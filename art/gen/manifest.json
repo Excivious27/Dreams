@@ -44333,6 +44333,96 @@
   }
  },
  "decor": {
+  "dc_arc_air_hockey": {
+   "file": "decor/dc_arc_air_hockey.png",
+   "h": 62,
+   "w": 60
+  },
+  "dc_arc_beanbag": {
+   "file": "decor/dc_arc_beanbag.png",
+   "h": 27,
+   "w": 30
+  },
+  "dc_arc_cart_shelf": {
+   "file": "decor/dc_arc_cart_shelf.png",
+   "h": 40,
+   "w": 48
+  },
+  "dc_arc_claw": {
+   "file": "decor/dc_arc_claw.png",
+   "h": 55,
+   "w": 30
+  },
+  "dc_arc_couch": {
+   "file": "decor/dc_arc_couch.png",
+   "h": 40,
+   "w": 60
+  },
+  "dc_arc_couch_r1": {
+   "file": "decor/dc_arc_couch_r1.png",
+   "h": 45,
+   "w": 34
+  },
+  "dc_arc_couch_r3": {
+   "file": "decor/dc_arc_couch_r3.png",
+   "h": 45,
+   "w": 34
+  },
+  "dc_arc_dance_pad": {
+   "file": "decor/dc_arc_dance_pad.png",
+   "h": 60,
+   "w": 60
+  },
+  "dc_arc_gamer_chair": {
+   "file": "decor/dc_arc_gamer_chair.png",
+   "h": 48,
+   "w": 30
+  },
+  "dc_arc_gamer_chair_r1": {
+   "file": "decor/dc_arc_gamer_chair_r1.png",
+   "h": 48,
+   "w": 28
+  },
+  "dc_arc_gamer_chair_r2": {
+   "file": "decor/dc_arc_gamer_chair_r2.png",
+   "h": 48,
+   "w": 30
+  },
+  "dc_arc_gamer_chair_r3": {
+   "file": "decor/dc_arc_gamer_chair_r3.png",
+   "h": 48,
+   "w": 28
+  },
+  "dc_arc_high_score": {
+   "file": "decor/dc_arc_high_score.png",
+   "h": 48,
+   "w": 41
+  },
+  "dc_arc_neon_joystick": {
+   "file": "decor/dc_arc_neon_joystick.png",
+   "h": 48,
+   "w": 30
+  },
+  "dc_arc_pinball": {
+   "file": "decor/dc_arc_pinball.png",
+   "h": 59,
+   "w": 30
+  },
+  "dc_arc_pixel_art": {
+   "file": "decor/dc_arc_pixel_art.png",
+   "h": 48,
+   "w": 31
+  },
+  "dc_arc_speaker": {
+   "file": "decor/dc_arc_speaker.png",
+   "h": 23,
+   "w": 30
+  },
+  "dc_arc_vending": {
+   "file": "decor/dc_arc_vending.png",
+   "h": 43,
+   "w": 30
+  },
   "dc_art_antlers": {
    "file": "decor/dc_art_antlers.png",
    "h": 46,
@@ -44455,8 +44545,8 @@
   },
   "dc_bloom_dresser": {
    "file": "decor/dc_bloom_dresser.png",
-   "h": 37,
-   "w": 30
+   "h": 73,
+   "w": 60
   },
   "dc_bloom_flowers": {
    "file": "decor/dc_bloom_flowers.png",
@@ -44593,15 +44683,45 @@
    "h": 56,
    "w": 60
   },
+  "dc_catkins_bell": {
+   "file": "decor/dc_catkins_bell.png",
+   "h": 48,
+   "w": 14
+  },
   "dc_catkins_bonsai": {
    "file": "decor/dc_catkins_bonsai.png",
    "h": 34,
    "w": 30
   },
+  "dc_catkins_chair": {
+   "file": "decor/dc_catkins_chair.png",
+   "h": 34,
+   "w": 30
+  },
+  "dc_catkins_chair_r1": {
+   "file": "decor/dc_catkins_chair_r1.png",
+   "h": 34,
+   "w": 31
+  },
+  "dc_catkins_chair_r2": {
+   "file": "decor/dc_catkins_chair_r2.png",
+   "h": 28,
+   "w": 31
+  },
+  "dc_catkins_chair_r3": {
+   "file": "decor/dc_catkins_chair_r3.png",
+   "h": 34,
+   "w": 31
+  },
   "dc_catkins_cushion": {
    "file": "decor/dc_catkins_cushion.png",
    "h": 23,
    "w": 30
+  },
+  "dc_catkins_fan": {
+   "file": "decor/dc_catkins_fan.png",
+   "h": 47,
+   "w": 48
   },
   "dc_catkins_gong": {
    "file": "decor/dc_catkins_gong.png",
@@ -44623,15 +44743,35 @@
    "h": 43,
    "w": 30
   },
+  "dc_catkins_scroll": {
+   "file": "decor/dc_catkins_scroll.png",
+   "h": 48,
+   "w": 25
+  },
   "dc_catkins_shelf": {
    "file": "decor/dc_catkins_shelf.png",
    "h": 40,
    "w": 30
   },
+  "dc_catkins_shrine": {
+   "file": "decor/dc_catkins_shrine.png",
+   "h": 48,
+   "w": 36
+  },
   "dc_catkins_table": {
    "file": "decor/dc_catkins_table.png",
    "h": 64,
    "w": 60
+  },
+  "dc_catkins_table_r1": {
+   "file": "decor/dc_catkins_table_r1.png",
+   "h": 28,
+   "w": 35
+  },
+  "dc_catkins_table_r3": {
+   "file": "decor/dc_catkins_table_r3.png",
+   "h": 28,
+   "w": 35
   },
   "dc_chrome_bed": {
    "file": "decor/dc_chrome_bed.png",
@@ -44642,6 +44782,46 @@
    "file": "decor/dc_chrome_bench.png",
    "h": 63,
    "w": 60
+  },
+  "dc_chrome_bench_r1": {
+   "file": "decor/dc_chrome_bench_r1.png",
+   "h": 48,
+   "w": 32
+  },
+  "dc_chrome_bench_r3": {
+   "file": "decor/dc_chrome_bench_r3.png",
+   "h": 48,
+   "w": 32
+  },
+  "dc_chrome_blueprint": {
+   "file": "decor/dc_chrome_blueprint.png",
+   "h": 48,
+   "w": 48
+  },
+  "dc_chrome_chair": {
+   "file": "decor/dc_chrome_chair.png",
+   "h": 38,
+   "w": 30
+  },
+  "dc_chrome_chair_r1": {
+   "file": "decor/dc_chrome_chair_r1.png",
+   "h": 37,
+   "w": 27
+  },
+  "dc_chrome_chair_r2": {
+   "file": "decor/dc_chrome_chair_r2.png",
+   "h": 36,
+   "w": 31
+  },
+  "dc_chrome_chair_r3": {
+   "file": "decor/dc_chrome_chair_r3.png",
+   "h": 37,
+   "w": 27
+  },
+  "dc_chrome_fan": {
+   "file": "decor/dc_chrome_fan.png",
+   "h": 47,
+   "w": 48
   },
   "dc_chrome_lamp": {
    "file": "decor/dc_chrome_lamp.png",
@@ -44663,6 +44843,11 @@
    "h": 45,
    "w": 30
   },
+  "dc_chrome_screen": {
+   "file": "decor/dc_chrome_screen.png",
+   "h": 42,
+   "w": 48
+  },
   "dc_chrome_server": {
    "file": "decor/dc_chrome_server.png",
    "h": 53,
@@ -44672,6 +44857,11 @@
    "file": "decor/dc_chrome_terminal.png",
    "h": 29,
    "w": 30
+  },
+  "dc_chrome_tools": {
+   "file": "decor/dc_chrome_tools.png",
+   "h": 40,
+   "w": 48
   },
   "dc_coral_anemone": {
    "file": "decor/dc_coral_anemone.png",
@@ -44688,29 +44878,119 @@
    "h": 30,
    "w": 30
   },
+  "dc_coral_chair": {
+   "file": "decor/dc_coral_chair.png",
+   "h": 36,
+   "w": 30
+  },
+  "dc_coral_chair_r1": {
+   "file": "decor/dc_coral_chair_r1.png",
+   "h": 37,
+   "w": 28
+  },
+  "dc_coral_chair_r2": {
+   "file": "decor/dc_coral_chair_r2.png",
+   "h": 34,
+   "w": 29
+  },
+  "dc_coral_chair_r3": {
+   "file": "decor/dc_coral_chair_r3.png",
+   "h": 37,
+   "w": 28
+  },
   "dc_coral_chest": {
    "file": "decor/dc_coral_chest.png",
    "h": 25,
    "w": 30
+  },
+  "dc_coral_kelp": {
+   "file": "decor/dc_coral_kelp.png",
+   "h": 35,
+   "w": 48
   },
   "dc_coral_lamp": {
    "file": "decor/dc_coral_lamp.png",
    "h": 48,
    "w": 30
   },
+  "dc_coral_map": {
+   "file": "decor/dc_coral_map.png",
+   "h": 48,
+   "w": 39
+  },
+  "dc_coral_mirror": {
+   "file": "decor/dc_coral_mirror.png",
+   "h": 48,
+   "w": 42
+  },
   "dc_coral_shelf": {
    "file": "decor/dc_coral_shelf.png",
    "h": 39,
    "w": 30
+  },
+  "dc_coral_starfish": {
+   "file": "decor/dc_coral_starfish.png",
+   "h": 48,
+   "w": 26
   },
   "dc_coral_table": {
    "file": "decor/dc_coral_table.png",
    "h": 67,
    "w": 60
   },
+  "dc_coral_table_r1": {
+   "file": "decor/dc_coral_table_r1.png",
+   "h": 30,
+   "w": 30
+  },
+  "dc_coral_table_r3": {
+   "file": "decor/dc_coral_table_r3.png",
+   "h": 30,
+   "w": 30
+  },
   "dc_coral_tank": {
    "file": "decor/dc_coral_tank.png",
    "h": 41,
+   "w": 30
+  },
+  "dc_fest_cornucopia": {
+   "file": "decor/dc_fest_cornucopia.png",
+   "h": 27,
+   "w": 30
+  },
+  "dc_fest_gift_pile": {
+   "file": "decor/dc_fest_gift_pile.png",
+   "h": 26,
+   "w": 30
+  },
+  "dc_fest_hay_scarecrow": {
+   "file": "decor/dc_fest_hay_scarecrow.png",
+   "h": 41,
+   "w": 30
+  },
+  "dc_fest_leaf_wreath": {
+   "file": "decor/dc_fest_leaf_wreath.png",
+   "h": 48,
+   "w": 46
+  },
+  "dc_fest_pumpkins": {
+   "file": "decor/dc_fest_pumpkins.png",
+   "h": 25,
+   "w": 30
+  },
+  "dc_fest_snow_lantern": {
+   "file": "decor/dc_fest_snow_lantern.png",
+   "h": 45,
+   "w": 30
+  },
+  "dc_fest_stocking": {
+   "file": "decor/dc_fest_stocking.png",
+   "h": 32,
+   "w": 48
+  },
+  "dc_fest_winter_tree": {
+   "file": "decor/dc_fest_winter_tree.png",
+   "h": 44,
    "w": 30
   },
   "dc_fl_blue_tile": {
@@ -44838,35 +45118,75 @@
    "h": 47,
    "w": 48
   },
+  "dc_gart_cash_frame": {
+   "file": "decor/dc_gart_cash_frame.png",
+   "h": 30,
+   "w": 47
+  },
   "dc_gart_circuit_art": {
    "file": "decor/dc_gart_circuit_art.png",
    "h": 48,
    "w": 37
+  },
+  "dc_gart_city_map": {
+   "file": "decor/dc_gart_city_map.png",
+   "h": 45,
+   "w": 48
   },
   "dc_gart_cyber_poster": {
    "file": "decor/dc_gart_cyber_poster.png",
    "h": 48,
    "w": 34
   },
+  "dc_gart_deco_clock": {
+   "file": "decor/dc_gart_deco_clock.png",
+   "h": 48,
+   "w": 45
+  },
   "dc_gart_fedora_hook": {
    "file": "decor/dc_gart_fedora_hook.png",
    "h": 48,
    "w": 31
+  },
+  "dc_gart_fedora_portrait": {
+   "file": "decor/dc_gart_fedora_portrait.png",
+   "h": 48,
+   "w": 44
   },
   "dc_gart_gold_record": {
    "file": "decor/dc_gart_gold_record.png",
    "h": 48,
    "w": 42
   },
+  "dc_gart_holo_koi": {
+   "file": "decor/dc_gart_holo_koi.png",
+   "h": 48,
+   "w": 32
+  },
   "dc_gart_jazz_poster": {
    "file": "decor/dc_gart_jazz_poster.png",
    "h": 48,
    "w": 35
   },
+  "dc_gart_neon_cat": {
+   "file": "decor/dc_gart_neon_cat.png",
+   "h": 48,
+   "w": 38
+  },
+  "dc_gart_neon_diamond": {
+   "file": "decor/dc_gart_neon_diamond.png",
+   "h": 40,
+   "w": 48
+  },
   "dc_gart_neon_star": {
    "file": "decor/dc_gart_neon_star.png",
    "h": 48,
    "w": 47
+  },
+  "dc_gart_record_wall": {
+   "file": "decor/dc_gart_record_wall.png",
+   "h": 18,
+   "w": 48
   },
   "dc_gart_tv_wall": {
    "file": "decor/dc_gart_tv_wall.png",
@@ -45483,6 +45803,46 @@
    "h": 29,
    "w": 48
   },
+  "dc_plant_fiddle": {
+   "file": "decor/dc_plant_fiddle.png",
+   "h": 50,
+   "w": 30
+  },
+  "dc_plant_glow": {
+   "file": "decor/dc_plant_glow.png",
+   "h": 43,
+   "w": 30
+  },
+  "dc_plant_hanging": {
+   "file": "decor/dc_plant_hanging.png",
+   "h": 50,
+   "w": 30
+  },
+  "dc_plant_lemon": {
+   "file": "decor/dc_plant_lemon.png",
+   "h": 42,
+   "w": 30
+  },
+  "dc_plant_monstera": {
+   "file": "decor/dc_plant_monstera.png",
+   "h": 39,
+   "w": 30
+  },
+  "dc_plant_orchid": {
+   "file": "decor/dc_plant_orchid.png",
+   "h": 45,
+   "w": 30
+  },
+  "dc_plant_snake": {
+   "file": "decor/dc_plant_snake.png",
+   "h": 63,
+   "w": 30
+  },
+  "dc_plant_succulent": {
+   "file": "decor/dc_plant_succulent.png",
+   "h": 37,
+   "w": 60
+  },
   "dc_rug_bear": {
    "file": "decor/dc_rug_bear.png",
    "h": 54,
@@ -45538,9 +45898,49 @@
    "h": 60,
    "w": 60
   },
+  "dc_rustic_barrel": {
+   "file": "decor/dc_rustic_barrel.png",
+   "h": 40,
+   "w": 30
+  },
+  "dc_rustic_bed": {
+   "file": "decor/dc_rustic_bed.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_rustic_bench": {
+   "file": "decor/dc_rustic_bench.png",
+   "h": 48,
+   "w": 60
+  },
+  "dc_rustic_churn": {
+   "file": "decor/dc_rustic_churn.png",
+   "h": 73,
+   "w": 30
+  },
+  "dc_rustic_dresser": {
+   "file": "decor/dc_rustic_dresser.png",
+   "h": 74,
+   "w": 60
+  },
+  "dc_rustic_lamp": {
+   "file": "decor/dc_rustic_lamp.png",
+   "h": 61,
+   "w": 30
+  },
+  "dc_rustic_rocker": {
+   "file": "decor/dc_rustic_rocker.png",
+   "h": 39,
+   "w": 30
+  },
+  "dc_rustic_table": {
+   "file": "decor/dc_rustic_table.png",
+   "h": 50,
+   "w": 60
+  },
   "dc_safe_board": {
    "file": "decor/dc_safe_board.png",
-   "h": 29,
+   "h": 30,
    "w": 30
   },
   "dc_safe_bulb": {
@@ -45550,8 +45950,8 @@
   },
   "dc_safe_bunk": {
    "file": "decor/dc_safe_bunk.png",
-   "h": 35,
-   "w": 30
+   "h": 69,
+   "w": 60
   },
   "dc_safe_chair": {
    "file": "decor/dc_safe_chair.png",
@@ -45595,7 +45995,7 @@
   },
   "dc_safe_drum": {
    "file": "decor/dc_safe_drum.png",
-   "h": 46,
+   "h": 45,
    "w": 30
   },
   "dc_safe_keys": {
@@ -45615,7 +46015,7 @@
   },
   "dc_safe_safe": {
    "file": "decor/dc_safe_safe.png",
-   "h": 40,
+   "h": 41,
    "w": 30
   },
   "dc_safe_table": {
@@ -45627,6 +46027,96 @@
    "file": "decor/dc_safe_wanted.png",
    "h": 39,
    "w": 48
+  },
+  "dc_sea_anchor": {
+   "file": "decor/dc_sea_anchor.png",
+   "h": 48,
+   "w": 28
+  },
+  "dc_sea_bed": {
+   "file": "decor/dc_sea_bed.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_sea_buoy": {
+   "file": "decor/dc_sea_buoy.png",
+   "h": 38,
+   "w": 30
+  },
+  "dc_sea_chair": {
+   "file": "decor/dc_sea_chair.png",
+   "h": 41,
+   "w": 30
+  },
+  "dc_sea_chair_r1": {
+   "file": "decor/dc_sea_chair_r1.png",
+   "h": 39,
+   "w": 29
+  },
+  "dc_sea_chair_r2": {
+   "file": "decor/dc_sea_chair_r2.png",
+   "h": 35,
+   "w": 29
+  },
+  "dc_sea_chair_r3": {
+   "file": "decor/dc_sea_chair_r3.png",
+   "h": 39,
+   "w": 29
+  },
+  "dc_sea_chest": {
+   "file": "decor/dc_sea_chest.png",
+   "h": 22,
+   "w": 30
+  },
+  "dc_sea_lamp": {
+   "file": "decor/dc_sea_lamp.png",
+   "h": 59,
+   "w": 30
+  },
+  "dc_sea_life_ring": {
+   "file": "decor/dc_sea_life_ring.png",
+   "h": 48,
+   "w": 41
+  },
+  "dc_sea_net": {
+   "file": "decor/dc_sea_net.png",
+   "h": 39,
+   "w": 48
+  },
+  "dc_sea_porthole": {
+   "file": "decor/dc_sea_porthole.png",
+   "h": 48,
+   "w": 44
+  },
+  "dc_sea_shipbottle": {
+   "file": "decor/dc_sea_shipbottle.png",
+   "h": 24,
+   "w": 30
+  },
+  "dc_sea_sofa": {
+   "file": "decor/dc_sea_sofa.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_sea_sofa_r1": {
+   "file": "decor/dc_sea_sofa_r1.png",
+   "h": 42,
+   "w": 32
+  },
+  "dc_sea_sofa_r3": {
+   "file": "decor/dc_sea_sofa_r3.png",
+   "h": 42,
+   "w": 32
+  },
+  "dc_sea_table": {
+   "file": "decor/dc_sea_table.png",
+   "h": 53,
+   "w": 60
+  },
+  "dc_sea_wheel": {
+   "file": "decor/dc_sea_wheel.png",
+   "h": 39,
+   "w": 30
   },
   "dc_show_aurora_tank": {
    "cell_h": 34,
@@ -45754,6 +46244,46 @@
    "h": 58,
    "w": 60
   },
+  "dc_stat_bust": {
+   "file": "decor/dc_stat_bust.png",
+   "h": 57,
+   "w": 30
+  },
+  "dc_stat_cat": {
+   "file": "decor/dc_stat_cat.png",
+   "h": 44,
+   "w": 30
+  },
+  "dc_stat_globe_bar": {
+   "file": "decor/dc_stat_globe_bar.png",
+   "h": 48,
+   "w": 30
+  },
+  "dc_stat_lion": {
+   "file": "decor/dc_stat_lion.png",
+   "h": 58,
+   "w": 30
+  },
+  "dc_stat_owl": {
+   "file": "decor/dc_stat_owl.png",
+   "h": 60,
+   "w": 30
+  },
+  "dc_stat_penguin_gold": {
+   "file": "decor/dc_stat_penguin_gold.png",
+   "h": 57,
+   "w": 30
+  },
+  "dc_stat_robot": {
+   "file": "decor/dc_stat_robot.png",
+   "h": 62,
+   "w": 30
+  },
+  "dc_stat_trophy": {
+   "file": "decor/dc_stat_trophy.png",
+   "h": 36,
+   "w": 30
+  },
   "dc_top_books": {
    "file": "decor/dc_top_books.png",
    "h": 26,
@@ -45769,6 +46299,11 @@
    "h": 30,
    "w": 25
   },
+  "dc_top_cash_box": {
+   "file": "decor/dc_top_cash_box.png",
+   "h": 23,
+   "w": 30
+  },
   "dc_top_cash_register_mini": {
    "file": "decor/dc_top_cash_register_mini.png",
    "h": 30,
@@ -45779,9 +46314,19 @@
    "h": 24,
    "w": 30
   },
+  "dc_top_desk_lamp_green": {
+   "file": "decor/dc_top_desk_lamp_green.png",
+   "h": 30,
+   "w": 26
+  },
   "dc_top_desk_phone": {
    "file": "decor/dc_top_desk_phone.png",
    "h": 24,
+   "w": 30
+  },
+  "dc_top_dice_cup": {
+   "file": "decor/dc_top_dice_cup.png",
+   "h": 28,
    "w": 30
   },
   "dc_top_fish_bowl": {
@@ -45793,6 +46338,11 @@
    "file": "decor/dc_top_globe.png",
    "h": 29,
    "w": 21
+  },
+  "dc_top_gold_bar": {
+   "file": "decor/dc_top_gold_bar.png",
+   "h": 22,
+   "w": 30
   },
   "dc_top_holo_cube": {
    "file": "decor/dc_top_holo_cube.png",
@@ -45809,15 +46359,30 @@
    "h": 30,
    "w": 18
   },
+  "dc_top_mini_robot": {
+   "file": "decor/dc_top_mini_robot.png",
+   "h": 30,
+   "w": 21
+  },
   "dc_top_music_box": {
    "file": "decor/dc_top_music_box.png",
    "h": 30,
    "w": 27
   },
+  "dc_top_neon_cube": {
+   "file": "decor/dc_top_neon_cube.png",
+   "h": 30,
+   "w": 28
+  },
   "dc_top_penguin_plush": {
    "file": "decor/dc_top_penguin_plush.png",
    "h": 30,
    "w": 28
+  },
+  "dc_top_radio_tube": {
+   "file": "decor/dc_top_radio_tube.png",
+   "h": 29,
+   "w": 30
   },
   "dc_top_snow_globe": {
    "file": "decor/dc_top_snow_globe.png",
@@ -45827,6 +46392,11 @@
   "dc_top_teapot": {
    "file": "decor/dc_top_teapot.png",
    "h": 30,
+   "w": 30
+  },
+  "dc_top_typewriter": {
+   "file": "decor/dc_top_typewriter.png",
+   "h": 26,
    "w": 30
   },
   "dc_top_vase": {
@@ -45953,6 +46523,31 @@
    "file": "decor/dc_wp_star_navy_icon.png",
    "h": 32,
    "w": 32
+  },
+  "ui_decor_box": {
+   "file": "decor/ui_decor_box.png",
+   "h": 28,
+   "w": 27
+  },
+  "ui_frame_mythic": {
+   "file": "decor/ui_frame_mythic.png",
+   "h": 40,
+   "w": 35
+  },
+  "ui_frame_unique": {
+   "file": "decor/ui_frame_unique.png",
+   "h": 40,
+   "w": 35
+  },
+  "ui_tab_decor": {
+   "file": "decor/ui_tab_decor.png",
+   "h": 74,
+   "w": 100
+  },
+  "ui_tab_decor_sel": {
+   "file": "decor/ui_tab_decor_sel.png",
+   "h": 75,
+   "w": 100
   }
  },
  "edges": {

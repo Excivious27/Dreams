@@ -1,5 +1,265 @@
 [
  {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 24,
+  "id": "dc_arc_air_hockey",
+  "layer": "floor",
+  "name": "Air Hockey Table",
+  "px": [
+   60,
+   62
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_arc_beanbag",
+  "layer": "floor",
+  "name": "Checker Beanbag",
+  "px": [
+   30,
+   27
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_arc_cart_shelf",
+  "layer": "wall",
+  "name": "Game Cart Shelf",
+  "px": [
+   48,
+   40
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 28,
+  "id": "dc_arc_claw",
+  "layer": "floor",
+  "name": "Mini Claw Machine",
+  "px": [
+   30,
+   55
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_arc_couch",
+  "layer": "floor",
+  "name": "Neon Lounge Couch",
+  "px": [
+   60,
+   40
+  ],
+  "rarity": "uncommon",
+  "rot": 2,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "rug",
+  "glow": 20,
+  "id": "dc_arc_dance_pad",
+  "layer": "flat",
+  "name": "Dance Pad",
+  "px": [
+   60,
+   60
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_arc_gamer_chair",
+  "layer": "floor",
+  "name": "Racer Game Chair",
+  "px": [
+   30,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 4,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 24,
+  "id": "dc_arc_high_score",
+  "layer": "wall",
+  "name": "High-Score Board",
+  "px": [
+   41,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 30,
+  "id": "dc_arc_neon_joystick",
+  "layer": "wall",
+  "name": "Neon Joystick Sign",
+  "px": [
+   30,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 28,
+  "id": "dc_arc_pinball",
+  "layer": "floor",
+  "name": "Pinball Table",
+  "px": [
+   30,
+   59
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   1,
+   2
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_arc_pixel_art",
+  "layer": "wall",
+  "name": "Pixel Hero Poster",
+  "px": [
+   31,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_arc_speaker",
+  "layer": "floor",
+  "name": "Boombox Speaker",
+  "px": [
+   30,
+   23
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 24,
+  "id": "dc_arc_vending",
+  "layer": "floor",
+  "name": "Snack Vending Box",
+  "px": [
+   30,
+   43
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "neon_arcade",
+  "sheet": "set_neon_arcade_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "wall_art",
   "glow": 0,
@@ -427,15 +687,15 @@
   "layer": "floor",
   "name": "Painted Dresser",
   "px": [
-   30,
-   37
+   60,
+   73
   ],
   "rarity": "uncommon",
   "rot": 1,
   "set": "cottage_bloom",
   "sheet": "set_cottage_bloom_a.png",
   "size": [
-   1,
+   2,
    1
   ]
  },
@@ -841,6 +1101,26 @@
  },
  {
   "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_catkins_bell",
+  "layer": "wall",
+  "name": "Wind Bell",
+  "px": [
+   14,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "catkins",
+  "sheet": "set_catkins_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_catkins_bonsai",
@@ -863,6 +1143,26 @@
   "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
+  "id": "dc_catkins_chair",
+  "layer": "floor",
+  "name": "Zabuton Chair",
+  "px": [
+   30,
+   34
+  ],
+  "rarity": "common",
+  "rot": 4,
+  "set": "catkins",
+  "sheet": "set_catkins_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
   "id": "dc_catkins_cushion",
   "layer": "floor",
   "name": "Meditation Cushion",
@@ -874,6 +1174,26 @@
   "rot": 1,
   "set": "catkins",
   "sheet": "set_catkins_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_catkins_fan",
+  "layer": "wall",
+  "name": "Paper Fan",
+  "px": [
+   48,
+   47
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "catkins",
+  "sheet": "set_catkins_b.png",
   "size": [
    1,
    1
@@ -961,6 +1281,26 @@
  },
  {
   "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_catkins_scroll",
+  "layer": "wall",
+  "name": "Paw Scroll",
+  "px": [
+   25,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "catkins",
+  "sheet": "set_catkins_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_catkins_shelf",
@@ -981,6 +1321,26 @@
  },
  {
   "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 16,
+  "id": "dc_catkins_shrine",
+  "layer": "wall",
+  "name": "Little Wall Shrine",
+  "px": [
+   36,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "catkins",
+  "sheet": "set_catkins_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_catkins_table",
@@ -991,7 +1351,7 @@
    64
   ],
   "rarity": "common",
-  "rot": 1,
+  "rot": 2,
   "set": "catkins",
   "sheet": "set_catkins_a.png",
   "size": [
@@ -1031,11 +1391,71 @@
    63
   ],
   "rarity": "uncommon",
-  "rot": 1,
+  "rot": 2,
   "set": "chrome_lab",
   "sheet": "set_chrome_lab_a.png",
   "size": [
    2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_chrome_blueprint",
+  "layer": "wall",
+  "name": "Robot Blueprint",
+  "px": [
+   48,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "chrome_lab",
+  "sheet": "set_chrome_lab_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_chrome_chair",
+  "layer": "floor",
+  "name": "Hover Chair",
+  "px": [
+   30,
+   38
+  ],
+  "rarity": "uncommon",
+  "rot": 4,
+  "set": "chrome_lab",
+  "sheet": "set_chrome_lab_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_chrome_fan",
+  "layer": "wall",
+  "name": "Vent Fan",
+  "px": [
+   48,
+   47
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "chrome_lab",
+  "sheet": "set_chrome_lab_b.png",
+  "size": [
+   1,
    1
   ]
  },
@@ -1121,6 +1541,26 @@
  },
  {
   "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 24,
+  "id": "dc_chrome_screen",
+  "layer": "wall",
+  "name": "Code Screen",
+  "px": [
+   48,
+   42
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "chrome_lab",
+  "sheet": "set_chrome_lab_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
   "cat": "furniture",
   "glow": 24,
   "id": "dc_chrome_server",
@@ -1154,6 +1594,26 @@
   "rot": 1,
   "set": "chrome_lab",
   "sheet": "set_chrome_lab_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_chrome_tools",
+  "layer": "wall",
+  "name": "Tool Pegboard",
+  "px": [
+   48,
+   40
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "chrome_lab",
+  "sheet": "set_chrome_lab_b.png",
   "size": [
    1,
    1
@@ -1223,6 +1683,26 @@
   "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
+  "id": "dc_coral_chair",
+  "layer": "floor",
+  "name": "Scallop Chair",
+  "px": [
+   30,
+   36
+  ],
+  "rarity": "uncommon",
+  "rot": 4,
+  "set": "merkitty_coral",
+  "sheet": "set_merkitty_coral_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
   "id": "dc_coral_chest",
   "layer": "floor",
   "name": "Treasure Chest",
@@ -1234,6 +1714,26 @@
   "rot": 1,
   "set": "merkitty_coral",
   "sheet": "set_merkitty_coral_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_coral_kelp",
+  "layer": "wall",
+  "name": "Kelp Garland",
+  "px": [
+   48,
+   35
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "merkitty_coral",
+  "sheet": "set_merkitty_coral_b.png",
   "size": [
    1,
    1
@@ -1261,6 +1761,46 @@
  },
  {
   "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_coral_map",
+  "layer": "wall",
+  "name": "Sunken Map",
+  "px": [
+   39,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "merkitty_coral",
+  "sheet": "set_merkitty_coral_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_coral_mirror",
+  "layer": "wall",
+  "name": "Pearl Mirror",
+  "px": [
+   42,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "merkitty_coral",
+  "sheet": "set_merkitty_coral_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_coral_shelf",
@@ -1281,6 +1821,26 @@
  },
  {
   "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_coral_starfish",
+  "layer": "wall",
+  "name": "Starfish Charm",
+  "px": [
+   26,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "merkitty_coral",
+  "sheet": "set_merkitty_coral_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_coral_table",
@@ -1291,7 +1851,7 @@
    67
   ],
   "rarity": "common",
-  "rot": 1,
+  "rot": 2,
   "set": "merkitty_coral",
   "sheet": "set_merkitty_coral_a.png",
   "size": [
@@ -1314,6 +1874,166 @@
   "rot": 1,
   "set": "merkitty_coral",
   "sheet": "set_merkitty_coral_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_fest_cornucopia",
+  "layer": "top",
+  "name": "Cornucopia",
+  "px": [
+   30,
+   27
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_fest_gift_pile",
+  "layer": "floor",
+  "name": "Gift Pile",
+  "px": [
+   30,
+   26
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_fest_hay_scarecrow",
+  "layer": "floor",
+  "name": "Mini Scarecrow",
+  "px": [
+   30,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_fest_leaf_wreath",
+  "layer": "wall",
+  "name": "Autumn Leaf Wreath",
+  "px": [
+   46,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_fest_pumpkins",
+  "layer": "floor",
+  "name": "Pumpkin Pile",
+  "px": [
+   30,
+   25
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 30,
+  "id": "dc_fest_snow_lantern",
+  "layer": "floor",
+  "name": "Snow Lantern",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_fest_stocking",
+  "layer": "wall",
+  "name": "Hanging Stockings",
+  "px": [
+   48,
+   32
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 36,
+  "id": "dc_fest_winter_tree",
+  "layer": "floor",
+  "name": "Festive Pine",
+  "px": [
+   30,
+   44
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "seasonal.png",
   "size": [
    1,
    1
@@ -1606,6 +2326,26 @@
  {
   "arc": "gangsters",
   "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_gart_cash_frame",
+  "layer": "wall",
+  "name": "First Dollar Frame",
+  "px": [
+   47,
+   30
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
   "glow": 20,
   "id": "dc_gart_circuit_art",
   "layer": "wall",
@@ -1618,6 +2358,26 @@
   "rot": 1,
   "set": "",
   "sheet": "wallart_gang.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_gart_city_map",
+  "layer": "wall",
+  "name": "Turf Map Frame",
+  "px": [
+   48,
+   45
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
   "size": [
    1,
    1
@@ -1647,6 +2407,26 @@
   "arc": "gangsters",
   "cat": "wall_art",
   "glow": 0,
+  "id": "dc_gart_deco_clock",
+  "layer": "wall",
+  "name": "Chrome Sunburst Clock",
+  "px": [
+   45,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
   "id": "dc_gart_fedora_hook",
   "layer": "wall",
   "name": "Fedora Hook",
@@ -1667,6 +2447,26 @@
   "arc": "gangsters",
   "cat": "wall_art",
   "glow": 0,
+  "id": "dc_gart_fedora_portrait",
+  "layer": "wall",
+  "name": "Boss Portrait",
+  "px": [
+   44,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
   "id": "dc_gart_gold_record",
   "layer": "wall",
   "name": "Framed Gold Record",
@@ -1678,6 +2478,26 @@
   "rot": 1,
   "set": "",
   "sheet": "wallart_gang.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 24,
+  "id": "dc_gart_holo_koi",
+  "layer": "wall",
+  "name": "Holo Koi Panel",
+  "px": [
+   32,
+   48
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
   "size": [
    1,
    1
@@ -1707,6 +2527,46 @@
   "arc": "gangsters",
   "cat": "wall_art",
   "glow": 28,
+  "id": "dc_gart_neon_cat",
+  "layer": "wall",
+  "name": "Neon Cat Sign",
+  "px": [
+   38,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 28,
+  "id": "dc_gart_neon_diamond",
+  "layer": "wall",
+  "name": "Neon Diamond Sign",
+  "px": [
+   48,
+   40
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 28,
   "id": "dc_gart_neon_star",
   "layer": "wall",
   "name": "Neon Star",
@@ -1718,6 +2578,26 @@
   "rot": 1,
   "set": "",
   "sheet": "wallart_gang.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_gart_record_wall",
+  "layer": "wall",
+  "name": "Vinyl Record Trio",
+  "px": [
+   48,
+   18
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang2.png",
   "size": [
    1,
    1
@@ -3685,6 +4565,166 @@
  },
  {
   "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_fiddle",
+  "layer": "floor",
+  "name": "Fiddle-Leaf Fig",
+  "px": [
+   30,
+   50
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 20,
+  "id": "dc_plant_glow",
+  "layer": "floor",
+  "name": "Glowbloom Pot",
+  "px": [
+   30,
+   43
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_hanging",
+  "layer": "floor",
+  "name": "Hanging Ivy Stand",
+  "px": [
+   30,
+   50
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_lemon",
+  "layer": "floor",
+  "name": "Lemon Tree Tub",
+  "px": [
+   30,
+   42
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_monstera",
+  "layer": "floor",
+  "name": "Monstera Pot",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_orchid",
+  "layer": "floor",
+  "name": "Orchid Stand",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_snake",
+  "layer": "floor",
+  "name": "Snake Plant",
+  "px": [
+   30,
+   63
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_plant_succulent",
+  "layer": "floor",
+  "name": "Succulent Trough",
+  "px": [
+   60,
+   37
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "plants.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
   "cat": "rug",
   "glow": 0,
   "id": "dc_rug_bear",
@@ -3844,6 +4884,166 @@
   ]
  },
  {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_barrel",
+  "layer": "floor",
+  "name": "Apple Barrel",
+  "px": [
+   30,
+   40
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_bed",
+  "layer": "floor",
+  "name": "Plaid Quilt Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_bench",
+  "layer": "floor",
+  "name": "Pine Bench",
+  "px": [
+   60,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_churn",
+  "layer": "floor",
+  "name": "Butter Churn",
+  "px": [
+   30,
+   73
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_dresser",
+  "layer": "floor",
+  "name": "Oak Dresser",
+  "px": [
+   60,
+   74
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 36,
+  "id": "dc_rustic_lamp",
+  "layer": "floor",
+  "name": "Oil Lamp Stand",
+  "px": [
+   30,
+   61
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_rocker",
+  "layer": "floor",
+  "name": "Rocking Chair",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_rustic_table",
+  "layer": "floor",
+  "name": "Harvest Table",
+  "px": [
+   60,
+   50
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
   "arc": "gangsters",
   "cat": "furniture",
   "glow": 0,
@@ -3852,12 +5052,12 @@
   "name": "Plan Board",
   "px": [
    30,
-   29
+   30
   ],
   "rarity": "uncommon",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    1,
    1
@@ -3877,7 +5077,7 @@
   "rarity": "common",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    1,
    1
@@ -3891,16 +5091,16 @@
   "layer": "floor",
   "name": "Bunk Bed",
   "px": [
-   30,
-   35
+   60,
+   69
   ],
   "rarity": "uncommon",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
-   1,
-   2
+   2,
+   1
   ]
  },
  {
@@ -3937,7 +5137,7 @@
   "rarity": "common",
   "rot": 2,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    2,
    1
@@ -3957,7 +5157,7 @@
   "rarity": "common",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    1,
    1
@@ -3972,12 +5172,12 @@
   "name": "Oil-Drum Table",
   "px": [
    30,
-   46
+   45
   ],
   "rarity": "common",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    1,
    1
@@ -4052,12 +5252,12 @@
   "name": "Old Iron Safe",
   "px": [
    30,
-   40
+   41
   ],
   "rarity": "rare",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    1,
    1
@@ -4077,7 +5277,7 @@
   "rarity": "uncommon",
   "rot": 1,
   "set": "safehouse",
-  "sheet": "set_safehouse_a.png",
+  "sheet": "set_safehouse_a_v2.png",
   "size": [
    2,
    1
@@ -4098,6 +5298,266 @@
   "rot": 1,
   "set": "safehouse",
   "sheet": "set_safehouse_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_sea_anchor",
+  "layer": "wall",
+  "name": "Anchor Plaque",
+  "px": [
+   28,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_bed",
+  "layer": "floor",
+  "name": "Sailcloth Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_buoy",
+  "layer": "floor",
+  "name": "Buoy Stool",
+  "px": [
+   30,
+   38
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_chair",
+  "layer": "floor",
+  "name": "Deck Chair",
+  "px": [
+   30,
+   41
+  ],
+  "rarity": "common",
+  "rot": 4,
+  "set": "seaside",
+  "sheet": "set_seaside_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_chest",
+  "layer": "floor",
+  "name": "Sea Chest",
+  "px": [
+   30,
+   22
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 40,
+  "id": "dc_sea_lamp",
+  "layer": "floor",
+  "name": "Lighthouse Lamp",
+  "px": [
+   30,
+   59
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_sea_life_ring",
+  "layer": "wall",
+  "name": "Life Ring",
+  "px": [
+   41,
+   48
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_sea_net",
+  "layer": "wall",
+  "name": "Shell Net Garland",
+  "px": [
+   48,
+   39
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_sea_porthole",
+  "layer": "wall",
+  "name": "Porthole Window",
+  "px": [
+   44,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_shipbottle",
+  "layer": "floor",
+  "name": "Ship-in-a-Jar Stand",
+  "px": [
+   30,
+   24
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_sofa",
+  "layer": "floor",
+  "name": "Striped Deck Sofa",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "common",
+  "rot": 2,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_table",
+  "layer": "floor",
+  "name": "Driftwood Table",
+  "px": [
+   60,
+   53
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_sea_wheel",
+  "layer": "floor",
+  "name": "Ship's Wheel Stand",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
   "size": [
    1,
    1
@@ -4312,6 +5772,166 @@
  },
  {
   "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_bust",
+  "layer": "floor",
+  "name": "Marble Bust",
+  "px": [
+   30,
+   57
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_cat",
+  "layer": "floor",
+  "name": "Lucky Cat Statue",
+  "px": [
+   30,
+   44
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_globe_bar",
+  "layer": "floor",
+  "name": "Brass Globe Stand",
+  "px": [
+   30,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_lion",
+  "layer": "floor",
+  "name": "Gilded Lion",
+  "px": [
+   30,
+   58
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_owl",
+  "layer": "floor",
+  "name": "Stone Owl",
+  "px": [
+   30,
+   60
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_penguin_gold",
+  "layer": "floor",
+  "name": "Golden Penguin Idol",
+  "px": [
+   30,
+   57
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_robot",
+  "layer": "floor",
+  "name": "Retro Robot Statue",
+  "px": [
+   30,
+   62
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_stat_trophy",
+  "layer": "floor",
+  "name": "Crew Cup Trophy",
+  "px": [
+   30,
+   36
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "",
+  "sheet": "statues.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
   "cat": "decor",
   "glow": 0,
   "id": "dc_top_books",
@@ -4371,6 +5991,26 @@
   ]
  },
  {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_cash_box",
+  "layer": "top",
+  "name": "Locked Cash Box",
+  "px": [
+   30,
+   23
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "decor",
   "glow": 0,
@@ -4411,6 +6051,26 @@
   ]
  },
  {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 20,
+  "id": "dc_top_desk_lamp_green",
+  "layer": "top",
+  "name": "Banker's Lamp",
+  "px": [
+   26,
+   30
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "decor",
   "glow": 0,
@@ -4425,6 +6085,26 @@
   "rot": 1,
   "set": "",
   "sheet": "tabletop_arcs.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_dice_cup",
+  "layer": "top",
+  "name": "Lucky Dice Cup",
+  "px": [
+   30,
+   28
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
   "size": [
    1,
    1
@@ -4465,6 +6145,26 @@
   "rot": 1,
   "set": "",
   "sheet": "tabletop_both.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_gold_bar",
+  "layer": "top",
+  "name": "Gold Bar Paperweight",
+  "px": [
+   30,
+   22
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
   "size": [
    1,
    1
@@ -4531,6 +6231,26 @@
   ]
  },
  {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_mini_robot",
+  "layer": "top",
+  "name": "Desk Robot Pal",
+  "px": [
+   21,
+   30
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "decor",
   "glow": 0,
@@ -4551,6 +6271,26 @@
   ]
  },
  {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 16,
+  "id": "dc_top_neon_cube",
+  "layer": "top",
+  "name": "Neon Name Cube",
+  "px": [
+   28,
+   30
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "decor",
   "glow": 0,
@@ -4565,6 +6305,26 @@
   "rot": 1,
   "set": "",
   "sheet": "tabletop_arcs.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_radio_tube",
+  "layer": "top",
+  "name": "Tube Radio",
+  "px": [
+   30,
+   29
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
   "size": [
    1,
    1
@@ -4605,6 +6365,26 @@
   "rot": 1,
   "set": "",
   "sheet": "tabletop_both.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_top_typewriter",
+  "layer": "top",
+  "name": "Typewriter",
+  "px": [
+   30,
+   26
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "",
+  "sheet": "tabletop_gang2.png",
   "size": [
    1,
    1

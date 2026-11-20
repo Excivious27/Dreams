@@ -63,10 +63,10 @@ sheet("set_chrome_lab_a.png", "chrome_lab", "gangsters",
         P("dc_chrome_terminal", "Glow Terminal", F, U, [1, 1], glow=32), P("dc_chrome_locker", "Chrome Locker", F, C, [1, 1])],
        [P("dc_chrome_lamp", "Tube Lamp", F, C, [1, 1], glow=40), P("dc_chrome_robot", "Tea Robot", F, E, [1, 1]),
         P("dc_chrome_plant", "Hydro Planter", F, C, [1, 1], glow=24), P("dc_chrome_server", "Server Tower", F, U, [1, 1], glow=24)]])
-sheet("set_safehouse_a.png", "safehouse", "gangsters",
+sheet("set_safehouse_a_v2.png", "safehouse", "gangsters",
       "Safehouse: cosy crew hideout, worn brick-red leather, crates, maps, warm bulbs",
       [[P("dc_safe_couch", "Lumpy Crew Couch", F, C, [2, 1], rot=2), P("dc_safe_table", "Map Table", F, U, [2, 1], rot=2),
-        P("dc_safe_bunk", "Bunk Bed", F, U, [1, 2], rot=1), P("dc_safe_crates", "Crate Shelf", F, C, [1, 1])],
+        P("dc_safe_bunk", "Bunk Bed", F, U, [2, 1]), P("dc_safe_crates", "Crate Shelf", F, C, [1, 1])],
        [P("dc_safe_bulb", "Bare Bulb Stand", F, C, [1, 1], glow=36), P("dc_safe_safe", "Old Iron Safe", F, RA, [1, 1]),
         P("dc_safe_drum", "Oil-Drum Table", F, C, [1, 1]), P("dc_safe_board", "Plan Board", F, U, [1, 1])]])
 sheet("set_gilt_deco_a.png", "gilt_deco", "gangsters",
@@ -156,7 +156,7 @@ rot_sheet("set_cottage_bloom_b.png", "cottage_bloom", "both",
            ("dc_bloom_sampler", "Stitched Sampler", C, 0), ("dc_bloom_birdhouse", "Wall Birdhouse", U, 0)])
 sheet("set_cottage_bloom_a.png", "cottage_bloom", "both", "Cottage Bloom: sunny flower cottage, cream wood, pastel florals, gingham",
       [[P("dc_bloom_bed", "Quilted Bloom Bed", F, U, [2, 2], rot=2), P("dc_bloom_sofa", "Gingham Sofa", F, C, [2, 1], rot=2),
-        P("dc_bloom_lamp", "Tulip Lamp", F, C, [1, 1], glow=36), P("dc_bloom_dresser", "Painted Dresser", F, U, [1, 1])],
+        P("dc_bloom_lamp", "Tulip Lamp", F, C, [1, 1], glow=36), P("dc_bloom_dresser", "Painted Dresser", F, U, [2, 1])],
        [P("dc_bloom_table", "Lace Tea Table", F, C, [2, 1], rot=2), P("dc_bloom_flowers", "Flower Cart", F, RA, [1, 1]),
         P("dc_bloom_basket", "Yarn Basket", F, C, [1, 1]), P("dc_bloom_cradle_cat", "Cat Basket", F, C, [1, 1])]])
 
@@ -268,6 +268,76 @@ sheet("showpiece_both.png", "", "both", "magical home treasures",
        [P("dc_show_grand_piano", "Grand Piano", F, L, [2, 2])],
        [P("dc_show_dream_clock", "Dream Clock", F, Q, [1, 1], glow=36)]], grid=GRID_ANIM, kind="anim")
 
+# ---------------- wave 3 (C10a P6 second pass): more sets, plants, statues, seasonal, UI ----------------
+SEASIDE = "Seaside: breezy beach cottage, whitewashed driftwood, navy and white stripes, rope, shells"
+sheet("set_seaside_a.png", "seaside", "both", SEASIDE,
+      [[P("dc_sea_bed", "Sailcloth Bed", F, U, [2, 2], rot=2), P("dc_sea_sofa", "Striped Deck Sofa", F, C, [2, 1], rot=2),
+        P("dc_sea_lamp", "Lighthouse Lamp", F, U, [1, 1], glow=40), P("dc_sea_chest", "Sea Chest", F, C, [1, 1])],
+       [P("dc_sea_table", "Driftwood Table", F, C, [2, 1], rot=2), P("dc_sea_wheel", "Ship's Wheel Stand", F, RA, [1, 1]),
+        P("dc_sea_buoy", "Buoy Stool", F, C, [1, 1]), P("dc_sea_shipbottle", "Ship-in-a-Jar Stand", F, E, [1, 1])]])
+rot_sheet("set_seaside_b.png", "seaside", "both", SEASIDE,
+          ("dc_sea_chair", "Deck Chair", C), "dc_sea_sofa",
+          [("dc_sea_life_ring", "Life Ring", C, 0), ("dc_sea_porthole", "Porthole Window", U, 0),
+           ("dc_sea_anchor", "Anchor Plaque", C, 0), ("dc_sea_net", "Shell Net Garland", U, 0)])
+RUSTIC = "Farmhouse Rustic: sturdy pine and oak, red-and-cream plaid, iron hardware, quilts"
+sheet("set_rustic_a.png", "farmhouse_rustic", "both", RUSTIC,
+      [[P("dc_rustic_bed", "Plaid Quilt Bed", F, C, [2, 2], rot=2), P("dc_rustic_bench", "Pine Bench", F, C, [2, 1], rot=2),
+        P("dc_rustic_lamp", "Oil Lamp Stand", F, C, [1, 1], glow=36), P("dc_rustic_dresser", "Oak Dresser", F, U, [2, 1])],
+       [P("dc_rustic_table", "Harvest Table", F, U, [2, 1], rot=2), P("dc_rustic_churn", "Butter Churn", F, C, [1, 1]),
+        P("dc_rustic_rocker", "Rocking Chair", F, U, [1, 1]), P("dc_rustic_barrel", "Apple Barrel", F, C, [1, 1])]])
+rot_sheet("set_chrome_lab_b.png", "chrome_lab", "gangsters", SHEETS[1]["theme"],
+          ("dc_chrome_chair", "Hover Chair", U), "dc_chrome_bench",
+          [("dc_chrome_screen", "Code Screen", U, 24), ("dc_chrome_tools", "Tool Pegboard", C, 0),
+           ("dc_chrome_blueprint", "Robot Blueprint", C, 0), ("dc_chrome_fan", "Vent Fan", C, 0)])
+rot_sheet("set_catkins_b.png", "catkins", "penguins", SHEETS[9]["theme"],
+          ("dc_catkins_chair", "Zabuton Chair", C), "dc_catkins_table",
+          [("dc_catkins_scroll", "Paw Scroll", U, 0), ("dc_catkins_fan", "Paper Fan", C, 0),
+           ("dc_catkins_bell", "Wind Bell", C, 0), ("dc_catkins_shrine", "Little Wall Shrine", RA, 16)])
+rot_sheet("set_merkitty_coral_b.png", "merkitty_coral", "penguins", SHEETS[8]["theme"],
+          ("dc_coral_chair", "Scallop Chair", U), "dc_coral_table",
+          [("dc_coral_starfish", "Starfish Charm", C, 0), ("dc_coral_mirror", "Pearl Mirror", U, 0),
+           ("dc_coral_kelp", "Kelp Garland", C, 0), ("dc_coral_map", "Sunken Map", RA, 0)])
+sheet("plants.png", "", "both", "indoor potted plants and planters",
+      [[P("dc_plant_monstera", "Monstera Pot", F, C, [1, 1]), P("dc_plant_fiddle", "Fiddle-Leaf Fig", F, U, [1, 1]),
+        P("dc_plant_snake", "Snake Plant", F, C, [1, 1]), P("dc_plant_orchid", "Orchid Stand", F, RA, [1, 1])],
+       [P("dc_plant_hanging", "Hanging Ivy Stand", F, C, [1, 1]), P("dc_plant_lemon", "Lemon Tree Tub", F, U, [1, 1]),
+        P("dc_plant_succulent", "Succulent Trough", F, C, [2, 1]), P("dc_plant_glow", "Glowbloom Pot", F, E, [1, 1], glow=20)]])
+sheet("statues.png", "", "both", "indoor statues and floor ornaments (row 1 cosy and penguin, row 2 underworld and cyberpunk, no weapons)",
+      [[P("dc_stat_owl", "Stone Owl", F, C, [1, 1]), P("dc_stat_penguin_gold", "Golden Penguin Idol", F, E, [1, 1]),
+        P("dc_stat_cat", "Lucky Cat Statue", F, U, [1, 1]), P("dc_stat_bust", "Marble Bust", F, RA, [1, 1])],
+       [P("dc_stat_lion", "Gilded Lion", F, RA, [1, 1]), P("dc_stat_robot", "Retro Robot Statue", F, U, [1, 1]),
+        P("dc_stat_globe_bar", "Brass Globe Stand", F, U, [1, 1]), P("dc_stat_trophy", "Crew Cup Trophy", F, E, [1, 1])]])
+sheet("seasonal.png", "", "both", "seasonal home decorations: row 1 harvest festival, row 2 winter festival",
+      [[P("dc_fest_pumpkins", "Pumpkin Pile", D, C, [1, 1]), P("dc_fest_hay_scarecrow", "Mini Scarecrow", F, U, [1, 1]),
+        P("dc_fest_cornucopia", "Cornucopia", D, U, [1, 1], "top"), P("dc_fest_leaf_wreath", "Autumn Leaf Wreath", W, C, [1, 1], "wall")],
+       [P("dc_fest_winter_tree", "Festive Pine", F, RA, [1, 1], glow=36), P("dc_fest_gift_pile", "Gift Pile", D, C, [1, 1]),
+        P("dc_fest_snow_lantern", "Snow Lantern", F, U, [1, 1], glow=30), P("dc_fest_stocking", "Hanging Stockings", W, C, [1, 1], "wall")]])
+
+ARCADE = "Neon Arcade: retro 80s arcade den, black cabinets, magenta and cyan neon, chrome trim, checker accents"
+sheet("set_neon_arcade_a.png", "neon_arcade", "gangsters", ARCADE,
+      [[P("dc_arc_couch", "Neon Lounge Couch", F, U, [2, 1], rot=2), P("dc_arc_pinball", "Pinball Table", F, RA, [1, 2], glow=28),
+        P("dc_arc_claw", "Mini Claw Machine", F, E, [1, 1], glow=28), P("dc_arc_vending", "Snack Vending Box", F, U, [1, 1], glow=24)],
+       [P("dc_arc_air_hockey", "Air Hockey Table", F, RA, [2, 1], glow=24), P("dc_arc_beanbag", "Checker Beanbag", F, C, [1, 1]),
+        P("dc_arc_speaker", "Boombox Speaker", F, C, [1, 1]), P("dc_arc_dance_pad", "Dance Pad", R, U, [2, 2], "flat", glow=20)]])
+rot_sheet("set_neon_arcade_b.png", "neon_arcade", "gangsters", ARCADE,
+          ("dc_arc_gamer_chair", "Racer Game Chair", U), "dc_arc_couch",
+          [("dc_arc_neon_joystick", "Neon Joystick Sign", RA, 30), ("dc_arc_high_score", "High-Score Board", U, 24),
+           ("dc_arc_cart_shelf", "Game Cart Shelf", C, 0), ("dc_arc_pixel_art", "Pixel Hero Poster", C, 0)])
+sheet("wallart_gang2.png", "", "gangsters", "more 1940s underworld and cyberpunk wall decor (no weapons, no drinks), straight-on",
+      [[P("dc_gart_fedora_portrait", "Boss Portrait", W, RA, [1, 1], "wall"), P("dc_gart_neon_diamond", "Neon Diamond Sign", W, U, [1, 1], "wall", glow=28),
+        P("dc_gart_city_map", "Turf Map Frame", W, C, [1, 1], "wall"), P("dc_gart_cash_frame", "First Dollar Frame", W, U, [1, 1], "wall")],
+       [P("dc_gart_holo_koi", "Holo Koi Panel", W, E, [1, 1], "wall", glow=24), P("dc_gart_record_wall", "Vinyl Record Trio", W, C, [1, 1], "wall"),
+        P("dc_gart_neon_cat", "Neon Cat Sign", W, U, [1, 1], "wall", glow=28), P("dc_gart_deco_clock", "Chrome Sunburst Clock", W, RA, [1, 1], "wall")]])
+sheet("tabletop_gang2.png", "", "gangsters", "1940s underworld and cyberpunk tabletop pieces (no drinks, no weapons)",
+      [[P("dc_top_typewriter", "Typewriter", D, U, [1, 1], "top"), P("dc_top_desk_lamp_green", "Banker's Lamp", D, C, [1, 1], "top", glow=20),
+        P("dc_top_cash_box", "Locked Cash Box", D, U, [1, 1], "top"), P("dc_top_dice_cup", "Lucky Dice Cup", D, C, [1, 1], "top")],
+       [P("dc_top_mini_robot", "Desk Robot Pal", D, RA, [1, 1], "top"), P("dc_top_neon_cube", "Neon Name Cube", D, C, [1, 1], "top", glow=16),
+        P("dc_top_radio_tube", "Tube Radio", D, U, [1, 1], "top"), P("dc_top_gold_bar", "Gold Bar Paperweight", D, E, [1, 1], "top")]])
+
+sheet("ui_decor.png", "", "both", "decor UI: rarity frames for mythic and unique, Decor tab icon, decor box icon",
+      [[P("ui_frame_mythic", "", "ui", M, [1, 1], "ui"), P("ui_frame_unique", "", "ui", Q, [1, 1], "ui"),
+        P("ui_tab_decor", "", "ui", C, [1, 1], "ui"), P("ui_decor_box", "", "ui", C, [1, 1], "ui")]], kind="ui")
+
 ANIM_WORDS = {
     "dc_show_aurora_tank": "a long glass aquarium with a frosted silver frame, tiny fish and aurora-coloured light moving inside",
     "dc_show_star_orrery": "a brass orrery of planets on rings above a star-chart base, planets moving around their rings",
@@ -330,7 +400,7 @@ TOP_MAX = 30       # tabletop pieces fit in 30x30 src px (sit on one table cell)
 FPS = 6
 # side views drawn facing RIGHT (all other sheets drew them facing left; _r1 is always
 # stored facing right, _r3 is its mirror)
-FACE_RIGHT = {"set_neon_noir_b.png"}
+FACE_RIGHT = {"set_neon_noir_b.png", "set_catkins_b.png", "set_neon_arcade_b.png:dc_arc_gamer_chair"}  # "file" or "file:id"
 # the exact prompts sent where the generated text above was hand-tuned before the call
 PROMPT_TWEAKS = {
     "set_cottage_bloom_a.png": "Cottage Bloom theme said 'pink gingham'.",
@@ -346,6 +416,11 @@ PROMPT_TWEAKS = {
     "rugs.png": "rug-only preamble; round/long shapes named per rug.",
     "wallpaper_*.png": "'straight-on' (not top-down) and 'wallpaper for a game interior'.",
     "floors_*.png": "'floor for a game interior'.",
+    "set_safehouse_a_v2.png": "edit_image of set_safehouse_a.png (kept): bottles swapped for a compass, a succulent and tin cans (all-ages rule).",
+    "set_*_b.png (wave 3)": "row-1 4th piece named workbench/low table/table; 'no writing' hints on scrolls, maps and screens.",
+    "plants/statues/seasonal.png": "pot/plinth details spelled out per piece.",
+    "neon_arcade / gang2 sheets": "'no digits or letters' hints; cat boss portrait and star banknote spelled out.",
+    "ui_decor.png": "edit_image with sources ui/frame_legendary, ui/frame_epic, ui/tab_book (style match).",
 }
 
 
@@ -463,7 +538,7 @@ def sheet_pieces(s):
             f = row_f.get(r) or CELL * FILL / im.width
             out = _scaled(im, f)
             if view == "r1":
-                if s["file"] not in FACE_RIGHT:
+                if s["file"] not in FACE_RIGHT and "%s:%s" % (s["file"], base) not in FACE_RIGHT:
                     out = ImageOps.mirror(out)
                 save(out, base + "_r1")
                 save(ImageOps.mirror(out), base + "_r3")
@@ -596,6 +671,26 @@ def settle_rot():
                     e["rot"] = 4 if (view == "r2" or e["rot"] == 4) else max(2, e["rot"])
 
 
+def sheet_ui(s):
+    """UI pieces (not catalogue entries): frames at the size of ui/frame_legendary, the tab icon
+    composed on the tab_items frame size like tab_book (+ _sel), the decor box as a 28-px icon."""
+    from PIL import Image
+    S = _S()
+    a = rgba_of(s["file"])
+    boxes = cells(a, 1, 4)[0]
+    ims = [_crop(a, b) for b in boxes]
+    ref = Image.open(os.path.join(S.OUT, "ui", "frame_legendary.png"))
+    for nm, im in (("ui_frame_mythic", ims[0]), ("ui_frame_unique", ims[1])):
+        save(S.scale_to(im, height=ref.height), nm)
+    icon = S.scale_to(ims[2], height=40)
+    for sel, base in (("", "tab_items"), ("_sel", "tab_items_sel")):
+        r = Image.open(os.path.join(S.OUT, "ui", base + ".png"))
+        out = Image.new("RGBA", r.size, (0, 0, 0, 0))
+        out.alpha_composite(icon, ((r.width - icon.width) // 2, (r.height - icon.height) // 2))
+        save(out, "ui_tab_decor" + sel)
+    save(S.scale_to(ims[3], width=28, height=28), "ui_decor_box")
+
+
 def write_catalog():
     S = _S()
     settle_rot()
@@ -665,7 +760,7 @@ def main(only):
     for s in SHEETS:
         if only and s["file"] not in only and s["kind"] not in only:
             continue
-        {"pieces": sheet_pieces, "anim": sheet_anim}.get(s["kind"], sheet_texture)(s)
+        {"pieces": sheet_pieces, "anim": sheet_anim, "ui": sheet_ui}.get(s["kind"], sheet_texture)(s)
         print("ok", s["file"])
     if only:   # partial run: keep earlier catalogue rows
         cp = os.path.join(S.OUT, GROUP, "_catalog.json")
