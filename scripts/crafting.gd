@@ -269,6 +269,7 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 				m.fx("masterwork", m.player.position + Vector2(0, -22), 10.0, 0.5)
 		m.xp(skill_of(station), int((4 + 3 * int(j.get("tier", 1))) * minf(4.0, 1.0 + 0.5 * (int(j.get("batches", 1)) - 1))))
 		GameState.run["made"] = int(GameState.run.get("made", 0)) + n
+		Collections.record_make(str(j.get("station", station)), str(j.get("id", "")), n)  # cookbook / crafting log
 		list.erase(j)
 		got += 1
 	if got > 0:

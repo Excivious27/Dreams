@@ -1324,5 +1324,43 @@
    "Copper. Warm already. I'll take it up the stair tonight.",
    "When you hear a bell at dusk, that's the courtyard saying thank you. And me. Mostly me."
   ]
+ },
+ "coll_pip_fossil": {
+  "offer": [
+   "Theo has a museum now! A real one, with glass cases!",
+   "Could you put a fossil in it? I want to see one with a little card under it."
+  ],
+  "yes": "Yes! With a card!",
+  "no": "Okay. But the cases look so empty...",
+  "wait": "A fossil, in the museum tray! Theo does the card.",
+  "done": [
+   "I saw it! It has a card and everything!",
+   "I read the card four times. Here, I saved this for you."
+  ]
+ },
+ "coll_finn_tanks": {
+  "offer": [
+   "Theo's got tanks in that museum, and nothing swimming in them.",
+   "Five kinds of fish in there and I'll stock you up on bait."
+  ],
+  "yes": "Good. Fish deserve an audience.",
+  "no": "Suit yourself. They're patient.",
+  "wait": "Five kinds in the tanks. Any five.",
+  "done": [
+   "Saw the tanks. Looks like a proper aquarium now.",
+   "Bait, as promised."
+  ]
+ },
+ "coll_pip_fossil@gangsters": {
+  "offer": [
+   "Theo turned the east wing into a Curio Room! With glass cases!",
+   "Could you put a fossil in there? I want to see it with a little card."
+  ]
+ },
+ "coll_finn_tanks@gangsters": {
+  "offer": [
+   "Theo's got tanks in that Curio Room and nothing swimming in them.",
+   "Five kinds of fish in there and I'll stock you up on bait."
+  ]
  }
 }

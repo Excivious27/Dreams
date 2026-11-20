@@ -628,8 +628,8 @@ static func milestones() -> Array:
 			fish_all += 1
 			if seen.has(id):
 				fish_seen += 1
-	if fish_all > 0:
-		out.append(["Fish found", "%d of %d" % [fish_seen, fish_all], float(fish_seen) / fish_all])
+	for cr: Array in Collections.summary_rows():  # museum + logs (C8 P3; replaced "Fish found", which counted unreachable fish)
+		out.append([cr[0], "%d of %d" % [cr[1], cr[2]], float(cr[1]) / maxi(1, int(cr[2]))])
 	out.append(["Items found", "%d kinds" % seen.size(), -1.0])
 	out.append(["Foes met", "%d kinds" % (r.get("kill_counts", {}) as Dictionary).size(), -1.0])
 	out.append(["Recipes known", str((r.get("known_recipes", []) as Variant).size() if r.get("known_recipes") is Array or r.get("known_recipes") is Dictionary else 0), -1.0])

@@ -5,7 +5,7 @@ extends CanvasLayer
 ## tap a backpack item to swap it into the selected toolbar slot.
 ## Pauses the game while open.
 
-const TABS := ["Items", "Hero", "Skills", "Pup", "Party", "Social", "Map", "Quests", "Options"]
+const TABS := ["Items", "Hero", "Skills", "Pup", "Party", "Social", "Map", "Quests", "Book", "Options"]
 const SLOT := 34
 
 var _panel: PanelContainer
@@ -42,6 +42,8 @@ func _ready() -> void:
 		var tab_group := "ui"
 		if t == "Party" and not Art.has("ui", tab_icon):
 			tab_icon = "crew_badge_dice" if not GameState.is_penguins() else "icon_party_merry"  # no tab_party art yet
+		if t == "Book" and not Art.has("ui", tab_icon):
+			tab_icon = "medal_collector"  # Collections (C8 P3)
 		if t == "Hero" and not Art.has("ui", tab_icon):
 			tab_group = "items"  # no tab_hero art yet: a helmet
 			tab_icon = Hud.icon_for("iron_helm")
@@ -161,6 +163,24 @@ var _opened_frame := 0
 
 ## A story beat is playing (its player is held). A beat that broke off and left
 ## the flag behind doesn't count, so the menu is never locked for good.
+## Opens the menu on a tab (and a Book page) from gameplay code, e.g. the museum tray.
+## Call it once the dialogue has closed (toggle refuses while paused or in a story beat).
+static func open_page(tree: SceneTree, tab: String, page := "") -> void:
+	if tree.current_scene == null:
+		return
+	for ch in tree.current_scene.get_children():
+		if ch is GameMenu:
+			var gm := ch as GameMenu
+			gm._tab = tab
+			if tab == "Book":
+				CollectionScreen.open(page)
+			if not gm._open:
+				gm.toggle()
+			else:
+				gm._refresh()
+			return
+
+
 static func story_busy(tree: SceneTree) -> bool:
 	if GameState.run.is_empty():
 		return false
@@ -347,8 +367,12 @@ func _refresh() -> void:
 		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) else Color(0.85, 0.85, 0.85)
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
+	if _tab_buttons.has("Book"):
+		SkillGlow.set_glow(_tab_buttons["Book"] as Control, Collections.new_count())  # new log entries
 	var r := GameState.run
 	match _tab:
+		"Book":
+			CollectionScreen.build(self)
 		"Items":
 			var slot := int(r["slot"])
 			var tb: Array = r["toolbar"]

@@ -119,7 +119,7 @@ const LOOT := [
 	{"#gold": 1600, "crystal_refined": 3, "relic_orb": 1},
 	{"#gold": 2500, "moon_shard": 2, "wonder_elixir": 1},
 ]
-const CACHE := [["copper", 4], ["iron", 3], ["gold", 2], ["fossil", 1], ["amethyst", 1], ["shard", 2], ["relic_mask", 1]]
+const CACHE := [["copper", 4], ["iron", 3], ["gold", 2], ["fossil", 1], ["amethyst", 1], ["shard", 2], ["relic_mask", 1], ["ancient_urn", 1]]
 
 
 static func place(m: GameMap, rid: String, tier: int) -> void:

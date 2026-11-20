@@ -166,5 +166,18 @@ func _run() -> void:
 	ok(seen2.has("rp_penguin_plush") and not seen2.has("rp_fuzzy_dice"), "penguin claw pool")
 	claw2.free()
 
+	# Collections (C8 P3): every gangster text in collections.json (letters, milestones, room names, wings).
+	var coll: Dictionary = GameState.load_json("res://data/collections.json")
+	var ctexts := []
+	for m: Dictionary in coll.get("milestones", []):
+		ctexts.append(str(m.get("text_gangsters", "")))
+	for k in coll.get("letters", {}):
+		if str(k).ends_with("_gangsters"):
+			ctexts.append(str(coll["letters"][k]))
+	ctexts.append(str(coll.get("room_names", {}).get("gangsters", "")))
+	for w: Dictionary in coll.get("wings", []):
+		ctexts.append(str(w["title"]))
+	_clean("collections", ctexts)
+
 	print("gang_flavour_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

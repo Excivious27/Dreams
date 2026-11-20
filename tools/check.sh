@@ -695,3 +695,10 @@ echo "$hcout" | grep -E "FAIL|hearts_content_test" || true
 if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
+
+echo "== C8 P3: collections (museum, logs, Book tab) =="
+clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
+echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
+if ! echo "$clout" | grep -q "collections_test: 0 failures"; then
+  echo "Collections test failed"; exit 1
+fi

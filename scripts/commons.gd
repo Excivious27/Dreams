@@ -875,6 +875,7 @@ static func sell_at_market(id: String, n: int) -> int:
 	sold[id] = int(sold.get(id, 0)) + n
 	GameState.run["sold_today"] = sold
 	GameState.add_money(pay, "market")
+	Collections.record_ship(id, n)  # shipping log (C8 P3)
 	return pay
 
 

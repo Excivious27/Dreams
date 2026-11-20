@@ -375,6 +375,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				_ready_at["fence"] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get("fence", DEFAULT_COOLDOWN))
 				var n := GameState.count(best)
 				GameState.add_item(best, -n)
+				Collections.record_ship(best, n)  # shipping log (C8 P3)
 				var pay := GameState.sell_price(best, n)
 				var sold: Dictionary = GameState.run.get("sold_today", {})
 				sold[best] = int(sold.get(best, 0)) + n

@@ -50180,6 +50180,36 @@
    "h": 97,
    "w": 135
   },
+  "museum_case": {
+   "file": "furniture/museum_case.png",
+   "h": 36,
+   "w": 32
+  },
+  "museum_counter": {
+   "file": "furniture/museum_counter.png",
+   "h": 37,
+   "w": 62
+  },
+  "museum_pedestal": {
+   "file": "furniture/museum_pedestal.png",
+   "h": 38,
+   "w": 26
+  },
+  "museum_rope": {
+   "file": "furniture/museum_rope.png",
+   "h": 19,
+   "w": 18
+  },
+  "museum_sign_wing": {
+   "file": "furniture/museum_sign_wing.png",
+   "h": 17,
+   "w": 26
+  },
+  "museum_tank": {
+   "file": "furniture/museum_tank.png",
+   "h": 37,
+   "w": 64
+  },
   "net_a": {
    "file": "furniture/net_a.png",
    "h": 121,
@@ -62893,6 +62923,11 @@
    "file": "items/cupcake.png",
    "h": 32,
    "w": 32
+  },
+  "curators_loupe": {
+   "file": "items/curators_loupe.png",
+   "h": 39,
+   "w": 28
   },
   "curry": {
    "file": "items/curry.png",
@@ -86772,6 +86807,11 @@
    "h": 64,
    "w": 276
   },
+  "curio_jar": {
+   "file": "props/curio_jar.png",
+   "h": 33,
+   "w": 22
+  },
   "dark_spire": {
    "file": "props/dark_spire.png",
    "h": 320,
@@ -88133,6 +88173,11 @@
    "file": "props/fish_rack.png",
    "h": 127,
    "w": 198
+  },
+  "fish_trophy": {
+   "file": "props/fish_trophy.png",
+   "h": 24,
+   "w": 30
   },
   "fishing_hut_stilts": {
    "file": "props/fishing_hut_stilts.png",
@@ -90474,6 +90519,11 @@
    "h": 96,
    "w": 336
   },
+  "mineral_display": {
+   "file": "props/mineral_display.png",
+   "h": 29,
+   "w": 30
+  },
   "mk_boardwalk": {
    "file": "props/mk_boardwalk.png",
    "h": 124,
@@ -90844,6 +90894,11 @@
    "file": "props/mrock_stone_1.png",
    "h": 37,
    "w": 44
+  },
+  "museum_trophy": {
+   "file": "props/museum_trophy.png",
+   "h": 28,
+   "w": 22
   },
   "mushroom_tree_a": {
    "file": "props/mushroom_tree_a.png",
@@ -93870,6 +93925,11 @@
    "h": 32,
    "w": 58
   },
+  "relic_shelf": {
+   "file": "props/relic_shelf.png",
+   "h": 25,
+   "w": 30
+  },
   "resonator": {
    "cell_h": 80,
    "cell_w": 45,
@@ -94512,6 +94572,11 @@
    "file": "props/shell_throne.png",
    "h": 80,
    "w": 79
+  },
+  "shipper_ribbon": {
+   "file": "props/shipper_ribbon.png",
+   "h": 30,
+   "w": 20
   },
   "shipwreck_small": {
    "file": "props/shipwreck_small.png",
@@ -126077,6 +126142,11 @@
    "h": 95,
    "w": 86
   },
+  "cut_big_jim_tail": {
+   "file": "ui/cut_big_jim_tail.png",
+   "h": 248,
+   "w": 372
+  },
   "cut_campfire": {
    "file": "ui/cut_campfire.png",
    "h": 355,
@@ -126091,6 +126161,11 @@
    "file": "ui/cut_chase.png",
    "h": 355,
    "w": 500
+  },
+  "cut_clean_break": {
+   "file": "ui/cut_clean_break.png",
+   "h": 248,
+   "w": 372
   },
   "cut_crystal_prison": {
    "file": "ui/cut_crystal_prison.png",
@@ -126107,6 +126182,16 @@
    "h": 333,
    "w": 500
   },
+  "cut_gang_doors": {
+   "file": "ui/cut_gang_doors.png",
+   "h": 248,
+   "w": 372
+  },
+  "cut_gang_stone": {
+   "file": "ui/cut_gang_stone.png",
+   "h": 248,
+   "w": 372
+  },
   "cut_letter": {
    "file": "ui/cut_letter.png",
    "h": 177,
@@ -126121,6 +126206,11 @@
    "file": "ui/cut_old_dog.png",
    "h": 180,
    "w": 160
+  },
+  "cut_penguins_fly": {
+   "file": "ui/cut_penguins_fly.png",
+   "h": 355,
+   "w": 500
   },
   "cut_president_chair": {
    "file": "ui/cut_president_chair.png",
@@ -131277,6 +131367,16 @@
    "h": 30,
    "w": 68
   },
+  "tab_book": {
+   "file": "ui/tab_book.png",
+   "h": 74,
+   "w": 100
+  },
+  "tab_book_sel": {
+   "file": "ui/tab_book_sel.png",
+   "h": 75,
+   "w": 100
+  },
   "tab_idle": {
    "file": "ui/tab_idle.png",
    "h": 30,
@@ -131701,31 +131801,6 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
-  },
-  "cut_penguins_fly": {
-   "file": "ui/cut_penguins_fly.png",
-   "h": 355,
-   "w": 500
-  },
-  "cut_gang_doors": {
-   "file": "ui/cut_gang_doors.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_gang_stone": {
-   "file": "ui/cut_gang_stone.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_clean_break": {
-   "file": "ui/cut_clean_break.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_big_jim_tail": {
-   "file": "ui/cut_big_jim_tail.png",
-   "w": 372,
-   "h": 248
   }
  },
  "ui_creator": {

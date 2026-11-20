@@ -19,6 +19,14 @@
 - Shops: seed lines show grow days, sell value, regrowth and "!" when it won't ripen this season; food lines show energy/hp; "all you can afford" seed quantity; Gideon/Wren/Granite stock grows with progress (`Shops.GROWN`); Tam's greeting fixed. Plaza fountain: the day's first toss gives 2 h of luck.
 - Valley Fund (gangsters: Neighbourhood Fund) at the town hall: chip in any amount toward five projects (5k..200k running total), each brings a letter from Alder and +10 friendship with every villager (`Shops.FUND`, run.fund_paid, flags fund_<id>). Compost makes at most 5 fertilizer a day. Gangster hall: "Lose a file" (heat -1 once a day, 300 x (tier + heat) cash). Shared stall loop `Shops.stall` for region/colony stalls (hooks pending in their files).
 - Money: `Money.group` (1,234,567) in fmt/amount/num; cash conversion keeps grouped amounts. Test tools/shop_econ_test.gd (check.sh).
+## 2026-11-20 — CONDUCT 8 fix P3: Collections (new system)
+
+- `tools/gen_collections.py` -> data/collections.json (wings, logs, cats, milestones, letters, legends), the museum room (interiors.json "museum", hand-laid, no_furnish) + the library's east-wing doorway, the Curator's Loupe (+2 luck charm, value 0), two starter quests (Pip fossil, Finn five fish).
+- `Collections` (scripts/collections.gd, run.coll): shipping log (sell box at sleep incl. guest morning, Sal's fence, market stand), fish log (GameMap.fish_at; legendary koi as a once-per-run legend at the lake), cookbook/crafting log (Crafting.collect), forage log (seen), museum donations, milestones queued to the morning post (Mail._morning), quest conditions museum_n/museum_wing/logged/donated, farmhouse decor via RecCenter.dress_house.
+- `Museum` (scripts/museum.gd): room "Valley Museum" / "The Curio Room", donation tray (paged menu, last option Never mind; Theo thanks by letter), case cards with where-hints, wing plaques, donated pieces drawn in their cases.
+- Book tab (GameMenu, `CollectionScreen`): hub with % and medal badges, per-category icon grids (max 48 cells per page), Field log / journal / Foes links.
+- Fixes: Commons._sell counted earned_total twice; eagle_feather/goat_horn (mountain forage) and ancient_urn (buried caches) had no source.
+- Art: museum case/pedestal/tank/counter/plaque/rope, 6 decor props, Book tab icon, loupe (tools/slice_c8_collections.py). Test tools/collections_test.gd (check.sh).
 
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 

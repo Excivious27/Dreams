@@ -10160,5 +10160,17 @@
   "rarity": "rare",
   "tier": 1,
   "desc": "Give to your sweetheart at 10 hearts to propose."
+ },
+ "curators_loupe": {
+  "name": "Curator's Loupe",
+  "type": "equip",
+  "value": 0,
+  "tier": 3,
+  "rarity": "legendary",
+  "slot": "charm",
+  "stats": {
+   "luck": 2
+  },
+  "desc": "Theo's old loupe. It always finds the lucky things."
  }
 }

@@ -177,6 +177,7 @@ static func _migrate() -> void:
 		run["opts"]["difficulty"] = Difficulty.DEFAULT
 	run["day_len"] = _valid_len(int(run.get("day_len", DAY_LEN_DEFAULT)))
 	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
+	Collections.st()  # museum + logs (old saves: fish/recipes backfilled from seen/known_recipes)
 	Romance.st()  # dating/marriage state (old saves: single, friendship untouched)
 	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
 	if not (run.get("skills") is Dictionary):
@@ -2600,6 +2601,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 			return false
 	if when.has("chapter") and Story.chapter_no() < int(when["chapter"]):
 		return false
+	if Collections.cond_keys(when) and not Collections.cond_ok(when):
+		return false  # museum / log counts (C8 P3)
 	if (when.has("arcade_ms") or when.has("rec_best") or when.has("tickets_won")) and not Tickets.cond_ok(when):
 		return false  # Rec Center / arcade progress
 	if (when.has("heat_min") or when.has("heat_max") or when.has("loyalty") or when.has("clean_break")) and not Epilogue.cond_ok(when):
