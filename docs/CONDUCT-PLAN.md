@@ -162,3 +162,10 @@ An extremely sophisticated collectible card system, unified with the game's tier
 - Optional card mini-game (simple, all-ages) used for friendly matches and a league ladder; ties to tiers so big sets/cards take into year 2-3 (C16 rules).
 - Tests: economy check, pack odds sim, trade test (solo + net), binder UI phone audit.
 Order: C3..C18, then C19, then the final package and artifact.
+
+## Fast travel (added 2026-11-19 17:39) -> built in CONDUCT 14, paced in CONDUCT 16
+Earned, organic, tiered travel network instead of teleport menus:
+- Each link is a real vehicle/place you repair, build or win: mine-cart lines between mines and the valley, a rail line (Ironline ties in), ferries/boats along rivers and to the islands, a prop plane / airship from the mountain pad, cloud rides in the Sky Islands (penguin arc), getaway cars/taxis/subway for the gangster arc, merkitty current-rides underwater.
+- Tiers: walk -> local shortcuts (secret passages, ladders, zip lines) -> regional lines (carts, ferries, buses) -> world lines (train, plane, clouds, airship) -> late-game instant hops at a few hubs. Each tier unlocks through quests, projects (materials + money), campaign wins or a skill node; tickets/fuel cost early, free later.
+- Stations appear on the map as you build them; a ride plays a short travel scene (riding the cart, the plane over the map) and can be skipped once seen.
+- Unified with exploration (C14), story gates (Campaign.blocks still applies) and progression (C16: no early shortcut that skips content). Works in co-op (host's network).
