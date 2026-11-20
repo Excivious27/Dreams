@@ -173,7 +173,7 @@ func _run() -> void:
 	var psf := PaperDoll.body_frames(GameState.run["look"])
 	for an in ["sit", "sleep", "swim", "ride", "float", "wave"]:
 		var tx := psf.get_frame_texture(an, 0) if psf.has_animation(an) else null
-		var own := Art.tex("body", "outfit_pinstripe_water" if an in ["swim", "float"] else "outfit_pinstripe")
+		var own := Art.tex("body", "outfit_pinstripe_water" if an in ["swim", "float"] else ("outfit_pinstripe_life" if an in ["sit", "sleep", "wave"] else "outfit_pinstripe"))
 		check(tx is AtlasTexture and (tx as AtlasTexture).atlas == own, "costume keeps its own look in " + an)
 	var armour := ""
 	for id: String in GameState.items:

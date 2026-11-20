@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Water rows for the six arc costumes (C10b P5, c10b_11-18).
+"""Water and life rows for the six arc costumes (C10b P5, c10b_11-18).
 
 The arc costumes (outfit_pinstripe/vest/armored/parka/crystal_parka/starlight) were
 drawn without _water sheets, so swimming fell back to the walk poses: the hero walked
@@ -9,6 +9,9 @@ waterline is cut, and the ripple/foam of the matching outfit_farmer_water cell
 (blue and white pixels only, scaled to the costume's pixel size) goes on top.
 Cell order = PaperDoll.WATER: swim side 1-4, down 1-4, up 1-4, float, dive, climb out x2.
 Anchors are the full figure's (shifted down), so doll hair pins on the head.
+Life rows (body/outfit_<k>_life, PaperDoll.LIFE order): sleep and faint lie the idle
+figure down (an exact 90-degree turn, head to the left); the other poses reuse the
+costume's idle/walk frames, so nobody faints standing up any more.
 Run after the other slicers; then `godot --headless --import`.
 """
 import json, os
@@ -41,6 +44,46 @@ def ripple(ref, i, rw, rh, W, H):
 def used(cell):
     bb = cell.getbbox()
     return bb if bb else (0, 0, cell.size[0], cell.size[1])
+
+
+# life cell -> (base pose, lying)
+LIFE = [(0, False), (0, True), (0, True), (7, False), (9, False), (0, False), (8, False), (0, False), (2, False),
+        (7, False), (8, False), (9, False), (8, False), (0, False), (0, False), (0, False)]
+
+
+def make_life(k, bi, sheet, skin, body):
+    cw, ch = bi["cell_w"], bi["cell_h"]
+    W = H = ch
+    out = Image.new("RGBA", (W * 16, H), (0, 0, 0, 0))
+    out_s = Image.new("RGBA", (W * 16, H), (0, 0, 0, 0)) if skin else None
+    anchors = []
+    for i, (pose, lying) in enumerate(LIFE):
+        for src_img, dst in [(sheet, out)] + ([(skin, out_s)] if skin else []):
+            cell = src_img.crop((pose * cw, 0, (pose + 1) * cw, ch))
+            if lying:
+                fig = cell.crop(used(cell)).rotate(90, expand=True)  # head to the left
+                x = (W - fig.size[0]) // 2
+                y = H - fig.size[1] - 1
+            else:
+                fig = cell
+                x = (W - cw) // 2
+                y = 0
+            dst.paste(fig, (i * W + x, y), fig)
+        c = sheet.crop((pose * cw, 0, (pose + 1) * cw, ch))
+        l, t, r, b = used(c)
+        hh = (b - t) * 96.0 / 92.0
+        dx = (W - cw) // 2
+        anchors.append([dx + (l + r) / 2.0, b - hh, float(b), float(r - l), hh])
+    name = k + "_life"
+    for nm, img in [(name, out)] + ([(name + "_skin", out_s)] if skin else []):
+        p = os.path.join(GEN, "body", nm + ".png")
+        if os.path.exists(p):
+            os.remove(p)
+        img.save(p)
+    body[name] = {"file": "body/%s.png" % name, "cell_w": W, "cell_h": H, "frames": 16, "w": W * 16, "h": H, "anchors": anchors}
+    if skin:
+        body[name + "_skin"] = {"file": "body/%s_skin.png" % name, "w": W * 16, "h": H, "mask": True}
+    print(name, W, H)
 
 
 def main():
@@ -87,6 +130,7 @@ def main():
         if skin:
             body[name + "_skin"] = {"file": "body/%s_skin.png" % name, "w": W * 16, "h": H, "mask": True}
         print(name, W, H)
+        make_life(k, bi, sheet, skin, body)
     tmp = mpath + ".tmp"
     with open(tmp, "w") as f:
         json.dump(man, f, indent=1, sort_keys=True)
