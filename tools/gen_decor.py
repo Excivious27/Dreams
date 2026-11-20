@@ -1105,6 +1105,28 @@ out = {'rarity': RARITY, 'cats': CATS, 'sell_share': SELL_SHARE, 'reorder_fee': 
        'pity': PITY, 'luck_step': LUCK_STEP, 'comfort_tiers': COMFORT_TIERS, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
        'shop_days': SHOP_DAYS, 'pools': POOLS, 'recipes': RECIPES, 'house_reserved': HOUSE_RESERVED, 'legacy': LEGACY,
        'backgrant': {k: v for k, v in BACKGRANT.items() if k in ENTRIES}, 'grants': GRANTS}
+# c10b_13_10: boilerplate descriptions get a line by kind (sub) or set, picked per id (two per kind).
+SUB_DESC = {'seating': ['A good seat after a long day in the fields.', 'Sit down, put your feet up.'],
+            'table': ['A table for meals, maps and mail.', 'Sturdy legs, no wobble.'],
+            'storage': ['Somewhere to keep the clutter out of sight.', 'Shelves and drawers for everything.'],
+            'bed': ['A bed to dream in.', 'Soft enough to sleep through a storm.'],
+            'kitchen': ['For the kitchen corner.', 'Kitchen kit for a cook who means it.'],
+            'tabletop': ['A little something for a shelf or table.', 'Small, but it catches the eye.'],
+            'plant': ['Greenery for a sunny corner.', 'It only asks for a little light.'],
+            'painting': ['A picture for the wall.', 'Paint and frame, hung straight.'],
+            'window': ['A window for the wall.', 'Let the daylight in.'],
+            'tech': ['Screens and wires, neatly kept.', 'Hums quietly in the corner.'],
+            'study': ['For long evenings with a book.', 'Ink, paper and a quiet corner.'],
+            'wall_art': ['Hangs on a wall.', 'Something for a bare wall.'],
+            'decor': ['A little something for a shelf or table.', 'A finishing touch for a room.'],
+            'furniture': ['Furniture for your house.', 'Built to last a lifetime.']}
+for k, e in ENTRIES.items():
+    if e['desc'] in ('Furniture for your house.', 'Hangs on a wall.', 'A little something for a shelf or table.'):
+        if e.get('set') and e['set'] in SETS:
+            e['desc'] = 'Part of the %s.' % SETS[e['set']]['name']
+        elif e['sub'] in SUB_DESC:
+            e['desc'] = SUB_DESC[e['sub']][zlib.crc32(k.encode()) % 2]
+
 # c10b_08-08/09-01/12: catalogue wallpaper/flooring are room surfaces: DecorMode.SURFACE_LAYERS reads
 # layer "wallpaper"/"flooring" (the entry keeps "style" = the tile kit / seamless texture it paints).
 for e in ENTRIES.values():

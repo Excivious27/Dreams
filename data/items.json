@@ -10272,7 +10272,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/antler_hooks",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_armchair2_blue": {
@@ -10282,7 +10282,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_blue",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_armchair2_green": {
@@ -10292,7 +10292,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_green",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_armchair2_red": {
@@ -10302,7 +10302,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_red",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_armchair2_yellow": {
@@ -10312,7 +10312,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_yellow",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_armchair_a": {
@@ -10322,7 +10322,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_armchair_b": {
@@ -10332,7 +10332,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_b",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_armchair_c": {
@@ -10342,7 +10342,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_c",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_armchair_d": {
@@ -10352,7 +10352,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_d",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_armchair_window": {
@@ -10362,7 +10362,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/armchair_window",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_barrel": {
@@ -10372,7 +10372,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/barrel",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_barrels3": {
@@ -10382,7 +10382,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/barrels3",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bathtub": {
@@ -10402,7 +10402,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_blue",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_bed2_double_blue": {
@@ -10412,7 +10412,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed2_double_blue",
-  "desc": "Furniture for your house.",
+  "desc": "Soft enough to sleep through a storm.",
   "decor": true
  },
  "dc_bed2_double_red": {
@@ -10422,7 +10422,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed2_double_red",
-  "desc": "Furniture for your house.",
+  "desc": "A bed to dream in.",
   "decor": true
  },
  "dc_bed2_green": {
@@ -10432,7 +10432,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_green",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_bed2_red": {
@@ -10442,7 +10442,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_red",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_bed_blue": {
@@ -10452,7 +10452,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed_blue",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_bed_double": {
@@ -10462,7 +10462,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed_double",
-  "desc": "Furniture for your house.",
+  "desc": "Soft enough to sleep through a storm.",
   "decor": true
  },
  "dc_bed_double_green": {
@@ -10472,7 +10472,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed_double_green",
-  "desc": "Furniture for your house.",
+  "desc": "A bed to dream in.",
   "decor": true
  },
  "dc_bed_red": {
@@ -10482,7 +10482,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed_red",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_bed_single": {
@@ -10492,7 +10492,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed_single",
-  "desc": "Furniture for your house.",
+  "desc": "Soft enough to sleep through a storm.",
   "decor": true
  },
  "dc_bookcase2_a": {
@@ -10502,7 +10502,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Country Comforts.",
   "decor": true
  },
  "dc_bookcase2_b": {
@@ -10512,7 +10512,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_b",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bookcase2_c": {
@@ -10522,7 +10522,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_c",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bookcase3_a": {
@@ -10532,7 +10532,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase3_b": {
@@ -10542,7 +10542,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_b",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase3_c": {
@@ -10552,7 +10552,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_c",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase3_d": {
@@ -10562,7 +10562,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_d",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase3_e": {
@@ -10572,7 +10572,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_e",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase3_f": {
@@ -10582,7 +10582,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_f",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_bookcase_a": {
@@ -10592,7 +10592,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_bookcase_b": {
@@ -10602,7 +10602,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_b",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Classics.",
   "decor": true
  },
  "dc_bookcase_c": {
@@ -10612,7 +10612,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_c",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_books_scrolls": {
@@ -10622,7 +10622,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/books_scrolls",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_bookshelf": {
@@ -10632,7 +10632,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bookshelf_a": {
@@ -10642,7 +10642,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf_a",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bookshelf_b": {
@@ -10652,7 +10652,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf_b",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bookshelf_ivy": {
@@ -10662,7 +10662,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookshelf_ivy",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_bunk_bed": {
@@ -10672,7 +10672,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bunk_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Soft enough to sleep through a storm.",
   "decor": true
  },
  "dc_candle_stand": {
@@ -10702,7 +10702,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/cattail_pot",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_chair2_a_down": {
@@ -10712,7 +10712,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair2_a_down",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair2_b_down": {
@@ -10722,7 +10722,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair2_b_down",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair_a": {
@@ -10732,7 +10732,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_a",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair_b": {
@@ -10742,7 +10742,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_b",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair_c": {
@@ -10752,7 +10752,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_c",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair_d": {
@@ -10762,7 +10762,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_d",
-  "desc": "Furniture for your house.",
+  "desc": "A good seat after a long day in the fields.",
   "decor": true
  },
  "dc_chair_down": {
@@ -10772,7 +10772,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_down",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_chair_up": {
@@ -10782,7 +10782,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_up",
-  "desc": "Furniture for your house.",
+  "desc": "A good seat after a long day in the fields.",
   "decor": true
  },
  "dc_chalkboard": {
@@ -10792,7 +10792,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/chalkboard",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_chandelier": {
@@ -10822,7 +10822,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/clock_grand",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Manor House.",
   "decor": true
  },
  "dc_clock_grand2": {
@@ -10852,7 +10852,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/coat_hooks",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_coffee_pot": {
@@ -10862,7 +10862,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/coffee_pot",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_coffee_pot_a": {
@@ -10872,7 +10872,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/coffee_pot_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_cradle": {
@@ -10882,7 +10882,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/cradle",
-  "desc": "Furniture for your house.",
+  "desc": "Soft enough to sleep through a storm.",
   "decor": true
  },
  "dc_crystal_ball": {
@@ -10892,7 +10892,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/crystal_ball",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_crystal_cage": {
@@ -10902,7 +10902,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/crystal_cage",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_curtain_blue_closed": {
@@ -10912,7 +10912,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_blue_closed",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_curtain_blue_open": {
@@ -10922,7 +10922,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_blue_open",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_curtain_closed": {
@@ -10932,7 +10932,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_closed",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_curtain_green_closed": {
@@ -10942,7 +10942,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_green_closed",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_curtain_green_open": {
@@ -10952,7 +10952,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_green_open",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_curtain_open": {
@@ -10962,7 +10962,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_open",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_curtain_red_closed": {
@@ -10972,7 +10972,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_red_closed",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_curtain_red_open": {
@@ -10982,7 +10982,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_red_open",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_desk_a": {
@@ -10992,7 +10992,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_a",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_desk_b": {
@@ -11002,7 +11002,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_b",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_desk_c": {
@@ -11012,7 +11012,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_c",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_desk_d": {
@@ -11022,7 +11022,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_d",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_dog_bed": {
@@ -11042,7 +11042,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_dresser2_a": {
@@ -11052,7 +11052,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser2_a",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_dresser2_b": {
@@ -11062,7 +11062,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser2_b",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_easel2": {
@@ -11072,7 +11072,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/easel2",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_filing_cabinet": {
@@ -11082,7 +11082,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/filing_cabinet",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_fire_pit2": {
@@ -11142,7 +11142,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/flag_a",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_flag_b": {
@@ -11152,7 +11152,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/flag_b",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_flower_jug": {
@@ -11162,7 +11162,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/flower_jug",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_fridge": {
@@ -11172,7 +11172,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/fridge",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_globe": {
@@ -11182,7 +11182,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_globe2": {
@@ -11192,7 +11192,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe2",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Reading Nook.",
   "decor": true
  },
  "dc_globe3": {
@@ -11202,7 +11202,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe3",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Ink, paper and a quiet corner.",
   "decor": true
  },
  "dc_hanging_mugs": {
@@ -11212,7 +11212,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/hanging_mugs",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_hearth": {
@@ -11232,7 +11232,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/ink_brushes",
-  "desc": "A little something for a shelf or table.",
+  "desc": "For long evenings with a book.",
   "decor": true
  },
  "dc_ivy_pot": {
@@ -11242,7 +11242,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/ivy_pot",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_jug": {
@@ -11252,7 +11252,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/jug",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_kettle": {
@@ -11262,7 +11262,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kettle",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_kettle_stand": {
@@ -11272,7 +11272,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kettle_stand",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_kitchen_counter_a": {
@@ -11282,7 +11282,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_counter_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cosy Kitchen.",
   "decor": true
  },
  "dc_kitchen_counter_b": {
@@ -11292,7 +11292,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_counter_b",
-  "desc": "Furniture for your house.",
+  "desc": "Kitchen kit for a cook who means it.",
   "decor": true
  },
  "dc_kitchen_fridge": {
@@ -11302,7 +11302,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_fridge",
-  "desc": "Furniture for your house.",
+  "desc": "For the kitchen corner.",
   "decor": true
  },
  "dc_kitchen_sink": {
@@ -11312,7 +11312,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_sink",
-  "desc": "Furniture for your house.",
+  "desc": "Kitchen kit for a cook who means it.",
   "decor": true
  },
  "dc_kitchen_stove": {
@@ -11322,7 +11322,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_stove",
-  "desc": "Furniture for your house.",
+  "desc": "Kitchen kit for a cook who means it.",
   "decor": true
  },
  "dc_lamp_floor": {
@@ -11402,7 +11402,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/library_ladder",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Ink, paper and a quiet corner.",
   "decor": true
  },
  "dc_low_table": {
@@ -11412,7 +11412,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/low_table",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_mirror": {
@@ -11422,7 +11422,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/mirror",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_mirror2": {
@@ -11432,7 +11432,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/mirror2",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_nightstand_a": {
@@ -11442,7 +11442,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/nightstand_a",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_nightstand_b": {
@@ -11452,7 +11452,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/nightstand_b",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_organ": {
@@ -11472,7 +11472,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_a",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting2_b": {
@@ -11482,7 +11482,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_b",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting2_c": {
@@ -11492,7 +11492,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_c",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting2_d": {
@@ -11502,7 +11502,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_d",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_painting2_e": {
@@ -11512,7 +11512,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_e",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_painting2_f": {
@@ -11522,7 +11522,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_f",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_painting_a": {
@@ -11532,7 +11532,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_a",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting_b": {
@@ -11542,7 +11542,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_b",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting_c": {
@@ -11552,7 +11552,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_c",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_painting_d": {
@@ -11562,7 +11562,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_d",
-  "desc": "Hangs on a wall.",
+  "desc": "Paint and frame, hung straight.",
   "decor": true
  },
  "dc_pelt_bear": {
@@ -11622,7 +11622,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant2_a": {
@@ -11632,7 +11632,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_a",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_plant2_b": {
@@ -11642,7 +11642,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_b",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_plant2_c": {
@@ -11652,7 +11652,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_c",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_plant2_d": {
@@ -11662,7 +11662,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_d",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant2_e": {
@@ -11672,7 +11672,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_e",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant2_f": {
@@ -11682,7 +11682,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_f",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant_a": {
@@ -11692,7 +11692,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant_a",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant_b": {
@@ -11702,7 +11702,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant_b",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_plant_c": {
@@ -11712,7 +11712,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant_c",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true
  },
  "dc_poster_frame": {
@@ -11722,7 +11722,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/poster_frame",
-  "desc": "Hangs on a wall.",
+  "desc": "A picture for the wall.",
   "decor": true
  },
  "dc_radio": {
@@ -11732,7 +11732,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/radio",
-  "desc": "Furniture for your house.",
+  "desc": "Screens and wires, neatly kept.",
   "decor": true
  },
  "dc_reed_mat_a": {
@@ -11782,7 +11782,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/round_set_a",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_round_set_b": {
@@ -11792,7 +11792,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/round_set_b",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_rug2_blue": {
@@ -11932,7 +11932,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/safe",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true
  },
  "dc_shelf_books": {
@@ -11942,7 +11942,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_books",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_shelf_empty": {
@@ -11952,7 +11952,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_empty",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_shelf_house": {
@@ -11962,7 +11962,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_house",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_shelf_jars": {
@@ -11972,7 +11972,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_jars",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_shelf_misc": {
@@ -11982,7 +11982,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_misc",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_sink": {
@@ -11992,7 +11992,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/sink",
-  "desc": "Furniture for your house.",
+  "desc": "For the kitchen corner.",
   "decor": true
  },
  "dc_sofa_blue": {
@@ -12002,7 +12002,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_blue",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_sofa_green": {
@@ -12012,7 +12012,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_green",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_sofa_red": {
@@ -12022,7 +12022,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_red",
-  "desc": "Furniture for your house.",
+  "desc": "A good seat after a long day in the fields.",
   "decor": true
  },
  "dc_sofa_velvet": {
@@ -12032,7 +12032,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/sofa_velvet",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_spiral_stair": {
@@ -12042,7 +12042,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/spiral_stair",
-  "desc": "A little something for a shelf or table.",
+  "desc": "For long evenings with a book.",
   "decor": true
  },
  "dc_stool2": {
@@ -12052,7 +12052,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool2",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_stool_blue": {
@@ -12062,7 +12062,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_blue",
-  "desc": "Furniture for your house.",
+  "desc": "A good seat after a long day in the fields.",
   "decor": true
  },
  "dc_stool_green": {
@@ -12072,7 +12072,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_green",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_stool_red": {
@@ -12082,7 +12082,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_red",
-  "desc": "Furniture for your house.",
+  "desc": "A good seat after a long day in the fields.",
   "decor": true
  },
  "dc_stool_wood": {
@@ -12092,7 +12092,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_wood",
-  "desc": "Furniture for your house.",
+  "desc": "Sit down, put your feet up.",
   "decor": true
  },
  "dc_stove_iron": {
@@ -12102,7 +12102,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stove_iron",
-  "desc": "Furniture for your house.",
+  "desc": "Kitchen kit for a cook who means it.",
   "decor": true
  },
  "dc_table": {
@@ -12112,7 +12112,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_table2_long4": {
@@ -12122,7 +12122,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table2_long4",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_table2_long8": {
@@ -12132,7 +12132,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table2_long8",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_table2_round": {
@@ -12142,7 +12142,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table2_round",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_table_long": {
@@ -12152,7 +12152,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_long",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_table_long_cloth": {
@@ -12162,7 +12162,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_long_cloth",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_table_round": {
@@ -12172,7 +12172,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_round",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_table_round_cloth": {
@@ -12182,7 +12182,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_round_cloth",
-  "desc": "Furniture for your house.",
+  "desc": "Sturdy legs, no wobble.",
   "decor": true
  },
  "dc_table_square": {
@@ -12192,7 +12192,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_square",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_table_square_cloth": {
@@ -12202,7 +12202,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_square_cloth",
-  "desc": "Furniture for your house.",
+  "desc": "A table for meals, maps and mail.",
   "decor": true
  },
  "dc_telescope2": {
@@ -12212,7 +12212,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/telescope2",
-  "desc": "A little something for a shelf or table.",
+  "desc": "For long evenings with a book.",
   "decor": true
  },
  "dc_toilet": {
@@ -12232,7 +12232,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/trophy_case",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_trophy_shelf": {
@@ -12242,7 +12242,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/trophy_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_tv_off": {
@@ -12252,7 +12252,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/tv_off",
-  "desc": "Furniture for your house.",
+  "desc": "Hums quietly in the corner.",
   "decor": true
  },
  "dc_tv_on": {
@@ -12262,7 +12262,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/tv_on",
-  "desc": "Furniture for your house.",
+  "desc": "Hums quietly in the corner.",
   "decor": true
  },
  "dc_vault_closed": {
@@ -12272,7 +12272,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/vault_closed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true
  },
  "dc_vault_open": {
@@ -12282,7 +12282,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/vault_open",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_wardrobe2_a": {
@@ -12292,7 +12292,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe2_a",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_wardrobe2_b": {
@@ -12302,7 +12302,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe2_b",
-  "desc": "Furniture for your house.",
+  "desc": "Somewhere to keep the clutter out of sight.",
   "decor": true
  },
  "dc_wardrobe_a": {
@@ -12312,7 +12312,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe_a",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_wardrobe_b": {
@@ -12322,7 +12322,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe_b",
-  "desc": "Furniture for your house.",
+  "desc": "Shelves and drawers for everything.",
   "decor": true
  },
  "dc_window": {
@@ -12332,7 +12332,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_window2_day_a": {
@@ -12342,7 +12342,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_day_a",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_window2_day_b": {
@@ -12352,7 +12352,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_day_b",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_window2_night_a": {
@@ -12362,7 +12362,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_night_a",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_window2_night_b": {
@@ -12372,7 +12372,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_night_b",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_window_day": {
@@ -12382,7 +12382,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_day",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_window_night": {
@@ -12392,7 +12392,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_night",
-  "desc": "Hangs on a wall.",
+  "desc": "A window for the wall.",
   "decor": true
  },
  "dc_window_rain": {
@@ -12402,7 +12402,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_rain",
-  "desc": "Hangs on a wall.",
+  "desc": "Let the daylight in.",
   "decor": true
  },
  "dc_neon_sign_0": {
@@ -12540,7 +12540,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "props/jukebox_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -12561,7 +12561,7 @@
   "rarity": "epic",
   "tier": 3,
   "icon": "props/arcade_cab_0",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_arcade_cab_1": {
@@ -12571,7 +12571,7 @@
   "rarity": "epic",
   "tier": 3,
   "icon": "props/arcade_cab_1",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_arcade_cab_2": {
@@ -12581,7 +12581,7 @@
   "rarity": "legendary",
   "tier": 4,
   "icon": "props/arcade_cab_2",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_arcade_cab_3": {
@@ -12591,7 +12591,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "props/arcade_cab_3",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_arcade_cab_4": {
@@ -12601,7 +12601,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "props/arcade_cab_4",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_arcade_cab_5": {
@@ -12611,7 +12611,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/arcade_cab_5",
-  "desc": "Furniture for your house.",
+  "desc": "Screens and wires, neatly kept.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -12622,7 +12622,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "props/rec_pinball_a",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_rec_pinball_b": {
@@ -12632,7 +12632,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/rec_pinball_b",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Arcade Den.",
   "decor": true
  },
  "dc_cat_statue": {
@@ -12642,7 +12642,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "props/cat_statue",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true,
   "arc": "penguins"
  },
@@ -12695,7 +12695,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "props/city_planter",
-  "desc": "A little something for a shelf or table.",
+  "desc": "It only asks for a little light.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -12706,7 +12706,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "props/carnivore_plant",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_bulb_plant": {
@@ -12716,7 +12716,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "props/bulb_plant",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Greenery for a sunny corner.",
   "decor": true
  },
  "dc_tt_vase": {
@@ -12726,7 +12726,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "items/vase",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_cat_figurine": {
@@ -12736,7 +12736,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cat_figurine",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true,
   "arc": "penguins"
  },
@@ -12747,7 +12747,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_figurine",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true,
   "arc": "penguins"
  },
@@ -12758,7 +12758,7 @@
   "rarity": "rare",
   "tier": 2,
   "icon": "items/snow_globe",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true
  },
  "dc_tt_teddy_bear": {
@@ -12768,7 +12768,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "items/teddy_bear",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_statue_head": {
@@ -12778,7 +12778,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "items/statue_head",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_candle": {
@@ -12808,7 +12808,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "items/pot_a",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_pot_b": {
@@ -12818,7 +12818,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "items/pot_b",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_pot_c": {
@@ -12828,7 +12828,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/pot_c",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_snowman": {
@@ -12838,7 +12838,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/snowman",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true,
   "arc": "penguins"
  },
@@ -12889,7 +12889,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "items/trophy_fish_a",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_trophy_farm_a": {
@@ -12909,7 +12909,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "items/trophy_craft_a",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_trophy_crystal": {
@@ -12919,7 +12919,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "items/trophy_crystal",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_medal_bronze": {
@@ -12929,7 +12929,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/medal_bronze",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_medal_silver": {
@@ -12939,7 +12939,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "items/medal_silver",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_lantern_moon": {
@@ -13021,7 +13021,7 @@
   "rarity": "rare",
   "tier": 2,
   "icon": "items/first_dollar",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Small, but it catches the eye.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -13043,7 +13043,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "items/snow_heart",
-  "desc": "A little something for a shelf or table.",
+  "desc": "Part of the Snow Parlour.",
   "decor": true,
   "arc": "penguins"
  },
@@ -13054,7 +13054,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/painting_landscape",
-  "desc": "Hangs on a wall.",
+  "desc": "Small, but it catches the eye.",
   "decor": true
  },
  "dc_tt_painting_portrait": {
@@ -13064,7 +13064,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/painting_portrait",
-  "desc": "Hangs on a wall.",
+  "desc": "A little something for a shelf or table.",
   "decor": true
  },
  "dc_wall_bakery": {
@@ -15156,7 +15156,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_air_hockey",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15167,7 +15167,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_beanbag",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15178,7 +15178,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_cart_shelf",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15189,7 +15189,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_arc_claw",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15200,7 +15200,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_couch",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15222,7 +15222,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_gamer_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15233,7 +15233,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_high_score",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15244,7 +15244,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_neon_joystick",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15255,7 +15255,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_pinball",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15266,7 +15266,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_pixel_art",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15277,7 +15277,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_speaker",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15288,7 +15288,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_vending",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Arcade Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15309,7 +15309,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_art_cuckoo",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_art_meadow": {
@@ -15319,7 +15319,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_meadow",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_art_mountain": {
@@ -15339,7 +15339,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_plate_rack",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_art_round_mirror": {
@@ -15349,7 +15349,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_round_mirror",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_art_seascape": {
@@ -15359,7 +15359,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_seascape",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_art_still_life": {
@@ -15369,7 +15369,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_art_still_life",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_bath_duck_tub": {
@@ -15389,7 +15389,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_plant",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_bath_screen": {
@@ -15399,7 +15399,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_screen",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_bath_sink": {
@@ -15419,7 +15419,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_toilet",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_bath_towels": {
@@ -15439,7 +15439,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bath_tub",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_bath_vanity": {
@@ -15459,7 +15459,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_basket",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_bed": {
@@ -15469,7 +15469,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_bed_lilac": {
@@ -15479,7 +15479,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed_lilac",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_bed_sage": {
@@ -15489,7 +15489,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed_sage",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_birdhouse": {
@@ -15499,7 +15499,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_birdhouse",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_chair": {
@@ -15509,7 +15509,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_chair_sage": {
@@ -15519,7 +15519,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_chair_sage",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_chair_sky": {
@@ -15529,7 +15529,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_chair_sky",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_cradle_cat": {
@@ -15539,7 +15539,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_cradle_cat",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_dresser": {
@@ -15549,7 +15549,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_dresser",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_flowers": {
@@ -15559,7 +15559,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_bloom_flowers",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_lamp": {
@@ -15569,7 +15569,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_sampler": {
@@ -15579,7 +15579,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_sampler",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_shelf": {
@@ -15589,7 +15589,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_shelf",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_sofa": {
@@ -15599,7 +15599,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_sofa",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_sofa_sage": {
@@ -15609,7 +15609,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_sofa_sage",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_sofa_sky": {
@@ -15619,7 +15619,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_sofa_sky",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_table": {
@@ -15629,7 +15629,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_bloom_wreath": {
@@ -15639,7 +15639,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_wreath",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Cottage Bloom Set.",
   "decor": true
  },
  "dc_casino_ace_sign": {
@@ -15649,7 +15649,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_ace_sign",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15660,7 +15660,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_booth",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15671,7 +15671,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_cards_art",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15682,7 +15682,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_chip_frame",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15693,7 +15693,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_chips",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15704,7 +15704,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_dice",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15715,7 +15715,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15726,7 +15726,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_marquee",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15737,7 +15737,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_rope",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15748,7 +15748,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_roulette",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15759,7 +15759,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_slot",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15770,7 +15770,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_stool",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15781,7 +15781,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Lucky Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15792,7 +15792,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_bell",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15803,7 +15803,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_catkins_bonsai",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15814,7 +15814,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15825,7 +15825,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_cushion",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15836,7 +15836,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_fan",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15847,7 +15847,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_catkins_gong",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15858,7 +15858,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_lantern",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15869,7 +15869,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_mat_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15880,7 +15880,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_scratch",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15891,7 +15891,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_scroll",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15902,7 +15902,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15913,7 +15913,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_catkins_shrine",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15924,7 +15924,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Catkins Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -15935,7 +15935,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_chrome_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15946,7 +15946,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_bench",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15957,7 +15957,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_blueprint",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15968,7 +15968,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15979,7 +15979,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_fan",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15990,7 +15990,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16001,7 +16001,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_locker",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16012,7 +16012,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_plant",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16023,7 +16023,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_chrome_robot",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16034,7 +16034,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_screen",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16045,7 +16045,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_server",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16056,7 +16056,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_terminal",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16067,7 +16067,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_tools",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Chrome Lab Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16078,7 +16078,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_anemone",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16089,7 +16089,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_coral_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16100,7 +16100,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_catbed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16111,7 +16111,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16122,7 +16122,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_coral_chest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16133,7 +16133,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_kelp",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16144,7 +16144,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16155,7 +16155,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_coral_map",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16166,7 +16166,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_mirror",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16177,7 +16177,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16188,7 +16188,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_starfish",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16199,7 +16199,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16210,7 +16210,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_tank",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Merkitty Coral Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16241,7 +16241,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fest_hay_scarecrow",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_fest_leaf_wreath": {
@@ -16251,7 +16251,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_leaf_wreath",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true
  },
  "dc_fest_pumpkins": {
@@ -16261,7 +16261,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_pumpkins",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true
  },
  "dc_fest_snow_lantern": {
@@ -16291,7 +16291,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_fest_winter_tree",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_fl_blue_tile": {
@@ -16418,7 +16418,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_car_plate",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16473,7 +16473,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gart_deco_clock",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16484,7 +16484,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_fedora_hook",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16528,7 +16528,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_jazz_poster",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16550,7 +16550,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_neon_diamond",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16572,7 +16572,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_record_wall",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16594,7 +16594,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16605,7 +16605,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_cabinet",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16616,7 +16616,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16627,7 +16627,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_clock",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16638,7 +16638,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_gramophone",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16649,7 +16649,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16660,7 +16660,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_mirror",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16671,7 +16671,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gilt_palm",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16682,7 +16682,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_sconce",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16693,7 +16693,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_skyline",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16704,7 +16704,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_sofa",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16715,7 +16715,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_statue",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16726,7 +16726,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Gilt Deco Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16737,7 +16737,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_glight_arcade",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16759,7 +16759,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_glight_jukebox",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16770,7 +16770,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_glight_lava",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16825,7 +16825,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16836,7 +16836,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_fern",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16847,7 +16847,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_fossil",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16858,7 +16858,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16869,7 +16869,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_moss_frame",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16880,7 +16880,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_mushroom",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16891,7 +16891,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_obelisk",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16902,7 +16902,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_grotto_pool",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16913,7 +16913,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16924,7 +16924,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16935,7 +16935,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_throne",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16946,7 +16946,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_vines",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16957,7 +16957,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_wall_crystal",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Crystal Grotto Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16968,7 +16968,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_ice_aurora_window",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16979,7 +16979,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -16990,7 +16990,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_fish_tank",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17001,7 +17001,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_ice_fountain",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17012,7 +17012,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_igloo_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17023,7 +17023,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_mirror",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17034,7 +17034,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_ice_penguin",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17045,7 +17045,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_penguin_portrait",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17056,7 +17056,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17067,7 +17067,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_snowflake",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17078,7 +17078,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_snowman",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17089,7 +17089,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17100,7 +17100,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_ice_throne",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Ice Palace Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17111,7 +17111,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_igloo_aurora_jar",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17122,7 +17122,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17133,7 +17133,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17144,7 +17144,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_fish_sign",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17155,7 +17155,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_ice_window",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17166,7 +17166,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_mittens",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17177,7 +17177,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_igloo_pebble_art",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17188,7 +17188,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_shelf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17199,7 +17199,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_sled",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17210,7 +17210,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_sofa",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17221,7 +17221,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_stove",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17232,7 +17232,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17243,7 +17243,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_yarn",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Snowdrift Igloo Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17254,7 +17254,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_kit_bread_oven",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_kit_counter": {
@@ -17264,7 +17264,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_counter",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_kit_dining": {
@@ -17274,7 +17274,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_dining",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_kit_fridge": {
@@ -17294,7 +17294,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_kit_hutch",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_kit_pot_rack": {
@@ -17324,7 +17324,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_kit_stove",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_light_brass": {
@@ -17344,7 +17344,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_light_candelabra",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_light_chandelier": {
@@ -17394,7 +17394,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_light_lantern",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_light_stained": {
@@ -17414,7 +17414,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17425,7 +17425,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17436,7 +17436,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_clock",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17447,7 +17447,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_constellation",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17458,7 +17458,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_desk",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17469,7 +17469,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_dreamcatcher",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17480,7 +17480,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17491,7 +17491,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_phase_art",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17502,7 +17502,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_plant",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17513,7 +17513,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_pouf",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17524,7 +17524,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_star_garland",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17535,7 +17535,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_moon_telescope",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17546,7 +17546,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_wardrobe",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Moonlit Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17557,7 +17557,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_armchair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17568,7 +17568,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17579,7 +17579,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_blinds",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17590,7 +17590,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_cabinet",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17601,7 +17601,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_city_poster",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17612,7 +17612,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_clock",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17623,7 +17623,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_desk",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17634,7 +17634,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_hatstand",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17645,7 +17645,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17656,7 +17656,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_neon_moon",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17667,7 +17667,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_noir_neon_palm",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17678,7 +17678,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_radio",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17689,7 +17689,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_sofa",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17700,7 +17700,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_sofa_forest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17711,7 +17711,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_sofa_navy",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Neon Noir.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -17722,7 +17722,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_basket",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_bed": {
@@ -17732,7 +17732,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_orch_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_crate": {
@@ -17742,7 +17742,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_crate",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_hutch": {
@@ -17752,7 +17752,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_orch_hutch",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_lamp": {
@@ -17762,7 +17762,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_settee": {
@@ -17772,7 +17772,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_settee",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_table": {
@@ -17782,7 +17782,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_orch_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_orch_tree": {
@@ -17792,7 +17792,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_orch_tree",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Orchard Harvest Set.",
   "decor": true
  },
  "dc_part_aurora_art": {
@@ -17824,7 +17824,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_part_fish_trophy",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17857,7 +17857,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_part_penguin_family",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17868,7 +17868,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_part_scarf_hook",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17879,7 +17879,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_part_snow_globe_shelf",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "penguins"
  },
@@ -17890,7 +17890,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_plant_fiddle",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_plant_glow": {
@@ -17900,7 +17900,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_plant_glow",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_plant_hanging": {
@@ -17910,7 +17910,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_hanging",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_plant_lemon": {
@@ -17930,7 +17930,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_monstera",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_plant_orchid": {
@@ -17960,7 +17960,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_succulent",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_rug_bear": {
@@ -18091,7 +18091,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_barrel",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_bed": {
@@ -18101,7 +18101,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_bed_forest": {
@@ -18111,7 +18111,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_bed_forest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_bed_navy": {
@@ -18121,7 +18121,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_bed_navy",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_bench": {
@@ -18131,7 +18131,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_bench",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_churn": {
@@ -18141,7 +18141,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_churn",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_dresser": {
@@ -18151,7 +18151,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_dresser",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_lamp": {
@@ -18161,7 +18161,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_rocker": {
@@ -18171,7 +18171,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_rocker",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_rustic_table": {
@@ -18181,7 +18181,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Farmhouse Rustic Set.",
   "decor": true
  },
  "dc_safe_board": {
@@ -18191,7 +18191,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_board",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18202,7 +18202,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_bulb",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18213,7 +18213,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_bunk",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18224,7 +18224,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18235,7 +18235,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_chair_forest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18246,7 +18246,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_chair_navy",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18257,7 +18257,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_couch",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18268,7 +18268,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_couch_forest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18279,7 +18279,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_couch_navy",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18290,7 +18290,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_crates",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18301,7 +18301,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_drum",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18312,7 +18312,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_keys",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18323,7 +18323,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_map",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18334,7 +18334,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_safe_neon_arrow",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18345,7 +18345,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_safe_safe",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18356,7 +18356,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18367,7 +18367,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_wanted",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Safehouse Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18378,7 +18378,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_anchor",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_bed": {
@@ -18388,7 +18388,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_bed_coral": {
@@ -18398,7 +18398,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed_coral",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_bed_sage": {
@@ -18408,7 +18408,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed_sage",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_buoy": {
@@ -18418,7 +18418,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_buoy",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_chair": {
@@ -18428,7 +18428,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_chair",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_chest": {
@@ -18438,7 +18438,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_chest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_lamp": {
@@ -18448,7 +18448,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_lamp",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_life_ring": {
@@ -18458,7 +18458,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_life_ring",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_net": {
@@ -18468,7 +18468,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_net",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_porthole": {
@@ -18478,7 +18478,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_porthole",
-  "desc": "Hangs on a wall.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_shipbottle": {
@@ -18488,7 +18488,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_sea_shipbottle",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_sofa": {
@@ -18498,7 +18498,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_sofa",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_sofa_coral": {
@@ -18508,7 +18508,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_sofa_coral",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_sofa_forest": {
@@ -18518,7 +18518,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_sofa_forest",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_table": {
@@ -18528,7 +18528,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_table",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_sea_wheel": {
@@ -18538,7 +18538,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_sea_wheel",
-  "desc": "Furniture for your house.",
+  "desc": "Part of the Seaside Set.",
   "decor": true
  },
  "dc_show_aurora_tank": {
@@ -18580,7 +18580,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_show_gold_jukebox_icon",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18591,7 +18591,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_show_grand_piano_icon",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_show_kingpin_vault": {
@@ -18625,7 +18625,7 @@
   "rarity": "mythic",
   "tier": 5,
   "icon": "decor/dc_show_skyline_window_icon",
-  "desc": "Hangs on a wall.",
+  "desc": "Something for a bare wall.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18647,7 +18647,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_stat_bust",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_stat_cat": {
@@ -18657,7 +18657,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_stat_cat",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_stat_globe_bar": {
@@ -18677,7 +18677,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_stat_lion",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_stat_owl": {
@@ -18697,7 +18697,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_stat_penguin_gold",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true,
   "arc": "penguins"
  },
@@ -18718,7 +18718,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_stat_trophy",
-  "desc": "Furniture for your house.",
+  "desc": "Built to last a lifetime.",
   "decor": true
  },
  "dc_top_books": {
@@ -18758,7 +18758,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_cash_box",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18769,7 +18769,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_cash_register_mini",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true
  },
  "dc_top_chess": {
@@ -18789,7 +18789,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_desk_lamp_green",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18810,7 +18810,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_dice_cup",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18821,7 +18821,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_fish_bowl",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true
  },
  "dc_top_globe": {
@@ -18841,7 +18841,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_top_gold_bar",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18893,7 +18893,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_top_music_box",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true
  },
  "dc_top_neon_cube": {
@@ -18914,7 +18914,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_penguin_plush",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "penguins"
  },
@@ -18925,7 +18925,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_radio_tube",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -18936,7 +18936,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_snow_globe",
-  "desc": "A little something for a shelf or table.",
+  "desc": "A finishing touch for a room.",
   "decor": true,
   "arc": "penguins"
  },
