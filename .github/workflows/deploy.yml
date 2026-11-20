@@ -66,7 +66,9 @@ jobs:
         run: bash tools/check.sh
 
       - name: Export web build
+        shell: bash
         run: |
+          set -eo pipefail
           mkdir -p build/web
           godot --headless --path . --export-release "Web" build/web/index.html
           test -f build/web/index.html
@@ -74,7 +76,10 @@ jobs:
           # Streamed music (data/music_stream.json) sits next to the game; Music fetches it on demand.
           mkdir -p build/web/music
           python3 -c "import json;print('\n'.join(json.load(open('data/music_stream.json'))['stream']))" | while read t; do cp "audio/music/$t.ogg" build/web/music/; done
-          echo "streamed music: $(du -sh build/web/music | cut -f1)"
+          want=$(python3 -c "import json;print(len(json.load(open('data/music_stream.json'))['stream']))")
+          got=$(ls build/web/music/*.ogg | wc -l)
+          echo "streamed music: $got of $want files, $(du -sh build/web/music | cut -f1)"
+          test "$got" -eq "$want" || { echo "music/ has $got songs, data/music_stream.json lists $want: rerun tools/music_stream.py"; exit 1; }
           # Phones download the whole pack before the game starts: report it, and
           # stop a deploy that has ballooned (Pages sites should stay under 1 GB).
           size=$(stat -c %s build/web/index.pck)

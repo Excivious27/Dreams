@@ -146,13 +146,18 @@ func _ready() -> void:
 	Hud.pause(get_tree(), "epilogue")
 	showing = true
 	# The ending gets its own song, not whatever the last fight left playing.
-	Music.instance(get_tree()).set_duck(0.0)
+	var mu := Music.instance(get_tree())
+	mu.set_duck(0.0)
 	var end_track := "ending_penguin" if GameState.is_penguins() else "ending_gangster"
 	if Music.has_track(end_track):
-		Music.instance(get_tree()).play(end_track)
-		Music.instance(get_tree()).queue_after("credits")
+		# Streamed on the web: the ending and credits jump the download queue; while
+		# the ending downloads a packed stand-in plays (never the last fight's song).
+		mu.prefetch([end_track, "credits"], true)
+		mu.play(end_track, 1.6)
+		mu.queue_after("credits")
+		mu.queue_after("title", true)  # slides still up after the credits: the title theme
 	else:
-		Music.instance(get_tree()).play("title")
+		mu.play("title")
 	var bg := ColorRect.new()
 	bg.color = Color(0.05, 0.04, 0.08, 0.96)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -225,8 +230,10 @@ func _close() -> void:
 	get_tree().paused = false
 	showing = false
 	var gm := get_tree().current_scene as GameMap
+	var mu := Music.instance(get_tree())
+	mu.queue_after("")  # the credits never start later, on the map
 	if gm:
-		Music.instance(get_tree()).play(gm.area_track())
+		mu.play(gm.area_track(), 2.5)  # the ending song winds down, no quick cut
 	Dialogue.block_input(0.4)
 	Hud.modal_rect = Rect2()
 	closed.emit()
