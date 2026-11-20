@@ -20,8 +20,8 @@ extends Node2D
 ## picker `HouseExterior.open(map)` (Plans board > Restyle the farmhouse), pen fence
 ## names `HouseExterior.fence_set()` (farm._plan_fences).
 
-const PARTS := ["roof", "siding", "glass", "stone", "door", "porch", "mailbox", "fence"]
-const PART_WORDS := {"roof": "Roof", "siding": "Walls", "glass": "Windows", "stone": "Stonework", "door": "Door", "porch": "Porch", "mailbox": "Mailbox", "fence": "Pen fence"}
+const PARTS := ["roof", "siding", "glass", "stone", "door", "shutters", "porch", "mailbox", "fence"]
+const PART_WORDS := {"roof": "Roof", "siding": "Walls", "glass": "Windows", "stone": "Stonework", "door": "Door", "shutters": "Shutters", "porch": "Porch", "mailbox": "Mailbox", "fence": "Pen fence"}
 const PART_ID := {"roof": 1, "siding": 2, "glass": 3, "stone": 4}
 const DIR := "res://art/gen/house_parts/"
 ## Prices are one-time (owning a style lets you switch back for free); arc-only
@@ -71,6 +71,14 @@ const STYLES := {
 		{"id": "ext_door_studded", "name": "Studded Oak Door", "price": 1300, "art": "door_studded"},
 		{"id": "ext_door_ice", "name": "Snowflake Door", "price": 1200, "arc": "penguins", "art": "door_ice"},
 		{"id": "ext_door_steel", "name": "Steel Door", "price": 1000, "arc": "gangsters", "art": "door_steel"},
+	],
+	"shutters": [
+		{"id": "ext_shutters_green", "name": "Forest Shutters", "price": 350, "art": "shutter_green"},
+		{"id": "ext_shutters_blue", "name": "Cornflower Shutters", "price": 350, "art": "shutter_blue"},
+		{"id": "ext_shutters_white", "name": "White Shutters", "price": 350, "art": "shutter_white"},
+		{"id": "ext_shutters_red", "name": "Barn Red Shutters", "price": 350, "art": "shutter_red"},
+		{"id": "ext_shutters_ice", "name": "Snowflake Shutters", "price": 600, "arc": "penguins", "art": "shutter_ice"},
+		{"id": "ext_shutters_steel", "name": "Steel Shutters", "price": 600, "arc": "gangsters", "art": "shutter_steel"},
 	],
 	"porch": [
 		{"id": "ext_porch_fern", "name": "Potted Ferns", "price": 300, "art": "porch_fern", "pair": true, "h": 20},
@@ -361,6 +369,17 @@ func _build() -> void:
 		var t := _load(str(style(dk).get("art", "")))
 		if t:
 			_add(t, Vector2(float(door[0]), float(door[1])), Vector2(float(door[2] - door[0]), float(door[3] - door[1])))
+	var sk := str(look_now.get("shutters", ""))
+	if sk != "":
+		var st3 := _load(str(style(sk).get("art", "")))
+		if st3:
+			# a shutter each side of every pane (pane boxes from the glass mask), framing
+			# the glass so the night light still lands on it
+			for pb: Array in meta().get("panes", {}).get(base, []):
+				var ph := float(pb[3] - pb[1]) + 4.0
+				var pw := ph * st3.get_width() / float(st3.get_height())
+				_add(st3, Vector2(float(pb[0]) - 1.0 - pw, float(pb[1]) - 2.0), Vector2(pw, ph))
+				_add(st3, Vector2(float(pb[2]) + 1.0, float(pb[1]) - 2.0), Vector2(pw, ph)).flip_h = true
 	var pk := str(look_now.get("porch", ""))
 	if pk != "" and door.size() == 4:
 		var ps := style(pk)

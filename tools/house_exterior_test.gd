@@ -117,6 +117,7 @@ func _run() -> void:
 	HouseExterior.choose("porch", "ext_porch_fern")
 	HouseExterior.choose("fence", "ext_fence_stone")
 	HouseExterior.choose("mailbox", "ext_mailbox_birdhouse")
+	HouseExterior.choose("shutters", "ext_shutters_green")
 	Decor.st()["house"]["glass"] = "ext_glass_bogus"  # a renamed id in an old save
 	check(not HouseExterior.look().has("glass"), "unknown ids fall back to the original")
 
@@ -132,7 +133,8 @@ func _run() -> void:
 		check(mat != null and str(mat.shader.resource_path).ends_with("house_palette.gdshader"), "tier %d palette material on the house" % tier)
 		check(mat != null and bool(mat.get_shader_parameter("use1")) and bool(mat.get_shader_parameter("use2")) and not bool(mat.get_shader_parameter("use3")), "tier %d roof+walls recoloured, glass original" % tier)
 		ext = sp.get_node_or_null("HouseExterior") as HouseExterior
-		check(ext != null and ext._kids.size() == 3, "tier %d door + a pair of ferns" % tier)
+		var panes: Array = HouseExterior.meta().get("panes", {}).get(str(m._house_pics[0]).replace("_snow", ""), [])
+		check(ext != null and ext._kids.size() == 3 + 2 * panes.size(), "tier %d door + a pair of ferns + shutters on %d windows" % [tier, panes.size()])
 		if ext:
 			var tw := float(sp.texture.get_width())
 			var th := float(sp.texture.get_height())

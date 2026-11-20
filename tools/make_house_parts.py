@@ -121,6 +121,12 @@ def main():
         arr = np.asarray(src.convert("RGB")).astype(np.float32) / 255.0
         lum = arr[..., 0] * 0.3 + arr[..., 1] * 0.59 + arr[..., 2] * 0.11
         meta["lum"][h] = {str(k): [round(float(np.percentile(lum[p == k], 3)), 3), round(float(np.percentile(lum[p == k], 97)), 3)] for k in PREVIEW if (p == k).any()}
+        gl, gn = ndimage.label(ndimage.binary_closing(p == 3, iterations=2))
+        panes = []
+        for i, sl in enumerate(ndimage.find_objects(gl)):
+            if sl is not None and (gl[sl] == i + 1).sum() >= 20:
+                panes.append([int(sl[1].start), int(sl[0].start), int(sl[1].stop), int(sl[0].stop)])
+        meta.setdefault("panes", {})[h] = sorted(panes)
         counts = {k: int((p == k).sum()) for k in PREVIEW}
         print(h, src.size, counts)
     if check:

@@ -68,7 +68,7 @@ func _frame_house(on: bool) -> void:
 		var h := sp.texture.get_height() * sp.scale.y if sp.texture else 80.0
 		var centre := sp.global_position + Vector2(0, -h * 0.5)
 		# the house sits in the top two thirds, above the panel
-		_cam.offset = _cam_off + (centre - _cam.get_screen_center_position()) + Vector2(0, 60)
+		_cam.offset = _cam_off + (centre - _cam.get_screen_center_position()) + Vector2(0, 72)
 	elif _cam and is_instance_valid(_cam):
 		_cam.offset = _cam_off
 
@@ -124,13 +124,13 @@ func _build() -> void:
 	sb.set_border_width_all(2)
 	sb.set_corner_radius_all(4)
 	bg.add_theme_stylebox_override("panel", sb)
-	bg.position = Vector2(6, 292)
-	bg.size = Vector2(258, 182)
+	bg.position = Vector2(6, 270)
+	bg.size = Vector2(258, 204)
 	bg.mouse_filter = Control.MOUSE_FILTER_STOP
 	_root.add_child(bg)
 	var v := VBoxContainer.new()
-	v.position = Vector2(12, 296)
-	v.size = Vector2(246, 174)
+	v.position = Vector2(12, 274)
+	v.size = Vector2(246, 196)
 	v.add_theme_constant_override("separation", 3)
 	_root.add_child(v)
 	var top := HBoxContainer.new()
