@@ -521,11 +521,15 @@ func _draw_hud() -> void:
 			var np := Vector2(rect.end.x - nw - 2, rect.end.y - 2)
 			c.draw_string_outline(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0.1, 0.06, 0.03, 0.95))
 			c.draw_string(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
+		elif id == "can":  # C6 P7: the can's water level, a small bar along the slot's foot
+			var wb := Rect2(rect.position.x + 3, rect.end.y - 4, SLOT - 6, 2.5)
+			c.draw_rect(wb.grow(0.5), Color(0.08, 0.05, 0.03, 0.9))
+			c.draw_rect(Rect2(wb.position, Vector2(wb.size.x * WaterCan.frac(), wb.size.y)), Color(0.35, 0.7, 1.0) if WaterCan.level() > 0 else Color(0.9, 0.3, 0.25))
 	# Held item name / hint line
 	var held := str(tb[slot])
 	var line := ""
 	if held != "":
-		line = GameState.item_name(held)
+		line = GameState.item_name(held) + ("  %d/%d" % [WaterCan.level(), WaterCan.cap()] if held == "can" else "")
 	if _hint != "":
 		line = Money.t((line + "   " if line != "" else "") + _hint)
 	var lw := 180 if Racket.on() or y_offset > 0.0 else 240

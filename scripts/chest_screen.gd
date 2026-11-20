@@ -20,6 +20,9 @@ var _press := {}  # the slot under the finger: {"grid", "i", "t"}
 var _acts: HBoxContainer
 var _trash_arm := ""
 var _amt_btn: Button
+var _trash_btn: Button
+var _trash_icon: TextureRect
+var _drag: SlotDrag
 var _was_paused := false
 var _arm := 0
 const SLOT := 30
@@ -68,8 +71,8 @@ func _ready() -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 2)
 	v.add_child(row)
-	row.add_child(_btn("Sort", func() -> void: Storage.sort_box(key); _pick = {}; _refresh()))
-	row.add_child(_btn("Quick stack", func() -> void: _note(Storage.quick_stack(key), "stacked")))
+	row.add_child(_btn("Organise", func() -> void: Storage.sort_box(key); _pick = {}; _refresh()))
+	row.add_child(_btn("Add to stacks", func() -> void: _note(Storage.quick_stack(key), "stacked")))
 	row.add_child(_btn("Deposit all", func() -> void: _note(Storage.deposit_all(key), "stored")))
 	row.add_child(_btn("Take all", func() -> void:
 		var n := Storage.take_all(key)
@@ -89,6 +92,26 @@ func _ready() -> void:
 	row2.add_child(_btl)
 	_amt_btn = _btn("Move: all", func() -> void: _amt = (_amt + 1) % 4; _refresh())
 	row2.add_child(_amt_btn)
+	# C6 P7: the trash can (drop a bag item on it, or tap it with one picked).
+	_trash_btn = Button.new()
+	_trash_btn.custom_minimum_size = Vector2(24, 22)
+	_trash_btn.focus_mode = Control.FOCUS_NONE
+	_trash_btn.tooltip_text = "Trash"
+	_trash_btn.pressed.connect(_trash_pressed)
+	_trash_icon = TextureRect.new()
+	_trash_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_trash_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_trash_icon.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_trash_icon.offset_left = 3
+	_trash_icon.offset_top = 2
+	_trash_icon.offset_right = -3
+	_trash_icon.offset_bottom = -2
+	_trash_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_trash_btn.add_child(_trash_icon)
+	row2.add_child(_trash_btn)
+	_drag = SlotDrag.new()
+	add_child(_drag)
+	_drag.on_lift = func(pl: Dictionary) -> void: _hold(str(pl["grid"]), int(pl["i"]))
 	if key.begins_with("p:"):
 		row2.add_child(_btn("Pick up", _pick_up))
 	# Long-press an item: pick it up to place it, or lock / trash / move half.
@@ -98,7 +121,7 @@ func _ready() -> void:
 	_bot = _scroll_grid(v, 158)  # keeps the panel and its tip line on the 480 screen
 	(_bot.get_parent() as ScrollContainer).size_flags_vertical = Control.SIZE_EXPAND_FILL  # bag fills the panel, no dead band
 	v.add_child(_acts)  # under the bag, so its empty band isn't between the label and the grid
-	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
+	var tip := _label("Tap: move across.  Hold: pick up or drag (slot, other side, trash).", 7, Color(0.8, 0.75, 0.65))
 	v.add_child(tip)
 	_refresh()
 
@@ -218,9 +241,9 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 	sb.set_corner_radius_all(2)
 	for st in ["normal", "hover", "pressed", "focus"]:
 		b.add_theme_stylebox_override(st, sb)
-	if grid != "":
-		b.button_down.connect(func() -> void: _press = {"grid": grid, "i": idx, "t": Time.get_ticks_msec(), "at": get_viewport().get_mouse_position()} if id != "" else {})
-		b.button_up.connect(func() -> void: _press = {})
+	if grid != "" and _drag:
+		# Long press lifts (SlotDrag): drop on a slot here or across, or the trash.
+		_drag.add(b, {"grid": grid, "i": idx, "id": id} if id != "" else {}, _drop_on.bind(grid, idx))
 	b.pressed.connect(_tap.bind(grid, idx, cb))
 	if id != "":
 		if grid == "b" and GameState.is_locked(id):
@@ -265,6 +288,11 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 
 
 func _refresh() -> void:
+	if _drag:
+		_drag.clear()
+		_drag.add(_trash_btn, {}, _drop_trash)
+	_trash_btn.modulate = Color(1, 0.55, 0.5) if _trash_arm != "" else Color.WHITE
+	_trash_icon.texture = Art.tex("ui", "trash_can_open" if (_trash_arm != "" or str(_pick.get("grid", "")) == "b") else "trash_can")
 	for g in [_top, _bot]:
 		for c in (g as Node).get_children():
 			c.queue_free()
@@ -335,8 +363,53 @@ func _pick_up() -> void:
 
 ## A tap: place a picked item, else the slot's own action (quick move across).
 func _tap(grid: String, i: int, cb: Callable) -> void:
-	if Time.get_ticks_msec() < _swallow_until:
+	if Time.get_ticks_msec() < _swallow_until or (_drag and _drag.eat_tap()):
 		return
+	_tap_now(grid, i, cb)
+
+
+## C6 P7: an item dragged from (grid, i) and let go over slot (grid2, i2).
+func _drop_on(grid2: String, i2: int, pl: Dictionary) -> void:
+	_pick = pl
+	_tap_now(grid2, i2, Callable())
+
+
+func _drop_trash(pl: Dictionary) -> void:
+	_pick = pl
+	_trash_pressed()
+
+
+func _trash_pressed() -> void:
+	if _drag and _drag.eat_tap() and _pick.is_empty():
+		return
+	if _pick.is_empty():
+		_fail("Hold an item from your bag (or drag it here) to trash it.")
+		return
+	var id := str(_pick["id"])
+	if str(_pick["grid"]) != "b":
+		_fail("Take it into your bag first to trash it.")
+		_pick = {}
+		_refresh()
+		return
+	if not GameState.can_trash(id):
+		_fail("Locked: unlock it first." if GameState.is_locked(id) else "%s can't go in the trash." % GameState.item_name(id))
+		_pick = {}
+		_refresh()
+		return
+	if _trash_arm != id and GameState.trash_needs_confirm(id):
+		_trash_arm = id
+		if m and m.hud:
+			m.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+		_refresh()
+		return
+	GameState.trash(id, GameState.count(id))
+	Music.instance(get_tree()).sfx("thud", "nope")
+	_pick = {}
+	_trash_arm = ""
+	_refresh()
+
+
+func _tap_now(grid: String, i: int, cb: Callable) -> void:
 	if not _pick.is_empty():
 		var pg := str(_pick["grid"])
 		var pid := str(_pick["id"])

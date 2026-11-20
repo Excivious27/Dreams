@@ -341,17 +341,20 @@ func _refresh() -> void:
 			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
 				_bag_pick = ""
 			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("Toolbar  ·  in hand: %s  (tap it again, then a slot, to move it)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
+			var dr := _items_drag()
 			var g := _grid(6)
 			for i in 12:
 				var id := str(tb[i])
-				g.add_child(_slot_button(id, i == slot, _toolbar_tap.bind(i)))
+				var tsb := _slot_button(id, i == slot, _toolbar_tap.bind(i))
+				dr.add(tsb, {"id": id, "bar": i} if id != "" else {}, _drop_on_bar.bind(i))
+				g.add_child(tsb)
 			var bh := HBoxContainer.new()
 			bh.add_theme_constant_override("separation", 3)
 			_body.add_child(bh)
 			var bl := _line("Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()], 8, Color(1, 0.6, 0.5) if GameState.bag_free() <= 0 else Color(0.9, 0.85, 0.7))
 			bl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			bl.reparent(bh)
-			var sb1 := _button("Sort", func() -> void: GameState.sort_bag(); _refresh())
+			var sb1 := _button("Organise", func() -> void: GameState.sort_bag(); _refresh())
 			sb1.reparent(bh)
 			sb1.size_flags_horizontal = Control.SIZE_SHRINK_END
 			sb1.autowrap_mode = TextServer.AUTOWRAP_OFF
@@ -361,12 +364,16 @@ func _refresh() -> void:
 				sb2.reparent(bh)
 				sb2.size_flags_horizontal = Control.SIZE_SHRINK_END
 				sb2.autowrap_mode = TextServer.AUTOWRAP_OFF
-			_line("Bag (toolbar items are these same stacks): tap one, then a slot", 8, Color(0.9, 0.85, 0.7))
+			var trs := _trash_slot()
+			bh.add_child(trs)
+			dr.add(trs, {}, _drop_trash)
+			_line("Bag: tap one, then a slot. Hold and drag to move or trash.", 8, Color(0.9, 0.85, 0.7))
 			var bs := GameState.bag_slots()
 			var g2 := _grid(6)
 			for i in bs.size():
 				var bid := str(bs[i])
 				var bb := _slot_button(bid, bid != "" and bid == _bag_pick, _bag_tap.bind(i))
+				dr.add(bb, {"id": bid, "bar": -1} if bid != "" else {}, _drop_on_bag.bind(i))
 				if bid != "" and bid != _bag_pick and tb.has(bid):
 					bb.modulate = Color(1, 1, 1, 0.55)  # also on the toolbar above
 				if bid != "" and GameState.is_locked(bid):
@@ -382,7 +389,9 @@ func _refresh() -> void:
 				_line("Tools", 8, Color(0.9, 0.85, 0.7))
 				var g3 := _grid(6)
 				for t: String in lt:
-					g3.add_child(_slot_button(t, t == _bag_pick, _tool_tap.bind(t)))
+					var tlb := _slot_button(t, t == _bag_pick, _tool_tap.bind(t))
+					dr.add(tlb, {"id": t, "bar": -1}, func(_p: Dictionary) -> void: pass)
+					g3.add_child(tlb)
 			if _bag_pick != "" and not GameState.has_tool(_bag_pick):
 				var ah := HBoxContainer.new()
 				ah.add_theme_constant_override("separation", 3)
@@ -1111,6 +1120,12 @@ var _trash_arm := ""
 
 ## Bag slot tapped: pick it, or place/swap the picked item there.
 func _bag_tap(i: int) -> void:
+	if _drag and _drag.eat_tap():
+		return
+	_bag_tap_now(i)
+
+
+func _bag_tap_now(i: int) -> void:
 	var bs := GameState.bag_slots()
 	var id := str(bs[i]) if i < bs.size() else ""
 	if _bag_pick == "":
@@ -1141,6 +1156,8 @@ func _bag_tap(i: int) -> void:
 ## on the selected slot picks its item up (place it on another slot to swap,
 ## or on a bag slot to take it off the bar).
 func _toolbar_tap(i: int) -> void:
+	if _drag and _drag.eat_tap():
+		return
 	if _bag_pick != "":
 		_assign_toolbar(_bag_pick, i)
 		return
@@ -1156,20 +1173,126 @@ func _toolbar_tap(i: int) -> void:
 
 
 func _tool_tap(t: String) -> void:
+	if _drag and _drag.eat_tap():
+		return
 	_bag_pick = "" if _bag_pick == t else t
 	_pick_bar = -1
 	_refresh()
 
 
 func _trash_tap(id: String) -> void:
-	if _trash_arm == id:
+	if _trash_arm == id or not GameState.trash_needs_confirm(id):
 		GameState.trash(id, GameState.count(id))
 		Music.instance(get_tree()).sfx("thud", "nope")
 		_bag_pick = ""
 		_trash_arm = ""
 	else:
 		_trash_arm = id
+		var gm := get_tree().current_scene as GameMap
+		if gm and gm.hud:
+			gm.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
 	_refresh()
+
+
+## ---- C6 P7: drag and drop + trash can slot (Items tab) ----------------------
+var _drag: SlotDrag
+
+
+func _items_drag() -> SlotDrag:
+	if _drag == null or not is_instance_valid(_drag):
+		_drag = SlotDrag.new()
+		add_child(_drag)
+		_drag.on_lift = func(pl: Dictionary) -> void:
+			_bag_pick = str(pl.get("id", ""))
+			_pick_bar = int(pl.get("bar", -1))
+			_trash_arm = ""
+			_refresh()
+	_drag.clear()
+	return _drag
+
+
+func _drop_on_bar(i: int, pl: Dictionary) -> void:
+	_bag_pick = str(pl.get("id", ""))
+	_pick_bar = int(pl.get("bar", -1))
+	_assign_toolbar(_bag_pick, i)
+
+
+func _drop_on_bag(i: int, pl: Dictionary) -> void:
+	var id := str(pl.get("id", ""))
+	if GameState.has_tool(id) and int(pl.get("bar", -1)) < 0:
+		_bag_pick = ""
+		_refresh()
+		return  # a tool from the Tools row has no bag slot
+	_bag_pick = id
+	_pick_bar = int(pl.get("bar", -1))
+	_bag_tap_now(i)
+
+
+func _drop_trash(pl: Dictionary) -> void:
+	var id := str(pl.get("id", ""))
+	_bag_pick = id
+	if not GameState.can_trash(id):
+		var gm := get_tree().current_scene as GameMap
+		if gm and gm.hud:
+			gm.hud.toast("%s can't go in the trash." % GameState.item_name(id) if not GameState.is_locked(id) else "Locked: unlock it first to trash it.", Color(1, 0.8, 0.6))
+		Music.instance(get_tree()).sfx("nope", "thud")
+		_refresh()
+		return
+	_trash_tap(id)
+
+
+## The trash can: tap it with an item picked (or drop one on it). Cheap stacks go
+## at once; valuable ones (GameState.trash_needs_confirm) ask once: the can
+## opens and turns red, tap it again to throw them away.
+func _trash_slot() -> Control:
+	var armed := _trash_arm != "" and _trash_arm == _bag_pick
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(26, 26)
+	b.focus_mode = Control.FOCUS_NONE
+	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
+	b.tooltip_text = "Trash"
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.55, 0.15, 0.12) if armed else Color(0.25, 0.17, 0.1)
+	sb.border_color = Color(1, 0.5, 0.4) if armed else Color(0.1, 0.07, 0.04)
+	sb.set_border_width_all(1)
+	sb.set_corner_radius_all(2)
+	for st in ["normal", "hover", "pressed", "focus"]:
+		b.add_theme_stylebox_override(st, sb)
+	var tex := Art.tex("ui", "trash_can_open" if (armed or _bag_pick != "") else "trash_can")
+	if tex:
+		var tr := TextureRect.new()
+		tr.texture = tex
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+		tr.offset_left = 3
+		tr.offset_top = 2
+		tr.offset_right = -3
+		tr.offset_bottom = -2
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(tr)
+	else:
+		b.text = "Bin"
+	b.pressed.connect(func() -> void:
+		if _drag and _drag.eat_tap():
+			return
+		if _bag_pick == "" or GameState.has_tool(_bag_pick):
+			var gm := get_tree().current_scene as GameMap
+			if gm and gm.hud:
+				gm.hud.toast("Pick an item (or drag one here) to trash it.", Color(0.95, 0.9, 0.8))
+			return
+		_drop_trash({"id": _bag_pick}))
+	if armed:
+		var q := Label.new()
+		q.text = "?"
+		q.add_theme_font_size_override("font_size", 9)
+		q.add_theme_color_override("font_color", Color(1, 0.9, 0.5))
+		q.add_theme_constant_override("outline_size", 2)
+		q.add_theme_color_override("font_outline_color", Color.BLACK)
+		q.position = Vector2(17, -1)
+		q.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(q)
+	return b
 
 
 ## Put id on toolbar slot i. If it's on another slot they swap; a tool that gets
@@ -1203,7 +1326,7 @@ func _pup_tab() -> void:
 	if Pet.resting():
 		_line("%s is resting at home after a rough day. Back %s." % [pname, "this afternoon" if GameState.bonus("pup", "best") > 0.0 else "tomorrow"], 9, Color(1, 0.85, 0.7))
 	_line("%s  ·  Lv %d  (%d / %d xp)" % [pname, lvl, int(sk["xp"]), GameState.xp_for_next(lvl)], 10, Color(1, 0.95, 0.8))
-	_line("Health %d / %d   ·   bite %d   ·   speed ×%.1f   ·   pack %d" % [int(st["hp"]), Pet.max_hp(), Pet.bite_damage(), Pet.speed_mult(), Pet.pack_size()], 8, Color(0.85, 1.0, 0.85))
+	_line("Health %d / %d   ·   bite %d   ·   speed ×%.1f" % [int(st["hp"]), Pet.max_hp(), Pet.bite_damage(), Pet.speed_mult()] + ("   ·   pack %d" % Pet.pack_size() if Pet.pack_size() > 0 else ""), 8, Color(0.85, 1.0, 0.85))
 	_line("Mode: %s" % str(st.get("mode", "follow")).to_upper(), 9, Color(1, 0.9, 0.5))
 	var cmds := [["Heel (follow)", "follow"], ["Attack", "attack"], ["Guard here", "guard"], ["Stay", "wait"]]
 	for c in cmds:

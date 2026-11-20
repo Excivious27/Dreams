@@ -982,6 +982,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
+			GameState.toughen(thing, "pickaxe")  # C6 P7: early rocks take more swings
 			thing["hp"] = int(thing["hp"]) - swing
 			if int(thing["hp"]) <= 0:
 				_tremor(c, swing)
