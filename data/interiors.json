@@ -1751,6 +1751,14 @@
      8
     ],
     "auto": true
+   },
+   {
+    "name": "doorway_ornate",
+    "cell": [
+     10,
+     2
+    ],
+    "solid": false
    }
   ],
   "things": [
@@ -1775,6 +1783,16 @@
     "text": "'Grumps and How to Cheer Them': mostly blank pages. Someone wrote 'you can't' on the last one.",
     "hint": "A: read",
     "solid": false
+   },
+   {
+    "type": "museum",
+    "act": "enter",
+    "cell": [
+     10,
+     2
+    ],
+    "hint": "A: Museum (east wing)",
+    "solid": true
    }
   ],
   "npcs": [
@@ -5608,6 +5626,1655 @@
    "wall": "wl_concrete",
    "music": "bowling_alley",
    "intro": "Four lanes under blacklight, pins glowing like teeth. Somebody's put a chalk line on the wall: HOUSE RECORD."
+  }
+ },
+ "museum": {
+  "museum": true,
+  "no_furnish": true,
+  "cols": 18,
+  "rows": 15,
+  "floor": "fl_wood",
+  "wall": "wl_plaster",
+  "door": [
+   8,
+   14
+  ],
+  "back": [
+   "in_library",
+   10,
+   3
+  ],
+  "door_prop": "doorway_ornate",
+  "door_hint": "A: back to the library",
+  "music": "chapel",
+  "windows": [
+   4,
+   13
+  ],
+  "pet": false,
+  "wall_props": [
+   {
+    "name": "museum_sign_wing",
+    "x": 3
+   },
+   {
+    "name": "museum_sign_wing",
+    "x": 14
+   }
+  ],
+  "props": [
+   {
+    "name": "museum_case",
+    "cell": [
+     1,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     3,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     4,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     5,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     6,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     11,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     12,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     13,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     14,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     15,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     16,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     1,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     2,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     3,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     4,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     5,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     6,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     11,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     12,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     13,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     14,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     15,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_case",
+    "cell": [
+     16,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     1,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     2,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     3,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     4,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     5,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     6,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     11,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     12,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     13,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     14,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     15,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     16,
+     7
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     13,
+     11
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     14,
+     11
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_pedestal",
+    "cell": [
+     15,
+     11
+    ],
+    "w": 1
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     1,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     3,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     5,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     11,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     13,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     15,
+     9
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     1,
+     11
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     3,
+     11
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     5,
+     11
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_tank",
+    "cell": [
+     11,
+     11
+    ],
+    "w": 2
+   },
+   {
+    "name": "museum_rope",
+    "cell": [
+     7,
+     3
+    ],
+    "solid": false
+   },
+   {
+    "name": "museum_rope",
+    "cell": [
+     10,
+     3
+    ],
+    "solid": false
+   },
+   {
+    "name": "museum_counter",
+    "cell": [
+     11,
+     13
+    ],
+    "w": 2
+   },
+   {
+    "name": "plant2_b",
+    "cell": [
+     1,
+     13
+    ]
+   },
+   {
+    "name": "plant2_b",
+    "cell": [
+     16,
+     13
+    ]
+   },
+   {
+    "name": "rug_rect_green",
+    "cell": [
+     8,
+     7
+    ],
+    "w": 2,
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "coal",
+    "cell": [
+     1,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "copper",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "iron",
+    "cell": [
+     3,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "tin",
+    "cell": [
+     4,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "silver",
+    "cell": [
+     5,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "gold",
+    "cell": [
+     6,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "bog_iron",
+    "cell": [
+     11,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "shard",
+    "cell": [
+     12,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "dark",
+    "cell": [
+     13,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "moon_shard",
+    "cell": [
+     14,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sunstone",
+    "cell": [
+     15,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "frost",
+    "cell": [
+     16,
+     3
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "storm_glass",
+    "cell": [
+     1,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "platinum",
+    "cell": [
+     2,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "ruby",
+    "cell": [
+     3,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sapphire",
+    "cell": [
+     4,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "emerald",
+    "cell": [
+     5,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "amethyst",
+    "cell": [
+     6,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "luna_moth",
+    "cell": [
+     11,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sun_scarab",
+    "cell": [
+     12,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "seashell",
+    "cell": [
+     13,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "eagle_feather",
+    "cell": [
+     14,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "otter_whisker",
+    "cell": [
+     15,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "goat_horn",
+    "cell": [
+     16,
+     5
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "book",
+    "cell": [
+     1,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "old_coin",
+    "cell": [
+     2,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "fossil",
+    "cell": [
+     3,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "pearl",
+    "cell": [
+     4,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "map_scrap",
+    "cell": [
+     5,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "rune_tablet",
+    "cell": [
+     6,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "relic_orb",
+    "cell": [
+     11,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "relic_mask",
+    "cell": [
+     12,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "relic_blade",
+    "cell": [
+     13,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "relic_crown",
+    "cell": [
+     14,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "river_pearl",
+    "cell": [
+     15,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "ancient_urn",
+    "cell": [
+     16,
+     7
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "storm_eye",
+    "cell": [
+     13,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "lucky_coin",
+    "cell": [
+     14,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "pearl_necklace",
+    "cell": [
+     15,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "minnow",
+    "cell": [
+     1,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "trout",
+    "cell": [
+     2,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sunfish",
+    "cell": [
+     3,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "carp",
+    "cell": [
+     4,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "bass",
+    "cell": [
+     5,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "catfish",
+    "cell": [
+     6,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "salmon",
+    "cell": [
+     11,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "eel",
+    "cell": [
+     12,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "puffer",
+    "cell": [
+     13,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "goldfish",
+    "cell": [
+     14,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "starfin",
+    "cell": [
+     15,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "mooncarp",
+    "cell": [
+     16,
+     9
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "tuna",
+    "cell": [
+     1,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "crab",
+    "cell": [
+     2,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "legendary_koi",
+    "cell": [
+     3,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "ghost_fish",
+    "cell": [
+     4,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sun_trout",
+    "cell": [
+     5,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "ice_pike",
+    "cell": [
+     6,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "sky_fish",
+    "cell": [
+     11,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "case",
+    "item": "ember_koi",
+    "cell": [
+     12,
+     11
+    ],
+    "hint": "A: look",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "counter",
+    "cell": [
+     11,
+     13
+    ],
+    "hint": "A: donation tray",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "counter",
+    "cell": [
+     12,
+     13
+    ],
+    "hint": "A: donation tray",
+    "solid": true
+   },
+   {
+    "type": "museum",
+    "act": "plaque",
+    "wing": "minerals",
+    "cell": [
+     3,
+     2
+    ],
+    "hint": "A: read the plaque",
+    "solid": false
+   },
+   {
+    "type": "museum",
+    "act": "plaque",
+    "wing": "artifacts",
+    "cell": [
+     14,
+     2
+    ],
+    "hint": "A: read the plaque",
+    "solid": false
+   }
+  ],
+  "npcs": [],
+  "cases": [
+   {
+    "item": "coal",
+    "wing": "minerals",
+    "cell": [
+     1,
+     3
+    ]
+   },
+   {
+    "item": "copper",
+    "wing": "minerals",
+    "cell": [
+     2,
+     3
+    ]
+   },
+   {
+    "item": "iron",
+    "wing": "minerals",
+    "cell": [
+     3,
+     3
+    ]
+   },
+   {
+    "item": "tin",
+    "wing": "minerals",
+    "cell": [
+     4,
+     3
+    ]
+   },
+   {
+    "item": "silver",
+    "wing": "minerals",
+    "cell": [
+     5,
+     3
+    ]
+   },
+   {
+    "item": "gold",
+    "wing": "minerals",
+    "cell": [
+     6,
+     3
+    ]
+   },
+   {
+    "item": "bog_iron",
+    "wing": "minerals",
+    "cell": [
+     11,
+     3
+    ]
+   },
+   {
+    "item": "shard",
+    "wing": "minerals",
+    "cell": [
+     12,
+     3
+    ]
+   },
+   {
+    "item": "dark",
+    "wing": "minerals",
+    "cell": [
+     13,
+     3
+    ]
+   },
+   {
+    "item": "moon_shard",
+    "wing": "minerals",
+    "cell": [
+     14,
+     3
+    ]
+   },
+   {
+    "item": "sunstone",
+    "wing": "minerals",
+    "cell": [
+     15,
+     3
+    ]
+   },
+   {
+    "item": "frost",
+    "wing": "minerals",
+    "cell": [
+     16,
+     3
+    ]
+   },
+   {
+    "item": "storm_glass",
+    "wing": "minerals",
+    "cell": [
+     1,
+     5
+    ]
+   },
+   {
+    "item": "platinum",
+    "wing": "minerals",
+    "cell": [
+     2,
+     5
+    ]
+   },
+   {
+    "item": "ruby",
+    "wing": "minerals",
+    "cell": [
+     3,
+     5
+    ]
+   },
+   {
+    "item": "sapphire",
+    "wing": "minerals",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "item": "emerald",
+    "wing": "minerals",
+    "cell": [
+     5,
+     5
+    ]
+   },
+   {
+    "item": "amethyst",
+    "wing": "minerals",
+    "cell": [
+     6,
+     5
+    ]
+   },
+   {
+    "item": "luna_moth",
+    "wing": "curios",
+    "cell": [
+     11,
+     5
+    ]
+   },
+   {
+    "item": "sun_scarab",
+    "wing": "curios",
+    "cell": [
+     12,
+     5
+    ]
+   },
+   {
+    "item": "seashell",
+    "wing": "curios",
+    "cell": [
+     13,
+     5
+    ]
+   },
+   {
+    "item": "eagle_feather",
+    "wing": "curios",
+    "cell": [
+     14,
+     5
+    ]
+   },
+   {
+    "item": "otter_whisker",
+    "wing": "curios",
+    "cell": [
+     15,
+     5
+    ]
+   },
+   {
+    "item": "goat_horn",
+    "wing": "curios",
+    "cell": [
+     16,
+     5
+    ]
+   },
+   {
+    "item": "book",
+    "wing": "artifacts",
+    "cell": [
+     1,
+     7
+    ]
+   },
+   {
+    "item": "old_coin",
+    "wing": "artifacts",
+    "cell": [
+     2,
+     7
+    ]
+   },
+   {
+    "item": "fossil",
+    "wing": "artifacts",
+    "cell": [
+     3,
+     7
+    ]
+   },
+   {
+    "item": "pearl",
+    "wing": "artifacts",
+    "cell": [
+     4,
+     7
+    ]
+   },
+   {
+    "item": "map_scrap",
+    "wing": "artifacts",
+    "cell": [
+     5,
+     7
+    ]
+   },
+   {
+    "item": "rune_tablet",
+    "wing": "artifacts",
+    "cell": [
+     6,
+     7
+    ]
+   },
+   {
+    "item": "relic_orb",
+    "wing": "artifacts",
+    "cell": [
+     11,
+     7
+    ]
+   },
+   {
+    "item": "relic_mask",
+    "wing": "artifacts",
+    "cell": [
+     12,
+     7
+    ]
+   },
+   {
+    "item": "relic_blade",
+    "wing": "artifacts",
+    "cell": [
+     13,
+     7
+    ]
+   },
+   {
+    "item": "relic_crown",
+    "wing": "artifacts",
+    "cell": [
+     14,
+     7
+    ]
+   },
+   {
+    "item": "river_pearl",
+    "wing": "artifacts",
+    "cell": [
+     15,
+     7
+    ]
+   },
+   {
+    "item": "ancient_urn",
+    "wing": "artifacts",
+    "cell": [
+     16,
+     7
+    ]
+   },
+   {
+    "item": "storm_eye",
+    "wing": "artifacts",
+    "cell": [
+     13,
+     11
+    ]
+   },
+   {
+    "item": "lucky_coin",
+    "wing": "artifacts",
+    "cell": [
+     14,
+     11
+    ]
+   },
+   {
+    "item": "pearl_necklace",
+    "wing": "artifacts",
+    "cell": [
+     15,
+     11
+    ]
+   },
+   {
+    "item": "minnow",
+    "wing": "fish",
+    "cell": [
+     1,
+     9
+    ]
+   },
+   {
+    "item": "trout",
+    "wing": "fish",
+    "cell": [
+     2,
+     9
+    ]
+   },
+   {
+    "item": "sunfish",
+    "wing": "fish",
+    "cell": [
+     3,
+     9
+    ]
+   },
+   {
+    "item": "carp",
+    "wing": "fish",
+    "cell": [
+     4,
+     9
+    ]
+   },
+   {
+    "item": "bass",
+    "wing": "fish",
+    "cell": [
+     5,
+     9
+    ]
+   },
+   {
+    "item": "catfish",
+    "wing": "fish",
+    "cell": [
+     6,
+     9
+    ]
+   },
+   {
+    "item": "salmon",
+    "wing": "fish",
+    "cell": [
+     11,
+     9
+    ]
+   },
+   {
+    "item": "eel",
+    "wing": "fish",
+    "cell": [
+     12,
+     9
+    ]
+   },
+   {
+    "item": "puffer",
+    "wing": "fish",
+    "cell": [
+     13,
+     9
+    ]
+   },
+   {
+    "item": "goldfish",
+    "wing": "fish",
+    "cell": [
+     14,
+     9
+    ]
+   },
+   {
+    "item": "starfin",
+    "wing": "fish",
+    "cell": [
+     15,
+     9
+    ]
+   },
+   {
+    "item": "mooncarp",
+    "wing": "fish",
+    "cell": [
+     16,
+     9
+    ]
+   },
+   {
+    "item": "tuna",
+    "wing": "fish",
+    "cell": [
+     1,
+     11
+    ]
+   },
+   {
+    "item": "crab",
+    "wing": "fish",
+    "cell": [
+     2,
+     11
+    ]
+   },
+   {
+    "item": "legendary_koi",
+    "wing": "fish",
+    "cell": [
+     3,
+     11
+    ]
+   },
+   {
+    "item": "ghost_fish",
+    "wing": "fish",
+    "cell": [
+     4,
+     11
+    ]
+   },
+   {
+    "item": "sun_trout",
+    "wing": "fish",
+    "cell": [
+     5,
+     11
+    ]
+   },
+   {
+    "item": "ice_pike",
+    "wing": "fish",
+    "cell": [
+     6,
+     11
+    ]
+   },
+   {
+    "item": "sky_fish",
+    "wing": "fish",
+    "cell": [
+     11,
+     11
+    ]
+   },
+   {
+    "item": "ember_koi",
+    "wing": "fish",
+    "cell": [
+     12,
+     11
+    ]
+   }
+  ],
+  "intro": "Glass cases in neat rows, a velvet rope, a little brass bell. The Valley Museum.",
+  "gangsters": {
+   "floor": "fl_wood_dark",
+   "intro": "Glass cases, a velvet rope, a ledger by the tray. The Curio Room."
   }
  }
 }

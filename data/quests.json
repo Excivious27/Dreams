@@ -3132,6 +3132,50 @@
      25
     ]
    }
+  },
+  {
+   "id": "coll_pip_fossil",
+   "giver": "pip",
+   "text": "Pip wants to see a fossil in the museum. Give one at the donation tray.",
+   "text_gangsters": "Pip wants to see a fossil in the Curio Room. Leave one in the tray.",
+   "when": {
+    "flag": "museum_open"
+   },
+   "done_when": {
+    "donated": "fossil"
+   },
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "pip",
+     20
+    ]
+   }
+  },
+  {
+   "id": "coll_finn_tanks",
+   "giver": "finn",
+   "text": "Finn wants five kinds of fish in the museum tanks.",
+   "text_gangsters": "Finn wants five kinds of fish in the Curio Room tanks.",
+   "when": {
+    "flag": "museum_open"
+   },
+   "done_when": {
+    "museum_wing": [
+     "fish",
+     5
+    ]
+   },
+   "reward": {
+    "item": [
+     "bait",
+     10
+    ],
+    "friend": [
+     "finn",
+     15
+    ]
+   }
   }
  ]
 }
