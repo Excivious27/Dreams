@@ -177,12 +177,23 @@ static func sprite(group: String, name: String) -> Sprite2D:
 	return s
 
 
+## Set by the baked-ground painter while it draws one chunk (draw-space rect;
+## empty = draw everything). Draw helpers skip what lies wholly outside it.
+static var clip := Rect2()
+
+
+static func clipped(r: Rect2) -> bool:
+	return clip.has_area() and not clip.intersects(r)
+
+
 ## Draw a 32px source tile into a 16px cell. `index` picks a cell of a 3x3 set
 ## (0..8) or a frame of a strip.
 static func draw_tile(ci: CanvasItem, group: String, name: String, at: Vector2, index := 4, size := 16.0) -> bool:
 	var t := tex(group, name)
 	if t == null:
 		return false
+	if clip.has_area() and not clip.intersects(Rect2(at, Vector2(size, size))):
+		return true  # outside the chunk being baked
 	var i := info(group, name)
 	var cw := int(i.get("cell_w", 32))
 	var ch := int(i.get("cell_h", 32))
@@ -202,7 +213,10 @@ static func draw_prop(ci: CanvasItem, group: String, name: String, feet: Vector2
 		return false
 	var w := t.get_width() / 2.0
 	var h := t.get_height() / 2.0
-	ci.draw_texture_rect(t, Rect2(feet.x - w / 2.0, feet.y - h, w, h), false)
+	var r := Rect2(feet.x - w / 2.0, feet.y - h, w, h)
+	if clip.has_area() and not clip.intersects(r):
+		return true
+	ci.draw_texture_rect(t, r, false)
 	return true
 
 

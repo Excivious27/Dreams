@@ -74,6 +74,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	GameState.look_season = ""
+	CliffPainter.memo.clear()  # recorded cliff/forest-floor drawing belongs to one map
 	Art.trim_cache()
 	InputSetup.ensure_actions()
 	y_sort_enabled = true
@@ -2899,8 +2900,16 @@ func _draw() -> void:
 	if _bake_on():
 		_bake_request()
 		return
+	# Painter, clipped to one chunk: draw helpers skip what lies outside it, per-cell
+	# loops walk only its cells; the animated jobs (water) stay as the full pass made them.
+	var clipped := _painter_of != null and _bake_clip.has_area()
+	var jobs_n := -1
 	if _anim_layer:
-		_anim_layer.jobs.clear()
+		if clipped:
+			jobs_n = _anim_layer.jobs.size()
+		else:
+			_anim_layer.jobs.clear()
+	Art.clip = _bake_clip if clipped else Rect2()
 	draw_set_transform(offset())
 	draw_map()
 	if not _ext_paths.is_empty():
@@ -2909,6 +2918,23 @@ func _draw() -> void:
 	if pad > 0:
 		draw_border()
 	draw_set_transform(Vector2.ZERO)
+	Art.clip = Rect2()
+	if jobs_n >= 0 and _anim_layer.jobs.size() > jobs_n:
+		_anim_layer.jobs.resize(jobs_n)
+	if _painter_of != null and not clipped:
+		_bake_full_done = true
+
+
+## Cells (content coordinates) a clipped painter pass must walk: the clip plus
+## `grow` cells for things drawn beyond their cell (tufts, flowers, rims). The
+## whole padded map when not clipped.
+func clip_cells(grow := 4) -> Rect2i:
+	var all := Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
+	if not Art.clip.has_area():
+		return all
+	var p0 := Vector2i((Art.clip.position / TILE).floor()) - Vector2i(grow, grow)
+	var p1 := Vector2i((Art.clip.end / TILE).ceil()) + Vector2i(grow, grow)
+	return Rect2i(p0, p1 - p0).intersection(all)
 
 
 ## Exit corridors through the border band (region.gd draws its own road tiles).
@@ -2942,6 +2968,7 @@ func draw_map() -> void:
 
 
 var _tall := {}
+var _geom_memo := {}  # drawing geometry/orders worked out by a full pass, reused by clipped bakes (shared with the painter)
 
 
 ## Seamless ground (Prompts 16): a 256px texture that tiles every 8 cells. Each
@@ -2960,7 +2987,8 @@ func seam_fill(ci: CanvasItem, name: String, area: Rect2, col := Color.WHITE) ->
 		var bx := floorf(area.position.x / SEAM_PERIOD) * SEAM_PERIOD
 		while bx < area.end.x:
 			var blk := Rect2(bx, by, SEAM_PERIOD, SEAM_PERIOD).intersection(area)
-			ci.draw_texture_rect_region(t, blk, Rect2((blk.position - Vector2(bx, by)) * 2.0, blk.size * 2.0), col)
+			if not Art.clipped(blk):
+				ci.draw_texture_rect_region(t, blk, Rect2((blk.position - Vector2(bx, by)) * 2.0, blk.size * 2.0), col)
 			bx += SEAM_PERIOD
 		by += SEAM_PERIOD
 	return true
@@ -2974,6 +3002,8 @@ func seam_cell(ci: CanvasItem, name: String, c: Vector2i, col := Color.WHITE, sc
 	var wy := fposmod(c.y * TILE + scroll.y, SEAM_PERIOD) * 2.0
 	var src := Rect2(wx, wy, TILE * 2, TILE * 2)
 	var dst := Rect2(c * TILE, Vector2i(TILE, TILE))
+	if Art.clipped(dst):
+		return true
 	if wx + TILE * 2 > 256.0 or wy + TILE * 2 > 256.0:
 		# Window straddles the texture's edge: draw it in up to four pieces.
 		var w1 := minf(TILE * 2, 256.0 - wx)
@@ -3016,11 +3046,17 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 			var bx := floorf(area.position.x / SEAM_PERIOD) * SEAM_PERIOD
 			while bx < area.end.x:
 				var blk := Rect2(bx, by, SEAM_PERIOD, SEAM_PERIOD).intersection(area)
-				draw_texture_rect_region(tseam, blk, Rect2((blk.position - Vector2(bx, by)) * 2.0, blk.size * 2.0), seam_col)
+				if not Art.clipped(blk):
+					draw_texture_rect_region(tseam, blk, Rect2((blk.position - Vector2(bx, by)) * 2.0, blk.size * 2.0), seam_col)
 				bx += SEAM_PERIOD
 			by += SEAM_PERIOD
-	for y in range(r.position.y, r.end.y):
-		for x in range(r.position.x, r.end.x):
+	# A clipped painter pass walks only the cells near its chunk (every branch below
+	# but the old g_tall one is per-cell, so the subset draws the same pixels).
+	var lr := r
+	if Art.clip.has_area() and (has_seam or (has_tiles and Art.has("tiles", "gv_short_0")) or not has_tiles):
+		lr = r.intersection(clip_cells())
+	for y in range(lr.position.y, lr.end.y):
+		for x in range(lr.position.x, lr.end.x):
 			var at := Vector2(x * TILE, y * TILE)
 			var ni := (y + pad) * nw + (x + pad)
 			var n9: float = noise9[ni] if x >= -pad and y >= -pad and x < cols + pad and y < rows + pad else WorldGen.fbm(float(x), float(y), sd, 9.0)
@@ -3996,15 +4032,40 @@ func _band_depth(c: Vector2i) -> int:
 
 
 func draw_border() -> void:
-	var water := {}
-	var cliff := {}
-	var treec := {}
-	for c: Vector2i in _border_cells:
-		match _border_cells[c]:
-			"water": water[c] = true
-			"cliff": cliff[c] = true
-			"tree": treec[c] = true
-			"void": draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.05, 0.05, 0.08))
+	# The band's cell sets never change after _build_border: sorted once per band
+	# (c3_16 #2), not on every redraw and clipped chunk bake.
+	var bkey := "border:%d:%d" % [_border_cells.size(), _border_cells.hash()]
+	var bg: Dictionary = _geom_memo.get(bkey, {})
+	if bg.is_empty():
+		bg = {"water": {}, "cliff": {}, "tree": {}, "void": []}
+		for c: Vector2i in _border_cells:
+			match _border_cells[c]:
+				"water": bg["water"][c] = true
+				"cliff": bg["cliff"][c] = true
+				"tree": bg["tree"][c] = true
+				"void": (bg["void"] as Array).append(c)
+		var ring0 := {}
+		var deep0 := {}
+		var shade0 := {}
+		for c: Vector2i in bg["tree"]:
+			var dd := _band_depth(c)
+			if dd >= 2:
+				ring0[c] = true
+			if dd >= 3:
+				deep0[c] = true
+			if dd >= 4:
+				shade0[c] = true
+		bg["ring"] = ring0
+		bg["deep"] = deep0
+		bg["shade"] = shade0
+		_geom_memo[bkey] = bg
+	var water: Dictionary = bg["water"]
+	var cliff: Dictionary = bg["cliff"]
+	var treec: Dictionary = bg["tree"]
+	for c: Vector2i in bg["void"]:
+		var vr := Rect2(c * TILE, Vector2i(TILE, TILE))
+		if not Art.clipped(vr):
+			draw_rect(vr, Color(0.05, 0.05, 0.08))
 	# Exit corridors through the band match the map's own paths (dirt on grass maps).
 	if not _border_open.is_empty():
 		# Each exit's corridor is as wide as the exit (not the grown band opening), and on
@@ -4054,14 +4115,8 @@ func draw_border() -> void:
 	# edge in two layers (a faint outer ring, then the full floor), and shade that
 	# deepens toward the map's outer edge: layered woods, no square steps.
 	var ff := Art.tex("seamless", "forest_floor")
-	var ring := {}
-	var deep := {}
-	for c: Vector2i in treec:
-		var dd := _band_depth(c)
-		if dd >= 2:
-			ring[c] = true
-		if dd >= 3:
-			deep[c] = true
+	var ring: Dictionary = bg["ring"]
+	var deep: Dictionary = bg["deep"]
 	if ff != null:
 		CliffPainter.draw_rounded_cells(self, ring, ff, SEAM_PERIOD, Color(1, 1, 1, 0.4))
 		CliffPainter.draw_rounded_cells(self, deep, ff, SEAM_PERIOD, Color(1, 1, 1, 0.85))
@@ -4069,11 +4124,7 @@ func draw_border() -> void:
 		for c: Vector2i in deep:
 			if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
 				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
-	var shade := {}
-	for c: Vector2i in deep:
-		if _band_depth(c) >= 4:
-			shade[c] = true
-	_draw_soft_shade(shade, Color(0.03, 0.06, 0.05, 0.22))
+	_draw_soft_shade(bg["shade"], Color(0.03, 0.06, 0.05, 0.22))
 	if _painter_of != null:
 		_border_stripes()
 		return
@@ -4086,11 +4137,22 @@ func draw_border() -> void:
 func _draw_soft_shade(cells: Dictionary, col: Color) -> void:
 	if cells.is_empty():
 		return
-	for lp: PackedVector2Array in CliffPainter.loops(cells):
-		if CliffPainter.is_hole(lp):
-			continue
-		var poly := CliffPainter.smooth(lp, 1.2)
-		if poly.size() >= 3 and not Geometry2D.triangulate_polygon(poly).is_empty():
+	var skey := "shade:%d:%d" % [cells.size(), cells.hash()]
+	if not _geom_memo.has(skey):
+		var polys: Array = []
+		for lp: PackedVector2Array in CliffPainter.loops(cells):
+			if CliffPainter.is_hole(lp):
+				continue
+			var poly0 := CliffPainter.smooth(lp, 1.2)
+			if poly0.size() >= 3 and not Geometry2D.triangulate_polygon(poly0).is_empty():
+				var bb := Rect2(poly0[0], Vector2.ZERO)
+				for q in poly0:
+					bb = bb.expand(q)
+				polys.append([poly0, bb.grow(2.0)])
+		_geom_memo[skey] = polys
+	for pe: Array in _geom_memo[skey]:
+		var poly: PackedVector2Array = pe[0]
+		if not Art.clipped(pe[1]):
 			draw_colored_polygon(poly, col)
 
 
@@ -4409,6 +4471,37 @@ var _bake_frame := -1            # budgets below are per drawn frame (_bake_upda
 var _bake_budget := 0
 var _bake_redo := 0
 var _bake_cover_left := 0
+static var bake_clip := true     # clipped single-chunk bakes (tests/tools can turn it off to compare)
+const BAKE_MODE_FULL := Vector2i(-99999, -99999)
+var _bake_mode_frame := -1       # the frame _bake_mode was chosen for
+var _bake_mode := BAKE_MODE_FULL # what the painter's list holds this frame: the full map or one chunk
+var _bake_clip := Rect2()        # on the painter: the draw-space rect its list is clipped to (empty = all)
+var _bake_clips := 0             # clipped painter redraws so far (perf probes)
+
+
+## The draw-space rect a chunk needs (chunk + its margin texels, in the painter's
+## offset() drawing coordinates).
+func _bake_chunk_clip(k: Vector2i) -> Rect2:
+	return Rect2(Vector2(k * BAKE_CHUNK), Vector2(BAKE_CHUNK, BAKE_CHUNK)).grow(2.0)
+
+
+func _bake_set_clip(r: Rect2) -> void:
+	var dr := r
+	if r.has_area():
+		dr.position -= offset()
+	if _painter._bake_clip == dr:
+		return  # the list already holds exactly this
+	_painter._bake_clip = dr
+	if dr.has_area():
+		_bake_clips += 1
+	_painter.queue_redraw()
+
+
+## Painter: clipped redraws are safe once a full one has run since the last
+## request (that one did the drawing's one-off work: forage, masks, stripes).
+func _bake_can_clip() -> bool:
+	return _bake_full_done
+var _bake_full_done := false
 var _bake_pool: Array = []       # freed chunks [SubViewport, Sprite2D] kept for reuse
 var _bake_covered := false       # the arrival fade is still opaque: visible chunks may spread over frames
 const BAKE_COVER_PER_FRAME := 2  # missing on-screen chunks per frame while covered (player's chunk first)
@@ -4510,7 +4603,11 @@ func _bake_request() -> void:
 	if _painter == null:
 		_bake_setup()
 	_sync_painter()
+	_painter._bake_clip = Rect2()
+	_painter._bake_full_done = false
 	_painter.queue_redraw()
+	_bake_mode_frame = Engine.get_process_frames()
+	_bake_mode = BAKE_MODE_FULL
 	for ch in _bake.values():
 		ch[2] = true
 	_bake_busy = true
@@ -4548,6 +4645,7 @@ func _bake_update() -> void:
 		_bake_budget = BAKE_PER_FRAME
 		_bake_redo = BAKE_REDO_PER_FRAME
 		_bake_cover_left = BAKE_COVER_PER_FRAME
+	var todo: Array[Vector2i] = []
 	for k in keys:
 		var on_screen := Rect2(Vector2(k * BAKE_CHUNK), Vector2(BAKE_CHUNK, BAKE_CHUNK)).intersects(vis)
 		var ch = _bake.get(k)
@@ -4568,12 +4666,35 @@ func _bake_update() -> void:
 				_bake_busy = true
 				continue
 			_bake_budget -= 1
-		if ch == null:
-			_bake_make(k)
-		else:
-			(ch[0] as SubViewport).render_target_update_mode = SubViewport.UPDATE_ONCE
-			_bake_n += 1
-			ch[2] = false
+		todo.append(k)
+	if not todo.is_empty():
+		# Clipped bakes (c3_16 #1): the painter's list holds what ONE chunk needs, so a
+		# frame that renders a single chunk redraws the painter clipped to it (a few
+		# dozen draw calls instead of the whole map's). Several chunks in one frame
+		# (arrival, a camera jump, re-bakes after a redraw) share the full list.
+		if _bake_mode_frame != f:
+			_bake_mode_frame = f
+			if bake_clip and todo.size() == 1 and _painter._bake_can_clip():
+				_bake_mode = todo[0]
+				_bake_set_clip(_bake_chunk_clip(todo[0]))
+			else:
+				_bake_mode = BAKE_MODE_FULL
+				_bake_set_clip(Rect2())
+		if _bake_mode != BAKE_MODE_FULL:
+			# This frame's list is one chunk's: only that chunk may render now.
+			var keep := todo.filter(func(k: Vector2i) -> bool: return k == _bake_mode)
+			if keep.size() < todo.size():
+				_bake_busy = true
+				# Undo the budget the skipped ones took: they wait for a later frame.
+			todo.assign(keep)
+		for k in todo:
+			var ch = _bake.get(k)
+			if ch == null:
+				_bake_make(k)
+			else:
+				(ch[0] as SubViewport).render_target_update_mode = SubViewport.UPDATE_ONCE
+				_bake_n += 1
+				ch[2] = false
 	if _bake.size() > BAKE_MAX:
 		var far: Array = _bake.keys().filter(func(k: Vector2i) -> bool: return not keys.has(k))
 		far.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:

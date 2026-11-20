@@ -48,8 +48,11 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 	rng.seed = seed_v
 	var season := GameState.look_se()
 	var later := {}  # texture name -> feet positions: drawn grouped after the loop (batches)
-	for y in range(1, m.rows - 1):
-		for x in range(1, m.cols - 1):
+	# Every cell rolls from its own seed, so a clipped painter pass (one baked chunk)
+	# can walk just the cells near it and draw the same pixels.
+	var cr := Rect2i(1, 1, m.cols - 2, m.rows - 2).intersection(m.clip_cells())
+	for y in range(cr.position.y, cr.end.y):
+		for x in range(cr.position.x, cr.end.x):
 			var c := Vector2i(x, y)
 			# Roll first so each cell's roll never depends on its neighbours
 			# (otherwise the decor reshuffles whenever a cell fills up).
@@ -94,7 +97,18 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 			else:
 				if Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
 					(later.get_or_add("grass_tuft_winter" if rng.randf() < 0.7 else "grass_tuft_frost", []) as Array).append(at + Vector2(8, 16))
-	for nm: String in later:
+	# Group order = first appearance over the whole map (a clipped pass sees only
+	# some groups: it keeps the full pass's order so overlaps stack the same way).
+	var okey := "gd_order:%d:%s" % [seed_v, season]
+	var order: Array = later.keys()
+	if not Art.clip.has_area():
+		m._geom_memo[okey] = order
+	elif m._geom_memo.has(okey):
+		order = (m._geom_memo[okey] as Array).filter(func(k): return later.has(k))
+		for k in later:
+			if not order.has(k):
+				order.append(k)
+	for nm: String in order:
 		for p: Vector2 in later[nm]:
 			Art.draw_prop(m, "nature", nm, p)
 	# Placed once per map (this runs from _draw, which repeats on every redraw).
