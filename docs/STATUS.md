@@ -2,6 +2,15 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 fix P3: Collections (new system)
+
+- `tools/gen_collections.py` -> data/collections.json (wings, logs, cats, milestones, letters, legends), the museum room (interiors.json "museum", hand-laid, no_furnish) + the library's east-wing doorway, the Curator's Loupe (+2 luck charm, value 0), two starter quests (Pip fossil, Finn five fish).
+- `Collections` (scripts/collections.gd, run.coll): shipping log (sell box at sleep incl. guest morning, Sal's fence, market stand), fish log (GameMap.fish_at; legendary koi as a once-per-run legend at the lake), cookbook/crafting log (Crafting.collect), forage log (seen), museum donations, milestones queued to the morning post (Mail._morning), quest conditions museum_n/museum_wing/logged/donated, farmhouse decor via RecCenter.dress_house.
+- `Museum` (scripts/museum.gd): room "Valley Museum" / "The Curio Room", donation tray (paged menu, last option Never mind; Theo thanks by letter), case cards with where-hints, wing plaques, donated pieces drawn in their cases.
+- Book tab (GameMenu, `CollectionScreen`): hub with % and medal badges, per-category icon grids (max 48 cells per page), Field log / journal / Foes links.
+- Fixes: Commons._sell counted earned_total twice; eagle_feather/goat_horn (mountain forage) and ancient_urn (buried caches) had no source.
+- Art: museum case/pedestal/tank/counter/plaque/rope, 6 decor props, Book tab icon, loupe (tools/slice_c8_collections.py). Test tools/collections_test.gd (check.sh).
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).

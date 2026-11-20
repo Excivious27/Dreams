@@ -376,7 +376,7 @@ func _migration() -> void:
 	GameState.use_slot(3)
 	GameState.new_run("gangsters", "dad", "Old", "Oldtown", "Rex")
 	var r: Dictionary = GameState.run
-	for k in ["arcade", "cfarm", "mega", "campaign", "en_ver", "skill_ver", "equip", "hp_scale", "opts", "day_len"]:
+	for k in ["arcade", "cfarm", "mega", "campaign", "en_ver", "skill_ver", "equip", "hp_scale", "opts", "day_len", "coll"]:
 		r.erase(k)
 	r["toolbar"] = ["hoe", "can", "axe", "pickaxe", "sword", "rod", "", ""]
 	r["tickets"] = 7
@@ -414,6 +414,8 @@ func _migration() -> void:
 	check(Tickets.best_score("bowling") == 0, "arcade bests start at zero")
 	Tickets.add(3, "test")
 	check(Tickets.count() == 10, "tickets add after the move")
+	# Collections (C8 P3): run.coll made on load, shipping starts empty.
+	check(GameState.run.get("coll") is Dictionary and Collections.count("shipping") == 0, "old save gets run.coll")
 	# Community farm: starts fresh, not yet known.
 	check(Commons.stage() == 0 and not Commons.known() and GameState.run["cfarm"] is Dictionary, "community farm starts at stage 0 for an old save")
 	check((Commons.st()["plots"] as Dictionary).is_empty() and Commons.st().has("stock"), "community farm block has its fields")

@@ -18,7 +18,7 @@ Read order for a new chat: CLAUDE.md → docs/HANDOFF.md (Baton) → this file �
 
 ## 2. Scale today (docs/INVENTORY.md has the full table)
 
-~1,134 items, 134 crops, 92 enemies, 26 villagers, 19 main + 99 side quests, 56 regions, 10 mega regions, ~19,000 art pieces, 69 real songs (ACE Music), ~840 sound files. 37 systems tracked: 27 done, 5 rough (both arc stories, festivals, pet, co-op), 5 missing (side stories, dating/marriage, collections, haptics, Steam build). Overall ~73–77%.
+~1,134 items, 134 crops, 92 enemies, 26 villagers, 19 main + 99 side quests, 56 regions, 10 mega regions, ~19,000 art pieces, 69 real songs (ACE Music), ~840 sound files. 37 systems tracked: 27 done, 5 rough (both arc stories, festivals, pet, co-op), 5 missing (side stories, dating/marriage, haptics, Steam build; collections built in C8 P3). Overall ~73–77%.
 
 ## 3. How the work happens (process)
 

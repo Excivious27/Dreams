@@ -2,9 +2,9 @@
 
 Every system in the game with its state, what is still outstanding, test coverage, and what Claude needs from Tom. `docs/inventory.csv` is the source (edit it, then run `python3 tools/inventory_md.py`). Percentages are estimates against Tom's bar ("100% = Stardew-grade commercial release").
 
-**Summary:** 58 systems: 39 done, 9 rough, 10 missing. Average 70%.
+**Summary:** 58 systems: 40 done, 9 rough, 9 missing. Average 71%.
 
-**Live counts:** 19,379 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 99 headless tests, 93 in check.sh.
+**Live counts:** 19,394 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 101 headless tests, 95 in check.sh.
 
 ## Systems
 
@@ -12,7 +12,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 | Area | System / feature | Status | Percent | Tests | Notes |
 |---|---|---|---|---|---|
-| Art | 19,379 sliced pieces in 653 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
+| Art | 19,394 sliced pieces in 653 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
 | Audio | 105 music tracks (ACE), 467 sfx files, 61 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |
@@ -37,7 +37,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| QA | Headless tests, bots, playtest | done | 85 | 99 *_test.gd; 93 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| QA | Headless tests, bots, playtest | done | 85 | 101 *_test.gd; 95 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
 | Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
 | Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
 | Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |
@@ -52,13 +52,13 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Systems | Day length 15/20/30/40 min (new-game menu + Settings, per slot) | done | 90 | day_length_test (not in check.sh) | C4 P1 |
 | Systems | Skill trees: 13 trees, unlock nodes, caps, renames | done | 88 | skill_glow_test | C2: unspent points shimmer on tabs + banner |
 | Systems | Hero tab, gear sets, energy revamp | done | 85 | char_sheet_test (not in check.sh) |  |
+| Systems | Collections: museum, shipping log, fish log, cookbook/crafting/forage logs, milestones (badges) | done | 85 | collections_test, gang_flavour_test, save_test, coop_test | C8 P3: Valley Museum / Curio Room (library east wing, 59 pieces in 4 wings, donation tray, Theo letters), Book menu tab, milestone letters + farmhouse decor + Curator's Loupe; open: wildlife log or bug catching (Tom), museum cases not synced to co-op guests |
 | Systems | Shops, economy, money (gangster cash), kill-crystal cap | done | 80 | cash_test | Balance sheet docs/economy.xlsx |
 | Systems | Long-run progression and balance (3-year pacing, year 2-3 unlocks) | rough | 50 | first_week_test | Tom: CONDUCT 16 |
 | Systems | Seasonal content (festivals, holidays, seasonal items/quests per season, year-2+ events) | rough | 45 | none | Tom: CONDUCT 15 |
 | Systems | Earned fast travel network (mine carts, ferries, trains, planes, clouds, cars/subway, currents) | missing | 10 |  | Tom 17:39; mega hub vehicles exist; built in C14, paced C16 |
 | Systems | Decor and cosmetics ecosystem (furniture, wallpaper, floors, exteriors, outdoor decor, apparel, footwear; rarity to one-of-a-kind) | missing | 5 | none | Tom: CONDUCT 10 |
 | Systems | Helper automation (assign recruits/helpers/animals to farm, combat, forage, chests; levels, energy) | missing | 5 |  | Tom 17:12; base = battle team helpers (C3); full in C11 |
-| Systems | Collections: museum, shipping log, fish log, achievements | missing | 0 | none | Stardew-grade milestone layer absent (audit 17b W11); Claude can build |
 | Systems | Haptics (phone vibration) | missing | 0 | none | Audit 17b W7; Claude can build |
 | Systems | Trading cards (packs, binder, regional sets, trading with NPCs/players, card game) | missing | 0 |  | Tom 17:21; CONDUCT 19 |
 | Systems | Casino side arc (gangster; tiered build-up against NPC pushback, staff) | missing | 0 |  | Tom 17:12; CONDUCT 10. Tom 20:03: real betting allowed, all-ages tone (no drinking: wines are trade goods) |
