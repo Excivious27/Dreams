@@ -984,13 +984,60 @@ static func draw_wall_col(ci: CanvasItem, id: String, x: int, part: String) -> b
 		var t := Art.tex("tiles", nm)
 		if t == null:
 			return false
-		ci.draw_texture_rect(t, Rect2(x * GameMap.TILE, 0, GameMap.TILE, GameMap.TILE * 2), false)
+		ci.draw_texture_rect_region(t, Rect2(x * GameMap.TILE, 0, GameMap.TILE, GameMap.TILE * 2), _wall_src(t))
 		return true
 	var tx := Art.tex(str(a[0]), str(a[1]))
 	if tx == null:
 		return false
 	_seam(ci, tx, Vector2i(x, 0), Vector2i(1, 2))
 	return true
+
+
+## A wall tile's source rect without the magenta key rules some kit sheets carry on
+## their top/bottom rows and outer columns (c10b_08-29). Cached per texture.
+static var _wall_src_cache := {}
+
+
+static func _wall_src(t: Texture2D) -> Rect2:
+	var key := t.resource_path if t.resource_path != "" else str(t.get_instance_id())
+	if _wall_src_cache.has(key):
+		return _wall_src_cache[key]
+	var r := Rect2(Vector2.ZERO, t.get_size())
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		var w := img.get_width()
+		var h := img.get_height()
+		var pink_row := func(y: int) -> bool:
+			var n := 0
+			for x in w:
+				var c := img.get_pixel(x, y)
+				if c.a > 0.5 and c.r - c.g > 0.24 and c.b - c.g > 0.24:
+					n += 1
+			return n > w / 3
+		var pink_col := func(x: int) -> bool:
+			var n := 0
+			for y in h:
+				var c := img.get_pixel(x, y)
+				if c.a > 0.5 and c.r - c.g > 0.24 and c.b - c.g > 0.24:
+					n += 1
+			return n > h / 3
+		var top := 0
+		while top < 3 and pink_row.call(top):
+			top += 1
+		var bot := 0
+		while bot < 3 and pink_row.call(h - 1 - bot):
+			bot += 1
+		var lft := 0
+		while lft < 2 and pink_col.call(lft):
+			lft += 1
+		var rgt := 0
+		while rgt < 2 and pink_col.call(w - 1 - rgt):
+			rgt += 1
+		r = Rect2(lft, top, w - lft - rgt, h - top - bot)
+	_wall_src_cache[key] = r
+	return r
 
 
 ## Sample a seamless texture for a cell block (16 px cells = 32 texture px, wraps).
