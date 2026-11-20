@@ -13680,7 +13680,7 @@
     {
      "kind": "boss",
      "once": true,
-     "ref": "grump_king"
+     "ref": "grump_commander"
     }
    ],
    "sub": "hat",
@@ -15401,7 +15401,7 @@
    "glow": false,
    "icon": "items/president_crown",
    "layer": "wear",
-   "name": "Presidential Crown",
+   "name": "Smuggler King Crown",
    "price": 0,
    "rarity": "unique",
    "renders": "icon",
@@ -15417,7 +15417,7 @@
     {
      "kind": "boss",
      "once": true,
-     "ref": "the_president"
+     "ref": "smuggler_king"
     }
    ],
    "sub": "hat",

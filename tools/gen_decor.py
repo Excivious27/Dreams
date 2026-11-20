@@ -448,9 +448,9 @@ for icon, name, cat, rar, tier, arc in [('hoodie', 'Hoodie', 'top', 'common', 1,
                                         ('cloak', 'Wanderer Cloak', 'acc', 'uncommon', 2, 'both'), ('commander_cape', 'Commander Cape', 'acc', 'legendary', 5, 'gangsters'),
                                         ('grump_king_crown', 'Grump King Crown', 'hat', 'unique', 5, 'penguins'),
                                         ('golem_crown', 'Golem Crown', 'hat', 'mythic', 5, 'both'),
-                                        ('president_crown', 'Presidential Crown', 'hat', 'unique', 5, 'gangsters')]:
+                                        ('president_crown', 'Smuggler King Crown', 'hat', 'unique', 5, 'gangsters')]:
     if art_ok('items/' + icon):
-        src = [{'kind': 'boss', 'ref': {'grump_king_crown': 'grump_king', 'president_crown': 'the_president'}[icon], 'once': True}] if rar == 'unique' else None
+        src = [{'kind': 'boss', 'ref': {'grump_king_crown': 'grump_commander', 'president_crown': 'smuggler_king'}[icon], 'once': True}] if rar == 'unique' else None
         add('wr_' + icon, name, cat, rar, 'items/' + icon, 'wear', tier, arc, renders='icon', fp=[1, 1], sources=src)
 
 # ---- 6) external entries: Rec prize decor already in items.json (gen_rec owns those items) --------------
