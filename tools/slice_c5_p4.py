@@ -140,6 +140,8 @@ def crew():
             rel = info.get("file")
             if not rel or not os.path.exists(os.path.join(GEN, rel)):
                 continue
+            if anim in REDRAWN and _redraw_sheet(cid):
+                continue  # drawn fresh by the redraw step
             a = np.array(_orig(rel))
             cells = int(info.get("frames", 1) or 1)
             _save(Image.fromarray(recolour(a, dark, light, acc, HEAD, cells)), os.path.join(GEN, rel))
@@ -161,9 +163,9 @@ def _cells(path, n):
     return [im.crop((i * cw, 0, (i + 1) * cw, im.height)) for i in range(n)]
 
 
-def _strip(frames):
+def _strip(frames, min_h=0):
     w = max(f.width for f in frames)
-    h = max(f.height for f in frames)
+    h = max(max(f.height for f in frames), min_h)
     out = Image.new("RGBA", (w * len(frames), h), (0, 0, 0, 0))
     for i, f in enumerate(frames):
         out.alpha_composite(f, (i * w + (w - f.width) // 2, h - f.height))
@@ -173,6 +175,8 @@ def _strip(frames):
 def vicval():
     man = json.load(open(MAN))
     for cid in CREW:
+        if _redraw_sheet(cid):
+            continue  # walk/views drawn fresh by the redraw step
         g = man["characters/" + cid]
         base = os.path.join(GEN, "characters", cid)
         idle = _cells(os.path.join(ORIG if os.path.exists(os.path.join(ORIG, "characters", cid, "idle_down.png")) else GEN, "characters", cid, "idle_down.png"), int(g["idle_down"]["frames"]))
@@ -315,8 +319,8 @@ def _used_h(img):
     return (bb[3] - bb[1]) if bb else img.height
 
 
-def _save_strip(frames, group, name, man):
-    out, w, h = _strip(frames)
+def _save_strip(frames, group, name, man, min_h=0):
+    out, w, h = _strip(frames, min_h)
     path = os.path.join(GEN, group, name + ".png")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     _save(out, path)
@@ -386,7 +390,79 @@ def tools():
     print("tools: tool strips written")
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools}
+# ---- c5_06 #2 crew redraws ("one shape, one colour pair, one prop"): walk sets
+# front/side/back from art/incoming/c5/p4_crew_<id>.png (3 rows x 4 frames); the
+# idles/views are built from them. Anims not redrawn keep the recolour.
+REDRAW_SIZE = {"ladder": 1.15, "dice": 0.88, "sasha": 1.05}  # their intended build
+REDRAWN = ["walk_down", "walk", "walk_up", "idle_down", "idle", "idle_up", "view_front", "view_right", "view_back", "view_left"]
+
+
+def _redraw_sheet(cid):
+    rel = "c5/p4_crew_%s.png" % cid
+    return rel if os.path.exists(os.path.join(INC, rel)) else None
+
+
+def _bob(im):
+    """A breathing frame: 1 px squashed, feet planted."""
+    sq = im.resize((im.width, max(1, im.height - 1)), Image.LANCZOS)
+    out = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    out.alpha_composite(sq, (0, 1))
+    return out
+
+
+def redraw():
+    man = json.load(open(MAN))
+    done = []
+    for cid in CREW:
+        rel = _redraw_sheet(cid)
+        if not rel:
+            continue
+        a = _load_sheet(rel)
+        rows = _figs(a, 3)
+        if len(rows) < 3 or any(len(r) < 4 for r in rows):
+            print("redraw: %s rows %s, skipped" % (cid, [len(r) for r in rows]))
+            continue
+        ref = _ref_h_orig(cid)
+        f = REDRAW_SIZE.get(cid, 1.0) * ref / float(np.median([b[3] - b[1] for b in rows[0]]))
+        g = "characters/" + cid
+        cut = []
+        for r in rows:
+            fr = []
+            for b in r[:4]:
+                im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+                im = im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS)
+                pad = Image.new("RGBA", (im.width + 4, im.height), (0, 0, 0, 0))  # 2 px side margin
+                pad.alpha_composite(im, (2, 0))
+                fr.append(pad)
+            cut.append(fr)
+        front, side, back = cut
+        _save_strip(front, g, "walk_down", man, 112)
+        _save_strip(side, g, "walk", man, 112)
+        _save_strip(back, g, "walk_up", man, 112)
+        _save_strip([front[0], _bob(front[0])], g, "idle_down", man, 112)
+        _save_strip([side[0], _bob(side[0])], g, "idle", man, 112)
+        _save_strip([back[0], _bob(back[0])], g, "idle_up", man, 112)
+        _save_strip([front[0]], g, "view_front", man, 112)
+        _save_strip([side[0]], g, "view_right", man, 112)
+        _save_strip([back[0]], g, "view_back", man, 112)
+        _save_strip([side[0].transpose(Image.FLIP_LEFT_RIGHT)], g, "view_left", man, 112)
+        done.append(cid)
+    _write_dump(man)
+    print("redraw: %s" % ", ".join(done))
+
+
+def _ref_h_orig(cid):
+    """Figure height of the original front idle (kept in ORIG), so reruns don't drift."""
+    man = json.load(open(MAN))
+    rel = "characters/%s/idle_down.png" % cid
+    keep = os.path.join(ORIG, rel)
+    im = Image.open(keep if os.path.exists(keep) else os.path.join(GEN, rel)).convert("RGBA")
+    n = 2
+    cw = im.width // n
+    return int(np.median([_used_h(im.crop((i * cw, 0, (i + 1) * cw, im.height))) for i in range(n)]))
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
