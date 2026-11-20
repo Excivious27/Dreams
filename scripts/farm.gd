@@ -2034,6 +2034,10 @@ func _place_props() -> void:
 				var hd := int(hatch[hi])
 				if int(GameState.run["day"]) >= hd:
 					var young := int(GameState.run["day"]) < hd + 7
+					if hud and int(GameState.run["day"]) == hd and not GameState.run["flags"].has("hatch_peep_%d" % hd):
+						GameState.run["flags"]["hatch_peep_%d" % hd] = true
+						hud.toast("A chick hatched in the coop!", Color(0.9, 1, 0.8))
+						Music.instance(get_tree()).sfx("peep", "critter")  # hatch day (c6_10-15)
 					_animal("chick" if young else "chicken", Vector2i(26 + hi, 9), pen, young, "hatch_%d" % hi)
 	if builds.has("barn"):
 		var pen := BARN_PEN
