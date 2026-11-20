@@ -82,8 +82,16 @@ func _run() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(Music._cache_path("winter")))
 	m.play("winter")
 	check(m.now_playing() == "farm", "title -> downloading area song: farm stand-in (%s)" % m.now_playing())
-	# Asking for the stand-in itself does not restart it.
+	# Asking for the stand-in itself does not restart it. Hold the winter download
+	# first: if it lands during the wait, winter takes over and the check races it.
+	if m._fetching.has("winter"):
+		var wrq: HTTPRequest = m._fetching["winter"]
+		m._fetching.erase("winter")
+		m._fetch_prog.erase("winter")
+		wrq.cancel_request()
+		wrq.queue_free()
 	await create_timer(0.6).timeout
+	check(m.now_playing() == "farm", "the stand-in is still playing before the re-ask (%s)" % m.now_playing())
 	var pos0: float = m._player.get_playback_position()
 	m.play("farm")
 	check(m.now_playing() == "farm" and m._player.get_playback_position() >= pos0, "asking for the playing stand-in keeps it going (%.2f >= %.2f)" % [m._player.get_playback_position(), pos0])
