@@ -483,23 +483,7 @@ static func _shop(m: GameMap, id: String) -> void:
 	if not bool(st(id)["done"]):
 		await m.say([{"who": str(c["shop_who"]), "text": "Shop's shut while the crystal's dim. Help us first?"}])
 		return
-	var items: Array = c["shop"]
-	var opts: Array = []
-	for it in items:
-		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), int(GameState.shop_price(str(it[0]), int(int(it[1]) * (1.0 - GameState.bonus("harmony", "colony_discount")))))])
-	opts.append("Leave")
-	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": str(c["shop_who"]), "text": "For a friend of the colony. (◆%d)" % int(GameState.run["crystals"]), "choice": opts, "key": ""}])
-	await d.finished
-	var i := d.last_choice
-	if i < 0 or i >= items.size():
-		return
-	var price := int(GameState.shop_price(str(items[i][0]), int(int(items[i][1]) * (1.0 - GameState.bonus("harmony", "colony_discount")))))
-	if int(GameState.run["crystals"]) < price:
-		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-		return
-	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-	m.give(str(items[i][0]), 1)
+	await Shops.stall(m, str(c["shop_who"]), "For a friend of the colony.", c["shop"], GameState.bonus("harmony", "colony_discount"))  # C8 P6 hook
 
 
 static func _take(k: String, n: int) -> void:

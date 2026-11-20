@@ -308,7 +308,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 60,
+    "crystals": 100,
     "friend": [
      "maple",
      10
@@ -446,7 +446,8 @@
     "friend": [
      "lumi",
      12
-    ]
+    ],
+    "crystals": 10
    }
   },
   {
@@ -595,7 +596,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 120,
+    "crystals": 210,
     "friend": [
      "maple",
      12
@@ -741,7 +742,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 400,
+    "crystals": 750,
     "item": [
      "steel_bar",
      1
@@ -770,7 +771,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 150,
+    "crystals": 200,
     "friend": [
      "gideon",
      10
@@ -829,7 +830,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 900,
+    "crystals": 1170,
     "friend": [
      "gideon",
      25
@@ -858,7 +859,8 @@
     "friend": [
      "wren",
      12
-    ]
+    ],
+    "crystals": 40
    }
   },
   {
@@ -942,7 +944,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 350,
+    "crystals": 520,
     "friend": [
      "wren",
      20
@@ -1113,7 +1115,8 @@
     "friend": [
      "finn",
      12
-    ]
+    ],
+    "crystals": 30
    }
   },
   {
@@ -1231,7 +1234,7 @@
      "hazel",
      12
     ],
-    "crystals": 200
+    "crystals": 280
    }
   },
   {
@@ -1314,7 +1317,8 @@
     "friend": [
      "hazel",
      20
-    ]
+    ],
+    "crystals": 30
    }
   },
   {
@@ -1342,7 +1346,8 @@
     "friend": [
      "posy",
      12
-    ]
+    ],
+    "crystals": 20
    }
   },
   {
@@ -1371,7 +1376,8 @@
     "friend": [
      "posy",
      18
-    ]
+    ],
+    "crystals": 60
    }
   },
   {
@@ -1393,7 +1399,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 220,
+    "crystals": 250,
     "item": [
      "jam",
      1
@@ -1473,7 +1479,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 260,
+    "crystals": 290,
     "friend": [
      "bram",
      15
@@ -1528,7 +1534,8 @@
     "friend": [
      "juniper",
      12
-    ]
+    ],
+    "crystals": 40
    }
   },
   {
@@ -1776,7 +1783,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 300,
+    "crystals": 520,
     "friend": [
      "lumi",
      20
@@ -1798,7 +1805,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 260,
+    "crystals": 290,
     "friend": [
      "sal",
      15
@@ -1831,7 +1838,7 @@
      "bartering",
      20
     ],
-    "crystals": 120
+    "crystals": 160
    }
   },
   {
@@ -1903,7 +1910,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 40,
+    "crystals": 60,
     "friend": [
      "tobin",
      15
@@ -2360,7 +2367,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 260,
+    "crystals": 320,
     "friend": [
      "theo",
      15
@@ -2473,7 +2480,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 320,
+    "crystals": 410,
     "friend": [
      "gideon",
      15
@@ -2503,7 +2510,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 240,
+    "crystals": 280,
     "friend": [
      "lumi",
      15
@@ -3125,7 +3132,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 260,
+    "crystals": 330,
     "friend": [
      "catkins",
      15

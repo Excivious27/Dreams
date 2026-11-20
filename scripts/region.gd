@@ -837,28 +837,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _shop(thing: Dictionary) -> void:
-	var items: Array = thing.get("items", [])
-	var opts: Array = []
-	for it in items:
-		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), GameState.shop_price(str(it[0]), int(it[1]))])
-	opts.append("Leave")
-	var d := Dialogue.instance(get_tree())
-	d.say([{"who": str(thing.get("who", "Shop")), "text": "%s  (◆%d)" % [str(thing.get("greet", "What'll it be?")), int(GameState.run["crystals"])], "choice": opts, "key": ""}])
-	await d.finished
-	var i := d.last_choice
-	if i < 0 or i >= items.size():
-		return
-	var id := str(items[i][0])
-	var price := GameState.shop_price(id, int(items[i][1]))
-	if int(GameState.run["crystals"]) < price:
-		hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-		return
-	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-	if GameState.items.get(id, {}).get("type", "") == "tool":
-		GameState.add_tool(id)
-		hud.toast("Got the %s." % GameState.item_name(id), Color(1, 0.9, 0.4))
-	else:
-		give(id)
+	# C8 P6/P4: the shared stall loop (stays open, 1/5/10, price floor, bartering XP).
+	await Shops.stall(self, str(thing.get("who", "Shop")), str(thing.get("greet", "What'll it be?")), thing.get("items", []))
 
 
 func _boss(thing: Dictionary) -> void:
