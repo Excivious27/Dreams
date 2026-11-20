@@ -1,0 +1,169 @@
+name: CONDUCT CI (check shards + 20 bots)
+
+# Heavy CONDUCT runs off the 2-CPU sandbox: push a commit to ci/<label>-<sha>
+# (tools/conduct/ci_run.sh does it). Never deploys; deploy.yml stays the only deploy.
+on:
+  push:
+    branches: ['ci/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: conduct-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "4.5.1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Godot (same key as deploy.yml)
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web
+      - name: Download Godot if the cache missed
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          mkdir -p "$HOME/godot"; cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip; mv "Godot_v${V}_linux.x86_64" godot; chmod +x godot; rm godot.zip
+      - run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Restore imported assets (same key as deploy.yml)
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: check.sh shard ${{ matrix.shard }}/6
+        run: |
+          mkdir -p out
+          start=$(date +%s)
+          set +e
+          CHECK_TIMES="$PWD/out/times_${{ matrix.shard }}.jsonl" CHECK_SHARD="${{ matrix.shard }}/6" bash tools/check.sh > "out/shard_${{ matrix.shard }}.log" 2>&1
+          rc=$?
+          set -e
+          echo "{\"shard\": ${{ matrix.shard }}, \"rc\": $rc, \"secs\": $(( $(date +%s) - start ))}" > "out/shard_${{ matrix.shard }}.json"
+          tail -n 40 "out/shard_${{ matrix.shard }}.log"
+          exit $rc
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shard-${{ matrix.shard }}
+          path: out/
+          retention-days: 7
+
+  bots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        bot: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Godot (same key as deploy.yml)
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web
+      - name: Download Godot if the cache missed
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          mkdir -p "$HOME/godot"; cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip; mv "Godot_v${V}_linux.x86_64" godot; chmod +x godot; rm godot.zip
+      - run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Restore imported assets (same key as deploy.yml)
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: Bot ${{ matrix.bot }}
+        run: |
+          mkdir -p out
+          days=$(python3 -c "import json;print(json.load(open('ci/params.json')).get('days',3))" 2>/dev/null || echo 3)
+          focus=$(python3 -c "import json;print(json.load(open('ci/params.json')).get('focus',''))" 2>/dev/null || echo "")
+          spec=$(bash tools/conduct/bot_spec.sh ${{ matrix.bot }})
+          godot --headless --path . --import > /dev/null 2>&1 || true
+          start=$(date +%s)
+          set +e
+          BOT_FOCUS="$focus" XDG_DATA_HOME="$PWD/out/data" timeout 1500 godot --headless --path . -s res://tools/bot.gd -- $spec "$days" > "out/bot${{ matrix.bot }}.log" 2>&1
+          rc=$?
+          set -e
+          echo "{\"bot\": ${{ matrix.bot }}, \"spec\": \"$spec\", \"days\": $days, \"rc\": $rc, \"secs\": $(( $(date +%s) - start ))}" > "out/bot${{ matrix.bot }}.json"
+          rm -rf out/data
+          tail -n 5 "out/bot${{ matrix.bot }}.log"
+          grep -q "BOT ${{ matrix.bot }} done" "out/bot${{ matrix.bot }}.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bot-${{ matrix.bot }}
+          path: out/
+          retention-days: 7
+
+  report:
+    needs: [check, bots]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: tools/conduct
+      - uses: actions/download-artifact@v4
+        with:
+          path: results
+      - name: Summarise
+        run: |
+          python3 tools/conduct/ci_summary.py results "${{ github.sha }}" "${{ github.ref_name }}" "${{ github.run_id }}"
+          cat results/summary.txt
+          cat results/summary.txt >> "$GITHUB_STEP_SUMMARY"
+      - name: Push results to ci-results/<sha>/
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          sha="${{ github.sha }}"
+          url="https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
+          for i in 1 2 3 4; do
+            rm -rf /tmp/cr
+            if git clone -q --depth 1 --branch ci-results "$url" /tmp/cr 2>/dev/null; then :; else
+              mkdir -p /tmp/cr && cd /tmp/cr && git init -q && git checkout -q -b ci-results && git remote add origin "$url" && cd - >/dev/null
+            fi
+            cd /tmp/cr
+            git config user.name "conduct-ci"; git config user.email "conduct-ci@users.noreply.github.com"
+            for d in */; do d=${d%/}; [ -f "$d/summary.json" ] || continue
+              old=$(python3 -c "import json,time;print(1 if time.time()-json.load(open('$d/summary.json')).get('finished',time.time())>7*86400 else 0)")
+              [ "$old" = 1 ] && rm -rf "$d"; done
+            rm -rf "$sha"; cp -r "$GITHUB_WORKSPACE/results" "$sha"
+            find "$sha" -name '*.log' -size +2M -exec sh -c 'tail -c 2000000 "$1" > "$1.t" && mv "$1.t" "$1"' _ {} \;
+            git add -A
+            git commit -qm "CI results for $sha (${{ github.ref_name }})" || true
+            if git push -q origin ci-results; then echo "pushed results"; exit 0; fi
+            cd "$GITHUB_WORKSPACE"; sleep $((i * 5))
+          done
+          echo "results push failed"; exit 1

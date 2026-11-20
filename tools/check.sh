@@ -3,6 +3,10 @@
 set -uo pipefail
 GODOT="${GODOT:-godot}"
 cd "$(dirname "$0")/.."
+# CHECK_SHARD=i/N runs every Nth step only (CI shards; see tools/conduct/check_shard.py).
+if [ -n "${CHECK_SHARD:-}" ] && [ -z "${CHECK_SHARD_CHILD:-}" ]; then
+  exec python3 tools/conduct/check_shard.py "$CHECK_SHARD"
+fi
 
 echo "== import =="
 "$GODOT" --headless --path . --import 2>&1 | tail -n 30
