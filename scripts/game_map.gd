@@ -581,6 +581,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			if a != null and is_instance_valid(a):
 				pet_farm_animal(a)
+				animal_hint(a)
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool that swings): fiber, Stardew-style.
@@ -1025,8 +1026,9 @@ func pet_farm_animal(a: Node2D) -> void:
 	var no_hay := baby or kind == "rooster"  # babies and the rooster give nothing: no hay, no nagging
 	var hungry_before := int(st["fed"]) != day and int(st["fed"]) < day - 1 and int(st["fed"]) >= 0
 	var fed_now := false
-	# Big Coop / Big Barn feeders: the same rule the farm uses on arrival.
-	RanchFarm.feed_from_silo(st, kind, baby, day)
+	# Pasture on dry days, then the Big Coop / Big Barn feeders: the same rules the farm uses on arrival.
+	if not RanchFarm.graze(st, kind, baby, day):
+		RanchFarm.feed_from_silo(st, kind, baby, day)
 	# Holding hay: feed it (once a day), then the same tap pets it.
 	if GameState.held_item() == "hay" and int(st["fed"]) != day and not no_hay:
 		GameState.add_item("hay", -1)
@@ -1081,6 +1083,16 @@ func pet_farm_animal(a: Node2D) -> void:
 	var q := RanchFarm.lift_quality(RanchFarm.quality_for(int(st["streak"])))
 	if q != "":
 		GameState.add_quality(prod, q, n)
+
+
+## Keep an animal's tap hint current ("A: Clover (hungry)"); the thing dict moves with the animal.
+func animal_hint(a: Node) -> void:
+	var day := int(GameState.run.get("day", 1))
+	for c: Vector2i in things:
+		var t: Dictionary = things[c]
+		if t.get("animal", null) == a:
+			t["hint"] = RanchFarm.hint_for(a, day)
+			return
 
 
 func _feeder_hint(kind: String) -> String:

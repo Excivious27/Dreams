@@ -83,7 +83,14 @@ func _run() -> void:
 	check(RanchFarm.silo_feeds("chicken2", false) and RanchFarm.silo_feeds("duck2", false), "feeder rule: Big Coop feeds birds")
 	check(RanchFarm.hatch_species("egg") == "chicken" and RanchFarm.hatch_species("duck_egg") == "duck" and RanchFarm.hatch_species("milk") == "", "incubator eggs (hen and duck)")
 
-	# --- 2. Classic herd: silo feeds milkers first, petting gives goods ---
+	# Pasture: a dry summer day feeds grown animals, rain doesn't.
+	GameState.run["weather"] = {"30": "clear"}
+	var gs := {"fed": -9}
+	check(GameState.season() != "winter" and RanchFarm.graze(gs, "cow_brown", false, 30) and int(gs["fed"]) == 30, "dry day: the cow grazes")
+	GameState.run["weather"] = {"30": "rain"}
+	gs = {"fed": -9}
+	check(not RanchFarm.graze(gs, "cow_brown", false, 30), "rainy day: hay or silo")
+	# --- 2. Classic herd (rain): silo feeds milkers first, petting gives goods ---
 	GameState.run["builds"] = {"coop": 2, "barn": 2, "silo": 1}
 	GameState.run["silo"] = 3
 	var m := await load_farm()
@@ -130,6 +137,12 @@ func _run() -> void:
 	for tc: Vector2i in m.things:
 		if str((m.things[tc] as Dictionary).get("hint", "")).begins_with("A: incubator"):
 			inc_things += 1
+	var hinted := 0
+	for tc: Vector2i in m.things:
+		var tt: Dictionary = m.things[tc]
+		if str(tt.get("type", "")) == "pet_animal" and str(tt.get("hint", "")).ends_with(")"):
+			hinted += 1
+	check(hinted >= 10, "animal hints say what they need (%d)" % hinted)
 	check(inc_things == 1, "the Big Coop's incubator is drawn and tappable (%d)" % inc_things)
 	GameState.run["quests"].append({"id": "hazel_hay", "text": "x", "done": false})
 	check(GameMap.quest_wants("hay"), "an open hay quest keeps scythed hay in the bag")
@@ -202,6 +215,7 @@ func _run() -> void:
 	check(RanchFarm.incubator().size() == 1 and int((RanchFarm.incubator()[0] as Dictionary)["day"]) == 34, "duck egg warming (4 days)")
 	check(RanchFarm.coop_room() == 6 - 2 - 1, "coop room = cap - birds - eggs (%d)" % RanchFarm.coop_room())
 	GameState.run["day"] = 34
+	GameState.run["weather"] = {"34": "rain"}
 	m = await load_farm()
 	check(Ranch.roster("coop").size() == 3 and RanchFarm.incubator().is_empty(), "the egg hatched into a roster duckling")
 	Ranch._data = {}

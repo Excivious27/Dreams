@@ -81,6 +81,44 @@ static func feed_from_silo(st: Dictionary, kind: String, baby: bool, day: int) -
 	return true
 
 
+## Pasture (c11a_03-04): on a dry day outside winter, grown animals in their pen graze and need
+## no hay (ranch.json rules.graze = false turns it off). Hay and the silo carry rain, snow and winter.
+const WET := ["rain", "storm", "snow", "blizzard"]
+
+
+static func graze_day() -> bool:
+	if not bool(_rules().get("graze", true)):
+		return false
+	return GameState.season() != "winter" and not (GameState.weather_today() in WET)
+
+
+static func graze(st: Dictionary, kind: String, baby: bool, day: int) -> bool:
+	if baby or kind == "rooster" or int(st.get("fed", -9)) == day or not graze_day():
+		return false
+	st["fed"] = day
+	return true
+
+
+## The thing hint over an animal: its name and what it needs ("A: Clover (hungry)").
+static func hint_for(a: Node, day: int) -> String:
+	var st := state_of(a)
+	var uid := uid_of(a)
+	var nm := str(Ranch.animal(uid).get("name", "")) if uid != "" else ""
+	if nm == "":
+		nm = "the " + str(a.get("kind")).split("_")[0].rstrip("0123456789")
+	var baby := bool(a.get("baby"))
+	var want := ""
+	if not baby and str(a.get("kind")) != "rooster" and int(st["fed"]) != day:
+		want = "hungry"
+	elif int(st["last_pet"]) != day:
+		want = "pet me"
+	elif not baby and product_for(str(a.get("kind")), uid) != "" and int(st["made"]) != day:
+		want = "goods ready"
+	else:
+		want = "happy"
+	return "A: %s (%s)" % [nm, want]
+
+
 ## The care state of a FarmAnimal node: roster record (uid) or run.animals[name].
 static func uid_of(a: Node) -> String:
 	if a == null:

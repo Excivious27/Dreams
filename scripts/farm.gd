@@ -1026,7 +1026,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_coop(sel)
 			return true
 		"barn":
-			hud.toast("The animals live out in the pen: hold hay and tap them, pet them daily for milk and wool. %d days of care (fed and petted): silver goods; %d: gold. A missed day costs a little.%s" % [RanchFarm.silver(), RanchFarm.gold(), " The Big Barn feeds them from the silo when you come home." if Builds.built_tier("barn") >= 2 else ""])
+			hud.toast("The animals live out in the pen: they graze on dry days; in rain and winter hold hay and tap them. Pet them daily for milk and wool. %d days of care (fed and petted): silver goods; %d: gold. A missed day costs a little.%s" % [RanchFarm.silver(), RanchFarm.gold(), " The Big Barn feeds them from the silo when you come home." if Builds.built_tier("barn") >= 2 else ""])
 			Music.instance(get_tree()).sfx("moo", "sheep")
 			return true
 		"greenhouse":
@@ -2213,6 +2213,9 @@ func _place_props() -> void:
 			# The Big Barn: goats and a llama.
 			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(32, 6), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")
 	_silo_feed()
+	for ch in get_children():
+		if ch is FarmAnimal:
+			animal_hint.call_deferred(ch)  # after FarmAnimal places its thing
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():
@@ -2594,17 +2597,24 @@ static func harvest_xp(cd: Dictionary) -> int:
 
 ## The Big Barn (and the Big Coop) feed their grown animals from the silo once each morning, 1 hay each (C8 P2).
 func _silo_feed() -> void:
-	if Net.visiting() or Builds.silo_hay() <= 0:
+	if Net.visiting():
 		return
 	var day := int(GameState.run["day"])
 	# Most valuable goods first (cows and goats before hens), so a short silo feeds the milkers (c11a_03-03).
 	var herd: Array = []
 	for ch in get_children():
-		if ch is FarmAnimal and RanchFarm.silo_feeds(str((ch as FarmAnimal).kind), (ch as FarmAnimal).baby):
+		if not (ch is FarmAnimal):
+			continue
+		var gst := RanchFarm.state_of(ch)
+		if RanchFarm.graze(gst, str((ch as FarmAnimal).kind), (ch as FarmAnimal).baby, day):
+			RanchFarm.save_state(ch, gst)  # out on the pasture: no hay today
+		elif RanchFarm.silo_feeds(str((ch as FarmAnimal).kind), (ch as FarmAnimal).baby):
 			herd.append(ch)
 	herd.sort_custom(func(x: Node, y: Node) -> bool: return int(GameState.items.get(RanchFarm.product_for(str(x.get("kind"))), {}).get("value", 0)) > int(GameState.items.get(RanchFarm.product_for(str(y.get("kind"))), {}).get("value", 0)))
 	var fed := 0
 	var short := 0
+	if Builds.silo_hay() <= 0 and not Builds.is_built("silo"):
+		herd.clear()  # no silo: nothing to say
 	for ch: Node in herd:
 		var st := RanchFarm.state_of(ch)
 		if int(st["fed"]) == day:
