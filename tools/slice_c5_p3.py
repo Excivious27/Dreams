@@ -5,6 +5,7 @@
           buildings/fountain_frozen, props/fountain2_frozen (1 frame, fountain2 cell),
           props/planter2_N_winter (N 0-3), nature/log_snow
           -> each fitted to its summer sprite's exact size (same footprint).
+  petal:  fx/petal_pink (4-frame tumbling petal for the petals weather).
   walks:  wildlife/<raccoon|beaver|badger|otter>/walk (4-frame side walk, replaces
           the front-facing 2-frame strip), wildlife/duck/waddle (4 frames; the duck's
           walk strip stays its flight).
@@ -121,13 +122,23 @@ def walks(man):
             print(k, name, man[g][name])
 
 
+def petal(man):
+    a = load("petal_pink.png")
+    row = sorted(blobs(a, merge=4, min_area=200), key=lambda b: b[0])[:4]
+    info = strip(a, row, 18, "fx/petal_pink.png")
+    man["fx"]["petal_pink"] = info
+    print("petal_pink", info)
+
+
 if __name__ == "__main__":
     man = json.load(open(MAN))
-    steps = sys.argv[1:] or ["winter", "walks"]
+    steps = sys.argv[1:] or ["winter", "walks", "petal"]
     if "winter" in steps:
         winter(man)
     if "walks" in steps:
         walks(man)
+    if "petal" in steps:
+        petal(man)
     tmp = MAN + ".tmp"
     json.dump(man, open(tmp, "w"), indent=1, sort_keys=True)
     os.remove(MAN)

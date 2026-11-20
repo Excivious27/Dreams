@@ -52000,6 +52000,14 @@
    "h": 23,
    "w": 284
   },
+  "petal_pink": {
+   "cell_h": 18,
+   "cell_w": 15,
+   "file": "fx/petal_pink.png",
+   "frames": 4,
+   "h": 18,
+   "w": 60
+  },
   "pine_fall_r": {
    "cell_h": 112,
    "cell_w": 178,

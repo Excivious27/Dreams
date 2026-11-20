@@ -141,7 +141,7 @@ func _process(delta: float) -> void:
 			# they drift loose instead of marching down in a grid.
 			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind,
 				"fall": randf_range(14.0, 30.0) if leafy else 18.0, "sway": randf_range(6.0, 16.0) if leafy else 8.0, "wob": randf_range(0.6, 1.4) if leafy else 1.0,
-				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": randf_range(0.35, 0.55) if leafy else 0.5})
+				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind == "petal_pink" else randf_range(0.35, 0.55)) if leafy else 0.5})
 		for p: Dictionary in _parts:
 			if weather == "fireflies":
 				p["t"] += delta
