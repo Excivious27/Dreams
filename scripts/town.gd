@@ -714,6 +714,33 @@ func _animal_show(fest: String) -> void:
 	player.frozen = false
 
 
+## C11a P5: the plaza market stalls Hazel and Benno keep in the morning (their routines put them at
+## the market then). [stall cell, open hour, close hour, greet pen, greet gang, items [[id, price]]].
+const MARKET_STALLS := {
+	"benno": [Vector2i(33, 24), 9, 11, "Feed for the barn, straight off the cart.", "Feed and hay. Cash, no receipts.", [["hay", 8], ["wheat_seed", 6], ["carrot_seed", 8]]],
+	"hazel": [Vector2i(33, 28), 8, 11, "Fresh from my yard: seed, hay, and good advice for free.", "Seed and hay. Advice is free; the rest isn't.", [["hay", 8], ["fertilizer", 10], ["corn_seed", 18]]],
+}
+
+
+static func market_open(who: String, minutes: int) -> bool:
+	var st: Array = MARKET_STALLS.get(who, [])
+	return not st.is_empty() and minutes >= int(st[1]) * 60 and minutes < int(st[2]) * 60 and GameState.festival_today() == ""
+
+
+func _market_stall(who: String) -> void:
+	var st: Array = MARKET_STALLS.get(who, [])
+	if st.is_empty():
+		return
+	var nm := str(GameState.npcs.get(who, {}).get("name", who))
+	player.frozen = true
+	if not market_open(who, int(GameState.run["time"])):
+		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
+	else:
+		var items: Array = (st[5] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
+		await Shops.stall(self, nm, str(st[3] if GameState.is_penguins() else st[4]), items)
+	player.frozen = false
+
+
 ## Star-wish: a small gift box, a wish for a lasting little boon, and a star sent
 ## to one villager (a big friendship boost); everyone you know still gets +10.
 func _star_wish(key: String) -> void:
@@ -873,6 +900,9 @@ func _place_props() -> void:
 			prop("props", "stall2_" + col + ("" if open_hours else "_closed"), c, 1)
 		else:
 			prop("props", "stall_" + col, c, 1)
+		for ms: String in MARKET_STALLS:  # C11a P5: Benno's feed stall and Hazel's farm stall (mornings)
+			if (MARKET_STALLS[ms][0] as Vector2i) == c:
+				set_thing(c.x + 1, c.y, {"type": "market_stall", "who": ms, "hint": "A: %s's stall" % str(GameState.npcs.get(ms, {}).get("name", ms))}, false)
 		i += 1
 	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
 	for bx in [35, 36]:
@@ -1110,6 +1140,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"fest_stall":
 			later(_fest_stall.bind(str(thing.get("fest", ""))))
+			return true
+		"market_stall":
+			later(_market_stall.bind(str(thing.get("who", ""))))
 			return true
 		"animal_show":
 			later(_animal_show.bind(str(thing.get("fest", ""))))

@@ -24,6 +24,12 @@ func _texts() -> String:
 		t += str(m.get("from", "")) + ": " + str(m.get("text", "")) + "\n"
 	return t
 
+func _fresh(arc: String) -> void:
+	GameState.new_run(arc, "kairi", "T", "Town", "Pup")
+	for k in ["builds", "quality", "farm", "flags"]:
+		if not (GameState.run.get(k, null) is Dictionary):
+			GameState.run[k] = {}
+
 func _empty_ranch() -> void:
 	Ranch._data = {"species": {}, "buildings": {}, "rules": {}, "products": {}, "processing": {}}
 
@@ -39,7 +45,7 @@ func _run() -> void:
 	quit(1 if fails > 0 else 0)
 
 func _arc(arc: String) -> void:
-	GameState.new_run(arc, "kairi", "T", "Town", "Pup")
+	_fresh(arc)
 	_empty_ranch()
 	var fl: Dictionary = GameState.run["flags"]
 	# --- sources (legacy tiers while ranch.json is empty) ---
@@ -137,7 +143,7 @@ func _arc(arc: String) -> void:
 	_empty_ranch()
 
 func _romance() -> void:
-	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	_fresh("penguins")
 	_empty_ranch()
 	var s := Romance.st()
 	s["spouse"] = "benno"
@@ -172,7 +178,7 @@ func _romance() -> void:
 	_empty_ranch()
 
 func _town() -> void:
-	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	_fresh("penguins")
 	var town: GDScript = load("res://scripts/town.gd")
 	check(not town.contest_crop("egg") and not town.contest_crop("milk") and not town.contest_crop("sheep_wool"), "crop contest takes no animal goods")
 	check(town.contest_crop("turnip"), "crop contest takes crops")
@@ -195,6 +201,10 @@ func _town() -> void:
 	Ranch.animal(a)["mood"] = 90
 	check(int(town.show_score_animal(a)) > int(town.show_score_animal(b)) and int(town.show_score_animal(a)) > 100, "show score follows friendship and mood")
 	check(town.SHOW.has("harvest") and town.SHOW.has("egg"), "Animal Show at the Harvest Fair, Best Egg at the Egg Festival")
+	check(town.market_open("benno", 9 * 60 + 30) and not town.market_open("benno", 12 * 60) and town.market_open("hazel", 8 * 60), "market stalls open in the morning only")
+	for ms: String in town.MARKET_STALLS:
+		for it: Array in town.MARKET_STALLS[ms][5]:
+			check(GameState.items.has(str(it[0])) and GameState.shop_price(str(it[0]), int(it[1])) >= GameState.item_value(str(it[0])), "%s stall: %s exists and never sells under its value" % [ms, it[0]])
 	GameState.run["arc"] = "gangsters"
 	check(str(town.show_title("harvest")) != "Animal Show", "gangster arc words the show its own way")
 	_empty_ranch()

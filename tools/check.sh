@@ -740,6 +740,13 @@ if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
 
+echo "== C11a P5: ranch villagers, mail, festivals, pen sounds =="
+rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villagers_test.gd 2>&1)"
+echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true
+if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep -q "SCRIPT ERROR"; then
+  echo "Ranch villagers test failed"; exit 1
+fi
+
 echo "== C8 P3: collections (museum, logs, Book tab) =="
 clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
