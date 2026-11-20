@@ -24,6 +24,7 @@ const PATTERNS := {
 	"hit": [[14], 0.4, 90, ""],
 	"hit_big": [[28], 0.75, 120, ""],
 	"recoil": [[16], 0.5, 120, ""],
+	"recoil_big": [[26], 0.7, 160, ""],
 	"block": [[10], 0.35, 150, ""],
 	"deny": [[12], 0.3, 250, ""],
 	"bite": [[50, 40, 50], 0.9, 0, ""],
@@ -56,8 +57,9 @@ const SFX := {
 	"hit": "hit", "crit": "hit_big", "block": "block", "dry_click": "deny",
 	"hurt": "hurt", "knockout": "ko", "heartbeat": "warn",
 	"harvest": "harvest", "boss_fall": "boss_down",
-	"shot_smg": "recoil",
 }
+## Gun shots are not on the list (turrets and foes share those names): Player._fire
+## calls buzz("recoil"/"recoil_big") itself.
 
 ## Strength setting: pulse length scale and amplitude scale.
 const STR_NAMES := ["light", "normal", "strong"]

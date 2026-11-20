@@ -32,7 +32,37 @@ def patch_sw(sw: str) -> str:
         "// Try network if don't have it in cache.\n\t\t\t\ttry {\n\t\t\t\t\treturn await fetchAndCache(event, cache, isCacheable);\n"
         "\t\t\t\t} catch (e) {\n\t\t\t\t\tconst fb = await caches.match(isNavigate ? 'index.html' : event.request);\n"
         "\t\t\t\t\treturn fb || caches.match(OFFLINE_URL);\n\t\t\t\t}")
+    sw += MUSIC_SW
     return sw
+
+
+# Streamed songs (music/<name>.ogg?v=<ver>) are kept in their own Cache Storage
+# (off the page heap, survives game updates since the key carries the version);
+# an older version of the same song is dropped when a new one is stored.
+MUSIC_SW = """
+// Dreams (C9 P4): streamed music cache.
+const MUSIC_CACHE = 'Dreams-music-v1';
+self.addEventListener('fetch', (event) => {
+	const url = new URL(event.request.url);
+	if (event.request.method !== 'GET' || !/\\/music\\/[^/]+\\.ogg$/.test(url.pathname)) {
+		return;
+	}
+	event.respondWith((async () => {
+		const cache = await caches.open(MUSIC_CACHE);
+		const hit = await cache.match(event.request);
+		if (hit) {
+			return hit;
+		}
+		const res = await fetch(event.request);
+		if (res && res.ok && url.search) {
+			const keys = await cache.keys();
+			await Promise.all(keys.filter((k) => new URL(k.url).pathname === url.pathname).map((k) => cache.delete(k)));
+			await cache.put(event.request, res.clone());
+		}
+		return res;
+	})());
+});
+"""
 
 
 def patch_manifest(out: str) -> None:

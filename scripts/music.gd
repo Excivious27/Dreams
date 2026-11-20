@@ -394,7 +394,8 @@ static var stall_secs := 20.0
 const STREAMED_KEEP := 4
 ## user://mcache size cap (bytes); least recently used songs go first.
 static var cache_cap := 40 * 1024 * 1024
-## On the web user:// is held in page memory (IDBFS), so the cache stays small there.
+## On the web user:// is held in page memory (IDBFS), so the cache stays small there;
+## the service worker also keeps every streamed song in Cache Storage (web/post_export.py).
 const WEB_CACHE_CAP := 16 * 1024 * 1024
 ## Songs heard often, fetched quietly one by one once the first song is in.
 const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
