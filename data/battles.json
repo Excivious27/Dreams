@@ -1407,7 +1407,7 @@
       "id": "n1",
       "name": "Rubble Gate",
       "type": "skirmish",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -1490,10 +1490,10 @@
           "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Signal Tower",
+          "id": "c",
+          "name": "Water Tower",
           "cell": [
-           22,
+           90,
            20
           ],
           "owner": "enemy"
@@ -1531,7 +1531,7 @@
       "id": "n2",
       "name": "Crane Pit",
       "type": "cache",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -1682,7 +1682,7 @@
       "id": "n4",
       "name": "Foreman's Hut",
       "type": "siege",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -1835,7 +1835,7 @@
       "id": "n5",
       "name": "The Deep Cut",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -2103,7 +2103,7 @@
       "id": "n1",
       "name": "Reedbank",
       "type": "cache",
-      "x": 0.22,
+      "x": 0.31,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -2125,7 +2125,7 @@
       "id": "n2",
       "name": "Lily Causeway",
       "type": "skirmish",
-      "x": 0.78,
+      "x": 0.87,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -2248,7 +2248,7 @@
       "id": "n3",
       "name": "Witch's Larder",
       "type": "defend",
-      "x": 0.5,
+      "x": 0.41,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -2414,7 +2414,7 @@
       "id": "n4",
       "name": "Dry Hummock",
       "type": "siege",
-      "x": 0.26,
+      "x": 0.35,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -2585,7 +2585,7 @@
       "id": "n5",
       "name": "Witchlight Isle",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.47,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -3569,7 +3569,7 @@
       "id": "n1",
       "name": "Broken Stair",
       "type": "cache",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -3591,7 +3591,7 @@
       "id": "n2",
       "name": "Moss Court",
       "type": "escort",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -3618,15 +3618,6 @@
           "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Burnt Watchtower",
-          "cell": [
-           90,
-           20
-          ],
-          "owner": "enemy"
-         },
-         {
           "id": "a",
           "name": "Cinder Gate",
           "cell": [
@@ -3634,12 +3625,21 @@
            18
           ],
           "owner": "enemy"
+         },
+         {
+          "id": "b",
+          "name": "Glass Dunes",
+          "cell": [
+           56,
+           26
+          ],
+          "owner": "neutral"
          }
         ],
         "convoy": [
          "e",
          "d",
-         "c"
+         "a"
         ],
         "vehicle": "wagon",
         "enemies": [
@@ -3672,15 +3672,6 @@
           "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Water Tower",
-          "cell": [
-           90,
-           20
-          ],
-          "owner": "enemy"
-         },
-         {
           "id": "a",
           "name": "Signal Tower",
           "cell": [
@@ -3688,12 +3679,21 @@
            20
           ],
           "owner": "enemy"
+         },
+         {
+          "id": "b",
+          "name": "Coal Depot",
+          "cell": [
+           56,
+           26
+          ],
+          "owner": "neutral"
          }
         ],
         "convoy": [
          "e",
          "d",
-         "c"
+         "a"
         ],
         "vehicle": "truck",
         "enemies": [
@@ -3712,8 +3712,8 @@
       "wave_every": 7.5,
       "enemy_cap": 13,
       "brief": {
-       "penguins": "Our supply wagon has to reach Burnt Watchtower. Walk with it: it only rolls with friends beside it and no foes on it.",
-       "gangsters": "Our supply truck has to reach Water Tower. Walk with it: it only rolls with friends beside it and no foes on it."
+       "penguins": "Our supply wagon has to reach Cinder Gate. Walk with it: it only rolls with friends beside it and no foes on it.",
+       "gangsters": "Our supply truck has to reach Signal Tower. Walk with it: it only rolls with friends beside it and no foes on it."
       },
       "reward": {
        "crystals": 324,
@@ -3861,7 +3861,7 @@
       "id": "n4",
       "name": "Scribes' Rest",
       "type": "defend",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -4009,7 +4009,7 @@
       "id": "n5",
       "name": "The Star Arch",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -4679,7 +4679,7 @@
       "id": "n1",
       "name": "Cloudfoot",
       "type": "skirmish",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -4697,20 +4697,29 @@
           "owner": "ally"
          },
          {
+          "id": "d",
+          "name": "Hollow Ridge",
+          "cell": [
+           56,
+           52
+          ],
+          "owner": "neutral"
+         },
+         {
           "id": "b",
           "name": "Frozen Mill",
           "cell": [
            55,
            30
           ],
-          "owner": "neutral"
+          "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Aurora Rise",
+          "id": "c",
+          "name": "Glacier Shelf",
           "cell": [
-           24,
-           22
+           86,
+           24
           ],
           "owner": "enemy"
          }
@@ -4746,7 +4755,7 @@
       "id": "n2",
       "name": "Ice Ladder",
       "type": "cache",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -4848,7 +4857,7 @@
       "id": "n4",
       "name": "Finargle Roost",
       "type": "siege",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -4948,7 +4957,7 @@
       "id": "n5",
       "name": "The Sky Stair",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -5707,7 +5716,7 @@
       "id": "n1",
       "name": "Fern Wall",
       "type": "skirmish",
-      "x": 0.24,
+      "x": 0.33,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -5784,7 +5793,7 @@
       "id": "n2",
       "name": "Glow Pool",
       "type": "skirmish",
-      "x": 0.76,
+      "x": 0.85,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -5860,7 +5869,7 @@
       "id": "n3",
       "name": "Vine Bridge",
       "type": "siege",
-      "x": 0.18,
+      "x": 0.12,
       "y": 0.48,
       "layer": 2,
       "step": 0,
@@ -5960,7 +5969,7 @@
       "id": "n4",
       "name": "Flower Canopy",
       "type": "camp",
-      "x": 0.66,
+      "x": 0.57,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -5984,7 +5993,7 @@
       "id": "n5",
       "name": "Spore Hollow",
       "type": "siege",
-      "x": 0.4,
+      "x": 0.49,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -6085,7 +6094,7 @@
       "id": "n6",
       "name": "The Heart Grove",
       "type": "gate",
-      "x": 0.6,
+      "x": 0.51,
       "y": 0.08,
       "layer": 4,
       "step": 1,
@@ -6287,7 +6296,7 @@
       "id": "n1",
       "name": "Shell Beach",
       "type": "skirmish",
-      "x": 0.22,
+      "x": 0.31,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -6362,7 +6371,7 @@
       "id": "n2",
       "name": "Tide Pools",
       "type": "skirmish",
-      "x": 0.78,
+      "x": 0.87,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -6437,7 +6446,7 @@
       "id": "n3",
       "name": "Crab Kingdom",
       "type": "escort",
-      "x": 0.5,
+      "x": 0.41,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -6455,22 +6464,13 @@
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Reed Fort",
+          "id": "d",
+          "name": "Frog Chorus",
           "cell": [
-           86,
-           60
+           24,
+           58
           ],
           "owner": "neutral"
-         },
-         {
-          "id": "c",
-          "name": "Drowned Mill",
-          "cell": [
-           88,
-           22
-          ],
-          "owner": "enemy"
          },
          {
           "id": "a",
@@ -6480,12 +6480,21 @@
            22
           ],
           "owner": "enemy"
+         },
+         {
+          "id": "b",
+          "name": "Heron Causeway",
+          "cell": [
+           54,
+           30
+          ],
+          "owner": "neutral"
          }
         ],
         "convoy": [
          "f",
-         "e",
-         "c"
+         "d",
+         "a"
         ],
         "vehicle": "wagon",
         "enemies": [
@@ -6501,7 +6510,7 @@
       "tickets": 130,
       "wave_every": 8.25,
       "enemy_cap": 10,
-      "brief": "Our supply wagon has to reach Drowned Mill. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply wagon has to reach Witchlight Isle. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
        "crystals": 251,
        "supply": 18,
@@ -6521,7 +6530,7 @@
       "id": "n4",
       "name": "Pearl Cove",
       "type": "defend",
-      "x": 0.26,
+      "x": 0.35,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -6617,7 +6626,7 @@
       "id": "n5",
       "name": "The Reef Gate",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.47,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -6812,7 +6821,7 @@
       "id": "n1",
       "name": "Kelp Edge",
       "type": "cache",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -6834,7 +6843,7 @@
       "id": "n2",
       "name": "Bubble Field",
       "type": "skirmish",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -6852,29 +6861,20 @@
           "owner": "ally"
          },
          {
-          "id": "d",
-          "name": "Hollow Ridge",
-          "cell": [
-           56,
-           52
-          ],
-          "owner": "neutral"
-         },
-         {
           "id": "b",
           "name": "Frozen Mill",
           "cell": [
            55,
            30
           ],
-          "owner": "enemy"
+          "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Glacier Shelf",
+          "id": "a",
+          "name": "Aurora Rise",
           "cell": [
-           86,
-           24
+           24,
+           22
           ],
           "owner": "enemy"
          }
@@ -7012,7 +7012,7 @@
       "id": "n4",
       "name": "Eel Narrows",
       "type": "defend",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -7100,7 +7100,7 @@
       "id": "n5",
       "name": "The Kelp Gate",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -7298,7 +7298,7 @@
       "id": "n1",
       "name": "Snowdrift Beach",
       "type": "cache",
-      "x": 0.24,
+      "x": 0.76,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -7321,7 +7321,7 @@
       "id": "n2",
       "name": "Seal Rocks",
       "type": "skirmish",
-      "x": 0.76,
+      "x": 0.24,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -7339,29 +7339,20 @@
           "owner": "ally"
          },
          {
-          "id": "d",
-          "name": "Hollow Ridge",
-          "cell": [
-           56,
-           52
-          ],
-          "owner": "neutral"
-         },
-         {
           "id": "b",
           "name": "Frozen Mill",
           "cell": [
            55,
            30
           ],
-          "owner": "enemy"
+          "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Glacier Shelf",
+          "id": "a",
+          "name": "Aurora Rise",
           "cell": [
-           86,
-           24
+           24,
+           22
           ],
           "owner": "enemy"
          }
@@ -7397,7 +7388,7 @@
       "id": "n3",
       "name": "Frost Chapel",
       "type": "defend",
-      "x": 0.18,
+      "x": 0.82,
       "y": 0.48,
       "layer": 2,
       "step": 0,
@@ -7485,7 +7476,7 @@
       "id": "n4",
       "name": "Aurora Field",
       "type": "siege",
-      "x": 0.66,
+      "x": 0.34,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -7577,7 +7568,7 @@
       "id": "n5",
       "name": "Glacier Mouth",
       "type": "boss",
-      "x": 0.4,
+      "x": 0.6,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -7595,20 +7586,29 @@
           "owner": "ally"
          },
          {
+          "id": "d",
+          "name": "Hollow Ridge",
+          "cell": [
+           56,
+           52
+          ],
+          "owner": "neutral"
+         },
+         {
           "id": "b",
           "name": "Frozen Mill",
           "cell": [
            55,
            30
           ],
-          "owner": "neutral"
+          "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Aurora Rise",
+          "id": "c",
+          "name": "Glacier Shelf",
           "cell": [
-           24,
-           22
+           86,
+           24
           ],
           "owner": "enemy"
          }
@@ -7647,7 +7647,7 @@
       "id": "n6",
       "name": "The Ice Gate",
       "type": "gate",
-      "x": 0.6,
+      "x": 0.4,
       "y": 0.08,
       "layer": 4,
       "step": 1,
@@ -7843,7 +7843,7 @@
       "id": "n1",
       "name": "Ash Shore",
       "type": "escort",
-      "x": 0.18,
+      "x": 0.27,
       "y": 0.74,
       "layer": 1,
       "step": 0,
@@ -7926,7 +7926,7 @@
       "id": "n2",
       "name": "Smoke Hollow",
       "type": "skirmish",
-      "x": 0.5,
+      "x": 0.59,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -8003,7 +8003,7 @@
       "id": "n3",
       "name": "Lava Bridge",
       "type": "cache",
-      "x": 0.82,
+      "x": 0.88,
       "y": 0.74,
       "layer": 1,
       "step": 0,
@@ -8025,7 +8025,7 @@
       "id": "n4",
       "name": "Ember Market",
       "type": "camp",
-      "x": 0.24,
+      "x": 0.15,
       "y": 0.47,
       "layer": 2,
       "step": 0,
@@ -8048,7 +8048,7 @@
       "id": "n5",
       "name": "Cinder Cone",
       "type": "siege",
-      "x": 0.76,
+      "x": 0.67,
       "y": 0.47,
       "layer": 2,
       "step": 0,
@@ -8140,7 +8140,7 @@
       "id": "n6",
       "name": "Hound Kennels",
       "type": "defend",
-      "x": 0.5,
+      "x": 0.59,
       "y": 0.29,
       "layer": 3,
       "step": 1,
@@ -8229,7 +8229,7 @@
       "id": "n7",
       "name": "The Ember Gate",
       "type": "gate",
-      "x": 0.5,
+      "x": 0.41,
       "y": 0.08,
       "layer": 4,
       "step": 1,
@@ -8429,7 +8429,7 @@
       "id": "n1",
       "name": "Billboard Bend",
       "type": "skirmish",
-      "x": 0.24,
+      "x": 0.76,
       "y": 0.66,
       "layer": 1,
       "step": 0,
@@ -8465,10 +8465,10 @@
           "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Billboard Hill",
+          "id": "c",
+          "name": "Gas Station",
           "cell": [
-           20,
+           84,
            20
           ],
           "owner": "enemy"
@@ -8503,7 +8503,7 @@
       "id": "n2",
       "name": "Gas Station",
       "type": "skirmish",
-      "x": 0.76,
+      "x": 0.24,
       "y": 0.66,
       "layer": 1,
       "step": 0,
@@ -8539,10 +8539,10 @@
           "owner": "enemy"
          },
          {
-          "id": "c",
-          "name": "Water Tower",
+          "id": "a",
+          "name": "Signal Tower",
           "cell": [
-           90,
+           22,
            20
           ],
           "owner": "enemy"
@@ -8831,7 +8831,7 @@
       "id": "n1",
       "name": "Fish Market",
       "type": "cache",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -8853,7 +8853,7 @@
       "id": "n2",
       "name": "Net Lofts",
       "type": "skirmish",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -8889,10 +8889,10 @@
           "owner": "enemy"
          },
          {
-          "id": "c",
-          "name": "Water Tower",
+          "id": "a",
+          "name": "Signal Tower",
           "cell": [
-           90,
+           22,
            20
           ],
           "owner": "enemy"
@@ -9029,7 +9029,7 @@
       "id": "n4",
       "name": "Tugboat Yard",
       "type": "boss",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -9065,10 +9065,10 @@
           "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Signal Tower",
+          "id": "c",
+          "name": "Water Tower",
           "cell": [
-           22,
+           90,
            20
           ],
           "owner": "enemy"
@@ -9106,7 +9106,7 @@
       "id": "n5",
       "name": "The Harbour Gate",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -9303,7 +9303,7 @@
       "id": "n1",
       "name": "Noodle Row",
       "type": "skirmish",
-      "x": 0.22,
+      "x": 0.78,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -9330,20 +9330,20 @@
           "owner": "neutral"
          },
          {
-          "id": "e",
-          "name": "Laundromat Lot",
-          "cell": [
-           20,
-           60
-          ],
-          "owner": "enemy"
-         },
-         {
           "id": "b",
           "name": "Night Market",
           "cell": [
            52,
            26
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "c",
+          "name": "Pachinko Hall",
+          "cell": [
+           84,
+           18
           ],
           "owner": "enemy"
          }
@@ -9379,7 +9379,7 @@
       "id": "n2",
       "name": "Arcade Alley",
       "type": "cache",
-      "x": 0.78,
+      "x": 0.22,
       "y": 0.7,
       "layer": 1,
       "step": 0,
@@ -9500,7 +9500,7 @@
       "id": "n4",
       "name": "Rooftop Garden",
       "type": "boss",
-      "x": 0.26,
+      "x": 0.74,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -9536,10 +9536,10 @@
           "owner": "enemy"
          },
          {
-          "id": "a",
-          "name": "Signal Tower",
+          "id": "c",
+          "name": "Water Tower",
           "cell": [
-           22,
+           90,
            20
           ],
           "owner": "enemy"
@@ -9578,7 +9578,7 @@
       "id": "n5",
       "name": "The Neon Gate",
       "type": "gate",
-      "x": 0.56,
+      "x": 0.44,
       "y": 0.09,
       "layer": 4,
       "step": 1,
@@ -9775,7 +9775,7 @@
       "id": "n1",
       "name": "Lawn Terrace",
       "type": "skirmish",
-      "x": 0.24,
+      "x": 0.33,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -9852,7 +9852,7 @@
       "id": "n2",
       "name": "Fountain Plaza",
       "type": "cache",
-      "x": 0.76,
+      "x": 0.85,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -9874,7 +9874,7 @@
       "id": "n3",
       "name": "Gallery Steps",
       "type": "siege",
-      "x": 0.18,
+      "x": 0.12,
       "y": 0.48,
       "layer": 2,
       "step": 0,
@@ -9974,7 +9974,7 @@
       "id": "n4",
       "name": "Valet Ramp",
       "type": "siege",
-      "x": 0.66,
+      "x": 0.57,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -10077,7 +10077,7 @@
       "id": "n5",
       "name": "Glass Atrium",
       "type": "defend",
-      "x": 0.4,
+      "x": 0.49,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -10175,7 +10175,7 @@
       "id": "n6",
       "name": "The Tower Gate",
       "type": "gate",
-      "x": 0.6,
+      "x": 0.51,
       "y": 0.08,
       "layer": 4,
       "step": 1,
@@ -10381,7 +10381,7 @@
       "id": "n1",
       "name": "Drip Tunnel",
       "type": "skirmish",
-      "x": 0.24,
+      "x": 0.33,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -10458,7 +10458,7 @@
       "id": "n2",
       "name": "Pipe Junction",
       "type": "cache",
-      "x": 0.76,
+      "x": 0.85,
       "y": 0.72,
       "layer": 1,
       "step": 0,
@@ -10480,7 +10480,7 @@
       "id": "n3",
       "name": "Old Platform",
       "type": "siege",
-      "x": 0.18,
+      "x": 0.12,
       "y": 0.48,
       "layer": 2,
       "step": 0,
@@ -10580,7 +10580,7 @@
       "id": "n4",
       "name": "Rat King's Hall",
       "type": "boss",
-      "x": 0.66,
+      "x": 0.57,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -10659,7 +10659,7 @@
       "id": "n5",
       "name": "Pump Room",
       "type": "defend",
-      "x": 0.4,
+      "x": 0.49,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -10757,7 +10757,7 @@
       "id": "n6",
       "name": "The Pit Door",
       "type": "gate",
-      "x": 0.6,
+      "x": 0.51,
       "y": 0.08,
       "layer": 4,
       "step": 1,

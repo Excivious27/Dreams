@@ -434,6 +434,18 @@ LAYOUTS = {
     7: {"pos": [[0.5, 0.93], [0.18, 0.74], [0.5, 0.70], [0.82, 0.74], [0.24, 0.47], [0.76, 0.47], [0.5, 0.29], [0.5, 0.08]],
         "links": [[0, 1], [0, 2], [0, 3], [1, 4], [2, 4], [2, 5], [3, 5], [4, 6], [5, 6], [6, 7], [5, 7]], "layer": [0, 1, 1, 1, 2, 2, 3, 4]},
 }
+# Each board picks one of three shapes of its layout (same links): as drawn,
+# mirrored, or swayed (rows shifted alternately), so boards don't all look alike.
+def _layout(n, cid):
+    L = LAYOUTS[n]
+    v = random.Random(cid + ":layout").randrange(3)
+    pos = [list(p) for p in L["pos"]]
+    if v == 1:
+        pos = [[round(1.0 - x, 2), y] for x, y in pos]
+    elif v == 2:
+        pos = [[round(min(0.88, max(0.12, x + (0.09 if L["layer"][i] % 2 else -0.09) * (1 if i else 0))), 2), y] for i, (x, y) in enumerate(pos)]
+    return {"pos": pos, "links": L["links"], "layer": L["layer"]}
+
 # Node type pools by layer (the last layer is always the gate: a siege with a boss).
 POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
 # Tier 1 boards teach the basics: no sieges or defends before the gate.
@@ -533,7 +545,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     arcs = ["penguins", "gangsters"] if arc == "both" else [arc]
     fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
     n = SIZE[tier]
-    L = LAYOUTS[n]
+    L = _layout(n, cid)
     pools = POOL_T1 if tier <= 1 else POOL
     nm = list(names)
     nodes = []

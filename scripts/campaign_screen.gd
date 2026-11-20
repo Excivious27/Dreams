@@ -195,7 +195,21 @@ func _show_list() -> void:
 	elif not CampaignGate.trained():
 		tb.modulate = Color(1.15, 1.05, 0.8)
 	v.add_child(tb)
-	for id: String in Campaign.for_arc():
+	# Under way first, then ready, gathering, locked; won ones last.
+	var ids: Array = Campaign.for_arc()
+	var rank := func(id: String) -> int:
+		if Campaign.is_won(id) or Campaign.region_open(str(Campaign.get_c(id)["region"])):
+			return 4
+		if Campaign.started(id):
+			return 0
+		if Campaign.why_locked(id) == "":
+			return 1
+		return 2 if Campaign.plan_lock(id) == "" else 3
+	var order := {}
+	for i in ids.size():
+		order[ids[i]] = rank.call(ids[i]) * 100 + i
+	ids.sort_custom(func(a: String, b: String) -> bool: return int(order[a]) < int(order[b]))
+	for id: String in ids:
 		var c := Campaign.get_c(id)
 		var why := Campaign.why_locked(id)
 		var tag := ""
