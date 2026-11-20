@@ -516,12 +516,12 @@ func _spots(delta: float) -> void:
 		_spot_t[pk] = float(_spot_t.get(pk, randf_range(float(r[1]), float(r[2])))) - delta
 		if float(_spot_t[pk]) <= 0.0:
 			_spot_t[pk] = randf_range(float(r[1]), float(r[2]))
-			var src: Array = _herd.get(str(r[4]), [])
+			var src: Array = (_herd.get(str(r[4]), []) as Array).filter(func(n: Variant) -> bool: return is_instance_valid(n))
 			if not src.is_empty():
 				_spot(str(r[0]), float(r[3]), (src.pick_random() as Node2D).position, str(r[4]))
 	# The rooster crows once each morning, from the rooster, when the farm has one (c11a_13-09).
 	var day := int(GameState.run.get("day", 1))
-	var roosters: Array = _herd.get("rooster", [])
+	var roosters: Array = (_herd.get("rooster", []) as Array).filter(func(n: Variant) -> bool: return is_instance_valid(n))
 	if id in RANCH_MAPS and not roosters.is_empty() and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
 		_rooster_day = day
 		_spot("rooster", -10.0, (roosters[0] as Node2D).position)

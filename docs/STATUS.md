@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11a P5 (2026-11-20): ranch villagers: favour/board sources by tier (Mail.ranch_source_ok), storm letter only with animals, ranch welcome/first-goods letters both arcs, Tam's lamb Bramble (keepsake, never rehomed) and highland letters, spouse feeds the roster, Harvest Fair crop contest fixes + Animal Show/Best Egg, Benno and Hazel market stalls, heart perks fixed, quest gates, Tam intro (also at his hut), ambience pen spots from real animals, CC0 oink/buzz/thump. Test tools/ranch_villagers_test.gd.
+
 ## 2026-11-20 — C11a integration (2026-11-20): bee idle strip so gen_ranch passes; one care path (farm tap writes the roster, collects overnight goods, pasture nights feed); one incubator path (Ranch.incubate); canonical Ranching keys (animal_quality, animal_friend, grow_speed, big_goods) read everywhere; Down Pillow uses feathers (econ 0 ranch warnings); P6 heights, chick art, ranch building snow/night looks, mayo/apiary tier art, team poses; Farm Hand workers; crew job waters the morning; tools/c11a_integ_test.gd.
 
 ## 2026-11-20 — CONDUCT 11a fix P1: Ranch core (data + runtime)

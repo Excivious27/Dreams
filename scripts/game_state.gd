@@ -2555,8 +2555,8 @@ static func board_today() -> Array:
 		var item: String = pool[rng.randi_range(0, mini(pool.size(), 2 + tier) - 1)]
 		if not items.has(item) or not crop_in_season(item):
 			continue
-		if (item == "egg" and not Builds.is_built("coop")) or (item in ["milk", "butter"] and not Builds.is_built("barn")):
-			continue  # nothing to get it from yet
+		if Mail.needs_source(item) and not Mail.ranch_source_ok(item):
+			continue  # nothing to get it from yet (one source rule with favour letters)
 		var n := rng.randi_range(2, 4 + tier * 2)
 		var val := maxi(2, item_value(item))
 		var pay := int(val * n * (1.15 if item in BOARD_SHOP_GOODS else 1.6)) + 20 * tier  # shop goods: pay for the errand, not a markup

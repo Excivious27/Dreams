@@ -433,6 +433,9 @@ static func _detail(menu: Variant, uid: String) -> void:
 	else:
 		var rb: Button = menu._button("  Rename", func() -> void: _rename_uid = uid; menu._refresh())
 		rb.set_meta("pc_key", "animals:%s:rename" % uid)
+	if bool(Ranch.animal(uid).get("keepsake", false)):
+		menu._line("  %s is a keepsake: a gift that stays with you." % name_of(uid), 8, Color(0.85, 0.85, 0.75))
+		return
 	var arm := _rehome_arm == uid
 	var hb: Button = menu._button("  Sure? %s goes to a villager farm for good" % name_of(uid) if arm else "  Rehome…", func() -> void:
 		if _rehome_arm != uid:

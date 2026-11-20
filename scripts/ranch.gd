@@ -227,7 +227,7 @@ static func rehome_pay(uid: String) -> int:
 ## Send an animal to live on at a villager's pasture (never sold for meat). A thank-you for grown ones.
 static func rehome(uid: String) -> bool:
 	var a := animal(uid)
-	if a.is_empty():
+	if a.is_empty() or bool(a.get("keepsake", false)):  # a gift with a promise (Tam's lamb) never leaves
 		return false
 	var pay := rehome_pay(uid)
 	if pay > 0:
