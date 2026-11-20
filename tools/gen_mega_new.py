@@ -20,7 +20,7 @@ walks every area to prove it.   Run: python3 tools/gen_mega_new.py
 import json, os, sys, math, random, zlib
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(D, "tools"))
-from mega_regions_new import REGIONS, BY_ID, EXTRA, EXTERNAL
+from mega_regions_new import REGIONS, BY_ID, EXTRA, EXTERNAL, TIER_STEP
 
 def shash(t):  # stable across runs (Python's hash() is salted per process)
     return zlib.crc32(t.encode())
@@ -154,32 +154,68 @@ RECIPES = [  # kitchen: known once you've held every ingredient (Crafting.mark_k
 ]
 
 # ---------------------------------------------------------------- enemies
-# new kind: (base kind for art/abilities, tint, hp, tier, name, drops, extra)
+# new kind: (base kind for abilities/fallback art, tint, raw hp, tier, name, drops, extra)
+# Balance (CONDUCT 4, c4_09): raw hp is BEFORE Enemy's home-tier scaling (NATIVE_HP x2.2..5),
+# so trash stays ~8-12 raw at tier 2 up to ~20-25 at tier 5 (base_hp < 36: no elite music);
+# region bosses are x0.55 of the first pass (they are region bosses, not finales).
+# reward: trash ~0.3 x scaled hp, bosses BOSS_REWARD by tier. Drop chances are normalised in
+# main() to ~3.4 crystals of expected drop value per raw hp (DROP_PER_HP).
+# Kinds P5 draws (enemies/<kind>) are listed in OWN_ART: their tint only applies while the
+# fallback sprite (the base kind) is used. extra "status" overrides the base kind's.
 ENEMIES = {
-    "gloom_moth": ("lantern_moth", "#c8a0ff", 12, 2, "Gloom Moth", [["wisp_thread", 0.35, 1], ["light_mote", 0.08, 1]], {}),
+    "gloom_moth": ("lantern_moth", "#c8a0ff", 10, 2, "Gloom Moth", [["wisp_thread", 0.35, 1], ["light_mote", 0.08, 1]], {}),
     "thorn_slime": ("mud_slime", "#b878e0", 9, 2, "Thorn Slime", [["slime_gel", 0.6, 1], ["wisp_thread", 0.15, 1]], {}),
     "glade_wisp": ("wisp", "#ffa8e8", 8, 2, "Glade Wisp", [["wisp_spark", 0.2, 1], ["wisp_thread", 0.3, 1]], {}),
-    "gloom_spider": ("shard_spider", "#9878f0", 20, 3, "Gloom Spider", [["wisp_thread", 0.5, 2], ["amethyst", 0.06, 1]], {}),
-    "thornmother": ("marsh_witch", "#c898ff", 150, 3, "The Thornmother", [["wisp_spark", 1.0, 3], ["luna_moth", 0.5, 1]], {"boss": True, "scale": 1.2}),
-    "dune_crab": ("rock_crab", "#f4d898", 18, 3, "Dune Crab", [["sunstone", 0.12, 1], ["shell", 0.3, 1]], {}),
-    "sand_hound": ("ash_hound", "#e8c080", 22, 3, "Sand Hound", [["pelt", 0.4, 1], ["spice", 0.15, 1]], {}),
-    "sun_moth": ("lantern_moth", "#ffc860", 16, 3, "Sun Moth", [["sun_scarab", 0.05, 1], ["light_mote", 0.1, 1]], {}),
-    "glass_golem": ("quarry_golem", "#a8f0ff", 30, 3, "Glass Golem", [["glass", 0.8, 2], ["sunstone", 0.2, 1]], {}),
-    "sun_colossus": ("ruin_warden", "#ffd868", 190, 4, "The Sun Colossus", [["sunstone", 1.0, 4], ["sun_scarab", 1.0, 1]], {"boss": True, "scale": 1.15}),
-    "rail_bot": ("rust_knight", "#c89060", 26, 3, "Rail Bot", [["chain_link", 0.4, 1], ["gear", 0.15, 1], ["oil", 0.25, 1]], {}),
-    "coal_crawler": ("drip_crawler", "#8a8a8a", 20, 3, "Coal Crawler", [["charcoal", 0.6, 2], ["coal", 0.4, 1]], {}),
-    "baron_coalbrook": ("thug_enforcer", "", 210, 4, "Baron Coalbrook", [["thug_cash", 1.0, 6], ["chain_link", 1.0, 3]], {"boss": True, "char": "mg_coalbrook", "scale": 1.15}),
-    "frost_wolf": ("hill_wolf", "#dcf2ff", 28, 4, "Frost Wolf", [["pelt", 0.5, 1], ["frost", 0.08, 1]], {}),
-    "rime_golem": ("golem", "#acdcff", 40, 4, "Rime Golem", [["frost", 0.35, 1], ["stone", 1.0, 3], ["glass_frosted", 0.15, 1]], {}),
-    "frost_spider": ("shard_spider", "#c4ecff", 30, 4, "Frost Spider", [["glass_frosted", 0.2, 1], ["silver", 0.2, 1]], {}),
-    "rime_wyrm": ("river_serpent", "", 230, 5, "The Rime Wyrm", [["frost", 1.0, 4], ["glass_frosted", 1.0, 2]], {"boss": True, "scale": 1.2, "art": "rime_wyrm"}),
-    "gale_finargle": ("finargle", "#d4f2ff", 36, 5, "Gale Finargle", [["storm_fluff", 0.35, 1], ["finargle_fuzz", 0.3, 1]], {"art": "finargle"}),
-    "storm_wisp": ("prism_wisp", "#b4bcff", 30, 5, "Storm Wisp", [["storm_glass", 0.12, 1], ["wisp_spark", 0.2, 1]], {}),
-    "cloud_knight": ("knight", "#f2f8ff", 46, 5, "Cloud Knight", [["storm_fluff", 0.3, 1], ["silver", 0.3, 1]], {}),
-    "storm_roc": ("finargle_elder", "", 260, 5, "The Storm Roc", [["storm_glass", 1.0, 3], ["storm_fluff", 1.0, 3]], {"boss": True, "scale": 1.15, "art": "storm_roc"}),
-    "gilt_guard": ("knight", "#ffe488", 48, 5, "Gilt Guard", [["gambler_chip", 0.5, 2], ["gold", 0.2, 1]], {}),
-    "gilded_mirror": ("mirror", "#ffe070", 40, 5, "Gilded Mirror", [["gold_bundle", 0.15, 1], ["glass", 0.5, 1]], {}),
-    "madame_aurum": ("thug_gambler", "", 260, 5, "Madame Aurum", [["gambler_chip", 1.0, 8], ["lucky_coin", 1.0, 2]], {"boss": True, "char": "mg_aurum", "scale": 1.15}),
+    "gloom_spider": ("shard_spider", "#9878f0", 13, 3, "Gloom Spider", [["wisp_thread", 0.5, 2], ["amethyst", 0.06, 1]], {}),
+    "thornmother": ("marsh_witch", "#c898ff", 85, 3, "The Thornmother", [["wisp_spark", 1.0, 3], ["luna_moth", 0.5, 1]], {"boss": True, "scale": 1.2}),
+    "garden_boss": ("thug_gambler", "#c898ff", 85, 3, "Rosa Thorne", [["thug_cash", 1.0, 4], ["luna_moth", 0.5, 1]], {"boss": True, "scale": 1.15, "char": "gambler", "status": "poison"}),
+    "dune_crab": ("rock_crab", "#f4d898", 13, 3, "Dune Crab", [["sunstone", 0.12, 1], ["shell", 0.3, 1]], {}),
+    "sand_hound": ("ash_hound", "#e8c080", 15, 3, "Sand Hound", [["pelt", 0.4, 1], ["spice", 0.15, 1]], {}),
+    "sun_moth": ("lantern_moth", "#ffc860", 12, 3, "Sun Moth", [["sun_scarab", 0.05, 1], ["light_mote", 0.1, 1]], {}),
+    "glass_golem": ("quarry_golem", "#a8f0ff", 18, 3, "Glass Golem", [["glass", 0.8, 2], ["sunstone", 0.2, 1]], {}),
+    "sun_colossus": ("ruin_warden", "#ffd868", 105, 4, "The Sun Colossus", [["sunstone", 1.0, 4], ["sun_scarab", 1.0, 1]], {"boss": True, "scale": 1.15}),
+    "smuggler_king": ("thug_brute", "#e8b060", 105, 4, "Dune King Vasco", [["thug_cash", 1.0, 5], ["sun_scarab", 1.0, 1]], {"boss": True, "scale": 1.15, "char": "brute", "status": "burn"}),
+    "rail_bot": ("rust_knight", "#c89060", 16, 3, "Rail Bot", [["chain_link", 0.4, 1], ["gear", 0.15, 1], ["oil", 0.25, 1]], {}),
+    "coal_crawler": ("drip_crawler", "#8a8a8a", 13, 3, "Coal Crawler", [["charcoal", 0.6, 2], ["coal", 0.4, 1]], {}),
+    "mill_runner": ("thug_cyber", "#c8a070", 13, 3, "Mill Runner", [["chain_link", 0.3, 1], ["thug_cash", 0.3, 1]], {"char": "cyber"}),
+    "tunnel_bat": ("bat", "#6a6a7a", 14, 4, "Tunnel Bat", [["charcoal", 0.6, 1], ["coal", 0.5, 1]], {}),
+    "baron_coalbrook": ("thug_enforcer", "", 115, 4, "Baron Coalbrook", [["thug_cash", 1.0, 6], ["chain_link", 1.0, 3]], {"boss": True, "char": "mg_coalbrook", "scale": 1.15}),
+    "frost_wolf": ("hill_wolf", "#9cc8f0", 17, 4, "Frost Wolf", [["pelt", 0.5, 1], ["frost", 0.08, 1]], {}),
+    "rime_golem": ("golem", "#acdcff", 22, 4, "Rime Golem", [["frost", 0.35, 1], ["stone", 1.0, 3], ["glass_frosted", 0.15, 1]], {}),
+    "frost_spider": ("shard_spider", "#88c8f8", 18, 4, "Frost Spider", [["glass_frosted", 0.2, 1], ["silver", 0.2, 1]], {"status": "chill"}),
+    "rime_wisp": ("ice_wisp", "#b8e8ff", 14, 4, "Rime Wisp", [["frost", 0.12, 1], ["glass_frosted", 0.15, 1]], {"status": "chill"}),
+    "rime_wyrm": ("river_serpent", "", 125, 5, "The Rime Wyrm", [["frost", 1.0, 4], ["glass_frosted", 1.0, 2]], {"boss": True, "scale": 1.2, "art": "rime_wyrm", "status": "chill"}),
+    "ice_hauler": ("thug_enforcer", "#a8d8ff", 125, 5, "Big Ike Frost", [["thug_cash", 1.0, 7], ["glass_frosted", 1.0, 2]], {"boss": True, "scale": 1.2, "char": "enforcer", "status": "chill"}),
+    "finargle_drone": ("finargle", "#b8e0f0", 15, 3, "Finargle Drone", [["storm_fluff", 0.35, 1], ["finargle_fuzz", 0.3, 1]], {"art": "finargle"}),
+    "storm_wisp": ("prism_wisp", "#9aa4ff", 20, 4, "Storm Wisp", [["storm_glass", 0.12, 1], ["wisp_spark", 0.2, 1]], {}),
+    "cloud_knight": ("knight", "#c8d8f8", 24, 4, "Cloud Knight", [["storm_fluff", 0.3, 1], ["silver", 0.3, 1]], {}),
+    "storm_roc": ("finargle_elder", "", 140, 5, "The Storm Roc", [["storm_glass", 1.0, 3], ["storm_fluff", 1.0, 3]], {"boss": True, "scale": 1.15, "art": "storm_roc"}),
+    "gilt_guard": ("knight", "#ffe488", 24, 4, "Gilt Guard", [["gambler_chip", 0.5, 2], ["gold", 0.2, 1]], {}),
+    "gilded_mirror": ("mirror", "#ffe070", 22, 4, "Gilded Mirror", [["gold_bundle", 0.15, 1], ["glass", 0.5, 1]], {}),
+    "gilt_runner": ("thug_speedster", "#ffd870", 18, 4, "Gilt Runner", [["gambler_chip", 0.4, 1], ["thug_cash", 0.3, 1]], {"char": "speedster"}),
+    "madame_aurum": ("thug_gambler", "", 140, 5, "Madame Aurum", [["gambler_chip", 1.0, 8], ["lucky_coin", 1.0, 2]], {"boss": True, "char": "mg_aurum", "scale": 1.15}),
+}
+# Kinds with their own sheet coming from CONDUCT 4 P5 (enemies/<kind>): tint only on the fallback.
+OWN_ART = ["thornmother", "sun_colossus", "garden_boss", "smuggler_king", "ice_hauler", "dune_crab", "sand_hound", "sun_moth", "glass_golem", "gilt_guard", "rail_bot"]
+BOSS_REWARD = {3: 350, 4: 550, 5: 850}
+NATIVE_HP = [1.5, 2.2, 2.8, 3.5, 4.0, 5.0]  # mirrors Enemy.NATIVE_HP (rewards only)
+DROP_PER_HP = 3.4
+# Region bosses wait for the hub job (Moonpool after Liesl's, etc.): set per boss in main().
+# Gangster-arc bosses for the both-arc regions (c4_09 #6): region.gd reads kind/who/text/title/
+# win/after "_gangsters". All-ages: a scuffle, then they back down.
+GANG_BOSS = {
+    "gloam_moonpool": {"kind_gangsters": "garden_boss", "who_gangsters": "Rosa Thorne", "title_gangsters": "Rosa Thorne",
+        "text_gangsters": "A woman in a thorn-green coat steps out from behind the roses, pruning shears in one hand. 'This garden pays me rent,' says Rosa Thorne. 'Everyone in Gloamwood pays me rent.'",
+        "win_gangsters": "Rosa snips one rose, tucks it in your collar and backs off into the mist. 'Fine. The garden's yours. Water it.' Nobody in Lanternfall pays her again.",
+        "after_gangsters": "The roses grow wild again. Nobody collects rent here now."},
+    "desert_sunken_temple": {"kind_gangsters": "smuggler_king", "who_gangsters": "Dune King Vasco", "title_gangsters": "Dune King Vasco",
+        "text_gangsters": "A big man in a sun-bleached coat sits on a crate of temple gold in the doorway. 'Every caravan pays the Dune King,' says Vasco. 'You're a caravan now.'",
+        "win_gangsters": "Vasco climbs off the crate, dusts himself down and laughs. 'Keep the door, then. The sand was getting in my boots anyway.' He leaves the temple to the scholars.",
+        "after_gangsters": "Vasco's crate sits empty by the door. The caravans pass for free."},
+    "frost_summit": {"kind_gangsters": "ice_hauler", "who_gangsters": "Big Ike Frost", "title_gangsters": "Big Ike Frost",
+        "text_gangsters": "A sled the size of a truck, and on it a man the size of the sled. 'Nobody hauls ice off this mountain but Big Ike,' he says, cracking his knuckles.",
+        "win_gangsters": "Big Ike sits down in the snow, out of breath. 'All right, all right. The summit's free. Hearthhold can have its ice.' He slides off down the mountain.",
+        "after_gangsters": "Sled tracks lead down the mountain. Big Ike doesn't haul here any more."},
 }
 
 # ---------------------------------------------------------------- looks
@@ -469,7 +505,7 @@ A("iron_mill_district", cols=50, rows=44, music="hideout", look="rail", ground_s
           ("mrock", {"ore": "tin", "hp": 3, "n": 2, "sprite": "props/boulder2_s_b"}), ("mrock", {"ore": "coal", "hp": 2, "n": 3, "sprite": "props/ore_coal"}),
           ("heal", {"hp": 3, "energy": 40, "msg": "A fire barrel and a crate to sit on. Warm hands, warm heart.", "hint": "A: warm up at the barrel"}),
           ("note", {"hint": "A: read the poster", "text": "A poster: 'WORK HARDER. THE BARON IS WATCHING.' Someone has drawn him a very small hat."})],
-  enemies=[("thug_cyber", 2), ("thug_flame", 2), ("rail_bot", 2)],
+  enemies=[("mill_runner", 2), ("thug_flame", 2), ("rail_bot", 2)],
   forage=[["fiber", 0.4]],
   intro=["Brick mills with every window lit, chimneys coughing, and a great silo with the Baron's crest painted on it twice as tall as a house."])
 A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_seam="cave_stone_floor", path="ballast", border="cliff", backdrop="night", weather="clear",
@@ -484,7 +520,7 @@ A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_sea
         "text": "A man in a coal-black coat steps off a private rail car and checks a gold pocket watch. 'You're eight minutes late for your own defeat.'",
         "win": "The Baron sits down hard on his own rail car. 'Fine. FINE. The trains can run.' He hands over the watch. 'It's eight minutes fast. It always was.'",
         "after": "The Baron's rail car, empty. A timetable on the seat reads: ALL TRAINS RUNNING."},
-  enemies=[("coal_crawler", 3), ("rail_bot", 2), ("bat", 2)],
+  enemies=[("coal_crawler", 3), ("rail_bot", 2), ("tunnel_bat", 2)],
   forage=[["mushroom", 0.3], ["fiber", 0.3]],
   intro=["Under the mills the old rail tunnels run in the dark, lamps flickering along the walls. Far ahead, a private rail car is parked with all its lights on."])
 
@@ -512,7 +548,7 @@ A("frost_glacier", cols=52, rows=44, music="mega_frost", look="snow", ground_sea
           ("loot", {"item": "glass_frosted", "n": 1, "every": 3, "hint": "A: a sheet of clear ice", "sprite": "props/icicles_1"}),
           ("loot", {"item": "edelweiss", "n": 2, "every": 2, "hint": "A: edelweiss in the lee of a rock", "sprite": "nature/rock_snow_m"}),
           ("note", {"hint": "A: read the cairn", "text": "A cairn with a plaque: 'FOR THE CLIMBERS WHO TURNED BACK. YOU WERE RIGHT.'"})],
-  enemies=[("frost_wolf", 3), ("ice_wisp", 2), ("rime_golem", 1)],
+  enemies=[("frost_wolf", 3), ("rime_wisp", 2), ("rime_golem", 1)],
   forage=[["edelweiss", 0.4], ["wild_herb", 0.2], ["fiber", 0.2]],
   intro=["White in every direction, blue in the cracks. The glacier groans under you like a very old dog getting comfortable."])
 A("frost_caverns", cols=46, rows=42, music="mine_deep", look="snow", ground_seam="cave_ice_floor", path="snow_paving", border="cliff", weather="clear", backdrop="night", links={"frost_hearthhold": ("e", 18)},
@@ -523,7 +559,7 @@ A("frost_caverns", cols=46, rows=42, music="mine_deep", look="snow", ground_seam
           ("mrock", {"ore": "sapphire", "hp": 4, "n": 1, "sprite": "props/ore_crystal_1"}), ("mrock", {"ore": "silver", "hp": 3, "n": 2, "sprite": "props/ore_silver"}),
           ("loot", {"item": "glass_frosted", "n": 2, "every": 3, "hint": "A: a frozen pane in the wall", "sprite": "props/icicles_2"}),
           ("note", {"hint": "A: read the frozen journal", "text": "A journal frozen into the ice, readable through it: 'The caverns hum the same note as the Summit. I think the Wyrm is snoring.'"})],
-  enemies=[("frost_spider", 3), ("rime_golem", 2), ("ice_wisp", 2)],
+  enemies=[("frost_spider", 3), ("rime_golem", 2), ("rime_wisp", 2)],
   forage=[["mushroom", 0.3], ["cave_bloom", 0.1]],
   intro=["Blue ice overhead, blue ice underfoot, and your breath hangs in the air like it's afraid to leave. The walls hum one long, low note."])
 A("frost_falls", cols=48, rows=42, music="mega_frost", look="snow", ground_seam="snow_smooth", links={"frost_hearthhold": ("w", 17)},
@@ -533,7 +569,7 @@ A("frost_falls", cols=48, rows=42, music="mega_frost", look="snow", ground_seam=
           ("heal", {"hp": 4, "energy": 50, "msg": "The falls roar under the ice. Somehow it's peaceful.", "hint": "A: watch the frozen falls"}),
           ("mrock", {"ore": "frost", "hp": 4, "n": 1, "sprite": "props/mrock_ice_1"}),
           ("note", {"hint": "A: read the fishing log", "text": "Fishing log, Tove (age 8): 'Monday: Pike. Tuesday: Pike. Wednesday: a different Pike.'"})],
-  enemies=[("frost_wolf", 2), ("ice_wisp", 2), ("rime_golem", 1)], fish=["ice_pike", "ice_pike", "trout", "salmon"],
+  enemies=[("frost_wolf", 2), ("rime_wisp", 2), ("rime_golem", 1)], fish=["ice_pike", "ice_pike", "trout", "salmon"],
   forage=[["edelweiss", 0.3], ["wild_herb", 0.3]],
   intro=["A waterfall frozen halfway down, still pouring under its skin of ice. The pools below are open and dark, and full of pike."])
 A("frost_summit", cols=44, rows=40, music="colony_ice", look="snow", ground_seam="snow_smooth", weather="blizzard", links={"frost_glacier": ("s", 20)}, boss_at=(20, 8),
@@ -546,7 +582,7 @@ A("frost_summit", cols=44, rows=40, music="colony_ice", look="snow", ground_seam
         "text": "The snowfield shrugs. A head as long as a sled lifts out of the ice, frost pouring from its jaws, and two pale eyes open. It is not pleased to be awake.",
         "win": "The Wyrm sighs a long, cold sigh and curls back down into the snow. Before it sleeps it drops one scale at your feet, as if to say: fine. You win. Now let me sleep.",
         "after": "The snow over the Wyrm rises and falls, slowly. It's snoring."},
-  enemies=[("frost_wolf", 2), ("frost_spider", 2), ("ice_wisp", 2)],
+  enemies=[("frost_wolf", 2), ("frost_spider", 2), ("rime_wisp", 2)],
   forage=[["edelweiss", 0.4]],
   intro=["The top of the world. Wind like knives, sky like glass, and in the middle of the snowfield a long shape under the snow, breathing."])
 
@@ -574,7 +610,7 @@ A("wind_sunrise_shelf", cols=50, rows=44, music="mega_wind", look="sky", ground_
           ("loot", {"item": "star_dust", "n": 1, "every": 3, "hint": "A: dust from a falling star", "sprite": "props/skydeco_2"}),
           ("mrock", {"ore": "storm_glass", "hp": 4, "n": 1, "sprite": "props/moon_crystal_blue_s"}), ("mrock", {"ore": "silver", "hp": 3, "n": 2, "sprite": "props/ore_silver"}),
           ("note", {"hint": "A: read the sky-stone", "text": "A stone that floats, carved: 'FIRST LIGHT FALLS HERE FIRST.' The carving glows faintly pink."})],
-  enemies=[("gale_finargle", 3), ("storm_wisp", 2), ("wisp", 2)], fish=["sky_fish", "sky_fish", "mooncarp"],
+  enemies=[("finargle_drone", 3), ("storm_wisp", 3)], fish=["sky_fish", "sky_fish", "mooncarp"],
   forage=[["star_dust", 0.15], ["flower", 0.3], ["wild_herb", 0.3]],
   intro=["Pink cloud and gold light. The Shelf is always just at sunrise, no matter what time it is down below."])
 A("wind_storm_shelf", cols=48, rows=42, music="danger", look="sky", ground_seam="starry_cloud", weather="storm", links={"wind_breezehaven": ("s", 22), "wind_starfall_garden": ("n", 22)},
@@ -584,7 +620,7 @@ A("wind_storm_shelf", cols=48, rows=42, music="danger", look="sky", ground_seam=
           ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold"}),
           ("loot", {"item": "storm_fluff", "n": 2, "every": 3, "hint": "A: storm fluff snagged on a rod", "sprite": "props/skydeco_5"}),
           ("note", {"hint": "A: read the warning sign", "text": "A sign, scorched: 'DO NOT STAND HERE DURING STORMS. (IT IS ALWAYS STORMING.)'"})],
-  enemies=[("storm_wisp", 3), ("cloud_knight", 2), ("gale_finargle", 2)],
+  enemies=[("storm_wisp", 3), ("cloud_knight", 2), ("finargle_drone", 2)],
   forage=[["star_dust", 0.1], ["wild_herb", 0.2]],
   intro=["Black cloud underfoot, lightning in it like veins. The rods hum. Your hair stands up. So does the pup's."])
 A("wind_starfall_garden", cols=46, rows=42, music="mega_wind", look="sky", ground_seam="starry_cloud", path="float_stone", links={"wind_storm_shelf": ("s", 21)}, boss_at=(21, 9),
@@ -598,7 +634,7 @@ A("wind_starfall_garden", cols=46, rows=42, music="mega_wind", look="sky", groun
         "text": "Wings like thunderheads open over the garden. The Roc lands, and every star in the garden flickers. It screams once, and the wind screams with it.",
         "win": "The Roc folds its wings and the storm goes with them. It looks at you, then at the Star Crystal's glow, and bows its great head. A feather drifts down, crackling.",
         "after": "The Roc's nest, empty and peaceful. A breeze, just a breeze."},
-  enemies=[("storm_wisp", 2), ("cloud_knight", 2), ("gale_finargle", 2)], fish=["sky_fish", "mooncarp"],
+  enemies=[("storm_wisp", 2), ("cloud_knight", 2), ("finargle_drone", 2)], fish=["sky_fish", "mooncarp"],
   forage=[["star_dust", 0.2], ["flower", 0.3]],
   intro=["Above the storm, the sky goes dark and full of stars, close enough to touch. Flowers glow in the cloud. In the middle of it all, a nest the size of a barn."])
 
@@ -625,7 +661,7 @@ A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="c
           ("loot", {"item": "lucky_coin", "n": 1, "every": 4, "hint": "A: a coin in the fountain", "sprite": "props/plaza_06"}),
           ("mrock", {"ore": "gold", "hp": 4, "n": 2, "sprite": "props/ore_gold"}),
           ("note", {"hint": "A: read the house rules", "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)"})],
-  enemies=[("thug_gambler", 2), ("thug_speedster", 2), ("gilt_guard", 2)],
+  enemies=[("thug_gambler", 2), ("gilt_runner", 2), ("gilt_guard", 2)],
   forage=[["flower", 0.3]],
   intro=["Neon on gold. Every door is a casino, every window shows somebody winning, and none of them look happy about it."])
 A("gilt_gardens", cols=50, rows=44, music="mega_gilt", look="gilt", ground_seam="meadow_grass", path="cobble_moss", border="trees", links={"gilt_grand_plaza": ("e", 18)},
@@ -676,7 +712,7 @@ A("sky_reaches", cols=48, rows=42, music="sky", look="sky", ground_seam="cloud",
           ("mrock", {"ore": "silver", "hp": 3, "n": 2, "sprite": "props/moon_crystal_blue_s"}), ("mrock", {"ore": "star_dust", "hp": 4, "n": 1, "sprite": "props/moon_crystal_pink_s"}),
           ("heal", {"hp": 4, "energy": 50, "msg": "The whale's song rolls through the cloud. You feel lighter.", "hint": "A: listen to the whale"}),
           ("note", {"hint": "A: read the knight's carving", "text": "Carved into a floating stone: 'THE WHALE IS NOT LOST. IT IS WAITING FOR SOMEONE WHO WILL LISTEN.'"})],
-  enemies=[("finargle", 3), ("wisp", 2), ("archer", 1), ("gale_finargle", 1)], fish=["sky_fish", "mooncarp"],
+  enemies=[("finargle_drone", 3), ("storm_wisp", 2), ("archer", 1)], fish=["sky_fish", "mooncarp"],
   forage=[["star_dust", 0.15], ["flower", 0.3], ["wild_herb", 0.3]],
   intro=["Above the Cloud Isles the air thins and sings. A shadow the size of a town slides under the clouds below you: the sky whale, circling, circling."])
 
@@ -1021,6 +1057,12 @@ def patch_external(regs):
         lane = EXT_LANES[ext]
         if lane not in R["paths"]:
             R["paths"].append(lane)
+    # The Sky Isles' plain Finargles are the queen's drones (c4_08 #6).
+    for e in regs["sky"].get("enemies", []):
+        if isinstance(e, dict) and e.get("kind") in ("finargle", "finargle_drone"):
+            e["kind"] = "finargle_drone"
+        elif isinstance(e, list) and e and e[0] == "finargle":
+            e[0] = "finargle_drone"
 
 EXT_LANES = {"hollow_heart": [66, 30, 10, 2], "sky": [15, 0, 2, 4]}
 
@@ -1045,6 +1087,18 @@ def main():
             sys.exit("one-way link %s -> %s" % (a, b))
         if links_geom[(b, a)][0] != OPP[side]:
             sys.exit("link %s -> %s: sides %s / %s don't face" % (a, b, side, links_geom[(b, a)][0]))
+    for r in REGIONS:
+        jid = "mega_%s_job" % r["id"]
+        job = AREAS[r["hub"]]["job"]
+        job["reward"].pop("friend", None)  # keepers aren't villagers: no hidden hearts (c4_10 #9)
+        giver = next((n[1] for n in AREAS[r["hub"]].get("npcs", []) if n[0] == job["giver"]), "someone")
+        for a in r["areas"]:
+            bs = AREAS[a["id"]].get("boss")
+            if bs:
+                bs["when"] = {"quest": jid}
+                bs["locked"] = "It hasn't noticed you yet. Help %s in %s first, and the way to it will open." % (giver, CONTENT[r["id"]]["hub_name"])
+                if r["arc"] == "both":
+                    bs.update(GANG_BOSS.get(a["id"], {}))
     regs = J("regions.json")
     owned = {aid for aid in AREAS}
     for aid in owned:
@@ -1067,27 +1121,54 @@ def main():
     W("items.json", I)
     # enemies
     E = J("enemies.json")
+    ival = {k: int(v.get("value", 0)) for k, v in I.items()}
     for k, (base, tint, hp, tier, nm, drops, extra) in ENEMIES.items():
         b = E["enemies"][base]
         d = {"hp": hp, "dmg": max(1, int(b.get("dmg", 2)) + (1 if tier >= 4 else 0)), "speed": b.get("speed", 30), "xp": max(4, hp // 3), "tier": tier,
-             "abilities": list(b.get("abilities", [])), "name": nm, "art": extra.get("art", b.get("art", base))}
-        if tint:
-            d["tint"] = tint
-        if base.startswith("thug_"):
-            d.pop("art")
-        if b.get("status"):
-            d["status"] = b["status"]
-        for kk in ("boss", "scale", "char"):
+             "abilities": list(b.get("abilities", [])), "name": nm}
+        own = k in OWN_ART and os.path.isdir(f"{D}/art/gen/enemies/{k}")
+        if own:  # P5's sheet is in: no char, no tint
+            d["art"] = k
+        elif extra.get("char"):
+            d["char"] = extra["char"]
+            if tint:
+                d["tint"] = tint
+        else:
+            fb = extra.get("art", b.get("art", base))
+            if k in OWN_ART:  # sheet not sliced yet: Enemy falls back at runtime
+                d.update({"art": k, "art_fallback": fb})
+                if tint:
+                    d["fallback_tint"] = tint
+            else:
+                d["art"] = fb
+                if tint:
+                    d["tint"] = tint
+        st = extra.get("status", b.get("status"))
+        if st:
+            d["status"] = st
+        for kk in ("boss", "scale"):
             if kk in extra:
                 d[kk] = extra[kk]
         if extra.get("boss"):
             d["dmg"] = max(d["dmg"], 3)
-            d["xp"] = hp // 2
+            d["xp"] = hp
+            d["reward"] = BOSS_REWARD[tier]
             for a in ("enrage", "lunge"):
                 if a not in d["abilities"]:
                     d["abilities"].append(a)
+        else:
+            d["reward"] = max(6, int(round(hp * NATIVE_HP[tier] * 0.3)))
+            # drop value per raw hp ~DROP_PER_HP: scale every chance by one factor (capped at 1)
+            ev = sum(c * n * ival.get(i, 0) for i, c, n in drops)
+            if ev > 0:
+                f = DROP_PER_HP * hp / ev
+                drops = [[i, round(min(1.0, c * f), 3), n] for i, c, n in drops]
         E["enemies"][k] = d
         E["drops"][k] = drops
+    # first-pass kinds renamed/replaced in CONDUCT 4 (no area spawns them any more)
+    for old in ("gale_finargle",):
+        E["enemies"].pop(old, None)
+        E["drops"].pop(old, None)
     W("enemies.json", E)
     # forage
     F = J("forage.json")
@@ -1120,7 +1201,7 @@ def main():
         e.update({"w": C.get("entry_w", 0), "keeper_at": C.get("keeper_at", [-2, 0]), "home_name": C["home_name"]})
         e.setdefault("spawn", [e["cell"][0], e["cell"][1] + 2])
         travel[r["id"]] = {"name": r["name"], "arc": r["arc"], "hub": r["hub"], "hub_name": C["hub_name"], "hub_spawn": [gate["cell"][0], gate["cell"][1] + 2],
-                           "areas": [a["id"] for a in r["areas"]], "entry": e, "unlock": {"tier": r["unlock"]["tier"]}, "quest": r["unlock"]["quest"],
+                           "areas": [a["id"] for a in r["areas"]], "entry": e, "unlock": {"tier": r["unlock"]["tier"], "hint": {arc: "Opens " + t + "." for arc, t in TIER_STEP.get(r["unlock"]["tier"], {}).items()}}, "quest": r["unlock"]["quest"],
                            "keeper": C["keeper"], "keeper_sprite": C["keeper_sprite"], "lines": C["lines"], "mail": C["mail"], "sfx": C.get("sfx", "door")}
     W("quests.json", Q)
     W("quest_lines.json", QL)

@@ -834,48 +834,48 @@
   "gloom_moth": [
    [
     "wisp_thread",
-    0.35,
+    0.246,
     1
    ],
    [
     "light_mote",
-    0.08,
+    0.056,
     1
    ]
   ],
   "thorn_slime": [
    [
     "slime_gel",
-    0.6,
+    0.805,
     1
    ],
    [
     "wisp_thread",
-    0.15,
+    0.201,
     1
    ]
   ],
   "glade_wisp": [
    [
     "wisp_spark",
-    0.2,
+    0.08,
     1
    ],
    [
     "wisp_thread",
-    0.3,
+    0.12,
     1
    ]
   ],
   "gloom_spider": [
    [
     "wisp_thread",
-    0.5,
+    0.171,
     2
    ],
    [
     "amethyst",
-    0.06,
+    0.02,
     1
    ]
   ],
@@ -894,48 +894,48 @@
   "dune_crab": [
    [
     "sunstone",
-    0.12,
+    0.19,
     1
    ],
    [
     "shell",
-    0.3,
+    0.475,
     1
    ]
   ],
   "sand_hound": [
    [
     "pelt",
-    0.4,
+    0.699,
     1
    ],
    [
     "spice",
-    0.15,
+    0.262,
     1
    ]
   ],
   "sun_moth": [
    [
     "sun_scarab",
-    0.05,
+    0.093,
     1
    ],
    [
     "light_mote",
-    0.1,
+    0.185,
     1
    ]
   ],
   "glass_golem": [
    [
     "glass",
-    0.8,
+    0.544,
     2
    ],
    [
     "sunstone",
-    0.2,
+    0.136,
     1
    ]
   ],
@@ -954,29 +954,29 @@
   "rail_bot": [
    [
     "chain_link",
-    0.4,
+    0.262,
     1
    ],
    [
     "gear",
-    0.15,
+    0.098,
     1
    ],
    [
     "oil",
-    0.25,
+    0.164,
     1
    ]
   ],
   "coal_crawler": [
    [
     "charcoal",
-    0.6,
+    0.349,
     2
    ],
    [
     "coal",
-    0.4,
+    0.233,
     1
    ]
   ],
@@ -995,41 +995,41 @@
   "frost_wolf": [
    [
     "pelt",
-    0.5,
+    0.87,
     1
    ],
    [
     "frost",
-    0.08,
+    0.139,
     1
    ]
   ],
   "rime_golem": [
    [
     "frost",
-    0.35,
+    0.218,
     1
    ],
    [
     "stone",
-    1.0,
+    0.623,
     3
    ],
    [
     "glass_frosted",
-    0.15,
+    0.093,
     1
    ]
   ],
   "frost_spider": [
    [
     "glass_frosted",
-    0.2,
+    0.255,
     1
    ],
    [
     "silver",
-    0.2,
+    0.255,
     1
    ]
   ],
@@ -1043,18 +1043,6 @@
     "glass_frosted",
     1.0,
     2
-   ]
-  ],
-  "gale_finargle": [
-   [
-    "storm_fluff",
-    0.35,
-    1
-   ],
-   [
-    "finargle_fuzz",
-    0.3,
-    1
    ]
   ],
   "storm_wisp": [
@@ -1072,12 +1060,12 @@
   "cloud_knight": [
    [
     "storm_fluff",
-    0.3,
+    0.302,
     1
    ],
    [
     "silver",
-    0.3,
+    0.302,
     1
    ]
   ],
@@ -1096,24 +1084,24 @@
   "gilt_guard": [
    [
     "gambler_chip",
-    0.5,
+    0.212,
     2
    ],
    [
     "gold",
-    0.2,
+    0.085,
     1
    ]
   ],
   "gilded_mirror": [
    [
     "gold_bundle",
-    0.15,
+    0.197,
     1
    ],
    [
     "glass",
-    0.5,
+    0.656,
     1
    ]
   ],
@@ -1500,6 +1488,102 @@
    [
     "light_mote",
     0.3,
+    1
+   ]
+  ],
+  "garden_boss": [
+   [
+    "thug_cash",
+    1.0,
+    4
+   ],
+   [
+    "luna_moth",
+    0.5,
+    1
+   ]
+  ],
+  "smuggler_king": [
+   [
+    "thug_cash",
+    1.0,
+    5
+   ],
+   [
+    "sun_scarab",
+    1.0,
+    1
+   ]
+  ],
+  "mill_runner": [
+   [
+    "chain_link",
+    0.327,
+    1
+   ],
+   [
+    "thug_cash",
+    0.327,
+    1
+   ]
+  ],
+  "tunnel_bat": [
+   [
+    "charcoal",
+    0.697,
+    1
+   ],
+   [
+    "coal",
+    0.58,
+    1
+   ]
+  ],
+  "rime_wisp": [
+   [
+    "frost",
+    0.097,
+    1
+   ],
+   [
+    "glass_frosted",
+    0.121,
+    1
+   ]
+  ],
+  "ice_hauler": [
+   [
+    "thug_cash",
+    1.0,
+    7
+   ],
+   [
+    "glass_frosted",
+    1.0,
+    2
+   ]
+  ],
+  "finargle_drone": [
+   [
+    "storm_fluff",
+    0.199,
+    1
+   ],
+   [
+    "finargle_fuzz",
+    0.171,
+    1
+   ]
+  ],
+  "gilt_runner": [
+   [
+    "gambler_chip",
+    0.308,
+    1
+   ],
+   [
+    "thug_cash",
+    0.231,
     1
    ]
   ]
@@ -2340,7 +2424,7 @@
    "char": "lookout"
   },
   "gloom_moth": {
-   "hp": 12,
+   "hp": 10,
    "dmg": 1,
    "speed": 46,
    "xp": 4,
@@ -2351,7 +2435,8 @@
    "name": "Gloom Moth",
    "art": "lantern_moth",
    "tint": "#c8a0ff",
-   "status": "blind"
+   "status": "blind",
+   "reward": 8
   },
   "thorn_slime": {
    "hp": 9,
@@ -2363,7 +2448,8 @@
    "name": "Thorn Slime",
    "art": "mud_slime",
    "tint": "#b878e0",
-   "status": "slow"
+   "status": "slow",
+   "reward": 8
   },
   "glade_wisp": {
    "hp": 8,
@@ -2377,13 +2463,14 @@
    "name": "Glade Wisp",
    "art": "wisp",
    "tint": "#ffa8e8",
-   "status": "weak"
+   "status": "weak",
+   "reward": 7
   },
   "gloom_spider": {
-   "hp": 20,
+   "hp": 13,
    "dmg": 2,
    "speed": 44,
-   "xp": 6,
+   "xp": 4,
    "tier": 3,
    "abilities": [
     "lunge"
@@ -2391,13 +2478,14 @@
    "name": "Gloom Spider",
    "art": "shard_spider",
    "tint": "#9878f0",
-   "status": "poison"
+   "status": "poison",
+   "reward": 14
   },
   "thornmother": {
-   "hp": 150,
+   "hp": 85,
    "dmg": 3,
    "speed": 28,
-   "xp": 75,
+   "xp": 85,
    "tier": 3,
    "abilities": [
     "ranged",
@@ -2407,73 +2495,83 @@
     "lunge"
    ],
    "name": "The Thornmother",
-   "art": "marsh_witch",
-   "tint": "#c898ff",
+   "art": "thornmother",
+   "art_fallback": "marsh_witch",
+   "fallback_tint": "#c898ff",
    "status": "poison",
    "boss": true,
-   "scale": 1.2
+   "scale": 1.2,
+   "reward": 350
   },
   "dune_crab": {
-   "hp": 18,
+   "hp": 13,
    "dmg": 1,
    "speed": 40,
-   "xp": 6,
+   "xp": 4,
    "tier": 3,
    "abilities": [
     "shield"
    ],
    "name": "Dune Crab",
-   "art": "rock_crab",
-   "tint": "#f4d898"
+   "art": "dune_crab",
+   "art_fallback": "rock_crab",
+   "fallback_tint": "#f4d898",
+   "reward": 14
   },
   "sand_hound": {
-   "hp": 22,
+   "hp": 15,
    "dmg": 3,
    "speed": 56,
-   "xp": 7,
+   "xp": 5,
    "tier": 3,
    "abilities": [
     "enrage",
     "lunge"
    ],
    "name": "Sand Hound",
-   "art": "ash_hound",
-   "tint": "#e8c080",
-   "status": "burn"
+   "art": "sand_hound",
+   "art_fallback": "ash_hound",
+   "fallback_tint": "#e8c080",
+   "status": "burn",
+   "reward": 16
   },
   "sun_moth": {
-   "hp": 16,
+   "hp": 12,
    "dmg": 1,
    "speed": 46,
-   "xp": 5,
+   "xp": 4,
    "tier": 3,
    "abilities": [
     "blink"
    ],
    "name": "Sun Moth",
-   "art": "lantern_moth",
-   "tint": "#ffc860",
-   "status": "blind"
+   "art": "sun_moth",
+   "art_fallback": "lantern_moth",
+   "fallback_tint": "#ffc860",
+   "status": "blind",
+   "reward": 13
   },
   "glass_golem": {
-   "hp": 30,
+   "hp": 18,
    "dmg": 2,
    "speed": 22,
-   "xp": 10,
+   "xp": 6,
    "tier": 3,
    "abilities": [
     "stomp",
     "regen"
    ],
    "name": "Glass Golem",
-   "art": "quarry_golem",
-   "tint": "#a8f0ff"
+   "art": "glass_golem",
+   "art_fallback": "quarry_golem",
+   "fallback_tint": "#a8f0ff",
+   "reward": 19
   },
   "sun_colossus": {
-   "hp": 190,
+   "hp": 105,
    "dmg": 5,
    "speed": 22,
-   "xp": 95,
+   "xp": 105,
    "tier": 4,
    "abilities": [
     "shield",
@@ -2484,31 +2582,35 @@
     "lunge"
    ],
    "name": "The Sun Colossus",
-   "art": "ruin_warden",
-   "tint": "#ffd868",
+   "art": "sun_colossus",
+   "art_fallback": "ruin_warden",
+   "fallback_tint": "#ffd868",
    "status": "weak",
    "boss": true,
-   "scale": 1.15
+   "scale": 1.15,
+   "reward": 550
   },
   "rail_bot": {
-   "hp": 26,
+   "hp": 16,
    "dmg": 2,
    "speed": 22,
-   "xp": 8,
+   "xp": 5,
    "tier": 3,
    "abilities": [
     "shield",
     "lunge"
    ],
    "name": "Rail Bot",
-   "art": "rust_knight",
-   "tint": "#c89060"
+   "art": "rail_bot",
+   "art_fallback": "rust_knight",
+   "fallback_tint": "#c89060",
+   "reward": 17
   },
   "coal_crawler": {
-   "hp": 20,
+   "hp": 13,
    "dmg": 2,
    "speed": 30,
-   "xp": 6,
+   "xp": 4,
    "tier": 3,
    "abilities": [
     "ranged"
@@ -2516,13 +2618,14 @@
    "name": "Coal Crawler",
    "art": "drip_crawler",
    "tint": "#8a8a8a",
-   "status": "poison"
+   "status": "poison",
+   "reward": 14
   },
   "baron_coalbrook": {
-   "hp": 210,
+   "hp": 115,
    "dmg": 4,
    "speed": 20,
-   "xp": 105,
+   "xp": 115,
    "tier": 4,
    "abilities": [
     "shield",
@@ -2531,55 +2634,59 @@
     "lunge"
    ],
    "name": "Baron Coalbrook",
+   "char": "mg_coalbrook",
    "boss": true,
    "scale": 1.15,
-   "char": "mg_coalbrook"
+   "reward": 550
   },
   "frost_wolf": {
-   "hp": 28,
+   "hp": 17,
    "dmg": 3,
    "speed": 54,
-   "xp": 9,
+   "xp": 5,
    "tier": 4,
    "abilities": [
     "lunge"
    ],
    "name": "Frost Wolf",
    "art": "hill_wolf",
-   "tint": "#dcf2ff"
+   "tint": "#9cc8f0",
+   "reward": 20
   },
   "rime_golem": {
-   "hp": 40,
+   "hp": 22,
    "dmg": 3,
    "speed": 18,
-   "xp": 13,
+   "xp": 7,
    "tier": 4,
    "abilities": [
     "stomp"
    ],
    "name": "Rime Golem",
    "art": "golem",
-   "tint": "#acdcff"
+   "tint": "#acdcff",
+   "reward": 26
   },
   "frost_spider": {
-   "hp": 30,
+   "hp": 18,
    "dmg": 3,
    "speed": 44,
-   "xp": 10,
+   "xp": 6,
    "tier": 4,
    "abilities": [
     "lunge"
    ],
    "name": "Frost Spider",
    "art": "shard_spider",
-   "tint": "#c4ecff",
-   "status": "poison"
+   "tint": "#88c8f8",
+   "status": "chill",
+   "reward": 22
   },
   "rime_wyrm": {
-   "hp": 230,
+   "hp": 125,
    "dmg": 3,
    "speed": 36,
-   "xp": 115,
+   "xp": 125,
    "tier": 5,
    "abilities": [
     "lunge",
@@ -2587,31 +2694,17 @@
    ],
    "name": "The Rime Wyrm",
    "art": "rime_wyrm",
-   "status": "poison",
+   "status": "chill",
    "boss": true,
-   "scale": 1.2
-  },
-  "gale_finargle": {
-   "hp": 36,
-   "dmg": 3,
-   "speed": 36,
-   "xp": 12,
-   "tier": 5,
-   "abilities": [
-    "blink",
-    "ranged"
-   ],
-   "name": "Gale Finargle",
-   "art": "finargle",
-   "tint": "#d4f2ff",
-   "status": "blind"
+   "scale": 1.2,
+   "reward": 850
   },
   "storm_wisp": {
-   "hp": 30,
+   "hp": 20,
    "dmg": 3,
    "speed": 40,
-   "xp": 10,
-   "tier": 5,
+   "xp": 6,
+   "tier": 4,
    "abilities": [
     "summon",
     "blink",
@@ -2619,28 +2712,30 @@
    ],
    "name": "Storm Wisp",
    "art": "prism_wisp",
-   "tint": "#b4bcff",
-   "status": "blind"
+   "tint": "#9aa4ff",
+   "status": "blind",
+   "reward": 24
   },
   "cloud_knight": {
-   "hp": 46,
+   "hp": 24,
    "dmg": 3,
    "speed": 28,
-   "xp": 15,
-   "tier": 5,
+   "xp": 8,
+   "tier": 4,
    "abilities": [
     "shield",
     "lunge"
    ],
    "name": "Cloud Knight",
    "art": "knight",
-   "tint": "#f2f8ff"
+   "tint": "#c8d8f8",
+   "reward": 29
   },
   "storm_roc": {
-   "hp": 260,
+   "hp": 140,
    "dmg": 4,
    "speed": 32,
-   "xp": 130,
+   "xp": 140,
    "tier": 5,
    "abilities": [
     "blink",
@@ -2654,28 +2749,31 @@
    "art": "storm_roc",
    "status": "blind",
    "boss": true,
-   "scale": 1.15
+   "scale": 1.15,
+   "reward": 850
   },
   "gilt_guard": {
-   "hp": 48,
+   "hp": 24,
    "dmg": 3,
    "speed": 28,
-   "xp": 16,
-   "tier": 5,
+   "xp": 8,
+   "tier": 4,
    "abilities": [
     "shield",
     "lunge"
    ],
    "name": "Gilt Guard",
-   "art": "knight",
-   "tint": "#ffe488"
+   "art": "gilt_guard",
+   "art_fallback": "knight",
+   "fallback_tint": "#ffe488",
+   "reward": 29
   },
   "gilded_mirror": {
-   "hp": 40,
+   "hp": 22,
    "dmg": 4,
    "speed": 48,
-   "xp": 13,
-   "tier": 5,
+   "xp": 7,
+   "tier": 4,
    "abilities": [
     "lunge",
     "blink",
@@ -2684,13 +2782,14 @@
    "name": "Gilded Mirror",
    "art": "mirror",
    "tint": "#ffe070",
-   "status": "weak"
+   "status": "weak",
+   "reward": 26
   },
   "madame_aurum": {
-   "hp": 260,
+   "hp": 140,
    "dmg": 3,
    "speed": 32,
-   "xp": 130,
+   "xp": 140,
    "tier": 5,
    "abilities": [
     "ranged",
@@ -2699,10 +2798,11 @@
     "lunge"
    ],
    "name": "Madame Aurum",
+   "char": "mg_aurum",
    "status": "blind",
    "boss": true,
    "scale": 1.15,
-   "char": "mg_aurum"
+   "reward": 850
   },
   "grump_crystal": {
    "hp": 18,
@@ -3130,6 +3230,138 @@
    "scale": 1.35,
    "grump": true,
    "status": "burn"
+  },
+  "garden_boss": {
+   "hp": 85,
+   "dmg": 3,
+   "speed": 32,
+   "xp": 85,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "blink",
+    "enrage",
+    "lunge"
+   ],
+   "name": "Rosa Thorne",
+   "char": "gambler",
+   "tint": "#c898ff",
+   "status": "poison",
+   "boss": true,
+   "scale": 1.15,
+   "reward": 350
+  },
+  "smuggler_king": {
+   "hp": 105,
+   "dmg": 4,
+   "speed": 22,
+   "xp": 105,
+   "tier": 4,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Dune King Vasco",
+   "char": "brute",
+   "tint": "#e8b060",
+   "status": "burn",
+   "boss": true,
+   "scale": 1.15,
+   "reward": 550
+  },
+  "mill_runner": {
+   "hp": 13,
+   "dmg": 2,
+   "speed": 34,
+   "xp": 4,
+   "tier": 3,
+   "abilities": [
+    "ranged"
+   ],
+   "name": "Mill Runner",
+   "char": "cyber",
+   "tint": "#c8a070",
+   "status": "blind",
+   "reward": 14
+  },
+  "tunnel_bat": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 48,
+   "xp": 4,
+   "tier": 4,
+   "abilities": [],
+   "name": "Tunnel Bat",
+   "art": "bat",
+   "tint": "#6a6a7a",
+   "reward": 17
+  },
+  "rime_wisp": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 44,
+   "xp": 4,
+   "tier": 4,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "name": "Rime Wisp",
+   "art": "ice_wisp",
+   "tint": "#b8e8ff",
+   "status": "chill",
+   "reward": 17
+  },
+  "ice_hauler": {
+   "hp": 125,
+   "dmg": 4,
+   "speed": 20,
+   "xp": 125,
+   "tier": 5,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage",
+    "lunge"
+   ],
+   "name": "Big Ike Frost",
+   "char": "enforcer",
+   "tint": "#a8d8ff",
+   "status": "chill",
+   "boss": true,
+   "scale": 1.2,
+   "reward": 850
+  },
+  "finargle_drone": {
+   "hp": 15,
+   "dmg": 2,
+   "speed": 36,
+   "xp": 5,
+   "tier": 3,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "name": "Finargle Drone",
+   "art": "finargle",
+   "tint": "#b8e0f0",
+   "status": "blind",
+   "reward": 16
+  },
+  "gilt_runner": {
+   "hp": 18,
+   "dmg": 2,
+   "speed": 60,
+   "xp": 6,
+   "tier": 4,
+   "abilities": [
+    "lunge",
+    "blink"
+   ],
+   "name": "Gilt Runner",
+   "char": "speedster",
+   "tint": "#ffd870",
+   "reward": 22
   }
  }
 }

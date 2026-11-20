@@ -27,7 +27,7 @@ REGIONS = [
      "areas": [
          {"id": "gloam_lanternfall", "scene": "gloam_lanternfall", "name": "Lanternfall", "links": ["gloam_violet_glade", "gloam_crystal_thicket"], "tier": 2, "hub": True},
          {"id": "gloam_violet_glade", "scene": "gloam_violet_glade", "name": "Violet Glade", "links": ["gloam_lanternfall", "gloam_moonpool"], "tier": 2},
-         {"id": "gloam_crystal_thicket", "scene": "gloam_crystal_thicket", "name": "Crystal Thicket", "links": ["gloam_lanternfall"], "tier": 3},
+         {"id": "gloam_crystal_thicket", "scene": "gloam_crystal_thicket", "name": "Crystal Thicket", "links": ["gloam_lanternfall"], "tier": 2},
          {"id": "gloam_moonpool", "scene": "gloam_moonpool", "name": "The Moonpool", "links": ["gloam_violet_glade"], "tier": 3},
      ]},
     {"id": "sunscorch", "name": "Sunscorch Expanse", "arc": "both", "theme": "desert", "color": "d8a048",
@@ -63,27 +63,37 @@ REGIONS = [
      ]},
     {"id": "windward", "name": "Windward Isles", "arc": "penguins", "theme": "sky", "color": "b8d8f8",
      "entry": {"scene": "meadow", "cell": [42, 24], "prop": "wi_mooring_tower", "label": "Captain Zephyr's balloon"},
-     "unlock": {"tier": 4, "quest": "mega_windward_hook", "flag": "mega_windward_open"},
+     "unlock": {"tier": 3, "quest": "mega_windward_hook", "flag": "mega_windward_open"},
      "hub": "wind_breezehaven",
      "areas": [
-         {"id": "wind_breezehaven", "scene": "wind_breezehaven", "name": "Breezehaven", "links": ["wind_sunrise_shelf", "wind_storm_shelf"], "tier": 5, "hub": True},
-         {"id": "wind_sunrise_shelf", "scene": "wind_sunrise_shelf", "name": "Sunrise Shelf", "links": ["wind_breezehaven"], "tier": 5},
-         {"id": "wind_storm_shelf", "scene": "wind_storm_shelf", "name": "Storm Shelf", "links": ["wind_breezehaven", "wind_starfall_garden"], "tier": 5},
+         {"id": "wind_breezehaven", "scene": "wind_breezehaven", "name": "Breezehaven", "links": ["wind_sunrise_shelf", "wind_storm_shelf"], "tier": 4, "hub": True},
+         {"id": "wind_sunrise_shelf", "scene": "wind_sunrise_shelf", "name": "Sunrise Shelf", "links": ["wind_breezehaven"], "tier": 4},
+         {"id": "wind_storm_shelf", "scene": "wind_storm_shelf", "name": "Storm Shelf", "links": ["wind_breezehaven", "wind_starfall_garden"], "tier": 4},
          {"id": "wind_starfall_garden", "scene": "wind_starfall_garden", "name": "Starfall Garden", "links": ["wind_storm_shelf"], "tier": 5},
      ]},
     {"id": "giltcity", "name": "Gilt City", "arc": "gangsters", "theme": "gilt", "color": "e8c048",
      "entry": {"scene": "farm", "cell": [40, 31], "spawn": [40, 29], "prop": "limo", "label": "the black limousine"},
-     "unlock": {"tier": 4, "quest": "mega_giltcity_hook", "flag": "mega_giltcity_open"},
+     "unlock": {"tier": 3, "quest": "mega_giltcity_hook", "flag": "mega_giltcity_open"},
      "hub": "gilt_grand_plaza",
      "areas": [
-         {"id": "gilt_grand_plaza", "scene": "gilt_grand_plaza", "name": "Grand Plaza", "links": ["gilt_casino_row", "gilt_gardens"], "tier": 5, "hub": True},
-         {"id": "gilt_casino_row", "scene": "gilt_casino_row", "name": "Casino Row", "links": ["gilt_grand_plaza", "gilt_vaults"], "tier": 5},
-         {"id": "gilt_gardens", "scene": "gilt_gardens", "name": "Gilded Gardens", "links": ["gilt_grand_plaza"], "tier": 5},
+         {"id": "gilt_grand_plaza", "scene": "gilt_grand_plaza", "name": "Grand Plaza", "links": ["gilt_casino_row", "gilt_gardens"], "tier": 4, "hub": True},
+         {"id": "gilt_casino_row", "scene": "gilt_casino_row", "name": "Casino Row", "links": ["gilt_grand_plaza", "gilt_vaults"], "tier": 4},
+         {"id": "gilt_gardens", "scene": "gilt_gardens", "name": "Gilded Gardens", "links": ["gilt_grand_plaza"], "tier": 4},
          {"id": "gilt_vaults", "scene": "gilt_vaults", "name": "The Vaults", "links": ["gilt_casino_row"], "tier": 5},
      ]},
 ]
 
 BY_ID = {r["id"]: r for r in REGIONS}
+
+# What the locked travel point says (CONDUCT 4, c4_11 #3): the real story step per arc for each
+# GameState.progress_tier() value, not "chapter N". Unlock tier = the region's first area tier - 1
+# (its boss area waits for the hub job). mega_travel.json carries it as unlock.hint {arc: text}.
+TIER_STEP = {
+    1: {"penguins": "after you find out what's howling in the east meadow", "gangsters": "after you settle things in the east meadow"},
+    2: {"penguins": "after you build the Crystal Resonator", "gangsters": "after you take the docks from the dock boss"},
+    3: {"penguins": "after you climb the sky stair", "gangsters": "after you put out Flame in the neon district"},
+    4: {"penguins": "after you power the moon teleporter", "gangsters": "after you beat the President's Enforcer"},
+}
 
 # ---------------------------------------------------------------- map tabs (a5's schema)
 # tools/gen_mega_regions.py imports MEGA (five regions of their own) and IRONLINE (areas

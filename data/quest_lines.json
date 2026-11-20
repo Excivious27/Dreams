@@ -1128,66 +1128,6 @@
    "I need eighty tickets and I have four. Win him for me? I'll give you my kite."
   ]
  },
- "mega_gloamwood_job": {
-  "offer": [
-   "The moth nets are fraying and the moths keep wandering off to the Glade.",
-   "Five Wisp Thread would mend them. The glade wisps leave it everywhere."
-  ],
-  "yes": "You're a dear. Mind the slimes, they're sticky.",
-  "done": [
-   "Perfect. Gerald says thank you. Gerald is the moth."
-  ]
- },
- "mega_sunscorch_job": {
-  "offer": [
-   "The Sunken Temple's full of carved scarabs. Gold ones. They're the key to the whole script.",
-   "Two would do. I'd go myself but I'm a scholar, not a hero."
-  ],
-  "yes": "Wonderful! Mind the glass golems. They don't mind you.",
-  "done": [
-   "Look at the wings! It's a calendar. The whole beetle is a calendar."
-  ]
- },
- "mega_ironline_job": {
-  "offer": [
-   "The Baron's bots wrecked the yard switch. No switch, no trains, no Junction.",
-   "Four Rail Chain and two cans of Engine Oil. The bots carry both."
-  ],
-  "yes": "Good. Hit 'em where the rivets are.",
-  "done": [
-   "She switches! Hear that clunk? That's freedom, that is."
-  ]
- },
- "mega_frostpeak_job": {
-  "offer": [
-   "I want a window that never frosts over. Rime Crystal for the frame, Glacier Glass for the pane.",
-   "Three crystals and two glass. The Caverns and the Glacier have both."
-  ],
-  "yes": "Wrap up warm. The golems don't feel the cold, but you do.",
-  "done": [
-   "Look at that view. I can see the Summit from my stove! Here, something for your trouble."
-  ]
- },
- "mega_windward_job": {
-  "offer": [
-   "The winds are getting wilder every day. I can calm them, with the right weather in a jar.",
-   "Three Storm Glass and two Storm Fluff. The Storm Shelf has plenty."
-  ],
-  "yes": "Splendid. Don't hold anything metal up there.",
-  "done": [
-   "Feel that? A breeze. Just a breeze. Take this, you'll need it on the Shelf."
-  ]
- },
- "mega_giltcity_job": {
-  "offer": [
-   "I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.",
-   "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."
-  ],
-  "yes": "Wonderful. Wear something dark, the guards hate that.",
-  "done": [
-   "Perfect. Look at it shine! She'll hate it. Here, for you."
-  ]
- },
  "rec_pip_jumper": {
   "offer": [
    "Block Jumper level three has a gap that is IMPOSSIBLE. Like, actually impossible.",
@@ -1301,5 +1241,65 @@
    "I can't test it. My hands panic. Would you score three thousand with it, for science?"
   ],
   "wait": "Three thousand points on Neon Stack. The pattern holds, I'm nearly sure."
+ },
+ "mega_gloamwood_job": {
+  "offer": [
+   "The moth nets are fraying and the moths keep wandering off to the Glade.",
+   "Five Wisp Thread would mend them. The glade wisps leave it everywhere."
+  ],
+  "yes": "You're a dear. Mind the slimes, they're sticky.",
+  "done": [
+   "Perfect. Gerald says thank you. Gerald is the moth."
+  ]
+ },
+ "mega_sunscorch_job": {
+  "offer": [
+   "The Sunken Temple's full of carved scarabs. Gold ones. They're the key to the whole script.",
+   "Two would do. I'd go myself but I'm a scholar, not a hero."
+  ],
+  "yes": "Wonderful! Mind the glass golems. They don't mind you.",
+  "done": [
+   "Look at the wings! It's a calendar. The whole beetle is a calendar."
+  ]
+ },
+ "mega_ironline_job": {
+  "offer": [
+   "The Baron's bots wrecked the yard switch. No switch, no trains, no Junction.",
+   "Four Rail Chain and two cans of Engine Oil. The bots carry both."
+  ],
+  "yes": "Good. Hit 'em where the rivets are.",
+  "done": [
+   "She switches! Hear that clunk? That's freedom, that is."
+  ]
+ },
+ "mega_frostpeak_job": {
+  "offer": [
+   "I want a window that never frosts over. Rime Crystal for the frame, Glacier Glass for the pane.",
+   "Three crystals and two glass. The Caverns and the Glacier have both."
+  ],
+  "yes": "Wrap up warm. The golems don't feel the cold, but you do.",
+  "done": [
+   "Look at that view. I can see the Summit from my stove! Here, something for your trouble."
+  ]
+ },
+ "mega_windward_job": {
+  "offer": [
+   "The winds are getting wilder every day. I can calm them, with the right weather in a jar.",
+   "Three Storm Glass and two Storm Fluff. The Storm Shelf has plenty."
+  ],
+  "yes": "Splendid. Don't hold anything metal up there.",
+  "done": [
+   "Feel that? A breeze. Just a breeze. Take this, you'll need it on the Shelf."
+  ]
+ },
+ "mega_giltcity_job": {
+  "offer": [
+   "I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.",
+   "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."
+  ],
+  "yes": "Wonderful. Wear something dark, the guards hate that.",
+  "done": [
+   "Perfect. Look at it shine! She'll hate it. Here, for you."
+  ]
  }
 }
