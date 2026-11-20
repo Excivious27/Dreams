@@ -117,6 +117,17 @@ func _chest(m: GameMap) -> void:
 	var amt := cs._amt
 	await _press(ScreenCursor.TOOL)
 	check(cs._amt == (amt + 1) % 4, "TOOL cycles the move amount")
+	# Rarity dots: count, not colour alone.
+	var rare_id := ""
+	for iid: String in GameState.items:
+		if str(GameState.items[iid].get("rarity", "")) == "epic":
+			rare_id = iid
+			break
+	if rare_id != "":
+		var sb := Button.new()
+		cs._rarity_dots(sb, rare_id)
+		check(sb.get_child_count() == 3, "epic slot shows 3 rarity dots")
+		sb.queue_free()
 	await _press("b")
 	await _frames(4)
 	check(not is_instance_valid(cs) or not cs.is_inside_tree(), "B closes the chest")

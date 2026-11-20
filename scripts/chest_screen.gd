@@ -322,6 +322,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 		else:
 			b.text = GameState.item_name(id).left(4)
 			b.add_theme_font_size_override("font_size", 7)
+		_rarity_dots(b, id)
 		if count > 1:
 			var n := _label(str(count), 7, Color.WHITE)
 			n.add_theme_constant_override("outline_size", 2)
@@ -340,6 +341,31 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 			st.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			b.add_child(st)
 	return b
+
+
+## Rarity said by count too, not colour alone (c9_07): uncommon 1 dot .. legendary 4,
+## along the slot's bottom-left edge, in the rarity colour with a dark rim.
+const RARITY_RANK := {"uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+
+
+func _rarity_dots(b: Control, id: String) -> void:
+	var n := int(RARITY_RANK.get(str(GameState.items.get(id, {}).get("rarity", "common")), 0))
+	if n == 0:
+		return
+	var col := GameState.rarity_color(id)
+	for k in n:
+		var dot := ColorRect.new()
+		dot.color = Color(0.05, 0.03, 0.02)
+		dot.size = Vector2(4, 4)
+		dot.position = Vector2(2 + k * 4, SLOT - 6)
+		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var inner := ColorRect.new()
+		inner.color = col
+		inner.size = Vector2(2, 2)
+		inner.position = Vector2(1, 1)
+		inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		dot.add_child(inner)
+		b.add_child(dot)
 
 
 func _refresh() -> void:
