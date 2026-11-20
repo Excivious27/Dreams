@@ -137,6 +137,37 @@ func _run() -> void:
 	await press("b")
 	await frames(3)
 	check(m._open and m._tab == "Quests", "B on Mail goes back to Quests")
+	# Items with the cursor: A on a bag slot holding something picks it, A on an
+	# empty bag slot puts it down there, and B drops a pick before anything else.
+	GameState.add_item("berry", 3)
+	m._tab = "Items"
+	m._refresh()
+	await frames(3)
+	var bag := GameState.bag_slots()
+	var bi := bag.find("berry")
+	var empty := bag.find("")
+	var slots: Array = []
+	for b in m._cursor_list():
+		if (b as Control).custom_minimum_size == Vector2(GameMenu.SLOT, GameMenu.SLOT):
+			slots.append(b)
+	if bi >= 0 and empty >= 0:
+		# Bag slots are the last 30 square buttons, in bag order.
+		var bag_btns := slots.slice(slots.size() - bag.size())
+		m._cur = m._cursor_list().find(bag_btns[bi])
+		await press("a")
+		await frames(2)
+		check(m._bag_pick == "berry", "A on a bag slot picks it (picked '%s')" % m._bag_pick)
+		var l2 := m._cursor_list()
+		var sq: Array = []
+		for b in l2:
+			if (b as Control).custom_minimum_size == Vector2(GameMenu.SLOT, GameMenu.SLOT):
+				sq.append(b)
+		m._cur = l2.find(sq[sq.size() - bag.size() + empty])
+		await press("a")
+		await frames(2)
+		check(m._bag_pick == "" and GameState.bag_slots()[empty] == "berry", "A on an empty bag slot puts it there")
+	else:
+		check(false, "bag has berries and a free slot")
 	# Skills: the cursor list never holds disabled (empty) node cells.
 	m._tab = "Skills"
 	m._refresh()
