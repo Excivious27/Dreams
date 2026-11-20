@@ -1727,7 +1727,8 @@
    "abilities": [
     "ranged"
    ],
-   "status": "blind"
+   "status": "blind",
+   "reward": 8
   },
   "thug_brute": {
    "hp": 20,
@@ -1738,7 +1739,8 @@
    "abilities": [
     "lunge",
     "enrage"
-   ]
+   ],
+   "reward": 16
   },
   "thug_flame": {
    "hp": 14,
@@ -1749,7 +1751,8 @@
    "abilities": [
     "ranged"
    ],
-   "status": "burn"
+   "status": "burn",
+   "reward": 12
   },
   "thug_speedster": {
    "hp": 8,
@@ -1760,7 +1763,8 @@
    "abilities": [
     "lunge",
     "blink"
-   ]
+   ],
+   "reward": 7
   },
   "thug_gambler": {
    "hp": 10,
@@ -1773,7 +1777,8 @@
     "blink"
    ],
    "status": "blind",
-   "name": "Trickster"
+   "name": "Trickster",
+   "reward": 9
   },
   "thug_enforcer": {
    "hp": 26,
@@ -1784,7 +1789,8 @@
    "abilities": [
     "shield",
     "stomp"
-   ]
+   ],
+   "reward": 22
   },
   "president": {
    "hp": 200,
@@ -2499,7 +2505,7 @@
    "status": "poison",
    "boss": true,
    "scale": 1.2,
-   "reward": 350
+   "reward": 1000
   },
   "dune_crab": {
    "hp": 13,
@@ -2576,7 +2582,7 @@
    "status": "weak",
    "boss": true,
    "scale": 1.15,
-   "reward": 550
+   "reward": 1800
   },
   "rail_bot": {
    "hp": 16,
@@ -2623,7 +2629,7 @@
    "char": "mg_coalbrook",
    "boss": true,
    "scale": 1.15,
-   "reward": 550
+   "reward": 1800
   },
   "frost_wolf": {
    "hp": 17,
@@ -2683,7 +2689,7 @@
    "status": "chill",
    "boss": true,
    "scale": 1.2,
-   "reward": 850
+   "reward": 2800
   },
   "storm_wisp": {
    "hp": 20,
@@ -2736,7 +2742,7 @@
    "status": "blind",
    "boss": true,
    "scale": 1.15,
-   "reward": 850
+   "reward": 2800
   },
   "gilt_guard": {
    "hp": 24,
@@ -2786,7 +2792,7 @@
    "status": "blind",
    "boss": true,
    "scale": 1.15,
-   "reward": 850
+   "reward": 2800
   },
   "grump_crystal": {
    "hp": 18,
@@ -3232,7 +3238,7 @@
    "status": "poison",
    "boss": true,
    "scale": 1.15,
-   "reward": 350
+   "reward": 1000
   },
   "smuggler_king": {
    "hp": 105,
@@ -3249,7 +3255,7 @@
    "status": "burn",
    "boss": true,
    "scale": 1.15,
-   "reward": 550
+   "reward": 1800
   },
   "mill_runner": {
    "hp": 13,
@@ -3311,7 +3317,7 @@
    "status": "chill",
    "boss": true,
    "scale": 1.2,
-   "reward": 850
+   "reward": 2800
   },
   "finargle_drone": {
    "hp": 15,

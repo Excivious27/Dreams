@@ -1165,12 +1165,13 @@
     "who": "Harbourmaster Vance",
     "text": "You're the farmer. The President said you'd come by water eventually. Everyone does.",
     "win": "He sits down hard between two containers and tosses you his jacket. 'Take it. I'm done.' In the pocket: a shipping manifest. Every crate on it is marked with a small purple crystal.",
-    "reward": "dark",
+    "reward": "crystal_refined",
     "reward_n": 2,
     "after": "The docks are yours now. Specs says a hacker could do a lot with the harbour cameras.",
     "hint": "A: dock boss",
     "solid": false,
-    "title": "Harbourmaster Vance"
+    "title": "Harbourmaster Vance",
+    "max_hp": 1
    },
    {
     "type": "loot",
@@ -1653,7 +1654,8 @@
      "quest": "docks"
     },
     "locked": "The neon boss is not seeing anyone who has not settled the docks.",
-    "title": "Lucia \"Flame\" Ardent"
+    "title": "Lucia \"Flame\" Ardent",
+    "max_hp": 1
    }
   ],
   "enemies": [
@@ -2062,7 +2064,7 @@
     "who": "Silas Crane",
     "text": "Uptown doesn't do visitors. Uptown does paperwork. You're about to be filed.",
     "win": "The riot shield clatters down the marble steps. Behind it, for one second, the tower's doors open. Then they close. There's a slot in them like a mailbox.",
-    "reward": "gold",
+    "reward": "gold_bar",
     "reward_n": 3,
     "after": "The tower doors. Whatever you kept, this is where it counts.",
     "hint": "A: enforcer",
@@ -2071,7 +2073,8 @@
      "quest": "pit"
     },
     "locked": "The tower guards look straight through you. Win the pit first; then they will take you seriously.",
-    "title": "Silas Crane"
+    "title": "Silas Crane",
+    "max_hp": 1
    }
   ],
   "enemies": [
@@ -7373,7 +7376,13 @@
   "intro": [
    "Pink stilt-huts, grey coral creeping up the beach, and somewhere a merkitty singing, badly out of tune."
   ],
-  "colony": "colony_coral"
+  "colony": "colony_coral",
+  "fish": [
+   "sunfish",
+   "bass",
+   "puffer",
+   "starfin"
+  ]
  },
  "colony_kelp": {
   "cols": 96,
@@ -7691,6 +7700,12 @@
    "Teal moss down to the waterline, huts leaning on kelp-wrapped legs, and fog that moves like it's breathing."
   ],
   "colony": "colony_kelp",
+  "fish": [
+   "catfish",
+   "eel",
+   "salmon",
+   "tuna"
+  ],
   "ground_seam": "teal_moss",
   "weather": "fog",
   "water_blobs": [
@@ -8035,6 +8050,11 @@
    "Snow on everything, the lodge chimneys barely smoking, and a frozen shoreline creaking like an old door."
   ],
   "colony": "colony_ice",
+  "fish": [
+   "salmon",
+   "tuna",
+   "ice_pike"
+  ],
   "weather": "snow",
   "season": "winter"
  },
@@ -8364,6 +8384,11 @@
    "Black sand, warm underfoot, glassworks glowing along the shore, and over it all a mountain that won't stop grumbling."
   ],
   "colony": "colony_ember",
+  "fish": [
+   "puffer",
+   "tuna",
+   "ember_koi"
+  ],
   "ground_seam": "ash"
  },
  "hollow_heart": {

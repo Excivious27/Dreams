@@ -28,7 +28,7 @@ const T := {
 	# XP per catch: base + value / per (capped); boots give the floor.
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
 	# Legendary Koi: the lake at night under the lit lighthouse, baited, Fishing 10+.
-	"koi": {"scene": "lake", "level": 10, "chance": 0.03},
+	"koi": {"scene": "lake", "level": 10, "chance": 0.012},
 	# Fallback pools for waters with no list of their own.
 	"sea_pool": ["sunfish", "bass", "eel", "puffer", "tuna"],
 	"fresh_pool": ["carp", "bass", "catfish", "salmon", "eel"],

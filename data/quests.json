@@ -118,7 +118,7 @@
     "flag": "boss_wastes"
    },
    "reward": {
-    "crystals": 300,
+    "crystals": 1200,
     "item": [
      "light_mote",
      3
@@ -150,7 +150,7 @@
     "flag": "boss_sky"
    },
    "reward": {
-    "crystals": 400,
+    "crystals": 2000,
     "item": [
      "crystal_refined",
      2
@@ -168,7 +168,7 @@
     "flag": "tele_on"
    },
    "reward": {
-    "crystals": 500
+    "crystals": 3000
    }
   },
   {
@@ -208,7 +208,7 @@
     "flag": "boss_docks"
    },
    "reward": {
-    "crystals": 250,
+    "crystals": 1200,
     "item": [
      "leather",
      3
@@ -226,7 +226,7 @@
     "flag": "boss_neon"
    },
    "reward": {
-    "crystals": 350
+    "crystals": 1500
    }
   },
   {
@@ -240,7 +240,7 @@
     "flag": "boss_underground"
    },
    "reward": {
-    "crystals": 300,
+    "crystals": 1000,
     "item": [
      "brass_knuckles",
      1
@@ -258,7 +258,7 @@
     "flag": "boss_uptown"
    },
    "reward": {
-    "crystals": 600,
+    "crystals": 2500,
     "item": [
      "enforcer_plate",
      1
@@ -372,7 +372,7 @@
   {
    "id": "finn_fish",
    "giver": "finn",
-   "text": "Finn bets you can't catch 3 bass.",
+   "text": "Finn bets you can't catch 3 bass. (Bass run in the lake.)",
    "when": {
     "skill": [
      "fishing",
@@ -1119,7 +1119,7 @@
   {
    "id": "finn_trout",
    "giver": "finn",
-   "text": "Finn bets you can't bring him 3 trout.",
+   "text": "Finn bets you can't bring him 3 trout. (Trout like the forest stream.)",
    "when": {
     "friend": [
      "finn",
@@ -1230,7 +1230,8 @@
     "friend": [
      "hazel",
      12
-    ]
+    ],
+    "crystals": 200
    }
   },
   {
@@ -1797,7 +1798,7 @@
    },
    "take": true,
    "reward": {
-    "crystals": 60,
+    "crystals": 260,
     "friend": [
      "sal",
      15
@@ -1829,7 +1830,8 @@
     "xp": [
      "bartering",
      20
-    ]
+    ],
+    "crystals": 120
    }
   },
   {
@@ -3100,7 +3102,8 @@
     "item": [
      "wonder_elixir",
      1
-    ]
+    ],
+    "max_hp": 20
    }
   },
   {

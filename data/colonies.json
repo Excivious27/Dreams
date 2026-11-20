@@ -94,7 +94,7 @@
      "thanks": "Perfect! Don't tell her. She'll know anyway. She always knows.",
      "reward": {
       "pearl": 1,
-      "crystals": 200
+      "crystals": 60
      }
     },
     "after": [
@@ -116,7 +116,7 @@
      "thanks": "She floats! I've called her the Land-Walker. She's very brave and only a bit wonky.",
      "reward": {
       "starfish_snack": 3,
-      "crystals": 250
+      "crystals": 90
      }
     },
     "after": [
@@ -242,7 +242,7 @@
      "thanks": "A new net, and supper already in it! You're better than a tide.",
      "reward": {
       "kelp_wrap": 3,
-      "crystals": 250
+      "crystals": 150
      }
     },
     "after": [
@@ -264,7 +264,7 @@
      "thanks": "Lanterns on every hut! The shoals will come and look. They always come and look.",
      "reward": {
       "pearl": 1,
-      "crystals": 300
+      "crystals": 160
      }
     },
     "after": [
@@ -391,7 +391,7 @@
      "thanks": "I've studied them. I know everything about fish now. I'm going to win!",
      "reward": {
       "hot_cocoa": 2,
-      "crystals": 250
+      "crystals": 300
      }
     },
     "after": [
@@ -412,7 +412,7 @@
      "thanks": "The table looks like home again. Thank you.",
      "reward": {
       "glass_frosted": 1,
-      "crystals": 300
+      "crystals": 380
      }
     },
     "after": [
@@ -534,13 +534,13 @@
      "title": "Cooling Stones",
      "ask": "My little brother's hut is right over a cracked vent. If you bring me ten stone and three coal, we can build him a proper hearth instead of a hot floor.",
      "need": {
-      "stone": 10,
-      "coal": 3
+      "ember_glass": 2,
+      "coal": 6
      },
      "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.",
      "reward": {
       "ember_glass": 1,
-      "crystals": 300
+      "crystals": 600
      }
     },
     "after": [
@@ -562,7 +562,7 @@
      "thanks": "Look how it shines in all of them! It's not lonely now.",
      "reward": {
       "crystal_glass": 1,
-      "crystals": 350
+      "crystals": 650
      }
     },
     "after": [
