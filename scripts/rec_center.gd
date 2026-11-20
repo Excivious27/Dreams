@@ -895,6 +895,10 @@ static func jukebox_track() -> String:
 
 ## GameMap.area_track hook: inside the rec, today's jukebox record wins over the house song.
 static func music_for(m: GameMap, t: String) -> String:
+	if m.scene_id() == "house":
+		# The home Jukebox / Music Box prize picks the house's song.
+		var h := str(GameState.run.get("flags", {}).get("home_juke", "")) if not GameState.run.is_empty() else ""
+		return h if h != "" and Music.has_track(h) else t
 	if not is_rec(m):
 		return t
 	var j := jukebox_track()
@@ -902,19 +906,81 @@ static func music_for(m: GameMap, t: String) -> String:
 
 
 static func _jukebox(m: GameMap) -> void:
-	var mus := Music.instance(m.get_tree())
-	var now := mus.wanted()
+	var t := next_record(Music.instance(m.get_tree()).wanted())
+	if t == "":
+		return
+	if not drop_record(m, t):
+		return
+	GameState.run["flags"]["rec_juke"] = t
+	GameState.run["flags"]["rec_juke_day"] = int(GameState.run["day"])
+	m.hud.toast("♪ The jukebox clunks and drops a record: \"%s\"." % RecAudio.record_name(t), Color(0.9, 0.85, 1))
+
+
+## The record after `now` (never the one already playing).
+static func next_record(now: String) -> String:
 	var cur := JUKEBOX.find(now)
 	for i in range(1, JUKEBOX.size() + 1):
 		var t: String = JUKEBOX[(cur + i) % JUKEBOX.size()]
 		if t == now or not Music.has_track(t):
-			continue  # a new record, never the one already playing
-		GameState.run["flags"]["rec_juke"] = t
-		GameState.run["flags"]["rec_juke_day"] = int(GameState.run["day"])
-		mus.play(t)
-		mus.sfx("juke_needle", "ui_tap")
-		m.hud.toast("♪ The jukebox clunks and drops a record: \"%s\"." % RecAudio.record_name(t), Color(0.9, 0.85, 1))
-		return
+			continue
+		return t
+	return ""
+
+
+static var _juke_busy_until := 0
+static var juke_now := false  # tests: the record starts at once (no needle delay or busy arm)
+
+
+## The needle drops first, the old song dips, the record starts ~0.8 s later. A
+## second press while the arm is moving is ignored (no stacked needles/crossfades).
+## False when the jukebox is still busy.
+static func drop_record(m: GameMap, t: String) -> bool:
+	var now := Time.get_ticks_msec()
+	if now < _juke_busy_until and not juke_now:
+		return false
+	_juke_busy_until = now + 1000
+	var mus := Music.instance(m.get_tree())
+	mus.sfx("juke_needle", "ui_tap")
+	if juke_now:
+		mus.play(t, 0.3)
+		return true
+	if mus.has_method("prefetch"):
+		mus.call("prefetch", [t])
+	m.get_tree().create_timer(0.8, true).timeout.connect(func() -> void:
+		mus.play(t, 0.3))
+	return true
+
+
+## Prize decor at home (CONDUCT 6): the Music Box and the home Jukebox choose the
+## house's song, the Arcade Cabinet opens the picker in free practice.
+static func home_use(m: GameMap, thing: Dictionary) -> bool:
+	var f: Dictionary = GameState.run["flags"]
+	match str(thing.get("what", "")):
+		"rp_music_box":
+			if str(f.get("home_juke", "")) == "title_musicbox":
+				f.erase("home_juke")
+				m.hud.toast("You close the music box's lid.", Color(0.9, 0.85, 1))
+				Music.instance(m.get_tree()).sfx("chest_close", "ui_tap")
+				Music.instance(m.get_tree()).play(m.area_track(), 2.0)
+			else:
+				f["home_juke"] = "title_musicbox"
+				Music.instance(m.get_tree()).sfx("chest_open", "ui_tap")
+				Music.instance(m.get_tree()).play("title_musicbox", 1.5)
+				m.hud.toast("♪ You wind the music box. A little tune fills the room.", Color(0.9, 0.85, 1))
+			return true
+		"rp_jukebox":
+			var cur := str(f.get("home_juke", ""))
+			var t := next_record(cur if cur in JUKEBOX else Music.instance(m.get_tree()).wanted())
+			if t == "" or not drop_record(m, t):
+				return true
+			f["home_juke"] = t
+			m.hud.toast("♪ Your jukebox drops a record: \"%s\". (A again: the next one)" % RecAudio.record_name(t), Color(0.9, 0.85, 1))
+			return true
+		"rp_arcade_cab":
+			Music.instance(m.get_tree()).sfx("arcade_coin", "pop")
+			ArcadeHub.open_home(m)
+			return true
+	return false
 
 
 ## The claw machine and the skee lane are full-screen arcade games (ArcadeClaw,
@@ -1010,6 +1076,9 @@ static func _soda(m: GameMap) -> void:
 # ---- your house ---------------------------------------------------------------------
 
 ## House.after_ready hook: prize decor you own shows up at home.
+const HOME_USE := {"rp_music_box": "A: wind the music box", "rp_jukebox": "A: play a record", "rp_arcade_cab": "A: play (free practice)"}
+
+
 static func dress_house(m: GameMap) -> void:
 	var deco: Dictionary = data().get("house_decor", {})
 	var shelves := {}
@@ -1037,9 +1106,13 @@ static func dress_house(m: GameMap) -> void:
 				t.position = m.cell_pos(sc.x + 0.35 + 0.65 * int(d.get("slot", 0)), sc.y + 1) + Vector2(0, -15)
 				t.offset = Vector2(0, -t.texture.get_height() / 2.0) if t.texture else Vector2.ZERO
 				m.add_child(t)
+			if str(id) in HOME_USE:
+				m.set_thing(sc.x, sc.y, {"type": "rec_home", "what": str(id), "hint": str(HOME_USE[str(id)])})
 			continue
 		var c := Vector2i(int(d["cell"][0]), int(d["cell"][1]))
 		var g := str(d.get("group", "items"))
 		var nm := str(d.get("name", ""))
 		if Art.has(g, nm):
 			m.prop(g, nm, c, 0, 0.0, bool(d.get("solid", false)), float(d.get("scale", 0.5)))
+		if str(id) in HOME_USE:
+			m.set_thing(c.x, c.y, {"type": "rec_home", "what": str(id), "hint": str(HOME_USE[str(id)])})

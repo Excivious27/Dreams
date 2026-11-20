@@ -147,13 +147,13 @@ func shoot() -> int:
 		"gold":
 			pts = 60
 			golds += 1
-			sfx("coin")
+			point_sfx()
 		"frog":
 			pts = -20
 			frogs += 1
-			sfx("nope", "whimper")
+			sfx("croak", "pop")
 		_:
-			sfx("hit", "thud")
+			sfx("gallery_ding", "anvil")
 	score = maxi(0, score + pts)
 	if pts > 0:
 		hits += 1
@@ -181,7 +181,7 @@ func _tickets_for(s: int) -> int:
 
 
 func _good_tickets() -> int:
-	return 20
+	return 16
 
 
 func _draw_play(c: Control) -> void:

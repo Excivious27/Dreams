@@ -59,6 +59,10 @@ var _prev_track := ""
 var _prev_modal := Rect2()   # the picker's modal rect while a cabinet runs on top of it
 var _rects_on := false
 var draw_off := Vector2.ZERO  # this frame's shake offset (reset transforms to it)
+var result_cue_done := false  # a game that already played its own result sting (claw win)
+var free_play := false        # the home cabinet: no fee, no tickets (practice)
+var _shown_tickets := 0       # the results card counts its tickets up
+var _tick_t := 0.0
 
 
 func _init() -> void:
@@ -242,6 +246,7 @@ func frame() -> void:
 			if play_t > 0.0:
 				play_t = 0.0
 			_over_t += DT
+			_count_tickets(DT)
 			if _over_t > 0.6 and pressed("a"):
 				_after_over()
 			elif _over_t > 0.3 and pressed("b"):
@@ -253,14 +258,37 @@ func frame() -> void:
 var _over_t := 0.0
 
 
+## The results card dispenses its tickets: the number counts up over ~0.8 s with
+## a soft tick (at most 12 ticks, so a big payout doesn't rattle).
+func _count_tickets(dt: float) -> void:
+	if _shown_tickets >= won_tickets or _over_t < 0.35:
+		return
+	_tick_t -= dt
+	if _tick_t > 0.0:
+		return
+	var steps := mini(12, won_tickets)
+	_shown_tickets = mini(won_tickets, _shown_tickets + maxi(1, int(ceil(float(won_tickets) / steps))))
+	_tick_t = 0.07
+	sfx("ticket_feed", "scroll_tick")
+
+
 ## Insert coin and start a round. False (with a message) when you can't pay.
 func start() -> bool:
+	if free_play:
+		sfx("arcade_coin", "pop")
+		return _begin()
 	if not ArcadeHub.charge(fee):
 		say("Not enough %s (%s)." % [Money.word(), Money.num(fee)])
 		sfx("nope", "locked")
 		return false
 	sfx("coin")
+	return _begin()
+
+
+func _begin() -> bool:
 	score = 0
+	result_cue_done = false
+	_shown_tickets = 0
 	won_tickets = 0
 	new_best = false
 	over_lines = []
@@ -278,17 +306,36 @@ func game_over(extra_lines: Array = [], best_value := -1) -> void:
 	if state == "over":
 		return
 	over_lines = extra_lines
-	won_tickets = Tickets.payout(game_id, maxi(0, _tickets_for(score)))
+	won_tickets = 0 if free_play else Tickets.payout(game_id, maxi(0, _tickets_for(score)))
 	if won_tickets > 0:
 		Tickets.add(won_tickets, game_id)
-	new_best = Tickets.set_best(game_id, score if best_value < 0 else best_value)
-	ArcadeHub.check_milestones(game_id, score, self)
+	new_best = false if free_play else Tickets.set_best(game_id, score if best_value < 0 else best_value)
+	if not free_play:
+		ArcadeHub.check_milestones(game_id, score, self)
 	_over_t = 0.0
+	_shown_tickets = 0
+	_tick_t = 0.0
 	state = "over"
-	if won_tickets >= _good_tickets():
-		sfx("j_victory", "levelup")
-	else:
-		sfx("j_battle_lost", "nope")
+	if not result_cue_done:
+		sfx(result_cue(won_tickets, _good_tickets(), new_best and score > 0), "pickup")
+	result_cue_done = true
+
+
+## Three tiers (CONDUCT 6): a good round or a new best gets the fanfare, any
+## tickets a short bright "ticket" cue, nothing at all a soft round-over cue
+## (never the campaign-defeat sting: the player usually won tickets).
+static func result_cue(won: int, good: int, best: bool) -> String:
+	if best or won >= good:
+		return "j_victory"
+	if won > 0:
+		return "j_confirm"
+	return "menu_close"
+
+
+## In-game points and pickups (not money): an arcade blip in both arcs, never
+## the gangster arc's banknote rustle (Money swaps every "coin").
+func point_sfx() -> void:
+	sfx("arcade_coin", "sparkle")
 
 
 ## What A does on the results card (default: back to the title card).
@@ -670,6 +717,6 @@ func _draw_over(c: Control) -> void:
 		text(c, Vector2(r.position.x + 6, y), str(line), r.size.x - 12, 8, Color(0.9, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)
 		y += 11
 	_ticket_icon(c, Vector2(r.position.x + 62, r.end.y - 50))
-	text_outline(c, Vector2(r.position.x + 78, r.end.y - 42), "+%d tickets" % won_tickets, 120, 11, Color(1, 0.85, 0.4))
+	text_outline(c, Vector2(r.position.x + 78, r.end.y - 42), ("Practice" if free_play else "+%d tickets" % _shown_tickets), 120, 11, Color(1, 0.85, 0.4))
 	if _over_t > 0.6:
 		text(c, Vector2(r.position.x, r.end.y - 14), "A: again   B: leave", r.size.x, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)

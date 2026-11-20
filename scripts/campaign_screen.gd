@@ -155,6 +155,8 @@ func _btn(text: String, cb: Callable) -> Button:
 	b.text = text
 	b.add_theme_font_size_override("font_size", 8)
 	b.focus_mode = Control.FOCUS_NONE
+	# Every board button taps (a callback's own cue, e.g. a jingle, plays on top).
+	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap", "pickup"))
 	b.pressed.connect(cb)
 	return b
 
@@ -371,12 +373,20 @@ func _enemy_name(k: String) -> String:
 
 func _muster() -> void:
 	if Net.visiting():
+		_no()
 		_flash_msg("You're visiting a friend's farm. Muster when you're home.")
 		return
 	var line := CampaignGate.muster(cid)
 	if line == "":
+		# Refused: say why instead of a dead tap.
+		_no()
+		var why := CampaignGate.lock(cid)
+		if why != "":
+			_flash_msg(why)
 		return
-	Music.instance(get_tree()).sfx("j_battle_start", "alert")
+	# Mustering is its own moment (the battle-start jingle is for the first fight).
+	Music.instance(get_tree()).sfx("war_horn", "horn")
+	Music.instance(get_tree()).sfx("j_confirm", "levelup")
 	GameState.save()
 	_brief.visible = false
 	_show_board(cid)
@@ -386,9 +396,10 @@ func _muster() -> void:
 func _start_drill() -> void:
 	var why := CampaignGate.drill_lock()
 	if why != "":
+		_no()
 		_flash_list(why)
 		return
-	_close_now()
+	_close_now(false)  # the board's song carries into the fade, not the area song
 	CampaignGate.launch_drill(m)
 
 
@@ -452,9 +463,14 @@ func _attack() -> void:
 	var id := cid
 	var nid := sel
 	if Net.visiting():
+		_no()
 		_flash_msg("You're visiting a friend's farm. Campaigns wait until you're home.")
 		return
-	_close_now()
+	if not Campaign.can_attack(id, nid) or str(Campaign.cfg(id, nid).get("field", "")) == "":
+		_no()
+		_flash_msg("That ground is out of reach: march next to it first.")
+		return
+	_close_now(false)
 	Campaign.launch(m, id, nid)
 
 
@@ -470,7 +486,7 @@ func _march_attack() -> void:
 
 func _march() -> void:
 	if Campaign.march(cid, sel):
-		Music.instance(get_tree()).sfx("step", "pickup")
+		Music.instance(get_tree()).sfx("march", "step_gravel")
 		_flash_msg("The %s marches to %s." % [Campaign.force_word(), str(Campaign.node(cid, sel)["name"])])
 		GameState.save()
 	_refresh()
@@ -482,16 +498,27 @@ func _kin(choice: String) -> void:
 	GameState.save()
 	_refresh()
 	if not lines.is_empty():
-		Music.instance(get_tree()).sfx("j_battle_won" if choice != "later" else "pickup", "levelup")
+		if choice == "meow":
+			Music.instance(get_tree()).sfx("meow", "sparkle")
+		Music.instance(get_tree()).sfx("j_secret" if choice != "later" else "pickup", "sparkle")
 		_flash_msg(str(lines[lines.size() - 1].get("text", "")))
 
 
 func _settle(choice: String) -> void:
 	var line := Campaign.settle(cid, sel, choice)
-	Music.instance(get_tree()).sfx("coin", "pickup")
+	Music.instance(get_tree()).sfx(str(SETTLE_SFX.get(choice, "pickup")), "pickup")
 	GameState.save()
 	_refresh()
 	_flash_msg(line)
+
+
+## Camp / cache choices each sound like what they do.
+const SETTLE_SFX := {"take": "chest_open", "share": "coin", "rest": "cloth", "forage": "harvest"}
+
+
+## A refused tap on the board: a soft "no" (the flash message says why).
+func _no() -> void:
+	Music.instance(get_tree()).sfx("nope", "thud")
 
 
 func _flash_msg(t: String) -> void:
@@ -756,11 +783,12 @@ func _text(cv: Control, f: Font, p: Vector2, t: String, size: int, col: Color, w
 
 # ---- closing ------------------------------------------------------------------------
 
-func _close_now() -> void:
+func _close_now(restore_music := true) -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
-	if m != null and is_instance_valid(m):
+	Music.instance(get_tree()).sfx("menu_close", "ui_tap")
+	if restore_music and m != null and is_instance_valid(m):
 		Music.instance(get_tree()).play(m.area_track())
 	Hud.modal_rect = Rect2()
 	Dialogue.block_input(0.4)

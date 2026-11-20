@@ -149,6 +149,7 @@ func _close() -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = false
+	Music.instance(get_tree()).sfx("menu_close", "ui_tap")
 	Dialogue.block_input(0.3)
 	Hud.modal_rect = Rect2()
 	closed.emit()

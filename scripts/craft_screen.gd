@@ -43,6 +43,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "craft_screen")
+	Music.instance(get_tree()).sfx("menu_open", "ui_tap")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.16, 0.11, 0.07, 0.97)
@@ -104,6 +105,7 @@ func close() -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
+	Music.instance(get_tree()).sfx("menu_close", "ui_tap")
 	Dialogue.block_input(0.3)
 	Hud.modal_rect = Rect2()
 	closed.emit()

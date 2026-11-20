@@ -329,6 +329,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 			continue
 		GameState.add_quest(str(q[0]), str(q[1]))
 		m.hud.toast("New quest: %s" % str(q[1]), Color(1, 0.9, 0.4))
+		Music.instance(m.get_tree()).sfx("new_item", "pickup")
 	for q in fx.get("complete", []):
 		if GameState.complete_quest(str(q)):
 			m.hud.toast(GameMap.quest_done_text(str(q)), Color(1, 0.9, 0.4))

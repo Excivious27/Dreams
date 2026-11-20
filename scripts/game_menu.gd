@@ -227,6 +227,10 @@ func _button(text: String, cb: Callable) -> Button:
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
+	# A greyed-out row answers a tap with a soft refusal instead of silence.
+	b.gui_input.connect(func(ev: InputEvent) -> void:
+		if b.disabled and TapInput.is_release(ev):
+			Music.instance(get_tree()).sfx("nope", "thud"))
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.custom_minimum_size = Vector2(0, 22)  # finger-sized rows (18 was under 5 mm on a phone)
