@@ -337,6 +337,9 @@ python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="
 python3 tools/drink_rule_test.py || { echo "Drink rule failed"; exit 1; }
 
+echo "== C10a decor art: every catalogue piece and rotation exists =="
+python3 tools/slice_c10a.py check || { echo "Decor art check failed"; exit 1; }
+
 echo "== economy: no money loops, crops and brews inside their bands =="
 python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }
 
