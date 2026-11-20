@@ -19,6 +19,8 @@ const T := {
 	"mine_prize_p": 1.0,     # every 10th-floor prize chest (once each)
 	"mine_chest_p": 0.08,    # repeatable miner's chests: rarely, and only the common pool
 	"fish_p": 0.17,          # inside a treasure catch (fishing skill/luck raise treasure itself)
+	"reorder_fee": 1.25,     # catalogue re-order: price x this (delivered by the morning post)
+	"order_cap": 3,          # orders waiting at once
 }
 
 ## Shop ids (Shops.run) -> decor shelf keys in decor.json "shops". Gangster arc keys
@@ -248,3 +250,47 @@ static func shelf(m: GameMap, shop: String, who: String) -> void:
 				hello = "Anything else for the house?"
 			_:
 				m.hud.toast("You already have that one.")
+
+
+# ---- orders (catalogue re-order, made-to-order furniture) -------------------------
+
+static func orders() -> Array:
+	if not (GameState.run.get("decor_orders", null) is Array):
+		GameState.run["decor_orders"] = []
+	return GameState.run["decor_orders"]
+
+
+static func order_price(id: String) -> int:
+	return int(ceil(Decor.price(id) * float(T["reorder_fee"])))
+
+
+## Orders a piece you have seen or owned (P3's catalogue calls this): pays now, the
+## piece comes with tomorrow's post. Returns "ok", "poor", "owned", "full" or "none".
+static func order(id: String) -> String:
+	if not Decor.is_decor(id) or Decor.price(id) <= 0:
+		return "none"
+	if taken(id) or orders().any(func(o: Variant) -> bool: return Decor.is_unique(id) and str((o as Dictionary).get("id", "")) == id):
+		return "owned"
+	if orders().size() >= int(T["order_cap"]):
+		return "full"
+	var cost := order_price(id)
+	if int(GameState.run["crystals"]) < cost:
+		return "poor"
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+	orders().append({"id": id, "day": int(GameState.run.get("day", 1))})
+	return "ok"
+
+
+## Morning post (Mail._morning): yesterday's orders arrive as parcels to pick up.
+static func deliver_orders() -> int:
+	var today := int(GameState.run.get("day", 1))
+	var keep: Array = []
+	var n := 0
+	for o: Dictionary in orders():
+		if int(o.get("day", today)) >= today:
+			keep.append(o)
+			continue
+		Mail.send("Catalogue order", "Your order came in: %s. Take it from this parcel and it goes to your decor box." % name_of(str(o["id"])), "gift", {"item": str(o["id"]), "n": 1})
+		n += 1
+	GameState.run["decor_orders"] = keep
+	return n

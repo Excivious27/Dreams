@@ -87,6 +87,17 @@ func _run() -> void:
 	GameState.run["crystals"] = 99999
 	check(DecorSources.buy(null, "dc_crown") == "owned", "a unique you own can't be bought")
 
+	# Catalogue orders: paid now, a parcel in tomorrow's post, opened into the decor box.
+	GameState.run["crystals"] = 1000
+	check(DecorSources.order("dc_lamp") == "ok" and int(GameState.run["crystals"]) == 1000 - DecorSources.order_price("dc_lamp"), "an order is paid up front with the re-order fee")
+	check(DecorSources.deliver_orders() == 0, "nothing arrives the same day")
+	GameState.run["day"] = 6
+	check(DecorSources.deliver_orders() == 1 and DecorSources.orders().is_empty(), "the order arrives next morning")
+	var parcel: Dictionary = (Mail.list() as Array).back()
+	check(Mail._act(parcel) == "" and Decor.owned("dc_lamp") == 2, "opening the parcel boxes the lamp")
+	check(DecorSources.order("dc_crown") == "owned", "an owned unique can't be ordered")
+	GameState.run["day"] = 5
+
 	# Loot hooks.
 	check(Secrets.decor_pool(0) == "chest_t1" and Secrets.decor_pool(9) == "chest_t5", "chest pools by loot tier")
 	var mine: Variant = load("res://scripts/mine.gd")

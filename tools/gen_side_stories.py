@@ -131,5 +131,17 @@ chain("specs_wire", "gangsters", "Specs and the wire", {"flag": "st_g3_specs"}, 
      "friend": ["sal", 20], "flag": "ss_specs_files", "hint": ""},
 ])
 
+# C10a P4: a chain's last step may hand over a home keepsake: data/decor.json "grants"
+# "side:<chain id>": decor id (tools/gen_decor.py runs first). Only when the step has no
+# give of its own (SideStory gives one item per step) and the id is in the catalogue.
+try:
+    DECOR = json.load(open("data/decor.json"))
+except (OSError, ValueError):
+    DECOR = {}
+for ch in C:
+    did = (DECOR.get("grants", {}) or {}).get("side:" + ch["id"], "")
+    if did and did in (DECOR.get("items", {}) or {}) and "give" not in ch["steps"][-1]:
+        ch["steps"][-1]["give"] = [did, 1]
+
 json.dump({"_": __doc__.strip().splitlines()[0], "chains": C}, open("data/side_stories.json", "w"), indent=1, ensure_ascii=False)
 print(len(C), "side stories,", sum(len(c["steps"]) for c in C), "steps")

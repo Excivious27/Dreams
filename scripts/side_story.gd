@@ -99,7 +99,8 @@ static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 		f[str(st["flag"])] = true
 	if st.has("give"):
 		var g: Array = st["give"]
-		GameState.add_item(str(g[0]), int(g[1]))
+		if not DecorSources.grant(m, str(g[0]), int(g[1]), "side"):  # C10a P4 hook: decor to the decor box
+			GameState.add_item(str(g[0]), int(g[1]))
 		m.hud.toast("Got %s." % ItemWords.count_id(str(g[0]), int(g[1])), Color(1, 0.9, 0.4))
 	if st.has("money"):
 		GameState.add_money(int(st["money"]), "side_story")

@@ -182,6 +182,7 @@ static func _morning() -> int:
 	_first_week(day)
 	RecCenter.morning()
 	Collections.morning()  # museum opening, donation thanks, milestone letters (C8 P3)
+	DecorSources.deliver_orders()  # catalogue orders arrive as parcels (C10a P4)
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:

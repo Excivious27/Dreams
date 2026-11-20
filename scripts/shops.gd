@@ -168,7 +168,7 @@ static func food_note(id: String) -> String:
 
 
 static func run(m: GameMap, shop: String, absent := false) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
@@ -182,7 +182,8 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
 		"sel": "Relics. Real ones. Mostly.",
 		"catkins": "Litter boxes. Every Grump stops to hold its nose. Don't ask how we found out.",
-	}[shop]
+		"hazel": "Plans and permits are at the hall. Chairs, shelves and rugs are right here.",  # decor counter (C10a P4; needs a counter thing in hazel_house)
+	}.get(shop, "What'll it be?")
 	if absent:
 		# Nobody at the counter: a note on the till, no keeper's voice.
 		greet = "A note on the till: \"Back soon. Prices on the tags. - %s\"" % keeper
