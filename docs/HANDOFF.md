@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 10:55 PT, personal account.
-- **Done:** CONDUCT 1-10a (C10a decor catalogue 862 pieces, decorate mode, catalogue screen, wardrobe, decor sources; CI c10a PASS). C9 package sent.
-- **In progress:** C10a package (low subagent); C10b audit done (14 auditors, ~360 findings in /home/claude/wt/c10b_reports), checklist 15-20 + packages next.
-- **Next step:** C10b packages (docs/reports/C10B-PACKAGES.md), 6 fix agents, merge, ci_run.sh c10b, package; then C11a.
+- **Last update:** 2026-11-20 12:45 PT, personal account.
+- **Done:** CONDUCT 1-10b (C10b exteriors, yard decor, Tess the carpenter, casino The Gilded Ace, wardrobe on every hero; CI c10b2 PASS). C10a package sent.
+- **In progress:** C10b package (low subagent); C11a audit (14 auditors, /home/claude/wt/c11a_reports), then checklist 15-20 and packages.
+- **Next step:** C11a packages (docs/reports/C11A-PACKAGES.md: write a contract stub for any new shared ranch system before branching), 6 fix agents, merge, ci_run.sh c11a, package; then C11b.
 - **Jobs running elsewhere:** none besides subagents in the personal sandbox.
-- **WIP branches:** none.
+- **WIP branches:** none. Note: the web service-worker patches are skipped (template text differs, deploy logs it); look at web/post_export.py in C11/C22.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
@@ -85,6 +85,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 12:45 CONDUCT 10b pushed (61 farmhouse styles, yard decorating with 169 outdoor pieces, Tess the carpenter, The Gilded Ace casino in Gilt City, wardrobe on every hero, shop rotation fix); CI c10b2 PASS.
 - 2026-11-20 10:55 CONDUCT 10a pushed (Decor catalogue 862 pieces incl. 373 new renders, decorate mode with rooms/walls/floors, catalogue + re-order + sets, wardrobe, decor shelves and loot); CI c10a PASS; deploy SW patch made idempotent.
 - 2026-11-20 09:40 CONDUCT 9 pushed (controllers on every screen, Steam Deck prep, haptics, save export/import codes+files, web deploy unblocked, compass routes, forest 3x lighter); CI c9c PASS.
 - 2026-11-20 06:10 CONDUCT 8 pushed (economy/progression pass, Collections museum + Book tab, MoveSpeed ladder, fishing/mining curves, shop floors); CI c8c PASS.
