@@ -196,8 +196,12 @@ func _process(delta: float) -> void:
 					Music.instance(get_tree()).sfx("stun", "alert")  # hear the opening
 				open_t = maxf(open_t, 0.1)
 		"offbeat":
-			_closed_t += delta
 			var beat := float(d["rule"].get("beat", 1.6))
+			var was_t := _closed_t
+			_closed_t += delta
+			# An audible beat on every bar line (c6_08_24): hit just after it.
+			if int(was_t / beat) != int(_closed_t / beat) and e.position.distance_to(p.position) < 190.0:
+				Music.instance(get_tree()).sfx("war_drum", "thud")
 			if fmod(_closed_t, beat) < float(d["rule"].get("gap", 0.5)):
 				open_t = maxf(open_t, 0.05)
 	# Pull / gust act on you while they last.
@@ -206,6 +210,7 @@ func _process(delta: float) -> void:
 		if GameState.bonus("magic", "awakened") <= 0.0:
 			_shove(p, (e.position - p.position).normalized() * float(d.get("pull_force", 42.0)) * delta)
 		if _pull <= 0.0:
+			_impact(p)
 			_ring(14, 80.0, 3.0, 3)
 			e.map.shake(3.0)
 			_open_after("pull")
@@ -276,13 +281,40 @@ func _open_after(move: String) -> void:
 		e._stun = maxf(e._stun, minf(open_t, float(r.get("stagger", 0.0))))
 
 
-## Which Prompt 16-5 effect strip belongs to a gift ("" for none).
-static func fx_for(g: String) -> String:
-	var fam: String = {"beat": "tempo", "lt_tide": "gale", "lt_neonfire": "cinder", "lt_anvil": "iron", "lt_grid": "volt", "lt_thicket": "bramble",
+## A gift's family word (cinder, volt, gale, iron, bramble, gravity, fortune,
+## dark_burst, mirror, shade, tempo, or the id itself).
+static func family(g: String) -> String:
+	return {"beat": "tempo", "lt_tide": "gale", "lt_neonfire": "cinder", "lt_anvil": "iron", "lt_grid": "volt", "lt_thicket": "bramble",
 		"lt_gravity": "gravity", "lt_express": "gale", "lt_ledger": "fortune", "b_dark": "dark_burst", "b_president": "dark_burst",
 		"b_sentinel": "dark_burst", "b_mirror": "mirror", "b_witch": "shade", "b_elder": "shade", "c_ember": "cinder", "c_ice": "mirror",
 		"c_kelp": "gale", "c_coral": "bramble"}.get(g, g)
+
+
+## Which Prompt 16-5 effect strip belongs to a gift ("" for none).
+static func fx_for(g: String) -> String:
+	var fam := family(g)
 	return "gift_" + fam if Art.has("fx", "gift_" + fam) else ""
+
+
+## The impact sound of a gift's blasts by family (c6_08_09); shared with the
+## Marked crew's borrowed powers (Companion). Every name exists or falls back.
+const FAMILY_SFX := {"cinder": "spell_fire", "volt": "spell_lightning", "gale": "swing_heavy", "iron": "rock_break",
+	"bramble": "spell_nature", "gravity": "spell_dark", "dark_burst": "spell_dark", "shade": "spell_dark",
+	"mirror": "glass", "fortune": "dice_roll", "tempo": "war_drum", "ice": "spell_ice"}
+
+
+static func sfx_for(g: String) -> String:
+	var fam := family(g)
+	if g == "c_ice":
+		fam = "ice"
+	return str(FAMILY_SFX.get(fam, "spell"))
+
+
+## Play the family impact, near the player only.
+func _impact(p: Player) -> void:
+	if p and e.position.distance_to(p.position) < 190.0:
+		var n := sfx_for(gid)
+		Music.instance(get_tree()).sfx(n, "spell_earth" if n == "rock_break" else ("stun" if n in ["dice_roll", "war_drum"] else "spell"))
 
 
 func _do(mv: Dictionary, p: Player) -> void:
@@ -294,6 +326,7 @@ func _do(mv: Dictionary, p: Player) -> void:
 		e.map.fx(gf, e.position + Vector2(0, -4), 14.0, 0.6)
 	if t == "roll":
 		_rolls += 1
+		Music.instance(get_tree()).sfx("dice_roll", "cards")  # count her rolls by ear (c6_08_24)
 		var opts: Array = mv.get("of", ["ring", "zones", "lines"])
 		t = str(opts[randi() % opts.size()])
 		_say(["Lucky!", "Double or nothing!", "Come on, sevens..."][randi() % 3], col)
@@ -305,6 +338,8 @@ func _do(mv: Dictionary, p: Player) -> void:
 			e.hp = mini(e.max_hp, e.hp + int(e.max_hp * 0.06))
 			e.map.fx("sparkle", e.position + Vector2(0, -10), 12.0, 0.5)
 			return
+	if t in ["ring", "spiral", "dash", "gust", "veil"]:
+		_impact(p)
 	match t:
 		"ring":
 			_ring(int(mv.get("n", 12)), float(mv.get("speed", 58.0)), 3.0, int(mv.get("gap_n", 3)))
@@ -437,6 +472,9 @@ func _tick_shots(delta: float, p: Player) -> void:
 	for z: Dictionary in _zones.duplicate():
 		z["t"] = float(z["t"]) - delta
 		if float(z["t"]) <= 0.0:
+			if not z.has("rang"):
+				z["rang"] = true
+				_impact(p)  # each zone lands with the family's sound
 			z["linger"] = float(z["linger"]) - delta
 			if (z["p"] as Vector2).distance_to(p.position) < float(z["r"]) and int(Time.get_ticks_msec() / 300) != int(z.get("tick", -1)):
 				z["tick"] = int(Time.get_ticks_msec() / 300)

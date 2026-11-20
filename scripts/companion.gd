@@ -14,6 +14,10 @@ static var _data := {}
 
 
 ## Sal never fences things quests ask for.
+## Partner ability cues (others play "spell"). Meow Pow Wow meows (the cat's own voice).
+const ABILITY_SFX := {"meow_pow_wow": "meow", "powerup": "power_up", "haul": "pickup", "scout": "whistle",
+	"tinker": "tools", "bee_bop": "stun"}
+
 const FENCE_KEEP := ["fossil", "old_coin", "pearl", "knight_shard", "sacred_key", "manifest", "brass_locket", "old_collar"]
 static var _fence_t := 0
 static var _fence_pick := ""
@@ -174,7 +178,13 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		var th := int(GameState.bonus("leadership", "team_heal"))
 		if th > 0:
 			GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
-	Music.instance(m.get_tree()).sfx("spell", "pickup")
+	# Each ability its own cue (c6_08_18): lent Gifts by family, partners by ability.
+	var cue := "spell"
+	if ab.begins_with("gift:"):
+		cue = Gift.sfx_for(ab.trim_prefix("gift:"))
+	else:
+		cue = str(ABILITY_SFX.get(ab, "spell"))
+	Music.instance(m.get_tree()).sfx(cue, "spell")
 	# Prompts-12 partner art: cast pose + the partner's own effect strip.
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):
