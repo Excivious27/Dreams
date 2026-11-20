@@ -269,7 +269,7 @@ if ! echo "$cout" | grep -q "farm_look_test: PASS"; then
   echo "farm_look_test failed"; exit 1
 fi
 
-python3 tools/make_house_parts.py --check
+python3 tools/make_house_parts.py --check || { echo "house parts check failed"; exit 1; }
 
 cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/house_exterior_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|house exterior test" || true
