@@ -13415,7 +13415,26 @@
     "owl",
     "firefly"
    ],
-   "critter_count": 8
+   "critter_count": 8,
+   "theme": {
+    "trees": [
+     "props/mushroom_tree_a",
+     "props/mushroom_tree_b",
+     "props/crystal_tree_pink"
+    ],
+    "bushes": false,
+    "logs": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "props/mushroom_tree_a",
+    "props/crystal_tree_pink"
+   ],
+   "big": [
+    "props/mushroom_tree_b",
+    "props/crystal_tree"
+   ]
   },
   "paths": [
    [
@@ -13836,7 +13855,26 @@
     "firefly"
    ],
    "critter_count": 8,
-   "clumps": 2
+   "clumps": 2,
+   "theme": {
+    "trees": [
+     "props/mushroom_tree_a",
+     "props/mushroom_tree_b",
+     "props/crystal_tree_pink"
+    ],
+    "bushes": false,
+    "logs": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "props/mushroom_tree_a",
+    "props/crystal_tree_pink"
+   ],
+   "big": [
+    "props/mushroom_tree_b",
+    "props/crystal_tree"
+   ]
   },
   "paths": [
    [
@@ -14175,7 +14213,26 @@
     "owl",
     "firefly"
    ],
-   "critter_count": 8
+   "critter_count": 8,
+   "theme": {
+    "trees": [
+     "props/mushroom_tree_a",
+     "props/mushroom_tree_b",
+     "props/crystal_tree_pink"
+    ],
+    "bushes": false,
+    "logs": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "props/mushroom_tree_a",
+    "props/crystal_tree_pink"
+   ],
+   "big": [
+    "props/mushroom_tree_b",
+    "props/crystal_tree"
+   ]
   },
   "paths": [
    [
@@ -14502,7 +14559,26 @@
     "owl",
     "firefly"
    ],
-   "critter_count": 8
+   "critter_count": 8,
+   "theme": {
+    "trees": [
+     "props/mushroom_tree_a",
+     "props/mushroom_tree_b",
+     "props/crystal_tree_pink"
+    ],
+    "bushes": false,
+    "logs": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "props/mushroom_tree_a",
+    "props/crystal_tree_pink"
+   ],
+   "big": [
+    "props/mushroom_tree_b",
+    "props/crystal_tree"
+   ]
   },
   "paths": [
    [
@@ -14520,14 +14596,14 @@
    [
     23,
     21,
-    2,
+    14,
     2
    ],
    [
-    23,
-    9,
+    35,
+    20,
     2,
-    14
+    3
    ],
    [
     10,
@@ -14548,9 +14624,9 @@
     12
    ],
    [
-    23,
+    10,
     31,
-    14,
+    15,
     2
    ]
   ],
@@ -14574,10 +14650,10 @@
   "water_blobs": [
    {
     "c": [
-     35.5,
-     20.5
+     19.5,
+     13.5
     ],
-    "r": 5,
+    "r": 3,
     "seed": 301,
     "fish": [
      "ghost_fish",
@@ -14589,8 +14665,8 @@
    },
    {
     "c": [
-     13.5,
-     30.5
+     38.5,
+     29.5
     ],
     "r": 3,
     "seed": 419,
@@ -14607,8 +14683,8 @@
    {
     "name": "gl_thorn_rose",
     "cell": [
-     27,
-     6
+     28,
+     14
     ],
     "w": 1,
     "h": 1
@@ -14616,8 +14692,8 @@
    {
     "name": "grotto_pool_a",
     "cell": [
-     29,
-     10
+     32,
+     14
     ],
     "w": 4,
     "h": 2
@@ -14625,7 +14701,7 @@
    {
     "name": "mushroom_tree_b",
     "cell": [
-     11,
+     10,
      10
     ],
     "w": 2,
@@ -14634,8 +14710,8 @@
    {
     "name": "hollow_tree",
     "cell": [
-     33,
-     36
+     30,
+     38
     ],
     "w": 6,
     "h": 3,
@@ -14659,8 +14735,8 @@
    {
     "name": "vines_b",
     "cell": [
-     17,
-     9
+     29,
+     17
     ],
     "w": 2,
     "h": 1,
@@ -14675,7 +14751,7 @@
     "name": "stump2_1",
     "cell": [
      8,
-     13
+     18
     ],
     "solid": false,
     "group": "nature"
@@ -14702,8 +14778,8 @@
     "after_gangsters": "The roses grow wild again. Nobody collects rent here now.",
     "type": "boss",
     "cell": [
-     23,
-     7
+     35,
+     18
     ],
     "max_hp": 1,
     "solid": false,
@@ -14713,7 +14789,7 @@
     "type": "loot",
     "cell": [
      8,
-     13
+     18
     ],
     "item": "luna_moth",
     "n": 1,
@@ -14724,8 +14800,8 @@
    {
     "type": "heal",
     "cell": [
-     19,
-     38
+     24,
+     37
     ],
     "hp": 4,
     "energy": 50,
@@ -14736,8 +14812,8 @@
    {
     "type": "note",
     "cell": [
-     38,
-     32
+     15,
+     29
     ],
     "hint": "A: read the old sign",
     "text": "An old garden sign, nearly swallowed by thorns: 'MOTHER'S GARDEN. PLEASE DO NOT PICK THE ROSES. SHE WILL KNOW.'",
@@ -14807,16 +14883,23 @@
     "dune_8",
     "dune_9",
     "dead_tree_s",
-    "bones",
-    "deer_bones",
-    "palm"
+    "dead_tree_m",
+    "boulder2_s_a",
+    "boulder2_s_b",
+    "rock_s"
    ],
    "region_count": 20,
    "critters": [
     "crow",
     "eagle"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -15238,16 +15321,23 @@
     "dune_8",
     "dune_9",
     "dead_tree_s",
-    "bones",
-    "deer_bones",
-    "palm"
+    "dead_tree_m",
+    "boulder2_s_a",
+    "boulder2_s_b",
+    "rock_s"
    ],
    "region_count": 40,
    "critters": [
     "crow",
     "eagle"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -15577,16 +15667,23 @@
     "dune_8",
     "dune_9",
     "dead_tree_s",
-    "bones",
-    "deer_bones",
-    "palm"
+    "dead_tree_m",
+    "boulder2_s_a",
+    "boulder2_s_b",
+    "rock_s"
    ],
    "region_count": 40,
    "critters": [
     "crow",
     "eagle"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -15920,28 +16017,22 @@
   },
   "gen": {
    "region_props": [
-    "dune_0",
-    "dune_1",
-    "dune_2",
-    "dune_3",
-    "dune_4",
-    "dune_5",
-    "dune_6",
-    "dune_7",
-    "dune_8",
-    "dune_9",
-    "dead_tree_s",
-    "bones",
-    "deer_bones",
-    "palm"
+    "boulder2_s_a",
+    "boulder2_s_b",
+    "rock_s",
+    "cave_stalag_m"
    ],
-   "region_count": 40,
-   "critters": [
-    "crow",
-    "eagle"
-   ],
-   "critter_count": 4
+   "region_count": 16,
+   "critters": [],
+   "critter_count": 0,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
+  "cave": true,
   "paths": [
    [
     21,
@@ -16333,7 +16424,13 @@
     "crow",
     "sparrow"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -16737,7 +16834,13 @@
     "crow",
     "sparrow"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -17094,7 +17197,13 @@
     "crow",
     "sparrow"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -17394,24 +17503,24 @@
   },
   "gen": {
    "region_props": [
-    "fire_barrel",
-    "oil_drums",
     "crates_a",
     "crates_b",
-    "crates_c",
-    "tyres",
-    "pipe_t",
-    "pipe_s",
-    "dumpster",
-    "cargo_yellow"
+    "oil_drums",
+    "cave_stalag_l",
+    "cave_stalag_m",
+    "tyres"
    ],
-   "region_count": 26,
-   "critters": [
-    "crow",
-    "sparrow"
-   ],
-   "critter_count": 4
+   "region_count": 16,
+   "critters": [],
+   "critter_count": 0,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
+  "cave": true,
   "paths": [
    [
     22,
@@ -17751,7 +17860,25 @@
     "eagle",
     "rabbit"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "pine_snow",
+     "mid_snowpine",
+     "mid_snowpine_b"
+    ],
+    "bushes": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "mid_snowpine",
+    "mid_snowpine_b"
+   ],
+   "big": [
+    "big_snowpine_a",
+    "big_snowpine_b"
+   ]
   },
   "paths": [
    [
@@ -18201,7 +18328,25 @@
     "rabbit"
    ],
    "critter_count": 5,
-   "clumps": 2
+   "clumps": 2,
+   "theme": {
+    "trees": [
+     "pine_snow",
+     "mid_snowpine",
+     "mid_snowpine_b"
+    ],
+    "bushes": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "mid_snowpine",
+    "mid_snowpine_b"
+   ],
+   "big": [
+    "big_snowpine_a",
+    "big_snowpine_b"
+   ]
   },
   "paths": [
    [
@@ -18540,26 +18685,25 @@
   },
   "gen": {
    "region_props": [
-    "snowdrift_0",
-    "snowdrift_1",
-    "snowdrift_2",
-    "snowdrift_3",
-    "snowdrift_4",
-    "snowdrift_5",
-    "rock_snow_s",
-    "rock_snow_m",
-    "bush_snow",
-    "bush_bare_snow",
-    "stump_snow",
-    "grass_tuft_winter"
+    "cave_stalag_l",
+    "cave_stalag_m",
+    "icicles_0",
+    "icicles_1",
+    "icicles_2",
+    "crystal_tree_frost",
+    "cave_mush_blue"
    ],
-   "region_count": 36,
-   "critters": [
-    "eagle",
-    "rabbit"
-   ],
-   "critter_count": 5
+   "region_count": 16,
+   "critters": [],
+   "critter_count": 0,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
+  "cave": true,
   "paths": [
    [
     22,
@@ -18898,7 +19042,25 @@
     "eagle",
     "rabbit"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "pine_snow",
+     "mid_snowpine",
+     "mid_snowpine_b"
+    ],
+    "bushes": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "mid_snowpine",
+    "mid_snowpine_b"
+   ],
+   "big": [
+    "big_snowpine_a",
+    "big_snowpine_b"
+   ]
   },
   "paths": [
    [
@@ -19157,7 +19319,25 @@
     "eagle",
     "rabbit"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "pine_snow",
+     "mid_snowpine",
+     "mid_snowpine_b"
+    ],
+    "bushes": false
+   }
+  },
+  "border_trees": {
+   "mid": [
+    "mid_snowpine",
+    "mid_snowpine_b"
+   ],
+   "big": [
+    "big_snowpine_a",
+    "big_snowpine_b"
+   ]
   },
   "paths": [
    [
@@ -19437,7 +19617,16 @@
     "eagle",
     "butterfly_blue"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "cloud_tree_a",
+     "cloud_tree_b",
+     "cloud_tree_c"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [
@@ -19818,7 +20007,16 @@
     "eagle",
     "butterfly_blue"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "cloud_tree_a",
+     "cloud_tree_b",
+     "cloud_tree_c"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [
@@ -20103,7 +20301,16 @@
     "eagle",
     "butterfly_blue"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "cloud_tree_a",
+     "cloud_tree_b",
+     "cloud_tree_c"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [
@@ -20435,7 +20642,16 @@
     "eagle",
     "butterfly_blue"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "cloud_tree_a",
+     "cloud_tree_b",
+     "cloud_tree_c"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [
@@ -20714,7 +20930,13 @@
    "critters": [
     "sparrow"
    ],
-   "critter_count": 3
+   "critter_count": 3,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -21114,7 +21336,13 @@
    "critters": [
     "sparrow"
    ],
-   "critter_count": 3
+   "critter_count": 3,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -21291,7 +21519,7 @@
     "solid": false
    },
    {
-    "name": "plaza_06",
+    "name": "fountain2",
     "cell": [
      24,
      23
@@ -21422,7 +21650,13 @@
    "critters": [
     "sparrow"
    ],
-   "critter_count": 3
+   "critter_count": 3,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "paths": [
    [
@@ -21545,13 +21779,13 @@
     ]
    },
    {
-    "name": "plaza_51",
+    "name": "gold_fountain",
     "cell": [
-     34,
-     24
+     35,
+     25
     ],
-    "w": 4,
-    "h": 3
+    "w": 3,
+    "h": 2
    },
    {
     "name": "plaza_29",
@@ -21571,8 +21805,8 @@
    {
     "name": "plaza_31",
     "cell": [
-     28,
-     17
+     29,
+     22
     ],
     "w": 3,
     "h": 1,
@@ -21621,8 +21855,8 @@
    {
     "name": "flowerbed_red",
     "cell": [
-     41,
-     17
+     9,
+     28
     ],
     "solid": false
    }
@@ -21643,8 +21877,8 @@
    {
     "type": "loot",
     "cell": [
-     41,
-     17
+     9,
+     28
     ],
     "item": "dark_rose",
     "n": 2,
@@ -21655,8 +21889,8 @@
    {
     "type": "heal",
     "cell": [
-     21,
-     15
+     22,
+     24
     ],
     "hp": 4,
     "energy": 60,
@@ -21667,8 +21901,8 @@
    {
     "type": "note",
     "cell": [
-     9,
-     24
+     27,
+     14
     ],
     "hint": "A: read the gardener's note",
     "text": "Gardener's note: 'Madame wants the roses gold. Roses do not come in gold. I have explained this nine times.'",
@@ -21727,24 +21961,25 @@
   },
   "gen": {
    "region_props": [
-    "planter2_0",
-    "planter2_1",
-    "planter2_2",
-    "planter2_3",
-    "topiary_a",
-    "topiary_b",
-    "topiary_c",
-    "hedge2_ball",
-    "hedge2_pot",
-    "flowerbed_pink",
-    "flowerbed_yellow"
+    "crates_a",
+    "crates_b",
+    "crates_c",
+    "crates_pallet",
+    "ore_gold_1",
+    "ore_gold_2",
+    "gold_fence_c"
    ],
-   "region_count": 24,
-   "critters": [
-    "sparrow"
-   ],
-   "critter_count": 3
+   "region_count": 16,
+   "critters": [],
+   "critter_count": 0,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
+  "cave": true,
   "paths": [
    [
     22,
@@ -21877,26 +22112,35 @@
     "h": 2
    },
    {
-    "name": "plaza_51",
+    "name": "crates_pallet",
+    "cell": [
+     18,
+     33
+    ],
+    "w": 2,
+    "h": 1
+   },
+   {
+    "name": "crates_pallet_b",
     "cell": [
      25,
      33
     ],
-    "w": 4,
-    "h": 3
+    "w": 2,
+    "h": 1
    },
    {
     "name": "chest_open",
     "cell": [
-     20,
-     35
+     25,
+     36
     ],
     "solid": false
    },
    {
     "name": "chest_closed",
     "cell": [
-     9,
+     10,
      33
     ],
     "solid": false
@@ -21904,16 +22148,16 @@
    {
     "name": "ore_silver_2",
     "cell": [
-     37,
-     12
+     25,
+     26
     ],
     "solid": false
    },
    {
     "name": "ore_silver_1",
     "cell": [
-     25,
-     24
+     36,
+     23
     ],
     "solid": false
    }
@@ -21943,8 +22187,8 @@
    {
     "type": "loot",
     "cell": [
-     20,
-     35
+     25,
+     36
     ],
     "item": "gold_bundle",
     "n": 1,
@@ -21955,7 +22199,7 @@
    {
     "type": "loot",
     "cell": [
-     9,
+     10,
      33
     ],
     "item": "pearl_necklace",
@@ -21967,8 +22211,8 @@
    {
     "type": "mrock",
     "cell": [
-     37,
-     12
+     25,
+     26
     ],
     "ore": "platinum",
     "hp": 5,
@@ -21979,8 +22223,8 @@
    {
     "type": "mrock",
     "cell": [
-     25,
-     24
+     36,
+     23
     ],
     "ore": "platinum",
     "hp": 5,
@@ -21991,8 +22235,8 @@
    {
     "type": "note",
     "cell": [
-     35,
-     23
+     37,
+     9
     ],
     "hint": "A: read the vault ledger",
     "text": "Vault ledger: 'Gold: yes. Pearls: yes. Friends: (blank).'",
@@ -22065,7 +22309,16 @@
     "owl",
     "firefly"
    ],
-   "critter_count": 8
+   "critter_count": 8,
+   "theme": {
+    "trees": [
+     "props/mushroom_tree_a",
+     "props/mushroom_tree_b",
+     "props/crystal_tree_pink"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [
@@ -22463,7 +22716,16 @@
     "eagle",
     "butterfly_blue"
    ],
-   "critter_count": 5
+   "critter_count": 5,
+   "theme": {
+    "trees": [
+     "cloud_tree_a",
+     "cloud_tree_b",
+     "cloud_tree_c"
+    ],
+    "bushes": false,
+    "logs": false
+   }
   },
   "paths": [
    [

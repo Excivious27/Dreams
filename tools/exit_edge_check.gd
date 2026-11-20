@@ -39,17 +39,35 @@ static func dist_to(edge: String, c: Vector2i, cols: int, rows: int) -> int:
 		_: return rows - 1 - c.y
 
 
+## Every mega area (data/mega_travel.json) plus the second areas of converted regions.
+static func scene_list() -> Array:
+	var out: Array = SCENES.duplicate()
+	var f := FileAccess.open("res://data/mega_travel.json", FileAccess.READ)
+	if f != null:
+		var d = JSON.parse_string(f.get_as_text())
+		if d is Dictionary:
+			for r in (d.get("regions", {}) as Dictionary).values():
+				for a in r.get("areas", []):
+					if not out.has(str(a)):
+						out.append(str(a))
+	for x in ["hollow_deeps", "sky_reaches"]:
+		if not out.has(x):
+			out.append(x)
+	return out
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
+	var scenes := scene_list()
 	for arc in ["penguins", "gangsters"]:
 		GameState.new_run(arc, "kairi", "T", "Town", "Pup")
 		GameState.run["intro_done"] = true
 		for f in ["cm_seen", "mine_open_1", "meow_taught", "moon_seen", "mine_seen"]:
 			GameState.run["flags"][f] = true
-		for s in SCENES:
+		for s in scenes:
 			GameState.run["flags"][s + "_seen"] = true
 		var info := {}
-		for s in SCENES:
+		for s in scenes:
 			GameMap.next_spawn = Vector2.ZERO
 			GameState.run["scene"] = s
 			change_scene_to_file("res://scenes/%s.tscn" % s)

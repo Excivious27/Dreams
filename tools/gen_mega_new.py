@@ -231,12 +231,35 @@ AREA_AMB = {"gloam_moonpool": {"marsh": -16.0, "frogs": -18.0}, "gloam_crystal_t
             "frost_summit": {"wind_strong": -8.0}, "gilt_casino_row": {"neon_street": -15.0, "crowd": -20.0}, "gilt_vaults": {"cave": -18.0, "basement_drips": -22.0},
             "gilt_gardens": {"birds_day": -16.0}, "wind_starfall_garden": {"crystal_hum": -22.0}}
 
+# Per-look scatter theme (WorldGen.theme: tree clumps, bushes, band) and border stands
+# (GameMap border_trees). c4_03/c4_05/c4_04: gloam mushroom/crystal, frost snow pines, desert dry.
+THEME = {
+    "gloam": {"trees": ["props/mushroom_tree_a", "props/mushroom_tree_b", "props/crystal_tree_pink"], "bushes": False, "logs": False},
+    "desert": {"trees": [], "bushes": False, "logs": False, "band": []},
+    "snow": {"trees": ["pine_snow", "mid_snowpine", "mid_snowpine_b"], "bushes": False},
+    "sky": {"trees": ["cloud_tree_a", "cloud_tree_b", "cloud_tree_c"], "bushes": False, "logs": False},
+    "rail": {"trees": [], "bushes": False, "logs": False, "band": []},
+    "gilt": {"trees": [], "bushes": False, "logs": False, "band": []},
+}
+BORDER_TREES = {
+    "gloam": {"mid": ["props/mushroom_tree_a", "props/crystal_tree_pink"], "big": ["props/mushroom_tree_b", "props/crystal_tree"]},
+    "snow": {"mid": ["mid_snowpine", "mid_snowpine_b"], "big": ["big_snowpine_a", "big_snowpine_b"]},
+}
+# Underground areas (c4_05 #6): "cave": true (Ambience/P4), no surface critters or mounds,
+# cave scatter instead of the look's.
+CAVE = {
+    "frost_caverns": ["cave_stalag_l", "cave_stalag_m", "icicles_0", "icicles_1", "icicles_2", "crystal_tree_frost", "cave_mush_blue"],
+    "iron_tunnels": ["crates_a", "crates_b", "oil_drums", "cave_stalag_l", "cave_stalag_m", "tyres"],
+    "gilt_vaults": ["crates_a", "crates_b", "crates_c", "crates_pallet", "ore_gold_1", "ore_gold_2", "gold_fence_c"],
+    "desert_sunken_temple": ["boulder2_s_a", "boulder2_s_b", "rock_s", "cave_stalag_m"],
+}
+
 LOOKS = {
     "gloam": {"ground": "grass", "ground_seam": "violet_moss", "path": "flagstone", "border": "trees", "backdrop": "night", "weather": "fireflies",
               "gen": {"region_props": ["gmush_blue", "gmush_purple", "gmush_red", "starflower_blue", "starflower_pink", "spiral_fern", "cave_mush_blue", "cave_mush_purple", "fd_mush_purple", "fd_mush_blue", "crystal_tree_pink"], "region_count": 34,
                       "critters": ["firefly", "butterfly_blue", "owl", "firefly"], "critter_count": 8}},
     "desert": {"ground": "grass", "ground_seam": "sand", "path": "cobble_warm", "border": "cliff", "cliff_style": ["sand", "stair_wood"], "backdrop": "hills", "weather": "sun",
-               "gen": {"region_props": ["dune_0", "dune_1", "dune_2", "dune_3", "dune_4", "dune_5", "dune_6", "dune_7", "dune_8", "dune_9", "dead_tree_s", "bones", "deer_bones", "palm"], "region_count": 40,
+               "gen": {"region_props": ["dune_0", "dune_1", "dune_2", "dune_3", "dune_4", "dune_5", "dune_6", "dune_7", "dune_8", "dune_9", "dead_tree_s", "dead_tree_m", "boulder2_s_a", "boulder2_s_b", "rock_s"], "region_count": 40,
                        "critters": ["crow", "eagle"], "critter_count": 4}},
     "rail": {"ground": "grass", "ground_seam": "cobble_grey", "path": "city_pavement", "border": "cliff", "cliff_style": ["grass", "stair_iron"], "backdrop": "gritty", "weather": "clear",
              "gen": {"region_props": ["fire_barrel", "oil_drums", "crates_a", "crates_b", "crates_c", "tyres", "pipe_t", "pipe_s", "dumpster", "cargo_yellow"], "region_count": 26,
@@ -400,7 +423,7 @@ A("gloam_crystal_thicket", cols=48, rows=42, music="mega_gloam_thicket", music_f
   forage=[["crystal_bloom", 0.15], ["glowcap", 0.3], ["wild_herb", 0.3], ["mushroom", 0.3]],
   intro=["Crystal grass, crystal trees, a wind that rings like a hundred tiny bells. Every step is a chord."])
 A("gloam_moonpool", cols=48, rows=44, music="mega_gloam_moonpool", music_fallback="marsh", look="gloam", ground_seam="teal_moss_wet", weather="fog", links={"gloam_violet_glade": ("s", 20)},
-  water=[(10, 26), (37, 28)], boss_at=(23, 9),
+  water=[(10, 26), (37, 28)], boss_at=(35, 20),
   structs=[("props/gl_thorn_rose", 1, 1, (27, 6)), ("props/grotto_pool_a", 4, 2, (32, 14)), ("props/mushroom_tree_b", 2, 2, (12, 12)), ("nature/hollow_tree", 6, 3, (36, 36)), ("props/vines_a", 2, 1, (16, 7)), ("props/vines_b", 2, 1, (31, 7))],
   things=[("loot", {"item": "luna_moth", "n": 1, "every": 7, "hint": "A: moths circling a stump", "sprite": "nature/stump2_1"}),
           ("heal", {"hp": 4, "energy": 50, "msg": "Moonlight off the water settles on you like a blanket.", "hint": "A: sit by the moonlit water"}),
@@ -664,7 +687,7 @@ A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="c
   structs=[("props/gc_casino", 8, 4, (24, 12)), ("buildings/neon_hotel", 9, 4, (10, 30)), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
            ("props/betting_booth", 3, 2, (12, 30)), ("props/lux_car_black", 3, 1, (36, 32)), ("props/neon_sign_2", 2, 1, (8, 22)), ("props/neon_sign_5", 2, 1, (40, 22))],
   things=[("loot", {"item": "gambler_chip", "n": 3, "every": 2, "hint": "A: chips under a table", "sprite": "props/card_table"}),
-          ("loot", {"item": "lucky_coin", "n": 1, "every": 4, "hint": "A: a coin in the fountain", "sprite": "props/plaza_06"}),
+          ("loot", {"item": "lucky_coin", "n": 1, "every": 4, "hint": "A: a coin in the fountain", "sprite": "props/fountain2"}),
           ("mrock", {"ore": "gold", "hp": 4, "n": 2, "sprite": "props/ore_gold"}),
           ("note", {"hint": "A: read the house rules", "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)"})],
   enemies=[("thug_gambler", 2), ("gilt_runner", 2), ("gilt_guard", 2)],
@@ -672,7 +695,7 @@ A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="c
   intro=["Neon on gold. Every door is a casino, every window shows somebody winning, and none of them look happy about it."])
 A("gilt_gardens", cols=50, rows=44, music="mega_gilt", look="gilt", ground_seam="meadow_grass", path="cobble_moss", border="trees", links={"gilt_grand_plaza": ("e", 18)},
   water=[(14, 30), (36, 12)],
-  structs=[("props/hedge2_arch", 5, 2, (24, 12)), ("props/plaza_50", 4, 3, (14, 13)), ("props/plaza_51", 4, 3, (36, 30)), ("props/plaza_29", 3, 1, (22, 30)), ("props/plaza_31", 3, 1, (30, 26)),
+  structs=[("props/hedge2_arch", 5, 2, (24, 12)), ("props/plaza_50", 4, 3, (14, 13)), ("props/gold_fountain", 3, 2, (36, 30)), ("props/plaza_29", 3, 1, (22, 30)), ("props/plaza_31", 3, 1, (30, 26)),
            ("props/plaza_45", 2, 1, (8, 22)), ("props/topiary_a", 1, 1, (40, 22)), ("props/hedge2_tree", 1, 1, (28, 35))],
   things=[("loot", {"item": "pearl_necklace", "n": 1, "every": 10, "hint": "A: something shining in the hedge", "sprite": "props/hedge2_ball"}),
           ("loot", {"item": "dark_rose", "n": 2, "every": 2, "hint": "A: velvet roses", "sprite": "props/flowerbed_red"}),
@@ -683,7 +706,7 @@ A("gilt_gardens", cols=50, rows=44, music="mega_gilt", look="gilt", ground_seam=
   intro=["Hedges clipped into crowns, roses in perfect rows, gold-fish in gold ponds. Even the bees look expensive."])
 A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam="floor_checker", path="plaza_tiles", border="cliff", backdrop="night", links={"gilt_casino_row": ("s", 21)}, boss_at=(21, 9),
   structs=[("props/gc_vault_door", 5, 3, (28, 8)), ("props/gold_fence_a", 2, 1, (12, 14)), ("props/gold_fence_b", 2, 1, (32, 14)), ("props/gold_gate", 1, 1, (16, 7)), ("props/gold_gate", 1, 1, (27, 7)),
-           ("props/treasure", 2, 1, (12, 28)), ("props/statue2_founder", 3, 2, (34, 28)), ("props/plaza_51", 4, 3, (24, 33))],
+           ("props/treasure", 2, 1, (12, 28)), ("props/statue2_founder", 3, 2, (34, 28)), ("props/crates_pallet", 2, 1, (22, 33)), ("props/crates_pallet_b", 2, 1, (26, 33))],
   things=[("loot", {"item": "gold_bundle", "n": 1, "every": 3, "hint": "A: a stack of gold leaf", "sprite": "props/chest_open"}),
           ("loot", {"item": "pearl_necklace", "n": 1, "every": 8, "hint": "A: a velvet case", "sprite": "props/chest_closed"}),
           ("mrock", {"ore": "platinum", "hp": 5, "n": 1, "sprite": "props/ore_silver_2"}), ("mrock", {"ore": "platinum", "hp": 5, "n": 1, "sprite": "props/ore_silver_1"}),
@@ -801,6 +824,17 @@ def build_area(aid, mega, spec, links_geom):
     R["amb"].update(AREA_AMB.get(aid, {}))
     R["gen"] = json.loads(json.dumps(L["gen"]))
     R["gen"].update(spec.get("gen_extra", {}))
+    if spec["look"] in THEME:
+        R["gen"]["theme"] = json.loads(json.dumps(THEME[spec["look"]]))
+    if spec["look"] in BORDER_TREES and R.get("border") == "trees":
+        R["border_trees"] = BORDER_TREES[spec["look"]]
+    if aid in CAVE:
+        R["cave"] = True
+        R["gen"]["critters"] = []
+        R["gen"]["critter_count"] = 0
+        R["gen"]["region_props"] = [n for n in CAVE[aid] if has_art("props", n) or has_art("nature", n)]
+        R["gen"]["region_count"] = 16
+        R["gen"]["theme"] = {"trees": [], "bushes": False, "logs": False, "band": []}
     if is_hub:
         R["gen"]["region_count"] = max(10, R["gen"].get("region_count", 20) // 2)
     G = Grid(cols, rows)
