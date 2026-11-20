@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 03:40 PT, personal account.
-- **Done:** CONDUCT 1-7 (C7 story/quests/dating merged; CI c7b PASS: 6 shards + 20 bots + playtest). C6 package sent.
-- **In progress:** CONDUCT 8 (economy/progression + collections build): 6 fix agents (medium) launched 03:50, cap ~05:00 (plan docs/reports/C8-PACKAGES.md; worktrees /home/claude/wt/c8f_p1..p6; reports /home/claude/wt/c8f_reports). C7 package sent (report, Guide 31, xlsx, page).
-- **Next step:** merge C8 packages as they finish, ci_run.sh c8, C8 package (low subagent), C9 auditors at the merge (code map first).
-- **Jobs running elsewhere:** 6 C8 fix agents + c8_09 (30-day bots) + c8_15..20 checklist agent in the personal sandbox (relaunch from C8-PACKAGES.md / C8-SCOPES.txt if lost).
+- **Last update:** 2026-11-20 05:05 PT, personal account.
+- **Done:** CONDUCT 1-8 merged on local main (C8: 6 packages + regenerated colony/gift/battle/station data; compile_all 0 bad, econ_check 0 failures).
+- **In progress:** CI `c8b` (tools/conduct/ci_run.sh c8b 3, log /tmp/ci_c8b.log). On PASS: push main, C8 package (CONDUCT-8.md, GUIDE-32.md, build_*_c8.py, artifact page), then C9.
+- **Next step:** C9 release readiness (haptics, save export/import, quest tracker polish, forest node perf +34%, flaky hearts_test rc134, hits_for -> Mining.pick_swing): C9_SCOPES.txt + code map, 14 medium + 6 low auditors, packages, 6 fix agents.
+- **Jobs running elsewhere:** CI c8b on GitHub Actions only.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
