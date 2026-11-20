@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P2: penguin story canon + beat flow
+
+- Story engine: one beat at a time (`Story.is_playing()`, `_queue`), quest-done beats have a level-triggered backstop in `Story.tick` (a missed moment plays as soon as the screen is free), beats wait for full-screen UIs/pauses (`_screen_busy`), gated choices re-arm with no effects, a beat cut off by a scene change re-arms instead of applying effects on the wrong map, every beat is skippable (Skip/MENU up to the next choice), `"pre"` effects (p5_win clears the boss first), `only_hero`/`not_hero` line filters. `story_busy` also covers a skippable scene (opening fades); the player's freeze-safety release (dead since it tested a Callable) now works. `data/story_gang.json` (P3) overrides story.json keys.
+- Penguin canon (Tom 17:12): Grumps = converted Crystopia crystals, Crystopia/Celestica named, one 21-year timeline with the bell, Catkins' guardian line and reunion with her teacher, Catkins sends the two to Prismatica, Nova's dream, Fennimore named + a whisper, the four elders at the finale, sacred key used, campfire at home, painted panels on ch4/5 and a new flying panel (ui/cut_penguins_fly). Test tools/story_flow_test.gd (check.sh). Details: docs/PENGUIN-ARC.md "C7 canon pass".
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.

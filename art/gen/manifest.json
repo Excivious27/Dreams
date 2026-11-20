@@ -131591,6 +131591,11 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
+  },
+  "cut_penguins_fly": {
+   "file": "ui/cut_penguins_fly.png",
+   "h": 355,
+   "w": 500
   }
  },
  "ui_creator": {

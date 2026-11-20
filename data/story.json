@@ -181,7 +181,26 @@
      "lines": [
       {
        "who": "",
-       "text": "The crystal meadow. Purple and green, and rings of light turning slowly over it: Celestica's rings, seen from underneath. Where the Star Crystal landed, the sky went thin, and here your valley touches her world. Past the standing stones, a mountain with a mouth, and a fog coming out of it."
+       "text": "On the road east the two penguins stop walking. Then they stop touching the ground. No penguin has ever flown before; these two fly the whole last stretch, laughing, trailing rainbows, toward a ringed world hanging low over the meadow.",
+       "pic": "cut_penguins_fly",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "",
+       "text": "On the road east you stop walking. Then you stop touching the ground. No penguin has ever flown before; you fly the whole last stretch, laughing, trailing rainbows, toward a ringed world hanging low over the meadow.",
+       "pic": "cut_penguins_fly",
+       "only_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "",
+       "text": "The crystal meadow. Purple and green, and rings of light turning slowly over it: Celestica's rings, seen from underneath. Where the Star Crystal landed, the sky went thin, and here your valley touches her world. Past the standing stones, a mountain with a mouth, and a fog coming out of it.",
+       "pic": "none"
       },
       {
        "who": "",

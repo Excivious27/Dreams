@@ -51,6 +51,41 @@ book is heading: up the inside of Mount Prismatica to the Dark Crystal.
   moment they enter water.* The under-mountain ocean tunnels run to the very
   top.
 
+## C7 canon pass (Tom's 17:12 answers, written into data/story.json)
+
+- **Grumps are converted Crystopia crystals** (Tom #1, #2): the Dark Crystal
+  *talks* them grey, promising paradise, until they forget who they were. When
+  one is turned back a small crystal floats home (p1_grump_truth, p2_catkins).
+  Most Grumps were crystals; some are creatures he picked up on the way (Tom
+  #30): Biscuit's collar stays, and the old dog comes home in the epilogue.
+- **Timeline (one canon, Tom #7):** 21 years ago the Star Crystal fled over the
+  island with his army behind her; the sky went red, the town bell cracked, and
+  Grandfather Auk flew after the red sky (taken, became the Crystal Knight).
+  On night 1 she comes down for good. Lines: p1_town, p1_howl, p3_knight_nova,
+  p4_bell_rung ("That bell broke for me. Now it rings for you."), p5_bell_help.
+  Hearts/talk lines that mention the 21 years belong to P4's files.
+- **Worlds:** where she landed the sky went thin: the crystal meadow is where
+  the valley touches **Celestica** (the rings overhead are hers); past the
+  Wastes it touches **Crystopia**, so Mount Prismatica can be walked.
+  The penguins first fly on the way to Cat-topia (p2_arrive, ui/cut_penguins_fly).
+- **Catkins** (Tom #5): Keeper of the Paw, the latest of an unbroken line of
+  cat guardians; the Star Crystal taught the first of them three thousand years
+  ago and Catkins calls her "Teacher". The Meow Pow Wow is a way, not a weapon:
+  breath, and stone, water, wind and fire moving through the heart. Catkins
+  sends the two to Mount Prismatica at the end of p2_spark (flag catkins_sent).
+- **Nova's dream** (Tom #3): p2_nova_dream (sleep after the catship): kingdoms
+  of happiness for the whole universe; Pip-Pip will help (and carry snacks).
+  Called back in p5_win and p5_epilogue (flag nova_dream).
+- **The heart** of Prismatica is at the top (p2_dream reworded); Coldy's sacred
+  key opens the spire (p5_spire); the merkitty tunnels come up under the pad.
+- **Fennimore:** Coldy names her in p4_prison and she names herself; a dream
+  whisper after the sky (p3_whisper). The throne has been empty since the old
+  queen went quiet. Her lines stay speakerless italics.
+- **The four elders** come to the finale when their colony is restored
+  (p5_elder_coral/kelp/ice/ember, keyed on colony_coral_ward / colony_tideswim /
+  colony_frost_step / colony_starfire).
+- Coldy is spelled C-O-L-D-Y everywhere.
+
 ## Where each book scene lives in the game
 
 | Book | Game |
