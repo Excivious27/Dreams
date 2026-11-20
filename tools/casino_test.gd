@@ -274,6 +274,20 @@ func _region() -> void:
 	check(types.has("casino"), "Casino Row has the casino door")
 	check(types.has("casino_odds"), "Casino Row has the odds board")
 	check(Casino.odds_board().contains("Roulette $2.70"), "odds board posts the roulette edge")
+	var door := Vector2i(-1, -1)
+	for t: Dictionary in r.get("things", []):
+		if str(t["type"]) == "casino":
+			door = Vector2i(int(t["cell"][0]), int(t["cell"][1]))
+	var rooms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/interiors.json"))
+	var room: Dictionary = rooms.get("gilt_casino", {})
+	check(not room.is_empty(), "the casino floor room exists")
+	var back: Array = room.get("back", [])
+	check(back.size() == 3 and str(back[0]) == "gilt_casino_row" and int(back[1]) == door.x and int(back[2]) == door.y + 1, "leaving puts you on the casino's front step")
+	var acts := {}
+	for t: Dictionary in room.get("things", []):
+		acts[str(t.get("act", ""))] = true
+	for a in ["slots", "roulette", "blackjack", "dice", "poker", "host", "odds"]:
+		check(acts.has(a), "the floor has %s" % a)
 
 
 func _wash() -> void:

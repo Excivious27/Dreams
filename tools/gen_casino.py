@@ -372,6 +372,73 @@ REWARDS = [
     {"key": "hands:100", "decor": "dc_casino_ace_sign", "text": "A hundred hands at the Ace. The house sends you its neon ace."},
 ]
 
+# The casino floor behind props/gc_casino (merged into data/interiors.json as
+# "gilt_casino"). "back" is the casino door's front cell on Casino Row, read from the
+# solved layout in regions.json (gen_mega_new moves structs, so never hard-coded).
+def D_(n, c, w=0, solid=True, g="decor"):
+    p = {"group": g, "name": n, "cell": list(c)}
+    if w:
+        p["w"] = w
+    if not solid:
+        p["solid"] = False
+    return p
+
+
+ROOM = {
+    "cols": 16, "rows": 13, "floor": "fl_carpet_red", "wall": "wl_marble", "door": [8, 12], "music": "mega_gilt",
+    "no_furnish": True, "pet": False, "casino": True, "windows": [],
+    "props": [
+        D_("dc_casino_marquee", (5, 1), solid=False), D_("dc_casino_ace_sign", (10, 1), solid=False),
+        D_("dc_casino_slot", (1, 3)), D_("dc_casino_slot", (2, 3)), D_("dc_casino_slot", (3, 3)), D_("dc_casino_slot", (4, 3)),
+        D_("dc_casino_roulette", (7, 4), 1), D_("dc_casino_slot", (12, 3)), D_("dc_casino_slot", (13, 3)), D_("dc_casino_booth", (12, 9), 1),
+        D_("dc_casino_table", (3, 7), 1), D_("dc_casino_table", (11, 7), 1),
+        D_("betting_booth", (6, 9), 2, g="props"),
+        D_("dc_casino_stool", (3, 8), solid=False), D_("dc_casino_stool", (4, 8), solid=False),
+        D_("dc_casino_rope", (6, 11), solid=False), D_("dc_casino_rope", (10, 11), solid=False),
+        D_("dc_casino_lamp", (1, 11)), D_("dc_gilt_palm", (14, 11)), D_("dc_gilt_statue", (14, 5)), D_("dc_casino_lamp", (1, 6)),
+    ],
+    "things": [
+        {"type": "casino", "act": "slots", "cell": [1, 3], "hint": "A: Gilded Slots", "solid": True},
+        {"type": "casino", "act": "slots", "cell": [2, 3], "hint": "A: Gilded Slots", "solid": True},
+        {"type": "casino", "act": "slots", "cell": [3, 3], "hint": "A: Gilded Slots", "solid": True},
+        {"type": "casino", "act": "slots", "cell": [4, 3], "hint": "A: Gilded Slots", "solid": True},
+        {"type": "casino", "act": "roulette", "cell": [7, 4], "hint": "A: Roulette", "solid": True},
+        {"type": "casino", "act": "roulette", "cell": [8, 4], "hint": "A: Roulette", "solid": True},
+        {"type": "casino", "act": "poker", "cell": [12, 3], "hint": "A: Video Poker", "solid": True},
+        {"type": "casino", "act": "poker", "cell": [13, 3], "hint": "A: Video Poker", "solid": True},
+        {"type": "casino", "act": "blackjack", "cell": [3, 7], "hint": "A: Blackjack", "solid": True},
+        {"type": "casino", "act": "blackjack", "cell": [4, 7], "hint": "A: Blackjack", "solid": True},
+        {"type": "casino", "act": "dice", "cell": [11, 7], "hint": "A: Big or Small", "solid": True},
+        {"type": "casino", "act": "dice", "cell": [12, 7], "hint": "A: Big or Small", "solid": True},
+        {"type": "casino", "act": "host", "cell": [6, 9], "hint": "A: the host stand (odds, limits)", "solid": True},
+        {"type": "casino", "act": "host", "cell": [7, 9], "hint": "A: the host stand (odds, limits)", "solid": True},
+        {"type": "casino", "act": "host", "cell": [8, 9], "hint": "A: the host stand (odds, limits)", "solid": True},
+        {"type": "casino", "act": "odds", "cell": [14, 5], "hint": "A: read the brass plaque (house odds)", "solid": True},
+    ],
+}
+
+
+def write_room():
+    regs = json.load(open(os.path.join(D, "regions.json")))
+    door = None
+    for t in regs.get("gilt_casino_row", {}).get("things", []):
+        if t.get("type") == "casino":
+            door = t["cell"]
+    if door is None:
+        print("gen_casino: no casino door on Casino Row (run gen_mega_new first)")
+        sys.exit(1)
+    room = dict(ROOM)
+    room["back"] = ["gilt_casino_row", door[0], door[1] + 1]
+    path = os.path.join(D, "interiors.json")
+    rooms = json.load(open(path))
+    rooms["gilt_casino"] = room
+    nl = open(path, "rb").read()[-1:] == b"\n"
+    with open(path, "w") as f:
+        json.dump(rooms, f, indent=1, ensure_ascii=False)
+        if nl:
+            f.write("\n")
+
+
 BANNED = ["blood", "drug", "drunk", "beer", "booze", "whisk", "cigar", "smok", "kill", "dead", "debt", "loan",
           "win it back", "chase", "credit", "marker", "guaranteed", "can't lose", "hot table", "due for"]
 KIDS = ["dice_kid", "the_kid", "pip", "tobin", "mabel", "wren_jr"]
@@ -496,6 +563,7 @@ def save(n, obj):
 if __name__ == "__main__":
     o = build()
     save("casino.json", o)
+    write_room()
     print("gen_casino: ok  slots %.4f (hit %.1f%%)  roulette %.4f  dice %.4f  blackjack %.4f+-%.4f  poker %.4f (simple holds %.4f)" % (
         o["rtp"]["slots"], o["slots"]["hit_rate"] * 100, max(o["rtp"]["roulette"].values()), max(o["rtp"]["dice"].values()),
         o["rtp"]["blackjack"], o["rtp"]["blackjack_sd"], o["rtp"]["poker"], o["rtp"]["poker_simple_holds"]))

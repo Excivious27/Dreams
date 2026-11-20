@@ -316,8 +316,28 @@ static func enter(m: GameMap) -> void:
 	if GameState.equipped("charm") == "golden_dice" or GameState.equipped("ring") == "golden_dice":
 		lines.append({"who": "Croupier", "text": line("luck_charm")})
 	await m.say(lines)
-	await floor_menu(m)
-	leave(m)
+	GameMap.next_interior = "gilt_casino"
+	m.go_to("interior", Vector2.ZERO, "up")
+
+
+## A casino thing inside the floor room (interior thing type "casino", key "act").
+static func use(m: GameMap, thing: Dictionary) -> void:
+	var act := str(thing.get("act", ""))
+	if act == "odds":
+		await m.say([{"who": "", "text": odds_board()}])
+		return
+	if act == "host":
+		await floor_menu(m)
+		leave(m)
+		return
+	var why := why_shut()
+	if why != "":
+		await m.say([{"who": "Croupier", "text": line("closing") if why == line("doorman_closed") else why}])
+		return
+	var g := open_table(m, act)
+	if g:
+		await g.closed
+		leave(m)
 
 
 static func floor_menu(m: GameMap) -> void:
