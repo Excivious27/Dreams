@@ -154,6 +154,10 @@ const JOINED_SPOTS := [[24, 26], [28, 28], [16, 24], [32, 20], [22, 30], [38, 22
 ## joined stand around the hideout and talk (lines from data/gifts.json).
 static func _place_joined(m: GameMap) -> void:
 	var n := 0
+	# A partner you didn't pick at the farm gate waits here for a second ask (c7_14).
+	if partner_waiting("big_jim"):
+		_register("partner_big_jim", "Big Jim", "big_jim", "partner")
+		_put(m, "partner_big_jim", _free_near(m, Vector2i(8, 18)))
 	for id in joined_ids():
 		if id == Companion.active_id():
 			continue
@@ -202,6 +206,8 @@ static func _joined_talk(m: GameMap, id: String) -> bool:
 
 ## Loyalty talk at the hideout: one scene per three days. Returns true if played.
 static func talk(m: GameMap, id: String) -> bool:
+	if id.begins_with("partner_"):
+		return await _partner_ask(m, id.trim_prefix("partner_"))
 	if (id.begins_with("mk_") or id.begins_with("lt_")) and not GameState.is_penguins():
 		return await _joined_talk(m, id)
 	if not members().has(id):
@@ -318,4 +324,34 @@ static func _waiting(m: GameMap, id: String) -> bool:
 	if h != "" and not f.has("crew_hint_" + id):
 		f["crew_hint_" + id] = true
 		m.hud.toast(h, Color(1, 0.85, 0.7))
+	return true
+
+
+## A gangster-arc partner not picked at the day-3 farm gate (or "Nobody, for now"):
+## after the hideout is yours, they wait there and can still be asked.
+static func partner_waiting(cid: String) -> bool:
+	if GameState.is_penguins() or not GameState.run["flags"].has("partner_scene") or not GameState.run["flags"].has("hideout_seen"):
+		return false
+	if cid == str(GameState.run.get("playable", "")):
+		return false
+	return not cid in Companion.party()["known"]
+
+
+static func _partner_ask(m: GameMap, cid: String) -> bool:
+	if not partner_waiting(cid):
+		return false
+	var nm := str(Companion.defs().get(cid, {}).get("name", cid.capitalize()))
+	var d := Dialogue.instance(m.get_tree())
+	var first: String = {"big_jim": "You paid me in silence last time. Silence doesn't buy fuel. ...Truck's still running, though."}.get(cid, "Still looking for someone to ride with?")
+	d.say([{"who": nm, "text": first, "choice": ["Ride with me?", "Not now."], "key": ""}])
+	await d.finished
+	if d.last_choice == 0:
+		Companion.recruit(cid)
+		var yes: String = {"big_jim": "I'm in. You point, I swing."}.get(cid, "Let's go.")
+		await m.say([{"who": nm, "text": yes}])
+		m.hud.toast("%s joins you. Swap partners in Menu > Party." % nm, Color(1, 0.9, 0.5))
+		for ch in m.get_children():
+			if ch is Npc and (ch as Npc).id == "partner_" + cid:
+				(ch as Node2D).visible = false  # gone on the next visit; hidden now (npcs keeps refs)
+				(ch as Node).process_mode = Node.PROCESS_MODE_DISABLED
 	return true

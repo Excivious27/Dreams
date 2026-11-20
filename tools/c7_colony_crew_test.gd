@@ -50,6 +50,8 @@ func _thing(m: GameMap, typ: String, key := "") -> Dictionary:
 
 func _run() -> void:
 	InputSetup.ensure_actions()
+	GameState.new_run("penguins", "penguin_f", "T", "Town", "Pup")
+	var en: Dictionary = GameState.load_json("res://data/enemies.json")["enemies"]
 	# ---- data -------------------------------------------------------------
 	var cd := Colony.data()
 	var verses := 0
@@ -59,7 +61,7 @@ func _run() -> void:
 		check((c.get("beacon_lines", []) as Array).size() == int(c["beacons"]), id + " has a verse per beacon")
 		check((c.get("reveal", []) as Array).size() >= 2 and (c.get("lore", []) as Array).size() >= 3, id + " has a reveal and lore")
 		for k: String in c.get("foe_kinds", []):
-			check(GameState.enemy_data["enemies"].has(k), id + " foe kind exists: " + k)
+			check(en.has(k), id + " foe kind exists: " + k)
 		var kq := 0
 		for k: Dictionary in c["kits"]:
 			if k.has("quest"):
@@ -191,6 +193,10 @@ func _run() -> void:
 	check(seen.has("mk_kit") and seen.has("lt_brock"), "Kit and Brock stand in the hideout (%s)" % str(seen.keys()))
 	check(await Crew.talk(m, "mk_kit"), "Kit talks at the hideout")
 	await _drain()
+	check(seen.has("partner_big_jim"), "Big Jim waits at the hideout for a second ask")
+	m.later(func() -> void: await Crew.talk(m, "partner_big_jim"))
+	await _drain()
+	check("big_jim" in Companion.party()["known"], "asked again, Big Jim joins")
 	var lts: Dictionary = Gift.data()["lieutenants"]
 	var refuse := 0
 	for lid: String in lts:

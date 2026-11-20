@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P5: colonies, companions, crew and recruits
+
+- Colonies (c7_10/c7_11): each island has its own story on the same five steps: an arrival narration (no longer the elder's line twice), ancient-but-sprightly elders (Brine 812, Tidewhisker, Icewhisker 900 winters, Cinderpaw 2000) who acknowledge the campaign win and Mer's song (or its absence), a local problem told after the supplies (Brine's black pearl, the Sunken Bell tied to the tower bell, frozen Frostfin cats under the ice, the Never-Out Fire), one verse of the old four-part song per beacon, a reveal after the boss tying it to the Dark Crystal (a splinter of the same fallen star), a lore talk once, then rotating after-lines with news of other saved colonies; the Star Crystal speaks at 1, 2, 3 and 4 saved.
+- Kits are talkable (`colony_kit` things on the kit sprites): two side quests per island (8 in all, fetch + reward, journal rows with x/y progress) and a chatter kit. Foes match the elder's words (grump variants + the named creature) and only those count; per-island secrets (own lore line building the "one star" mystery, own loot).
+- Colony quests are tickable in Menu > Quests with progress ("Bring the supplies." / "Foes 3/8, beacons 1/3." / "Wake the star crystal.") and the compass points at the ferry, elder, next unlit beacon, crystal or the kit (`Colony.progress/pointer`, hooks in QuestTracker). A saved colony sets `colony_<id>_done` (old saves migrated in `Colony.st`). Ferry-cat renamed Skipper Barnacle. Tideswim now swims 25% faster than a tail.
+- Crew (c7_14): unrecruited members say what they want (crew.json `waiting` + one-time hint) instead of "..."; Marlene closes the deal and walks after the letter is sold; deuce_thumb/dice_scared/lt_joined_brock get everyday lines; holding a gift lets you gift crew; the Crew tab shows the drilled perk and "Also with you" (joined Marked and lieutenants); Vic's perk says melee; Halo no longer says "Say where." without a ride.
+- Marked call out with a spoken line before the fight, and say their own join/home line; joined Marked and Brock/Mags stand in the hideout and talk; six lieutenants refuse in their own words; Big Jim waits at the hideout for a second ask if not picked at the farm gate.
+- Meow Pow Wow: Grumps float home as crystals, crystal babies calm and toddle off, finargles vanish into shadow (Companion.REVERT "@crystal/@calm/@vanish"). Penguin partner scene: they touched the crystal in your field; the other keeps watch over the island; Coldy's finargle lines.
+- Test: tools/c7_colony_crew_test.gd.
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.
