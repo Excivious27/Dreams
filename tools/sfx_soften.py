@@ -65,10 +65,11 @@ TARGETS = [("step_", -21.0), ("ui_", -20.0), ("menu_", -20.0), ("talk_blip", -20
            ("scroll_tick", -21.0), ("tab", -20.0), ("nope", -19.0),
            ("page", -19.0), ("equip", -19.0), ("coin", -18.0), ("pickup", -18.0), ("cash_pickup", -19.0),
            ("cash_register", -18.0), ("cash", -19.0), ("reel", -21.0), ("tools", -19.0), ("rock_break", -18.0),
-           ("servo", -21.0), ("bowl_roll", -20.0), ("sparkle", -20.0), ("fairy_ring", -18.0), ("heartbeat", -17.0), ("hoof", -20.0), ("beat_tick", -18.0),
+           ("servo", -21.0), ("bowl_roll", -20.0), ("sparkle", -20.0), ("fairy_ring", -18.0), ("heartbeat", -17.0), ("hoof", -20.0), ("beat_tick", -18.0), ("status_tick", -23.0), ("yawn", -19.0),
            ("spot_", -22.0)]
 DEFAULT_TARGET = -16.0
 STEP_CAP = 0.28
+LONG_STEPS = ("step_swim", "step_wheels")  # strokes / rolling, not footfalls: no 0.28 s cap
 BRIGHT_OK = ("sparkle", "fairy_ring", "reel", "spot_cicada", "spot_insect", "spot_bird")  # meant to shimmer: level them normally
 TAKE_BAND = 1.5
 SR = 44100
@@ -164,7 +165,7 @@ def trim(x, name):
         return x
     a = max(0, on[0] - int(0.003 * SR))
     b = min(len(m), off[-1] + int(0.01 * SR))
-    if name.startswith("step_"):
+    if name.startswith("step_") and not name.startswith(LONG_STEPS):
         b = min(b, a + int(STEP_CAP * SR))
     return x[a:b]
 

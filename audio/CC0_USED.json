@@ -52,6 +52,11 @@
   "bat-screeches/bat_x/flac/bat_02.flac",
   "bat-screeches/bat_x/flac/bat_03.flac"
  ],
+ "beast_down": [
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/die_01.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/die_02.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/die_03.ogg"
+ ],
  "beat_tick": [
   "bigsoundbank/0007.ogg"
  ],
@@ -95,6 +100,14 @@
  "boss_down": [
   "muffled-distant-explosion/NenadSimic - Muffled Distant Explosion.wav",
   "cave-in/cave_in_-_starninjas_0.ogg"
+ ],
+ "boss_fall": [
+  "bigsoundbank/1022.ogg",
+  "cave-in/cave_in_-_starninjas_0.ogg"
+ ],
+ "bow": [
+  "bigsoundbank/0549.ogg",
+  "bigsoundbank/0548.ogg"
  ],
  "bowl_gutter": [
   "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
@@ -399,6 +412,9 @@
  "horse": [
   "horse-trotting/Trot.ogg"
  ],
+ "horse_whinny": [
+  "bigsoundbank/0460.ogg"
+ ],
  "hurt": [
   "12-wet-towel-hittingfallingpunching-floor-sounds/wet_towel_on_floor_x/wet_towel_on_floor/wet_towel_on_floor-01.flac"
  ],
@@ -521,6 +537,10 @@
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle01.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle02.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle03.flac"
+ ],
+ "plant_pat": [
+  "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",
+  "shovel-sound/shovel_0.ogg"
  ],
  "pop": [
   "3-pop-sounds/3pops_x/3pops/pop1.ogg",
@@ -704,6 +724,9 @@
   "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_cluster6.wav",
   "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Fanfares/sfx_sounds_fanfare1.wav"
  ],
+ "status_tick": [
+  "bigsoundbank/0007.ogg"
+ ],
  "step_dirt": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep03.ogg",
@@ -718,6 +741,9 @@
   "different-steps-on-wood-stone-leaves-gravel-and-mud/[kdd]DifferentSteps_0_x/gravel.ogg",
   "42-snow-and-gravel-footsteps/corsica_s-walking_in_snow_x/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_02.flac",
   "42-snow-and-gravel-footsteps/corsica_s-walking_in_snow_x/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_05.flac"
+ ],
+ "step_hoof": [
+  "bigsoundbank/1854.ogg"
  ],
  "step_leaves": [
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle04.flac",
@@ -744,10 +770,16 @@
   "fantozzis-footsteps-grasssand-stone/Fantozzi-footsteps_x/Fantozzi-footsteps/flac/Fantozzi-StoneR2.flac",
   "fantozzis-footsteps-grasssand-stone/Fantozzi-footsteps_x/Fantozzi-footsteps/flac/Fantozzi-StoneL3.flac"
  ],
+ "step_swim": [
+  "bigsoundbank/1514.ogg"
+ ],
  "step_water": [
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_wet_01.ogg",
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_wet_02.ogg",
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_wet_03.ogg"
+ ],
+ "step_wheels": [
+  "bigsoundbank/1634.ogg"
  ],
  "step_wood": [
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_wood_01.ogg",
@@ -762,6 +794,9 @@
   "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/stomp_01.ogg",
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/NPC/giant/giant1.wav",
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/NPC/giant/giant3.wav"
+ ],
+ "stone_grind": [
+  "bigsoundbank/0580.ogg"
  ],
  "stun": [
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/Retro Electric Short 03_s05.wav",
@@ -882,6 +917,10 @@
  ],
  "wind_strong": [
   "wind-whoosh-loop/wind%20woosh%20loop.ogg"
+ ],
+ "yawn": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/breath.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/breath_02.ogg"
  ],
  "zap": [
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/ElectroZap_s01.wav",

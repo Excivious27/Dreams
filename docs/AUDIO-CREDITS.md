@@ -140,8 +140,8 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [60 CC0 Sci-Fi SFX](https://opengameart.org/content/60-cc0-sci-fi-sfx) | rubberduck | CC0 | servo |
 | [68 Workshop Sounds](https://opengameart.org/content/68-workshop-sounds) | bart | CC0 | ball_return, drill, pin_crash, pin_strike, pin_tap, rec_alley, tools |
 | [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) | StarNinjas | CC0 | eat |
-| [80 CC0 creature SFX](https://opengameart.org/content/80-cc0-creature-sfx) | rubberduck | CC0 | bark, bug, critter, grunt, snore |
-| [80 CC0 creture SFX #2](https://opengameart.org/content/80-cc0-creture-sfx-2) | rubberduck | CC0 | snore, stomp |
+| [80 CC0 creature SFX](https://opengameart.org/content/80-cc0-creature-sfx) | rubberduck | CC0 | bark, bug, critter, grunt, snore, yawn |
+| [80 CC0 creture SFX #2](https://opengameart.org/content/80-cc0-creture-sfx-2) | rubberduck | CC0 | beast_down, snore, stomp, yawn |
 | [80 CC0 RPG SFX](https://opengameart.org/content/80-cc0-rpg-sfx) | rubberduck | CC0 | coin, gem, monster, pick, pickup, roar, slime, spell |
 | [9 wet snow steps](https://opengameart.org/content/9-wet-snow-steps) | qubodup | CC0 | step_snow |
 | [Air whoosh](https://opengameart.org/content/air-whoosh) | pyranostudios | CC0 | airship_whoosh |
@@ -164,7 +164,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Car engine start 01](https://opengameart.org/content/car-engine-start-01) | looneybits | CC0 | car_start |
 | [Car_door_SFX](https://opengameart.org/content/cardoorsfx) | looneybits | CC0 | car_door |
 | [Cat Purr & Meow](https://opengameart.org/content/cat-purr-meow) | Kerzoven | CC0 | meow, purr, purr_loop |
-| [Cave In](https://opengameart.org/content/cave-in) | StarNinjas | CC0 | boss_down, cave_in |
+| [Cave In](https://opengameart.org/content/cave-in) | StarNinjas | CC0 | boss_down, boss_fall, cave_in |
 | [Crickets Ambient Noise - loopable](https://opengameart.org/content/crickets-ambient-noise-loopable) | Wolfgang_ | CC0 | crickets |
 | [Crow](https://opengameart.org/content/crow) | fvcalderan | CC0 | crow |
 | [Crow caw](https://opengameart.org/content/crow-caw) | zeroisnotnull | CC0 | crow, crow_spot |
@@ -176,7 +176,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Door Open, Door Close Set](https://opengameart.org/content/door-open-door-close-set) | qubodup | CC0 | door, door_close |
 | [Dripping water loop](https://opengameart.org/content/dripping-water-loop) | qubodup | CC0 | basement_drips |
 | [Energy Drain](https://opengameart.org/content/energy-drain) | qubodup | CC0 | drain |
-| [Fantasy Sound Effects (Tinysized SFX)](https://opengameart.org/content/fantasy-sound-effects-tinysized-sfx) | Vehicle | CC0 | dig, drip, drop, step_dirt, step_mud, twig, water |
+| [Fantasy Sound Effects (Tinysized SFX)](https://opengameart.org/content/fantasy-sound-effects-tinysized-sfx) | Vehicle | CC0 | dig, drip, drop, plant_pat, step_dirt, step_mud, twig, water |
 | [Fantasy Weapons and Apparel SFX Library](https://opengameart.org/content/fantasy-weapons-and-apparel-sfx-library) | Vehicle | CC0 | equip |
 | [Fantozzi's Footsteps (Grass/Sand & Stone)](https://opengameart.org/content/fantozzis-footsteps-grasssand-stone) | qubodup | CC0 | step_sand, step_stone |
 | [Fire Crackling](https://opengameart.org/content/fire-crackling) | AntumDeluge | CC0 | campfire |
@@ -207,7 +207,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Scifi City - Ambient Loop](https://opengameart.org/content/scifi-city-ambient-loop) | TinyWorlds | CC0 | neon_street |
 | [Sea and river wave sounds](https://opengameart.org/content/sea-and-river-wave-sounds) | RandomMind | CC0 | river |
 | [Sheep Baa](https://opengameart.org/content/sheep-baa) | AntumDeluge | CC0 | sheep |
-| [Shovel Sound](https://opengameart.org/content/shovel-sound) | themightyglider | CC0 | dig |
+| [Shovel Sound](https://opengameart.org/content/shovel-sound) | themightyglider | CC0 | dig, plant_pat |
 | [Sirens and Alarm Noise](https://opengameart.org/content/sirens-and-alarm-noise) | aquinn | CC0 | siren |
 | [small metal clasp (open, close, switching)](https://opengameart.org/content/small-metal-clasp-open-close-switching) | sinny | CC0 | dry_click |
 | [Solo Seagull Sound Effects](https://opengameart.org/content/solo-seagull-sound-effects) | Rango Mango | CC0 | gull, seagull |
@@ -218,7 +218,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [tree chop fall thud](https://opengameart.org/content/tree-chop-fall-thud) | kheetor | CC0 | timber |
 | [Vinyl](https://opengameart.org/content/vinyl) | OpenGameArt | CC0 | juke_needle |
 | [wind whoosh loop](https://opengameart.org/content/wind-whoosh-loop) | SketchMan3 | CC0 | wind_strong |
-| [BigSoundBank #0007 Clock](https://bigsoundbank.com/clock-s0007.html) | Joseph Sardin | CC0 | beat_tick |
+| [BigSoundBank #0007 Clock](https://bigsoundbank.com/clock-s0007.html) | Joseph Sardin | CC0 | beat_tick, status_tick |
 | [BigSoundBank #0016 Saw](https://bigsoundbank.com/saw-s0016.html) | Joseph Sardin | CC0 | saw |
 | [BigSoundBank #0040 Dreamcatcher](https://bigsoundbank.com/dreamcatcher-s0040.html) | Joseph Sardin | CC0 | fairy_ring, sparkle |
 | [BigSoundBank #0053 Metal box lid](https://bigsoundbank.com/metal-box-lid-s0053.html) | Joseph Sardin | CC0 | chest_close |
@@ -236,15 +236,18 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [BigSoundBank #0436 Cat Purr](https://bigsoundbank.com/cat-purr-s0436.html) | Joseph Sardin | CC0 | purr_loop |
 | [BigSoundBank #0437 Shot Beretta M12 9mm](https://bigsoundbank.com/shot-beretta-m12-9-mm-s0437.html) | Joseph Sardin | CC0 | shot_smg |
 | [BigSoundBank #0453 Annoyed Hen](https://bigsoundbank.com/annoyed-hen-s0453.html) | Joseph Sardin | CC0 | cluck |
-| [BigSoundBank #0460 Neighing of a horse](https://bigsoundbank.com/neighing-of-a-horse-s0460.html) | Joseph Sardin | CC0 | whinny |
+| [BigSoundBank #0460 Neighing of a horse](https://bigsoundbank.com/neighing-of-a-horse-s0460.html) | Joseph Sardin | CC0 | horse_whinny, whinny |
 | [BigSoundBank #0482 Airsoft Shooting](https://bigsoundbank.com/tir-airsoft-s0482.html) | Joseph Sardin | CC0 | shot_smg |
 | [BigSoundBank #0491 Big broth in a pot](https://bigsoundbank.com/big-broth-in-a-pot-s0491.html) | Joseph Sardin | CC0 | lava |
 | [BigSoundBank #0492 Small Broth in a Pot](https://bigsoundbank.com/small-broth-in-a-pot-s0492.html) | Joseph Sardin | CC0 | boiling |
 | [BigSoundBank #0502 Noisy office industry](https://bigsoundbank.com/noisy-office-industry-s0502.html) | Joseph Sardin | CC0 | machines |
 | [BigSoundBank #0506 Office cathedral of Chartres](https://bigsoundbank.com/office-cathedral-of-chartres-s0506.html) | Joseph Sardin | CC0 | room_chapel |
+| [BigSoundBank #0548 #0548](https://bigsoundbank.com/) | Joseph Sardin | CC0 | bow |
+| [BigSoundBank #0549 #0549](https://bigsoundbank.com/) | Joseph Sardin | CC0 | bow |
 | [BigSoundBank #0551 Balloon: burst](https://bigsoundbank.com/balloon-burst-s0551.html) | Joseph Sardin | CC0 | knockout |
 | [BigSoundBank #0558 Klaxons, inside car](https://bigsoundbank.com/klaxons-inside-car-s0558.html) | Joseph Sardin | CC0 | car_horn |
 | [BigSoundBank #0559 Saw Wood](https://bigsoundbank.com/saw-wood-s0559.html) | Joseph Sardin | CC0 | saw |
+| [BigSoundBank #0580 #0580](https://bigsoundbank.com/) | Joseph Sardin | CC0 | stone_grind |
 | [BigSoundBank #0581 Two dice on wooden table](https://bigsoundbank.com/two-dice-on-wooden-table-s0581.html) | Joseph Sardin | CC0 | dice_roll |
 | [BigSoundBank #0582 Four dice on wooden table](https://bigsoundbank.com/four-dice-on-wooden-table-s0582.html) | Joseph Sardin | CC0 | dice_roll |
 | [BigSoundBank #0672 Chick that chirp](https://bigsoundbank.com/chick-that-chirp-s0672.html) | Joseph Sardin | CC0 | peep |
@@ -255,6 +258,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [BigSoundBank #0880 Dwarf goat bleating](https://bigsoundbank.com/dwarf-goat-bleating-s0880.html) | Joseph Sardin | CC0 | bleat |
 | [BigSoundBank #0904 Wind in the Trees](https://bigsoundbank.com/forest-wind-in-the-trees-s0904.html) | Joseph Sardin | CC0 | leaves |
 | [BigSoundBank #0978 Hens Lays](https://bigsoundbank.com/hens-lays-s0978.html) | Joseph Sardin | CC0 | cluck, hens |
+| [BigSoundBank #1022 #1022](https://bigsoundbank.com/) | Joseph Sardin | CC0 | boss_fall |
 | [BigSoundBank #1039 Hens worried](https://bigsoundbank.com/hens-worried-s1039.html) | Joseph Sardin | CC0 | cluck |
 | [BigSoundBank #1074 Bubbles Burst](https://bigsoundbank.com/bubbles-burst-s1074.html) | Joseph Sardin | CC0 | harvest_pluck |
 | [BigSoundBank #1170 Hisses, loud long](https://bigsoundbank.com/hisses-loud-long-s1170.html) | Joseph Sardin | CC0 | whistle |
@@ -263,8 +267,9 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [BigSoundBank #1377 Goat and Young Goat](https://bigsoundbank.com/goat-and-young-goat-s1377.html) | Joseph Sardin | CC0 | bleat |
 | [BigSoundBank #1436 Fishing reel, medium](https://bigsoundbank.com/fishing-reel-medium-s1436.html) | Joseph Sardin | CC0 | reel |
 | [BigSoundBank #1437 Fishing reel, slow](https://bigsoundbank.com/fishing-reel-slow-s1437.html) | Joseph Sardin | CC0 | reel |
-| [BigSoundBank #1514 Rowing slowly](https://bigsoundbank.com/rowing-slowly-s1514.html) | Joseph Sardin | CC0 | swim |
-| [BigSoundBank #1854 Horse Walking on a Path](https://bigsoundbank.com/horse-walking-on-a-path-s1854.html) | Joseph Sardin | CC0 | hoof |
+| [BigSoundBank #1514 Rowing slowly](https://bigsoundbank.com/rowing-slowly-s1514.html) | Joseph Sardin | CC0 | step_swim, swim |
+| [BigSoundBank #1634 #1634](https://bigsoundbank.com/) | Joseph Sardin | CC0 | step_wheels |
+| [BigSoundBank #1854 Horse Walking on a Path](https://bigsoundbank.com/horse-walking-on-a-path-s1854.html) | Joseph Sardin | CC0 | hoof, step_hoof |
 | [BigSoundBank #2561 Coffee Shop at the Capucins](https://bigsoundbank.com/coffee-shop-at-the-capucins-s2561.html) | Joseph Sardin | CC0 | room_shop |
 | [BigSoundBank #2721 Truck Horn](https://bigsoundbank.com/truck-horn-s2721.html) | Joseph Sardin | CC0 | car_horn, war_horn_gang |
 | [BigSoundBank #2750 Chainsaw and falling tree](https://bigsoundbank.com/chainsaw-and-falling-tree-s2750.html) | Joseph Sardin | CC0 | timber |
