@@ -102,6 +102,8 @@ func _title_pass() -> void:
 	await _check("newgame_names_hard", t)
 	t.call("_show_slots")
 	await _check("slots", t)
+	t.call("_show_sound")  # C6 P1: title sound page (volumes before a save loads)
+	await _check("title_sound", t)
 	GameState.run = {}
 
 
