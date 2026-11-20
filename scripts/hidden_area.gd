@@ -319,7 +319,7 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 	var ck := "hidden_chest_" + rid + tag
 	var got: bool = GameState.run["flags"].has(ck)
 	var loot: Dictionary = Secrets.LOOT[clampi(tier + 1, 0, Secrets.LOOT.size() - 1)]
-	m.set_thing(back.x, back.y, {"type": "secret_chest", "key": ck, "give": loot, "hint": "" if got else "A: an old chest"}, true)
+	m.set_thing(back.x, back.y, {"type": "secret_chest", "key": ck, "give": loot, "decor_pool": Secrets.decor_pool(tier + 1), "hint": "" if got else "A: an old chest"}, true)
 	m.prop("props", "chest_open" if got else "chest_closed", back)
 	var page_txt := str(sanctum.get("page", Secrets.POCKET_PAGES.get(rid, "")))
 	if page_txt != "":

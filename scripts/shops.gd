@@ -108,7 +108,7 @@ static func offers(shop: String) -> Array:
 ## Stock that arrives as you progress (C8 P6, c8_14_07): shop -> [[progress tier, ids]].
 ## Arc-only items (items.json "arc") are left out of the other arc's shop.
 const GROWN := {
-	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "ring_warmth"]], [5, ["moon_ring", "ring_platinum"]]],
+	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "ring_warmth", "moon_ring"]]],  # c10_07: tier tops out at 4; ring_platinum stays Madame Aurum's
 	"potions": [[3, ["dream_tonic"]]],
 	"granite": [[3, ["silver", "tin"]]],
 }
@@ -168,7 +168,7 @@ static func food_note(id: String) -> String:
 
 
 static func run(m: GameMap, shop: String, absent := false) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
@@ -182,7 +182,8 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
 		"sel": "Relics. Real ones. Mostly.",
 		"catkins": "Litter boxes. Every Grump stops to hold its nose. Don't ask how we found out.",
-	}[shop]
+		"hazel": "Plans and permits are at the hall. Chairs, shelves and rugs are right here.",  # decor counter (C10a P4; needs a counter thing in hazel_house)
+	}.get(shop, "What'll it be?")
 	if absent:
 		# Nobody at the counter: a note on the till, no keeper's voice.
 		greet = "A note on the till: \"Back soon. Prices on the tags. - %s\"" % keeper
@@ -202,11 +203,18 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			if GameState.has_tool(id):
 				continue
 			opts.append(line(id))
+		var decor_i := -1
+		if not DecorSources.today(shop).is_empty():
+			decor_i = opts.size()
+			opts.append("Home goods (decor shelf)")  # C10a P4: rotating decor from data/decor.json
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": keeper, "text": "%s  (you have %s)" % [greet, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
 		await d.finished
 		var pick := d.last_choice
+		if decor_i >= 0 and pick == decor_i:
+			await DecorSources.shelf(m, shop, keeper if keeper != "" else "Shelf")
+			continue
 		var buyable := offers.filter(func(i: String) -> bool: return not GameState.has_tool(i))
 		if pick < 0 or pick >= buyable.size():
 			break
@@ -316,18 +324,27 @@ static func stall_price(id: String, listed: int, discount := 0.0) -> int:
 	return GameState.shop_price(id, int(listed * (1.0 - discount)))
 
 
-static func stall(m: GameMap, who: String, greet: String, items: Array, discount := 0.0) -> void:
+static func stall(m: GameMap, who: String, greet: String, items: Array, discount := 0.0, stall_id := "") -> void:
 	var hello := greet
+	# Decor shelf key for this stall: "stall:<scene>" (or the caller's id) in decor.json "shops".
+	var dkey := ("stall:" + stall_id) if stall_id != "" else ("stall:" + m.scene_id())
 	while true:
 		var opts: Array = []
 		for it: Array in items:
 			var iid := str(it[0])
 			opts.append("%s  %s%s%s" % [GameState.item_name(iid), Money.fmt(stall_price(iid, int(it[1]), discount)), food_note(iid), "  (owned)" if GameState.has_tool(iid) else ""])
+		var decor_i := -1
+		if not DecorSources.today(dkey).is_empty():
+			decor_i = opts.size()
+			opts.append("Home goods (decor shelf)")
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": who, "text": "%s  (you have %s)" % [hello, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
 		await d.finished
 		var i := d.last_choice
+		if decor_i >= 0 and i == decor_i:
+			await DecorSources.shelf(m, dkey, who)
+			continue
 		if i < 0 or i >= items.size():
 			return
 		var id := str(items[i][0])
@@ -335,6 +352,21 @@ static func stall(m: GameMap, who: String, greet: String, items: Array, discount
 		var ty := str(GameState.items.get(id, {}).get("type", ""))
 		if ty == "tool" and GameState.has_tool(id):
 			m.hud.toast("You already have one.")
+			continue
+		if Decor.is_decor(id):
+			# A decor piece listed by hand on a stall: decor box, unique guard, no x5/x10.
+			if DecorSources.taken(id):
+				m.hud.toast("You already have the %s." % DecorSources.name_of(id))
+				continue
+			if int(GameState.run["crystals"]) < unit:
+				m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				Music.instance(m.get_tree()).sfx("nope", "thud")
+				continue
+			GameState.run["crystals"] = int(GameState.run["crystals"]) - unit
+			Music.instance(m.get_tree()).sfx("cash", "coin")
+			DecorSources.grant(m, id, 1, "stall")
+			m.xp("bartering", 1)
+			hello = "Anything else?"
 			continue
 		var qty := 1
 		if not ty in ["tool", "equip", "key", "vehicle", "upgrade"]:

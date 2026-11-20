@@ -86,12 +86,15 @@ func _setup_round() -> void:
 ## How hard the claw holds: centring matters most (a few pixels off halves it),
 ## big plushes are heavier, wins today loosen it, luck (gear + popcorn) and a
 ## long dry run firm it up again (the old dialogue claw's pity win, kept fair).
+const LUCK_GRIP_MAX := 0.12
+
+
 static func grip_for(dx: float, r: float, tight: float, lk: float, dry: int) -> float:
 	var c := clampf(1.0 - dx / (r * 1.1), 0.0, 1.0)
 	var heavy := 0.84 if r > 12.5 else 0.94
 	var g := pow(c, 1.5) * heavy * tight
 	if c > 0.0:
-		g += 0.03 * lk + minf(0.25, 0.05 * maxi(0, dry - 2))
+		g += minf(LUCK_GRIP_MAX, 0.03 * lk) + minf(0.25, 0.05 * maxi(0, dry - 2))  # luck capped (c10_07; gen_rec CLAW_LUCK_CAP)
 	return clampf(g, 0.0, 0.97)
 
 
@@ -243,7 +246,8 @@ func _win(i: int) -> void:
 	held_i = -1
 	ArcadeHub._data()["claw_today"] = [int(GameState.run.get("day", 0)), wins_today() + 1]
 	ArcadeHub._data()["claw_dry"] = 0
-	GameState.add_item(won_item, 1)
+	if not DecorSources.grant(null, won_item, 1, "claw"):  # C10a P4 hook: plush decor to the decor box
+		GameState.add_item(won_item, 1)
 	score = maxi(1, GameState.item_value(won_item)) if GameState.items.has(won_item) else 10
 	var d: Dictionary = ArcadeHub._data()
 	d["claw_wins"] = int(d.get("claw_wins", 0)) + 1

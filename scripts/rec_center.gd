@@ -1128,13 +1128,17 @@ static func _soda(m: GameMap) -> void:
 const HOME_USE := {"rp_music_box": "A: wind the music box", "rp_jukebox": "A: play a record", "rp_arcade_cab": "A: play (free practice)"}
 
 
+const SHELF_SLOT_W := 9.0     # px each shelf piece may be wide
+const SHELF_SLOT_STEP := 0.58  # cells between shelf slots (centred on the shelf)
+
+
 static func dress_house(m: GameMap) -> void:
 	Collections.dress_house(m)  # museum/log milestone decor (C8 P3)
 	var deco: Dictionary = data().get("house_decor", {})
 	var shelves := {}
 	for id in deco:
-		if GameState.count(str(id)) < 1:
-			continue
+		if Tickets.have(str(id)) < 1:
+			continue  # bag, chests or the decor box all count (c10_02/13: Deposit All no longer strips the house)
 		var d: Dictionary = deco[id]
 		if d.has("wall"):
 			var w := RecDecor.new()
@@ -1150,10 +1154,12 @@ static func dress_house(m: GameMap) -> void:
 				shelves[sc] = m.prop("furniture", "trophy_shelf", sc, 1, 0.0, true, 0.5)
 			var t := Art.sprite("items", str(d["name"]))
 			if t:
-				var tw := float(t.texture.get_height()) if t.texture else 32.0
-				var ts := 13.0 / maxf(1.0, tw)
+				var th := float(t.texture.get_height()) if t.texture else 32.0
+				var tw := float(t.texture.get_width()) if t.texture else 32.0
+				# Three pieces share a 28-px shelf top: fit each to its third (c10_02 overlap fix).
+				var ts := minf(13.0 / maxf(1.0, th), SHELF_SLOT_W / maxf(1.0, tw))
 				t.scale = Vector2(ts, ts)
-				t.position = m.cell_pos(sc.x + 0.35 + 0.65 * int(d.get("slot", 0)), sc.y + 1) + Vector2(0, -15)
+				t.position = m.cell_pos(sc.x + 1.0 + SHELF_SLOT_STEP * (int(d.get("slot", 0)) - 1), sc.y + 1) + Vector2(0, -15)
 				t.offset = Vector2(0, -t.texture.get_height() / 2.0) if t.texture else Vector2.ZERO
 				m.add_child(t)
 			if str(id) in HOME_USE:

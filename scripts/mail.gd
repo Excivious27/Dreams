@@ -182,6 +182,8 @@ static func _morning() -> int:
 	_first_week(day)
 	RecCenter.morning()
 	Collections.morning()  # museum opening, donation thanks, milestone letters (C8 P3)
+	DecorSources.deliver_orders()  # catalogue orders arrive as parcels (C10a P4)
+	_housewarming()
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:
@@ -199,6 +201,11 @@ static func _morning() -> int:
 	if not friends.is_empty() and rng.randf() < 0.25:
 		var who2 := str(friends[rng.randi() % friends.size()])
 		var gift := _gift_item(who2, rng)
+		# C10a P4: a close friend (6+ hearts) now and then sends a small home piece instead.
+		if GameState.friend_hearts(who2) >= int(DECOR_GIFT["hearts"]) and rng.randf() < float(DECOR_GIFT["p"]):
+			var dg := Decor.roll(str(DECOR_GIFT["pool"]))
+			if dg != "" and not DecorSources.taken(dg) and Decor.rarity_rank(Decor.rarity(dg)) <= Decor.rarity_rank("uncommon"):
+				gift = dg
 		send(_name(who2), "%s - %s" % [_pick_line(who2, GIFT_NOTES, rng), _name(who2)], "gift", {"npc": who2, "item": gift, "n": 1})
 	# Chatter.
 	if not known.is_empty() and rng.randf() < 0.3:
@@ -331,6 +338,24 @@ static func _pick_line(who: String, pool: Dictionary, rng: RandomNumberGenerator
 	return pick
 
 
+## A bigger farmhouse gets a housewarming parcel once per tier (decor.json grants
+## "house:<tier>", c10_06): the town chips in for the new rooms.
+static func _housewarming() -> void:
+	var t := Builds.built_tier("house")
+	for tier in range(2, t + 1):
+		var fk := "house_warm_%d" % tier
+		var id := DecorSources.granted_for("house:%d" % tier)
+		if id == "" or GameState.run["flags"].has(fk) or DecorSources.taken(id):
+			continue
+		GameState.run["flags"][fk] = true
+		var who := "Hazel" if GameState.is_penguins() else "The crew"
+		send(who, "New rooms deserve something in them. From all of us: %s. - %s" % [DecorSources.name_of(id), who], "gift", {"item": id, "n": 1})
+
+
+## Friend letters that carry a decor piece (decor.json pool "mail"; common/uncommon only).
+const DECOR_GIFT := {"hearts": 6, "p": 0.125, "pool": "mail"}
+
+
 static func _gift_item(who: String, rng: RandomNumberGenerator) -> String:
 	var likes: Array = GameState.npcs.get(who, {}).get("likes", [])
 	for i in 6:
@@ -368,13 +393,18 @@ static func _act(m: Dictionary) -> String:
 			if bool(m.get("got", false)):
 				return "Already taken."
 			m["got"] = true
-			GameState.add_item(str(m["item"]), int(m.get("n", 1)))
+			if Decor.is_decor(str(m["item"])):
+				DecorSources.grant(null, str(m["item"]), int(m.get("n", 1)), "mail")  # decor box, not the bag (C10a)
+			else:
+				GameState.add_item(str(m["item"]), int(m.get("n", 1)))
 			return ""
 		"favour":
 			if bool(m.get("done", false)):
 				return "That's done." if not bool(m.get("lapsed", false)) else "Too late: they found it elsewhere."
 			var id := str(m["item"])
 			var n := int(m["n"])
+			if DecorSources.keeps(id):
+				return DecorSources.KEEP_LINE
 			if GameState.count(id) < n:
 				return "You need %s (you have %d)." % [ItemWords.count_id(id, n), GameState.count(id)]
 			GameState.add_item(id, -n)

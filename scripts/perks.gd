@@ -77,7 +77,11 @@ static func _give(g: Dictionary) -> void:
 	for id: String in g:
 		var n := int(g[id])
 		if id == "#gold":
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + n
+			GameState.add_money(n, "friends")  # counts in earned_total/earned_by (c10_06)
+		elif id.begins_with("#decor:"):
+			DecorSources.grant(null, id.substr(7), n, "heart")  # a keepsake for the house (C10a)
+		elif Decor.is_decor(id):
+			DecorSources.grant(null, id, n, "heart")
 		elif id == "#seedpack":
 			GameState.add_item(seed_pack(), 5 * n)
 		elif id == "#tickets":

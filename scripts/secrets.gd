@@ -130,6 +130,11 @@ const HUB_TIER_DROP := 2        # areas with no foes (hubs) hide loot this many 
 const PAGE_SPACING := [10.0, 6.0, 3.0]  # path-side picks keep apart; looser until the page fits
 
 
+## Decor pool a chest of loot tier t rolls ("chest_t1".."chest_t5" in decor.json pools).
+static func decor_pool(t: int) -> String:
+	return "chest_t%d" % clampi(t + 1, 1, 5)
+
+
 ## Loot tier for an area's chest/pocket: safe hubs pay less than the dangerous areas.
 static func loot_tier(area_tier: int, has_foes: bool) -> int:
 	return area_tier if has_foes else maxi(0, area_tier - HUB_TIER_DROP)
@@ -211,7 +216,7 @@ static func _put(m: GameMap, rid: String, tier: int, picks: Array) -> void:
 	var ck := "secret_chest_" + rid
 	var c0: Vector2i = picks[0]
 	var opened: bool = GameState.run["flags"].has(ck)
-	m.set_thing(c0.x, c0.y, {"type": "secret_chest", "key": ck, "give": LOOT[t], "hint": "" if opened else "A: an old chest"}, true)
+	m.set_thing(c0.x, c0.y, {"type": "secret_chest", "key": ck, "give": LOOT[t], "decor_pool": decor_pool(t), "hint": "" if opened else "A: an old chest"}, true)
 	m.prop("props", "chest_open" if opened else "chest_closed", c0)
 	# Two buried caches: nothing to see, but the hoe finds them.
 	for i in range(1, mini(3, picks.size())):
@@ -290,6 +295,10 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 					m.hud.toast("+◆%d" % int(g[id]), Color(1, 0.9, 0.5))
 				else:
 					m.give(id, int(g[id]))
+			# C10a P4: once-per-game chests also hold a home piece (a fixed grant
+			# "chest:<key>" from decor.json wins over the tier pool roll).
+			if randf() < float(DecorSources.T["chest_p"]) and DecorSources.grant_key(m, "chest:" + key) == "":
+				DecorSources.roll_grant(m, str(thing.get("decor_pool", "")), Fishing.luck(), "chest")
 			GameState.notify("Hidden chest found (%d/%d)." % [found("secret_chest_") + found("hidden_chest_"), chests_total()])
 			return true
 		"secret_dig":
@@ -320,6 +329,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			if n >= pages_total() and not GameState.run["flags"].has("journal_done"):
 				GameState.run["flags"]["journal_done"] = true
 				m.give("relic_crown", 1)
+				DecorSources.grant_key(m, "secret:journal")  # the Wayfarer's keepsake (unique, decor.json grants)
 				GameState.add_money(5000, "secret")
 				GameState.notify("The journal is whole. Tucked in its spine: a map to a crown, and ◆5000.")
 			return true

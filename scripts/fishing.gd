@@ -14,6 +14,7 @@ const T := {
 	"cap_per_area_tier": 30,    # a mega water's own fish are within reach of its tier
 	"boot": 0.08,
 	"rare_per_luck": 0.03,
+	"rare_luck_cap": 0.15,      # luck's share of the Rare Catch chance (c10_07: luck 20 made every cast rare)
 	"lit_waters": ["lake", "beach"],  # the lighthouse only draws fish to the lake and sea
 	# Bite window by fish band (value <= band[i] -> window[i]); then + escape_less + rod.
 	"value_bands": [30, 80, 150, 250, 99999],
@@ -24,6 +25,7 @@ const T := {
 	"treasure_valley": ["old_coin", "map_scrap", "map_scrap"],
 	"treasure_sea": ["old_coin", "map_scrap", "pearl"],
 	"treasure_deep": ["old_coin", "pearl", "pearl"],   # area tier 3+
+	"treasure_decor_p": 0.17,   # share of treasure catches that bring up a decor piece instead
 	"sea_waters": ["beach", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "docks"],
 	# XP per catch: base + value / per (capped); boots give the floor.
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
@@ -70,6 +72,17 @@ static func pool_for(pool_in: Array, area_tier: int) -> Array:
 	return pool
 
 
+## The koi is one of a kind: only under the lit lighthouse, and only until you have one (c10_07).
+static func koi_open() -> bool:
+	if not GameState.run.get("flags", {}).has("lighthouse_lit"):
+		return false
+	if GameState.has_seen("legendary_koi"):
+		return false
+	var coll: Variant = GameState.run.get("coll", {})
+	var caught: Variant = (coll as Dictionary).get("caught", {}) if coll is Dictionary else {}
+	return not (caught is Dictionary and (caught as Dictionary).has("legendary_koi"))
+
+
 static func luck() -> float:
 	return GameState.buff("luck") + float(GameState.gear_stat("luck"))
 
@@ -96,7 +109,7 @@ static func bait_helps(pool: Array, lvl: int, night: bool, area_tier: int) -> bo
 ## rare: chance of a Rare Catch roll (skill + perks); picks from the top of reach.
 static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: int, rare: float, scene := "") -> String:
 	var k: Dictionary = T["koi"]
-	if scene == str(k["scene"]) and night and baited and lvl >= int(k["level"]) and randf() < float(k["chance"]):
+	if scene == str(k["scene"]) and night and baited and lvl >= int(k["level"]) and koi_open() and randf() < float(k["chance"]):
 		return "legendary_koi"
 	if randf() < float(T["boot"]):
 		return "boot"
@@ -106,7 +119,7 @@ static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: in
 		open = [pool[0]]
 	var reach := mini(open.size(), reach_n(lvl, night, baited))
 	var ratio := 0.8 if baited else 0.67
-	if randf() < rare + float(T["rare_per_luck"]) * luck():
+	if randf() < rare + minf(float(T["rare_luck_cap"]), float(T["rare_per_luck"]) * luck()):
 		# Rare Catch: one more fish and +40 ceiling, picked from the TOP down.
 		var up := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap + 40)
 		if up.is_empty():
@@ -129,12 +142,22 @@ static func treasure(scene: String, area_tier: int) -> String:
 	var ch := GameState.bonus("fishing", "chest_chance") * float(mults[clampi(area_tier, 0, mults.size() - 1)])
 	if randf() >= ch:
 		return ""
+	# C10a P4: some treasure catches are a home piece instead (decor box, toast queued).
+	if randf() < float(T["treasure_decor_p"]) and DecorSources.roll_grant(null, decor_pool(scene, area_tier), luck(), "fishing") != "":
+		return ""
 	var list: Array = T["treasure_valley"]
 	if area_tier >= 3:
 		list = T["treasure_deep"]
 	elif (T["sea_waters"] as Array).has(scene):
 		list = T["treasure_sea"]
 	return str(list[randi() % list.size()])
+
+
+## Decor pool for a treasure catch here: "fishing_sea" / "fishing_deep" when decor.json
+## has them, else the shared "fishing" pool.
+static func decor_pool(scene: String, area_tier: int) -> String:
+	var want := "fishing_deep" if area_tier >= 3 else ("fishing_sea" if (T["sea_waters"] as Array).has(scene) else "fishing")
+	return want if (Decor.data()["pools"] as Dictionary).has(want) else "fishing"
 
 
 static func xp_for(fish: String) -> int:
