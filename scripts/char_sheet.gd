@@ -689,7 +689,32 @@ static func build(menu: GameMenu, body: VBoxContainer) -> void:
 	_stats(body)
 	_effects(body)
 	_skills(body)
+	_team(body)
 	_milestones(body)
+
+
+## C11a P4: who walks with you (pup, partner, team animals) and a way to the Animals page.
+static func _team(body: Control) -> void:
+	var sl := TeamAnimals.slots()
+	var v := _card(body, "Team")
+	var pid := str(sl["partner"])
+	var parts: Array = [str(sl["pup"])]
+	if pid != "":
+		parts.append(str(Companion.defs().get(pid, {}).get("name", pid)))
+	for uid in (sl["animals"] as Array):
+		var st := TeamAnimals.stats(str(uid))
+		parts.append("%s (%s, %d hp)" % [TeamAnimals.name_of(str(uid)), TeamAnimals.species_name(str(uid)), int(st["hp"])])
+	_lab(v, ", ".join(parts))
+	_lab(v, "Animals on the team: %d of %d" % [(sl["animals"] as Array).size(), int(sl["animal_max"])], 7)
+	var b := _row(v, func() -> void:
+		if is_instance_valid(_menu):
+			_menu._tab = "Animals"
+			_menu._refresh())
+	b.text = "Animals ›"
+	b.add_theme_font_size_override("font_size", Settings.font(8))
+	for k in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		b.add_theme_color_override(k, INK)
+	b.set_meta("pc_key", "hero:animals")
 
 
 static func _redo() -> void:

@@ -411,7 +411,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) or (t == "Party" and _tab in ["Animals", "Chores"]) else Color(0.85, 0.85, 0.85)
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	if _tab_buttons.has("Book"):
@@ -548,9 +548,17 @@ func _refresh() -> void:
 			_skills_tab()
 		"Pup":
 			_pup_tab()
+		"Animals":
+			TeamAnimals.build_page(self)  # C11a P4: roster, hearts, lessons, rename, rehome, team toggle
+		"Chores":
+			Chores.build_page(self)  # C11a P4: overnight farm chores for the pup, team animals, crew, partners
 		"Party":
 			var pt := Companion.party()
 			var act := Companion.active_id()
+			var anb := _button("Animals: %d on the ranch, %d on the team ›" % [Ranch.animals().size(), TeamAnimals.team().size()], func() -> void: _tab = "Animals"; _refresh())
+			anb.set_meta("pc_key", "party:animals")
+			var chb := _button("Chores: %d helper%s working ›" % [Chores.st()["assign"].size(), "" if Chores.st()["assign"].size() == 1 else "s"] if Chores.unlocked() else "Chores (after your first week) ›", func() -> void: _tab = "Chores"; _refresh())
+			chb.set_meta("pc_key", "party:chores")
 			if not GameState.is_penguins():
 				_crew_tab()
 			_line("Party", 10, Color(1, 0.95, 0.8))
@@ -1752,7 +1760,7 @@ func _crew_tab() -> void:
 
 var _steal_warn := {}  # Keys page: {key, from} while a stolen key waits for its confirm press
 
-const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests"}
+const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests", "Animals": "Party", "Chores": "Party"}
 ## Cursor key repeat: first delay, then every step (seconds, real time).
 const REPEAT_FIRST := 0.35
 const REPEAT_STEP := 0.09

@@ -185,6 +185,13 @@ if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
   echo "storage_test failed"; exit 1
 fi
 
+echo "== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) =="
+taout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/team_animals_test.gd 2>&1)"
+echo "$taout" | grep -E "FAIL|SCRIPT ERROR|team_animals_test" || true
+if ! echo "$taout" | grep -q "team_animals_test: OK" || echo "$taout" | grep -q "SCRIPT ERROR"; then
+  echo "team_animals_test failed"; exit 1
+fi
+
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
 dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
 echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true
