@@ -505,6 +505,20 @@ func _refresh() -> void:
 				_line("%s  ·  %s  ·  tier %d  ·  %s" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), worth], 8, DecorCatalogue.rarity_col(sel))
 				if Collections.museum_needs(sel):
 					_line("Museum wants this: donate it before selling.", 8, Color(1, 0.85, 0.5))
+				if Decor.is_decor(sel) and GameState.count(sel) > 0 and not GameState.visiting():
+					# C10a P3: a decor piece still in the bag (old saves) moves to the decor box.
+					var dsel := sel
+					_button("Put in the decor box ›", func() -> void:
+						var before := Decor.owned(dsel)
+						Decor.give(dsel, GameState.count(dsel), "bag")
+						var took := Decor.owned(dsel) - before  # a unique already held is refused: it stays in the bag
+						if took <= 0:
+							_toast("You already have this one-of-a-kind piece.")
+							return
+						GameState.add_item(dsel, -took)
+						_bag_pick = ""
+						_toast("%s is in your decor box now." % DecorCatalogue.name_of(dsel))
+						_refresh())
 				if itd.has("desc"):
 					_line(str(itd["desc"]), 8, Color(0.8, 0.8, 0.8))
 				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):

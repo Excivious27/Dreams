@@ -149,6 +149,10 @@ func _run() -> void:
 	check(Collections.give_decor("dc_koi_scroll", "test") and Decor.owned("dc_koi_scroll") == 1, "legend keepsake goes to the decor box")
 	check(not Collections.give_decor("no_such_piece", "test"), "unknown decor gift is skipped")
 	check(Collections.decor_id("museum_trophy") == "", "legacy prop with no catalogue entry keeps its fixed spot")
+	# Items tab: a decor piece left in the bag (old saves) moves to the decor box.
+	Decor._data["items"]["dc_bag_lamp"] = {"name": "Bag Lamp", "cat": "light", "rarity": "common", "arc": ""}
+	GameState.items["dc_bag_lamp"] = {"name": "Bag Lamp", "type": "decor", "value": 10}
+	GameState.add_item("dc_bag_lamp", 2)
 	# 3) The screen at 270x480.
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/beach.tscn")
@@ -160,6 +164,26 @@ func _run() -> void:
 		d._advance()
 		await frames(3)
 	check(DecorCatalogue.new_count() > 0, "new decor kinds glow the Book")
+	for ch in current_scene.get_children():
+		if ch is GameMenu:
+			var gmn := ch as GameMenu
+			gmn._tab = "Items"
+			gmn.toggle()
+			await frames(3)
+			gmn._bag_pick = "dc_bag_lamp"
+			gmn._refresh()
+			await frames(2)
+			var mv: Button = null
+			for b in gmn._cursor_list():
+				if b is Button and str((b as Button).text).begins_with("Put in the decor box"):
+					mv = b
+			check(mv != null, "Items tab offers 'Put in the decor box' for a decor piece in the bag")
+			if mv:
+				mv.pressed.emit()
+				await frames(2)
+				check(GameState.count("dc_bag_lamp") == 0 and Decor.owned("dc_bag_lamp") == 2, "bag decor moved to the decor box")
+			gmn.toggle()
+			await frames(10)
 	var scr := DecorCatalogue.open(current_scene, "grid")
 	await frames(10)
 	check(DecorCatalogue.new_count() == 0, "opening the catalogue clears New")
