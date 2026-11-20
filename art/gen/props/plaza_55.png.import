@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/plaza_55.png-490d1865928a81d117719e63d5874c44
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/r_marsh_96.png-2bcf443331c731a190f13893c4d9ec
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

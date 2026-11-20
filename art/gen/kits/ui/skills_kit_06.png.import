@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/skills_kit_06.png-f6f4b21e0a64f9410349c802655
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

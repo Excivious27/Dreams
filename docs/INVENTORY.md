@@ -4,7 +4,7 @@ Every system in the game with its state, what is still outstanding, test coverag
 
 **Summary:** 59 systems: 40 done, 9 rough, 9 missing. Average 71%.
 
-**Live counts:** 19,401 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 107 headless tests, 100 in check.sh.
+**Live counts:** 19,401 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 112 headless tests, 100 in check.sh.
 
 ## Systems
 
@@ -38,7 +38,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| QA | Headless tests, bots, playtest | done | 85 | 107 *_test.gd; 100 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| QA | Headless tests, bots, playtest | done | 85 | 112 *_test.gd; 100 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
 | Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
 | Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
 | Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |
@@ -92,4 +92,4 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 ## Tests outside check.sh
 
-char_sheet_test, creator_test, day_length_test, difficulty_test, net_test, pad_test, reach_test
+border_bucket_test, char_sheet_test, creator_test, day_length_test, difficulty_test, haptics_test, menu_pad_test, net_test, pad_test, reach_test, save_transfer_test, screens_pad_test

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/mk_wisp_green_3.png-731a282601aba4d454d37a6bc
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

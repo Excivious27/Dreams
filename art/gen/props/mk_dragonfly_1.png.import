@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/mk_dragonfly_1.png-e04b5f7dd1dd242db894a53410
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

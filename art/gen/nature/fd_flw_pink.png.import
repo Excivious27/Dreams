@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/fd_flw_pink.png-158ff5d6e6ba2bbda009981dc9665
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

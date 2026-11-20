@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/lamp_arm_a.png-33bf23f5b66fb45ea6d10ae90bad56
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

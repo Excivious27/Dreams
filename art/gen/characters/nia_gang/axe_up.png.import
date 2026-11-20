@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/axe_up.png-aa701e8835e971abc8e87af4b53396d0.c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

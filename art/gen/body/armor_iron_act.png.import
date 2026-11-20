@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/armor_iron_act.png-7f417ab912e96034cf058d86c6
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

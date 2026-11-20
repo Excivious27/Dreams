@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/mk_fog_s.png-d0307c8652d44e5c3d8cd751e5baf28a
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/silo.png-2c17f5f285f672abb69ec49f35b4a42a.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/lychee_young.png-b0f7ecb477c09749bc0c2761f7d8
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

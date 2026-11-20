@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sofa_blue.png-6f29d169e82970f65a7dbb6e5e0dcf3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

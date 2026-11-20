@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/bed_red.png-b651f62d76b5be0a92b0b9d1b25dbbc3.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

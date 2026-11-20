@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/fdeco_4.png-b6c768cc4dfa92a995c717bb1399eb8f.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

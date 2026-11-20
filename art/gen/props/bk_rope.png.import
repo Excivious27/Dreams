@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/bk_rope.png-51e2159794a81c70d0f376a70a1a2d45.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

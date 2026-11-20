@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sleep.png-c2b22a7aab8e68cd4b0c825f7ed70bd0.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

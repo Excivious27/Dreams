@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/hedge2_corner_b.png-bfbc4b04c66508ba5a395a1e9
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

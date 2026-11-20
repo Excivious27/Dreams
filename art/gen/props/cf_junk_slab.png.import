@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cf_junk_slab.png-14be7e4f945597885309309d7b06
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

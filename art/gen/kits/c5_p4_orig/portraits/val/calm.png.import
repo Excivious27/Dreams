@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/calm.png-51f50d0d9fbdde189ea67c18d65e4a16.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

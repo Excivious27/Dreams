@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/kiwi_ready.png-ba6b03897d81451ac8ef882e3b64ec
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

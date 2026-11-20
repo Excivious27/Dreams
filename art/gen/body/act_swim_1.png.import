@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/act_swim_1.png-04e989c538bd8204cb0e2c84b1b36d
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

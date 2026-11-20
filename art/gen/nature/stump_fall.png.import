@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/stump_fall.png-f566e650a0599cd1aec14b7f0487fa
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

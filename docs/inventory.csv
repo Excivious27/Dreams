@@ -72,3 +72,5 @@ Tom,Steam,Steam release,,,A Steamworks developer account (about $100 per game) w
 Tom,OpenAI organisation verification,nothing now,,,"Was still in review (HANDOFF); the image tool works meanwhile. 300 images/day through Nov 25, then 60."
 Tom,Playtest notes from your phone,polish,,,"One good and one confusing thing per session (Guide 24 Part 5), plus the Guide 24 checklist: new game, shop/bag, rooms, mines, fights, phone smoothness, co-op."
 Tom,Song swaps,nothing,,,Say 'swap <name>' for any track you don't like.
+Core,Haptics (vibration on phones and pads),done,85,haptics_test (not in check.sh),"Web Vibration API on Android; iPhone browsers cannot vibrate (Options says so). Hooks beyond Music.sfx names (tool fx, story shakes, arcade) can be added with one Haptics.buzz line."
+Core,Steam Deck / Linux native build,partial,55,"haptics_test (not in check.sh), deploy linux job","Linux preset + CI export, fullscreen, touch auto, cursor hide, focus pause. Open: UI scale for 1280x800, physics interpolation, Steam art (docs/STEAM-DECK.md)."

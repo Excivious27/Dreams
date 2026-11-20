@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/alien_statue.png-07038a8e284f11b245c94501fcfd
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

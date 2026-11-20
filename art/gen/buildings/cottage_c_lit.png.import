@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cottage_c_lit.png-8a20ad75e80c2ce39de3a58adab
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

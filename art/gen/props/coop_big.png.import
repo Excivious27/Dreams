@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/coop_big.png-edb7712d06d8f1465e5a0b473a2c24a2
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

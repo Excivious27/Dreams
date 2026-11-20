@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/angry.png-2611ab1d49a0990023b8ce35612eca23.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

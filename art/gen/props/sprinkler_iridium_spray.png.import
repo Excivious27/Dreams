@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sprinkler_iridium_spray.png-01672f874ffdc31e2
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

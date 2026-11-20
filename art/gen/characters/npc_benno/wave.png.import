@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/wave.png-3e2e710d81671b95296ea9ef1e928e2a.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/snow_pea_star.png-b9a913f067b0bdd45a76f12c7f4
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

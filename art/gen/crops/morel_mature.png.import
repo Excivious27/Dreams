@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/morel_mature.png-d945c3db3a22b95b4e70d5df164c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

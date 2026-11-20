@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/lit_kit_16.png-d3b87cd55ac06651b1a9d5657c51ce
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

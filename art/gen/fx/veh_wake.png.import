@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/veh_wake.png-457e9223401012f06b181b2ace0f6e5b
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

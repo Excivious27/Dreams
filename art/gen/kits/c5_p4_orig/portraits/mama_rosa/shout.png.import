@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/shout.png-b96b25452f72ad8643daaba9c0c9ac1f.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/withered_kit_14.png-e981b294742380c6ff257c500
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

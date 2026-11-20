@@ -403,6 +403,8 @@ func _apply_targets() -> void:
 			(s as AudioStreamOggVorbis).loop = true
 		var p := AudioStreamPlayer.new()
 		p.bus = "Ambience" if AudioServer.get_bus_index("Ambience") != -1 else "SFX"
+		if OS.has_feature("web"):
+			p.playback_type = AudioServer.PLAYBACK_TYPE_STREAM  # long beds: no decoded PCM in page memory (C9 P4)
 		p.stream = s
 		p.volume_db = OFF_DB
 		add_child(p)

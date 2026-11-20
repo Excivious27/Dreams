@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/table_kit_02.png-9b0824dbe983f95c12800b0b8d95
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cast_up.png-adceb507301cff4146001a14d985f4e4.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

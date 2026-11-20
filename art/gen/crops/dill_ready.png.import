@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dill_ready.png-d7b8defc33c8dca3a68c8b0a38ed7f
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

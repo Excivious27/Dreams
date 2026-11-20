@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/pleading.png-e53a5b803d4e55d25acfba15f6a34e0c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

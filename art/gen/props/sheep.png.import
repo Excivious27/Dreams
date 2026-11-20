@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sheep.png-2d912847a6ff169600a592e7caa86e88.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

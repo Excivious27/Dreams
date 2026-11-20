@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/fig_young.png-8627c7d9a5d97e97a6088fd2ae6cb8e
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

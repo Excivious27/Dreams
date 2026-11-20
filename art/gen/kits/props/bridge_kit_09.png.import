@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/bridge_kit_09.png-b4f7030ba0a115aa9966a006e38
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

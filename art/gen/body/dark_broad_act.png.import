@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dark_broad_act.png-9822f56bc0cb7e1e9dcd0071ea
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

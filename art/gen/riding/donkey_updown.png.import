@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/donkey_updown.png-205ab7c464f5ff559852237aa33
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

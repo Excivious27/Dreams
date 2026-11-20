@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cf_mural_wall.png-46e92e5d1c78a2b6c31e2712b46
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

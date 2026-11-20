@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/two_tier_07.png-f0c4c6d3cac13178e1f90992f3d6f
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/r_highlands_31.png-683c38e687321444fea13d51a5
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
