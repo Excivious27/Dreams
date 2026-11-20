@@ -28,9 +28,10 @@ for f in sorted(glob.glob(os.path.join(d, "bot-*", "bot*.json")), key=lambda p: 
     j["script_errors"] = txt.count("SCRIPT ERROR")
     j["fails"] = txt.count("BOT FAIL")
     j["warns"] = txt.count("BOT WARN")
+    j["pauses"] = txt.count("paused with nothing on screen")
     m = re.search(r"BOT \d+ done: (.*)", txt)
     j["line"] = (m.group(1)[:90] if m else "DID NOT FINISH")
-    for m in re.findall(r"(BOT FAIL.{0,140}|BOT WARN.{0,140}|SCRIPT ERROR.{0,140})", txt):
+    for m in re.findall(r"(BOT FAIL.{0,140}|BOT WARN.{0,140}|SCRIPT ERROR.{0,140}|paused with nothing on screen.{0,140})", txt):
         errs[re.sub(r"\[\d+ [a-z]+\] ", "", m)[:160]] += 1
     bots.append(j)
 ok_sh = len(shards) == 6 and all(s["rc"] == 0 for s in shards)
@@ -47,9 +48,9 @@ for s in shards:
              ("  failed: " + ", ".join(s["failed_steps"])) if s["failed_steps"] else ""))
 L.append("bots (%d/20, finished %d):" % (len(bots), sum(b["done"] for b in bots)))
 for b in bots:
-    L.append("  bot%-2s %-36s %s errors=%d fails=%d warns=%d %ss  %s" % (b["bot"], b.get("spec", ""),
+    L.append("  bot%-2s %-36s %s errors=%d fails=%d warns=%d pauses=%d %ss  %s" % (b["bot"], b.get("spec", ""),
              "OK  " if b["done"] and not b["fails"] and not b["script_errors"] else "FAIL",
-             b["script_errors"], b["fails"], b["warns"], b["secs"], b["line"]))
+             b["script_errors"], b["fails"], b["warns"], b["pauses"], b["secs"], b["line"]))
 L.append("")
 L.append("longest job: %ss" % wall)
 if res["slowest_steps"]:
