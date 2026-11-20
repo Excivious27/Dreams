@@ -43,6 +43,17 @@ func _run() -> void:
 			Dialogue.instance(self)._advance()
 		await frames(2)
 	await shot("farm_button")
+	# A test path + statue (injected entries) to check the flat layer and standing pieces.
+	var items: Dictionary = Decor.data()["items"]
+	items["t_shot_path"] = {"name": "Cobble Path", "cat": "outdoor_path", "layer": "outdoor", "seam": "cobble_warm", "sub": "path", "size": [1, 1], "rot": 1, "art": "props/birdbath", "rarity": "common", "arc": ""}
+	items["t_shot_bath"] = {"name": "Bird Bath", "cat": "outdoor_statue", "layer": "outdoor", "size": [1, 1], "rot": 1, "art": "props/birdbath", "rarity": "common", "arc": ""}
+	Decor.give("t_shot_path", 12)
+	Decor.give("t_shot_bath", 2)
+	var pc: Vector2i = f.player.cell()
+	for k in 8:
+		DecorMode.place(f, "t_shot_path", pc + Vector2i(2 + k, 2))
+	DecorMode.place(f, "t_shot_bath", pc + Vector2i(3, 4))
+	await shot("yard_pieces")
 	var dm := DecorMode.open(f)
 	await frames(4)
 	if dm:
