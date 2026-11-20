@@ -138,6 +138,93 @@
    },
    "give": "sprinkler_iridium",
    "tier": 4
+  },
+  {
+   "id": "dc_stool_wood",
+   "name": "Wood Stool",
+   "need": {
+    "plank": 4
+   },
+   "give": "dc_stool_wood",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_chair_a",
+   "name": "Cottage Oak Chair",
+   "need": {
+    "nails": 4,
+    "plank": 6
+   },
+   "give": "dc_chair_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_table_square",
+   "name": "Cottage Square Table",
+   "need": {
+    "nails": 6,
+    "plank": 10
+   },
+   "give": "dc_table_square",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_shelf_empty",
+   "name": "Plain Shelf",
+   "need": {
+    "nails": 4,
+    "plank": 8
+   },
+   "give": "dc_shelf_empty",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_low_table",
+   "name": "Low Table",
+   "need": {
+    "nails": 4,
+    "plank": 8
+   },
+   "give": "dc_low_table",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_nightstand_a",
+   "name": "Cottage Oak Nightstand",
+   "need": {
+    "nails": 4,
+    "plank": 6
+   },
+   "give": "dc_nightstand_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_cat_bed",
+   "name": "Cat Bed",
+   "need": {
+    "cloth": 2,
+    "plank": 2
+   },
+   "give": "dc_cat_bed",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_dog_bed",
+   "name": "Dog Bed",
+   "need": {
+    "cloth": 2,
+    "plank": 2
+   },
+   "give": "dc_dog_bed",
+   "tier": 1,
+   "decor": true
   }
  ],
  "kitchen": [
@@ -533,6 +620,72 @@
    },
    "give": "ironwood_beam",
    "tier": 4
+  },
+  {
+   "id": "dc_bookshelf",
+   "name": "Cottage Bookshelf",
+   "need": {
+    "hardwood_plank": 3,
+    "nails": 10
+   },
+   "give": "dc_bookshelf",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_dresser",
+   "name": "Dresser",
+   "need": {
+    "hardwood_plank": 4,
+    "nails": 10
+   },
+   "give": "dc_dresser",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_wardrobe_a",
+   "name": "Cottage Oak Wardrobe",
+   "need": {
+    "hardwood_plank": 6,
+    "nails": 12
+   },
+   "give": "dc_wardrobe_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_table2_long4",
+   "name": "Dining Table",
+   "need": {
+    "beam": 1,
+    "hardwood_plank": 5
+   },
+   "give": "dc_table2_long4",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_desk_a",
+   "name": "Cottage Oak Desk",
+   "need": {
+    "hardwood_plank": 4,
+    "nails": 8
+   },
+   "give": "dc_desk_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_bed_single",
+   "name": "Single Bed",
+   "need": {
+    "cloth": 3,
+    "hardwood_plank": 4
+   },
+   "give": "dc_bed_single",
+   "tier": 2,
+   "decor": true
   }
  ],
  "furnace": [
@@ -2042,6 +2195,39 @@
    },
    "give": "moon_belt_plus",
    "tier": 5
+  },
+  {
+   "id": "dc_lantern2",
+   "name": "Iron Lantern",
+   "need": {
+    "glass": 1,
+    "iron_bar": 1
+   },
+   "give": "dc_lantern2",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_lamp_floor",
+   "name": "Floor Lamp",
+   "need": {
+    "glass": 1,
+    "iron_bar": 2
+   },
+   "give": "dc_lamp_floor",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_stove_iron",
+   "name": "Iron Stove",
+   "need": {
+    "coal": 2,
+    "iron_bar": 4
+   },
+   "give": "dc_stove_iron",
+   "tier": 1,
+   "decor": true
   }
  ],
  "loom": [
@@ -2216,6 +2402,127 @@
    },
    "give": "outfit_penguin",
    "tier": 4
+  },
+  {
+   "id": "dc_rug_rect_blue",
+   "name": "Cottage Rect Blue Rug",
+   "need": {
+    "yarn": 6
+   },
+   "give": "dc_rug_rect_blue",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_rug_rect_green",
+   "name": "Cottage Rect Green Rug",
+   "need": {
+    "yarn": 6
+   },
+   "give": "dc_rug_rect_green",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_rug_rect_red",
+   "name": "Cottage Rect Red Rug",
+   "need": {
+    "yarn": 6
+   },
+   "give": "dc_rug_rect_red",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_reed_mat_a",
+   "name": "Reed Mat",
+   "need": {
+    "fiber": 10
+   },
+   "give": "dc_reed_mat_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_curtain_blue_open",
+   "name": "Blue Curtains",
+   "need": {
+    "linen": 3
+   },
+   "give": "dc_curtain_blue_open",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_curtain_red_open",
+   "name": "Red Curtains",
+   "need": {
+    "linen": 3
+   },
+   "give": "dc_curtain_red_open",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_rug2_round_blue",
+   "name": "Country Round Blue Rug",
+   "need": {
+    "cotton_cloth": 3,
+    "yarn": 4
+   },
+   "give": "dc_rug2_round_blue",
+   "tier": 2,
+   "decor": true
+  },
+  {
+   "id": "wr_hoodie",
+   "name": "Hoodie",
+   "need": {
+    "cotton_cloth": 3
+   },
+   "give": "wr_hoodie",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "wr_sweater",
+   "name": "Cosy Sweater",
+   "need": {
+    "yarn": 6
+   },
+   "give": "wr_sweater",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "wr_scarf_red",
+   "name": "Red Knit Scarf",
+   "need": {
+    "yarn": 3
+   },
+   "give": "wr_scarf_red",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "wr_scarf_blue",
+   "name": "Blue Knit Scarf",
+   "need": {
+    "yarn": 3
+   },
+   "give": "wr_scarf_blue",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "wr_beanie",
+   "name": "Knit Beanie",
+   "need": {
+    "yarn": 4
+   },
+   "give": "wr_beanie",
+   "tier": 1,
+   "decor": true
   }
  ],
  "tannery": [
@@ -2639,6 +2946,49 @@
    },
    "give": "crystal_glass",
    "tier": 3
+  },
+  {
+   "id": "dc_tt_vase",
+   "name": "Glazed Vase",
+   "need": {
+    "clay": 3,
+    "coal": 1
+   },
+   "give": "dc_tt_vase",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_tt_pot_a",
+   "name": "Clay Jar",
+   "need": {
+    "clay": 2
+   },
+   "give": "dc_tt_pot_a",
+   "tier": 1,
+   "decor": true
+  },
+  {
+   "id": "dc_tt_pot_c",
+   "name": "Urn",
+   "need": {
+    "clay": 4,
+    "tile": 1
+   },
+   "give": "dc_tt_pot_c",
+   "tier": 2,
+   "decor": true
+  },
+  {
+   "id": "dc_ivy_pot",
+   "name": "Ivy Pot",
+   "need": {
+    "clay_pot": 1,
+    "fiber": 4
+   },
+   "give": "dc_ivy_pot",
+   "tier": 1,
+   "decor": true
   }
  ],
  "jeweler": [
@@ -2751,6 +3101,28 @@
    },
    "give": "dream_charm",
    "tier": 5
+  },
+  {
+   "id": "dc_tt_snow_globe",
+   "name": "Snow Globe",
+   "need": {
+    "glass": 2,
+    "shard": 2
+   },
+   "give": "dc_tt_snow_globe",
+   "tier": 2,
+   "decor": true
+  },
+  {
+   "id": "dc_tt_lantern_crystal",
+   "name": "Crystal Lantern",
+   "need": {
+    "crystal_glass": 1,
+    "gold_bar": 1
+   },
+   "give": "dc_tt_lantern_crystal",
+   "tier": 3,
+   "decor": true
   }
  ],
  "cauldron": [
@@ -3373,6 +3745,28 @@
    },
    "give": "neon_jacket",
    "tier": 3
+  },
+  {
+   "id": "dc_safe",
+   "name": "Iron Safe",
+   "need": {
+    "gear": 2,
+    "steel_bar": 6
+   },
+   "give": "dc_safe",
+   "tier": 4,
+   "decor": true
+  },
+  {
+   "id": "wr_shades",
+   "name": "Night Shades",
+   "need": {
+    "glass": 2,
+    "leather": 1
+   },
+   "give": "wr_shades",
+   "tier": 2,
+   "decor": true
   }
  ],
  "soda": [
@@ -3581,6 +3975,28 @@
    },
    "give": "starlight_mantle",
    "tier": 4
+  },
+  {
+   "id": "dc_tt_snowman",
+   "name": "Tiny Snowman",
+   "need": {
+    "fiber": 2,
+    "shard": 2
+   },
+   "give": "dc_tt_snowman",
+   "tier": 2,
+   "decor": true
+  },
+  {
+   "id": "dc_tt_penguin_figurine",
+   "name": "Penguin Figurine",
+   "need": {
+    "clay": 2,
+    "shard": 2
+   },
+   "give": "dc_tt_penguin_figurine",
+   "tier": 2,
+   "decor": true
   }
  ],
  "litter": [
@@ -3778,6 +4194,28 @@
    },
    "give": "ghost_ledger",
    "tier": 4
+  },
+  {
+   "id": "dc_neon_sign_0",
+   "name": "Neon Sign: Moon",
+   "need": {
+    "circuit_board": 1,
+    "glass": 3
+   },
+   "give": "dc_neon_sign_0",
+   "tier": 2,
+   "decor": true
+  },
+  {
+   "id": "dc_neon_sign_1",
+   "name": "Neon Sign: Star",
+   "need": {
+    "circuit_board": 1,
+    "glass": 3
+   },
+   "give": "dc_neon_sign_1",
+   "tier": 2,
+   "decor": true
   }
  ],
  "implant": [

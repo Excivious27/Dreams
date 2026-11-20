@@ -120,6 +120,26 @@ for id, name, slot, stats, val, tier in [
  ('trench_coat', 'Trench Coat', 'back', {'defense': 2, 'speed': 1}, 700, 3), ('tool_belt', "Driver's Belt", 'belt', {'speed': 1, 'damage': 1}, 480, 3), ('gold_chain', 'Gold Chain', 'charm', {'luck': 2}, 800, 3)]:
     item(id, name, 'equip', val, tier, slot=slot, stats=stats, arc='gangsters')
 
+# C10a (c10_09): the six drawn arc costume sheets show when the suit is worn (PaperDoll outfit key), and
+# every arc apparel piece says what it is.
+for k, c in (('pinstripe_suit', 'pinstripe'), ('padded_vest', 'vest'), ('armored_suit', 'armored'),
+             ('puffy_parka', 'parka'), ('crystal_parka', 'crystal_parka'), ('starlight_mantle', 'starlight')):
+    if 'outfit_' + c in M.get('body', {}):
+        I[k]['costume'] = 'outfit_' + c  # body sheet name (PaperDoll.body_for)
+ARC_DESC = {'fedora': 'A sharp felt hat. Every crew boss has one.', 'shades': 'Dark lenses for bright neon nights.',
+            'pinstripe_suit': 'A sharp suit with a little padding sewn in.', 'padded_vest': 'Quilted plates under plain cloth.',
+            'armored_suit': 'Looks like a suit, stops like a wall.', 'steel_toes': 'Kick a crate, keep your toes.',
+            'knuckle_gloves': 'Leather gloves with a hard knuckle.', 'trench_coat': 'Long coat, deep pockets, quick feet.',
+            'tool_belt': "A driver's belt: tools close, hands free.", 'gold_chain': 'Heavy, shiny and oddly lucky.',
+            'snow_goggles': 'Keeps the glare and the snow out.', 'aurora_hood': 'Shimmers like the northern lights.',
+            'puffy_parka': 'Warm, round and surprisingly tough.', 'crystal_parka': 'A parka laced with crystal threads.',
+            'starlight_mantle': 'Woven from moonweave. It glows a little.', 'ice_cleats': 'Spiked soles that never slip.',
+            'mitten_paws': 'Cosy mittens with a firm grip.', 'courage_scarf': 'A scarf that makes you stand taller.',
+            'flipper_belt': 'A belt with a little paddle flair.', 'bell_collar': 'Jingles softly. Lucky, they say.'}
+for k, d in ARC_DESC.items():
+    if k in I and not I[k].get('desc'):
+        I[k]['desc'] = d
+
 # ---- stations ------------------------------------------------------------------
 SK = [1, 3, 5, 7]
 def art(*names):
@@ -443,24 +463,37 @@ for bk in ('anvil', 'tannery', 'armory'):
         if r['id'].startswith(('crystal_', 'moon_', 'temper_', 'neon_')):
             I[r['give']]['value'] = max(int(I[r['give']].get('value', 0)), int(0.8 * val(r['need'])))
 
+# 6) Decor and wearables (C10a): gen_decor.py lists its craftable pieces in data/decor.json "recipes";
+# they join the books here (gen_stations rebuilds every book, so it must import them). Decor is a money
+# sink: crafted decor saves money against the shop price but never earns (value capped below the inputs).
+DEC = json.load(open(D + 'decor.json')) if os.path.exists(D + 'decor.json') else {}
+DECOR_IDS = set()
+for dr in DEC.get('recipes', []):
+    if dr['book'] in books and dr['id'] in I and all(k in I or k.startswith('#') for k in dr['need']):
+        books[dr['book']].append(rc(dr['id'], dr['name'], dict(dr['need']), tier=int(dr.get('tier', 1)), decor=True))
+        DECOR_IDS.add(dr['id'])
+
 # ---- economy pass (C8 P2) ---------------------------------------------------------
 # Every number here is checked by tools/econ_check.py (in check.sh).
 ECON = {'craft_floor': 1.15,   # intermediates (craft/material/bar) sell for >= 1.15 x their inputs
         'goods_floor': 1.2,    # food/potion/consumable/placeable/gift made at a station: >= 1.2 x inputs
         'armour_floor': 0.7,   # metal/leather set pieces: >= 0.7 x their bars (slot and metal both show)
-        'loop_cap': 1.1}       # anything made only from shop-bought goods sells for <= 1.1 x them (no buy-craft-sell loop)
+        'loop_cap': 1.1,       # anything made only from shop-bought goods sells for <= 1.1 x them (no buy-craft-sell loop)
+        'decor_cap': 0.8}      # crafted decor/wear sells for <= 0.8 x its inputs (a sink, never income; c10_05-23)
 FLOOR_TYPES = {'craft': 'craft_floor', 'material': 'craft_floor', 'bar': 'craft_floor',
                'food': 'goods_floor', 'potion': 'goods_floor', 'consumable': 'goods_floor', 'placeable': 'goods_floor', 'gift': 'goods_floor'}
 NO_FLOOR = {'bills_crude', 'bills_passable', 'bills_fine', 'bills_perfect', 'forged_permit', 'rounds'}  # face value / ammo, priced by hand
 import re
 def shop_goods():
-    """Every item id a town shop sells (mirror of the static lists in scripts/shops.gd offers())."""
+    """Every item id a town shop sells (mirror of the static lists in scripts/shops.gd offers()) plus
+    every decor/wear piece a decor shop stocks (data/decor.json "shops", C10a)."""
     src = open(os.path.join(D, '..', 'scripts', 'shops.gd')).read()
     a = src.index('static func offers'); b = src.index('static func run', a)
     out = set()
     for m in re.finditer(r'\[([^\[\]]*)\]', src[a:b]):
         if src[a:b][:m.start()].rstrip().endswith(' in'): continue  # `cid in [...]` filters name crops, not goods
         out |= {w for w in re.findall(r'"([a-z0-9_]+)"', m.group(1)) if w in I}
+    out |= {k for rows in DEC.get('shops', {}).values() for _, ids in rows for k in ids if k in I}
     return out
 SHOP = shop_goods()
 # Recipe fixes: milling adds value, made goods cost less than the shop's, tier-1 gates match tier 1.
@@ -506,6 +539,9 @@ for _ in range(3):  # upstream values move downstream ones: settle in a few pass
             per = need_val(r['need']) / float(r.get('n', 1))
             if all_shop(r['need']):
                 cap[g] = min(cap.get(g, 1e9), int(ECON['loop_cap'] * per))
+            if it.get('type') in ('decor', 'wear'):
+                cap[g] = min(cap.get(g, 1e9), max(1, int(ECON['decor_cap'] * per)))
+                continue
             if it.get('type') == 'equip' and g.startswith(ARMOUR) and not g.endswith('_plus'):
                 f = int(ECON['armour_floor'] * per)
             elif it.get('type') in FLOOR_TYPES and not r.get('tool') and not r.get('vehicle'):
@@ -519,6 +555,15 @@ for _ in range(3):  # upstream values move downstream ones: settle in a few pass
         if g in cap: new = min(new, cap[g])
         if new != cur:
             econ_log.append('%s %d -> %d' % (g, cur, new)); I[g]['value'] = new
+# Tempered pieces are worth more than their base (c10_07: moon _plus sold below the plain piece).
+for bk2 in ('anvil', 'tannery', 'armory', 'shaper'):
+    for r in books.get(bk2, []):
+        if r['id'].startswith('temper_') and r['give'] in I:
+            base = r['id'][len('temper_'):]
+            if base in I:
+                want = max(int(int(I[base].get('value', 0)) * 1.08), int(I[base].get('value', 0)) + 1)
+                if int(I[r['give']].get('value', 0)) < want:
+                    econ_log.append('%s %s -> %d (temper)' % (r['give'], I[r['give']].get('value'), want)); I[r['give']]['value'] = want
 # Station cards don't promise recipes a tier doesn't add.
 for sid, st in B.items():
     if not isinstance(st, dict) or 'station' not in st or st['station'].get('book') == 'keg': continue

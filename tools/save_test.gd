@@ -384,6 +384,11 @@ func _migration() -> void:
 	r["intro_done"] = true
 	r["max_energy"] = 100
 	r["energy"] = 40
+	# C10a: a v9 save kept Rec prize decor in the bag and a chest, and had no run.decor.
+	r.erase("decor")
+	r["save_ver"] = 9
+	r["inventory"]["rp_jukebox"] = 1
+	r["chests"] = {"chest": {"items": {"rp_trophy_bronze": 1}}}
 	var visited_reg := ""
 	var other_reg := ""
 	var started_cid := ""
@@ -414,6 +419,10 @@ func _migration() -> void:
 	check(Tickets.best_score("bowling") == 0, "arcade bests start at zero")
 	Tickets.add(3, "test")
 	check(Tickets.count() == 10, "tickets add after the move")
+	# Decor (C10a): bag/chest decor moved into the decor box, still counted, save version bumped.
+	check(GameState.run.get("decor") is Dictionary and int(GameState.run.get("save_ver", 0)) == GameState.SAVE_VERSION, "old save gets run.decor and the new save version")
+	check(not (GameState.run["inventory"] as Dictionary).has("rp_jukebox") and Decor.owned("rp_jukebox") == 1 and GameState.count("rp_jukebox") == 1, "bag decor moves to the decor box and still counts")
+	check(Decor.owned("rp_trophy_bronze") == 1, "chest decor moves to the decor box")
 	# Collections (C8 P3): run.coll made on load, shipping starts empty.
 	check(GameState.run.get("coll") is Dictionary and Collections.count("shipping") == 0, "old save gets run.coll")
 	# Community farm: starts fresh, not yet known.

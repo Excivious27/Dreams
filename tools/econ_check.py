@@ -61,6 +61,8 @@ for cid, c in C.items():
 src = open(os.path.join(ROOT, 'scripts', 'shops.gd')).read()
 a = src.index('static func offers'); b = src.index('static func run', a); body = src[a:b]
 SHOP = set()
+DEC = json.load(open(os.path.join(D, 'decor.json'))) if os.path.exists(os.path.join(D, 'decor.json')) else {}
+SHOP |= {k for rows in DEC.get('shops', {}).values() for _, ids in rows for k in ids if k in I}
 for m in re.finditer(r'\[([^\[\]]*)\]', body):
     if body[:m.start()].rstrip().endswith(' in'):
         continue
@@ -93,6 +95,52 @@ for bk, rs in R.items():
             cheapest = min(sum(fval(k) * q for k, q in o['need'].items()) / float(o.get('n', 1)) for b2 in R.values() if isinstance(b2, list) for o in b2 if o['give'] == g)
             if int(it.get('value', 0)) + 1 < cheapest:
                 fails.append('loses value: %s/%s %d from %d' % (bk, r['id'], out, cost))
+
+# 3a) decor and wearables (C10a): a money sink. Mirror of Decor.buy_price / Decor.sell_value:
+#  the cheapest a decor piece is ever bought for is price x DECOR_BUY_MIN; it sells back flat at its value
+#  (no perks, no demand), so value < price x DECOR_BUY_MIN always; crafted decor sells below its inputs;
+#  re-order fee >= 0; rarity price bands from decor.json; uniques worth 0 and never stocked.
+DECOR_BUY_MIN = 0.8 * 0.9
+if DEC:
+    bands = {r['id']: r['band'] for r in DEC.get('rarity', [])}
+    stocked = {k for rows in DEC.get('shops', {}).values() for _, ids in rows for k in ids}
+    for k, e in DEC.get('items', {}).items():
+        if e.get('ext'):
+            continue
+        v = val(k) if k in I else int(e.get('sell', 0))
+        p = int(e.get('price', 0))
+        if e.get('order') is False and not p:
+            if v or k in stocked:
+                fails.append('decor keepsake priced/stocked: %s' % k)
+            continue
+        if e['rarity'] == 'unique':
+            if p or v or k in stocked:
+                fails.append('decor unique priced/stocked: %s' % k)
+            continue
+        if v >= p * DECOR_BUY_MIN:
+            fails.append('decor buy-sell loop: %s sells %d, bought for %d' % (k, v, int(p * DECOR_BUY_MIN)))
+        lo, hi = bands.get(e['rarity'], [0, 1e12])
+        if not lo <= p <= hi:
+            fails.append('decor price out of band: %s %s %d' % (k, e['rarity'], p))
+        if e['rarity'] == 'mythic' and k in stocked:
+            fails.append('decor mythic in a shop: %s' % k)
+    for rs in R.values():
+        if not isinstance(rs, list):
+            continue
+        for r in rs:
+            if r['give'] in DEC.get('items', {}) and r['give'] in I:
+                cost = sum(fval(q) * n for q, n in r['need'].items())
+                if val(r['give']) * int(r.get('n', 1)) > cost:
+                    fails.append('decor craft earns: %s %d from %d' % (r['id'], val(r['give']), cost))
+    if float(DEC.get('reorder_fee', 0)) < 0:
+        fails.append('decor re-order fee below 0')
+
+# 3c) a tempered piece is worth more than its base (c10_07)
+for rs in R.values():
+    if isinstance(rs, list):
+        for r in rs:
+            if r['id'].startswith('temper_') and r['id'][7:] in I and r['give'] in I and val(r['give']) <= val(r['id'][7:]):
+                fails.append('temper worth less: %s %d <= %d' % (r['give'], val(r['give']), val(r['id'][7:])))
 
 # 3b) animal goods are never a dead end: each one goes into at least one recipe (directly or by family)
 ANIMAL_GOODS = ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
