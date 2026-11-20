@@ -3045,7 +3045,7 @@ static func _crows(report: Dictionary) -> void:
 
 
 ## The glass plot in front of the greenhouse: crops there ignore the season.
-const GREENHOUSE_PLOT := Rect2i(17, 7, 9, 6)
+const GREENHOUSE_PLOT := Rect2i(19, 20, 9, 6)  # south-east open ground, under the greenhouse (C5; it was 17,7 where the Manor stands)
 
 
 static func in_greenhouse(key: String) -> bool:

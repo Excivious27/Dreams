@@ -17,6 +17,15 @@ var baby := false
 ## has its own redrawn strips since round 13.)
 const BABY_OF := {"chick": ["chicken2", "baby", 1.0]}
 var _at := Vector2i(-999, -999)  # the cell that holds this animal's interact thing
+## True-to-life heights on screen (px, idle frame's drawn height), C5: the strips
+## come from different sheets (36-px cells, big 105-px cells), so a fixed 0.5 scale
+## made the Big Barn goat twice a cow. Babies are 60% of their parent.
+const TARGET_H := {"chicken2": 16.0, "rooster": 17.0, "duck2": 15.0, "chick": 10.0,
+	"cow_brown": 26.0, "cow_bw": 26.0, "calf": 16.0, "sheep_woolly": 20.0, "lamb": 12.0,
+	"goat": 20.0, "goat2": 20.0, "goat_kid": 12.0, "llama": 30.0, "pig_a": 18.0, "horse3": 32.0}
+const BABY_SHARE := 0.6
+static var _h_cache := {}  # kind -> [drawn height, drawn width] of idle frame 0 at scale 1
+var _shadow: Node2D
 
 
 func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> void:
@@ -43,7 +52,13 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 				fps[a] = 6.0 if a == "walk" else 3.0
 	sprite_frames = Art.frames(g, anims, fps)
 	animation = "idle"
+	var hw := _drawn_size(k)
+	if TARGET_H.has(k) and hw.y > 0.0:
+		sc = float(TARGET_H[k]) / hw.y
+		if is_baby and not k in ["calf", "lamb", "goat_kid", "chick"]:
+			sc *= BABY_SHARE  # a young one drawn from its parent's strip
 	scale = Vector2(sc, sc)
+	_add_shadow(hw.x * sc if hw.x > 0.0 else 16.0)
 	position = m.cell_center(c)
 	# Feet on the ground for every strip (walk/eat cells differ from idle's).
 	frame_changed.connect(_fit)
@@ -78,8 +93,9 @@ func _process(delta: float) -> void:
 			_state = "walk"
 			var c := Vector2i(_rng.randi_range(pen.position.x, pen.end.x - 1), _rng.randi_range(pen.position.y, pen.end.y - 1))
 			# At night, in rain and in winter they huddle at the back of the pen, by the barn.
+			# Two rows (and spread along them), so a herd never stacks into one line.
 			if GameState.is_night() or GameState.is_wet() or GameState.season() == "winter":
-				c.y = pen.position.y
+				c.y = pen.position.y + (absi(hash(name)) % 2 if pen.size.y > 1 else 0)
 			if map.blocked.has(c):
 				_wait = 0.5
 				_state = "idle"
@@ -127,3 +143,41 @@ func _fit() -> void:
 	var tex := sprite_frames.get_frame_texture(animation, frame) if sprite_frames else null
 	if tex:
 		offset = Vector2(0, -tex.get_height() / 2.0 + 2.0)
+
+
+## The idle frame's drawn (alpha) size at scale 1, cached per kind.
+func _drawn_size(k: String) -> Vector2:
+	if _h_cache.has(k):
+		return _h_cache[k]
+	var out := Vector2.ZERO
+	var tex := sprite_frames.get_frame_texture("idle", 0) if sprite_frames and sprite_frames.has_animation("idle") else null
+	if tex:
+		out = Vector2(tex.get_width(), tex.get_height())
+		var img := tex.get_image()
+		if img:
+			if img.is_compressed():
+				img.decompress()
+			var r := img.get_used_rect()
+			if r.size.y > 4:
+				out = Vector2(r.size)
+	_h_cache[k] = out
+	return out
+
+
+## A soft ground shadow sized by the animal's width (screen px).
+func _add_shadow(w: float) -> void:
+	_shadow = AnimalShadow.new()
+	_shadow.w = clampf(w * 0.8, 6.0, 30.0)
+	_shadow.scale = Vector2(1.0 / scale.x, 1.0 / scale.y)
+	_shadow.position = Vector2(0, -1.0) * (1.0 / scale.y)
+	_shadow.show_behind_parent = true
+	add_child(_shadow)
+
+
+class AnimalShadow:
+	extends Node2D
+	var w := 16.0
+	func _draw() -> void:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.32))
+		draw_circle(Vector2.ZERO, w / 2.0, Color(0, 0, 0, 0.22))
+		draw_circle(Vector2.ZERO, w / 2.0 - 2.0, Color(0, 0, 0, 0.12))

@@ -56,7 +56,8 @@ func after_ready() -> void:
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"door":
-			go_to("farm", Vector2(13 * TILE + 8, 11 * TILE + 4), "down")
+			var fd: Vector2i = (load("res://scripts/farm.gd") as GDScript).house_look(Builds.built_tier("house"))["door"]  # the door of this tier's picture
+			go_to("farm", Vector2(fd.x * TILE + 8, (fd.y + 1) * TILE + 4), "down")
 			return true
 		"bed":
 			_sleep()

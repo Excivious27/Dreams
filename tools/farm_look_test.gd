@@ -69,6 +69,66 @@ func _run() -> void:
 	var handled: bool = m.call("_farm_tile", Vector2i(20, 20), "")
 	check(handled and not (GameState.run["farm"]["20,20"] as Dictionary).has("dead"), "a bare hand pulls the withered plant")
 	check(GameState.run["farm"].has("20,20"), "the bed stays tilled")
+	# --- 2. Farmhouse tiers (c5_01 #1), greenhouse plot clear of the Manor ---
+	for tier in [1, 2, 3]:
+		new_run()
+		GameState.run["day"] = 30
+		GameState.run["builds"] = {"house": tier, "greenhouse": 1, "coop": 2, "barn": 2, "beehive": 1, "scarecrow": 1}
+		GameState.run["flags"]["coop_day"] = 1
+		GameState.run["flags"]["barn_day"] = 1
+		GameState.run["flags"]["barn2_day"] = 1
+		if tier == 3:
+			GameState.run["farm"]["18,8"] = {"watered": false, "crop": "turnip", "days": 2}  # old greenhouse plot, now under the Manor
+		m = await load_farm()
+		var hl: Dictionary = m.call("house_look", tier)
+		var want := str(hl["sprite"])
+		var found := false
+		for ch in m.get_children():
+			if ch is Sprite2D and (ch as Sprite2D).texture == Art.tex("buildings", want):
+				found = true
+		check(found, "tier %d farmhouse shows %s" % [tier, want])
+		var door: Vector2i = hl["door"]
+		check(str((m.things.get(door, {}) as Dictionary).get("type", "")) == "door", "tier %d door thing at %s" % [tier, str(door)])
+		check(not m.blocked.has(door + Vector2i(0, 1)), "tier %d: you can stand below the door" % tier)
+		var mail: Vector2i = hl["mail"]
+		check(str((m.things.get(mail, {}) as Dictionary).get("type", "")) == "mailbox", "tier %d mailbox at %s" % [tier, str(mail)])
+		var hr: Rect2i = hl["rect"]
+		check(not hr.intersects(GameState.GREENHOUSE_PLOT.grow(1)), "tier %d house clear of the greenhouse plot" % tier)
+		var gc: Array = Builds.data()["greenhouse"]["cell"]
+		check(not hr.grow(1).has_point(Vector2i(int(gc[0]), int(gc[1]))), "tier %d house clear of the greenhouse" % tier)
+		var bad := 0
+		for c: Vector2i in m.cells_of([GameState.GREENHOUSE_PLOT]):
+			if m.blocked.has(c) or (m.things.has(c) and str((m.things[c] as Dictionary).get("type", "")) in ["weeds", "rock", "log", "stump", "tree"]):
+				bad += 1
+		check(bad == 0, "tier %d greenhouse plot is open ground (%d blocked)" % [tier, bad])
+		if tier == 3:
+			check(not GameState.run["farm"].has("18,8"), "a bed under the Manor moved off (seed back)")
+		# Animals: true-to-life heights (c5_09 #1).
+		var hts := {}
+		for ch in m.get_children():
+			if ch is FarmAnimal:
+				var fa := ch as FarmAnimal
+				var tx := fa.sprite_frames.get_frame_texture("idle", 0)
+				var h := float(fa.call("_drawn_size", fa.kind).y) * fa.scale.y
+				hts[fa.kind + ("_baby" if fa.baby else "")] = h
+		if tier == 1:
+			print("    animal heights: %s" % str(hts))
+			check(hts.has("llama") and hts.has("cow_brown") and float(hts["llama"]) > float(hts["cow_brown"]) and float(hts["llama"]) < float(hts["cow_brown"]) * 1.4, "llama a bit taller than a cow")
+			check(hts.has("goat2") and float(hts["goat2"]) < float(hts["cow_brown"]), "goats (goat2) smaller than cows")
+			# Fences round the pens, with a walk-in gate.
+			var fences: Array = m.get("_fences")
+			var gates := 0
+			for f: Array in fences:
+				if not bool(f[2]):
+					gates += 1
+			check(fences.size() >= 16 and gates == 2, "pens fenced (%d pieces, %d gates)" % [fences.size(), gates])
+	# --- 3. Debris never on a path (c5_12 #1) ---
+	var on_path := 0
+	for c: Vector2i in m.things:
+		var pcs: Dictionary = m.get("_path_cells")
+		if str((m.things[c] as Dictionary).get("type", "")) in ["weeds", "rock", "log", "stump", "tree", "bush"] and (pcs.has(c) or pcs.has(c + Vector2i.LEFT) or pcs.has(c + Vector2i.RIGHT) or pcs.has(c + Vector2i.UP) or pcs.has(c + Vector2i.DOWN)):
+			on_path += 1
+	check(on_path == 0, "no debris on path cells (%d)" % on_path)
 	# --- results ---
 	print("farm_look_test: %s (%d fails)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(1 if fails > 0 else 0)
