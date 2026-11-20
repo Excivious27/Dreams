@@ -47,9 +47,18 @@ var _hold := 0.0
 var _elapsed := 0.0
 var _boss_down := false
 var _boss_ref: Enemy = null
+var _boss_t := 0.0       # seconds the commander has been on the field (it pushes after BOSS_PUSH)
+const BOSS_PUSH := 20.0
 var convoy: CampaignConvoy = null
 var drill: BattleDrill = null   # the training drill (CampaignGate), else null
 var is_drill := false
+var _briefing := false   # the briefing card is up: no waves, clocks wait
+var _wave_n := 0         # waves sent (every SQUAD_EVERY-th one is a squad)
+var team: Array = []     # the mustered allies on the field (HelperUnit)
+var _guest := false      # started as a co-op guest: being sent home is no retreat
+const BattleTurretS := preload("res://scripts/battle_turret.gd")
+const SQUAD_EVERY := 4
+const TEAM_MAX := 4      # mustered allies who take the field at once
 
 
 static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
@@ -60,7 +69,10 @@ static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
 	b.d = data
 	b.z_index = 1
 	m.add_child(b)
+	m.set("battle", b)  # (region.gd assigns it too) so area_track sees the fight's mode now
 	b._setup()
+	# The fight's own song from the first frame (siege/escort moods), not ~3 s later.
+	Music.instance(m.get_tree()).play(m.area_track(), 0.3)
 	return b
 
 
@@ -99,6 +111,10 @@ func _setup() -> void:
 		map.set_thing(c.x, c.y, {"type": "cpoint", "id": pt["id"], "hint": "A: %s" % pt["name"]}, true)
 	if camp != "" or is_drill:
 		_campaign_setup()
+	if camp != "":
+		_resume(cf)
+		map.later(_field_team)
+	_guest = Net.visiting()
 	var layer := CanvasLayer.new()
 	layer.layer = 5
 	map.add_child(layer)
@@ -127,14 +143,18 @@ func _setup() -> void:
 		# Campaign fights and the drill open with a briefing card (objective, how to win, controls).
 		var bd := d.duplicate()
 		bd["who"] = _who()
-		map.later(func() -> void: await BattleBrief.show_for(map, bd))
+		_briefing = true
+		map.later(func() -> void:
+			await BattleBrief.show_for(map, bd)
+			_briefing = false
+			_spawn_t = minf(_spawn_t, 2.0))  # first wave about 2 s after the card goes
 	else:
 		map.hud.toast("%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
 		map.later(func() -> void:
 			await map.say([{"who": _who(), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
 
 
-const RALLY_RECT := Rect2(8, 146, 112, 18)
+const RALLY_RECT := Rect2(8, 146, 124, 21)   # >= 20 px tall: a comfortable tap
 var _rally_btn: Button
 var _rally := -1
 var _rally_flash := 0.0
@@ -157,6 +177,10 @@ func _pick_rally() -> void:
 		o.append("%sSend to %s %s (%s)" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
 	o.append("Leave as is")
 	var dl := Dialogue.instance(get_tree())
+	if _helpers() == 0 and not is_drill:
+		dl.say([{"who": "", "text": "No helpers yet. Build at a banner you hold (USE on it) and they'll come.", "choice": ["Leave"], "key": ""}])
+		await dl.finished
+		return
 	dl.say([{"who": "", "text": "Rally %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
 	await dl.finished
 	if dl.last_choice >= 0 and dl.last_choice < o.size() - 1 and not _over:
@@ -182,24 +206,34 @@ func _set_rally(i: int, quiet := false) -> void:
 		map.set_meta("follow_me", true)
 		_rally_btn.text = "RALLY: follow me"
 		_rally_btn.icon = Art.tex("ui", "rally_follow")
-		map.hud.toast("Helpers: on me!", Color(0.7, 0.95, 1.0))
+		_rally_toast("Helpers: on me!")
 	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
 		_rally_btn.text = "RALLY: guard posts"
 		_rally_btn.icon = Art.tex("ui", "rally_guard")
 		if not quiet:
-			map.hud.toast("Helpers: hold your posts.", Color(0.7, 0.95, 1.0))
+			_rally_toast("Helpers: hold your posts.")
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
 		_rally_btn.text = "RALLY ▸ %s" % str(points[i]["name"])
 		_rally_btn.icon = Art.tex("ui", "rally_send")
-		map.hud.toast("Helpers: everyone to %s!" % str(points[i]["name"]), Color(0.7, 0.95, 1.0))
+		_rally_toast("Helpers: everyone to %s!" % str(points[i]["name"]))
 	_rally_flash = 1.0
 
 
+## A new rally order replaces the last one's toast instead of stacking under it.
+func _rally_toast(text: String) -> void:
+	var box: Variant = map.hud.get("_toasts")
+	if box is Node:
+		for c in (box as Node).get_children():
+			if c is Label and c.has_meta("base") and str(c.get_meta("base")).begins_with("Helpers:") and str(c.get_meta("base")) != text:
+				c.queue_free()
+	map.hud.toast(text, Color(0.7, 0.95, 1.0))
+
+
 func _exit_tree() -> void:
-	if camp != "" and not _over:
+	if camp != "" and not _over and not _guest and not Net.visiting():
 		Campaign.retreat(supply)  # walked off the field mid-fight
 	elif is_drill and not _over:
 		CampaignGate.drill_quit()
@@ -233,7 +267,7 @@ func _owned(side: String) -> int:
 
 
 func _process(delta: float) -> void:
-	if _over or get_tree().paused or map.player == null:
+	if _over or get_tree().paused or map.player == null or _briefing:
 		return
 	_capture(delta)
 	_sec += delta
@@ -265,6 +299,7 @@ func _capture(delta: float) -> void:
 		for e in map.enemies:
 			if is_instance_valid(e) and e._alive and e.position.distance_to(p["pos"]) < CAP_R:
 				foes += 1
+		p["near_a"] = allies
 		if bool(p.get("gate", false)):
 			continue  # an enemy gate: it can't be taken, only held off
 		var rate := delta / CAP_TIME * (1.0 + GameState.bonus("strategist", "capture_speed"))
@@ -274,17 +309,26 @@ func _capture(delta: float) -> void:
 			p["prog"] = minf(1.0, float(p["prog"]) + rate * fort_k * (1.0 + 0.25 * (allies - 1)))
 		elif foes > 0 and allies == 0:
 			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)) * (0.5 if bool(p.get("fort", false)) else 1.0))
+		elif allies == 0 and foes == 0 and str(p["owner"]) == "enemy" and float(p["prog"]) > -1.0:
+			# Walked off half-taken: their point settles back (and spawns again once full).
+			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * 0.5)
 		var was := str(p["owner"])
 		if float(p["prog"]) >= 1.0:
 			if str(p["owner"]) != "ally":
-				GameState.add_arc_xp(10)
-				GameState.add_xp("leadership", 6)
-				GameState.add_xp("strategist", 20)
+				if drill != null:
+					drill.xp += 20  # the drill pays its XP in one go at the end (no level-up toasts mid-step)
+				else:
+					GameState.add_arc_xp(10)
+					GameState.add_xp("leadership", 6)
+					GameState.add_xp("strategist", 20)
 			p["owner"] = "ally"
 		elif float(p["prog"]) <= -1.0:
 			p["owner"] = "enemy"
 		elif (absf(float(p["prog"])) < 0.05 or (was == "ally" and float(p["prog"]) < 0.0)) and was != "neutral":
 			p["owner"] = "neutral"
+			# Lost: its level and walls go with it, spawner or not.
+			p["lvl"] = 1
+			p["fort"] = false
 			if str(p["spawner"]) != "":
 				p["spawner"] = ""
 				# Whatever it built goes down with it (turrets included).
@@ -292,9 +336,8 @@ func _capture(delta: float) -> void:
 					if is_instance_valid(mm):
 						(mm as Node).queue_free()
 				p["made"] = []
-				p["lvl"] = 1
-				p["fort"] = false
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
+				Music.instance(get_tree()).sfx("power_off" if not GameState.is_penguins() else "glass", "thud")
 		if str(p["owner"]) != was:
 			if str(p["owner"]) == "ally":
 				map.hud.toast("%s is ours." % str(p["name"]), Color(0.6, 1, 0.7))
@@ -341,22 +384,28 @@ func _tick() -> void:
 		p["made"] = (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
 		p["t"] = float(p["t"]) + 1.0
 		var plv := int(p.get("lvl", 1))
-		if float(p["t"]) >= 12.0 - 3.0 * (plv - 1) and (p["made"] as Array).size() < (mini(2, plv) if str(p["spawner"]) == "turret" else MAX_PER_SPAWNER + plv - 1):
+		# (The drill's first helper steps out at once: the next step needs one to follow you.)
+		var first := is_drill and (p["made"] as Array).is_empty() and float(p["t"]) >= 10.0
+		if (first or float(p["t"]) >= 12.0 - 3.0 * (plv - 1)) and (p["made"] as Array).size() < (mini(2, plv) if str(p["spawner"]) == "turret" else MAX_PER_SPAWNER + plv - 1):
 			p["t"] = 0.0
 			if str(p["spawner"]) == "turret":
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
-				var b := Bot.deploy(map, "guard_bot", it, true)
-				b.position = p["pos"] + Vector2(randf_range(-20, 20), randf_range(-14, 14))
-				b.life = 45.0  # a turret runs 45 seconds, then the point builds a new one
+				# A turret / pylon runs 45 seconds (then the point builds a new one); it
+				# stands with the allies: it holds the ring and foes come to break it.
+				var b: Node2D = BattleTurretS.make_at(map, p["pos"] + Vector2(randf_range(-20, 20), randf_range(-14, 14)), it)
 				(p["made"] as Array).append(b)
 			else:
 				var h := HelperUnit.make(map, str(p["spawner"]), p["pos"] + Vector2(randf_range(-16, 16), 10), p["pos"])
+				if (p["made"] as Array).is_empty() or randf() < 0.5:
+					Music.instance(get_tree()).sfx("craft_done", "pop")
 				if bool(d.get("inspired", false)):
 					h.max_hp = int(h.max_hp * 1.25)  # an inspired army (campaign morale 85+)
 					h.hp = h.max_hp
 				(p["made"] as Array).append(h)
 	# Halfway through their tickets, their commander takes the field.
 	_elapsed += 1.0
+	if _boss_ref != null and is_instance_valid(_boss_ref):
+		_boss_t += 1.0
 	var boss_now := int(tickets["enemy"]) < int(_t_max["enemy"]) / 2 if str(d.get("boss_at", "half")) == "half" else _elapsed >= 8.0
 	if not _boss_out and d.has("boss") and boss_now:
 		_boss_out = true
@@ -368,15 +417,24 @@ func _tick() -> void:
 		var bk := str(d["boss"])
 		if GameState.run["flags"].has(bk):
 			bk = "thug_enforcer"  # a beaten lieutenant doesn't come back for the rematch
-		var bb := map.spawn_enemy(bk, at, clampi((int(d["enemy_tier"]) if d.has("enemy_tier") else GameState.progress_tier()) + 1, 0, 5))
+		var bb := map.spawn_enemy(bk, at, clampi(etier() + 1, 0, 5))
 		if bb:
 			_boss_ref = bb
+			_boss_t = 0.0
 			bb.set_meta("boss_name", bb.display_name())
-			# The commander is a real fight: half again as tough.
-			bb.max_hp = maxi(int(bb.max_hp * 1.5), int(120 * (1 + GameState.progress_tier()) * (0.6 if Settings.easy() else 1.0)))
+			bb.max_hp = boss_hp(bb.max_hp, ctier(), GameState.progress_tier(), Settings.easy())
 			bb.hp = bb.max_hp
+			if ctier() <= 1:
+				bb.damage = maxi(1, bb.damage - 1)  # a first-campaign captain hits softer
 			map.hud.toast("%s takes the field!" % bb.display_name(), Color(1, 0.6, 0.4))
 			map.shake(3.0)
+			# A full boss theme, the horn, and DangerMusic holds it till the captain falls.
+			var bt := map.boss_track(bb.kind)
+			Music.instance(get_tree()).sfx("horn", "alert")
+			Music.instance(get_tree()).play(bt, 0.4)
+			DangerMusic.boss_started(map, bt)
+	if camp != "":
+		_keep()
 	if int(tickets["ally"]) <= 0:
 		_end(false)
 		return
@@ -403,32 +461,85 @@ func _tick() -> void:
 				_end(true)
 
 
+## The campaign's tier (1-5): a war-table field uses its enemy tier + 1.
+func ctier() -> int:
+	if camp != "":
+		return clampi(int(Campaign.get_c(camp).get("tier", etier() + 1)), 1, 5)
+	return clampi(etier() + 1, 1, 5)
+
+
+## The enemy tier on this field: the campaign node's, else your progress + the field's bonus.
+func etier() -> int:
+	if d.has("enemy_tier"):
+		return clampi(int(d["enemy_tier"]), 0, 5)
+	return clampi(GameState.progress_tier() + int(d.get("tier_bonus", 0)), 0, 5)
+
+
+## A commander's health: a bit tougher than its kind, floored by the campaign
+## tier (T1 ~60-90, more when you've outgrown the campaign), capped for T1-2
+## so a first campaign's captain stays a short fight.
+static func boss_hp(base: int, ct: int, pt: int, easy := false) -> int:
+	var floor_hp := 60.0 * ct * (1.0 + 0.5 * maxi(0, pt - ct + 1))
+	var hp := maxf(base * 1.25, floor_hp)
+	if ct <= 2:
+		hp = minf(hp, floor_hp * 1.6)
+	return maxi(20, int(hp * (0.75 if easy else 1.0)))
+
+
 func _enemy_wave() -> void:
 	if drill != null and not drill.waves_on():
 		return
+	_wave_n += 1
 	var cap := int(d.get("enemy_cap", 14))
 	var alive := 0
 	for e in map.enemies:
 		if is_instance_valid(e) and e._alive:
 			alive += 1
 	var kinds: Array = d.get("enemies", ["grump"])
+	var etr := etier()
+	# Each wave leans on one kind (squads look like squads), with the odd other one.
+	var lead := str(kinds[randi() % kinds.size()])
 	for p in points:
 		if alive >= cap:
 			break
 		if str(p["owner"]) != "enemy":
 			continue
-		# No spawn-camping: a point you're standing on (or taking) gets no fresh foes.
-		if map.player.position.distance_to(p["pos"]) < CAP_R * 1.5 or float(p.get("prog", -1.0)) > -0.99:
-			continue
-		var kind := str(kinds[randi() % kinds.size()])
-		var etier := int(d["enemy_tier"]) if d.has("enemy_tier") else clampi(GameState.progress_tier() + int(d.get("tier_bonus", 0)), 0, 5)
-		var e := map.spawn_enemy(kind, p["pos"] + Vector2(randf_range(-24, 24), randf_range(-24, 24)), etier)
-		if e:
-			if e._gift:
-				e._gift.queue_free()
-				e._gift = null
-			e.reward = maxi(1, e.reward / 2)
+		var at: Vector2 = p["pos"] + Vector2(randf_range(-24, 24), randf_range(-24, 24))
+		if bool(p.get("gate", false)):
+			# A gate can't be camped shut: it pours out at the ring's far side from you.
+			var away: Vector2 = (p["pos"] - map.player.position).normalized()
+			if away == Vector2.ZERO:
+				away = Vector2.UP
+			at = HelperUnit.free_spot(map, p["pos"] + away * CAP_R * 0.9)
+		else:
+			# No spawn-camping: a point you (or your helpers) stand on, or are taking, gets no fresh foes.
+			if map.player.position.distance_to(p["pos"]) < CAP_R * 1.5 or int(p.get("near_a", 0)) > 0 or float(p.get("prog", -1.0)) > -0.99:
+				continue
+		var kind := lead if randf() < 0.7 else str(kinds[randi() % kinds.size()])
+		if _spawn_foe(kind, at, etr):
 			alive += 1
+	# Every few waves the commander sends a squad of three straight at its target.
+	if _wave_n % SQUAD_EVERY == 0 and not _target_pt.is_empty():
+		var src: Variant = null
+		var sd := 1e9
+		for p in points:
+			if str(p["owner"]) == "enemy" and int(p.get("near_a", 0)) == 0:
+				var dd: float = (p["pos"] as Vector2).distance_to(_target_pt["pos"])
+				if dd < sd:
+					sd = dd
+					src = p
+		if src != null:
+			for k in 3:
+				if alive >= cap + 2:
+					break
+				var e := _spawn_foe(lead, (src as Dictionary)["pos"] + Vector2(randf_range(-20, 20), randf_range(-20, 20)), etr)
+				if e:
+					e.set_meta("goal", _target_pt["pos"])
+					e.set_meta("squad", true)
+					alive += 1
+	# Pressed back to two points or fewer, they come faster.
+	if _owned("enemy") <= 2 and _owned("enemy") > 0:
+		_spawn_t *= 0.9
 	# Orders: the enemy commander picks one target every 25 s and sends a squad;
 	# the rest hold the points they own, a couple of defenders each.
 	_order_t -= float(d.get("wave_every", 6.0))
@@ -443,6 +554,8 @@ func _enemy_wave() -> void:
 			for h in map.get_tree().get_nodes_in_group("allies"):
 				if is_instance_valid(h) and (h as Node2D).position.distance_to(p["pos"]) < 80.0:
 					defenders += 1
+			if map.player.position.distance_to(p["pos"]) < 80.0:
+				defenders += 2  # you count double
 			# Weak, valuable (has a spawner) and recently lost points first.
 			var sc := 10.0 - defenders * 3.0 + (6.0 if str(p["spawner"]) != "" else 0.0) + (8.0 if str(p["owner"]) == "neutral" else 0.0) + randf() * 3.0
 			if sc > bs:
@@ -465,6 +578,11 @@ func _enemy_wave() -> void:
 				guards[key] = int(guards.get(key, 0)) + 1
 				best = hp_["pos"]
 				break
+		if e == _boss_ref and _boss_t >= BOSS_PUSH:
+			# After a while the commander stops waiting and leads the push.
+			best = _target_pt["pos"] if not _target_pt.is_empty() else map.player.position
+		elif e.has_meta("squad") and e.has_meta("goal") and best == null:
+			continue  # a squad keeps the order it was sent with
 		if best == null and convoy != null and is_instance_valid(convoy) and not convoy.arrived:
 			best = convoy.position  # escort: the squad goes for the convoy
 		elif best == null and not _target_pt.is_empty():
@@ -473,23 +591,89 @@ func _enemy_wave() -> void:
 			e.set_meta("goal", best)
 
 
+func _spawn_foe(kind: String, at: Vector2, etr: int) -> Enemy:
+	var e := map.spawn_enemy(kind, at, etr)
+	if e:
+		if e._gift:
+			e._gift.queue_free()
+			e._gift = null
+		e.reward = maxi(1, e.reward / 2)
+	return e
+
+
 func _count_kills() -> void:
+	# [enemy, no-count (decoy/minion), boss], remembered while alive: a decoy that
+	# is queue_freed has lost its metas by the time we look.
 	for e in map.enemies:
-		if is_instance_valid(e):
-			_known[e.get_instance_id()] = e
+		if is_instance_valid(e) and e._alive:
+			var id: int = e.get_instance_id()
+			if not _known.has(id):
+				_known[id] = [e, e.has_meta("decoy") or e.has_meta("minion"), false]
+			(_known[id] as Array)[2] = e.has_meta("boss_name")
 	for k in _known.keys():
-		var e: Variant = _known[k]
+		var rec: Array = _known[k]
+		var e: Variant = rec[0]
 		if not is_instance_valid(e) or not (e as Enemy)._alive:
 			_known.erase(k)
-			if is_instance_valid(e) and ((e as Enemy).has_meta("decoy") or (e as Enemy).has_meta("minion")):
+			if bool(rec[1]) or (is_instance_valid(e) and ((e as Enemy).has_meta("decoy") or (e as Enemy).has_meta("minion"))):
 				continue  # a mirror's reflection or a summoned minion is no real kill
-			var was_boss: bool = is_instance_valid(e) and (e as Enemy).has_meta("boss_name")
+			var was_boss: bool = bool(rec[2])
 			tickets["enemy"] = int(tickets["enemy"]) - (30 if was_boss else 1)
 			_kills += 1
 			GameState.add_xp("strategist", 15 if was_boss else 1)
 			if was_boss:
 				_boss_down = true
 				map.hud.toast("Their commander is down! Rout!", Color(1, 0.9, 0.4))
+				# Boss song winds down to the fight's song; a sting unless the win jingle follows.
+				DangerMusic.boss_ended(map, false, win_by != "boss")
+				Music.instance(get_tree()).play(map.area_track(), DangerMusic.BOSS_WIND)
+
+
+## The allies you mustered (CampaignGate.team) take the field beside you:
+## up to TEAM_MAX of them (not the partner already walking with you), crew
+## and friends as strikers, then a healer and a warden.
+func _field_team() -> void:
+	if _over or map.player == null:
+		return
+	var jobs := ["striker", "healer", "striker", "warden"]
+	var n := 0
+	var act_id := Companion.active_id()
+	for m: Array in team_members():
+		if n >= TEAM_MAX:
+			break
+		if str(m[0]) == act_id:
+			continue
+		var at: Vector2 = map.player.position + Vector2(-24 + 16 * n, 18)
+		var h := HelperUnit.make_team(map, m, jobs[n % jobs.size()], at, team_sprite(m))
+		if bool(d.get("inspired", false)):
+			h.max_hp = int(h.max_hp * 1.25)
+			h.hp = h.max_hp
+		team.append(h)
+		n += 1
+	if n > 0:
+		var nm: Array = team.map(func(h: HelperUnit) -> String: return h.team_name)
+		map.hud.toast("%s fight%s beside you." % [_and_list(nm), "s" if n == 1 else ""], Color(0.7, 0.95, 1.0))
+
+
+static func team_members() -> Array:
+	return CampaignGate.team()
+
+
+static func _and_list(a: Array) -> String:
+	if a.size() <= 1:
+		return "".join(a)
+	return ", ".join(a.slice(0, a.size() - 1)) + " and " + str(a.back())
+
+
+## The character strip a team member is drawn with.
+static func team_sprite(m: Array) -> String:
+	var id := str(m[0])
+	match str(m[2]):
+		"partner":
+			return str(Companion.defs().get(id, {}).get("sprite", ""))
+		"crew":
+			return str(Crew.members().get(id, {}).get("sprite", ""))
+	return str(GameState.npcs.get(id, {}).get("sprite", ""))
 
 
 func _disc(n: int) -> int:
@@ -545,13 +729,16 @@ func interact(id: String) -> void:
 		return
 	var k: String = keys[i]
 	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "mend": 25, "barrage": 35}
+	var mu := Music.instance(get_tree())
 	if (k == "mend" and _mend_cd > 0.0) or (k == "barrage" and _barrage_cd > 0.0):
 		map.hud.toast("Not ready yet.", Color(1, 0.8, 0.6))
+		mu.sfx("nope", "thud")
 		return
 	if extra.has(k):
 		var c := _disc(int(extra[k]))
 		if supply < c:
 			map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
+			mu.sfx("nope", "thud")
 			return
 		supply -= c
 		GameState.add_xp("strategist", 5)
@@ -559,15 +746,20 @@ func interact(id: String) -> void:
 			"upgrade":
 				p["lvl"] = int(p.get("lvl", 1)) + 1
 				map.hud.toast("%s upgraded to level %d." % [str(p["name"]), int(p["lvl"])], Color(0.7, 1, 0.8))
+				mu.sfx("craft_done", "levelup")
 			"fortify":
 				p["fort"] = true
 				map.hud.toast("%s fortified." % str(p["name"]), Color(0.7, 1, 0.8))
+				mu.sfx("hammer", "craft_done")
 			"mend":
 				GameState.heal_points(40)
 				for h in map.get_tree().get_nodes_in_group("allies"):
 					if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
 						(h as HelperUnit).hp = (h as HelperUnit).max_hp
+				if map.pet != null and is_instance_valid(map.pet) and map.pet.position.distance_to(map.player.position) < 120.0 and not Pet.state().has("down_until"):
+					Pet.state()["hp"] = Pet.max_hp()
 				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)
+				mu.sfx("heal", "levelup")
 				map.hud.toast("Mend pulse!", Color(0.7, 1, 0.8))
 				_mend_cd = 20.0
 			"barrage":
@@ -577,14 +769,17 @@ func interact(id: String) -> void:
 						e._stun = maxf(e._stun, 1.0 if e.has_meta("boss_name") else 3.0)
 						n += 1
 				map.shake(3.0)
+				mu.sfx("boom", "thud")
 				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
 				_barrage_cd = 25.0
 		return
 	if k == str(p["spawner"]):
 		map.hud.toast("%s already builds that." % str(p["name"]), Color(1, 0.85, 0.6))
+		mu.sfx("nope", "thud")
 		return
 	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
+		mu.sfx("nope", "thud")
 		return
 	supply -= _cost(k)
 	GameState.add_xp("strategist", 5)
@@ -597,6 +792,7 @@ func interact(id: String) -> void:
 	p["spawner"] = k
 	p["t"] = 10.0
 	map.fx("sparkle", p["pos"] + Vector2(0, -12), 12.0, 0.6)
+	mu.sfx("craft_done", "levelup")
 	map.hud.toast("Built at %s." % str(p["name"]), Color(0.7, 1, 0.8))
 
 
@@ -611,7 +807,9 @@ func _end(won: bool, travel := true) -> void:
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
 	var rematch: bool = GameState.run["flags"].has("battle_" + bid)
 	GameState.add_xp("strategist", (120 if rematch else 400) if won else mini(120, 20 * _caps + _kills))
-	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
+	if won or travel:
+		Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
+	_duck_music()
 	if won:
 		GameState.add_arc_xp(25 if rematch else 80)
 	for e in map.enemies.duplicate():
@@ -661,7 +859,9 @@ func _draw() -> void:
 		if not view.has_point(pos):
 			continue
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.85, 0.85, 0.85))
-		draw_arc(pos, CAP_R, 0, TAU, 48, Color(col.r, col.g, col.b, 0.35 + 0.1 * sin(t * 2.0)), 1.5, true)
+		# A dark under-stroke so a white (open) ring reads on pavement, snow and ash.
+		draw_arc(pos, CAP_R, 0, TAU, 48, Color(0.05, 0.05, 0.08, 0.55), 4.0, true)
+		draw_arc(pos, CAP_R, 0, TAU, 48, Color(col.r, col.g, col.b, (0.75 if str(p["owner"]) == "neutral" else 0.45) + 0.1 * sin(t * 2.0)), 2.0, true)
 		if bool(p.get("gate", false)):
 			# An enemy gate (defend): a spiked double ring; it can't be taken.
 			draw_arc(pos, CAP_R + 4, 0, TAU, 48, Color(0.55, 0.1, 0.12, 0.7), 2.0, true)
@@ -731,17 +931,18 @@ func _draw_hud() -> void:
 	var f := ThemeDB.fallback_font
 	var txt := []  # [pos, text, align, width, size, colour]: drawn at the end, all outlines then all fills
 	var y := 104.0
-	var bw := 90.0
+	# The bars stop short of the point pips (6 points used to sit on top of them).
+	var bw := clampf(135.0 - points.size() * 7.0 - 14.0, 50.0, 90.0)
 	var ta := clampf(float(tickets["ally"]) / float(maxi(1, int(_t_max["ally"]))), 0, 1)
 	var te := clampf(float(tickets["enemy"]) / float(maxi(1, int(_t_max["enemy"]))), 0, 1)
 	_hud.draw_rect(Rect2(10, y, bw, 5), Color(0, 0, 0, 0.6))
 	_hud.draw_rect(Rect2(10, y, bw * ta, 5), Color(0.5, 0.9, 1.0))
-	_hud.draw_rect(Rect2(170, y, bw, 5), Color(0, 0, 0, 0.6))
-	_hud.draw_rect(Rect2(170 + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
+	_hud.draw_rect(Rect2(260 - bw, y, bw, 5), Color(0, 0, 0, 0.6))
+	_hud.draw_rect(Rect2(260 - bw + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
 	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
 	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by in ["hold", "drill"] else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
 	# The objective, always on screen, in its own banner.
-	var goal := _goal_text()
+	var goal := _goal_text() if drill == null else ""  # the drill's step card says what to do
 	if goal != "":
 		var gr := Rect2(8, y + 22, 254, 15)
 		_hud.draw_rect(gr, Color(0.06, 0.05, 0.08, 0.72))
@@ -758,10 +959,10 @@ func _draw_hud() -> void:
 	for i in points.size():
 		var p: Dictionary = points[i]
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.8, 0.8, 0.8))
-		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 5.0, Color(0, 0, 0, 0.6))
-		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 4.0, col)
+		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 6.5, Color(0, 0, 0, 0.7))
+		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 5.5, col)
 	for i in points.size():
-		_hud.draw_string(f, Vector2(x0 + i * 14 + 4, y + 6), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(0.1, 0.1, 0.1))
+		_hud.draw_string(f, Vector2(x0 + i * 14 + 2, y + 5.5), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_CENTER, 10, 7, Color(0.08, 0.08, 0.08))
 	# Who is bleeding tickets (the side holding fewer points), and supply income.
 	var oa := _owned("ally")
 	var oe := _owned("enemy")
@@ -826,6 +1027,42 @@ func _campaign_setup() -> void:
 			convoy = CampaignConvoy.make(map, wp, int(d.get("convoy_hp", 80)))
 
 
+## The fight's state, kept in the campaign fight record every second, so a
+## game closed mid-fight and reopened carries on where it was (not afresh).
+func _keep() -> void:
+	var f: Dictionary = Campaign.st().get("fight", {})
+	if f.is_empty() or str(f.get("cid", "")) != camp:
+		return
+	f["state"] = {"tickets": tickets.duplicate(), "supply": supply, "hold": _hold, "elapsed": _elapsed,
+		"boss_out": _boss_out, "points": points.map(func(p: Dictionary) -> Array: return [str(p["id"]), str(p["owner"]), float(p["prog"]), str(p["spawner"]), int(p.get("lvl", 1)), bool(p.get("fort", false))])}
+
+
+func _resume(cf: Dictionary) -> void:
+	var stt: Dictionary = cf.get("state", {})
+	if stt.is_empty():
+		return
+	var tk: Dictionary = stt.get("tickets", {})
+	tickets = {"ally": int(tk.get("ally", tickets["ally"])), "enemy": int(tk.get("enemy", tickets["enemy"]))}
+	supply = int(stt.get("supply", supply))
+	_hold = float(stt.get("hold", _hold))
+	_elapsed = float(stt.get("elapsed", 0.0))
+	for rec: Array in stt.get("points", []):
+		var p := point(str(rec[0]))
+		if p.is_empty():
+			continue
+		p["owner"] = str(rec[1])
+		p["prog"] = float(rec[2])
+		p["spawner"] = str(rec[3]) if p["owner"] == "ally" else ""
+		p["lvl"] = int(rec[4])
+		p["fort"] = bool(rec[5])
+		p["t"] = 10.0
+	# A commander already out comes back for the rest of the fight.
+	if bool(stt.get("boss_out", false)) and d.has("boss"):
+		d["boss_at"] = "start"
+		_elapsed = maxf(_elapsed, 7.0)
+	map.hud.toast("The fight picks up where you left it.", Color(0.8, 0.95, 1.0))
+
+
 func _goal_text() -> String:
 	match win_by:
 		"drill":
@@ -847,9 +1084,37 @@ func _goal_text() -> String:
 	return "TAKE ALL %d POINTS (%d/%d) · or drain their tickets" % [points.size(), held, points.size()]
 
 
+## The fight's over: the song drops under the jingle and the closing lines.
+func _duck_music() -> void:
+	var mu := Music.instance(get_tree())
+	var was: float = mu._duck
+	mu.set_duck(was - 9.0)
+	get_tree().create_timer(4.0).timeout.connect(func() -> void:
+		if is_instance_valid(mu) and is_equal_approx(mu._duck, was - 9.0):
+			mu.set_duck(was))
+
+
+## The drill can't hurt you: knocked out, worn out or up too late, the trainer
+## pulls you out (half health, no fee, no pass-out) and the drill ends untaken.
+## GameMap.player_down hands over here while a drill runs.
+func drill_rescue(_reason := "hurt") -> void:
+	if _over:
+		return
+	GameState.run["hp"] = maxi(int(GameState.run["hp"]), int(GameState.run["max_hp"]) / 2)
+	GameState.run["energy"] = maxi(int(GameState.run["energy"]), int(GameState.run["max_energy"]) / 4)
+	GameState.status_clear()
+	map.player.invuln = 2.0
+	var tr := CampaignGate.trainer()
+	map.hud.toast("%s pulls you out of the drill. No harm done." % (tr if tr != "" else "Your trainer"), Color(1, 0.9, 0.6))
+	_end(false)
+
+
 func _end_drill(won: bool, travel: bool) -> void:
 	_over = true
+	if drill != null and drill.xp > 0:
+		GameState.add_xp("strategist", drill.xp)
 	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
+	_duck_music()
 	for e in map.enemies.duplicate():
 		if is_instance_valid(e):
 			e.queue_free()
@@ -870,7 +1135,11 @@ func _end_drill(won: bool, travel: bool) -> void:
 func _end_campaign(won: bool, travel: bool) -> void:
 	_over = true
 	GameState.add_xp("strategist", 150 if won else mini(80, 15 * _caps + _kills))
-	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
+	# Jingles once: Campaign.finish plays the win (battle or whole campaign); a KO
+	# (no travel) leaves the sound to the faint. The song ducks under the jingle.
+	if not won and travel:
+		Music.instance(get_tree()).sfx("j_battle_lost", "thud")
+	_duck_music()
 	if won:
 		GameState.add_arc_xp(30)
 	for e in map.enemies.duplicate():

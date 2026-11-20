@@ -221,6 +221,43 @@
    }
   ]
  },
+ "battle_gang": {
+  "chosen": "so_adfa264fafcb4adb937d6f3b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/battle_gang__so_adfa264fafcb4adb937d6f3b.mp3",
+    "id": "so_adfa264fafcb4adb937d6f3b",
+    "page": "https://acemusic.ai/song/96kv7khkxfpa",
+    "score": {
+     "dur": 118.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_gang__so_adfa264fafcb4adb937d6f3b.mp3",
+     "holes": 0,
+     "lvl_diff": 3.299999952316284,
+     "peak": 1.397,
+     "score": 94.77,
+     "seam": 0.998
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/battle_gang__so_c73acf15f12f4e188295348e.mp3",
+    "id": "so_c73acf15f12f4e188295348e",
+    "page": "https://acemusic.ai/song/mhn8q2n2avq3",
+    "score": {
+     "dur": 115.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_gang__so_c73acf15f12f4e188295348e.mp3",
+     "holes": 2,
+     "lvl_diff": 2.700000047683716,
+     "peak": 1.371,
+     "score": 83.27,
+     "seam": 0.993
+    }
+   }
+  ]
+ },
  "battle_siege": {
   "chosen": "so_f6acacc36d51451596c1e9b2",
   "kind": "music",
@@ -254,6 +291,43 @@
      "peak": 1.302,
      "score": 93.5,
      "seam": 0.994
+    }
+   }
+  ]
+ },
+ "battle_siege_gang": {
+  "chosen": "so_57caccbb3e4c49db92531171",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/battle_siege_gang__so_a24de07c94ab43b9a5683208.mp3",
+    "id": "so_a24de07c94ab43b9a5683208",
+    "page": "https://acemusic.ai/song/jzvezrdhqqa9",
+    "score": {
+     "dur": 115.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_siege_gang__so_a24de07c94ab43b9a5683208.mp3",
+     "holes": 0,
+     "lvl_diff": 2.9000000953674316,
+     "peak": 1.406,
+     "score": 92.32,
+     "seam": 0.967
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/battle_siege_gang__so_57caccbb3e4c49db92531171.mp3",
+    "id": "so_57caccbb3e4c49db92531171",
+    "page": "https://acemusic.ai/song/mxxd96m4hpht",
+    "score": {
+     "dur": 118.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_siege_gang__so_57caccbb3e4c49db92531171.mp3",
+     "holes": 0,
+     "lvl_diff": 0.6000000238418579,
+     "peak": 1.419,
+     "score": 98.15,
+     "seam": 0.99
     }
    }
   ]

@@ -135,10 +135,10 @@ static func on_quest_done(m: GameMap, qid: String) -> void:
 					break
 			if next.is_empty():
 				return
-			while Dialogue.instance(m.get_tree()).active or (m.player and m.player.frozen):
+			while is_instance_valid(m) and m.is_inside_tree() and (Dialogue.instance(m.get_tree()).active or (m.player and m.player.frozen)):
 				await m.get_tree().process_frame
-				if not is_instance_valid(m):
-					return
+			if not is_instance_valid(m) or not m.is_inside_tree():
+				return  # the map closed (scene change / quit) while the beat waited
 			await play(m, next))
 
 

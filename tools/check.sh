@@ -328,6 +328,13 @@ if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
   echo "Campaign test failed"; exit 1
 fi
 
+echo "== battle outcomes: drain, siege, boss, defend, convoy; team, helpers =="
+bwout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/battle_win_test.gd 2>&1)"
+echo "$bwout" | grep -E "FAIL|SCRIPT ERROR|battle_win_test" || true
+if ! echo "$bwout" | grep -q "battle_win_test: 0 fails"; then
+  echo "Battle outcome test failed"; exit 1
+fi
+
 echo "== region campaigns: boards, locks, convoy =="
 mout2="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_map_test.gd 2>&1)"
 echo "$mout2" | grep -E "FAIL|SCRIPT ERROR|campaign_map_test" | head -n 40 || true

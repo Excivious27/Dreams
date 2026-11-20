@@ -51,6 +51,10 @@ static var _want_t := 0.0            # how long _want has held
 static var _calm_t := 0.0            # seconds since the last threat
 static var _low_t := 0.0             # seconds the threat has sat below the playing tier
 static var last := {}                # last assessment (tests, debugging)
+static var _boss_wr: WeakRef = null  # the boss holding tier 4 (boss_ended when it falls)
+static var _sting_t := -1.0          # >0: seconds until the victory sting after a boss
+const BOSS_WIND := 2.0               # a fallen boss's song winds down this long, then the sting
+const STING := "j_victory"
 ## Tests: skip the ENTER delay.
 static var instant := false
 
@@ -65,6 +69,8 @@ static func reset() -> void:
 	_calm_t = 0.0
 	_low_t = 0.0
 	last = {}
+	_boss_wr = null
+	_sting_t = -1.0
 
 
 static func tick(m: GameMap, delta: float) -> void:
@@ -74,6 +80,14 @@ static func tick(m: GameMap, delta: float) -> void:
 		_area_t = AREA_EVERY  # the map's _ready already started its song
 	if m.get_tree().paused:
 		return
+	if _sting_t > 0.0:
+		_sting_t -= delta
+		if _sting_t <= 0.0:
+			Music.instance(m.get_tree()).sfx(STING, "j_battle_won")
+	if tier == 4 and _boss_wr != null:
+		var bo: Variant = _boss_wr.get_ref()
+		if bo == null or not is_instance_valid(bo) or not (bo as Enemy)._alive:
+			boss_ended(m)
 	_t -= delta
 	_area_t -= delta
 	if _t > 0.0:
@@ -83,6 +97,8 @@ static func tick(m: GameMap, delta: float) -> void:
 	var mu := Music.instance(m.get_tree())
 	if mu._current in Music.ONCE:
 		return  # an ending or a lullaby plays out
+	if tier == 4 and own_music(m):
+		return  # a battlefield commander (Battle started the song; Battle ends it)
 	var a := assess(m)
 	last = a
 	var w := int(a["tier"])
@@ -169,6 +185,7 @@ static func assess(m: GameMap) -> Dictionary:
 		out["tier"] = 4
 		out["boss"] = boss.kind
 		out["track"] = boss_track_for(m, boss)
+		_boss_wr = weakref(boss)
 		return out
 	if best > 0 and best < 2:
 		var hp_frac := float(GameState.run.get("hp", 100)) / maxf(1.0, float(GameState.run.get("max_hp", 100)))
@@ -179,6 +196,14 @@ static func assess(m: GameMap) -> Dictionary:
 	if best > 0:
 		out["track"] = tier_track(best)
 	return out
+
+
+static func own_music(m: GameMap) -> bool:
+	var sid := m.scene_id()
+	for p: String in OWN_MUSIC:
+		if sid.begins_with(p):
+			return true
+	return false
 
 
 ## Fighting you or after you (read-only look at Enemy's own state).
@@ -245,3 +270,31 @@ static func boss_started(m: GameMap, t: String) -> void:
 	_want_t = 0.0
 	_calm_t = 0.0
 	_low_t = 0.0
+
+
+## The boss holding the boss music fell: no BOSS_GRACE linger. The song winds
+## down over BOSS_WIND seconds into the area song (unless the map already
+## changed the song itself, e.g. a story beat), then a victory sting plays.
+## Called by tick when the boss it tracks dies, and by Battle for field commanders.
+static func boss_ended(m: GameMap, play_area := true, sting := true) -> void:
+	if m.get_instance_id() != _map_id:
+		_map_id = m.get_instance_id()
+		reset()
+	var mu := Music.instance(m.get_tree())
+	var was := track
+	tier = 0
+	track = ""
+	_want = 0
+	_want_t = 0.0
+	_calm_t = 0.0
+	_low_t = 0.0
+	_boss_wr = null
+	_area_t = AREA_EVERY
+	_sting_t = BOSS_WIND if sting else -1.0
+	if play_area and (mu.wanted() == was or mu.wanted() in GameMap.BOSS_TRACKS or was == ""):
+		mu.play(m.area_track(), BOSS_WIND)
+
+
+## Seconds until the post-boss sting (-1: none queued). Tests.
+static func sting_in() -> float:
+	return _sting_t

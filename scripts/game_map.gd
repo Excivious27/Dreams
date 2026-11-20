@@ -1361,6 +1361,8 @@ func area_track() -> String:
 			t = "battle_siege"
 		elif md in ["escort", "supply"]:
 			t = "battle_escort"
+		if not GameState.is_penguins() and Music.has_track(t + "_gang"):
+			t += "_gang"  # gangster battles: gritty funk/noir variants (battle_gang, battle_siege_gang)
 	if Racket.on() and _collectors_near():
 		return "raid"
 	if not Music.has_track(t):
@@ -2366,7 +2368,7 @@ func on_enemy_died(e: Enemy) -> void:
 func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
 	var best: Enemy = null
 	for e in enemies:
-		if is_instance_valid(e) and e.position.distance_to(p) < within:
+		if is_instance_valid(e) and e._alive and e.position.distance_to(p) < within:
 			if best == null or e.position.distance_to(p) < best.position.distance_to(p):
 				best = e
 	return best
@@ -2401,6 +2403,9 @@ func player_down(reason := "hurt") -> void:
 		return
 	# Knocked out mid-battle counts as a lost campaign (and still teaches something).
 	var bt: Variant = get("battle")
+	if bt is Battle and (bt as Battle).is_drill and not (bt as Battle)._over:
+		(bt as Battle).drill_rescue(reason)  # the drill is risk-free: no faint, no fee
+		return
 	if bt is Battle and not (bt as Battle)._over:
 		(bt as Battle)._end(false, false)
 	_changing = true

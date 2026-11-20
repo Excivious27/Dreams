@@ -237,8 +237,19 @@ func _meadow_boss(arc: String, want: String) -> void:
 	check(held, "the boss song holds for the whole fight (%s)" % mu().wanted())
 	m.player.position = boss.position + Vector2(8, 0)
 	boss.hit(9999, m.player.position)
-	await drain(4.0)
-	await wait(DangerMusic.BOSS_GRACE + 2.0)
+	var dd := Dialogue.instance(self)
+	var tt := 0.0
+	while tt < 4.0 and (DangerMusic.tier != 0 or dd.active):
+		if dd.active:
+			Input.action_press("a")
+			await frames(2)
+			Input.action_release("a")
+		await wait(0.1)
+		tt += 0.1
+	check(DangerMusic.tier == 0, "boss down: the boss music lets go at once, no %.0f s linger (%.1f s)" % [DangerMusic.BOSS_GRACE, tt])
+	await drain(1.0)
+	await wait(DangerMusic.BOSS_WIND + 0.3)
+	check(DangerMusic.sting_in() <= 0.0, "the victory sting has played after the %.0f s wind-down" % DangerMusic.BOSS_WIND)
 	check(mu().wanted() == m.area_track(), "after the boss: the meadow song (%s)" % mu().wanted())
 
 
