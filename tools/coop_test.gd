@@ -162,6 +162,70 @@ func _more(n: Variant) -> void:
 	check(int(GameState.run["flags"].get("forage_forest_9_9", 0)) == 5, "forage picked before the kill is on our own day")
 
 
+## C9 P6: a guest never takes the host's progress home, and world sync sends deltas.
+func _c9(n: Variant) -> void:
+	print("C9: guest guards and world deltas")
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run["day"] = 5
+	GameState.run["time"] = 600
+	var mega0: Dictionary = (GameState.run.get("mega", {}) as Dictionary).duplicate(true)
+	var rom0: Dictionary = Romance.st().duplicate(true)
+	_join(n, _host_world(40, {"launchpad": 4, "kitchen": 3, "house": 3, "shed": 2}))
+	check(Builds.built_tier("launchpad") == 4 and NetNode.own_tier("launchpad") == 0, "own_tier reads our builds, not the host's")
+	check(Crafting.own_tier("kitchen") == 0, "a guest crafts at its own station tier")
+	MegaRegion.check_unlocks()
+	var un: Dictionary = (GameState.run.get("mega", {}) as Dictionary).get("unlocked", {})
+	var space_ok := true
+	for id in un:
+		var u: Variant = MegaRegion.get_r(str(id)).get("unlock", {})
+		if u is Dictionary and (u as Dictionary).has("built"):
+			space_ok = false
+	check(space_ok, "host's builds unlock no region for the guest (%s)" % str(un.keys()))
+	var wk := "rp_sprout_fizz"  # a weekly prize (gen_rec.py)
+	check(not (Tickets.prize(wk).get("need", {}) as Dictionary).has("weekly") or Tickets.lock_text(wk) != "", "weekly prizes wait for the guest's own Rec (%s)" % wk)
+	check(not Romance.can_bouquet("x") and not Romance.can_propose("x"), "no bouquet/proposal while visiting")
+	check(Commons.guest_blocked(null), "commons are read-only for a guest")
+	n._restore_solo()
+	check(not Commons.guest_blocked(null), "commons open again at home")
+	check(Romance.st() == rom0, "run.romance unchanged after the visit")
+	var mega1: Dictionary = GameState.run.get("mega", {})
+	check((mega1.get("unlocked", {}) as Dictionary).size() <= (mega0.get("unlocked", {}) as Dictionary).size() + 1, "run.mega gained no build-earned region")
+	# World deltas: only what changed travels; a guest merges them.
+	var old := {"day": 3, "time": 600, "farm": {"1,1": {"crop": "a"}, "2,2": {"crop": "b"}}, "placed": {"3,3": "x"}}
+	var now := {"day": 3, "time": 610, "farm": {"1,1": {"crop": "a"}, "4,4": {"crop": "c"}}}
+	var d: Dictionary = NetNode.world_delta(old, now)
+	check(d.has("time") and not d.has("day") and not d.has("farm"), "delta carries changed keys only")
+	check((d["farm_d"] as Dictionary).size() == 2 and d["farm_d"]["2,2"] == null, "farm delta per tile, removed tiles null")
+	check((d["_gone"] as Array) == ["placed"], "removed keys listed")
+	var run := old.duplicate(true)
+	NetNode.merge_delta(run, d)
+	check(run == now, "merge_delta rebuilds the host's world")
+	var big := {}
+	for i in 3000:
+		big["%d,%d" % [i % 60, i / 60]] = {"crop": "turnip", "days": i % 7, "w": true}
+	var w0 := {"day": 3, "time": 600, "farm": big}
+	var w1 := w0.duplicate(true)
+	w1["time"] = 620
+	(w1["farm"] as Dictionary)["5,5"] = {"crop": "beet"}
+	var full_len := JSON.stringify(w1).length()
+	var delta_len := JSON.stringify(NetNode.world_delta(w0, w1)).length()
+	check(full_len > 65536 and delta_len < 400, "a late farm's delta is tiny (%d bytes vs full %d)" % [delta_len, full_len])
+	# A guest ignores a delta before its first full world, and world/toast from a non-host.
+	_reset(n)
+	n._host = false
+	n.my_id = 2
+	_snap(n)
+	n._apply_world({"_delta": true, "_gone": [], "day": 99})
+	check(int(GameState.run["day"]) != 99, "a delta before the first full world is ignored")
+	n._on_msg({"t": "msg", "from": 7, "host": false, "d": {"k": "world", "d": _host_world(77, {})}})
+	check(int(GameState.run["day"]) != 77, "a world from a non-host peer is ignored")
+	n._on_msg({"t": "msg", "from": 1, "host": true, "d": {"k": "world", "d": _host_world(41, {})}})
+	check(int(GameState.run["day"]) == 41, "the host's world applies")
+	n._on_msg({"t": "msg", "from": 1, "host": true, "d": {"k": "world", "d": {"_delta": true, "_gone": [], "time": 700, "farm_d": {"10,10": null, "9,9": {"crop": "beet"}}}}})
+	check(int(GameState.run["time"]) == 700 and (GameState.run["farm"] as Dictionary).has("9,9") and not (GameState.run["farm"] as Dictionary).has("10,10"), "the host's delta merges")
+	n._restore_solo()
+
+
 func _run() -> void:
 	var n: Variant = Net.i()
 	if n == null:
@@ -205,6 +269,8 @@ func _run() -> void:
 	check(Difficulty.level() == 3 and GameState.day_len() == 20, "home again: our own difficulty and day length")
 	_reset(n)
 	_more(n)
+	_reset(n)
+	_c9(n)
 	n.my_id = -1
 	n._host = false
 	n._last_world = {}
