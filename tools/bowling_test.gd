@@ -119,8 +119,8 @@ func _run() -> void:
 	tb.tick(1.0 / 30.0)
 	ok(tb.phase == "line" and tb.x0 < x_before - 5.0, "dragging left moves the ball (%.1f -> %.1f), no throw" % [x_before, tb.x0])
 	var sp0 := tb.spin_step
-	tb._tap(_press(Bowling.BTN_SPIN_L.get_center(), true))
-	tb._tap(_press(Bowling.BTN_SPIN_L.get_center(), false))
+	tb._tap(_press(tb.BTN_SPIN_L.get_center(), true))
+	tb._tap(_press(tb.BTN_SPIN_L.get_center(), false))
 	ok(tb.spin_step == sp0 + 1, "the left spin button adds hook to the left")
 	tb._tap(_press(Vector2(135, 300), true))
 	tb._tap(_press(Vector2(135, 300), false))

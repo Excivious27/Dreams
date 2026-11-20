@@ -9,10 +9,10 @@ extends ArcadeGame
 
 const GAMES := [
 	{"id": "jumper", "name": "Block Jumper", "blurb": "Run, jump, duck! 8 levels + endless", "col": Color(0.35, 0.8, 1.0)},
-	{"id": "stack", "name": "Crystal Stack", "blurb": "Drop the gems, clear the rows", "col": Color(0.75, 0.45, 1.0)},
-	{"id": "whack", "name": "Whack-a-Grump", "blurb": "Bop the grumps, spare the bunnies", "col": Color(0.55, 0.85, 0.35)},
+	{"id": "stack", "name": "Crystal Stack", "blurb": "Drop the gems, clear the rows", "gang_blurb": "Drop the neon blocks, clear the rows", "col": Color(0.75, 0.45, 1.0)},
+	{"id": "whack", "name": "Whack-a-Grump", "blurb": "Bop the grumps, spare the bunnies", "gang_blurb": "Bop the snitches, spare the bunnies", "col": Color(0.55, 0.85, 0.35)},
 	{"id": "claw", "name": "Claw Machine", "blurb": "Grab a real prize", "col": Color(1.0, 0.5, 0.7)},
-	{"id": "gallery", "name": "Duck Pond", "blurb": "Pop the toy ducks with corks", "col": Color(1.0, 0.8, 0.3)},
+	{"id": "gallery", "name": "Duck Pond", "blurb": "Pop the toy ducks with corks", "gang_blurb": "Pop the tin targets with corks", "col": Color(1.0, 0.8, 0.3)},
 ]
 
 ## Milestones the prize counter can require (id -> what it means).
@@ -98,6 +98,13 @@ static func make(game_id: String) -> ArcadeGame:
 			return ArcadeSkee.new()  # the rec's skee lane (not a picker cabinet)
 	push_warning("ArcadeHub: no game " + game_id)
 	return null
+
+
+## A cabinet's picker line in the current arc (C9 P3, c9_14: gangster blurbs).
+static func blurb(g: Dictionary) -> String:
+	if not GameState.is_penguins() and g.has("gang_blurb"):
+		return str(g["gang_blurb"])
+	return str(g.get("blurb", ""))
 
 
 static func game_ids() -> Array:
@@ -214,10 +221,10 @@ func _card(i: int) -> Rect2:
 func _step_state(s: String, _dt: float) -> void:
 	if s != "pick" or _child != null:
 		return
-	if pressed("up"):
+	if repeat_pressed("up"):
 		_sel = posmod(_sel - 1, GAMES.size())
 		sfx("scroll_tick", "ui_tap")
-	elif pressed("down"):
+	elif repeat_pressed("down"):
 		_sel = posmod(_sel + 1, GAMES.size())
 		sfx("scroll_tick", "ui_tap")
 	elif pressed("a"):
@@ -284,7 +291,7 @@ func _draw_play(c: Control) -> void:
 		c.draw_rect(ic, Color(0.04, 0.02, 0.07))
 		draw_icon(c, str(g["id"]), ic, t)
 		text_outline(c, r.position + Vector2(54, 17), Tickets.game_name(str(g["id"])), 190, 10, Color.WHITE)
-		text(c, r.position + Vector2(54, 30), str(g["blurb"]), 190, 7, Color(0.9, 0.88, 1))
+		text(c, r.position + Vector2(54, 30), blurb(g), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
 		text(c, r.position + Vector2(54, 44), "%s · best %d" % [("free play" if free_play else Money.amount(int(cabinet["fee"]))), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
 

@@ -9,12 +9,16 @@ signal closed
 const TIERS := ["Treats", "Toys", "Prizes", "Grand"]
 const ROW_H := 34.0
 const LIST_Y := 98.0
+const DESC_Y := 342.0  # the picked prize's description box
+const VISIBLE := 7     # rows above the description box: floor((DESC_Y - LIST_Y) / ROW_H)
 const BTN_BUY := Rect2(150, 420, 100, 34)
 const BTN_CLOSE := Rect2(20, 420, 100, 34)
 
 var map: GameMap
 var tier := 0
 var sel := 0
+var top := 0  # C9 P3: first row shown (a shelf of 8+ scrolls; the 8th sat under the box)
+var _rep := ScreenCursor.Rep.new()
 var _rows: Array = []
 var _canvas: Control
 var _font: Font
@@ -67,6 +71,7 @@ func _fill() -> void:
 	var owned := _rows.filter(func(r: String) -> bool: return Tickets.lock_text(r) == "Already yours")
 	_rows = _rows.filter(func(r: String) -> bool: return not owned.has(r)) + owned
 	sel = clampi(sel, 0, maxi(0, _rows.size() - 1))
+	_keep_in_view()
 
 
 ## Something on shelf t can be bought right now (the tab gets a dot).
@@ -102,23 +107,38 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu"):
 		_close()
 		return
+	var up := _rep.pressed("up", delta)
+	var dn := _rep.pressed("down", delta)
 	if Input.is_action_just_pressed("left"):
 		_tier(tier - 1)
 	elif Input.is_action_just_pressed("right"):
 		_tier(tier + 1)
-	elif Input.is_action_just_pressed("up"):
-		sel = maxi(0, sel - 1)
-		Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
-	elif Input.is_action_just_pressed("down"):
-		sel = mini(_rows.size() - 1, sel + 1)
+	elif (up or dn) and not _rows.is_empty():
+		sel = posmod(sel + (1 if dn else -1), _rows.size())  # wraps, like the other pickers
+		_keep_in_view()
 		Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 	elif Input.is_action_just_pressed("a") or Input.is_action_just_pressed("action"):
 		_buy()
 
 
+## Keep the picked row on screen; at the first/last visible row the list steps
+## one more so the next row shows (a finger reaches every prize by tapping the edge row).
+func _keep_in_view() -> void:
+	var n := _rows.size()
+	if n <= VISIBLE:
+		top = 0
+		return
+	top = clampi(top, 0, n - VISIBLE)
+	if sel < top + 1:
+		top = maxi(0, sel - 1)
+	elif sel > top + VISIBLE - 2:
+		top = mini(n - VISIBLE, sel - VISIBLE + 2)
+
+
 func _tier(t: int) -> void:
 	tier = wrapi(t, 0, TIERS.size())
 	sel = 0
+	top = 0
 	_fill()
 	Music.instance(get_tree()).sfx("tab", "ui_tap")
 
@@ -175,12 +195,14 @@ func _tap(ev: InputEvent) -> void:
 		if _tab_rect(i).has_point(p):
 			_tier(i)
 			return
-	var row := int(floor((p.y - LIST_Y) / ROW_H))
-	if p.y >= LIST_Y and row >= 0 and row < _rows.size() and p.x > 10 and p.x < 260:
+	var vis := int(floor((p.y - LIST_Y) / ROW_H))
+	var row := top + vis
+	if p.y >= LIST_Y and vis >= 0 and vis < VISIBLE and row < _rows.size() and p.x > 10 and p.x < 260:
 		if row == sel:
 			_buy()
 		else:
 			sel = row
+			_keep_in_view()
 			Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 
 
@@ -203,11 +225,15 @@ func _draw_it() -> void:
 			c.draw_circle(Vector2(r.end.x - 5, r.position.y + 5), 3.0, Color(0.5, 1, 0.55) if i != tier else Color(0.1, 0.55, 0.2))
 	if _rows.is_empty():
 		c.draw_string(_font, Vector2(0, LIST_Y + 30), "Nothing on this shelf.", HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.6))
-	for i in _rows.size():
+	if top > 0:
+		c.draw_string(_font, Vector2(250, LIST_Y - 2), "▲", HORIZONTAL_ALIGNMENT_LEFT, 12, 8, Color(1, 0.85, 0.35))
+	if top + VISIBLE < _rows.size():
+		c.draw_string(_font, Vector2(250, DESC_Y - 1), "▼", HORIZONTAL_ALIGNMENT_LEFT, 12, 8, Color(1, 0.85, 0.35))
+	for i in range(top, mini(_rows.size(), top + VISIBLE)):
 		var id: String = _rows[i]
 		var p := Tickets.prize(id)
 		var item := str(p.get("item", id))
-		var y := LIST_Y + i * ROW_H
+		var y := LIST_Y + (i - top) * ROW_H
 		var r := Rect2(10, y, 250, ROW_H - 3)
 		var lock := Tickets.lock_text(id)
 		var can := lock == "" and Tickets.count() >= int(p.get("cost", 0))
@@ -238,7 +264,7 @@ func _draw_it() -> void:
 		if plock != "" and plock != "Already yours":
 			full = ("%s. %s" if plock.begins_with("Sold out") else "Locked: %s. %s") % [plock, full]
 		if full != "":
-			c.draw_rect(Rect2(10, 342, 250, 34), Color(0, 0, 0, 0.35))
+			c.draw_rect(Rect2(10, DESC_Y, 250, 34), Color(0, 0, 0, 0.35))
 			c.draw_multiline_string(_font, Vector2(16, 355), full, HORIZONTAL_ALIGNMENT_LEFT, 238, 8, 2, Color(0.9, 0.88, 0.95) if plock == "" or plock == "Already yours" else Color(1, 0.78, 0.65))
 	if _flash_t > 0.0:
 		c.draw_rect(Rect2(10, 380, 250, 30), Color(0, 0, 0, 0.7))

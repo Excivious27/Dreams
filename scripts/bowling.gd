@@ -592,11 +592,42 @@ const F := 330.0       # focal length (px)
 const CAM_H := 42.0    # camera height (in)
 const HZ := 214.0      # horizon (screen y)
 const MODAL := Rect2(0, 0, 270, 372)
-const BTN_L := Rect2(8, 398, 42, 34)
-const BTN_R := Rect2(54, 398, 42, 34)
-const BTN_SPIN_L := Rect2(8, 438, 42, 28)
-const BTN_SPIN_R := Rect2(54, 438, 42, 28)
-const BTN_GO := Rect2(102, 398, 48, 68)
+## Deck buttons: right-handed layout, then the left-handed one (C9 P3: GO under
+## the left thumb, arrows on the right, the scorecard between). Picked in _ready.
+const DECK_RH := {"l": Rect2(8, 398, 42, 34), "r": Rect2(54, 398, 42, 34), "sl": Rect2(8, 438, 42, 28),
+	"sr": Rect2(54, 438, 42, 28), "go": Rect2(102, 398, 48, 68), "info": Rect2(156, 398, 108, 68)}
+const DECK_LH := {"l": Rect2(174, 398, 42, 34), "r": Rect2(220, 398, 42, 34), "sl": Rect2(174, 438, 42, 28),
+	"sr": Rect2(220, 438, 42, 28), "go": Rect2(6, 398, 48, 68), "info": Rect2(60, 398, 108, 68)}
+var BTN_L: Rect2 = DECK_RH["l"]
+var BTN_R: Rect2 = DECK_RH["r"]
+var BTN_SPIN_L: Rect2 = DECK_RH["sl"]
+var BTN_SPIN_R: Rect2 = DECK_RH["sr"]
+var BTN_GO: Rect2 = DECK_RH["go"]
+var _info_r: Rect2 = DECK_RH["info"]
+
+
+func _pick_deck() -> void:
+	var d: Dictionary = DECK_LH if Settings.left_handed() else DECK_RH
+	BTN_L = d["l"]
+	BTN_R = d["r"]
+	BTN_SPIN_L = d["sl"]
+	BTN_SPIN_R = d["sr"]
+	BTN_GO = d["go"]
+	_info_r = d["info"]
+
+
+## Fingers see buttons; a pad hides them (it plays on the actions) (C9 P3).
+func deck_hidden() -> bool:
+	return ScreenCursor.pad_active() and not manual and bot < 0.0
+
+
+## "Tap" for fingers, the button word for keys/pads.
+func _verb(touch_word: String, key_word: String) -> String:
+	return touch_word if TouchControls.visible_controls and not ScreenCursor.pad_active() else key_word
+
+
+func _input(ev: InputEvent) -> void:
+	ScreenCursor.note(ev)
 const AIM_MAX := 1.0        # degrees each side the aim arrow swings
 const AIM_PERIOD := 3.2     # seconds for a full swing there and back
 const POWER_PERIOD := 1.5   # seconds for the power bar to rise and fall
@@ -659,6 +690,7 @@ static func play(m: GameMap, lane_no: int, versus := "") -> Dictionary:
 func _ready() -> void:
 	layer = 70
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_pick_deck()
 	_font = ThemeDB.fallback_font
 	_btn_quit = Rect2(6, _sheet_rect().end.y + 6, 30, 24)
 	Hud.modal_rect = MODAL
@@ -987,7 +1019,7 @@ func _ask_quit() -> void:
 		_finish()
 	else:
 		_quit_arm = 2.0
-		_say("Tap ✕ again to leave", "(no tickets)", 2.0)
+		_say(_verb("Tap ✕ again to leave", "Press B again to leave"), "(no tickets)", 2.0)
 
 
 func _finish() -> void:
@@ -1422,24 +1454,25 @@ func _draw_controls() -> void:
 	var c := _canvas
 	var tip := ""
 	match phase:
-		"line": tip = "Drag the ball or ◀ ▶ · ↶ ↷ spin · then GO"
-		"aim": tip = "Tap when the line hits the pocket"
-		"power": tip = "Tap in the gold band for a clean release"
-		"opp": tip = "Tap to carry on"
+		"line": tip = _verb("Drag the ball or ◀ ▶ · ↶ ↷ spin · then GO", "◀ ▶ line · ▲ ▼ spin · A: go")
+		"aim": tip = _verb("Tap", "Press A") + " when the line hits the pocket"
+		"power": tip = _verb("Tap", "Press A") + " in the gold band for a clean release"
+		"opp": tip = _verb("Tap", "Press A") + " to carry on"
 	c.draw_rect(Rect2(0, 372, 270, 108), Color(0.05, 0.04, 0.08, 0.9))
 	if tip != "":
 		c.draw_string(_font, Vector2(0, 388), tip, HORIZONTAL_ALIGNMENT_CENTER, 270, 8, Color(0.85, 0.85, 1))
 	var line := phase == "line"
-	_btn(BTN_L, "◀", line)
-	_btn(BTN_R, "▶", line)
-	_btn(BTN_SPIN_L, "↶", line)
-	_btn(BTN_SPIN_R, "↷", line)
-	var go_txt := "GO" if phase == "line" else ("LOCK" if phase == "aim" else ("ROLL" if phase == "power" else "OK"))
-	_btn(BTN_GO, go_txt, phase != "roll", phase in ["aim", "power"])
-	_btn(_btn_quit, "✕", true, _quit_arm > 0.0)
+	if not deck_hidden():
+		_btn(BTN_L, "◀", line)
+		_btn(BTN_R, "▶", line)
+		_btn(BTN_SPIN_L, "↶", line)
+		_btn(BTN_SPIN_R, "↷", line)
+		var go_txt := "GO" if phase == "line" else ("LOCK" if phase == "aim" else ("ROLL" if phase == "power" else "OK"))
+		_btn(BTN_GO, go_txt, phase != "roll", phase in ["aim", "power"])
+		_btn(_btn_quit, "✕", true, _quit_arm > 0.0)
 	# Frame and ball, and the score so far.
 	var ns := next_state(rolls)
-	var info := Rect2(156, 398, 108, 68)
+	var info := _info_r
 	c.draw_rect(info, Color(0.1, 0.1, 0.16, 0.6))
 	c.draw_rect(info, Color(1, 1, 1, 0.2), false, 1.0)
 	if not bool(ns["over"]):
@@ -1549,7 +1582,7 @@ func _draw_final() -> void:
 		var unlocked := _prize_unlock(best, sc)
 		if unlocked != "":
 			c.draw_string(_font, Vector2(r.position.x, y + 4), unlocked, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(0.6, 1, 0.7))
-	c.draw_string(_font, Vector2(r.position.x, r.end.y - 10), "Tap to finish", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(1, 1, 1, 0.7))
+	c.draw_string(_font, Vector2(r.position.x, r.end.y - 10), _verb("Tap", "Press A") + " to finish", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(1, 1, 1, 0.7))
 	_draw_parts()
 
 

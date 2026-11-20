@@ -29,7 +29,14 @@ var _arm := 0
 var _t := 0.0
 var _flash := ""
 var _flash_t := 0.0
-var _acts: Array = []   # [label, callable] for the card's buttons (A presses the first)
+var _acts: Array = []   # [label, callable] for the card's buttons (A presses the framed one)
+var _act_i := 0         # C9 P3: the framed action (PAGE/TOOL step it, A runs it)
+var _cur: ScreenCursor  # C9 P3: pad/keyboard cursor over the campaign list
+var _rep := ScreenCursor.Rep.new()
+const PICK_CONE := 0.5   # d-pad node pick: within 60 deg of the direction
+const PICK_SIDE := 1.5   # sideways distance weighs this much more than forward
+## Danger words under the pips (colour alone said it before; -1 easy .. 2 deadly).
+const PIP_WORDS := ["", "", "HARD", "DEADLY"]
 var _brief: PanelContainer   # the campaign briefing (first open of a board, or the ? button)
 var _brief_box: VBoxContainer
 var _help: Button
@@ -119,6 +126,7 @@ func _ready() -> void:
 	_list.size = Vector2(254, 432)
 	_list.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_root.add_child(_list)
+	_cur = ScreenCursor.make(self, _list)
 	# The briefing card over the board.
 	_brief = PanelContainer.new()
 	var bsb := sb.duplicate() as StyleBoxFlat
@@ -351,7 +359,10 @@ func _refresh() -> void:
 		if why != "":
 			_acts.append(["What's needed", _show_brief])
 		else:
-			_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: tap one, then Attack or March.")])
+			if TouchControls.visible_controls:
+				_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: tap one, then Attack or March.")])
+			else:
+				_acts.append(["Pick a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: move to one, then Attack or March.")])
 	for a in _acts:
 		var b := _btn(str(a[0]), a[1])
 		b.custom_minimum_size = Vector2(0, 22)
@@ -360,6 +371,7 @@ func _refresh() -> void:
 			b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			b.custom_minimum_size = Vector2(120, 26)
 		_btns.add_child(b)
+	_frame_act(clampi(_act_i, 0, maxi(0, _acts.size() - 1)))
 	_board.queue_redraw()
 
 
@@ -548,6 +560,7 @@ func _select(nid: String) -> void:
 	if nid == sel:
 		return
 	sel = nid
+	_act_i = 0
 	Music.instance(get_tree()).sfx("pickup")
 	_refresh()
 
@@ -571,19 +584,75 @@ func _process(delta: float) -> void:
 		else:
 			close()
 		return
+	_cur.enabled = cid == "" and not _brief.visible
 	if cid == "":
 		return
-	var nodes: Array = Campaign.get_c(cid)["nodes"]
-	var i := 0
-	for k in nodes.size():
-		if str(nodes[k]["id"]) == sel:
-			i = k
-	if Input.is_action_just_pressed("right") or Input.is_action_just_pressed("up"):
-		_select(str(nodes[(i + 1) % nodes.size()]["id"]))
-	elif Input.is_action_just_pressed("left") or Input.is_action_just_pressed("down"):
-		_select(str(nodes[(i - 1 + nodes.size()) % nodes.size()]["id"]))
+	for a: String in ScreenCursor.DIRS:
+		if _rep.pressed(a, delta):
+			var nb := pick_dir(ScreenCursor.DIRS[a])
+			if nb != "":
+				_select(nb)
+	if not _acts.is_empty() and (Input.is_action_just_pressed(ScreenCursor.PAGE) or Input.is_action_just_pressed(ScreenCursor.TOOL)):
+		_frame_act((_act_i + 1) % _acts.size())
+	elif Input.is_action_just_pressed(ScreenCursor.CONFIRM_ALT):
+		_show_brief()  # X: the briefing, from any node
 	elif Input.is_action_just_pressed("a") and not _acts.is_empty():
-		(_acts[0][1] as Callable).call()
+		(_acts[clampi(_act_i, 0, _acts.size() - 1)][1] as Callable).call()
+
+
+## C9 P3: the nearest node in a direction from the selected one (spatial, like a
+## map cursor); none in that cone -> wrap to the far side along that line.
+func pick_dir(dir: Vector2) -> String:
+	if cid == "":
+		return ""
+	var nodes: Array = Campaign.get_c(cid)["nodes"]
+	var p := Vector2.ZERO
+	for n: Dictionary in nodes:
+		if str(n["id"]) == sel:
+			p = _npos(n)
+	var best := ""
+	var bs := INF
+	var far := ""
+	var fs := INF
+	for n: Dictionary in nodes:
+		if str(n["id"]) == sel:
+			continue
+		var d := _npos(n) - p
+		var fwd := d.dot(dir)
+		var side := absf(d.dot(Vector2(-dir.y, dir.x)))
+		if fwd > 1.0 and fwd >= d.length() * PICK_CONE:
+			var sc := fwd + side * PICK_SIDE
+			if sc < bs:
+				bs = sc
+				best = str(n["id"])
+		elif fwd < -1.0:
+			var sc2 := fwd + side * PICK_SIDE  # most negative = furthest back
+			if sc2 < fs:
+				fs = sc2
+				far = str(n["id"])
+	return best if best != "" else far
+
+
+## Frame one of the card's action buttons (gold border).
+func _frame_act(i: int) -> void:
+	_act_i = i
+	var k := 0
+	for b in _btns.get_children():
+		if b.is_queued_for_deletion() or not (b is Button):
+			continue
+		var on := k == _act_i and _acts.size() > 1
+		if on:
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Color(0.45, 0.33, 0.15)
+			sb.border_color = ScreenCursor.FRAME_COL
+			sb.set_border_width_all(2)
+			sb.set_corner_radius_all(3)
+			for st in ["normal", "hover", "pressed", "focus"]:
+				(b as Button).add_theme_stylebox_override(st, sb)
+		else:
+			for st in ["normal", "hover", "pressed", "focus"]:
+				(b as Button).remove_theme_stylebox_override(st)
+		k += 1
 
 
 # ---- drawing -----------------------------------------------------------------------
@@ -684,8 +753,16 @@ func _draw_board() -> void:
 		var stn := Campaign.stars(cid, id)
 		if stn > 0 and not tk:
 			var dcol: Color = [Color(0.5, 1, 0.6), Color(1, 0.95, 0.5), Color(1, 0.65, 0.35), Color(1, 0.4, 0.35)][Campaign.danger(cid, id) + 1]
+			var dg := Campaign.danger(cid, id) + 1
 			for k in stn:
-				Art.draw_disc(cv, p + Vector2((k - (stn - 1) / 2.0) * 5.0, r + 5), 1.8, dcol)
+				var pp := p + Vector2((k - (stn - 1) / 2.0) * 5.0, r + 5)
+				if dg >= 2:
+					# Hard/deadly: a diamond pip, not just a redder dot (colour-blind safe).
+					cv.draw_colored_polygon(PackedVector2Array([pp + Vector2(0, -2.4), pp + Vector2(2.4, 0), pp + Vector2(0, 2.4), pp + Vector2(-2.4, 0)]), dcol)
+				else:
+					Art.draw_disc(cv, pp, 1.8, dcol)
+			if str(PIP_WORDS[dg]) != "":
+				_text(cv, f, p + Vector2(-30, r + 14), str(PIP_WORDS[dg]), 6, dcol, 60, HORIZONTAL_ALIGNMENT_CENTER)
 		var nm := str(n["name"])
 		_text(cv, f, p + Vector2(-40, -r - 4), nm, 6, Color(1, 0.97, 0.88) if tk or att or id == sel else Color(0.9, 0.88, 0.82, 0.8), 80, HORIZONTAL_ALIGNMENT_CENTER)
 	# The army's banner where it stands.
