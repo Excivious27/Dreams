@@ -274,8 +274,10 @@ func _web() -> void:
 	var dir := ProjectSettings.globalize_path("res://audio/music")
 	pid = OS.create_process("python3", ["-m", "http.server", str(port), "--bind", "127.0.0.1", "--directory", dir])
 	await wait(1.5)
-	for t: String in ["combat_light", "combat_elite", "combat_light_gang", "combat_elite_gang"]:
+	for t: String in ["combat_elite", "combat_elite_gang"]:  # combat_light(_gang) are packed in the build since C9 P4 (EMBED)
 		check(t in Music._stream_list(), "%s is streamed on the web" % t)
+	for t: String in ["combat_light", "combat_light_gang"]:
+		check(not (t in Music._stream_list()), "%s is packed (plays at once offline)" % t)
 		check(Music.has_track(t), "%s exists (has_track)" % t)
 		DirAccess.remove_absolute(ProjectSettings.globalize_path("user://mcache/%s.ogg" % t))
 	var m: GameMap = await go("penguins", "meadow")

@@ -37,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-20 08:04 Tom: never ask him for permission to update a schedule (changing the device-bound watchdog scheduled task makes him approve it and pauses the work). Do not edit or create device-bound scheduled tasks; use in-session reminders (send_later) for watchdog check-ins, and keep working to completion.
 - 2026-11-19 22:37 Tom (phone playtest): mining and harvesting are far too fast early: make the player work for it through progression; the watering can must need refilling; the "planted seeds" text stays stuck at the top of the screen; tapping the pup offers the Pack option before you own a pack; the inventory needs drag and drop; every inventory sorting option should match Stardew's exactly (polished, intuitive, optimised management). Fixes go into CONDUCT 6 as an extra package (P7); deeper pacing in C8.
 - 2026-11-19 22:33 Tom: a complete review of all team, ally, crew, companion and pup functions so everything is seamless, intuitive and works as intended: CONDUCT 11b.
 - 2026-11-19 22:30 Tom: the town should be expanded and embellished (bigger, richer): CONDUCT 14.

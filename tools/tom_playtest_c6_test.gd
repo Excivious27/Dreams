@@ -147,6 +147,7 @@ func _held_name(farm: GameMap) -> void:
 	check(farm.hud.held_age < 1.0, "picking a slot shows its name")
 	await wait(Hud.HELD_SHOW + 1.0)
 	check(farm.hud.held_age >= Hud.HELD_SHOW + 0.5, "after %.1f s the name is gone (age %.1f)" % [Hud.HELD_SHOW + 0.5, farm.hud.held_age])
+	await wait(Hud.TOAST_MAX * Settings.toast_hold() + 1.0)  # long tips stay up longer since C9 (Messages stay up)
 	for c in farm.hud._toasts.get_children():
 		check((c as CanvasItem).modulate.a < 0.05 or c.is_queued_for_deletion(), "no toast stays up: " + str(c.get_meta("base", "")))
 

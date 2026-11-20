@@ -85,6 +85,8 @@ static func make(host: Node, root_ctrl: Control) -> ScreenCursor:
 
 ## A pad is in use: P1's PadInput when it exists, else what we saw last.
 static func pad_active() -> bool:
+	if pad_used:
+		return true
 	for g: Dictionary in ProjectSettings.get_global_class_list():
 		if str(g.get("class", "")) == "PadInput":
 			var sc: Script = load(str(g["path"]))

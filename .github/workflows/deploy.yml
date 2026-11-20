@@ -75,7 +75,7 @@ jobs:
             godot-import-${{ env.GODOT_VERSION }}-
 
       - name: Python deps (numpy for the music/sfx checks)
-        run: pip install --quiet numpy && (command -v ffmpeg >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null))
+        run: pip install --quiet numpy pillow && (command -v ffmpeg >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null))
       # The full tools/check.sh gates merges on the CONDUCT CI shards
       # (.github/workflows/conduct-ci.yml); the deploy only needs a clean
       # import and the smoke test, so it can't be blocked by a slow or

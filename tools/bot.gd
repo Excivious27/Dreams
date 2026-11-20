@@ -432,7 +432,7 @@ func _menu_crawl(m: GameMap) -> void:
 			_collect_buttons(menu._body, btns)
 			if not btns.is_empty() and rng.randf() < 0.5:
 				var b: BaseButton = btns[rng.randi_range(0, btns.size() - 1)]
-				if is_instance_valid(b) and not b.disabled:
+				if is_instance_valid(b) and not b.disabled and not str(b.get("text")).to_lower().contains("quit"):  # native builds offer Save and quit (C9 P2)
 					_last_press = "%s > %s" % [t, str(b.get("text"))]
 					b.pressed.emit()
 					await frames(3)
