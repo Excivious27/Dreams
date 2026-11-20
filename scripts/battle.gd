@@ -308,7 +308,7 @@ func _capture(delta: float) -> void:
 			var fort_k := 0.5 if bool(p.get("efort", false)) and float(p["prog"]) < 0.0 else 1.0
 			p["prog"] = minf(1.0, float(p["prog"]) + rate * fort_k * (1.0 + 0.25 * (allies - 1)))
 		elif foes > 0 and allies == 0:
-			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)) * (0.5 if bool(p.get("fort", false)) else 1.0))
+			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)) * (0.5 if bool(p.get("fort", false)) else 1.0) * float(d.get("foe_capture", 1.0)))
 		elif allies == 0 and foes == 0 and str(p["owner"]) == "enemy" and float(p["prog"]) > -1.0:
 			# Walked off half-taken: their point settles back (and spawns again once full).
 			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * 0.5)
@@ -354,7 +354,7 @@ func _tick() -> void:
 	var e := _owned("enemy")
 	# Supply trickles in (fractions carry over, so small skill bonuses count).
 	var rate := minf(1.0, GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("strategist", "supply_rate"))
-	_sup_f += a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate)
+	_sup_f += a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate) * float(d.get("supply_mul", 1.0))
 	supply += int(_sup_f)
 	_sup_f -= int(_sup_f)
 	_mend_cd = maxf(0.0, _mend_cd - 1.0)
@@ -422,7 +422,7 @@ func _tick() -> void:
 			_boss_ref = bb
 			_boss_t = 0.0
 			bb.set_meta("boss_name", bb.display_name())
-			bb.max_hp = boss_hp(bb.max_hp, ctier(), GameState.progress_tier(), Settings.easy())
+			bb.max_hp = boss_hp(roundi(bb.max_hp / maxf(0.01, bb.diff_hp)), ctier(), GameState.progress_tier(), Difficulty.mul("boss_hp"))  # mode applied once, here
 			bb.hp = bb.max_hp
 			if ctier() <= 1:
 				bb.damage = maxi(1, bb.damage - 1)  # a first-campaign captain hits softer
@@ -478,12 +478,12 @@ func etier() -> int:
 ## A commander's health: a bit tougher than its kind, floored by the campaign
 ## tier (T1 ~60-90, more when you've outgrown the campaign), capped for T1-2
 ## so a first campaign's captain stays a short fight.
-static func boss_hp(base: int, ct: int, pt: int, easy := false) -> int:
+static func boss_hp(base: int, ct: int, pt: int, mode_mul := 1.0) -> int:
 	var floor_hp := 60.0 * ct * (1.0 + 0.5 * maxi(0, pt - ct + 1))
 	var hp := maxf(base * 1.25, floor_hp)
 	if ct <= 2:
 		hp = minf(hp, floor_hp * 1.6)
-	return maxi(20, int(hp * (0.75 if easy else 1.0)))
+	return maxi(20, int(hp * mode_mul))
 
 
 func _enemy_wave() -> void:

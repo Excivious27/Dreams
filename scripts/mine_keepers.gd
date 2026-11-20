@@ -234,6 +234,7 @@ static func resolve(id: String, floor_no: int, tier: int, theme_idx: int, rng: R
 		var n := rng.randi_range(int(nr[0]), int(nr[1]))
 		if floor_no <= 3:
 			n = mini(n, 3 + (1 if lead_tok == "" else 0))   # the first floors: smaller packs
+		n = maxi(1, n + Difficulty.add("keeper_n"))  # C4 difficulty: -2/-1/0/+1
 		for i in n:
 			var k := _token(kin_tok, pool_kind, pool, tier, rng)
 			units.append({"kind": k, "scale": float(en.get("ks", 0.85)), "hp": float(en.get("kh", 0.8)), "tint": tint if kin_tok.begins_with("@") else "", "lead": units.is_empty()})

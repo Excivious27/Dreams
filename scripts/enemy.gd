@@ -11,6 +11,7 @@ var _art_scale := 1.0  # data "scale": drawn size multiplier
 var _flash_sent := -1.0
 var _draw_sig := -1
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
+var diff_hp := 1.0      # the difficulty mode's HP multiplier (Difficulty foe_hp / boss_hp)
 ## Home-tier toughness: an enemy at home takes several swings at every stage.
 const PACK_KINDS := ["hill_wolf", "ash_hound"]
 const NATIVE_HP := [1.5, 2.2, 2.8, 3.5, 4.0, 5.0]
@@ -176,9 +177,10 @@ func setup(k: String, tier_override := -1) -> void:
 	base_hp = hp
 	bossy = bool(ed.get("boss", false)) or ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
 	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(mini(native, tier), 0, 5)])  # run below home: scale for the tier you meet it at
-	if Settings.easy():
-		hp_scale = maxf(1.0, hp_scale * 0.6)
-	hp = int(round(hp * hp_scale))
+	# C4 difficulty: its own multiplier after hp_scale (hp_scale also scales ally
+	# hits, so the mode must never be folded into it), no floor.
+	diff_hp = Difficulty.mul("boss_hp" if bossy else "foe_hp")
+	hp = maxi(1, int(round(hp * hp_scale * diff_hp)))
 	max_hp = hp
 	var art_kind := str(ed.get("art", k if k != "big_grump" or Art.has("enemies/big_grump", "idle") else "grump"))
 	var group := "enemies/" + art_kind
@@ -380,14 +382,14 @@ func _process(delta: float) -> void:
 		if _windup <= 0.0:
 			if tgt != player:
 				if dist < reach + 6.0 and tgt.has_method("take_damage"):
-					tgt.call("take_damage", maxi(1, damage + int(tier / 2)), position)
+					tgt.call("take_damage", ally_damage(damage + int(tier / 2)), position)
 			elif dist < reach + 4.0 and player.invuln <= 0.0:
 				player.take_damage(GameState.enemy_damage(damage), position)
 				if inflicts != "":
 					GameState.status_apply(inflicts, tier)
 			_cooldown = 1.1
 	elif not stunned and dist < reach and _cooldown <= 0.0:
-		_windup = (0.32 + 0.04 * clampi(damage - 2, 0, 10)) * (1.35 if kind.begins_with("thug_") and Crew.perk_level("doors") >= 1 else 1.0)
+		_windup = (0.32 + 0.04 * clampi(damage - 2, 0, 10)) * (1.35 if kind.begins_with("thug_") and Crew.perk_level("doors") >= 1 else 1.0) * Difficulty.mul("windup")
 		if _sprite and _sprite.sprite_frames.has_animation("attack"):
 			_sprite.play("attack")
 		_attacking = 0.45
@@ -455,6 +457,11 @@ func _slide(step: Vector2) -> void:
 
 
 ## `magic`: spells pierce half the armour and don't feed the anti-kite counter.
+## A foe's hit on a pet, crew member or helper, after the difficulty mode.
+static func ally_damage(n: int) -> int:
+	return maxi(1, roundi(n * Difficulty.mul("ally_dmg")))
+
+
 func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) -> bool:
 	if not _alive:
 		return false
@@ -565,7 +572,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 		_slide(_lunge_dir * speed * 3.4 * delta)
 		var pd := position.distance_to(player.position)
 		if tgt != player and is_instance_valid(tgt) and position.distance_to(tgt.position) < reach + 2.0 and tgt.has_method("take_damage"):
-			tgt.call("take_damage", maxi(1, damage + int(tier / 2)), position)
+			tgt.call("take_damage", ally_damage(damage + int(tier / 2)), position)
 			_lunge = 0.0
 		elif pd < reach + 2.0 and player.invuln <= 0.0:
 			player.take_damage(GameState.enemy_damage(damage), position)
@@ -589,7 +596,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 				player.take_damage(GameState.enemy_damage(damage + 1), position)
 			for ally: Node2D in map.allies():
 				if position.distance_to(ally.position) < 30.0 and ally.has_method("take_damage"):
-					ally.call("take_damage", damage + 1, position)
+					ally.call("take_damage", ally_damage(damage + 1), position)
 		return true
 	if abilities.has("stomp") and _stomp_cd <= 0.0 and dist < 26.0 and _stun <= 0.0:
 		_stomp_cd = 3.5

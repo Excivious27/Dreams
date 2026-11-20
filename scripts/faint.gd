@@ -57,9 +57,11 @@ static func in_grace() -> bool:
 
 
 ## What a collapse costs. Clinic: 8% of what you carry + 20 + 4 per mine floor
-## (cap 750), halved/waived by Juniper's hearts or easy mode. At home: 5% goes
-## missing on the way (cap 300). Never more than you carry; nothing in week 1.
-static func fee(clinic: bool, floor_no: int) -> int:
+## (cap 750), halved/waived by Juniper's hearts. At home: 5% goes missing on
+## the way (cap 300). Never more than you carry; nothing in week 1. The
+## difficulty mode (Difficulty clinic_fee) scales only a combat faint
+## (reason "hurt"): late nights and exhaustion cost the same in every mode.
+static func fee(clinic: bool, floor_no: int, reason := "") -> int:
 	var cr := int(GameState.run.get("crystals", 0))
 	if in_grace():
 		return 0
@@ -71,11 +73,11 @@ static func fee(clinic: bool, floor_no: int) -> int:
 			mult = 0.0
 		elif GameState.has_friend_perk("juniper", 2):
 			mult = 0.5
-		if Settings.easy() or Perks.flag("no_clinic_fee"):
+		if Perks.flag("no_clinic_fee"):
 			mult = 0.0
+		if reason == "hurt":
+			mult *= Difficulty.mul("clinic_fee")
 		return clinic_fee(cr, floor_no, mult)  # first visit free, gentle flat part
-	if Settings.easy():
-		return 0
 	return mini(cr, mini(300, int(ceil(cr * 0.05))))
 
 

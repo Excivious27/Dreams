@@ -381,8 +381,9 @@ static func stats() -> Array:
 		p.append(["Chance to block a hit", _pct(blk)])
 	if GameState.has_team() and GameState.bonus("leadership", "team_defense") > 0.0:
 		p.append(["Leadership (team out)", "-" + _pct(minf(0.4, GameState.bonus("leadership", "team_defense")))])
-	if Settings.easy():
-		p.append(["Easy mode", "-40%"])
+	if not Difficulty.is_default():
+		var fm := Difficulty.mul("foe_dmg")
+		p.append(["%s mode: foe hits" % Difficulty.name_of(), ("-" if fm < 1.0 else "+") + _pct(absf(1.0 - fm))])
 	var dn := "You take %s of a hit after armour%s." % [_pct(taken * (1.0 - dr)), "" if dr == 0.0 else " and damage cuts"]
 	if GameState.gear_stat("defense") >= 3:
 		dn += " Statuses wear off 30% faster (3+ armour)."
@@ -472,13 +473,17 @@ static func stats() -> Array:
 	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % (1 + fl), "parts": p,
 		"note": "Fish worth up to %d◆ can bite (more at night or with bait)." % (25 + 15 * fl)})
 	# Recovery
-	var every := maxi(5, 20 - 5 * int(GameState.bonus("magic", "mana_regen")))
-	p = [["Mana", "+1 every %d min" % every], ["Food energy left today", str(maxi(0, int(r.get("max_energy", 100)) - fed))], ["Sleep", "full health, energy, mana"]]
+	var every := roundi(GameState.mana_regen_secs())
+	p = [["Mana", "+1 every %d s" % every], ["Food energy left today", str(maxi(0, int(r.get("max_energy", 100)) - fed))], ["Sleep", "full health, energy, mana"]]
 	if GameState.bonus("combat", "last_stand") > 0.0:
 		p.append(["Last Stand", "once a day" + (" (used)" if int(r.get("flags", {}).get("last_stand_day", -1)) == int(r.get("day", 1)) else "")])
 	if int(r.get("flags", {}).get("shield", 0)) > 0:
 		p.append(["Shield charges", str(int(r["flags"]["shield"]))])
-	out.append({"id": "regen", "name": "Recovery", "icon": ["ui", "status_regen"], "value": "mana 1/%dm" % every, "parts": p, "note": ""})
+	out.append({"id": "regen", "name": "Recovery", "icon": ["ui", "status_regen"], "value": "mana 1/%ds" % every, "parts": p, "note": ""})
+	# Difficulty mode and day length (per save slot; Settings changes them)
+	p = [["Foe health", _pct(Difficulty.mul("foe_hp"))], ["Boss health", _pct(Difficulty.mul("boss_hp"))], ["Foe hits on you", _pct(Difficulty.mul("foe_dmg"))], ["Day length", "%d real min" % GameState.day_len()]]
+	out.append({"id": "mode", "name": "Difficulty", "icon": ["items", Hud.icon_for("sword")], "value": Difficulty.name_of(), "parts": p,
+		"note": Difficulty.words() + " Only fights and battle campaigns change; change it in Settings."})
 	return out
 
 

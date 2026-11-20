@@ -602,6 +602,20 @@ func _show_names() -> void:
 	_name_edit = _edit("Your name", pname)
 	_town_edit = _edit("Town name", "Dreamhollow")
 	_pet_edit = _edit("Pet name", "Kitty" if str(_look_full.get("pet", "")).begins_with("cat_") else "Pup")
+	# C4: difficulty (fights only) and day length, kept with this save slot.
+	var diff_btn := _button("Difficulty: " + Difficulty.name_of(_new_diff), func() -> void: pass)
+	var diff_note := _label(Difficulty.words(_new_diff), 7, false)
+	diff_btn.pressed.connect(func() -> void:
+		_new_diff = (_new_diff + 1) % Difficulty.NAMES.size()
+		diff_btn.text = "Difficulty: " + Difficulty.name_of(_new_diff)
+		diff_note.text = Difficulty.words(_new_diff))
+	_page.add_child(diff_btn)
+	_page.add_child(diff_note)
+	var len_btn := _button("Day length: %d real min" % _new_len, func() -> void: pass)
+	len_btn.pressed.connect(func() -> void:
+		_new_len = Difficulty.next_day_len(_new_len)
+		len_btn.text = "Day length: %d real min" % _new_len)
+	_page.add_child(len_btn)
 	_page.add_child(_button("Start", _begin, true))
 	var made_look := bool(_playables[_playable].get("custom", false)) or GameState.sprite_for_playable(_playable, _arc) == "penguin"
 	_page.add_child(_button("Back", _show_look if made_look else _show_characters))  # back to the look you made, not the hero grid
@@ -635,13 +649,17 @@ func _edit(label_text: String, default_text: String) -> LineEdit:
 	return e
 
 
+var _new_diff := Difficulty.DEFAULT   # new-game page choices
+var _new_len := GameState.DAY_LEN_DEFAULT
+
+
 func _begin() -> void:
 	var cname := _name_edit.text.strip_edges()
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
 	if GameState.has_run():
 		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
-	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
+	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup", {"difficulty": _new_diff, "day_len": _new_len})
 	var is_custom := bool(_playables[_playable].get("custom", false))
 	var is_penguin := GameState.sprite_for_playable(_playable, _arc) == "penguin"
 	if is_custom or is_penguin:

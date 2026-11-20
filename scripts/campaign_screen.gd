@@ -276,7 +276,7 @@ func _refresh() -> void:
 	var st_txt := ""
 	var stars := Campaign.stars(cid, sel)
 	if stars > 0:
-		st_txt = " · " + "★".repeat(stars) + "☆".repeat(5 - stars) + " " + ["easy", "fair", "hard", "very hard"][Campaign.danger(cid, sel) + 1]
+		st_txt = " · " + "★".repeat(stars) + "☆".repeat(5 - stars) + " " + Difficulty.DANGER_WORDS[Campaign.danger(cid, sel) + 1]
 	var state := "yours" if Campaign.taken(cid, sel) else ("can attack" if Campaign.can_attack(cid, sel) else ("march, then attack" if Campaign.staging(cid, sel) != "" else "out of reach"))
 	if str(Campaign.cs(cid)["at"]) == sel:
 		state = "your %s is here" % Campaign.force_word()

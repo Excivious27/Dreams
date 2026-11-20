@@ -502,15 +502,17 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["enemies"] = cf.get("enemies", d.get("enemies", []))
 	d["enemy_tier"] = enemy_tier(cid, nid)
 	var tk := int(cf.get("tickets", n.get("tickets", 120)))  # sieges carry their own (size-scaled) count
-	d["tickets"] = maxi(40, int(tk * (0.6 + 0.4 * morale / 100.0)))
+	d["tickets"] = maxi(40, int(tk * (0.6 + 0.4 * morale / 100.0) * Difficulty.mul("ally_tickets")))
 	d["tickets_max"] = tk
 	var et := int(n.get("enemy_tickets", 120))
-	if Settings.easy() and typ != "defend" and typ != "escort":
-		et = int(et * 0.75)
+	if typ != "defend" and typ != "escort":
+		et = maxi(10, int(et * Difficulty.mul("enemy_tickets")))
 	d["enemy_tickets"] = et
 	d["supply"] = int(base.get("supply", 15)) + int(s.get("supply", 0))
-	d["wave_every"] = float(n.get("wave_every", d.get("wave_every", 7.0)))
-	d["enemy_cap"] = int(n.get("enemy_cap", d.get("enemy_cap", 14))) - (3 if Settings.easy() else 0)
+	d["wave_every"] = float(n.get("wave_every", d.get("wave_every", 7.0))) * Difficulty.mul("wave_every")
+	d["enemy_cap"] = maxi(3, int(n.get("enemy_cap", d.get("enemy_cap", 14))) + Difficulty.add("enemy_cap"))
+	d["foe_capture"] = Difficulty.mul("capture")  # Battle._capture: enemy capture speed
+	d["supply_mul"] = Difficulty.mul("supply")  # Battle._tick: supply trickle
 	d["inspired"] = morale >= 85
 	d["reward"] = {}
 	d.erase("boss")
@@ -523,11 +525,11 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	elif typ == "escort":
 		d["win_by"] = "convoy"
 		d["convoy"] = cf.get("convoy", [])
-		d["convoy_hp"] = int(n.get("convoy_hp", 80)) + (20 if Settings.easy() else 0)
+		d["convoy_hp"] = maxi(20, int(n.get("convoy_hp", 80)) + Difficulty.add("convoy"))
 		d["vehicle"] = str(cf.get("vehicle", "wagon" if arc() == "penguins" else "truck"))
 	elif typ == "defend":
 		d["win_by"] = "hold"
-		d["hold"] = int(n.get("hold", 150)) - (30 if Settings.easy() else 0)
+		d["hold"] = maxi(45, int(n.get("hold", 150)) + Difficulty.add("hold"))
 	var back: Array = f.get("back", [])
 	if back.size() >= 3:
 		d["back"] = [str(back[0]), float(back[1]) / GameMap.TILE, float(back[2]) / GameMap.TILE]
@@ -577,7 +579,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 	else:
 		s["losses"] = int(s.get("losses", 0)) + 1
 		s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)  # never too poor to place one helper
-		s["morale"] = int(s["morale"]) - 20
+		s["morale"] = int(s["morale"]) - Difficulty.add("morale_loss")
 		if int(s["morale"]) <= 0:
 			s["morale"] = 40
 			s["supply"] = 0

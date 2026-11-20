@@ -49,7 +49,7 @@ var ground_seam := {}  # cell -> seam of the soft patch drawn there (exit corrid
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
-var _last_mana_t := -1
+var _mana_acc := 0.0  # real seconds toward the next mana point
 var _sign_labels := {}
 ## False in places where trees and rocks are scenery (the town): they can't be chopped or broken.
 var resources_here := true
@@ -2413,7 +2413,7 @@ func player_down(reason := "hurt") -> void:
 	var cr := int(GameState.run["crystals"])
 	var mines := in_mines()
 	var clinic := (reason == "hurt" or mines) and not Net.visiting()
-	var fee := Faint.fee(clinic, int(GameState.run.get("mine_floor", 1)) if mines else 0)
+	var fee := Faint.fee(clinic, int(GameState.run.get("mine_floor", 1)) if mines else 0, reason)
 	# A Marked who beat you won't come at you again today.
 	for e in enemies:
 		if is_instance_valid(e) and e.has_meta("marked"):
@@ -2756,7 +2756,7 @@ func _process(delta: float) -> void:
 			hud.toast("A new version of Dreams is ready. Tap the yellow bar at the top to update. Your farm is saved.", Color(1, 0.85, 0.4))
 	# Clamp: a phone coming back from the background reports one huge frame;
 	# that must not fast-forward the clock by hours.
-	_time_acc += minf(delta, 0.25) * GameState.MINUTES_PER_SECOND
+	_time_acc += minf(delta, 0.25) * GameState.minutes_per_second()  # C4: per-slot day length
 	if _time_acc >= 1.0:
 		var m := int(_time_acc)
 		_time_acc -= m
@@ -2776,10 +2776,10 @@ func _process(delta: float) -> void:
 		player_down("late")
 	elif int(GameState.run["energy"]) <= 0 and not _changing and not player.frozen:
 		player_down("tired")
-	# Mana trickles back: 1 point every 20 game minutes (Attunement: 15, 10).
-	var regen_every := maxi(5, 20 - 5 * int(GameState.bonus("magic", "mana_regen")))
-	if t % regen_every == 0 and t != _last_mana_t:
-		_last_mana_t = t
+	# Mana trickles back in real time: 1 point every 14 s (Attunement: 10.5, 7), any day length.
+	_mana_acc += delta
+	if _mana_acc >= GameState.mana_regen_secs():
+		_mana_acc = 0.0
 		GameState.restore_mana(1)
 	if player and hud:
 		var fc := player.facing_cell()

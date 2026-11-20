@@ -167,7 +167,7 @@ static func _cast(m: GameMap, id: String) -> bool:
 			GameState.run["flags"]["glow_day"] = int(GameState.run["day"])
 			m.hud.toast("The dark pulls back.", Color(0.9, 0.95, 1.0))
 		"haste":
-			GameState.run["flags"]["haste_abs"] = GameState.now_abs() + 60  # the real timer (survives sleep)
+			GameState.run["flags"]["haste_abs"] = GameState.now_abs() + GameState.real_min(42.0)  # 42 real s on any day length (survives sleep)
 			m.hud.toast("Haste!", Color(0.8, 1.0, 0.8))
 		"rain_call":
 			var n := 0
