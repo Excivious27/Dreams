@@ -76701,6 +76701,26 @@
    "h": 32,
    "w": 30
   },
+  "tgrass_fall": {
+   "file": "nature/tgrass_fall.png",
+   "h": 35,
+   "w": 34
+  },
+  "tgrass_spring": {
+   "file": "nature/tgrass_spring.png",
+   "h": 36,
+   "w": 34
+  },
+  "tgrass_summer": {
+   "file": "nature/tgrass_summer.png",
+   "h": 36,
+   "w": 34
+  },
+  "tgrass_winter": {
+   "file": "nature/tgrass_winter.png",
+   "h": 36,
+   "w": 34
+  },
   "tree_bare": {
    "file": "nature/tree_bare.png",
    "h": 128,
@@ -76770,6 +76790,26 @@
    "file": "nature/treeline_stream.png",
    "h": 64,
    "w": 122
+  },
+  "weed_fall": {
+   "file": "nature/weed_fall.png",
+   "h": 33,
+   "w": 34
+  },
+  "weed_spring": {
+   "file": "nature/weed_spring.png",
+   "h": 33,
+   "w": 34
+  },
+  "weed_summer": {
+   "file": "nature/weed_summer.png",
+   "h": 31,
+   "w": 34
+  },
+  "weed_winter": {
+   "file": "nature/weed_winter.png",
+   "h": 36,
+   "w": 34
   },
   "wheat": {
    "file": "nature/wheat.png",

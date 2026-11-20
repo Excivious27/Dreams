@@ -342,6 +342,11 @@ echo "$sbout" | grep -E "FAIL|SCRIPT ERROR|street_bat_test" || true
 if ! echo "$sbout" | grep -q "street_bat_test: 0 fails"; then
   echo "Street bat test failed"; exit 1
 fi
+fdout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/farm_debris_test.gd 2>&1)"
+echo "$fdout" | grep -E "FAIL|SCRIPT ERROR|farm_debris_test" || true
+if ! echo "$fdout" | grep -q "farm_debris_test: 0 fails"; then
+  echo "Farm debris test failed"; exit 1
+fi
 gout2="$("$GODOT" --headless --path . -s res://tools/campaign_gate_test.gd 2>&1)"
 echo "$gout2" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout2" | grep -q "campaign_gate_test: 0 fails"; then

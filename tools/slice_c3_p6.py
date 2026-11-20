@@ -40,10 +40,30 @@ def bats():
         S.save(_largest(C.piece(rgba, b, h=32)), "items", "bat_" + tier)
 
 
+SEASONS = ["spring", "summer", "fall", "winter"]
+
+
+def grass():
+    """Farm tall grass (nature/tgrass_<season>) and weeds (nature/weed_<season>)."""
+    import numpy as np
+    from PIL import Image
+    # This render came back with a real alpha channel (no magenta): keep it.
+    rgba = np.asarray(Image.open(os.path.join(S.INC, "c3/p6_grass_weeds.png")).convert("RGBA")).copy()
+    rgba[rgba[..., 3] < 110] = 0
+    rows = [r for r in C.rows_of(C.blobs(rgba, merge=4, min_area=400)) if len(r) >= 4]
+    assert len(rows) == 2 and all(len(r) == 4 for r in rows), [len(r) for r in rows]
+    for kind, row in zip(["tgrass", "weed"], rows):
+        for se, b in zip(SEASONS, row):
+            _rm(os.path.join(S.OUT, "nature", "%s_%s.png" % (kind, se)))
+            S.save(_largest(C.piece(rgba, b, w=34)), "nature", "%s_%s" % (kind, se))
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     S.manifest.update(json.load(open(mpath)))
-    bats()
+    for fn in [bats, grass]:
+        if len(sys.argv) < 2 or fn.__name__ in sys.argv[1:]:
+            fn()
     data = json.dumps(S.manifest, indent=1, sort_keys=True)
     _rm(mpath)
     with open(mpath, "w") as f:
