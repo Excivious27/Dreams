@@ -16,7 +16,7 @@ import os, sys, re
 DEFAULT_Q = "0.8"
 QUALITY = {"ui": "0.9", "ui_creator": "0.9", "ui_creator2": "0.9", "items": "0.9", "icons_hair": "0.9",
            "seamless": "0.9", "decor": "0.9", "arcade": "0.9", "emotes": "0.9", "cliffs": "0.9", "edges": "0.9", "stairs": "0.9"}
-LOSSLESS = {"tiles"}
+LOSSLESS = {"tiles", "house_parts"}  # house_parts: part-id masks must stay exact (C10b P3)
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "art", "gen")
 one = next((a for a in sys.argv[1:] if not a.startswith("-")), None)
 check = "--check" in sys.argv

@@ -4,7 +4,7 @@ Every system in the game with its state, what is still outstanding, test coverag
 
 **Summary:** 67 systems: 47 done, 11 rough, 8 missing. Average 74%.
 
-**Live counts:** 19,977 sliced art pieces in 654 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 117 headless tests, 111 in check.sh.
+**Live counts:** 19,980 sliced art pieces in 654 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 118 headless tests, 112 in check.sh.
 
 ## Systems
 
@@ -12,7 +12,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 | Area | System / feature | Status | Percent | Tests | Notes |
 |---|---|---|---|---|---|
-| Art | 19,977 sliced pieces in 654 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
+| Art | 19,980 sliced pieces in 654 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
 | Audio | 105 music tracks (ACE), 467 sfx files, 61 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |
@@ -41,7 +41,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| QA | Headless tests, bots, playtest | done | 85 | 117 *_test.gd; 111 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| QA | Headless tests, bots, playtest | done | 85 | 118 *_test.gd; 112 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
 | Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
 | Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
 | Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |

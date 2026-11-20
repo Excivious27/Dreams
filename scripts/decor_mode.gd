@@ -54,7 +54,7 @@ static func view() -> Dictionary:
 ## What the host shares with guests: only the house's looks (never the box or wardrobe).
 static func home_view() -> Dictionary:
 	var d := Decor.st()
-	return {"placed": (d["placed"] as Dictionary).duplicate(true), "wall": (d["wall"] as Dictionary).duplicate(true), "floor": (d["floor"] as Dictionary).duplicate(true)}
+	return {"placed": (d["placed"] as Dictionary).duplicate(true), "wall": (d["wall"] as Dictionary).duplicate(true), "floor": (d["floor"] as Dictionary).duplicate(true), "house": (d.get("house", {}) as Dictionary).duplicate(true)}  # house: C10b P3 exterior look for guests
 
 
 static func room_key(m: GameMap) -> String:
