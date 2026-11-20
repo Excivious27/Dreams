@@ -135,6 +135,17 @@ func _run() -> void:
 		var f := Art.tex("characters/" + c, "view_front").get_image()
 		var d := Art.tex("characters/" + c, "idle_down").get_image()
 		check(f.get_width() * 2 == d.get_width() or f.get_width() == int(Art.info("characters/" + c, "idle_down")["cell_w"]), "%s view_front is the front idle" % c)
+	# 11. C5 P4: the playable penguins have drawn tool poses right and up;
+	#     Coldy and Big Jim have a drawn pickaxe_down.
+	for id: String in ["penguin_king", "penguin_wizard"]:
+		var sf := CharacterLibrary.frames_for(id)
+		for t: String in ["hoe", "axe", "pickaxe", "water"]:
+			for d: String in ["right", "up"]:
+				var an := t + "_" + d
+				check(sf.has_animation(an) and not CharacterLibrary.is_alias(sf, an) and sf.get_frame_count(an) == 3, "%s has a drawn %s" % [id, an])
+	for id: String in ["coldy", "big_jim"]:
+		var sf := CharacterLibrary.frames_for(id)
+		check(sf.has_animation("pickaxe_down") and sf.get_frame_count("pickaxe_down") == 3, "%s has a drawn pickaxe_down" % id)
 	GameState.load_data()  # enemies.json (GameState is static: nothing loads it in a bare tree)
 	# 10. C5 P4: thugs stand at hero height (heroes are drawn 24 px; c5_06 #1
 	#     measured 0.5-scale cells against unscaled hero cells, so no data scale).

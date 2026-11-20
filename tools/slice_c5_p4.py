@@ -271,7 +271,122 @@ def slivers():
     print("slivers: cleaned %d strips" % n)
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers}
+# ---- c5_07 #2 / c5_15 #3: tool poses right/up for Pip-Pip and Nova, pickaxe_down
+# for Coldy and Big Jim (renders art/incoming/c5/p4_*; edit_image from their strips).
+TOOL_SHEETS = [
+    ("c5/p4_pk_tools_right.png", "penguin_king", "right"),
+    ("c5/p4_pk_tools_up.png", "penguin_king", "up"),
+    ("c5/p4_pw_tools_right.png", "penguin_wizard", "right"),
+    ("c5/p4_pw_tools_up.png", "penguin_wizard", "up"),
+]
+TOOL_ROWS = ["hoe", "axe", "pickaxe", "water"]
+INC = os.path.join(ROOT, "art", "incoming")
+
+
+def _load_sheet(rel):
+    im = Image.open(os.path.join(INC, rel)).convert("RGBA")
+    a = np.array(im)
+    if (a[..., 3] < 10).mean() < 0.2:  # an opaque magenta render: key pure magenta only
+        rgb = a[..., :3].astype(np.int32)  # (the shared keyer eats Big Jim's purple)
+        d = np.abs(rgb - np.array([255, 0, 255])).sum(-1)
+        a[d < 80] = 0
+        mag = (rgb[..., 0] > 215) & (rgb[..., 2] > 215) & (rgb[..., 1] < 70)
+        a[mag] = 0
+    else:
+        a[a[..., 3] < 40] = 0
+    return a
+
+
+def _figs(a, n_rows):
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import slice_comp as C
+    rows = C.rows_of(C.blobs(a, merge=10, min_area=1500))
+    rows = sorted(rows, key=lambda r: min(b[1] for b in r))[:n_rows]
+    return [sorted(r, key=lambda b: b[0]) for r in rows]
+
+
+def _body_h(rel_png, frame=0):
+    info_im = Image.open(os.path.join(GEN, rel_png)).convert("RGBA")
+    return info_im
+
+
+def _used_h(img):
+    bb = img.getbbox()
+    return (bb[3] - bb[1]) if bb else img.height
+
+
+def _save_strip(frames, group, name, man):
+    out, w, h = _strip(frames)
+    path = os.path.join(GEN, group, name + ".png")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    _save(out, path)
+    man.setdefault(group, {})[name] = {"file": "%s/%s.png" % (group, name), "w": out.width, "h": h, "cell_w": w, "cell_h": h, "frames": len(frames)}
+
+
+def _ref_h(cid, anim):
+    man = json.load(open(MAN))
+    info = man["characters/" + cid][anim]
+    im = Image.open(os.path.join(GEN, info["file"])).convert("RGBA")
+    cw = info["cell_w"]
+    return int(np.median([_used_h(im.crop((i * cw, 0, (i + 1) * cw, im.height))) for i in range(info["frames"])])), info["cell_h"]
+
+
+def _ref_w(cid, anim):
+    man = json.load(open(MAN))
+    info = man["characters/" + cid][anim]
+    im = Image.open(os.path.join(GEN, info["file"])).convert("RGBA")
+    cw = info["cell_w"]
+    ws = []
+    for i in range(info["frames"]):
+        bb = im.crop((i * cw, 0, (i + 1) * cw, im.height)).getbbox()
+        ws.append(bb[2] - bb[0] if bb else cw)
+    return int(np.median(ws))
+
+
+def _write_dump(man):
+    tmp = MAN + ".tmp"
+    json.dump(man, open(tmp, "w"), indent=1, sort_keys=True)
+    os.remove(MAN)
+    os.rename(tmp, MAN)
+
+
+def tools():
+    man = json.load(open(MAN))
+    for rel, cid, d in TOOL_SHEETS:
+        if not os.path.exists(os.path.join(INC, rel)):
+            continue
+        a = _load_sheet(rel)
+        rows = _figs(a, 4)
+        # Scale: the watering row (no tool raised) matches their drawn water_down body.
+        ref, cell_h = _ref_h(cid, "idle_down")
+        wat = [b[3] - b[1] for b in rows[3]]
+        f = ref / float(np.median(wat))
+        for name, row in zip(TOOL_ROWS, rows):
+            frames = []
+            for b in row[:3]:
+                im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+                frames.append(im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS))
+            _save_strip(frames, "characters/" + cid, "%s_%s" % (name, d), man)
+    rel = "c5/p4_pickaxe_down_coldy_jim.png"
+    if os.path.exists(os.path.join(INC, rel)):
+        a = _load_sheet(rel)
+        rows = _figs(a, 2)
+        for cid, row in zip(["coldy", "big_jim"], rows):
+            row = [b for b in row if b[3] - b[1] > 100][:3]
+            if cid == "coldy":
+                f = _ref_w(cid, "idle_down") / float(row[0][2] - row[0][0])  # arms up: body width
+            else:  # Big Jim's arms stick out at rest: match the mid swing to his height
+                f = 0.97 * _ref_h(cid, "idle_down")[0] / float(row[1][3] - row[1][1])
+            frames = []
+            for b in row:
+                im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+                frames.append(im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS))
+            _save_strip(frames, "characters/" + cid, "pickaxe_down", man)
+    _write_dump(man)
+    print("tools: tool strips written")
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
