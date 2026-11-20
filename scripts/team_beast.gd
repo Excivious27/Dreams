@@ -24,6 +24,10 @@ var spd := 1.0
 var _spr: AnimatedSprite2D
 var _cd := 0.0
 var _target: Node2D = null
+var _fetch_c := Vector2i(-1, -1)   # forage cell it is fetching (Fetch lesson)
+var _fetch_t := 0.0
+const FETCH_EVERY := [0.0, 14.0, 10.0, 7.0]  # seconds between fetches by rank (game time)
+static var _fetch_claims := {}  # cell -> beast instance id, so two fetchers split the forage
 
 
 ## Animals on the team that can walk with you today (not resting).
@@ -77,7 +81,9 @@ func _process(delta: float) -> void:
 	_cd = maxf(0.0, _cd - delta)
 	var goal: Vector2 = map.player.position + _slot_offset()
 	var fight := _pick_target()
-	if fight != null:
+	if fight == null and _fetch(delta):
+		goal = map.cell_center(_fetch_c)
+	elif fight != null:
 		var guard_only := TeamAnimals.rank(uid, "attack") == 0
 		if guard_only:
 			goal = map.player.position + (fight.position - map.player.position).normalized() * 16.0
@@ -103,6 +109,61 @@ func _process(delta: float) -> void:
 	var want := "walk" if moving and _spr.sprite_frames.has_animation("walk") else "idle"
 	if _spr.animation != want:
 		_spr.play(want)
+
+
+## Fetch lesson: now and then trot to a forage spot near you and bring it back (the pick is the
+## map's own forage pick, so flags, xp and the bag all work as if you picked it). True while busy.
+func _fetch(delta: float) -> bool:
+	var r := TeamAnimals.rank(uid, "fetch")
+	if r <= 0:
+		return false
+	if _fetch_c.x >= 0:
+		var th: Dictionary = map.things.get(_fetch_c, {})
+		if str(th.get("type", "")) != "forage":
+			_drop_fetch()
+			return false
+		if position.distance_to(map.cell_center(_fetch_c)) < 10.0:
+			var c := _fetch_c
+			_drop_fetch()
+			map.interact_common(c, th)
+			if map.hud and randf() < 0.5:
+				map.hud.toast("%s fetched something for you." % TeamAnimals.name_of(uid), Color(0.8, 1, 0.8))
+			return false
+		return true
+	_fetch_t += delta
+	if _fetch_t < float(FETCH_EVERY[mini(r, 3)]):
+		return false
+	_fetch_t = 0.0
+	var pc := map.world_to_cell(map.player.position)
+	var reach := 3 + r
+	var best := Vector2i(-1, -1)
+	var bd := 9999
+	for c: Vector2i in map.things:
+		if str((map.things[c] as Dictionary).get("type", "")) != "forage":
+			continue
+		var d := absi(c.x - pc.x) + absi(c.y - pc.y)
+		if d > reach or d >= bd:
+			continue
+		var cl := int(_fetch_claims.get(c, 0))
+		if cl != 0 and cl != get_instance_id() and is_instance_id_valid(cl):
+			continue
+		bd = d
+		best = c
+	if best.x < 0:
+		return false
+	_fetch_c = best
+	_fetch_claims[best] = get_instance_id()
+	return true
+
+
+func _drop_fetch() -> void:
+	_fetch_claims.erase(_fetch_c)
+	_fetch_c = Vector2i(-1, -1)
+
+
+func _exit_tree() -> void:
+	if _fetch_c.x >= 0:
+		_drop_fetch()
 
 
 func _pick_target() -> Node2D:

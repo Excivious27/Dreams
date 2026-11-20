@@ -252,6 +252,24 @@ func _menu_pages() -> void:
 		check(not is_instance_valid(b) and TeamBeast.out_today().is_empty(), "downed animal rests till morning")
 		GameState.run["day"] = int(GameState.run["day"]) + 1
 		check(TeamBeast.out_today().size() == 1, "back out next day")
+		# Fetch: a forage spot near you gets picked and lands in your bag.
+		Ranch.animal(g)["lessons"]["fetch"] = 7
+		var b2: Array = TeamBeast.spawn_all(gm)
+		var pc := gm.world_to_cell(gm.player.position)
+		var fc := pc + Vector2i(2, 1)
+		gm.set_thing(fc.x, fc.y, {"type": "forage", "item": "berry", "key": "p4_test_forage"}, false)
+		var had := GameState.count("berry")
+		m.toggle()  # close the menu: the world runs
+		await frames(10)
+		for i in 900:
+			await process_frame
+			if not gm.things.has(fc):
+				break
+		check(not gm.things.has(fc) and GameState.count("berry") > had, "Fetch lesson picks forage near you")
+		for x in b2:
+			(x as Node).queue_free()
+		m.toggle()
+		await frames(3)
 	m._tab = "Chores"
 	Chores._open = "animal:" + g
 	m._refresh()
