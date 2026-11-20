@@ -462,7 +462,75 @@ def _ref_h_orig(cid):
     return int(np.median([_used_h(im.crop((i * cw, 0, (i + 1) * cw, im.height))) for i in range(n)]))
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw}
+# ---- c5_06 #2 thug redraws (enemy art, characters/<kind>): same sheet layout as
+# the crew. Enemy cells stay their original height (54) so Enemy's 0.5 scale holds;
+# idle = front, idle_side = side (Enemy only plays idle/walk; the rest for views).
+THUGS = ["cyber", "brute", "flame", "speedster", "gambler", "enforcer", "lookout"]
+THUG_SIZE = {"brute": 1.08, "enforcer": 1.05, "lookout": 0.94}
+
+
+def thugs():
+    man = json.load(open(MAN))
+    done = []
+    for cid in THUGS:
+        rel = "c5/p4_thug_%s.png" % cid
+        if not os.path.exists(os.path.join(INC, rel)):
+            continue
+        g = "characters/" + cid
+        a = _load_sheet(rel)
+        rows = _figs(a, 3, merge=14)
+        if len(rows) < 3 or any(len(r) < 4 for r in rows):
+            print("thugs: %s rows %s, skipped" % (cid, [len(r) for r in rows]))
+            continue
+        info = man[g]["idle"]
+        keep = os.path.join(ORIG, info["file"])
+        if not os.path.exists(keep):
+            os.makedirs(os.path.dirname(keep), exist_ok=True)
+            shutil.copyfile(os.path.join(GEN, info["file"]), keep)
+        im0 = Image.open(keep).convert("RGBA")
+        cw = int(info.get("cell_w") or im0.width)
+        ref = _used_h(im0.crop((0, 0, cw, im0.height)))
+        cell = int(info.get("cell_h") or im0.height)
+        f = THUG_SIZE.get(cid, 1.0) * ref / float(np.median([b[3] - b[1] for b in rows[0]]))
+        cut = []
+        for r in rows:
+            fr = []
+            for b in r[:4]:
+                im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+                im = im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS)
+                pad = Image.new("RGBA", (im.width + 2, im.height), (0, 0, 0, 0))
+                pad.alpha_composite(im, (1, 0))
+                fr.append(pad)
+            cut.append(fr)
+        front, side, back = cut
+        for name, frames in (("walk_down", front), ("walk", side), ("walk_up", back),
+                             ("idle", [front[0], _bob(front[0])]), ("idle_side", [side[0], _bob(side[0])]),
+                             ("idle_up", [back[0], _bob(back[0])]), ("view_front", [front[0]]),
+                             ("view_right", [side[0]]), ("view_back", [back[0]]),
+                             ("view_left", [side[0].transpose(Image.FLIP_LEFT_RIGHT)])):
+            _save_strip(frames, g, name, man, cell)
+        # Fight strips in the new look (the old ones were another outfit):
+        # a lunge from the side step, a flinch, a slump.
+        def shift(im, dx):
+            out = Image.new("RGBA", (im.width + 8, im.height), (0, 0, 0, 0))
+            out.alpha_composite(im, (4 + dx, 0))
+            return out
+        for name in ("attack", "hurt", "die"):
+            k = os.path.join(ORIG, g, name + ".png")
+            src = os.path.join(GEN, g, name + ".png")
+            if os.path.exists(src) and not os.path.exists(k):
+                os.makedirs(os.path.dirname(k), exist_ok=True)
+                shutil.copyfile(src, k)
+        _save_strip([shift(side[0], -2), shift(side[1], 1), shift(side[2], 4), shift(side[3], 2)], g, "attack", man, cell)
+        _save_strip([shift(front[0], 0), shift(front[0], -2)], g, "hurt", man, cell)
+        slump = front[0].resize((front[0].width, max(1, int(front[0].height * 0.8))), Image.LANCZOS)
+        _save_strip([front[0], slump], g, "die", man, cell)
+        done.append(cid)
+    _write_dump(man)
+    print("thugs: %s" % ", ".join(done))
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
