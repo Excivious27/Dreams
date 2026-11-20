@@ -684,6 +684,8 @@ func draw_map() -> void:
 	for x in range(1, cols - 1):
 		var part: String = parts[x - 1]
 		var t := Art.tex("tiles", wl + part)
+		if part == "_window" and not night and Art.has("tiles", wl + "_window_day"):
+			t = Art.tex("tiles", wl + "_window_day")  # warm-lit glass painted in: daylight blue by day (c5_04 #9)
 		if t and part == "_corner" and x == cols - 2:
 			# Mirror with a transform (a negative-width rect lands one cell to the right).
 			draw_set_transform(offset() + Vector2((x + 1) * TILE, 0), 0.0, Vector2(-1, 1))

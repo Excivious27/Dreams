@@ -115368,6 +115368,11 @@
    "h": 64,
    "w": 32
   },
+  "wl_curve_window_day": {
+   "file": "tiles/wl_curve_window_day.png",
+   "h": 64,
+   "w": 32
+  },
   "wl_fish_corner": {
    "file": "tiles/wl_fish_corner.png",
    "h": 64,
@@ -115405,6 +115410,11 @@
   },
   "wl_fish_window": {
    "file": "tiles/wl_fish_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_fish_window_day": {
+   "file": "tiles/wl_fish_window_day.png",
    "h": 64,
    "w": 32
   },
@@ -115518,6 +115528,11 @@
    "h": 64,
    "w": 32
   },
+  "wl_hut_window_day": {
+   "file": "tiles/wl_hut_window_day.png",
+   "h": 64,
+   "w": 32
+  },
   "wl_library_corner": {
    "file": "tiles/wl_library_corner.png",
    "h": 64,
@@ -115585,6 +115600,11 @@
   },
   "wl_log_window": {
    "file": "tiles/wl_log_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_log_window_day": {
+   "file": "tiles/wl_log_window_day.png",
    "h": 64,
    "w": 32
   },
@@ -115780,6 +115800,11 @@
   },
   "wl_reed_window": {
    "file": "tiles/wl_reed_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_reed_window_day": {
+   "file": "tiles/wl_reed_window_day.png",
    "h": 64,
    "w": 32
   },
