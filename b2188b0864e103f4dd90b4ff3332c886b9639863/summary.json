@@ -1,0 +1,142 @@
+{
+ "sha": "b2188b0864e103f4dd90b4ff3332c886b9639863",
+ "ref": "ci/p5-pre-fbe11067",
+ "run": "44826947191",
+ "finished": 1795213237.9446027,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 50,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "fbe1106703e72e4a88f5074338a781e67ed987b2",
+  "label": "p5-pre",
+  "branch": "c11af/p5",
+  "shards": [
+   1,
+   2
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 307,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 307,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 175,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 113.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 78.4
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 48.5
+  },
+  {
+   "step": 44,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 34.1
+  },
+  {
+   "step": 62,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 24.4
+  },
+  {
+   "step": 26,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 22.5
+  },
+  {
+   "step": 15,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 10.8
+  },
+  {
+   "step": 32,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 10.1
+  },
+  {
+   "step": 123,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 10.0
+  },
+  {
+   "step": 63,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.0
+  },
+  {
+   "step": 75,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 7.9
+  },
+  {
+   "step": 105,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 7.8
+  },
+  {
+   "step": 74,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 5.9
+  },
+  {
+   "step": 14,
+   "name": "crops wired in",
+   "rc": 0,
+   "secs": 5.1
+  },
+  {
+   "step": 39,
+   "name": "house_exterior_test",
+   "rc": 0,
+   "secs": 4.9
+  }
+ ]
+}

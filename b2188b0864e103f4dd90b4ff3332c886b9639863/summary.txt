@@ -1,0 +1,11 @@
+CONDUCT CI PASS  b2188b0864  (ci/p5-pre-fbe11067, run 44826947191)
+
+subset run: shards [1, 2], bots off, playtest on
+check shards (2/2):
+  shard 1: PASS  307s
+  shard 2: PASS  175s
+playtest: PASS  50s  21 screenshots (results playtest/shots/)
+
+longest job: 307s
+slowest check steps: import 113.7s; import 78.4s; smoke test 48.5s; commons_test 34.1s; music: every map has a song; web streaming works offline 24.4s; held-tool rules: right tool acts, wrong tool hints 22.5s; phone_ui_test 10.8s; bowling_test 10.1s
+distinct errors/fails/warns:
