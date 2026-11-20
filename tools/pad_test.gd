@@ -273,6 +273,34 @@ func _run() -> void:
 	ok(not PadCursor.shown(), "cursor hides when the screen leaves the group")
 	layer.queue_free()
 
+	# 10b. Look creator row cursor: right steps the first row's choice, down to
+	# the bottom row and A presses Done.
+	await _btn(JOY_BUTTON_A, true)
+	await _btn(JOY_BUTTON_A, false)
+	var cl := CanvasLayer.new()
+	root.add_child(cl)
+	var cr := Creator.new({}, "", true)
+	cl.add_child(cr)
+	var got := []
+	cr.done.connect(func(lk: Dictionary) -> void: got.append(lk))
+	await _frames(10)
+	if cr._rows_cb.size() > 0:
+		var key0: Dictionary = cr.look.duplicate()
+		await _btn(JOY_BUTTON_DPAD_RIGHT, true)
+		await _btn(JOY_BUTTON_DPAD_RIGHT, false)
+		await _frames(2)
+		ok(cr.look != key0, "creator: right changes the first row's choice")
+		for i in cr._rows_cb.size():
+			await _btn(JOY_BUTTON_DPAD_DOWN, true)
+			await _btn(JOY_BUTTON_DPAD_DOWN, false)
+		ok(cr._row == cr._rows_cb.size() and cr._col == 1, "creator: down reaches the bottom row on Done")
+		await _btn(JOY_BUTTON_A, true)
+		await _btn(JOY_BUTTON_A, false)
+		ok(got.size() == 1, "creator: A presses Done once (%d)" % got.size())
+	else:
+		print("  (creator has no picker rows here: body sheets missing)")
+	cl.queue_free()
+
 	# 11. Battle rally on the pad (L3): a tap cycles, a hold opens the list;
 	# a penguin-only speaker narrates a gangster run's field brief.
 	GameState.new_run("gangsters", "mom", "T", "Town", "Pup")
