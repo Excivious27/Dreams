@@ -1676,6 +1676,53 @@
    }
   ]
  },
+ "date_evening": {
+  "chosen": "so_536dc56789ef419a8e5ebafe",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/date_evening__so_f7608d4092054a2a895a4bef.mp3",
+    "id": "so_f7608d4092054a2a895a4bef",
+    "page": "https://acemusic.ai/song/fshvd93drk6b",
+    "score": {
+     "dur": 90.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/date_evening__so_f7608d4092054a2a895a4bef.mp3",
+     "holes": 0,
+     "intro_db": 0.0,
+     "late_soft": 0,
+     "low120": 0.33,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.237,
+     "r999": 1986,
+     "score": 43.1,
+     "seam": 0.849,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/date_evening__so_536dc56789ef419a8e5ebafe.mp3",
+    "id": "so_536dc56789ef419a8e5ebafe",
+    "page": "https://acemusic.ai/song/56ixpcrrwjsr",
+    "score": {
+     "dur": 89.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/date_evening__so_536dc56789ef419a8e5ebafe.mp3",
+     "holes": 0,
+     "intro_db": 0.0,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 1.100000023841858,
+     "peak": 1.181,
+     "r999": 1756,
+     "score": 47.68,
+     "seam": 0.893,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "docks": {
   "chosen": "so_405aa5428994403f99bc12e1",
   "kind": "music",
@@ -4527,6 +4574,100 @@
      "peak": 1.171,
      "score": 77.33,
      "seam": 0.843
+    }
+   }
+  ]
+ },
+ "wedding": {
+  "chosen": "so_3377eae838de4eecab7266b5",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/wedding__so_3377eae838de4eecab7266b5.mp3",
+    "id": "so_3377eae838de4eecab7266b5",
+    "page": "https://acemusic.ai/song/ykdvstr3ty64",
+    "score": {
+     "dur": 87.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wedding__so_3377eae838de4eecab7266b5.mp3",
+     "holes": 0,
+     "intro_db": 4.7,
+     "late_soft": 0,
+     "low120": 0.15,
+     "lvl_diff": 5.800000190734863,
+     "peak": 1.296,
+     "r999": 3281,
+     "score": 62.17,
+     "seam": 0.959,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/wedding__so_ceaad3b1a19048d3bf370df5.mp3",
+    "id": "so_ceaad3b1a19048d3bf370df5",
+    "page": "https://acemusic.ai/song/xhrbt2iq7a7r",
+    "score": {
+     "dur": 85.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wedding__so_ceaad3b1a19048d3bf370df5.mp3",
+     "holes": 0,
+     "intro_db": 7.1,
+     "late_soft": 0,
+     "low120": 0.19,
+     "lvl_diff": 6.599999904632568,
+     "peak": 0.978,
+     "r999": 2354,
+     "score": 43.78,
+     "seam": 0.943,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "wedding_gang": {
+  "chosen": "so_1906b6fe8008414b84ef30be",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/wedding_gang__so_1906b6fe8008414b84ef30be.mp3",
+    "id": "so_1906b6fe8008414b84ef30be",
+    "page": "https://acemusic.ai/song/fezjtrxm87dg",
+    "score": {
+     "dur": 89.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wedding_gang__so_1906b6fe8008414b84ef30be.mp3",
+     "holes": 0,
+     "intro_db": 1.7,
+     "late_soft": 0,
+     "low120": 0.53,
+     "lvl_diff": 2.0,
+     "peak": 1.106,
+     "r999": 7403,
+     "score": 95.79,
+     "seam": 0.988,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/wedding_gang__so_e4e6ab3770494014940a3012.mp3",
+    "id": "so_e4e6ab3770494014940a3012",
+    "page": "https://acemusic.ai/song/graynjjyzeec",
+    "score": {
+     "dur": 89.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wedding_gang__so_e4e6ab3770494014940a3012.mp3",
+     "holes": 0,
+     "intro_db": 5.0,
+     "late_soft": 0,
+     "low120": 0.41,
+     "lvl_diff": 2.5999999046325684,
+     "peak": 1.367,
+     "r999": 1780,
+     "score": 54.98,
+     "seam": 0.989,
+     "soft": 0
     }
    }
   ]

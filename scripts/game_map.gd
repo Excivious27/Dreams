@@ -2990,6 +2990,7 @@ func _process(delta: float) -> void:
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
 		TouchControls.context_word = action_word(fc)
 	Events.tick(self, delta)
+	Dates.tick(self, delta)  # a date tonight (Romance)
 	Story.tick(self, delta)
 	if Net.online():
 		_puppet_t += delta

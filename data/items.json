@@ -10142,5 +10142,23 @@
   "rarity": "uncommon",
   "icon": "fine_wine",
   "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."
+ },
+ "bouquet": {
+  "name": "Bouquet",
+  "type": "romance",
+  "value": 135,
+  "icon": "bouquet_pink",
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Give to someone at 8 hearts to start dating."
+ },
+ "sea_locket": {
+  "name": "Sea-Glass Locket",
+  "type": "romance",
+  "value": 3300,
+  "icon": "pendant_pearl",
+  "rarity": "rare",
+  "tier": 1,
+  "desc": "Give to your sweetheart at 10 hearts to propose."
  }
 }

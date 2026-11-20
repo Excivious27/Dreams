@@ -177,6 +177,7 @@ static func _migrate() -> void:
 		run["opts"]["difficulty"] = Difficulty.DEFAULT
 	run["day_len"] = _valid_len(int(run.get("day_len", DAY_LEN_DEFAULT)))
 	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
+	Romance.st()  # dating/marriage state (old saves: single, friendship untouched)
 	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
@@ -1828,7 +1829,7 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 
 ## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
 ## Gifts: one per villager per day, and never tools, seeds, story keys or gear.
-const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor"]
+const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor", "romance"]
 
 
 static func can_gift(npc: String, item: String) -> bool:
@@ -2724,6 +2725,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
+	hazel_waters = Romance.overnight(report) or hazel_waters  # the spouse's chore (water: every planted tile)
 	_sprinklers_water()
 	Project.overnight(report)
 	Commons.overnight(report)

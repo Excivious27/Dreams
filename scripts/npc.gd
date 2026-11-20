@@ -302,6 +302,9 @@ func face(toward: Vector2) -> void:
 static func place_now(routine_list: Array, npc_id: String) -> String:
 	if routine_list.is_empty():
 		return ""
+	var sp := Romance.spouse_place(npc_id)  # married: at home on the farm (or at work on job days)
+	if sp != "":
+		return sp
 	var t := int(GameState.run["time"])
 	var hour := t / 60.0
 	var day := int(GameState.run["day"])
