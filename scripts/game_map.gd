@@ -1650,7 +1650,11 @@ func on_world_sync(_d: Dictionary) -> void:
 	# The host pushes the world every 2 s. Farm tiles live on the soil layer, time and
 	# weather on the HUD/sky: only cleared cells, builds and construction can change
 	# the static (baked) ground. Redraw and re-bake only when one of those changed.
-	var sig := hash([GameState.run.get("cleared", {}), GameState.run.get("builds", {}), GameState.run.get("construction", {})])  # tilled cells live on the soil layer (solo tilling doesn't redraw the ground either)
+	# Only this map's cleared cells count (a guest re-baked whenever anyone cleared
+	# anything anywhere, c5_16 #5); builds/construction only draw on the home maps.
+	var cl: Variant = (GameState.run.get("cleared", {}) as Dictionary).get(scene_id(), [])
+	var home := scene_id() in ["farm", "town", "community_farm"]
+	var sig := hash([cl, GameState.run.get("builds", {}) if home else 0, GameState.run.get("construction", {}) if home else 0])  # tilled cells live on the soil layer (solo tilling doesn't redraw the ground either)
 	if sig == _sync_sig:
 		return
 	_sync_sig = sig
