@@ -157,7 +157,16 @@ When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to
 
 **Fallbacks:** if CI results don't appear on ci-results within 45 min, ci_run.sh tries `gh run download`; if that fails it exits 3: run check.sh and bots.sh locally as before (note it in the Baton).
 
-**Watchdog (Tom, 2026-11-19):** while any agents or bots run (in a CONDUCT or any other job), check on every one of them **every 30 minutes**: is it still working (recent tool use, commits, log output), stuck, or stopped (for example after a server restart)? Resume stopped agents from their transcript (or re-create them with the same scope if they can't be resumed), restart dead bot/test runs, and note it in the Baton. Use the session's scheduled-message tool (send_later, 30 minutes) to wake yourself for each check, and schedule the next one at every check until all agents are done. Never let avoidable downtime build up.
+**Usage rules (Tom 2026-11-19 22:49, OPTIMIZE CONDUCT USAGE; guardrails unchanged: 20 auditors, 60-75 min fix cap, one full test run, 20 bots, full package, hourly check-ins, all subagents Opus 5.5):**
+- Effort on every Agent call. MEDIUM: the 14 focus auditors, the 5-6 fix agents, the main chat's sorting/merge/conflicts. LOW: the 4 regression auditors (checklist of the last run's fixes, one line each), the inventory/docs auditor, the performance auditor (perf_probe steps + thresholds), CI/bot triage, package building (one subagent: guide, xlsx, report, artifact page), art slicing/wiring jobs, watchdog checks. If a low-effort role misses something a later run catches, move it back to medium and note it in PROJECT-MEMORY.
+- Code map once per CONDUCT: `python3 tools/conduct/code_map.py /home/claude/wt/cN_map.md` (~400 lines: big-file functions with line numbers, autoloads, data -> generators, tests). Every brief points to it: start from the map, grep, read line ranges, never a whole big file.
+- Tight briefs: /home/claude/wt/AUDIT_BRIEF.md and FIX_BRIEF.md (copies in docs/CONDUCT-BRIEF.md). Auditors reply one line ("done, N findings in <file>"); the main chat reads cluster.py output, not prose reports. CI: read summary.txt only; log digging goes to a low-effort subagent.
+- Main chat reads HANDOFF/PROJECT-MEMORY fully once per chat, then only the Baton and needed sections.
+- Watchdog: every 45-60 min while healthy; back to 30 min after any stall/failure/restart until two clean checks. A check = agent status + .done files, not reports.
+- No double work: auditor scopes don't overlap; cluster.py drops duplicates; fix agents never re-audit.
+- Reports' timing table adds effort per role and agents per effort.
+
+**Watchdog (Tom, 2026-11-19):** while any agents or bots run (in a CONDUCT or any other job), check on every one of them **every 30 minutes** (45-60 min while healthy since 22:49, see Usage rules): is it still working (recent tool use, commits, log output), stuck, or stopped (for example after a server restart)? Resume stopped agents from their transcript (or re-create them with the same scope if they can't be resumed), restart dead bot/test runs, and note it in the Baton. Use the session's scheduled-message tool (send_later, 30 minutes) to wake yourself for each check, and schedule the next one at every check until all agents are done. Never let avoidable downtime build up.
 
 If a usage limit ends the chat mid-CONDUCT, the Baton says which step it reached; the next chat (either account) carries on from there.
 

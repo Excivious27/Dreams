@@ -1,5 +1,8 @@
 # Common rules for every CONDUCT agent (read fully)
 
+## Usage rules (Tom 2026-11-19 22:49)
+Start from the code map /home/claude/wt/cN_map.md (tools/conduct/code_map.py), grep, read line ranges; never a whole big file. Screenshot only what you need and view each once. Auditors finish with one line ("done, N findings in <file>"); fix agents with "done, report in <path>". Briefs: /home/claude/wt/AUDIT_BRIEF.md, /home/claude/wt/FIX_BRIEF.md (copied below).
+
 ## Auditors (read and play only)
 - Do not change game code, data or art; small probes go under tools/probe_<id>_*.gd or /tmp/<id>/.
 - Append each finding AS SOON AS YOU FIND IT to /home/claude/wt/cN_reports/<id>.jsonl (create the dir if needed), one JSON object per line:
@@ -59,3 +62,30 @@ Each CONDUCT agent both AUDITS and FIXES its scope:
 Time: 20 agents share 2 CPUs. During work run only targeted tests (and `godot --headless --path . --check-only -s <script>` / tools/compile_all.gd if present); run the full `flock /tmp/godot.lock bash tools/check.sh` ONCE at the end and fix until rc 0.
 Final report: bullets of findings, fixes, files touched, tests + results, NEEDS TOM.
 Recent changes to know (Round 13 + CONDUCT 1, merged: GoalLine, ToolHint, Money.amount/num, SleepReport, Faint grace + first visit free, TownHours, Intros, Mail.story_due, ArcIntro, symbol font (never use 🔒⏱⌛〰 glyphs), TriBatch, Dialogue.is_way_out; also): rec center + bowling (RecCenter, Bowling, Tickets), arcade (ArcadeHub, ArcadeGame, 5 cabinets), community farm (Commons), campaign gating/drill/briefings (CampaignGate, BattleDrill, BattleBrief), mega regions (MegaRegion, MegaMap, MegaTravel), gangster cash (Money, MoneyHook), pup in mines (PupMine), Faint (10pm wake), BuildingAccess, PlaceNames. Tom 2026-11-18: default move speed stays as is; speed boosts come from gear/potions/foods/mounts/skills. Fishing only with the rod held.
+
+## AUDIT_BRIEF (copy)
+
+# CONDUCT auditor brief (usage-optimised, Tom 2026-11-19 22:49)
+
+You audit Tom's Godot 4.5.1 phone game Dreams (270x480). Common rules: docs/CONDUCT-BRIEF.md "Auditors". Do not re-learn the project: start from the code map /home/claude/wt/cN_map.md (N = your CONDUCT), grep for what you need, read line ranges only. Never read a whole big file (game_map.gd, game_state.gd, ...).
+- Worktree /home/claude/wt/<id>; no changes to game code, data or art. Probes only as tools/probe_<id>_*.gd or /tmp/<id>/.
+- Findings: append each AS YOU FIND IT to /home/claude/wt/cN_reports/<id>.jsonl, one JSON per line: {"id","area","severity" (blocker|major|minor|polish),"title","files" [real files the fix touches; generators, not generated JSON],"repro","fix","art_needed","audio_needed","needs_tom"}. Write <id>.done at the end. If restarted: read your .jsonl, continue, never redo.
+- Stay inside your scope line; other auditors cover the rest (no overlap).
+- Screenshots: only what you need to check, and view each one once.
+- Godot runs: short scripts only, each under `flock /tmp/godot.lock`, `XDG_DATA_HOME=$(mktemp -d)`, `timeout 600`, `export PATH=$PATH:/home/claude/tools`. Never tools/check.sh or tools/bots.sh.
+- About 35 minutes. All ages; gangster guns OK (no blood/drugs/mature); wine and ales are trade goods, never drunk.
+- Your final message is ONE line: "done, N findings in /home/claude/wt/cN_reports/<id>.jsonl". No summary. Commit nothing.
+
+## FIX_BRIEF (copy)
+
+# CONDUCT fix agent brief (usage-optimised, Tom 2026-11-19 22:49)
+
+You fix ONE package for Tom's Godot game Dreams. Common rules (worktree, hardlinked art, flock, commit footer, content rules, art/audio pipeline): docs/CONDUCT-BRIEF.md. Do not re-learn the project: start from the code map /home/claude/wt/cN_map.md, grep, read line ranges only; never read a whole big file.
+- Fix exactly the findings in your package (they name files/functions) plus anything directly broken by your change. Do not re-audit.
+- Window: 60-75 minutes of real clock time (`TZ=America/Los_Angeles date`). Do not stop early or call it "time cap" before then. If you must stop (tool limit), write what is left in your report; the main chat resumes you.
+- NEVER run tools/check.sh or tools/bots.sh (CI runs them). Run only the targeted tests your package names, each under `flock /tmp/godot.lock`, fresh XDG_DATA_HOME, `timeout 600`; `--check-only` on changed scripts. Add a focused test per fix; wire it into check.sh only if it runs in < 60 s.
+- Stay inside your owned files; a hook in another package's file is one or two lines and reported.
+- Commit small on your branch as you go. Never push or merge.
+- Art: dreams-image generate/edit (budget in the package), slice, wire, look at each result once. Audio: ACE / CC0 (budget in the package). Nothing left outstanding that the package lists.
+- Docs: one STATUS.md entry, CLAUDE.md lines for new conventions.
+- Report to /home/claude/wt/cNf_reports/pK.md as you go (item -> fixed: how + test / not fixed: why + suggested fix; art/audio made; NEEDS TOM), touch pK.done at the end. Final message: one line, "done, report in <path>".

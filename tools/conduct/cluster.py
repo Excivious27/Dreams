@@ -81,6 +81,15 @@ def main():
     def union(x, y):
         parent[find(x)] = find(y)
 
+    # hub files (touched by many findings: music.gd, check.sh, regions.json...) join BIG so they
+    # don't glue every package into one; each still gets a single owner below.
+    global BIG
+    freq = defaultdict(int)
+    for it in items:
+        for f in set(it["files"]):
+            freq[f] += 1
+    hub = tuple(f for f, n in freq.items() if n >= max(6, len(items) // 25) and f not in BIG)
+    BIG = BIG + hub
     for it in items:
         fs = [f for f in it["files"] if f not in BIG]
         for f in fs:
