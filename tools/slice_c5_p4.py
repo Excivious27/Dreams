@@ -570,7 +570,42 @@ def nova():
     print("nova: re-hued %d strips" % n)
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs, "nova": nova}
+# ---- c5_06 #5: red face slashes (could read as wounds) -> cyan circuit marks on
+# the man_gang / President / Brock portraits. Only red pixels surrounded by skin
+# change; the red hat band, tie and coat trim are left alone.
+MARKED_FACES = ["man_gang", "president", "lt_brock"]
+
+
+def marks():
+    from scipy import ndimage
+    n = 0
+    for pid in MARKED_FACES:
+        d = os.path.join(GEN, "portraits", pid)
+        if not os.path.isdir(d):
+            continue
+        for f in sorted(os.listdir(d)):
+            if not f.endswith(".png"):
+                continue
+            rel = "portraits/%s/%s" % (pid, f)
+            a = np.array(_orig(rel)).astype(np.float32)
+            h, sat, v = _hsv(a[..., :3] / 255.0)
+            op = a[..., 3] > 128
+            skin = op & (h > 0.03) & (h < 0.13) & (sat > 0.18) & (sat < 0.75) & (v > 0.3)
+            red = op & ((h < 0.025) | (h > 0.93)) & (sat > 0.6) & (v > 0.45)
+            near = ndimage.uniform_filter(skin.astype(np.float32), size=9)
+            face_red = red & (near > 0.28)
+            face_red = ndimage.binary_dilation(face_red, iterations=1) & red
+            if not face_red.any():
+                continue
+            cyan = _hex("#3ee6ff")
+            k = np.clip(v / 0.9, 0.35, 1.0)[..., None]
+            a[..., :3] = np.where(face_red[..., None], cyan[None, None, :] * k, a[..., :3])
+            _save(Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)), os.path.join(GEN, rel))
+            n += 1
+    print("marks: %d portraits" % n)
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs, "nova": nova, "marks": marks}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
