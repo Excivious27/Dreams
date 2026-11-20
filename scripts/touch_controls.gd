@@ -462,7 +462,7 @@ func _on_draw() -> void:
 		if action == "a":
 			# Show what USE will do: the held tool's icon, or a sword.
 			var held := GameState.held_tool() if not GameState.run.is_empty() else ""
-			var icon := Art.tex("items", held if held != "" else "sword")
+			var icon := Art.tex("items", Hud.icon_for(held if held != "" else "sword"))  # tiered art, the bat in the gang arc
 			# A context verb that isn't a tool's (Talk, Enter, Sleep, Shop...) shows a hand instead.
 			if context_word != "" and not get_tree().paused and not (context_word in TOOL_VERBS) and Art.has("items", "hand"):
 				# Sleep and Talk get their own picture, so USE never matches CHECK's hand.
