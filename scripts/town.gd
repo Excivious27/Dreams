@@ -159,6 +159,19 @@ func _process(delta: float) -> void:
 		return
 	_front_t = 2.0
 	refresh_fronts()
+	_heart_marks()
+
+
+## A small heart over a nearby villager whose heart scene (or side story) is waiting (C7 P4).
+var _mark_t := 0.0
+func _heart_marks() -> void:
+	_mark_t -= 2.0
+	if _mark_t > 0.0 or player == null:
+		return
+	_mark_t = 6.0
+	for n in npcs:
+		if is_instance_valid(n) and n.visible and n.position.distance_to(player.position) < 140.0 and (Hearts.due(str(n.id)) > 0 or not SideStory.due(str(n.id)).is_empty()):
+			emote(n, "heart", 1.4, -30.0)
 
 
 func refresh_fronts() -> void:
