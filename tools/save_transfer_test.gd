@@ -146,6 +146,14 @@ func _run() -> void:
 	cfs["drank"] = 40
 	GameState.shift_clock(-35 * 1440, -35)
 	check(int(rs["invite_day"]) == 5 and int(rs["ex"]["mabel"]) == 5 and int(rs["date"]["day"]) == 5 and int(cfs["drank"]) == 5, "romance and commons stamps shift back to the guest's own days")
+	# A write that can't land (another tab owns the farm): nothing changes, and it says why.
+	var before := GameState.slot_info(GameState.slot())
+	var other := SaveTransfer.farm_of(GameState.slot())
+	other["names"]["character"] = "Dot"
+	SaveGame._blocked = true
+	var rb := SaveTransfer.apply_one(other, GameState.slot())
+	SaveGame._blocked = false
+	check(not bool(rb["ok"]) and str(rb["why"]).contains("other Dreams") and GameState.slot_info(GameState.slot()) == before, "blocked write: refused, slot unchanged (%s)" % str(rb["why"]))
 	# SaveGame.flush reports success.
 	check(SaveGame.flush() and SaveGame.last_ok, "flush reports a landed write")
 	print("SAVE TRANSFER DONE %d" % fails)

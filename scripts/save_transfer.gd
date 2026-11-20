@@ -296,8 +296,10 @@ static func apply_one(d: Dictionary, n: int) -> Dictionary:
 		res["moved"] = true
 	SaveGame.set_value(GameState.save_key(), d.duplicate(true))
 	if not SaveGame.last_ok:
+		var why := SaveGame.last_why
 		_roll_back(cache_before, live)
-		res["why"] = WHY.get(SaveGame.last_why, WHY["file"])
+		SaveGame.flush()  # put the device copy back too (a half-landed write: file ok, mirror full)
+		res["why"] = WHY.get(why, WHY["file"])
 		res["moved"] = false
 		return res
 	GameState.run = {}
@@ -345,8 +347,10 @@ static func apply_all(d: Dictionary) -> Dictionary:
 		if not r.is_empty() and not (pv is Dictionary and (pv as Dictionary).has("names")):
 			c[prev_key_of(n)] = r.duplicate(true)
 	if not SaveGame.flush():
+		var why := SaveGame.last_why
 		_roll_back(cache_before, live)
-		res["why"] = WHY.get(SaveGame.last_why, WHY["file"])
+		SaveGame.flush()
+		res["why"] = WHY.get(why, WHY["file"])
 		return res
 	GameState.run = {}
 	SaveGame.set_value("slot", keep)

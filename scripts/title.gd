@@ -24,6 +24,7 @@ func _ready() -> void:
 	if nn and (nn.online() or nn.room != "" or not nn._solo_backup.is_empty()):
 		nn.leave()  # back at the title: put our own world back before any slot/new/restore
 	Hud.skin_buttons(self)
+	add_to_group("pad_cursor")  # C9: P1's PadCursor/PadFocus may drive this screen
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
