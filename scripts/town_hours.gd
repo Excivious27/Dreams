@@ -32,6 +32,8 @@ const CREW_SHOPS := ["Deuce's arcade", "Mama Rosa's kitchen", "Specs' net cafe",
 const HOME_OPEN := 7
 const HOME_CLOSE := 22
 const FRIEND_HEARTS := 4
+## Good friends (FRIEND_HEARTS+) let you in late, until midnight (Tom, Guide 26 #16).
+const FRIEND_CLOSE := 24
 
 
 static func _hour() -> float:
@@ -103,11 +105,22 @@ static func door_reason(interior: String, label := "") -> String:
 	if HOMES.has(interior):
 		if _within(_hour(), HOME_OPEN, HOME_CLOSE):
 			return ""
-		for id: String in HOMES[interior]:
-			if GameState.friend_hearts(id) >= FRIEND_HEARTS:
-				return ""  # friends can always knock
 		var nm := label if label != "" else interior.capitalize()
+		if late_friend(interior) != "":
+			return ""  # a good friend is still up
+		if _within(_hour(), HOME_OPEN, FRIEND_CLOSE):
+			return "%s: the lights are low. Only close friends knock this late; come back after %s." % [nm, _clock(HOME_OPEN)]
 		return "%s: the lights are out. Too late to knock; come back after %s." % [nm, _clock(HOME_OPEN)]
+	return ""
+
+
+## The good friend (4+ hearts) who lets you into their home after hours, or "".
+static func late_friend(interior: String) -> String:
+	if not HOMES.has(interior) or _within(_hour(), HOME_OPEN, HOME_CLOSE) or not _within(_hour(), HOME_OPEN, FRIEND_CLOSE):
+		return ""
+	for id: String in HOMES[interior]:
+		if GameState.friend_hearts(id) >= FRIEND_HEARTS:
+			return id
 	return ""
 
 
@@ -116,6 +129,9 @@ static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 	var id := str(thing.get("interior", thing.get("shop", "hall")))
 	var label := str(thing.get("hint", "")).trim_prefix("A: ")
 	var why := door_reason(id, label)
+	var pal := late_friend(id)
+	if why == "" and pal != "":
+		m.hud.toast("%s is still up and waves you in." % str(GameState.npcs.get(pal, {}).get("name", pal.capitalize())), Color(1, 0.9, 0.75))
 	if why == "":
 		return false
 	m.hud.toast(why, Color(1, 0.85, 0.7))
