@@ -950,7 +950,8 @@ const VARIANT_SETS := ["dead_grass", "metal_a", "metal_b", "cloud", "cracked_ear
 
 ## Feature-blob cells drawn from tiles (no soft seam): the soft patch layer keeps off them.
 var _tile_feature := {}
-const FEATURE_SOFT := {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand"}
+const FEATURE_SOFT := {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand",
+	"cave_ice": "cave_ice_floor", "cave_water": "cave_crystal_floor", "grass_dry": "dry_grass"}  # soft edges (CONDUCT 4)
 
 
 ## One feature blob entry's cells (noise blobs), with specks dropped and holes filled.
