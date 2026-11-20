@@ -115,6 +115,7 @@ var _fade := FADE
 func _start(stream: AudioStream, name: String) -> void:
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = not (name in ONCE)
+		(stream as AudioStreamOggVorbis).loop_offset = loop_point(name)  # C6 P2: data/music_loops.json
 	_now = name
 	# Crossfade: the old track fades out on the spare player while the new one fades in.
 	# A second change mid-fade must not let the first fade's stop() land on the
@@ -456,3 +457,21 @@ func blip(who: String) -> void:
 	var h := absi(who.hash()) % 1000
 	pick.pitch_scale = 0.8 + 0.5 * float(h) / 1000.0 if who != "" else 1.0
 	pick.play()
+
+
+## Where a song loops back to (s): the end of its quiet intro, written by
+## tools/ace_import.py into data/music_loops.json ({"track": seconds}; absent = 0).
+## The file's tail is crossfaded into that point, so it must be applied.
+static var _loops: Dictionary = {}
+static var _loops_read := false
+
+
+static func loop_point(track: String) -> float:
+	if not _loops_read:
+		_loops_read = true
+		var f := FileAccess.open("res://data/music_loops.json", FileAccess.READ)
+		if f:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			if d is Dictionary:
+				_loops = d
+	return float(_loops.get(track, 0.0))
