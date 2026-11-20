@@ -456,6 +456,12 @@ echo "$mnout" | grep -E "FAIL|SCRIPT ERROR|mega_regions_test" || true
 if ! echo "$mnout" | grep -q "mega_regions_test: 0 failures"; then
   echo "Mega regions (new) test failed"; exit 1
 fi
+echo "== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) =="
+haout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/hidden_area_test.gd 2>&1)"
+echo "$haout" | grep -E "FAIL|SCRIPT ERROR|hidden_area_test" || true
+if ! echo "$haout" | grep -q "hidden_area_test: PASS"; then
+  echo "Hidden area test failed"; exit 1
+fi
 echo "== arcade: cabinets play, pay tickets; every jumper level can be finished =="
 jout="$("$GODOT" --headless --path . -s res://tools/jumper_solve.gd 2>&1)"
 echo "$jout" | grep -E "FAIL|jumper_solve" || true

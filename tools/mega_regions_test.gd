@@ -184,6 +184,9 @@ func _area(arc: String, aid: String, hub: bool, sp: Vector2, regs: Dictionary, s
 		var t := str(m.things[c].get("type", ""))
 		if t in ["water", "forage", "tree", "rock", "bush", "log", "stump", "weed", "grass"]:
 			continue
+		var ha := m.get_node_or_null("HiddenArea") as HiddenArea
+		if ha and ha.sealed.has(c):
+			continue  # inside a hidden pocket: reached once its mouth is opened (hidden_area_test)
 		if t == "locked" and m._building_doors.keys().any(func(w: Vector2i) -> bool: return m._building_doors[w] == c and _near(seen, w)):
 			continue  # any wall cell of the building answers with the knock
 		if not _near(seen, c):

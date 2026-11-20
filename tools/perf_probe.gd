@@ -128,14 +128,16 @@ func _run() -> void:
 				await process_frame
 				plain = _ms(tq, Time.get_ticks_usec())
 				tq = Time.get_ticks_usec()
+				if not is_instance_valid(m):
+					break  # the probe walked into an exit: this map is gone
 				m.queue_redraw()
 				await process_frame
 				await process_frame
 				rds.append(_ms(tq, Time.get_ticks_usec()) - 2.0 * plain)
 			rds.sort()
-			redraw_ms = rds[1]
+			redraw_ms = rds[rds.size() / 2] if not rds.is_empty() else 0.0
 			print("  %s full redraw %.0f ms (median of 3; plain frame %.0f ms)" % [sc, redraw_ms, plain])
-		if OS.get_environment("BREAKDOWN") != "" and m:
+		if OS.get_environment("BREAKDOWN") != "" and is_instance_valid(m):
 			await _breakdown(m)
 		var n := times.size()
 		print("%-22s %8.0f %7.1f %7.1f %7.1f %6d %6d %6d %7.0f %7.0f %6d %6.0f" % [sc, _ms(t0, t1), times[n / 2], times[int(n * 0.95)], times[n - 1],

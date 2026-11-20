@@ -113,15 +113,28 @@ func after_ready() -> void:
 		prop("props", "bulb_plant", c)
 	for c: Vector2i in [Vector2i(9, 12), Vector2i(21, 3), Vector2i(28, 22)]:
 		prop("props", "spiral_fern", c)
+	var gang := not GameState.is_penguins()
 	for i in 4:
-		spawn_enemy(["grump", "soldier", "shard", "wisp"][i], Vector2(randf_range(14, 28) * TILE, randf_range(3, 23) * TILE), 4)
+		var kind: String = (["thug_lookout", "thug_enforcer", "shard", "wisp"] if gang else ["grump", "soldier", "shard", "wisp"])[i]
+		var at := Vector2(randf_range(14, 28) * TILE, randf_range(3, 23) * TILE)
+		for tries in 30:  # never on top of where you land (>= 64 px from the arrival)
+			if player == null or at.distance_to(player.position) >= 64.0:
+				break
+			at = Vector2(randf_range(14, 28) * TILE, randf_range(3, 23) * TILE)
+		spawn_enemy(kind, at, 4)
 	if not GameState.run["flags"].has("moon_seen"):
 		GameState.run["flags"]["moon_seen"] = true
 		player.frozen = true
-		await say([
-			{"text": "Silence, and lavender dust that puffs up and falls slower than it should. The sky is black and full of stars, and the valley is a green coin far below."},
-			{"who": "Star Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. " + ("Three Refined Crystals would wake it, and you're carrying them." if GameState.count("crystal_refined") >= 3 else "It wants three Refined Crystals. The resonator makes them."), "mood": "worried"},
-		])
+		if gang:
+			await say([
+				{"text": "Silence, and lavender dust that puffs up and falls slower than it should. The sky is black and full of stars, and the city is a little glowing coin far below."},
+				{"text": "Somebody got here first: crates with the President's stamp, and a teleporter pad that goes further out. " + ("Three Refined Crystals would wake it, and you're carrying them." if GameState.count("crystal_refined") >= 3 else "Its panel wants three Refined Crystals.")},
+			])
+		else:
+			await say([
+				{"text": "Silence, and lavender dust that puffs up and falls slower than it should. The sky is black and full of stars, and the valley is a green coin far below."},
+				{"who": "Star Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. " + ("Three Refined Crystals would wake it, and you're carrying them." if GameState.count("crystal_refined") >= 3 else "It wants three Refined Crystals. The resonator makes them."), "mood": "worried"},
+			])
 		player.frozen = false
 
 
@@ -132,6 +145,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"alien_shop":
 			later(_alien_shop)
+			return true
+		"spire" when not GameState.is_penguins():
+			tell([{"text": "A spire of glass grown out of the moon. Something inside hums the same tune the neon signs do. Not your business. Yet."}])
+			return true
+		"spire_old" when not GameState.is_penguins():
+			tell([{"text": "A crystal the size of a house, grown right into the rock. The President's crates are stacked around it like he's waiting to move it."}])
 			return true
 		"spire":
 			later(func() -> void:
@@ -217,5 +236,8 @@ func _alien_shop() -> void:
 
 
 func _tele_first() -> void:
-	await say([{"who": "Star Crystal", "text": "There. Feel that? It's waking up.", "mood": "happy"}])
+	if GameState.is_penguins():
+		await say([{"who": "Star Crystal", "text": "There. Feel that? It's waking up.", "mood": "happy"}])
+	else:
+		await say([{"text": "The pad hums, then roars. Whatever the President was shipping out here, you're about to see where it went."}])
 	go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")

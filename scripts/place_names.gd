@@ -62,13 +62,15 @@ static func for_id(id: String, m: GameMap = null) -> String:
 		var c: Dictionary = GameState.load_json("res://data/colonies.json").get(id, {})
 		if c.has("name"):
 			return str(c["name"])
-	if NAMES.has(id):
-		return str(NAMES[id])
-	# Mega-region areas ("wind_breezehaven") carry their own names ("Breezehaven").
+	# Mega-region areas ("wind_breezehaven") carry their own names ("Breezehaven"),
+	# the same words as the Map tab and the banner (CONDUCT 4: moon/station/sky too).
 	if MegaRegion.region_of(id) != MegaRegion.VALLEY:
 		var a := MegaRegion.area(MegaRegion.region_of(id), id)
 		if a.has("name"):
-			return str(a["name"])
+			var an = a.get("name_" + ("penguins" if GameState.is_penguins() else "gangsters"), a["name"])
+			return str(an)
+	if NAMES.has(id):
+		return str(NAMES[id])
 	return id.replace("_", " ").capitalize()
 
 

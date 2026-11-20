@@ -3918,6 +3918,12 @@ func draw_rock_mass(cells: Dictionary) -> void:
 
 # ---- organic borders ---------------------------------------------------------
 
+## The cells of an exit strip a path actually runs through (maps with paths
+## override; Rect2i() = the whole strip).
+func exit_lanes(_r: Rect2i) -> Rect2i:
+	return Rect2i()
+
+
 func border_kind(side: String) -> String:
 	if border is Dictionary:
 		return str((border as Dictionary).get(side, "trees"))
@@ -3945,6 +3951,11 @@ func _build_border() -> void:
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		var g := r.grow(1)
+		# Void edges (sky islands, space): open only the path's own lanes, no shoulder,
+		# so the road leaves the island without a wide notch (CONDUCT 4).
+		var lanes := exit_lanes(r)
+		if lanes.size.x > 0 and border_kind(_side_of(r.get_center())) == "none":
+			g = lanes
 		# Same cells as testing every map cell: each case needs x inside g's columns
 		# (north/south exits) or y inside g's rows (west/east exits).
 		for y in range(-pad, rows + pad):

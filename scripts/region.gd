@@ -28,6 +28,12 @@ var _rect_water := {}  # shore -> cells of painted water rects
 
 func _place_secrets() -> void:
 	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
+	var ha := HiddenArea.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
+	if ha:
+		for dc: Vector2i in Secrets.undug(self):
+			ha.spots.append([dc, "cache"])
+	_settle_enemies()
+	_fix_access.call_deferred()
 	_boss_markers()
 	# Doors that are a hole or a ladder in the ground show it (manhole, sewer ladder).
 	for c: Vector2i in things.keys():
@@ -35,6 +41,82 @@ func _place_secrets() -> void:
 			var ds := prop("props", str(things[c]["sprite"]), c, 0, 0.0, false)
 			if ds and str(things[c]["sprite"]).begins_with("manhole"):
 				to_under(ds)
+
+
+## Doors and "locked" reasons you can't reach get their front cell cleared, and a
+## villager standing in a wall steps to the nearest open cell (CONDUCT 4).
+func _fix_access() -> void:
+	if player == null:
+		return
+	var start := world_to_cell(default_spawn() - Vector2(0, 2))
+	var reach := HiddenArea._reach(self, start)
+	if reach.size() < 8:
+		return
+	var near := func(c: Vector2i) -> bool:
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			if reach.has(c + d):
+				return true
+		return false
+	var changed := false
+	for c: Vector2i in things.keys():
+		if not str(things[c].get("type", "")) in ["locked", "door", "idoor", "shop"] or near.call(c) or reach.has(c):
+			continue
+		# Open the way straight down from the door to the nearest reachable cell (<= 3).
+		for k in range(1, 4):
+			var f := c + Vector2i(0, k)
+			if not in_content(f) or is_water_cell(f) or things.has(f):
+				break
+			if reach.has(f):
+				for j in range(1, k):
+					blocked.erase(c + Vector2i(0, j))
+					hard.erase(c + Vector2i(0, j))
+				changed = true
+				break
+	if changed:
+		_flows.clear()
+		reach = HiddenArea._reach(self, start)
+	for n: Npc in npcs:
+		var nc := n.cell()
+		if reach.has(nc) or near.call(nc):
+			continue
+		var best := Vector2i(-1, -1)
+		var bd := INF
+		for c: Vector2i in reach:
+			var dd := float((c - nc).length_squared())
+			if dd < bd and not things.has(c):
+				bd = dd
+				best = c
+		if best.x >= 0:
+			n.position = cell_center(best)
+			if n.get("home") != null and n.get("home") is Vector2:
+				n.set("home", n.position)
+
+
+## Every foe stands where you can reach it: one spawned in a wall, a pond, a
+## sealed hidden nook or a cell the late dressing filled is moved to the nearest
+## reachable open cell (CONDUCT 4: enemies in blocked cells).
+func _settle_enemies() -> void:
+	if player == null or enemies.is_empty():
+		return
+	var reach := HiddenArea._reach(self, world_to_cell(default_spawn() - Vector2(0, 2)))
+	if reach.size() < 8:
+		return
+	var cells: Array = reach.keys()
+	for e in enemies:
+		if not is_instance_valid(e) or (e as Node2D).has_meta("boss"):
+			continue
+		var ec := world_to_cell((e as Node2D).position - Vector2(0, 2))
+		if reach.has(ec) and not is_water_cell(ec):
+			continue
+		var best := Vector2i(-1, -1)
+		var bd := INF
+		for c: Vector2i in cells:
+			var dd := float((c - ec).length_squared())
+			if dd < bd and not is_water_cell(c) and not things.has(c):
+				bd = dd
+				best = c
+		if best.x >= 0:
+			(e as Node2D).position = cell_center(best)
 
 
 ## Show who's waiting at a boss spot (a dim, still figure) until they're beaten,
@@ -97,7 +179,21 @@ func cliff_style() -> Array:
 
 func default_spawn() -> Vector2:
 	var s: Array = R.get("spawn", [2, 2])
-	return cell_center(Vector2i(int(s[0]), int(s[1])))
+	var c := Vector2i(int(s[0]), int(s[1]))
+	# At least 3 cells inside any exit strip, so arriving never sits on a way out.
+	for step in 4:
+		var moved := false
+		for e in exits:
+			var er: Rect2i = e["rect"]
+			if not er.grow(2).has_point(c):
+				continue
+			var inw := Vector2i(1 if er.position.x <= 0 else (-1 if er.end.x >= cols else 0), 1 if er.position.y <= 0 else (-1 if er.end.y >= rows else 0))
+			if inw != Vector2i.ZERO and not blocked.has(c + inw):
+				c += inw
+				moved = true
+		if not moved:
+			break
+	return cell_center(c)
 
 
 func build() -> void:
@@ -327,6 +423,8 @@ func build() -> void:
 		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)), pav)
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
+		if str(t["type"]) == "mrock" and not GameState.respawned(mrock_key(Vector2i(int(c[0]), int(c[1]))), mrock_every(t)):
+			continue  # broken: grows back after `every` days (CONDUCT 4)
 		var d := {"type": str(t["type"]), "hint": str(t.get("hint", ""))}
 		for k in t:
 			if not k in ["cell", "solid"]:
@@ -337,6 +435,35 @@ func build() -> void:
 ## A second, higher tier on a plateau ("upper": [blobs], optional "upper_ramps").
 ## It sits inset on the lower top (2 cells in from the sides and north, 4 from
 ## the south) so its rock face and stairs land on open ground, not on the rim.
+## Exit strip cells with a path within 3 cells inward (GameMap._build_border opens
+## only these through a void band).
+func exit_lanes(r: Rect2i) -> Rect2i:
+	var pcs := {}
+	for pr in R.get("paths", []):
+		for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+			for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+				pcs[Vector2i(x, y)] = true
+	var inw := Vector2i(1 if r.position.x <= 0 else (-1 if r.end.x >= cols else 0), 1 if r.position.y <= 0 else (-1 if r.end.y >= rows else 0))
+	var out := Rect2i()
+	for c: Vector2i in cells_of([r]):
+		for k in range(0, 4):
+			if pcs.has(c + inw * k):
+				out = Rect2i(c, Vector2i.ONE) if out.size.x == 0 else out.merge(Rect2i(c, Vector2i.ONE))
+				break
+	return out
+
+
+func mrock_key(c: Vector2i) -> String:
+	return "mrock_%s_%d_%d" % [region_id, c.x, c.y]
+
+
+## Days an ore rock takes to come back: the data's `every`, else by ore tier (3-7).
+static func mrock_every(t: Dictionary) -> int:
+	if t.has("every"):
+		return maxi(1, int(t["every"]))
+	return clampi(2 + int(GameState.items.get(str(t.get("ore", "stone")), {}).get("tier", 1)), 3, 7)
+
+
 func _upper_tier(low: Dictionary, pl: Dictionary) -> void:
 	var ups: Array = pl.get("upper", [])
 	if ups.is_empty() or low.is_empty():
@@ -528,8 +655,11 @@ func after_ready() -> void:
 				continue
 			var tx := Art.tex(g, nm)
 			prop(g, nm, c, 0, 0.0, tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
-	if gen.has("critters"):
-		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
+	if gen.has("critters") and not bool(R.get("cave", false)):  # caves: no surface critters
+		var ccount := int(gen.get("critter_count", 6))
+		if MegaRegion.region_of(region_id) != "":
+			ccount = mini(ccount, 5)  # mega maps: a few critters read as life; dozens cost frames
+		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, ccount, gen["critters"])
 	var colony_kinds := 0
 	for e0 in R.get("enemies", []):
 		if bool(e0.get("colony", false)):
@@ -592,7 +722,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		if n.visible and (n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
 			later(_talk_npc.bind(n))
 			return true
-	if Secrets.interact(self, c, thing):
+	if Secrets.interact(self, c, thing) or HiddenArea.interact(self, c, thing):
 		return true
 	match str(thing.get("type", "")):
 		"cpoint":
@@ -607,7 +737,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					var txt := str(thing.get("text_after", thing.get("text", "..."))) if thing.has("after_flag") and GameState.run["flags"].has(str(thing["after_flag"])) else str(thing.get("text", "..."))
 					tell([{"who": str(thing.get("who", "")), "text": txt, "mood": str(thing.get("mood", "neutral"))}]))
 				return true
-			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
+			var who := str(thing.get("who", ""))
+			if who == "Star Crystal" and not GameState.is_penguins():
+				who = ""  # no Star Crystal in the gangster arc: the note reads as narration
+			tell([{"who": who, "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"water":
 			# fish_at casts with the rod in hand, else says how to get it there
@@ -683,6 +816,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if props.has(c):
 					(props[c] as Node).queue_free()
 					props.erase(c)
+				GameState.run["flags"][mrock_key(c)] = maxi(1, int(GameState.run["day"]))
 				give(str(thing.get("ore", "stone")), int(thing.get("n", 1)))
 				xp("mining", 3)
 			return true
@@ -819,7 +953,8 @@ const VARIANT_SETS := ["dead_grass", "metal_a", "metal_b", "cloud", "cracked_ear
 
 ## Feature-blob cells drawn from tiles (no soft seam): the soft patch layer keeps off them.
 var _tile_feature := {}
-const FEATURE_SOFT := {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand"}
+const FEATURE_SOFT := {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand",
+	"cave_ice": "cave_ice_floor", "cave_water": "cave_crystal_floor", "grass_dry": "dry_grass"}  # soft edges (CONDUCT 4)
 
 
 ## One feature blob entry's cells (noise blobs), with specks dropped and holes filled.
