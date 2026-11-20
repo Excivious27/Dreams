@@ -360,6 +360,18 @@ TABLES = [   # id, name, short how-to (3 lines, button words through PadInput.wo
      "howto": ["Five cards. Tap cards (or X) to hold them.", "A draws new cards for the rest. Y shows a hint.", "Jacks or better pays. Paytable 8/5."]},
 ]
 
+# One-time keepsakes for trying the tables and for hands played: never for the size
+# of a win (no money milestones). Granted through DecorSources.grant(m, id, 1, "casino").
+REWARDS = [
+    {"key": "table:slots", "decor": "dc_casino_slot", "text": "First spin on the Gilded Slots: the house sends a little slot machine home with you."},
+    {"key": "table:roulette", "decor": "dc_casino_roulette", "text": "First spin of the wheel: a small roulette wheel for your shelf, with the house's compliments."},
+    {"key": "table:blackjack", "decor": "dc_casino_table", "text": "First hand of blackjack: the house sends over a felt card table."},
+    {"key": "table:dice", "decor": "dc_casino_dice", "text": "First roll at Big or Small: a pair of house dice, yours to keep."},
+    {"key": "table:poker", "decor": "dc_casino_cards_art", "text": "First hand of video poker: a framed royal flush for your wall."},
+    {"key": "tables:all", "decor": "dc_casino_marquee", "text": "You've sat at every table in the house. The Gilded Ace sends you a marquee sign."},
+    {"key": "hands:100", "decor": "dc_casino_ace_sign", "text": "A hundred hands at the Ace. The house sends you its neon ace."},
+]
+
 BANNED = ["blood", "drug", "drunk", "beer", "booze", "whisk", "cigar", "smok", "kill", "dead", "debt", "loan",
           "win it back", "chase", "credit", "marker", "guaranteed", "can't lose", "hot table", "due for"]
 KIDS = ["dice_kid", "the_kid", "pip", "tobin", "mabel", "wren_jr"]
@@ -400,7 +412,7 @@ def build():
         "dice": {"bets": DICE_BETS},
         "blackjack": BJ,
         "poker": {"pays": POKER, "order": POKER_ORDER},
-        "rtp": rtp, "house_keeps": keep, "odds_board": board, "lines": LINES,
+        "rtp": rtp, "house_keeps": keep, "odds_board": board, "lines": LINES, "rewards": REWARDS,
     }
     check(out, worst)
     return out
@@ -429,8 +441,23 @@ def check(out, worst):
             errs.append("max bet %d not a multiple of the step" % m)
         if m // LIMITS["min_bet"] > 50:
             errs.append("max/min bet ratio over 50 (martingale guard)")
+    # keepsakes: every decor id exists, each key once, none for money
+    try:
+        dec = json.load(open(os.path.join(D, "decor.json")))["items"]
+        ids = set(dec.keys()) if isinstance(dec, dict) else {x["id"] for x in dec}
+    except Exception:
+        ids = None
+    keys = set()
+    for r in REWARDS:
+        if r["key"] in keys:
+            errs.append("reward key %s twice" % r["key"])
+        keys.add(r["key"])
+        if not r["key"].split(":")[0] in ("table", "tables", "hands"):
+            errs.append("reward %s is not for variety or hands" % r["key"])
+        if ids is not None and r["decor"] not in ids:
+            errs.append("reward decor %s not in decor.json" % r["decor"])
     # words
-    for s in all_text({"lines": LINES, "tables": TABLES, "board": out["odds_board"], "name": NAME}):
+    for s in all_text({"lines": LINES, "rewards": REWARDS, "tables": TABLES, "board": out["odds_board"], "name": NAME}):
         low = s.lower()
         for b in BANNED:
             if b in low:

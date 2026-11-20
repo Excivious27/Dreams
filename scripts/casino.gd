@@ -182,6 +182,7 @@ static func settle(game: String, stake: int, gross: int, m: Node = null, free :=
 	tables[game] = int(tables.get(game, 0)) + 1
 	st["played"] = tables
 	_advance_clock()
+	_keepsakes(m, game)
 	# Big net day: the pit boss notices (+1 heat once a day).
 	if net_today() > int(lim("big_win_x")) * max_bet() and int(st.get("heat_day", -1)) != own_day():
 		st["heat_day"] = own_day()
@@ -191,6 +192,29 @@ static func settle(game: String, stake: int, gross: int, m: Node = null, free :=
 				(m as GameMap).hud.toast(line("big_win_heat"), Color(1, 0.7, 0.5))
 	_save()
 	return net
+
+
+## One-time keepsakes for trying each table and for hands played (data/casino.json
+## "rewards"; never for the size of a win). Through DecorSources, never add_item.
+static func _keepsakes(m: Node, game: String) -> void:
+	var st := _st()
+	var got: Dictionary = st.get("got", {})
+	var played: Dictionary = st.get("played", {})
+	for r: Dictionary in data().get("rewards", []):
+		var key := str(r["key"])
+		if got.has(key):
+			continue
+		var due := false
+		match key.get_slice(":", 0):
+			"table": due = key.get_slice(":", 1) == game
+			"tables": due = played.size() >= (data().get("tables", []) as Array).size()
+			"hands": due = int(st.get("hands_total", 0)) >= int(key.get_slice(":", 1))
+		if not due:
+			continue
+		got[key] = true
+		st["got"] = got
+		if DecorSources.grant(m, str(r["decor"]), 1, "casino"):
+			st["keepsake_line"] = str(r["text"])  # the table shows it on its banner
 
 
 ## Kind words after a cold run, a reality check every N hands ("" = none).

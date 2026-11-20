@@ -37,6 +37,7 @@ func _run() -> void:
 	_wash()
 	_coop()
 	_confirm()
+	_keepsakes()
 	print("casino_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -321,3 +322,20 @@ func _confirm() -> void:
 	check(not g.place() and Casino.purse() == p0, "a bet over a quarter of the purse asks first")
 	check(g.place() and Casino.purse() == p0 - 50, "A again puts it down")
 	g.queue_free()
+
+
+func _keepsakes() -> void:
+	GameState.run["day"] = int(GameState.run["day"]) + 1
+	GameState.run["crystals"] = 5000
+	GameState.run.erase("casino")
+	var n0 := GameState.count("dc_casino_slot")
+	Casino.take(10, "slots")
+	Casino.settle("slots", 10, 0)
+	check(GameState.count("dc_casino_slot") == n0 + 1, "first slots hand sends the slot keepsake (decor box)")
+	Casino.take(10, "slots")
+	Casino.settle("slots", 10, 0)
+	check(GameState.count("dc_casino_slot") == n0 + 1, "keepsakes are once only")
+	for t in ["roulette", "blackjack", "dice", "poker"]:
+		Casino.take(10, t)
+		Casino.settle(t, 10, 0)
+	check(GameState.count("dc_casino_marquee") >= 1, "every table tried: the marquee")

@@ -267,6 +267,10 @@ func finish(gross: int) -> void:
 	else:
 		result_text = _net_words(last_net)
 	note = "" if free else Casino.after_hand_note()
+	var ks := str(Casino._st().get("keepsake_line", ""))
+	if ks != "":
+		Casino._st().erase("keepsake_line")
+		note = ks if note == "" else note
 	if note != "":
 		say(note, 4.0)
 	_result_t = 0.0

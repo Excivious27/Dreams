@@ -407,5 +407,42 @@
   "big_win_heat": "The pit boss is making calls about you.",
   "break_set": "Done. The floor is closed to you until day %d. The house will hold your table.",
   "stop_early": "Stopping early never changes the result: it was drawn before the reels moved."
- }
+ },
+ "rewards": [
+  {
+   "key": "table:slots",
+   "decor": "dc_casino_slot",
+   "text": "First spin on the Gilded Slots: the house sends a little slot machine home with you."
+  },
+  {
+   "key": "table:roulette",
+   "decor": "dc_casino_roulette",
+   "text": "First spin of the wheel: a small roulette wheel for your shelf, with the house's compliments."
+  },
+  {
+   "key": "table:blackjack",
+   "decor": "dc_casino_table",
+   "text": "First hand of blackjack: the house sends over a felt card table."
+  },
+  {
+   "key": "table:dice",
+   "decor": "dc_casino_dice",
+   "text": "First roll at Big or Small: a pair of house dice, yours to keep."
+  },
+  {
+   "key": "table:poker",
+   "decor": "dc_casino_cards_art",
+   "text": "First hand of video poker: a framed royal flush for your wall."
+  },
+  {
+   "key": "tables:all",
+   "decor": "dc_casino_marquee",
+   "text": "You've sat at every table in the house. The Gilded Ace sends you a marquee sign."
+  },
+  {
+   "key": "hands:100",
+   "decor": "dc_casino_ace_sign",
+   "text": "A hundred hands at the Ace. The house sends you its neon ace."
+  }
+ ]
 }
