@@ -76,6 +76,11 @@ func _initialize() -> void:
 					ptr = GameState.next_step()
 				check(Campaign.region_open(reg), "%s/%s: %s is open after its campaign" % [arc, qid, reg])
 				check(not GameState.next_step().contains("campaign map"), "%s/%s: goal line goes back to the story" % [arc, qid])
+			if reg != "":
+				# C7 (c7_06): once the region is open the compass has a place for the step.
+				GameState.run["pinned_quest"] = ""
+				var gp := GoalLine.story_place(qid)
+				check(str(gp[0]) != "", "%s/%s: the compass has a place once %s is open (%s)" % [arc, qid, reg, str(gp)])
 			for q in GameState.run["quests"]:
 				if str(q["id"]) == qid:
 					q["done"] = true

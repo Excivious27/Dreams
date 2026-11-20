@@ -143,6 +143,10 @@ func _run() -> void:
 		if story_keys.has(k):
 			for opt: String in ep["choices"][k]:
 				check(int(opt) < int(story_keys[k]), "epilogue %s option %s exists in the story choice" % [k, opt])
+	# Romance (C7 P1's system): its own tools/romance_test.gd covers dating/marriage; here
+	# only that the script, when present, loads beside the story.
+	if ResourceLoader.exists("res://scripts/romance.gd"):
+		check(load("res://scripts/romance.gd") != null, "romance script loads beside the story")
 	check(endings.size() == 2, "both arcs played both endings (%s)" % str(endings))
 	var want := {"penguins": ["revert", "shatter"], "gangsters": ["free", "take"]}
 	for a: String in endings:

@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P6: quests, compass, story tests, text
+
+- Compass and goal line for every main step: `GoalLine.story_place` (wastes, sky, moon, docks, neon, pit, uptown, tower; campaign-held regions defer to the board), `late_text` where-to-go words for the gangster chapters and the knight; one two-way route graph (`GoalLine.adj`: ADJ + all regions.json exits + `VIA` thing-ways: gate, great tree, pad, neon stairs), so Tam/Granite/Old Moss/Sel jobs and every outer region get an arrow.
+- Quest tracker: givers indoors / at the community farm / at the Rec get their door or exit; Marlowe and Orla live at the lake; jobs done elsewhere point there first (`QuestTracker.job_place`: Rec Center, orchard, grotto, colony, community farm); giverless jobs are tickable; captions for skill, best score and colony steps; place tags on Quests rows.
+- Side-quest texts fixed (minnows, Bait at Finn's, Orchard Hills moonwort, Old Moss acorns, Orla's wheat for Marlowe's bread, no deadlines that don't exist); wine is a gift to carry home, never a toast; first-person wait lines with what's still short; Rook's orchard foes appear as soon as the job is taken.
+- Gift reactions use the right article ("an Apple", "some Turnip Seeds"); `GameState.plural_name` for letters; UK spellings in the gangster opening; heist brief matches the story.
+- Tests: story_test plays every story choice option and both endings per arc (+ epilogue key check), hearts_test runs both arcs in check.sh, gang_start_test chapter-1 asserts, deterministic flags/seeds and SCRIPT ERROR fails on the story blocks, new tools/c7_text_test.gd.
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.
