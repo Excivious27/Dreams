@@ -115,6 +115,13 @@ func _run() -> void:
 	check(Shops.fund_status() == "complete", "fund status complete")
 	GameState.run["arc"] = "gangsters"
 	check(Shops.fund_name() == "Neighbourhood Fund", "gangster fund name")
+	Racket.set_heat(3)
+	GameState.run["crystals"] = 100000
+	var fee := Shops.file_fee()
+	Shops.lose_file()
+	check(Racket.heat() == 2 and int(GameState.run["crystals"]) == 100000 - fee, "lose a file: heat -1 for its fee")
+	Shops.lose_file()
+	check(Racket.heat() == 2, "one file a day")
 
 	print("shop_econ_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

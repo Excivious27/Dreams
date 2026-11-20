@@ -283,6 +283,10 @@ static func hall(m: GameMap) -> void:
 			ids.append(id)
 		var fund_i := opts.size()
 		opts.append("%s (%s)" % [fund_name(), fund_status()])
+		var file_i := -1
+		if Racket.on() and Racket.heat() > 0:
+			file_i = opts.size()
+			opts.append("Lose a file (heat -1) · %s" % Money.fmt(file_fee()))
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "Mayor Alder", "text": "Permits. %s on you.%s" % [Money.fmt(int(r["crystals"])), "  (friends of the office pay 20% less)" if GameState.has_friend_perk("alder", 4) else ""], "choice": opts, "key": ""}])
@@ -290,6 +294,9 @@ static func hall(m: GameMap) -> void:
 		var i := d.last_choice
 		if i == fund_i:
 			await fund(m)
+			continue
+		if i == file_i:
+			m.hud.toast(lose_file(), Color(1, 0.9, 0.5))
 			continue
 		if i < 0 or i >= ids.size():
 			return
@@ -351,6 +358,28 @@ static func stall(m: GameMap, who: String, greet: String, items: Array, discount
 			m.give(id, qty)
 		m.xp("bartering", 1)
 		hello = "Anything else?"
+
+
+# ---- the gangster arc's own sink (C8 P6, c8_14_11) ------------------------------
+## Alder "loses" a file for a fee: heat -1, once a day, dearer as you rise.
+const FILE_FEE := 300  # x (progress tier + current heat)
+
+
+static func file_fee() -> int:
+	return FILE_FEE * (GameState.progress_tier() + Racket.heat())
+
+
+## Pays and cools one heat step; returns the toast text.
+static func lose_file() -> String:
+	if int(GameState.run["flags"].get("file_day", 0)) == int(GameState.run["day"]):
+		return "Alder: \"One file a day. People notice an empty cabinet.\""
+	var fee := file_fee()
+	if int(GameState.run["crystals"]) < fee:
+		return "Not enough cash."
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - fee
+	GameState.run["flags"]["file_day"] = int(GameState.run["day"])
+	Racket.set_heat(Racket.heat() - 1)
+	return "A folder goes missing. Heat %d/5." % Racket.heat()
 
 
 # ---- the Valley Fund (C8 P6, c8_14): a long, repeatable money sink ------------
