@@ -1,0 +1,5 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 11 start arc=gangsters hero=dad style=wander progress=0
+BOT WARN [11 wander] player boxed in at town at cell (16, 29), frozen=true paused=false story_pending=
+BOT 11 done: 0 fails, 1 warns, 629 steps, scenes ["moon", "forest", "lake", "docks", "underground", "interior", "uptown", "wastes", "mine"], day 4, ◆80

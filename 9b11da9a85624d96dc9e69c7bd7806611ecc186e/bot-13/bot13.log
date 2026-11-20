@@ -1,0 +1,8 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 13 start arc=gangsters hero=june style=fighter progress=2
+BOT 13 done: 0 fails, 0 warns, 630 steps, scenes ["desert_sunken_temple", "mine", "neon", "iron_mill_district"], day 4, ◆2195
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+ERROR: 12 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:795)

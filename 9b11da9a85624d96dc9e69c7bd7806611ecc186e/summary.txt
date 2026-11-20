@@ -1,0 +1,39 @@
+CONDUCT CI FAIL  9b11da9a85  (ci/verify-129b0a97, run 44675322674)
+
+check shards (6/6):
+  shard 1: FAIL  0s  failed: import
+  shard 2: FAIL  0s  failed: import
+  shard 3: FAIL  0s  failed: import
+  shard 4: FAIL  0s  failed: import
+  shard 5: FAIL  0s  failed: import
+  shard 6: FAIL  0s  failed: import
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0            OK   errors=0 fails=0 warns=1 92s  0 fails, 1 warns, 630 steps, scenes ["lake", "neon", "wind_storm_shelf", "orchard_hills", 
+  bot2  2 penguins penguin_f story 1         OK   errors=0 fails=0 warns=1 86s  0 fails, 1 warns, 630 steps, scenes ["mountain", "mine", "farm", "bf_shattered_vale", "fro
+  bot3  3 penguins penguin_m fighter 2       OK   errors=0 fails=0 warns=0 90s  0 fails, 0 warns, 630 steps, scenes ["ruins", "quarry", "mine", "sky", "colony_kelp", "mea
+  bot4  4 penguins merry farmer 0            OK   errors=0 fails=0 warns=1 59s  0 fails, 1 warns, 420 steps, scenes ["town", "desert_dune_sea", "farm"], day 4, ◆70
+  bot5  5 penguins coco menus 1              OK   errors=0 fails=0 warns=0 74s  0 fails, 0 warns, 322 steps, scenes ["highlands", "colony_ice", "gloam_crystal_thicket", "
+  bot6  6 penguins mer story 3               OK   errors=0 fails=0 warns=1 96s  0 fails, 1 warns, 630 steps, scenes ["lake", "town", "farm", "meadow", "moon", "mountain",
+  bot7  7 penguins coldy fighter 4           OK   errors=0 fails=0 warns=0 88s  0 fails, 0 warns, 630 steps, scenes ["ruins", "sky", "frost_hearthhold", "quarry", "mine"]
+  bot8  8 penguins big_jim wander 5          OK   errors=0 fails=0 warns=0 88s  0 fails, 0 warns, 630 steps, scenes ["forest", "house", "bf_frostfield", "countryside", "g
+  bot9  9 penguins custom farmer 2           OK   errors=0 fails=0 warns=1 56s  0 fails, 1 warns, 419 steps, scenes ["house", "farm", "town"], day 4, ◆2285
+  bot10 10 penguins pax story 5              OK   errors=0 fails=0 warns=1 91s  0 fails, 1 warns, 630 steps, scenes ["crystal_meadow", "sky", "meadow", "town", "lake", "m
+  bot11 11 gangsters dad wander 0            OK   errors=0 fails=0 warns=1 90s  0 fails, 1 warns, 629 steps, scenes ["moon", "forest", "lake", "docks", "underground", "in
+  bot12 12 gangsters mom story 1             OK   errors=0 fails=0 warns=1 91s  0 fails, 1 warns, 630 steps, scenes ["lake", "town", "mine", "hideout", "moon", "bf_docksi
+  bot13 13 gangsters june fighter 2          OK   errors=0 fails=0 warns=0 89s  0 fails, 0 warns, 630 steps, scenes ["desert_sunken_temple", "mine", "neon", "iron_mill_di
+  bot14 14 gangsters rafe farmer 0           OK   errors=0 fails=0 warns=1 57s  0 fails, 1 warns, 420 steps, scenes ["town", "farm"], day 4, ◆80
+  bot15 15 gangsters nia menus 3             OK   errors=0 fails=0 warns=0 75s  0 fails, 0 warns, 320 steps, scenes ["uptown", "house", "neon", "highlands", "bf_rail_yard
+  bot16 16 gangsters ollie story 4           OK   errors=0 fails=0 warns=1 89s  0 fails, 1 warns, 629 steps, scenes ["town", "meadow", "farm", "lake", "hideout", "mountai
+  bot17 17 gangsters marisol fighter 5       OK   errors=0 fails=0 warns=0 86s  0 fails, 0 warns, 630 steps, scenes ["jungle", "mine", "sky", "wastes", "ruins"], day 4, ◆
+  bot18 18 gangsters bo wander 3             OK   errors=0 fails=0 warns=1 89s  0 fails, 1 warns, 630 steps, scenes ["highlands", "mountain", "lake", "hideout", "house", 
+  bot19 19 gangsters custom story 2          OK   errors=0 fails=0 warns=0 91s  0 fails, 0 warns, 630 steps, scenes ["sky", "hideout", "mountain", "town", "meadow"], day 
+  bot20 20 gangsters pax menus 5             OK   errors=0 fails=0 warns=0 79s  0 fails, 0 warns, 323 steps, scenes ["meadow", "docks", "beach", "hideout", "frost_hearthh
+
+longest job: 96s
+slowest check steps: import 0.4s; import 0.3s; import 0.1s; import 0.1s; import 0.1s; import 0.1s
+distinct errors/fails/warns:
+    7  BOT WARN player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (40, 3), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (16, 29), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (80, 47), frozen=true paused=false story_pending=

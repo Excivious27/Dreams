@@ -1,0 +1,8 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 19 start arc=gangsters hero=custom style=story progress=2
+BOT 19 done: 0 fails, 0 warns, 630 steps, scenes ["sky", "hideout", "mountain", "town", "meadow"], day 4, ◆2215
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+ERROR: 8 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:795)

@@ -1,0 +1,9 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+Error: Can't run project: no main scene defined in the project.
+Error: Can't run project: no main scene defined in the project.
+
+#### step 1 import: FAIL rc=1 in 0.1s
+
+#### shard 3/6 done in 0s: FAIL (import)

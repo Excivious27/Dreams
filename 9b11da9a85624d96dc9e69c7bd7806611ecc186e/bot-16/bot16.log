@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 16 start arc=gangsters hero=ollie style=story progress=4
+BOT WARN [16 story] player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=
+BOT 16 done: 0 fails, 1 warns, 629 steps, scenes ["town", "meadow", "farm", "lake", "hideout", "mountain", "crystal_meadow"], day 4, ◆2815
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
