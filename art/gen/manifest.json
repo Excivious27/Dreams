@@ -47236,31 +47236,6 @@
    "h": 32,
    "w": 32
   },
-  "ui_decor_box": {
-   "file": "decor/ui_decor_box.png",
-   "h": 28,
-   "w": 27
-  },
-  "ui_frame_mythic": {
-   "file": "decor/ui_frame_mythic.png",
-   "h": 40,
-   "w": 35
-  },
-  "ui_frame_unique": {
-   "file": "decor/ui_frame_unique.png",
-   "h": 40,
-   "w": 35
-  },
-  "ui_tab_decor": {
-   "file": "decor/ui_tab_decor.png",
-   "h": 74,
-   "w": 100
-  },
-  "ui_tab_decor_sel": {
-   "file": "decor/ui_tab_decor_sel.png",
-   "h": 75,
-   "w": 100
-  },
   "pg_bowtie_front": {
    "file": "decor/pg_bowtie_front.png",
    "h": 24,
@@ -47300,6 +47275,31 @@
    "file": "decor/pg_scarf_side.png",
    "h": 47,
    "w": 45
+  },
+  "ui_decor_box": {
+   "file": "decor/ui_decor_box.png",
+   "h": 28,
+   "w": 27
+  },
+  "ui_frame_mythic": {
+   "file": "decor/ui_frame_mythic.png",
+   "h": 40,
+   "w": 35
+  },
+  "ui_frame_unique": {
+   "file": "decor/ui_frame_unique.png",
+   "h": 40,
+   "w": 35
+  },
+  "ui_tab_decor": {
+   "file": "decor/ui_tab_decor.png",
+   "h": 74,
+   "w": 100
+  },
+  "ui_tab_decor_sel": {
+   "file": "decor/ui_tab_decor_sel.png",
+   "h": 75,
+   "w": 100
   }
  },
  "edges": {

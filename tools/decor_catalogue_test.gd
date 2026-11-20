@@ -56,7 +56,7 @@ func _run() -> void:
 	GameState.run["intro_done"] = true
 	# 1) Empty catalogue: nothing breaks, Book row reads 0/0.
 	var saved := Decor._data.duplicate(true)
-	Decor._data = {}
+	Decor._data = {"items": {}, "sets": {}, "shops": {}, "pools": {}}  # {} would reload the real decor.json
 	DecorCatalogue.reset()
 	check(DecorCatalogue.ids().is_empty(), "empty catalogue has no ids")
 	check(DecorCatalogue.progress() == [0, 0], "empty progress 0/0")
@@ -119,7 +119,7 @@ func _run() -> void:
 	Collections.morning()
 	check(Decor.owned("dc_t_common_1") == 1, "delivered next morning into the decor box")
 	check(DecorCatalogue.orders().is_empty(), "order queue empty after delivery")
-	check(GameState.count("dc_t_common_1") == 0, "decor never lands in the bag")
+	check(int(GameState.run["inventory"].get("dc_t_common_1", 0)) == 0, "decor never lands in the bag")
 	GameState.run["crystals"] = 5
 	check(DecorCatalogue.order("dc_t_common_1").begins_with("Not enough"), "order refused without money")
 	Decor.st()["placed"]["house"] = [{"id": "dc_t_common_0", "cell": [3, 3], "rot": 0}]
@@ -156,7 +156,7 @@ func _run() -> void:
 	# Items tab: a decor piece left in the bag (old saves) moves to the decor box.
 	Decor._data["items"]["dc_bag_lamp"] = {"name": "Bag Lamp", "cat": "light", "rarity": "common", "arc": ""}
 	GameState.items["dc_bag_lamp"] = {"name": "Bag Lamp", "type": "decor", "value": 10}
-	GameState.add_item("dc_bag_lamp", 2)
+	GameState.run["inventory"]["dc_bag_lamp"] = 2  # old save: raw bag entry (add_item routes decor to the box)
 	# 3) The screen at 270x480.
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/beach.tscn")
@@ -185,7 +185,7 @@ func _run() -> void:
 			if mv:
 				mv.pressed.emit()
 				await frames(2)
-				check(GameState.count("dc_bag_lamp") == 0 and Decor.owned("dc_bag_lamp") == 2, "bag decor moved to the decor box")
+				check(not GameState.run["inventory"].has("dc_bag_lamp") and Decor.owned("dc_bag_lamp") == 2, "bag decor moved to the decor box")
 			gmn.toggle()
 			await frames(10)
 	var scr := DecorCatalogue.open(current_scene, "grid")

@@ -47,12 +47,12 @@ func _run() -> void:
 			"wr_cap": {"name": "Cap", "cat": "hat", "layer": "wear", "rarity": "common", "arc": "", "price": 50},
 		},
 		"sets": {}, "pools": {"chest_t1": ["dc_vase"], "mine_t1": ["dc_lamp"], "fishing": ["dc_stool"], "boss": ["dc_vase"]},
-		"shops": {"maple": ["dc_stool", "dc_lamp", "dc_rug", "dc_neon", "dc_vase", "dc_late", "dc_crown", "wr_cap"]},
+		"shops": {"maple": [[0, ["dc_stool", "dc_lamp", "dc_rug", "dc_neon", "dc_vase", "dc_late", "dc_crown", "wr_cap"]]]},  # [[tier, ids]] rows (P1 schema)
 		"grants": {"secret:journal": "dc_keep", "house:2": "dc_vase"},
 	}
 	var inv0: int = (GameState.run["inventory"] as Dictionary).size()
 	check(DecorSources.grant(null, "dc_stool", 2, "test"), "grant a stool")
-	check(Decor.owned("dc_stool") == 2 and GameState.count("dc_stool") == 0, "decor goes to the decor box, not the bag")
+	check(Decor.owned("dc_stool") == 2 and int(GameState.run["inventory"].get("dc_stool", 0)) == 0, "decor goes to the decor box, not the bag")
 	check((GameState.run["inventory"] as Dictionary).size() == inv0, "the bag is untouched")
 	check(DecorSources.grant(null, "dc_crown") and not DecorSources.grant(null, "dc_crown"), "a unique is granted once only")
 	check(Decor.owned("dc_crown") == 1, "one crown in the box")
@@ -135,7 +135,7 @@ func _run() -> void:
 	# Mail: a decor gift goes to the box; a favour can't take a unique.
 	var letter := {"kind": "gift", "item": "dc_stool", "n": 1}
 	var stools := Decor.owned("dc_stool")
-	check(Mail._act(letter) == "" and Decor.owned("dc_stool") == stools + 1 and GameState.count("dc_stool") == 0, "mail decor gift goes to the box")
+	check(Mail._act(letter) == "" and Decor.owned("dc_stool") == stools + 1 and int(GameState.run["inventory"].get("dc_stool", 0)) == 0, "mail decor gift goes to the box")
 
 	# Commons: a kept piece never sells at the stand.
 	GameState.add_item("rp_music_box", 1, true)
@@ -152,7 +152,7 @@ func _run() -> void:
 	check(Tickets.lock_text("rp_music_box") == "", "a lost once-prize can be bought back")
 	(Decor._data["items"] as Dictionary)["rp_music_box"] = {"name": "Music Box", "cat": "decor", "rarity": "uncommon", "arc": ""}
 	check(Tickets.buy("rp_music_box") == "", "buy it again")
-	check(Decor.owned("rp_music_box") == 1 and GameState.count("rp_music_box") == 0, "a catalogue prize goes to the decor box")
+	check(Decor.owned("rp_music_box") == 1 and int(GameState.run["inventory"].get("rp_music_box", 0)) == 0, "a catalogue prize goes to the decor box")
 	check(Tickets.lock_text("rp_music_box") == "Already yours", "and counts as yours from the box")
 	check(Tickets.have("rp_music_box") == 1, "Tickets.have sees the box")
 

@@ -51,9 +51,13 @@ static func register() -> void:
 			items[id] = w.duplicate(true)
 		else:
 			var e: Dictionary = items[id]
-			for k in ["renders", "doll", "penguin", "slot", "starter", "desc"]:
-				if not e.has(k) and w.has(k):
+			# The render contract is ours (decor.json only knows "icon"/"doll" from the art it finds);
+			# name, price, rarity and sources stay P1's.
+			for k in ["renders", "doll", "penguin", "slot", "starter"]:
+				if w.has(k):
 					e[k] = w[k]
+			if not e.has("desc") and w.has("desc"):
+				e["desc"] = w["desc"]
 
 
 static func entry(id: String) -> Dictionary:
@@ -116,13 +120,14 @@ static func put_on(id: String) -> bool:
 		return false
 	if worn_id(slot) == id:
 		return true
-	if not is_starter(id) and Decor.owned(id) > 0:
-		Decor.take(id, 1)
+	# Wardrobe owns the box moves itself (Decor.wear would take a second copy and can't wear starters).
+	if not is_starter(id) and not Decor.take(id, 1):
+		return false
 	take_off(slot)
-	Decor.wear(slot, id)
 	if slot == "outfit":
-		Decor.wear("top", "")
-		Decor.wear("bottom", "")
+		take_off("top")
+		take_off("bottom")
+	Decor.st()["wear"][slot] = id
 	return true
 
 
@@ -130,7 +135,7 @@ static func take_off(slot: String) -> void:
 	var cur := worn_id(slot)
 	if cur == "":
 		return
-	Decor.wear(slot, "")
+	(Decor.st()["wear"] as Dictionary).erase(slot)
 	if not is_starter(cur) and is_wear(cur):
 		var box: Dictionary = Decor.st()["box"]
 		box[cur] = int(box.get(cur, 0)) + 1  # straight back (Decor.give refuses a unique you "own")

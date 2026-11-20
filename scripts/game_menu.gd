@@ -424,7 +424,7 @@ func _refresh() -> void:
 			var slot := int(r["slot"])
 			var tb: Array = r["toolbar"]
 			var sel := str(tb[slot])
-			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
+			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and int(r["inventory"].get(_bag_pick, 0)) <= 0 and not GameState.has_tool(_bag_pick):
 				_bag_pick = ""
 			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("Toolbar  ·  in hand: %s  (tap it again, then a slot, to move it)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
 			var dr := _items_drag()
@@ -505,17 +505,20 @@ func _refresh() -> void:
 				_line("%s  ·  %s  ·  tier %d  ·  %s" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), worth], 8, DecorCatalogue.rarity_col(sel))
 				if Collections.museum_needs(sel):
 					_line("Museum wants this: donate it before selling.", 8, Color(1, 0.85, 0.5))
-				if Decor.is_decor(sel) and GameState.count(sel) > 0 and not GameState.visiting():
+				if Decor.is_decor(sel) and int(GameState.run["inventory"].get(sel, 0)) > 0 and not GameState.visiting():
 					# C10a P3: a decor piece still in the bag (old saves) moves to the decor box.
 					var dsel := sel
 					_button("Put in the decor box ›", func() -> void:
 						var before := Decor.owned(dsel)
-						Decor.give(dsel, GameState.count(dsel), "bag")
+						var inv: Dictionary = GameState.run["inventory"]
+						Decor.give(dsel, int(inv.get(dsel, 0)), "bag")
 						var took := Decor.owned(dsel) - before  # a unique already held is refused: it stays in the bag
 						if took <= 0:
 							_toast("You already have this one-of-a-kind piece.")
 							return
-						GameState.add_item(dsel, -took)
+						inv[dsel] = int(inv.get(dsel, 0)) - took  # raw bag (add_item routes decor to the box)
+						if int(inv[dsel]) <= 0:
+							inv.erase(dsel)
 						_bag_pick = ""
 						_toast("%s is in your decor box now." % DecorCatalogue.name_of(dsel))
 						_refresh())

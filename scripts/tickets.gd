@@ -291,7 +291,7 @@ static func buy(prize_id: String) -> String:
 
 ## Copies of a prize item held anywhere: bag, chests, decor box / placed / worn.
 static func have(item: String) -> int:
-	return GameState.count(item) + Storage.total(item) + DecorSources.held(item)
+	return GameState.count(item) + Storage.total(item)  # decor: GameState.count is already Decor.total (box + placed + worn)
 
 
 ## True for an item a "once" prize gives (one per game: never sold, shipped or trashed).

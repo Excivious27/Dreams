@@ -244,9 +244,10 @@
   },
   "8": {
    "give": {
-    "greater_potion": 2
+    "greater_potion": 2,
+    "#decor:dc_pelt_bear": 1
    },
-   "text": "Rook's field kit: 2 Greater Potions"
+   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Bear Pelt Rug"
   },
   "10": {
    "give": {
@@ -278,7 +279,10 @@
    "bonus": {
     "mana": 20
    },
-   "text": "A guardian's patience: +20 max mana"
+   "give": {
+    "#decor:dc_stat_penguin_gold": 1
+   },
+   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Golden Penguin Idol"
   },
   "10": {
    "bonus": {
@@ -438,9 +442,10 @@
   },
   "8": {
    "give": {
-    "moonlight_elixir": 1
+    "moonlight_elixir": 1,
+    "#decor:dc_tt_bottled_wind": 1
    },
-   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir"
+   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Bottled Breeze"
   },
   "10": {
    "give": {
@@ -472,7 +477,10 @@
    "weekly": {
     "flour": 5
    },
-   "text": "The mill works for you: 5 Flour each week"
+   "give": {
+    "#decor:dc_kit_bread_oven": 1
+   },
+   "text": "The mill works for you: 5 Flour each week, and a keepsake for your home: Bread Oven"
   },
   "10": {
    "give": {
@@ -546,7 +554,10 @@
    "weekly": {
     "cider": 2
    },
-   "text": "Tam's cider: 2 each week"
+   "give": {
+    "#decor:dc_bed2_double_blue": 1
+   },
+   "text": "Tam's cider: 2 each week, and a keepsake for your home: Blue Quilt Double Bed"
   },
   "10": {
    "give": {
@@ -574,7 +585,10 @@
    "weekly": {
     "marsh_gas": 2
    },
-   "text": "Marsh gas jars: 2 each week"
+   "give": {
+    "#decor:dc_bookshelf_ivy": 1
+   },
+   "text": "Marsh gas jars: 2 each week, and a keepsake for your home: Ivy Bookcase"
   },
   "10": {
    "weekly": {
@@ -604,9 +618,10 @@
   },
   "8": {
    "give": {
-    "dynamite": 3
+    "dynamite": 3,
+    "#decor:dc_fire_pit2": 1
    },
-   "text": "Granite's crew clears rockslides: 3 Dynamite"
+   "text": "Granite's crew clears rockslides: 3 Dynamite, and a keepsake for your home: Indoor Fire Bowl"
   },
   "10": {
    "give": {
@@ -638,7 +653,10 @@
    "bonus": {
     "mana": 10
    },
-   "text": "Sel's translation: +10 max mana"
+   "give": {
+    "#decor:dc_bookcase3_b": 1
+   },
+   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Manor Pine Bookcase"
   },
   "10": {
    "bonus": {
