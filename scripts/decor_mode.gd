@@ -1053,6 +1053,14 @@ func _input(ev: InputEvent) -> void:
 			_step(Vector2i.ZERO)
 		get_viewport().set_input_as_handled()
 		return
+	if _drag_from == Vector2.INF and ev is InputEventMouseMotion and not TapInput.is_echo(ev) and DisplayMode.ui(ev.position).y < 480 - BAR_H:
+		# Desktop: the ghost follows the mouse (hover), a click places / lifts.
+		var hc := _world_cell(ev.position)
+		var b := bounds(map)
+		if hc != cursor and hc.x >= b.position.x and hc.x < b.end.x and hc.y >= wall_row(map) and hc.y < b.end.y:
+			cursor = hc
+			_step(Vector2i.ZERO)
+		return
 	if _drag_from != Vector2.INF and TapInput.is_release(ev):
 		_drag_from = Vector2.INF
 		get_viewport().set_input_as_handled()

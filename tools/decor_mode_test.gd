@@ -167,6 +167,24 @@ func _run() -> void:
 	var had := Decor.owned("t_chair")
 	dm._confirm()
 	check(Decor.owned("t_chair") == had - 1 and DecorMode.piece_at(m, Vector2i(5, 10)) >= 0, "Place from the screen")
+	# Touch: the first tap aims, the second tap on the same cell places (no one-tap actions).
+	Decor.give("t_chair", 1)
+	dm.held = "t_chair"
+	var tc := Vector2i(7, 6)
+	var sp := m.get_viewport().get_canvas_transform() * (m.cell_pos(tc.x, tc.y) + Vector2(8, 8))
+	var had2 := Decor.owned("t_chair")
+	for k in 2:
+		var tev := InputEventScreenTouch.new()
+		tev.position = sp
+		tev.pressed = true
+		dm._input(tev)
+		var rel := InputEventScreenTouch.new()
+		rel.position = sp
+		rel.pressed = false
+		dm._input(rel)
+		if k == 0:
+			check(dm.cursor == tc and Decor.owned("t_chair") == had2, "first tap only aims (%s)" % str(dm.cursor))
+	check(Decor.owned("t_chair") == had2 - 1 and DecorMode.piece_at(m, tc) >= 0, "second tap places")
 	dm._toggle_list()
 	await frames(2)
 	check(dm._list_box.get_child_count() >= 2, "the box list lists pieces")
