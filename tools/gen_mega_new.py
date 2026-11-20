@@ -1341,7 +1341,14 @@ def main():
     # recipes (kitchen keeps unknown recipes when gen_stations.py runs)
     RC = J("recipes.json")
     ids = {r["id"] for r in RECIPES}
-    RC["kitchen"] = [r for r in RC["kitchen"] if r["id"] not in ids] + RECIPES
+    # Milk and eggs as families (#milk/#egg: goat milk and duck eggs count), exactly as
+    # gen_stations.py writes kitchen needs, so the two generators agree in any order (c9_17).
+    fam_recipes = []
+    for r in RECIPES:
+        r = json.loads(json.dumps(r))
+        r["need"] = {({"milk": "#milk", "egg": "#egg"}.get(k, k)): n for k, n in r["need"].items()}
+        fam_recipes.append(r)
+    RC["kitchen"] = [r for r in RC["kitchen"] if r["id"] not in ids] + fam_recipes
     W("recipes.json", RC)
     json.dump({"_": "Written by tools/gen_mega_new.py (edit tools/mega_regions_new.py / gen_mega_new.py, not this).", "regions": travel},
               open(f"{D}/data/mega_travel.json", "w"), indent=1, ensure_ascii=False)

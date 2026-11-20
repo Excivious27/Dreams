@@ -372,8 +372,8 @@
    "name": "Gloam Pudding",
    "need": {
     "wisp_spark": 1,
-    "honey": 1,
-    "#milk": 1
+    "#milk": 1,
+    "honey": 1
    },
    "give": "echo_pudding",
    "tier": 2
@@ -405,8 +405,8 @@
    "name": "Frost Sorbet",
    "need": {
     "frost": 1,
-    "edelweiss": 1,
-    "#milk": 1
+    "#milk": 1,
+    "edelweiss": 1
    },
    "give": "frost_sorbet",
    "tier": 4
@@ -416,8 +416,8 @@
    "name": "Cloud Souffle",
    "need": {
     "storm_fluff": 1,
-    "#milk": 1,
-    "#egg": 2
+    "#egg": 2,
+    "#milk": 1
    },
    "give": "cloud_souffle",
    "tier": 4
@@ -427,8 +427,8 @@
    "name": "Gilded Flan",
    "need": {
     "gold_bundle": 1,
-    "#milk": 1,
-    "#egg": 2
+    "#egg": 2,
+    "#milk": 1
    },
    "give": "sun_flan",
    "tier": 4

@@ -5452,7 +5452,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1120,
+       "crystals": 1110,
        "items": {
         "crystal_battery": 2
        }
@@ -6127,7 +6127,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1120,
+       "crystals": 1110,
        "items": {
         "crystal_battery": 2
        }
@@ -7447,7 +7447,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1120,
+       "crystals": 1110,
        "items": {
         "crystal_battery": 2
        }
@@ -8147,7 +8147,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1620,
+       "crystals": 1590,
        "items": {
         "crystal_battery": 3
        }
@@ -8169,7 +8169,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1620,
+       "crystals": 1590,
        "items": {
         "crystal_battery": 3
        }
@@ -9994,7 +9994,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1120,
+       "crystals": 1110,
        "items": {
         "crystal_battery": 2
        }
@@ -10574,7 +10574,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1120,
+       "crystals": 1110,
        "items": {
         "crystal_battery": 2
        }
