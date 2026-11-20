@@ -259,62 +259,62 @@
     {
      "item": "minnow",
      "arc": "",
-     "where": "Farm, Sanctuary"
+     "where": "Crystal Meadow, Farm"
     },
     {
      "item": "trout",
      "arc": "",
-     "where": "Farm, Item Words"
+     "where": "Crystal Meadow, Farm"
     },
     {
      "item": "sunfish",
      "arc": "",
-     "where": "Farm, Beach"
+     "where": "Beach, Crystal Meadow"
     },
     {
      "item": "carp",
      "arc": "",
-     "where": "Farm, Lake"
+     "where": "Crystal Meadow, Farm"
     },
     {
      "item": "bass",
      "arc": "",
-     "where": "Farm, Lake"
+     "where": "Beach, Farm"
     },
     {
      "item": "catfish",
      "arc": "",
-     "where": "Farm, Lake"
+     "where": "Farm, Fishing"
     },
     {
      "item": "salmon",
      "arc": "",
-     "where": "Farm, Lake"
+     "where": "Beach, Farm"
     },
     {
      "item": "eel",
      "arc": "",
-     "where": "Farm, Lake"
+     "where": "Beach, Farm"
     },
     {
      "item": "puffer",
      "arc": "",
-     "where": "Lake, Beach"
+     "where": "Beach, Fishing"
     },
     {
      "item": "goldfish",
      "arc": "",
-     "where": "Lake, Beach, at night with bait, fishing 3+"
+     "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
     },
     {
      "item": "starfin",
      "arc": "",
-     "where": "Lake, Beach, at night with bait, fishing 7+"
+     "where": "Beach, Lake, at night with bait, fishing 7+"
     },
     {
      "item": "mooncarp",
      "arc": "",
-     "where": "Lake, Crystal Meadow, at night with bait, fishing 6+"
+     "where": "Crystal Meadow, Lake, at night with bait, fishing 6+"
     },
     {
      "item": "tuna",
@@ -425,13 +425,13 @@
     "item": "minnow",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Sanctuary"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "trout",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Item Words"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "honey",
@@ -455,61 +455,61 @@
     "item": "sunfish",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Beach"
+    "where": "Beach, Crystal Meadow"
    },
    {
     "item": "carp",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Lake"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "bass",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "catfish",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Lake"
+    "where": "Farm, Fishing"
    },
    {
     "item": "salmon",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "eel",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "puffer",
     "arc": "",
     "family": "Fish",
-    "where": "Lake, Beach"
+    "where": "Beach, Fishing"
    },
    {
     "item": "goldfish",
     "arc": "",
     "family": "Fish",
-    "where": "Lake, Beach, at night with bait, fishing 3+"
+    "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
    },
    {
     "item": "starfin",
     "arc": "",
     "family": "Fish",
-    "where": "Lake, Beach, at night with bait, fishing 7+"
+    "where": "Beach, Lake, at night with bait, fishing 7+"
    },
    {
     "item": "mooncarp",
     "arc": "",
     "family": "Fish",
-    "where": "Lake, Crystal Meadow, at night with bait, fishing 6+"
+    "where": "Crystal Meadow, Lake, at night with bait, fishing 6+"
    },
    {
     "item": "potato",
@@ -1662,62 +1662,62 @@
    {
     "item": "minnow",
     "arc": "",
-    "where": "Farm, Sanctuary"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "trout",
     "arc": "",
-    "where": "Farm, Item Words"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "sunfish",
     "arc": "",
-    "where": "Farm, Beach"
+    "where": "Beach, Crystal Meadow"
    },
    {
     "item": "carp",
     "arc": "",
-    "where": "Farm, Lake"
+    "where": "Crystal Meadow, Farm"
    },
    {
     "item": "bass",
     "arc": "",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "catfish",
     "arc": "",
-    "where": "Farm, Lake"
+    "where": "Farm, Fishing"
    },
    {
     "item": "salmon",
     "arc": "",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "eel",
     "arc": "",
-    "where": "Farm, Lake"
+    "where": "Beach, Farm"
    },
    {
     "item": "puffer",
     "arc": "",
-    "where": "Lake, Beach"
+    "where": "Beach, Fishing"
    },
    {
     "item": "goldfish",
     "arc": "",
-    "where": "Lake, Beach, at night with bait, fishing 3+"
+    "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
    },
    {
     "item": "starfin",
     "arc": "",
-    "where": "Lake, Beach, at night with bait, fishing 7+"
+    "where": "Beach, Lake, at night with bait, fishing 7+"
    },
    {
     "item": "mooncarp",
     "arc": "",
-    "where": "Lake, Crystal Meadow, at night with bait, fishing 6+"
+    "where": "Crystal Meadow, Lake, at night with bait, fishing 6+"
    },
    {
     "item": "legendary_koi",

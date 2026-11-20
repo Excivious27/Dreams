@@ -244,7 +244,7 @@ def source_text():
     out = []
     skip = {"items.json", "collections.json", "gift_lines.json", "talk.json", "npcs.json", "skills.json", "skills_old.json"}
     for d, ext in (("scripts", ".gd"), ("data", ".json")):
-        for f in os.listdir(os.path.join(ROOT, d)):
+        for f in sorted(os.listdir(os.path.join(ROOT, d))):
             if f.endswith(ext) and f not in skip:
                 out.append(open(os.path.join(ROOT, d, f), encoding="utf-8").read())
     return "\n".join(out)
@@ -274,7 +274,7 @@ def where_hint(item_id, it, forage, pools):
 
 def fish_pools():
     out = {}
-    for f in os.listdir(os.path.join(ROOT, "scripts")):
+    for f in sorted(os.listdir(os.path.join(ROOT, "scripts"))):  # stable order on every filesystem (CI)
         if not f.endswith(".gd"):
             continue
         txt = open(os.path.join(ROOT, "scripts", f), encoding="utf-8").read()

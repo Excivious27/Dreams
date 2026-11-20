@@ -28,7 +28,7 @@ func _run() -> void:
 	await shot("01_intro")
 	# Advance intro until a choice appears.
 	var d := Dialogue.instance(self)
-	for i in 30:
+	for i in 90:  # a slow runner types slower: keep pressing until the choice shows
 		if d._in_choice:
 			break
 		await press("a", 2)
