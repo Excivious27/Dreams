@@ -3114,6 +3114,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	_sprinklers_water()
 	Project.overnight(report)
 	Commons.overnight(report)
+	Chores.overnight(report)  # C11a P4: assigned overnight chores (before crops grow)
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		var crop_id := str(tile.get("crop", ""))

@@ -60,6 +60,8 @@ static func lines(report: Dictionary) -> Array:
 			lines.append({"text": "The %s basket is full. Empty it, or the gifts stop." % kind})
 	for l in report.get("cfarm", []):
 		lines.append({"who": Commons.keeper_name(), "text": str(l)})
+	if report.has("chores"):
+		lines.append({"who": "Chores", "text": "\n".join(report["chores"])})  # C11a P4
 	if report.has("crew_jobs"):
 		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
 	# Arc project effects that work overnight (Project.overnight).

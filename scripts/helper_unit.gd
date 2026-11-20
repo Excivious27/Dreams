@@ -134,12 +134,41 @@ static func make_team(m: GameMap, member: Array, a: String, at: Vector2, sprite 
 	h.team_name = str(member[1])
 	h.max_hp = 36 + 8 * GameState.progress_tier() + int(GameState.bonus("strategist", "helper_hp"))
 	h.hp = h.max_hp
-	if sprite != "" and CharacterLibrary.has_character(sprite):
+	if sprite.begins_with("animals/") and member.size() > 2 and str(member[2]) == "animal":
+		# C11a P4: a trained team animal, drawn from its own farm strip at the pen's size.
+		var st := TeamAnimals.stats(str(member[0]).trim_prefix("animal:"))
+		h.max_hp = int(st["hp"]) + 4 * GameState.progress_tier() + int(GameState.bonus("strategist", "helper_hp"))
+		h.hp = h.max_hp
+		h._spr = animal_sprite(sprite)
+		h.add_child(h._spr)
+	elif sprite != "" and CharacterLibrary.has_character(sprite):
 		h._spr = CharacterLibrary.make_sprite(sprite)
 		h._spr.scale *= 0.85
 		h._spr.play("idle")
 		h.add_child(h._spr)
 	return h
+
+
+## An AnimatedSprite2D for an animals/<strip> group with idle (+ walk when drawn) at ~TEAM_ANIMAL_H px.
+const TEAM_ANIMAL_H := 22.0
+
+
+static func animal_sprite(group: String) -> AnimatedSprite2D:
+	var anims := {"idle": "idle"}
+	var fps := {"idle": 3.0}
+	if Art.has(group, "walk"):
+		anims["walk"] = "walk"
+		fps["walk"] = 6.0
+	var spr := AnimatedSprite2D.new()
+	spr.sprite_frames = Art.frames(group, anims, fps)
+	var tex := spr.sprite_frames.get_frame_texture("idle", 0) if spr.sprite_frames.get_frame_count("idle") > 0 else null
+	var sc := 0.5
+	if tex != null and tex.get_height() > 0:
+		sc = TEAM_ANIMAL_H / float(tex.get_height())
+	spr.scale = Vector2(sc, sc)
+	spr.offset = Vector2(0, -float(tex.get_height()) * 0.5) if tex != null else Vector2.ZERO
+	spr.play("idle")
+	return spr
 
 
 func label() -> String:

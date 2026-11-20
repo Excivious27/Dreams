@@ -754,7 +754,8 @@ func _field_team() -> void:
 		# Spread on a ring around you (not a row on top of you); free_spot keeps it dry.
 		var ang := PI * 0.5 + (float(n) - 1.5) * 0.9
 		var at: Vector2 = map.player.position + Vector2(cos(ang), sin(ang)) * Vector2(34, 24)
-		var h := HelperUnit.make_team(map, m, jobs[n % jobs.size()], at, team_sprite(m))
+		var job: String = TeamAnimals.battle_job(str(m[0]).trim_prefix("animal:")) if str(m[2]) == "animal" else jobs[n % jobs.size()]
+		var h := HelperUnit.make_team(map, m, job, at, team_sprite(m))
 		h.tag_row = n % 2
 		if bool(d.get("inspired", false)):
 			h.max_hp = int(h.max_hp * 1.25)
@@ -813,6 +814,8 @@ static func team_sprite(m: Array) -> String:
 			return str(Companion.defs().get(id, {}).get("sprite", ""))
 		"crew":
 			return str(Crew.members().get(id, {}).get("sprite", ""))
+		"animal":
+			return TeamAnimals.sprite_group(id.trim_prefix("animal:"))  # "animals/<strip>"
 	return str(GameState.npcs.get(id, {}).get("sprite", ""))
 
 
