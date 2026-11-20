@@ -158,6 +158,17 @@ func _run() -> void:
 	d._advance()
 	await frames(3)
 	Settings.set_v("text_speed", 1)
+	# Held down in a choice list repeats and stops at the last option.
+	d.say([{"who": "T", "text": "Pick", "choice": ["One", "Two", "Three", "Four", "Leave"]}])
+	await frames(15)
+	Input.action_press("down")
+	await frames(90)
+	Input.action_release("down")
+	await frames(2)
+	check(d._choice_focus == 4, "held down repeats to the last choice (at %d)" % d._choice_focus)
+	await press("b")
+	await frames(5)
+	check(not d.active, "B leaves the choice")
 	# Reduced motion setting reads the old shake key.
 	Settings.set_v("shake", false)
 	check(Settings.reduced_motion(), "reduced motion follows the shake key")

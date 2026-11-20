@@ -246,8 +246,22 @@ static func fullscreen_offered() -> bool:
 	if OS.has_feature("web_ios") or OS.has_feature("ios") or OS.has_feature("android"):
 		return false
 	if OS.has_feature("web_android"):
-		return true
+		return not _installed_app()
 	return not DisplayMode.is_phone()
+
+
+static var _standalone := -1
+
+
+## The web build runs as an installed app (PWA display-mode standalone/fullscreen):
+## the browser bars are gone already, so no Fullscreen row.
+static func _installed_app() -> bool:
+	if _standalone < 0:
+		_standalone = 0
+		if OS.has_feature("web"):
+			var v: Variant = JavaScriptBridge.eval("(window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches) ? 1 : 0", true)
+			_standalone = 1 if int(v) == 1 else 0
+	return _standalone == 1
 
 
 static func _cycle(key: String, n: int) -> void:
