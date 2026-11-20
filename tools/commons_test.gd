@@ -102,6 +102,9 @@ func _run() -> void:
 		await _arc(arc)
 	check(arcs_done == 2, "both arcs ran to the end (%d)" % arcs_done)
 	await _extras()
+	# C4 P6: build wording follows the bar (1/4 isn't "half-way").
+	var cfs: GDScript = load("res://scripts/community_farm.gd")
+	check(str(cfs.call("_progress_word", 1, 4)) == "made a start on" and str(cfs.call("_progress_word", 2, 4)) == "half-way into" and str(cfs.call("_progress_word", 2, 3)) == "nearly done with", "build wording matches the nights done")
 	print("commons_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 

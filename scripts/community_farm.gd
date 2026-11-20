@@ -333,6 +333,16 @@ const SITES := {
 }
 
 
+## How far in the crew is, in words that match the bar (1/4 isn't "half-way").
+static func _progress_word(done: int, days: int) -> String:
+	var f := float(done) / maxf(1.0, float(days))
+	if f < 0.4:
+		return "made a start on"
+	if f <= 0.6:
+		return "half-way into"
+	return "nearly done with"
+
+
 ## While the crew builds a stage tonight: its materials stacked on the spot.
 func _place_site() -> void:
 	var b := Commons.pending()
@@ -340,7 +350,7 @@ func _place_site() -> void:
 		return
 	var done := Commons.build_done()
 	var note := ("Everything for the %s, stacked and ready. The crew starts after dark: come back in the morning." % Commons.build_word(b)) if done == 0 \
-		else ("The crew's half-way into the %s: %s. They're back after dark; %s." % [Commons.build_word(b), Commons.build_bar(), "it should be done by morning" if Commons.build_left_words() == "tonight" else Commons.build_left_words() + " to go"])
+		else ("The crew's %s the %s: %s. They're back after dark; %s." % [_progress_word(done, Commons.build_days(b)), Commons.build_word(b), Commons.build_bar(), "it should be done by morning" if Commons.build_left_words() == "tonight" else Commons.build_left_words() + " to go"])
 	var first := true
 	for e: Array in SITES.get(str(Commons.stages()[b]["id"]), []):
 		var c: Vector2i = e[1]
@@ -410,10 +420,10 @@ func _place_greenhouse(s: int) -> void:
 			set_thing(x, GREENHOUSE.y, {"type": "cf_greenhouse", "hint": "A: the greenhouse"})
 		for c: Vector2i in [Vector2i(36, 10), Vector2i(43, 10)]:
 			prop("props", "planter2_%d" % (c.x % 4), c, 0, 0.0, true, 0.32)
-	elif _built_nights("greenhouse") >= 2 and Art.has("props", "cf_build_greenhouse"):
+	elif _built_nights("greenhouse") >= 1 and Art.has("props", "cf_build_greenhouse"):
 		prop("props", "cf_build_greenhouse", GREENHOUSE, 3, 0.0, true, 0.66)  # the iron frame at the finished greenhouse's size
 		for x in range(GREENHOUSE.x + 1, GREENHOUSE.x + 3):
-			set_thing(x, GREENHOUSE.y, {"type": "cf_note", "text": "The greenhouse frame, ribs all up. %s panes in so far." % ("A few" if _built_nights("greenhouse") == 2 else "Half the"), "hint": "A: the greenhouse frame"})
+			set_thing(x, GREENHOUSE.y, {"type": "cf_note", "text": "The greenhouse frame, the first ribs up. No glass yet: the panes go in over the next nights." if _built_nights("greenhouse") == 1 else ("The greenhouse frame, ribs all up. %s panes in so far." % ("A few" if _built_nights("greenhouse") == 2 else "Half the")), "hint": "A: the greenhouse frame"})
 	elif s >= 1:
 		prop("props", "wood_fence_pile", Vector2i(39, 8), 0, 0.0, false)
 		set_thing(39, 9, {"type": "cf_note", "text": "Stone footings, laid square. A greenhouse will stand here one day: it's on the board, near the end.", "hint": "A: the footings"}, false)

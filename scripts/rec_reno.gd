@@ -131,7 +131,7 @@ static func cup() -> Dictionary:
 	if games.is_empty():
 		return {}
 	var day := int(GameState.run["day"])
-	var season_n := (day - 1) / 28
+	var season_n := (day - 1) / GameState.DAYS_PER_SEASON
 	var g: Array = games[season_n % games.size()]
 	var target := int(round(float(g[1]) * pow(float(c.get("step", 1.1)), season_n / games.size())))
 	return {"key": "%d" % season_n, "game": str(g[0]), "score": target, "tickets": int(c.get("tickets", 100))}
