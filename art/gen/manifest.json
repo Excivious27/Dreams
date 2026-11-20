@@ -47291,6 +47291,11 @@
    "h": 61,
    "w": 60
   },
+  "dc_y_arbor_swing_winter": {
+   "file": "decor/dc_y_arbor_swing_winter.png",
+   "h": 61,
+   "w": 56
+  },
   "dc_y_aurora_lamp": {
    "cell_h": 68,
    "cell_w": 30,
@@ -47476,6 +47481,11 @@
   },
   "dc_y_herb_box": {
    "file": "decor/dc_y_herb_box.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_y_herb_box_winter": {
+   "file": "decor/dc_y_herb_box_winter.png",
    "h": 41,
    "w": 60
   },
@@ -47666,6 +47676,11 @@
    "h": 45,
    "w": 30
   },
+  "dc_y_penguin_topiary_winter": {
+   "file": "decor/dc_y_penguin_topiary_winter.png",
+   "h": 43,
+   "w": 30
+  },
   "dc_y_picnic_set": {
    "file": "decor/dc_y_picnic_set.png",
    "h": 50,
@@ -47676,9 +47691,19 @@
    "h": 59,
    "w": 30
   },
+  "dc_y_pin_statue_winter": {
+   "file": "decor/dc_y_pin_statue_winter.png",
+   "h": 57,
+   "w": 30
+  },
   "dc_y_rain_barrel": {
    "file": "decor/dc_y_rain_barrel.png",
    "h": 42,
+   "w": 30
+  },
+  "dc_y_rain_barrel_winter": {
+   "file": "decor/dc_y_rain_barrel_winter.png",
+   "h": 41,
    "w": 30
   },
   "dc_y_shell_bed": {
@@ -47740,6 +47765,11 @@
    "h": 48,
    "w": 30
   },
+  "dc_y_sundial_winter": {
+   "file": "decor/dc_y_sundial_winter.png",
+   "h": 48,
+   "w": 24
+  },
   "dc_y_tag_wall": {
    "file": "decor/dc_y_tag_wall.png",
    "h": 54,
@@ -47759,6 +47789,11 @@
    "file": "decor/dc_y_twin_lamp.png",
    "h": 46,
    "w": 30
+  },
+  "dc_y_twin_lamp_winter": {
+   "file": "decor/dc_y_twin_lamp_winter.png",
+   "h": 46,
+   "w": 29
   },
   "dc_y_tyre_stack": {
    "file": "decor/dc_y_tyre_stack.png",
@@ -47788,6 +47823,11 @@
   "dc_y_wheelbarrow": {
    "file": "decor/dc_y_wheelbarrow.png",
    "h": 30,
+   "w": 30
+  },
+  "dc_y_wheelbarrow_winter": {
+   "file": "decor/dc_y_wheelbarrow_winter.png",
+   "h": 27,
    "w": 30
   },
   "dc_y_wind_spinner": {

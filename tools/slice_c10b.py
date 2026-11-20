@@ -523,7 +523,10 @@ WINTER_TWINS = {"out_winter_twins.png": ["flowerbed_pink", "hedge2_h", "topiary_
                 "out_winter_twins_b.png": ["flowerbed_blue", "flowerbed_red", "flowerbed_yellow", "topiary_b",
                                            "bench2_iron_a", "wedding_arch", "cat_statue", "statue_cane"],
                 "out_winter_twins_c.png": ["picket2_h", "fence2_wood_h", "fence2_iron_h", "fence2_stone_h",
-                                           "bench2_green_a", "well_stone", "birdbath", "scarecrow_knight"]}
+                                           "bench2_green_a", "well_stone", "birdbath", "scarecrow_knight"],
+                "out_winter_twins_d.png": ["decor/dc_y_arbor_swing", "decor/dc_y_herb_box", "decor/dc_y_wheelbarrow",
+                                           "decor/dc_y_sundial", "decor/dc_y_rain_barrel", "decor/dc_y_pin_statue",
+                                           "decor/dc_y_twin_lamp", "decor/dc_y_penguin_topiary"]}
 
 
 def winter_twins():
@@ -533,10 +536,15 @@ def winter_twins():
         a = rgba(file)
         boxes = A.cells(a, 2, 4)
         for k, nm in enumerate(names):
-            ref = _open("props", nm)
+            grp, _, nm = nm.rpartition("/")
+            grp = grp or "props"
+            ref = _open(grp, nm)
             im = A._crop(a, boxes[k // 4][k % 4])
             out = _S().scale_to(im, width=ref.width, height=ref.height)
-            _write(out, "props", nm + "_winter")
+            if grp == GROUP:
+                A.save(out, nm + "_winter")
+            else:
+                _write(out, grp, nm + "_winter")
 
 
 def wall_rules():
@@ -862,6 +870,17 @@ def _quality(cat):
     al = np.asarray(_open("tiles", "wl_tent_m"))[..., 3]
     if (al[8:].max(0) == 0).any():
         bad.append("wl_tent_m has an empty column")
+    wg = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "scripts", "world_gen.gd")).read()
+    for names in WINTER_TWINS.values():      # winter twins: same size as summer art, listed in WINTER_LOOKS
+        for full in names:
+            grp, _, nm = full.rpartition("/")
+            grp = grp or "props"
+            if not os.path.exists(_out(grp, nm + "_winter")):
+                bad.append("no winter twin " + full)
+            elif _open(grp, nm).size != _open(grp, nm + "_winter").size:
+                bad.append("winter twin size " + full)
+            if '"%s": "%s_winter"' % (nm, nm) not in wg:
+                bad.append("not in WINTER_LOOKS " + nm)
     for e in cat:
         if e.get("arc") == "gangsters" and GANG_BAD.search(e["name"]):
             bad.append("gang word in %s %r" % (e["id"], e["name"]))
