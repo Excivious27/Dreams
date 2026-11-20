@@ -123,12 +123,33 @@ func _run() -> void:
 					gates += 1
 			check(fences.size() >= 16 and gates == 2, "pens fenced (%d pieces, %d gates)" % [fences.size(), gates])
 	# --- 3. Debris never on a path (c5_12 #1) ---
+	var pm := m
 	var on_path := 0
 	for c: Vector2i in m.things:
 		var pcs: Dictionary = m.get("_path_cells")
 		if str((m.things[c] as Dictionary).get("type", "")) in ["weeds", "rock", "log", "stump", "tree", "bush"] and (pcs.has(c) or pcs.has(c + Vector2i.LEFT) or pcs.has(c + Vector2i.RIGHT) or pcs.has(c + Vector2i.UP) or pcs.has(c + Vector2i.DOWN)):
 			on_path += 1
 	check(on_path == 0, "no debris on path cells (%d)" % on_path)
+	# --- 4. The house inside grows with the tier (c5_04 #2) ---
+	for tier in [1, 3]:
+		GameState.run["builds"]["house"] = tier
+		GameMap.next_spawn = Vector2(8 * 16 + 8, 10 * 16)
+		change_scene_to_file("res://scenes/house.tscn")
+		await frames(14)
+		var hm := current_scene as GameMap
+		check(hm.cols == (16 if tier == 1 else 26), "tier %d house is %d cells wide" % [tier, hm.cols])
+		var names := {}
+		for ch in hm.get_children():
+			if ch is Sprite2D and (ch as Sprite2D).texture:
+				names[(ch as Sprite2D).texture.resource_path.get_file().get_basename()] = true
+		for ch in hm.under_layer().get_children():
+			if ch is Sprite2D and (ch as Sprite2D).texture:
+				names[(ch as Sprite2D).texture.resource_path.get_file().get_basename()] = true
+		if tier == 3:
+			for want: String in ["study_desk", "cellar_hatch", "keg_wall", "bathtub", "bed_double"]:
+				check(names.has(want), "Manor has %s" % want)
+		else:
+			check(not names.has("study_desk") and names.has("bed_blue"), "the cottage has no study, a single bed")
 	# --- results ---
 	print("farm_look_test: %s (%d fails)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(1 if fails > 0 else 0)

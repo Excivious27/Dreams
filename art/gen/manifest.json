@@ -43004,6 +43004,31 @@
    "h": 88,
    "w": 95
   },
+  "withered_any_0": {
+   "file": "crops/withered_any_0.png",
+   "h": 33,
+   "w": 35
+  },
+  "withered_any_1": {
+   "file": "crops/withered_any_1.png",
+   "h": 40,
+   "w": 35
+  },
+  "withered_any_2": {
+   "file": "crops/withered_any_2.png",
+   "h": 33,
+   "w": 48
+  },
+  "withered_any_3": {
+   "file": "crops/withered_any_3.png",
+   "h": 73,
+   "w": 36
+  },
+  "withered_any_4": {
+   "file": "crops/withered_any_4.png",
+   "h": 71,
+   "w": 38
+  },
   "worldseed_growing": {
    "file": "crops/worldseed_growing.png",
    "h": 66,
@@ -43093,31 +43118,6 @@
    "file": "crops/zucchini_young.png",
    "h": 67,
    "w": 86
-  },
-  "withered_any_0": {
-   "file": "crops/withered_any_0.png",
-   "h": 33,
-   "w": 35
-  },
-  "withered_any_1": {
-   "file": "crops/withered_any_1.png",
-   "h": 40,
-   "w": 35
-  },
-  "withered_any_2": {
-   "file": "crops/withered_any_2.png",
-   "h": 33,
-   "w": 48
-  },
-  "withered_any_3": {
-   "file": "crops/withered_any_3.png",
-   "h": 73,
-   "w": 36
-  },
-  "withered_any_4": {
-   "file": "crops/withered_any_4.png",
-   "h": 71,
-   "w": 38
   }
  },
  "decals": {
@@ -46826,6 +46826,16 @@
    "h": 49,
    "w": 184
   },
+  "cellar_hatch": {
+   "file": "furniture/cellar_hatch.png",
+   "h": 52,
+   "w": 64
+  },
+  "cellar_hatch_open": {
+   "file": "furniture/cellar_hatch_open.png",
+   "h": 67,
+   "w": 64
+  },
   "chair2_a_down": {
    "file": "furniture/chair2_a_down.png",
    "h": 28,
@@ -49679,6 +49689,11 @@
    "file": "furniture/stove_iron.png",
    "h": 53,
    "w": 40
+  },
+  "study_desk": {
+   "file": "furniture/study_desk.png",
+   "h": 128,
+   "w": 103
   },
   "table": {
    "file": "furniture/table.png",

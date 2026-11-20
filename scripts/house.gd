@@ -5,6 +5,9 @@ extends GameMap
 const BED := Vector2i(3, 2)
 const CHEST := Vector2i(12, 2)   # the dresser: your journal lives in the top drawer
 const DOOR := Vector2i(8, 11)
+const CELLAR := Vector2i(17, 9)   # Manor: the hatch (2x2) beside the keg rack
+const STUDY := Vector2i(17, 3)    # Manor: the study desk
+const BATH := Vector2i(23, 3)     # Manor: the bath nook in the east wing
 
 
 func scene_id() -> String:
@@ -15,8 +18,17 @@ func default_spawn() -> Vector2:
 	return Vector2(8 * TILE + 8, 10 * TILE)
 
 
+## The house grows with its tier (C5): the Farmhouse adds a pantry corner and a
+## double bed to the east, the Manor a cellar (kegs age faster), a study and a bath.
+const COLS_BY_TIER := {1: 16, 2: 20, 3: 26}
+
+
+static func tier() -> int:
+	return clampi(Builds.built_tier("house"), 1, 3)
+
+
 func build() -> void:
-	cols = 16
+	cols = int(COLS_BY_TIER[tier()])
 	rows = 13
 	has_sky = false
 	music_track = "house"
@@ -29,6 +41,11 @@ func build() -> void:
 	block_rect(1, 1, cols - 2, 1)  # back wall
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go outside"})
 	set_thing(13, 9, {"type": "kitchen", "hint": "A: cook (campfire)"})
+	if tier() >= 3:
+		for hc: Vector2i in [CELLAR, CELLAR + Vector2i(1, 0)]:
+			set_thing(hc.x, hc.y, {"type": "sign", "text": "The cellar. Kegs and jars down here age twice as fast.", "hint": "A: the cellar"})
+		set_thing(STUDY.x + 1, STUDY.y, {"type": "sign", "text": "Your study: books, a journal and a good lamp. Thinking here sharpens you (+1 skill point when the Manor went up).", "hint": "A: the study desk"})
+		set_thing(BATH.x, BATH.y, {"type": "sign", "text": "A hot bath. You feel sturdier just looking at it (+5 max health).", "hint": "A: the bath"})
 
 
 func after_ready() -> void:
@@ -147,6 +164,10 @@ func draw_map() -> void:
 		var night := GameState.is_night()
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(6 * TILE + 8, 2 * TILE))
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(10 * TILE + 8, 2 * TILE))
+		for wx: int in ([16] if tier() == 2 else ([15, 21] if tier() >= 3 else [])):
+			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(wx * TILE + 8, 2 * TILE))
+		if tier() >= 3 and Art.has("furniture", "rug_rect_red"):
+			draw_texture_rect(Art.tex("furniture", "rug_rect_red"), Rect2(19 * TILE, 6 * TILE + 8, 4 * TILE, 2 * TILE), false)
 	elif Art.has("tiles", "floor_wood"):
 		draw_tileset_rect("floor_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
 		draw_tileset_rect("rug_red", Rect2i(4, 5, 3, 3), Color("b03a2e"))
@@ -173,15 +194,33 @@ func _place_props() -> void:
 	if not Art.has("furniture", "bed_single"):
 		return
 	var kit := Art.has("furniture", "bed_blue")
-	prop("furniture", "bed_blue" if kit else "bed_single", Vector2i(BED.x, BED.y + 1), 1)
+	var bed := "bed_double" if tier() >= 2 and Art.has("furniture", "bed_double") else ("bed_blue" if kit else "bed_single")
+	prop("furniture", bed, Vector2i(BED.x, BED.y + 1), 1)
 	prop("furniture", "dresser" if kit else "chest_closed", CHEST)
 	if Art.has("furniture", "kitchen_stove"):
 		prop("furniture", "kitchen_stove", Vector2i(13, 9))
 	# Cells kept clear of the bed (3-4,2-3), dresser (12,2), stove (13,9), rug, door (8,11) and windows.
 	for pr: Array in [["lamp_floor", Vector2i(1, 2), 0], ["bookshelf", Vector2i(14, 5), 0], ["table_round_cloth", Vector2i(3, 8), 1],
 			["chair_down", Vector2i(3, 7), 0], ["plant2_a", Vector2i(1, 11), 0], ["plant_a", Vector2i(14, 11), 0]]:
+		if str(pr[0]) == "bookshelf" and tier() >= 2:
+			continue  # it stood on the old east wall; the bigger rooms have their own shelves
 		if Art.has("furniture", str(pr[0])):
 			prop("furniture", str(pr[0]), pr[1], int(pr[2]))
+	# The bigger tiers' rooms (east of x15): the Farmhouse's pantry corner, the
+	# Manor's cellar, study and bath.
+	var more: Array = []
+	if tier() == 2:
+		more = [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(18, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1], ["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]]
+	elif tier() >= 3:
+		more = [["study_desk", STUDY, 2], ["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0],
+			["cellar_hatch", CELLAR, 1], ["keg_wall", CELLAR + Vector2i(2, 0), 1], ["shelf_jars", Vector2i(22, 10), 1],
+			["bathtub", BATH, 1], ["sink", Vector2i(21, 3), 0], ["plant2_c", Vector2i(24, 6), 0],
+			["table_round_cloth", Vector2i(20, 7), 1], ["chair_down", Vector2i(20, 6), 0], ["plant2_b", Vector2i(24, 11), 0]]
+	for pr: Array in more:
+		if Art.has("furniture", str(pr[0])):
+			var sp := prop("furniture", str(pr[0]), pr[1], int(pr[2]), 0.0, str(pr[0]) != "cellar_hatch")
+			if str(pr[0]) == "cellar_hatch" and sp:
+				to_under(sp)  # a trapdoor lies in the floor
 
 
 ## The dresser: read the journal or change your look (hair, hat, body).
