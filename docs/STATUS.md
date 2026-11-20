@@ -2,6 +2,15 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 3 fix P2: battle runtime, helpers, battle audio
+- Your mustered team takes the field: up to 4 of CampaignGate.team (not the partner already with you) fight as named HelperUnits drawn with their own sprites (strikers, a healer, a warden); they walk with you unless sent to a point and fall back to camp instead of dying.
+- Commanders: HP floored by campaign tier (`Battle.boss_hp`, T1 60-96, capped for T1-2), T1 captains hit softer, boss tier follows the field's enemy tier (tier_bonus too), the commander leads a push after 20 s; boss theme + horn + DangerMusic.boss_started on spawn, wind-down to the fight's song on the kill.
+- Helpers: spawn on the nearest free dry cell (`HelperUnit.free_spot`), walk out of blocked cells, catch up at up to 100 px/s when left behind, poof back beside you past 400 px, keep 8 px apart, healer/warden act only when they really heal/shield (healer mends the pup too), Shade veil on game time, extra kinds from battles.json `_helper_kinds`; "Healer Crystal" rename; dying foes are never targeted.
+- Waves: first wave ~2 s after the briefing closes (clocks wait while it is up), half-taken enemy points settle back and spawn again, gates spawn at the ring's far side (no camping them shut), every 4th wave a squad of 3 at the target, faster when they hold <= 2 points, you count as 2 defenders, decoys/minions never count as kills, a lost point drops its level/walls. Turret/Crystal Pylon (`scripts/battle_turret.gd`) stands with the allies (holds rings, can be broken; penguin pylon art).
+- Drill: risk-free (KO/tired/late -> trainer pulls you out, half health, no fee/faint), step card above the touch deck and hidden while the trainer talks, short spoken lines, 7 px text, leaves on the win, follow step waits for a helper (first drill helper at once), XP paid in one go.
+- HUD/audio: RALLY button 21 px, rally toasts replace each other, "No helpers yet" picker, pips 7 px clear of the ticket bars, open rings with a dark under-stroke; battle song from frame 1, jingles once (Campaign.finish owns the win; KO leaves it to the faint), music ducks at the end, sfx for helpers, point menu, spawners, turrets; `DangerMusic.boss_ended` (2 s wind-down, then the j_victory sting) everywhere.
+- Tests: new tools/battle_win_test.gd (check.sh: drain, siege, boss, defend, convoy lost/arrived, team, free spawn, veil), danger_music_test boss wind-down cases, campaign_gate_test both arcs pass. Balance table: tools/battle_audit.gd.
+
 ## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
 - Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
 - Mine stones/ore (55 props: mine_*_rock/bigrock/ore, node_*) crispened by tools/crispen.py: hard alpha (no magenta-tinted soft fringe), clean dark 1px outline, small palette, light unsharp. Same canvas sizes.
