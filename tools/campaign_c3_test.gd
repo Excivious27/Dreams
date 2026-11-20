@@ -17,7 +17,9 @@ func check(ok: bool, what: String) -> void:
 func _initialize() -> void:
 	seed(3)
 	Campaign.bypass = false
-	var E: Dictionary = GameState.enemy_data.get("enemies", {})
+	var E: Dictionary = GameState.load_json("res://data/enemies.json").get("enemies", {})
+	if GameState.enemy_data.is_empty():
+		GameState.enemy_data = GameState.load_json("res://data/enemies.json")
 	var variants := ["grump_crystal", "grump_storm", "grump_frost", "grump_coral", "grump_ember", "grump_moss", "grump_brute", "grump_wisp"]
 	for v: String in variants:
 		check(E.has(v) and str(E[v].get("art_fallback", "")) == "grump" and E[v].has("fallback_tint"), "%s exists with a grump fallback" % v)
