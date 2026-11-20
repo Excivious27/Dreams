@@ -16,6 +16,9 @@ var hp := 100
 var max_hp := 100
 var arrived := false
 var state := "wait"       # wait (no friend near), roll, blocked (foe on it)
+var _hit_cd := 0.0        # sounds: one hit sound per HIT_GAP, one alert per stop
+var _rolled := false
+const HIT_GAP := 0.4
 var _hurt := 0.0
 var _t := 0.0
 var _face := 1.0
@@ -54,8 +57,16 @@ func take_damage(n: int, _from: Vector2) -> void:
 		return
 	hp = maxi(0, hp - maxi(1, n))
 	_hurt = 0.2
+	if _hit_cd <= 0.0:
+		_hit_cd = HIT_GAP
+		_sfx("crate_break" if hp <= 0 else "hit")
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -8), 12.0, 0.6)
+
+
+func _sfx(n: String, fb := "pop") -> void:
+	if map and map.player and position.distance_to(map.player.position) < 260.0:
+		Music.instance(get_tree()).sfx(n, fb)
 
 
 func provoke(_by: Node2D) -> void:
@@ -67,6 +78,7 @@ func _process(delta: float) -> void:
 		return
 	_t += delta
 	_hurt = maxf(0.0, _hurt - delta)
+	_hit_cd = maxf(0.0, _hit_cd - delta)
 	var friend := map.player.position.distance_to(position) < ESCORT_R
 	if not friend:
 		for h in get_tree().get_nodes_in_group("allies"):
@@ -74,7 +86,14 @@ func _process(delta: float) -> void:
 				friend = true
 				break
 	var foe := map.nearest_enemy_to(position, BLOCK_R)
+	var was := state
 	state = "blocked" if foe != null else ("roll" if friend else "wait")
+	if state != was:
+		if state == "blocked":
+			_sfx("alert", "thud")  # foes on the convoy
+		elif state == "roll" and not _rolled:
+			_rolled = true
+			_sfx("car_start" if not GameState.is_penguins() else "j_confirm")  # it sets off
 	if state == "roll" and _i < path.size():
 		var goal: Vector2 = path[_i]
 		if position.distance_to(goal) < 14.0:
@@ -82,6 +101,7 @@ func _process(delta: float) -> void:
 			if _i >= path.size():
 				arrived = true
 				map.fx("levelup", position + Vector2(0, -10), 10.0, 0.6)
+				_sfx("horn", "levelup")
 				queue_redraw()
 				return
 			goal = path[_i]
