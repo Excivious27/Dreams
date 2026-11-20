@@ -37,6 +37,8 @@ func _ready() -> void:
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "wardrobe")
 	Wardrobe.register()
+	if Wardrobe.hero_kind() == "penguin":
+		slot = "acc"  # what shows on Pip-Pip / Nova
 	var got := Wardrobe.sync_unlocks()
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
