@@ -1,9 +1,10 @@
 class_name Settings
 extends RefCounted
 ## Player settings that live outside any one save: volumes, button size,
-## left-handed layout, easy mode. Stored with SaveGame's global values.
+## left-handed layout. Stored with SaveGame's global values. Difficulty and
+## day length are per save slot (Difficulty, GameState.day_len).
 
-const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "easy": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false}
+const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]
@@ -30,10 +31,6 @@ static func left_handed() -> bool:
 ## How dark nights get: 0 off, 0.6 soft, 1 full.
 static func night_strength() -> float:
 	return [0.0, 0.6, 1.0][clampi(int(get_v("night")), 0, 2)]
-
-
-static func easy() -> bool:
-	return bool(get_v("easy"))
 
 
 ## 0..10 -> decibels on the Music / SFX buses (0 = silent).

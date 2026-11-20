@@ -161,7 +161,7 @@ func _first_run() -> void:
 		check(GameState.slot_info(n) == "Empty", "first run: slot %d empty" % n)
 	for k: String in Settings.DEFAULTS:
 		check(Settings.get_v(k) == Settings.DEFAULTS[k], "first run: setting %s is its default" % k)
-	check(not Settings.easy() and is_equal_approx(Settings.night_strength(), 1.0) and is_equal_approx(Settings.btn_scale(), 1.0), "first run: normal mode, full nights, normal buttons")
+	check(not Settings.DEFAULTS.has("easy") and is_equal_approx(Settings.night_strength(), 1.0) and is_equal_approx(Settings.btn_scale(), 1.0), "first run: normal mode, full nights, normal buttons")
 	Settings.apply_audio()
 	var mi := AudioServer.get_bus_index("Music")
 	check(mi >= 0 and is_equal_approx(AudioServer.get_bus_volume_db(mi), linear_to_db(0.8)) and not AudioServer.is_bus_mute(mi), "first run: music bus at the default volume")
@@ -185,7 +185,7 @@ func _slots_and_intro() -> void:
 		var n: int = s[0]
 		GameState.use_slot(n)
 		check(not GameState.has_run(), "slot %d starts empty" % n)
-		GameState.new_run(str(s[1]), str(s[2]), str(s[3]), "Town" + str(n), "Pup" + str(n))
+		GameState.new_run(str(s[1]), str(s[2]), str(s[3]), "Town" + str(n), "Pup" + str(n), {"difficulty": n - 1, "day_len": GameState.DAY_LENGTHS[n]})
 		if str(s[2]) == "custom":
 			GameState.run["look"] = {"tint": "ffffff", "outfit": "outfit_farmer"}
 		GameState.save()
@@ -205,6 +205,8 @@ func _slots_and_intro() -> void:
 		reboot()
 		check(bool(GameState.run.get("intro_done", false)) and str(GameState.run["names"]["character"]) == str(s[3]), "slot %d: the opening is saved" % n)
 		check(Settings.get_v("sfx_vol") == 5, "slot %d: settings are shared, not per slot" % n)
+		check(Difficulty.level() == n - 1 and GameState.day_len() == int(GameState.DAY_LENGTHS[n]), "slot %d: difficulty and day length are kept per slot (%s, %d)" % [n, Difficulty.name_of(), GameState.day_len()])
+		check(GameState.slot_info(n).contains(Difficulty.name_of(n - 1)) and GameState.slot_info(n).contains("%d-min" % int(GameState.DAY_LENGTHS[n])), "slot %d info shows mode and day length (%s)" % [n, GameState.slot_info(n)])
 	check(int(counts.get(2, 99)) <= 3 and int(counts.get(3, 99)) <= 3 and int(counts.get(1, 0)) >= 6, "Skip drops the narration (full %d lines, skipped %d / %d)" % [int(counts.get(1, 0)), int(counts.get(2, 0)), int(counts.get(3, 0))])
 	for s in SLOTS:
 		GameState.use_slot(int(s[0]))
@@ -374,7 +376,7 @@ func _migration() -> void:
 	GameState.use_slot(3)
 	GameState.new_run("gangsters", "dad", "Old", "Oldtown", "Rex")
 	var r: Dictionary = GameState.run
-	for k in ["arcade", "cfarm", "mega", "campaign", "en_ver", "skill_ver", "equip", "hp_scale"]:
+	for k in ["arcade", "cfarm", "mega", "campaign", "en_ver", "skill_ver", "equip", "hp_scale", "opts", "day_len"]:
 		r.erase(k)
 	r["toolbar"] = ["hoe", "can", "axe", "pickaxe", "sword", "rod", "", ""]
 	r["tickets"] = 7
@@ -398,8 +400,11 @@ func _migration() -> void:
 	r["visited"] = {"town": true, visited_reg: true}
 	var old := r.duplicate(true)
 	SaveGame.set_value(GameState.save_key(), old)
+	SaveGame.set_value("set_easy", true)  # the old global Easy switch was on
 	GameState.run = {}
 	reboot()
+	check(Difficulty.level() == 1 and GameState.day_len() == 15, "old save: the global Easy switch becomes this slot's Easy mode, day length 15 (%d, %d)" % [Difficulty.level(), GameState.day_len()])
+	SaveGame.set_value("set_easy", false)
 	check(GameState.has_run() and str(GameState.run["names"]["character"]) == "Old", "the old save loads")
 	check((GameState.run["toolbar"] as Array).size() == 12, "old toolbar grows to 12 slots")
 	check(int(GameState.run.get("en_ver", 0)) == 11 and int(GameState.run["max_energy"]) > 100 and int(GameState.run["energy"]) > 40, "old energy bar becomes the Round 11 bar with its new room filled")

@@ -846,7 +846,7 @@ func _clear_debris(c: Vector2i, thing: Dictionary) -> void:
 	fx("dust_puff", cell_center(c), 12.0, 0.5)
 	(Commons.st()["cleared"] as Dictionary)[str(thing["key"])] = true
 	if str(j[4]) == "":
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(j[5])
+		GameState.add_money(int(j[5]), "commons")
 		hud.toast("The scrap dealer pays ◆%d for those." % int(j[5]), Color(1, 0.9, 0.5))
 	else:
 		pop_items(cell_center(c), str(j[4]), int(j[5]))

@@ -542,11 +542,11 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 				en._stun = maxf(en._stun, 0.8)
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
 			if GameState.buff("speed") <= 2.0:
-				GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + 30, "amount": 2.0}
+				GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + GameState.real_min(21.0), "amount": 2.0}
 		"iron":
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
 			if GameState.buff("defense") <= 3.0:
-				GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 30, "amount": 3.0}
+				GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + GameState.real_min(21.0), "amount": 3.0}
 		"shade":
 			p.invuln = maxf(p.invuln, 3.0)
 		"beat":

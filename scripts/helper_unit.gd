@@ -273,7 +273,7 @@ func _process(delta: float) -> void:
 				var db: Dictionary = GameState.run["buffs"].get("defense", {})
 				if db.is_empty() or int(db.get("until", 0)) <= GameState.now_abs() or float(db.get("amount", 0.0)) <= 2.0:
 					var fresh := db.is_empty() or int(db.get("until", 0)) <= GameState.now_abs()
-					GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 3, "amount": 2.0}
+					GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + GameState.real_min(2.1), "amount": 2.0}
 					_cd = 2.0
 					_act_t = 0.5
 					if fresh:

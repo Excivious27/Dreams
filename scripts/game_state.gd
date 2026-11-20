@@ -6,9 +6,40 @@ extends RefCounted
 const SAVE_KEY := "run"
 const DAY_START := 6 * 60      # 6:00
 const DAY_END := 26 * 60       # 2:00 next day: pass out
-const MINUTES_PER_SECOND := 1.0 / 0.7  # one game minute every 0.7s (about 14 min per day)
+## Real minutes for the waking day (6am-2am, 1200 game minutes), per save
+## slot in run.day_len (Tom C4: 15/20/30/40; 15 is the classic pace).
+const DAY_LENGTHS := [15, 20, 30, 40]
+const DAY_LEN_DEFAULT := 15
 
 static var run: Dictionary = {}
+
+
+## The run's day length in real minutes (one of DAY_LENGTHS).
+static func day_len() -> int:
+	return _valid_len(int(run.get("day_len", DAY_LEN_DEFAULT)))
+
+
+static func _valid_len(n: int) -> int:
+	return n if n in DAY_LENGTHS else DAY_LEN_DEFAULT
+
+
+## Game minutes per real second: the waking day (DAY_END - DAY_START) lasts
+## day_len() real minutes (15 -> 1.33, 40 -> 0.5).
+static func minutes_per_second() -> float:
+	return float(DAY_END - DAY_START) / (float(day_len()) * 60.0)
+
+
+## Game minutes that pass in `sec` real seconds at this run's pace (rounded up,
+## at least 1). Real-time timers (buffs, mana, wardens) use it so they last
+## the same on every day length.
+static func real_min(sec: float) -> int:
+	return maxi(1, ceili(sec * minutes_per_second() - 0.0001))
+
+
+## Real seconds per mana point (was 20/15/10 game minutes at the old 0.7 s pace).
+static func mana_regen_secs() -> float:
+	return maxf(3.5, 14.0 - 3.5 * int(bonus("magic", "mana_regen")))
+
 static var items: Dictionary = {}
 static var crops: Dictionary = {}
 static var skills_data: Dictionary = {}
@@ -38,7 +69,7 @@ static func load_data() -> void:
 	quests_data = load_json("res://data/quests.json")
 
 
-static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String) -> void:
+static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String, opts := {}) -> void:
 	load_data()
 	quests_data = load_json("res://data/quests.json")
 	if arc == "penguins":
@@ -77,6 +108,8 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"kills": 0,
 		"intro_done": false,
 		"skill_ver": SKILL_VER,
+		"opts": {"difficulty": clampi(int(opts.get("difficulty", Difficulty.DEFAULT)), 0, 3)},
+		"day_len": _valid_len(int(opts.get("day_len", DAY_LEN_DEFAULT))),
 	}
 	add_item("turnip_seed", 6)
 	add_item("berry", 2)
@@ -137,6 +170,12 @@ const SKILL_VER := 8
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	# C4: difficulty and day length are per slot (the old global Easy switch -> Easy).
+	if not run.get("opts", null) is Dictionary:
+		run["opts"] = {"difficulty": 1 if Difficulty.legacy_easy() else Difficulty.DEFAULT}
+	elif not (run["opts"] as Dictionary).has("difficulty"):
+		run["opts"]["difficulty"] = Difficulty.DEFAULT
+	run["day_len"] = _valid_len(int(run.get("day_len", DAY_LEN_DEFAULT)))
 	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
 	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
 	if not (run.get("skills") is Dictionary):
@@ -283,7 +322,10 @@ static func slot_info(n: int) -> String:
 		return "Empty"
 	var r: Dictionary = d
 	var arc := "Penguins" if str(r.get("arc", "")) == "penguins" else "Gangsters"
-	return "%s · %s · day %d" % [str(r["names"].get("character", "?")), arc, int(r.get("day", 1))]
+	var o: Dictionary = r.get("opts", {}) if r.get("opts", {}) is Dictionary else {}
+	var dl := int(r.get("day_len", DAY_LEN_DEFAULT))
+	var dn := int(o.get("difficulty", 1 if Difficulty.legacy_easy() and not r.has("opts") else Difficulty.DEFAULT))
+	return "%s · %s · day %d\n%s · %d-min days" % [str(r["names"].get("character", "?")), arc, int(r.get("day", 1)), Difficulty.name_of(dn), _valid_len(dl)]
 
 
 static func use_slot(n: int) -> void:
@@ -442,8 +484,8 @@ const TOOL_UPGRADE_NEED := [
 # What a node needs before it gives anything. Tool tiers: 0 wood, 1 copper,
 # 2 iron, 3 steel, 4 silver, 5 gold, 6 crystal, 7 moon. Skill levels gate the
 # rare stuff a second time so a lucky upgrade alone doesn't skip the game.
-const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "dark": 3, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4}
-const ORE_SKILL := {"dark": 5, "silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
+const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "dark": 3, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4, "tin": 2, "sunstone": 3, "sapphire": 3, "frost": 3, "star_dust": 3, "storm_glass": 4, "platinum": 4}  # mega ores (C4): region tier - 1
+const ORE_SKILL := {"tin": 3, "sunstone": 5, "sapphire": 6, "frost": 6, "star_dust": 6, "storm_glass": 7, "platinum": 8, "dark": 5, "silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
 
 
 ## "" when you can gather this, else the reason (already phrased for a toast).
@@ -1453,6 +1495,9 @@ static func enemy_damage(dmg_units: int) -> int:
 	var n := maxi(5, dmg_units * 12)
 	if run.get("flags", {}).has("proj_aurora_dome"):
 		n = int(n * 0.85)  # the Aurora Dome thins the dark: foes hit softer
+	var m := Difficulty.mul("foe_dmg")
+	if m != 1.0:
+		n = maxi(3 if Difficulty.level() == 0 else 5, roundi(n * m))  # Very easy: floor 3
 	return n
 
 
@@ -2842,7 +2887,9 @@ static func status_apply(name: String, t: int) -> void:
 	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0) * (0.5 if Crew.perk_level("status_half") >= 2 else 1.0)
 	run["status"] = run.get("status", {})
 	var cur: Dictionary = run["status"].get(name, {})
-	run["status"][name] = {"secs": maxf(float(cur.get("secs", 0.0)), secs), "power": float(tier(t).get("status_power", 1.0)), "tier": t}
+	var dm := Difficulty.mul("status")  # C4 difficulty: length and power together
+	secs *= dm
+	run["status"][name] = {"secs": maxf(float(cur.get("secs", 0.0)), secs), "power": float(tier(t).get("status_power", 1.0)) * dm, "tier": t}
 
 
 static func status_active(name: String) -> bool:

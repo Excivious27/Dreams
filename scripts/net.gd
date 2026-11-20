@@ -270,10 +270,11 @@ func _broadcast_state() -> void:
 
 
 # ---- world sync (host -> guests) ---------------------------------------------
-## Only what's truly shared: the host's clock, weather and farm. Each player
+## Only what's truly shared: the host's clock (and day length), difficulty
+## (run.opts), weather and farm. Each player
 ## keeps their own money, bank, sell box, quests, story flags and friendships
 ## (overwriting those from the host let guests copy crystals and replay story).
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed"]
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts"]
 
 
 func _push_world(to_id := -1) -> void:

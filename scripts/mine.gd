@@ -692,7 +692,7 @@ func _loot(big: bool) -> Dictionary:
 func _give_loot(c: Vector2i, loot: Dictionary) -> void:
 	for id: String in loot:
 		if id == "#gold":
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(loot[id])
+			GameState.add_money(int(loot[id]), "mine")
 			hud.toast("+◆%d" % int(loot[id]), Color(1, 0.9, 0.5))
 			Music.instance(get_tree()).sfx("coin", "pickup")
 			if Money.cash():

@@ -415,7 +415,7 @@ func _festival_event(fest: String) -> void:
 				var score := bv + grown * 4
 				var place := 1 if score >= 100 else (2 if score >= 40 else 3)
 				await say([{"who": "Mayor Alder", "text": "A %s! %s" % [GameState.item_name(best), ["First prize! The blue ribbon and three hundred crystals.", "Second prize! The red ribbon and a hundred and fifty.", "Third prize! The yellow ribbon and fifty."][place - 1]]}])
-				GameState.run["crystals"] = int(GameState.run["crystals"]) + [300, 150, 50][place - 1]
+				GameState.add_money([300, 150, 50][place - 1], "festival")
 				GameState.run["flags"][key] = true
 				Music.instance(get_tree()).sfx("quest_done", "coin")
 				hud.toast("+%d crystals" % [300, 150, 50][place - 1], Color(0.7, 0.9, 1))
@@ -778,7 +778,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			give("candy", 1)
 			if left <= 0:
 				hud.toast("All the eggs! Alder gives you ◆200.", Color(1, 0.9, 0.4))
-				GameState.run["crystals"] = int(GameState.run["crystals"]) + 200
+				GameState.add_money(200, "festival")
 				xp("foraging", 30)
 			else:
 				hud.toast("%d eggs left." % left)

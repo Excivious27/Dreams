@@ -1523,7 +1523,7 @@ func _intro_penguins(n: Dictionary) -> void:
 		await say([
 			{"who": "Star Crystal", "text": "Then we start small. Here, in this soil. The Meow Pow Wow grows from living things, so grow living things."},
 		])
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + 10
+		GameState.add_money(10, "farm")
 		GameState.run["flags"]["crystal_trust"] = 2
 	elif ans == 1:
 		await say([

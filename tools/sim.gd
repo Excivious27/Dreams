@@ -7,8 +7,8 @@ extends SceneTree
 ##
 ## Strategies: "best" (highest profit/day in-season seed the store sells),
 ## "cheap" (always the cheapest seed), "mixed" (regrow crops once affordable).
-## The bot works ~10 real seconds per tile per day (walk + act) inside a 23-min
-## day, so the day caps at about 130 tile actions; energy is the other cap.
+## The bot works ~10 real seconds per tile per day (walk + act) inside a day of
+## DAY_SECONDS work time (the real day is 15-40 min, GameState.day_len()), so the day caps at about 130 tile actions; energy is the other cap.
 
 const DAY_SECONDS := 23.0 * 60.0
 const SECONDS_PER_ACTION := 1.6   # walk a step, swing, next tile
