@@ -109,11 +109,48 @@ BEAT = {
     "orchard": ["rook", P("Three summers and you'll be climbing these for cherries. Trees don't hurry.", "Three summers and there'll be fruit on a vacant lot. Trees don't hurry.")],
     "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in January.")],
 }
+# Builds take a few days each (Tom, Guide 26 #2): "days" nights of work; after each night
+# but the last, the sleep report reads that night's "progress" line and the site shows
+# the half-built piece (community_farm.gd SITES/PROGRESS). The last night reads "night".
+# "tonight" (Hazel, when the bundle fills) is replaced with a line that says how long.
+BUILD_DAYS = {
+    "shed": [2, P("Hazel's crew framed the commons shed by lantern light: posts up, half the walls on. One more night for the roof.",
+                  "The crew framed the garden shed under work lights: posts up, half the walls on. One more night for the roof and the lock.")],
+    "beds": [2, P("Two of the four raised beds stand at the commons; Finn ran out of nails and patience. Two more tonight.",
+                  "Two of four raised beds are up at the lot. Finn ran out of nails. Two more tonight.")],
+    "well": [3, P("The commons well is cleared out to the water and the first stone course is laid. Benno says two more nights.",
+                  "The lot's well is dug back out to the water and the first course of stone is down. Benno says two more nights."),
+                P("The well wall is waist high and the pump tripod is up. One more night to seat the pump.",
+                  "The well wall's waist high, pump tripod up. One more night to seat the pump.")],
+    "orchard": [2, P("Rook dug eight planting holes along the commons lane and soaked them. The trees go in tonight.",
+                     "Rook dug eight holes along the back fence and soaked them. The trees go in tonight.")],
+    "greenhouse": [4, P("The greenhouse footings are poured and the sills are down. Nothing to see yet but string lines and mud.",
+                        "Greenhouse footings poured, sills down. Nothing to see yet but string lines and mud."),
+                      P("The greenhouse's iron frame stands: every rib up, not a pane in yet. Gideon is very proud of the welds.",
+                        "The greenhouse frame is up: every rib, no panes yet. Gideon won't stop talking about the welds."),
+                      P("Half the greenhouse panes are in. Juniper has already claimed a bench. One more night.",
+                        "Half the greenhouse panes are in. Juniper's already claimed a bench. One more night.")],
+}
+TONIGHT = {
+    "shed": P("That's everything. Gideon and Sal start after supper with lanterns. Two nights' work: frame first, then the roof.",
+              "That's the lot. Gideon and Sal start after dark with work lights. Two nights: frame, then roof and lock."),
+    "beds": P("Planks, stone, twine: all here. Finn's bringing his cousins tonight. Four beds in two nights, you'll see.",
+              "That's all of it. Finn's bringing his cousins tonight. Four beds in two nights."),
+    "well": P("Stone, copper, rope. Benno and Gideon start on the wall tonight. Three nights to dig it out, wall it and seat the pump.",
+              "Stone, copper, rope. Benno and Gideon start tonight. Three nights: dig, wall, pump."),
+    "orchard": P("Rook wants the holes dug and soaked tonight and the trees in tomorrow night, while the ground's cool. Two nights.",
+                 "Rook digs and soaks the holes tonight, trees go in tomorrow night. Two nights."),
+    "greenhouse": P("Glass, iron, benches. This one's the big job: footings, the frame, then every pane. Give us four nights, and mind the mess.",
+                    "Glass, iron, benches. Biggest job yet: footings, frame, then the panes. Four nights. Mind the mess."),
+}
 for _s in STAGES:
     if _s["id"] in BUILD:
         _s["build"] = True
-        _s["tonight"] = BUILD[_s["id"]]["tonight"]
+        _s["tonight"] = TONIGHT.get(_s["id"], BUILD[_s["id"]]["tonight"])
         _s["night"] = BUILD[_s["id"]]["night"]
+        _s["days"] = BUILD_DAYS[_s["id"]][0]
+        _s["progress"] = BUILD_DAYS[_s["id"]][1:]
+        assert len(_s["progress"]) == _s["days"] - 1, _s["id"]
     if _s["id"] in BEAT:
         _s["beat"] = BEAT[_s["id"]]
 

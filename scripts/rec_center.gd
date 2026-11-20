@@ -40,6 +40,7 @@ static func morning() -> void:
 		return
 	if is_open():
 		news()
+		RecReno.morning()  # renovations and the Rec Cup keep the rec growing for seasons
 		return
 	var day := int(GameState.run["day"])
 	if day < int(data().get("building", {}).get("open_day", 7)) or not GameState.quest_done("meet_town"):
@@ -342,6 +343,8 @@ static func today_lines() -> Array:
 		lines.append({"who": "Front desk", "text": "%s: %s." % [where, ", ".join(bits) if not bits.is_empty() else "nobody booked in, so take your pick"]})
 	if GameState.is_wet():
 		lines.append({"who": "Front desk", "text": "It's raining, so expect a crowd this afternoon."})
+	for ln: String in RecReno.board_lines():
+		lines.append({"who": "Front desk", "text": ln})
 	return lines
 
 
@@ -582,6 +585,13 @@ static func build_room(m: GameMap, I: Dictionary) -> Dictionary:
 		for th: Dictionary in I.get("things", []):  # cabinet hints use this arc's names (Neon Stack)
 			if str(th.get("act", "")) == "cabinet":
 				th["hint"] = "A: play " + Tickets.game_name(str(th.get("game", "")))
+	for th: Dictionary in I.get("things", []):  # a corner still to be renovated says so
+		if RecReno.blocked(th) != "":
+			I = I.duplicate(true)  # never write hints into the cached room data
+			break
+	for th: Dictionary in I.get("things", []):
+		if RecReno.blocked(th) != "":
+			th["hint"] = "A: under renovation" if RecReno.working(_reno_id(th)) else "A: covered (coming soon)"
 	if bool(I.get("lanes", false)):
 		var top := int(data().get("lane_top", 3))
 		var foul := int(data().get("lane_foul", 11))
@@ -621,11 +631,23 @@ static func dress(m: GameMap, interior_id: String) -> void:
 		m.hud.toast("Welcome gift: +20 tickets", Color(1, 0.85, 0.5))
 
 
+static func _reno_id(th: Dictionary) -> String:
+	for ph: Dictionary in RecReno.phases():
+		var o: Dictionary = ph.get("opens", {})
+		if str(th.get("game", "-")) in o.get("cabinets", []) or (str(th.get("act", "")) in ["skee", "jukebox"] and bool(o.get(str(th["act"]), false))):
+			return str(ph["id"])
+	return ""
+
+
 ## Every "rec" thing in both rooms.
 static func use(m: GameMap, thing: Dictionary, c: Vector2i) -> void:
 	var act := str(thing.get("act", ""))
 	if act in NEEDS_OPEN and why_closed() != "":
 		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		return
+	var reno := RecReno.blocked(thing)
+	if reno != "":
+		m.hud.toast(reno, Color(1, 0.9, 0.6))
 		return
 	match act:
 		"up":

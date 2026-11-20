@@ -1331,13 +1331,22 @@ func _draw_sheet() -> void:
 		c.draw_string(_font, Vector2(130, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, Color(1, 0.85, 0.4))
 		_sheet_row(rolls, 20, 40, cur, true)
 	else:
-		c.draw_string(_font, Vector2(9, 15), "LANE %d · VS %s" % [lane, opp_name().to_upper()], HORIZONTAL_ALIGNMENT_LEFT, 170, 8, Color(0.75, 0.9, 1))
+		var head := "LANE %d · VS %s" % [lane, opp_name().to_upper()]
+		c.draw_string(_font, Vector2(9, 15), head, HORIZONTAL_ALIGNMENT_LEFT, 170, fit_size(head, 170.0, 8), Color(0.75, 0.9, 1))
 		c.draw_string(_font, Vector2(180, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_RIGHT, 80, 8, Color(1, 0.85, 0.4))
 		var shown_opp := opp_rolls
 		if phase == "opp":
 			shown_opp = opp_rolls.slice(0, _opp_from + _opp_show)
 		_sheet_row(rolls, 19, 34, cur, true)
-		_sheet_row(shown_opp, 54, 34, -1, false, opp_name().left(4).to_upper())
+		_sheet_row(shown_opp, 54, 34, -1, false, opp_name().to_upper())
+
+
+## The largest font size (down to 4) at which text fits in width px.
+func fit_size(text: String, width: float, size: int) -> int:
+	var sz := size
+	while sz > 4 and _font != null and _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x > width:
+		sz -= 1
+	return sz
 
 
 func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag := "") -> void:
@@ -1352,8 +1361,6 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 		c.draw_rect(box, Color("6a6a88"), false, 1.0)
 		if frame_nums:
 			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, 6, Color(0.6, 0.6, 0.75))
-		elif f == 0 and tag != "":
-			c.draw_string(_font, Vector2(x + 1, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, w, 6, Color(0.6, 0.85, 1))
 		var marks := frame_marks(rs, f)
 		var nbox := 2 if f < 9 else 3
 		for k in nbox:
@@ -1366,6 +1373,10 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 		if f < totals.size() and int(totals[f]) >= 0:
 			c.draw_string(_font, Vector2(x, top + h - 4), str(int(totals[f])), HORIZONTAL_ALIGNMENT_CENTER, w, 9, Color(1, 1, 0.85))
 		x += w + 0.5
+	if tag != "" and not frame_nums:
+		# The opponent's whole name along the row's free top strip, never cut (c3_17 #4).
+		var tw := 9 * 24.0 - 4.0
+		c.draw_string(_font, Vector2(9, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, tw, fit_size(tag, tw, 6), Color(0.6, 0.85, 1))
 
 
 ## The ten-pin chart (standing / down) beside the lane.

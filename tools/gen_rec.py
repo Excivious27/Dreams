@@ -66,6 +66,55 @@ LANES = [  # upper floor: left cell of each 2-wide lane; pins at the top, foul l
 ]
 LANE_TOP, LANE_FOUL = 3, 11
 
+# ---------------------------------------------------------------- renovations
+# The rec is never "done" in one season (Tom, Guide 26 #3): after the grand opening a
+# letter announces each renovation, the work runs a few days (that corner taped off),
+# then it opens with a second letter. `after` = days after the opening day, `build` =
+# days of work; `opens`: cabinets (ids), "skee", "jukebox", "prize_tier" (prizes of
+# that tier and up wait for it). RecReno (scripts/rec_reno.gd) runs them each morning.
+# After the last phase a seasonal "Rec Cup" letter keeps coming (CUP).
+def P2(p, g):
+    return {"penguins": p, "gangsters": g}
+
+
+RENOVATIONS = [
+    {"id": "arcade_wing", "after": 18, "build": 3, "opens": {"cabinets": ["whack", "gallery"]},
+     "name": P2("the arcade wing", "the back room"),
+     "start": P2("Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start tomorrow; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
+                 "Word from the {hall}: the back room's getting two new cabinets. Crew starts tomorrow, that corner's taped off three days. Keep your tickets warm. - Front desk"),
+     "done": P2("The arcade wing is open! {games} are plugged in and waiting. First one to top the board gets their name on the wall. - The {hall} front desk",
+                "Back room's open. {games} are plugged in. Top the board and your initials go on the wall. - Front desk")},
+    {"id": "skee_alley", "after": 42, "build": 4, "opens": {"skee": True},
+     "name": P2("Skee-Ball Alley", "Skee-Ball Alley"),
+     "start": P2("The empty corner by the snack bar is becoming a Skee-Ball alley! Four days of sawing and sanding, so mind the dust. - The {hall} front desk",
+                 "The dead corner by the snack bar's becoming a Skee-Ball alley. Four days of sawing. Mind the dust. - Front desk"),
+     "done": P2("Skee-Ball Alley is open! Roll for the hundred hole. Tickets pour out of these things. - The {hall} front desk",
+                "Skee-Ball Alley's open. Aim for the hundred hole. These machines spit tickets. - Front desk")},
+    {"id": "lounge", "after": 66, "build": 3, "opens": {"jukebox": True},
+     "name": P2("the jukebox lounge", "the jukebox lounge"),
+     "start": P2("We found a jukebox in the old hotel cellar! Gideon is rewiring it and we're building a little lounge around it. Three days. - The {hall} front desk",
+                 "Found a jukebox in the hotel cellar. Gideon's rewiring it, we're building a lounge round it. Three days. - Front desk"),
+     "done": P2("The jukebox lounge is open: pick a record, any record, and it plays all day. - The {hall} front desk",
+                "Jukebox lounge is open. Pick a record and the whole hall hears it all day. - Front desk")},
+    {"id": "prize_gallery", "after": 92, "build": 4, "opens": {"prize_tier": 4},
+     "name": P2("the prize gallery", "the prize gallery"),
+     "start": P2("The prize counter is growing a whole new glass case for our grandest prizes. Four days of polishing. Start saving! - The {hall} front desk",
+                 "Prize counter's getting a new glass case for the big prizes. Four days. Start saving. - Front desk"),
+     "done": P2("The prize gallery is open: our grandest prizes, under glass, waiting for the very best players. - The {hall} front desk",
+                "Prize gallery's open. The big prizes, under glass. Only serious players need apply. - Front desk")},
+    {"id": "trophy_hall", "after": 120, "build": 5, "opens": {"cup": True},
+     "name": P2("the trophy hall", "the trophy hall"),
+     "start": P2("Last big job of the year: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
+                 "Last big job this year: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"),
+     "done": P2("The trophy hall is open, and with it the Rec Cup: every season, beat the posted score and win the cup's tickets. Watch your mail. - The {hall} front desk",
+                "Trophy hall's open, and so is the Rec Cup. Every season, beat the posted score and take the pot. Watch your mail. - Front desk")},
+]
+# Seasonal Rec Cup once the trophy hall stands: one game per season (by year), a score to
+# beat, and a ticket pot. Announced on the season's first morning.
+CUP = {"games": [["bowling", 140], ["stack", 4000], ["whack", 380], ["gallery", 320], ["skee_ball", 240]],
+       "step": 1.1, "tickets": 120}
+
+
 # ---------------------------------------------------------------- rooms
 def room_ground():
     things = [
@@ -374,13 +423,13 @@ QUESTS = [
      "done_when": {"arcade_ms": "jumper_3"}, "reward": {"tickets": 40, "friend": ["pip", 15]}},
     {"id": "rec_theo_stack", "giver": "theo", "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.", "text_gangsters": "Theo wants proof his Neon Stack pattern works: score 3,000 points.", "when": {"flag": "rec_visited", "day": 12},
      "done_when": {"rec_best": ["stack", 3000]}, "reward": {"crystals": 120, "tickets": 30, "friend": ["theo", 15]}},
-    {"id": "rec_wren_jr_duck", "giver": "wren_jr", "text": "Wren jr wants a Duck Pond score of 300 for the class chart.", "text_gangsters": "Wren jr wants a Neon Range score of 300 for the class chart.", "when": {"flag": "rec_visited", "day": 11},
+    {"id": "rec_wren_jr_duck", "giver": "wren_jr", "text": "Wren jr wants a Duck Pond score of 300 for the class chart.", "text_gangsters": "Wren jr wants a Neon Range score of 300 for the class chart.", "when": {"flag": "rec_reno_arcade_wing", "day": 11},
      "done_when": {"rec_best": ["gallery", 300]}, "reward": {"tickets": 35, "friend": ["wren_jr", 15]}},
-    {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "text_gangsters": "Sal wants initials on the Whack-a-Snitch board: score 400.", "when": {"flag": "rec_visited", "day": 14},
+    {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "text_gangsters": "Sal wants initials on the Whack-a-Snitch board: score 400.", "when": {"flag": "rec_reno_arcade_wing", "day": 14},
      "done_when": {"rec_best": ["whack", 400]}, "reward": {"tickets": 60, "item": ["luck_potion", 1], "friend": ["sal", 15]}},
     {"id": "rec_maple_league", "giver": "maple", "text": "Maple dares you onto league night: bowl 150 or better.", "when": {"flag": "rec_visited", "day": 16, "quest": "rec_bowl_120"},
      "done_when": {"rec_best": ["bowling", 150]}, "reward": {"crystals": 250, "friend": ["maple", 20]}},
-    {"id": "rec_alder_cabinets", "giver": "alder", "text": "Mayor Alder wants every cabinet tried before he cuts the arcade ribbon twice.", "when": {"flag": "rec_visited", "day": 9},
+    {"id": "rec_alder_cabinets", "giver": "alder", "text": "Mayor Alder wants every cabinet tried before he cuts the arcade ribbon twice.", "when": {"flag": "rec_reno_arcade_wing", "day": 9},
      "done_when": {"arcade_ms": "all_games"}, "reward": {"crystals": 100, "tickets": 30, "friend": ["alder", 15]}},
 ]
 QUEST_LINES = {
@@ -598,7 +647,7 @@ def main():
         return
     rec = {
         "_": "Generated by tools/gen_rec.py",
-        "building": BUILDING, "cabinets": CABINETS, "lanes": LANES, "lane_top": LANE_TOP, "lane_foul": LANE_FOUL,
+        "building": BUILDING, "renovations": RENOVATIONS, "cup": CUP, "cabinets": CABINETS, "lanes": LANES, "lane_top": LANE_TOP, "lane_foul": LANE_FOUL,
         "visitors": VISITORS, "stands": STANDS,
         "bowl_avg": BOWL_AVG, "chat_spot": CHAT_SPOT, "chat_league": CHAT_LEAGUE, "chat_league_own": CHAT_LEAGUE_OWN,
         "chat_rain": CHAT_RAIN, "chat_result": CHAT_RESULT, "day_words": DAY_WORDS,

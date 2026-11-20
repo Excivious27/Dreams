@@ -62,6 +62,24 @@ static func pending() -> int:
 	return int(st().get("pending", -1))
 
 
+## Nights the stage being built takes (gen_community_farm BUILD_DAYS; 1 for old data).
+static func build_days(i: int) -> int:
+	if i < 0 or i >= stages().size():
+		return 1
+	return maxi(1, int(stages()[i].get("days", 1)))
+
+
+## Nights of work already done on the pending build (0 = starts tonight).
+static func build_done() -> int:
+	return int(st().get("build_done", 0)) if pending() >= 0 else 0
+
+
+## "tonight" / "2 more nights" for the pending build.
+static func build_left_words() -> String:
+	var left := build_days(pending()) - build_done()
+	return "tonight" if left <= 1 else "%d more nights" % left
+
+
 static func stage() -> int:
 	if GameState.run.is_empty():
 		return 0
@@ -421,7 +439,9 @@ static func quest_text() -> String:
 	if complete():
 		return "%s is thriving. Market every 7th day." % place_name()
 	if pending() >= 0:
-		return "%s: the crew is building the %s tonight. Visit tomorrow." % [place_name(), build_word(pending())]
+		if build_done() > 0:
+			return "%s: the crew is building the %s (night %d of %d done). Visit tomorrow." % [place_name(), build_word(pending()), build_done(), build_days(pending())]
+		return "%s: the crew starts the %s tonight (%d night%s of work). Visit tomorrow." % [place_name(), build_word(pending()), build_days(pending()), "" if build_days(pending()) == 1 else "s"]
 	if not GameState.run["flags"].has("cf_met"):
 		return "Meet %s at %s, out the west road from the town plaza." % [keeper_name(), short_name()]
 	return "%s (%d/%d): %s. Check the board by the gate." % [place_name(), stage() + 1, stages().size(), stage_name(stage())]
@@ -450,6 +470,7 @@ static func finish_stage(m: GameMap, save := true) -> void:
 	st()["stage"] = s + 1
 	st()["given"] = {}
 	st()["pending"] = -1
+	st()["build_done"] = 0
 	GameState.run["flags"]["cf_stage_" + str(sd["id"])] = true
 	var got: Array = []
 	if int(sd.get("crystals", 0)) > 0:
@@ -494,6 +515,13 @@ static func build_word(i: int) -> String:
 	return {"shed": "shed", "beds": "raised beds", "well": "well", "orchard": "orchard", "greenhouse": "greenhouse"}.get(str(stages()[i]["id"]), stage_name(i).to_lower())
 
 
+## Build progress as a little bar: "■■□ 2/3 nights".
+static func build_bar() -> String:
+	var n := build_days(pending())
+	var d := build_done()
+	return "%s%s %d/%d nights" % ["■".repeat(d), "□".repeat(n - d), d, n]
+
+
 static func is_build(i: int) -> bool:
 	return i >= 0 and i < stages().size() and bool(stages()[i].get("build", false))
 
@@ -504,12 +532,14 @@ static func bundle_full(m: GameMap) -> void:
 	var sd: Dictionary = stages()[s]
 	if is_build(s):
 		st()["pending"] = s
+		st()["build_done"] = 0
 		st()["given"] = {}
 		sync_quest()
 		if m != null and is_instance_valid(m):
 			Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 			await m.say([{"who": keeper_name(), "text": str(tx(sd.get("tonight", sd["done"])))}])
-			m.hud.toast("The crew builds the %s tonight. Sleep, then come and see." % build_word(s), Color(1, 0.95, 0.8))
+			var nd := build_days(s)
+			m.hud.toast(("The crew builds the %s tonight. Sleep, then come and see." % build_word(s)) if nd <= 1 else ("The crew starts the %s tonight: %d nights of work. Drop by and watch it go up." % [build_word(s), nd]), Color(1, 0.95, 0.8))
 			if m.scene_id() == SCENE:
 				m.go_to(SCENE, m.player.position - m.offset(), m.player.facing)  # the build site appears
 				return
@@ -588,7 +618,7 @@ static func open_board(m: GameMap) -> void:
 			else:
 				text += "\nThis season's ask is answered. Thank you!"
 		elif pending() >= 0:
-			text = "%s · stage %d of %d: %s\nAll in! The crew is building the %s tonight. Come back tomorrow and see." % [place_name(), pending() + 1, stages().size(), stage_name(pending()), build_word(pending())]
+			text = "%s · stage %d of %d: %s\nAll in! The crew is building the %s: %s, done %s. Come back tomorrow and see." % [place_name(), pending() + 1, stages().size(), stage_name(pending()), build_word(pending()), build_bar(), build_left_words()]
 		else:
 			var sd: Dictionary = stages()[stage()]
 			text = "%s · stage %d of %d: %s\n%s\n%s" % [place_name(), stage() + 1, stages().size(), stage_name(stage()), str(tx(sd["desc"])), "\n".join(need_lines())]
@@ -947,10 +977,18 @@ static func overnight(report: Dictionary) -> void:
 	var lines: Array = []
 	if pending() >= 0:
 		var b := pending()
-		var night := str(tx(stages()[b].get("night", {"penguins": "The crew finished the %s overnight." % build_word(b)})))
-		finish_stage(null, false)  # the sleep saves
-		flags["cf_reveal_done"] = true  # Hazel's "done" line plays in the reveal on your next visit
-		lines.append(night)
+		var done := build_done() + 1
+		if done < build_days(b):
+			# A night of a multi-day build: the site shows the half-built piece tomorrow.
+			st()["build_done"] = done
+			var prog: Array = stages()[b].get("progress", [])
+			lines.append(str(tx(prog[done - 1])) if done - 1 < prog.size() else "The crew worked on the %s all night: %d of %d nights done." % [build_word(b), done, build_days(b)])
+			sync_quest()
+		else:
+			var night := str(tx(stages()[b].get("night", {"penguins": "The crew finished the %s overnight." % build_word(b)})))
+			finish_stage(null, false)  # the sleep saves
+			flags["cf_reveal_done"] = true  # Hazel's "done" line plays in the reveal on your next visit
+			lines.append(night)
 	# The compost works from the day the shed stands (a little fertilizer every third night).
 	var share_before := _share_n()
 	if stage() >= 2 and int(GameState.run["day"]) % 3 == 0:

@@ -415,10 +415,15 @@ func _back(n: Npc, job: Dictionary) -> void:
 	job["state"] = "back"
 	job["t"] = 0.0
 	# A short pause on the spot, then home to their own cell.
-	var t := map.get_tree().create_timer(0.8)
+	# Weakrefs: the map (and this node) may be gone when the timer fires (c3_17 #2).
+	var wn: WeakRef = weakref(n)
+	var me: WeakRef = weakref(self)
+	var t := map.get_tree().create_timer(0.8, false)
 	t.timeout.connect(func() -> void:
-		if is_instance_valid(n) and _task.get(n, {}) == job:
-			_go(n, job["back"]))
+		var nn := wn.get_ref() as Npc
+		var vol := me.get_ref() as CfVolunteers
+		if nn != null and vol != null and is_instance_valid(nn) and vol._task.get(nn, {}) == job:
+			vol._go(nn, job["back"]))
 
 
 func _end_task(n: Npc) -> void:

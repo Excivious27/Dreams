@@ -78,9 +78,13 @@ static func lane_sound(at: Node2D, pos: Vector2, what: String, hits := 0) -> Str
 	at.add_child(p)
 	p.finished.connect(p.queue_free)
 	if what == "roll":
+		# Capture a weakref, never the player: a lambda whose captured node was freed
+		# (map changed, sound ended) errors "Lambda capture ... was freed" (c3_17 #2).
+		var wr: WeakRef = weakref(p)
 		at.get_tree().create_timer(1.55, false).timeout.connect(func() -> void:
-			if is_instance_valid(p):
-				create_fade(p))
+			var pp := wr.get_ref() as AudioStreamPlayer2D
+			if pp != null and is_instance_valid(pp) and pp.is_inside_tree():
+				create_fade(pp))
 	p.play()
 	return nm
 

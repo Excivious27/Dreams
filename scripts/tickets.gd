@@ -74,6 +74,7 @@ static func best_score(game_id: String) -> int:
 static func set_best(game_id: String, score: int) -> bool:
 	var a := _st()
 	a["plays"][game_id] = int(a["plays"].get(game_id, 0)) + 1
+	RecReno.cup_score(game_id, score)  # the seasonal Rec Cup (once the trophy hall stands)
 	if score > int(a["best"].get(game_id, 0)):
 		a["best"][game_id] = score
 		return true
@@ -152,6 +153,39 @@ static func game_name(game: String) -> String:
 	return str(names.get(game, game.capitalize()))
 
 
+## A little ticket stub (notched ends, a perforation line), drawn in place of a glyph so
+## tickets never look like crystals ◆ (c3_17 #5). `at` = left of the stub's centre line;
+## returns the stub's width so text can follow it.
+static func draw_ticket(c: CanvasItem, at: Vector2, h: float, col := Color(1, 0.62, 0.82)) -> float:
+	var w := roundf(h * 1.6)
+	var r := Rect2(at.x, at.y - h / 2.0, w, h)
+	var dark := col.darkened(0.55)
+	c.draw_rect(r.grow(0.6), dark)
+	c.draw_rect(r, col)
+	var nr := maxf(1.0, h * 0.22)
+	c.draw_circle(Vector2(r.position.x, at.y), nr, dark)
+	c.draw_circle(Vector2(r.end.x, at.y), nr, dark)
+	var px := r.position.x + w * 0.68
+	var y := r.position.y + 1.0
+	while y < r.end.y - 0.5:
+		c.draw_rect(Rect2(px, y, 0.8, 0.9), dark)
+		y += 2.0
+	return w
+
+
+## A ticket stub followed by text, centred in [x, x + width] (draw_string HORIZONTAL_ALIGNMENT_CENTER
+## stand-in for screens that used "♦ n").
+static func draw_amount(c: CanvasItem, font: Font, x: float, base_y: float, width: float, text: String, size: int, col: Color, align := HORIZONTAL_ALIGNMENT_CENTER) -> void:
+	var tw := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	var ih := maxf(3.0, size * 0.62)
+	var iw := roundf(ih * 1.6) + 2.0
+	var left := x + (width - tw - iw) / 2.0
+	if align == HORIZONTAL_ALIGNMENT_RIGHT:
+		left = x + width - tw - iw
+	draw_ticket(c, Vector2(left, base_y - size * 0.36), ih, col if col.a > 0.6 else Color(1, 0.62, 0.82, col.a))
+	c.draw_string(font, Vector2(left + iw, base_y), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, col)
+
+
 ## False for an item that belongs to the other arc (the counter, claw and machines skip it).
 static func arc_ok(item: String) -> bool:
 	var a := str(GameState.items.get(item, {}).get("arc", ""))
@@ -170,6 +204,9 @@ static func lock_text(prize_id: String) -> String:
 		return "Unknown prize."
 	if not arc_ok(str(p.get("item", prize_id))):
 		return "Not on this counter."
+	var reno := RecReno.prize_lock(int(p.get("tier", 1)))
+	if reno != "":
+		return reno
 	var need: Dictionary = p.get("need", {})
 	for g in (need.get("best", {}) as Dictionary):
 		if best_score(str(g)) < int(need["best"][g]):

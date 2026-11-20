@@ -250,7 +250,7 @@ func _draw_board() -> void:
 	draw_string(f, Vector2(r.position.x, r.position.y + 7), "HI-SCORE", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 5, g)
 	var best := Tickets.best_score("bowling") if not GameState.run.is_empty() else 0
 	draw_string(f, Vector2(r.position.x, r.position.y + 14), "BOWL %d" % best, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 5, Color(1, 0.9, 0.4))
-	draw_string(f, Vector2(r.position.x, r.position.y + 19), "♦ %d" % (Tickets.count() if not GameState.run.is_empty() else 0), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 4, Color(1, 0.7, 0.9))
+	Tickets.draw_amount(self, f, r.position.x, r.position.y + 19, r.size.x, "%d" % (Tickets.count() if not GameState.run.is_empty() else 0), 4, Color(1, 0.7, 0.9))
 
 
 # ---- outside ---------------------------------------------------------------------
