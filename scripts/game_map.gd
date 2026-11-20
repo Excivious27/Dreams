@@ -2891,7 +2891,7 @@ func _lieutenant_choice(id: String, nm: String) -> void:
 				GameState._apply_max_stats()
 				hud.toast("Old Mags joins: +20 max energy (her back roads save your legs).", Color(1, 0.9, 0.5))
 			return
-		d.say([{"who": nm, "text": "Work for you? I'd rather walk. Don't worry. I'm done with him too."}])
+		d.say([{"who": nm, "text": str(Gift.data().get("lieutenants", {}).get(id, {}).get("refuse", "Work for you? I'd rather walk. Don't worry. I'm done with him too."))}])
 		await d.finished
 	GameState.run["flags"]["lt_spared_" + id] = true
 

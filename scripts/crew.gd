@@ -54,12 +54,45 @@ static func _set_loyalty(id: String, n: int) -> void:
 ## Perk keys: sell_bonus, meal_heal, shop_discount, raid_warning, sword, defence,
 ## rides, board_bonus, run_speed, heal_hideout, status_half, fence, doors.
 static func perk_level(key: String) -> int:
-	var who: String = {"sell_bonus": "deuce", "meal_heal": "mama_rosa", "shop_discount": "specs", "raid_warning": "ladder", "sword": "vic", "defence": "val", "rides": "halo", "board_bonus": "dice", "run_speed": "the_kid", "heal_hideout": "doc", "status_half": "doc", "fence": "marlene", "doors": "sasha"}.get(key, "")
+	var who: String = PERK_OF.get(key, "")
 	if who == "" or not recruited(who):
 		return 0
-	# The Recruit Training Center: drilled crew count a step (or two) higher.
+	return member_level(who)
+
+
+const PERK_OF := {"sell_bonus": "deuce", "meal_heal": "mama_rosa", "shop_discount": "specs", "raid_warning": "ladder", "sword": "vic", "defence": "val", "rides": "halo", "board_bonus": "dice", "run_speed": "the_kid", "heal_hideout": "doc", "status_half": "doc", "fence": "marlene", "doors": "sasha"}
+
+
+## A member's working perk level: loyalty plus the Recruit Training Center drill
+## (drilled crew count a step or two higher).
+static func member_level(id: String) -> int:
 	var drill := maxi(0, Builds.built_tier("training") - 1)
-	return mini(3, loyalty(who) + drill)
+	return mini(3, loyalty(id) + drill)
+
+
+## Crew tab text for one member: name, role and the perk that is really active.
+static func roster_text(id: String) -> String:
+	var mdef: Dictionary = members().get(id, {})
+	var perks: Array = mdef.get("perks", [])
+	var lv := member_level(id)
+	var p := "no perk yet: talk at the hideout"
+	if lv > 0 and lv <= perks.size():
+		p = str(perks[lv - 1]) + (" (drilled)" if lv > loyalty(id) else "")
+	return "%s — %s\n%s" % [str(mdef.get("name", id)), str(mdef.get("role", "")), p]
+
+
+## Crew tab: the Marked and lieutenants who joined you (they live at the hideout).
+static func also_with_you() -> Array:
+	var out: Array = []
+	for mid: String in Marked.all():
+		if Marked.state(mid) == "crew":
+			var md: Dictionary = Marked.all()[mid]
+			out.append("%s \"%s\" (Marked)" % [str(md["name"]), str(md["epithet"])])
+	var lts: Dictionary = Gift.data().get("lieutenants", {})
+	for lid: String in lts:
+		if GameState.run["flags"].has("lt_joined_" + lid):
+			out.append("%s (%s, retired)" % [str(lts[lid]["name"]), str(lts[lid].get("title", "lieutenant"))])
+	return out
 
 
 ## Place crew members in this map: unrecruited ones where the story expects
@@ -88,34 +121,93 @@ static func place(m: GameMap) -> void:
 				at = Vector2i(int(b["cell"][0]), int(b["cell"][1]))
 		if at == Vector2i(-1, -1):
 			continue
-		# Find a free cell near the wanted one.
-		var c := at
-		for r in 10:
-			var found := false
-			for dy in range(-r, r + 1):
-				for dx in range(-r, r + 1):
-					var cc := at + Vector2i(dx, dy)
-					if m.in_content(cc) and not m.blocked.has(cc) and not m.things.has(cc) and not m.is_water_cell(cc):
-						c = cc
-						found = true
-						break
-				if found:
-					break
-			if found:
-				break
-		var npc := Npc.new()
-		npc.map = m
-		npc.setup(id, GameState.npcs[id], m.cell_center(c))
-		npc.wander = 10.0
-		m.add_child(npc)
-		if m.get("npcs") != null:
-			(m.get("npcs") as Array).append(npc)
+		_put(m, id, _free_near(m, at))
+	if m.scene_id() == "hideout":
+		_place_joined(m)
+
+
+static func _free_near(m: GameMap, at: Vector2i) -> Vector2i:
+	for r in 10:
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				var cc := at + Vector2i(dx, dy)
+				if m.in_content(cc) and not m.blocked.has(cc) and not m.things.has(cc) and not m.is_water_cell(cc):
+					return cc
+	return at
+
+
+static func _put(m: GameMap, id: String, c: Vector2i) -> void:
+	var npc := Npc.new()
+	npc.map = m
+	npc.setup(id, GameState.npcs[id], m.cell_center(c))
+	npc.wander = 10.0
+	m.add_child(npc)
+	if m.get("npcs") != null:
+		(m.get("npcs") as Array).append(npc)
+
+
+## Hideout spots for the Marked and lieutenants who joined (C7 c7_14).
+const JOINED_SPOTS := [[24, 26], [28, 28], [16, 24], [32, 20], [22, 30], [38, 22], [12, 22], [30, 32], [18, 30], [40, 26], [26, 10], [8, 24]]
+
+
+## Marked with state "crew" (not the one following you) and the lieutenants who
+## joined stand around the hideout and talk (lines from data/gifts.json).
+static func _place_joined(m: GameMap) -> void:
+	var n := 0
+	for id in joined_ids():
+		if id == Companion.active_id():
+			continue
+		var at: Array = JOINED_SPOTS[n % JOINED_SPOTS.size()]
+		n += 1
+		_put(m, id, _free_near(m, Vector2i(int(at[0]), int(at[1]))))
+
+
+## npc ids (mk_<id>, lt_<id>) of everyone who joined outside crew.json, registered as NPCs.
+static func joined_ids() -> Array:
+	var out: Array = []
+	for mid: String in Marked.all():
+		if Marked.state(mid) == "crew":
+			var md: Dictionary = Marked.all()[mid]
+			_register("mk_" + mid, str(md["name"]).split(" ")[0], str(md.get("char", "cyber")), "Marked")
+			out.append("mk_" + mid)
+	var lts: Dictionary = Gift.data().get("lieutenants", {})
+	for lid: String in lts:
+		if GameState.run["flags"].has("lt_joined_" + lid):
+			_register("lt_" + lid, str(lts[lid]["name"]), str(lts[lid].get("char", "enforcer")), "retired lieutenant")
+			out.append("lt_" + lid)
+	return out
+
+
+static func _register(id: String, nm: String, sprite: String, role: String) -> void:
+	if GameState.npcs.has(id):
+		return
+	GameState.npcs[id] = {"name": nm, "sprite": sprite, "portrait": sprite if Art.has("portraits/" + sprite, "neutral") else "gambler", "role": role, "routine": [], "likes": ["root_beer", "coffee", "thug_cash"], "dislikes": ["turnip"]}
+
+
+## A joined Marked or lieutenant at the hideout: one of their lines (day-rotated).
+static func _joined_talk(m: GameMap, id: String) -> bool:
+	var ls: Array = []
+	if id.begins_with("mk_"):
+		ls = Marked.all().get(id.trim_prefix("mk_"), {}).get("hideout", [])
+	else:
+		ls = Gift.data().get("lieutenants", {}).get(id.trim_prefix("lt_"), {}).get("hideout", [])
+	if ls.is_empty():
+		return false
+	if GameState.can_gift(id, str(GameState.run.get("selected", ""))):
+		return false
+	var nm := str(GameState.npcs.get(id, {}).get("name", id))
+	await m.say([{"who": nm, "text": str(ls[int(GameState.run["day"]) % ls.size()])}])
+	return true
 
 
 ## Loyalty talk at the hideout: one scene per three days. Returns true if played.
 static func talk(m: GameMap, id: String) -> bool:
-	if not members().has(id) or not recruited(id):
+	if (id.begins_with("mk_") or id.begins_with("lt_")) and not GameState.is_penguins():
+		return await _joined_talk(m, id)
+	if not members().has(id):
 		return false
+	if not recruited(id):
+		return await _waiting(m, id)
 	if await Ops.talk(m, id):
 		return true
 	var mdef: Dictionary = members()[id]
@@ -137,6 +229,9 @@ static func talk(m: GameMap, id: String) -> bool:
 				if m.player and Art.has("fx", "special_" + id):
 					m.fx("special_" + id, m.player.position + Vector2(0, -16), 10.0, 0.5)
 			return true
+	# Holding a gift: let the gift confirm run (region._talk_npc) instead of a line.
+	if GameState.can_gift(id, str(GameState.run.get("selected", ""))):
+		return false
 	# Halo: rides between the gangster districts.
 	if id == "halo" and perk_level("rides") >= 1 and (m.scene_id() == "hideout" or perk_level("rides") >= 3):
 		var d := Dialogue.instance(m.get_tree())
@@ -165,13 +260,62 @@ static func talk(m: GameMap, id: String) -> bool:
 		"ladder": ["Four hundred and twelve.", "Clear sky today. You can see the tower from the roof.", "Nothing on the road. Nothing's always something."],
 		"vic": ["Val's warming up.", "We're ready.", "Left side's yours. Remember."],
 		"val": ["Vic's warming up.", "Right side's ours.", "Don't listen to the stone."],
-		"halo": ["Engine's warm.", "Say where.", "Never quit at the containers."],
+		"halo": ["Engine's warm.", "Hideout's where I park. Find me there.", "Never quit at the containers."],
 		"dice": ["Nothing new. Well. Something new. Nothing I can tell you yet.", "I'm fine. I'm FINE.", "Messages are quiet. Quiet's bad."],
 		"the_kid": ["...", "...", "..."],
 		"doc": ["Let me see that arm.", "Sleep more.", "Try not to need me."],
 		"marlene": ["Prices are up. Yours especially.", "I don't do favours. This isn't one.", "Paper, boss. Keep it dry."],
 		"sasha": ["Doors?", "...", "Say the word."],
 	}
-	var pick: Array = lines.get(id, ["..."])
+	var pick: Array = (lines.get(id, ["..."]) as Array).duplicate()
+	pick.append_array(flag_lines(id))
 	await m.say([{"who": str(mdef["name"]), "text": str(pick[(day + lv) % pick.size()])}])
+	return true
+
+
+## Everyday lines that remember a recruit choice or who else joined (C7 c7_14).
+static func flag_lines(id: String) -> Array:
+	var f: Dictionary = GameState.run.get("flags", {})
+	var out: Array = []
+	match id:
+		"deuce":
+			if f.has("deuce_thumb"):
+				out.append("Still not doing the thumb one. Don't ask.")
+		"dice":
+			if f.has("dice_scared"):
+				out.append("The pawnbroker crosses the street when he sees me now. Is that... good?")
+		"vic":
+			if f.has("lt_joined_brock"):
+				out.append("You kept the champion? Huh. He hits like a wall.")
+		"val":
+			if f.has("lt_joined_brock"):
+				out.append("Brock's in. Smart. Nobody gets past the three of us.")
+		"sasha":
+			if f.has("lt_joined_brock"):
+				out.append("I carried Brock out of that pit. Now he eats at our table. Funny city.")
+	return out
+
+
+## Before a member is recruited (and no story beat fits yet): an in-voice line
+## that says what has to happen first, plus a one-time hint toast. Marlene after
+## the letter was sold: one closing scene, then she walks (like Dice).
+static func _waiting(m: GameMap, id: String) -> bool:
+	var f: Dictionary = GameState.run["flags"]
+	if f.has(id + "_refused"):
+		return false
+	var mdef: Dictionary = members()[id]
+	if id == "marlene" and f.has("letter_sold"):
+		await m.say(mdef.get("sold", []))
+		f["marlene_refused"] = true
+		return true
+	var ws: Array = mdef.get("waiting", [])
+	if ws.is_empty():
+		return false
+	var w: Variant = ws[int(GameState.run["day"]) % ws.size()]
+	var line: Dictionary = (w as Dictionary).duplicate() if w is Dictionary else {"who": str(mdef["name"]), "text": str(w)}
+	await m.say([line])
+	var h := str(mdef.get("waiting_hint", ""))
+	if h != "" and not f.has("crew_hint_" + id):
+		f["crew_hint_" + id] = true
+		m.hud.toast(h, Color(1, 0.85, 0.7))
 	return true

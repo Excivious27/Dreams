@@ -66,9 +66,49 @@ static func has_ability(ab: String) -> bool:
 	return str(defs().get(a, {}).get("ability", "")) == ab
 
 
-## Grumps were villagers' animals once. Meow Pow Wow turns them back; rank
-## (from Nova's friendship hearts / 2, min 1) decides how big a grump it reaches.
-const REVERT := {"crystal_baby": ["moon_rabbit", 1], "finargle": ["owl", 3], "finargle_elder": ["owl", 4], "grump": ["rabbit", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["crystal_fish", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["deer", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
+## Meow Pow Wow turns the Dark Crystal's work back; rank (from Nova's friendship
+## hearts / 2, min 1) decides how big a foe it reaches. Grumps were crystals of
+## Crystopia that listened to him: they shake off the grey and float home as a
+## little crystal ("@crystal"). Crystal babies calm down and toddle back to their
+## caves ("@calm"); finargles blink and slip away into the shadows ("@vanish").
+## Other creatures he squeezed turn back into the animal they were (C7 c7_01).
+const REVERT := {"crystal_baby": ["@calm", 1], "finargle": ["@vanish", 3], "finargle_elder": ["@vanish", 4], "grump": ["@crystal", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["@crystal", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["@crystal", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
+
+
+## What a reverted foe leaves behind for the "@" outcomes: a floating crystal, or
+## a copy of the foe that walks off / fades into shadow.
+static func revert_show(m: GameMap, e: Node2D, how: String) -> void:
+	if how == "@crystal":
+		var sp := Sprite2D.new()
+		sp.texture = Art.tex("items", "crystal")
+		sp.position = e.position + Vector2(0, -6)
+		sp.scale = Vector2(0.6, 0.6)
+		sp.z_index = 5
+		m.add_child(sp)
+		if Art.has("fx", "glow_crystal"):
+			m.fx("glow_crystal", sp.position, 8.0, 1.4)
+		var tw := sp.create_tween()
+		tw.tween_property(sp, "position:y", sp.position.y - 48.0, 1.6).set_ease(Tween.EASE_OUT)
+		tw.parallel().tween_property(sp, "modulate:a", 0.0, 1.6).set_delay(0.6)
+		tw.tween_callback(sp.queue_free)
+		return
+	var src: Variant = e.get("_sprite")
+	if not (src is AnimatedSprite2D):
+		return
+	var ghost := (src as AnimatedSprite2D).duplicate() as AnimatedSprite2D
+	ghost.position = e.position + (src as AnimatedSprite2D).position
+	ghost.z_index = 4
+	m.add_child(ghost)
+	ghost.modulate = Color(1, 1, 1, 1)
+	ghost.play(ghost.animation)
+	var tw2 := ghost.create_tween()
+	if how == "@calm":
+		var away := Vector2(randf_range(-1.0, 1.0), -0.6).normalized() * 40.0
+		tw2.tween_property(ghost, "position", ghost.position + away, 2.2)
+		tw2.parallel().tween_property(ghost, "modulate:a", 0.0, 0.8).set_delay(1.4)
+	else:
+		tw2.tween_property(ghost, "modulate", Color(0.2, 0.15, 0.3, 0.0), 0.9)
+	tw2.tween_callback(ghost.queue_free)
 
 
 static func meow_rank() -> int:
@@ -230,6 +270,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 						pg.position = e.position
 						pg.play("idle")
 						m.add_child(pg)
+				elif str(rv[0]).begins_with("@"):
+					revert_show(m, e, str(rv[0]))
 				else:
 					WorldGen.add_critters(m, Rect2i(m.world_to_cell(e.position) - Vector2i(2, 2), Vector2i(5, 5)), int(Time.get_ticks_msec()), 1, [str(rv[0])])
 				e.set_meta("reverted", true)
