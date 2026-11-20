@@ -86,7 +86,7 @@ func _ready() -> void:
 	add_child(_canvas)
 	_prev_track = Music.instance(get_tree())._current
 	_start_music()
-	_deck = _deck_buttons()
+	_deck = mirror_deck(_deck_buttons()) if Settings.left_handed() else _deck_buttons()
 	for b: Dictionary in _deck:
 		Hud.extra_rects.append(b["rect"])
 	_rects_on = true
@@ -110,6 +110,37 @@ func _deck_buttons() -> Array:
 	]
 
 
+const DPAD := ["up", "down", "left", "right"]
+
+
+## C9 P3: left-handed decks. The d-pad cluster moves to the other side as one
+## piece (◀ stays left of ▶); every other button flips on its own.
+static func mirror_deck(deck: Array) -> Array:
+	var lo := INF
+	var hi := -INF
+	for b: Dictionary in deck:
+		if str(b["action"]) in DPAD:
+			lo = minf(lo, (b["rect"] as Rect2).position.x)
+			hi = maxf(hi, (b["rect"] as Rect2).end.x)
+	var dx := (W - hi) - lo if lo != INF else 0.0
+	var out: Array = []
+	for b: Dictionary in deck:
+		var nb := b.duplicate()
+		var r: Rect2 = b["rect"]
+		if str(b["action"]) in DPAD:
+			r.position.x += dx
+		else:
+			r.position.x = W - r.end.x
+		nb["rect"] = r
+		out.append(nb)
+	return out
+
+
+## The on-screen deck is only for fingers: hidden while a pad plays (C9 P3).
+func deck_hidden() -> bool:
+	return ScreenCursor.pad_active() and bot.is_empty() and not manual
+
+
 ## Called once the screen exists (jumper opens its level select here).
 func _opened() -> void:
 	pass
@@ -118,6 +149,7 @@ func _opened() -> void:
 # --- input -------------------------------------------------------------------
 
 func _input(ev: InputEvent) -> void:
+	ScreenCursor.note(ev)
 	if ev is InputEventScreenTouch:
 		var st := ev as InputEventScreenTouch
 		if st.pressed:
@@ -183,6 +215,18 @@ func pressed(a: String) -> bool:
 	return bool(_jp.get(a, false))
 
 
+## Like pressed(), then again while held (after REPEAT_DELAY, every REPEAT_RATE):
+## lists stepped by a pad, which never echoes (C9 P3).
+func repeat_pressed(a: String) -> bool:
+	return bool(_jp.get(a, false)) or bool(_rp.get(a, false))
+
+
+const REPEAT_DELAY := 0.35
+const REPEAT_RATE := 0.09
+var _hold_t := {}
+var _rp := {}
+
+
 func _read_input() -> void:
 	for a in ACTIONS:
 		var h: bool
@@ -194,6 +238,10 @@ func _read_input() -> void:
 			# A tap shorter than a frame still counts (once, on the first sub-step).
 			j = _first_sub and Input.is_action_just_pressed(a)
 		_jp[a] = (h and not bool(_prev.get(a, false))) or j
+		var ht := float(_hold_t.get(a, 0.0)) + DT if h else 0.0
+		var was := float(_hold_t.get(a, 0.0))
+		_rp[a] = h and ht >= REPEAT_DELAY and floori((ht - REPEAT_DELAY) / REPEAT_RATE) > (floori((was - REPEAT_DELAY) / REPEAT_RATE) if was >= REPEAT_DELAY else -1)
+		_hold_t[a] = ht
 		_held[a] = h
 		_prev[a] = h
 	if _arm < 6:  # the press that opened the cabinet must not also start it
@@ -450,6 +498,8 @@ func float_text(p: Vector2, text: String, col := Color(1, 0.95, 0.5)) -> void:
 
 
 func shake(a := 3.0) -> void:
+	if not bool(Settings.get_v("shake")):
+		return  # Options > Screen shake: off reaches the cabinets too (c9_07)
 	_shake = maxf(_shake, a)
 
 
@@ -595,6 +645,9 @@ var _deck_geo := {}  # which buttons are down -> [idx, pts, cols]: the deck's sh
 ## (cached per pressed-state; was ~60 draw calls a frame), then the labels on top
 ## (buttons never overlap, so shapes-then-labels is the same picture).
 func _draw_deck(c: Control) -> void:
+	if deck_hidden():
+		text(c, Vector2(0, DECK + (H - DECK) / 2.0 + 4), "Controller in use", W, 8, Color(1, 1, 1, 0.35), HORIZONTAL_ALIGNMENT_CENTER)
+		return
 	var sig := ""
 	for b: Dictionary in _deck:
 		sig += "x" if _dead(b) else ("1" if _down(b) else "0")

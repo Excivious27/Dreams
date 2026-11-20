@@ -77,8 +77,32 @@ static func make_map(id: String, refresh: Callable = Callable()) -> Control:
 	m.custom_minimum_size = Vector2(W, H)
 	m.name = "MegaMap_" + id
 	m.mouse_filter = Control.MOUSE_FILTER_PASS
-	m.draw.connect(func() -> void: draw_region(m, id))
+	# C9 P3: a focus stop for pad/keyboard navigation. While focused the d-pad walks
+	# the pins (step_sel); a direction with no pin that way is left unhandled so the
+	# menu's focus moves on (up from the top pin goes back to the tab strip).
+	m.focus_mode = Control.FOCUS_ALL
+	m.focus_entered.connect(func() -> void:
+		if sel == "" and not pin_spots(id).is_empty():
+			step_sel(id, Vector2.ZERO)
+			if refresh.is_valid():
+				refresh.call.call_deferred()
+		m.queue_redraw())
+	m.focus_exited.connect(m.queue_redraw)
+	m.draw.connect(func() -> void:
+		draw_region(m, id)
+		if m.has_focus() and not TouchControls.visible_controls:
+			m.draw_rect(Rect2(Vector2.ZERO, m.size).grow(-1), Color(1, 0.85, 0.3), false, 2.0))
 	m.gui_input.connect(func(ev: InputEvent) -> void:
+		for a: String in PAD_DIRS:
+			if ev.is_action_pressed(a, true):
+				if step_sel(id, PAD_DIRS[a]):
+					m.accept_event()
+					Music.instance(m.get_tree()).sfx("ui_tap", "pickup")
+					if refresh.is_valid():
+						refresh.call.call_deferred()
+					else:
+						m.queue_redraw()
+				return
 		var p := TapInput.press_pos(ev)
 		if p != Vector2.INF:
 			_press = p
@@ -99,6 +123,43 @@ static func make_map(id: String, refresh: Callable = Callable()) -> Control:
 				else:
 					m.queue_redraw())
 	return m
+
+
+const PAD_DIRS := {"up": Vector2.UP, "down": Vector2.DOWN, "left": Vector2.LEFT, "right": Vector2.RIGHT}
+const STEP_CONE := 0.4  ## a pin counts as "that way" within ~66 deg
+const STEP_SIDE := 2.0  ## sideways distance weighs this much more than forward
+
+
+## C9 P3: move the picked pin to the nearest pin in a direction (ZERO = the first
+## pin, or the pin you stand in). Returns whether sel changed.
+static func step_sel(id: String, dir: Vector2) -> bool:
+	var spots := pin_spots(id)
+	if spots.is_empty():
+		return false
+	if dir == Vector2.ZERO or not spots.has(sel):
+		var here := str(GameState.run.get("scene", ""))
+		var first := here if spots.has(here) else str(spots.keys()[0])
+		var changed := first != sel
+		sel = first
+		return changed
+	var p: Vector2 = spots[sel]
+	var best := ""
+	var bs := INF
+	for aid: String in spots:
+		if aid == sel:
+			continue
+		var d: Vector2 = (spots[aid] as Vector2) - p
+		var fwd := d.dot(dir)
+		if fwd <= 1.0 or fwd < d.length() * STEP_CONE:
+			continue
+		var sc := fwd + absf(d.dot(Vector2(-dir.y, dir.x))) * STEP_SIDE
+		if sc < bs:
+			bs = sc
+			best = aid
+	if best == "":
+		return false
+	sel = best
+	return true
 
 
 ## Pin positions on a region map (control space).

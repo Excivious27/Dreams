@@ -896,7 +896,7 @@ func _draw_select(c: Control) -> void:
 		info = "Clear level %d to unlock" % (maxi(1, n2 - 1))
 	text(c, Vector2(0, 312), info, W, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	text(c, Vector2(0, 326), "Double jump: ON (A in mid-air)" if double_jump() else "Clear level 4 for a double jump", W, 7, Color(0.7, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)
-	text(c, Vector2(0, 338), "Tap JUMP or the picture · hold = higher · ▼ ducks", W, 7, Color(0.7, 0.75, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
+	text(c, Vector2(0, 338), "JUMP (A) or tap the picture · hold = higher · ▼ ducks", W, 7, Color(0.7, 0.75, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _lock(c: Control, p: Vector2) -> void:
