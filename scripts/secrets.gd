@@ -10,13 +10,79 @@ const PENG_ONLY := ["wastes", "sky", "station", "jungle"]
 
 
 ## Pages this arc can actually reach: the journal is finishable in either arc.
+## (POCKET_PAGES lie in the newer mega areas' hidden nooks: HiddenArea.)
 static func pages_total() -> int:
 	var n := 0
 	for rid: String in PAGES:
 		if (rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()):
 			continue
 		n += 1
+	for rid: String in POCKET_PAGES:
+		if _area_here(rid):
+			n += 1
 	return n
+
+
+## Hidden chests this arc can find: one per outdoor region with roads, plus one in
+## every mega area's hidden nook.
+static func chests_total() -> int:
+	var n := 0
+	for rid: String in RegionData.all():
+		var r: Dictionary = RegionData.region(rid)
+		if rid.begins_with("bf_") or r.get("paths", []).is_empty():
+			continue
+		if (rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()):
+			continue
+		var mr := MegaRegion.region_of(rid)
+		if mr != "" and not _area_here(rid):
+			continue
+		n += 1
+		if mr != "" and int(r.get("hidden", {}).get("pockets", 1)) > 0:
+			n += 1
+	return n
+
+
+## A mega area this run can reach (right arc, scene built).
+static func _area_here(rid: String) -> bool:
+	var mr := MegaRegion.region_of(rid)
+	if mr == "":
+		return true
+	if not MegaRegion.in_arc(mr):
+		return false
+	var a := MegaRegion.area(mr, rid)
+	return (a.is_empty() or MegaRegion.area_in_arc(mr, a)) and MegaRegion.scene_exists(rid)
+
+
+## Lore pages tucked in the hidden nooks of the newer areas (HiddenArea places them).
+const POCKET_PAGES := {
+	"iron_junction": "Page: The first train through the Junction carried no cargo at all. Just one lantern, lit, on an empty flatcar.",
+	"iron_freight_yards": "Page: Every crate in the yards is numbered except one. Nobody will say who ships it, but it goes out every spring.",
+	"iron_mill_district": "Page: The mill wheel turned for forty years after the river moved. The workers say it learned to.",
+	"iron_tunnels": "Page: Tap the tunnel walls and they ring like bells. The diggers tuned them, one note per mile.",
+	"hollow_deeps": "Page: Below the heart the stone is warm and soft as bread. I pressed my hand in it. It pressed back, gently.",
+	"sky_reaches": "Page: The far islands drift a hand's width every year. In a thousand years they'll all have touched once.",
+	"gloam_lanternfall": "Page: Every lantern here was hung by someone lost. They light them so the next lost one finds the road.",
+	"gloam_violet_glade": "Page: The violet flowers close when you lie. I tested it. I don't recommend testing it.",
+	"gloam_crystal_thicket": "Page: The thicket's crystals grow toward sound. Hum, and by morning they'll lean your way.",
+	"gloam_moonpool": "Page: The moonpool shows the sky of the night you were born. Mine had a comet in it.",
+	"desert_mirage_post": "Page: The post's well is never dry. The keepers swear it fills from a sea that isn't there any more.",
+	"desert_dune_sea": "Page: The dunes walk east a step each day. Somewhere under them is the town they buried, still walking too.",
+	"desert_glass_canyon": "Page: The glass walls were sand once, melted in one bright moment. You can still see footprints in it.",
+	"desert_sunken_temple": "Page: The Colossus wasn't made to keep people out. It was made to keep the sun's last spark in.",
+	"frost_hearthhold": "Page: The hearth at Hearthhold has burned through every winter for three hundred years. Each family feeds it one log.",
+	"frost_glacier": "Page: There are flowers frozen deep in the glacier, still blue. Summer flowers from a summer nobody remembers.",
+	"frost_caverns": "Page: The ice caves sing when the wind is right. The old songs of the valley, a little out of tune.",
+	"frost_falls": "Page: The falls freeze solid every year on the same night. People come to hear the last splash.",
+	"frost_summit": "Page: From the summit on a clear day you can see the whole valley, and the farm, and someone waving.",
+	"wind_breezehaven": "Page: Breezehaven's kites never come down. The oldest has flown since the town was founded.",
+	"wind_sunrise_shelf": "Page: The sun rises here a minute before anywhere else. The shelf folk use the minute to make a wish.",
+	"wind_storm_shelf": "Page: The storms here aren't angry. They're shy. They only rumble when someone's watching.",
+	"wind_starfall_garden": "Page: The garden grows where the star's dust settled. Some of the flowers glow only for children.",
+	"gilt_grand_plaza": "Page: The plaza's fountain coins are never collected. The city says it's saving them for a rainy century.",
+	"gilt_casino_row": "Page: Every sign on the Row lights in the same order each night. Read the first letters and it spells a name.",
+	"gilt_gardens": "Page: The hedges in the gardens are trimmed at night by somebody nobody has ever seen.",
+	"gilt_vaults": "Page: The deepest vault holds no gold. Just a little crystal, the first one ever found, wrapped in a scarf.",
+}
 
 
 const PAGES := {
@@ -63,6 +129,11 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(rid + "_secrets")
 	var picks: Array = []
+	# The chest likes a tucked-away spot: walled in on most sides (behind a rock,
+	# in a hedge corner, at a dead end), not in plain view by the road.
+	var tucked: Array = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 4)
+	if not tucked.is_empty():
+		picks.append(tucked[rng.randi() % tucked.size()])
 	var tries := 0
 	while picks.size() < 4 and tries < 400:
 		tries += 1
@@ -96,6 +167,24 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 		if not GameState.run["flags"].has(pk):
 			m.set_thing(pc.x, pc.y, {"type": "page", "key": pk, "text": PAGES[rid], "hint": "A: a torn page"}, false)
 			m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
+
+
+static func _walls(m: GameMap, c: Vector2i) -> int:
+	var n := 0
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			if (dx != 0 or dy != 0) and m.blocked.has(c + Vector2i(dx, dy)):
+				n += 1
+	return n
+
+
+## Buried caches not dug yet (HiddenArea sparkles over them at dawn and dusk).
+static func undug(m: GameMap) -> Array:
+	var out: Array = []
+	for c: Vector2i in m.things:
+		if str(m.things[c].get("type", "")) == "secret_dig":
+			out.append(c)
+	return out
 
 
 ## Open, walkable cells one or two steps off a path.
@@ -140,7 +229,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 					m.hud.toast("+◆%d" % int(g[id]), Color(1, 0.9, 0.5))
 				else:
 					m.give(id, int(g[id]))
-			GameState.notify("Hidden chest found (%d/%d)." % [found("secret_chest_"), pages_total()])
+			GameState.notify("Hidden chest found (%d/%d)." % [found("secret_chest_") + found("hidden_chest_"), chests_total()])
 			return true
 		"secret_dig":
 			if GameState.held_tool() != "hoe":
@@ -148,6 +237,9 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			var key := str(thing["key"])
 			GameState.run["flags"][key] = true
 			m.things.erase(c)
+			var ha := m.get_node_or_null("HiddenArea") as HiddenArea
+			if ha:
+				ha.found_spot(c)
 			m.player.play_tool("hoe")
 			m.fx("dust_puff" if Art.has("fx", "dust_puff") else "poof", m.cell_center(c), 12.0, 0.4)
 			Music.instance(m.get_tree()).sfx("dig")

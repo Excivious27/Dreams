@@ -28,6 +28,10 @@ var _rect_water := {}  # shore -> cells of painted water rects
 
 func _place_secrets() -> void:
 	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
+	var ha := HiddenArea.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
+	if ha:
+		for dc: Vector2i in Secrets.undug(self):
+			ha.spots.append([dc, "cache"])
 	_boss_markers()
 	# Doors that are a hole or a ladder in the ground show it (manhole, sewer ladder).
 	for c: Vector2i in things.keys():
@@ -590,7 +594,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		if n.visible and (n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
 			later(_talk_npc.bind(n))
 			return true
-	if Secrets.interact(self, c, thing):
+	if Secrets.interact(self, c, thing) or HiddenArea.interact(self, c, thing):
 		return true
 	match str(thing.get("type", "")):
 		"cpoint":
