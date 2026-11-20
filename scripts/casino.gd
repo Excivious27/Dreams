@@ -54,10 +54,17 @@ static func _st() -> Dictionary:
 		st = {"seed": randi() % 2000000000 + 1, "hand_no": 0, "day": -1, "today": {}, "loss_limit": int(lim("loss_default")),
 			"break_until": 0, "seen": {}, "cold": 0, "session": 0, "visits": 0, "hands_total": 0}
 		GameState.run["casino"] = st
-	if int(st.get("day", -1)) != int(GameState.run.get("day", 1)):
+	# Co-op: run.day is the host's calendar while visiting, so a visit never starts a
+	# new casino day (it can't reset limits or lift a break early): own_day() stays put.
+	if int(st.get("day", -1)) != int(GameState.run.get("day", 1)) and (not GameState.visiting() or int(st.get("day", -1)) < 0):
 		st["day"] = int(GameState.run.get("day", 1))
 		st["today"] = {"hands": 0, "staked": 0, "won": 0, "lost": 0}
 	return st
+
+
+## The player's own casino day (the host's day never counts while visiting).
+static func own_day() -> int:
+	return int(_st().get("day", GameState.run.get("day", 1)))
 
 
 static func today() -> Dictionary:
@@ -176,8 +183,8 @@ static func settle(game: String, stake: int, gross: int, m: Node = null, free :=
 	st["played"] = tables
 	_advance_clock()
 	# Big net day: the pit boss notices (+1 heat once a day).
-	if net_today() > int(lim("big_win_x")) * max_bet() and int(st.get("heat_day", -1)) != int(GameState.run.get("day", 1)):
-		st["heat_day"] = int(GameState.run.get("day", 1))
+	if net_today() > int(lim("big_win_x")) * max_bet() and int(st.get("heat_day", -1)) != own_day():
+		st["heat_day"] = own_day()
 		if Racket.on():
 			Racket.add_heat(m as GameMap, 1)
 			if m is GameMap:
@@ -243,7 +250,7 @@ static func why_shut() -> String:
 	if GameState.run.is_empty():
 		return ""
 	var st := _st()
-	if int(st.get("break_until", 0)) > int(GameState.run.get("day", 1)):
+	if int(st.get("break_until", 0)) > own_day():
 		return line("doorman_break") % int(st["break_until"])
 	var h: Array = data().get("hours", [18, 26])
 	if day_hour() < float(h[0]) or day_hour() >= float(h[1]):
@@ -357,7 +364,7 @@ static func limits_menu(m: GameMap) -> void:
 
 static func take_break() -> void:
 	var st := _st()
-	st["break_until"] = int(GameState.run.get("day", 1)) + int(lim("break_days"))
+	st["break_until"] = own_day() + int(lim("break_days"))
 	_save()
 
 

@@ -35,6 +35,7 @@ func _run() -> void:
 	_tables()
 	_region()
 	_wash()
+	_coop()
 	print("casino_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -281,3 +282,26 @@ func _wash() -> void:
 	GameState.run["wash"] = {"bills_crude": 2}
 	check(Racket.wash_room_left() == maxi(0, cap - 2 * face), "wash budget counts what's inside")
 	GameState.run["wash"] = {}
+
+
+## c10b_04_17: a guest's limits and break lock are their own (run.casino is never a
+## world key) and the host's calendar can't start a new casino day for them.
+func _coop() -> void:
+	var n := Net.i()
+	if n == null:
+		print("  (no NetSvc: co-op case skipped)")
+		return
+	GameState.run.erase("casino")
+	GameState.run["day"] = 40
+	Casino._st()["loss_limit"] = 200
+	Casino.take_break()
+	var until := int(Casino._st()["break_until"])
+	n._host = false
+	n._solo_backup = {"day": 40}
+	GameState.run["day"] = 60  # the host is weeks ahead
+	check(Casino.why_shut().begins_with("You asked the house"), "a guest's break lock holds on a host further along")
+	check(int(Casino._st()["loss_limit"]) == 200 and int(Casino._st()["break_until"]) == until, "guest limits survive the visit")
+	check(Casino.own_day() == 40, "visiting never starts a new casino day")
+	check(not "casino" in NetNode.WORLD_KEYS, "casino is never a co-op world key")
+	n._solo_backup = {}
+	GameState.run["day"] = 40
