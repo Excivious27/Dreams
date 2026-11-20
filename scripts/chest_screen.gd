@@ -39,7 +39,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "chest_screen")
 	Music.instance(get_tree()).sfx("chest_open", "pickup")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()

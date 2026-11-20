@@ -143,7 +143,7 @@ func _ready() -> void:
 	layer = 80
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "epilogue")
 	showing = true
 	# The ending gets its own song, not whatever the last fight left playing.
 	Music.instance(get_tree()).set_duck(0.0)

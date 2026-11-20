@@ -262,16 +262,16 @@ LOOKS = {
     "gloam": {"ground": "grass", "ground_seam": "violet_moss", "path": "flagstone", "border": "trees", "backdrop": "night", "weather": "fireflies",
               "gen": {"region_props": ["gmush_blue", "gmush_purple", "gmush_red", "starflower_blue", "starflower_pink", "spiral_fern", "cave_mush_blue", "cave_mush_purple", "fd_mush_purple", "fd_mush_blue", "crystal_tree_pink"], "region_count": 34,
                       "critters": ["firefly", "butterfly_blue", "owl", "firefly"], "critter_count": 8}},
-    "desert": {"ground": "grass", "ground_seam": "sand", "path": "cobble_warm", "border": "cliff", "cliff_style": ["sand", "stair_wood"], "backdrop": "hills", "weather": "sun",
+    "desert": {"ground": "grass", "ground_seam": "sand", "path": "cobble_warm", "border": "cliff", "season": "summer", "cliff_style": ["sand", "stair_wood"], "backdrop": "hills", "weather": "sun",
                "gen": {"region_props": ["dune_0", "dune_1", "dune_2", "dune_3", "dune_4", "dune_5", "dune_6", "dune_7", "dune_8", "dune_9", "dead_tree_s", "dead_tree_m", "boulder2_s_a", "boulder2_s_b", "rock_s"], "region_count": 40,
                        "critters": ["crow", "eagle"], "critter_count": 4}},
     "rail": {"ground": "grass", "ground_seam": "cobble_grey", "path": "city_pavement", "border": "cliff", "cliff_style": ["grass", "stair_iron"], "backdrop": "gritty", "weather": "clear",
-             "gen": {"region_props": ["fire_barrel", "oil_drums", "crates_a", "crates_b", "crates_c", "tyres", "pipe_t", "pipe_s", "dumpster", "cargo_yellow"], "region_count": 26,
+             "gen": {"region_props": ["fire_barrel2", "oil_drums", "crates_a", "crates_b", "crates_c", "tyres", "pipe_t", "pipe_s", "dumpster", "cargo_yellow"], "region_count": 26,
                      "critters": ["crow", "sparrow"], "critter_count": 4}},
     "snow": {"ground": "grass", "ground_seam": "snow_packed", "path": "snow_trodden", "border": "trees", "season": "winter", "cliff_style": ["snow", "stair_snow"], "backdrop": "mountains", "weather": "snow",
              "gen": {"region_props": ["snowdrift_0", "snowdrift_1", "snowdrift_2", "snowdrift_3", "snowdrift_4", "snowdrift_5", "rock_snow_s", "rock_snow_m", "bush_snow", "bush_bare_snow", "stump_snow", "grass_tuft_winter"], "region_count": 36,
                      "critters": ["eagle", "rabbit"], "critter_count": 5}},
-    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "backdrop": "hills", "weather": "wind", "pet": False,
+    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "season": "summer", "backdrop": "hills", "weather": "wind", "pet": False,
             "gen": {"region_props": ["skydeco_0", "skydeco_1", "skydeco_2", "skydeco_3", "skydeco_4", "skydeco_5", "skydeco_6", "skydeco_7", "cloud_tree_a", "cloud_tree_b", "cloud_tree_c", "starflower_blue", "starflower_yellow"], "region_count": 34,
                     "critters": ["eagle", "butterfly_blue"], "critter_count": 5}},
     "gilt": {"ground": "grass", "ground_seam": "plaza_tiles", "path": "cobble_warm", "border": "cliff", "cliff_style": ["grass", "stair_iron"], "backdrop": "city", "weather": "clear",
@@ -531,7 +531,7 @@ A("iron_freight_yards", cols=54, rows=44, music="underground", look="rail", grou
   forage=[["fiber", 0.4], ["wild_herb", 0.2]],
   intro=["Rows of rusting freight cars, cranes like skeletons, and rail bots patrolling with lanterns. All of it stamped COALBROOK."])
 A("iron_mill_district", cols=50, rows=44, music="hideout", look="rail", ground_seam="brick_herring", path="cobble_warm", links={"iron_junction": ("s", 23), "iron_tunnels": ("n", 24)},
-  structs=[("buildings/warehouse_c", 6, 4, (12, 12)), ("buildings/silo", 4, 5, (36, 13)), ("buildings/grain_elevator", 11, 5, (34, 33)), ("props/fire_barrel", 4, 1, (14, 30)),
+  structs=[("buildings/warehouse_c", 6, 4, (12, 12)), ("buildings/silo", 4, 5, (36, 13)), ("buildings/grain_elevator", 11, 5, (34, 33)), ("props/fire_barrel2", 1, 1, (14, 30)),
            ("props/radio_tower_b", 1, 1, (8, 22)), ("props/forklift", 2, 1, (16, 22))],
   things=[("loot", {"item": "charcoal", "n": 2, "every": 2, "hint": "A: a cooling firebox", "sprite": "props/fire_barrel2"}),
           ("loot", {"item": "gear", "n": 1, "every": 4, "hint": "A: a broken press", "sprite": "props/crates_b"}),
@@ -826,6 +826,8 @@ def build_area(aid, mega, spec, links_geom):
     R["ground"] = R["ground_seam"]  # not "grass": that would draw the valley's grass instead of the seamless ground
     R["amb"] = dict(AMB.get(spec["look"], {}))
     R["amb"].update(AREA_AMB.get(aid, {}))
+    if aid in CAVE or aid.startswith("hollow_"):
+        R["light"] = 0.5  # C5: fixed darkness 0..1 underground (P2's runtime reads it)
     if aid in CAVE:  # C5: underground areas drop the look's surface beds (wind, streets); Ambience skips them too
         for k in ("wind_soft", "wind_strong", "town_day", "crowd", "city_hum", "neon_street", "birds_day", "birds_dawn", "waves", "leaves"):
             R["amb"].pop(k, None)

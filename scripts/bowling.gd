@@ -664,7 +664,7 @@ func _ready() -> void:
 	Hud.modal_rect = MODAL
 	for r in _rects():
 		Hud.extra_rects.append(r)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "bowling")
 	_covered = ScreenCover.cover(get_parent())  # the opaque screen hides the map: don't render it
 	var seed_v := int(GameState.run.get("day", 1)) * 977 + lane * 31 + int(GameState.run.get("time", 0))
 	sim.rng.seed = seed_v

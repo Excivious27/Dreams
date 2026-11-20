@@ -14860,6 +14860,7 @@
   "border": "cliff",
   "backdrop": "hills",
   "weather": "sun",
+  "season": "summer",
   "cliff_style": [
    "sand",
    "stair_wood"
@@ -15300,6 +15301,7 @@
   "border": "cliff",
   "backdrop": "hills",
   "weather": "dust",
+  "season": "summer",
   "cliff_style": [
    "sand",
    "stair_wood"
@@ -15646,6 +15648,7 @@
   "border": "cliff",
   "backdrop": "hills",
   "weather": "sun",
+  "season": "summer",
   "cliff_style": [
    "sand",
    "stair_wood"
@@ -16006,6 +16009,7 @@
   "border": "cliff",
   "backdrop": "hills",
   "weather": "sun",
+  "season": "summer",
   "cliff_style": [
    "sand",
    "stair_wood"
@@ -16014,6 +16018,7 @@
   "amb": {
    "cave": -20.0
   },
+  "light": 0.5,
   "gen": {
    "region_props": [
     "boulder2_s_a",
@@ -16407,7 +16412,7 @@
   },
   "gen": {
    "region_props": [
-    "fire_barrel",
+    "fire_barrel2",
     "oil_drums",
     "crates_a",
     "crates_b",
@@ -16817,7 +16822,7 @@
   },
   "gen": {
    "region_props": [
-    "fire_barrel",
+    "fire_barrel2",
     "oil_drums",
     "crates_a",
     "crates_b",
@@ -17180,7 +17185,7 @@
   },
   "gen": {
    "region_props": [
-    "fire_barrel",
+    "fire_barrel2",
     "oil_drums",
     "crates_a",
     "crates_b",
@@ -17318,12 +17323,12 @@
     "group": "buildings"
    },
    {
-    "name": "fire_barrel",
+    "name": "fire_barrel2",
     "cell": [
-     12,
+     13,
      29
     ],
-    "w": 4,
+    "w": 1,
     "h": 1
    },
    {
@@ -17355,23 +17360,23 @@
    {
     "name": "crates_b",
     "cell": [
-     14,
-     14
+     22,
+     25
     ],
     "solid": false
    },
    {
     "name": "boulder2_s_b",
     "cell": [
-     9,
-     33
+     14,
+     13
     ],
     "solid": false
    },
    {
     "name": "ore_coal",
     "cell": [
-     13,
+     9,
      24
     ],
     "solid": false
@@ -17393,8 +17398,8 @@
    {
     "type": "loot",
     "cell": [
-     14,
-     14
+     22,
+     25
     ],
     "item": "gear",
     "n": 1,
@@ -17405,8 +17410,8 @@
    {
     "type": "mrock",
     "cell": [
-     9,
-     33
+     14,
+     13
     ],
     "ore": "tin",
     "hp": 3,
@@ -17417,7 +17422,7 @@
    {
     "type": "mrock",
     "cell": [
-     13,
+     9,
      24
     ],
     "ore": "coal",
@@ -17429,7 +17434,7 @@
    {
     "type": "heal",
     "cell": [
-     20,
+     12,
      34
     ],
     "hp": 3,
@@ -17441,8 +17446,8 @@
    {
     "type": "note",
     "cell": [
-     23,
-     18
+     27,
+     36
     ],
     "hint": "A: read the poster",
     "text": "A poster: 'WORK HARDER. THE BARON IS WATCHING.' Someone has drawn him a very small hat.",
@@ -17499,6 +17504,7 @@
    "cave": -14.0,
    "basement_drips": -18.0
   },
+  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -18680,6 +18686,7 @@
    "cave": -14.0,
    "crystal_hum": -22.0
   },
+  "light": 0.5,
   "gen": {
    "region_props": [
     "cave_stalag_l",
@@ -19588,6 +19595,7 @@
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
+  "season": "summer",
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -19978,6 +19986,7 @@
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
+  "season": "summer",
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -20272,6 +20281,7 @@
   "border": "none",
   "backdrop": "hills",
   "weather": "storm",
+  "season": "summer",
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -20612,6 +20622,7 @@
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
+  "season": "summer",
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -21955,6 +21966,7 @@
    "cave": -18.0,
    "basement_drips": -22.0
   },
+  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -22284,6 +22296,7 @@
    "crickets": -15.0,
    "crystal_hum": -26.0
   },
+  "light": 0.5,
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -22686,6 +22699,7 @@
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
+  "season": "summer",
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
