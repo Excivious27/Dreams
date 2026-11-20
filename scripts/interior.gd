@@ -807,7 +807,7 @@ func _upgrade_tools() -> void:
 			var k1 := str(pend["kind"])
 			var fee := rush_fee(GameState.tool_tier(k1))
 			var dr := Dialogue.instance(get_tree())
-			dr.say([{"who": "Gideon", "text": "Your %s is on the bench. %s. Come back then.  (Or I drop everything for %s.)" % [GameState.item_name(k1), Crafting.fmt_minutes(int(pend["done_at"]) - Crafting.now_abs()), Money.fmt(fee)], "choice": ["Rush it (%s)" % Money.fmt(fee), "I'll come back"], "key": ""}])
+			dr.say([{"who": "Gideon", "text": "Your %s is on the bench. %s. Come back then.  (Or I drop everything for %s.)" % [GameState.item_name(k1), Crafting.fmt_minutes(int(pend["done_at"]) - Crafting.now_abs()), Money.fmt(fee)], "choice": ["Rush it (%s)" % Money.fmt(fee), "Not now"], "key": ""}])
 			await dr.finished
 			if dr.last_choice != 0:
 				return
