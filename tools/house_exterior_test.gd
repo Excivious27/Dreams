@@ -5,6 +5,7 @@ extends SceneTree
 ## you switch free; bad ids fall back to the original; night/snow swaps keep the
 ## dressing; the door, rect and mailbox never move; the picker opens and closes;
 ## fence styles reach the pen fences. Pass an output dir (under xvfb) for shots.
+const UiAudit := preload("res://tools/ui_audit.gd")
 var fails := 0
 var out := ""
 
@@ -218,6 +219,13 @@ func _run() -> void:
 	await frames(2)
 	check(str(HouseExterior.look().get("roof", "")) == "ext_roof_slate", "preview doesn't change the saved look")
 	await shot(m, "picker", false)
+	for tab: String in HouseExterior.PARTS:  # phone UI audit on every tab (taps >= 20 px, no spill)
+		pk.set("part", tab)
+		pk.call("_build")
+		await frames(2)
+		var issues: Array = UiAudit.audit(pk, "house_style_" + tab)
+		check(issues.is_empty(), "picker tab %s passes the phone UI audit %s" % [tab, str(issues.slice(0, 3))])
+	pk.set("part", "roof")
 	pk.call("_close")
 	await frames(3)
 	check(paused == was_paused, "picker closes and restores the pause state (%s)" % was_paused)
@@ -230,5 +238,12 @@ func _run() -> void:
 	check("ext_door_steel" in ids and not "ext_door_ice" in ids, "gangster arc lists its own door styles")
 	var gf := HouseExterior.fence_set()
 	check(gf.size() == 3 and str(gf[2]) == "chain_fence_gate_open", "gangster pens default to chain-link with a chain-link gate")
+	GameState.run["crystals"] = 9000
+	for pair: Array in [["roof", "ext_roof_tar"], ["siding", "ext_siding_fieldstone"], ["door", "ext_door_steel"], ["shutters", "ext_shutters_steel"], ["mailbox", "ext_mailbox_steel"], ["porch", "ext_porch_crates"]]:
+		check(HouseExterior.choose(str(pair[0]), str(pair[1])) == "ok", "gangster arc can use %s" % pair[1])
+	GameState.run["builds"] = {"house": 2, "coop": 2}
+	m = await load_farm()
+	check(m._house_sprite.get_node_or_null("HouseExterior") != null, "gangster farmhouse styled")
+	await shot(m, "gang_t2")
 	print("house exterior test: %s (%d fails)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(1 if fails else 0)
