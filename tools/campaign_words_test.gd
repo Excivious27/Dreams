@@ -49,7 +49,8 @@ func _words(arc: String, cid: String, want: String, must: Array) -> Dictionary:
 			check(wl == "", "%s/%s: ready means it can be mustered" % [arc, cid])
 		"under_way":
 			check(Campaign.started(cid), "%s/%s: under way" % [arc, cid])
-	check(bool(gw["board"]) == (want in ["train", "gather", "ready", "under_way"]), "%s/%s: board offered only when useful" % [arc, cid])
+	check(bool(gw["board"]) == (want in ["train", "after", "gather", "ready", "under_way"]), "%s/%s: board offered only when useful" % [arc, cid])
+	check(not all_text.contains("only way into"), "%s/%s: no false geography" % [arc, cid])
 	return gw
 
 
@@ -80,12 +81,12 @@ func _initialize() -> void:
 		# Earlier region first / story tier / gather, depending on the campaign.
 		for cid: String in Campaign.for_arc():
 			var c := Campaign.get_c(cid)
-			var pre := ""
-			for p in c.get("after", []):
-				if Campaign.all().has(p) and str(Campaign.all()[p].get("arc", "both")) in ["both", arc]:
-					pre = str(p)
-			if pre != "":
-				_words(arc, cid, "after", [str(Campaign.get_c(pre)["region_name"]), str(Campaign.get_c(pre)["title"])])
+			var pre := Campaign.first_in_chain(cid)
+			if pre != cid:
+				# the step names the first held campaign of the whole chain, which has none before it
+				check(Campaign.first_in_chain(pre) == pre and not Campaign.region_open(str(Campaign.get_c(pre)["region"])), "%s/%s: chain start %s is real" % [arc, cid, pre])
+				var gwa := _words(arc, cid, "after", [str(Campaign.get_c(pre)["region_name"]), str(Campaign.get_c(pre)["title"]), Campaign.who(cid)])
+				check(str(gwa.get("cid", "")) == pre, "%s/%s: the board opens on %s" % [arc, cid, pre])
 			elif GameState.progress_tier() < int(c.get("min_pt", 0)):
 				_words(arc, cid, "later", ["story"])
 			else:
@@ -109,13 +110,13 @@ func _initialize() -> void:
 			if GameState.progress_tier() < mt:
 				_words(arc, cid, "later", ["story"])
 			elif short:
-				_words(arc, cid, "gather", [lead])
+				_words(arc, cid, "gather", [Campaign.who(cid)])
 			var nd: Dictionary = CampaignGate.need(cid)
 			for it: String in nd.get("items", {}):
 				GameState.add_item(it, int(nd["items"][it]))
 			GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + int(nd.get("crystals", 0))
 			if CampaignGate.team_short(cid) == 0 and GameState.progress_tier() >= mt:
-				_words(arc, cid, "ready", [lead, str(c["title"]), "Muster"])
+				_words(arc, cid, "ready", [Campaign.who(cid), str(c["title"]), "Muster"])
 				check(CampaignGate.muster(cid) != "", "%s/%s: musters" % [arc, cid])
 				_words(arc, cid, "under_way", ["territories", str(c["title"])])
 			Campaign.st()["open"][reg] = true

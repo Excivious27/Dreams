@@ -23,7 +23,7 @@ func _initialize() -> void:
 	for arc: String in orders:
 		GameState.new_run(arc, "kairi" if arc == "penguins" else "pax", "Hero", "Dreamhollow", "Biscuit")
 		GameState.run["quests"] = []
-		check(not Campaign.region_open("wastes"), "%s: a new game starts with the Wastes held" % arc)
+		check(Campaign.region_open("wastes") == (arc == "gangsters"), "%s: a new game starts with the Wastes held (penguin-only campaign)" % arc)
 		GameState.run["party"] = {}
 		for cid0: String in Campaign.for_arc():
 			check(Campaign.why_locked(cid0) != "", "%s: %s can't be fought on day one" % [arc, cid0])
@@ -39,6 +39,7 @@ func _initialize() -> void:
 					GameState.run["flags"]["babies_done"] = true
 				var ptr := GameState.next_step()
 				check(ptr.contains("campaign map"), "%s/%s: goal line points at the campaign: %s" % [arc, qid, ptr])
+				check(Campaign.story_pointer(qid).length() <= 112, "%s/%s: goal line fits (%d chars)" % [arc, qid, Campaign.story_pointer(qid).length()])
 				check(CampaignGate.story_ok(), "%s/%s: chapter 2 comes before the first held story region" % [arc, qid])
 				# Win the chain, first campaign first, as the pointer leads.
 				var guard := 0

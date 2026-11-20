@@ -293,6 +293,9 @@ func _run() -> void:
 	var gl := Campaign.for_arc()
 	check(gl.has("c_docks") and gl.has("c_underground") and not gl.has("c_sky"), "gangster run: its own campaigns")
 	check(Campaign.gate_of("sky") == "" and Campaign.gate_of("neon") == "c_neon", "gangster run: sky isn't gated, neon is")
+	check(Campaign.why_locked("c_docks").begins_with("Open ") and not Campaign.why_locked("c_countryside").begins_with("Open "), "the docks wait for the countryside (Highway Job first): %s / %s" % [Campaign.why_locked("c_docks"), Campaign.why_locked("c_countryside")])
+	check(not gl.has("c_wastes") and not gl.has("c_colony_coral"), "gangster run: no Wastes or island campaigns")
+	Campaign.st()["open"]["countryside"] = true
 	check(Campaign.why_locked("c_neon") != "" and Campaign.why_locked("c_docks") == "", "neon waits for the docks")
 	m = await _go("hideout")
 	if m:
@@ -303,19 +306,24 @@ func _run() -> void:
 		if gs:
 			gs.close()
 		await process_frame
-		# An escort node: the convoy rolls with you and reaches its goal.
-		var esc := ""
-		for n in Campaign.get_c("c_docks")["nodes"]:
-			if str(n["type"]) == "escort" and Campaign.can_attack("c_docks", str(n["id"])):
-				esc = str(n["id"])
 		check(CampaignGate.muster("c_docks") != "", "the docks can be mustered (%s)" % Campaign.why_locked("c_docks"))
-		for n in Campaign.get_c("c_docks")["nodes"]:
-			if str(n["type"]) == "escort" and Campaign.can_attack("c_docks", str(n["id"])):
+		# An escort node (never an opener on early boards now): stand the army next to
+		# the Ruin Siege escort; the convoy rolls with you and reaches its goal.
+		var ecid := "c_ruins"
+		var esc := ""
+		for n in Campaign.get_c(ecid)["nodes"]:
+			if str(n["type"]) == "escort":
 				esc = str(n["id"])
-		check(esc != "", "the docks open with an escort")
+		check(esc != "", "the ruin siege has an escort")
 		if esc != "":
-			Campaign.launch(m, "c_docks", esc)
-			m = await _arrive(str(Campaign.cfg("c_docks", esc)["field"]))
+			Campaign.cs(ecid)["mustered"] = true
+			var nb := str((Campaign.node(ecid, esc)["links"] as Array)[0])
+			Campaign.cs(ecid)["taken"][nb] = true
+			Campaign.cs(ecid)["at"] = nb
+			check(Campaign.can_attack(ecid, esc), "escort can be attacked")
+			check(str(Campaign.cfg(ecid, esc).get("vehicle", "")) == "truck" and Campaign.text(Campaign.node(ecid, esc), "brief").contains("truck"), "gangster escort is a truck")
+			Campaign.launch(m, ecid, esc)
+			m = await _arrive(str(Campaign.cfg(ecid, esc)["field"]))
 			var bt: Battle = m.get("battle")
 			check(bt != null and bt.convoy != null, "escort: the convoy rolls out")
 			await _drain(30)
@@ -335,7 +343,7 @@ func _run() -> void:
 					await process_frame
 				await _drain(30)
 				m = await _arrive("hideout")
-				check(Campaign.taken("c_docks", esc), "a convoy that arrives wins the node")
+				check(Campaign.taken(ecid, esc), "a convoy that arrives wins the node")
 	print("campaign_map_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)
 

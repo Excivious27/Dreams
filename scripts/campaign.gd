@@ -636,13 +636,13 @@ static func story_pointer(qid: String) -> String:
 	if first != "":
 		# The step comes first: the HUD shows two short lines, and the tail is what gets cut.
 		# Goal line budget (~112 chars): the step, then the campaign; no "X is guarded."
-		var where := "" if first.contains("campaign map") or first.contains("Menu > Map") else " (Menu > Map)"
-		var line := "First: %s Then win \"%s\"%s." % [first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
-		if line.length() > 112:
-			line = "First: %s Then win \"%s\"." % [first.left(1).to_lower() + first.substr(1), str(c["title"])]
-		if line.length() > 112:
-			line = "First: %s" % first
-		return line
+		var st := first.left(1).to_lower() + first.substr(1)
+		var has_map := first.contains("campaign map")
+		for where in (["."] if has_map else [" (campaign map, Menu > Map).", " on the campaign map.", " (campaign map)."]):
+			var line := "First: %s Then win \"%s\"%s" % [st, str(c["title"]), where]
+			if line.length() <= 112:
+				return line
+		return ("First: %s (campaign map)" % st).left(112)
 	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
 
 
