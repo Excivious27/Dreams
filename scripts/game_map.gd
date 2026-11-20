@@ -3656,6 +3656,10 @@ const WATER_LOOK := {
 }
 
 
+const WINTER_SHORE_SOFT := 0.13
+const WINTER_SHORE_WOBBLE := 0.5
+
+
 func _water_mask(cells: Dictionary, shore: String) -> bool:
 	if cells.is_empty():
 		return false
@@ -3669,6 +3673,10 @@ func _water_mask(cells: Dictionary, shore: String) -> bool:
 	if GameState.look_se() == "winter" and shore in ["grass", "river"]:
 		opts["bank"] = Color(0.9, 0.93, 0.98, 0.9)
 		opts["tint"] = Color(0.78, 0.86, 1.0)
+		# Ice against snow is high contrast: a wider, noisier edge so the cell
+		# steps of the blob never read as stairs (c9_13).
+		opts["soft"] = WINTER_SHORE_SOFT
+		opts["wobble"] = WINTER_SHORE_WOBBLE
 	for k in ["foam", "tint", "drift"]:
 		if look.has(k) and not opts.has(k):
 			opts[k] = look[k]
