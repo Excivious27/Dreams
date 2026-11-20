@@ -247,21 +247,22 @@ func _tour_guide_in(id: String) -> Npc:
 		if in_content(c) and not blocked.has(c) and not things.has(c):
 			to = c
 			break
-	for dy in range(8, 3, -1):
+	for dy in range(5, 2, -1):  # a few steps away: the player is frozen while they walk up
 		var c := pc + Vector2i(0, dy)
 		if in_content(c) and not blocked.has(c):
 			from = c
 			break
 	if to == Vector2i(-1, -1) or from == Vector2i(-1, -1):
 		return null
-	g.step_in(cell_center(from) if not g.visible or g.position.distance_to(player.position) > 140.0 else g.position, cell_center(to))
-	var t0 := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - t0 < 5000:  # up to 5 s on foot, then they're simply there
+	g.step_in(cell_center(from) if not g.visible or g.position.distance_to(player.position) > 90.0 else g.position, cell_center(to))
+	var gt := 0.0
+	while gt < 2.5:  # up to 2.5 s of game time on foot, then they're simply there (the player is frozen meanwhile)
 		if not is_inside_tree():
 			return g
 		if g.position.distance_to(g.home) < 4.0:
 			break
 		await get_tree().process_frame
+		gt += get_process_delta_time()
 	g._path.clear()
 	g.position = g.home
 	g._target = g.home
