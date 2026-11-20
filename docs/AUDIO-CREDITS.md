@@ -10,29 +10,35 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 |---|---|---|
 | amb_crystal | raw | https://acemusic.ai/song/jfsqjujs5r77 |
 | amb_space | raw | https://acemusic.ai/song/k7kcn833xbyh |
+| arc_gangsters | music |  |
+| arc_penguins | music |  |
 | arcade_hall | music | https://acemusic.ai/song/rdqqmx6iybpx |
 | arcade_jumper | music | https://acemusic.ai/song/8ar5jhqydzs5 |
 | battle | music | https://acemusic.ai/song/awb4pde7wdpz |
 | battle_escort | music | https://acemusic.ai/song/v2wmrg9ddny4 |
-| battle_gang | music | https://acemusic.ai/song/96kv7khkxfpa |
+| battle_escort_gang | music | https://acemusic.ai/song/v7nz572744pb |
+| battle_gang | music | https://acemusic.ai/song/s7ph8apbr4jz |
+| battle_penguin | music | https://acemusic.ai/song/8y5759uz5u82 |
 | battle_siege | music | https://acemusic.ai/song/7nvdxwep3f6r |
 | battle_siege_gang | music | https://acemusic.ai/song/mxxd96m4hpht |
+| battle_siege_penguin | music | https://acemusic.ai/song/ref5t78b49zm |
 | beach | music | https://acemusic.ai/song/y8qhavxjy8zw |
 | boss | music | https://acemusic.ai/song/7ebx3u8sswt8 |
 | boss_aurum | music | https://acemusic.ai/song/hwpanzrvrn4y |
 | boss_coalbrook | music | https://acemusic.ai/song/mer98nus8mhc |
 | boss_colossus | music | https://acemusic.ai/song/ryg2k9ye575w |
-| boss_gang | music | https://acemusic.ai/song/d3jve5e2z3qa |
+| boss_gang | music | https://acemusic.ai/song/7hdexihve9dw |
 | boss_light_eater | music | https://acemusic.ai/song/fvd5bjxxzq83 |
-| boss_penguin | music | https://acemusic.ai/song/w62e3k5q83hb |
+| boss_penguin | music | https://acemusic.ai/song/pcjzxg3xvzgt |
 | boss_roc | music | https://acemusic.ai/song/6hwi9ce78bfe |
 | boss_thornmother | music | https://acemusic.ai/song/9ginx57bm6j7 |
 | boss_wyrm | music | https://acemusic.ai/song/atpp3atsvheg |
 | bowling_alley | music | https://acemusic.ai/song/wru8ipndzama |
-| campaign_map | music | https://acemusic.ai/song/rmtce9uus2jm |
+| campaign_map | music | https://acemusic.ai/song/evhyjcywh88j |
+| campaign_map_gang | music | https://acemusic.ai/song/vag7quwqs6xw |
 | cattopia | music | https://acemusic.ai/song/vvzy8uy55v8x |
-| chapel | music | https://acemusic.ai/song/8rrt4upzu82p |
-| clinic | music | https://acemusic.ai/song/v7ixirfubgku |
+| chapel | music | https://acemusic.ai/song/vrmzwkxjyvej |
+| clinic | music | https://acemusic.ai/song/h7vuvhpe78qm |
 | colony_coral | music | https://acemusic.ai/song/r4q5uh75asth |
 | colony_ember | music | https://acemusic.ai/song/eea76v4kttu6 |
 | colony_ice | music | https://acemusic.ai/song/ugtqdxvh39zj |
@@ -43,18 +49,20 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | combat_light_gang | music | https://acemusic.ai/song/ku25xzsdp2me |
 | countryside | music | https://acemusic.ai/song/ny7pm4tqju5a |
 | credits | once | https://acemusic.ai/song/px9ergikphz6 |
-| danger | music | https://acemusic.ai/song/u2fhbqw4mwxg |
-| docks | music | https://acemusic.ai/song/wqwfrwb5scvp |
-| ending_gangster | once | https://acemusic.ai/song/7e8bqg4uivnt |
-| ending_penguin | once | https://acemusic.ai/song/4gxv5d86yuix |
+| danger | music | https://acemusic.ai/song/d8mam4n6c4ts |
+| date_evening | music | https://acemusic.ai/song/56ixpcrrwjsr |
+| docks | music | https://acemusic.ai/song/j6494uferehi |
+| ending_gangster | once | https://acemusic.ai/song/dwdcy9se7a66 |
+| ending_penguin | once | https://acemusic.ai/song/yb4awtjgr59m |
 | farm | music | https://acemusic.ai/song/qdqecpre6gv2 |
 | farm_fall | music | https://acemusic.ai/song/dkvfz8sxv6d2 |
 | festival | music | https://acemusic.ai/song/gj7ju8yps8yj |
+| festival_night | music | https://acemusic.ai/song/r8gc2ma49rz8 |
 | finargle | music | https://acemusic.ai/song/nfesspv2vjd3 |
-| forest | music | https://acemusic.ai/song/bqn8uxg4jcej |
-| hideout | music | https://acemusic.ai/song/zhxtgrtbaw7w |
+| forest | music | https://acemusic.ai/song/fhekqh4xw4hu |
+| hideout | music | https://acemusic.ai/song/9jck7gkrztkp |
 | hollow_heart | music | https://acemusic.ai/song/x95ajiu3sfmd |
-| house | music | https://acemusic.ai/song/pbjidkc4ikg4 |
+| house | music | https://acemusic.ai/song/pyq9qeiakksx |
 | inn | music | https://acemusic.ai/song/6yx6mmbkm23z |
 | jin_battle | raw | https://acemusic.ai/song/p4e9fqksdmhz |
 | jin_bright | raw | https://acemusic.ai/song/uzqe2yr4ryzi |
@@ -68,44 +76,51 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | lake | music | https://acemusic.ai/song/4v3iecfv5e8p |
 | marked | music | https://acemusic.ai/song/bxw4sitt3c9m |
 | marsh | music | https://acemusic.ai/song/nqwz68awwj5r |
-| meadow | music | https://acemusic.ai/song/cqj7an97g4ti |
+| meadow | music | https://acemusic.ai/song/zgwvwat5drqz |
 | mega_desert | music | https://acemusic.ai/song/zriw46m5m6zm |
 | mega_desert_canyon | music | https://acemusic.ai/song/hh67ipghuzqb |
 | mega_desert_temple | music | https://acemusic.ai/song/js74zs9pi5bf |
 | mega_frost | music | https://acemusic.ai/song/st7hexwd27d9 |
+| mega_frost_caverns | music | https://acemusic.ai/song/hqrswp9k5tsx |
+| mega_frost_summit | music | https://acemusic.ai/song/4zs8ivxsq6tx |
 | mega_gilt | music | https://acemusic.ai/song/3sfqg89x8x2w |
 | mega_gloam | music | https://acemusic.ai/song/5ziprij2r8pk |
-| mega_gloam_moonpool | music | https://acemusic.ai/song/hrge9xuatafx |
+| mega_gloam_moonpool | music | https://acemusic.ai/song/vvqdq25575ym |
 | mega_gloam_thicket | music | https://acemusic.ai/song/veidvprskdpy |
+| mega_hollow_deeps | music | https://acemusic.ai/song/2q8m42h9ws5s |
 | mega_iron | music | https://acemusic.ai/song/bpewpjrbyhay |
+| mega_sky_reaches | music | https://acemusic.ai/song/ibni4j6ppqxt |
 | mega_station | music | https://acemusic.ai/song/num8cwzk26s4 |
 | mega_wind | music | https://acemusic.ai/song/igxnw2m3cic4 |
 | mega_wind_storm | music | https://acemusic.ai/song/hn9izjmqbsjr |
 | merkitty_song | once | https://acemusic.ai/song/hdm2pbsr7u52 |
-| mine | music | https://acemusic.ai/song/kreybbjfbwv9 |
-| mine_deep | music | https://acemusic.ai/song/ybspp7c38xv3 |
-| moon | music | https://acemusic.ai/song/wfma933z68xd |
+| mine | music | https://acemusic.ai/song/gue87adqakpd |
+| mine_deep | music | https://acemusic.ai/song/ykcnig7rmjn5 |
+| moon | music | https://acemusic.ai/song/zmird3g8txum |
 | mountain | music | https://acemusic.ai/song/9jbp9gwcgmqn |
 | neon | music | https://acemusic.ai/song/7d6vre5q3fe7 |
-| night | music | https://acemusic.ai/song/e9twedd5nzsz |
+| night | music | https://acemusic.ai/song/272e88uafutk |
+| night_gang | music | https://acemusic.ai/song/74vfx4brbcjb |
 | orchard | music | https://acemusic.ai/song/da3ry2kcurnk |
-| quarry | music | https://acemusic.ai/song/7j6gwu6zeh3t |
+| outskirts | music | https://acemusic.ai/song/yka8gus35ze8 |
+| quarry | music | https://acemusic.ai/song/jsxfsr9qs4ss |
 | raid | music | https://acemusic.ai/song/tx7xfih6f5iy |
-| rain | music | https://acemusic.ai/song/cc6q9462hkrn |
+| rain | music | https://acemusic.ai/song/y7xdgde87bp8 |
 | rec_center | music | https://acemusic.ai/song/kv8pmgk64bhe |
 | ruins | music | https://acemusic.ai/song/edbnbft4geyb |
-| sanctuary | music | https://acemusic.ai/song/xm3e8v7ivewm |
+| sanctuary | music | https://acemusic.ai/song/vrivhqwmcsm3 |
 | shop | music | https://acemusic.ai/song/nk63ma5hzegf |
-| shop_gang | music | https://acemusic.ai/song/eswt2crzs8va |
+| shop_gang | music | https://acemusic.ai/song/g7urw5w2yjwn |
 | sky | music | https://acemusic.ai/song/2vmd84ethujd |
-| title_musicbox | music | https://acemusic.ai/song/zqyyb67hf7z4 |
+| title | music |  |
+| title_musicbox | music | https://acemusic.ai/song/xx6ywzchyfdf |
 | town | music | https://acemusic.ai/song/vj4i3a66zp4u |
-| underground | music | https://acemusic.ai/song/rkwb3sis9gn4 |
+| underground | music | https://acemusic.ai/song/xedgark9qydx |
 | uptown | music | https://acemusic.ai/song/tarq7dev5wbn |
 | wastes | music | https://acemusic.ai/song/nmxgmnpye49y |
+| wedding | music | https://acemusic.ai/song/ykdvstr3ty64 |
+| wedding_gang | music | https://acemusic.ai/song/fezjtrxm87dg |
 | winter | music | https://acemusic.ai/song/7d6g6jhyxw5p |
-
-Title and arc themes (arc_gangsters, arc_penguins, title): Tom's own uploads (made with ACE Music; originals in audio/incoming/).
 
 ## Recorded sound effects and ambience: CC0
 
@@ -258,17 +273,22 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [BigSoundBank #0880 Dwarf goat bleating](https://bigsoundbank.com/dwarf-goat-bleating-s0880.html) | Joseph Sardin | CC0 | bleat |
 | [BigSoundBank #0904 Wind in the Trees](https://bigsoundbank.com/forest-wind-in-the-trees-s0904.html) | Joseph Sardin | CC0 | leaves |
 | [BigSoundBank #0978 Hens Lays](https://bigsoundbank.com/hens-lays-s0978.html) | Joseph Sardin | CC0 | cluck, hens |
+| [BigSoundBank #1000 Bumblebee #1](https://bigsoundbank.com/bumblebee-1-s1000.html) | Joseph Sardin | CC0 | buzz |
+| [BigSoundBank #1001 Bumblebee #2](https://bigsoundbank.com/bumblebee-2-s1001.html) | Joseph Sardin | CC0 | buzz |
 | [BigSoundBank #1022 #1022](https://bigsoundbank.com/) | Joseph Sardin | CC0 | boss_fall |
 | [BigSoundBank #1039 Hens worried](https://bigsoundbank.com/hens-worried-s1039.html) | Joseph Sardin | CC0 | cluck |
 | [BigSoundBank #1074 Bubbles Burst](https://bigsoundbank.com/bubbles-burst-s1074.html) | Joseph Sardin | CC0 | harvest_pluck |
 | [BigSoundBank #1170 Hisses, loud long](https://bigsoundbank.com/hisses-loud-long-s1170.html) | Joseph Sardin | CC0 | whistle |
 | [BigSoundBank #1293 Rain on car roof](https://bigsoundbank.com/rain-on-car-roof-s1293.html) | Joseph Sardin | CC0 | rain_roof |
 | [BigSoundBank #1294 Big rain on car roof](https://bigsoundbank.com/big-rain-on-car-roof-s1294.html) | Joseph Sardin | CC0 | rain_roof |
+| [BigSoundBank #1376 Bunny hutch](https://bigsoundbank.com/bunny-hutch-s1376.html) | Joseph Sardin | CC0 | thump |
 | [BigSoundBank #1377 Goat and Young Goat](https://bigsoundbank.com/goat-and-young-goat-s1377.html) | Joseph Sardin | CC0 | bleat |
 | [BigSoundBank #1436 Fishing reel, medium](https://bigsoundbank.com/fishing-reel-medium-s1436.html) | Joseph Sardin | CC0 | reel |
 | [BigSoundBank #1437 Fishing reel, slow](https://bigsoundbank.com/fishing-reel-slow-s1437.html) | Joseph Sardin | CC0 | reel |
 | [BigSoundBank #1514 Rowing slowly](https://bigsoundbank.com/rowing-slowly-s1514.html) | Joseph Sardin | CC0 | step_swim, swim |
 | [BigSoundBank #1634 #1634](https://bigsoundbank.com/) | Joseph Sardin | CC0 | step_wheels |
+| [BigSoundBank #1658 Grumpy pig, with the mouth #1](https://bigsoundbank.com/grumpy-pig-1-s1658.html) | Joseph Sardin | CC0 | oink |
+| [BigSoundBank #1659 Grumpy Pig, with the Mouth #2](https://bigsoundbank.com/grumpy-pig-2-s1659.html) | Joseph Sardin | CC0 | oink |
 | [BigSoundBank #1854 Horse Walking on a Path](https://bigsoundbank.com/horse-walking-on-a-path-s1854.html) | Joseph Sardin | CC0 | hoof, step_hoof |
 | [BigSoundBank #2561 Coffee Shop at the Capucins](https://bigsoundbank.com/coffee-shop-at-the-capucins-s2561.html) | Joseph Sardin | CC0 | room_shop |
 | [BigSoundBank #2721 Truck Horn](https://bigsoundbank.com/truck-horn-s2721.html) | Joseph Sardin | CC0 | car_horn, war_horn_gang |
