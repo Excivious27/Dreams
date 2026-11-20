@@ -1771,6 +1771,15 @@ static func rarity_color(id: String) -> Color:
 	return Color(0.9, 0.9, 0.9)
 
 
+## C9 (colour-blind safe): rarity as a count, 0 common .. 4 legendary, so slots can
+## draw rank dots beside the colour (char_sheet / chest_screen pips).
+const RARITY_RANKS := ["common", "uncommon", "rare", "epic", "legendary"]
+
+
+static func rarity_rank(id: String) -> int:
+	return maxi(0, RARITY_RANKS.find(str(items.get(id, {}).get("rarity", "common"))))
+
+
 # ---- energy / hp -------------------------------------------------------------
 
 static func spend_energy(n: int) -> bool:

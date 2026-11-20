@@ -380,6 +380,27 @@ static func done_text(r: Dictionary, n: int) -> String:
 	return t
 
 
+## In-game Options "Back up this farm" (game_menu calls this guarded): saves first,
+## then shows the code (web: a page box with Copy/Share/Save file) or copies it and
+## offers a file (desktop). done(line) gets the words to show.
+static func back_up_this_farm(host: Node, done: Callable) -> void:
+	if GameState.run.is_empty():
+		done.call(WHY["no_farm"])
+		return
+	GameState.save()
+	var code := encode_slot(GameState.slot())
+	if code == "":
+		done.call(WHY["no_farm"])
+		return
+	if OS.has_feature("web"):
+		web_code_box(code)
+		done.call("Your code is on screen: Copy, Share or Save it somewhere safe.")
+		return
+	DisplayServer.clipboard_set(code)
+	save_file(host, code, func(ok: bool, where: String) -> void:
+		done.call(("Copied the code and saved %s." % where) if ok else "Copied the code. Paste it somewhere safe."))
+
+
 # ---------------------------------------------------------------- files
 
 static var _web_cb: Variant = null  # keeps the JS callback alive

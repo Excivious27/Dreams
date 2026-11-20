@@ -793,6 +793,8 @@ func _show_names() -> void:
 		_new_len = Difficulty.next_day_len(_new_len)
 		len_btn.text = "Day length: %d real min" % _new_len)
 	_page.add_child(len_btn)
+	if OS.get_environment("SteamDeck") == "1":
+		_page.add_child(_label("Typing a name: Steam + X opens the keyboard (or tap Random).", 7, false))
 	_page.add_child(_button("Start", _begin, true))
 	var made_look := bool(_playables[_playable].get("custom", false)) or GameState.sprite_for_playable(_playable, _arc) == "penguin"
 	_page.add_child(_button("Back", _show_look if made_look else _show_characters))  # back to the look you made, not the hero grid
