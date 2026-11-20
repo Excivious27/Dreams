@@ -2097,6 +2097,62 @@
     "arc": ""
    },
    {
+    "recipe": "dc_stool_wood",
+    "station": "workbench",
+    "item": "dc_stool_wood",
+    "name": "Wood Stool",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_chair_a",
+    "station": "workbench",
+    "item": "dc_chair_a",
+    "name": "Cottage Oak Chair",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_table_square",
+    "station": "workbench",
+    "item": "dc_table_square",
+    "name": "Cottage Square Table",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_shelf_empty",
+    "station": "workbench",
+    "item": "dc_shelf_empty",
+    "name": "Plain Shelf",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_low_table",
+    "station": "workbench",
+    "item": "dc_low_table",
+    "name": "Low Table",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_nightstand_a",
+    "station": "workbench",
+    "item": "dc_nightstand_a",
+    "name": "Cottage Oak Nightstand",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_cat_bed",
+    "station": "workbench",
+    "item": "dc_cat_bed",
+    "name": "Cat Bed",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_dog_bed",
+    "station": "workbench",
+    "item": "dc_dog_bed",
+    "name": "Dog Bed",
+    "arc": ""
+   },
+   {
     "recipe": "flour",
     "station": "mill",
     "item": "flour",
@@ -2164,6 +2220,48 @@
     "station": "sawmill",
     "item": "ironwood_beam",
     "name": "Ironwood Beam",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_bookshelf",
+    "station": "sawmill",
+    "item": "dc_bookshelf",
+    "name": "Cottage Bookshelf",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_dresser",
+    "station": "sawmill",
+    "item": "dc_dresser",
+    "name": "Dresser",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_wardrobe_a",
+    "station": "sawmill",
+    "item": "dc_wardrobe_a",
+    "name": "Cottage Oak Wardrobe",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_table2_long4",
+    "station": "sawmill",
+    "item": "dc_table2_long4",
+    "name": "Dining Table",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_desk_a",
+    "station": "sawmill",
+    "item": "dc_desk_a",
+    "name": "Cottage Oak Desk",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_bed_single",
+    "station": "sawmill",
+    "item": "dc_bed_single",
+    "name": "Single Bed",
     "arc": ""
    },
    {
@@ -3091,6 +3189,27 @@
     "arc": ""
    },
    {
+    "recipe": "dc_lantern2",
+    "station": "anvil",
+    "item": "dc_lantern2",
+    "name": "Iron Lantern",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_lamp_floor",
+    "station": "anvil",
+    "item": "dc_lamp_floor",
+    "name": "Floor Lamp",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_stove_iron",
+    "station": "anvil",
+    "item": "dc_stove_iron",
+    "name": "Iron Stove",
+    "arc": ""
+   },
+   {
     "recipe": "rope",
     "station": "loom",
     "item": "rope",
@@ -3207,6 +3326,90 @@
     "station": "loom",
     "item": "outfit_penguin",
     "name": "Ceremony Coat",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_rug_rect_blue",
+    "station": "loom",
+    "item": "dc_rug_rect_blue",
+    "name": "Cottage Rect Blue Rug",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_rug_rect_green",
+    "station": "loom",
+    "item": "dc_rug_rect_green",
+    "name": "Cottage Rect Green Rug",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_rug_rect_red",
+    "station": "loom",
+    "item": "dc_rug_rect_red",
+    "name": "Cottage Rect Red Rug",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_reed_mat_a",
+    "station": "loom",
+    "item": "dc_reed_mat_a",
+    "name": "Reed Mat",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_curtain_blue_open",
+    "station": "loom",
+    "item": "dc_curtain_blue_open",
+    "name": "Blue Curtains",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_curtain_red_open",
+    "station": "loom",
+    "item": "dc_curtain_red_open",
+    "name": "Red Curtains",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_rug2_round_blue",
+    "station": "loom",
+    "item": "dc_rug2_round_blue",
+    "name": "Country Round Blue Rug",
+    "arc": ""
+   },
+   {
+    "recipe": "wr_hoodie",
+    "station": "loom",
+    "item": "wr_hoodie",
+    "name": "Hoodie",
+    "arc": ""
+   },
+   {
+    "recipe": "wr_sweater",
+    "station": "loom",
+    "item": "wr_sweater",
+    "name": "Cosy Sweater",
+    "arc": ""
+   },
+   {
+    "recipe": "wr_scarf_red",
+    "station": "loom",
+    "item": "wr_scarf_red",
+    "name": "Red Knit Scarf",
+    "arc": ""
+   },
+   {
+    "recipe": "wr_scarf_blue",
+    "station": "loom",
+    "item": "wr_scarf_blue",
+    "name": "Blue Knit Scarf",
+    "arc": ""
+   },
+   {
+    "recipe": "wr_beanie",
+    "station": "loom",
+    "item": "wr_beanie",
+    "name": "Knit Beanie",
     "arc": ""
    },
    {
@@ -3504,6 +3707,34 @@
     "arc": ""
    },
    {
+    "recipe": "dc_tt_vase",
+    "station": "kiln",
+    "item": "dc_tt_vase",
+    "name": "Glazed Vase",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_tt_pot_a",
+    "station": "kiln",
+    "item": "dc_tt_pot_a",
+    "name": "Clay Jar",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_tt_pot_c",
+    "station": "kiln",
+    "item": "dc_tt_pot_c",
+    "name": "Urn",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_ivy_pot",
+    "station": "kiln",
+    "item": "dc_ivy_pot",
+    "name": "Ivy Pot",
+    "arc": ""
+   },
+   {
     "recipe": "copper_ring",
     "station": "jeweler",
     "item": "copper_ring",
@@ -3571,6 +3802,20 @@
     "station": "jeweler",
     "item": "dream_charm",
     "name": "Dream Charm",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_tt_snow_globe",
+    "station": "jeweler",
+    "item": "dc_tt_snow_globe",
+    "name": "Snow Globe",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_tt_lantern_crystal",
+    "station": "jeweler",
+    "item": "dc_tt_lantern_crystal",
+    "name": "Crystal Lantern",
     "arc": ""
    },
    {
@@ -3952,6 +4197,20 @@
     "arc": "gangsters"
    },
    {
+    "recipe": "dc_safe",
+    "station": "armory",
+    "item": "dc_safe",
+    "name": "Iron Safe",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "wr_shades",
+    "station": "armory",
+    "item": "wr_shades",
+    "name": "Night Shades",
+    "arc": "gangsters"
+   },
+   {
     "recipe": "icicle_blade",
     "station": "shaper",
     "item": "icicle_blade",
@@ -4057,6 +4316,20 @@
     "arc": "penguins"
    },
    {
+    "recipe": "dc_tt_snowman",
+    "station": "shaper",
+    "item": "dc_tt_snowman",
+    "name": "Tiny Snowman",
+    "arc": "penguins"
+   },
+   {
+    "recipe": "dc_tt_penguin_figurine",
+    "station": "shaper",
+    "item": "dc_tt_penguin_figurine",
+    "name": "Penguin Figurine",
+    "arc": "penguins"
+   },
+   {
     "recipe": "litter_box",
     "station": "litter",
     "item": "litter_box",
@@ -4138,6 +4411,20 @@
     "station": "hack",
     "item": "ghost_ledger",
     "name": "Ghost Ledger",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_neon_sign_0",
+    "station": "hack",
+    "item": "dc_neon_sign_0",
+    "name": "Neon Sign: Moon",
+    "arc": ""
+   },
+   {
+    "recipe": "dc_neon_sign_1",
+    "station": "hack",
+    "item": "dc_neon_sign_1",
+    "name": "Neon Sign: Star",
     "arc": ""
    },
    {

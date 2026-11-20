@@ -443,24 +443,37 @@ for bk in ('anvil', 'tannery', 'armory'):
         if r['id'].startswith(('crystal_', 'moon_', 'temper_', 'neon_')):
             I[r['give']]['value'] = max(int(I[r['give']].get('value', 0)), int(0.8 * val(r['need'])))
 
+# 6) Decor and wearables (C10a): gen_decor.py lists its craftable pieces in data/decor.json "recipes";
+# they join the books here (gen_stations rebuilds every book, so it must import them). Decor is a money
+# sink: crafted decor saves money against the shop price but never earns (value capped below the inputs).
+DEC = json.load(open(D + 'decor.json')) if os.path.exists(D + 'decor.json') else {}
+DECOR_IDS = set()
+for dr in DEC.get('recipes', []):
+    if dr['book'] in books and dr['id'] in I and all(k in I or k.startswith('#') for k in dr['need']):
+        books[dr['book']].append(rc(dr['id'], dr['name'], dict(dr['need']), tier=int(dr.get('tier', 1)), decor=True))
+        DECOR_IDS.add(dr['id'])
+
 # ---- economy pass (C8 P2) ---------------------------------------------------------
 # Every number here is checked by tools/econ_check.py (in check.sh).
 ECON = {'craft_floor': 1.15,   # intermediates (craft/material/bar) sell for >= 1.15 x their inputs
         'goods_floor': 1.2,    # food/potion/consumable/placeable/gift made at a station: >= 1.2 x inputs
         'armour_floor': 0.7,   # metal/leather set pieces: >= 0.7 x their bars (slot and metal both show)
-        'loop_cap': 1.1}       # anything made only from shop-bought goods sells for <= 1.1 x them (no buy-craft-sell loop)
+        'loop_cap': 1.1,       # anything made only from shop-bought goods sells for <= 1.1 x them (no buy-craft-sell loop)
+        'decor_cap': 0.8}      # crafted decor/wear sells for <= 0.8 x its inputs (a sink, never income; c10_05-23)
 FLOOR_TYPES = {'craft': 'craft_floor', 'material': 'craft_floor', 'bar': 'craft_floor',
                'food': 'goods_floor', 'potion': 'goods_floor', 'consumable': 'goods_floor', 'placeable': 'goods_floor', 'gift': 'goods_floor'}
 NO_FLOOR = {'bills_crude', 'bills_passable', 'bills_fine', 'bills_perfect', 'forged_permit', 'rounds'}  # face value / ammo, priced by hand
 import re
 def shop_goods():
-    """Every item id a town shop sells (mirror of the static lists in scripts/shops.gd offers())."""
+    """Every item id a town shop sells (mirror of the static lists in scripts/shops.gd offers()) plus
+    every decor/wear piece a decor shop stocks (data/decor.json "shops", C10a)."""
     src = open(os.path.join(D, '..', 'scripts', 'shops.gd')).read()
     a = src.index('static func offers'); b = src.index('static func run', a)
     out = set()
     for m in re.finditer(r'\[([^\[\]]*)\]', src[a:b]):
         if src[a:b][:m.start()].rstrip().endswith(' in'): continue  # `cid in [...]` filters name crops, not goods
         out |= {w for w in re.findall(r'"([a-z0-9_]+)"', m.group(1)) if w in I}
+    out |= {k for rows in DEC.get('shops', {}).values() for _, ids in rows for k in ids if k in I}
     return out
 SHOP = shop_goods()
 # Recipe fixes: milling adds value, made goods cost less than the shop's, tier-1 gates match tier 1.
@@ -506,6 +519,9 @@ for _ in range(3):  # upstream values move downstream ones: settle in a few pass
             per = need_val(r['need']) / float(r.get('n', 1))
             if all_shop(r['need']):
                 cap[g] = min(cap.get(g, 1e9), int(ECON['loop_cap'] * per))
+            if it.get('type') in ('decor', 'wear'):
+                cap[g] = min(cap.get(g, 1e9), max(1, int(ECON['decor_cap'] * per)))
+                continue
             if it.get('type') == 'equip' and g.startswith(ARMOUR) and not g.endswith('_plus'):
                 f = int(ECON['armour_floor'] * per)
             elif it.get('type') in FLOOR_TYPES and not r.get('tool') and not r.get('vehicle'):
