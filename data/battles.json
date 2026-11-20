@@ -3690,7 +3690,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 920,
+       "crystals": 1040,
        "items": {
         "gold_bar": 3
        }
@@ -4892,7 +4892,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 920,
+       "crystals": 1040,
        "items": {
         "gold_bar": 3
        }
@@ -5452,7 +5452,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 1120,
        "items": {
         "crystal_battery": 2
        }
@@ -6127,7 +6127,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 1120,
        "items": {
         "crystal_battery": 2
        }
@@ -6485,8 +6485,7 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab",
-         "mud_slime"
+         "rock_crab"
         ]
        }
       },
@@ -6560,8 +6559,7 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab",
-         "mud_slime"
+         "rock_crab"
         ]
        }
       },
@@ -6641,8 +6639,7 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab",
-         "mud_slime"
+         "rock_crab"
         ]
        }
       },
@@ -6739,8 +6736,7 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab",
-         "mud_slime"
+         "rock_crab"
         ]
        }
       },
@@ -6840,8 +6836,7 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab",
-         "mud_slime"
+         "rock_crab"
         ]
        }
       },
@@ -6970,7 +6965,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 920,
+       "crystals": 1040,
        "items": {
         "gold_bar": 3
        }
@@ -7024,8 +7019,7 @@
          "grump_coral",
          "grump_moss",
          "grump_storm",
-         "river_serpent",
-         "wisp"
+         "river_serpent"
         ]
        }
       },
@@ -7124,8 +7118,7 @@
          "grump_coral",
          "grump_moss",
          "grump_storm",
-         "river_serpent",
-         "wisp"
+         "river_serpent"
         ]
        }
       },
@@ -7222,8 +7215,7 @@
          "grump_coral",
          "grump_moss",
          "grump_storm",
-         "river_serpent",
-         "wisp"
+         "river_serpent"
         ]
        }
       },
@@ -7324,8 +7316,7 @@
          "grump_coral",
          "grump_moss",
          "grump_storm",
-         "river_serpent",
-         "wisp"
+         "river_serpent"
         ]
        }
       },
@@ -7456,7 +7447,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 1120,
        "items": {
         "crystal_battery": 2
        }
@@ -7511,8 +7502,7 @@
          "grump_frost",
          "grump_crystal",
          "grump_brute",
-         "ice_wisp",
-         "hill_wolf"
+         "ice_wisp"
         ]
        }
       },
@@ -7598,8 +7588,7 @@
          "grump_frost",
          "grump_crystal",
          "grump_brute",
-         "ice_wisp",
-         "hill_wolf"
+         "ice_wisp"
         ]
        }
       },
@@ -7689,8 +7678,7 @@
          "grump_frost",
          "grump_crystal",
          "grump_brute",
-         "ice_wisp",
-         "hill_wolf"
+         "ice_wisp"
         ]
        }
       },
@@ -7768,8 +7756,7 @@
          "grump_frost",
          "grump_crystal",
          "grump_brute",
-         "ice_wisp",
-         "hill_wolf"
+         "ice_wisp"
         ]
        }
       },
@@ -7861,8 +7848,7 @@
          "grump_frost",
          "grump_crystal",
          "grump_brute",
-         "ice_wisp",
-         "hill_wolf"
+         "ice_wisp"
         ]
        }
       },
@@ -8049,7 +8035,7 @@
          "grump_brute",
          "grump_storm",
          "lantern_moth",
-         "geode_golem"
+         "wisp"
         ]
        }
       },
@@ -8126,7 +8112,7 @@
          "grump_brute",
          "grump_storm",
          "lantern_moth",
-         "geode_golem"
+         "wisp"
         ]
        }
       },
@@ -8161,7 +8147,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1540,
+       "crystals": 1620,
        "items": {
         "crystal_battery": 3
        }
@@ -8183,7 +8169,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1540,
+       "crystals": 1620,
        "items": {
         "crystal_battery": 3
        }
@@ -8262,7 +8248,7 @@
          "grump_brute",
          "grump_storm",
          "lantern_moth",
-         "geode_golem"
+         "wisp"
         ]
        }
       },
@@ -8351,7 +8337,7 @@
          "grump_brute",
          "grump_storm",
          "lantern_moth",
-         "geode_golem"
+         "wisp"
         ]
        }
       },
@@ -8444,7 +8430,7 @@
          "grump_brute",
          "grump_storm",
          "lantern_moth",
-         "geode_golem"
+         "wisp"
         ]
        }
       },
@@ -9539,7 +9525,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 920,
+       "crystals": 1040,
        "items": {
         "gold_bar": 3
        }
@@ -10008,7 +9994,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 1120,
        "items": {
         "crystal_battery": 2
        }
@@ -10588,7 +10574,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 1120,
        "items": {
         "crystal_battery": 2
        }

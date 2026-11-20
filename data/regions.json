@@ -12519,9 +12519,9 @@
     }
    ],
    "enemies": [
+    "grump_coral",
     "rock_crab",
-    "mud_slime",
-    "river_serpent",
+    "grump_wisp",
     "grump"
    ],
    "tickets": 150,
@@ -12854,8 +12854,8 @@
    ],
    "enemies": [
     "river_serpent",
-    "wisp",
-    "slime",
+    "grump_moss",
+    "grump_coral",
     "grump"
    ],
    "tickets": 150,
@@ -13536,8 +13536,8 @@
     38
    ]
   },
-  "ground_seam": "cave_stone_floor",
-  "light": 0.6
+  "light": 0.6,
+  "ground_seam": "cave_stone_floor"
  },
  "gloam_lanternfall": {
   "cols": 42,
