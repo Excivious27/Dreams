@@ -24,10 +24,10 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 13:25 PT, personal account. **Paused for optimization round 3** (Tom 13:00: CI deps/pre-merge CI/flaky reruns/shallow+cached import, rolling merges, slim CLAUDE.md + docs/TOOLS.md, STATUS rotation, one package builder, art lane + music budget). Running agents keep going; next stage waits for the changes.
+- **Last update:** 2026-11-20 13:55 PT, personal account. Optimization round 3 DONE (see "CONDUCT operating rules"): CI r3full PASS 13.1 min wall / 134 job-min; subset runs 9-10 min; CLAUDE.md 84->14 KB (+docs/TOOLS.md), CONDUCT-BRIEF 12->6 KB, STATUS 292->209 KB (+STATUS-ARCHIVE), one package builder.
 - **Done:** CONDUCT 1-10b (all packages sent; C10b CI c10b2 PASS).
-- **In progress:** C11a fix agents P1-P4, P6 (resumed after a server restart; worktrees /home/claude/wt/c11af_pN, reports /home/claude/wt/c11af_reports); P5 (villagers/audio) to launch after the optimization changes. Optimization round 3 changes.
-- **Next step:** finish round 3 (spec: Tom's message, summarised in HANDOFF "CONDUCT operating rules"), push, then launch C11a P5, rolling-merge C11a, CI, package; then C11b.
+- **In progress:** C11a fix agents P1-P6 (resumed after a 2nd server restart; worktrees /home/claude/wt/c11af_pN, reports /home/claude/wt/c11af_reports). C11b auditors 01-14 running in parallel (B1; worktrees /home/claude/wt/c11b_NN, findings /home/claude/wt/c11b_reports/*.jsonl; scopes /home/claude/wt/C11b_SCOPES.txt, 15-20 run low after the C11a push).
+- **Next step:** rolling-merge C11a packages as they finish (mrg.sh), regen_data, ci_run c11a, build_package.py 11a, push, package to Tom; then synthesize C11b findings into packages and launch fixes.
 - **Jobs running elsewhere:** subagents only. Images used today: ~150 of 300 (limit drops to 60/day on Nov 25). ACE credits: 664 until Dec 1.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
@@ -174,6 +174,8 @@ Everything needed to run a CONDUCT from this section alone. Target: **1 h 35 m t
 **Lean reads**: briefs point to the code map and docs/TOOLS.md; agents grep and read line ranges, never whole big files; auditors reply only "done, N findings"; the conductor reads cluster.py output and CI summary.txt only. STATUS.md holds 2 days (older in docs/STATUS-ARCHIVE.md, `python3 tools/status_add.py "<line>"`, `--rotate 2` weekly). CLAUDE.md is a slim core (~15 KB); the full catalog is docs/TOOLS.md.
 
 **Art lane and music budget**: image limit 300/day until Nov 25, then 60/day: before Nov 25 front-load art for queued art-heavy CONDUCTs (C11b creatures, C14 aesthetics/marina/town, C18 cutscenes, C23 art direction) where designs are known; from Nov 25 fix agents never block on images: missing renders go to docs/ART-QUEUE.md and a daily low-effort art agent works through it within the limit; wiring happens when art lands. Track images used per day in the Baton. ACE music: 664 credits until Dec 1; first reuse the unused second take of every existing song (audio/ACE_LOG.json) as alternates (C13 especially); new songs only where no take fits; check get_account before C13.
+
+**Godot locks:** fix agents share /tmp/godot.lock; auditors use their own /tmp/godot_audit.lock (C11b: 20 agents on one lock starved auditors of play runs).
 
 **Report timing table** (every CONDUCT): audit, sort, fix, merge, CI, package, total, gap since the last CONDUCT, effort per role, agents per effort, CI first-run result (pass/fail and why), CI minutes, images used, ACE credits used.
 
