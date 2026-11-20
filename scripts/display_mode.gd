@@ -252,6 +252,7 @@ func _on_node_added(n: Node) -> void:
 
 
 func _process(_d: float) -> void:
+	PlayClock.tick(_d, get_tree().paused)
 	for a: String in _tap_release:
 		Input.action_release(a)
 	_tap_release.clear()

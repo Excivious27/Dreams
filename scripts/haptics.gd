@@ -245,29 +245,28 @@ static func rows(parent: Control, font := 8) -> void:
 		b.pressed.connect(func() -> void: b.text = cb.call(true))
 		parent.add_child(b)
 		return b
-	var str_btn: Button
-	var tap_btn: Button
+	var refs := {}  # lambdas capture by value: look the rows up at press time
+	var show_rest := func() -> void:
+		for k: String in ["str", "tap"]:
+			if refs.has(k):
+				(refs[k] as Control).visible = enabled()
 	var on_btn: Button = mk.call(func(press: bool) -> String:
 		if press:
 			SaveGame.set_value("set_haptics", not enabled())
 			if enabled():
 				buzz("tool_hit", true)
-			if str_btn:
-				str_btn.visible = enabled()
-			if tap_btn:
-				tap_btn.visible = enabled()
+			show_rest.call()
 		return "Vibration: %s" % ("on" if enabled() else "off"))
-	str_btn = mk.call(func(press: bool) -> String:
+	refs["str"] = mk.call(func(press: bool) -> String:
 		if press:
 			SaveGame.set_value("set_haptics_str", (strength() + 1) % STR_NAMES.size())
 			buzz("tool_break", true)
 		return "Vibration strength: %s" % STR_NAMES[strength()])
-	tap_btn = mk.call(func(press: bool) -> String:
+	refs["tap"] = mk.call(func(press: bool) -> String:
 		if press:
 			SaveGame.set_value("set_haptics_ui", not taps_on())
 			if taps_on():
 				buzz("press", true)
 		return "Vibrate on button taps: %s" % ("on" if taps_on() else "off"))
-	str_btn.visible = enabled()
-	tap_btn.visible = enabled()
+	show_rest.call()
 	on_btn.tooltip_text = "Buzz on bites, hits, harvests and big moments"

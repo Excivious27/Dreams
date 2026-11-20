@@ -70,8 +70,8 @@ func take_damage(n: int, _from: Vector2) -> void:
 	if _spr:
 		_spr.modulate = Color(1.8, 1.8, 1.8)
 	var near := map.player != null and map.player.position.distance_to(position) < 220.0
-	if hp > 0 and near and Time.get_ticks_msec() - _hit_ms > 400:
-		_hit_ms = Time.get_ticks_msec()
+	if hp > 0 and near and PlayClock.ms() - _hit_ms > 400:
+		_hit_ms = PlayClock.ms()
 		Music.instance(get_tree()).sfx("glass" if GameState.is_penguins() else "hit", "thud")
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)

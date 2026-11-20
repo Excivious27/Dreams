@@ -265,7 +265,7 @@ func _process(delta: float) -> void:
 	if map.hitstop > 0.0:
 		return
 	# Sorcery status: asleep (Lull) holds the enemy still; burn (Ember) ticks damage.
-	if has_meta("asleep_until") and Time.get_ticks_msec() < int(get_meta("asleep_until")):
+	if has_meta("asleep_until") and PlayClock.ms() < int(get_meta("asleep_until")):
 		_stun = maxf(_stun, 0.2); _shield = maxf(0.0, _shield - delta)
 		return
 	if has_meta("burn") and int(get_meta("burn")) > 0:

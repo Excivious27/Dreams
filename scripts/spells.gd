@@ -119,7 +119,7 @@ static func _cast(m: GameMap, id: String) -> bool:
 			var n := 0
 			for e2 in m.enemies.duplicate():
 				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 80.0:
-					e2.set_meta("asleep_until", Time.get_ticks_msec() + (2000 if e2.base_hp >= 10 else 6000))
+					e2.set_meta("asleep_until", PlayClock.ms() + (2000 if e2.base_hp >= 10 else 6000))  # game time (C9 P4)
 					m.emote(e2, "sleep", 1.5)
 					n += 1
 			m.hud.toast("%d fall asleep." % n if n > 0 else "Nothing here to lull.", Color(0.85, 0.8, 1.0))

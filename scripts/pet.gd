@@ -117,7 +117,7 @@ func _ready() -> void:
 	# keeps counting across doors); after it runs out it has gone home.
 	var until := float(state().get("down_until", -1.0))
 	if until > 0.0:
-		var left := minf(until - Time.get_ticks_msec() / 1000.0, DOWN_WINDOW)  # a restarted app resets the clock
+		var left := minf(until - PlayClock.now(), DOWN_WINDOW)  # a restarted app resets the clock
 		if left > 0.0:
 			state()["hp"] = 0
 			_down_t = left
@@ -285,7 +285,7 @@ func _knock_down() -> void:
 	Pet.say(get_tree(), "hurt")
 	state()["hp"] = 0
 	_down_t = DOWN_WINDOW
-	state()["down_until"] = Time.get_ticks_msec() / 1000.0 + DOWN_WINDOW
+	state()["down_until"] = PlayClock.now() + DOWN_WINDOW  # game time: menus don't eat the window (C9 P4)
 	_target = null
 	if anim.sprite_frames.has_animation("sleep"):
 		anim.play("sleep")
