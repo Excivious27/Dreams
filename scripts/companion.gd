@@ -359,7 +359,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			for id in GameState.run["inventory"].keys():
 				var v := GameState.item_value(str(id))
 				# Only loot: enemy drops, junk, ore and treasure. Never gear, food or keys.
-				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"] and not str(id) in FENCE_KEEP and not GameState.is_locked(str(id)):
+				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"] and not str(id) in FENCE_KEEP and not GameState.is_locked(str(id)) and not DecorSources.keeps(str(id)) and not (Collections.in_log("museum", str(id)) and not (Collections.st()["donated"] as Dictionary).has(str(id))):  # C10a P4: never fence a one-of-a-kind or an undonated museum piece
 					bv = v
 					best = str(id)
 			# One tap names the deal, a second tap within 5 seconds makes it.
