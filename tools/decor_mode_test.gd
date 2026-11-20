@@ -285,6 +285,25 @@ func _c10b(items: Dictionary) -> void:
 		if dmc:
 			dmc.close()
 			await frames(3)
+	# B / Esc / right-click: drop what you hold first, then leave; Store all asks Yes/No.
+	var dmb := DecorMode.open(m)
+	await frames(3)
+	if dmb:
+		dmb._choose("t_chair")
+		check(dmb.held == "t_chair", "holding from the box")
+		dmb._back()
+		check(dmb.held == "" and is_instance_valid(dmb) and not dmb.is_queued_for_deletion(), "back drops the piece, stays open")
+		dmb._toggle_list()
+		await frames(2)
+		var n_before := DecorMode.placed("house").size()
+		dmb._ask("store")
+		await frames(1)
+		check(dmb._confirm_row.visible and DecorMode.placed("house").size() == n_before, "Store all waits for Yes")
+		dmb._back()
+		check(not dmb._list_panel.visible, "back closes the list first")
+		dmb._back()
+		await frames(2)
+		check(not is_instance_valid(dmb) or dmb.is_queued_for_deletion(), "back again leaves decorate mode")
 	# The box list pages (a full catalogue never builds 700 rows).
 	for k in 70:
 		items["t_many_%d" % k] = _ent("Many %02d" % k, "floor", [1, 1], "furniture/chair2_a_down")
