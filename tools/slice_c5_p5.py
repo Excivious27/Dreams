@@ -71,6 +71,45 @@ def wren_jr():
         S.strip(frames, g, nm)
 
 
+BASE = ["maple", "gideon", "wren", "alder", "sal", "finn", "lumi", "theo", "hazel", "bram", "posy", "juniper", "rook", "pip", "tobin"]
+# Side-row frames the render drew facing LEFT: mirrored to face right.
+# key -> indices into [idle_side, walk0..3]
+FLIP = {}
+
+
+def base_walker(vid, flips=None):
+    """art/incoming/c5/p5_walk_<vid>.png -> characters/npc_<vid>_base, scaled
+    so a standing figure matches their pose sheet's standing height."""
+    rgba = _load_keep_alpha("c5/p5_walk_%s.png" % vid)
+    rgba, rows = C.sheet_rows(None, merge=4, min_area=400, rgba=rgba)
+    rows = [r for r in rows if len(r) >= 3]
+    assert len(rows) == 4 and len(rows[0]) == 3 and all(len(r) == 4 for r in rows[1:]), (vid, [len(r) for r in rows])
+    pg = "characters/npc_" + vid
+    hs = sorted(int(S.manifest[pg][p]["cell_h"]) for p in ("talk", "wave", "talk_2", "laugh") if p in S.manifest.get(pg, {}))
+    target = hs[len(hs) // 2] if hs else 100
+    f = target / C.med_h(rows[0] + rows[2])
+    flips = set(FLIP.get(vid, []) if flips is None else flips)
+    g = "characters/npc_%s_base" % vid
+    fl = lambda im: im.transpose(Image.FLIP_LEFT_RIGHT)
+    def pc(b, k=None):
+        im = C.piece(rgba, b, factor=f)
+        return fl(im) if k is not None and k in flips else im
+    for nm, b, k in [("idle", rows[0][0], None), ("idle_side", rows[0][1], 0), ("idle_up", rows[0][2], None)]:
+        _rm(g, nm)
+        im = pc(b, k)
+        S.save(im, g, nm)
+        S.manifest[g][nm].update({"cell_w": im.width, "cell_h": im.height, "frames": 1})
+    for nm, r, side in [("walk", rows[1], True), ("walk_down", rows[2], False), ("walk_up", rows[3], False)]:
+        _rm(g, nm)
+        S.strip([pc(b, i + 1 if side else None) for i, b in enumerate(r)], g, nm)
+
+
+def bases():
+    for v in (sys.argv[2:] if len(sys.argv) > 2 and sys.argv[1] == "bases" else BASE):
+        base_walker(v)
+        print("base", v)
+
+
 def _rekey_arr(a):
     """Leftover magenta key under the feet: pixels in the bottom band of a
     frame whose hue sits near magenta (red and blue well above green, blue
@@ -186,12 +225,12 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs]
+STEPS = [wren_jr, rekey, blobs, bases]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     S.manifest.update(json.load(open(mpath)))
-    only = sys.argv[1:]
+    only = sys.argv[1:2] if sys.argv[1:2] == ["bases"] else sys.argv[1:]
     for fn in STEPS:
         if only and fn.__name__ not in only:
             continue

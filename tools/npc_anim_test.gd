@@ -50,6 +50,7 @@ func _run() -> void:
 		var w := Npc.walker_for(id, job, job)
 		check(w != job and w.begins_with("npc_" + id), "%s walks as their new design (got %s)" % [id, w])
 		check(CharacterLibrary.has_character(w), "%s walker %s exists" % [id, w])
+		check(w == "npc_%s_base" % id, "%s has a base-outfit walker (got %s)" % [id, w])
 	check(Npc.walker_for("wren_jr", "npc_child_girl_a", "npc_child_girl_a") == "npc_wren_jr_base", "wren_jr has her own base walker")
 	# 2. Kids.
 	for id: String in ["pip", "wren_jr", "tobin", "mabel"]:
@@ -98,7 +99,12 @@ func _run() -> void:
 	check(sit < stand * 0.85, "sitting is drawn shorter than standing (%.1f vs %.1f)" % [sit, stand])
 	check(absf(stand - idle_h) < idle_h * 0.12, "a standing pose is about the walker's height")
 	# 6. Outfit skips base-outfit gestures but keeps activity poses.
-	check(maple.in_outfit() == maple._walker.begins_with("npc_maple_"), "in_outfit follows the walker")
+	check(not maple.in_outfit() and maple.pose_ok("wave"), "maple in her base walker plays every pose")
+	GameState.run["day"] = 3 + 28 * 3  # winter: her winter coat
+	var mw := _make("maple")
+	check(mw._walker == "npc_maple_winter" and mw.in_outfit(), "winter maple wears her coat (%s)" % mw._walker)
+	maple = mw
+	GameState.run["day"] = 3
 	if maple.in_outfit():
 		check(not maple.pose_ok("wave") and maple.pose_ok("sit"), "outfit: wave skipped, sit kept")
 	var wj := _make("wren_jr")
