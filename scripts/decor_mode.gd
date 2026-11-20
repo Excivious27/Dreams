@@ -38,6 +38,9 @@ static var _no_people := false
 ## relayout outdoors: every piece passed the walk check when it was placed; only
 ## reserved/blocked cells are re-checked (one farm-wide flood per piece was ~250 ms).
 static var _no_reach := false
+## relayout keeps the kept pieces' cells here (no O(n^2) decor_blocked scans).
+static var _mine_override: Variant = null
+static var _under_override: Variant = null
 ## Last relayout signature per room (house entry skips the full check when nothing changed).
 static var _lay_sig := {}
 
@@ -61,7 +64,10 @@ static func view() -> Dictionary:
 ## What the host shares with guests: only the house's looks (never the box or wardrobe).
 static func home_view() -> Dictionary:
 	var d := Decor.st()
-	return {"placed": (d["placed"] as Dictionary).duplicate(true), "wall": (d["wall"] as Dictionary).duplicate(true), "floor": (d["floor"] as Dictionary).duplicate(true)}
+	var out := {"placed": (d["placed"] as Dictionary).duplicate(true), "wall": (d["wall"] as Dictionary).duplicate(true), "floor": (d["floor"] as Dictionary).duplicate(true)}
+	if d.get("ext", null) is Dictionary:
+		out["ext"] = (d["ext"] as Dictionary).duplicate(true)  # P3's farmhouse exterior look rides along (c10b_01-06)
+	return out
 
 
 static func room_key(m: GameMap) -> String:
@@ -259,18 +265,23 @@ static func why_not(m: GameMap, id: String, cell: Vector2i, rot := 0, skip := -1
 			return ow
 	if layer == "under":
 		var door := _map_call(m, "decor_door", Vector2i(-99, -99)) as Vector2i
-		for i in list.size():
-			if i == skip or not (list[i] is Dictionary) or layer_of(str(list[i].get("id", ""))) != "under":
-				continue
-			for c: Vector2i in footprint(str(list[i]["id"]), _cell_of(list[i]), int(list[i].get("rot", 0))):
-				if c in fp:
+		if _under_override is Dictionary:
+			for c: Vector2i in fp:
+				if (_under_override as Dictionary).has(c):
 					return "A rug is already there."
+		else:
+			for i in list.size():
+				if i == skip or not (list[i] is Dictionary) or layer_of(str(list[i].get("id", ""))) != "under":
+					continue
+				for c: Vector2i in footprint(str(list[i]["id"]), _cell_of(list[i]), int(list[i].get("rot", 0))):
+					if c in fp:
+						return "A rug is already there."
 		if (door + Vector2i(0, 1)) in fp:
 			return "Keep the doorway clear."
 		return ""
 	var fixed := fixed_blocked(m)
 	var res: Dictionary = _map_call(m, "decor_reserved", {})
-	var mine := decor_blocked(m, skip)
+	var mine: Dictionary = _mine_override if _mine_override is Dictionary else decor_blocked(m, skip)
 	var who := {} if _no_people else occupied_cells(m)
 	for c: Vector2i in fp:
 		if res.has(c):
@@ -641,13 +652,25 @@ static func relayout(m: GameMap) -> Array:
 	list.clear()
 	_no_people = true
 	_no_reach = outdoor(m)
+	var mine := {}
+	var under := {}
 	for p: Dictionary in keep:
 		var id := str(p["id"])
 		list.append(p)
+		_mine_override = mine if _no_reach else null
+		_under_override = under
 		if why_not(m, id, _cell_of(p), int(p.get("rot", 0)), list.size() - 1) != "":
 			list.pop_back()
 			_box_back(id)
 			gone.append(nm(id))
+		else:
+			for c: Vector2i in footprint(id, _cell_of(p), int(p.get("rot", 0))):
+				if layer_of(id) == "floor":
+					mine[c] = list.size() - 1
+				elif layer_of(id) == "under":
+					under[c] = true
+	_mine_override = null
+	_under_override = null
 	_no_people = false
 	_no_reach = false
 	list.append_array(unknown)

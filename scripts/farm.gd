@@ -2606,7 +2606,19 @@ func decor_door() -> Vector2i:
 
 
 ## Cells no yard piece may cover, with why (c10b_02_02 / 08 / 09 / 16 / 19 / 20 / 23).
+var _res_cache := {}
+var _res_frame := -1
+
+
 func decor_reserved() -> Dictionary:
+	if _res_frame == Engine.get_process_frames() and not _res_cache.is_empty():
+		return _res_cache  # one build per frame (relayout asks for every piece)
+	_res_frame = Engine.get_process_frames()
+	_res_cache = _decor_reserved()
+	return _res_cache
+
+
+func _decor_reserved() -> Dictionary:
 	var r := {}
 	for c: Vector2i in cells_of([house_r.grow(1)]):
 		r[c] = "the house"
