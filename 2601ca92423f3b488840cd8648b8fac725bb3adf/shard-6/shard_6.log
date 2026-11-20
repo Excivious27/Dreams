@@ -1,0 +1,116 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | water_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2356 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 174.3s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 8.6s
+
+#### step 13: phone_ui_test (shard 6/6)
+glyphs ok: 50 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 13 phone_ui_test: PASS in 10.4s
+
+#### step 19: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 6/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 2, tree 3, farm tree 4
+   tier 2: rock 1, log 2, tree 3, farm tree 4
+   tier 3: rock 1, log 1, tree 2, farm tree 2
+   tier 4: rock 1, log 1, tree 2, farm tree 2
+tom_playtest_c6_test: OK (0 fails)
+#### step 19 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 3.7s
+
+#### step 25: rec_reno_test (shard 6/6)
+rec_reno_test: 0 failures
+#### step 25 rec_reno_test: PASS in 2.3s
+
+#### step 31: farm_week_test (shard 6/6)
+farm_week_test: OK (0 fails)
+#### step 31 farm_week_test: PASS in 5.2s
+
+#### step 37: commons_test (shard 6/6)
+commons_test: 0 failures
+#### step 37 commons_test: PASS in 40.2s
+
+#### step 43: workshop: no dead ends (shard 6/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 43 workshop: no dead ends: PASS in 2.2s
+
+#### step 49: all ages: alcohol is a trade good, never drunk (shard 6/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 10 alcoholic items checked
+ok
+#### step 49 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 55: footstep_test (shard 6/6)
+footstep_test: 0 failures
+#### step 55 footstep_test: PASS in 6.5s
+
+#### step 61: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 6/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 61 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 8.5s
+
+#### step 67: campaign_story_test (shard 6/6)
+campaign_story_test: 0 fails
+#### step 67 campaign_story_test: PASS in 2.6s
+
+#### step 73: campaign_gate_test (shard 6/6)
+campaign_gate_test: 0 fails
+#### step 73 campaign_gate_test: PASS in 5.9s
+
+#### step 79: settings, slots, quality, discovery, perks, birthdays (shard 6/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 79 settings, slots, quality, discovery, perks, birthdays: PASS in 2.5s
+
+#### step 85: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 6/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 85 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.7s
+
+#### step 91: hidden areas stay put day to day (C5) (shard 6/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 91 hidden areas stay put day to day (C5): PASS in 5.1s
+
+#### step 97: softlocks: every menu/screen leaves on B, dialogues always finish (shard 6/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 97 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.7s
+
+#### shard 6/6 done in 290s: PASS

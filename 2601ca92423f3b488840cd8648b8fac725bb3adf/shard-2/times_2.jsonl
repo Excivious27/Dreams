@@ -1,0 +1,18 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 222.1}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 5.0}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.7}
+{"step": 15, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.4}
+{"step": 21, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 23.6}
+{"step": 27, "name": "bowling_test", "rc": 0, "secs": 15.0}
+{"step": 33, "name": "crop_test", "rc": 0, "secs": 4.6}
+{"step": 39, "name": "gang_flavour_test", "rc": 0, "secs": 2.5}
+{"step": 45, "name": "every sound the game asks for exists", "rc": 0, "secs": 0.4}
+{"step": 51, "name": "music_stream_test", "rc": 0, "secs": 9.2}
+{"step": 57, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.9}
+{"step": 63, "name": "every script compiles", "rc": 0, "secs": 3.5}
+{"step": 69, "name": "quest_tracker_test", "rc": 0, "secs": 3.6}
+{"step": 75, "name": "campaign_words_test", "rc": 0, "secs": 2.9}
+{"step": 81, "name": "story: every chapter plays to the end", "rc": 0, "secs": 21.3}
+{"step": 87, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 11.2}
+{"step": 93, "name": "jumper_test", "rc": 0, "secs": 2.7}
+{"step": 99, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.3}
