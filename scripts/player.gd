@@ -629,7 +629,7 @@ var _status_shield := 0.0   # secs; Not Today washes statuses off for this long
 
 
 func _physics_process(delta: float) -> void:
-	if frozen and not get_tree().paused and not Dialogue.instance(get_tree()).active and not GameMenu.story_busy:
+	if frozen and not get_tree().paused and not Dialogue.instance(get_tree()).active and not Story.is_playing() and not Dialogue.instance(get_tree()).skippable:  # C7: was the Callable GameMenu.story_busy (always truthy)
 		_frozen_idle += delta
 		if _frozen_idle > FREEZE_SAFETY:
 			_frozen_idle = 0.0

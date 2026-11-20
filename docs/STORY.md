@@ -26,6 +26,8 @@ Source: Tom and his daughter's book (`reference/PENGUIN-STORY-by-Tom-and-daughte
 
 **Chapter 4 — The Finargles and the Merkitties.** After the Knight the finargles take you: **crystal prison**, Fennimore's telepathic question (decision **fennimore**: tell her the truth → `fennimore_doubt` → she can be turned at the finale; say nothing → `fennimore_sure`). Coldy drills the floor with the spell; the uphill stream; the waterfall; you wake at the lake. **Mer and the merkitties** hide you from the spies and share their magic: `mermaid_gift` (a tail in any water, swim and dive anywhere), Mer joins, and Big Jim screams. The teleporter wants three refined crystals; the bell (Alder's gold clapper, `bell_rung`); the night before: everyone at the gate.
 
+**C7 canon pass:** see docs/PENGUIN-ARC.md "C7 canon pass" (converted Crystopia crystals, 21-year bell timeline, Celestica/Crystopia, Catkins the guardian, Nova's dream p2_nova_dream, Fennimore p3_whisper/p4_prison, elders p5_elder_*).
+
 **Chapter 5 — The Heart of Mount Prismatica.** The spire is the Dark Crystal; **Fennimore** rises beside him (finargle_elder boss). If she doubted, she hesitates (`fennimore_turnable`). The bell halves his shell; Auk holds the shards off; a bitter companion stands with him. Ending **revert** (make the heart: two crystals, both crying; Fennimore's light goes out and she is just a fuzzy thing with no mouth to say sorry) or **shatter**. Epilogue: she plants herself in the field; the old dog comes home; two penguins on the fence. "Today there's turnips."
 
 ## Arc B — Gangster's Paradise (serious)

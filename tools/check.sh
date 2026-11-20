@@ -599,6 +599,12 @@ echo "$slout" | grep -E "FAIL|SCRIPT ERROR|softlock_test" || true
 if ! echo "$slout" | grep -q "softlock_test: 0 failures"; then
   echo "Softlock test failed"; exit 1
 fi
+echo "== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines =="
+sfout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/story_flow_test.gd 2>&1)"
+echo "$sfout" | grep -E "FAIL|SCRIPT ERROR|STORY FLOW DONE" || true
+if ! echo "$sfout" | grep -q "STORY FLOW DONE, failures: 0"; then
+  echo "Story flow test failed"; exit 1
+fi
 echo "== toasts: never over a boss card, a region card, the pup strip or the energy bar =="
 tlout="$("$GODOT" --headless --path . -s res://tools/toast_layout_test.gd 2>&1)"
 echo "$tlout" | grep -E "FAIL|SCRIPT ERROR|toast_layout_test" || true
