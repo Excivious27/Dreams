@@ -122,9 +122,6 @@ const LOOT := [
 	{"#gold": 1600, "crystal_refined": 3, "relic_orb": 1},
 	{"#gold": 2500, "storm_glass": 2, "wonder_elixir": 1},  # C8 P4: moon shards stay a moon find
 ]
-<<<<<<< HEAD
-const CACHE := [["copper", 4], ["iron", 3], ["gold", 2], ["fossil", 1], ["amethyst", 1], ["shard", 2], ["relic_mask", 1], ["ancient_urn", 1]]
-=======
 ## Buried caches: one item kind per dig (hash), count = the tier's value budget / its value.
 const CACHE := ["copper", "iron", "gold", "fossil", "amethyst", "shard", "relic_mask", "ancient_urn"]
 const CACHE_BUDGET := [80, 150, 250, 400, 600, 900]
@@ -159,7 +156,6 @@ static func cache_for(key: String, tier: int) -> Array:
 	if CACHE_SINGLE.has(item):
 		return [item, 1]
 	return [item, maxi(1, int(round(float(b) / float(maxi(1, GameState.item_value(item))))))]
->>>>>>> c8f/p4
 
 
 static func place(m: GameMap, rid: String, tier: int) -> void:

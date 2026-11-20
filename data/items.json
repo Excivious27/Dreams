@@ -697,7 +697,7 @@
  "silver_bar": {
   "name": "Silver Bar",
   "type": "bar",
-  "value": 253,
+  "value": 242,
   "rarity": "rare",
   "tier": 3
  },
@@ -5335,7 +5335,7 @@
   "slot": "head",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 192,
   "stats": {
    "defense": 2
   },
@@ -5359,7 +5359,7 @@
   "slot": "body",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 287,
   "stats": {
    "defense": 2
   },
@@ -5382,7 +5382,7 @@
   "slot": "legs",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 240,
   "stats": {
    "defense": 2
   }
@@ -5404,7 +5404,7 @@
   "slot": "feet",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 192,
   "stats": {
    "defense": 2
   }
@@ -5426,7 +5426,7 @@
   "slot": "hands",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 144,
   "stats": {
    "energy": 10
   }
@@ -5448,7 +5448,7 @@
   "slot": "offhand",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 240,
   "stats": {
    "defense": 2
   }
@@ -5470,7 +5470,7 @@
   "slot": "back",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 192,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -5493,7 +5493,7 @@
   "slot": "belt",
   "rarity": "common",
   "tier": 1,
-  "value": 116,
+  "value": 144,
   "stats": {
    "luck": 2
   }
@@ -5504,7 +5504,7 @@
   "slot": "head",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 402,
   "stats": {
    "defense": 3
   },
@@ -5528,7 +5528,7 @@
   "slot": "body",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 484,
   "stats": {
    "defense": 3
   },
@@ -5551,7 +5551,7 @@
   "slot": "legs",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 402,
   "stats": {
    "defense": 3
   }
@@ -5617,7 +5617,7 @@
   "slot": "offhand",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 402,
   "stats": {
    "defense": 3
   }
@@ -5685,7 +5685,7 @@
   "slot": "head",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 734,
   "stats": {
    "defense": 4
   },
@@ -5709,7 +5709,7 @@
   "slot": "body",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 1141,
   "stats": {
    "defense": 4
   },
@@ -5732,7 +5732,7 @@
   "slot": "legs",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 937,
   "stats": {
    "defense": 4
   }
@@ -5754,7 +5754,7 @@
   "slot": "feet",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 734,
   "stats": {
    "defense": 4
   }
@@ -5776,7 +5776,7 @@
   "slot": "hands",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 530,
   "stats": {
    "energy": 15
   }
@@ -5798,7 +5798,7 @@
   "slot": "offhand",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 937,
   "stats": {
    "defense": 4
   }
@@ -5820,7 +5820,7 @@
   "slot": "back",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 734,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -5843,7 +5843,7 @@
   "slot": "belt",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 320,
+  "value": 530,
   "stats": {
    "luck": 3
   }
@@ -5890,7 +5890,7 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 804,
   "stats": {
    "defense": 4
   },
@@ -6047,7 +6047,7 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 741,
   "stats": {
    "defense": 5
   },
@@ -6071,7 +6071,7 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 1153,
   "stats": {
    "defense": 5
   },
@@ -6094,7 +6094,7 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 948,
   "stats": {
    "defense": 5
   }
@@ -6116,7 +6116,7 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 741,
   "stats": {
    "defense": 5
   }
@@ -6160,7 +6160,7 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 948,
   "stats": {
    "defense": 5
   }
@@ -6182,7 +6182,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 741,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -6216,7 +6216,7 @@
   "slot": "head",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 642,
   "stats": {
    "defense": 5
   },
@@ -6240,7 +6240,7 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 924,
+  "value": 962,
   "stats": {
    "defense": 5
   },
@@ -6264,7 +6264,7 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 764,
+  "value": 802,
   "stats": {
    "defense": 5
   }
@@ -6286,7 +6286,7 @@
   "slot": "feet",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 642,
   "stats": {
    "defense": 5
   }
@@ -6330,7 +6330,7 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 764,
+  "value": 802,
   "stats": {
    "defense": 5
   }
@@ -6352,7 +6352,7 @@
   "slot": "back",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 642,
   "stats": {
    "speed": 1
   }
@@ -8060,7 +8060,7 @@
  "wheel": {
   "name": "Cart Wheel",
   "type": "craft",
-  "value": 258,
+  "value": 253,
   "rarity": "uncommon",
   "tier": 2
  },
@@ -8095,14 +8095,14 @@
  "nails": {
   "name": "Nails",
   "type": "craft",
-  "value": 10,
+  "value": 9,
   "rarity": "common",
   "tier": 1
  },
  "horseshoe": {
   "name": "Horseshoe",
   "type": "craft",
-  "value": 98,
+  "value": 89,
   "rarity": "common",
   "tier": 1,
   "stats": {},
@@ -8232,7 +8232,7 @@
  "crystal_battery": {
   "name": "Crystal Battery",
   "type": "craft",
-  "value": 593,
+  "value": 584,
   "rarity": "rare",
   "tier": 3
  },
@@ -8394,14 +8394,14 @@
  "hull_plate": {
   "name": "Hull Plate",
   "type": "craft",
-  "value": 2110,
+  "value": 2188,
   "rarity": "rare",
   "tier": 3
  },
  "rocket_engine": {
   "name": "Rocket Engine",
   "type": "craft",
-  "value": 7012,
+  "value": 7143,
   "rarity": "epic",
   "tier": 4
  },
@@ -8416,14 +8416,14 @@
  "nav_computer": {
   "name": "Nav Computer",
   "type": "craft",
-  "value": 4290,
+  "value": 4269,
   "rarity": "epic",
   "tier": 4
  },
  "heat_shield": {
   "name": "Heat Shield",
   "type": "craft",
-  "value": 2573,
+  "value": 2624,
   "rarity": "epic",
   "tier": 4
  },
@@ -9089,7 +9089,7 @@
  "circuit_board": {
   "name": "Circuit Board",
   "type": "craft",
-  "value": 67,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters"
@@ -9097,7 +9097,7 @@
  "data_chip": {
   "name": "Data Chip",
   "type": "craft",
-  "value": 308,
+  "value": 302,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9114,7 +9114,7 @@
  "scrambler": {
   "name": "Signal Scrambler",
   "type": "consumable",
-  "value": 380,
+  "value": 372,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9125,7 +9125,7 @@
  "ghost_ledger": {
   "name": "Ghost Ledger",
   "type": "consumable",
-  "value": 2334,
+  "value": 2295,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",
@@ -9136,7 +9136,7 @@
  "emp_charge": {
   "name": "EMP Charge",
   "type": "consumable",
-  "value": 202,
+  "value": 196,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9148,7 +9148,7 @@
  "emp_heavy": {
   "name": "Blackout Charge",
   "type": "consumable",
-  "value": 1185,
+  "value": 1172,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9161,7 +9161,7 @@
  "spy_drone": {
   "name": "Spy Drone",
   "type": "consumable",
-  "value": 2091,
+  "value": 2153,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9171,7 +9171,7 @@
  "scrap_bot": {
   "name": "Scrap Bot",
   "type": "consumable",
-  "value": 1120,
+  "value": 1155,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9183,7 +9183,7 @@
  "guard_bot": {
   "name": "Guard Bot",
   "type": "consumable",
-  "value": 4410,
+  "value": 4580,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9196,7 +9196,7 @@
  "drone_swarm": {
   "name": "Drone Swarm",
   "type": "consumable",
-  "value": 6636,
+  "value": 6838,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",

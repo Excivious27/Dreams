@@ -454,7 +454,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1390,
+    "price": 1360,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -477,7 +477,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 5340,
+    "price": 5430,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -585,7 +585,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2550,
+    "price": 2460,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -608,7 +608,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 7070,
+    "price": 10660,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -673,7 +673,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Anything you grow, given time.",
-    "price": 470,
+    "price": 450,
     "art_missing": false
    },
    {
@@ -689,7 +689,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1690,
+    "price": 1720,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -712,7 +712,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 5000,
+    "price": 6800,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -834,7 +834,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 3370,
+    "price": 3300,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -857,7 +857,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, every recipe already open.",
-    "price": 7160,
+    "price": 7450,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -965,7 +965,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1710,
+    "price": 1660,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -988,7 +988,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 5710,
+    "price": 5810,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -1054,7 +1054,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nails, tools, copper gear.",
-    "price": 760,
+    "price": 700,
     "art_missing": false
    },
    {
@@ -1070,7 +1070,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 3720,
+    "price": 3860,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1093,7 +1093,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 6850,
+    "price": 11340,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -1382,7 +1382,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2590,
+    "price": 2660,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1405,7 +1405,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 6060,
+    "price": 8750,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -1428,7 +1428,7 @@
     "permit": 0,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
-    "price": 10060,
+    "price": 10270,
     "unlock": {
      "progress": 3,
      "skill": [
@@ -1487,7 +1487,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2080,
+    "price": 2130,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1590,7 +1590,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2220,
+    "price": 2160,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1613,7 +1613,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, every recipe already open.",
-    "price": 5930,
+    "price": 7720,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -1678,7 +1678,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Rings and charms.",
-    "price": 660,
+    "price": 620,
     "art_missing": false
    },
    {
@@ -1694,7 +1694,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2560,
+    "price": 2700,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1717,7 +1717,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
-    "price": 6320,
+    "price": 6640,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -1783,7 +1783,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Remedies and red potions.",
-    "price": 700,
+    "price": 660,
     "art_missing": false
    },
    {
@@ -1799,7 +1799,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Swift, luck and hearth brews.",
-    "price": 2960,
+    "price": 3050,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1822,7 +1822,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Growth elixir, stoneskin.",
-    "price": 7220,
+    "price": 7510,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -2107,7 +2107,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills: hold one and USE it in town to pass it. Risky: a noticed bill raises heat.",
-    "price": 860,
+    "price": 820,
     "art_missing": false
    },
    {
@@ -2123,7 +2123,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Passable bills, forged permits.",
-    "price": 4960,
+    "price": 5060,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2169,7 +2169,7 @@
     "permit": 0,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Perfect bills.",
-    "price": 14100,
+    "price": 14740,
     "unlock": {
      "progress": 3,
      "skill": [
@@ -2213,7 +2213,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Knuckles, a fedora, rounds.",
-    "price": 1210,
+    "price": 1140,
     "art_missing": false
    },
    {
@@ -2229,7 +2229,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Crowbar, bat, six-shooter, suits.",
-    "price": 4190,
+    "price": 4330,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2252,7 +2252,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Chrome, tommy gun, scattergun.",
-    "price": 7550,
+    "price": 12040,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -2319,7 +2319,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Root beer. A front with a real queue.",
-    "price": 1100,
+    "price": 1070,
     "art_missing": false
    },
    {
@@ -2335,7 +2335,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 3680,
+    "price": 3750,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2381,7 +2381,7 @@
     "permit": 0,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open.",
-    "price": 14060,
+    "price": 14690,
     "unlock": {
      "progress": 3,
      "skill": [
@@ -2420,7 +2420,7 @@
     "permit": 0,
     "days": 0,
     "desc": "Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.",
-    "price": 1200,
+    "price": 1130,
     "art_missing": false
    },
    {
@@ -2436,7 +2436,7 @@
     "permit": 0,
     "days": 0,
     "desc": "Washes 6 bills a night at 85%.",
-    "price": 5090,
+    "price": 5230,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2514,7 +2514,7 @@
     "permit": 0,
     "days": 0,
     "desc": "Every crew member's perk counts one loyalty step higher. Sparring pays double.",
-    "price": 5700,
+    "price": 8400,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2581,7 +2581,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. An icicle blade, snow goggles.",
-    "price": 1080,
+    "price": 1040,
     "art_missing": false
    },
    {
@@ -2597,7 +2597,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Sabre, parka, cleats.",
-    "price": 5480,
+    "price": 5620,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2620,7 +2620,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Prism lance, aurora gear.",
-    "price": 9230,
+    "price": 13710,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -2703,7 +2703,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scented boxes, paw lanterns.",
-    "price": 3080,
+    "price": 3150,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2808,7 +2808,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. S'mores and cocoa.",
-    "price": 2320,
+    "price": 2370,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2831,7 +2831,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, every recipe already open. Big Jim's stew.",
-    "price": 5530,
+    "price": 7330,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -2854,7 +2854,7 @@
     "permit": 0,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open.",
-    "price": 10500,
+    "price": 10810,
     "unlock": {
      "progress": 3,
      "skill": [
@@ -2913,7 +2913,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 gifts a morning, sometimes a pearl.",
-    "price": 3570,
+    "price": 3460,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2936,7 +2936,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 gifts a morning; rare fish and pearls.",
-    "price": 10150,
+    "price": 10440,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -3146,7 +3146,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
-    "price": 1290,
+    "price": 1220,
     "art_missing": false
    },
    {
@@ -3162,7 +3162,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scramblers, EMP charges.",
-    "price": 4080,
+    "price": 4180,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -3185,7 +3185,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Blackout charges.",
-    "price": 6870,
+    "price": 10460,
     "unlock": {
      "progress": 2,
      "skill": [
@@ -3252,7 +3252,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
-    "price": 1610,
+    "price": 1680,
     "art_missing": false
    },
    {
@@ -3268,7 +3268,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Optics and reflex wires.",
-    "price": 3790,
+    "price": 5590,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -3358,7 +3358,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
-    "price": 2080,
+    "price": 2010,
     "art_missing": false
    },
    {
@@ -3374,7 +3374,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scrap bots and the spy drone.",
-    "price": 5840,
+    "price": 5980,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -3397,7 +3397,7 @@
     "permit": 0,
     "days": 1,
     "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Guard bots.",
-    "price": 7910,
+    "price": 11500,
     "unlock": {
      "progress": 2,
      "skill": [
