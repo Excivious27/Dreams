@@ -47294,7 +47294,7 @@
   "dc_y_arbor_swing_winter": {
    "file": "decor/dc_y_arbor_swing_winter.png",
    "h": 61,
-   "w": 56
+   "w": 60
   },
   "dc_y_aurora_lamp": {
    "cell_h": 68,
@@ -47678,7 +47678,7 @@
   },
   "dc_y_penguin_topiary_winter": {
    "file": "decor/dc_y_penguin_topiary_winter.png",
-   "h": 43,
+   "h": 45,
    "w": 30
   },
   "dc_y_picnic_set": {
@@ -47693,7 +47693,7 @@
   },
   "dc_y_pin_statue_winter": {
    "file": "decor/dc_y_pin_statue_winter.png",
-   "h": 57,
+   "h": 59,
    "w": 30
   },
   "dc_y_rain_barrel": {
@@ -47703,7 +47703,7 @@
   },
   "dc_y_rain_barrel_winter": {
    "file": "decor/dc_y_rain_barrel_winter.png",
-   "h": 41,
+   "h": 42,
    "w": 30
   },
   "dc_y_shell_bed": {
@@ -47768,7 +47768,7 @@
   "dc_y_sundial_winter": {
    "file": "decor/dc_y_sundial_winter.png",
    "h": 48,
-   "w": 24
+   "w": 30
   },
   "dc_y_tag_wall": {
    "file": "decor/dc_y_tag_wall.png",
@@ -47793,7 +47793,7 @@
   "dc_y_twin_lamp_winter": {
    "file": "decor/dc_y_twin_lamp_winter.png",
    "h": 46,
-   "w": 29
+   "w": 30
   },
   "dc_y_tyre_stack": {
    "file": "decor/dc_y_tyre_stack.png",
@@ -47827,7 +47827,7 @@
   },
   "dc_y_wheelbarrow_winter": {
    "file": "decor/dc_y_wheelbarrow_winter.png",
-   "h": 27,
+   "h": 30,
    "w": 30
   },
   "dc_y_wind_spinner": {
@@ -88694,7 +88694,7 @@
   "bench2_green_a_winter": {
    "file": "props/bench2_green_a_winter.png",
    "h": 58,
-   "w": 87
+   "w": 97
   },
   "bench2_green_b": {
    "file": "props/bench2_green_b.png",
@@ -88708,7 +88708,7 @@
   },
   "bench2_iron_a_winter": {
    "file": "props/bench2_iron_a_winter.png",
-   "h": 61,
+   "h": 62,
    "w": 81
   },
   "bench2_iron_b": {
@@ -88723,7 +88723,7 @@
   },
   "bench2_wood_a_winter": {
    "file": "props/bench2_wood_a_winter.png",
-   "h": 57,
+   "h": 60,
    "w": 89
   },
   "bench2_wood_b": {
@@ -88798,7 +88798,7 @@
   },
   "birdbath_winter": {
    "file": "props/birdbath_winter.png",
-   "h": 54,
+   "h": 56,
    "w": 36
   },
   "bk_crab": {
@@ -89494,7 +89494,7 @@
   },
   "cat_statue_winter": {
    "file": "props/cat_statue_winter.png",
-   "h": 94,
+   "h": 96,
    "w": 79
   },
   "cat_wall": {
@@ -90945,7 +90945,7 @@
   },
   "fence2_stone_h_winter": {
    "file": "props/fence2_stone_h_winter.png",
-   "h": 25,
+   "h": 32,
    "w": 39
   },
   "fence2_wood_corner": {
@@ -91855,7 +91855,7 @@
   },
   "flowerbed_blue_winter": {
    "file": "props/flowerbed_blue_winter.png",
-   "h": 29,
+   "h": 32,
    "w": 44
   },
   "flowerbed_pink": {
@@ -91865,7 +91865,7 @@
   },
   "flowerbed_pink_winter": {
    "file": "props/flowerbed_pink_winter.png",
-   "h": 23,
+   "h": 32,
    "w": 45
   },
   "flowerbed_red": {
@@ -91875,7 +91875,7 @@
   },
   "flowerbed_red_winter": {
    "file": "props/flowerbed_red_winter.png",
-   "h": 31,
+   "h": 32,
    "w": 46
   },
   "flowerbed_yellow": {
@@ -91885,7 +91885,7 @@
   },
   "flowerbed_yellow_winter": {
    "file": "props/flowerbed_yellow_winter.png",
-   "h": 28,
+   "h": 32,
    "w": 44
   },
   "foot3_ew_a": {
@@ -92329,7 +92329,7 @@
   "hedge2_ball_winter": {
    "file": "props/hedge2_ball_winter.png",
    "h": 85,
-   "w": 89
+   "w": 96
   },
   "hedge2_corner": {
    "file": "props/hedge2_corner.png",
@@ -92353,7 +92353,7 @@
   },
   "hedge2_h_winter": {
    "file": "props/hedge2_h_winter.png",
-   "h": 74,
+   "h": 79,
    "w": 147
   },
   "hedge2_pot": {
@@ -94905,7 +94905,7 @@
   "picket2_h_winter": {
    "file": "props/picket2_h_winter.png",
    "h": 106,
-   "w": 160
+   "w": 198
   },
   "pickup": {
    "file": "props/pickup.png",
@@ -98121,7 +98121,7 @@
   "scarecrow_knight_winter": {
    "file": "props/scarecrow_knight_winter.png",
    "h": 48,
-   "w": 30
+   "w": 33
   },
   "scarecrow_pumpkin": {
    "file": "props/scarecrow_pumpkin.png",
@@ -99630,12 +99630,12 @@
   "statue_cane_winter": {
    "file": "props/statue_cane_winter.png",
    "h": 64,
-   "w": 32
+   "w": 39
   },
   "statue_winter": {
    "file": "props/statue_winter.png",
    "h": 68,
-   "w": 49
+   "w": 56
   },
   "stone_arch": {
    "file": "props/stone_arch.png",
@@ -99645,7 +99645,7 @@
   "stone_arch_winter": {
    "file": "props/stone_arch_winter.png",
    "h": 86,
-   "w": 92
+   "w": 112
   },
   "stone_circle": {
    "file": "props/stone_circle.png",
@@ -99749,7 +99749,7 @@
   "topiary_a_winter": {
    "file": "props/topiary_a_winter.png",
    "h": 56,
-   "w": 36
+   "w": 37
   },
   "topiary_b": {
    "file": "props/topiary_b.png",
@@ -99759,7 +99759,7 @@
   "topiary_b_winter": {
    "file": "props/topiary_b_winter.png",
    "h": 56,
-   "w": 27
+   "w": 29
   },
   "topiary_c": {
    "file": "props/topiary_c.png",
@@ -99819,7 +99819,7 @@
   "trellis_winter": {
    "file": "props/trellis_winter.png",
    "h": 96,
-   "w": 102
+   "w": 123
   },
   "trough": {
    "file": "props/trough.png",
@@ -100115,7 +100115,7 @@
   },
   "wedding_arch_winter": {
    "file": "props/wedding_arch_winter.png",
-   "h": 89,
+   "h": 96,
    "w": 67
   },
   "wedding_bench": {
@@ -100156,7 +100156,7 @@
   "well_stone_winter": {
    "file": "props/well_stone_winter.png",
    "h": 45,
-   "w": 40
+   "w": 48
   },
   "wheat_sheaf": {
    "file": "props/wheat_sheaf.png",

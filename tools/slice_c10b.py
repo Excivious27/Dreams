@@ -540,7 +540,10 @@ def winter_twins():
             grp = grp or "props"
             ref = _open(grp, nm)
             im = A._crop(a, boxes[k // 4][k % 4])
-            out = _S().scale_to(im, width=ref.width, height=ref.height)
+            fitd = _S().scale_to(im, width=ref.width, height=ref.height)   # fits inside, keeps aspect
+            from PIL import Image
+            out = Image.new("RGBA", ref.size, (0, 0, 0, 0))                # same canvas, bottom-centred
+            out.alpha_composite(fitd, ((ref.width - fitd.width) // 2, ref.height - fitd.height))
             if grp == GROUP:
                 A.save(out, nm + "_winter")
             else:
