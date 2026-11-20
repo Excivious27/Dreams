@@ -168,12 +168,12 @@
     "8": [
      {
       "who": "Wren",
-      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was.",
-      "text_gangsters": "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that was going to work, and it did, and I never told her mother how close it was."
+      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told anyone how close it was. Not even her.",
+      "text_gangsters": "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that was going to work, and it did, and I never told anyone how close it was. Not even her."
      },
      {
       "who": "Wren",
-      "text": "Her mother's not here now. That's a different story, and it's not yours. But you should know what you brought me."
+      "text": "Her father's not here now. That's a different story, and it's not yours. But you should know what you brought me."
      }
     ],
     "10": [
@@ -609,12 +609,12 @@
     "6": [
      {
       "who": "Bram",
-      "text": "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.",
+      "text": "Festival night. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
       "text_gangsters": "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."
      },
      {
       "who": "Bram",
-      "text": "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to.",
+      "text": "Two bottles, for the sill. Not for drinking; for remembering. I'll pay. I just can't walk to the lake for them. Every year I mean to.",
       "text_gangsters": "I'll pay for them. I just can't get to the soda fountain on the avenue. Every year I mean to."
      }
     ],
@@ -626,7 +626,8 @@
      },
      {
       "who": "Bram",
-      "text": "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."
+      "text": "She used to walk it in forty minutes. Took me two hours. The sill was full again before I sat down.",
+      "text_gangsters": "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."
      }
     ],
     "10": [
@@ -647,13 +648,14 @@
    "after": {
     "2": "Corner's yours.",
     "4": "Still hiding in the kitchen.",
-    "6": "Two wine. Festival night.",
-    "8": "Two hours. Her glass was full.",
+    "6": "Two bottles for the sill. Festival night.",
+    "8": "Two hours. The sill's full.",
     "10": "Tea towel. Right in the face."
    },
    "quest6_gangsters": "bram_rootbeer",
    "after_gangsters": {
-    "6": "Two root beers. Festival night."
+    "6": "Two root beers. Festival night.",
+    "8": "Two hours. Her glass was full."
    }
   },
   "posy": {
@@ -696,7 +698,7 @@
      },
      {
       "who": "Posy",
-      "text": "Dad walked to the lake for wine. Did you hear? Two hours. He's insufferable about it.",
+      "text": "Dad walked to the lake for two bottles for Mum's sill. Did you hear? Two hours. He's insufferable about it.",
       "text_gangsters": "Dad walked to the avenue for root beer. Did you hear? Two hours. He's insufferable about it."
      }
     ],
@@ -730,7 +732,7 @@
      },
      {
       "who": "Juniper",
-      "text": "There's a crack in your left boot. Fix it before winter or I'll be seeing you in the other way."
+      "text": "There's a crack in your left boot. Fix it before winter or I'll be seeing you the other way: on my table."
      }
     ],
     "4": [
@@ -904,7 +906,7 @@
      }
     ]
    },
-   "fall": "Pip would ring the bell. If there was a bell. Pip would ring it with a rock if there wasn't.",
+   "fall": "Pip would ring the bell. Clapper or no clapper. Pip would ring it with a rock.",
    "after": {
     "2": "Both. Don't tell.",
     "4": "Five lines. I'm nine.",
@@ -1333,7 +1335,8 @@
     "8": [
      {
       "who": "Ivy",
-      "text": "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice."
+      "text": "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice.",
+      "text_gangsters": "The coins settled it. The bell, the dark lamp, the mine log: one night, twenty-one years ago. Theo's writing a small notice."
      },
      {
       "who": "Ivy",

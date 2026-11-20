@@ -461,7 +461,8 @@ func _festival_event(fest: String) -> void:
 				var grown := (GameState.run.get("grown", {}) as Dictionary).size()
 				var score := bv + grown * 4
 				var place := 1 if score >= 100 else (2 if score >= 40 else 3)
-				await say([{"who": "Mayor Alder", "text": "A %s! %s" % [GameState.item_name(best), ["First prize! The blue ribbon and three hundred crystals.", "Second prize! The red ribbon and a hundred and fifty.", "Third prize! The yellow ribbon and fifty."][place - 1]]}])
+				var art := ItemWords.with_article(GameState.item_name(best))
+				await say([{"who": "Mayor Alder", "text": "%s! %s" % [art.substr(0, 1).to_upper() + art.substr(1), ["First prize! The blue ribbon and %s." % Money.amount(300), "Second prize! The red ribbon and %s." % Money.amount(150), "Third prize! The yellow ribbon and %s." % Money.amount(50)][place - 1]]}])
 				GameState.add_money([300, 150, 50][place - 1], "festival")
 				GameState.run["flags"][key] = true
 				Music.instance(get_tree()).sfx("quest_done", "coin")
@@ -498,7 +499,7 @@ func _board() -> void:
 		var poster := str(GameState.npcs[str(j["npc"])]["name"])
 		if not Intros.met(str(j["npc"])) and str(GameState.npcs[str(j["npc"])].get("role", "")) != "":
 			poster += " (%s)" % str(GameState.npcs[str(j["npc"])]["role"]).to_lower()  # who's that? the board says
-		ch.append("%s%s: %d %s · ◆%d" % ["✓ " if taken else "", poster, int(j["n"]), GameState.item_name(str(j["item"])), int(j["crystals"])])
+		ch.append("%s%s: %s · ◆%d" % ["✓ " if taken else "", poster, ItemWords.count_id(str(j["item"]), int(j["n"])), int(j["crystals"])])
 	ch.append("Close")
 	var head := "Pinned today (%s %d). Bring the goods to whoever posted it: a week for goods, two for crop orders." % [GameState.season().capitalize(), GameState.day_of_season()]
 	if jobs.is_empty():
@@ -514,7 +515,7 @@ func _board() -> void:
 			hud.toast("You already took that one.")
 		else:
 			GameState.board_accept(j)
-			hud.toast("Job taken: %d %s for %s." % [int(j["n"]), GameState.item_name(str(j["item"])), str(GameState.npcs[str(j["npc"])]["name"])], Color(1, 0.9, 0.4))
+			hud.toast("Job taken: %s for %s." % [ItemWords.count_id(str(j["item"]), int(j["n"])), str(GameState.npcs[str(j["npc"])]["name"])], Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("pickup")
 	player.frozen = false
 
@@ -893,6 +894,8 @@ func _talk(n: Npc) -> void:
 		player.frozen = false
 		return
 	if await Hearts.talk(self, id):
+		if GameState.can_gift(id, sel):
+			hud.toast("Talk to %s again to give the %s." % [name, GameState.item_name(sel)], Color(1, 0.85, 0.9))
 		player.frozen = false
 		return
 	if await Quests.talk(self, id, name):
@@ -930,16 +933,18 @@ func _gift_line(id: String, item: String, gain: int) -> String:
 	if own != "":
 		return own
 	var n := GameState.item_name(item)
+	var art := ItemWords.with_article(n)
+	art = art.substr(0, 1).to_upper() + art.substr(1)
 	if gain < 0:
-		return {"gideon": "A %s. ...Why." % n, "alder": "A %s. I'll have it... filed." % n, "wren": "A %s. You can keep that, actually." % n}.get(id, "Oh. A %s. Thanks, I suppose." % n)
+		return {"gideon": "%s. ...Why." % art, "alder": "%s. I'll have it... filed." % art, "wren": "%s. You can keep that, actually." % art}.get(id, "Oh. %s. Thanks, I suppose." % art)
 	if gain >= 20:
-		return {"maple": "A %s! You remembered! Oh, you're going to fit right in." % n, "gideon": "...A %s. Where did you— Don't make it weird. Thank you." % n, "wren": "A %s. Do you know how rare these are? I do." % n, "finn": "A %s! Now that's a gift. Come by the hut, I'll show you the good spots." % n, "rook": "A %s. Huh. You pay attention. Good." % n, "sal": "A %s. Nobody gives me things. ...Thanks, boss." % n}.get(id, "A %s! My favourite. How did you know?" % n)
+		return {"maple": "%s! You remembered! Oh, you're going to fit right in." % art, "gideon": "...%s. Where did you— Don't make it weird. Thank you." % art, "wren": "%s. Do you know how rare these are? I do." % art, "finn": "%s! Now that's a gift. Come by the hut, I'll show you the good spots." % art, "rook": "%s. Huh. You pay attention. Good." % art, "sal": "%s. Nobody gives me things. ...Thanks, boss." % art}.get(id, "%s! My favourite. How did you know?" % art)
 	match id:
-		"maple": return "A %s! For me? That's kind." % n
-		"gideon": return "Hm. A %s. ...Thank you." % n
-		"wren": return "A %s. I can do something with this. Probably not what you'd expect." % n
-		"alder": return "A %s, how civic-minded. It'll go in the town records." % n
-		"sal": return "A %s. Huh. What do you want?" % n
+		"maple": return "%s! For me? That's kind." % art
+		"gideon": return "Hm. %s. ...Thank you." % art
+		"wren": return "%s. I can do something with this. Probably not what you'd expect." % art
+		"alder": return "%s, how civic-minded. It'll go in the town records." % art
+		"sal": return "%s. Huh. What do you want?" % art
 	return "Thanks for the %s." % n
 
 

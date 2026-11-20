@@ -2057,7 +2057,7 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 	_gift_lines = d
 	var n := item_name(item)
 	if is_birthday(id) and gain > 0 and d.get("birthday", {}).has(id):
-		return str(d["birthday"][id]).replace("{item}", n)
+		return ItemWords.fill(str(d["birthday"][id]), n)
 	var ls: Array = d.get("lines", {}).get(id, [])
 	if ls.size() < 4:
 		return ""
@@ -2066,7 +2066,7 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 	if g > 0:
 		g = maxi(0, g - int(bonus("bartering", "gift_bonus")) - int(items.get(item, {}).get("friend", 0)))  # react to the gift itself, not the bonuses
 	var idx := 3 if g < 0 else (0 if g >= 20 else (1 if g >= 12 else 2))
-	return str(ls[idx]).replace("{item}", n)
+	return ItemWords.fill(str(ls[idx]), n)
 
 
 static var _gift_lines := {}
@@ -2223,7 +2223,7 @@ static func board_accept(job: Dictionary) -> void:
 	if has_quest(id):
 		return
 	var who := str(job["npc"])
-	var text := "%s needs %d %s (board job)." % [str(npcs[who]["name"]), int(job["n"]), item_name(str(job["item"]))]
+	var text := "%s needs %s (board job)." % [str(npcs[who]["name"]), ItemWords.count_id(str(job["item"]), int(job["n"]))]
 	quests_data["side"].append({"id": id, "giver": who, "text": text, "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(round(int(job["crystals"]) * (1.25 if Crew.perk_level("board_bonus") >= 3 else (1.1 if Crew.perk_level("board_bonus") >= 1 else 1.0)))), "friend": [who, int(job["friend"])]}, "board": true})
 	add_quest(id, text)
 	# Keep the job itself: the board's list is replaced every day.
