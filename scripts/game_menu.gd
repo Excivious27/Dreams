@@ -190,6 +190,7 @@ func _process(_delta: float) -> void:
 
 var _was_paused := false
 var _opened_frame := 0
+static var _book_run := ""
 
 
 ## A story beat is playing (its player is held). A beat that broke off and left
@@ -242,6 +243,10 @@ func toggle() -> void:
 	_panel.visible = _open
 	Music.instance(get_tree()).sfx("menu_open" if _open else "menu_close")
 	if _open:
+		var rk := "%s|%s|%s" % [GameState.save_key(), str(GameState.run.get("arc", "")), str(GameState.run.get("hero", ""))]
+		if rk != _book_run:
+			_book_run = rk
+			CollectionScreen.reset()  # C10a P3: another slot/arc opens the Book on its hub
 		_opened_frame = Engine.get_process_frames()
 		_bag_pick = ""
 		_pick_bar = -1
@@ -339,6 +344,9 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 		else:
 			b.text = GameState.item_name(id).left(4)
 			b.add_theme_font_size_override("font_size", 7)
+		DecorCatalogue.rarity_dots(b, id, SLOT)  # C10a P3: the Items tab shows rarity like chests (c10_07)
+		if DecorCatalogue.rarity_of(id) != "common":
+			sb.border_color = Color(1, 0.9, 0.5) if selected else DecorCatalogue.rarity_col(id).darkened(0.3)
 		if GameState.run["inventory"].has(id):
 			var n := Label.new()
 			n.text = str(int(GameState.run["inventory"][id]))
@@ -407,7 +415,7 @@ func _refresh() -> void:
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	if _tab_buttons.has("Book"):
-		SkillGlow.set_glow(_tab_buttons["Book"] as Control, Collections.new_count())  # new log entries
+		SkillGlow.set_glow(_tab_buttons["Book"] as Control, Collections.new_count() + DecorCatalogue.new_count())  # new log entries + new decor kinds
 	var r := GameState.run
 	match _tab:
 		"Book":
@@ -470,6 +478,10 @@ func _refresh() -> void:
 					var tlb := _slot_button(t, t == _bag_pick, _tool_tap.bind(t))
 					dr.add(tlb, {"id": t, "bar": -1}, func(_p: Dictionary) -> void: pass, "tool:" + t)
 					g3.add_child(tlb)
+			# C10a P3: decor and wearables never stack in the bag; they live in the decor box.
+			var dbn := DecorCatalogue._box_total()
+			var dbb := _button("Decor box: %d piece%s ›" % [dbn, "" if dbn == 1 else "s"] if dbn > 0 else "Decor box & catalogue ›", func() -> void: CollectionScreen.open_catalogue(self, "box"))
+			dbb.set_meta("pc_key", "items:decor_box")
 			if _bag_pick != "" and not GameState.has_tool(_bag_pick):
 				var ah := HBoxContainer.new()
 				ah.add_theme_constant_override("separation", 3)
@@ -489,7 +501,24 @@ func _refresh() -> void:
 			if sel != "":
 				var itd: Dictionary = GameState.items.get(sel, {})
 				var rar := str(itd.get("rarity", "common"))
-				_line("%s  ·  %s  ·  tier %d  ·  ◆%d" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), GameState.item_value(sel)], 8, GameState.rarity_color(sel))
+				var worth := ("◆%d" % GameState.item_value(sel)) if GameState.item_value(sel) > 0 else "keepsake"
+				_line("%s  ·  %s  ·  tier %d  ·  %s" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), worth], 8, DecorCatalogue.rarity_col(sel))
+				if Collections.museum_needs(sel):
+					_line("Museum wants this: donate it before selling.", 8, Color(1, 0.85, 0.5))
+				if Decor.is_decor(sel) and GameState.count(sel) > 0 and not GameState.visiting():
+					# C10a P3: a decor piece still in the bag (old saves) moves to the decor box.
+					var dsel := sel
+					_button("Put in the decor box ›", func() -> void:
+						var before := Decor.owned(dsel)
+						Decor.give(dsel, GameState.count(dsel), "bag")
+						var took := Decor.owned(dsel) - before  # a unique already held is refused: it stays in the bag
+						if took <= 0:
+							_toast("You already have this one-of-a-kind piece.")
+							return
+						GameState.add_item(dsel, -took)
+						_bag_pick = ""
+						_toast("%s is in your decor box now." % DecorCatalogue.name_of(dsel))
+						_refresh())
 				if itd.has("desc"):
 					_line(str(itd["desc"]), 8, Color(0.8, 0.8, 0.8))
 				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):
@@ -2002,6 +2031,12 @@ func _cursor_input(delta: float) -> bool:
 	if (_cur >= 0 or _cur_tabs) and InputSetup.confirm_pressed():
 		press_cursor()
 		return true
+	# C10a P3: a control may offer a second press on TOOL (meta "menu_alt": Callable).
+	if _cur >= 0 and not _cur_tabs and InputMap.has_action("tool") and Input.is_action_just_pressed("tool"):
+		var c := cursor_control()
+		if c and c.has_meta("menu_alt") and (c.get_meta("menu_alt") as Callable).is_valid():
+			(c.get_meta("menu_alt") as Callable).call()
+			return true
 	return false
 
 
@@ -2102,7 +2137,24 @@ func press_cursor() -> void:
 				return
 		Music.instance(get_tree()).sfx("nope", "thud")
 		return
+	var pk := str(b.get_meta("pc_key", "")) if b.has_meta("pc_key") else ""
 	b.pressed.emit()
+	if pk != "":
+		_cursor_to_key(pk)
+
+
+## C10a P3: after a press rebuilt the page, put the cursor back on the control with that key
+## (a Book group header adding a whole grid used to leave it on an unrelated cell).
+func _cursor_to_key(pk: String) -> void:
+	var l := _cursor_list()
+	for i in l.size():
+		var c := l[i] as Control
+		if not c.is_queued_for_deletion() and c.has_meta("pc_key") and str(c.get_meta("pc_key")) == pk:
+			_cur = i
+			var sc := _body.get_parent() as ScrollContainer
+			if sc:
+				sc.ensure_control_visible.call_deferred(c)
+			return
 
 
 func _draw_cursor() -> void:

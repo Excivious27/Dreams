@@ -168,6 +168,58 @@ func _run() -> void:
 		check(m._bag_pick == "" and GameState.bag_slots()[empty] == "berry", "A on an empty bag slot puts it there")
 	else:
 		check(false, "bag has berries and a free slot")
+	# C10a P3: Book with the cursor: the Decor catalogue row opens its screen over the menu
+	# (B closes it, the menu stays); a museum group header keeps the cursor on itself.
+	m._tab = "Book"
+	CollectionScreen.open("")
+	m._refresh()
+	await frames(3)
+	var drow := -1
+	var bl := m._cursor_list()
+	for i in bl.size():
+		if (bl[i] as Control).has_meta("pc_key") and str((bl[i] as Control).get_meta("pc_key")) == "book:decor":
+			drow = i
+	check(drow >= 0, "Book hub has the Decor catalogue row")
+	if drow >= 0:
+		m._cur = drow
+		await press("a")
+		await frames(12)
+		var cat: DecorCatalogue = null
+		for ch in m.get_parent().get_children():
+			if ch is DecorCatalogue:
+				cat = ch
+		check(cat != null, "A on the row opens the Decor catalogue")
+		await press("b")
+		await frames(4)
+		check(not is_instance_valid(cat) or cat.is_queued_for_deletion(), "B closes the catalogue")
+		check(m._open and m._tab == "Book", "the menu stays open on the Book after the catalogue")
+		check(Hud.modal_rect.size == Vector2.ZERO, "catalogue gives the modal back")
+	CollectionScreen.open("museum")
+	m._refresh()
+	await frames(3)
+	var hdrs: Array = []
+	for b in m._cursor_list():
+		if (b as Control).has_meta("pc_key") and str((b as Control).get_meta("pc_key")).begins_with("grp:"):
+			hdrs.append(b)
+	check(hdrs.size() >= 2, "museum page has group headers (%d)" % hdrs.size())
+	if hdrs.size() >= 2:
+		var key2 := str((hdrs[1] as Control).get_meta("pc_key"))
+		m._cur = m._cursor_list().find(hdrs[1])
+		await press("a")
+		await frames(3)
+		var cc := m.cursor_control()
+		check(cc != null and cc.has_meta("pc_key") and str(cc.get_meta("pc_key")) == key2, "cursor stays on the opened group header")
+		check(CollectionScreen.sub == key2.trim_prefix("grp:"), "A opened that group")
+	CollectionScreen.sub = "no_such_group"
+	m._refresh()
+	await frames(2)
+	check(CollectionScreen.sub != "no_such_group", "a stale group falls back to the first")
+	await press("b")
+	await frames(3)
+	check(m._open and CollectionScreen.page == "", "B on a Book page goes back to the hub")
+	m._tab = "Items"
+	m._refresh()
+	await frames(2)
 	# Skills: the cursor list never holds disabled (empty) node cells.
 	m._tab = "Skills"
 	m._refresh()
@@ -217,13 +269,41 @@ func _run() -> void:
 	Settings.set_v("timing_help", true)
 	check(is_equal_approx(Fishing.window_for("minnow"), w0 * Settings.TIMING_HELP_WINDOW), "timing help widens the bite window")
 	Settings.set_v("timing_help", false)
-	# Rarity reads by dot count, not colour alone.
-	var ranks := {}
+	# Rarity reads by dot count, not colour alone: all seven levels (C10a: mythic 5 dots, unique a star).
+	var saved := Decor._data.duplicate(true)
+	Decor._data = {"items": {}, "sets": {}, "shops": {}, "pools": {}}
+	for rn in Decor.RARITIES:
+		Decor._data["items"]["t_" + rn] = {"name": rn, "cat": "decor", "rarity": rn}
+	var want := {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4, "mythic": 5}
+	for rn in Decor.RARITIES:
+		var probe := Control.new()
+		DecorCatalogue.rarity_dots(probe, "t_" + rn, 30)
+		var dots := 0
+		var stars := 0
+		for ch in probe.get_children():
+			if ch is ColorRect:
+				dots += 1
+			elif ch is Label:
+				stars += 1
+		if rn == "unique":
+			check(stars == 1 and dots == 0, "unique shows a star plate")
+		else:
+			check(dots == int(want[rn]), "rarity %s has %d dots (got %d)" % [rn, int(want[rn]), dots])
+		check(DecorCatalogue.rarity_col("t_" + rn) == Decor.rarity_color(rn), "rarity %s colour from the one table" % rn)
+		probe.free()
+	var colors := {}
+	for rn in Decor.RARITIES:
+		colors[Decor.rarity_color(rn).to_html()] = true
+	check(colors.size() == Decor.RARITIES.size(), "every rarity has its own colour")
+	Decor._data = saved
 	for id in GameState.items:
-		ranks[str(GameState.items[id].get("rarity", "common"))] = CharSheet.rarity_rank(str(id))
-	for rn in ["uncommon", "rare", "epic", "legendary"]:
-		if ranks.has(rn):
-			check(int(ranks[rn]) == int(CharSheet.RARITY_RANK[rn]), "rarity %s has %d dots" % [rn, int(CharSheet.RARITY_RANK[rn])])
+		var rr := str(GameState.items[id].get("rarity", "common"))
+		if rr in ["uncommon", "rare", "epic", "legendary"]:
+			var probe2 := Control.new()
+			DecorCatalogue.rarity_dots(probe2, str(id), 30)
+			check(probe2.get_child_count() == int(want[rr]), "item %s (%s) dots" % [id, rr])
+			probe2.free()
+			break
 	# Fullscreen row: never on iOS; the help text names keys and the controller.
 	check("Controller:" in GameMenu.help_text(), "help names the controller buttons")
 	_end()

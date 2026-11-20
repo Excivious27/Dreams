@@ -177,6 +177,11 @@ static func record_catch(id: String, n := 1, night := false, rain := false) -> b
 	c["caught"][id] = e
 	if first:
 		_first("fish", id, false, "Fish log")
+		# C10a P3: a legend's first catch leaves a keepsake in the decor box (once per run).
+		var L: Variant = data().get("legends", {}).get(id, null)
+		if L is Dictionary and str((L as Dictionary).get("first_decor", "")) != "":
+			if give_decor(str(L["first_decor"]), "legend:" + id):
+				GameState.notify("A keepsake of the %s is waiting in your decor box." % GameState.item_name(id))
 	return first
 
 
@@ -293,7 +298,7 @@ static func check_milestones() -> Array:
 		hits.append(mid)
 		var g: Dictionary = m.get("give", {})
 		if g.has("decor"):
-			c["decor"][str(g["decor"])] = true
+			c["decor"][str(g["decor"])] = true  # the piece itself goes to the decor box with the letter
 		if mid == "mus_all":
 			GameState.run["flags"]["museum_done_" + ("gang" if gang() else "peng")] = true
 		GameState.notify("%s milestone! Expect a letter from %s in the morning." % [cat_title(str(m["cat"])), _npc_name(str(m.get("from", "theo")))])
@@ -301,7 +306,7 @@ static func check_milestones() -> Array:
 
 
 static func milestone(mid: String) -> Dictionary:
-	for m: Dictionary in data().get("milestones", []):
+	for m: Dictionary in data().get("milestones", []) + data().get("decor_milestones", []):
 		if str(m["id"]) == mid:
 			return m
 	return {}
@@ -333,7 +338,11 @@ static func _give_text(g: Dictionary) -> String:
 	if int(g.get("money", 0)) > 0:
 		bits.append(Money.amount(int(g["money"])))
 	if g.has("decor"):
-		bits.append(GameState.item_name(str(g["decor"])) if GameState.items.has(str(g["decor"])) else str(g["decor"]).replace("_", " "))
+		var did := decor_id(str(g["decor"]))
+		if did != "":
+			bits.append(DecorCatalogue.name_of(did) + " (in your decor box)")
+		elif DECOR_AT.has(str(g["decor"])) or GameState.items.has(str(g["decor"])):
+			bits.append(GameState.item_name(str(g["decor"])) if GameState.items.has(str(g["decor"])) else str(g["decor"]).replace("_", " "))
 	return ", ".join(bits)
 
 
@@ -358,6 +367,7 @@ static func morning() -> void:
 		Mail.send(_npc_name("theo"), letter("thanks") % s, "chat", {"npc": "theo", "coll": "thanks"})
 		GameState.add_friend("theo", 3 * mini(today.size(), 5))
 		c["today"] = []
+	check_decor_milestones()
 	for mid in (c["pending"] as Array):
 		var m := milestone(str(mid))
 		if m.is_empty():
@@ -365,6 +375,8 @@ static func morning() -> void:
 		var g: Dictionary = m.get("give", {})
 		if int(g.get("money", 0)) > 0:
 			GameState.add_money(int(g["money"]), "collection")
+		if g.has("decor"):
+			give_decor(str(g["decor"]), "milestone:" + str(mid))
 		var text := str(m.get("text_gangsters", m["text"])) if gang() else str(m["text"])
 		var enc := _give_text(g)
 		if enc != "":
@@ -375,6 +387,68 @@ static func morning() -> void:
 		else:
 			Mail.send(_npc_name(from), text, "chat", {"npc": from, "coll": str(mid)})
 	c["pending"] = []
+	# C10a P3: catalogue orders placed yesterday arrive in the decor box with the post.
+	var got := DecorCatalogue.deliver_orders()
+	if not got.is_empty():
+		var nm := []
+		for id in got.slice(0, 3):
+			nm.append(DecorCatalogue.name_of(str(id)))
+		var s := ", ".join(nm) + (" and %d more" % (got.size() - 3) if got.size() > 3 else "")
+		Mail.send("Catalogue desk", "Your order came in: %s. It's waiting in your decor box." % s, "chat", {"coll": "decor_order"})
+
+
+# ---- decor (C10a P3) ------------------------------------------------------------------------
+
+## The catalogue id a milestone/legend decor gift maps to: the id itself, dc_<id>, or "".
+static func decor_id(id: String) -> String:
+	if id == "":
+		return ""
+	if Decor.is_decor(id):
+		return id
+	if Decor.is_decor("dc_" + id):
+		return "dc_" + id
+	return ""
+
+
+## Hands a decor gift over through Decor (decor box), recording it in the old run.coll.decor too
+## so pre-C10 houses keep their piece. Returns true when the catalogue knows the piece.
+static func give_decor(id: String, source: String) -> bool:
+	if id == "":
+		return false
+	st()["decor"][id] = true
+	var did := decor_id(id)
+	if did == "":
+		return false
+	if Decor.owned(did) + Decor.placed_count(did) <= 0:
+		Decor.give(did, 1, source)
+	return true
+
+
+## A museum piece that isn't donated yet (sell box / fence warnings, Items tab tag).
+static func museum_needs(id: String) -> bool:
+	if not museum_open() and not GameState.run.get("flags", {}).has("museum_open"):
+		return false
+	var e: Variant = _catset("museum").get(id, null)
+	return e is Dictionary and not st()["donated"].has(id)
+
+
+## Decor catalogue milestones (collections.json "decor_milestones"): kinds of decor ever owned.
+## Claimed once into run.coll.claimed; letters ride the same pending queue.
+static func check_decor_milestones() -> Array:
+	var hits := []
+	if Decor.data()["items"].is_empty():
+		return hits
+	var c := st()
+	var have := int(DecorCatalogue.progress()[0])
+	for m: Dictionary in data().get("decor_milestones", []):
+		var mid := str(m["id"])
+		if c["claimed"].has(mid) or have < int(m.get("need", 0)):
+			continue
+		c["claimed"][mid] = true
+		(c["pending"] as Array).append(mid)
+		hits.append(mid)
+		GameState.notify("Decor catalogue milestone! Expect a letter from %s in the morning." % _npc_name(str(m.get("from", "maple"))))
+	return hits
 
 
 # ---- conditions, legends, house decor ------------------------------------------------------
@@ -431,6 +505,8 @@ static func dress_house(m: GameMap) -> void:
 	if GameState.run.is_empty():
 		return
 	for id in st()["decor"]:
+		if decor_id(str(id)) != "":
+			continue  # a catalogue piece: the decor layer draws it where it was placed (no double draw)
 		if DECOR_AT.has(str(id)) and Art.has("props", str(id)):
 			m.prop("props", str(id), DECOR_AT[str(id)], 0, 0.0, true, 0.5)
 

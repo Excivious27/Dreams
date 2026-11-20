@@ -751,6 +751,13 @@ if ! echo "$mpout" | grep -q "menu_pad_test: 0 failures"; then
   echo "menu_pad_test failed"; exit 1
 fi
 
+echo "== C10a P3: decor catalogue =="
+dcout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/decor_catalogue_test.gd 2>&1)"
+echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_catalogue_test" || true
+if ! echo "$dcout" | grep -q "decor_catalogue_test: 0 failures"; then
+  echo "decor_catalogue_test failed"; exit 1
+fi
+
 echo "== C9 P3: full-screen screens with actions only =="
 spout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/screens_pad_test.gd 2>&1)"
 echo "$spout" | grep -E "FAIL|SCRIPT ERROR|screens_pad_test" || true

@@ -62,7 +62,7 @@ NOT_ROD = ["tuna", "crab"]
 
 # Legends: replace a normal catch once per run when the place and moment fit (bypass the value ceiling).
 LEGENDS = {
-    "legendary_koi": {"scene": "lake", "lvl": 8, "when": "rain_or_winter_dawn", "chance": 0.04},
+    "legendary_koi": {"scene": "lake", "lvl": 8, "when": "rain_or_winter_dawn", "chance": 0.04, "first_decor": "dc_koi_scroll"},
 }
 
 SHIP_TYPES = ["crop", "fruit", "flower", "herb", "forage", "fish", "ore", "gem", "bar", "treasure"]
@@ -108,7 +108,7 @@ MILESTONES = [
     {"id": "wing_fish", "cat": "museum", "need": "wing:fish", "from": "finn", "give": {"money": 1500, "decor": "fish_trophy"},
      "text": "Every fish in the tanks. Even the koi! Mounted one for your wall, a pretend one. - Finn",
      "text_gangsters": "Every fish in the tanks. I had a wooden one carved for your wall. - Finn"},
-    {"id": "mus_all", "cat": "museum", "need": "all", "from": "theo", "give": {"money": 5000, "item": "curators_loupe", "n": 1},
+    {"id": "mus_all", "cat": "museum", "need": "all", "from": "theo", "give": {"decor": "dc_founders_orrery", "money": 5000, "item": "curators_loupe", "n": 1},
      "text": "The museum is complete. I didn't think I'd live to write that. Please take my old loupe: it always finds the lucky things. - Theo",
      "text_gangsters": "The Curio Room is complete. Take my old loupe. It has a habit of spotting the good stuff. - Theo"},
     {"id": "ship_25", "cat": "shipping", "need": 25, "from": "maple", "give": {"money": 500},
@@ -117,19 +117,19 @@ MILESTONES = [
     {"id": "ship_75", "cat": "shipping", "need": 75, "from": "maple", "give": {"money": 1500, "decor": "shipper_ribbon"},
      "text": "Seventy-five kinds shipped. Here's a ribbon. The fair judges don't give these out for nothing. - Maple",
      "text_gangsters": "Seventy-five kinds of goods. Here's a ribbon for the wall: best supplier on the block. - Maple"},
-    {"id": "ship_150", "cat": "shipping", "need": 150, "from": "maple", "give": {"money": 4000},
+    {"id": "ship_150", "cat": "shipping", "need": 150, "from": "maple", "give": {"decor": "dc_golden_crate", "money": 4000},
      "text": "A hundred and fifty kinds! I've run out of shelf labels. - Maple",
      "text_gangsters": "A hundred and fifty kinds. I ran out of price tags. - Maple"},
     {"id": "fish_10", "cat": "fish", "need": 10, "from": "finn", "give": {"item": "bait", "n": 20},
      "text": "Ten kinds of fish caught! Bait's on me. - Finn",
      "text_gangsters": "Ten kinds of fish. Bait's on me. - Finn"},
-    {"id": "fish_all", "cat": "fish", "need": "all", "from": "finn", "give": {"money": 3000},
+    {"id": "fish_all", "cat": "fish", "need": "all", "from": "finn", "give": {"decor": "dc_golden_rod_mount", "money": 3000},
      "text": "Every fish the rod can find. You're the best angler this lake has seen. - Finn",
      "text_gangsters": "Every fish a rod can find. Best angler on the waterfront. - Finn"},
     {"id": "cook_10", "cat": "cooking", "need": 10, "from": "posy", "give": {"money": 600},
      "text": "Ten dishes cooked! You've got the touch. - Posy",
      "text_gangsters": "Ten dishes. You cook like you mean it. - Posy"},
-    {"id": "cook_all", "cat": "cooking", "need": "all", "from": "posy", "give": {"money": 3000},
+    {"id": "cook_all", "cat": "cooking", "need": "all", "from": "posy", "give": {"decor": "dc_master_hearth", "money": 3000},
      "text": "You've cooked every recipe there is. Teach me something now! - Posy",
      "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy"},
     {"id": "craft_25", "cat": "crafting", "need": 25, "from": "hazel", "give": {"item": "chest", "n": 1},
@@ -141,6 +141,27 @@ MILESTONES = [
     {"id": "forage_20", "cat": "forage", "need": 20, "from": "willow", "give": {"money": 400},
      "text": "Twenty wild things found. The valley shares with those who look. - Willow",
      "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Willow"},
+]
+
+# C10a P3: Decor catalogue milestones: kinds of decor ever owned (DecorCatalogue.progress). Letters
+# ride the Collections post; "decor" ids are catalogue entries (gen_decor.py); a gift the catalogue
+# doesn't list yet is skipped (the letter never names it). Never a Book cat (would swamp percent()).
+DECOR_MILESTONES = [
+    {"id": "decor_10", "need": 10, "from": "maple", "give": {"money": 300},
+     "text": "Ten different pieces in your home! It's starting to feel lived in. A little something for the next one. - Maple",
+     "text_gangsters": "Ten pieces in your place already. Starting to look like somebody lives there. Here's a little something. - Maple"},
+    {"id": "decor_25", "need": 25, "from": "maple", "give": {"money": 800},
+     "text": "Twenty-five pieces! Folks have started asking who does your decorating. - Maple",
+     "text_gangsters": "Twenty-five pieces. People ask who does your decorating. I tell them it's a secret. - Maple"},
+    {"id": "decor_50", "need": 50, "from": "maple", "give": {"money": 1500, "decor": "dc_collectors_shelf"},
+     "text": "Fifty pieces collected. Here's a collector's shelf, to show off the little ones. - Maple",
+     "text_gangsters": "Fifty pieces. A collector's shelf for your place: put the good stuff where folks can see it. - Maple"},
+    {"id": "decor_100", "need": 100, "from": "maple", "give": {"money": 3000},
+     "text": "A hundred pieces! You could open a showroom. - Maple",
+     "text_gangsters": "A hundred pieces. You could run a showroom out of there. - Maple"},
+    {"id": "decor_200", "need": 200, "from": "maple", "give": {"money": 5000, "decor": "dc_grand_catalogue_stand"},
+     "text": "Two hundred pieces. I had the catalogue's own display stand sent over: you've earned it. - Maple",
+     "text_gangsters": "Two hundred pieces. The catalogue's own display stand is yours now. You earned it. - Maple"},
 ]
 
 LETTERS = {
@@ -339,7 +360,7 @@ def main():
     items["curators_loupe"] = LOUPE
     out = {"_": "Generated by tools/gen_collections.py", "cats": CATS, "wings": wings,
            "logs": {"shipping": ship, "fish": fish_log, "cooking": cook, "crafting": craft, "forage": forage_log},
-           "stations": sorted({e["station"] for e in craft}), "milestones": MILESTONES, "letters": LETTERS,
+           "stations": sorted({e["station"] for e in craft}), "milestones": MILESTONES, "decor_milestones": DECOR_MILESTONES, "letters": LETTERS,
            "room_names": ROOM_NAMES, "legends": LEGENDS}
     check(out, items, src)
     save("collections.json", out)
@@ -365,6 +386,10 @@ def main():
     print("shipping log left out (no source found): %d (%s...)" % (len(dropped), ", ".join(dropped[:8])))
 
 
+# Pre-C10 milestone props drawn at fixed farmhouse cells (Collections.DECOR_AT).
+LEGACY_DECOR = {"museum_trophy", "mineral_display", "relic_shelf", "curio_jar", "fish_trophy", "shipper_ribbon"}
+
+
 def check(out, items, src):
     bad = []
     icons = os.path.join(ROOT, "art", "gen", "items")
@@ -378,8 +403,10 @@ def check(out, items, src):
                 bad.append("no icon " + i)
             elif i not in out["legends"] and not re.search(r"[\"']%s[\"']" % re.escape(i), src):
                 bad.append("museum item with no source " + i)
-    for m in out["milestones"]:
+    for m in out["milestones"] + out["decor_milestones"]:
         g = m["give"]
+        if "decor" in g and not (g["decor"].startswith("dc_") or g["decor"] in LEGACY_DECOR):
+            bad.append("milestone decor id must be a catalogue id (dc_...): " + m["id"])
         if int(g.get("money", 0)) > 5000:
             bad.append("milestone money over 5000: " + m["id"])
         if "item" in g and g["item"] not in items:
@@ -389,6 +416,14 @@ def check(out, items, src):
             for word in ("crystal", "wine", "gambl", "penguin", "beer"):
                 if word in low:
                     bad.append("gang text word %r in %s" % (word, m["id"]))
+    ids = [m["id"] for m in out["milestones"] + out["decor_milestones"]]
+    if len(ids) != len(set(ids)):
+        bad.append("duplicate milestone ids")
+    if any(c["id"] == "decor" for c in out["cats"]):
+        bad.append("decor must not be a Book cat (DecorCatalogue has its own page)")
+    for L in out["legends"].values():
+        if "first_decor" in L and not L["first_decor"].startswith("dc_"):
+            bad.append("legend first_decor must be a catalogue id")
     if bad:
         print("\n".join(bad))
         sys.exit(1)
