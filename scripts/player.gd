@@ -702,6 +702,9 @@ func _physics_process(delta: float) -> void:
 		elif char_id == "penguin":
 			base = Color(str(GameState.look_d().get("tint", "ffffff")))
 		_anim.modulate = Color(base, 0.5 if invuln > 0.0 and int(invuln * 20) % 2 == 0 else 1.0)
+		var pacc := get_node_or_null("PenguinAcc") as CanvasItem
+		if pacc:
+			pacc.modulate = _anim.modulate  # wardrobe accessories blink with the hero
 	if frozen:
 		velocity = Vector2.ZERO
 		auto_target = Vector2.INF

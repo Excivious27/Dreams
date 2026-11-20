@@ -30,6 +30,10 @@ const ACTIONS := {"attack": ["act_attack_1", "act_attack_2", "act_attack_3"], "h
 const LIFE := {"sit": [0], "sleep": [1], "faint": [2], "carry": [3, 4], "pet": [5, 6], "wave": [7, 8], "dance": [9, 10, 11, 12], "eat_down": [13, 14], "eat_up": [13, 14], "eat_right": [13, 14], "drink": [15]}
 const WATER := {"swim": [0, 1, 2, 3], "swim_down": [4, 5, 6, 7], "swim_up": [8, 9, 10, 11], "float": [12], "dive": [13], "climb_out": [14, 15]}
 const RIDE := {"ride": [0, 1, 2, 3], "ride_run": [4, 5], "ride_down": [6, 7], "ride_up": [8, 9]}
+## Missing-row stand-ins for costume sheets (see body_frames); frame_source mirrors it.
+const POSE_FALLBACK := {"sit": "idle", "sleep": "idle", "faint": "idle", "carry": "walk_down", "pet": "idle", "wave": "idle", "dance": "walk_down",
+	"eat_up": "idle", "drink": "idle", "swim": "walk", "swim_down": "walk_down", "swim_up": "walk_up", "float": "idle", "dive": "idle", "climb_out": "idle",
+	"ride": "walk", "ride_run": "run", "ride_down": "walk_down", "ride_up": "walk_up", "swim_1": "walk", "hold_up": "idle_up"}
 const TOOL_POSES := {"hoe": "attack", "water": "hold", "axe": "attack", "pickaxe": "attack", "cast": "attack", "reel": "hold", "eat": "eat"}
 
 
@@ -306,6 +310,19 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 				at.atlas = rtex
 				at.region = Rect2(int(i) * rcw, 0, rcw, rch)
 				sf.add_frame(anim, at)
+	# Costume sheets without life/water/ride rows (the six arc costumes): reuse the
+	# costume's own idle/walk poses, never the bald base's act_* frames (another look,
+	# drawn at a different scale).
+	if not body in BODIES:
+		for anim: String in POSE_FALLBACK:
+			if sf.has_animation(anim):
+				continue
+			var from := str(POSE_FALLBACK[anim])
+			sf.add_animation(anim)
+			sf.set_animation_speed(anim, sf.get_animation_speed(from))
+			sf.set_animation_loop(anim, not anim in ["dive", "climb_out", "faint", "sleep", "sit"])
+			for i in sf.get_frame_count(from):
+				sf.add_frame(anim, sf.get_frame_texture(from, i))
 	for anim: String in ACTIONS:
 		if sf.has_animation(anim):
 			continue
@@ -337,6 +354,9 @@ static func frame_source(anim: String, frame: int, body: String) -> Array:
 	if RIDE.has(anim) and Art.has("body", body + "_ride"):
 		var arr5: Array = RIDE[anim]
 		return [body + "_ride", int(arr5[clampi(frame, 0, arr5.size() - 1)])]
+	if POSE_FALLBACK.has(anim) and not body in BODIES:
+		var arr6: Array = POSES[str(POSE_FALLBACK[anim])]
+		return [body, int(arr6[clampi(frame, 0, arr6.size() - 1)])]
 	return [body, 0]
 
 

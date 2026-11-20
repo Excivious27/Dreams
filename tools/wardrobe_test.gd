@@ -115,6 +115,10 @@ func _run() -> void:
 	check(Wardrobe.put_on("wr_pinstripe_suit") and Wardrobe.put_on("wr_fedora") and Wardrobe.put_on("wr_shades"), "full look on")
 	check(_gear_totals() == before, "cosmetics never change gear stats")
 	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_pinstripe", "doll wears the cosmetic outfit")
+	var psf := PaperDoll.body_frames(GameState.run["look"])
+	for an in ["sit", "sleep", "swim", "ride", "float", "wave"]:
+		var tx := psf.get_frame_texture(an, 0) if psf.has_animation(an) else null
+		check(tx is AtlasTexture and (tx as AtlasTexture).atlas == Art.tex("body", "outfit_pinstripe"), "costume keeps its own look in " + an)
 	var armour := ""
 	for id: String in GameState.items:
 		var cs := str(GameState.items[id].get("costume", ""))
