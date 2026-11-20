@@ -17,6 +17,12 @@ static var _loaded := false
 static var _blocked := false
 static var _js_cb: Variant = null
 const LS_KEY := "dreams_save"
+## Corrupt saves set aside (save.bad.json + timestamped ones): at most this many.
+const BAD_KEEP := 3
+## C9: did the last flush really land? last_why: "" | "other" (another Dreams tab
+## owns the farm) | "full" (browser storage full) | "file" (couldn't write user://).
+static var last_ok := true
+static var last_why := ""
 
 
 ## On the web: let the page save us when it's hidden or about to update.
@@ -96,6 +102,7 @@ static func load_all() -> Dictionary:
 		# Keep the first bad copy (the one worth recovering by hand); later ones get a timestamp.
 		var bad := BAD if not FileAccess.file_exists(BAD) else "user://save.bad.%d.json" % int(Time.get_unix_time_from_system())
 		DirAccess.copy_absolute(ProjectSettings.globalize_path(PATH), ProjectSettings.globalize_path(bad))
+		_prune_bad()
 		var bak: Variant = _read(BAK)
 		if bak is Dictionary:
 			_cache = bak
@@ -120,32 +127,71 @@ static func set_value(key: String, value: Variant) -> void:
 	flush()
 
 
-static func flush() -> void:
+static func flush() -> bool:
+	last_ok = false
 	if _blocked:
-		return
+		last_why = "other"
+		return false
 	if OS.has_feature("web") and bool(JavaScriptBridge.eval("window.dreamsOtherOpen === true", true)):
 		_blocked = true  # a newer window owns the farm; a hidden tab never ran GameMap's 3 s check
-		return
+		last_why = "other"
+		return false
+	if OS.has_feature("web") and _ls_counter() > int(_cache.get("_saved_at", 0)):
+		# C9: an old background tab (frozen, then restored) must never write over
+		# newer progress saved by another tab/the home-screen app since it loaded.
+		_blocked = true
+		last_why = "other"
+		JavaScriptBridge.eval("window.dreamsOtherOpen = true", true)  # GameMap tells the player
+		return false
 	_cache["_saved_at"] = int(_cache.get("_saved_at", 0)) + 1
 	var txt := JSON.stringify(_cache, "", false)  # keep key order (sorted bags and chests)
+	var full := false
 	if OS.has_feature("web"):
 		# Through eval so a full or blocked localStorage is noticed (the wrapper drops the error).
 		var ok: Variant = JavaScriptBridge.eval("(function(t){try{localStorage.setItem(%s,t);return true}catch(e){return false}})(%s)" % [JSON.stringify(LS_KEY), JSON.stringify(txt)], true)
 		if not bool(ok):
+			full = true
 			push_warning("localStorage mirror failed (storage full?)")
 	var f := FileAccess.open(TMP, FileAccess.WRITE)
 	if f == null:
-		return
+		last_why = "full" if full else "file"
+		return false
 	f.store_string(txt)
 	f.close()
 	var dir := DirAccess.open("user://")
 	if dir == null:
-		return
+		last_why = "file"
+		return false
 	if FileAccess.file_exists(PATH):
 		if dir.file_exists("save.bak.json"):
 			dir.remove("save.bak.json")
 		dir.rename("save.json", "save.bak.json")
 	dir.rename("save.tmp.json", "save.json")
+	last_ok = not full
+	last_why = "full" if full else ""
+	return last_ok
+
+
+## The save counter stored in the browser copy (0 when none): just the number,
+## read with a regex so a big save is never parsed twice.
+static func _ls_counter() -> int:
+	var n: Variant = JavaScriptBridge.eval("(function(){try{var t=localStorage.getItem(%s)||'';var m=t.match(/\"_saved_at\":(\\d+)/);return m?parseInt(m[1]):0}catch(e){return 0}})()" % JSON.stringify(LS_KEY), true)
+	return int(n) if n != null else 0
+
+
+## Keep at most BAD_KEEP set-aside saves: the first one (save.bad.json, worth
+## recovering by hand) and the newest timestamped ones.
+static func _prune_bad() -> void:
+	var dir := DirAccess.open("user://")
+	if dir == null:
+		return
+	var stamped: Array = []
+	for fn in dir.get_files():
+		if fn.begins_with("save.bad.") and fn != "save.bad.json" and fn.ends_with(".json"):
+			stamped.append(fn)
+	stamped.sort()  # unix stamps of the same width sort by age
+	while stamped.size() > BAD_KEEP - 1:
+		dir.remove(str(stamped.pop_front()))
 
 
 ## Tests and "new game" flows that wipe the run in memory use this.

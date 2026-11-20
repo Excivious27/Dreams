@@ -150,42 +150,60 @@ func _show_sound() -> void:
 	_page.add_child(_button("Back", _show_title))
 
 
-func _show_slots() -> void:
+func _show_slots(msg := "") -> void:
 	_clear()
 	if is_inside_tree():
 		Music.instance(get_tree()).play("title_musicbox" if Music.has_track("title_musicbox") else "title")
 	_page.add_child(_label("Save slots", 16))
 	_page.add_child(_label("Three farms side by side. Tap one to play it.", 8, false))
-	for n in [1, 2, 3]:
+	for n in SaveTransfer.SLOTS:
 		var here: bool = int(n) == GameState.slot()
 		_page.add_child(_button("%s%d: %s" % ["▶ " if here else "", n, GameState.slot_info(n)], func() -> void:
 			GameState.use_slot(n)
 			_show_title(), here))
-	_page.add_child(_label("Move a farm to another phone: copy its code here, then paste it on the other phone.", 8, false))
-	_page.add_child(_button("Copy this slot's save code", func() -> void:
-		var code := GameState.export_code()
-		if OS.has_feature("web"):
-			# Phones only allow copying from the tap itself: show the code in a
-			# real page box with the phone's own Share / Copy.
-			JavaScriptBridge.eval(_web_code_box(code))
-			_slot_msg.text = "Your code is on screen: tap Copy or Share and keep it somewhere safe."
+		if GameState.slot_info(n) != "Empty":
+			_page.add_child(_pair("Copy slot %d's code" % n, func() -> void: _export_code(n),
+				"Save to a file", func() -> void: _export_file(SaveTransfer.encode_slot(n))))
+	_page.add_child(_label("Move or back up a farm", 11))
+	_page.add_child(_label("Keep a code or file somewhere safe, then load it here or on another phone or computer. Loading goes into slot %d (you'll be asked first)." % GameState.slot(), 8, false))
+	if OS.has_feature("web"):
+		_page.add_child(_button("Paste a save code", func() -> void:
+			SaveTransfer.web_paste(func(txt: String) -> void:
+				if txt.strip_edges() != "":
+					_try_load(txt))))
+	else:
+		_slot_code = TextEdit.new()
+		_slot_code.placeholder_text = "Paste a save code here"
+		_slot_code.custom_minimum_size = Vector2(220, 46)
+		_slot_code.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+		_slot_code.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+		_slot_code.add_theme_font_size_override("font_size", 7)
+		_field_style(_slot_code)
+		_page.add_child(_slot_code)
+		_slot_code.text_changed.connect(func() -> void:
+			var t := _slot_code.text
+			if t.strip_edges() == "":
+				_slot_msg.text = ""
+				return
+			var d := SaveTransfer.decode(t)
+			_slot_msg.text = ("Looks good: " + _code_summary(d)) if bool(d["ok"]) else str(d["why"]))
+		_page.add_child(_pair("Load the code", func() -> void: _try_load(_slot_code.text),
+			"Clear", func() -> void:
+				_slot_code.text = ""
+				_slot_msg.text = ""))
+	_page.add_child(_button("Load from a file", func() -> void:
+		SaveTransfer.open_file(self, func(txt: String) -> void:
+			if txt.strip_edges() != "":
+				_try_load(txt))))
+	_page.add_child(_button("Back up all farms to a file", func() -> void:
+		var all := SaveTransfer.encode_all()
+		if all == "":
+			_slot_msg.text = "There are no farms to back up yet."
 		else:
-			DisplayServer.clipboard_set(code)
-			_slot_msg.text = "Copied. Paste it somewhere safe (a note or a message to yourself)."))
-	_slot_code = TextEdit.new()
-	_slot_code.placeholder_text = "Paste a save code here"
-	_slot_code.custom_minimum_size = Vector2(220, 46)
-	_slot_code.add_theme_font_size_override("font_size", 7)
-	_field_style(_slot_code)
-	_page.add_child(_slot_code)
-	_page.add_child(_button("Load the code into slot %d" % GameState.slot(), func() -> void:
-		var txt := _slot_code.text
-		if OS.has_feature("web") and txt.strip_edges() == "":
-			var got: Variant = JavaScriptBridge.eval("prompt('Paste your Dreams save code') || ''")
-			txt = str(got) if got != null else ""
-		var err := GameState.import_code(txt)
-		_slot_msg.text = err if err != "" else "Loaded. The farm that was here can be brought back with Restore."))
-	_slot_msg = _label("", 8, false)
+			_export_file(all)))
+	if SaveTransfer.ios_tab():
+		_page.add_child(_label("On iPhone, add Dreams to your Home Screen (Share > Add to Home Screen): Safari can clear a tab's farms after a week away. Keep a backup file too.", 8, false))
+	_slot_msg = _label(msg, 8, false)
 	_page.add_child(_slot_msg)
 	_page.add_child(_button("Back", _show_title))
 
@@ -194,19 +212,102 @@ var _slot_code: TextEdit
 var _slot_msg: Label
 
 
-## An HTML overlay with the code in a text box and Copy / Share buttons (web).
-func _web_code_box(code: String) -> String:
-	var js := """(function(){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:9999;background:#000c;display:flex;align-items:center;justify-content:center';
-var b=document.createElement('div');b.style.cssText='background:#f4e6c4;border-radius:12px;padding:14px;width:86%;max-width:420px;font:15px sans-serif;color:#2a1a10';
-b.innerHTML='<b>Your Dreams save code</b><br><small>Keep it in a note or message. Paste it on the other phone.</small>';
-var t=document.createElement('textarea');t.readOnly=true;t.value=CODE;t.style.cssText='width:100%;height:120px;margin:8px 0;font:11px monospace';
-var row=document.createElement('div');row.style.cssText='display:flex;gap:8px';
-function btn(l,f){var x=document.createElement('button');x.textContent=l;x.style.cssText='flex:1;padding:10px;font:bold 15px sans-serif;border-radius:8px;border:0;background:#c98a3a;color:#fff';x.onclick=f;row.appendChild(x);}
-btn('Copy',function(){t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}});
-if(navigator.share)btn('Share',function(){navigator.share({text:t.value}).catch(function(){});});
-btn('Close',function(){o.remove();});
-b.appendChild(t);b.appendChild(row);o.appendChild(b);document.body.appendChild(o);t.focus();t.select();})();"""
-	return js.replace("CODE", JSON.stringify(code))
+## Two buttons side by side (per-slot export, load/clear).
+func _pair(t1: String, f1: Callable, t2: String, f2: Callable) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.size_flags_horizontal = SIZE_EXPAND_FILL
+	row.add_child(_button(t1, f1))
+	row.add_child(_button(t2, f2))
+	return row
+
+
+func _code_summary(d: Dictionary) -> String:
+	if str(d.get("kind", "")) == "all":
+		var data: Dictionary = d["data"]
+		return "a backup of %d farm%s" % [(data["slots"] as Dictionary).size(), "" if (data["slots"] as Dictionary).size() == 1 else "s"]
+	return SaveTransfer.summary(d["data"])
+
+
+func _export_code(n: int) -> void:
+	var code := SaveTransfer.encode_slot(n)
+	if code == "":
+		_slot_msg.text = str(SaveTransfer.WHY["no_farm"])
+		return
+	if OS.has_feature("web"):
+		# Phones only allow copying from the tap itself: show the code in a
+		# real page box with the phone's own Copy / Share / Save file.
+		SaveTransfer.web_code_box(code)
+		_slot_msg.text = "Your code is on screen: Copy, Share or Save it somewhere safe."
+	else:
+		DisplayServer.clipboard_set(code)
+		_slot_msg.text = "Copied slot %d's code. Paste it somewhere safe (a note or a message to yourself)." % n
+
+
+func _export_file(code: String) -> void:
+	if code == "":
+		_slot_msg.text = str(SaveTransfer.WHY["no_farm"])
+		return
+	SaveTransfer.save_file(self, code, func(ok: bool, where: String) -> void:
+		if is_instance_valid(_slot_msg):
+			_slot_msg.text = ("Saved %s. Keep it somewhere safe." % where) if ok else ("" if where == "" else "That file couldn't be written."))
+
+
+## A pasted/loaded code: check it, then ask before anything is replaced.
+func _try_load(text: String) -> void:
+	var d := SaveTransfer.decode(text)
+	if not bool(d["ok"]):
+		_slot_msg.text = str(d["why"])
+		return
+	if str(d["kind"]) == "all":
+		_confirm_all(d["data"])
+	else:
+		_confirm_one(d["data"], GameState.slot())
+
+
+func _confirm_one(farm: Dictionary, n: int) -> void:
+	var plan := SaveTransfer.plan_one(farm, n)
+	if bool(plan["same"]):
+		_show_slots(SaveTransfer.confirm_text(farm, n))
+		return
+	if str(plan["replaces"]) == "":
+		_finish_one(farm, n)  # empty slot: nothing to lose, no question
+		return
+	_clear()
+	_page.add_child(_label("Load this farm?", 16))
+	_page.add_child(_label(SaveTransfer.confirm_text(farm, n), 8, false))
+	_page.add_child(_button("Replace slot %d" % n, func() -> void: _finish_one(farm, n), true))
+	for e in SaveTransfer.empty_slots():
+		_page.add_child(_button("Put it in empty slot %d instead" % int(e), func() -> void: _finish_one(farm, int(e))))
+	_page.add_child(_button("Back", _show_slots))
+
+
+func _finish_one(farm: Dictionary, n: int) -> void:
+	var r := SaveTransfer.apply_one(farm, n)
+	_show_slots(SaveTransfer.done_text(r, n))  # rebuilt, so the slot list shows the new farm
+
+
+func _confirm_all(data: Dictionary) -> void:
+	_clear()
+	_page.add_child(_label("Load the backup?", 16))
+	var lines: Array = []
+	for n in SaveTransfer.SLOTS:
+		var f: Dictionary = (data["slots"] as Dictionary).get(str(n), {})
+		if f.is_empty():
+			lines.append("Slot %d: not in the backup, left as it is." % n)
+			continue
+		var cur := SaveTransfer.farm_of(n)
+		if SaveTransfer.same_farm(cur, f):
+			lines.append("Slot %d: already holds %s." % [n, SaveTransfer.summary(f)])
+		elif cur.is_empty():
+			lines.append("Slot %d: %s." % [n, SaveTransfer.summary(f)])
+		else:
+			lines.append("Slot %d: %s replaces %s (who moves to Restore)." % [n, SaveTransfer.summary(f), SaveTransfer.summary(cur)])
+	_page.add_child(_label("\n".join(lines), 8, false))
+	_page.add_child(_button("Load the backup", func() -> void:
+		var r := SaveTransfer.apply_all(data)
+		_show_slots(("Loaded the backup into slot%s %s." % ["" if (r["loaded"] as Array).size() == 1 else "s", ", ".join((r["loaded"] as Array).map(func(x: Variant) -> String: return str(x)))]) if bool(r["ok"]) and not (r["loaded"] as Array).is_empty() else ("Every farm in the backup is already here." if bool(r["ok"]) else str(r["why"]))), true))
+	_page.add_child(_button("Back", _show_slots))
 
 
 ## Starting over never loses a farm: the current one is kept to restore.
