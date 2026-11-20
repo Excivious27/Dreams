@@ -22,6 +22,7 @@
 | 18 | Cutscenes (Crystopia intro, night and side-event scenes) | |
 | 19 | Trading cards | |
 | 20 | Hazards, jumping and flight, lava mega region, mine hazards | |
-| 21 | Polish pass + cleanup of the two biggest code files | |
-| 22 | One consistent art direction | |
+| 21 | The General Store side arc | |
+| 22 | Polish pass + cleanup of the two biggest code files | |
+| 23 | One consistent art direction | |
 | end | Final package and artifact page | |
