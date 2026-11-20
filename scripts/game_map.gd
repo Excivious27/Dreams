@@ -28,7 +28,22 @@ var fixed_dark := -1.0   # >= 0: underground light (no sky clock, lamps always g
 var _canopies: Array = []      # tall sprites that fade when you walk behind them
 var _faded: Array = []
 var _fade_t := 0.0
-const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon"]
+const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire"]
+## Festival pieces that are lights without a light word in their name (Lantern
+## Festival posts/strings fest_ss_23..33, its bonfire fest_ss_80) (c5_10 #1).
+const FEST_GLOW := ["fest_ss_23", "fest_ss_24", "fest_ss_25", "fest_ss_26", "fest_ss_27", "fest_ss_28", "fest_ss_29", "fest_ss_30", "fest_ss_31", "fest_ss_32", "fest_ss_33", "fest_ss_80"]
+
+
+## Does a prop with this art name give off light after dark?
+static func glows(name: String) -> bool:
+	if name.ends_with("unlit") or name.ends_with("_off") or name.ends_with("_broken"):
+		return false
+	if name in FEST_GLOW:
+		return true
+	for gw: String in GLOW_WORDS:
+		if gw in name:
+			return true
+	return false
 var props := {}          # Vector2i -> Sprite2D (so things can change their look)
 ## Organic border: `pad` cells of forest/cliff/water around the content, drawn by
 ## draw_border(). Content coordinates stay 0..cols-1; world = (cell + pad) * TILE.
@@ -1285,10 +1300,20 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
 	add_child(a)
 	a.play("idle")
+	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
+		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
+		glow.lights.append([a, 30.0 + minf(ch, 60.0) * 0.3, ch * 0.55])
+	if group in ["props", "nature", "buildings"] and ch_tall(a, scale):
+		_canopies.append(a)  # tall animated props fade when you walk behind them too (c5_12 #6)
 	if solid:
 		for i in extra_w + 1:
 			blocked[Vector2i(c.x + i, c.y)] = true
 	return a
+
+
+func ch_tall(a: AnimatedSprite2D, scale: float) -> bool:
+	var f := a.sprite_frames.get_frame_texture("idle", 0) if a.sprite_frames else null
+	return f != null and f.get_height() * scale > 30.0
 
 
 ## Make a y-sorted prop draw under whoever stands on it (bridges, docks, rugs):
@@ -1418,24 +1443,58 @@ func _collectors_near() -> bool:
 ## Walking behind a tree canopy or a roof: that sprite turns see-through so you
 ## (and anything hidden behind it) stay visible.
 func _update_canopy_fade() -> void:
+	# Only undo our own fade: a sprite something else is tweening (a felled tree
+	# fading out) is left alone (c5_12 #6).
 	for s in _faded:
-		if is_instance_valid(s):
-			(s as Sprite2D).modulate.a = 1.0
+		if is_instance_valid(s) and is_equal_approx((s as CanvasItem).modulate.a, CANOPY_FADE):
+			(s as CanvasItem).modulate.a = 1.0
 	_faded.clear()
 	var pp := player.position
+	# the hero's feet, middle and head: any of them hidden behind the sprite fades it
+	var probes := [pp + Vector2(0, -4), pp + Vector2(0, -12), pp + Vector2(0, -20)]
 	for s in _canopies:
 		if not is_instance_valid(s):
 			continue
-		var sp := s as Sprite2D
-		if absf(sp.position.x - pp.x) > 80.0 or absf(sp.position.y - pp.y) > 120.0:
+		var n := s as Node2D
+		if absf(n.position.x - pp.x) > 80.0 or absf(n.position.y - pp.y) > 120.0:
 			continue
-		var sz := sp.texture.get_size() * sp.scale
-		var r := Rect2(sp.position - Vector2(sz.x / 2.0, sz.y) + (sp.offset * sp.scale if not sp.centered else Vector2(0, sz.y / 2.0)), sz)
-		if sp.centered:
-			r = Rect2(sp.position + sp.offset * sp.scale - sz / 2.0, sz)
-		if pp.y < sp.position.y - 4.0 and r.grow(-3.0).has_point(pp + Vector2(0, -8)):
-			sp.modulate.a = 0.45
-			_faded.append(sp)
+		if pp.y >= n.position.y - 4.0 or not is_equal_approx(n.modulate.a, 1.0):
+			continue
+		var r := _canopy_rect(n)
+		if r.size == Vector2.ZERO:
+			continue
+		r = r.grow(-3.0)
+		for q: Vector2 in probes:
+			if r.has_point(q):
+				n.modulate.a = CANOPY_FADE
+				_faded.append(n)
+				break
+
+
+const CANOPY_FADE := 0.45
+
+
+## World rect a Sprite2D / AnimatedSprite2D covers (current frame).
+func _canopy_rect(n: Node2D) -> Rect2:
+	var tex: Texture2D = null
+	var off := Vector2.ZERO
+	var centered := true
+	if n is Sprite2D:
+		tex = (n as Sprite2D).texture
+		off = (n as Sprite2D).offset
+		centered = (n as Sprite2D).centered
+	elif n is AnimatedSprite2D:
+		var a := n as AnimatedSprite2D
+		if a.sprite_frames and a.sprite_frames.has_animation(a.animation):
+			tex = a.sprite_frames.get_frame_texture(a.animation, a.frame)
+		off = a.offset
+		centered = a.centered
+	if tex == null:
+		return Rect2()
+	var sz := tex.get_size() * n.scale
+	if centered:
+		return Rect2(n.position + off * n.scale - sz / 2.0, sz)
+	return Rect2(n.position + off * n.scale, sz)
 
 
 ## The light colour for this map at time t (minutes). Outdoors follows the
@@ -1492,11 +1551,8 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	props[c] = s
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
-	if glow and not name.ends_with("unlit") and not name.ends_with("_off"):
-		for gw: String in GLOW_WORDS:
-			if gw in name:
-				glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
-				break
+	if glow and glows(name):
+		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
 	if group in ["buildings", "props", "nature"]:
@@ -4856,5 +4912,5 @@ func glow_dark() -> float:
 	if fixed_dark >= 0.0:
 		return fixed_dark * Settings.night_strength()
 	if not has_sky:
-		return 0.0
+		return GameState.darkness() * Settings.night_strength() * 0.8 if scene_id() == "house" else 0.0
 	return GameState.darkness() * Settings.night_strength()

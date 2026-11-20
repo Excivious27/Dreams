@@ -135,6 +135,14 @@ if ! echo "$maout" | grep -q "mine_arrival_test: 0 failures"; then
   echo "mine_arrival_test failed"; exit 1
 fi
 
+echo "== night lighting: windows, festival fires, underground, mines (c5_10) =="
+nlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/night_light_test.gd 2>&1)"
+echo "$nlout" | grep -E "FAIL|SCRIPT ERROR|night_light_test" || true
+if ! echo "$nlout" | grep -q "night_light_test: 0 failures"; then
+  echo "night_light_test failed"; exit 1
+fi
+
+
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then

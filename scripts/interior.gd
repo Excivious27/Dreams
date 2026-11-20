@@ -178,6 +178,8 @@ func after_ready() -> void:
 		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
 		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and nm in ["window_day", "window_night"]:
+			_win_props.append([ps, g])
 		if ps and crop.has_area():
 			ps.region_enabled = true
 			ps.region_rect = crop
@@ -831,8 +833,42 @@ func _leave() -> void:
 var _walked_out := false
 
 
+var _win_props: Array = []   # [Sprite2D, group] window props that swap day/night
+var _night_was := -1
+var _night_t := 0.0
+
+
+## Windows (wall glass and window props) follow dusk and dawn while you're inside,
+## not only when you walk in (c5_10 #5).
+func _watch_night(delta: float) -> void:
+	_night_t -= delta
+	if _night_t > 0.0:
+		return
+	_night_t = 1.0
+	var n := 1 if GameState.is_night() else 0
+	if _night_was == -1:
+		_night_was = n
+		return
+	if n == _night_was:
+		return
+	_night_was = n
+	queue_redraw()
+	for wp: Array in _win_props:
+		if is_instance_valid(wp[0]) and Art.has(str(wp[1]), "window_night"):
+			(wp[0] as Sprite2D).texture = Art.tex(str(wp[1]), "window_night" if n == 1 else "window_day")
+
+
+## Lamps, candles and hearths glow indoors after dark (c5_04 #3); the Rec Center
+## has its own coloured light (RecGlow).
+func glow_dark() -> float:
+	if RecCenter.is_rec(self):
+		return 0.0
+	return GameState.darkness() * Settings.night_strength() * 0.8
+
+
 func _process(delta: float) -> void:
 	super(delta)
+	_watch_night(delta)
 	if _walked_out or player == null or player.frozen or get_tree().paused:
 		return
 	var d: Array = I.get("door", [cols / 2, rows - 2])
