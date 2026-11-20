@@ -389,6 +389,7 @@ func _migration() -> void:
 	r["save_ver"] = 9
 	r["inventory"]["rp_jukebox"] = 1
 	r["chests"] = {"chest": {"items": {"rp_trophy_bronze": 1}}}
+	r["coll"] = {"decor": {"shipper_ribbon": true}}  # C10b: a C9 milestone keepsake drawn at its old house spot
 	var visited_reg := ""
 	var other_reg := ""
 	var started_cid := ""
@@ -423,6 +424,7 @@ func _migration() -> void:
 	check(GameState.run.get("decor") is Dictionary and int(GameState.run.get("save_ver", 0)) == GameState.SAVE_VERSION, "old save gets run.decor and the new save version")
 	check(not (GameState.run["inventory"] as Dictionary).has("rp_jukebox") and Decor.owned("rp_jukebox") == 1 and GameState.count("rp_jukebox") == 1, "bag decor moves to the decor box and still counts")
 	check(Decor.owned("rp_trophy_bronze") == 1, "chest decor moves to the decor box")
+	check(Decor.total("dc_shipper_ribbon") == 1 and int(Decor.st().get("mig", 0)) == Decor.MIGRATION and Decor.st()["exterior"] is Dictionary, "C10b: old keepsake kept in the house, decor migration 2, exterior block")
 	# Collections (C8 P3): run.coll made on load, shipping starts empty.
 	check(GameState.run.get("coll") is Dictionary and Collections.count("shipping") == 0, "old save gets run.coll")
 	# Community farm: starts fresh, not yet known.

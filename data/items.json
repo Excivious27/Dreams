@@ -11738,7 +11738,7 @@
  "dc_reed_mat_a": {
   "name": "Reed Mat",
   "type": "decor",
-  "value": 23,
+  "value": 8,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/reed_mat_a",
@@ -12088,7 +12088,7 @@
  "dc_stool_wood": {
   "name": "Wood Stool",
   "type": "decor",
-  "value": 28,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_wood",
@@ -12408,7 +12408,7 @@
  "dc_neon_sign_0": {
   "name": "Neon Sign: Moon",
   "type": "decor",
-  "value": 232,
+  "value": 120,
   "rarity": "rare",
   "tier": 2,
   "icon": "props/neon_sign_0",
@@ -12419,7 +12419,7 @@
  "dc_neon_sign_1": {
   "name": "Neon Sign: Star",
   "type": "decor",
-  "value": 248,
+  "value": 120,
   "rarity": "rare",
   "tier": 2,
   "icon": "props/neon_sign_1",
@@ -12743,7 +12743,7 @@
  "dc_tt_penguin_figurine": {
   "name": "Penguin Figurine",
   "type": "decor",
-  "value": 82,
+  "value": 81,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_figurine",
@@ -12754,7 +12754,7 @@
  "dc_tt_snow_globe": {
   "name": "Snow Globe",
   "type": "decor",
-  "value": 165,
+  "value": 120,
   "rarity": "rare",
   "tier": 2,
   "icon": "items/snow_globe",
@@ -12804,7 +12804,7 @@
  "dc_tt_pot_a": {
   "name": "Clay Jar",
   "type": "decor",
-  "value": 11,
+  "value": 9,
   "rarity": "common",
   "tier": 1,
   "icon": "items/pot_a",
@@ -12824,7 +12824,7 @@
  "dc_tt_pot_c": {
   "name": "Urn",
   "type": "decor",
-  "value": 104,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/pot_c",
@@ -12834,7 +12834,7 @@
  "dc_tt_snowman": {
   "name": "Tiny Snowman",
   "type": "decor",
-  "value": 123,
+  "value": 73,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/snowman",
