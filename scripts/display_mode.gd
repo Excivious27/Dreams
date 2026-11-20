@@ -38,12 +38,34 @@ var _sides: Array = []
 var _dim: ColorRect  # C5 c5_13 #7: the column behind the game menu dims too (desktop)
 var _last_size := Vector2i.ZERO
 var _web_fs_armed := false
+var _was_fs := false
+var _back_t := 0
+var _tap_release: Array = []   # actions pressed by _tap, released next frame
+## Native: the game lost focus or the app was suspended (Deck overlay, alt-tab).
+signal app_backgrounded
 
 
 static func is_phone() -> bool:
 	if force >= 0:
 		return force == 0
 	return OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios") or OS.has_feature("android") or OS.has_feature("ios")
+
+
+## Steam Deck (or any gamescope / 1280x800-or-smaller handheld screen).
+static func is_deck() -> bool:
+	if force >= 0 or OS.has_feature("web"):
+		return false
+	if OS.get_environment("SteamDeck") == "1" or OS.get_environment("XDG_CURRENT_DESKTOP").to_lower() == "gamescope":
+		return true
+	if DisplayServer.get_name() == "headless":
+		return false
+	var sz := DisplayServer.screen_get_size()
+	return sz.x > 0 and sz.x <= 1280 and sz.y <= 800 and sz.x > sz.y
+
+
+## Touch buttons on "auto": phones, the Deck and any touchscreen computer show them.
+static func touch_auto() -> bool:
+	return is_phone() or is_deck() or DisplayServer.is_touchscreen_available()
 
 
 ## True when the view is wider than the phone's 270 px.
@@ -106,8 +128,9 @@ func _ready() -> void:
 	_dim.visible = false
 	dl.add_child(_dim)
 	if not is_phone() and DisplayServer.get_name() != "headless" and not _tool_run():
-		# Desktop: no on-screen pad unless asked for.
-		TouchControls.visible_controls = int(Settings.get_v("touch_ui")) == 1
+		# Desktop: no on-screen pad unless asked for (or a touchscreen / Deck on auto).
+		var tm := int(Settings.get_v("touch_ui"))
+		TouchControls.visible_controls = tm == 1 or (tm == 0 and touch_auto())
 		if not OS.has_feature("web") and force < 0:
 			_desktop_window()
 	elif int(Settings.get_v("touch_ui")) == 2:
@@ -125,7 +148,8 @@ static func _tool_run() -> bool:
 ## is the phone's portrait 540x960), or fullscreen if that was chosen last time.
 func _desktop_window() -> void:
 	var w := get_window()
-	if bool(Settings.get_v("fullscreen")):
+	# Handhelds (Deck) start fullscreen at the panel's native 16:10 size, never a shrunken 16:9 window.
+	if bool(Settings.get_v("fullscreen")) or is_deck():
 		w.mode = Window.MODE_FULLSCREEN
 		return
 	var scr := DisplayServer.screen_get_usable_rect(w.current_screen)
@@ -228,6 +252,11 @@ func _on_node_added(n: Node) -> void:
 
 
 func _process(_d: float) -> void:
+	for a: String in _tap_release:
+		Input.action_release(a)
+	_tap_release.clear()
+	if OS.has_feature("web") and DisplayServer.get_name() != "headless":
+		_web_tick()
 	var s := _win_size()
 	if s != _last_size:
 		_refit()
@@ -267,11 +296,93 @@ func _input(event: InputEvent) -> void:
 		if k.keycode == KEY_F11 or (k.keycode == KEY_ENTER and k.alt_pressed) or (k.keycode == KEY_KP_ENTER and k.alt_pressed):
 			toggle_fullscreen()
 			get_viewport().set_input_as_handled()
-	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and OS.has_feature("web") and not is_phone():
-		# Browsers only allow fullscreen from a click: ask once, on the first one.
-		if not _web_fs_armed and bool(Settings.get_v("fullscreen")):
+	elif _first_press(event) and OS.has_feature("web") and (not is_phone() or OS.has_feature("web_android")):
+		# Browsers only allow fullscreen from a click or tap: ask once, on the first one.
+		if not _web_fs_armed and bool(Settings.get_v("fullscreen")) and not web_standalone():
 			_web_fs_armed = true
 			set_fullscreen(true)
+	_cursor_follow(event)
+
+
+static func _first_press(event: InputEvent) -> bool:
+	if event is InputEventMouseButton:
+		return (event as InputEventMouseButton).pressed
+	if event is InputEventScreenTouch:
+		return (event as InputEventScreenTouch).pressed
+	return false
+
+
+## Native computers: the mouse cursor hides while playing by touch or pad and
+## comes back when the mouse really moves.
+func _cursor_follow(event: InputEvent) -> void:
+	if OS.has_feature("web") or is_phone() or DisplayServer.get_name() == "headless":
+		return
+	if event is InputEventJoypadButton or event is InputEventScreenTouch \
+			or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
+		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative.length() > 2.0:
+		if Input.mouse_mode == Input.MOUSE_MODE_HIDDEN:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+## Running as the installed home-screen app (no browser bars to hide).
+static func web_standalone() -> bool:
+	if not OS.has_feature("web"):
+		return false
+	var r: Variant = JavaScriptBridge.eval("window.dreamsStandalone===true", true)
+	return r == true
+
+
+## Press an action for one frame (Android back, focus-loss pause).
+func _tap(action: String) -> void:
+	if not InputMap.has_action(action):
+		return
+	Input.action_press(action)
+	_tap_release.append(action)
+
+
+## The back gesture/button closes what is open, else opens the menu. Returns the action used.
+func back_pressed() -> String:
+	var a := "b" if (get_tree().paused or Hud.modal_rect.has_area()) else "menu"
+	_tap(a)
+	return a
+
+
+func _web_tick() -> void:
+	# Leaving fullscreen with the browser's Esc writes the setting back.
+	var fs := is_fullscreen()
+	if _was_fs and not fs and bool(Settings.get_v("fullscreen")):
+		Settings.set_v("fullscreen", false)
+	_was_fs = fs
+	# Android back (web/head_include.html keeps a history entry and counts presses).
+	_back_t += 1
+	if _back_t % 6 != 0:
+		return
+	var n: Variant = JavaScriptBridge.eval("(function(){var n=window.dreamsBack|0;window.dreamsBack=0;return n;})()", true)
+	if n != null and int(n) > 0:
+		back_pressed()
+
+
+## Native: pause into the menu when the game loses focus or is suspended
+## (Deck Quick Access, alt-tab, a phone call on Android), like Stardew.
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_APPLICATION_FOCUS_OUT and what != NOTIFICATION_APPLICATION_PAUSED:
+		return
+	if OS.has_feature("web") or DisplayServer.get_name() == "headless" or _tool_run() or not is_inside_tree():
+		return
+	app_backgrounded.emit()
+	if not bool(Settings.get_v("bg_sound")) or what == NOTIFICATION_APPLICATION_PAUSED:
+		pause_for_focus()
+
+
+## Opens the game menu over a running map (nothing when a menu/screen is already up).
+func pause_for_focus() -> bool:
+	var sc := get_tree().current_scene
+	if sc == null or not (sc is GameMap) or get_tree().paused or Hud.modal_rect.has_area():
+		return false
+	_tap("menu")
+	return true
 
 
 static func is_fullscreen() -> bool:
@@ -288,6 +399,8 @@ static func set_fullscreen(on: bool) -> void:
 	var w := _svc.get_window()
 	if on:
 		w.mode = Window.MODE_FULLSCREEN
+		if OS.has_feature("web_android"):
+			JavaScriptBridge.eval("try{screen.orientation.lock('portrait').catch(function(){})}catch(e){}", true)
 	else:
 		w.mode = Window.MODE_WINDOWED
 		if not OS.has_feature("web") and not is_phone():
@@ -312,4 +425,4 @@ static func cycle_touch_mode() -> void:
 	elif m == 2:
 		TouchControls.visible_controls = false
 	else:
-		TouchControls.visible_controls = is_phone() or DisplayServer.is_touchscreen_available()
+		TouchControls.visible_controls = touch_auto()
