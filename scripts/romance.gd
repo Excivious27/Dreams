@@ -375,8 +375,12 @@ static func overnight(report: Dictionary) -> bool:
 	if int(s["married_day"]) == day - 1 or int(s["chore_day"]) < 0:
 		chore = "breakfast"
 	elif randf() < rule("chore_chance"):
-		var opts: Array = ["animals", "fence", "breakfast", "pup"]
-		if not GameState.is_wet():
+		# C11a P5: only chores there's work for: animals once the farm keeps some, water
+		# only when something is planted.
+		var opts: Array = ["fence", "breakfast", "pup"]
+		if Mail.has_animals():
+			opts.append("animals")
+		if not GameState.is_wet() and _planted():
 			opts.append("water")
 			opts.append("water")
 		chore = str(opts[randi() % opts.size()])
@@ -386,10 +390,7 @@ static func overnight(report: Dictionary) -> bool:
 	var id := spouse()
 	match chore:
 		"animals":
-			var all: Dictionary = GameState.run.get("animals", {})
-			for nm in all:
-				if all[nm] is Dictionary:
-					all[nm]["fed"] = day + 1
+			feed_all(day)
 		"breakfast":
 			GameState.add_item(str(cand(id).get("dish", "bread")), 1)
 		"pup":
@@ -398,6 +399,32 @@ static func overnight(report: Dictionary) -> bool:
 			GameState.add_item("wood", 3)
 	report["spouse"] = {"chore": chore, "who": id}
 	return chore == "water"
+
+
+## Anything planted on the farm (so a watering chore has work)?
+static func _planted() -> bool:
+	var farm: Dictionary = GameState.run.get("farm", {})
+	for k in farm:
+		if farm[k] is Dictionary and str((farm[k] as Dictionary).get("crop", "")) != "":
+			return true
+	return false
+
+
+## The spouse feeds every animal for tomorrow and gives each a pet (keeps streaks): the
+## Ranch roster (last_fed / Ranch.pet) and the legacy run.animals entries. Returns how many.
+static func feed_all(day: int) -> int:
+	var n := 0
+	for uid: String in Ranch.animals():
+		var a: Dictionary = Ranch.animals()[uid]
+		a["last_fed"] = day + 1
+		Ranch.pet(uid)
+		n += 1
+	var all: Dictionary = GameState.run.get("animals", {})
+	for nm in all:
+		if all[nm] is Dictionary:
+			all[nm]["fed"] = day + 1
+			n += 1
+	return n
 
 
 ## SleepReport line for the chore ("" = none).
