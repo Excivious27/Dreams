@@ -65,6 +65,7 @@ func _run() -> void:
 		var fmax := 0.0
 		for k in range(1, fts.size()):
 			fmax = maxf(fmax, _ms(fts[k - 1], fts[k]))
+		print("  %s _ready phases ms: %s" % [sc, ", ".join(GameMap.ready_ms.keys().map(func(k): return "%s %.0f" % [k, GameMap.ready_ms[k]]))])
 		print("  %s load frames: %.0f / %.0f / %.0f / %.0f ms; longest load frame after the first %.0f ms; cover lifts at frame %d (%.0f ms)" % [sc, _ms(t0, fts[0]), _ms(fts[0], fts[1]), _ms(fts[1], fts[2]), _ms(fts[2], fts[3]), fmax, uncover, _ms(t0, fts[maxi(uncover, 0)])])
 		for k in 18:
 			await process_frame

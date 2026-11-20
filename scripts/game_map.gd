@@ -9,7 +9,9 @@ const TILE := 16
 static var next_spawn := Vector2.ZERO
 static var next_facing := "down"
 static var next_interior := ""
-static var exits_off := false  # probes (perf_probe) walk without leaving the map
+static var exits_off := false
+static var ready_ms := {}  # last map's _ready phases in ms (perf_probe prints them)
+var _rt := 0  # probes (perf_probe) walk without leaving the map
 
 var cols := 20
 var rows := 30
@@ -105,7 +107,10 @@ func _ready() -> void:
 	if not GameState.has_run():
 		GameState.new_run("penguins", "dad", "Hero", "Dreamhollow", "Pup")
 	GameState.run["scene"] = scene_id()
+	ready_ms = {}
+	_rt = Time.get_ticks_usec()
 	build()
+	_phase("build")
 	# build() is where subclasses set pad; the animated layer must follow it.
 	_anim_layer.position = offset()
 	# Outer ring is always solid; with a pad the organic border fills the rest.
@@ -117,6 +122,7 @@ func _ready() -> void:
 		blocked[Vector2i(cols + pad - 1, y)] = true
 	if pad > 0:
 		_build_border()
+	_phase("border")
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		for y in range(r.position.y, r.end.y):
@@ -215,16 +221,19 @@ func _ready() -> void:
 	player.add_child(cam)
 	cam.make_current()
 
+	_phase("actors")
 	hud = Hud.new()
 	add_child(hud)
 	add_child(TouchControls.new())
 	add_child(GameMenu.new())
+	_phase("hud")
 	Music.instance(get_tree()).play(area_track())
 	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
 	_clear_stale_pause()  # a pause owned by the last scene (menu opened in the fade) must not freeze this one (c9_10)
 	_fade_in_when_baked()
 	after_ready()
+	_phase("after_ready")
 	_lock_untouched_buildings()
 	Story.restore_spawns(self)
 	Racket.on_enter(self)
@@ -2130,6 +2139,12 @@ func fit_camera(cam: Camera2D) -> void:
 	cam.limit_top = -oy
 	cam.limit_right = maxi(mw, vw) - ox
 	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
+
+
+func _phase(n: String) -> void:
+	var now := Time.get_ticks_usec()
+	ready_ms[n] = (now - _rt) / 1000.0
+	_rt = now
 
 
 ## Arrival: a pause whose owner stayed in the previous scene (a menu opened
