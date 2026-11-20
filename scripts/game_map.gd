@@ -494,7 +494,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	if t == "rec_home":  # prize decor at home (RecCenter.home_use)
 		return RecCenter.home_use(self, thing)
-	if t in ["elder", "beacon", "star_crystal", "colony_shop"]:
+	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit"]:
 		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))

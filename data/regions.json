@@ -7304,7 +7304,7 @@
      40
     ],
     "who": "",
-    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
+    "text": "A carving on a flat stone: four crystals in a ring around a fifth. Under it, in merkitty scratch-script: 'Pink for the morning. Ask the others for the rest.'",
     "hint": "A: carved stone",
     "solid": false
    },
@@ -7314,34 +7314,64 @@
      68,
      60
     ],
-    "item": "crystal_refined",
-    "n": 1,
-    "every": 5,
+    "item": "seashell",
+    "n": 2,
+    "every": 4,
     "empty": "The tide will bring more.",
     "hint": "A: tide pool",
     "solid": false
+   },
+   {
+    "type": "colony_kit",
+    "key": "k0",
+    "cell": [
+     36,
+     47
+    ],
+    "hint": "A: Shelly",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k1",
+    "cell": [
+     40,
+     48
+    ],
+    "hint": "A: Barnaby",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k2",
+    "cell": [
+     44,
+     47
+    ],
+    "hint": "A: Pebble",
+    "solid": true
    }
   ],
   "enemies": [
+   {
+    "kind": "grump_coral",
+    "count": 3,
+    "colony": true
+   },
    {
     "kind": "rock_crab",
     "count": 3,
     "colony": true
    },
    {
-    "kind": "mud_slime",
-    "count": 3,
-    "colony": true
-   },
-   {
-    "kind": "river_serpent",
+    "kind": "grump_wisp",
     "count": 3,
     "colony": true
    }
   ],
   "npcs": [],
   "intro": [
-   "You came by the ferry? Then the sea still lets some through. Good."
+   "Pink stilt-huts, grey coral creeping up the beach, and somewhere a merkitty singing, badly out of tune."
   ],
   "colony": "colony_coral"
  },
@@ -7577,10 +7607,10 @@
      75,
      18
     ],
-    "item": "pearl",
+    "item": "river_pearl",
     "n": 1,
-    "every": 7,
-    "empty": "Just sand and a crab, now.",
+    "every": 6,
+    "empty": "Only kelp and a cross little crab.",
     "hint": "A: dig",
     "solid": false
    },
@@ -7591,8 +7621,8 @@
      40
     ],
     "who": "",
-    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
-    "hint": "A: carved stone",
+    "text": "Kelp stems pressed into the mud in a spiral, like a star map drawn by someone falling. A shell is pinned at the centre: 'Green for the forest. Brine has the morning.'",
+    "hint": "A: kelp spiral",
     "solid": false
    },
    {
@@ -7601,12 +7631,42 @@
      27,
      60
     ],
-    "item": "crystal_refined",
-    "n": 1,
-    "every": 5,
-    "empty": "The tide will bring more.",
-    "hint": "A: tide pool",
+    "item": "driftwood",
+    "n": 3,
+    "every": 3,
+    "empty": "The fog will wash more up.",
+    "hint": "A: driftwood pile",
     "solid": false
+   },
+   {
+    "type": "colony_kit",
+    "key": "k0",
+    "cell": [
+     51,
+     47
+    ],
+    "hint": "A: Reed",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k1",
+    "cell": [
+     55,
+     48
+    ],
+    "hint": "A: Minnow",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k2",
+    "cell": [
+     59,
+     47
+    ],
+    "hint": "A: Bubbles",
+    "solid": true
    }
   ],
   "enemies": [
@@ -7616,19 +7676,19 @@
     "colony": true
    },
    {
-    "kind": "wisp",
+    "kind": "grump_moss",
     "count": 3,
     "colony": true
    },
    {
-    "kind": "slime",
+    "kind": "grump_coral",
     "count": 3,
     "colony": true
    }
   ],
   "npcs": [],
   "intro": [
-   "The forest under the water is dying, and it was the only home we had."
+   "Teal moss down to the waterline, huts leaning on kelp-wrapped legs, and fog that moves like it's breathing."
   ],
   "colony": "colony_kelp",
   "ground_seam": "teal_moss",
@@ -7876,10 +7936,10 @@
      20,
      18
     ],
-    "item": "pearl",
+    "item": "frost",
     "n": 1,
-    "every": 7,
-    "empty": "Just sand and a crab, now.",
+    "every": 6,
+    "empty": "Just snow now.",
     "hint": "A: dig",
     "solid": false
    },
@@ -7890,8 +7950,8 @@
      40
     ],
     "who": "",
-    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
-    "hint": "A: carved stone",
+    "text": "Words scratched into the ice by a claw, still sharp: 'White for the winter. We were one star, once. Ask Cinderpaw how it ends.'",
+    "hint": "A: scratched ice",
     "solid": false
    },
    {
@@ -7900,34 +7960,64 @@
      68,
      60
     ],
-    "item": "crystal_refined",
-    "n": 1,
-    "every": 5,
-    "empty": "The tide will bring more.",
-    "hint": "A: tide pool",
+    "item": "coal",
+    "n": 2,
+    "every": 4,
+    "empty": "Someone's taken the coal for the hearths. Fair.",
+    "hint": "A: coal box",
     "solid": false
+   },
+   {
+    "type": "colony_kit",
+    "key": "k0",
+    "cell": [
+     36,
+     47
+    ],
+    "hint": "A: Flurry",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k1",
+    "cell": [
+     40,
+     48
+    ],
+    "hint": "A: Sleet",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k2",
+    "cell": [
+     44,
+     47
+    ],
+    "hint": "A: Snowdrop",
+    "solid": true
    }
   ],
   "enemies": [
+   {
+    "kind": "grump_frost",
+    "count": 3,
+    "colony": true
+   },
    {
     "kind": "ice_wisp",
     "count": 3,
     "colony": true
    },
    {
-    "kind": "hill_wolf",
-    "count": 3,
-    "colony": true
-   },
-   {
-    "kind": "crystal_baby",
+    "kind": "grump_crystal",
     "count": 3,
     "colony": true
    }
   ],
   "npcs": [],
   "intro": [
-   "You picked a cold day to visit. Every day is a cold day now."
+   "Snow on everything, the lodge chimneys barely smoking, and a frozen shoreline creaking like an old door."
   ],
   "colony": "colony_ice",
   "weather": "snow",
@@ -8175,10 +8265,10 @@
      75,
      18
     ],
-    "item": "pearl",
+    "item": "glass",
     "n": 1,
-    "every": 7,
-    "empty": "Just sand and a crab, now.",
+    "every": 5,
+    "empty": "Sand gone to glass, then gone to someone's pocket.",
     "hint": "A: dig",
     "solid": false
    },
@@ -8189,8 +8279,8 @@
      40
     ],
     "who": "",
-    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
-    "hint": "A: carved stone",
+    "text": "A tile of black glass with gold in it: four flames in a ring around a fifth, dark one. 'Gold for the fire. And four become one.'",
+    "hint": "A: glass tile",
     "solid": false
    },
    {
@@ -8199,34 +8289,64 @@
      27,
      60
     ],
-    "item": "crystal_refined",
-    "n": 1,
-    "every": 5,
-    "empty": "The tide will bring more.",
-    "hint": "A: tide pool",
+    "item": "coal",
+    "n": 2,
+    "every": 4,
+    "empty": "The mountain will cough up more.",
+    "hint": "A: cinder pile",
     "solid": false
+   },
+   {
+    "type": "colony_kit",
+    "key": "k0",
+    "cell": [
+     51,
+     47
+    ],
+    "hint": "A: Cinder",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k1",
+    "cell": [
+     55,
+     48
+    ],
+    "hint": "A: Flick",
+    "solid": true
+   },
+   {
+    "type": "colony_kit",
+    "key": "k2",
+    "cell": [
+     59,
+     47
+    ],
+    "hint": "A: Soot",
+    "solid": true
    }
   ],
   "enemies": [
+   {
+    "kind": "grump_ember",
+    "count": 3,
+    "colony": true
+   },
    {
     "kind": "lantern_moth",
     "count": 3,
     "colony": true
    },
    {
-    "kind": "geode_golem",
-    "count": 3,
-    "colony": true
-   },
-   {
-    "kind": "shard",
+    "kind": "grump_brute",
     "count": 3,
     "colony": true
    }
   ],
   "npcs": [],
   "intro": [
-   "Careful, the sand is hot. It's always been hot. Now it's angry."
+   "Black sand, warm underfoot, glassworks glowing along the shore, and over it all a mountain that won't stop grumbling."
   ],
   "colony": "colony_ember",
   "ground_seam": "ash"
