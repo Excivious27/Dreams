@@ -54,7 +54,7 @@
     },
     {
      "id": "fertilizer",
-     "name": "Fertilizer",
+     "name": "Compost Lore",
      "desc": "+5% chance a crop grows an extra day overnight",
      "ranks": 1,
      "tier": 1,
@@ -107,7 +107,7 @@
     {
      "id": "golden_seeds",
      "name": "Golden Seeds",
-     "desc": "5% of harvests are star-quality, x2 value (per rank)",
+     "desc": "+5% chance per rank of a star harvest: two extra crops, and gold quality more often",
      "ranks": 2,
      "tier": 3,
      "requires": [
@@ -213,14 +213,14 @@
     {
      "id": "gem_sense",
      "name": "Gem Sense",
-     "desc": "Rocks can drop gems (6% per rank)",
+     "desc": "Rocks can drop gems (3% per rank)",
      "ranks": 2,
      "tier": 1,
      "requires": [
       "copper_eye"
      ],
      "effect": {
-      "gem_chance": 0.06
+      "gem_chance": 0.03
      }
     },
     {
@@ -265,14 +265,14 @@
     {
      "id": "geologist",
      "name": "Geologist",
-     "desc": "+5% chance of a gem from any rock",
+     "desc": "+3% chance of a gem from any rock",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "crystal_resonance"
      ],
      "effect": {
-      "gem_chance": 0.05
+      "gem_chance": 0.03
      }
     },
     {
@@ -502,14 +502,14 @@
     {
      "id": "trapper",
      "name": "Trapper",
-     "desc": "+5% chance of a treasure chest on the line",
+     "desc": "+3% chance of a treasure chest on the line",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "bait_maker"
      ],
      "effect": {
-      "chest_chance": 0.05
+      "chest_chance": 0.03
      }
     },
     {
@@ -554,14 +554,14 @@
     {
      "id": "treasure_hunter",
      "name": "Treasure Hunter",
-     "desc": "Chance of a chest on the line (5% per rank)",
+     "desc": "Chance of a chest on the line (3% per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [
       "angler"
      ],
      "effect": {
-      "chest_chance": 0.05
+      "chest_chance": 0.03
      }
     },
     {
@@ -906,7 +906,7 @@
     {
      "id": "crystal_baron",
      "name": "Crystal Baron",
-     "desc": "Daily interest on crystals (1% per rank)",
+     "desc": "Daily interest on crystals (1% per rank; a day's interest is capped by your progress)",
      "ranks": 2,
      "tier": 3,
      "requires": [
@@ -1178,7 +1178,7 @@
     {
      "id": "haste",
      "name": "Haste",
-     "desc": "Cast Haste: run 30% faster for a game hour",
+     "desc": "Cast Haste: run 30% faster for about 40 seconds",
      "ranks": 1,
      "tier": 1,
      "requires": [
@@ -1352,14 +1352,14 @@
     {
      "id": "gem_eye",
      "name": "Gem Eye",
-     "desc": "+4% gem chance (per rank)",
+     "desc": "+2% gem chance (per rank)",
      "ranks": 2,
      "tier": 3,
      "requires": [
       "mana_flow"
      ],
      "effect": {
-      "gem_chance": 0.04
+      "gem_chance": 0.02
      },
      "branch": "crystal"
     },

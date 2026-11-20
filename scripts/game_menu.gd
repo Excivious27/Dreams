@@ -925,7 +925,7 @@ func _skills_tab() -> void:
 	_body.add_child(tabs)
 	for k in shown:
 		var tb := Button.new()
-		var pf := GameState.points_free(str(k))
+		var pf := SkillGlow.usable(str(k))  # P5 hook: maxed trees stop glowing
 		tb.text = str(GameState.skills_data[k]["name"]) + ("  +%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
 		tb.custom_minimum_size = Vector2(0, 20)
@@ -940,7 +940,7 @@ func _skills_tab() -> void:
 	var lvl := GameState.skill_level(sk)
 	var xp := int(GameState.run["skills"].get(sk, {}).get("xp", 0))
 	var need := GameState.xp_for_next(lvl)
-	var free := GameState.points_free(sk)
+	var free := SkillGlow.usable(sk)  # P5 hook: maxed trees stop glowing
 	var spent := GameState.points_spent(sk)
 	var head := HBoxContainer.new()
 	_body.add_child(head)

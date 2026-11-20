@@ -13,8 +13,22 @@ static func total_free() -> int:
 	var n := 0
 	for sk: String in GameState.skills_data:
 		if GameState.skill_in_arc(sk):
-			n += GameState.points_free(sk)
+			n += usable(sk)
 	return n
+
+
+## Ranks still to buy in a tree (0 = every node maxed).
+static func ranks_left(sk: String) -> int:
+	var left := 0
+	for nd: Dictionary in GameState.skills_data.get(sk, {}).get("nodes", []):
+		left += maxi(0, int(nd.get("ranks", 1)) - GameState.node_rank(sk, str(nd.get("id", ""))))
+	return left
+
+
+## Points worth glowing about: free points, but never more than the tree can take
+## (a fully bought tree stops shimmering, c8_05).
+static func usable(sk: String) -> int:
+	return mini(GameState.points_free(sk), ranks_left(sk))
 
 
 ## Add (n > 0) or remove the shimmering frame + badge on a tab button.

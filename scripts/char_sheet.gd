@@ -396,30 +396,25 @@ static func stats() -> Array:
 		p.append(["Combat tree", "+" + _pct(cb)])
 	out.append({"id": "crit", "name": "Critical chance", "icon": ["items", "ruby"], "value": _pct(minf(0.40, cl + cb)), "parts": p, "note": "A crit hits for 1.5×. Capped at 40%."})
 	# Speed
-	var spd := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed") + GameState.move_bonus()
-	p = [["Base", "100%"]]
-	if GameState.gear_stat("speed") != 0:
-		p.append(["Gear (%+d spd, 8%% each)" % GameState.gear_stat("speed"), "%+d%%" % roundi(8 * GameState.gear_stat("speed"))])
-	if GameState.buff("speed") > 0.0:
-		p.append(["Speed buff", "+" + _pct(0.15 * GameState.buff("speed"))])
-	if GameState.move_bonus() > 0.0:
-		p.append(["Skill trees (movement)", "+" + _pct(GameState.move_bonus())])
-	if int(r.get("flags", {}).get("haste_abs", -1)) > GameState.now_abs():
-		spd *= 1.3
-		p.append(["Haste spell", "×1.3"])
-	if Crew.perk_level("run_speed") > 0:
-		spd *= 1.0 + 0.05 * mini(2, Crew.perk_level("run_speed"))
-		p.append(["Crew: %s" % crew_name("the_kid"), "+" + _pct(0.05 * mini(2, Crew.perk_level("run_speed")))])
-	if GameState.weather_today() in ["snow", "blizzard"]:
-		p.append(["Snow (outdoors)", "×0.9"])
-	if int(r.get("energy", 0)) < int(r.get("max_energy", 100)) * 0.12:
-		spd *= 0.75
-		p.append(["Running on empty", "×0.75"])
-	var ss := GameState.status_speed()
-	if ss < 1.0:
-		spd *= ss
-		p.append(["Statuses", "×%.2f" % ss])
-	out.append({"id": "speed", "name": "Move speed", "icon": ["items", Hud.icon_for("boots")], "value": _pct(spd), "parts": p, "note": "Hold B (or the run toggle) to run."})
+	# Same ladder the hero moves by (MoveSpeed, c8_10): walking parts, plus the ride/swim you're on.
+	var pl = _sheet_player()
+	var mmode := "foot"
+	var vsp := 1.0
+	var vwat := 0.0
+	if pl != null:
+		var vdd: Dictionary = pl.vehicle_def()
+		if pl.swimming:
+			mmode = "swim"
+			vwat = float(vdd.get("water", 0.0))
+		elif pl.mounted:
+			mmode = "mount"
+		elif str(pl.vehicle) != "":
+			mmode = "vehicle"
+			vsp = float(vdd.get("speed", 1.0))
+	var mcalc := MoveSpeed.calc(pl.map if pl != null else null, false, mmode, vsp, vwat)
+	var spd := float(mcalc["total"])
+	p = mcalc["parts"]
+	out.append({"id": "speed", "name": "Move speed", "icon": ["items", Hud.icon_for("boots")], "value": _pct(spd), "parts": p, "note": "Hold B (or the run toggle) to run. Gear, food and skills add up to +%d%%; on foot tops out at ×%.2f, rides at ×%.1f." % [roundi(MoveSpeed.FOOT_CAP * 100), MoveSpeed.FOOT_MAX, MoveSpeed.RIDE_MAX]})
 	# Luck
 	var lk := GameState.gear_stat("luck") + int(GameState.buff("luck"))
 	p = []
@@ -464,14 +459,15 @@ static func stats() -> Array:
 		"note": mn + "Harder ores also need a pickaxe tier and Mining level."})
 	# Fishing
 	var fl := GameState.skill_level("fishing")
-	p = [["Fishing level %d" % fl, "%d kinds" % (1 + fl)], ["Night", "+2 kinds, +40 value"], ["Bait", "+1 kind"]]
+	var lit: bool = GameState.run.get("flags", {}).has("lighthouse_lit")
+	p = [["Fishing level %d" % fl, "%d kinds" % (1 + fl)], ["Night", "+2 kinds, +40 value" if lit else "light the lighthouse first"], ["Bait", "+1 kind"]]
 	var rare := GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0)
 	if rare > 0.0:
 		p.append(["Rare catch chance", _pct(rare)])
 	if GameState.bonus("fishing", "bite_speed") > 0.0:
 		p.append(["Faster bites", _pct(GameState.bonus("fishing", "bite_speed"))])
 	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % (1 + fl), "parts": p,
-		"note": "Fish worth up to %d◆ can bite (more at night or with bait)." % (25 + 15 * fl)})
+		"note": "Fish worth up to %d◆ can bite (more with bait%s)." % [25 + 15 * fl, ", or at night" if lit else ""]})
 	# Recovery
 	var every := roundi(GameState.mana_regen_secs())
 	p = [["Mana", "+1 every %d s" % every], ["Food energy left today", str(maxi(0, int(r.get("max_energy", 100)) - fed))], ["Sleep", "full health, energy, mana"]]
@@ -492,7 +488,7 @@ static func renown() -> int:
 	var n := 0
 	for sk in GameState.skills_data.keys():
 		if GameState.skill_in_arc(str(sk)):
-			n += GameState.skill_level(str(sk)) - 1
+			n += mini(RENOWN_SKILL_CAP, GameState.skill_level(str(sk)) - 1)  # capped so story/hearts/quests weigh in (c8_05)
 	n += total_hearts()
 	n += (Story.chapter_no() - 1) * 6
 	n += int(GameState.run.get("flags", {}).get("mine_deepest", 1)) / 5 * 2
@@ -501,6 +497,7 @@ static func renown() -> int:
 
 
 const RANK_AT := [0, 15, 40, 80, 140, 220]
+const RENOWN_SKILL_CAP := 12  # renown per skill tops out at 12 levels
 const RANK_PENGUIN := ["Newcomer", "Settler", "Homesteader", "Floe Friend", "Keeper of the Ice", "Legend"]
 const RANK_GANG := ["New Face", "Runner", "Earner", "Made", "Underboss", "Boss"]
 
@@ -1254,3 +1251,13 @@ static func _milestones(body: Control) -> void:
 			var bb := _bar(v, float(m[2]), Color(0.75, 0.55, 0.2), 3)
 			bb.custom_minimum_size = Vector2(0, 3)
 		t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+
+## The hero on the current map (null in tests without one).
+static func _sheet_player():
+	var ml := Engine.get_main_loop()
+	if ml is SceneTree:
+		var cs := (ml as SceneTree).current_scene
+		if cs is GameMap and (cs as GameMap).player != null and is_instance_valid((cs as GameMap).player):
+			return (cs as GameMap).player
+	return null

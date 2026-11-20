@@ -450,7 +450,7 @@ func _process(delta: float) -> void:
 		var cap := maxf(95.0 * speed_mult(), player.velocity.length() * 1.15)
 		var sp := minf(dist * 3.0, cap)
 		if _target == null and mode == "follow" and player.mounted:
-			sp = 150.0 * speed_mult()
+			sp = maxf(150.0 * speed_mult(), player.velocity.length() * 1.15)  # P5 hook (c8_10): keep up with a fast ride
 		if _target == null and mode == "follow" and dist > 140.0:
 			# Far behind (doors, cliffs): pop back to heel rather than walk through walls.
 			position = player.position + Vector2(-14, 4)

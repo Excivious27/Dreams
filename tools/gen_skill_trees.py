@@ -12,7 +12,7 @@ base = json.load(open(f"{R}/data/skills_base.json"))
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 # Per-rank amount for filler nodes, by effect key.
 AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
-       "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.02,
+       "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.01,
        "shard_bonus": 0.06, "double_hit": 0.04, "forage_bonus": 1, "wood_bonus": 1, "chop_bonus": 1, "sap_chance": 0.06,
        "rare_forage": 0.03, "bite_speed": 0.05, "rare_fish": 0.03, "escape_less": 0.06, "chest_chance": 0.02, "fish_value": 0.06,
        "double_fish": 0.04, "damage": 1, "hp": 8, "energy": 6, "block": 0.03, "crit": 0.03, "kill_energy": 1, "damage_reduction": 0.03,
@@ -32,7 +32,7 @@ DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop grow
         "escape_less": "fewer fish escape", "chest_chance": "treasure chest chance", "fish_value": "fish sell value", "double_fish": "chance of a double catch",
         "damage": "sword damage", "hp": "max health", "energy": "max energy", "block": "chance to block", "crit": "critical hit chance",
         "kill_energy": "energy back per foe beaten", "damage_reduction": "damage taken reduced", "sell_bonus": "sell prices", "gift_bonus": "friendship per gift",
-        "interest": "daily interest on savings", "wood_discount": "less wood for building", "stone_discount": "less stone for building",
+        "interest": "daily interest on savings (a day's interest is capped by your progress)", "wood_discount": "less wood for building", "stone_discount": "less stone for building",
         "craft_speed": "faster crafting", "build_discount": "cheaper buildings", "spark_damage": "Spark damage", "mana": "max mana",
         "mana_regen": "mana regen", "spell_discount": "cheaper spells", "spell_power": "spell power", "pet_hp": "pup health", "pet_dmg": "pup bite damage",
         "pet_speed": "pup speed", "pet_def": "pup defence", "pass_risk": "less risk passing bills", "heat_cool": "chance heat cools an extra step overnight",
@@ -147,8 +147,8 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
-            "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus"],
+FALLBACK = {"farming": ["growth", "seed_back", "animal_yield"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
+            "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
@@ -159,6 +159,26 @@ FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_
 #   blueprint: a station you can't build until you learn it (Builds.gate)
 #   spell: a spell learned outside the Sorcery tree (Spells.known)
 #   move_speed / chop_power / mine_power / damage: read in Player / GameMap
+# Generator-only caps, tighter than GameState.BONUS_CAPS (CONDUCT 8 P5): gems and
+# treasure were worth more than the ore/fish they ride on (c8_02, c8_03-14).
+# Tree totals: mining gems 0.12 + Sorcery 0.04; fishing treasure 0.15.
+GEN_CAPS = {"mining": {"gem_chance": 0.12}, "magic": {"gem_chance": 0.04}, "fishing": {"chest_chance": 0.15},
+            "leadership": {"team_xp": 0.25}}
+# Cross-tree totals GameState applies at run time (P1, C8): mirrored here so the
+# filler hp/energy nodes of one arc add up to the cap instead of past it (nodes
+# past a total cap would be dead picks). Base nodes keep their values; only the
+# filler nodes' amounts are scaled (rounded, at least TOTAL_FLOOR, so an arc can
+# end a little over the cap: the last few ranks bought are then dead). Keep in step with
+# GameState.TREE_HP_CAP / TREE_EN_CAP / TEAM_XP_CAP (MAX_LEVEL 100; level effects
+# stop at level 20 via GameState.skill_level_eff).
+TREE_TOTAL_CAPS = {"hp": 200, "energy": 120}
+TOTAL_FLOOR = {"hp": 2, "energy": 2}  # a scaled filler rank never drops below this (a +1 node reads as junk)
+TEAM_XP_CAP = 0.25
+# Columns from here on never get "faster levelling": by then it buys nothing (c8_05).
+NO_XP_FROM = 9
+# Movement: exactly five +5% nodes per arc (farming, foraging, combat, pup, arc tree)
+# = GameState.move_bonus() cap of 25%, so none is a dead pick (c8_10).
+
 UNLOCKS = {
     "farming": [(0, 1, "Brewer's Blueprint", "Learn to build the Keg: brew crops into drinks.", {"blueprint": "keg"}),
                 (2, 2, "Press Blueprint", "Learn to build the Press: jams, oils and juices.", {"blueprint": "press"}),
@@ -166,20 +186,20 @@ UNLOCKS = {
                 (3, 8, "Bountiful Touch", "Learn the Growth spell: the crop in front of you grows a day.", {"spell": "growth"}),
                 (3, 3, "Field Runner", "Move 5% faster.", {"move_speed": 0.05}),
                 (0, 9, "Wide Spout", "Your watering can also soaks the tilled tiles to either side.", {"wide_water": 1})],
-    "mining": [(0, 2, "Heavy Swing", "Your pickaxe breaks rock with one more hit per swing.", {"mine_power": 1}),
+    "mining": [(0, 2, "Iron Arm", "Your pickaxe breaks rock with one more hit per swing.", {"mine_power": 1}, "mining_u_heavy_swing"),
                (1, 2, "Kiln Blueprint", "Learn to build the Kiln: glass, brick and pottery.", {"blueprint": "kiln"}),
                (0, 7, "Seismic Swing", "Another extra hit per pickaxe swing.", {"mine_power": 1}),
-               (2, 6, "Tunnel Legs", "Move 5% faster.", {"move_speed": 0.05}),
+               (2, 6, "Tunnel Legs", "Move 15% faster in mines and caves.", {"cave_speed": 0.15}),
                (3, 9, "Tremor", "Breaking a rock cracks the rocks around it down to one last hit.", {"tremor": 1})],
-    "foraging": [(0, 1, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),
+    "foraging": [(0, 3, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),  # col IV, not II: it doubled the wooden axe on day 3 (c8_13)
                  (0, 6, "Lumberjack's Might", "Another extra hit per axe swing.", {"chop_power": 1}),
                  (2, 3, "Trailblazer", "Move 5% faster.", {"move_speed": 0.05}),
-                 (2, 7, "Wind at Your Back", "Learn the Haste spell: run 30% faster for an hour.", {"spell": "haste"}),
+                 (2, 7, "Wind at Your Back", "Learn the Haste spell: run 30% faster for about 40 seconds.", {"spell": "haste"}),
                  (1, 2, "Loom Blueprint", "Learn to build the Loom: cloth, rope and sacks.", {"blueprint": "loom"}),
                  (3, 9, "Domino Fall", "A tree you fell knocks down the tree behind it too.", {"timber": 1})],
     "fishing": [(1, 2, "Pond Blueprint", "Learn to build the Fish Pond on your farm.", {"blueprint": "fish_pond"}),
                 (2, 6, "Still Waters", "Learn the Lull spell: nearby enemies fall asleep.", {"spell": "lull"}),
-                (3, 4, "Strong Strokes", "Move 5% faster.", {"move_speed": 0.05}),
+                (3, 4, "Strong Strokes", "Swim 30% faster.", {"swim_speed": 0.3}),
                 (0, 9, "Tidecall", "Your first cast each day bites at once.", {"tidecall": 1})],
     "combat": [(0, 2, "Honed Blade", "+2 damage on every hit.", {"damage": 2}),
                (0, 6, "Keen Edge", "+3 damage on every hit.", {"damage": 3}),
@@ -193,10 +213,10 @@ UNLOCKS = {
                   (1, 9, "Lucky Day", "5% chance each night the sell box pays double (big boxes: a capped bonus).", {"jackpot": 0.05})],
     "building": [(0, 2, "Garage Blueprint", "Learn to build the Garage: carts and vehicles.", {"blueprint": "garage"}),
                  (1, 3, "Cauldron Blueprint", "Learn to build the Cauldron: potions and tonics.", {"blueprint": "cauldron"}),
-                 (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05}),
+                 (2, 2, "Smooth Ride", "Your horse and vehicles go 10% faster.", {"ride_speed": 0.1}, "building_u_light_feet"),
                  (3, 9, "Quick Build", "Hazel's crew finishes every build a day sooner.", {"quick_build": 1})],
     "pup": [(1, 4, "Pack Run", "Move 5% faster.", {"move_speed": 0.05})],
-    "magic": [(2, 3, "Blink Step", "Move 5% faster.", {"move_speed": 0.05}),
+    "magic": [(2, 3, "Blink Step", "Haste lasts half as long again.", {"haste_time": 0.5}),
               (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),
                (1, 3, "Clinic Blueprint", "Learn to build the Chrome Clinic.", {"blueprint": "clinic"}),
@@ -207,10 +227,10 @@ UNLOCKS = {
     "harmony": [(0, 2, "Lantern Step", "Move 5% faster.", {"move_speed": 0.05}),
                 (1, 4, "Radiant Heart", "Learn the Radiance spell: a ring of light hits everything near you.", {"spell": "radiance"}),
                 (2, 7, "Harvest Song", "Learn the Bloom spell: every ripe crop goes to the sell box.", {"spell": "bloom"})],
-    "leadership": [(0, 2, "Marching Pace", "Move 5% faster.", {"move_speed": 0.05}),
+    "leadership": [(0, 2, "Steady Ranks", "4% less damage taken while a partner is with you.", {"team_defense": 0.04}, "leadership_u_marching_pace"),
                    (1, 3, "Rally Cry", "Your party hits 2 harder.", {"team_damage": 2}),
                    (2, 6, "Field Medic", "Your partner heals 4 more.", {"team_heal": 4})],
-    "strategist": [(0, 2, "Forced March", "Move 5% faster.", {"move_speed": 0.05}),
+    "strategist": [(0, 2, "Forced March", "Capture battle points 10% faster.", {"capture_speed": 0.1}),
                    (1, 3, "Quartermaster", "Start every battle with 10 more supply.", {"start_supply": 10}),
                    (2, 5, "Drill Sergeant", "Your helpers hit 2 harder.", {"helper_damage": 2})],
 }
@@ -222,6 +242,8 @@ total = 0
 for sk, sd in base["skills"].items():
     rows, rowmap = T[sk]
     CAPS = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
+    for gk, gv in GEN_CAPS.get(sk, {}).items():
+        CAPS[gk] = min(CAPS.get(gk, gv), gv)
     grid = [[None] * 10 for _ in range(4)]
     for n in sd["nodes"]:
         r = MAGIC_ROW[n.get("branch", "core")] if sk == "magic" else rowmap[n["id"]]
@@ -237,7 +259,9 @@ for sk, sd in base["skills"].items():
         m["tier"] = c
         m["row"] = r
         grid[r][c] = m
-    for (ur, uc, unm, udesc, ueff) in UNLOCKS.get(sk, []):
+    for ul in UNLOCKS.get(sk, []):
+        ur, uc, unm, udesc, ueff = ul[:5]
+        uid = ul[5] if len(ul) > 5 else None  # explicit id: a renamed unlock keeps its saves and icon
         placed = False
         for rr in [ur] + [x for x in range(4) if x != ur]:
             for dc in [0, -1, 1, -2, 2, 3, 4, 5]:
@@ -245,7 +269,7 @@ for sk, sd in base["skills"].items():
                 if 0 <= cc < 10 and grid[rr][cc] is None:
                     # Stable id (by name), so later grid changes never rename a node you bought.
                     slug = re.sub(r"[^a-z0-9]+", "_", unm.lower()).strip("_")
-                    grid[rr][cc] = {"id": f"{sk}_u_{slug}", "name": unm, "desc": udesc if "move_speed" not in ueff else "Move 5% faster (all trees together: 25% at most).", "ranks": 1, "tier": cc, "row": rr, "effect": dict(ueff), "unlock": True}
+                    grid[rr][cc] = {"id": uid or f"{sk}_u_{slug}", "name": unm, "desc": udesc if "move_speed" not in ueff else "Move 5% faster (all trees together: 25% at most).", "ranks": 1, "tier": cc, "row": rr, "effect": dict(ueff), "unlock": True}
                     placed = True
                     break
             if placed:
@@ -266,16 +290,17 @@ for sk, sd in base["skills"].items():
                 k = keys[(c + r) % len(keys)]
                 ranks = 3 if c < 6 else (2 if c < 9 else 1)
                 a = AMT[k] * (2 if c == 9 else 1)
-                if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9:
+                no_xp = c >= NO_XP_FROM
+                if (k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9) or (no_xp and k == "xp_gain"):
                     for fk in ([x for x in keys if x != k] + FALLBACK.get(sk, []) if sk == "combat" else FALLBACK.get(sk, []) + [x for x in keys if x != k]) + ["xp_gain", "energy", "hp"]:
                         fa = AMT.get(fk, 0) * (2 if c == 9 else 1)
-                        if fk in AMT and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
+                        if fk in AMT and not (no_xp and fk == "xp_gain") and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
                             k, a = fk, fa
                             break
                     else:
                         # Everything here is capped: one rank of whatever still has room.
                         ranks = 1
-                        cands = [x for x in FALLBACK.get(sk, []) + keys + ["xp_gain", "energy", "hp"] if x in AMT and x in CAPS]
+                        cands = [x for x in FALLBACK.get(sk, []) + keys + ["xp_gain", "energy", "hp"] if x in AMT and x in CAPS and not (no_xp and x == "xp_gain")]
                         room = {x: CAPS[x] - used.get(x, 0) for x in cands}
                         best = max(room, key=room.get) if room else None
                         if best is not None and room[best] > 1e-9:
@@ -304,6 +329,37 @@ for sk, sd in base["skills"].items():
         out["skills"][sk]["arc"] = "gangsters" if sk == "hustle" else "penguins"
     if sk == "magic":
         out["skills"][sk]["branch_keys"] = sd.get("branches", {})
+def _arc_trees(arc):
+    return [sk for sk, sd in out["skills"].items() if sd.get("arc", arc) == arc]
+
+
+for key, cap in TREE_TOTAL_CAPS.items():
+    worst = 1.0
+    for arc in ("penguins", "gangsters"):
+        base_t = fill_t = 0.0
+        for sk in _arc_trees(arc):
+            for n in out["skills"][sk]["nodes"]:
+                v = (n.get("effect") or {}).get(key)
+                if isinstance(v, (int, float)):
+                    if re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])):
+                        fill_t += v * int(n.get("ranks", 1))
+                    else:
+                        base_t += v * int(n.get("ranks", 1))
+        if fill_t > 0 and base_t + fill_t > cap:
+            worst = min(worst, max(0.0, cap - base_t) / fill_t)
+    if worst < 1.0:
+        for sk, sd in out["skills"].items():
+            for n in sd["nodes"]:
+                v = (n.get("effect") or {}).get(key)
+                if isinstance(v, (int, float)) and re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])):
+                    nv = max(TOTAL_FLOOR.get(key, 1), int(v * worst + 0.5))
+                    n["effect"] = {key: nv}
+                    n["desc"] = fmt(key, nv) + (" (per rank)" if int(n.get("ranks", 1)) > 1 else "")
+for arc in ("penguins", "gangsters"):
+    for key, cap in list(TREE_TOTAL_CAPS.items()) + [("team_xp", TEAM_XP_CAP)]:
+        t = sum(float((n.get("effect") or {}).get(key, 0)) * int(n.get("ranks", 1)) for sk in _arc_trees(arc) for n in out["skills"][sk]["nodes"])
+        print("  %s %s total %g (run-time cap %g)" % (arc, key, round(t, 3), cap))
+
 # "aka": earlier names of a node whose effect and ranks did not change, so a
 # rename alone never refunds an old save's ranks (GameState._migrate reads it).
 # A node whose effect or ranks change loses its aka list (its old ranks refund).

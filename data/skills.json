@@ -60,12 +60,12 @@
     {
      "id": "farming_0_4",
      "name": "Full Rows",
-     "desc": "+3% chance of a double harvest (per rank)",
+     "desc": "+6% animal products (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "double_harvest": 0.03
+      "animal_yield": 0.06
      }
     },
     {
@@ -160,17 +160,14 @@
     },
     {
      "id": "farming_1_3",
-     "name": "Practice",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Morning Dew",
+     "desc": "+6% animal products (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Morning Dew"
-     ]
+      "animal_yield": 0.06
+     }
     },
     {
      "id": "rich_soil",
@@ -219,41 +216,35 @@
     },
     {
      "id": "farming_1_8",
-     "name": "Study",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Rain Reader",
+     "desc": "+6% animal products (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Rain Reader"
-     ]
+      "animal_yield": 0.06
+     }
     },
     {
      "id": "farming_1_9",
-     "name": "Lessons",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Loam Lore",
+     "desc": "+12% animal products",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Loam Lore"
-     ]
+      "animal_yield": 0.12
+     }
     },
     {
      "id": "farming_2_0",
-     "name": "Gentle Hands",
-     "desc": "+6% animal products (per rank)",
+     "name": "Practice",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "xp_gain": 0.03
      }
     },
     {
@@ -281,13 +272,13 @@
     },
     {
      "id": "farming_2_3",
-     "name": "Warm Barn",
-     "desc": "+6% animal products (per rank)",
+     "name": "Study",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "xp_gain": 0.03
      }
     },
     {
@@ -303,13 +294,13 @@
     },
     {
      "id": "farming_2_5",
-     "name": "Fresh Straw",
-     "desc": "+6% animal products (per rank)",
+     "name": "Lessons",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "xp_gain": 0.03
      }
     },
     {
@@ -323,7 +314,8 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Happy Herd"
+      "Happy Herd",
+      "Study"
      ]
     },
     {
@@ -335,10 +327,7 @@
      "row": 2,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Brushed Coats"
-     ]
+     }
     },
     {
      "id": "farming_2_8",
@@ -349,24 +338,18 @@
      "row": 2,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Best in Show"
-     ]
+     }
     },
     {
      "id": "farming_2_9",
-     "name": "Drills",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Big Eggs"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "farming_3_0",
@@ -392,14 +375,17 @@
     },
     {
      "id": "fertilizer",
-     "name": "Fertilizer",
+     "name": "Compost Lore",
      "desc": "+5% chance a crop grows an extra day overnight",
      "ranks": 1,
      "tier": 2,
      "effect": {
       "extra_day": 0.05
      },
-     "row": 3
+     "row": 3,
+     "aka": [
+      "Fertilizer"
+     ]
     },
     {
      "id": "farming_u_field_runner",
@@ -438,7 +424,7 @@
     {
      "id": "golden_seeds",
      "name": "Golden Seeds",
-     "desc": "5% of harvests are star-quality, x2 value (per rank)",
+     "desc": "+5% chance per rank of a star harvest: two extra crops, and gold quality more often",
      "ranks": 2,
      "tier": 6,
      "effect": {
@@ -516,7 +502,7 @@
     },
     {
      "id": "mining_u_heavy_swing",
-     "name": "Heavy Swing",
+     "name": "Iron Arm",
      "desc": "Your pickaxe breaks rock with one more hit per swing.",
      "ranks": 1,
      "tier": 2,
@@ -524,7 +510,10 @@
      "effect": {
       "mine_power": 1
      },
-     "unlock": true
+     "unlock": true,
+     "aka": [
+      "Heavy Swing"
+     ]
     },
     {
      "id": "mining_0_3",
@@ -601,17 +590,14 @@
     },
     {
      "id": "mining_0_9",
-     "name": "Lessons",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Stone Ear"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "mining_1_0",
@@ -649,7 +635,7 @@
     },
     {
      "id": "mining_1_3",
-     "name": "Know-How",
+     "name": "Lessons",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -658,6 +644,7 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Know-How",
       "Vein Finder"
      ]
     },
@@ -674,7 +661,7 @@
     },
     {
      "id": "mining_1_5",
-     "name": "Experience",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -683,6 +670,7 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Experience",
       "Ore Song"
      ]
     },
@@ -710,41 +698,35 @@
     },
     {
      "id": "mining_1_8",
-     "name": "Insight",
+     "name": "Experience",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Iron Grip"
-     ]
+     }
     },
     {
      "id": "mining_1_9",
-     "name": "Stamina",
-     "desc": "+12 max energy",
+     "name": "Endurance",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Rich Seams"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "mining_2_0",
      "name": "Sparkle Eye",
-     "desc": "+2% gem chance (per rank)",
+     "desc": "+1% gem chance (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 2,
      "effect": {
-      "gem_chance": 0.02
+      "gem_chance": 0.01
      }
     },
     {
@@ -761,11 +743,11 @@
     {
      "id": "gem_sense",
      "name": "Gem Sense",
-     "desc": "Rocks can drop gems (6% per rank)",
+     "desc": "Rocks can drop gems (3% per rank)",
      "ranks": 2,
      "tier": 2,
      "effect": {
-      "gem_chance": 0.06
+      "gem_chance": 0.03
      },
      "row": 2
     },
@@ -794,23 +776,23 @@
     {
      "id": "mining_u_tunnel_legs",
      "name": "Tunnel Legs",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "desc": "Move 15% faster in mines and caves.",
      "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "move_speed": 0.05
+      "cave_speed": 0.15
      },
      "unlock": true
     },
     {
      "id": "geologist",
      "name": "Geologist",
-     "desc": "+5% chance of a gem from any rock",
+     "desc": "+3% chance of a gem from any rock",
      "ranks": 1,
      "tier": 6,
      "effect": {
-      "gem_chance": 0.05
+      "gem_chance": 0.03
      },
      "row": 2
     },
@@ -828,12 +810,12 @@
     {
      "id": "mining_2_8",
      "name": "Facet Sense",
-     "desc": "+2% gem chance (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "gem_chance": 0.02
+      "shard_bonus": 0.06
      }
     },
     {
@@ -860,16 +842,16 @@
     },
     {
      "id": "mining_3_1",
-     "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      },
      "aka": [
-      "Lantern Light"
+      "Experience"
      ]
     },
     {
@@ -886,44 +868,35 @@
     {
      "id": "mining_3_3",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Cave Sense"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "mining_3_4",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Cool Head"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "mining_3_5",
-     "name": "Tough Hide",
-     "desc": "+8 max health",
+     "name": "Early Riser",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Ladder Luck"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "core_diver",
@@ -938,31 +911,25 @@
     },
     {
      "id": "mining_3_7",
-     "name": "Early Riser",
-     "desc": "+6 max energy",
+     "name": "Tough Hide",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Dark Eyes"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "mining_3_8",
      "name": "Stamina II",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Deep Stamina"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "mining_u_tremor",
@@ -1000,16 +967,15 @@
      "row": 0
     },
     {
-     "id": "foraging_u_sharp_edge",
-     "name": "Sharp Edge",
-     "desc": "Your axe fells trees with one more hit per swing.",
-     "ranks": 1,
+     "id": "foraging_0_1",
+     "name": "Keen Nose",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
+     "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "chop_power": 1
-     },
-     "unlock": true
+      "wood_bonus": 1
+     }
     },
     {
      "id": "herbalist",
@@ -1023,15 +989,16 @@
      "row": 0
     },
     {
-     "id": "foraging_0_3",
-     "name": "Keen Nose",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 3,
+     "id": "foraging_u_sharp_edge",
+     "name": "Sharp Edge",
+     "desc": "Your axe fells trees with one more hit per swing.",
+     "ranks": 1,
      "tier": 3,
      "row": 0,
      "effect": {
-      "wood_bonus": 1
-     }
+      "chop_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "foraging_0_4",
@@ -1199,10 +1166,7 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Log Roller"
-     ]
+     }
     },
     {
      "id": "old_growth",
@@ -1214,17 +1178,14 @@
     },
     {
      "id": "foraging_1_9",
-     "name": "Insight",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Forest Giant"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "foraging_2_0",
@@ -1250,16 +1211,16 @@
     },
     {
      "id": "foraging_2_2",
-     "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 2,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      },
      "aka": [
-      "Sweet Wood"
+      "Experience"
      ]
     },
     {
@@ -1310,7 +1271,7 @@
     {
      "id": "foraging_u_wind_at_your_back",
      "name": "Wind at Your Back",
-     "desc": "Learn the Haste spell: run 30% faster for an hour.",
+     "desc": "Learn the Haste spell: run 30% faster for about 40 seconds.",
      "ranks": 1,
      "tier": 7,
      "row": 2,
@@ -1322,58 +1283,46 @@
     {
      "id": "foraging_2_8",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Amber Drops"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "foraging_2_9",
-     "name": "Hardy",
-     "desc": "+16 max health",
+     "name": "Early Riser",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Busy Bees"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "foraging_3_0",
-     "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "name": "Hardy",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Quiet Steps"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "foraging_3_1",
-     "name": "Tough Hide",
-     "desc": "+8 max health",
-     "ranks": 1,
+     "name": "Sturdy Frame",
+     "desc": "+2 max health (per rank)",
+     "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Trail Lore"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "tracker",
@@ -1385,17 +1334,14 @@
     },
     {
      "id": "foraging_3_3",
-     "name": "Good Health",
-     "desc": "+8 max health",
+     "name": "Tough Hide",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Moss Sense"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "night_eyes",
@@ -1410,17 +1356,14 @@
     },
     {
      "id": "foraging_3_5",
-     "name": "Early Riser",
-     "desc": "+6 max energy",
+     "name": "Deep Breath",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Night Walker"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "keeper_of_the_woods",
@@ -1443,17 +1386,14 @@
     },
     {
      "id": "foraging_3_8",
-     "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "name": "Good Health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Glint Eye"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "foraging_u_domino_fall",
@@ -1571,10 +1511,7 @@
      "row": 0,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Ripple Reader"
-     ]
+     }
     },
     {
      "id": "fishing_0_8",
@@ -1585,10 +1522,7 @@
      "row": 0,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Dawn Caster"
-     ]
+     }
     },
     {
      "id": "fishing_u_tidecall",
@@ -1613,7 +1547,8 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Firm Grip"
+      "Firm Grip",
+      "Lessons"
      ]
     },
     {
@@ -1658,22 +1593,20 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Know-How",
       "Tight Knots"
      ]
     },
     {
      "id": "fishing_1_5",
      "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Steady Reel"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "net_caster",
@@ -1689,44 +1622,35 @@
     {
      "id": "fishing_1_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Iron Line"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "fishing_1_8",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Double Hook"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "fishing_1_9",
      "name": "Sturdy Frame",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Fighting Spirit"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "fishing_2_0",
@@ -1742,16 +1666,13 @@
     {
      "id": "fishing_2_1",
      "name": "Tough Hide",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Shiny Scales"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "angler",
@@ -1767,30 +1688,24 @@
     {
      "id": "fishing_2_3",
      "name": "Early Riser",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Deep Water"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "fishing_2_4",
      "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 2,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Market Catch"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "fishing_u_still_waters",
@@ -1861,35 +1776,35 @@
     },
     {
      "id": "fishing_3_1",
-     "name": "Sunken Sense",
-     "desc": "+2% treasure chest chance (per rank)",
-     "ranks": 3,
+     "name": "Good Health",
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "hp": 2
      }
     },
     {
      "id": "trapper",
      "name": "Trapper",
-     "desc": "+5% chance of a treasure chest on the line",
+     "desc": "+3% chance of a treasure chest on the line",
      "ranks": 1,
      "tier": 2,
      "effect": {
-      "chest_chance": 0.05
+      "chest_chance": 0.03
      },
      "row": 3
     },
     {
      "id": "fishing_u_strong_strokes",
      "name": "Strong Strokes",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "desc": "Swim 30% faster.",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "move_speed": 0.05
+      "swim_speed": 0.3
      },
      "unlock": true
     },
@@ -1907,60 +1822,57 @@
     {
      "id": "treasure_hunter",
      "name": "Treasure Hunter",
-     "desc": "Chance of a chest on the line (5% per rank)",
+     "desc": "Chance of a chest on the line (3% per rank)",
      "ranks": 2,
      "tier": 5,
      "effect": {
-      "chest_chance": 0.05
+      "chest_chance": 0.03
      },
      "row": 3
     },
     {
      "id": "fishing_3_6",
      "name": "Barnacle Luck",
-     "desc": "+2% treasure chest chance (per rank)",
-     "ranks": 2,
+     "desc": "+5% faster bites",
+     "ranks": 1,
      "tier": 6,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "bite_speed": 0.05
      }
     },
     {
      "id": "fishing_3_7",
      "name": "Wreck Diver",
-     "desc": "+2% treasure chest chance (per rank)",
-     "ranks": 2,
+     "desc": "+6% fish sell value",
+     "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "fish_value": 0.06
      }
     },
     {
      "id": "fishing_3_8",
      "name": "Pearl Eye",
-     "desc": "+2% treasure chest chance (per rank)",
-     "ranks": 2,
+     "desc": "+5% fewer fish escape",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "escape_less": 0.05
      }
     },
     {
      "id": "fishing_3_9",
-     "name": "Good Health",
-     "desc": "+4 max health",
+     "name": "Old Maps",
+     "desc": "+2% faster bites",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "hp": 4
-     },
-     "aka": [
-      "Old Maps"
-     ]
+      "bite_speed": 0.02
+     }
     }
    ]
   },
@@ -2188,24 +2100,18 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Shield Arm"
-     ]
+     }
     },
     {
      "id": "combat_1_9",
-     "name": "Experience",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Hardy",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Iron Stance"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "stamina",
@@ -2244,12 +2150,12 @@
     {
      "id": "combat_2_3",
      "name": "Deep Breaths",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -2265,7 +2171,7 @@
     },
     {
      "id": "combat_2_5",
-     "name": "Insight",
+     "name": "Experience",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -2274,29 +2180,31 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Hearty"
+      "Hearty",
+      "Insight",
+      "Know-How"
      ]
     },
     {
      "id": "combat_2_6",
      "name": "Runner",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "hp": 8
+      "energy": 2
      }
     },
     {
      "id": "combat_2_7",
-     "name": "Big Lungs",
-     "desc": "+6 max energy (per rank)",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
@@ -2457,7 +2365,7 @@
     {
      "id": "bartering_0_1",
      "name": "Fair Price",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
@@ -2480,7 +2388,7 @@
     {
      "id": "bartering_0_3",
      "name": "Good Pitch",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
@@ -2527,7 +2435,7 @@
     {
      "id": "bartering_0_7",
      "name": "Display Skill",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
@@ -2544,24 +2452,18 @@
      "row": 0,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Sharp Ledger"
-     ]
+     }
     },
     {
      "id": "bartering_0_9",
-     "name": "Lessons",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Hot Market",
+     "desc": "+2 friendship per gift",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Hot Market"
-     ]
+      "gift_bonus": 2
+     }
     },
     {
      "id": "haggler",
@@ -2631,7 +2533,7 @@
     },
     {
      "id": "bartering_1_6",
-     "name": "Know-How",
+     "name": "Lessons",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -2640,36 +2542,32 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Know-How",
+      "Study",
       "Wholesale"
      ]
     },
     {
      "id": "bartering_1_7",
-     "name": "Experience",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Back Room Prices"
-     ]
+     }
     },
     {
      "id": "bartering_1_8",
-     "name": "Insight",
+     "name": "Experience",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Insider"
-     ]
+     }
     },
     {
      "id": "bartering_u_lucky_day",
@@ -2685,28 +2583,28 @@
     },
     {
      "id": "bartering_2_0",
-     "name": "Warm Smile",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "row": 2,
-     "effect": {
-      "gift_bonus": 1
-     }
-    },
-    {
-     "id": "bartering_2_1",
-     "name": "Drills",
+     "name": "Insight",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
-     "tier": 1,
+     "tier": 0,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
      },
      "aka": [
-      "Remember Names"
+      "Lessons"
      ]
+    },
+    {
+     "id": "bartering_2_1",
+     "name": "Stamina",
+     "desc": "+2 max energy (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 2,
+     "effect": {
+      "energy": 2
+     }
     },
     {
      "id": "smooth_talker",
@@ -2721,17 +2619,14 @@
     },
     {
      "id": "bartering_2_3",
-     "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "name": "Endurance",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Thoughtful Gifts"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "festival_favorite",
@@ -2769,73 +2664,58 @@
     },
     {
      "id": "bartering_2_7",
-     "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "name": "Good Listener",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Good Listener"
-     ]
+      "gift_bonus": 1
+     }
     },
     {
      "id": "bartering_2_8",
-     "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "name": "Drills",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Town Favourite"
-     ]
+      "xp_gain": 0.03
+     }
     },
     {
      "id": "bartering_2_9",
-     "name": "Sturdy Frame",
-     "desc": "+16 max health",
+     "name": "Hardy",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Best Neighbour"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "bartering_3_0",
-     "name": "Tough Hide",
-     "desc": "+8 max health (per rank)",
+     "name": "Sturdy Frame",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Piggy Bank"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "bartering_3_1",
-     "name": "Early Riser",
-     "desc": "+6 max energy",
+     "name": "Tough Hide",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Rainy Day Fund"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "networker",
@@ -2847,47 +2727,41 @@
     },
     {
      "id": "bartering_3_3",
-     "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "name": "Good Health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Coin Counter"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "bartering_3_4",
-     "name": "Good Health",
-     "desc": "+4 max health",
+     "name": "Early Riser",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
-      "hp": 4
-     },
-     "aka": [
-      "Compound"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "bartering_3_5",
-     "name": "Nest Egg",
-     "desc": "+1 friendship per gift",
+     "name": "Hardy II",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "hp": 2
      }
     },
     {
      "id": "crystal_baron",
      "name": "Crystal Baron",
-     "desc": "Daily interest on crystals (1% per rank)",
+     "desc": "Daily interest on crystals (1% per rank; a day's interest is capped by your progress)",
      "ranks": 2,
      "tier": 6,
      "effect": {
@@ -2904,10 +2778,7 @@
      "row": 3,
      "effect": {
       "xp_gain": 0.02
-     },
-     "aka": [
-      "Investor"
-     ]
+     }
     },
     {
      "id": "magnate",
@@ -2923,12 +2794,12 @@
     {
      "id": "bartering_3_9",
      "name": "Vault Key",
-     "desc": "+0.1% daily interest on savings",
+     "desc": "+2% off shop prices",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "interest": 0.001
+      "buy_discount": 0.02
      }
     }
    ]
@@ -3002,16 +2873,13 @@
     {
      "id": "building_0_5",
      "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Joinery"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "bridgewright",
@@ -3027,16 +2895,13 @@
     {
      "id": "building_0_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Beam Lore"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "building_0_8",
@@ -3158,28 +3023,22 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Cut Stone"
-     ]
+     }
     },
     {
      "id": "building_1_9",
-     "name": "Study",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Hardy",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Foundations"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "building_2_0",
-     "name": "Lessons",
+     "name": "Study",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 0,
@@ -3188,18 +3047,20 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Lessons",
+      "Practice",
       "Tidy Bench"
      ]
     },
     {
      "id": "building_u_light_feet",
-     "name": "Light Feet",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "name": "Smooth Ride",
+     "desc": "Your horse and vehicles go 10% faster.",
      "ranks": 1,
      "tier": 1,
      "row": 2,
      "effect": {
-      "move_speed": 0.05
+      "ride_speed": 0.1
      },
      "unlock": true
     },
@@ -3216,7 +3077,7 @@
     },
     {
      "id": "building_2_3",
-     "name": "Know-How",
+     "name": "Lessons",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -3225,7 +3086,9 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Sharp Tools"
+      "Know-How",
+      "Sharp Tools",
+      "Study"
      ]
     },
     {
@@ -3241,7 +3104,7 @@
     },
     {
      "id": "building_2_5",
-     "name": "Experience",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -3250,6 +3113,8 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Experience",
+      "Lessons",
       "Quick Hands"
      ]
     },
@@ -3266,101 +3131,80 @@
     },
     {
      "id": "building_2_7",
-     "name": "Insight",
+     "name": "Experience",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Jig Maker"
-     ]
+     }
     },
     {
      "id": "building_2_8",
-     "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Assembly Line"
-     ]
+      "xp_gain": 0.03
+     }
     },
     {
      "id": "building_2_9",
      "name": "Sturdy Frame",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Fine Work"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "building_3_0",
      "name": "Tough Hide",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Blueprints"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "building_3_1",
      "name": "Early Riser",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Permit Pal"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "building_3_2",
      "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 2,
      "row": 3,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Site Boss"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "building_3_3",
      "name": "Good Health",
-     "desc": "+4 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 4
-     },
-     "aka": [
-      "Crew Chief"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "foreman",
@@ -3404,10 +3248,7 @@
      "row": 3,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Big Thinker"
-     ]
+     }
     },
     {
      "id": "city_planner",
@@ -3587,7 +3428,7 @@
     {
      "id": "haste",
      "name": "Haste",
-     "desc": "Cast Haste: run 30% faster for a game hour",
+     "desc": "Cast Haste: run 30% faster for about 40 seconds",
      "ranks": 1,
      "tier": 3,
      "branch": "dream",
@@ -3640,21 +3481,18 @@
     },
     {
      "id": "magic_1_9",
-     "name": "Practice",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Lucid"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "magic_2_0",
-     "name": "Study",
+     "name": "Practice",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 0,
@@ -3663,18 +3501,19 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Facet"
+      "Facet",
+      "Study"
      ]
     },
     {
      "id": "magic_u_blink_step",
      "name": "Blink Step",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "desc": "Haste lasts half as long again.",
      "ranks": 1,
      "tier": 1,
      "row": 2,
      "effect": {
-      "move_speed": 0.05
+      "haste_time": 0.5
      },
      "unlock": true
     },
@@ -3735,11 +3574,11 @@
     {
      "id": "gem_eye",
      "name": "Gem Eye",
-     "desc": "+4% gem chance (per rank)",
+     "desc": "+2% gem chance (per rank)",
      "ranks": 2,
      "tier": 7,
      "effect": {
-      "gem_chance": 0.04
+      "gem_chance": 0.02
      },
      "branch": "crystal",
      "row": 2
@@ -3759,17 +3598,14 @@
     },
     {
      "id": "magic_2_9",
-     "name": "Lessons",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Endurance",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Clear Mind"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "deep_well",
@@ -3797,7 +3633,7 @@
     },
     {
      "id": "magic_3_2",
-     "name": "Know-How",
+     "name": "Study",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 2,
@@ -3806,12 +3642,13 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Know-How",
       "Spark of Self"
      ]
     },
     {
      "id": "magic_3_3",
-     "name": "Experience",
+     "name": "Lessons",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -3820,12 +3657,13 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Experience",
       "Well Spring"
      ]
     },
     {
      "id": "magic_3_4",
-     "name": "Insight",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 4,
@@ -3834,50 +3672,42 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Inner Hum"
+      "Inner Hum",
+      "Insight"
      ]
     },
     {
      "id": "magic_3_5",
-     "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "name": "Experience",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Deep Current"
-     ]
+      "xp_gain": 0.03
+     }
     },
     {
      "id": "magic_3_6",
-     "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "name": "Early Riser",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Overflow"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "magic_3_7",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Old Song"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "magic_u_twin_cast",
@@ -4136,24 +3966,18 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Shake"
-     ]
+     }
     },
     {
      "id": "pup_1_9",
-     "name": "Know-How",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Pounce"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "pup_2_0",
@@ -4168,7 +3992,7 @@
     },
     {
      "id": "pup_2_1",
-     "name": "Experience",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 1,
@@ -4177,7 +4001,9 @@
       "xp_gain": 0.03
      },
      "aka": [
-      "Fast Feet"
+      "Experience",
+      "Fast Feet",
+      "Lessons"
      ]
     },
     {
@@ -4215,7 +4041,7 @@
     },
     {
      "id": "pup_2_5",
-     "name": "Insight",
+     "name": "Experience",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -4224,36 +4050,35 @@
       "xp_gain": 0.03
      },
      "aka": [
+      "Insight",
+      "Know-How",
       "Leap"
      ]
     },
     {
      "id": "pup_2_6",
-     "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      },
      "aka": [
-      "Sprint"
+      "Experience"
      ]
     },
     {
      "id": "pup_2_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Sharp Turns"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "dream_hound",
@@ -4270,16 +4095,13 @@
     {
      "id": "pup_2_9",
      "name": "Early Riser",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Long Stride"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "sniff",
@@ -4317,16 +4139,13 @@
     {
      "id": "pup_3_3",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Sniffer"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "truffle_nose",
@@ -4376,30 +4195,24 @@
     {
      "id": "pup_3_8",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Good Nose"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "pup_3_9",
      "name": "Tough Hide",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Treat Finder"
-     ]
+      "hp": 3
+     }
     }
    ]
   },
@@ -4438,12 +4251,12 @@
     {
      "id": "strategist_u_forced_march",
      "name": "Forced March",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "desc": "Capture battle points 10% faster.",
      "ranks": 1,
      "tier": 2,
      "row": 0,
      "effect": {
-      "move_speed": 0.05
+      "capture_speed": 0.1
      },
      "unlock": true
     },
@@ -4504,28 +4317,25 @@
     },
     {
      "id": "strategist_0_8",
-     "name": "Terrain Master",
-     "desc": "+5% faster point capture (per rank)",
+     "name": "Practice",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "capture_speed": 0.05
+      "xp_gain": 0.03
      }
     },
     {
      "id": "strategist_0_9",
-     "name": "Practice",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Stamina",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "Field Marshal"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "strategist_1_0",
@@ -4895,13 +4705,13 @@
     },
     {
      "id": "leadership_u_marching_pace",
-     "name": "Marching Pace",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "name": "Steady Ranks",
+     "desc": "4% less damage taken while a partner is with you.",
      "ranks": 1,
      "tier": 2,
      "row": 0,
      "effect": {
-      "move_speed": 0.05
+      "team_defense": 0.04
      },
      "unlock": true
     },
@@ -5251,12 +5061,12 @@
     {
      "id": "leadership_3_4",
      "name": "Field Promotions",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5273,12 +5083,12 @@
     {
      "id": "leadership_3_6",
      "name": "Chain of Command",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5295,12 +5105,12 @@
     {
      "id": "leadership_3_8",
      "name": "Legend of the Crew",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5452,12 +5262,12 @@
     {
      "id": "hustle_1_1",
      "name": "Spin Cycle",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5497,12 +5307,12 @@
     {
      "id": "hustle_1_5",
      "name": "Fat Envelope",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5541,12 +5351,12 @@
     {
      "id": "hustle_1_9",
      "name": "Empire Ledger",
-     "desc": "+6% faster levelling in this skill",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
+      "energy": 3
      }
     },
     {
@@ -5645,23 +5455,23 @@
     {
      "id": "hustle_2_8",
      "name": "Iron Nerves",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
      "id": "hustle_2_9",
      "name": "Second Wind",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -5756,12 +5566,12 @@
     {
      "id": "hustle_3_8",
      "name": "War Room",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5802,12 +5612,12 @@
     {
      "id": "harmony_0_1",
      "name": "Trust",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5825,12 +5635,12 @@
     {
      "id": "harmony_0_3",
      "name": "Side by Side",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5902,12 +5712,12 @@
     {
      "id": "harmony_1_0",
      "name": "Hum",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 1,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5924,12 +5734,12 @@
     {
      "id": "harmony_1_2",
      "name": "Meow Chorus",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 1,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5995,10 +5805,7 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Choir of Stars"
-     ]
+     }
     },
     {
      "id": "harmony_1_8",
@@ -6009,24 +5816,18 @@
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Pow Wow Heart"
-     ]
+     }
     },
     {
      "id": "harmony_1_9",
-     "name": "Insight",
-     "desc": "+6% faster levelling in this skill",
+     "name": "Hardy",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "xp_gain": 0.06
-     },
-     "aka": [
-      "The Real One"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "harmony_2_0",
@@ -6085,31 +5886,28 @@
     },
     {
      "id": "harmony_2_5",
-     "name": "Hardy",
-     "desc": "+8 max health",
-     "ranks": 1,
-     "tier": 5,
-     "row": 2,
-     "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Ice Friend"
-     ]
-    },
-    {
-     "id": "harmony_2_6",
-     "name": "Drills",
+     "name": "Insight",
      "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
-     "tier": 6,
+     "ranks": 3,
+     "tier": 5,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
      },
      "aka": [
-      "Ember Glass"
+      "Know-How"
      ]
+    },
+    {
+     "id": "harmony_2_6",
+     "name": "Stamina",
+     "desc": "+2 max energy",
+     "ranks": 1,
+     "tier": 6,
+     "row": 2,
+     "effect": {
+      "energy": 2
+     }
     },
     {
      "id": "harmony_u_harvest_song",
@@ -6125,31 +5923,25 @@
     },
     {
      "id": "harmony_2_8",
-     "name": "Stamina",
-     "desc": "+4 max energy",
+     "name": "Colony Hero",
+     "desc": "+3% cheaper colony shops",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 4
-     },
-     "aka": [
-      "Colony Hero"
-     ]
+      "colony_discount": 0.03
+     }
     },
     {
      "id": "harmony_2_9",
-     "name": "Sturdy Frame",
-     "desc": "+4 max health",
+     "name": "Star of the Sea",
+     "desc": "+2% cheaper colony shops",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 4
-     },
-     "aka": [
-      "Star of the Sea"
-     ]
+      "colony_discount": 0.02
+     }
     },
     {
      "id": "harmony_3_0",

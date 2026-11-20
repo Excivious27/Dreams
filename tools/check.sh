@@ -515,6 +515,12 @@ if ! echo "$p5out" | grep -q "skill_glow_test: 0 fails"; then
   echo "Skill points glow test failed"; exit 1
 fi
 
+msout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/move_speed_test.gd 2>&1)"
+echo "$msout" | grep -E "FAIL|SCRIPT ERROR|move_speed_test" || true
+if ! echo "$msout" | grep -q "move_speed_test: 0 fails"; then
+  echo "Move speed ladder test failed"; exit 1
+fi
+
 echo "== settings, slots, quality, discovery, perks, birthdays =="
 yout="$("$GODOT" --headless --path . -s res://tools/systems_test.gd 2>&1)"
 echo "$yout" | grep -E "FAIL|systems_test" || true
