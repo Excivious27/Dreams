@@ -298,7 +298,8 @@ func _process(delta: float) -> void:
 	var to := tgt.position - position
 	var dist := to.length()
 	# A veiled player (Shade crystal / stealth drone) can't be picked out.
-	if tgt == player and map.has_meta("stealth_until") and Time.get_ticks_msec() < int(map.get_meta("stealth_until")):
+	HelperUnit.tick_clock(delta)
+	if tgt == player and HelperUnit.veiled(map):
 		dist = 9999.0
 	_t -= delta
 	_since_hit += delta

@@ -2360,7 +2360,7 @@ func on_enemy_died(e: Enemy) -> void:
 func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
 	var best: Enemy = null
 	for e in enemies:
-		if is_instance_valid(e) and e.position.distance_to(p) < within:
+		if is_instance_valid(e) and e._alive and e.position.distance_to(p) < within:
 			if best == null or e.position.distance_to(p) < best.position.distance_to(p):
 				best = e
 	return best
