@@ -255,12 +255,44 @@
    "text": "Rook's lucky arrowhead: a Light Charm"
   }
  },
+ "catkins": {
+  "2": {
+   "bonus": {
+    "energy": 10
+   },
+   "text": "Catkins' first meditation: +10 max energy"
+  },
+  "4": {
+   "bonus": {
+    "mana": 10
+   },
+   "text": "Catkins' four coats: +10 max mana"
+  },
+  "6": {
+   "weekly": {
+    "tuna": 2
+   },
+   "text": "Cat-topia's pantry: 2 Tuna each week"
+  },
+  "8": {
+   "bonus": {
+    "mana": 20
+   },
+   "text": "A guardian's patience: +20 max mana"
+  },
+  "10": {
+   "bonus": {
+    "hp": 20
+   },
+   "text": "Catkins' monastery blessing: +20 max health"
+  }
+ },
  "pip": {
   "2": {
    "weekly": {
     "#gold": 20
    },
-   "text": "Pip finds you coins: \u25c620 each week"
+   "text": "Pip finds you loose change: \u25c620 each week"
   },
   "4": {
    "give": {

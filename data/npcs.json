@@ -1005,7 +1005,7 @@
    "turnip"
   ],
   "perks": {
-   "2": "Pip finds you coins: ◆20 each week",
+   "2": "Pip finds you loose change: ◆20 each week",
    "4": "Pip's treasure map: a Map Scrap",
    "6": "Pip's secret: the fountain wish works (a Luck Potion)",
    "8": "Pip's gang brings shells and arcade tickets: 3 shells, 10 tickets a week",
@@ -1596,6 +1596,13 @@
   "birthday": [
    "winter",
    3
-  ]
+  ],
+  "perks": {
+   "2": "Catkins' first meditation: +10 max energy",
+   "4": "Catkins' four coats: +10 max mana",
+   "6": "Cat-topia's pantry: 2 Tuna each week",
+   "8": "A guardian's patience: +20 max mana",
+   "10": "Catkins' monastery blessing: +20 max health"
+  }
  }
 }
