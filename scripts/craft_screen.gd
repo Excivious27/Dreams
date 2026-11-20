@@ -23,6 +23,10 @@ var _status: Label
 var _cats: HFlowContainer
 var _was_paused := false
 var _arm := 0
+var _cur: ScreenCursor  # C9 P3: pad/keyboard cursor (A picks/presses, left/right = quantity, CONFIRM_ALT = Max, PAGE = category)
+var _msg: Label
+var _msg_t := 0.0
+const MSG_SECS := 3.5  # the screen's own message line (Hud toasts wait while it's open)
 
 
 static func open(map: GameMap, st: String, k: String, t: int, is_town: bool, title: String) -> void:
@@ -43,6 +47,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "craft_screen")
+	add_to_group("toast_hold")  # C9 P3 (c9_14): toasts wait; they covered the first recipe row
 	Music.instance(get_tree()).sfx("menu_open", "ui_tap")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -69,6 +74,11 @@ func _ready() -> void:
 	var x := _btn("✕", close)
 	x.custom_minimum_size = Vector2(26, 22)
 	top.add_child(x)
+	_msg = Label.new()
+	_msg.add_theme_font_size_override("font_size", 8)
+	_msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_msg.visible = false
+	v.add_child(_msg)
 	_status = Label.new()
 	_status.add_theme_font_size_override("font_size", 7)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -88,10 +98,60 @@ func _ready() -> void:
 	_detail = VBoxContainer.new()
 	_detail.custom_minimum_size = Vector2(250, 86)
 	v.add_child(_detail)
+	_cur = ScreenCursor.make(self, _root)
+	_cur.on_move = _pad_move
+	_cur.on_alt = func(_c: Control) -> void: _pad_qty(999999)
+	_cur.on_page = func(d: int) -> void: _pad_cat(d)
 	_refresh()
+	_cur.select_key("r:0")
+
+
+## C9 P3: the screen's own feedback, in a line under the title.
+func _say(t: String, col := Color(1, 0.9, 0.7)) -> void:
+	_msg.text = t
+	_msg.add_theme_color_override("font_color", col)
+	_msg.visible = true
+	_msg_t = MSG_SECS
+
+
+## Left/right on a picked recipe's card or MAKE steps the quantity.
+func _pad_move(dir: Vector2) -> bool:
+	if _sel.is_empty() or dir.y != 0.0 or _cur.cur == null:
+		return false
+	var k := _cur.key_of(_cur.cur)
+	if k == "sel" or k == "make":
+		_pad_qty(int(dir.x))
+		return true
+	return false
+
+
+func _pad_qty(d: int) -> void:
+	if _sel.is_empty():
+		return
+	var mx := mini(Crafting.max_qty(_sel), 10 * tier)
+	if Crafting._single(_sel):
+		mx = mini(mx, 1)
+	_qty = clampi(_qty + d, 1, maxi(1, mx))
+	_show_detail()
+
+
+func _pad_cat(d: int) -> void:
+	var cats: Array = [""]
+	for rc in Crafting._all(station):
+		if Crafting._cat(rc) not in cats:
+			cats.append(Crafting._cat(rc))
+	if cats.size() <= 2:
+		return
+	_cat = str(cats[posmod(cats.find(_cat) + d, cats.size())])
+	_refresh()
+	_cur.select_key("r:0")
 
 
 func _process(_d: float) -> void:
+	if _msg_t > 0.0:
+		_msg_t -= _d
+		if _msg_t <= 0.0:
+			_msg.visible = false
 	# Touch buttons press actions: poll them (a short arm delay so the tap that
 	# opened the screen doesn't close it).
 	_arm += 1
@@ -173,8 +233,10 @@ func _refresh() -> void:
 		rows.append([rank, rc, why, disc])
 	rows.sort_custom(func(a: Array, b: Array) -> bool: return int(a[0]) < int(b[0]))
 	for row: Array in rows:
+		var card := _card(row[1], str(row[2]), bool(row[3]))
+		card.set_meta("pc_key", "sel" if not _sel.is_empty() and str(_sel["id"]) == str(row[1]["id"]) else "r:%d" % shown)
 		shown += 1
-		_list.add_child(_card(row[1], str(row[2]), bool(row[3])))
+		_list.add_child(card)
 	if shown == 0:
 		var l := Label.new()
 		l.text = "Nothing here yet." if station != "keg" else "Bring produce: fruit, vegetables, herbs, grain, mushrooms or flowers."
@@ -227,11 +289,16 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 	h.add_child(l)
 	b.pressed.connect(func() -> void:
 		if not disc:
-			m.hud.toast("Hold every ingredient once to learn this recipe: %s." % Crafting.discover_hint(rc), Color(0.9, 0.85, 1.0))
+			_say("Hold every ingredient once to learn this recipe: %s." % Crafting.discover_hint(rc), Color(0.9, 0.85, 1.0))
+			return
+		if not _sel.is_empty() and str(_sel["id"]) == str(rc["id"]) and _cur and _cur.shown:
+			_pad_make_or_jump()  # a second A on the picked card: go to MAKE
 			return
 		_sel = rc
 		_qty = 1
-		_refresh())
+		_refresh()
+		if _cur:
+			_cur.select_key("sel"))
 	return b
 
 
@@ -241,7 +308,7 @@ func _show_detail() -> void:
 	var js := Crafting.jobs(key)
 	if _sel.is_empty():
 		var l := Label.new()
-		l.text = "Tap a recipe to pick it."
+		l.text = "Tap a recipe to pick it." if TouchControls.visible_controls else "Pick a recipe (A)."
 		l.add_theme_font_size_override("font_size", 8)
 		_detail.add_child(l)
 	else:
@@ -281,6 +348,7 @@ func _show_detail() -> void:
 			xb.custom_minimum_size = Vector2(34, 26)
 			row.add_child(xb)
 		var make := _btn("MAKE", _make)
+		make.set_meta("pc_key", "make")
 		make.disabled = why != "" or not Crafting.can_make(rc, _qty) or Crafting._owned(rc) or js.size() >= Crafting.slots(tier)
 		make.add_theme_font_size_override("font_size", 10)
 		make.custom_minimum_size = Vector2(72, 26)
@@ -304,6 +372,11 @@ func _show_detail() -> void:
 		_detail.add_child(_btn("Run today's hack (a memory game)", _hack))
 
 
+func _pad_make_or_jump() -> void:
+	if not _cur.select_key("make"):
+		_say("Can't make that yet: see what it needs below.", Color(1, 0.75, 0.6))
+
+
 func _hack() -> void:
 	GameState.run["flags"]["hack_day"] = int(GameState.run["day"])
 	visible = false
@@ -316,17 +389,17 @@ func _hack() -> void:
 			Racket.set_heat(Racket.heat() - 1)
 			GameState.add_item("data_chip", 1)
 			GameState.add_money(150 * tier, "craft")
-			m.hud.toast("Clean hack: file wiped (heat −1), a data chip and ◆%d." % (150 * tier), Color(0.5, 1, 0.85))
+			_say("Clean hack: file wiped (heat −1), a data chip and ◆%d." % (150 * tier), Color(0.5, 1, 0.85))
 		2:
 			GameState.add_money(60 * tier, "craft")
-			m.hud.toast("Partial hack: ◆%d skimmed from a shell account." % (60 * tier), Color(0.5, 1, 0.85))
+			_say("Partial hack: ◆%d skimmed from a shell account." % (60 * tier), Color(0.5, 1, 0.85))
 		-1:
-			m.hud.toast("You pulled out before anything was taken.", Color(0.8, 0.85, 0.9))
+			_say("You pulled out before anything was taken.", Color(0.8, 0.85, 0.9))
 		1:
 			GameState.add_money(30, "craft")
-			m.hud.toast("You got a peek before the alarm: ◆30.", Color(0.7, 0.9, 0.85))
+			_say("You got a peek before the alarm: ◆30.", Color(0.7, 0.9, 0.85))
 		_:
-			m.hud.toast("The wire was hot today. Try again tomorrow.", Color(1, 0.75, 0.6))
+			_say("The wire was hot today. Try again tomorrow.", Color(1, 0.75, 0.6))
 	_refresh()
 
 
@@ -337,12 +410,12 @@ func _make() -> void:
 	if town:
 		var fee := 5 * int(rc.get("tier", 1)) * _qty
 		if int(GameState.run["crystals"]) < fee:
-			m.hud.toast("The bench fee is ◆%d." % fee, Color(1, 0.7, 0.7))
+			_say("The bench fee is ◆%d." % fee, Color(1, 0.7, 0.7))
 			return
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - fee
 	var j := Crafting.start(station, key, rc, tier, _qty)
 	Crafting.mark_known(rc)
-	m.hud.toast("%s: ready in %s." % [str(rc["name"]), Crafting.fmt_minutes(int(j["done_at"]) - Crafting.now_abs())], Color(1, 0.9, 0.4))
+	_say("%s: ready in %s." % [str(rc["name"]), Crafting.fmt_minutes(int(j["done_at"]) - Crafting.now_abs())], Color(1, 0.9, 0.4))
 	Music.instance(get_tree()).sfx(station_sound(station), "craft_done")
 	_qty = 1
 	if not Crafting.can_make(rc):
@@ -356,10 +429,10 @@ func _wait() -> void:
 		soon = mini(soon, int(j["done_at"]) - Crafting.now_abs())
 	var day_left := GameState.DAY_END - int(GameState.run["time"]) - 10
 	if soon > day_left:
-		m.hud.toast("That won't be ready today. Sleep on it.")
+		_say("That won't be ready today. Sleep on it.")
 	elif soon > 0:
 		GameState.run["time"] = int(GameState.run["time"]) + soon
-		m.hud.toast("You wait. %s." % Crafting.fmt_minutes(soon))
+		_say("You wait. %s." % Crafting.fmt_minutes(soon))
 	_refresh()
 
 

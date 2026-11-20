@@ -25,6 +25,7 @@ var _trash_icon: TextureRect
 var _drag: SlotDrag
 var _was_paused := false
 var _arm := 0
+var _cur: ScreenCursor  # C9 P3: pad/keyboard cursor (A = tap, CONFIRM_ALT = pick/place, TOOL = move amount)
 const SLOT := 30
 
 
@@ -43,6 +44,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "chest_screen")
+	add_to_group("toast_hold")  # C9 P3: toasts wait while the chest covers the screen
 	Music.instance(get_tree()).sfx("chest_open", "pickup")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -83,7 +85,7 @@ func _ready() -> void:
 		else:
 			_note(n, "taken")
 			if not Storage.is_empty(key) and m and m.hud:
-				m.hud.toast("Bag full: some stacks stay in the chest.")))
+				_say("Bag full: some stacks stay in the chest.")))
 	var row2 := HBoxContainer.new()
 	row2.add_theme_constant_override("separation", 2)
 	v.add_child(row2)
@@ -121,9 +123,56 @@ func _ready() -> void:
 	_bot = _scroll_grid(v, 158)  # keeps the panel and its tip line on the 480 screen
 	(_bot.get_parent() as ScrollContainer).size_flags_vertical = Control.SIZE_EXPAND_FILL  # bag fills the panel, no dead band
 	v.add_child(_acts)  # under the bag, so its empty band isn't between the label and the grid
-	var tip := _label("Tap: move across.  Hold: pick up or drag (slot, other side, trash).", 7, Color(0.8, 0.75, 0.65))
-	v.add_child(tip)
+	_tip = _label(_tip_text(), 7, TIP_COL)
+	_tip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(_tip)
+	_trash_btn.set_meta("pc_key", "trash")
+	_cur = ScreenCursor.make(self, _root)
+	_cur.on_alt = _pad_pick
+	_cur.on_tool = func(_c: Control) -> void: _amt = (_amt + 1) % 4; _refresh()
 	_refresh()
+	_cur.select_key("b:0")
+
+
+var _tip: Label
+var _msg_t := 0.0
+const TIP_COL := Color(0.8, 0.75, 0.65)
+const MSG_SECS := 3.0  # a message in the tip line stays this long
+
+
+func _tip_text() -> String:
+	return TIP_TOUCH if TouchControls.visible_controls else TIP_PAD
+
+
+## C9 P3: the chest's own feedback goes in its tip line (Hud toasts wait while
+## the chest is open: they'd cover the grids).
+func _say(t: String, col := Color(1, 0.9, 0.7)) -> void:
+	if _tip == null:
+		return
+	_tip.text = t
+	_tip.add_theme_color_override("font_color", col)
+	_msg_t = MSG_SECS
+
+
+const TIP_TOUCH := "Tap: move across.  Hold: pick up or drag (slot, other side, trash)."
+const TIP_PAD := "A: move across.  X (Action): pick up, then put down on a slot or the trash."
+
+
+## C9 P3: the pad's "pick up / put down" on the slot under the cursor.
+func _pad_pick(c: Control) -> void:
+	if c == null:
+		return
+	var k := _cur.key_of(c)
+	if k == "trash":
+		_trash_pressed()
+		return
+	var parts := k.split(":")
+	if parts.size() != 2 or not (parts[0] in ["c", "b"]):
+		return
+	if _pick.is_empty():
+		_hold(parts[0], int(parts[1]))
+	else:
+		_tap_now(parts[0], int(parts[1]), Callable())
 
 
 func _scroll_grid(v: VBoxContainer, h: float) -> GridContainer:
@@ -142,6 +191,11 @@ func _scroll_grid(v: VBoxContainer, h: float) -> GridContainer:
 
 func _process(_d: float) -> void:
 	_arm += 1
+	if _msg_t > 0.0:
+		_msg_t -= _d
+		if _msg_t <= 0.0 and _tip:
+			_tip.text = _tip_text()
+			_tip.add_theme_color_override("font_color", TIP_COL)
 	# A finger that moves is scrolling, not holding.
 	if not _press.is_empty() and get_viewport().get_mouse_position().distance_to(_press["at"]) > 6.0:
 		_press = {}
@@ -201,16 +255,14 @@ func _full_msg(id: String) -> String:
 
 func _fail(t: String) -> void:
 	Music.instance(get_tree()).sfx("nope", "thud")
-	if m and m.hud:
-		m.hud.toast(t)
+	_say(t)
 
 
 func _note(n: int, verb: String) -> void:
 	_pick = {}
 	_trash_arm = ""
 	Music.instance(get_tree()).sfx("pickup" if n > 0 else "nope", "thud")
-	if m and m.hud:
-		m.hud.toast("%d stack%s %s." % [n, "" if n == 1 else "s", verb] if n > 0 else "Nothing to move.")
+	_say("%d stack%s %s." % [n, "" if n == 1 else "s", verb] if n > 0 else "Nothing to move.")
 	_refresh()
 
 
@@ -246,6 +298,8 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 		# Long press lifts (SlotDrag): drop on a slot here or across, or the trash.
 		_drag.add(b, {"grid": grid, "i": idx, "id": id} if id != "" else {}, _drop_on.bind(grid, idx), "%s:%d" % [grid, idx])
 	b.pressed.connect(_tap.bind(grid, idx, cb))
+	if grid != "":
+		b.set_meta("pc_key", "%s:%d" % [grid, idx])
 	if id != "":
 		if grid == "b" and GameState.is_locked(id):
 			var lk := _label("•", 9, Color(1, 0.85, 0.3))
@@ -331,8 +385,7 @@ func _take(id: String, have := 0) -> void:
 	# One slot's stack (up to 999), not every stack of that item in the chest.
 	if Storage.withdraw(key, id, _n(have if have > 0 else Storage.amount(key, id))) == 0:
 		Music.instance(get_tree()).sfx("nope", "thud")
-		if m and m.hud:
-			m.hud.toast("Your bag is full.")
+		_say("Your bag is full.")
 	else:
 		Music.instance(get_tree()).sfx("pickup")
 	_refresh()
@@ -342,8 +395,7 @@ func _put(id: String) -> void:
 	_last = GameState.item_name(id)
 	if Storage.deposit(key, id, _n(GameState.count(id))) == 0:
 		Music.instance(get_tree()).sfx("nope", "thud")
-		if m and m.hud:
-			m.hud.toast(_full_msg(id))
+		_say(_full_msg(id))
 	else:
 		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 	_refresh()
@@ -351,8 +403,7 @@ func _put(id: String) -> void:
 
 func _pick_up() -> void:
 	if not Storage.is_empty(key):
-		if m and m.hud:
-			m.hud.toast("Empty the chest first.")
+		_say("Empty the chest first.")
 		return
 	var xy := key.substr(2).split(",")
 	var c := Vector2i(int(xy[0]), int(xy[1]))
@@ -384,7 +435,7 @@ func _trash_pressed() -> void:
 	if _drag and _drag.eat_tap() and _pick.is_empty():
 		return
 	if _pick.is_empty():
-		_fail("Hold an item from your bag (or drag it here) to trash it.")
+		_fail("Pick up an item from your bag (hold it, or drag it here) to trash it.")
 		return
 	var id := str(_pick["id"])
 	if str(_pick["grid"]) != "b":
@@ -399,8 +450,7 @@ func _trash_pressed() -> void:
 		return
 	if _trash_arm != id and GameState.trash_needs_confirm(id):
 		_trash_arm = id
-		if m and m.hud:
-			m.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+		_say("Throw away %d %s? Trash it again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
 		_refresh()
 		return
 	GameState.trash(id, GameState.count(id))
