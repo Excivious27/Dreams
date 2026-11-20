@@ -194,7 +194,6 @@ static func how_to(id: String, aid: String) -> String:
 			while k != aid and k != "":
 				path.append(MegaRegion.area_name(k))
 				k = str(prev.get(k, ""))
-			path.reverse()
 			var e: Dictionary = entry_to[s]
 			return "%s from %s, then walk on through %s" % [str(e.get("how", "the road")), str(e.get("label", "")), " > ".join(path)]
 		for l in links:
@@ -245,7 +244,19 @@ static func draw_region(m: Control, id: String) -> void:
 	# Title ribbon first, so pins near the top sit over it, never under it (c4_02 #3).
 	var title := str(r.get("name", id))
 	var tsz := font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10)
-	var tr := Rect2(Vector2((W - tsz.x) / 2.0 - 8, 6), Vector2(tsz.x + 16, 15))
+	var tsz2 := Vector2(tsz.x + 16, 15)
+	var tr := Rect2(Vector2((W - tsz.x) / 2.0 - 8, 6), tsz2)
+	# Slide the ribbon to a corner when a pin sits under it (pins near the top: Moonpool, Summit...).
+	var spots := pin_spots(id)
+	for cand: Vector2 in [Vector2((W - tsz2.x) / 2.0, 6), Vector2(7, 6), Vector2(W - tsz2.x - 7, 6), Vector2(7, H - 22)]:
+		var free := true
+		for k: String in spots:
+			if Rect2(cand, tsz2).grow(10).has_point(spots[k]):
+				free = false
+				break
+		if free:
+			tr = Rect2(cand, tsz2)
+			break
 	m.draw_rect(tr, Color(0.12, 0.08, 0.05, 0.7))
 	m.draw_rect(tr, acc, false, 1.0)
 	m.draw_string(font, tr.position + Vector2(8, 11), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, acc)
