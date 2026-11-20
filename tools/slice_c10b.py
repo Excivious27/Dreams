@@ -172,6 +172,14 @@ def _S():
 
 
 def rgba(file):
+    """Renders with a real transparent background keep their own alpha: keying magenta would eat the
+    magenta neon tubes (neon arch, chase arch)."""
+    import numpy as np
+    from PIL import Image
+    src = np.asarray(Image.open(os.path.join(_S().INC, SRC + file)).convert("RGBA")).copy()
+    if (src[..., 3] == 0).mean() > 0.2:
+        src[src[..., 3] < 16] = 0
+        return src
     A.SRC = SRC
     try:
         return A.rgba_of(file)
@@ -461,9 +469,7 @@ def fix_table_sides(cat):
     """Side views at the front's scale, cushions kept (c10b_08-30)."""
     from PIL import ImageOps
     S = _S()
-    A.SRC = SRC
-    a = A.rgba_of("out_fix_table_sides.png")
-    A.SRC = "c10/"
+    a = rgba("out_fix_table_sides.png")
     boxes = A.cells(a, 1, 4)[0]
     for b, base in zip(boxes, ["dc_catkins_table", "dc_coral_table", "dc_ice_table", "dc_grotto_table"]):
         im = A._crop(a, b)
