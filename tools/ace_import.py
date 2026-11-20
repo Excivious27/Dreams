@@ -4,9 +4,13 @@
     python3 tools/ace_import.py <name> <file.mp3|wav> [--kind music|jingle] [--trim START:END]
                                 [--loop-xfade 2.0] [--dry OUTDIR]
 
-music  : trims leading/trailing silence, loudness-normalises to -16 LUFS (EBU R128),
-         makes the end flow back into the start (crossfades the tail over the head so
-         Godot's loop is seamless), writes audio/music/<name>.ogg (Vorbis q4, 48 kHz stereo)
+music  : trims leading/trailing silence and a false ending (render stopped, a fragment
+         restarted), phone-masters (low shelf on bass-heavy songs, -16 LUFS / -1.5 dBTP,
+         clamped trim toward PHONE_TARGET through a 300 Hz proxy), makes the end flow back
+         into the loop point with a sample-accurate equal-power crossfade (numpy; the old
+         ffmpeg acrossfade graph silently dropped the join), keeps a quiet intro once by
+         writing its end to data/music_loops.json ("track": loop_offset seconds, read by
+         Music), checks the seam, writes audio/music/<name>.ogg (Vorbis q3, 48 kHz stereo)
          and adds <name> to audio/music/REAL.txt so the placeholder generators never
          overwrite it.
 jingle : takes --trim START:END seconds (a short phrase from a 30 s render), fades the
@@ -16,7 +20,8 @@ jingle : takes --trim START:END seconds (a short phrase from a 30 s render), fad
 Originals are not copied into the repo; audio/ACE_LOG.json records each track's ACE song ids.
 Needs ffmpeg/ffprobe. Run `godot --headless --path . --import` afterwards.
 """
-import argparse, json, os, shutil, subprocess, sys, tempfile
+import argparse, json, os, re, shutil, subprocess, sys, tempfile
+import numpy as np
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 AUD = os.path.join(ROOT, "audio")
@@ -43,16 +48,178 @@ def loudnorm(src, dst, target, extra_filters=""):
     run("ffmpeg", "-hide_banner", "-y", "-i", src, "-af", af, "-ar", "48000", "-ac", "2", dst)
 
 
-def seamless(src, dst, xfade):
-    """Crossfade the last `xfade` s over the first `xfade` s, so end -> start is continuous."""
-    d = duration(src)
-    x = max(0.2, min(xfade, d / 4))
-    flt = (f"[0:a]atrim=0:{x},asetpts=PTS-STARTPTS[head];"
-           f"[0:a]atrim={x}:{d - x},asetpts=PTS-STARTPTS[body];"
-           f"[0:a]atrim={d - x}:{d},asetpts=PTS-STARTPTS[tail];"
-           f"[tail][head]acrossfade=d={x}:c1=tri:c2=tri[join];"
-           f"[body][join]concat=n=2:v=0:a=1[out]")
-    run("ffmpeg", "-hide_banner", "-y", "-i", src, "-filter_complex", flt, "-map", "[out]", dst)
+SR = 48000
+
+
+def decode(path, sr=SR):
+    """Float32 stereo samples (n, 2)."""
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "2", "-ar", str(sr), "-f", "f32le", "-"],
+                         capture_output=True, check=True).stdout
+    return np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
+
+
+def write_wav(path, x, sr=SR):
+    p = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-",
+                        "-c:a", "pcm_f32le", path], input=np.ascontiguousarray(x, np.float32).tobytes(),
+                       capture_output=True)
+    if p.returncode:
+        raise RuntimeError(p.stderr.decode())
+
+
+def win_db(x, sr=SR, w=0.5):
+    m = x.mean(axis=1) if x.ndim == 2 else x
+    n = int(w * sr)
+    k = len(m) // n
+    r = np.sqrt(np.mean(m[:k * n].reshape(k, n) ** 2, axis=1) + 1e-12)
+    return 20 * np.log10(r)
+
+
+def false_end(x, sr=SR, drop=18.0):
+    """A render that stopped and then restarted a fragment: the last >= 0.5 s hole
+    (median - drop dB) in the final 25 % is the real ending. Returns the cut sample or None."""
+    db = win_db(x, sr)
+    med = np.median(db)
+    n = len(db)
+    for i in range(n - 2, int(n * 0.75) - 1, -1):
+        if db[i] < med - drop:
+            j = i
+            while j > 0 and db[j - 1] < med - drop:
+                j -= 1
+            # end on the hole start, but keep at least the window before it at level
+            return int(j * 0.5 * sr)
+    return None
+
+
+def onset_near(x, t, sr=SR, span=0.5):
+    """Strongest onset (rise in 20 ms energy) within +-span s of sample t."""
+    m = np.abs(x.mean(axis=1))
+    h = int(0.02 * sr)
+    a, b = max(h, t - int(span * sr)), min(len(m) - h, t + int(span * sr))
+    if b - a < 4 * h:
+        return t
+    e = np.array([m[i:i + h].mean() for i in range(a, b, h)])
+    d = np.diff(e, prepend=e[0])
+    return a + int(np.argmax(d)) * h
+
+
+def intro_end(x, sr=SR, xfade=3.0):
+    """Where a quiet intro has built up to the body level: the first 0.5 s window within
+    3 dB of the median, snapped to an onset. 0 when the head is already at level (a
+    head dip under 6 dB is left to the crossfade)."""
+    db = win_db(x, sr)
+    med = np.median(db)
+    head = np.mean(db[:6]) if len(db) > 6 else med
+    if med - head < 6.0:
+        return 0
+    i = 0
+    while i < len(db) - 1 and db[i] < med - 3.0:
+        i += 1
+    t = int(i * 0.5 * sr)
+    if t < int(xfade * sr) + sr // 2:
+        return 0
+    return onset_near(x, t, sr)
+
+
+def seamless_np(x, xfade, offset=0, sr=SR):
+    """Sample-accurate equal-power loop seam. The file ends with its tail crossfaded into
+    the music that leads up to the loop point, so end -> loop point is continuous.
+    offset 0: classic loop (file starts xfade s in, tail fades into the head; Godot loops
+    to 0). offset > 0: the intro is kept and Godot loops to `offset` (loop_offset).
+    Returns (samples, loop_offset_seconds)."""
+    n = len(x)
+    X = int(max(0.2, min(xfade, n / sr / 4)) * sr)
+    t = np.linspace(0, np.pi / 2, X, dtype=np.float32)[:, None]
+    fo, fi = np.cos(t), np.sin(t)
+    if offset <= X:
+        y = np.concatenate([x[X:n - X], x[n - X:] * fo + x[:X] * fi])
+        assert len(y) == n - X, (len(y), n, X)
+        return y, 0.0
+    y = np.concatenate([x[:n - X], x[n - X:] * fo + x[offset - X:offset] * fi])
+    assert len(y) == n, (len(y), n)
+    return y, offset / sr
+
+
+def seam_ok(y, offset_s=0.0, sr=SR):
+    """The join (last sample -> loop point) steps no more than 3x the 99th pct step."""
+    m = y.mean(axis=1)
+    o = int(round(offset_s * sr))
+    step = abs(float(m[-1] - m[o]))
+    p99 = float(np.percentile(np.abs(np.diff(m)), 99))
+    return step <= 3 * p99 + 1e-4, step, p99
+
+
+def seamless(src, dst, xfade, offset=0):
+    """File version (kept for tools that call it): returns loop_offset seconds."""
+    x = decode(src)
+    y, lo = seamless_np(x, xfade, offset)
+    write_wav(dst, y)
+    return lo
+
+
+def measure(path, hp=0):
+    """Integrated loudness (LUFS) and true peak (dBTP); hp > 0 measures through a
+    hp Hz 4-pole high-pass (phone-speaker proxy)."""
+    pre = f"highpass=f={hp}:poles=2,highpass=f={hp}:poles=2," if hp else ""
+    p = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", pre + "ebur128=peak=true",
+                        "-f", "null", "-"], capture_output=True, text=True)
+    tail = p.stderr[p.stderr.rindex("Summary:"):]
+    i = float(re.search(r"I:\s+(-?[\d.]+|-inf) LUFS", tail).group(1))
+    tp = re.search(r"Peak:\s+(-?[\d.]+|-inf) dBFS", tail)
+    return i, (float(tp.group(1)) if tp else 0.0)
+
+
+def low_share(x, sr=SR, cut=120.0):
+    m = x.mean(axis=1)[: sr * 90]
+    f = np.abs(np.fft.rfft(m)) ** 2
+    fr = np.fft.rfftfreq(len(m), 1 / sr)
+    return float(f[fr < cut].sum() / (f.sum() + 1e-12))
+
+
+PHONE_TARGET = -20.0   # loudness through the 300 Hz proxy (bright songs at -16 LUFS read about -19.5)
+PHONE_CUT, PHONE_LIFT = -1.5, 3.0  # clamp: integrated loudness stays within -17.5..-13 LUFS
+
+
+def phone_master(src, dst, target=-16.0):
+    """Game master: bass-heavy songs get a low shelf + presence lift so they survive a
+    phone speaker, then loudnorm to -16 LUFS / -1.5 dBTP, then a clamped phone-proxy trim
+    (-1.5..+3 dB) under a true-peak limiter."""
+    x = decode(src)
+    eq = ""
+    if low_share(x) > 0.45:
+        eq = "bass=g=-4:f=120:w=0.7,equalizer=f=3000:t=q:w=1.0:g=1.5"
+    loudnorm(src, dst + ".n.wav", target, eq)
+    ph, _ = measure(dst + ".n.wav", hp=300)
+    g = max(PHONE_CUT, min(PHONE_LIFT, PHONE_TARGET - ph))
+    if abs(g) < 0.3:
+        os.replace(dst + ".n.wav", dst)
+    else:
+        run("ffmpeg", "-hide_banner", "-y", "-i", dst + ".n.wav", "-af",
+            f"volume={g:.2f}dB,alimiter=limit=0.84:attack=2:release=60:level=disabled", "-ar", "48000", dst)
+        os.remove(dst + ".n.wav")
+    return g
+
+
+LOOPS = os.path.join(ROOT, "data", "music_loops.json")
+
+
+def set_loop(name, sec):
+    import fcntl
+    with open(LOOPS + ".lock", "w") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        _set_loop(name, sec)
+
+
+def _set_loop(name, sec):
+    d = json.load(open(LOOPS)) if os.path.exists(LOOPS) else {}
+    if sec > 0:
+        d[name] = round(sec, 3)
+    else:
+        d.pop(name, None)
+    tmp = LOOPS + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(d, f, indent=1, sort_keys=True)
+        f.write("\n")
+    os.replace(tmp, LOOPS)
 
 
 def add_real(listfile, name):
@@ -76,6 +243,7 @@ def main():
     ap.add_argument("--trim", default="")
     ap.add_argument("--loop-xfade", type=float, default=3.0)
     ap.add_argument("--once", action="store_true", help="plays once (endings, credits): keep the natural ending, no loop seam")
+    ap.add_argument("--no-offset", action="store_true", help="loop to 0 even after a quiet intro")
     ap.add_argument("--dry", default="", help="write here instead of the repo (testing)")
     a = ap.parse_args()
     tmp = tempfile.mkdtemp(prefix="ace_")
@@ -89,21 +257,40 @@ def main():
         import ace_pick
         x, sr = ace_pick.load(a.src)
         s0, s1 = ace_pick.trim_quiet(x, sr, tail_db=40.0 if a.once else 9.0)
+        if not a.once:
+            fe = false_end(x[s0:s1], sr)
+            if fe is not None and fe > 0.5 * (s1 - s0):
+                print(f"  false ending at {(s0 + fe) / sr:.1f} s: cut there")
+                s1 = s0 + fe
         run("ffmpeg", "-hide_banner", "-y", "-i", a.src, "-af",
             f"atrim={s0 / sr}:{s1 / sr},asetpts=PTS-STARTPTS", t1)
         t2 = os.path.join(tmp, "t2.wav")
-        loudnorm(t1, t2, -16)
+        g = phone_master(t1, t2)
         t3 = os.path.join(tmp, "t3.wav")
+        lo = 0.0
         if a.once:
             d = duration(t2)
             run("ffmpeg", "-hide_banner", "-y", "-i", t2, "-af", f"afade=t=out:st={max(0.0, d - 2.5)}:d=2.5", t3)
         else:
-            seamless(t2, t3, a.loop_xfade)
+            xs = decode(t2)
+            off = 0 if a.no_offset else intro_end(xs, SR, a.loop_xfade)
+            y, lo = seamless_np(xs, a.loop_xfade, off)
+            write_wav(t3, y)
         outdir = a.dry or os.path.join(AUD, "music")
         out = os.path.join(outdir, a.name + ".ogg")
-        run("ffmpeg", "-hide_banner", "-y", "-i", t3, "-c:a", "libvorbis", "-q:a", "2", out)
+        if os.path.exists(out):
+            os.remove(out)  # audio/ is hardlinked across worktrees: never write through the link
+        run("ffmpeg", "-hide_banner", "-y", "-i", t3, "-c:a", "libvorbis", "-q:a", "3", out)
+        if not a.once:
+            ok, step, p99 = seam_ok(decode(out), lo)
+            exp = duration(t3)
+            if not ok or abs(duration(out) - exp) > 0.05:
+                sys.exit(f"seam check failed for {out}: step {step:.4f} vs p99 {p99:.4f}, "
+                         f"dur {duration(out):.2f} vs {exp:.2f}")
         if not a.dry:
             add_real(os.path.join(AUD, "music", "REAL.txt"), a.name)
+            set_loop(a.name, lo)
+        print(f"  phone trim {g:+.1f} dB, loop_offset {lo:.2f} s")
     else:
         if not a.trim:
             sys.exit("--trim START:END is required for a jingle")

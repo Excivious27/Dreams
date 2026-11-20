@@ -289,6 +289,8 @@ echo "== art prompts: at most 3 images each =="
 python3 tools/prompt_size_check.py || { echo "Prompt size check failed"; exit 1; }
 echo "== every sound the game asks for exists =="
 python3 tools/sfx_audit.py || { echo "Sound audit failed"; exit 1; }
+echo "== music loop seams (join click + level jump) =="
+python3 tools/music_loop_check.py || { echo "Music loop check failed"; exit 1; }
 echo "== text size floors (7 px) =="
 python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="
