@@ -823,7 +823,7 @@ static func _no_drift(name: String) -> bool:
 
 
 ## Footstep level, and per ground on top: grass and leaves are a soft swish.
-const STEP_DB := -14.0
+const STEP_DB := -10.0  # footsteps were ~-41 LUFS, under every bed (c6_06)
 const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0}
 ## A step may cut the previous one's tail after this long (long gravel/leaf takes
 ## used to swallow every other step).
