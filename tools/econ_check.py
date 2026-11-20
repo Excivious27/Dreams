@@ -131,6 +131,13 @@ if DEC:
     if float(DEC.get('reorder_fee', 0)) < 0:
         fails.append('decor re-order fee below 0')
 
+# 3c) a tempered piece is worth more than its base (c10_07)
+for rs in R.values():
+    if isinstance(rs, list):
+        for r in rs:
+            if r['id'].startswith('temper_') and r['id'][7:] in I and r['give'] in I and val(r['give']) <= val(r['id'][7:]):
+                fails.append('temper worth less: %s %d <= %d' % (r['give'], val(r['give']), val(r['id'][7:])))
+
 # 3b) animal goods are never a dead end: each one goes into at least one recipe (directly or by family)
 ANIMAL_GOODS = ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
 for g in ANIMAL_GOODS:

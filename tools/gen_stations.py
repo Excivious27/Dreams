@@ -535,6 +535,15 @@ for _ in range(3):  # upstream values move downstream ones: settle in a few pass
         if g in cap: new = min(new, cap[g])
         if new != cur:
             econ_log.append('%s %d -> %d' % (g, cur, new)); I[g]['value'] = new
+# Tempered pieces are worth more than their base (c10_07: moon _plus sold below the plain piece).
+for bk2 in ('anvil', 'tannery', 'armory', 'shaper'):
+    for r in books.get(bk2, []):
+        if r['id'].startswith('temper_') and r['give'] in I:
+            base = r['id'][len('temper_'):]
+            if base in I:
+                want = max(int(int(I[base].get('value', 0)) * 1.08), int(I[base].get('value', 0)) + 1)
+                if int(I[r['give']].get('value', 0)) < want:
+                    econ_log.append('%s %s -> %d (temper)' % (r['give'], I[r['give']].get('value'), want)); I[r['give']]['value'] = want
 # Station cards don't promise recipes a tier doesn't add.
 for sid, st in B.items():
     if not isinstance(st, dict) or 'station' not in st or st['station'].get('book') == 'keg': continue

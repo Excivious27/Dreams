@@ -6409,7 +6409,7 @@
   "slot": "head",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2441,
+  "value": 2540,
   "stats": {
    "defense": 7
   },
@@ -6433,7 +6433,7 @@
   "slot": "body",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4233,
+  "value": 4959,
   "stats": {
    "defense": 7
   },
@@ -6456,7 +6456,7 @@
   "slot": "legs",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4105,
+  "value": 4786,
   "stats": {
    "defense": 7
   }
@@ -6478,7 +6478,7 @@
   "slot": "feet",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2441,
+  "value": 2540,
   "stats": {
    "defense": 7
   }
@@ -6500,7 +6500,7 @@
   "slot": "hands",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2313,
+  "value": 2367,
   "stats": {
    "energy": 30
   }
@@ -6522,7 +6522,7 @@
   "slot": "offhand",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4105,
+  "value": 4786,
   "stats": {
    "defense": 7
   }
@@ -6544,7 +6544,7 @@
   "slot": "back",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2441,
+  "value": 2540,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -6567,7 +6567,7 @@
   "slot": "belt",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2313,
+  "value": 2367,
   "stats": {
    "luck": 6
   }
