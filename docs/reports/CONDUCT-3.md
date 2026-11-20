@@ -2,7 +2,7 @@
 
 Run on the personal account with the standing process. 20 read/play-only auditors and a 20-bot playtest went first. Their findings went into 6 file-disjoint fix packages, together with Tom's decisions from 16:40 (Grump variants, Catkins later, crystal babies won over, a themed battlefield per region), his Guide 26 answers (16:54) and his story answers (17:12). After the fixes: one merge, one full check.sh, 20 bots and the playtest. Findings: docs/reports/C3-PACKAGES.md.
 
-**Whole game after CONDUCT 3: about 73% done, 27% remaining.** Battles and campaigns went from 80% to 92%. New scope Tom added today has its own CONDUCTs: trading cards (C19), earned fast travel (C14/C16), the casino side arc and helper automation.
+**Whole game after CONDUCT 3: about 66% done, 34% remaining.** Battles and campaigns rose from 82% to 92%. The rec, community farm and farm start went up too. The total fell because four new systems Tom asked for today now count at 0-10%: trading cards (C19), earned fast travel (C14/C16), the casino arc (C10) and helper automation (C11). Without them the game is about 71%.
 
 ## Audit (20 auditors + 20 bots)
 

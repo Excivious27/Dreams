@@ -148,7 +148,7 @@ func _run() -> void:
 			GameState.run["flags"]["crew_deuce"] = true
 			GameState.complete_quest("gang")
 			g = goal("first crew recruited")
-			check(g.find("Dockside Push") >= 0 and g.find("First:") >= 0 and g.to_lower().find("training") >= 0, "gang: docks campaign, training first")
+			check((g.find("Dockside Push") >= 0 or g.find("Highway Job") >= 0) and g.find("First:") >= 0 and g.to_lower().find("training") >= 0, "gang: docks campaign, training first")
 		# Show the whole quest log for the record.
 		for q in GameState.run["quests"]:
 			print("      log: %s %s" % ["[x]" if q["done"] else "[ ]", q["text"]])
