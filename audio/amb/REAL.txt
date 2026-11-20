@@ -45,3 +45,10 @@ arcade_floor
 spot_pins_far
 spot_cabinet_win
 spot_pins_near
+spot_cow
+spot_cow_2
+spot_hens
+spot_hens_2
+spot_rooster
+spot_rooster_2
+spot_town_bell

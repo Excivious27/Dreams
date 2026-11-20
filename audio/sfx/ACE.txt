@@ -1,6 +1,5 @@
 alert
 bite
-boss_down
 craft_done
 crop_ready
 j_battle_lost
@@ -31,9 +30,6 @@ scroll_tick
 scroll_tick_2
 shop_bell
 sleep
-sparkle
-sparkle_2
-sparkle_3
 tab
 tab_2
 talk_blip

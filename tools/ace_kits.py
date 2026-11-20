@@ -29,7 +29,10 @@ JINGLES = {
     "jin_battle": ["j_battle_won", "j_battle_lost", "j_battle_start", "j_campaign_won"],
 }
 # extra names that reuse a cue
-ALIASES = {"boss_down": "j_victory", "sleep": "j_morning", "craft_done": "j_skill"}
+ALIASES = {"sleep": "j_morning", "craft_done": "j_skill"}
+# C6: these come from real CC0 recordings now (tools/cc0_import.py): never cut them here
+# (boss_down was a copy of j_victory -> the fanfare played twice; sparkle had no shimmer)
+CC0_NOW = {"boss_down", "sparkle", "sparkle_2", "sparkle_3"}
 # kit -> list of (name, takes, rank) ; rank picks notes from bright (0.0) to dark (1.0)
 KITS = {
     "kit_marimba": [("ui_tap", 3, 0.35), ("menu_open", 1, 0.1), ("menu_close", 1, 0.8), ("j_confirm", 1, 0.0),
@@ -52,8 +55,12 @@ def write_ogg(x, sr, dst, q=4):
     with wave.open(tmp, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr)
         w.writeframes((np.clip(x, -1, 1) * 32767).astype(np.int16).tobytes())
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-c:a", "libvorbis", "-q:a", str(q), dst], check=True)
+    out = dst + ".new.ogg"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-c:a", "libvorbis", "-q:a", str(q), out], check=True)
     os.remove(tmp)
+    if os.path.exists(dst):
+        os.remove(dst)  # hardlinked across worktrees: never write through
+    os.rename(out, dst)
 
 
 def fade(seg, sr, fi=0.005, fo=0.5):
@@ -112,6 +119,8 @@ def cut_kit(src, spec, out_dir, done, tmp):
                 sr = w.getframerate()
             x = fade(x, sr, fo=min(0.25, len(x) / sr / 2))
             nm = name if t == 0 else f"{name}_{t + 1}"
+            if nm in CC0_NOW:
+                continue
             write_ogg(x, sr, os.path.join(out_dir, nm + ".ogg"))
             done.append(nm)
 
@@ -137,7 +146,10 @@ def main():
     for al, base in ALIASES.items():
         p = os.path.join(out, base + ".ogg")
         if os.path.exists(p):
-            subprocess.run(["cp", p, os.path.join(out, al + ".ogg")], check=True)
+            q = os.path.join(out, al + ".ogg")
+            if os.path.exists(q):
+                os.remove(q)
+            subprocess.run(["cp", p, q], check=True)
             done.append(al)
     if not a.dry:
         for lst in ("ACE.txt", "REAL.txt"):

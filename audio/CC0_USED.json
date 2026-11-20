@@ -52,6 +52,9 @@
   "bat-screeches/bat_x/flac/bat_02.flac",
   "bat-screeches/bat_x/flac/bat_03.flac"
  ],
+ "beat_tick": [
+  "bigsoundbank/0007.ogg"
+ ],
  "beep": [
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/beep_01.ogg",
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/beep_02.ogg",
@@ -66,6 +69,10 @@
  ],
  "birds_day": [
   "park-ambiences/park_ambience_birds.wav"
+ ],
+ "bleat": [
+  "bigsoundbank/0880.ogg",
+  "bigsoundbank/1377.ogg"
  ],
  "block": [
   "10-impactshield-blocks/impact_-_starninjas_x/impact.2.ogg",
@@ -83,6 +90,10 @@
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_01.ogg",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_04.ogg",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_07.ogg"
+ ],
+ "boss_down": [
+  "muffled-distant-explosion/NenadSimic - Muffled Distant Explosion.wav",
+  "cave-in/cave_in_-_starninjas_0.ogg"
  ],
  "bowl_gutter": [
   "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
@@ -119,6 +130,10 @@
   "cardoorsfx/door_closing.wav",
   "cardoorsfx/door_opening.wav"
  ],
+ "car_horn": [
+  "bigsoundbank/0558.ogg",
+  "bigsoundbank/2721.ogg"
+ ],
  "car_start": [
   "car-engine-start-01/generic_car_startengine.wav"
  ],
@@ -151,9 +166,12 @@
  "cave_in": [
   "cave-in/cave_in_-_starninjas_0.ogg"
  ],
+ "chest_close": [
+  "bigsoundbank/0053.ogg"
+ ],
  "chest_open": [
   "100-cc0-sfx/100-CC0-SFX_0_x/wooded_box_open.ogg",
-  "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/lock_01.ogg"
+  "open-chest-sfx/open chest_0.wav"
  ],
  "chop": [
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/chop.ogg",
@@ -176,6 +194,11 @@
   "202-more-sound-effects/MoreSounds_x/Cloth/Cloth_03.wav",
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/inventory/cloth.wav"
  ],
+ "cluck": [
+  "bigsoundbank/0978.ogg",
+  "bigsoundbank/1039.ogg",
+  "bigsoundbank/0453.ogg"
+ ],
  "coin": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/item_coins_01.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/item_coins_02.ogg",
@@ -183,6 +206,9 @@
  ],
  "cooking": [
   "boiling-water-loops/cooking_without_cover_01_0.ogg"
+ ],
+ "cow": [
+  "bigsoundbank/3221.ogg"
  ],
  "crate_break": [
   "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/crack01.mp3.flac",
@@ -194,7 +220,7 @@
  ],
  "crit": [
   "150-combat-sound-effects/150gameeffectsounds_x/01_combat_melee/Impact_01_s01.wav",
-  "150-combat-sound-effects/150gameeffectsounds_x/01_combat_melee/Impact_02_s01.wav",
+  "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit24.mp3.flac",
   "10-impactshield-blocks/impact_-_starninjas_x/impact.1.ogg"
  ],
  "critter": [
@@ -204,6 +230,10 @@
  ],
  "crow": [
   "crow-caw/crow_caw.wav"
+ ],
+ "dice_roll": [
+  "bigsoundbank/0581.ogg",
+  "bigsoundbank/0582.ogg"
  ],
  "die": [
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/inventory/bubble.wav",
@@ -264,6 +294,9 @@
   "fantasy-weapons-and-apparel-sfx-library/weapons-apparel_x/sfx/belt-buckle-03.wav",
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/inventory/chainmail1.wav"
  ],
+ "fairy_ring": [
+  "bigsoundbank/0040.ogg"
+ ],
  "fireworks": [
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/fw_01.ogg",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/fw_03.ogg",
@@ -321,21 +354,31 @@
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle12.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle15.flac"
  ],
+ "harvest_pluck": [
+  "bigsoundbank/1074.ogg"
+ ],
  "heal": [
   "cure-magic/curemagic_x/Cure1.wav",
   "cure-magic/curemagic_x/Cure3.wav",
   "magic-words-healing-sound-effect/health_restore.wav"
  ],
  "heartbeat": [
-  "heartbeat-single-sound/heartbeat.flac"
+  "bigsoundbank/0218.ogg"
  ],
  "hearth": [
   "fireplace-sound-loop/fire.wav"
+ ],
+ "hens": [
+  "bigsoundbank/0282.ogg",
+  "bigsoundbank/0978.ogg"
  ],
  "hit": [
   "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit01.mp3.flac",
   "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit04.mp3.flac",
   "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit07.mp3.flac"
+ ],
+ "hoof": [
+  "bigsoundbank/1854.ogg"
  ],
  "horn": [
   "bicycle-horn/bicycle-horn-1.wav"
@@ -344,9 +387,7 @@
   "horse-trotting/Trot.ogg"
  ],
  "hurt": [
-  "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit12.mp3.flac",
-  "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit15.mp3.flac",
-  "37-hitspunches/independent_nu_ljudbank-hits_and_punches_x/hits/hit18.mp3.flac"
+  "12-wet-towel-hittingfallingpunching-floor-sounds/wet_towel_on_floor_x/wet_towel_on_floor/wet_towel_on_floor-01.flac"
  ],
  "insect": [
   "insect-sounds/insect_x/insect1.ogg",
@@ -368,6 +409,9 @@
  "keys": [
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/keys_01.ogg",
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/keys_03.ogg"
+ ],
+ "knockout": [
+  "bigsoundbank/0551.ogg"
  ],
  "laser": [
   "150-combat-sound-effects/150gameeffectsounds_x/02_combat_ranged/Laser Pistol 1_s09.wav",
@@ -401,6 +445,9 @@
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_monster_02.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_monster_03.ogg"
  ],
+ "moo": [
+  "bigsoundbank/0845.ogg"
+ ],
  "neon_street": [
   "scifi-city-ambient-loop/busy_cyberworld.ogg"
  ],
@@ -411,6 +458,11 @@
   "book-flip-sounds/BookFlip_SFX_x/BookFlip1.wav",
   "book-flip-sounds/BookFlip_SFX_x/BookFlip3.wav",
   "book-flip-sounds/BookFlip_SFX_x/BookFlip5.wav"
+ ],
+ "peep": [
+  "bigsoundbank/0430.ogg",
+  "bigsoundbank/0431.ogg",
+  "bigsoundbank/0672.ogg"
  ],
  "penguin": [
   "penguin-sounds/penguin_x/flac/penguin_01.flac",
@@ -452,7 +504,7 @@
  "pop": [
   "3-pop-sounds/3pops_x/3pops/pop1.ogg",
   "3-pop-sounds/3pops_x/3pops/pop2.ogg",
-  "bubbles-pop/pop.ogg"
+  "3-pop-sounds/3pops_x/3pops/pop3.ogg"
  ],
  "pot": [
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/metalPot1.ogg",
@@ -472,6 +524,9 @@
  "purr_loop": [
   "cat-purr-meow/cat_purrsleepy_loop.wav"
  ],
+ "quack": [
+  "bigsoundbank/0276.ogg"
+ ],
  "rain_heavy": [
   "amb-rain-loop-2/amb_rain2.flac"
  ],
@@ -484,8 +539,8 @@
   "crowd bed (audio/amb/crowd.ogg)"
  ],
  "reel": [
-  "68-workshop-sounds/workshop_x/workshop/workshop - ratchet1.wav",
-  "68-workshop-sounds/workshop_x/workshop/workshop - ratchet2.wav"
+  "bigsoundbank/1437.ogg",
+  "bigsoundbank/1436.ogg"
  ],
  "reload": [
   "gun-reload-sounds/gunreload1.wav",
@@ -505,14 +560,29 @@
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_stones_02.ogg",
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_stones_03.ogg"
  ],
+ "rooster": [
+  "bigsoundbank/0283.ogg",
+  "bigsoundbank/0104.ogg"
+ ],
+ "rooster@spot": [
+  "bigsoundbank/0283.ogg",
+  "bigsoundbank/0104.ogg"
+ ],
+ "saw": [
+  "bigsoundbank/0559.ogg",
+  "bigsoundbank/0016.ogg"
+ ],
+ "scythe": [
+  "bigsoundbank/0127.ogg"
+ ],
  "seagull": [
   "solo-seagull-sound-effects/Seagull%20Ambient%201.wav",
   "solo-seagull-sound-effects/Seagull%20Ambient%203.wav",
   "solo-seagull-sound-effects/Seagull%20Ambient%205.wav"
  ],
  "servo": [
-  "quick-drill-fix/roboticsqueeze.flac",
-  "60-cc0-sci-fi-sfx/60-sci-fi-sfx_0_x/sfx_05a.ogg"
+  "60-cc0-sci-fi-sfx/60-sci-fi-sfx_0_x/sfx_05a.ogg",
+  "60-cc0-sci-fi-sfx/60-sci-fi-sfx_0_x/sfx_05b.ogg"
  ],
  "sheep": [
   "sheep-baa/sheep_baa.flac"
@@ -531,6 +601,10 @@
   "gunshot-sounds/sounds_x/sounds/shotty.wav",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/shot_02.ogg"
  ],
+ "shot_smg": [
+  "bigsoundbank/0437.ogg",
+  "bigsoundbank/0482.ogg"
+ ],
  "siren": [
   "sirens-and-alarm-noise/siren_0.mp3"
  ],
@@ -545,6 +619,9 @@
  "snore": [
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/snore.ogg",
   "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/snore_02.ogg"
+ ],
+ "sparkle": [
+  "bigsoundbank/0040.ogg"
  ],
  "spell": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/spell_01.ogg",
@@ -646,8 +723,8 @@
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_wood_03.ogg"
  ],
  "stink": [
-  "58-random-sound-effects/Sound%20Effects_x/Fizz_01.wav",
-  "58-random-sound-effects/Sound%20Effects_x/Fizz_02.wav"
+  "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/slime_04.ogg",
+  "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/slime_09.ogg"
  ],
  "stomp": [
   "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/stomp_01.ogg",
@@ -658,10 +735,13 @@
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/Retro Electric Short 03_s05.wav",
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/Retro Electric Short 17_s05.wav"
  ],
+ "swim": [
+  "bigsoundbank/1514.ogg"
+ ],
  "swing": [
-  "swishes-sound-pack/swishes_x/swishes/swish-1.wav",
-  "swishes-sound-pack/swishes_x/swishes/swish-2.wav",
-  "swishes-sound-pack/swishes_x/swishes/swish-3.wav"
+  "bigsoundbank/0128.ogg",
+  "swish-bamboo-stick-weapon-swhoshes/swoshes_x/swosh-03.flac",
+  "swish-bamboo-stick-weapon-swhoshes/swoshes_x/swosh-08.flac"
  ],
  "swing_heavy": [
   "swish-bamboo-stick-weapon-swhoshes/swoshes_x/swosh-05.flac",
@@ -692,12 +772,21 @@
  ],
  "timber": [
   "tree-chop-fall-thud/chop-tree-fall.ogg",
-  "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/wood_falling_01.ogg"
+  "bigsoundbank/2750.ogg"
  ],
  "tools": [
   "68-workshop-sounds/workshop_x/workshop/workshop - tool clatter.wav",
-  "68-workshop-sounds/workshop_x/workshop/workshop - tool rummaging.wav",
-  "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/tools_01.ogg"
+  "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/wood_hammer_02.ogg",
+  "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/tools_05.ogg"
+ ],
+ "town_bell": [
+  "bigsoundbank/0830.ogg"
+ ],
+ "town_bell@spot": [
+  "bigsoundbank/0830.ogg"
+ ],
+ "town_bell_far": [
+  "bigsoundbank/0830.ogg"
  ],
  "train_depart": [
   "bell-dingschimes/station_depart.wav"
@@ -719,9 +808,19 @@
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/battle/sword-unsheathe2.wav",
   "rpg-sound-pack/rpg_sound_pack_x/RPG Sound Pack/battle/sword-unsheathe3.wav"
  ],
+ "war_drum": [
+  "horde-war-drums-loop/horde_war_drums_by_william_hector.wav"
+ ],
+ "war_horn": [
+  "their-coming-generic-horn-sound/theircoming_0.ogg",
+  "their-coming-generic-horn-sound/theircoming3_0.ogg"
+ ],
+ "war_horn_gang": [
+  "bigsoundbank/2721.ogg"
+ ],
  "water": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/water-pour-01.wav",
-  "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/water-vial-fill-01.wav"
+  "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/loop_water_02.ogg"
  ],
  "water_lap": [
   "park-ambiences/park_ambience_river.wav"
@@ -739,6 +838,12 @@
  "whimper": [
   "dog-sounds-pauliuw/sad_dog.wav",
   "dog-sounds-pauliuw/sad_dog_1.wav"
+ ],
+ "whinny": [
+  "bigsoundbank/0460.ogg"
+ ],
+ "whistle": [
+  "bigsoundbank/1170.ogg"
  ],
  "wind_soft": [
   "park-ambiences/park_ambience_wind.wav"
