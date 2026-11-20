@@ -114,7 +114,10 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 	# Placed once per map (this runs from _draw, which repeats on every redraw).
 	if not m.has_meta("wx_dressed"):
 		m.set_meta("wx_dressed", true)
-		weather_dressing(m, seed_v + 99, avoid)
+		# Deferred: the map's paths (step_word / ground_seam) are drawn later in draw_map,
+		# and drifts and puddles must stay off them.
+		var host: GameMap = m._painter_of if m._painter_of != null else m
+		weather_dressing.call_deferred(host, seed_v + 99, avoid)
 
 
 ## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts
@@ -125,19 +128,44 @@ static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) ->
 	# A region's own weather wins over the calendar (no puddles in snowy colony_ice or the clear sky).
 	var rd: Variant = m.get("R")
 	var ov := str((rd as Dictionary).get("weather", "")) if rd is Dictionary else ""
-	var winter := GameState.season() == "winter" or ov in ["snow", "blizzard"]
+	# The look season (a region's own "season") rules the ground, not the calendar:
+	# jungles, deserts and the sky never get snowdrifts (c5_14 #4).
+	var winter := (GameState.look_se() == "winter" and not ov in WARM_WEATHER) or ov in ["snow", "blizzard"]
 	var wet := GameState.is_wet() and ov in ["", "rain", "storm"]
 	if not wet and not winter:
+		return
+	if not is_instance_valid(m):
 		return
 	var n := int(m.cols * m.rows * (0.012 if wet else 0.008))
 	for i in n:
 		var c := Vector2i(rng.randi_range(2, m.cols - 3), rng.randi_range(2, m.rows - 3))
 		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
 			continue
+		if on_path(m, c):
+			continue  # no drifts or puddles on paths, roads or plaza paving (c5_14 #2)
 		if wet and Art.has("props", "puddle_storm_0") and int(Art.info("props", "puddle_storm_0").get("frames", 1)) > 1:
 			_puddle(m, c, rng, GameState.weather_today() == "storm")
 		elif winter and Art.has("props", "snowdrift_0"):
 			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
+
+
+## Weathers that mean a warm place: no winter dressing even in a winter month.
+const WARM_WEATHER := ["sun", "dust", "fireflies"]
+
+
+## A drawn path, road or paved cell (tile paths mark step_word, soft paths ground_seam,
+## exit corridors _ext_paths). Weather dressing and decor keep off these.
+static func on_path(m: GameMap, c: Vector2i) -> bool:
+	if m.step_word.has(c) or m._ext_paths.has(c):
+		return true
+	var sm := str(m.ground_seam.get(c, ""))
+	if sm == "":
+		return false
+	# A soft ground patch that is the map's base (grass/moss/snow fields) is not a path.
+	for w in ["path", "road", "pave", "cobble", "stone", "flag", "brick", "plank", "trodden", "dirt", "sand_path", "asphalt"]:
+		if w in sm:
+			return true
+	return false
 
 
 ## One rain puddle, flat on the ground. Uses the redrawn 3-frame storm puddles
