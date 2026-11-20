@@ -310,7 +310,8 @@ STANDS = {
     # last two cabinets. A visitor at a cabinet steps aside when you ask for a go.
     "rec": {"cab": [[8, 3], [11, 3], [10, 3], [13, 3], [9, 3], [12, 3]],
             "lobby": [[5, 10], [9, 13], [9, 10], [4, 12], [10, 7], [6, 6]]},
-    "rec_up": {"lane": [[3, 12], [6, 12], [10, 12], [2, 13], [5, 13], [9, 13]],
+    # (partners two cells back and aside, so two visitors' bubbles never stack: c9_14)
+    "rec_up": {"lane": [[3, 12], [6, 12], [10, 12], [1, 14], [4, 14], [8, 14]],
                "lobby": [[6, 14], [9, 14], [8, 13], [14, 15], [12, 15], [7, 15]]},
 }
 
