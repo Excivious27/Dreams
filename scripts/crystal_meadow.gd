@@ -24,7 +24,7 @@ func build() -> void:
 	rows = 26
 	pad = 6
 	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
-	music_track = "cattopia" if GameState.is_penguins() else "rain"
+	music_track = "cattopia" if GameState.is_penguins() else GameMap.first_track(["outskirts", "hideout", "rain"])  # gang turf song (c6_02)
 	add_exit(MEADOW_EXIT, "meadow", Vector2(51 * TILE, 15 * TILE + 8), "left", "◀ meadow")
 	set_thing(EAST_GATE.x, EAST_GATE.y, {"type": "gate", "hint": "A: the way east"})
 	set_thing(EAST_GATE.x, EAST_GATE.y + 1, {"type": "gate", "hint": "A: the way east"})

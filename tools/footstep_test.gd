@@ -42,13 +42,20 @@ func _run() -> void:
 		["uptown", "gangsters", "grass", 0.2, 1.0], ["uptown", "gangsters", "stone", 0.02, 0.8],
 		["highlands", "penguins", "grass", 0.4, 1.0], ["meadow", "penguins", "grass", 0.5, 1.0],
 		["farm", "penguins", "grass", 0.4, 1.0], ["neon", "gangsters", "stone", 0.5, 1.0],
-		["docks", "gangsters", "stone", 0.4, 1.0], ["docks", "gangsters", "wood", 0.03, 0.6], ["beach", "penguins", "sand", 0.99, 1.0]]
+		["docks", "gangsters", "stone", 0.4, 1.0], ["docks", "gangsters", "wood", 0.03, 0.6], ["beach", "penguins", "sand", 0.8, 1.0], ["beach", "penguins", "wood", 0.0, 0.2],
+		# C6 (c6_06): seamless region ground, the marsh's dry paths, winter only on soft natural ground.
+		["desert_dune_sea", "penguins", "sand", 0.5, 1.0], ["gilt_casino_row", "gangsters", "stone", 0.5, 1.0],
+		["iron_freight_yards", "gangsters", "grass", 0.0, 0.3], ["marsh", "penguins", "mud", 0.0, 0.9],
+		["farm", "penguins", "snow", 0.4, 1.0, 92], ["gilt_casino_row", "gangsters", "snow", 0.0, 0.2, 92],
+		["iron_tunnels", "gangsters", "snow", 0.0, 0.05, 92]]
 	var shares := {}
 	for cs: Array in cases:
-		var key := "%s/%s" % [cs[1], cs[0]]
+		var day := int(cs[5]) if cs.size() > 5 else 1
+		var key := "%s/%s/d%d" % [cs[1], cs[0], day]
 		if not shares.has(key):
 			GameState.new_run(str(cs[1]), "man", "Tester", "Dreamhollow", "Pip")
 			GameState.run["intro_done"] = true
+			GameState.run["day"] = day
 			for f in ["cm_seen", "mine_open_1", "meow_taught", "intro_done", "gangsters_intro", str(cs[0]) + "_seen"]:
 				GameState.run["flags"][f] = true
 			GameMap.next_spawn = Vector2.ZERO
@@ -60,6 +67,11 @@ func _run() -> void:
 			print("%s: %s" % [key, str(shares[key])])
 		var s: float = float(shares[key].get(cs[2], 0.0))
 		check(s >= float(cs[3]) and s <= float(cs[4]), "%s %s share %.2f not in [%.2f, %.2f]" % [key, cs[2], s, cs[3], cs[4]])
+	# Exact texture names (c6_06).
+	check(Footsteps.seam_word("cobble_moss") == "stone", "cobble_moss is stone")
+	check(Footsteps.seam_word("floor_carpet") == "grass", "carpet is soft")
+	check(Footsteps.seam_word("cave_crystal_floor") == "stone", "crystal cave floor is stone")
+	check(Footsteps.seam_word("cave_earth_floor") == "dirt", "earth cave floor is dirt")
 	# Words map to real sounds.
 	for w: String in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves"]:
 		check(ResourceLoader.exists("res://audio/sfx/step_%s.ogg" % w), "step_%s exists" % w)

@@ -35,6 +35,27 @@ const MEGA_CAVES := ["frost_caverns", "gilt_vaults", "iron_tunnels", "desert_sun
 ## Mega regions with no birds, crickets or frogs anywhere (dry desert); regions.json "quiet": true adds more.
 const QUIET_REGIONS := ["sunscorch"]
 const WILD_BEDS := ["birds_dawn", "birds_day", "crickets", "frogs"]
+## Rooms with a fireplace (the hearth bed plays only here, plus the farmhouse) (c6_07).
+const HEARTH_ROOMS := ["cottage_a", "cottage_b", "cottage_c", "hazel_house", "inn", "lodge", "mansion", "moss_hut",
+	"tam_hut", "river_hut", "fishing_hut", "sel_camp", "lighthouse"]
+## Themed battlefields (bf_themes FIELDS): their own beds, and whether wildlife/caves apply (c6_07).
+const BF_AMB := {
+	"bf_station_deck": {"amb": {"space": -16.0, "machines": -24.0}, "quiet": true},
+	"bf_ash_wastes": {"amb": {"wind_soft": -12.0}, "quiet": true},
+	"bf_sewer_works": {"amb": {"cave": -16.0, "basement_drips": -18.0}, "cave": true},
+	"bf_reef_shallows": {"amb": {"waves": -9.0}}, "bf_kelp_beds": {"amb": {"waves": -10.0}},
+	"bf_rail_yards": {"amb": {"city_hum": -18.0, "machines": -26.0}, "urban": true},
+	"bf_uptown_plaza": {"amb": {"city_hum": -18.0, "neon_street": -20.0}, "urban": true},
+	"bf_neon_block": {"urban": true}, "bf_dockside": {"urban": true},
+	"bf_highland_pass": {"amb": {"wind_soft": -13.0}}, "bf_cloud_stair": {"amb": {"wind_soft": -11.0}, "quiet": true},
+	"bf_frostfield": {"amb": {"wind_soft": -11.0}}, "bf_jungle_grove": {"amb": {"jungle_insects": -15.0}},
+	"bf_river_ford": {"amb": {"river": -15.0}}, "bf_quarry_cut": {"amb": {"wind_soft": -16.0}, "quiet": true},
+}
+## Region looks that are towns and cities: no birds, crickets or frogs (c6_07).
+const URBAN_STYLES := ["city", "chrome", "clockwork"]
+const URBAN_REGIONS := ["giltcity", "ironline"]
+## Beds that stop under rain and snow, and the ones that are night/day only, wherever they come from.
+const NIGHT_BEDS := ["crickets", "frogs", "campfire"]
 
 
 ## The map's region data (regions.json entry), or {}.
@@ -52,6 +73,8 @@ static func is_cave(m: GameMap) -> bool:
 	var id := m.scene_id()
 	if id in CAVE_MAPS:
 		return true
+	if bool((BF_AMB.get(id, {}) as Dictionary).get("cave", false)):
+		return true
 	var rd := _rd(m)
 	return bool(rd.get("cave", id in MEGA_CAVES))
 
@@ -59,10 +82,44 @@ static func is_cave(m: GameMap) -> bool:
 ## Outdoors but no wildlife sounds: QUIET_MAPS, caves, regions marked quiet / dry.
 static func is_quiet(m: GameMap) -> bool:
 	var id := m.scene_id()
-	if id in QUIET_MAPS or is_cave(m):
+	if id in QUIET_MAPS or is_cave(m) or is_urban(m):
+		return true
+	if bool((BF_AMB.get(id, {}) as Dictionary).get("quiet", false)):
 		return true
 	var rd := _rd(m)
 	return bool(rd.get("quiet", str(rd.get("mega", "")) in QUIET_REGIONS))
+
+
+## A town or city map (Valley streets, Gilt City, Ironline, urban battlefields): no countryside wildlife.
+static func is_urban(m: GameMap) -> bool:
+	var id := m.scene_id()
+	if id in CITY_MAPS or bool((BF_AMB.get(id, {}) as Dictionary).get("urban", false)):
+		return true
+	var rd := _rd(m)
+	if bool(rd.get("urban", false)) or str(rd.get("mega", "")) in URBAN_REGIONS:
+		return true
+	var th: Variant = rd.get("theme")
+	return th is Dictionary and str((th as Dictionary).get("style", "")) in URBAN_STYLES
+
+
+## May a wildlife/weather-sensitive bed play now? The same gates for built-in and region beds.
+static func wild_ok(bed: String, ph: String, se: String, wet: bool, snowy: bool) -> bool:
+	match bed:
+		"crickets":
+			return ph in ["dusk", "night"] and se in ["spring", "summer", "fall"] and not wet and not snowy
+		"frogs":
+			return ph in ["dusk", "night"] and se in ["spring", "summer"] and not snowy
+		"birds_day":
+			return ph == "day" and se != "winter" and not wet and not snowy
+		"birds_dawn":
+			return ph == "dawn" and se != "winter" and not wet and not snowy
+		"campfire":
+			return ph in ["dusk", "night"] and not wet
+		"leaves":
+			return not wet and not snowy
+		"jungle_insects":
+			return se != "winter"
+	return true
 
 
 static func instance(tree: SceneTree) -> Ambience:
@@ -142,6 +199,7 @@ func _evaluate() -> Dictionary:
 	var out := {}
 	var m := _map()
 	if m == null or _muted() or Epilogue.showing:
+		_set_duck(0.0)  # never leave the night/storm dip on the ending songs (c6_07)
 		return out
 	var id := m.scene_id()
 	var t := int(GameState.run.get("time", 480))
@@ -159,6 +217,7 @@ func _evaluate() -> Dictionary:
 	var outdoors := m.has_sky and id not in ["house", "interior"]
 	var gang := Racket.on()
 	var wild := outdoors and not is_quiet(m)
+	var urban := is_urban(m)
 	if outdoors:
 		var near := _water_near(m)
 		if wild:
@@ -168,10 +227,16 @@ func _evaluate() -> Dictionary:
 				out["birds_day"] = -16.0 - (4.0 if se == "fall" else 0.0)
 			if ph in ["dusk", "night"] and se in ["spring", "summer", "fall"] and not wet and id not in CITY_MAPS:
 				out["crickets"] = -14.0 - (4.0 if se == "spring" else 0.0)
-			if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id in ["marsh", "bf_bog_crossing"]):
-				out["frogs"] = -16.0 + 6.0 * (near - 1.0)
+			if ph == "night" and se in ["spring", "summer"] and not snowy and id not in SEA_MAPS and (near > 0.3 or id in ["marsh", "bf_bog_crossing"]):
+				out["frogs"] = -16.0 + 6.0 * (near - 1.0)  # fresh water only: no frogs at the salt docks
 		if (se == "winter" and not deep) or id in WINDY_MAPS or w == "wind":
-			out["wind_soft"] = -10.0 if w == "wind" else -14.0
+			# Winter wind by place: open ground gusts, sheltered streets and woods are calmer; nights a little quieter.
+			var wdb := -14.0
+			if se == "winter" and w != "wind":
+				wdb = -12.0 if id in ["mountain", "meadow", "beach", "highlands", "crystal_meadow"] else (-18.0 if id in ["town", "forest"] or urban else -14.0)
+				if ph == "night":
+					wdb -= 2.0
+			out["wind_soft"] = -10.0 if w == "wind" else wdb
 		if w == "blizzard" or id == "colony_ice":
 			out["wind_strong"] = -6.0
 		if w == "rain":
@@ -186,11 +251,11 @@ func _evaluate() -> Dictionary:
 			out["lava"] = -18.0
 		if id == "wastes" or (str(_rd(m).get("mega", "")) in QUIET_REGIONS and not cave):
 			out["wind_soft"] = -12.0  # dry lands: a hot wind instead of birds
-		if w == "leaves" or (se == "fall" and id == "forest"):
-			out["leaves"] = -18.0
+		if (w == "leaves" or (se == "fall" and id == "forest")) and not wet and not snowy:
+			out["leaves"] = -18.0 - (6.0 if ph == "night" else 0.0)
 		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and not wet:
 			if GameState.festival_today() != "":
-				out["crowd"] = -14.0
+				out["crowd"] = -14.0 - (10.0 * clampf(float(t - 22 * 60) / 60.0, 0.0, 1.0))  # tapers 22:00-23:00
 			else:
 				out["town_day"] = -20.0
 		if gang and id in CITY_MAPS:
@@ -205,16 +270,22 @@ func _evaluate() -> Dictionary:
 		if id in ["house", "interior"]:
 			if GameState.is_wet():
 				out["rain_roof"] = -16.0
-			if se in ["fall", "winter"] or ph == "night":
+			var room := str(m.get("interior_id")) if m.get("interior_id") != null else ""
+			if (id == "house" or room in HEARTH_ROOMS) and (se in ["fall", "winter"] or ph == "night"):
 				out["hearth"] = -18.0
+			if w == "storm" and out.has("rain_roof"):
+				out["rain_roof"] = -12.0  # a storm drums harder than drizzle
 	if cave:
 		out["cave"] = -14.0
 		var th: Dictionary = m.get("theme") if m.get("theme") is Dictionary else {}
-		var feat := str(th.get("feat", ""))
-		if feat == "lava":
+		var fv: Variant = th.get("feat", [])
+		var feat: Array = fv if fv is Array else [str(fv)]  # mine THEMES feat is an Array (c6_07)
+		if "lava" in feat:
 			out["lava"] = -14.0
-		elif "crystal" in str(th.get("cave", "")):
+		elif "crystals" in feat or "crystal" in str(th.get("cave", "")):
 			out["crystal_hum"] = -20.0
+		if "water" in feat:
+			out["basement_drips"] = -20.0  # flooded floors: water in the dark
 	if id in ["moon", "station"]:
 		out["space"] = -16.0
 	# CC0 recordings (tools/cc0_import.py): rivers, fires, streets, jungles, marsh.
@@ -230,7 +301,7 @@ func _evaluate() -> Dictionary:
 			out["neon_street"] = -16.0
 		if id in ["countryside", "highlands", "mountain"] and not wet and ph != "night":
 			out["wind_soft"] = maxf(float(out.get("wind_soft", -40.0)), -18.0)
-		if GameState.festival_today() != "" and id == "town" and ph == "night":
+		if GameState.festival_today() != "" and id == "town" and ph == "night" and not wet:
 			out["campfire"] = -20.0
 	elif id == "interior":
 		var kind := str(m.get("interior_id")) if m.get("interior_id") != null else ""
@@ -243,6 +314,10 @@ func _evaluate() -> Dictionary:
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
 	# "amb_day" / "amb_night" (C4) take over from "amb" by time of day (a casino street is busy by
 	# day and quiet at night); caves and quiet lands never take birds, crickets or frogs.
+	if outdoors and BF_AMB.has(id):
+		var bfa: Dictionary = (BF_AMB[id] as Dictionary).get("amb", {})
+		for k: String in bfa:
+			out[k] = float(bfa[k])
 	var rdd := _rd(m)
 	var night := ph in ["dusk", "night"]
 	var bed_key := "amb"
@@ -257,8 +332,10 @@ func _evaluate() -> Dictionary:
 				continue
 			if quiet and k in WILD_BEDS:
 				continue
-			if deep and k in SURFACE_BEDS:
+			if (deep or cave) and k in SURFACE_BEDS:
 				continue  # C5: a mega cave's region beds (wind, streets) stay on the surface
+			if not wild_ok(k, ph, se, wet, snowy):
+				continue  # region beds follow the clock, season and weather like the built-in ones (c6_07)
 			var db := float(rdd[bed_key][k])
 			if night and bed_key == "amb" and k in ["crowd", "town_day"]:
 				db -= 10.0  # no night list: the streets thin out after dark
@@ -277,10 +354,16 @@ func _evaluate() -> Dictionary:
 		duck = -4.0
 	if w in ["storm", "blizzard"] and outdoors:
 		duck = minf(duck, -3.0) - (1.0 if duck < 0.0 else 0.0)  # a night storm dips more than a calm night
+	if cave or not outdoors:
+		duck = 0.0
+	_set_duck(duck)
+	return out
+
+
+func _set_duck(db: float) -> void:
 	var mu := Music._inst
 	if mu and is_instance_valid(mu):
-		mu.set_duck(duck)
-	return out
+		mu.set_duck(db)
 
 
 func _apply_targets() -> void:
@@ -333,24 +416,41 @@ func _spots(delta: float) -> void:
 	var calm := w not in ["rain", "storm", "blizzard", "snow"]
 	var rules := []  # [spot, min_s, max_s, dB]
 	if outdoors and calm and ph == "night" and id in OWL_MAPS:
-		rules.append(["owl", 25.0, 60.0, -8.0])
+		rules.append(["owl", 25.0, 60.0, -14.0])
 	if outdoors and calm and not is_quiet(m) and GameState.look_se() == "winter" and ph == "day":
-		rules.append(["bird_chirp", 8.0, 20.0, -12.0])
-	if id == "crystal_meadow" and GameState.is_penguins():
-		rules.append(["penguin_chatter", 10.0, 25.0, -10.0])
+		rules.append(["bird_chirp", 8.0, 20.0, -18.0])
+	var se := GameState.look_se()
+	if id == "crystal_meadow" and GameState.is_penguins() and calm and ph != "night":
+		rules.append(["penguin_chatter", 10.0, 25.0, -14.0])
 	if is_cave(m):
 		rules.append(["drip", 3.0, 9.0, -10.0])
 	if outdoors and calm and id in SEA_MAPS and ph != "night":
-		rules.append(["gull", 10.0, 26.0, -12.0])
+		rules.append(["gull", 10.0, 26.0, -16.0])
 		rules.append(["wave", 7.0, 16.0, -14.0])
 	if outdoors and calm and ph == "day" and id in ["farm", "countryside", "orchard_hills", "meadow", "community_farm"] and GameState.look_se() != "winter":
 		rules.append(["crow", 30.0, 70.0, -14.0])
-	if outdoors and ph in ["dusk", "night"] and id in ["marsh", "lake", "bf_bog_crossing"]:
+	if outdoors and ph in ["dusk", "night"] and id in ["marsh", "lake", "bf_bog_crossing"] and (se in ["spring", "summer"] or (se == "fall" and ph == "dusk")) and w not in ["snow", "blizzard"]:
 		rules.append(["frog", 6.0, 16.0, -12.0])
 	if outdoors and calm and ph == "day" and GameState.look_se() == "summer" and id in ["jungle", "forest", "meadow", "orchard_hills"]:
 		rules.append(["cicada", 20.0, 45.0, -16.0])
-	if outdoors and calm and id in ["jungle", "marsh"]:
+	if outdoors and calm and id in ["jungle", "marsh"] and se != "winter":
 		rules.append(["insect", 12.0, 30.0, -16.0])
+	if not outdoors and id in ["house", "interior"] and GameState.weather_today() == "storm":
+		rules.append(["thunder", 20.0, 50.0, -16.0])  # muffled thunder through the walls (c6_07)
+	# Region spot lists (regions.json "spots": [[spot, min_s, max_s, dB, phase?]], mega areas).
+	var rspots: Variant = _rd(m).get("spots")
+	if outdoors and rspots is Array:
+		for r: Variant in rspots:
+			if r is Array and (r as Array).size() >= 4:
+				var ra := r as Array
+				var need := str(ra[4]) if ra.size() > 4 else ""
+				if need == "night" and ph not in ["dusk", "night"]:
+					continue
+				if need == "day" and ph not in ["dawn", "day"]:
+					continue
+				if not calm or (str(ra[0]) in ["frog", "insect", "cicada"] and se == "winter"):
+					continue
+				rules.append([str(ra[0]), float(ra[1]), float(ra[2]), float(ra[3])])
 	if id == "interior" and m.get("interior_id") != null:
 		rules.append_array(RecAudio.spots(str(m.get("interior_id"))))  # pins through the ceiling, a cabinet win
 	for r: Array in rules:
@@ -363,21 +463,29 @@ func _spots(delta: float) -> void:
 	var day := int(GameState.run.get("day", 1))
 	if id == "farm" and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
 		_rooster_day = day
-		_spot("rooster", -6.0)
+		_spot("rooster", -10.0)
 
 
 func _spot(name: String, db: float) -> void:
 	var m := _map()
-	var s := _stream("res://audio/amb/spot_%s.ogg" % name)  # CC0 recording (tools/cc0_import.py)
-	if s == null:
-		s = _stream("res://audio/amb/spot_%s.wav" % name)
+	# Every take of the spot (spot_<n>, spot_<n>_2, spot_<n>_3; .ogg CC0 recordings win over .wav).
+	var takes := []
+	for suf: String in ["", "_2", "_3"]:
+		var st := _stream("res://audio/amb/spot_%s%s.ogg" % [name, suf])
+		if st == null:
+			st = _stream("res://audio/amb/spot_%s%s.wav" % [name, suf])
+		if st != null:
+			takes.append(st)
+	var s: AudioStream = takes.pick_random() if not takes.is_empty() else null
 	if s == null or m == null or m.player == null:
 		return
 	var p := AudioStreamPlayer2D.new()
 	p.stream = s
 	p.bus = "Ambience" if AudioServer.get_bus_index("Ambience") != -1 else "SFX"
 	p.volume_db = db
-	p.max_distance = 400.0
+	p.max_distance = 260.0
+	p.attenuation = 1.6  # the 60-140 px offset reads as distance, not a pop in the ear (c6_07)
+	p.pitch_scale = randf_range(0.94, 1.06) if name != "thunder" else randf_range(0.8, 0.9)
 	var ang := randf() * TAU
 	p.position = m.player.position + Vector2(cos(ang), sin(ang)) * randf_range(60.0, 140.0)
 	if name == "thunder":
