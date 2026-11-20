@@ -311,4 +311,4 @@ func _place_props() -> void:
 	# The mine mouth: a big timbered portal dressed with rocks, lanterns, rails and
 	# an ore cart (falls back to the small prop when the portal art is missing).
 	preload("res://scripts/mine_entrance.gd").dress(self, MINE_DOOR)
-	prop("nature", "log", Vector2i(6, 13), 1)
+	prop("nature", WorldGen.winter_look("nature", "log"), Vector2i(6, 13), 1)

@@ -117,7 +117,37 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 		# Deferred: the map's paths (step_word / ground_seam) are drawn later in draw_map,
 		# and drifts and puddles must stay off them.
 		var host: GameMap = m._painter_of if m._painter_of != null else m
-		weather_dressing.call_deferred(host, seed_v + 99, avoid)
+		_after_paths.call_deferred(host, seed_v + 99, avoid)
+
+
+## Runs once the map's paths are drawn: scatter off the paths, then weather dressing.
+static func _after_paths(m: GameMap, seed_v: int, avoid: Dictionary) -> void:
+	if not is_instance_valid(m):
+		return
+	clear_paths(m)
+	weather_dressing(m, seed_v, avoid)
+
+
+## Scatter (trees, rocks, logs, stumps, bushes, boulder-sized props) that landed on a
+## drawn path is removed: paths stay walkable and readable (c5_12 #5).
+static func clear_paths(m: GameMap) -> int:
+	var n := 0
+	for c: Vector2i in m.props.keys():
+		if not on_path(m, c):
+			continue
+		var t := str(m.things.get(c, {}).get("type", ""))
+		var node: Variant = m.props[c]
+		if t in ["tree", "rock", "log", "stump", "bush", "weeds", "grove"] or (t == "" and _small_prop(node) and m.blocked.has(c)):
+			m.things.erase(c)
+			m.blocked.erase(c)
+			m.hard.erase(c)
+			m.props.erase(c)
+			if node is Node and is_instance_valid(node):
+				(node as Node).queue_free()
+			n += 1
+	if n > 0:
+		m._flows.clear()
+	return n
 
 
 ## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts
@@ -299,9 +329,9 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 			m.set_thing(c.x, c.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 			m.prop("nature", nm, c)
 		elif r < 0.5:
-			var nm: String = {"fall": "log_fall", "summer": "logs"}.get(season, "log")
+			var nm: String = {"fall": "log_fall", "summer": "logs", "winter": "log_snow"}.get(season, "log")
 			m.set_thing(c.x, c.y, {"type": "log", "hp": 2, "hint": "A: chop"})
-			m.prop("nature", nm if Art.has("nature", nm) else "log", c, 1 if nm == "log" else 0)
+			m.prop("nature", nm if Art.has("nature", nm) else "log", c, 1 if nm in ["log", "log_snow"] else 0)
 		elif r < 0.62:
 			var nm: String = {"fall": "stump_fall", "winter": "stump_snow"}.get(season, "stump")
 			m.set_thing(c.x, c.y, {"type": "stump", "hp": 2, "hint": "A: chop"})
@@ -341,6 +371,21 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
+
+
+## The winter look of a sprite when the look season is winter and the art exists:
+## buildings/house(_2/_3)_snow, woodcutter_hut_snow, fountain_frozen,
+## props/fountain2_frozen, props/planter2_N_winter, nature/log_snow (C5 P3).
+const WINTER_LOOKS := {"house": "house_snow", "house_2": "house_2_snow", "house_3": "house_3_snow", "woodcutter_hut": "woodcutter_hut_snow",
+	"fountain": "fountain_frozen", "fountain2": "fountain2_frozen", "planter2_0": "planter2_0_winter", "planter2_1": "planter2_1_winter",
+	"planter2_2": "planter2_2_winter", "planter2_3": "planter2_3_winter", "log": "log_snow"}
+
+
+static func winter_look(group: String, name: String) -> String:
+	if GameState.look_se() != "winter" or not WINTER_LOOKS.has(name):
+		return name
+	var w: String = WINTER_LOOKS[name]
+	return w if Art.has(group, w) else name
 
 
 ## Ground birds whose walk strip is a flying pose: they take off only when startled.
@@ -397,7 +442,9 @@ class Critter:
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
-			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0})
+			if Art.has(g, "waddle"):
+				anims["waddle"] = "waddle"  # ducks: a ground walk; their walk strip is the flight
+			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0, "waddle": 7.0})
 			# Ground animals' idle strips are separate poses, not a loop: hold
 			# the first pose and only now and then glance about (no twitching).
 			var sf := _anim.sprite_frames
@@ -437,7 +484,7 @@ class Critter:
 		var spd := 60.0 if _flee else 14.0
 		if _lifts and not _flee:
 			# A heron stands still in the shallows; a duck potters slowly.
-			spd = 0.0 if kind == "heron" else 6.0
+			spd = 0.0 if kind == "heron" else 10.0
 		if (_flyer or _lifts) and _flee:
 			spd = 110.0
 		if kind.begins_with("butterfly") or kind == "bee":
@@ -459,7 +506,7 @@ class Critter:
 			var moving := _dir != Vector2.ZERO and spd > 0.0
 			var want := "walk" if moving else "idle"
 			if _lifts:
-				want = "walk" if _flee else "idle"  # the walk strip is the flight
+				want = "walk" if _flee else ("waddle" if moving and _anim.sprite_frames.has_animation("waddle") else "idle")  # walk = flight
 			if _anim.animation != want:
 				_anim.play(want)
 			# Legs keep pace with the ground (no sliding at a stroll, no

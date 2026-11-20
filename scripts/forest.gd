@@ -136,7 +136,7 @@ func after_ready() -> void:
 	else:
 		prop("nature", "forest_shrine", SHRINE, 0, 2.0)
 	if Art.has("buildings", "woodcutter_hut"):
-		prop("buildings", "woodcutter_hut", Vector2i(26, 24), 4, 0.0, true, 0.85)  # town-sized (Rook's lodge is the same hut at 1.25)
+		prop("buildings", WorldGen.winter_look("buildings", "woodcutter_hut"), Vector2i(26, 24), 4, 0.0, true, 0.85)  # town-sized (Rook's lodge is the same hut at 1.25)
 		prop("nature", "stump_axe", Vector2i(33, 26))
 		prop("nature", "giant_log", Vector2i(27, 29), 3)
 		set_thing(28, 25, {"type": "note", "text": "The woodcutter's hut. Axe in the stump, kettle on, nobody home. A list on the door: 'oak 40, pine 20, birch 10' with the first line crossed out.", "hint": "A: the hut"}, false)
