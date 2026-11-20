@@ -210,13 +210,13 @@ def room():
             things.append({"type": "museum", "act": "case", "item": item, "cell": list(c), "hint": "A: look", "solid": True})
             if w["case"] == "museum_tank":
                 if i % 2 == 0:
-                    props.append({"name": "museum_tank", "cell": list(c), "w": 2})
+                    props.append({"name": "museum_tank", "cell": list(c), "w": 1})  # w = extra cells
             else:
-                props.append({"name": w["case"], "cell": list(c), "w": 1})
+                props.append({"name": w["case"], "cell": list(c)})
     props += [{"name": "museum_rope", "cell": [7, 3], "solid": False}, {"name": "museum_rope", "cell": [10, 3], "solid": False},
-              {"name": "museum_counter", "cell": [11, 13], "w": 2},
+              {"name": "museum_counter", "cell": [11, 13], "w": 1},
               {"name": "plant2_b", "cell": [1, 13]}, {"name": "plant2_b", "cell": [16, 13]},
-              {"name": "rug_rect_green", "cell": [8, 7], "w": 2, "solid": False}]
+              {"name": "rug_rect_green", "cell": [8, 7], "w": 1, "solid": False}]
     things += [{"type": "museum", "act": "counter", "cell": [11, 13], "hint": "A: donation tray", "solid": True},
                {"type": "museum", "act": "counter", "cell": [12, 13], "hint": "A: donation tray", "solid": True},
                {"type": "museum", "act": "plaque", "wing": "minerals", "cell": [3, 2], "hint": "A: read the plaque", "solid": False},

@@ -16,16 +16,18 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/interior.tscn")
 	for i in 40:
 		await process_frame
+	var d := Dialogue.instance(self)
+	for i in 30:
+		if d.active:
+			d._advance()
+		await process_frame
 	var out := OS.get_cmdline_user_args()[0]
 	root.get_texture().get_image().save_png(out + "/museum.png")
 	var gm: GameMenu = null
 	for ch in current_scene.get_children():
 		if ch is GameMenu:
 			gm = ch
-	gm._tab = "Book"
-	gm.toggle()
-	CollectionScreen.open("")
-	gm._refresh()
+	GameMenu.open_page(self, "Book", "")
 	for i in 10:
 		await process_frame
 	root.get_texture().get_image().save_png(out + "/book.png")
