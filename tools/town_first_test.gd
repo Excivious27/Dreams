@@ -170,6 +170,10 @@ func _arc(arc: String) -> void:
 	check(TownHours.door_reason("cottage_a") != "", "[%s] homes don't answer at 11pm" % tag)
 	GameState.run["friendship"]["wren"] = 400
 	check(TownHours.door_reason("cottage_a") == "", "[%s] a good friend's door opens late (hearts %d)" % [tag, GameState.friend_hearts("wren")])
+	check(TownHours.late_friend("cottage_a") in ["wren", "wren_jr"], "[%s] the friend who lets you in is named" % tag)
+	GameState.run["time"] = 24 * 60 + 30
+	check(TownHours.door_reason("cottage_a") != "" and TownHours.late_friend("cottage_a") == "", "[%s] even friends are asleep after midnight" % tag)
+	GameState.run["time"] = 23 * 60
 	GameState.run["friendship"]["wren"] = 0
 	check(TownHours.door_reason("inn") == "" and TownHours.door_reason("chapel") == "", "[%s] inn and chapel never close" % tag)
 	check(TownHours.counter_shut("store") != "" and TownHours.counter_shut("bait") != "", "[%s] counters are shut at night too" % tag)

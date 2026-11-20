@@ -1,7 +1,9 @@
 extends SceneTree
 ## Community farm volunteers (CONDUCT 2, c2_10): schedules, crowding, visible work,
 ## walking in/out, rain days, chatter and the lend-a-hand tasks, both arcs.
-##   godot --headless --path . -s res://tools/cf_volunteer_test.gd
+##   godot --headless --path . --fixed-fps 60 -s res://tools/cf_volunteer_test.gd
+## Deterministic (c3_17 #1): seeded, waits count game time (never the wall clock), and
+## check.sh runs it with --fixed-fps 60, so a loaded machine can't change the outcome.
 var fails := 0
 
 
@@ -13,12 +15,25 @@ func check(ok: bool, what: String) -> void:
 
 func _initialize() -> void:
 	Campaign.bypass = true
+	seed(4242)
 	_run.call_deferred()
 
 
-## Game seconds (headless frames are short: wait on timers, sped up).
+## Game seconds: frames until `sec` of game time has passed (with --fixed-fps 60,
+## 0.1 s is exactly 6 frames, however slow the machine is).
 func _wait(sec: float) -> void:
-	await create_timer(sec).timeout
+	var gt := 0.0
+	while gt < sec - 0.0001:
+		await process_frame
+		gt += root.get_process_delta_time()
+
+
+## Frames until cond() holds (or `cap` frames pass).
+func _until(cond: Callable, cap := 600) -> void:
+	for i in cap:
+		if cond.call():
+			return
+		await process_frame
 
 
 func _frames(n: int) -> void:
@@ -172,6 +187,7 @@ func _help() -> void:
 	for c: Vector2i in weeds:
 		check(not m.blocked.has(c), "[help] weeds don't block the way")
 		m.interact(c, m.things[c])
+	await _until(func() -> bool: return crew.help.is_empty(), 240)
 	await _frames(4)
 	await _drain()
 	check(crew.help.is_empty(), "[help] weeding done")
@@ -216,6 +232,7 @@ func _help() -> void:
 			check(m.things.has(loads[1]), "[help] one crate at a time")
 		check(m.hint_for(drop, m.things[drop]) == "A: put the crate down" or crew.help.is_empty(), "[help] the drop point says so")
 		m.interact(drop, m.things[drop])
+	await _until(func() -> bool: return crew.help.is_empty(), 240)
 	await _frames(4)
 	await _drain()
 	check(crew.help.is_empty() and Commons.helped_today("mabel"), "[help] hauling done")

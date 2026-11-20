@@ -28,6 +28,10 @@
    9,
    24
   ],
+  "hours_gang": [
+   9,
+   26
+  ],
   "house_lane": 4,
   "snacks": [
    [
@@ -52,6 +56,137 @@
    ]
   ]
  },
+ "renovations": [
+  {
+   "id": "arcade_wing",
+   "after": 18,
+   "build": 3,
+   "opens": {
+    "cabinets": [
+     "whack",
+     "gallery"
+    ]
+   },
+   "name": {
+    "penguins": "the arcade wing",
+    "gangsters": "the back room"
+   },
+   "start": {
+    "penguins": "Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start tomorrow; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
+    "gangsters": "Word from the {hall}: the back room's getting two new cabinets. Crew starts tomorrow, that corner's taped off three days. Keep your tickets warm. - Front desk"
+   },
+   "done": {
+    "penguins": "The arcade wing is open! {games} are plugged in and waiting. First one to top the board gets their name on the wall. - The {hall} front desk",
+    "gangsters": "Back room's open. {games} are plugged in. Top the board and your initials go on the wall. - Front desk"
+   }
+  },
+  {
+   "id": "skee_alley",
+   "after": 42,
+   "build": 4,
+   "opens": {
+    "skee": true
+   },
+   "name": {
+    "penguins": "Skee-Ball Alley",
+    "gangsters": "Skee-Ball Alley"
+   },
+   "start": {
+    "penguins": "The empty corner by the snack bar is becoming a Skee-Ball alley! Four days of sawing and sanding, so mind the dust. - The {hall} front desk",
+    "gangsters": "The dead corner by the snack bar's becoming a Skee-Ball alley. Four days of sawing. Mind the dust. - Front desk"
+   },
+   "done": {
+    "penguins": "Skee-Ball Alley is open! Roll for the hundred hole. Tickets pour out of these things. - The {hall} front desk",
+    "gangsters": "Skee-Ball Alley's open. Aim for the hundred hole. These machines spit tickets. - Front desk"
+   }
+  },
+  {
+   "id": "lounge",
+   "after": 66,
+   "build": 3,
+   "opens": {
+    "jukebox": true
+   },
+   "name": {
+    "penguins": "the jukebox lounge",
+    "gangsters": "the jukebox lounge"
+   },
+   "start": {
+    "penguins": "We found a jukebox in the old hotel cellar! Gideon is rewiring it and we're building a little lounge around it. Three days. - The {hall} front desk",
+    "gangsters": "Found a jukebox in the hotel cellar. Gideon's rewiring it, we're building a lounge round it. Three days. - Front desk"
+   },
+   "done": {
+    "penguins": "The jukebox lounge is open: pick a record, any record, and it plays all day. - The {hall} front desk",
+    "gangsters": "Jukebox lounge is open. Pick a record and the whole hall hears it all day. - Front desk"
+   }
+  },
+  {
+   "id": "prize_gallery",
+   "after": 92,
+   "build": 4,
+   "opens": {
+    "prize_tier": 4
+   },
+   "name": {
+    "penguins": "the prize gallery",
+    "gangsters": "the prize gallery"
+   },
+   "start": {
+    "penguins": "The prize counter is growing a whole new glass case for our grandest prizes. Four days of polishing. Start saving! - The {hall} front desk",
+    "gangsters": "Prize counter's getting a new glass case for the big prizes. Four days. Start saving. - Front desk"
+   },
+   "done": {
+    "penguins": "The prize gallery is open: our grandest prizes, under glass, waiting for the very best players. - The {hall} front desk",
+    "gangsters": "Prize gallery's open. The big prizes, under glass. Only serious players need apply. - Front desk"
+   }
+  },
+  {
+   "id": "trophy_hall",
+   "after": 120,
+   "build": 5,
+   "opens": {
+    "cup": true
+   },
+   "name": {
+    "penguins": "the trophy hall",
+    "gangsters": "the trophy hall"
+   },
+   "start": {
+    "penguins": "Last big job of the year: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
+    "gangsters": "Last big job this year: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"
+   },
+   "done": {
+    "penguins": "The trophy hall is open, and with it the Rec Cup: every season, beat the posted score and win the cup's tickets. Watch your mail. - The {hall} front desk",
+    "gangsters": "Trophy hall's open, and so is the Rec Cup. Every season, beat the posted score and take the pot. Watch your mail. - Front desk"
+   }
+  }
+ ],
+ "cup": {
+  "games": [
+   [
+    "bowling",
+    140
+   ],
+   [
+    "stack",
+    4000
+   ],
+   [
+    "whack",
+    380
+   ],
+   [
+    "gallery",
+    320
+   ],
+   [
+    "skee_ball",
+    240
+   ]
+  ],
+  "step": 1.1,
+  "tickets": 120
+ },
  "cabinets": [
   {
    "id": "jumper",
@@ -75,6 +210,7 @@
   {
    "id": "whack",
    "name": "Whack-a-Grump",
+   "gang_name": "Whack-a-Snitch",
    "sprite": "arcade_cab_whack",
    "cell": [
     11,
@@ -84,6 +220,7 @@
   {
    "id": "gallery",
    "name": "Duck Pond",
+   "gang_name": "Neon Range",
    "sprite": "arcade_cab_gallery",
    "cell": [
     12,

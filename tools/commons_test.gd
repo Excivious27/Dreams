@@ -222,9 +222,29 @@ func _arc(arc: String) -> void:
 			for q in GameState.run["quests"]:
 				if str(q["id"]) == Commons.QUEST:
 					jt = str(q["text"])
-			check(jt.contains("tonight"), "[%s] journal says the crew builds tonight (%s)" % [tag, jt])
+			check(jt.contains("tonight") and jt.contains("nights of work"), "[%s] journal says the crew starts tonight (%s)" % [tag, jt])
 			await _shot(m, "%s_%d_site" % [tag, s], cam.get(s + 1, Vector2i(28, 20)))
 			var rep := {}
+			# Multi-day builds (Guide 26 #2): every night but the last is progress.
+			var nd := Commons.build_days(s)
+			check(nd >= 2, "[%s] stage %d takes a few nights (%d)" % [tag, s, nd])
+			for night in range(1, nd):
+				rep = {}
+				GameState.run["day"] = int(GameState.run["day"]) + 1
+				Commons.overnight(rep)
+				check(Commons.pending() == s and Commons.build_done() == night and Commons.stage() == s, "[%s] stage %d night %d of %d: still building" % [tag, s, night, nd])
+				check(str(rep.get("cfarm", [""])[0]) == str(Commons.tx(Commons.stages()[s]["progress"][night - 1])), "[%s] sleep report gives night %d's progress (%s)" % [tag, night, str(rep.get("cfarm", []))])
+				check(Commons.quest_text().contains("night %d of %d" % [night, nd]), "[%s] journal shows build progress (%s)" % [tag, Commons.quest_text()])
+				m.go_to(Commons.SCENE, m.player.position - m.offset())
+				m = await _wait_reload(m)
+				var half := 0
+				for c in m.props:
+					if is_instance_valid(m.props[c]) and str((m.props[c] as Sprite2D).texture.resource_path).contains("cf_build_"):
+						half += 1
+				check(half > 0, "[%s] stage %d night %d: work in progress on the map (%d)" % [tag, s, night, half])
+				if night == nd - 1:
+					await _shot(m, "%s_%d_progress" % [tag, s], cam.get(s + 1, Vector2i(28, 20)))
+			rep = {}
 			GameState.run["day"] = int(GameState.run["day"]) + 1
 			Commons.overnight(rep)
 			check(Commons.stage() == s + 1 and Commons.pending() == -1, "[%s] stage %d built overnight" % [tag, s])

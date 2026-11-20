@@ -84679,6 +84679,26 @@
    "h": 55,
    "w": 232
   },
+  "cf_build_frame": {
+   "file": "props/cf_build_frame.png",
+   "h": 111,
+   "w": 96
+  },
+  "cf_build_greenhouse": {
+   "file": "props/cf_build_greenhouse.png",
+   "h": 118,
+   "w": 96
+  },
+  "cf_build_sawhorse": {
+   "file": "props/cf_build_sawhorse.png",
+   "h": 56,
+   "w": 64
+  },
+  "cf_build_well": {
+   "file": "props/cf_build_well.png",
+   "h": 85,
+   "w": 80
+  },
   "cf_cold_frame": {
    "file": "props/cf_cold_frame.png",
    "h": 106,

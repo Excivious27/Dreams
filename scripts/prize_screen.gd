@@ -192,7 +192,7 @@ func _draw_it() -> void:
 		c.draw_rect(Rect2(i * 20.0, 0, 10, 14), Color("c8323c") if not gang else Color("b02aa0"))
 		c.draw_rect(Rect2(i * 20.0 + 10, 0, 10, 14), Color("f2e6c8") if not gang else Color("2a1840"))
 	c.draw_string(_font, Vector2(0, 36), "PRIZE COUNTER", HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.35))
-	c.draw_string(_font, Vector2(0, 52), "♦ %d tickets" % Tickets.count(), HORIZONTAL_ALIGNMENT_CENTER, 270, 11, Color(1, 0.7, 0.9))
+	Tickets.draw_amount(c, _font, 0, 52, 270, "%d tickets" % Tickets.count(), 11, Color(1, 0.7, 0.9))
 	c.draw_string(_font, Vector2(0, 62), "%d won in all · every game pays tickets" % Tickets.earned(), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
 	for i in TIERS.size():
 		var r := _tab_rect(i)
@@ -227,7 +227,7 @@ func _draw_it() -> void:
 		if owned:
 			c.draw_string(_font, Vector2(196, y + 18), "OWNED", HORIZONTAL_ALIGNMENT_RIGHT, 60, 8, Color(0.6, 1, 0.65, 0.8))
 		else:
-			c.draw_string(_font, Vector2(196, y + 18), "♦%d" % int(p.get("cost", 0)), HORIZONTAL_ALIGNMENT_RIGHT, 60, 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4))
+			Tickets.draw_amount(c, _font, 196, y + 18, 60, "%d" % int(p.get("cost", 0)), 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4), HORIZONTAL_ALIGNMENT_RIGHT)
 	# The picked prize in full (rows cut long text to one line).
 	if sel >= 0 and sel < _rows.size():
 		var pid: String = _rows[sel]

@@ -338,11 +338,33 @@ func _place_site() -> void:
 	var b := Commons.pending()
 	if b < 0:
 		return
+	var done := Commons.build_done()
+	var note := ("Everything for the %s, stacked and ready. The crew starts after dark: come back in the morning." % Commons.build_word(b)) if done == 0 \
+		else ("The crew's half-way into the %s: %s. They're back after dark; %s." % [Commons.build_word(b), Commons.build_bar(), "it should be done by morning" if Commons.build_left_words() == "tonight" else Commons.build_left_words() + " to go"])
+	var first := true
 	for e: Array in SITES.get(str(Commons.stages()[b]["id"]), []):
 		var c: Vector2i = e[1]
 		prop("props", str(e[0]), c, 1, 0.0, true, 0.5)
 		for x in range(c.x, c.x + 2):
-			set_thing(x, c.y, {"type": "cf_note", "text": "Everything for the %s, stacked and ready. The crew starts after dark: come back in the morning." % Commons.build_word(b), "hint": "A: the build site"})
+			set_thing(x, c.y, {"type": "cf_note", "text": note, "hint": "A: the build site"})
+		if done > 0 and first and Art.has("props", "cf_build_sawhorse"):
+			# Work under way: the crew's sawhorse and tools beside the first pile.
+			first = false
+			var sc := c + Vector2i(2, 0)
+			if str(Commons.stages()[b]["id"]) == "greenhouse":
+				sc = c + Vector2i(-3, 1)  # clear of the frame going up on the footings
+			if not things.has(sc):
+				prop("props", "cf_build_sawhorse", sc, 1, 0.0, true, 0.5)
+				for x in range(sc.x, sc.x + 2):
+					set_thing(x, sc.y, {"type": "cf_note", "text": note, "hint": "A: the build site"})
+
+
+## Nights the crew has already worked on stage `id` (0 unless it is the build under way).
+func _built_nights(id: String) -> int:
+	var b := Commons.pending()
+	if b < 0 or str(Commons.stages()[b]["id"]) != id:
+		return 0
+	return Commons.build_done()
 
 
 func _place_board() -> void:
@@ -362,6 +384,8 @@ func _place_shed(s: int) -> void:
 		prop("props", "barrel_a", Vector2i(30, 6))
 		prop("props", "crates_a", Vector2i(32, 7), 0, 0.0, true, 0.45)
 		prop("props", "bucket", Vector2i(25, 9), 0, 0.0, false)
+	elif _built_nights("shed") > 0 and Art.has("props", "cf_build_frame"):
+		prop("props", "cf_build_frame", SHED, 2, 0.0, true, 0.5)  # framed, no roof yet
 	else:
 		prop("props", "cf_shed_ruin", SHED, 2)
 		prop("props", "wood_fence_pile", Vector2i(30, 8), 0, 0.0, false)
@@ -370,7 +394,8 @@ func _place_shed(s: int) -> void:
 
 
 func _place_well(s: int) -> void:
-	prop("props", "well_roofed" if s >= 5 else "cf_well_broken", WELL, 1, 0.0, true, 0.6)
+	var half := s < 5 and _built_nights("well") > 0 and Art.has("props", "cf_build_well")
+	prop("props", "well_roofed" if s >= 5 else ("cf_build_well" if half else "cf_well_broken"), WELL, 1, 0.0, true, 0.5 if half else 0.6)
 	for x in range(WELL.x, WELL.x + 2):
 		set_thing(x, WELL.y, {"type": "cf_well", "hint": "A: drink from the well" if s >= 5 else "A: the old well"})
 	if s >= 5:
@@ -385,6 +410,10 @@ func _place_greenhouse(s: int) -> void:
 			set_thing(x, GREENHOUSE.y, {"type": "cf_greenhouse", "hint": "A: the greenhouse"})
 		for c: Vector2i in [Vector2i(36, 10), Vector2i(43, 10)]:
 			prop("props", "planter2_%d" % (c.x % 4), c, 0, 0.0, true, 0.32)
+	elif _built_nights("greenhouse") >= 2 and Art.has("props", "cf_build_greenhouse"):
+		prop("props", "cf_build_greenhouse", GREENHOUSE, 3, 0.0, true, 0.66)  # the iron frame at the finished greenhouse's size
+		for x in range(GREENHOUSE.x + 1, GREENHOUSE.x + 3):
+			set_thing(x, GREENHOUSE.y, {"type": "cf_note", "text": "The greenhouse frame, ribs all up. %s panes in so far." % ("A few" if _built_nights("greenhouse") == 2 else "Half the"), "hint": "A: the greenhouse frame"})
 	elif s >= 1:
 		prop("props", "wood_fence_pile", Vector2i(39, 8), 0, 0.0, false)
 		set_thing(39, 9, {"type": "cf_note", "text": "Stone footings, laid square. A greenhouse will stand here one day: it's on the board, near the end.", "hint": "A: the footings"}, false)
@@ -898,7 +927,10 @@ func _talk(n: Npc) -> void:
 			await say([{"who": name, "text": str(Commons.tx(Commons.data()["intro"]))}])
 			Commons.sync_quest()
 		elif Commons.pending() >= 0:
-			await say([{"who": name, "text": ("Everything's here for the %s. We start after supper: go home, sleep, and come see it in the morning." if not _gang() else "Got everything for the %s. Crew starts after dark. Go sleep, come see it tomorrow.") % Commons.build_word(Commons.pending())}])
+			if Commons.build_done() > 0:
+				await say([{"who": name, "text": ("The %s is coming along: %s. The crew's back after supper. %s" if not _gang() else "The %s's coming along: %s. Crew's back after dark. %s") % [Commons.build_word(Commons.pending()), Commons.build_bar(), ("Done by morning, I promise." if not _gang() else "Done by morning.") if Commons.build_left_words() == "tonight" else (Commons.build_left_words().capitalize() + " to go.")]}])
+			else:
+				await say([{"who": name, "text": ("Everything's here for the %s. We start after supper: %s of work. Come see how it goes up." if not _gang() else "Got everything for the %s. Crew starts after dark: %s of work. Come watch it go up.") % [Commons.build_word(Commons.pending()), ("%d nights" % Commons.build_days(Commons.pending())) if Commons.build_days(Commons.pending()) > 1 else "one night"]}])
 		elif Commons.complete():
 			var ln := ""
 			if Commons.market_day():

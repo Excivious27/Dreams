@@ -53,6 +53,24 @@ func _run() -> void:
 	ok(Commons.place_name() == "Westside Lot Garden" and Commons.short_name() == "the lot garden", "the garden is the Westside Lot Garden")
 	ok(Tickets.game_name("stack") == "Neon Stack", "the stacker is Neon Stack (%s)" % Tickets.game_name("stack"))
 	ok(Tickets.game_name("bowling") == "Bowling", "other names unchanged")
+	# Guide 26 #1 / #5: gangster cabinet names and the 2am Rec Hall.
+	ok(Tickets.game_name("whack") == "Whack-a-Snitch" and Tickets.game_name("gallery") == "Neon Range", "whack/gallery gangster names (%s, %s)" % [Tickets.game_name("whack"), Tickets.game_name("gallery")])
+	var wg := ArcadeWhack.new()
+	var gg := ArcadeGallery.new()
+	ok(wg.title == "Whack-a-Snitch" and gg.title == "Neon Range", "cabinet screens use the arc names")
+	ok(not " ".join(wg.howto).to_lower().contains("grump"), "whack how-to has no grumps in this arc")
+	wg.free()
+	gg.free()
+	ok(RecCenter.hours() == [9, 26], "Rec Hall open 9am to 2am (%s)" % str(RecCenter.hours()))
+	GameState.run["time"] = 25 * 60 + 30
+	ok(RecCenter.why_closed() == "", "Rec Hall open at 1:30am")
+	GameState.run["time"] = 26 * 60 + 10
+	ok(RecCenter.why_closed() != "" and RecCenter.why_closed().contains("2am"), "shut after 2am (%s)" % RecCenter.why_closed())
+	GameState.run["time"] = 12 * 60
+	for q: Dictionary in GameState.load_json("res://data/quests.json")["side"]:
+		if q.has("text_gangsters"):
+			_clean("quest " + str(q["id"]), [q["text_gangsters"]])
+			ok(not str(q["text_gangsters"]).contains("Grump") and not str(q["text_gangsters"]).contains("Duck Pond"), "quest %s gangster text" % q["id"])
 	ok(ArcadeStack._crush() == "NEON CRUSH!", "four-row shout is NEON CRUSH!")
 	# Prize swaps.
 	ok(not Tickets.arc_ok("rp_penguin_plush") and not Tickets.arc_ok("rp_top_hat"), "penguin plush and top hat are the other arc's")
@@ -132,6 +150,13 @@ func _run() -> void:
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	ok(RecCenter.name() == "Rec Center" and Commons.place_name() == "Dreamhollow Commons", "penguin arc names")
 	ok(Tickets.game_name("stack") == "Crystal Stack" and ArcadeStack._crush() == "CRYSTAL CRUSH!", "penguin arc keeps Crystal Stack")
+	ok(Tickets.game_name("whack") == "Whack-a-Grump" and Tickets.game_name("gallery") == "Duck Pond", "penguin arc keeps Whack-a-Grump / Duck Pond")
+	ok(RecCenter.hours() == [9, 24], "Rec Center open 9am to midnight")
+	GameState.run["time"] = 24 * 60 + 30
+	ok(RecCenter.why_closed() != "", "Rec Center shut at 0:30am")
+	# Guide 26 #4: Prize Candy is a loved gift for anyone who likes candy.
+	ok(GameState.gift_value("pip", "rp_candy") >= 20, "Prize Candy loved by Pip (%d)" % GameState.gift_value("pip", "rp_candy"))
+	ok(GameState.gift_line("pip", "rp_candy", GameState.gift_value("pip", "rp_candy")) == GameState.gift_line("pip", "rp_candy", 20), "Pip reacts with a loved line")
 	ok(Tickets.arc_ok("rp_penguin_plush") and not Tickets.arc_ok("rp_fuzzy_dice") and not Tickets.arc_ok("rp_lane_fedora"), "penguin counter swaps back")
 	var claw2 := ArcadeClaw.new()
 	claw2.rng.seed = 7
