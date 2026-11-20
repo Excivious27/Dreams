@@ -316,6 +316,12 @@ if ! echo "$mxout" | grep -q "mix_test: 0 failures"; then
   echo "Music mix test failed"; exit 1
 fi
 
+amout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ambience_test.gd 2>&1)"
+echo "$amout" | grep -E "FAIL|SCRIPT ERROR|ambience_test" || true
+if ! echo "$amout" | grep -q "ambience_test: 0 failures"; then
+  echo "Ambience/where-sound-plays test failed"; exit 1
+fi
+
 fsout="$("$GODOT" --headless --path . -s res://tools/footstep_test.gd 2>&1)"
 echo "$fsout" | grep -E "FAIL|SCRIPT ERROR|footstep_test" || true
 if ! echo "$fsout" | grep -q "footstep_test: 0 failures"; then

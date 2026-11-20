@@ -234,6 +234,13 @@ AREA_AMB = {"gloam_moonpool": {"marsh": -16.0, "frogs": -18.0}, "gloam_crystal_t
             "frost_hearthhold": {"campfire": -20.0}, "frost_caverns": {"cave": -14.0, "crystal_hum": -22.0}, "frost_falls": {"river": -15.0},
             "frost_summit": {"wind_strong": -8.0}, "gilt_casino_row": {"neon_street": -15.0, "crowd": -20.0}, "gilt_vaults": {"cave": -18.0, "basement_drips": -22.0},
             "gilt_gardens": {"birds_day": -16.0}, "wind_starfall_garden": {"crystal_hum": -22.0}}
+# Night beds (C6 c6_07): the casino street gets busier after dark, not quieter.
+AREA_AMB_NIGHT = {"gilt_casino_row": {"crowd": -16.0, "neon_street": -13.0, "town_day": -24.0}}
+# One-shot spots per look/area (Ambience reads regions.json "spots": [spot, min_s, max_s, dB, phase]).
+SPOTS = {"gloam": [["owl", 25.0, 60.0, -16.0, "night"], ["insect", 14.0, 32.0, -18.0, ""]],
+         "sky": [["gull", 18.0, 40.0, -20.0, "day"]], "snow": [], "desert": [], "rail": [], "gilt": []}
+AREA_SPOTS = {"gloam_moonpool": [["frog", 8.0, 18.0, -16.0, "night"]], "frost_caverns": [], "iron_tunnels": [],
+              "gilt_vaults": [], "desert_sunken_temple": []}
 
 # Per-look scatter theme (WorldGen.theme: tree clumps, bushes, band) and border stands
 # (GameMap border_trees). c4_03/c4_05/c4_04: gloam mushroom/crystal, frost snow pines, desert dry.
@@ -249,6 +256,8 @@ BORDER_TREES = {
     "gloam": {"mid": ["props/mushroom_tree_a", "props/crystal_tree_pink"], "big": ["props/mushroom_tree_b", "props/crystal_tree"]},
     "snow": {"mid": ["mid_snowpine", "mid_snowpine_b"], "big": ["big_snowpine_a", "big_snowpine_b"]},
 }
+# Darkness per underground area (C5 tuned by eye; default 0.5).
+LIGHT = {"desert_sunken_temple": 0.5, "iron_tunnels": 0.6, "frost_caverns": 0.55, "gilt_vaults": 0.55, "hollow_deeps": 0.6}
 # Underground areas (c4_05 #6): "cave": true (Ambience/P4), no surface critters or mounds,
 # cave scatter instead of the look's.
 CAVE = {
@@ -518,7 +527,7 @@ A("iron_junction", cols=44, rows=40, music="mega_iron", look="rail", links={"iro
   job={"giver": "mg_hollis", "text": "Hollis needs 4 Rail Chain and 2 Engine Oil to fix the yard switch.", "items": [["chain_link", 4], ["oil", 2]], "reward": {"crystals": 650, "item": ["gear", 2], "friend": ["mg_hollis", 15]},
        "lines": {"offer": ["The Baron's bots wrecked the yard switch. No switch, no trains, no Junction.", "Four Rail Chain and two cans of Engine Oil. The bots carry both."], "yes": "Good. Hit 'em where the rivets are.", "done": ["She switches! Hear that clunk? That's freedom, that is."]}},
   intro=["The night train screeches into Junction City under a sky the colour of an old penny. Coal smoke, brick, and every timetable on the station wall says CANCELLED.", "Somebody here runs the rails. Somebody here is about to have a very bad week."])
-A("iron_freight_yards", cols=54, rows=44, music="underground", look="rail", ground_seam="ballast", path="dock_concrete", links={"iron_junction": ("e", 18)},
+A("iron_freight_yards", cols=54, rows=44, music="mega_iron", look="rail", ground_seam="ballast", path="dock_concrete", links={"iron_junction": ("e", 18)},
   feature=("curb_road", [(14, 12, 5), (40, 34, 5)]),
   structs=[("props/ir_coal_hopper", 2, 2, (20, 12)), ("props/ir_signal_tower", 1, 2, (46, 30)), ("props/crane", 2, 2, (12, 30)), ("props/container_red", 3, 1, (30, 10)), ("props/container_blue", 3, 1, (36, 12)), ("props/cargo_yellow", 2, 1, (20, 32)),
            ("props/forklift", 2, 1, (40, 26)), ("props/container_green", 3, 1, (8, 12)), ("props/train_car", 5, 2, (28, 32)), ("props/water_tower", 2, 2, (44, 9))],
@@ -530,7 +539,7 @@ A("iron_freight_yards", cols=54, rows=44, music="underground", look="rail", grou
   enemies=[("rail_bot", 3), ("thug_brute", 2), ("coal_crawler", 2)],
   forage=[["fiber", 0.4], ["wild_herb", 0.2]],
   intro=["Rows of rusting freight cars, cranes like skeletons, and rail bots patrolling with lanterns. All of it stamped COALBROOK."])
-A("iron_mill_district", cols=50, rows=44, music="hideout", look="rail", ground_seam="brick_herring", path="cobble_warm", links={"iron_junction": ("s", 23), "iron_tunnels": ("n", 24)},
+A("iron_mill_district", cols=50, rows=44, music="mega_iron", look="rail", ground_seam="brick_herring", path="cobble_warm", links={"iron_junction": ("s", 23), "iron_tunnels": ("n", 24)},
   structs=[("buildings/warehouse_c", 6, 4, (12, 12)), ("buildings/silo", 4, 5, (36, 13)), ("buildings/grain_elevator", 11, 5, (34, 33)), ("props/fire_barrel2", 1, 1, (14, 30)),
            ("props/radio_tower_b", 1, 1, (8, 22)), ("props/forklift", 2, 1, (16, 22))],
   things=[("loot", {"item": "charcoal", "n": 2, "every": 2, "hint": "A: a cooling firebox", "sprite": "props/fire_barrel2"}),
@@ -584,7 +593,7 @@ A("frost_glacier", cols=52, rows=44, music="mega_frost", look="snow", ground_sea
   enemies=[("frost_wolf", 3), ("rime_wisp", 2), ("rime_golem", 1)],
   forage=[["edelweiss", 0.4], ["wild_herb", 0.2], ["fiber", 0.2]],
   intro=["White in every direction, blue in the cracks. The glacier groans under you like a very old dog getting comfortable."])
-A("frost_caverns", cols=46, rows=42, music="mine_deep", look="snow", ground_seam="cave_ice_floor", path="snow_paving", border="cliff", weather="clear", backdrop="night", links={"frost_hearthhold": ("e", 18)},
+A("frost_caverns", cols=46, rows=42, music="mega_frost_caverns", music_fallback="mine_deep", look="snow", ground_seam="cave_ice_floor", path="snow_paving", border="cliff", weather="clear", backdrop="night", links={"frost_hearthhold": ("e", 18)},
   feature=("cave_ice", [(14, 12, 4), (30, 32, 4)]),
   structs=[("props/cave_stalag_l", 1, 1, (12, 22)), ("props/cave_stalag_m", 1, 1, (34, 12)), ("props/ice_crystal_lit", 3, 3, (24, 9)), ("props/crystal_tree_frost", 2, 2, (8, 32)),
            ("props/icicles_0", 3, 1, (33, 26)), ("props/cave_stalactite_a", 1, 1, (20, 33))],
@@ -605,7 +614,7 @@ A("frost_falls", cols=48, rows=42, music="mega_frost", look="snow", ground_seam=
   enemies=[("frost_wolf", 2), ("rime_wisp", 2), ("rime_golem", 1)], fish=["ice_pike", "ice_pike", "trout", "salmon"],
   forage=[["edelweiss", 0.3], ["wild_herb", 0.3]],
   intro=["A waterfall frozen halfway down, still pouring under its skin of ice. The pools below are open and dark, and full of pike."])
-A("frost_summit", cols=44, rows=40, music="colony_ice", look="snow", ground_seam="snow_smooth", weather="blizzard", links={"frost_glacier": ("s", 20)}, boss_at=(20, 8),
+A("frost_summit", cols=44, rows=40, music="mega_frost_summit", music_fallback="mega_frost", look="snow", ground_seam="snow_smooth", weather="blizzard", links={"frost_glacier": ("s", 20)}, boss_at=(20, 8),
   hills=[(8, 22)],
   structs=[("props/ice_crystal_lit", 3, 3, (11, 9)), ("props/ice_crystal_lit", 3, 3, (30, 9)), ("props/crystal_tree_frost", 2, 2, (14, 32)), ("props/snowdrift_3", 2, 1, (30, 32))],
   things=[("mrock", {"ore": "frost", "hp": 4, "n": 2, "sprite": "props/mrock_ice_0"}),
@@ -687,7 +696,7 @@ A("gilt_grand_plaza", cols=44, rows=40, music="mega_gilt", look="gilt", ground_s
   job={"giver": "mg_odette", "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.", "items": [["gold_bundle", 3], ["pearl_necklace", 1]], "reward": {"crystals": 2000, "item": ["wonder_elixir", 1], "friend": ["mg_odette", 15]},
        "lines": {"offer": ["I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.", "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."], "yes": "Wonderful. Wear something dark, the guards hate that.", "done": ["Perfect. Look at it shine! She'll hate it. Here, for you."]}},
   intro=["The limousine purrs into a plaza paved with gold-veined stone. Statues, fountains, a mansion with a hundred windows, and every lamp post has a little crown on top.", "Gilt City. Everything glitters. Everything has a price."])
-A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="city_pavement", path="brick_herring", links={"gilt_grand_plaza": ("w", 17), "gilt_vaults": ("n", 24)},
+A("gilt_casino_row", cols=50, rows=42, music="mega_gilt", look="gilt", ground_seam="city_pavement", path="brick_herring", links={"gilt_grand_plaza": ("w", 17), "gilt_vaults": ("n", 24)},
   structs=[("props/gc_casino", 8, 4, (24, 12)), ("buildings/neon_hotel", 9, 4, (10, 30)), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
            ("props/betting_booth", 3, 2, (12, 30)), ("props/lux_car_black", 3, 1, (36, 32)), ("props/neon_sign_2", 2, 1, (8, 22)), ("props/neon_sign_5", 2, 1, (40, 22))],
   things=[("loot", {"item": "gambler_chip", "n": 3, "every": 2, "hint": "A: chips under a table", "sprite": "props/card_table"}),
@@ -724,7 +733,7 @@ A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam
   intro=["Under the casinos, the Vaults: gold in stacks to the ceiling, fences of gold, and the soft tick of somebody counting."])
 
 # Second areas for converted regions --------------------------------------------
-A("hollow_deeps", cols=50, rows=44, music="hollow_heart", look="gloam", ground_seam="cave_crystal_floor", path="cave_stone_floor", border="cliff", backdrop="night", weather="clear",
+A("hollow_deeps", cols=50, rows=44, music="mega_hollow_deeps", music_fallback="hollow_heart", look="gloam", ground_seam="cave_crystal_floor", path="cave_stone_floor", border="cliff", backdrop="night", weather="clear",
   links={"hollow_heart": ("w", 20)}, water=[(34, 30), (16, 12)], feature=("cave_water", [(36, 12, 4)]),
   structs=[("props/mushroom_tree_a", 2, 2, (12, 30)), ("props/mushroom_tree_b", 2, 2, (40, 22)), ("props/grotto_crystal_a", 3, 2, (26, 10)), ("props/cave_lamp", 0, 1, (20, 22)),
            ("props/cave_cart", 1, 1, (30, 22)), ("props/mine_crystal_bigrock_1", 2, 2, (8, 22)), ("props/geode_chamber", 6, 3, (38, 36))],
@@ -738,7 +747,7 @@ A("hollow_deeps", cols=50, rows=44, music="hollow_heart", look="gloam", ground_s
   enemies=[("prism_wisp", 3), ("obsidian_sentinel", 2), ("void_eel", 2), ("gloom_spider", 2)], fish=["mooncarp", "ghost_fish", "eel"],
   forage=[["cave_bloom", 0.3], ["glowcap", 0.3], ["mushroom", 0.3], ["crystal_bloom", 0.1]],
   intro=["East of the Heart the caverns open into rivers of light: crystal floors, glowing pools, and the cold ashes of a miners' camp nobody ever came back for."])
-A("sky_reaches", cols=48, rows=42, music="sky", look="sky", ground_seam="cloud", links={"sky": ("s", 22)}, water=[(12, 14)],
+A("sky_reaches", cols=48, rows=42, music="mega_sky_reaches", music_fallback="sky", look="sky", ground_seam="cloud", links={"sky": ("s", 22)}, water=[(12, 14)],
   structs=[("nature/cloud_tree_a", 2, 2, (10, 28)), ("nature/cloud_tree_b", 2, 2, (36, 30)), ("props/sky_bridge", 10, 2, (24, 20)), ("props/wi_wind_shrine", 2, 2, (30, 8))],
   things=[("loot", {"item": "star_dust", "n": 2, "every": 3, "hint": "A: dust shaken off a passing whale", "sprite": "props/skydeco_2"}),
           ("loot", {"item": "storm_fluff", "n": 1, "every": 4, "hint": "A: a curl of storm cloud", "sprite": "props/skydeco_5"}),
@@ -826,8 +835,12 @@ def build_area(aid, mega, spec, links_geom):
     R["ground"] = R["ground_seam"]  # not "grass": that would draw the valley's grass instead of the seamless ground
     R["amb"] = dict(AMB.get(spec["look"], {}))
     R["amb"].update(AREA_AMB.get(aid, {}))
-    if aid in CAVE or aid.startswith("hollow_"):
-        R["light"] = 0.5  # C5: fixed darkness 0..1 underground (P2's runtime reads it)
+    if aid in AREA_AMB_NIGHT:
+        R["amb_night"] = dict(R["amb"])
+        R["amb_night"].update(AREA_AMB_NIGHT[aid])
+    sp = [] if aid in CAVE else SPOTS.get(spec["look"], []) + AREA_SPOTS.get(aid, [])
+    if sp:
+        R["spots"] = sp
     if aid in CAVE:  # C5: underground areas drop the look's surface beds (wind, streets); Ambience skips them too
         for k in ("wind_soft", "wind_strong", "town_day", "crowd", "city_hum", "neon_street", "birds_day", "birds_dawn", "waves", "leaves"):
             R["amb"].pop(k, None)
@@ -1090,6 +1103,9 @@ def build_area(aid, mega, spec, links_geom):
         R["spawn"] = [int(sp[0]), int(sp[1])]
     if spec.get("intro"):
         R["intro"] = spec["intro"]
+    if aid in CAVE or aid.startswith("hollow_"):
+        # C5: fixed darkness 0..1 underground (GameMap reads it); written last so reruns match the file (c6_17-1)
+        R["light"] = LIGHT.get(aid, 0.5)
     return R
 
 EXT_NAME = {"hollow_heart": "the Hollow Heart", "sky": "the Cloud Isles"}

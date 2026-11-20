@@ -2,7 +2,7 @@
  "wastes": {
   "cols": 52,
   "rows": 40,
-  "music": "boss",
+  "music": "wastes",
   "backdrop": "night",
   "ground": "dead_grass",
   "ground_seam": "ash",
@@ -291,7 +291,7 @@
  "hideout": {
   "cols": 52,
   "rows": 42,
-  "music": "rain",
+  "music": "hideout",
   "backdrop": "gritty",
   "ground": "weedy_lot",
   "path": "asphalt2",
@@ -768,7 +768,7 @@
  "docks": {
   "cols": 54,
   "rows": 40,
-  "music": "rain",
+  "music": "docks",
   "backdrop": "gritty",
   "ground": "concrete_pier",
   "path": "wood_dock",
@@ -1233,7 +1233,7 @@
  "neon": {
   "cols": 50,
   "rows": 42,
-  "music": "town",
+  "music": "neon",
   "backdrop": "night",
   "ground": "wet_asphalt_0",
   "path": "neon_sidewalk",
@@ -1686,7 +1686,7 @@
  "uptown": {
   "cols": 50,
   "rows": 44,
-  "music": "boss",
+  "music": "uptown",
   "backdrop": "gritty",
   "ground": "lawn",
   "path": "asphalt2",
@@ -2095,7 +2095,7 @@
  "underground": {
   "cols": 40,
   "rows": 32,
-  "music": "mine",
+  "music": "underground",
   "backdrop": "night",
   "sky": false,
   "ground": "sewer_brick",
@@ -3297,7 +3297,7 @@
  "jungle": {
   "cols": 50,
   "rows": 42,
-  "music": "cattopia",
+  "music": "jungle",
   "backdrop": "night",
   "ground": "teal_moss",
   "ground_seam": "teal_moss",
@@ -4388,7 +4388,7 @@
  "ruins": {
   "cols": 48,
   "rows": 44,
-  "music": "meadow",
+  "music": "ruins",
   "backdrop": "hills",
   "ground": "grass",
   "path": "stone",
@@ -4767,7 +4767,7 @@
  "quarry": {
   "cols": 52,
   "rows": 44,
-  "music": "mine",
+  "music": "quarry",
   "backdrop": "mountains",
   "ground": "grass",
   "path": "stone",
@@ -5269,7 +5269,7 @@
  "marsh": {
   "cols": 52,
   "rows": 44,
-  "music": "rain",
+  "music": "marsh",
   "backdrop": "hills",
   "ground": "grass",
   "path": "dirt",
@@ -13399,6 +13399,22 @@
    "crickets": -15.0,
    "crystal_hum": -26.0
   },
+  "spots": [
+   [
+    "owl",
+    25.0,
+    60.0,
+    -16.0,
+    "night"
+   ],
+   [
+    "insect",
+    14.0,
+    32.0,
+    -18.0,
+    ""
+   ]
+  ],
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -13838,6 +13854,22 @@
    "crickets": -15.0,
    "crystal_hum": -26.0
   },
+  "spots": [
+   [
+    "owl",
+    25.0,
+    60.0,
+    -16.0,
+    "night"
+   ],
+   [
+    "insect",
+    14.0,
+    32.0,
+    -18.0,
+    ""
+   ]
+  ],
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -14197,6 +14229,22 @@
    "crickets": -15.0,
    "crystal_hum": -18.0
   },
+  "spots": [
+   [
+    "owl",
+    25.0,
+    60.0,
+    -16.0,
+    "night"
+   ],
+   [
+    "insect",
+    14.0,
+    32.0,
+    -18.0,
+    ""
+   ]
+  ],
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -14543,6 +14591,29 @@
    "marsh": -16.0,
    "frogs": -18.0
   },
+  "spots": [
+   [
+    "owl",
+    25.0,
+    60.0,
+    -16.0,
+    "night"
+   ],
+   [
+    "insect",
+    14.0,
+    32.0,
+    -18.0,
+    ""
+   ],
+   [
+    "frog",
+    8.0,
+    18.0,
+    -16.0,
+    "night"
+   ]
+  ],
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -16023,7 +16094,6 @@
   "amb": {
    "cave": -20.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "boulder2_s_a",
@@ -16805,7 +16875,7 @@
  "iron_freight_yards": {
   "cols": 54,
   "rows": 44,
-  "music": "underground",
+  "music": "mega_iron",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
@@ -17168,7 +17238,7 @@
  "iron_mill_district": {
   "cols": 50,
   "rows": 44,
-  "music": "hideout",
+  "music": "mega_iron",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
@@ -17510,7 +17580,6 @@
    "cave": -14.0,
    "basement_drips": -18.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -18671,12 +18740,13 @@
  "frost_caverns": {
   "cols": 46,
   "rows": 42,
-  "music": "mine_deep",
+  "music": "mega_frost_caverns",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "Rime Caverns",
+  "music_fallback": "mine_deep",
   "ground": "cave_ice_floor",
   "ground_seam": "cave_ice_floor",
   "path": "snow_paving",
@@ -18693,7 +18763,6 @@
    "cave": -14.0,
    "crystal_hum": -22.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "cave_stalag_l",
@@ -19289,12 +19358,13 @@
  "frost_summit": {
   "cols": 44,
   "rows": 40,
-  "music": "colony_ice",
+  "music": "mega_frost_summit",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "The Summit",
+  "music_fallback": "mega_frost",
   "ground": "snow_smooth",
   "ground_seam": "snow_smooth",
   "path": "snow_trodden",
@@ -19609,6 +19679,15 @@
   "amb": {
    "wind_soft": -11.0
   },
+  "spots": [
+   [
+    "gull",
+    18.0,
+    40.0,
+    -20.0,
+    "day"
+   ]
+  ],
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -20000,6 +20079,15 @@
   "amb": {
    "wind_soft": -11.0
   },
+  "spots": [
+   [
+    "gull",
+    18.0,
+    40.0,
+    -20.0,
+    "day"
+   ]
+  ],
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -20295,6 +20383,15 @@
   "amb": {
    "wind_soft": -11.0
   },
+  "spots": [
+   [
+    "gull",
+    18.0,
+    40.0,
+    -20.0,
+    "day"
+   ]
+  ],
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -20637,6 +20734,15 @@
    "wind_soft": -11.0,
    "crystal_hum": -22.0
   },
+  "spots": [
+   [
+    "gull",
+    18.0,
+    40.0,
+    -20.0,
+    "day"
+   ]
+  ],
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -21312,7 +21418,7 @@
  "gilt_casino_row": {
   "cols": 50,
   "rows": 42,
-  "music": "neon",
+  "music": "mega_gilt",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
@@ -21333,6 +21439,11 @@
    "town_day": -20.0,
    "neon_street": -15.0,
    "crowd": -20.0
+  },
+  "amb_night": {
+   "town_day": -24.0,
+   "neon_street": -13.0,
+   "crowd": -16.0
   },
   "gen": {
    "region_props": [
@@ -21974,7 +22085,6 @@
    "cave": -18.0,
    "basement_drips": -22.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -22288,12 +22398,13 @@
  "hollow_deeps": {
   "cols": 50,
   "rows": 44,
-  "music": "hollow_heart",
+  "music": "mega_hollow_deeps",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "hollow",
   "area_name": "The Glowing Deeps",
+  "music_fallback": "hollow_heart",
   "ground": "cave_crystal_floor",
   "ground_seam": "cave_crystal_floor",
   "path": "cave_stone_floor",
@@ -22305,7 +22416,22 @@
    "crickets": -15.0,
    "crystal_hum": -26.0
   },
-  "light": 0.5,
+  "spots": [
+   [
+    "owl",
+    25.0,
+    60.0,
+    -16.0,
+    "night"
+   ],
+   [
+    "insect",
+    14.0,
+    32.0,
+    -18.0,
+    ""
+   ]
+  ],
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -22697,12 +22823,13 @@
  "sky_reaches": {
   "cols": 48,
   "rows": 42,
-  "music": "sky",
+  "music": "mega_sky_reaches",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "sky",
   "area_name": "Whale Reaches",
+  "music_fallback": "sky",
   "ground": "cloud",
   "ground_seam": "cloud",
   "path": "float_stone",
@@ -22715,6 +22842,15 @@
   "amb": {
    "wind_soft": -11.0
   },
+  "spots": [
+   [
+    "gull",
+    18.0,
+    40.0,
+    -20.0,
+    "day"
+   ]
+  ],
   "gen": {
    "region_props": [
     "skydeco_0",

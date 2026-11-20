@@ -580,6 +580,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					fed_now = true
 					Music.instance(get_tree()).sfx("eat", "pickup")
 					hud.toast("%s munches the hay." % species, Color(0.9, 1, 0.8))
+				Music.instance(get_tree()).sfx(animal_voice(str(a.kind)), "sheep" if not bird else "pickup")
 				if int(st["last_pet"]) == day and not fed_now:
 					hud.toast("Already happy today." if int(st["fed"]) == day or no_hay else ("%s is hungry. Bring hay (hold it and tap)%s." % [species, ", or fill the silo" if Builds.built_tier("barn") >= 2 and not bird else ""]))
 					return true
@@ -624,7 +625,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				player.play_tool("axe")
 			else:
 				player.play_tool("hold")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("scythe" if ht == "scythe" or GameState.is_sword(ht) else "step_leaves", "swing" if ht == "scythe" or GameState.is_sword(ht) else "pickup")  # grass swish, not an axe (c6_10-07)
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < float(thing.get("hay", 0.5)):  # farm: old weed-spot grass always, meadow clumps half
@@ -1012,8 +1013,36 @@ func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool
 
 
 ## Break a rock: jolt, crumble, stone pops out.
+## Queue a toast that carries its own sound (shown by the map's next frame). Cue names use
+## Music.sfx fallbacks ("new_item" when the file is missing). P6 wires callers (birthdays, quests...).
+static func notify(text: String, sfx := "") -> void:
+	if GameState.run.is_empty():
+		return
+	if not GameState.run.has("notes"):
+		GameState.run["notes"] = []
+	(GameState.run["notes"] as Array).append({"text": text, "sfx": sfx} if sfx != "" else text)
+
+
+## A farm animal's voice when petted/fed (c6_10-01). Names come from P3's CC0 set; a missing
+## file falls back (sheep for the big animals, pickup for birds) through Music.sfx.
+static func animal_voice(kind: String) -> String:
+	var k := kind.to_lower()
+	if k == "rooster":
+		return "rooster"
+	if k == "chick" or (k.ends_with("_baby") and (k.begins_with("chicken") or k.begins_with("hen"))):
+		return "peep"
+	for pre: String in ["chicken", "hen"]:
+		if k.begins_with(pre):
+			return "cluck"
+	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "bleat", "pig": "bleat", "horse": "whinny"}
+	for pre: String in voices:
+		if k.begins_with(pre):
+			return str(voices[pre])
+	return "sheep"
+
+
 func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") -> void:
-	Music.instance(get_tree()).sfx("crate_break", "thud")  # the shatter (hits only "pick")
+	Music.instance(get_tree()).sfx("rock_break", "thud")  # the shatter (hits only "pick"); crates keep crate_break
 	var sp: Node2D = props.get(c, null)
 	things.erase(c)
 	blocked.erase(c)
@@ -1262,6 +1291,10 @@ func check_exits() -> void:
 			if Campaign.blocks(self, str(e["scene"])):
 				_exit_grace[i] = true  # stay put; step out of the strip and back in to be asked again
 				continue
+			if _retreat_needs_ok():
+				_exit_grace[i] = true
+				_ask_retreat(e)
+				return
 			go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
 			return
 		_exit_grace.erase(i)
@@ -1272,6 +1305,22 @@ func check_exits() -> void:
 		try_interact(c)
 	elif not on_desc:
 		_desc_armed = true
+
+
+## Walking off a live campaign battlefield is a retreat (costs morale/supply): ask first (c6_11).
+func _retreat_needs_ok() -> bool:
+	var bt: Variant = get("battle")
+	return bt is Battle and str((bt as Battle).camp) != "" and not (bt as Battle)._over and not (bt as Battle).is_drill and not Net.visiting()
+
+
+func _ask_retreat(e: Dictionary) -> void:
+	var d := Dialogue.instance(get_tree())
+	Music.instance(get_tree()).sfx("nope", "ui_tap")
+	d.say([{"who": "", "text": "Leave the field? That's a retreat: the campaign loses morale and the supplies you brought.", "choice": ["Retreat", "Stay and fight"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0 and not _changing:
+		Music.instance(get_tree()).sfx("j_battle_lost", "nope")
+		go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
 
 
 func draw_exits() -> void:
@@ -1348,13 +1397,14 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown",
 	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
 	"bf_dockside": "battle", "bf_orchard_line": "battle", "bf_bog_crossing": "battle", "bf_ash_wastes": "battle", "bf_neon_block": "battle",
 	"colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
-	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "sanctuary": "sanctuary"}
+	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart"}
 ## Interiors by kind (data/interiors.json ids). Gangster-arc shops get the crew's lounge tune.
+## The town hall keeps the plaza song going (no restart on the way in); the mansion is a quiet home.
 const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
-	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "inn", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
-	"school": "chapel", "mansion": "chapel", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
+	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
+	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
-const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid",
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
 ## Mega bosses' own themes (C4): by kind (a gangster variant may share the stem), then by the
 ## region the fight is in, so a reskinned boss still gets its region's theme.
@@ -1363,40 +1413,62 @@ const MEGA_BOSS := {"thornmother": "boss_thornmother", "sun_colossus": "boss_col
 	"coalbrook": "boss_coalbrook", "madame_aurum": "boss_aurum", "aurum": "boss_aurum", "light_eater": "boss_light_eater"}
 const MEGA_REGION_BOSS := {"gloamwood": "boss_thornmother", "sunscorch": "boss_colossus", "frostpeak": "boss_wyrm",
 	"windward": "boss_roc", "ironline": "boss_coalbrook", "giltcity": "boss_aurum"}
+## Gangster-arc mega rivals are people, not monsters: they get the gang boss theme (C6 default).
+const GANG_RIVALS := ["garden_boss", "smuggler_king", "ice_hauler"]
+## Penguin-arc story bosses (their theme is the penguin one; in the gang arc they never get it).
+const PENGUIN_BOSSES := ["big_grump", "dark_crystal", "grump_commander"]
 var boss_music := "boss"
 
 
 ## The boss song for a foe: the arc themes for arc bosses, stone drums for mine keepers,
-## the Marked's own theme for Gift fights.
+## the Marked's own theme for Gift fights. Arc-aware: the gang arc never hears the penguin theme.
 func boss_track(kind: String) -> String:
 	var k := kind.to_lower()
 	var t := "boss"
 	var mt := ""
+	var peng := GameState.is_penguins()
+	var sid := scene_id()
+	var marked := k.begins_with("marked") or k.begins_with("mk_")
+	if not peng and k in GANG_RIVALS:
+		return "boss_gang" if Music.has_track("boss_gang") else "boss"
+	if k == "finargle" or k.begins_with("finargle_"):
+		mt = "finargle"
 	for stem: String in MEGA_BOSS:
-		if k == stem or k.begins_with(stem + "_") or k.ends_with("_" + stem):
+		if mt == "" and (k == stem or k.begins_with(stem + "_") or k.ends_with("_" + stem)):
 			mt = str(MEGA_BOSS[stem])
 			break
-	if mt == "" and not (k.begins_with("marked") or k.begins_with("mk_")):
-		var sid := scene_id()
+	if mt == "" and not marked:
 		mt = str(MEGA_REGION_BOSS.get(MegaTravel.region_of(sid), ""))
 		if mt == "" and sid == "hollow_deeps":
 			mt = "boss_light_eater"
 	if mt != "" and Music.has_track(mt):
 		return mt
-	if k.begins_with("marked") or k.begins_with("mk_"):
+	if marked:
 		t = "marked"
-	elif "golem" in k or "keeper" in k or scene_id() == "mine":
-		t = "keeper"
-	elif k in ["big_grump", "dark_crystal", "grump_commander", "finargle"] or (k == "commander" and GameState.is_penguins()) or (GameState.is_penguins() and k.begins_with("cboss")):
+	elif sid == "mine" or (("golem" in k or "keeper" in k) and not sid.begins_with("bf_")):
+		t = "keeper"  # the mine keepers' stone drums: mine fights only, not campaign golems
+	elif peng and (k in PENGUIN_BOSSES or k == "commander" or k.begins_with("cboss") or k.begins_with("gcap_") or sid.begins_with("bf_")):
 		t = "boss_penguin"
-	elif k in ["president", "thug_brute"] or k.begins_with("lieutenant") or k.begins_with("lt_") or (k == "commander" and not GameState.is_penguins()) or (Racket.on() and k.begins_with("thug")):
-		t = "boss_gang"
+	elif not peng and (k in PENGUIN_BOSSES or k in ["president", "thug_brute", "commander"] or k.begins_with("lieutenant") or k.begins_with("lt_") or k.begins_with("thug") or sid.begins_with("bf_")):
+		t = "boss_gang"  # every gang-arc captain (shared campaigns too) gets the gang theme
 	return t if Music.has_track(t) else "boss"
-const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands"]  # not crystal_meadow: cattopia is its song day and night
+const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands", "community_farm"]  # not crystal_meadow: its own song day and night (sanctuary after dark in the penguin arc)
+## Festival song hours in town (match Ambience's crowd bed).
+const FESTIVAL_FROM := 8 * 60
+const FESTIVAL_TO := 23 * 60
+
+
+## First of these that exists (streamed or packed); "" if none.
+static func first_track(names: Array) -> String:
+	for n: String in names:
+		if n != "" and Music.has_track(n):
+			return n
+	return ""
 
 
 func area_track() -> String:
 	var id := scene_id()
+	var peng := GameState.is_penguins()
 	var t := str(AREA_MUSIC.get(id, music_track))
 	if id == "interior":
 		var iid := str(get("interior_id"))
@@ -1406,24 +1478,46 @@ func area_track() -> String:
 		t = RecCenter.music_for(self, t)  # today's jukebox record
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
-	if id.begins_with("bf_") and get("battle") != null and is_instance_valid(get("battle")):
-		var md := str(get("battle").get("mode"))
+	# Countryside and the community farm: the harmonica Americana is the gang arc's; the penguin
+	# arc hears its pastoral orchard song there (c6_01).
+	if peng and id in ["countryside", "community_farm"]:
+		t = first_track(["countryside_penguin", "orchard", "meadow", t])
+	if id == "crystal_meadow":
+		if peng:
+			t = first_track(["sanctuary" if GameState.is_night() else "", "cattopia", t])
+		else:
+			t = first_track(["outskirts", "hideout", t])  # the Outskirts are gang turf (c6_02)
+	if id.begins_with("bf_"):
+		var md := ""
+		if get("battle") != null and is_instance_valid(get("battle")):
+			md = str(get("battle").get("mode"))
 		if md in ["siege", "gate", "defend", "camp"]:
 			t = "battle_siege"
 		elif md in ["escort", "supply"]:
 			t = "battle_escort"
-		if not GameState.is_penguins() and Music.has_track(t + "_gang"):
-			t += "_gang"  # gangster battles: gritty funk/noir variants (battle_gang, battle_siege_gang)
+		elif t == music_track or t == "":
+			t = "battle"
+		var arc_t := t + ("_penguin" if peng else "_gang")
+		if Music.has_track(arc_t):
+			t = arc_t  # arc variants: penguin marches, gangster funk/noir (battle_gang, battle_siege_gang)
 	if Racket.on() and _collectors_near():
 		return "raid"
 	if not Music.has_track(t):
 		t = music_track
+	var now := int(GameState.run.get("time", 0)) % 1440 if not GameState.run.is_empty() else 720
 	if id == "town" and GameState.festival_today() != "":
-		return "festival"
+		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
+			if GameState.is_night() and Music.has_track("festival_night"):
+				return "festival_night"
+			return "festival"
 	if id in NIGHT_OK and GameState.is_night():
+		if not peng and Music.has_track("night_gang"):
+			return "night_gang"  # the gang arc's valley at night is noir (C6 default)
 		return "night"
 	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and Music.has_track("rain"):
 		return "rain"
+	if id in NIGHT_OK and GameState.season() == "winter" and GameState.weather_today() in ["snow", "blizzard"] and Music.has_track("winter"):
+		return "winter"  # snow days: the outdoor maps share the winter piece
 	if id == "farm" and GameState.season() == "winter":
 		return "winter"
 	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
@@ -2510,7 +2604,8 @@ func player_down(reason := "hurt") -> void:
 			Marked.mark_try(str(e.get_meta("marked")))
 	var why := "You collapsed..." if reason == "hurt" else ("Too tired to go on... you pass out." if reason == "tired" else "It's so late... you pass out.")
 	hud.toast(why, Color(1, 0.6, 0.6))
-	Music.instance(get_tree()).sfx("die" if reason == "hurt" else "sleep")
+	Music.instance(get_tree()).sfx("knockout" if reason == "hurt" else "thud", "hurt")  # a KO is not an enemy pop, a pass-out not a bedtime (c6_08-23, c6_10-14)
+	DangerMusic.reset()  # combat tiers end with the knockout (the next map picks its own song)
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
 	if Net.visiting():
@@ -2809,11 +2904,19 @@ func _process(delta: float) -> void:
 		return
 	if hud and not (GameState.run.get("notes", []) as Array).is_empty():
 		for nt in GameState.run["notes"]:
-			hud.toast(str(nt), Color(1, 0.85, 0.9))
-			var low := str(nt).to_lower()
-			if "letter" in low:
+			# A note may carry its own cue: {"text", "sfx"} (GameMap.notify / GameState.notify(text, sfx)).
+			var cue := ""
+			var txt := str(nt)
+			if nt is Dictionary:
+				txt = str((nt as Dictionary).get("text", ""))
+				cue = str((nt as Dictionary).get("sfx", ""))
+			hud.toast(txt, Color(1, 0.85, 0.9))
+			var low := txt.to_lower()
+			if cue != "":
+				Music.instance(get_tree()).sfx(cue, "new_item")
+			elif "letter" in low:
 				Music.instance(get_tree()).sfx("mail")
-			elif "level" in low or "heart" in low or low.begins_with("built"):  # (learned: the menu already played craft_done)
+			elif "level" in low or low.begins_with("built"):  # (learned: the menu already played craft_done; hearts play j_heart in change_friend)
 				Music.instance(get_tree()).sfx("levelup")
 				if player:
 					fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
@@ -2909,7 +3012,8 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 		PlaceNames.entering(self)  # the HUD labels the room as its door read
 	# A creak only for real doors (in or out of a building, a mine), not road edges or ferries.
 	if not force and (scene.contains("house") or scene.contains("interior") or scene.contains("mine") or scene_id() in ["house", "interior", "mine"]):
-		Music.instance(get_tree()).sfx("door")
+		var leaving := scene_id() in ["house", "interior"] and not (scene.contains("house") or scene.contains("interior"))
+		Music.instance(get_tree()).sfx("door_close" if leaving else "door", "door")  # out: the door shuts behind you (c6_10-16)
 	_changing = true
 	player.frozen = true
 	next_spawn = spawn
@@ -4350,6 +4454,8 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		bob.play("bobber")
 	hud.toast("Casting...")
 	Music.instance(get_tree()).sfx("cast")
+	var plop_tree := get_tree()
+	plop_tree.create_timer(0.35).timeout.connect(func() -> void: Music.instance(plop_tree).sfx("step_water", "splash"))  # bobber plop (c6_10-18)
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
