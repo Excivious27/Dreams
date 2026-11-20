@@ -1006,6 +1006,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"]:
 				hud.toast("Put the tool away to pick it up.")
 				return true
+			# c10_13: a tap meant to walk past must never lift it: the first USE asks, a
+			# second one on the same spot within PICK_ARM_S seconds picks it up.
+			if not pick_armed(c):
+				_pick_arm = [c, PlayClock.now()]
+				hud.toast("USE again to pick up the %s." % GameState.item_name(str(thing.get("kind", ""))))
+				return true
+			_pick_arm = []
 			pickup_placed(c)
 			return true
 		"":
@@ -1679,6 +1686,14 @@ func _furnace() -> void:
 		(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
 
 
+const PICK_ARM_S := 2.5
+var _pick_arm: Array = []
+
+
+func pick_armed(c: Vector2i) -> bool:
+	return _pick_arm.size() == 2 and _pick_arm[0] == c and PlayClock.now() - float(_pick_arm[1]) <= PICK_ARM_S
+
+
 func pickup_placed(c: Vector2i) -> void:
 	var pk := "%d,%d" % [c.x, c.y]
 	var kind := str(GameState.run.get("placed", {}).get(pk, ""))
@@ -2239,7 +2254,7 @@ func on_world_sync(d: Dictionary) -> void:
 
 
 func _show_placed(c: Vector2i, id: String) -> void:
-	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": ("A: open chest" if id == "chest" else "A: pick up %s" % GameState.item_name(id))})
+	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": ("A: open chest" if id == "chest" else "A twice: pick up %s" % GameState.item_name(id))})
 	blocked[c] = true
 	var nm: String = {"sprinkler": "sprinkler_basic", "sprinkler_quality": "sprinkler_quality", "sprinkler_iridium": "sprinkler_iridium", "scarecrow": "scarecrow_classic"}.get(id, id)
 	if not Art.has("props", nm):
