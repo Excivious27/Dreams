@@ -295,6 +295,8 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
+const HAUL_CHOP_MULT := 2   # Dad's Haul: chop damage x this on trees/logs/stumps
+const HAUL_EXTRA_WOOD := 2  # ... and this much more wood per felled tree
 const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "sea": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "colony_kit": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
 
 
@@ -671,9 +673,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
-			thing["hp"] = int(thing.get("hp", 3)) - (1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power")))
+			var chop := 1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power"))
 			if Companion.has_ability("haul"):
-				thing["hp"] = 0  # Dad: "Just point at the tree."
+				chop *= HAUL_CHOP_MULT  # Dad swings with you (C8 P4: never one-swing; he carries extra wood)
+			thing["hp"] = int(thing.get("hp", 3)) - chop
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
@@ -688,7 +691,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						pop_items(cell_center(c), "sap", 1)
 					if randf() < 0.2 + (0.5 if GameState.has_perk("foraging", "Old Growth") else 0.0):
 						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
-					fell_tree(c, 4 + bonus)
+					fell_tree(c, 4 + bonus + (HAUL_EXTRA_WOOD if Companion.has_ability("haul") else 0))
 					# Domino Fall (Foraging): the trunk knocks down the next tree in line.
 					if GameState.bonus("foraging", "timber") > 0:
 						var dd := c - player.cell()
