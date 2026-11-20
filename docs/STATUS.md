@@ -2,6 +2,17 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P3: gangster story + endings/epilogue
+
+- Gangster beats now live in data/story_gang.json (Story.data merges it over story.json; edit gangster beats there). Origin per Tom (Guide 11 #12): you came to the river cities to end the gangs, M. fed you tips and buried you on the farm when you got close; the President reveals he used you to clean out his rivals. M.'s real name is Winter Kade (the W/K on the deed), the stone is "black with a purple pulse" everywhere in the story, Dark Crystal whispers foreshadowed (g1_man coat, g3 crates, after a shop takeover), chapter title cards on every chapter's first beat.
+- Corruption and redemption: dark choices flag dark_* (shops, sold letter, leaning on the pawnbroker); Sal's conscience talk after the first shop (g4_sal_conscience) opens amends; Deuce sells each shop back (g4_return_1..3: unflags shop_N and the owner's _gone, owners come back, flag shop_N_returned, purpose_kept).
+- Inspector Hale: g3_hale (heat >= 2, she has a file) or g3_hale_quiet (heat <= 1) after the docks, three outcomes (hale_friend / hale_fooled / hale_outrun); g4_hale in Neon (Juniper's letters, bring her the stone).
+- Third ending "A Clean Break" (g5_win_clean; `Epilogue.clean_ok`: heat 0, every Marked went home, no shop still held): hand the stone to Hale. Crew finale help by loyalty 3: Doc heals, Vic and Val hold the doors (clear the tower_loud spawns), Ladder spots (weakens the President). Finale staged on the tower steps/red carpet (no indoor lobby). Loyalty threads paid off (the Kid's sister, the twins' brother, Specs' wire, Marlene's deed, Ladder's trucks). g5_epilogue variants for city_taken / president_freed / clean_break; duplicate "Thank you" toast dropped.
+- New story conditions (GameState._cond_ok hook -> `Epilogue.cond_ok`): heat_min, heat_max, loyalty [id, n], clean_break true/false.
+- Epilogue: slides page by measured height (no text off the phone screen), pictures (THE END per ending, Big Jim's tail, last slide per arc), a Credits slide that starts the credits song and lets it play on after the slideshow, toasts held while it's up, lists joined with "and", gangster cash lines (Ivy), Sal not said twice, Vic without Val, Dad/Mom lines, playing as Nova gets "you" lines, returned shops, Hale lines.
+- Art: 4 dreams-image panels (tools/slice_c7_p3.py): ui/cut_gang_doors, cut_gang_stone, cut_clean_break, cut_big_jim_tail. Sal's drill invite is a burner-phone call and names the real job (the highway).
+- Test: tools/epilogue_test.gd; story_test drives the new conditions.
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.

@@ -54,6 +54,8 @@ func _run() -> void:
 			if when.has("known"): Companion.recruit(str(when["known"]))
 			# Choices made outside story beats (the farm intro's letter, skipped here) and mid-fight health.
 			if when.has("decision"): GameState.run["decisions"][str(when["decision"][0])] = int(when["decision"][1])
+			if when.has("heat_min") or when.has("heat_max"): Racket.set_heat(clampi(Racket.heat(), int(when.get("heat_min", 0)), int(when.get("heat_max", 5))))  # C7 P3 conditions
+			if when.has("loyalty"): Crew._set_loyalty(str(when["loyalty"][0]), int(when["loyalty"][1]))
 			if when.has("hp_below"): GameState.run["hp"] = maxi(1, int(float(when["hp_below"]) * 0.5 * float(GameState.run["max_hp"])))
 			if b.has("after") and not Story.fired(str(b["after"])): GameState.run["flags"]["st_" + str(b["after"])] = true
 			if when.has("not_flag") and not str(when["not_flag"]).begins_with("crew_"): GameState.run["flags"].erase(str(when["not_flag"]))
@@ -75,7 +77,7 @@ func _run() -> void:
 				continue  # arrival beats fire on their own when the scene loads
 			if when.has("day"): GameState.run["day"] = maxi(int(GameState.run["day"]), int(when["day"]))
 			var ok := Story._ready_beat(b, map)
-			if not ok and str(b["id"]).ends_with("_knows"):
+			if not ok and (str(b["id"]).ends_with("_knows") or when.has("clean_break")):
 				played += 1
 				continue  # alternate path, excluded by the main path's flags
 			check(ok, "%s: beat %s ready (%s)" % [arc, b["id"], str(when)])
