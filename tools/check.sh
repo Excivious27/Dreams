@@ -471,6 +471,27 @@ if ! echo "$haout" | grep -q "hidden_area_test: PASS"; then
   echo "Hidden area test failed"; exit 1
 fi
 
+echo "== crisp art shader on buildings/props (C2 P7) =="
+caout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/crisp_art_test.gd 2>&1)"
+echo "$caout" | grep -E "FAIL|SCRIPT ERROR|crisp_art_test" || true
+if ! echo "$caout" | grep -q "crisp_art_test: OK"; then
+  echo "Crisp art test failed"; exit 1
+fi
+
+echo "== fish critters only in deep water (C2 P4) =="
+cwout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/critter_water_test.gd 2>&1)"
+echo "$cwout" | grep -E "FAIL|SCRIPT ERROR|critter_water_test" || true
+if ! echo "$cwout" | grep -q "critter_water_test: PASS"; then
+  echo "Critter water test failed"; exit 1
+fi
+
+echo "== menu sweep: every menu button, both arcs (C2) =="
+msout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_sweep_test.gd 2>&1)"
+echo "$msout" | grep -E "FAIL|SCRIPT ERROR|menu_sweep_test" || true
+if ! echo "$msout" | grep -q "menu_sweep_test: .* 0 failures"; then
+  echo "Menu sweep test failed"; exit 1
+fi
+
 echo "== hidden areas stay put day to day (C5) =="
 hsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/hidden_stable_test.gd 2>&1)"
 echo "$hsout" | grep -E "FAIL|SCRIPT ERROR|hidden_stable_test" || true
