@@ -55,6 +55,7 @@ func _words(arc: String, cid: String, want: String, must: Array) -> Dictionary:
 
 
 func _initialize() -> void:
+	seed(7)
 	verbose = "-v" in OS.get_cmdline_user_args()
 	Campaign.bypass = false
 	for arc: String in ["penguins", "gangsters"]:

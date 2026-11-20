@@ -317,12 +317,12 @@ if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
 fi
 
 echo "== region campaigns: boards, locks, convoy =="
-mout2="$("$GODOT" --headless --path . -s res://tools/campaign_map_test.gd 2>&1)"
+mout2="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_map_test.gd 2>&1)"
 echo "$mout2" | grep -E "FAIL|SCRIPT ERROR|campaign_map_test" | head -n 40 || true
 if ! echo "$mout2" | grep -q "campaign_map_test: 0 fails"; then
   echo "Campaign map test failed"; exit 1
 fi
-sout2="$("$GODOT" --headless --path . -s res://tools/campaign_story_test.gd 2>&1)"
+sout2="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_story_test.gd 2>&1)"
 echo "$sout2" | grep -E "FAIL|SCRIPT ERROR|campaign_story_test" || true
 if ! echo "$sout2" | grep -q "campaign_story_test: 0 fails"; then
   echo "Campaign story test failed"; exit 1
@@ -332,20 +332,25 @@ echo "$glout" | grep -E "FAIL|SCRIPT ERROR|goal_line_test" || true
 if ! echo "$glout" | grep -q "goal_line_test: 0 fails"; then
   echo "Goal line test failed"; exit 1
 fi
-gout2="$("$GODOT" --headless --path . -s res://tools/campaign_gate_test.gd 2>&1)"
+gout2="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_gate_test.gd 2>&1)"
 echo "$gout2" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout2" | grep -q "campaign_gate_test: 0 fails"; then
   echo "Campaign gate test failed"; exit 1
 fi
-gout3="$(ARC=gangsters "$GODOT" --headless --path . -s res://tools/campaign_gate_test.gd 2>&1)"
+gout3="$(ARC=gangsters "$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_gate_test.gd 2>&1)"
 echo "$gout3" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout3" | grep -q "campaign_gate_test: 0 fails"; then
   echo "Campaign gate test (gangsters) failed"; exit 1
 fi
-p5out="$("$GODOT" --headless --path . -s res://tools/campaign_words_test.gd 2>&1)"
+p5out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_words_test.gd 2>&1)"
 echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|campaign_words_test" || true
 if ! echo "$p5out" | grep -q "campaign_words_test: 0 fails"; then
   echo "Campaign gate words test failed"; exit 1
+fi
+c3out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_c3_test.gd 2>&1)"
+echo "$c3out" | grep -E "FAIL|SCRIPT ERROR|campaign_c3_test" || true
+if ! echo "$c3out" | grep -q "campaign_c3_test: 0 fails"; then
+  echo "Campaign C3 design test failed"; exit 1
 fi
 p5out="$("$GODOT" --headless --path . -s res://tools/meow_gate_test.gd 2>&1)"
 echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|meow_gate_test" || true

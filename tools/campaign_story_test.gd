@@ -15,6 +15,7 @@ func check(ok: bool, what: String) -> void:
 
 
 func _initialize() -> void:
+	seed(7)
 	Campaign.bypass = false
 	var orders := {
 		"penguins": ["meet_town", "first_harvest", "clear_meadow", "cattopia", "spark", "wastes_gate", "commander", "sky_stair", "knight", "teleporter", "finale"],

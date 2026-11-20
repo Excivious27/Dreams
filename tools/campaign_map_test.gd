@@ -16,6 +16,7 @@ func check(ok: bool, what: String) -> void:
 
 
 func _initialize() -> void:
+	seed(7)
 	_run.call_deferred()
 
 
