@@ -289,6 +289,14 @@ echo "== art prompts: at most 3 images each =="
 python3 tools/prompt_size_check.py || { echo "Prompt size check failed"; exit 1; }
 echo "== every sound the game asks for exists =="
 python3 tools/sfx_audit.py || { echo "Sound audit failed"; exit 1; }
+echo "== music loop seams (join click + level jump) =="
+python3 tools/music_loop_check.py || { echo "Music loop check failed"; exit 1; }
+echo "== music: loop points are applied (data/music_loops.json) =="
+mlout="$("$GODOT" --headless --path . -s res://tools/music_loops_test.gd 2>&1)"
+echo "$mlout" | grep -E "FAIL|SCRIPT ERROR|music_loops_test" || true
+if ! echo "$mlout" | grep -q "music_loops_test: .* 0 failures"; then
+  echo "Music loops test failed"; exit 1
+fi
 echo "== text size floors (7 px) =="
 python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="

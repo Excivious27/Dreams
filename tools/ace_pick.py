@@ -3,8 +3,9 @@
 
     python3 tools/ace_pick.py a.mp3 b.mp3 [--kind music]
 
-Checks: length, clipping, long silences inside, and how well the end joins the
-start (loop seam: loudness + spectral match of last vs first 3 s). Higher is better.
+Checks: length, clipping, long silences and near-silent stretches inside (late ones =
+false endings), quiet intros, band-limited (muffled) renders (r999), bass-heavy masters
+that vanish on phones (low120), and how well the end joins the start. Higher is better.
 """
 import subprocess, sys, json
 import numpy as np
@@ -39,6 +40,16 @@ def trim_quiet(x, sr, tail_db=9.0, head_db=20.0):
     return i * win, (j + 1) * win
 
 
+def r999(x, sr):
+    """Frequency under which 99.9 % of the power sits (first 90 s): a band-limited,
+    muffled render sits under ~3 kHz."""
+    m = x[: sr * 90]
+    f = np.abs(np.fft.rfft(m.astype(np.float64))) ** 2
+    c = np.cumsum(f) / (f.sum() + 1e-12)
+    fr = np.fft.rfftfreq(len(m), 1 / sr)
+    return float(fr[min(len(fr) - 1, int(np.searchsorted(c, 0.999)))])
+
+
 def score(p):
     x, sr = load(p)
     a, b = trim_quiet(x, sr)
@@ -50,14 +61,24 @@ def score(p):
     db = 20 * np.log10(rms)
     med = np.median(db)
     holes = int(np.sum(db[4:-4] < med - 30))  # dropouts inside the piece
+    soft = np.where(db[4:-4] < med - 18)[0] + 4  # near-silent stretches (false endings, dead air)
+    late = int(np.sum(soft > 0.75 * len(db)))
     n = 3 * sr
     head, tail = x[:n], x[-n:]
     seam_spec = float(np.dot(spec(head), spec(tail)))
     lvl = abs(20 * np.log10(np.sqrt(np.mean(head ** 2)) + 1e-9) - 20 * np.log10(np.sqrt(np.mean(tail ** 2)) + 1e-9))
+    intro = max(0.0, float(med - db[:6].mean()))  # quiet intro (loop_offset handles some of it)
     fade = max(0.0, float(med - db[-4:].mean()) - 6)  # a fade-out ending hurts a loop
-    s = 100 * seam_spec - 1.5 * lvl - 2 * fade - 6 * holes - (20 if d < 60 else 0)
+    bw = r999(x, sr)
+    f = np.abs(np.fft.rfft(x[: sr * 90])) ** 2
+    low = float(f[np.fft.rfftfreq(min(len(x), sr * 90), 1 / sr) < 120].sum() / (f.sum() + 1e-12))
+    s = (100 * seam_spec - 1.5 * lvl - 2 * fade - 6 * holes - 2 * len(soft) - 6 * late
+         - 0.5 * max(0.0, intro - 6) - (20 if d < 60 else 0)
+         - (40 if bw < 3000 else 25 if bw < 6000 else 0) - (15 if low > 0.6 else 0))
     return {"file": p, "score": round(float(s), 2), "dur": round(d, 1), "seam": round(seam_spec, 3),
-            "lvl_diff": round(lvl, 1), "fade": round(fade, 1), "holes": holes, "peak": round(peak, 3)}
+            "lvl_diff": round(lvl, 1), "fade": round(fade, 1), "holes": holes, "soft": int(len(soft)),
+            "late_soft": late, "intro_db": round(intro, 1), "r999": round(bw), "low120": round(low, 2),
+            "peak": round(peak, 3)}
 
 if __name__ == "__main__":
     files = [a for a in sys.argv[1:] if not a.startswith("--")]

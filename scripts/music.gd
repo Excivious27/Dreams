@@ -200,6 +200,7 @@ var _resume := {}
 func _start(stream: AudioStream, name: String) -> void:
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = not (name in ONCE)
+		(stream as AudioStreamOggVorbis).loop_offset = loop_point(name)  # C6 P2: data/music_loops.json
 	# Remember where the outgoing song was, so it resumes there if asked again soon.
 	if _player.playing and _now != "" and not (_now in ONCE):
 		_resume[_now] = [_player.get_playback_position(), Time.get_ticks_msec()]
@@ -963,3 +964,21 @@ func _web_visibility_hook() -> void:
 	var doc := JavaScriptBridge.get_interface("document")
 	if doc != null:
 		doc.addEventListener("visibilitychange", _vis_cb)
+
+
+## Where a song loops back to (s): the end of its quiet intro, written by
+## tools/ace_import.py into data/music_loops.json ({"track": seconds}; absent = 0).
+## The file's tail is crossfaded into that point, so it must be applied.
+static var _loops: Dictionary = {}
+static var _loops_read := false
+
+
+static func loop_point(track: String) -> float:
+	if not _loops_read:
+		_loops_read = true
+		var f := FileAccess.open("res://data/music_loops.json", FileAccess.READ)
+		if f:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			if d is Dictionary:
+				_loops = d
+	return float(_loops.get(track, 0.0))

@@ -1,33 +1,16 @@
 # Dreams — Audio plan through ACE Music
 
-## Status (Nov 18): done
+## Status (Nov 19, CONDUCT 6): done — the sections after this one are the original plan (history)
 
-- **Music, 61 tracks, all from ACE Music:**
-  - every area, region and colony, both arcs and every room type;
-  - festivals, the campaign board and three battle moods;
-  - bosses by kind: the arc themes played heavy for arc bosses, stone drums for mine keepers, the Marked's own theme;
-  - chase and danger music;
-  - both endings, built on the arc themes, plus the credits;
-  - a music-box version of the title theme and a sung merkitty lullaby.
-
-  The title and both arc themes were uploaded so their melodies could be reused for the endings and the boss songs.
-- **Jingles and instrument sounds (45, from ACE):**
-  - level up, quest, skill and victory;
-  - heart and gift, birthday and morning;
-  - secret, journal page, new region and treasure;
-  - battle won, lost and start, and campaign won;
-  - marimba menu clicks and talk blips (each speaker at their own pitch);
-  - bell sparkles, shop bell and save chime.
-- **Recorded effects (306 files, 3 takes each where packs allowed) and 40 ambience pieces:** from 96 free CC0 packs on OpenGameArt, all downloaded and processed by me. Every pack is listed in docs/AUDIO-CREDITS.md.
-- **Wiring:**
-  - every action calls its sound;
-  - footsteps follow the ground (grass, dirt, sand, stone, wood, snow, water, mud, gravel, leaves);
-  - spells, guns, enemy deaths and crafting stations each have their own sound;
-  - new beds: river, jungle, marsh, neon street, festival fire, kitchen and workshop rooms;
-  - new spots: gulls, waves, crows, frogs, cicadas and insects.
-- **Checks:** `tools/sfx_audit.py` runs in check.sh. It fails the build if any sound or song the game asks for is missing.
-- **Phone size:** 57 songs stream on demand (data/music_stream.json) and are cached after first play. (Round 13: fixed. The fetch used a relative URL, which Godot refuses, so these songs never played on the web. Songs now stream from the full address, with a packed stand-in until each one arrives.) Only the title, farm, house and music-box songs are in the first download.
-- **Credits:** about 280 of 988 used.
+- **Music: 95 songs** in audio/music (91 looping + 4 play-once: both endings, credits, the merkitty lullaby), all ACE Music renders except the title and the two arc themes (Tom's uploads in audio/incoming, re-mastered through the same importer). Every version id is in audio/ACE_LOG.json (with `previous` takes for re-rendered songs).
+- **C6 import fix (all songs re-imported from their raw renders):** the old loop seam silently dropped its crossfade, so every looping song ended 6 s short with a hard splice. `tools/ace_import.py` now does a sample-accurate equal-power crossfade in numpy, cuts false endings (a render that stopped and restarted a fragment), keeps a quiet intro once (loop point in data/music_loops.json, `"track": seconds`, read by Music), masters for the phone speaker (low shelf on bass-heavy songs, -16 LUFS / -1.5 dBTP, then a -1.5..+3 dB trim measured through a 300 Hz high-pass) and encodes Vorbis q3 (~112 kbps). `tools/music_loop_check.py` (check.sh) fails any join that clicks or jumps more than 4 dB.
+- **C6 re-renders (2.5 min, full-range, mid-heavy for phones):** mine_deep, night, rain, hideout, boss_penguin (45 s -> 2.5 min), quarry, boss_gang (68 s -> 2.5 min), moon, campaign_map, clinic, ending_gangster (66 s -> 2.7 min), mine, shop_gang, title_musicbox, danger, battle_gang, docks, underground; mega_gloam_moonpool swapped to its full-range take.
+- **C6 new songs:** night_gang (gangster nights, noir jazz), outskirts (gangster Outskirts turf, street funk), battle_escort_gang, festival_night (festival evenings).
+- **Still soft (ACE renders quiet acoustic styles band-limited, ~2 kHz top):** marsh, sanctuary, chapel, meadow, sky, house, forest, mega_wind_storm, ending_penguin, night/rain/clinic/moon (better than before, not hi-fi). Both takes were checked; neither is full-range. Next step if wanted: re-render with brighter instrumentation.
+- **Jingles and instrument sounds (45, from ACE), recorded effects and ambience (CC0 packs):** see docs/AUDIO-CREDITS.md and audio/sfx/ACE.txt.
+- **Checks:** `tools/sfx_audit.py` (every sound/song the game asks for exists) and `tools/music_loop_check.py` (loop seams) run in check.sh.
+- **Phone size:** every song except the packed few streams on demand (data/music_stream.json, rebuilt by tools/music_stream.py) and is cached after first play; ~150 MB of music in total at q3 (was ~121 MB at q2).
+- **Make or fix a song:** `tools/ace_batch.py` (stdin `name kind id url page`), `--swap name`, `--reimport-all [--jobs N] [names]` (raws in /home/claude/work/ace_raw; re-download by id from ACE_LOG with download_song when missing). Score a take: `tools/ace_pick.py` (seam, holes, late holes = false endings, intro dip, r999 band-limit, low-end share).
 
 ## 1. The connection is ready
 
