@@ -443,37 +443,34 @@ static func _starter_id(art: String) -> String:
 	return str(_art_ids.get(art, ""))
 
 
-## Seed the starting furniture as placed decor once per tier (new pieces of a bigger
-## tier join when the house grows; a starter that no longer fits goes to the box).
+## Seed the starting furniture as placed decor: each starter once (keyed art@x,y in
+## run.decor.seeded.house), as soon as the catalogue knows its art; a bigger tier's new
+## pieces join when the house grows; a starter that doesn't fit goes to the box.
 func _seed_starters() -> void:
 	var d := Decor.st()
 	if not (d.get("seeded", null) is Dictionary):
 		d["seeded"] = {}
-	var was := int(d["seeded"].get("house", 0))
+	if not (d["seeded"].get("house", null) is Dictionary):
+		d["seeded"]["house"] = {}
+	var done: Dictionary = d["seeded"]["house"]
 	var t := tier()
-	if was >= t:
-		return
-	var had: Array = []
-	if was > 0:
-		had = STARTERS[1].duplicate() + (STARTERS.get(was, []) if was > 1 else [])
 	var want: Array = STARTERS[1].duplicate() + (STARTERS.get(t, []) if t > 1 else [])
 	if t >= 2:
 		want = want.filter(func(pr: Array) -> bool: return str(pr[0]) != "bookshelf")
 	var list: Array = DecorMode._own_placed("house")
 	for pr: Array in want:
-		if pr in had:
-			continue
-		var id := _starter_id(str(pr[0]))
-		if id == "":
-			continue
 		var c: Vector2i = pr[1]
+		var key := "%s@%d,%d" % [str(pr[0]), c.x, c.y]
+		var id := _starter_id(str(pr[0]))
+		if id == "" or done.has(key):
+			continue
+		done[key] = int(GameState.run.get("day", 1))
 		if DecorMode.why_not(self, id, c) == "":
 			list.append({"id": id, "cell": [c.x, c.y], "rot": 0})
 		else:
 			DecorMode._box_back(id)
 		if not (d["got"] as Dictionary).has(id):
 			d["got"][id] = int(GameState.run.get("day", 1))
-	d["seeded"]["house"] = t
 
 
 func decor_bounds() -> Rect2i:
