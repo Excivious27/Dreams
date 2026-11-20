@@ -703,6 +703,13 @@ for c in p6:
             e['glow_r'] = int(c['glow'])
         if c.get('fps'):
             e['fps'] = int(c['fps'])
+        if layer == 'outdoor' or cat == 'outdoor':  # C10b P6 yard renders: 2x art drawn at half scale, plus sub/season/desc
+            e['cat'] = 'outdoor'; e['layer'] = 'outdoor'
+            e['scale'] = float(c.get('scale', 0.5))
+            if c.get('season'):
+                e['season'] = str(c['season'])
+            if c.get('desc'):
+                e['desc'] = str(c['desc'])
         if c.get('colourway_of'):
             e['colourway_of'] = str(c['colourway_of'])
         if cat in ('wallpaper', 'flooring'):

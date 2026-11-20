@@ -28194,6 +28194,7 @@
    "price": 1850,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 278,
    "set": "yard_garden",
    "sets": [
@@ -28232,6 +28233,7 @@
    "price": 21500,
    "rarity": "legendary",
    "rot": 1,
+   "scale": 0.5,
    "sell": 3225,
    "set": "yard_show",
    "sets": [
@@ -28267,6 +28269,7 @@
    "price": 175,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 26,
    "set": "yard_kit",
    "sets": [
@@ -28302,6 +28305,7 @@
    "price": 115,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 17,
    "set": "yard_kit",
    "sets": [
@@ -28338,6 +28342,7 @@
    "price": 685,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 103,
    "set": "yard_gang",
    "sets": [
@@ -28373,6 +28378,7 @@
    "price": 200,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 30,
    "set": "yard_kit",
    "sets": [
@@ -28408,6 +28414,7 @@
    "price": 1500,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 225,
    "set": "yard_kit",
    "sets": [
@@ -28444,6 +28451,7 @@
    "price": 635,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 95,
    "set": "yard_lights",
    "sets": [
@@ -28471,7 +28479,7 @@
    "art": "decor/dc_y_car_lift",
    "cat": "outdoor",
    "comfort": 5,
-   "desc": "A piece for the yard outside.",
+   "desc": "Parked for show. Polished to a mirror shine.",
    "glow": false,
    "icon": "decor/dc_y_car_lift",
    "layer": "outdoor",
@@ -28479,6 +28487,7 @@
    "price": 10000,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 1500,
    "set": "yard_gang",
    "sets": [
@@ -28514,6 +28523,7 @@
    "price": 635,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 95,
    "set": "",
    "sets": [],
@@ -28547,6 +28557,7 @@
    "price": 3050,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 458,
    "set": "",
    "sets": [],
@@ -28580,6 +28591,7 @@
    "price": 185,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 28,
    "set": "yard_gang",
    "sets": [
@@ -28616,6 +28628,7 @@
    "price": 550,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 82,
    "set": "",
    "sets": [],
@@ -28650,6 +28663,7 @@
    "price": 1400,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 210,
    "set": "",
    "sets": [],
@@ -28686,6 +28700,7 @@
    "price": 94000,
    "rarity": "mythic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14100,
    "set": "yard_show",
    "sets": [
@@ -28717,6 +28732,7 @@
    "price": 5900,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 885,
    "set": "yard_fence",
    "sets": [
@@ -28752,6 +28768,7 @@
    "price": 835,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 125,
    "set": "yard_fence",
    "sets": [
@@ -28787,6 +28804,7 @@
    "price": 790,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 118,
    "set": "yard_fence",
    "sets": [
@@ -28822,6 +28840,7 @@
    "price": 420,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 63,
    "set": "yard_fence",
    "sets": [
@@ -28857,6 +28876,7 @@
    "price": 575,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 86,
    "set": "yard_fence",
    "sets": [
@@ -28893,6 +28913,7 @@
    "price": 2850,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 428,
    "set": "yard_fence",
    "sets": [
@@ -28929,6 +28950,7 @@
    "price": 1400,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 210,
    "set": "yard_fence",
    "sets": [
@@ -28964,6 +28986,7 @@
    "price": 200,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 30,
    "set": "yard_fence",
    "sets": [
@@ -28999,6 +29022,7 @@
    "price": 145,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 22,
    "set": "yard_fence",
    "sets": [
@@ -29034,6 +29058,7 @@
    "price": 505,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 76,
    "set": "yard_fence",
    "sets": [
@@ -29069,6 +29094,7 @@
    "price": 510,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 76,
    "set": "yard_fence",
    "sets": [
@@ -29104,6 +29130,7 @@
    "price": 130,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 20,
    "set": "yard_fence",
    "sets": [
@@ -29139,6 +29166,7 @@
    "price": 155,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 23,
    "set": "yard_fence",
    "sets": [
@@ -29175,6 +29203,7 @@
    "price": 535,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 80,
    "set": "yard_kit",
    "sets": [
@@ -29211,6 +29240,7 @@
    "price": 1800,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 270,
    "set": "yard_lights",
    "sets": [
@@ -29246,6 +29276,7 @@
    "price": 515,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 77,
    "set": "yard_penguin",
    "sets": [
@@ -29281,6 +29312,7 @@
    "price": 95,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14,
    "set": "yard_gang",
    "sets": [
@@ -29316,6 +29348,8 @@
    "price": 80,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "fall",
    "sell": 12,
    "set": "yard_seasonal",
    "sets": [
@@ -29351,6 +29385,7 @@
    "price": 190,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 28,
    "set": "yard_fence",
    "sets": [
@@ -29386,6 +29421,7 @@
    "price": 75,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 11,
    "set": "yard_garden",
    "sets": [
@@ -29422,6 +29458,7 @@
    "price": 90,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14,
    "set": "yard_lights",
    "sets": [
@@ -29457,6 +29494,7 @@
    "price": 475,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 71,
    "set": "yard_gang",
    "sets": [
@@ -29492,6 +29530,7 @@
    "price": 75,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 11,
    "set": "yard_gang",
    "sets": [
@@ -29527,6 +29566,7 @@
    "price": 6100,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 915,
    "set": "yard_penguin",
    "sets": [
@@ -29563,6 +29603,8 @@
    "price": 775,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
+   "season": "winter",
    "sell": 116,
    "set": "yard_seasonal",
    "sets": [
@@ -29599,6 +29641,7 @@
    "price": 760,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 114,
    "set": "yard_penguin",
    "sets": [
@@ -29634,6 +29677,8 @@
    "price": 675,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
+   "season": "summer",
    "sell": 101,
    "set": "yard_seasonal",
    "sets": [
@@ -29671,6 +29716,7 @@
    "price": 19500,
    "rarity": "legendary",
    "rot": 1,
+   "scale": 0.5,
    "sell": 2925,
    "set": "yard_show",
    "sets": [
@@ -29707,6 +29753,7 @@
    "price": 735,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 110,
    "set": "yard_kit",
    "sets": [
@@ -29742,6 +29789,8 @@
    "price": 75,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "fall",
    "sell": 11,
    "set": "yard_seasonal",
    "sets": [
@@ -29777,6 +29826,8 @@
    "price": 2300,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
+   "season": "summer",
    "sell": 345,
    "set": "yard_seasonal",
    "sets": [
@@ -29812,6 +29863,8 @@
    "price": 100,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "summer",
    "sell": 15,
    "set": "yard_seasonal",
    "sets": [
@@ -29849,6 +29902,7 @@
    "price": 34000,
    "rarity": "legendary",
    "rot": 1,
+   "scale": 0.5,
    "sell": 5100,
    "set": "yard_show",
    "sets": [
@@ -29876,7 +29930,7 @@
    "art": "decor/dc_y_lowrider_purple",
    "cat": "outdoor",
    "comfort": 5,
-   "desc": "A piece for the yard outside.",
+   "desc": "Parked for show. Polished to a mirror shine.",
    "glow": false,
    "icon": "decor/dc_y_lowrider_purple",
    "layer": "outdoor",
@@ -29884,6 +29938,7 @@
    "price": 8100,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 1215,
    "set": "yard_gang",
    "sets": [
@@ -29911,7 +29966,7 @@
    "art": "decor/dc_y_lowrider_teal",
    "cat": "outdoor",
    "comfort": 5,
-   "desc": "A piece for the yard outside.",
+   "desc": "Parked for show. Polished to a mirror shine.",
    "glow": false,
    "icon": "decor/dc_y_lowrider_teal",
    "layer": "outdoor",
@@ -29919,6 +29974,7 @@
    "price": 6000,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 900,
    "set": "yard_gang",
    "sets": [
@@ -29955,6 +30011,7 @@
    "price": 5150,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 772,
    "set": "yard_gang",
    "sets": [
@@ -29991,6 +30048,7 @@
    "price": 735,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 110,
    "set": "yard_gang",
    "sets": [
@@ -30029,6 +30087,7 @@
    "price": 8700,
    "rarity": "epic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 1305,
    "set": "yard_show",
    "sets": [
@@ -30065,6 +30124,7 @@
    "price": 425,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 64,
    "set": "yard_gang",
    "sets": [
@@ -30101,6 +30161,7 @@
    "price": 2000,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 300,
    "set": "yard_gang",
    "sets": [
@@ -30137,6 +30198,7 @@
    "price": 545,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 82,
    "set": "yard_lights",
    "sets": [
@@ -30172,6 +30234,7 @@
    "price": 135,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 20,
    "set": "yard_path",
    "sets": [
@@ -30207,6 +30270,7 @@
    "price": 90,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14,
    "set": "yard_path",
    "sets": [
@@ -30243,6 +30307,7 @@
    "price": 110,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 16,
    "set": "yard_lights",
    "sets": [
@@ -30278,6 +30343,7 @@
    "price": 470,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 70,
    "set": "yard_path",
    "sets": [
@@ -30313,6 +30379,7 @@
    "price": 775,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 116,
    "set": "yard_path",
    "sets": [
@@ -30348,6 +30415,7 @@
    "price": 1400,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 210,
    "set": "yard_penguin",
    "sets": [
@@ -30383,6 +30451,7 @@
    "price": 745,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 112,
    "set": "yard_penguin",
    "sets": [
@@ -30418,6 +30487,8 @@
    "price": 215,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "spring",
    "sell": 32,
    "set": "yard_seasonal",
    "sets": [
@@ -30445,7 +30516,7 @@
    "art": "decor/dc_y_pin_statue",
    "cat": "outdoor",
    "comfort": 3,
-   "desc": "A piece for the yard outside.",
+   "desc": "A giant lawn pin from the Rec. Strike-proof.",
    "glow": false,
    "icon": "decor/dc_y_pin_statue",
    "layer": "outdoor",
@@ -30453,6 +30524,7 @@
    "price": 1900,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 285,
    "set": "yard_garden",
    "sets": [
@@ -30488,6 +30560,7 @@
    "price": 90,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14,
    "set": "yard_garden",
    "sets": [
@@ -30523,6 +30596,7 @@
    "price": 145,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 22,
    "set": "yard_penguin",
    "sets": [
@@ -30558,6 +30632,7 @@
    "price": 170,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 26,
    "set": "yard_kit",
    "sets": [
@@ -30593,6 +30668,7 @@
    "price": 125,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 19,
    "set": "yard_kit",
    "sets": [
@@ -30628,6 +30704,8 @@
    "price": 90,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "winter",
    "sell": 14,
    "set": "yard_penguin",
    "sets": [
@@ -30663,6 +30741,7 @@
    "price": 470,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 70,
    "set": "yard_gang",
    "sets": [
@@ -30699,6 +30778,7 @@
    "price": 790,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 118,
    "set": "yard_penguin",
    "sets": [
@@ -30737,6 +30817,7 @@
    "price": 95500,
    "rarity": "mythic",
    "rot": 1,
+   "scale": 0.5,
    "sell": 14325,
    "set": "yard_show",
    "sets": [
@@ -30768,6 +30849,7 @@
    "price": 165,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 25,
    "set": "yard_garden",
    "sets": [
@@ -30804,6 +30886,7 @@
    "price": 410,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 62,
    "set": "yard_lights",
    "sets": [
@@ -30839,6 +30922,7 @@
    "price": 720,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 108,
    "set": "yard_garden",
    "sets": [
@@ -30874,6 +30958,7 @@
    "price": 150,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 22,
    "set": "yard_gang",
    "sets": [
@@ -30910,6 +30995,8 @@
    "price": 90,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
+   "season": "summer",
    "sell": 14,
    "set": "yard_lights",
    "sets": [
@@ -30945,6 +31032,8 @@
    "price": 395,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
+   "season": "spring",
    "sell": 59,
    "set": "yard_seasonal",
    "sets": [
@@ -30981,6 +31070,7 @@
    "price": 1200,
    "rarity": "rare",
    "rot": 1,
+   "scale": 0.5,
    "sell": 180,
    "set": "yard_lights",
    "sets": [
@@ -31016,6 +31106,7 @@
    "price": 65,
    "rarity": "common",
    "rot": 1,
+   "scale": 0.5,
    "sell": 10,
    "set": "yard_gang",
    "sets": [
@@ -31051,6 +31142,7 @@
    "price": 0,
    "rarity": "unique",
    "rot": 1,
+   "scale": 0.5,
    "sell": 0,
    "set": "",
    "sets": [],
@@ -31081,6 +31173,7 @@
    "price": 0,
    "rarity": "unique",
    "rot": 1,
+   "scale": 0.5,
    "sell": 0,
    "set": "",
    "sets": [],
@@ -31112,6 +31205,7 @@
    "price": 0,
    "rarity": "unique",
    "rot": 1,
+   "scale": 0.5,
    "sell": 0,
    "set": "",
    "sets": [],
@@ -31143,6 +31237,7 @@
    "price": 400,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 60,
    "set": "yard_gang",
    "sets": [
@@ -31178,6 +31273,7 @@
    "price": 565,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 85,
    "set": "yard_garden",
    "sets": [
@@ -31213,6 +31309,7 @@
    "price": 385,
    "rarity": "uncommon",
    "rot": 1,
+   "scale": 0.5,
    "sell": 58,
    "set": "yard_garden",
    "sets": [
@@ -47263,6 +47360,46 @@
     100
    ],
    [
+    "dc_y_hay_wall",
+    600
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_leaf_pile",
+    600
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
+   ],
+   [
+    "dc_y_lounger",
+    600
+   ],
+   [
+    "dc_y_picnic_set",
+    600
+   ],
+   [
+    "dc_y_snow_fort",
+    600
+   ],
+   [
+    "dc_y_tiki_torch",
+    600
+   ],
+   [
+    "dc_y_tulip_barrow",
+    260
+   ],
+   [
     "wr_flower_crown",
     260
    ],
@@ -47325,6 +47462,10 @@
    [
     "dc_out_wedding_arch",
     100
+   ],
+   [
+    "dc_y_tulip_barrow",
+    260
    ]
   ],
   "festival_summer_prize": [
@@ -47355,6 +47496,14 @@
    [
     "dc_out_sunflower_bush",
     260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
    ]
   ],
   "festival_winter_prize": [
@@ -47377,6 +47526,10 @@
    [
     "dc_out_fest_fw_62",
     100
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
    ]
   ],
   "fishing": [
@@ -55421,7 +55574,9 @@
     [
      "dc_fest_leaf_wreath",
      "dc_fest_pumpkins",
-     "dc_out_haystack"
+     "dc_out_haystack",
+     "dc_y_hay_wall",
+     "dc_y_leaf_pile"
     ]
    ],
    [
@@ -55446,7 +55601,8 @@
     1,
     [
      "dc_out_flowerbed_blue",
-     "dc_out_flowerbed_pink"
+     "dc_out_flowerbed_pink",
+     "dc_y_picnic_set"
     ]
    ],
    [
@@ -55455,7 +55611,8 @@
      "dc_out_fest_ss_09",
      "dc_out_lanterns_pink",
      "dc_out_lanterns_red",
-     "dc_out_trellis"
+     "dc_out_trellis",
+     "dc_y_tulip_barrow"
     ]
    ],
    [
@@ -55475,7 +55632,9 @@
      "dc_out_sunflowers",
      "dc_out_umbrella_blue",
      "dc_out_umbrella_red",
-     "dc_out_umbrella_yellow"
+     "dc_out_umbrella_yellow",
+     "dc_y_lounger",
+     "dc_y_tiki_torch"
     ]
    ],
    [
@@ -55486,7 +55645,14 @@
      "dc_out_fest_ss_31",
      "dc_out_lanterns_cyan",
      "dc_out_planter2_3",
-     "dc_out_sunflower_bush"
+     "dc_out_sunflower_bush",
+     "dc_y_kiddie_pool"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_y_lemonade_stand"
     ]
    ]
   ],
@@ -55495,14 +55661,16 @@
     1,
     [
      "dc_fest_gift_pile",
-     "dc_fest_stocking"
+     "dc_fest_stocking",
+     "dc_y_snow_fort"
     ]
    ],
    [
     2,
     [
      "dc_fest_snow_lantern",
-     "dc_out_fest_fw_38"
+     "dc_out_fest_fw_38",
+     "dc_y_icicle_lamp"
     ]
    ],
    [

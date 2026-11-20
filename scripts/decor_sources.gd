@@ -183,13 +183,13 @@ static func rotate(pool: Array, n: int, period: int, salt: int) -> Array:
 	var per := int(GameState.run.get("day", 1)) / maxi(1, period)
 	var keyed: Array = []
 	for id in p:
-		keyed.append([hash("%s:%d:%d" % [str(id), per, salt]), str(id)])
+		keyed.append([("%s:%d:%d" % [str(id), per, salt]).md5_text().hash(), str(id)])  # md5 first: hash() of near-equal strings keeps their order
 	keyed.sort_custom(func(a: Array, b: Array) -> bool: return int(a[0]) < int(b[0]) or (int(a[0]) == int(b[0]) and str(a[1]) < str(b[1])))
 	var out: Array = []
 	var subs := {}
 	for kv in keyed:  # at most two of one kind (sub) on a shelf
 		var sb := str(Decor.entry(str(kv[1])).get("sub", ""))
-		if int(subs.get(sb, 0)) >= 2:
+		if sb != "" and int(subs.get(sb, 0)) >= 2:
 			continue
 		subs[sb] = int(subs.get(sb, 0)) + 1
 		out.append(str(kv[1]))
@@ -304,6 +304,8 @@ static func order_price(id: String) -> int:
 ## Orders a piece you have seen or owned (P3's catalogue calls this): pays now, the
 ## piece comes with tomorrow's post. Returns "ok", "poor", "owned", "full" or "none".
 static func order(id: String) -> String:
+	if Decor.is_decor(id) and taken(id):
+		return "owned"  # an owned unique says so, even though uniques are never on the order list
 	if not Decor.is_decor(id) or order_price(id) <= 0:
 		return "none"
 	if taken(id) or orders().any(func(o: Variant) -> bool: return Decor.is_unique(id) and str((o as Dictionary).get("id", "")) == id):

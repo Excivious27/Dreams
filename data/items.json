@@ -20047,7 +20047,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_car_lift",
-  "desc": "A piece for the yard outside.",
+  "desc": "Parked for show. Polished to a mirror shine.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -20466,7 +20466,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_lowrider_purple",
-  "desc": "A piece for the yard outside.",
+  "desc": "Parked for show. Polished to a mirror shine.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -20477,7 +20477,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_lowrider_teal",
-  "desc": "A piece for the yard outside.",
+  "desc": "Parked for show. Polished to a mirror shine.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -20638,7 +20638,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_pin_statue",
-  "desc": "A piece for the yard outside.",
+  "desc": "A giant lawn pin from the Rec. Strike-proof.",
   "decor": true
  },
  "dc_y_rain_barrel": {
