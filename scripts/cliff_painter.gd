@@ -18,6 +18,9 @@ const FACE_H := T * 1.6      # painted face height in world px
 const FACE_TOP := 5.0        # the strip's grass fringe overlaps the rim by this much
 const SIDE_W := 9.0          # side wall width (world px)
 const CORNER_R := 0.9        # corner rounding (cells)
+const SIDE_NX := 0.75         # |normal.x| above this is a side wall; rounded back corners get the rim instead (c9_13: no rock chips)
+const TOP_LIGHT := Color(1.0, 0.98, 0.82, 0.07)  # raised ground catches a little more sun: a tier on a tier reads as a step
+const RIM_DARK := Color(0.06, 0.05, 0.1, 0.5)    # the line just outside a back rim
 
 
 ## Outline loops of a cell set, in cell-corner units. Walking a loop keeps the
@@ -217,7 +220,7 @@ static func _draw_impl(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, op
 				if stair_x.has(sc):
 					continue
 				fronts.append([a, b, nrm])
-			elif absf(nrm.x) > 0.5:
+			elif absf(nrm.x) > SIDE_NX:
 				sides.append([a, b, nrm])
 			else:
 				backs.append([a, b, nrm])
@@ -240,13 +243,23 @@ static func _draw_impl(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, op
 		var nrm: Vector2 = s[2]
 		tb.fan(PackedVector2Array([a, b, b + nrm * 4.0, a + nrm * 4.0]), PackedColorArray([ss0, ss0, sh1, sh1]))
 	tb.flush(ci)
+	# 1b. Sunlit top: the raised surface a shade lighter than the ground around it.
+	if not opts.get("no_top", false):
+		for lp: PackedVector2Array in loops(cells):
+			if is_hole(lp):
+				continue
+			var tp := smooth(lp, CORNER_R, keep)
+			var tri := Geometry2D.triangulate_polygon(tp)
+			for i in range(0, tri.size(), 3):
+				tb.fan(PackedVector2Array([tp[tri[i]], tp[tri[i + 1]], tp[tri[i + 2]]]), PackedColorArray([TOP_LIGHT]))
+		tb.flush(ci)
 	# 2. Back rims: a dark line just outside, a light lip just inside.
 	var lip_hi := Color(lip.r * 1.1, lip.g * 1.1, lip.b * 1.1, 0.55)
 	for bk: Array in backs:
 		var a: Vector2 = bk[0]
 		var b: Vector2 = bk[1]
 		var nrm: Vector2 = bk[2]
-		tb.line(a + nrm * 1.0, b + nrm * 1.0, Color(0.06, 0.05, 0.1, 0.4), 2.0)
+		tb.line(a + nrm * 1.2, b + nrm * 1.2, RIM_DARK, 2.4)
 		tb.line(a - nrm * 1.0, b - nrm * 1.0, lip_hi, 1.0)
 	tb.flush(ci)
 	# 3. Side walls: rock from the side piece, inside the rim, with a lip on top.
