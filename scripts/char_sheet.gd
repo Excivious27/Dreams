@@ -1027,6 +1027,14 @@ static func _doll(body: Control) -> void:
 			var w := WardrobeScreen.open(tree.current_scene)
 			w.closed.connect(_redo))
 	wb.set_meta("pc_key", "wardrobe")
+	var worn: Array = []
+	for ws2: String in Wardrobe.SHOWN_SLOTS:
+		var wid := Wardrobe.worn_id(ws2)
+		if wid != "":
+			worn.append(str(Wardrobe.entry(wid).get("name", wid)))
+	if not worn.is_empty():
+		var lk := _lab(mid, "Look: " + ", ".join(worn) + ("" if Wardrobe.hero_kind() != "doll" else ("  (armour shown)" if Wardrobe.show_armor() else "")), 7, INK_SOFT)
+		lk.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var gs: Array = []
 	for k: String in ["defense", "speed", "luck", "energy", "damage", "mana"]:
 		var n := GameState.gear_stat(k)
