@@ -46,6 +46,8 @@ var _was_paused := false
 var _arm := 0
 var _msg_t := 0.0
 var _prev_modal := Rect2()
+var _chip_down := 0
+const LONG_MS := 450  # a chip held this long steps back (touch has no second button)
 
 
 ## Opens the catalogue on a view ("grid" | "sets" | "box") over whatever is on screen.
@@ -489,7 +491,7 @@ func _ready() -> void:
 
 
 const TIP_COL := Color(0.8, 0.75, 0.65)
-const TIP_TOUCH := "Tap a chip to change it, a piece for its card. B closes."
+const TIP_TOUCH := "Tap a chip to change it (hold: back), a piece for its card. B closes."
 
 
 func _tip_text() -> String:
@@ -697,7 +699,11 @@ func _grid_view() -> void:
 	_body.add_child(chips)
 	for i in 4:
 		var ii := i
-		var cb := _btn(_chip_text(i), func() -> void: cycle_chip(ii, 1), "chip:%d" % i)
+		var cb := _btn(_chip_text(i), func() -> void:
+			var held := _chip_down > 0 and Time.get_ticks_msec() - _chip_down >= LONG_MS
+			_chip_down = 0  # a pad A press has no button_down: always forward
+			cycle_chip(ii, -1 if held else 1), "chip:%d" % i)
+		cb.button_down.connect(func() -> void: _chip_down = Time.get_ticks_msec())  # hold = step back
 		cb.custom_minimum_size = Vector2(60, 22)
 		cb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		cb.add_theme_font_size_override("font_size", Settings.font(7))

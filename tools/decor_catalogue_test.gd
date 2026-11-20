@@ -195,6 +195,13 @@ func _run() -> void:
 	check(scr._edge_move(Vector2.LEFT) and DecorCatalogue.part == 0, "pad left past the edge turns back")
 	scr._turn(1)
 	check(DecorCatalogue.part == 1, "Page › turns the page")
+	var r0 := DecorCatalogue.show_i
+	for b in scr._cur.items():
+		if str((b as Control).get_meta("pc_key", "")) == "chip:2":
+			(b as Button).pressed.emit()
+			break
+	check(DecorCatalogue.show_i == (r0 + 1) % DecorCatalogue.SHOWS.size(), "a plain chip press (pad A) steps forward")
+	DecorCatalogue.show_i = 0
 	scr.cycle_chip(1, -1)
 	check(DecorCatalogue.rar_i == Decor.RARITIES.size() and DecorCatalogue.part == 0, "chip cycles back and resets the page")
 	DecorCatalogue.view = "box"
