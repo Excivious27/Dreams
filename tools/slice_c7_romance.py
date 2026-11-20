@@ -3,7 +3,7 @@
 
   romance_wedding_props.png  -> props/wedding_arch, props/wedding_bench, props/wedding_heart_sign
   romance_corners_a/b/c.png  -> furniture/spouse_<id> (lumi theo finn rook | juniper posy ivy | benno tam sel)
-  romance_love_faces.png     -> portraits/<artist|scholar|nurse|fisherman|baker>/love (blush faces)
+  romance_love_faces_npc.png -> portraits/<npc_lumi|npc_theo|npc_juniper|npc_finn_normal|npc_posy_normal|npc_rook_normal>/love
   cut_wedding_penguins/gangsters.png, cut_proposal.png -> ui/cut_* (500x355 like the other panels)
 
 Run after the other slicers:  python3 tools/slice_c7_romance.py
@@ -59,16 +59,20 @@ def corners():
             _save(_fit(rgba, b, 60), "furniture", "spouse_" + cid)
 
 
+# The portrait sets Dialogue.portrait_for really uses for the candidates without a love face.
+PORTRAITS = ["npc_lumi", "npc_theo", "npc_juniper", "npc_finn_normal", "npc_posy_normal", "npc_rook_normal"]
+
+
 def love():
-    rgba = S.load(os.path.join(C7, "romance_love_faces.png"))
+    rgba = S.load(os.path.join(C7, "romance_love_faces_npc.png"))
     # Five portraits in one row; the little heart beside each is left out (portrait cells
     # are face-only, and Dialogue.one_face splits over-wide pictures).
     bs = blobs(rgba, merge=8, min_area=60)
     bs.sort(key=lambda b: -(b[2] - b[0]) * (b[3] - b[1]))
-    faces = sorted(bs[:5], key=lambda b: b[0])
-    assert len(faces) == 5, len(faces)
+    faces = sorted(bs[:6], key=lambda b: b[0])
+    assert len(faces) == 6, len(faces)
     bs = [tuple(f) for f in faces]
-    for b, pid in zip(bs, ["artist", "scholar", "nurse", "fisherman", "baker"]):
+    for b, pid in zip(bs, PORTRAITS):
         ref = Image.open(os.path.join(S.OUT, "portraits", pid, "happy.png"))
         im = S.crop(rgba, b)
         im = S.scale_to(im, width=max(1, round(im.width * ref.height / im.height)), height=ref.height)

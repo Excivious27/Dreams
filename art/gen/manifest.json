@@ -79002,11 +79002,6 @@
    "h": 96,
    "w": 75
   },
-  "love": {
-   "file": "portraits/artist/love.png",
-   "h": 96,
-   "w": 83
-  },
   "neutral": {
    "file": "portraits/artist/neutral.png",
    "h": 96,
@@ -79040,11 +79035,6 @@
    "file": "portraits/baker/happy.png",
    "h": 96,
    "w": 75
-  },
-  "love": {
-   "file": "portraits/baker/love.png",
-   "h": 96,
-   "w": 80
   },
   "neutral": {
    "file": "portraits/baker/neutral.png",
@@ -80131,11 +80121,6 @@
    "file": "portraits/fisherman/happy.png",
    "h": 96,
    "w": 75
-  },
-  "love": {
-   "file": "portraits/fisherman/love.png",
-   "h": 96,
-   "w": 86
   },
   "neutral": {
    "file": "portraits/fisherman/neutral.png",
@@ -82887,6 +82872,11 @@
    "h": 96,
    "w": 93
   },
+  "love": {
+   "file": "portraits/npc_finn_normal/love.png",
+   "h": 96,
+   "w": 90
+  },
   "neutral": {
    "file": "portraits/npc_finn_normal/neutral.png",
    "h": 96,
@@ -83077,6 +83067,11 @@
    "h": 96,
    "w": 93
   },
+  "love": {
+   "file": "portraits/npc_juniper/love.png",
+   "h": 96,
+   "w": 85
+  },
   "neutral": {
    "file": "portraits/npc_juniper/neutral.png",
    "h": 96,
@@ -83147,6 +83142,11 @@
    "file": "portraits/npc_lumi/happy.png",
    "h": 96,
    "w": 100
+  },
+  "love": {
+   "file": "portraits/npc_lumi/love.png",
+   "h": 96,
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_lumi/neutral.png",
@@ -83503,6 +83503,11 @@
    "h": 95,
    "w": 82
   },
+  "love": {
+   "file": "portraits/npc_posy_normal/love.png",
+   "h": 95,
+   "w": 78
+  },
   "neutral": {
    "file": "portraits/npc_posy_normal/neutral.png",
    "h": 95,
@@ -83534,6 +83539,11 @@
    "file": "portraits/npc_rook_normal/happy.png",
    "h": 96,
    "w": 100
+  },
+  "love": {
+   "file": "portraits/npc_rook_normal/love.png",
+   "h": 96,
+   "w": 92
   },
   "neutral": {
    "file": "portraits/npc_rook_normal/neutral.png",
@@ -83745,6 +83755,11 @@
    "h": 96,
    "w": 94
   },
+  "love": {
+   "file": "portraits/npc_theo/love.png",
+   "h": 96,
+   "w": 87
+  },
   "neutral": {
    "file": "portraits/npc_theo/neutral.png",
    "h": 96,
@@ -83955,11 +83970,6 @@
    "file": "portraits/nurse/happy.png",
    "h": 96,
    "w": 75
-  },
-  "love": {
-   "file": "portraits/nurse/love.png",
-   "h": 96,
-   "w": 80
   },
   "neutral": {
    "file": "portraits/nurse/neutral.png",
@@ -84387,11 +84397,6 @@
    "file": "portraits/scholar/happy.png",
    "h": 96,
    "w": 75
-  },
-  "love": {
-   "file": "portraits/scholar/love.png",
-   "h": 96,
-   "w": 81
   },
   "neutral": {
    "file": "portraits/scholar/neutral.png",
