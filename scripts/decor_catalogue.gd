@@ -321,8 +321,8 @@ static func order(id: String) -> String:
 ## Morning post (Collections.morning): orders placed before today land in the decor box.
 ## Returns the delivered ids.
 static func deliver_orders() -> Array:
-	if GameState.run.is_empty():
-		return []
+	if GameState.run.is_empty() or not (GameState.run.get("decor", null) is Dictionary) or (GameState.run["decor"] as Dictionary).get("orders", []).is_empty():
+		return []  # nothing on order: never creates run.decor for old saves
 	var today := int(GameState.run.get("day", 1))
 	var keep := []
 	var got := []
