@@ -224,20 +224,21 @@ func _run() -> void:
 		print("  (no defend node in this arc's campaigns)")
 
 	# --- escort: convoy lost, then convoy arrives
-	var en := node_of("c_highlands", "escort")
-	b = await fight("c_highlands", en)
+	var ecid := "c_wastes"
+	var en := node_of(ecid, "escort")
+	b = await fight(ecid, en)
 	if b:
 		check(b.convoy != null, "escort has a convoy")
 		if b.convoy:
 			b.convoy.hp = 0
 			b._tick()
-			check(b._over and not Campaign.taken("c_highlands", en), "a destroyed convoy loses")
+			check(b._over and not Campaign.taken(ecid, en), "a destroyed convoy loses")
 		await settle()
-	b = await fight("c_highlands", en)
+	b = await fight(ecid, en)
 	if b and b.convoy:
 		b.convoy.arrived = true
 		b._tick()
-		check(b._over and Campaign.taken("c_highlands", en), "an arrived convoy wins")
+		check(b._over and Campaign.taken(ecid, en), "an arrived convoy wins")
 		await settle()
 
 	# --- a fight reopened from a save resumes (tickets, supply, point owners)
