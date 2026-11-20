@@ -169,3 +169,7 @@ Earned, organic, tiered travel network instead of teleport menus:
 - Tiers: walk -> local shortcuts (secret passages, ladders, zip lines) -> regional lines (carts, ferries, buses) -> world lines (train, plane, clouds, airship) -> late-game instant hops at a few hubs. Each tier unlocks through quests, projects (materials + money), campaign wins or a skill node; tickets/fuel cost early, free later.
 - Stations appear on the map as you build them; a ride plays a short travel scene (riding the cart, the plane over the map) and can be skipped once seen.
 - Unified with exploration (C14), story gates (Campaign.blocks still applies) and progression (C16: no early shortcut that skips content). Works in co-op (host's network).
+
+## Added 2026-11-19 18:24 -> CONDUCT 4 extra package
+- Difficulty: Very easy / Easy / Default / Hard, combat and battle campaigns only (enemy HP/damage, boss HP, wave pace, ticket counts, faint penalty in fights); chosen in the new-game menu, changeable in Settings; per save slot.
+- Day length: 15 / 20 / 30 / 40 real minutes per in-game day, chosen in the new-game menu (and Settings); scales the game clock only.
