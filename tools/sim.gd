@@ -8,10 +8,15 @@ extends SceneTree
 ## Strategies: "best" (highest profit/day in-season seed the store sells),
 ## "cheap" (always the cheapest seed), "mixed" (regrow crops once affordable).
 ## The bot works ~10 real seconds per tile per day (walk + act) inside a day of
-## DAY_SECONDS work time (the real day is 15-40 min, GameState.day_len()), so the day caps at about 130 tile actions; energy is the other cap.
+## DAY_SECONDS work time (the real day is 15-40 min, GameState.day_len()), so the day caps at about 230 tile actions; energy is the other cap.
+## C8 P1: costs are the real fractional ones (energy_cost_f / spend_for), rocks
+## take GameState.hits_for swings (C6 P7 toughness + tool tier + level), mining
+## XP matches mine.gd ((3|6) + tier), and the watering can's capacity costs a
+## refill walk (REFILL_ACTIONS) every WaterCan.cap() pours.
 
 const DAY_SECONDS := 23.0 * 60.0
-const SECONDS_PER_ACTION := 1.6   # walk a step, swing, next tile
+const SECONDS_PER_ACTION := 6.0   # walk to the tile, act, next (was 1.6: 862 actions a day)
+const REFILL_ACTIONS := 12        # walk to water and back with an empty can
 var mine := true                  # spend leftover energy in the mine (ores sold)
 const ORE_VALUE := {"copper": 12, "iron": 25, "gold": 60, "shard": 45, "dark": 90, "stone": 2}
 
@@ -165,10 +170,12 @@ func _play_day() -> String:
 		tile["watered"] = true
 		watered += 1
 		actions += 1
+		if watered % maxi(1, WaterCan.cap()) == 0:
+			actions += REFILL_ACTIONS
 	# 4. Expand the field with what is left: never more tiles than tomorrow's
 	# energy can water (1 each) with a third kept back for hoeing and planting.
 	if seed != "":
-		var cap := int(int(GameState.run["max_energy"]) * 0.7 / maxi(1, GameState.energy_cost("can")))
+		var cap := int(int(GameState.run["max_energy"]) * 0.7 / maxf(0.1, GameState.energy_cost_f("can")))
 		var affordable := int(int(GameState.run["crystals"]) / maxi(1, GameState.buy_price(seed))) + GameState.count(seed)
 		while farm.size() < mini(cap, affordable) and actions < max_actions and int(GameState.run["energy"]) > 6:
 			if not GameState.spend_for("hoe"):
@@ -192,17 +199,20 @@ func _play_day() -> String:
 		var mtier := mini(5, int(GameState.run["day"]) / 28)
 		var pools: Array = GameState.tier_data.get("mine", {}).get("ores", [])
 		var ores: Array = pools[mini(mtier, pools.size() - 1)]
-		var hits_per_rock := int(ceil(float(3 + mtier) / (1 + GameState.tool_tier("pickaxe") / 2)))
-		while actions < max_actions - hits_per_rock and int(GameState.run["energy"]) >= hits_per_rock * GameState.energy_cost("pickaxe"):
-			for h in hits_per_rock:
-				GameState.spend_for("pickaxe")
-			actions += hits_per_rock
+		while true:
 			var ore := "stone"
 			if rng.randf() > 0.5 and ores.size() > 1:
 				ore = str(ores[rng.randi_range(1, ores.size() - 1)])
+			# Rock hp like mine.gd: stone 2 on the early floors, ore a little more.
+			var hits_per_rock := GameState.hits_for((2 if ore == "stone" else 4) + mtier, "pickaxe")
+			if actions >= max_actions - hits_per_rock or float(GameState.run["energy"]) < hits_per_rock * GameState.energy_cost_f("pickaxe") + 1.0:
+				break
+			for h in hits_per_rock:
+				GameState.spend_for("pickaxe")
+			actions += hits_per_rock
 			var lumps := 2 if ore == "stone" else 1 + (1 if rng.randf() < 0.3 else 0)
 			GameState.run["sellbox"][ore] = int(GameState.run["sellbox"].get(ore, 0)) + lumps
-			GameState.add_xp("mining", (2 if ore == "stone" else 5) + mtier)
+			GameState.add_xp("mining", (3 if ore == "stone" else 6) + mtier)
 			mined += lumps
 	var energy_left := int(GameState.run["energy"])
 	var sold_value := 0
