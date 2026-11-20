@@ -68,10 +68,30 @@ func _run() -> void:
 	# P1's decor.json wins on shared ids; our render fields fill the gaps
 	Decor.data()
 	(Decor._data["items"] as Dictionary)["wr_fedora"] = {"name": "Crew Fedora", "cat": "hat", "rarity": "rare", "layer": "wear"}
-	Wardrobe.register()
+	Wardrobe.register(true)
 	check(str(Decor.entry("wr_fedora").get("name", "")) == "Crew Fedora" and Decor.entry("wr_fedora").has("doll"), "register keeps P1's entry and adds render fields")
-	(Decor._data["items"] as Dictionary).erase("wr_fedora")
+	Decor._data = {}
+	Wardrobe.register()
 	var items: Dictionary = Wardrobe.data()["items"]
+	# --- C10b: one id set, sources, sets, aliases ------------------------------
+	var dj: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/decor.json"))["items"]
+	for id: String in items:
+		var w: Dictionary = items[id]
+		check(dj.has(id) or bool(w.get("starter", false)) or not (w.get("pools", []) as Array).is_empty() or id == "wr_goggles_ice" or id == "wr_hat_bandana_gold", "wardrobe-only piece has a source: " + id)
+		for row in w.get("pools", []):
+			var found_row := false
+			for r in (Decor.data()["pools"] as Dictionary).get(str(row[0]), []):
+				if r is Array and str(r[0]) == id:
+					found_row = true
+			check(found_row, "filed in loot pool %s: %s" % [row[0], id])
+	check(Wardrobe.alias("wr_pinstripe_suit") == "wr_outfit_pinstripe" and Wardrobe.alias("wr_hat_beanie") == "wr_beanie", "old ids alias to decor ids")
+	check(str(Decor.entry("wr_beanie").get("doll", {}).get("hat", "")) == "hats/beanie", "decor beanie draws (render contract on P1's id)")
+	check((Decor.data()["sets"] as Dictionary).has("wear_street") and (Decor.data()["sets"] as Dictionary).has("wear_snowfolk"), "wardrobe sets join Decor's sets")
+	for id: String in dj:
+		var de: Dictionary = Decor.entry(id)
+		if str(de.get("layer", "")) == "wear" and str(de.get("renders", "")).contains("doll"):
+			var dd: Dictionary = de.get("doll", {})
+			check(dd.has("body") or dd.has("hat") or dd.has("face") or dd.has("back"), "doll piece yields a layer: " + id)
 	check(items.size() >= 40, "wardrobe pieces: %d" % items.size())
 	Wardrobe.register()
 	for id: String in items:
@@ -107,35 +127,54 @@ func _run() -> void:
 	check(m != null and m.player != null, "farm with custom hero")
 	check(Wardrobe.hero_kind() == "doll", "custom hero is a doll")
 	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_farmer", "no wardrobe piece worn: the look's outfit as before (old saves unchanged)")
-	check(Wardrobe.choices("outfit").has("wr_neon_jacket") and not Wardrobe.choices("outfit").has("wr_ceremony_coat"), "arc filter on starters")
-	check(not Wardrobe.put_on("wr_pinstripe_suit"), "can't wear what you don't own")
+	check(Wardrobe.choices("outfit").has("wr_outfit_neon") and not Wardrobe.choices("outfit").has("wr_outfit_penguin"), "arc filter on starters")
+	check(not Wardrobe.put_on("wr_outfit_pinstripe"), "can't wear what you don't own")
 	# owning gear whose costume is a wardrobe outfit unlocks that look
 	GameState.items["_probe_suit"] = {"name": "Probe Suit", "slot": "body", "costume": "outfit_vest"}
 	GameState.run["inventory"]["_probe_suit"] = 1
 	var unl := Wardrobe.sync_unlocks()
-	check(unl.has("wr_padded_vest") and Decor.owned("wr_padded_vest") == 1, "gear costume unlocks the wardrobe look: %s" % [unl])
+	check(unl.has("wr_outfit_vest") and Decor.owned("wr_outfit_vest") == 1, "gear costume unlocks the wardrobe look: %s" % [unl])
 	check(Wardrobe.sync_unlocks().is_empty(), "unlock happens once")
+	GameState.items["_probe_parka"] = {"name": "Probe Coat", "slot": "body", "costume": "outfit_armored"}
+	GameState.add_item("_probe_parka", 1)
+	check(Decor.owned("wr_outfit_armored") == 1, "getting costume gear unlocks its look at once (add_item hook)")
+	Decor.take("wr_outfit_armored")
+	GameState.run["inventory"].erase("_probe_parka")
+	GameState.items.erase("_probe_parka")
+	check(not Wardrobe.choices("acc").has("wr_scarf_red"), "red scarf is not a gangster starter")
+	check(not DecorSources.today("wardrobe").is_empty(), "clothes catalogue has stock in the gangster arc")
+	# old save ids migrate
+	Decor.st()["box"]["wr_hat_cap"] = 1
+	Wardrobe._mig_st = {}
+	Wardrobe.migrate()
+	check(not Decor.st()["box"].has("wr_hat_cap") and int(Decor.st()["box"].get("wr_cap", 0)) >= 1, "old box ids migrate")
+	Decor.st()["box"].erase("wr_cap")
+	# outfit sheets: walk-down never shows the back view (frame 10)
+	check(PaperDoll.frame_source("walk_down", 3, "outfit_farmer")[1] == 8 and PaperDoll.frame_source("walk_down", 3, "medium_slim")[1] == 10, "outfit walk_down skips the back frame")
+	check(PaperDoll.has_headgear("outfit_farmer_life") and not PaperDoll.has_headgear("outfit_scholar_life"), "painted-head life rows hide layers")
+	check(PaperDoll.act_map("outfit_pinstripe_act")["hoe_up"] == [10] and PaperDoll.act_map("outfit_farmer_act")["hoe_up"] == [6, 7, 8], "arc costume act map")
 	GameState.run["inventory"].erase("_probe_suit")
 	GameState.items.erase("_probe_suit")
-	Decor.take("wr_padded_vest")
+	Decor.take("wr_outfit_vest")
 	var before := _gear_totals()
-	Decor.give("wr_pinstripe_suit")
-	Decor.give("wr_padded_vest")
+	Decor.give("wr_outfit_pinstripe")
+	Decor.give("wr_outfit_vest")
 	Decor.give("wr_fedora")
 	Decor.give("wr_shades")
-	check(Wardrobe.put_on("wr_pinstripe_suit"), "wear pinstripe")
-	check(Decor.owned("wr_pinstripe_suit") == 0 and Decor.worn("outfit") == "wr_pinstripe_suit", "worn piece leaves the box")
-	check(Wardrobe.put_on("wr_padded_vest") and Decor.owned("wr_pinstripe_suit") == 1, "swap returns the old piece")
+	check(Wardrobe.put_on("wr_outfit_pinstripe"), "wear pinstripe")
+	check(Decor.owned("wr_outfit_pinstripe") == 0 and Decor.worn("outfit") == "wr_outfit_pinstripe", "worn piece leaves the box")
+	check(Wardrobe.put_on("wr_outfit_vest") and Decor.owned("wr_outfit_pinstripe") == 1, "swap returns the old piece")
 	Wardrobe.take_off("outfit")
-	check(Decor.owned("wr_padded_vest") == 1 and Decor.worn("outfit") == "", "take off returns it")
-	check(Wardrobe.put_on("wr_pinstripe_suit") and Wardrobe.put_on("wr_fedora") and Wardrobe.put_on("wr_shades"), "full look on")
+	check(Decor.owned("wr_outfit_vest") == 1 and Decor.worn("outfit") == "", "take off returns it")
+	check(Wardrobe.put_on("wr_outfit_pinstripe") and Wardrobe.put_on("wr_fedora") and Wardrobe.put_on("wr_shades"), "full look on")
 	check(_gear_totals() == before, "cosmetics never change gear stats")
 	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_pinstripe", "doll wears the cosmetic outfit")
 	check(Dialogue.portrait_for(str(GameState.run["names"]["character"])) == "hero_outfit_pinstripe", "portrait follows the worn outfit")
 	var psf := PaperDoll.body_frames(GameState.run["look"])
 	for an in ["sit", "sleep", "swim", "ride", "float", "wave"]:
 		var tx := psf.get_frame_texture(an, 0) if psf.has_animation(an) else null
-		check(tx is AtlasTexture and (tx as AtlasTexture).atlas == Art.tex("body", "outfit_pinstripe"), "costume keeps its own look in " + an)
+		var own := Art.tex("body", "outfit_pinstripe_water" if an in ["swim", "float"] else ("outfit_pinstripe_life" if an in ["sit", "sleep", "wave"] else "outfit_pinstripe"))
+		check(tx is AtlasTexture and (tx as AtlasTexture).atlas == own, "costume keeps its own look in " + an)
 	var armour := ""
 	for id: String in GameState.items:
 		var cs := str(GameState.items[id].get("costume", ""))
@@ -150,6 +189,7 @@ func _run() -> void:
 		check(PaperDoll.has_headgear(PaperDoll.body_for(GameState.run["look"])), "show armour shows the armour")
 		var hair := Sprite2D.new()
 		var hat := Sprite2D.new()
+		hair.visible = true
 		root.add_child(hair)
 		root.add_child(hat)
 		PaperDoll.place_all({"hair": hair, "hat": hat}, GameState.run["look"], PaperDoll.body_for(GameState.run["look"]), 0, false, 0.27)
@@ -158,6 +198,12 @@ func _run() -> void:
 		hat.queue_free()
 		Wardrobe.set_show_armor(false)
 		check(_gear_totals() != before or true, "armour stats unaffected by look toggle")
+		Decor.give("wr_beanie")
+		Wardrobe.put_on("wr_beanie")
+		Wardrobe.set_show_armor(true)
+		check(Wardrobe.hidden_by_helmet("wr_beanie") == PaperDoll.has_headgear(PaperDoll.body_for(GameState.run["look"])), "helmet hides hat pieces honestly")
+		Wardrobe.set_show_armor(false)
+		Wardrobe.take_off("hat")
 	# full helms/hoods hide the hair
 	Decor.give("wr_hat_knight")
 	Wardrobe.put_on("wr_hat_knight")
@@ -175,7 +221,7 @@ func _run() -> void:
 	h3.queue_free()
 	Wardrobe.put_on("wr_fedora")
 	# every outfit x every pose: layers resolve and stay near the head
-	for id: String in Wardrobe.choices("outfit") + ["wr_pinstripe_suit", "wr_padded_vest", "wr_armored_suit"]:
+	for id: String in Wardrobe.choices("outfit") + ["wr_outfit_pinstripe", "wr_outfit_vest", "wr_outfit_armored"]:
 		var body := str((Wardrobe.entry(id).get("doll", {}) as Dictionary).get("body", ""))
 		if body == "":
 			continue
@@ -203,6 +249,18 @@ func _run() -> void:
 	check(pl._doll_body == "outfit_pinstripe", "player wears pinstripe: " + pl._doll_body)
 	check(pl._hat.visible and pl._hat.texture != null, "fedora on the player")
 	check(pl._face != null and pl._face.visible, "shades on the player")
+	Decor.give("wr_cape_red")
+	Wardrobe.put_on("wr_cape_red")
+	check(Wardrobe.shows_on("wr_cape_red") and Wardrobe.shows_label("wr_cape_red") == "Shows on your hero.", "capes draw on the doll")
+	pl.refresh_doll()
+	await process_frame
+	var cb := pl.get_node_or_null("HeroBack")
+	check(cb != null and (cb.get_child(0) as Sprite2D).texture != null, "cape layer behind the doll")
+	check(Art.has("capes", "cape_back") and Art.has("capes", "cape_side"), "cape art sliced")
+	Wardrobe.put_on("wr_shades")
+	pl.refresh_doll()
+	await process_frame
+	check(pl.get_node_or_null("HeroBack") == null, "cape off when another accessory goes on")
 	GameState.run["look"]["body"] = "dark_slim"
 	pl.refresh_doll()
 	await process_frame
@@ -233,11 +291,11 @@ func _run() -> void:
 	ws.slot = "outfit"
 	ws._build()
 	await process_frame
-	check(ws._cursor.select_key("w_wr_padded_vest"), "cursor reaches a wardrobe row")
+	check(ws._cursor.select_key("w_wr_outfit_vest"), "cursor reaches a wardrobe row")
 	ws._cursor.press()
 	await process_frame
-	check(Decor.worn("outfit") == "wr_padded_vest", "A on a row puts it on")
-	check(Wardrobe.put_on("wr_pinstripe_suit") and Decor.worn("outfit") == "wr_pinstripe_suit", "back in the pinstripe")
+	check(Decor.worn("outfit") == "wr_outfit_vest", "A on a row puts it on")
+	check(Wardrobe.put_on("wr_outfit_pinstripe") and Decor.worn("outfit") == "wr_outfit_pinstripe", "back in the pinstripe")
 	Wardrobe.put_on("wr_hat_beanie_blue")
 	ws.slot = "hat"
 	ws._build()
@@ -293,9 +351,28 @@ func _run() -> void:
 	m.player._anim.play("walk")
 	await _shot("5_penguin_side")
 	ws2._close()
-	# drawn hero: honest label, nothing pinned
+	# drawn hero: hats/face pieces pinned, outfits honest
 	m = await _start("gangsters", "june")
-	check(Wardrobe.hero_kind() == "", "June is a drawn hero")
-	check(Wardrobe.shows_label("wr_fedora").begins_with("Only shows on"), "honest label: " + Wardrobe.shows_label("wr_fedora"))
+	check(Wardrobe.hero_kind() == "pin", "June is a drawn hero (pins)")
+	Decor.give("wr_fedora")
+	Wardrobe.put_on("wr_fedora")
+	check(Wardrobe.shows_label("wr_fedora") == "Shows on your hero.", "fedora shows on June: " + Wardrobe.shows_label("wr_fedora"))
+	check(Wardrobe.shows_label("wr_outfit_neon").begins_with("Only shows on"), "outfit label honest: " + Wardrobe.shows_label("wr_outfit_neon"))
+	m.player.refresh_doll()
+	await process_frame
+	var pins := m.player.get_node_or_null("HeroPins")
+	check(pins != null and pins.get_child_count() == 1 and (pins.get_child(0) as Sprite2D).visible, "fedora pinned on June")
+	m.player._anim.play("faint")
+	await process_frame
+	check(pins != null and not (pins as Node2D).visible, "pins hide while lying down")
+	# co-op: a friend's look never borrows yours
+	var pp := Player.new()
+	pp.peer_look = {"playable": "custom", "arc": "gangsters", "look": {"body": "medium_slim", "hair": PaperDoll.hair_styles()[0], "outfit": "outfit_fisher"}, "equip": {}, "wear": {"outfit": "wr_outfit_pinstripe"}}
+	m.add_child(pp)
+	pp.with_look(func() -> void: pp.set_character(""))
+	await process_frame
+	check(pp._doll and pp._doll_body == "outfit_pinstripe", "puppet wears the friend's outfit: " + str(pp._doll_body))
+	check(str(GameState.run.get("playable", "")) == "june" and Decor.worn("hat") == "wr_fedora", "your own look restored after the swap")
+	pp.queue_free()
 	print("wardrobe_test: %s (%d failures)" % ["OK" if _fail == 0 else "FAILED", _fail])
 	quit(1 if _fail > 0 else 0)

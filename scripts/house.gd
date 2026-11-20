@@ -291,17 +291,16 @@ func _dresser() -> void:
 	var pdata: Dictionary = GameState.playables.get(str(GameState.run.get("playable", "")), {})
 	var sprite_id := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
 	var can_look := (bool(pdata.get("custom", false)) and PaperDoll.available()) or sprite_id == "penguin"
-	var opts: Array = ["Journal", "Change my look", "Decorate", "Close"] if can_look else ["Journal", "Decorate", "Close"]
-	if ResourceLoader.exists("res://scripts/wardrobe_screen.gd"):
-		opts.insert(1, "Wardrobe")  # "Wear it from the dresser at home" (c10b_11-04)
+	var opts: Array = ["Journal", "Wardrobe", "Change my look", "Decorate", "Close"] if can_look else ["Journal", "Wardrobe", "Decorate", "Close"]
 	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": opts, "key": ""}])
 	await d.finished
 	var pickd := str(opts[d.last_choice]) if d.last_choice >= 0 and d.last_choice < opts.size() else "Close"
 	if pickd == "Decorate":
 		DecorMode.open(self)
 		return
-	if pickd == "Wardrobe":
-		DecorCatalogue.open_other("res://scripts/wardrobe_screen.gd", self)
+	if pickd == "Wardrobe":  # C10b P5 (c10b_11-04): every hero dresses here
+		player.frozen = true
+		WardrobeScreen.open(self).closed.connect(func() -> void: player.frozen = false; player.refresh_doll())
 		return
 	if pickd == "Journal":
 		_journal()

@@ -1009,6 +1009,25 @@ static func _doll(body: Control) -> void:
 		dv.resized.connect(func() -> void: dh.position = Vector2(dv.size.x / 2.0, 114))
 		PaperDoll.build_preview(dh, GameState.run.get("look", {}), 3.3, "idle")
 		ht = null
+	elif Wardrobe.hero_kind() in ["penguin", "pin"]:
+		# Penguin / drawn heroes: a live sprite wearing the pinned pieces, like the wardrobe preview (c10b_11-19).
+		var spr := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
+		if spr != "" and CharacterLibrary.has_character(spr):
+			var pv := Control.new()
+			pv.custom_minimum_size = Vector2(0, 118)
+			pv.clip_contents = true
+			pv.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			mid.add_child(pv)
+			var ph := Node2D.new()
+			pv.add_child(ph)
+			pv.resized.connect(func() -> void: ph.position = Vector2(pv.size.x / 2.0, 112))
+			var sp := CharacterLibrary.make_sprite(spr)
+			sp.scale *= 3.0
+			sp.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			ph.add_child(sp)
+			sp.play("idle" if sp.sprite_frames.has_animation("idle") else sp.sprite_frames.get_animation_names()[0])
+			Wardrobe.dress_hero(ph, sp, spr)
+			ht = null
 	var hr := TextureRect.new()
 	hr.texture = ht
 	hr.custom_minimum_size = Vector2(0, 118)
@@ -1020,7 +1039,7 @@ static func _doll(body: Control) -> void:
 		mid.add_child(hr)
 	var wn := 0
 	for ws: String in Wardrobe.SHOWN_SLOTS:
-		wn += Wardrobe.choices(ws).size()
+		wn += WardrobeScreen._choices(ws).size()
 	var wb := _small_btn(mid, "Wardrobe (%d)" % wn, func() -> void:
 		var tree := Engine.get_main_loop() as SceneTree
 		if tree and tree.current_scene:
@@ -1028,10 +1047,35 @@ static func _doll(body: Control) -> void:
 			w.closed.connect(_redo))
 	wb.set_meta("pc_key", "wardrobe")
 	var worn: Array = []
-	for ws2: String in Wardrobe.SHOWN_SLOTS:
+	var badges: Array = []
+	for ws2: String in Decor.WEAR_SLOTS:
 		var wid := Wardrobe.worn_id(ws2)
-		if wid != "":
+		if wid == "":
+			continue
+		if Wardrobe.shows_on(wid):
 			worn.append(str(Wardrobe.entry(wid).get("name", wid)))
+		else:
+			badges.append(wid)  # not drawn on this hero: a badge, not a promise (c10b_11-03/19)
+	if not badges.is_empty():
+		var br := HBoxContainer.new()
+		br.alignment = BoxContainer.ALIGNMENT_CENTER
+		br.add_theme_constant_override("separation", 2)
+		br.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mid.add_child(br)
+		for bid: String in badges.slice(0, 6):
+			var bt := TextureRect.new()
+			bt.texture = WardrobeScreen.icon_tex(bid)
+			if bt.texture == null:
+				bt.texture = DecorCatalogue.icon_tex(bid)
+			bt.custom_minimum_size = Vector2(16, 16)
+			bt.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			bt.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			bt.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			bt.tooltip_text = str(Wardrobe.entry(bid).get("name", bid))
+			bt.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			br.add_child(bt)
+		var bl := _lab(mid, "Also wearing (not drawn): " + ", ".join(badges.map(func(i: String) -> String: return str(Wardrobe.entry(i).get("name", i)))), 7, INK_SOFT)
+		bl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if not worn.is_empty():
 		var lk := _lab(mid, "Look: " + ", ".join(worn) + ("" if Wardrobe.hero_kind() != "doll" else ("  (armour shown)" if Wardrobe.show_armor() else "")), 7, INK_SOFT)
 		lk.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

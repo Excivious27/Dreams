@@ -678,6 +678,7 @@ func _pick(pid: String) -> void:
 		var rl := PaperDoll.random_look()
 		rl["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"  # the preview matches the game
 		var cr := Creator.new(_look_full if _look_full.has("body") else rl, "", false)
+		cr.arc = _arc  # C10b P5: starter outfits of the arc being built
 		_preview.add_child(cr)
 		cr.visible = false
 		PaperDoll.preview_bare = true  # a loaded run's armour must not dress the new hero
@@ -764,6 +765,7 @@ func _show_look() -> void:
 		_look_full["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"  # the preview matches the game
 	Music.instance(get_tree()).play("title_musicbox" if Music.has_track("title_musicbox") else "title")
 	var cr := Creator.new(_look_full, sprite_id, false)
+	cr.arc = _arc
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
 	_page.add_child(cr)
 	var gap := Control.new()

@@ -24,6 +24,19 @@ static func hair_material(col: String) -> ShaderMaterial:
 	return m
 ## 16-pose row from w56: idle down, idle up, idle side, walk side ×4, walk down ×4, walk up ×4, run side.
 const POSES := {"idle": [0], "idle_up": [1], "idle_side": [2], "walk": [3, 4, 5, 6], "walk_down": [7, 8, 9, 10], "walk_up": [11, 12, 13, 14], "run": [15, 4, 15, 6], "run_down": [7, 8, 9, 10], "run_up": [11, 12, 13, 14], "view_front": [0], "view_back": [1], "view_right": [2]}
+## Costume sheets (outfit_*) draw 3 front walk frames (7-9) and 5 back (10-14): their
+## walk/run down reuses frame 8 instead of the back view at 10 (c10b_11-10).
+const OUTFIT_POSES := {"walk_down": [7, 8, 9, 8], "run_down": [7, 8, 9, 8]}
+
+
+static func poses_for(body: String) -> Dictionary:
+	if not body.begins_with("outfit_"):
+		return POSES
+	var d := POSES.duplicate()
+	d.merge(OUTFIT_POSES, true)
+	return d
+
+
 const FPS := {"idle": 1.0, "idle_up": 1.0, "idle_side": 1.0, "walk": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run": 12.0, "run_down": 12.0, "run_up": 12.0}
 ## Action poses from w56 row 7 used as single frames for tool/attack anims.
 const ACTIONS := {"attack": ["act_attack_1", "act_attack_2", "act_attack_3"], "hurt": ["act_hurt"], "sit": ["act_sit"], "sleep": ["act_sleep"], "eat_down": ["act_eat"], "celebrate": ["act_celebrate_1", "act_celebrate_2"], "swim": ["act_swim_1", "act_swim_2"], "ride": ["act_ride_1", "act_ride_2"], "hold_down": ["act_carry_1"], "hold_up": ["act_carry_1"], "hold_right": ["act_carry_2"], "faint": ["act_faint"]}
@@ -68,6 +81,20 @@ const ACT := {"hoe_down": [0, 1, 2], "hoe_right": [3, 4, 5], "hoe_up": [6, 7, 8]
 	"pickaxe_down": [0, 1, 2], "pickaxe_right": [3, 4, 5], "pickaxe_up": [6, 7, 8], "attack": [3, 4, 5], "attack_down": [0, 1, 2], "attack_up": [6, 7, 8],
 	"water_down": [9], "water_up": [10], "water_right": [11], "hold_down": [9], "hold_up": [10], "hold_right": [11], "cast_down": [14], "cast_up": [14], "cast_right": [14],
 	"reel_down": [9], "reel_up": [10], "reel_right": [11], "eat_down": [13], "eat_up": [13], "eat_right": [13], "hurt": [12], "celebrate": [15], "powerup": [15]}
+
+
+## The six arc costumes' _act sheets have their own order (c10b_11-34): 0 stand, 1-5 side
+## punches, 6-8 front swings, 9 front stand, 10 back, 11 lying, 12 hurt, 13 side stand,
+## 14 side punch, 15 celebrate. Up swings use the one back view; side holds the side stand.
+const ARC_ACT_SHEETS := ["outfit_pinstripe_act", "outfit_vest_act", "outfit_armored_act", "outfit_parka_act", "outfit_crystal_parka_act", "outfit_starlight_act"]
+const ARC_ACT := {"hoe_down": [7, 8, 6], "hoe_right": [3, 4, 5], "hoe_up": [10], "axe_down": [7, 8, 6], "axe_right": [3, 4, 5], "axe_up": [10],
+	"pickaxe_down": [7, 8, 6], "pickaxe_right": [3, 4, 5], "pickaxe_up": [10], "attack": [3, 4, 5], "attack_down": [7, 8, 6], "attack_up": [10],
+	"water_down": [9], "water_up": [10], "water_right": [13], "hold_down": [9], "hold_up": [10], "hold_right": [13], "cast_down": [14], "cast_up": [14], "cast_right": [14],
+	"reel_down": [9], "reel_up": [10], "reel_right": [13], "eat_down": [9], "eat_up": [10], "eat_right": [13], "hurt": [12], "celebrate": [15], "powerup": [15]}
+
+
+static func act_map(act_sheet: String) -> Dictionary:
+	return ARC_ACT if act_sheet in ARC_ACT_SHEETS else ACT
 
 
 ## Skin tone on the painted (tan = medium) costume sheets: the look's body prefix picks
@@ -155,8 +182,20 @@ const FULL_HATS := ["knight", "hood", "aurora_hood", "crystal_helm", "gold_helm"
 
 ## Body sheets with a helmet/hood painted in: no hair, no hat layer on top (c10_04).
 static func has_headgear(body: String) -> bool:
+	if body in HEADED_SHEETS:
+		return true
 	var b := body.trim_suffix("_act").trim_suffix("_life").trim_suffix("_water").trim_suffix("_ride")
 	return b.begins_with("armor_") or b == "outfit_miner" or b == "outfit_armored"
+
+
+## Everyday-outfit life/ride rows were drawn with hair and hats painted in: no layers on
+## top of them (no double hats, c10b_11-33). Scholar's life row is bald (hair still pins).
+const HEADED_SHEETS := ["outfit_farmer_life", "outfit_farmer_ride", "outfit_fisher_life", "outfit_fisher_ride", "outfit_forester_life",
+	"outfit_forester_ride", "outfit_merchant_life", "outfit_merchant_ride", "outfit_miner_life", "outfit_miner_ride", "outfit_neon_life",
+	"outfit_neon_ride", "outfit_penguin_life", "outfit_penguin_ride", "outfit_scholar_ride"]
+## Poses whose head isn't upright (lying, side swim, diving): hair/hat/face layers hide
+## rather than float above the body (c10b_11-17).
+const LYING := ["faint", "sleep", "swim", "dive"]
 
 
 ## Any penguin hero sprite (penguin, penguin_king, penguin_wizard).
@@ -214,7 +253,11 @@ static func _colourway(layer: Sprite2D, tint: String) -> void:
 
 
 ## Pin hair/hat/face layers for a body frame. Layers: {"hair": Sprite2D, "hat": .., "face": ..}.
-static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: int, flip: bool, sc: float) -> void:
+static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: int, flip: bool, sc: float, anim := "") -> void:
+	if anim in LYING:
+		for k: String in layers:
+			(layers[k] as Sprite2D).visible = false
+		return
 	var hg := has_headgear(body)
 	if layers.has("hair"):
 		if hg:
@@ -272,12 +315,14 @@ static func build_preview(parent: Node2D, look: Dictionary, mult: float, anim :=
 		var src := frame_source(body.animation, body.frame, bname)
 		apply_skin(bm, src[0])
 		preview_bare = bare
-		place_all(layers, look, src[0], src[1], body.flip_h, sc)
+		place_all(layers, look, src[0], src[1], body.flip_h, sc, str(body.animation))
 		preview_bare = false
 	body.frame_changed.connect(upd)
 	body.animation_changed.connect(upd)
 	upd.call()
 	preview_bare = false
+	if not bare:
+		Wardrobe.dress_hero(parent, body, "doll")  # capes/cloaks (back layer)
 	return body
 
 
@@ -290,11 +335,12 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 	var info := Art.info("body", body)
 	var cw := int(info.get("cell_w", 96))
 	var ch := int(info.get("cell_h", 96))
-	for anim: String in POSES:
+	var poses := poses_for(body)
+	for anim: String in poses:
 		sf.add_animation(anim)
 		sf.set_animation_speed(anim, float(FPS.get(anim, 6.0)))
 		sf.set_animation_loop(anim, true)
-		for i in POSES[anim]:
+		for i in poses[anim]:
 			var at := AtlasTexture.new()
 			at.atlas = tex
 			at.region = Rect2(int(i) * cw, 0, cw, ch)
@@ -306,11 +352,12 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 		var ainfo := Art.info("body", act)
 		var acw := int(ainfo.get("cell_w", 96))
 		var ach := int(ainfo.get("cell_h", 96))
-		for anim: String in ACT:
+		var amap := act_map(act)
+		for anim: String in amap:
 			sf.add_animation(anim)
 			sf.set_animation_speed(anim, 10.0)
 			sf.set_animation_loop(anim, false)
-			for i in ACT[anim]:
+			for i in amap[anim]:
 				var at := AtlasTexture.new()
 				at.atlas = atex
 				at.region = Rect2(int(i) * acw, 0, acw, ach)
@@ -399,10 +446,10 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 ## the sheet it came from, so layers pin to the right anchor.
 static func frame_source(anim: String, frame: int, body: String) -> Array:
 	if POSES.has(anim):
-		var arr: Array = POSES[anim]
+		var arr: Array = poses_for(body)[anim]
 		return [body, int(arr[clampi(frame, 0, arr.size() - 1)])]
 	if ACT.has(anim) and Art.has("body", body + "_act"):
-		var arr2: Array = ACT[anim]
+		var arr2: Array = act_map(body + "_act")[anim]
 		return [body + "_act", int(arr2[clampi(frame, 0, arr2.size() - 1)])]
 	if LIFE.has(anim) and Art.has("body", body + "_life"):
 		var arr3: Array = LIFE[anim]
@@ -414,7 +461,7 @@ static func frame_source(anim: String, frame: int, body: String) -> Array:
 		var arr5: Array = RIDE[anim]
 		return [body + "_ride", int(arr5[clampi(frame, 0, arr5.size() - 1)])]
 	if POSE_FALLBACK.has(anim) and not body in BODIES:
-		var arr6: Array = POSES[str(POSE_FALLBACK[anim])]
+		var arr6: Array = poses_for(body)[str(POSE_FALLBACK[anim])]
 		return [body, int(arr6[clampi(frame, 0, arr6.size() - 1)])]
 	return [body, 0]
 
@@ -533,6 +580,8 @@ static func place_layer(layer: Sprite2D, group: String, name: String, body_name:
 	var cw := int(info.get("cell_w", 96))
 	var ch := int(info.get("cell_h", 96))
 	var lf := layer_frame(body_frame_pose, act)
+	if act and body_name in ARC_ACT_SHEETS:
+		lf = 1 if body_frame_pose == 10 else (2 if body_frame_pose in [1, 2, 3, 4, 5, 13, 14] else 0)
 	if life:
 		lf = 2 if body_frame_pose in [1, 2] else 0
 	elif water:

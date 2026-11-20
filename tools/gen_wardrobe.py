@@ -9,9 +9,14 @@ Every piece is a Decor wear entry (Decor.WEAR_SLOTS) plus how it is drawn:
   doll     {"body": sheet} | {"hat": "group/name"} | {"face": "group/name"}
   penguin  {"neck"|"face"|"hat": "group/name"}
   starter  free in the wardrobe for that arc (everyday clothes, like hair)
-Cosmetics never carry stats. tools/gen_decor.py (P1) merges these ids into
-data/decor.json; until then Wardrobe.register() adds missing ones at runtime.
-Edit this file, then run it (regen_data.sh runs it before gen_decor.py).
+Cosmetics never carry stats. Ids are decor.json's wherever P1's catalogue already has
+the piece (C10b: one id set; the old C10a ids live on in ALIAS for saves), so name,
+price and sources stay P1's and this file only adds the render contract. Pieces only
+the wardrobe has (colourway hats, bowties, penguin goggles, knight helm) carry their own
+"sources" + "pools" ([pool, weight]) and Wardrobe.register() files them into Decor's
+loot pools at runtime. SETS (street, snowfolk) list obtainable pieces and a reward;
+register() adds them to Decor's sets so the catalogue can pay them.
+Edit this file, then run it (regen_data.sh runs it right after gen_decor.py: its self-check reads decor.json).
 """
 import json, os, sys
 
@@ -20,14 +25,33 @@ PRICE = {"common": 150, "uncommon": 400, "rare": 900, "epic": 2000, "legendary":
 SELL_SHARE = 0.2  # sell-back share of the price (P1's econ_check owns the ladder)
 
 SETS = {
-    "street": {"name": "Street Set", "arc": "gangsters", "desc": "Sharp suits and tilted brims for the crew boss."},
-    "snowfolk": {"name": "Snowfolk Set", "arc": "penguins", "desc": "Quilted, puffy and ready for a snowball war."},
-    "everyday": {"name": "Everyday Clothes", "arc": "", "desc": "What you wear around the farm."},
+    "street": {"name": "Street Set", "arc": "gangsters", "desc": "Sharp suits and tilted brims for the crew boss.",
+               "pieces": ["wr_outfit_pinstripe", "wr_outfit_vest", "wr_outfit_armored", "wr_fedora", "wr_shades"],
+               "reward": {"money": 1500, "decor": "wr_hat_bandana_gold"}},
+    "snowfolk": {"name": "Snowfolk Set", "arc": "penguins", "desc": "Quilted, puffy and ready for a snowball war.",
+                 "pieces": ["wr_outfit_parka", "wr_outfit_crystal_parka", "wr_aurora_hood", "wr_snow_goggles", "wr_bowtie_red", "wr_scarf_blue"],
+                 "reward": {"money": 1500, "decor": "wr_goggles_ice"}},
 }
+# Old C10a ids -> the decor.json id (saves keep working: Wardrobe.migrate()).
+ALIAS = {"wr_farmer_clothes": "wr_outfit_farmer", "wr_fisher_gear": "wr_outfit_fisher", "wr_forester_cloak": "wr_outfit_forester",
+         "wr_miner_overalls": "wr_outfit_miner", "wr_merchant_coat": "wr_outfit_merchant", "wr_scholar_robe": "wr_outfit_scholar",
+         "wr_neon_jacket": "wr_outfit_neon", "wr_ceremony_coat": "wr_outfit_penguin", "wr_pinstripe_suit": "wr_outfit_pinstripe",
+         "wr_padded_vest": "wr_outfit_vest", "wr_armored_suit": "wr_outfit_armored", "wr_puffy_parka": "wr_outfit_parka",
+         "wr_crystal_parka": "wr_outfit_crystal_parka", "wr_starlight_mantle": "wr_outfit_starlight"}
+for _h in ("straw", "cap", "beanie", "flatcap", "bandana", "kerchief", "earmuffs", "cowboy", "tophat", "flower_crown", "hood", "witch",
+           "goggles", "crystal_crown", "halo"):
+    ALIAS["wr_hat_" + _h] = "wr_" + _h
+# Loot for wardrobe-only pieces (decor.json pool weights by rarity).
+POOL_W = {"common": 600, "uncommon": 260, "rare": 100, "epic": 30, "legendary": 8, "mythic": 8}
+OWN_LOOT = {"wr_hat_beanie_blue": ["chest_t2"], "wr_hat_beanie_green": ["chest_t2"], "wr_hat_beanie_gold": ["chest_t3"],
+            "wr_hat_bandana_blue": ["chest_t2"], "wr_hat_bandana_green": ["chest_t2"], "wr_hat_bandana_gold": ["chest_t3"],
+            "wr_bowtie_red": ["chest_t2", "fishing"], "wr_bowtie_blue": ["chest_t2", "fishing_sea"],
+            "wr_goggles_brass": ["chest_t3"], "wr_goggles_ice": ["chest_t4"], "wr_hat_knight": ["chest_t4", "boss"]}
 
 # id, slot, name, rarity, arc, renders, draw, set, starter, desc
 P = []
 def add(i, slot, name, rarity, arc, renders, draw, st="", starter=False, desc="", pdraw=None):
+    i = ALIAS.get(i, i)
     P.append(dict(id=i, slot=slot, name=name, rarity=rarity, arc=arc, renders=renders, doll=draw if renders != "penguin" else {},
                   penguin=pdraw or ({} if renders == "doll" else draw), set=st, starter=starter, desc=desc))
 
@@ -69,14 +93,39 @@ for hid, nm in [("beanie", "Beanie"), ("bandana", "Bandana")]:
         add("wr_hat_%s_%s" % (hid, col), "hat", "%s %s" % (col.capitalize(), nm), rar, "", "doll", {"hat": "hats/" + hid, "tint": hexv}, "", False, "Same cosy %s, new colour." % nm.lower())
 # Penguin accessories (pinned on Pip-Pip / Nova; whole-penguin wear sheets on the plain penguin)
 for col, rar in [("red", "common"), ("blue", "common"), ("green", "common"), ("yellow", "uncommon"), ("purple", "uncommon"), ("white", "rare")]:
-    add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col], "plain": "scarf_" + col}, "snowfolk", col == "red", "Knitted with room for flippers.")
-add("wr_bowtie_red", "acc", "Red Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "d8403a", "plain": "bowtie_red"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
-add("wr_bowtie_blue", "acc", "Blue Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "3f6fd8", "plain": "bowtie_blue"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
-add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff", "plain": "goggles_a"}, "snowfolk", False, "For flying very fast. Or pretending to.")
-add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff", "plain": "goggles_b"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
+    add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col]}, "snowfolk", col == "red", "Knitted with room for flippers.")
+add("wr_bowtie_red", "acc", "Red Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "d8403a"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
+add("wr_bowtie_blue", "acc", "Blue Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "3f6fd8"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
+add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff"}, "snowfolk", False, "For flying very fast. Or pretending to.")
+add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
+
+
+# Capes and cloaks (C10b P5, c10b_11-03/28): P1's decor pieces get a drawn back layer
+# (art/gen/capes/cape_back + cape_side, recoloured by tint) on every hero kind.
+CAPE_TINT = {"wr_cape_black": "3a3440", "wr_cape_blue": "3f6fd8", "wr_cape_cloud": "e8eef6", "wr_cape_crystal": "9fe0ff",
+             "wr_cape_dream": "c79bf0", "wr_cape_ember": "e8673a", "wr_cape_frost": "bfe6ff", "wr_cape_gold": "f2c94c",
+             "wr_cape_green": "4aa84a", "wr_cape_moon": "d8d8ec", "wr_cape_paw": "f4a6c8", "wr_cape_penguin": "2e3446",
+             "wr_cape_red": "d8403a", "wr_cape_star": "f6d860", "wr_cape_storm": "6a7088", "wr_cape_white": "f4f4f4",
+             "wr_cloak": "7a6a4a", "wr_commander_cape": "8a2030"}
+
+
+def add_capes():
+    dpath = os.path.join(ROOT, "data", "decor.json")
+    if not os.path.exists(dpath):
+        return
+    decor = json.load(open(dpath))["items"]
+    for cid, tint in CAPE_TINT.items():
+        e = decor.get(cid)
+        if not e:
+            continue
+        draw = {"back": "capes/cape", "tint": tint}
+        P.append(dict(id=cid, slot=e.get("cat", "acc"), name=e["name"], rarity=e["rarity"], arc=e.get("arc", ""),
+                      renders="doll,penguin,pin", doll=dict(draw), penguin=dict(draw), set="", starter=False,
+                      desc=e.get("desc", "A cape.")))
 
 
 def main():
+    add_capes()
     ids = set()
     items = {}
     for p in P:
@@ -85,21 +134,36 @@ def main():
         assert p["slot"] in ("hat", "top", "bottom", "outfit", "acc", "shoes"), p
         assert p["rarity"] in PRICE, p
         assert p["arc"] in ("", "gangsters", "penguins"), p
-        assert not p["set"] or p["set"] in SETS, p
+        assert p["set"] in ("", "everyday") or p["set"] in SETS, p
         price = PRICE[p["rarity"]]
         d = p["doll"]
-        art = ("body/" + d["body"]) if "body" in d else (d.get("hat") or d.get("face") or (p["penguin"].get("neck") or p["penguin"].get("face") or ""))
+        art = ("body/" + d["body"]) if "body" in d else (d.get("hat") or d.get("face") or d.get("back") or (p["penguin"].get("neck") or p["penguin"].get("face") or ""))
         items[p["id"]] = {
             "name": p["name"], "cat": p["slot"], "slot": p["slot"], "rarity": p["rarity"], "arc": p["arc"], "layer": "wear",
             "size": [1, 1], "rot": 1, "glow": False, "art": art, "icon": art, "price": price, "sell": int(price * SELL_SHARE),
-            "sources": ["starter"] if p["starter"] else [], "set": p["set"], "renders": p["renders"], "doll": p["doll"],
-            "penguin": p["penguin"], "starter": p["starter"], "desc": p["desc"], "stats": {}}
+            "sources": [{"kind": "loot", "ref": r} for r in OWN_LOOT.get(p["id"], [])], "set": p["set"], "renders": p["renders"],
+            "doll": p["doll"], "penguin": p["penguin"], "starter": p["starter"], "starter_arc": p["arc"] if p["starter"] else "",
+            "pools": [[r, POOL_W[p["rarity"]]] for r in OWN_LOOT.get(p["id"], [])], "desc": p["desc"], "stats": {}}
     # Self-checks: no stats on cosmetics, every set has both arcs' pieces where it says, counts
     for i, e in items.items():
         assert not e["stats"], i
     n_arc = {a: sum(1 for e in items.values() if e["arc"] in ("", a)) for a in ("gangsters", "penguins")}
     assert min(n_arc.values()) >= 20, n_arc
-    out = {"_doc": "Generated by tools/gen_wardrobe.py (edit that).", "sets": SETS, "items": items}
+    # One id set (c10b_11-01): every piece is decor.json's or has its own loot/set source.
+    dpath = os.path.join(ROOT, "data", "decor.json")
+    decor = json.load(open(dpath))["items"] if os.path.exists(dpath) else {}
+    rewards = {str(st["reward"].get("decor", "")) for st in SETS.values()}
+    for i, e in items.items():
+        assert i not in ALIAS, i
+        if e["starter"] or i in decor:
+            continue
+        assert e["pools"] or i in rewards, "no source for wardrobe-only piece " + i
+    for sid, st in SETS.items():
+        for pid in st["pieces"]:
+            assert pid in items or pid in decor, (sid, pid)
+            a = items.get(pid, decor.get(pid, {})).get("arc", "")
+            assert a in ("", st["arc"]), (sid, pid, a)
+    out = {"_doc": "Generated by tools/gen_wardrobe.py (edit that).", "sets": SETS, "alias": ALIAS, "items": items}
     path = os.path.join(ROOT, "data", "wardrobe.json")
     with open(path, "w") as f:
         json.dump(out, f, indent=1, sort_keys=True)

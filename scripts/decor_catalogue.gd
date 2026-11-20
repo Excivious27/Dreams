@@ -932,9 +932,8 @@ func _use(id: String) -> void:
 	if not wear:
 		_place(id)
 		return
-	# The wardrobe's open() lives on WardrobeScreen (c10b_11-29).
-	var path := "res://scripts/wardrobe_screen.gd" if ResourceLoader.exists("res://scripts/wardrobe_screen.gd") else "res://scripts/wardrobe.gd"
-	var arg: Variant = str(e.get("cat", ""))
+	var path := "res://scripts/wardrobe_screen.gd"  # C10b P5: WardrobeScreen.open(map, id)
+	var arg: Variant = id
 	if not open_other(path, m, arg):
 		_sfx("nope", "thud")
 		_say("Wear it from the dresser at home." if wear else "Decorate from your house: tap Decorate there.", Color(1, 0.8, 0.6))

@@ -282,6 +282,16 @@ func _fullscreen_pass(m: GameMap) -> void:
 		await _check("arcade_%s_play" % id, g)
 		g.close()
 		await _frames(3)
+	# Wardrobe at every text size (C10b P5, c10b_11-21): nothing runs off the panel.
+	for ts in [0, 2]:
+		Settings.set_v("text_size", ts)
+		var wsc := WardrobeScreen.open(m)
+		await _frames(4)
+		await _check("wardrobe_t%d" % ts, wsc)
+		wsc._close()
+		await _frames(3)
+	Settings.set_v("text_size", 0)
+	paused = false
 	var bw := Bowling.new()
 	bw.lane = 1
 	m.add_child(bw)

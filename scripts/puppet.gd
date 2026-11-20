@@ -41,23 +41,11 @@ func _apply_look(info: Dictionary) -> void:
 	if key == _last_look:
 		return
 	_last_look = key
-	# Temporarily swap run look/playable so set_character builds the right doll.
-	var saved_look: Variant = GameState.run.get("look")
-	var saved_play: Variant = GameState.run.get("playable")
-	var saved_equip: Variant = GameState.run.get("equip")
-	var sub_look: Variant = lk.get("look", {})
-	var sub_equip: Variant = lk.get("equip", saved_equip)
-	GameState.run["look"] = sub_look if sub_look is Dictionary else {}
-	GameState.run["playable"] = lk.get("playable", saved_play)
-	GameState.run["equip"] = sub_equip if sub_equip is Dictionary else {}
-	# Their arc decides their sprite (a gangster-arc friend wears the _gang strip).
-	_p.set_character(GameState.sprite_for_playable(str(GameState.run["playable"]), str(lk.get("arc", ""))))
-	if saved_look is Dictionary and not (saved_look as Dictionary).is_empty():
-		GameState.run["look"] = saved_look
-	else:
-		GameState.run.erase("look")
-	GameState.run["playable"] = saved_play
-	GameState.run["equip"] = saved_equip
+	# The friend's look/equip/wardrobe stand in for the run's while the Player builds and
+	# re-pins the doll (Player.with_look), so they never wear your clothes (c10b_11-13).
+	_p.peer_look = lk
+	_p.with_look(func() -> void:
+		_p.set_character(GameState.sprite_for_playable(str(GameState.run.get("playable", "")), str(lk.get("arc", "")))))
 
 
 func _process(delta: float) -> void:
