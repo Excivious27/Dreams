@@ -368,6 +368,8 @@ var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
 static var force_style := ""   # tools/tests: carve this style every time
+const KEEPER_MIN_HP := 8  # a keeper encounter's total hp is never below this
+static var force_encounter := ""  # tools/tests: this keeper encounter id instead of a roll ("" = roll)
 static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
 
 
@@ -2113,6 +2115,8 @@ func _summon_guardian() -> void:
 	rng.seed = randi()
 	var recent: Array = (GameState.run.get("mine_keeper_recent", []) as Array).duplicate()
 	encounter = MineKeepers.pick(floor_no, mine_tier, clampi((floor_no - 1) / 10, 0, THEMES.size() - 1), rng, recent)
+	if force_encounter != "":
+		encounter = MineKeepers.resolve(force_encounter, floor_no, mine_tier, clampi((floor_no - 1) / 10, 0, THEMES.size() - 1), rng)
 	recent.append(str(encounter["id"]))
 	while recent.size() > 6:
 		recent.pop_front()
@@ -2173,6 +2177,18 @@ func _summon_guardian() -> void:
 		_summoning = false
 		_open_way()
 		return
+	# A swarm of tiny kin (floor-1 bats at 1 hp each) must still be a fight:
+	# top the encounter up to KEEPER_MIN_HP in total, one hp at a time round the pack.
+	var tot := 0
+	for k: Enemy in _keepers:
+		tot += k.max_hp
+	var ki := 0
+	while tot < KEEPER_MIN_HP:
+		var ke: Enemy = _keepers[ki % _keepers.size()]
+		ke.max_hp += 1
+		ke.hp = ke.max_hp
+		tot += 1
+		ki += 1
 	_guardian = lead if lead != null else _keepers[0]
 	if str(encounter["id"]) == "keeper" and Art.has("ui", "card_keeper_%d" % mine_tier):
 		boss_card("card:card_keeper_%d" % mine_tier, ["The Stone Fist", "The Quarrymaster", "The Cracked Helm", "The Crystal King", "The Dark Warden", "The Heart's Shadow"][mine_tier])

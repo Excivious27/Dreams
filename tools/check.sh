@@ -385,6 +385,13 @@ if ! echo "$mout" | grep -q "MINE DONE, failures: 0"; then
   echo "Mine test failed"; exit 1
 fi
 
+echo "== keeper encounters keep real hp (floor-1 swarms topped up) =="
+kmout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/keeper_min_hp_test.gd 2>&1)"
+echo "$kmout" | grep -E "FAIL|SCRIPT ERROR|keeper_min_hp_test" || true
+if echo "$kmout" | grep -q "SCRIPT ERROR" || ! echo "$kmout" | grep -q "keeper_min_hp_test: 0 failures"; then
+  echo "Keeper min hp test failed"; exit 1
+fi
+
 echo "== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route =="
 mkout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/mine_keeper_test.gd 2>&1)"
 echo "$mkout" | grep -E "FAIL|MINE KEEPER DONE" || true
