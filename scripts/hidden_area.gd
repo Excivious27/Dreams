@@ -202,6 +202,8 @@ static func _keep(m: GameMap) -> Dictionary:
 			keep.merge(m.cells_of([Rect2i(stc.x - 1, stc.y - 2, 3, 5)]))
 	for c: Vector2i in m.things:
 		keep[c] = true
+		if str(m.things[c].get("type", "")) in ["casino", "casino_odds"]:  # C10b P4: never wall off the casino's front
+			keep.merge(m.cells_of([Rect2i(c.x - 1, c.y + 1, 3, 3)]))
 	return keep
 
 
