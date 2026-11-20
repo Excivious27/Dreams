@@ -367,6 +367,18 @@ func _battlefield_save() -> void:
 	check(str(GameState.run["scene"]) == "farm", "no launch spot: back to the farm")
 
 
+## C11a: the old farm's animals became roster records (same count the old farm drew, streaks -> friendship).
+func _ranch_migrated() -> void:
+	var cow := Ranch.uid_of_legacy("cow_brown_33_7")
+	check(Ranch.roster("coop").size() == 9 and Ranch.roster("barn").size() == 5, "old save: coop 8 + 1 hatched, barn 5 (%d, %d)" % [Ranch.roster("coop").size(), Ranch.roster("barn").size()])
+	check(cow != "" and int(Ranch.animal(cow)["friend"]) == 650 and int(Ranch.animal(cow)["last_pet"]) == 29, "old save: the cow's 13-day streak is friendship 650")
+	check(Ranch.uid_of_legacy("cow_bw_31_8") != "" and int(Ranch.animal(Ranch.uid_of_legacy("cow_bw_31_8"))["friend"]) == 150, "old save: a moved spawn key keeps its streak")
+	check((Ranch.house("coop")["incubator"] as Array).size() == 1 and not GameState.run.has("coop_hatch"), "old save: the warming egg is in the incubator, coop_hatch gone")
+	check(not Ranch.is_adult(Ranch.uid_of_legacy("calf_35_7")) and Ranch.is_adult(Ranch.uid_of_legacy("chick_28_11")), "old save: the calf is still young, the chick grew up")
+	check(not (GameState.run["flags"] as Dictionary).has("hatch_peep_20") and int(GameState.run.get("save_ver", 0)) == GameState.SAVE_VERSION, "old save: hatch flags dropped, save version current")
+	check(SleepReport.extra_lines().is_empty(), "old save: no every-morning missed-pet nag")
+
+
 # ---- an old save meets Round 13 ---------------------------------------------------
 
 func _migration() -> void:
@@ -404,6 +416,14 @@ func _migration() -> void:
 			other_reg = str(c["region"])
 	check(visited_reg != "" and other_reg != "", "two gangster campaign regions to test with")
 	r["visited"] = {"town": true, visited_reg: true}
+	# C11a: a pre-ranch farm: Big Coop + Barn, animals keyed by node name, incubator days, kid flags.
+	r.erase("ranch")
+	r["builds"] = {"coop": 2, "barn": 1}
+	r["animals"] = {"cow_brown_33_7": {"streak": 13, "last_pet": 29, "fed": 29, "made": 29}, "cow_bw_36_8": {"streak": 3, "last_pet": 20, "fed": 20}}
+	r["coop_hatch"] = [31, 20]
+	r["flags"]["coop_day"] = 2
+	r["flags"]["barn_day"] = 27
+	r["flags"]["hatch_peep_20"] = true
 	var old := r.duplicate(true)
 	SaveGame.set_value(GameState.save_key(), old)
 	SaveGame.set_value("set_easy", true)  # the old global Easy switch was on
@@ -452,6 +472,7 @@ func _migration() -> void:
 	check(CampaignGate.trained() and Campaign.started(started_cid), "a campaign already under way counts as trained")
 	Campaign.bypass = true
 	# Round trip: everything above survives a save + reopen, and migrating twice changes nothing.
+	_ranch_migrated()
 	GameState.save()
 	reboot()
 	var once := JSON.stringify(GameState.run, "", true)

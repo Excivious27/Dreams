@@ -50,6 +50,9 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for l in extra_lines():
 		lines.append(l)
+	var ranch: Array = report.get("ranch", [])
+	if not ranch.is_empty():
+		lines.append({"who": "Ranch" if str(GameState.run.get("arc", "")) != "gangsters" else "The pens", "text": "\n".join(ranch.slice(0, 5))})
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
 	if int(report.get("wash_back", 0)) > 0:
@@ -98,22 +101,15 @@ static func lines(report: Dictionary) -> Array:
 	return lines
 
 
-## C8 P1: a finished tool upgrade waiting at the forge, and animals that missed
-## yesterday's pet (their streak resets).
+## C8 P1: a finished tool upgrade waiting at the forge.
 static func extra_lines() -> Array:
 	var out: Array = []
 	var r := GameState.run
 	var job: Variant = (r.get("jobs", {}) as Dictionary).get("smith_upgrade", null)
 	if job is Dictionary and (job as Dictionary).has("done_at") and GameState.now_abs() >= int(job["done_at"]):
 		out.append({"who": "Gideon", "text": "Your %s is ready at the forge." % GameState.item_name(str(job.get("kind", "tool")))})
-	var day := int(r.get("day", 1))
-	var missed := 0
-	for nm in (r.get("animals", {}) as Dictionary):
-		var st: Variant = r["animals"][nm]
-		if st is Dictionary and int((st as Dictionary).get("last_pet", -9)) >= 0 and int(st.get("last_pet", -9)) < day - 1:
-			missed += 1
-	if missed > 0:
-		out.append({"text": "%d animal%s went without a pet yesterday: a daily pet keeps the friendship streak going." % [missed, "" if missed == 1 else "s"]})
+	# C11a: animal news (hungry, missed pets said once, goods ready, births, hatching) comes from
+	# Ranch.overnight as report["ranch"]; the old every-morning streak nag is gone (c11a_03-02).
 	return out
 
 
