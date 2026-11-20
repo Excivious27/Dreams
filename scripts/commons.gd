@@ -495,6 +495,9 @@ static func finish_stage(m: GameMap, save := true) -> void:
 	for it: String in sd.get("give", {}):
 		GameState.add_item(it, int(sd["give"][it]), true)
 		got.append("%s ×%d" % [GameState.item_name(it), int(sd["give"][it])])
+	var keep := DecorSources.grant_key(m, "commons:" + str(sd["id"]))  # a keepsake for the house (decor.json grants, C10a)
+	if keep != "":
+		got.append(DecorSources.name_of(keep))
 	if sd.has("recipe"):
 		GameState.run["flags"][str(sd["recipe"])] = true
 		for rc: Dictionary in GameState.load_json("res://data/recipes.json").get("kitchen", []):

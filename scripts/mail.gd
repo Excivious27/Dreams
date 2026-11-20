@@ -183,6 +183,7 @@ static func _morning() -> int:
 	RecCenter.morning()
 	Collections.morning()  # museum opening, donation thanks, milestone letters (C8 P3)
 	DecorSources.deliver_orders()  # catalogue orders arrive as parcels (C10a P4)
+	_housewarming()
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:
@@ -335,6 +336,20 @@ static func _pick_line(who: String, pool: Dictionary, rng: RandomNumberGenerator
 	var pick := str(opts[rng.randi() % opts.size()])
 	last[who] = pick
 	return pick
+
+
+## A bigger farmhouse gets a housewarming parcel once per tier (decor.json grants
+## "house:<tier>", c10_06): the town chips in for the new rooms.
+static func _housewarming() -> void:
+	var t := Builds.built_tier("house")
+	for tier in range(2, t + 1):
+		var fk := "house_warm_%d" % tier
+		var id := DecorSources.granted_for("house:%d" % tier)
+		if id == "" or GameState.run["flags"].has(fk) or DecorSources.taken(id):
+			continue
+		GameState.run["flags"][fk] = true
+		var who := "Hazel" if GameState.is_penguins() else "The crew"
+		send(who, "New rooms deserve something in them. From all of us: %s. - %s" % [DecorSources.name_of(id), who], "gift", {"item": id, "n": 1})
 
 
 ## Friend letters that carry a decor piece (decor.json pool "mail"; common/uncommon only).

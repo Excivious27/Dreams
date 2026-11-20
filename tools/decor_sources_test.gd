@@ -48,7 +48,7 @@ func _run() -> void:
 		},
 		"sets": {}, "pools": {"chest_t1": ["dc_vase"], "mine_t1": ["dc_lamp"], "fishing": ["dc_stool"], "boss": ["dc_vase"]},
 		"shops": {"maple": ["dc_stool", "dc_lamp", "dc_rug", "dc_neon", "dc_vase", "dc_late", "dc_crown", "wr_cap"]},
-		"grants": {"secret:journal": "dc_keep"},
+		"grants": {"secret:journal": "dc_keep", "house:2": "dc_vase"},
 	}
 	var inv0: int = (GameState.run["inventory"] as Dictionary).size()
 	check(DecorSources.grant(null, "dc_stool", 2, "test"), "grant a stool")
@@ -97,6 +97,15 @@ func _run() -> void:
 	check(Mail._act(parcel) == "" and Decor.owned("dc_lamp") == 2, "opening the parcel boxes the lamp")
 	check(DecorSources.order("dc_crown") == "owned", "an owned unique can't be ordered")
 	GameState.run["day"] = 5
+
+	# Housewarming: one parcel per new farmhouse tier with a grant.
+	if not GameState.run.has("builds"):
+		GameState.run["builds"] = {}
+	GameState.run["builds"]["house"] = 2
+	var mails := (Mail.list() as Array).size()
+	Mail._housewarming()
+	Mail._housewarming()
+	check((Mail.list() as Array).size() == mails + 1, "one housewarming parcel for tier 2")
 
 	# Loot hooks.
 	check(Secrets.decor_pool(0) == "chest_t1" and Secrets.decor_pool(9) == "chest_t5", "chest pools by loot tier")
