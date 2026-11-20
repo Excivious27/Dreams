@@ -3658,6 +3658,27 @@
     "arc": ""
    },
    {
+    "recipe": "cream",
+    "station": "press",
+    "item": "cream",
+    "name": "Cream",
+    "arc": ""
+   },
+   {
+    "recipe": "yogurt",
+    "station": "press",
+    "item": "yogurt",
+    "name": "Honey Yogurt",
+    "arc": ""
+   },
+   {
+    "recipe": "truffle_oil",
+    "station": "press",
+    "item": "truffle_oil",
+    "name": "Truffle Oil",
+    "arc": ""
+   },
+   {
     "recipe": "brick",
     "station": "kiln",
     "item": "brick",
@@ -4510,6 +4531,48 @@
     "item": "drone_swarm",
     "name": "Drone Swarm",
     "arc": ""
+   },
+   {
+    "recipe": "mayonnaise",
+    "station": "mayo",
+    "item": "mayonnaise",
+    "name": "Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "duck_mayonnaise",
+    "station": "mayo",
+    "item": "duck_mayonnaise",
+    "name": "Duck Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_comb",
+    "station": "extractor",
+    "item": "honey",
+    "name": "Honey (from honeycomb)",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax",
+    "station": "extractor",
+    "item": "beeswax",
+    "name": "Beeswax",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_jar",
+    "station": "extractor",
+    "item": "honey_jar",
+    "name": "Jar of Honey",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax_candle",
+    "station": "extractor",
+    "item": "beeswax_candle",
+    "name": "Beeswax Candle",
+    "arc": ""
    }
   ],
   "forage": [
@@ -4679,6 +4742,7 @@
   "anvil",
   "armory",
   "cauldron",
+  "extractor",
   "furnace",
   "garage",
   "hack",
@@ -4687,6 +4751,7 @@
   "kiln",
   "litter",
   "loom",
+  "mayo",
   "mill",
   "press",
   "print",
