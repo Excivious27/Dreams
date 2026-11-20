@@ -437,6 +437,8 @@ func _draw_hud() -> void:
 	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	var wx := GameState.weather_today()
+	if str(GameState.run.get("scene", "")) in ["moon", "station", "jungle"]:
+		wx = "sun"  # no rain in space
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
 	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")
 	if Art.has("ui", wxa):
