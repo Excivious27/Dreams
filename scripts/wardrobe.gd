@@ -282,10 +282,10 @@ static func dress_penguin_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: S
 			var k := want_w / maxf(1.0, float(t.get_width()))
 			s.scale = Vector2(k, k) * sc
 			var fy: float = bb[2] - (bb[2] - bb[1]) * float(anc[kind])
-			var fx: float = bb[0] + (bb[3] * 0.12 * (-1.0 if flip else 1.0) if v == "side" else 0.0)
-			s.flip_h = flip if v == "side" else false
+			var fx: float = bb[0] + (bb[3] * 0.12 if v == "side" else 0.0)  # side frames face right
+			s.flip_h = (not flip) if v == "side" else false  # side pieces are drawn facing left
 			s.offset = Vector2(0, t.get_height() * 0.5 - 2.0) if kind == "neck" and base != "pg_bowtie" else Vector2.ZERO
-			s.position = Vector2((fx - tex.get_width() / 2.0) * sc * (-1.0 if flip and v != "side" else 1.0), (fy - tex.get_height()) * sc)
+			s.position = Vector2((fx - tex.get_width() / 2.0) * sc * (-1.0 if flip else 1.0), (fy - tex.get_height()) * sc)
 	anim.frame_changed.connect(upd)
 	anim.animation_changed.connect(upd)
 	upd.call()
