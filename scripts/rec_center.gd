@@ -45,6 +45,9 @@ static func morning() -> void:
 	var day := int(GameState.run["day"])
 	if day < int(data().get("building", {}).get("open_day", 7)) or not GameState.quest_done("meet_town"):
 		return
+	if not Mail.intro_ok():
+		return  # C9: another "new place" letter came today; the Rec opens tomorrow
+	Mail.intro_sent()
 	open_now()
 
 

@@ -152,6 +152,9 @@ static func _mail(id: String, r: Dictionary) -> void:
 	var key := "mega_%s_mail" % id
 	if GameState.run["flags"].has(key) or is_open(id) or not can_start(r) or not r.has("mail"):
 		return
+	if not Mail.intro_ok():
+		return  # C9: an old save catching up gets these a couple a day, not all at once
+	Mail.intro_sent()
 	GameState.run["flags"][key] = true
 	Mail.send(str(r["mail"].get("from", r.get("keeper", ""))), str(r["mail"].get("text", "")), "news")
 

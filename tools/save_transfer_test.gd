@@ -120,6 +120,17 @@ func _run() -> void:
 		GameState.weather_today()
 	check((GameState.run["weather"] as Dictionary).size() <= 4, "weather keys pruned (%d)" % (GameState.run["weather"] as Dictionary).size())
 	check(int(GameState.run.get("save_ver", 0)) == GameState.SAVE_VERSION, "runs carry save_ver")
+	# Old-save catch-up: at most Mail.INTROS_PER_DAY "new place" letters a day.
+	GameState.run["day"] = 60
+	GameState.run["flags"].erase("rec_open")
+	for i in Mail.INTROS_PER_DAY:
+		check(Mail.intro_ok(), "intro %d may go out" % i)
+		Mail.intro_sent()
+	check(not Mail.intro_ok(), "a third intro waits for tomorrow")
+	RecCenter.morning()
+	check(not RecCenter.is_open(), "the Rec opening waits when today's intros are spent")
+	GameState.run["day"] = 61
+	check(Mail.intro_ok(), "next day there is room again")
 	# SaveGame.flush reports success.
 	check(SaveGame.flush() and SaveGame.last_ok, "flush reports a landed write")
 	print("SAVE TRANSFER DONE %d" % fails)
