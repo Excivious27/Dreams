@@ -227,7 +227,7 @@ func _camp() -> void:
 	# C5 c5_17 #2: the moon's foes are tier 4, so the run waits for the gang arc's
 	# chapter-4 step (Flame put out in the neon district), like the penguins' merkitties.
 	var moon_i := -1
-	var moon_ready := GameState.quest_done("clear_meadow") and (GameState.quest_done("neon") or GameState.run["flags"].has("moon_unlocked"))
+	var moon_ready: bool = GameState.quest_done("clear_meadow") and (GameState.quest_done("neon") or GameState.run["flags"].has("moon_unlocked"))
 	if moon_ready:
 		moon_i = ch.size()
 		ch.append("Ride the cargo rocket to the moon")
