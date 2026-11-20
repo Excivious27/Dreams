@@ -72,7 +72,7 @@ func _ready() -> void:
 			b.custom_minimum_size = Vector2(0, 18)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		b.pressed.connect(func() -> void: _tab = t; _rebinding = ""; Music.instance(get_tree()).sfx("tab", "ui_tap"); _refresh())
+		b.pressed.connect(func() -> void: _switch_tab(t))
 		_tabs.add_child(b)
 		_tab_buttons[t] = b
 		if has_icon:
@@ -107,14 +107,41 @@ var _rebinding := ""
 
 
 func _input(event: InputEvent) -> void:
-	if _rebinding == "" or not _panel.visible:
+	if not _panel.visible:
+		return
+	if _rebinding == "":
+		# A finger or the mouse takes over: the pad/keyboard cursor hides (C9).
+		if (event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed) or (event is InputEventMouseButton and (event as InputEventMouseButton).pressed):
+			_hide_cursor()
+		return
+	if _tab == "Pad":
+		if event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+			var jb := event as InputEventJoypadButton
+			var why := pad_rebind(_rebinding, int(jb.button_index))
+			if why != "":
+				_toast(why)
+			_rebinding = ""
+			get_viewport().set_input_as_handled()
+			_refresh()
 		return
 	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
 		var k := event as InputEventKey
-		if k.physical_keycode != KEY_ESCAPE:
-			InputSetup.rebind(_rebinding, k.physical_keycode)
-		_rebinding = ""
 		get_viewport().set_input_as_handled()
+		if k.physical_keycode == KEY_ESCAPE:
+			_rebinding = ""
+			_steal_warn = {}
+			_refresh()
+			return
+		# C9 c9_07: a key another action uses is not taken silently. The first
+		# press names what would lose it; the same key again confirms.
+		var other := key_owner(_rebinding, k.physical_keycode)
+		if other != "" and _steal_warn.get("key", -1) != int(k.physical_keycode):
+			_steal_warn = {"key": int(k.physical_keycode), "from": other}
+			_refresh()
+			return
+		InputSetup.rebind(_rebinding, k.physical_keycode)
+		_rebinding = ""
+		_steal_warn = {}
 		_refresh()
 
 
@@ -136,10 +163,14 @@ func _process(_delta: float) -> void:
 		_refresh()
 		return
 	if _open and Input.is_action_just_pressed("b") and Engine.get_process_frames() - _opened_frame > 6 and Hud.modal_rect.size == Vector2.ZERO:
+		if back_one():
+			return  # a sub-page steps back first (C9 c9_02)
 		toggle()  # B backs out of the menu too (phones: no hunting for the MENU key)
 		return
 	if _open and Hud.modal_rect.size != Vector2.ZERO:
 		return  # a screen opened from the menu sits on top: MENU/B are its own (closing under it unpaused the game)
+	if _open and _cursor_input(_delta):
+		return
 	if Input.is_action_just_pressed("menu"):
 		if not _open:
 			_tab = "Items"
@@ -202,6 +233,10 @@ func toggle() -> void:
 	# Nor in the middle of a story beat (between its lines the tree runs).
 	if not _open and story_busy(get_tree()):
 		return
+	# Nor during a map change: the fade's old map is freed with the menu, and the
+	# new map would arrive paused with no owner (C9 c9_10).
+	if not _open and changing_map(get_tree()):
+		return
 	_open = not _open
 	_rebinding = ""
 	_panel.visible = _open
@@ -230,7 +265,7 @@ func toggle() -> void:
 func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	var l := Label.new()
 	l.text = text
-	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_font_size_override("font_size", Settings.font(size))  # Options > Text size (C9)
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.add_child(l)
@@ -248,12 +283,15 @@ static func _has_static(sc: Script, fn: String) -> bool:
 	return false
 
 
+var _centre_rows := false  # Options rows are centred like the shared sound rows
+
+
 func _button(text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
 	b.text = text
-	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	b.add_theme_font_size_override("font_size", 9)
+	b.alignment = HORIZONTAL_ALIGNMENT_CENTER if _centre_rows else HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", Settings.font(9))
 	# Release mode: a finger that lands on a button to scroll the list must not
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
@@ -351,6 +389,7 @@ func _grid(cols: int) -> GridContainer:
 func _refresh() -> void:
 	if not is_inside_tree():
 		return
+	_centre_rows = false
 	for c in _body.get_children():
 		_body.remove_child(c)
 		c.queue_free()
@@ -707,54 +746,36 @@ func _refresh() -> void:
 				for hnt in hs.slice(0, 12):
 					_line("  ✎ " + str(hnt), 8, Color(0.9, 0.85, 0.95))
 		"Options":
+			_centre_rows = true
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
-			# Sound rows are shared with the title screen (Settings.audio_rows, C6 P1) when present.
-			var settings_sc: Script = load("res://scripts/settings.gd")
-			if _has_static(settings_sc, "audio_rows"):
-				settings_sc.call("audio_rows", _body, get_tree(), _refresh)
-			else:
-				_button("All sound: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
-				for vk: String in ["music_vol", "sfx_vol", "amb_vol"]:
-					var row := HBoxContainer.new()
-					_body.add_child(row)
-					var vl := Label.new()
-					vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Sound", "amb_vol": "Nature"}[vk], int(Settings.get_v(vk))]
-					vl.add_theme_font_size_override("font_size", 8)
-					vl.custom_minimum_size = Vector2(110, 0)
-					row.add_child(vl)
-					for step: int in [-1, 1]:
-						var bt := Button.new()
-						bt.text = " − " if step < 0 else " + "
-						bt.custom_minimum_size = Vector2(34, 22)
-						bt.pressed.connect(func() -> void: last_press = "%s > %s %+d" % [_tab, vk, step])
-						bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("ui_tap", "pickup"); _refresh())
-						row.add_child(bt)
-			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
-			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
-			_button("Text size: %s" % Settings.TEXT_NAMES[Settings.text_bonus()], func() -> void: Settings.set_v("text_size", (Settings.text_bonus() + 1) % Settings.TEXT_NAMES.size()); _refresh())
-			_button("Screen shake: %s" % ("on" if bool(Settings.get_v("shake")) else "off"), func() -> void: Settings.set_v("shake", not bool(Settings.get_v("shake"))); _refresh())
-			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
-			Difficulty.settings_rows(self)  # C4: difficulty + day length (this save slot)
-			_button("On-screen controls: %s" % {"auto": "auto (%s)" % ("shown" if TouchControls.visible_controls else "hidden"), "on": "always", "off": "never"}[DisplayMode.touch_mode_name()], func() -> void: DisplayMode.cycle_touch_mode(); _refresh())
+			# Grouped (C9 c9_07): Sound, Display and controls, This farm, then the way out.
+			Settings.header(_body, "Sound")
+			Settings.audio_rows(_body, get_tree(), _refresh)
+			Settings.header(_body, "Display and controls")
+			Settings.general_rows(_body, get_tree(), _refresh)
 			if not DisplayMode.is_phone():
-				_button("Fullscreen: %s  (F11)" % ("on" if DisplayMode.is_fullscreen() else "off"), func() -> void: DisplayMode.toggle_fullscreen(); _refresh.call_deferred())
-			_button("Key bindings…", func() -> void: _tab = "Keys"; _refresh())
+				Settings.row_button(_body, get_tree(), "Key bindings…", func() -> void: _tab = "Keys"; _refresh())
+			Settings.row_button(_body, get_tree(), "Controller buttons…", func() -> void: _tab = "Pad"; _refresh())
+			Settings.header(_body, "This farm")
+			Difficulty.settings_rows(self)  # C4: difficulty + day length (this save slot)
+			_backup_row()
 			if r["flags"].has("epilogue_done"):
 				_button("Replay the ending", func() -> void:
 					toggle()
 					var mp := get_tree().current_scene as GameMap
 					if mp:
 						Epilogue.play(mp))
+			if quit_offered():
+				_button("Save and quit", func() -> void:
+					_save_now()
+					get_tree().paused = false
+					get_tree().quit())
 			_button("Save & back to title", func() -> void:
-				var gm := get_tree().current_scene as GameMap
-				if gm and not gm._changing:
-					gm.save_here()
-				else:
-					GameState.save()
+				_save_now()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
-			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 8, Color(0.8, 0.8, 0.8))
+			_line(help_text(), 8, Color(0.8, 0.8, 0.8))
 		"Workshop":
 			var ws2 := Crafting.summary()
 			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
@@ -865,16 +886,20 @@ func _refresh() -> void:
 			_line("(Names in brackets grow this season; look for their seeds at Maple's, Tam's, Old Moss's, Sel's%s.)" % (" and Catkins's" if GameState.is_penguins() else ""), 8, Color(0.7, 0.7, 0.7))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Keys":
-			_line("Key bindings (Stardew defaults). Tap a row, then press the new key. Esc cancels.", 8, Color(0.8, 0.8, 0.8))
+			_line("Key bindings (Stardew defaults). Pick a row, then press the new key. Esc cancels.", 8, Color(0.8, 0.8, 0.8))
 			for pair in InputSetup.SHOWN:
 				var action: String = pair[0]
 				var label: String = pair[1]
 				var txt := "%-18s %s" % [label, InputSetup.key_label(action)]
 				if _rebinding == action:
 					txt = "%-18s [press a key]" % label
-				_button(txt, func() -> void: _rebinding = action; _refresh())
-			_button("Reset to defaults", func() -> void: InputSetup.reset_bindings(); _rebinding = ""; _refresh())
-			_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _refresh())
+				_button(txt, func() -> void: _rebinding = action; _steal_warn = {}; _refresh())
+				if _rebinding == action and not _steal_warn.is_empty():
+					_line("  That key is %s's. Press it again to move it here (%s loses it), or Esc to cancel." % [action_label(str(_steal_warn["from"])), action_label(str(_steal_warn["from"]))], 8, Color(1, 0.75, 0.5))
+			_button("Reset to defaults", func() -> void: InputSetup.reset_bindings(); _rebinding = ""; _steal_warn = {}; _refresh())
+			_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _steal_warn = {}; _refresh())
+		"Pad":
+			_pad_page()
 	_pass_drags(_body)
 
 
@@ -1044,6 +1069,7 @@ func _skills_tab() -> void:
 				GameState.notify("Learned %s." % str(sel["name"]))
 			_refresh())
 		lb.disabled = why != ""
+		lb.set_meta("skill_buy", nid)
 	var moved := 0
 	for i in (range(sel_from, _body.get_child_count()) if not sel.is_empty() else []):
 		_body.move_child(_body.get_child(i), sel_at + moved)
@@ -1145,6 +1171,7 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 	rl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	b.add_child(rl)
 	b.pressed.connect(func() -> void: _node_sel = id; _refresh())
+	b.set_meta("skill_node", id)
 	return b
 
 
@@ -1686,3 +1713,404 @@ func _crew_tab() -> void:
 	for t: String in Crew.also_with_you():  # joined Marked / lieutenants (C7 P5)
 		_line("  Also with you: " + t, 7, Color(0.85, 0.85, 1))
 	_line("")
+
+
+# --- C9 P2: sub-page back, options helpers, pad/keyboard cursor ---------------
+
+var _steal_warn := {}  # Keys page: {key, from} while a stolen key waits for its confirm press
+
+const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests"}
+## Cursor key repeat: first delay, then every step (seconds, real time).
+const REPEAT_FIRST := 0.35
+const REPEAT_STEP := 0.09
+## Highlight frame around the cursor's row.
+const CURSOR_COL := Color(1, 0.85, 0.3)
+
+
+## True while the current map is fading out to another (menus must not open then).
+static func changing_map(tree: SceneTree) -> bool:
+	var gm := tree.current_scene as GameMap
+	return gm != null and gm._changing
+
+
+func _switch_tab(t: String) -> void:
+	if not is_inside_tree():
+		return  # a body button changed scene; this menu is on its way out (C9 c9_10/c9_18)
+	_tab = t
+	_rebinding = ""
+	_steal_warn = {}
+	Music.instance(get_tree()).sfx("tab", "ui_tap")
+	_refresh()
+
+
+## B on a sub-page goes back one level; true when it did (the menu stays open).
+func back_one() -> bool:
+	if _rebinding != "":
+		return false
+	if SUB_PARENT.has(_tab):
+		_switch_tab(str(SUB_PARENT[_tab]))
+		return true
+	if _tab == "Book" and CollectionScreen.back():
+		Music.instance(get_tree()).sfx("tab", "ui_tap")
+		_refresh()
+		return true
+	if _tab == "Skills" and _node_sel != "":
+		_node_sel = ""
+		_refresh()
+		return true
+	return false
+
+
+func _exit_tree() -> void:
+	# Freed while open (a scene change from a body row): never leave the next scene paused.
+	if _open and get_tree():
+		_open = false
+		get_tree().paused = false
+
+
+func _toast(text: String) -> void:
+	var gm := get_tree().current_scene as GameMap
+	if gm and gm.hud:
+		gm.hud.toast(text, Color(1, 0.85, 0.6))
+
+
+func _save_now() -> void:
+	var gm := get_tree().current_scene as GameMap
+	if gm and not gm._changing:
+		gm.save_here()
+	else:
+		GameState.save()
+
+
+## "Save and quit" only where quitting means something: native desktop/Deck builds.
+static func quit_offered() -> bool:
+	return not OS.has_feature("web") and not DisplayMode.is_phone()
+
+
+## Options > This farm: a backup code of this farm (P5's GameState.export_code).
+func _backup_row() -> void:
+	if Net.visiting() or not _has_static(_sc("game_state"), "export_code"):
+		return
+	_button("Back up this farm (copy code)", func() -> void:
+		_save_now()
+		var code := str(_call_export())
+		if code == "":
+			_toast("Couldn't make a backup code.")
+			return
+		DisplayServer.clipboard_set(code)
+		_toast("Backup code copied. Paste it somewhere safe; Save slots on the title screen restores it."))
+	if _has_static(_sc("game_state"), "export_file"):
+		_button("Back up this farm (save a file)", func() -> void:
+			_save_now()
+			_sc("game_state").call("export_file", GameState.slot()))
+
+
+func _call_export() -> Variant:
+	var sc := _sc("game_state")
+	for md in sc.get_script_method_list():
+		if str(md.get("name", "")) == "export_code":
+			if (md.get("args", []) as Array).size() > 0:
+				return sc.call("export_code", GameState.slot())
+			return sc.call("export_code")
+	return ""
+
+
+## A script by name, so optional static API from other packages is called without
+## a parse-time dependency.
+static func _sc(name: String) -> Script:
+	return load("res://scripts/%s.gd" % name) as Script
+
+
+## The Options how-to line, per input: touch, mouse, keyboard, controller (C9 c9_02/c9_07).
+static func help_text() -> String:
+	var out: Array = []
+	if DisplayMode.is_phone() or DisplayServer.is_touchscreen_available():
+		out.append("Touch: joystick (drag anywhere) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item")
+	if not DisplayMode.is_phone():
+		out.append("Mouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item")
+		out.append("Keys: %s move · %s use · %s check · %s confirm · %s run/back · %s menu · %s next item" % [
+			"/".join([_k1("up"), _k1("left"), _k1("down"), _k1("right")]), _k1("tool"), _k1("action"), _k1("a"), _k1("b"), _k1("menu"), _k1("cycle_tool")])
+	out.append("Controller: %s confirm · %s back · %s menu · %s/%s change tab · stick or d-pad moves the cursor" % [pad_name("a"), pad_name("b"), pad_name("menu"), pad_name("tab_prev"), pad_name("tab_next")])
+	return "\n".join(out)
+
+
+static func _k1(action: String) -> String:
+	return InputSetup.key_label(action).split(" / ")[0]
+
+
+static func action_label(action: String) -> String:
+	for pair in InputSetup.SHOWN:
+		if str(pair[0]) == action:
+			return str(pair[1])
+	return action.capitalize()
+
+
+## The action (other than `action`) that already uses this key, or "".
+static func key_owner(action: String, key: int) -> String:
+	var map := InputSetup.keys()
+	for other: String in map:
+		if other != action and int(key) in (map[other] as Array):
+			return other
+	return ""
+
+
+## Pad button name for an action through P1's InputSetup.pad_label when it exists.
+static func pad_name(action: String) -> String:
+	if _has_static(_sc("input_setup"), "pad_label"):
+		return str(_sc("input_setup").call("pad_label", action))
+	return {"a": "A", "b": "B", "menu": "Start", "tab_prev": "LB", "tab_next": "RB", "tool": "X", "action": "Y", "map": "View", "journal": "—", "cycle_tool": "RB", "dodge": "RT"}.get(action, "—")
+
+
+## Pad rebind through P1's API; "" when done, else why it was refused.
+## Back and Menu keep at least one button so a player can always get out.
+static func pad_rebind(action: String, button: int) -> String:
+	if not _has_static(_sc("input_setup"), "rebind_pad"):
+		return "Controller buttons can't be changed in this build yet."
+	for keep: String in ["b", "menu"]:
+		if keep != action and _pad_only_button(keep, button):
+			return "That button is the only one for %s; it stays there so you can always back out." % action_label(keep)
+	_sc("input_setup").call("rebind_pad", action, button)
+	return ""
+
+
+static func _pad_only_button(action: String, button: int) -> bool:
+	var n := 0
+	var has := false
+	for ev in InputMap.action_get_events(action) if InputMap.has_action(action) else []:
+		if ev is InputEventJoypadButton:
+			n += 1
+			if int((ev as InputEventJoypadButton).button_index) == button:
+				has = true
+	return has and n <= 1
+
+
+## Options > Controller buttons: every shown action with its pad button, rebind by pressing one.
+func _pad_page() -> void:
+	var have_pad := not Input.get_connected_joypads().is_empty()
+	_line("Controller buttons. Pick a row, then press the new button on your controller. B or Menu on screen cancels." if have_pad else "No controller connected. Plug one in or pair it, then pick a row and press the new button.", 8, Color(0.8, 0.8, 0.8))
+	var can := _has_static(_sc("input_setup"), "rebind_pad")
+	for pair in InputSetup.SHOWN:
+		var action: String = pair[0]
+		if action in ["up", "down", "left", "right"]:
+			continue  # movement stays on the stick and d-pad (nobody can lose it)
+		var label: String = pair[1]
+		var txt := "%-18s %s" % [label, pad_name(action)]
+		if _rebinding == action:
+			txt = "%-18s [press a button]" % label
+		var b := _button(txt, func() -> void: _rebinding = action; _refresh())
+		b.disabled = not can or not have_pad
+	_line("Move: left stick or d-pad (fixed).", 8, Color(0.75, 0.75, 0.75))
+	if can and _has_static(_sc("input_setup"), "reset_pad"):
+		_button("Reset controller to defaults", func() -> void: _sc("input_setup").call("reset_pad"); _rebinding = ""; _refresh())
+	_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _refresh())
+
+
+# Cursor: a gold frame over one row/slot/tab. Hidden until a direction is pressed;
+# a touch hides it again. A presses the framed button.
+var _cur := -1  # index into _cursor_list(); -1 hidden
+var _cur_tabs := false  # the frame is on the tab row
+var _hold_dir := ""
+var _hold_t := 0.0
+var _hi: Control
+
+
+func _ensure_tab_actions() -> void:
+	# LB/RB (and [ ]) change tabs. P1 owns pad bindings; these are created only when missing.
+	for pair in [["tab_prev", KEY_BRACKETLEFT, JOY_BUTTON_LEFT_SHOULDER], ["tab_next", KEY_BRACKETRIGHT, JOY_BUTTON_RIGHT_SHOULDER]]:
+		if InputMap.has_action(str(pair[0])):
+			continue
+		InputMap.add_action(str(pair[0]), 0.5)
+		var k := InputEventKey.new()
+		k.physical_keycode = int(pair[1]) as Key
+		InputMap.action_add_event(str(pair[0]), k)
+		var j := InputEventJoypadButton.new()
+		j.button_index = int(pair[2]) as JoyButton
+		InputMap.action_add_event(str(pair[0]), j)
+
+
+func _cursor_list() -> Array:
+	var out: Array = []
+	_collect(_body, out)
+	return out
+
+
+func _collect(n: Node, out: Array) -> void:
+	for c in n.get_children():
+		if c is BaseButton:
+			var b := c as BaseButton
+			if b.is_visible_in_tree() and not b.disabled and not b.is_queued_for_deletion():
+				out.append(b)
+			continue
+		if c is Control and (c as Control).visible:
+			_collect(c, out)
+
+
+func _hide_cursor() -> void:
+	_cur = -1
+	_cur_tabs = false
+	if _hi:
+		_hi.queue_redraw()
+
+
+func cursor_control() -> Control:
+	if _cur_tabs:
+		return _tab_buttons.get(_tab) as Control
+	if _cur < 0:
+		return null
+	var l := _cursor_list()
+	if l.is_empty():
+		return null
+	return l[clampi(_cur, 0, l.size() - 1)]
+
+
+func _dir_pressed(delta: float) -> String:
+	for d: String in ["up", "down", "left", "right"]:
+		if Input.is_action_just_pressed(d):
+			_hold_dir = d
+			_hold_t = REPEAT_FIRST
+			return d
+	if _hold_dir != "" and Input.is_action_pressed(_hold_dir):
+		_hold_t -= delta
+		if _hold_t <= 0.0:
+			_hold_t = REPEAT_STEP
+			return _hold_dir
+	elif _hold_dir != "" :
+		_hold_dir = ""
+	return ""
+
+
+## Pad/keyboard menu play (C9 c9_02). True when it used this frame's input.
+func _cursor_input(delta: float) -> bool:
+	if _rebinding != "" or Engine.get_process_frames() - _opened_frame <= 2:
+		return false
+	if _hi == null:
+		_ensure_tab_actions()
+		_hi = Control.new()
+		_hi.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_hi.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_hi.draw.connect(_draw_cursor)
+		add_child(_hi)
+	_hi.queue_redraw()
+	for pair in [["tab_prev", -1], ["tab_next", 1]]:
+		if InputMap.has_action(str(pair[0])) and Input.is_action_just_pressed(str(pair[0])):
+			step_tab(int(pair[1]))
+			return true
+	var d := _dir_pressed(delta)
+	if d != "":
+		move_cursor(d)
+		return true
+	if (_cur >= 0 or _cur_tabs) and InputSetup.confirm_pressed():
+		press_cursor()
+		return true
+	return false
+
+
+## LB/RB (or left/right on the tab row): the next or previous tab.
+func step_tab(dir: int) -> void:
+	var i := TABS.find(str(SUB_PARENT.get(_tab, _tab)))
+	if i < 0:
+		i = 0
+	if not _cur_tabs and _cur >= 0:
+		_cur = 0
+	_switch_tab(str(TABS[(i + dir + TABS.size()) % TABS.size()]))
+
+
+func move_cursor(d: String) -> void:
+	if _cur_tabs:
+		if d == "left" or d == "right":
+			step_tab(-1 if d == "left" else 1)
+		elif d == "down" and not _cursor_list().is_empty():
+			_cur_tabs = false
+			_cur = 0
+		_after_move()
+		return
+	var l := _cursor_list()
+	if _cur < 0:
+		if l.is_empty():
+			_cur_tabs = true
+		else:
+			_cur = 0
+		_after_move()
+		return
+	_cur = clampi(_cur, 0, l.size() - 1)
+	var nxt := _nearest(l, _cur, d)
+	if nxt >= 0:
+		_cur = nxt
+	elif d == "up":
+		_cur_tabs = true  # past the top row: onto the tabs
+	_after_move()
+
+
+func _after_move() -> void:
+	var c := cursor_control()
+	if c and not _cur_tabs:
+		var sc := _body.get_parent() as ScrollContainer
+		if sc:
+			sc.ensure_control_visible(c)
+	Music.instance(get_tree()).sfx("ui_tap", "pickup")
+	if _hi:
+		_hi.queue_redraw()
+
+
+## The nearest control from l[from] in direction d (by rect centres), or -1.
+## Rows of a list are walked one by one; grids (slots, skill trees) move spatially.
+static func _nearest(l: Array, from: int, d: String) -> int:
+	var a: Rect2 = (l[from] as Control).get_global_rect()
+	var ac := a.get_center()
+	var dv := {"up": Vector2(0, -1), "down": Vector2(0, 1), "left": Vector2(-1, 0), "right": Vector2(1, 0)}[d] as Vector2
+	var best := -1
+	var best_s := INF
+	for i in l.size():
+		if i == from:
+			continue
+		var r: Rect2 = (l[i] as Control).get_global_rect()
+		var off := r.get_center() - ac
+		var along := off.dot(dv)
+		if along < 2.0:
+			continue
+		# Cross-axis gap between the two rects (0 when they overlap), so a wide row
+		# reaches the small buttons right under it before a far row in line with it.
+		var side := 0.0
+		if dv.x == 0.0:
+			side = maxf(0.0, maxf(r.position.x - a.end.x, a.position.x - r.end.x))
+		else:
+			side = maxf(0.0, maxf(r.position.y - a.end.y, a.position.y - r.end.y))
+		var s := along + side * 2.5 + absf(off.dot(Vector2(dv.y, dv.x))) * 0.1
+		if s < best_s:
+			best_s = s
+			best = i
+	return best
+
+
+func press_cursor() -> void:
+	var c := cursor_control()
+	if c == null:
+		return
+	if _cur_tabs:
+		_cur_tabs = false
+		_cur = 0 if not _cursor_list().is_empty() else -1
+		if _cur < 0:
+			_cur_tabs = true
+		_after_move()
+		return
+	var b := c as BaseButton
+	# Skills: A on the selected node learns a rank (same as its Learn button).
+	if b.has_meta("skill_node") and str(b.get_meta("skill_node")) == _node_sel:
+		for o in _cursor_list():
+			if (o as BaseButton).has_meta("skill_buy"):
+				(o as BaseButton).pressed.emit()
+				return
+		Music.instance(get_tree()).sfx("nope", "thud")
+		return
+	b.pressed.emit()
+
+
+func _draw_cursor() -> void:
+	var c := cursor_control()
+	if c == null or not _panel.visible or not c.is_inside_tree():
+		return
+	var r := c.get_global_rect()
+	# The overlay shares the layer's transform: global rects line up directly.
+	r = Rect2(r.position - _hi.get_global_rect().position, r.size).grow(1)
+	var a := 1.0 if Settings.reduced_motion() else 0.7 + 0.3 * sin(float(Time.get_ticks_msec()) * 0.008)
+	_hi.draw_rect(r, Color(CURSOR_COL, a), false, 2.0)

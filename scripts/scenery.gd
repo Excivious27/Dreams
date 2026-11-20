@@ -209,6 +209,8 @@ func _draw_weather_extras() -> void:
 		if _next_flash <= 0.0:
 			_flash_t = 0.5
 			_next_flash = randf_range(3.0, 9.0)
+			if Settings.reduced_motion():
+				_next_flash = maxf(_next_flash, Settings.CALM_FLASH_GAP)  # C9: never more than one per 6 s
 			if is_inside_tree():
 				Ambience.instance(get_tree()).thunder()
 		if _flash_t > 0.0:
@@ -217,9 +219,9 @@ func _draw_weather_extras() -> void:
 			var info := Art.info("fx", "lightning_flash")
 			var fw := float(info.get("cell_w", 188))
 			var fh := float(info.get("cell_h", 136))
-			# With screen shake off (Settings), the bolt stays but the whole-screen flash is gentle.
-			var calm := not bool(Settings.get_v("shake"))
-			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, 0.5 if calm else 0.8))
+			# Reduced motion and flashes (Settings, C9): the bolt stays soft, the screen flash is gentle.
+			var calm := Settings.reduced_motion()
+			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, Settings.CALM_FLASH_ALPHA if calm else 0.8))
 			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, (0.03 if calm else 0.12) if fr < 2 else (0.0 if calm else 0.04)))
 
 

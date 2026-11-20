@@ -286,7 +286,7 @@ func _process(delta: float) -> void:
 	_squash = maxf(0.0, _squash - delta * 5.0)
 	if _flash_mat and _flash != _flash_sent:
 		_flash_sent = _flash  # only touch the material when the flash changes
-		_flash_mat.set_shader_parameter("flash", _flash)
+		_flash_mat.set_shader_parameter("flash", minf(_flash, Settings.CALM_HIT_FLASH) if Settings.reduced_motion() else _flash)
 	var player := map.player
 	# Who am I fighting? Whoever hurt me last, or an ally of yours that is much
 	# closer than you are. Enemies defend themselves against the pup and friends.

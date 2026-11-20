@@ -120,7 +120,7 @@ static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: in
 static func window_for(fish: String) -> float:
 	var w: float = float((T["windows"] as Array)[band(fish)]) if fish != "boot" else float((T["windows"] as Array)[0])
 	w += GameState.bonus("fishing", "escape_less") + float(T["window_per_rod"]) * GameState.tool_tier("rod")
-	return maxf(float(T["window_min"]), w)
+	return maxf(float(T["window_min"]), w) * Settings.timing_factor()  # Options > Timing help (C9; rewards unchanged)
 
 
 ## Treasure after a catch, or "" (chest_chance scaled by where you fish).

@@ -19,6 +19,20 @@ static func open(cat: String) -> void:
 	sel = ""
 
 
+## B on a Book page steps back one level (entry card, then page, then hub).
+## True when it went back; false on the hub (the menu then closes).
+static func back() -> bool:
+	if sel != "":
+		sel = ""
+		return true
+	if page != "":
+		page = ""
+		sub = ""
+		part = 0
+		return true
+	return false
+
+
 static func build(gm: Node) -> void:
 	if page == "":
 		_hub(gm)
@@ -59,7 +73,7 @@ static func _hub(gm: Node) -> void:
 	_badge(gm, head, "medal_champion", badges == all_b)
 	var hl := Label.new()
 	hl.text = "Collections · %d%% · Badges %d/%d" % [Collections.percent(), badges, all_b]
-	hl.add_theme_font_size_override("font_size", 9)
+	hl.add_theme_font_size_override("font_size", Settings.font(9))
 	hl.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
 	head.add_child(hl)
 	for c: Dictionary in Collections.cats():

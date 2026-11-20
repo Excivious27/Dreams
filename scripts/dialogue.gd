@@ -26,6 +26,12 @@ var _choices: VBoxContainer
 var _full := ""
 var _shown := 0.0
 var _choice_focus := 0
+## Held up/down in a choice list repeats (pad/keyboard): first delay, then every step.
+const REPEAT_FIRST := 0.35
+const REPEAT_STEP := 0.1
+var _rep_dir := 0
+var _rep_t := 0.0
+var _rep_fresh := false
 var _in_choice := false
 var _typing := false
 var _hint: Label
@@ -608,7 +614,8 @@ func _process(delta: float) -> void:
 		_skip_btn.position = Vector2(_panel.position.x + _panel.size.x - SKIP_SIZE.x, _panel.position.y - SKIP_SIZE.y - 3)
 	_process_input()
 	if _typing:
-		_shown += delta * 45.0
+		var cps := Settings.text_cps()  # Options > Text speed (C9); 0 = instant
+		_shown += delta * cps if cps > 0.0 else float(_full.length())
 		var n := mini(int(_shown), _full.length())
 		_text.text = _full.substr(0, n)
 		if n >= _full.length():
@@ -683,14 +690,14 @@ func _process_input() -> void:
 			return
 		# A tap meant to skip text must not also pick an answer (moving is fine).
 		var settling := Engine.get_process_frames() - _choice_opened < 12
-		if Input.is_action_just_pressed("down"):
-			_choice_focus = (_choice_focus + 1) % n
-			_refresh_focus()
-			Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
-		elif Input.is_action_just_pressed("up"):
-			_choice_focus = (_choice_focus - 1 + n) % n
-			_refresh_focus()
-			Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
+		var step := _choice_step()
+		if step != 0:
+			# A fresh press wraps around; a held d-pad/stick repeats and stops at the ends (C9).
+			var nf := (_choice_focus + step + n) % n if _rep_fresh else clampi(_choice_focus + step, 0, n - 1)
+			if nf != _choice_focus:
+				_choice_focus = nf
+				_refresh_focus()
+				Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 		elif Input.is_action_just_pressed("b"):
 			# B backs out when the last option is a way out (even while settling:
 			# B never skips text, so it can't be a stray skip tap; C4 P6).
@@ -738,3 +745,22 @@ func _advance() -> void:
 func _scroll_to_choice(c: Control) -> void:
 	if is_instance_valid(_choice_scroll) and is_instance_valid(c) and _choice_scroll.is_ancestor_of(c):
 		_choice_scroll.ensure_control_visible(c)
+
+
+## -1/+1 when the choice focus should move this frame (fresh press or held repeat).
+func _choice_step() -> int:
+	_rep_fresh = false
+	for pair in [["down", 1], ["up", -1]]:
+		if Input.is_action_just_pressed(str(pair[0])):
+			_rep_dir = int(pair[1])
+			_rep_t = REPEAT_FIRST
+			_rep_fresh = true
+			return _rep_dir
+	if _rep_dir != 0 and Input.is_action_pressed("down" if _rep_dir > 0 else "up"):
+		_rep_t -= get_process_delta_time()
+		if _rep_t <= 0.0:
+			_rep_t = REPEAT_STEP
+			return _rep_dir
+		return 0
+	_rep_dir = 0
+	return 0
