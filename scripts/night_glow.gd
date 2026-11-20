@@ -121,6 +121,15 @@ func _draw_glow() -> void:
 			_canvas.draw_set_transform_matrix(s.global_transform)
 			_canvas.draw_texture(tex, tl, Color(1, 1, 1, minf(1.0, lv * 1.15)))
 		_canvas.draw_set_transform_matrix(Transform2D.IDENTITY)
+	# Indoors a lamp lights its room only: the halo is cut at the walls instead of
+	# spilling into the black around a small room (c9_14).
+	var room := Rect2()
+	if map.scene_id() in ["house", "interior"]:
+		# The outer ring of cells is the dark wall frame: light stops at the floor's
+		# sides and bottom, and goes up the back wall.
+		var t := float(GameMap.TILE)
+		room = Rect2(map.to_global(map.offset()) + Vector2(t, 0), Vector2(map.cols, map.rows) * t - Vector2(2 * t, t))
+	var tsz := _tex.get_size() if _tex else Vector2.ONE
 	for l: Array in lights:
 		var o: Variant = l[0]
 		if not is_instance_valid(o):
@@ -132,4 +141,12 @@ func _draw_glow() -> void:
 			continue
 		var r := float(l[1]) * (1.0 + 0.04 * sin(tm * 3.0 + n.position.x))
 		var p := n.global_position + Vector2(0, -float(l[2]))
-		_canvas.draw_texture_rect(_tex, Rect2(p - Vector2(r, r), Vector2(r, r) * 2.0), false, Color(1, 1, 1, a))
+		var dst := Rect2(p - Vector2(r, r), Vector2(r, r) * 2.0)
+		if room.has_area():
+			var cut_r := dst.intersection(room)
+			if not cut_r.has_area():
+				continue
+			var src := Rect2((cut_r.position - dst.position) / dst.size * tsz, cut_r.size / dst.size * tsz)
+			_canvas.draw_texture_rect_region(_tex, cut_r, src, Color(1, 1, 1, a))
+			continue
+		_canvas.draw_texture_rect(_tex, dst, false, Color(1, 1, 1, a))
