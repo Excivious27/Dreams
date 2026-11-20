@@ -249,7 +249,7 @@ func _place_buildings() -> void:
 		return
 	# North of the plaza: shops. Scales bring the small painted buildings up to
 	# village size (10+ cells wide) so nothing looks like a shed next to the hero.
-	_door("store", Vector2i(10, 18), "store", "A: General Store")
+	_door("store", Vector2i(10, 18), "store", "A: Maple's Mercantile")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
 	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
 		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's arcade", 0.6)

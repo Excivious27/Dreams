@@ -93,7 +93,9 @@ func _ready() -> void:
 	sb.set_border_width_all(2)
 	sb.set_corner_radius_all(4)
 	sb.set_content_margin_all(6)
-	panel.add_theme_stylebox_override("panel", sb)
+	# C5 c5_13 #5: the menus' wooden panel (Hud.panel_stylebox), not a flat dark box.
+	var wood: StyleBox = Hud.panel_stylebox("panel_wood")
+	panel.add_theme_stylebox_override("panel", wood if wood else sb)
 	panel.position = Vector2(6, 324)
 	panel.size = Vector2(258, 150)
 	_root.add_child(panel)
@@ -121,7 +123,7 @@ func _ready() -> void:
 	_brief = PanelContainer.new()
 	var bsb := sb.duplicate() as StyleBoxFlat
 	bsb.bg_color.a = 1.0
-	_brief.add_theme_stylebox_override("panel", bsb)
+	_brief.add_theme_stylebox_override("panel", wood if wood else bsb)
 	_brief.position = Vector2(10, 40)
 	_brief.custom_minimum_size = Vector2(250, 0)
 	_brief.visible = false
@@ -179,7 +181,7 @@ func _show_list() -> void:
 	# The lead-in: the story, then training with the veteran.
 	var tr := CampaignGate.trainer()
 	if not CampaignGate.story_ok():
-		var gate := _label("✕ Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6))
+		var gate := _label("✕ Campaigns aren't open yet. %s Then %s drills you to lead your %s." % [CampaignGate.story_need(), tr, Campaign.force_word()], 8, Color(1, 0.8, 0.6))
 		gate.custom_minimum_size.x = 236
 		v.add_child(gate)
 	var tb := _btn("%s  Training: First Muster\n%s · %s" % ["✓" if CampaignGate.trained() else "★", tr,
@@ -216,7 +218,7 @@ func _show_list() -> void:
 		if Campaign.is_won(id):
 			tag = "✓ open"
 		elif Campaign.region_open(str(c["region"])):
-			tag = "open (old road)"
+			tag = "✓ open (another way in)"
 		elif Campaign.started(id):
 			tag = "%d/%d taken" % [Campaign.taken_count(id) - 1, (c["nodes"] as Array).size() - 1]
 		elif why != "":
@@ -228,7 +230,7 @@ func _show_list() -> void:
 			why = "needs chapter 2" if not CampaignGate.story_ok() else "train first"  # said once, at the top
 		if tag == "locked" and plan == "":
 			tag = "gathering"
-		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else ("⚑" if plan == "" else "✕")), str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or Campaign.is_won(id) else " · " + why)], _show_board.bind(id))
+		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else ("⚑" if plan == "" else "✕")), str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or Campaign.is_won(id) or Campaign.region_open(str(c["region"])) else " · " + why)], _show_board.bind(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(242, 30)
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

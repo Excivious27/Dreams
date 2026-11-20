@@ -14,7 +14,7 @@ const NAMES := {
 }
 ## Interiors entered without a door hint (the clinic after a faint, a reload).
 const INTERIORS := {
-	"store": "General Store", "smith": "Blacksmith", "potions": "Potion Shop", "hall": "Town Hall", "inn": "The Inn",
+	"store": "Maple's Mercantile", "smith": "Blacksmith", "potions": "Potion Shop", "hall": "Town Hall", "inn": "The Inn",
 	"bakery": "Bakery", "clinic": "Clinic", "library": "Library", "chapel": "Chapel", "cottage_a": "Wren's Cottage",
 	"cottage_b": "Finn's Cottage", "cottage_c": "Lumi & Theo's Cottage", "hazel_house": "Hazel's Farmhouse",
 	"stable": "Stable", "lodge": "Rook's Lodge", "bank": "Bank", "mansion": "Mayor's House", "school": "School",

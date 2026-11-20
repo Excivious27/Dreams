@@ -141,7 +141,7 @@ func _arc(arc: String) -> void:
 		m.call("_talk", maple)
 		await _frames(3)
 		await _drain()
-		check(" ".join(said).contains("General Store") and Intros.met("maple"), "[%s] Maple introduces herself and her store (%s)" % [tag, said])
+		check(" ".join(said).contains("Mercantile") and Intros.met("maple"), "[%s] Maple introduces herself and her store (%s)" % [tag, said])
 		said.clear()
 		m.call("_talk", maple)
 		await _frames(3)

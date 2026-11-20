@@ -454,7 +454,7 @@ func _on_draw() -> void:
 					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - cl / full), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
 		var label := str(b["label"])
 		var size := 9 if r > 20.0 else 7
-		if action == "a" and context_word != "" and not get_tree().paused:
+		if action == "a" and context_word != "" and context_word.to_lower() != label.to_lower() and not get_tree().paused:  # "Use" over USE says nothing (C5)
 			var tw := font.get_string_size(context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x + 8.0
 			var tp := p + Vector2(-tw / 2.0, -r - 13.0)
 			_canvas.draw_rect(Rect2(tp, Vector2(tw, 11)), Color(0.1, 0.07, 0.04, 0.75))

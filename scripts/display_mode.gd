@@ -35,6 +35,7 @@ static var _svc: DisplayMode = null
 
 var _curtain: CanvasLayer
 var _sides: Array = []
+var _dim: ColorRect  # C5 c5_13 #7: the column behind the game menu dims too (desktop)
 var _last_size := Vector2i.ZERO
 var _web_fs_armed := false
 
@@ -94,6 +95,16 @@ func _ready() -> void:
 		r.visible = false
 		_curtain.add_child(r)
 		_sides.append(r)
+	var dl := CanvasLayer.new()
+	dl.layer = 8  # over the HUD (5), under the game menu (9)
+	dl.process_mode = Node.PROCESS_MODE_ALWAYS
+	dl.set_meta("dm_skip", true)
+	add_child(dl)
+	_dim = ColorRect.new()
+	_dim.color = Color(0.05, 0.04, 0.08, 0.55)
+	_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_dim.visible = false
+	dl.add_child(_dim)
 	if not is_phone() and DisplayServer.get_name() != "headless" and not _tool_run():
 		# Desktop: no on-screen pad unless asked for.
 		TouchControls.visible_controls = int(Settings.get_v("touch_ui")) == 1
@@ -156,6 +167,9 @@ func _refit() -> void:
 		var r: ColorRect = _sides[i]
 		r.position = Vector2(0.0 if i == 0 else cx + BASE.x, 0)
 		r.size = Vector2(cx if i == 0 else view.x - cx - BASE.x, view.y)
+	if _dim:
+		_dim.position = Vector2(cx, 0)
+		_dim.size = BASE
 	_recenter(root)
 	if was != view:
 		changed.emit()
@@ -220,6 +234,18 @@ func _process(_d: float) -> void:
 	var on := wide() and _modal_open()
 	for r: ColorRect in _sides:
 		r.visible = on
+	if _dim:
+		_dim.visible = on and _menu_open()
+
+
+func _menu_open() -> bool:
+	var sc := get_tree().current_scene
+	if sc == null:
+		return false
+	for c in sc.get_children():
+		if c is GameMenu and (c as GameMenu)._open:
+			return true
+	return false
 
 
 ## A full-screen panel (Hud.modal_rect), the game menu or a pausing UI is up.

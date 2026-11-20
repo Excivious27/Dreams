@@ -893,11 +893,11 @@ static func _slot_cell(slot: String) -> Control:
 		b.add_child(ic)
 		if ic.texture == null:
 			b.text = GameState.item_name(id).left(4)
-			b.add_theme_font_size_override("font_size", 6)
+			b.add_theme_font_size_override("font_size", 7)
 		if is_tempered(id):
 			var pl := Label.new()
 			pl.text = "+1"
-			pl.add_theme_font_size_override("font_size", 6)
+			pl.add_theme_font_size_override("font_size", 7)
 			pl.add_theme_color_override("font_color", Color(0.6, 1, 0.5))
 			pl.add_theme_constant_override("outline_size", 2)
 			pl.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -914,7 +914,7 @@ static func _slot_cell(slot: String) -> Control:
 	else:
 		var el := Label.new()
 		el.text = str(SLOT_NAMES.get(slot, slot))
-		el.add_theme_font_size_override("font_size", 6)
+		el.add_theme_font_size_override("font_size", 7)
 		el.add_theme_color_override("font_color", Color(0.85, 0.75, 0.6, 0.75))
 		el.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		el.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -924,7 +924,7 @@ static func _slot_cell(slot: String) -> Control:
 		if not candidates(slot).is_empty():
 			var dot := Label.new()  # something in the bag fits here
 			dot.text = "●"
-			dot.add_theme_font_size_override("font_size", 6)
+			dot.add_theme_font_size_override("font_size", 7)
 			dot.add_theme_color_override("font_color", Color(0.55, 1, 0.45))
 			dot.position = Vector2(22, 1)
 			dot.mouse_filter = Control.MOUSE_FILTER_IGNORE

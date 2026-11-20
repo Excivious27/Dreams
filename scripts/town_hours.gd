@@ -10,7 +10,7 @@ extends RefCounted
 ## interior id -> [open hour, close hour, sign name]. Close may pass midnight
 ## (24+). Kind "home" doors use HOME_OPEN/HOME_CLOSE.
 const SHOPS := {
-	"store": [7, 21, "Maple's General Store"],
+	"store": [7, 21, "Maple's Mercantile"],
 	"smith": [7, 21, "Gideon's Forge"],
 	"potions": [7, 21, "Wren's Potion Shop"],
 	"bakery": [7, 21, "Posy's Bakery"],

@@ -61,7 +61,7 @@ func _ready() -> void:
 			b.tooltip_text = t
 			# Phones never show tooltips: print the name under the icon.
 			b.text = t
-			b.add_theme_font_size_override("font_size", 6)
+			b.add_theme_font_size_override("font_size", 7)
 			b.custom_minimum_size = Vector2(0, 30)
 			b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		else:
@@ -474,7 +474,7 @@ func _refresh() -> void:
 					col.add_child(nm)
 					var ab := Label.new()
 					ab.text = "%s: %s" % [Companion.ability_name(cid), Companion.ability_desc(cid)]
-					ab.add_theme_font_size_override("font_size", 6)
+					ab.add_theme_font_size_override("font_size", 7)
 					ab.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 					ab.modulate = Color(0.85, 0.85, 0.8)
 					col.add_child(ab)
@@ -911,7 +911,7 @@ func _skills_tab() -> void:
 	hv.add_child(bar)
 	var l3 := Label.new()
 	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
-	l3.add_theme_font_size_override("font_size", 6)
+	l3.add_theme_font_size_override("font_size", 7)
 	hv.add_child(l3)
 	if free > 0:
 		SkillGlow.points_banner(_body, free, str(sd["name"]))
@@ -1065,7 +1065,7 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 	b.add_child(tr)
 	var rl := Label.new()
 	rl.text = "%d/%d" % [rank, ranks]
-	rl.add_theme_font_size_override("font_size", 6)
+	rl.add_theme_font_size_override("font_size", 7)
 	rl.add_theme_color_override("font_color", Color(0.6, 1, 0.6) if rank >= ranks else Color(1, 1, 1))
 	rl.add_theme_constant_override("outline_size", 2)
 	rl.add_theme_color_override("font_outline_color", Color.BLACK)

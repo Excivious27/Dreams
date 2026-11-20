@@ -531,6 +531,7 @@ func _close() -> void:
 func _process(delta: float) -> void:
 	if skippable and _skip_owner != null and not (is_instance_valid(_skip_owner) and _skip_owner.is_inside_tree()):
 		end_skippable()  # the scene that offered Skip is gone (left mid-intro)
+	_nudge_camera()
 	if not active:
 		return
 	# The box grows upward as text wraps, so it never covers the touch buttons.
@@ -546,6 +547,35 @@ func _process(delta: float) -> void:
 		if n >= _full.length():
 			_typing = false
 			_hint.visible = true
+
+
+## C5 c5_13 #4: while a tall box is open, the camera slides down a little so the
+## player (and whoever's talking beside them) shows above it; back after.
+const NUDGE_MAX := 72.0
+var _nudge := 0.0
+
+
+func nudge_target() -> float:
+	if not active or skipping or not _panel or not _panel.visible:
+		return 0.0
+	# The player sits about mid-screen (240): lift them clear of the box top, with a head's room.
+	return clampf(240.0 + 26.0 - (_panel.position.y - 30.0), 0.0, NUDGE_MAX)
+
+
+func _nudge_camera() -> void:
+	var m := get_tree().current_scene as GameMap
+	if m == null or m.player == null:
+		_nudge = 0.0
+		return
+	var t := nudge_target()
+	if t == 0.0 and _nudge == 0.0:
+		return
+	_nudge = t
+	for ch in m.player.get_children():
+		if ch is Camera2D:
+			var cam := ch as Camera2D
+			cam.process_mode = Node.PROCESS_MODE_ALWAYS  # glide while the dialogue holds the pause
+			cam.position.y = _nudge
 
 
 var _choice_opened := 0

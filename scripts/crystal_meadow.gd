@@ -269,7 +269,7 @@ func _market() -> void:
 	var picks := [[_blade(), 100], ["potion", GameState.shop_price("potion", 22)], ["dark", GameState.shop_price("dark", 60)]]
 	var ch: Array = []
 	for pk in picks:
-		ch.append("%s  ◆%d%s" % [GameState.item_name(str(pk[0])), int(pk[1]), "  (owned)" if GameState.has_tool(str(pk[0])) else ""])
+		ch.append("%s · ◆%d%s" % [GameState.item_name(str(pk[0])), int(pk[1]), " (owned)" if GameState.has_tool(str(pk[0])) else ""])
 	ch.append("Leave")
 	d.say([{"who": "Black market", "text": "Cash only. No receipts. (◆%d)" % int(GameState.run["crystals"]), "choice": ch, "key": ""}])
 	await d.finished

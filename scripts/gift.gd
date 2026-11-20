@@ -138,7 +138,7 @@ func on_hit(mult: float) -> void:
 func _say(t: String, c: Color) -> void:
 	var l := Label.new()
 	l.text = t
-	l.add_theme_font_size_override("font_size", 6)
+	l.add_theme_font_size_override("font_size", 7)
 	l.add_theme_color_override("font_color", c)
 	l.add_theme_constant_override("outline_size", 2)
 	l.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.1))
