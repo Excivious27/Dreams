@@ -239,7 +239,7 @@ func say(lines: Array) -> void:
 	if not active:
 		active = true
 		_opened_frame = Engine.get_process_frames()
-		get_tree().paused = true
+		Hud.pause(get_tree(), "Dialogue")
 		_panel.visible = not skipping
 		if skipping:
 			_next.call_deferred()  # may close at once: finished must come after the caller's await

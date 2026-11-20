@@ -59,7 +59,7 @@ func _ready() -> void:
 	layer = 65
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	Hud.pause(get_tree(), "BattleBrief")
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	_min_t = 0.3 if seen(mode) else 1.6
 	var root := Control.new()

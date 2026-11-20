@@ -172,5 +172,24 @@ func _run() -> void:
 		await frames(5)
 		check(not menu._open and not paused, "then B closes the menu")
 
+	# 11. C4 P6: B backs out of a menu that just opened (still settling).
+	await frames(10)
+	d.say([{"text": "Pick one", "choice": ["Buy seeds", "Leave"], "key": ""}])
+	await frames(4)
+	check(d._in_choice, "menu up")
+	await press("b")
+	await frames(3)
+	check(not d.active, "B leaves a menu even in its first frames")
+	# 12. A screen that closes with a stale "was paused" never freezes the map;
+	# Hud.pause names the owner.
+	await frames(20)
+	var ag := ArcadeHub.open(m, "jumper")
+	await frames(3)
+	check(Hud.pause_owner.begins_with("ArcadeGame"), "Hud.pause records the owner (%s)" % Hud.pause_owner)
+	if ag:
+		ag._was_paused = true  # as if its opener had paused and then let go
+		ag.close()
+		await frames(3)
+		check(not paused, "arcade close: no pause left with nothing on screen")
 	print("softlock_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

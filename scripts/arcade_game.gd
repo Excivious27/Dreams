@@ -69,7 +69,7 @@ func _ready() -> void:
 	layer = 72
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	Hud.pause(get_tree(), "ArcadeGame %s" % name)
 	_prev_modal = Hud.modal_rect
 	_covered = ScreenCover.cover(get_parent())  # the opaque cabinet hides the map: don't render it
 	Hud.modal_rect = Rect2(0, 0, W, H)
@@ -308,7 +308,9 @@ func close() -> void:
 	_touch.clear()
 	_mouse_action = ""
 	_unregister()
-	get_tree().paused = _was_paused
+	# Back to the opener's pause only if something still needs it (the picker, a
+	# dialogue, the menu): a stale "was paused" must never freeze the map (C4 P6).
+	get_tree().paused = _was_paused and (Hud.keep_paused(get_tree(), self) or _prev_modal.size != Vector2.ZERO)
 	if _prev_track != "":
 		Music.instance(get_tree()).play(_prev_track)
 	Hud.modal_rect = _prev_modal  # back to the picker's (or nothing on the map)
