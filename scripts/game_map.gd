@@ -622,7 +622,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						hud.toast("%s is too hungry to give anything today. Hay first." % species, Color(1, 0.85, 0.7))
 					else:
 						st["made"] = day
-						var ay := GameState.bonus("farming", "animal_yield")
+						var ay := GameState.bonus("ranching", "animal_yield")
 						var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
 						pop_items(a.position, prod, n)
 						# Friendship shows in the goods: silver after 5 days running, gold after 14.
