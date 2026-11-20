@@ -13,7 +13,23 @@ const HOUSE_SCALE := 0.667
 const DOOR := Vector2i(13, 10)
 const MAILBOX := Vector2i(16, 11)  # in the front yard (the wider house fills x9-16)
 const SELLBOX := Vector2i(8, 10)
-const PLANS := Vector2i(17, 13)  # outside the greenhouse plot Rect2i(17,7,9,6)
+const PLANS := Vector2i(17, 13)  # in the front yard, clear of every house tier
+## The farmhouse per tier (C5): its art, scale, solid rect, door and mailbox. The
+## door is where each picture's front door is; the bigger tiers keep x9 as their
+## west wall and grow east (the greenhouse plot moved out of the way, south-east).
+const HOUSE_TIERS := {
+	1: {"sprite": "house", "scale": 0.667, "rect": Rect2i(9, 6, 8, 5), "door": Vector2i(13, 10), "mail": Vector2i(16, 11)},
+	2: {"sprite": "house_2", "scale": 0.6, "rect": Rect2i(9, 6, 12, 5), "door": Vector2i(13, 10), "mail": Vector2i(11, 11)},
+	3: {"sprite": "house_3", "scale": 0.58, "rect": Rect2i(9, 6, 15, 5), "door": Vector2i(16, 10), "mail": Vector2i(11, 11)},
+}
+const OLD_GREENHOUSE_PLOT := Rect2i(17, 7, 9, 6)  # before C5 (crops there move to the new plot once)
+var house_r := HOUSE
+var _house_sprite: Sprite2D
+var _house_pics := []  # [day name, night name, showing night]
+var _house_scale := HOUSE_SCALE
+var _house_t := 0.0
+var door_c := DOOR
+var mail_c := MAILBOX
 const CRYSTAL_SPOT := Vector2i(12, 14)
 const POND_C := Vector2(48.0, 37.0)
 const LEDGE_Y := 11
@@ -24,8 +40,8 @@ const MEADOW_EXIT := Rect2i(70, 28, 2, 4)
 const FOREST_EXIT := Rect2i(34, 0, 4, 2)
 const LAKE_EXIT := Rect2i(0, 28, 2, 4)
 ## Animal pens (kept clear of debris; the barn pen stops short of the cliff at x38).
-const COOP_PEN := Rect2i(26, 9, 6, 3)
-const BARN_PEN := Rect2i(31, 6, 5, 3)  # x31-35: the north track runs on x36 (C1), keep the herd off it
+const COOP_PEN := Rect2i(25, 9, 6, 4)  # bigger since C5 (fenced: posts x24/x31, rail y13 with a gate)
+const BARN_PEN := Rect2i(31, 6, 4, 3)  # fenced on x30/x35 and y9 (C5); x31-35: the north track runs on x36 (C1), keep the herd off it
 ## The river: in from the west edge, under the footbridge (the house path's line)
 ## and the stone bridge (the town road), past the pond and out the east edge.
 const RIVER_PTS := [Vector2(0, 40), Vector2(18, 45), Vector2(36, 48), Vector2(50, 52), Vector2(71, 45)]
@@ -41,9 +57,9 @@ const BUILDS := {
 	"furnace": {"cell": Vector2i(8, 13), "w": 0, "h": 1, "cost": {"stone": 20, "copper": 5}, "group": "props", "sprite": "furnace2_off", "thing": "furnace", "label": "Furnace (20 stone, 5 copper ore)"},
 	"well": {"cell": Vector2i(19, 13), "w": 0, "h": 1, "cost": {"stone": 30}, "group": "props", "sprite": "well_roofed", "thing": "well", "label": "Well (30 stone)"},
 	"keg": {"cell": Vector2i(6, 15), "w": 0, "h": 1, "cost": {"wood": 30, "copper_bar": 1}, "group": "props", "sprite": "keg2", "thing": "keg", "label": "Keg (30 wood, 1 copper bar)"},
-	"beehive": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive3_a", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
+	"beehive": {"cell": Vector2i(29, 19), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive3_a", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
 	"resonator": {"cell": Vector2i(16, 16), "w": 0, "h": 1, "cost": {"stone": 10, "shard": 1}, "group": "props", "sprite": "resonator", "thing": "resonator", "label": "Crystal resonator (10 stone, 1 shard)"},
-	"scarecrow": {"cell": Vector2i(24, 14), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow_classic", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
+	"scarecrow": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow_classic", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
 	"coop": {"cell": Vector2i(26, 8), "w": 3, "h": 3, "cost": {"wood": 120, "stone": 40}, "group": "props", "sprite": "coop_small", "thing": "", "label": "Coop (120 wood, 40 stone) - chickens"},
 	"barn": {"cell": Vector2i(32, 5), "w": 4, "h": 3, "cost": {"wood": 200, "stone": 80}, "group": "props", "sprite": "barn_small", "thing": "", "label": "Barn (200 wood, 80 stone) - cows & sheep"},
 	"silo": {"cell": Vector2i(30, 4), "w": 1, "h": 3, "cost": {"stone": 60, "wood": 30}, "group": "props", "sprite": "silo2", "thing": "", "label": "Silo (60 stone, 30 wood)"},
@@ -51,9 +67,10 @@ const BUILDS := {
 	"shed": {"cell": Vector2i(6, 20), "w": 2, "h": 2, "cost": {"wood": 80, "stone": 20}, "group": "props", "sprite": "shed", "thing": "chest", "label": "Shed (80 wood, 20 stone) - big storage"},
 	"stable": {"cell": Vector2i(32, 11), "w": 3, "h": 3, "cost": {"wood": 150, "iron_bar": 2}, "group": "props", "sprite": "stable2", "thing": "", "label": "Stable (150 wood, 2 iron bars) - a horse, soon"},
 	"mill": {"cell": Vector2i(26, 2), "w": 2, "h": 4, "cost": {"wood": 120, "stone": 60}, "group": "props", "sprite": "windmill3", "anim": "windmill3", "thing": "", "label": "Mill (120 wood, 60 stone)"},
-	"greenhouse": {"cell": Vector2i(20, 4), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse2", "anim": "greenhouse2", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
+	"greenhouse": {"cell": Vector2i(22, 19), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse2", "anim": "greenhouse2", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
 }
 
+const WITHERED_KITS := 5  # crops/withered_any_0..4 (copied from kits/crops/withered_kit_*)
 var _pond_cells := {}
 var _ledge_cells := {}
 var _path_cells := {}
@@ -87,9 +104,10 @@ func build() -> void:
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(36 * TILE, 46 * TILE + 8), "up", "▲ forest")
 	add_exit(LAKE_EXIT, "lake", Vector2(55 * TILE, 22 * TILE + 8), "left", "◀ lake")
-	block_rect(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y)
-	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go inside"})
-	set_thing(MAILBOX.x, MAILBOX.y, {"type": "mailbox", "hint": "A: check mailbox"})
+	_house_from_tier()
+	block_rect(house_r.position.x, house_r.position.y, house_r.size.x, house_r.size.y)
+	set_thing(door_c.x, door_c.y, {"type": "door", "hint": "A: go inside"})
+	set_thing(mail_c.x, mail_c.y, {"type": "mailbox", "hint": "A: check mailbox"})
 	set_thing(SELLBOX.x, SELLBOX.y, {"type": "sellbox", "hint": "A: shipping bin (sell what you hold)"})
 	set_thing(PLANS.x, PLANS.y, {"type": "plans", "hint": "A: building plans"})
 	for dx in [-1, 0, 1]:  # the board and its overhanging posts
@@ -120,7 +138,7 @@ func build() -> void:
 		blocked[c] = true
 	# Paths (dirt): door to south exit, and the east-west track.
 	# (the north track runs on x36: its soft edge would paint over the terrace's rock wall on x38)
-	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(36, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
+	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(mini(13, door_c.x), 11, absi(door_c.x - 13) + 1, 1), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(36, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
 	for c: Vector2i in _pond_cells:
 		_path_cells.erase(c)
 	_make_river()
@@ -160,6 +178,128 @@ func build() -> void:
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	_place_debris()
+	_plan_fences()
+	_migrate_layout()
+
+
+## Day/night farmhouse picture: swapped at dusk and dawn while you're on the farm.
+func _house_lights() -> void:
+	if _house_sprite == null or not is_instance_valid(_house_sprite) or _house_pics.is_empty():
+		return
+	var n := GameState.is_night()
+	if n == bool(_house_pics[2]):
+		return
+	_house_pics[2] = n
+	_house_sprite.texture = Art.tex("buildings", str(_house_pics[1] if n else _house_pics[0]))
+	_fit_house_pic()
+
+
+func _fit_house_pic() -> void:
+	var day_t := Art.tex("buildings", str(_house_pics[0]))
+	if _house_sprite.texture and day_t:
+		var k := _house_scale * float(day_t.get_width()) / float(_house_sprite.texture.get_width())  # the same footprint as the day picture
+		_house_sprite.scale = Vector2(k, k)
+		_house_sprite.offset = Vector2(0, -_house_sprite.texture.get_height() / 2.0)
+
+
+## Pen fences (C5): wooden rails (chain-link in the gangster arc) round the coop and
+## barn pens, the building as the back wall, an open gate on the front rail.
+var _fences: Array = []  # [cell, sprite, solid, scale]
+
+
+func _plan_fences() -> void:
+	_fences.clear()
+	var gang := not GameState.is_penguins() and Art.has("props", "chain_fence_h")
+	var h_name := "chain_fence_h" if gang else "fence2_wood_h"
+	var v_name := "chain_fence_v" if gang else "fence2_wood_end"
+	var gate := "fence2_iron_gate_open" if gang else "fence2_wood_gate_open"
+	var specs: Array = []
+	if Builds.is_built("coop"):
+		specs.append([COOP_PEN, Vector2i(COOP_PEN.position.x + COOP_PEN.size.x / 2, COOP_PEN.end.y)])
+	if Builds.is_built("barn"):
+		specs.append([BARN_PEN, Vector2i(BARN_PEN.position.x + 1, BARN_PEN.end.y)])
+	var taken := {}
+	for sp: Array in specs:
+		var r: Rect2i = sp[0]
+		var g: Vector2i = sp[1]
+		for gc: Vector2i in [g + Vector2i(0, 1), g + Vector2i(0, 2), g + Vector2i(-1, 1), g + Vector2i(1, 1)]:
+			if things.has(gc) and str((things[gc] as Dictionary).get("type", "")) in ["weeds", "rock", "log", "stump", "tree", "bush"]:
+				things.erase(gc)  # the way to the gate stays open
+				blocked.erase(gc)
+		var cells: Array = []
+		for y in range(r.position.y, r.end.y):
+			cells.append([Vector2i(r.position.x - 1, y), v_name])
+			cells.append([Vector2i(r.end.x, y), v_name])
+		for x in range(r.position.x - 1, r.end.x + 1):
+			cells.append([Vector2i(x, r.end.y), h_name])
+		for e: Array in cells:
+			var c: Vector2i = e[0]
+			if taken.has(c) or _path_cells.has(c) or not in_content(c) or (blocked.has(c) and not things.has(c)) or _river.has(c):
+				continue  # a path, a building or water: leave the gap
+			if things.has(c):
+				var tt := str((things[c] as Dictionary).get("type", ""))
+				if tt in ["weeds", "rock", "log", "stump", "tree", "bush", "forage"]:
+					things.erase(c)
+					blocked.erase(c)
+				else:
+					continue
+			taken[c] = true
+			var is_gate: bool = c == g
+			var nm: String = gate if is_gate and Art.has("props", gate) else str(e[1])
+			_fences.append([c, nm, not is_gate, 0.5])
+			if not is_gate:
+				blocked[c] = true
+
+
+## One-off moves for old saves when the farm's layout changed (C5): soil or placed
+## things under a building or the bigger farmhouse go (seed back / to a free cell),
+## and crops in the old greenhouse plot move to the same spot in the new one.
+func _migrate_layout() -> void:
+	if Net.visiting():
+		return
+	var farm: Dictionary = GameState.run["farm"]
+	var fl: Dictionary = GameState.run["flags"]
+	if Builds.is_built("greenhouse") and not fl.has("gh_plot_c5"):
+		fl["gh_plot_c5"] = true
+		var off := GameState.GREENHOUSE_PLOT.position - OLD_GREENHOUSE_PLOT.position
+		for oc: Vector2i in cells_of([OLD_GREENHOUSE_PLOT]):
+			var ok := "%d,%d" % [oc.x, oc.y]
+			if not farm.has(ok) or str((farm[ok] as Dictionary).get("crop", "")) == "":
+				continue
+			var nc := oc + off
+			var nk := "%d,%d" % [nc.x, nc.y]
+			if blocked.has(nc) or (farm.has(nk) and str((farm[nk] as Dictionary).get("crop", "")) != ""):
+				continue
+			farm[nk] = farm[ok]
+			farm.erase(ok)
+	var solid := {}
+	for k in farm.keys():
+		var kp := str(k).split(",")
+		var c := Vector2i(int(kp[0]), int(kp[1]))
+		if blocked.has(c) and not _river.has(c):
+			solid[c] = true
+	for pk in GameState.run.get("placed", {}).keys():
+		var xy := str(pk).split(",")
+		var pc := Vector2i(int(xy[0]), int(xy[1]))
+		if blocked.has(pc):
+			solid[pc] = true
+	if solid.is_empty():
+		return
+	for c: Vector2i in solid:
+		if farm.has("%d,%d" % [c.x, c.y]):
+			_clear_tile(c)
+	_move_placed_off(solid)
+
+
+static func house_look(tier: int) -> Dictionary:
+	return HOUSE_TIERS.get(clampi(tier, 1, 3), HOUSE_TIERS[1])
+
+
+func _house_from_tier() -> void:
+	var hl := house_look(Builds.built_tier("house"))
+	house_r = hl["rect"]
+	door_c = hl["door"]
+	mail_c = hl["mail"]
 
 
 func _river_y(x: float) -> float:
@@ -185,7 +325,7 @@ func _make_river() -> void:
 				y = lerpf(_river_y(bx + 1.0), y, t)
 		return y
 	var keep_out := {}  # never under a building (built or not yet), the house, pens, the pond's bank or the track
-	keep_out.merge(cells_of([HOUSE.grow(2), COOP_PEN.grow(1), BARN_PEN.grow(1), GameState.GREENHOUSE_PLOT.grow(1), Rect2i(0, 28, cols, 4)]))
+	keep_out.merge(cells_of([house_r.grow(2), COOP_PEN.grow(1), BARN_PEN.grow(1), GameState.GREENHOUSE_PLOT.grow(1), Rect2i(0, 28, cols, 4)]))
 	for bid: String in Builds.all():
 		var bd: Dictionary = Builds.all()[bid]
 		if bd.has("cell"):
@@ -251,6 +391,13 @@ func _migrate_river() -> void:
 	for c: Vector2i in solid:
 		if farm.has("%d,%d" % [c.x, c.y]):
 			_clear_tile(c)  # a crop's seed comes back
+	_move_placed_off(solid)
+
+
+## Placed things (sprinklers, scarecrows, chests) standing on `solid` cells move to
+## the nearest dry, free cell; a chest's contents go with it.
+func _move_placed_off(solid: Dictionary) -> void:
+	var farm: Dictionary = GameState.run["farm"]
 	var placed: Dictionary = GameState.run.get("placed", {})
 	for pk in placed.keys():
 		var xy := str(pk).split(",")
@@ -336,7 +483,7 @@ func _clear_tile(c: Vector2i) -> void:
 ## Weeds, rocks, logs, stumps and saplings all over the field, thicker away from
 ## the house. Deterministic from a seed; cleared cells are remembered in the save.
 func _place_debris() -> void:
-	var home := Vector2(DOOR)
+	var home := Vector2(door_c)
 	# Keep the fronts of built things clear (beehive, shed, keg, fish pond...).
 	var keep_clear := {}
 	for kc: Vector2i in cells_of([Rect2i(PLANS.x - 2, PLANS.y - 1, 5, 4)]):
@@ -368,9 +515,11 @@ func _place_debris() -> void:
 			_rng.seed = 77 + x * 7919 + y * 104729  # per cell: clearing or tilling one cell never reshuffles the rest
 			if blocked.has(c) or things.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
 				continue
-			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3 or keep_clear.has(c):
+			if _path_cells.has(c + Vector2i.LEFT) or _path_cells.has(c + Vector2i.RIGHT) or _path_cells.has(c + Vector2i.UP) or _path_cells.has(c + Vector2i.DOWN):
+				continue  # the path's soft edge reaches its neighbours: nothing grows on the trail (C5)
+			if house_r.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3 or keep_clear.has(c):
 				continue
-			if (Builds.is_built("coop") and COOP_PEN.grow_individual(0, 0, 0, 2).has_point(c)) or (Builds.is_built("barn") and BARN_PEN.has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
+			if (Builds.is_built("coop") and COOP_PEN.grow(1).has_point(c)) or (Builds.is_built("barn") and BARN_PEN.grow(1).has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
 				continue
 			var near_pond := false
 			for pc: Vector2i in _pond_cells:
@@ -451,7 +600,7 @@ func regrow_days(kind: String, c: Vector2i) -> int:
 	var d := int(REGROW.get(kind, 0))
 	if d == 0 or kind in ["grass", "weeds"]:
 		return d
-	if Vector2(c).distance_to(Vector2(DOOR)) < 14.0 or _by_soil(c):
+	if Vector2(c).distance_to(Vector2(door_c)) < 14.0 or _by_soil(c):
 		return 0
 	return d
 
@@ -629,7 +778,7 @@ func _make_mail_mark() -> void:
 	_mail_mark.region_rect = Rect2(3, 6, t.get_width() - 3, t.get_height() - 6)
 	_mail_mark.scale = Vector2(0.4, 0.4)
 	_mail_mark.z_index = 20
-	_mail_mark.position = cell_center(MAILBOX) + Vector2(0, -30)
+	_mail_mark.position = cell_center(mail_c) + Vector2(0, -30)
 	_mail_mark.visible = false
 	add_child(_mail_mark)
 
@@ -659,9 +808,13 @@ func _make_crystal() -> void:
 func _process(delta: float) -> void:
 	super(delta)
 	_grass_step()
+	_house_t += delta
+	if _house_t > 2.0:
+		_house_t = 0.0
+		_house_lights()
 	if _mail_mark:
 		_mail_t += delta
-		_mail_mark.position.y = cell_center(MAILBOX).y - 30.0 - absf(sin(_mail_t * 3.0)) * 3.0
+		_mail_mark.position.y = cell_center(mail_c).y - 30.0 - absf(sin(_mail_t * 3.0)) * 3.0
 		if int(_mail_t * 2.0) != int((_mail_t - delta) * 2.0):
 			_mail_mark.visible = bool(GameState.run.get("intro_done", false)) and Mail.waiting() > 0
 	if _crystal:
@@ -992,6 +1145,24 @@ func _plans() -> void:
 			return
 
 
+## A crop that died at the season's turn stays as a withered plant (Stardew-style)
+## until it's pulled: any tool or a bare hand clears it, leaving tilled soil.
+func _clear_withered(c: Vector2i, key: String, tile: Dictionary) -> bool:
+	var dead := str(tile.get("dead", ""))
+	tile.erase("dead")
+	tile["fert"] = false
+	net_act({"a": "farm_tile", "key": key, "tile": tile})
+	player.play_tool("hoe" if GameState.held_tool() == "hoe" else "hold")
+	Music.instance(get_tree()).sfx("pickup", "dig")
+	fx("crop_wilt", cell_center(c), 8.0, 0.5)
+	if GameState.items.has("fiber") and randf() < 0.5:
+		GameState.add_item("fiber", 1)
+	var nm := GameState.item_name(str(GameState.crops.get(dead, {}).get("yield", dead)))
+	hud.toast("Pulled up the withered %s." % nm.to_lower(), Color(0.9, 0.85, 0.7))
+	_soil.queue_redraw() if _soil else queue_redraw()
+	return true
+
+
 func _farm_tile(c: Vector2i, sel: String) -> bool:
 	var key := "%d,%d" % [c.x, c.y]
 	var farm: Dictionary = GameState.run["farm"]
@@ -1007,8 +1178,13 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		player.play_tool("hoe")
 		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
-		_soil.queue_redraw() if _soil else queue_redraw()
+		# The soil turns when the hoe bites (0.25 s into the swing), with a puff of dirt.
+		_later(0.25, func() -> void:
+			fx("dirt_puff", cell_center(c) + Vector2(0, 3), 14.0, 0.4)
+			_soil.queue_redraw() if _soil else queue_redraw())
 		return true
+	if str(tile.get("dead", "")) != "":
+		return _clear_withered(c, key, tile)
 	var crop := str(tile.get("crop", ""))
 	var ripe := crop != "" and GameState.crops.has(crop) and int(tile.get("days", 0)) >= int(GameState.crops[crop]["days"])
 	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "" and not ripe:
@@ -1049,7 +1225,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			tile["days"] = 0
 			net_act({"a": "farm_tile", "key": key, "tile": tile})
 			GameState.add_item(sel, -1)
-			player.play_tool("hoe")
+			player.play_tool("hold")  # seeds go in by hand (a hoe swing read as tilling)
 			Music.instance(get_tree()).sfx("plant")
 			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
@@ -1194,8 +1370,18 @@ func _water(tile: Dictionary, key := "") -> bool:
 				net_act({"a": "farm_tile", "key": k2, "tile": t2})
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
-	_soil.queue_redraw() if _soil else queue_redraw()
+	if key != "":
+		var wp := key.split(",")
+		_later(0.3, func() -> void: fx("splash", cell_center(Vector2i(int(wp[0]), int(wp[1]))) + Vector2(0, 2), 14.0, 0.35))
+	_later(0.3, func() -> void: _soil.queue_redraw() if _soil else queue_redraw())  # the soil darkens as the water lands
 	return true
+
+
+## Run f after `sec` seconds of game time (tool timing: soil changes when the swing lands).
+func _later(sec: float, f: Callable) -> void:
+	get_tree().create_timer(sec, false).timeout.connect(func() -> void:
+		if is_instance_valid(self):
+			f.call())
 
 
 ## Crops with no painted sheet yet: a drawn plant that grows (a trunk and canopy
@@ -1660,6 +1846,12 @@ func _intro_gangsters(n: Dictionary) -> void:
 # ---- drawing -----------------------------------------------------------------
 
 func draw_map() -> void:
+	dry_patches = false  # the per-cell dry squares read as hard tan boxes in the field (c5_01 #6)
+	tuft_skip.clear()
+	for pen_t: Array in [["coop", COOP_PEN], ["barn", BARN_PEN], ["greenhouse", GameState.GREENHOUSE_PLOT]]:
+		if Builds.is_built(str(pen_t[0])):
+			for tc: Vector2i in cells_of([(pen_t[1] as Rect2i).grow(1)]):
+				tuft_skip[tc] = true  # grazed pens and the bed: short grass (C5)
 	draw_grass(1)
 	# No decor, forage, puddles or drifts on tilled soil, paths or the greenhouse plot.
 	var av := {}
@@ -1670,8 +1862,12 @@ func draw_map() -> void:
 		av[pc] = true
 	av.merge(_bridge_cells)
 	if Builds.is_built("greenhouse"):
-		for gc: Vector2i in cells_of([GameState.GREENHOUSE_PLOT]):
+		for gc: Vector2i in cells_of([GameState.GREENHOUSE_PLOT.grow(1)]):
 			av[gc] = true
+	for pen_b: Array in [["coop", COOP_PEN], ["barn", BARN_PEN]]:
+		if Builds.is_built(str(pen_b[0])):
+			for pc2: Vector2i in cells_of([(pen_b[1] as Rect2i).grow(1)]):
+				av[pc2] = true  # a grazed pen: no tufts or flowers (C5)
 	WorldGen.draw_ground_detail(self, 21, 0.05, av)
 	draw_ground("dirt", _path_cells)
 	# Terrace: a lighter, drier grass up top and a cliff lip along the ledge.
@@ -1697,13 +1893,23 @@ func draw_map() -> void:
 	if _soil:
 		_soil.queue_redraw()
 	if not Art.has("buildings", "house"):
-		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
+		draw_building(house_r.position.x, house_r.position.y, house_r.size.x, house_r.size.y, Color("8b5a2b"), Color("b03a2e"), "")
 
 
 func _place_props() -> void:
 	if Art.has("buildings", "house"):
-		prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1, 0.0, false, HOUSE_SCALE)
-		prop("buildings", "mailbox", MAILBOX)
+		var hl := house_look(Builds.built_tier("house"))
+		var hs := str(hl["sprite"]) if Art.has("buildings", str(hl["sprite"])) else "house"
+		var hn := hs + "_night"  # lit windows after dark (the night pictures were cut but unused)
+		var night_pic := GameState.is_night() and Art.has("buildings", hn)
+		var hsc := float(hl["scale"]) if hs == str(hl["sprite"]) else HOUSE_SCALE
+		_house_pics = [hs, hn if Art.has("buildings", hn) else hs, night_pic]
+		var hp := prop("buildings", hn if night_pic else hs, Vector2i(house_r.position.x, house_r.end.y - 1), house_r.size.x - 1, 0.0, false, hsc)
+		_house_sprite = hp
+		_house_scale = hsc
+		if night_pic:
+			_fit_house_pic()
+		prop("buildings", "mailbox", mail_c)
 		prop("buildings", "sellbox", SELLBOX)
 	prop("props", "notice_board", PLANS)
 	# Under construction: a scaffold/sign where the crew is working.
@@ -1778,6 +1984,8 @@ func _place_props() -> void:
 			var sinfo := Art.info(str(b["group"]), str(b["sprite"]))
 			var sw := float(sinfo.get("cell_w", sinfo.get("w", 0)))
 			var ssc := 0.5 if str(b["thing"]) != "station" or sw <= 0.0 else minf(0.5, float(int(b["w"]) + 3) * TILE / sw)  # a wide top-tier station stays in its slot (one cell spare each side)
+			if id in ["coop", "barn"] and sw > 0.0:
+				ssc = minf(0.667, float(int(b["w"]) + 2) * TILE / sw)  # the farmhouse's scale (at 0.5 they read as toys, C5), one cell spare
 			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]), 0.0, true, ssc)
 	# Starter babies grow up two weeks after their coop/barn goes up (names kept, so friendship carries over).
 	var fl: Dictionary = GameState.run["flags"]
@@ -1790,12 +1998,16 @@ func _place_props() -> void:
 	var coop_kids := today < int(fl.get("coop_day", 0)) + 14
 	var barn_kids := today < int(fl.get("barn_day", 0)) + 14
 	var goat_kids := today < int(fl.get("barn2_day", 0)) + 14
+	for f: Array in _fences:
+		var fp := prop("props", str(f[1]), f[0], 0, 0.0, bool(f[2]), float(f[3]))
+		if fp and str(f[1]).ends_with("_v"):
+			fp.offset.y += 4.0  # a side post stands on its cell, not above it
 	if builds.has("coop"):
 		var pen := COOP_PEN
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick" if coop_kids else "chicken", Vector2i(28, 11), pen, coop_kids, "chick_28_11")
 		if Builds.built_tier("coop") >= 2:
 			# The Big Coop: two more hens, two ducks, and the incubator's chicks.
-			_animal("chicken", Vector2i(26, 10), pen); _animal("chicken", Vector2i(31, 10), pen); _animal("duck2", Vector2i(27, 11), pen); _animal("duck2", Vector2i(29, 11), pen)
+			_animal("chicken", Vector2i(26, 12), pen); _animal("chicken", Vector2i(30, 12), pen); _animal("duck2", Vector2i(25, 11), pen); _animal("duck2", Vector2i(28, 12), pen)
 			var hatch: Array = GameState.run.get("coop_hatch", [])
 			for hi in hatch.size():
 				var hd := int(hatch[hi])
@@ -1804,10 +2016,10 @@ func _place_props() -> void:
 					_animal("chick" if young else "chicken", Vector2i(26 + hi, 9), pen, young, "hatch_%d" % hi)
 	if builds.has("barn"):
 		var pen := BARN_PEN
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(31, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(35, 7), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(31, 7), pen, barn_kids, "lamb_36_7")  # (name kept: friendship)
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(31, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(34, 6), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(31, 7), pen, barn_kids, "lamb_36_7")  # (name kept: friendship)
 		if Builds.built_tier("barn") >= 2:
 			# The Big Barn: goats and a llama.
-			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(35, 8), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")
+			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(32, 6), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():
@@ -1860,6 +2072,8 @@ func _place_river_props() -> void:
 		var y1: int = ys[ys.size() - 1]
 		var stone := bx == BRIDGE_X[1]  # the town road gets the stone bridge
 		var nm := "bridge3_ns_3" if stone else "foot3_ns_a"
+		if Art.has("props", nm + "_dry"):
+			nm += "_dry"  # its painted pond patch keyed out: the river shows under it (c5_01 #7)
 		if not Art.has("props", nm):
 			nm = "bridge_wood2" if Art.has("props", "bridge_wood2") else "bridge"
 		var tex := Art.tex("props", nm)
@@ -1879,16 +2093,24 @@ func _place_river_props() -> void:
 		if _bridge_cells.has(c) or not in_content(c):
 			continue
 		var edge := false
+		var land := Vector2.ZERO  # towards the bank
 		for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
 			if not _river.has(c + d):
 				edge = true
+				land += Vector2(d)
 		var r := rng.randf()
 		if edge and r < 0.16:
 			var nm: String = ["mk_reeds_2", "mk_reeds_3", "mk_cattail_1", "mk_cattail_2", "reeds2_0", "reeds2_2"][rng.randi_range(0, 5)]
+			# Reeds stand in the shallows at the bank, not out in the stream (the soft
+			# shore draws the edge cell half as water): nudged towards the land side.
+			var nudge := land.normalized() * 7.0 if land != Vector2.ZERO else Vector2.ZERO
+			var rp: Sprite2D = null
 			if Art.has("props", nm):
-				prop("props", nm, c, 0, 2.0, false, 0.32)
+				rp = prop("props", nm, c, 0, 2.0, false, 0.32)
 			elif Art.has("nature", nm):
-				prop("nature", nm, c, 0, 2.0, false)
+				rp = prop("nature", nm, c, 0, 2.0, false)
+			if rp:
+				rp.position += nudge
 		elif not edge and r < 0.05 and Art.has("nature", "lily2_0"):
 			var lp := prop("nature", "lily2_%d" % rng.randi_range(0, 3), c, 0, -2.0, false)
 			if lp:
@@ -1897,10 +2119,12 @@ func _place_river_props() -> void:
 
 
 func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "") -> void:
-	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse3"}.get(kind, kind)
+	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse3", "goat": "goat2"}.get(kind, kind)  # goat2: same sheet style as the cows and sheep (C5)
 	if Art.has("animals/" + full, "idle"):
 		var fa := FarmAnimal.new()
 		fa.setup(self, str(full), c, pen, is_baby)
+		if nm == "" and kind == "goat":
+			nm = "goat_%d_%d" % [c.x, c.y]  # (drawn from goat2 since C5: the name, and its friendship, stay)
 		if nm != "":
 			fa.name = nm  # one name for life (a hatched chick keeps its friendship when grown)
 		add_child(fa)
@@ -2018,11 +2242,7 @@ func _draw_soil(ci: CanvasItem) -> void:
 	var farm: Dictionary = GameState.run["farm"]
 	# The greenhouse plot (crops ignore the season here): a low stone border marks it.
 	if Builds.is_built("greenhouse"):
-		var gp := GameState.GREENHOUSE_PLOT
-		var r := Rect2(Vector2(gp.position * TILE) + Vector2(1, 1), Vector2(gp.size * TILE) - Vector2(2, 2))
-		ci.draw_rect(r, Color(0.85, 0.95, 0.8, 0.10))
-		ci.draw_rect(r, Color(0.55, 0.5, 0.42, 0.9), false, 2.0)
-		ci.draw_rect(r.grow(-2), Color(0.85, 0.8, 0.7, 0.5), false, 1.0)
+		_draw_kerb(ci, GameState.GREENHOUSE_PLOT)
 	# Drawn in passes (dry beds, wet beds, overlays, crops) so the field batches:
 	# bed, overlay and crop per tile in a row broke the batch three times a tile
 	# (300 tiles: ~650 draw calls every frame; this way about a dozen).
@@ -2054,6 +2274,9 @@ func _draw_soil(ci: CanvasItem) -> void:
 	for c: Vector2i in cells:
 		var tile: Dictionary = tiles[c]
 		var crop := str(tile.get("crop", ""))
+		if crop == "" and str(tile.get("dead", "")) != "":
+			_draw_withered(ci, c, str(tile["dead"]))
+			continue
 		if crop != "":
 			var cd: Dictionary = GameState.crops.get(crop, {})
 			if cd.is_empty():
@@ -2089,3 +2312,47 @@ func _draw_soil(ci: CanvasItem) -> void:
 				ci.draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
 			else:
 				_draw_plain_crop(c, cd, frac, ci)
+
+
+## A withered plant: the crop's own *_withered sprite, else one of the shared kit plants.
+func _draw_withered(ci: CanvasItem, c: Vector2i, art: String) -> void:
+	var tex: Texture2D = null
+	if Art.has("crops", art + "_withered"):
+		tex = Art.tex("crops", art + "_withered")
+	else:
+		var n := posmod(c.x * 7 + c.y * 3, WITHERED_KITS)
+		if Art.has("crops", "withered_any_%d" % n):
+			tex = Art.tex("crops", "withered_any_%d" % n)
+	if tex == null:
+		ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(5, 7), Vector2(6, 7)), Color("6b5a3a"))
+		return
+	var ks := minf(0.5, 22.0 / float(maxi(1, tex.get_width())))
+	var w := tex.get_width() * ks
+	var h := tex.get_height() * ks
+	ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h - 1, w, h), false)
+
+
+## The greenhouse bed's low stone kerb (C5: it was a thin debug-looking rectangle):
+## a ring of rounded field stones in two greys with a light top and a dark base.
+func _draw_kerb(ci: CanvasItem, gp: Rect2i) -> void:
+	var r := Rect2(Vector2(gp.position * TILE) - Vector2(3, 3), Vector2(gp.size * TILE) + Vector2(6, 6))
+	ci.draw_rect(Rect2(r.position + Vector2(3, 3), r.size - Vector2(6, 6)), Color(0.36, 0.27, 0.17, 0.35))  # darker bed soil under the glass's care
+	var stones: Array[Rect2] = []
+	var step := 8.0
+	var n := int(r.size.x / step)
+	for i in n:
+		var w := step - 1.0 - float((i * 7) % 3) * 0.5
+		stones.append(Rect2(r.position.x + i * step, r.position.y, w, 5))
+		stones.append(Rect2(r.position.x + i * step, r.end.y - 5, w, 5))
+	var m := int(r.size.y / step)
+	for j in range(1, m):
+		var h := step - 1.0 - float((j * 5) % 3) * 0.5
+		stones.append(Rect2(r.position.x, r.position.y + j * step, 5, h))
+		stones.append(Rect2(r.end.x - 5, r.position.y + j * step, 5, h))
+	for k in stones.size():
+		var st: Rect2 = stones[k]
+		var base := Color(0.62, 0.6, 0.55) if k % 3 != 0 else Color(0.54, 0.53, 0.5)
+		ci.draw_rect(st.grow(0.5), Color(0.22, 0.2, 0.2))
+		ci.draw_rect(st, base)
+		ci.draw_rect(Rect2(st.position, Vector2(st.size.x, 1.5)), base.lightened(0.25))
+		ci.draw_rect(Rect2(st.position + Vector2(0, st.size.y - 1.5), Vector2(st.size.x, 1.5)), base.darkened(0.25))

@@ -2,6 +2,17 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
+
+- Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
+- Greenhouse plot moved to south-east open ground (`GameState.GREENHOUSE_PLOT` 19,20 9x6) with the greenhouse in front (22,19), beehive (29,19), scarecrow (21,15); old saves: plot crops move once (flag gh_plot_c5), soil/placed things under buildings move (`_migrate_layout`). Stone kerb round the bed.
+- Coop/barn drawn at house scale; bigger coop pen; wooden (gangster: chain-link) pen fences with an open gate; no decor tufts in pens.
+- Animals: per-kind true-to-life heights (`FarmAnimal.TARGET_H`, babies 60%), goat drawn from goat2, width-sized shadows, two-row huddle at night/rain/winter.
+- Crops killed by the season's turn stay as withered plants until pulled (any tool or hand). Planting plays "hold"; tilling turns the soil at 0.25 s with a dirt puff; watering splashes.
+- Debris never on a path or its soft edge. Test: tools/farm_look_test.gd (check.sh).
+- House interior grows per tier (house.gd `COLS_BY_TIER` 16/20/26): Farmhouse pantry corner + double bed; Manor cellar (new cellar_hatch art + keg rack), study (new study_desk art), bath nook. Art: tools/slice_c5_p1.py (art/incoming/c5/p1_house_interior.png).
+- Farm bridges use keyed `*_dry` art (no painted pond box); reeds nudged onto the banks; no tall tufts in pens/bed (`GameMap.tuft_skip`) and no summer dry squares on the farm (`GameMap.dry_patches`).
+
 ## 2026-11-19 — CONDUCT 4 fix P1: difficulty modes, day length, money routing
 - **Difficulty (Tom):** Very easy / Easy / Default / Hard per save slot (run.opts.difficulty, default Default), chosen on the new-game page (Difficulty button + one-line description) and in Options; COMBAT AND BATTLE CAMPAIGNS ONLY. `Difficulty` (scripts/difficulty.gd) holds the c4_15 table: foe HP (own `Enemy.diff_hp`, after hp_scale, no floor), boss HP (once, inside `Battle.boss_hp`), foe hits on you (`GameState.enemy_damage`, Very easy floor 3), on allies (`Enemy.ally_damage`), status length/power, wind-up time, battle tickets/cap/waves/convoy/hold/enemy capture/supply/morale loss (`Campaign.battle_data` -> `foe_capture`/`supply_mul`), mine keeper pack size, clinic fee only after a combat faint (`Faint.fee(clinic, floor, reason)`). Old global Easy switch migrates to Easy per slot and is gone. Hero tab shows the mode; campaign danger words light/fair/tough/fierce; co-op guests play at the host's mode (run.opts in Net.WORLD_KEYS). Hard gives no extra loot.
 - **Day length (Tom):** 15/20/30/40 real minutes for the 6am-2am day per slot (run.day_len, default 15; new-game page + Options; locked for a co-op guest, host's value via WORLD_KEYS). `GameState.minutes_per_second()` / `day_len()`; real-time timers use `GameState.real_min(sec)` (gift gale/iron buffs, haste, warden) and mana regen runs on real seconds (`GameState.mana_regen_secs()`, 14 s). Save slot info shows mode and day length.

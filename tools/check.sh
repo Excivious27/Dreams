@@ -195,6 +195,13 @@ echo "$cout" | grep -E "FAIL|farm_week_test" || true
 if ! echo "$cout" | grep -q "farm_week_test: OK"; then
   echo "farm_week_test failed"; exit 1
 fi
+
+cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/farm_look_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|farm_look_test" || true
+if ! echo "$cout" | grep -q "farm_look_test: PASS"; then
+  echo "farm_look_test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/crop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|crop_test" || true
 if ! echo "$cout" | grep -q "crop_test: 0 failures"; then

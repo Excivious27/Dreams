@@ -2679,6 +2679,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			var is_tree := bool(cd.get("tree", false))
 			var dies := (next_se != se and not crop_fits_season(cd, next_se)) or (se == "winter" and not fits)
 			if dies and not glass and not is_tree:
+				tile["dead"] = str(cd.get("art", crop_id))  # a withered plant stays on the bed until cleared (C5)
 				tile["crop"] = ""
 				tile["days"] = 0
 				tile["acc"] = 0.0
@@ -3044,7 +3045,7 @@ static func _crows(report: Dictionary) -> void:
 
 
 ## The glass plot in front of the greenhouse: crops there ignore the season.
-const GREENHOUSE_PLOT := Rect2i(17, 7, 9, 6)
+const GREENHOUSE_PLOT := Rect2i(19, 20, 9, 6)  # south-east open ground, under the greenhouse (C5; it was 17,7 where the Manor stands)
 
 
 static func in_greenhouse(key: String) -> bool:

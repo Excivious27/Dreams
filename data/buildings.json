@@ -24,7 +24,7 @@
    {
     "tier": 2,
     "name": "Farmhouse",
-    "sprite": "house",
+    "sprite": "house_2",
     "cost": {
      "plank": 80,
      "brick": 60,
@@ -39,13 +39,13 @@
       3
      ]
     },
-    "desc": "A kitchen (cook recipes), a bigger bed (+10 max energy), room for a second player.",
+    "desc": "A bigger house with a front porch: a bigger bed (+10 max energy), a pantry corner, room for a second player.",
     "price": 5330
    },
    {
     "tier": 3,
     "name": "Manor",
-    "sprite": "house",
+    "sprite": "house_3",
     "cost": {
      "beam": 40,
      "tile": 60,
@@ -313,8 +313,8 @@
  "greenhouse": {
   "label": "Greenhouse",
   "cell": [
-   20,
-   4
+   22,
+   19
   ],
   "w": 3,
   "h": 3,
@@ -750,8 +750,8 @@
  "beehive": {
   "label": "Beehive",
   "cell": [
-   21,
-   15
+   29,
+   19
   ],
   "w": 0,
   "h": 1,
@@ -882,8 +882,8 @@
  "scarecrow": {
   "label": "Scarecrow",
   "cell": [
-   24,
-   14
+   21,
+   15
   ],
   "w": 0,
   "h": 1,
