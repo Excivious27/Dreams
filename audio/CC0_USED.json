@@ -80,7 +80,8 @@
   "10-impactshield-blocks/impact_-_starninjas_x/impact.4.ogg"
  ],
  "boiling": [
-  "boiling-water-loops/cooking_with_cover_01.ogg"
+  "bigsoundbank/0149.ogg",
+  "bigsoundbank/0492.ogg"
  ],
  "book": [
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/bookOpen.ogg",
@@ -138,8 +139,8 @@
   "car-engine-start-01/generic_car_startengine.wav"
  ],
  "cards": [
-  "58-random-sound-effects/Sound%20Effects_x/Card_Swipe_01.wav",
-  "58-random-sound-effects/Sound%20Effects_x/Cards_Riffle_Shuffle_01.wav"
+  "58-random-sound-effects/Sound Effects_x/Card_Swipe_01.wav",
+  "58-random-sound-effects/Sound Effects_x/Cards_Riffle_Shuffle_01.wav"
  ],
  "cash": [
   "purchasing-sound-effect/snd_purchase_0.wav",
@@ -183,11 +184,11 @@
   "swamp-environment-audio/swamp_sounds_x/cicada_2.ogg"
  ],
  "city_hum": [
-  "high-traffic-road-sounds/gatve%20Varniu_2.ogg"
+  "high-traffic-road-sounds/gatve Varniu_2.ogg"
  ],
  "clap": [
-  "58-random-sound-effects/Sound%20Effects_x/Hand_Clap_01.wav",
-  "58-random-sound-effects/Sound%20Effects_x/Hand_Clap_02.wav"
+  "58-random-sound-effects/Sound Effects_x/Hand_Clap_01.wav",
+  "58-random-sound-effects/Sound Effects_x/Hand_Clap_02.wav"
  ],
  "cloth": [
   "202-more-sound-effects/MoreSounds_x/Cloth/Cloth_01.wav",
@@ -229,7 +230,14 @@
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_07.ogg"
  ],
  "crow": [
+  "crow-caw/crow_caw.wav",
+  "crow/crow_0.ogg"
+ ],
+ "crow_spot": [
   "crow-caw/crow_caw.wav"
+ ],
+ "crowd": [
+  "bigsoundbank/0825.ogg"
  ],
  "dice_roll": [
   "bigsoundbank/0581.ogg",
@@ -311,6 +319,11 @@
   "ice-spells/icespells_x/coldsnap.wav"
  ],
  "frog": [
+  "frog-croaks/croak_02.mp3",
+  "frog-croaks/croak_03.mp3",
+  "frog-croaks/croak_04.mp3"
+ ],
+ "frog_spot": [
   "frog-croaks/croak_01_0.mp3",
   "frog-croaks/croak_03.mp3"
  ],
@@ -418,10 +431,18 @@
   "150-combat-sound-effects/150gameeffectsounds_x/02_combat_ranged/Laser Pistol 2_s09.wav",
   "150-combat-sound-effects/150gameeffectsounds_x/02_combat_ranged/Laser Pistol 3_s09.wav"
  ],
+ "lava": [
+  "bigsoundbank/0491.ogg",
+  "bigsoundbank/0149.ogg"
+ ],
+ "leaves": [
+  "bigsoundbank/0904.ogg"
+ ],
  "locked": [
   "door-lock-sounds/DoorLockSounds_x/DoorLockSounds/LockedDoorHandleJiggle.ogg"
  ],
  "machines": [
+  "bigsoundbank/0502.ogg",
   "30-cc0-sfx-loops/sfx_loops_x/machine_03.ogg"
  ],
  "mail": [
@@ -433,7 +454,7 @@
   "opening-and-closing-a-map-sounds/snd_close_map.wav"
  ],
  "marsh": [
-  "swamp-environment-audio/swamp_sounds_x/atmosphere_1.ogg"
+  "bigsoundbank/0691.ogg"
  ],
  "meow": [
   "cat-purr-meow/cat_softmew.wav",
@@ -522,6 +543,7 @@
   "cat-purr-meow/cat_purractive_loop.wav"
  ],
  "purr_loop": [
+  "bigsoundbank/0436.ogg",
   "cat-purr-meow/cat_purrsleepy_loop.wav"
  ],
  "quack": [
@@ -533,10 +555,15 @@
  "rain_light": [
   "amb-rain-loop-1/amb_rain_loop_1.ogg"
  ],
+ "rain_roof": [
+  "bigsoundbank/1293.ogg",
+  "bigsoundbank/1294.ogg"
+ ],
  "rec_alley": [
   "30-cc0-sfx-loops/sfx_loops_x/rolling.ogg",
-  "68-workshop-sounds (clatters)",
-  "crowd bed (audio/amb/crowd.ogg)"
+  "68-workshop-sounds/workshop - clatter.wav",
+  "68-workshop-sounds/workshop - wood clatter.wav",
+  "crowd-shoutingspeaking-ambience/crowd_shouting_0.ogg"
  ],
  "reel": [
   "bigsoundbank/1437.ogg",
@@ -560,11 +587,17 @@
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_stones_02.ogg",
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_stones_03.ogg"
  ],
+ "room_chapel": [
+  "bigsoundbank/0506.ogg"
+ ],
+ "room_shop": [
+  "bigsoundbank/2561.ogg"
+ ],
  "rooster": [
   "bigsoundbank/0283.ogg",
   "bigsoundbank/0104.ogg"
  ],
- "rooster@spot": [
+ "rooster_spot": [
   "bigsoundbank/0283.ogg",
   "bigsoundbank/0104.ogg"
  ],
@@ -588,7 +621,6 @@
   "sheep-baa/sheep_baa.flac"
  ],
  "shot": [
-  "gunshots/22%20Pistol.wav",
   "gunshot-sound-effect/gunshot.mp3",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/shot_01.ogg"
  ],
@@ -674,16 +706,16 @@
  ],
  "step_dirt": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",
-  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_01.ogg",
-  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_02.ogg"
+  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep03.ogg",
+  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep05.ogg"
  ],
  "step_grass": [
-  "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/leaves01.ogg",
-  "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/leaves02.ogg",
-  "fantozzis-footsteps-grasssand-stone/Fantozzi-footsteps_x/Fantozzi-footsteps/flac/Fantozzi-SandR1.flac"
+  "different-steps-on-wood-stone-leaves-gravel-and-mud/[kdd]DifferentSteps_0_x/leaves01.ogg",
+  "different-steps-on-wood-stone-leaves-gravel-and-mud/[kdd]DifferentSteps_0_x/leaves02.ogg",
+  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep01.ogg"
  ],
  "step_gravel": [
-  "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/gravel.ogg",
+  "different-steps-on-wood-stone-leaves-gravel-and-mud/[kdd]DifferentSteps_0_x/gravel.ogg",
   "42-snow-and-gravel-footsteps/corsica_s-walking_in_snow_x/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_02.flac",
   "42-snow-and-gravel-footsteps/corsica_s-walking_in_snow_x/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_05.flac"
  ],
@@ -782,11 +814,14 @@
  "town_bell": [
   "bigsoundbank/0830.ogg"
  ],
- "town_bell@spot": [
-  "bigsoundbank/0830.ogg"
- ],
  "town_bell_far": [
   "bigsoundbank/0830.ogg"
+ ],
+ "town_bell_spot": [
+  "bigsoundbank/0830.ogg"
+ ],
+ "town_day": [
+  "bigsoundbank/3542.ogg"
  ],
  "train_depart": [
   "bell-dingschimes/station_depart.wav"
@@ -830,10 +865,7 @@
   "beach-ocean-waves/wave_03_cc0-18363__jasinski__alkaibeach.flac"
  ],
  "waves": [
-  "beach-ocean-waves/wave_01_cc0-18363__jasinski__alkaibeach.flac",
-  "beach-ocean-waves/wave_02_cc0-18363__jasinski__alkaibeach.flac",
-  "beach-ocean-waves/wave_03_cc0-18363__jasinski__alkaibeach.flac",
-  "beach-ocean-waves/wave_04_cc0-18363__jasinski__alkaibeach.flac"
+  "bigsoundbank/0266.ogg"
  ],
  "whimper": [
   "dog-sounds-pauliuw/sad_dog.wav",

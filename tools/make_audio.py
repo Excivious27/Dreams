@@ -155,6 +155,8 @@ SFX_GAIN = {"levelup": 1.7, "pickup": 1.7, "chest_open": 1.6, "crit": 1.3}
 
 def sfx(name, sig):
     os.makedirs(os.path.join(ROOT, "sfx"), exist_ok=True)
+    if os.path.exists(os.path.join(ROOT, "sfx", f"{name}.ogg")):
+        return  # C6: a real recording exists; Music never plays the .wav, so don't ship one
     write_wav(os.path.join(ROOT, "sfx", f"{name}.wav"), np.tanh(sig * 1.5) * SFX_GAIN.get(name, 1.0))
 
 def sweep(f0, f1, dur, wave_fn="square", vol=0.3):

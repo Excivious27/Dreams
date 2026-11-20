@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P3: sound effect and ambience files
+
+- Every effect re-imported from its CC0 source and run once through a rebuilt `tools/sfx_soften.py`: K-weighted loudness (BS.1770), dead-air trim, footsteps capped at 0.28 s, a stronger second pass for still-bright sounds and never a boost on them, a phone-presence lift for bass-only sounds, takes of one name matched within +-1.5 dB, jingles loudness-matched to -17 LUFS, ambience spots levelled too. `--force` on a done file only re-levels (filters never stack).
+- `tools/cc0_import.py`: `--fetch` downloads every pack (OpenGameArt pages + BigSoundBank CC0 recordings), `slice` cuts separate takes out of long recordings, beds are built as true seamless loops (numpy equal-power crossfade; the old ffmpeg graph wrote only the body) of 24-48 s, high-passed at 120 Hz with a presence lift and levelled to -26 LUFS (audio/amb/BED_LOG.json; `--level-beds` levels the generated ones), `--credits` rebuilds docs/AUDIO-CREDITS.md.
+- New real sounds (list in the C6 report): farm animals (moo, cluck, peep, quack, bleat, rooster, whinny, hoof), war_horn/war_horn_gang, car_horn, war_drum, beat_tick, dice_roll, shot_smg, knockout, town_bell(+_far), whistle, chest_close, saw, scythe, harvest_pluck, swim, fairy_ring, real sparkle/heartbeat/swing/reel/boss_down/timber_2/hurt; spots rooster/hens/cow/town_bell; beds town_day, crowd, rain_roof, leaves, lava are real recordings, plus room_shop and room_chapel.
+- 60 dead .wav placeholders removed (a real .ogg always won); make_audio/make_ambience no longer write a .wav where an .ogg exists. sfx_audit now fails on unsoftened files, take spreads > 4 dB, beds < 8 s or off the loudness target, and loop-seam clicks; it warns about unused sounds.
+
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.

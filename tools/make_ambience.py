@@ -290,11 +290,11 @@ def main():
         write_ogg(os.path.join(AMB, fn), bed(b))
     for s, fnc in SPOTS.items():
         fn = f"spot_{s}.wav"
-        if fn not in ra:
+        if fn not in ra and not os.path.exists(os.path.join(AMB, f"spot_{s}.ogg")):  # a real .ogg wins: no dead placeholder
             write_wav(os.path.join(AMB, fn), norm(fnc(), 0.6))
     for s, fnc in NEW_SFX.items():
         fn = f"{s}.wav"
-        if fn not in rs:
+        if fn not in rs and not os.path.exists(os.path.join(SFX, f"{s}.ogg")):
             write_wav(os.path.join(SFX, fn), norm(fnc(), 0.55 * SFX_GAIN.get(s, 1.0)))
     print(len(BEDS), "beds,", len(SPOTS), "spots,", len(NEW_SFX), "sfx")
 

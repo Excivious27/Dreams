@@ -14,11 +14,12 @@ make_rec_audio.py write the raw take; this pass finishes it):
     a second, stronger pass (6.5 kHz low-pass, -8 dB shelf at 3.5 kHz);
   * phone translation: a sound whose energy sits under 350 Hz (or that loses
     > 8 dB through a 300 Hz high-pass, i.e. on a phone speaker) gets a 90 Hz
-    high-pass and a +5 dB presence lift at 1.8 kHz;
+    high-pass and a +5 dB presence lift at 1.8 kHz; one that loses > 8 dB also
+    gets parallel tanh harmonics above 350 Hz mixed in 6 dB under it (excite);
   * levels by K-weighted loudness (BS.1770 pre-filter, loudest 100 ms), which
     reads 2-8 kHz the way the ear does, moving each file 75 % toward its
     group target (a boom stays bigger than a click), never boosting a bright
-    sound, never more than +6 dB, peaks at or under -1.5 dBFS;
+    sound by more than +3 dB, never more than +6 dB, peaks at or under -1.5 dBFS;
   * matches takes: name, name_2, name_3 end within +-1.5 dB of their median, so
     the random take Music.sfx picks never jumps in level;
   * jingles (j_*, levelup, quest_done, craft_done) are only loudness-matched:
@@ -34,6 +35,23 @@ filters never stack; to redo the filters, re-import the source first.
 """
 import argparse, glob, hashlib, json, os, subprocess, sys
 import numpy as np
+from scipy.signal import butter, sosfilt
+
+
+def _kweight_sos(fs):
+    """BS.1770 K-weighting (pre-filter shelf + RLB high-pass), bilinear at fs."""
+    import math
+    f0, G, Q = 1681.974450955533, 3.999843853973347, 0.7071752369554196
+    K = math.tan(math.pi * f0 / fs)
+    Vh = 10 ** (G / 20)
+    Vb = Vh ** 0.4996667741545416
+    a0 = 1 + K / Q + K * K
+    shelf = [(Vh + Vb * K / Q + K * K) / a0, 2 * (K * K - Vh) / a0, (Vh - Vb * K / Q + K * K) / a0, 1.0, 2 * (K * K - 1) / a0, (1 - K / Q + K * K) / a0]
+    f0, Q = 38.13547087602444, 0.5003270373238773
+    K = math.tan(math.pi * f0 / fs)
+    a0 = 1 + K / Q + K * K
+    hp = [1.0, -2.0, 1.0, 1.0, 2 * (K * K - 1) / a0, (1 - K / Q + K * K) / a0]
+    return np.array([shelf, hp])
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 SFX = os.path.join(ROOT, "audio", "sfx")
@@ -47,13 +65,15 @@ TARGETS = [("step_", -21.0), ("ui_", -20.0), ("menu_", -20.0), ("talk_blip", -20
            ("scroll_tick", -21.0), ("tab", -20.0), ("nope", -19.0),
            ("page", -19.0), ("equip", -19.0), ("coin", -18.0), ("pickup", -18.0), ("cash_pickup", -19.0),
            ("cash_register", -18.0), ("cash", -19.0), ("reel", -21.0), ("tools", -19.0), ("rock_break", -18.0),
-           ("servo", -21.0), ("bowl_roll", -20.0), ("heartbeat", -17.0), ("hoof", -20.0), ("beat_tick", -18.0),
+           ("servo", -21.0), ("bowl_roll", -20.0), ("sparkle", -20.0), ("fairy_ring", -18.0), ("heartbeat", -17.0), ("hoof", -20.0), ("beat_tick", -18.0),
            ("spot_", -22.0)]
 DEFAULT_TARGET = -16.0
 STEP_CAP = 0.28
+BRIGHT_OK = ("sparkle", "fairy_ring", "reel", "spot_cicada", "spot_insect", "spot_bird")  # meant to shimmer: level them normally
 TAKE_BAND = 1.5
 SR = 44100
-KW = "highpass=f=38:p=2,highshelf=f=1681:g=4:t=q:w=0.707"  # BS.1770 K-weighting (close enough at 44.1 kHz)
+_KW_SOS = _kweight_sos(SR)
+_PH_SOS = butter(4, 300, "highpass", fs=SR, output="sos")  # what a phone speaker reproduces
 
 
 def md5(p):
@@ -100,8 +120,8 @@ def measure(x):
     X = np.abs(np.fft.rfft(m * np.hanning(len(m)))) ** 2
     f = np.fft.rfftfreq(len(m), 1 / SR)
     tot = X.sum() + 1e-12
-    lk = loud100(filt(m, KW, 1))
-    ph = loud100(filt(m, "highpass=f=300:p=2,highpass=f=300:p=2", 1))
+    lk = loud100(sosfilt(_KW_SOS, m))
+    ph = loud100(sosfilt(_PH_SOS, m))
     return {"lk": round(lk, 1), "rms": round(loud100(m), 1), "peak": round(20 * np.log10(float(np.max(np.abs(m))) + 1e-9), 1),
             "hf": round(float(X[f > 4000].sum() / tot), 3), "low": round(float(X[f < 350].sum() / tot), 3),
             "phone_loss": round(loud100(m) - ph, 1), "dur": round(len(m) / SR, 3)}
@@ -176,6 +196,19 @@ def chain(hf, name):
     return lp, shelf, f"highpass=f=50,treble=g={shelf}:f=5000:t=s:w=0.7,lowpass=f={lp}:p=2"
 
 
+_EX_SOS = butter(4, 350, "highpass", fs=SR, output="sos")
+
+
+def excite(y, rel_db=-6.0):
+    """Parallel saturation: tanh harmonics above 350 Hz mixed in rel_db under the sound, so a
+    sub-bass thump (heartbeat, stomp, roar) still reads on a phone speaker."""
+    m = mono(y)
+    pk = float(np.max(np.abs(m))) + 1e-9
+    h = sosfilt(_EX_SOS, np.tanh(6 * y / pk) * pk, axis=0)
+    rel = loud100(mono(h)) - loud100(m)
+    return (y + h * 10 ** ((rel_db - rel) / 20)).astype(np.float32)
+
+
 def soft_limit(x, ceil_db=-1.5):
     c = 10 ** (ceil_db / 20)
     m = float(np.max(np.abs(x))) + 1e-9
@@ -192,22 +225,25 @@ def full_pass(x, name, before):
     """Trim, filter, phone presence, level. Returns (signal, record)."""
     ch = x.shape[1] if x.ndim > 1 else 1
     x = trim(x, name)
-    lp, shelf, af = chain(before["hf"], name)
+    lp, shelf, af = chain(min(before["hf"], 0.3) if name.startswith(BRIGHT_OK) else before["hf"], name)
     extra = []
     phone = before["low"] > 0.75 or before["phone_loss"] > 8.0
     if phone and not name.startswith("step_"):
         af += ",highpass=f=90,equalizer=f=1800:t=o:w=1.5:g=5"
         extra.append("presence")
     y = filt(x, af, ch)
+    if before["phone_loss"] > 8.0 and not name.startswith("step_"):
+        y = excite(y)  # a phone speaker drops the body: give it harmonics it can play
+        extra.append("exciter")
     mid = measure(y)
-    if mid["hf"] > 0.5:
+    if mid["hf"] > 0.5 and not name.startswith(BRIGHT_OK):
         y = filt(y, "lowpass=f=6500:p=2,treble=g=-8:f=3500:t=s:w=0.7", ch)
         mid = measure(y)
         extra.append("bright2")
     t = target(name) - (3.0 if mid["hf"] > 0.4 else 0.0)  # bright sounds read louder than any meter says
     gain = max(-16.0, min(6.0, (t - mid["lk"]) * 0.75))
-    if mid["hf"] > 0.5:
-        gain = min(gain, 0.0)  # never boost a bright sound
+    if mid["hf"] > 0.5 and not name.startswith(BRIGHT_OK):
+        gain = min(gain, 3.0)  # bright: at most a small lift (already aimed 3 dB low), never the full +6
     y = y * 10 ** (gain / 20)
     y = soft_limit(y)
     y = fades(y, name)

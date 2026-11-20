@@ -431,3 +431,10 @@ town_bell
 harvest_pluck
 harvest_pluck_2
 harvest_pluck_3
+crow
+crow_2
+frog
+frog_2
+frog_3
+knockout_2
+knockout_3
