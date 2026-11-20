@@ -54,7 +54,7 @@ func _deal() -> void:
 		hand.append(_next_card())
 	held_cards = [false, false, false, false, false]
 	cursor = 0
-	sfx("card_deal", "page")
+	sfx("card_deal", "cards")
 	state = "play"
 
 

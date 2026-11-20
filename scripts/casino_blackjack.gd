@@ -58,7 +58,7 @@ func _deal() -> void:
 	dealer.append(_draw_card_val())
 	doubled = false
 	_dealer_shown = 1
-	sfx("card_deal", "page")
+	sfx("card_deal", "cards")
 	# Peek: either natural ends the hand at once.
 	if CasinoRules.bj_natural(player) or CasinoRules.bj_natural(dealer):
 		_to_reveal()
@@ -68,7 +68,7 @@ func _deal() -> void:
 
 func hit() -> void:
 	player.append(_draw_card_val())
-	sfx("card_deal", "page")
+	sfx("card_deal", "cards")
 	if int(CasinoRules.bj_total(player)[0]) >= 21:
 		_to_reveal()
 
@@ -85,7 +85,7 @@ func double_down() -> void:
 		say("The table can't take a second bet.")
 		return
 	doubled = true
-	sfx("chip_clack", "ui_tap")
+	sfx("chip_clack", "pin_tap")
 	player.append(_draw_card_val())
 	_to_reveal()
 

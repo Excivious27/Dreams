@@ -279,6 +279,9 @@ static func enter(m: GameMap) -> void:
 	var lines: Array = [{"who": "Host", "text": line("host_greet")}]
 	if int(st["visits"]) == 1:
 		lines.append({"who": "Host", "text": line("first_visit") % Money.amount(keep())})
+	if GameState.count("gambler_chip") > 0 and not bool(st.get("chip_told", false)):
+		st["chip_told"] = true  # Gilt Chips are collector loot: never stakes, never cashed here
+		lines.append({"who": "Cashier", "text": line("gilt_chip")})
 	if GameState.equipped("charm") == "golden_dice" or GameState.equipped("ring") == "golden_dice":
 		lines.append({"who": "Croupier", "text": line("luck_charm")})
 	await m.say(lines)

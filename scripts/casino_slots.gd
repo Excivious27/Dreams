@@ -5,6 +5,7 @@ extends CasinoGame
 
 var stops := [0, 0, 0]
 var _spin_from := [0.0, 0.0, 0.0]
+var _stopped := 3
 
 const REEL_X := [52.0, 113.0, 174.0]
 const REEL_W := 44.0
@@ -32,8 +33,15 @@ func _deal() -> void:
 		_spin_from[i] = float(stops[i])
 		stops[i] = r.randi_range(0, (CasinoRules.strips()[i] as Array).size() - 1)
 	reveal_len = 1.4
+	_stopped = 0
 	state = "reveal"
 	sfx("slot_spin", "scroll_tick")
+
+
+func _reveal_step() -> void:
+	while _stopped < 3 and reveal_t >= 0.6 + 0.3 * _stopped:
+		_stopped += 1
+		sfx("slot_stop", "dry_click")
 
 
 func symbol(i: int, k: int) -> String:
@@ -50,7 +58,9 @@ func gross_for(syms: Array) -> int:
 
 
 func _reveal_done() -> void:
-	sfx("slot_stop", "ui_tap")
+	if _stopped < 3:
+		sfx("slot_stop", "dry_click")
+	_stopped = 3
 	finish(gross_for(line_symbols()))
 
 
@@ -71,8 +81,6 @@ func _reel_pos(i: int) -> float:
 	var e := 1.0 - pow(1.0 - u, 3.0)
 	var from := float(stops[i]) - n * turns
 	var p := lerpf(from, float(stops[i]), e)
-	if p > float(stops[i]) - 0.02 and reveal_t + DT >= stop_at:
-		sfx("slot_stop", "ui_tap")
 	return p
 
 

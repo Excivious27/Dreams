@@ -137,6 +137,11 @@ func _play_step(_dt: float) -> void:
 	pass
 
 
+## Each reveal frame (per-reel stop clicks and the like).
+func _reveal_step() -> void:
+	pass
+
+
 func out_rng() -> RandomNumberGenerator:
 	return Casino.rng_for(table, "%s|%d" % [bet_id(), stake])
 
@@ -166,6 +171,7 @@ func frame() -> void:
 			_play_step(DT)
 		"reveal":
 			reveal_t += DT * (2.0 if Settings.reduced_motion() else 1.0)
+			_reveal_step()
 			if pressed("b"):
 				leave_after = true
 				reveal_t = reveal_len
@@ -199,13 +205,13 @@ func _step_bet() -> void:
 		var mx := Casino.max_stake()
 		if stake + st <= mx:
 			stake += st
-			sfx("chip_clack", "ui_tap")
+			sfx("chip_clack", "pin_tap")
 		else:
 			say("Table limit for you: %s." % Money.amount(maxi(Casino.min_bet(), mx)))
 	elif repeat_pressed("left"):
 		if stake - st >= Casino.min_bet():
 			stake -= st
-			sfx("chip_clack", "ui_tap")
+			sfx("chip_clack", "pin_tap")
 	var b := bets()
 	if b.size() > 1:
 		if repeat_pressed("down"):
@@ -231,7 +237,7 @@ func place() -> bool:
 	if not Casino.take(stake, table, practice or free_play):
 		say("The table can't take that bet.")
 		return false
-	sfx("chip_clack", "ui_tap")
+	sfx("chip_clack", "pin_tap")
 	leave_after = false
 	reveal_t = 0.0
 	play_t = 0.0

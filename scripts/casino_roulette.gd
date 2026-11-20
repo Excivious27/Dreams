@@ -57,7 +57,7 @@ func _deal() -> void:
 	_to_a = _from_a + TAU * 3.0 + fposmod(-TAU * idx / 37.0 - _from_a, TAU)
 	reveal_len = 2.5
 	state = "reveal"
-	sfx("roulette_spin", "scroll_tick")
+	sfx("roulette_spin", "beat_tick")
 
 
 func gross_for(p: int) -> int:
@@ -69,7 +69,7 @@ func _reveal_done() -> void:
 	history.push_front(pocket)
 	if history.size() > 10:
 		history.pop_back()
-	sfx("roulette_ball", "ui_tap")
+	sfx("roulette_ball", "pin_tap")
 	finish(gross_for(pocket))
 
 
