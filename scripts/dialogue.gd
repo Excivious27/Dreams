@@ -592,15 +592,16 @@ func _process_input() -> void:
 		elif Input.is_action_just_pressed("up"):
 			_choice_focus = (_choice_focus - 1 + n) % n
 			_refresh_focus()
+		elif Input.is_action_just_pressed("b"):
+			# B backs out when the last option is a way out (even while settling:
+			# B never skips text, so it can't be a stray skip tap; C4 P6).
+			var last := _choices.get_child(n - 1) as Button
+			if is_way_out(last.text, _choice_key == ""):
+				last.pressed.emit()
 		elif settling:
 			return
 		elif InputSetup.confirm_pressed():
 			(_choices.get_child(_choice_focus) as Button).pressed.emit()
-		elif Input.is_action_just_pressed("b"):
-			# B backs out when the last option is a way out.
-			var last := _choices.get_child(n - 1) as Button
-			if is_way_out(last.text, _choice_key == ""):
-				last.pressed.emit()
 		return
 	if skippable and not skipping and Input.is_action_just_pressed("menu"):
 		skip()

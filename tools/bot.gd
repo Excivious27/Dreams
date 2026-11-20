@@ -90,11 +90,31 @@ func _apply_progress() -> void:
 			GameState.add_xp(sk, 3000)
 
 
+## Every mega-region area (data/mega_regions.json) open to `a` whose scene exists.
+static func mega_areas(a: String) -> Array:
+	var out: Array = []
+	var d: Dictionary = GameState.load_json("res://data/mega_regions.json")
+	for rid: String in d.get("order", []):
+		var r: Dictionary = d.get("list", {}).get(rid, {})
+		if str(r.get("arc", "both")) not in ["both", a]:
+			continue
+		var areas: Variant = r.get("areas", {})
+		for k: Variant in areas:
+			var id := str(k) if areas is Dictionary else str((k as Dictionary).get("id", ""))
+			if id != "" and id not in out and ResourceLoader.exists("res://scenes/%s.tscn" % id):
+				out.append(id)
+	return out
+
+
 func _pick_scene() -> String:
 	# A quarter of the time, go and poke the newer systems: battlefields,
 	# colonies, the big mine caverns, the gangster districts with their bosses.
 	if rng.randf() < 0.25:
 		var newer: Array = ["bf_frostfield", "bf_shattered_vale", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "mine"] if arc == "penguins" else ["bf_rail_yards", "bf_dockside", "docks", "neon", "crystal_meadow", "countryside", "mine"]
+		# Half of those trips: one of the mega-region areas open to this arc (C4 P6).
+		var mega := mega_areas(arc)
+		if not mega.is_empty() and rng.randf() < 0.5:
+			return mega[rng.randi_range(0, mega.size() - 1)]
 		return newer[rng.randi_range(0, newer.size() - 1)]
 	match style:
 		"farmer":
@@ -201,6 +221,12 @@ func _dialogue_tick() -> void:
 			# Loops like the farm Plans board otherwise keep a bot browsing forever.
 			if rounds > 2 or rng.randf() < 0.3:
 				var before_text := d._text.text if d._text else ""
+				await press("b", 2)
+				await frames(4)
+				if not d.active or not d._in_choice or (d._text and d._text.text != before_text):
+					continue
+				# A menu that just opened may still be settling: wait it out, try B again.
+				await frames(12)
 				await press("b", 2)
 				await frames(4)
 				if not d.active or not d._in_choice or (d._text and d._text.text != before_text):
