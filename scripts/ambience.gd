@@ -35,6 +35,22 @@ const MEGA_CAVES := ["frost_caverns", "gilt_vaults", "iron_tunnels", "desert_sun
 ## Mega regions with no birds, crickets or frogs anywhere (dry desert); regions.json "quiet": true adds more.
 const QUIET_REGIONS := ["sunscorch"]
 const WILD_BEDS := ["birds_dawn", "birds_day", "crickets", "frogs"]
+## Where each bed sits (dB on a -26 LUFS file): weather loudest, wildlife and town below it,
+## room tones and textures under that; indoor rain under outdoor rain.
+const BED_LEVEL := {"birds_dawn": -11.0, "birds_day": -14.0, "crickets": -13.0, "frogs": -15.0,
+	"wind_soft": -12.0, "wind_strong": -8.0, "rain_light": -10.0, "rain_heavy": -7.0, "waves": -9.0,
+	"water_lap": -14.0, "lava": -12.0, "leaves": -16.0, "crowd": -12.0, "town_day": -15.0, "city_hum": -15.0,
+	"campfire": -15.0, "rain_roof": -15.0, "hearth": -15.0, "cave": -12.0, "crystal_hum": -16.0,
+	"basement_drips": -15.0, "space": -14.0, "river": -13.0, "jungle_insects": -12.0, "marsh": -14.0,
+	"neon_street": -14.0, "boiling": -16.0, "machines": -17.0, "room_shop": -17.0, "room_chapel": -19.0}
+## The base each rule above was written against (the old per-file-compensated numbers): modifiers
+## (season, nearness, tapers, region tweaks) stay relative to these.
+const OLD_BASE := {"birds_dawn": -10.0, "birds_day": -16.0, "crickets": -14.0, "frogs": -16.0,
+	"wind_soft": -14.0, "wind_strong": -6.0, "rain_light": -8.0, "rain_heavy": -5.0, "waves": -8.0,
+	"water_lap": -14.0, "lava": -14.0, "leaves": -18.0, "crowd": -14.0, "town_day": -20.0, "city_hum": -18.0,
+	"campfire": -22.0, "rain_roof": -16.0, "hearth": -18.0, "cave": -14.0, "crystal_hum": -20.0,
+	"basement_drips": -20.0, "space": -16.0, "river": -16.0, "jungle_insects": -14.0, "marsh": -16.0,
+	"neon_street": -16.0, "boiling": -22.0, "machines": -24.0, "room_shop": -22.0, "room_chapel": -22.0}
 ## Rooms with a fireplace (the hearth bed plays only here, plus the farmhouse) (c6_07).
 const HEARTH_ROOMS := ["cottage_a", "cottage_b", "cottage_c", "hazel_house", "inn", "lodge", "mansion", "moss_hut",
 	"tam_hut", "river_hut", "fishing_hut", "sel_camp", "lighthouse"]
@@ -345,7 +361,12 @@ func _evaluate() -> Dictionary:
 			if night and bed_key == "amb" and k in ["crowd", "town_day"]:
 				db -= 10.0  # no night list: the streets thin out after dark
 			out[k] = db
-	# Keep the loudest few.
+	# Equal-loudness beds (C6 P3: every bed file is a -26 LUFS loop): the dB above are relative
+	# choices; rebase each onto its LEVEL so no per-file compensation is left (c6_07).
+	for k: String in out.keys():
+		if BED_LEVEL.has(k) and OLD_BASE.has(k):
+			out[k] = float(out[k]) - float(OLD_BASE[k]) + float(BED_LEVEL[k])
+	# Keep the loudest few (now a real loudness ranking).
 	if out.size() > MAX_BEDS:
 		var ks := out.keys()
 		ks.sort_custom(func(a: String, b: String) -> bool: return float(out[a]) > float(out[b]))
