@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 05:05 PT, personal account.
-- **Done:** CONDUCT 1-8 merged on local main (C8: 6 packages + regenerated colony/gift/battle/station data; compile_all 0 bad, econ_check 0 failures).
-- **In progress:** CI `c8b` (tools/conduct/ci_run.sh c8b 3, log /tmp/ci_c8b.log). On PASS: push main, C8 package (CONDUCT-8.md, GUIDE-32.md, build_*_c8.py, artifact page), then C9.
-- **Next step:** C9 release readiness (haptics, save export/import, quest tracker polish, forest node perf +34%, flaky hearts_test rc134, hits_for -> Mining.pick_swing): C9_SCOPES.txt + code map, 14 medium + 6 low auditors, packages, 6 fix agents.
-- **Jobs running elsewhere:** CI c8b on GitHub Actions only.
+- **Last update:** 2026-11-20 06:10 PT, personal account.
+- **Done:** CONDUCT 1-8 (C8 CI c8c PASS: 6 shards + 20 bots + playtest). C9 audit done (20 auditors, 189 findings in /home/claude/wt/c9_reports).
+- **In progress:** C9 fix agents P1-P6 (plan docs/reports/C9-PACKAGES.md; worktrees /home/claude/wt/c9f_p1..p6, branches c9f/pN, reports /home/claude/wt/c9f_reports). C8 package being built by a low subagent.
+- **Next step:** merge c9f/p1..p6 (mrg.sh), wire InputSetup.prompt into P2/P3/P5 hint text and P4's listed haptic hooks, check.sh lines from reports, ci_run.sh c9; C9 package; then C10a.
+- **Jobs running elsewhere:** 6 C9 fix agents in the personal sandbox (relaunch from C9-PACKAGES.md if lost).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
@@ -83,6 +83,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 06:10 CONDUCT 8 pushed (economy/progression pass, Collections museum + Book tab, MoveSpeed ladder, fishing/mining curves, shop floors); CI c8c PASS.
 One line per finished piece of work: date, account, what was done.
 
 - 2026-11-19, personal: CONDUCT 2 merged and pushed (rec/arcade/commons + 8 fix packages: mines, movement, combat music, world, wording/skills/Meow Pow Wow, arcade/bowling, art crispness, desktop full screen).
