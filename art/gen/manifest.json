@@ -131591,6 +131591,26 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
+  },
+  "cut_gang_doors": {
+   "file": "ui/cut_gang_doors.png",
+   "w": 372,
+   "h": 248
+  },
+  "cut_gang_stone": {
+   "file": "ui/cut_gang_stone.png",
+   "w": 372,
+   "h": 248
+  },
+  "cut_clean_break": {
+   "file": "ui/cut_clean_break.png",
+   "w": 372,
+   "h": 248
+  },
+  "cut_big_jim_tail": {
+   "file": "ui/cut_big_jim_tail.png",
+   "w": 372,
+   "h": 248
   }
  },
  "ui_creator": {

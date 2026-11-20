@@ -14,13 +14,14 @@
     "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training."}},
    {"id": "bt_invite_g", "trigger": {"quest_done": "gang"}, "when": {"flag": "hideout_seen", "not_flags": ["bt_invited", "bt_trained"]},
     "lines": [
+     {"who": "", "text": "The burner phone from the coat buzzes. Not the number that was in it: a new one. It's Sal. Of course Sal has the number."},
      {"who": "Sal", "text": "Lying low's fine. But the President's people hold every road out of here, and you don't take a road with one pair of fists."},
-     {"who": "Sal", "pic": "cut_drill_sal", "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then we talk about a real job."},
-     {"who": "", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
+     {"who": "Sal", "pic": "cut_drill_sal", "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then I'll show you the real job: the highway out of here."},
+     {"who": "", "pic": "none", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
     "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you on running a crew in a fight: MENU > Map > Campaign map > Training. Campaigns open new turf."}},
    {"id": "bt_invite_g_late", "trigger": {"scene": "hideout"}, "when": {"flag": "hideout_seen", "quest": "gang", "not_flags": ["bt_invited", "bt_trained"]},
     "lines": [
-     {"who": "Sal", "text": "Boss. Before you try for the docks or the highway: a drill with me. MENU > Map > Campaign map > Training."}],
+     {"who": "Sal", "text": "Boss. Before you try for the docks or the highway: a drill with me. MENU > Map > Campaign map > Training. The highway's the real job; I'll show you after."}],
     "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you: MENU > Map > Campaign map > Training."}},
    {"id": "bt_ready", "trigger": {"sleep": true}, "when": {"flag": "bt_trained", "not_flag": "bt_ready_note"},
     "lines": [
