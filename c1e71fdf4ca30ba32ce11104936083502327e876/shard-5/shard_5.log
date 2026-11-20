@@ -1,0 +1,128 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | bubble.png[39m[0m
+[  99% ] [90m[1mreimport[22m | loiter.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sit.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2410 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 75.2s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 24.8s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+  weeks 3-4 average bar left at bedtime: 42%
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 2.8s
+
+#### step 18: mine arrival: no black cover (c5_16) (shard 5/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 18 mine arrival: no black cover (c5_16): PASS in 2.5s
+
+#### step 24: held-tool rules: right tool acts, wrong tool hints (shard 5/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+  FAIL region mrock with the pickaxe: mined
+tool_rules_test: 1 failures
+Tool rules test failed
+#### step 24 held-tool rules: right tool acts, wrong tool hints: FAIL rc=1 in 22.5s
+
+#### step 30: bowling_test (shard 5/6)
+bowling_test: OK
+#### step 30 bowling_test: PASS in 12.8s
+
+#### step 36: crop_test (shard 5/6)
+crop_test: 0 failures
+#### step 36 crop_test: PASS in 4.1s
+
+#### step 42: cf_volunteer_test (shard 5/6)
+cf_volunteer_test: 0 failures
+#### step 42 cf_volunteer_test: PASS in 6.3s
+
+#### step 48: art prompts: at most 3 images each (shard 5/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 48 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 54: economy: no money loops, crops and brews inside their bands (shard 5/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 353 recipes, 2 warnings, 0 failures
+#### step 54 economy: no money loops, crops and brews inside their bands: PASS in 0.0s
+
+#### step 60: footstep_test (shard 5/6)
+footstep_test: 0 failures
+#### step 60 footstep_test: PASS in 5.0s
+
+#### step 66: keeper encounters keep real hp (floor-1 swarms topped up) (shard 5/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 66 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 3.0s
+
+#### step 72: region campaigns: boards, locks, convoy (shard 5/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 72 region campaigns: boards, locks, convoy: PASS in 6.6s
+
+#### step 78: farm_debris_test (shard 5/6)
+farm_debris_test: 0 fails
+#### step 78 farm_debris_test: PASS in 3.6s
+
+#### step 84: skill_glow_test (shard 5/6)
+skill_glow_test: 0 fails
+#### step 84 skill_glow_test: PASS in 3.3s
+
+#### step 90: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 5/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 90 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 9.0s
+
+#### step 96: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 5/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 96 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 8.8s
+
+#### step 102: jumper_test (shard 5/6)
+jumper_test: 0 failures
+#### step 102 jumper_test: PASS in 2.1s
+
+#### step 108: toasts: never over a boss card, a region card, the pup strip or the en (shard 5/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 108 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 7.0s
+
+#### step 114: C8 P3: collections (museum, logs, Book tab) (shard 5/6)
+== C8 P3: collections (museum, logs, Book tab) ==
+collections_test: 0 failures
+#### step 114 C8 P3: collections (museum, logs, Book tab): PASS in 2.6s
+
+#### shard 5/6 done in 202s: FAIL (held-tool rules: right tool acts, wrong tool hints)
