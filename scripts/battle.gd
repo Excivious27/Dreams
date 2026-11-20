@@ -902,6 +902,8 @@ func interact(id: String) -> void:
 				for h in map.get_tree().get_nodes_in_group("allies"):
 					if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
 						(h as HelperUnit).hp = (h as HelperUnit).max_hp
+					elif h is TeamBeast and (h as Node2D).position.distance_to(map.player.position) < 120.0:
+						(h as TeamBeast).heal(9999)  # C11a P4
 				if map.pet != null and is_instance_valid(map.pet) and map.pet.position.distance_to(map.player.position) < 120.0 and not Pet.state().has("down_until"):
 					Pet.state()["hp"] = Pet.max_hp()
 				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)

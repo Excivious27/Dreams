@@ -36,7 +36,7 @@ static func spawn_all(m: GameMap) -> Array:
 	var out: Array = []
 	if GameState.run.is_empty() or GameState.visiting() or m.player == null:
 		return out
-	if m.scene_id() in ["house", "interior", "moon"] or m.scene_id().begins_with("in_"):
+	if m.scene_id() in ["house", "interior", "moon"] or m.scene_id().begins_with("in_") or m.scene_id().begins_with("bf_"):  # battles muster it as a HelperUnit
 		return out
 	var i := 0
 	for u: String in out_today():

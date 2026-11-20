@@ -100,6 +100,7 @@ func _arc(arc: String) -> void:
 	check(TeamAnimals.rename(goat, "  Captain Hooves the Great  ") and TeamAnimals.name_of(goat).length() <= 14, "rename trims")
 	check(not TeamAnimals.rename(goat, "   "), "blank name refused")
 	check(TeamAnimals.suggest_name(cow) != "", "name suggestion")
+	check(ItemWords.with_article("Old Coin") == "an Old Coin", "pup dig toast article (ItemWords)")
 
 	# ---- Chores ----
 	GameState.run["day"] = 3

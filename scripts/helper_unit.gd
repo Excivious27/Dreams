@@ -299,6 +299,9 @@ func _process(delta: float) -> void:
 				if o is HelperUnit and o != self and o.position.distance_to(position) < 70.0 and o.hp < o.max_hp:
 					o.hp = mini(o.max_hp, o.hp + 4)
 					healed = true
+				elif o is TeamBeast and o.position.distance_to(position) < 70.0 and (o as TeamBeast).hp < (o as TeamBeast).max_hp:
+					(o as TeamBeast).heal(4)  # C11a P4: team animals out with you
+					healed = true
 			# The pup too (it fights beside you and has its own health).
 			var pet: Variant = map.get("pet")
 			if pet != null and is_instance_valid(pet) and (pet as Node2D).visible and (pet as Node2D).position.distance_to(position) < 70.0:
