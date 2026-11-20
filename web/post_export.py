@@ -19,6 +19,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def patch_sw(sw: str) -> str:
+    if "Dreams (C9 P4): streamed music cache." in sw:
+        return sw  # already patched (a restored build folder): patching twice would fail
     def rep(a, b):
         nonlocal sw
         assert a in sw, "service worker changed, can't find: " + a[:70]
