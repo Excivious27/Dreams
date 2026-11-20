@@ -214,7 +214,10 @@ static func where_line() -> String:
 	var sc := str(GameState.run.get("scene", ""))
 	var reg := MegaRegion.region_of(sc)
 	if reg == "":
-		return "You are in: %s · %s Valley" % [sc.replace("_", " ").capitalize(), str(GameState.run.get("names", {}).get("town", "Home"))]
+		var nm := PlaceNames.for_id(sc)  # C5: the HUD's name ("Your Farm"), not the raw scene id
+		if nm == "":
+			nm = sc.replace("_", " ").capitalize()
+		return "You are in: %s · %s Valley" % [nm, str(GameState.run.get("names", {}).get("town", "Home"))]
 	return "You are in: %s · %s" % [MegaRegion.area_name(sc), str(MegaRegion.get_r(reg)["name"])]
 
 
