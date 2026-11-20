@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 20:25 PT, personal account.
-- **Done:** Round 13, CONDUCT 1, CONDUCT 2, CONDUCT 3 merged (6 fix packages c3f/p1..p6; full check.sh rc 0 at 18:49 PT). Report docs/reports/CONDUCT-3.md, guide docs/guides/GUIDE-27.md, plan docs/reports/C3-PACKAGES.md.
-- **In progress:** PAUSED for CONDUCT optimization (Tom 20:18, OPTIMIZE CONDUCT: move check.sh shards + 20 bots to GitHub Actions via .github/workflows/conduct-ci.yml + tools/conduct/ci_run.sh; resilient .jsonl auditors; tools/conduct/cluster.py; pipeline; split C10/C11/C18; timing tables; target ~1.5 h per CONDUCT). CONDUCT 4 is merged locally in the personal sandbox (/home/claude/dreams, not yet pushed: one move_target_test failure being checked); C5 auditors already running finish their reports.
-- **Next step:** build + verify the CI pipeline (conduct-ci.yml, sharded check.sh, ci_run.sh), then resume: push C4 via ci_run.sh, C4 package, then C5 on the new process.
-- **Jobs running elsewhere:** 20 C4 auditors in the personal sandbox (lost on a switch: relaunch from docs/reports/C4-SCOPES.txt).
+- **Last update:** 2026-11-19 21:05 PT, personal account.
+- **Done:** CONDUCT 1-4 pushed (C4 report docs/reports/CONDUCT-4.md, Guide 28). CONDUCT CI optimisation done: `bash tools/conduct/ci_run.sh <label> 3` runs check.sh in 6 shards + 20 bots on GitHub Actions (~10 min, verify3 PASS); see HANDOFF CONDUCT section + PROJECT-MEMORY 3.
+- **In progress:** CONDUCT 5 (home-world look and feel). 20 auditor reports: /home/claude/wt/c5_reports/*.md (copy in docs/reports/c5_audit/ when merged). 6 fix agents launched 20:55 (plan /home/claude/wt/C5_PACKAGES.md, worktrees /home/claude/wt/c5f_p1..p6, branches c5f/p1..p6, reports /home/claude/wt/c5f_reports/pN.md + .done); cap ~22:10.
+- **Next step:** C4 package to Tom; when C5 agents finish: merge (merge_c.sh), local smoke, ci_run.sh c5, fix, push, C5 package; start C6 auditors (audio) at the C5 merge.
+- **Jobs running elsewhere:** 6 C5 fix agents in the personal sandbox (lost on a switch: relaunch from C5_PACKAGES.md, which is also committed as docs/reports/C5-PACKAGES.md).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
