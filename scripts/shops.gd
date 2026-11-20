@@ -299,6 +299,60 @@ static func hall(m: GameMap) -> void:
 			Music.instance(m.get_tree()).sfx("coin", "pickup")
 
 
+# ---- shared stall (C8 P6, c8_07) ----------------------------------------------
+## One loop for every hand-priced stall (region stalls, colony shops, camps):
+## items = [[id, listed], ...]; the price goes through GameState.shop_price (and
+## `discount`, e.g. a colony perk, applied to the listed price); stackables offer
+## 1/5/10; cash/nope sounds and bartering XP like the town shops. Callers keep
+## their own lists: region._shop -> Shops.stall(self, who, greet, items).
+static func stall_price(id: String, listed: int, discount := 0.0) -> int:
+	return GameState.shop_price(id, int(listed * (1.0 - discount)))
+
+
+static func stall(m: GameMap, who: String, greet: String, items: Array, discount := 0.0) -> void:
+	var hello := greet
+	while true:
+		var opts: Array = []
+		for it: Array in items:
+			var iid := str(it[0])
+			opts.append("%s  %s%s%s" % [GameState.item_name(iid), Money.fmt(stall_price(iid, int(it[1]), discount)), food_note(iid), "  (owned)" if GameState.has_tool(iid) else ""])
+		opts.append("Leave")
+		var d := Dialogue.instance(m.get_tree())
+		d.say([{"who": who, "text": "%s  (you have %s)" % [hello, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
+		await d.finished
+		var i := d.last_choice
+		if i < 0 or i >= items.size():
+			return
+		var id := str(items[i][0])
+		var unit := stall_price(id, int(items[i][1]), discount)
+		var ty := str(GameState.items.get(id, {}).get("type", ""))
+		if ty == "tool" and GameState.has_tool(id):
+			m.hud.toast("You already have one.")
+			continue
+		var qty := 1
+		if not ty in ["tool", "equip", "key", "vehicle", "upgrade"]:
+			var dq := Dialogue.instance(m.get_tree())
+			dq.say([{"who": who, "text": "%s, %s each. How many?" % [GameState.item_name(id), Money.fmt(unit)], "choice": ["1", "5", "10", "Back"], "key": ""}])
+			await dq.finished
+			if dq.last_choice < 0 or dq.last_choice > 2:
+				continue
+			qty = [1, 5, 10][dq.last_choice]
+		var cost := unit * qty
+		if int(GameState.run["crystals"]) < cost:
+			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
+			continue
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+		Music.instance(m.get_tree()).sfx("cash", "coin")
+		if ty == "tool":
+			GameState.add_tool(id)
+			m.hud.toast("Got the %s." % GameState.item_name(id), Color(1, 0.9, 0.4))
+		else:
+			m.give(id, qty)
+		m.xp("bartering", 1)
+		hello = "Anything else?"
+
+
 # ---- the Valley Fund (C8 P6, c8_14): a long, repeatable money sink ------------
 ## Year-2/3 goal at the town hall: chip in any amount; each mark the town reaches
 ## brings a project, a letter from Alder and +FUND_FRIEND with every villager.

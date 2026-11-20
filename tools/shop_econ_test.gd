@@ -99,6 +99,10 @@ func _run() -> void:
 	check(int(mountain.mrock_regrow("stone")) < int(mountain.mrock_regrow("iron")), "ore rocks take longer to come back")
 	check(int(mountain.pick_damage()) >= 1, "pick damage")
 
+	# Shared stall pricing: never under the resale floor, discounts on the listed price.
+	check(Shops.stall_price("energy_tea", 12) == GameState.shop_price("energy_tea", 12), "stall price floors like shop_price")
+	check(Shops.stall_price("potion", 1000, 0.5) == GameState.shop_price("potion", 500), "stall discount on the listed price")
+
 	# The Valley Fund: a repeatable late sink with marks and friendship.
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	check(Shops.fund_next() == 0, "fund starts at its first mark")
