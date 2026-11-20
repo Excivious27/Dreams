@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 15:45 PT, personal account.
+- **Last update:** 2026-11-19 17:02 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
-- **In progress:** CONDUCT 3 (battle campaigns) starting 15:45 PT on the personal account: 20 read-only auditors in /home/claude/wt/c3_NN (personal sandbox).
+- **In progress:** CONDUCT 3 (battle campaigns), personal account: 9 of 20 auditor reports in (/home/claude/wt/c3_reports); the other 11 were stopped by a chat interrupt and relaunched 17:00 PT; 20-bot run started 17:00 PT (/tmp/c3_bots). Draft fix packages in /home/claude/wt/C3_PACKAGES_DRAFT.md (P1 campaign data/writing incl. Tom's Grump variants, Catkins later, convertible crystal babies; P2 battle runtime + audio; P3 bake performance; P4 themed battlefields + art; P5 Guide 26 answers; P6 tests/docs).
 - **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then CONDUCT 4-18 back to back with no waits (Tom 16:17) (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
-- **Jobs running elsewhere:** none.
+- **Jobs running elsewhere:** personal sandbox: 11 C3 auditors + 20 bots (lost on a switch; rerun from C3_SCOPES if so). Tom is answering the 31 Guide 11 story questions (sent 16:57; defaults until then; feed into C7/C12).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer) and CONDUCT 18 (cutscenes), then the fully updated artifact.
