@@ -737,7 +737,16 @@ func _market_stall(who: String) -> void:
 		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
 	else:
 		var items: Array = (st[5] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
-		await Shops.stall(self, nm, str(st[3] if GameState.is_penguins() else st[4]), items)
+		var pick := 0
+		if not Shops.animals_for(who).is_empty():  # fix2: Hazel sells her animals from the stall too
+			var d := Dialogue.instance(get_tree())
+			d.say([{"who": nm, "text": str(st[3] if GameState.is_penguins() else st[4]), "choice": ["Seed and hay", "Animals for your ranch", "Leave"], "key": ""}])
+			await d.finished
+			pick = d.last_choice
+		if pick == 0:
+			await Shops.stall(self, nm, str(st[3] if GameState.is_penguins() else st[4]), items)
+		elif pick == 1:
+			await Shops.animal_counter(self, who, nm)
 	player.frozen = false
 
 

@@ -93,6 +93,9 @@ func _run() -> void:
 	# --- 2. Classic herd (rain): silo feeds milkers first, petting gives goods ---
 	GameState.run["builds"] = {"coop": 2, "barn": 2, "silo": 1}
 	GameState.run["silo"] = 3
+	# fix2: your own farm never draws the hard-coded herd; an old save's migrated legacy herd is the roster.
+	Ranch.st()["legacy_done"] = false
+	Ranch.migrate()
 	var m := await load_farm()
 	var herd := animals(m)
 	check(herd.size() >= 12, "classic herd spawned (%d)" % herd.size())
@@ -148,13 +151,16 @@ func _run() -> void:
 	check(GameMap.quest_wants("hay"), "an open hay quest keeps scythed hay in the bag")
 	GameState.run["quests"].pop_back()
 	check(not GameMap.quest_wants("hay"), "no hay quest: the silo takes it")
-	# Legacy incubator: four grown hatchlings no longer block a fifth egg.
-	GameState.run["coop_hatch"] = [1, 2, 3, 4]
-	GameState.add_item("egg", 1)
+	# Incubator on the roster (fix2: the farm always runs on the roster now): a full coop asks for room,
+	# then an egg goes in and only one warms at a time.
+	GameState.add_item("egg", 2)
 	m._coop("egg")
-	check((GameState.run["coop_hatch"] as Array).size() == 5, "grown hatchlings don't count: a 5th egg goes in")
+	check(RanchFarm.incubator().is_empty(), "a full coop takes no egg (%d/%d)" % [Ranch.roster("coop").size(), Ranch.capacity("coop")])
+	Ranch.rehome(str(Ranch.roster("coop")[0]))
 	m._coop("egg")
-	check((GameState.run["coop_hatch"] as Array).size() == 5, "one egg warming at a time")
+	check(RanchFarm.incubator().size() == 1, "room made: the egg goes in (%d)" % RanchFarm.incubator().size())
+	m._coop("egg")
+	check(RanchFarm.incubator().size() == 1, "one egg warming at a time")
 	# Fences: no post inside a neighbouring pen; gate fronts kept clear of decor.
 	var coop_pen: Rect2i = m.pen_of("coop")
 	var barn_pen: Rect2i = m.pen_of("barn")
