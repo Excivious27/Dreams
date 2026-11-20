@@ -1,0 +1,230 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | watermelon_seed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_sprout.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_young.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (12940 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 185.9s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 55.0s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 3.5s
+
+#### step 14: crops wired in (shard 1/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 14 crops wired in: PASS in 6.0s
+
+#### step 20: night lighting: windows, festival fires, underground, mines (c5_10) (shard 1/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 20 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 3.9s
+
+#### step 26: ticket_econ_test (shard 1/6)
+ticket_econ_test: 0 failures
+#### step 26 ticket_econ_test: PASS in 2.7s
+
+#### step 32: gang_play_test (shard 1/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 32 gang_play_test: PASS in 20.8s
+
+#### step 38: npc_anim_test (shard 1/6)
+npc_anim_test: OK (0 fails)
+#### step 38 npc_anim_test: PASS in 2.7s
+
+#### step 44: cf_layout_test (shard 1/6)
+cf_layout_test: 0 failures
+#### step 44 cf_layout_test: PASS in 10.2s
+
+#### step 50: music loop seams (join click + level jump) (shard 1/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 101
+#### step 50 music loop seams (join click + level jump): PASS in 10.4s
+
+#### step 56: music_stream_test (shard 1/6)
+music_stream_test: 0 failures
+#### step 56 music_stream_test: PASS in 9.4s
+
+#### step 62: arcs: path cards, arc building intros, locked-plan hints (shard 1/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 62 arcs: path cards, arc building intros, locked-plan hints: PASS in 4.0s
+
+#### step 68: early combat: clinic, pup lesson, telegraph, first boss (shard 1/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 68 early combat: clinic, pup lesson, telegraph, first boss: PASS in 8.4s
+
+#### step 74: goal_line_test (shard 1/6)
+goal_line_test: 0 fails
+#### step 74 goal_line_test: PASS in 2.7s
+
+#### step 80: campaign_gate_test (shard 1/6)
+campaign_gate_test: 0 fails
+#### step 80 campaign_gate_test: PASS in 6.1s
+
+#### step 86: settings, slots, quality, discovery, perks, birthdays (shard 1/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 86 settings, slots, quality, discovery, perks, birthdays: PASS in 2.7s
+
+#### step 92: C7 text: gift articles, plurals, quest wording (shard 1/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 92 C7 text: gift articles, plurals, quest wording: PASS in 2.6s
+
+#### step 98: fish critters only in deep water (C2 P4) (shard 1/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 98 fish critters only in deep water (C2 P4): PASS in 11.1s
+
+#### step 104: stack_whack_test (shard 1/6)
+stack_whack_test: 0 failures
+#### step 104 stack_whack_test: PASS in 3.4s
+
+#### step 110: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 1/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 110 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 2.8s
+
+#### step 116: C9 P1: controller bindings and field play (shard 1/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 116 C9 P1: controller bindings and field play: PASS in 3.6s
+
+#### step 122: C9 P6: generated data in sync (shard 1/6)
+== C9 P6: generated data in sync ==
+    from PIL import Image
+ModuleNotFoundError: No module named 'PIL'
+regen_data: gen_mega_new failed
+data_sync_check failed
+#### step 122 C9 P6: generated data in sync: FAIL rc=1 in 0.7s
+
+#### shard 1/6 done in 359s: FAIL (C9 P6: generated data in sync)

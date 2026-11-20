@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 185.9}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 55.0}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.5}
+{"step": 14, "name": "crops wired in", "rc": 0, "secs": 6.0}
+{"step": 20, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.9}
+{"step": 26, "name": "ticket_econ_test", "rc": 0, "secs": 2.7}
+{"step": 32, "name": "gang_play_test", "rc": 0, "secs": 20.8}
+{"step": 38, "name": "npc_anim_test", "rc": 0, "secs": 2.7}
+{"step": 44, "name": "cf_layout_test", "rc": 0, "secs": 10.2}
+{"step": 50, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.4}
+{"step": 56, "name": "music_stream_test", "rc": 0, "secs": 9.4}
+{"step": 62, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 4.0}
+{"step": 68, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.4}
+{"step": 74, "name": "goal_line_test", "rc": 0, "secs": 2.7}
+{"step": 80, "name": "campaign_gate_test", "rc": 0, "secs": 6.1}
+{"step": 86, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 2.7}
+{"step": 92, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.6}
+{"step": 98, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 11.1}
+{"step": 104, "name": "stack_whack_test", "rc": 0, "secs": 3.4}
+{"step": 110, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.8}
+{"step": 116, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 3.6}
+{"step": 122, "name": "C9 P6: generated data in sync", "rc": 1, "secs": 0.7}

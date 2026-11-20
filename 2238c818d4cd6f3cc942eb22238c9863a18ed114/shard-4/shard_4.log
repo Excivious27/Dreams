@@ -1,0 +1,132 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | watermelon_seed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_sprout.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_young.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (12940 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 213.8s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 33.3s
+
+#### step 11: C8 core curves: levels, caps, swings, food, prices, sleep (shard 4/6)
+== C8 core curves: levels, caps, swings, food, prices, sleep ==
+  pacing (level reached with steady XP/day): xp/day | d28 | d112 | d224 | d336
+  swings by tool tier (level 1): tree [7, 5, 4, 3, 2, 2, 1, 1], stone [3, 2, 2, 1, 1, 1, 1, 1], ore [6, 5, 4, 3, 2, 2, 1, 1]
+c8_curve_test: 0 failures
+#### step 11 C8 core curves: levels, caps, swings, food, prices, sleep: PASS in 2.1s
+
+#### step 17: performance guards (batched cliffs, texture cache) (shard 4/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 17 performance guards (batched cliffs, texture cache): PASS in 2.0s
+
+#### step 23: storage_test (shard 4/6)
+storage_test: 0 failures
+#### step 23 storage_test: PASS in 2.2s
+
+#### step 29: rec_audio_test (shard 4/6)
+rec_audio_test: 0 failures
+#### step 29 rec_audio_test: PASS in 2.2s
+
+#### step 35: farm_look_test (shard 4/6)
+farm_look_test: PASS (0 fails)
+#### step 35 farm_look_test: PASS in 3.4s
+
+#### step 41: shop_econ_test (shard 4/6)
+shop_econ_test: 0 failures
+#### step 41 shop_econ_test: PASS in 2.3s
+
+#### step 47: workshop: no dead ends (shard 4/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 47 workshop: no dead ends: PASS in 2.0s
+
+#### step 53: all ages: alcohol is a trade good, never drunk (shard 4/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 12 alcoholic items checked
+ok
+#### step 53 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 59: ambience_test (shard 4/6)
+ambience_test: 0 failures (40 checks)
+#### step 59 ambience_test: PASS in 4.5s
+
+#### step 65: mine: keeper, shaft, tiers (shard 4/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 65 mine: keeper, shaft, tiers: PASS in 3.5s
+
+#### step 71: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 4/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 71 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 6.8s
+
+#### step 77: c6_cue_test (shard 4/6)
+c6_cue_test: 0 fails
+#### step 77 c6_cue_test: PASS in 2.1s
+
+#### step 83: meow_gate_test (shard 4/6)
+meow_gate_test: 0 fails
+#### step 83 meow_gate_test: PASS in 2.9s
+
+#### step 89: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 4/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 89 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 4.9s
+
+#### step 95: mega regions: the new worlds walk end to end (shard 4/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 95 mega regions: the new worlds walk end to end: PASS in 16.8s
+
+#### step 101: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 4/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 101 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.5s
+
+#### step 107: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 4/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 107 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.3s
+
+#### step 113: C7 P4: heart scene content (shard 4/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 113 C7 P4: heart scene content: PASS in 2.5s
+
+#### step 119: C9 P4: haptics (shard 4/6)
+== C9 P4: haptics ==
+HAPTICS DONE, failures: 0
+#### step 119 C9 P4: haptics: PASS in 2.1s
+
+#### shard 4/6 done in 315s: PASS
