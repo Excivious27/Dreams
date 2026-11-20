@@ -1279,7 +1279,8 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.animation = "idle"
 	a.scale = Vector2(scale, scale)
 	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
-	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
+	var ai := Art.info(group, name)
+	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
 	if solid:

@@ -8,6 +8,7 @@ extends GameMap
 const MEADOW_EXIT := Rect2i(0, 11, 1, 3)
 const EAST_GATE := Vector2i(33, 12)
 const STONES := Rect2i(14, 8, 7, 7)
+const POND := Rect2i(4, 13, 4, 4)  # the glow pond and its rim: no forage or scatter on it
 
 
 func scene_id() -> String:
@@ -36,7 +37,7 @@ func build() -> void:
 		set_thing(17, 11, {"type": "altar", "hint": "A: the crystal altar"})
 		for i in 4:  # crystal blooms: a handful a day (70 each), not a 700/day forage battery
 			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
-			if things.has(c) or STONES.has_point(c):
+			if things.has(c) or STONES.has_point(c) or POND.has_point(c):
 				continue
 			var key := "forage_cm_%d_%d" % [c.x, c.y]
 			if int(GameState.run["flags"].get(key, 0)) >= int(GameState.run["day"]):
@@ -121,6 +122,8 @@ func after_ready() -> void:
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true
+		for c: Vector2i in cells_of([POND]):
+			avoid[c] = true
 		WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 103, 5, avoid)
 		WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 104, 14, avoid)
 		WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 105, 10, ["moon_rabbit", "crystal_fish", "butterfly_blue", "firefly", "rabbit"])
@@ -133,20 +136,31 @@ func after_ready() -> void:
 		for c: Vector2i in [Vector2i(4, 14), Vector2i(29, 15)]:
 			prop("props", "crates_a", c)
 		prop("props", "crates_c", Vector2i(18, 20), 1)
-		var fb := prop("props", "fire_barrel_0", Vector2i(12, 18))
-		if fb and Art.has("props", "fire_barrel"):
-			fb.queue_free()
-			var a := AnimatedSprite2D.new()
-			a.sprite_frames = Art.frames("props", {"idle": "fire_barrel"}, {"idle": 8.0})
-			a.animation = "idle"
-			a.scale = Vector2(0.5, 0.5)
-			a.position = cell_center(Vector2i(12, 18))
-			a.offset = Vector2(0, -float(Art.info("props", "fire_barrel").get("cell_h", 40)) / 2.0)
-			add_child(a)
-			a.play("idle")
-		for x in range(2, 32, 2):
-			if x < 30 and x > 4:
-				prop("props", "chain_fence_h", Vector2i(x, 23), 1)
+		# One barrel with a flickering fire (fire_barrel is a merged 4-barrel sheet).
+		if anim_prop("props", "fire_barrel2", Vector2i(12, 18), 0, 8.0, true) == null:
+			prop("props", "fire_barrel_0", Vector2i(12, 18))
+		# The chain fence runs unbroken along the lot's south edge (30 px art = one cell).
+		for x in range(5, 30):
+			prop("props", "chain_fence_h", Vector2i(x, 23), 0, 0.0, true)
+		# Lot clutter: a few drums, tyres and pipes on the dirt, off the road and sidewalks.
+		var lot_rng := RandomNumberGenerator.new()
+		lot_rng.seed = 110
+		var junk := ["oil_drums", "tyres", "crates_b", "pipe_t", "tyres", "oil_drums"]
+		var placed := 0
+		for tries in 60:
+			if placed >= 7:
+				break
+			var c := Vector2i(lot_rng.randi_range(4, 29), lot_rng.randi_range(16, 21))
+			if lot_rng.randf() < 0.35:
+				c.y = lot_rng.randi_range(3, 6)
+			var clear := true
+			for d: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1)]:
+				var o := c + d
+				if things.has(o) or blocked.has(o) or props.has(o) or (o.y >= 8 and o.y <= 15):
+					clear = false
+			if clear:
+				prop("props", junk[placed % junk.size()], c)
+				placed += 1
 		for y in range(3, 24):
 			for x in range(5, 28):
 				avoid[Vector2i(x, y)] = true
@@ -293,7 +307,10 @@ func _market() -> void:
 func draw_map() -> void:
 	if GameState.is_penguins():
 		draw_grass(9)
-		WorldGen.draw_ground_detail(self, 108, 0.2)
+		var no_pond := {}
+		for c: Vector2i in cells_of([POND]):
+			no_pond[c] = true
+		WorldGen.draw_ground_detail(self, 108, 0.2, no_pond)
 		if Art.has("tiles", "g_glow"):
 			# Glowing turf spreads out from the crystals in soft noise blobs, not boxes.
 			var glow := {}
@@ -302,7 +319,8 @@ func draw_map() -> void:
 				var dist := Vector2(c).distance_to(Vector2(17, 11)) / 14.0
 				if n - dist * 0.5 > -0.15:
 					glow[c] = true
-			if not soft_ground(glow, "meadow_grass", Color(0, 0, 0, 0), Color(0.8, 1.3, 1.3)):
+			# Tint stays <= 1 and half see-through: a soft cyan glow over the grass, not flat lime.
+			if not soft_ground(glow, "meadow_grass", Color(0, 0, 0, 0), Color(0.78, 1.0, 0.96, 0.55)):
 				for c: Vector2i in glow:
 					Art.draw_tile(self, "tiles", "g_glow" if (c.x * 3 + c.y) % 5 != 0 else "g_glow_b", Vector2(c * TILE), 4)
 			var rng := RandomNumberGenerator.new()
@@ -323,8 +341,8 @@ func draw_map() -> void:
 	for yy in range(_gate.y - 1, _gate.y + 3):
 		gap[yy] = true
 	if GameState.is_penguins() and Art.has("buildings", "fence_v"):
-		for yy in range(1, rows - 1):  # only the east fence by the gate: the other sides are forest
-			if not gap.has(yy + 1):
+		for yy in range(1, rows - 1):  # only the east fence by the gate (rows +-5): the other sides are forest
+			if not gap.has(yy + 1) and absi(yy + 1 - _gate.y) <= 5:
 				Art.draw_prop(self, "buildings", "fence_v", Vector2((cols - 0.5) * TILE, (yy + 1) * TILE))
 	else:
 		draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"), gap)

@@ -511,3 +511,10 @@ echo "$tlout" | grep -E "FAIL|SCRIPT ERROR|toast_layout_test" || true
 if ! echo "$tlout" | grep -q "toast_layout_test: 0 failures"; then
   echo "Toast layout test failed"; exit 1
 fi
+
+echo "== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks =="
+slkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/season_look_test.gd 2>&1)"
+echo "$slkout" | grep -E "FAIL|SCRIPT ERROR|season_look_test" || true
+if ! echo "$slkout" | grep -q "season_look_test: PASS"; then
+  echo "Season look test failed"; exit 1
+fi

@@ -2364,7 +2364,8 @@
   "pad": 2,
   "border": "none",
   "fruit": 0,
-  "ground_seam": "cave_stone_floor"
+  "ground_seam": "cave_stone_floor",
+  "light": 0.6
  },
  "countryside": {
   "cols": 50,
@@ -2948,7 +2949,8 @@
   ],
   "pad": 6,
   "border": "none",
-  "fruit": 0
+  "fruit": 0,
+  "season": "summer"
  },
  "station": {
   "cols": 42,
@@ -3551,7 +3553,8 @@
    "Teal moss, violet earth, mushrooms the size of houses glowing from the inside. Fireflies that are not fireflies. Everything here breathes."
   ],
   "pad": 6,
-  "border": "trees"
+  "border": "trees",
+  "season": "summer"
  },
  "orchard_hills": {
   "cols": 52,
@@ -8715,7 +8718,8 @@
   "intro": [
    "The lift goes down past where the rope should run out, and then it stops, and there is a whole country under the world.",
    "Moss that glows teal, rivers that run with light, mushrooms as tall as houses, and far off, in a geode the size of the town hall, something beating like a heart."
-  ]
+  ],
+  "light": 0.5
  },
  "bf_orchard_line": {
   "cols": 104,
@@ -13372,7 +13376,8 @@
     38
    ]
   },
-  "ground_seam": "cave_stone_floor"
+  "ground_seam": "cave_stone_floor",
+  "light": 0.6
  },
  "gloam_lanternfall": {
   "cols": 42,
@@ -16380,7 +16385,8 @@
   ],
   "intro": [
    "Half buried in sand, a temple of pale stone. Braziers still burn at the far door, and something enormous is sitting very still in front of it."
-  ]
+  ],
+  "light": 0.5
  },
  "iron_junction": {
   "cols": 44,
@@ -17813,7 +17819,8 @@
   ],
   "intro": [
    "Under the mills the old rail tunnels run in the dark, lamps flickering along the walls. Far ahead, a private rail car is parked with all its lights on."
-  ]
+  ],
+  "light": 0.6
  },
  "frost_hearthhold": {
   "cols": 44,
@@ -18995,7 +19002,8 @@
   ],
   "intro": [
    "Blue ice overhead, blue ice underfoot, and your breath hangs in the air like it's afraid to leave. The walls hum one long, low note."
-  ]
+  ],
+  "light": 0.55
  },
  "frost_falls": {
   "cols": 48,
@@ -22266,7 +22274,8 @@
   ],
   "intro": [
    "Under the casinos, the Vaults: gold in stacks to the ceiling, fences of gold, and the soft tick of somebody counting."
-  ]
+  ],
+  "light": 0.55
  },
  "hollow_deeps": {
   "cols": 50,
@@ -22673,7 +22682,8 @@
   ],
   "intro": [
    "East of the Heart the caverns open into rivers of light: crystal floors, glowing pools, and the cold ashes of a miners' camp nobody ever came back for."
-  ]
+  ],
+  "light": 0.6
  },
  "sky_reaches": {
   "cols": 48,

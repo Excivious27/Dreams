@@ -114,7 +114,104 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 	# Placed once per map (this runs from _draw, which repeats on every redraw).
 	if not m.has_meta("wx_dressed"):
 		m.set_meta("wx_dressed", true)
-		weather_dressing(m, seed_v + 99, avoid)
+		# Deferred: the map's paths (step_word / ground_seam) are drawn later in draw_map,
+		# and drifts and puddles must stay off them.
+		var host: GameMap = m._painter_of if m._painter_of != null else m
+		_after_paths.call_deferred(host, seed_v + 99, avoid)
+
+
+## Runs once the map's paths are drawn: scatter off the paths, then weather dressing.
+static func _after_paths(m: GameMap, seed_v: int, avoid: Dictionary) -> void:
+	if not is_instance_valid(m):
+		return
+	clear_paths(m)
+	mark_dead_ends(m)
+	weather_dressing(m, seed_v, avoid)
+
+
+## Scatter (trees, rocks, logs, stumps, bushes, boulder-sized props) that landed on a
+## drawn path is removed: paths stay walkable and readable (c5_12 #5).
+static func clear_paths(m: GameMap) -> int:
+	var n := 0
+	for c: Vector2i in m.props.keys():
+		if not on_path(m, c):
+			continue
+		var t := str(m.things.get(c, {}).get("type", ""))
+		var node: Variant = m.props[c]
+		if t in ["tree", "rock", "log", "stump", "bush", "weeds", "grove"] or (t == "" and _small_prop(node) and m.blocked.has(c)):
+			m.things.erase(c)
+			m.blocked.erase(c)
+			m.hard.erase(c)
+			m.props.erase(c)
+			if node is Node and is_instance_valid(node):
+				(node as Node).queue_free()
+			n += 1
+	if n > 0:
+		m._flows.clear()
+	return n
+
+
+## A path that just stops reads as a bug: give each dead end a reason to walk there
+## (a bench, a milestone or a lantern) (c5_12 #4). Ends by an exit, a door, a sign
+## or anything you can use are left alone. Returns the cells marked.
+const DEAD_END_LOOKS := ["bench_wood", "milestone", "lantern_lit", "ri_cairn"]
+
+
+static func mark_dead_ends(m: GameMap, most := 3) -> Array:
+	var path := {}
+	for c: Vector2i in m.step_word:
+		if on_path(m, c):
+			path[c] = true
+	for c: Vector2i in m.ground_seam:
+		if on_path(m, c):
+			path[c] = true
+	var cands: Array = []
+	for c: Vector2i in path:
+		if c.x < 3 or c.y < 3 or c.x > m.cols - 4 or c.y > m.rows - 4:
+			continue
+		var off := Vector2.ZERO
+		var n := 0
+		for dy in range(-4, 5):
+			for dx in range(-4, 5):
+				if (dx != 0 or dy != 0) and path.has(c + Vector2i(dx, dy)):
+					off += Vector2(dx, dy)
+					n += 1
+		if n < 10:
+			continue
+		off /= n
+		if off.length() < 1.9:
+			continue
+		cands.append([off.length(), c, off])
+	cands.sort_custom(func(a, b): return a[0] > b[0])
+	var marked: Array = []
+	for cd in cands:
+		if marked.size() >= most:
+			break
+		var c: Vector2i = cd[1]
+		var near := false
+		for o: Vector2i in marked:
+			if (o - c).length() < 8.0:
+				near = true
+		for e in m.exits:
+			var r: Rect2i = e["rect"]
+			if r.grow(5).has_point(c):
+				near = true
+		for dy in range(-3, 4):
+			for dx in range(-3, 4):
+				var t := str(m.things.get(c + Vector2i(dx, dy), {}).get("type", ""))
+				if t != "" and not t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove", "water"]:
+					near = true  # a door, sign, npc spot or station is already the reason
+		for bp: Array in m._bprops:
+			if (Vector2(bp[1]) - Vector2(c)).length() < 6.0:
+				near = true
+		if near or m.blocked.has(c) or m.things.has(c) or m.props.has(c) or m.is_water_cell(c):
+			continue
+		var look: String = DEAD_END_LOOKS[absi(hash(Vector2i(c.x, c.y + m.cols))) % DEAD_END_LOOKS.size()]
+		if not Art.has("props", look):
+			look = "milestone"
+		if m.prop("props", look, c, 0, 0.0, false) != null:  # never solid: it can't wall off anything
+			marked.append(c)
+	return marked
 
 
 ## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts
@@ -125,19 +222,45 @@ static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) ->
 	# A region's own weather wins over the calendar (no puddles in snowy colony_ice or the clear sky).
 	var rd: Variant = m.get("R")
 	var ov := str((rd as Dictionary).get("weather", "")) if rd is Dictionary else ""
-	var winter := GameState.season() == "winter" or ov in ["snow", "blizzard"]
+	# The look season (a region's own "season") rules the ground, not the calendar:
+	# jungles, deserts and the sky never get snowdrifts (c5_14 #4).
+	var winter := (GameState.look_se() == "winter" and not ov in WARM_WEATHER) or ov in ["snow", "blizzard"]
 	var wet := GameState.is_wet() and ov in ["", "rain", "storm"]
 	if not wet and not winter:
+		return
+	if not is_instance_valid(m):
 		return
 	var n := int(m.cols * m.rows * (0.012 if wet else 0.008))
 	for i in n:
 		var c := Vector2i(rng.randi_range(2, m.cols - 3), rng.randi_range(2, m.rows - 3))
 		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
 			continue
+		if on_path(m, c):
+			continue  # no drifts or puddles on paths, roads or plaza paving (c5_14 #2)
 		if wet and Art.has("props", "puddle_storm_0") and int(Art.info("props", "puddle_storm_0").get("frames", 1)) > 1:
 			_puddle(m, c, rng, GameState.weather_today() == "storm")
 		elif winter and Art.has("props", "snowdrift_0"):
 			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
+
+
+## Weathers that mean a warm place: no winter dressing even in a winter month.
+const WARM_WEATHER := ["sun", "dust", "fireflies"]
+
+
+## A drawn path, road or paved cell (tile paths mark step_word, soft paths ground_seam,
+## exit corridors _ext_paths). Weather dressing and decor keep off these.
+static func on_path(m: GameMap, c: Vector2i) -> bool:
+	if m._ext_paths.has(c):
+		return true
+	var sm := str(m.ground_seam.get(c, ""))
+	if sm == "":
+		# Tile paths mark a step word; soft grass/snow/moss patches mark one too.
+		return m.step_word.has(c) and not str(m.step_word[c]) in ["grass", "snow", "moss", "leaves", "water"]
+	# A soft ground patch that is the map's base (grass/moss/snow fields) is not a path.
+	for w in ["path", "road", "pave", "cobble", "stone", "flag", "brick", "plank", "trodden", "dirt", "sand_path", "asphalt"]:
+		if w in sm:
+			return true
+	return false
 
 
 ## One rain puddle, flat on the ground. Uses the redrawn 3-frame storm puddles
@@ -271,9 +394,9 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 			m.set_thing(c.x, c.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 			m.prop("nature", nm, c)
 		elif r < 0.5:
-			var nm: String = {"fall": "log_fall", "summer": "logs"}.get(season, "log")
+			var nm: String = {"fall": "log_fall", "summer": "logs", "winter": "log_snow"}.get(season, "log")
 			m.set_thing(c.x, c.y, {"type": "log", "hp": 2, "hint": "A: chop"})
-			m.prop("nature", nm if Art.has("nature", nm) else "log", c, 1 if nm == "log" else 0)
+			m.prop("nature", nm if Art.has("nature", nm) else "log", c, 1 if nm in ["log", "log_snow"] else 0)
 		elif r < 0.62:
 			var nm: String = {"fall": "stump_fall", "winter": "stump_snow"}.get(season, "stump")
 			m.set_thing(c.x, c.y, {"type": "stump", "hp": 2, "hint": "A: chop"})
@@ -315,6 +438,25 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 		m.add_child(cr)
 
 
+## The winter look of a sprite when the look season is winter and the art exists:
+## buildings/house(_2/_3)_snow, woodcutter_hut_snow, fountain_frozen,
+## props/fountain2_frozen, props/planter2_N_winter, nature/log_snow (C5 P3).
+const WINTER_LOOKS := {"house": "house_snow", "house_2": "house_2_snow", "house_3": "house_3_snow", "woodcutter_hut": "woodcutter_hut_snow",
+	"fountain": "fountain_frozen", "fountain2": "fountain2_frozen", "planter2_0": "planter2_0_winter", "planter2_1": "planter2_1_winter",
+	"planter2_2": "planter2_2_winter", "planter2_3": "planter2_3_winter", "log": "log_snow"}
+
+
+static func winter_look(group: String, name: String) -> String:
+	if GameState.look_se() != "winter" or not WINTER_LOOKS.has(name):
+		return name
+	var w: String = WINTER_LOOKS[name]
+	return w if Art.has(group, w) else name
+
+
+## Ground birds whose walk strip is a flying pose: they take off only when startled.
+const TAKE_OFF := ["duck", "heron"]
+
+
 ## Kinds that live in water only: spawned on water cells and kept there.
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
@@ -353,15 +495,21 @@ class Critter:
 	var _flee := false
 	var _anim: AnimatedSprite2D
 	var _flyer := false
+	## Waders/swimmers (duck, heron): stand and potter on the ground, and only
+	## take off (their walk strip is a flying pose) when startled (c5_09 #3).
+	var _lifts := false
 
 	func _ready() -> void:
 		var g := "wildlife/" + kind
-		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "heron", "jelly"]
+		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "jelly"]
+		_lifts = kind in TAKE_OFF
 		if Art.has(g, "idle"):
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
-			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0})
+			if Art.has(g, "waddle"):
+				anims["waddle"] = "waddle"  # ducks: a ground walk; their walk strip is the flight
+			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0, "waddle": 7.0})
 			# Ground animals' idle strips are separate poses, not a loop: hold
 			# the first pose and only now and then glance about (no twitching).
 			var sf := _anim.sprite_frames
@@ -399,12 +547,15 @@ class Critter:
 			if position.distance_to(home) > 80.0:
 				_dir = (home - position).normalized()
 		var spd := 60.0 if _flee else 14.0
-		if _flyer and _flee:
+		if _lifts and not _flee:
+			# A heron stands still in the shallows; a duck potters slowly.
+			spd = 0.0 if kind == "heron" else 10.0
+		if (_flyer or _lifts) and _flee:
 			spd = 110.0
 		if kind.begins_with("butterfly") or kind == "bee":
 			spd = 18.0
 		var np := position + _dir * spd * delta
-		if _flyer and _flee:
+		if (_flyer or _lifts) and _flee:
 			position = np
 			if position.distance_to(home) > 400.0:
 				queue_free()
@@ -417,8 +568,10 @@ class Critter:
 		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
 			position = np
 		if _anim:
-			var moving := _dir != Vector2.ZERO
+			var moving := _dir != Vector2.ZERO and spd > 0.0
 			var want := "walk" if moving else "idle"
+			if _lifts:
+				want = "walk" if _flee else ("waddle" if moving and _anim.sprite_frames.has_animation("waddle") else "idle")  # walk = flight
 			if _anim.animation != want:
 				_anim.play(want)
 			# Legs keep pace with the ground (no sliding at a stroll, no
@@ -427,7 +580,7 @@ class Critter:
 			# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
 			if absf(_dir.x) > 0.25:
 				_anim.flip_h = _dir.x < 0
-			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if _flyer and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
+			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if (_flyer or _lifts) and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
 		else:
 			queue_redraw()  # the sprite animates itself; its shadow follows position
 
@@ -607,6 +760,12 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 	var season := GameState.look_se()
 	var key := "fruit_%s_%d_%d" % [m.scene_id(), c.x, c.y]
 	var ripe := str(info[0]) == season and int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+	# Early spring is blossom time for cherries and apples (c5_14 #7): cherries
+	# fruit from day 8 of spring.
+	var sday := (int(GameState.run.get("day", 1)) - 1) % GameState.DAYS_PER_SEASON + 1
+	var blossoming := season == "spring" and sday <= 7 and kind in ["cherry", "apple"] and Art.has("nature", "ftree_%s_blossom" % kind)
+	if blossoming:
+		ripe = false
 	var sprite := str(info[1])
 	if Art.has("nature", "ftree_%s_fruit" % kind):
 		# Prompts 10 painted fruit trees: bare / blossom / fruit / late / snow.
@@ -626,6 +785,8 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 		else:
 			# Two seasons before fruiting (apples in spring): in leaf, not bare.
 			st = "fall" if kind == "cherry" else ("green" if Art.has("nature", "ftree_%s_green" % kind) else "bare")
+		if blossoming:
+			st = "blossom"
 		if not Art.has("nature", "ftree_%s_%s" % [kind, st]):
 			st = "fruit"
 		sprite = "ftree_%s_%s" % [kind, st]
@@ -831,10 +992,10 @@ static func clear_stairs(m: GameMap) -> void:
 		return
 	for pl: Dictionary in m.plateaus:
 		for st: Vector2i in pl["stairs"]:
-			for dy in range(-1, 3):
+			for dy in range(-2, 3):  # two rows up too: the landing at the stair top (c5_12 #3)
 				var c := st + Vector2i(0, dy)
 				var t := str(m.things.get(c, {}).get("type", ""))
-				if t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove"] or (t == "" and m.props.has(c) and m.blocked.has(c) and dy != -1):
+				if t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove"] or (t == "" and m.props.has(c) and m.blocked.has(c) and (dy >= 0 or _small_prop(m.props[c]))):
 					m.things.erase(c)
 					if dy >= 0 or t != "":
 						m.blocked.erase(c)
@@ -843,6 +1004,14 @@ static func clear_stairs(m: GameMap) -> void:
 					m.props.erase(c)
 					if sp:
 						sp.queue_free()
+
+
+## A boulder/crate-sized scatter prop (not a building or big structure).
+static func _small_prop(n: Variant) -> bool:
+	if not (n is Sprite2D) or (n as Sprite2D).texture == null:
+		return false
+	var sp := n as Sprite2D
+	return sp.texture.get_width() * sp.scale.x <= 40.0
 
 
 ## Two side-by-side south-edge cells for a plateau's stairs: both on the same

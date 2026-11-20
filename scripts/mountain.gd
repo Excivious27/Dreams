@@ -9,6 +9,7 @@ const SPRING := Rect2i(44, 20, 3, 2)
 const LEDGES := [[14, 24, 27], [28, 10, 13]]   # [row, stair x0, stair x1]
 const FALLS_X := 52   # the stream runs down the top terrace and pours over the first ledge
 const FALLS_BRIDGE := Vector2i(FALLS_X, 9)
+const STREAM_BEND := {3: -1, 4: -1, 5: -1, 6: 1, 7: 1, 11: 1}  # row -> column offset of the stream
 var _ledge := {}
 var _falls_water := {}
 
@@ -39,12 +40,23 @@ func build() -> void:
 			_ledge[Vector2i(x, y)] = true
 			blocked[Vector2i(x, y)] = true
 	# Stream (1 wide) down the top terrace, the falls over the ledge, a pool at the foot.
+	# It wanders a cell either way (straight under the bridge and at the lip), and
+	# the bends are two cells wide so the water stays one body (c5_03 #4).
+	var prev := 0
 	for y in range(2, 14):
-		var c := Vector2i(FALLS_X, y)
-		_falls_water[c] = true
-		if c != FALLS_BRIDGE:  # the rope bridge crosses here
-			set_thing(c.x, c.y, {"type": "water", "hint": ""})
-	for c: Vector2i in cells_of([Rect2i(FALLS_X - 1, 15, 3, 2)]):
+		var dx: int = STREAM_BEND.get(y, 0)
+		for k in range(mini(dx, prev), maxi(dx, prev) + 1):
+			var c := Vector2i(FALLS_X + k, y)
+			if blocked.has(c) and not _falls_water.has(c):
+				continue
+			_falls_water[c] = true
+			if c != FALLS_BRIDGE:  # the rope bridge crosses here
+				set_thing(c.x, c.y, {"type": "water", "hint": ""})
+		prev = dx
+	# The plunge pool: an oval, not a box.
+	for c: Vector2i in cells_of([Rect2i(FALLS_X - 1, 15, 3, 1), Rect2i(FALLS_X - 2, 16, 5, 1), Rect2i(FALLS_X - 1, 17, 3, 1)]):
+		if blocked.has(c) or things.has(c):
+			continue
 		_falls_water[c] = true
 		set_thing(c.x, c.y, {"type": "water", "hint": ""})
 	var rng := RandomNumberGenerator.new()

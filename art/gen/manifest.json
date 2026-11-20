@@ -15592,6 +15592,11 @@
    "h": 78,
    "w": 96
   },
+  "fountain_frozen": {
+   "file": "buildings/fountain_frozen.png",
+   "h": 78,
+   "w": 96
+  },
   "galleon": {
    "file": "buildings/galleon.png",
    "h": 134,
@@ -15697,6 +15702,11 @@
    "h": 158,
    "w": 303
   },
+  "house_2_snow": {
+   "file": "buildings/house_2_snow.png",
+   "h": 158,
+   "w": 306
+  },
   "house_3": {
    "file": "buildings/house_3.png",
    "h": 201,
@@ -15707,8 +15717,18 @@
    "h": 201,
    "w": 386
   },
+  "house_3_snow": {
+   "file": "buildings/house_3_snow.png",
+   "h": 201,
+   "w": 392
+  },
   "house_night": {
    "file": "buildings/house_night.png",
+   "h": 174,
+   "w": 192
+  },
+  "house_snow": {
+   "file": "buildings/house_snow.png",
    "h": 174,
    "w": 192
   },
@@ -16035,6 +16055,11 @@
   },
   "woodcutter_hut_night": {
    "file": "buildings/woodcutter_hut_night.png",
+   "h": 101,
+   "w": 160
+  },
+  "woodcutter_hut_snow": {
+   "file": "buildings/woodcutter_hut_snow.png",
    "h": 101,
    "w": 160
   }
@@ -52015,6 +52040,14 @@
    "h": 23,
    "w": 284
   },
+  "petal_pink": {
+   "cell_h": 18,
+   "cell_w": 15,
+   "file": "fx/petal_pink.png",
+   "frames": 4,
+   "h": 18,
+   "w": 60
+  },
   "pine_fall_r": {
    "cell_h": 112,
    "cell_w": 178,
@@ -77294,6 +77327,11 @@
    "h": 36,
    "w": 43
   },
+  "log_snow": {
+   "file": "nature/log_snow.png",
+   "h": 36,
+   "w": 58
+  },
   "logs": {
    "file": "nature/logs.png",
    "h": 33,
@@ -87420,6 +87458,11 @@
    "h": 118,
    "w": 492
   },
+  "fountain2_frozen": {
+   "file": "props/fountain2_frozen.png",
+   "h": 118,
+   "w": 123
+  },
   "fr_bell_tower": {
    "file": "props/fr_bell_tower.png",
    "h": 199,
@@ -90391,8 +90434,18 @@
    "h": 106,
    "w": 95
   },
+  "planter2_0_winter": {
+   "file": "props/planter2_0_winter.png",
+   "h": 106,
+   "w": 95
+  },
   "planter2_1": {
    "file": "props/planter2_1.png",
+   "h": 106,
+   "w": 94
+  },
+  "planter2_1_winter": {
+   "file": "props/planter2_1_winter.png",
    "h": 106,
    "w": 94
   },
@@ -90401,8 +90454,18 @@
    "h": 107,
    "w": 98
   },
+  "planter2_2_winter": {
+   "file": "props/planter2_2_winter.png",
+   "h": 107,
+   "w": 98
+  },
   "planter2_3": {
    "file": "props/planter2_3.png",
+   "h": 106,
+   "w": 101
+  },
+  "planter2_3_winter": {
+   "file": "props/planter2_3_winter.png",
    "h": 106,
    "w": 101
   },
@@ -133942,11 +134005,11 @@
   },
   "walk": {
    "cell_h": 29,
-   "cell_w": 36,
+   "cell_w": 51,
    "file": "wildlife/badger/walk.png",
-   "frames": 2,
+   "frames": 4,
    "h": 29,
-   "w": 72
+   "w": 204
   }
  },
  "wildlife/bat": {
@@ -133978,11 +134041,11 @@
   },
   "walk": {
    "cell_h": 31,
-   "cell_w": 36,
+   "cell_w": 57,
    "file": "wildlife/beaver/walk.png",
-   "frames": 2,
+   "frames": 4,
    "h": 31,
-   "w": 72
+   "w": 228
   }
  },
  "wildlife/bee": {
@@ -134266,6 +134329,14 @@
    "h": 46,
    "w": 53
   },
+  "waddle": {
+   "cell_h": 46,
+   "cell_w": 53,
+   "file": "wildlife/duck/waddle.png",
+   "frames": 4,
+   "h": 46,
+   "w": 212
+  },
   "walk": {
    "cell_h": 46,
    "cell_w": 53,
@@ -134531,12 +134602,12 @@
    "w": 58
   },
   "walk": {
-   "cell_h": 30,
-   "cell_w": 48,
+   "cell_h": 29,
+   "cell_w": 61,
    "file": "wildlife/otter/walk.png",
-   "frames": 2,
-   "h": 30,
-   "w": 96
+   "frames": 4,
+   "h": 29,
+   "w": 244
   }
  },
  "wildlife/owl": {
@@ -134603,12 +134674,12 @@
    "w": 50
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 32,
+   "cell_h": 31,
+   "cell_w": 50,
    "file": "wildlife/raccoon/walk.png",
-   "frames": 2,
-   "h": 32,
-   "w": 64
+   "frames": 4,
+   "h": 31,
+   "w": 200
   }
  },
  "wildlife/rat": {
