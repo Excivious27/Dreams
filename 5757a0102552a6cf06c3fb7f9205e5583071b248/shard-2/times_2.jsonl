@@ -1,0 +1,21 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 471.0}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 5.2}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 3.0}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 11.0}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.9}
+{"step": 27, "name": "rec_links_test", "rc": 0, "secs": 2.7}
+{"step": 33, "name": "coop_test", "rc": 0, "secs": 2.8}
+{"step": 39, "name": "move_target_test", "rc": 0, "secs": 16.4}
+{"step": 45, "name": "early_gating_test", "rc": 0, "secs": 2.8}
+{"step": 51, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.9}
+{"step": 57, "name": "danger_music_test", "rc": 0, "secs": 27.9}
+{"step": 63, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.0}
+{"step": 69, "name": "every script compiles", "rc": 0, "secs": 3.7}
+{"step": 75, "name": "quest_tracker_test", "rc": 0, "secs": 4.3}
+{"step": 81, "name": "campaign_words_test", "rc": 0, "secs": 3.2}
+{"step": 87, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 19.9}
+{"step": 93, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 9.2}
+{"step": 99, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 21.0}
+{"step": 105, "name": "rec_games_test", "rc": 0, "secs": 2.9}
+{"step": 111, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 5.5}
+{"step": 117, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 4.0}

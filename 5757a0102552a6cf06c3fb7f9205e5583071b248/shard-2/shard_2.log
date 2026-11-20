@@ -1,0 +1,138 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | watermelon_seed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_sprout.png[39m[0m
+[  99% ] [90m[1mreimport[22m | watermelon_young.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (12940 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 471.0s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 5.2s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 3.0s
+
+#### step 15: phone_ui_test (shard 2/6)
+glyphs ok: 50 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 15 phone_ui_test: PASS in 11.0s
+
+#### step 21: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 21 gangster interior skins (c5_04): PASS in 2.9s
+
+#### step 27: rec_links_test (shard 2/6)
+rec_links_test: 0 failures
+#### step 27 rec_links_test: PASS in 2.7s
+
+#### step 33: coop_test (shard 2/6)
+coop_test: 0 failures
+#### step 33 coop_test: PASS in 2.8s
+
+#### step 39: move_target_test (shard 2/6)
+move_target_test: 0 failures
+#### step 39 move_target_test: PASS in 16.4s
+
+#### step 45: early_gating_test (shard 2/6)
+early_gating_test: PASS (0 fails)
+#### step 45 early_gating_test: PASS in 2.8s
+
+#### step 51: music: loop points are applied (data/music_loops.json) (shard 2/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 50 entries, 0 failures
+#### step 51 music: loop points are applied (data/music_loops.json): PASS in 2.9s
+
+#### step 57: danger_music_test (shard 2/6)
+danger_music_test: 0 failures
+#### step 57 danger_music_test: PASS in 27.9s
+
+#### step 63: allies: enemies fight back, pup commands (shard 2/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 63 allies: enemies fight back, pup commands: PASS in 4.0s
+
+#### step 69: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 69 every script compiles: PASS in 3.7s
+
+#### step 75: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 75 quest_tracker_test: PASS in 4.3s
+
+#### step 81: campaign_words_test (shard 2/6)
+campaign_words_test: 0 fails
+#### step 81 campaign_words_test: PASS in 3.2s
+
+#### step 87: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 2/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 148 checks, 0 failures
+#### step 87 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 19.9s
+
+#### step 93: mega regions: map tabs, unlocks, travel (shard 2/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 93 mega regions: map tabs, unlocks, travel: PASS in 9.2s
+
+#### step 99: menu sweep: every menu button, both arcs (C2) (shard 2/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 164 buttons pressed, 0 failures
+#### step 99 menu sweep: every menu button, both arcs (C2): PASS in 21.0s
+
+#### step 105: rec_games_test (shard 2/6)
+rec_games_test: 0 failures
+#### step 105 rec_games_test: PASS in 2.9s
+
+#### step 111: C7 P5: colony stories and crew (shard 2/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 111 C7 P5: colony stories and crew: PASS in 5.5s
+
+#### step 117: C9 P2: game menu with keys/pad (shard 2/6)
+== C9 P2: game menu with keys/pad ==
+menu_pad_test: 0 failures
+#### step 117 C9 P2: game menu with keys/pad: PASS in 4.0s
+
+#### shard 2/6 done in 627s: PASS

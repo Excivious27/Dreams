@@ -1,0 +1,21 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 317.8}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 26.2}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 3.2}
+{"step": 18, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 2.8}
+{"step": 24, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 22.9}
+{"step": 30, "name": "bowling_test", "rc": 0, "secs": 13.2}
+{"step": 36, "name": "crop_test", "rc": 0, "secs": 4.5}
+{"step": 42, "name": "cf_volunteer_test", "rc": 0, "secs": 6.8}
+{"step": 48, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 54, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.0}
+{"step": 60, "name": "footstep_test", "rc": 0, "secs": 5.5}
+{"step": 66, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 3.3}
+{"step": 72, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 7.1}
+{"step": 78, "name": "farm_debris_test", "rc": 0, "secs": 4.0}
+{"step": 84, "name": "skill_glow_test", "rc": 0, "secs": 3.5}
+{"step": 90, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 10.0}
+{"step": 96, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 9.3}
+{"step": 102, "name": "jumper_test", "rc": 0, "secs": 2.4}
+{"step": 108, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 7.2}
+{"step": 114, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 2.9}
+{"step": 120, "name": "C9 P5: save codes and files", "rc": 0, "secs": 2.2}
