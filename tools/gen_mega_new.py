@@ -280,7 +280,7 @@ LOOKS = {
     "snow": {"ground": "grass", "ground_seam": "snow_packed", "path": "snow_trodden", "border": "trees", "season": "winter", "cliff_style": ["snow", "stair_snow"], "backdrop": "mountains", "weather": "snow",
              "gen": {"region_props": ["snowdrift_0", "snowdrift_1", "snowdrift_2", "snowdrift_3", "snowdrift_4", "snowdrift_5", "rock_snow_s", "rock_snow_m", "bush_snow", "bush_bare_snow", "stump_snow", "grass_tuft_winter"], "region_count": 36,
                      "critters": ["eagle", "rabbit"], "critter_count": 5}},
-    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "season": "summer", "backdrop": "hills", "weather": "wind", "pet": False,
+    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "void_color": "eef0ff", "season": "summer", "backdrop": "hills", "weather": "wind", "pet": False,
             "gen": {"region_props": ["skydeco_0", "skydeco_1", "skydeco_2", "skydeco_3", "skydeco_4", "skydeco_5", "skydeco_6", "skydeco_7", "cloud_tree_a", "cloud_tree_b", "cloud_tree_c", "starflower_blue", "starflower_yellow"], "region_count": 34,
                     "critters": ["eagle", "butterfly_blue"], "critter_count": 5}},
     "gilt": {"ground": "grass", "ground_seam": "plaza_tiles", "path": "cobble_warm", "border": "cliff", "cliff_style": ["grass", "stair_iron"], "backdrop": "city", "weather": "clear",
@@ -827,7 +827,7 @@ def build_area(aid, mega, spec, links_geom):
          "mega": mega, "area_name": spec.get("name", "")}
     if spec.get("music_fallback"):
         R["music_fallback"] = spec["music_fallback"]
-    for k in ("ground", "ground_seam", "path", "border", "backdrop", "weather", "season", "cliff_style", "pet"):
+    for k in ("ground", "ground_seam", "path", "border", "void_color", "backdrop", "weather", "season", "cliff_style", "pet"):
         v = spec.get(k, L.get(k))
         if v is not None:
             R[k] = v
@@ -1124,6 +1124,7 @@ def patch_external(regs):
         lane = EXT_LANES[ext]
         if lane not in R["paths"]:
             R["paths"].append(lane)
+    regs["sky"]["void_color"] = LOOKS["sky"]["void_color"]  # the cloud bank past the edge, not a black band (c9_14)
     # The Sky Isles' plain Finargles are the queen's drones (c4_08 #6).
     for e in regs["sky"].get("enemies", []):
         if isinstance(e, dict) and e.get("kind") in ("finargle", "finargle_drone"):

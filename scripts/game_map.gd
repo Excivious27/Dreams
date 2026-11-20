@@ -4303,10 +4303,19 @@ func draw_border() -> void:
 	var water: Dictionary = bg["water"]
 	var cliff: Dictionary = bg["cliff"]
 	var treec: Dictionary = bg["tree"]
+	# Void past the map edge: space stays dark; a region's "void_color" (sky isles:
+	# the cloud bank) fades in toward the outside instead of a black band (c9_14).
+	var vrd = get("R")
+	var vcs := str((vrd as Dictionary).get("void_color", "")) if vrd is Dictionary else ""
 	for c: Vector2i in bg["void"]:
 		var vr := Rect2(c * TILE, Vector2i(TILE, TILE))
-		if not Art.clipped(vr):
+		if Art.clipped(vr):
+			continue
+		if vcs == "":
 			draw_rect(vr, Color(0.05, 0.05, 0.08))
+			continue
+		var dep := maxi(maxi(-c.x, c.x - (cols - 1)), maxi(-c.y, c.y - (rows - 1)))  # cells past the content edge
+		draw_rect(vr, Color(vcs, 0.55 if dep < pad else 0.85))
 	# Exit corridors through the band match the map's own paths (dirt on grass maps).
 	if not _border_open.is_empty():
 		# Each exit's corridor is as wide as the exit (not the grown band opening), and on
