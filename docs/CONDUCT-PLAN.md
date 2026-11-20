@@ -149,7 +149,7 @@ After CONDUCT 17, then the final package and artifact. Sole purpose: cutscenes t
 
 ## Added 2026-11-19 17:12 (Tom's Guide 11 answers)
 - Helper automation (any recruit/helper/pup/tamed animal): assign to farming, combat, foraging, hauling; energy, work amounts, tiered levelling per skill, deposit into assigned placed chests; intuitive UI. Base built in CONDUCT 3/7 (crew/helpers), finished in CONDUCT 11 with trainable ranch animals.
-- Casino side arc (gangster arc): bring a casino to town against NPC pushback, tiered expansion, hiring staff, tied to the tier system; all-ages (chips/tickets). Built in CONDUCT 10 (with decor/build tiers), balanced in C16.
+- Casino side arc (gangster arc): bring a casino to town against NPC pushback, tiered expansion, hiring staff, tied to the tier system; all-ages tone with real betting allowed (Tom 20:03; supersedes chips/tickets), no drinking (wines are trade goods). Built in CONDUCT 10 (with decor/build tiers), balanced in C16.
 - Exploration everywhere (hidden areas, secret passages, ways up/down) and underwater caverns on the merkitty islands: C14 (aesthetics/exploration) with island content in C7/C12.
 - Story spine: Tom's book is canon for the penguin arc; Grumps = converted Crystopia crystals (+ some other creatures); Catkins' monastic guardian line; Nova's universe-of-happiness dream; gangster origin (fighting gangs, corrupted, redeemable). C7/C12 rebuild with no plot holes; C18 intro cutscene shows the Star Crystal visiting the hero.
 

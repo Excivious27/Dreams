@@ -46,10 +46,11 @@ difficulty_test, day_length_test, hidden_area_test, mega_ui_test; save_test, coo
 - Convoy progress on resume.
 - c_colony_ember still needs its own battlefield.
 - Regrowth by rarity on maps other than the farm.
-- Three songs: Moonpool, Canyon, Temple (they fall back to older tracks for now).
+- ~~Three songs: Moonpool, Canyon, Temple~~ (done after C4: ACE songs imported).
 - Small plateau cliff sides.
 - Pockets are not yet tied to path dead ends.
 - Cities pin positions on the map.
+- Added by C5 c5_20: a 2-bot mega-region run per CONDUCT (one per arc) was planned, not run; the gilt_guard art (fixed in C5 P6: drawn as casino_guard); C3 leftovers that fell off this list: farm/town/community-farm clipped-bake checks, battle toasts on the desktop view, the frozen-agent watchdog, the community farm's city edge.
 
 ## Timing (from commit times; paused 20:14 for the CI optimisation)
 

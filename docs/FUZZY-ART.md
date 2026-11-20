@@ -15,22 +15,23 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 | group | images | fuzz >= 55 | worst |
 |---|---|---|---|
 | buildings | 114 | 1 | 59.0 |
-| props | 2134 | 62 | 80.2 |
-| nature | 241 | 0 | 50.0 |
+| props | 2165 | 62 | 80.2 |
+| nature | 252 | 0 | 50.0 |
 | furniture | 805 | 3 | 63.3 |
 | stations | 32 | 5 | 81.2 |
-| enemies | 238 | 2 | 56.5 |
-| characters | 2823 | 273 | 72.2 |
+| enemies | 314 | 2 | 56.5 |
+| characters | 2826 | 236 | 72.4 |
 | animals | 430 | 45 | 72.2 |
 | wildlife | 94 | 12 | 65.3 |
 | tiles | 3676 | 125 | 85.0 |
-| cliffs | 51 | 0 | 49.4 |
-| ui | 1302 | 21 | 91.2 |
-| items | 2419 | 30 | 70.5 |
+| cliffs | 54 | 0 | 49.4 |
+| ui | 1314 | 21 | 91.2 |
+| items | 2427 | 30 | 70.5 |
 | animals_ref | 14 | 0 | 38.2 |
 | battle | 34 | 0 | 38.1 |
 | body | 130 | 48 | 75.5 |
 | crops | 858 | 30 | 73.6 |
+| decals | 3 | 0 | 51.4 |
 | edges | 80 | 0 | 52.1 |
 | emotes | 25 | 0 | 31.8 |
 | faces | 16 | 0 | 43.3 |
@@ -38,7 +39,7 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 | hair | 24 | 2 | 68.5 |
 | hats | 16 | 0 | 46.7 |
 | hats_poses | 8 | 0 | 34.5 |
-| helpers | 80 | 0 | 47.9 |
+| helpers | 95 | 0 | 47.9 |
 | icons_hair | 24 | 0 | 50.4 |
 | mounts | 8 | 0 | 48.1 |
 | portraits | 1159 | 360 | 76.1 |
@@ -313,46 +314,46 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 
 | fuzz | file | size | soft rim | detail | grad | colours/100px |
 |---|---|---|---|---|---|---|
-| 72.2 | characters/penguin_king/view_back.png | 72x94 | 1.16 | 0.194 | 0.251 | 86.2 |
-| 72.0 | characters/penguin_king/idle_up.png | 144x94 | 1.17 | 0.194 | 0.254 | 83.3 |
-| 71.9 | characters/mk_sable/view_back.png | 54x84 | 1.21 | 0.191 | 0.264 | 86.4 |
-| 71.4 | characters/penguin_king/idle.png | 156x98 | 1.14 | 0.2 | 0.258 | 88.5 |
-| 71.3 | characters/penguin_king/view_left.png | 78x98 | 1.15 | 0.201 | 0.258 | 92.2 |
-| 71.3 | characters/penguin_king/view_right.png | 78x98 | 1.15 | 0.201 | 0.258 | 92.2 |
-| 70.8 | characters/penguin_wizard/walk.png | 504x100 | 1.22 | 0.207 | 0.258 | 71.7 |
-| 70.7 | characters/big_jim/walk_up.png | 144x90 | 1.14 | 0.202 | 0.27 | 68.8 |
-| 70.6 | characters/penguin_king/run.png | 588x90 | 1.18 | 0.206 | 0.264 | 83.1 |
-| 70.6 | characters/big_jim/idle_up.png | 144x90 | 1.09 | 0.202 | 0.272 | 69.6 |
-| 70.4 | characters/mk_tomas/power.png | 840x88 | 1.13 | 0.209 | 0.264 | 69.0 |
-| 70.3 | characters/mk_kit/walk_up.png | 232x92 | 1.18 | 0.204 | 0.274 | 88.5 |
-| 70.1 | characters/mk_sable/idle_up.png | 112x89 | 1.14 | 0.214 | 0.26 | 81.3 |
-| 70.1 | characters/penguin_king/walk.png | 624x92 | 1.19 | 0.213 | 0.263 | 72.6 |
-| 69.8 | characters/mk_sable/walk_up.png | 232x90 | 1.19 | 0.21 | 0.274 | 74.7 |
-| 69.6 | characters/mk_atlas/view_back.png | 84x94 | 1.05 | 0.214 | 0.272 | 93.6 |
-| 69.5 | characters/penguin_king/view_front.png | 100x96 | 1.18 | 0.215 | 0.27 | 89.9 |
-| 69.5 | characters/mk_bruno/view_back.png | 66x89 | 1.08 | 0.213 | 0.275 | 95.9 |
-| 69.3 | characters/mk_bruno/hurt.png | 176x90 | 1.1 | 0.208 | 0.289 | 93.9 |
-| 69.1 | characters/penguin_king/idle_down.png | 300x96 | 1.16 | 0.217 | 0.276 | 85.8 |
-| 68.8 | characters/penguin_wizard/run.png | 432x90 | 1.12 | 0.217 | 0.285 | 83.4 |
-| 68.6 | characters/penguin_wizard/view_left.png | 72x96 | 1.14 | 0.215 | 0.292 | 93.4 |
-| 68.6 | characters/penguin_wizard/view_right.png | 72x96 | 1.14 | 0.215 | 0.292 | 93.4 |
-| 68.3 | characters/mk_tomas/guard.png | 160x90 | 0.91 | 0.219 | 0.29 | 97.4 |
-| 68.2 | characters/mk_bruno/walk_up.png | 264x91 | 1.09 | 0.222 | 0.287 | 90.9 |
-| 68.1 | characters/mk_atlas/view_left.png | 60x92 | 1.03 | 0.219 | 0.294 | 95.4 |
-| 68.1 | characters/mk_kit/view_back.png | 58x89 | 1.17 | 0.225 | 0.283 | 96.2 |
-| 68.0 | characters/penguin_king/walk_down.png | 400x96 | 1.2 | 0.226 | 0.285 | 75.4 |
-| 68.0 | characters/mk_bruno/walk.png | 296x86 | 1.12 | 0.218 | 0.298 | 92.8 |
-| 68.0 | characters/mk_bruno/idle_up.png | 132x89 | 1.08 | 0.225 | 0.287 | 94.4 |
-| 67.9 | characters/penguin_wizard/idle.png | 152x96 | 1.14 | 0.22 | 0.298 | 90.9 |
-| 67.9 | characters/mk_kit/idle_up.png | 144x91 | 1.2 | 0.227 | 0.284 | 93.5 |
-| 67.8 | characters/penguin_wizard/view_front.png | 80x96 | 1.1 | 0.223 | 0.294 | 90.4 |
-| 67.5 | characters/penguin_wizard/walk_down.png | 320x96 | 1.21 | 0.23 | 0.289 | 76.9 |
-| 67.5 | characters/mk_sable/walk.png | 248x86 | 1.18 | 0.224 | 0.3 | 85.3 |
-| 67.4 | characters/penguin_king/walk_up.png | 384x95 | 1.17 | 0.237 | 0.277 | 70.4 |
-| 67.4 | characters/mk_bruno/idle_side.png | 100x91 | 1.1 | 0.226 | 0.298 | 93.5 |
-| 67.3 | characters/mk_tomas/attack.png | 348x87 | 1.13 | 0.232 | 0.289 | 94.0 |
-| 67.2 | characters/penguin_wizard/idle_down.png | 246x96 | 1.1 | 0.226 | 0.302 | 86.1 |
-| 67.1 | characters/mk_mei/guard.png | 176x83 | 1.12 | 0.234 | 0.289 | 95.8 |
+| 72.4 | characters/penguin_king/view_back.png | 72x94 | 1.2 | 0.194 | 0.248 | 86.1 |
+| 72.3 | characters/penguin_king/idle_up.png | 144x94 | 1.21 | 0.193 | 0.252 | 83.3 |
+| 72.2 | characters/mk_sable/view_back.png | 54x84 | 1.13 | 0.189 | 0.261 | 86.2 |
+| 71.7 | characters/penguin_king/view_left.png | 78x98 | 1.18 | 0.199 | 0.254 | 92.3 |
+| 71.7 | characters/penguin_king/view_right.png | 78x98 | 1.18 | 0.199 | 0.254 | 92.3 |
+| 71.7 | characters/penguin_king/idle.png | 156x98 | 1.17 | 0.199 | 0.254 | 88.5 |
+| 71.3 | characters/penguin_wizard/walk.png | 504x100 | 1.28 | 0.203 | 0.252 | 71.3 |
+| 71.0 | characters/big_jim/walk_up.png | 144x90 | 1.13 | 0.201 | 0.264 | 68.7 |
+| 70.9 | characters/penguin_king/run.png | 588x90 | 1.22 | 0.204 | 0.261 | 83.2 |
+| 70.9 | characters/big_jim/idle_up.png | 144x90 | 1.1 | 0.201 | 0.267 | 69.5 |
+| 70.4 | characters/mk_tomas/power.png | 840x88 | 1.11 | 0.208 | 0.264 | 69.2 |
+| 70.4 | characters/penguin_king/walk.png | 624x92 | 1.24 | 0.21 | 0.261 | 72.7 |
+| 70.4 | characters/mk_kit/walk_up.png | 232x92 | 1.16 | 0.204 | 0.273 | 88.5 |
+| 70.3 | characters/mk_sable/idle_up.png | 112x89 | 1.14 | 0.212 | 0.26 | 81.2 |
+| 70.0 | characters/mk_sable/walk_up.png | 232x90 | 1.15 | 0.208 | 0.273 | 74.8 |
+| 69.7 | characters/penguin_king/view_front.png | 100x96 | 1.23 | 0.215 | 0.267 | 89.9 |
+| 69.6 | characters/mk_atlas/view_back.png | 84x94 | 1.01 | 0.214 | 0.27 | 93.7 |
+| 69.5 | characters/mk_bruno/hurt.png | 176x90 | 1.05 | 0.207 | 0.287 | 94.1 |
+| 69.5 | characters/mk_bruno/view_back.png | 66x89 | 1.02 | 0.213 | 0.275 | 95.9 |
+| 69.3 | characters/penguin_king/idle_down.png | 300x96 | 1.2 | 0.217 | 0.273 | 85.8 |
+| 69.0 | characters/penguin_wizard/run.png | 432x90 | 1.15 | 0.216 | 0.28 | 83.6 |
+| 68.8 | characters/penguin_wizard/view_left.png | 72x96 | 1.14 | 0.214 | 0.29 | 93.4 |
+| 68.8 | characters/penguin_wizard/view_right.png | 72x96 | 1.14 | 0.214 | 0.29 | 93.4 |
+| 68.5 | characters/mk_kit/view_back.png | 58x89 | 1.14 | 0.224 | 0.277 | 96.3 |
+| 68.3 | characters/mk_tomas/guard.png | 160x90 | 0.74 | 0.22 | 0.29 | 97.6 |
+| 68.3 | characters/mk_bruno/walk_up.png | 264x91 | 1.02 | 0.221 | 0.286 | 90.8 |
+| 68.2 | characters/mk_atlas/view_left.png | 60x92 | 1.02 | 0.219 | 0.293 | 95.2 |
+| 68.1 | characters/mk_bruno/walk.png | 296x86 | 1.09 | 0.218 | 0.297 | 93.0 |
+| 68.1 | characters/mk_kit/idle_up.png | 144x91 | 1.17 | 0.227 | 0.28 | 93.7 |
+| 68.0 | characters/penguin_wizard/idle.png | 152x96 | 1.14 | 0.22 | 0.295 | 90.9 |
+| 68.0 | characters/penguin_king/walk_down.png | 400x96 | 1.23 | 0.226 | 0.285 | 75.4 |
+| 68.0 | characters/mk_bruno/idle_up.png | 132x89 | 1.03 | 0.225 | 0.287 | 94.4 |
+| 67.9 | characters/penguin_wizard/view_front.png | 80x96 | 1.09 | 0.222 | 0.293 | 90.3 |
+| 67.7 | characters/penguin_king/walk_up.png | 384x95 | 1.21 | 0.234 | 0.275 | 70.5 |
+| 67.5 | characters/penguin_wizard/walk_down.png | 320x96 | 1.24 | 0.229 | 0.288 | 76.8 |
+| 67.5 | characters/mk_sable/walk.png | 248x86 | 1.19 | 0.223 | 0.3 | 85.3 |
+| 67.5 | characters/mk_bruno/sit.png | 60x62 | 0.85 | 0.222 | 0.304 | 96.3 |
+| 67.4 | characters/mk_bruno/idle_side.png | 100x91 | 0.95 | 0.226 | 0.298 | 93.6 |
+| 67.3 | characters/penguin_wizard/idle_down.png | 246x96 | 1.1 | 0.226 | 0.3 | 86.2 |
+| 67.3 | characters/mk_tomas/attack.png | 348x87 | 1.13 | 0.231 | 0.289 | 94.1 |
 
 ## animals
 
@@ -522,6 +523,7 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 | 42.2 | cliffs/cave_stone_outer_l.png | 103x121 | 0.0 | 0.16 | 0.205 | 87.3 |
 | 42.0 | cliffs/cave_earth_outer_l.png | 103x121 | 0.0 | 0.162 | 0.206 | 90.6 |
 | 41.7 | cliffs/cave_stone_wall.png | 765x126 | 0.0 | 0.143 | 0.19 | 49.7 |
+| 41.3 | cliffs/cloudstone_strip.png | 664x138 | 0.0 | 0.122 | 0.177 | 38.4 |
 | 40.8 | cliffs/cave_lava_outer_r.png | 127x136 | 0.0 | 0.171 | 0.215 | 93.8 |
 | 40.2 | cliffs/sand_inner_l.png | 121x143 | 0.0 | 0.171 | 0.229 | 89.1 |
 | 40.1 | cliffs/cave_lava_outer_l.png | 121x136 | 0.0 | 0.175 | 0.223 | 93.4 |
@@ -532,7 +534,6 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 | 39.1 | cliffs/sand_outer_l.png | 116x142 | 0.0 | 0.177 | 0.242 | 90.7 |
 | 38.6 | cliffs/sand_corner_a.png | 110x149 | 0.0 | 0.18 | 0.247 | 90.2 |
 | 38.5 | cliffs/sand_corner_b.png | 111x150 | 0.0 | 0.183 | 0.244 | 87.7 |
-| 38.1 | cliffs/sand_outer_r.png | 119x143 | 0.0 | 0.186 | 0.246 | 91.2 |
 
 ## ui
 
@@ -771,6 +772,14 @@ magnification of 2x-detail art stays crisp instead of bilinear-soft.
 | 53.6 | crops/moonflower_ready.png | 113x116 | 0.34 | 0.215 | 0.284 | 94.8 |
 | 53.2 | crops/worldseed_young.png | 41x50 | 1.16 | 0.319 | 0.436 | 99.7 |
 | 53.1 | crops/prism_tomato_growing.png | 58x87 | 1.28 | 0.323 | 0.432 | 99.7 |
+
+## decals
+
+| fuzz | file | size | soft rim | detail | grad | colours/100px |
+|---|---|---|---|---|---|---|
+| 51.4 | decals/glass_b.png | 64x58 | 1.66 | 0.365 | 0.419 | 99.8 |
+| 50.0 | decals/glass_a.png | 63x47 | 1.69 | 0.446 | 0.542 | 99.7 |
+| 50.0 | decals/glass_c.png | 64x39 | 1.66 | 0.474 | 0.62 | 99.8 |
 
 ## edges
 
