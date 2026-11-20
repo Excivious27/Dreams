@@ -402,9 +402,10 @@ static func guest_morning() -> Dictionary:
 	var total := 0
 	if not run.has("sold_today"):
 		run["sold_today"] = {}
+	total += quality_bonus_value(run.get("sellbox_q", {}))  # before the box saturates (C8 P1)
 	for id in run["sellbox"].keys():
 		total += sell_price(id, int(run["sellbox"][id]))
-	total += quality_bonus_value(run.get("sellbox_q", {}))
+		ship_log(str(id), int(run["sellbox"][id]))
 	run["sellbox_q"] = {}
 	run["sellbox"] = {}
 	run["sold_today"] = {}
@@ -1868,6 +1869,44 @@ static func consume_blocked(id: String) -> String:
 	return "nothing"
 
 
+## What eating `id` gives at most (same rules as consume, before today's
+## caps): {"hp", "energy", "mana", "buff"}. For the Items tab / shop lines.
+static func food_effect(id: String) -> Dictionary:
+	var it: Dictionary = items.get(id, {})
+	var heal := int(it.get("heal", 0))
+	var ty := str(it.get("type", ""))
+	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 5)
+	var out := {}
+	if heal > 0:
+		out["hp"] = heal
+	var en := int(it.get("energy", 0)) + heal * en_mult
+	if en > 0:
+		out["energy"] = en
+	if int(it.get("mana", 0)) > 0:
+		out["mana"] = int(it["mana"])
+	if it.has("buff"):
+		out["buff"] = str((it["buff"] as Dictionary).get("kind", ""))
+	return out
+
+
+## One short line for food_effect ("+33 energy  +20 health"), "" for non-food.
+static func food_line(id: String) -> String:
+	var e := food_effect(id)
+	var parts: Array = []
+	if e.has("energy"): parts.append("+%d energy" % int(e["energy"]))
+	if e.has("hp"): parts.append("+%d health" % int(e["hp"]))
+	if e.has("mana"): parts.append("+%d mana" % int(e["mana"]))
+	if e.has("buff"): parts.append(str(e["buff"]) + " buff")
+	return "  ".join(parts)
+
+
+## True when selling `n` more of `id` today dips below full price (the daily
+## saturation): the sell box can say "mix crops for full price" (C8 P1).
+static func saturating(id: String, n: int) -> bool:
+	var in_box := int((run.get("sellbox", {}) as Dictionary).get(id, 0))  # saturation() adds sold_today
+	return saturation(id, in_box + maxi(0, n - 1)) < 1.0
+
+
 ## Why the last consume() kept the item (see consume_blocked).
 static var last_full_why := ""
 
@@ -2907,6 +2946,19 @@ static func clock_text() -> String:
 
 
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
+## Shipping log (Collections, C8 P3): records a sale; true the first time
+## this item is ever shipped. Loaded by path so this file doesn't depend on the
+## Collections script existing.
+static var _coll: Variant = null
+
+static func ship_log(id: String, n: int) -> bool:
+	if _coll == null:
+		_coll = load("res://scripts/collections.gd") if ResourceLoader.exists("res://scripts/collections.gd") else false
+	if _coll is Script:
+		return bool(_coll.call("record_ship", id, n, true))
+	return false
+
+
 ## Bartering XP from one night's box (was 20 + 5 x level: it fed itself).
 const BARTER_XP_NIGHT := 60
 ## Up late: bedtime past midnight wakes you on LATE_WAKE_MIN of the bar at 2am.
@@ -2958,6 +3010,8 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["sold_today"][id] = int(run["sold_today"].get(id, 0)) + n
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
+		if ship_log(str(id), n):
+			report["ship_new"] = report.get("ship_new", []) + [str(id)]
 	if qb > 0:
 		total += qb
 		report["sold"].append("quality bonus = %d" % qb)

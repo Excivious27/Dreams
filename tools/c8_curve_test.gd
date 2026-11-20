@@ -34,6 +34,7 @@ func _initialize() -> void:
 	_food()
 	_prices()
 	_sleep_bits()
+	_helpers()
 	print("c8_curve_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -239,3 +240,13 @@ func _sleep_bits() -> void:
 	r["day"] = 20
 	r["crystals"] = 1000
 	_ok(Faint.fee(false, 0) == 50, "away from home the 5% still goes missing (headless: no map)")
+
+
+func _helpers() -> void:
+	_fresh()
+	_ok(GameState.food_line("bread").contains("energy"), "bread shows its energy (%s)" % GameState.food_line("bread"))
+	GameState.run["sellbox"] = {}
+	GameState.run["sold_today"] = {}
+	_ok(not GameState.saturating("turnip", 5), "5 turnips: full price")
+	_ok(GameState.saturating("turnip", 30), "30 turnips: saturating")
+	_ok(not GameState.ship_log("turnip", 1) or ResourceLoader.exists("res://scripts/collections.gd"), "ship log is a no-op without Collections")
