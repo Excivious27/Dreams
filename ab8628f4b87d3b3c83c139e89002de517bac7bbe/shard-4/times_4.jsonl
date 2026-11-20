@@ -1,0 +1,21 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 437.0}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 44.9}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.7}
+{"step": 17, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.7}
+{"step": 23, "name": "storage_test", "rc": 0, "secs": 2.8}
+{"step": 29, "name": "rec_audio_test", "rc": 0, "secs": 2.8}
+{"step": 35, "name": "farm_look_test", "rc": 0, "secs": 4.3}
+{"step": 41, "name": "shop_econ_test", "rc": 0, "secs": 3.0}
+{"step": 47, "name": "workshop: no dead ends", "rc": 0, "secs": 2.4}
+{"step": 53, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 59, "name": "ambience_test", "rc": 0, "secs": 5.7}
+{"step": 65, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 4.6}
+{"step": 71, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 9.1}
+{"step": 77, "name": "c6_cue_test", "rc": 0, "secs": 2.6}
+{"step": 83, "name": "meow_gate_test", "rc": 0, "secs": 3.5}
+{"step": 89, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 6.5}
+{"step": 95, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 21.3}
+{"step": 101, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 3.3}
+{"step": 107, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 4.5}
+{"step": 113, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.2}
+{"step": 119, "name": "C9 P4: haptics", "rc": 0, "secs": 2.8}
