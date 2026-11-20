@@ -44611,6 +44611,278 @@
    "w": 196
   }
  },
+ "enemies/grump_brute": {
+  "attack": {
+   "cell_h": 74,
+   "cell_w": 105,
+   "file": "enemies/grump_brute/attack.png",
+   "frames": 4,
+   "h": 74,
+   "w": 420
+  },
+  "hurt": {
+   "cell_h": 79,
+   "cell_w": 103,
+   "file": "enemies/grump_brute/hurt.png",
+   "frames": 2,
+   "h": 79,
+   "w": 206
+  },
+  "idle": {
+   "cell_h": 68,
+   "cell_w": 93,
+   "file": "enemies/grump_brute/idle.png",
+   "frames": 4,
+   "h": 68,
+   "w": 372
+  },
+  "walk": {
+   "cell_h": 70,
+   "cell_w": 94,
+   "file": "enemies/grump_brute/walk.png",
+   "frames": 4,
+   "h": 70,
+   "w": 376
+  }
+ },
+ "enemies/grump_coral": {
+  "attack": {
+   "cell_h": 44,
+   "cell_w": 76,
+   "file": "enemies/grump_coral/attack.png",
+   "frames": 4,
+   "h": 44,
+   "w": 304
+  },
+  "hurt": {
+   "cell_h": 52,
+   "cell_w": 57,
+   "file": "enemies/grump_coral/hurt.png",
+   "frames": 2,
+   "h": 52,
+   "w": 114
+  },
+  "idle": {
+   "cell_h": 44,
+   "cell_w": 51,
+   "file": "enemies/grump_coral/idle.png",
+   "frames": 4,
+   "h": 44,
+   "w": 204
+  },
+  "walk": {
+   "cell_h": 46,
+   "cell_w": 53,
+   "file": "enemies/grump_coral/walk.png",
+   "frames": 4,
+   "h": 46,
+   "w": 212
+  }
+ },
+ "enemies/grump_crystal": {
+  "attack": {
+   "cell_h": 45,
+   "cell_w": 83,
+   "file": "enemies/grump_crystal/attack.png",
+   "frames": 4,
+   "h": 45,
+   "w": 332
+  },
+  "hurt": {
+   "cell_h": 53,
+   "cell_w": 59,
+   "file": "enemies/grump_crystal/hurt.png",
+   "frames": 2,
+   "h": 53,
+   "w": 118
+  },
+  "idle": {
+   "cell_h": 46,
+   "cell_w": 53,
+   "file": "enemies/grump_crystal/idle.png",
+   "frames": 4,
+   "h": 46,
+   "w": 212
+  },
+  "walk": {
+   "cell_h": 46,
+   "cell_w": 63,
+   "file": "enemies/grump_crystal/walk.png",
+   "frames": 4,
+   "h": 46,
+   "w": 252
+  }
+ },
+ "enemies/grump_ember": {
+  "attack": {
+   "cell_h": 46,
+   "cell_w": 80,
+   "file": "enemies/grump_ember/attack.png",
+   "frames": 4,
+   "h": 46,
+   "w": 320
+  },
+  "hurt": {
+   "cell_h": 51,
+   "cell_w": 56,
+   "file": "enemies/grump_ember/hurt.png",
+   "frames": 2,
+   "h": 51,
+   "w": 112
+  },
+  "idle": {
+   "cell_h": 45,
+   "cell_w": 51,
+   "file": "enemies/grump_ember/idle.png",
+   "frames": 4,
+   "h": 45,
+   "w": 204
+  },
+  "walk": {
+   "cell_h": 39,
+   "cell_w": 62,
+   "file": "enemies/grump_ember/walk.png",
+   "frames": 4,
+   "h": 39,
+   "w": 248
+  }
+ },
+ "enemies/grump_frost": {
+  "attack": {
+   "cell_h": 47,
+   "cell_w": 91,
+   "file": "enemies/grump_frost/attack.png",
+   "frames": 4,
+   "h": 47,
+   "w": 364
+  },
+  "hurt": {
+   "cell_h": 52,
+   "cell_w": 66,
+   "file": "enemies/grump_frost/hurt.png",
+   "frames": 2,
+   "h": 52,
+   "w": 132
+  },
+  "idle": {
+   "cell_h": 44,
+   "cell_w": 65,
+   "file": "enemies/grump_frost/idle.png",
+   "frames": 4,
+   "h": 44,
+   "w": 260
+  },
+  "walk": {
+   "cell_h": 44,
+   "cell_w": 69,
+   "file": "enemies/grump_frost/walk.png",
+   "frames": 4,
+   "h": 44,
+   "w": 276
+  }
+ },
+ "enemies/grump_moss": {
+  "attack": {
+   "cell_h": 55,
+   "cell_w": 97,
+   "file": "enemies/grump_moss/attack.png",
+   "frames": 4,
+   "h": 55,
+   "w": 388
+  },
+  "hurt": {
+   "cell_h": 52,
+   "cell_w": 82,
+   "file": "enemies/grump_moss/hurt.png",
+   "frames": 2,
+   "h": 52,
+   "w": 164
+  },
+  "idle": {
+   "cell_h": 42,
+   "cell_w": 78,
+   "file": "enemies/grump_moss/idle.png",
+   "frames": 4,
+   "h": 42,
+   "w": 312
+  },
+  "walk": {
+   "cell_h": 58,
+   "cell_w": 71,
+   "file": "enemies/grump_moss/walk.png",
+   "frames": 4,
+   "h": 58,
+   "w": 284
+  }
+ },
+ "enemies/grump_storm": {
+  "attack": {
+   "cell_h": 56,
+   "cell_w": 87,
+   "file": "enemies/grump_storm/attack.png",
+   "frames": 4,
+   "h": 56,
+   "w": 348
+  },
+  "hurt": {
+   "cell_h": 52,
+   "cell_w": 59,
+   "file": "enemies/grump_storm/hurt.png",
+   "frames": 2,
+   "h": 52,
+   "w": 118
+  },
+  "idle": {
+   "cell_h": 44,
+   "cell_w": 55,
+   "file": "enemies/grump_storm/idle.png",
+   "frames": 4,
+   "h": 44,
+   "w": 220
+  },
+  "walk": {
+   "cell_h": 47,
+   "cell_w": 56,
+   "file": "enemies/grump_storm/walk.png",
+   "frames": 4,
+   "h": 47,
+   "w": 224
+  }
+ },
+ "enemies/grump_wisp": {
+  "attack": {
+   "cell_h": 56,
+   "cell_w": 79,
+   "file": "enemies/grump_wisp/attack.png",
+   "frames": 4,
+   "h": 56,
+   "w": 316
+  },
+  "hurt": {
+   "cell_h": 56,
+   "cell_w": 74,
+   "file": "enemies/grump_wisp/hurt.png",
+   "frames": 2,
+   "h": 56,
+   "w": 148
+  },
+  "idle": {
+   "cell_h": 46,
+   "cell_w": 72,
+   "file": "enemies/grump_wisp/idle.png",
+   "frames": 4,
+   "h": 46,
+   "w": 288
+  },
+  "walk": {
+   "cell_h": 44,
+   "cell_w": 77,
+   "file": "enemies/grump_wisp/walk.png",
+   "frames": 4,
+   "h": 44,
+   "w": 308
+  }
+ },
  "enemies/hill_wolf": {
   "attack": {
    "cell_h": 69,
@@ -57845,6 +58117,81 @@
   }
  },
  "helpers": {
+  "crystal_kin": {
+   "file": "helpers/crystal_kin.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_act_0": {
+   "file": "helpers/crystal_kin_crystal_act_0.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_act_1": {
+   "file": "helpers/crystal_kin_crystal_act_1.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_act_2": {
+   "file": "helpers/crystal_kin_crystal_act_2.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_act_3": {
+   "file": "helpers/crystal_kin_crystal_act_3.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_hurt_0": {
+   "file": "helpers/crystal_kin_crystal_hurt_0.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_hurt_1": {
+   "file": "helpers/crystal_kin_crystal_hurt_1.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_idle_0": {
+   "file": "helpers/crystal_kin_crystal_idle_0.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_idle_1": {
+   "file": "helpers/crystal_kin_crystal_idle_1.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_idle_2": {
+   "file": "helpers/crystal_kin_crystal_idle_2.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_idle_3": {
+   "file": "helpers/crystal_kin_crystal_idle_3.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_walk_0": {
+   "file": "helpers/crystal_kin_crystal_walk_0.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_walk_1": {
+   "file": "helpers/crystal_kin_crystal_walk_1.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_walk_2": {
+   "file": "helpers/crystal_kin_crystal_walk_2.png",
+   "h": 72,
+   "w": 79
+  },
+  "crystal_kin_crystal_walk_3": {
+   "file": "helpers/crystal_kin_crystal_walk_3.png",
+   "h": 72,
+   "w": 79
+  },
   "healer_crystal_act_0": {
    "file": "helpers/healer_crystal_act_0.png",
    "h": 102,
@@ -83298,6 +83645,36 @@
    "h": 104,
    "w": 96
   },
+  "bf_cairn": {
+   "file": "props/bf_cairn.png",
+   "h": 96,
+   "w": 81
+  },
+  "bf_ruin_pillar": {
+   "file": "props/bf_ruin_pillar.png",
+   "h": 120,
+   "w": 120
+  },
+  "bf_ruin_wall": {
+   "file": "props/bf_ruin_wall.png",
+   "h": 96,
+   "w": 135
+  },
+  "bf_sewer_mouth": {
+   "file": "props/bf_sewer_mouth.png",
+   "h": 100,
+   "w": 130
+  },
+  "bf_sky_pillar": {
+   "file": "props/bf_sky_pillar.png",
+   "h": 120,
+   "w": 113
+  },
+  "bf_weir_gate": {
+   "file": "props/bf_weir_gate.png",
+   "h": 100,
+   "w": 110
+  },
   "bicycle": {
    "file": "props/bicycle.png",
    "h": 44,
@@ -84821,6 +85198,31 @@
    "file": "props/crystal_door_open.png",
    "h": 96,
    "w": 106
+  },
+  "crystal_pylon": {
+   "file": "props/crystal_pylon.png",
+   "h": 83,
+   "w": 53
+  },
+  "crystal_pylon_0": {
+   "file": "props/crystal_pylon_0.png",
+   "h": 84,
+   "w": 107
+  },
+  "crystal_pylon_1": {
+   "file": "props/crystal_pylon_1.png",
+   "h": 84,
+   "w": 107
+  },
+  "crystal_pylon_2": {
+   "file": "props/crystal_pylon_2.png",
+   "h": 84,
+   "w": 107
+  },
+  "crystal_pylon_3": {
+   "file": "props/crystal_pylon_3.png",
+   "h": 84,
+   "w": 107
   },
   "crystal_rock": {
    "file": "props/crystal_rock.png",

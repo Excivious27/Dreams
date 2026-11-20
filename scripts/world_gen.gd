@@ -175,10 +175,34 @@ static func tree_border(m: GameMap, rect: Rect2i, seed_v: int, gaps: Array = [],
 		m.prop("nature", GameState.tree_sprite(rng.randi_range(0, 2)), cc)
 
 
+## A map's scatter theme (regions.json gen.theme, battlefields from tools/bf_themes.py):
+## {"trees": [names] ([] = no tree clumps), "rocks": [names], "logs": bool, "bushes": bool,
+##  "band": [names] (border undergrowth; [] = none)}. Names are nature/ or props/ art
+## ("props/x" or bare). Keeps green trees and berry bushes off pavement, ash and snow.
+static func theme(m: GameMap) -> Dictionary:
+	var rd = m.get("R")
+	if rd is Dictionary:
+		var g = (rd as Dictionary).get("gen", {})
+		if g is Dictionary and (g as Dictionary).get("theme") is Dictionary:
+			return (g as Dictionary)["theme"]
+	return {}
+
+
+## [group, name] for a theme art name ("props/x", or bare: nature first, then props).
+static func theme_art(nm: String) -> Array:
+	if "/" in nm:
+		return [nm.get_slice("/", 0), nm.get_slice("/", 1)]
+	return ["nature" if Art.has("nature", nm) else "props", nm]
+
+
 ## Random clusters of trees inside a rect.
 static func tree_clumps(m: GameMap, rect: Rect2i, seed_v: int, clumps: int, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
+	var th := theme(m)
+	var tpool: Array = th.get("trees", [])
+	if th.has("trees") and tpool.is_empty():
+		return  # pavement / deck / sky: no tree clumps at all
 	for i in clumps:
 		var cx := rng.randi_range(rect.position.x, rect.end.x - 1)
 		var cy := rng.randi_range(rect.position.y, rect.end.y - 1)
@@ -186,6 +210,13 @@ static func tree_clumps(m: GameMap, rect: Rect2i, seed_v: int, clumps: int, avoi
 		for k in n:
 			var c := Vector2i(cx + rng.randi_range(-2, 2), cy + rng.randi_range(-1, 1))
 			if not rect.has_point(c) or m.things.has(c) or m.blocked.has(c) or avoid.has(c) or m.is_cleared(c):
+				continue
+			if not tpool.is_empty():
+				var ga := theme_art(str(tpool[rng.randi_range(0, tpool.size() - 1)]))
+				if Art.has(str(ga[0]), str(ga[1])):
+					if str(ga[0]) == "nature" and str(ga[1]).contains("tree") or str(ga[1]).contains("pine"):
+						m.set_thing(c.x, c.y, {"type": "tree", "hp": 4, "hint": "A: chop"})
+					m.prop(str(ga[0]), str(ga[1]), c)  # solid either way
 				continue
 			m.set_thing(c.x, c.y, {"type": "tree", "hp": 4, "hint": "A: chop"})
 			m.prop("nature", GameState.tree_sprite(rng.randi_range(0, 2)), c)
@@ -196,10 +227,26 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	var season := GameState.look_se()
+	var th := theme(m)
+	var rocks: Array = th.get("rocks", [])
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
 		var r := rng.randf()  # rolled first so the layout doesn't shift as things are cleared
 		if m.things.has(c) or m.blocked.has(c) or avoid.has(c) or (r < 0.62 and m.is_cleared(c, 8 if r < 0.35 else 10)):
+			continue
+		# Themed ground: logs/stumps and berry bushes only where the theme allows them
+		# (they turn into rocks or nothing on pavement, decks, ash and snow).
+		if r >= 0.35 and r < 0.62 and not bool(th.get("logs", true)):
+			r = 0.3 if not rocks.is_empty() else 2.0
+		elif r >= 0.62 and not bool(th.get("bushes", true)):
+			r = 0.3 if not rocks.is_empty() and r < 0.8 else 2.0
+		if r > 1.0:
+			continue
+		if r < 0.35 and not rocks.is_empty():
+			var ga := theme_art(str(rocks[rng.randi_range(0, rocks.size() - 1)]))
+			if Art.has(str(ga[0]), str(ga[1])):
+				m.set_thing(c.x, c.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
+				m.prop(str(ga[0]), str(ga[1]), c)
 			continue
 		if r < 0.35:
 			var nm := "rock_s" if r < 0.2 else "rock_m"
@@ -602,6 +649,10 @@ static func dress_band(m: GameMap, seed_v: int) -> void:
 	var se := GameState.look_se()
 	var shrubs: Array = {"spring": ["bush", "bush2_green", "bush2_flower", "ferns", "hedge", "bush_white"], "summer": ["bush", "bush2_green", "ferns", "hedge", "bush2_yellow", "sunflower_bush"], "fall": ["bush_fall_orange", "bush_fall_red", "ferns", "bush2_red", "hedge"], "winter": ["bush_snow", "bush_bare_snow", "bush_snow", "hedge"]}.get(se, ["bush"])
 	var young: Array = {"spring": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_cherry_b"], "summer": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_willow_b"], "fall": ["mid_maple_b", "mid_oak_b", "mid_pine_b"], "winter": ["mid_snowpine_b", "mid_dead_b", "mid_snowpine"]}.get(se, ["mid_oak_b"])
+	var th := theme(m)
+	var band: Array = th.get("band", [])
+	if th.has("band") and band.is_empty():
+		return
 	for c: Vector2i in m._border_cells:
 		if str(m._border_cells[c]) != "tree" or m.props.has(c):
 			continue
@@ -616,6 +667,13 @@ static func dress_band(m: GameMap, seed_v: int) -> void:
 		rng.seed = hash(Vector3i(seed_v, c.x, c.y))
 		var r := rng.randf()
 		var nm: String
+		if not band.is_empty():
+			var ga := theme_art(str(band[rng.randi_range(0, band.size() - 1)]))
+			if r < 0.7 and Art.has(str(ga[0]), str(ga[1])):
+				var bs := m.prop(str(ga[0]), str(ga[1]), c, 0, 0.0, false, 0.5)
+				if bs:
+					bs.position.x += rng.randf_range(-3.0, 3.0)
+			continue
 		if r < 0.22 and Art.has("nature", str(young[0])):
 			nm = str(young[rng.randi_range(0, young.size() - 1)])
 		else:

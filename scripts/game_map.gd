@@ -3947,6 +3947,10 @@ func _build_border() -> void:
 	if scene_id() == "wastes" and Art.has("nature", "mid_dead"):
 		mids = ["mid_dead", "mid_dead_b"]  # a corrupted wasteland, not a blossom ring
 		bigs = ["big_dead_a", "big_dead_b"]
+	var bt = get("R")  # themed border stands (regions.json "border_trees": {"mid": [...], "big": [...]}, "props/x" allowed)
+	if bt is Dictionary and (bt as Dictionary).get("border_trees") is Dictionary:
+		mids = (bt as Dictionary)["border_trees"].get("mid", mids)
+		bigs = (bt as Dictionary)["border_trees"].get("big", bigs)
 	for c: Vector2i in _border_cells:
 		if _border_cells[c] != "tree":
 			continue
@@ -3957,10 +3961,14 @@ func _build_border() -> void:
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
 		if has_big:
 			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if depth <= 2 or rng.randf() < 0.4 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
+		var bg := "nature"
+		if "/" in nm:
+			bg = nm.get_slice("/", 0)
+			nm = nm.get_slice("/", 1)
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
-			prop("nature", nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
+			prop(bg, nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
 		else:
-			_border_draw.append([c, "nature", nm, rng.randf_range(-3.0, 3.0)])
+			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0)])
 	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
 
 
