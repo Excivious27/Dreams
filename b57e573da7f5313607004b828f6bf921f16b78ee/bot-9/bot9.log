@@ -1,0 +1,5 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 9 start arc=penguins hero=custom style=farmer progress=2 difficulty=1 day_len=20
+BOT WARN [9 farmer] player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=
+BOT 9 done: 0 fails, 1 warns, 418 steps, 0 kills, 0 ownerless pauses, scenes ["house", "frost_hearthhold", "hollow_heart", "town", "farm"], day 4, ◆2285

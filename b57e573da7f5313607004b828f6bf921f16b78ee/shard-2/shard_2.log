@@ -1,0 +1,119 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | water_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2356 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 125.9s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.0s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.0s
+
+#### step 15: performance guards (batched cliffs, texture cache) (shard 2/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 15 performance guards (batched cliffs, texture cache): PASS in 1.8s
+
+#### step 21: held-tool rules: right tool acts, wrong tool hints (shard 2/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+tool_rules_test: 0 failures
+#### step 21 held-tool rules: right tool acts, wrong tool hints: PASS in 22.5s
+
+#### step 27: bowling_test (shard 2/6)
+bowling_test: OK
+#### step 27 bowling_test: PASS in 12.7s
+
+#### step 33: crop_test (shard 2/6)
+crop_test: 0 failures
+#### step 33 crop_test: PASS in 3.5s
+
+#### step 39: gang_flavour_test (shard 2/6)
+gang_flavour_test: 0 failures
+#### step 39 gang_flavour_test: PASS in 1.9s
+
+#### step 45: every sound the game asks for exists (shard 2/6)
+== every sound the game asks for exists ==
+loop seam check skipped (No module named 'numpy')
+unused sfx (11, warning): alarm beat_tick cannon cave_in drain j_birthday j_skill monster save_done shop_bell unsheathe
+sfx asked for: 138 names, real recordings/ACE files: 465
+music: 79 tracks wired, 102/102 real (ACE)
+ambience: 32 beds, 17 spots
+sfx_audit: 0 missing
+#### step 45 every sound the game asks for exists: PASS in 0.3s
+
+#### step 51: music_stream_test (shard 2/6)
+music_stream_test: 0 failures
+#### step 51 music_stream_test: PASS in 8.6s
+
+#### step 57: arcs: path cards, arc building intros, locked-plan hints (shard 2/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 57 arcs: path cards, arc building intros, locked-plan hints: PASS in 3.1s
+
+#### step 63: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 63 every script compiles: PASS in 2.6s
+
+#### step 69: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 69 quest_tracker_test: PASS in 2.7s
+
+#### step 75: campaign_words_test (shard 2/6)
+campaign_words_test: 0 fails
+#### step 75 campaign_words_test: PASS in 2.1s
+
+#### step 81: story: every chapter plays to the end (shard 2/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 81 story: every chapter plays to the end: PASS in 19.2s
+
+#### step 87: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 2/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 87 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 8.5s
+
+#### step 93: jumper_test (shard 2/6)
+jumper_test: 0 failures
+#### step 93 jumper_test: PASS in 2.0s
+
+#### step 99: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 2/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 99 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 3.3s
+
+#### shard 2/6 done in 227s: PASS

@@ -1,0 +1,13 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 5 start arc=penguins hero=coco style=menus progress=1 difficulty=1 day_len=15
+WARNING: Hud: the game was paused with nothing on screen; resuming (scene farm, layers @CanvasLayer@5702, @CanvasLayer@5705, @CanvasLayer@5715, @CanvasLayer@5720, @CanvasLayer@5722, last menu press: , paused by: GameMenu 21 frames ago)
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _pause_watch (res://scripts/hud.gd:256)
+         [1] _process (res://scripts/hud.gd:162)
+BOT 5 done: 0 fails, 0 warns, 314 steps, 0 kills, 1 ownerless pauses, scenes ["meadow", "mine", "bf_shattered_vale", "orchard_hills", "sky", "riverlands", "moon", "farm"], day 4, ◆135
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+ERROR: 10 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:795)

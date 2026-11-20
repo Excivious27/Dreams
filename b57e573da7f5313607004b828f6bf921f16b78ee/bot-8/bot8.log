@@ -1,0 +1,5 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 8 start arc=penguins hero=big_jim style=wander progress=5 difficulty=2 day_len=30
+BOT WARN [8 wander] player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=
+BOT 8 done: 0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "crystal_meadow", "bf_frostfield", "orchard_hills", "gloam_violet_glade", "colony_kelp", "meadow", "marsh", "town"], day 4, ◆4785

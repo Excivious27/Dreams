@@ -1,0 +1,17 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 55.4}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 26.8}
+{"step": 11, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 44.2}
+{"step": 17, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 2.5}
+{"step": 23, "name": "ticket_econ_test", "rc": 0, "secs": 1.6}
+{"step": 29, "name": "gang_play_test", "rc": 0, "secs": 11.2}
+{"step": 35, "name": "npc_anim_test", "rc": 0, "secs": 1.7}
+{"step": 41, "name": "early_gating_test", "rc": 0, "secs": 1.7}
+{"step": 47, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 1.7}
+{"step": 53, "name": "mix_test", "rc": 0, "secs": 3.5}
+{"step": 59, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 5.5}
+{"step": 65, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 1, "secs": 4.9}
+{"step": 71, "name": "c6_cue_test", "rc": 0, "secs": 1.5}
+{"step": 77, "name": "meow_gate_test", "rc": 0, "secs": 2.2}
+{"step": 83, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 35.7}
+{"step": 89, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 6.3}
+{"step": 95, "name": "stack_whack_test", "rc": 0, "secs": 1.9}

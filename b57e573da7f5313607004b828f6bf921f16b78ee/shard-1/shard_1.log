@@ -1,0 +1,217 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | water_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | die.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2356 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 284.0s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 50.6s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 2.6s
+
+#### step 14: touch_ui_test (shard 1/6)
+touch_ui_test: 0 failures
+#### step 14 touch_ui_test: PASS in 39.7s
+
+#### step 20: storage_test (shard 1/6)
+storage_test: 0 failures
+#### step 20 storage_test: PASS in 1.9s
+
+#### step 26: rec_audio_test (shard 1/6)
+rec_audio_test: 0 failures
+#### step 26 rec_audio_test: PASS in 2.0s
+
+#### step 32: farm_look_test (shard 1/6)
+farm_look_test: PASS (0 fails)
+#### step 32 farm_look_test: PASS in 3.1s
+
+#### step 38: cf_volunteer_test (shard 1/6)
+cf_volunteer_test: 0 failures
+#### step 38 cf_volunteer_test: PASS in 5.4s
+
+#### step 44: art prompts: at most 3 images each (shard 1/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 44 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 50: music: every map has a song; web streaming works offline (shard 1/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 585 songs checked, 0 failures
+#### step 50 music: every map has a song; web streaming works offline: PASS in 29.5s
+
+#### step 56: workshop: stations at run time (shard 1/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 56 workshop: stations at run time: PASS in 3.1s
+
+#### step 62: early combat: clinic, pup lesson, telegraph, first boss (shard 1/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 62 early combat: clinic, pup lesson, telegraph, first boss: PASS in 7.7s
+
+#### step 68: goal_line_test (shard 1/6)
+goal_line_test: 0 fails
+#### step 68 goal_line_test: PASS in 1.9s
+
+#### step 74: campaign_gate_test (shard 1/6)
+campaign_gate_test: 0 fails
+#### step 74 campaign_gate_test: PASS in 4.5s
+
+#### step 80: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 1/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+  FAIL first run: music bus at the default volume
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 144 checks, 1 failures
+Save test failed
+#### step 80 saves: first run, slots, opening Skip, reopen at early milestones, old: FAIL rc=1 in 18.1s
+
+#### step 86: mega regions: the new worlds walk end to end (shard 1/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 86 mega regions: the new worlds walk end to end: PASS in 16.7s
+
+#### step 92: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 1/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 92 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.2s
+
+#### step 98: toasts: never over a boss card, a region card, the pup strip or the en (shard 1/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 98 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 6.9s
+
+#### shard 1/6 done in 480s: FAIL (saves: first run, slots, opening Skip, reopen at early milestones, old)

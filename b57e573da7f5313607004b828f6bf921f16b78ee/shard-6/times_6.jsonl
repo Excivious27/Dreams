@@ -1,0 +1,17 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 241.6}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 6.6}
+{"step": 13, "name": "phone_ui_test", "rc": 0, "secs": 9.6}
+{"step": 19, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 3.0}
+{"step": 25, "name": "rec_reno_test", "rc": 0, "secs": 1.9}
+{"step": 31, "name": "farm_week_test", "rc": 0, "secs": 4.5}
+{"step": 37, "name": "commons_test", "rc": 0, "secs": 36.2}
+{"step": 43, "name": "workshop: no dead ends", "rc": 0, "secs": 1.7}
+{"step": 49, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 55, "name": "footstep_test", "rc": 0, "secs": 5.2}
+{"step": 61, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 6.8}
+{"step": 67, "name": "campaign_story_test", "rc": 0, "secs": 2.0}
+{"step": 73, "name": "campaign_gate_test", "rc": 0, "secs": 4.6}
+{"step": 79, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 2.1}
+{"step": 85, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.2}
+{"step": 91, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 4.1}
+{"step": 97, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 6.3}

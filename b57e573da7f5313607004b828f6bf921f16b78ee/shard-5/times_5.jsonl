@@ -1,0 +1,17 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 110.7}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 25.3}
+{"step": 12, "name": "crops wired in", "rc": 0, "secs": 5.0}
+{"step": 18, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.0}
+{"step": 24, "name": "rec_links_test", "rc": 0, "secs": 1.9}
+{"step": 30, "name": "coop_test", "rc": 0, "secs": 2.0}
+{"step": 36, "name": "move_target_test", "rc": 0, "secs": 9.5}
+{"step": 42, "name": "town_first_test", "rc": 0, "secs": 3.3}
+{"step": 48, "name": "text size floors (7 px)", "rc": 0, "secs": 0.0}
+{"step": 54, "name": "ambience_test", "rc": 0, "secs": 4.3}
+{"step": 60, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.4}
+{"step": 66, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.5}
+{"step": 72, "name": "farm_debris_test", "rc": 0, "secs": 3.6}
+{"step": 78, "name": "skill_glow_test", "rc": 0, "secs": 3.2}
+{"step": 84, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 7.9}
+{"step": 90, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 14.0}
+{"step": 96, "name": "rec_games_test", "rc": 0, "secs": 2.1}
