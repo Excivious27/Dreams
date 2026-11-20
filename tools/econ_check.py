@@ -83,6 +83,13 @@ for bk, rs in R.items():
             if int(it.get('value', 0)) + 1 < cheapest:
                 fails.append('loses value: %s/%s %d from %d' % (bk, r['id'], out, cost))
 
+# 3b) animal goods are never a dead end: each one goes into at least one recipe (directly or by family)
+ANIMAL_GOODS = ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
+for g in ANIMAL_GOODS:
+    keys = {g} | ({'#' + I[g]['family']} if I.get(g, {}).get('family') else set())
+    if not any(k in r['need'] for rs in R.values() if isinstance(rs, list) for r in rs for k in keys):
+        fails.append('dead end: %s goes into no recipe' % g)
+
 # 4) keg (mirror of Crafting.keg_plan)
 tb = B['keg']['brew']
 SPECIAL = {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider", "tea": "herbal_tea"}

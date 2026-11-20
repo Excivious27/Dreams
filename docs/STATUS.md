@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 P2: crops, crafting, items, animals economy
+
+- Crops: every seed and yield item carries its crop's tier (buy markup, keg product, board XP now agree); outliers retuned (tea leaf yields its own Tea Leaf 30, hops regrow 4, grape seed 40, moonberry regrow 6, melon 140, lotus 300, rice/sunflower 5 days, the 11-day herbs 6 days); fertiliser value 7 and it feeds one growth cycle on every crop (regrowers included).
+- Harvest: level terms stop at Farming 10 (`farm.HARVEST` table), star_chance is gold-star odds only (no +2 crops), star toasts once a day, harvest XP grows with the wait (`farm.harvest_xp`).
+- Keg: a brew is worth about 2x its produce, at most 3x (cheap produce takes several per brew, dear produce gives several brews or the family's premium good: Reserve Ale, Royal Mead, Gourmet Pickles, Herbal Cordial, Truffle Broth); table `buildings.json keg.brew` from gen_stations.py, `Crafting.keg_plan`. Old keg/resonator props open the station screen.
+- Recipes: gen_stations.py economy pass (intermediates >= 1.15x inputs, goods >= 1.2x, metal/leather armour >= 0.7x its bars, anything made only from shop goods <= 1.1x: no buy-craft-sell loop); mill 1 wheat -> 1 flour; cheaper iron sword / copper ring / potion; tier-1 skill gates lowered; Rocket Yard gate never drops; station cards say "every recipe already open" when a tier adds none; town benches cap at tier 2 (`Crafting.TOWN_TIER_CAP`); terminal/clinic/robotics speeds.
+- Animals: goat cheese (press), duck eggs (ducks), `#milk`/`#egg` families so goat milk and duck eggs work in every milk/egg recipe; butter 70; the Big Barn/Big Coop feed grown animals from the silo each morning (`farm._silo_feed`); petting shows the streak and the silver/gold milestones; young animals grow in 7 days; the coop says its 4-hatchling limit.
+- Sell box: a stack asks how many (all, all but 1, half, 1).
+- `tools/econ_check.py` (check.sh): seed/yield tiers, crop profit bands, loops, losing intermediates, keg ratios, animal goods with no use.
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).
