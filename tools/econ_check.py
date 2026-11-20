@@ -109,6 +109,10 @@ if DEC:
             continue
         v = val(k) if k in I else int(e.get('sell', 0))
         p = int(e.get('price', 0))
+        if e.get('order') is False and not p:
+            if v or k in stocked:
+                fails.append('decor keepsake priced/stocked: %s' % k)
+            continue
         if e['rarity'] == 'unique':
             if p or v or k in stocked:
                 fails.append('decor unique priced/stocked: %s' % k)

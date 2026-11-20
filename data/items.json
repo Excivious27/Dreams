@@ -14813,17 +14813,6 @@
   "arc": "gangsters",
   "keep": true
  },
- "dc_u_founders_statue": {
-  "name": "Founder's Statue",
-  "type": "decor",
-  "value": 0,
-  "rarity": "unique",
-  "tier": 5,
-  "icon": "props/statue2_founder",
-  "desc": "One of a kind. There is only one in the whole valley.",
-  "decor": true,
-  "keep": true
- },
  "dc_u_aurum_statue": {
   "name": "Golden Aurum Statue",
   "type": "decor",
@@ -15028,5 +15017,136 @@
   "desc": "A full outfit. Looks only, no stats.",
   "decor": true,
   "arc": "penguins"
+ },
+ "dc_museum_trophy": {
+  "name": "Museum Trophy",
+  "type": "decor",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/museum_trophy",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_mineral_display": {
+  "name": "Mineral Display",
+  "type": "decor",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/mineral_display",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_relic_shelf": {
+  "name": "Relic Shelf",
+  "type": "decor",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/relic_shelf",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_curio_jar": {
+  "name": "Curio Jar",
+  "type": "decor",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 3,
+  "icon": "props/curio_jar",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_fish_trophy": {
+  "name": "Fish Trophy",
+  "type": "decor",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/fish_trophy",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_shipper_ribbon": {
+  "name": "Shipper Ribbon",
+  "type": "decor",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 3,
+  "icon": "props/shipper_ribbon",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_koi_scroll": {
+  "name": "Koi Scroll",
+  "type": "decor",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 4,
+  "icon": "items/painting_landscape",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_golden_rod_mount": {
+  "name": "Golden Rod Mount",
+  "type": "decor",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "furniture/rod_a",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_master_hearth": {
+  "name": "Master Hearth",
+  "type": "decor",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "furniture/fireplace2",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_golden_crate": {
+  "name": "Golden Crate",
+  "type": "decor",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "furniture/crate",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_collectors_shelf": {
+  "name": "Collector's Shelf",
+  "type": "decor",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "furniture/trophy_shelf",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_grand_catalogue_stand": {
+  "name": "Grand Catalogue Stand",
+  "type": "decor",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 4,
+  "icon": "furniture/lectern",
+  "desc": "A keepsake from the museum and your collections.",
+  "decor": true
+ },
+ "dc_founders_orrery": {
+  "name": "Founder's Orrery",
+  "type": "decor",
+  "value": 0,
+  "rarity": "unique",
+  "tier": 5,
+  "icon": "furniture/globe3",
+  "desc": "One of a kind. The founders charted the valley sky with it.",
+  "decor": true,
+  "keep": true
  }
 }

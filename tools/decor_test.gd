@@ -40,6 +40,24 @@ func _run() -> void:
 		check(((d["pools"] as Dictionary).get(p, []) as Array).size() > 0, "pool exists: " + p)
 	for s in ["home_goods", "wall_art", "wardrobe", "crew_goods", "hub_goods"]:
 		check((d["shops"] as Dictionary).has(s), "shop exists: " + s)
+	# --- keys P3/P4 reference ------------------------------------------------------------------
+	for p in ["fishing_sea", "fishing_deep", "mail"]:
+		check(((d["pools"] as Dictionary).get(p, []) as Array).size() > 0, "pool exists: " + p)
+	for k in ["maple", "gideon", "wren", "granite", "sel", "tam", "orla", "marlowe", "rook", "old_moss", "catkins", "finn", "hazel"]:
+		check(((d["shops"] as Dictionary).get(k, []) as Array).size() > 0, "keeper shelf: " + k)
+		check(not (d["shop_slots"] as Dictionary).has(k), "keeper shelf is a full list (P4 rotates): " + k)
+	check((d["shops"] as Dictionary).has("maple_gang") and not (d["shops"] as Dictionary).has("catkins_gang"), "gang shelves (none for Catkins)")
+	for id in ["dc_koi_scroll", "dc_golden_rod_mount", "dc_master_hearth", "dc_golden_crate", "dc_founders_orrery", "dc_collectors_shelf", "dc_grand_catalogue_stand",
+			"dc_museum_trophy", "dc_mineral_display", "dc_relic_shelf", "dc_curio_jar", "dc_fish_trophy", "dc_shipper_ribbon"]:
+		check(Decor.is_decor(id), "P3 keepsake entry: " + id)
+	check(Decor.is_unique("dc_founders_orrery") and Decor.order_price("dc_koi_scroll") == 0, "orrery unique, keepsakes never ordered")
+	check(Decor.grant_id("secret:journal") != "" and Decor.grant_id("house:2") != "" and Decor.grant_id("heart:maple:8") != "", "grant keys")
+	for gk in (d.get("grants", {}) as Dictionary):
+		check(Decor.is_decor(str(d["grants"][gk])), "grant points at an entry: " + str(gk))
+	check(Decor.order_price("dc_sofa_red") == Decor.buy_price("dc_sofa_red", true), "order price = re-order price")
+	check(str(Decor.entry("dc_sofa_red").get("arc", "x")) == "", "decor.json arc '' for both arcs")
+	Decor.st()
+	check(GameState.run["decor"]["orders"] is Array and GameState.run["decor"]["sets_done"] is Dictionary and GameState.run["decor"]["viewed"] is Dictionary, "P3 run.decor keys exist")
 	# --- icons resolve from any group ---------------------------------------------------------------
 	check(Art.has("items", "furniture/sofa_red") and Art.tex("items", "furniture/sofa_red") != null, "group-qualified icon texture")
 	check(Art.info("items", "furniture/sofa_red").get("w", 0) == Art.info("furniture", "sofa_red").get("w", -1), "group-qualified info")

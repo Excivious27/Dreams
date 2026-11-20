@@ -17,6 +17,44 @@
   "acc",
   "shoes"
  ],
+ "grants": {
+  "commons:beds": "dc_rug2_round_red",
+  "commons:clear": "dc_round_rug_stone",
+  "commons:greenhouse": "dc_tt_fossil_shell",
+  "commons:market": "dc_tt_lantern_copper",
+  "commons:orchard": "dc_rug_round_red",
+  "commons:seeds": "dc_rug_round_blue",
+  "commons:shed": "dc_rug2_round_blue",
+  "commons:well": "dc_rug_round_green",
+  "heart:catkins:8": "dc_tt_snow_globe",
+  "heart:finn:8": "dc_tt_trophy_fish_a",
+  "heart:gideon:8": "dc_bookcase3_a",
+  "heart:granite:8": "dc_fire_pit2",
+  "heart:hazel:8": "dc_armchair_window",
+  "heart:maple:8": "dc_books_scrolls",
+  "heart:marlowe:8": "dc_tt_echo_shell",
+  "heart:old_moss:8": "dc_bookshelf_ivy",
+  "heart:orla:8": "dc_tt_bottled_wind",
+  "heart:rook:8": "dc_pelt_bear",
+  "heart:sel:8": "dc_bookcase3_b",
+  "heart:tam:8": "dc_bed2_double_blue",
+  "heart:wren:8": "dc_bulb_plant",
+  "house:2": "dc_sofa_blue",
+  "house:3": "dc_clock_grand",
+  "mine:100": "dc_tt_trophy_crystal",
+  "mine:120": "dc_tt_wisp_lantern",
+  "mine:25": "dc_crystal_ball",
+  "mine:50": "dc_crystal_cage",
+  "mine:75": "dc_chandelier",
+  "secret:journal": "dc_tt_lantern_moon",
+  "side:babies": "dc_cat_statue",
+  "side:coldy_key": "dc_globe",
+  "side:commander": "dc_globe2",
+  "side:jim_brother": "dc_easel2",
+  "side:kid_school": "dc_ink_brushes",
+  "side:rosa": "dc_globe3",
+  "side:specs_wire": "dc_library_ladder"
+ },
  "house_reserved": {
   "1": [
    [
@@ -174,7 +212,7 @@
  },
  "items": {
   "dc_alien_statue": {
-   "arc": "both",
+   "arc": "",
    "art": "props/alien_statue",
    "cat": "decor",
    "comfort": 12,
@@ -203,7 +241,7 @@
    "tier": 5
   },
   "dc_antler_hooks": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/antler_hooks",
    "cat": "wall_art",
    "comfort": 2,
@@ -236,7 +274,7 @@
    "tier": 2
   },
   "dc_arcade_cab_0": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_0",
    "cat": "furniture",
    "comfort": 5,
@@ -271,7 +309,7 @@
    "tier": 3
   },
   "dc_arcade_cab_1": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_1",
    "cat": "furniture",
    "comfort": 5,
@@ -306,7 +344,7 @@
    "tier": 3
   },
   "dc_arcade_cab_2": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_2",
    "cat": "furniture",
    "comfort": 8,
@@ -341,7 +379,7 @@
    "tier": 4
   },
   "dc_arcade_cab_3": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_3",
    "cat": "furniture",
    "comfort": 5,
@@ -376,7 +414,7 @@
    "tier": 4
   },
   "dc_arcade_cab_4": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_4",
    "cat": "furniture",
    "comfort": 5,
@@ -446,7 +484,7 @@
    "tier": 5
   },
   "dc_armchair2_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair2_blue",
    "cat": "furniture",
    "comfort": 1,
@@ -481,7 +519,7 @@
    "tier": 1
   },
   "dc_armchair2_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair2_green",
    "cat": "furniture",
    "comfort": 1,
@@ -516,7 +554,7 @@
    "tier": 1
   },
   "dc_armchair2_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair2_red",
    "cat": "furniture",
    "comfort": 1,
@@ -551,7 +589,7 @@
    "tier": 1
   },
   "dc_armchair2_yellow": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair2_yellow",
    "cat": "furniture",
    "comfort": 1,
@@ -586,7 +624,7 @@
    "tier": 1
   },
   "dc_armchair_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair_a",
    "cat": "furniture",
    "comfort": 1,
@@ -621,7 +659,7 @@
    "tier": 1
   },
   "dc_armchair_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair_b",
    "cat": "furniture",
    "comfort": 1,
@@ -656,7 +694,7 @@
    "tier": 1
   },
   "dc_armchair_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair_c",
    "cat": "furniture",
    "comfort": 1,
@@ -691,7 +729,7 @@
    "tier": 1
   },
   "dc_armchair_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair_d",
    "cat": "furniture",
    "comfort": 1,
@@ -726,7 +764,7 @@
    "tier": 1
   },
   "dc_armchair_window": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/armchair_window",
    "cat": "furniture",
    "comfort": 3,
@@ -753,13 +791,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "hazel:8"
     }
    ],
    "sub": "seating",
    "tier": 3
   },
   "dc_barrel": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/barrel",
    "cat": "furniture",
    "comfort": 2,
@@ -792,7 +834,7 @@
    "tier": 2
   },
   "dc_barrels3": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/barrels3",
    "cat": "furniture",
    "comfort": 2,
@@ -825,7 +867,7 @@
    "tier": 2
   },
   "dc_bathtub": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bathtub",
    "cat": "furniture",
    "comfort": 2,
@@ -858,7 +900,7 @@
    "tier": 2
   },
   "dc_bed2_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed2_blue",
    "cat": "furniture",
    "comfort": 2,
@@ -893,7 +935,7 @@
    "tier": 2
   },
   "dc_bed2_double_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed2_double_blue",
    "cat": "furniture",
    "comfort": 3,
@@ -920,13 +962,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "tam:8"
     }
    ],
    "sub": "bed",
    "tier": 3
   },
   "dc_bed2_double_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed2_double_red",
    "cat": "furniture",
    "comfort": 3,
@@ -959,7 +1005,7 @@
    "tier": 3
   },
   "dc_bed2_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed2_green",
    "cat": "furniture",
    "comfort": 2,
@@ -994,7 +1040,7 @@
    "tier": 2
   },
   "dc_bed2_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed2_red",
    "cat": "furniture",
    "comfort": 2,
@@ -1029,7 +1075,7 @@
    "tier": 2
   },
   "dc_bed_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed_blue",
    "cat": "furniture",
    "comfort": 2,
@@ -1064,7 +1110,7 @@
    "tier": 2
   },
   "dc_bed_double": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed_double",
    "cat": "furniture",
    "comfort": 3,
@@ -1097,7 +1143,7 @@
    "tier": 3
   },
   "dc_bed_double_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed_double_green",
    "cat": "furniture",
    "comfort": 3,
@@ -1130,7 +1176,7 @@
    "tier": 3
   },
   "dc_bed_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed_red",
    "cat": "furniture",
    "comfort": 2,
@@ -1165,7 +1211,7 @@
    "tier": 2
   },
   "dc_bed_single": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bed_single",
    "cat": "furniture",
    "comfort": 2,
@@ -1202,7 +1248,7 @@
    "tier": 2
   },
   "dc_bookcase2_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase2_a",
    "cat": "furniture",
    "comfort": 1,
@@ -1237,7 +1283,7 @@
    "tier": 1
   },
   "dc_bookcase2_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase2_b",
    "cat": "furniture",
    "comfort": 1,
@@ -1270,7 +1316,7 @@
    "tier": 1
   },
   "dc_bookcase2_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase2_c",
    "cat": "furniture",
    "comfort": 1,
@@ -1303,7 +1349,7 @@
    "tier": 1
   },
   "dc_bookcase3_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_a",
    "cat": "furniture",
    "comfort": 3,
@@ -1332,13 +1378,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "gideon:8"
     }
    ],
    "sub": "storage",
    "tier": 3
   },
   "dc_bookcase3_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_b",
    "cat": "furniture",
    "comfort": 3,
@@ -1367,13 +1417,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "sel:8"
     }
    ],
    "sub": "storage",
    "tier": 3
   },
   "dc_bookcase3_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_c",
    "cat": "furniture",
    "comfort": 3,
@@ -1408,7 +1462,7 @@
    "tier": 3
   },
   "dc_bookcase3_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_d",
    "cat": "furniture",
    "comfort": 3,
@@ -1443,7 +1497,7 @@
    "tier": 3
   },
   "dc_bookcase3_e": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_e",
    "cat": "furniture",
    "comfort": 3,
@@ -1478,7 +1532,7 @@
    "tier": 3
   },
   "dc_bookcase3_f": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase3_f",
    "cat": "furniture",
    "comfort": 3,
@@ -1513,7 +1567,7 @@
    "tier": 3
   },
   "dc_bookcase_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase_a",
    "cat": "furniture",
    "comfort": 1,
@@ -1548,7 +1602,7 @@
    "tier": 1
   },
   "dc_bookcase_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase_b",
    "cat": "furniture",
    "comfort": 1,
@@ -1583,7 +1637,7 @@
    "tier": 1
   },
   "dc_bookcase_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookcase_c",
    "cat": "furniture",
    "comfort": 1,
@@ -1616,7 +1670,7 @@
    "tier": 1
   },
   "dc_books_scrolls": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/books_scrolls",
    "cat": "decor",
    "comfort": 3,
@@ -1645,13 +1699,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "maple:8"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_bookshelf": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookshelf",
    "cat": "furniture",
    "comfort": 1,
@@ -1688,7 +1746,7 @@
    "tier": 1
   },
   "dc_bookshelf_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookshelf_a",
    "cat": "furniture",
    "comfort": 1,
@@ -1721,7 +1779,7 @@
    "tier": 1
   },
   "dc_bookshelf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookshelf_b",
    "cat": "furniture",
    "comfort": 1,
@@ -1754,7 +1812,7 @@
    "tier": 1
   },
   "dc_bookshelf_ivy": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bookshelf_ivy",
    "cat": "furniture",
    "comfort": 3,
@@ -1781,13 +1839,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "old_moss:8"
     }
    ],
    "sub": "storage",
    "tier": 3
   },
   "dc_bulb_plant": {
-   "arc": "both",
+   "arc": "",
    "art": "props/bulb_plant",
    "cat": "decor",
    "comfort": 3,
@@ -1814,13 +1876,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "wren:8"
     }
    ],
    "sub": "plant",
    "tier": 3
   },
   "dc_bunk_bed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/bunk_bed",
    "cat": "furniture",
    "comfort": 2,
@@ -1854,7 +1920,7 @@
   },
   "dc_candle_stand": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/candle_stand",
    "cat": "light",
    "comfort": 1,
@@ -1887,7 +1953,7 @@
    "tier": 1
   },
   "dc_carnivore_plant": {
-   "arc": "both",
+   "arc": "",
    "art": "props/carnivore_plant",
    "cat": "decor",
    "comfort": 5,
@@ -1920,7 +1986,7 @@
    "tier": 4
   },
   "dc_cat_bed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/cat_bed",
    "cat": "furniture",
    "comfort": 1,
@@ -1986,13 +2052,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "babies"
     }
    ],
    "sub": "statue",
    "tier": 3
   },
   "dc_cattail_pot": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/cattail_pot",
    "cat": "decor",
    "comfort": 1,
@@ -2025,7 +2095,7 @@
    "tier": 1
   },
   "dc_chair2_a_down": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair2_a_down",
    "cat": "furniture",
    "comfort": 1,
@@ -2064,7 +2134,7 @@
    "tier": 1
   },
   "dc_chair2_b_down": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair2_b_down",
    "cat": "furniture",
    "comfort": 1,
@@ -2103,7 +2173,7 @@
    "tier": 1
   },
   "dc_chair_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_a",
    "cat": "furniture",
    "comfort": 1,
@@ -2140,7 +2210,7 @@
    "tier": 1
   },
   "dc_chair_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_b",
    "cat": "furniture",
    "comfort": 1,
@@ -2173,7 +2243,7 @@
    "tier": 1
   },
   "dc_chair_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_c",
    "cat": "furniture",
    "comfort": 1,
@@ -2206,7 +2276,7 @@
    "tier": 1
   },
   "dc_chair_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_d",
    "cat": "furniture",
    "comfort": 1,
@@ -2239,7 +2309,7 @@
    "tier": 1
   },
   "dc_chair_down": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_down",
    "cat": "furniture",
    "comfort": 1,
@@ -2272,7 +2342,7 @@
    "tier": 1
   },
   "dc_chair_up": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chair_up",
    "cat": "furniture",
    "comfort": 1,
@@ -2305,7 +2375,7 @@
    "tier": 1
   },
   "dc_chalkboard": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chalkboard",
    "cat": "wall_art",
    "comfort": 2,
@@ -2338,7 +2408,7 @@
    "tier": 2
   },
   "dc_chandelier": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/chandelier",
    "cat": "light",
    "comfort": 5,
@@ -2367,6 +2437,10 @@
     {
      "kind": "loot",
      "ref": "chest_t4"
+    },
+    {
+     "kind": "mine",
+     "ref": "75"
     }
    ],
    "sub": "light",
@@ -2406,7 +2480,7 @@
    "tier": 1
   },
   "dc_clock": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/clock",
    "cat": "wall_art",
    "comfort": 2,
@@ -2439,7 +2513,7 @@
    "tier": 2
   },
   "dc_clock_grand": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/clock_grand",
    "cat": "furniture",
    "comfort": 3,
@@ -2468,6 +2542,10 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "house",
+     "ref": "3"
     }
    ],
    "sub": "clock",
@@ -2475,7 +2553,7 @@
   },
   "dc_clock_grand2": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/clock_grand2",
    "cat": "furniture",
    "comfort": 3,
@@ -2508,7 +2586,7 @@
    "tier": 3
   },
   "dc_clock_tall": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/clock_tall",
    "cat": "furniture",
    "comfort": 3,
@@ -2541,7 +2619,7 @@
    "tier": 3
   },
   "dc_coat_hooks": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/coat_hooks",
    "cat": "wall_art",
    "comfort": 2,
@@ -2575,7 +2653,7 @@
   },
   "dc_coffee_pot": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/coffee_pot",
    "cat": "furniture",
    "comfort": 1,
@@ -2611,7 +2689,7 @@
   },
   "dc_coffee_pot_a": {
    "anim": 1,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/coffee_pot_a",
    "cat": "furniture",
    "comfort": 1,
@@ -2645,8 +2723,43 @@
    "sub": "kitchen",
    "tier": 1
   },
+  "dc_collectors_shelf": {
+   "arc": "",
+   "art": "furniture/trophy_shelf",
+   "cat": "furniture",
+   "comfort": 3,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "furniture/trophy_shelf",
+   "layer": "floor",
+   "name": "Collector's Shelf",
+   "order": false,
+   "price": 0,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "decor_50"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_cradle": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/cradle",
    "cat": "furniture",
    "comfort": 2,
@@ -2680,7 +2793,7 @@
   },
   "dc_crystal_ball": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/crystal_ball",
    "cat": "decor",
    "comfort": 3,
@@ -2709,6 +2822,10 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "mine",
+     "ref": "25"
     }
    ],
    "sub": "study",
@@ -2716,7 +2833,7 @@
   },
   "dc_crystal_cage": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/crystal_cage",
    "cat": "decor",
    "comfort": 3,
@@ -2745,13 +2862,52 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "mine",
+     "ref": "50"
     }
    ],
    "sub": "study",
    "tier": 3
   },
+  "dc_curio_jar": {
+   "arc": "",
+   "art": "props/curio_jar",
+   "cat": "decor",
+   "comfort": 2,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/curio_jar",
+   "layer": "floor",
+   "name": "Curio Jar",
+   "order": false,
+   "price": 0,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "curio_jar"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_curtain_blue_closed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_blue_closed",
    "cat": "wall_art",
    "comfort": 1,
@@ -2784,7 +2940,7 @@
    "tier": 1
   },
   "dc_curtain_blue_open": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_blue_open",
    "cat": "wall_art",
    "comfort": 1,
@@ -2821,7 +2977,7 @@
    "tier": 1
   },
   "dc_curtain_closed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_closed",
    "cat": "wall_art",
    "comfort": 1,
@@ -2854,7 +3010,7 @@
    "tier": 1
   },
   "dc_curtain_green_closed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_green_closed",
    "cat": "wall_art",
    "comfort": 1,
@@ -2887,7 +3043,7 @@
    "tier": 1
   },
   "dc_curtain_green_open": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_green_open",
    "cat": "wall_art",
    "comfort": 1,
@@ -2920,7 +3076,7 @@
    "tier": 1
   },
   "dc_curtain_open": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_open",
    "cat": "wall_art",
    "comfort": 1,
@@ -2953,7 +3109,7 @@
    "tier": 1
   },
   "dc_curtain_red_closed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_red_closed",
    "cat": "wall_art",
    "comfort": 1,
@@ -2986,7 +3142,7 @@
    "tier": 1
   },
   "dc_curtain_red_open": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/curtain_red_open",
    "cat": "wall_art",
    "comfort": 1,
@@ -3023,7 +3179,7 @@
    "tier": 1
   },
   "dc_desk_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/desk_a",
    "cat": "furniture",
    "comfort": 1,
@@ -3060,7 +3216,7 @@
    "tier": 1
   },
   "dc_desk_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/desk_b",
    "cat": "furniture",
    "comfort": 1,
@@ -3093,7 +3249,7 @@
    "tier": 1
   },
   "dc_desk_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/desk_c",
    "cat": "furniture",
    "comfort": 1,
@@ -3126,7 +3282,7 @@
    "tier": 1
   },
   "dc_desk_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/desk_d",
    "cat": "furniture",
    "comfort": 1,
@@ -3159,7 +3315,7 @@
    "tier": 1
   },
   "dc_dog_bed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/dog_bed",
    "cat": "furniture",
    "comfort": 1,
@@ -3196,7 +3352,7 @@
    "tier": 1
   },
   "dc_dresser": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/dresser",
    "cat": "furniture",
    "comfort": 1,
@@ -3233,7 +3389,7 @@
    "tier": 1
   },
   "dc_dresser2_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/dresser2_a",
    "cat": "furniture",
    "comfort": 1,
@@ -3266,7 +3422,7 @@
    "tier": 1
   },
   "dc_dresser2_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/dresser2_b",
    "cat": "furniture",
    "comfort": 1,
@@ -3299,7 +3455,7 @@
    "tier": 1
   },
   "dc_easel2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/easel2",
    "cat": "decor",
    "comfort": 3,
@@ -3328,13 +3484,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "jim_brother"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_filing_cabinet": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/filing_cabinet",
    "cat": "furniture",
    "comfort": 1,
@@ -3368,7 +3528,7 @@
   },
   "dc_fire_pit2": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fire_pit2",
    "cat": "furniture",
    "comfort": 3,
@@ -3395,13 +3555,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "granite:8"
     }
    ],
    "sub": "fireplace",
    "tier": 3
   },
   "dc_fireplace": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fireplace",
    "cat": "furniture",
    "comfort": 3,
@@ -3435,7 +3599,7 @@
   },
   "dc_fireplace2": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fireplace2",
    "cat": "furniture",
    "comfort": 3,
@@ -3468,7 +3632,7 @@
    "tier": 3
   },
   "dc_fireplace2_unlit": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fireplace2_unlit",
    "cat": "furniture",
    "comfort": 3,
@@ -3502,7 +3666,7 @@
   },
   "dc_fireplace_anim": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fireplace_anim",
    "cat": "furniture",
    "comfort": 8,
@@ -3534,8 +3698,43 @@
    "sub": "fireplace",
    "tier": 5
   },
+  "dc_fish_trophy": {
+   "arc": "",
+   "art": "props/fish_trophy",
+   "cat": "wall_art",
+   "comfort": 3,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/fish_trophy",
+   "layer": "wall",
+   "name": "Fish Trophy",
+   "order": false,
+   "price": 0,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "fish_trophy"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_flag_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/flag_a",
    "cat": "wall_art",
    "comfort": 2,
@@ -3568,7 +3767,7 @@
    "tier": 2
   },
   "dc_flag_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/flag_b",
    "cat": "wall_art",
    "comfort": 2,
@@ -3601,7 +3800,7 @@
    "tier": 2
   },
   "dc_floor_bakery": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_bakery",
    "cat": "flooring",
    "comfort": 1,
@@ -3631,7 +3830,7 @@
    "tier": 1
   },
   "dc_floor_brick": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_brick",
    "cat": "flooring",
    "comfort": 1,
@@ -3661,7 +3860,7 @@
    "tier": 1
   },
   "dc_floor_brick_herring": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/brick_herring",
    "cat": "flooring",
    "comfort": 3,
@@ -3691,7 +3890,7 @@
    "tier": 3
   },
   "dc_floor_camp": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_camp",
    "cat": "flooring",
    "comfort": 1,
@@ -3721,7 +3920,7 @@
    "tier": 1
   },
   "dc_floor_carpet_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_carpet_blue",
    "cat": "flooring",
    "comfort": 2,
@@ -3751,7 +3950,7 @@
    "tier": 2
   },
   "dc_floor_carpet_green": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_carpet_green",
    "cat": "flooring",
    "comfort": 2,
@@ -3781,7 +3980,7 @@
    "tier": 2
   },
   "dc_floor_carpet_purple": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_carpet_purple",
    "cat": "flooring",
    "comfort": 2,
@@ -3811,7 +4010,7 @@
    "tier": 2
   },
   "dc_floor_carpet_red": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_carpet_red",
    "cat": "flooring",
    "comfort": 2,
@@ -3841,7 +4040,7 @@
    "tier": 2
   },
   "dc_floor_clinic": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_clinic",
    "cat": "flooring",
    "comfort": 1,
@@ -3871,7 +4070,7 @@
    "tier": 1
   },
   "dc_floor_cobble": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_cobble",
    "cat": "flooring",
    "comfort": 1,
@@ -3961,7 +4160,7 @@
    "tier": 1
   },
   "dc_floor_grey_plank": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_grey_plank",
    "cat": "flooring",
    "comfort": 1,
@@ -3991,7 +4190,7 @@
    "tier": 1
   },
   "dc_floor_hut_plank": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_hut_plank",
    "cat": "flooring",
    "comfort": 1,
@@ -4021,7 +4220,7 @@
    "tier": 1
   },
   "dc_floor_inn": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_inn",
    "cat": "flooring",
    "comfort": 1,
@@ -4051,7 +4250,7 @@
    "tier": 1
   },
   "dc_floor_marble": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_marble",
    "cat": "flooring",
    "comfort": 3,
@@ -4081,7 +4280,7 @@
    "tier": 3
   },
   "dc_floor_moss_plank": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_moss_plank",
    "cat": "flooring",
    "comfort": 1,
@@ -4111,7 +4310,7 @@
    "tier": 1
   },
   "dc_floor_parquet": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_parquet",
    "cat": "flooring",
    "comfort": 3,
@@ -4141,7 +4340,7 @@
    "tier": 3
   },
   "dc_floor_plank": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_plank",
    "cat": "flooring",
    "comfort": 1,
@@ -4171,7 +4370,7 @@
    "tier": 1
   },
   "dc_floor_quarry": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_quarry",
    "cat": "flooring",
    "comfort": 1,
@@ -4201,7 +4400,7 @@
    "tier": 1
   },
   "dc_floor_round_stone": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_round_stone",
    "cat": "flooring",
    "comfort": 1,
@@ -4231,7 +4430,7 @@
    "tier": 1
   },
   "dc_floor_s_carpet": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_carpet",
    "cat": "flooring",
    "comfort": 2,
@@ -4291,7 +4490,7 @@
    "tier": 3
   },
   "dc_floor_s_dark": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_dark",
    "cat": "flooring",
    "comfort": 2,
@@ -4321,7 +4520,7 @@
    "tier": 2
   },
   "dc_floor_s_flagstone": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_flagstone",
    "cat": "flooring",
    "comfort": 2,
@@ -4351,7 +4550,7 @@
    "tier": 2
   },
   "dc_floor_s_light": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_light",
    "cat": "flooring",
    "comfort": 2,
@@ -4381,7 +4580,7 @@
    "tier": 2
   },
   "dc_floor_s_oak": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_oak",
    "cat": "flooring",
    "comfort": 2,
@@ -4411,7 +4610,7 @@
    "tier": 2
   },
   "dc_floor_s_stone_tiles": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_stone_tiles",
    "cat": "flooring",
    "comfort": 2,
@@ -4441,7 +4640,7 @@
    "tier": 2
   },
   "dc_floor_s_terracotta": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_terracotta",
    "cat": "flooring",
    "comfort": 2,
@@ -4471,7 +4670,7 @@
    "tier": 2
   },
   "dc_floor_s_worn": {
-   "arc": "both",
+   "arc": "",
    "art": "seamless/floor_worn",
    "cat": "flooring",
    "comfort": 2,
@@ -4501,7 +4700,7 @@
    "tier": 2
   },
   "dc_floor_stone": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_stone",
    "cat": "flooring",
    "comfort": 1,
@@ -4531,7 +4730,7 @@
    "tier": 1
   },
   "dc_floor_tile": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_tile",
    "cat": "flooring",
    "comfort": 2,
@@ -4561,7 +4760,7 @@
    "tier": 2
   },
   "dc_floor_wood": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_wood",
    "cat": "flooring",
    "comfort": 1,
@@ -4591,7 +4790,7 @@
    "tier": 1
   },
   "dc_floor_wood_dark": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_wood_dark",
    "cat": "flooring",
    "comfort": 2,
@@ -4621,7 +4820,7 @@
    "tier": 2
   },
   "dc_floor_wood_light": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/fl_wood_light",
    "cat": "flooring",
    "comfort": 1,
@@ -4651,7 +4850,7 @@
    "tier": 1
   },
   "dc_flower_jug": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/flower_jug",
    "cat": "decor",
    "comfort": 1,
@@ -4683,8 +4882,38 @@
    "sub": "plant",
    "tier": 1
   },
+  "dc_founders_orrery": {
+   "arc": "",
+   "art": "furniture/globe3",
+   "cat": "decor",
+   "comfort": 15,
+   "desc": "One of a kind. The founders charted the valley sky with it.",
+   "glow": false,
+   "icon": "furniture/globe3",
+   "layer": "floor",
+   "name": "Founder's Orrery",
+   "price": 0,
+   "rarity": "unique",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "mus_all"
+    }
+   ],
+   "sub": "showpiece",
+   "tier": 5
+  },
   "dc_fridge": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/fridge",
    "cat": "furniture",
    "comfort": 1,
@@ -4719,7 +4948,7 @@
    "tier": 1
   },
   "dc_globe": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/globe",
    "cat": "decor",
    "comfort": 3,
@@ -4748,13 +4977,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "coldy_key"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_globe2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/globe2",
    "cat": "decor",
    "comfort": 3,
@@ -4783,13 +5016,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "commander"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_globe3": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/globe3",
    "cat": "decor",
    "comfort": 3,
@@ -4816,13 +5053,122 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "rosa"
     }
    ],
    "sub": "study",
    "tier": 3
   },
+  "dc_golden_crate": {
+   "arc": "",
+   "art": "furniture/crate",
+   "cat": "decor",
+   "comfort": 5,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "furniture/crate",
+   "layer": "floor",
+   "name": "Golden Crate",
+   "order": false,
+   "price": 0,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "ship_150"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
+  "dc_golden_rod_mount": {
+   "arc": "",
+   "art": "furniture/rod_a",
+   "cat": "wall_art",
+   "comfort": 5,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "furniture/rod_a",
+   "layer": "wall",
+   "name": "Golden Rod Mount",
+   "order": false,
+   "price": 0,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "fish_all"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
+  "dc_grand_catalogue_stand": {
+   "arc": "",
+   "art": "furniture/lectern",
+   "cat": "furniture",
+   "comfort": 8,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "furniture/lectern",
+   "layer": "floor",
+   "name": "Grand Catalogue Stand",
+   "order": false,
+   "price": 0,
+   "rarity": "legendary",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "decor_200"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
   "dc_hanging_mugs": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/hanging_mugs",
    "cat": "furniture",
    "comfort": 1,
@@ -4857,7 +5203,7 @@
    "tier": 1
   },
   "dc_hearth": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/hearth",
    "cat": "furniture",
    "comfort": 3,
@@ -4890,7 +5236,7 @@
    "tier": 3
   },
   "dc_ink_brushes": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/ink_brushes",
    "cat": "decor",
    "comfort": 3,
@@ -4917,13 +5263,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "kid_school"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_ivy_pot": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/ivy_pot",
    "cat": "decor",
    "comfort": 1,
@@ -4960,7 +5310,7 @@
    "tier": 1
   },
   "dc_jug": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/jug",
    "cat": "furniture",
    "comfort": 1,
@@ -5030,7 +5380,7 @@
    "tier": 4
   },
   "dc_jukebox_b": {
-   "arc": "both",
+   "arc": "",
    "art": "props/jukebox_b",
    "cat": "furniture",
    "comfort": 8,
@@ -5064,7 +5414,7 @@
   },
   "dc_kettle": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kettle",
    "cat": "furniture",
    "comfort": 1,
@@ -5099,7 +5449,7 @@
    "tier": 1
   },
   "dc_kettle_stand": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kettle_stand",
    "cat": "furniture",
    "comfort": 1,
@@ -5134,7 +5484,7 @@
    "tier": 1
   },
   "dc_kitchen_counter_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kitchen_counter_a",
    "cat": "furniture",
    "comfort": 1,
@@ -5169,7 +5519,7 @@
    "tier": 1
   },
   "dc_kitchen_counter_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kitchen_counter_b",
    "cat": "furniture",
    "comfort": 1,
@@ -5202,7 +5552,7 @@
    "tier": 1
   },
   "dc_kitchen_fridge": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kitchen_fridge",
    "cat": "furniture",
    "comfort": 1,
@@ -5235,7 +5585,7 @@
    "tier": 1
   },
   "dc_kitchen_sink": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kitchen_sink",
    "cat": "furniture",
    "comfort": 1,
@@ -5268,7 +5618,7 @@
    "tier": 1
   },
   "dc_kitchen_stove": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/kitchen_stove",
    "cat": "furniture",
    "comfort": 1,
@@ -5300,8 +5650,43 @@
    "sub": "kitchen",
    "tier": 1
   },
+  "dc_koi_scroll": {
+   "arc": "",
+   "art": "items/painting_landscape",
+   "cat": "wall_art",
+   "comfort": 8,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "items/painting_landscape",
+   "layer": "wall",
+   "name": "Koi Scroll",
+   "order": false,
+   "price": 0,
+   "rarity": "legendary",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "legendary_koi"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
   "dc_lamp_arm_a": {
-   "arc": "both",
+   "arc": "",
    "art": "props/lamp_arm_a",
    "cat": "light",
    "comfort": 2,
@@ -5334,7 +5719,7 @@
    "tier": 2
   },
   "dc_lamp_floor": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lamp_floor",
    "cat": "light",
    "comfort": 1,
@@ -5371,7 +5756,7 @@
    "tier": 1
   },
   "dc_lamp_floor_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lamp_floor_b",
    "cat": "light",
    "comfort": 1,
@@ -5404,7 +5789,7 @@
    "tier": 1
   },
   "dc_lamp_table_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lamp_table_a",
    "cat": "light",
    "comfort": 1,
@@ -5437,7 +5822,7 @@
    "tier": 1
   },
   "dc_lamp_table_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lamp_table_b",
    "cat": "light",
    "comfort": 1,
@@ -5505,7 +5890,7 @@
    "tier": 2
   },
   "dc_lantern2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lantern2",
    "cat": "light",
    "comfort": 1,
@@ -5542,7 +5927,7 @@
    "tier": 1
   },
   "dc_lantern3": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lantern3",
    "cat": "light",
    "comfort": 1,
@@ -5575,7 +5960,7 @@
    "tier": 1
   },
   "dc_lantern4": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/lantern4",
    "cat": "light",
    "comfort": 1,
@@ -5608,7 +5993,7 @@
    "tier": 1
   },
   "dc_library_ladder": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/library_ladder",
    "cat": "decor",
    "comfort": 3,
@@ -5635,13 +6020,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "side",
+     "ref": "specs_wire"
     }
    ],
    "sub": "study",
    "tier": 3
   },
   "dc_low_table": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/low_table",
    "cat": "furniture",
    "comfort": 1,
@@ -5677,8 +6066,78 @@
    "sub": "table",
    "tier": 1
   },
+  "dc_master_hearth": {
+   "arc": "",
+   "art": "furniture/fireplace2",
+   "cat": "furniture",
+   "comfort": 5,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "furniture/fireplace2",
+   "layer": "floor",
+   "name": "Master Hearth",
+   "order": false,
+   "price": 0,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "cook_all"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
+  "dc_mineral_display": {
+   "arc": "",
+   "art": "props/mineral_display",
+   "cat": "decor",
+   "comfort": 3,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/mineral_display",
+   "layer": "floor",
+   "name": "Mineral Display",
+   "order": false,
+   "price": 0,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "mineral_display"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_mirror": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/mirror",
    "cat": "wall_art",
    "comfort": 2,
@@ -5711,7 +6170,7 @@
    "tier": 2
   },
   "dc_mirror2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/mirror2",
    "cat": "wall_art",
    "comfort": 2,
@@ -5742,6 +6201,41 @@
    ],
    "sub": "painting",
    "tier": 2
+  },
+  "dc_museum_trophy": {
+   "arc": "",
+   "art": "props/museum_trophy",
+   "cat": "decor",
+   "comfort": 3,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/museum_trophy",
+   "layer": "floor",
+   "name": "Museum Trophy",
+   "order": false,
+   "price": 0,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "museum_trophy"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
   },
   "dc_neon_sign_0": {
    "arc": "gangsters",
@@ -6032,7 +6526,7 @@
    "tier": 5
   },
   "dc_nightstand_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/nightstand_a",
    "cat": "furniture",
    "comfort": 1,
@@ -6069,7 +6563,7 @@
    "tier": 1
   },
   "dc_nightstand_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/nightstand_b",
    "cat": "furniture",
    "comfort": 1,
@@ -6102,7 +6596,7 @@
    "tier": 1
   },
   "dc_organ": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/organ",
    "cat": "furniture",
    "comfort": 5,
@@ -6135,7 +6629,7 @@
    "tier": 4
   },
   "dc_painting2_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_a",
    "cat": "wall_art",
    "comfort": 3,
@@ -6168,7 +6662,7 @@
    "tier": 3
   },
   "dc_painting2_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_b",
    "cat": "wall_art",
    "comfort": 3,
@@ -6201,7 +6695,7 @@
    "tier": 3
   },
   "dc_painting2_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_c",
    "cat": "wall_art",
    "comfort": 3,
@@ -6234,7 +6728,7 @@
    "tier": 3
   },
   "dc_painting2_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_d",
    "cat": "wall_art",
    "comfort": 3,
@@ -6267,7 +6761,7 @@
    "tier": 3
   },
   "dc_painting2_e": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_e",
    "cat": "wall_art",
    "comfort": 3,
@@ -6300,7 +6794,7 @@
    "tier": 3
   },
   "dc_painting2_f": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting2_f",
    "cat": "wall_art",
    "comfort": 3,
@@ -6333,7 +6827,7 @@
    "tier": 3
   },
   "dc_painting_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting_a",
    "cat": "wall_art",
    "comfort": 2,
@@ -6366,7 +6860,7 @@
    "tier": 2
   },
   "dc_painting_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting_b",
    "cat": "wall_art",
    "comfort": 2,
@@ -6399,7 +6893,7 @@
    "tier": 2
   },
   "dc_painting_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting_c",
    "cat": "wall_art",
    "comfort": 2,
@@ -6432,7 +6926,7 @@
    "tier": 2
   },
   "dc_painting_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/painting_d",
    "cat": "wall_art",
    "comfort": 2,
@@ -6465,7 +6959,7 @@
    "tier": 2
   },
   "dc_pelt_bear": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/pelt_bear",
    "cat": "rug",
    "comfort": 3,
@@ -6492,13 +6986,17 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "rook:8"
     }
    ],
    "sub": "rug",
    "tier": 3
   },
   "dc_pelt_leopard": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/pelt_leopard",
    "cat": "rug",
    "comfort": 3,
@@ -6531,7 +7029,7 @@
    "tier": 3
   },
   "dc_pelt_wolf": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/pelt_wolf",
    "cat": "rug",
    "comfort": 3,
@@ -6564,7 +7062,7 @@
    "tier": 3
   },
   "dc_pet_bed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/pet_bed",
    "cat": "furniture",
    "comfort": 1,
@@ -6597,7 +7095,7 @@
    "tier": 1
   },
   "dc_piano": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/piano",
    "cat": "furniture",
    "comfort": 5,
@@ -6630,7 +7128,7 @@
    "tier": 4
   },
   "dc_plant": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant",
    "cat": "decor",
    "comfort": 1,
@@ -6663,7 +7161,7 @@
    "tier": 1
   },
   "dc_plant2_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_a",
    "cat": "decor",
    "comfort": 1,
@@ -6696,7 +7194,7 @@
    "tier": 1
   },
   "dc_plant2_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_b",
    "cat": "decor",
    "comfort": 1,
@@ -6729,7 +7227,7 @@
    "tier": 1
   },
   "dc_plant2_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_c",
    "cat": "decor",
    "comfort": 1,
@@ -6762,7 +7260,7 @@
    "tier": 1
   },
   "dc_plant2_d": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_d",
    "cat": "decor",
    "comfort": 1,
@@ -6795,7 +7293,7 @@
    "tier": 1
   },
   "dc_plant2_e": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_e",
    "cat": "decor",
    "comfort": 1,
@@ -6828,7 +7326,7 @@
    "tier": 1
   },
   "dc_plant2_f": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant2_f",
    "cat": "decor",
    "comfort": 1,
@@ -6861,7 +7359,7 @@
    "tier": 1
   },
   "dc_plant_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant_a",
    "cat": "decor",
    "comfort": 1,
@@ -6894,7 +7392,7 @@
    "tier": 1
   },
   "dc_plant_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant_b",
    "cat": "decor",
    "comfort": 1,
@@ -6927,7 +7425,7 @@
    "tier": 1
   },
   "dc_plant_c": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/plant_c",
    "cat": "decor",
    "comfort": 1,
@@ -6960,7 +7458,7 @@
    "tier": 1
   },
   "dc_poster_frame": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/poster_frame",
    "cat": "wall_art",
    "comfort": 2,
@@ -6993,7 +7491,7 @@
    "tier": 2
   },
   "dc_radio": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/radio",
    "cat": "furniture",
    "comfort": 3,
@@ -7026,7 +7524,7 @@
    "tier": 3
   },
   "dc_rec_neon_0": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_neon_0",
    "cat": "light",
    "comfort": 2,
@@ -7061,7 +7559,7 @@
    "tier": 2
   },
   "dc_rec_neon_1": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_neon_1",
    "cat": "light",
    "comfort": 3,
@@ -7096,7 +7594,7 @@
    "tier": 3
   },
   "dc_rec_neon_2": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_neon_2",
    "cat": "light",
    "comfort": 3,
@@ -7131,7 +7629,7 @@
    "tier": 3
   },
   "dc_rec_neon_3": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_neon_3",
    "cat": "light",
    "comfort": 2,
@@ -7166,7 +7664,7 @@
    "tier": 2
   },
   "dc_rec_pinball_a": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_pinball_a",
    "cat": "furniture",
    "comfort": 5,
@@ -7201,7 +7699,7 @@
    "tier": 4
   },
   "dc_rec_pinball_b": {
-   "arc": "both",
+   "arc": "",
    "art": "props/rec_pinball_b",
    "cat": "furniture",
    "comfort": 8,
@@ -7236,7 +7734,7 @@
    "tier": 5
   },
   "dc_reed_mat_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/reed_mat_a",
    "cat": "rug",
    "comfort": 1,
@@ -7273,7 +7771,7 @@
    "tier": 1
   },
   "dc_reed_mat_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/reed_mat_b",
    "cat": "rug",
    "comfort": 1,
@@ -7306,7 +7804,7 @@
    "tier": 1
   },
   "dc_reed_mat_round": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/reed_mat_round",
    "cat": "rug",
    "comfort": 1,
@@ -7338,8 +7836,43 @@
    "sub": "rug",
    "tier": 1
   },
+  "dc_relic_shelf": {
+   "arc": "",
+   "art": "props/relic_shelf",
+   "cat": "furniture",
+   "comfort": 5,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/relic_shelf",
+   "layer": "floor",
+   "name": "Relic Shelf",
+   "order": false,
+   "price": 0,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "relic_shelf"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 4
+  },
   "dc_round_rug_stone": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/round_rug_stone",
    "cat": "rug",
    "comfort": 2,
@@ -7366,13 +7899,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "clear"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_round_set_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/round_set_a",
    "cat": "furniture",
    "comfort": 2,
@@ -7405,7 +7942,7 @@
    "tier": 2
   },
   "dc_round_set_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/round_set_b",
    "cat": "furniture",
    "comfort": 2,
@@ -7438,7 +7975,7 @@
    "tier": 2
   },
   "dc_rug2_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_blue",
    "cat": "rug",
    "comfort": 1,
@@ -7471,7 +8008,7 @@
    "tier": 1
   },
   "dc_rug2_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_green",
    "cat": "rug",
    "comfort": 1,
@@ -7504,7 +8041,7 @@
    "tier": 1
   },
   "dc_rug2_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_red",
    "cat": "rug",
    "comfort": 1,
@@ -7537,7 +8074,7 @@
    "tier": 1
   },
   "dc_rug2_round_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_round_blue",
    "cat": "rug",
    "comfort": 2,
@@ -7568,13 +8105,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "shed"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_rug2_round_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_round_red",
    "cat": "rug",
    "comfort": 2,
@@ -7601,13 +8142,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "beds"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_rug2_runner": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug2_runner",
    "cat": "rug",
    "comfort": 1,
@@ -7640,7 +8185,7 @@
    "tier": 1
   },
   "dc_rug_rect_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_rect_blue",
    "cat": "rug",
    "comfort": 1,
@@ -7677,7 +8222,7 @@
    "tier": 1
   },
   "dc_rug_rect_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_rect_green",
    "cat": "rug",
    "comfort": 1,
@@ -7714,7 +8259,7 @@
    "tier": 1
   },
   "dc_rug_rect_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_rect_red",
    "cat": "rug",
    "comfort": 1,
@@ -7751,7 +8296,7 @@
    "tier": 1
   },
   "dc_rug_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_red",
    "cat": "rug",
    "comfort": 1,
@@ -7784,7 +8329,7 @@
    "tier": 1
   },
   "dc_rug_round_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_round_blue",
    "cat": "rug",
    "comfort": 2,
@@ -7811,13 +8356,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "seeds"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_rug_round_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_round_green",
    "cat": "rug",
    "comfort": 2,
@@ -7844,13 +8393,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "well"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_rug_round_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/rug_round_red",
    "cat": "rug",
    "comfort": 2,
@@ -7877,13 +8430,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "orchard"
     }
    ],
    "sub": "rug",
    "tier": 2
   },
   "dc_safe": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/safe",
    "cat": "furniture",
    "comfort": 5,
@@ -7922,7 +8479,7 @@
    "tier": 4
   },
   "dc_shelf_books": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/shelf_books",
    "cat": "furniture",
    "comfort": 1,
@@ -7955,7 +8512,7 @@
    "tier": 1
   },
   "dc_shelf_empty": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/shelf_empty",
    "cat": "furniture",
    "comfort": 1,
@@ -7992,7 +8549,7 @@
    "tier": 1
   },
   "dc_shelf_house": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/shelf_house",
    "cat": "furniture",
    "comfort": 1,
@@ -8025,7 +8582,7 @@
    "tier": 1
   },
   "dc_shelf_jars": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/shelf_jars",
    "cat": "furniture",
    "comfort": 1,
@@ -8058,7 +8615,7 @@
    "tier": 1
   },
   "dc_shelf_misc": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/shelf_misc",
    "cat": "furniture",
    "comfort": 1,
@@ -8090,8 +8647,43 @@
    "sub": "storage",
    "tier": 1
   },
+  "dc_shipper_ribbon": {
+   "arc": "",
+   "art": "props/shipper_ribbon",
+   "cat": "wall_art",
+   "comfort": 2,
+   "desc": "A keepsake from the museum and your collections.",
+   "glow": false,
+   "icon": "props/shipper_ribbon",
+   "layer": "wall",
+   "name": "Shipper Ribbon",
+   "order": false,
+   "price": 0,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "shipper_ribbon"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_sink": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/sink",
    "cat": "furniture",
    "comfort": 1,
@@ -8124,7 +8716,7 @@
    "tier": 1
   },
   "dc_sofa_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/sofa_blue",
    "cat": "furniture",
    "comfort": 2,
@@ -8151,13 +8743,17 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "house",
+     "ref": "2"
     }
    ],
    "sub": "seating",
    "tier": 2
   },
   "dc_sofa_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/sofa_green",
    "cat": "furniture",
    "comfort": 2,
@@ -8190,7 +8786,7 @@
    "tier": 2
   },
   "dc_sofa_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/sofa_red",
    "cat": "furniture",
    "comfort": 2,
@@ -8223,7 +8819,7 @@
    "tier": 2
   },
   "dc_sofa_velvet": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/sofa_velvet",
    "cat": "furniture",
    "comfort": 5,
@@ -8256,7 +8852,7 @@
    "tier": 4
   },
   "dc_spiral_stair": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/spiral_stair",
    "cat": "decor",
    "comfort": 3,
@@ -8322,7 +8918,7 @@
    "tier": 5
   },
   "dc_stool2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stool2",
    "cat": "furniture",
    "comfort": 1,
@@ -8355,7 +8951,7 @@
    "tier": 1
   },
   "dc_stool_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stool_blue",
    "cat": "furniture",
    "comfort": 1,
@@ -8388,7 +8984,7 @@
    "tier": 1
   },
   "dc_stool_green": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stool_green",
    "cat": "furniture",
    "comfort": 1,
@@ -8421,7 +9017,7 @@
    "tier": 1
   },
   "dc_stool_red": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stool_red",
    "cat": "furniture",
    "comfort": 1,
@@ -8454,7 +9050,7 @@
    "tier": 1
   },
   "dc_stool_wood": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stool_wood",
    "cat": "furniture",
    "comfort": 1,
@@ -8491,7 +9087,7 @@
    "tier": 1
   },
   "dc_stove_iron": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/stove_iron",
    "cat": "furniture",
    "comfort": 1,
@@ -8528,7 +9124,7 @@
    "tier": 1
   },
   "dc_table": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table",
    "cat": "furniture",
    "comfort": 1,
@@ -8561,7 +9157,7 @@
    "tier": 1
   },
   "dc_table2_long4": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table2_long4",
    "cat": "furniture",
    "comfort": 1,
@@ -8598,7 +9194,7 @@
    "tier": 1
   },
   "dc_table2_long8": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table2_long8",
    "cat": "furniture",
    "comfort": 1,
@@ -8631,7 +9227,7 @@
    "tier": 1
   },
   "dc_table2_round": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table2_round",
    "cat": "furniture",
    "comfort": 1,
@@ -8664,7 +9260,7 @@
    "tier": 1
   },
   "dc_table_long": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_long",
    "cat": "furniture",
    "comfort": 1,
@@ -8697,7 +9293,7 @@
    "tier": 1
   },
   "dc_table_long_cloth": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_long_cloth",
    "cat": "furniture",
    "comfort": 2,
@@ -8730,7 +9326,7 @@
    "tier": 2
   },
   "dc_table_round": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_round",
    "cat": "furniture",
    "comfort": 1,
@@ -8763,7 +9359,7 @@
    "tier": 1
   },
   "dc_table_round_cloth": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_round_cloth",
    "cat": "furniture",
    "comfort": 2,
@@ -8796,7 +9392,7 @@
    "tier": 2
   },
   "dc_table_square": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_square",
    "cat": "furniture",
    "comfort": 1,
@@ -8833,7 +9429,7 @@
    "tier": 1
   },
   "dc_table_square_cloth": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/table_square_cloth",
    "cat": "furniture",
    "comfort": 2,
@@ -8866,7 +9462,7 @@
    "tier": 2
   },
   "dc_telescope2": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/telescope2",
    "cat": "decor",
    "comfort": 3,
@@ -8899,7 +9495,7 @@
    "tier": 3
   },
   "dc_toilet": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/toilet",
    "cat": "furniture",
    "comfort": 2,
@@ -8932,7 +9528,7 @@
    "tier": 2
   },
   "dc_trophy_case": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/trophy_case",
    "cat": "furniture",
    "comfort": 2,
@@ -8965,7 +9561,7 @@
    "tier": 2
   },
   "dc_trophy_shelf": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/trophy_shelf",
    "cat": "furniture",
    "comfort": 2,
@@ -9032,7 +9628,7 @@
    "tier": 1
   },
   "dc_tt_bottled_wind": {
-   "arc": "both",
+   "arc": "",
    "art": "items/bottled_wind",
    "cat": "decor",
    "comfort": 3,
@@ -9059,6 +9655,10 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "orla:8"
     }
    ],
    "sub": "tabletop",
@@ -9066,7 +9666,7 @@
    "tier": 3
   },
   "dc_tt_candle": {
-   "arc": "both",
+   "arc": "",
    "art": "items/candle",
    "cat": "light",
    "comfort": 1,
@@ -9100,7 +9700,7 @@
    "tier": 1
   },
   "dc_tt_candle_tall": {
-   "arc": "both",
+   "arc": "",
    "art": "items/candle_tall",
    "cat": "light",
    "comfort": 1,
@@ -9170,7 +9770,7 @@
    "tier": 2
   },
   "dc_tt_echo_shell": {
-   "arc": "both",
+   "arc": "",
    "art": "items/echo_shell",
    "cat": "decor",
    "comfort": 3,
@@ -9197,6 +9797,10 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "marlowe:8"
     }
    ],
    "sub": "tabletop",
@@ -9238,7 +9842,7 @@
    "tier": 2
   },
   "dc_tt_fossil_shell": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fossil_shell",
    "cat": "decor",
    "comfort": 2,
@@ -9265,6 +9869,10 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "greenhouse"
     }
    ],
    "sub": "tabletop",
@@ -9272,7 +9880,7 @@
    "tier": 2
   },
   "dc_tt_lantern_copper": {
-   "arc": "both",
+   "arc": "",
    "art": "items/lantern_copper",
    "cat": "light",
    "comfort": 2,
@@ -9299,6 +9907,10 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "commons",
+     "ref": "market"
     }
    ],
    "sub": "tabletop",
@@ -9380,7 +9992,7 @@
    "tier": 4
   },
   "dc_tt_lantern_moon": {
-   "arc": "both",
+   "arc": "",
    "art": "items/lantern_moon",
    "cat": "light",
    "comfort": 5,
@@ -9407,6 +10019,10 @@
     {
      "kind": "loot",
      "ref": "chest_t4"
+    },
+    {
+     "kind": "secret",
+     "ref": "journal"
     }
    ],
    "sub": "tabletop",
@@ -9414,7 +10030,7 @@
    "tier": 4
   },
   "dc_tt_lantern_red": {
-   "arc": "both",
+   "arc": "",
    "art": "items/lantern_red",
    "cat": "light",
    "comfort": 1,
@@ -9448,7 +10064,7 @@
    "tier": 1
   },
   "dc_tt_medal_bronze": {
-   "arc": "both",
+   "arc": "",
    "art": "items/medal_bronze",
    "cat": "decor",
    "comfort": 2,
@@ -9482,7 +10098,7 @@
    "tier": 2
   },
   "dc_tt_medal_silver": {
-   "arc": "both",
+   "arc": "",
    "art": "items/medal_silver",
    "cat": "decor",
    "comfort": 3,
@@ -9516,7 +10132,7 @@
    "tier": 3
   },
   "dc_tt_painting_landscape": {
-   "arc": "both",
+   "arc": "",
    "art": "items/painting_landscape",
    "cat": "wall_art",
    "comfort": 2,
@@ -9549,7 +10165,7 @@
    "tier": 2
   },
   "dc_tt_painting_portrait": {
-   "arc": "both",
+   "arc": "",
    "art": "items/painting_portrait",
    "cat": "wall_art",
    "comfort": 2,
@@ -9622,7 +10238,7 @@
    "tier": 2
   },
   "dc_tt_pot_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/pot_a",
    "cat": "decor",
    "comfort": 1,
@@ -9660,7 +10276,7 @@
    "tier": 1
   },
   "dc_tt_pot_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/pot_b",
    "cat": "decor",
    "comfort": 1,
@@ -9694,7 +10310,7 @@
    "tier": 1
   },
   "dc_tt_pot_c": {
-   "arc": "both",
+   "arc": "",
    "art": "items/pot_c",
    "cat": "decor",
    "comfort": 2,
@@ -9732,7 +10348,7 @@
    "tier": 2
   },
   "dc_tt_pumpkin_lantern": {
-   "arc": "both",
+   "arc": "",
    "art": "items/pumpkin_lantern",
    "cat": "light",
    "comfort": 2,
@@ -9766,7 +10382,7 @@
    "tier": 2
   },
   "dc_tt_snow_globe": {
-   "arc": "both",
+   "arc": "",
    "art": "items/snow_globe",
    "cat": "decor",
    "comfort": 3,
@@ -9799,6 +10415,10 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
+    },
+    {
+     "kind": "heart",
+     "ref": "catkins:8"
     }
    ],
    "sub": "tabletop",
@@ -9882,7 +10502,7 @@
    "tier": 2
   },
   "dc_tt_statue_head": {
-   "arc": "both",
+   "arc": "",
    "art": "items/statue_head",
    "cat": "decor",
    "comfort": 3,
@@ -9916,7 +10536,7 @@
    "tier": 3
   },
   "dc_tt_teddy_bear": {
-   "arc": "both",
+   "arc": "",
    "art": "items/teddy_bear",
    "cat": "decor",
    "comfort": 1,
@@ -9950,7 +10570,7 @@
    "tier": 1
   },
   "dc_tt_trophy_craft_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_craft_a",
    "cat": "decor",
    "comfort": 3,
@@ -9984,7 +10604,7 @@
    "tier": 3
   },
   "dc_tt_trophy_crystal": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_crystal",
    "cat": "decor",
    "comfort": 5,
@@ -10011,6 +10631,10 @@
     {
      "kind": "loot",
      "ref": "chest_t4"
+    },
+    {
+     "kind": "mine",
+     "ref": "100"
     }
    ],
    "sub": "tabletop",
@@ -10018,7 +10642,7 @@
    "tier": 4
   },
   "dc_tt_trophy_farm_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_farm_a",
    "cat": "decor",
    "comfort": 3,
@@ -10052,7 +10676,7 @@
    "tier": 3
   },
   "dc_tt_trophy_fish_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_fish_a",
    "cat": "decor",
    "comfort": 3,
@@ -10079,6 +10703,10 @@
     {
      "kind": "loot",
      "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "finn:8"
     }
    ],
    "sub": "tabletop",
@@ -10086,7 +10714,7 @@
    "tier": 3
   },
   "dc_tt_vase": {
-   "arc": "both",
+   "arc": "",
    "art": "items/vase",
    "cat": "decor",
    "comfort": 1,
@@ -10124,7 +10752,7 @@
    "tier": 1
   },
   "dc_tt_wisp_bottle": {
-   "arc": "both",
+   "arc": "",
    "art": "items/wisp_bottle",
    "cat": "light",
    "comfort": 5,
@@ -10158,7 +10786,7 @@
    "tier": 4
   },
   "dc_tt_wisp_lantern": {
-   "arc": "both",
+   "arc": "",
    "art": "items/wisp_lantern",
    "cat": "light",
    "comfort": 8,
@@ -10185,6 +10813,10 @@
     {
      "kind": "loot",
      "ref": "chest_t5"
+    },
+    {
+     "kind": "mine",
+     "ref": "120"
     }
    ],
    "sub": "tabletop",
@@ -10192,7 +10824,7 @@
    "tier": 5
   },
   "dc_tv_off": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/tv_off",
    "cat": "furniture",
    "comfort": 3,
@@ -10225,7 +10857,7 @@
    "tier": 3
   },
   "dc_tv_on": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/tv_on",
    "cat": "furniture",
    "comfort": 3,
@@ -10287,38 +10919,8 @@
    "sub": "showpiece",
    "tier": 5
   },
-  "dc_u_founders_statue": {
-   "arc": "both",
-   "art": "props/statue2_founder",
-   "cat": "decor",
-   "comfort": 15,
-   "desc": "One of a kind. There is only one in the whole valley.",
-   "glow": false,
-   "icon": "props/statue2_founder",
-   "layer": "floor",
-   "name": "Founder's Statue",
-   "price": 0,
-   "rarity": "unique",
-   "rot": 1,
-   "sell": 0,
-   "set": "",
-   "sets": [],
-   "size": [
-    2,
-    2
-   ],
-   "sources": [
-    {
-     "kind": "collection",
-     "once": true,
-     "ref": "museum_complete"
-    }
-   ],
-   "sub": "showpiece",
-   "tier": 5
-  },
   "dc_u_golden_fountain": {
-   "arc": "both",
+   "arc": "",
    "art": "props/gold_fountain",
    "cat": "furniture",
    "comfort": 15,
@@ -10378,7 +10980,7 @@
    "tier": 5
   },
   "dc_u_lighthouse_lamp": {
-   "arc": "both",
+   "arc": "",
    "art": "props/lighthouse_lamp",
    "cat": "light",
    "comfort": 15,
@@ -10438,7 +11040,7 @@
    "tier": 5
   },
   "dc_vault_closed": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/vault_closed",
    "cat": "furniture",
    "comfort": 5,
@@ -10473,7 +11075,7 @@
    "tier": 4
   },
   "dc_vault_open": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/vault_open",
    "cat": "furniture",
    "comfort": 5,
@@ -10506,7 +11108,7 @@
    "tier": 4
   },
   "dc_wall_bakery": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_bakery_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10536,7 +11138,7 @@
    "tier": 1
   },
   "dc_wall_brick": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_brick_l",
    "cat": "wallpaper",
    "comfort": 2,
@@ -10566,7 +11168,7 @@
    "tier": 2
   },
   "dc_wall_chalk": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_chalk_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10596,7 +11198,7 @@
    "tier": 1
   },
   "dc_wall_clinic": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_clinic_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10656,7 +11258,7 @@
    "tier": 1
   },
   "dc_wall_curve": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_curve_l",
    "cat": "wallpaper",
    "comfort": 2,
@@ -10686,7 +11288,7 @@
    "tier": 2
   },
   "dc_wall_fish": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_fish_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10720,7 +11322,7 @@
    "tier": 1
   },
   "dc_wall_floral": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_floral_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10750,7 +11352,7 @@
    "tier": 1
   },
   "dc_wall_floral_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_floral_blue_l",
    "cat": "wallpaper",
    "comfort": 2,
@@ -10780,7 +11382,7 @@
    "tier": 2
   },
   "dc_wall_hut": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_hut_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10810,7 +11412,7 @@
    "tier": 1
   },
   "dc_wall_library": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_library_l",
    "cat": "wallpaper",
    "comfort": 3,
@@ -10840,7 +11442,7 @@
    "tier": 3
   },
   "dc_wall_log": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_log_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10870,7 +11472,7 @@
    "tier": 1
   },
   "dc_wall_marble": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_marble_l",
    "cat": "wallpaper",
    "comfort": 3,
@@ -10900,7 +11502,7 @@
    "tier": 3
   },
   "dc_wall_panel": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_panel_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10930,7 +11532,7 @@
    "tier": 1
   },
   "dc_wall_plaster": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_plaster_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10960,7 +11562,7 @@
    "tier": 1
   },
   "dc_wall_quarry": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_quarry_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -10990,7 +11592,7 @@
    "tier": 1
   },
   "dc_wall_reed": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_reed_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11024,7 +11626,7 @@
    "tier": 1
   },
   "dc_wall_stone": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_stone_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11054,7 +11656,7 @@
    "tier": 1
   },
   "dc_wall_striped": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_striped_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11084,7 +11686,7 @@
    "tier": 1
   },
   "dc_wall_striped_green": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_striped_green_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11114,7 +11716,7 @@
    "tier": 1
   },
   "dc_wall_striped_red": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_striped_red_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11144,7 +11746,7 @@
    "tier": 1
   },
   "dc_wall_tent": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_tent_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11174,7 +11776,7 @@
    "tier": 1
   },
   "dc_wall_timber": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_timber_l",
    "cat": "wallpaper",
    "comfort": 2,
@@ -11204,7 +11806,7 @@
    "tier": 2
   },
   "dc_wall_wood": {
-   "arc": "both",
+   "arc": "",
    "art": "tiles/wl_wood_l",
    "cat": "wallpaper",
    "comfort": 1,
@@ -11234,7 +11836,7 @@
    "tier": 1
   },
   "dc_wardrobe2_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/wardrobe2_a",
    "cat": "furniture",
    "comfort": 1,
@@ -11267,7 +11869,7 @@
    "tier": 1
   },
   "dc_wardrobe2_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/wardrobe2_b",
    "cat": "furniture",
    "comfort": 1,
@@ -11300,7 +11902,7 @@
    "tier": 1
   },
   "dc_wardrobe_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/wardrobe_a",
    "cat": "furniture",
    "comfort": 1,
@@ -11337,7 +11939,7 @@
    "tier": 1
   },
   "dc_wardrobe_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/wardrobe_b",
    "cat": "furniture",
    "comfort": 1,
@@ -11370,7 +11972,7 @@
    "tier": 1
   },
   "dc_window": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window",
    "cat": "wall_art",
    "comfort": 2,
@@ -11403,7 +12005,7 @@
    "tier": 2
   },
   "dc_window2_day_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window2_day_a",
    "cat": "wall_art",
    "comfort": 2,
@@ -11436,7 +12038,7 @@
    "tier": 2
   },
   "dc_window2_day_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window2_day_b",
    "cat": "wall_art",
    "comfort": 2,
@@ -11469,7 +12071,7 @@
    "tier": 2
   },
   "dc_window2_night_a": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window2_night_a",
    "cat": "wall_art",
    "comfort": 2,
@@ -11502,7 +12104,7 @@
    "tier": 2
   },
   "dc_window2_night_b": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window2_night_b",
    "cat": "wall_art",
    "comfort": 2,
@@ -11535,7 +12137,7 @@
    "tier": 2
   },
   "dc_window_day": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window_day",
    "cat": "wall_art",
    "comfort": 2,
@@ -11568,7 +12170,7 @@
    "tier": 2
   },
   "dc_window_night": {
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window_night",
    "cat": "wall_art",
    "comfort": 2,
@@ -11602,7 +12204,7 @@
   },
   "dc_window_rain": {
    "anim": 4,
-   "arc": "both",
+   "arc": "",
    "art": "furniture/window_rain",
    "cat": "wall_art",
    "comfort": 2,
@@ -11635,7 +12237,7 @@
    "tier": 2
   },
   "rp_arcade_cab": {
-   "arc": "both",
+   "arc": "",
    "art": "props/arcade_cab_0",
    "cat": "furniture",
    "comfort": 5,
@@ -11665,7 +12267,7 @@
    "tier": 4
   },
   "rp_arcade_medal": {
-   "arc": "both",
+   "arc": "",
    "art": "items/medal_gold",
    "cat": "decor",
    "comfort": 3,
@@ -11696,7 +12298,7 @@
    "tier": 3
   },
   "rp_golden_pin": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_master",
    "cat": "decor",
    "comfort": 8,
@@ -11729,7 +12331,7 @@
    "tier": 5
   },
   "rp_jukebox": {
-   "arc": "both",
+   "arc": "",
    "art": "props/jukebox_b",
    "cat": "furniture",
    "comfort": 5,
@@ -11759,7 +12361,7 @@
    "tier": 4
   },
   "rp_music_box": {
-   "arc": "both",
+   "arc": "",
    "art": "items/music_box",
    "cat": "decor",
    "comfort": 2,
@@ -11790,7 +12392,7 @@
    "tier": 2
   },
   "rp_painting": {
-   "arc": "both",
+   "arc": "",
    "art": "items/painting_abstract",
    "cat": "wall_art",
    "comfort": 2,
@@ -11820,7 +12422,7 @@
    "tier": 2
   },
   "rp_trophy_bronze": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_bronze",
    "cat": "decor",
    "comfort": 2,
@@ -11853,7 +12455,7 @@
    "tier": 2
   },
   "rp_trophy_gold": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_gold",
    "cat": "decor",
    "comfort": 5,
@@ -11886,7 +12488,7 @@
    "tier": 4
   },
   "rp_trophy_silver": {
-   "arc": "both",
+   "arc": "",
    "art": "items/trophy_silver",
    "cat": "decor",
    "comfort": 3,
@@ -11949,7 +12551,7 @@
    "tier": 5
   },
   "wr_bandana": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/bandana",
    "cat": "hat",
    "comfort": 1,
@@ -11983,7 +12585,7 @@
    "tier": 1
   },
   "wr_beanie": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/beanie",
    "cat": "hat",
    "comfort": 1,
@@ -12021,7 +12623,7 @@
    "tier": 1
   },
   "wr_cap": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/cap",
    "cat": "hat",
    "comfort": 1,
@@ -12055,7 +12657,7 @@
    "tier": 1
   },
   "wr_cape_black": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_black",
    "cat": "acc",
    "comfort": 2,
@@ -12089,7 +12691,7 @@
    "tier": 2
   },
   "wr_cape_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_blue",
    "cat": "acc",
    "comfort": 2,
@@ -12123,7 +12725,7 @@
    "tier": 2
   },
   "wr_cape_cloud": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_cloud",
    "cat": "acc",
    "comfort": 2,
@@ -12187,7 +12789,7 @@
    "tier": 4
   },
   "wr_cape_dream": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_dream",
    "cat": "acc",
    "comfort": 8,
@@ -12217,7 +12819,7 @@
    "tier": 5
   },
   "wr_cape_ember": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_ember",
    "cat": "acc",
    "comfort": 3,
@@ -12251,7 +12853,7 @@
    "tier": 3
   },
   "wr_cape_frost": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_frost",
    "cat": "acc",
    "comfort": 3,
@@ -12285,7 +12887,7 @@
    "tier": 3
   },
   "wr_cape_gold": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_gold",
    "cat": "acc",
    "comfort": 3,
@@ -12319,7 +12921,7 @@
    "tier": 3
   },
   "wr_cape_green": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_green",
    "cat": "acc",
    "comfort": 2,
@@ -12353,7 +12955,7 @@
    "tier": 2
   },
   "wr_cape_moon": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_moon",
    "cat": "acc",
    "comfort": 5,
@@ -12451,7 +13053,7 @@
    "tier": 2
   },
   "wr_cape_red": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_red",
    "cat": "acc",
    "comfort": 2,
@@ -12485,7 +13087,7 @@
    "tier": 2
   },
   "wr_cape_star": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_star",
    "cat": "acc",
    "comfort": 5,
@@ -12515,7 +13117,7 @@
    "tier": 4
   },
   "wr_cape_storm": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_storm",
    "cat": "acc",
    "comfort": 3,
@@ -12549,7 +13151,7 @@
    "tier": 3
   },
   "wr_cape_white": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cape_white",
    "cat": "acc",
    "comfort": 2,
@@ -12583,7 +13185,7 @@
    "tier": 2
   },
   "wr_cloak": {
-   "arc": "both",
+   "arc": "",
    "art": "items/cloak",
    "cat": "acc",
    "comfort": 2,
@@ -12647,7 +13249,7 @@
    "tier": 5
   },
   "wr_cowboy": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/cowboy",
    "cat": "hat",
    "comfort": 2,
@@ -12711,7 +13313,7 @@
    "tier": 4
   },
   "wr_dancing_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/dancing_shoes",
    "cat": "shoes",
    "comfort": 3,
@@ -12745,7 +13347,7 @@
    "tier": 3
   },
   "wr_dress": {
-   "arc": "both",
+   "arc": "",
    "art": "items/dress",
    "cat": "top",
    "comfort": 2,
@@ -12813,7 +13415,7 @@
    "tier": 1
   },
   "wr_farmer_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -12827,8 +13429,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 17,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -12847,7 +13451,7 @@
    "tier": 1
   },
   "wr_farmer_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -12861,8 +13465,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 96,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -12881,7 +13487,7 @@
    "tier": 2
   },
   "wr_farmer_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -12895,8 +13501,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -12915,7 +13523,7 @@
    "tier": 1
   },
   "wr_farmer_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -12929,8 +13537,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 92,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -12949,7 +13559,7 @@
    "tier": 2
   },
   "wr_farmer_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -12963,8 +13573,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -12983,7 +13595,7 @@
    "tier": 1
   },
   "wr_farmer_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/farmer_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -12997,8 +13609,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 88,
-   "set": "",
-   "sets": [],
+   "set": "wear_farmer",
+   "sets": [
+    "wear_farmer"
+   ],
    "size": [
     1,
     1
@@ -13051,7 +13665,7 @@
    "tier": 2
   },
   "wr_fisher_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -13065,8 +13679,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13085,7 +13701,7 @@
    "tier": 1
   },
   "wr_fisher_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -13099,8 +13715,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 92,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13119,7 +13737,7 @@
    "tier": 2
   },
   "wr_fisher_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -13133,8 +13751,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13153,7 +13773,7 @@
    "tier": 1
   },
   "wr_fisher_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -13167,8 +13787,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 97,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13187,7 +13809,7 @@
    "tier": 2
   },
   "wr_fisher_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -13201,8 +13823,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 16,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13221,7 +13845,7 @@
    "tier": 1
   },
   "wr_fisher_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/fisher_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -13235,8 +13859,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 94,
-   "set": "",
-   "sets": [],
+   "set": "wear_fisher",
+   "sets": [
+    "wear_fisher"
+   ],
    "size": [
     1,
     1
@@ -13289,7 +13915,7 @@
    "tier": 2
   },
   "wr_flower_crown": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/flower_crown",
    "cat": "hat",
    "comfort": 2,
@@ -13323,7 +13949,7 @@
    "tier": 2
   },
   "wr_flower_crown_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/flower_crown_a",
    "cat": "hat",
    "comfort": 1,
@@ -13357,7 +13983,7 @@
    "tier": 1
   },
   "wr_flower_crown_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/flower_crown_b",
    "cat": "hat",
    "comfort": 2,
@@ -13391,7 +14017,7 @@
    "tier": 2
   },
   "wr_forester_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -13405,8 +14031,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 16,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13425,7 +14053,7 @@
    "tier": 1
   },
   "wr_forester_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -13439,8 +14067,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 94,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13459,7 +14089,7 @@
    "tier": 2
   },
   "wr_forester_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -13473,8 +14103,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 19,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13493,7 +14125,7 @@
    "tier": 1
   },
   "wr_forester_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -13507,8 +14139,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 90,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13527,7 +14161,7 @@
    "tier": 2
   },
   "wr_forester_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -13541,8 +14175,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13561,7 +14197,7 @@
    "tier": 1
   },
   "wr_forester_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/forester_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -13575,8 +14211,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 97,
-   "set": "",
-   "sets": [],
+   "set": "wear_forester",
+   "sets": [
+    "wear_forester"
+   ],
    "size": [
     1,
     1
@@ -13595,7 +14233,7 @@
    "tier": 2
   },
   "wr_goggles": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/goggles",
    "cat": "hat",
    "comfort": 2,
@@ -13629,7 +14267,7 @@
    "tier": 2
   },
   "wr_golem_crown": {
-   "arc": "both",
+   "arc": "",
    "art": "items/golem_crown",
    "cat": "hat",
    "comfort": 12,
@@ -13690,7 +14328,7 @@
    "tier": 5
   },
   "wr_halo": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/halo",
    "cat": "hat",
    "comfort": 12,
@@ -13720,7 +14358,7 @@
    "tier": 5
   },
   "wr_hiking_boots": {
-   "arc": "both",
+   "arc": "",
    "art": "items/hiking_boots",
    "cat": "shoes",
    "comfort": 2,
@@ -13754,7 +14392,7 @@
    "tier": 2
   },
   "wr_hood": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/hood",
    "cat": "hat",
    "comfort": 1,
@@ -13788,7 +14426,7 @@
    "tier": 1
   },
   "wr_hoodie": {
-   "arc": "both",
+   "arc": "",
    "art": "items/hoodie",
    "cat": "top",
    "comfort": 1,
@@ -13894,7 +14532,7 @@
    "tier": 3
   },
   "wr_kerchief": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/kerchief",
    "cat": "hat",
    "comfort": 1,
@@ -13962,7 +14600,7 @@
    "tier": 2
   },
   "wr_mask": {
-   "arc": "both",
+   "arc": "",
    "art": "items/mask",
    "cat": "acc",
    "comfort": 3,
@@ -13996,7 +14634,7 @@
    "tier": 3
   },
   "wr_merchant_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -14010,8 +14648,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 19,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14030,7 +14670,7 @@
    "tier": 1
   },
   "wr_merchant_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -14044,8 +14684,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 90,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14064,7 +14706,7 @@
    "tier": 2
   },
   "wr_merchant_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -14078,8 +14720,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 17,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14098,7 +14742,7 @@
    "tier": 1
   },
   "wr_merchant_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -14112,8 +14756,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 96,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14132,7 +14778,7 @@
    "tier": 2
   },
   "wr_merchant_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -14146,8 +14792,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14166,7 +14814,7 @@
    "tier": 1
   },
   "wr_merchant_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/merchant_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -14180,8 +14828,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 93,
-   "set": "",
-   "sets": [],
+   "set": "wear_merchant",
+   "sets": [
+    "wear_merchant"
+   ],
    "size": [
     1,
     1
@@ -14200,7 +14850,7 @@
    "tier": 2
   },
   "wr_miner_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -14214,8 +14864,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 17,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14234,7 +14886,7 @@
    "tier": 1
   },
   "wr_miner_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -14248,8 +14900,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 96,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14268,7 +14922,7 @@
    "tier": 2
   },
   "wr_miner_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -14282,8 +14936,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14302,7 +14958,7 @@
    "tier": 1
   },
   "wr_miner_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -14316,8 +14972,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 92,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14336,7 +14994,7 @@
    "tier": 2
   },
   "wr_miner_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -14350,8 +15008,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14370,7 +15030,7 @@
    "tier": 1
   },
   "wr_miner_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/miner_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -14384,8 +15044,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 88,
-   "set": "",
-   "sets": [],
+   "set": "wear_miner",
+   "sets": [
+    "wear_miner"
+   ],
    "size": [
     1,
     1
@@ -14404,7 +15066,7 @@
    "tier": 2
   },
   "wr_necklace_a": {
-   "arc": "both",
+   "arc": "",
    "art": "items/necklace_a",
    "cat": "acc",
    "comfort": 1,
@@ -14438,7 +15100,7 @@
    "tier": 1
   },
   "wr_necklace_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/necklace_b",
    "cat": "acc",
    "comfort": 2,
@@ -14486,8 +15148,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14520,8 +15184,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 93,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14554,8 +15220,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14588,8 +15256,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 88,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14622,8 +15292,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 17,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14656,8 +15328,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 96,
-   "set": "",
-   "sets": [],
+   "set": "wear_neon",
+   "sets": [
+    "wear_neon"
+   ],
    "size": [
     1,
     1
@@ -14742,7 +15416,7 @@
    "tier": 4
   },
   "wr_outfit_farmer": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_farmer/neutral",
    "cat": "outfit",
    "comfort": 1,
@@ -14777,7 +15451,7 @@
    "tier": 1
   },
   "wr_outfit_fisher": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_fisher/neutral",
    "cat": "outfit",
    "comfort": 1,
@@ -14812,7 +15486,7 @@
    "tier": 1
   },
   "wr_outfit_forester": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_forester/neutral",
    "cat": "outfit",
    "comfort": 1,
@@ -14847,7 +15521,7 @@
    "tier": 1
   },
   "wr_outfit_merchant": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_merchant/neutral",
    "cat": "outfit",
    "comfort": 2,
@@ -14882,7 +15556,7 @@
    "tier": 2
   },
   "wr_outfit_miner": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_miner/neutral",
    "cat": "outfit",
    "comfort": 1,
@@ -15057,7 +15731,7 @@
    "tier": 2
   },
   "wr_outfit_scholar": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_scholar/neutral",
    "cat": "outfit",
    "comfort": 2,
@@ -15092,7 +15766,7 @@
    "tier": 2
   },
   "wr_outfit_starlight": {
-   "arc": "both",
+   "arc": "",
    "art": "portraits/hero_outfit_starlight/neutral",
    "cat": "outfit",
    "comfort": 8,
@@ -15158,7 +15832,7 @@
    "tier": 2
   },
   "wr_overalls": {
-   "arc": "both",
+   "arc": "",
    "art": "items/overalls",
    "cat": "bottom",
    "comfort": 1,
@@ -15206,8 +15880,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15240,8 +15916,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 88,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15274,8 +15952,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 16,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15308,8 +15988,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 94,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15342,8 +16024,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 20,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15376,8 +16060,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 92,
-   "set": "",
-   "sets": [],
+   "set": "wear_penguin",
+   "sets": [
+    "wear_penguin"
+   ],
    "size": [
     1,
     1
@@ -15427,7 +16113,7 @@
    "tier": 5
   },
   "wr_rain_boots": {
-   "arc": "both",
+   "arc": "",
    "art": "items/rain_boots",
    "cat": "shoes",
    "comfort": 1,
@@ -15461,7 +16147,7 @@
    "tier": 1
   },
   "wr_scarf_black": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_black",
    "cat": "acc",
    "comfort": 1,
@@ -15495,7 +16181,7 @@
    "tier": 1
   },
   "wr_scarf_blue": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_blue",
    "cat": "acc",
    "comfort": 1,
@@ -15533,7 +16219,7 @@
    "tier": 1
   },
   "wr_scarf_cyan": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_cyan",
    "cat": "acc",
    "comfort": 1,
@@ -15567,7 +16253,7 @@
    "tier": 1
   },
   "wr_scarf_green": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_green",
    "cat": "acc",
    "comfort": 1,
@@ -15601,7 +16287,7 @@
    "tier": 1
   },
   "wr_scarf_purple": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_purple",
    "cat": "acc",
    "comfort": 1,
@@ -15635,7 +16321,7 @@
    "tier": 1
   },
   "wr_scarf_red": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_red",
    "cat": "acc",
    "comfort": 1,
@@ -15673,7 +16359,7 @@
    "tier": 1
   },
   "wr_scarf_white": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_white",
    "cat": "acc",
    "comfort": 1,
@@ -15707,7 +16393,7 @@
    "tier": 1
   },
   "wr_scarf_yellow": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scarf_yellow",
    "cat": "acc",
    "comfort": 1,
@@ -15741,7 +16427,7 @@
    "tier": 1
   },
   "wr_scholar_gloves": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_gloves",
    "cat": "acc",
    "comfort": 1,
@@ -15755,8 +16441,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 16,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -15775,7 +16463,7 @@
    "tier": 1
   },
   "wr_scholar_gloves_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_gloves_b",
    "cat": "acc",
    "comfort": 2,
@@ -15789,8 +16477,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 94,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -15809,7 +16499,7 @@
    "tier": 2
   },
   "wr_scholar_scarf": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_scarf",
    "cat": "acc",
    "comfort": 1,
@@ -15823,8 +16513,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 19,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -15843,7 +16535,7 @@
    "tier": 1
   },
   "wr_scholar_scarf_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_scarf_b",
    "cat": "acc",
    "comfort": 2,
@@ -15857,8 +16549,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 90,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -15877,7 +16571,7 @@
    "tier": 2
   },
   "wr_scholar_shoes": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_shoes",
    "cat": "shoes",
    "comfort": 1,
@@ -15891,8 +16585,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 18,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -15911,7 +16607,7 @@
    "tier": 1
   },
   "wr_scholar_shoes_b": {
-   "arc": "both",
+   "arc": "",
    "art": "items/scholar_shoes_b",
    "cat": "shoes",
    "comfort": 2,
@@ -15925,8 +16621,10 @@
    "renders": "icon",
    "rot": 1,
    "sell": 97,
-   "set": "",
-   "sets": [],
+   "set": "wear_scholar",
+   "sets": [
+    "wear_scholar"
+   ],
    "size": [
     1,
     1
@@ -16051,7 +16749,7 @@
    "tier": 2
   },
   "wr_straw": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/straw",
    "cat": "hat",
    "comfort": 1,
@@ -16085,7 +16783,7 @@
    "tier": 1
   },
   "wr_sweater": {
-   "arc": "both",
+   "arc": "",
    "art": "items/sweater",
    "cat": "top",
    "comfort": 1,
@@ -16123,7 +16821,7 @@
    "tier": 1
   },
   "wr_tophat": {
-   "arc": "both",
+   "arc": "",
    "art": "hats/tophat",
    "cat": "hat",
    "comfort": 3,
@@ -16240,12 +16938,32 @@
     8
    ],
    [
+    "dc_golden_crate",
+    30
+   ],
+   [
+    "dc_golden_rod_mount",
+    30
+   ],
+   [
+    "dc_grand_catalogue_stand",
+    8
+   ],
+   [
     "dc_jukebox_a",
     30
    ],
    [
     "dc_jukebox_b",
     8
+   ],
+   [
+    "dc_koi_scroll",
+    8
+   ],
+   [
+    "dc_master_hearth",
+    30
    ],
    [
     "dc_neon_sign_4",
@@ -16278,6 +16996,10 @@
    [
     "dc_rec_pinball_b",
     8
+   ],
+   [
+    "dc_relic_shelf",
+    30
    ],
    [
     "dc_safe",
@@ -18490,6 +19212,10 @@
     600
    ],
    [
+    "dc_collectors_shelf",
+    100
+   ],
+   [
     "dc_cradle",
     260
    ],
@@ -18500,6 +19226,10 @@
    [
     "dc_crystal_cage",
     100
+   ],
+   [
+    "dc_curio_jar",
+    260
    ],
    [
     "dc_curtain_blue_closed",
@@ -18587,6 +19317,10 @@
    ],
    [
     "dc_fireplace2_unlit",
+    100
+   ],
+   [
+    "dc_fish_trophy",
     100
    ],
    [
@@ -18710,12 +19444,20 @@
     600
    ],
    [
+    "dc_mineral_display",
+    100
+   ],
+   [
     "dc_mirror",
     260
    ],
    [
     "dc_mirror2",
     260
+   ],
+   [
+    "dc_museum_trophy",
+    100
    ],
    [
     "dc_neon_sign_0",
@@ -18960,6 +19702,10 @@
    [
     "dc_shelf_misc",
     600
+   ],
+   [
+    "dc_shipper_ribbon",
+    260
    ],
    [
     "dc_sink",
@@ -19840,6 +20586,10 @@
     260
    ],
    [
+    "dc_collectors_shelf",
+    100
+   ],
+   [
     "dc_cradle",
     260
    ],
@@ -19850,6 +20600,10 @@
    [
     "dc_crystal_cage",
     100
+   ],
+   [
+    "dc_curio_jar",
+    260
    ],
    [
     "dc_easel2",
@@ -19869,6 +20623,10 @@
    ],
    [
     "dc_fireplace2_unlit",
+    100
+   ],
+   [
+    "dc_fish_trophy",
     100
    ],
    [
@@ -19892,6 +20650,18 @@
     100
    ],
    [
+    "dc_golden_crate",
+    30
+   ],
+   [
+    "dc_golden_rod_mount",
+    30
+   ],
+   [
+    "dc_grand_catalogue_stand",
+    8
+   ],
+   [
     "dc_hearth",
     100
    ],
@@ -19902,6 +20672,10 @@
    [
     "dc_jukebox_a",
     30
+   ],
+   [
+    "dc_koi_scroll",
+    8
    ],
    [
     "dc_lamp_arm_a",
@@ -19916,12 +20690,24 @@
     100
    ],
    [
+    "dc_master_hearth",
+    30
+   ],
+   [
+    "dc_mineral_display",
+    100
+   ],
+   [
     "dc_mirror",
     260
    ],
    [
     "dc_mirror2",
     260
+   ],
+   [
+    "dc_museum_trophy",
+    100
    ],
    [
     "dc_neon_sign_0",
@@ -20040,6 +20826,10 @@
     30
    ],
    [
+    "dc_relic_shelf",
+    30
+   ],
+   [
     "dc_round_rug_stone",
     260
    ],
@@ -20074,6 +20864,10 @@
    [
     "dc_safe",
     30
+   ],
+   [
+    "dc_shipper_ribbon",
+    260
    ],
    [
     "dc_sofa_blue",
@@ -20654,12 +21448,20 @@
     100
    ],
    [
+    "dc_collectors_shelf",
+    100
+   ],
+   [
     "dc_crystal_ball",
     100
    ],
    [
     "dc_crystal_cage",
     100
+   ],
+   [
+    "dc_curio_jar",
+    260
    ],
    [
     "dc_easel2",
@@ -20686,6 +21488,10 @@
     8
    ],
    [
+    "dc_fish_trophy",
+    100
+   ],
+   [
     "dc_globe",
     100
    ],
@@ -20696,6 +21502,18 @@
    [
     "dc_globe3",
     100
+   ],
+   [
+    "dc_golden_crate",
+    30
+   ],
+   [
+    "dc_golden_rod_mount",
+    30
+   ],
+   [
+    "dc_grand_catalogue_stand",
+    8
    ],
    [
     "dc_hearth",
@@ -20714,7 +21532,23 @@
     8
    ],
    [
+    "dc_koi_scroll",
+    8
+   ],
+   [
     "dc_library_ladder",
+    100
+   ],
+   [
+    "dc_master_hearth",
+    30
+   ],
+   [
+    "dc_mineral_display",
+    100
+   ],
+   [
+    "dc_museum_trophy",
     100
    ],
    [
@@ -20806,8 +21640,16 @@
     8
    ],
    [
+    "dc_relic_shelf",
+    30
+   ],
+   [
     "dc_safe",
     30
+   ],
+   [
+    "dc_shipper_ribbon",
+    260
    ],
    [
     "dc_sofa_velvet",
@@ -21408,6 +22250,10 @@
   ],
   "fishing": [
    [
+    "dc_fish_trophy",
+    100
+   ],
+   [
     "dc_lantern2",
     600
    ],
@@ -21517,6 +22363,444 @@
    ],
    [
     "wr_outfit_fisher",
+    600
+   ]
+  ],
+  "fishing_deep": [
+   [
+    "dc_armchair_window",
+    100
+   ],
+   [
+    "dc_chandelier",
+    30
+   ],
+   [
+    "dc_crystal_ball",
+    100
+   ],
+   [
+    "dc_crystal_cage",
+    100
+   ],
+   [
+    "dc_koi_scroll",
+    8
+   ],
+   [
+    "dc_sofa_velvet",
+    30
+   ],
+   [
+    "dc_statue2_crystal",
+    8
+   ],
+   [
+    "dc_tt_bottled_wind",
+    100
+   ],
+   [
+    "dc_tt_echo_shell",
+    100
+   ],
+   [
+    "dc_tt_lantern_crystal",
+    100
+   ],
+   [
+    "dc_tt_trophy_crystal",
+    30
+   ],
+   [
+    "dc_tt_wisp_bottle",
+    30
+   ],
+   [
+    "dc_tt_wisp_lantern",
+    8
+   ],
+   [
+    "wr_cape_crystal",
+    30
+   ],
+   [
+    "wr_crystal_crown",
+    30
+   ],
+   [
+    "wr_outfit_crystal_parka",
+    30
+   ]
+  ],
+  "fishing_sea": [
+   [
+    "dc_arcade_cab_0",
+    30
+   ],
+   [
+    "dc_arcade_cab_1",
+    30
+   ],
+   [
+    "dc_arcade_cab_2",
+    8
+   ],
+   [
+    "dc_arcade_cab_3",
+    30
+   ],
+   [
+    "dc_arcade_cab_4",
+    30
+   ],
+   [
+    "dc_arcade_cab_5",
+    8
+   ],
+   [
+    "dc_armchair2_blue",
+    600
+   ],
+   [
+    "dc_armchair2_green",
+    600
+   ],
+   [
+    "dc_armchair2_red",
+    600
+   ],
+   [
+    "dc_armchair2_yellow",
+    600
+   ],
+   [
+    "dc_armchair_a",
+    600
+   ],
+   [
+    "dc_armchair_b",
+    600
+   ],
+   [
+    "dc_armchair_c",
+    600
+   ],
+   [
+    "dc_armchair_d",
+    600
+   ],
+   [
+    "dc_armchair_window",
+    100
+   ],
+   [
+    "dc_chair2_a_down",
+    600
+   ],
+   [
+    "dc_chair2_b_down",
+    600
+   ],
+   [
+    "dc_chair_a",
+    600
+   ],
+   [
+    "dc_chair_b",
+    600
+   ],
+   [
+    "dc_chair_c",
+    600
+   ],
+   [
+    "dc_chair_d",
+    600
+   ],
+   [
+    "dc_chair_down",
+    600
+   ],
+   [
+    "dc_chair_up",
+    600
+   ],
+   [
+    "dc_filing_cabinet",
+    600
+   ],
+   [
+    "dc_fish_trophy",
+    100
+   ],
+   [
+    "dc_sofa_blue",
+    260
+   ],
+   [
+    "dc_sofa_green",
+    260
+   ],
+   [
+    "dc_sofa_red",
+    260
+   ],
+   [
+    "dc_sofa_velvet",
+    30
+   ],
+   [
+    "dc_stool2",
+    600
+   ],
+   [
+    "dc_stool_blue",
+    600
+   ],
+   [
+    "dc_stool_green",
+    600
+   ],
+   [
+    "dc_stool_red",
+    600
+   ],
+   [
+    "dc_stool_wood",
+    600
+   ],
+   [
+    "dc_tt_bottle_cap",
+    600
+   ],
+   [
+    "dc_tt_bottled_wind",
+    100
+   ],
+   [
+    "dc_tt_echo_shell",
+    100
+   ],
+   [
+    "dc_tt_fossil_shell",
+    260
+   ],
+   [
+    "dc_tt_trophy_fish_a",
+    100
+   ],
+   [
+    "dc_tt_wisp_bottle",
+    30
+   ],
+   [
+    "dc_wall_fish",
+    600
+   ],
+   [
+    "wr_fisher_gloves",
+    600
+   ],
+   [
+    "wr_fisher_gloves_b",
+    260
+   ],
+   [
+    "wr_fisher_scarf",
+    600
+   ],
+   [
+    "wr_fisher_scarf_b",
+    260
+   ],
+   [
+    "wr_fisher_shoes",
+    600
+   ],
+   [
+    "wr_fisher_shoes_b",
+    260
+   ],
+   [
+    "wr_outfit_fisher",
+    600
+   ]
+  ],
+  "mail": [
+   [
+    "dc_candle_stand",
+    600
+   ],
+   [
+    "dc_cattail_pot",
+    600
+   ],
+   [
+    "dc_city_planter",
+    600
+   ],
+   [
+    "dc_flower_jug",
+    600
+   ],
+   [
+    "dc_ivy_pot",
+    600
+   ],
+   [
+    "dc_lamp_arm_a",
+    260
+   ],
+   [
+    "dc_lamp_floor",
+    600
+   ],
+   [
+    "dc_lamp_floor_b",
+    600
+   ],
+   [
+    "dc_lamp_table_a",
+    600
+   ],
+   [
+    "dc_lamp_table_b",
+    600
+   ],
+   [
+    "dc_lamp_tall_a",
+    260
+   ],
+   [
+    "dc_lantern2",
+    600
+   ],
+   [
+    "dc_lantern3",
+    600
+   ],
+   [
+    "dc_lantern4",
+    600
+   ],
+   [
+    "dc_plant",
+    600
+   ],
+   [
+    "dc_plant2_a",
+    600
+   ],
+   [
+    "dc_plant2_b",
+    600
+   ],
+   [
+    "dc_plant2_c",
+    600
+   ],
+   [
+    "dc_plant2_d",
+    600
+   ],
+   [
+    "dc_plant2_e",
+    600
+   ],
+   [
+    "dc_plant2_f",
+    600
+   ],
+   [
+    "dc_plant_a",
+    600
+   ],
+   [
+    "dc_plant_b",
+    600
+   ],
+   [
+    "dc_plant_c",
+    600
+   ],
+   [
+    "dc_rec_neon_0",
+    260
+   ],
+   [
+    "dc_rec_neon_3",
+    260
+   ],
+   [
+    "dc_tt_bottle_cap",
+    600
+   ],
+   [
+    "dc_tt_candle",
+    600
+   ],
+   [
+    "dc_tt_candle_tall",
+    600
+   ],
+   [
+    "dc_tt_cat_figurine",
+    260
+   ],
+   [
+    "dc_tt_fossil_shell",
+    260
+   ],
+   [
+    "dc_tt_lantern_copper",
+    260
+   ],
+   [
+    "dc_tt_lantern_red",
+    600
+   ],
+   [
+    "dc_tt_medal_bronze",
+    260
+   ],
+   [
+    "dc_tt_painting_landscape",
+    260
+   ],
+   [
+    "dc_tt_painting_portrait",
+    260
+   ],
+   [
+    "dc_tt_penguin_figurine",
+    260
+   ],
+   [
+    "dc_tt_pot_a",
+    600
+   ],
+   [
+    "dc_tt_pot_b",
+    600
+   ],
+   [
+    "dc_tt_pot_c",
+    260
+   ],
+   [
+    "dc_tt_pumpkin_lantern",
+    260
+   ],
+   [
+    "dc_tt_snowman",
+    260
+   ],
+   [
+    "dc_tt_teddy_bear",
+    600
+   ],
+   [
+    "dc_tt_vase",
     600
    ]
   ],
@@ -23035,9 +24319,9 @@
     1200
    ],
    "col": [
-    0.35,
-    0.85,
-    0.7
+    0.25,
+    0.75,
+    0.45
    ],
    "comfort": 2,
    "glyph": "",
@@ -23052,8 +24336,8 @@
     4000
    ],
    "col": [
-    0.35,
-    0.6,
+    0.3,
+    0.5,
     1.0
    ],
    "comfort": 3,
@@ -23069,9 +24353,9 @@
     12000
    ],
    "col": [
-    1.0,
-    0.45,
-    0.8
+    0.9,
+    0.3,
+    0.65
    ],
    "comfort": 5,
    "glyph": "",
@@ -23536,7 +24820,7 @@
  "sell_share": 0.15,
  "sets": {
   "arcade_den": {
-   "arc": "both",
+   "arc": "",
    "comfort": 29,
    "name": "Arcade Den",
    "pieces": [
@@ -23558,7 +24842,7 @@
    }
   },
   "cosy_kitchen": {
-   "arc": "both",
+   "arc": "",
    "comfort": 21,
    "name": "Cosy Kitchen",
    "pieces": [
@@ -23576,7 +24860,7 @@
    }
   },
   "cottage": {
-   "arc": "both",
+   "arc": "",
    "comfort": 21,
    "name": "Cottage Classics",
    "pieces": [
@@ -23594,7 +24878,7 @@
    }
   },
   "country": {
-   "arc": "both",
+   "arc": "",
    "comfort": 21,
    "name": "Country Comforts",
    "pieces": [
@@ -23612,7 +24896,7 @@
    }
   },
   "manor": {
-   "arc": "both",
+   "arc": "",
    "comfort": 21,
    "name": "Manor House",
    "pieces": [
@@ -23652,7 +24936,7 @@
    }
   },
   "reading_nook": {
-   "arc": "both",
+   "arc": "",
    "comfort": 17,
    "name": "Reading Nook",
    "pieces": [
@@ -23668,7 +24952,7 @@
    }
   },
   "rec_trophies": {
-   "arc": "both",
+   "arc": "",
    "comfort": 13,
    "name": "Rec Hall of Fame",
    "pieces": [
@@ -23697,6 +24981,134 @@
    "reward": {
     "comfort": 19
    }
+  },
+  "wear_farmer": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Farmer Set",
+   "pieces": [
+    "wr_farmer_gloves",
+    "wr_farmer_gloves_b",
+    "wr_farmer_scarf",
+    "wr_farmer_scarf_b",
+    "wr_farmer_shoes",
+    "wr_farmer_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_fisher": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Fisher Set",
+   "pieces": [
+    "wr_fisher_gloves",
+    "wr_fisher_gloves_b",
+    "wr_fisher_scarf",
+    "wr_fisher_scarf_b",
+    "wr_fisher_shoes",
+    "wr_fisher_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_forester": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Forester Set",
+   "pieces": [
+    "wr_forester_gloves",
+    "wr_forester_gloves_b",
+    "wr_forester_scarf",
+    "wr_forester_scarf_b",
+    "wr_forester_shoes",
+    "wr_forester_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_merchant": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Merchant Set",
+   "pieces": [
+    "wr_merchant_gloves",
+    "wr_merchant_gloves_b",
+    "wr_merchant_scarf",
+    "wr_merchant_scarf_b",
+    "wr_merchant_shoes",
+    "wr_merchant_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_miner": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Miner Set",
+   "pieces": [
+    "wr_miner_gloves",
+    "wr_miner_gloves_b",
+    "wr_miner_scarf",
+    "wr_miner_scarf_b",
+    "wr_miner_shoes",
+    "wr_miner_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_neon": {
+   "arc": "gangsters",
+   "comfort": 17,
+   "name": "Neon Set",
+   "pieces": [
+    "wr_neon_gloves",
+    "wr_neon_gloves_b",
+    "wr_neon_scarf",
+    "wr_neon_scarf_b",
+    "wr_neon_shoes",
+    "wr_neon_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_penguin": {
+   "arc": "penguins",
+   "comfort": 17,
+   "name": "Penguin Set",
+   "pieces": [
+    "wr_penguin_gloves",
+    "wr_penguin_gloves_b",
+    "wr_penguin_scarf",
+    "wr_penguin_scarf_b",
+    "wr_penguin_shoes",
+    "wr_penguin_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
+  },
+  "wear_scholar": {
+   "arc": "",
+   "comfort": 17,
+   "name": "Scholar Set",
+   "pieces": [
+    "wr_scholar_gloves",
+    "wr_scholar_gloves_b",
+    "wr_scholar_scarf",
+    "wr_scholar_scarf_b",
+    "wr_scholar_shoes",
+    "wr_scholar_shoes_b"
+   ],
+   "reward": {
+    "comfort": 17
+   }
   }
  },
  "shop_days": {
@@ -23714,6 +25126,32 @@
   "wardrobe": 6
  },
  "shops": {
+  "catkins": [
+   [
+    1,
+    [
+     "dc_cat_bed",
+     "dc_cattail_pot",
+     "dc_pet_bed"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_tt_cat_figurine",
+     "dc_tt_penguin_figurine",
+     "dc_tt_snow_globe",
+     "dc_tt_snowman"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_cat_statue",
+     "dc_tt_snow_heart"
+    ]
+   ]
+  ],
   "crew_goods": [
    [
     1,
@@ -23816,6 +25254,531 @@
      "dc_sofa_velvet",
      "dc_tt_lantern_gold",
      "wr_outfit_armored"
+    ]
+   ]
+  ],
+  "finn": [
+   [
+    2,
+    [
+     "dc_tt_fossil_shell"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_tt_echo_shell",
+     "dc_tt_trophy_fish_a"
+    ]
+   ]
+  ],
+  "finn_gang": [
+   [
+    1,
+    [
+     "dc_city_planter",
+     "dc_tt_bottle_cap"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_tt_first_dollar",
+     "dc_tt_fossil_shell"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_tt_echo_shell",
+     "dc_tt_trophy_fish_a"
+    ]
+   ]
+  ],
+  "gideon": [
+   [
+    1,
+    [
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_filing_cabinet",
+     "dc_kitchen_stove",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stove_iron",
+     "dc_tt_lantern_red",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_barrel",
+     "dc_barrels3",
+     "dc_lamp_arm_a",
+     "dc_trophy_case",
+     "dc_trophy_shelf",
+     "dc_tt_lantern_copper",
+     "dc_tt_pumpkin_lantern"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookcase3_a",
+     "dc_bookcase3_b",
+     "dc_bookcase3_c",
+     "dc_bookcase3_d",
+     "dc_bookcase3_e",
+     "dc_bookcase3_f",
+     "dc_bookshelf_ivy",
+     "dc_clock_grand",
+     "dc_clock_grand2",
+     "dc_clock_tall",
+     "dc_tt_lantern_crystal"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_chandelier",
+     "dc_safe",
+     "dc_tt_lantern_moon",
+     "dc_vault_closed",
+     "dc_vault_open"
+    ]
+   ]
+  ],
+  "gideon_gang": [
+   [
+    1,
+    [
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_filing_cabinet",
+     "dc_kitchen_stove",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stove_iron",
+     "dc_tt_lantern_red",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_barrel",
+     "dc_barrels3",
+     "dc_lamp_arm_a",
+     "dc_lamp_tall_a",
+     "dc_neon_sign_0",
+     "dc_neon_sign_1",
+     "dc_trophy_case",
+     "dc_trophy_shelf",
+     "dc_tt_lantern_copper",
+     "dc_tt_pumpkin_lantern"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookcase3_a",
+     "dc_bookcase3_b",
+     "dc_bookcase3_c",
+     "dc_bookcase3_d",
+     "dc_bookcase3_e",
+     "dc_bookcase3_f",
+     "dc_bookshelf_ivy",
+     "dc_clock_grand",
+     "dc_clock_grand2",
+     "dc_clock_tall",
+     "dc_neon_sign_2",
+     "dc_neon_sign_3",
+     "dc_neon_sign_4"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_chandelier",
+     "dc_jukebox_a",
+     "dc_neon_sign_5",
+     "dc_neon_sign_6",
+     "dc_safe",
+     "dc_tt_lantern_gold",
+     "dc_tt_lantern_moon",
+     "dc_vault_closed",
+     "dc_vault_open"
+    ]
+   ]
+  ],
+  "granite": [
+   [
+    1,
+    [
+     "dc_floor_brick",
+     "dc_floor_cobble",
+     "dc_floor_quarry",
+     "dc_floor_round_stone",
+     "dc_floor_stone",
+     "dc_wall_quarry",
+     "dc_wall_stone"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_s_flagstone",
+     "dc_floor_s_stone_tiles",
+     "dc_wall_brick"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_cat_statue",
+     "dc_fire_pit2",
+     "dc_fireplace",
+     "dc_fireplace2",
+     "dc_fireplace2_unlit",
+     "dc_floor_brick_herring",
+     "dc_floor_marble",
+     "dc_hearth",
+     "dc_tt_statue_head",
+     "dc_wall_marble"
+    ]
+   ]
+  ],
+  "granite_gang": [
+   [
+    1,
+    [
+     "dc_city_planter",
+     "dc_floor_brick",
+     "dc_floor_cobble",
+     "dc_floor_concrete",
+     "dc_floor_grate",
+     "dc_floor_quarry",
+     "dc_floor_round_stone",
+     "dc_floor_stone",
+     "dc_tt_bottle_cap",
+     "dc_wall_concrete",
+     "dc_wall_quarry",
+     "dc_wall_stone"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_s_flagstone",
+     "dc_floor_s_stone_tiles",
+     "dc_tt_first_dollar",
+     "dc_wall_brick"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_fire_pit2",
+     "dc_fireplace",
+     "dc_fireplace2",
+     "dc_fireplace2_unlit",
+     "dc_floor_brick_herring",
+     "dc_floor_marble",
+     "dc_floor_s_checker",
+     "dc_hearth",
+     "dc_tt_statue_head",
+     "dc_wall_marble"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_jukebox_a"
+    ]
+   ]
+  ],
+  "hazel": [
+   [
+    1,
+    [
+     "dc_armchair2_blue",
+     "dc_armchair2_green",
+     "dc_armchair2_red",
+     "dc_armchair2_yellow",
+     "dc_armchair_a",
+     "dc_armchair_b",
+     "dc_armchair_c",
+     "dc_armchair_d",
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_cat_bed",
+     "dc_chair2_a_down",
+     "dc_chair2_b_down",
+     "dc_chair_a",
+     "dc_chair_b",
+     "dc_chair_c",
+     "dc_chair_d",
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_dog_bed",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_pet_bed",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stool2",
+     "dc_stool_blue",
+     "dc_stool_green",
+     "dc_stool_red",
+     "dc_stool_wood",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bunk_bed",
+     "dc_cradle",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_sofa_blue",
+     "dc_sofa_green",
+     "dc_sofa_red",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_trophy_shelf"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_armchair_window",
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_bookshelf_ivy"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_sofa_velvet"
+    ]
+   ]
+  ],
+  "hazel_gang": [
+   [
+    1,
+    [
+     "dc_armchair2_blue",
+     "dc_armchair2_green",
+     "dc_armchair2_red",
+     "dc_armchair2_yellow",
+     "dc_armchair_a",
+     "dc_armchair_b",
+     "dc_armchair_c",
+     "dc_armchair_d",
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_cat_bed",
+     "dc_chair2_a_down",
+     "dc_chair2_b_down",
+     "dc_chair_a",
+     "dc_chair_b",
+     "dc_chair_c",
+     "dc_chair_d",
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_dog_bed",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_floor_concrete",
+     "dc_floor_grate",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_pet_bed",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stool2",
+     "dc_stool_blue",
+     "dc_stool_green",
+     "dc_stool_red",
+     "dc_stool_wood",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_wall_concrete",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bunk_bed",
+     "dc_cradle",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_sofa_blue",
+     "dc_sofa_green",
+     "dc_sofa_red",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_trophy_shelf"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_armchair_window",
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_bookshelf_ivy",
+     "dc_floor_s_checker"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_jukebox_a",
+     "dc_rec_pinball_a",
+     "dc_sofa_velvet"
     ]
    ]
   ],
@@ -24153,6 +26116,1094 @@
     ]
    ]
   ],
+  "maple": [
+   [
+    1,
+    [
+     "dc_candle_stand",
+     "dc_cattail_pot",
+     "dc_floor_bakery",
+     "dc_floor_brick",
+     "dc_floor_camp",
+     "dc_floor_clinic",
+     "dc_floor_cobble",
+     "dc_floor_grey_plank",
+     "dc_floor_hut_plank",
+     "dc_floor_inn",
+     "dc_floor_moss_plank",
+     "dc_floor_plank",
+     "dc_floor_quarry",
+     "dc_floor_round_stone",
+     "dc_floor_stone",
+     "dc_floor_wood",
+     "dc_floor_wood_light",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug2_runner",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rug_red",
+     "dc_tt_candle",
+     "dc_tt_candle_tall",
+     "dc_tt_lantern_red",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b",
+     "dc_tt_teddy_bear",
+     "dc_tt_vase",
+     "dc_wall_bakery",
+     "dc_wall_chalk",
+     "dc_wall_clinic",
+     "dc_wall_fish",
+     "dc_wall_floral",
+     "dc_wall_hut",
+     "dc_wall_log",
+     "dc_wall_panel",
+     "dc_wall_plaster",
+     "dc_wall_quarry",
+     "dc_wall_reed",
+     "dc_wall_stone",
+     "dc_wall_striped",
+     "dc_wall_striped_green",
+     "dc_wall_striped_red",
+     "dc_wall_tent",
+     "dc_wall_wood"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_carpet_blue",
+     "dc_floor_carpet_green",
+     "dc_floor_carpet_purple",
+     "dc_floor_carpet_red",
+     "dc_floor_s_carpet",
+     "dc_floor_s_dark",
+     "dc_floor_s_flagstone",
+     "dc_floor_s_light",
+     "dc_floor_s_oak",
+     "dc_floor_s_stone_tiles",
+     "dc_floor_s_terracotta",
+     "dc_floor_s_worn",
+     "dc_floor_tile",
+     "dc_floor_wood_dark",
+     "dc_lamp_arm_a",
+     "dc_round_rug_stone",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_tt_cat_figurine",
+     "dc_tt_fossil_shell",
+     "dc_tt_lantern_copper",
+     "dc_tt_medal_bronze",
+     "dc_tt_penguin_figurine",
+     "dc_tt_pot_c",
+     "dc_tt_pumpkin_lantern",
+     "dc_tt_snow_globe",
+     "dc_tt_snowman",
+     "dc_wall_brick",
+     "dc_wall_curve",
+     "dc_wall_floral_blue",
+     "dc_wall_timber"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_books_scrolls",
+     "dc_bulb_plant",
+     "dc_cat_statue",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_easel2",
+     "dc_floor_brick_herring",
+     "dc_floor_marble",
+     "dc_floor_parquet",
+     "dc_globe",
+     "dc_globe2",
+     "dc_globe3",
+     "dc_ink_brushes",
+     "dc_library_ladder",
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf",
+     "dc_spiral_stair",
+     "dc_telescope2",
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell",
+     "dc_tt_lantern_crystal",
+     "dc_tt_medal_silver",
+     "dc_tt_snow_heart",
+     "dc_tt_statue_head",
+     "dc_tt_trophy_craft_a",
+     "dc_tt_trophy_farm_a",
+     "dc_tt_trophy_fish_a",
+     "dc_wall_library",
+     "dc_wall_marble"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant",
+     "dc_chandelier",
+     "dc_tt_lantern_moon",
+     "dc_tt_trophy_crystal",
+     "dc_tt_wisp_bottle"
+    ]
+   ]
+  ],
+  "maple_gang": [
+   [
+    1,
+    [
+     "dc_candle_stand",
+     "dc_cattail_pot",
+     "dc_city_planter",
+     "dc_floor_bakery",
+     "dc_floor_brick",
+     "dc_floor_camp",
+     "dc_floor_clinic",
+     "dc_floor_cobble",
+     "dc_floor_concrete",
+     "dc_floor_grate",
+     "dc_floor_grey_plank",
+     "dc_floor_hut_plank",
+     "dc_floor_inn",
+     "dc_floor_moss_plank",
+     "dc_floor_plank",
+     "dc_floor_quarry",
+     "dc_floor_round_stone",
+     "dc_floor_stone",
+     "dc_floor_wood",
+     "dc_floor_wood_light",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug2_runner",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rug_red",
+     "dc_tt_bottle_cap",
+     "dc_tt_candle",
+     "dc_tt_candle_tall",
+     "dc_tt_lantern_red",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b",
+     "dc_tt_teddy_bear",
+     "dc_tt_vase",
+     "dc_wall_bakery",
+     "dc_wall_chalk",
+     "dc_wall_clinic",
+     "dc_wall_concrete",
+     "dc_wall_fish",
+     "dc_wall_floral",
+     "dc_wall_hut",
+     "dc_wall_log",
+     "dc_wall_panel",
+     "dc_wall_plaster",
+     "dc_wall_quarry",
+     "dc_wall_reed",
+     "dc_wall_stone",
+     "dc_wall_striped",
+     "dc_wall_striped_green",
+     "dc_wall_striped_red",
+     "dc_wall_tent",
+     "dc_wall_wood"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_carpet_blue",
+     "dc_floor_carpet_green",
+     "dc_floor_carpet_purple",
+     "dc_floor_carpet_red",
+     "dc_floor_s_carpet",
+     "dc_floor_s_dark",
+     "dc_floor_s_flagstone",
+     "dc_floor_s_light",
+     "dc_floor_s_oak",
+     "dc_floor_s_stone_tiles",
+     "dc_floor_s_terracotta",
+     "dc_floor_s_worn",
+     "dc_floor_tile",
+     "dc_floor_wood_dark",
+     "dc_lamp_arm_a",
+     "dc_lamp_tall_a",
+     "dc_neon_sign_0",
+     "dc_neon_sign_1",
+     "dc_rec_neon_0",
+     "dc_rec_neon_3",
+     "dc_round_rug_stone",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_tt_first_dollar",
+     "dc_tt_fossil_shell",
+     "dc_tt_lantern_copper",
+     "dc_tt_medal_bronze",
+     "dc_tt_pot_c",
+     "dc_tt_pumpkin_lantern",
+     "dc_tt_snow_globe",
+     "dc_wall_brick",
+     "dc_wall_curve",
+     "dc_wall_floral_blue",
+     "dc_wall_timber"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_books_scrolls",
+     "dc_bulb_plant",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_easel2",
+     "dc_floor_brick_herring",
+     "dc_floor_marble",
+     "dc_floor_parquet",
+     "dc_floor_s_checker",
+     "dc_globe",
+     "dc_globe2",
+     "dc_globe3",
+     "dc_ink_brushes",
+     "dc_library_ladder",
+     "dc_neon_sign_2",
+     "dc_neon_sign_3",
+     "dc_neon_sign_4",
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf",
+     "dc_rec_neon_1",
+     "dc_rec_neon_2",
+     "dc_spiral_stair",
+     "dc_telescope2",
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell",
+     "dc_tt_medal_silver",
+     "dc_tt_statue_head",
+     "dc_tt_trophy_craft_a",
+     "dc_tt_trophy_farm_a",
+     "dc_tt_trophy_fish_a",
+     "dc_wall_library",
+     "dc_wall_marble"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant",
+     "dc_chandelier",
+     "dc_neon_sign_5",
+     "dc_neon_sign_6",
+     "dc_tt_lantern_gold",
+     "dc_tt_lantern_moon",
+     "dc_tt_trophy_crystal",
+     "dc_tt_wisp_bottle"
+    ]
+   ]
+  ],
+  "marlowe": [
+   [
+    1,
+    [
+     "dc_curtain_blue_closed",
+     "dc_curtain_blue_open",
+     "dc_curtain_closed",
+     "dc_curtain_green_closed",
+     "dc_curtain_green_open",
+     "dc_curtain_open",
+     "dc_curtain_red_closed",
+     "dc_curtain_red_open",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_tt_lantern_red"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_lamp_arm_a",
+     "dc_tt_fossil_shell",
+     "dc_tt_lantern_copper",
+     "dc_tt_pumpkin_lantern",
+     "dc_window",
+     "dc_window2_day_a",
+     "dc_window2_day_b",
+     "dc_window2_night_a",
+     "dc_window2_night_b",
+     "dc_window_day",
+     "dc_window_night",
+     "dc_window_rain"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell",
+     "dc_tt_lantern_crystal"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_tt_lantern_moon",
+     "dc_tt_wisp_bottle"
+    ]
+   ]
+  ],
+  "marlowe_gang": [
+   [
+    1,
+    [
+     "dc_city_planter",
+     "dc_curtain_blue_closed",
+     "dc_curtain_blue_open",
+     "dc_curtain_closed",
+     "dc_curtain_green_closed",
+     "dc_curtain_green_open",
+     "dc_curtain_open",
+     "dc_curtain_red_closed",
+     "dc_curtain_red_open",
+     "dc_lamp_floor",
+     "dc_lamp_floor_b",
+     "dc_lamp_table_a",
+     "dc_lamp_table_b",
+     "dc_lantern2",
+     "dc_lantern3",
+     "dc_lantern4",
+     "dc_tt_bottle_cap",
+     "dc_tt_lantern_red"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_lamp_arm_a",
+     "dc_lamp_tall_a",
+     "dc_neon_sign_0",
+     "dc_neon_sign_1",
+     "dc_tt_first_dollar",
+     "dc_tt_fossil_shell",
+     "dc_tt_lantern_copper",
+     "dc_tt_pumpkin_lantern",
+     "dc_window",
+     "dc_window2_day_a",
+     "dc_window2_day_b",
+     "dc_window2_night_a",
+     "dc_window2_night_b",
+     "dc_window_day",
+     "dc_window_night",
+     "dc_window_rain"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_neon_sign_2",
+     "dc_neon_sign_3",
+     "dc_neon_sign_4",
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_neon_sign_5",
+     "dc_neon_sign_6",
+     "dc_tt_lantern_gold",
+     "dc_tt_lantern_moon",
+     "dc_tt_wisp_bottle"
+    ]
+   ]
+  ],
+  "old_moss": [
+   [
+    1,
+    [
+     "dc_cattail_pot",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookshelf_ivy",
+     "dc_bulb_plant"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant"
+    ]
+   ]
+  ],
+  "old_moss_gang": [
+   [
+    1,
+    [
+     "dc_cattail_pot",
+     "dc_city_planter",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round",
+     "dc_tt_bottle_cap"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_tt_first_dollar"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookshelf_ivy",
+     "dc_bulb_plant"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant",
+     "dc_jukebox_a"
+    ]
+   ]
+  ],
+  "orla": [
+   [
+    1,
+    [
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_coffee_pot",
+     "dc_coffee_pot_a",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_floor_bakery",
+     "dc_floor_clinic",
+     "dc_flower_jug",
+     "dc_fridge",
+     "dc_hanging_mugs",
+     "dc_jug",
+     "dc_kettle",
+     "dc_kettle_stand",
+     "dc_kitchen_counter_a",
+     "dc_kitchen_counter_b",
+     "dc_kitchen_fridge",
+     "dc_kitchen_sink",
+     "dc_kitchen_stove",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_sink",
+     "dc_stove_iron",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b",
+     "dc_tt_teddy_bear",
+     "dc_tt_vase"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_s_stone_tiles",
+     "dc_floor_tile",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_tt_cat_figurine",
+     "dc_tt_fossil_shell",
+     "dc_tt_medal_bronze",
+     "dc_tt_penguin_figurine",
+     "dc_tt_pot_c",
+     "dc_tt_snow_globe",
+     "dc_tt_snowman"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell",
+     "dc_tt_medal_silver",
+     "dc_tt_snow_heart",
+     "dc_tt_statue_head",
+     "dc_tt_trophy_craft_a",
+     "dc_tt_trophy_farm_a",
+     "dc_tt_trophy_fish_a"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_tt_trophy_crystal"
+    ]
+   ]
+  ],
+  "orla_gang": [
+   [
+    1,
+    [
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_city_planter",
+     "dc_coffee_pot",
+     "dc_coffee_pot_a",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_floor_bakery",
+     "dc_floor_clinic",
+     "dc_floor_concrete",
+     "dc_floor_grate",
+     "dc_flower_jug",
+     "dc_fridge",
+     "dc_hanging_mugs",
+     "dc_jug",
+     "dc_kettle",
+     "dc_kettle_stand",
+     "dc_kitchen_counter_a",
+     "dc_kitchen_counter_b",
+     "dc_kitchen_fridge",
+     "dc_kitchen_sink",
+     "dc_kitchen_stove",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_sink",
+     "dc_stove_iron",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_tt_bottle_cap",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b",
+     "dc_tt_teddy_bear",
+     "dc_tt_vase"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_floor_s_stone_tiles",
+     "dc_floor_tile",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_tt_first_dollar",
+     "dc_tt_fossil_shell",
+     "dc_tt_medal_bronze",
+     "dc_tt_pot_c",
+     "dc_tt_snow_globe"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_floor_s_checker",
+     "dc_tt_bottled_wind",
+     "dc_tt_echo_shell",
+     "dc_tt_medal_silver",
+     "dc_tt_statue_head",
+     "dc_tt_trophy_craft_a",
+     "dc_tt_trophy_farm_a",
+     "dc_tt_trophy_fish_a"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_jukebox_a",
+     "dc_rec_pinball_a",
+     "dc_tt_trophy_crystal"
+    ]
+   ]
+  ],
+  "rook": [
+   [
+    1,
+    [
+     "dc_filing_cabinet",
+     "wr_hood"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_antler_hooks",
+     "dc_trophy_case",
+     "dc_trophy_shelf",
+     "wr_cloak"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf"
+    ]
+   ]
+  ],
+  "rook_gang": [
+   [
+    1,
+    [
+     "dc_filing_cabinet",
+     "wr_hood",
+     "wr_neon_gloves",
+     "wr_neon_scarf"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_antler_hooks",
+     "dc_trophy_case",
+     "dc_trophy_shelf",
+     "wr_cloak",
+     "wr_fedora",
+     "wr_flatcap",
+     "wr_neon_gloves_b",
+     "wr_neon_scarf_b",
+     "wr_shades"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_arcade_cab_0",
+     "dc_arcade_cab_1",
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_arcade_cab_3",
+     "dc_arcade_cab_4",
+     "dc_jukebox_a"
+    ]
+   ]
+  ],
+  "sel": [
+   [
+    1,
+    [
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_kitchen_sink",
+     "dc_shelf_books",
+     "dc_sink"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_antler_hooks",
+     "dc_chalkboard",
+     "dc_coat_hooks",
+     "dc_flag_a",
+     "dc_flag_b",
+     "dc_mirror",
+     "dc_mirror2",
+     "dc_painting_a",
+     "dc_painting_b",
+     "dc_painting_c",
+     "dc_painting_d",
+     "dc_poster_frame",
+     "dc_tt_painting_landscape",
+     "dc_tt_painting_portrait",
+     "dc_tt_snow_globe"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookcase3_a",
+     "dc_bookcase3_b",
+     "dc_bookcase3_c",
+     "dc_bookcase3_d",
+     "dc_bookcase3_e",
+     "dc_bookcase3_f",
+     "dc_books_scrolls",
+     "dc_bookshelf_ivy",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_easel2",
+     "dc_globe",
+     "dc_globe2",
+     "dc_globe3",
+     "dc_ink_brushes",
+     "dc_library_ladder",
+     "dc_painting2_a",
+     "dc_painting2_b",
+     "dc_painting2_c",
+     "dc_painting2_d",
+     "dc_painting2_e",
+     "dc_painting2_f",
+     "dc_spiral_stair",
+     "dc_telescope2"
+    ]
+   ]
+  ],
+  "sel_gang": [
+   [
+    1,
+    [
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_city_planter",
+     "dc_kitchen_sink",
+     "dc_shelf_books",
+     "dc_sink",
+     "dc_tt_bottle_cap"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_antler_hooks",
+     "dc_chalkboard",
+     "dc_coat_hooks",
+     "dc_flag_a",
+     "dc_flag_b",
+     "dc_mirror",
+     "dc_mirror2",
+     "dc_painting_a",
+     "dc_painting_b",
+     "dc_painting_c",
+     "dc_painting_d",
+     "dc_poster_frame",
+     "dc_tt_first_dollar",
+     "dc_tt_painting_landscape",
+     "dc_tt_painting_portrait",
+     "dc_tt_snow_globe"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bookcase3_a",
+     "dc_bookcase3_b",
+     "dc_bookcase3_c",
+     "dc_bookcase3_d",
+     "dc_bookcase3_e",
+     "dc_bookcase3_f",
+     "dc_books_scrolls",
+     "dc_bookshelf_ivy",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_easel2",
+     "dc_globe",
+     "dc_globe2",
+     "dc_globe3",
+     "dc_ink_brushes",
+     "dc_library_ladder",
+     "dc_painting2_a",
+     "dc_painting2_b",
+     "dc_painting2_c",
+     "dc_painting2_d",
+     "dc_painting2_e",
+     "dc_painting2_f",
+     "dc_spiral_stair",
+     "dc_telescope2"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_jukebox_a"
+    ]
+   ]
+  ],
+  "tam": [
+   [
+    1,
+    [
+     "dc_cat_bed",
+     "dc_dog_bed",
+     "dc_pet_bed",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug2_runner",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rug_red",
+     "wr_beanie",
+     "wr_farmer_scarf",
+     "wr_fisher_scarf",
+     "wr_forester_scarf",
+     "wr_merchant_scarf",
+     "wr_miner_scarf",
+     "wr_penguin_scarf",
+     "wr_scarf_black",
+     "wr_scarf_blue",
+     "wr_scarf_cyan",
+     "wr_scarf_green",
+     "wr_scarf_purple",
+     "wr_scarf_red",
+     "wr_scarf_white",
+     "wr_scarf_yellow",
+     "wr_scholar_scarf",
+     "wr_sweater"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bunk_bed",
+     "dc_cradle",
+     "dc_round_rug_stone",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "wr_farmer_scarf_b",
+     "wr_fisher_scarf_b",
+     "wr_forester_scarf_b",
+     "wr_merchant_scarf_b",
+     "wr_miner_scarf_b",
+     "wr_penguin_scarf_b",
+     "wr_scholar_scarf_b"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf"
+    ]
+   ]
+  ],
+  "tam_gang": [
+   [
+    1,
+    [
+     "dc_cat_bed",
+     "dc_dog_bed",
+     "dc_pet_bed",
+     "dc_reed_mat_a",
+     "dc_reed_mat_b",
+     "dc_reed_mat_round",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug2_runner",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rug_red",
+     "wr_beanie",
+     "wr_farmer_scarf",
+     "wr_fisher_scarf",
+     "wr_forester_scarf",
+     "wr_merchant_scarf",
+     "wr_miner_scarf",
+     "wr_neon_gloves",
+     "wr_neon_scarf",
+     "wr_scarf_black",
+     "wr_scarf_blue",
+     "wr_scarf_cyan",
+     "wr_scarf_green",
+     "wr_scarf_purple",
+     "wr_scarf_red",
+     "wr_scarf_white",
+     "wr_scarf_yellow",
+     "wr_scholar_scarf",
+     "wr_sweater"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bunk_bed",
+     "dc_cradle",
+     "dc_round_rug_stone",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "wr_farmer_scarf_b",
+     "wr_fedora",
+     "wr_fisher_scarf_b",
+     "wr_flatcap",
+     "wr_forester_scarf_b",
+     "wr_jacket",
+     "wr_lab_coat",
+     "wr_merchant_scarf_b",
+     "wr_miner_scarf_b",
+     "wr_neon_gloves_b",
+     "wr_neon_scarf_b",
+     "wr_scholar_scarf_b",
+     "wr_shades"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_pelt_bear",
+     "dc_pelt_leopard",
+     "dc_pelt_wolf",
+     "wr_jacket_patch"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_jukebox_a"
+    ]
+   ]
+  ],
   "wall_art": [
    [
     1,
@@ -24373,6 +27424,113 @@
      "wr_outfit_penguin",
      "wr_tophat",
      "wr_witch"
+    ]
+   ]
+  ],
+  "wren": [
+   [
+    1,
+    [
+     "dc_candle_stand",
+     "dc_cattail_pot",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_shelf_jars",
+     "dc_tt_candle",
+     "dc_tt_candle_tall",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bulb_plant",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_tt_bottled_wind",
+     "dc_tt_lantern_crystal"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant",
+     "dc_chandelier",
+     "dc_tt_trophy_crystal",
+     "dc_tt_wisp_bottle"
+    ]
+   ]
+  ],
+  "wren_gang": [
+   [
+    1,
+    [
+     "dc_candle_stand",
+     "dc_cattail_pot",
+     "dc_city_planter",
+     "dc_flower_jug",
+     "dc_ivy_pot",
+     "dc_plant",
+     "dc_plant2_a",
+     "dc_plant2_b",
+     "dc_plant2_c",
+     "dc_plant2_d",
+     "dc_plant2_e",
+     "dc_plant2_f",
+     "dc_plant_a",
+     "dc_plant_b",
+     "dc_plant_c",
+     "dc_shelf_jars",
+     "dc_tt_bottle_cap",
+     "dc_tt_candle",
+     "dc_tt_candle_tall",
+     "dc_tt_pot_a",
+     "dc_tt_pot_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_lamp_tall_a",
+     "dc_neon_sign_0",
+     "dc_neon_sign_1",
+     "dc_tt_first_dollar"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_bulb_plant",
+     "dc_crystal_ball",
+     "dc_crystal_cage",
+     "dc_neon_sign_2",
+     "dc_neon_sign_3",
+     "dc_neon_sign_4",
+     "dc_tt_bottled_wind"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_carnivore_plant",
+     "dc_chandelier",
+     "dc_jukebox_a",
+     "dc_neon_sign_5",
+     "dc_neon_sign_6",
+     "dc_tt_lantern_gold",
+     "dc_tt_trophy_crystal",
+     "dc_tt_wisp_bottle"
     ]
    ]
   ]

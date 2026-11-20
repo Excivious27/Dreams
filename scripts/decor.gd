@@ -20,8 +20,8 @@ const RARITIES := ["common", "uncommon", "rare", "epic", "legendary", "mythic", 
 const WEAR_SLOTS := ["hat", "top", "bottom", "outfit", "acc", "shoes"]
 ## CVD-safe ramp that also steps in lightness (c10_07); decor.json "rarity" carries the same values.
 const RARITY_COLORS := {
-	"common": Color(0.82, 0.82, 0.82), "uncommon": Color(0.35, 0.85, 0.70), "rare": Color(0.35, 0.60, 1.0),
-	"epic": Color(1.0, 0.45, 0.80), "legendary": Color(1.0, 0.80, 0.25), "mythic": Color(1.0, 0.35, 0.35),
+	"common": Color(0.82, 0.82, 0.82), "uncommon": Color(0.25, 0.75, 0.45), "rare": Color(0.30, 0.50, 1.0),
+	"epic": Color(0.90, 0.30, 0.65), "legendary": Color(1.0, 0.80, 0.25), "mythic": Color(1.0, 0.35, 0.35),
 	"unique": Color(0.4, 1.0, 0.95)}
 ## Wear category -> slot (acc covers scarves, capes, gloves, glasses).
 const CAT_SLOT := {"hat": "hat", "top": "top", "bottom": "bottom", "outfit": "outfit", "acc": "acc", "shoes": "shoes"}
@@ -68,9 +68,11 @@ static func st() -> Dictionary:
 	if not (r.get("decor", null) is Dictionary):
 		r["decor"] = {}
 	var d: Dictionary = r["decor"]
-	for k in ["box", "placed", "wall", "floor", "wear", "seen", "got", "uniques", "pity", "sold"]:
+	for k in ["box", "placed", "wall", "floor", "wear", "seen", "got", "uniques", "pity", "sold", "sets_done", "viewed"]:
 		if not (d.get(k, null) is Dictionary):
 			d[k] = {}
+	if not (d.get("orders", null) is Array):
+		d["orders"] = []  # P3/P4 catalogue orders [{id, day}] (kept by migrate)
 	return d
 
 
@@ -196,6 +198,13 @@ static func buy_price(id: String, reorder := false) -> int:
 	return maxi(1, out)
 
 
+## Catalogue/mail order price (P3/P4 call it when present): the shop price plus the re-order fee.
+static func order_price(id: String) -> int:
+	if price(id) <= 0 or bool(entry(id).get("order", true)) == false or rarity(id) in ["unique", "mythic"]:
+		return 0
+	return buy_price(id, true)
+
+
 static func reorder_fee(id: String) -> int:
 	return maxi(int(data().get("reorder_min", 50)), int(ceil(price(id) * float(data().get("reorder_fee", 0.1)))))
 
@@ -225,6 +234,11 @@ static func sell(id: String, n := 1) -> int:
 	if pay > 0:
 		GameState.add_money(pay, "decor")
 	return pay
+
+
+## Grant table (P4 grant_key): the decor id for "<owner>:<ref>", or "".
+static func grant_id(key: String) -> String:
+	return str((data().get("grants", {}) as Dictionary).get(key, ""))
 
 
 ## Arc filter: "" / "both" = every arc (c10_01-09; Tickets.arc_ok semantics).
@@ -269,8 +283,12 @@ static func stock_all(shop: String, tier := -1) -> Array:
 
 
 ## Ids a shop stocks today: shop_slots of them, rotating every shop_days days (seeded by shop + period).
+## Keeper shelves (maple, gideon, ..., <key>_gang, stall:<scene>) have no shop_slots: the whole tier/arc list
+## comes back and P4's DecorSources.today rotates it.
 static func stock(shop: String) -> Array:
 	var pool := stock_all(shop)
+	if not (data().get("shop_slots", {}) as Dictionary).has(shop):
+		return pool
 	var slots := int((data().get("shop_slots", {}) as Dictionary).get(shop, 8))
 	if pool.size() <= slots:
 		return pool
