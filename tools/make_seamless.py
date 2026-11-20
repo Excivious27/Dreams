@@ -35,6 +35,33 @@ def stats(a):
     return step, wrap
 
 
+# Patterned floors (checker squares, brick bond) can't be cross-faded: the blend
+# ghosts the pattern at the joins (c5_12 #2). Right after a fresh slice, rebuild them
+# from a clean crop of whole periods (box in the sliced 256 texture, repeats x/y):
+#   python3 tools/make_seamless.py --periodic
+PERIODIC = {"floor_checker": ((59, 58, 195, 196), (2, 2)), "city_pavement": ((81, 61, 169, 207), (3, 2))}
+
+
+def periodic(f, box, reps):
+    a = np.asarray(Image.open(f).convert("RGBA"))
+    x0, y0, x1, y1 = box
+    mos = np.tile(a[y0:y1, x0:x1], (reps[1], reps[0], 1))
+    pad = 12
+    big = np.pad(mos, ((pad, pad), (pad, pad), (0, 0)), mode="wrap")
+    H, W = mos.shape[:2]
+    sy, sx = 256 / H, 256 / W
+    im = Image.fromarray(big).resize((round(big.shape[1] * sx), round(big.shape[0] * sy)), Image.LANCZOS)
+    oy, ox = round(pad * sy), round(pad * sx)
+    o = np.asarray(im.crop((ox, oy, ox + 256, oy + 256))).copy()
+    o[..., 3] = 255
+    os.remove(f)  # hardlinked art: never write in place
+    Image.fromarray(o).save(f)
+    print("periodic", os.path.basename(f))
+
+
+if "--periodic" in sys.argv:
+    for nm, (box, reps) in PERIODIC.items():
+        periodic(os.path.join(ROOT, "art/gen/seamless/%s.png" % nm), box, reps)
 check = "--check" in sys.argv
 bad = 0
 for f in sorted(glob.glob(os.path.join(ROOT, "art/gen/seamless/*.png"))):
@@ -46,10 +73,11 @@ for f in sorted(glob.glob(os.path.join(ROOT, "art/gen/seamless/*.png"))):
         bad += flag
         print("%-28s step %5.1f wrap %5.1f %s" % (os.path.basename(f), step, wrap, "SEAM" if flag else ""))
         continue
-    if wrap <= 1.3 * step + 1:
-        continue  # already wraps
+    if wrap <= 1.3 * step + 1 or os.path.basename(f)[:-4] in PERIODIC:
+        continue  # already wraps (patterned floors: --periodic)
     o = seamless(a)
     o[..., 3] = a[..., 3]  # keep the alpha as it was (water edges etc.)
+    os.remove(f)  # hardlinked art: never write in place
     Image.fromarray(o.clip(0, 255).astype(np.uint8)).save(f)
     print("fixed", os.path.basename(f), round(wrap, 1), "->", round(stats(o)[1], 1))
 if check:
