@@ -27,6 +27,161 @@ var _pose := ""
 var _base_scale := Vector2.ZERO
 var _idle_t := 0.0
 var map: GameMap
+var _walker := ""  # the character sheet they walk in (CharacterLibrary id)
+var _dir := "down"  # last way they walked or turned: "down" | "up" | "side"
+var _walk_h := {}  # walker anim -> source height (per-animation scale normalise)
+
+
+## Cells cut through by the slice or drawn as someone else (c5_08 #2): a pose
+## here is skipped; a walker idle here borrows frame 0 of the matching walk.
+## (Mabel's idle, Bram's festival idle_up, Juniper's winter idle_side and
+## Benno/Marlowe's poses were redrawn/resliced in C5: tools/slice_c5_p5.py.)
+const BAD_CELLS := {
+	"npc_bram_festival": ["idle"],
+}
+const IDLE_FROM := {"idle": "walk_down", "idle_up": "walk_up", "idle_side": "walk"}
+
+
+static func bad_cell(sheet: String, anim: String) -> bool:
+	return anim in (BAD_CELLS.get(sheet, []) as Array)
+
+
+## Grown-ups are NPC_H (24 px) tall; children are drawn shorter.
+const KID_H := 18.0
+## The pose sheets drawn for each villager (npc_<id>): a kid's are this short.
+const KID_SHEET_H := 80
+## Outfit sheets npc_<id>_<outfit>, the first that exists stands in for the
+## base walker while the job-sprite walker is a different person (C5 c5_08).
+const OUTFITS := ["base", "spring", "summer", "fall", "winter", "festival", "all"]
+## Short gestures a seasonal outfit skips (their pose rows wear the base
+## outfit); longer activity poses still play so nobody stands frozen.
+const OUTFIT_SKIP := ["wave", "talk", "talk_2", "laugh", "dance", "dance_2", "eat"]
+
+
+## The walker sheet for this villager: the outfit chosen for the day, unless
+## that is still the old job chibi while a newer design exists (their pose
+## sheet npc_<id>): then their own base walker, else any outfit of theirs.
+static func walker_for(npc_id: String, chosen: String, job_sprite: String) -> String:
+	if chosen != job_sprite or not Art.manifest().has("characters/npc_" + npc_id):
+		return chosen
+	if CharacterLibrary.has_character("npc_" + npc_id):
+		return "npc_" + npc_id  # their own sheet carries idle/walk too (mabel, tam...)
+	for o: String in OUTFITS:
+		var cand := "npc_%s_%s" % [npc_id, o]
+		if CharacterLibrary.has_character(cand):
+			return cand
+	return chosen
+
+
+## True for the short villagers (pip, wren_jr, tobin, mabel...): judged by the
+## height their own pose sheet was drawn at.
+static func is_kid(npc_id: String) -> bool:
+	var g := "characters/npc_" + npc_id
+	for p: String in ["talk", "wave", "idle"]:
+		if Art.has(g, p):
+			return int(Art.info(g, p).get("cell_h", 99)) < KID_SHEET_H
+	return npc_id in ["pip", "wren_jr", "tobin", "mabel"]
+
+
+## Wearing a seasonal/festival outfit (not their base design).
+func in_outfit() -> bool:
+	return _walker.begins_with("npc_%s_" % id) and not _walker.ends_with("_base")
+
+
+func pose_ok(pose: String) -> bool:
+	return not (in_outfit() and pose in OUTFIT_SKIP)
+
+
+## Leg speed for a walk at `speed` px/s (the strips were drawn for ~52 px/s).
+static func walk_speed_scale(speed: float) -> float:
+	return clampf(speed / 52.0, 0.45, 1.0)
+
+
+## Idle facing the way they last walked or turned.
+func idle_anim() -> String:
+	if _anim == null:
+		return "idle"
+	var want := "idle_up" if _dir == "up" else ("idle_side" if _dir == "side" else "idle")
+	if want != "idle" and _anim.sprite_frames.has_animation(want) and not CharacterLibrary.is_alias(_anim.sprite_frames, want):
+		return want
+	return "idle"
+
+
+## Kid height and per-animation size (strips cut at other heights don't pop).
+func _fit_walker() -> void:
+	var sf := _anim.sprite_frames
+	for a: String in IDLE_FROM:
+		if bad_cell(_walker, a) and sf.has_animation(IDLE_FROM[a]):
+			# (SpriteFrames are shared per character: fix the shared copy once.)
+			if sf.get_frame_count(a) > 0 and sf.get_frame_texture(a, 0) != sf.get_frame_texture(IDLE_FROM[a], 0):
+				sf.clear(a)
+				sf.add_frame(a, sf.get_frame_texture(IDLE_FROM[a], 0))
+	if is_kid(id):
+		_anim.scale *= KID_H / CharacterLibrary.NPC_H
+	_base_scale = _anim.scale
+	for a in _anim.sprite_frames.get_animation_names():
+		var t := _anim.sprite_frames.get_frame_texture(a, 0)
+		if t:
+			_walk_h[str(a)] = float(t.get_height())
+
+
+func _idle_h() -> float:
+	return float(_walk_h.get("idle", 0.0))
+
+
+## Play a walker animation at the size of their idle (catkins/mabel/tam strips
+## were cut at different heights than their idle and popped in size).
+func _play_walker(a: String) -> void:
+	if _anim == null:
+		return
+	if not _anim.sprite_frames.has_animation(a):
+		a = "idle"
+	var r := 1.0
+	var ih := _idle_h()
+	var ah := float(_walk_h.get(a, 0.0))
+	if ih > 0.0 and ah > 0.0 and absf(ah / ih - 1.0) > 0.04 and (a.begins_with("walk") or a.begins_with("idle")):
+		r = ih / ah
+	if _base_scale != Vector2.ZERO:
+		_anim.scale = _base_scale * r
+	if _anim.animation != a:
+		_anim.play(a)
+
+
+## Frame 0 of a pose strip (a multi-frame strip would draw whole otherwise).
+static func first_frame(g: String, pose: String) -> Texture2D:
+	var t := Art.tex(g, pose)
+	var inf := Art.info(g, pose)
+	var n := int(inf.get("frames", 1))
+	if t == null or n <= 1:
+		return t
+	var at := AtlasTexture.new()
+	at.atlas = t
+	at.region = Rect2(0, 0, float(inf.get("cell_w", t.get_width() / n)), float(inf.get("cell_h", t.get_height())))
+	return at
+
+
+## Scale factor (vs their walker scale) for a pose: one ratio per pose sheet,
+## from its standing poses against the walker idle, so a sitting pose is
+## really shorter. A sit drawn with its stool at full height is brought down.
+static func pose_ratio(g: String, pose: String, idle_h: float) -> float:
+	var hs: Array[float] = []
+	for p: String in ["talk", "wave", "talk_2", "laugh", "idle"]:
+		if Art.has(g, p):
+			hs.append(float(Art.info(g, p).get("cell_h", 0)))
+	hs.sort()
+	var stand := hs[hs.size() / 2] if not hs.is_empty() else 0.0
+	if stand <= 0.0 or idle_h <= 0.0:
+		return 1.0
+	var r := idle_h / stand
+	if pose == "sit":
+		var sh := float(Art.info(g, pose).get("cell_h", stand))
+		if sh > stand * SIT_RATIO:
+			r *= stand * SIT_RATIO / sh
+	return r
+
+
+## A seated villager (with their stool) stands this share of their height.
+const SIT_RATIO := 0.8
 
 
 ## Villagers whose life-pose row was drawn as a different person from their
@@ -44,12 +199,19 @@ func set_pose(pose: String) -> void:
 	if pose == "":
 		if _pose != "":
 			_pose = ""
-			_anim.scale = _base_scale
-			_anim.play("idle")
+			_play_walker(idle_anim())
 		return
-	# Their own pose sheet (npc_<id>) first, then the job sprite's.
+	if not pose_ok(pose):
+		return
+	# Their own pose sheet (npc_<id>) first, then the job sprite's (only while
+	# they still wear the job sprite: it's a different person from the new design).
 	var g := ""
-	for cand in ["characters/npc_" + id, "characters/" + _base_sprite]:
+	var cands := ["characters/npc_" + id]
+	if _walker == _base_sprite:
+		cands.append("characters/" + _base_sprite)
+	for cand: String in cands:
+		if bad_cell(cand.get_file(), pose):
+			continue
 		if Art.has(cand, pose) and int(Art.info(cand, pose).get("h", 0)) >= 16:
 			g = cand
 			break
@@ -61,17 +223,10 @@ func set_pose(pose: String) -> void:
 	if not _anim.sprite_frames.has_animation(key):
 		_anim.sprite_frames.add_animation(key)
 		_anim.sprite_frames.set_animation_loop(key, false)
-		_anim.sprite_frames.add_frame(key, Art.tex(g, pose))
-	# A pose sheet sliced at another scale than the walk strips is brought to
-	# the same size (a real height change, like sitting, stays).
-	var idle_tex := _anim.sprite_frames.get_frame_texture("idle", 0) if _anim.sprite_frames.has_animation("idle") else null
-	var ph := float(Art.info(g, pose).get("cell_h", Art.info(g, pose).get("h", 0)))
-	_anim.scale = _base_scale
-	if idle_tex and ph > 0:
-		var r := float(idle_tex.get_height()) / ph
-		if r > 1.6 or r < 0.6:
-			_anim.scale = _base_scale * r
+		_anim.sprite_frames.add_frame(key, first_frame(g, pose))
+	_anim.scale = _base_scale * pose_ratio(g, pose, _idle_h())
 	_pose = pose
+	_anim.speed_scale = 1.0
 	_anim.play(key)
 
 
@@ -99,10 +254,13 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	elif int(GameState.run.get("day", 1)) % 28 in [13, 27] and CharacterLibrary.has_character(sprite_id + "_festival"):
 		sprite_id = sprite_id + "_festival"
 	_base_sprite = str(data.get("sprite", ""))
+	sprite_id = walker_for(npc_id, sprite_id, _base_sprite)
+	_walker = sprite_id
 	if sprite_id != "" and CharacterLibrary.has_character(sprite_id):
 		_anim = CharacterLibrary.make_sprite(sprite_id)
 		_anim.play("idle")
 		add_child(_anim)
+		_fit_walker()
 	else:
 		_figure = PlaceholderSprite.new()
 		_figure.tint = Color(str(data.get("color", "888888")))
@@ -131,6 +289,11 @@ func face(toward: Vector2) -> void:
 		var to := toward - position
 		if absf(to.x) >= absf(to.y):
 			_anim.flip_h = to.x < 0
+			_dir = "side"
+		else:
+			_dir = "up" if to.y < 0 else "down"
+		if _pose == "" and str(_anim.animation).begins_with("idle"):
+			_play_walker(idle_anim())
 	elif _figure:
 		_figure.scale.x = -1.0 if toward.x < position.x else 1.0
 
@@ -341,17 +504,26 @@ func _process(delta: float) -> void:
 			_figure.scale.x = -1.0 if to.x < 0 else 1.0
 		elif _anim:
 			var a := "walk"
+			_dir = "side"
 			if absf(to.y) >= absf(to.x):
+				_dir = "up" if to.y < 0 else "down"
 				var want := "walk_up" if to.y < 0 else "walk_down"
 				if _anim.sprite_frames.has_animation(want):
 					a = want
-			_anim.flip_h = a == "walk" and to.x < 0
-			if _anim.animation != a:
-				_anim.play(a)
+			if absf(to.x) > 0.5 or a == "walk":
+				_anim.flip_h = to.x < 0 if a == "walk" else false
+			if not moved:
+				a = idle_anim()  # blocked: stand, don't run on the spot
+			if _pose != "":
+				set_pose("")
+			_play_walker(a)
+			# Legs keep pace with the feet: a slow drift near home steps slowly.
+			_anim.speed_scale = walk_speed_scale(speed) if moved else 1.0
 	elif _anim and _pose != "":
-		pass
-	elif _anim and _anim.animation != "idle":
-		_anim.play("idle")
+		_anim.speed_scale = 1.0
+	elif _anim and _anim.animation != idle_anim():
+		_play_walker(idle_anim())
+		_anim.speed_scale = 1.0
 		_idle_t = 0.0
 	_chat(delta, to)
 	if _anim and to.length() <= 2.0:
@@ -435,6 +607,7 @@ func _start_chat(o: Npc) -> void:
 	_chat_t = randf_range(4.0, 9.0)
 	_target = position
 	_path.clear()
+	_dir = "side"
 	set_pose("talk")
 	if _bubble_sprite == null and Art.has("emotes", "bubble_dots"):
 		_bubble_sprite = Sprite2D.new()

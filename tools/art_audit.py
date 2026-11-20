@@ -3,15 +3,52 @@
 Flags frames whose height, width or feet line differ a lot from the strip's
 median (a cell that caught a neighbour, an effect, or a wrong split), strips
 with a single frame where the name implies motion, and characters whose idle
-and walk heights disagree (scale mismatch). Prints a report; --fix normalises
-the feet line of every frame to the strip's median (shifts frames vertically)."""
+and walk heights disagree (scale mismatch). Edge-blob scan (C5): a figure
+touching the top of its cell (cut off by the slice) and detached bits on a
+cell's left/right edge (a neighbour bleeding in) are reported. Prints a report;
+--fix normalises the feet line of every frame to the strip's median (shifts
+frames vertically); with --bleed too it also clears the bleeding edge bits
+(review first: a detached tool head can touch a cell edge)."""
 import json, os, sys, glob
 import numpy as np
 from PIL import Image
+from scipy import ndimage
+
+
+def edge_blobs(cell):
+    """(cut_top, bleed_mask) for one cell's alpha mask: cut_top when the main
+    figure runs along the top row (a slice that cut the head off); bleed_mask
+    marks detached islands under 15% of the main piece that touch the cell's
+    left or right edge (the next figure's sliver)."""
+    lab, n = ndimage.label(cell, structure=np.ones((3, 3)))
+    bleed = np.zeros_like(cell)
+    if n == 0:
+        return False, bleed
+    sz = ndimage.sum(cell, lab, range(1, n + 1))
+    big = int(np.argmax(sz)) + 1
+    # Every strip is cropped to its tallest frame, so a head touching the top
+    # row is normal; a slice cut leaves a flat, wide edge (row 0 about as wide
+    # as row 2 and a good share of the figure's width).
+    fig = lab == big
+    xs = np.nonzero(fig.any(axis=0))[0]
+    fw = (xs.max() - xs.min() + 1) if len(xs) else 1
+    r0, r2 = fig[0].sum(), fig[min(2, fig.shape[0] - 1)].sum()
+    cut = r0 >= max(6, 0.4 * fw) and r0 >= 0.75 * r2
+    w = cell.shape[1]
+    for i, sl in enumerate(ndimage.find_objects(lab)):
+        if i + 1 == big or sl is None:
+            continue
+        # A neighbour's sliver: a narrow, tall-ish piece standing on the side
+        # edge (sparkles, rain, notes and shiver lines are small or not on the edge).
+        bw, bh = sl[1].stop - sl[1].start, sl[0].stop - sl[0].start
+        if sz[i] < 0.15 * sz[big - 1] and (sl[1].start <= 1 or sl[1].stop >= w - 1) and bw <= 0.25 * w and bh >= 0.2 * cell.shape[0]:
+            bleed |= lab == i + 1
+    return bool(cut), bleed
 
 MOTION = {"walk", "run", "swim", "ride", "attack", "powerup", "hoe_down", "axe_down", "pickaxe_down", "water_down", "cast_right", "walk_up", "walk_down", "dive", "surface", "swim_fast"}
 m = json.load(open("art/gen/manifest.json"))
 fix = "--fix" in sys.argv
+clear_bleed = "--bleed" in sys.argv
 only = [a for a in sys.argv[1:] if not a.startswith("--")]
 issues = []
 changed = False
@@ -41,6 +78,16 @@ for key in sorted(k for k in m if k.startswith("characters/")):
         cw, ch = dims
         a = np.array(im)[..., 3] > 30
         boxes = []
+        bleeds = {}
+        for i in range(n):
+            cut, bl = edge_blobs(a[:, i * cw:(i + 1) * cw])
+            if cut and name not in ("umbrella", "fish"):  # umbrella tops / rods may reach the edge
+                issues.append((cid, name, "frame %d cut off at the top" % i))
+            if bl.any():
+                issues.append((cid, name, "frame %d neighbour bleed (%d px)" % (i, int(bl.sum()))))
+                if clear_bleed:
+                    bleeds[i] = bl
+                    a[:, i * cw:(i + 1) * cw] &= ~bl
         for i in range(n):
             cell = a[:, i * cw:(i + 1) * cw]
             ys, xs = np.where(cell)
@@ -74,6 +121,10 @@ for key in sorted(k for k in m if k.startswith("characters/")):
             for j, i in enumerate(keep):
                 b = boxes[i]
                 cell = im.crop((i * cw, 0, (i + 1) * cw, ch))
+                if i in bleeds:
+                    ca = np.array(cell)
+                    ca[bleeds[i]] = 0
+                    cell = Image.fromarray(ca)
                 dy = max(-b[1], int(mf - b[3]))
                 out.paste(cell, (j * cw, dy), cell)
             _p = "art/gen/%s/%s.png" % (key, name)

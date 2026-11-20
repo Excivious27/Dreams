@@ -3294,36 +3294,36 @@
  },
  "animals/sheep_woolly": {
   "baby": {
-   "cell_h": 36,
-   "cell_w": 59,
+   "cell_h": 35,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/baby.png",
    "frames": 4,
-   "h": 36,
-   "w": 236
+   "h": 35,
+   "w": 188
   },
   "eat": {
-   "cell_h": 36,
-   "cell_w": 62,
+   "cell_h": 31,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/eat.png",
    "frames": 2,
-   "h": 36,
-   "w": 124
+   "h": 31,
+   "w": 94
   },
   "idle": {
-   "cell_h": 36,
-   "cell_w": 59,
+   "cell_h": 35,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/idle.png",
    "frames": 4,
-   "h": 36,
-   "w": 236
+   "h": 35,
+   "w": 188
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 59,
+   "cell_w": 48,
    "file": "animals/sheep_woolly/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 295
+   "w": 240
   }
  },
  "animals_ref": {
@@ -15989,7 +15989,7 @@
   },
   "ward_3": {
    "file": "buildings/ward_3.png",
-   "h": 197,
+   "h": 156,
    "w": 211
   },
   "ward_4": {
@@ -28250,6 +28250,56 @@
    "w": 87
   }
  },
+ "characters/npc_alder_base": {
+  "idle": {
+   "cell_h": 109,
+   "cell_w": 68,
+   "file": "characters/npc_alder_base/idle.png",
+   "frames": 1,
+   "h": 109,
+   "w": 68
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 55,
+   "file": "characters/npc_alder_base/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 109,
+   "cell_w": 67,
+   "file": "characters/npc_alder_base/idle_up.png",
+   "frames": 1,
+   "h": 109,
+   "w": 67
+  },
+  "walk": {
+   "cell_h": 108,
+   "cell_w": 66,
+   "file": "characters/npc_alder_base/walk.png",
+   "frames": 4,
+   "h": 108,
+   "w": 264
+  },
+  "walk_down": {
+   "cell_h": 108,
+   "cell_w": 67,
+   "file": "characters/npc_alder_base/walk_down.png",
+   "frames": 4,
+   "h": 108,
+   "w": 268
+  },
+  "walk_up": {
+   "cell_h": 115,
+   "cell_w": 68,
+   "file": "characters/npc_alder_base/walk_up.png",
+   "frames": 4,
+   "h": 115,
+   "w": 272
+  }
+ },
  "characters/npc_alder_festival": {
   "idle": {
    "cell_h": 111,
@@ -28450,52 +28500,52 @@
  },
  "characters/npc_benno": {
   "carry": {
-   "cell_h": 121,
-   "cell_w": 50,
+   "cell_h": 108,
+   "cell_w": 55,
    "file": "characters/npc_benno/carry.png",
    "frames": 1,
-   "h": 121,
-   "w": 50
+   "h": 108,
+   "w": 55
   },
   "counter": {
-   "cell_h": 136,
-   "cell_w": 36,
+   "cell_h": 96,
+   "cell_w": 54,
    "file": "characters/npc_benno/counter.png",
    "frames": 1,
-   "h": 136,
-   "w": 36
+   "h": 96,
+   "w": 54
   },
   "dance": {
-   "cell_h": 121,
-   "cell_w": 51,
+   "cell_h": 103,
+   "cell_w": 52,
    "file": "characters/npc_benno/dance.png",
    "frames": 1,
-   "h": 121,
-   "w": 51
+   "h": 103,
+   "w": 52
   },
   "dance_2": {
-   "cell_h": 121,
-   "cell_w": 51,
+   "cell_h": 98,
+   "cell_w": 55,
    "file": "characters/npc_benno/dance_2.png",
    "frames": 1,
-   "h": 121,
-   "w": 51
+   "h": 98,
+   "w": 55
   },
   "eat": {
-   "cell_h": 121,
+   "cell_h": 95,
    "cell_w": 51,
    "file": "characters/npc_benno/eat.png",
    "frames": 1,
-   "h": 121,
+   "h": 95,
    "w": 51
   },
   "fish": {
-   "cell_h": 136,
-   "cell_w": 36,
+   "cell_h": 95,
+   "cell_w": 54,
    "file": "characters/npc_benno/fish.png",
    "frames": 1,
-   "h": 136,
-   "w": 36
+   "h": 95,
+   "w": 54
   },
   "idle": {
    "cell_h": 108,
@@ -28522,60 +28572,60 @@
    "w": 65
   },
   "laugh": {
-   "cell_h": 99,
-   "cell_w": 64,
+   "cell_h": 95,
+   "cell_w": 49,
    "file": "characters/npc_benno/laugh.png",
    "frames": 1,
-   "h": 99,
-   "w": 64
+   "h": 95,
+   "w": 49
   },
   "shiver": {
-   "cell_h": 136,
-   "cell_w": 36,
+   "cell_h": 97,
+   "cell_w": 48,
    "file": "characters/npc_benno/shiver.png",
    "frames": 1,
-   "h": 136,
-   "w": 36
+   "h": 97,
+   "w": 48
   },
   "sit": {
-   "cell_h": 100,
-   "cell_w": 64,
+   "cell_h": 90,
+   "cell_w": 49,
    "file": "characters/npc_benno/sit.png",
    "frames": 1,
-   "h": 100,
-   "w": 64
+   "h": 90,
+   "w": 49
   },
   "sleep": {
-   "cell_h": 99,
-   "cell_w": 64,
+   "cell_h": 108,
+   "cell_w": 55,
    "file": "characters/npc_benno/sleep.png",
    "frames": 1,
-   "h": 99,
-   "w": 64
+   "h": 108,
+   "w": 55
   },
   "talk": {
-   "cell_h": 100,
-   "cell_w": 64,
+   "cell_h": 101,
+   "cell_w": 51,
    "file": "characters/npc_benno/talk.png",
    "frames": 1,
-   "h": 100,
-   "w": 64
+   "h": 101,
+   "w": 51
   },
   "talk_2": {
-   "cell_h": 100,
-   "cell_w": 64,
+   "cell_h": 99,
+   "cell_w": 52,
    "file": "characters/npc_benno/talk_2.png",
    "frames": 1,
-   "h": 100,
-   "w": 64
+   "h": 99,
+   "w": 52
   },
   "umbrella": {
-   "cell_h": 136,
-   "cell_w": 36,
+   "cell_h": 116,
+   "cell_w": 57,
    "file": "characters/npc_benno/umbrella.png",
    "frames": 1,
-   "h": 136,
-   "w": 36
+   "h": 116,
+   "w": 57
   },
   "walk": {
    "cell_h": 107,
@@ -28602,28 +28652,28 @@
    "w": 260
   },
   "wave": {
-   "cell_h": 100,
-   "cell_w": 64,
+   "cell_h": 99,
+   "cell_w": 49,
    "file": "characters/npc_benno/wave.png",
    "frames": 1,
-   "h": 100,
-   "w": 64
-  },
-  "work": {
-   "cell_h": 91,
-   "cell_w": 49,
-   "file": "characters/npc_benno/work.png",
-   "frames": 1,
-   "h": 91,
+   "h": 99,
    "w": 49
   },
+  "work": {
+   "cell_h": 99,
+   "cell_w": 53,
+   "file": "characters/npc_benno/work.png",
+   "frames": 1,
+   "h": 99,
+   "w": 53
+  },
   "work_2": {
-   "cell_h": 93,
-   "cell_w": 46,
+   "cell_h": 101,
+   "cell_w": 50,
    "file": "characters/npc_benno/work_2.png",
    "frames": 1,
-   "h": 93,
-   "w": 46
+   "h": 101,
+   "w": 50
   }
  },
  "characters/npc_blacksmith": {
@@ -28830,6 +28880,56 @@
    "w": 53
   }
  },
+ "characters/npc_bram_base": {
+  "idle": {
+   "cell_h": 100,
+   "cell_w": 63,
+   "file": "characters/npc_bram_base/idle.png",
+   "frames": 1,
+   "h": 100,
+   "w": 63
+  },
+  "idle_side": {
+   "cell_h": 100,
+   "cell_w": 44,
+   "file": "characters/npc_bram_base/idle_side.png",
+   "frames": 1,
+   "h": 100,
+   "w": 44
+  },
+  "idle_up": {
+   "cell_h": 100,
+   "cell_w": 63,
+   "file": "characters/npc_bram_base/idle_up.png",
+   "frames": 1,
+   "h": 100,
+   "w": 63
+  },
+  "walk": {
+   "cell_h": 99,
+   "cell_w": 63,
+   "file": "characters/npc_bram_base/walk.png",
+   "frames": 4,
+   "h": 99,
+   "w": 252
+  },
+  "walk_down": {
+   "cell_h": 100,
+   "cell_w": 67,
+   "file": "characters/npc_bram_base/walk_down.png",
+   "frames": 4,
+   "h": 100,
+   "w": 268
+  },
+  "walk_up": {
+   "cell_h": 100,
+   "cell_w": 66,
+   "file": "characters/npc_bram_base/walk_up.png",
+   "frames": 4,
+   "h": 100,
+   "w": 264
+  }
+ },
  "characters/npc_bram_festival": {
   "idle": {
    "cell_h": 99,
@@ -28848,12 +28948,12 @@
    "w": 64
   },
   "idle_up": {
-   "cell_h": 100,
-   "cell_w": 33,
+   "cell_h": 101,
+   "cell_w": 60,
    "file": "characters/npc_bram_festival/idle_up.png",
    "frames": 1,
-   "h": 100,
-   "w": 33
+   "h": 101,
+   "w": 60
   },
   "walk": {
    "cell_h": 100,
@@ -29454,6 +29554,56 @@
    "w": 53
   }
  },
+ "characters/npc_finn_base": {
+  "idle": {
+   "cell_h": 99,
+   "cell_w": 51,
+   "file": "characters/npc_finn_base/idle.png",
+   "frames": 1,
+   "h": 99,
+   "w": 51
+  },
+  "idle_side": {
+   "cell_h": 98,
+   "cell_w": 48,
+   "file": "characters/npc_finn_base/idle_side.png",
+   "frames": 1,
+   "h": 98,
+   "w": 48
+  },
+  "idle_up": {
+   "cell_h": 99,
+   "cell_w": 50,
+   "file": "characters/npc_finn_base/idle_up.png",
+   "frames": 1,
+   "h": 99,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 100,
+   "cell_w": 57,
+   "file": "characters/npc_finn_base/walk.png",
+   "frames": 4,
+   "h": 100,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 102,
+   "cell_w": 52,
+   "file": "characters/npc_finn_base/walk_down.png",
+   "frames": 4,
+   "h": 102,
+   "w": 208
+  },
+  "walk_up": {
+   "cell_h": 103,
+   "cell_w": 49,
+   "file": "characters/npc_finn_base/walk_up.png",
+   "frames": 4,
+   "h": 103,
+   "w": 196
+  }
+ },
  "characters/npc_finn_winter": {
   "idle": {
    "cell_h": 99,
@@ -29706,6 +29856,56 @@
    "frames": 1,
    "h": 107,
    "w": 95
+  }
+ },
+ "characters/npc_gideon_base": {
+  "idle": {
+   "cell_h": 103,
+   "cell_w": 77,
+   "file": "characters/npc_gideon_base/idle.png",
+   "frames": 1,
+   "h": 103,
+   "w": 77
+  },
+  "idle_side": {
+   "cell_h": 101,
+   "cell_w": 61,
+   "file": "characters/npc_gideon_base/idle_side.png",
+   "frames": 1,
+   "h": 101,
+   "w": 61
+  },
+  "idle_up": {
+   "cell_h": 103,
+   "cell_w": 75,
+   "file": "characters/npc_gideon_base/idle_up.png",
+   "frames": 1,
+   "h": 103,
+   "w": 75
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 70,
+   "file": "characters/npc_gideon_base/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 280
+  },
+  "walk_down": {
+   "cell_h": 105,
+   "cell_w": 75,
+   "file": "characters/npc_gideon_base/walk_down.png",
+   "frames": 4,
+   "h": 105,
+   "w": 300
+  },
+  "walk_up": {
+   "cell_h": 107,
+   "cell_w": 74,
+   "file": "characters/npc_gideon_base/walk_up.png",
+   "frames": 4,
+   "h": 107,
+   "w": 296
   }
  },
  "characters/npc_gideon_summer": {
@@ -30064,6 +30264,56 @@
    "frames": 1,
    "h": 107,
    "w": 100
+  }
+ },
+ "characters/npc_hazel_base": {
+  "idle": {
+   "cell_h": 100,
+   "cell_w": 76,
+   "file": "characters/npc_hazel_base/idle.png",
+   "frames": 1,
+   "h": 100,
+   "w": 76
+  },
+  "idle_side": {
+   "cell_h": 100,
+   "cell_w": 75,
+   "file": "characters/npc_hazel_base/idle_side.png",
+   "frames": 1,
+   "h": 100,
+   "w": 75
+  },
+  "idle_up": {
+   "cell_h": 100,
+   "cell_w": 73,
+   "file": "characters/npc_hazel_base/idle_up.png",
+   "frames": 1,
+   "h": 100,
+   "w": 73
+  },
+  "walk": {
+   "cell_h": 100,
+   "cell_w": 78,
+   "file": "characters/npc_hazel_base/walk.png",
+   "frames": 4,
+   "h": 100,
+   "w": 312
+  },
+  "walk_down": {
+   "cell_h": 100,
+   "cell_w": 75,
+   "file": "characters/npc_hazel_base/walk_down.png",
+   "frames": 4,
+   "h": 100,
+   "w": 300
+  },
+  "walk_up": {
+   "cell_h": 100,
+   "cell_w": 73,
+   "file": "characters/npc_hazel_base/walk_up.png",
+   "frames": 4,
+   "h": 100,
+   "w": 292
   }
  },
  "characters/npc_hazel_summer": {
@@ -30572,6 +30822,56 @@
    "w": 57
   }
  },
+ "characters/npc_juniper_base": {
+  "idle": {
+   "cell_h": 101,
+   "cell_w": 51,
+   "file": "characters/npc_juniper_base/idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 51
+  },
+  "idle_side": {
+   "cell_h": 100,
+   "cell_w": 52,
+   "file": "characters/npc_juniper_base/idle_side.png",
+   "frames": 1,
+   "h": 100,
+   "w": 52
+  },
+  "idle_up": {
+   "cell_h": 101,
+   "cell_w": 50,
+   "file": "characters/npc_juniper_base/idle_up.png",
+   "frames": 1,
+   "h": 101,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 60,
+   "file": "characters/npc_juniper_base/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 101,
+   "cell_w": 52,
+   "file": "characters/npc_juniper_base/walk_down.png",
+   "frames": 4,
+   "h": 101,
+   "w": 208
+  },
+  "walk_up": {
+   "cell_h": 102,
+   "cell_w": 51,
+   "file": "characters/npc_juniper_base/walk_up.png",
+   "frames": 4,
+   "h": 102,
+   "w": 204
+  }
+ },
  "characters/npc_juniper_winter": {
   "idle": {
    "cell_h": 96,
@@ -30582,12 +30882,12 @@
    "w": 47
   },
   "idle_side": {
-   "cell_h": 94,
-   "cell_w": 26,
+   "cell_h": 100,
+   "cell_w": 41,
    "file": "characters/npc_juniper_winter/idle_side.png",
    "frames": 1,
-   "h": 94,
-   "w": 26
+   "h": 100,
+   "w": 41
   },
   "idle_up": {
    "cell_h": 97,
@@ -30826,6 +31126,56 @@
    "w": 53
   }
  },
+ "characters/npc_lumi_base": {
+  "idle": {
+   "cell_h": 101,
+   "cell_w": 55,
+   "file": "characters/npc_lumi_base/idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 55
+  },
+  "idle_side": {
+   "cell_h": 102,
+   "cell_w": 52,
+   "file": "characters/npc_lumi_base/idle_side.png",
+   "frames": 1,
+   "h": 102,
+   "w": 52
+  },
+  "idle_up": {
+   "cell_h": 102,
+   "cell_w": 51,
+   "file": "characters/npc_lumi_base/idle_up.png",
+   "frames": 1,
+   "h": 102,
+   "w": 51
+  },
+  "walk": {
+   "cell_h": 101,
+   "cell_w": 60,
+   "file": "characters/npc_lumi_base/walk.png",
+   "frames": 4,
+   "h": 101,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 102,
+   "cell_w": 54,
+   "file": "characters/npc_lumi_base/walk_down.png",
+   "frames": 4,
+   "h": 102,
+   "w": 216
+  },
+  "walk_up": {
+   "cell_h": 106,
+   "cell_w": 53,
+   "file": "characters/npc_lumi_base/walk_up.png",
+   "frames": 4,
+   "h": 106,
+   "w": 212
+  }
+ },
  "characters/npc_lumi_winter": {
   "idle": {
    "cell_h": 101,
@@ -30926,12 +31276,12 @@
    "w": 62
   },
   "idle": {
-   "cell_h": 68,
-   "cell_w": 24,
+   "cell_h": 71,
+   "cell_w": 38,
    "file": "characters/npc_mabel/idle.png",
    "frames": 1,
-   "h": 68,
-   "w": 24
+   "h": 71,
+   "w": 38
   },
   "idle_side": {
    "cell_h": 70,
@@ -31234,6 +31584,56 @@
    "w": 49
   }
  },
+ "characters/npc_maple_base": {
+  "idle": {
+   "cell_h": 105,
+   "cell_w": 46,
+   "file": "characters/npc_maple_base/idle.png",
+   "frames": 1,
+   "h": 105,
+   "w": 46
+  },
+  "idle_side": {
+   "cell_h": 104,
+   "cell_w": 48,
+   "file": "characters/npc_maple_base/idle_side.png",
+   "frames": 1,
+   "h": 104,
+   "w": 48
+  },
+  "idle_up": {
+   "cell_h": 103,
+   "cell_w": 44,
+   "file": "characters/npc_maple_base/idle_up.png",
+   "frames": 1,
+   "h": 103,
+   "w": 44
+  },
+  "walk": {
+   "cell_h": 99,
+   "cell_w": 48,
+   "file": "characters/npc_maple_base/walk.png",
+   "frames": 4,
+   "h": 99,
+   "w": 192
+  },
+  "walk_down": {
+   "cell_h": 99,
+   "cell_w": 44,
+   "file": "characters/npc_maple_base/walk_down.png",
+   "frames": 4,
+   "h": 99,
+   "w": 176
+  },
+  "walk_up": {
+   "cell_h": 100,
+   "cell_w": 45,
+   "file": "characters/npc_maple_base/walk_up.png",
+   "frames": 4,
+   "h": 100,
+   "w": 180
+  }
+ },
  "characters/npc_maple_winter": {
   "idle": {
    "cell_h": 97,
@@ -31286,52 +31686,52 @@
  },
  "characters/npc_marlowe": {
   "carry": {
-   "cell_h": 96,
-   "cell_w": 49,
+   "cell_h": 108,
+   "cell_w": 55,
    "file": "characters/npc_marlowe/carry.png",
    "frames": 1,
-   "h": 96,
-   "w": 49
+   "h": 108,
+   "w": 55
   },
   "counter": {
-   "cell_h": 144,
-   "cell_w": 80,
+   "cell_h": 96,
+   "cell_w": 55,
    "file": "characters/npc_marlowe/counter.png",
    "frames": 1,
-   "h": 144,
-   "w": 80
+   "h": 96,
+   "w": 55
   },
   "dance": {
-   "cell_h": 124,
-   "cell_w": 42,
+   "cell_h": 101,
+   "cell_w": 54,
    "file": "characters/npc_marlowe/dance.png",
    "frames": 1,
-   "h": 124,
-   "w": 42
+   "h": 101,
+   "w": 54
   },
   "dance_2": {
-   "cell_h": 124,
-   "cell_w": 42,
+   "cell_h": 99,
+   "cell_w": 54,
    "file": "characters/npc_marlowe/dance_2.png",
    "frames": 1,
-   "h": 124,
-   "w": 42
+   "h": 99,
+   "w": 54
   },
   "eat": {
-   "cell_h": 124,
-   "cell_w": 42,
+   "cell_h": 98,
+   "cell_w": 50,
    "file": "characters/npc_marlowe/eat.png",
    "frames": 1,
-   "h": 124,
-   "w": 42
+   "h": 98,
+   "w": 50
   },
   "fish": {
-   "cell_h": 144,
-   "cell_w": 80,
+   "cell_h": 130,
+   "cell_w": 83,
    "file": "characters/npc_marlowe/fish.png",
    "frames": 1,
-   "h": 144,
-   "w": 80
+   "h": 130,
+   "w": 83
   },
   "idle": {
    "cell_h": 105,
@@ -31358,60 +31758,60 @@
    "w": 75
   },
   "laugh": {
-   "cell_h": 99,
-   "cell_w": 79,
+   "cell_h": 94,
+   "cell_w": 50,
    "file": "characters/npc_marlowe/laugh.png",
    "frames": 1,
-   "h": 99,
-   "w": 79
+   "h": 94,
+   "w": 50
   },
   "shiver": {
-   "cell_h": 122,
+   "cell_h": 97,
    "cell_w": 49,
    "file": "characters/npc_marlowe/shiver.png",
    "frames": 1,
-   "h": 122,
+   "h": 97,
    "w": 49
   },
   "sit": {
-   "cell_h": 100,
-   "cell_w": 49,
+   "cell_h": 89,
+   "cell_w": 50,
    "file": "characters/npc_marlowe/sit.png",
    "frames": 1,
-   "h": 100,
-   "w": 49
+   "h": 89,
+   "w": 50
   },
   "sleep": {
    "cell_h": 106,
-   "cell_w": 53,
+   "cell_w": 52,
    "file": "characters/npc_marlowe/sleep.png",
    "frames": 1,
    "h": 106,
-   "w": 53
+   "w": 52
   },
   "talk": {
    "cell_h": 100,
-   "cell_w": 49,
+   "cell_w": 50,
    "file": "characters/npc_marlowe/talk.png",
    "frames": 1,
    "h": 100,
-   "w": 49
+   "w": 50
   },
   "talk_2": {
-   "cell_h": 99,
-   "cell_w": 79,
+   "cell_h": 101,
+   "cell_w": 55,
    "file": "characters/npc_marlowe/talk_2.png",
    "frames": 1,
-   "h": 99,
-   "w": 79
+   "h": 101,
+   "w": 55
   },
   "umbrella": {
-   "cell_h": 125,
-   "cell_w": 43,
+   "cell_h": 114,
+   "cell_w": 59,
    "file": "characters/npc_marlowe/umbrella.png",
    "frames": 1,
-   "h": 125,
-   "w": 43
+   "h": 114,
+   "w": 59
   },
   "walk": {
    "cell_h": 104,
@@ -31438,28 +31838,28 @@
    "w": 300
   },
   "wave": {
-   "cell_h": 106,
-   "cell_w": 53,
+   "cell_h": 97,
+   "cell_w": 52,
    "file": "characters/npc_marlowe/wave.png",
    "frames": 1,
-   "h": 106,
-   "w": 53
+   "h": 97,
+   "w": 52
   },
   "work": {
-   "cell_h": 98,
-   "cell_w": 50,
+   "cell_h": 100,
+   "cell_w": 51,
    "file": "characters/npc_marlowe/work.png",
    "frames": 1,
-   "h": 98,
-   "w": 50
+   "h": 100,
+   "w": 51
   },
   "work_2": {
-   "cell_h": 101,
-   "cell_w": 48,
+   "cell_h": 103,
+   "cell_w": 49,
    "file": "characters/npc_marlowe/work_2.png",
    "frames": 1,
-   "h": 101,
-   "w": 48
+   "h": 103,
+   "w": 49
   }
  },
  "characters/npc_mayor": {
@@ -32096,6 +32496,56 @@
    "w": 46
   }
  },
+ "characters/npc_pip_base": {
+  "idle": {
+   "cell_h": 69,
+   "cell_w": 50,
+   "file": "characters/npc_pip_base/idle.png",
+   "frames": 1,
+   "h": 69,
+   "w": 50
+  },
+  "idle_side": {
+   "cell_h": 70,
+   "cell_w": 43,
+   "file": "characters/npc_pip_base/idle_side.png",
+   "frames": 1,
+   "h": 70,
+   "w": 43
+  },
+  "idle_up": {
+   "cell_h": 68,
+   "cell_w": 50,
+   "file": "characters/npc_pip_base/idle_up.png",
+   "frames": 1,
+   "h": 68,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 74,
+   "cell_w": 43,
+   "file": "characters/npc_pip_base/walk.png",
+   "frames": 4,
+   "h": 74,
+   "w": 172
+  },
+  "walk_down": {
+   "cell_h": 71,
+   "cell_w": 54,
+   "file": "characters/npc_pip_base/walk_down.png",
+   "frames": 4,
+   "h": 71,
+   "w": 216
+  },
+  "walk_up": {
+   "cell_h": 71,
+   "cell_w": 53,
+   "file": "characters/npc_pip_base/walk_up.png",
+   "frames": 4,
+   "h": 71,
+   "w": 212
+  }
+ },
  "characters/npc_pip_winter": {
   "idle": {
    "cell_h": 68,
@@ -32274,6 +32724,56 @@
    "frames": 1,
    "h": 99,
    "w": 57
+  }
+ },
+ "characters/npc_posy_base": {
+  "idle": {
+   "cell_h": 101,
+   "cell_w": 57,
+   "file": "characters/npc_posy_base/idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 57
+  },
+  "idle_side": {
+   "cell_h": 101,
+   "cell_w": 55,
+   "file": "characters/npc_posy_base/idle_side.png",
+   "frames": 1,
+   "h": 101,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 102,
+   "cell_w": 55,
+   "file": "characters/npc_posy_base/idle_up.png",
+   "frames": 1,
+   "h": 102,
+   "w": 55
+  },
+  "walk": {
+   "cell_h": 101,
+   "cell_w": 59,
+   "file": "characters/npc_posy_base/walk.png",
+   "frames": 4,
+   "h": 101,
+   "w": 236
+  },
+  "walk_down": {
+   "cell_h": 102,
+   "cell_w": 57,
+   "file": "characters/npc_posy_base/walk_down.png",
+   "frames": 4,
+   "h": 102,
+   "w": 228
+  },
+  "walk_up": {
+   "cell_h": 106,
+   "cell_w": 56,
+   "file": "characters/npc_posy_base/walk_up.png",
+   "frames": 4,
+   "h": 106,
+   "w": 224
   }
  },
  "characters/npc_posy_winter": {
@@ -32530,6 +33030,56 @@
    "w": 42
   }
  },
+ "characters/npc_rook_base": {
+  "idle": {
+   "cell_h": 101,
+   "cell_w": 52,
+   "file": "characters/npc_rook_base/idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 52
+  },
+  "idle_side": {
+   "cell_h": 101,
+   "cell_w": 47,
+   "file": "characters/npc_rook_base/idle_side.png",
+   "frames": 1,
+   "h": 101,
+   "w": 47
+  },
+  "idle_up": {
+   "cell_h": 101,
+   "cell_w": 51,
+   "file": "characters/npc_rook_base/idle_up.png",
+   "frames": 1,
+   "h": 101,
+   "w": 51
+  },
+  "walk": {
+   "cell_h": 100,
+   "cell_w": 57,
+   "file": "characters/npc_rook_base/walk.png",
+   "frames": 4,
+   "h": 100,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 99,
+   "cell_w": 54,
+   "file": "characters/npc_rook_base/walk_down.png",
+   "frames": 4,
+   "h": 99,
+   "w": 216
+  },
+  "walk_up": {
+   "cell_h": 105,
+   "cell_w": 54,
+   "file": "characters/npc_rook_base/walk_up.png",
+   "frames": 4,
+   "h": 105,
+   "w": 216
+  }
+ },
  "characters/npc_rook_winter": {
   "idle": {
    "cell_h": 99,
@@ -32708,6 +33258,56 @@
    "frames": 1,
    "h": 94,
    "w": 48
+  }
+ },
+ "characters/npc_sal_base": {
+  "idle": {
+   "cell_h": 97,
+   "cell_w": 53,
+   "file": "characters/npc_sal_base/idle.png",
+   "frames": 1,
+   "h": 97,
+   "w": 53
+  },
+  "idle_side": {
+   "cell_h": 100,
+   "cell_w": 54,
+   "file": "characters/npc_sal_base/idle_side.png",
+   "frames": 1,
+   "h": 100,
+   "w": 54
+  },
+  "idle_up": {
+   "cell_h": 98,
+   "cell_w": 52,
+   "file": "characters/npc_sal_base/idle_up.png",
+   "frames": 1,
+   "h": 98,
+   "w": 52
+  },
+  "walk": {
+   "cell_h": 101,
+   "cell_w": 57,
+   "file": "characters/npc_sal_base/walk.png",
+   "frames": 4,
+   "h": 101,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 100,
+   "cell_w": 54,
+   "file": "characters/npc_sal_base/walk_down.png",
+   "frames": 4,
+   "h": 100,
+   "w": 216
+  },
+  "walk_up": {
+   "cell_h": 106,
+   "cell_w": 54,
+   "file": "characters/npc_sal_base/walk_up.png",
+   "frames": 4,
+   "h": 106,
+   "w": 216
   }
  },
  "characters/npc_sal_winter": {
@@ -33394,6 +33994,56 @@
    "w": 95
   }
  },
+ "characters/npc_theo_base": {
+  "idle": {
+   "cell_h": 95,
+   "cell_w": 58,
+   "file": "characters/npc_theo_base/idle.png",
+   "frames": 1,
+   "h": 95,
+   "w": 58
+  },
+  "idle_side": {
+   "cell_h": 95,
+   "cell_w": 54,
+   "file": "characters/npc_theo_base/idle_side.png",
+   "frames": 1,
+   "h": 95,
+   "w": 54
+  },
+  "idle_up": {
+   "cell_h": 95,
+   "cell_w": 58,
+   "file": "characters/npc_theo_base/idle_up.png",
+   "frames": 1,
+   "h": 95,
+   "w": 58
+  },
+  "walk": {
+   "cell_h": 96,
+   "cell_w": 59,
+   "file": "characters/npc_theo_base/walk.png",
+   "frames": 4,
+   "h": 96,
+   "w": 236
+  },
+  "walk_down": {
+   "cell_h": 99,
+   "cell_w": 60,
+   "file": "characters/npc_theo_base/walk_down.png",
+   "frames": 4,
+   "h": 99,
+   "w": 240
+  },
+  "walk_up": {
+   "cell_h": 104,
+   "cell_w": 59,
+   "file": "characters/npc_theo_base/walk_up.png",
+   "frames": 4,
+   "h": 104,
+   "w": 236
+  }
+ },
  "characters/npc_theo_summer": {
   "idle": {
    "cell_h": 113,
@@ -33572,6 +34222,56 @@
    "frames": 1,
    "h": 69,
    "w": 37
+  }
+ },
+ "characters/npc_tobin_base": {
+  "idle": {
+   "cell_h": 77,
+   "cell_w": 43,
+   "file": "characters/npc_tobin_base/idle.png",
+   "frames": 1,
+   "h": 77,
+   "w": 43
+  },
+  "idle_side": {
+   "cell_h": 78,
+   "cell_w": 44,
+   "file": "characters/npc_tobin_base/idle_side.png",
+   "frames": 1,
+   "h": 78,
+   "w": 44
+  },
+  "idle_up": {
+   "cell_h": 78,
+   "cell_w": 43,
+   "file": "characters/npc_tobin_base/idle_up.png",
+   "frames": 1,
+   "h": 78,
+   "w": 43
+  },
+  "walk": {
+   "cell_h": 75,
+   "cell_w": 43,
+   "file": "characters/npc_tobin_base/walk.png",
+   "frames": 4,
+   "h": 75,
+   "w": 172
+  },
+  "walk_down": {
+   "cell_h": 77,
+   "cell_w": 43,
+   "file": "characters/npc_tobin_base/walk_down.png",
+   "frames": 4,
+   "h": 77,
+   "w": 172
+  },
+  "walk_up": {
+   "cell_h": 82,
+   "cell_w": 43,
+   "file": "characters/npc_tobin_base/walk_up.png",
+   "frames": 4,
+   "h": 82,
+   "w": 172
   }
  },
  "characters/npc_tobin_summer": {
@@ -33828,6 +34528,56 @@
    "w": 90
   }
  },
+ "characters/npc_wren_base": {
+  "idle": {
+   "cell_h": 104,
+   "cell_w": 77,
+   "file": "characters/npc_wren_base/idle.png",
+   "frames": 1,
+   "h": 104,
+   "w": 77
+  },
+  "idle_side": {
+   "cell_h": 106,
+   "cell_w": 74,
+   "file": "characters/npc_wren_base/idle_side.png",
+   "frames": 1,
+   "h": 106,
+   "w": 74
+  },
+  "idle_up": {
+   "cell_h": 106,
+   "cell_w": 78,
+   "file": "characters/npc_wren_base/idle_up.png",
+   "frames": 1,
+   "h": 106,
+   "w": 78
+  },
+  "walk": {
+   "cell_h": 109,
+   "cell_w": 76,
+   "file": "characters/npc_wren_base/walk.png",
+   "frames": 4,
+   "h": 109,
+   "w": 304
+  },
+  "walk_down": {
+   "cell_h": 107,
+   "cell_w": 79,
+   "file": "characters/npc_wren_base/walk_down.png",
+   "frames": 4,
+   "h": 107,
+   "w": 316
+  },
+  "walk_up": {
+   "cell_h": 112,
+   "cell_w": 80,
+   "file": "characters/npc_wren_base/walk_up.png",
+   "frames": 4,
+   "h": 112,
+   "w": 320
+  }
+ },
  "characters/npc_wren_fall": {
   "idle": {
    "cell_h": 113,
@@ -34006,6 +34756,56 @@
    "frames": 1,
    "h": 66,
    "w": 46
+  }
+ },
+ "characters/npc_wren_jr_base": {
+  "idle": {
+   "cell_h": 63,
+   "cell_w": 43,
+   "file": "characters/npc_wren_jr_base/idle.png",
+   "frames": 1,
+   "h": 63,
+   "w": 43
+  },
+  "idle_side": {
+   "cell_h": 64,
+   "cell_w": 46,
+   "file": "characters/npc_wren_jr_base/idle_side.png",
+   "frames": 1,
+   "h": 64,
+   "w": 46
+  },
+  "idle_up": {
+   "cell_h": 64,
+   "cell_w": 44,
+   "file": "characters/npc_wren_jr_base/idle_up.png",
+   "frames": 1,
+   "h": 64,
+   "w": 44
+  },
+  "walk": {
+   "cell_h": 67,
+   "cell_w": 49,
+   "file": "characters/npc_wren_jr_base/walk.png",
+   "frames": 4,
+   "h": 67,
+   "w": 196
+  },
+  "walk_down": {
+   "cell_h": 69,
+   "cell_w": 46,
+   "file": "characters/npc_wren_jr_base/walk_down.png",
+   "frames": 4,
+   "h": 69,
+   "w": 184
+  },
+  "walk_up": {
+   "cell_h": 72,
+   "cell_w": 48,
+   "file": "characters/npc_wren_jr_base/walk_up.png",
+   "frames": 4,
+   "h": 72,
+   "w": 192
   }
  },
  "characters/npc_young_farmer": {
@@ -40347,33 +41147,33 @@
   },
   "dreamflower_growing": {
    "file": "crops/dreamflower_growing.png",
-   "h": 82,
-   "w": 84
+   "h": 91,
+   "w": 73
   },
   "dreamflower_mature": {
    "file": "crops/dreamflower_mature.png",
-   "h": 104,
-   "w": 95
+   "h": 100,
+   "w": 78
   },
   "dreamflower_ready": {
    "file": "crops/dreamflower_ready.png",
-   "h": 114,
-   "w": 106
+   "h": 113,
+   "w": 87
   },
   "dreamflower_seed": {
    "file": "crops/dreamflower_seed.png",
-   "h": 39,
-   "w": 73
+   "h": 29,
+   "w": 63
   },
   "dreamflower_sprout": {
    "file": "crops/dreamflower_sprout.png",
-   "h": 47,
-   "w": 75
+   "h": 44,
+   "w": 64
   },
   "dreamflower_young": {
    "file": "crops/dreamflower_young.png",
-   "h": 64,
-   "w": 78
+   "h": 65,
+   "w": 64
   },
   "dreamfruit_growing": {
    "file": "crops/dreamfruit_growing.png",
@@ -40467,12 +41267,12 @@
   },
   "ethereal_corn_growing": {
    "file": "crops/ethereal_corn_growing.png",
-   "h": 85,
-   "w": 53
+   "h": 73,
+   "w": 60
   },
   "ethereal_corn_mature": {
    "file": "crops/ethereal_corn_mature.png",
-   "h": 97,
+   "h": 85,
    "w": 58
   },
   "ethereal_corn_ready": {
@@ -40482,18 +41282,18 @@
   },
   "ethereal_corn_seed": {
    "file": "crops/ethereal_corn_seed.png",
-   "h": 24,
-   "w": 42
+   "h": 25,
+   "w": 52
   },
   "ethereal_corn_sprout": {
    "file": "crops/ethereal_corn_sprout.png",
-   "h": 44,
-   "w": 40
+   "h": 37,
+   "w": 53
   },
   "ethereal_corn_young": {
    "file": "crops/ethereal_corn_young.png",
-   "h": 66,
-   "w": 50
+   "h": 56,
+   "w": 53
   },
   "fig_growing": {
    "file": "crops/fig_growing.png",
@@ -41247,33 +42047,33 @@
   },
   "lumiflora_growing": {
    "file": "crops/lumiflora_growing.png",
-   "h": 69,
-   "w": 53
+   "h": 67,
+   "w": 45
   },
   "lumiflora_mature": {
    "file": "crops/lumiflora_mature.png",
    "h": 79,
-   "w": 59
+   "w": 61
   },
   "lumiflora_ready": {
    "file": "crops/lumiflora_ready.png",
    "h": 93,
-   "w": 70
+   "w": 63
   },
   "lumiflora_seed": {
    "file": "crops/lumiflora_seed.png",
-   "h": 27,
-   "w": 42
+   "h": 19,
+   "w": 38
   },
   "lumiflora_sprout": {
    "file": "crops/lumiflora_sprout.png",
-   "h": 41,
-   "w": 40
+   "h": 35,
+   "w": 38
   },
   "lumiflora_young": {
    "file": "crops/lumiflora_young.png",
-   "h": 52,
-   "w": 48
+   "h": 48,
+   "w": 40
   },
   "luminous_starfruit_growing": {
    "file": "crops/luminous_starfruit_growing.png",
@@ -42117,33 +42917,33 @@
   },
   "prism_tomato_growing": {
    "file": "crops/prism_tomato_growing.png",
-   "h": 87,
-   "w": 58
+   "h": 85,
+   "w": 50
   },
   "prism_tomato_mature": {
    "file": "crops/prism_tomato_mature.png",
-   "h": 92,
-   "w": 60
+   "h": 94,
+   "w": 55
   },
   "prism_tomato_ready": {
    "file": "crops/prism_tomato_ready.png",
    "h": 99,
-   "w": 72
+   "w": 62
   },
   "prism_tomato_seed": {
    "file": "crops/prism_tomato_seed.png",
-   "h": 27,
-   "w": 41
+   "h": 24,
+   "w": 45
   },
   "prism_tomato_sprout": {
    "file": "crops/prism_tomato_sprout.png",
-   "h": 48,
-   "w": 43
+   "h": 36,
+   "w": 45
   },
   "prism_tomato_young": {
    "file": "crops/prism_tomato_young.png",
-   "h": 69,
-   "w": 50
+   "h": 59,
+   "w": 45
   },
   "pumpkin": {
    "cell_h": 26,
@@ -42605,33 +43405,33 @@
   },
   "soulleaf_growing": {
    "file": "crops/soulleaf_growing.png",
-   "h": 76,
-   "w": 55
+   "h": 69,
+   "w": 52
   },
   "soulleaf_mature": {
    "file": "crops/soulleaf_mature.png",
-   "h": 86,
+   "h": 81,
    "w": 64
   },
   "soulleaf_ready": {
    "file": "crops/soulleaf_ready.png",
    "h": 98,
-   "w": 71
+   "w": 70
   },
   "soulleaf_seed": {
    "file": "crops/soulleaf_seed.png",
-   "h": 28,
-   "w": 42
+   "h": 21,
+   "w": 41
   },
   "soulleaf_sprout": {
    "file": "crops/soulleaf_sprout.png",
-   "h": 45,
-   "w": 42
+   "h": 34,
+   "w": 40
   },
   "soulleaf_young": {
    "file": "crops/soulleaf_young.png",
-   "h": 57,
-   "w": 49
+   "h": 52,
+   "w": 41
   },
   "spinach_growing": {
    "file": "crops/spinach_growing.png",
@@ -43371,33 +44171,33 @@
   },
   "wishfruit_growing": {
    "file": "crops/wishfruit_growing.png",
-   "h": 99,
-   "w": 112
+   "h": 95,
+   "w": 89
   },
   "wishfruit_mature": {
    "file": "crops/wishfruit_mature.png",
-   "h": 106,
-   "w": 114
+   "h": 108,
+   "w": 102
   },
   "wishfruit_ready": {
    "file": "crops/wishfruit_ready.png",
    "h": 116,
-   "w": 118
+   "w": 110
   },
   "wishfruit_seed": {
    "file": "crops/wishfruit_seed.png",
-   "h": 53,
-   "w": 95
+   "h": 34,
+   "w": 67
   },
   "wishfruit_sprout": {
    "file": "crops/wishfruit_sprout.png",
-   "h": 64,
-   "w": 90
+   "h": 45,
+   "w": 67
   },
   "wishfruit_young": {
    "file": "crops/wishfruit_young.png",
-   "h": 88,
-   "w": 95
+   "h": 75,
+   "w": 69
   },
   "withered_any_0": {
    "file": "crops/withered_any_0.png",
@@ -43426,33 +44226,33 @@
   },
   "worldseed_growing": {
    "file": "crops/worldseed_growing.png",
-   "h": 66,
-   "w": 49
+   "h": 71,
+   "w": 51
   },
   "worldseed_mature": {
    "file": "crops/worldseed_mature.png",
-   "h": 78,
-   "w": 54
+   "h": 79,
+   "w": 59
   },
   "worldseed_ready": {
    "file": "crops/worldseed_ready.png",
    "h": 93,
-   "w": 72
+   "w": 67
   },
   "worldseed_seed": {
    "file": "crops/worldseed_seed.png",
-   "h": 26,
-   "w": 40
+   "h": 23,
+   "w": 44
   },
   "worldseed_sprout": {
    "file": "crops/worldseed_sprout.png",
    "h": 36,
-   "w": 39
+   "w": 44
   },
   "worldseed_young": {
    "file": "crops/worldseed_young.png",
-   "h": 50,
-   "w": 41
+   "h": 54,
+   "w": 44
   },
   "yellow_squash_growing": {
    "file": "crops/yellow_squash_growing.png",
@@ -44359,20 +45159,20 @@
  },
  "enemies/cboss_coral": {
   "attack": {
-   "cell_h": 96,
-   "cell_w": 105,
+   "cell_h": 141,
+   "cell_w": 122,
    "file": "enemies/cboss_coral/attack.png",
    "frames": 4,
-   "h": 96,
-   "w": 420
+   "h": 141,
+   "w": 488
   },
   "hurt": {
-   "cell_h": 96,
-   "cell_w": 87,
+   "cell_h": 91,
+   "cell_w": 98,
    "file": "enemies/cboss_coral/hurt.png",
    "frames": 2,
-   "h": 96,
-   "w": 174
+   "h": 91,
+   "w": 196
   },
   "idle": {
    "cell_h": 96,
@@ -81809,92 +82609,36 @@
    "w": 64
   }
  },
- "portraits/npc_alder_festival": {
-  "happy": {
-   "file": "portraits/npc_alder_festival/happy.png",
-   "h": 96,
-   "w": 77
-  },
-  "neutral": {
-   "file": "portraits/npc_alder_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_alder_festival/sad.png",
-   "h": 96,
-   "w": 75
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_alder_normal": {
+  "angry": {
+   "file": "portraits/npc_alder_normal/angry.png",
+   "h": 96,
+   "w": 97
+  },
   "happy": {
    "file": "portraits/npc_alder_normal/happy.png",
    "h": 96,
-   "w": 80
+   "w": 98
   },
   "neutral": {
    "file": "portraits/npc_alder_normal/neutral.png",
    "h": 96,
-   "w": 81
+   "w": 95
   },
   "sad": {
    "file": "portraits/npc_alder_normal/sad.png",
    "h": 96,
-   "w": 79
+   "w": 99
   },
   "surprised": {
    "file": "portraits/npc_alder_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_alder_summer": {
-  "happy": {
-   "file": "portraits/npc_alder_summer/happy.png",
-   "h": 96,
-   "w": 74
+   "w": 99
   },
-  "neutral": {
-   "file": "portraits/npc_alder_summer/neutral.png",
-   "h": 96,
-   "w": 75
-  },
-  "sad": {
-   "file": "portraits/npc_alder_summer/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_alder_winter": {
-  "happy": {
-   "file": "portraits/npc_alder_winter/happy.png",
-   "h": 96,
-   "w": 77
-  },
-  "neutral": {
-   "file": "portraits/npc_alder_winter/neutral.png",
-   "h": 96,
-   "w": 81
-  },
-  "sad": {
-   "file": "portraits/npc_alder_winter/sad.png",
-   "h": 96,
-   "w": 79
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_winter/surprised.png",
-   "h": 96,
-   "w": 74
+  "worried": {
+   "file": "portraits/npc_alder_normal/worried.png",
+   "h": 95,
+   "w": 98
   }
  },
  "portraits/npc_benno": {
@@ -82067,195 +82811,68 @@
    "w": 82
   }
  },
- "portraits/npc_finn_festival": {
-  "happy": {
-   "file": "portraits/npc_finn_festival/happy.png",
-   "h": 96,
-   "w": 70
-  },
-  "neutral": {
-   "file": "portraits/npc_finn_festival/neutral.png",
-   "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_finn_festival/sad.png",
-   "h": 96,
-   "w": 71
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_festival/surprised.png",
-   "h": 96,
-   "w": 71
-  }
- },
  "portraits/npc_finn_normal": {
+  "angry": {
+   "file": "portraits/npc_finn_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_finn_normal/happy.png",
    "h": 96,
-   "w": 77
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_finn_normal/neutral.png",
    "h": 96,
-   "w": 79
+   "w": 93
   },
   "sad": {
    "file": "portraits/npc_finn_normal/sad.png",
    "h": 96,
-   "w": 77
+   "w": 92
   },
   "surprised": {
    "file": "portraits/npc_finn_normal/surprised.png",
    "h": 96,
-   "w": 73
-  }
- },
- "portraits/npc_finn_summer": {
-  "happy": {
-   "file": "portraits/npc_finn_summer/happy.png",
-   "h": 96,
-   "w": 73
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_finn_summer/neutral.png",
-   "h": 96,
-   "w": 73
-  },
-  "sad": {
-   "file": "portraits/npc_finn_summer/sad.png",
-   "h": 96,
-   "w": 72
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_summer/surprised.png",
-   "h": 96,
-   "w": 68
-  }
- },
- "portraits/npc_finn_winter": {
-  "happy": {
-   "file": "portraits/npc_finn_winter/happy.png",
-   "h": 96,
-   "w": 70
-  },
-  "neutral": {
-   "file": "portraits/npc_finn_winter/neutral.png",
-   "h": 96,
-   "w": 70
-  },
-  "sad": {
-   "file": "portraits/npc_finn_winter/sad.png",
-   "h": 96,
-   "w": 70
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_winter/surprised.png",
-   "h": 96,
-   "w": 69
-  }
- },
- "portraits/npc_gideon_festival": {
-  "happy": {
-   "file": "portraits/npc_gideon_festival/happy.png",
-   "h": 96,
-   "w": 62
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_festival/neutral.png",
-   "h": 96,
-   "w": 62
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_festival/sad.png",
-   "h": 23,
-   "w": 1
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_festival/surprised.png",
-   "h": 23,
-   "w": 1
+  "worried": {
+   "file": "portraits/npc_finn_normal/worried.png",
+   "h": 95,
+   "w": 92
   }
  },
  "portraits/npc_gideon_normal": {
+  "angry": {
+   "file": "portraits/npc_gideon_normal/angry.png",
+   "h": 95,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_gideon_normal/happy.png",
    "h": 96,
-   "w": 81
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_gideon_normal/neutral.png",
    "h": 96,
-   "w": 68
+   "w": 93
   },
   "sad": {
    "file": "portraits/npc_gideon_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 93
   },
   "surprised": {
    "file": "portraits/npc_gideon_normal/surprised.png",
    "h": 96,
-   "w": 71
-  }
- },
- "portraits/npc_gideon_summer": {
-  "angry": {
-   "file": "portraits/npc_gideon_summer/angry.png",
-   "h": 96,
-   "w": 125
-  },
-  "happy": {
-   "file": "portraits/npc_gideon_summer/happy.png",
-   "h": 96,
-   "w": 120
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_summer/neutral.png",
-   "h": 96,
-   "w": 125
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_summer/sad.png",
-   "h": 96,
-   "w": 119
-  },
-  "sly": {
-   "file": "portraits/npc_gideon_summer/sly.png",
-   "h": 96,
-   "w": 117
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_summer/surprised.png",
-   "h": 96,
-   "w": 116
+   "w": 94
   },
   "worried": {
-   "file": "portraits/npc_gideon_summer/worried.png",
+   "file": "portraits/npc_gideon_normal/worried.png",
    "h": 96,
-   "w": 118
-  }
- },
- "portraits/npc_gideon_winter": {
-  "happy": {
-   "file": "portraits/npc_gideon_winter/happy.png",
-   "h": 96,
-   "w": 76
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_winter/neutral.png",
-   "h": 96,
-   "w": 80
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_winter/sad.png",
-   "h": 96,
-   "w": 65
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_winter/surprised.png",
-   "h": 96,
-   "w": 63
+   "w": 94
   }
  },
  "portraits/npc_granite": {
@@ -82290,92 +82907,36 @@
    "w": 96
   }
  },
- "portraits/npc_hazel_festival": {
-  "happy": {
-   "file": "portraits/npc_hazel_festival/happy.png",
-   "h": 96,
-   "w": 78
-  },
-  "neutral": {
-   "file": "portraits/npc_hazel_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_festival/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_hazel_normal": {
+  "angry": {
+   "file": "portraits/npc_hazel_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_hazel_normal/happy.png",
    "h": 96,
-   "w": 83
+   "w": 92
   },
   "neutral": {
    "file": "portraits/npc_hazel_normal/neutral.png",
    "h": 96,
-   "w": 88
+   "w": 92
   },
   "sad": {
    "file": "portraits/npc_hazel_normal/sad.png",
    "h": 96,
-   "w": 82
+   "w": 92
   },
   "surprised": {
    "file": "portraits/npc_hazel_normal/surprised.png",
    "h": 96,
-   "w": 79
-  }
- },
- "portraits/npc_hazel_summer": {
-  "happy": {
-   "file": "portraits/npc_hazel_summer/happy.png",
-   "h": 96,
-   "w": 79
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_hazel_summer/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_summer/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_summer/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_hazel_winter": {
-  "happy": {
-   "file": "portraits/npc_hazel_winter/happy.png",
-   "h": 96,
-   "w": 75
-  },
-  "neutral": {
-   "file": "portraits/npc_hazel_winter/neutral.png",
-   "h": 96,
-   "w": 77
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_winter/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_winter/surprised.png",
-   "h": 96,
-   "w": 72
+  "worried": {
+   "file": "portraits/npc_hazel_normal/worried.png",
+   "h": 95,
+   "w": 92
   }
  },
  "portraits/npc_ivy": {
@@ -82619,92 +83180,36 @@
    "w": 72
   }
  },
- "portraits/npc_maple_festival": {
-  "happy": {
-   "file": "portraits/npc_maple_festival/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_maple_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_maple_festival/sad.png",
-   "h": 96,
-   "w": 75
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_festival/surprised.png",
-   "h": 96,
-   "w": 74
-  }
- },
  "portraits/npc_maple_normal": {
+  "angry": {
+   "file": "portraits/npc_maple_normal/angry.png",
+   "h": 96,
+   "w": 79
+  },
   "happy": {
    "file": "portraits/npc_maple_normal/happy.png",
    "h": 96,
-   "w": 79
+   "w": 78
   },
   "neutral": {
    "file": "portraits/npc_maple_normal/neutral.png",
    "h": 96,
-   "w": 79
+   "w": 78
   },
   "sad": {
    "file": "portraits/npc_maple_normal/sad.png",
    "h": 96,
-   "w": 77
+   "w": 79
   },
   "surprised": {
    "file": "portraits/npc_maple_normal/surprised.png",
    "h": 96,
-   "w": 74
-  }
- },
- "portraits/npc_maple_summer": {
-  "happy": {
-   "file": "portraits/npc_maple_summer/happy.png",
-   "h": 96,
    "w": 78
   },
-  "neutral": {
-   "file": "portraits/npc_maple_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_maple_normal/worried.png",
    "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_maple_summer/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_summer/surprised.png",
-   "h": 96,
-   "w": 73
-  }
- },
- "portraits/npc_maple_winter": {
-  "happy": {
-   "file": "portraits/npc_maple_winter/happy.png",
-   "h": 96,
-   "w": 67
-  },
-  "neutral": {
-   "file": "portraits/npc_maple_winter/neutral.png",
-   "h": 96,
-   "w": 70
-  },
-  "sad": {
-   "file": "portraits/npc_maple_winter/sad.png",
-   "h": 96,
-   "w": 68
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_winter/surprised.png",
-   "h": 96,
-   "w": 66
+   "w": 78
   }
  },
  "portraits/npc_marlowe": {
@@ -82922,180 +83427,68 @@
    "w": 72
   }
  },
- "portraits/npc_posy_festival": {
-  "happy": {
-   "file": "portraits/npc_posy_festival/happy.png",
-   "h": 96,
-   "w": 78
-  },
-  "neutral": {
-   "file": "portraits/npc_posy_festival/neutral.png",
-   "h": 96,
-   "w": 80
-  },
-  "sad": {
-   "file": "portraits/npc_posy_festival/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_posy_normal": {
-  "happy": {
-   "file": "portraits/npc_posy_normal/happy.png",
+  "angry": {
+   "file": "portraits/npc_posy_normal/angry.png",
    "h": 96,
    "w": 81
   },
+  "happy": {
+   "file": "portraits/npc_posy_normal/happy.png",
+   "h": 95,
+   "w": 82
+  },
   "neutral": {
    "file": "portraits/npc_posy_normal/neutral.png",
-   "h": 96,
+   "h": 95,
    "w": 81
   },
   "sad": {
    "file": "portraits/npc_posy_normal/sad.png",
-   "h": 96,
-   "w": 80
+   "h": 95,
+   "w": 82
   },
   "surprised": {
    "file": "portraits/npc_posy_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_posy_summer": {
-  "happy": {
-   "file": "portraits/npc_posy_summer/happy.png",
-   "h": 96,
-   "w": 76
+   "w": 82
   },
-  "neutral": {
-   "file": "portraits/npc_posy_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_posy_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_posy_summer/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_summer/surprised.png",
-   "h": 96,
-   "w": 70
-  }
- },
- "portraits/npc_posy_winter": {
-  "happy": {
-   "file": "portraits/npc_posy_winter/happy.png",
-   "h": 96,
-   "w": 75
-  },
-  "neutral": {
-   "file": "portraits/npc_posy_winter/neutral.png",
-   "h": 96,
-   "w": 77
-  },
-  "sad": {
-   "file": "portraits/npc_posy_winter/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_winter/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_rook_festival": {
-  "happy": {
-   "file": "portraits/npc_rook_festival/happy.png",
-   "h": 96,
-   "w": 80
-  },
-  "neutral": {
-   "file": "portraits/npc_rook_festival/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_rook_festival/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_festival/surprised.png",
-   "h": 96,
-   "w": 76
+   "w": 82
   }
  },
  "portraits/npc_rook_normal": {
+  "angry": {
+   "file": "portraits/npc_rook_normal/angry.png",
+   "h": 96,
+   "w": 100
+  },
   "happy": {
    "file": "portraits/npc_rook_normal/happy.png",
    "h": 96,
-   "w": 79
+   "w": 100
   },
   "neutral": {
    "file": "portraits/npc_rook_normal/neutral.png",
    "h": 96,
-   "w": 81
+   "w": 100
   },
   "sad": {
    "file": "portraits/npc_rook_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 100
   },
   "surprised": {
    "file": "portraits/npc_rook_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_rook_summer": {
-  "happy": {
-   "file": "portraits/npc_rook_summer/happy.png",
-   "h": 96,
-   "w": 77
+   "w": 100
   },
-  "neutral": {
-   "file": "portraits/npc_rook_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_rook_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_rook_summer/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_rook_winter": {
-  "happy": {
-   "file": "portraits/npc_rook_winter/happy.png",
-   "h": 96,
-   "w": 76
-  },
-  "neutral": {
-   "file": "portraits/npc_rook_winter/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_rook_winter/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_winter/surprised.png",
-   "h": 96,
-   "w": 74
+   "w": 100
   }
  },
  "portraits/npc_sal": {
@@ -83401,28 +83794,6 @@
    "w": 83
   }
  },
- "portraits/npc_wren_festival": {
-  "happy": {
-   "file": "portraits/npc_wren_festival/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_wren_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_wren_festival/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_festival/surprised.png",
-   "h": 96,
-   "w": 73
-  }
- },
  "portraits/npc_wren_jr": {
   "angry": {
    "file": "portraits/npc_wren_jr/angry.png",
@@ -83478,69 +83849,35 @@
   }
  },
  "portraits/npc_wren_normal": {
+  "angry": {
+   "file": "portraits/npc_wren_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_wren_normal/happy.png",
    "h": 96,
-   "w": 80
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_wren_normal/neutral.png",
    "h": 96,
-   "w": 80
+   "w": 94
   },
   "sad": {
    "file": "portraits/npc_wren_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 93
   },
   "surprised": {
    "file": "portraits/npc_wren_normal/surprised.png",
    "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_wren_summer": {
-  "happy": {
-   "file": "portraits/npc_wren_summer/happy.png",
-   "h": 96,
-   "w": 76
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_wren_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_wren_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_wren_summer/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_wren_winter": {
-  "happy": {
-   "file": "portraits/npc_wren_winter/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_wren_winter/neutral.png",
-   "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_wren_winter/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_winter/surprised.png",
-   "h": 96,
-   "w": 73
+   "w": 93
   }
  },
  "portraits/nurse": {
@@ -85245,13 +85582,13 @@
   },
   "bulb_off": {
    "file": "props/bulb_off.png",
-   "h": 41,
-   "w": 28
+   "h": 40,
+   "w": 16
   },
   "bulb_on": {
    "file": "props/bulb_on.png",
    "h": 41,
-   "w": 28
+   "w": 17
   },
   "bulb_plant": {
    "file": "props/bulb_plant.png",
@@ -86649,7 +86986,7 @@
   "drums": {
    "file": "props/drums.png",
    "h": 38,
-   "w": 56
+   "w": 39
   },
   "ds_bazaar_tent": {
    "file": "props/ds_bazaar_tent.png",
@@ -88346,11 +88683,11 @@
   },
   "holo_table": {
    "cell_h": 108,
-   "cell_w": 108,
+   "cell_w": 96,
    "file": "props/holo_table.png",
    "frames": 4,
    "h": 108,
-   "w": 432
+   "w": 384
   },
   "horse": {
    "file": "props/horse.png",
@@ -90544,7 +90881,7 @@
   "oil_drums": {
    "file": "props/oil_drums.png",
    "h": 38,
-   "w": 48
+   "w": 38
   },
   "oil_press": {
    "file": "props/oil_press.png",
@@ -95512,11 +95849,11 @@
    "w": 72
   },
   "teleporter": {
-   "cell_h": 16,
+   "cell_h": 41,
    "cell_w": 64,
    "file": "props/teleporter.png",
    "frames": 1,
-   "h": 16,
+   "h": 41,
    "w": 64
   },
   "teleporter2": {
