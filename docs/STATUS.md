@@ -8,6 +8,7 @@
 - Every crew walk_down was broken (two half figures + a back view): rebuilt from the drawn front frames; Vic/Val view_front now a front view (`vicval`).
 - 12B hero strips (Pip-Pip, Nova, Coldy, Big Jim) lose neighbour-row slivers (`slivers`).
 - Tool swings with only a _down strip now face right/up (attack / back pose + HeldSwing tool) instead of swinging toward the camera; gangster heroes fish with the rod pose any way and water from a standing pose, never a punch.
+- Round 2 (18 renders): Pip-Pip/Nova hoe/axe/pickaxe/water right+up, Coldy/Big Jim pickaxe_down; all 12 crew redrawn (one shape, colour pair, prop) for walk/idle/view sets (`tools`, `redraw` steps); scythe/sword weed cuts sweep.
 - Thug scale left at 1.0: heroes are drawn 24 px, thugs 27 px (the audit compared 0.5-scaled cells with unscaled hero cells). Test: tools/anim_test.gd sections 8-10.
 
 ## 2026-11-19 — CONDUCT 4 fix P1: difficulty modes, day length, money routing
