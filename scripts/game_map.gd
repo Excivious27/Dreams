@@ -4072,8 +4072,12 @@ func draw_border() -> void:
 		# soft paths it overlaps the map's own path by 2 cells so the two shapes join.
 		var corridor := {}
 		var rd = get("R")
-		var soft_k := not (rd is Dictionary) or str((rd as Dictionary).get("path", "dirt")) in ["dirt", "sand", "stone"]
+		var pk := str((rd as Dictionary).get("path", "dirt")) if rd is Dictionary else "dirt"
+		# Any soft (seamless) region path keeps to its lanes too: a full-width corridor
+		# beside a 2-wide path read as a notch at the map edge (Windward hub).
+		var soft_k := not (rd is Dictionary) or pk in ["dirt", "sand", "stone"] or Art.has("seamless", pk)
 		var gw_map: Dictionary = (_painter_of if _painter_of != null else self).ground_word
+		var rpcs = get("_pcs")  # region paths (any kind)
 		for e in exits:
 			var r: Rect2i = e["rect"]
 			var vert := r.size.y >= r.size.x  # west/east exit
@@ -4082,7 +4086,7 @@ func draw_border() -> void:
 			var lanes := {}
 			if soft_k:
 				for c: Vector2i in cells_of([Rect2i(r.position + inward * 3, r.size)]):
-					if str(gw_map.get(c, "")) in ["dirt", "sand", "stone"]:
+					if str(gw_map.get(c, "")) in ["dirt", "sand", "stone"] or (rpcs is Dictionary and (rpcs as Dictionary).has(c)):
 						lanes[c.y if vert else c.x] = true
 			for c: Vector2i in _border_open:
 				if not blocked.has(c) and ((vert and c.y >= r.position.y and c.y < r.end.y) or (not vert and c.x >= r.position.x and c.x < r.end.x)) and (lanes.is_empty() or lanes.has(c.y if vert else c.x)):
