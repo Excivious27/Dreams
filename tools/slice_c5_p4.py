@@ -530,7 +530,47 @@ def thugs():
     print("thugs: %s" % ", ".join(done))
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs}
+# ---- Nova's hat (penguin_wizard): the idle/view design (purple hat, pink feather)
+# is canonical; strips drawn with a dark green-grey hat and grey feather are
+# re-hued in the top of the figure. Pixels already purple are left alone.
+def nova():
+    import colorsys
+    man = json.load(open(MAN))
+    n = 0
+    for anim, info in man.get("characters/penguin_wizard", {}).items():
+        rel = info.get("file")
+        if not rel or not os.path.exists(os.path.join(GEN, rel)):
+            continue
+        a = np.array(_orig(rel)).astype(np.float32)
+        cells = int(info.get("frames", 1) or 1)
+        H, W = a.shape[:2]
+        cw = W // cells
+        alpha = a[..., 3] > 40
+        top = np.zeros_like(alpha)
+        for c in range(cells):
+            x0, x1 = c * cw, (c + 1) * cw
+            ys = np.where(alpha[:, x0:x1].any(1))[0]
+            if ys.size:
+                top[ys[0]:ys[0] + int((ys[-1] - ys[0]) * 0.5), x0:x1] = True
+        h, sat, v = _hsv(a[..., :3] / 255.0)
+        hat = top & alpha & (h > 0.15) & (h < 0.55) & (v > 0.08) & (v < 0.62) & (sat < 0.6)
+        fea = top & alpha & ((h > 0.85) | (h < 0.05)) & (sat < 0.4) & (v > 0.35)
+        if not (hat.any() or fea.any()):
+            continue
+        out = a.copy()
+        t = np.clip(v / 0.62, 0, 1)
+        dark, light = _hex("#3c1450"), _hex("#b450d2")
+        sh = dark[None, None, :] * (1 - t[..., None]) + light[None, None, :] * t[..., None]
+        out[..., :3] = np.where(hat[..., None], sh, out[..., :3])
+        pink_d, pink_l = _hex("#a83a78"), _hex("#ff8ac8")
+        tf = np.clip((v - 0.35) / 0.65, 0, 1)[..., None]
+        out[..., :3] = np.where(fea[..., None], pink_d * (1 - tf) + pink_l * tf, out[..., :3])
+        _save(Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)), os.path.join(GEN, rel))
+        n += 1
+    print("nova: re-hued %d strips" % n)
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs, "nova": nova}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
