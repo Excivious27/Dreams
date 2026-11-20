@@ -429,6 +429,27 @@ func _c10b(items: Dictionary) -> void:
 	check(r2 < r1 or r2 < 5.0, "an unchanged layout skips the full check")
 	var jd := JSON.stringify(Decor.st()["placed"].get("farm", []))
 	print("  yard save: %d pieces, %d bytes" % [DecorMode.placed("farm").size(), jd.length()])
+	# A planned building slot is free for decor; once the crew starts, relayout boxes it.
+	var slot_c := Vector2i(-1, -1)
+	var slot_id := ""
+	for bid in Builds.data():
+		var bd: Dictionary = Builds.all().get(bid, {})
+		if bid == "house" or Builds.is_built(bid) or not bd.has("cell"):
+			continue
+		var bc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
+		if DecorMode.why_not(f, "t_statue", bc) == "":
+			slot_c = bc
+			slot_id = str(bid)
+			break
+	if slot_c.x >= 0:
+		Decor.give("t_statue", 1)
+		check(DecorMode.place(f, "t_statue", slot_c) == "", "decor on a planned building slot")
+		var n_box := Decor.owned("t_statue")
+		GameState.run["construction"] = GameState.run.get("construction", {})
+		GameState.run["construction"][slot_id] = {"day": 1}
+		var gone := DecorMode.relayout(f)
+		check(not gone.is_empty() and Decor.owned("t_statue") == n_box + 1, "the crew starts: the piece goes back to the box (%s)" % str(gone))
+		(GameState.run["construction"] as Dictionary).erase(slot_id)
 	# Co-op: a big yard sends only the pieces that changed.
 	var ya: Array = []
 	for k in 60:

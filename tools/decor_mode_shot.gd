@@ -52,7 +52,7 @@ func _run() -> void:
 	var pc: Vector2i = f.player.cell()
 	for k in 8:
 		DecorMode.place(f, "t_shot_path", pc + Vector2i(2 + k, 2))
-	DecorMode.place(f, "t_shot_bath", pc + Vector2i(3, 4))
+	print("bath: ", DecorMode.place(f, "t_shot_bath", pc + Vector2i(3, 4)), " path: ", DecorMode.why_not(f, "t_shot_path", pc + Vector2i(2, 2)), " at ", pc)
 	await shot("yard_pieces")
 	var dm := DecorMode.open(f)
 	await frames(4)

@@ -2634,9 +2634,10 @@ var _res_frame := -1
 
 
 func decor_reserved() -> Dictionary:
-	if _res_frame == Engine.get_process_frames() and not _res_cache.is_empty():
-		return _res_cache  # one build per frame (relayout asks for every piece)
-	_res_frame = Engine.get_process_frames()
+	var key := hash([Engine.get_process_frames(), (GameState.run.get("construction", {}) as Dictionary).keys(), (GameState.run.get("builds", {}) as Dictionary), GameState.run["flags"].get("horse_at", []), house_r])
+	if _res_frame == key and not _res_cache.is_empty():
+		return _res_cache  # one build per frame and state (relayout asks for every piece)
+	_res_frame = key
 	_res_cache = _decor_reserved()
 	return _res_cache
 
@@ -2678,10 +2679,12 @@ func _decor_reserved() -> Dictionary:
 	if Builds.is_built("greenhouse"):
 		for c: Vector2i in cells_of([GameState.GREENHOUSE_PLOT.grow(1)]):
 			r[c] = "the greenhouse plot"
-	# Every building slot of this story (built, being built or planned) with its roof
-	# rows and front: a building never goes up on top of a statue (c10b_02_08 / 23).
+	# Built and under-construction building slots with their roof rows and front. Planned
+	# slots stay free for decor: when the crew starts, the next farm load's relayout sends
+	# pieces on the site back to the box with a toast (c10b_02_08 option b / 23).
+	var sites: Dictionary = GameState.run.get("construction", {})
 	for bid in Builds.all():
-		if bid == "house" or not Builds.data().has(bid):
+		if bid == "house" or not Builds.data().has(bid) or not (Builds.is_built(bid) or sites.has(bid)):
 			continue
 		var bd: Dictionary = Builds.all()[bid]
 		if not bd.has("cell"):
