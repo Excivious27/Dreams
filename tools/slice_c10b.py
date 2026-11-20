@@ -518,19 +518,51 @@ def fix_tent_mid():
     _write(im, "tiles", "wl_tent_m")
 
 
-WINTER_TWINS = ["flowerbed_pink", "hedge2_h", "topiary_a", "hedge2_ball", "bench2_wood_a", "statue", "trellis", "stone_arch"]
+WINTER_TWINS = {"out_winter_twins.png": ["flowerbed_pink", "hedge2_h", "topiary_a", "hedge2_ball",
+                                         "bench2_wood_a", "statue", "trellis", "stone_arch"],
+                "out_winter_twins_b.png": ["flowerbed_blue", "flowerbed_red", "flowerbed_yellow", "topiary_b",
+                                           "bench2_iron_a", "wedding_arch", "cat_statue", "statue_cane"]}
 
 
 def winter_twins():
     """props/<name>_winter for garden props that stayed summer-green in snow (c10b_03); WorldGen.WINTER_LOOKS
     lists them (P2 hook). Each twin is drawn at its summer piece's exact size so footprints never change."""
-    a = rgba("out_winter_twins.png")
-    boxes = A.cells(a, 2, 4)
-    for k, nm in enumerate(WINTER_TWINS):
-        ref = _open("props", nm)
-        im = A._crop(a, boxes[k // 4][k % 4])
-        out = _S().scale_to(im, width=ref.width, height=ref.height)
-        _write(out, "props", nm + "_winter")
+    for file, names in WINTER_TWINS.items():
+        a = rgba(file)
+        boxes = A.cells(a, 2, 4)
+        for k, nm in enumerate(names):
+            ref = _open("props", nm)
+            im = A._crop(a, boxes[k // 4][k % 4])
+            out = _S().scale_to(im, width=ref.width, height=ref.height)
+            _write(out, "props", nm + "_winter")
+
+
+def wall_rules():
+    """Magenta key rules left on the edge rows of tile-kit wall pieces (c10b_08-29): a top/bottom row
+    that is mostly key-pink takes the colour of the nearest clean row. Interior detail is untouched."""
+    import glob
+    import numpy as np
+    from PIL import Image
+    fixed = []
+    for f in sorted(glob.glob(os.path.join(_S().OUT, "tiles", "wl_*.png"))):
+        nm = os.path.basename(f)[:-4]
+        if nm == "wl_tent_m":       # rebuilt by fix_tent_mid
+            continue
+        a = np.asarray(_orig("tiles", nm)).astype(int).copy()
+        H = a.shape[0]
+        r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
+        pink = (al > 0) & (r - g > 60) & (b - g > 40)
+        frac = pink.sum(1) / np.maximum(1, (al > 0).sum(1))
+        rule = [y for y in list(range(3)) + list(range(H - 3, H)) if frac[y] > 0.4]
+        if not rule:
+            continue
+        clean = [y for y in range(H) if y not in rule and frac[y] < 0.05]
+        for y in rule:
+            src = min(clean, key=lambda c: abs(c - y))
+            a[y] = a[src]
+        _write(Image.fromarray(a.astype(np.uint8)), "tiles", nm)
+        fixed.append(nm)
+    return fixed
 
 
 def fix_colourways():
@@ -895,6 +927,7 @@ def main(only):
         fix_colourways()
         fix_tent_mid()
         winter_twins()
+        print("wall rules", wall_rules())
         fix_crops(cat)
         fix_furniture()
         for i in ("dc_lucky_cat_gold", "dc_gart_car_plate_navy"):
