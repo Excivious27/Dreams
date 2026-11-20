@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P6: UI, arcade, rec and story audio
+
+- Story: the final fights keep the arc boss themes (no generic "boss" beside a boss_card; Story._apply skips fx.music next to boss_card); dialogue lines carry "sfx"/"music" keys (`Dialogue.line_cues/line_music`, skipped lines still set the song; ONCE songs queue the area song after); bell beats toll (town_bell/_far), the first howl, locket hum, the stone breaking; merkitty_song plays in p4_merkitties, finargle in the crystal prison, title_musicbox after both endings and in the morning epilogues; tender/ominous beats end on j_heart/j_page/alert instead of quest_done; chapter cards play j_region; situational prefetch (Story.PREFETCH_AFTER) and boss-sting cancel via P1's Music.prefetch/hold, DangerMusic.cancel_sting when present.
+- Dialogue: letters/notes/boards make a paper sound, not a talk blip (`Dialogue.is_paper`); choice cursor ticks. Hearts: every heart scene opens on a soft cue; new quests play new_item. Mail: gift/favour/refusal cues in `Mail.act`.
+- Arcade: three-tier results (`ArcadeGame.result_cue`: fanfare / ticket cue / soft round-over; no campaign-defeat sting), tickets count up on the results card, in-game points use an arcade blip (`point_sfx`, never the gangster banknote), claw plays one win jingle and a paced motor, claw/skee keep the room song, Skee/Gallery/Stack good lines retuned, Whack helmet clank, Duck Pond ding/croak, Block Jumper light landings, milestones play j_secret. Home Arcade Cabinet opens the picker in free practice (`ArcadeHub.open_home`, `free_play`).
+- Rec: home Jukebox / Music Box set the house song (`RecCenter.home_use`, flags.home_juke, `music_for` now covers the house: one-line hook in GameMap.area_track + interact_common "rec_home"); jukebox needle leads the record by 0.8 s and ignores double presses; refusal toasts say nope; tickets play `Tickets.cue()`; Rec Cup fanfare; rec songs prefetched on entry; lane bed and pin spots follow the lanes in use; villager rolls graded (`RecAudio.opp_roll`); bowling plays one result sting (`Bowling.end_cue`, solo gutter games get no fanfare).
+- Campaign board: every button taps, refusals say nope + why, muster horn + confirm, march cue, settle cues per choice, Kin meow + j_secret, attack/drill keep the board song into the fade. Full-screen closes play menu_close (craft, prize, campaign; chest_close for chests); greyed GameMenu rows nope; crystal arc buy/sell cues are the coin chime (`Money.CRYSTAL_SFX`); pet commands meow for a cat.
+- Test: tools/ui_audio_test.gd (check.sh).
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
