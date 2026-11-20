@@ -484,8 +484,8 @@ const TOOL_UPGRADE_NEED := [
 # What a node needs before it gives anything. Tool tiers: 0 wood, 1 copper,
 # 2 iron, 3 steel, 4 silver, 5 gold, 6 crystal, 7 moon. Skill levels gate the
 # rare stuff a second time so a lucky upgrade alone doesn't skip the game.
-const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "dark": 3, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4}
-const ORE_SKILL := {"dark": 5, "silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
+const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "dark": 3, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4, "tin": 2, "sunstone": 3, "sapphire": 3, "frost": 3, "star_dust": 3, "storm_glass": 4, "platinum": 4}  # mega ores (C4): region tier - 1
+const ORE_SKILL := {"tin": 3, "sunstone": 5, "sapphire": 6, "frost": 6, "star_dust": 6, "storm_glass": 7, "platinum": 8, "dark": 5, "silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
 
 
 ## "" when you can gather this, else the reason (already phrased for a toast).

@@ -357,7 +357,7 @@ static func settle(cid: String, nid: String, choice: String) -> String:
 			out = "The stores are loaded up. Supply ◇%d." % int(s["supply"])
 		"share":
 			s["morale"] = mini(100, int(s["morale"]) + int(lt.get("morale", 15)))
-			GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + int(lt.get("crystals", 60))
+			GameState.add_money(int(lt.get("crystals", 60)), "campaign")
 			out = "The locals cheer you on and press a purse into your hand. Morale %d." % int(s["morale"])
 		"rest":
 			s["morale"] = mini(100, int(s["morale"]) + (30 if first else 20))
@@ -563,7 +563,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 		s["supply"] = clampi(maxi(10, supply_left / 2) + int(rw.get("supply", 0)), 0, SUPPLY_CAP)
 		s["morale"] = mini(100, int(s["morale"]) + int(rw.get("morale", 8)))
 		var cr := int(rw.get("crystals", 0))
-		GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + cr
+		GameState.add_money(cr, "campaign")
 		var got: Array = ["◆%d" % cr] if cr > 0 else []
 		for it: String in rw.get("items", {}):
 			GameState.add_item(it, int(rw["items"][it]))
@@ -641,7 +641,7 @@ static func _unlock(cid: String) -> Array:
 	st()["open"][reg] = true
 	var rw: Dictionary = c.get("reward", {})
 	var cr := int(rw.get("crystals", 0))
-	GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + cr
+	GameState.add_money(cr, "campaign")
 	var got: Array = ["◆%d" % cr]
 	var items: Dictionary = (rw.get("items", {}) as Dictionary).duplicate()
 	var ai: Dictionary = rw.get("arc_items", {}).get(arc(), {})

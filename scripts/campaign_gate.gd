@@ -246,7 +246,7 @@ static func drill_finish(won: bool) -> Array:
 	var lines: Array = [{"who": who, "text": "That's the whole of it: take points, build, rally, spend supply, win. You're ready to lead."}]
 	if first:
 		var rw: Dictionary = drill_def().get("reward", {})
-		GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + int(rw.get("crystals", 0))
+		GameState.add_money(int(rw.get("crystals", 0)), "campaign")
 		var got: Array = ["◆%d" % int(rw.get("crystals", 0))]
 		for it: String in rw.get("items", {}):
 			GameState.add_item(it, int(rw["items"][it]))

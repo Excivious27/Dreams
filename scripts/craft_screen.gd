@@ -312,15 +312,15 @@ func _hack() -> void:
 		3:
 			Racket.set_heat(Racket.heat() - 1)
 			GameState.add_item("data_chip", 1)
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + 150 * tier
+			GameState.add_money(150 * tier, "craft")
 			m.hud.toast("Clean hack: file wiped (heat −1), a data chip and ◆%d." % (150 * tier), Color(0.5, 1, 0.85))
 		2:
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + 60 * tier
+			GameState.add_money(60 * tier, "craft")
 			m.hud.toast("Partial hack: ◆%d skimmed from a shell account." % (60 * tier), Color(0.5, 1, 0.85))
 		-1:
 			m.hud.toast("You pulled out before anything was taken.", Color(0.8, 0.85, 0.9))
 		1:
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + 30
+			GameState.add_money(30, "craft")
 			m.hud.toast("You got a peek before the alarm: ◆30.", Color(0.7, 0.9, 0.85))
 		_:
 			m.hud.toast("The wire was hot today. Try again tomorrow.", Color(1, 0.75, 0.6))

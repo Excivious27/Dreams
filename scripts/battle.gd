@@ -830,7 +830,7 @@ func _end(won: bool, travel := true) -> void:
 		var paid_today: bool = not first and int(GameState.run["flags"].get("bfpay_" + bid, -1)) == int(GameState.run["day"])
 		GameState.run["flags"]["bfpay_" + bid] = int(GameState.run["day"])
 		var cr := 0 if paid_today else int(rw.get("crystals", 300)) / (1 if first else 3)
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + cr
+		GameState.add_money(cr, "battle")
 		for it in rw.get("items", {}):
 			if first:
 				if str(GameState.items.get(str(it), {}).get("type", "")) == "tool":

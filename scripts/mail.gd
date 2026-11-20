@@ -223,7 +223,7 @@ static func act(m: Dictionary) -> String:
 			if GameState.count(id) < n:
 				return "You need %d %s (you have %d)." % [n, GameState.item_name(id), GameState.count(id)]
 			GameState.add_item(id, -n)
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(m["pay"])
+			GameState.add_money(int(m["pay"]), "mail")
 			if m.has("npc"):
 				GameState.add_friend(str(m["npc"]), 15)
 			m["done"] = true

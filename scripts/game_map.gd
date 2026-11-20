@@ -2315,7 +2315,7 @@ func on_enemy_died(e: Enemy) -> void:
 	GameState.run["kills_today"] = kt
 	var paid: bool = exempt or int(kt.get(kkey, 0)) <= 12
 	if paid:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
+		GameState.add_money(e.reward, "combat")
 		hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	elif int(kt.get(kkey, 0)) == 13:
 		hud.toast("No more crystals from these foes today.", Color(0.8, 0.8, 0.9))

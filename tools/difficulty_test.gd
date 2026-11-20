@@ -171,5 +171,13 @@ func _run() -> void:
 		n.my_id = -1
 		n._solo_backup = {}
 		n._last_world = {}
+	# Money routing (c4_20 #5): earnings go through GameState.add_money (earned_by).
+	var rx := RegEx.create_from_string("run\\[\"crystals\"\\] = int\\(GameState\\.run(\\[\"crystals\"\\]|\\.get\\(\"crystals\", 0\\))\\) \\+")
+	for f: String in ["campaign", "campaign_gate", "battle", "game_map", "mine", "mail", "ops", "town", "community_farm", "craft_screen", "farm", "region"]:
+		var txt := FileAccess.get_file_as_string("res://scripts/%s.gd" % f)
+		check(rx.search(txt) == null, "%s.gd adds money only through GameState.add_money" % f)
+	# Mega ores have a pickaxe tier and Mining level.
+	for ore: String in ["tin", "sunstone", "sapphire", "frost", "star_dust", "storm_glass", "platinum"]:
+		check(GameState.ORE_TIER.has(ore) and GameState.ORE_SKILL.has(ore), "mega ore %s has ORE_TIER/ORE_SKILL" % ore)
 	print("difficulty_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails > 0 else 0)

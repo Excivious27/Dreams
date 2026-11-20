@@ -88,7 +88,7 @@ static func morning() -> int:
 			GameState.run["flags"]["heist_hint_" + hid] = true
 			GameState.add_hint("%s has a job planned: %s. Talk to them at the hideout." % [str(Crew.members()[str(HEISTS[hid]["planner"])]["name"]), str(HEISTS[hid]["name"])])
 	var pay := TURF_PAY * turf().size()
-	GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
+	GameState.add_money(pay, "ops")
 	return pay
 
 
@@ -148,7 +148,7 @@ static func _run_heist(m: GameMap, id: String) -> void:
 			# Fast and loud pays more: half again in cash, and something grabbed on the way out.
 			var bonus := 150 * (1 + GameState.progress_tier())
 			var grab: String = ["data_chip", "relic_orb", "gold_bar"][randi() % 3]
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + bonus
+			GameState.add_money(bonus, "ops")
 			GameState.add_item(grab, 1)
 			extra = ", +◆%d and a %s grabbed on the way out" % [bonus, GameState.item_name(grab)]
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
