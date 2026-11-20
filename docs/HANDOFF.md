@@ -24,10 +24,10 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 17:02 PT, personal account.
+- **Last update:** 2026-11-19 17:26 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
-- **In progress:** CONDUCT 3 (battle campaigns), personal account: 9 of 20 auditor reports in (/home/claude/wt/c3_reports); the other 11 were stopped by a chat interrupt and relaunched 17:00 PT; 20-bot run started 17:00 PT (/tmp/c3_bots). Draft fix packages in /home/claude/wt/C3_PACKAGES_DRAFT.md (P1 campaign data/writing incl. Tom's Grump variants, Catkins later, convertible crystal babies; P2 battle runtime + audio; P3 bake performance; P4 themed battlefields + art; P5 Guide 26 answers; P6 tests/docs).
-- **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then CONDUCT 4-18 back to back with no waits (Tom 16:17) (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
+- **In progress:** CONDUCT 3 fix phase: all 20 audits in, 20 bots clean (5 ownerless-pause warnings). 6 fix agents launched 17:25 PT in the personal sandbox (/home/claude/wt/c3f_p1..p6, branches c3f/p1..p6, never pushed); plan committed as docs/reports/C3-PACKAGES.md. If the sandbox is lost on a switch, relaunch the packages from that file on fresh worktrees.
+- **Next step:** when the 6 fix agents report (~18:40 PT): merge c3f/p1..p6, one check.sh, 20 bots, playtest, push with Baton, then the CONDUCT 3 package (report docs/reports/CONDUCT-3.md, GUIDE-27, xlsx, art prompts or none, artifact page). Then CONDUCT 4-18 back to back (no waits), then the final package.
 - **Jobs running elsewhere:** personal sandbox: 11 C3 auditors + 20 bots (lost on a switch; rerun from C3_SCOPES if so). Tom is answering the 31 Guide 11 story questions (sent 16:57; defaults until then; feed into C7/C12).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
