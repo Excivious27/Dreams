@@ -37,7 +37,11 @@
     ]
    },
    "unlock": {
-    "tier": 1
+    "tier": 1,
+    "hint": {
+     "penguins": "Opens after you find out what's howling in the east meadow.",
+     "gangsters": "Opens after you settle things in the east meadow."
+    }
    },
    "quest": "mega_gloamwood_hook",
    "keeper": "Liesl",
@@ -100,7 +104,11 @@
     ]
    },
    "unlock": {
-    "tier": 2
+    "tier": 2,
+    "hint": {
+     "penguins": "Opens after you build the Crystal Resonator.",
+     "gangsters": "Opens after you take the docks from the dock boss."
+    }
    },
    "quest": "mega_sunscorch_hook",
    "keeper": "Sefa",
@@ -156,14 +164,18 @@
      -2,
      0
     ],
-    "home_name": "town",
+    "home_name": "the town square",
     "spawn": [
      50,
      6
     ]
    },
    "unlock": {
-    "tier": 2
+    "tier": 2,
+    "hint": {
+     "penguins": "Opens after you build the Crystal Resonator.",
+     "gangsters": "Opens after you take the docks from the dock boss."
+    }
    },
    "quest": "mega_ironline_hook",
    "keeper": "Conductor Hollis",
@@ -227,7 +239,11 @@
     ]
    },
    "unlock": {
-    "tier": 3
+    "tier": 3,
+    "hint": {
+     "penguins": "Opens after you climb the sky stair.",
+     "gangsters": "Opens after you put out Flame in the neon district."
+    }
    },
    "quest": "mega_frostpeak_hook",
    "keeper": "Brannoch",
@@ -290,7 +306,11 @@
     ]
    },
    "unlock": {
-    "tier": 4
+    "tier": 3,
+    "hint": {
+     "penguins": "Opens after you climb the sky stair.",
+     "gangsters": "Opens after you put out Flame in the neon district."
+    }
    },
    "quest": "mega_windward_hook",
    "keeper": "Captain Zephyr",
@@ -353,7 +373,11 @@
     "home_name": "the farm"
    },
    "unlock": {
-    "tier": 4
+    "tier": 3,
+    "hint": {
+     "penguins": "Opens after you climb the sky stair.",
+     "gangsters": "Opens after you put out Flame in the neon district."
+    }
    },
    "quest": "mega_giltcity_hook",
    "keeper": "Mister Pell",
@@ -363,10 +387,10 @@
     "offer": [
      "Nice place. Small. Honest. Gilt City is neither.",
      "Madame Aurum runs the casinos, the gardens and the Vaults under them. She's heard of you. She wants to meet.",
-     "The invitation costs twelve stacks of cash and one gold bar. Call it a cover charge. In?"
+     "The invitation costs twelve Rolled Bills and one gold bar. Call it a cover charge. In?"
     ],
     "yes": "Wonderful. I'll keep the leather seats warm.",
-    "wait": "Twelve stacks and a gold bar. Madame is patient. I am less so.",
+    "wait": "Twelve Rolled Bills and a gold bar. Madame is patient. I am less so.",
     "done": [
      "Pleasure doing business. Mind the step, it's real gold.",
      "Grand Plaza in an hour. Smile for the statues."

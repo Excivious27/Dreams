@@ -105,6 +105,27 @@ def _seed(rid):
     return zlib.crc32(rid.encode()) % 900
 
 
+# CONDUCT 4 (c4_08 #2): the colonies stop sharing one map. Kelp Hollow and Emberclaw
+# are the east-west mirror of the base plan (islands, plateaus, paths, elder/shop/crystal,
+# beacons, secrets and the ferry all flip), on top of their own island seeds.
+MIRROR = ("colony_kelp", "colony_ember")
+
+def _mirror(r, cols):
+    fx = lambda x: cols - 1 - x
+    for k in ("islands",):
+        for b in r.get(k, []):
+            b["c"][0] = fx(b["c"][0])
+    for pl in r.get("plateaus", []):
+        for b in pl.get("blobs", []) + pl.get("upper", []):
+            b["c"][0] = fx(b["c"][0])
+    r["paths"] = [[cols - p[0] - p[2], p[1], p[2], p[3]] for p in r["paths"]]
+    for e in r.get("exits", []):
+        e["rect"][0] = cols - e["rect"][0] - e["rect"][2]
+    r["spawn"][0] = fx(r["spawn"][0])
+    for t in r.get("things", []):
+        t["cell"][0] = fx(t["cell"][0])
+
+
 for rid, c in COL.items():
     cols, rows = 96, 76
     # Islands: a big main island, two smaller ones joined by sand bars, and a reef islet.
@@ -126,7 +147,7 @@ for rid, c in COL.items():
               "exits": [{"rect": [38, 63, 4, 1], "scene": "beach", "spawn": [12, 22], "facing": "down", "label": "▼ ferry home"}],
               "paths": [[39, 44, 2, 20], [42, 34, 32, 2], [40, 50, 32, 2], [18, 22, 2, 20], [18, 41, 24, 2]], "islands": isl, "island_shore": "sand",
               "plateaus": [{"blobs": [{"c": [34, 32], "r": 7, "seed": 41}], "upper": [{"c": [34, 30], "r": 3.5, "seed": 43}]}, {"blobs": [{"c": [74, 22], "r": 5, "seed": 42}]}],
-              "patch_set": "sand", "ground_threshold": -0.05, "fruit": 0, "forage": 6,
+              "patch_set": "sand", "ground_threshold": -0.05, "fruit": 0, "forage": 14,
               "gen": {"clumps": 2, "scatter": 18, "critters": ["seagull", "crab", "sparrow"], "critter_count": 8},
               "things": things, "enemies": [{"kind": k, "count": 3, "colony": True} for k in c["enemies"]], "npcs": [],
               "intro": [c["intro"][0]], "colony": rid}
@@ -141,6 +162,8 @@ for rid, c in COL.items():
             R[rid][key] = lk[key]
     if "critters" in lk:
         R[rid]["gen"]["critters"] = lk["critters"]
+    if rid in MIRROR:
+        _mirror(R[rid], cols)
     scene(rid)
     E["enemies"]["cboss_" + rid.split("_")[1]] = {"hp": 70 + 30 * c["tier"], "dmg": 2 + c["tier"] // 2, "speed": 26, "xp": 50 + 20 * c["tier"], "tier": c["tier"] + 1,
         "abilities": [], "gift": c["gift"], "art": c["boss_art"], "name": c["boss_name"], "reward": 100 * c["tier"]}

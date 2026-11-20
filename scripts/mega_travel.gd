@@ -130,7 +130,7 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		return
 	if not can_start(r):
 		await m.say([{"who": who, "text": str(L.get("locked", "Not yet."))}])
-		m.hud.toast("Opens at story chapter %d." % (int(r.get("unlock", {}).get("tier", 0)) + 1), Color(1, 0.85, 0.6))
+		m.hud.toast(str(r.get("unlock", {}).get("hint", {}).get(str(GameState.run.get("arc", "")), "Opens later in your story.")), Color(1, 0.85, 0.6))
 		return
 	var qid := str(r.get("quest", ""))
 	var d := GameState._quest_def(qid)

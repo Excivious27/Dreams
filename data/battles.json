@@ -295,9 +295,9 @@
         ],
         "enemies": [
          "hill_wolf",
-         "grump",
-         "soldier",
-         "archer"
+         "thug_cyber",
+         "thug_speedster",
+         "thug_gambler"
         ]
        }
       },
@@ -418,9 +418,9 @@
         ],
         "enemies": [
          "hill_wolf",
-         "grump",
-         "soldier",
-         "archer"
+         "thug_cyber",
+         "thug_speedster",
+         "thug_gambler"
         ]
        }
       },
@@ -571,9 +571,9 @@
         "tickets": 210,
         "enemies": [
          "hill_wolf",
-         "grump",
-         "soldier",
-         "archer"
+         "thug_cyber",
+         "thug_speedster",
+         "thug_gambler"
         ]
        }
       },
@@ -792,7 +792,7 @@
         "enemies": [
          "hill_wolf",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -895,7 +895,7 @@
         "enemies": [
          "hill_wolf",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1065,7 +1065,7 @@
         "enemies": [
          "hill_wolf",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1190,7 +1190,7 @@
         "enemies": [
          "hill_wolf",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1362,7 +1362,7 @@
         "enemies": [
          "hill_wolf",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1587,7 +1587,7 @@
         "enemies": [
          "quarry_golem",
          "rock_crab",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1732,7 +1732,7 @@
         "enemies": [
          "quarry_golem",
          "rock_crab",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -1905,7 +1905,7 @@
         "enemies": [
          "quarry_golem",
          "rock_crab",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -2076,7 +2076,7 @@
         "enemies": [
          "quarry_golem",
          "rock_crab",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3084,7 +3084,7 @@
         "enemies": [
          "river_serpent",
          "mud_slime",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3206,7 +3206,7 @@
         "enemies": [
          "river_serpent",
          "mud_slime",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3378,7 +3378,7 @@
         "enemies": [
          "river_serpent",
          "mud_slime",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3548,7 +3548,7 @@
         "enemies": [
          "river_serpent",
          "mud_slime",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3812,7 +3812,7 @@
         "enemies": [
          "ruin_guardian",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -3939,7 +3939,7 @@
         "enemies": [
          "ruin_guardian",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -4104,7 +4104,7 @@
         "enemies": [
          "ruin_guardian",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -4276,7 +4276,7 @@
         "enemies": [
          "ruin_guardian",
          "ice_wisp",
-         "grump"
+         "thug_cyber"
         ]
        }
       },
@@ -4857,7 +4857,7 @@
          "grump_storm",
          "grump_wisp",
          "grump_frost",
-         "finargle",
+         "finargle_drone",
          "wisp"
         ]
        }
@@ -4956,7 +4956,7 @@
          "grump_storm",
          "grump_wisp",
          "grump_frost",
-         "finargle",
+         "finargle_drone",
          "wisp"
         ]
        }
@@ -5059,7 +5059,7 @@
          "grump_storm",
          "grump_wisp",
          "grump_frost",
-         "finargle",
+         "finargle_drone",
          "wisp"
         ]
        }
@@ -5160,7 +5160,7 @@
          "grump_storm",
          "grump_wisp",
          "grump_frost",
-         "finargle",
+         "finargle_drone",
          "wisp"
         ]
        }
@@ -8628,8 +8628,7 @@
          "thug_speedster",
          "thug_brute",
          "thug_cyber",
-         "soldier",
-         "archer"
+         "thug_gambler"
         ]
        }
       },
@@ -8704,8 +8703,7 @@
          "thug_speedster",
          "thug_brute",
          "thug_cyber",
-         "soldier",
-         "archer"
+         "thug_gambler"
         ]
        }
       },
@@ -8780,8 +8778,7 @@
          "thug_speedster",
          "thug_brute",
          "thug_cyber",
-         "soldier",
-         "archer"
+         "thug_gambler"
         ]
        }
       },
@@ -8872,8 +8869,7 @@
          "thug_speedster",
          "thug_brute",
          "thug_cyber",
-         "soldier",
-         "archer"
+         "thug_gambler"
         ]
        }
       },
@@ -11061,7 +11057,7 @@
      "grump"
     ],
     "gangsters": [
-     "soldier"
+     "thug_speedster"
     ]
    },
    "supply": 60,

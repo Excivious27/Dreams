@@ -273,6 +273,10 @@ CAPTAINS = {
 }
 # Penguin campaigns never field the gangster-world soldiers.
 NOT_PENGUIN = ("soldier", "archer", "knight")
+# Gangster campaigns field thugs, never the penguin-world soldiers/grumps (c4_17 #7).
+GANG_FOES = {"soldier": "thug_speedster", "archer": "thug_gambler", "knight": "thug_enforcer", "grump": "thug_cyber"}
+def gang_kind(k):
+    return "thug_cyber" if k.startswith("grump") else GANG_FOES.get(k, k)
 # Crystal Kin (Tom C3): crystal babies start as foes; after a campaign battle with
 # them, proving your purpose (a gift, or Meow Pow Wow) turns them into a helper
 # kind you can raise at spawners. HelperUnit reads "_helper_kinds" generically.
@@ -497,7 +501,7 @@ DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters":
          "points": [{"id": "e", "name": "Wagon Camp", "cell": [52, 74], "owner": "ally"},
                     {"id": "d", "name": "Scarecrow Post", "cell": [52, 56], "owner": "neutral"},
                     {"id": "b", "name": "Old Mill", "cell": [52, 38], "owner": "enemy"}],
-         "enemies": {"penguins": ["grump"], "gangsters": ["soldier"]}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
+         "enemies": {"penguins": ["grump"], "gangsters": ["thug_speedster"]}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
          "reward": {"crystals": 150, "items": {"potion": 3}}}
 STEP = {1: 0, 2: 0, 3: 1, 4: 1}
 BRIEF = {
@@ -638,6 +642,8 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                     cfg["tickets"] = {"siege": 150, "gate": 170}[typ] + 40 * max(0, ne - 3)
                 if a == "gangsters" and region in GANG_ONLY:
                     ek = [k for k in ek if k.startswith("thug_") or k in ("soldier", "archer", "rust_knight")] or ek
+                if a == "gangsters":
+                    ek = [gang_kind(k) for k in ek]
                 seen = []
                 for k in ek:
                     if k not in seen:

@@ -2639,334 +2639,6 @@
    }
   },
   {
-   "id": "mega_gloamwood_hook",
-   "giver": "gate_gloamwood",
-   "arc": "both",
-   "text": "Liesl the moth-keeper needs 6 flowers and 3 wild herbs to wake the fairy ring.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "flower",
-      6
-     ],
-     [
-      "wild_herb",
-      3
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 60,
-    "flag": "mega_gloamwood_open"
-   }
-  },
-  {
-   "id": "mega_gloamwood_job",
-   "giver": "mg_liesl",
-   "arc": "both",
-   "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.",
-   "when": {
-    "flag": "mega_gloamwood_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "wisp_thread",
-      5
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 300,
-    "item": [
-     "luna_moth",
-     1
-    ],
-    "friend": [
-     "mg_liesl",
-     15
-    ]
-   }
-  },
-  {
-   "id": "mega_sunscorch_hook",
-   "giver": "gate_sunscorch",
-   "arc": "both",
-   "text": "Sefa the sand-sailor needs 4 bread and 3 rope before the caravan can cross.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "bread",
-      4
-     ],
-     [
-      "rope",
-      3
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 90,
-    "flag": "mega_sunscorch_open"
-   }
-  },
-  {
-   "id": "mega_sunscorch_job",
-   "giver": "mg_nadia",
-   "arc": "both",
-   "text": "Nadia the scholar wants 2 Sun Scarabs from the Sunken Temple.",
-   "when": {
-    "flag": "mega_sunscorch_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "sun_scarab",
-      2
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 700,
-    "item": [
-     "greater_potion",
-     2
-    ],
-    "friend": [
-     "mg_nadia",
-     15
-    ]
-   }
-  },
-  {
-   "id": "mega_ironline_hook",
-   "giver": "gate_ironline",
-   "arc": "gangsters",
-   "text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "coal",
-      10
-     ],
-     [
-      "iron_bar",
-      3
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 120,
-    "flag": "mega_ironline_open"
-   }
-  },
-  {
-   "id": "mega_ironline_job",
-   "giver": "mg_hollis",
-   "arc": "gangsters",
-   "text": "Hollis needs 4 Rail Chain and 2 Engine Oil to fix the yard switch.",
-   "when": {
-    "flag": "mega_ironline_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "chain_link",
-      4
-     ],
-     [
-      "oil",
-      2
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 650,
-    "item": [
-     "gear",
-     2
-    ],
-    "friend": [
-     "mg_hollis",
-     15
-    ]
-   }
-  },
-  {
-   "id": "mega_frostpeak_hook",
-   "giver": "gate_frostpeak",
-   "arc": "both",
-   "text": "Brannoch the guide needs 4 wool and 6 coal before he'll take you up to Frostpeak.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "sheep_wool",
-      4
-     ],
-     [
-      "coal",
-      6
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 150,
-    "flag": "mega_frostpeak_open"
-   }
-  },
-  {
-   "id": "mega_frostpeak_job",
-   "giver": "mg_ingrid",
-   "arc": "both",
-   "text": "Ingrid wants 3 Rime Crystals and 2 Glacier Glass for her new window.",
-   "when": {
-    "flag": "mega_frostpeak_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "frost",
-      3
-     ],
-     [
-      "glass_frosted",
-      2
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 1100,
-    "max_energy": 10,
-    "friend": [
-     "mg_ingrid",
-     15
-    ]
-   }
-  },
-  {
-   "id": "mega_windward_hook",
-   "giver": "gate_windward",
-   "arc": "penguins",
-   "text": "Captain Zephyr needs 4 cloth and a Refined Crystal to patch the balloon and lift it.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "cloth",
-      4
-     ],
-     [
-      "crystal_refined",
-      1
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 200,
-    "flag": "mega_windward_open"
-   }
-  },
-  {
-   "id": "mega_windward_job",
-   "giver": "mg_nimbus",
-   "arc": "penguins",
-   "text": "Nimbus wants 3 Storm Glass and 2 Storm Fluff to calm the winds.",
-   "when": {
-    "flag": "mega_windward_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "storm_glass",
-      3
-     ],
-     [
-      "storm_fluff",
-      2
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 1500,
-    "max_hp": 20,
-    "friend": [
-     "mg_nimbus",
-     15
-    ]
-   }
-  },
-  {
-   "id": "mega_giltcity_hook",
-   "giver": "gate_giltcity",
-   "arc": "gangsters",
-   "text": "Mister Pell wants 12 thug cash and a gold bar for the invitation to Gilt City.",
-   "when": {},
-   "done_when": {
-    "items": [
-     [
-      "thug_cash",
-      12
-     ],
-     [
-      "gold_bar",
-      1
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 250,
-    "flag": "mega_giltcity_open"
-   }
-  },
-  {
-   "id": "mega_giltcity_job",
-   "giver": "mg_odette",
-   "arc": "gangsters",
-   "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.",
-   "when": {
-    "flag": "mega_giltcity_open"
-   },
-   "done_when": {
-    "items": [
-     [
-      "gold_bundle",
-      3
-     ],
-     [
-      "pearl_necklace",
-      1
-     ]
-    ]
-   },
-   "take": true,
-   "reward": {
-    "crystals": 2000,
-    "item": [
-     "wonder_elixir",
-     1
-    ],
-    "friend": [
-     "mg_odette",
-     15
-    ]
-   }
-  },
-  {
    "id": "rec_pip_jumper",
    "giver": "pip",
    "text": "Pip is stuck on Block Jumper. Clear level 3 to show how it's done.",
@@ -3099,6 +2771,335 @@
     "friend": [
      "alder",
      15
+    ]
+   }
+  },
+  {
+   "id": "mega_gloamwood_hook",
+   "giver": "gate_gloamwood",
+   "arc": "both",
+   "text": "Liesl the moth-keeper needs 6 flowers and 3 wild herbs to wake the fairy ring.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "flower",
+      6
+     ],
+     [
+      "wild_herb",
+      3
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 60,
+    "flag": "mega_gloamwood_open"
+   }
+  },
+  {
+   "id": "mega_gloamwood_job",
+   "giver": "mg_liesl",
+   "arc": "both",
+   "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.",
+   "when": {
+    "flag": "mega_gloamwood_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "wisp_thread",
+      5
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "item": [
+     "luna_moth",
+     1
+    ]
+   }
+  },
+  {
+   "id": "mega_sunscorch_hook",
+   "giver": "gate_sunscorch",
+   "arc": "both",
+   "text": "Sefa the sand-sailor needs 4 bread and 3 rope before the caravan can cross.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "bread",
+      4
+     ],
+     [
+      "rope",
+      3
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 90,
+    "flag": "mega_sunscorch_open"
+   }
+  },
+  {
+   "id": "mega_sunscorch_job",
+   "giver": "mg_nadia",
+   "arc": "both",
+   "text": "Nadia the scholar wants 2 Sun Scarabs from the Sunken Temple.",
+   "when": {
+    "flag": "mega_sunscorch_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "sun_scarab",
+      2
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 700,
+    "item": [
+     "greater_potion",
+     2
+    ]
+   }
+  },
+  {
+   "id": "mega_sunscorch_rahim",
+   "giver": "mg_rahim",
+   "arc": "both",
+   "text": "Old Rahim wants 4 Sunstones to keep the well's night lamps warm.",
+   "when": {
+    "flag": "mega_sunscorch_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "sunstone",
+      4
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 900,
+    "item": [
+     "sun_loaf",
+     2
+    ]
+   }
+  },
+  {
+   "id": "mega_ironline_hook",
+   "giver": "gate_ironline",
+   "arc": "gangsters",
+   "text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "coal",
+      10
+     ],
+     [
+      "iron_bar",
+      3
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "flag": "mega_ironline_open"
+   }
+  },
+  {
+   "id": "mega_ironline_job",
+   "giver": "mg_hollis",
+   "arc": "gangsters",
+   "text": "Hollis needs 4 Rail Chain and 2 Engine Oil to fix the yard switch.",
+   "when": {
+    "flag": "mega_ironline_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "chain_link",
+      4
+     ],
+     [
+      "oil",
+      2
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 650,
+    "item": [
+     "gear",
+     2
+    ]
+   }
+  },
+  {
+   "id": "mega_frostpeak_hook",
+   "giver": "gate_frostpeak",
+   "arc": "both",
+   "text": "Brannoch the guide needs 4 wool and 6 coal before he'll take you up to Frostpeak.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "sheep_wool",
+      4
+     ],
+     [
+      "coal",
+      6
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "flag": "mega_frostpeak_open"
+   }
+  },
+  {
+   "id": "mega_frostpeak_job",
+   "giver": "mg_ingrid",
+   "arc": "both",
+   "text": "Ingrid wants 3 Rime Crystals and 2 Glacier Glass for her new window.",
+   "when": {
+    "flag": "mega_frostpeak_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "frost",
+      3
+     ],
+     [
+      "glass_frosted",
+      2
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 1100,
+    "max_energy": 10
+   }
+  },
+  {
+   "id": "mega_windward_hook",
+   "giver": "gate_windward",
+   "arc": "penguins",
+   "text": "Captain Zephyr needs 4 cloth and a Refined Crystal to patch the balloon and lift it.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "cloth",
+      4
+     ],
+     [
+      "crystal_refined",
+      1
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "flag": "mega_windward_open"
+   }
+  },
+  {
+   "id": "mega_windward_job",
+   "giver": "mg_nimbus",
+   "arc": "penguins",
+   "text": "Nimbus wants 3 Storm Glass and 2 Storm Fluff to calm the winds.",
+   "when": {
+    "flag": "mega_windward_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "storm_glass",
+      3
+     ],
+     [
+      "storm_fluff",
+      2
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 1500,
+    "max_hp": 20
+   }
+  },
+  {
+   "id": "mega_giltcity_hook",
+   "giver": "gate_giltcity",
+   "arc": "gangsters",
+   "text": "Mister Pell wants 12 Rolled Bills and a Gold Bar for the invitation to Gilt City.",
+   "when": {},
+   "done_when": {
+    "items": [
+     [
+      "thug_cash",
+      12
+     ],
+     [
+      "gold_bar",
+      1
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 250,
+    "flag": "mega_giltcity_open"
+   }
+  },
+  {
+   "id": "mega_giltcity_job",
+   "giver": "mg_odette",
+   "arc": "gangsters",
+   "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.",
+   "when": {
+    "flag": "mega_giltcity_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "gold_bundle",
+      3
+     ],
+     [
+      "pearl_necklace",
+      1
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 2000,
+    "item": [
+     "wonder_elixir",
+     1
     ]
    }
   }

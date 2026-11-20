@@ -106,6 +106,8 @@ func build() -> void:
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
 	music_track = str(R.get("music", "meadow"))
+	if R.has("music_fallback") and not Music.has_track(music_track):
+		music_track = str(R["music_fallback"])  # a new area song not imported yet
 	has_sky = bool(R.get("sky", true))
 	has_pet = bool(R.get("pet", true))
 	pad = int(R.get("pad", 5))
@@ -715,7 +717,7 @@ func _shop(thing: Dictionary) -> void:
 func _boss(thing: Dictionary) -> void:
 	var key := "boss_%s" % region_id
 	if GameState.run["flags"].has(key):
-		await say([{"text": str(thing.get("after", "Quiet now."))}])
+		await say([{"text": str(thing.get("after_gangsters", thing.get("after", "Quiet now."))) if not GameState.is_penguins() else str(thing.get("after", "Quiet now."))}])
 		return
 	if _boss_node != null and is_instance_valid(_boss_node) and _boss_node._alive:
 		return  # already fighting it: A at the boss swings, it doesn't re-summon
@@ -731,7 +733,7 @@ func _boss(thing: Dictionary) -> void:
 	var b := spawn_enemy(bk, player.position + Vector2(40, 0), int(thing.get("tier", -1)))
 	if b:
 		b.set_meta("boss_name", bw if bw != "" else str(thing.get("title", "")))
-	boss_card(bk, str(thing.get("title", bw)))
+	boss_card(bk, str(thing.get("title_gangsters", thing.get("title", bw))) if gang else str(thing.get("title", bw)))
 	Music.instance(get_tree()).play(boss_music)
 	player.frozen = false
 	_boss_node = b
@@ -750,6 +752,8 @@ func on_enemy_died(e: Enemy) -> void:
 		Music.instance(get_tree()).play(area_track())
 		player.frozen = true
 		var win: Variant = _boss_thing.get("win_reverted", _boss_thing.get("win", "It's over.")) if e.has_meta("reverted") else _boss_thing.get("win", "It's over.")
+		if not GameState.is_penguins() and _boss_thing.has("win_gangsters"):
+			win = _boss_thing["win_gangsters"]
 		await say([{"text": str(win)}])
 		var reward := str(_boss_thing.get("reward", ""))
 		if reward != "":
