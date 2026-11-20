@@ -565,6 +565,35 @@ def wall_rules():
     return fixed
 
 
+GLINT = ["trophy_fish_a", "cat_figurine", "fossil_shell", "candle"]   # c10b_08-32
+
+
+def tabletop_copies():
+    """decor/dc_tt_<icon>: the bag icon without its floating inventory glint, for the placed piece
+    (gen_decor uses it as art when it exists; the bag icon stays as the icon)."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+    for nm in GLINT:
+        if not os.path.exists(_out("items", nm)):
+            continue
+        a = np.asarray(_orig("items", nm)).copy()
+        r, g, b = (a[..., k].astype(int) for k in range(3))
+        box = np.zeros(a.shape[:2], bool)
+        box[:14, :14] = True                 # the inventory glint sits at the top-left
+        blue = ((b >= r - 5) & (b >= g) & ((b - np.minimum(r, g) > 25) | (r + g + b > 700))) | ((b > g + 30) & (r > g + 30))
+        if nm != "snow_heart":
+            a[box & blue, 3] = 0
+        lab, n = ndimage.label(a[..., 3] > 0, structure=np.ones((3, 3)))
+        if n > 1:
+            sizes = ndimage.sum(np.ones(lab.shape), lab, range(1, n + 1))
+            for k in range(1, n + 1):
+                if sizes[k - 1] < 0.06 * sizes.max():
+                    a[lab == k, 3] = 0
+        im = Image.fromarray(a)
+        A.save(im.crop(im.getbbox()), "dc_tt_" + nm)
+
+
 def fix_colourways():
     for base, cols in (("dc_rustic_bed", ["forest", "navy"]), ("dc_rug_persian", ["navy"])):
         for c in cols:
@@ -927,6 +956,7 @@ def main(only):
         fix_colourways()
         fix_tent_mid()
         winter_twins()
+        tabletop_copies()
         print("wall rules", wall_rules())
         fix_crops(cat)
         fix_furniture()

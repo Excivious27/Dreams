@@ -345,8 +345,9 @@ for icon, name, rar, tier, arc in TABLETOP:
     if icon in M['items']:
         glow = 'lantern' in icon or 'candle' in icon or 'wisp' in icon
         add('dc_tt_' + icon, name, 'light' if glow else ('wall_art' if icon.startswith('painting') else 'decor'), rar,
-            'items/' + icon, 'wall' if icon.startswith('painting') else 'floor', tier, arc,
-            sub='tabletop', glow=glow, surface=not icon.startswith('painting'), fp=[1, 1])
+            ('decor/dc_tt_' + icon) if art_ok('decor/dc_tt_' + icon) else 'items/' + icon,  # C10b P6: glint-free placed copy
+            'wall' if icon.startswith('painting') else 'floor', tier, arc,
+            sub='tabletop', glow=glow, surface=not icon.startswith('painting'), fp=[1, 1], icon='items/' + icon)
 
 # ---- 4) wallpaper and flooring ------------------------------------------------------------------------
 WALL_NAMES = {'floral': 'Rose Floral', 'floral_blue': 'Blue Floral', 'brick': 'Red Brick', 'library': 'Library Panel', 'bakery': 'Bakery Cream',

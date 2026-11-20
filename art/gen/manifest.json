@@ -47146,6 +47146,26 @@
    "h": 30,
    "w": 23
   },
+  "dc_tt_candle": {
+   "file": "decor/dc_tt_candle.png",
+   "h": 28,
+   "w": 26
+  },
+  "dc_tt_cat_figurine": {
+   "file": "decor/dc_tt_cat_figurine.png",
+   "h": 31,
+   "w": 28
+  },
+  "dc_tt_fossil_shell": {
+   "file": "decor/dc_tt_fossil_shell.png",
+   "h": 30,
+   "w": 32
+  },
+  "dc_tt_trophy_fish_a": {
+   "file": "decor/dc_tt_trophy_fish_a.png",
+   "h": 26,
+   "w": 28
+  },
   "dc_wp_brick_neon": {
    "file": "decor/dc_wp_brick_neon.png",
    "h": 256,
