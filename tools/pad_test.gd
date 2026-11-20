@@ -17,6 +17,7 @@ var fails := 0
 
 
 func _initialize() -> void:
+	Campaign.bypass = true
 	seed(9)
 	_run.call_deferred()
 
@@ -271,6 +272,48 @@ func _run() -> void:
 	await _frames(2)
 	ok(not PadCursor.shown(), "cursor hides when the screen leaves the group")
 	layer.queue_free()
+
+	# 11. Battle rally on the pad (L3): a tap cycles, a hold opens the list;
+	# a penguin-only speaker narrates a gangster run's field brief.
+	GameState.new_run("gangsters", "mom", "T", "Town", "Pup")
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/bf_bog_crossing.tscn")
+	await _frames(14)
+	var m := current_scene as GameMap
+	var bt: Variant = m.get("battle") if m != null else null
+	ok(bt != null, "bf_bog_crossing starts a battle")
+	if bt != null:
+		var b: Battle = bt
+		ok(b._who() == "", "gangster run: no Catkins on the field brief (%s)" % b._who())
+		for c in get_nodes_in_group("toast_hold"):
+			if c.has_method("_close"):
+				c.set("_arm", 99)
+				c.call("_close")
+		await _frames(4)
+		var d0 := Dialogue.instance(self)
+		for i in 60:
+			if not d0.active:
+				break
+			d0._advance()
+			await _frames(1)
+		b._briefing = false
+		await _frames(2)
+		Dialogue.block_until_ms = 0  # the after-dialogue block is wall-clock: clear it (game time only here)
+		var r0 := b._rally
+		await _btn(JOY_BUTTON_LEFT_STICK, true)
+		await _btn(JOY_BUTTON_LEFT_STICK, false)
+		await _frames(2)
+		ok(b._rally != r0, "tap L3 cycles the rally (%d -> %d)" % [r0, b._rally])
+		ok(b._rally_btn.text.contains("(L3)"), "rally button names L3 off touch: %s" % b._rally_btn.text)
+		Dialogue.block_until_ms = 0
+		await _btn(JOY_BUTTON_LEFT_STICK, true)
+		var ht := 0.0
+		while ht < Battle.RALLY_HOLD + 0.2:
+			await process_frame
+			ht += root.get_process_delta_time()
+		await _btn(JOY_BUTTON_LEFT_STICK, false)
+		await _frames(4)
+		ok(Dialogue.instance(self).active, "hold L3 opens the rally list")
 
 	print("pad_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
