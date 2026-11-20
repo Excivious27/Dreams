@@ -3102,6 +3102,36 @@
      1
     ]
    }
+  },
+  {
+   "id": "catkins_bell",
+   "giver": "catkins",
+   "arc": "penguins",
+   "text": "Catkins wants 3 Copper Bars to recast the old monastery bell.",
+   "when": {
+    "friend": [
+     "catkins",
+     6
+    ]
+   },
+   "done_when": {
+    "item": [
+     "copper_bar",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "catkins",
+     15
+    ],
+    "xp": [
+     "magic",
+     25
+    ]
+   }
   }
  ]
 }

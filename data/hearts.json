@@ -2322,7 +2322,7 @@
    }
   },
   "catkins": {
-   "quest6": "",
+   "quest6": "catkins_bell",
    "milestones": {
     "2": [
      {
@@ -2363,7 +2363,7 @@
      },
      {
       "who": "Catkins",
-      "text": "It's quiet now. There used to be a bell. If you find anything up there that wants ringing, bring it to me."
+      "text": "It's quiet now. There used to be a bell. A bell is only copper that learned to sing; we could teach some more."
      }
     ],
     "8": [

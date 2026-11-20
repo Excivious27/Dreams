@@ -1311,5 +1311,18 @@
   "done": [
    "Perfect. Look at it shine! She'll hate it. Here, for you."
   ]
+ },
+ "catkins_bell": {
+  "offer": [
+   "The bell is gone; only the hook is left. But a bell is just copper that has learned to sing.",
+   "Three bars of copper. Smelt them in your furnace and bring them to me; the old monastery can have its voice back."
+  ],
+  "yes": "Three bars. Mind they're copper, not tin. Tin sulks.",
+  "no": "The courtyard has been quiet for an age. It can wait a little longer.",
+  "wait": "Three Copper Bars, for the monastery bell.",
+  "done": [
+   "Copper. Warm already. I'll take it up the stair tonight.",
+   "When you hear a bell at dusk, that's the courtyard saying thank you. And me. Mostly me."
+  ]
  }
 }

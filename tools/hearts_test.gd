@@ -36,7 +36,7 @@ func _pass(arc: String) -> void:
 	await frames(12)
 	var m := current_scene as GameMap
 	await _advance_all()
-	var vill := Hearts.data().keys()
+	var vill := Hearts.data().keys().filter(func(x: String) -> bool: return Hearts.in_arc(x))  # Catkins: penguins only
 	check(vill.size() >= 25, "%s: %d villagers with arcs" % [arc, vill.size()])
 	# ♥8 can wait on another villager's ♥8 (Hearts.NEEDS_FLAG): those go first.
 	var first := ["granite", "bram", "gideon", "hazel"]

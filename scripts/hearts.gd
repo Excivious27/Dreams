@@ -13,6 +13,12 @@ static func data() -> Dictionary:
 	return _data
 
 
+## Does this villager's heart arc belong to the current story arc? (hearts.json
+## "arc": Catkins' arc is penguins-only.)
+static func in_arc(id: String) -> bool:
+	return str(data().get(id, {}).get("arc", "")) in ["", str(GameState.run.get("arc", ""))]
+
+
 static func _flag(id: String, n: int) -> String:
 	return "hv_%s_%d" % [id, n]
 
@@ -28,7 +34,7 @@ static func seen_level(id: String) -> int:
 
 ## Next milestone that is due (hearts reached, scene not yet played), or 0.
 static func due(id: String) -> int:
-	if not data().has(id):
+	if not data().has(id) or not in_arc(id):
 		return 0
 	var hearts := GameState.friend_hearts(id)
 	for n in [2, 4, 6, 8, 10]:
@@ -164,6 +170,6 @@ static func daily(id: String) -> String:
 static func standing_with_you() -> Array:
 	var out: Array = []
 	for id in data():
-		if GameState.friend_hearts(id) >= 10:
+		if in_arc(id) and GameState.friend_hearts(id) >= 10:
 			out.append(str(GameState.npcs.get(id, {}).get("name", id)))
 	return out
