@@ -35,12 +35,6 @@ const SFX := {"coin": "cash_pickup"}
 ## The crystal arc pays in crystals: banknote/register cues become the coin chime.
 const CRYSTAL_SFX := {"cash": "coin", "cash_register": "coin", "cash_pickup": "coin"}
 
-## Shop price rules (C8 P6; GameState.buy_price/shop_price read them):
-## a novice pays BUY_MARKUP x value; no shop sells below RESALE_FLOOR x what the
-## piece sells for (perks and demand in, today's saturation out).
-const BUY_MARKUP := 1.5
-const RESALE_FLOOR := 1.15
-
 static var _re_num_sym: RegEx
 static var _re_sym: RegEx
 static var _re_num_word: RegEx

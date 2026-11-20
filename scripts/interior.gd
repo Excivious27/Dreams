@@ -909,11 +909,11 @@ func _stable() -> void:
 ## What the bank really pays (C8 P6, c8_07/c8_14_01): nothing before Ivy 2 hearts,
 ## then 1% a night (2% at 6 hearts) up to the cap GameState.sleep uses.
 static func bank_terms(bal: int) -> String:
-	if not GameState.has_friend_perk("ivy", 2):
+	var rate := GameState.bank_rate()  # P1's helpers: the same numbers GameState.sleep pays
+	if rate <= 0.0:
 		return "No interest yet: I open savings accounts for friends."
-	var rate := 2 if GameState.has_friend_perk("ivy", 6) else 1
-	var cap := 40 + 40 * GameState.progress_tier()
-	return "%d%% a night, up to %s (tonight: %s)." % [rate, Money.fmt(cap), Money.fmt(mini(int(round(bal * rate / 100.0)), cap))]
+	var cap := GameState.bank_interest_cap()
+	return "%d%% a night, up to %s (tonight: %s)." % [int(round(rate * 100.0)), Money.fmt(cap), Money.fmt(mini(int(round(bal * rate)), cap))]
 
 
 ## Ivy's bank: deposit crystals for interest (1% a day, 2% at 6 hearts), withdraw any time.

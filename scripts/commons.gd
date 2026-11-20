@@ -695,7 +695,7 @@ const MARKET_BONUS := 1.25
 
 
 static func stand_price(id: String) -> int:
-	return maxi(1, int(ceil(GameState.sell_unit(id) * STAND_MARKUP)))
+	return maxi(1, int(ceil(GameState.unit_sell_value(id) * STAND_MARKUP)))
 
 
 static func _bag_produce() -> Array:

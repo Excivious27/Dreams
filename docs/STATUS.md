@@ -4,7 +4,7 @@
 
 ## 2026-11-20 — CONDUCT 8 fix P6: shops, prices, money sinks
 
-- Shop floors: `GameState.sell_unit(id)` (one piece's sell price, perks in, saturation out); buy_price/shop_price floor on it (`Money.RESALE_FLOOR` 1.15, `Money.BUY_MARKUP` 1.5) and buy_price never goes above the novice price, so Bartering/friend perks can't raise prices and dumping a stack on a fence no longer cheapens the shop. Seeds use their crop's tier for the progress surcharge.
+- Shop floors are P1's (`GameState.unit_sell_value`, saturation-free, capped at the plain price); P6 prices the community stand, rec snacks and stalls on them and tests that perks never raise a shop price.
 - Community stand: sells at 1.35x sell price (`Commons.STAND_MARKUP`), above the market-day 1.25x, donations go to a `pantry` neighbours empty overnight (never back on sale); market sales pay gold/silver stars, count toward saturation and earned_total once (`Commons.sell_at_market`); the well uses the shared rest half-bar and refuses at a full bar.
 - Rec snack bar and vending machine priced on the shop energy curve (popcorn 25, pretzel 55, cotton candy 45, fizzy pop/soda 30); gen_rec check_economy checks snacks (no resale loop, energy per crystal band), MAX_SELL 2.23 + Marlene's fence on claw loot (old_coin weight 3 -> 2).
 - Mountain ore rocks stay broken (stone 3 / copper 4 / iron 5 / shard 6 days, same ore when they return), take toughen + pick tier damage; smuggler blade priced at 0.9x the smithy, the camp stays open with cash/nope sounds and bartering XP.

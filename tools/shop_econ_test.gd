@@ -39,13 +39,8 @@ func _run() -> void:
 	for id: String in sample:
 		var p := GameState.buy_price(id)
 		check(p <= int(novice[id]), "%s: %d with perks is not above the novice %d" % [id, p, novice[id]])
-		check(float(p) >= GameState.sell_unit(id), "%s: %d never under its sell price %.1f (no loop)" % [id, p, GameState.sell_unit(id)])
+		check(float(p) >= GameState.unit_sell_value(id), "%s: %d never under its sell price %.1f (no loop)" % [id, p, GameState.unit_sell_value(id)])
 	check(GameState.buy_price("iron_sword") < int(novice["iron_sword"]), "Maple 8 hearts still discounts something")
-
-	# Seeds cost what their crop is worth (tier from crops.json).
-	if GameState.items.has("moon_melon_seed"):
-		var mm := GameState.buy_price("moon_melon_seed")
-		check(mm > int(GameState.item_value("moon_melon_seed") * 1.5 * 0.85), "moon melon seed carries its tier-5 surcharge (%d)" % mm)
 
 	# Community stand: buy price is above what the market pays, donations go to the pantry.
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
