@@ -2068,8 +2068,14 @@ static func _nearest(l: Array, from: int, d: String) -> int:
 		var along := off.dot(dv)
 		if along < 2.0:
 			continue
-		var side := absf(off.dot(Vector2(dv.y, dv.x)))
-		var s := along + side * 2.5
+		# Cross-axis gap between the two rects (0 when they overlap), so a wide row
+		# reaches the small buttons right under it before a far row in line with it.
+		var side := 0.0
+		if dv.x == 0.0:
+			side = maxf(0.0, maxf(r.position.x - a.end.x, a.position.x - r.end.x))
+		else:
+			side = maxf(0.0, maxf(r.position.y - a.end.y, a.position.y - r.end.y))
+		var s := along + side * 2.5 + absf(off.dot(Vector2(dv.y, dv.x))) * 0.1
 		if s < best_s:
 			best_s = s
 			best = i

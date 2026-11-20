@@ -83,6 +83,14 @@ func _run() -> void:
 	await press("down")
 	await frames(2)
 	check(m.cursor_control() != c0 and m.cursor_control() != null, "down moves the cursor")
+	# Options: down from "All sound" goes to the volume buttons right under it.
+	m._hide_cursor()
+	await press("down")
+	var first := m.cursor_control()
+	await press("down")
+	var nxt := m.cursor_control()
+	if first is Button and str((first as Button).text).begins_with("All sound"):
+		check(nxt is Button and str((nxt as Button).text).strip_edges() in ["−", "+"], "down from All sound reaches the volume buttons (got %s)" % (str((nxt as Button).text) if nxt is Button else "none"))
 	# Up from the top row lands on the tab row; left/right there switch tabs.
 	for i in 60:
 		await press("up")
