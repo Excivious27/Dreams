@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 236.7}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 35.1}
+{"step": 11, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 45.4}
+{"step": 17, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 1, "secs": 2.7}
+{"step": 23, "name": "rec_test", "rc": 0, "secs": 4.7}
+{"step": 29, "name": "cash_test", "rc": 0, "secs": 2.8}
+{"step": 35, "name": "anim_test", "rc": 0, "secs": 2.4}
+{"step": 41, "name": "cf_layout_test", "rc": 0, "secs": 8.0}
+{"step": 47, "name": "music loop seams (join click + level jump)", "rc": 1, "secs": 9.8}
+{"step": 53, "name": "danger_music_test", "rc": 0, "secs": 15.7}
+{"step": 59, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.2}
+{"step": 65, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 5.1}
+{"step": 71, "name": "street_bat_test", "rc": 0, "secs": 2.0}
+{"step": 77, "name": "campaign_c3_test", "rc": 0, "secs": 2.0}
+{"step": 83, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 1, "secs": 4.6}
+{"step": 89, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 17.0}
+{"step": 95, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.4}
+{"step": 101, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.4}
+{"step": 107, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.3}

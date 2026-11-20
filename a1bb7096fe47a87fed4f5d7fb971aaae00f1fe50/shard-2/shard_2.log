@@ -1,0 +1,129 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2388 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 100.0s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 3.6s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 1.8s
+
+#### step 15: performance guards (batched cliffs, texture cache) (shard 2/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 15 performance guards (batched cliffs, texture cache): PASS in 1.7s
+
+#### step 21: storage_test (shard 2/6)
+storage_test: 0 failures
+#### step 21 storage_test: PASS in 1.8s
+
+#### step 27: rec_audio_test (shard 2/6)
+rec_audio_test: 0 failures
+#### step 27 rec_audio_test: PASS in 1.8s
+
+#### step 33: farm_look_test (shard 2/6)
+farm_look_test: PASS (0 fails)
+#### step 33 farm_look_test: PASS in 2.7s
+
+#### step 39: cf_volunteer_test (shard 2/6)
+cf_volunteer_test: 0 failures
+#### step 39 cf_volunteer_test: PASS in 4.5s
+
+#### step 45: art prompts: at most 3 images each (shard 2/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 45 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 51: music: every map has a song; web streaming works offline (shard 2/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 585 songs checked, 0 failures
+#### step 51 music: every map has a song; web streaming works offline: PASS in 22.7s
+
+#### step 57: workshop: stations at run time (shard 2/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 57 workshop: stations at run time: PASS in 2.5s
+
+#### step 63: early combat: clinic, pup lesson, telegraph, first boss (shard 2/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 63 early combat: clinic, pup lesson, telegraph, first boss: PASS in 7.3s
+
+#### step 69: goal_line_test (shard 2/6)
+goal_line_test: 0 fails
+#### step 69 goal_line_test: PASS in 1.7s
+
+#### step 75: campaign_gate_test (shard 2/6)
+campaign_gate_test: 0 fails
+#### step 75 campaign_gate_test: PASS in 3.7s
+
+#### step 81: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 2/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 144 checks, 0 failures
+#### step 81 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 17.1s
+
+#### step 87: mega regions: map tabs, unlocks, travel (shard 2/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 87 mega regions: map tabs, unlocks, travel: PASS in 7.1s
+
+#### step 93: menu sweep: every menu button, both arcs (C2) (shard 2/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 151 buttons pressed, 0 failures
+#### step 93 menu sweep: every menu button, both arcs (C2): PASS in 10.0s
+
+#### step 99: rec_games_test (shard 2/6)
+rec_games_test: 0 failures
+#### step 99 rec_games_test: PASS in 1.7s
+
+#### step 105: C7 P5: colony stories and crew (shard 2/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 105 C7 P5: colony stories and crew: PASS in 3.1s
+
+#### shard 2/6 done in 195s: PASS

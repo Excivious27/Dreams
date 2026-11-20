@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 119.1}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 55.0}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.4}
+{"step": 14, "name": "touch_ui_test", "rc": 0, "secs": 39.0}
+{"step": 20, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 3.8}
+{"step": 26, "name": "rec_reno_test", "rc": 0, "secs": 2.4}
+{"step": 32, "name": "farm_week_test", "rc": 0, "secs": 5.2}
+{"step": 38, "name": "commons_test", "rc": 0, "secs": 40.3}
+{"step": 44, "name": "workshop: no dead ends", "rc": 0, "secs": 2.1}
+{"step": 50, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 56, "name": "footstep_test", "rc": 0, "secs": 6.5}
+{"step": 62, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 8.4}
+{"step": 68, "name": "campaign_story_test", "rc": 0, "secs": 2.6}
+{"step": 74, "name": "campaign_gate_test", "rc": 0, "secs": 5.8}
+{"step": 80, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 1, "secs": 2.5}
+{"step": 86, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.4}
+{"step": 92, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 10.8}
+{"step": 98, "name": "stack_whack_test", "rc": 0, "secs": 3.1}
+{"step": 104, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.6}

@@ -1,0 +1,18 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 107.5}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 24.9}
+{"step": 12, "name": "crops wired in", "rc": 0, "secs": 4.9}
+{"step": 18, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.0}
+{"step": 24, "name": "ticket_econ_test", "rc": 0, "secs": 1.9}
+{"step": 30, "name": "gang_play_test", "rc": 0, "secs": 13.7}
+{"step": 36, "name": "npc_anim_test", "rc": 0, "secs": 1.9}
+{"step": 42, "name": "early_gating_test", "rc": 0, "secs": 2.0}
+{"step": 48, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.0}
+{"step": 54, "name": "mix_test", "rc": 0, "secs": 3.9}
+{"step": 60, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.0}
+{"step": 66, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.5}
+{"step": 72, "name": "c6_cue_test", "rc": 0, "secs": 1.9}
+{"step": 78, "name": "meow_gate_test", "rc": 0, "secs": 2.7}
+{"step": 84, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 7.6}
+{"step": 90, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 8.5}
+{"step": 96, "name": "jumper_test", "rc": 0, "secs": 2.1}
+{"step": 102, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 6.9}

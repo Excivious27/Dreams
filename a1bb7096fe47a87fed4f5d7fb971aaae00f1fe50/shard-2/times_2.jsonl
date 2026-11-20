@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 100.0}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 3.6}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 1.8}
+{"step": 15, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 1.7}
+{"step": 21, "name": "storage_test", "rc": 0, "secs": 1.8}
+{"step": 27, "name": "rec_audio_test", "rc": 0, "secs": 1.8}
+{"step": 33, "name": "farm_look_test", "rc": 0, "secs": 2.7}
+{"step": 39, "name": "cf_volunteer_test", "rc": 0, "secs": 4.5}
+{"step": 45, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 51, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 22.7}
+{"step": 57, "name": "workshop: stations at run time", "rc": 0, "secs": 2.5}
+{"step": 63, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 7.3}
+{"step": 69, "name": "goal_line_test", "rc": 0, "secs": 1.7}
+{"step": 75, "name": "campaign_gate_test", "rc": 0, "secs": 3.7}
+{"step": 81, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 17.1}
+{"step": 87, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 7.1}
+{"step": 93, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 10.0}
+{"step": 99, "name": "rec_games_test", "rc": 0, "secs": 1.7}
+{"step": 105, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 3.1}

@@ -1,0 +1,48 @@
+CONDUCT CI FAIL  a1bb7096fe  (ci/c7-e0e15f19, run 44716140260)
+
+check shards (6/6):
+  shard 1: FAIL  316s  failed: settings, slots, quality, discovery, perks, birthdays
+  shard 2: PASS  195s
+  shard 3: FAIL  224s  failed: music_stream_test
+  shard 4: FAIL  406s  failed: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1), music loop seams (join click + level jump), penguin arc: new game to day 2 (crystal, mailbox marker, partner scene
+  shard 5: PASS  208s
+  shard 6: FAIL  255s  failed: mine: keeper, shaft, tiers, villager heart arcs (2-10 hearts, 6-heart quests, daily lines)
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=1 pauses=0 91s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=1 pauses=0 88s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 152s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=1 pauses=0 59s  0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 73s  0 fails, 0 warns, 316 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "quarry", "fro
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=1 pauses=0 100s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 162s  0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes ["ruins", "wastes", "mine
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 95s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 60s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm"], day 4,
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=1 pauses=0 90s  0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "forest", "lake"
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 152s  0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=1 pauses=0 59s  0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm"], day 4, 
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 75s  0 fails, 0 warns, 300 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "interior", "f
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=1 pauses=0 92s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 169s  0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes ["jungle", "wastes", "rui
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=1 pauses=0 92s  0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 85s  0 fails, 0 warns, 325 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "lake", "beach
+playtest: PASS  60s  21 screenshots (results playtest/shots/)
+
+longest job: 406s
+slowest check steps: import 236.7s; import 167.1s; import 119.1s; import 107.5s; import 100.0s; import 96.9s; smoke test 55.0s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 45.4s
+distinct errors/fails/warns:
+    5  BOT WARN player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=
+    2  FAIL water chore waters planted tiles (seen: true)  @2
+    1  FAIL a gift letter gives its item
+    1  FAIL asking for the playing stand-in keeps it going (0.38 >= 0.47)
+    1  FAIL wedding: step 0.00x, level +29.6 dB (allowed 7.9)
+    1  FAIL wedding_gang: step 0.19x, level +10.7 dB (allowed 4.1)
+    1  FAIL Pip-Pip and Nova ask to stay
+    1  FAIL keeper encounter bat_swarm has real hp (lead bat, total hp 5)
+    1  FAIL penguins catkins: ♥6 quest  offered
+    1  FAIL gangsters catkins: ♥6 quest  offered
+    1  BOT WARN player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (16, 29), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (80, 47), frozen=true paused=false story_pending=

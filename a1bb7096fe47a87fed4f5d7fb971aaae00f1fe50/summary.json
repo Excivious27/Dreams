@@ -1,0 +1,474 @@
+{
+ "sha": "a1bb7096fe47a87fed4f5d7fb971aaae00f1fe50",
+ "ref": "ci/c7-e0e15f19",
+ "run": "44716140260",
+ "finished": 1795169756.7685778,
+ "pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 60,
+  "shots": 21,
+  "fails": []
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "max_job_secs": 406,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 316,
+   "failed_steps": [
+    "settings, slots, quality, discovery, perks, birthdays"
+   ]
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 195,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 224,
+   "failed_steps": [
+    "music_stream_test"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 1,
+   "secs": 406,
+   "failed_steps": [
+    "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)",
+    "music loop seams (join click + level jump)",
+    "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene"
+   ]
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 208,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 255,
+   "failed_steps": [
+    "mine: keeper, shaft, tiers",
+    "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)"
+   ]
+  }
+ ],
+ "bots": [
+  {
+   "bot": 1,
+   "spec": "1 penguins kairi wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"marsh\", \"lake\", \"wind_s"
+  },
+  {
+   "bot": 2,
+   "spec": "2 penguins penguin_f story 1 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 88,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"mountain\", \"mine\", \"far"
+  },
+  {
+   "bot": 3,
+   "spec": "3 penguins penguin_m fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 152,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes [\"ruins\", \"sky_reaches\", "
+  },
+  {
+   "bot": 4,
+   "spec": "4 penguins merry farmer 0 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 59,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"desert_dune_sea"
+  },
+  {
+   "bot": 5,
+   "spec": "5 penguins coco menus 1 1 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 73,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 316 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"quarry\", \"fro"
+  },
+  {
+   "bot": 6,
+   "spec": "6 penguins mer story 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 100,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"colony_ember\", "
+  },
+  {
+   "bot": 7,
+   "spec": "7 penguins coldy fighter 4 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 162,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes [\"ruins\", \"wastes\", \"mine"
+  },
+  {
+   "bot": 8,
+   "spec": "8 penguins big_jim wander 5 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 95,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"countrysid"
+  },
+  {
+   "bot": 9,
+   "spec": "9 penguins custom farmer 2 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 60,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"house\", \"farm\"], day 4,"
+  },
+  {
+   "bot": 10,
+   "spec": "10 penguins pax story 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 94,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"crystal_meadow\", \"moon\""
+  },
+  {
+   "bot": 11,
+   "spec": "11 gangsters dad wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 90,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes [\"moon\", \"forest\", \"lake\""
+  },
+  {
+   "bot": 12,
+   "spec": "12 gangsters mom story 1 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 92,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"mine\", \"moon\", "
+  },
+  {
+   "bot": 13,
+   "spec": "13 gangsters june fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 152,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes [\"desert_sunken_temple\", "
+  },
+  {
+   "bot": 14,
+   "spec": "14 gangsters rafe farmer 0 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 59,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\"], day 4, "
+  },
+  {
+   "bot": 15,
+   "spec": "15 gangsters nia menus 3 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 75,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 300 steps, 0 kills, 0 ownerless pauses, scenes [\"uptown\", \"interior\", \"f"
+  },
+  {
+   "bot": 16,
+   "spec": "16 gangsters ollie story 4 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 92,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\", \"mountai"
+  },
+  {
+   "bot": 17,
+   "spec": "17 gangsters marisol fighter 5 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 169,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes [\"jungle\", \"wastes\", \"rui"
+  },
+  {
+   "bot": 18,
+   "spec": "18 gangsters bo wander 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 90,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"sky\", \"lak"
+  },
+  {
+   "bot": 19,
+   "spec": "19 gangsters custom story 2 1 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 92,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes [\"sky\", \"mountain\", \"mine"
+  },
+  {
+   "bot": 20,
+   "spec": "20 gangsters pax menus 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 85,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 325 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"lake\", \"beach"
+  }
+ ],
+ "errors": [
+  [
+   "BOT WARN player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=",
+   5
+  ],
+  [
+   "FAIL water chore waters planted tiles (seen: true)  @2",
+   2
+  ],
+  [
+   "FAIL a gift letter gives its item",
+   1
+  ],
+  [
+   "FAIL asking for the playing stand-in keeps it going (0.38 >= 0.47)",
+   1
+  ],
+  [
+   "FAIL wedding: step 0.00x, level +29.6 dB (allowed 7.9)",
+   1
+  ],
+  [
+   "FAIL wedding_gang: step 0.19x, level +10.7 dB (allowed 4.1)",
+   1
+  ],
+  [
+   "FAIL Pip-Pip and Nova ask to stay",
+   1
+  ],
+  [
+   "FAIL keeper encounter bat_swarm has real hp (lead bat, total hp 5)",
+   1
+  ],
+  [
+   "FAIL penguins catkins: \u26656 quest  offered",
+   1
+  ],
+  [
+   "FAIL gangsters catkins: \u26656 quest  offered",
+   1
+  ],
+  [
+   "BOT WARN player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=",
+   1
+  ],
+  [
+   "BOT WARN player boxed in at town at cell (16, 29), frozen=true paused=false story_pending=",
+   1
+  ],
+  [
+   "BOT WARN player boxed in at town at cell (80, 47), frozen=true paused=false story_pending=",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 236.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 167.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 119.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 107.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 100.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 96.9
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 55.0
+  },
+  {
+   "step": 11,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 45.4
+  },
+  {
+   "step": 38,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 40.3
+  },
+  {
+   "step": 14,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.0
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 35.1
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 24.9
+  },
+  {
+   "step": 22,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 23.5
+  },
+  {
+   "step": 51,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 22.7
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 17.2
+  }
+ ]
+}

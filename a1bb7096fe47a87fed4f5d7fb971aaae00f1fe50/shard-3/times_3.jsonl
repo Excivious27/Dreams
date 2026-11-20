@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 96.9}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 17.2}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 2.7}
+{"step": 16, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 3.2}
+{"step": 22, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 23.5}
+{"step": 28, "name": "bowling_test", "rc": 0, "secs": 14.7}
+{"step": 34, "name": "crop_test", "rc": 0, "secs": 4.7}
+{"step": 40, "name": "gang_flavour_test", "rc": 0, "secs": 2.6}
+{"step": 46, "name": "every sound the game asks for exists", "rc": 0, "secs": 3.7}
+{"step": 52, "name": "music_stream_test", "rc": 1, "secs": 9.2}
+{"step": 58, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.9}
+{"step": 64, "name": "every script compiles", "rc": 0, "secs": 3.4}
+{"step": 70, "name": "quest_tracker_test", "rc": 0, "secs": 3.5}
+{"step": 76, "name": "campaign_words_test", "rc": 0, "secs": 2.9}
+{"step": 82, "name": "story: every chapter plays to the end", "rc": 0, "secs": 12.3}
+{"step": 88, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.8}
+{"step": 94, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 4.9}
+{"step": 100, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 6.9}
+{"step": 106, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 2.6}

@@ -1,0 +1,5 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 6 start arc=penguins hero=mer style=story progress=3 difficulty=2 day_len=20
+BOT WARN [6 story] player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=
+BOT 6 done: 0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", "mountain", "moon", "town", "mine", "crystal_meadow"], day 4, ◆3085

@@ -1,0 +1,127 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2388 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 236.7s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 35.1s
+
+#### step 11: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 4/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 11 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 45.4s
+
+#### step 17: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 4/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+  FAIL water chore waters planted tiles (seen: true)  @2
+  FAIL water chore waters planted tiles (seen: true)  @2
+ROMANCE DONE, failures: 2
+romance_test failed
+#### step 17 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): FAIL rc=1 in 2.7s
+
+#### step 23: rec_test (shard 4/6)
+rec_test: 0 failures
+#### step 23 rec_test: PASS in 4.7s
+
+#### step 29: cash_test (shard 4/6)
+cash_test: scanned 66304 strings, 0 failures
+#### step 29 cash_test: PASS in 2.8s
+
+#### step 35: anim_test (shard 4/6)
+anim_test: 0 failures
+#### step 35 anim_test: PASS in 2.4s
+
+#### step 41: cf_layout_test (shard 4/6)
+cf_layout_test: 0 failures
+#### step 41 cf_layout_test: PASS in 8.0s
+
+#### step 47: music loop seams (join click + level jump) (shard 4/6)
+== music loop seams (join click + level jump) ==
+FAIL wedding: step 0.00x, level +29.6 dB (allowed 7.9)
+FAIL wedding_gang: step 0.19x, level +10.7 dB (allowed 4.1)
+music_loop_check: 2 bad of 101
+Music loop check failed
+#### step 47 music loop seams (join click + level jump): FAIL rc=1 in 9.8s
+
+#### step 53: danger_music_test (shard 4/6)
+danger_music_test: 0 failures
+#### step 53 danger_music_test: PASS in 15.7s
+
+#### step 59: allies: enemies fight back, pup commands (shard 4/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 59 allies: enemies fight back, pup commands: PASS in 3.2s
+
+#### step 65: campaign: battles, projects, colonies, big mines (shard 4/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 65 campaign: battles, projects, colonies, big mines: PASS in 5.1s
+
+#### step 71: street_bat_test (shard 4/6)
+street_bat_test: 0 fails
+#### step 71 street_bat_test: PASS in 2.0s
+
+#### step 77: campaign_c3_test (shard 4/6)
+campaign_c3_test: 0 fails
+#### step 77 campaign_c3_test: PASS in 2.0s
+
+#### step 83: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 4/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+  FAIL Pip-Pip and Nova ask to stay
+newgame_penguin_test: 1 failures
+New-game penguin test failed
+#### step 83 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: FAIL rc=1 in 4.6s
+
+#### step 89: mega regions: the new worlds walk end to end (shard 4/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 89 mega regions: the new worlds walk end to end: PASS in 17.0s
+
+#### step 95: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 4/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 95 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.4s
+
+#### step 101: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 4/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 101 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.4s
+
+#### step 107: C7 P4: heart scene content (shard 4/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 107 C7 P4: heart scene content: PASS in 2.3s
+
+#### shard 4/6 done in 405s: FAIL (dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1), music loop seams (join click + level jump), penguin arc: new game to day 2 (crystal, mailbox marker, partner scene)

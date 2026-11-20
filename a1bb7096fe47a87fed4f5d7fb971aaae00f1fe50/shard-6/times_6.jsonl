@@ -1,0 +1,18 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 167.1}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 8.7}
+{"step": 13, "name": "phone_ui_test", "rc": 0, "secs": 10.6}
+{"step": 19, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.6}
+{"step": 25, "name": "rec_links_test", "rc": 0, "secs": 2.5}
+{"step": 31, "name": "coop_test", "rc": 0, "secs": 2.5}
+{"step": 37, "name": "move_target_test", "rc": 0, "secs": 12.7}
+{"step": 43, "name": "town_first_test", "rc": 0, "secs": 4.4}
+{"step": 49, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 55, "name": "ambience_test", "rc": 0, "secs": 5.4}
+{"step": 61, "name": "mine: keeper, shaft, tiers", "rc": 1, "secs": 4.2}
+{"step": 67, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 8.8}
+{"step": 73, "name": "farm_debris_test", "rc": 0, "secs": 4.7}
+{"step": 79, "name": "skill_glow_test", "rc": 0, "secs": 3.9}
+{"step": 85, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 1, "secs": 5.9}
+{"step": 91, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.5}
+{"step": 97, "name": "arcade_test", "rc": 0, "secs": 3.1}
+{"step": 103, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.4}

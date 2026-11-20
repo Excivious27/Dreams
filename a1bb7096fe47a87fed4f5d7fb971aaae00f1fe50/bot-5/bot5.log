@@ -1,0 +1,8 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 5 start arc=penguins hero=coco style=menus progress=1 difficulty=1 day_len=15
+BOT 5 done: 0 fails, 0 warns, 316 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "quarry", "frost_glacier", "countryside", "sky", "riverlands", "moon", "mine", "farm"], day 4, ◆135
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+ERROR: 12 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:795)
