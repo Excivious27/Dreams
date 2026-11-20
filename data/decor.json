@@ -19,6 +19,38 @@
   "acc",
   "shoes"
  ],
+ "comfort_tiers": [
+  [
+   0,
+   "Bare",
+   0,
+   0.0
+  ],
+  [
+   25,
+   "Homey",
+   0,
+   0.8
+  ],
+  [
+   60,
+   "Cosy",
+   180,
+   0.85
+  ],
+  [
+   120,
+   "Lovely",
+   300,
+   0.9
+  ],
+  [
+   200,
+   "Dream Home",
+   480,
+   0.95
+  ]
+ ],
  "grants": {
   "boss:gilt_vaults": "dc_u_aurum_statue",
   "chest:hidden_chest_gilt_vaults": "dc_u_vault_door",
@@ -38,7 +70,6 @@
   "heart:finn:8": "dc_tt_echo_shell",
   "heart:gideon:8": "dc_bookcase3_a",
   "heart:granite:8": "dc_fire_pit2",
-  "heart:hazel:8": "dc_armchair_window",
   "heart:maple:8": "dc_books_scrolls",
   "heart:marlowe:8": "dc_tt_bottled_wind",
   "heart:old_moss:8": "dc_bookshelf_ivy",
@@ -46,6 +77,7 @@
   "heart:rook:8": "dc_pelt_bear",
   "heart:sel:8": "dc_bookcase3_b",
   "heart:tam:8": "dc_bed2_double_blue",
+  "heart:tess:8": "dc_armchair_window",
   "heart:wren:8": "dc_bloom_flowers",
   "house:2": "dc_sofa_blue",
   "house:3": "dc_clock_grand",
@@ -1290,7 +1322,7 @@
     },
     {
      "kind": "heart",
-     "ref": "hazel:8"
+     "ref": "tess:8"
     }
    ],
    "sub": "seating",
@@ -15417,7 +15449,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15451,7 +15483,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15485,7 +15517,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15523,7 +15555,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15557,7 +15589,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15630,7 +15662,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15877,7 +15909,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15911,7 +15943,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15945,7 +15977,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -15980,7 +16012,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16015,7 +16047,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16050,7 +16082,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16190,7 +16222,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16225,7 +16257,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16260,7 +16292,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16330,7 +16362,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16365,7 +16397,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16400,7 +16432,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16435,7 +16467,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16609,7 +16641,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16681,7 +16713,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16715,7 +16747,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16753,7 +16785,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16787,7 +16819,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16821,7 +16853,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16855,7 +16887,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16889,7 +16921,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16924,7 +16956,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -16959,7 +16991,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17027,7 +17059,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17062,7 +17094,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17097,7 +17129,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17132,7 +17164,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17166,7 +17198,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17268,7 +17300,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17302,7 +17334,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17336,7 +17368,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17375,7 +17407,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17409,7 +17441,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17443,7 +17475,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17477,7 +17509,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17545,7 +17577,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17580,7 +17612,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17614,7 +17646,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17648,7 +17680,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17682,7 +17714,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17717,7 +17749,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17786,7 +17818,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17825,7 +17857,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17893,7 +17925,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17927,7 +17959,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17961,7 +17993,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -17996,7 +18028,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -18031,7 +18063,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -18066,7 +18098,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -18101,7 +18133,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -18170,7 +18202,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -18208,7 +18240,7 @@
    "sources": [
     {
      "kind": "shop",
-     "ref": "hazel"
+     "ref": "carpenter"
     },
     {
      "kind": "loot",
@@ -32736,8 +32768,8 @@
   }
  },
  "legacy": {
-  "fish_trophy": "dc_tt_trophy_fish_a",
-  "museum_trophy": "dc_tt_trophy_crystal"
+  "fish_trophy": "dc_fish_trophy",
+  "museum_trophy": "dc_museum_trophy"
  },
  "luck_step": 0.04,
  "pity": 8,
@@ -47002,6 +47034,567 @@
   "wardrobe": 6
  },
  "shops": {
+  "carpenter": [
+   [
+    1,
+    [
+     "dc_armchair2_blue",
+     "dc_armchair2_green",
+     "dc_armchair2_red",
+     "dc_armchair2_yellow",
+     "dc_armchair_a",
+     "dc_armchair_b",
+     "dc_armchair_c",
+     "dc_armchair_d",
+     "dc_bloom_basket",
+     "dc_bloom_chair",
+     "dc_bloom_cradle_cat",
+     "dc_bloom_lamp",
+     "dc_bloom_sofa",
+     "dc_bloom_table",
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_cat_bed",
+     "dc_catkins_chair",
+     "dc_catkins_table",
+     "dc_chair2_a_down",
+     "dc_chair2_b_down",
+     "dc_chair_a",
+     "dc_chair_b",
+     "dc_chair_c",
+     "dc_chair_d",
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_coral_shelf",
+     "dc_coral_table",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_dog_bed",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_grotto_mushroom",
+     "dc_grotto_table",
+     "dc_ice_shelf",
+     "dc_ice_table",
+     "dc_igloo_chair",
+     "dc_igloo_shelf",
+     "dc_igloo_sofa",
+     "dc_igloo_table",
+     "dc_kit_dining",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_out_bench2_green_a",
+     "dc_out_bench2_wood_a",
+     "dc_out_birdbath",
+     "dc_out_fence2_wood_h",
+     "dc_out_flowerbed_blue",
+     "dc_out_flowerbed_pink",
+     "dc_out_flowerbed_red",
+     "dc_out_flowerbed_yellow",
+     "dc_out_haystack",
+     "dc_out_hedge2_ball",
+     "dc_out_lamp2_short_0",
+     "dc_out_lamp2_short_1",
+     "dc_out_lamp2_tall_0",
+     "dc_out_lantern_lit",
+     "dc_out_log_bench",
+     "dc_out_planter2_0",
+     "dc_out_planter2_1",
+     "dc_out_ri_lantern_post",
+     "dc_out_rope_fence",
+     "dc_out_signpost_1",
+     "dc_out_signpost_2",
+     "dc_out_sunflowers",
+     "dc_out_topiary_b",
+     "dc_out_topiary_c",
+     "dc_out_umbrella_blue",
+     "dc_out_umbrella_red",
+     "dc_out_umbrella_yellow",
+     "dc_pet_bed",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rustic_bed",
+     "dc_rustic_bench",
+     "dc_sea_buoy",
+     "dc_sea_chair",
+     "dc_sea_sofa",
+     "dc_sea_table",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stool2",
+     "dc_stool_blue",
+     "dc_stool_green",
+     "dc_stool_red",
+     "dc_stool_wood",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bloom_bed",
+     "dc_bloom_bed_lilac",
+     "dc_bloom_bed_sage",
+     "dc_bloom_chair_sage",
+     "dc_bloom_chair_sky",
+     "dc_bloom_dresser",
+     "dc_bloom_sofa_sage",
+     "dc_bloom_sofa_sky",
+     "dc_bunk_bed",
+     "dc_catkins_mat_bed",
+     "dc_catkins_shelf",
+     "dc_coral_catbed",
+     "dc_coral_chair",
+     "dc_cradle",
+     "dc_grotto_shelf",
+     "dc_ice_bed",
+     "dc_igloo_bed",
+     "dc_moon_chair",
+     "dc_moon_wardrobe",
+     "dc_orch_bed",
+     "dc_out_bee_house",
+     "dc_out_bench2_iron_a",
+     "dc_out_cf_picnic_table",
+     "dc_out_fence2_iron_h",
+     "dc_out_fence2_stone_h",
+     "dc_out_fest_fw_00",
+     "dc_out_fest_fw_01",
+     "dc_out_fest_fw_38",
+     "dc_out_fest_ss_09",
+     "dc_out_fest_ss_22",
+     "dc_out_fest_ss_31",
+     "dc_out_hedge2_pot",
+     "dc_out_hedge2_tree",
+     "dc_out_hedge2_tree_s",
+     "dc_out_lamp2_short_2",
+     "dc_out_lamp2_tall_1",
+     "dc_out_lanterns_cyan",
+     "dc_out_lanterns_pink",
+     "dc_out_lanterns_red",
+     "dc_out_planter2_2",
+     "dc_out_planter2_3",
+     "dc_out_ri_windmill_small",
+     "dc_out_scarecrow_knight",
+     "dc_out_scarecrow_pumpkin",
+     "dc_out_statue",
+     "dc_out_statue_cane",
+     "dc_out_sunflower_bush",
+     "dc_out_topiary_a",
+     "dc_out_trellis",
+     "dc_out_well_roofed",
+     "dc_out_well_stone",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_rustic_bed_forest",
+     "dc_rustic_bed_navy",
+     "dc_rustic_dresser",
+     "dc_rustic_rocker",
+     "dc_rustic_table",
+     "dc_sea_bed",
+     "dc_sea_bed_coral",
+     "dc_sea_bed_sage",
+     "dc_sea_sofa_coral",
+     "dc_sea_sofa_forest",
+     "dc_sofa_blue",
+     "dc_sofa_green",
+     "dc_sofa_red",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_trophy_shelf"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_armchair_window",
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_bloom_flowers",
+     "dc_bookshelf_ivy",
+     "dc_coral_bed",
+     "dc_grotto_bed",
+     "dc_ice_throne",
+     "dc_moon_bed",
+     "dc_orch_table",
+     "dc_out_cat_statue",
+     "dc_out_dock_lantern",
+     "dc_out_fairy_ring",
+     "dc_out_fest_fw_41",
+     "dc_out_fest_fw_62",
+     "dc_out_fest_ss_02",
+     "dc_out_glow_pond",
+     "dc_out_hedge2_arch",
+     "dc_out_lamp2_tall_2",
+     "dc_out_stone_arch",
+     "dc_out_wedding_arch"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_out_alien_statue",
+     "dc_out_ds_sun_obelisk",
+     "dc_out_flower_cart",
+     "dc_out_fountain",
+     "dc_out_gold_fence_a",
+     "dc_sofa_velvet"
+    ]
+   ]
+  ],
+  "carpenter_gang": [
+   [
+    1,
+    [
+     "dc_arc_beanbag",
+     "dc_arc_speaker",
+     "dc_armchair2_blue",
+     "dc_armchair2_green",
+     "dc_armchair2_red",
+     "dc_armchair2_yellow",
+     "dc_armchair_a",
+     "dc_armchair_b",
+     "dc_armchair_c",
+     "dc_armchair_d",
+     "dc_bloom_basket",
+     "dc_bloom_chair",
+     "dc_bloom_cradle_cat",
+     "dc_bloom_lamp",
+     "dc_bloom_sofa",
+     "dc_bloom_table",
+     "dc_bookcase2_a",
+     "dc_bookcase2_b",
+     "dc_bookcase2_c",
+     "dc_bookcase_a",
+     "dc_bookcase_b",
+     "dc_bookcase_c",
+     "dc_bookshelf",
+     "dc_bookshelf_a",
+     "dc_bookshelf_b",
+     "dc_casino_chips",
+     "dc_casino_lamp",
+     "dc_casino_rope",
+     "dc_cat_bed",
+     "dc_chair2_a_down",
+     "dc_chair2_b_down",
+     "dc_chair_a",
+     "dc_chair_b",
+     "dc_chair_c",
+     "dc_chair_d",
+     "dc_chair_down",
+     "dc_chair_up",
+     "dc_chrome_lamp",
+     "dc_chrome_locker",
+     "dc_chrome_plant",
+     "dc_desk_a",
+     "dc_desk_b",
+     "dc_desk_c",
+     "dc_desk_d",
+     "dc_dog_bed",
+     "dc_dresser",
+     "dc_dresser2_a",
+     "dc_dresser2_b",
+     "dc_fl_dark_parquet",
+     "dc_floor_concrete",
+     "dc_floor_grate",
+     "dc_gilt_palm",
+     "dc_glight_neon_tube",
+     "dc_glight_streetlamp",
+     "dc_kit_dining",
+     "dc_low_table",
+     "dc_nightstand_a",
+     "dc_nightstand_b",
+     "dc_noir_cabinet",
+     "dc_noir_hatstand",
+     "dc_noir_lamp",
+     "dc_out_bench2_green_a",
+     "dc_out_bench2_wood_a",
+     "dc_out_birdbath",
+     "dc_out_chain_fence_h",
+     "dc_out_city_planter",
+     "dc_out_crates_pallet",
+     "dc_out_fence2_wood_h",
+     "dc_out_flowerbed_blue",
+     "dc_out_flowerbed_pink",
+     "dc_out_flowerbed_red",
+     "dc_out_flowerbed_yellow",
+     "dc_out_haystack",
+     "dc_out_hedge2_ball",
+     "dc_out_lamp2_short_0",
+     "dc_out_lamp2_short_1",
+     "dc_out_lamp2_tall_0",
+     "dc_out_lantern_lit",
+     "dc_out_log_bench",
+     "dc_out_oil_drums",
+     "dc_out_planter2_0",
+     "dc_out_planter2_1",
+     "dc_out_ri_lantern_post",
+     "dc_out_rope_fence",
+     "dc_out_signpost_1",
+     "dc_out_signpost_2",
+     "dc_out_sunflowers",
+     "dc_out_topiary_b",
+     "dc_out_topiary_c",
+     "dc_out_umbrella_blue",
+     "dc_out_umbrella_red",
+     "dc_out_umbrella_yellow",
+     "dc_pet_bed",
+     "dc_rug2_blue",
+     "dc_rug2_green",
+     "dc_rug2_red",
+     "dc_rug_rect_blue",
+     "dc_rug_rect_green",
+     "dc_rug_rect_red",
+     "dc_rustic_bed",
+     "dc_rustic_bench",
+     "dc_safe_bulb",
+     "dc_safe_chair",
+     "dc_safe_couch",
+     "dc_safe_crates",
+     "dc_safe_drum",
+     "dc_sea_buoy",
+     "dc_sea_chair",
+     "dc_sea_sofa",
+     "dc_sea_table",
+     "dc_shelf_books",
+     "dc_shelf_empty",
+     "dc_shelf_house",
+     "dc_shelf_jars",
+     "dc_shelf_misc",
+     "dc_stool2",
+     "dc_stool_blue",
+     "dc_stool_green",
+     "dc_stool_red",
+     "dc_stool_wood",
+     "dc_table",
+     "dc_table2_long4",
+     "dc_table2_long8",
+     "dc_table2_round",
+     "dc_table_long",
+     "dc_table_round",
+     "dc_table_square",
+     "dc_wall_concrete",
+     "dc_wardrobe2_a",
+     "dc_wardrobe2_b",
+     "dc_wardrobe_a",
+     "dc_wardrobe_b",
+     "dc_wp_brick_neon"
+    ]
+   ],
+   [
+    2,
+    [
+     "dc_arc_couch",
+     "dc_arc_dance_pad",
+     "dc_arc_gamer_chair",
+     "dc_arc_vending",
+     "dc_bed2_blue",
+     "dc_bed2_green",
+     "dc_bed2_red",
+     "dc_bed_blue",
+     "dc_bed_red",
+     "dc_bed_single",
+     "dc_bloom_bed",
+     "dc_bloom_bed_lilac",
+     "dc_bloom_bed_sage",
+     "dc_bloom_chair_sage",
+     "dc_bloom_chair_sky",
+     "dc_bloom_dresser",
+     "dc_bloom_sofa_sage",
+     "dc_bloom_sofa_sky",
+     "dc_bunk_bed",
+     "dc_casino_booth",
+     "dc_casino_dice",
+     "dc_casino_stool",
+     "dc_chrome_bench",
+     "dc_chrome_chair",
+     "dc_chrome_server",
+     "dc_chrome_terminal",
+     "dc_cradle",
+     "dc_fl_casino_carpet",
+     "dc_gilt_cabinet",
+     "dc_gilt_lamp",
+     "dc_glight_lava",
+     "dc_glight_spot",
+     "dc_glight_tv",
+     "dc_noir_armchair",
+     "dc_noir_bed",
+     "dc_noir_desk",
+     "dc_orch_bed",
+     "dc_out_bee_house",
+     "dc_out_bench2_iron_a",
+     "dc_out_cf_picnic_table",
+     "dc_out_fence2_iron_h",
+     "dc_out_fence2_stone_h",
+     "dc_out_fest_fw_00",
+     "dc_out_fest_fw_01",
+     "dc_out_fest_fw_38",
+     "dc_out_fest_ss_09",
+     "dc_out_fest_ss_22",
+     "dc_out_fest_ss_31",
+     "dc_out_hedge2_pot",
+     "dc_out_hedge2_tree",
+     "dc_out_hedge2_tree_s",
+     "dc_out_lamp2_short_2",
+     "dc_out_lamp2_tall_1",
+     "dc_out_lanterns_cyan",
+     "dc_out_lanterns_pink",
+     "dc_out_lanterns_red",
+     "dc_out_planter2_2",
+     "dc_out_planter2_3",
+     "dc_out_ri_windmill_small",
+     "dc_out_rusted_car",
+     "dc_out_scarecrow_knight",
+     "dc_out_scarecrow_pumpkin",
+     "dc_out_statue",
+     "dc_out_statue_cane",
+     "dc_out_sunflower_bush",
+     "dc_out_topiary_a",
+     "dc_out_trellis",
+     "dc_out_well_roofed",
+     "dc_out_well_stone",
+     "dc_round_set_a",
+     "dc_round_set_b",
+     "dc_rug2_round_blue",
+     "dc_rug2_round_red",
+     "dc_rug_round_blue",
+     "dc_rug_round_green",
+     "dc_rug_round_red",
+     "dc_rustic_bed_forest",
+     "dc_rustic_bed_navy",
+     "dc_rustic_dresser",
+     "dc_rustic_rocker",
+     "dc_rustic_table",
+     "dc_safe_board",
+     "dc_safe_bunk",
+     "dc_safe_chair_forest",
+     "dc_safe_chair_navy",
+     "dc_safe_couch_forest",
+     "dc_safe_couch_navy",
+     "dc_safe_table",
+     "dc_sea_bed",
+     "dc_sea_bed_coral",
+     "dc_sea_bed_sage",
+     "dc_sea_sofa_coral",
+     "dc_sea_sofa_forest",
+     "dc_sofa_blue",
+     "dc_sofa_green",
+     "dc_sofa_red",
+     "dc_table_long_cloth",
+     "dc_table_round_cloth",
+     "dc_table_square_cloth",
+     "dc_trophy_shelf",
+     "dc_wp_red_velvet"
+    ]
+   ],
+   [
+    3,
+    [
+     "dc_arc_air_hockey",
+     "dc_arc_pinball",
+     "dc_armchair_window",
+     "dc_bed2_double_blue",
+     "dc_bed2_double_red",
+     "dc_bed_double",
+     "dc_bed_double_green",
+     "dc_bloom_flowers",
+     "dc_bookshelf_ivy",
+     "dc_casino_slot",
+     "dc_casino_table",
+     "dc_chrome_bed",
+     "dc_fl_checker_gold",
+     "dc_floor_s_checker",
+     "dc_gilt_chair",
+     "dc_gilt_gramophone",
+     "dc_gilt_sofa",
+     "dc_gilt_table",
+     "dc_glight_arcade",
+     "dc_glight_holo",
+     "dc_noir_radio",
+     "dc_noir_sofa",
+     "dc_noir_sofa_forest",
+     "dc_noir_sofa_navy",
+     "dc_orch_table",
+     "dc_out_cat_statue",
+     "dc_out_dock_lantern",
+     "dc_out_fest_fw_41",
+     "dc_out_fest_fw_62",
+     "dc_out_fest_ss_02",
+     "dc_out_glow_pond",
+     "dc_out_hedge2_arch",
+     "dc_out_lamp2_tall_2",
+     "dc_out_stone_arch",
+     "dc_out_taxi",
+     "dc_out_wedding_arch",
+     "dc_safe_safe",
+     "dc_wp_deco_gold"
+    ]
+   ],
+   [
+    4,
+    [
+     "dc_arc_claw",
+     "dc_casino_roulette",
+     "dc_chrome_robot",
+     "dc_fl_metal_grid",
+     "dc_gilt_bed",
+     "dc_gilt_statue",
+     "dc_glight_jukebox",
+     "dc_jukebox_a",
+     "dc_noir_neon_palm",
+     "dc_out_alien_statue",
+     "dc_out_ds_sun_obelisk",
+     "dc_out_flower_cart",
+     "dc_out_fountain",
+     "dc_out_gold_fence_a",
+     "dc_out_lux_car_red",
+     "dc_rec_pinball_a",
+     "dc_sofa_velvet",
+     "dc_wp_circuit"
+    ]
+   ]
+  ],
   "catkins": [
    [
     1,
@@ -48130,567 +48723,6 @@
      "dc_jukebox_a",
      "dc_noir_neon_palm",
      "dc_top_gold_bar",
-     "dc_wp_circuit"
-    ]
-   ]
-  ],
-  "hazel": [
-   [
-    1,
-    [
-     "dc_armchair2_blue",
-     "dc_armchair2_green",
-     "dc_armchair2_red",
-     "dc_armchair2_yellow",
-     "dc_armchair_a",
-     "dc_armchair_b",
-     "dc_armchair_c",
-     "dc_armchair_d",
-     "dc_bloom_basket",
-     "dc_bloom_chair",
-     "dc_bloom_cradle_cat",
-     "dc_bloom_lamp",
-     "dc_bloom_sofa",
-     "dc_bloom_table",
-     "dc_bookcase2_a",
-     "dc_bookcase2_b",
-     "dc_bookcase2_c",
-     "dc_bookcase_a",
-     "dc_bookcase_b",
-     "dc_bookcase_c",
-     "dc_bookshelf",
-     "dc_bookshelf_a",
-     "dc_bookshelf_b",
-     "dc_cat_bed",
-     "dc_catkins_chair",
-     "dc_catkins_table",
-     "dc_chair2_a_down",
-     "dc_chair2_b_down",
-     "dc_chair_a",
-     "dc_chair_b",
-     "dc_chair_c",
-     "dc_chair_d",
-     "dc_chair_down",
-     "dc_chair_up",
-     "dc_coral_shelf",
-     "dc_coral_table",
-     "dc_desk_a",
-     "dc_desk_b",
-     "dc_desk_c",
-     "dc_desk_d",
-     "dc_dog_bed",
-     "dc_dresser",
-     "dc_dresser2_a",
-     "dc_dresser2_b",
-     "dc_grotto_mushroom",
-     "dc_grotto_table",
-     "dc_ice_shelf",
-     "dc_ice_table",
-     "dc_igloo_chair",
-     "dc_igloo_shelf",
-     "dc_igloo_sofa",
-     "dc_igloo_table",
-     "dc_kit_dining",
-     "dc_low_table",
-     "dc_nightstand_a",
-     "dc_nightstand_b",
-     "dc_out_bench2_green_a",
-     "dc_out_bench2_wood_a",
-     "dc_out_birdbath",
-     "dc_out_fence2_wood_h",
-     "dc_out_flowerbed_blue",
-     "dc_out_flowerbed_pink",
-     "dc_out_flowerbed_red",
-     "dc_out_flowerbed_yellow",
-     "dc_out_haystack",
-     "dc_out_hedge2_ball",
-     "dc_out_lamp2_short_0",
-     "dc_out_lamp2_short_1",
-     "dc_out_lamp2_tall_0",
-     "dc_out_lantern_lit",
-     "dc_out_log_bench",
-     "dc_out_planter2_0",
-     "dc_out_planter2_1",
-     "dc_out_ri_lantern_post",
-     "dc_out_rope_fence",
-     "dc_out_signpost_1",
-     "dc_out_signpost_2",
-     "dc_out_sunflowers",
-     "dc_out_topiary_b",
-     "dc_out_topiary_c",
-     "dc_out_umbrella_blue",
-     "dc_out_umbrella_red",
-     "dc_out_umbrella_yellow",
-     "dc_pet_bed",
-     "dc_rug2_blue",
-     "dc_rug2_green",
-     "dc_rug2_red",
-     "dc_rug_rect_blue",
-     "dc_rug_rect_green",
-     "dc_rug_rect_red",
-     "dc_rustic_bed",
-     "dc_rustic_bench",
-     "dc_sea_buoy",
-     "dc_sea_chair",
-     "dc_sea_sofa",
-     "dc_sea_table",
-     "dc_shelf_books",
-     "dc_shelf_empty",
-     "dc_shelf_house",
-     "dc_shelf_jars",
-     "dc_shelf_misc",
-     "dc_stool2",
-     "dc_stool_blue",
-     "dc_stool_green",
-     "dc_stool_red",
-     "dc_stool_wood",
-     "dc_table",
-     "dc_table2_long4",
-     "dc_table2_long8",
-     "dc_table2_round",
-     "dc_table_long",
-     "dc_table_round",
-     "dc_table_square",
-     "dc_wardrobe2_a",
-     "dc_wardrobe2_b",
-     "dc_wardrobe_a",
-     "dc_wardrobe_b"
-    ]
-   ],
-   [
-    2,
-    [
-     "dc_bed2_blue",
-     "dc_bed2_green",
-     "dc_bed2_red",
-     "dc_bed_blue",
-     "dc_bed_red",
-     "dc_bed_single",
-     "dc_bloom_bed",
-     "dc_bloom_bed_lilac",
-     "dc_bloom_bed_sage",
-     "dc_bloom_chair_sage",
-     "dc_bloom_chair_sky",
-     "dc_bloom_dresser",
-     "dc_bloom_sofa_sage",
-     "dc_bloom_sofa_sky",
-     "dc_bunk_bed",
-     "dc_catkins_mat_bed",
-     "dc_catkins_shelf",
-     "dc_coral_catbed",
-     "dc_coral_chair",
-     "dc_cradle",
-     "dc_grotto_shelf",
-     "dc_ice_bed",
-     "dc_igloo_bed",
-     "dc_moon_chair",
-     "dc_moon_wardrobe",
-     "dc_orch_bed",
-     "dc_out_bee_house",
-     "dc_out_bench2_iron_a",
-     "dc_out_cf_picnic_table",
-     "dc_out_fence2_iron_h",
-     "dc_out_fence2_stone_h",
-     "dc_out_fest_fw_00",
-     "dc_out_fest_fw_01",
-     "dc_out_fest_fw_38",
-     "dc_out_fest_ss_09",
-     "dc_out_fest_ss_22",
-     "dc_out_fest_ss_31",
-     "dc_out_hedge2_pot",
-     "dc_out_hedge2_tree",
-     "dc_out_hedge2_tree_s",
-     "dc_out_lamp2_short_2",
-     "dc_out_lamp2_tall_1",
-     "dc_out_lanterns_cyan",
-     "dc_out_lanterns_pink",
-     "dc_out_lanterns_red",
-     "dc_out_planter2_2",
-     "dc_out_planter2_3",
-     "dc_out_ri_windmill_small",
-     "dc_out_scarecrow_knight",
-     "dc_out_scarecrow_pumpkin",
-     "dc_out_statue",
-     "dc_out_statue_cane",
-     "dc_out_sunflower_bush",
-     "dc_out_topiary_a",
-     "dc_out_trellis",
-     "dc_out_well_roofed",
-     "dc_out_well_stone",
-     "dc_round_set_a",
-     "dc_round_set_b",
-     "dc_rug2_round_blue",
-     "dc_rug2_round_red",
-     "dc_rug_round_blue",
-     "dc_rug_round_green",
-     "dc_rug_round_red",
-     "dc_rustic_bed_forest",
-     "dc_rustic_bed_navy",
-     "dc_rustic_dresser",
-     "dc_rustic_rocker",
-     "dc_rustic_table",
-     "dc_sea_bed",
-     "dc_sea_bed_coral",
-     "dc_sea_bed_sage",
-     "dc_sea_sofa_coral",
-     "dc_sea_sofa_forest",
-     "dc_sofa_blue",
-     "dc_sofa_green",
-     "dc_sofa_red",
-     "dc_table_long_cloth",
-     "dc_table_round_cloth",
-     "dc_table_square_cloth",
-     "dc_trophy_shelf"
-    ]
-   ],
-   [
-    3,
-    [
-     "dc_armchair_window",
-     "dc_bed2_double_blue",
-     "dc_bed2_double_red",
-     "dc_bed_double",
-     "dc_bed_double_green",
-     "dc_bloom_flowers",
-     "dc_bookshelf_ivy",
-     "dc_coral_bed",
-     "dc_grotto_bed",
-     "dc_ice_throne",
-     "dc_moon_bed",
-     "dc_orch_table",
-     "dc_out_cat_statue",
-     "dc_out_dock_lantern",
-     "dc_out_fairy_ring",
-     "dc_out_fest_fw_41",
-     "dc_out_fest_fw_62",
-     "dc_out_fest_ss_02",
-     "dc_out_glow_pond",
-     "dc_out_hedge2_arch",
-     "dc_out_lamp2_tall_2",
-     "dc_out_stone_arch",
-     "dc_out_wedding_arch"
-    ]
-   ],
-   [
-    4,
-    [
-     "dc_out_alien_statue",
-     "dc_out_ds_sun_obelisk",
-     "dc_out_flower_cart",
-     "dc_out_fountain",
-     "dc_out_gold_fence_a",
-     "dc_sofa_velvet"
-    ]
-   ]
-  ],
-  "hazel_gang": [
-   [
-    1,
-    [
-     "dc_arc_beanbag",
-     "dc_arc_speaker",
-     "dc_armchair2_blue",
-     "dc_armchair2_green",
-     "dc_armchair2_red",
-     "dc_armchair2_yellow",
-     "dc_armchair_a",
-     "dc_armchair_b",
-     "dc_armchair_c",
-     "dc_armchair_d",
-     "dc_bloom_basket",
-     "dc_bloom_chair",
-     "dc_bloom_cradle_cat",
-     "dc_bloom_lamp",
-     "dc_bloom_sofa",
-     "dc_bloom_table",
-     "dc_bookcase2_a",
-     "dc_bookcase2_b",
-     "dc_bookcase2_c",
-     "dc_bookcase_a",
-     "dc_bookcase_b",
-     "dc_bookcase_c",
-     "dc_bookshelf",
-     "dc_bookshelf_a",
-     "dc_bookshelf_b",
-     "dc_casino_chips",
-     "dc_casino_lamp",
-     "dc_casino_rope",
-     "dc_cat_bed",
-     "dc_chair2_a_down",
-     "dc_chair2_b_down",
-     "dc_chair_a",
-     "dc_chair_b",
-     "dc_chair_c",
-     "dc_chair_d",
-     "dc_chair_down",
-     "dc_chair_up",
-     "dc_chrome_lamp",
-     "dc_chrome_locker",
-     "dc_chrome_plant",
-     "dc_desk_a",
-     "dc_desk_b",
-     "dc_desk_c",
-     "dc_desk_d",
-     "dc_dog_bed",
-     "dc_dresser",
-     "dc_dresser2_a",
-     "dc_dresser2_b",
-     "dc_fl_dark_parquet",
-     "dc_floor_concrete",
-     "dc_floor_grate",
-     "dc_gilt_palm",
-     "dc_glight_neon_tube",
-     "dc_glight_streetlamp",
-     "dc_kit_dining",
-     "dc_low_table",
-     "dc_nightstand_a",
-     "dc_nightstand_b",
-     "dc_noir_cabinet",
-     "dc_noir_hatstand",
-     "dc_noir_lamp",
-     "dc_out_bench2_green_a",
-     "dc_out_bench2_wood_a",
-     "dc_out_birdbath",
-     "dc_out_chain_fence_h",
-     "dc_out_city_planter",
-     "dc_out_crates_pallet",
-     "dc_out_fence2_wood_h",
-     "dc_out_flowerbed_blue",
-     "dc_out_flowerbed_pink",
-     "dc_out_flowerbed_red",
-     "dc_out_flowerbed_yellow",
-     "dc_out_haystack",
-     "dc_out_hedge2_ball",
-     "dc_out_lamp2_short_0",
-     "dc_out_lamp2_short_1",
-     "dc_out_lamp2_tall_0",
-     "dc_out_lantern_lit",
-     "dc_out_log_bench",
-     "dc_out_oil_drums",
-     "dc_out_planter2_0",
-     "dc_out_planter2_1",
-     "dc_out_ri_lantern_post",
-     "dc_out_rope_fence",
-     "dc_out_signpost_1",
-     "dc_out_signpost_2",
-     "dc_out_sunflowers",
-     "dc_out_topiary_b",
-     "dc_out_topiary_c",
-     "dc_out_umbrella_blue",
-     "dc_out_umbrella_red",
-     "dc_out_umbrella_yellow",
-     "dc_pet_bed",
-     "dc_rug2_blue",
-     "dc_rug2_green",
-     "dc_rug2_red",
-     "dc_rug_rect_blue",
-     "dc_rug_rect_green",
-     "dc_rug_rect_red",
-     "dc_rustic_bed",
-     "dc_rustic_bench",
-     "dc_safe_bulb",
-     "dc_safe_chair",
-     "dc_safe_couch",
-     "dc_safe_crates",
-     "dc_safe_drum",
-     "dc_sea_buoy",
-     "dc_sea_chair",
-     "dc_sea_sofa",
-     "dc_sea_table",
-     "dc_shelf_books",
-     "dc_shelf_empty",
-     "dc_shelf_house",
-     "dc_shelf_jars",
-     "dc_shelf_misc",
-     "dc_stool2",
-     "dc_stool_blue",
-     "dc_stool_green",
-     "dc_stool_red",
-     "dc_stool_wood",
-     "dc_table",
-     "dc_table2_long4",
-     "dc_table2_long8",
-     "dc_table2_round",
-     "dc_table_long",
-     "dc_table_round",
-     "dc_table_square",
-     "dc_wall_concrete",
-     "dc_wardrobe2_a",
-     "dc_wardrobe2_b",
-     "dc_wardrobe_a",
-     "dc_wardrobe_b",
-     "dc_wp_brick_neon"
-    ]
-   ],
-   [
-    2,
-    [
-     "dc_arc_couch",
-     "dc_arc_dance_pad",
-     "dc_arc_gamer_chair",
-     "dc_arc_vending",
-     "dc_bed2_blue",
-     "dc_bed2_green",
-     "dc_bed2_red",
-     "dc_bed_blue",
-     "dc_bed_red",
-     "dc_bed_single",
-     "dc_bloom_bed",
-     "dc_bloom_bed_lilac",
-     "dc_bloom_bed_sage",
-     "dc_bloom_chair_sage",
-     "dc_bloom_chair_sky",
-     "dc_bloom_dresser",
-     "dc_bloom_sofa_sage",
-     "dc_bloom_sofa_sky",
-     "dc_bunk_bed",
-     "dc_casino_booth",
-     "dc_casino_dice",
-     "dc_casino_stool",
-     "dc_chrome_bench",
-     "dc_chrome_chair",
-     "dc_chrome_server",
-     "dc_chrome_terminal",
-     "dc_cradle",
-     "dc_fl_casino_carpet",
-     "dc_gilt_cabinet",
-     "dc_gilt_lamp",
-     "dc_glight_lava",
-     "dc_glight_spot",
-     "dc_glight_tv",
-     "dc_noir_armchair",
-     "dc_noir_bed",
-     "dc_noir_desk",
-     "dc_orch_bed",
-     "dc_out_bee_house",
-     "dc_out_bench2_iron_a",
-     "dc_out_cf_picnic_table",
-     "dc_out_fence2_iron_h",
-     "dc_out_fence2_stone_h",
-     "dc_out_fest_fw_00",
-     "dc_out_fest_fw_01",
-     "dc_out_fest_fw_38",
-     "dc_out_fest_ss_09",
-     "dc_out_fest_ss_22",
-     "dc_out_fest_ss_31",
-     "dc_out_hedge2_pot",
-     "dc_out_hedge2_tree",
-     "dc_out_hedge2_tree_s",
-     "dc_out_lamp2_short_2",
-     "dc_out_lamp2_tall_1",
-     "dc_out_lanterns_cyan",
-     "dc_out_lanterns_pink",
-     "dc_out_lanterns_red",
-     "dc_out_planter2_2",
-     "dc_out_planter2_3",
-     "dc_out_ri_windmill_small",
-     "dc_out_rusted_car",
-     "dc_out_scarecrow_knight",
-     "dc_out_scarecrow_pumpkin",
-     "dc_out_statue",
-     "dc_out_statue_cane",
-     "dc_out_sunflower_bush",
-     "dc_out_topiary_a",
-     "dc_out_trellis",
-     "dc_out_well_roofed",
-     "dc_out_well_stone",
-     "dc_round_set_a",
-     "dc_round_set_b",
-     "dc_rug2_round_blue",
-     "dc_rug2_round_red",
-     "dc_rug_round_blue",
-     "dc_rug_round_green",
-     "dc_rug_round_red",
-     "dc_rustic_bed_forest",
-     "dc_rustic_bed_navy",
-     "dc_rustic_dresser",
-     "dc_rustic_rocker",
-     "dc_rustic_table",
-     "dc_safe_board",
-     "dc_safe_bunk",
-     "dc_safe_chair_forest",
-     "dc_safe_chair_navy",
-     "dc_safe_couch_forest",
-     "dc_safe_couch_navy",
-     "dc_safe_table",
-     "dc_sea_bed",
-     "dc_sea_bed_coral",
-     "dc_sea_bed_sage",
-     "dc_sea_sofa_coral",
-     "dc_sea_sofa_forest",
-     "dc_sofa_blue",
-     "dc_sofa_green",
-     "dc_sofa_red",
-     "dc_table_long_cloth",
-     "dc_table_round_cloth",
-     "dc_table_square_cloth",
-     "dc_trophy_shelf",
-     "dc_wp_red_velvet"
-    ]
-   ],
-   [
-    3,
-    [
-     "dc_arc_air_hockey",
-     "dc_arc_pinball",
-     "dc_armchair_window",
-     "dc_bed2_double_blue",
-     "dc_bed2_double_red",
-     "dc_bed_double",
-     "dc_bed_double_green",
-     "dc_bloom_flowers",
-     "dc_bookshelf_ivy",
-     "dc_casino_slot",
-     "dc_casino_table",
-     "dc_chrome_bed",
-     "dc_fl_checker_gold",
-     "dc_floor_s_checker",
-     "dc_gilt_chair",
-     "dc_gilt_gramophone",
-     "dc_gilt_sofa",
-     "dc_gilt_table",
-     "dc_glight_arcade",
-     "dc_glight_holo",
-     "dc_noir_radio",
-     "dc_noir_sofa",
-     "dc_noir_sofa_forest",
-     "dc_noir_sofa_navy",
-     "dc_orch_table",
-     "dc_out_cat_statue",
-     "dc_out_dock_lantern",
-     "dc_out_fest_fw_41",
-     "dc_out_fest_fw_62",
-     "dc_out_fest_ss_02",
-     "dc_out_glow_pond",
-     "dc_out_hedge2_arch",
-     "dc_out_lamp2_tall_2",
-     "dc_out_stone_arch",
-     "dc_out_taxi",
-     "dc_out_wedding_arch",
-     "dc_safe_safe",
-     "dc_wp_deco_gold"
-    ]
-   ],
-   [
-    4,
-    [
-     "dc_arc_claw",
-     "dc_casino_roulette",
-     "dc_chrome_robot",
-     "dc_fl_metal_grid",
-     "dc_gilt_bed",
-     "dc_gilt_statue",
-     "dc_glight_jukebox",
-     "dc_jukebox_a",
-     "dc_noir_neon_palm",
-     "dc_out_alien_statue",
-     "dc_out_ds_sun_obelisk",
-     "dc_out_flower_cart",
-     "dc_out_fountain",
-     "dc_out_gold_fence_a",
-     "dc_out_lux_car_red",
-     "dc_rec_pinball_a",
-     "dc_sofa_velvet",
      "dc_wp_circuit"
     ]
    ]

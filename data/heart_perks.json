@@ -163,6 +163,38 @@
    "text": "Theo's thesis: one free skill point in every tree"
   }
  },
+ "tess": {
+  "2": {
+   "weekly": {
+    "wood": 5
+   },
+   "text": "Tess saves you offcuts: 5 Wood each week"
+  },
+  "4": {
+   "give": {
+    "plank": 10
+   },
+   "text": "Tess's spare planks: 10 Plank"
+  },
+  "6": {
+   "weekly": {
+    "hardwood": 3
+   },
+   "text": "Tess sends hardwood: 3 Hardwood each week"
+  },
+  "10": {
+   "give": {
+    "hardwood": 10
+   },
+   "text": "Tess's master joinery: 10 Hardwood"
+  },
+  "8": {
+   "give": {
+    "#decor:dc_armchair_window": 1
+   },
+   "text": "Tess gives you a keepsake for your home: Window Seat"
+  }
+ },
  "hazel": {
   "2": {
    "weekly": {
@@ -280,9 +312,9 @@
     "mana": 20
    },
    "give": {
-    "#decor:dc_stat_penguin_gold": 1
+    "#decor:dc_tt_snow_globe": 1
    },
-   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Golden Penguin Idol"
+   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Snow Globe"
   },
   "10": {
    "bonus": {

@@ -1369,7 +1369,31 @@
        ]
       }
      ],
-     "name": "Deuce's Arcade"
+     "name": "Deuce's Arcade",
+     "things": [
+      {
+       "type": "heal",
+       "cell": [
+        4,
+        6
+       ],
+       "hp": 2,
+       "energy": 25,
+       "msg": "A warm roll, on the house.",
+       "hint": "A: fresh bread",
+       "solid": false
+      },
+      {
+       "type": "counter",
+       "shop": "crew_deuce",
+       "cell": [
+        4,
+        5
+       ],
+       "hint": "A: browse",
+       "solid": false
+      }
+     ]
     }
    }
   }
@@ -2013,7 +2037,31 @@
      "floor": "fl_grey_plank",
      "intro": "Marlene's trading post: pews pushed back, crates stacked high. Everything here has a price and a story.",
      "props_add": [],
-     "name": "Marlene's Trading Post"
+     "name": "Marlene's Trading Post",
+     "things": [
+      {
+       "type": "heal",
+       "cell": [
+        4,
+        4
+       ],
+       "hp": 2,
+       "energy": 50,
+       "msg": "Quiet.",
+       "hint": "A: sit a while",
+       "solid": false
+      },
+      {
+       "type": "counter",
+       "shop": "crew_marlene",
+       "cell": [
+        9,
+        3
+       ],
+       "hint": "A: browse",
+       "solid": false
+      }
+     ]
     }
    }
   }
@@ -3466,6 +3514,16 @@
     "text": "Half the cottage is canvases, half is books. The line down the middle is chalk.",
     "hint": "A: look",
     "solid": false
+   },
+   {
+    "type": "counter",
+    "shop": "lumi",
+    "cell": [
+     5,
+     5
+    ],
+    "hint": "A: browse",
+    "solid": false
    }
   ],
   "npcs": [
@@ -3501,7 +3559,49 @@
        "solid": false
       }
      ],
-     "name": "Specs' Net Cafe"
+     "name": "Specs' Net Cafe",
+     "things": [
+      {
+       "type": "bed",
+       "cell": [
+        2,
+        3
+       ],
+       "hint": "A: bed"
+      },
+      {
+       "type": "note",
+       "cell": [
+        8,
+        2
+       ],
+       "who": "",
+       "text": "Fishing tackle, three broken rods, and a photo of a fish bigger than the man holding it.",
+       "hint": "A: look",
+       "solid": false
+      },
+      {
+       "type": "note",
+       "cell": [
+        8,
+        3
+       ],
+       "who": "",
+       "text": "Half the cottage is canvases, half is books. The line down the middle is chalk.",
+       "hint": "A: look",
+       "solid": false
+      },
+      {
+       "type": "counter",
+       "shop": "crew_specs",
+       "cell": [
+        5,
+        5
+       ],
+       "hint": "A: browse",
+       "solid": false
+      }
+     ]
     }
    }
   }
@@ -3870,7 +3970,39 @@
        "solid": false
       }
      ],
-     "name": "Halo's Garage"
+     "name": "Halo's Garage",
+     "things": [
+      {
+       "type": "stable",
+       "cell": [
+        8,
+        5
+       ],
+       "hint": "A: Benno (horses)",
+       "solid": false
+      },
+      {
+       "type": "note",
+       "cell": [
+        2,
+        4
+       ],
+       "who": "",
+       "text": "Three stalls. One has a name carved on the post: CLOVER.",
+       "hint": "A: the stalls",
+       "solid": false
+      },
+      {
+       "type": "counter",
+       "shop": "crew_halo",
+       "cell": [
+        8,
+        6
+       ],
+       "hint": "A: browse",
+       "solid": false
+      }
+     ]
     }
    }
   }
@@ -7236,6 +7368,185 @@
   "gangsters": {
    "floor": "fl_wood_dark",
    "intro": "Glass cases, a velvet rope, a ledger by the tray. The Curio Room."
+  }
+ },
+ "workshop": {
+  "cols": 14,
+  "rows": 11,
+  "floor": "fl_plank",
+  "wall": "wl_timber",
+  "windows": [
+   4,
+   10
+  ],
+  "door": [
+   7,
+   10
+  ],
+  "back": [
+   "town",
+   9,
+   9
+  ],
+  "music": "town",
+  "props": [
+   {
+    "name": "st_workbench_2",
+    "group": "props",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 3
+   },
+   {
+    "name": "tool_rack",
+    "cell": [
+     6,
+     2
+    ]
+   },
+   {
+    "name": "cf_site_lumber",
+    "group": "props",
+    "cell": [
+     11,
+     3
+    ],
+    "w": 2
+   },
+   {
+    "name": "counter2_l",
+    "cell": [
+     5,
+     5
+    ]
+   },
+   {
+    "name": "counter2_m",
+    "cell": [
+     6,
+     5
+    ]
+   },
+   {
+    "name": "counter2_r",
+    "cell": [
+     7,
+     5
+    ]
+   },
+   {
+    "name": "blueprint_table",
+    "cell": [
+     9,
+     5
+    ],
+    "w": 2
+   },
+   {
+    "name": "cf_build_sawhorse",
+    "group": "props",
+    "cell": [
+     2,
+     7
+    ],
+    "w": 2,
+    "solid": true
+   },
+   {
+    "name": "armchair_a",
+    "cell": [
+     11,
+     7
+    ]
+   },
+   {
+    "name": "table_square",
+    "cell": [
+     12,
+     8
+    ]
+   },
+   {
+    "name": "bookshelf_a",
+    "cell": [
+     1,
+     8
+    ],
+    "auto": true
+   },
+   {
+    "name": "stool_wood",
+    "cell": [
+     9,
+     8
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor_b",
+    "cell": [
+     12,
+     2
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_rect_red",
+    "cell": [
+     6,
+     8
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "counter",
+    "shop": "carpenter",
+    "cell": [
+     6,
+     5
+    ],
+    "hint": "A: browse",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     9,
+     5
+    ],
+    "who": "",
+    "text": "Plans pinned flat with chisels: a rocking chair, a bird house, a bed with a moon carved in the headboard.",
+    "hint": "A: look",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "tess",
+    "cell": [
+     6,
+     4
+    ]
+   }
+  ],
+  "intro": "Sawdust in the sunbeams and the smell of pine. Tess's workshop: chairs half-built, shelves fully built.",
+  "gangsters": {
+   "intro": "Sawdust and engine noise from the street. Tess's workshop builds furniture for every crew in town, and asks nobody's business.",
+   "props_add": [
+    {
+     "name": "neon_sign_3",
+     "group": "props",
+     "cell": [
+      10,
+      1
+     ],
+     "solid": false
+    }
+   ]
   }
  }
 }

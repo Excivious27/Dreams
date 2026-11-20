@@ -34,7 +34,7 @@ const SPOTS := {
 	"market": Vector2i(34, 26), "stable": Vector2i(32, 93), "gate_n": Vector2i(41, 6), "gate_s": Vector2i(41, 90),
 	"mansion_front": Vector2i(60, 26), "bridge": Vector2i(70, 48), "bank": Vector2i(26, 7), "beach_road": Vector2i(41, 88),
 	"bench_nw": Vector2i(32, 44), "bench_ne": Vector2i(48, 44), "bench_sw": Vector2i(32, 54), "bench_se": Vector2i(48, 54),
-	"clock": Vector2i(29, 36), "bandstand": Vector2i(10, 38),
+	"clock": Vector2i(29, 36), "bandstand": Vector2i(10, 38), "workshop_front": Vector2i(11, 10),
 }
 
 var npcs: Array = []
@@ -354,7 +354,8 @@ func _place_buildings() -> void:
 		_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
 	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
 	# The working north end: a warehouse by the farm road, the bank by the smith.
-	building("warehouse_a", Vector2i(7, 4), "", "", 1.25)
+	# C10b P1: the old warehouse by the farm road is Tess's workshop (furniture, rugs, yard pieces).
+	_door("warehouse_a", Vector2i(7, 4), "workshop", "A: Tess's workshop", 1.25)
 	_door("bank", Vector2i(26, 4), "bank", "A: Bank", 1.25)
 	if Art.has("props", "town_gate"):
 		prop("props", "gate2" if Art.has("props", "gate2") else "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 12, 0.0, false, 0.8 if not Art.has("props", "gate2") else 0.5)
@@ -414,6 +415,43 @@ func _place_festival(fest: String) -> void:
 			pf.call("fest_fw_41", Vector2i(32, 54)); pf.call("fest_fw_42", Vector2i(48, 54)); pf.call("fest_fw_43", Vector2i(35, 60)); pf.call("fest_fw_44", Vector2i(45, 60))
 			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1); pf.call("fest_fw_68", Vector2i(40, 60), 1, false)
 	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + GameState.festival_name(fest)}, false)
+	# C10b P1 (c10b_06_02/15): the festival stall sells the day's treat and that season's decor
+	# (decor.json "stall:festival_<season>", through Shops.stall). Lantern/harvest get their own stall prop.
+	var st: Array = FEST_STALL.get(fest, [])
+	if not st.is_empty():
+		var sc: Vector2i = st[0]
+		if str(st[1]) != "":
+			pf.call(str(st[1]), sc, 2)
+		set_thing(sc.x, sc.y, {"type": "fest_stall", "fest": fest, "hint": "A: festival stall"}, false)
+
+
+## Festival stall per festival: [cell, stall prop to place ("" = one is already there), host, season, treats].
+const FEST_STALL := {
+	"egg": [Vector2i(44, 36), "", "Posy", "spring", [["candy", 15], ["cake", 140]]],
+	"lantern": [Vector2i(44, 41), "fest_ss_07", "Lumi", "summer", [["candy", 15], ["gift_pie", 45]]],
+	"harvest": [Vector2i(44, 40), "fest_fw_58", "Hazel", "fall", [["spiced_loaf", 95], ["gift_pie", 45]]],
+	"star": [Vector2i(44, 58), "", "Bram", "winter", [["hot_cocoa", 180], ["candy", 15]]],
+}
+
+
+func _fest_stall(fest: String) -> void:
+	var st: Array = FEST_STALL.get(fest, [])
+	if st.is_empty():
+		return
+	player.frozen = true
+	var treats: Array = (st[4] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
+	await Shops.stall(self, str(st[2]), "%s treats, and a few things for the house while they last." % GameState.festival_name(fest), treats, 0.0, "festival_" + str(st[3]))
+	player.frozen = false
+
+
+## Joining a festival's event once earns a keepsake roll from the season's prize pool (place 1 at the crop
+## contest rolls with extra luck). decor.json "festival_<season>_prize"; once per festival day.
+func _fest_keepsake(fest: String, key: String, luck := 0.0) -> void:
+	var st: Array = FEST_STALL.get(fest, [])
+	if st.is_empty() or not GameState.run["flags"].has(key) or GameState.run["flags"].has(key + "_dc"):
+		return
+	GameState.run["flags"][key + "_dc"] = true
+	DecorSources.roll_grant(self, "festival_%s_prize" % str(st[3]), luck, "festival")
 
 
 var _fest_hunt := false
@@ -454,6 +492,7 @@ func _festival_event(fest: String) -> void:
 		"star":
 			await _star_wish(key)
 	RecCenter.festival_bonus(self, key)  # joined in: the rec chips in tickets
+	await _fest_keepsake(fest, key, 4.0 if int(GameState.run["flags"].get(key + "_place", 0)) == 1 else 0.0)
 	player.frozen = false
 
 
@@ -529,6 +568,7 @@ func _crop_contest(key: String) -> void:
 	await say([{"text": "The table is crowded: %s's %s, %s's %s, and your %s, polished till it shines." % [a[0], GameState.item_name(str(a[1])), b[0], GameState.item_name(str(b[1])), GameState.item_name(best)]},
 		{"who": "Mayor Alder", "text": "%s! %s" % [art.substr(0, 1).to_upper() + art.substr(1), ["First prize! The blue ribbon and %s." % Money.amount(300), "Second prize! The red ribbon and %s." % Money.amount(150), "Third prize! The yellow ribbon and %s." % Money.amount(50)][place - 1]]}])
 	GameState.add_money([300, 150, 50][place - 1], "festival")
+	GameState.run["flags"][key + "_place"] = place  # C10b P1: first place rolls the festival keepsake with luck
 	GameState.run["flags"][key] = true
 	Music.instance(get_tree()).sfx("quest_done", "coin")
 	hud.toast("+%s" % Money.amount([300, 150, 50][place - 1]), Color(0.7, 0.9, 1))
@@ -928,6 +968,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"festival":
 			later(_festival_event.bind(str(thing.get("fest", ""))))
+			return true
+		"fest_stall":
+			later(_fest_stall.bind(str(thing.get("fest", ""))))
 			return true
 		"board":
 			later(_board)

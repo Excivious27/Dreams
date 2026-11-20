@@ -1601,8 +1601,81 @@
    "2": "Catkins' first meditation: +10 max energy",
    "4": "Catkins' four coats: +10 max mana",
    "6": "Cat-topia's pantry: 2 Tuna each week",
-   "8": "A guardian's patience: +20 max mana, and a keepsake for your home: Golden Penguin Idol",
+   "8": "A guardian's patience: +20 max mana, and a keepsake for your home: Snow Globe",
    "10": "Catkins' monastery blessing: +20 max health"
   }
+ },
+ "tess": {
+  "name": "Tess",
+  "role": "Carpenter",
+  "color": "a8703a",
+  "spot": [
+   9,
+   9
+  ],
+  "sprite": "npc_delve",
+  "portrait": "npc_delve",
+  "inside": [
+   "Measure twice, cut once. Then sand it till it purrs.",
+   "Every chair in this town has a wobble I know by name.",
+   "Bring me a room and a budget. I'll bring the rest."
+  ],
+  "spot_name": "workshop_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    12,
+    "workshop_front"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    17,
+    "market"
+   ],
+   [
+    18,
+    "inn"
+   ],
+   [
+    20,
+    "home"
+   ]
+  ],
+  "likes": [
+   "hardwood",
+   "plank",
+   "wood",
+   "sap",
+   "coffee",
+   "honey",
+   "#wood"
+  ],
+  "dislikes": [
+   "slime_goo",
+   "trash"
+  ],
+  "perks": {
+   "2": "Tess saves you offcuts: 5 Wood each week",
+   "4": "Tess's spare planks: 10 Plank",
+   "6": "Tess sends hardwood: 3 Hardwood each week",
+   "10": "Tess's master joinery: 10 Hardwood",
+   "8": "Tess gives you a keepsake for your home: Window Seat"
+  },
+  "home": "workshop",
+  "work": "workshop",
+  "birthday": [
+   "summer",
+   26
+  ]
  }
 }

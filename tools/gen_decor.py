@@ -49,6 +49,9 @@ SELL_SHARE = 0.15      # sell-back = 15% of the shop price (c10_12: 10-25%), fla
 REORDER_FEE = 0.10     # re-order from the catalogue after selling: +10% (min 50)
 REORDER_MIN = 10        # c10b_10_10: a flat 10% (min 10), not +45% on a common
 PRICE_TIER_W = 0.30     # price_for: share of the band position set by tier (rest = per-id spread)
+# Home comfort tiers (c10b_07): [min score, name, morning luck minutes, energy floor after a late/passed-out
+# night]. Small on purpose: comfort never pays money and never beats a food buff.
+COMFORT_TIERS = [[0, 'Bare', 0, 0.0], [25, 'Homey', 0, 0.80], [60, 'Cosy', 180, 0.85], [120, 'Lovely', 300, 0.90], [200, 'Dream Home', 480, 0.95]]
 PITY = 8               # Decor.roll: after 8 rolls on a pool without a rare+, the next one is rare+
 LUCK_STEP = 0.04       # weight x (1 + LUCK_STEP x rank x luck_eff), luck_eff = 10 x (1 - e^(-luck/8)) (c10_07)
 CATS = ['furniture', 'wall_art', 'decor', 'light', 'rug', 'wallpaper', 'flooring', 'outdoor', 'exterior', 'hat', 'top', 'bottom', 'outfit', 'acc', 'shoes']
@@ -856,7 +859,8 @@ KEEPERS = {  # key: (cats, words (any; empty = every piece of those cats))
     'old_moss': (('decor', 'rug', 'furniture'), ('plant', 'reed', 'cattail', 'frog', 'moss', 'hut', 'mat', 'ivy', 'fern')),
     'catkins': (('decor', 'furniture', 'rug', 'wall_art'), ('cat', 'paw', 'penguin', 'snow', 'cushion', 'figurine', 'yarn')),
     'finn': (('decor', 'wall_art', 'rug'), ('fish', 'shell', 'sea', 'net', 'boat', 'koi', 'rod', 'anchor', 'coral', 'echo')),
-    'hazel': (('furniture', 'rug', 'wallpaper', 'flooring'), ('bed', 'chair', 'table', 'sofa', 'armchair', 'stool', 'dresser', 'wardrobe', 'shelf', 'bench', 'cottage', 'country')),
+    # Tess the carpenter (Tom 2026-11-20: a new villager runs the furniture shop, not Hazel): workshop by the farm road.
+    'carpenter': (('furniture', 'rug', 'wallpaper', 'flooring'), ('bed', 'chair', 'table', 'sofa', 'armchair', 'stool', 'dresser', 'wardrobe', 'shelf', 'bench', 'cottage', 'country')),
 }
 for key, (cats, words) in KEEPERS.items():
     def keep_f(k, e, cats=cats, words=words, gang=False):
@@ -871,11 +875,11 @@ for key, (cats, words) in KEEPERS.items():
     g = shop_rows(lambda k, e, f=keep_f: f(k, e, gang=True) or (e['arc'] == 'gangsters' and e['cat'] in cats and e['rarity'] != 'legendary'))
     if g != SHOPS[key] and key != 'catkins':  # Catkins is penguin-only
         SHOPS[key + '_gang'] = g
-# C10b: yard pieces at Hazel's (the farmer; c10b_10_03 option A), exterior parts at Gideon's (he builds the
+# C10b: yard pieces at Tess's workshop (the carpenter, decor key "carpenter"; c10b_10_03), exterior parts at Gideon's (he builds the
 # house upgrades), seasonal stalls at the festivals (stall:festival_<season>, Shops.stall via town.gd),
 # Lumi's loom sells the wardrobe (c10b_10_06), crew counters split crew_goods (c10b_10_04).
 OUT_F = lambda k, e: e['cat'] == 'outdoor' and e['rarity'] in ('common', 'uncommon', 'rare', 'epic')
-for key, gang in (('hazel', False), ('hazel_gang', True)):
+for key, gang in (('carpenter', False), ('carpenter_gang', True)):
     rows = {t: list(ids) for t, ids in SHOPS.get(key, [])}
     for t, ids in shop_rows(lambda k, e, g=gang: OUT_F(k, e) and (e['arc'] in ('both', 'gangsters' if g else 'penguins'))):
         rows.setdefault(t, []).extend(ids)
@@ -967,12 +971,13 @@ grant('house:2', first(lambda k, e: e['sub'] == 'seating' and e['rarity'] == 'un
 grant('house:3', first(lambda k, e: e['sub'] == 'clock' and e['rarity'] == 'rare') or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] == 'furniture'))
 for fl, rar in ((25, 'rare'), (50, 'rare'), (75, 'epic'), (100, 'epic'), (120, 'legendary')):
     grant('mine:%d' % fl, first(lambda k, e, rar=rar: e['rarity'] == rar and any(w in text(k, e) for w in ('crystal', 'lantern', 'lamp', 'statue', 'stone', 'gem'))))
+KEEPER_NPC = {'carpenter': 'tess'}   # keeper shelf key -> villager id (heart grants)
 for npc in KEEPERS:
     rows = SHOPS.get(npc, [])
     pick = first(lambda k, e, ids={i for _, ids in rows for i in ids}: k in ids and e['rarity'] in ('rare', 'epic')) \
         or first(lambda k, e, w=KEEPERS[npc][1]: e['rarity'] in ('rare', 'epic') and e['cat'] not in WEAR_CATS | {'exterior'} and any(x in text(k, e) for x in w)) \
         or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] in ('decor', 'wall_art', 'light'))
-    grant('heart:%s:8' % npc, pick)
+    grant('heart:%s:8' % KEEPER_NPC.get(npc, npc), pick)
 CF = json.load(open(os.path.join(D, 'community_farm.json'))).get('stages', [])
 CF_WORDS = {'clear': ('signpost', 'bench'), 'shed': ('lantern', 'lamp'), 'beds': ('flowerbed', 'bed'), 'seeds': ('planter', 'trough'),
             'well': ('well', 'birdbath'), 'orchard': ('hedge', 'topiary'), 'greenhouse': ('planter', 'urn'), 'market': ('umbrella', 'cart', 'picnic')}
@@ -1018,7 +1023,7 @@ HOUSE_RESERVED = {str(t): _res(t, c) for t, c in {1: 16, 2: 20, 3: 26}.items()}
 # Old saves that already passed a unique's event get it once at migration (Decor.migrate; c10_06):
 # {id: run.flags key}. Only events whose flag already exists in the game are listed.
 BACKGRANT = {'dc_u_lighthouse_lamp': 'lighthouse_lit'}
-LEGACY = {'museum_trophy': 'dc_tt_trophy_crystal', 'fish_trophy': 'dc_tt_trophy_fish_a'}
+LEGACY = {'museum_trophy': 'dc_museum_trophy', 'fish_trophy': 'dc_fish_trophy'}   # agrees with Collections.decor_id (c10b_12)
 
 # ---- self-checks ---------------------------------------------------------------------------------------
 fails = []
@@ -1084,7 +1089,7 @@ if fails:
 
 # ---- write ---------------------------------------------------------------------------------------------
 out = {'rarity': RARITY, 'cats': CATS, 'sell_share': SELL_SHARE, 'reorder_fee': REORDER_FEE, 'reorder_min': REORDER_MIN,
-       'pity': PITY, 'luck_step': LUCK_STEP, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
+       'pity': PITY, 'luck_step': LUCK_STEP, 'comfort_tiers': COMFORT_TIERS, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
        'shop_days': SHOP_DAYS, 'pools': POOLS, 'recipes': RECIPES, 'house_reserved': HOUSE_RESERVED, 'legacy': LEGACY,
        'backgrant': {k: v for k, v in BACKGRANT.items() if k in ENTRIES}, 'grants': GRANTS}
 # c10b_08-08/09-01/12: catalogue wallpaper/flooring are room surfaces: DecorMode.SURFACE_LAYERS reads
