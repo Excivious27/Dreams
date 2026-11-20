@@ -499,7 +499,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 10890,
     "unlock": {
      "progress": 3,
@@ -745,7 +745,20 @@
     },
     "art_missing": false
    }
-  ]
+  ],
+  "brew": {
+   "mult": 2.0,
+   "cap": 3.0,
+   "max_out": 12,
+   "premium_at": 200,
+   "premium": {
+    "grain": "reserve_ale",
+    "flower": "royal_mead",
+    "veg": "gourmet_pickles",
+    "herb": "herbal_cordial",
+    "mushroom": "truffle_broth"
+   }
+  }
  },
  "beehive": {
   "label": "Beehive",
@@ -843,7 +856,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open.",
     "price": 7160,
     "unlock": {
      "progress": 2,
@@ -866,7 +879,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 15950,
     "unlock": {
      "progress": 3,
@@ -998,7 +1011,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 11130,
     "unlock": {
      "progress": 3,
@@ -1206,7 +1219,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 8600,
     "unlock": {
      "progress": 3,
@@ -1287,7 +1300,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open.",
     "price": 3200,
     "unlock": {
      "progress": 2,
@@ -1310,7 +1323,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 8380,
     "unlock": {
      "progress": 3,
@@ -1496,7 +1509,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open.",
     "price": 3660,
     "unlock": {
      "progress": 2,
@@ -1519,7 +1532,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 10450,
     "unlock": {
      "progress": 3,
@@ -1599,7 +1612,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open.",
     "price": 5930,
     "unlock": {
      "progress": 2,
@@ -1622,7 +1635,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 11380,
     "unlock": {
      "progress": 3,
@@ -2008,7 +2021,7 @@
      "progress": 2,
      "skill": [
       "building",
-      3
+      5
      ]
     },
     "art_missing": false
@@ -2031,7 +2044,7 @@
      "progress": 3,
      "skill": [
       "building",
-      5
+      7
      ]
     },
     "art_missing": false
@@ -2049,13 +2062,13 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Also flies to the star station.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. Also flies to the star station.",
     "price": 35400,
     "unlock": {
      "progress": 3,
      "skill": [
       "building",
-      7
+      9
      ]
     },
     "art_missing": false
@@ -2261,7 +2274,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Neon and armor.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. Neon and armor.",
     "price": 19470,
     "unlock": {
      "progress": 3,
@@ -2344,7 +2357,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open.",
     "price": 7380,
     "unlock": {
      "progress": 2,
@@ -2367,7 +2380,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 14060,
     "unlock": {
      "progress": 3,
@@ -2629,7 +2642,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. The Starheart Blade.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. The Starheart Blade.",
     "price": 19380,
     "unlock": {
      "progress": 3,
@@ -2712,7 +2725,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Mega boxes, heart sparks.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open. Mega boxes, heart sparks.",
     "price": 4250,
     "unlock": {
      "progress": 2,
@@ -2735,7 +2748,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 9730,
     "unlock": {
      "progress": 3,
@@ -2817,7 +2830,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Big Jim's stew.",
+    "desc": "3 jobs at once, 30% faster, every recipe already open. Big Jim's stew.",
     "price": 5530,
     "unlock": {
      "progress": 2,
@@ -2840,7 +2853,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 10500,
     "unlock": {
      "progress": 3,
@@ -3194,7 +3207,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. The Ghost Ledger.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. The Ghost Ledger.",
     "price": 14020,
     "unlock": {
      "progress": 3,
@@ -3300,7 +3313,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Mk II implants, the neural link.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. Mk II implants, the neural link.",
     "price": 12610,
     "unlock": {
      "progress": 3,
@@ -3406,7 +3419,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. A drone swarm.",
+    "desc": "4 jobs at once, 45% faster, every recipe already open. A drone swarm.",
     "price": 16920,
     "unlock": {
      "progress": 3,

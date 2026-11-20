@@ -106,7 +106,7 @@ func _run() -> void:
 	GameState.run["friendship"]["gideon"] = 0
 	var tt0 := Crafting.town_tier("anvil")
 	GameState.run["friendship"]["gideon"] = GameState.HEART_POINTS * 6
-	check(tt0 == 1 and Crafting.town_tier("anvil") == 3, "Gideon's forge grows with his friendship")
+	check(tt0 == 1 and Crafting.town_tier("anvil") == Crafting.TOWN_TIER_CAP, "Gideon's forge grows with his friendship, up to the town cap")
 	# Rocket: tier 3 flies, with a beacon and fuel.
 	check(Builds.all()["launchpad"]["tiers"].size() == 4, "rocket yard has four stages")
 
