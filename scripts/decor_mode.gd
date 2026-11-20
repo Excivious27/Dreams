@@ -499,6 +499,8 @@ static func dress(m: GameMap) -> void:
 		var id := str(p["id"])
 		var rot := int(p.get("rot", 0))
 		var cell := _cell_of(p)
+		if is_flat(id):
+			continue  # drawn into the baked map (draw_flat): no node, no draw call of its own
 		var s := sprite_for(id, rot)
 		if s == null:
 			continue
@@ -524,6 +526,54 @@ static func dress(m: GameMap) -> void:
 	m._flows.clear()
 
 
+## Rugs and wall pieces without a light are always behind everything: they are
+## drawn into the map's baked drawing instead of one Sprite2D each (a full house
+## stays cheap: only standing pieces are nodes).
+static func is_flat(id: String) -> bool:
+	return layer_of(id) in ["under", "wall", "window"] and not bool(Decor.entry(id).get("glow", false))
+
+
+## Draw this room's flat pieces (call at the end of the map's draw_map; works on the painter twin).
+static func draw_flat(ci: GameMap) -> void:
+	var list := placed(room_key(ci))
+	for layer in ["under", "wall"]:
+		for p in list:
+			if not (p is Dictionary) or not Decor.is_decor(str(p.get("id", ""))):
+				continue
+			var id := str(p["id"])
+			var ly := layer_of(id)
+			if not is_flat(id) or (ly == "under") != (layer == "under"):
+				continue
+			var rot := int(p.get("rot", 0))
+			var a := art_of(id, rot)
+			var t := Art.tex(str(a[0]), str(a[1]))
+			if t == null:
+				continue
+			var fr := int(Art.info(str(a[0]), str(a[1])).get("frames", 1))
+			var src := Rect2(0, 0, float(Art.info(str(a[0]), str(a[1])).get("cell_w", t.get_width() / fr)) if fr > 1 else float(t.get_width()), t.get_height())
+			var sz := size_of(id, rot)
+			var k := _fit_k(id, rot, src.size.x)
+			var wsz := src.size * k
+			var cell := _cell_of(p)
+			var bottom := float((cell.y + 1) * GameMap.TILE) if ly == "under" else float((wall_row(ci) + 1) * GameMap.TILE) - 2.0
+			var cx := (cell.x + sz.x / 2.0) * GameMap.TILE
+			if ly == "under":
+				# A rug fills its footprint (flat art reads best stretched to its cells).
+				ci.draw_texture_rect_region(t, Rect2(cell.x * GameMap.TILE, (cell.y - sz.y + 1) * GameMap.TILE, sz.x * GameMap.TILE, sz.y * GameMap.TILE), src)
+			else:
+				var r := Rect2(cx - wsz.x / 2.0, bottom - wsz.y, wsz.x, wsz.y)
+				if bool(a[2]):
+					r = Rect2(r.position.x + r.size.x, r.position.y, -r.size.x, r.size.y)
+				ci.draw_texture_rect_region(t, r, src)
+
+
+static func _fit_k(id: String, rot: int, tw: float) -> float:
+	var w := float(size_of(id, rot).x * GameMap.TILE)
+	if tw * 0.5 > w * 1.35 or tw * 0.5 < w * 0.6:
+		return w / maxf(1.0, tw)
+	return 0.5
+
+
 ## A piece's sprite, fitted to its footprint width (catalogue art comes at mixed scales).
 static func sprite_for(id: String, rot := 0) -> Sprite2D:
 	var a := art_of(id, rot)
@@ -537,11 +587,7 @@ static func sprite_for(id: String, rot := 0) -> Sprite2D:
 		at.region = Rect2(0, 0, float(Art.info(str(a[0]), str(a[1])).get("cell_w", s.texture.get_width() / fr)), s.texture.get_height())
 		s.texture = at
 		s.offset = Vector2(0, -at.get_height() / 2.0)
-	var w := float(size_of(id, rot).x * GameMap.TILE)
-	var tw := float(s.texture.get_width())
-	var k := 0.5
-	if tw * 0.5 > w * 1.35 or tw * 0.5 < w * 0.6:
-		k = w / maxf(1.0, tw)  # mixed source scales: fit the piece to its cells
+	var k := _fit_k(id, rot, float(s.texture.get_width()))  # mixed source scales: fit the piece to its cells
 	s.scale = Vector2(k, k)
 	s.flip_h = bool(a[2])
 	CrispArt.apply(s)

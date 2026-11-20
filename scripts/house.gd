@@ -246,6 +246,7 @@ func draw_map() -> void:
 		draw_rect(Rect2(BED.x * TILE, BED.y * TILE, 2 * TILE, TILE + 4), Color("6b3b2a"))
 		draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
 	draw_rect(Rect2(DOOR.x * TILE, DOOR.y * TILE, TILE, TILE), Color("3a2412"))
+	DecorMode.draw_flat(self)  # your rugs and wall art, baked with the room
 
 
 func _place_props() -> void:

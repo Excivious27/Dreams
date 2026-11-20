@@ -137,7 +137,8 @@ func _run() -> void:
 	GameState.run["decor"] = JSON.parse_string(js)
 	m = await _enter_house()
 	check(DecorMode.placed("house").size() == before.size(), "placed survives the save (%d)" % before.size())
-	check((m.get_meta("decor_nodes", []) as Array).size() == before.size(), "every piece drawn after reload")
+	var standing := before.filter(func(p: Dictionary) -> bool: return not DecorMode.is_flat(str(p["id"]))).size()
+	check((m.get_meta("decor_nodes", []) as Array).size() == standing and standing < before.size(), "standing pieces are nodes, rugs/wall art are baked (%d of %d)" % [standing, before.size()])
 	check(m.blocked.has(Vector2i(5, 9)), "blocking restored after reload")
 	check(DecorMode.surface_of("wall", "main") == "t_wall", "wallpaper survives the save")
 	# 13. The house grows: tier 2 adds the pantry; a piece on the Manor's study desk spot goes back to the box.
