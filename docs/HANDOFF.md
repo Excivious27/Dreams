@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 09:40 PT, personal account.
-- **Done:** CONDUCT 1-9 (C9 release readiness: controllers/Deck, haptics, save codes/files, web deploy fix, compass, forest perf; CI c9c PASS). C8 package sent.
-- **In progress:** C9 package (low subagent). C10a fix agents P1-P6 (plan docs/reports/C10A-PACKAGES.md; Decor contract stub scripts/decor.gd on main; worktrees /home/claude/wt/c10f_p1..p6, branches c10f/pN, reports /home/claude/wt/c10f_reports).
-- **Next step:** merge c10f/p1..p6 (P6 art first: run tools/slice_c10a.py, then gen_decor.py / regen_data.sh), check.sh lines from reports, ci_run.sh c10a; C10a package; C10a checklist auditors 15-20 (C10A-SCOPES) can run after this push; then C10b.
-- **Jobs running elsewhere:** 6 C10a fix agents in the personal sandbox (relaunch from C10A-PACKAGES.md if lost).
+- **Last update:** 2026-11-20 10:55 PT, personal account.
+- **Done:** CONDUCT 1-10a (C10a decor catalogue 862 pieces, decorate mode, catalogue screen, wardrobe, decor sources; CI c10a PASS). C9 package sent.
+- **In progress:** C10a package (low subagent); C10b audit done (14 auditors, ~360 findings in /home/claude/wt/c10b_reports), checklist 15-20 + packages next.
+- **Next step:** C10b packages (docs/reports/C10B-PACKAGES.md), 6 fix agents, merge, ci_run.sh c10b, package; then C11a.
+- **Jobs running elsewhere:** none besides subagents in the personal sandbox.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
@@ -84,6 +84,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 10:55 CONDUCT 10a pushed (Decor catalogue 862 pieces incl. 373 new renders, decorate mode with rooms/walls/floors, catalogue + re-order + sets, wardrobe, decor shelves and loot); CI c10a PASS; deploy SW patch made idempotent.
 - 2026-11-20 09:40 CONDUCT 9 pushed (controllers on every screen, Steam Deck prep, haptics, save export/import codes+files, web deploy unblocked, compass routes, forest 3x lighter); CI c9c PASS.
 - 2026-11-20 06:10 CONDUCT 8 pushed (economy/progression pass, Collections museum + Book tab, MoveSpeed ladder, fishing/mining curves, shop floors); CI c8c PASS.
 One line per finished piece of work: date, account, what was done.
