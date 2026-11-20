@@ -105,7 +105,16 @@ func _run() -> void:
 	check(not wj.in_outfit() and wj.pose_ok("wave"), "wren_jr in her base design plays every pose")
 	wj.set_pose("wave")
 	check(str(wj._anim.animation).begins_with("pose_npc_wren_jr"), "wren_jr's pose comes from her own sheet")
-	# 7. Pose frame 0 of a multi-frame strip is one cell.
+	# 7. Broken cells: never shown.
+	if GameState.npcs.has("mabel"):
+		var mb := _make("mabel")
+		var sf := mb._anim.sprite_frames
+		check(sf.get_frame_texture("idle", 0) == sf.get_frame_texture("walk_down", 0), "mabel's cut idle borrows her walk_down frame")
+	if GameState.npcs.has("benno"):
+		var bn := _make("benno")
+		bn.set_pose("counter")
+		check(bn._pose == "", "benno's broken counter cell is skipped")
+	# 8. Pose frame 0 of a multi-frame strip is one cell.
 	var multi := ""
 	for k: String in Art.manifest().get("characters/catkins", {}).keys():
 		if int(Art.info("characters/catkins", k).get("frames", 1)) > 1:

@@ -32,6 +32,19 @@ var _dir := "down"  # last way they walked or turned: "down" | "up" | "side"
 var _walk_h := {}  # walker anim -> source height (per-animation scale normalise)
 
 
+## Cells cut through by the slice or drawn as someone else (c5_08 #2): a pose
+## here is skipped; a walker idle here borrows frame 0 of the matching walk.
+const BAD_CELLS := {
+	"npc_mabel": ["idle"], "npc_bram_festival": ["idle_up"], "npc_juniper_winter": ["idle_side"],
+	"npc_benno": ["counter", "fish", "umbrella"], "npc_marlowe": ["dance", "eat", "umbrella"],
+}
+const IDLE_FROM := {"idle": "walk_down", "idle_up": "walk_up", "idle_side": "walk"}
+
+
+static func bad_cell(sheet: String, anim: String) -> bool:
+	return anim in (BAD_CELLS.get(sheet, []) as Array)
+
+
 ## Grown-ups are NPC_H (24 px) tall; children are drawn shorter.
 const KID_H := 18.0
 ## The pose sheets drawn for each villager (npc_<id>): a kid's are this short.
@@ -95,6 +108,13 @@ func idle_anim() -> String:
 
 ## Kid height and per-animation size (strips cut at other heights don't pop).
 func _fit_walker() -> void:
+	var sf := _anim.sprite_frames
+	for a: String in IDLE_FROM:
+		if bad_cell(_walker, a) and sf.has_animation(IDLE_FROM[a]):
+			# (SpriteFrames are shared per character: fix the shared copy once.)
+			if sf.get_frame_count(a) > 0 and sf.get_frame_texture(a, 0) != sf.get_frame_texture(IDLE_FROM[a], 0):
+				sf.clear(a)
+				sf.add_frame(a, sf.get_frame_texture(IDLE_FROM[a], 0))
 	if is_kid(id):
 		_anim.scale *= KID_H / CharacterLibrary.NPC_H
 	_base_scale = _anim.scale
@@ -189,6 +209,8 @@ func set_pose(pose: String) -> void:
 	if _walker == _base_sprite:
 		cands.append("characters/" + _base_sprite)
 	for cand: String in cands:
+		if bad_cell(cand.get_file(), pose):
+			continue
 		if Art.has(cand, pose) and int(Art.info(cand, pose).get("h", 0)) >= 16:
 			g = cand
 			break
