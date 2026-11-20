@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/faint.png-b0866d6ef5d71d840b0a92e3e74b2a0a.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

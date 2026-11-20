@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/eyes_17.png-120323ac941cb7e74b059c2825dd9cd1.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

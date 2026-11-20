@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/kit_sand_stone_24.png-acee05622b974f78915e33a
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

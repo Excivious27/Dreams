@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/fringe_13.png-5fcf32cf3afdbf02e116a29a44ac765
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

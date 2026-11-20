@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/wardrobe_a.png-501da2f4b3c3d49c5ead138a7a42bb
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

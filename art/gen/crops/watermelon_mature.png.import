@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/watermelon_mature.png-661083eb566b0b73beb08b4
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

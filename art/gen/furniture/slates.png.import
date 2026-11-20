@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/slates.png-06f174d4692959a2f4f8beecadafc62b.c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

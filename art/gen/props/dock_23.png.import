@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dock_23.png-d7c6721d3a5d5b0dab2dfe9cc68d1a16.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

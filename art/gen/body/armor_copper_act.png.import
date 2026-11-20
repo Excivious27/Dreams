@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/armor_copper_act.png-9b8f9e9ef6450796ce67b5b8
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

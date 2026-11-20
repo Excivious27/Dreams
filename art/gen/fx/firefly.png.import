@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/firefly.png-37853129146d4a0d78a282b15f8dcf1d.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

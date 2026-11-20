@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/limo.png-025616ee88bf1c0b9f71a10117338561.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

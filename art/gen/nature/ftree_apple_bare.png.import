@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ftree_apple_bare.png-f7ea03af8ac487bd0e4b4aa2
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

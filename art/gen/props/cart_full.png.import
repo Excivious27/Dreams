@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cart_full.png-5a1135fc300c5183185f6e63da20b2c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

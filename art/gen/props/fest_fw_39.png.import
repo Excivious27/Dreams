@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/fest_fw_39.png-a952821621e433cad297568e2e0118
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

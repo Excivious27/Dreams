@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/small_b_kit_15.png-655ddb07883d9ebca31e163cff
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

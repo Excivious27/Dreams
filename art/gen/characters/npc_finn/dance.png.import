@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dance.png-d8c23a9e2d1ed29f759d1ed5709cb36c.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/carry.png-e87d94e7509d512ff0b7907da7c0af08.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

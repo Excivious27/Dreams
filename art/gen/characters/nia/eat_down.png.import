@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/eat_down.png-da76e036e6df491c5a6c5ab7faa97acd
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

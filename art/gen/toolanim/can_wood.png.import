@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/can_wood.png-63eac9e37c75ac9d3f6d4e6adc8f9c34
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

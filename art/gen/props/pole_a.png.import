@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/pole_a.png-54c3d056d56e7f8cd486d16fdd9471e9.c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

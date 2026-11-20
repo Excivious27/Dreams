@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/float.png-bb1fce5c15e6d25b3a01d9172f2e1282.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/worried.png-38c45236547d4a4f6f4e513b6f6a3e9d.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

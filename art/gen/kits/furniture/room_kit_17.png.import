@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/room_kit_17.png-2617f36de44829b9cf6c249663c50
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

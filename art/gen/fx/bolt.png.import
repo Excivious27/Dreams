@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/bolt.png-9cf9a2dffcec02ae658f04bc0f042747.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cf_build_frame.png-6b3ef0e95fbf6b41d8e0f4cb20
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

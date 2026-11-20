@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/veh_getaway_car_down.png-4bf862277bfd6d0d3341
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

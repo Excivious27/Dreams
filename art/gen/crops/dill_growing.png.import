@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dill_growing.png-e472949011388e01eb800f1f9180
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

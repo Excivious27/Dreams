@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/pond_extra_10.png-b51c747404f06a62e2a6c4a573e
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

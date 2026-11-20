@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sword_iron.png-06b0d60fd1c822dad48e3a4829c8d3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

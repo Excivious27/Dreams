@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/kit_grass_07.png-93d8951a2999f0b648a5da220101
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

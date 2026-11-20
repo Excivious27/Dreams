@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/crystal_tomato_sprout.png-18e45df6bc04f2be7eb
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

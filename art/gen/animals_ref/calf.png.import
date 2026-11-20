@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/calf.png-422fe45d50c9c811cd847e078509132b.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

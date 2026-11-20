@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/iron_fence_v.png-f3c77d0fa9aa9b5cfbf32684e0b3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

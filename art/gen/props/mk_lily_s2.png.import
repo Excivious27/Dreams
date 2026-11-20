@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/mk_lily_s2.png-46b842c2564c25797acf0083f862e3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

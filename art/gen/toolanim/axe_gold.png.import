@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/axe_gold.png-f4471a3bd2571c64bcd08ff3540a2079
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

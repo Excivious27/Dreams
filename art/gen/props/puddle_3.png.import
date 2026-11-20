@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/puddle_3.png-ac83d088ab99fefdd7c1afdc8a037b79
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

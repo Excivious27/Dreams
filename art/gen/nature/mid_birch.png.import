@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/mid_birch.png-72693dd174dfa5dddc804c216b06913
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

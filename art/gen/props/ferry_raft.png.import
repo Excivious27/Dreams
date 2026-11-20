@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ferry_raft.png-4be9604d342b5f8f4c7bbd48460057
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

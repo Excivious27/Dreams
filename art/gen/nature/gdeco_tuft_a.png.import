@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/gdeco_tuft_a.png-1bbdd157957f4ebbdd2b430ac066
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

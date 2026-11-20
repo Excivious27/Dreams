@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/sky_day.png-4a86900d84da8f511e58eccbc51f5f1e.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

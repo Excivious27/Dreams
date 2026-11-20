@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/prismatica_kit_24.png-34ef8f5d2bc8b54e4c245a3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

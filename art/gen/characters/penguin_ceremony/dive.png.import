@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/dive.png-07a9f1713ffc264ac5147b908489f639.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

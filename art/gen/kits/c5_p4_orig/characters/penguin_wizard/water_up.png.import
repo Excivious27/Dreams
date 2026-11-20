@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/water_up.png-d47c79221357c8de7a92ce1f9c17e4e9
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

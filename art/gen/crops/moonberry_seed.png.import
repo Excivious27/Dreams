@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/moonberry_seed.png-6e49b4f4752406c13328941b81
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

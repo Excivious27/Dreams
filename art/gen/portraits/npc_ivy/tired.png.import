@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/tired.png-9a0d2ba86c98fec144d29ddfaa869393.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

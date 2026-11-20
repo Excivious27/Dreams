@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/spire_kit_31.png-5a04e1a02d6435f86e1c45e5cda3
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

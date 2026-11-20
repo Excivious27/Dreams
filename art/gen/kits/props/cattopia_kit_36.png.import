@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/cattopia_kit_36.png-b65be6cd387452b5ed0eb5adb
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/stairs3_down.png-5fc139d6c97e74d5600beb2c6ee6
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/guard.png-03a98a0d18feee7ca3811791598789c2.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

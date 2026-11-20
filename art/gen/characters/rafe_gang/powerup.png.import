@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/powerup.png-dd182a75e6fd4b8cc7ba95f8d0afe679.
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/st_robotics_2.png-4228fc4b2d2f1d8e2ae471fb255
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

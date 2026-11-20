@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ride.png-70ad395689a8284cc1b7f446c6769fdf.cte
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

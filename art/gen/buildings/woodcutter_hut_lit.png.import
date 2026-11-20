@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/woodcutter_hut_lit.png-2b25926ed04073d0f16905
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

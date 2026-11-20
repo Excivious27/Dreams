@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/river_dress_18.png-356d3b93e56f4eb6c4609aba6e
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

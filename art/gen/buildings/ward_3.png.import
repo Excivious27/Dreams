@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ward_3.png-8b34c91a1a89a605c931aaacd7adbfab.c
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

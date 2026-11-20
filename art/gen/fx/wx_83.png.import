@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/wx_83.png-9cd106375565f2b00aa6c8bf67562dbc.ct
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
