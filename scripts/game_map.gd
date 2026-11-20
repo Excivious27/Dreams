@@ -222,6 +222,7 @@ func _ready() -> void:
 	Music.instance(get_tree()).play(area_track())
 	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
+	_clear_stale_pause()  # a pause owned by the last scene (menu opened in the fade) must not freeze this one (c9_10)
 	_fade_in_when_baked()
 	after_ready()
 	_lock_untouched_buildings()
@@ -2129,6 +2130,15 @@ func fit_camera(cam: Camera2D) -> void:
 	cam.limit_top = -oy
 	cam.limit_right = maxi(mw, vw) - ox
 	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
+
+
+## Arrival: a pause whose owner stayed in the previous scene (a menu opened
+## during the transition fade) has no one here to lift it. Nothing in this scene
+## has paused yet at _ready, so any pause now is left over.
+func _clear_stale_pause() -> void:
+	var t := get_tree()
+	if t != null and t.paused and not Hud.keep_paused(t) and Hud.modal_rect.size == Vector2.ZERO:
+		t.paused = false
 
 
 ## Camera nudge on a hit (more on a kill or crit).
