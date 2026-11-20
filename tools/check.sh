@@ -718,3 +718,52 @@ echo "$p4out" | grep -E "FAIL|SCRIPT ERROR|c8_p4_test" || true
 if echo "$p4out" | grep -q "SCRIPT ERROR" || ! echo "$p4out" | grep -q "c8_p4_test: PASS"; then
   echo "C8 P4 test failed"; exit 1
 fi
+
+echo "== C9 P1: controller bindings and field play =="
+padout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/pad_test.gd 2>&1)"
+echo "$padout" | grep -E "FAIL|SCRIPT ERROR|pad_test" || true
+if ! echo "$padout" | grep -q "pad_test: 0 failures"; then
+  echo "pad_test failed"; exit 1
+fi
+
+echo "== C9 P2: game menu with keys/pad =="
+mpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_pad_test.gd 2>&1)"
+echo "$mpout" | grep -E "FAIL|SCRIPT ERROR|menu_pad_test" || true
+if ! echo "$mpout" | grep -q "menu_pad_test: 0 failures"; then
+  echo "menu_pad_test failed"; exit 1
+fi
+
+echo "== C9 P3: full-screen screens with actions only =="
+spout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/screens_pad_test.gd 2>&1)"
+echo "$spout" | grep -E "FAIL|SCRIPT ERROR|screens_pad_test" || true
+if ! echo "$spout" | grep -q "screens_pad_test: 0 failures"; then
+  echo "screens_pad_test failed"; exit 1
+fi
+
+echo "== C9 P4: haptics =="
+hpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/haptics_test.gd 2>&1)"
+echo "$hpout" | grep -E "FAIL|SCRIPT ERROR|HAPTICS" || true
+if ! echo "$hpout" | grep -q "HAPTICS DONE, failures: 0"; then
+  echo "haptics_test failed"; exit 1
+fi
+
+echo "== C9 P5: save codes and files =="
+stout="$("$GODOT" --headless --path . -s res://tools/save_transfer_test.gd 2>&1)"
+echo "$stout" | grep -E "FAIL|SCRIPT ERROR|SAVE TRANSFER DONE" || true
+if ! echo "$stout" | grep -q "SAVE TRANSFER DONE 0"; then
+  echo "save_transfer_test failed"; exit 1
+fi
+
+echo "== C9 P6: forest border buckets =="
+bbout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/border_bucket_test.gd 2>&1)"
+echo "$bbout" | grep -E "FAIL|SCRIPT ERROR|border_bucket_test" || true
+if ! echo "$bbout" | grep -q "border_bucket_test: 0 failures"; then
+  echo "border_bucket_test failed"; exit 1
+fi
+
+echo "== C9 P6: generated data in sync =="
+dsout="$(bash tools/data_sync_check.sh 2>&1)"
+echo "$dsout" | tail -3
+if ! echo "$dsout" | grep -q "data_sync_check: 0 failures"; then
+  echo "data_sync_check failed"; exit 1
+fi

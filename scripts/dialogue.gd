@@ -231,6 +231,7 @@ func skip() -> void:
 		_pic.visible = false
 	if is_inside_tree():
 		Music.instance(get_tree()).sfx("ui_tap")
+		Haptics.buzz("ui_light")
 	if active and not _in_choice:
 		_next.call_deferred()  # after this frame's _process: the MENU press must not also open the menu
 

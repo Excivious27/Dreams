@@ -1470,6 +1470,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	tw.tween_callback(ln.queue_free)
 	map.fx("sparkle", muzzle, 6.0, 0.15)
 	Music.instance(get_tree()).sfx(_gun_sound(), "shot")
+	Haptics.buzz("recoil_big" if _gun_sound() == "shot_shotgun" else "recoil")
 	if _count_shot(GameState.held_tool()) and GameState.count("rounds") > 0:
 		get_tree().create_timer(0.28).timeout.connect(func() -> void:
 			if is_inside_tree():

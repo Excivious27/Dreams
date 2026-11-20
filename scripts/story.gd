@@ -497,6 +497,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		Dialogue.line_music(m.get_tree(), str(fx["music"]))
 	if fx.has("shake"):
 		m.shake(float(fx["shake"]))
+		Haptics.buzz_amount(float(fx["shake"]))
 	if fx.has("fx"):
 		var f: Array = fx["fx"]
 		m.fx(str(f[0]), m.player.position + Vector2(float(f[1]), float(f[2])), 12.0, 0.8)

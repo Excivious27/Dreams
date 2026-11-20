@@ -1886,6 +1886,7 @@ func clear_cell(c: Vector2i) -> void:
 func boss_card(kind: String, title := "") -> void:
 	boss_music = boss_track(kind)
 	Music.instance(get_tree()).play(boss_music, DangerMusic.FADE_IN)  # every boss, mine keepers too
+	Haptics.buzz("boss", false, true)
 	DangerMusic.boss_started(self, boss_music)  # held while the boss fights, then a grace period
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):

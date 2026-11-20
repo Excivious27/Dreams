@@ -501,6 +501,7 @@ func shake(a := 3.0) -> void:
 	if not bool(Settings.get_v("shake")):
 		return  # Options > Screen shake: off reaches the cabinets too (c9_07)
 	_shake = maxf(_shake, a)
+	Haptics.buzz_amount(a)
 
 
 func _step_fx() -> void:

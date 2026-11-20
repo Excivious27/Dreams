@@ -786,11 +786,8 @@ const TOAST_MIN := 2.0
 const TOAST_MAX := 7.0
 static func toast_hold(text: String) -> float:
 	if text.begins_with("+"):
-		return clampf(1.2 + text.length() * 0.03, 1.6, 4.0)
-	var f := 1.0
-	if Settings.DEFAULTS.has("msg_time"):
-		f = maxf(0.5, float(Settings.get_v("msg_time")))
-	return clampf(1.2 + text.length() / TOAST_CPS, TOAST_MIN, TOAST_MAX) * f
+		return clampf(1.2 + text.length() * 0.03, 1.6, 4.0) * Settings.toast_hold()
+	return clampf(1.2 + text.length() / TOAST_CPS, TOAST_MIN, TOAST_MAX) * Settings.toast_hold()  # Options > Messages stay up
 
 
 func toast(text: String, color := Color.WHITE) -> void:

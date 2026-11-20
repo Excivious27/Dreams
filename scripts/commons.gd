@@ -1051,11 +1051,12 @@ static func overnight(report: Dictionary) -> void:
 		if int(pantry[id]) <= 0:
 			pantry.erase(id)
 	var flags: Dictionary = GameState.run["flags"]
-	if not flags.has("cf_letter") and int(GameState.run["day"]) >= 3:
+	if not flags.has("cf_letter") and int(GameState.run["day"]) >= 3 and (flags.has("cf_met") or Mail.intro_ok()):  # old saves: at most 2 opening letters a day (C9 P5)
 		flags["cf_letter"] = true
 		flags["cf_known"] = true
 		if not flags.has("cf_met"):  # already met her out there: no "come and help" letter
 			Mail.send(keeper_name(), str(tx(data()["letter"])), "chat", {"npc": keeper()})
+			Mail.intro_sent()
 		sync_quest()
 	var lines: Array = []
 	if pending() >= 0:

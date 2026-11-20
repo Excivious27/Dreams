@@ -1656,6 +1656,7 @@ static func energy_warn() -> void:
 	elif e < int(ceil(m * EXHAUSTED_FRAC)):
 		now = 1
 	if now > lvl:
+		Haptics.buzz("warn")
 		if now == 1:
 			notify("You're exhausted. Eat something, rest, or head home: at zero energy you'll pass out.")
 		else:

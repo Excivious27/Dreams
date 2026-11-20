@@ -198,7 +198,7 @@ func _show_sound() -> void:
 	_page.add_child(box)
 	Settings.audio_rows(box, get_tree(), _show_sound)
 	# C9: the other packages' shared rows, when present (P2 general options, P4 vibration).
-	for sp: Array in [["res://scripts/settings.gd", "general_rows"], ["res://scripts/haptics.gd", "rows"]]:
+	for sp: Array in [["res://scripts/settings.gd", "general_rows"]]:  # vibration rows come with Settings.audio_rows
 		if ResourceLoader.exists(str(sp[0])):
 			var sc: Script = load(str(sp[0]))
 			if sc != null and sc.has_method(str(sp[1])):

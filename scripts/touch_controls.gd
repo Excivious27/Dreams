@@ -377,6 +377,7 @@ func _end_stick() -> void:
 
 func _press(action: String) -> void:
 	_held[action] = true
+	Haptics.buzz("press")  # only when Options > Vibrate on button taps is on (C9 P4)
 	if action.begins_with("pup:"):
 		_pup_cmd(action.trim_prefix("pup:"))
 		_canvas.queue_redraw()
