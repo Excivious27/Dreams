@@ -27,6 +27,25 @@ const CITY_MAPS := ["neon", "uptown", "docks", "hideout", "bf_neon_block"]
 const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone
 const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake", "community_farm"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
+## C11a P5: maps that can hold farm animals (pen spots, the rooster). A pasture scene joins here.
+const RANCH_MAPS := ["farm"]
+## Pen spots per species (C11a P5): [spot, min_s, max_s, dB]. A spot plays audio/amb/spot_<spot>
+## takes, else the species' voice takes in audio/sfx (VOICE_FALLBACK), from a real animal of that
+## species on the map (positional), so a named cow still moos and a co-op guest hears the host's herd.
+const PEN_SPOTS := {"chicken": ["hens", 25.0, 60.0, -20.0], "cow": ["cow", 40.0, 90.0, -20.0],
+	"goat": ["goat", 45.0, 100.0, -22.0], "sheep": ["sheep", 45.0, 100.0, -22.0], "duck": ["duck", 35.0, 80.0, -22.0],
+	"horse": ["horse", 60.0, 120.0, -22.0], "llama": ["llama", 60.0, 120.0, -24.0], "pig": ["pig", 45.0, 100.0, -22.0],
+	"bees": ["bees", 30.0, 60.0, -24.0]}
+const VOICE_FALLBACK := {"goat": "bleat", "sheep": "sheep", "duck": "quack", "horse": "whinny", "llama": "bleat", "pig": "oink", "bees": "buzz"}
+## Animal-kind prefixes (FarmAnimal.kind / art names) -> species. Babies count with their species.
+const KIND_SPECIES := [["rooster", "rooster"], ["chick", "chicken"], ["chicken", "chicken"], ["hen", "chicken"],
+	["calf", "cow"], ["cow", "cow"], ["kid", "goat"], ["goat", "goat"], ["lamb", "sheep"], ["sheep", "sheep"],
+	["duck", "duck"], ["foal", "horse"], ["horse", "horse"], ["donkey", "horse"], ["llama", "llama"],
+	["piglet", "pig"], ["pig", "pig"], ["rabbit", "rabbit"], ["bee", "bees"]]
+## Animal buildings indoors: interior id -> species heard inside (spots from the animals themselves).
+const ROOM_ANIMALS := {"stable": ["horse"], "coop": ["chicken", "duck"], "barn": ["cow", "goat", "sheep"]}
+var _herd := {}        # species -> Array of Node2D (refreshed with the beds)
+var _herd_t := 0.0
 ## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
 const QUIET_MAPS := ["hollow_heart", "wastes", "colony_ember", "moon", "station", "sky"]
 var _quick_t := 0.0
@@ -461,13 +480,11 @@ func _spots(delta: float) -> void:
 		rules.append(["frog", 6.0, 16.0, -12.0])
 	if outdoors and calm and ph == "day" and GameState.look_se() == "summer" and id in ["jungle", "forest", "meadow", "orchard_hills"]:
 		rules.append(["cicada", 20.0, 45.0, -16.0])
-	if outdoors and calm and id == "farm" and ph == "day":
-		# Pen spots when the farm keeps those animals (C6 P3 recordings; quiet, low rate).
-		var owned := str((GameState.run.get("animals", {}) as Dictionary).keys())
-		if "chicken" in owned or "hen" in owned:
-			rules.append(["hens", 25.0, 60.0, -20.0])
-		if "cow" in owned:
-			rules.append(["cow", 40.0, 90.0, -20.0])
+	_herd_t -= delta
+	if _herd_t <= 0.0:
+		_herd_t = 2.0
+		_herd = herd_on(m)
+	var pen_rules := pen_rules_for(id, outdoors, calm, ph, str(m.get("interior_id")) if m.get("interior_id") != null else "", _herd)
 	if outdoors and calm and id in ["jungle", "marsh"] and se != "winter":
 		rules.append(["insect", 12.0, 30.0, -16.0])
 	if not outdoors and id in ["house", "interior"] and GameState.weather_today() == "storm":
@@ -494,14 +511,80 @@ func _spots(delta: float) -> void:
 		if float(_spot_t[k]) <= 0.0:
 			_spot_t[k] = randf_range(float(r[1]), float(r[2]))
 			_spot(k, float(r[3]))
-	# The rooster crows once each morning on the farm.
+	for r: Array in pen_rules:  # [spot, min, max, dB, species]: from one of that species' animals
+		var pk := "pen_" + str(r[0])
+		_spot_t[pk] = float(_spot_t.get(pk, randf_range(float(r[1]), float(r[2])))) - delta
+		if float(_spot_t[pk]) <= 0.0:
+			_spot_t[pk] = randf_range(float(r[1]), float(r[2]))
+			var src: Array = _herd.get(str(r[4]), [])
+			if not src.is_empty():
+				_spot(str(r[0]), float(r[3]), (src.pick_random() as Node2D).position, str(r[4]))
+	# The rooster crows once each morning, from the rooster, when the farm has one (c11a_13-09).
 	var day := int(GameState.run.get("day", 1))
-	if id == "farm" and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
+	var roosters: Array = _herd.get("rooster", [])
+	if id in RANCH_MAPS and not roosters.is_empty() and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
 		_rooster_day = day
-		_spot("rooster", -10.0)
+		_spot("rooster", -10.0, (roosters[0] as Node2D).position)
 
 
-func _spot(name: String, db: float) -> void:
+## Species -> the animal nodes of that species on this map (FarmAnimal or any node with a "kind").
+static func herd_on(m: Node) -> Dictionary:
+	var out := {}
+	if m == null:
+		return out
+	for c in m.get_children():
+		if not (c is Node2D):
+			continue
+		var k: Variant = c.get("kind") if c is FarmAnimal else null
+		if k == null:
+			continue
+		var sp := species_of(str(k))
+		if sp == "":
+			continue
+		if not out.has(sp):
+			out[sp] = []
+		(out[sp] as Array).append(c)
+	return out
+
+
+## FarmAnimal kind ("cow_brown", "kid_goat", "piglet") -> species id ("" = not farm stock).
+static func species_of(kind: String) -> String:
+	var k := kind.to_lower()
+	var sp := Ranch.species(k)
+	if not sp.is_empty():
+		return k
+	for row: Array in KIND_SPECIES:
+		if k.begins_with(str(row[0])):
+			return str(row[1])
+	return ""
+
+
+## Pen spot rules for the animals present: outdoors on ranch maps by day in calm weather,
+## and inside animal buildings (ROOM_ANIMALS) at any hour, quieter at night. Each row carries
+## its species as a 5th field. Total kept to 3 species so the farm isn't a zoo.
+static func pen_rules_for(id: String, outdoors: bool, calm: bool, ph: String, room: String, herd: Dictionary) -> Array:
+	var out: Array = []
+	var allowed: Array = []
+	var night_db := 0.0
+	if outdoors and calm and ph == "day" and id in RANCH_MAPS:
+		allowed = PEN_SPOTS.keys()
+	elif not outdoors and id == "interior" and ROOM_ANIMALS.has(room):
+		allowed = ROOM_ANIMALS[room]
+		night_db = -8.0 if ph == "night" else 0.0
+	var kinds: Array = []
+	for sp: String in allowed:
+		if herd.has(sp) and not (herd[sp] as Array).is_empty() and PEN_SPOTS.has(sp):
+			kinds.append(sp)
+	kinds.sort_custom(func(a: String, b: String) -> bool: return (herd[a] as Array).size() > (herd[b] as Array).size())
+	for sp: String in kinds.slice(0, 3):
+		var r: Array = PEN_SPOTS[sp]
+		# A bigger flock calls a little more often (up to twice as often at 8+).
+		var rate := 1.0 / clampf(1.0 + float((herd[sp] as Array).size() - 1) / 7.0, 1.0, 2.0)
+		out.append([str(r[0]), float(r[1]) * rate, float(r[2]) * rate, float(r[3]) + night_db, sp])
+	return out
+
+
+func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
 	var m := _map()
 	# Every take of the spot (spot_<n>, spot_<n>_2, spot_<n>_3; .ogg CC0 recordings win over .wav).
 	var takes := []
@@ -511,8 +594,17 @@ func _spot(name: String, db: float) -> void:
 			st = _stream("res://audio/amb/spot_%s%s.wav" % [name, suf])
 		if st != null:
 			takes.append(st)
+	# C11a P5: a pen spot with no ambience recording borrows the species' voice takes (quieter).
+	if takes.is_empty() and species != "" and VOICE_FALLBACK.has(species):
+		for suf2: String in ["", "_2", "_3"]:
+			var vs := _stream("res://audio/sfx/%s%s.ogg" % [str(VOICE_FALLBACK[species]), suf2])
+			if vs != null:
+				takes.append(vs)
+		db -= 4.0
 	var s: AudioStream = takes.pick_random() if not takes.is_empty() else null
 	if s == null or m == null or m.player == null:
+		return
+	if at != Vector2.INF and at.distance_to(m.player.position) > 300.0:
 		return
 	var p := AudioStreamPlayer2D.new()
 	p.stream = s
@@ -523,6 +615,10 @@ func _spot(name: String, db: float) -> void:
 	p.pitch_scale = randf_range(0.94, 1.06) if name != "thunder" else randf_range(0.8, 0.9)
 	var ang := randf() * TAU
 	p.position = m.player.position + Vector2(cos(ang), sin(ang)) * randf_range(60.0, 140.0)
+	if at != Vector2.INF:
+		# From the animal itself (c11a_13-10): a far pen fades with distance (past range: skipped above).
+		p.max_distance = 300.0
+		p.position = at
 	if name == "thunder":
 		p.position = m.player.position + Vector2(randf_range(-40, 40), -60)
 	m.add_child(p)
