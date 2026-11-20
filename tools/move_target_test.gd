@@ -281,6 +281,14 @@ func _approach(m: GameMap, p: Player, t: Vector2i, d: Vector2i) -> Array:
 		Input.action_press(k)
 	for i in 150:
 		await frames(1)
+		if Dialogue.instance(self).active:
+			# a town beat (first visit, keeper letter) may open mid-walk: this test is about aiming
+			_release_all()
+			await _drain()
+			p.frozen = false
+			Dialogue.block_until_ms = 0
+			for k in ks:
+				Input.action_press(k)
 		var c := p.cell()
 		if maxi(absi(c.x - t.x), absi(c.y - t.y)) <= 1:
 			break
@@ -333,7 +341,7 @@ func _villager_check() -> void:
 		p.frozen = false  # a first-visit beat may hold the hero: this is about aiming
 		Dialogue.block_until_ms = 0
 		var res := await _approach(m, p, t, d)
-		check(res[0], "villager from %s: target is the villager (got %s, stood %s facing %s)" % [d, res[1], res[2], p.facing])
+		check(res[0], "villager from %s: target is the villager at %s (got %s, stood %s facing %s)" % [d, t, res[1], res[2], p.facing])
 
 
 func _deep_water(m: GameMap) -> Vector2i:
