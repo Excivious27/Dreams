@@ -621,6 +621,48 @@
  },
  {
   "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_bed",
+  "glow": 0,
+  "id": "dc_bloom_bed_lilac",
+  "layer": "floor",
+  "name": "Lilac Bloom Bed",
+  "px": [
+   60,
+   79
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_bed",
+  "glow": 0,
+  "id": "dc_bloom_bed_sage",
+  "layer": "floor",
+  "name": "Sage Quilted Bloom Bed",
+  "px": [
+   60,
+   79
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
   "cat": "wall_art",
   "glow": 0,
   "id": "dc_bloom_birdhouse",
@@ -652,6 +694,48 @@
   ],
   "rarity": "common",
   "rot": 4,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_chair",
+  "glow": 0,
+  "id": "dc_bloom_chair_sage",
+  "layer": "floor",
+  "name": "Sage Floral Armchair",
+  "px": [
+   30,
+   34
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_chair",
+  "glow": 0,
+  "id": "dc_bloom_chair_sky",
+  "layer": "floor",
+  "name": "Sky Floral Armchair",
+  "px": [
+   30,
+   34
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
   "set": "cottage_bloom",
   "sheet": "set_cottage_bloom_b.png",
   "size": [
@@ -792,6 +876,48 @@
   ],
   "rarity": "common",
   "rot": 2,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_sofa",
+  "glow": 0,
+  "id": "dc_bloom_sofa_sage",
+  "layer": "floor",
+  "name": "Sage Gingham Sofa",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "cottage_bloom",
+  "sheet": "set_cottage_bloom_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_bloom_sofa",
+  "glow": 0,
+  "id": "dc_bloom_sofa_sky",
+  "layer": "floor",
+  "name": "Sky Gingham Sofa",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
   "set": "cottage_bloom",
   "sheet": "set_cottage_bloom_a.png",
   "size": [
@@ -4404,6 +4530,48 @@
   ]
  },
  {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "colourway_of": "dc_noir_sofa",
+  "glow": 0,
+  "id": "dc_noir_sofa_forest",
+  "layer": "floor",
+  "name": "Forest Noir Sofa",
+  "px": [
+   60,
+   32
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "neon_noir",
+  "sheet": "set_neon_noir_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "colourway_of": "dc_noir_sofa",
+  "glow": 0,
+  "id": "dc_noir_sofa_navy",
+  "layer": "floor",
+  "name": "Navy Velvet Noir Sofa",
+  "px": [
+   60,
+   32
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "neon_noir",
+  "sheet": "set_neon_noir_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
   "arc": "penguins",
   "cat": "wall_art",
   "glow": 0,
@@ -4786,6 +4954,48 @@
  {
   "arc": "both",
   "cat": "rug",
+  "colourway_of": "dc_rug_casino",
+  "glow": 0,
+  "id": "dc_rug_casino_forest",
+  "layer": "flat",
+  "name": "Forest Carpet Runner",
+  "px": [
+   83,
+   30
+  ],
+  "rarity": "uncommon",
+  "rot": 2,
+  "set": "",
+  "sheet": "rugs.png",
+  "size": [
+   3,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "rug",
+  "colourway_of": "dc_rug_casino",
+  "glow": 0,
+  "id": "dc_rug_casino_navy",
+  "layer": "flat",
+  "name": "Navy Carpet Runner",
+  "px": [
+   83,
+   30
+  ],
+  "rarity": "uncommon",
+  "rot": 2,
+  "set": "",
+  "sheet": "rugs.png",
+  "size": [
+   3,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "rug",
   "glow": 0,
   "id": "dc_rug_moon",
   "layer": "flat",
@@ -4866,6 +5076,48 @@
  {
   "arc": "both",
   "cat": "rug",
+  "colourway_of": "dc_rug_persian",
+  "glow": 0,
+  "id": "dc_rug_persian_forest",
+  "layer": "flat",
+  "name": "Forest Long Rug",
+  "px": [
+   90,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 2,
+  "set": "",
+  "sheet": "rugs.png",
+  "size": [
+   3,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "rug",
+  "colourway_of": "dc_rug_persian",
+  "glow": 0,
+  "id": "dc_rug_persian_navy",
+  "layer": "flat",
+  "name": "Navy Long Rug",
+  "px": [
+   90,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 2,
+  "set": "",
+  "sheet": "rugs.png",
+  "size": [
+   3,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "rug",
   "glow": 0,
   "id": "dc_rug_star",
   "layer": "flat",
@@ -4915,6 +5167,48 @@
    75
   ],
   "rarity": "common",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_rustic_bed",
+  "glow": 0,
+  "id": "dc_rustic_bed_forest",
+  "layer": "floor",
+  "name": "Forest Plaid Quilt Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "farmhouse_rustic",
+  "sheet": "set_rustic_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_rustic_bed",
+  "glow": 0,
+  "id": "dc_rustic_bed_navy",
+  "layer": "floor",
+  "name": "Navy Plaid Quilt Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "uncommon",
   "rot": 1,
   "set": "farmhouse_rustic",
   "sheet": "set_rustic_a.png",
@@ -5126,6 +5420,48 @@
  {
   "arc": "gangsters",
   "cat": "furniture",
+  "colourway_of": "dc_safe_chair",
+  "glow": 0,
+  "id": "dc_safe_chair_forest",
+  "layer": "floor",
+  "name": "Forest Armchair",
+  "px": [
+   30,
+   31
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "safehouse",
+  "sheet": "set_safehouse_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "colourway_of": "dc_safe_chair",
+  "glow": 0,
+  "id": "dc_safe_chair_navy",
+  "layer": "floor",
+  "name": "Navy Patched Armchair",
+  "px": [
+   30,
+   31
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "safehouse",
+  "sheet": "set_safehouse_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
   "glow": 0,
   "id": "dc_safe_couch",
   "layer": "floor",
@@ -5136,6 +5472,48 @@
   ],
   "rarity": "common",
   "rot": 2,
+  "set": "safehouse",
+  "sheet": "set_safehouse_a_v2.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "colourway_of": "dc_safe_couch",
+  "glow": 0,
+  "id": "dc_safe_couch_forest",
+  "layer": "floor",
+  "name": "Forest Crew Couch",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "safehouse",
+  "sheet": "set_safehouse_a_v2.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "cat": "furniture",
+  "colourway_of": "dc_safe_couch",
+  "glow": 0,
+  "id": "dc_safe_couch_navy",
+  "layer": "floor",
+  "name": "Navy Lumpy Crew Couch",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
   "set": "safehouse",
   "sheet": "set_safehouse_a_v2.png",
   "size": [
@@ -5346,6 +5724,48 @@
  {
   "arc": "both",
   "cat": "furniture",
+  "colourway_of": "dc_sea_bed",
+  "glow": 0,
+  "id": "dc_sea_bed_coral",
+  "layer": "floor",
+  "name": "Coral Sailcloth Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_sea_bed",
+  "glow": 0,
+  "id": "dc_sea_bed_sage",
+  "layer": "floor",
+  "name": "Sage Sailcloth Bed",
+  "px": [
+   60,
+   75
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
   "glow": 0,
   "id": "dc_sea_buoy",
   "layer": "floor",
@@ -5516,6 +5936,48 @@
   ],
   "rarity": "common",
   "rot": 2,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_sea_sofa",
+  "glow": 0,
+  "id": "dc_sea_sofa_coral",
+  "layer": "floor",
+  "name": "Coral Deck Sofa",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "seaside",
+  "sheet": "set_seaside_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "colourway_of": "dc_sea_sofa",
+  "glow": 0,
+  "id": "dc_sea_sofa_forest",
+  "layer": "floor",
+  "name": "Forest Deck Sofa",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
   "set": "seaside",
   "sheet": "set_seaside_a.png",
   "size": [

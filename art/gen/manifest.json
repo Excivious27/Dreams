@@ -44513,6 +44513,16 @@
    "h": 79,
    "w": 60
   },
+  "dc_bloom_bed_lilac": {
+   "file": "decor/dc_bloom_bed_lilac.png",
+   "h": 79,
+   "w": 60
+  },
+  "dc_bloom_bed_sage": {
+   "file": "decor/dc_bloom_bed_sage.png",
+   "h": 79,
+   "w": 60
+  },
   "dc_bloom_birdhouse": {
    "file": "decor/dc_bloom_birdhouse.png",
    "h": 48,
@@ -44535,6 +44545,46 @@
   },
   "dc_bloom_chair_r3": {
    "file": "decor/dc_bloom_chair_r3.png",
+   "h": 36,
+   "w": 25
+  },
+  "dc_bloom_chair_sage": {
+   "file": "decor/dc_bloom_chair_sage.png",
+   "h": 34,
+   "w": 30
+  },
+  "dc_bloom_chair_sage_r1": {
+   "file": "decor/dc_bloom_chair_sage_r1.png",
+   "h": 36,
+   "w": 25
+  },
+  "dc_bloom_chair_sage_r2": {
+   "file": "decor/dc_bloom_chair_sage_r2.png",
+   "h": 32,
+   "w": 30
+  },
+  "dc_bloom_chair_sage_r3": {
+   "file": "decor/dc_bloom_chair_sage_r3.png",
+   "h": 36,
+   "w": 25
+  },
+  "dc_bloom_chair_sky": {
+   "file": "decor/dc_bloom_chair_sky.png",
+   "h": 34,
+   "w": 30
+  },
+  "dc_bloom_chair_sky_r1": {
+   "file": "decor/dc_bloom_chair_sky_r1.png",
+   "h": 36,
+   "w": 25
+  },
+  "dc_bloom_chair_sky_r2": {
+   "file": "decor/dc_bloom_chair_sky_r2.png",
+   "h": 32,
+   "w": 30
+  },
+  "dc_bloom_chair_sky_r3": {
+   "file": "decor/dc_bloom_chair_sky_r3.png",
    "h": 36,
    "w": 25
   },
@@ -44580,6 +44630,36 @@
   },
   "dc_bloom_sofa_r3": {
    "file": "decor/dc_bloom_sofa_r3.png",
+   "h": 37,
+   "w": 26
+  },
+  "dc_bloom_sofa_sage": {
+   "file": "decor/dc_bloom_sofa_sage.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_bloom_sofa_sage_r1": {
+   "file": "decor/dc_bloom_sofa_sage_r1.png",
+   "h": 37,
+   "w": 26
+  },
+  "dc_bloom_sofa_sage_r3": {
+   "file": "decor/dc_bloom_sofa_sage_r3.png",
+   "h": 37,
+   "w": 26
+  },
+  "dc_bloom_sofa_sky": {
+   "file": "decor/dc_bloom_sofa_sky.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_bloom_sofa_sky_r1": {
+   "file": "decor/dc_bloom_sofa_sky_r1.png",
+   "h": 37,
+   "w": 26
+  },
+  "dc_bloom_sofa_sky_r3": {
+   "file": "decor/dc_bloom_sofa_sky_r3.png",
    "h": 37,
    "w": 26
   },
@@ -45753,6 +45833,36 @@
    "h": 32,
    "w": 60
   },
+  "dc_noir_sofa_forest": {
+   "file": "decor/dc_noir_sofa_forest.png",
+   "h": 32,
+   "w": 60
+  },
+  "dc_noir_sofa_forest_r1": {
+   "file": "decor/dc_noir_sofa_forest_r1.png",
+   "h": 35,
+   "w": 28
+  },
+  "dc_noir_sofa_forest_r3": {
+   "file": "decor/dc_noir_sofa_forest_r3.png",
+   "h": 35,
+   "w": 28
+  },
+  "dc_noir_sofa_navy": {
+   "file": "decor/dc_noir_sofa_navy.png",
+   "h": 32,
+   "w": 60
+  },
+  "dc_noir_sofa_navy_r1": {
+   "file": "decor/dc_noir_sofa_navy_r1.png",
+   "h": 35,
+   "w": 28
+  },
+  "dc_noir_sofa_navy_r3": {
+   "file": "decor/dc_noir_sofa_navy_r3.png",
+   "h": 35,
+   "w": 28
+  },
   "dc_noir_sofa_r1": {
    "file": "decor/dc_noir_sofa_r1.png",
    "h": 35,
@@ -45858,6 +45968,26 @@
    "h": 30,
    "w": 83
   },
+  "dc_rug_casino_forest": {
+   "file": "decor/dc_rug_casino_forest.png",
+   "h": 30,
+   "w": 83
+  },
+  "dc_rug_casino_forest_r1": {
+   "file": "decor/dc_rug_casino_forest_r1.png",
+   "h": 83,
+   "w": 30
+  },
+  "dc_rug_casino_navy": {
+   "file": "decor/dc_rug_casino_navy.png",
+   "h": 30,
+   "w": 83
+  },
+  "dc_rug_casino_navy_r1": {
+   "file": "decor/dc_rug_casino_navy_r1.png",
+   "h": 83,
+   "w": 30
+  },
   "dc_rug_casino_r1": {
    "file": "decor/dc_rug_casino_r1.png",
    "h": 83,
@@ -45888,6 +46018,26 @@
    "h": 48,
    "w": 90
   },
+  "dc_rug_persian_forest": {
+   "file": "decor/dc_rug_persian_forest.png",
+   "h": 48,
+   "w": 90
+  },
+  "dc_rug_persian_forest_r1": {
+   "file": "decor/dc_rug_persian_forest_r1.png",
+   "h": 90,
+   "w": 48
+  },
+  "dc_rug_persian_navy": {
+   "file": "decor/dc_rug_persian_navy.png",
+   "h": 48,
+   "w": 90
+  },
+  "dc_rug_persian_navy_r1": {
+   "file": "decor/dc_rug_persian_navy_r1.png",
+   "h": 90,
+   "w": 48
+  },
   "dc_rug_persian_r1": {
    "file": "decor/dc_rug_persian_r1.png",
    "h": 90,
@@ -45905,6 +46055,16 @@
   },
   "dc_rustic_bed": {
    "file": "decor/dc_rustic_bed.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_rustic_bed_forest": {
+   "file": "decor/dc_rustic_bed_forest.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_rustic_bed_navy": {
+   "file": "decor/dc_rustic_bed_navy.png",
    "h": 75,
    "w": 60
   },
@@ -45958,6 +46118,46 @@
    "h": 31,
    "w": 30
   },
+  "dc_safe_chair_forest": {
+   "file": "decor/dc_safe_chair_forest.png",
+   "h": 31,
+   "w": 30
+  },
+  "dc_safe_chair_forest_r1": {
+   "file": "decor/dc_safe_chair_forest_r1.png",
+   "h": 31,
+   "w": 25
+  },
+  "dc_safe_chair_forest_r2": {
+   "file": "decor/dc_safe_chair_forest_r2.png",
+   "h": 27,
+   "w": 31
+  },
+  "dc_safe_chair_forest_r3": {
+   "file": "decor/dc_safe_chair_forest_r3.png",
+   "h": 31,
+   "w": 25
+  },
+  "dc_safe_chair_navy": {
+   "file": "decor/dc_safe_chair_navy.png",
+   "h": 31,
+   "w": 30
+  },
+  "dc_safe_chair_navy_r1": {
+   "file": "decor/dc_safe_chair_navy_r1.png",
+   "h": 31,
+   "w": 25
+  },
+  "dc_safe_chair_navy_r2": {
+   "file": "decor/dc_safe_chair_navy_r2.png",
+   "h": 27,
+   "w": 31
+  },
+  "dc_safe_chair_navy_r3": {
+   "file": "decor/dc_safe_chair_navy_r3.png",
+   "h": 31,
+   "w": 25
+  },
   "dc_safe_chair_r1": {
    "file": "decor/dc_safe_chair_r1.png",
    "h": 31,
@@ -45977,6 +46177,36 @@
    "file": "decor/dc_safe_couch.png",
    "h": 41,
    "w": 60
+  },
+  "dc_safe_couch_forest": {
+   "file": "decor/dc_safe_couch_forest.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_safe_couch_forest_r1": {
+   "file": "decor/dc_safe_couch_forest_r1.png",
+   "h": 41,
+   "w": 26
+  },
+  "dc_safe_couch_forest_r3": {
+   "file": "decor/dc_safe_couch_forest_r3.png",
+   "h": 41,
+   "w": 26
+  },
+  "dc_safe_couch_navy": {
+   "file": "decor/dc_safe_couch_navy.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_safe_couch_navy_r1": {
+   "file": "decor/dc_safe_couch_navy_r1.png",
+   "h": 41,
+   "w": 26
+  },
+  "dc_safe_couch_navy_r3": {
+   "file": "decor/dc_safe_couch_navy_r3.png",
+   "h": 41,
+   "w": 26
   },
   "dc_safe_couch_r1": {
    "file": "decor/dc_safe_couch_r1.png",
@@ -46035,6 +46265,16 @@
   },
   "dc_sea_bed": {
    "file": "decor/dc_sea_bed.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_sea_bed_coral": {
+   "file": "decor/dc_sea_bed_coral.png",
+   "h": 75,
+   "w": 60
+  },
+  "dc_sea_bed_sage": {
+   "file": "decor/dc_sea_bed_sage.png",
    "h": 75,
    "w": 60
   },
@@ -46097,6 +46337,36 @@
    "file": "decor/dc_sea_sofa.png",
    "h": 41,
    "w": 60
+  },
+  "dc_sea_sofa_coral": {
+   "file": "decor/dc_sea_sofa_coral.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_sea_sofa_coral_r1": {
+   "file": "decor/dc_sea_sofa_coral_r1.png",
+   "h": 42,
+   "w": 32
+  },
+  "dc_sea_sofa_coral_r3": {
+   "file": "decor/dc_sea_sofa_coral_r3.png",
+   "h": 42,
+   "w": 32
+  },
+  "dc_sea_sofa_forest": {
+   "file": "decor/dc_sea_sofa_forest.png",
+   "h": 41,
+   "w": 60
+  },
+  "dc_sea_sofa_forest_r1": {
+   "file": "decor/dc_sea_sofa_forest_r1.png",
+   "h": 42,
+   "w": 32
+  },
+  "dc_sea_sofa_forest_r3": {
+   "file": "decor/dc_sea_sofa_forest_r3.png",
+   "h": 42,
+   "w": 32
   },
   "dc_sea_sofa_r1": {
    "file": "decor/dc_sea_sofa_r1.png",

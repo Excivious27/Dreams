@@ -660,6 +660,72 @@ def sheet_texture(s):
         entry(p, s, px=[256, 256], period_cells=8, tile=how, icon=p[0] + "_icon")
 
 
+# Colourways (c10_11_09): free fabric recolours of common pieces. The piece's main fabric hue
+# (the most common saturated hue outside wood browns) is turned to each target hue; rotations follow.
+COLOURWAYS = {
+    "dc_bloom_sofa": ["sage", "sky"], "dc_bloom_chair": ["sage", "sky"], "dc_bloom_bed": ["sage", "lilac"],
+    "dc_rustic_bed": ["forest", "navy"], "dc_sea_sofa": ["coral", "forest"], "dc_sea_bed": ["coral", "sage"],
+    "dc_safe_couch": ["forest", "navy"], "dc_safe_chair": ["forest", "navy"], "dc_rug_persian": ["navy", "forest"],
+    "dc_rug_casino": ["navy", "forest"], "dc_noir_sofa": ["forest", "navy"],
+}
+HUES = {"sage": (100, "Sage"), "sky": (205, "Sky"), "lilac": (275, "Lilac"), "forest": (130, "Forest"),
+        "navy": (225, "Navy"), "coral": (8, "Coral")}
+
+
+def _fabric_hue(h, sat, val, alpha):
+    import numpy as np
+    m = (alpha > 0) & (sat > 0.28) & (val > 0.18) & ~((h > 15) & (h < 48) & (sat < 0.75))
+    if m.sum() < 30:
+        return None, m
+    hist, edges = np.histogram(h[m], bins=36, range=(0, 360))
+    return (np.argmax(hist) + 0.5) * 10, m
+
+
+def recolour(img, target):
+    import numpy as np, colorsys
+    from PIL import Image
+    a = np.asarray(img.convert("RGBA")).astype(float) / 255
+    rgb = a[..., :3]
+    mx, mn = rgb.max(2), rgb.min(2)
+    val, sat = mx, np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0)
+    hsv = np.asarray(img.convert("RGB").convert("HSV")).astype(float)
+    h = hsv[..., 0] * 360 / 255
+    base, m = _fabric_hue(h, sat, val, a[..., 3])
+    if base is None:
+        return None
+    d = (h - base + 180) % 360 - 180
+    sel = m & (np.abs(d) < 32)
+    nh = (target + d) % 360
+    out = hsv.copy()
+    out[..., 0] = np.where(sel, nh * 255 / 360, hsv[..., 0])
+    rgb2 = np.asarray(Image.fromarray(out.astype(np.uint8), "HSV").convert("RGB"))
+    o = np.asarray(img.convert("RGBA")).copy()
+    o[..., :3] = np.where(sel[..., None], rgb2, o[..., :3])
+    return Image.fromarray(o)
+
+
+def colourways():
+    from PIL import Image
+    S = _S()
+    for base, cols in COLOURWAYS.items():
+        e = CATALOG.get(base)
+        if not e:
+            continue
+        for c in cols:
+            hue, word = HUES[c]
+            nid = "%s_%s" % (base, c)
+            for suf in ("", "_r1", "_r2", "_r3"):
+                f = os.path.join(S.OUT, GROUP, base + suf + ".png")
+                if os.path.exists(f):
+                    im = recolour(Image.open(f), hue)
+                    if im is not None:
+                        save(im, nid + suf)
+            nm = e["name"][4:] if e["name"].startswith("Red ") else e["name"]   # no "Navy Red ..."
+            name = "%s %s" % (word, nm.split(" ", 1)[-1] if len(word) + len(nm) > 21 else nm)
+            ne = dict(e, id=nid, name=name[:22], rarity="uncommon" if e["rarity"] == "common" else e["rarity"], colourway_of=base)
+            CATALOG[nid] = ne
+
+
 def settle_rot():
     """rot from the views that were drawn: back view -> 4 (seat), side only -> 2."""
     for s in SHEETS:
@@ -700,7 +766,7 @@ def write_catalog():
     rows = []
     for e in sorted(CATALOG.values(), key=lambda e: e["id"]):
         rows.append({k: e[k] for k in ("id", "name", "cat", "rarity", "arc", "layer", "size", "rot", "glow", "set")}
-                    | {k: e[k] for k in ("frames", "fps", "icon", "px", "tile", "sheet") if k in e})
+                    | {k: e[k] for k in ("frames", "fps", "icon", "px", "tile", "sheet", "colourway_of") if k in e})
     with open(path, "w") as fh:
         json.dump(rows, fh, indent=1, sort_keys=True)
     return rows
@@ -762,6 +828,8 @@ def main(only):
             continue
         {"pieces": sheet_pieces, "anim": sheet_anim, "ui": sheet_ui}.get(s["kind"], sheet_texture)(s)
         print("ok", s["file"])
+    if not only or "colourways" in only:
+        colourways()
     if only:   # partial run: keep earlier catalogue rows
         cp = os.path.join(S.OUT, GROUP, "_catalog.json")
         if os.path.exists(cp):
