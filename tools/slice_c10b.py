@@ -13,7 +13,7 @@ Hardlinked art: every file is removed before it is written.
 After: python3 tools/art_audit.py --fix <ids>, python3 tools/set_import_lossy.py,
 flock godot --headless --import.
 """
-import json, os, sys
+import json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import slice_c10a as A
 
@@ -496,6 +496,37 @@ def _strict_recolour(img, target, lo_sat=0.4):
     return Image.fromarray(o)
 
 
+def fix_tent_mid():
+    """wl_tent_m had a transparent right band and an outline column: a black gap between every wall
+    column (c10b_08-17). New mid = the outline-free drape of wl_tent_l, wrapped with a 3-px blend."""
+    import numpy as np
+    from PIL import Image
+    src = np.asarray(_orig("tiles", "wl_tent_l")).astype(float)[:, 3:]
+    w = src.shape[1]
+    k = 3
+    out = src.copy()
+    for i in range(k):      # blend the last k columns toward the first ones so the run wraps
+        t = (i + 1) / (k + 1)
+        out[:, w - k + i] = src[:, w - k + i] * (1 - t) + src[:, i] * t
+    im = Image.fromarray(out.clip(0, 255).astype(np.uint8)).resize((32, 64), Image.NEAREST)
+    _write(im, "tiles", "wl_tent_m")
+
+
+WINTER_TWINS = ["flowerbed_pink", "hedge2_h", "topiary_a", "hedge2_ball", "bench2_wood_a", "statue", "trellis", "stone_arch"]
+
+
+def winter_twins():
+    """props/<name>_winter for garden props that stayed summer-green in snow (c10b_03); WorldGen.WINTER_LOOKS
+    lists them (P2 hook). Each twin is drawn at its summer piece's exact size so footprints never change."""
+    a = rgba("out_winter_twins.png")
+    boxes = A.cells(a, 2, 4)
+    for k, nm in enumerate(WINTER_TWINS):
+        ref = _open("props", nm)
+        im = A._crop(a, boxes[k // 4][k % 4])
+        out = _S().scale_to(im, width=ref.width, height=ref.height)
+        _write(out, "props", nm + "_winter")
+
+
 def fix_colourways():
     for base, cols in (("dc_rustic_bed", ["forest", "navy"]), ("dc_rug_persian", ["navy"])):
         for c in cols:
@@ -733,6 +764,39 @@ HEIGHT_BAND = {"bench": (0.6, 2.6), "planter": (0.5, 2.0), "lamp": (0.8, 3.5), "
                "fence": (0.4, 3.5), "yard_gang": (0.4, 3.5), "yard_penguin": (0.4, 3.5)}
 
 
+GANG_BAD = re.compile(r"(?i)casino|roulette|slot machine|poker|high.?roller|royal flush|gambl|crystal|penguin")
+PEN_BAD = re.compile(r"(?i)\bcrew\b|vault|casino")
+
+
+def _quality(cat):
+    """Seams wrap exactly, the penguin wall band holds whole penguins, the tent mid has no gap,
+    arc words stay in their arc (c10b_08-01/02/03/17, c10b_13)."""
+    import numpy as np
+    from PIL import Image
+    bad = []
+    for nm in ("dc_wp_penguin_print", "dc_fl_tatami", "dc_fl_casino_carpet"):
+        l = np.asarray(Image.open(_out(GROUP, nm)).convert("L")).astype(float)
+        # the jump across the wrap may be no bigger than the biggest jump inside (pattern lines)
+        step = max(np.abs(np.diff(l, axis=1)).mean(0).max(), np.abs(np.diff(l, axis=0)).mean(1).max())
+        wrap = max(np.abs(l[:, 0] - l[:, -1]).mean(), np.abs(l[0] - l[-1]).mean())
+        if wrap > 1.1 * step + 2:
+            bad.append("seam %s wrap %.1f step %.1f" % (nm, wrap, step))
+    l = np.asarray(Image.open(_out(GROUP, "dc_wp_penguin_print")).convert("L")).astype(float)
+    if max(l[0].std(), l[63].std()) > 0.5 * np.median(l[:64].std(1)):
+        bad.append("penguin print: wall band edge cuts a penguin row")
+    al = np.asarray(_open("tiles", "wl_tent_m"))[..., 3]
+    if (al[8:].max(0) == 0).any():
+        bad.append("wl_tent_m has an empty column")
+    for e in cat:
+        if e.get("arc") == "gangsters" and GANG_BAD.search(e["name"]):
+            bad.append("gang word in %s %r" % (e["id"], e["name"]))
+        if e.get("set") == "casino":
+            bad.append("set casino on " + e["id"])
+        if e.get("arc") in ("both", "") and (re.search(r"(?i)penguin", e["name"]) or PEN_BAD.search(e["name"])):
+            bad.append("arc word in both-arc %s %r" % (e["id"], e["name"]))
+    return bad
+
+
 def check():
     """C10b art check (c10b_14_20): every outdoor piece has art at its catalogue size, anims have
     their icon + strip, glow pieces carry a glow radius, names unique and <= 22, ids dc_.
@@ -759,6 +823,7 @@ def check():
             bad.append("lamp without glow " + e["id"])
         if not e.get("sub"):
             bad.append("no sub " + e["id"])
+    bad += _quality(cat)
     assert not bad, bad
     for e in cat:
         if e["name"].endswith(" II"):
@@ -816,6 +881,8 @@ def main(only):
         fix_pieces(cat)
         fix_table_sides(cat)
         fix_colourways()
+        fix_tent_mid()
+        winter_twins()
         fix_crops(cat)
         fix_furniture()
         for i in ("dc_lucky_cat_gold", "dc_gart_car_plate_navy"):

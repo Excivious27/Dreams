@@ -88651,6 +88651,11 @@
    "h": 60,
    "w": 89
   },
+  "bench2_wood_a_winter": {
+   "file": "props/bench2_wood_a_winter.png",
+   "h": 57,
+   "w": 89
+  },
   "bench2_wood_b": {
    "file": "props/bench2_wood_b.png",
    "h": 60,
@@ -91758,6 +91763,11 @@
    "h": 32,
    "w": 45
   },
+  "flowerbed_pink_winter": {
+   "file": "props/flowerbed_pink_winter.png",
+   "h": 23,
+   "w": 45
+  },
   "flowerbed_red": {
    "file": "props/flowerbed_red.png",
    "h": 32,
@@ -92206,6 +92216,11 @@
    "h": 85,
    "w": 96
   },
+  "hedge2_ball_winter": {
+   "file": "props/hedge2_ball_winter.png",
+   "h": 85,
+   "w": 89
+  },
   "hedge2_corner": {
    "file": "props/hedge2_corner.png",
    "h": 102,
@@ -92224,6 +92239,11 @@
   "hedge2_h": {
    "file": "props/hedge2_h.png",
    "h": 79,
+   "w": 147
+  },
+  "hedge2_h_winter": {
+   "file": "props/hedge2_h_winter.png",
+   "h": 74,
    "w": 147
   },
   "hedge2_pot": {
@@ -99487,10 +99507,20 @@
    "h": 64,
    "w": 39
   },
+  "statue_winter": {
+   "file": "props/statue_winter.png",
+   "h": 68,
+   "w": 49
+  },
   "stone_arch": {
    "file": "props/stone_arch.png",
    "h": 86,
    "w": 112
+  },
+  "stone_arch_winter": {
+   "file": "props/stone_arch_winter.png",
+   "h": 86,
+   "w": 92
   },
   "stone_circle": {
    "file": "props/stone_circle.png",
@@ -99591,6 +99621,11 @@
    "h": 56,
    "w": 37
   },
+  "topiary_a_winter": {
+   "file": "props/topiary_a_winter.png",
+   "h": 56,
+   "w": 36
+  },
   "topiary_b": {
    "file": "props/topiary_b.png",
    "h": 56,
@@ -99650,6 +99685,11 @@
    "file": "props/trellis.png",
    "h": 96,
    "w": 123
+  },
+  "trellis_winter": {
+   "file": "props/trellis_winter.png",
+   "h": 96,
+   "w": 102
   },
   "trough": {
    "file": "props/trough.png",
