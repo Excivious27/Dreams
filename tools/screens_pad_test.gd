@@ -5,6 +5,7 @@ extends SceneTree
 ## pad carry, arcade/bowling decks (pad hide, left-handed mirror, shake off,
 ## held-direction repeat) and the gangster picker blurbs.
 ##   godot --headless --path . --fixed-fps 60 -s res://tools/screens_pad_test.gd
+##   (xvfb-run -a godot ... --resolution 540x960 -s ... -- /tmp/dir  saves pad_*.png)
 var fails := 0
 
 
@@ -31,6 +32,16 @@ func _press(a: String, hold := 1) -> void:
 	await _frames(hold)
 	Input.action_release(a)
 	await _frames(2)
+
+
+## With an output dir under xvfb: a screenshot (the cursor frame, the screens).
+func _shot(name: String) -> void:
+	var args := OS.get_cmdline_user_args()
+	if args.is_empty() or DisplayServer.get_name() == "headless":
+		return
+	await _frames(3)
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("%s/pad_%s.png" % [args[0], name])
 
 
 func _child(m: Node, cls: String) -> Node:
@@ -93,6 +104,7 @@ func _chest(m: GameMap) -> void:
 	check(GameState.count(first) < had and Storage.amount("chest", first) > 0, "A moves %s across (%d -> %d)" % [first, had, GameState.count(first)])
 	await _press("up")
 	check(cur.cur != null and not cur.key_of(cur.cur).begins_with("b:"), "up leaves the bag grid (%s)" % cur.key_of(cur.cur))
+	await _shot("chest")
 	# Find the chest slot holding the item, pick it (CONFIRM_ALT), put it on bag slot 0.
 	var ci := Storage.slots("chest").find(first)
 	check(ci >= 0, "item is in a chest slot")
@@ -131,6 +143,7 @@ func _craft(m: GameMap) -> void:
 	await _press("a")
 	check(not cr._sel.is_empty(), "A picks the recipe")
 	check(cur.cur != null and cur.key_of(cur.cur) == "sel", "cursor stays on the picked card")
+	await _shot("craft")
 	var mx := mini(Crafting.max_qty(cr._sel), 10 * cr.tier)
 	await _press("right")
 	check(cr._qty == mini(2, maxi(1, mx)), "right = +1 (%d)" % cr._qty)
@@ -178,6 +191,7 @@ func _prizes(m: GameMap) -> void:
 		for k in ps._rows.size() - 1:
 			await _press("down")
 		check(ps.sel == ps._rows.size() - 1, "down reaches the last prize")
+		await _shot("prizes")
 		check(ps.sel >= ps.top and ps.sel < ps.top + PrizeScreen.VISIBLE, "last prize is on screen (top %d)" % ps.top)
 		check(PrizeScreen.LIST_Y + (ps.sel - ps.top + 1) * PrizeScreen.ROW_H <= PrizeScreen.DESC_Y + 1.0, "row ends above the description box")
 		await _press("down")
@@ -209,6 +223,7 @@ func _campaign(m: GameMap) -> void:
 	check(cb.cid != "", "A opens the campaign board")
 	if cb.cid != "":
 		cb._brief.visible = false
+		await _shot("board")
 		var nodes: Array = Campaign.get_c(cb.cid)["nodes"]
 		var p0 := Vector2.ZERO
 		for n: Dictionary in nodes:
