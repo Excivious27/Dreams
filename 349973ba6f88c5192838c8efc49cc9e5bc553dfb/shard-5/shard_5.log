@@ -1,0 +1,221 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  97% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  97% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  97% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  97% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  98% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  98% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (703 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 140.0s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 22.0s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+  weeks 3-4 average bar left at bedtime: 42%
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 4.3s
+
+#### step 18: mine arrival: no black cover (c5_16) (shard 5/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 18 mine arrival: no black cover (c5_16): PASS in 2.7s
+
+#### step 24: team animals + chores: lessons, team, muster, overnight chores, Animal (shard 5/6)
+== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) ==
+team_animals_test: OK
+#### step 24 team animals + chores: lessons, team, muster, overnight chores, Animal: PASS in 3.6s
+
+#### step 30: rec_links_test (shard 5/6)
+rec_links_test: 0 failures
+#### step 30 rec_links_test: PASS in 2.3s
+
+#### step 36: coop_test (shard 5/6)
+coop_test: 0 failures
+#### step 36 coop_test: PASS in 2.3s
+
+#### step 42: crop_test (shard 5/6)
+crop_test: 0 failures
+#### step 42 crop_test: PASS in 24.8s
+
+#### step 48: ranch_test (shard 5/6)
+ranch_test: 74 checks, 0 failures
+#### step 48 ranch_test: PASS in 2.4s
+
+#### step 54: town_first_test (shard 5/6)
+town_first_test: 0 failures
+#### step 54 town_first_test: PASS in 3.5s
+
+#### step 60: text size floors (7 px) (shard 5/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 60 text size floors (7 px): PASS in 0.1s
+
+#### step 66: music: every map has a song; web streaming works offline (shard 5/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 597 songs checked, 0 failures
+#### step 66 music: every map has a song; web streaming works offline: PASS in 25.4s
+
+#### step 72: workshop: stations at run time (shard 5/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 72 workshop: stations at run time: PASS in 3.3s
+
+#### step 78: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 5/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 78 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 6.5s
+
+#### step 84: campaign_story_test (shard 5/6)
+campaign_story_test: 0 fails
+#### step 84 campaign_story_test: PASS in 2.4s
+
+#### step 90: campaign_gate_test (shard 5/6)
+campaign_gate_test: 0 fails
+#### step 90 campaign_gate_test: PASS in 4.7s
+
+#### step 96: move_speed_test (shard 5/6)
+move_speed_test: 0 fails
+#### step 96 move_speed_test: PASS in 3.4s
+
+#### step 102: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 5/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+HEARTS DONE, failures: 0
+#### step 102 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): PASS in 4.9s
+
+#### step 108: crisp art shader on buildings/props (C2 P7) (shard 5/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 108 crisp art shader on buildings/props (C2 P7): PASS in 3.0s
+
+#### step 114: arcade_test (shard 5/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 114 arcade_test: PASS in 2.6s
+
+#### step 120: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 5/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 120 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 3.3s
+
+#### step 126: C8 P3: collections (museum, logs, Book tab) (shard 5/6)
+== C8 P3: collections (museum, logs, Book tab) ==
+collections_test: 0 failures
+#### step 126 C8 P3: collections (museum, logs, Book tab): PASS in 3.1s
+
+#### step 132: C10a P3: decor catalogue (shard 5/6)
+== C10a P3: decor catalogue ==
+decor_catalogue_test: 0 failures
+#### step 132 C10a P3: decor catalogue: PASS in 2.8s
+
+#### step 138: C10a P5: wardrobe (shard 5/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 138 C10a P5: wardrobe: PASS in 3.9s
+
+#### shard 5/6 done in 277s: PASS

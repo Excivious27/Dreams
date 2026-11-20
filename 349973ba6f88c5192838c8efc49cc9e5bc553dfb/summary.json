@@ -1,0 +1,179 @@
+{
+ "sha": "349973ba6f88c5192838c8efc49cc9e5bc553dfb",
+ "ref": "ci/c11ai2-67c6f478",
+ "run": "44830187693",
+ "finished": 1795214780.7401912,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 62,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "67c6f478d578cfb3e21d7dc4433585eed270bb6f",
+  "label": "c11ai2",
+  "branch": "",
+  "shards": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 402,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 289,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 231,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 213,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 402,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 278,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 205,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "SCRIPT ERROR: Invalid access to property or key 'root' on a base object of type 'null instance'.",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Invalid call. Nonexistent function 'say' in base 'Nil'.",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 180.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 140.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 74.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.5
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 55.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 48.9
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 45.4
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.1
+  },
+  {
+   "step": 137,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 40.8
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 37.4
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 33.7
+  },
+  {
+   "step": 68,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 30.1
+  },
+  {
+   "step": 110,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 25.4
+  },
+  {
+   "step": 66,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 25.4
+  }
+ ]
+}

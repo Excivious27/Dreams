@@ -1,0 +1,17 @@
+CONDUCT CI PASS  349973ba6f  (ci/c11ai2-67c6f478, run 44830187693)
+
+subset run: shards [1, 2, 3, 4, 5, 6], bots off, playtest on
+check shards (6/6):
+  shard 1: PASS  289s
+  shard 2: PASS  231s
+  shard 3: PASS  213s
+  shard 4: PASS  402s
+  shard 5: PASS  278s
+  shard 6: PASS  205s
+playtest: PASS  62s  21 screenshots (results playtest/shots/)
+
+longest job: 402s
+slowest check steps: import 180.5s; import 140.0s; import 75.3s; import 74.8s; import 72.5s; smoke test 55.6s; import 48.9s; exits and spawns 45.4s
+distinct errors/fails/warns:
+    1  SCRIPT ERROR: Invalid access to property or key 'root' on a base object of type 'null instance'.
+    1  SCRIPT ERROR: Invalid call. Nonexistent function 'say' in base 'Nil'.
