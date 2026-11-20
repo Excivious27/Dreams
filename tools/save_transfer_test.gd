@@ -123,6 +123,10 @@ func _run() -> void:
 	# Old-save catch-up: at most Mail.INTROS_PER_DAY "new place" letters a day.
 	GameState.run["day"] = 60
 	GameState.run["flags"].erase("rec_open")
+	if not GameState.quest_done("meet_town"):
+		GameState.add_quest("meet_town", "Meet the town.")
+		GameState.complete_quest("meet_town")
+	check(GameState.quest_done("meet_town"), "test setup: the town intro is done")
 	for i in Mail.INTROS_PER_DAY:
 		check(Mail.intro_ok(), "intro %d may go out" % i)
 		Mail.intro_sent()
@@ -131,6 +135,8 @@ func _run() -> void:
 	check(not RecCenter.is_open(), "the Rec opening waits when today's intros are spent")
 	GameState.run["day"] = 61
 	check(Mail.intro_ok(), "next day there is room again")
+	RecCenter.morning()
+	check(RecCenter.is_open(), "the Rec opens the next morning")
 	# Co-op: romance/cfarm day stamps move with shift_clock (there and back).
 	var rs := Romance.st()
 	rs["invite_day"] = 40

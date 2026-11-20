@@ -389,6 +389,8 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 const ROUTE_STEPS := 5
 const ROUTE_EVERY := 0.25
 const ROUTE_MIN := 64.0
+const ROUTE_SNAP := 4          # cells: far goals share one flow field per 4x4 block
+const ROUTE_SNAP_FROM := 192.0
 static var _route := {"t": -1.0, "tgt": Vector2i(-999, -999), "from": Vector2i(-999, -999), "aim": Vector2.ZERO}
 
 
@@ -402,9 +404,15 @@ static func route_aim(m: GameMap, tgt: Vector2) -> Vector2:
 		return _route["aim"]
 	if _route["tgt"] == tc and now - float(_route["t"]) < ROUTE_EVERY:
 		return _route["aim"]
+	# Far goals are routed to a coarse spot so a walking villager doesn't build a new
+	# flow field (and push battle/enemy fields out of GameMap's cache) every cell.
+	var goal := tgt
+	if m.player.position.distance_to(tgt) > ROUTE_SNAP_FROM:
+		var sn := m.cell_center(Vector2i((tc.x / ROUTE_SNAP) * ROUTE_SNAP, (tc.y / ROUTE_SNAP) * ROUTE_SNAP))
+		goal = sn if not m.blocked.has(m.world_to_cell(sn)) else tgt
 	var p := m.player.position
 	for i in ROUTE_STEPS:
-		var dv: Vector2 = m.flow_dir(p, tgt)
+		var dv: Vector2 = m.flow_dir(p, goal)
 		if dv == Vector2.ZERO:
 			break
 		p += dv * 16.0
