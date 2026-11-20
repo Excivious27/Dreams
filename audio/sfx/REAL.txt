@@ -465,3 +465,11 @@ yawn
 yawn_2
 j_proposal
 j_wedding
+buzz
+buzz_2
+oink
+oink_2
+oink_3
+thump
+thump_2
+thump_3
