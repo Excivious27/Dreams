@@ -436,6 +436,7 @@ func _c10b(items: Dictionary) -> void:
 	DecorMode.place(f, "t_statue", free_c)
 	var one_ms := (Time.get_ticks_usec() - t0) / 1000.0
 	print("  why_not (ghost check) %.1f ms" % why_ms)
+	check(why_ms < 80.0 and one_ms < 150.0, "heavy yard stays quick (ghost %.1f ms, place %.1f ms; loose guard for slow CI)" % [why_ms, one_ms])
 	print("  yard perf: %d paths + %d statues; one more piece %.1f ms (dress + walk check)" % [laid, stood, one_ms])
 	check(keep_node == null or is_instance_valid(keep_node) and not (keep_node as Node).is_queued_for_deletion(), "unchanged pieces keep their nodes")
 	t0 = Time.get_ticks_usec()
