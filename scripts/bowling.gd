@@ -830,7 +830,7 @@ func tick(delta: float) -> void:
 			if _opp_show < shown and _phase_t > 0.55 * (_opp_show + 1):
 				_opp_show += 1
 				var v := int(opp_rolls[_opp_from + _opp_show - 1])
-				Music.instance(get_tree()).sfx("pin_crash" if v >= 7 else ("bowl_roll" if v > 0 else "nope"), "thud")
+				Music.instance(get_tree()).sfx(RecAudio.opp_roll(v), "thud")
 			if _opp_show >= shown and (go or _phase_t > 0.55 * (shown + 1) + 1.1):
 				_new_ball()
 		"over":
@@ -966,7 +966,19 @@ func _game_over() -> void:
 		result["bonus"] = int(opponent(opp_id)["bonus"]) if sc > os else (2 if sc == os else 0)
 	if GameState.run.size() > 0 and sc > Tickets.best_score("bowling"):
 		_burst(48)
-	Music.instance(get_tree()).sfx("j_victory" if bool(result.get("won", true)) else "j_page", "coin")
+	var new_best := GameState.run.size() > 0 and sc > Tickets.best_score("bowling")
+	Music.instance(get_tree()).sfx(end_cue(result, new_best), "coin")
+
+
+## The one result sting for a bowling game (RecCenter only adds the ticket cue):
+## versus = won/lost; solo = the fanfare for a new best or a 100+ game, else a
+## light cue (a 20-point gutter game is no victory).
+static func end_cue(res: Dictionary, new_best: bool) -> String:
+	if res.has("opponent"):
+		return "j_victory" if bool(res.get("won", false)) else "j_page"
+	if new_best or int(res.get("score", 0)) >= 100:
+		return "j_victory"
+	return "sparkle"
 
 
 func _ask_quit() -> void:

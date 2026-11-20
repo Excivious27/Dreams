@@ -101,6 +101,7 @@ static func festival_bonus(m: GameMap, key: String) -> int:
 	Tickets.add(15, "festival")
 	if m and m.hud:
 		m.hud.toast("The %s sponsors the festival: +15 tickets" % name(), Color(1, 0.85, 0.5))
+		Tickets.cue()
 	return 15
 
 
@@ -204,6 +205,7 @@ static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 		var why := why_closed()
 		if why != "":
 			m.hud.toast(why, Color(1, 0.9, 0.6))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return true
 		return false
 	var day := int(GameState.run["day"])
@@ -492,6 +494,7 @@ static func visitor_talk(m: GameMap, n: Npc) -> void:
 	m.player.frozen = false
 	if why_closed() != "":
 		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	_cabinet(m, str(cab.get("game", "")))
 
@@ -629,6 +632,21 @@ static func dress(m: GameMap, interior_id: String) -> void:
 			m.hud.toast("Quest complete: visit the %s" % name(), Color(1, 0.9, 0.4))
 		Tickets.add(20, "welcome")
 		m.hud.toast("Welcome gift: +20 tickets", Color(1, 0.85, 0.5))
+		Tickets.cue()
+	prefetch_songs(m)
+
+
+## The rec's songs are streamed on the phone build: queue them on the way in so
+## the jukebox, the cabinets and the lanes start on cue (Music.prefetch, P1).
+static func prefetch_songs(m: GameMap) -> void:
+	var mus := Music.instance(m.get_tree())
+	if mus == null or not mus.has_method("prefetch"):
+		return
+	var want: Array = ["rec_center" if GameState.is_penguins() else "neon", "bowling_alley", "arcade_hall", "arcade_jumper"]
+	var nx := next_record(mus.wanted())
+	if nx != "":
+		want.append(nx)
+	mus.call("prefetch", want)
 
 
 static func _reno_id(th: Dictionary) -> String:
@@ -644,10 +662,12 @@ static func use(m: GameMap, thing: Dictionary, c: Vector2i) -> void:
 	var act := str(thing.get("act", ""))
 	if act in NEEDS_OPEN and why_closed() != "":
 		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var reno := RecReno.blocked(thing)
 	if reno != "":
 		m.hud.toast(reno, Color(1, 0.9, 0.6))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	match act:
 		"up":
@@ -724,6 +744,7 @@ static func _lane(m: GameMap, lane: int) -> void:
 		return
 	if int(GameState.run["crystals"]) < cost:
 		m.hud.toast("Not enough crystals for a game (%s)." % Money.amount(cost), Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	GameState.run["flags"].erase("rec_free_game")
@@ -748,12 +769,14 @@ static func bowl_avg(npc_id: String) -> int:
 static func bowl_with(m: GameMap, npc_id: String, lane: int) -> void:
 	if why_closed() != "":
 		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
 	var free := bool(GameState.run["flags"].get("rec_free_game", false))
 	var cost := 0 if free else fee()
 	if int(GameState.run["crystals"]) < cost:
 		m.hud.toast("Not enough crystals for a game (%s)." % Money.amount(cost), Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	GameState.run["flags"].erase("rec_free_game")
@@ -814,7 +837,8 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 			var who := str(GameState.npcs.get(opp, {}).get("name", opp))
 			vs = "  vs %s: %d-%d%s%s" % [who, score, int(res.get("opp_score", 0)), " (win!)" if bool(res.get("won", false)) else "", ("  %s +%d" % [who, gain]) if gain > 0 else ""]
 		m.hud.toast("Score %d%s · +%d tickets%s" % [score, "  NEW BEST!" if best else "", t, vs], Color(1, 0.9, 0.4))
-		Music.instance(m.get_tree()).sfx("j_victory" if best else "coin", "coin")
+		# The bowling screen already played the result sting: here only the tickets.
+		Tickets.cue()
 	return t
 
 
@@ -1040,6 +1064,7 @@ static func buy_snack(m: GameMap, i: int) -> bool:
 	if int(GameState.run["crystals"]) < cost:
 		if m:
 			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 		return false
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	if m:
@@ -1067,6 +1092,7 @@ static func _soda(m: GameMap) -> void:
 		return
 	if int(GameState.run["crystals"]) < price:
 		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 	Music.instance(m.get_tree()).sfx("drop", "pickup")

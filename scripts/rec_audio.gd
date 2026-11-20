@@ -38,12 +38,26 @@ const RECORDS := {
 }
 
 
+## Beds follow the lanes (CONDUCT 6): the rolling-ball bed is near silent with every
+## lane empty and full with two or more bowlers.
 static func beds(kind: String) -> Dictionary:
-	return (BEDS.get(kind, {}) as Dictionary).duplicate()
+	var out := (BEDS.get(kind, {}) as Dictionary).duplicate()
+	if out.has("rec_alley"):
+		out["rec_alley"] = float(out["rec_alley"]) + alley_trim(RecCenter.lanes_taken().size())
+	return out
 
 
+## dB added to the rec_alley bed for n villager lanes in use.
+static func alley_trim(n: int) -> float:
+	return -12.0 if n <= 0 else (-5.0 if n == 1 else 0.0)
+
+
+## Pin crashes only when somebody is actually bowling.
 static func spots(kind: String) -> Array:
-	return (SPOTS.get(kind, []) as Array).duplicate(true)
+	var out := (SPOTS.get(kind, []) as Array).duplicate(true)
+	if RecCenter.lanes_taken().is_empty():
+		out = out.filter(func(s: Array) -> bool: return not str(s[0]).begins_with("pins_"))
+	return out
 
 
 static func record_name(track: String) -> String:
@@ -87,6 +101,18 @@ static func lane_sound(at: Node2D, pos: Vector2, what: String, hits := 0) -> Str
 				create_fade(pp))
 	p.play()
 	return nm
+
+
+## The next lane's villager ball, graded like the player's own: tap (1-2),
+## crash (3-9), strike (10), gutter (0).
+static func opp_roll(v: int) -> String:
+	if v >= 10:
+		return "pin_strike"
+	if v >= 3:
+		return "pin_crash"
+	if v > 0:
+		return "pin_tap"
+	return "bowl_gutter"
 
 
 ## Fade a lane rumble out as the ball reaches the pins.

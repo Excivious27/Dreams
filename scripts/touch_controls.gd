@@ -233,7 +233,9 @@ func _pup_cmd(cmd: String) -> void:
 		var mh := get_tree().current_scene as GameMap
 		if mh and mh.hud:
 			mh.hud.toast("%s: %s" % [Pet.name_of(), str({"follow": "heel", "attack": "attack", "wait": "stay", "guard": "guard"}.get(cmd, cmd)).capitalize()], Color(1, 0.95, 0.75))
-	Music.instance(get_tree()).sfx("bark", "pickup")
+	# A cat answers with a meow, a dog with a bark (Pet.voice, P5, says the same).
+	var cat := str(GameState.look_d().get("pet", "")).begins_with("cat")
+	Music.instance(get_tree()).sfx("meow" if cat else "bark", "pickup")
 
 
 func _hit(pos: Vector2) -> String:

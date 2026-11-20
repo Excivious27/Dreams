@@ -54,6 +54,14 @@ static func add(n: int, source := "") -> void:
 		a["earned"][source] = int(a["earned"].get(source, 0)) + n
 
 
+## Tickets handed to you (welcome gift, sponsor, lane payout, quest/perk reward):
+## a short ticket-stub cue, never the money sound (tickets aren't cash).
+static func cue() -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree:
+		Music.instance(tree).sfx("ticket_feed", "j_confirm")
+
+
 static func spend(n: int) -> bool:
 	var a := _st()
 	if n < 0 or int(a["tickets"]) < n:
