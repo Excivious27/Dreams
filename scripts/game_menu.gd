@@ -163,6 +163,24 @@ var _opened_frame := 0
 
 ## A story beat is playing (its player is held). A beat that broke off and left
 ## the flag behind doesn't count, so the menu is never locked for good.
+## Opens the menu on a tab (and a Book page) from gameplay code, e.g. the museum tray.
+## Call it once the dialogue has closed (toggle refuses while paused or in a story beat).
+static func open_page(tree: SceneTree, tab: String, page := "") -> void:
+	if tree.current_scene == null:
+		return
+	for ch in tree.current_scene.get_children():
+		if ch is GameMenu:
+			var gm := ch as GameMenu
+			gm._tab = tab
+			if tab == "Book":
+				CollectionScreen.open(page)
+			if not gm._open:
+				gm.toggle()
+			else:
+				gm._refresh()
+			return
+
+
 static func story_busy(tree: SceneTree) -> bool:
 	if GameState.run.is_empty():
 		return false

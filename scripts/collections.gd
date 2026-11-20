@@ -291,7 +291,7 @@ static func check_milestones() -> Array:
 			c["decor"][str(g["decor"])] = true
 		if mid == "mus_all":
 			GameState.run["flags"]["museum_done_" + ("gang" if gang() else "peng")] = true
-		GameState.notify("%s milestone! %s wrote to you." % [cat_title(str(m["cat"])), _npc_name(str(m.get("from", "theo")))])
+		GameState.notify("%s milestone! Expect a letter from %s in the morning." % [cat_title(str(m["cat"])), _npc_name(str(m.get("from", "theo")))])
 	return hits
 
 

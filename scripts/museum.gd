@@ -104,6 +104,7 @@ static func _tray(m: GameMap) -> void:
 		var more := can.size() > start + 6
 		if more:
 			opts.append("More...")
+		opts.append("Look at the collection")
 		opts.append("Never mind")
 		d.say([{"who": "Donation tray", "text": "Give to the museum? Theo will catalogue it tonight.", "choice": opts, "key": ""}])
 		await d.finished
@@ -112,6 +113,8 @@ static func _tray(m: GameMap) -> void:
 			if more and pick == show.size():
 				page += 1
 				continue
+			if pick == show.size() + (1 if more else 0):
+				await _open_book(m)
 			return
 		var id := str(show[pick])
 		if GameState.count(id) == 1 and GameState.item_value(id) >= 100:
@@ -129,6 +132,15 @@ static func _tray(m: GameMap) -> void:
 		var mu := m.get_node_or_null("Museum") as Museum
 		if mu:
 			mu.refresh(id)
+
+
+static func _open_book(m: GameMap) -> void:
+	var tree := m.get_tree()
+	for i in 120:
+		if not Dialogue.input_blocked() and not tree.paused:
+			break
+		await tree.process_frame
+	GameMenu.open_page(tree, "Book", "museum")
 
 
 ## Nothing to give: point at one missing piece from the least complete wing.
