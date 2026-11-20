@@ -1097,6 +1097,10 @@ func _ready() -> void:
 	if is_instance_valid(map.hud):
 		_hud_was = map.hud.visible
 		map.hud.visible = false  # hotbar, hearts and farm hints stay out of the way (c10b_09-16)
+		if map.hud._toasts:
+			for c in map.hud._toasts.get_children():
+				c.queue_free()  # toasts on screen (a tool tip) would sit over the box list
+			map.hud._toasts.visible = false
 	_ghost = Node2D.new()
 	_ghost.z_index = 50
 	_ghost.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -1110,7 +1114,7 @@ func _ready() -> void:
 	var tip_key := "decor_tip_yard" if outdoor(map) else "decor_tip"
 	if not GameState.run["flags"].has(tip_key):
 		GameState.run["flags"][tip_key] = true
-		_say("Tap a spot to put the cursor there, then tap it again (or Place). Box has your pieces." + (" Hold a path and drag to lay a row." if outdoor(map) else ""))
+		_say("Pick a piece from the Box, tap a spot, tap it again to place." + (" Drag a path to lay a row." if outdoor(map) else ""))
 
 
 ## One line under the status: the controls for the device in use (pad, keys or touch).
@@ -1130,6 +1134,8 @@ func _exit_tree() -> void:
 		Hud.modal_rect = Rect2()
 	if _hidden_node and is_instance_valid(_hidden_node):
 		_hidden_node.modulate.a = 1.0
+	if map and is_instance_valid(map) and is_instance_valid(map.hud) and map.hud._toasts:
+		map.hud._toasts.visible = true
 
 
 func close() -> void:
@@ -1144,6 +1150,8 @@ func close() -> void:
 			cam.offset = Vector2.ZERO
 	if map and is_instance_valid(map.hud):
 		map.hud.visible = _hud_was
+		if map.hud._toasts:
+			map.hud._toasts.visible = true
 	Dialogue.block_input()
 	undo_stack.clear()
 	queue_free()
@@ -1178,12 +1186,12 @@ func _build_ui() -> void:
 	_bar.add_child(v)
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_status.custom_minimum_size = Vector2(250, 0)
+	_status.custom_minimum_size = Vector2(250, Settings.font(9) * 2.0 + 6.0)  # two lines, sized before layout
 	_status.max_lines_visible = 2
 	_status.add_theme_font_size_override("font_size", Settings.font(9))
 	v.add_child(_status)
 	_tip = Label.new()
-	_tip.custom_minimum_size = Vector2(250, 0)
+	_tip.custom_minimum_size = Vector2(250, Settings.font(7) + 4.0)
 	_tip.clip_text = true
 	_tip.add_theme_font_size_override("font_size", Settings.font(7))
 	_tip.modulate = Color(1, 1, 1, 0.75)
@@ -1205,7 +1213,7 @@ func _build_ui() -> void:
 	_btns["done"] = _btn(row2, "Done", close, 116)
 	# The bar's height follows its contents (Text size larger grows it): it always
 	# ends at the screen's bottom edge (c10b_09-07).
-	var h := maxf(BAR_H - 2.0, v.get_combined_minimum_size().y + 10.0)
+	var h := maxf(BAR_H - 2.0, v.get_combined_minimum_size().y + 16.0)
 	_bar.position = Vector2(2, 480 - h - 2)
 	_bar.size = Vector2(266, h)
 	_bar_rect = Rect2(_bar.position, _bar.size)
