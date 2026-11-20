@@ -351,6 +351,8 @@ func _place_site() -> void:
 			# Work under way: the crew's sawhorse and tools beside the first pile.
 			first = false
 			var sc := c + Vector2i(2, 0)
+			if str(Commons.stages()[b]["id"]) == "greenhouse":
+				sc = c + Vector2i(-3, 1)  # clear of the frame going up on the footings
 			if not things.has(sc):
 				prop("props", "cf_build_sawhorse", sc, 1, 0.0, true, 0.5)
 				for x in range(sc.x, sc.x + 2):
@@ -409,7 +411,7 @@ func _place_greenhouse(s: int) -> void:
 		for c: Vector2i in [Vector2i(36, 10), Vector2i(43, 10)]:
 			prop("props", "planter2_%d" % (c.x % 4), c, 0, 0.0, true, 0.32)
 	elif _built_nights("greenhouse") >= 2 and Art.has("props", "cf_build_greenhouse"):
-		prop("props", "cf_build_greenhouse", GREENHOUSE, 2, 0.0, true, 0.5)  # the iron frame, panes going in
+		prop("props", "cf_build_greenhouse", GREENHOUSE, 3, 0.0, true, 0.66)  # the iron frame at the finished greenhouse's size
 		for x in range(GREENHOUSE.x + 1, GREENHOUSE.x + 3):
 			set_thing(x, GREENHOUSE.y, {"type": "cf_note", "text": "The greenhouse frame, ribs all up. %s panes in so far." % ("A few" if _built_nights("greenhouse") == 2 else "Half the"), "hint": "A: the greenhouse frame"})
 	elif s >= 1:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""CONDUCT 3 (P5) art: the community farm's multi-day build progress pieces.
+"""CONDUCT 3 (P5) art: the community farm's multi-day build progress pieces, and the
+gangster-arc Whack-a-Snitch critters (whack_snitch step, art/gen/arcade, no manifest).
 
 art/incoming/r13/c3_p5_build_progress.png (image tool edit of cf_site_lumber/stone):
 four pieces left to right -> art/gen/props/cf_build_frame (half-built timber shed),
@@ -40,7 +41,41 @@ def build_progress():
         S.save(Image.fromarray(q), "props", name)
 
 
-STEPS = [build_progress]
+def whack_snitch():
+    """art/incoming/r13/c3_p5_whack_snitch.png -> art/gen/arcade/whack_snitch{,_gold,_helmet,_dizzy}
+    (gangster-arc Whack-a-Snitch critters, same 120-wide hole framing as whack_grump)."""
+    p = os.path.join(S.INC, "r13/c3_p5_whack_snitch.png")
+    if not os.path.exists(p):
+        return
+    a = np.asarray(Image.open(p).convert("RGBA")).copy()
+    mag = (a[..., 3] > 40) & (a[..., 0] > 200) & (a[..., 2] > 200) & (a[..., 1] < 80)
+    a[mag] = 0
+    a[a[..., 3] <= 40] = 0
+    cols = (a[..., 3] > 40).sum(axis=0) > 0
+    spans, x = [], 0
+    while x < len(cols):
+        if cols[x]:
+            x0 = x
+            while x < len(cols) and (cols[x:x + 12].any()):
+                x += 1
+            spans.append((x0, x))
+        x += 1
+    spans = [sp for sp in spans if sp[1] - sp[0] > 60]
+    assert len(spans) == 4, spans
+    for name, (x0, x1) in zip(["whack_snitch", "whack_snitch_gold", "whack_snitch_helmet", "whack_snitch_dizzy"], spans):
+        sub = a[:, x0:x1]
+        rows = np.where((sub[..., 3] > 40).any(axis=1))[0]
+        im = Image.fromarray(sub[rows[0]:rows[-1] + 1])
+        im = im.resize((120, max(1, round(im.height * 120 / im.width))), Image.LANCZOS)
+        q = np.asarray(im).copy()
+        q[..., 3] = np.where(q[..., 3] > 128, 255, 0)
+        out = os.path.join(S.OUT, "arcade", name + ".png")
+        if os.path.exists(out):
+            os.remove(out)
+        Image.fromarray(q).save(out)
+
+
+STEPS = [build_progress, whack_snitch]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

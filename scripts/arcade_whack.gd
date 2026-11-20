@@ -356,6 +356,16 @@ func _draw_overlays(c: Control) -> void:
 
 
 const SPRITE := {"grump": "whack_grump", "gold": "whack_gold", "helmet": "whack_helmet", "bunny": "whack_bunny"}
+## Gangster arc (Whack-a-Snitch): the same critters as fedora snitch rats (tools/slice_r13_c3_p5.py).
+const SPRITE_GANG := {"grump": "whack_snitch", "gold": "whack_snitch_gold", "helmet": "whack_snitch_helmet", "bunny": "whack_bunny", "dizzy": "whack_snitch_dizzy"}
+
+
+## The sprite for a critter kind ("dizzy" for a bopped one) in this arc.
+static func sprite_for(kind: String) -> String:
+	var gang := not GameState.run.is_empty() and not GameState.is_penguins()
+	if gang and SPRITE_GANG.has(kind) and ArcadeGame.tex(str(SPRITE_GANG[kind])) != null:
+		return str(SPRITE_GANG[kind])
+	return "whack_dizzy" if kind == "dizzy" else str(SPRITE.get(kind, "whack_grump"))
 
 
 ## Painted hole and critter: the critter rises out of the hole, cut at the rim,
@@ -375,7 +385,7 @@ func _hole_art(c: Control, p: Vector2, d: Variant) -> bool:
 		return true
 	var k := str(dd["kind"])
 	var hit := float(dd["hit"]) > 0.0
-	var name := "whack_dizzy" if hit and k != "bunny" else str(SPRITE[k])
+	var name := sprite_for("dizzy") if hit and k != "bunny" else sprite_for(k)
 	var ctx := ArcadeGame.tex(name)
 	if ctx == null:
 		return true
