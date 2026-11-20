@@ -107,6 +107,17 @@ func _run() -> void:
 	Mail._housewarming()
 	check((Mail.list() as Array).size() == mails + 1, "one housewarming parcel for tier 2")
 
+	# The shelf screen: lists today's pieces and buys into the box.
+	var scr := DecorShopScreen.new()
+	scr.shop = "store"
+	root.add_child(scr)
+	check(scr._rows == DecorSources.today("store") and not scr._rows.is_empty(), "the shelf screen lists today's pieces")
+	scr.sel = scr._rows.find("dc_stool")
+	var before := Decor.owned("dc_stool")
+	scr._buy()
+	check(Decor.owned("dc_stool") == before + 1 and scr.bought == 1, "BUY on the screen boxes the piece")
+	scr._close()
+
 	# Loot hooks.
 	check(Secrets.decor_pool(0) == "chest_t1" and Secrets.decor_pool(9) == "chest_t5", "chest pools by loot tier")
 	var mine: Variant = load("res://scripts/mine.gd")
@@ -123,7 +134,8 @@ func _run() -> void:
 
 	# Mail: a decor gift goes to the box; a favour can't take a unique.
 	var letter := {"kind": "gift", "item": "dc_stool", "n": 1}
-	check(Mail._act(letter) == "" and Decor.owned("dc_stool") == 3 and GameState.count("dc_stool") == 0, "mail decor gift goes to the box")
+	var stools := Decor.owned("dc_stool")
+	check(Mail._act(letter) == "" and Decor.owned("dc_stool") == stools + 1 and GameState.count("dc_stool") == 0, "mail decor gift goes to the box")
 
 	# Commons: a kept piece never sells at the stand.
 	GameState.add_item("rp_music_box", 1, true)

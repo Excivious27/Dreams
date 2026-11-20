@@ -217,6 +217,17 @@ static func buy(m: Node, id: String, qty := 1) -> String:
 
 ## The decor shelf menu (a counter's "Home goods" choice or a stall's extra rows).
 static func shelf(m: GameMap, shop: String, who: String) -> void:
+	if use_screen:
+		await DecorShopScreen.open(m, shop, who)
+		return
+	await shelf_dialogue(m, shop, who)
+
+
+## Tests and bots may prefer the dialogue list (no full-screen UI).
+static var use_screen := true
+
+
+static func shelf_dialogue(m: GameMap, shop: String, who: String) -> void:
 	var hello := "Home goods. New pieces every few days."
 	while true:
 		var ids := today(shop)
