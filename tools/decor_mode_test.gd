@@ -147,11 +147,15 @@ func _run() -> void:
 	m = await _enter_house()
 	Decor.give("t_chair", 1)
 	check(DecorMode.place(m, "t_chair", Vector2i(18, 3)) == "", "a chair in the Farmhouse pantry")
+	for sc: Vector2i in [Vector2i(5, 3), Vector2i(11, 9), Vector2i(17, 6), Vector2i(4, 9)]:
+		check(not m.blocked.has(sc), "the Farmhouse spouse spot %s is free floor" % str(sc))
 	GameState.run["builds"]["house"] = 3
 	var boxed := Decor.owned("t_chair")
 	m = await _enter_house()
 	check(DecorMode.piece_at(m, Vector2i(18, 3)) < 0 and Decor.owned("t_chair") == boxed + 1, "the Manor's study desk spot sends the chair to the box")
 	check(DecorMode.reach_ok(m), "the Manor stays walkable with decor")
+	for sc: Vector2i in [Vector2i(5, 3), Vector2i(11, 9), Vector2i(23, 10), Vector2i(4, 9)]:
+		check(not m.blocked.has(sc), "the Manor's spouse spot %s is free floor" % str(sc))
 	check((DecorMode.placed("house") as Array).all(func(p: Dictionary) -> bool: return DecorMode.why_not(m, str(p["id"]), Vector2i(int(p["cell"][0]), int(p["cell"][1])), int(p.get("rot", 0)), DecorMode.placed("house").find(p)) == ""), "every placed piece is valid in the Manor")
 	# 14. The screen: opens, pauses, places with A, closes.
 	var dm := DecorMode.open(m)

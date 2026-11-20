@@ -796,6 +796,12 @@ func _toggle_list() -> void:
 		bt.add_theme_font_size_override("font_size", Settings.font(8))
 		bt.add_theme_color_override("font_color", Decor.rarity_color(r))
 		bt.focus_mode = Control.FOCUS_NONE
+		var ia := art_of(id)
+		var itx := Art.tex(str(ia[0]), str(ia[1]) + ("_icon" if Art.has(str(ia[0]), str(ia[1]) + "_icon") else ""))
+		if itx:
+			bt.icon = itx
+			bt.expand_icon = true
+			bt.add_theme_constant_override("icon_max_width", 20)
 		bt.pressed.connect(_choose.bind(id))
 		_list_box.add_child(bt)
 	_confirm_store = false

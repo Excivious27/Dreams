@@ -272,7 +272,7 @@ func _place_props() -> void:
 		more = [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(15, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1], ["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]]
 	elif tier() >= 3:
 		more = [["study_desk", STUDY, 2], ["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0],
-			["cellar_hatch", CELLAR, 1], ["keg_wall", CELLAR + Vector2i(2, 0), 1], ["shelf_jars", Vector2i(20, 10), 1],
+			["cellar_hatch", CELLAR, 1], ["keg_wall", CELLAR + Vector2i(2, 0), 1], ["shelf_jars", Vector2i(21, 11), 1],
 			["bathtub", BATH, 1], ["sink", Vector2i(21, 3), 0], ["plant2_c", Vector2i(24, 6), 0],
 			["table_round_cloth", Vector2i(20, 7), 1], ["chair_down", Vector2i(20, 6), 0], ["plant2_b", Vector2i(24, 11), 0]]
 	for pr: Array in more:
@@ -425,7 +425,7 @@ const STARTERS := {
 		["chair_down", Vector2i(3, 7), 0], ["plant2_a", Vector2i(1, 11), 0], ["plant_a", Vector2i(14, 11), 0], ["rug_rect_red", Vector2i(6, 7), 3]],
 	2: [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(15, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1],
 		["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]],
-	3: [["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0], ["shelf_jars", Vector2i(20, 10), 1],
+	3: [["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0], ["shelf_jars", Vector2i(21, 11), 1],
 		["plant2_c", Vector2i(24, 6), 0], ["table_round_cloth", Vector2i(20, 7), 1], ["chair_down", Vector2i(20, 6), 0],
 		["plant2_b", Vector2i(24, 11), 0], ["rug_rect_red", Vector2i(19, 7), 3]]}
 
@@ -589,7 +589,10 @@ func _dusk_watch() -> void:
 		queue_redraw()
 
 
-## A small "Decorate" button at the top right of the room (also on the dresser).
+var _decor_btn: Button = null
+
+
+## A small "Decorate" button under the room (also on the dresser).
 func _entry_button() -> void:
 	if GameState.visiting() or not is_instance_valid(hud):
 		return
@@ -598,13 +601,22 @@ func _entry_button() -> void:
 	var bt := Button.new()
 	bt.text = "Decorate"
 	bt.add_theme_font_size_override("font_size", Settings.font(8))
-	bt.position = Vector2(212, 70)
-	bt.size = Vector2(54, 22)
+	bt.position = Vector2(206, 252)  # the dark band under the room, clear of the furniture and the HUD
+	bt.size = Vector2(60, 22)
 	bt.focus_mode = Control.FOCUS_NONE
 	bt.pressed.connect(func() -> void:
 		if not get_tree().paused and not Dialogue.instance(get_tree()).active:
 			DecorMode.open(self))
 	ly.add_child(bt)
 	add_child(ly)
+	_decor_btn = bt
+	var hide_t := Timer.new()  # hidden while decorate mode or a menu owns the screen
+	hide_t.wait_time = 0.25
+	hide_t.process_mode = Node.PROCESS_MODE_ALWAYS
+	hide_t.timeout.connect(func() -> void:
+		if is_instance_valid(bt):
+			bt.visible = not get_tree().paused)
+	ly.add_child(hide_t)
+	hide_t.start()
 	Hud.extra_rects.append(Rect2(bt.position, bt.size))
 	tree_exiting.connect(func() -> void: Hud.extra_rects.erase(Rect2(bt.position, bt.size)))
