@@ -96,7 +96,7 @@ const STYLES := {
 		{"id": "ext_fence_wood", "name": "Farm Rail", "price": 300, "fence": ["fence2_wood_h", "fence2_wood_end", "fence2_wood_gate_open"]},
 		{"id": "ext_fence_stone", "name": "Fieldstone Wall", "price": 900, "fence": ["fence2_stone_h", "fence2_stone_end", "fence2_stone_gate_open"]},
 		{"id": "ext_fence_iron", "name": "Wrought Iron", "price": 1500, "fence": ["fence2_iron_h", "fence2_iron_end", "fence2_iron_gate_open"]},
-		{"id": "ext_fence_chain", "name": "Chain-Link", "price": 300, "arc": "gangsters", "fence": ["chain_fence_h", "chain_fence_v", "fence2_iron_gate_open"]},
+		{"id": "ext_fence_chain", "name": "Chain-Link", "price": 300, "arc": "gangsters", "fence": ["chain_fence_h", "chain_fence_v", "chain_fence_gate_open"]},
 	],
 }
 ## Chimney tops (day-picture px) per house picture, for the smoke.
@@ -222,9 +222,12 @@ static func _first_note() -> void:
 		Mail.send("Sal", "Drove past your place. New look, huh? Classy. Nobody's gonna mistake it for the old shack now. Keep it sharp. - Sal")
 
 
-## Pen fence pieces [h, v, gate_open] for farm._plan_fences, or [] = the arc default.
+## Pen fence pieces [h, v, gate_open] for farm._plan_fences, or [] = the arc default
+## (the gangster default is the chain-link set with its matching open gate).
 static func fence_set() -> Array:
 	var id := str(look().get("fence", ""))
+	if id == "" and not GameState.is_penguins():
+		id = "ext_fence_chain"  # gangster default: chain-link with its own gate (c10b_01-31)
 	var f: Array = style(id).get("fence", [])
 	for n: String in f:
 		if not Art.has("props", n):

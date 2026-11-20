@@ -77,6 +77,42 @@ def walls():
         im.save(dst)
 
 
+# Chain-link pen gate (c10b_01-31: gangster pens used the gothic iron gate): the
+# open gate goes to props/chain_fence_gate_open (+ manifest) at the pen-gate height,
+# toned to the existing chain_fence_h palette.
+GATE = {"file": "ext_chain_gate.png", "name": "chain_fence_gate_open", "h": 32,
+        "prompt": "open chain-link gate + end post matching props/chain_fence_h (edit_image sources chain_fence_h, fence2_wood_gate_open)"}
+
+
+def chain_gate():
+    import json
+    src = os.path.join(INC, GATE["file"])
+    rgba = key(np.asarray(Image.open(src).convert("RGBA")))
+    boxes = sorted(blobs(rgba, merge=6, min_area=800), key=lambda b: (b[2] - b[0]) * (b[3] - b[1]), reverse=True)
+    b = boxes[0]  # the gate (the lone post is the smaller piece)
+    im = Image.fromarray(rgba[b[1]:b[3], b[0]:b[2]], "RGBA")
+    w = max(1, round(im.size[0] * GATE["h"] / im.size[1]))
+    arr = np.asarray(im.resize((w, GATE["h"]), Image.LANCZOS)).astype(np.float32)
+    ref = np.asarray(Image.open(os.path.join(ROOT, "art/gen/props/chain_fence_h.png")).convert("RGBA")).astype(np.float32)
+    rm = ref[..., 3] > 128
+    tone = ref[rm][:, :3].mean(0) / max(1.0, ref[rm][:, :3].mean())
+    lum = arr[..., :3].mean(-1, keepdims=True)
+    arr[..., :3] = np.clip(lum * 0.72 * tone, 0, 255)
+    arr[..., 3] = np.where(arr[..., 3] > 110, 255, 0)
+    dst = os.path.join(ROOT, "art/gen/props", GATE["name"] + ".png")
+    if os.path.exists(dst):
+        os.remove(dst)
+    Image.fromarray(arr.astype(np.uint8), "RGBA").save(dst)
+    man_p = os.path.join(ROOT, "art/gen/manifest.json")
+    man = json.load(open(man_p))
+    man.setdefault("props", {})[GATE["name"]] = {"file": "props/%s.png" % GATE["name"], "w": w, "h": GATE["h"]}
+    tmp = man_p + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(man, f, indent=1, sort_keys=True)
+    os.remove(man_p)
+    os.rename(tmp, man_p)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     made = 0
@@ -104,6 +140,7 @@ def main():
             Image.fromarray(arr, "RGBA").save(dst)
             made += 1
     walls()
+    chain_gate()
     print("house parts overlays:", made, "+ walls", len(WALLS["names"]))
 
 

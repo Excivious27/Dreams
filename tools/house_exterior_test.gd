@@ -216,5 +216,7 @@ func _run() -> void:
 	new_run("gangsters")
 	var ids: Array = HouseExterior.styles("door").map(func(s: Dictionary) -> String: return str(s["id"]))
 	check("ext_door_steel" in ids and not "ext_door_ice" in ids, "gangster arc lists its own door styles")
+	var gf := HouseExterior.fence_set()
+	check(gf.size() == 3 and str(gf[2]) == "chain_fence_gate_open", "gangster pens default to chain-link with a chain-link gate")
 	print("house exterior test: %s (%d fails)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(1 if fails else 0)

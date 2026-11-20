@@ -89283,6 +89283,11 @@
    "h": 36,
    "w": 31
   },
+  "chain_fence_gate_open": {
+   "file": "props/chain_fence_gate_open.png",
+   "h": 32,
+   "w": 23
+  },
   "chain_fence_h": {
    "file": "props/chain_fence_h.png",
    "h": 32,
