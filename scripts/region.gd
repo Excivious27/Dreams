@@ -791,8 +791,19 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE + 8, float(thing["spawn"][1]) * TILE + 4), str(thing.get("facing", "down")))
 			return true
 		"idoor":
+			var shut := idoor_shut(thing)
+			if shut != "":
+				hud.toast(shut, Color(1, 0.9, 0.6))
+				Music.instance(get_tree()).sfx("nope", "thud")
+				return true
 			GameMap.next_interior = str(thing["interior"])
 			go_to("interior", Vector2.ZERO, "up")
+			return true
+		"casino":
+			later(Casino.enter.bind(self))
+			return true
+		"casino_odds":
+			tell([{"who": "", "text": Casino.odds_board()}])
 			return true
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
@@ -1328,3 +1339,21 @@ func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 		var bc := Vector2i(rng.randi_range(4, cols - 5), rng.randi_range(4, rows - 5))
 		if Art.has("props", bn) and not blocked.has(bc) and not things.has(bc) and not props.has(bc) and not is_water_cell(bc) and bc.distance_to(at) > 9:
 			prop("props", bn, bc, 0, 0.0, true, 0.35)
+
+
+## C10b P4 (c10b_04_15): a region interior door may carry "open": {"hours": [from, to]
+## on the day's own scale (26 = 2am), "flag": "<flag>"} and "shut": "<words>". ""
+## while it opens; never a silent door.
+static func idoor_shut(thing: Dictionary) -> String:
+	var o: Dictionary = thing.get("open", {})
+	if o.is_empty():
+		return ""
+	var flag := str(o.get("flag", ""))
+	if flag != "" and not GameState.run.get("flags", {}).has(flag):
+		return str(thing.get("shut", "Locked for now."))
+	var h: Array = o.get("hours", [])
+	if h.size() == 2:
+		var now := int(GameState.run.get("time", 0)) / 60.0
+		if now < float(h[0]) or now >= float(h[1]):
+			return str(thing.get("shut", "Closed. Open %s." % TownHours.hours_text(int(h[0]), int(h[1]))))
+	return ""

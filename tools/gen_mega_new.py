@@ -143,7 +143,7 @@ ITEMS = {
     "ring_platinum": ("Aurum Signet", "equip", 3200, 5, {"rarity": "legendary", "slot": "ring", "stats": {"damage": 3, "luck": 3}, "desc": "Madame Aurum's seal. Doors open for whoever wears it."}),
     "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."}),
     "ember_koi": ("Ember Koi", "fish", 260, 5, {"rarity": "rare", "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."}),
-    "golden_dice": ("Loaded Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
+    "golden_dice": ("Golden Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
 }
 
 RECIPES = [  # kitchen: known once you've held every ingredient (Crafting.mark_known)
@@ -690,15 +690,16 @@ A("gilt_grand_plaza", cols=44, rows=40, music="mega_gilt", look="gilt", ground_s
   heal=("props/fountain2", 6, 3, (19, 30), {"hp": 5, "energy": 80, "msg": "You sit on the fountain's edge. The spray is cool and smells faintly of money."}),
   gate=("props/limo", 4, 1, "spawn"),
   notes=[("A: read the brass plaque", "Brass plaque: 'GILT CITY. CASINO ROW east, and beneath it THE VAULTS. GILDED GARDENS west. By order of MADAME AURUM, everything here is hers. Including this plaque.'")],
-  npcs=[("mg_pell", "Pell", "mg_pell", ["Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.", "Gilt Chips spend like cash on the Row.", "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."]),
+  npcs=[("mg_pell", "Pell", "mg_pell", ["Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.", "Collectors pay well for Gilt Chips. The Gilded Ace on the Row takes cash only.", "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."]),
         ("mg_odette", "Odette", "mg_odette", ["I paint the statues. Madame keeps asking me to make them look more like her.", "Gold leaf on a flan. Disgusting. Delicious.", "The gardens are the only place in Gilt City that's free. Don't tell her."]),
         ("mg_cass", "Cass", "mg_cass", ["Fastest legs in Gilt. Madame's guards can't catch me.", "There's a lucky coin under every third bench. I've checked.", "I'd steal her crown, but it's glued on."])],
   job={"giver": "mg_odette", "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.", "items": [["gold_bundle", 3], ["pearl_necklace", 1]], "reward": {"crystals": 2000, "item": ["wonder_elixir", 1], "max_hp": 20, "friend": ["mg_odette", 15]},
        "lines": {"offer": ["I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.", "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."], "yes": "Wonderful. Wear something dark, the guards hate that.", "done": ["Perfect. Look at it shine! She'll hate it. Here, for you."]}},
   intro=["The limousine purrs into a plaza paved with gold-veined stone. Statues, fountains, a mansion with a hundred windows, and every lamp post has a little crown on top.", "Gilt City. Everything glitters. Everything has a price."])
 A("gilt_casino_row", cols=50, rows=42, music="mega_gilt", look="gilt", ground_seam="city_pavement", path="brick_herring", links={"gilt_grand_plaza": ("w", 17), "gilt_vaults": ("n", 24)},
-  structs=[("props/gc_casino", 8, 4, (24, 12)), ("buildings/neon_hotel", 9, 4, (10, 30)), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
-           ("props/betting_booth", 3, 2, (12, 30)), ("props/lux_car_black", 3, 1, (36, 32)), ("props/neon_sign_2", 2, 1, (8, 22)), ("props/neon_sign_5", 2, 1, (40, 22))],
+  structs=[("props/gc_casino", 8, 4, (24, 12), {"type": "casino", "hint": "A: enter The Gilded Ace"}),
+           ("buildings/neon_hotel", 9, 4, (10, 30), {"type": "note", "hint": "A: read the hotel sign", "who": "", "text": "The Neon Hotel. A brass sign: ROOMS FOR GUESTS OF THE GILDED ACE. Tonight every room is booked; the desk clerk points you across the Row to the casino."}), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
+           ("props/betting_booth", 3, 2, (12, 30), {"type": "casino_odds", "hint": "A: read the odds board"}), ("props/lux_car_black", 3, 1, (36, 32)), ("props/neon_sign_2", 2, 1, (8, 22)), ("props/neon_sign_5", 2, 1, (40, 22))],
   things=[("loot", {"item": "gambler_chip", "n": 3, "every": 2, "hint": "A: chips under a table", "sprite": "props/card_table"}),
           ("loot", {"item": "lucky_coin", "n": 1, "every": 4, "hint": "A: a coin in the fountain", "sprite": "props/fountain2"}),
           ("mrock", {"ore": "gold", "hp": 4, "n": 2, "sprite": "props/ore_gold"}),
@@ -1008,7 +1009,7 @@ def build_area(aid, mega, spec, links_geom):
         R["water_blobs"] = wb
     for st in spec.get("structs", []):
         name, w, h, near = st[:4]
-        place_struct(name, w, h, near, maxd=6)
+        place_struct(name, w, h, near, maxd=6, thing=st[4] if len(st) > 4 else None)  # a 5th entry = the struct's door thing (C10b P4)
     pl = []
     for i, near in enumerate(spec.get("hills", [])):
         r = 6

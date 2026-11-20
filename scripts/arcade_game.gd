@@ -63,6 +63,7 @@ var result_cue_done := false  # a game that already played its own result sting 
 var free_play := false        # the home cabinet: no fee, no tickets (practice)
 var _shown_tickets := 0       # the results card counts its tickets up
 var _tick_t := 0.0
+var slide_follow := true      # a thumb sliding onto another deck button presses it (casino money buttons: off)
 
 
 func _init() -> void:
@@ -171,7 +172,7 @@ func _input(ev: InputEvent) -> void:
 	elif ev is InputEventScreenDrag:
 		var sd := ev as InputEventScreenDrag
 		# Sliding a thumb from one deck button to another (◀ to ▶) follows it.
-		if _touch.has(sd.index):
+		if _touch.has(sd.index) and slide_follow:
 			var a2 := _deck_at(DisplayMode.ui(sd.position))
 			if a2 != "" and a2 != str(_touch[sd.index]):
 				Input.action_release(str(_touch[sd.index]))
@@ -197,7 +198,7 @@ func _input(ev: InputEvent) -> void:
 
 func _deck_at(p: Vector2) -> String:
 	for b: Dictionary in _deck:
-		if (b["rect"] as Rect2).grow(3).has_point(p):
+		if (b["rect"] as Rect2).grow(3 if slide_follow else 0).has_point(p):
 			return str(b["action"])
 	return ""
 
@@ -227,8 +228,13 @@ var _hold_t := {}
 var _rp := {}
 
 
+## The actions this screen reads (casino tables add tool/action for X/Y).
+func actions() -> Array:
+	return ACTIONS
+
+
 func _read_input() -> void:
-	for a in ACTIONS:
+	for a in actions():
 		var h: bool
 		var j := false
 		if not bot.is_empty() or manual:
@@ -245,7 +251,7 @@ func _read_input() -> void:
 		_held[a] = h
 		_prev[a] = h
 	if _arm < 6:  # the press that opened the cabinet must not also start it
-		for a in ACTIONS:
+		for a in actions():
 			_jp[a] = false
 
 
@@ -398,7 +404,7 @@ func _good_tickets() -> int:
 func close() -> void:
 	if not is_inside_tree():
 		return
-	for a in ACTIONS:
+	for a in actions():
 		Input.action_release(a)
 	_touch.clear()
 	_mouse_action = ""
@@ -620,7 +626,10 @@ func _draw_all() -> void:
 	if message_t > 0.0 and message != "":
 		var a := clampf(message_t * 3.0, 0.0, 1.0)
 		panel(c, message_rect, Color(0.08, 0.05, 0.14, 0.92 * a), Color(accent, a))
-		text(c, message_rect.position + Vector2(0, 15), message, message_rect.size.x, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
+		if message_rect.size.y > 26:  # a tall banner wraps (casino dealer lines)
+			c.draw_multiline_string(_font, message_rect.position + Vector2(6, 12), Money.t(message), HORIZONTAL_ALIGNMENT_CENTER, message_rect.size.x - 12, 8, 3, Color(1, 1, 1, a))
+		else:
+			text(c, message_rect.position + Vector2(0, 15), message, message_rect.size.x, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _draw_frame(c: Control) -> void:
@@ -687,12 +696,29 @@ func _button_shapes(tb: TriBatch, b: Dictionary, down: bool, dead := false) -> v
 		col = Color(0.32, 0.3, 0.38)
 		down = false
 	var press := Vector2(0, 2) if down else Vector2.ZERO
+	if str(b.get("shape", "")) == "pill" or r.size.x > r.size.y * 1.4:
+		_pill_shapes(tb, r, col, down)
+		return
 	tb.circle(ctr + Vector2(0, 3), rad, Color(0, 0, 0, 0.35))
 	tb.circle(ctr + Vector2(0, 2), rad, col.darkened(0.55))
 	tb.circle(ctr + press, rad - 1.0, col.darkened(0.25) if down else col)
 	tb.circle(ctr + press + Vector2(0, -rad * 0.12), rad * 0.78, (col.darkened(0.15) if down else col.lightened(0.18)))
 	_aa_arc(tb, ctr + press + Vector2(-rad * 0.2, -rad * 0.25), rad * 0.45, PI * 1.05, PI * 1.6, 10, Color(1, 1, 1, 0.45), 2.0)
 	_aa_arc(tb, ctr + press, rad - 1.0, 0, TAU, 32, col.darkened(0.6), 1.0)
+
+
+## A word button (STAND, DOUBLE, SPIN): a rounded bar from the whole rect (C10b P4).
+func _pill_shapes(tb: TriBatch, r: Rect2, col: Color, down: bool) -> void:
+	var rad := r.size.y * 0.5
+	var press := Vector2(0, 2) if down else Vector2.ZERO
+	for layer in [[Vector2(0, 3), 0.0, Color(0, 0, 0, 0.35)], [Vector2(0, 2), 0.0, col.darkened(0.55)], [press, 1.0, col.darkened(0.25) if down else col]]:
+		var o: Vector2 = layer[0]
+		var g: float = layer[1]
+		var cc: Color = layer[2]
+		tb.rect(Rect2(r.position + o + Vector2(rad, g), Vector2(r.size.x - 2 * rad, r.size.y - 2 * g)), cc)
+		tb.circle(r.position + o + Vector2(rad, rad), rad - g, cc)
+		tb.circle(r.position + o + Vector2(r.size.x - rad, rad), rad - g, cc)
+	tb.rect(Rect2(r.position + press + Vector2(rad, 3), Vector2(r.size.x - 2 * rad, r.size.y * 0.3)), Color(1, 1, 1, 0.16))
 
 
 ## draw_arc(..., antialiased = true) as feathered segments.
@@ -710,7 +736,8 @@ func _draw_button(c: Control, b: Dictionary) -> void:
 	var dead := _dead(b)
 	var down := _down(b) and not dead
 	var ctr := r.get_center()
-	var fs := 14 if str(b["label"]).length() <= 1 else 8
+	var pill := str(b.get("shape", "")) == "pill" or r.size.x > r.size.y * 1.4
+	var fs := 14 if str(b["label"]).length() <= 1 else (clampi(int((r.size.x - 8.0) / maxf(1.0, str(b["label"]).length() * 0.62)), 8, 10) if pill else 8)
 	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (2 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color(1, 1, 1, 0.35) if dead else Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	var hint := str(b.get("hint", ""))
 	if hint != "" and not dead:

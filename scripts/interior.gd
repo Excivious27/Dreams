@@ -365,6 +365,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"museum":
 			later(Museum.use.bind(self, thing, c))
 			return true
+		"casino":  # C10b P4: The Gilded Ace's tables and host stand
+			later(Casino.use.bind(self, thing))
+			return true
 		"counter":
 			later(_counter.bind(str(thing.get("shop", ""))))
 			return true

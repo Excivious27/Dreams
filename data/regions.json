@@ -21550,7 +21550,7 @@
     ],
     "lines": [
      "Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.",
-     "Gilt Chips spend like cash on the Row.",
+     "Collectors pay well for Gilt Chips. The Gilded Ace on the Row takes cash only.",
      "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."
     ],
     "wander": 10.0
@@ -21824,34 +21824,63 @@
    {
     "name": "card_table",
     "cell": [
-     15,
-     16
+     39,
+     18
     ],
     "solid": false
    },
    {
     "name": "fountain2",
     "cell": [
-     24,
-     23
+     28,
+     17
     ],
     "solid": false
    },
    {
     "name": "ore_gold",
     "cell": [
-     32,
-     14
+     40,
+     32
     ],
     "solid": false
    }
   ],
   "things": [
    {
+    "type": "casino",
+    "hint": "A: enter The Gilded Ace",
+    "cell": [
+     18,
+     12
+    ],
+    "solid": true
+   },
+   {
+    "type": "note",
+    "hint": "A: read the hotel sign",
+    "who": "",
+    "text": "The Neon Hotel. A brass sign: ROOMS FOR GUESTS OF THE GILDED ACE. Tonight every room is booked; the desk clerk points you across the Row to the casino.",
+    "cell": [
+     11,
+     25
+    ],
+    "solid": true
+   },
+   {
+    "type": "casino_odds",
+    "hint": "A: read the odds board",
+    "cell": [
+     20,
+     27
+    ],
+    "solid": true
+   },
+   {
     "type": "loot",
     "cell": [
-     15,
-     16
+     39,
+     18
     ],
     "item": "gambler_chip",
     "n": 3,
@@ -21862,8 +21891,8 @@
    {
     "type": "loot",
     "cell": [
-     24,
-     23
+     28,
+     17
     ],
     "item": "lucky_coin",
     "n": 1,
@@ -21874,8 +21903,8 @@
    {
     "type": "mrock",
     "cell": [
-     32,
-     14
+     40,
+     32
     ],
     "ore": "gold",
     "hp": 4,
@@ -21886,8 +21915,8 @@
    {
     "type": "note",
     "cell": [
-     33,
-     23
+     28,
+     6
     ],
     "hint": "A: read the house rules",
     "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)",

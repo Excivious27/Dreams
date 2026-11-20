@@ -816,3 +816,10 @@ echo "$wrout" | grep -E "FAIL|SCRIPT ERROR|wardrobe_test" || true
 if ! echo "$wrout" | grep -q "wardrobe_test: OK (0 failures)"; then
   echo "wardrobe_test failed"; exit 1
 fi
+
+echo "== C10b P4: casino =="
+csout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/casino_test.gd 2>&1)"
+echo "$csout" | grep -E "FAIL|SCRIPT ERROR|casino_test" || true
+if ! echo "$csout" | grep -q "casino_test: 0 failures"; then
+  echo "casino_test failed"; exit 1
+fi
