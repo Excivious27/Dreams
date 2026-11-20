@@ -440,6 +440,28 @@ static func rarity_dots(b: Control, id: String, h: float) -> void:
 		b.add_child(dot)
 
 
+## The category chips: the hand list, then any new category in the data (outdoor_*,
+## exterior_*, casino...) so they can be filtered too (c10b_14_26).
+static var _cats_n := -1
+static var _cats: Array = []
+
+
+static func cats() -> Array:
+	var items: Dictionary = Decor.data().get("items", {})
+	if _cats_n != items.size():
+		_cats_n = items.size()
+		_cats = CATS.duplicate()
+		var extra := {}
+		for id in items:
+			var c := str((items[id] as Dictionary).get("cat", ""))
+			if c != "" and not CATS.has(c):
+				extra[c] = true
+		var ek := extra.keys()
+		ek.sort()
+		_cats.append_array(ek)
+	return _cats
+
+
 ## Sort rank of a category: the hand list first, then any new data category
 ## (outdoor_*, exterior_*, casino...) after it, never first (c10b_14_26).
 static func _cat_rank(c: String) -> int:
@@ -450,7 +472,7 @@ static func _cat_rank(c: String) -> int:
 ## The filtered id list for the current chips.
 static func filtered() -> Array:
 	var out := []
-	var c := str(CATS[cat_i % CATS.size()])
+	var c := str(cats()[cat_i % cats().size()])
 	var rr := "" if rar_i == 0 else str(Decor.RARITIES[(rar_i - 1) % Decor.RARITIES.size()])
 	var sh := str(SHOWS[show_i % SHOWS.size()])
 	var sets := _set_ids()
@@ -641,7 +663,7 @@ static func _box_total() -> int:
 func _chip_text(i: int) -> String:
 	match i:
 		0:
-			return str(CAT_WORDS.get(CATS[cat_i % CATS.size()], "All")) if cat_i != 0 else "Type: all"
+			return str(CAT_WORDS.get(cats()[cat_i % cats().size()], str(cats()[cat_i % cats().size()]).replace("_", " ").capitalize())) if cat_i != 0 else "Type: all"
 		1:
 			return "Rarity: all" if rar_i == 0 else str(Decor.RARITIES[(rar_i - 1) % Decor.RARITIES.size()]).capitalize()
 		2:
@@ -656,7 +678,7 @@ func _chip_text(i: int) -> String:
 ## Steps chip i by dir (tap = forward, pad X = back).
 func cycle_chip(i: int, dir: int) -> void:
 	match i:
-		0: cat_i = posmod(cat_i + dir, CATS.size())
+		0: cat_i = posmod(cat_i + dir, cats().size())
 		1: rar_i = posmod(rar_i + dir, Decor.RARITIES.size() + 1)
 		2: show_i = posmod(show_i + dir, SHOWS.size())
 		3: set_i = posmod(set_i + dir, _set_ids().size() + 1)
