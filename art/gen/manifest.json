@@ -88651,6 +88651,11 @@
    "h": 58,
    "w": 97
   },
+  "bench2_green_a_winter": {
+   "file": "props/bench2_green_a_winter.png",
+   "h": 58,
+   "w": 87
+  },
   "bench2_green_b": {
    "file": "props/bench2_green_b.png",
    "h": 58,
@@ -88749,6 +88754,11 @@
   "birdbath": {
    "file": "props/birdbath.png",
    "h": 56,
+   "w": 36
+  },
+  "birdbath_winter": {
+   "file": "props/birdbath_winter.png",
+   "h": 54,
    "w": 36
   },
   "bk_crab": {
@@ -90863,6 +90873,11 @@
    "h": 32,
    "w": 39
   },
+  "fence2_iron_h_winter": {
+   "file": "props/fence2_iron_h_winter.png",
+   "h": 32,
+   "w": 39
+  },
   "fence2_stone_corner": {
    "file": "props/fence2_stone_corner.png",
    "h": 32,
@@ -90888,6 +90903,11 @@
    "h": 32,
    "w": 39
   },
+  "fence2_stone_h_winter": {
+   "file": "props/fence2_stone_h_winter.png",
+   "h": 25,
+   "w": 39
+  },
   "fence2_wood_corner": {
    "file": "props/fence2_wood_corner.png",
    "h": 32,
@@ -90910,6 +90930,11 @@
   },
   "fence2_wood_h": {
    "file": "props/fence2_wood_h.png",
+   "h": 32,
+   "w": 42
+  },
+  "fence2_wood_h_winter": {
+   "file": "props/fence2_wood_h_winter.png",
    "h": 32,
    "w": 42
   },
@@ -94837,6 +94862,11 @@
    "h": 106,
    "w": 198
   },
+  "picket2_h_winter": {
+   "file": "props/picket2_h_winter.png",
+   "h": 106,
+   "w": 160
+  },
   "pickup": {
    "file": "props/pickup.png",
    "h": 43,
@@ -98048,6 +98078,11 @@
    "h": 48,
    "w": 33
   },
+  "scarecrow_knight_winter": {
+   "file": "props/scarecrow_knight_winter.png",
+   "h": 48,
+   "w": 30
+  },
   "scarecrow_pumpkin": {
    "file": "props/scarecrow_pumpkin.png",
    "h": 48,
@@ -100077,6 +100112,11 @@
    "file": "props/well_stone.png",
    "h": 45,
    "w": 48
+  },
+  "well_stone_winter": {
+   "file": "props/well_stone_winter.png",
+   "h": 45,
+   "w": 40
   },
   "wheat_sheaf": {
    "file": "props/wheat_sheaf.png",

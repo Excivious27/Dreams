@@ -521,7 +521,9 @@ def fix_tent_mid():
 WINTER_TWINS = {"out_winter_twins.png": ["flowerbed_pink", "hedge2_h", "topiary_a", "hedge2_ball",
                                          "bench2_wood_a", "statue", "trellis", "stone_arch"],
                 "out_winter_twins_b.png": ["flowerbed_blue", "flowerbed_red", "flowerbed_yellow", "topiary_b",
-                                           "bench2_iron_a", "wedding_arch", "cat_statue", "statue_cane"]}
+                                           "bench2_iron_a", "wedding_arch", "cat_statue", "statue_cane"],
+                "out_winter_twins_c.png": ["picket2_h", "fence2_wood_h", "fence2_iron_h", "fence2_stone_h",
+                                           "bench2_green_a", "well_stone", "birdbath", "scarecrow_knight"]}
 
 
 def winter_twins():
