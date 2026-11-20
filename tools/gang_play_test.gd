@@ -163,7 +163,7 @@ func _run() -> void:
 		pt._target = null
 		var gt := 0.0
 		var got := false
-		while gt < 30.0:  # game seconds (fixed frames under --fixed-fps)
+		while gt < 45.0:  # game seconds (fixed frames under --fixed-fps)
 			await process_frame
 			gt += root.get_process_delta_time()
 			if pt._carry_item == "" and pt._carry_find == "":

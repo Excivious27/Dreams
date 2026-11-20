@@ -10,12 +10,12 @@ Farm,"Animals, coop/barn, hay, streaks, crows",rough,45,systems_test,"Tom C11: m
 Farm,Buildings: crafted/purchased by tier (43 defs),done,90,"station_test, station_check.py",No free stations (Tom rule)
 Farm,"Farm river, chests, bag upgrades",done,90,storage_test,Sun Haven style bag + chests
 World,"Valley maps: farm, town, beach, mountain, forest, lake, meadow, crystal meadow, outskirts, community farm",done,90,"reach_test, exit_check, exit_edge_check, door_check, invisible_walls",Sun Haven openness via WorldGen
-World,56 regions (regions.json) incl. campaign-gated story regions,done,85,"r13_world_test, campaign_gate_test",Story regions held until campaign won (Tom may want free)
-World,"Mega regions: 10 worlds, own map tabs, travel hooks",done,85,"mega_region_test, mega_regions_test",Five built round 13; new and least played
+World,67 regions (regions.json) incl. campaign-gated story regions,done,85,"r13_world_test, campaign_gate_test",Story regions held until campaign won (Tom may want free)
+World,"Mega regions: 10 worlds, own map tabs, travel hooks",done,88,"mega_region_test, mega_regions_test","Five built round 13; new and least played; C4: balance/rewards/unlocks per arc, pin cards, mega quest tracker, boss themes, hidden pockets + secret ways, gangster Space, new boss/foe art"
 World,"Mines: 26 layouts, chunks, pup in mines, Hollow Heart",done,90,"mine_test, mine_keeper_test","C2: 35 varied guardian encounters, varied wake pace, route-following arrow, reliable crates/barrels, tools 30% of sword in fights"
 World,"Day/night, seasons, weather, dawn glow, faint at 10pm",done,90,r13_world_test,Day length option for short sessions missing (audit 17b W12)
 People,"26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks",done,85,"hearts_test (not in check.sh), gift lines",10-heart endings and best-friend ceremony are story defaults not built
-People,Dating/marriage,missing,0,none,Guide 11 Q27 default: friendship only; waiting on Tom
+People,Dating/marriage,missing,0,none,"Tom chose G-rated dating/marriage; built in C7, writing C12"
 People,"Pet/pup: perks, hunter perk, mines",rough,78,"systems_test, move_target_test",C2: pup swims (Paddle) instead of walking on water
 Story,"Penguin arc: 5 chapters, sanctuary, colonies",rough,72,"story_test, meow_gate_test",C2: Meow Pow Wow earned from Catkins; name fixed; deeper story pass C7/C12
 Story,"Gangster arc: 5 chapters, Racket, heat, turf, heists, crew",rough,70,"story_test, gang_play_test, cash_test","Clean Break ending, Inspector Hale, Marked scenes not built"
@@ -46,13 +46,18 @@ Systems,"Earned fast travel network (mine carts, ferries, trains, planes, clouds
 Systems,"Trading cards (packs, binder, regional sets, trading with NPCs/players, card game)",missing,0,,Tom 17:21; CONDUCT 19
 Systems,"Casino side arc (gangster; tiered build-up against NPC pushback, staff)",missing,0,,Tom 17:12; CONDUCT 10
 Systems,"Helper automation (assign recruits/helpers/animals to farm, combat, forage, chests; levels, energy)",missing,5,,Tom 17:12; base = battle team helpers (C3); full in C11
+Systems,"Difficulty modes Very easy/Easy/Default/Hard (combat + battle campaigns only, per slot)",done,90,difficulty_test,C4 P1
+Systems,"Day length 15/20/30/40 min (new-game menu + Settings, per slot)",done,90,day_length_test,C4 P1
+World,"Hidden pockets and secret ways (one each per mega area), journal pages",rough,60,hidden_area_test,C4 P3; home-world + more in C14
+World,"Hazards, jumping/flight, lava mega region, mine hazards",missing,0,,CONDUCT 20
+Systems,The General Store side arc,missing,0,,CONDUCT 21
 Outstanding,Item,Count,,Checked by,
 Art,"Missing art (icons, enemies, portraits, stations, named, broken)",0,,tools/missing_art.py,2026-11-19
 Audio,Missing sounds,0,,tools/sfx_audit.py,2026-11-19
 Needs Tom,Item,Blocks,,,
 Tom,Co-op relay host account,online co-op on the live site,,,Sign up for Render (second Starter service) or Fly.io; Claude gives tap-by-tap steps and deploys server/. Until then co-op only works in tests.
 Tom,"Story answers, or say 'write the defaults'","side stories, third ending, colony/Marked scenes",,,"Guide 11 Part 3: 31 questions. Not built yet: finargle queen scene, four merkitty verses, one story per colony, Clean Break ending + Inspector Hale, one scene per Marked, 10-heart villager endings, side stories 20-26, festival mini-games."
-Tom,Dating/marriage or friendship only,10-heart villager endings,,,Guide 11 Q27; default friendship only plus a best-friend ceremony.
+Tom,Dating/marriage or friendship only,10-heart villager endings,,,"Tom chose G-rated dating/marriage; built in C7, writing C12"
 Tom,Your daughter's ideas,nothing (optional),,,"Guide 11 Q29: a creature, place, joke or character she wants."
 Tom,"Tone check, both arcs",nothing (defaults running),,,Guide 11 Q30-31; default keep sad scenes gentle and the gangster arc as is.
 Tom,Gameplay calls,nothing (defaults running),,,Farm debris regrow?; Muscle skill row names; pup Hunter perk; full XP past the kill cap?; story regions held until their campaign is won (on now).

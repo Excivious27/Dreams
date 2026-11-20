@@ -5,8 +5,8 @@
 | 1 | First 3 hours, both arcs | done |
 | 2 | Rec Center, arcade, community farm + your playtest notes | done |
 | 3 | Battle campaigns | done |
-| 4 | Mega regions + difficulty modes (combat/battles) + day length option | next |
-| 5 | Home-world look and feel (fuzzy buildings, distinctive gangster heroes) | |
+| 4 | Mega regions + difficulty modes (combat/battles) + day length option | done |
+| 5 | Home-world look and feel (fuzzy buildings, distinctive gangster heroes) | next |
 | 6 | Audio and music | |
 | 7 | Story, quests, writing + dating and marriage | |
 | 8 | Economy, progression, balance + collections (museum, shipping, fish logs) | |
