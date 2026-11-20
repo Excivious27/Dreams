@@ -539,7 +539,7 @@ func decor_changed() -> void:
 ## Guests: the host changed the house's look.
 func on_world_sync(d: Dictionary) -> void:
 	super.on_world_sync(d)
-	if d.has("decor_home"):
+	if d.has("decor_home") or d.has("decor_home_d"):
 		DecorMode.dress(self)
 		queue_redraw()
 

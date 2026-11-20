@@ -348,6 +348,18 @@ static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
 				if not nf.has(t):
 					fd[t] = null
 			out["farm_d"] = fd
+		elif k == "decor_home" and old.get(k) is Dictionary and now[k] is Dictionary:
+			# Per room: only the rooms whose pieces changed (a full house is ~41 B a piece).
+			var op: Dictionary = (old[k] as Dictionary).get("placed", {})
+			var np: Dictionary = (now[k] as Dictionary).get("placed", {})
+			var pd := {}
+			for r in np:
+				if not op.has(r) or op[r] != np[r]:
+					pd[r] = np[r]
+			for r in op:
+				if not np.has(r):
+					pd[r] = null
+			out["decor_home_d"] = {"placed": pd, "wall": (now[k] as Dictionary).get("wall", {}), "floor": (now[k] as Dictionary).get("floor", {})}
 		else:
 			out[k] = now[k]
 	for k in old:
@@ -372,6 +384,23 @@ static func merge_delta(run: Dictionary, d: Dictionary) -> void:
 				(farm as Dictionary).erase(t)
 			else:
 				farm[t] = fv[t]
+	var dh: Variant = d.get("decor_home_d", null)
+	if dh is Dictionary:
+		var home: Variant = run.get("decor_home", null)
+		if not (home is Dictionary):
+			home = {"placed": {}, "wall": {}, "floor": {}}
+			run["decor_home"] = home
+		if not ((home as Dictionary).get("placed", null) is Dictionary):
+			home["placed"] = {}
+		var pv: Variant = (dh as Dictionary).get("placed", {})
+		if pv is Dictionary:
+			for r in pv:
+				if pv[r] == null:
+					(home["placed"] as Dictionary).erase(r)
+				else:
+					home["placed"][r] = pv[r]
+		home["wall"] = (dh as Dictionary).get("wall", {})
+		home["floor"] = (dh as Dictionary).get("floor", {})
 	var gv: Variant = d.get("_gone", [])
 	if gv is Array:
 		for k in gv:

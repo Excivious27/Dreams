@@ -196,6 +196,14 @@ func _run() -> void:
 	var home := DecorMode.home_view()
 	check(not home.has("box") and not home.has("wear") and home.has("placed"), "guests get only the house look")
 	check("decor_home" in NetNode.WORLD_KEYS, "the house look rides the world sync")
+	# The world delta sends only the rooms that changed, and merges back whole.
+	var w0 := {"decor_home": {"placed": {"house": [{"id": "a", "cell": [1, 2], "rot": 0}], "barn": [{"id": "b", "cell": [3, 4], "rot": 0}]}, "wall": {}, "floor": {}}}
+	var w1 := {"decor_home": {"placed": {"house": [{"id": "a", "cell": [2, 2], "rot": 0}], "barn": [{"id": "b", "cell": [3, 4], "rot": 0}]}, "wall": {"main": "w"}, "floor": {}}}
+	var dl := NetNode.world_delta(w0, w1)
+	check(dl.has("decor_home_d") and not dl.has("decor_home") and ((dl["decor_home_d"] as Dictionary)["placed"] as Dictionary).keys() == ["house"], "decor delta carries only the changed room")
+	var guest := {"decor_home": w0["decor_home"].duplicate(true)}
+	NetNode.merge_delta(guest, dl)
+	check(guest["decor_home"] == w1["decor_home"], "decor delta merges to the host's house")
 	var nn := Net.i()
 	nn._solo_backup = {"day": 1}
 	GameState.run["decor_home"] = {"placed": {"house": []}, "wall": {}, "floor": {}}
