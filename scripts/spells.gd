@@ -26,7 +26,7 @@ static func cost_of(id: String) -> int:
 
 static func power() -> float:
 	# Spell weight grows with the Sorcery skill on the same curve as the tier table.
-	return (1.0 + GameState.bonus("magic", "spell_power")) * (1.0 + 0.08 * GameState.skill_level("magic"))
+	return (1.0 + GameState.bonus("magic", "spell_power")) * (1.0 + 0.08 * GameState.skill_level_eff("magic"))
 
 
 static func known() -> Array:

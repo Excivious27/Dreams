@@ -1486,7 +1486,7 @@ func _eat(id: String) -> void:
 	var m := get_tree().current_scene
 	if fx_out.keys() == ["full"]:
 		if m is GameMap and (m as GameMap).hud:
-			(m as GameMap).hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
+			(m as GameMap).hud.toast(GameState.full_text(), Color(1, 0.8, 0.6))
 		return  # nothing eaten: the food stays in the bag (and no chewing lock)
 	if in_fight:
 		_food_ready = Time.get_ticks_msec() + 3000

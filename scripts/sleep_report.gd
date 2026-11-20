@@ -26,6 +26,12 @@ static func lines(report: Dictionary) -> Array:
 	var lines: Array = []
 	if int(report.get("earned", 0)) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report.get("sold", [])), int(report.get("earned", 0))]})
+	var ship_new: Array = report.get("ship_new", [])  # Collections (C8 P3) fills it from GameState.sleep
+	if not ship_new.is_empty():
+		var names: Array = []
+		for id in ship_new.slice(0, 3):
+			names.append(GameState.item_name(str(id)))
+		lines.append({"who": "Shipping log", "text": "New: %s%s." % [", ".join(names), (" +%d more" % (ship_new.size() - 3)) if ship_new.size() > 3 else ""]})
 	if int(report.get("left", 0)) > 0:
 		lines.append({"text": Sanctuary.morning_line()})
 	if int(report.get("washed", 0)) > 0:
@@ -42,6 +48,8 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"text": "Crows got into the field overnight and ate %d crop%s. A scarecrow covers about 8 steps around it." % [int(report["crows"]), "" if int(report["crows"]) == 1 else "s"]})
 	if int(report.get("died", 0)) > 0:
 		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
+	for l in extra_lines():
+		lines.append(l)
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
 	if int(report.get("wash_back", 0)) > 0:
@@ -83,8 +91,30 @@ static func lines(report: Dictionary) -> Array:
 	for nm in report.get("gone", []):
 		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	if bool(report.get("short", false)):
-		lines.insert(1, {"text": "Collapsing takes it out of you: you wake on three quarters of your energy. Get to bed before you drop (and before 2am) and you wake full."})
+		if bool(report.get("late", false)):
+			lines.insert(1, {"text": "Up late: you woke a little tired. Bed before midnight and you wake on a full bar."})
+		else:
+			lines.insert(1, {"text": "Collapsing takes it out of you: you wake on three quarters of your energy. Get to bed before you drop (and before 2am) and you wake full."})
 	return lines
+
+
+## C8 P1: a finished tool upgrade waiting at the forge, and animals that missed
+## yesterday's pet (their streak resets).
+static func extra_lines() -> Array:
+	var out: Array = []
+	var r := GameState.run
+	var job: Variant = (r.get("jobs", {}) as Dictionary).get("smith_upgrade", null)
+	if job is Dictionary and (job as Dictionary).has("done_at") and GameState.now_abs() >= int(job["done_at"]):
+		out.append({"who": "Gideon", "text": "Your %s is ready at the forge." % GameState.item_name(str(job.get("kind", "tool")))})
+	var day := int(r.get("day", 1))
+	var missed := 0
+	for nm in (r.get("animals", {}) as Dictionary):
+		var st: Variant = r["animals"][nm]
+		if st is Dictionary and int((st as Dictionary).get("last_pet", -9)) >= 0 and int(st.get("last_pet", -9)) < day - 1:
+			missed += 1
+	if missed > 0:
+		out.append({"text": "%d animal%s went without a pet yesterday: a daily pet keeps the friendship streak going." % [missed, "" if missed == 1 else "s"]})
+	return out
 
 
 ## Opens main quests whose day (or other condition) came round overnight, the

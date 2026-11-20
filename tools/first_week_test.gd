@@ -106,6 +106,7 @@ func _week(arc: String) -> void:
 	var farm: Dictionary = r["farm"]
 	var curve: Array = []
 	var low_energy := 999
+	var refills := 0
 	print("%s: day | purse am | field | sold | energy left/max" % arc)
 	for d in range(1, 8):
 		var purse := int(r["crystals"])
@@ -140,6 +141,7 @@ func _week(arc: String) -> void:
 				var n := GameState.count(str(id))
 				_sell(str(id), n)
 				GameState.add_item(str(id), -n)
+		var pours := 0
 		# 2. Water and plant, growing the field.
 		var cap := 15 + 5 * (d - 1)
 		var sd := _best_seed()
@@ -167,10 +169,14 @@ func _week(arc: String) -> void:
 			if str(t.get("crop", "")) != "" and not GameState.is_wet():
 				GameState.spend_for("can")
 				t["watered"] = true
-		# 3. Wood: two trees (4 swings each, 5 wood each).
-		for i in 8:
+				pours += 1
+		# The can holds WaterCan.cap() pours: every refill is a walk to water.
+		refills += maxi(0, (pours - 1) / maxi(1, WaterCan.cap()))
+		# 3. Wood: two trees, swings from the real curve (GameState.hits_for: 7
+		# with the starter axe at level 1), 4 wood each (game_map fell_tree).
+		for i in 2 * GameState.hits_for(4, "axe"):
 			GameState.spend_for("axe")
-		GameState.add_item("wood", 10)
+		GameState.add_item("wood", 8)
 		GameState.add_xp("foraging", 8)
 		_hand_in("hazel_wood")
 		# 4. Forage a handful.
@@ -184,13 +190,14 @@ func _week(arc: String) -> void:
 		_sell("minnow", 2)
 		_sell("carp", 1)
 		GameState.add_xp("fishing", 12)
-		# 6. Mine from day 3: two floors (about 10 rocks x 2 swings, 40 sword swings, 4 dodges each).
+		# 6. Mine from day 3: two floors (about 10 stone rocks at the real swing
+		# count, 3 with the wood pick at level 1, 40 sword swings, 4 dodges each).
 		if d >= 3:
 			if not GameState.has_quest("clear_meadow"):
 				GameState.tick_quests()
 			GameState.complete_quest("clear_meadow")
 			for fl in 2:
-				for i in 20:
+				for i in 10 * GameState.hits_for(2, "pickaxe"):
 					GameState.spend_for("pickaxe")
 				for i in 40:
 					GameState.spend_for("sword")
@@ -214,13 +221,25 @@ func _week(arc: String) -> void:
 	print("  day 8 morning purse: %d" % end)
 	# Pacing bands (both arcs): generous, but the first upgrades are a goal, not a given.
 	var pack := GameState.buy_price("backpack_1")
-	_ok(low_energy >= int(int(r["max_energy"]) * GameState.EXHAUSTED_FRAC), "%s: a full modest day never forces Exhausted (lowest %d)" % [arc, low_energy])
+	# C8 P1 band: with the real swing counts (C6 P7 toughness) the first mine day
+	# (two floors with the wood pick) brushes the Exhausted line; that is the
+	# intended "work for it" pace. A modest day must still end above 10% of the
+	# bar (never a pass-out), and no other day may dip into Exhausted.
+	_ok(low_energy >= int(int(r["max_energy"]) * 0.10), "%s: a full modest day never runs the bar below 10%% (lowest %d)" % [arc, low_energy])
+	var exhausted_days := 0
+	for row in curve:
+		if int(row[4]) < int(int(row[5]) * GameState.EXHAUSTED_FRAC):
+			exhausted_days += 1
+	_ok(exhausted_days <= 1, "%s: at most one day (the first mine day) ends Exhausted (%d)" % [arc, exhausted_days])
 	_ok(int(curve[0][4]) <= int(int(curve[0][5]) * 0.8), "%s: day 1 uses a real share of the bar (left %d)" % [arc, int(curve[0][4])])
 	var day5 := int(curve[4][1])
 	_ok(day5 >= 200, "%s: day 5 morning purse is generous (%d)" % [arc, day5])
 	_ok(end >= pack, "%s: the Bigger Backpack (%d) is affordable by the end of week 1 (%d)" % [arc, pack, end])
 	_ok(int(curve[3][1]) < pack, "%s: ...but not before day 4 (%d)" % [arc, int(curve[3][1])])
 	_ok(end < 4 * pack, "%s: week 1 doesn't flood the purse (%d)" % [arc, end])
+	# C8 P1: the bar still binds at the end of week 1 (was 156 by day 7).
+	_ok(int(curve[6][5]) <= 140, "%s: day-7 max energy stays near the start (%d)" % [arc, int(curve[6][5])])
+	print("  can refill walks this week: %d (can holds %d)" % [refills, WaterCan.cap()])
 
 
 # ---- faint, clinic, sleep ----------------------------------------------------
@@ -266,6 +285,18 @@ func _faint_rules() -> void:
 		_ok(Faint.to_evening("tired"), "%s: 3pm faint wakes at 10pm" % arc)
 		rep = GameState.sleep()
 		_ok(bool(rep.get("short", false)) and int(r["energy"]) == int(r["max_energy"]) * 3 / 4, "%s: bed after an evening faint still costs a quarter bar" % arc)
+		# C8 P1: bed after midnight wakes you a little tired, and the report says so.
+		r["time"] = 25 * 60
+		rep = GameState.sleep()
+		_ok(bool(rep.get("late", false)) and int(r["energy"]) < int(r["max_energy"]) and int(r["energy"]) >= int(r["max_energy"] * 0.85) - 1, "%s: 1am bedtime wakes a little short (%d/%d)" % [arc, int(r["energy"]), int(r["max_energy"])])
+		var lt := ""
+		for l in SleepReport.lines(rep):
+			lt += str(l.get("text", "")) + "\n"
+		_ok("Up late" in lt and not "three quarters" in lt, "%s: the late line, not the collapse line" % arc)
+		# C8 P1: a waived bill keeps the free first visit and names why.
+		var fl0: Dictionary = r["flags"]
+		fl0.erase("clinic_used")
+		_ok(Faint.clinic_fee(1000, 0, 0.0) == 0 and not fl0.has("clinic_used"), "%s: a waived bill doesn't spend the free first visit" % arc)
 		# Bedtime warnings: midnight and 1:30am, once each a night.
 		r["time"] = 23 * 60
 		_ok(Faint.bedtime_note() == "", "%s: no warning at 11pm" % arc)

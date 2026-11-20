@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 fix P1: core curves (levels, energy, swings, food, faint, sleep)
+- Level curve has a shape and an end: 40..400 by lv 13 as before, then x1.03 a level, `GameState.MAX_LEVEL` 100 (mastered: XP stops). Steady 420 XP/day: lv 30 d28, 62 end of year 1, 95 year 3 (was 124 in year 1). `points_free` capped by `ranks_left` (a full tree stops glowing); `add_xp` sets `last_levels`/`last_crossed5`, `level_up_text` (plural points, "mastered").
+- Per-level terms stop at `LEVEL_EFFECT_CAP` 20 via `skill_level_eff` (hp/mana per level, crit, water can, spell power, pup hp, toughness); player_tier caps level shares. Trees together: `TREE_HP_CAP` 200, `TREE_EN_CAP` 120; team_xp `TEAM_XP_CAP` 0.25; passive energy `level_energy` = 1.5 a summed level up to 30 (+45; was +3 up to 40).
+- Swings: `toughness` is smooth (axe 1.8 / pick 1.6 x 0.75 per tier x level factor / power), `toughen` stores swings x `swing_damage` so callers land on exactly `hits_for`. Tree 7,5,4,3,2,2,1,1; stone 3,2,2,1; level 6 shaves a swing.
+- Food: `consume_blocked`/`full_text` keep anything that would do nothing (potion at full health, pup treat, full bar vs daily cap, each with its own words). Heat wave outdoors only (`in_the_heat`). Shop floor never above the plain price and saturation-free (`unit_sell_value`, `SHOP_FLOOR`). Sell-box star bonus priced before the box saturates. Bartering nightly XP flat (`BARTER_XP_NIGHT`). Bed after midnight wakes up to 15% short (`late_wake_mult`). Bank: `bank_rate/bank_interest_cap/bank_interest`, interest counts in earned_by.bank.
+- Faint: a waived clinic bill keeps the free first visit and names why; collapsing in your own house costs nothing (`Faint.at_home/home_note`). SleepReport: late line, forge-ready line, unpetted animals, Shipping log `ship_new` line.
+- Tests: tools/c8_curve_test.gd (new, check.sh), tools/month_curve_test.gd (new 30-day curve), first_week_test on real swing counts (+ day-7 max energy band), sim.gd on real costs.
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).
