@@ -122,6 +122,7 @@ func _process(delta: float) -> void:
 
 func _lift(payload: Dictionary) -> void:
 	dragging = payload
+	Haptics.buzz("press", true)  # a long-press lift is felt (the finger hides the slot, c10_13)
 	_scrolls.clear()
 	_find_scrolls(get_parent())
 	var id := str(payload.get("id", ""))

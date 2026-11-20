@@ -245,6 +245,8 @@ func draw_map() -> void:
 		draw_rect(Rect2(TILE, TILE, (cols - 2) * TILE, TILE), Color("c9b08a"))
 		draw_rect(Rect2(BED.x * TILE, BED.y * TILE, 2 * TILE, TILE + 4), Color("6b3b2a"))
 		draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
+	if Art.has("tiles", "fl_wood"):
+		_draw_shell()
 	draw_rect(Rect2(DOOR.x * TILE, DOOR.y * TILE, TILE, TILE), Color("3a2412"))
 	DecorMode.draw_flat(self)  # your rugs and wall art, baked with the room
 
@@ -621,3 +623,60 @@ func _entry_button() -> void:
 	hide_t.start()
 	Hud.extra_rects.append(Rect2(bt.position, bt.size))
 	tree_exiting.connect(func() -> void: Hud.extra_rects.erase(Rect2(bt.position, bt.size)))
+
+
+## Side walls, the front lip and the back wall's floor shadow, like the town interiors'
+## (the house floated on black, c10_03), in the main room's wall colours.
+func _draw_shell() -> void:
+	var I0: Variant = load("res://scripts/interior.gd")
+	var wid := DecorMode.surface_of("wall", "main")
+	var wa := DecorMode.art_of(wid) if wid != "" else ["tiles", "wl_floral", false]
+	var trim := Art.tex("tiles", str(wa[1]) + "_m") if str(wa[0]) == "tiles" else null
+	if trim == null:
+		trim = Art.tex("tiles", "wl_floral_m")
+	var ty := float(I0.first_opaque_row(trim)) if trim else 0.0
+	var sx := 12.0
+	var gq: Vector2i = I0.wall_gap(trim) if trim else Vector2i.ZERO
+	if gq != Vector2i.ZERO and gq.x < 20 and gq.y > 12:
+		sx = 2.0 if gq.x >= 10 else float(gq.y) + 1.0
+	var rim := Color("3a2a1c")
+	for side in [0, cols - 1]:
+		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows - 1):
+			var r := Rect2(x0, y * TILE, 8, TILE)
+			if trim:
+				draw_texture_rect_region(trim, r, Rect2(sx, 26, 8, 16), Color(0.62, 0.56, 0.5))
+			else:
+				draw_rect(r, rim)
+	for side in [0, cols - 1]:
+		var x1 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows - 1):
+			draw_rect(Rect2(x1 + (8.0 if side == 0 else -4.0), y * TILE, 4, TILE), Color(0, 0, 0, 0.28))
+	for x in range(0, cols):
+		if x == DOOR.x:
+			continue
+		var r2 := Rect2(x * TILE, (rows - 1) * TILE, TILE, 8)
+		if x == 0:
+			r2 = Rect2(TILE - 8, (rows - 1) * TILE, 8, 8)
+		elif x == cols - 1:
+			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
+		if trim:
+			draw_texture_rect_region(trim, r2, Rect2(sx, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
+		else:
+			draw_rect(r2, rim)
+	draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, 3), Color(0, 0, 0, 0.22))
+
+
+## The floor word under a cell (footsteps): the room's flooring id, else "wood".
+func floor_at(c: Vector2i) -> String:
+	for room in ROOMS_BY_TIER[tier()]:
+		var rr: Rect2i = ROOMS_BY_TIER[tier()][room]
+		if c.x >= rr.position.x and c.x < rr.end.x:
+			var id := DecorMode.surface_of("floor", str(room))
+			if id != "":
+				var a := str(DecorMode.art_of(id)[1])
+				for w: Array in [["stone", "stone"], ["tile", "stone"], ["marble", "stone"], ["carpet", "grass"], ["rug", "grass"]]:
+					if str(w[0]) in a:
+						return str(w[1])
+			return "wood"
+	return "wood"
