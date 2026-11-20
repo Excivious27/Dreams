@@ -978,7 +978,7 @@
   ],
   "rarity": "rare",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_b.png",
   "size": [
    1,
@@ -998,7 +998,7 @@
   ],
   "rarity": "uncommon",
   "rot": 2,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    2,
@@ -1011,14 +1011,14 @@
   "glow": 0,
   "id": "dc_casino_cards_art",
   "layer": "wall",
-  "name": "Royal Flush Art",
+  "name": "Playing Card Art",
   "px": [
    48,
    40
   ],
   "rarity": "common",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_b.png",
   "size": [
    1,
@@ -1031,14 +1031,14 @@
   "glow": 0,
   "id": "dc_casino_chip_frame",
   "layer": "wall",
-  "name": "Framed Lucky Chip",
+  "name": "Framed Lucky Token",
   "px": [
    48,
    48
   ],
   "rarity": "uncommon",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_b.png",
   "size": [
    1,
@@ -1051,14 +1051,14 @@
   "glow": 0,
   "id": "dc_casino_chips",
   "layer": "floor",
-  "name": "Chip Tower Stand",
+  "name": "Token Tower",
   "px": [
    30,
    48
   ],
   "rarity": "common",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    1,
@@ -1078,7 +1078,7 @@
   ],
   "rarity": "uncommon",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    1,
@@ -1098,7 +1098,7 @@
   ],
   "rarity": "common",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    1,
@@ -1118,7 +1118,7 @@
   ],
   "rarity": "epic",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_b.png",
   "size": [
    1,
@@ -1138,7 +1138,7 @@
   ],
   "rarity": "common",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    1,
@@ -1151,14 +1151,14 @@
   "glow": 0,
   "id": "dc_casino_roulette",
   "layer": "floor",
-  "name": "Roulette Wheel",
+  "name": "Lucky Prize Wheel",
   "px": [
    60,
    58
   ],
   "rarity": "epic",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    2,
@@ -1171,14 +1171,14 @@
   "glow": 28,
   "id": "dc_casino_slot",
   "layer": "floor",
-  "name": "Lucky Slot Machine",
+  "name": "Neon Fruit Machine",
   "px": [
    30,
    45
   ],
   "rarity": "rare",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    1,
@@ -1191,14 +1191,14 @@
   "glow": 0,
   "id": "dc_casino_stool",
   "layer": "floor",
-  "name": "High-Roller Stool",
+  "name": "Velvet Bar Stool",
   "px": [
    30,
    58
   ],
   "rarity": "uncommon",
   "rot": 4,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_b.png",
   "size": [
    1,
@@ -1211,14 +1211,14 @@
   "glow": 0,
   "id": "dc_casino_table",
   "layer": "floor",
-  "name": "Card Table",
+  "name": "Velvet Game Table",
   "px": [
    60,
    56
   ],
   "rarity": "rare",
   "rot": 1,
-  "set": "casino",
+  "set": "velvet_lounge",
   "sheet": "set_casino_a.png",
   "size": [
    2,
@@ -5454,7 +5454,7 @@
   ]
  },
  {
-  "arc": "both",
+  "arc": "penguins",
   "cat": "rug",
   "glow": 0,
   "id": "dc_rug_penguin",
@@ -6477,7 +6477,7 @@
   "icon": "dc_show_crystal_tree_icon",
   "id": "dc_show_crystal_tree",
   "layer": "floor",
-  "name": "Crystal Tree",
+  "name": "Glow Glass Tree",
   "px": [
    60,
    83
@@ -6753,7 +6753,7 @@
   ]
  },
  {
-  "arc": "both",
+  "arc": "penguins",
   "cat": "furniture",
   "glow": 0,
   "id": "dc_stat_penguin_gold",
@@ -6798,7 +6798,7 @@
   "glow": 0,
   "id": "dc_stat_trophy",
   "layer": "floor",
-  "name": "Crew Cup Trophy",
+  "name": "Champion's Cup",
   "px": [
    30,
    36
@@ -6978,7 +6978,7 @@
   "glow": 0,
   "id": "dc_top_dice_cup",
   "layer": "top",
-  "name": "Lucky Dice Cup",
+  "name": "Dice Cup",
   "px": [
    30,
    28
@@ -7098,7 +7098,7 @@
   "glow": 18,
   "id": "dc_top_ice_crystal",
   "layer": "top",
-  "name": "Ice Crystal",
+  "name": "Ice Cube Paperweight",
   "px": [
    18,
    30
@@ -7173,7 +7173,7 @@
   ]
  },
  {
-  "arc": "both",
+  "arc": "penguins",
   "cat": "decor",
   "glow": 0,
   "id": "dc_top_penguin_plush",
@@ -7218,7 +7218,7 @@
   "glow": 0,
   "id": "dc_top_snow_globe",
   "layer": "top",
-  "name": "Penguin Snow Globe",
+  "name": "Snowy Village Globe",
   "px": [
    24,
    30
@@ -7555,5 +7555,1972 @@
    1
   ],
   "tile": "x:130 y:131"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_arbor_swing",
+  "layer": "outdoor",
+  "name": "Arbor Swing Seat",
+  "px": [
+   60,
+   61
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "bench"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 48,
+  "icon": "dc_y_aurora_lamp_icon",
+  "id": "dc_y_aurora_lamp",
+  "layer": "outdoor",
+  "name": "Northern-Lights Lamp",
+  "px": [
+   30,
+   68
+  ],
+  "rarity": "legendary",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_b.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_boulder",
+  "layer": "outdoor",
+  "name": "Mossy Boulder",
+  "px": [
+   29,
+   21
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_boulder_b",
+  "layer": "outdoor",
+  "name": "Mossy Boulder Pair",
+  "px": [
+   60,
+   36
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 40,
+  "id": "dc_y_bulb_poles",
+  "layer": "outdoor",
+  "name": "Bulb-String Poles",
+  "px": [
+   60,
+   53
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_cairn",
+  "layer": "outdoor",
+  "name": "Trail Cairn",
+  "px": [
+   30,
+   27
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_camp_tent",
+  "layer": "outdoor",
+  "name": "Camping Tent",
+  "px": [
+   60,
+   48
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 28,
+  "id": "dc_y_candle_stand",
+  "layer": "outdoor",
+  "name": "Candle Lantern Stand",
+  "px": [
+   30,
+   54
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "Parked for show. Polished to a mirror shine.",
+  "glow": 0,
+  "id": "dc_y_car_lift",
+  "layer": "outdoor",
+  "name": "Car on a Lift",
+  "px": [
+   60,
+   49
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_cat_tower",
+  "layer": "outdoor",
+  "name": "Garden Cat Tower",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_cat_tower_b",
+  "layer": "outdoor",
+  "name": "Tall Cat Tower",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_cones",
+  "layer": "outdoor",
+  "name": "Cones and Barricade",
+  "px": [
+   60,
+   46
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 24,
+  "id": "dc_y_crystal_cluster",
+  "layer": "outdoor",
+  "name": "Yard Crystal Cluster",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 28,
+  "id": "dc_y_crystal_cluster_b",
+  "layer": "outdoor",
+  "name": "Glowing Crystal Spire",
+  "px": [
+   30,
+   32
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 48,
+  "icon": "dc_y_crystal_fountain_icon",
+  "id": "dc_y_crystal_fountain",
+  "layer": "outdoor",
+  "name": "Crystal Plaza Fountain",
+  "px": [
+   60,
+   60
+  ],
+  "rarity": "mythic",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_b.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "fountain"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_gold",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "Gilded Fence",
+  "px": [
+   64,
+   36
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_ice",
+  "layer": "outdoor",
+  "name": "Ice-Brick Fence",
+  "px": [
+   30,
+   15
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_ice_v",
+  "layer": "outdoor",
+  "name": "Ice-Brick Fence (side)",
+  "px": [
+   14,
+   51
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_iron",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "Iron Railing",
+  "px": [
+   32,
+   24
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_iron_v",
+  "layer": "outdoor",
+  "name": "Iron Fence (side)",
+  "px": [
+   8,
+   50
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 24,
+  "id": "dc_y_fence_neon",
+  "layer": "outdoor",
+  "name": "Neon-Trim Fence",
+  "px": [
+   29,
+   14
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 24,
+  "id": "dc_y_fence_neon_v",
+  "layer": "outdoor",
+  "name": "Neon-Trim Fence (side)",
+  "px": [
+   9,
+   51
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_picket",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "White Picket Fence",
+  "px": [
+   64,
+   32
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_picket_v",
+  "layer": "outdoor",
+  "name": "Picket Fence (side)",
+  "px": [
+   12,
+   50
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_stone",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "Low Stone Wall",
+  "px": [
+   32,
+   24
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_stone_v",
+  "layer": "outdoor",
+  "name": "Stone Wall (side)",
+  "px": [
+   12,
+   51
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_wood",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "Wood Rail Fence",
+  "px": [
+   32,
+   22
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fence_wood_v",
+  "layer": "outdoor",
+  "name": "Wood Fence (side)",
+  "px": [
+   9,
+   51
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "out_fences.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 32,
+  "id": "dc_y_fire_pit",
+  "layer": "outdoor",
+  "name": "Stone Fire Pit",
+  "px": [
+   30,
+   34
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 28,
+  "id": "dc_y_firefly_jar",
+  "layer": "outdoor",
+  "name": "Firefly Jar Post",
+  "px": [
+   27,
+   57
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_fish_vane",
+  "layer": "outdoor",
+  "name": "Fish Weathervane",
+  "px": [
+   30,
+   49
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_grill",
+  "layer": "outdoor",
+  "name": "Charcoal Grill",
+  "px": [
+   30,
+   58
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_hay_wall",
+  "layer": "outdoor",
+  "name": "Hay Bale Wall",
+  "px": [
+   60,
+   60
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "fall",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_hedge_run",
+  "joins": true,
+  "layer": "outdoor",
+  "name": "Clipped Hedge Run",
+  "px": [
+   63,
+   31
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_fence",
+  "sheet": "existing props",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "fence"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_herb_box",
+  "layer": "outdoor",
+  "name": "Herb Planter Box",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "planter"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 32,
+  "id": "dc_y_hook_lantern",
+  "layer": "outdoor",
+  "name": "Hook Lantern Post",
+  "px": [
+   24,
+   63
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_hoop",
+  "layer": "outdoor",
+  "name": "Basketball Hoop",
+  "px": [
+   30,
+   72
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_hydrant",
+  "layer": "outdoor",
+  "name": "Fire Hydrant",
+  "px": [
+   29,
+   41
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_ice_slide",
+  "layer": "outdoor",
+  "name": "Penguin Ice Slide",
+  "px": [
+   60,
+   55
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 36,
+  "id": "dc_y_icicle_lamp",
+  "layer": "outdoor",
+  "name": "Icicle Lamp Post",
+  "px": [
+   27,
+   80
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "season": "winter",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 32,
+  "id": "dc_y_igloo_lantern",
+  "layer": "outdoor",
+  "name": "Igloo Lantern",
+  "px": [
+   30,
+   28
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_kiddie_pool",
+  "layer": "outdoor",
+  "name": "Kiddie Pool",
+  "px": [
+   60,
+   52
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "season": "summer",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 0,
+  "icon": "dc_y_koi_pond_icon",
+  "id": "dc_y_koi_pond",
+  "layer": "outdoor",
+  "name": "Koi Pond",
+  "px": [
+   60,
+   53
+  ],
+  "rarity": "legendary",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_a.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "fountain"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 32,
+  "id": "dc_y_lantern_post_kit",
+  "layer": "outdoor",
+  "name": "Cat Lantern Post",
+  "px": [
+   30,
+   60
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_leaf_pile",
+  "layer": "outdoor",
+  "name": "Leaf Pile with Rake",
+  "px": [
+   30,
+   31
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "fall",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_lemonade_stand",
+  "layer": "outdoor",
+  "name": "Lemonade Stand",
+  "px": [
+   60,
+   64
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "season": "summer",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_lounger",
+  "layer": "outdoor",
+  "name": "Striped Lounger",
+  "px": [
+   30,
+   37
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "summer",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 0,
+  "icon": "dc_y_lowrider_bounce_icon",
+  "id": "dc_y_lowrider_bounce",
+  "layer": "outdoor",
+  "name": "Lowrider Bounce",
+  "px": [
+   89,
+   36
+  ],
+  "rarity": "legendary",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_a.png",
+  "size": [
+   3,
+   1
+  ],
+  "sub": "showpiece"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "Parked for show. Polished to a mirror shine.",
+  "glow": 0,
+  "id": "dc_y_lowrider_purple",
+  "layer": "outdoor",
+  "name": "Purple Lowrider",
+  "px": [
+   59,
+   35
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "Parked for show. Polished to a mirror shine.",
+  "glow": 0,
+  "id": "dc_y_lowrider_teal",
+  "layer": "outdoor",
+  "name": "Teal Lowrider",
+  "px": [
+   89,
+   28
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   3,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 44,
+  "id": "dc_y_neon_arch",
+  "layer": "outdoor",
+  "name": "Neon Arch",
+  "px": [
+   60,
+   71
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "arch"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 36,
+  "id": "dc_y_neon_arrow",
+  "layer": "outdoor",
+  "name": "Neon Arrow Pole Sign",
+  "px": [
+   30,
+   76
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 44,
+  "icon": "dc_y_neon_chase_arch_icon",
+  "id": "dc_y_neon_chase_arch",
+  "layer": "outdoor",
+  "name": "Neon Chase Arch",
+  "px": [
+   60,
+   63
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_a.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "arch"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 36,
+  "id": "dc_y_neon_frame",
+  "layer": "outdoor",
+  "name": "Neon Sign Frame",
+  "px": [
+   60,
+   58
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "sign"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 40,
+  "id": "dc_y_neon_palm",
+  "layer": "outdoor",
+  "name": "Neon Palm Pole",
+  "px": [
+   30,
+   37
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 32,
+  "id": "dc_y_paper_lantern_post",
+  "layer": "outdoor",
+  "name": "Paper Lantern Post",
+  "px": [
+   30,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "icon": "dc_y_path_checker_icon",
+  "id": "dc_y_path_checker",
+  "layer": "outdoor",
+  "name": "Checker Plate Path",
+  "period_cells": 8,
+  "px": [
+   256,
+   256
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_path",
+  "sheet": "out_paths.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "path",
+  "tile": "x:76 y:76"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "icon": "dc_y_path_ice_brick_icon",
+  "id": "dc_y_path_ice_brick",
+  "layer": "outdoor",
+  "name": "Ice Brick Path",
+  "period_cells": 8,
+  "px": [
+   256,
+   256
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_path",
+  "sheet": "out_paths.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "path",
+  "tile": "x:fade y:fade"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 20,
+  "id": "dc_y_path_light",
+  "layer": "outdoor",
+  "name": "Solar Path Light",
+  "px": [
+   19,
+   32
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "icon": "dc_y_path_neon_asphalt_icon",
+  "id": "dc_y_path_neon_asphalt",
+  "layer": "outdoor",
+  "name": "Neon Fleck Asphalt",
+  "period_cells": 8,
+  "px": [
+   256,
+   256
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_path",
+  "sheet": "out_paths.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "path",
+  "tile": "x:fade y:fade"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "icon": "dc_y_path_pebble_icon",
+  "id": "dc_y_path_pebble",
+  "layer": "outdoor",
+  "name": "Pebble Mosaic Path",
+  "period_cells": 8,
+  "px": [
+   256,
+   256
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_path",
+  "sheet": "out_paths.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "path",
+  "tile": "x:fade y:fade"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_penguin_statue",
+  "layer": "outdoor",
+  "name": "Penguin Garden Statue",
+  "px": [
+   30,
+   47
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_penguin_topiary",
+  "layer": "outdoor",
+  "name": "Penguin Topiary",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_picnic_set",
+  "layer": "outdoor",
+  "name": "Picnic Blanket Set",
+  "px": [
+   60,
+   50
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "spring",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "A giant lawn pin from the Rec. Strike-proof.",
+  "glow": 0,
+  "id": "dc_y_pin_statue",
+  "layer": "outdoor",
+  "name": "Lawn Bowling Pin",
+  "px": [
+   30,
+   59
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "statue"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_rain_barrel",
+  "layer": "outdoor",
+  "name": "Rain Barrel",
+  "px": [
+   30,
+   42
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_shell_bed",
+  "layer": "outdoor",
+  "name": "Shell and Coral Bed",
+  "px": [
+   60,
+   46
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "flowerbed"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_sleeping_bag",
+  "layer": "outdoor",
+  "name": "Sleeping Bag",
+  "px": [
+   26,
+   46
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_sleeping_bag_b",
+  "layer": "outdoor",
+  "name": "Striped Sleeping Bag",
+  "px": [
+   25,
+   45
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_kit",
+  "sheet": "kits",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_snow_fort",
+  "layer": "outdoor",
+  "name": "Snow Fort Wall",
+  "px": [
+   60,
+   41
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "winter",
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "yard_penguin"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_speakers",
+  "layer": "outdoor",
+  "name": "Speaker Stack",
+  "px": [
+   30,
+   53
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 28,
+  "id": "dc_y_star_planter",
+  "layer": "outdoor",
+  "name": "Star-Crystal Planter",
+  "px": [
+   30,
+   32
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_penguin",
+  "sheet": "out_penguin.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "planter"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "fps": 6,
+  "frames": 4,
+  "glow": 40,
+  "icon": "dc_y_star_well_icon",
+  "id": "dc_y_star_well",
+  "layer": "outdoor",
+  "name": "Wishing-Star Well",
+  "px": [
+   60,
+   69
+  ],
+  "rarity": "mythic",
+  "rot": 1,
+  "set": "yard_show",
+  "sheet": "out_show_b.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_stepping_stones",
+  "layer": "outdoor",
+  "name": "Stepping Stones",
+  "px": [
+   29,
+   8
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "path"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 40,
+  "id": "dc_y_string_posts",
+  "layer": "outdoor",
+  "name": "String-Light Posts",
+  "px": [
+   60,
+   47
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_sundial",
+  "layer": "outdoor",
+  "name": "Garden Sundial",
+  "px": [
+   30,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_tag_wall",
+  "layer": "outdoor",
+  "name": "Tagged Brick Wall",
+  "px": [
+   60,
+   54
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   2,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 36,
+  "id": "dc_y_tiki_torch",
+  "layer": "outdoor",
+  "name": "Tiki Torch",
+  "px": [
+   17,
+   74
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "season": "summer",
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_tulip_barrow",
+  "layer": "outdoor",
+  "name": "Tulip Barrow",
+  "px": [
+   30,
+   27
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "season": "spring",
+  "set": "yard_seasonal",
+  "sheet": "out_seasonal.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "seasonal"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 44,
+  "id": "dc_y_twin_lamp",
+  "layer": "outdoor",
+  "name": "Twin Iron Lamp Post",
+  "px": [
+   30,
+   46
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "yard_lights",
+  "sheet": "out_lights_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "lamp"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_tyre_stack",
+  "layer": "outdoor",
+  "name": "Tyre Stack",
+  "px": [
+   30,
+   51
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_b.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "A tiny copy of the valley's old bell tower.",
+  "glow": 0,
+  "id": "dc_y_u_bell_tower",
+  "layer": "outdoor",
+  "name": "Bell Tower Miniature",
+  "px": [
+   30,
+   53
+  ],
+  "rarity": "unique",
+  "rot": 1,
+  "set": "yard_unique",
+  "sheet": "out_uniques.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "showpiece"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "The crew's pride. Nobody drives it; everybody polishes it.",
+  "glow": 0,
+  "id": "dc_y_u_gold_lowrider",
+  "layer": "outdoor",
+  "name": "Golden Lowrider",
+  "px": [
+   89,
+   26
+  ],
+  "rarity": "unique",
+  "rot": 1,
+  "set": "yard_unique",
+  "sheet": "out_uniques.png",
+  "size": [
+   3,
+   1
+  ],
+  "sub": "showpiece"
+ },
+ {
+  "arc": "penguins",
+  "c10b": true,
+  "cat": "outdoor",
+  "desc": "Raised where the story's star came home.",
+  "glow": 48,
+  "id": "dc_y_u_star_shrine",
+  "layer": "outdoor",
+  "name": "Star Crystal Shrine",
+  "px": [
+   60,
+   88
+  ],
+  "rarity": "unique",
+  "rot": 1,
+  "set": "yard_unique",
+  "sheet": "out_uniques.png",
+  "size": [
+   2,
+   2
+  ],
+  "sub": "showpiece"
+ },
+ {
+  "arc": "gangsters",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 28,
+  "id": "dc_y_vending",
+  "layer": "outdoor",
+  "name": "Street Snack Machine",
+  "px": [
+   30,
+   44
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_gang",
+  "sheet": "out_gang_a.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "yard_gang"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_wheelbarrow",
+  "layer": "outdoor",
+  "name": "Wheelbarrow Planter",
+  "px": [
+   30,
+   30
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "planter"
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "outdoor",
+  "glow": 0,
+  "id": "dc_y_wind_spinner",
+  "layer": "outdoor",
+  "name": "Wind Spinner",
+  "px": [
+   29,
+   61
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "yard_garden",
+  "sheet": "out_garden_both.png",
+  "size": [
+   1,
+   1
+  ],
+  "sub": "garden"
  }
 ]
