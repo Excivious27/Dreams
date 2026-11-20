@@ -581,3 +581,10 @@ echo "$slkout" | grep -E "FAIL|SCRIPT ERROR|season_look_test" || true
 if ! echo "$slkout" | grep -q "season_look_test: PASS"; then
   echo "Season look test failed"; exit 1
 fi
+
+echo "== UI/arcade/rec/story audio cues (CONDUCT 6 P6) =="
+uaout="$("$GODOT" --headless --path . -s res://tools/ui_audio_test.gd 2>&1)"
+echo "$uaout" | grep -E "FAIL|SCRIPT ERROR|ui_audio_test" || true
+if ! echo "$uaout" | grep -q "ui_audio_test: 0 failures"; then
+  echo "UI audio test failed"; exit 1
+fi
