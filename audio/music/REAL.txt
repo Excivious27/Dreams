@@ -87,3 +87,6 @@ boss_light_eater
 mega_wind_storm
 mega_station
 mega_gloam_thicket
+mega_desert_canyon
+mega_desert_temple
+mega_gloam_moonpool

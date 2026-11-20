@@ -201,3 +201,16 @@ A major side arc built on Tom's real store, The General Store (Spokane, est. 194
 - UPGRADES (tiered): help the store grow: reopen the upstairs card department and expand it into a full card hall, add departments, build the parking lot/garden center, open the Outpost and lakeside branches, a delivery van route (ties to fast travel C14), an employee crew you hire and level (ties to helper automation C11); each tier unlocks stock, perks and cosmetics (C10 decor).
 - ECONOMY: a store-credit/loyalty card, wholesale buying for your farm goods (the store buys your crops/crafts for its shelves), gift cards as gifts; numbers in a generator with an economy check; both arcs (gangster arc: a family store under pressure from the gangs, protection-racket plot you resolve the right way; penguin arc: the cozy heart of town).
 - Tests: store_test (departments reachable, quests, upgrades, economy), phone UI audit of every store screen, bots walk the store. Art via image tool; music: an upbeat in-store song (ACE).
+
+## Split build-from-scratch runs (Tom 20:18, OPTIMIZE CONDUCT)
+Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, full package):
+- C10a decor/cosmetics: the item catalogue, rarity tiers, shops/rewards/drops, placing furniture/wallpaper/flooring indoors, apparel and footwear (wardrobe), data generator + tests.
+- C10b decor/cosmetics: house exteriors and outdoor/farm decor placement, the casino side arc (gangster; real gambling allowed), decor in quests/festivals/collections, art for the whole catalogue, balance.
+- C11a ranching: classic animals (coops, barns, care, products, breeding, babies), pens/fences, animal skill tree, hay/feed economy, trainable team animals (with C3 helpers), helper automation base.
+- C11b ranching: exotics and fantastic creatures (ostrich, Komodo, space and Merkitty Islands creatures; gangster genetically modified ones), quest-earned animals, ranch buildings tiers, helper automation full (assign to farm/combat/forage/chests, levels, energy), balance + art.
+- C18a cutscenes: cutscene engine (art panels, staged NPC scenes, skip), the Crystopia intro (Star Crystal visits the hero), main-story beats both arcs.
+- C18b cutscenes: random night events, side-event and quirky side-quest scenes, big openings (rec, casino, General Store), polish + art.
+Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, then the final package.
+
+## CONDUCT timing (Tom 20:18)
+Every report carries a timing table (audit, sort, fix, merge+CI, package, total, gap since the last CONDUCT ended); the progress sheet has a Timing tab. Target about 1.5-2 h between finished CONDUCTs (Tom 20:22: ideally ~1.5 h all in).

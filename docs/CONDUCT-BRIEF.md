@@ -1,5 +1,15 @@
 # Common rules for every CONDUCT agent (read fully)
 
+## Auditors (read and play only)
+- Do not change game code, data or art; small probes go under tools/probe_<id>_*.gd or /tmp/<id>/.
+- Append each finding AS SOON AS YOU FIND IT to /home/claude/wt/cN_reports/<id>.jsonl (create the dir if needed), one JSON object per line:
+  {"id":"c5_07","area":"...","severity":"blocker|major|minor|polish","title":"...","files":["scripts/x.gd","data/y.json"],"repro":"...","fix":"...","art_needed":"","audio_needed":"","needs_tom":""}
+  Name the real files the fix touches (generators, not generated JSON) so tools/conduct/cluster.py can build file-disjoint packages.
+- When finished, write /home/claude/wt/cN_reports/<id>.done and end with a short summary (the .jsonl is the report).
+- If you were restarted, read your existing .jsonl first and CONTINUE: never repeat or re-check findings already written.
+- Read-only auditors don't run Godot at all. Playing auditors use short scripts (area_shot, probes) under flock; never bots.sh or check.sh.
+
+
 Project: Dreams, a Godot 4.5.1 phone game (GDScript, portrait 270x480). Owner Tom plays on his phone only.
 Read CLAUDE.md in your worktree first (project conventions, tools, generators — edit generators, not generated JSON).
 
@@ -7,12 +17,12 @@ YOUR WORKTREE: /home/claude/wt/<your id> (given in your task). Work ONLY there. 
 Your branch is checked out there. Commit your work on that branch (several commits fine). DO NOT push. DO NOT merge.
 Commit message footer (exactly):
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_013g54oquy7KhPYLKKRq36dZ
+Claude-Session: <the session link from the main chat's attribution>
 
 ART FILES ARE HARDLINKED to the main repo: never modify an existing file under art/ (or audio/) in place. To replace one, `rm` it first, then write the new file. Adding new files is fine.
 
-Godot: `export PATH=$PATH:/home/claude/tools` (godot binary). The machine has 2 CPUs shared by 20 agents, so wrap EVERY godot invocation (including tools/check.sh) in `flock /tmp/godot.lock ...` and use a fresh `XDG_DATA_HOME=$(mktemp -d)`.
-Before finishing: `flock /tmp/godot.lock bash tools/check.sh` must pass (rc 0). Fix what you broke. If you add gameplay, add or extend a headless test (tools/*_test.gd) and wire it into tools/check.sh when it is fast.
+Godot: `export PATH=$PATH:/home/claude/tools` (godot binary). The machine has 2 CPUs shared by many agents, so wrap EVERY godot invocation in `flock /tmp/godot.lock ...` with a fresh `XDG_DATA_HOME=$(mktemp -d)` and `timeout 600`.
+NEVER run tools/check.sh or tools/bots.sh locally (the main chat runs them on GitHub Actions with tools/conduct/ci_run.sh). Fix agents run only the targeted tests for the files they touch. If you add gameplay, add or extend a headless test (tools/*_test.gd) and wire it into tools/check.sh as its own block (a blank line before and after; it becomes a CI shard step automatically).
 Screenshots: tools/area_shot.gd (see CLAUDE.md) — look at them (Read tool on the PNG) to verify visuals.
 
 Content rules: all ages. Gangster arc: guns OK, no blood/graphic violence, no drugs/alcohol-centred/mature content. Original characters and art only. Never delete Tom's uploads (reference/, art/incoming/).
