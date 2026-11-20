@@ -44739,20 +44739,20 @@
  },
  "enemies/cboss_coral": {
   "attack": {
-   "cell_h": 96,
-   "cell_w": 105,
+   "cell_h": 141,
+   "cell_w": 122,
    "file": "enemies/cboss_coral/attack.png",
    "frames": 4,
-   "h": 96,
-   "w": 420
+   "h": 141,
+   "w": 488
   },
   "hurt": {
-   "cell_h": 96,
-   "cell_w": 87,
+   "cell_h": 91,
+   "cell_w": 98,
    "file": "enemies/cboss_coral/hurt.png",
    "frames": 2,
-   "h": 96,
-   "w": 174
+   "h": 91,
+   "w": 196
   },
   "idle": {
    "cell_h": 96,

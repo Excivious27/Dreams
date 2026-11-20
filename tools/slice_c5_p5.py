@@ -353,6 +353,24 @@ def props_redraw():
     print("props redrawn")
 
 
+def coral():
+    """cboss_coral attack (4) + hurt (2) redrawn whole (the old swipe frames
+    were cut at the cell edges). Transparent render: no magenta key (the
+    coral itself is pink)."""
+    a = np.asarray(Image.open(os.path.join(S.INC, "c5/p5_cboss_coral.png")).convert("RGBA")).copy()
+    a[a[..., 3] <= 40] = 0
+    top = a.copy(); top[640:] = 0
+    bot = a.copy(); bot[:640] = 0
+    atk = _row_slots(top, 1, 4)[0]
+    hurt = _row_slots(bot, 1, 2)[0]
+    g = "enemies/cboss_coral"
+    f = float(S.manifest[g]["idle"]["cell_h"]) / atk[0].height
+    for nm, ims in [("attack", atk), ("hurt", hurt)]:
+        _rm(g, nm)
+        S.strip([_fit(im, f) for im in ims], g, nm)
+    print("cboss_coral")
+
+
 def poses():
     """Redraws of the cells Npc.BAD_CELLS used to hide (c5_08 #2)."""
     for src, sheet, names, ref in POSE_FIX:
@@ -489,7 +507,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep, tile_lines, crops_redraw, props_redraw]
+STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep, tile_lines, crops_redraw, props_redraw, coral]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
