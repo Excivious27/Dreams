@@ -268,6 +268,9 @@ func _fade_roll(secs: float) -> void:
 
 
 func _follow_roll(delta: float) -> void:
+	# The file ends in a fade: wrap before it (a slow ball heard a dropout at the loop).
+	if _roll.playing and _roll.stream and _roll.get_playback_position() > _roll.stream.get_length() - 0.35:
+		_roll.seek(0.5)
 	var sim: Variant = game.sim
 	var spd: float = (sim.ball_v as Vector2).length()
 	if _roll.playing and _roll_fade <= 0.0:
