@@ -84790,6 +84790,11 @@
    "h": 201,
    "w": 151
   },
+  "bridge3_ns_3_dry": {
+   "file": "props/bridge3_ns_3_dry.png",
+   "h": 201,
+   "w": 151
+  },
   "bridge3_ns_5": {
    "file": "props/bridge3_ns_5.png",
    "h": 202,
@@ -87356,6 +87361,11 @@
   },
   "foot3_ns_a": {
    "file": "props/foot3_ns_a.png",
+   "h": 184,
+   "w": 154
+  },
+  "foot3_ns_a_dry": {
+   "file": "props/foot3_ns_a_dry.png",
    "h": 184,
    "w": 154
   },

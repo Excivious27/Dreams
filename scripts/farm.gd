@@ -2072,6 +2072,8 @@ func _place_river_props() -> void:
 		var y1: int = ys[ys.size() - 1]
 		var stone := bx == BRIDGE_X[1]  # the town road gets the stone bridge
 		var nm := "bridge3_ns_3" if stone else "foot3_ns_a"
+		if Art.has("props", nm + "_dry"):
+			nm += "_dry"  # its painted pond patch keyed out: the river shows under it (c5_01 #7)
 		if not Art.has("props", nm):
 			nm = "bridge_wood2" if Art.has("props", "bridge_wood2") else "bridge"
 		var tex := Art.tex("props", nm)
@@ -2091,16 +2093,24 @@ func _place_river_props() -> void:
 		if _bridge_cells.has(c) or not in_content(c):
 			continue
 		var edge := false
+		var land := Vector2.ZERO  # towards the bank
 		for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
 			if not _river.has(c + d):
 				edge = true
+				land += Vector2(d)
 		var r := rng.randf()
 		if edge and r < 0.16:
 			var nm: String = ["mk_reeds_2", "mk_reeds_3", "mk_cattail_1", "mk_cattail_2", "reeds2_0", "reeds2_2"][rng.randi_range(0, 5)]
+			# Reeds stand in the shallows at the bank, not out in the stream (the soft
+			# shore draws the edge cell half as water): nudged towards the land side.
+			var nudge := land.normalized() * 7.0 if land != Vector2.ZERO else Vector2.ZERO
+			var rp: Sprite2D = null
 			if Art.has("props", nm):
-				prop("props", nm, c, 0, 2.0, false, 0.32)
+				rp = prop("props", nm, c, 0, 2.0, false, 0.32)
 			elif Art.has("nature", nm):
-				prop("nature", nm, c, 0, 2.0, false)
+				rp = prop("nature", nm, c, 0, 2.0, false)
+			if rp:
+				rp.position += nudge
 		elif not edge and r < 0.05 and Art.has("nature", "lily2_0"):
 			var lp := prop("nature", "lily2_%d" % rng.randi_range(0, 3), c, 0, -2.0, false)
 			if lp:

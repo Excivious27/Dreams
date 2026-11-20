@@ -25,12 +25,41 @@ def interior():
         print(name, b)
 
 
-STEPS = [interior]
+def bridge_dry():
+    for nm in ["bridge3_ns_3", "foot3_ns_a"]:
+        _dry(nm)
+
+
+def _dry(nm):
+    """The stone bridge with the pond patch painted into its art keyed out (it showed as a
+    hard blue box round the base over the farm river): props/bridge3_ns_3_dry."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+    src = os.path.join(S.OUT, "props", nm + ".png")
+    a = np.array(Image.open(src).convert("RGBA")).astype(int)
+    r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
+    water = (b > r + 35) & (b > g + 5) & (al > 0)
+    water = ndimage.binary_closing(water, iterations=1)
+    # Dark rims round the water (outline pixels touching it) go too.
+    rim = ndimage.binary_dilation(water, iterations=1) & (r + g + b < 200) & ~water
+    out = a.copy()
+    out[..., 3] = np.where(water | rim, 0, al)
+    dst = os.path.join(S.OUT, "props", nm + "_dry.png")
+    if os.path.exists(dst):
+        os.remove(dst)
+    S.save(Image.fromarray(out.astype(np.uint8)), "props", nm + "_dry")
+
+
+STEPS = [interior, bridge_dry]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     S.manifest.update(json.load(open(mpath)))
+    only = sys.argv[1:]
     for fn in STEPS:
+        if only and fn.__name__ not in only:
+            continue
         fn(); print("ok", fn.__name__)
     data = json.dumps(S.manifest, indent=1, sort_keys=True)
     os.remove(mpath)
