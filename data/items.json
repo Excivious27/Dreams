@@ -10268,7 +10268,7 @@
  "dc_antler_hooks": {
   "name": "Antler Hooks",
   "type": "decor",
-  "value": 90,
+  "value": 65,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/antler_hooks",
@@ -10278,7 +10278,7 @@
  "dc_armchair2_blue": {
   "name": "Country Blue Armchair",
   "type": "decor",
-  "value": 17,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_blue",
@@ -10288,7 +10288,7 @@
  "dc_armchair2_green": {
   "name": "Country Green Armchair",
   "type": "decor",
-  "value": 17,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_green",
@@ -10298,7 +10298,7 @@
  "dc_armchair2_red": {
   "name": "Country Red Armchair",
   "type": "decor",
-  "value": 19,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_red",
@@ -10308,7 +10308,7 @@
  "dc_armchair2_yellow": {
   "name": "Country Yellow Armchair",
   "type": "decor",
-  "value": 16,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair2_yellow",
@@ -10318,7 +10318,7 @@
  "dc_armchair_a": {
   "name": "Cottage Oak Armchair",
   "type": "decor",
-  "value": 18,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_a",
@@ -10328,7 +10328,7 @@
  "dc_armchair_b": {
   "name": "Cottage Pine Armchair",
   "type": "decor",
-  "value": 18,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_b",
@@ -10338,7 +10338,7 @@
  "dc_armchair_c": {
   "name": "Cottage Walnut Armchair",
   "type": "decor",
-  "value": 19,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_c",
@@ -10348,7 +10348,7 @@
  "dc_armchair_d": {
   "name": "Cottage Birch Armchair",
   "type": "decor",
-  "value": 20,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/armchair_d",
@@ -10358,7 +10358,7 @@
  "dc_armchair_window": {
   "name": "Window Seat",
   "type": "decor",
-  "value": 375,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/armchair_window",
@@ -10368,7 +10368,7 @@
  "dc_barrel": {
   "name": "Barrel",
   "type": "decor",
-  "value": 92,
+  "value": 61,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/barrel",
@@ -10378,7 +10378,7 @@
  "dc_barrels3": {
   "name": "Barrel Stack",
   "type": "decor",
-  "value": 88,
+  "value": 98,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/barrels3",
@@ -10388,7 +10388,7 @@
  "dc_bathtub": {
   "name": "Bathtub",
   "type": "decor",
-  "value": 94,
+  "value": 96,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bathtub",
@@ -10398,7 +10398,7 @@
  "dc_bed2_blue": {
   "name": "Country Blue Bed",
   "type": "decor",
-  "value": 88,
+  "value": 108,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_blue",
@@ -10408,7 +10408,7 @@
  "dc_bed2_double_blue": {
   "name": "Blue Quilt Double Bed",
   "type": "decor",
-  "value": 375,
+  "value": 248,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed2_double_blue",
@@ -10418,7 +10418,7 @@
  "dc_bed2_double_red": {
   "name": "Red Quilt Double Bed",
   "type": "decor",
-  "value": 390,
+  "value": 352,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed2_double_red",
@@ -10428,7 +10428,7 @@
  "dc_bed2_green": {
   "name": "Country Green Bed",
   "type": "decor",
-  "value": 88,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_green",
@@ -10438,7 +10438,7 @@
  "dc_bed2_red": {
   "name": "Country Red Bed",
   "type": "decor",
-  "value": 93,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed2_red",
@@ -10448,7 +10448,7 @@
  "dc_bed_blue": {
   "name": "Cottage Blue Bed",
   "type": "decor",
-  "value": 97,
+  "value": 82,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed_blue",
@@ -10458,7 +10458,7 @@
  "dc_bed_double": {
   "name": "Double Bed",
   "type": "decor",
-  "value": 368,
+  "value": 285,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed_double",
@@ -10468,7 +10468,7 @@
  "dc_bed_double_green": {
   "name": "Green Double Bed",
   "type": "decor",
-  "value": 375,
+  "value": 240,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bed_double_green",
@@ -10488,7 +10488,7 @@
  "dc_bed_single": {
   "name": "Single Bed",
   "type": "decor",
-  "value": 88,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bed_single",
@@ -10498,7 +10498,7 @@
  "dc_bookcase2_a": {
   "name": "Country Oak Bookcase",
   "type": "decor",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_a",
@@ -10508,7 +10508,7 @@
  "dc_bookcase2_b": {
   "name": "Country Pine Bookcase",
   "type": "decor",
-  "value": 19,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_b",
@@ -10518,7 +10518,7 @@
  "dc_bookcase2_c": {
   "name": "Country Walnut Bookcase",
   "type": "decor",
-  "value": 20,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase2_c",
@@ -10528,7 +10528,7 @@
  "dc_bookcase3_a": {
   "name": "Manor Oak Bookcase",
   "type": "decor",
-  "value": 382,
+  "value": 322,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_a",
@@ -10538,7 +10538,7 @@
  "dc_bookcase3_b": {
   "name": "Manor Pine Bookcase",
   "type": "decor",
-  "value": 390,
+  "value": 330,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_b",
@@ -10548,7 +10548,7 @@
  "dc_bookcase3_c": {
   "name": "Manor Walnut Bookcase",
   "type": "decor",
-  "value": 398,
+  "value": 375,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_c",
@@ -10558,7 +10558,7 @@
  "dc_bookcase3_d": {
   "name": "Manor Birch Bookcase",
   "type": "decor",
-  "value": 368,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_d",
@@ -10568,7 +10568,7 @@
  "dc_bookcase3_e": {
   "name": "Manor Cedar Bookcase",
   "type": "decor",
-  "value": 375,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookcase3_e",
@@ -10588,7 +10588,7 @@
  "dc_bookcase_a": {
   "name": "Cottage Oak Bookcase",
   "type": "decor",
-  "value": 18,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_a",
@@ -10598,7 +10598,7 @@
  "dc_bookcase_b": {
   "name": "Cottage Pine Bookcase",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_b",
@@ -10608,7 +10608,7 @@
  "dc_bookcase_c": {
   "name": "Cottage Walnut Bookcase",
   "type": "decor",
-  "value": 19,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookcase_c",
@@ -10618,7 +10618,7 @@
  "dc_books_scrolls": {
   "name": "Books and Scrolls",
   "type": "decor",
-  "value": 368,
+  "value": 345,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/books_scrolls",
@@ -10628,7 +10628,7 @@
  "dc_bookshelf": {
   "name": "Cottage Bookshelf",
   "type": "decor",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf",
@@ -10638,7 +10638,7 @@
  "dc_bookshelf_a": {
   "name": "Cottage Oak Bookshelf",
   "type": "decor",
-  "value": 17,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf_a",
@@ -10648,7 +10648,7 @@
  "dc_bookshelf_b": {
   "name": "Cottage Pine Bookshelf",
   "type": "decor",
-  "value": 18,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/bookshelf_b",
@@ -10658,7 +10658,7 @@
  "dc_bookshelf_ivy": {
   "name": "Ivy Bookcase",
   "type": "decor",
-  "value": 382,
+  "value": 338,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/bookshelf_ivy",
@@ -10668,7 +10668,7 @@
  "dc_bunk_bed": {
   "name": "Bunk Bed",
   "type": "decor",
-  "value": 88,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/bunk_bed",
@@ -10678,7 +10678,7 @@
  "dc_candle_stand": {
   "name": "Candelabra",
   "type": "decor",
-  "value": 18,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/candle_stand",
@@ -10688,7 +10688,7 @@
  "dc_cat_bed": {
   "name": "Cat Bed",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/cat_bed",
@@ -10698,7 +10698,7 @@
  "dc_cattail_pot": {
   "name": "Cattail Pot",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/cattail_pot",
@@ -10708,7 +10708,7 @@
  "dc_chair2_a_down": {
   "name": "Country Oak Chair",
   "type": "decor",
-  "value": 17,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair2_a_down",
@@ -10718,7 +10718,7 @@
  "dc_chair2_b_down": {
   "name": "Country Pine Chair",
   "type": "decor",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair2_b_down",
@@ -10728,7 +10728,7 @@
  "dc_chair_a": {
   "name": "Cottage Oak Chair",
   "type": "decor",
-  "value": 19,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_a",
@@ -10738,7 +10738,7 @@
  "dc_chair_b": {
   "name": "Cottage Pine Chair",
   "type": "decor",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_b",
@@ -10748,7 +10748,7 @@
  "dc_chair_c": {
   "name": "Cottage Walnut Chair",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_c",
@@ -10758,7 +10758,7 @@
  "dc_chair_d": {
   "name": "Cottage Birch Chair",
   "type": "decor",
-  "value": 16,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_d",
@@ -10768,7 +10768,7 @@
  "dc_chair_down": {
   "name": "Kitchen Chair",
   "type": "decor",
-  "value": 19,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_down",
@@ -10778,7 +10778,7 @@
  "dc_chair_up": {
   "name": "Kitchen Chair (back)",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/chair_up",
@@ -10788,7 +10788,7 @@
  "dc_chalkboard": {
   "name": "Chalkboard",
   "type": "decor",
-  "value": 97,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/chalkboard",
@@ -10798,7 +10798,7 @@
  "dc_chandelier": {
   "name": "Crystal Chandelier",
   "type": "decor",
-  "value": 1402,
+  "value": 810,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/chandelier",
@@ -10808,7 +10808,7 @@
  "dc_clock": {
   "name": "Mantel Clock",
   "type": "decor",
-  "value": 97,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/clock",
@@ -10818,7 +10818,7 @@
  "dc_clock_grand": {
   "name": "Grandfather Clock",
   "type": "decor",
-  "value": 375,
+  "value": 240,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/clock_grand",
@@ -10828,7 +10828,7 @@
  "dc_clock_grand2": {
   "name": "Grand Clock",
   "type": "decor",
-  "value": 382,
+  "value": 218,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/clock_grand2",
@@ -10838,7 +10838,7 @@
  "dc_clock_tall": {
   "name": "Tall Clock",
   "type": "decor",
-  "value": 390,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/clock_tall",
@@ -10848,7 +10848,7 @@
  "dc_coat_hooks": {
   "name": "Coat Hooks",
   "type": "decor",
-  "value": 92,
+  "value": 101,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/coat_hooks",
@@ -10858,7 +10858,7 @@
  "dc_coffee_pot": {
   "name": "Coffee Pot",
   "type": "decor",
-  "value": 16,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/coffee_pot",
@@ -10868,7 +10868,7 @@
  "dc_coffee_pot_a": {
   "name": "Tall Coffee Pot",
   "type": "decor",
-  "value": 18,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/coffee_pot_a",
@@ -10878,7 +10878,7 @@
  "dc_cradle": {
   "name": "Cradle",
   "type": "decor",
-  "value": 93,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/cradle",
@@ -10888,7 +10888,7 @@
  "dc_crystal_ball": {
   "name": "Crystal Ball",
   "type": "decor",
-  "value": 375,
+  "value": 458,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/crystal_ball",
@@ -10898,7 +10898,7 @@
  "dc_crystal_cage": {
   "name": "Crystal Cage",
   "type": "decor",
-  "value": 390,
+  "value": 195,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/crystal_cage",
@@ -10908,7 +10908,7 @@
  "dc_curtain_blue_closed": {
   "name": "Drawn Blue Curtains",
   "type": "decor",
-  "value": 19,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_blue_closed",
@@ -10918,7 +10918,7 @@
  "dc_curtain_blue_open": {
   "name": "Blue Curtains",
   "type": "decor",
-  "value": 16,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_blue_open",
@@ -10928,7 +10928,7 @@
  "dc_curtain_closed": {
   "name": "Drawn Lace Curtains",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_closed",
@@ -10938,7 +10938,7 @@
  "dc_curtain_green_closed": {
   "name": "Drawn Green Curtains",
   "type": "decor",
-  "value": 19,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_green_closed",
@@ -10948,7 +10948,7 @@
  "dc_curtain_green_open": {
   "name": "Green Curtains",
   "type": "decor",
-  "value": 16,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_green_open",
@@ -10958,7 +10958,7 @@
  "dc_curtain_open": {
   "name": "Lace Curtains",
   "type": "decor",
-  "value": 20,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_open",
@@ -10968,7 +10968,7 @@
  "dc_curtain_red_closed": {
   "name": "Drawn Red Curtains",
   "type": "decor",
-  "value": 16,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_red_closed",
@@ -10978,7 +10978,7 @@
  "dc_curtain_red_open": {
   "name": "Red Curtains",
   "type": "decor",
-  "value": 18,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/curtain_red_open",
@@ -10988,7 +10988,7 @@
  "dc_desk_a": {
   "name": "Cottage Oak Desk",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_a",
@@ -11008,7 +11008,7 @@
  "dc_desk_c": {
   "name": "Cottage Walnut Desk",
   "type": "decor",
-  "value": 17,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_c",
@@ -11018,7 +11018,7 @@
  "dc_desk_d": {
   "name": "Cottage Birch Desk",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/desk_d",
@@ -11028,7 +11028,7 @@
  "dc_dog_bed": {
   "name": "Dog Bed",
   "type": "decor",
-  "value": 17,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dog_bed",
@@ -11038,7 +11038,7 @@
  "dc_dresser": {
   "name": "Dresser",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser",
@@ -11048,7 +11048,7 @@
  "dc_dresser2_a": {
   "name": "Country Oak Dresser",
   "type": "decor",
-  "value": 17,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser2_a",
@@ -11058,7 +11058,7 @@
  "dc_dresser2_b": {
   "name": "Country Pine Dresser",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/dresser2_b",
@@ -11068,7 +11068,7 @@
  "dc_easel2": {
   "name": "Painter's Easel",
   "type": "decor",
-  "value": 390,
+  "value": 435,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/easel2",
@@ -11078,7 +11078,7 @@
  "dc_filing_cabinet": {
   "name": "Filing Cabinet",
   "type": "decor",
-  "value": 20,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/filing_cabinet",
@@ -11088,7 +11088,7 @@
  "dc_fire_pit2": {
   "name": "Indoor Fire Bowl",
   "type": "decor",
-  "value": 382,
+  "value": 390,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/fire_pit2",
@@ -11098,7 +11098,7 @@
  "dc_fireplace": {
   "name": "Stone Fireplace",
   "type": "decor",
-  "value": 375,
+  "value": 285,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/fireplace",
@@ -11108,7 +11108,7 @@
  "dc_fireplace2": {
   "name": "Brick Fireplace",
   "type": "decor",
-  "value": 375,
+  "value": 382,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/fireplace2",
@@ -11118,7 +11118,7 @@
  "dc_fireplace2_unlit": {
   "name": "Cold Brick Fireplace",
   "type": "decor",
-  "value": 375,
+  "value": 360,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/fireplace2_unlit",
@@ -11128,7 +11128,7 @@
  "dc_fireplace_anim": {
   "name": "Roaring Hearth",
   "type": "decor",
-  "value": 5625,
+  "value": 3000,
   "rarity": "legendary",
   "tier": 5,
   "icon": "furniture/fireplace_anim",
@@ -11138,7 +11138,7 @@
  "dc_flag_a": {
   "name": "Pennant Flag",
   "type": "decor",
-  "value": 88,
+  "value": 123,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/flag_a",
@@ -11148,7 +11148,7 @@
  "dc_flag_b": {
   "name": "Banner Flag",
   "type": "decor",
-  "value": 90,
+  "value": 117,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/flag_b",
@@ -11158,7 +11158,7 @@
  "dc_flower_jug": {
   "name": "Flower Jug",
   "type": "decor",
-  "value": 20,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/flower_jug",
@@ -11168,7 +11168,7 @@
  "dc_fridge": {
   "name": "Icebox",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/fridge",
@@ -11178,7 +11178,7 @@
  "dc_globe": {
   "name": "Desk Globe",
   "type": "decor",
-  "value": 382,
+  "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe",
@@ -11188,7 +11188,7 @@
  "dc_globe2": {
   "name": "Floor Globe",
   "type": "decor",
-  "value": 382,
+  "value": 330,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe2",
@@ -11198,7 +11198,7 @@
  "dc_globe3": {
   "name": "Brass Globe",
   "type": "decor",
-  "value": 390,
+  "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/globe3",
@@ -11208,7 +11208,7 @@
  "dc_hanging_mugs": {
   "name": "Mug Rack",
   "type": "decor",
-  "value": 19,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/hanging_mugs",
@@ -11218,7 +11218,7 @@
  "dc_hearth": {
   "name": "Old Hearth",
   "type": "decor",
-  "value": 398,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/hearth",
@@ -11228,7 +11228,7 @@
  "dc_ink_brushes": {
   "name": "Ink and Brushes",
   "type": "decor",
-  "value": 390,
+  "value": 375,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/ink_brushes",
@@ -11238,7 +11238,7 @@
  "dc_ivy_pot": {
   "name": "Ivy Pot",
   "type": "decor",
-  "value": 17,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/ivy_pot",
@@ -11248,7 +11248,7 @@
  "dc_jug": {
   "name": "Water Jug",
   "type": "decor",
-  "value": 19,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/jug",
@@ -11258,7 +11258,7 @@
  "dc_kettle": {
   "name": "Kettle",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kettle",
@@ -11268,7 +11268,7 @@
  "dc_kettle_stand": {
   "name": "Kettle Stand",
   "type": "decor",
-  "value": 17,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kettle_stand",
@@ -11278,7 +11278,7 @@
  "dc_kitchen_counter_a": {
   "name": "Kitchen Counter",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_counter_a",
@@ -11288,7 +11288,7 @@
  "dc_kitchen_counter_b": {
   "name": "Kitchen Cupboard",
   "type": "decor",
-  "value": 20,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_counter_b",
@@ -11298,7 +11298,7 @@
  "dc_kitchen_fridge": {
   "name": "Kitchen Icebox",
   "type": "decor",
-  "value": 20,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_fridge",
@@ -11308,7 +11308,7 @@
  "dc_kitchen_sink": {
   "name": "Kitchen Sink",
   "type": "decor",
-  "value": 16,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_sink",
@@ -11318,7 +11318,7 @@
  "dc_kitchen_stove": {
   "name": "Kitchen Stove",
   "type": "decor",
-  "value": 20,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/kitchen_stove",
@@ -11328,7 +11328,7 @@
  "dc_lamp_floor": {
   "name": "Floor Lamp",
   "type": "decor",
-  "value": 18,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lamp_floor",
@@ -11338,7 +11338,7 @@
  "dc_lamp_floor_b": {
   "name": "Tall Floor Lamp",
   "type": "decor",
-  "value": 16,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lamp_floor_b",
@@ -11348,7 +11348,7 @@
  "dc_lamp_table_a": {
   "name": "Table Lamp",
   "type": "decor",
-  "value": 17,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lamp_table_a",
@@ -11358,7 +11358,7 @@
  "dc_lamp_table_b": {
   "name": "Shaded Table Lamp",
   "type": "decor",
-  "value": 18,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lamp_table_b",
@@ -11368,7 +11368,7 @@
  "dc_lantern2": {
   "name": "Iron Lantern",
   "type": "decor",
-  "value": 17,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lantern2",
@@ -11378,7 +11378,7 @@
  "dc_lantern3": {
   "name": "Brass Lantern",
   "type": "decor",
-  "value": 18,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lantern3",
@@ -11388,7 +11388,7 @@
  "dc_lantern4": {
   "name": "Paper Lantern",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/lantern4",
@@ -11398,7 +11398,7 @@
  "dc_library_ladder": {
   "name": "Library Ladder",
   "type": "decor",
-  "value": 375,
+  "value": 188,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/library_ladder",
@@ -11408,7 +11408,7 @@
  "dc_low_table": {
   "name": "Low Table",
   "type": "decor",
-  "value": 17,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/low_table",
@@ -11418,7 +11418,7 @@
  "dc_mirror": {
   "name": "Round Mirror",
   "type": "decor",
-  "value": 92,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/mirror",
@@ -11428,7 +11428,7 @@
  "dc_mirror2": {
   "name": "Tall Mirror",
   "type": "decor",
-  "value": 93,
+  "value": 57,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/mirror2",
@@ -11438,7 +11438,7 @@
  "dc_nightstand_a": {
   "name": "Cottage Oak Nightstand",
   "type": "decor",
-  "value": 17,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/nightstand_a",
@@ -11448,7 +11448,7 @@
  "dc_nightstand_b": {
   "name": "Cottage Pine Nightstand",
   "type": "decor",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/nightstand_b",
@@ -11458,7 +11458,7 @@
  "dc_organ": {
   "name": "Pipe Organ",
   "type": "decor",
-  "value": 1402,
+  "value": 795,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/organ",
@@ -11468,7 +11468,7 @@
  "dc_painting2_a": {
   "name": "Country Oak Painting",
   "type": "decor",
-  "value": 375,
+  "value": 442,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_a",
@@ -11478,7 +11478,7 @@
  "dc_painting2_b": {
   "name": "Country Pine Painting",
   "type": "decor",
-  "value": 375,
+  "value": 188,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_b",
@@ -11488,7 +11488,7 @@
  "dc_painting2_c": {
   "name": "Country Walnut Painting",
   "type": "decor",
-  "value": 382,
+  "value": 225,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_c",
@@ -11498,7 +11498,7 @@
  "dc_painting2_d": {
   "name": "Country Birch Painting",
   "type": "decor",
-  "value": 382,
+  "value": 285,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_d",
@@ -11508,7 +11508,7 @@
  "dc_painting2_e": {
   "name": "Country Cedar Painting",
   "type": "decor",
-  "value": 390,
+  "value": 412,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_e",
@@ -11518,7 +11518,7 @@
  "dc_painting2_f": {
   "name": "Country Maple Painting",
   "type": "decor",
-  "value": 398,
+  "value": 240,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/painting2_f",
@@ -11528,7 +11528,7 @@
  "dc_painting_a": {
   "name": "Cottage Oak Painting",
   "type": "decor",
-  "value": 88,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_a",
@@ -11538,7 +11538,7 @@
  "dc_painting_b": {
   "name": "Cottage Pine Painting",
   "type": "decor",
-  "value": 90,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_b",
@@ -11548,7 +11548,7 @@
  "dc_painting_c": {
   "name": "Cottage Walnut Painting",
   "type": "decor",
-  "value": 92,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_c",
@@ -11558,7 +11558,7 @@
  "dc_painting_d": {
   "name": "Cottage Birch Painting",
   "type": "decor",
-  "value": 93,
+  "value": 87,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/painting_d",
@@ -11568,7 +11568,7 @@
  "dc_pelt_bear": {
   "name": "Bear Pelt Rug",
   "type": "decor",
-  "value": 382,
+  "value": 360,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/pelt_bear",
@@ -11578,7 +11578,7 @@
  "dc_pelt_leopard": {
   "name": "Spotted Pelt Rug",
   "type": "decor",
-  "value": 375,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/pelt_leopard",
@@ -11588,7 +11588,7 @@
  "dc_pelt_wolf": {
   "name": "Wolf Pelt Rug",
   "type": "decor",
-  "value": 398,
+  "value": 405,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/pelt_wolf",
@@ -11598,7 +11598,7 @@
  "dc_pet_bed": {
   "name": "Pet Cushion",
   "type": "decor",
-  "value": 18,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/pet_bed",
@@ -11608,7 +11608,7 @@
  "dc_piano": {
   "name": "Upright Piano",
   "type": "decor",
-  "value": 1402,
+  "value": 1500,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/piano",
@@ -11628,7 +11628,7 @@
  "dc_plant2_a": {
   "name": "Country Fern Pot",
   "type": "decor",
-  "value": 17,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_a",
@@ -11638,7 +11638,7 @@
  "dc_plant2_b": {
   "name": "Country Palm Pot",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_b",
@@ -11648,7 +11648,7 @@
  "dc_plant2_c": {
   "name": "Country Ivy Pot",
   "type": "decor",
-  "value": 18,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_c",
@@ -11658,7 +11658,7 @@
  "dc_plant2_d": {
   "name": "Country Cactus Pot",
   "type": "decor",
-  "value": 19,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_d",
@@ -11668,7 +11668,7 @@
  "dc_plant2_e": {
   "name": "Country Fig Pot",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_e",
@@ -11678,7 +11678,7 @@
  "dc_plant2_f": {
   "name": "Country Lily Pot",
   "type": "decor",
-  "value": 20,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant2_f",
@@ -11688,7 +11688,7 @@
  "dc_plant_a": {
   "name": "Cottage Fern Pot",
   "type": "decor",
-  "value": 16,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant_a",
@@ -11708,7 +11708,7 @@
  "dc_plant_c": {
   "name": "Cottage Ivy Pot",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/plant_c",
@@ -11718,7 +11718,7 @@
  "dc_poster_frame": {
   "name": "Framed Poster",
   "type": "decor",
-  "value": 97,
+  "value": 57,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/poster_frame",
@@ -11728,7 +11728,7 @@
  "dc_radio": {
   "name": "Valve Radio",
   "type": "decor",
-  "value": 375,
+  "value": 225,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/radio",
@@ -11738,7 +11738,7 @@
  "dc_reed_mat_a": {
   "name": "Reed Mat",
   "type": "decor",
-  "value": 8,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/reed_mat_a",
@@ -11758,7 +11758,7 @@
  "dc_reed_mat_round": {
   "name": "Round Reed Mat",
   "type": "decor",
-  "value": 18,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/reed_mat_round",
@@ -11768,7 +11768,7 @@
  "dc_round_rug_stone": {
   "name": "Stone-Ring Rug",
   "type": "decor",
-  "value": 96,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/round_rug_stone",
@@ -11778,7 +11778,7 @@
  "dc_round_set_a": {
   "name": "Cottage Set Oak Round",
   "type": "decor",
-  "value": 92,
+  "value": 96,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/round_set_a",
@@ -11788,7 +11788,7 @@
  "dc_round_set_b": {
   "name": "Cottage Set Pine Round",
   "type": "decor",
-  "value": 93,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/round_set_b",
@@ -11798,7 +11798,7 @@
  "dc_rug2_blue": {
   "name": "Country Blue Rug",
   "type": "decor",
-  "value": 16,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug2_blue",
@@ -11808,7 +11808,7 @@
  "dc_rug2_green": {
   "name": "Country Green Rug",
   "type": "decor",
-  "value": 16,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug2_green",
@@ -11818,7 +11818,7 @@
  "dc_rug2_red": {
   "name": "Country Red Rug",
   "type": "decor",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug2_red",
@@ -11828,7 +11828,7 @@
  "dc_rug2_round_blue": {
   "name": "Country Round Blue Rug",
   "type": "decor",
-  "value": 93,
+  "value": 86,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/rug2_round_blue",
@@ -11838,7 +11838,7 @@
  "dc_rug2_round_red": {
   "name": "Country Round Red Rug",
   "type": "decor",
-  "value": 97,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/rug2_round_red",
@@ -11848,7 +11848,7 @@
  "dc_rug2_runner": {
   "name": "Hall Runner",
   "type": "decor",
-  "value": 19,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug2_runner",
@@ -11858,7 +11858,7 @@
  "dc_rug_rect_blue": {
   "name": "Cottage Rect Blue Rug",
   "type": "decor",
-  "value": 20,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug_rect_blue",
@@ -11878,7 +11878,7 @@
  "dc_rug_rect_red": {
   "name": "Cottage Rect Red Rug",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug_rect_red",
@@ -11888,7 +11888,7 @@
  "dc_rug_red": {
   "name": "Great Red Rug",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/rug_red",
@@ -11898,7 +11898,7 @@
  "dc_rug_round_blue": {
   "name": "Cottage Round Blue Rug",
   "type": "decor",
-  "value": 92,
+  "value": 59,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/rug_round_blue",
@@ -11908,7 +11908,7 @@
  "dc_rug_round_green": {
   "name": "Cottage Round Green Rug",
   "type": "decor",
-  "value": 92,
+  "value": 94,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/rug_round_green",
@@ -11918,7 +11918,7 @@
  "dc_rug_round_red": {
   "name": "Cottage Round Red Rug",
   "type": "decor",
-  "value": 96,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/rug_round_red",
@@ -11928,7 +11928,7 @@
  "dc_safe": {
   "name": "Iron Safe",
   "type": "decor",
-  "value": 1388,
+  "value": 728,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/safe",
@@ -11938,7 +11938,7 @@
  "dc_shelf_books": {
   "name": "Book Shelf",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_books",
@@ -11948,7 +11948,7 @@
  "dc_shelf_empty": {
   "name": "Plain Shelf",
   "type": "decor",
-  "value": 17,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_empty",
@@ -11958,7 +11958,7 @@
  "dc_shelf_house": {
   "name": "House Shelf",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_house",
@@ -11968,7 +11968,7 @@
  "dc_shelf_jars": {
   "name": "Jar Shelf",
   "type": "decor",
-  "value": 16,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_jars",
@@ -11978,7 +11978,7 @@
  "dc_shelf_misc": {
   "name": "Odds Shelf",
   "type": "decor",
-  "value": 18,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/shelf_misc",
@@ -11988,7 +11988,7 @@
  "dc_sink": {
   "name": "Wash Basin",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/sink",
@@ -11998,7 +11998,7 @@
  "dc_sofa_blue": {
   "name": "Cottage Blue Sofa",
   "type": "decor",
-  "value": 97,
+  "value": 87,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_blue",
@@ -12008,7 +12008,7 @@
  "dc_sofa_green": {
   "name": "Cottage Green Sofa",
   "type": "decor",
-  "value": 97,
+  "value": 102,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_green",
@@ -12018,7 +12018,7 @@
  "dc_sofa_red": {
   "name": "Cottage Red Sofa",
   "type": "decor",
-  "value": 92,
+  "value": 76,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/sofa_red",
@@ -12028,7 +12028,7 @@
  "dc_sofa_velvet": {
   "name": "Velvet Sofa",
   "type": "decor",
-  "value": 1440,
+  "value": 1050,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/sofa_velvet",
@@ -12038,7 +12038,7 @@
  "dc_spiral_stair": {
   "name": "Spiral Stair",
   "type": "decor",
-  "value": 390,
+  "value": 225,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/spiral_stair",
@@ -12048,7 +12048,7 @@
  "dc_stool2": {
   "name": "Country Stool",
   "type": "decor",
-  "value": 18,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool2",
@@ -12058,7 +12058,7 @@
  "dc_stool_blue": {
   "name": "Cottage Blue Stool",
   "type": "decor",
-  "value": 18,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_blue",
@@ -12068,7 +12068,7 @@
  "dc_stool_green": {
   "name": "Cottage Green Stool",
   "type": "decor",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_green",
@@ -12078,7 +12078,7 @@
  "dc_stool_red": {
   "name": "Cottage Red Stool",
   "type": "decor",
-  "value": 20,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_red",
@@ -12088,7 +12088,7 @@
  "dc_stool_wood": {
   "name": "Wood Stool",
   "type": "decor",
-  "value": 19,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stool_wood",
@@ -12098,7 +12098,7 @@
  "dc_stove_iron": {
   "name": "Iron Stove",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/stove_iron",
@@ -12108,7 +12108,7 @@
  "dc_table": {
   "name": "Kitchen Table",
   "type": "decor",
-  "value": 18,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table",
@@ -12118,7 +12118,7 @@
  "dc_table2_long4": {
   "name": "Dining Table",
   "type": "decor",
-  "value": 17,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table2_long4",
@@ -12138,7 +12138,7 @@
  "dc_table2_round": {
   "name": "Round Dining Table",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table2_round",
@@ -12148,7 +12148,7 @@
  "dc_table_long": {
   "name": "Cottage Long Table",
   "type": "decor",
-  "value": 19,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_long",
@@ -12158,7 +12158,7 @@
  "dc_table_long_cloth": {
   "name": "Cottage Long Cloth Table",
   "type": "decor",
-  "value": 88,
+  "value": 83,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_long_cloth",
@@ -12168,7 +12168,7 @@
  "dc_table_round": {
   "name": "Cottage Round Table",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_round",
@@ -12178,7 +12178,7 @@
  "dc_table_round_cloth": {
   "name": "Cottage Round Cloth Table",
   "type": "decor",
-  "value": 90,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_round_cloth",
@@ -12188,7 +12188,7 @@
  "dc_table_square": {
   "name": "Cottage Square Table",
   "type": "decor",
-  "value": 20,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/table_square",
@@ -12198,7 +12198,7 @@
  "dc_table_square_cloth": {
   "name": "Cottage Square Cloth Table",
   "type": "decor",
-  "value": 90,
+  "value": 93,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/table_square_cloth",
@@ -12208,7 +12208,7 @@
  "dc_telescope2": {
   "name": "Brass Telescope",
   "type": "decor",
-  "value": 398,
+  "value": 382,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/telescope2",
@@ -12218,7 +12218,7 @@
  "dc_toilet": {
   "name": "Toilet",
   "type": "decor",
-  "value": 97,
+  "value": 126,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/toilet",
@@ -12228,7 +12228,7 @@
  "dc_trophy_case": {
   "name": "Trophy Case",
   "type": "decor",
-  "value": 92,
+  "value": 93,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/trophy_case",
@@ -12238,7 +12238,7 @@
  "dc_trophy_shelf": {
   "name": "Trophy Shelf",
   "type": "decor",
-  "value": 90,
+  "value": 93,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/trophy_shelf",
@@ -12248,7 +12248,7 @@
  "dc_tv_off": {
   "name": "Retro TV Set",
   "type": "decor",
-  "value": 368,
+  "value": 450,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/tv_off",
@@ -12258,7 +12258,7 @@
  "dc_tv_on": {
   "name": "Television",
   "type": "decor",
-  "value": 382,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "furniture/tv_on",
@@ -12268,7 +12268,7 @@
  "dc_vault_closed": {
   "name": "Vault Door",
   "type": "decor",
-  "value": 1418,
+  "value": 1395,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/vault_closed",
@@ -12278,7 +12278,7 @@
  "dc_vault_open": {
   "name": "Open Vault Door",
   "type": "decor",
-  "value": 1365,
+  "value": 1125,
   "rarity": "epic",
   "tier": 4,
   "icon": "furniture/vault_open",
@@ -12288,7 +12288,7 @@
  "dc_wardrobe2_a": {
   "name": "Country Oak Wardrobe",
   "type": "decor",
-  "value": 19,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe2_a",
@@ -12298,7 +12298,7 @@
  "dc_wardrobe2_b": {
   "name": "Country Pine Wardrobe",
   "type": "decor",
-  "value": 20,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe2_b",
@@ -12308,7 +12308,7 @@
  "dc_wardrobe_a": {
   "name": "Cottage Oak Wardrobe",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe_a",
@@ -12318,7 +12318,7 @@
  "dc_wardrobe_b": {
   "name": "Cottage Pine Wardrobe",
   "type": "decor",
-  "value": 19,
+  "value": 25,
   "rarity": "common",
   "tier": 1,
   "icon": "furniture/wardrobe_b",
@@ -12328,7 +12328,7 @@
  "dc_window": {
   "name": "Small Window",
   "type": "decor",
-  "value": 97,
+  "value": 60,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window",
@@ -12338,7 +12338,7 @@
  "dc_window2_day_a": {
   "name": "Tall Window",
   "type": "decor",
-  "value": 93,
+  "value": 54,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_day_a",
@@ -12348,7 +12348,7 @@
  "dc_window2_day_b": {
   "name": "Wide Window",
   "type": "decor",
-  "value": 94,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_day_b",
@@ -12358,7 +12358,7 @@
  "dc_window2_night_a": {
   "name": "Tall Night Window",
   "type": "decor",
-  "value": 97,
+  "value": 65,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_night_a",
@@ -12368,7 +12368,7 @@
  "dc_window2_night_b": {
   "name": "Wide Night Window",
   "type": "decor",
-  "value": 88,
+  "value": 112,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window2_night_b",
@@ -12378,7 +12378,7 @@
  "dc_window_day": {
   "name": "Cottage Window",
   "type": "decor",
-  "value": 97,
+  "value": 77,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_day",
@@ -12388,7 +12388,7 @@
  "dc_window_night": {
   "name": "Night Window",
   "type": "decor",
-  "value": 92,
+  "value": 81,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_night",
@@ -12398,7 +12398,7 @@
  "dc_window_rain": {
   "name": "Rainy Window",
   "type": "decor",
-  "value": 92,
+  "value": 61,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "furniture/window_rain",
@@ -12408,7 +12408,7 @@
  "dc_neon_sign_0": {
   "name": "Neon Sign: Moon",
   "type": "decor",
-  "value": 120,
+  "value": 232,
   "rarity": "rare",
   "tier": 2,
   "icon": "props/neon_sign_0",
@@ -12419,7 +12419,7 @@
  "dc_neon_sign_1": {
   "name": "Neon Sign: Star",
   "type": "decor",
-  "value": 120,
+  "value": 248,
   "rarity": "rare",
   "tier": 2,
   "icon": "props/neon_sign_1",
@@ -12430,7 +12430,7 @@
  "dc_neon_sign_2": {
   "name": "Neon Sign: Heart",
   "type": "decor",
-  "value": 398,
+  "value": 338,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/neon_sign_2",
@@ -12441,7 +12441,7 @@
  "dc_neon_sign_3": {
   "name": "Neon Sign: Bolt",
   "type": "decor",
-  "value": 368,
+  "value": 442,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/neon_sign_3",
@@ -12452,7 +12452,7 @@
  "dc_neon_sign_4": {
   "name": "Neon Sign: Diamond",
   "type": "decor",
-  "value": 1140,
+  "value": 818,
   "rarity": "epic",
   "tier": 3,
   "icon": "props/neon_sign_4",
@@ -12463,7 +12463,7 @@
  "dc_neon_sign_5": {
   "name": "Neon Sign: Crown",
   "type": "decor",
-  "value": 1388,
+  "value": 878,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/neon_sign_5",
@@ -12474,7 +12474,7 @@
  "dc_neon_sign_6": {
   "name": "Neon Sign: Ace",
   "type": "decor",
-  "value": 1402,
+  "value": 638,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/neon_sign_6",
@@ -12485,7 +12485,7 @@
  "dc_neon_sign_7": {
   "name": "Neon Sign: Skyline",
   "type": "decor",
-  "value": 5475,
+  "value": 3900,
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/neon_sign_7",
@@ -12496,7 +12496,7 @@
  "dc_rec_neon_0": {
   "name": "Neon Bowling Pin",
   "type": "decor",
-  "value": 94,
+  "value": 95,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "props/rec_neon_0",
@@ -12506,7 +12506,7 @@
  "dc_rec_neon_1": {
   "name": "Neon Strike Sign",
   "type": "decor",
-  "value": 390,
+  "value": 352,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/rec_neon_1",
@@ -12516,7 +12516,7 @@
  "dc_rec_neon_2": {
   "name": "Neon Joystick",
   "type": "decor",
-  "value": 398,
+  "value": 240,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/rec_neon_2",
@@ -12526,7 +12526,7 @@
  "dc_rec_neon_3": {
   "name": "Neon Ticket Sign",
   "type": "decor",
-  "value": 88,
+  "value": 126,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "props/rec_neon_3",
@@ -12536,7 +12536,7 @@
  "dc_jukebox_a": {
   "name": "Chrome Jukebox",
   "type": "decor",
-  "value": 1365,
+  "value": 1118,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/jukebox_a",
@@ -12547,7 +12547,7 @@
  "dc_jukebox_b": {
   "name": "Diner Jukebox",
   "type": "decor",
-  "value": 5400,
+  "value": 2925,
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/jukebox_b",
@@ -12557,7 +12557,7 @@
  "dc_arcade_cab_0": {
   "name": "Arcade Cabinet: Red",
   "type": "decor",
-  "value": 1208,
+  "value": 1282,
   "rarity": "epic",
   "tier": 3,
   "icon": "props/arcade_cab_0",
@@ -12567,7 +12567,7 @@
  "dc_arcade_cab_1": {
   "name": "Arcade Cabinet: Blue",
   "type": "decor",
-  "value": 1125,
+  "value": 1245,
   "rarity": "epic",
   "tier": 3,
   "icon": "props/arcade_cab_1",
@@ -12577,7 +12577,7 @@
  "dc_arcade_cab_2": {
   "name": "Arcade Cabinet: Gold",
   "type": "decor",
-  "value": 4575,
+  "value": 3225,
   "rarity": "legendary",
   "tier": 4,
   "icon": "props/arcade_cab_2",
@@ -12587,7 +12587,7 @@
  "dc_arcade_cab_3": {
   "name": "Arcade Cabinet: Green",
   "type": "decor",
-  "value": 1388,
+  "value": 1432,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/arcade_cab_3",
@@ -12597,7 +12597,7 @@
  "dc_arcade_cab_4": {
   "name": "Arcade Cabinet: Violet",
   "type": "decor",
-  "value": 1402,
+  "value": 1208,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/arcade_cab_4",
@@ -12607,7 +12607,7 @@
  "dc_arcade_cab_5": {
   "name": "Arcade Cabinet: Night",
   "type": "decor",
-  "value": 5475,
+  "value": 4800,
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/arcade_cab_5",
@@ -12618,7 +12618,7 @@
  "dc_rec_pinball_a": {
   "name": "Pinball Table",
   "type": "decor",
-  "value": 1388,
+  "value": 1028,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/rec_pinball_a",
@@ -12628,7 +12628,7 @@
  "dc_rec_pinball_b": {
   "name": "Galaxy Pinball",
   "type": "decor",
-  "value": 5475,
+  "value": 3675,
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/rec_pinball_b",
@@ -12638,7 +12638,7 @@
  "dc_cat_statue": {
   "name": "Cat Statue",
   "type": "decor",
-  "value": 390,
+  "value": 442,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/cat_statue",
@@ -12649,7 +12649,7 @@
  "dc_alien_statue": {
   "name": "Moon Visitor Statue",
   "type": "decor",
-  "value": 16500,
+  "value": 7650,
   "rarity": "mythic",
   "tier": 5,
   "icon": "props/alien_statue",
@@ -12659,7 +12659,7 @@
  "dc_statue2_crystal": {
   "name": "Crystal Statue",
   "type": "decor",
-  "value": 5400,
+  "value": 5550,
   "rarity": "legendary",
   "tier": 5,
   "icon": "props/statue2_crystal",
@@ -12670,7 +12670,7 @@
  "dc_lamp_tall_a": {
   "name": "Street Lamp (indoor)",
   "type": "decor",
-  "value": 90,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "props/lamp_tall_a",
@@ -12681,7 +12681,7 @@
  "dc_lamp_arm_a": {
   "name": "Arm Lamp",
   "type": "decor",
-  "value": 94,
+  "value": 76,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "props/lamp_arm_a",
@@ -12691,7 +12691,7 @@
  "dc_city_planter": {
   "name": "City Planter",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "props/city_planter",
@@ -12702,7 +12702,7 @@
  "dc_carnivore_plant": {
   "name": "Snapjaw Plant",
   "type": "decor",
-  "value": 1418,
+  "value": 1088,
   "rarity": "epic",
   "tier": 4,
   "icon": "props/carnivore_plant",
@@ -12712,7 +12712,7 @@
  "dc_bulb_plant": {
   "name": "Glowbulb Plant",
   "type": "decor",
-  "value": 375,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "props/bulb_plant",
@@ -12722,7 +12722,7 @@
  "dc_tt_vase": {
   "name": "Glazed Vase",
   "type": "decor",
-  "value": 18,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "items/vase",
@@ -12732,7 +12732,7 @@
  "dc_tt_cat_figurine": {
   "name": "Cat Figurine",
   "type": "decor",
-  "value": 92,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cat_figurine",
@@ -12743,7 +12743,7 @@
  "dc_tt_penguin_figurine": {
   "name": "Penguin Figurine",
   "type": "decor",
-  "value": 81,
+  "value": 82,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_figurine",
@@ -12754,7 +12754,7 @@
  "dc_tt_snow_globe": {
   "name": "Snow Globe",
   "type": "decor",
-  "value": 120,
+  "value": 165,
   "rarity": "rare",
   "tier": 2,
   "icon": "items/snow_globe",
@@ -12764,7 +12764,7 @@
  "dc_tt_teddy_bear": {
   "name": "Teddy Bear",
   "type": "decor",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "items/teddy_bear",
@@ -12774,7 +12774,7 @@
  "dc_tt_statue_head": {
   "name": "Marble Bust",
   "type": "decor",
-  "value": 375,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/statue_head",
@@ -12784,7 +12784,7 @@
  "dc_tt_candle": {
   "name": "Candle",
   "type": "decor",
-  "value": 19,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/candle",
@@ -12794,7 +12794,7 @@
  "dc_tt_candle_tall": {
   "name": "Tall Candle",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "items/candle_tall",
@@ -12804,7 +12804,7 @@
  "dc_tt_pot_a": {
   "name": "Clay Jar",
   "type": "decor",
-  "value": 9,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "items/pot_a",
@@ -12814,7 +12814,7 @@
  "dc_tt_pot_b": {
   "name": "Painted Jar",
   "type": "decor",
-  "value": 20,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "items/pot_b",
@@ -12824,7 +12824,7 @@
  "dc_tt_pot_c": {
   "name": "Urn",
   "type": "decor",
-  "value": 67,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/pot_c",
@@ -12834,7 +12834,7 @@
  "dc_tt_snowman": {
   "name": "Tiny Snowman",
   "type": "decor",
-  "value": 73,
+  "value": 123,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/snowman",
@@ -12845,7 +12845,7 @@
  "dc_tt_wisp_bottle": {
   "name": "Wisp in a Bottle",
   "type": "decor",
-  "value": 1418,
+  "value": 1575,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/wisp_bottle",
@@ -12855,7 +12855,7 @@
  "dc_tt_bottled_wind": {
   "name": "Bottled Breeze",
   "type": "decor",
-  "value": 382,
+  "value": 270,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/bottled_wind",
@@ -12865,7 +12865,7 @@
  "dc_tt_echo_shell": {
   "name": "Echo Shell",
   "type": "decor",
-  "value": 375,
+  "value": 248,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/echo_shell",
@@ -12875,7 +12875,7 @@
  "dc_tt_fossil_shell": {
   "name": "Fossil Shell",
   "type": "decor",
-  "value": 94,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/fossil_shell",
@@ -12885,7 +12885,7 @@
  "dc_tt_trophy_fish_a": {
   "name": "Fishing Cup",
   "type": "decor",
-  "value": 382,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/trophy_fish_a",
@@ -12895,7 +12895,7 @@
  "dc_tt_trophy_farm_a": {
   "name": "Harvest Cup",
   "type": "decor",
-  "value": 398,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/trophy_farm_a",
@@ -12905,7 +12905,7 @@
  "dc_tt_trophy_craft_a": {
   "name": "Maker's Cup",
   "type": "decor",
-  "value": 368,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/trophy_craft_a",
@@ -12915,7 +12915,7 @@
  "dc_tt_trophy_crystal": {
   "name": "Crystal Cup",
   "type": "decor",
-  "value": 1372,
+  "value": 772,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/trophy_crystal",
@@ -12925,7 +12925,7 @@
  "dc_tt_medal_bronze": {
   "name": "Bronze Medal Frame",
   "type": "decor",
-  "value": 94,
+  "value": 103,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/medal_bronze",
@@ -12935,7 +12935,7 @@
  "dc_tt_medal_silver": {
   "name": "Silver Medal Frame",
   "type": "decor",
-  "value": 375,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/medal_silver",
@@ -12945,7 +12945,7 @@
  "dc_tt_lantern_moon": {
   "name": "Moon Lantern",
   "type": "decor",
-  "value": 1388,
+  "value": 682,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/lantern_moon",
@@ -12955,7 +12955,7 @@
  "dc_tt_lantern_crystal": {
   "name": "Crystal Lantern",
   "type": "decor",
-  "value": 375,
+  "value": 188,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/lantern_crystal",
@@ -12966,7 +12966,7 @@
  "dc_tt_lantern_red": {
   "name": "Red Paper Lantern",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "items/lantern_red",
@@ -12976,7 +12976,7 @@
  "dc_tt_lantern_gold": {
   "name": "Gold Lantern",
   "type": "decor",
-  "value": 1418,
+  "value": 1020,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/lantern_gold",
@@ -12987,7 +12987,7 @@
  "dc_tt_lantern_copper": {
   "name": "Copper Lantern",
   "type": "decor",
-  "value": 88,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/lantern_copper",
@@ -12997,7 +12997,7 @@
  "dc_tt_pumpkin_lantern": {
   "name": "Pumpkin Lantern",
   "type": "decor",
-  "value": 94,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/pumpkin_lantern",
@@ -13007,7 +13007,7 @@
  "dc_tt_wisp_lantern": {
   "name": "Wisp Lantern",
   "type": "decor",
-  "value": 5550,
+  "value": 3975,
   "rarity": "legendary",
   "tier": 5,
   "icon": "items/wisp_lantern",
@@ -13017,7 +13017,7 @@
  "dc_tt_first_dollar": {
   "name": "Framed First Dollar",
   "type": "decor",
-  "value": 292,
+  "value": 188,
   "rarity": "rare",
   "tier": 2,
   "icon": "items/first_dollar",
@@ -13028,7 +13028,7 @@
  "dc_tt_bottle_cap": {
   "name": "Bottle-Cap Jar",
   "type": "decor",
-  "value": 17,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "items/bottle_cap",
@@ -13039,7 +13039,7 @@
  "dc_tt_snow_heart": {
   "name": "Snow Heart",
   "type": "decor",
-  "value": 375,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/snow_heart",
@@ -13050,7 +13050,7 @@
  "dc_tt_painting_landscape": {
   "name": "Landscape Canvas",
   "type": "decor",
-  "value": 88,
+  "value": 91,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/painting_landscape",
@@ -13060,7 +13060,7 @@
  "dc_tt_painting_portrait": {
   "name": "Portrait Canvas",
   "type": "decor",
-  "value": 92,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/painting_portrait",
@@ -13070,7 +13070,7 @@
  "dc_wall_bakery": {
   "name": "Bakery Cream Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_bakery_l",
@@ -13080,7 +13080,7 @@
  "dc_wall_brick": {
   "name": "Red Brick Wallpaper",
   "type": "decor",
-  "value": 88,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/wl_brick_l",
@@ -13090,7 +13090,7 @@
  "dc_wall_chalk": {
   "name": "Schoolhouse Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_chalk_l",
@@ -13100,7 +13100,7 @@
  "dc_wall_clinic": {
   "name": "Clinic Mint Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_clinic_l",
@@ -13110,7 +13110,7 @@
  "dc_wall_concrete": {
   "name": "Bare Concrete Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_concrete_l",
@@ -13121,7 +13121,7 @@
  "dc_wall_curve": {
   "name": "Arched Plaster Wallpaper",
   "type": "decor",
-  "value": 96,
+  "value": 91,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/wl_curve_l",
@@ -13131,7 +13131,7 @@
  "dc_wall_fish": {
   "name": "Seaside Boards Wallpaper",
   "type": "decor",
-  "value": 17,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_fish_l",
@@ -13141,7 +13141,7 @@
  "dc_wall_floral": {
   "name": "Rose Floral Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_floral_l",
@@ -13151,7 +13151,7 @@
  "dc_wall_floral_blue": {
   "name": "Blue Floral Wallpaper",
   "type": "decor",
-  "value": 97,
+  "value": 122,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/wl_floral_blue_l",
@@ -13161,7 +13161,7 @@
  "dc_wall_hut": {
   "name": "Hut Wattle Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_hut_l",
@@ -13171,7 +13171,7 @@
  "dc_wall_library": {
   "name": "Library Panel Wallpaper",
   "type": "decor",
-  "value": 382,
+  "value": 210,
   "rarity": "rare",
   "tier": 3,
   "icon": "tiles/wl_library_l",
@@ -13181,7 +13181,7 @@
  "dc_wall_log": {
   "name": "Log Cabin Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_log_l",
@@ -13191,7 +13191,7 @@
  "dc_wall_marble": {
   "name": "Marble Hall Wallpaper",
   "type": "decor",
-  "value": 398,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "tiles/wl_marble_l",
@@ -13201,7 +13201,7 @@
  "dc_wall_panel": {
   "name": "Panel Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_panel_l",
@@ -13211,7 +13211,7 @@
  "dc_wall_plaster": {
   "name": "Plain Plaster Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_plaster_l",
@@ -13221,7 +13221,7 @@
  "dc_wall_quarry": {
   "name": "Quarry Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_quarry_l",
@@ -13231,7 +13231,7 @@
  "dc_wall_reed": {
   "name": "Woven Reed Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_reed_l",
@@ -13241,7 +13241,7 @@
  "dc_wall_stone": {
   "name": "Stone Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_stone_l",
@@ -13251,7 +13251,7 @@
  "dc_wall_striped": {
   "name": "Striped Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_striped_l",
@@ -13261,7 +13261,7 @@
  "dc_wall_striped_green": {
   "name": "Striped Green Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 25,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_striped_green_l",
@@ -13271,7 +13271,7 @@
  "dc_wall_striped_red": {
   "name": "Striped Red Wallpaper",
   "type": "decor",
-  "value": 20,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_striped_red_l",
@@ -13281,7 +13281,7 @@
  "dc_wall_tent": {
   "name": "Tent Wallpaper",
   "type": "decor",
-  "value": 19,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_tent_l",
@@ -13291,7 +13291,7 @@
  "dc_wall_timber": {
   "name": "Timber Frame Wallpaper",
   "type": "decor",
-  "value": 90,
+  "value": 128,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/wl_timber_l",
@@ -13301,7 +13301,7 @@
  "dc_wall_wood": {
   "name": "Wood Panel Wallpaper",
   "type": "decor",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/wl_wood_l",
@@ -13311,7 +13311,7 @@
  "dc_floor_bakery": {
   "name": "Bakery Tile Floor",
   "type": "decor",
-  "value": 20,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_bakery",
@@ -13321,7 +13321,7 @@
  "dc_floor_brick": {
   "name": "Brick Floor",
   "type": "decor",
-  "value": 18,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_brick",
@@ -13331,7 +13331,7 @@
  "dc_floor_camp": {
   "name": "Camp Boards Floor",
   "type": "decor",
-  "value": 17,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_camp",
@@ -13341,7 +13341,7 @@
  "dc_floor_carpet_blue": {
   "name": "Blue Carpet Floor",
   "type": "decor",
-  "value": 88,
+  "value": 65,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_carpet_blue",
@@ -13351,7 +13351,7 @@
  "dc_floor_carpet_green": {
   "name": "Green Carpet Floor",
   "type": "decor",
-  "value": 88,
+  "value": 52,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_carpet_green",
@@ -13361,7 +13361,7 @@
  "dc_floor_carpet_purple": {
   "name": "Purple Carpet Floor",
   "type": "decor",
-  "value": 92,
+  "value": 106,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_carpet_purple",
@@ -13371,7 +13371,7 @@
  "dc_floor_carpet_red": {
   "name": "Red Carpet Floor",
   "type": "decor",
-  "value": 93,
+  "value": 108,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_carpet_red",
@@ -13381,7 +13381,7 @@
  "dc_floor_clinic": {
   "name": "Clinic Tile Floor",
   "type": "decor",
-  "value": 16,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_clinic",
@@ -13391,7 +13391,7 @@
  "dc_floor_cobble": {
   "name": "Cobble Floor",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_cobble",
@@ -13401,7 +13401,7 @@
  "dc_floor_concrete": {
   "name": "Concrete Floor",
   "type": "decor",
-  "value": 17,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_concrete",
@@ -13423,7 +13423,7 @@
  "dc_floor_grey_plank": {
   "name": "Grey Plank Floor",
   "type": "decor",
-  "value": 17,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_grey_plank",
@@ -13433,7 +13433,7 @@
  "dc_floor_hut_plank": {
   "name": "Hut Plank Floor",
   "type": "decor",
-  "value": 19,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_hut_plank",
@@ -13443,7 +13443,7 @@
  "dc_floor_inn": {
   "name": "Inn Boards Floor",
   "type": "decor",
-  "value": 16,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_inn",
@@ -13453,7 +13453,7 @@
  "dc_floor_marble": {
   "name": "Marble Floor",
   "type": "decor",
-  "value": 375,
+  "value": 420,
   "rarity": "rare",
   "tier": 3,
   "icon": "tiles/fl_marble",
@@ -13473,7 +13473,7 @@
  "dc_floor_parquet": {
   "name": "Parquet Floor",
   "type": "decor",
-  "value": 382,
+  "value": 428,
   "rarity": "rare",
   "tier": 3,
   "icon": "tiles/fl_parquet",
@@ -13483,7 +13483,7 @@
  "dc_floor_plank": {
   "name": "Barn Plank Floor",
   "type": "decor",
-  "value": 20,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_plank",
@@ -13493,7 +13493,7 @@
  "dc_floor_quarry": {
   "name": "Quarry Stone Floor",
   "type": "decor",
-  "value": 17,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_quarry",
@@ -13503,7 +13503,7 @@
  "dc_floor_round_stone": {
   "name": "River Stone Floor",
   "type": "decor",
-  "value": 16,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_round_stone",
@@ -13513,7 +13513,7 @@
  "dc_floor_stone": {
   "name": "Flagstone Floor",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_stone",
@@ -13523,7 +13523,7 @@
  "dc_floor_tile": {
   "name": "White Tile Floor",
   "type": "decor",
-  "value": 88,
+  "value": 55,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_tile",
@@ -13533,7 +13533,7 @@
  "dc_floor_wood": {
   "name": "Honey Plank Floor",
   "type": "decor",
-  "value": 19,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_wood",
@@ -13543,7 +13543,7 @@
  "dc_floor_wood_dark": {
   "name": "Dark Plank Floor",
   "type": "decor",
-  "value": 97,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "tiles/fl_wood_dark",
@@ -13553,7 +13553,7 @@
  "dc_floor_wood_light": {
   "name": "Light Plank Floor",
   "type": "decor",
-  "value": 20,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "tiles/fl_wood_light",
@@ -13563,7 +13563,7 @@
  "dc_floor_s_carpet": {
   "name": "Plush Carpet Floor",
   "type": "decor",
-  "value": 97,
+  "value": 84,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_carpet",
@@ -13573,7 +13573,7 @@
  "dc_floor_s_checker": {
   "name": "Checker Tile Floor",
   "type": "decor",
-  "value": 375,
+  "value": 210,
   "rarity": "rare",
   "tier": 3,
   "icon": "seamless/floor_checker",
@@ -13584,7 +13584,7 @@
  "dc_floor_s_dark": {
   "name": "Ebony Board Floor",
   "type": "decor",
-  "value": 92,
+  "value": 127,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_dark",
@@ -13594,7 +13594,7 @@
  "dc_floor_s_light": {
   "name": "Ash Board Floor",
   "type": "decor",
-  "value": 90,
+  "value": 101,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_light",
@@ -13604,7 +13604,7 @@
  "dc_floor_s_oak": {
   "name": "Oak Board Floor",
   "type": "decor",
-  "value": 94,
+  "value": 103,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_oak",
@@ -13614,7 +13614,7 @@
  "dc_floor_s_stone_tiles": {
   "name": "Stone Tile Floor",
   "type": "decor",
-  "value": 88,
+  "value": 107,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_stone_tiles",
@@ -13624,7 +13624,7 @@
  "dc_floor_s_terracotta": {
   "name": "Terracotta Floor",
   "type": "decor",
-  "value": 88,
+  "value": 66,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_terracotta",
@@ -13634,7 +13634,7 @@
  "dc_floor_s_worn": {
   "name": "Worn Board Floor",
   "type": "decor",
-  "value": 93,
+  "value": 102,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_worn",
@@ -13644,7 +13644,7 @@
  "dc_floor_s_flagstone": {
   "name": "Garden Flagstone Floor",
   "type": "decor",
-  "value": 90,
+  "value": 127,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "seamless/floor_flagstone",
@@ -13654,7 +13654,7 @@
  "dc_floor_brick_herring": {
   "name": "Herringbone Brick Floor",
   "type": "decor",
-  "value": 375,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "seamless/brick_herring",
@@ -13664,7 +13664,7 @@
  "wr_straw": {
   "name": "Sun Straw Hat",
   "type": "wear",
-  "value": 16,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "items/straw_hat",
@@ -13674,7 +13674,7 @@
  "wr_cowboy": {
   "name": "Ranch Hat",
   "type": "wear",
-  "value": 65,
+  "value": 48,
   "rarity": "uncommon",
   "tier": 1,
   "icon": "items/cowboy_hat",
@@ -13684,7 +13684,7 @@
  "wr_beanie": {
   "name": "Knit Beanie",
   "type": "wear",
-  "value": 18,
+  "value": 33,
   "rarity": "common",
   "tier": 1,
   "icon": "items/beanie",
@@ -13694,7 +13694,7 @@
  "wr_bandana": {
   "name": "Bandana",
   "type": "wear",
-  "value": 17,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "items/bandana",
@@ -13704,7 +13704,7 @@
  "wr_cap": {
   "name": "Ball Cap",
   "type": "wear",
-  "value": 20,
+  "value": 25,
   "rarity": "common",
   "tier": 1,
   "icon": "items/cap",
@@ -13714,7 +13714,7 @@
  "wr_flatcap": {
   "name": "Flat Cap",
   "type": "wear",
-  "value": 92,
+  "value": 71,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/flatcap",
@@ -13725,7 +13725,7 @@
  "wr_tophat": {
   "name": "Silk Top Hat",
   "type": "wear",
-  "value": 382,
+  "value": 405,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/top_hat",
@@ -13735,7 +13735,7 @@
  "wr_witch": {
   "name": "Wizard Hat",
   "type": "wear",
-  "value": 382,
+  "value": 405,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/wizard_hat",
@@ -13746,7 +13746,7 @@
  "wr_flower_crown": {
   "name": "Flower Crown",
   "type": "wear",
-  "value": 88,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/flower_crown",
@@ -13756,7 +13756,7 @@
  "wr_crystal_crown": {
   "name": "Crystal Tiara",
   "type": "wear",
-  "value": 1402,
+  "value": 728,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/crystal_crown",
@@ -13767,7 +13767,7 @@
  "wr_goggles": {
   "name": "Tinker Goggles",
   "type": "wear",
-  "value": 90,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/goggles",
@@ -13777,7 +13777,7 @@
  "wr_hood": {
   "name": "Traveller Hood",
   "type": "wear",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "items/hood",
@@ -13787,7 +13787,7 @@
  "wr_earmuffs": {
   "name": "Earmuffs",
   "type": "wear",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "items/penguin_hat",
@@ -13798,7 +13798,7 @@
  "wr_kerchief": {
   "name": "Kerchief",
   "type": "wear",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "items/bandana_drop",
@@ -13808,7 +13808,7 @@
  "wr_halo": {
   "name": "Star Halo",
   "type": "wear",
-  "value": 16800,
+  "value": 15525,
   "rarity": "mythic",
   "tier": 5,
   "icon": "items/token_crown",
@@ -13818,7 +13818,7 @@
  "wr_fedora": {
   "name": "Pinstripe Fedora",
   "type": "wear",
-  "value": 292,
+  "value": 278,
   "rarity": "rare",
   "tier": 2,
   "icon": "items/merchant_hat",
@@ -13829,7 +13829,7 @@
  "wr_shades": {
   "name": "Night Shades",
   "type": "wear",
-  "value": 76,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/shades",
@@ -13840,7 +13840,7 @@
  "wr_snow_goggles": {
   "name": "Snow Goggles (Look)",
   "type": "wear",
-  "value": 96,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/snow_goggles",
@@ -13851,7 +13851,7 @@
  "wr_aurora_hood": {
   "name": "Aurora Hood (Look)",
   "type": "wear",
-  "value": 5400,
+  "value": 5700,
   "rarity": "legendary",
   "tier": 5,
   "icon": "items/aurora_hood",
@@ -13862,7 +13862,7 @@
  "wr_farmer_scarf": {
   "name": "Farmer Scarf",
   "type": "wear",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/farmer_scarf",
@@ -13872,7 +13872,7 @@
  "wr_farmer_scarf_b": {
   "name": "Farmer Scarf II",
   "type": "wear",
-  "value": 92,
+  "value": 124,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/farmer_scarf_b",
@@ -13882,7 +13882,7 @@
  "wr_farmer_gloves": {
   "name": "Farmer Gloves",
   "type": "wear",
-  "value": 17,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "items/farmer_gloves",
@@ -13892,7 +13892,7 @@
  "wr_farmer_gloves_b": {
   "name": "Farmer Gloves II",
   "type": "wear",
-  "value": 96,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/farmer_gloves_b",
@@ -13902,7 +13902,7 @@
  "wr_farmer_shoes": {
   "name": "Farmer Shoes",
   "type": "wear",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "items/farmer_shoes",
@@ -13912,7 +13912,7 @@
  "wr_farmer_shoes_b": {
   "name": "Farmer Shoes II",
   "type": "wear",
-  "value": 88,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/farmer_shoes_b",
@@ -13922,7 +13922,7 @@
  "wr_fisher_scarf": {
   "name": "Fisher Scarf",
   "type": "wear",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "items/fisher_scarf",
@@ -13932,7 +13932,7 @@
  "wr_fisher_scarf_b": {
   "name": "Fisher Scarf II",
   "type": "wear",
-  "value": 97,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/fisher_scarf_b",
@@ -13942,7 +13942,7 @@
  "wr_fisher_gloves": {
   "name": "Fisher Gloves",
   "type": "wear",
-  "value": 20,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "items/fisher_gloves",
@@ -13952,7 +13952,7 @@
  "wr_fisher_gloves_b": {
   "name": "Fisher Gloves II",
   "type": "wear",
-  "value": 92,
+  "value": 106,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/fisher_gloves_b",
@@ -13962,7 +13962,7 @@
  "wr_fisher_shoes": {
   "name": "Fisher Shoes",
   "type": "wear",
-  "value": 16,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "items/fisher_shoes",
@@ -13972,7 +13972,7 @@
  "wr_fisher_shoes_b": {
   "name": "Fisher Shoes II",
   "type": "wear",
-  "value": 94,
+  "value": 119,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/fisher_shoes_b",
@@ -13982,7 +13982,7 @@
  "wr_forester_scarf": {
   "name": "Forester Scarf",
   "type": "wear",
-  "value": 19,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/forester_scarf",
@@ -13992,7 +13992,7 @@
  "wr_forester_scarf_b": {
   "name": "Forester Scarf II",
   "type": "wear",
-  "value": 90,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/forester_scarf_b",
@@ -14002,7 +14002,7 @@
  "wr_forester_gloves": {
   "name": "Forester Gloves",
   "type": "wear",
-  "value": 16,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "items/forester_gloves",
@@ -14012,7 +14012,7 @@
  "wr_forester_gloves_b": {
   "name": "Forester Gloves II",
   "type": "wear",
-  "value": 94,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/forester_gloves_b",
@@ -14022,7 +14022,7 @@
  "wr_forester_shoes": {
   "name": "Forester Shoes",
   "type": "wear",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "items/forester_shoes",
@@ -14032,7 +14032,7 @@
  "wr_forester_shoes_b": {
   "name": "Forester Shoes II",
   "type": "wear",
-  "value": 97,
+  "value": 128,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/forester_shoes_b",
@@ -14042,7 +14042,7 @@
  "wr_merchant_scarf": {
   "name": "Merchant Scarf",
   "type": "wear",
-  "value": 17,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "items/merchant_scarf",
@@ -14052,7 +14052,7 @@
  "wr_merchant_scarf_b": {
   "name": "Merchant Scarf II",
   "type": "wear",
-  "value": 96,
+  "value": 118,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/merchant_scarf_b",
@@ -14062,7 +14062,7 @@
  "wr_merchant_gloves": {
   "name": "Merchant Gloves",
   "type": "wear",
-  "value": 19,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "items/merchant_gloves",
@@ -14072,7 +14072,7 @@
  "wr_merchant_gloves_b": {
   "name": "Merchant Gloves II",
   "type": "wear",
-  "value": 90,
+  "value": 54,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/merchant_gloves_b",
@@ -14082,7 +14082,7 @@
  "wr_merchant_shoes": {
   "name": "Merchant Shoes",
   "type": "wear",
-  "value": 20,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "items/merchant_shoes",
@@ -14092,7 +14092,7 @@
  "wr_merchant_shoes_b": {
   "name": "Merchant Shoes II",
   "type": "wear",
-  "value": 93,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/merchant_shoes_b",
@@ -14112,7 +14112,7 @@
  "wr_miner_scarf_b": {
   "name": "Miner Scarf II",
   "type": "wear",
-  "value": 92,
+  "value": 69,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/miner_scarf_b",
@@ -14122,7 +14122,7 @@
  "wr_miner_gloves": {
   "name": "Miner Gloves",
   "type": "wear",
-  "value": 17,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "items/miner_gloves",
@@ -14132,7 +14132,7 @@
  "wr_miner_gloves_b": {
   "name": "Miner Gloves II",
   "type": "wear",
-  "value": 96,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/miner_gloves_b",
@@ -14142,7 +14142,7 @@
  "wr_miner_shoes": {
   "name": "Miner Shoes",
   "type": "wear",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/miner_shoes",
@@ -14152,7 +14152,7 @@
  "wr_miner_shoes_b": {
   "name": "Miner Shoes II",
   "type": "wear",
-  "value": 88,
+  "value": 112,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/miner_shoes_b",
@@ -14162,7 +14162,7 @@
  "wr_scholar_scarf": {
   "name": "Scholar Scarf",
   "type": "wear",
-  "value": 19,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scholar_scarf",
@@ -14172,7 +14172,7 @@
  "wr_scholar_scarf_b": {
   "name": "Scholar Scarf II",
   "type": "wear",
-  "value": 90,
+  "value": 123,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/scholar_scarf_b",
@@ -14182,7 +14182,7 @@
  "wr_scholar_gloves": {
   "name": "Scholar Gloves",
   "type": "wear",
-  "value": 16,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scholar_gloves",
@@ -14192,7 +14192,7 @@
  "wr_scholar_gloves_b": {
   "name": "Scholar Gloves II",
   "type": "wear",
-  "value": 94,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/scholar_gloves_b",
@@ -14202,7 +14202,7 @@
  "wr_scholar_shoes": {
   "name": "Scholar Shoes",
   "type": "wear",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scholar_shoes",
@@ -14212,7 +14212,7 @@
  "wr_scholar_shoes_b": {
   "name": "Scholar Shoes II",
   "type": "wear",
-  "value": 97,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/scholar_shoes_b",
@@ -14222,7 +14222,7 @@
  "wr_neon_scarf": {
   "name": "Neon Scarf",
   "type": "wear",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "items/neon_scarf",
@@ -14233,7 +14233,7 @@
  "wr_neon_scarf_b": {
   "name": "Neon Scarf II",
   "type": "wear",
-  "value": 88,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/neon_scarf_b",
@@ -14244,7 +14244,7 @@
  "wr_neon_gloves": {
   "name": "Neon Gloves",
   "type": "wear",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "items/neon_gloves",
@@ -14255,7 +14255,7 @@
  "wr_neon_gloves_b": {
   "name": "Neon Gloves II",
   "type": "wear",
-  "value": 93,
+  "value": 85,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/neon_gloves_b",
@@ -14266,7 +14266,7 @@
  "wr_neon_shoes": {
   "name": "Neon Shoes",
   "type": "wear",
-  "value": 17,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "items/neon_shoes",
@@ -14277,7 +14277,7 @@
  "wr_neon_shoes_b": {
   "name": "Neon Shoes II",
   "type": "wear",
-  "value": 96,
+  "value": 54,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/neon_shoes_b",
@@ -14288,7 +14288,7 @@
  "wr_penguin_scarf": {
   "name": "Snowfolk Scarf",
   "type": "wear",
-  "value": 16,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "items/penguin_scarf",
@@ -14299,7 +14299,7 @@
  "wr_penguin_scarf_b": {
   "name": "Snowfolk Scarf II",
   "type": "wear",
-  "value": 94,
+  "value": 102,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_scarf_b",
@@ -14310,7 +14310,7 @@
  "wr_penguin_gloves": {
   "name": "Snowfolk Gloves",
   "type": "wear",
-  "value": 18,
+  "value": 33,
   "rarity": "common",
   "tier": 1,
   "icon": "items/penguin_gloves",
@@ -14321,7 +14321,7 @@
  "wr_penguin_gloves_b": {
   "name": "Snowfolk Gloves II",
   "type": "wear",
-  "value": 88,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_gloves_b",
@@ -14332,7 +14332,7 @@
  "wr_penguin_shoes": {
   "name": "Snowfolk Shoes",
   "type": "wear",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "items/penguin_shoes",
@@ -14343,7 +14343,7 @@
  "wr_penguin_shoes_b": {
   "name": "Snowfolk Shoes II",
   "type": "wear",
-  "value": 92,
+  "value": 117,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/penguin_shoes_b",
@@ -14354,7 +14354,7 @@
  "wr_cape_black": {
   "name": "Black Cape",
   "type": "wear",
-  "value": 94,
+  "value": 59,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_black",
@@ -14364,7 +14364,7 @@
  "wr_cape_blue": {
   "name": "Blue Cape",
   "type": "wear",
-  "value": 93,
+  "value": 121,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_blue",
@@ -14374,7 +14374,7 @@
  "wr_cape_green": {
   "name": "Green Cape",
   "type": "wear",
-  "value": 93,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_green",
@@ -14384,7 +14384,7 @@
  "wr_cape_red": {
   "name": "Red Cape",
   "type": "wear",
-  "value": 97,
+  "value": 94,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_red",
@@ -14394,7 +14394,7 @@
  "wr_cape_white": {
   "name": "White Cape",
   "type": "wear",
-  "value": 96,
+  "value": 117,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_white",
@@ -14404,7 +14404,7 @@
  "wr_cape_gold": {
   "name": "Gold Cape (Look)",
   "type": "wear",
-  "value": 375,
+  "value": 218,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/cape_gold",
@@ -14414,7 +14414,7 @@
  "wr_cape_paw": {
   "name": "Paw Cape",
   "type": "wear",
-  "value": 96,
+  "value": 65,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_paw",
@@ -14425,7 +14425,7 @@
  "wr_cape_penguin": {
   "name": "Penguin Cape",
   "type": "wear",
-  "value": 90,
+  "value": 91,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_penguin",
@@ -14436,7 +14436,7 @@
  "wr_cape_star": {
   "name": "Star Cape",
   "type": "wear",
-  "value": 1365,
+  "value": 818,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/cape_star",
@@ -14446,7 +14446,7 @@
  "wr_cape_moon": {
   "name": "Moon Cape (Look)",
   "type": "wear",
-  "value": 1440,
+  "value": 1418,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/cape_moon",
@@ -14456,7 +14456,7 @@
  "wr_cape_cloud": {
   "name": "Cloud Cape",
   "type": "wear",
-  "value": 92,
+  "value": 55,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cape_cloud",
@@ -14466,7 +14466,7 @@
  "wr_cape_storm": {
   "name": "Storm Cape",
   "type": "wear",
-  "value": 382,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/cape_storm",
@@ -14476,7 +14476,7 @@
  "wr_cape_frost": {
   "name": "Frost Cape",
   "type": "wear",
-  "value": 382,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/cape_frost",
@@ -14486,7 +14486,7 @@
  "wr_cape_ember": {
   "name": "Ember Cape",
   "type": "wear",
-  "value": 382,
+  "value": 255,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/cape_ember",
@@ -14496,7 +14496,7 @@
  "wr_cape_dream": {
   "name": "Dream Cape",
   "type": "wear",
-  "value": 5400,
+  "value": 2400,
   "rarity": "legendary",
   "tier": 5,
   "icon": "items/cape_dream",
@@ -14506,7 +14506,7 @@
  "wr_cape_crystal": {
   "name": "Crystal Cape (Look)",
   "type": "wear",
-  "value": 1440,
+  "value": 1252,
   "rarity": "epic",
   "tier": 4,
   "icon": "items/cape_crystal",
@@ -14517,7 +14517,7 @@
  "wr_scarf_black": {
   "name": "Black Knit Scarf",
   "type": "wear",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_black",
@@ -14527,7 +14527,7 @@
  "wr_scarf_blue": {
   "name": "Blue Knit Scarf",
   "type": "wear",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_blue",
@@ -14537,7 +14537,7 @@
  "wr_scarf_cyan": {
   "name": "Cyan Knit Scarf",
   "type": "wear",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_cyan",
@@ -14547,7 +14547,7 @@
  "wr_scarf_green": {
   "name": "Green Knit Scarf",
   "type": "wear",
-  "value": 18,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_green",
@@ -14557,7 +14557,7 @@
  "wr_scarf_purple": {
   "name": "Purple Knit Scarf",
   "type": "wear",
-  "value": 19,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_purple",
@@ -14577,7 +14577,7 @@
  "wr_scarf_white": {
   "name": "White Knit Scarf",
   "type": "wear",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_white",
@@ -14587,7 +14587,7 @@
  "wr_scarf_yellow": {
   "name": "Yellow Knit Scarf",
   "type": "wear",
-  "value": 17,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "items/scarf_yellow",
@@ -14597,7 +14597,7 @@
  "wr_hoodie": {
   "name": "Hoodie",
   "type": "wear",
-  "value": 17,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "items/hoodie",
@@ -14607,7 +14607,7 @@
  "wr_jacket": {
   "name": "Bomber Jacket",
   "type": "wear",
-  "value": 92,
+  "value": 102,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/jacket",
@@ -14618,7 +14618,7 @@
  "wr_sweater": {
   "name": "Cosy Sweater",
   "type": "wear",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "items/sweater",
@@ -14628,7 +14628,7 @@
  "wr_lab_coat": {
   "name": "Lab Coat",
   "type": "wear",
-  "value": 90,
+  "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/lab_coat",
@@ -14639,7 +14639,7 @@
  "wr_dress": {
   "name": "Sun Dress",
   "type": "wear",
-  "value": 96,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/dress",
@@ -14649,7 +14649,7 @@
  "wr_overalls": {
   "name": "Denim Overalls",
   "type": "wear",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "items/overalls",
@@ -14659,7 +14659,7 @@
  "wr_jacket_patch": {
   "name": "Patched Jacket",
   "type": "wear",
-  "value": 375,
+  "value": 255,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/jacket_patch",
@@ -14670,7 +14670,7 @@
  "wr_mask": {
   "name": "Masquerade Mask",
   "type": "wear",
-  "value": 368,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/mask",
@@ -14680,7 +14680,7 @@
  "wr_dancing_shoes": {
   "name": "Dancing Shoes",
   "type": "wear",
-  "value": 398,
+  "value": 248,
   "rarity": "rare",
   "tier": 3,
   "icon": "items/dancing_shoes",
@@ -14690,7 +14690,7 @@
  "wr_rain_boots": {
   "name": "Rain Boots",
   "type": "wear",
-  "value": 16,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "items/rain_boots",
@@ -14700,7 +14700,7 @@
  "wr_hiking_boots": {
   "name": "Hiking Boots",
   "type": "wear",
-  "value": 96,
+  "value": 124,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/hiking_boots",
@@ -14710,7 +14710,7 @@
  "wr_snow_boots": {
   "name": "Fur Snow Boots",
   "type": "wear",
-  "value": 90,
+  "value": 99,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/snow_boots",
@@ -14721,7 +14721,7 @@
  "wr_necklace_a": {
   "name": "Bead Necklace",
   "type": "wear",
-  "value": 20,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "items/necklace_a",
@@ -14731,7 +14731,7 @@
  "wr_necklace_b": {
   "name": "Pendant Necklace",
   "type": "wear",
-  "value": 97,
+  "value": 86,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/necklace_b",
@@ -14741,7 +14741,7 @@
  "wr_flower_crown_a": {
   "name": "Daisy Crown",
   "type": "wear",
-  "value": 18,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "items/flower_crown_a",
@@ -14751,7 +14751,7 @@
  "wr_flower_crown_b": {
   "name": "Rose Crown",
   "type": "wear",
-  "value": 94,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/flower_crown_b",
@@ -14761,7 +14761,7 @@
  "wr_cloak": {
   "name": "Wanderer Cloak",
   "type": "wear",
-  "value": 93,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "items/cloak",
@@ -14771,7 +14771,7 @@
  "wr_commander_cape": {
   "name": "Commander Cape",
   "type": "wear",
-  "value": 5475,
+  "value": 4500,
   "rarity": "legendary",
   "tier": 5,
   "icon": "items/commander_cape",
@@ -14794,7 +14794,7 @@
  "wr_golem_crown": {
   "name": "Golem Crown",
   "type": "wear",
-  "value": 16350,
+  "value": 11400,
   "rarity": "mythic",
   "tier": 5,
   "icon": "items/golem_crown",
@@ -14874,7 +14874,7 @@
  "wr_outfit_pinstripe": {
   "name": "Pinstripe Suit (Look)",
   "type": "wear",
-  "value": 292,
+  "value": 405,
   "rarity": "rare",
   "tier": 2,
   "icon": "portraits/hero_outfit_pinstripe/neutral",
@@ -14885,7 +14885,7 @@
  "wr_outfit_vest": {
   "name": "Padded Vest (Look)",
   "type": "wear",
-  "value": 88,
+  "value": 86,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "portraits/hero_outfit_vest/neutral",
@@ -14896,7 +14896,7 @@
  "wr_outfit_armored": {
   "name": "Armored Suit (Look)",
   "type": "wear",
-  "value": 1388,
+  "value": 840,
   "rarity": "epic",
   "tier": 4,
   "icon": "portraits/hero_outfit_armored/neutral",
@@ -14907,7 +14907,7 @@
  "wr_outfit_parka": {
   "name": "Puffy Parka (Look)",
   "type": "wear",
-  "value": 88,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "portraits/hero_outfit_parka/neutral",
@@ -14918,7 +14918,7 @@
  "wr_outfit_crystal_parka": {
   "name": "Crystal Parka (Look)",
   "type": "wear",
-  "value": 1418,
+  "value": 638,
   "rarity": "epic",
   "tier": 4,
   "icon": "portraits/hero_outfit_crystal_parka/neutral",
@@ -14929,7 +14929,7 @@
  "wr_outfit_starlight": {
   "name": "Starlight Mantle (Look)",
   "type": "wear",
-  "value": 5475,
+  "value": 2700,
   "rarity": "legendary",
   "tier": 5,
   "icon": "portraits/hero_outfit_starlight/neutral",
@@ -14949,7 +14949,7 @@
  "wr_outfit_fisher": {
   "name": "Angler Outfit",
   "type": "wear",
-  "value": 18,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "portraits/hero_outfit_fisher/neutral",
@@ -14959,7 +14959,7 @@
  "wr_outfit_forester": {
   "name": "Forester Outfit",
   "type": "wear",
-  "value": 19,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "portraits/hero_outfit_forester/neutral",
@@ -14969,7 +14969,7 @@
  "wr_outfit_merchant": {
   "name": "Merchant Coat",
   "type": "wear",
-  "value": 90,
+  "value": 71,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "portraits/hero_outfit_merchant/neutral",
@@ -14979,7 +14979,7 @@
  "wr_outfit_miner": {
   "name": "Miner Outfit",
   "type": "wear",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "portraits/hero_outfit_miner/neutral",
@@ -14989,7 +14989,7 @@
  "wr_outfit_scholar": {
   "name": "Scholar Robe",
   "type": "wear",
-  "value": 94,
+  "value": 96,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "portraits/hero_outfit_scholar/neutral",
@@ -14999,7 +14999,7 @@
  "wr_outfit_neon": {
   "name": "Neon Street Outfit",
   "type": "wear",
-  "value": 382,
+  "value": 450,
   "rarity": "rare",
   "tier": 3,
   "icon": "portraits/hero_outfit_neon/neutral",
@@ -15010,7 +15010,7 @@
  "wr_outfit_penguin": {
   "name": "Snowfolk Outfit",
   "type": "wear",
-  "value": 368,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "portraits/hero_outfit_penguin/neutral",
@@ -15152,7 +15152,7 @@
  "dc_arc_air_hockey": {
   "name": "Air Hockey Table",
   "type": "decor",
-  "value": 382,
+  "value": 428,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_air_hockey",
@@ -15163,7 +15163,7 @@
  "dc_arc_beanbag": {
   "name": "Checker Beanbag",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_beanbag",
@@ -15174,7 +15174,7 @@
  "dc_arc_cart_shelf": {
   "name": "Game Cart Shelf",
   "type": "decor",
-  "value": 16,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_cart_shelf",
@@ -15185,7 +15185,7 @@
  "dc_arc_claw": {
   "name": "Mini Claw Machine",
   "type": "decor",
-  "value": 1388,
+  "value": 1072,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_arc_claw",
@@ -15196,7 +15196,7 @@
  "dc_arc_couch": {
   "name": "Neon Lounge Couch",
   "type": "decor",
-  "value": 94,
+  "value": 79,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_couch",
@@ -15207,7 +15207,7 @@
  "dc_arc_dance_pad": {
   "name": "Dance Pad",
   "type": "decor",
-  "value": 88,
+  "value": 102,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_dance_pad",
@@ -15218,7 +15218,7 @@
  "dc_arc_gamer_chair": {
   "name": "Racer Game Chair",
   "type": "decor",
-  "value": 93,
+  "value": 75,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_gamer_chair",
@@ -15229,7 +15229,7 @@
  "dc_arc_high_score": {
   "name": "High-Score Board",
   "type": "decor",
-  "value": 88,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_high_score",
@@ -15240,7 +15240,7 @@
  "dc_arc_neon_joystick": {
   "name": "Neon Joystick Sign",
   "type": "decor",
-  "value": 398,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_neon_joystick",
@@ -15251,7 +15251,7 @@
  "dc_arc_pinball": {
   "name": "Pinball Table II",
   "type": "decor",
-  "value": 375,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_arc_pinball",
@@ -15262,7 +15262,7 @@
  "dc_arc_pixel_art": {
   "name": "Pixel Hero Poster",
   "type": "decor",
-  "value": 17,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_pixel_art",
@@ -15273,7 +15273,7 @@
  "dc_arc_speaker": {
   "name": "Boombox Speaker",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_arc_speaker",
@@ -15284,7 +15284,7 @@
  "dc_arc_vending": {
   "name": "Snack Vending Box",
   "type": "decor",
-  "value": 94,
+  "value": 99,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_arc_vending",
@@ -15295,7 +15295,7 @@
  "dc_art_antlers": {
   "name": "Carved Wood Antlers",
   "type": "decor",
-  "value": 88,
+  "value": 107,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_art_antlers",
@@ -15305,7 +15305,7 @@
  "dc_art_cuckoo": {
   "name": "Cuckoo Clock",
   "type": "decor",
-  "value": 375,
+  "value": 412,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_art_cuckoo",
@@ -15315,7 +15315,7 @@
  "dc_art_meadow": {
   "name": "Meadow Painting",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_meadow",
@@ -15325,7 +15325,7 @@
  "dc_art_mountain": {
   "name": "Mountain Painting",
   "type": "decor",
-  "value": 92,
+  "value": 124,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_art_mountain",
@@ -15335,7 +15335,7 @@
  "dc_art_plate_rack": {
   "name": "Plate Rack",
   "type": "decor",
-  "value": 20,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_plate_rack",
@@ -15345,7 +15345,7 @@
  "dc_art_round_mirror": {
   "name": "Round Mirror II",
   "type": "decor",
-  "value": 16,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_round_mirror",
@@ -15355,7 +15355,7 @@
  "dc_art_seascape": {
   "name": "Seascape Painting",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_art_seascape",
@@ -15365,7 +15365,7 @@
  "dc_art_still_life": {
   "name": "Fruit Still Life",
   "type": "decor",
-  "value": 90,
+  "value": 122,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_art_still_life",
@@ -15375,7 +15375,7 @@
  "dc_bath_duck_tub": {
   "name": "Rubber Duck Basin",
   "type": "decor",
-  "value": 375,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_bath_duck_tub",
@@ -15385,7 +15385,7 @@
  "dc_bath_plant": {
   "name": "Fern Stand",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_plant",
@@ -15395,7 +15395,7 @@
  "dc_bath_screen": {
   "name": "Folding Screen",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_screen",
@@ -15405,7 +15405,7 @@
  "dc_bath_sink": {
   "name": "Pedestal Basin",
   "type": "decor",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_sink",
@@ -15415,7 +15415,7 @@
  "dc_bath_toilet": {
   "name": "Washroom Throne",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_toilet",
@@ -15425,7 +15425,7 @@
  "dc_bath_towels": {
   "name": "Towel Rack",
   "type": "decor",
-  "value": 19,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bath_towels",
@@ -15435,7 +15435,7 @@
  "dc_bath_tub": {
   "name": "Clawfoot Tub",
   "type": "decor",
-  "value": 90,
+  "value": 111,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bath_tub",
@@ -15445,7 +15445,7 @@
  "dc_bath_vanity": {
   "name": "Mirror Vanity",
   "type": "decor",
-  "value": 90,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bath_vanity",
@@ -15455,7 +15455,7 @@
  "dc_bloom_basket": {
   "name": "Yarn Basket",
   "type": "decor",
-  "value": 20,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_basket",
@@ -15465,7 +15465,7 @@
  "dc_bloom_bed": {
   "name": "Quilted Bloom Bed",
   "type": "decor",
-  "value": 88,
+  "value": 72,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed",
@@ -15475,7 +15475,7 @@
  "dc_bloom_bed_lilac": {
   "name": "Lilac Bloom Bed",
   "type": "decor",
-  "value": 93,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed_lilac",
@@ -15485,7 +15485,7 @@
  "dc_bloom_bed_sage": {
   "name": "Sage Quilted Bloom Bed",
   "type": "decor",
-  "value": 88,
+  "value": 85,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_bed_sage",
@@ -15495,7 +15495,7 @@
  "dc_bloom_birdhouse": {
   "name": "Wall Birdhouse",
   "type": "decor",
-  "value": 90,
+  "value": 123,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_birdhouse",
@@ -15505,7 +15505,7 @@
  "dc_bloom_chair": {
   "name": "Floral Armchair",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_chair",
@@ -15515,7 +15515,7 @@
  "dc_bloom_chair_sage": {
   "name": "Sage Floral Armchair",
   "type": "decor",
-  "value": 93,
+  "value": 103,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_chair_sage",
@@ -15525,7 +15525,7 @@
  "dc_bloom_chair_sky": {
   "name": "Sky Floral Armchair",
   "type": "decor",
-  "value": 88,
+  "value": 73,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_chair_sky",
@@ -15535,7 +15535,7 @@
  "dc_bloom_cradle_cat": {
   "name": "Cat Basket",
   "type": "decor",
-  "value": 20,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_cradle_cat",
@@ -15545,7 +15545,7 @@
  "dc_bloom_dresser": {
   "name": "Painted Dresser",
   "type": "decor",
-  "value": 97,
+  "value": 66,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_dresser",
@@ -15553,9 +15553,9 @@
   "decor": true
  },
  "dc_bloom_flowers": {
-  "name": "Flower Cart",
+  "name": "Flower Cart II",
   "type": "decor",
-  "value": 375,
+  "value": 345,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_bloom_flowers",
@@ -15565,7 +15565,7 @@
  "dc_bloom_lamp": {
   "name": "Tulip Lamp",
   "type": "decor",
-  "value": 17,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_lamp",
@@ -15575,7 +15575,7 @@
  "dc_bloom_sampler": {
   "name": "Stitched Sampler",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_sampler",
@@ -15585,7 +15585,7 @@
  "dc_bloom_shelf": {
   "name": "Teacup Shelf",
   "type": "decor",
-  "value": 88,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_shelf",
@@ -15595,7 +15595,7 @@
  "dc_bloom_sofa": {
   "name": "Gingham Sofa",
   "type": "decor",
-  "value": 16,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_sofa",
@@ -15605,7 +15605,7 @@
  "dc_bloom_sofa_sage": {
   "name": "Sage Gingham Sofa",
   "type": "decor",
-  "value": 88,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_sofa_sage",
@@ -15615,7 +15615,7 @@
  "dc_bloom_sofa_sky": {
   "name": "Sky Gingham Sofa",
   "type": "decor",
-  "value": 94,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_bloom_sofa_sky",
@@ -15625,7 +15625,7 @@
  "dc_bloom_table": {
   "name": "Lace Tea Table",
   "type": "decor",
-  "value": 19,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_table",
@@ -15635,7 +15635,7 @@
  "dc_bloom_wreath": {
   "name": "Flower Wreath",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_bloom_wreath",
@@ -15645,7 +15645,7 @@
  "dc_casino_ace_sign": {
   "name": "Neon Ace Sign",
   "type": "decor",
-  "value": 382,
+  "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_ace_sign",
@@ -15656,7 +15656,7 @@
  "dc_casino_booth": {
   "name": "Red Velvet Booth",
   "type": "decor",
-  "value": 96,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_booth",
@@ -15667,7 +15667,7 @@
  "dc_casino_cards_art": {
   "name": "Royal Flush Art",
   "type": "decor",
-  "value": 20,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_cards_art",
@@ -15678,7 +15678,7 @@
  "dc_casino_chip_frame": {
   "name": "Framed Lucky Chip",
   "type": "decor",
-  "value": 97,
+  "value": 57,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_chip_frame",
@@ -15689,7 +15689,7 @@
  "dc_casino_chips": {
   "name": "Chip Tower Stand",
   "type": "decor",
-  "value": 16,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_chips",
@@ -15700,7 +15700,7 @@
  "dc_casino_dice": {
   "name": "Giant Dice Seat",
   "type": "decor",
-  "value": 93,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_dice",
@@ -15711,7 +15711,7 @@
  "dc_casino_lamp": {
   "name": "Gold Shade Lamp",
   "type": "decor",
-  "value": 18,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_lamp",
@@ -15722,7 +15722,7 @@
  "dc_casino_marquee": {
   "name": "Marquee Light Strip",
   "type": "decor",
-  "value": 1365,
+  "value": 1058,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_marquee",
@@ -15733,7 +15733,7 @@
  "dc_casino_rope": {
   "name": "Velvet Rope Post",
   "type": "decor",
-  "value": 17,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_rope",
@@ -15744,7 +15744,7 @@
  "dc_casino_roulette": {
   "name": "Roulette Wheel",
   "type": "decor",
-  "value": 1440,
+  "value": 1035,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_roulette",
@@ -15755,7 +15755,7 @@
  "dc_casino_slot": {
   "name": "Lucky Slot Machine",
   "type": "decor",
-  "value": 398,
+  "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_slot",
@@ -15766,7 +15766,7 @@
  "dc_casino_stool": {
   "name": "High-Roller Stool",
   "type": "decor",
-  "value": 96,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_stool",
@@ -15777,7 +15777,7 @@
  "dc_casino_table": {
   "name": "Card Table",
   "type": "decor",
-  "value": 398,
+  "value": 375,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_table",
@@ -15788,7 +15788,7 @@
  "dc_catkins_bell": {
   "name": "Wind Bell",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_bell",
@@ -15799,7 +15799,7 @@
  "dc_catkins_bonsai": {
   "name": "Bonsai",
   "type": "decor",
-  "value": 382,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_catkins_bonsai",
@@ -15810,7 +15810,7 @@
  "dc_catkins_chair": {
   "name": "Zabuton Chair",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_chair",
@@ -15821,7 +15821,7 @@
  "dc_catkins_cushion": {
   "name": "Meditation Cushion",
   "type": "decor",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_cushion",
@@ -15832,7 +15832,7 @@
  "dc_catkins_fan": {
   "name": "Paper Fan",
   "type": "decor",
-  "value": 20,
+  "value": 25,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_fan",
@@ -15843,7 +15843,7 @@
  "dc_catkins_gong": {
   "name": "Little Gong",
   "type": "decor",
-  "value": 1418,
+  "value": 765,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_catkins_gong",
@@ -15854,7 +15854,7 @@
  "dc_catkins_lantern": {
   "name": "Paper Lantern Stand",
   "type": "decor",
-  "value": 19,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_lantern",
@@ -15865,7 +15865,7 @@
  "dc_catkins_mat_bed": {
   "name": "Futon Bed",
   "type": "decor",
-  "value": 97,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_mat_bed",
@@ -15876,7 +15876,7 @@
  "dc_catkins_scratch": {
   "name": "Cat Tree Tower",
   "type": "decor",
-  "value": 97,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_scratch",
@@ -15887,7 +15887,7 @@
  "dc_catkins_scroll": {
   "name": "Paw Scroll",
   "type": "decor",
-  "value": 90,
+  "value": 69,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_scroll",
@@ -15898,7 +15898,7 @@
  "dc_catkins_shelf": {
   "name": "Scroll Shelf",
   "type": "decor",
-  "value": 92,
+  "value": 127,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_catkins_shelf",
@@ -15909,7 +15909,7 @@
  "dc_catkins_shrine": {
   "name": "Little Wall Shrine",
   "type": "decor",
-  "value": 375,
+  "value": 278,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_catkins_shrine",
@@ -15920,7 +15920,7 @@
  "dc_catkins_table": {
   "name": "Low Tea Table",
   "type": "decor",
-  "value": 20,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_catkins_table",
@@ -15931,7 +15931,7 @@
  "dc_chrome_bed": {
   "name": "Capsule Bed",
   "type": "decor",
-  "value": 382,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_chrome_bed",
@@ -15942,7 +15942,7 @@
  "dc_chrome_bench": {
   "name": "Chrome Workbench",
   "type": "decor",
-  "value": 97,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_bench",
@@ -15953,7 +15953,7 @@
  "dc_chrome_blueprint": {
   "name": "Robot Blueprint",
   "type": "decor",
-  "value": 20,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_blueprint",
@@ -15964,7 +15964,7 @@
  "dc_chrome_chair": {
   "name": "Hover Chair",
   "type": "decor",
-  "value": 97,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_chair",
@@ -15975,7 +15975,7 @@
  "dc_chrome_fan": {
   "name": "Vent Fan",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_fan",
@@ -15986,7 +15986,7 @@
  "dc_chrome_lamp": {
   "name": "Tube Lamp",
   "type": "decor",
-  "value": 19,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_lamp",
@@ -15997,7 +15997,7 @@
  "dc_chrome_locker": {
   "name": "Chrome Locker",
   "type": "decor",
-  "value": 17,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_locker",
@@ -16008,7 +16008,7 @@
  "dc_chrome_plant": {
   "name": "Hydro Planter",
   "type": "decor",
-  "value": 18,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_plant",
@@ -16019,7 +16019,7 @@
  "dc_chrome_robot": {
   "name": "Tea Robot",
   "type": "decor",
-  "value": 1388,
+  "value": 968,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_chrome_robot",
@@ -16030,7 +16030,7 @@
  "dc_chrome_screen": {
   "name": "Code Screen",
   "type": "decor",
-  "value": 90,
+  "value": 110,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_screen",
@@ -16041,7 +16041,7 @@
  "dc_chrome_server": {
   "name": "Server Tower",
   "type": "decor",
-  "value": 93,
+  "value": 121,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_server",
@@ -16052,7 +16052,7 @@
  "dc_chrome_terminal": {
   "name": "Glow Terminal",
   "type": "decor",
-  "value": 94,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_chrome_terminal",
@@ -16063,7 +16063,7 @@
  "dc_chrome_tools": {
   "name": "Tool Pegboard",
   "type": "decor",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_chrome_tools",
@@ -16085,7 +16085,7 @@
  "dc_coral_bed": {
   "name": "Clamshell Bed",
   "type": "decor",
-  "value": 398,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_coral_bed",
@@ -16096,7 +16096,7 @@
  "dc_coral_catbed": {
   "name": "Sea-Cat Bed",
   "type": "decor",
-  "value": 93,
+  "value": 82,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_catbed",
@@ -16107,7 +16107,7 @@
  "dc_coral_chair": {
   "name": "Scallop Chair",
   "type": "decor",
-  "value": 92,
+  "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_chair",
@@ -16118,7 +16118,7 @@
  "dc_coral_chest": {
   "name": "Treasure Chest",
   "type": "decor",
-  "value": 1418,
+  "value": 1388,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_coral_chest",
@@ -16140,7 +16140,7 @@
  "dc_coral_lamp": {
   "name": "Pearl Lamp",
   "type": "decor",
-  "value": 88,
+  "value": 54,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_lamp",
@@ -16151,7 +16151,7 @@
  "dc_coral_map": {
   "name": "Sunken Map",
   "type": "decor",
-  "value": 382,
+  "value": 428,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_coral_map",
@@ -16162,7 +16162,7 @@
  "dc_coral_mirror": {
   "name": "Pearl Mirror",
   "type": "decor",
-  "value": 93,
+  "value": 60,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_mirror",
@@ -16173,7 +16173,7 @@
  "dc_coral_shelf": {
   "name": "Driftwood Shelf",
   "type": "decor",
-  "value": 20,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_shelf",
@@ -16184,7 +16184,7 @@
  "dc_coral_starfish": {
   "name": "Starfish Charm",
   "type": "decor",
-  "value": 17,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_starfish",
@@ -16195,7 +16195,7 @@
  "dc_coral_table": {
   "name": "Coral Table",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_coral_table",
@@ -16206,7 +16206,7 @@
  "dc_coral_tank": {
   "name": "Round Fishbowl Stand",
   "type": "decor",
-  "value": 94,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_coral_tank",
@@ -16217,7 +16217,7 @@
  "dc_fest_cornucopia": {
   "name": "Cornucopia",
   "type": "decor",
-  "value": 90,
+  "value": 78,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fest_cornucopia",
@@ -16227,7 +16227,7 @@
  "dc_fest_gift_pile": {
   "name": "Gift Pile",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_gift_pile",
@@ -16237,7 +16237,7 @@
  "dc_fest_hay_scarecrow": {
   "name": "Mini Scarecrow",
   "type": "decor",
-  "value": 94,
+  "value": 115,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fest_hay_scarecrow",
@@ -16247,7 +16247,7 @@
  "dc_fest_leaf_wreath": {
   "name": "Autumn Leaf Wreath",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_leaf_wreath",
@@ -16257,7 +16257,7 @@
  "dc_fest_pumpkins": {
   "name": "Pumpkin Pile",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_pumpkins",
@@ -16267,7 +16267,7 @@
  "dc_fest_snow_lantern": {
   "name": "Snow Lantern",
   "type": "decor",
-  "value": 90,
+  "value": 125,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fest_snow_lantern",
@@ -16277,7 +16277,7 @@
  "dc_fest_stocking": {
   "name": "Hanging Stockings",
   "type": "decor",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fest_stocking",
@@ -16285,9 +16285,9 @@
   "decor": true
  },
  "dc_fest_winter_tree": {
-  "name": "Festive Pine",
+  "name": "Festive Pine II",
   "type": "decor",
-  "value": 398,
+  "value": 270,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_fest_winter_tree",
@@ -16297,7 +16297,7 @@
  "dc_fl_blue_tile": {
   "name": "Blue Kitchen Tile",
   "type": "decor",
-  "value": 17,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_blue_tile_icon",
@@ -16307,7 +16307,7 @@
  "dc_fl_checker_gold": {
   "name": "Black-Gold Checker",
   "type": "decor",
-  "value": 368,
+  "value": 188,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_fl_checker_gold_icon",
@@ -16318,7 +16318,7 @@
  "dc_fl_dark_parquet": {
   "name": "Dark Walnut Floor",
   "type": "decor",
-  "value": 20,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_dark_parquet_icon",
@@ -16329,7 +16329,7 @@
  "dc_fl_herringbone": {
   "name": "Herringbone Oak",
   "type": "decor",
-  "value": 97,
+  "value": 120,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fl_herringbone_icon",
@@ -16339,7 +16339,7 @@
  "dc_fl_ice": {
   "name": "Polished Ice",
   "type": "decor",
-  "value": 90,
+  "value": 93,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fl_ice_icon",
@@ -16350,7 +16350,7 @@
  "dc_fl_metal_grid": {
   "name": "Glow Grid Floor",
   "type": "decor",
-  "value": 1388,
+  "value": 795,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_fl_metal_grid_icon",
@@ -16361,7 +16361,7 @@
  "dc_fl_moss_carpet": {
   "name": "Moss Carpet",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_moss_carpet_icon",
@@ -16371,7 +16371,7 @@
  "dc_fl_sand_shell": {
   "name": "Shell Sand Floor",
   "type": "decor",
-  "value": 16,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_sand_shell_icon",
@@ -16382,7 +16382,7 @@
  "dc_fl_snow_carpet": {
   "name": "Snow Carpet",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_snow_carpet_icon",
@@ -16393,7 +16393,7 @@
  "dc_fl_tatami": {
   "name": "Tatami Mats",
   "type": "decor",
-  "value": 88,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fl_tatami_icon",
@@ -16404,7 +16404,7 @@
  "dc_fl_terracotta_hex": {
   "name": "Hex Terracotta",
   "type": "decor",
-  "value": 16,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_fl_terracotta_hex_icon",
@@ -16414,7 +16414,7 @@
  "dc_gart_car_plate": {
   "name": "Vintage Car Plates",
   "type": "decor",
-  "value": 17,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_car_plate",
@@ -16425,7 +16425,7 @@
  "dc_gart_cash_frame": {
   "name": "First Dollar Frame",
   "type": "decor",
-  "value": 94,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_cash_frame",
@@ -16436,7 +16436,7 @@
  "dc_gart_circuit_art": {
   "name": "Circuit Art",
   "type": "decor",
-  "value": 1372,
+  "value": 1275,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gart_circuit_art",
@@ -16447,7 +16447,7 @@
  "dc_gart_city_map": {
   "name": "Turf Map Frame",
   "type": "decor",
-  "value": 16,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_city_map",
@@ -16458,7 +16458,7 @@
  "dc_gart_cyber_poster": {
   "name": "Cyber City Poster",
   "type": "decor",
-  "value": 18,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_cyber_poster",
@@ -16469,7 +16469,7 @@
  "dc_gart_deco_clock": {
   "name": "Chrome Sunburst Clock",
   "type": "decor",
-  "value": 375,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gart_deco_clock",
@@ -16480,7 +16480,7 @@
  "dc_gart_fedora_hook": {
   "name": "Fedora Hook",
   "type": "decor",
-  "value": 20,
+  "value": 25,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_fedora_hook",
@@ -16491,7 +16491,7 @@
  "dc_gart_fedora_portrait": {
   "name": "Boss Portrait",
   "type": "decor",
-  "value": 375,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gart_fedora_portrait",
@@ -16502,7 +16502,7 @@
  "dc_gart_gold_record": {
   "name": "Framed Gold Record",
   "type": "decor",
-  "value": 375,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gart_gold_record",
@@ -16513,7 +16513,7 @@
  "dc_gart_holo_koi": {
   "name": "Holo Koi Panel",
   "type": "decor",
-  "value": 1425,
+  "value": 1432,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gart_holo_koi",
@@ -16524,7 +16524,7 @@
  "dc_gart_jazz_poster": {
   "name": "Jazz Night Poster",
   "type": "decor",
-  "value": 16,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_jazz_poster",
@@ -16535,7 +16535,7 @@
  "dc_gart_neon_cat": {
   "name": "Neon Cat Sign",
   "type": "decor",
-  "value": 97,
+  "value": 105,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_neon_cat",
@@ -16546,7 +16546,7 @@
  "dc_gart_neon_diamond": {
   "name": "Neon Diamond Sign",
   "type": "decor",
-  "value": 97,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_neon_diamond",
@@ -16557,7 +16557,7 @@
  "dc_gart_neon_star": {
   "name": "Neon Star",
   "type": "decor",
-  "value": 93,
+  "value": 69,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_neon_star",
@@ -16568,7 +16568,7 @@
  "dc_gart_record_wall": {
   "name": "Vinyl Record Trio",
   "type": "decor",
-  "value": 19,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gart_record_wall",
@@ -16579,7 +16579,7 @@
  "dc_gart_tv_wall": {
   "name": "Wall Screen",
   "type": "decor",
-  "value": 96,
+  "value": 61,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gart_tv_wall",
@@ -16590,7 +16590,7 @@
  "dc_gilt_bed": {
   "name": "Sunburst Bed",
   "type": "decor",
-  "value": 1365,
+  "value": 728,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_bed",
@@ -16601,7 +16601,7 @@
  "dc_gilt_cabinet": {
   "name": "Lacquer Cabinet",
   "type": "decor",
-  "value": 88,
+  "value": 77,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_cabinet",
@@ -16612,7 +16612,7 @@
  "dc_gilt_chair": {
   "name": "Deco Lounge Chair",
   "type": "decor",
-  "value": 382,
+  "value": 368,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_chair",
@@ -16623,7 +16623,7 @@
  "dc_gilt_clock": {
   "name": "Deco Wall Clock",
   "type": "decor",
-  "value": 90,
+  "value": 121,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_clock",
@@ -16634,7 +16634,7 @@
  "dc_gilt_gramophone": {
   "name": "Gold Gramophone",
   "type": "decor",
-  "value": 382,
+  "value": 368,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_gramophone",
@@ -16645,7 +16645,7 @@
  "dc_gilt_lamp": {
   "name": "Deco Torch Lamp",
   "type": "decor",
-  "value": 90,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_lamp",
@@ -16656,7 +16656,7 @@
  "dc_gilt_mirror": {
   "name": "Sunburst Mirror",
   "type": "decor",
-  "value": 1418,
+  "value": 975,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_mirror",
@@ -16667,7 +16667,7 @@
  "dc_gilt_palm": {
   "name": "Potted Palm in Brass",
   "type": "decor",
-  "value": 17,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_gilt_palm",
@@ -16678,7 +16678,7 @@
  "dc_gilt_sconce": {
   "name": "Gold Fan Sconce",
   "type": "decor",
-  "value": 88,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_gilt_sconce",
@@ -16689,7 +16689,7 @@
  "dc_gilt_skyline": {
   "name": "Skyline Panel",
   "type": "decor",
-  "value": 398,
+  "value": 428,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_skyline",
@@ -16700,7 +16700,7 @@
  "dc_gilt_sofa": {
   "name": "Emerald Deco Sofa",
   "type": "decor",
-  "value": 368,
+  "value": 458,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_sofa",
@@ -16711,7 +16711,7 @@
  "dc_gilt_statue": {
   "name": "Deco Dancer Statue",
   "type": "decor",
-  "value": 1440,
+  "value": 968,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_gilt_statue",
@@ -16722,7 +16722,7 @@
  "dc_gilt_table": {
   "name": "Gold-Leaf Table",
   "type": "decor",
-  "value": 382,
+  "value": 285,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_gilt_table",
@@ -16733,7 +16733,7 @@
  "dc_glight_arcade": {
   "name": "Retro Arcade Cabinet",
   "type": "decor",
-  "value": 390,
+  "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_glight_arcade",
@@ -16744,7 +16744,7 @@
  "dc_glight_holo": {
   "name": "Holo Projector",
   "type": "decor",
-  "value": 398,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_glight_holo",
@@ -16755,7 +16755,7 @@
  "dc_glight_jukebox": {
   "name": "Neon Jukebox",
   "type": "decor",
-  "value": 1402,
+  "value": 1320,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_glight_jukebox",
@@ -16766,7 +16766,7 @@
  "dc_glight_lava": {
   "name": "Lava Lamp",
   "type": "decor",
-  "value": 97,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_glight_lava",
@@ -16777,7 +16777,7 @@
  "dc_glight_neon_tube": {
   "name": "Neon Tube Lamp",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_glight_neon_tube",
@@ -16788,7 +16788,7 @@
  "dc_glight_spot": {
   "name": "Stage Spotlight",
   "type": "decor",
-  "value": 96,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_glight_spot",
@@ -16799,7 +16799,7 @@
  "dc_glight_streetlamp": {
   "name": "Indoor Street Lamp",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_glight_streetlamp",
@@ -16810,7 +16810,7 @@
  "dc_glight_tv": {
   "name": "Big Retro TV",
   "type": "decor",
-  "value": 92,
+  "value": 98,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_glight_tv",
@@ -16821,7 +16821,7 @@
  "dc_grotto_bed": {
   "name": "Geode Bed",
   "type": "decor",
-  "value": 375,
+  "value": 435,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_bed",
@@ -16832,7 +16832,7 @@
  "dc_grotto_fern": {
   "name": "Cave Fern Pot",
   "type": "decor",
-  "value": 18,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_fern",
@@ -16843,7 +16843,7 @@
  "dc_grotto_fossil": {
   "name": "Framed Fossil",
   "type": "decor",
-  "value": 375,
+  "value": 428,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_fossil",
@@ -16854,7 +16854,7 @@
  "dc_grotto_lamp": {
   "name": "Crystal Cluster Lamp",
   "type": "decor",
-  "value": 92,
+  "value": 123,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_lamp",
@@ -16865,7 +16865,7 @@
  "dc_grotto_moss_frame": {
   "name": "Moss Mirror",
   "type": "decor",
-  "value": 16,
+  "value": 31,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_moss_frame",
@@ -16876,7 +16876,7 @@
  "dc_grotto_mushroom": {
   "name": "Glow Mushroom Stool",
   "type": "decor",
-  "value": 19,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_mushroom",
@@ -16887,7 +16887,7 @@
  "dc_grotto_obelisk": {
   "name": "Crystal Obelisk",
   "type": "decor",
-  "value": 398,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_obelisk",
@@ -16898,7 +16898,7 @@
  "dc_grotto_pool": {
   "name": "Glow Pool Basin",
   "type": "decor",
-  "value": 1418,
+  "value": 1358,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_grotto_pool",
@@ -16909,7 +16909,7 @@
  "dc_grotto_shelf": {
   "name": "Geode Shelf",
   "type": "decor",
-  "value": 90,
+  "value": 95,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_shelf",
@@ -16920,7 +16920,7 @@
  "dc_grotto_table": {
   "name": "Stone Slab Table",
   "type": "decor",
-  "value": 20,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_table",
@@ -16931,7 +16931,7 @@
  "dc_grotto_throne": {
   "name": "Amethyst Seat",
   "type": "decor",
-  "value": 375,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_grotto_throne",
@@ -16942,7 +16942,7 @@
  "dc_grotto_vines": {
   "name": "Glow Vines",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_grotto_vines",
@@ -16953,7 +16953,7 @@
  "dc_grotto_wall_crystal": {
   "name": "Wall Crystal",
   "type": "decor",
-  "value": 96,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_grotto_wall_crystal",
@@ -16964,7 +16964,7 @@
  "dc_ice_aurora_window": {
   "name": "Aurora Panel",
   "type": "decor",
-  "value": 1402,
+  "value": 825,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_ice_aurora_window",
@@ -16975,7 +16975,7 @@
  "dc_ice_bed": {
   "name": "Snowdrift Bed",
   "type": "decor",
-  "value": 97,
+  "value": 113,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_bed",
@@ -16986,7 +16986,7 @@
  "dc_ice_fish_tank": {
   "name": "Fish Snack Bucket",
   "type": "decor",
-  "value": 16,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_fish_tank",
@@ -16997,7 +16997,7 @@
  "dc_ice_fountain": {
   "name": "Frost Fountain",
   "type": "decor",
-  "value": 1372,
+  "value": 675,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_ice_fountain",
@@ -17008,7 +17008,7 @@
  "dc_ice_igloo_lamp": {
   "name": "Igloo Lamp",
   "type": "decor",
-  "value": 93,
+  "value": 81,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_igloo_lamp",
@@ -17019,7 +17019,7 @@
  "dc_ice_mirror": {
   "name": "Frost Mirror",
   "type": "decor",
-  "value": 93,
+  "value": 52,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_mirror",
@@ -17030,7 +17030,7 @@
  "dc_ice_penguin": {
   "name": "Ice Penguin Sculpture",
   "type": "decor",
-  "value": 382,
+  "value": 360,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_ice_penguin",
@@ -17041,7 +17041,7 @@
  "dc_ice_penguin_portrait": {
   "name": "Penguin Portrait",
   "type": "decor",
-  "value": 93,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_ice_penguin_portrait",
@@ -17052,7 +17052,7 @@
  "dc_ice_shelf": {
   "name": "Icicle Shelf",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_shelf",
@@ -17063,7 +17063,7 @@
  "dc_ice_snowflake": {
   "name": "Snowflake Wall Charm",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_snowflake",
@@ -17074,7 +17074,7 @@
  "dc_ice_snowman": {
   "name": "Tiny Snowman II",
   "type": "decor",
-  "value": 18,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_snowman",
@@ -17085,7 +17085,7 @@
  "dc_ice_table": {
   "name": "Carved Ice Table",
   "type": "decor",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_ice_table",
@@ -17107,7 +17107,7 @@
  "dc_igloo_aurora_jar": {
   "name": "Aurora Jar",
   "type": "decor",
-  "value": 1372,
+  "value": 698,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_igloo_aurora_jar",
@@ -17118,7 +17118,7 @@
  "dc_igloo_bed": {
   "name": "Snow-Nest Bed",
   "type": "decor",
-  "value": 90,
+  "value": 99,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_bed",
@@ -17129,7 +17129,7 @@
  "dc_igloo_chair": {
   "name": "Snow Armchair",
   "type": "decor",
-  "value": 19,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_chair",
@@ -17140,7 +17140,7 @@
  "dc_igloo_fish_sign": {
   "name": "Fish Wall Plaque",
   "type": "decor",
-  "value": 20,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_fish_sign",
@@ -17151,7 +17151,7 @@
  "dc_igloo_ice_window": {
   "name": "Round Ice Window",
   "type": "decor",
-  "value": 93,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_ice_window",
@@ -17162,7 +17162,7 @@
  "dc_igloo_mittens": {
   "name": "Mitten Garland",
   "type": "decor",
-  "value": 20,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_mittens",
@@ -17173,7 +17173,7 @@
  "dc_igloo_pebble_art": {
   "name": "Pebble Mosaic",
   "type": "decor",
-  "value": 368,
+  "value": 218,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_igloo_pebble_art",
@@ -17184,7 +17184,7 @@
  "dc_igloo_shelf": {
   "name": "Snow-Block Shelf",
   "type": "decor",
-  "value": 17,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_shelf",
@@ -17195,7 +17195,7 @@
  "dc_igloo_sled": {
   "name": "Toy Sled",
   "type": "decor",
-  "value": 16,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_sled",
@@ -17206,7 +17206,7 @@
  "dc_igloo_sofa": {
   "name": "Knitted Snow Sofa",
   "type": "decor",
-  "value": 17,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_sofa",
@@ -17217,7 +17217,7 @@
  "dc_igloo_stove": {
   "name": "Pebble Stove",
   "type": "decor",
-  "value": 94,
+  "value": 63,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_igloo_stove",
@@ -17228,7 +17228,7 @@
  "dc_igloo_table": {
   "name": "Driftwood Fish Table",
   "type": "decor",
-  "value": 20,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_igloo_table",
@@ -17250,7 +17250,7 @@
  "dc_kit_bread_oven": {
   "name": "Bread Oven",
   "type": "decor",
-  "value": 390,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_kit_bread_oven",
@@ -17260,7 +17260,7 @@
  "dc_kit_counter": {
   "name": "Butcher-Block Counter",
   "type": "decor",
-  "value": 17,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_counter",
@@ -17270,7 +17270,7 @@
  "dc_kit_dining": {
   "name": "Round Dining Table II",
   "type": "decor",
-  "value": 20,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_dining",
@@ -17280,7 +17280,7 @@
  "dc_kit_fridge": {
   "name": "Retro Icebox",
   "type": "decor",
-  "value": 96,
+  "value": 71,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_kit_fridge",
@@ -17290,7 +17290,7 @@
  "dc_kit_hutch": {
   "name": "Dish Hutch",
   "type": "decor",
-  "value": 94,
+  "value": 97,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_kit_hutch",
@@ -17300,7 +17300,7 @@
  "dc_kit_pot_rack": {
   "name": "Copper Pot Stand",
   "type": "decor",
-  "value": 16,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_pot_rack",
@@ -17310,7 +17310,7 @@
  "dc_kit_sink": {
   "name": "Farmhouse Sink",
   "type": "decor",
-  "value": 20,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_kit_sink",
@@ -17320,7 +17320,7 @@
  "dc_kit_stove": {
   "name": "Cast-Iron Range",
   "type": "decor",
-  "value": 94,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_kit_stove",
@@ -17330,7 +17330,7 @@
  "dc_light_brass": {
   "name": "Brass Floor Lamp",
   "type": "decor",
-  "value": 17,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_light_brass",
@@ -17340,7 +17340,7 @@
  "dc_light_candelabra": {
   "name": "Candelabra II",
   "type": "decor",
-  "value": 88,
+  "value": 69,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_light_candelabra",
@@ -17350,7 +17350,7 @@
  "dc_light_chandelier": {
   "name": "Candle Chandelier",
   "type": "decor",
-  "value": 382,
+  "value": 248,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_light_chandelier",
@@ -17360,7 +17360,7 @@
  "dc_light_fairy": {
   "name": "Fairy-Light Jar",
   "type": "decor",
-  "value": 17,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_light_fairy",
@@ -17370,7 +17370,7 @@
  "dc_light_firefly": {
   "name": "Firefly Lamp",
   "type": "decor",
-  "value": 1425,
+  "value": 998,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_light_firefly",
@@ -17380,7 +17380,7 @@
  "dc_light_fireplace": {
   "name": "Stone Fireplace II",
   "type": "decor",
-  "value": 92,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_light_fireplace",
@@ -17390,7 +17390,7 @@
  "dc_light_lantern": {
   "name": "Hanging Lantern Post",
   "type": "decor",
-  "value": 17,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_light_lantern",
@@ -17400,7 +17400,7 @@
  "dc_light_stained": {
   "name": "Stained-Glass Lamp",
   "type": "decor",
-  "value": 382,
+  "value": 218,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_light_stained",
@@ -17410,7 +17410,7 @@
  "dc_moon_bed": {
   "name": "Crescent Bed",
   "type": "decor",
-  "value": 375,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_bed",
@@ -17421,7 +17421,7 @@
  "dc_moon_chair": {
   "name": "Crescent Chair",
   "type": "decor",
-  "value": 96,
+  "value": 101,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_chair",
@@ -17432,7 +17432,7 @@
  "dc_moon_clock": {
   "name": "Star Grandfather Clock",
   "type": "decor",
-  "value": 382,
+  "value": 345,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_clock",
@@ -17443,7 +17443,7 @@
  "dc_moon_constellation": {
   "name": "Constellation Map",
   "type": "decor",
-  "value": 382,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_moon_constellation",
@@ -17454,7 +17454,7 @@
  "dc_moon_desk": {
   "name": "Stargazer Desk",
   "type": "decor",
-  "value": 88,
+  "value": 110,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_desk",
@@ -17465,7 +17465,7 @@
  "dc_moon_dreamcatcher": {
   "name": "Dreamcatcher",
   "type": "decor",
-  "value": 18,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_dreamcatcher",
@@ -17476,7 +17476,7 @@
  "dc_moon_lamp": {
   "name": "Moon Orb Lamp",
   "type": "decor",
-  "value": 93,
+  "value": 81,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_lamp",
@@ -17487,7 +17487,7 @@
  "dc_moon_phase_art": {
   "name": "Moon Phases Print",
   "type": "decor",
-  "value": 93,
+  "value": 125,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_phase_art",
@@ -17498,7 +17498,7 @@
  "dc_moon_plant": {
   "name": "Moonflower Pot",
   "type": "decor",
-  "value": 17,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_plant",
@@ -17509,7 +17509,7 @@
  "dc_moon_pouf": {
   "name": "Cloud Pouf",
   "type": "decor",
-  "value": 20,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_pouf",
@@ -17520,7 +17520,7 @@
  "dc_moon_star_garland": {
   "name": "Star Garland",
   "type": "decor",
-  "value": 18,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_moon_star_garland",
@@ -17531,7 +17531,7 @@
  "dc_moon_telescope": {
   "name": "Brass Telescope II",
   "type": "decor",
-  "value": 1388,
+  "value": 1200,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_moon_telescope",
@@ -17542,7 +17542,7 @@
  "dc_moon_wardrobe": {
   "name": "Night-Sky Wardrobe",
   "type": "decor",
-  "value": 94,
+  "value": 72,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_moon_wardrobe",
@@ -17553,7 +17553,7 @@
  "dc_noir_armchair": {
   "name": "Club Armchair",
   "type": "decor",
-  "value": 92,
+  "value": 115,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_armchair",
@@ -17564,7 +17564,7 @@
  "dc_noir_bed": {
   "name": "Noir Daybed",
   "type": "decor",
-  "value": 90,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_bed",
@@ -17575,7 +17575,7 @@
  "dc_noir_blinds": {
   "name": "Window Blinds",
   "type": "decor",
-  "value": 18,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_blinds",
@@ -17586,7 +17586,7 @@
  "dc_noir_cabinet": {
   "name": "Case-File Cabinet",
   "type": "decor",
-  "value": 17,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_cabinet",
@@ -17597,7 +17597,7 @@
  "dc_noir_city_poster": {
   "name": "Night City Poster",
   "type": "decor",
-  "value": 94,
+  "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_city_poster",
@@ -17608,7 +17608,7 @@
  "dc_noir_clock": {
   "name": "Noir Wall Clock",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_clock",
@@ -17619,7 +17619,7 @@
  "dc_noir_desk": {
   "name": "Noir Desk",
   "type": "decor",
-  "value": 97,
+  "value": 126,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_noir_desk",
@@ -17630,7 +17630,7 @@
  "dc_noir_hatstand": {
   "name": "Hat Stand",
   "type": "decor",
-  "value": 19,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_hatstand",
@@ -17641,7 +17641,7 @@
  "dc_noir_lamp": {
   "name": "Noir Floor Lamp",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_noir_lamp",
@@ -17652,7 +17652,7 @@
  "dc_noir_neon_moon": {
   "name": "Neon Moon Sign",
   "type": "decor",
-  "value": 390,
+  "value": 420,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_neon_moon",
@@ -17663,7 +17663,7 @@
  "dc_noir_neon_palm": {
   "name": "Neon Palm Planter",
   "type": "decor",
-  "value": 1418,
+  "value": 638,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_noir_neon_palm",
@@ -17674,7 +17674,7 @@
  "dc_noir_radio": {
   "name": "Console Radio",
   "type": "decor",
-  "value": 390,
+  "value": 368,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_radio",
@@ -17685,7 +17685,7 @@
  "dc_noir_sofa": {
   "name": "Velvet Noir Sofa",
   "type": "decor",
-  "value": 375,
+  "value": 270,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_sofa",
@@ -17696,7 +17696,7 @@
  "dc_noir_sofa_forest": {
   "name": "Forest Noir Sofa",
   "type": "decor",
-  "value": 398,
+  "value": 292,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_noir_sofa_forest",
@@ -17718,7 +17718,7 @@
  "dc_orch_basket": {
   "name": "Pear Basket",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_basket",
@@ -17728,7 +17728,7 @@
  "dc_orch_bed": {
   "name": "Apple Blossom Bed",
   "type": "decor",
-  "value": 93,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_orch_bed",
@@ -17738,7 +17738,7 @@
  "dc_orch_crate": {
   "name": "Apple Crate Stack",
   "type": "decor",
-  "value": 16,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_crate",
@@ -17748,7 +17748,7 @@
  "dc_orch_hutch": {
   "name": "Jam Jar Hutch",
   "type": "decor",
-  "value": 97,
+  "value": 106,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_orch_hutch",
@@ -17758,7 +17758,7 @@
  "dc_orch_lamp": {
   "name": "Pear Lamp",
   "type": "decor",
-  "value": 19,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_lamp",
@@ -17768,7 +17768,7 @@
  "dc_orch_settee": {
   "name": "Wicker Settee",
   "type": "decor",
-  "value": 19,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_orch_settee",
@@ -17778,7 +17778,7 @@
  "dc_orch_table": {
   "name": "Fruit Press Table",
   "type": "decor",
-  "value": 368,
+  "value": 308,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_orch_table",
@@ -17788,7 +17788,7 @@
  "dc_orch_tree": {
   "name": "Potted Apple Tree",
   "type": "decor",
-  "value": 1402,
+  "value": 832,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_orch_tree",
@@ -17798,7 +17798,7 @@
  "dc_part_aurora_art": {
   "name": "Aurora Painting",
   "type": "decor",
-  "value": 1402,
+  "value": 1290,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_part_aurora_art",
@@ -17809,7 +17809,7 @@
  "dc_part_fish_clock": {
   "name": "Fish Clock",
   "type": "decor",
-  "value": 19,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_part_fish_clock",
@@ -17820,7 +17820,7 @@
  "dc_part_fish_trophy": {
   "name": "Golden Fish Plaque",
   "type": "decor",
-  "value": 382,
+  "value": 315,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_part_fish_trophy",
@@ -17831,7 +17831,7 @@
  "dc_part_iceberg": {
   "name": "Iceberg Painting",
   "type": "decor",
-  "value": 18,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_part_iceberg",
@@ -17842,7 +17842,7 @@
  "dc_part_paw_banner": {
   "name": "Paw Banner",
   "type": "decor",
-  "value": 20,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_part_paw_banner",
@@ -17853,7 +17853,7 @@
  "dc_part_penguin_family": {
   "name": "Penguin Family Photo",
   "type": "decor",
-  "value": 97,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_part_penguin_family",
@@ -17864,7 +17864,7 @@
  "dc_part_scarf_hook": {
   "name": "Scarf Hook",
   "type": "decor",
-  "value": 16,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_part_scarf_hook",
@@ -17875,7 +17875,7 @@
  "dc_part_snow_globe_shelf": {
   "name": "Snow-Globe Shelf",
   "type": "decor",
-  "value": 382,
+  "value": 248,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_part_snow_globe_shelf",
@@ -17886,7 +17886,7 @@
  "dc_plant_fiddle": {
   "name": "Fiddle-Leaf Fig",
   "type": "decor",
-  "value": 90,
+  "value": 95,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_plant_fiddle",
@@ -17896,7 +17896,7 @@
  "dc_plant_glow": {
   "name": "Glowbloom Pot",
   "type": "decor",
-  "value": 1372,
+  "value": 638,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_plant_glow",
@@ -17906,7 +17906,7 @@
  "dc_plant_hanging": {
   "name": "Hanging Ivy Stand",
   "type": "decor",
-  "value": 20,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_hanging",
@@ -17916,7 +17916,7 @@
  "dc_plant_lemon": {
   "name": "Lemon Tree Tub",
   "type": "decor",
-  "value": 90,
+  "value": 122,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_plant_lemon",
@@ -17926,7 +17926,7 @@
  "dc_plant_monstera": {
   "name": "Monstera Pot",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_monstera",
@@ -17936,7 +17936,7 @@
  "dc_plant_orchid": {
   "name": "Orchid Stand",
   "type": "decor",
-  "value": 382,
+  "value": 405,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_plant_orchid",
@@ -17946,7 +17946,7 @@
  "dc_plant_snake": {
   "name": "Snake Plant",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_snake",
@@ -17956,7 +17956,7 @@
  "dc_plant_succulent": {
   "name": "Succulent Trough",
   "type": "decor",
-  "value": 18,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_plant_succulent",
@@ -17966,7 +17966,7 @@
  "dc_rug_bear": {
   "name": "Faux Bear Rug",
   "type": "decor",
-  "value": 20,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rug_bear",
@@ -17976,7 +17976,7 @@
  "dc_rug_braided": {
   "name": "Braided Rug",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rug_braided",
@@ -17986,7 +17986,7 @@
  "dc_rug_casino": {
   "name": "Red Carpet Runner",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rug_casino",
@@ -17996,7 +17996,7 @@
  "dc_rug_casino_forest": {
   "name": "Forest Carpet Runner",
   "type": "decor",
-  "value": 88,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_casino_forest",
@@ -18006,7 +18006,7 @@
  "dc_rug_casino_navy": {
   "name": "Navy Carpet Runner",
   "type": "decor",
-  "value": 94,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_casino_navy",
@@ -18016,7 +18016,7 @@
  "dc_rug_moon": {
   "name": "Moon Rug",
   "type": "decor",
-  "value": 375,
+  "value": 382,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_rug_moon",
@@ -18026,7 +18026,7 @@
  "dc_rug_neon": {
   "name": "Neon Grid Rug",
   "type": "decor",
-  "value": 88,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_neon",
@@ -18036,17 +18036,18 @@
  "dc_rug_penguin": {
   "name": "Penguin Rug",
   "type": "decor",
-  "value": 94,
+  "value": 116,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_penguin",
   "desc": "Lies flat on the floor.",
-  "decor": true
+  "decor": true,
+  "arc": "penguins"
  },
  "dc_rug_persian": {
   "name": "Patterned Long Rug",
   "type": "decor",
-  "value": 88,
+  "value": 94,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_persian",
@@ -18056,7 +18057,7 @@
  "dc_rug_persian_forest": {
   "name": "Forest Long Rug",
   "type": "decor",
-  "value": 96,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_persian_forest",
@@ -18066,7 +18067,7 @@
  "dc_rug_persian_navy": {
   "name": "Navy Long Rug",
   "type": "decor",
-  "value": 92,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rug_persian_navy",
@@ -18076,7 +18077,7 @@
  "dc_rug_star": {
   "name": "Star Rug",
   "type": "decor",
-  "value": 382,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_rug_star",
@@ -18086,7 +18087,7 @@
  "dc_rustic_barrel": {
   "name": "Apple Barrel",
   "type": "decor",
-  "value": 16,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_barrel",
@@ -18096,7 +18097,7 @@
  "dc_rustic_bed": {
   "name": "Plaid Quilt Bed",
   "type": "decor",
-  "value": 18,
+  "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_bed",
@@ -18106,7 +18107,7 @@
  "dc_rustic_bed_forest": {
   "name": "Forest Plaid Quilt Bed",
   "type": "decor",
-  "value": 90,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_bed_forest",
@@ -18116,7 +18117,7 @@
  "dc_rustic_bed_navy": {
   "name": "Navy Plaid Quilt Bed",
   "type": "decor",
-  "value": 96,
+  "value": 94,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_bed_navy",
@@ -18126,7 +18127,7 @@
  "dc_rustic_bench": {
   "name": "Pine Bench",
   "type": "decor",
-  "value": 20,
+  "value": 32,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_bench",
@@ -18136,7 +18137,7 @@
  "dc_rustic_churn": {
   "name": "Butter Churn",
   "type": "decor",
-  "value": 18,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_churn",
@@ -18146,7 +18147,7 @@
  "dc_rustic_dresser": {
   "name": "Oak Dresser",
   "type": "decor",
-  "value": 92,
+  "value": 71,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_dresser",
@@ -18156,7 +18157,7 @@
  "dc_rustic_lamp": {
   "name": "Oil Lamp Stand",
   "type": "decor",
-  "value": 19,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_rustic_lamp",
@@ -18166,7 +18167,7 @@
  "dc_rustic_rocker": {
   "name": "Rocking Chair",
   "type": "decor",
-  "value": 88,
+  "value": 110,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_rocker",
@@ -18176,7 +18177,7 @@
  "dc_rustic_table": {
   "name": "Harvest Table",
   "type": "decor",
-  "value": 88,
+  "value": 52,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_rustic_table",
@@ -18186,7 +18187,7 @@
  "dc_safe_board": {
   "name": "Plan Board",
   "type": "decor",
-  "value": 90,
+  "value": 117,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_board",
@@ -18197,7 +18198,7 @@
  "dc_safe_bulb": {
   "name": "Bare Bulb Stand",
   "type": "decor",
-  "value": 16,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_bulb",
@@ -18208,7 +18209,7 @@
  "dc_safe_bunk": {
   "name": "Bunk Bed II",
   "type": "decor",
-  "value": 94,
+  "value": 111,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_bunk",
@@ -18219,7 +18220,7 @@
  "dc_safe_chair": {
   "name": "Patched Armchair",
   "type": "decor",
-  "value": 16,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_chair",
@@ -18230,7 +18231,7 @@
  "dc_safe_chair_forest": {
   "name": "Forest Armchair",
   "type": "decor",
-  "value": 96,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_chair_forest",
@@ -18241,7 +18242,7 @@
  "dc_safe_chair_navy": {
   "name": "Navy Patched Armchair",
   "type": "decor",
-  "value": 92,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_chair_navy",
@@ -18252,7 +18253,7 @@
  "dc_safe_couch": {
   "name": "Lumpy Crew Couch",
   "type": "decor",
-  "value": 19,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_couch",
@@ -18263,7 +18264,7 @@
  "dc_safe_couch_forest": {
   "name": "Forest Crew Couch",
   "type": "decor",
-  "value": 92,
+  "value": 113,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_couch_forest",
@@ -18274,7 +18275,7 @@
  "dc_safe_couch_navy": {
   "name": "Navy Lumpy Crew Couch",
   "type": "decor",
-  "value": 97,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_couch_navy",
@@ -18285,7 +18286,7 @@
  "dc_safe_crates": {
   "name": "Crate Shelf",
   "type": "decor",
-  "value": 19,
+  "value": 28,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_crates",
@@ -18296,7 +18297,7 @@
  "dc_safe_drum": {
   "name": "Oil-Drum Table",
   "type": "decor",
-  "value": 20,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_drum",
@@ -18307,7 +18308,7 @@
  "dc_safe_keys": {
   "name": "Key Hook Rack",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_keys",
@@ -18318,7 +18319,7 @@
  "dc_safe_map": {
   "name": "City Map Pinboard",
   "type": "decor",
-  "value": 92,
+  "value": 116,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_map",
@@ -18329,7 +18330,7 @@
  "dc_safe_neon_arrow": {
   "name": "Neon Arrow Sign",
   "type": "decor",
-  "value": 382,
+  "value": 270,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_safe_neon_arrow",
@@ -18340,7 +18341,7 @@
  "dc_safe_safe": {
   "name": "Old Iron Safe",
   "type": "decor",
-  "value": 375,
+  "value": 202,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_safe_safe",
@@ -18351,7 +18352,7 @@
  "dc_safe_table": {
   "name": "Map Table",
   "type": "decor",
-  "value": 90,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_safe_table",
@@ -18362,7 +18363,7 @@
  "dc_safe_wanted": {
   "name": "Crew Photo Frame",
   "type": "decor",
-  "value": 20,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_safe_wanted",
@@ -18373,7 +18374,7 @@
  "dc_sea_anchor": {
   "name": "Anchor Plaque",
   "type": "decor",
-  "value": 16,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_anchor",
@@ -18383,7 +18384,7 @@
  "dc_sea_bed": {
   "name": "Sailcloth Bed",
   "type": "decor",
-  "value": 88,
+  "value": 94,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed",
@@ -18393,7 +18394,7 @@
  "dc_sea_bed_coral": {
   "name": "Coral Sailcloth Bed",
   "type": "decor",
-  "value": 90,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed_coral",
@@ -18403,7 +18404,7 @@
  "dc_sea_bed_sage": {
   "name": "Sage Sailcloth Bed",
   "type": "decor",
-  "value": 88,
+  "value": 75,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_bed_sage",
@@ -18413,7 +18414,7 @@
  "dc_sea_buoy": {
   "name": "Buoy Stool",
   "type": "decor",
-  "value": 17,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_buoy",
@@ -18423,7 +18424,7 @@
  "dc_sea_chair": {
   "name": "Deck Chair",
   "type": "decor",
-  "value": 18,
+  "value": 17,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_chair",
@@ -18433,7 +18434,7 @@
  "dc_sea_chest": {
   "name": "Sea Chest",
   "type": "decor",
-  "value": 20,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_chest",
@@ -18443,7 +18444,7 @@
  "dc_sea_lamp": {
   "name": "Lighthouse Lamp",
   "type": "decor",
-  "value": 90,
+  "value": 81,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_lamp",
@@ -18453,7 +18454,7 @@
  "dc_sea_life_ring": {
   "name": "Life Ring",
   "type": "decor",
-  "value": 16,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_life_ring",
@@ -18463,7 +18464,7 @@
  "dc_sea_net": {
   "name": "Shell Net Garland",
   "type": "decor",
-  "value": 88,
+  "value": 59,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_net",
@@ -18473,7 +18474,7 @@
  "dc_sea_porthole": {
   "name": "Porthole Window",
   "type": "decor",
-  "value": 94,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_porthole",
@@ -18483,7 +18484,7 @@
  "dc_sea_shipbottle": {
   "name": "Ship-in-a-Jar Stand",
   "type": "decor",
-  "value": 1402,
+  "value": 1102,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_sea_shipbottle",
@@ -18493,7 +18494,7 @@
  "dc_sea_sofa": {
   "name": "Striped Deck Sofa",
   "type": "decor",
-  "value": 16,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_sofa",
@@ -18503,7 +18504,7 @@
  "dc_sea_sofa_coral": {
   "name": "Coral Deck Sofa",
   "type": "decor",
-  "value": 90,
+  "value": 78,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_sofa_coral",
@@ -18513,7 +18514,7 @@
  "dc_sea_sofa_forest": {
   "name": "Forest Deck Sofa",
   "type": "decor",
-  "value": 96,
+  "value": 91,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_sea_sofa_forest",
@@ -18523,7 +18524,7 @@
  "dc_sea_table": {
   "name": "Driftwood Table",
   "type": "decor",
-  "value": 19,
+  "value": 23,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_sea_table",
@@ -18533,7 +18534,7 @@
  "dc_sea_wheel": {
   "name": "Ship's Wheel Stand",
   "type": "decor",
-  "value": 382,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_sea_wheel",
@@ -18543,7 +18544,7 @@
  "dc_show_aurora_tank": {
   "name": "Aurora Aquarium",
   "type": "decor",
-  "value": 5475,
+  "value": 5175,
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_show_aurora_tank_icon",
@@ -18554,7 +18555,7 @@
  "dc_show_crystal_tree": {
   "name": "Crystal Tree",
   "type": "decor",
-  "value": 15975,
+  "value": 11625,
   "rarity": "mythic",
   "tier": 5,
   "icon": "decor/dc_show_crystal_tree_icon",
@@ -18575,7 +18576,7 @@
  "dc_show_gold_jukebox": {
   "name": "Golden Jukebox",
   "type": "decor",
-  "value": 5400,
+  "value": 4050,
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_show_gold_jukebox_icon",
@@ -18586,7 +18587,7 @@
  "dc_show_grand_piano": {
   "name": "Grand Piano",
   "type": "decor",
-  "value": 5475,
+  "value": 4500,
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_show_grand_piano_icon",
@@ -18620,7 +18621,7 @@
  "dc_show_skyline_window": {
   "name": "Neon Skyline Window",
   "type": "decor",
-  "value": 16650,
+  "value": 13050,
   "rarity": "mythic",
   "tier": 5,
   "icon": "decor/dc_show_skyline_window_icon",
@@ -18631,7 +18632,7 @@
  "dc_show_star_orrery": {
   "name": "Star Orrery",
   "type": "decor",
-  "value": 16800,
+  "value": 8025,
   "rarity": "mythic",
   "tier": 5,
   "icon": "decor/dc_show_star_orrery_icon",
@@ -18642,7 +18643,7 @@
  "dc_stat_bust": {
   "name": "Marble Bust II",
   "type": "decor",
-  "value": 390,
+  "value": 188,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_stat_bust",
@@ -18652,7 +18653,7 @@
  "dc_stat_cat": {
   "name": "Lucky Cat Statue",
   "type": "decor",
-  "value": 94,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_stat_cat",
@@ -18662,7 +18663,7 @@
  "dc_stat_globe_bar": {
   "name": "Brass Globe Stand",
   "type": "decor",
-  "value": 90,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_stat_globe_bar",
@@ -18672,7 +18673,7 @@
  "dc_stat_lion": {
   "name": "Gilded Lion",
   "type": "decor",
-  "value": 368,
+  "value": 255,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_stat_lion",
@@ -18682,7 +18683,7 @@
  "dc_stat_owl": {
   "name": "Stone Owl",
   "type": "decor",
-  "value": 18,
+  "value": 29,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_stat_owl",
@@ -18692,17 +18693,18 @@
  "dc_stat_penguin_gold": {
   "name": "Golden Penguin Idol",
   "type": "decor",
-  "value": 1372,
+  "value": 1575,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_stat_penguin_gold",
   "desc": "Furniture for your house.",
-  "decor": true
+  "decor": true,
+  "arc": "penguins"
  },
  "dc_stat_robot": {
   "name": "Retro Robot Statue",
   "type": "decor",
-  "value": 94,
+  "value": 92,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_stat_robot",
@@ -18710,9 +18712,9 @@
   "decor": true
  },
  "dc_stat_trophy": {
-  "name": "Crew Cup Trophy",
+  "name": "Team Cup Trophy",
   "type": "decor",
-  "value": 1440,
+  "value": 802,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_stat_trophy",
@@ -18722,7 +18724,7 @@
  "dc_top_books": {
   "name": "Book Stack",
   "type": "decor",
-  "value": 18,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_books",
@@ -18732,7 +18734,7 @@
  "dc_top_cactus": {
   "name": "Tiny Cactus",
   "type": "decor",
-  "value": 20,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_cactus",
@@ -18742,7 +18744,7 @@
  "dc_top_candles": {
   "name": "Candle Trio",
   "type": "decor",
-  "value": 18,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_candles",
@@ -18752,7 +18754,7 @@
  "dc_top_cash_box": {
   "name": "Locked Cash Box",
   "type": "decor",
-  "value": 97,
+  "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_cash_box",
@@ -18763,7 +18765,7 @@
  "dc_top_cash_register_mini": {
   "name": "Toy Cash Register",
   "type": "decor",
-  "value": 97,
+  "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_cash_register_mini",
@@ -18773,7 +18775,7 @@
  "dc_top_chess": {
   "name": "Chess Set",
   "type": "decor",
-  "value": 92,
+  "value": 62,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_chess",
@@ -18783,7 +18785,7 @@
  "dc_top_desk_lamp_green": {
   "name": "Banker's Lamp",
   "type": "decor",
-  "value": 16,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_desk_lamp_green",
@@ -18794,7 +18796,7 @@
  "dc_top_desk_phone": {
   "name": "Rotary Phone",
   "type": "decor",
-  "value": 20,
+  "value": 14,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_desk_phone",
@@ -18815,7 +18817,7 @@
  "dc_top_fish_bowl": {
   "name": "Goldfish Bowl",
   "type": "decor",
-  "value": 20,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_fish_bowl",
@@ -18825,7 +18827,7 @@
  "dc_top_globe": {
   "name": "Desk Globe II",
   "type": "decor",
-  "value": 93,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_globe",
@@ -18835,7 +18837,7 @@
  "dc_top_gold_bar": {
   "name": "Gold Bar Paperweight",
   "type": "decor",
-  "value": 1365,
+  "value": 1492,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_top_gold_bar",
@@ -18846,7 +18848,7 @@
  "dc_top_holo_cube": {
   "name": "Holo Cube",
   "type": "decor",
-  "value": 398,
+  "value": 195,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_top_holo_cube",
@@ -18856,7 +18858,7 @@
  "dc_top_hourglass": {
   "name": "Hourglass",
   "type": "decor",
-  "value": 382,
+  "value": 225,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_top_hourglass",
@@ -18866,7 +18868,7 @@
  "dc_top_ice_crystal": {
   "name": "Ice Crystal",
   "type": "decor",
-  "value": 375,
+  "value": 262,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_top_ice_crystal",
@@ -18876,7 +18878,7 @@
  "dc_top_mini_robot": {
   "name": "Desk Robot Pal",
   "type": "decor",
-  "value": 382,
+  "value": 232,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_top_mini_robot",
@@ -18897,7 +18899,7 @@
  "dc_top_neon_cube": {
   "name": "Neon Name Cube",
   "type": "decor",
-  "value": 19,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_neon_cube",
@@ -18908,17 +18910,18 @@
  "dc_top_penguin_plush": {
   "name": "Penguin Plush",
   "type": "decor",
-  "value": 18,
+  "value": 26,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_penguin_plush",
   "desc": "A little something for a shelf or table.",
-  "decor": true
+  "decor": true,
+  "arc": "penguins"
  },
  "dc_top_radio_tube": {
   "name": "Tube Radio",
   "type": "decor",
-  "value": 94,
+  "value": 68,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_radio_tube",
@@ -18929,17 +18932,18 @@
  "dc_top_snow_globe": {
   "name": "Penguin Snow Globe",
   "type": "decor",
-  "value": 88,
+  "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_snow_globe",
   "desc": "A little something for a shelf or table.",
-  "decor": true
+  "decor": true,
+  "arc": "penguins"
  },
  "dc_top_teapot": {
   "name": "Teapot Set",
   "type": "decor",
-  "value": 92,
+  "value": 56,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_teapot",
@@ -18949,7 +18953,7 @@
  "dc_top_typewriter": {
   "name": "Typewriter",
   "type": "decor",
-  "value": 97,
+  "value": 77,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_typewriter",
@@ -18960,7 +18964,7 @@
  "dc_top_vase": {
   "name": "Flower Vase",
   "type": "decor",
-  "value": 19,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_top_vase",
@@ -18970,7 +18974,7 @@
  "dc_wp_brick_neon": {
   "name": "Painted Brick",
   "type": "decor",
-  "value": 19,
+  "value": 27,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_wp_brick_neon_icon",
@@ -18981,7 +18985,7 @@
  "dc_wp_circuit": {
   "name": "Circuit Panel Wall",
   "type": "decor",
-  "value": 1402,
+  "value": 960,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_wp_circuit_icon",
@@ -18992,7 +18996,7 @@
  "dc_wp_coral_shell": {
   "name": "Seashell Paper",
   "type": "decor",
-  "value": 92,
+  "value": 99,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_wp_coral_shell_icon",
@@ -19003,7 +19007,7 @@
  "dc_wp_deco_gold": {
   "name": "Gold Deco Paper",
   "type": "decor",
-  "value": 375,
+  "value": 322,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_wp_deco_gold_icon",
@@ -19014,7 +19018,7 @@
  "dc_wp_ice_block": {
   "name": "Ice Block Wall",
   "type": "decor",
-  "value": 18,
+  "value": 22,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_wp_ice_block_icon",
@@ -19025,7 +19029,7 @@
  "dc_wp_penguin_print": {
   "name": "Penguin Print Paper",
   "type": "decor",
-  "value": 368,
+  "value": 435,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_wp_penguin_print_icon",
@@ -19036,7 +19040,7 @@
  "dc_wp_plank_white": {
   "name": "Whitewashed Planks",
   "type": "decor",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_wp_plank_white_icon",
@@ -19046,7 +19050,7 @@
  "dc_wp_red_velvet": {
   "name": "Red Velvet Paper",
   "type": "decor",
-  "value": 96,
+  "value": 88,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_wp_red_velvet_icon",
@@ -19057,7 +19061,7 @@
  "dc_wp_rose_stripe": {
   "name": "Rose Stripe Paper",
   "type": "decor",
-  "value": 20,
+  "value": 13,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_wp_rose_stripe_icon",
@@ -19067,7 +19071,7 @@
  "dc_wp_sage_damask": {
   "name": "Sage Damask Paper",
   "type": "decor",
-  "value": 97,
+  "value": 122,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_wp_sage_damask_icon",
@@ -19077,7 +19081,7 @@
  "dc_wp_snowflake": {
   "name": "Snowflake Paper",
   "type": "decor",
-  "value": 90,
+  "value": 64,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_wp_snowflake_icon",
@@ -19088,7 +19092,7 @@
  "dc_wp_star_navy": {
   "name": "Starry Navy Paper",
   "type": "decor",
-  "value": 368,
+  "value": 218,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_wp_star_navy_icon",
@@ -19098,11 +19102,839 @@
  "dc_fl_casino_carpet": {
   "name": "Lucky Red Carpet",
   "type": "decor",
-  "value": 93,
+  "value": 58,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_fl_casino_carpet_icon",
   "desc": "Flooring for one room.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_lamp2_tall_0": {
+  "name": "Garden Lamp Post",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/lamp2_tall_0",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lamp2_tall_1": {
+  "name": "Twin Garden Lamp",
+  "type": "decor",
+  "value": 67,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/lamp2_tall_1",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lamp2_tall_2": {
+  "name": "Ornate Lamp Post",
+  "type": "decor",
+  "value": 240,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/lamp2_tall_2",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lamp2_short_0": {
+  "name": "Short Path Lamp",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/lamp2_short_0",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lamp2_short_1": {
+  "name": "Bollard Lamp",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/lamp2_short_1",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lamp2_short_2": {
+  "name": "Lantern Bollard",
+  "type": "decor",
+  "value": 100,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/lamp2_short_2",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lantern_lit": {
+  "name": "Yard Lantern",
+  "type": "decor",
+  "value": 23,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/lantern_lit",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_ri_lantern_post": {
+  "name": "Rustic Lantern Post",
+  "type": "decor",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/ri_lantern_post",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_dock_lantern": {
+  "name": "Harbour Lantern",
+  "type": "decor",
+  "value": 390,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/dock_lantern",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lanterns_red": {
+  "name": "Red Paper Lanterns",
+  "type": "decor",
+  "value": 84,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/lanterns_red",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lanterns_pink": {
+  "name": "Pink Paper Lanterns",
+  "type": "decor",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/lanterns_pink",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_lanterns_cyan": {
+  "name": "Teal Paper Lanterns",
+  "type": "decor",
+  "value": 69,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/lanterns_cyan",
+  "desc": "A light for the yard. Glows at night.",
+  "decor": true
+ },
+ "dc_out_planter2_0": {
+  "name": "Terracotta Planter",
+  "type": "decor",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/planter2_0",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_planter2_1": {
+  "name": "Stone Planter",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/planter2_1",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_planter2_2": {
+  "name": "Flower Urn",
+  "type": "decor",
+  "value": 102,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/planter2_2",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_planter2_3": {
+  "name": "Herb Trough",
+  "type": "decor",
+  "value": 73,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/planter2_3",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_city_planter": {
+  "name": "Street Planter",
+  "type": "decor",
+  "value": 23,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/city_planter",
+  "desc": "A planter for the yard.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_hedge2_pot": {
+  "name": "Potted Hedge",
+  "type": "decor",
+  "value": 104,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/hedge2_pot",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_flower_cart": {
+  "name": "Flower Cart",
+  "type": "decor",
+  "value": 1358,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/flower_cart",
+  "desc": "A planter for the yard.",
+  "decor": true
+ },
+ "dc_out_flowerbed_blue": {
+  "name": "Bluebell Bed",
+  "type": "decor",
+  "value": 13,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/flowerbed_blue",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_flowerbed_pink": {
+  "name": "Pink Tulip Bed",
+  "type": "decor",
+  "value": 32,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/flowerbed_pink",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_flowerbed_red": {
+  "name": "Red Poppy Bed",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/flowerbed_red",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_flowerbed_yellow": {
+  "name": "Marigold Bed",
+  "type": "decor",
+  "value": 11,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/flowerbed_yellow",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_sunflowers": {
+  "name": "Sunflower Patch",
+  "type": "decor",
+  "value": 11,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "nature/sunflowers",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_sunflower_bush": {
+  "name": "Sunflower Clump",
+  "type": "decor",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "nature/sunflower_bush",
+  "desc": "Flowers for the yard.",
+  "decor": true
+ },
+ "dc_out_fairy_ring": {
+  "name": "Fairy Ring",
+  "type": "decor",
+  "value": 202,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "nature/fairy_ring",
+  "desc": "Flowers for the yard.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_out_hedge2_ball": {
+  "name": "Round Hedge",
+  "type": "decor",
+  "value": 18,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/hedge2_ball",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_hedge2_tree_s": {
+  "name": "Clipped Hedge Tree",
+  "type": "decor",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/hedge2_tree_s",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_hedge2_tree": {
+  "name": "Tall Hedge Tree",
+  "type": "decor",
+  "value": 61,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/hedge2_tree",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_topiary_a": {
+  "name": "Spiral Topiary",
+  "type": "decor",
+  "value": 96,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/topiary_a",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_topiary_b": {
+  "name": "Cone Topiary",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/topiary_b",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_topiary_c": {
+  "name": "Ball Topiary",
+  "type": "decor",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/topiary_c",
+  "desc": "Clipped greenery for the yard.",
+  "decor": true
+ },
+ "dc_out_hedge2_arch": {
+  "name": "Hedge Arch",
+  "type": "decor",
+  "value": 360,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/hedge2_arch",
+  "desc": "An arch to walk under.",
+  "decor": true
+ },
+ "dc_out_statue": {
+  "name": "Garden Statue",
+  "type": "decor",
+  "value": 82,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/statue",
+  "desc": "A statue for the yard.",
+  "decor": true
+ },
+ "dc_out_statue_cane": {
+  "name": "Gentleman Statue",
+  "type": "decor",
+  "value": 52,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/statue_cane",
+  "desc": "A statue for the yard.",
+  "decor": true
+ },
+ "dc_out_cat_statue": {
+  "name": "Stone Cat Statue",
+  "type": "decor",
+  "value": 202,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/cat_statue",
+  "desc": "A statue for the yard.",
+  "decor": true
+ },
+ "dc_out_alien_statue": {
+  "name": "Star Visitor Statue",
+  "type": "decor",
+  "value": 1095,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/alien_statue",
+  "desc": "A statue for the yard.",
+  "decor": true
+ },
+ "dc_out_ds_sun_obelisk": {
+  "name": "Sun Obelisk",
+  "type": "decor",
+  "value": 1208,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/ds_sun_obelisk",
+  "desc": "A statue for the yard.",
+  "decor": true
+ },
+ "dc_out_fountain": {
+  "name": "Garden Fountain",
+  "type": "decor",
+  "value": 1148,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/fountain",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_fountain2": {
+  "name": "Grand Fountain",
+  "type": "decor",
+  "value": 4800,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "props/fountain2",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_glow_pond": {
+  "name": "Glow Pond",
+  "type": "decor",
+  "value": 398,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/glow_pond",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_birdbath": {
+  "name": "Stone Birdbath",
+  "type": "decor",
+  "value": 32,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/birdbath",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_well_stone": {
+  "name": "Wishing Well",
+  "type": "decor",
+  "value": 68,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/well_stone",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_well_roofed": {
+  "name": "Roofed Well",
+  "type": "decor",
+  "value": 128,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/well_roofed",
+  "desc": "Water for the yard.",
+  "decor": true
+ },
+ "dc_out_bench2_wood_a": {
+  "name": "Park Bench",
+  "type": "decor",
+  "value": 18,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/bench2_wood_a",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_bench2_iron_a": {
+  "name": "Iron Park Bench",
+  "type": "decor",
+  "value": 59,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/bench2_iron_a",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_bench2_green_a": {
+  "name": "Green Park Bench",
+  "type": "decor",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/bench2_green_a",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_log_bench": {
+  "name": "Log Seat",
+  "type": "decor",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "nature/log_bench",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_cf_picnic_table": {
+  "name": "Picnic Table",
+  "type": "decor",
+  "value": 65,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/cf_picnic_table",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_umbrella_red": {
+  "name": "Red Sun Umbrella",
+  "type": "decor",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/umbrella_red",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_umbrella_blue": {
+  "name": "Blue Sun Umbrella",
+  "type": "decor",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/umbrella_blue",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_umbrella_yellow": {
+  "name": "Yellow Sun Umbrella",
+  "type": "decor",
+  "value": 16,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/umbrella_yellow",
+  "desc": "Somewhere to sit outside.",
+  "decor": true
+ },
+ "dc_out_trellis": {
+  "name": "Rose Trellis",
+  "type": "decor",
+  "value": 64,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/trellis",
+  "desc": "An arch to walk under.",
+  "decor": true
+ },
+ "dc_out_wedding_arch": {
+  "name": "Flower Arch",
+  "type": "decor",
+  "value": 405,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/wedding_arch",
+  "desc": "An arch to walk under.",
+  "decor": true
+ },
+ "dc_out_stone_arch": {
+  "name": "Stone Garden Arch",
+  "type": "decor",
+  "value": 202,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/stone_arch",
+  "desc": "An arch to walk under.",
+  "decor": true
+ },
+ "dc_out_fence2_wood_h": {
+  "name": "Wood Fence Run",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/fence2_wood_h",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true
+ },
+ "dc_out_fence2_iron_h": {
+  "name": "Iron Fence Run",
+  "type": "decor",
+  "value": 57,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fence2_iron_h",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true
+ },
+ "dc_out_fence2_stone_h": {
+  "name": "Stone Wall Run",
+  "type": "decor",
+  "value": 71,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fence2_stone_h",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true
+ },
+ "dc_out_rope_fence": {
+  "name": "Rope Fence",
+  "type": "decor",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/rope_fence",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true
+ },
+ "dc_out_gold_fence_a": {
+  "name": "Gilded Fence",
+  "type": "decor",
+  "value": 750,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/gold_fence_a",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true
+ },
+ "dc_out_chain_fence_h": {
+  "name": "Chain-Link Fence",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/chain_fence_h",
+  "desc": "A fence piece. Lay them in a row.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_scarecrow_knight": {
+  "name": "Knight Scarecrow",
+  "type": "decor",
+  "value": 54,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/scarecrow_knight",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_scarecrow_pumpkin": {
+  "name": "Pumpkin Scarecrow",
+  "type": "decor",
+  "value": 69,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/scarecrow_pumpkin",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_ri_windmill_small": {
+  "name": "Garden Windmill",
+  "type": "decor",
+  "value": 124,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/ri_windmill_small",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_haystack": {
+  "name": "Hay Bale Stack",
+  "type": "decor",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/haystack",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_bee_house": {
+  "name": "Bee Hotel",
+  "type": "decor",
+  "value": 76,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/bee_house",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_signpost_1": {
+  "name": "Garden Signpost",
+  "type": "decor",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/signpost_1",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_signpost_2": {
+  "name": "Tall Signpost",
+  "type": "decor",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/signpost_2",
+  "desc": "A touch of the farm life.",
+  "decor": true
+ },
+ "dc_out_fest_fw_00": {
+  "name": "Harvest Pumpkin Pile",
+  "type": "decor",
+  "value": 113,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_fw_00",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_fw_01": {
+  "name": "Pumpkin Patch Display",
+  "type": "decor",
+  "value": 82,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_fw_01",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_fw_38": {
+  "name": "Yard Snowman",
+  "type": "decor",
+  "value": 64,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_fw_38",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_fw_41": {
+  "name": "Ice Sculpture",
+  "type": "decor",
+  "value": 390,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/fest_fw_41",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_fw_62": {
+  "name": "Festive Pine",
+  "type": "decor",
+  "value": 300,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/fest_fw_62",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_ss_02": {
+  "name": "Maypole",
+  "type": "decor",
+  "value": 225,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/fest_ss_02",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_ss_09": {
+  "name": "Egg Basket Display",
+  "type": "decor",
+  "value": 68,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_ss_09",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_ss_22": {
+  "name": "Lantern Garland",
+  "type": "decor",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_ss_22",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_fest_ss_31": {
+  "name": "String Lights",
+  "type": "decor",
+  "value": 59,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/fest_ss_31",
+  "desc": "A seasonal piece for the yard.",
+  "decor": true
+ },
+ "dc_out_lux_car_red": {
+  "name": "Red Coupe",
+  "type": "decor",
+  "value": 638,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "props/lux_car_red",
+  "desc": "Street-style yard dressing.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_taxi": {
+  "name": "Retired Cab",
+  "type": "decor",
+  "value": 338,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/taxi",
+  "desc": "Street-style yard dressing.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_rusted_car": {
+  "name": "Project Car",
+  "type": "decor",
+  "value": 54,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "props/rusted_car",
+  "desc": "Street-style yard dressing.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_oil_drums": {
+  "name": "Oil Drum Stack",
+  "type": "decor",
+  "value": 16,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/oil_drums",
+  "desc": "Street-style yard dressing.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_out_crates_pallet": {
+  "name": "Pallet of Crates",
+  "type": "decor",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "props/crates_pallet",
+  "desc": "Street-style yard dressing.",
   "decor": true,
   "arc": "gangsters"
  }

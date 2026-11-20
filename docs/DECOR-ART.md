@@ -1,12 +1,14 @@
 # Decor art coverage (written by tools/gen_decor.py; do not edit)
 
-Entries: 863 (decor 737, wear 126). P6 renders merged: 373.
+Entries: 945 (decor 819, wear 126). P6 renders merged: 373.
 
 | sub | have | target | gap |
 |---|---|---|---|
 | acc | 63 | 0 | 0 |
+| arch | 4 | 0 | 0 |
 | bath | 2 | 12 | 10 |
 | bed | 12 | 16 | 4 |
+| bench | 8 | 0 | 0 |
 | bottom | 1 | 0 | 0 |
 | casino | 9 | 0 | 0 |
 | catkins | 9 | 0 | 0 |
@@ -16,14 +18,20 @@ Entries: 863 (decor 737, wear 126). P6 renders merged: 373.
 | crystal_grotto | 9 | 0 | 0 |
 | decor | 27 | 0 | 0 |
 | farmhouse_rustic | 10 | 0 | 0 |
+| fence | 6 | 0 | 0 |
 | fireplace | 6 | 6 | 0 |
 | flooring | 47 | 40 | 0 |
+| flowerbed | 7 | 0 | 0 |
+| fountain | 6 | 0 | 0 |
 | furniture | 59 | 0 | 0 |
+| garden | 7 | 0 | 0 |
 | gilt_deco | 9 | 0 | 0 |
 | hat | 22 | 0 | 0 |
+| hedge | 6 | 0 | 0 |
 | ice_palace | 9 | 0 | 0 |
 | keepsake | 12 | 0 | 0 |
 | kitchen | 14 | 28 | 14 |
+| lamp | 12 | 0 | 0 |
 | light | 11 | 30 | 19 |
 | merkitty_coral | 9 | 0 | 0 |
 | moonlit | 9 | 0 | 0 |
@@ -36,15 +44,17 @@ Entries: 863 (decor 737, wear 126). P6 renders merged: 373.
 | painting | 18 | 70 | 52 |
 | pet | 3 | 0 | 0 |
 | plant | 16 | 18 | 2 |
+| planter | 7 | 0 | 0 |
 | prize | 9 | 0 | 0 |
 | rug | 33 | 24 | 0 |
 | safehouse | 13 | 0 | 0 |
 | seaside | 13 | 0 | 0 |
+| seasonal | 9 | 0 | 0 |
 | seating | 26 | 40 | 14 |
 | shoes | 20 | 0 | 0 |
 | showpiece | 6 | 10 | 4 |
 | snowdrift_igloo | 9 | 0 | 0 |
-| statue | 3 | 10 | 7 |
+| statue | 8 | 10 | 2 |
 | storage | 36 | 40 | 4 |
 | study | 11 | 12 | 1 |
 | table | 19 | 30 | 11 |
@@ -54,7 +64,8 @@ Entries: 863 (decor 737, wear 126). P6 renders merged: 373.
 | wall_art | 91 | 0 | 0 |
 | wallpaper | 36 | 30 | 0 |
 | window | 16 | 16 | 0 |
+| yard_gang | 5 | 0 | 0 |
 
-By category: acc 63, bottom 1, decor 92, flooring 47, furniture 362, hat 22, light 34, outfit 14, rug 33, shoes 20, top 6, wall_art 133, wallpaper 36
-By rarity: common 351, uncommon 265, rare 150, epic 62, legendary 18, mythic 6, unique 11
-By arc:  573, gangsters 166, penguins 124
+By category: acc 63, bottom 1, decor 92, flooring 47, furniture 362, hat 22, light 34, outdoor 82, outfit 14, rug 33, shoes 20, top 6, wall_art 133, wallpaper 36
+By rarity: common 382, uncommon 297, rare 162, epic 68, legendary 19, mythic 6, unique 11
+By arc:  643, gangsters 173, penguins 129
