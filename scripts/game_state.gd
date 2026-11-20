@@ -3014,7 +3014,7 @@ static func next_step() -> String:
 	if run.is_empty():
 		return ""
 	var pinned := str(run.get("pinned_quest", ""))
-	if pinned != "":
+	if pinned != "" and not QuestTracker.is_main(pinned):
 		for q in run.get("quests", []):
 			if not bool(q.get("done", false)) and str(q["id"]) == pinned:
 				return str(q.get("text", ""))

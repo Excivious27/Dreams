@@ -18,6 +18,7 @@ static var y_offset := 0.0
 static var extra_rects: Array = []
 ## Set by full-screen panels while open; touch buttons ignore taps inside it.
 static var modal_rect := Rect2()
+var _compass_on := false  # the quest compass is drawn (the goal line keeps clear of it)
 
 
 static func hud_rect_blocks(p: Vector2) -> bool:
@@ -503,11 +504,12 @@ func _draw_hud() -> void:
 				cut = 54
 			var rest := nxt.substr(cut).strip_edges()
 			gl = [nxt.left(cut), rest if rest.length() <= 58 else rest.left(56) + "…"]
+		var gw: float = QuestTracker.GOAL_W if _compass_on else 240.0
 		for gi in gl.size():
 			var gy := TOOLBAR_Y + SLOT + 21 + gi * 9
 			var gs := ("▸ " if gi == 0 else "   ") + str(gl[gi])
-			c.draw_string_outline(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
-			c.draw_string(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, Color(1, 0.92, 0.6))
+			c.draw_string_outline(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, 7, 3, Color(0, 0, 0, 0.7))
+			c.draw_string(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, 7, Color(1, 0.92, 0.6))
 	# Heat (gangster arc): five pips under the clock.
 	# Hidden until there is some heat (first time: a toast says what it means).
 	if Racket.on() and (Racket.heat() > 0 or r["flags"].has("heat_told")):
@@ -527,6 +529,7 @@ func _draw_hud() -> void:
 	_draw_boss_bar(c)
 	c.draw_set_transform(Vector2(0, y_offset))
 	_draw_pointer(c)
+	c.draw_set_transform(Vector2(0, 0))
 	# Energy bar (vertical, right side, Stardew style)
 	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
 	# moves up so it doesn't sit on the clock box.
@@ -794,38 +797,13 @@ func fade_in(seconds := 0.4) -> void:
 
 ## Big maps (the mines): an arrow at the screen edge toward the open shaft or the awake keeper.
 func _draw_pointer(c: CanvasItem) -> void:
+	_compass_on = false
 	var m := get_tree().current_scene as GameMap
 	if m == null or m.player == null or y_offset != 0.0 or Dialogue.instance(get_tree()).active or m.get("battle") != null:
 		return
-	# Maps with their own target (mine ladder/guardian) first; else the goal line's place.
-	var tgt: Vector2 = m.call("pointer_target") if m.has_method("pointer_target") else GoalLine.target(m)
-	if tgt == Vector2.ZERO:
-		return
-	var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
-	var view := Rect2(18, 112, DisplayMode.view.x - 48.0, 244)
-	if view.has_point(sp):
-		return
-	var ctr := view.get_center()
-	var d := (sp - ctr)
-	# Maps with a walking route (the mines) aim the arrow along it, not through walls.
-	if m.has_method("pointer_aim"):
-		var aim: Vector2 = m.call("pointer_aim")
-		var ct := m.get_viewport().get_canvas_transform()
-		if aim != tgt and aim != Vector2.ZERO:
-			d = (ct * aim - ct * m.player.position) * 100.0
-	var k := minf(absf((view.size.x * 0.5) / maxf(0.001, absf(d.x))), absf((view.size.y * 0.5) / maxf(0.001, absf(d.y))))
-	var at := ctr + d * k
-	var dir := d.normalized()
-	var col: Color = Color(1, 0.4, 0.35) if bool(m.get("_guardian") != null) else Color(0.5, 1, 0.6)
-	var pts := PackedVector2Array([at + dir * 10.0, at - dir * 6.0 + dir.orthogonal() * 7.0, at - dir * 6.0 - dir.orthogonal() * 7.0])
-	c.draw_colored_polygon(pts, Color(0, 0, 0, 0.6))
-	var pts2 := PackedVector2Array([at + dir * 8.0, at - dir * 4.5 + dir.orthogonal() * 5.3, at - dir * 4.5 - dir.orthogonal() * 5.3])
-	c.draw_colored_polygon(pts2, col)
-	# How far, in cells, so 10 and 80 don't look the same.
-	var dist := str(int(m.call("pointer_dist")) if m.has_method("pointer_dist") else int(m.player.position.distance_to(tgt) / 16.0))
-	var tp := at - dir * 14.0 + Vector2(-10, 3)
-	c.draw_string_outline(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, 2, Color(0, 0, 0, 0.8))
-	c.draw_string(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, col)
+	# The quest tracker's corner compass (QuestTracker): the tracked quest, or the
+	# way down in the mines. It replaced the old screen-edge arrow.
+	_compass_on = QuestTracker.draw(c, m, _font)
 
 
 ## The nearest boss in view: name and a health bar across the top of the field.
