@@ -4247,7 +4247,7 @@
      "tier": 1,
      "row": 0,
      "effect": {
-      "ani_double": 0.02
+      "big_goods": 0.02
      }
     },
     {
@@ -4269,7 +4269,7 @@
      "tier": 3,
      "row": 0,
      "effect": {
-      "ani_double": 0.02
+      "big_goods": 0.02
      }
     },
     {
@@ -4314,7 +4314,7 @@
      "tier": 7,
      "row": 0,
      "effect": {
-      "ani_double": 0.02
+      "big_goods": 0.02
      }
     },
     {
@@ -4336,7 +4336,7 @@
      "tier": 9,
      "row": 0,
      "effect": {
-      "ani_double": 0.04
+      "big_goods": 0.04
      }
     },
     {
@@ -4358,7 +4358,7 @@
      "tier": 1,
      "row": 1,
      "effect": {
-      "ani_quality": 0.12
+      "animal_quality": 0.12
      }
     },
     {
@@ -4381,7 +4381,7 @@
      "tier": 3,
      "row": 1,
      "effect": {
-      "ani_quality": 0.12
+      "animal_quality": 0.12
      }
     },
     {
@@ -4403,7 +4403,7 @@
      "tier": 5,
      "row": 1,
      "effect": {
-      "ani_quality": 0.12
+      "animal_quality": 0.12
      }
     },
     {
@@ -4426,7 +4426,7 @@
      "tier": 7,
      "row": 1,
      "effect": {
-      "ani_quality": 0.12
+      "animal_quality": 0.12
      }
     },
     {
@@ -4448,7 +4448,7 @@
      "tier": 9,
      "row": 1,
      "effect": {
-      "ani_quality": 1
+      "animal_quality": 1
      },
      "unlock": true
     },
@@ -4460,7 +4460,7 @@
      "tier": 0,
      "row": 2,
      "effect": {
-      "grow_fast": 0.12
+      "grow_speed": 0.12
      }
     },
     {
@@ -4482,7 +4482,7 @@
      "tier": 2,
      "row": 2,
      "effect": {
-      "grow_fast": 0.12
+      "grow_speed": 0.12
      }
     },
     {
@@ -4505,7 +4505,7 @@
      "tier": 4,
      "row": 2,
      "effect": {
-      "grow_fast": 0.12
+      "grow_speed": 0.12
      }
     },
     {
@@ -4527,7 +4527,7 @@
      "tier": 6,
      "row": 2,
      "effect": {
-      "grow_fast": 0.12
+      "grow_speed": 0.12
      }
     },
     {
@@ -4550,7 +4550,7 @@
      "tier": 8,
      "row": 2,
      "effect": {
-      "grow_fast": 0.12
+      "grow_speed": 0.12
      }
     },
     {
@@ -4583,7 +4583,7 @@
      "tier": 1,
      "row": 3,
      "effect": {
-      "ani_friend": 0.03
+      "animal_friend": 0.03
      }
     },
     {
@@ -4606,7 +4606,7 @@
      "tier": 3,
      "row": 3,
      "effect": {
-      "ani_friend": 0.03
+      "animal_friend": 0.03
      }
     },
     {
@@ -4628,7 +4628,7 @@
      "tier": 5,
      "row": 3,
      "effect": {
-      "ani_friend": 0.03
+      "animal_friend": 0.03
      }
     },
     {

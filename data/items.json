@@ -20984,5 +20984,14 @@
   "tier": 3,
   "icon": "cooking_oil",
   "desc": "A few drops make any dish taste rich."
+ },
+ "down_pillow": {
+  "name": "Down Pillow",
+  "type": "craft",
+  "value": 98,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "feather",
+  "desc": "Soft as a cloud, stuffed with feathers. A fine trade good."
  }
 }

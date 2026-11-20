@@ -3461,6 +3461,13 @@
     "arc": ""
    },
    {
+    "recipe": "down_pillow",
+    "station": "loom",
+    "item": "down_pillow",
+    "name": "Down Pillow",
+    "arc": ""
+   },
+   {
     "recipe": "angora_yarn",
     "station": "loom",
     "item": "yarn",

@@ -2406,6 +2406,16 @@
    "tier": 4
   },
   {
+   "id": "down_pillow",
+   "name": "Down Pillow",
+   "need": {
+    "feather": 2,
+    "cloth": 1
+   },
+   "give": "down_pillow",
+   "tier": 1
+  },
+  {
    "id": "angora_yarn",
    "name": "Yarn (rabbit fur)",
    "need": {

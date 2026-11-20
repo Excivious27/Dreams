@@ -44,6 +44,7 @@ G = [  # id, name, type, value, tier, extra
  ('beeswax_candle', 'Beeswax Candle', 'craft', 75, 2, {'icon': 'candle', 'desc': 'Burns long and smells of summer.'}),
  ('cream', 'Cream', 'food', 60, 1, {'energy': 25, 'desc': 'Skimmed from fresh milk.'}),
  ('yogurt', 'Honey Yogurt', 'food', 110, 2, {'energy': 40, 'heal': 1, 'icon': 'yogurt', 'desc': 'Thick, tangy and sweetened with honey.'}),
+ ('down_pillow', 'Down Pillow', 'craft', 90, 1, {'icon': 'feather', 'desc': 'Soft as a cloud, stuffed with feathers. A fine trade good.'}),
  ('truffle_oil', 'Truffle Oil', 'craft', 320, 3, {'icon': 'cooking_oil', 'desc': 'A few drops make any dish taste rich.'}),
  # potions (the magic potion station)
  ('swift_draught', 'Swift Draught', 'potion', 120, 2, {'buff': {'kind': 'speed', 'minutes': 180, 'amount': 1}, 'desc': 'Quick feet for three hours.'}),
@@ -482,6 +483,7 @@ books['extractor'] = [rc('honey_comb', 'Honey (from honeycomb)', {'honeycomb': 1
 # Raw goods that only exist once tools/gen_ranch.py has written them (C11a P1): recipes join when their inputs do.
 for bk, r in [('mayo', rc('big_mayo', 'Mayonnaise (big egg)', {'large_egg': 1}, 'mayonnaise', 2, 2)),
               ('mayo', rc('golden_mayo', 'Mayonnaise (golden egg)', {'golden_egg': 1}, 'duck_mayonnaise', 2, 6)),
+              ('loom', rc('down_pillow', 'Down Pillow', {'feather': 2, 'cloth': 1})),
               ('loom', rc('angora_yarn', 'Yarn (rabbit fur)', {'rabbit_fur': 1}, 'yarn', 1, 3)),
               ('press', rc('big_cheese', 'Cheese (big milk)', {'large_milk': 1}, 'cheese', 1, 2))]:
     if all(k in I for k in r['need']):

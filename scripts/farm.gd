@@ -1850,8 +1850,8 @@ func _coop(sel: String) -> void:
 	var egg_sp := RanchFarm.hatch_species(sel) if GameState.count(sel) > 0 else ""
 	if RanchFarm.uses_roster("coop") and Ranch.capacity("coop") > 0:
 		for e in RanchFarm.incubator():
-			if e is Dictionary and int((e as Dictionary).get("day", 0)) > day:
-				var left := int((e as Dictionary)["day"]) - day
+			if e is Dictionary and RanchFarm.egg_day(e) > day:
+				var left := RanchFarm.egg_day(e) - day
 				hud.toast("An egg is warming: %d more day%s." % [left, "" if left == 1 else "s"])
 				return
 		if RanchFarm.coop_room() <= 0:
@@ -1860,10 +1860,11 @@ func _coop(sel: String) -> void:
 		if egg_sp == "":
 			hud.toast("The incubator takes a hen's or a duck's egg: hold one and tap the coop.")
 			return
-		RanchFarm.take_egg(sel)
-		var hd := RanchFarm.hatch_days(egg_sp)
-		RanchFarm.incubator().append({"species": egg_sp, "day": day + hd})
-		_egg_in(egg_sp, hd)
+		var why := Ranch.incubate(sel)  # the one incubator path (C11a integ): Ranch hatches it overnight
+		if why != "":
+			hud.toast(why)
+			return
+		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(RanchFarm.incubator()[-1]) - day))
 		return
 	var hatch: Array = GameState.run.get("coop_hatch", [])
 	var growing := 0
@@ -2641,7 +2642,7 @@ func _place_incubator() -> void:
 	var warming := false
 	var eggs: Array = RanchFarm.incubator() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
 	for e in eggs:
-		var d := int((e as Dictionary).get("day", 0)) if e is Dictionary else int(e)
+		var d := RanchFarm.egg_day(e)
 		warming = warming or d > day
 		hatched = hatched or d == day
 	for c: Vector2i in [Vector2i(pen.position.x + 1, pen.end.y + 1), Vector2i(pen.position.x, pen.end.y + 1), Vector2i(pen.position.x - 2, pen.end.y - 1)]:

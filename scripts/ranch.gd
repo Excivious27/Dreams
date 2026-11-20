@@ -167,7 +167,7 @@ static func _make(species_id: String, h: String, nm: String, day: int, variant :
 		var vs: Array = (sp.get("art", {}) as Dictionary).get("variants", [])
 		variant = str((vs[0] as Dictionary).get("id", "")) if not vs.is_empty() else ""
 	var grow := int(sp.get("grow_days", rule("young_days", 7)))
-	grow = int(ceil(grow * (1.0 - GameState.ranch_bonus("grow_speed"))))
+	grow = maxi(1, grow - _days_off("grow_speed"))  # Ranching: days sooner to grow up
 	d["animals"][uid] = {"species": species_id, "name": nm if nm != "" else _pick_name(species_id), "named": nm != "",
 		"home": h, "born_day": day, "adult_day": day + grow, "friend": 0, "mood": 50, "last_pet": -1, "last_fed": -1,
 		"made_day": -1, "variant": variant, "parents": parents, "team": false}
@@ -244,6 +244,12 @@ static func rehome(uid: String) -> bool:
 static func is_adult(uid: String) -> bool:
 	var a := animal(uid)
 	return not a.is_empty() and _day() >= int(a.get("adult_day", 0))
+
+
+## A Ranching "days sooner" key (grow_speed, hatch_fast, animal_quality): whole days plus a chance of the fraction.
+static func _days_off(key: String) -> int:
+	var b := GameState.ranch_bonus(key)
+	return int(b) + (1 if randf() < fmod(b, 1.0) else 0)
 
 
 static func _friend_add(a: Dictionary, n: int) -> void:
@@ -456,7 +462,7 @@ static func incubate(egg_item: String, q := "") -> String:
 	if GameState.count(egg_item) <= 0:
 		return "Hold an egg to put it in."
 	GameState.add_item(egg_item, -1)
-	var days := int(ceil(int(species(sid)["breed"].get("days", 3)) * (1.0 - GameState.ranch_bonus("grow_speed"))))
+	var days := int(species(sid)["breed"].get("days", 3)) - _days_off("hatch_fast")
 	inc.append({"species": sid, "due": _day() + maxi(1, days), "q": q})
 	return ""
 
@@ -516,6 +522,10 @@ static func overnight(report: Dictionary) -> Array:
 			GameState.run["silo"] = Builds.silo_hay() - 1
 			a["last_fed"] = day
 			silo_fed += 1
+	if RanchFarm.graze_day():
+		for uid in animals().keys():
+			if needs_hay(uid) and not fed_today(uid, day):
+				(animals()[uid] as Dictionary)["last_fed"] = day  # out on the pasture (RanchFarm.graze)
 	var hungry := 0
 	var missed: Array = []
 	var made := {}
@@ -552,6 +562,7 @@ static func overnight(report: Dictionary) -> Array:
 				and not (bool(p.get("dig", false)) and (winter or wet)):
 			var ay := GameState.ranch_bonus("animal_yield")
 			var n := 1 + int(ay) + (1 if rng.randf() < fmod(ay, 1.0) else 0)
+			n += 1 if rng.randf() < GameState.ranch_bonus("big_goods") else 0
 			var item := str(p["id"])
 			var ex: Array = p.get("extra", [])
 			if ex.size() == 2 and rng.randf() < float(ex[1]):
@@ -657,7 +668,7 @@ static func _hatch(day: int, rng: RandomNumberGenerator) -> Array:
 		var inc: Array = house(home)["incubator"]
 		var keep: Array = []
 		for e in inc:
-			if int(e.get("due", 0)) > day + 1 or room(home) <= 0:
+			if int(e.get("due", e.get("day", 0))) > day + 1 or room(home) <= 0:
 				keep.append(e)
 				continue
 			var sid := str(e["species"])

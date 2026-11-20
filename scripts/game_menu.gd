@@ -972,7 +972,7 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
 	"pet_bond": "bone", "team_xp": "luck_potion", "xp_gain": "book", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
 	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer",
-	"ani_double": "egg", "ani_quality": "milk", "ranch_value": "gold", "breed_chance": "feather", "grow_fast": "hay", "ani_friend": "brush", "hand_work": "milk_pail", "hand_slot": "milk_pail", "feeder": "feed_bag", "care_grace": "brush", "hatch_fast": "egg"}  # C11a P3 hook (Ranching)
+	"big_goods": "egg", "animal_quality": "milk", "ranch_value": "gold", "breed_chance": "feather", "grow_speed": "hay", "animal_friend": "brush", "hand_work": "milk_pail", "hand_slot": "milk_pail", "feeder": "feed_bag", "care_grace": "brush", "hatch_fast": "egg"}  # C11a P3 hook (Ranching)
 
 
 func _skills_tab() -> void:

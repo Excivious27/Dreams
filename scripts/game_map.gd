@@ -1037,6 +1037,7 @@ func pet_farm_animal(a: Node2D) -> void:
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
 	Music.instance(get_tree()).sfx(animal_voice(kind), "sheep" if not bird else "pickup")
+	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
 	if newly:
 		st["last_pet"] = day
@@ -1080,10 +1081,29 @@ func pet_farm_animal(a: Node2D) -> void:
 	if n <= 0:
 		return
 	pop_items(a.position, prod, n)
+	Collections.record_ranch(prod, n)
 	# Care shows in the goods: silver and gold from RanchFarm.silver()/gold() care days.
 	var q := RanchFarm.lift_quality(RanchFarm.quality_for(int(st["streak"])))
 	if q != "":
 		GameState.add_quality(prod, q, n)
+
+
+## Pick up goods the night made (Ranch.overnight sets animal.ready): pop them with their star.
+func _ranch_goods(a: Node2D, uid: String) -> void:
+	if uid == "" or Net.visiting():
+		return
+	var got := Ranch.collect(uid)
+	if got.is_empty():
+		return
+	var item := str(got["item"])
+	pop_items(a.position, item, int(got["n"]))
+	if str(got.get("q", "")) != "":
+		GameState.add_quality(item, str(got["q"]), int(got["n"]))
+	Collections.record_ranch(item, int(got["n"]))
+	if str(got.get("extra", "")) != "":
+		pop_items(a.position, str(got["extra"]), 1)
+		Collections.record_ranch(str(got["extra"]), 1)
+	xp(RanchFarm.care_skill(), 1)
 
 
 ## Keep an animal's tap hint current ("A: Clover (hungry)"); the thing dict moves with the animal.
