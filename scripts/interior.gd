@@ -109,6 +109,8 @@ func build() -> void:
 	rows = int(I.get("rows", 11))
 	if bool(I.get("rec", false)):
 		I = RecCenter.build_room(self, I)  # arc skin, lane cells
+	else:
+		I = arc_skin(I)
 	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))
@@ -125,6 +127,71 @@ func build() -> void:
 		set_thing(int(c[0]), int(c[1]), dd, bool(t.get("solid", true)))
 
 
+## Gangster-town look for a room (c5_04 #1): interiors.json "gangsters" block.
+## Plain keys replace the room's (floor, wall, intro, music, windows...);
+## "prop_swap" {old: new} renames props, "props_add" appends props,
+## "props_drop" [names] removes them, "texts" {thing index: text} rewords notes,
+## "if_flag" {flag: block} applies a further block once that flag is set
+## (a crew member's shop moved in). Never writes into the loaded data.
+static func arc_skin(d: Dictionary) -> Dictionary:
+	if GameState.is_penguins() or not (d.get("gangsters") is Dictionary):
+		return d
+	var out := d.duplicate(true)
+	var g: Dictionary = d["gangsters"]
+	_skin_merge(out, g)
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var ifs: Dictionary = g.get("if_flag", {})
+	for f: String in ifs:
+		if fl.has(f):
+			_skin_merge(out, ifs[f])
+	out.erase("gangsters")
+	return out
+
+
+## The room's name in this arc when a crew shop has moved in ("" = the usual
+## name): PlaceNames asks this so a reload inside still says Specs' Net Cafe.
+static var _all_rooms: Dictionary = {}
+static func skin_name(iid: String) -> String:
+	if GameState.is_penguins():
+		return ""
+	if _all_rooms.is_empty():
+		_all_rooms = GameState.load_json("res://data/interiors.json")
+	var d: Dictionary = _all_rooms.get(iid, {})
+	if not (d.get("gangsters") is Dictionary):
+		return ""
+	return str(arc_skin(d).get("name", ""))
+
+
+static func _skin_merge(out: Dictionary, g: Dictionary) -> void:
+	for k: String in g:
+		match k:
+			"if_flag":
+				pass
+			"prop_swap":
+				var sw: Dictionary = g[k]
+				for p: Dictionary in out.get("props", []):
+					if sw.has(str(p.get("name", ""))):
+						p["name"] = sw[str(p["name"])]
+			"props_drop":
+				var keep: Array = []
+				for p: Dictionary in out.get("props", []):
+					if not (str(p.get("name", "")) in g[k]):
+						keep.append(p)
+				out["props"] = keep
+			"props_add":
+				var ps: Array = out.get("props", [])
+				for p: Dictionary in g[k]:
+					ps.append(p.duplicate(true))
+				out["props"] = ps
+			"texts":
+				var th: Array = out.get("things", [])
+				for i: String in g[k]:
+					if int(i) < th.size():
+						(th[int(i)] as Dictionary)["text"] = g[k][i]
+			_:
+				out[k] = g[k]
+
+
 func after_ready() -> void:
 	if bool(I.get("rec", false)):
 		RecCenter.dress(self, interior_id)
@@ -134,8 +201,12 @@ func after_ready() -> void:
 		var nm := str(p["name"])
 		if nm == "window_day" and GameState.is_night() and Art.has(g, "window_night"):
 			nm = "window_night"
+		var anim := bool(p.get("anim", false))
+		if nm == "lamp_mechanism" and not GameState.run["flags"].has("lighthouse_lit") and Art.has(g, "lamp_mechanism_unlit"):
+			nm = "lamp_mechanism_unlit"  # dark lens until the lighthouse is relit (c5_04 #4)
+			anim = false
 		var w := int(p.get("w", 0))
-		if bool(p.get("anim", false)) and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
+		if anim and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 5.0))})
 			a.animation = "idle"
@@ -178,6 +249,8 @@ func after_ready() -> void:
 		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
 		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and nm in ["window_day", "window_night"]:
+			_win_props.append([ps, g])
 		if ps and crop.has_area():
 			ps.region_enabled = true
 			ps.region_rect = crop
@@ -625,6 +698,8 @@ func draw_map() -> void:
 	for x in range(1, cols - 1):
 		var part: String = parts[x - 1]
 		var t := Art.tex("tiles", wl + part)
+		if part == "_window" and not night and Art.has("tiles", wl + "_window_day"):
+			t = Art.tex("tiles", wl + "_window_day")  # warm-lit glass painted in: daylight blue by day (c5_04 #9)
 		if t and part == "_corner" and x == cols - 2:
 			# Mirror with a transform (a negative-width rect lands one cell to the right).
 			draw_set_transform(offset() + Vector2((x + 1) * TILE, 0), 0.0, Vector2(-1, 1))
@@ -831,8 +906,42 @@ func _leave() -> void:
 var _walked_out := false
 
 
+var _win_props: Array = []   # [Sprite2D, group] window props that swap day/night
+var _night_was := -1
+var _night_t := 0.0
+
+
+## Windows (wall glass and window props) follow dusk and dawn while you're inside,
+## not only when you walk in (c5_10 #5).
+func _watch_night(delta: float) -> void:
+	_night_t -= delta
+	if _night_t > 0.0:
+		return
+	_night_t = 1.0
+	var n := 1 if GameState.is_night() else 0
+	if _night_was == -1:
+		_night_was = n
+		return
+	if n == _night_was:
+		return
+	_night_was = n
+	queue_redraw()
+	for wp: Array in _win_props:
+		if is_instance_valid(wp[0]) and Art.has(str(wp[1]), "window_night"):
+			(wp[0] as Sprite2D).texture = Art.tex(str(wp[1]), "window_night" if n == 1 else "window_day")
+
+
+## Lamps, candles and hearths glow indoors after dark (c5_04 #3); the Rec Center
+## has its own coloured light (RecGlow).
+func glow_dark() -> float:
+	if RecCenter.is_rec(self):
+		return 0.0
+	return GameState.darkness() * Settings.night_strength() * 0.8
+
+
 func _process(delta: float) -> void:
 	super(delta)
+	_watch_night(delta)
 	if _walked_out or player == null or player.frozen or get_tree().paused:
 		return
 	var d: Array = I.get("door", [cols / 2, rows - 2])

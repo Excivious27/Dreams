@@ -127,6 +127,30 @@ echo "$pout" | grep -E "FAIL|SCRIPT ERROR|perf_test" || true
 if ! echo "$pout" | grep -q "perf_test: 0 failures"; then
   echo "perf_test failed"; exit 1
 fi
+
+echo "== mine arrival: no black cover (c5_16) =="
+maout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mine_arrival_test.gd 2>&1)"
+echo "$maout" | grep -E "FAIL|SCRIPT ERROR|mine_arrival_test" || true
+if ! echo "$maout" | grep -q "mine_arrival_test: 0 failures"; then
+  echo "mine_arrival_test failed"; exit 1
+fi
+
+echo "== night lighting: windows, festival fires, underground, mines (c5_10) =="
+nlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/night_light_test.gd 2>&1)"
+echo "$nlout" | grep -E "FAIL|SCRIPT ERROR|night_light_test" || true
+if ! echo "$nlout" | grep -q "night_light_test: 0 failures"; then
+  echo "night_light_test failed"; exit 1
+fi
+
+echo "== gangster interior skins (c5_04) =="
+isout="$("$GODOT" --headless --path . -s res://tools/interior_skin_test.gd 2>&1)"
+echo "$isout" | grep -E "FAIL|SCRIPT ERROR|interior_skin_test" || true
+if ! echo "$isout" | grep -q "interior_skin_test: 0 failures"; then
+  echo "interior_skin_test failed"; exit 1
+fi
+
+
+
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then

@@ -17,10 +17,14 @@ func _initialize() -> void:
 
 func _run() -> void:
 	InputSetup.ensure_actions()
-	for arc in ["penguins", "gangsters"]:
+	for pass_id in ["penguins", "gangsters", "crew"]:
+		var arc := "penguins" if pass_id == "penguins" else "gangsters"
 		GameState.new_run(arc, "kairi" if arc == "penguins" else "dad", "T", "Town", "Pup")
 		GameState.run["intro_done"] = true
-		for scene in ALL:
+		if pass_id == "crew":  # every crew shop moved into town (c5_02 #2: their size/door follow the old building)
+			for f in ["shop_1", "shop_2", "shop_3", "crew_mama_rosa", "crew_halo", "crew_marlene"]:
+				GameState.run["flags"][f] = true
+		for scene in (["town"] if pass_id == "crew" else ALL):
 			GameState.run["flags"][scene + "_seen"] = true
 			GameMap.next_spawn = Vector2.ZERO
 			change_scene_to_file("res://scenes/%s.tscn" % scene)

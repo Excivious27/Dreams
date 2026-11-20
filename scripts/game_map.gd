@@ -24,10 +24,26 @@ var hud: Hud
 var enemies: Array = []
 var sky: Scenery
 var glow: NightGlow
+var fixed_dark := -1.0   # >= 0: underground light (no sky clock, lamps always glow); underground_light()
 var _canopies: Array = []      # tall sprites that fade when you walk behind them
 var _faded: Array = []
 var _fade_t := 0.0
-const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon"]
+const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire"]
+## Festival pieces that are lights without a light word in their name (Lantern
+## Festival posts/strings fest_ss_23..33, its bonfire fest_ss_80) (c5_10 #1).
+const FEST_GLOW := ["fest_ss_23", "fest_ss_24", "fest_ss_25", "fest_ss_26", "fest_ss_27", "fest_ss_28", "fest_ss_29", "fest_ss_30", "fest_ss_31", "fest_ss_32", "fest_ss_33", "fest_ss_80"]
+
+
+## Does a prop with this art name give off light after dark?
+static func glows(name: String) -> bool:
+	if name.ends_with("unlit") or name.ends_with("_off") or name.ends_with("_broken"):
+		return false
+	if name in FEST_GLOW:
+		return true
+	for gw: String in GLOW_WORDS:
+		if gw in name:
+			return true
+	return false
 var props := {}          # Vector2i -> Sprite2D (so things can change their look)
 ## Organic border: `pad` cells of forest/cliff/water around the content, drawn by
 ## draw_border(). Content coordinates stay 0..cols-1; world = (cell + pad) * TILE.
@@ -74,6 +90,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	GameState.look_season = ""
+	_crisp_hook()
 	CliffPainter.memo.clear()  # recorded cliff/forest-floor drawing belongs to one map
 	Art.trim_cache()
 	InputSetup.ensure_actions()
@@ -106,9 +123,10 @@ func _ready() -> void:
 				blocked.erase(Vector2i(x, y))
 				hard.erase(Vector2i(x, y))
 		_exit_zone(e)  # the whole road mouth, out through the border band
+	fixed_dark = underground_light()
 	if has_sky:
 		sky = Scenery.new()
-		sky.weather = GameState.weather_today()  # (gangster day 1 is real rain in weather_for)
+		sky.weather = GameState.weather_today() if fixed_dark < 0.0 else "clear"  # (gangster day 1 is real rain in weather_for)
 		add_child(sky)
 	_night = CanvasModulate.new()
 	add_child(_night)
@@ -1283,10 +1301,20 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
+	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
+		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
+		glow.lights.append([a, 30.0 + minf(ch, 60.0) * 0.3, ch * 0.55])
+	if group in ["props", "nature", "buildings"] and ch_tall(a, scale):
+		_canopies.append(a)  # tall animated props fade when you walk behind them too (c5_12 #6)
 	if solid:
 		for i in extra_w + 1:
 			blocked[Vector2i(c.x + i, c.y)] = true
 	return a
+
+
+func ch_tall(a: AnimatedSprite2D, scale: float) -> bool:
+	var f := a.sprite_frames.get_frame_texture("idle", 0) if a.sprite_frames else null
+	return f != null and f.get_height() * scale > 30.0
 
 
 ## Make a y-sorted prop draw under whoever stands on it (bridges, docks, rugs):
@@ -1416,30 +1444,66 @@ func _collectors_near() -> bool:
 ## Walking behind a tree canopy or a roof: that sprite turns see-through so you
 ## (and anything hidden behind it) stay visible.
 func _update_canopy_fade() -> void:
+	# Only undo our own fade: a sprite something else is tweening (a felled tree
+	# fading out) is left alone (c5_12 #6).
 	for s in _faded:
-		if is_instance_valid(s):
-			(s as Sprite2D).modulate.a = 1.0
+		if is_instance_valid(s) and is_equal_approx((s as CanvasItem).modulate.a, CANOPY_FADE):
+			(s as CanvasItem).modulate.a = 1.0
 	_faded.clear()
 	var pp := player.position
+	# the hero's feet, middle and head: any of them hidden behind the sprite fades it
+	var probes := [pp + Vector2(0, -4), pp + Vector2(0, -12), pp + Vector2(0, -20)]
 	for s in _canopies:
 		if not is_instance_valid(s):
 			continue
-		var sp := s as Sprite2D
-		if absf(sp.position.x - pp.x) > 80.0 or absf(sp.position.y - pp.y) > 120.0:
+		var n := s as Node2D
+		if absf(n.position.x - pp.x) > 80.0 or absf(n.position.y - pp.y) > 120.0:
 			continue
-		var sz := sp.texture.get_size() * sp.scale
-		var r := Rect2(sp.position - Vector2(sz.x / 2.0, sz.y) + (sp.offset * sp.scale if not sp.centered else Vector2(0, sz.y / 2.0)), sz)
-		if sp.centered:
-			r = Rect2(sp.position + sp.offset * sp.scale - sz / 2.0, sz)
-		if pp.y < sp.position.y - 4.0 and r.grow(-3.0).has_point(pp + Vector2(0, -8)):
-			sp.modulate.a = 0.45
-			_faded.append(sp)
+		if pp.y >= n.position.y - 4.0 or not is_equal_approx(n.modulate.a, 1.0):
+			continue
+		var r := _canopy_rect(n)
+		if r.size == Vector2.ZERO:
+			continue
+		r = r.grow(-3.0)
+		for q: Vector2 in probes:
+			if r.has_point(q):
+				n.modulate.a = CANOPY_FADE
+				_faded.append(n)
+				break
+
+
+const CANOPY_FADE := 0.45
+
+
+## World rect a Sprite2D / AnimatedSprite2D covers (current frame).
+func _canopy_rect(n: Node2D) -> Rect2:
+	var tex: Texture2D = null
+	var off := Vector2.ZERO
+	var centered := true
+	if n is Sprite2D:
+		tex = (n as Sprite2D).texture
+		off = (n as Sprite2D).offset
+		centered = (n as Sprite2D).centered
+	elif n is AnimatedSprite2D:
+		var a := n as AnimatedSprite2D
+		if a.sprite_frames and a.sprite_frames.has_animation(a.animation):
+			tex = a.sprite_frames.get_frame_texture(a.animation, a.frame)
+		off = a.offset
+		centered = a.centered
+	if tex == null:
+		return Rect2()
+	var sz := tex.get_size() * n.scale
+	if centered:
+		return Rect2(n.position + off * n.scale - sz / 2.0, sz)
+	return Rect2(n.position + off * n.scale, sz)
 
 
 ## The light colour for this map at time t (minutes). Outdoors follows the
 ## season's sunset and sunrise: warm gold at dusk, then real night. Indoors
 ## gets lamplight after dark; underground and space keep their own light.
 func sky_tint(t: int) -> Color:
+	if fixed_dark >= 0.0 and has_sky:  # underground: one steady dimness all day (c5_10 #3)
+		return Color(1, 1, 1).lerp(Color(0.46, 0.48, 0.66), fixed_dark * Settings.night_strength())
 	var dark := GameState.darkness(t)
 	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
 		dark *= 0.3
@@ -1488,11 +1552,8 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	props[c] = s
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
-	if glow and not name.ends_with("unlit") and not name.ends_with("_off"):
-		for gw: String in GLOW_WORDS:
-			if gw in name:
-				glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
-				break
+	if glow and glows(name):
+		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
 	if group in ["buildings", "props", "nature"]:
@@ -1540,6 +1601,8 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	var s := prop("buildings", name, base, w_cells - 1, 0.0, false, scale)
 	if s == null:
 		return Vector2i(-1, -1)
+	if glow:
+		glow.add_windows(s, name)  # lit panes after dark (NightGlow, buildings/<name>_lit)
 	# Block the body (leave the top ~1/3 open so you can walk "behind" the roof line).
 	var body_rows := maxi(1, int(ceil(h_cells * 0.62)))
 	for y in range(base.y - body_rows + 1, base.y + 1):
@@ -1588,7 +1651,11 @@ func on_world_sync(_d: Dictionary) -> void:
 	# The host pushes the world every 2 s. Farm tiles live on the soil layer, time and
 	# weather on the HUD/sky: only cleared cells, builds and construction can change
 	# the static (baked) ground. Redraw and re-bake only when one of those changed.
-	var sig := hash([GameState.run.get("cleared", {}), GameState.run.get("builds", {}), GameState.run.get("construction", {})])  # tilled cells live on the soil layer (solo tilling doesn't redraw the ground either)
+	# Only this map's cleared cells count (a guest re-baked whenever anyone cleared
+	# anything anywhere, c5_16 #5); builds/construction only draw on the home maps.
+	var cl: Variant = (GameState.run.get("cleared", {}) as Dictionary).get(scene_id(), [])
+	var home := scene_id() in ["farm", "town", "community_farm"]
+	var sig := hash([cl, GameState.run.get("builds", {}) if home else 0, GameState.run.get("construction", {}) if home else 0])  # tilled cells live on the soil layer (solo tilling doesn't redraw the ground either)
 	if sig == _sync_sig:
 		return
 	_sync_sig = sig
@@ -1774,7 +1841,7 @@ func fx(name: String, at: Vector2, fps := 12.0, scale := 0.5, flip := false) -> 
 ## Rain/snow/leaves/fireflies overlay; set by season/weather.
 func set_weather(kind: String) -> void:
 	if sky:
-		sky.weather = kind
+		sky.weather = kind if fixed_dark < 0.0 else "clear"  # no rain/snow underground
 
 
 func set_aurora(on: bool) -> void:
@@ -4585,6 +4652,8 @@ func _fade_in_when_baked() -> void:
 		await get_tree().process_frame
 		if not is_inside_tree() or hud == null:
 			return
+		if _painter == null and i >= 2:
+			break  # no bake started (a map that draws itself): never hold the cover (c5_16 #1)
 		if _painter != null and not _bake_visible_missing():
 			break
 	_bake_covered = false
@@ -4799,7 +4868,7 @@ func _bake_make(k: Vector2i) -> void:
 	sp.region_rect = Rect2(BAKE_MARGIN, BAKE_MARGIN, px, px)
 	sp.scale = Vector2.ONE / BAKE_SCALE
 	sp.position = origin - _bake_layer.position
-	sp.material = _bake_mat
+	sp.material = CrispArt.material_premul() if CrispArt.on() else _bake_mat
 	_bake_layer.add_child(sp)
 	_bake[k] = [sv, sp, false]
 	_bake_n += 1
@@ -4815,3 +4884,43 @@ func _bake_free(k: Vector2i) -> void:
 		return
 	(ch[1] as Node).queue_free()
 	(ch[0] as Node).queue_free()
+
+
+## Every AnimatedSprite2D under the map (villagers, pup, animals, critters, crows)
+## gets the crisp sampling the buildings have (c5_05 #4); sprites that bring
+## their own material (hero/foe flash shader, which samples crisply itself) keep it.
+func _crisp_hook() -> void:
+	if not CrispArt.on():
+		return
+	get_tree().node_added.connect(_crisp_added)
+	(func() -> void:
+		for n in find_children("*", "AnimatedSprite2D", true, false):
+			CrispArt.apply_anim(n)).call_deferred()
+
+
+func _crisp_added(n: Node) -> void:
+	if n is AnimatedSprite2D and is_ancestor_of(n):
+		CrispArt.apply_anim.call_deferred(n)
+
+
+## Underground places keep one steady dimness instead of the outdoor sky clock,
+## with their lamps lit (c5_10 #3 #4): regions.json "light" (0..1 darkness);
+## caves ("cave": true) and UNDERGROUND default to 0.5. Mines override this.
+const UNDERGROUND := ["hollow_deeps", "hollow_heart", "bf_sewer_works", "iron_tunnels", "frost_caverns", "gilt_vaults"]
+func underground_light() -> float:
+	var rd := RegionData.region(scene_id())
+	if rd.has("light"):
+		return clampf(float(rd["light"]), -1.0, 1.0)
+	if bool(rd.get("cave", false)) or scene_id() in UNDERGROUND:
+		return 0.5
+	return -1.0
+
+
+## How strong lamp/window glow is right now (NightGlow): the night outdoors,
+## the fixed dimness underground, nothing in other skyless rooms.
+func glow_dark() -> float:
+	if fixed_dark >= 0.0:
+		return fixed_dark * Settings.night_strength()
+	if not has_sky:
+		return GameState.darkness() * Settings.night_strength() * 0.8 if scene_id() == "house" else 0.0
+	return GameState.darkness() * Settings.night_strength()

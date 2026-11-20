@@ -135,6 +135,50 @@ func _gang(n: String) -> String:
 	return n
 
 
+## A crew shop in the slot of the building it replaced (c5_02 #2): about as wide
+## as that building (0.75-0.95, never a shed), its base row and door kept where
+## the old one stood, so lanes and door checks don't move.
+func _crew_door(name: String, c: Vector2i, interior: String, hint: String, old_name: String, old_scale: float) -> void:
+	var gi := Art.info("buildings", name)
+	var oi := Art.info("buildings", old_name)
+	var sc := clampf(float(oi.get("w", 112)) * old_scale / maxf(1.0, float(gi.get("w", 160))), 0.75, 0.95)
+	var old_h := maxi(1, int(round(float(oi.get("h", 64)) * old_scale / TILE)))
+	var new_h := maxi(1, int(round(float(gi.get("h", 64)) * sc / TILE)))
+	_door(_gang(name), Vector2i(c.x, c.y + old_h - new_h), interior, hint, sc)
+
+
+## Crew shop fronts follow opening hours while you're in town, not only at load
+## (c5_02 #7): checked every few seconds, swapped when the hour crosses 7am/9pm.
+var _front_t := 0.0
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	_front_t -= delta
+	if _front_t > 0.0:
+		return
+	_front_t = 2.0
+	refresh_fronts()
+
+
+func refresh_fronts() -> void:
+	for b: Array in _bprops:
+		var nm := str(b[0])
+		if not nm.begins_with("gang_shop_"):
+			continue
+		var base := nm.trim_suffix("_closed")
+		var want := _gang(base)
+		if want == nm or not is_instance_valid(b[3]):
+			continue
+		var t := Art.tex("buildings", want)
+		if t == null:
+			continue
+		var sp := b[3] as Sprite2D
+		sp.texture = t
+		sp.offset = Vector2(0, -t.get_height() / 2.0)
+		b[0] = want
+
+
 ## The first time you're free in town, someone meets you and explains who's who.
 func _town_tour() -> void:
 	# Let the arrival scene finish first.
@@ -252,7 +296,7 @@ func _place_buildings() -> void:
 	_door("store", Vector2i(10, 18), "store", "A: General Store")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
 	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
-		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's arcade", 0.6)
+		_crew_door("gang_shop_deuce", Vector2i(45, 17), "bakery", "A: Deuce's arcade", "bakery", 1.35)
 	else:
 		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
@@ -261,7 +305,7 @@ func _place_buildings() -> void:
 	# South-east: potions, inn, library, school.
 	_door("potions", Vector2i(45, 53), "potions", "A: Potion Shop", 1.15)
 	if GameState.run["flags"].has("crew_mama_rosa") and Art.has("buildings", "gang_shop_mama_rosa"):
-		_door(_gang("gang_shop_mama_rosa"), Vector2i(57, 52), "inn", "A: Mama Rosa's kitchen", 0.6)
+		_crew_door("gang_shop_mama_rosa", Vector2i(57, 52), "inn", "A: Mama Rosa's kitchen", "inn", 1.15)
 	else:
 		_door("inn", Vector2i(57, 52), "inn", "A: the Inn", 1.15)
 	_door("library", Vector2i(45, 64), "library", "A: Library", 1.35)
@@ -270,12 +314,13 @@ func _place_buildings() -> void:
 	_door("cottage_a", Vector2i(8, 52), "cottage_a", "A: Wren's cottage", 1.3)
 	_door("cottage_b", Vector2i(19, 59), "cottage_b", "A: Finn's cottage", 1.3)
 	if GameState.run["flags"].has("shop_2") and Art.has("buildings", "gang_shop_specs"):
-		_door(_gang("gang_shop_specs"), Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", 0.6)
+		_crew_door("gang_shop_specs", Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", "cottage_a", 1.3)
 	else:
-		_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
+		# Lumi & Theo have their own painter's cottage (c5_02 #5), not a copy of Wren's.
+		_door("cottage_c" if Art.has("buildings", "cottage_c") else "cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.05 if Art.has("buildings", "cottage_c") else 1.3)
 	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
 	if GameState.run["flags"].has("crew_halo") and Art.has("buildings", "gang_shop_halo"):
-		_door(_gang("gang_shop_halo"), Vector2i(27, 85), "stable", "A: Halo's garage", 0.6)
+		_crew_door("gang_shop_halo", Vector2i(27, 85), "stable", "A: Halo's garage", "stable", 1.25)
 	else:
 		_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
@@ -285,11 +330,11 @@ func _place_buildings() -> void:
 		_doors.append(rd)
 	# Across the river: clinic, chapel, Rook's lodge.
 	if GameState.run["flags"].has("shop_3") and Art.has("buildings", "gang_shop_doc"):
-		_door(_gang("gang_shop_doc"), Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
+		_crew_door("gang_shop_doc", Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", "clinic", 1.35)
 	else:
 		_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
 	if GameState.run["flags"].has("crew_marlene") and Art.has("buildings", "gang_shop_marlene"):
-		_door(_gang("gang_shop_marlene"), Vector2i(75, 53), "chapel", "A: Marlene's trading post", 0.6)
+		_crew_door("gang_shop_marlene", Vector2i(75, 53), "chapel", "A: Marlene's trading post", "chapel", 1.4)
 	else:
 		_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
 	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
@@ -482,12 +527,18 @@ func _dress_buildings() -> void:
 				anim_prop("props", name, c, w, 4.0, solid)
 			else:
 				prop("props", name, c, w, 0.0, solid)
+	# Crew shops that moved in dress their own lot (c5_02 #2): a crew flag in the gangster arc.
+	var crew := func(flag: String) -> bool:
+		return not GameState.is_penguins() and GameState.run["flags"].has(flag)
 	# General store (Maple): crates of stock, a flower cart, her red mailbox.
 	pl.call("crates2_a", Vector2i(9, 29)); pl.call("flower_cart", Vector2i(21, 28), 1); pl.call("mailbox2_red", Vector2i(23, 29))
 	# Smithy (Gideon): anvil, tools, a fire barrel, barrels of coal.
 	pl.call("forge_anvil_tools", Vector2i(35, 29), 1); pl.call("fire_barrel_0", Vector2i(24, 29)); pl.call("barrel2_b", Vector2i(36, 28))
 	# Bakery (Posy): bread cart and bottle crates.
-	pl.call("bread_cart", Vector2i(42, 27), 1); pl.call("bottle_crate_a", Vector2i(55, 27))
+	if crew.call("shop_1"):  # Deuce's arcade: a vending machine and his scooter
+		pl.call("vend_purple", Vector2i(42, 27)); pl.call("veh_scooter_side", Vector2i(55, 27))
+	else:
+		pl.call("bread_cart", Vector2i(42, 27), 1); pl.call("bottle_crate_a", Vector2i(55, 27))
 	# Mansion (Alder): iron fence posts, planters, the founder statue is on the plaza.
 	pl.call("planter2_1", Vector2i(55, 25)); pl.call("planter2_2", Vector2i(68, 25)); pl.call("lamp2_short_0", Vector2i(57, 26)); pl.call("lamp2_short_1", Vector2i(66, 26))
 	# Town hall: lamps and benches either side of the steps.
@@ -499,19 +550,31 @@ func _dress_buildings() -> void:
 	# Library (Theo): a bench under a lamp.
 	pl.call("bench2_wood_a", Vector2i(44, 73), 1); pl.call("lamp2_short_2", Vector2i(57, 73))
 	# School: a bell post and a planter; the yard is for the kids.
-	pl.call("horseshoe_sign", Vector2i(55, 73)); pl.call("planter2_0", Vector2i(66, 73))
+	pl.call("planter2_1", Vector2i(55, 73)); pl.call("planter2_0", Vector2i(66, 73))
 	# Cottages: flower beds and mailboxes in the right colours.
 	pl.call("flowerbed_blue", Vector2i(7, 60), 1); pl.call("mailbox2_blue", Vector2i(17, 60))
 	pl.call("flowerbed_yellow", Vector2i(18, 67), 1); pl.call("mailbox2_green", Vector2i(28, 67)); pl.call("fish_rack", Vector2i(27, 66), 1)
-	pl.call("flowerbed_pink", Vector2i(7, 74), 1); pl.call("mailbox2_red", Vector2i(17, 74))
+	if crew.call("shop_2"):  # Specs' net cafe: a drinks machine and the bins out back
+		pl.call("vend_blue", Vector2i(7, 74)); pl.call("dumpster2", Vector2i(17, 74), 1)
+	else:
+		pl.call("flowerbed_pink", Vector2i(7, 74), 1); pl.call("mailbox2_red", Vector2i(17, 74))
 	# Hazel's farmhouse: crates, hay, a trough, apple buckets.
 	pl.call("haystack", Vector2i(17, 84), 1); pl.call("trough2", Vector2i(26, 84), 1); pl.call("apple_bucket2", Vector2i(28, 84)); pl.call("crates_c", Vector2i(16, 83))
 	# Stable: hay feeder, hitching post.
-	pl.call("hay_feeder", Vector2i(26, 93), 1); pl.call("hitch_post", Vector2i(36, 93))
+	if crew.call("crew_halo"):  # Halo's garage: a bike waiting for parts, pallets of them
+		pl.call("veh_motor_scooter_side", Vector2i(26, 93), 1); pl.call("crates_pallet", Vector2i(38, 93))
+	else:
+		pl.call("hay_feeder", Vector2i(26, 93), 1); pl.call("hitch_post", Vector2i(36, 93)); pl.call("horseshoe_sign", Vector2i(38, 93))
 	# Clinic (Juniper): a bench and a planter of herbs.
-	pl.call("bench2_green_a", Vector2i(73, 41), 1); pl.call("planter2_3", Vector2i(80, 41))
+	if crew.call("shop_3"):  # Doc's back-room clinic: a snack machine, crates of supplies
+		pl.call("vend_red", Vector2i(73, 41)); pl.call("crates2_b", Vector2i(80, 41))
+	else:
+		pl.call("bench2_green_a", Vector2i(73, 41), 1); pl.call("planter2_3", Vector2i(80, 41))
 	# Chapel: flower beds and an iron bench.
-	pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
+	if crew.call("crew_marlene"):  # Marlene's trading post: goods stacked outside
+		pl.call("crates_pallet", Vector2i(73, 66), 1); pl.call("cart_covered", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
+	else:
+		pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
 	# Rook's lodge: pelts on a tanning rack, traps, a fire barrel.
 	pl.call("tanning_rack", Vector2i(75, 79), 1); pl.call("crab_pots2", Vector2i(80, 79)); pl.call("fire_barrel2", Vector2i(76, 80))
 	# Bank (Ivy): two short lamps and a hedge ball.
@@ -545,7 +608,7 @@ func _place_props() -> void:
 	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
 	if Art.has("props", "statue2_horse"):
 		prop("props", "statue2_horse", Vector2i(12, 36), 1)
-	if Art.has("props", "statue2_crystal"):
+	if Art.has("props", "statue2_crystal") and GameState.is_penguins():  # a crystal monument is penguin-arc lore (c5_02 #3)
 		prop("props", "statue2_crystal", Vector2i(58, 60), 1)
 	for c: Vector2i in [Vector2i(31, 43), Vector2i(49, 43), Vector2i(31, 53), Vector2i(49, 53)]:
 		var bn: String = ["bench2_wood_a", "bench2_green_a", "bench2_iron_a"][(c.x + c.y) % 3]
@@ -584,6 +647,11 @@ func _place_props() -> void:
 			continue
 		prop("props", _lamp_name(x), Vector2i(x, 43))
 		prop("props", _lamp_name(x), Vector2i(x, 52))
+	# Across the bridge the east road ran dark and flat at night (c5_02 #10): lamps there too.
+	for x in [75, 82]:
+		for y in [43, 52]:
+			if not things.has(Vector2i(x, y)) and not _river.has(Vector2i(x, y)) and not blocked.has(Vector2i(x, y)):
+				prop("props", _lamp_name(x), Vector2i(x, y))
 	# Wells, carts, crates: the working edges of town.
 	prop("buildings", "well", Vector2i(30, 56), 2)
 	prop("props", "well_stone", Vector2i(60, 32), 1)
@@ -961,16 +1029,25 @@ func draw_map() -> void:
 	draw_grass(3)
 	WorldGen.draw_ground_detail(self, 31, 0.08)
 	# Avenues: cobbles with grass edges. Side lanes to the districts are dirt.
-	var roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
-	for c in _plaza:
-		roads.erase(c)
+	# Roads/lanes/door paths are fixed once the map is built: worked out on the first
+	# full pass and reused by every clipped chunk bake (c5_16 #6).
+	var rk := "town_roads:%d:%d" % [_doors.hash(), blocked.size()]
+	var rm: Dictionary = _geom_memo.get(rk, {})
+	if rm.is_empty():
+		var r_roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
+		for c in _plaza:
+			r_roads.erase(c)
+		var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2), RecCenter.lane_rect()])
+		var all_roads := r_roads.duplicate()
+		all_roads.merge(lanes_base)
+		_carve_door_paths(all_roads)
+		var r_lanes := lanes_base.duplicate()
+		r_lanes.merge(_door_paths)
+		rm = {"roads": r_roads, "lanes": r_lanes}
+		_geom_memo[rk] = rm
+	var roads: Dictionary = rm["roads"]
+	var lanes: Dictionary = rm["lanes"]
 	draw_ground("cobble", roads)
-	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2), RecCenter.lane_rect()])
-	var all_roads := roads.duplicate()
-	all_roads.merge(lanes_base)
-	_carve_door_paths(all_roads)
-	var lanes := lanes_base.duplicate()
-	lanes.merge(_door_paths)
 	draw_ground("dirt", lanes)
 	# The plaza: flagstones in a circle, a ring of brick at the edge.
 	Footsteps.mark(self, _plaza, "stone")

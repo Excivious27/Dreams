@@ -16062,6 +16062,148 @@
    "file": "buildings/woodcutter_hut_snow.png",
    "h": 101,
    "w": 160
+  },
+  "bakery_lit": {
+   "file": "buildings/bakery_lit.png",
+   "glow_mask": true,
+   "h": 112,
+   "w": 112
+  },
+  "bandstand_lit": {
+   "file": "buildings/bandstand_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 144
+  },
+  "bank_lit": {
+   "file": "buildings/bank_lit.png",
+   "glow_mask": true,
+   "h": 110,
+   "w": 144
+  },
+  "chapel_lit": {
+   "file": "buildings/chapel_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 96
+  },
+  "clinic_lit": {
+   "file": "buildings/clinic_lit.png",
+   "glow_mask": true,
+   "h": 102,
+   "w": 112
+  },
+  "clock_tower_lit": {
+   "file": "buildings/clock_tower_lit.png",
+   "glow_mask": true,
+   "h": 160,
+   "w": 79
+  },
+  "cottage_a_lit": {
+   "file": "buildings/cottage_a_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 128
+  },
+  "cottage_b_lit": {
+   "file": "buildings/cottage_b_lit.png",
+   "glow_mask": true,
+   "h": 100,
+   "w": 128
+  },
+  "cottage_c": {
+   "file": "buildings/cottage_c.png",
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_lit": {
+   "file": "buildings/cottage_c_lit.png",
+   "glow_mask": true,
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_night": {
+   "file": "buildings/cottage_c_night.png",
+   "h": 125,
+   "w": 136
+  },
+  "fishing_hut_lit": {
+   "file": "buildings/fishing_hut_lit.png",
+   "glow_mask": true,
+   "h": 105,
+   "w": 112
+  },
+  "hall_lit": {
+   "file": "buildings/hall_lit.png",
+   "glow_mask": true,
+   "h": 216,
+   "w": 238
+  },
+  "house_lit": {
+   "file": "buildings/house_lit.png",
+   "glow_mask": true,
+   "h": 174,
+   "w": 192
+  },
+  "inn_lit": {
+   "file": "buildings/inn_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 171
+  },
+  "library_lit": {
+   "file": "buildings/library_lit.png",
+   "glow_mask": true,
+   "h": 112,
+   "w": 116
+  },
+  "mansion_lit": {
+   "file": "buildings/mansion_lit.png",
+   "glow_mask": true,
+   "h": 127,
+   "w": 208
+  },
+  "potions_lit": {
+   "file": "buildings/potions_lit.png",
+   "glow_mask": true,
+   "h": 136,
+   "w": 160
+  },
+  "school_lit": {
+   "file": "buildings/school_lit.png",
+   "glow_mask": true,
+   "h": 101,
+   "w": 160
+  },
+  "smith_lit": {
+   "file": "buildings/smith_lit.png",
+   "glow_mask": true,
+   "h": 162,
+   "w": 192
+  },
+  "stable_lit": {
+   "file": "buildings/stable_lit.png",
+   "glow_mask": true,
+   "h": 91,
+   "w": 128
+  },
+  "store_lit": {
+   "file": "buildings/store_lit.png",
+   "glow_mask": true,
+   "h": 163,
+   "w": 192
+  },
+  "warehouse_a_lit": {
+   "file": "buildings/warehouse_a_lit.png",
+   "glow_mask": true,
+   "h": 111,
+   "w": 144
+  },
+  "woodcutter_hut_lit": {
+   "file": "buildings/woodcutter_hut_lit.png",
+   "glow_mask": true,
+   "h": 101,
+   "w": 160
   }
  },
  "characters/alder": {
@@ -50615,6 +50757,11 @@
    "file": "furniture/wool_pile.png",
    "h": 94,
    "w": 124
+  },
+  "lamp_mechanism_unlit": {
+   "file": "furniture/lamp_mechanism_unlit.png",
+   "h": 145,
+   "w": 80
   }
  },
  "fx": {
@@ -115350,6 +115497,11 @@
    "h": 64,
    "w": 32
   },
+  "wl_curve_window_day": {
+   "file": "tiles/wl_curve_window_day.png",
+   "h": 64,
+   "w": 32
+  },
   "wl_fish_corner": {
    "file": "tiles/wl_fish_corner.png",
    "h": 64,
@@ -115387,6 +115539,11 @@
   },
   "wl_fish_window": {
    "file": "tiles/wl_fish_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_fish_window_day": {
+   "file": "tiles/wl_fish_window_day.png",
    "h": 64,
    "w": 32
   },
@@ -115500,6 +115657,11 @@
    "h": 64,
    "w": 32
   },
+  "wl_hut_window_day": {
+   "file": "tiles/wl_hut_window_day.png",
+   "h": 64,
+   "w": 32
+  },
   "wl_library_corner": {
    "file": "tiles/wl_library_corner.png",
    "h": 64,
@@ -115567,6 +115729,11 @@
   },
   "wl_log_window": {
    "file": "tiles/wl_log_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_log_window_day": {
+   "file": "tiles/wl_log_window_day.png",
    "h": 64,
    "w": 32
   },
@@ -115762,6 +115929,11 @@
   },
   "wl_reed_window": {
    "file": "tiles/wl_reed_window.png",
+   "h": 64,
+   "w": 32
+  },
+  "wl_reed_window_day": {
+   "file": "tiles/wl_reed_window_day.png",
    "h": 64,
    "w": 32
   },

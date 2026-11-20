@@ -142,10 +142,10 @@ static func place_town(m: GameMap) -> Vector2i:
 		return door
 	var sign := RecDecor.new()
 	sign.mode = "sign"
-	sign.position = m.cell_pos(door.x + 3, door.y + 1)
+	sign.position = m.cell_pos(door.x + 3, door.y + 2)  # a row out from the facade: never cut by the porch pots (c5_02 #4)
 	m.add_child(sign)
-	m.blocked[Vector2i(door.x + 3, door.y)] = true
-	for p: Array in [["bench2_wood_a", Vector2i(door.x - 5, door.y + 1)], ["flowerbed_pink", Vector2i(door.x - 3, door.y)], ["flowerbed_yellow", Vector2i(door.x + 5, door.y)]]:
+	m.blocked[Vector2i(door.x + 3, door.y + 1)] = true
+	for p: Array in [["bench2_wood_a", Vector2i(door.x - 5, door.y + 1)], ["flowerbed_pink", Vector2i(door.x - 3, door.y)], ["flowerbed_yellow", Vector2i(door.x + 6, door.y)]]:
 		if Art.has("props", str(p[0])):
 			m.prop("props", str(p[0]), p[1], 1 if str(p[0]).begins_with("bench") else 0)
 	_night_lights(m, door, info, sc)

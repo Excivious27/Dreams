@@ -270,7 +270,11 @@
     ]
    }
   ],
-  "intro": "Bells on the door. Flour in the air. Maple's General Store sells everything a farm needs and several things it doesn't."
+  "intro": "Bells on the door. Flour in the air. Maple's General Store sells everything a farm needs and several things it doesn't.",
+  "gangsters": {
+   "floor": "fl_concrete",
+   "intro": "Bells on the door, bars on the windows. The General Store sells everything, and keeps a ledger of who owes what."
+  }
  },
  "smith": {
   "cols": 14,
@@ -485,7 +489,21 @@
   "windows": [
    4,
    7
-  ]
+  ],
+  "gangsters": {
+   "floor": "fl_grate",
+   "wall": "wl_concrete",
+   "intro": "Sparks and engine oil. The smith fixes blades, bats and bumpers, and never asks how they got bent.",
+   "props_add": [
+    {
+     "name": "tool_rack",
+     "cell": [
+      5,
+      2
+     ]
+    }
+   ]
+  }
  },
  "potions": {
   "cols": 13,
@@ -690,7 +708,18 @@
   "intro": "It smells like rain and burnt sugar. Wren's shop. Don't touch the purple ones.",
   "windows": [
    5
-  ]
+  ],
+  "gangsters": {
+   "wall": "wl_brick",
+   "floor": "fl_concrete",
+   "props_drop": [
+    "crystal_ball"
+   ],
+   "intro": "It smells like rain and burnt sugar. Wren's labels are hand-written and her prices are not up for discussion.",
+   "texts": {
+    "1": "Bottles in every colour, every label hand-written. None of them say what's inside, and Wren likes it that way."
+   }
+  }
  },
  "hall": {
   "cols": 16,
@@ -882,7 +911,11 @@
     ]
    }
   ],
-  "intro": "The town hall: a long table, a long clock, and a mayor who is very good at long meetings."
+  "intro": "The town hall: a long table, a long clock, and a mayor who is very good at long meetings.",
+  "gangsters": {
+   "floor": "fl_carpet_red",
+   "intro": "The town hall: a long table, a long clock, and a mayor who smiles like he's counting the exits."
+  }
  },
  "inn": {
   "cols": 16,
@@ -1096,7 +1129,29 @@
     ]
    }
   ],
-  "intro": "The inn: low beams, a fire that never goes out, and Bram behind the bar pretending not to listen."
+  "intro": "The inn: low beams, a fire that never goes out, and Bram behind the bar pretending not to listen.",
+  "gangsters": {
+   "floor": "fl_wood_dark",
+   "wall": "wl_brick",
+   "intro": "Low beams, a fire that never goes out, and Bram watching the door as much as the bar.",
+   "if_flag": {
+    "crew_mama_rosa": {
+     "intro": "Mama Rosa's kitchen took over the inn: red sauce, loud plates, and a back table nobody sits at without asking.",
+     "props_add": [
+      {
+       "name": "neon_sign_2",
+       "group": "props",
+       "cell": [
+        7,
+        1
+       ],
+       "solid": false
+      }
+     ],
+     "name": "Mama Rosa's Kitchen"
+    }
+   }
+  }
  },
  "bakery": {
   "cols": 13,
@@ -1279,7 +1334,45 @@
     ]
    }
   ],
-  "intro": "Bread. Just bread, everywhere, in the best possible way."
+  "intro": "Bread. Just bread, everywhere, in the best possible way.",
+  "gangsters": {
+   "wall": "wl_brick",
+   "intro": "Bread, everywhere. The baker opens at five and knows everyone's business by six.",
+   "if_flag": {
+    "shop_1": {
+     "floor": "fl_carpet_purple",
+     "intro": "Deuce's arcade: the ovens are cold, the screens are hot. Tokens at the counter, no sore losers.",
+     "props_add": [
+      {
+       "name": "neon_sign_0",
+       "group": "props",
+       "cell": [
+        2,
+        1
+       ],
+       "solid": false
+      },
+      {
+       "name": "neon_sign_5",
+       "group": "props",
+       "cell": [
+        10,
+        1
+       ],
+       "solid": false
+      },
+      {
+       "name": "tv_on",
+       "cell": [
+        3,
+        3
+       ]
+      }
+     ],
+     "name": "Deuce's Arcade"
+    }
+   }
+  }
  },
  "clinic": {
   "cols": 13,
@@ -1448,7 +1541,28 @@
     ]
    }
   ],
-  "intro": "Clean sheets and a smell of soap. The clinic. Juniper looks you over like a leaking roof."
+  "intro": "Clean sheets and a smell of soap. The clinic. Juniper looks you over like a leaking roof.",
+  "gangsters": {
+   "wall": "wl_concrete",
+   "intro": "Clean sheets and a smell of soap. Juniper patches up anyone, and never asks how it happened.",
+   "if_flag": {
+    "shop_3": {
+     "intro": "Doc's back-room clinic: the sign out front still says CLINIC. The one in the back says CASH ONLY.",
+     "props_add": [
+      {
+       "name": "neon_sign_6",
+       "group": "props",
+       "cell": [
+        6,
+        1
+       ],
+       "solid": false
+      }
+     ],
+     "name": "Doc's Back Room"
+    }
+   }
+  }
  },
  "library": {
   "cols": 16,
@@ -1672,7 +1786,15 @@
     ]
    }
   ],
-  "intro": "Dust in sunbeams. The library. Theo looks up, then down, then up again."
+  "intro": "Dust in sunbeams. The library. Theo looks up, then down, then up again.",
+  "gangsters": {
+   "floor": "fl_wood_dark",
+   "intro": "Dust in sunbeams. The library. Theo keeps one eye on his book and one on the door.",
+   "texts": {
+    "0": "'A History of the Valley', chapter one: 'Before the town there was the river, and before the river there was a deal.'",
+    "1": "'Street Names and Who Runs Them': every page has been crossed out and written over at least twice."
+   }
+  }
  },
  "chapel": {
   "cols": 12,
@@ -1865,7 +1987,18 @@
     "name": "stained_c_day",
     "x": 8
    }
-  ]
+  ],
+  "gangsters": {
+   "intro": "Candles and cold stone. Nobody here but the quiet, and nobody asks who you are.",
+   "if_flag": {
+    "crew_marlene": {
+     "floor": "fl_grey_plank",
+     "intro": "Marlene's trading post: pews pushed back, crates stacked high. Everything here has a price and a story.",
+     "props_add": [],
+     "name": "Marlene's Trading Post"
+    }
+   }
+  }
  },
  "cottage_a": {
   "cols": 11,
@@ -2088,7 +2221,7 @@
    {
     "name": "painting2_b",
     "cell": [
-     5,
+     8,
      1
     ],
     "solid": false
@@ -2244,7 +2377,7 @@
    {
     "name": "painting2_b",
     "cell": [
-     5,
+     2,
      1
     ],
     "solid": false
@@ -2892,7 +3025,19 @@
     "x": 13
    }
   ],
-  "windows": []
+  "windows": [],
+  "gangsters": {
+   "intro": "Mayor Alder's house: more bookshelves than a mansion needs, and a safe everyone pretends not to see.",
+   "props_add": [
+    {
+     "name": "safe",
+     "cell": [
+      10,
+      2
+     ]
+    }
+   ]
+  }
  },
  "school": {
   "cols": 16,
@@ -2993,7 +3138,7 @@
    {
     "name": "school_bell",
     "cell": [
-     3,
+     10,
      3
     ]
    },
@@ -3065,8 +3210,8 @@
    {
     "name": "lamp_floor_b",
     "cell": [
-     14,
-     6
+     5,
+     10
     ],
     "auto": true
    },
@@ -3133,13 +3278,16 @@
     ]
    }
   ],
-  "intro": "The schoolroom. Four desks, one globe with the moon drawn in by hand."
+  "intro": "The schoolroom. Four desks, one globe with the moon drawn in by hand.",
+  "gangsters": {
+   "intro": "The schoolroom. Four desks, one globe, and a list of rules on the board that starts with NO PHONES IN CLASS."
+  }
  },
  "cottage_c": {
   "cols": 11,
   "rows": 10,
-  "floor": "fl_wood",
-  "wall": "wl_wood",
+  "floor": "fl_wood_light",
+  "wall": "wl_floral_blue",
   "door": [
    5,
    9
@@ -3152,7 +3300,7 @@
   "music": "house",
   "props": [
    {
-    "name": "bed2_blue",
+    "name": "bed2_red",
     "cell": [
      2,
      3
@@ -3174,7 +3322,7 @@
     ]
    },
    {
-    "name": "table_square_cloth",
+    "name": "table_round",
     "cell": [
      5,
      5
@@ -3191,13 +3339,13 @@
    {
     "name": "painting2_b",
     "cell": [
-     5,
+     8,
      1
     ],
     "solid": false
    },
    {
-    "name": "painting2_b",
+    "name": "painting_a",
     "cell": [
      2,
      1
@@ -3246,7 +3394,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "rod_a",
     "cell": [
      1,
      6
@@ -3254,12 +3402,20 @@
     "auto": true
    },
    {
-    "name": "toy_chest",
+    "name": "easel2",
     "cell": [
      9,
      6
     ],
     "auto": true
+   },
+   {
+    "name": "rug2_runner",
+    "cell": [
+     4,
+     7
+    ],
+    "w": 2
    }
   ],
   "things": [
@@ -3310,13 +3466,33 @@
     ]
    }
   ],
-  "intro": "Lumi and Theo's cottage: paint on one side, paper on the other."
+  "intro": "Lumi and Theo's cottage: paint on one side, paper on the other.",
+  "gangsters": {
+   "if_flag": {
+    "shop_2": {
+     "floor": "fl_concrete",
+     "intro": "Specs' net cafe: screens glowing, cables taped to the floor, and a sign that says NO SNOOPING.",
+     "props_add": [
+      {
+       "name": "neon_sign_7",
+       "group": "props",
+       "cell": [
+        8,
+        1
+       ],
+       "solid": false
+      }
+     ],
+     "name": "Specs' Net Cafe"
+    }
+   }
+  }
  },
  "hazel_house": {
   "cols": 11,
   "rows": 10,
-  "floor": "fl_wood",
-  "wall": "wl_floral",
+  "floor": "fl_grey_plank",
+  "wall": "wl_timber",
   "door": [
    5,
    9
@@ -3329,7 +3505,7 @@
   "music": "house",
   "props": [
    {
-    "name": "bed2_green",
+    "name": "bed2_double_red",
     "cell": [
      2,
      3
@@ -3344,7 +3520,7 @@
     ]
    },
    {
-    "name": "table_round_cloth",
+    "name": "table_round",
     "cell": [
      5,
      5
@@ -3365,7 +3541,7 @@
     ]
    },
    {
-    "name": "herbs_b",
+    "name": "fish_hang",
     "cell": [
      5,
      2
@@ -3373,7 +3549,7 @@
     "solid": false
    },
    {
-    "name": "rug2_round_blue",
+    "name": "rug_rect_red",
     "cell": [
      5,
      7
@@ -3576,15 +3752,6 @@
     "fps": 3
    },
    {
-    "name": "clock",
-    "cell": [
-     8,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
     "name": "lamp_floor",
     "cell": [
      1,
@@ -3664,7 +3831,31 @@
     ]
    }
   ],
-  "intro": "The stable. Hay, tack, and a stall waiting for a horse."
+  "intro": "The stable. Hay, tack, and a stall waiting for a horse.",
+  "gangsters": {
+   "intro": "The stable. Hay, tack, and a stall waiting for a horse nobody has claimed.",
+   "if_flag": {
+    "crew_halo": {
+     "floor": "fl_concrete",
+     "intro": "Halo's garage: the stalls hold motorbikes now, and the hay smells of motor oil.",
+     "prop_swap": {
+      "saddle_stand": "tool_rack"
+     },
+     "props_add": [
+      {
+       "name": "neon_sign_4",
+       "group": "props",
+       "cell": [
+        2,
+        1
+       ],
+       "solid": false
+      }
+     ],
+     "name": "Halo's Garage"
+    }
+   }
+  }
  },
  "lodge": {
   "cols": 14,
@@ -3811,8 +4002,8 @@
    {
     "name": "pet_bed",
     "cell": [
-     1,
-     6
+     10,
+     9
     ],
     "auto": true
    }
@@ -3948,7 +4139,7 @@
    {
     "name": "painting2_e",
     "cell": [
-     5,
+     10,
      1
     ],
     "solid": false,
@@ -4026,7 +4217,10 @@
     ]
    }
   ],
-  "intro": "The bank. Marble floor, one teller window, and the quietest room in town."
+  "intro": "The bank. Marble floor, one teller window, and the quietest room in town.",
+  "gangsters": {
+   "intro": "The bank. Marble floor, one teller window, and two guards trying very hard to look bored."
+  }
  },
  "quarry_office": {
   "cols": 13,
@@ -4167,8 +4361,8 @@
    {
     "id": "granite",
     "cell": [
-     10,
-     4
+     9,
+     5
     ]
    }
   ],

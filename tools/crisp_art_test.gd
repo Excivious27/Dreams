@@ -56,6 +56,25 @@ func _run() -> void:
 			if sp.material == mat:
 				n_crisp += 1
 	check(n_b > 0 and n_crisp == n_b, "town buildings use CrispArt (%d/%d)" % [n_crisp, n_b])
+	# CONDUCT 5 (c5_05 #3 #4 #6): characters/animals and baked ground chunks are crisp too
+	for i in 6:
+		await process_frame
+	var n_a := 0
+	var n_ac := 0
+	for a in m.find_children("*", "AnimatedSprite2D", true, false):
+		n_a += 1
+		var am: Material = (a as AnimatedSprite2D).material
+		if am == mat or (am is ShaderMaterial and (am as ShaderMaterial).shader.resource_path.ends_with("flash.gdshader")):
+			n_ac += 1
+	check(n_a > 0 and n_ac == n_a, "town characters/critters crisp (%d/%d)" % [n_ac, n_a])
+	var chunks: Dictionary = m.get("_bake")
+	var n_ch := 0
+	for ch in chunks.values():
+		if (ch[1] as Sprite2D).material == CrispArt.material_premul():
+			n_ch += 1
+	check(chunks.size() > 0 and n_ch == chunks.size(), "baked ground chunks crisp (%d/%d)" % [n_ch, chunks.size()])
+	for f in ["res://shaders/sharp_pixel.gdshader", "res://shaders/sharp_pixel_premul.gdshader", "res://shaders/flash.gdshader"]:
+		check("smoothstep(vec2(0.8), vec2(1.0), d)" in FileAccess.get_file_as_string(f), "%s eases crisp -> bilinear with smoothstep" % f)
 	var bad: Array = []
 	var man: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://art/gen/manifest.json"))
 	for nm: String in (man.get("props", {}) as Dictionary).keys():
