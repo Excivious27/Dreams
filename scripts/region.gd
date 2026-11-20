@@ -32,6 +32,7 @@ func _place_secrets() -> void:
 	if ha:
 		for dc: Vector2i in Secrets.undug(self):
 			ha.spots.append([dc, "cache"])
+	_settle_enemies()
 	_boss_markers()
 	# Doors that are a hole or a ladder in the ground show it (manhole, sewer ladder).
 	for c: Vector2i in things.keys():
@@ -39,6 +40,33 @@ func _place_secrets() -> void:
 			var ds := prop("props", str(things[c]["sprite"]), c, 0, 0.0, false)
 			if ds and str(things[c]["sprite"]).begins_with("manhole"):
 				to_under(ds)
+
+
+## Every foe stands where you can reach it: one spawned in a wall, a pond, a
+## sealed hidden nook or a cell the late dressing filled is moved to the nearest
+## reachable open cell (CONDUCT 4: enemies in blocked cells).
+func _settle_enemies() -> void:
+	if player == null or enemies.is_empty():
+		return
+	var reach := HiddenArea._reach(self, world_to_cell(default_spawn() - Vector2(0, 2)))
+	if reach.size() < 8:
+		return
+	var cells: Array = reach.keys()
+	for e in enemies:
+		if not is_instance_valid(e) or (e as Node2D).has_meta("boss"):
+			continue
+		var ec := world_to_cell((e as Node2D).position - Vector2(0, 2))
+		if reach.has(ec) and not is_water_cell(ec):
+			continue
+		var best := Vector2i(-1, -1)
+		var bd := INF
+		for c: Vector2i in cells:
+			var dd := float((c - ec).length_squared())
+			if dd < bd and not is_water_cell(c) and not things.has(c):
+				bd = dd
+				best = c
+		if best.x >= 0:
+			(e as Node2D).position = cell_center(best)
 
 
 ## Show who's waiting at a boss spot (a dim, still figure) until they're beaten,
@@ -329,6 +357,8 @@ func build() -> void:
 		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)), pav)
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
+		if str(t["type"]) == "mrock" and not GameState.respawned(mrock_key(Vector2i(int(c[0]), int(c[1]))), mrock_every(t)):
+			continue  # broken: grows back after `every` days (CONDUCT 4)
 		var d := {"type": str(t["type"]), "hint": str(t.get("hint", ""))}
 		for k in t:
 			if not k in ["cell", "solid"]:
@@ -339,6 +369,17 @@ func build() -> void:
 ## A second, higher tier on a plateau ("upper": [blobs], optional "upper_ramps").
 ## It sits inset on the lower top (2 cells in from the sides and north, 4 from
 ## the south) so its rock face and stairs land on open ground, not on the rim.
+func mrock_key(c: Vector2i) -> String:
+	return "mrock_%s_%d_%d" % [region_id, c.x, c.y]
+
+
+## Days an ore rock takes to come back: the data's `every`, else by ore tier (3-7).
+static func mrock_every(t: Dictionary) -> int:
+	if t.has("every"):
+		return maxi(1, int(t["every"]))
+	return clampi(2 + int(GameState.items.get(str(t.get("ore", "stone")), {}).get("tier", 1)), 3, 7)
+
+
 func _upper_tier(low: Dictionary, pl: Dictionary) -> void:
 	var ups: Array = pl.get("upper", [])
 	if ups.is_empty() or low.is_empty():
@@ -685,6 +726,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if props.has(c):
 					(props[c] as Node).queue_free()
 					props.erase(c)
+				GameState.run["flags"][mrock_key(c)] = maxi(1, int(GameState.run["day"]))
 				give(str(thing.get("ore", "stone")), int(thing.get("n", 1)))
 				xp("mining", 3)
 			return true
