@@ -460,6 +460,8 @@ func try_interact(c: Vector2i, check := false) -> bool:
 	if check and _pup_at(c) and not _npc_near(c) and pup_menu_allowed():
 		later(_pup_menu)
 		return true
+	if not check and WaterCan.try_refill(self, c):
+		return true  # C6 P7: USE with the can on water (or a well/trough) fills it
 	var thing: Dictionary = things.get(c, {})
 	if interact(c, thing):
 		return true
@@ -660,6 +662,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("axe")
 			Music.instance(get_tree()).sfx("chop")
+			GameState.toughen(thing, "axe", 3)  # C6 P7: early wood takes more swings
 			# Woodcutter nodes: a chance (10% per point) that a swing bites twice as deep.
 			if randf() < 0.1 * GameState.bonus("foraging", "chop_bonus") and int(thing.get("hp", 3)) > 1:
 				thing["hp"] = int(thing.get("hp", 3)) - 1
@@ -728,6 +731,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
+			GameState.toughen(thing, "pickaxe")  # C6 P7: early rocks take more swings
 			thing["hp"] = int(thing.get("hp", 2)) - swing
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
@@ -2765,7 +2769,8 @@ func _pup_menu() -> void:
 			opts.append("Give %s (+%d health)" % [GameState.item_name(id), _pet_heal_of(id)])
 			acts.append(["feed", id])
 	if not down:
-		opts.append("Gear and pack…"); acts.append(["menu", ""])
+		# Tom (C6 P7): "pack" only once the pup wears one (Pet.pack_size); before that it's gear.
+		opts.append("Gear and pack…" if Pet.pack_size() > 0 else "Gear…"); acts.append(["menu", ""])
 		opts.append("Heel" if str(st.get("mode", "")) != "follow" else "Stay here"); acts.append(["mode", "follow" if str(st.get("mode", "")) != "follow" else "wait"])
 	opts.append("Leave"); acts.append(["leave", ""])
 	var hp_line := "%s · health %d / %d" % [nm, int(st["hp"]), Pet.max_hp()]
@@ -2788,6 +2793,10 @@ func _pup_menu() -> void:
 			Music.instance(get_tree()).sfx("eat", "pickup")
 		"pet":
 			emote(pt, "heart", 1.0)
+			# P5's pup voice (Pet.say) once merged; guarded so this works without it.
+			var pet_script: Variant = load("res://scripts/pet.gd")
+			if (pet_script as Script).get_script_method_list().any(func(md: Dictionary) -> bool: return str(md.get("name", "")) == "say"):
+				pet_script.call("say", get_tree(), "happy")
 			if pt.anim.sprite_frames.has_animation("play"):
 				pt.anim.play("play")
 			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):

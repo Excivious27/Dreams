@@ -702,16 +702,43 @@ static func bag_free() -> int:
 	return bag_size() - bag_used()
 
 
-## Bag and chest order: by kind, then name (Sort button).
-const SORT_RANK := {"tool": 0, "weapon": 1, "equip": 2, "seed": 3, "crop": 4, "fruit": 5, "food": 6, "dish": 6, "tonic": 7, "potion": 7, "fish": 8, "forage": 9, "ore": 10, "bar": 11, "gem": 12, "material": 13, "placeable": 14, "gift": 15}
+## Bag and chest order (Organise button), Stardew's: tools and weapons first,
+## then its category order (gems/minerals, fish, animal goods, cooking,
+## crafting/placeables, ores and bars, resources, seeds, vegetables, fruit,
+## flowers, forage, rings and gear), then name, then the better stack (gold /
+## silver stars), then the bigger stack. Stacks of one kind are always merged
+## (one bag slot per kind), and the toolbar row never moves.
+const SORT_RANK := {"tool": 0, "weapon": 1, "gem": 2, "mineral": 2, "fish": 3, "animal": 4, "egg": 4, "milk": 4, "food": 5, "dish": 5, "tonic": 5, "potion": 5, "drink": 5, "placeable": 6, "craft": 6, "station": 6, "ore": 7, "bar": 8, "material": 9, "resource": 9, "seed": 10, "crop": 11, "fruit": 12, "flower": 13, "forage": 14, "equip": 15, "petgear": 16, "gift": 17, "key": 19, "quest": 19}
 
 
 static func item_order(a: String, b: String) -> bool:
-	var ra := int(SORT_RANK.get(str(items.get(a, {}).get("type", "")), 20))
-	var rb := int(SORT_RANK.get(str(items.get(b, {}).get("type", "")), 20))
+	var ra := int(SORT_RANK.get(str(items.get(a, {}).get("type", "")), 18))
+	var rb := int(SORT_RANK.get(str(items.get(b, {}).get("type", "")), 18))
 	if ra != rb:
 		return ra < rb
-	return item_name(a).naturalnocasecmp_to(item_name(b)) < 0
+	var nc := item_name(a).naturalnocasecmp_to(item_name(b))
+	if nc != 0:
+		return nc < 0
+	var qa := quality_of(a) if run.has("quality") else {}
+	var qb := quality_of(b) if run.has("quality") else {}
+	var sa := int(qa.get("g", 0)) * 2 + int(qa.get("s", 0))
+	var sb := int(qb.get("g", 0)) * 2 + int(qb.get("s", 0))
+	if sa != sb:
+		return sa > sb
+	return a < b
+
+
+## Trash asks once for a valuable stack (Tom C6 P7): starred, rare+ or worth
+## TRASH_ASK_VALUE or more in all; everyday stacks go straight in, like Stardew.
+const TRASH_ASK_VALUE := 100
+
+static func trash_needs_confirm(id: String) -> bool:
+	var q := quality_of(id)
+	if int(q.get("g", 0)) + int(q.get("s", 0)) > 0:
+		return true
+	if not str(items.get(id, {}).get("rarity", "common")) in ["common", ""]:
+		return true
+	return item_value(id) * count(id) >= TRASH_ASK_VALUE
 
 
 static func sort_bag() -> void:
@@ -1409,7 +1436,10 @@ static func energy_cost_f(task: String) -> float:
 	var sk := str(ENERGY_SKILL.get(task, ""))
 	var skill_mult := 1.0
 	if sk != "" and run.has("skills"):
-		skill_mult = maxf(0.6, 1.0 - 0.035 * float(skill_level(sk) - 1))
+		# C6 P7: early work costs a little more (x1.15 at level 1, back to x1.0
+		# by level 5), then the usual -3.5% a level down to the 0.6 floor.
+		var lv := float(skill_level(sk) - 1)
+		skill_mult = maxf(0.6, 1.0 - 0.035 * lv) * (1.0 + 0.15 * maxf(0.0, 1.0 - lv / 4.0))
 	var tier := 0
 	if task in ["sword", "dodge"]:
 		tier = 0  # a better blade hits harder; it doesn't swing lighter
@@ -1427,6 +1457,39 @@ static func energy_cost_f(task: String) -> float:
 	if weather_today() == "sun" and task in ["hoe", "axe", "pickaxe"]:
 		mult *= 1.1  # heat wave: heavy work is a little harder
 	return base * mult
+
+
+## Tom (C6 P7 phone playtest): early chopping and mining went far too fast.
+## The first blow at a tree / log / stump / rock scales its hits by this:
+## x1.8 (axe) / x1.6 (pickaxe) with the starter tool at skill level 1, -0.25 per tool tier and -0.04
+## per skill level, never below 1 (a copper axe or level ~6 is about where the
+## old pace comes back; better tools keep getting quicker through the swing
+## damage as before). Hits by tool tier: tools/tom_playtest_c6_test.gd.
+const TOUGH_START := {"axe": 1.8, "pickaxe": 1.6}
+const TOUGH_TIER := 0.25
+const TOUGH_LEVEL := 0.04
+
+static func toughness(tool: String) -> float:
+	var sk := "mining" if tool == "pickaxe" else "foraging"
+	var lvl := skill_level(sk) if run.has("skills") else 1
+	return maxf(1.0, float(TOUGH_START.get(tool, 1.6)) - TOUGH_TIER * float(tool_tier(tool)) - TOUGH_LEVEL * float(lvl - 1))
+
+
+## Called before each blow lands (game_map / mine): toughens the thing once.
+static func toughen(thing: Dictionary, tool: String, default_hp := 2) -> void:
+	if thing.has("tough"):
+		return
+	thing["tough"] = true
+	thing["hp"] = maxi(1, int(round(float(thing.get("hp", default_hp)) * toughness(tool))))
+
+
+## Swings it takes the tool right now to fell/break a thing of `hp` (tests, guide).
+static func hits_for(hp: int, tool: String) -> int:
+	var tier := tool_tier(tool)
+	var dmg := 1 + (tier + 1) / 2
+	dmg += int(bonus("mining", "mine_power")) if tool == "pickaxe" else int(bonus("foraging", "chop_power"))
+	var th := maxi(1, int(round(float(hp) * toughness(tool))))
+	return int(ceil(float(th) / float(dmg)))
 
 
 ## Whole-number view of energy_cost_f (menus, sims). Small actions can show 0.

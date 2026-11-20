@@ -1254,7 +1254,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		return true
 	var cd: Dictionary = GameState.crops[crop]
 	if int(tile["days"]) >= int(cd["days"]):
-		var n := 1 + (1 if randf() < 0.03 * GameState.skill_level("farming") + GameState.bonus("farming", "extra_crop") else 0)
+		var n := 1 + (1 if randf() < 0.03 * (GameState.skill_level("farming") - 1) + GameState.bonus("farming", "extra_crop") else 0)  # C6 P7: no bonus crop at level 1
 		if randf() < GameState.bonus("farming", "double_harvest"):
 			n *= 2
 		if randf() < GameState.bonus("farming", "star_chance"):
@@ -1357,10 +1357,14 @@ func _water(tile: Dictionary, key := "") -> bool:
 		if GameState.held_tool() == "hoe":
 			return false  # a hoe row over planted soil stays quiet
 		return ToolHint.need(self, "can", "to water it")
+	if WaterCan.level() <= 0:
+		WaterCan.say_empty(self)  # C6 P7: the can runs dry; refill at water
+		return true
 	if not GameState.spend_for("can"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
 	tile["watered"] = true
+	WaterCan.use()
 	if key != "":
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 	# Wide Spout (Farming): the pour also soaks the tilled tiles either side (no extra energy).

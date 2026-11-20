@@ -51,7 +51,7 @@ static func _a(nm: String) -> String:
 ## What each tool does, said once the first time it's in hand (toolbar tutorial).
 const TIPS := {
 	"hoe": "Hoe: face grass on your farm and tap USE to till. Hold USE and walk to till a row.",
-	"can": "Watering Can: tap USE on dry soil. It never runs dry. Hold USE and walk to water a row.",
+	"can": "Watering Can: tap USE on dry soil. When it runs dry, USE it on any water to refill.",
 	"axe": "Axe: chop trees, logs and stumps for wood.",
 	"pickaxe": "Pickaxe: break rocks for stone and ore.",
 	"scythe": "Scythe: cut weeds and tall grass. Cut weeds make hay for animals.",

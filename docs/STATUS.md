@@ -39,6 +39,13 @@
 
 - Every looping song had a hard splice and was 6 s short (the ffmpeg crossfade in ace_import dropped its join). The importer now crossfades in numpy, cuts false endings, keeps quiet intros once (data/music_loops.json, applied by Music), masters for phone speakers and encodes q3; all 95 songs re-imported from their raws (title/arc themes from Tom's uploads). tools/music_loop_check.py (check.sh) guards every join.
 - 30 ACE songs: the 15 weakest + gangster phone-weak set re-rendered (boss_penguin/boss_gang/endings now ~2.5-2.8 min), new night_gang, outskirts, battle_escort_gang, festival_night, campaign_map_gang; soft songs (house, meadow, night, forest, rain, moon, sanctuary, chapel, title_musicbox) re-rendered full-range with ACE v1.1.
+## 2026-11-19 — CONDUCT 6 fix P7: Tom's phone playtest
+
+- Early pace: the first blow at a tree/log/stump/rock toughens it (`GameState.toughen/toughness`: x1.8 axe / x1.6 pickaxe at tier 0 and level 1, -0.25 a tool tier, -0.04 a skill level). Swings with the starter tools: rock 2 -> 3, stump/log 2 -> 4, forest tree 4 -> 7, farm tree 5 -> 9; copper: rock 2, tree 3. Energy x1.15 at skill level 1 (back to normal by level 5); no bonus crop at farming level 1.
+- Watering can runs dry: `WaterCan` (scripts/water_can.gd), run.can_water (old saves full), cap 20 + 12/tier + 2/farming level; blue bar under the can on the toolbar and "12/20" in the held line; USE on any water cell or by a well/trough/fountain fills it (splash + toast); empty says "Empty — refill at water."
+- The held item's name under the toolbar ("Turnip Seeds") now fades after 2.5 s (`Hud.HELD_SHOW`, `held_age`), like Stardew; hints still show.
+- Pup menu says "Gear…" until the pup wears a pack (Pup tab hides "pack 0").
+- Drag and drop (`SlotDrag`, scripts/slot_drag.gd): long press lifts (desktop: press and move), drop on bag/toolbar slots, the trash can, or across in the chest screen; scrolls stay put while dragging. Trash can slot (ui/trash_can[_open], tools/slice_c6_p7.py) in the Items tab and the chest screen; valuable stacks ask once (`GameState.trash_needs_confirm`). Organise (Stardew category order, then name, quality) and "Add to stacks" in chests. Test: tools/tom_playtest_c6_test.gd (check.sh).
 
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 

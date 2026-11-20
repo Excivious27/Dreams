@@ -167,7 +167,7 @@ func _farm(arc: String) -> void:
 			_put(m, c, {"type": t, "hp": 3})
 			var tx := await _use(m, st, c, tool)
 			check(tx.contains("Axe") and int(m.things.get(c, {}).get("hp", -1)) == 3, "[%s] %s with %s: axe hint, untouched (%s)" % [tag, t, tool if tool != "" else "hand", tx])
-		_put(m, c, {"type": t, "hp": 9})
+		_put(m, c, {"type": t, "hp": 9, "tough": true})
 		await _use(m, st, c, "axe")
 		check(int(m.things.get(c, {}).get("hp", 9)) < 9, "[%s] %s with the axe: chopped" % [tag, t])
 	# Rocks: the pickaxe only.
@@ -175,7 +175,7 @@ func _farm(arc: String) -> void:
 		_put(m, c, {"type": "rock", "hp": 2})
 		var tx := await _use(m, st, c, tool)
 		check(tx.contains("Pickaxe") and int(m.things.get(c, {}).get("hp", -1)) == 2, "[%s] rock with %s: pickaxe hint (%s)" % [tag, tool if tool != "" else "hand", tx])
-	_put(m, c, {"type": "rock", "hp": 9})
+	_put(m, c, {"type": "rock", "hp": 9, "tough": true})
 	await _use(m, st, c, "pickaxe")
 	check(int(m.things.get(c, {}).get("hp", 9)) < 9, "[%s] rock with the pickaxe: broken into" % tag)
 	# Weeds: by hand or any swinging tool, never the can or the rod.

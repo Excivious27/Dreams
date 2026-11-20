@@ -148,6 +148,7 @@ var _was_paused := false
 func _process(delta: float) -> void:
 	if GameState.run.is_empty():
 		return
+	held_age += delta
 	_place_toasts()
 	if GameState.overflow_note != "":
 		toast(GameState.overflow_note, Color(1, 0.8, 0.5))
@@ -186,6 +187,9 @@ func _process(delta: float) -> void:
 		_canvas.queue_redraw()
 
 
+const HELD_SHOW := 2.5  # seconds the held item's name stays under the toolbar (C6 P7)
+var _held_key := ""
+var held_age := 0.0  # game seconds since the held slot/stack last changed
 var _orphan_pause := 0
 static var orphan_count := 0  # ownerless pauses let go this session (bots print it; C5 c5_19 #1)
 
@@ -521,16 +525,29 @@ func _draw_hud() -> void:
 			var np := Vector2(rect.end.x - nw - 2, rect.end.y - 2)
 			c.draw_string_outline(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0.1, 0.06, 0.03, 0.95))
 			c.draw_string(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
+		elif id == "can":  # C6 P7: the can's water level, a small bar along the slot's foot
+			var wb := Rect2(rect.position.x + 3, rect.end.y - 4, SLOT - 6, 2.5)
+			c.draw_rect(wb.grow(0.5), Color(0.08, 0.05, 0.03, 0.9))
+			c.draw_rect(Rect2(wb.position, Vector2(wb.size.x * WaterCan.frac(), wb.size.y)), Color(0.35, 0.7, 1.0) if WaterCan.level() > 0 else Color(0.9, 0.3, 0.25))
 	# Held item name / hint line
 	var held := str(tb[slot])
 	var line := ""
-	if held != "":
-		line = GameState.item_name(held)
+	# Tom (C6 P7): the held item's name ("Turnip Seeds") stayed under the toolbar
+	# for good. Like Stardew it now shows for HELD_SHOW s after you pick a slot
+	# (or its stack changes), then fades; contextual hints still show.
+	var hkey := "%s|%d" % [held, GameState.count(held) if held != "" else 0]
+	if hkey != _held_key:
+		_held_key = hkey
+		held_age = 0.0
+	var held_a := clampf((HELD_SHOW - held_age) / 0.5, 0.0, 1.0)
+	if held != "" and held_a > 0.0:
+		line = GameState.item_name(held) + ("  %d/%d" % [WaterCan.level(), WaterCan.cap()] if held == "can" else "")
 	if _hint != "":
 		line = Money.t((line + "   " if line != "" else "") + _hint)
 	var lw := 180 if Racket.on() or y_offset > 0.0 else 240
-	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7))  # reads on white sky ground
-	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9))
+	var la := 1.0 if _hint != "" else held_a
+	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7 * la))  # reads on white sky ground
+	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9, la))
 	# The goal, always on screen (one line, small).
 	var nxt := Money.t(GameState.next_step())
 	var sc0 := get_tree().current_scene
