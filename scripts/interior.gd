@@ -884,7 +884,7 @@ func _stable() -> void:
 	var d := Dialogue.instance(get_tree())
 	if not GameState.run["flags"].has("horse"):
 		var price := 1000 if GameState.has_friend_perk("benno", 2) else 2000
-		d.say([{"who": "Benno", "text": "Four in the stalls. All steady. ◆%d, saddle included.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["The bay", "The grey", "The black", "The palomino", "Not yet"], "key": ""}])
+		d.say([{"who": "Benno", "text": "Four in the stalls. All steady. %s, saddle included.  (you have %s)" % [Money.fmt(price), Money.fmt(int(GameState.run["crystals"]))], "choice": ["The bay", "The grey", "The black", "The palomino", "Not yet"], "key": ""}])
 		await d.finished
 		if d.last_choice >= 0 and d.last_choice < 4:
 			if int(GameState.run["crystals"]) < price:
@@ -937,7 +937,7 @@ func _bank() -> void:
 		2:
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + bal
 			GameState.run["bank"] = 0
-			hud.toast("Withdrew ◆%d." % bal)
+			hud.toast("Withdrew %s." % Money.fmt(bal))
 
 
 ## Out the door: back to the map named in "back" (["in_<id>", x, y] is another room,

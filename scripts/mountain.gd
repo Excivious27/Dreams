@@ -253,7 +253,7 @@ func _camp() -> void:
 		moon_i = ch.size()
 		ch.append("Ride the cargo rocket to the moon")
 	ch.append("Leave")
-	var hello := "No names, no questions. You have ◆%d." % int(GameState.run["crystals"])
+	var hello := "No names, no questions. You have %s." % Money.fmt(int(GameState.run["crystals"]))
 	if GameState.quest_done("clear_meadow") and not moon_ready:
 		hello += " Moon runs are for people with a name in this town. Put Flame out in the neon district, then we talk."
 	d.say([{"who": "Smuggler", "text": hello, "choice": ch, "key": ""}])

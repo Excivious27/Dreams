@@ -475,7 +475,7 @@ static func finish_stage(m: GameMap, save := true) -> void:
 	var got: Array = []
 	if int(sd.get("crystals", 0)) > 0:
 		GameState.add_money(int(sd["crystals"]), "commons")
-		got.append("◆%d" % int(sd["crystals"]))
+		got.append(Money.fmt(int(sd["crystals"])))
 	for it: String in sd.get("give", {}):
 		GameState.add_item(it, int(sd["give"][it]), true)
 		got.append("%s ×%d" % [GameState.item_name(it), int(sd["give"][it])])
@@ -725,7 +725,7 @@ static func open_stand(m: GameMap) -> void:
 			acts.append("sell")
 		opts.append("Leave")
 		acts.append("leave")
-		var head := "%s stand. %s  (you have ◆%d)" % [place_name(), ("Market day! The whole town's here." if arc() == "penguins" else "Market day. The whole block's out.") if market_day() else ("Fresh from the beds." if kinds > 0 else "Nothing ripe yet: donations welcome."), int(GameState.run["crystals"])]
+		var head := "%s stand. %s  (you have %s)" % [place_name(), ("Market day! The whole town's here." if arc() == "penguins" else "Market day. The whole block's out.") if market_day() else ("Fresh from the beds." if kinds > 0 else "Nothing ripe yet: donations welcome."), Money.fmt(int(GameState.run["crystals"]))]
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "Stand", "text": head, "choice": opts, "key": ""}])
 		await d.finished
@@ -747,7 +747,7 @@ static func _buy(m: GameMap, stock: Dictionary) -> void:
 	ids = ids.slice(0, 8)
 	var opts: Array = []
 	for id in ids:
-		opts.append("%s ×%d  ◆%d" % [GameState.item_name(str(id)), int(stock[id]), stand_price(str(id))])
+		opts.append("%s ×%d  %s" % [GameState.item_name(str(id)), int(stock[id]), Money.fmt(stand_price(str(id)))])
 	opts.append("Back")
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": "Stand", "text": "Everything here grew in the community beds.", "choice": opts, "key": ""}])
@@ -756,7 +756,7 @@ static func _buy(m: GameMap, stock: Dictionary) -> void:
 		return
 	var id := str(ids[d.last_choice])
 	var dq := Dialogue.instance(m.get_tree())
-	dq.say([{"who": "Stand", "text": "%s, ◆%d each. How many?" % [GameState.item_name(id), stand_price(id)], "choice": ["1", "5", "All %d" % int(stock[id]), "Back"], "key": ""}])
+	dq.say([{"who": "Stand", "text": "%s, %s each. How many?" % [GameState.item_name(id), Money.fmt(stand_price(id))], "choice": ["1", "5", "All %d" % int(stock[id]), "Back"], "key": ""}])
 	await dq.finished
 	if dq.last_choice < 0 or dq.last_choice > 2:
 		return
@@ -839,7 +839,7 @@ static func _sell(m: GameMap) -> void:
 		return
 	var opts: Array = []
 	for id in ids:
-		opts.append("%s ×%d  ◆%d" % [GameState.item_name(str(id)), GameState.count(str(id)), market_pay(str(id), GameState.count(str(id)))])
+		opts.append("%s ×%d  %s" % [GameState.item_name(str(id)), GameState.count(str(id)), Money.fmt(market_pay(str(id), GameState.count(str(id))))])
 	opts.append("Back")
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": "Stand", "text": "Market-day prices: a quarter over the shipping box. (All of the kind you pick.)", "choice": opts, "key": ""}])
@@ -851,7 +851,7 @@ static func _sell(m: GameMap) -> void:
 	var pay := sell_at_market(id, n)
 	Music.instance(m.get_tree()).sfx("cash", "coin")
 	m.xp("bartering", mini(20, pay / 15 + 1))
-	m.hud.toast("Sold %d %s for ◆%d." % [n, GameState.item_name(id), pay], Color(1, 0.9, 0.5))
+	m.hud.toast("Sold %s for %s." % [ItemWords.count_id(id, n), Money.fmt(pay)], Color(1, 0.9, 0.5))
 
 
 static func market_pay(id: String, n: int) -> int:
@@ -1004,6 +1004,17 @@ static func harvest(key: String) -> String:
 static func overnight(report: Dictionary) -> void:
 	if GameState.run.is_empty():
 		return
+	# Neighbours empty the pantry (donations) every night, whatever the stage.
+	var pantry: Dictionary = st()["pantry"]
+	var room := PANTRY_TAKE
+	for id: String in pantry.keys():
+		if room <= 0:
+			break
+		var t := mini(room, int(pantry[id]))
+		pantry[id] = int(pantry[id]) - t
+		room -= t
+		if int(pantry[id]) <= 0:
+			pantry.erase(id)
 	var flags: Dictionary = GameState.run["flags"]
 	if not flags.has("cf_letter") and int(GameState.run["day"]) >= 3:
 		flags["cf_letter"] = true
@@ -1066,16 +1077,7 @@ static func overnight(report: Dictionary) -> void:
 				p["crop"] = c
 				p["days"] = 0.0
 		p["w"] = false
-	# Neighbours empty the pantry (donations), then take produce off the stand.
-	var pantry: Dictionary = st()["pantry"]
-	var given_away := 0
-	for id: String in pantry.keys():
-		given_away += mini(int(pantry[id]), PANTRY_TAKE - given_away)
-		pantry[id] = int(pantry[id]) - mini(int(pantry[id]), PANTRY_TAKE)
-		if int(pantry[id]) <= 0:
-			pantry.erase(id)
-		if given_away >= PANTRY_TAKE:
-			break
+	# Neighbours take produce off the stand (more on market day).
 	var stock: Dictionary = st()["stock"]
 	var take := 8 if market_day() else 4
 	for id: String in stock.keys():

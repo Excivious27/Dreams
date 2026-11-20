@@ -134,7 +134,7 @@ static func line(id: String) -> String:
 	var it: Dictionary = GameState.items.get(id, {})
 	var cd: Dictionary = GameState.crops.get(str(it.get("crop", "")), {})
 	if cd.is_empty():
-		return "%s · %s" % [GameState.item_name(id), Money.fmt(price(id))]
+		return "%s · %s%s" % [GameState.item_name(id), Money.fmt(price(id)), food_note(id)]
 	var nm := GameState.item_name(id).trim_suffix(" Seeds").trim_suffix(" Seed")
 	var days := int(cd.get("days", 0))
 	var bits := "%s · %s · %dd" % [nm, Money.fmt(price(id)), days]
@@ -147,6 +147,23 @@ static func line(id: String) -> String:
 	var left := GameState.DAYS_PER_SEASON - GameState.day_of_season() + 1
 	if cs != "any" and (cs != GameState.season() or days > left):
 		bits += " !"
+	return bits
+
+
+## " · +45 energy +5 hp" for food in a shop list (c8_06): the same sums as
+## GameState.consume (cooked x8 heal into energy, raw x5, potions none).
+static func food_note(id: String) -> String:
+	var it: Dictionary = GameState.items.get(id, {})
+	var ty := str(it.get("type", ""))
+	if not ty in ["food", "consumable", "tonic", "potion", "crop", "fruit", "fish", "forage"]:
+		return ""
+	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 5)
+	var en := int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult
+	var bits := ""
+	if en > 0:
+		bits += " · +%d energy" % en
+	if int(it.get("heal", 0)) > 0:
+		bits += " +%d hp" % int(it["heal"])
 	return bits
 
 
@@ -187,7 +204,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			opts.append(line(id))
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
-		d.say([{"who": keeper, "text": "%s  (you have ◆%d)" % [greet, int(GameState.run["crystals"])], "choice": opts, "key": ""}])
+		d.say([{"who": keeper, "text": "%s  (you have %s)" % [greet, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
 		await d.finished
 		var pick := d.last_choice
 		var buyable := offers.filter(func(i: String) -> bool: return not GameState.has_tool(i))
@@ -262,11 +279,11 @@ static func hall(m: GameMap) -> void:
 			if nd.is_empty() or int(nd.get("permit", 0)) <= 0:
 				continue
 			var have := Builds.permitted(id) >= int(nd["tier"])
-			opts.append("%s%s permit · ◆%d%s" % ["✓ " if have else "", str(nd["name"]), Builds.permit_price(id), "" if not have else " (held)"])
+			opts.append("%s%s permit · %s%s" % ["✓ " if have else "", str(nd["name"]), Money.fmt(Builds.permit_price(id)), "" if not have else " (held)"])
 			ids.append(id)
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
-		d.say([{"who": "Mayor Alder", "text": "Permits. ◆%d on you.%s" % [int(r["crystals"]), "  (friends of the office pay 20% less)" if GameState.has_friend_perk("alder", 4) else ""], "choice": opts, "key": ""}])
+		d.say([{"who": "Mayor Alder", "text": "Permits. %s on you.%s" % [Money.fmt(int(r["crystals"])), "  (friends of the office pay 20% less)" if GameState.has_friend_perk("alder", 4) else ""], "choice": opts, "key": ""}])
 		await d.finished
 		var i := d.last_choice
 		if i < 0 or i >= ids.size():

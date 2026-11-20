@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 fix P6: shops, prices, money sinks
+
+- Shop floors: `GameState.sell_unit(id)` (one piece's sell price, perks in, saturation out); buy_price/shop_price floor on it (`Money.RESALE_FLOOR` 1.15, `Money.BUY_MARKUP` 1.5) and buy_price never goes above the novice price, so Bartering/friend perks can't raise prices and dumping a stack on a fence no longer cheapens the shop. Seeds use their crop's tier for the progress surcharge.
+- Community stand: sells at 1.35x sell price (`Commons.STAND_MARKUP`), above the market-day 1.25x, donations go to a `pantry` neighbours empty overnight (never back on sale); market sales pay gold/silver stars, count toward saturation and earned_total once (`Commons.sell_at_market`); the well uses the shared rest half-bar and refuses at a full bar.
+- Rec snack bar and vending machine priced on the shop energy curve (popcorn 25, pretzel 55, cotton candy 45, fizzy pop/soda 30); gen_rec check_economy checks snacks (no resale loop, energy per crystal band), MAX_SELL 2.23 + Marlene's fence on claw loot (old_coin weight 3 -> 2).
+- Mountain ore rocks stay broken (stone 3 / copper 4 / iron 5 / shard 6 days, same ore when they return), take toughen + pick tier damage; smuggler blade priced at 0.9x the smithy, the camp stays open with cash/nope sounds and bartering XP.
+- Gideon: upgrades ready next morning (copper/iron) or in two mornings (steel+), a rush fee (`Interior.RUSH_FEE`, 150..15,000), no upgrades while he's away, collecting trains the tool's own skill. Ivy's bank states its real terms (no interest before 2 hearts, nightly cap); interest counts in earned_total/earned_by.
+- Shops: seed lines show grow days, sell value, regrowth and "!" when it won't ripen this season; food lines show energy/hp; "all you can afford" seed quantity; Gideon/Wren/Granite stock grows with progress (`Shops.GROWN`); Tam's greeting fixed. Plaza fountain: the day's first toss gives 2 h of luck.
+- Money: `Money.group` (1,234,567) in fmt/amount/num; cash conversion keeps grouped amounts. Test tools/shop_econ_test.gd (check.sh).
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).
