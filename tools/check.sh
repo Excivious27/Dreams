@@ -55,6 +55,13 @@ if ! echo "$xeout" | grep -q "exit_edge_check: 0 failures"; then
   echo "Exit edge check failed"; exit 1
 fi
 
+echo "== themed battlefields (points open and reachable, themes, grump/kin/pylon art) =="
+bfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/bf_themes_test.gd 2>&1)"
+echo "$bfout" | grep -E "BF FAIL|bf_themes_test" || true
+if ! echo "$bfout" | grep -q "bf_themes_test: [0-9]* fields, 0 failures"; then
+  echo "Battlefield theme test failed"; exit 1
+fi
+
 echo "== no invisible walls (rocket pad, moon) =="
 iwout="$(MAPS=mountain,moon "$GODOT" --headless --path . -s res://tools/invisible_walls.gd 2>&1)"
 echo "$iwout" | grep -E "invisible" || true

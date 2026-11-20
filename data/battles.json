@@ -47,6 +47,72 @@
   "tier": 3,
   "blurb": "Every sign on this block belongs to the President's crews."
  },
+ "bf_highland_pass": {
+  "title": "Highland Pass",
+  "arc": "both",
+  "tier": 2,
+  "blurb": "The highland pass climbs in steps of stone and snow."
+ },
+ "bf_quarry_cut": {
+  "title": "The Deep Cut",
+  "arc": "both",
+  "tier": 2,
+  "blurb": "The quarry's terraces ring a deep pit."
+ },
+ "bf_river_ford": {
+  "title": "The River Ford",
+  "arc": "both",
+  "tier": 2,
+  "blurb": "The river splits the field in two."
+ },
+ "bf_ruin_court": {
+  "title": "The Pillared Court",
+  "arc": "both",
+  "tier": 3,
+  "blurb": "An old court of pillars around a raised dais."
+ },
+ "bf_cloud_stair": {
+  "title": "The Cloud Stair",
+  "arc": "penguins",
+  "tier": 3,
+  "blurb": "Up here the ground is cloud and the walls are sky."
+ },
+ "bf_station_deck": {
+  "title": "Station Deck",
+  "arc": "penguins",
+  "tier": 4,
+  "blurb": "The station's decks circle a dark reactor ring."
+ },
+ "bf_jungle_grove": {
+  "title": "Glowroot Grove",
+  "arc": "penguins",
+  "tier": 4,
+  "blurb": "A glowing river cuts the grove."
+ },
+ "bf_reef_shallows": {
+  "title": "Reef Shallows",
+  "arc": "both",
+  "tier": 2,
+  "blurb": "A tidal channel splits the reef."
+ },
+ "bf_kelp_beds": {
+  "title": "Kelp Beds",
+  "arc": "both",
+  "tier": 3,
+  "blurb": "Kelp and black water everywhere."
+ },
+ "bf_uptown_plaza": {
+  "title": "Fountain Plaza",
+  "arc": "gangsters",
+  "tier": 3,
+  "blurb": "Uptown's plaza rings a raised fountain terrace."
+ },
+ "bf_sewer_works": {
+  "title": "The Sewer Works",
+  "arc": "gangsters",
+  "tier": 4,
+  "blurb": "The sewer works run along one long channel."
+ },
  "_campaigns": {
   "title": "Campaigns",
   "arc": "none",
@@ -162,7 +228,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -209,7 +275,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -284,7 +350,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -331,7 +397,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -390,7 +456,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -410,7 +476,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -450,7 +516,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -470,7 +536,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -632,7 +698,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -680,7 +746,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -747,7 +813,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -756,7 +822,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -800,7 +866,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -809,7 +875,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -874,7 +940,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -894,7 +960,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -935,7 +1001,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -955,7 +1021,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1044,7 +1110,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -1092,7 +1158,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -1152,7 +1218,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -1172,7 +1238,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -1213,7 +1279,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1233,7 +1299,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1457,7 +1523,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -1622,7 +1688,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -1641,7 +1707,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -1713,7 +1779,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1733,7 +1799,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1775,7 +1841,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1795,7 +1861,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1937,7 +2003,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -1957,7 +2023,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -2137,7 +2203,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2185,7 +2251,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2261,7 +2327,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2309,7 +2375,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2385,7 +2451,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2433,7 +2499,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2494,7 +2560,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2514,7 +2580,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2565,7 +2631,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2585,7 +2651,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2664,7 +2730,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2684,7 +2750,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2735,7 +2801,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2755,7 +2821,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -2946,7 +3012,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -2994,7 +3060,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -3074,7 +3140,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -3093,7 +3159,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -3142,7 +3208,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -3161,7 +3227,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -3259,7 +3325,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -3308,7 +3374,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -3368,7 +3434,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -3388,7 +3454,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -3439,7 +3505,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -3459,7 +3525,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -3663,7 +3729,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -3672,7 +3738,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          }
@@ -3717,7 +3783,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -3726,7 +3792,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -3858,7 +3924,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -3920,7 +3986,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -3939,7 +4005,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -3980,7 +4046,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -3999,7 +4065,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -4141,7 +4207,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4161,7 +4227,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4341,7 +4407,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          }
@@ -4389,7 +4455,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          }
@@ -4465,7 +4531,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -4513,7 +4579,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -4580,7 +4646,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -4589,7 +4655,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          }
@@ -4633,7 +4699,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -4642,7 +4708,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          }
@@ -4707,7 +4773,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4727,7 +4793,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4768,7 +4834,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4788,7 +4854,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -4951,7 +5017,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -5140,7 +5206,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -5160,7 +5226,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -5519,7 +5585,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy"
          },
@@ -5528,7 +5594,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -5615,7 +5681,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -5635,7 +5701,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -5808,7 +5874,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -5828,7 +5894,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -6017,7 +6083,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -6154,7 +6220,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -6174,7 +6240,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -6278,7 +6344,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -6298,7 +6364,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -6587,7 +6653,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          },
@@ -6733,7 +6799,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -6782,7 +6848,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -6841,7 +6907,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -6860,7 +6926,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -7028,7 +7094,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -7077,7 +7143,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -7137,7 +7203,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -7157,7 +7223,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -7443,7 +7509,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy"
          }
@@ -7492,7 +7558,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -7551,7 +7617,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -7571,7 +7637,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -7725,7 +7791,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -7744,7 +7810,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "gate": true
@@ -7785,7 +7851,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -7804,7 +7870,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -7883,7 +7949,7 @@
           "name": "Witchlight Isle",
           "cell": [
            22,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -7903,7 +7969,7 @@
           "name": "Drowned Mill",
           "cell": [
            88,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -8191,7 +8257,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy"
          }
@@ -8239,7 +8305,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy"
          }
@@ -8297,7 +8363,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -8316,7 +8382,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "gate": true
@@ -8356,7 +8422,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "gate": true
@@ -8375,7 +8441,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "gate": true
@@ -8444,7 +8510,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -8464,7 +8530,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -8505,7 +8571,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -8525,7 +8591,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -8605,7 +8671,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -8644,7 +8710,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy"
          }
@@ -8704,7 +8770,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -8724,7 +8790,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -8765,7 +8831,7 @@
           "name": "Aurora Rise",
           "cell": [
            24,
-           22
+           26
           ],
           "owner": "enemy",
           "efort": true
@@ -8785,7 +8851,7 @@
           "name": "Glacier Shelf",
           "cell": [
            86,
-           24
+           28
           ],
           "owner": "enemy",
           "efort": true
@@ -8967,7 +9033,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          },
@@ -9021,7 +9087,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy"
          },
@@ -9113,7 +9179,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -9162,7 +9228,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -9267,7 +9333,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9287,7 +9353,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9329,7 +9395,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9349,7 +9415,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9421,7 +9487,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -9440,7 +9506,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -9481,7 +9547,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -9500,7 +9566,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -9571,7 +9637,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9591,7 +9657,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9633,7 +9699,7 @@
           "name": "Spike Gate",
           "cell": [
            24,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9653,7 +9719,7 @@
           "name": "Burnt Watchtower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -9839,7 +9905,7 @@
           "name": "Cider Press",
           "cell": [
            20,
-           20
+           24
           ],
           "owner": "enemy"
          },
@@ -9928,7 +9994,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -10004,7 +10070,7 @@
           "name": "Old Granary",
           "cell": [
            84,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -10061,7 +10127,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -10081,7 +10147,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -10332,7 +10398,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -10782,7 +10848,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -10801,7 +10867,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -10899,7 +10965,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -10959,7 +11025,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -10979,7 +11045,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11248,7 +11314,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11268,7 +11334,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11447,7 +11513,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11467,7 +11533,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11738,7 +11804,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11758,7 +11824,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -11855,7 +11921,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy"
          }
@@ -11916,7 +11982,7 @@
           "name": "Dragon Sign",
           "cell": [
            22,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -11935,7 +12001,7 @@
           "name": "Pachinko Hall",
           "cell": [
            84,
-           18
+           24
           ],
           "owner": "enemy",
           "gate": true
@@ -12014,7 +12080,7 @@
           "name": "Signal Tower",
           "cell": [
            22,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true
@@ -12034,7 +12100,7 @@
           "name": "Water Tower",
           "cell": [
            90,
-           20
+           24
           ],
           "owner": "enemy",
           "efort": true

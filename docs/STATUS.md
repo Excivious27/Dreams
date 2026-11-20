@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 3 fix P4: themed battlefields and battle art
+- 11 new battlefields, one per campaign region (tools/bf_themes.py, built through gen_battles.battle()): bf_highland_pass, bf_quarry_cut, bf_river_ford, bf_ruin_court, bf_cloud_stair, bf_station_deck, bf_jungle_grove, bf_reef_shallows, bf_kelp_beds, bf_uptown_plaza, bf_sewer_works. Each has its own ground/seam, border (snow pines, cliffs, cloud trees, hedges, palms, sea, dark void), scatter theme, landmarks and one of 4 layout families (river split, ring, diagonal ridge, open plain); lanes run camp -> hub -> each point. `bf_themes.campaign_field(region)` names the field for each campaign (P1 maps campaigns to it).
+- Original 8 fields: north points 4 rows lower (row >= 24, clear of the HUD), Frostfield on snow, Dockside on dock concrete with a north sea edge and piers, Vale dense with crystals, themed borders/scatter (dead trees on ash/rail, city blocks on neon).
+- Scatter filtered by theme (`WorldGen.theme`, regions gen.theme): no green tree clumps, logs or berry bushes on pavement, decks, sewers, ash or snow; themed border stands (`border_trees`, hook in GameMap._build_border); themed band undergrowth (dress_band).
+- Art (dreams-image, 10 images): 8 grump variants enemies/grump_{crystal,storm,frost,coral,ember,moss,brute,wisp} (idle/walk/attack/hurt), helpers/crystal_kin_crystal_{idle,walk,act,hurt}_N + helpers/crystal_kin, props/crystal_pylon (+_0.._3: glow, zap), props/bf_cairn, bf_ruin_pillar, bf_ruin_wall, bf_weir_gate, bf_sky_pillar, bf_sewer_mouth. Slicer tools/slice_c3_p4.py.
+- Test: tools/bf_themes_test.gd (in check.sh): every bf_ field loads, points dry/open/reachable and below the HUD, tree-less themes grow no trees, new art present. exit_edge_check covers the new fields.
+
 ## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
 - Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
 - Mine stones/ore (55 props: mine_*_rock/bigrock/ore, node_*) crispened by tools/crispen.py: hard alpha (no magenta-tinted soft fringe), clean dark 1px outline, small palette, light unsharp. Same canvas sizes.

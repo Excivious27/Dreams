@@ -6,7 +6,7 @@ extends SceneTree
 const SCENES := ["farm", "town", "forest", "lake", "meadow", "crystal_meadow", "mountain", "beach", "moon",
 	"countryside", "docks", "hideout", "neon", "uptown", "underground", "highlands", "jungle", "marsh",
 	"orchard_hills", "quarry", "riverlands", "ruins", "sky", "station", "wastes",
-	"bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
+	"bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "bf_highland_pass", "bf_quarry_cut", "bf_river_ford", "bf_ruin_court", "bf_cloud_stair", "bf_station_deck", "bf_jungle_grove", "bf_reef_shallows", "bf_kelp_beds", "bf_uptown_plaza", "bf_sewer_works", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
 const OPP := {"left": "right", "right": "left", "top": "bottom", "bottom": "top"}
 const INWARD := {"left": "right", "right": "left", "top": "down", "bottom": "up"}
 const ARROW := {"left": "◀", "right": "▶", "top": "▲", "bottom": "▼"}

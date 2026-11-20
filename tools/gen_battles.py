@@ -3,7 +3,8 @@
 control points. Adds/updates entries in data/regions.json and data/battles.json,
 and writes scenes/<id>.tscn. Re-runnable.   python3 tools/gen_battles.py
 """
-import json, os
+import json, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(os.path.dirname(__file__), "..")
 R = json.load(open(D + "/data/regions.json"))
 
@@ -21,16 +22,22 @@ def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, wat
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
     R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in (patch or "") or "frost" in rid else "hills", "ground": ground,
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
-              "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
+              "exits": exits, "paths": kw.get("lanes") or [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
-              "gen": {"clumps": 10, "scatter": 110, "region_props": PROP_SETS[rid], "region_count": 90, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
+              "gen": {"clumps": 10, "scatter": 110, "region_props": [n.split("/")[-1] for n in (kw.get("scatter") or PROP_SETS.get(rid) or ["boulder_m"])], "region_count": 90, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
               "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if patch is None:
         del R[rid]["patch_set"]
-    for k in ("backdrop", "border", "ground_threshold", "ground_seam"):
+    for k in ("backdrop", "border", "ground_threshold", "ground_seam", "cliff_style", "border_trees", "water_shore"):
         if k in kw:
             R[rid][k] = kw[k]
+    if "theme" in kw:  # bf_themes scatter theme (WorldGen.theme)
+        R[rid]["gen"]["theme"] = kw["theme"]
+        if kw["theme"].get("trees") == []:
+            R[rid]["gen"]["clumps"] = 0
+            R[rid]["gen"]["scatter"] = 40  # decks, pavement, sewers: a few crates, not a junkyard
+            R[rid]["gen"]["region_count"] = 60
     if rid in BOSSES:
         R[rid]["battle"]["boss"] = BOSSES[rid]
     B[rid] = {"title": title, "arc": arc, "tier": tier, "blurb": brief.split(".")[0] + "."}
@@ -156,6 +163,22 @@ battle("bf_neon_block", "The Neon Block", "gangsters", 3, 104, 84, "wet_asphalt_
        "Halo", "The block hums under your colours. The night market reopens before you've even left.", "Too hot tonight. Back to the van.",
        {"crystals": 700, "items": {"data_chip": 3, "servo": 6}}, ["hideout", 26, 38],
        backdrop="night", border={"n": "cliff", "s": "cliff", "w": "trees", "e": "cliff"}, ground_seam="pavement")
+
+# ---- themed fields (CONDUCT 3 P4): one per region, see tools/bf_themes.py -------
+import bf_themes
+for _fid in list(bf_themes.OLD):
+    bf_themes.tweak_old(R, _fid)
+
+def _kinds0(region):
+    _en = json.load(open(D + "/data/enemies.json"))["enemies"]
+    out = []
+    for e in R.get(region, {}).get("enemies", []):
+        k = e if isinstance(e, str) else e.get("kind")
+        if k in _en and not k.startswith(("lt_", "marked_", "cboss_")) and int(_en[k].get("hp", 0)) < 45 and k not in out:
+            out.append(k)
+    return out
+bf_themes.build(battle, _kinds0, _rprops)
+campaign_field = bf_themes.campaign_field
 
 # ---- campaigns: every major region is opened by a strategic campaign -----------
 # A board of 5-7 territories with branching routes; each battle node is a fight
