@@ -1,0 +1,106 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  95% ] [90m[1mreimport[22m | cellar_hatch.png[39m[0m
+[  96% ] [90m[1mreimport[22m | cellar_hatch_open.png[39m[0m
+[  96% ] [90m[1mreimport[22m | glass_b.png[39m[0m
+[  97% ] [90m[1mreimport[22m | glass_c.png[39m[0m
+[  97% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  98% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (189 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 56.6s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 13.6s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 1.9s
+
+#### step 16: mine arrival: no black cover (c5_16) (shard 3/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 16 mine arrival: no black cover (c5_16): PASS in 2.2s
+
+#### step 22: ticket_econ_test (shard 3/6)
+ticket_econ_test: 0 failures
+#### step 22 ticket_econ_test: PASS in 1.8s
+
+#### step 28: gang_play_test (shard 3/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 28 gang_play_test: PASS in 12.9s
+
+#### step 34: move_target_test (shard 3/6)
+move_target_test: 0 failures
+#### step 34 move_target_test: PASS in 9.0s
+
+#### step 40: town_first_test (shard 3/6)
+town_first_test: 0 failures
+#### step 40 town_first_test: PASS in 3.1s
+
+#### step 46: music: every map has a song; web streaming works offline (shard 3/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 585 songs checked, 0 failures
+#### step 46 music: every map has a song; web streaming works offline: PASS in 27.9s
+
+#### step 52: allies: enemies fight back, pup commands (shard 3/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 52 allies: enemies fight back, pup commands: PASS in 2.9s
+
+#### step 58: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 58 campaign: battles, projects, colonies, big mines: PASS in 4.7s
+
+#### step 64: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 64 street_bat_test: PASS in 1.8s
+
+#### step 70: meow_gate_test (shard 3/6)
+meow_gate_test: 0 fails
+#### step 70 meow_gate_test: PASS in 2.5s
+
+#### step 76: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 3/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 76 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 36.3s
+
+#### step 82: fish critters only in deep water (C2 P4) (shard 3/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 82 fish critters only in deep water (C2 P4): PASS in 7.6s
+
+#### step 88: stack_whack_test (shard 3/6)
+stack_whack_test: 0 failures
+#### step 88 stack_whack_test: PASS in 2.2s
+
+#### shard 3/6 done in 187s: PASS

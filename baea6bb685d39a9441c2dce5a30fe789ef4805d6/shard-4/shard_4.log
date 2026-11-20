@@ -1,0 +1,104 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  95% ] [90m[1mreimport[22m | cellar_hatch.png[39m[0m
+[  96% ] [90m[1mreimport[22m | cellar_hatch_open.png[39m[0m
+[  96% ] [90m[1mreimport[22m | glass_b.png[39m[0m
+[  97% ] [90m[1mreimport[22m | glass_c.png[39m[0m
+[  97% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  98% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (189 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 66.1s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 42.5s
+
+#### step 11: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 4/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 11 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 45.9s
+
+#### step 17: night lighting: windows, festival fires, underground, mines (c5_10) (shard 4/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 17 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 3.4s
+
+#### step 23: rec_links_test (shard 4/6)
+rec_links_test: 0 failures
+#### step 23 rec_links_test: PASS in 2.1s
+
+#### step 29: coop_test (shard 4/6)
+coop_test: 0 failures
+#### step 29 coop_test: PASS in 2.1s
+
+#### step 35: commons_test (shard 4/6)
+commons_test: 0 failures
+#### step 35 commons_test: PASS in 39.9s
+
+#### step 41: workshop: no dead ends (shard 4/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 41 workshop: no dead ends: PASS in 2.0s
+
+#### step 47: music_stream_test (shard 4/6)
+music_stream_test: 0 failures
+#### step 47 music_stream_test: PASS in 7.5s
+
+#### step 53: gifts: the Marked and boss powers (shard 4/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 53 gifts: the Marked and boss powers: PASS in 6.4s
+
+#### step 59: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 4/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 59 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 8.1s
+
+#### step 65: farm_debris_test (shard 4/6)
+farm_debris_test: 0 fails
+#### step 65 farm_debris_test: PASS in 4.4s
+
+#### step 71: skill_glow_test (shard 4/6)
+skill_glow_test: 0 fails
+#### step 71 skill_glow_test: PASS in 3.5s
+
+#### step 77: mega regions: map tabs, unlocks, travel (shard 4/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 77 mega regions: map tabs, unlocks, travel: PASS in 8.8s
+
+#### step 83: menu sweep: every menu button, both arcs (C2) (shard 4/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 149 buttons pressed, 0 failures
+#### step 83 menu sweep: every menu button, both arcs (C2): PASS in 15.3s
+
+#### step 89: rec_games_test (shard 4/6)
+rec_games_test: 0 failures
+#### step 89 rec_games_test: PASS in 2.3s
+
+#### shard 4/6 done in 260s: PASS

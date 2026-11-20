@@ -1,0 +1,40 @@
+CONDUCT CI FAIL  baea6bb685  (ci/c5a-c841bb39, run 44682476080)
+
+check shards (6/6):
+  shard 1: FAIL  237s  failed: no invisible walls (rocket pad, moon)
+  shard 2: PASS  106s
+  shard 3: PASS  187s
+  shard 4: PASS  260s
+  shard 5: PASS  269s
+  shard 6: PASS  155s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=1 pauses=0 92s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=1 pauses=0 85s  0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "lak
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 137s  0 fails, 0 warns, 630 steps, 3 kills, 0 ownerless pauses, scenes ["ruins", "colony_coral",
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=2 pauses=0 60s  0 fails, 2 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 79s  0 fails, 0 warns, 334 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "mine", "bf_sh
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=1 pauses=0 95s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "town", "farm", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 136s  0 fails, 0 warns, 630 steps, 4 kills, 0 ownerless pauses, scenes ["ruins", "mine", "bf_sha
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=1 pauses=0 93s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "crystal_me
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=1 pauses=0 58s  0 fails, 1 warns, 419 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "town"]
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=1 pauses=0 91s  0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "sky",
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=1 pauses=0 90s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "town", "mine", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 155s  0 fails, 0 warns, 630 steps, 4 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=1 pauses=0 57s  0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm"], day 4, 
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 71s  0 fails, 0 warns, 313 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "house", "neon
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=1 pauses=0 90s  0 fails, 1 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["town", "meadow", "farm"
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 144s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["jungle", "mine", "ruins
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "mountain",
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=1 pauses=0 92s  0 fails, 1 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "hideout", "town"
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=1 71s  0 fails, 0 warns, 282 steps, 0 kills, 1 ownerless pauses, scenes ["meadow", "lake", "town"
+playtest: PASS  62s  21 screenshots (results playtest/shots/)
+
+longest job: 269s
+slowest check steps: import 157.1s; import 66.1s; import 62.9s; import 58.4s; import 56.6s; import 56.2s; smoke test 48.7s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 45.9s
+distinct errors/fails/warns:
+    9  BOT WARN player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at desert_sunken_temple at cell (22, 38), frozen=false paused=false
+    1  BOT WARN player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=
+    1  BOT WARN player boxed in at town at cell (40, 3), frozen=true paused=false story_pending=
+    1  paused with nothing on screen; resuming (scene farm, layers @CanvasLayer@38300, @CanvasLayer@38303, @CanvasLayer@38313, @CanvasLayer@38318, @CanvasLayer@38320, 

@@ -1,0 +1,107 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  95% ] [90m[1mreimport[22m | cellar_hatch.png[39m[0m
+[  96% ] [90m[1mreimport[22m | cellar_hatch_open.png[39m[0m
+[  96% ] [90m[1mreimport[22m | glass_b.png[39m[0m
+[  97% ] [90m[1mreimport[22m | glass_c.png[39m[0m
+[  97% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  98% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (189 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 157.1s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 33.6s
+
+#### step 12: crops wired in (shard 5/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 12 crops wired in: PASS in 5.7s
+
+#### step 18: gangster interior skins (c5_04) (shard 5/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 18 gangster interior skins (c5_04): PASS in 2.5s
+
+#### step 24: rec_reno_test (shard 5/6)
+rec_reno_test: 0 failures
+#### step 24 rec_reno_test: PASS in 2.3s
+
+#### step 30: farm_week_test (shard 5/6)
+farm_week_test: OK (0 fails)
+#### step 30 farm_week_test: PASS in 5.2s
+
+#### step 36: cf_volunteer_test (shard 5/6)
+cf_volunteer_test: 0 failures
+#### step 36 cf_volunteer_test: PASS in 6.9s
+
+#### step 42: art prompts: at most 3 images each (shard 5/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 42 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 48: danger_music_test (shard 5/6)
+danger_music_test: 0 failures
+#### step 48 danger_music_test: PASS in 19.2s
+
+#### step 54: mine: keeper, shaft, tiers (shard 5/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 54 mine: keeper, shaft, tiers: PASS in 4.1s
+
+#### step 60: region campaigns: boards, locks, convoy (shard 5/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 60 region campaigns: boards, locks, convoy: PASS in 8.5s
+
+#### step 66: campaign_gate_test (shard 5/6)
+campaign_gate_test: 0 fails
+#### step 66 campaign_gate_test: PASS in 5.7s
+
+#### step 72: settings, slots, quality, discovery, perks, birthdays (shard 5/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 72 settings, slots, quality, discovery, perks, birthdays: PASS in 2.4s
+
+#### step 78: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 5/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 78 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.6s
+
+#### step 84: hidden areas stay put day to day (C5) (shard 5/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 84 hidden areas stay put day to day (C5): PASS in 4.9s
+
+#### step 90: softlocks: every menu/screen leaves on B, dialogues always finish (shard 5/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 90 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.7s
+
+#### shard 5/6 done in 269s: PASS

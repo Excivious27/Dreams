@@ -1,0 +1,16 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 66.1}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 42.5}
+{"step": 11, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 45.9}
+{"step": 17, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.4}
+{"step": 23, "name": "rec_links_test", "rc": 0, "secs": 2.1}
+{"step": 29, "name": "coop_test", "rc": 0, "secs": 2.1}
+{"step": 35, "name": "commons_test", "rc": 0, "secs": 39.9}
+{"step": 41, "name": "workshop: no dead ends", "rc": 0, "secs": 2.0}
+{"step": 47, "name": "music_stream_test", "rc": 0, "secs": 7.5}
+{"step": 53, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.4}
+{"step": 59, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 8.1}
+{"step": 65, "name": "farm_debris_test", "rc": 0, "secs": 4.4}
+{"step": 71, "name": "skill_glow_test", "rc": 0, "secs": 3.5}
+{"step": 77, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.8}
+{"step": 83, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 15.3}
+{"step": 89, "name": "rec_games_test", "rc": 0, "secs": 2.3}

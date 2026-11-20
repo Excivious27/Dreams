@@ -1,0 +1,117 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  95% ] [90m[1mreimport[22m | cellar_hatch.png[39m[0m
+[  96% ] [90m[1mreimport[22m | cellar_hatch_open.png[39m[0m
+[  96% ] [90m[1mreimport[22m | glass_b.png[39m[0m
+[  97% ] [90m[1mreimport[22m | glass_c.png[39m[0m
+[  97% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  98% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (189 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 56.2s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 8.3s
+
+#### step 13: phone_ui_test (shard 6/6)
+glyphs ok: 50 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 13 phone_ui_test: PASS in 10.1s
+
+#### step 19: storage_test (shard 6/6)
+storage_test: 0 failures
+#### step 19 storage_test: PASS in 2.2s
+
+#### step 25: rec_audio_test (shard 6/6)
+rec_audio_test: 0 failures
+#### step 25 rec_audio_test: PASS in 2.3s
+
+#### step 31: farm_look_test (shard 6/6)
+farm_look_test: PASS (0 fails)
+#### step 31 farm_look_test: PASS in 3.7s
+
+#### step 37: gang_flavour_test (shard 6/6)
+gang_flavour_test: 0 failures
+#### step 37 gang_flavour_test: PASS in 2.3s
+
+#### step 43: every sound the game asks for exists (shard 6/6)
+== every sound the game asks for exists ==
+sfx asked for: 111 names, real recordings/ACE files: 380
+music: 77 tracks wired, 91/91 real (ACE)
+ambience: 29 beds, 15 spots
+sfx_audit: 0 missing
+#### step 43 every sound the game asks for exists: PASS in 0.1s
+
+#### step 49: footstep_test (shard 6/6)
+footstep_test: 0 failures
+#### step 49 footstep_test: PASS in 4.6s
+
+#### step 55: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 6/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 55 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 8.0s
+
+#### step 61: campaign_story_test (shard 6/6)
+campaign_story_test: 0 fails
+#### step 61 campaign_story_test: PASS in 2.3s
+
+#### step 67: campaign_gate_test (shard 6/6)
+campaign_gate_test: 0 fails
+#### step 67 campaign_gate_test: PASS in 5.4s
+
+#### step 73: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 6/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 143 checks, 0 failures
+#### step 73 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 19.2s
+
+#### step 79: mega regions: the new worlds walk end to end (shard 6/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 79 mega regions: the new worlds walk end to end: PASS in 19.6s
+
+#### step 85: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 6/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 85 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.6s
+
+#### step 91: toasts: never over a boss card, a region card, the pup strip or the en (shard 6/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 91 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 7.2s
+
+#### shard 6/6 done in 154s: PASS

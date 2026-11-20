@@ -1,0 +1,182 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  95% ] [90m[1mreimport[22m | cellar_hatch.png[39m[0m
+[  96% ] [90m[1mreimport[22m | cellar_hatch_open.png[39m[0m
+[  96% ] [90m[1mreimport[22m | glass_b.png[39m[0m
+[  97% ] [90m[1mreimport[22m | glass_c.png[39m[0m
+[  97% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  98% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (189 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 62.9s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.5s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.3s
+
+#### step 15: performance guards (batched cliffs, texture cache) (shard 2/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 15 performance guards (batched cliffs, texture cache): PASS in 2.1s
+
+#### step 21: rec_test (shard 2/6)
+rec_test: 0 failures
+#### step 21 rec_test: PASS in 5.3s
+
+#### step 27: cash_test (shard 2/6)
+cash_test: scanned 62085 strings, 0 failures
+#### step 27 cash_test: PASS in 3.1s
+
+#### step 33: anim_test (shard 2/6)
+anim_test: 0 failures
+#### step 33 anim_test: PASS in 2.5s
+
+#### step 39: early_gating_test (shard 2/6)
+early_gating_test: PASS (0 fails)
+#### step 39 early_gating_test: PASS in 2.2s
+
+#### step 45: all ages: alcohol is a trade good, never drunk (shard 2/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 10 alcoholic items checked
+ok
+#### step 45 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 51: arcs: path cards, arc building intros, locked-plan hints (shard 2/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 51 arcs: path cards, arc building intros, locked-plan hints: PASS in 3.5s
+
+#### step 57: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 57 every script compiles: PASS in 3.1s
+
+#### step 63: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 63 quest_tracker_test: PASS in 3.2s
+
+#### step 69: campaign_c3_test (shard 2/6)
+campaign_c3_test: 0 fails
+#### step 69 campaign_c3_test: PASS in 2.2s
+
+#### step 75: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 2/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 75 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 3.8s
+
+#### step 81: crisp art shader on buildings/props (C2 P7) (shard 2/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 81 crisp art shader on buildings/props (C2 P7): PASS in 3.1s
+
+#### step 87: arcade_test (shard 2/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 87 arcade_test: PASS in 2.7s
+
+#### shard 2/6 done in 107s: PASS

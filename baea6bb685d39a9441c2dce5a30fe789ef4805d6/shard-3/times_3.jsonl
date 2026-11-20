@@ -1,0 +1,16 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 56.6}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 13.6}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 1.9}
+{"step": 16, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 2.2}
+{"step": 22, "name": "ticket_econ_test", "rc": 0, "secs": 1.8}
+{"step": 28, "name": "gang_play_test", "rc": 0, "secs": 12.9}
+{"step": 34, "name": "move_target_test", "rc": 0, "secs": 9.0}
+{"step": 40, "name": "town_first_test", "rc": 0, "secs": 3.1}
+{"step": 46, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 27.9}
+{"step": 52, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 2.9}
+{"step": 58, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 4.7}
+{"step": 64, "name": "street_bat_test", "rc": 0, "secs": 1.8}
+{"step": 70, "name": "meow_gate_test", "rc": 0, "secs": 2.5}
+{"step": 76, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 36.3}
+{"step": 82, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 7.6}
+{"step": 88, "name": "stack_whack_test", "rc": 0, "secs": 2.2}
