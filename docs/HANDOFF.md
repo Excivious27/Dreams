@@ -27,7 +27,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Last update:** 2026-11-19 15:45 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
 - **In progress:** CONDUCT 3 (battle campaigns) starting 15:45 PT on the personal account: 20 read-only auditors in /home/claude/wt/c3_NN (personal sandbox).
-- **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9, then CONDUCT 10-17 (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
+- **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then CONDUCT 4-18 back to back with no waits (Tom 16:17) (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
 - **Jobs running elsewhere:** none.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
