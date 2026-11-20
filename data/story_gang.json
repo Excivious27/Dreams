@@ -1,0 +1,2503 @@
+{
+ "gangsters": [
+  {
+   "id": "g1",
+   "title": "Chapter 1 — Lie Low",
+   "summary": "A deed with the wrong name. A letter. Somebody already knows.",
+   "beats": [
+    {
+     "id": "g1_town",
+     "trigger": {
+      "scene": "town"
+     },
+     "when": {
+      "flag": "town_seen"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "You came to the river cities to end the gangs. One block at a time, one crew at a time, you did: you were good at it, and a voice on a burner phone who signed himself M. always knew where the next one was."
+      },
+      {
+       "who": "",
+       "text": "Then the last crew you went after was waiting for you. M. got you out, gave you this farm and a deed with somebody else's name on it, and told you to stay buried. So here you are. Buried, with a hoe."
+      },
+      {
+       "who": "",
+       "text": "%town. The kind of place where nobody asks your name because they've already decided what it is."
+      },
+      {
+       "who": "",
+       "text": "A store, a smith, a clinic, a town hall with a bell tower and no bell. A man with a bad knee who watches the road the way you watch it, from the bridge in the morning and the bench by the south gate after lunch. Sal."
+      }
+     ],
+     "effects": {
+      "hint": "Sal (the bridge in the morning, the south-gate bench after lunch) has been places. Maple sells seeds and asks no questions."
+     },
+     "title_card": true
+    },
+    {
+     "id": "g1_man",
+     "trigger": {
+      "quest_done": "clear_meadow"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. For a second, as he runs, something in his fist glows a dark, bruised purple. In it, a photograph of your old front door, and a phone with one number in it."
+      },
+      {
+       "who": "",
+       "text": "You don't call it. You think about it for a long time, and then you don't."
+      },
+      {
+       "who": "",
+       "text": "Written on the back of the photograph, in a hand with hard loops on the W and a hard press on the K: \"WE KNOW ABOUT THE FARM. NICE TOUCH.\"",
+       "choice": [
+        "Burn it.",
+        "Keep it with the deed.",
+        "Hold it up to what you remember of the first note."
+       ],
+       "key": "photo",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "Ash in the meadow grass. Let them wonder."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "It goes in with the deed. Paper keeps. Paper remembers."
+         }
+        ],
+        "2": [
+         {
+          "who": "",
+          "text": "Hard loops on the W, a hard press on the K. You'll know that hand the next time you see it."
+         }
+        ]
+       }
+      },
+      {
+       "who": "",
+       "text": "The coat smells of rain and something else, something cold, like a cellar. Under your hand the pocket where his fist was is still faintly warm, and for a moment you'd swear it hums."
+      }
+     ],
+     "effects": {
+      "items": [
+       [
+        "burner_phone",
+        1
+       ]
+      ],
+      "quest": [
+       [
+        "hideout",
+        "Get through the gate to Hideout town and find a place to work from."
+       ]
+      ],
+      "hint": "Tell Sal (the bridge in the morning, the south-gate bench after lunch) about the President's man. The Hideout gate is past the meadow, east through the outskirts."
+     }
+    },
+    {
+     "id": "g1_sal",
+     "trigger": {
+      "talk": "sal"
+     },
+     "when": {
+      "quest": "clear_meadow"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running.",
+       "unless_flag": "sal_recruited"
+      },
+      {
+       "who": "Sal",
+       "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent.",
+       "unless_flag": "sal_recruited"
+      },
+      {
+       "who": "Sal",
+       "text": "You came out of the river cities to stop crews like his. Out here you'll have to build one to do it. Just remember which one you were building it against.",
+       "unless_flag": "sal_recruited"
+      },
+      {
+       "who": "Sal",
+       "text": "Hideout town. Past the outskirts, through a gate that doesn't look like a gate. Deuce does card tricks there, Mama Rosa feeds whoever's left, nobody runs the street. That's the opening."
+      },
+      {
+       "who": "Sal",
+       "text": "You'll want people. Not thugs; those come cheap by the dozen. People. Ones who want something you can give them."
+      },
+      {
+       "who": "Sal",
+       "text": "And boss? The President doesn't send one man. He sends one man, and then he sends the weather."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "sal_recruited"
+      ],
+      "hint": "Hideout town: Deuce (card tricks), Mama Rosa (kitchen door). Recruit people, not thugs."
+     }
+    }
+   ]
+  },
+  {
+   "id": "g2",
+   "title": "Chapter 2 — The Hideout",
+   "summary": "A town that isn't on maps. Two recruits. A shop, if you want one, and what it costs.",
+   "beats": [
+    {
+     "id": "g2_arrive",
+     "trigger": {
+      "scene": "hideout"
+     },
+     "when": {
+      "flag": "hideout_seen"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Up close it smells of the diner's burnt coffee, and somebody has painted a crown on the drive-in screen. Everybody here came from somewhere they can't go back to, which makes you a local."
+      },
+      {
+       "who": "",
+       "text": "A man at a folding table doing card tricks for nobody. A woman in a doorway with a rolling pin and an expression. Two people who want something."
+      },
+      {
+       "who": "",
+       "text": "Over the diner there's a room with a busted radiator and a window onto the whole street. Mama Rosa, it turns out, owns the stairs. \"Rent's whatever you grow,\" says the note on the door. Your crew has a place to meet."
+      }
+     ],
+     "effects": {
+      "hint": "Deuce at his folding table; Mama Rosa at the kitchen door. Each wants something before they'll join."
+     },
+     "title_card": true
+    },
+    {
+     "id": "g2_deuce",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flag": "hideout_seen",
+      "not_flag": "crew_deuce"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "Sit. No? Then stand, it's your knees. I'm Deuce. I do card tricks, I don't cheat, which is why I'm here and not uptown."
+      },
+      {
+       "who": "Deuce",
+       "text": "You're building something. I can tell; you've got the look of someone counting. I'm in, for a fee. A hundred and fifty, or catch my best card trick, one try, and I'll waive it.",
+       "choice": [
+        "Pay his fee (◆150).",
+        "Catch his trick.",
+        "Not yet."
+       ],
+       "key": "deuce_join",
+       "branches": {
+        "0": [
+         {
+          "who": "Deuce",
+          "text": "Cash. Boring. Effective. Welcome to the crew, boss; I'll keep the books."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "He fans the deck and your card vanishes. He does it again, slower, and you watch his left thumb, and you call it."
+         },
+         {
+          "who": "Deuce",
+          "text": "...You watched the thumb. Nobody watches the thumb. Fine. FINE. I'm in, and I'm never doing that one for you again."
+         }
+        ],
+        "2": [
+         {
+          "who": "Deuce",
+          "text": "The deck's always shuffled."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": -150,
+         "flags": [
+          "crew_deuce"
+         ],
+         "toast": "Deuce joined the crew.",
+         "sfx": "levelup"
+        },
+        "1": {
+         "flags": [
+          "crew_deuce",
+          "deuce_thumb"
+         ],
+         "toast": "Deuce joined the crew.",
+         "sfx": "levelup"
+        },
+        "2": {
+         "unflag": [
+          "st_g2_deuce"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crystals": 150
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g2_rosa",
+     "trigger": {
+      "talk": "mama_rosa"
+     },
+     "when": {
+      "flag": "hideout_seen",
+      "not_flag": "crew_mama_rosa"
+     },
+     "lines": [
+      {
+       "who": "Mama Rosa",
+       "text": "You're thin. Everyone who comes through that gate is thin. I had a kitchen in the river cities that fed forty men a night and none of them ever said thank you, and then it burned."
+      },
+      {
+       "who": "Mama Rosa",
+       "text": "Bring me ten of anything you grew with your own hands. Ten. Then we'll talk about whose crew I'm cooking for.",
+       "choice": [
+        "Hand over ten crops.",
+        "I'll come back with them."
+       ],
+       "key": "rosa_join",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "She weighs each one in her hand like it might be lying."
+         },
+         {
+          "who": "Mama Rosa",
+          "text": "...Dirt under the nails. All right, farmer. I'm in. Somebody in this crew is going to eat properly."
+         }
+        ],
+        "1": [
+         {
+          "who": "Mama Rosa",
+          "text": "The door's open. It's always open. That's the problem with it."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "crew_mama_rosa"
+         ],
+         "toast": "Mama Rosa joined the crew.",
+         "sfx": "levelup"
+        },
+        "1": {
+         "unflag": [
+          "st_g2_rosa"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crops": 10
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g2_shop1",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flag": "crew_deuce",
+      "not_flag": "shop_1_decided"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "Boss. The bakery in %town. Woman who runs it is sweet, and the lease is a joke, and the back room has a door onto the alley."
+      },
+      {
+       "who": "Deuce",
+       "text": "An arcade there pays the crew for a season. She'd have to go, of course. Somewhere nice. We'd make sure.",
+       "choice": [
+        "Fund it. Business is business.",
+        "No. Not her shop. Not anyone's."
+       ],
+       "key": "shop_1",
+       "branches": {
+        "0": [
+         {
+          "who": "Deuce",
+          "text": "That's the counting look. I like the counting look. I'll send the boys with a polite letter."
+         },
+         {
+          "who": "",
+          "text": "Three days later, the bakery is boarded, and there's a man in a good coat on the avenue at night who nods when you pass."
+         },
+         {
+          "who": "",
+          "text": "Walking home past the boarded window, you notice you're counting the takings in your head. Somewhere very quiet, something agrees with you.",
+          "keep": true
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "...Huh. All right. I've worked for worse reasons. We'll make money the slow way; I hear it keeps."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "shop_1",
+          "posy_gone",
+          "dark_shop_1"
+         ],
+         "crystals": 600,
+         "friend": {
+          "posy": -100,
+          "bram": -30
+         },
+         "hint": "Posy's bakery is an arcade now. A thug walks the avenue at night."
+        },
+        "1": {
+         "flags": [
+          "shop_1_refused"
+         ],
+         "friend": {
+          "posy": 15
+         }
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "shop_1_decided"
+      ],
+      "quest": [
+       [
+        "docks",
+        "The docks move everything. Take them from Harbourmaster Vance."
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "g3",
+   "title": "Chapter 3 — The Docks",
+   "summary": "Crates with dark crystals in them. Three recruits. A fence with an offer. A detective in town.",
+   "beats": [
+    {
+     "id": "g3_manifest",
+     "trigger": {
+      "quest_done": "docks"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Every crate on the manifest goes to the same place: UPTOWN, TOWER, SUB-BASEMENT 3."
+      },
+      {
+       "who": "",
+       "text": "He isn't moving money. He's moving something that eats money, and luck, and whole towns. You've seen the colour before: black until the light catches it, then purple. In the meadow, in the fist of the man who ran."
+      },
+      {
+       "who": "",
+       "text": "You put your hand on a crate. Through the slats, very faintly, something hums a tune you almost know, and it sounds pleased to meet you."
+      },
+      {
+       "who": "",
+       "text": "Someone who can read a manifest like a map would be worth a lot right now. The girl with the laptop in the warehouse doorway hasn't looked up once. She's looked up three times."
+      }
+     ],
+     "effects": {
+      "items": [
+       [
+        "manifest",
+        1
+       ]
+      ],
+      "hint": "Specs (warehouse door) wants the manifest. Ladder is up the crane. Halo races on the dock road."
+     },
+     "title_card": true
+    },
+    {
+     "id": "g3_specs",
+     "trigger": {
+      "talk": "specs"
+     },
+     "when": {
+      "item": "manifest",
+      "not_flag": "crew_specs"
+     },
+     "lines": [
+      {
+       "who": "Specs",
+       "text": "Don't say anything. Give me the paper. ...Yes. YES. Sub-basement three. I knew it had a basement. Buildings like that always have a basement."
+      },
+      {
+       "who": "Specs",
+       "text": "I'm Specs. I'm in. I was in before you got here; I just hadn't told you. Keep the paper, I've got it memorised. Don't lose the paper."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_specs"
+      ],
+      "toast": "Specs joined the crew.",
+      "sfx": "levelup"
+     }
+    },
+    {
+     "id": "g3_ladder",
+     "trigger": {
+      "talk": "ladder"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flag": "crew_ladder"
+     },
+     "lines": [
+      {
+       "who": "Ladder",
+       "text": "From up here you can see the whole dock, the whole road, and about a third of the tower. I've been counting trucks. Four hundred and twelve."
+      },
+      {
+       "who": "Ladder",
+       "text": "I don't fight. I see. You want someone who sees, I'm yours. You want someone who fights, ask the twins; they're always looking for a reason."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_ladder"
+      ],
+      "toast": "Ladder joined the crew.",
+      "sfx": "levelup",
+      "hint": "Ladder counts trucks. He'll warn you before a raid."
+     }
+    },
+    {
+     "id": "g3_halo",
+     "trigger": {
+      "talk": "halo"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flag": "crew_halo"
+     },
+     "lines": [
+      {
+       "who": "Halo",
+       "text": "Race you. Dock road, end to end, your legs against my car. I'll give you the first fifty yards because I'm generous."
+      },
+      {
+       "who": "",
+       "text": "You don't win. Nobody wins against Halo. But you don't stop, either, and when she pulls up at the end you're still coming, and she watches you come."
+      },
+      {
+       "who": "Halo",
+       "text": "Most people quit at the containers. I drive for people who don't quit at the containers. I'm in."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_halo"
+      ],
+      "toast": "Halo joined the crew.",
+      "sfx": "levelup",
+      "hint": "Halo can drive you between the gangster districts (talk to her at the hideout)."
+     }
+    },
+    {
+     "id": "g3_marlene",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flags": [
+       "letter_decided",
+       "tower_open"
+      ],
+      "decision": [
+       "letter",
+       1
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer with the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+      },
+      {
+       "who": "Marlene",
+       "text": "A letter, in a certain hand, with a certain W. There are people who'd pay to have it not exist. Two thousand. Tonight.",
+       "choice": [
+        "Sell it. ◆2000 buys a lot of crew.",
+        "It's not for sale."
+       ],
+       "key": "sell_letter",
+       "branches": {
+        "0": [
+         {
+          "who": "Marlene",
+          "text": "Sensible. Paper is only worth what someone fears it for. ...He'll know your face by the weekend, you understand. That's the price under the price."
+         },
+         {
+          "who": "",
+          "text": "Two thousand is a lot of crew. You keep telling yourself that on the walk home.",
+          "keep": true
+         }
+        ],
+        "1": [
+         {
+          "who": "Marlene",
+          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like someone who knows what they're holding."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": 2000,
+         "flags": [
+          "letter_sold",
+          "president_knows",
+          "letter_decided",
+          "dark_letter"
+         ],
+         "unflag": [
+          "letter"
+         ],
+         "hint": "The President knows your face now."
+        },
+        "1": {
+         "flags": [
+          "crew_marlene",
+          "letter_safe",
+          "letter_decided"
+         ],
+         "toast": "Marlene joined the crew.",
+         "sfx": "levelup"
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "letter_decided"
+      ],
+      "quest": [
+       [
+        "neon",
+        "Put out Flame in the neon district."
+       ]
+      ]
+     }
+    },
+    {
+     "id": "g3_marlene_m",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flags": [
+       "letter_decided",
+       "tower_open"
+      ],
+      "decision": [
+       "letter",
+       2
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer with the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+      },
+      {
+       "who": "Marlene",
+       "text": "A letter, in a certain hand, with a certain W. There are people who'd pay to have it not exist. Two thousand. Tonight.",
+       "choice": [
+        "Sell it. ◆2000 buys a lot of crew.",
+        "It's not for sale."
+       ],
+       "key": "sell_letter",
+       "branches": {
+        "0": [
+         {
+          "who": "Marlene",
+          "text": "Sensible. Paper is only worth what someone fears it for. ...He'll know your face by the weekend, you understand. That's the price under the price."
+         },
+         {
+          "who": "",
+          "text": "Two thousand is a lot of crew. You keep telling yourself that on the walk home.",
+          "keep": true
+         }
+        ],
+        "1": [
+         {
+          "who": "Marlene",
+          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like someone who knows what they're holding."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": 2000,
+         "flags": [
+          "letter_sold",
+          "president_knows",
+          "letter_decided",
+          "dark_letter"
+         ],
+         "unflag": [
+          "letter"
+         ],
+         "hint": "The President knows your face now."
+        },
+        "1": {
+         "flags": [
+          "crew_marlene",
+          "letter_safe",
+          "letter_decided"
+         ],
+         "toast": "Marlene joined the crew.",
+         "sfx": "levelup"
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "letter_decided"
+      ],
+      "quest": [
+       [
+        "neon",
+        "Put out Flame in the neon district."
+       ]
+      ]
+     }
+    },
+    {
+     "id": "g3_marlene_burned",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flag": "letter_decided",
+      "decision": [
+       "letter",
+       0
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer who had the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+      },
+      {
+       "who": "Marlene",
+       "text": "There was a letter, in a certain hand, with a certain W. People would have paid to have it not exist. Then I hear you burned it on your first night."
+      },
+      {
+       "who": "Marlene",
+       "text": "So you're the only person in this city with nothing to sell me. I find that... restful. I'm in. Somebody should fence for you who isn't an idiot."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_marlene",
+       "letter_decided",
+       "letter_burned"
+      ],
+      "toast": "Marlene joined the crew.",
+      "sfx": "levelup"
+     }
+    },
+    {
+     "id": "g3_marlene_late",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "flags": [
+       "tower_open"
+      ],
+      "not_flags": [
+       "letter_decided",
+       "letter_burned"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer with the paper. The tower's open now, so whatever that paper was worth, nobody's buying."
+      },
+      {
+       "who": "Marlene",
+       "text": "Nothing left to sell me. I find that restful. I'm in. Somebody should fence for you who isn't an idiot."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_marlene",
+       "letter_decided"
+      ],
+      "toast": "Marlene joined the crew.",
+      "sfx": "levelup"
+     }
+    },
+    {
+     "id": "g3_hale",
+     "trigger": {
+      "scene": "town"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "heat_min": 2,
+      "not_flag": "hale_met"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "A woman in a raincoat the colour of wet cement is sitting on the bench by the south gate, eating a sandwich very slowly. She has a file on her knee. It's thick. It's yours."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "Inspector Hale. Don't get up, you weren't sitting. Bills that don't wash, a dock boss on his back, and every road out of the city says a farmer did it."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "So. Do I write you down as a farmer, or are you going to tell me something worth the bus fare?",
+       "choice": [
+        "Tell her the truth: the President, the stone, all of it.",
+        "Play the simple farmer.",
+        "Walk away. Fast."
+       ],
+       "key": "hale",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "You tell her. The river cities, M., the deed, the crates going to Sub-basement 3. She doesn't write any of it down, which is how you know she believes you."
+         },
+         {
+          "who": "Inspector Hale",
+          "text": "Nobody in the capital will touch the tower. But somebody in your town keeps writing to me, and now there are two of you. Keep your heat low and your hands clean, and when it's over, you bring whatever's in that basement to me. Not to anyone else."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "You talk about turnips for four minutes. She lets you. At the end she closes the notebook with a small, tired smile."
+         },
+         {
+          "who": "Inspector Hale",
+          "text": "Nobody's that interested in turnips. Good day, farmer."
+         }
+        ],
+        "2": [
+         {
+          "who": "",
+          "text": "You're round the corner before she's finished the sentence. She doesn't run. People like Hale never run; they just turn up again."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "hale_friend"
+         ],
+         "hint": "Inspector Hale is on your side, as long as you keep your heat low and your hands clean."
+        },
+        "1": {
+         "flags": [
+          "hale_fooled"
+         ],
+         "hint": "Inspector Hale thinks you're a farmer. For now."
+        },
+        "2": {
+         "flags": [
+          "hale_outrun"
+         ],
+         "hint": "You outran Inspector Hale. She'll turn up again."
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "hale_met"
+      ]
+     }
+    },
+    {
+     "id": "g3_hale_quiet",
+     "trigger": {
+      "scene": "town"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "heat_max": 1,
+      "not_flag": "hale_met"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "A woman in a raincoat the colour of wet cement is asking Maple about the docks. When she sees you she comes over, the way a cat comes over: not quite to you, but somehow there."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "Inspector Hale, from the capital. Somebody shut the President's docks last week, and nobody here has the faintest idea who. You'd think that would worry me less than it does."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "So. Do I write you down as a farmer, or are you going to tell me something worth the bus fare?",
+       "choice": [
+        "Tell her the truth: the President, the stone, all of it.",
+        "Play the simple farmer.",
+        "Walk away. Fast."
+       ],
+       "key": "hale",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "You tell her. The river cities, M., the deed, the crates going to Sub-basement 3. She doesn't write any of it down, which is how you know she believes you."
+         },
+         {
+          "who": "Inspector Hale",
+          "text": "Nobody in the capital will touch the tower. But somebody in your town keeps writing to me, and now there are two of you. Keep your heat low and your hands clean, and when it's over, you bring whatever's in that basement to me. Not to anyone else."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "You talk about turnips for four minutes. She lets you. At the end she closes the notebook with a small, tired smile."
+         },
+         {
+          "who": "Inspector Hale",
+          "text": "Nobody's that interested in turnips. Good day, farmer."
+         }
+        ],
+        "2": [
+         {
+          "who": "",
+          "text": "You're round the corner before she's finished the sentence. She doesn't run. People like Hale never run; they just turn up again."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "hale_friend"
+         ],
+         "hint": "Inspector Hale is on your side, as long as you keep your heat low and your hands clean."
+        },
+        "1": {
+         "flags": [
+          "hale_fooled"
+         ],
+         "hint": "Inspector Hale thinks you're a farmer. For now."
+        },
+        "2": {
+         "flags": [
+          "hale_outrun"
+         ],
+         "hint": "You outran Inspector Hale. She'll turn up again."
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "hale_met"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "g4",
+   "title": "Chapter 4 — Neon",
+   "summary": "A dragon sign, a pit under the street, and six more who might follow you.",
+   "beats": [
+    {
+     "id": "g4_arrive",
+     "trigger": {
+      "scene": "neon"
+     },
+     "when": {
+      "flag": "neon_seen"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Neon. Rain that's pink on one side of the street and blue on the other. Under the dragon sign, a woman who sets things on fire for a living, and a crowd pretending not to watch her do it."
+      },
+      {
+       "who": "",
+       "text": "Down a stairwell with no sign: the sound of a crowd that isn't pretending anything."
+      }
+     ],
+     "effects": {
+      "hint": "Flame under the dragon sign. The pit is down the unmarked stairs."
+     },
+     "title_card": true
+    },
+    {
+     "id": "g4_hale",
+     "trigger": {
+      "scene": "neon"
+     },
+     "when": {
+      "flags": [
+       "hale_met",
+       "boss_neon"
+      ],
+      "not_flag": "hale_seen_neon"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Under the dragon sign, a raincoat the colour of wet cement. Inspector Hale, eating noodles out of a carton, watching the pink side of the street."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "Your nurse in town, Juniper, has been writing to the capital for a year. Nobody answered her but me. She says the stone is in the tower. She says you're the only one who's got close.",
+       "unless_flag": "hale_outrun"
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "She also says somebody took her clinic. I'm choosing to believe that's being put right.",
+       "if_flag": "shop_3"
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "You ran last time. I don't mind; my knees do. But I've read Juniper's letters now, and I know what's in that tower. When you get there, bring it to me.",
+       "if_flag": "hale_outrun"
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "Keep your heat down. Nobody believes a detective whose witness is on every wanted board."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "hale_seen_neon"
+      ],
+      "hint": "Inspector Hale wants the stone brought to her when it's over. Keep your heat low."
+     }
+    },
+    {
+     "id": "g4_flame",
+     "trigger": {
+      "quest_done": "neon"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "At the edge of the crowd, a pair of identical faces in red and blue stop clapping first and look at each other."
+      },
+      {
+       "who": "Vic",
+       "text": "Pit's open."
+      },
+      {
+       "who": "Val",
+       "text": "We fight the winner. Unless the winner beats Brock in the pit."
+      },
+      {
+       "who": "Vic",
+       "text": "Then we fight FOR the winner."
+      },
+      {
+       "who": "Val",
+       "text": "That's what I said."
+      }
+     ],
+     "effects": {
+      "quest": [
+       [
+        "pit",
+        "Win the fight pit under the neon street."
+       ]
+      ],
+      "hint": "The twins fight in the pit. Dice owes the pawnbroker for a busted scooter; the Kid lost his board; Doc wants herbs; Sasha is the ring's muscle."
+     }
+    },
+    {
+     "id": "g4_twins",
+     "trigger": {
+      "quest_done": "pit"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Brock goes down, and the twins are in the ring before the dust does, one each side of you, looking at the crowd instead of at you."
+      },
+      {
+       "who": "Vic",
+       "text": "...Okay."
+      },
+      {
+       "who": "Val",
+       "text": "Okay."
+      },
+      {
+       "who": "Vic",
+       "text": "We're in. Both of us. You don't get one."
+      },
+      {
+       "who": "Val",
+       "text": "Nobody gets one."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_vic",
+       "crew_val"
+      ],
+      "toast": "Vic and Val joined the crew.",
+      "sfx": "levelup"
+     }
+    },
+    {
+     "id": "g4_dice",
+     "trigger": {
+      "talk": "dice"
+     },
+     "when": {
+      "flag": "boss_neon",
+      "not_flags": [
+       "crew_dice",
+       "president_knows"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Dice",
+       "text": "I'm not— look, I run things. Messages. Small things. I borrowed the pawnbroker's scooter and I wrecked it. Three hundred to fix, and he's started saying my name in a voice."
+      },
+      {
+       "who": "Dice",
+       "text": "Clear it and I'm yours. I'm fast and I'm scared and both of those are useful.",
+       "choice": [
+        "Pay for the scooter (◆300).",
+        "Go have a word with the pawnbroker.",
+        "Not now."
+       ],
+       "key": "dice_join",
+       "branches": {
+        "0": [
+         {
+          "who": "Dice",
+          "text": "You— just like that? Boss. BOSS. Okay. Okay okay okay. I'm in."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "The pawnbroker is a man at a counter under a bare bulb, winding and rewinding a watch he never sells. You don't say anything. You put your hand flat on the counter, and you leave it there, and after a while he nods."
+         },
+         {
+          "who": "Dice",
+          "text": "What did you SAY to him? He tore up the scooter bill. He never tears up anything."
+         },
+         {
+          "who": "",
+          "text": "On the way out you catch yourself in the pawnshop glass: the hand flat on the counter, the long patient look. It's the President's trick. You learned it from the people you came to stop.",
+          "keep": true
+         }
+        ],
+        "2": [
+         {
+          "who": "Dice",
+          "text": "Yeah. Yeah, no, that's fair."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": -300,
+         "flags": [
+          "crew_dice"
+         ],
+         "toast": "Dice joined the crew.",
+         "sfx": "levelup"
+        },
+        "1": {
+         "flags": [
+          "crew_dice",
+          "dice_scared",
+          "dark_dice"
+         ],
+         "toast": "Dice joined the crew.",
+         "sfx": "levelup"
+        },
+        "2": {
+         "unflag": [
+          "st_g4_dice"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crystals": 300
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g4_dice_knows",
+     "trigger": {
+      "talk": "dice"
+     },
+     "when": {
+      "flag": "president_knows",
+      "not_flag": "crew_dice"
+     },
+     "lines": [
+      {
+       "who": "Dice",
+       "text": "No. No, I know who you are, your face is on a— he's got your FACE, man. I run messages. I'm not running yours."
+      },
+      {
+       "who": "",
+       "text": "He's gone before you can answer. Marlene did say there was a price under the price."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "dice_refused"
+      ]
+     }
+    },
+    {
+     "id": "g4_kid",
+     "trigger": {
+      "talk": "the_kid"
+     },
+     "when": {
+      "flag": "boss_neon",
+      "not_flag": "crew_the_kid"
+     },
+     "lines": [
+      {
+       "who": "The Kid",
+       "text": "..."
+      },
+      {
+       "who": "",
+       "text": "The hood doesn't move. After a while a hand comes out of it and makes a shape: a board, wheels, gone."
+      },
+      {
+       "who": "The Kid",
+       "text": "Flame's guys took it. Under the dragon. It's got a sticker of a cat."
+      },
+      {
+       "who": "",
+       "text": "Under the dragon sign, in a pile of what used to be Flame's things: a board with a cat sticker. You bring it back. The hood nods once, which you're told later is a speech."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_the_kid"
+      ],
+      "toast": "The Kid joined the crew.",
+      "sfx": "j_heart"
+     }
+    },
+    {
+     "id": "g4_doc",
+     "trigger": {
+      "talk": "doc"
+     },
+     "when": {
+      "flag": "boss_neon",
+      "not_flag": "crew_doc"
+     },
+     "lines": [
+      {
+       "who": "Doc",
+       "text": "Sit. Let me see that arm. ...You hold that bat like a hoe. That's not an insult; hoes are honest."
+      },
+      {
+       "who": "Doc",
+       "text": "I patched people for a man uptown, once. I stopped. Bring me five wild herbs from the forest and I'll patch for you instead, and I'll do it properly.",
+       "choice": [
+        "Hand over 5 wild herbs.",
+        "I'll bring them."
+       ],
+       "key": "doc_join",
+       "branches": {
+        "0": [
+         {
+          "who": "Doc",
+          "text": "Good roots. Good. I'm in, boss. Try not to need me."
+         }
+        ],
+        "1": [
+         {
+          "who": "Doc",
+          "text": "I'll be here. I'm always here."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "crew_doc"
+         ],
+         "items": [
+          [
+           "wild_herb",
+           -5
+          ]
+         ],
+         "toast": "Doc joined the crew.",
+         "sfx": "levelup"
+        },
+        "1": {
+         "unflag": [
+          "st_g4_doc"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "item": [
+          "wild_herb",
+          5
+         ]
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g4_sasha",
+     "trigger": {
+      "talk": "sasha"
+     },
+     "when": {
+      "flag": "boss_underground",
+      "not_flag": "crew_sasha"
+     },
+     "lines": [
+      {
+       "who": "Sasha",
+       "text": "You beat the champion. The champion was soft. I'm the one who carries the champion out."
+      },
+      {
+       "who": "Sasha",
+       "text": "I don't join. I follow. Walk out of here and don't look back to see if I'm coming, and we'll both find out."
+      },
+      {
+       "who": "",
+       "text": "You walk out. You don't look back. At the top of the stairs, a shadow the size of a doorway falls over yours."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_sasha"
+      ],
+      "toast": "Sasha follows the crew.",
+      "sfx": "alert"
+     }
+    },
+    {
+     "id": "g4_shop2",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flags": [
+       "shop_1",
+       "boss_neon"
+      ],
+      "not_flag": "shop_2_decided"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "The arcade's doing great, boss. The painter's studio next door — Lumi? — has room for a second floor of games. She'd land on her feet. Painters do.",
+       "choice": [
+        "Take it.",
+        "Leave her be."
+       ],
+       "key": "shop_2",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "Lumi leaves on the morning bus with a canvas under each arm and doesn't look at the arcade. Two men in good coats on the avenue now."
+         },
+         {
+          "who": "",
+          "text": "That night you dream of a cold, quiet voice that says: good. Count it. You wake up with your hands curled like they're holding something.",
+          "keep": true
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "You're a soft touch for a boss. I keep forgetting I like that."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "shop_2",
+          "lumi_gone",
+          "dark_shop_2"
+         ],
+         "crystals": 800,
+         "friend": {
+          "lumi": -100,
+          "theo": -30
+         }
+        },
+        "1": {
+         "flags": [
+          "shop_2_refused"
+         ],
+         "friend": {
+          "lumi": 15
+         }
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "shop_2_decided"
+      ]
+     }
+    },
+    {
+     "id": "g4_shop3",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flag": "shop_2",
+      "not_flag": "shop_3_decided"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "Last one. The clinic. I know. I KNOW. But we could run it, and the woman there — Juniper — she's been sending letters to the capital about us, boss. I read them.",
+       "choice": [
+        "Take the clinic.",
+        "No. That's the line."
+       ],
+       "key": "shop_3",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "Juniper doesn't leave quietly. She stands in the plaza and says what you are, to everyone, and then she goes. The bell tower stays empty. Nobody would pull the rope for you now."
+         },
+         {
+          "who": "",
+          "text": "You tell yourself the clinic will be free one day. Free for anyone who walks in. You tell yourself that a lot.",
+          "keep": true
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "...Good. I was hoping you'd say that. Don't tell the boys."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "shop_3",
+          "juniper_gone",
+          "town_lost",
+          "dark_shop_3"
+         ],
+         "crystals": 1000,
+         "friend": {
+          "juniper": -100,
+          "alder": -60,
+          "maple": -40
+         }
+        },
+        "1": {
+         "flags": [
+          "shop_3_refused"
+         ],
+         "friend": {
+          "juniper": 15,
+          "alder": 10
+         }
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "shop_3_decided"
+      ]
+     }
+    },
+    {
+     "id": "g4_sal_conscience",
+     "trigger": {
+      "talk": "sal"
+     },
+     "when": {
+      "flag": "shop_1",
+      "not_flags": [
+       "amends_open",
+       "shop_1_returned"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "Boss. Sit a minute. ...When you came out of the river cities you wanted to end the crews that lean on people. I believed you. It's why I'm here."
+      },
+      {
+       "who": "Sal",
+       "text": "There's a man in a good coat on the avenue at night now, and he works for us. I'm not saying it to make you feel bad. I'm saying it while it's still something you can fix."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "You're right. Help me put it right.",
+        "Business is business, Sal.",
+        "Not now."
+       ],
+       "key": "amends",
+       "branches": {
+        "0": [
+         {
+          "who": "Sal",
+          "text": "That's the one I signed up with. Deuce has the leases. Buy them back off the crew and hand them over; it'll cost what they paid us, and it'll be worth it."
+         }
+        ],
+        "1": [
+         {
+          "who": "Sal",
+          "text": "...Yeah. That's what he used to say, too. The man uptown."
+         }
+        ],
+        "2": [
+         {
+          "who": "Sal",
+          "text": "I'll be on the bench."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "amends_open",
+          "purpose_kept"
+         ],
+         "hint": "Talk to Deuce to buy the shops back and hand them to their owners."
+        },
+        "1": {
+         "flags": [
+          "sal_doubts"
+         ],
+         "friend": {
+          "sal": -20
+         }
+        },
+        "2": {
+         "unflag": [
+          "st_g4_sal_conscience"
+         ]
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g4_return_1",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flags": [
+       "amends_open",
+       "shop_1"
+      ],
+      "not_flag": "shop_1_returned"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "You want to give the bakery back. The lease cost the crew what it cost; that's ◆600 to buy it off them, and the boys will grumble."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "Pay it back (◆600).",
+        "Not yet."
+       ],
+       "key": "return_1",
+       "branches": {
+        "0": [
+         {
+          "who": "Deuce",
+          "text": "...The boys can grumble. I'll walk the keys over myself."
+         },
+         {
+          "who": "",
+          "text": "The boards come down. By the next morning the avenue smells of bread again, and Posy's window has a small loaf with a note on it: for the farmer."
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "The keys are in my drawer. They're not going anywhere."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": -600,
+         "flags": [
+          "shop_1_returned",
+          "purpose_kept"
+         ],
+         "unflag": [
+          "shop_1",
+          "posy_gone"
+         ],
+         "friend": {
+          "posy": 60,
+          "bram": 20
+         },
+         "toast": "You gave the bakery back.",
+         "sfx": "j_heart"
+        },
+        "1": {
+         "unflag": [
+          "st_g4_return_1"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crystals": 600
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g4_return_2",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flags": [
+       "amends_open",
+       "shop_2"
+      ],
+      "not_flag": "shop_2_returned"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "You want to give Lumi's studio back. The lease cost the crew what it cost; that's ◆800 to buy it off them, and the boys will grumble."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "Pay it back (◆800).",
+        "Not yet."
+       ],
+       "key": "return_2",
+       "branches": {
+        "0": [
+         {
+          "who": "Deuce",
+          "text": "...The boys can grumble. I'll walk the keys over myself."
+         },
+         {
+          "who": "",
+          "text": "A week later there's a fresh painting in Lumi's window: the avenue in the rain, and a small figure handing someone a set of keys."
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "The keys are in my drawer. They're not going anywhere."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": -800,
+         "flags": [
+          "shop_2_returned",
+          "purpose_kept"
+         ],
+         "unflag": [
+          "shop_2",
+          "lumi_gone"
+         ],
+         "friend": {
+          "lumi": 60,
+          "theo": 20
+         },
+         "toast": "You gave Lumi's studio back.",
+         "sfx": "j_heart"
+        },
+        "1": {
+         "unflag": [
+          "st_g4_return_2"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crystals": 800
+        }
+       }
+      }
+     ],
+     "effects": {}
+    },
+    {
+     "id": "g4_return_3",
+     "trigger": {
+      "talk": "deuce"
+     },
+     "when": {
+      "flags": [
+       "amends_open",
+       "shop_3"
+      ],
+      "not_flag": "shop_3_returned"
+     },
+     "lines": [
+      {
+       "who": "Deuce",
+       "text": "You want to give the clinic back. The lease cost the crew what it cost; that's ◆1000 to buy it off them, and the boys will grumble."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "Pay it back (◆1000).",
+        "Not yet."
+       ],
+       "key": "return_3",
+       "branches": {
+        "0": [
+         {
+          "who": "Deuce",
+          "text": "...The boys can grumble. I'll walk the keys over myself."
+         },
+         {
+          "who": "",
+          "text": "Juniper comes back on the Thursday bus. She doesn't thank you. She unlocks the clinic, puts the kettle on, and leaves the door open, and the town notices."
+         }
+        ],
+        "1": [
+         {
+          "who": "Deuce",
+          "text": "The keys are in my drawer. They're not going anywhere."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": -1000,
+         "flags": [
+          "shop_3_returned",
+          "purpose_kept"
+         ],
+         "unflag": [
+          "shop_3",
+          "juniper_gone",
+          "town_lost"
+         ],
+         "friend": {
+          "juniper": 60,
+          "alder": 40,
+          "maple": 30
+         },
+         "toast": "You gave the clinic back.",
+         "sfx": "j_heart"
+        },
+        "1": {
+         "unflag": [
+          "st_g4_return_3"
+         ]
+        }
+       },
+       "gates": {
+        "0": {
+         "crystals": 1000
+        }
+       }
+      }
+     ],
+     "effects": {}
+    }
+   ]
+  },
+  {
+   "id": "g5",
+   "title": "Chapter 5 — Uptown",
+   "summary": "The tower. The doors. The man with the stone in his chest.",
+   "beats": [
+    {
+     "id": "g5_doors_letter",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flags": [
+       "boss_uptown",
+       "letter_safe"
+      ],
+      "not_flag": "tower_open",
+      "quest": "pit"
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. You know what goes in the slot. You've known since the rain.",
+       "pic": "cut_gang_doors"
+      },
+      {
+       "who": "",
+       "text": "The letter goes in. Somewhere inside, a mechanism that has been waiting for exactly this paper, this hand, this W, turns over once."
+      },
+      {
+       "who": "",
+       "text": "The doors open on a lobby of cold marble, and out of it, on the red carpet in the rain, somebody carries a big chair. Nobody fights you. That was the point of keeping it.",
+       "pic": "none"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet"
+      ],
+      "hint": "The doors are open. He's coming out to meet you, on the red carpet."
+     }
+    },
+    {
+     "id": "g5_doors_kept",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flag": "boss_uptown",
+      "quest": "pit",
+      "decision": [
+       "letter",
+       1
+      ],
+      "not_flags": [
+       "letter_sold",
+       "letter_safe",
+       "tower_open"
+      ]
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. The letter has been folded into the deed since the rain.",
+       "pic": "cut_gang_doors"
+      },
+      {
+       "who": "",
+       "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you.",
+       "pic": "none"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "letter_safe",
+       "doors_by_letter"
+      ],
+      "hint": "The doors are open. He's coming out to meet you, on the red carpet."
+     }
+    },
+    {
+     "id": "g5_doors_kept_m",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flag": "boss_uptown",
+      "quest": "pit",
+      "decision": [
+       "letter",
+       2
+      ],
+      "not_flags": [
+       "letter_sold",
+       "letter_safe",
+       "tower_open"
+      ]
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. The letter is still in your coat, read so many times it's soft.",
+       "pic": "cut_gang_doors"
+      },
+      {
+       "who": "",
+       "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you.",
+       "pic": "none"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "letter_safe",
+       "doors_by_letter"
+      ],
+      "hint": "The doors are open. He's coming out to meet you, on the red carpet."
+     }
+    },
+    {
+     "id": "g5_doors_sasha",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flags": [
+       "boss_uptown",
+       "doors_sasha"
+      ],
+      "not_flags": [
+       "letter_safe",
+       "tower_open"
+      ],
+      "quest": "pit"
+     },
+     "lines": [
+      {
+       "who": "Sasha",
+       "text": "Stand back. I used to clean these doors. The service lock still takes my old key.",
+       "pic": "cut_gang_doors"
+      },
+      {
+       "text": "A click, a sigh of brass, and the tower doors swing in without a sound.",
+       "pic": "none"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "doors_by_sasha"
+      ],
+      "hint": "The tower is quiet. On the red carpet outside, somebody is setting out a big chair."
+     },
+     "title_card": true
+    },
+    {
+     "id": "g5_doors_force",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flag": "boss_uptown",
+      "quest": "pit",
+      "not_flags": [
+       "letter_safe",
+       "tower_open"
+      ]
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "Brass, twelve feet tall, a slot like a mailbox. Whatever was supposed to go in it, you don't have it any more.",
+       "pic": "cut_gang_doors"
+      },
+      {
+       "who": "Sasha",
+       "text": "Move.",
+       "if_flag": "crew_sasha"
+      },
+      {
+       "who": "",
+       "text": "Your crew put their shoulders to the brass together, and the mechanism inside gives with a sound like a bell that's been dropped."
+      },
+      {
+       "who": "",
+       "text": "Every light in the tower comes on at once. So much for quiet.",
+       "pic": "none"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_loud"
+      ],
+      "spawn": [
+       [
+        "thug_enforcer",
+        18,
+        13,
+        3
+       ],
+       [
+        "thug_cyber",
+        15,
+        14,
+        3
+       ]
+      ],
+      "hint": "They know you're here. He's coming out to the carpet himself."
+     }
+    },
+    {
+     "id": "g5_president",
+     "trigger": {
+      "scene": "uptown",
+      "area": [
+       14,
+       9,
+       8,
+       5
+      ]
+     },
+     "when": {
+      "flag": "tower_open"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Out of the tower doors, onto the red carpet in the rain, they've carried a chair that is too big for him. A man in a grey suit sits in it, and in his chest, where a pocket square should be, a stone the size of a fist: black, with a purple pulse under it."
+      },
+      {
+       "who": "",
+       "text": "He turns his face up to you. You know it. You've known it longer than you've known your own name: the man who got you out of the river cities with a coat over your head and a deed in your pocket."
+      },
+      {
+       "who": "The President",
+       "text": "Hello, kid. You read my letters. Burned, kept, memorised: I wrote every one of them so you'd do exactly what you did. M. was always me."
+      },
+      {
+       "who": "The President",
+       "text": "Every crew you took down in the river cities was a crew that wasn't mine. I fed you their addresses one by one. You cleaned my whole city for me, and when you got close to me, I buried you on a farm."
+      },
+      {
+       "who": "The President",
+       "text": "Read the deed. The name on it is mine. Winter Kade. W. K. The hard loops on the W, the hard press on the K: my other hand. You only ever saw me write with the right. I made sure of that."
+      },
+      {
+       "who": "The President",
+       "text": "Three trucks went out to that farm before you did: seed, tools, a roof that didn't leak. I was always going to look after you. I just needed you angry enough to walk up my avenue. And here you are."
+      },
+      {
+       "who": "The President",
+       "text": "Twenty-one years ago a star fell in your field. I took one piece and left the rest under the soil, waiting for someone it would trust. It trusts you. I made sure of that, too."
+      },
+      {
+       "who": "The President",
+       "text": "And my lieutenants, the ones you beat on the way? Vance's tides, Lucia's flame, Brock who never stays down, Silas and his rules, Old Mags and her roads: none of them were born with it. I gave each of them a splinter of this. So were the young people with the Gifts. Every trick in this city is the same stone, and the stone is mine."
+      },
+      {
+       "who": "The President",
+       "text": "It promised me nobody would ever leave me again. Everybody leaves, kid. So I stopped needing anyone to stay. Come and see what that buys."
+      }
+     ],
+     "effects": {
+      "boss_card": "president",
+      "spawn": [
+       [
+        "president",
+        17,
+        10,
+        5,
+        "boss_president",
+        1.0
+       ]
+      ],
+      "flags": [
+       "final_started"
+      ],
+      "shake": 4
+     }
+    },
+    {
+     "id": "g5_crew_help",
+     "trigger": {
+      "scene": "uptown"
+     },
+     "when": {
+      "flags": [
+       "final_started",
+       "crew_doc"
+      ],
+      "hp_below": 0.5,
+      "not_flag": "boss_president",
+      "loyalty": [
+       "doc",
+       3
+      ]
+     },
+     "after": "g5_president",
+     "lines": [
+      {
+       "who": "Doc",
+       "text": "I've got the patching up, boss. You've got him. Remember what I said."
+      }
+     ],
+     "effects": {
+      "heal": true,
+      "toast": "Doc patches you up mid-fight."
+     }
+    },
+    {
+     "id": "g5_twins_doors",
+     "trigger": {
+      "scene": "uptown"
+     },
+     "after": "g5_president",
+     "when": {
+      "flags": [
+       "final_started",
+       "tower_loud",
+       "crew_vic",
+       "crew_val"
+      ],
+      "loyalty": [
+       "vic",
+       3
+      ],
+      "not_flag": "boss_president"
+     },
+     "lines": [
+      {
+       "who": "Vic",
+       "text": "We've got the doors."
+      },
+      {
+       "who": "Val",
+       "text": "Nobody else comes out. Go."
+      }
+     ],
+     "effects": {
+      "clear_kind": [
+       "thug_enforcer",
+       "thug_cyber"
+      ],
+      "toast": "Vic and Val hold the tower doors."
+     }
+    },
+    {
+     "id": "g5_ladder_spot",
+     "trigger": {
+      "scene": "uptown"
+     },
+     "after": "g5_president",
+     "when": {
+      "flags": [
+       "final_started",
+       "crew_ladder"
+      ],
+      "loyalty": [
+       "ladder",
+       3
+      ],
+      "not_flag": "boss_president",
+      "hp_below": 0.8
+     },
+     "lines": [
+      {
+       "who": "Ladder",
+       "text": "(on the radio, from a rooftop) He drops his left shoulder before he swings. Every time. Four hundred and thirteen."
+      }
+     ],
+     "effects": {
+      "weaken": [
+       "boss_president",
+       0.85
+      ],
+      "toast": "Ladder spots an opening: the President is weaker."
+     }
+    },
+    {
+     "id": "g5_win_clean",
+     "trigger": {
+      "scene": "uptown"
+     },
+     "when": {
+      "flag": "boss_president",
+      "clean_break": true,
+      "not_flag": "st_g5_win"
+     },
+     "after": "g5_president",
+     "lines": [
+      {
+       "who": "",
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the runner's coat, the crates on the docks, the quiet thing that said good, count it."
+      },
+      {
+       "who": "Dark Crystal",
+       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "Pull the stone out of him.",
+        "Put your hand on it. Take the city.",
+        "Pull it out, and walk it down to Inspector Hale."
+       ],
+       "key": "ending",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new.",
+          "sfx": "pop",
+          "pic": "cut_gang_stone"
+         },
+         {
+          "who": "The President",
+          "text": "...I was going to come out to the farm. One spring. Help you plant, and tell you all of it. It said I didn't need to. It said you'd come to me."
+         },
+         {
+          "who": "",
+          "text": "You put the stone on the tower steps and you break it with your heel, and the whisper stops, and somewhere above the city a very old bell that was never going to ring again rings once anyway.",
+          "sfx": "glass"
+         },
+         {
+          "who": "",
+          "text": "All over the city the splinters go quiet. A girl on the docks watches the flame in her palm gutter, and then, slowly, come back smaller, and steadier, and hers.",
+          "sfx": "town_bell_far",
+          "sfx_fallback": "j_page",
+          "pic": "none"
+         },
+         {
+          "who": "",
+          "text": "The Gifts stay. They are only what they always were underneath: ten young people who were told a stone made them worth something, finding out it was the other way round."
+         },
+         {
+          "who": "",
+          "text": "The Kid is already running up the tower stairs. A minute later a girl in a cleaner's uniform comes running down them, and the hood finally comes off.",
+          "if_flag": "crew_the_kid"
+         },
+         {
+          "who": "Val",
+          "text": "Our brother's up there somewhere. With the stone gone... he'll come home. Won't he?",
+          "if_flag": "crew_val"
+         },
+         {
+          "who": "Specs",
+          "text": "Tower's on its own wire. Was. I just went for the wire.",
+          "if_flag": "crew_specs"
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans.",
+          "sfx": "alert"
+         },
+         {
+          "who": "",
+          "text": "Later, in the chair, you write a letter to someone who's gone to ground on a farm. You tell them the farm is a nice touch. You notice, as you seal it, the hard loops on the W.",
+          "pic": "cut_president_chair"
+         },
+         {
+          "who": "",
+          "text": "Across the city, ten splinters warm in ten pockets, and ten young people turn toward the tower without knowing why. They work for you now. They always did work for the stone.",
+          "pic": "none"
+         }
+        ],
+        "2": [
+         {
+          "who": "",
+          "pic": "cut_clean_break",
+          "text": "It comes loose with a sound like a cork. He gasps once, and then he's just an old man on a wet carpet. The stone is cold in your hand and it is talking, very fast, about everything you could have."
+         },
+         {
+          "who": "",
+          "text": "You don't break it. You don't keep it. You walk it down the avenue in the rain to a woman in a raincoat the colour of wet cement, who has been waiting under the bus shelter all night."
+         },
+         {
+          "who": "Inspector Hale",
+          "text": "Clean hands. Low heat. Nobody's shop. I didn't think anybody could do it from where you started. Give it here, farmer."
+         },
+         {
+          "who": "",
+          "text": "She seals it in a lead box with a click. The whisper stops. All over the city the splinters go quiet, and ten young people look at their hands and find their Gifts are still there, smaller and steadier, and theirs."
+         },
+         {
+          "who": "",
+          "text": "You came here to end the crews. You built one to do it. And you walked away from the chair with nothing in your hands. That was the whole job.",
+          "pic": "none"
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "ending": "free",
+         "ending_title": "A Tired Man",
+         "flags": [
+          "president_freed"
+         ]
+        },
+        "1": {
+         "ending": "take",
+         "ending_title": "The Chair",
+         "flags": [
+          "city_taken"
+         ]
+        },
+        "2": {
+         "ending": "clean",
+         "ending_title": "A Clean Break",
+         "flags": [
+          "president_freed",
+          "clean_break",
+          "hale_has_stone"
+         ]
+        }
+       }
+      }
+     ],
+     "effects": {
+      "music": "title_musicbox",
+      "flags": [
+       "final_done"
+      ],
+      "hint": "Go home and sleep. The crew will be at the gate in the morning.",
+      "heal": true
+     }
+    },
+    {
+     "id": "g5_win",
+     "trigger": {
+      "scene": "uptown"
+     },
+     "when": {
+      "flag": "boss_president",
+      "clean_break": false,
+      "not_flag": "st_g5_win_clean"
+     },
+     "after": "g5_president",
+     "lines": [
+      {
+       "who": "",
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the runner's coat, the crates on the docks, the quiet thing that said good, count it."
+      },
+      {
+       "who": "Dark Crystal",
+       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting."
+      },
+      {
+       "who": "",
+       "text": "...",
+       "choice": [
+        "Pull the stone out of him.",
+        "Put your hand on it. Take the city."
+       ],
+       "key": "ending",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new.",
+          "sfx": "pop",
+          "pic": "cut_gang_stone"
+         },
+         {
+          "who": "The President",
+          "text": "...I was going to come out to the farm. One spring. Help you plant, and tell you all of it. It said I didn't need to. It said you'd come to me."
+         },
+         {
+          "who": "",
+          "text": "You put the stone on the tower steps and you break it with your heel, and the whisper stops, and somewhere above the city a very old bell that was never going to ring again rings once anyway.",
+          "sfx": "glass"
+         },
+         {
+          "who": "",
+          "text": "All over the city the splinters go quiet. A girl on the docks watches the flame in her palm gutter, and then, slowly, come back smaller, and steadier, and hers.",
+          "sfx": "town_bell_far",
+          "sfx_fallback": "j_page",
+          "pic": "none"
+         },
+         {
+          "who": "",
+          "text": "The Gifts stay. They are only what they always were underneath: ten young people who were told a stone made them worth something, finding out it was the other way round."
+         },
+         {
+          "who": "",
+          "text": "The Kid is already running up the tower stairs. A minute later a girl in a cleaner's uniform comes running down them, and the hood finally comes off.",
+          "if_flag": "crew_the_kid"
+         },
+         {
+          "who": "Val",
+          "text": "Our brother's up there somewhere. With the stone gone... he'll come home. Won't he?",
+          "if_flag": "crew_val"
+         },
+         {
+          "who": "Specs",
+          "text": "Tower's on its own wire. Was. I just went for the wire.",
+          "if_flag": "crew_specs"
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans.",
+          "sfx": "alert"
+         },
+         {
+          "who": "",
+          "text": "Later, in the chair, you write a letter to someone who's gone to ground on a farm. You tell them the farm is a nice touch. You notice, as you seal it, the hard loops on the W.",
+          "pic": "cut_president_chair"
+         },
+         {
+          "who": "",
+          "text": "Across the city, ten splinters warm in ten pockets, and ten young people turn toward the tower without knowing why. They work for you now. They always did work for the stone.",
+          "pic": "none"
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "ending": "free",
+         "ending_title": "A Tired Man",
+         "flags": [
+          "president_freed"
+         ]
+        },
+        "1": {
+         "ending": "take",
+         "ending_title": "The Chair",
+         "flags": [
+          "city_taken"
+         ]
+        }
+       }
+      }
+     ],
+     "effects": {
+      "music": "title_musicbox",
+      "flags": [
+       "final_done"
+      ],
+      "hint": "Go home and sleep. The crew will be at the gate in the morning.",
+      "heal": true
+     }
+    },
+    {
+     "id": "g5_epilogue",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "final_done"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Morning. Rain again, the collar kind. The deed on the table still says Winter Kade, and you find you don't mind; names are things you can grow into.",
+       "music": "title_musicbox"
+      },
+      {
+       "who": "",
+       "text": "Under the deed, a letter in a careful right hand: \"I'll come out one spring and help you plant, if you'll have me. - W.\"",
+       "if_flag": "president_freed"
+      },
+      {
+       "who": "",
+       "text": "A postcard from the capital, a lead box drawn on the front in biro: \"Filed and buried. Stay buried, farmer, but only if you want to. - H.\"",
+       "if_flag": "clean_break"
+      },
+      {
+       "who": "",
+       "text": "At the gate, the crew. All of them, the ones who stayed, leaning on the gate like they've been there since before the sun. Sal at the front."
+      },
+      {
+       "who": "Sal",
+       "text": "Boss. Word's all over town by now. They're not sure what you are. Neither am I.",
+       "unless_flag": "city_taken"
+      },
+      {
+       "who": "Sal",
+       "text": "Doesn't have to be decided today. We'll mind the farm. Somebody's got to water the turnips.",
+       "unless_flag": "city_taken"
+      },
+      {
+       "who": "",
+       "text": "At the end of the lane a long black car is waiting, engine running, to take you back uptown to the chair.",
+       "if_flag": "city_taken"
+      },
+      {
+       "who": "Sal",
+       "text": "Boss. Or is it Mr President now? ...The car can wait. The turnips can't. Go on, water them, and then we'll see who you are today.",
+       "if_flag": "city_taken"
+      }
+     ],
+     "effects": {
+      "flags": [
+       "epilogue_done"
+      ],
+      "hint": "The story is done. The farm, the crew and every block you haven't walked yet are still yours.",
+      "sfx": "j_heart"
+     }
+    }
+   ]
+  }
+ ],
+ "_note_gang": "Gangster arc beats (C7 P3). Story.data() merges this file over story.json: its 'gangsters' list replaces story.json's. Hand-edited; edit gangster beats HERE, not in story.json."
+}

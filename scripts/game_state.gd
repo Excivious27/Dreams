@@ -2355,6 +2355,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 		return false
 	if (when.has("arcade_ms") or when.has("rec_best") or when.has("tickets_won")) and not Tickets.cond_ok(when):
 		return false  # Rec Center / arcade progress
+	if (when.has("heat_min") or when.has("heat_max") or when.has("loyalty") or when.has("clean_break")) and not Epilogue.cond_ok(when):
+		return false  # gangster arc: heat, crew loyalty, the Clean Break path (C7 P3)
 	return true
 
 

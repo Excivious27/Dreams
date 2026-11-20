@@ -34,6 +34,12 @@ V = {
  "sel": ("Sel reads the last rune aloud with you there. It says: home.", "Sel is still out in the ruins, reading stones."),
  "catkins": ("Catkins sits on your fence at dusk and purrs the Meow Pow Wow, just quietly, for you.", "Catkins rules Cat-topia with a soft paw and a sharp eye."),
 }
+# Gangster arc: villager lines that read wrong there (cash money; Sal is crew).
+V_GANG = {
+ "ivy": ("Ivy opens an account in your name with one dollar in it. 'For luck.'", "Ivy keeps the books balanced to the last cent."),
+}
+# Skipped in the villager slide when Sal is crew/companion (he gets his own line there).
+V_SKIP_IF_KNOWN = ["sal"]
 # A companion line that replaces the usual one when a flag is set.
 COMP_IF = {"penguin_f": ["knight_reverted", "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."]}
 CREW = {
@@ -44,16 +50,28 @@ CREW = {
  "vic": ("Vic and Val run the gym under the pit, and the kids there call you boss.", "Vic went back to the pit, where things are simple."),
  "val": ("Val stands at your door some nights for no reason at all. Just in case.", "Val keeps an eye on the docks."),
  "halo": ("Halo's car is the fastest in the city, and it's always parked outside your farm.", "Halo drives off into the sunset. Literally. Show-off."),
- "dice": ("Dice runs the token arcade on the avenue. Everyone wins something.", "Dice is still running messages, somewhere, faster than ever."),
+ "dice": ("Dice runs the token arcade on the avenue. Everyone wins something.", "Dice rolls for whoever buys him lunch, and still owes the pawnbroker a postcard."),
  "the_kid": ("The Kid goes back to school. He comes by after, every day.", "The Kid runs messages across the city, faster than anyone."),
  "doc": ("Doc's free clinic opens with your name over the door.", "Doc patches people up and doesn't ask questions."),
  "marlene": ("Marlene burns her old ledger in your fireplace and laughs.", "Marlene's shop is still there, dark window, open door."),
  "sasha": ("Sasha teaches the Marked to open doors instead of forcing them.", "Sasha slipped away one night. She'll turn up again."),
 }
+# Vic without Val (Val never joined): his line can't name her.
+CREW_SOLO = {"vic": ("Vic runs the gym under the pit, and the kids there call you boss.", "Vic went back to the pit, where things are simple."), "val_needs": "crew_val"}
+# Threads the crew's loyalty scenes planted, paid off when that scene was seen
+# (loyalty >= n). "not_ending": skipped in that ending.
+CREW_THREADS = {
+ "the_kid": [2, "The Kid's sister came down from the tower the morning after, still in her cleaner's uniform. Now there are two hoods on your fence after school.", "take"],
+ "vic": [1, "Vic and Val's big brother came home the week the stone broke. He's quiet, and he laughs at the wrong moments, and the twins don't let him out of their sight.", "take"],
+ "specs": [2, "Specs went for the wire, like she said she would. The tower's cameras show nothing but rain now.", ""],
+ "marlene": [2, "Marlene opened her safe one last time: a deed with your right name on it. It hangs over your fireplace, next to the one with his.", ""],
+}
 COMP = {
  "penguin_m": "Pip-Pip waddles the farm every morning like he owns it. He sort of does.",
  "penguin_f": "Nova keeps the knight's old helmet on a shelf, polished, and tells the story to anyone who'll sit still.",
- "big_jim": "Big Jim still screams about tails sometimes. Then he laughs about it.",
+ "big_jim": "Big Jim still breaks the odd stump for you, and complains about it every single time.",
+ "dad": "Dad fixes the fence before you notice it's broken, and pretends he was just passing.",
+ "mom": "Mom's jam is on every shelf in the house, and her letters always end: come home for supper.",
  "mer": "Mer swims up the river to visit, and leaves shells on the porch.",
  "coldy": "Coldy and the crystal babies stamp around the field, keeping the dark away just by being there.",
  "pax": "Pax stays on as a farmhand and is secretly better at it than you.",
@@ -64,6 +82,17 @@ COLONY = {"colony_coral": "Coral Reach glows rose-gold again, and Grandmother Br
           "colony_kelp": "In Kelp Hollow, the old song is sung every evening, and the kelp stays green.",
           "colony_ice": "Frostfin Isle thawed, and Captain Icewhisker's boats are back out on the water.",
           "colony_ember": "On Emberclaw Atoll, the star crystal burns bright, and Lady Cinderpaw's glassblowers make you a gift every year."}
+# Playing as a story character: lines that would talk about you in the third
+# person ("Nova still goes looking for him") get a "you" version; "" drops it.
+HERO_FLAG_LINES = {
+ "penguin_f": {"auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. You still go looking for him, and some mornings you find fresh footprints.",
+               "knight_reverted": "You and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."},
+}
+# Big Jim's tail (Tom, Guide 11 #6): his own slide with a picture, in any run he
+# was part of (penguins: the campfire; gangsters: he joined you).
+TAIL = {"title": "Big Jim's tail", "pic": "cut_big_jim_tail", "flag": "st_p3_campfire", "known": "big_jim",
+        "text": "One morning Big Jim woke up with a tail. A long, fluffy, striped one. He screamed about it for a week.\n\nThen he found out he could hang off the fence by it. Then he could juggle apples while he hung there. Then he could fish with it, crack walnuts with it, and catch a falling egg without looking.\n\nNow he wouldn't give it back for anything, and he tells everyone it was his idea.",
+        "text_hero": "One morning you woke up with a tail. A long, fluffy, striped one. You screamed about it for a week.\n\nThen you found out you could hang off the fence by it. Then you could juggle apples while you hung there. Then you could fish with it, crack walnuts with it, and catch a falling egg without looking.\n\nNow you wouldn't give it back for anything, and you tell everyone it was your idea."}
 LT = {"vance": "Harbourmaster Vance", "lucia": "Lucia \"Flame\" Ardent", "brock": "Brock the Unbroken", "silas": "Silas Crane",
       "mags": "Old Mags", "surveyor": "The Surveyor", "pike": "Conductor Pike", "ostrova": "Madame Ostrova"}
 LT_LINES = {"spared": "%s walked away when you let them, and nobody's seen them make trouble since.",
@@ -77,12 +106,25 @@ CHOICES = {
  "photo": {"0": "You burned the photo. The past stays burned.", "1": "The photo stays with the deed, a little piece of a case nobody else will ever close.", "2": "You learned that hand by heart. In the end, it was a hand you knew."},
  "shop_1": {"0": "The bakery stayed an arcade. Some mornings the avenue still smells of bread that isn't there.", "1": "The bakery never closed. You were the reason why."},
  "shop_2": {"0": "The shop you took is a token arcade now. Kids love it.", "1": "You left her shop alone, and she never forgot it."},
- "shop_3": {"0": "The clinic you took is free now. That was the deal you made with yourself.", "1": "You drew the line at the clinic, and held it."},
- "sell_letter": {"0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.", "1": "You never sold the letter. It opened the tower doors, the way he meant it to."},
+ "shop_3": {"0": "The crew still runs the clinic you took. You told yourself it would be free one day; Juniper never came back to see if it was.", "1": "You drew the line at the clinic, and held it."},
+ "sell_letter": {"0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.", "1": "You never sold the letter. Marlene still says it was the best deal you ever turned down."},
 }
-ENDINGS = {"revert": "Two Crystals", "shatter": "The Quiet Mountain", "free": "A Tired Man", "take": "The Chair"}
+# A shop you took and then gave back: replaces that choice's line.
+RETURNED = {"shop_1": "You took the bakery, and then you bought it back and handed Posy the keys. The avenue smells of bread again.",
+            "shop_2": "You took Lumi's studio, and then you gave it back. Her painting of the day you did hangs in the town hall.",
+            "shop_3": "You took the clinic, and then you gave it back. Juniper still won't thank you, but she leaves the door open."}
+ENDINGS = {"revert": "Two Crystals", "shatter": "The Quiet Mountain", "free": "A Tired Man", "take": "The Chair", "clean": "A Clean Break"}
+# Picture on the THE END slide (ui/<name>), and on the last slide per arc.
+ENDING_PICS = {"revert": "ending_two_crystals", "shatter": "ending_quiet_mountain", "free": "ending_tired_man", "take": "ending_the_chair", "clean": "cut_clean_break"}
+THANKS_PICS = {"penguins": "cut_old_dog", "gangsters": "cut_rain_road"}
+CREDITS = ("Made by Tom and his daughter: the story, the friends and the farm.\n\n"
+           "Music made with ACE Music.\n\n"
+           "Sound effects and ambience from CC0 packs on OpenGameArt.org (docs/AUDIO-CREDITS.md).\n\n"
+           "Built with the Godot Engine.")
 json.dump({"_": "End slideshow. Generated by tools/gen_epilogue.py.", "villagers": V, "crew": CREW, "companions": COMP,
-           "companions_if": COMP_IF, "colonies": COLONY, "lieutenants": LT, "lt_lines": LT_LINES, "choices": CHOICES, "endings": ENDINGS,
+           "companions_if": COMP_IF, "villagers_gang": V_GANG, "villagers_skip_if_known": V_SKIP_IF_KNOWN,
+           "crew_solo": CREW_SOLO, "crew_threads": CREW_THREADS, "hero_flag_lines": HERO_FLAG_LINES, "tail": TAIL,
+           "returned": RETURNED, "ending_pics": ENDING_PICS, "thanks_pics": THANKS_PICS, "credits": CREDITS, "colonies": COLONY, "lieutenants": LT, "lt_lines": LT_LINES, "choices": CHOICES, "endings": ENDINGS,
            "flag_lines": {"town_lost": "%town never quite forgave the clinic. People still lower their voices when you pass the plaza.",
                           "tower_loud": "Every light in the tower came on the night you went in. The city still calls it the Loud Night.",
                           "fennimore_free": "Fennimore's crown went out in your arms. The finargles have a queen again: a gentler one.",
@@ -93,6 +135,11 @@ json.dump({"_": "End slideshow. Generated by tools/gen_epilogue.py.", "villagers
                           "knight_reverted": "The knight above the clouds was given a chance, and took it.",
                           "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",
                           "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",
-                          "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it."}},
+                          "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it.",
+                          "purpose_kept": "Somewhere along the way you remembered why you came out of the river cities. Sal says that's the part he'll tell people about.",
+                          "hale_friend": "Inspector Hale sends a postcard from the capital every spring. It always says the same thing: still clean?",
+                          "hale_fooled": "Inspector Hale closed her file on the turnip farmer. She still wonders, some nights.",
+                          "hale_outrun": "Inspector Hale never did catch you. She tells the story at parties, and it gets faster every time.",
+                          "hale_has_stone": "The stone sits in a lead box in a basement in the capital, under a label in Hale's handwriting: DO NOT OPEN. NOT EVEN YOU."}},
           open(os.path.join(ROOT, "data/epilogue.json"), "w"), indent=1, ensure_ascii=False)
 print("epilogue lines:", len(V) * 2 + len(CREW) * 2 + len(COMP) + len(COLONY) + sum(len(v) for v in CHOICES.values()))
