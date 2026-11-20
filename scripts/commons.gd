@@ -719,7 +719,7 @@ static func stand_price(id: String) -> int:
 static func _bag_produce() -> Array:
 	var ids: Array = []
 	for id in GameState.run["inventory"]:
-		if is_produce(str(id)) and int(GameState.run["inventory"][id]) > 0 and not GameState.is_locked(str(id)):
+		if is_produce(str(id)) and int(GameState.run["inventory"][id]) > 0 and not GameState.is_locked(str(id)) and not DecorSources.keeps(str(id)):
 			ids.append(str(id))
 	ids.sort_custom(func(a: String, b: String) -> bool: return GameState.count(a) > GameState.count(b))
 	return ids.slice(0, 7)
@@ -824,8 +824,8 @@ static func _donate(m: GameMap) -> void:
 
 ## Hand produce to the stand: stock, goodwill, a little friendship (capped per day).
 static func donate(id: String, n: int) -> void:
-	if n <= 0:
-		return
+	if n <= 0 or DecorSources.keeps(id):
+		return  # one-of-a-kind pieces never go to the stand (C10a)
 	GameState.add_item(id, -n)
 	var pantry: Dictionary = st()["pantry"]
 	pantry[id] = int(pantry.get(id, 0)) + n
@@ -888,6 +888,8 @@ static func market_pay(id: String, n: int) -> int:
 ## Sells n of a kind at the stand (C8 P6): starred pieces earn their bonus, the
 ## day's saturation counts them, and the money is counted once.
 static func sell_at_market(id: String, n: int) -> int:
+	if DecorSources.keeps(id):
+		return 0
 	var pay := market_pay(id, n)
 	GameState.take_quality(id, n)
 	GameState.add_item(id, -n)

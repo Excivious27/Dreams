@@ -235,8 +235,8 @@ static func lock_text(prize_id: String) -> String:
 	for id in (ms if ms is Array else [ms]):
 		if not ArcadeHub.milestone(str(id)):
 			return str(ArcadeHub.MILESTONES.get(str(id), str(id)))
-	if need.has("once") and bought(prize_id) > 0:
-		return "Already yours"
+	if need.has("once") and bought(prize_id) > 0 and have(str(p.get("item", prize_id))) > 0:
+		return "Already yours"  # a once-prize lost before C10 (sold/trashed) can be bought back (c10_06)
 	if need.has("weekly") and Net.visiting():
 		return "Weekly prizes wait for your own Rec Center"  # the host's week isn't ours (its stamp would skip or repeat a week at home)
 	if need.has("weekly") and int((_st()["week"] as Dictionary).get(prize_id, [-1, 0])[0]) == week() \
@@ -281,5 +281,25 @@ static func buy(prize_id: String) -> String:
 	if (p.get("need", {}) as Dictionary).has("weekly"):
 		var wk: Array = (_st()["week"] as Dictionary).get(prize_id, [-1, 0])
 		_st()["week"][prize_id] = [week(), (int(wk[1]) if int(wk[0]) == week() else 0) + 1]
-	GameState.add_item(str(p.get("item", prize_id)), int(p.get("n", 1)))
+	var item := str(p.get("item", prize_id))
+	if Decor.is_decor(item):
+		DecorSources.grant(null, item, int(p.get("n", 1)), "prize")  # decor goes to the decor box, never the bag (C10a P4)
+	else:
+		GameState.add_item(item, int(p.get("n", 1)))
 	return ""
+
+
+## Copies of a prize item held anywhere: bag, chests, decor box / placed / worn.
+static func have(item: String) -> int:
+	return GameState.count(item) + Storage.total(item) + DecorSources.held(item)
+
+
+## True for an item a "once" prize gives (one per game: never sold, shipped or trashed).
+static func is_once(item: String) -> bool:
+	var ps: Variant = prizes().get("prizes", {})
+	if ps is Dictionary:
+		for pid in ps:
+			var p: Variant = ps[pid]
+			if p is Dictionary and str((p as Dictionary).get("item", pid)) == item and ((p as Dictionary).get("need", {}) as Dictionary).has("once"):
+				return true
+	return false

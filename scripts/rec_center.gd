@@ -1133,8 +1133,8 @@ static func dress_house(m: GameMap) -> void:
 	var deco: Dictionary = data().get("house_decor", {})
 	var shelves := {}
 	for id in deco:
-		if GameState.count(str(id)) < 1:
-			continue
+		if Tickets.have(str(id)) < 1:
+			continue  # bag, chests or the decor box all count (c10_02/13: Deposit All no longer strips the house)
 		var d: Dictionary = deco[id]
 		if d.has("wall"):
 			var w := RecDecor.new()

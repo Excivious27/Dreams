@@ -1474,15 +1474,30 @@ func _check_first_harvest() -> void:
 		hud.toast(GameMap.quest_done_text("first_harvest"), Color(1, 0.9, 0.4))
 
 
+## True for an item the museum collects that is not in its cases yet.
+static func museum_wants(id: String) -> bool:
+	return Collections.in_log("museum", id) and not (Collections.st()["donated"] as Dictionary).has(id)
+
+
 func _sellbox(sel: String) -> void:
 	var box: Dictionary = GameState.run["sellbox"]
 	var stype := str(GameState.items.get(sel, {}).get("type", ""))
 	if sel != "" and GameState.count(sel) > 0 and stype in ["key", "vehicle"]:
 		hud.toast("You can't sell the %s. It matters." % GameState.item_name(sel), Color(1, 0.85, 0.6))
 		return
+	if sel != "" and GameState.count(sel) > 0 and DecorSources.keeps(sel):
+		hud.toast(DecorSources.KEEP_LINE, Color(1, 0.85, 0.6))  # one-of-a-kind pieces never ship (C10a)
+		return
 	if sel != "" and GameState.is_locked(sel):
 		hud.toast("Your %s is locked in your bag. Unlock it to sell it." % GameState.item_name(sel), Color(1, 0.85, 0.6))
 		return
+	if sel != "" and GameState.count(sel) == 1 and stype != "tool" and museum_wants(sel) and not Net.visiting():
+		# The last one of a museum piece not yet donated (the koi exists once): ask first (c10_07).
+		var dm := Dialogue.instance(get_tree())
+		dm.say([{"text": "The museum doesn't have a %s yet, and this is your only one. Sell it anyway?" % GameState.item_name(sel), "choice": ["Sell it", "Keep it"], "key": ""}])
+		await dm.finished
+		if dm.last_choice != 0:
+			return
 	if sel != "" and GameState.count(sel) > 0 and stype != "tool":
 		var n := GameState.count(sel)
 		if n > 1 and not Net.visiting():
@@ -2224,7 +2239,7 @@ func on_world_sync(d: Dictionary) -> void:
 
 
 func _show_placed(c: Vector2i, id: String) -> void:
-	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": "A: pick up %s" % GameState.item_name(id)})
+	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": ("A: open chest" if id == "chest" else "A: pick up %s" % GameState.item_name(id))})
 	blocked[c] = true
 	var nm: String = {"sprinkler": "sprinkler_basic", "sprinkler_quality": "sprinkler_quality", "sprinkler_iridium": "sprinkler_iridium", "scarecrow": "scarecrow_classic"}.get(id, id)
 	if not Art.has("props", nm):

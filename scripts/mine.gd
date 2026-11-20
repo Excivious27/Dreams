@@ -692,6 +692,21 @@ func _loot(big: bool) -> Dictionary:
 	return out
 
 
+## C10a P4: prize chests (once each) give a home piece from the depth's pool
+## (a fixed "mine:<floor>" grant from decor.json wins, e.g. floor 150's keepsake);
+## repeatable miner's chests only rarely, and only from the shallowest pool.
+static func decor_pool(floor_n: int, big: bool) -> String:
+	return "mine_t%d" % (clampi(floor_n / 30 + 1, 1, 5) if big else 1)
+
+
+func _decor_loot(big: bool) -> void:
+	if big:
+		if DecorSources.grant_key(self, "mine:%d" % floor_no) == "" and randf() < float(DecorSources.T["mine_prize_p"]):
+			DecorSources.roll_grant(self, decor_pool(floor_no, true), Fishing.luck(), "mine")
+	elif randf() < float(DecorSources.T["mine_chest_p"]):
+		DecorSources.roll_grant(self, decor_pool(floor_no, false), 0.0, "mine")
+
+
 func _give_loot(c: Vector2i, loot: Dictionary) -> void:
 	for id: String in loot:
 		if id == "#gold":
@@ -950,6 +965,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("chest_open", "coin")
 			_give_loot(c, _loot(big))
 			hud.toast("The floor %d prize!" % floor_no if big else "A miner's stash.", Color(1, 0.9, 0.5))
+			_decor_loot(big)
 			return true
 		"skeleton":  # an old miner's supply crate (all-ages: no remains)
 			if not GameState.run["flags"].has("skel_%d" % floor_no):
