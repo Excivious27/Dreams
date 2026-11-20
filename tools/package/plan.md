@@ -11,15 +11,18 @@
 | 7 | Story, quests, writing + dating and marriage | |
 | 8 | Economy, progression, balance + collections (museum, shipping, fish logs) | |
 | 9 | Release readiness, controllers, Steam Deck, haptics, save export/import | |
-| 10 | Decor and cosmetics ecosystem + casino side arc | |
-| 11 | Ranching and livestock, trainable team animals, helper automation | |
+| 10a | Decor and cosmetics: catalogue, rarity, placing indoors, wardrobe | |
+| 10b | Decor: exteriors and outdoor decor, the casino side arc, art for the catalogue | |
+| 11a | Ranching: classic animals, pens, breeding, animal skills, trainable team animals | |
+| 11b | Ranching: exotics and fantastic creatures, ranch tiers, full helper automation | |
 | 12 | Writing, story, dialogue (thorough) | |
 | 13 | Audio depth: alternate area and season soundtracks, full audit | |
 | 14 | Aesthetic quality and exploration + earned fast travel | |
 | 15 | Seasons: festivals, holidays, seasonal content | |
 | 16 | Progression and balance over 3 years | |
 | 17 | Multiplayer, then your ~$4/month server and testing with friends | |
-| 18 | Cutscenes (Crystopia intro, night and side-event scenes) | |
+| 18a | Cutscenes: engine, the Crystopia intro, main-story beats | |
+| 18b | Cutscenes: random night events, side-event scenes, big openings | |
 | 19 | Trading cards | |
 | 20 | Hazards, jumping and flight, lava mega region, mine hazards | |
 | 21 | The General Store side arc | |

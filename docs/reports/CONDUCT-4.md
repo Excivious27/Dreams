@@ -51,6 +51,17 @@ difficulty_test, day_length_test, hidden_area_test, mega_ui_test; save_test, coo
 - Pockets are not yet tied to path dead ends.
 - Cities pin positions on the map.
 
+## Timing (from commit times; paused 20:14 for the CI optimisation)
+
+| Stage | Start | End | Minutes |
+|---|---|---|---|
+| Auditors (20) | 18:30 | 19:10 | 40 |
+| Package draft | 19:10 | 19:20 | 10 |
+| Fix agents (6) | 19:20 | 20:03 | 43 |
+| Merge + local tests (godot lock contention) | 20:03 | 20:14 | 11 (+ local check.sh waits) |
+| CI verify (6 shards + 20 bots on GitHub) | 20:43 | see Baton | — |
+| **Total to merge** | | | **~105** |
+
 ## Questions for Tom (defaults in place)
 1. Should the three gangster bosses in Gloamwood, Sunscorch and Frostpeak get their own songs? (Default: they share their region's theme.)
 2. Is the stand-in train departure sound OK? (Default: keep it.)

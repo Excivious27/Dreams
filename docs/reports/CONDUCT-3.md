@@ -51,6 +51,17 @@ campaign_c3_test, battle_win_test, bf_themes_test, rec_reno_test, quest_tracker_
 - The ownerless pause now names its source. Read it in the next bot run.
 - Community-farm city-edge side pavement.
 
+## Timing (from commit times, old process)
+
+| Stage | Start | End | Minutes |
+|---|---|---|---|
+| Auditors + bots (incl. a relaunch after an interrupt) | 15:42 | 17:00 | 78 |
+| Package draft | 17:00 | 17:20 | 20 |
+| Fix agents | 17:20 | 18:00 | 40 |
+| Merge + full local check.sh + bots | 18:00 | 18:28 | 28 |
+| Package | 18:28 | 18:50 | 22 |
+| **Total** | | | **~188** |
+
 ## Questions for Tom (defaults are in place)
 1. Should Nova or Pip-Pip lead the early penguin campaigns, as now, or someone else?
 2. Is two Refined Crystals the right gift for a crystal-baby nest?

@@ -2293,6 +2293,80 @@
    }
   ]
  },
+ "mega_desert_canyon": {
+  "chosen": "so_44e09d481cba4ec38f8d3860",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mega_desert_canyon__so_44e09d481cba4ec38f8d3860.mp3",
+    "id": "so_44e09d481cba4ec38f8d3860",
+    "page": "https://acemusic.ai/song/hh67ipghuzqb",
+    "score": {
+     "dur": 115.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_desert_canyon__so_44e09d481cba4ec38f8d3860.mp3",
+     "holes": 0,
+     "lvl_diff": 0.0,
+     "peak": 1.28,
+     "score": 98.24,
+     "seam": 0.982
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mega_desert_canyon__so_78f15a8b872b4fb1ba0ddec8.mp3",
+    "id": "so_78f15a8b872b4fb1ba0ddec8",
+    "page": "https://acemusic.ai/song/n7kwmcyqczw5",
+    "score": {
+     "dur": 114.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_desert_canyon__so_78f15a8b872b4fb1ba0ddec8.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.097,
+     "score": 95.41,
+     "seam": 0.973
+    }
+   }
+  ]
+ },
+ "mega_desert_temple": {
+  "chosen": "so_fed183a173284de3b2febe12",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mega_desert_temple__so_fed183a173284de3b2febe12.mp3",
+    "id": "so_fed183a173284de3b2febe12",
+    "page": "https://acemusic.ai/song/js74zs9pi5bf",
+    "score": {
+     "dur": 115.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_desert_temple__so_fed183a173284de3b2febe12.mp3",
+     "holes": 0,
+     "lvl_diff": 2.5,
+     "peak": 1.265,
+     "score": 78.85,
+     "seam": 0.826
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mega_desert_temple__so_e999908650a842ccbf6b91ac.mp3",
+    "id": "so_e999908650a842ccbf6b91ac",
+    "page": "https://acemusic.ai/song/6x8tc6eg8a29",
+    "score": {
+     "dur": 115.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_desert_temple__so_e999908650a842ccbf6b91ac.mp3",
+     "holes": 0,
+     "lvl_diff": 7.0,
+     "peak": 1.339,
+     "score": 74.75,
+     "seam": 0.852
+    }
+   }
+  ]
+ },
  "mega_frost": {
   "chosen": "so_066285d16d374a92b49f3b07",
   "kind": "music",
@@ -2400,6 +2474,43 @@
      "peak": 1.262,
      "score": 90.93,
      "seam": 0.916
+    }
+   }
+  ]
+ },
+ "mega_gloam_moonpool": {
+  "chosen": "so_12b73028a52b44f3a5a8e8f6",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mega_gloam_moonpool__so_12b73028a52b44f3a5a8e8f6.mp3",
+    "id": "so_12b73028a52b44f3a5a8e8f6",
+    "page": "https://acemusic.ai/song/hrge9xuatafx",
+    "score": {
+     "dur": 113.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_gloam_moonpool__so_12b73028a52b44f3a5a8e8f6.mp3",
+     "holes": 0,
+     "lvl_diff": 5.599999904632568,
+     "peak": 1.27,
+     "score": 75.6,
+     "seam": 0.84
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mega_gloam_moonpool__so_d62f47a6cbd14bb2af5e2794.mp3",
+    "id": "so_d62f47a6cbd14bb2af5e2794",
+    "page": "https://acemusic.ai/song/vvqdq25575ym",
+    "score": {
+     "dur": 118.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_gloam_moonpool__so_d62f47a6cbd14bb2af5e2794.mp3",
+     "holes": 0,
+     "lvl_diff": 7.300000190734863,
+     "peak": 1.271,
+     "score": 69.65,
+     "seam": 0.805
     }
    }
   ]
