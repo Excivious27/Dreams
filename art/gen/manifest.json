@@ -63379,6 +63379,11 @@
    "h": 32,
    "w": 30
   },
+  "duck_egg": {
+   "file": "items/duck_egg.png",
+   "h": 28,
+   "w": 32
+  },
   "dumpling": {
    "file": "items/dumpling.png",
    "h": 32,
@@ -64809,6 +64814,11 @@
    "h": 29,
    "w": 32
   },
+  "goat_cheese": {
+   "file": "items/goat_cheese.png",
+   "h": 25,
+   "w": 32
+  },
   "goat_horn": {
    "file": "items/goat_horn.png",
    "h": 31,
@@ -65038,6 +65048,11 @@
    "file": "items/gooseberry.png",
    "h": 30,
    "w": 32
+  },
+  "gourmet_pickles": {
+   "file": "items/gourmet_pickles.png",
+   "h": 32,
+   "w": 22
   },
   "grape": {
    "file": "items/grape.png",
@@ -65418,6 +65433,11 @@
    "file": "items/herb_roast.png",
    "h": 25,
    "w": 32
+  },
+  "herbal_cordial": {
+   "file": "items/herbal_cordial.png",
+   "h": 32,
+   "w": 23
   },
   "herbal_tea": {
    "file": "items/herbal_tea.png",
@@ -69244,6 +69264,11 @@
    "h": 31,
    "w": 32
   },
+  "reserve_ale": {
+   "file": "items/reserve_ale.png",
+   "h": 32,
+   "w": 16
+  },
   "resin": {
    "file": "items/resin.png",
    "h": 29,
@@ -69603,6 +69628,11 @@
    "file": "items/rowboat.png",
    "h": 22,
    "w": 32
+  },
+  "royal_mead": {
+   "file": "items/royal_mead.png",
+   "h": 32,
+   "w": 21
   },
   "ruby": {
    "file": "items/ruby.png",
@@ -71993,6 +72023,11 @@
    "file": "items/truffle.png",
    "h": 27,
    "w": 32
+  },
+  "truffle_broth": {
+   "file": "items/truffle_broth.png",
+   "h": 32,
+   "w": 30
   },
   "truffle_pasta": {
    "file": "items/truffle_pasta.png",
@@ -126077,6 +126112,11 @@
    "h": 95,
    "w": 86
   },
+  "cut_big_jim_tail": {
+   "file": "ui/cut_big_jim_tail.png",
+   "h": 248,
+   "w": 372
+  },
   "cut_campfire": {
    "file": "ui/cut_campfire.png",
    "h": 355,
@@ -126091,6 +126131,11 @@
    "file": "ui/cut_chase.png",
    "h": 355,
    "w": 500
+  },
+  "cut_clean_break": {
+   "file": "ui/cut_clean_break.png",
+   "h": 248,
+   "w": 372
   },
   "cut_crystal_prison": {
    "file": "ui/cut_crystal_prison.png",
@@ -126107,6 +126152,16 @@
    "h": 333,
    "w": 500
   },
+  "cut_gang_doors": {
+   "file": "ui/cut_gang_doors.png",
+   "h": 248,
+   "w": 372
+  },
+  "cut_gang_stone": {
+   "file": "ui/cut_gang_stone.png",
+   "h": 248,
+   "w": 372
+  },
   "cut_letter": {
    "file": "ui/cut_letter.png",
    "h": 177,
@@ -126121,6 +126176,11 @@
    "file": "ui/cut_old_dog.png",
    "h": 180,
    "w": 160
+  },
+  "cut_penguins_fly": {
+   "file": "ui/cut_penguins_fly.png",
+   "h": 355,
+   "w": 500
   },
   "cut_president_chair": {
    "file": "ui/cut_president_chair.png",
@@ -131701,31 +131761,6 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
-  },
-  "cut_penguins_fly": {
-   "file": "ui/cut_penguins_fly.png",
-   "h": 355,
-   "w": 500
-  },
-  "cut_gang_doors": {
-   "file": "ui/cut_gang_doors.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_gang_stone": {
-   "file": "ui/cut_gang_stone.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_clean_break": {
-   "file": "ui/cut_clean_break.png",
-   "w": 372,
-   "h": 248
-  },
-  "cut_big_jim_tail": {
-   "file": "ui/cut_big_jim_tail.png",
-   "w": 372,
-   "h": 248
   }
  },
  "ui_creator": {
