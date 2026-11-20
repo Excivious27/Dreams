@@ -298,8 +298,12 @@ func _refresh() -> void:
 		if typ == "gate":
 			var big: Dictionary = c.get("reward", {})
 			bits = ["OPENS %s" % str(c["region_name"]).to_upper(), "◆%d" % int(big.get("crystals", 0))]
-			for it: String in big.get("items", {}):
-				bits.append("%s ×%d" % [GameState.item_name(it), int(big["items"][it])])
+			var all_items: Dictionary = (big.get("items", {}) as Dictionary).duplicate()
+			var ai: Dictionary = (big.get("arc_items", {}) as Dictionary).get(Campaign.arc(), {})
+			for it: String in ai:
+				all_items[it] = int(all_items.get(it, 0)) + int(ai[it])
+			for it: String in all_items:
+				bits.append("%s ×%d" % [GameState.item_name(it), int(all_items[it])])
 		body += "Reward: " + ", ".join(bits)
 	_body.text = body
 	# Actions

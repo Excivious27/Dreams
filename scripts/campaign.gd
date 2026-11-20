@@ -449,6 +449,10 @@ static func launch(m: GameMap, cid: String, nid: String) -> void:
 	var fid := str(cf.get("field", ""))
 	if fid == "" or not can_attack(cid, nid):
 		return
+	if Net.visiting():  # a guest's fight would run unsynced on the host's world
+		if m and m.hud:
+			m.hud.toast("You're visiting a friend's farm. Campaigns wait until you're home.", Color(1, 0.8, 0.6))
+		return
 	var at := m.player.position - m.offset() if m.player else Vector2.ZERO
 	st()["fight"] = {"cid": cid, "nid": nid, "field": fid, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
 	var R: Dictionary = RegionData.region(fid)

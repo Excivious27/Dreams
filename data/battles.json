@@ -86,6 +86,7 @@
       "potion": 3,
       "copper_bar": 5
      },
+     "strategist": 350,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -94,8 +95,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 350
+     }
     },
     "nodes": [
      {
@@ -122,7 +122,7 @@
       "loot": {
        "supply": 24,
        "morale": 15,
-       "crystals": 60,
+       "crystals": 190,
        "items": {
         "potion": 3
        }
@@ -521,9 +521,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "potion": 1
-       }
+       "items": {}
       },
       "links": [
        "n3"
@@ -605,6 +603,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -613,8 +612,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -1293,9 +1291,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -1383,6 +1379,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -1391,8 +1388,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -1543,7 +1539,7 @@
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 120,
+       "crystals": 490,
        "items": {
         "greater_potion": 2
        }
@@ -1991,9 +1987,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -2081,6 +2075,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -2089,8 +2084,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -2117,7 +2111,7 @@
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 120,
+       "crystals": 490,
        "items": {
         "greater_potion": 2
        }
@@ -2751,9 +2745,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -2844,6 +2836,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -2852,8 +2845,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -2880,7 +2872,7 @@
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 120,
+       "crystals": 490,
        "items": {
         "greater_potion": 2
        }
@@ -3457,9 +3449,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -3551,16 +3541,16 @@
       "gold_bar": 3,
       "crystal_refined": 3
      },
+     "strategist": 550,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 550
+     }
     },
     "nodes": [
      {
@@ -3587,7 +3577,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 180,
+       "crystals": 920,
        "items": {
         "gold_bar": 3
        }
@@ -4171,9 +4161,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "gold_bar": 1
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -4251,6 +4239,7 @@
       "potion": 3,
       "copper_bar": 5
      },
+     "strategist": 350,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -4259,8 +4248,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 350
+     }
     },
     "nodes": [
      {
@@ -4590,9 +4578,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "potion": 1
-       }
+       "items": {}
       },
       "links": [
        "n3"
@@ -4665,16 +4651,16 @@
       "gold_bar": 3,
       "crystal_refined": 3
      },
+     "strategist": 550,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 550
+     }
     },
     "nodes": [
      {
@@ -4768,7 +4754,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 180,
+       "crystals": 920,
        "items": {
         "gold_bar": 3
        }
@@ -5041,9 +5027,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_refined": 1
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -5124,16 +5108,16 @@
       "ruby": 1,
       "sapphire": 1
      },
+     "strategist": 650,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 650
+     }
     },
     "nodes": [
      {
@@ -5320,7 +5304,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 240,
+       "crystals": 1070,
        "items": {
         "crystal_battery": 2
        }
@@ -5606,9 +5590,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "ruby": 1
-       }
+       "items": {}
       },
       "links": [
        "n4",
@@ -5697,16 +5679,16 @@
       "ruby": 1,
       "sapphire": 1
      },
+     "strategist": 650,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 650
+     }
     },
     "nodes": [
      {
@@ -5986,7 +5968,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 240,
+       "crystals": 1070,
        "items": {
         "crystal_battery": 2
        }
@@ -6192,9 +6174,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_battery": 1
-       }
+       "items": {}
       },
       "links": [
        "n4",
@@ -6279,6 +6259,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -6287,8 +6268,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -6725,9 +6705,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -6806,16 +6784,16 @@
       "gold_bar": 3,
       "crystal_refined": 3
      },
+     "strategist": 550,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 550
+     }
     },
     "nodes": [
      {
@@ -6842,7 +6820,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 180,
+       "crystals": 920,
        "items": {
         "gold_bar": 3
        }
@@ -7211,9 +7189,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_refined": 1
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -7294,16 +7270,16 @@
       "ruby": 1,
       "sapphire": 1
      },
+     "strategist": 650,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 650
+     }
     },
     "nodes": [
      {
@@ -7330,7 +7306,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 240,
+       "crystals": 1070,
        "items": {
         "crystal_battery": 2
        }
@@ -7750,9 +7726,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "ruby": 1
-       }
+       "items": {}
       },
       "links": [
        "n4",
@@ -7840,16 +7814,16 @@
       "gold_bar": 6,
       "emerald": 1
      },
+     "strategist": 750,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 6
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 12,
+       "data_chip": 3
       }
-     },
-     "strategist": 750
+     }
     },
     "nodes": [
      {
@@ -8037,7 +8011,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 300,
+       "crystals": 1540,
        "items": {
         "crystal_battery": 3
        }
@@ -8059,7 +8033,7 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 300,
+       "crystals": 1540,
        "items": {
         "crystal_battery": 3
        }
@@ -8334,9 +8308,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_battery": 1
-       }
+       "items": {}
       },
       "links": [
        "n5",
@@ -8429,6 +8401,7 @@
       "potion": 3,
       "copper_bar": 5
      },
+     "strategist": 350,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -8437,8 +8410,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 350
+     }
     },
     "nodes": [
      {
@@ -8761,9 +8733,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "potion": 1
-       }
+       "items": {}
       },
       "links": [
        "n3"
@@ -8833,6 +8803,7 @@
       "greater_potion": 2,
       "iron_bar": 5
      },
+     "strategist": 450,
      "arc_items": {
       "penguins": {
        "crystal_refined": 2
@@ -8841,8 +8812,7 @@
        "servo": 4,
        "data_chip": 1
       }
-     },
-     "strategist": 450
+     }
     },
     "nodes": [
      {
@@ -8869,7 +8839,7 @@
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 120,
+       "crystals": 490,
        "items": {
         "greater_potion": 2
        }
@@ -9225,9 +9195,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "iron_bar": 2
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -9307,16 +9275,16 @@
       "gold_bar": 3,
       "data_chip": 3
      },
+     "strategist": 550,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 550
+     }
     },
     "nodes": [
      {
@@ -9419,7 +9387,7 @@
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 180,
+       "crystals": 920,
        "items": {
         "gold_bar": 3
        }
@@ -9698,9 +9666,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "gold_bar": 1
-       }
+       "items": {}
       },
       "links": [
        "n3",
@@ -9781,16 +9747,16 @@
       "ruby": 1,
       "sapphire": 1
      },
+     "strategist": 650,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 650
+     }
     },
     "nodes": [
      {
@@ -9894,7 +9860,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 240,
+       "crystals": 1070,
        "items": {
         "crystal_battery": 2
        }
@@ -10298,9 +10264,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_battery": 1
-       }
+       "items": {}
       },
       "links": [
        "n4",
@@ -10389,16 +10353,16 @@
       "ruby": 1,
       "sapphire": 1
      },
+     "strategist": 650,
      "arc_items": {
       "penguins": {
-       "crystal_refined": 2
+       "crystal_refined": 4
       },
       "gangsters": {
-       "servo": 4,
-       "data_chip": 1
+       "servo": 8,
+       "data_chip": 2
       }
-     },
-     "strategist": 650
+     }
     },
     "nodes": [
      {
@@ -10502,7 +10466,7 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 240,
+       "crystals": 1070,
        "items": {
         "crystal_battery": 2
        }
@@ -10871,9 +10835,7 @@
        "crystals": 0,
        "supply": 0,
        "morale": 0,
-       "items": {
-        "crystal_battery": 1
-       }
+       "items": {}
       },
       "links": [
        "n4",

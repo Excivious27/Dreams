@@ -517,6 +517,8 @@ def _reward(tier, typ, arc, rng):
          "morale": {"skirmish": 8, "siege": 12, "escort": 10, "defend": 10, "boss": 15, "gate": 0}[typ], "items": {}}
     pick = list(REWARD_ITEMS[tier].items())
     k, n = pick[rng.randrange(len(pick))]
+    if typ == "gate":  # the gate pays the campaign's big reward instead (no stray item)
+        return r
     r["items"][k] = max(1, n // 2)
     if arc == "gangsters" and k in GANG_SWAP:
         r["items"] = {GANG_SWAP[k]: max(1, n // 2)}
@@ -561,7 +563,12 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
         if typ in ("camp", "cache"):
             node["brief"] = {"camp": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
                              "cache": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale."}[typ]
-            node["loot"] = {"supply": 20 + 4 * tier, "morale": 15, "crystals": 60 * tier, "items": dict([list(REWARD_ITEMS[tier].items())[0]])}
+            li = dict([list(REWARD_ITEMS[tier].items())[0]])
+            if arc == "gangsters":
+                li = {GANG_SWAP.get(k, k): v for k, v in li.items()}
+            # "share" pays about 0.8x what "take" is worth in goods (C3 economy)
+            worth = sum(int(IT[k].get("value", 50)) * v for k, v in li.items()) + 6 * (20 + 4 * tier)
+            node["loot"] = {"supply": 20 + 4 * tier, "morale": 15, "crystals": int(round(0.8 * worth / 10.0)) * 10, "items": li}
         else:
             cfgs = {}
             for a in arcs:
@@ -633,7 +640,8 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                 best[l] = w
                 heapq.heappush(hq, (w, l))
     gate_id = [nd["id"] for nd in nodes if nd["type"] == "gate"][0]
-    big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "arc_items": ARC_ITEMS, "strategist": 250 + 100 * tier}
+    big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "strategist": 250 + 100 * tier,
+           "arc_items": {a: {k: v * ((tier + 1) // 2) for k, v in ARC_ITEMS[a].items()} for a in ARC_ITEMS}}
     if arc == "gangsters":
         big["items"] = {GANG_SWAP.get(k, k): v for k, v in big["items"].items()}
     if arc == "both":
