@@ -80,7 +80,7 @@ static func free_spot(m: GameMap, at: Vector2, r := 6) -> Vector2:
 				var c := c0 + Vector2i(dx, dy)
 				if m.blocked.has(c) or m.is_water_cell(c):
 					continue
-				var w := m.cell_center(c)
+				var w := m.cell_pos(c.x + 0.5, c.y + 0.5)
 				if best == Vector2.INF or w.distance_to(at) < best.distance_to(at):
 					best = w
 		if best != Vector2.INF:

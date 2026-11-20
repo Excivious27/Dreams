@@ -310,9 +310,12 @@ func _capture(delta: float) -> void:
 		var was := str(p["owner"])
 		if float(p["prog"]) >= 1.0:
 			if str(p["owner"]) != "ally":
-				GameState.add_arc_xp(10)
-				GameState.add_xp("leadership", 6)
-				GameState.add_xp("strategist", 20)
+				if drill != null:
+					drill.xp += 20  # the drill pays its XP in one go at the end (no level-up toasts mid-step)
+				else:
+					GameState.add_arc_xp(10)
+					GameState.add_xp("leadership", 6)
+					GameState.add_xp("strategist", 20)
 			p["owner"] = "ally"
 		elif float(p["prog"]) <= -1.0:
 			p["owner"] = "enemy"
@@ -930,7 +933,7 @@ func _draw_hud() -> void:
 	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
 	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by in ["hold", "drill"] else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
 	# The objective, always on screen, in its own banner.
-	var goal := _goal_text()
+	var goal := _goal_text() if drill == null else ""  # the drill's step card says what to do
 	if goal != "":
 		var gr := Rect2(8, y + 22, 254, 15)
 		_hud.draw_rect(gr, Color(0.06, 0.05, 0.08, 0.72))
@@ -1046,8 +1049,25 @@ func _duck_music() -> void:
 			mu.set_duck(was))
 
 
+## The drill can't hurt you: knocked out, worn out or up too late, the trainer
+## pulls you out (half health, no fee, no pass-out) and the drill ends untaken.
+## GameMap.player_down hands over here while a drill runs.
+func drill_rescue(_reason := "hurt") -> void:
+	if _over:
+		return
+	GameState.run["hp"] = maxi(int(GameState.run["hp"]), int(GameState.run["max_hp"]) / 2)
+	GameState.run["energy"] = maxi(int(GameState.run["energy"]), int(GameState.run["max_energy"]) / 4)
+	GameState.status_clear()
+	map.player.invuln = 2.0
+	var tr := CampaignGate.trainer()
+	map.hud.toast("%s pulls you out of the drill. No harm done." % (tr if tr != "" else "Your trainer"), Color(1, 0.9, 0.6))
+	_end(false)
+
+
 func _end_drill(won: bool, travel: bool) -> void:
 	_over = true
+	if drill != null and drill.xp > 0:
+		GameState.add_xp("strategist", drill.xp)
 	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
 	_duck_music()
 	for e in map.enemies.duplicate():

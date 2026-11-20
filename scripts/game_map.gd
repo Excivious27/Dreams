@@ -2395,6 +2395,9 @@ func player_down(reason := "hurt") -> void:
 		return
 	# Knocked out mid-battle counts as a lost campaign (and still teaches something).
 	var bt: Variant = get("battle")
+	if bt is Battle and (bt as Battle).is_drill and not (bt as Battle)._over:
+		(bt as Battle).drill_rescue(reason)  # the drill is risk-free: no faint, no fee
+		return
 	if bt is Battle and not (bt as Battle)._over:
 		(bt as Battle)._end(false, false)
 	_changing = true
