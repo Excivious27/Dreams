@@ -1,0 +1,9 @@
+# Python packages CI needs (conduct-ci.yml, deploy.yml). tools/ci_deps_check.py imports each one.
+# A new third-party import in tools/ or web/ goes here in the same commit.
+numpy
+pillow
+scipy
+fonttools
+openpyxl
+py7zr
+markdown

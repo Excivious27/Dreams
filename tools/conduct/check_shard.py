@@ -3,6 +3,7 @@
 
     CHECK_SHARD=i/N bash tools/check.sh      (check.sh execs this script)
     python3 tools/conduct/check_shard.py [i/N] [--list]
+    python3 tools/conduct/check_shard.py [N] --for-files a.gd tools/b.py ...   (-v: why)
 
 check.sh stays a plain script that people edit as before: blocks separated by a
 blank line (at nesting depth 0) are steps. The first step (import) runs in every
@@ -13,6 +14,14 @@ set by an earlier step (each test block sets its own).
 Unlike the plain script, a shard keeps going after a failing step and exits 1 at
 the end, so one run reports every failure. Per-step wall times go to
 $CHECK_TIMES (JSON lines: step, name, rc, secs) when set.
+
+--for-files prints the shard numbers (comma list, of N=6 by default) whose steps
+run or test the given files, for fix agents' pre-merge CI runs
+(ci_run.sh --shards "$(python3 tools/conduct/check_shard.py --for-files ...)").
+A step "touches" a file when its own text, or a tool it runs (tools/*.gd|py|sh,
+one level of preload/load/class use followed), names the file's path, basename or
+class_name. Generators map through the data files they write. A file nothing
+matches, or a core file most steps reach, gives every shard.
 """
 import json, os, re, shlex, subprocess, sys, time
 
@@ -86,14 +95,112 @@ def name_of(step, k):
     return "step %d" % k
 
 
+def shard_of(k, sn):
+    return 0 if k == 1 else (k - 2) % sn + 1
+
+
+TOOL_REF = re.compile(r"(?:res://)?(tools/[A-Za-z0-9_/]+\.(?:gd|py|sh))")
+_src_cache = {}
+
+
+def _read(rel):
+    if rel not in _src_cache:
+        try:
+            _src_cache[rel] = open(os.path.join(ROOT, rel), errors="replace").read()
+        except OSError:
+            _src_cache[rel] = ""
+    return _src_cache[rel]
+
+
+def step_text(step):
+    """The step's own text plus every tool it runs, and the tools those name (one level)."""
+    text = "\n".join(step)
+    seen = set()
+    todo = TOOL_REF.findall(text)
+    depth = {t: 0 for t in todo}
+    parts = [text]
+    while todo:
+        t = todo.pop()
+        if t in seen:
+            continue
+        seen.add(t)
+        s = _read(t)
+        parts.append(s)
+        if depth.get(t, 0) < 1:
+            for u in TOOL_REF.findall(s):
+                if u not in depth:
+                    depth[u] = depth[t] + 1
+                    todo.append(u)
+    return "\n".join(parts)
+
+
+def keys_for(rel):
+    """Words that show a step reaches this file."""
+    rel = rel.replace("\\", "/").lstrip("./")
+    if rel.startswith(ROOT + "/"):
+        rel = rel[len(ROOT) + 1:]
+    base = os.path.basename(rel)
+    stem = os.path.splitext(base)[0]
+    keys = {rel, base}
+    src = _read(rel)
+    m = re.search(r"^class_name\s+(\w+)", src, re.M)
+    if m:
+        keys.add(m.group(1))
+    if rel.endswith(".py") and "/gen_" in "/" + base:
+        # a generator reaches whatever reads the data it writes
+        for out in re.findall(r"data/[A-Za-z0-9_]+\.json", src):
+            keys.add(out)
+    if rel.endswith(".tscn"):
+        keys.add(stem)
+    return {k for k in keys if len(k) > 3}
+
+
+def for_files(files, sn, verbose=False):
+    _, steps = split_steps()
+    texts = [step_text(st) for st in steps]
+    hit, why = set(), []
+    for f in files:
+        keys = keys_for(f)
+        found = []
+        for k, t in enumerate(texts, 1):
+            if k == 1:
+                continue  # import runs everywhere
+            for key in keys:
+                pat = re.escape(key) if ("/" in key or "." in key) else r"\b%s\b" % re.escape(key)
+                if re.search(pat, t):
+                    found.append((k, key))
+                    break
+        if not found or len(found) > 0.6 * (len(steps) - 1):
+            why.append("%s: %s -> every shard" % (f, "no step reaches it" if not found else "core file (%d steps)" % len(found)))
+            return list(range(1, sn + 1)), why
+        for k, key in found:
+            hit.add(shard_of(k, sn))
+            why.append("%s: step %d %s (%s) shard %d" % (f, k, name_of(steps[k - 1], k), key, shard_of(k, sn)))
+    return sorted(hit) or list(range(1, sn + 1)), why
+
+
 def main():
+    if "--for-files" in sys.argv:
+        i = sys.argv.index("--for-files")
+        pre = [a for a in sys.argv[1:i] if not a.startswith("-")]
+        sn = int(pre[0].split("/")[-1]) if pre else 6
+        files = [a for a in sys.argv[i + 1:] if not a.startswith("-")]
+        if not files:
+            print(",".join(str(x) for x in range(1, sn + 1)))
+            return 0
+        shards, why = for_files(files, sn, "-v" in sys.argv)
+        if "-v" in sys.argv:
+            for w in why:
+                print("  " + w, file=sys.stderr)
+        print(",".join(str(x) for x in shards))
+        return 0
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     spec = args[0] if args else os.environ.get("CHECK_SHARD", "1/1")
     si, sn = (int(x) for x in spec.split("/"))
     pre, steps = split_steps()
     if "--list" in sys.argv:
         for k, st in enumerate(steps, 1):
-            sh = 0 if k == 1 else (k - 2) % sn + 1
+            sh = shard_of(k, sn)
             print("%3d shard %s  %s" % (k, "all" if sh == 0 else sh, name_of(st, k)))
         return 0
     # check.sh's own "cd $(dirname $0)/.." means nothing under bash -c ($0 = bash): cd to the repo root instead.
