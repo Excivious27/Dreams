@@ -73,6 +73,9 @@ func _run() -> void:
 			var id := str(s["id"])
 			check(not seen.has(id) and id.begins_with("ext_" + part + "_"), "%s id unique and named ext_<part>_<style>" % id)
 			seen[id] = true
+			if s.has("wall"):
+				check(ResourceLoader.exists(HouseExterior.DIR + str(s["wall"]) + ".png"), "%s wall texture exists" % id)
+			check(s.has("ramp") or s.has("art") or s.has("fence") or s.has("wall"), "%s has a look" % id)
 			if s.has("ramp"):
 				check((s["ramp"] as Array).size() == 5, "%s ramp has 5 stops" % id)
 			if s.has("art"):
@@ -162,6 +165,17 @@ func _run() -> void:
 	sp = m._house_sprite
 	check(sp.get_node_or_null("HouseExterior") != null and sp.material is ShaderMaterial, "winter house still styled")
 	await shot(m, "winter")
+	GameState.run["crystals"] = 9000
+	HouseExterior.choose("siding", "ext_siding_brick")
+	GameState.run["day"] = 3
+	m = await load_farm()
+	check(bool((m._house_sprite.material as ShaderMaterial).get_shader_parameter("use_wall")), "Red Brick walls use the brick texture")
+	await shot(m, "brick")
+	HouseExterior.choose("siding", "ext_siding_logs")
+	m = await load_farm()
+	await shot(m, "logs")
+	HouseExterior.choose("siding", "ext_siding_white")
+	GameState.run["day"] = GameState.DAYS_PER_SEASON * 3 + 2
 	# winter night (c10b_01-05): the snowy house stays, dimmed, windows lit
 	for tier in [1, 3]:
 		GameState.run["builds"] = {"house": tier}

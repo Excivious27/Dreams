@@ -46,6 +46,9 @@ const STYLES := {
 		{"id": "ext_siding_walnut", "name": "Dark Walnut", "price": 900, "ramp": ["1a0f08", "331e10", "523219", "754c28", "a0723f"]},
 		{"id": "ext_siding_ice", "name": "Pastel Ice", "price": 1100, "arc": "penguins", "ramp": ["2c3f5a", "5677a0", "88a9cf", "b9d4ee", "e8f4ff"]},
 		{"id": "ext_siding_soot", "name": "Soot Grey", "price": 650, "arc": "gangsters", "ramp": ["121214", "25252a", "3a3a41", "55555e", "7a7a84"]},
+		{"id": "ext_siding_brick", "name": "Red Brick", "price": 1600, "wall": "wall_brick"},
+		{"id": "ext_siding_fieldstone", "name": "Fieldstone", "price": 1800, "wall": "wall_fieldstone"},
+		{"id": "ext_siding_logs", "name": "Log Cabin", "price": 1400, "wall": "wall_logs"},
 	],
 	"glass": [
 		{"id": "ext_glass_amber", "name": "Amber Glass", "price": 350, "ramp": ["3a1e05", "6e3c0c", "a8641a", "d8962e", "f6cf74"]},
@@ -308,7 +311,7 @@ static func _base_name(map: Node, sprite: Sprite2D) -> String:
 func _set_material() -> void:
 	var any := false
 	for part: String in PART_ID:
-		any = any or look_now.has(part)
+		any = any or look_now.has(part)  # every siding style (ramp or wall) needs the material
 	if not any:
 		if _host.material is ShaderMaterial and (_host.material as ShaderMaterial).shader and (_host.material as ShaderMaterial).shader.resource_path.ends_with("house_palette.gdshader"):
 			_host.material = null
@@ -336,6 +339,12 @@ func _set_material() -> void:
 				var c := Color(h)
 				cols.append(Vector3(c.r, c.g, c.b))
 			mat.set_shader_parameter("ramp" + k, cols)
+		if part == "siding":
+			var wt := _load(str(style(id).get("wall", "")))
+			mat.set_shader_parameter("use_wall", wt != null)
+			if wt:
+				mat.set_shader_parameter("wall", wt)
+				mat.set_shader_parameter("wall_px", float(wt.get_width()))
 		var lr: Array = lum.get(k, [])
 		if lr.size() == 2:
 			mat.set_shader_parameter("lum" + k, Vector2(float(lr[0]), float(lr[1])))

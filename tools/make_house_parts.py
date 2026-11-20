@@ -5,8 +5,8 @@ Writes art/gen/house_parts/<house>_parts.png for house, house_2, house_3: the sa
 size as the day picture, R channel = part id * 32 (nearest-sampled by
 shaders/house_palette.gdshader in UV space, so it also fits the slightly scaled
 _night/_snow pictures):
-  1 roof tiles   2 siding / wood (walls, trim, posts, steps)   3 window glass
-  4 stonework (base, chimneys)   0 anything else (flowers, bushes, lamps, outline)
+  1 roof tiles   2 wood trim (posts, rails, beams, steps)   3 window glass
+  4 stonework (base, chimneys)   5 broad wall planks   0 anything else (flowers, bushes, lamps, outline)
 Roof = the saturated red tile core, closed morphologically and hole-filled so tile
 highlights and inner outlines inside the roof get the ramp too (c10b_01-15).
 A coloured preview goes to /tmp/house_parts_preview.png. `--check` only verifies
@@ -24,7 +24,7 @@ SRC = os.path.join(ROOT, "art/gen/buildings")
 OUT = os.path.join(ROOT, "art/gen/house_parts")
 HOUSES = ["house", "house_2", "house_3"]
 STEP = 32
-PREVIEW = {1: (40, 90, 230), 2: (240, 200, 40), 3: (40, 230, 230), 4: (200, 60, 200)}
+PREVIEW = {1: (40, 90, 230), 2: (240, 200, 40), 3: (40, 230, 230), 4: (200, 60, 200), 5: (240, 120, 40)}
 
 
 # Door boxes (day-picture px, x0, y0, x1, y1): the painted door is never roof (its
@@ -80,6 +80,12 @@ def parts(img, door=None, roof_y=None):
     br0 = b / np.maximum(r, 1)
     wood = warm & ~roof & (gr >= 0.38) & (gr < 0.9) & ~((br0 > 0.5) & (gr > 0.6))
     out[wood] = 2
+    # broad wall areas (not posts, rails, beams, steps): material sidings go here only
+    broad = ndimage.binary_opening(wood | glass, iterations=3) & wood
+    out[broad] = 5
+    if door:  # steps below the door are trim, not wall
+        low = out[door[3]:, :]
+        low[low == 5] = 2
     out[glass] = 3
     br = b / np.maximum(r, 1)
     stone = op & (br > 0.5) & (gr > 0.6) & (r >= g) & (sat < 0.45) & (lum > 60) & ~glass & ~roof

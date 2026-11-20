@@ -40,6 +40,43 @@ def key(rgba):
     return a
 
 
+# Seamless straight-on wall textures for the siding "material" styles (c10b_01-22):
+# the shader tiles them over the walls, shaded by the painted planks' light.
+WALLS = {"file": "ext_walls.png", "names": ["brick", "fieldstone", "logs"], "px": 64,
+         "prompt": "3 square seamless wall swatches: red brick, grey fieldstone, horizontal log cabin (generate_image)"}
+
+
+def tileable(im):
+    """Cross-fade a half-offset copy across the seams so the swatch wraps."""
+    a = np.asarray(im).astype(np.float32)
+    h, w = a.shape[:2]
+    sh = np.roll(np.roll(a, h // 2, 0), w // 2, 1)
+    yy = np.abs(np.arange(h) - h / 2) / (h / 2)
+    xx = np.abs(np.arange(w) - w / 2) / (w / 2)
+    m = np.clip((np.maximum(yy[:, None], xx[None, :]) - 0.7) / 0.3, 0, 1)[..., None]
+    return Image.fromarray((a * (1 - m) + sh * m).astype(np.uint8), im.mode)
+
+
+def walls():
+    src = os.path.join(INC, WALLS["file"])
+    rgba = key(np.asarray(Image.open(src).convert("RGBA")))
+    boxes = sorted(blobs(rgba, merge=2, min_area=5000), key=lambda b: b[0])
+    if len(boxes) != len(WALLS["names"]):
+        print("walls: found", len(boxes))
+        sys.exit(1)
+    for name, b in zip(WALLS["names"], boxes):
+        x0, y0, x1, y1 = b
+        side = min(x1 - x0, y1 - y0) - 12
+        cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
+        im = Image.fromarray(rgba[cy - side // 2:cy + side // 2, cx - side // 2:cx + side // 2], "RGBA").convert("RGB")
+        im = tileable(im.resize((WALLS["px"] * 2, WALLS["px"] * 2), Image.LANCZOS))
+        im = tileable(im).resize((WALLS["px"], WALLS["px"]), Image.LANCZOS)
+        dst = os.path.join(OUT, "wall_%s.png" % name)
+        if os.path.exists(dst):
+            os.remove(dst)
+        im.save(dst)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     made = 0
@@ -66,7 +103,8 @@ def main():
                 os.remove(dst)  # hardlinked art: never write in place
             Image.fromarray(arr, "RGBA").save(dst)
             made += 1
-    print("house parts overlays:", made)
+    walls()
+    print("house parts overlays:", made, "+ walls", len(WALLS["names"]))
 
 
 if __name__ == "__main__":
