@@ -1077,6 +1077,12 @@ func draw_map() -> void:
 	_draw_part(self, Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), -1)
 
 
+## Mines: lamps and torches glow at a steady strength, day or night (c5_10 #4).
+## No tint (has_sky is false): the floors keep their own lighting.
+func underground_light() -> float:
+	return 0.45
+
+
 ## Chunked mines never use GameMap's ground bake (their MineChunks draw the
 ## floor), so the arrival cover must not wait for a bake that never starts (c5_16 #1).
 func _bake_on() -> bool:

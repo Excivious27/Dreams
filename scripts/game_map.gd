@@ -24,6 +24,7 @@ var hud: Hud
 var enemies: Array = []
 var sky: Scenery
 var glow: NightGlow
+var fixed_dark := -1.0   # >= 0: underground light (no sky clock, lamps always glow); underground_light()
 var _canopies: Array = []      # tall sprites that fade when you walk behind them
 var _faded: Array = []
 var _fade_t := 0.0
@@ -107,9 +108,10 @@ func _ready() -> void:
 				blocked.erase(Vector2i(x, y))
 				hard.erase(Vector2i(x, y))
 		_exit_zone(e)  # the whole road mouth, out through the border band
+	fixed_dark = underground_light()
 	if has_sky:
 		sky = Scenery.new()
-		sky.weather = GameState.weather_today()  # (gangster day 1 is real rain in weather_for)
+		sky.weather = GameState.weather_today() if fixed_dark < 0.0 else "clear"  # (gangster day 1 is real rain in weather_for)
 		add_child(sky)
 	_night = CanvasModulate.new()
 	add_child(_night)
@@ -1440,6 +1442,8 @@ func _update_canopy_fade() -> void:
 ## season's sunset and sunrise: warm gold at dusk, then real night. Indoors
 ## gets lamplight after dark; underground and space keep their own light.
 func sky_tint(t: int) -> Color:
+	if fixed_dark >= 0.0 and has_sky:  # underground: one steady dimness all day (c5_10 #3)
+		return Color(1, 1, 1).lerp(Color(0.46, 0.48, 0.66), fixed_dark * Settings.night_strength())
 	var dark := GameState.darkness(t)
 	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
 		dark *= 0.3
@@ -1540,6 +1544,8 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	var s := prop("buildings", name, base, w_cells - 1, 0.0, false, scale)
 	if s == null:
 		return Vector2i(-1, -1)
+	if glow:
+		glow.add_windows(s, name)  # lit panes after dark (NightGlow, buildings/<name>_lit)
 	# Block the body (leave the top ~1/3 open so you can walk "behind" the roof line).
 	var body_rows := maxi(1, int(ceil(h_cells * 0.62)))
 	for y in range(base.y - body_rows + 1, base.y + 1):
@@ -1774,7 +1780,7 @@ func fx(name: String, at: Vector2, fps := 12.0, scale := 0.5, flip := false) -> 
 ## Rain/snow/leaves/fireflies overlay; set by season/weather.
 func set_weather(kind: String) -> void:
 	if sky:
-		sky.weather = kind
+		sky.weather = kind if fixed_dark < 0.0 else "clear"  # no rain/snow underground
 
 
 func set_aurora(on: bool) -> void:
@@ -4829,3 +4835,26 @@ func _crisp_hook() -> void:
 func _crisp_added(n: Node) -> void:
 	if n is AnimatedSprite2D and is_ancestor_of(n):
 		CrispArt.apply_anim.call_deferred(n)
+
+
+## Underground places keep one steady dimness instead of the outdoor sky clock,
+## with their lamps lit (c5_10 #3 #4): regions.json "light" (0..1 darkness);
+## caves ("cave": true) and UNDERGROUND default to 0.5. Mines override this.
+const UNDERGROUND := ["hollow_deeps", "hollow_heart", "bf_sewer_works", "iron_tunnels", "frost_caverns", "gilt_vaults"]
+func underground_light() -> float:
+	var rd := RegionData.region(scene_id())
+	if rd.has("light"):
+		return clampf(float(rd["light"]), -1.0, 1.0)
+	if bool(rd.get("cave", false)) or scene_id() in UNDERGROUND:
+		return 0.5
+	return -1.0
+
+
+## How strong lamp/window glow is right now (NightGlow): the night outdoors,
+## the fixed dimness underground, nothing in other skyless rooms.
+func glow_dark() -> float:
+	if fixed_dark >= 0.0:
+		return fixed_dark * Settings.night_strength()
+	if not has_sky:
+		return 0.0
+	return GameState.darkness() * Settings.night_strength()
