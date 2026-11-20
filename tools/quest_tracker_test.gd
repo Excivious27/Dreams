@@ -99,6 +99,19 @@ func _run() -> void:
 		await shot("menu_quests")
 		menu.toggle()
 		await frames(3)
+	# A long choice list pins its way-out row below the scroll (c3_03 #2).
+	var dl := Dialogue.instance(self)
+	var opts: Array = []
+	for i in 16:
+		opts.append("Option number %d with a few words" % i)
+	opts.append("Leave")
+	dl.say([{"text": "Pick one.", "choice": opts}])
+	await frames(4)
+	check(dl._pin.get_child_count() == 1 and (dl._pin.get_child(0) as Button).text == "Leave", "long list: the way out is pinned in view")
+	await shot("pinned_way_out")
+	(dl._pin.get_child(0) as Button).pressed.emit()
+	await frames(4)
+	check(not dl.active and dl.last_choice == opts.size() - 1, "the pinned row picks the way out (%d)" % dl.last_choice)
 	# The mines: the compass always points to the way down.
 	GameState.run["flags"]["mine_seen"] = true
 	(load("res://scripts/mine.gd") as Variant).force_seed = 3

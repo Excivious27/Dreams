@@ -211,8 +211,13 @@ func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	return l
 
 
+## The last menu button pressed (Hud names it when a pause is left with no owner).
+static var last_press := ""
+
+
 func _button(text: String, cb: Callable) -> Button:
 	var b := Button.new()
+	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
 	b.text = text
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 9)

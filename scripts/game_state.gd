@@ -365,8 +365,7 @@ static func guest_morning() -> Dictionary:
 	run["sellbox_q"] = {}
 	run["sellbox"] = {}
 	run["sold_today"] = {}
-	run["crystals"] = int(run["crystals"]) + total
-	run["earned_total"] = int(run.get("earned_total", 0)) + total
+	add_money(total, "sales")
 	report["earned"] = total
 	run["energy"] = int(run["max_energy"])
 	run["fed_en"] = 0
@@ -2249,9 +2248,23 @@ static func _cond_ok(when: Dictionary) -> bool:
 	return true
 
 
+## Money in (C3 c3_08 #9): every payout counts in earned_total ("earned in
+## all" on the Hero tab), with a tally per source in run.earned_by (sales,
+## quest, campaign, kills, ...). Spending stays a plain subtraction.
+static func add_money(n: int, source := "other") -> void:
+	if run.is_empty() or n == 0:
+		return
+	run["crystals"] = int(run.get("crystals", 0)) + n
+	if n > 0:
+		run["earned_total"] = int(run.get("earned_total", 0)) + n
+		if not (run.get("earned_by") is Dictionary):
+			run["earned_by"] = {}
+		run["earned_by"][source] = int(run["earned_by"].get(source, 0)) + n
+
+
 static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("crystals"):
-		run["crystals"] = int(run["crystals"]) + int(rw["crystals"])
+		add_money(int(rw["crystals"]), "quest")
 	for k in ["max_hp", "max_energy", "max_mana"]:
 		if rw.has(k):
 			grow_vital(k.trim_prefix("max_"), int(rw[k]))
@@ -2570,7 +2583,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	_apply_max_stats()
 	var report := {"earned": 0, "sold": [], "grown": 0}
 	if bonus("bartering", "interest") > 0.0:
-		run["crystals"] = int(run["crystals"]) + mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier())
+		add_money(mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier()), "interest")
 	var total := 0
 	# sold_today still holds the day's sales to Sal's fence, so the box saturates on top of them.
 	if not (run.get("sold_today") is Dictionary):
@@ -2594,8 +2607,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	if total > 0:
 		add_xp("bartering", mini(total / 15, 20 + 5 * skill_level("bartering")))
 	run["sold_today"] = {}
-	run["crystals"] = int(run["crystals"]) + total
-	run["earned_total"] = int(run.get("earned_total", 0)) + total
+	add_money(total, "sales")
 	report["earned"] = total
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).

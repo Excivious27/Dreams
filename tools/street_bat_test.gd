@@ -23,5 +23,10 @@ func _initialize() -> void:
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	check(GameState.item_name("sword") == "Wooden Sword" and Hud.icon_for("sword") == "sword_wood", "penguins keep the Wooden Sword")
 	check(Player.gun_sound("scattergun") == "shot_shotgun" and Player.gun_sound("tommy_gun") == "shot_rifle" and Player.gun_sound("six_shooter") == "shot", "gun sounds follow the gun in hand")
+	# Money in counts in earned_total, by source (c3_08 #9).
+	var e0 := int(GameState.run.get("earned_total", 0))
+	GameState.add_money(120, "campaign")
+	GameState.add_money(-50, "spend")
+	check(int(GameState.run["earned_total"]) == e0 + 120 and int(GameState.run["earned_by"]["campaign"]) == 120, "add_money counts payouts in earned_total, not spending")
 	print("street_bat_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)

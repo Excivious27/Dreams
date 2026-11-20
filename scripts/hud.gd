@@ -208,17 +208,18 @@ func _pause_watch(sc: Node) -> void:
 	if not get_tree().paused or not (sc is GameMap) or (sc as GameMap)._changing:
 		_orphan_pause = 0
 		return
-	if Dialogue.instance(get_tree()).active or modal_rect.size != Vector2.ZERO:
+	if modal_rect.size != Vector2.ZERO or keep_paused(get_tree()):
 		_orphan_pause = 0
 		return
-	for n in sc.get_children():
-		if n is GameMenu and (n as GameMenu)._open:
-			_orphan_pause = 0
-			return
 	_orphan_pause += 1
 	if _orphan_pause >= 20:
 		_orphan_pause = 0
-		push_warning("Hud: the game was paused with nothing on screen; resuming")
+		# Name what's on screen, so the bots' log shows who left the pause behind.
+		var kids: Array = []
+		for n in sc.get_children():
+			if n is CanvasLayer or n is Control:
+				kids.append("%s%s" % [n.name, "" if not (n is CanvasItem) or (n as CanvasItem).visible else "(hidden)"])
+		push_warning("Hud: the game was paused with nothing on screen; resuming (scene %s, layers %s, last menu press: %s)" % [(sc as GameMap).scene_id(), ", ".join(kids), GameMenu.last_press])
 		get_tree().paused = false
 
 
@@ -238,6 +239,9 @@ func _place_toasts() -> void:
 	# A boss intro card holds the toasts (paused, unseen) until it slides away;
 	# a region name card pushes them under itself.
 	var hold := board or not get_tree().get_nodes_in_group("toast_hold").is_empty()
+	# In a battle, a choice menu (the point menu) owns the screen: toasts wait (c3_03 #1).
+	if sc and sc.get("battle") != null and Dialogue.instance(get_tree()).active and Dialogue.instance(get_tree())._in_choice:
+		hold = true
 	_toasts.visible = not hold
 	_hold_toasts(hold)
 	for n in get_tree().get_nodes_in_group("toast_under"):
