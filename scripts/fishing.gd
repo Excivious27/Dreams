@@ -29,6 +29,9 @@ const T := {
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
 	# Legendary Koi: the lake at night under the lit lighthouse, baited, Fishing 10+.
 	"koi": {"scene": "lake", "level": 10, "chance": 0.012},
+	# Time of day: these only bite by night / by day (the rest any time). Sorted pools
+	# that would lose every fish keep them all.
+	"when": {"mooncarp": "night", "starfin": "night", "ghost_fish": "night", "sun_trout": "day", "goldfish": "day"},
 	# Fallback pools for waters with no list of their own.
 	"sea_pool": ["sunfish", "bass", "eel", "puffer", "tuna"],
 	"fresh_pool": ["carp", "bass", "catfish", "salmon", "eel"],
@@ -53,6 +56,10 @@ static func pool_for(pool_in: Array, area_tier: int) -> Array:
 			pool.append(str(f))
 	if pool.is_empty():
 		pool = (T["fresh_pool"] as Array).duplicate()
+	var now := "night" if GameState.is_night() else "day"
+	var timed := pool.filter(func(f: String) -> bool: return str((T["when"] as Dictionary).get(f, now)) == now)
+	if not timed.is_empty():
+		pool = timed
 	if area_tier <= 0:
 		var cheap := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= int(T["cheap_value"])).size()
 		if cheap < int(T["commons_min"]):

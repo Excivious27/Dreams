@@ -44,10 +44,15 @@ func _run() -> void:
 	check(_share(falls, 5, 4, "ice_pike") > 0.03, "Glacier Pike bites at Fishing 5 in Frost Falls")
 	check(_share(gilt, 8, 4, "ember_koi") > 0.02, "Ember Koi bites at Fishing 8 in Gilt Gardens")
 	check(_share(gilt, 2, 4, "ember_koi") == 0.0, "but not at Fishing 2")
-	# --- Rare Catch now picks from the top ---
+	# --- Rare Catch now picks from the top (night: mooncarp only bites after dark) ---
+	GameState.run["time"] = 23 * 60
+	lake = Fishing.pool_for(["carp", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"], 0)
+	check(not lake.has("goldfish") and lake.has("mooncarp"), "night pool: mooncarp in, goldfish out")
 	var lo := _share(lake, 8, 0, "mooncarp", 4000, 0.0)
 	var hi := _share(lake, 8, 0, "mooncarp", 4000, 0.4)
 	check(hi > lo + 0.05, "Rare Catch 40%% lifts the top fish (%.3f -> %.3f)" % [lo, hi])
+	GameState.run["time"] = 10 * 60
+	check(not Fishing.pool_for(["goldfish", "mooncarp"], 0).has("mooncarp"), "day pool: no mooncarp")
 	# --- Window by fish ---
 	check(Fishing.window_for("minnow") > Fishing.window_for("sky_fish"), "rare fish bite for a shorter window")
 	GameState.run["tool_tier"]["rod"] = 3
@@ -59,6 +64,7 @@ func _run() -> void:
 	GameState.run["time"] = 23 * 60
 	check(not Fishing.night_here("farm") and not Fishing.night_here("frost_falls"), "the lighthouse night bonus stays at the lake and sea")
 	# --- Legendary Koi has a home ---
+	lake = Fishing.pool_for(["carp", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"], 0)
 	var koi := 0
 	for i in 6000:
 		if Fishing.pick(lake, 10, true, true, 0, 0.0, "lake") == "legendary_koi":
