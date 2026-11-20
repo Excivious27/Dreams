@@ -898,94 +898,98 @@ func _plans() -> void:
 		if d.last_choice < 0 or d.last_choice >= cids.size():
 			return
 		var cat := str(cids[d.last_choice])
-		var ids: Array = []
-		var opts: Array = []
-		for id: String in Builds.data():
-			if str(Builds.data()[id].get("cat", "farm")) != cat:
+		# Inside a category: a plan's "← Back" returns to this list, not the top (C4 P6).
+		while true:
+			var ids: Array = []
+			var opts: Array = []
+			for id: String in Builds.data():
+				if str(Builds.data()[id].get("cat", "farm")) != cat:
+					continue
+				var bt := Builds.built_tier(id)
+				var nd := Builds.next_def(id)
+				var uc := Builds.under_construction(id)
+				var label := str(Builds.data()[id]["label"])
+				if not uc.is_empty():
+					var dl := int(uc["done_day"]) - int(GameState.run["day"])
+					opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
+					ids.append("")
+					continue
+				if nd.is_empty():
+					opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
+					ids.append("")
+					continue
+				var g := Builds.gate(id)
+				var why := Builds.blocker(id)
+				var mark := "" if why == "" else ("⊘ " if g != "" else "✗ ")
+				var tag := ""
+				if g == "permit":
+					tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
+				elif g != "":
+					tag = "  [%s]" % g
+				opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
+				ids.append(id)
+			opts.append("← Back")
+			var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
+			if cat == "operation":
+				legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
+			elif cat == "sanctuary":
+				legend = "Cat-topia's crafts, and homes for friends you turn back: pool, burrow and shrine open as you meet who they're for.\n" + legend
+			d.say([{"who": "Plans", "text": legend, "choice": opts, "key": ""}])
+			await d.finished
+			var i := d.last_choice
+			if i < 0 or i >= ids.size():
+				break  # "← Back" (or B): back to the categories
+			if str(ids[i]) == "":
 				continue
-			var bt := Builds.built_tier(id)
-			var nd := Builds.next_def(id)
-			var uc := Builds.under_construction(id)
-			var label := str(Builds.data()[id]["label"])
-			if not uc.is_empty():
-				var dl := int(uc["done_day"]) - int(GameState.run["day"])
-				opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
-				ids.append("")
+			var id := str(ids[i])
+			var nd2 := Builds.next_def(id)
+			var parts: Array = []
+			for need in nd2.get("cost", {}):
+				var c2 := Builds.cost_of(nd2)
+				parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
+			var g2 := Builds.gate(id)
+			var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
+			if int(nd2.get("days", 0)) > 0:
+				var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
+				text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
+			var ch: Array = []
+			var acts: Array = []
+			if g2 != "":
+				text += "\nNot yet: %s." % ("buy the permit from Alder (◆%d)" % Builds.permit_price(id) if g2 == "permit" else g2)
+			else:
+				ch.append("Build from materials  [%s]" % ", ".join(parts))
+				acts.append("build")
+				if Builds.price(id) > 0:
+					ch.append("Buy ready-made from %s  [◆%d]" % [str(Builds.data()[id].get("seller", "Hazel")), Builds.price(id)])
+					acts.append("buy")
+			ch.append("← Back")
+			d.say([{"who": "Plans", "text": text, "choice": ch, "key": ""}])
+			await d.finished
+			if d.last_choice < 0 or d.last_choice >= acts.size():
 				continue
-			if nd.is_empty():
-				opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
-				ids.append("")
-				continue
-			var g := Builds.gate(id)
-			var why := Builds.blocker(id)
-			var mark := "" if why == "" else ("⊘ " if g != "" else "✗ ")
-			var tag := ""
-			if g == "permit":
-				tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
-			elif g != "":
-				tag = "  [%s]" % g
-			opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
-			ids.append(id)
-		opts.append("← Back")
-		var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
-		if cat == "operation":
-			legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
-		elif cat == "sanctuary":
-			legend = "Cat-topia's crafts, and homes for friends you turn back: pool, burrow and shrine open as you meet who they're for.\n" + legend
-		d.say([{"who": "Plans", "text": legend, "choice": opts, "key": ""}])
-		await d.finished
-		var i := d.last_choice
-		if i < 0 or i >= ids.size() or str(ids[i]) == "":
-			continue
-		var id := str(ids[i])
-		var nd2 := Builds.next_def(id)
-		var parts: Array = []
-		for need in nd2.get("cost", {}):
-			var c2 := Builds.cost_of(nd2)
-			parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
-		var g2 := Builds.gate(id)
-		var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
-		if int(nd2.get("days", 0)) > 0:
-			var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
-			text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
-		var ch: Array = []
-		var acts: Array = []
-		if g2 != "":
-			text += "\nNot yet: %s." % ("buy the permit from Alder (◆%d)" % Builds.permit_price(id) if g2 == "permit" else g2)
-		else:
-			ch.append("Build from materials  [%s]" % ", ".join(parts))
-			acts.append("build")
-			if Builds.price(id) > 0:
-				ch.append("Buy ready-made from %s  [◆%d]" % [str(Builds.data()[id].get("seller", "Hazel")), Builds.price(id)])
-				acts.append("buy")
-		ch.append("← Back")
-		d.say([{"who": "Plans", "text": text, "choice": ch, "key": ""}])
-		await d.finished
-		if d.last_choice < 0 or d.last_choice >= acts.size():
-			continue
-		var buy := str(acts[d.last_choice]) == "buy"
-		if Net.visiting():
-			# On someone else's farm the host decides (and pays).
-			if not Net.online():
-				hud.toast("Reconnecting to your host... try again in a moment.", Color(0.9, 0.95, 1.0))
+			var buy := str(acts[d.last_choice]) == "buy"
+			if Net.visiting():
+				# On someone else's farm the host decides (and pays).
+				if not Net.online():
+					hud.toast("Reconnecting to your host... try again in a moment.", Color(0.9, 0.95, 1.0))
+					return
+				net_act({"a": "build", "id": id})
+				hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
 				return
-			net_act({"a": "build", "id": id})
-			hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
+			var msg := Builds.start(id, buy)
+			var ok := not msg.begins_with("Can't")
+			if not ok:
+				hud.toast(msg, Color(1, 0.7, 0.7))
+				continue
+			# The scene reloads below (a new HUD): a note survives it and is announced after.
+			GameState.notify(msg)
+			Music.instance(get_tree()).sfx("craft_done", "levelup")
+			GameState.save()
+			# Simplest reliable refresh: reload the scene in place.
+			GameMap.next_spawn = player.position - offset()
+			GameMap.next_facing = player.facing
+			get_tree().reload_current_scene()
 			return
-		var msg := Builds.start(id, buy)
-		var ok := not msg.begins_with("Can't")
-		if not ok:
-			hud.toast(msg, Color(1, 0.7, 0.7))
-			continue
-		# The scene reloads below (a new HUD): a note survives it and is announced after.
-		GameState.notify(msg)
-		Music.instance(get_tree()).sfx("craft_done", "levelup")
-		GameState.save()
-		# Simplest reliable refresh: reload the scene in place.
-		GameMap.next_spawn = player.position - offset()
-		GameMap.next_facing = player.facing
-		get_tree().reload_current_scene()
-		return
 
 
 func _farm_tile(c: Vector2i, sel: String) -> bool:

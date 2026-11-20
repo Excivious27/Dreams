@@ -172,6 +172,23 @@ func _run() -> void:
 		await frames(5)
 		check(not menu._open and not paused, "then B closes the menu")
 
+	# 10b. C4 P6: the Plans board's "← Back" on a plan returns to its category.
+	await frames(10)
+	m.call("_plans")
+	await frames(14)
+	d._choose("", 0)  # first category
+	await frames(14)
+	var leg := d._text.text
+	d._choose("", 0)  # first plan in it
+	await frames(14)
+	d._choose("", d._choices.get_child_count() - 1)  # ← Back
+	await frames(14)
+	check(d.active and d._text.text == leg, "Plans: Back from a plan returns to its category")
+	for i in 3:
+		if d.active:
+			d._choose("", d._choices.get_child_count() - 1)
+			await frames(14)
+	check(not d.active, "Plans: Back, Back, Leave closes the board")
 	# 11. C4 P6: B backs out of a menu that just opened (still settling).
 	await frames(10)
 	d.say([{"text": "Pick one", "choice": ["Buy seeds", "Leave"], "key": ""}])
