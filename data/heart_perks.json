@@ -312,9 +312,9 @@
     "mana": 20
    },
    "give": {
-    "#decor:dc_tt_snow_globe": 1
+    "#decor:dc_lucky_cat_gold": 1
    },
-   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Snow Globe"
+   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Golden Lucky Cat"
   },
   "10": {
    "bonus": {

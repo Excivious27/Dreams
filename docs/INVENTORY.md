@@ -4,7 +4,7 @@ Every system in the game with its state, what is still outstanding, test coverag
 
 **Summary:** 67 systems: 47 done, 11 rough, 8 missing. Average 74%.
 
-**Live counts:** 19,980 sliced art pieces in 654 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 118 headless tests, 112 in check.sh.
+**Live counts:** 20,145 sliced art pieces in 655 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 118 headless tests, 112 in check.sh.
 
 ## Systems
 
@@ -12,7 +12,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 | Area | System / feature | Status | Percent | Tests | Notes |
 |---|---|---|---|---|---|
-| Art | 19,980 sliced pieces in 654 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
+| Art | 20,145 sliced pieces in 655 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
 | Audio | 105 music tracks (ACE), 467 sfx files, 61 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |

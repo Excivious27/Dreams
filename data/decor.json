@@ -57,6 +57,9 @@
   "collection:decor_dc_show_dream_clock": "dc_show_dream_clock",
   "collection:decor_dc_show_kingpin_vault": "dc_show_kingpin_vault",
   "collection:decor_dc_show_moon_throne": "dc_show_moon_throne",
+  "collection:decor_dc_y_u_bell_tower": "dc_y_u_bell_tower",
+  "collection:decor_dc_y_u_gold_lowrider": "dc_y_u_gold_lowrider",
+  "collection:decor_dc_y_u_star_shrine": "dc_y_u_star_shrine",
   "collection:mus_all": "dc_founders_orrery",
   "commons:beds": "dc_out_sunflower_bush",
   "commons:clear": "dc_out_bench2_iron_a",
@@ -66,7 +69,7 @@
   "commons:seeds": "dc_out_hedge2_pot",
   "commons:shed": "dc_out_dock_lantern",
   "commons:well": "dc_out_well_roofed",
-  "heart:catkins:8": "dc_tt_snow_globe",
+  "heart:catkins:8": "dc_lucky_cat_gold",
   "heart:finn:8": "dc_sea_shipbottle",
   "heart:gideon:8": "dc_bookcase3_a",
   "heart:granite:8": "dc_fire_pit2",
@@ -671,7 +674,7 @@
    "glow_r": 28,
    "icon": "decor/dc_arc_pinball",
    "layer": "floor",
-   "name": "Pinball Table II",
+   "name": "Arcade Pinball Table",
    "price": 1350,
    "rarity": "rare",
    "rot": 1,
@@ -1170,7 +1173,7 @@
     "cottage"
    ],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -1205,7 +1208,7 @@
     "cottage"
    ],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -1506,7 +1509,7 @@
    "glow": false,
    "icon": "decor/dc_art_round_mirror",
    "layer": "wall",
-   "name": "Round Mirror II",
+   "name": "Gilt Round Mirror",
    "price": 185,
    "rarity": "common",
    "rot": 1,
@@ -3732,7 +3735,7 @@
    "art": "decor/dc_casino_ace_sign",
    "cat": "wall_art",
    "comfort": 3,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": true,
    "glow_r": 30,
    "icon": "decor/dc_casino_ace_sign",
@@ -3742,9 +3745,9 @@
    "rarity": "rare",
    "rot": 1,
    "sell": 180,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3768,7 +3771,7 @@
    "art": "decor/dc_casino_booth",
    "cat": "furniture",
    "comfort": 2,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_booth",
    "layer": "floor",
@@ -3781,9 +3784,9 @@
     "decor/dc_casino_booth_r1"
    ],
    "sell": 70,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     2,
@@ -3799,7 +3802,7 @@
      "ref": "chest_t2"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 2
   },
   "dc_casino_cards_art": {
@@ -3807,18 +3810,18 @@
    "art": "decor/dc_casino_cards_art",
    "cat": "wall_art",
    "comfort": 1,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_cards_art",
    "layer": "wall",
-   "name": "Royal Flush Art",
+   "name": "Playing Card Art",
    "price": 75,
    "rarity": "common",
    "rot": 1,
    "sell": 11,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3842,18 +3845,18 @@
    "art": "decor/dc_casino_chip_frame",
    "cat": "wall_art",
    "comfort": 2,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_chip_frame",
    "layer": "wall",
-   "name": "Framed Lucky Chip",
+   "name": "Framed Lucky Token",
    "price": 380,
    "rarity": "uncommon",
    "rot": 1,
    "sell": 57,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3877,18 +3880,18 @@
    "art": "decor/dc_casino_chips",
    "cat": "furniture",
    "comfort": 1,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_chips",
    "layer": "floor",
-   "name": "Chip Tower Stand",
+   "name": "Token Tower",
    "price": 130,
    "rarity": "common",
    "rot": 1,
    "sell": 20,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3904,7 +3907,7 @@
      "ref": "chest_t1"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 1
   },
   "dc_casino_dice": {
@@ -3912,7 +3915,7 @@
    "art": "decor/dc_casino_dice",
    "cat": "furniture",
    "comfort": 2,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_dice",
    "layer": "floor",
@@ -3921,9 +3924,9 @@
    "rarity": "uncommon",
    "rot": 1,
    "sell": 70,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3939,7 +3942,7 @@
      "ref": "chest_t2"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 2
   },
   "dc_casino_lamp": {
@@ -3947,7 +3950,7 @@
    "art": "decor/dc_casino_lamp",
    "cat": "furniture",
    "comfort": 1,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": true,
    "glow_r": 40,
    "icon": "decor/dc_casino_lamp",
@@ -3957,9 +3960,9 @@
    "rarity": "common",
    "rot": 1,
    "sell": 13,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -3975,7 +3978,7 @@
      "ref": "chest_t1"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 1
   },
   "dc_casino_marquee": {
@@ -3983,7 +3986,7 @@
    "art": "decor/dc_casino_marquee",
    "cat": "wall_art",
    "comfort": 5,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": true,
    "glow_r": 36,
    "icon": "decor/dc_casino_marquee",
@@ -3993,9 +3996,9 @@
    "rarity": "epic",
    "rot": 1,
    "sell": 1058,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -4019,7 +4022,7 @@
    "art": "decor/dc_casino_rope",
    "cat": "furniture",
    "comfort": 1,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_rope",
    "layer": "floor",
@@ -4028,9 +4031,9 @@
    "rarity": "common",
    "rot": 1,
    "sell": 14,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -4046,7 +4049,7 @@
      "ref": "chest_t1"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 1
   },
   "dc_casino_roulette": {
@@ -4054,18 +4057,18 @@
    "art": "decor/dc_casino_roulette",
    "cat": "furniture",
    "comfort": 5,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_roulette",
    "layer": "floor",
-   "name": "Roulette Wheel",
+   "name": "Lucky Prize Wheel",
    "price": 6900,
    "rarity": "epic",
    "rot": 1,
    "sell": 1035,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     2,
@@ -4081,7 +4084,7 @@
      "ref": "chest_t4"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 4
   },
   "dc_casino_slot": {
@@ -4089,19 +4092,19 @@
    "art": "decor/dc_casino_slot",
    "cat": "furniture",
    "comfort": 3,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": true,
    "glow_r": 28,
    "icon": "decor/dc_casino_slot",
    "layer": "floor",
-   "name": "Lucky Slot Machine",
+   "name": "Neon Fruit Machine",
    "price": 1200,
    "rarity": "rare",
    "rot": 1,
    "sell": 180,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -4117,7 +4120,7 @@
      "ref": "chest_t3"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 3
   },
   "dc_casino_stool": {
@@ -4125,11 +4128,11 @@
    "art": "decor/dc_casino_stool",
    "cat": "furniture",
    "comfort": 2,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_stool",
    "layer": "floor",
-   "name": "High-Roller Stool",
+   "name": "Velvet Bar Stool",
    "price": 355,
    "rarity": "uncommon",
    "rot": 4,
@@ -4140,9 +4143,9 @@
     "decor/dc_casino_stool_r3"
    ],
    "sell": 53,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     1,
@@ -4158,7 +4161,7 @@
      "ref": "chest_t2"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 2
   },
   "dc_casino_table": {
@@ -4166,18 +4169,18 @@
    "art": "decor/dc_casino_table",
    "cat": "furniture",
    "comfort": 3,
-   "desc": "Part of the Lucky Lounge Set.",
+   "desc": "Part of the Velvet Lounge Set.",
    "glow": false,
    "icon": "decor/dc_casino_table",
    "layer": "floor",
-   "name": "Card Table",
+   "name": "Velvet Game Table",
    "price": 2500,
    "rarity": "rare",
    "rot": 1,
    "sell": 375,
-   "set": "casino",
+   "set": "velvet_lounge",
    "sets": [
-    "casino"
+    "velvet_lounge"
    ],
    "size": [
     2,
@@ -4193,7 +4196,7 @@
      "ref": "chest_t3"
     }
    ],
-   "sub": "casino",
+   "sub": "velvet_lounge",
    "tier": 3
   },
   "dc_cat_bed": {
@@ -5755,7 +5758,7 @@
    "set": "",
    "sets": [],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -5878,12 +5881,12 @@
   },
   "dc_collectors_shelf": {
    "arc": "",
-   "art": "furniture/trophy_shelf",
+   "art": "decor/dc_collectors_shelf",
    "cat": "furniture",
    "comfort": 3,
    "desc": "A keepsake from the museum and your collections.",
    "glow": false,
-   "icon": "furniture/trophy_shelf",
+   "icon": "decor/dc_collectors_shelf",
    "layer": "floor",
    "name": "Collector's Shelf",
    "order": false,
@@ -7410,7 +7413,7 @@
    "set": "",
    "sets": [],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -9152,12 +9155,12 @@
   },
   "dc_founders_orrery": {
    "arc": "",
-   "art": "furniture/globe3",
+   "art": "decor/dc_founders_orrery",
    "cat": "decor",
    "comfort": 15,
    "desc": "One of a kind. The founders charted the valley sky with it.",
    "glow": false,
-   "icon": "furniture/globe3",
+   "icon": "decor/dc_founders_orrery",
    "layer": "floor",
    "name": "Founder's Orrery",
    "price": 0,
@@ -9229,6 +9232,40 @@
    "rarity": "common",
    "rot": 1,
    "sell": 14,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "wall_art",
+   "tier": 1
+  },
+  "dc_gart_car_plate_navy": {
+   "arc": "gangsters",
+   "art": "decor/dc_gart_car_plate_navy",
+   "cat": "wall_art",
+   "colourway_of": "dc_gart_car_plate",
+   "comfort": 1,
+   "desc": "Hangs on a wall.",
+   "glow": false,
+   "icon": "decor/dc_gart_car_plate_navy",
+   "layer": "wall",
+   "name": "Navy Licence Plate",
+   "price": 160,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 24,
    "set": "",
    "sets": [],
    "size": [
@@ -10430,7 +10467,7 @@
    "glow_r": 44,
    "icon": "decor/dc_glight_streetlamp",
    "layer": "floor",
-   "name": "Indoor Street Lamp",
+   "name": "Mini Street Lamp",
    "price": 175,
    "rarity": "common",
    "rot": 1,
@@ -10542,7 +10579,7 @@
     "reading_nook"
    ],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -11595,7 +11632,7 @@
    "glow": false,
    "icon": "decor/dc_ice_snowman",
    "layer": "floor",
-   "name": "Tiny Snowman II",
+   "name": "Igloo Snowman",
    "price": 185,
    "rarity": "common",
    "rot": 1,
@@ -12218,7 +12255,7 @@
    "set": "",
    "sets": [],
    "size": [
-    4,
+    3,
     2
    ],
    "sources": [
@@ -12258,7 +12295,7 @@
    ],
    "size": [
     2,
-    2
+    1
    ],
    "sources": [
     {
@@ -12396,7 +12433,7 @@
     "cosy_kitchen"
    ],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -12492,7 +12529,7 @@
    "glow": false,
    "icon": "decor/dc_kit_dining",
    "layer": "floor",
-   "name": "Round Dining Table II",
+   "name": "Family Dining Table",
    "price": 140,
    "rarity": "common",
    "rot": 1,
@@ -12854,12 +12891,12 @@
   },
   "dc_koi_scroll": {
    "arc": "",
-   "art": "items/painting_landscape",
+   "art": "decor/dc_koi_scroll",
    "cat": "wall_art",
    "comfort": 8,
    "desc": "A keepsake from the museum and your collections.",
    "glow": false,
-   "icon": "items/painting_landscape",
+   "icon": "decor/dc_koi_scroll",
    "layer": "wall",
    "name": "Koi Scroll",
    "order": false,
@@ -13109,7 +13146,7 @@
    "sets": [],
    "size": [
     2,
-    2
+    1
    ],
    "sources": [
     {
@@ -13178,7 +13215,7 @@
    "set": "",
    "sets": [],
    "size": [
-    3,
+    2,
     2
    ],
    "sources": [
@@ -13271,7 +13308,7 @@
    "glow_r": 36,
    "icon": "decor/dc_light_candelabra",
    "layer": "floor",
-   "name": "Candelabra II",
+   "name": "Five-Candle Candelabra",
    "price": 460,
    "rarity": "uncommon",
    "rot": 1,
@@ -13411,7 +13448,7 @@
    "glow_r": 56,
    "icon": "decor/dc_light_fireplace",
    "layer": "floor",
-   "name": "Stone Fireplace II",
+   "name": "Hearthstone Fireplace",
    "price": 530,
    "rarity": "uncommon",
    "rot": 1,
@@ -13540,14 +13577,51 @@
    "sub": "table",
    "tier": 1
   },
+  "dc_lucky_cat_gold": {
+   "arc": "",
+   "art": "decor/dc_lucky_cat_gold",
+   "cat": "decor",
+   "comfort": 3,
+   "desc": "A finishing touch for a room.",
+   "glow": false,
+   "icon": "decor/dc_lucky_cat_gold",
+   "layer": "floor",
+   "name": "Golden Lucky Cat",
+   "price": 2200,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 330,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "home_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    },
+    {
+     "kind": "heart",
+     "ref": "catkins:8"
+    }
+   ],
+   "sub": "decor",
+   "tier": 3
+  },
   "dc_master_hearth": {
    "arc": "",
-   "art": "furniture/fireplace2",
+   "art": "decor/dc_master_hearth",
    "cat": "furniture",
    "comfort": 5,
    "desc": "A keepsake from the museum and your collections.",
    "glow": false,
-   "icon": "furniture/fireplace2",
+   "icon": "decor/dc_master_hearth",
    "layer": "floor",
    "name": "Master Hearth",
    "order": false,
@@ -14083,7 +14157,7 @@
    "glow": false,
    "icon": "decor/dc_moon_telescope",
    "layer": "floor",
-   "name": "Brass Telescope II",
+   "name": "Moonlit Telescope",
    "price": 8000,
    "rarity": "epic",
    "rot": 1,
@@ -19971,7 +20045,7 @@
    "set": "",
    "sets": [],
    "size": [
-    4,
+    3,
     2
    ],
    "sources": [
@@ -21366,7 +21440,7 @@
     "neon_noir"
    ],
    "size": [
-    4,
+    3,
     2
    ],
    "sources": [
@@ -21466,7 +21540,7 @@
    "glow": false,
    "icon": "decor/dc_safe_bunk",
    "layer": "floor",
-   "name": "Bunk Bed II",
+   "name": "Safehouse Bunk Bed",
    "price": 740,
    "rarity": "uncommon",
    "rot": 1,
@@ -22867,8 +22941,7 @@
    "glow_r": 48,
    "icon": "decor/dc_show_crystal_tree_icon",
    "layer": "floor",
-   "name": "Crystal Tree",
-   "name_gang": "Glass Tree",
+   "name": "Glow Glass Tree",
    "price": 77500,
    "rarity": "mythic",
    "rot": 1,
@@ -23308,7 +23381,7 @@
    "set": "",
    "sets": [],
    "size": [
-    4,
+    3,
     2
    ],
    "sources": [
@@ -23333,7 +23406,7 @@
    "glow": false,
    "icon": "decor/dc_stat_bust",
    "layer": "floor",
-   "name": "Marble Bust II",
+   "name": "Gallery Marble Bust",
    "price": 1250,
    "rarity": "rare",
    "rot": 1,
@@ -23564,8 +23637,7 @@
    "glow": false,
    "icon": "decor/dc_stat_trophy",
    "layer": "floor",
-   "name": "Team Cup Trophy",
-   "name_gang": "Crew Cup Trophy",
+   "name": "Champion's Cup",
    "price": 5350,
    "rarity": "epic",
    "rot": 1,
@@ -23644,7 +23716,7 @@
    "sets": [],
    "size": [
     2,
-    2
+    1
    ],
    "sources": [
     {
@@ -24519,7 +24591,7 @@
    "glow": false,
    "icon": "decor/dc_top_dice_cup",
    "layer": "floor",
-   "name": "Lucky Dice Cup",
+   "name": "Dice Cup",
    "price": 120,
    "rarity": "common",
    "rot": 1,
@@ -24587,7 +24659,7 @@
    "glow": false,
    "icon": "decor/dc_top_globe",
    "layer": "floor",
-   "name": "Desk Globe II",
+   "name": "Little Desk Globe",
    "price": 695,
    "rarity": "uncommon",
    "rot": 1,
@@ -24725,8 +24797,7 @@
    "glow_r": 18,
    "icon": "decor/dc_top_ice_crystal",
    "layer": "floor",
-   "name": "Ice Crystal",
-   "name_gang": "Ice Glass",
+   "name": "Ice Cube Paperweight",
    "price": 1750,
    "rarity": "rare",
    "rot": 1,
@@ -24923,7 +24994,7 @@
    "tier": 2
   },
   "dc_top_snow_globe": {
-   "arc": "penguins",
+   "arc": "",
    "art": "decor/dc_top_snow_globe",
    "cat": "decor",
    "comfort": 2,
@@ -24931,7 +25002,7 @@
    "glow": false,
    "icon": "decor/dc_top_snow_globe",
    "layer": "floor",
-   "name": "Penguin Snow Globe",
+   "name": "Snowy Village Globe",
    "price": 495,
    "rarity": "uncommon",
    "rot": 1,
@@ -25194,7 +25265,7 @@
   },
   "dc_tt_candle": {
    "arc": "",
-   "art": "items/candle",
+   "art": "decor/dc_tt_candle",
    "cat": "light",
    "comfort": 1,
    "desc": "Lights up a room at night.",
@@ -25262,7 +25333,7 @@
   },
   "dc_tt_cat_figurine": {
    "arc": "penguins",
-   "art": "items/cat_figurine",
+   "art": "decor/dc_tt_cat_figurine",
    "cat": "decor",
    "comfort": 2,
    "desc": "Part of the Snow Parlour.",
@@ -25370,7 +25441,7 @@
   },
   "dc_tt_fossil_shell": {
    "arc": "",
-   "art": "items/fossil_shell",
+   "art": "decor/dc_tt_fossil_shell",
    "cat": "decor",
    "comfort": 2,
    "desc": "A little something for a shelf or table.",
@@ -25934,10 +26005,6 @@
     {
      "kind": "loot",
      "ref": "chest_t2"
-    },
-    {
-     "kind": "heart",
-     "ref": "catkins:8"
     }
    ],
    "sub": "tabletop",
@@ -26193,7 +26260,7 @@
   },
   "dc_tt_trophy_fish_a": {
    "arc": "",
-   "art": "items/trophy_fish_a",
+   "art": "decor/dc_tt_trophy_fish_a",
    "cat": "decor",
    "comfort": 3,
    "desc": "Small, but it catches the eye.",
@@ -28113,6 +28180,3060 @@
    "style": "decor/dc_wp_star_navy",
    "sub": "wallpaper",
    "tier": 3
+  },
+  "dc_y_arbor_swing": {
+   "arc": "",
+   "art": "decor/dc_y_arbor_swing",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_arbor_swing",
+   "layer": "outdoor",
+   "name": "Arbor Swing Seat",
+   "price": 1850,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 278,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "bench",
+   "tier": 3
+  },
+  "dc_y_aurora_lamp": {
+   "anim": 4,
+   "arc": "penguins",
+   "art": "decor/dc_y_aurora_lamp",
+   "cat": "outdoor",
+   "comfort": 8,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": true,
+   "glow_r": 48,
+   "icon": "decor/dc_y_aurora_lamp_icon",
+   "layer": "outdoor",
+   "name": "Northern-Lights Lamp",
+   "price": 21500,
+   "rarity": "legendary",
+   "rot": 1,
+   "sell": 3225,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 5
+  },
+  "dc_y_boulder": {
+   "arc": "",
+   "art": "decor/dc_y_boulder",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_boulder",
+   "layer": "outdoor",
+   "name": "Mossy Boulder",
+   "price": 175,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 26,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_boulder_b": {
+   "arc": "",
+   "art": "decor/dc_y_boulder_b",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_boulder_b",
+   "layer": "outdoor",
+   "name": "Mossy Boulder Pair",
+   "price": 115,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 17,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_bulb_poles": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_bulb_poles",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 40,
+   "icon": "decor/dc_y_bulb_poles",
+   "layer": "outdoor",
+   "name": "Bulb-String Poles",
+   "price": 685,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 103,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 2
+  },
+  "dc_y_cairn": {
+   "arc": "",
+   "art": "decor/dc_y_cairn",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_cairn",
+   "layer": "outdoor",
+   "name": "Trail Cairn",
+   "price": 200,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 30,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_camp_tent": {
+   "arc": "",
+   "art": "decor/dc_y_camp_tent",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_camp_tent",
+   "layer": "outdoor",
+   "name": "Camping Tent",
+   "price": 1500,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 225,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "garden",
+   "tier": 3
+  },
+  "dc_y_candle_stand": {
+   "arc": "",
+   "art": "decor/dc_y_candle_stand",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 28,
+   "icon": "decor/dc_y_candle_stand",
+   "layer": "outdoor",
+   "name": "Candle Lantern Stand",
+   "price": 635,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 95,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 2
+  },
+  "dc_y_car_lift": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_car_lift",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_car_lift",
+   "layer": "outdoor",
+   "name": "Car on a Lift",
+   "price": 10000,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 1500,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 4
+  },
+  "dc_y_cat_tower": {
+   "arc": "penguins",
+   "art": "decor/dc_y_cat_tower",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_cat_tower",
+   "layer": "outdoor",
+   "name": "Garden Cat Tower",
+   "price": 635,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 95,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 2
+  },
+  "dc_y_cat_tower_b": {
+   "arc": "penguins",
+   "art": "decor/dc_y_cat_tower_b",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_cat_tower_b",
+   "layer": "outdoor",
+   "name": "Tall Cat Tower",
+   "price": 3050,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 458,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 3
+  },
+  "dc_y_cones": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_cones",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_cones",
+   "layer": "outdoor",
+   "name": "Cones and Barricade",
+   "price": 185,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 28,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 1
+  },
+  "dc_y_crystal_cluster": {
+   "arc": "penguins",
+   "art": "decor/dc_y_crystal_cluster",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 24,
+   "icon": "decor/dc_y_crystal_cluster",
+   "layer": "outdoor",
+   "name": "Yard Crystal Cluster",
+   "price": 550,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 82,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 2
+  },
+  "dc_y_crystal_cluster_b": {
+   "arc": "penguins",
+   "art": "decor/dc_y_crystal_cluster_b",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 28,
+   "icon": "decor/dc_y_crystal_cluster_b",
+   "layer": "outdoor",
+   "name": "Glowing Crystal Spire",
+   "price": 1400,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 210,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 3
+  },
+  "dc_y_crystal_fountain": {
+   "anim": 4,
+   "arc": "penguins",
+   "art": "decor/dc_y_crystal_fountain",
+   "cat": "outdoor",
+   "comfort": 12,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": true,
+   "glow_r": 48,
+   "icon": "decor/dc_y_crystal_fountain_icon",
+   "layer": "outdoor",
+   "name": "Crystal Plaza Fountain",
+   "price": 94000,
+   "rarity": "mythic",
+   "rot": 1,
+   "sell": 14100,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "fountain",
+   "tier": 5
+  },
+  "dc_y_fence_gold": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_fence_gold",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_gold",
+   "layer": "outdoor",
+   "name": "Gilded Fence II",
+   "price": 5900,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 885,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "fence",
+   "tier": 4
+  },
+  "dc_y_fence_ice": {
+   "arc": "penguins",
+   "art": "decor/dc_y_fence_ice",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_ice",
+   "layer": "outdoor",
+   "name": "Ice-Brick Fence",
+   "price": 835,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 125,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_ice_v": {
+   "arc": "penguins",
+   "art": "decor/dc_y_fence_ice_v",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_ice_v",
+   "layer": "outdoor",
+   "name": "Ice-Brick Fence (side)",
+   "price": 790,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 118,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_iron": {
+   "arc": "",
+   "art": "decor/dc_y_fence_iron",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_iron",
+   "layer": "outdoor",
+   "name": "Iron Railing",
+   "price": 420,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 63,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_iron_v": {
+   "arc": "",
+   "art": "decor/dc_y_fence_iron_v",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_iron_v",
+   "layer": "outdoor",
+   "name": "Iron Fence (side)",
+   "price": 575,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 86,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_neon": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_fence_neon",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 24,
+   "icon": "decor/dc_y_fence_neon",
+   "layer": "outdoor",
+   "name": "Neon-Trim Fence",
+   "price": 2850,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 428,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "fence",
+   "tier": 3
+  },
+  "dc_y_fence_neon_v": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_fence_neon_v",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 24,
+   "icon": "decor/dc_y_fence_neon_v",
+   "layer": "outdoor",
+   "name": "Neon-Trim Fence (side)",
+   "price": 1400,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 210,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "fence",
+   "tier": 3
+  },
+  "dc_y_fence_picket": {
+   "arc": "",
+   "art": "decor/dc_y_fence_picket",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_picket",
+   "layer": "outdoor",
+   "name": "White Picket Fence",
+   "price": 200,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 30,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "fence",
+   "tier": 1
+  },
+  "dc_y_fence_picket_v": {
+   "arc": "",
+   "art": "decor/dc_y_fence_picket_v",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_picket_v",
+   "layer": "outdoor",
+   "name": "Picket Fence (side)",
+   "price": 145,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 22,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "fence",
+   "tier": 1
+  },
+  "dc_y_fence_stone": {
+   "arc": "",
+   "art": "decor/dc_y_fence_stone",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_stone",
+   "layer": "outdoor",
+   "name": "Low Stone Wall",
+   "price": 505,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 76,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_stone_v": {
+   "arc": "",
+   "art": "decor/dc_y_fence_stone_v",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_stone_v",
+   "layer": "outdoor",
+   "name": "Stone Wall (side)",
+   "price": 510,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 76,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "fence",
+   "tier": 2
+  },
+  "dc_y_fence_wood": {
+   "arc": "",
+   "art": "decor/dc_y_fence_wood",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_wood",
+   "layer": "outdoor",
+   "name": "Wood Rail Fence",
+   "price": 130,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 20,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "fence",
+   "tier": 1
+  },
+  "dc_y_fence_wood_v": {
+   "arc": "",
+   "art": "decor/dc_y_fence_wood_v",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fence_wood_v",
+   "layer": "outdoor",
+   "name": "Wood Fence (side)",
+   "price": 155,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 23,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "fence",
+   "tier": 1
+  },
+  "dc_y_fire_pit": {
+   "arc": "",
+   "art": "decor/dc_y_fire_pit",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 32,
+   "icon": "decor/dc_y_fire_pit",
+   "layer": "outdoor",
+   "name": "Stone Fire Pit",
+   "price": 535,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 80,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "garden",
+   "tier": 2
+  },
+  "dc_y_firefly_jar": {
+   "arc": "",
+   "art": "decor/dc_y_firefly_jar",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 28,
+   "icon": "decor/dc_y_firefly_jar",
+   "layer": "outdoor",
+   "name": "Firefly Jar Post",
+   "price": 1800,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 270,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 3
+  },
+  "dc_y_fish_vane": {
+   "arc": "penguins",
+   "art": "decor/dc_y_fish_vane",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_fish_vane",
+   "layer": "outdoor",
+   "name": "Fish Weathervane",
+   "price": 515,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 77,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 2
+  },
+  "dc_y_grill": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_grill",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_grill",
+   "layer": "outdoor",
+   "name": "Charcoal Grill",
+   "price": 95,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 1
+  },
+  "dc_y_hay_wall": {
+   "arc": "",
+   "art": "decor/dc_y_hay_wall",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_hay_wall",
+   "layer": "outdoor",
+   "name": "Hay Bale Wall",
+   "price": 80,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 12,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 1
+  },
+  "dc_y_hedge_run": {
+   "arc": "",
+   "art": "decor/dc_y_hedge_run",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_hedge_run",
+   "layer": "outdoor",
+   "name": "Clipped Hedge Run",
+   "price": 190,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 28,
+   "set": "yard_fence",
+   "sets": [
+    "yard_fence"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "fence",
+   "tier": 1
+  },
+  "dc_y_herb_box": {
+   "arc": "",
+   "art": "decor/dc_y_herb_box",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_herb_box",
+   "layer": "outdoor",
+   "name": "Herb Planter Box",
+   "price": 75,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 11,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "planter",
+   "tier": 1
+  },
+  "dc_y_hook_lantern": {
+   "arc": "",
+   "art": "decor/dc_y_hook_lantern",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 32,
+   "icon": "decor/dc_y_hook_lantern",
+   "layer": "outdoor",
+   "name": "Hook Lantern Post",
+   "price": 90,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 1
+  },
+  "dc_y_hoop": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_hoop",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_hoop",
+   "layer": "outdoor",
+   "name": "Basketball Hoop",
+   "price": 475,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 71,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 2
+  },
+  "dc_y_hydrant": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_hydrant",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_hydrant",
+   "layer": "outdoor",
+   "name": "Fire Hydrant",
+   "price": 75,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 11,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 1
+  },
+  "dc_y_ice_slide": {
+   "arc": "penguins",
+   "art": "decor/dc_y_ice_slide",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_ice_slide",
+   "layer": "outdoor",
+   "name": "Penguin Ice Slide",
+   "price": 6100,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 915,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 4
+  },
+  "dc_y_icicle_lamp": {
+   "arc": "",
+   "art": "decor/dc_y_icicle_lamp",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 36,
+   "icon": "decor/dc_y_icicle_lamp",
+   "layer": "outdoor",
+   "name": "Icicle Lamp Post",
+   "price": 775,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 116,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 2
+  },
+  "dc_y_igloo_lantern": {
+   "arc": "penguins",
+   "art": "decor/dc_y_igloo_lantern",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 32,
+   "icon": "decor/dc_y_igloo_lantern",
+   "layer": "outdoor",
+   "name": "Igloo Lantern",
+   "price": 760,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 114,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 2
+  },
+  "dc_y_kiddie_pool": {
+   "arc": "",
+   "art": "decor/dc_y_kiddie_pool",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_kiddie_pool",
+   "layer": "outdoor",
+   "name": "Kiddie Pool",
+   "price": 675,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 101,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 2
+  },
+  "dc_y_koi_pond": {
+   "anim": 4,
+   "arc": "",
+   "art": "decor/dc_y_koi_pond",
+   "cat": "outdoor",
+   "comfort": 8,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": false,
+   "icon": "decor/dc_y_koi_pond_icon",
+   "layer": "outdoor",
+   "name": "Koi Pond",
+   "price": 19500,
+   "rarity": "legendary",
+   "rot": 1,
+   "sell": 2925,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "fountain",
+   "tier": 5
+  },
+  "dc_y_lantern_post_kit": {
+   "arc": "",
+   "art": "decor/dc_y_lantern_post_kit",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 32,
+   "icon": "decor/dc_y_lantern_post_kit",
+   "layer": "outdoor",
+   "name": "Cat Lantern Post",
+   "price": 735,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 110,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 2
+  },
+  "dc_y_leaf_pile": {
+   "arc": "",
+   "art": "decor/dc_y_leaf_pile",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_leaf_pile",
+   "layer": "outdoor",
+   "name": "Leaf Pile with Rake",
+   "price": 75,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 11,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 1
+  },
+  "dc_y_lemonade_stand": {
+   "arc": "",
+   "art": "decor/dc_y_lemonade_stand",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_lemonade_stand",
+   "layer": "outdoor",
+   "name": "Lemonade Stand",
+   "price": 2300,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 345,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 3
+  },
+  "dc_y_lounger": {
+   "arc": "",
+   "art": "decor/dc_y_lounger",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_lounger",
+   "layer": "outdoor",
+   "name": "Striped Lounger",
+   "price": 100,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 15,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 1
+  },
+  "dc_y_lowrider_bounce": {
+   "anim": 4,
+   "arc": "gangsters",
+   "art": "decor/dc_y_lowrider_bounce",
+   "cat": "outdoor",
+   "comfort": 8,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": false,
+   "icon": "decor/dc_y_lowrider_bounce_icon",
+   "layer": "outdoor",
+   "name": "Lowrider Bounce",
+   "price": 34000,
+   "rarity": "legendary",
+   "rot": 1,
+   "sell": 5100,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    3,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "showpiece",
+   "tier": 5
+  },
+  "dc_y_lowrider_purple": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_lowrider_purple",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_lowrider_purple",
+   "layer": "outdoor",
+   "name": "Purple Lowrider",
+   "price": 8100,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 1215,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 4
+  },
+  "dc_y_lowrider_teal": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_lowrider_teal",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_lowrider_teal",
+   "layer": "outdoor",
+   "name": "Teal Lowrider",
+   "price": 6000,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 900,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    3,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 4
+  },
+  "dc_y_neon_arch": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_neon_arch",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 44,
+   "icon": "decor/dc_y_neon_arch",
+   "layer": "outdoor",
+   "name": "Neon Arch",
+   "price": 5150,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 772,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "arch",
+   "tier": 4
+  },
+  "dc_y_neon_arrow": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_neon_arrow",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 36,
+   "icon": "decor/dc_y_neon_arrow",
+   "layer": "outdoor",
+   "name": "Neon Arrow Pole Sign",
+   "price": 735,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 110,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 2
+  },
+  "dc_y_neon_chase_arch": {
+   "anim": 4,
+   "arc": "gangsters",
+   "art": "decor/dc_y_neon_chase_arch",
+   "cat": "outdoor",
+   "comfort": 5,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": true,
+   "glow_r": 44,
+   "icon": "decor/dc_y_neon_chase_arch_icon",
+   "layer": "outdoor",
+   "name": "Neon Chase Arch",
+   "price": 8700,
+   "rarity": "epic",
+   "rot": 1,
+   "sell": 1305,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "arch",
+   "tier": 4
+  },
+  "dc_y_neon_frame": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_neon_frame",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 36,
+   "icon": "decor/dc_y_neon_frame",
+   "layer": "outdoor",
+   "name": "Neon Sign Frame",
+   "price": 425,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 64,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "sign",
+   "tier": 2
+  },
+  "dc_y_neon_palm": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_neon_palm",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 40,
+   "icon": "decor/dc_y_neon_palm",
+   "layer": "outdoor",
+   "name": "Neon Palm Pole",
+   "price": 2000,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 300,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 3
+  },
+  "dc_y_paper_lantern_post": {
+   "arc": "",
+   "art": "decor/dc_y_paper_lantern_post",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 32,
+   "icon": "decor/dc_y_paper_lantern_post",
+   "layer": "outdoor",
+   "name": "Paper Lantern Post",
+   "price": 545,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 82,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 2
+  },
+  "dc_y_path_checker": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_path_checker",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_path_checker_icon",
+   "layer": "outdoor",
+   "name": "Checker Plate Path",
+   "price": 135,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 20,
+   "set": "yard_path",
+   "sets": [
+    "yard_path"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "path",
+   "tier": 1
+  },
+  "dc_y_path_ice_brick": {
+   "arc": "penguins",
+   "art": "decor/dc_y_path_ice_brick",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_path_ice_brick_icon",
+   "layer": "outdoor",
+   "name": "Ice Brick Path",
+   "price": 90,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_path",
+   "sets": [
+    "yard_path"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "path",
+   "tier": 1
+  },
+  "dc_y_path_light": {
+   "arc": "",
+   "art": "decor/dc_y_path_light",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 20,
+   "icon": "decor/dc_y_path_light",
+   "layer": "outdoor",
+   "name": "Solar Path Light",
+   "price": 110,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 16,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 1
+  },
+  "dc_y_path_neon_asphalt": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_path_neon_asphalt",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_path_neon_asphalt_icon",
+   "layer": "outdoor",
+   "name": "Neon Fleck Asphalt",
+   "price": 470,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 70,
+   "set": "yard_path",
+   "sets": [
+    "yard_path"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "path",
+   "tier": 2
+  },
+  "dc_y_path_pebble": {
+   "arc": "",
+   "art": "decor/dc_y_path_pebble",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_path_pebble_icon",
+   "layer": "outdoor",
+   "name": "Pebble Mosaic Path",
+   "price": 775,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 116,
+   "set": "yard_path",
+   "sets": [
+    "yard_path"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "path",
+   "tier": 2
+  },
+  "dc_y_penguin_statue": {
+   "arc": "penguins",
+   "art": "decor/dc_y_penguin_statue",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_penguin_statue",
+   "layer": "outdoor",
+   "name": "Penguin Garden Statue",
+   "price": 1400,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 210,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 3
+  },
+  "dc_y_penguin_topiary": {
+   "arc": "penguins",
+   "art": "decor/dc_y_penguin_topiary",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_penguin_topiary",
+   "layer": "outdoor",
+   "name": "Penguin Topiary",
+   "price": 745,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 112,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 2
+  },
+  "dc_y_picnic_set": {
+   "arc": "",
+   "art": "decor/dc_y_picnic_set",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_picnic_set",
+   "layer": "outdoor",
+   "name": "Picnic Blanket Set",
+   "price": 215,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 32,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 1
+  },
+  "dc_y_pin_statue": {
+   "arc": "",
+   "art": "decor/dc_y_pin_statue",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_pin_statue",
+   "layer": "outdoor",
+   "name": "Lawn Bowling Pin",
+   "price": 1900,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 285,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "statue",
+   "tier": 3
+  },
+  "dc_y_rain_barrel": {
+   "arc": "",
+   "art": "decor/dc_y_rain_barrel",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_rain_barrel",
+   "layer": "outdoor",
+   "name": "Rain Barrel",
+   "price": 90,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_shell_bed": {
+   "arc": "penguins",
+   "art": "decor/dc_y_shell_bed",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_shell_bed",
+   "layer": "outdoor",
+   "name": "Shell and Coral Bed",
+   "price": 145,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 22,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "flowerbed",
+   "tier": 1
+  },
+  "dc_y_sleeping_bag": {
+   "arc": "",
+   "art": "decor/dc_y_sleeping_bag",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_sleeping_bag",
+   "layer": "outdoor",
+   "name": "Sleeping Bag",
+   "price": 170,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 26,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_sleeping_bag_b": {
+   "arc": "",
+   "art": "decor/dc_y_sleeping_bag_b",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_sleeping_bag_b",
+   "layer": "outdoor",
+   "name": "Striped Sleeping Bag",
+   "price": 125,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 19,
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "garden",
+   "tier": 1
+  },
+  "dc_y_snow_fort": {
+   "arc": "penguins",
+   "art": "decor/dc_y_snow_fort",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_snow_fort",
+   "layer": "outdoor",
+   "name": "Snow Fort Wall",
+   "price": 90,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_penguin",
+   "tier": 1
+  },
+  "dc_y_speakers": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_speakers",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_speakers",
+   "layer": "outdoor",
+   "name": "Speaker Stack",
+   "price": 470,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 70,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 2
+  },
+  "dc_y_star_planter": {
+   "arc": "penguins",
+   "art": "decor/dc_y_star_planter",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 28,
+   "icon": "decor/dc_y_star_planter",
+   "layer": "outdoor",
+   "name": "Star-Crystal Planter",
+   "price": 790,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 118,
+   "set": "yard_penguin",
+   "sets": [
+    "yard_penguin"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "planter",
+   "tier": 2
+  },
+  "dc_y_star_well": {
+   "anim": 4,
+   "arc": "",
+   "art": "decor/dc_y_star_well",
+   "cat": "outdoor",
+   "comfort": 12,
+   "desc": "A piece for the yard outside.",
+   "fps": 6,
+   "glow": true,
+   "glow_r": 40,
+   "icon": "decor/dc_y_star_well_icon",
+   "layer": "outdoor",
+   "name": "Wishing-Star Well",
+   "price": 95500,
+   "rarity": "mythic",
+   "rot": 1,
+   "sell": 14325,
+   "set": "yard_show",
+   "sets": [
+    "yard_show"
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "garden",
+   "tier": 5
+  },
+  "dc_y_stepping_stones": {
+   "arc": "",
+   "art": "decor/dc_y_stepping_stones",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_stepping_stones",
+   "layer": "outdoor",
+   "name": "Stepping Stones",
+   "price": 165,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 25,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "path",
+   "tier": 1
+  },
+  "dc_y_string_posts": {
+   "arc": "",
+   "art": "decor/dc_y_string_posts",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 40,
+   "icon": "decor/dc_y_string_posts",
+   "layer": "outdoor",
+   "name": "String-Light Posts",
+   "price": 410,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 62,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 2
+  },
+  "dc_y_sundial": {
+   "arc": "",
+   "art": "decor/dc_y_sundial",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_sundial",
+   "layer": "outdoor",
+   "name": "Garden Sundial",
+   "price": 720,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 108,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "garden",
+   "tier": 2
+  },
+  "dc_y_tag_wall": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_tag_wall",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_tag_wall",
+   "layer": "outdoor",
+   "name": "Tagged Brick Wall",
+   "price": 150,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 22,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 1
+  },
+  "dc_y_tiki_torch": {
+   "arc": "",
+   "art": "decor/dc_y_tiki_torch",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 36,
+   "icon": "decor/dc_y_tiki_torch",
+   "layer": "outdoor",
+   "name": "Tiki Torch",
+   "price": 90,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 14,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 1
+  },
+  "dc_y_tulip_barrow": {
+   "arc": "",
+   "art": "decor/dc_y_tulip_barrow",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_tulip_barrow",
+   "layer": "outdoor",
+   "name": "Tulip Barrow",
+   "price": 395,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 59,
+   "set": "yard_seasonal",
+   "sets": [
+    "yard_seasonal"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "seasonal",
+   "tier": 2
+  },
+  "dc_y_twin_lamp": {
+   "arc": "",
+   "art": "decor/dc_y_twin_lamp",
+   "cat": "outdoor",
+   "comfort": 3,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 44,
+   "icon": "decor/dc_y_twin_lamp",
+   "layer": "outdoor",
+   "name": "Twin Iron Lamp Post",
+   "price": 1200,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 180,
+   "set": "yard_lights",
+   "sets": [
+    "yard_lights"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "hub_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "lamp",
+   "tier": 3
+  },
+  "dc_y_tyre_stack": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_tyre_stack",
+   "cat": "outdoor",
+   "comfort": 1,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_tyre_stack",
+   "layer": "outdoor",
+   "name": "Tyre Stack",
+   "price": 65,
+   "rarity": "common",
+   "rot": 1,
+   "sell": 10,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 1
+  },
+  "dc_y_u_bell_tower": {
+   "arc": "",
+   "art": "decor/dc_y_u_bell_tower",
+   "cat": "outdoor",
+   "comfort": 15,
+   "desc": "One of a kind. There is only one in the whole valley.",
+   "glow": false,
+   "icon": "decor/dc_y_u_bell_tower",
+   "layer": "outdoor",
+   "name": "Bell Tower Miniature",
+   "price": 0,
+   "rarity": "unique",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "decor_dc_y_u_bell_tower"
+    }
+   ],
+   "sub": "showpiece",
+   "tier": 5
+  },
+  "dc_y_u_gold_lowrider": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_u_gold_lowrider",
+   "cat": "outdoor",
+   "comfort": 15,
+   "desc": "One of a kind. There is only one in the whole valley.",
+   "glow": false,
+   "icon": "decor/dc_y_u_gold_lowrider",
+   "layer": "outdoor",
+   "name": "Golden Lowrider",
+   "price": 0,
+   "rarity": "unique",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    3,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "decor_dc_y_u_gold_lowrider"
+    }
+   ],
+   "sub": "showpiece",
+   "tier": 5
+  },
+  "dc_y_u_star_shrine": {
+   "arc": "penguins",
+   "art": "decor/dc_y_u_star_shrine",
+   "cat": "outdoor",
+   "comfort": 15,
+   "desc": "One of a kind. There is only one in the whole valley.",
+   "glow": true,
+   "glow_r": 48,
+   "icon": "decor/dc_y_u_star_shrine",
+   "layer": "outdoor",
+   "name": "Star Crystal Shrine",
+   "price": 0,
+   "rarity": "unique",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    2,
+    2
+   ],
+   "sources": [
+    {
+     "kind": "collection",
+     "once": true,
+     "ref": "decor_dc_y_u_star_shrine"
+    }
+   ],
+   "sub": "showpiece",
+   "tier": 5
+  },
+  "dc_y_vending": {
+   "arc": "gangsters",
+   "art": "decor/dc_y_vending",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": true,
+   "glow_r": 28,
+   "icon": "decor/dc_y_vending",
+   "layer": "outdoor",
+   "name": "Street Snack Machine",
+   "price": 400,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 60,
+   "set": "yard_gang",
+   "sets": [
+    "yard_gang"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "yard_gang",
+   "tier": 2
+  },
+  "dc_y_wheelbarrow": {
+   "arc": "",
+   "art": "decor/dc_y_wheelbarrow",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_wheelbarrow",
+   "layer": "outdoor",
+   "name": "Wheelbarrow Planter",
+   "price": 565,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 85,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "planter",
+   "tier": 2
+  },
+  "dc_y_wind_spinner": {
+   "arc": "",
+   "art": "decor/dc_y_wind_spinner",
+   "cat": "outdoor",
+   "comfort": 2,
+   "desc": "A piece for the yard outside.",
+   "glow": false,
+   "icon": "decor/dc_y_wind_spinner",
+   "layer": "outdoor",
+   "name": "Wind Spinner",
+   "price": 385,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 58,
+   "set": "yard_garden",
+   "sets": [
+    "yard_garden"
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "carpenter"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "garden",
+   "tier": 2
   },
   "rp_arcade_cab": {
    "arc": "",
@@ -33076,6 +36197,54 @@
     30
    ],
    [
+    "dc_y_aurora_lamp",
+    8
+   ],
+   [
+    "dc_y_car_lift",
+    30
+   ],
+   [
+    "dc_y_crystal_fountain",
+    2
+   ],
+   [
+    "dc_y_fence_gold",
+    30
+   ],
+   [
+    "dc_y_ice_slide",
+    30
+   ],
+   [
+    "dc_y_koi_pond",
+    8
+   ],
+   [
+    "dc_y_lowrider_bounce",
+    8
+   ],
+   [
+    "dc_y_lowrider_purple",
+    30
+   ],
+   [
+    "dc_y_lowrider_teal",
+    30
+   ],
+   [
+    "dc_y_neon_arch",
+    30
+   ],
+   [
+    "dc_y_neon_chase_arch",
+    30
+   ],
+   [
+    "dc_y_star_well",
+    2
+   ],
+   [
     "wr_aurora_hood",
     8
    ],
@@ -33511,6 +36680,10 @@
    ],
    [
     "dc_gart_car_plate",
+    600
+   ],
+   [
+    "dc_gart_car_plate_navy",
     600
    ],
    [
@@ -34275,6 +37448,122 @@
    ],
    [
     "dc_wardrobe_b",
+    600
+   ],
+   [
+    "dc_y_boulder",
+    600
+   ],
+   [
+    "dc_y_boulder_b",
+    600
+   ],
+   [
+    "dc_y_cairn",
+    600
+   ],
+   [
+    "dc_y_cones",
+    600
+   ],
+   [
+    "dc_y_fence_picket",
+    600
+   ],
+   [
+    "dc_y_fence_picket_v",
+    600
+   ],
+   [
+    "dc_y_fence_wood",
+    600
+   ],
+   [
+    "dc_y_fence_wood_v",
+    600
+   ],
+   [
+    "dc_y_grill",
+    600
+   ],
+   [
+    "dc_y_hay_wall",
+    600
+   ],
+   [
+    "dc_y_hedge_run",
+    600
+   ],
+   [
+    "dc_y_herb_box",
+    600
+   ],
+   [
+    "dc_y_hook_lantern",
+    600
+   ],
+   [
+    "dc_y_hydrant",
+    600
+   ],
+   [
+    "dc_y_leaf_pile",
+    600
+   ],
+   [
+    "dc_y_lounger",
+    600
+   ],
+   [
+    "dc_y_path_checker",
+    600
+   ],
+   [
+    "dc_y_path_ice_brick",
+    600
+   ],
+   [
+    "dc_y_path_light",
+    600
+   ],
+   [
+    "dc_y_picnic_set",
+    600
+   ],
+   [
+    "dc_y_rain_barrel",
+    600
+   ],
+   [
+    "dc_y_shell_bed",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag_b",
+    600
+   ],
+   [
+    "dc_y_snow_fort",
+    600
+   ],
+   [
+    "dc_y_stepping_stones",
+    600
+   ],
+   [
+    "dc_y_tag_wall",
+    600
+   ],
+   [
+    "dc_y_tiki_torch",
+    600
+   ],
+   [
+    "dc_y_tyre_stack",
     600
    ],
    [
@@ -35097,6 +38386,10 @@
    ],
    [
     "dc_gart_car_plate",
+    600
+   ],
+   [
+    "dc_gart_car_plate_navy",
     600
    ],
    [
@@ -36509,6 +39802,246 @@
    ],
    [
     "dc_window_rain",
+    260
+   ],
+   [
+    "dc_y_boulder",
+    600
+   ],
+   [
+    "dc_y_boulder_b",
+    600
+   ],
+   [
+    "dc_y_bulb_poles",
+    260
+   ],
+   [
+    "dc_y_cairn",
+    600
+   ],
+   [
+    "dc_y_candle_stand",
+    260
+   ],
+   [
+    "dc_y_cat_tower",
+    260
+   ],
+   [
+    "dc_y_cones",
+    600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_fence_ice",
+    260
+   ],
+   [
+    "dc_y_fence_ice_v",
+    260
+   ],
+   [
+    "dc_y_fence_iron",
+    260
+   ],
+   [
+    "dc_y_fence_iron_v",
+    260
+   ],
+   [
+    "dc_y_fence_picket",
+    600
+   ],
+   [
+    "dc_y_fence_picket_v",
+    600
+   ],
+   [
+    "dc_y_fence_stone",
+    260
+   ],
+   [
+    "dc_y_fence_stone_v",
+    260
+   ],
+   [
+    "dc_y_fence_wood",
+    600
+   ],
+   [
+    "dc_y_fence_wood_v",
+    600
+   ],
+   [
+    "dc_y_fire_pit",
+    260
+   ],
+   [
+    "dc_y_fish_vane",
+    260
+   ],
+   [
+    "dc_y_grill",
+    600
+   ],
+   [
+    "dc_y_hay_wall",
+    600
+   ],
+   [
+    "dc_y_hedge_run",
+    600
+   ],
+   [
+    "dc_y_herb_box",
+    600
+   ],
+   [
+    "dc_y_hook_lantern",
+    600
+   ],
+   [
+    "dc_y_hoop",
+    260
+   ],
+   [
+    "dc_y_hydrant",
+    600
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
+   ],
+   [
+    "dc_y_igloo_lantern",
+    260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_lantern_post_kit",
+    260
+   ],
+   [
+    "dc_y_leaf_pile",
+    600
+   ],
+   [
+    "dc_y_lounger",
+    600
+   ],
+   [
+    "dc_y_neon_arrow",
+    260
+   ],
+   [
+    "dc_y_neon_frame",
+    260
+   ],
+   [
+    "dc_y_paper_lantern_post",
+    260
+   ],
+   [
+    "dc_y_path_checker",
+    600
+   ],
+   [
+    "dc_y_path_ice_brick",
+    600
+   ],
+   [
+    "dc_y_path_light",
+    600
+   ],
+   [
+    "dc_y_path_neon_asphalt",
+    260
+   ],
+   [
+    "dc_y_path_pebble",
+    260
+   ],
+   [
+    "dc_y_penguin_topiary",
+    260
+   ],
+   [
+    "dc_y_picnic_set",
+    600
+   ],
+   [
+    "dc_y_rain_barrel",
+    600
+   ],
+   [
+    "dc_y_shell_bed",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag_b",
+    600
+   ],
+   [
+    "dc_y_snow_fort",
+    600
+   ],
+   [
+    "dc_y_speakers",
+    260
+   ],
+   [
+    "dc_y_star_planter",
+    260
+   ],
+   [
+    "dc_y_stepping_stones",
+    600
+   ],
+   [
+    "dc_y_string_posts",
+    260
+   ],
+   [
+    "dc_y_sundial",
+    260
+   ],
+   [
+    "dc_y_tag_wall",
+    600
+   ],
+   [
+    "dc_y_tiki_torch",
+    600
+   ],
+   [
+    "dc_y_tulip_barrow",
+    260
+   ],
+   [
+    "dc_y_tyre_stack",
+    600
+   ],
+   [
+    "dc_y_vending",
+    260
+   ],
+   [
+    "dc_y_wheelbarrow",
+    260
+   ],
+   [
+    "dc_y_wind_spinner",
     260
    ],
    [
@@ -37718,6 +41251,10 @@
     600
    ],
    [
+    "dc_gart_car_plate_navy",
+    600
+   ],
+   [
     "dc_gart_cash_frame",
     260
    ],
@@ -38140,6 +41677,10 @@
    [
     "dc_low_table",
     600
+   ],
+   [
+    "dc_lucky_cat_gold",
+    100
    ],
    [
     "dc_mineral_display",
@@ -39502,6 +43043,294 @@
     260
    ],
    [
+    "dc_y_arbor_swing",
+    100
+   ],
+   [
+    "dc_y_boulder",
+    600
+   ],
+   [
+    "dc_y_boulder_b",
+    600
+   ],
+   [
+    "dc_y_bulb_poles",
+    260
+   ],
+   [
+    "dc_y_cairn",
+    600
+   ],
+   [
+    "dc_y_camp_tent",
+    100
+   ],
+   [
+    "dc_y_candle_stand",
+    260
+   ],
+   [
+    "dc_y_cat_tower",
+    260
+   ],
+   [
+    "dc_y_cat_tower_b",
+    100
+   ],
+   [
+    "dc_y_cones",
+    600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_fence_ice",
+    260
+   ],
+   [
+    "dc_y_fence_ice_v",
+    260
+   ],
+   [
+    "dc_y_fence_iron",
+    260
+   ],
+   [
+    "dc_y_fence_iron_v",
+    260
+   ],
+   [
+    "dc_y_fence_neon",
+    100
+   ],
+   [
+    "dc_y_fence_neon_v",
+    100
+   ],
+   [
+    "dc_y_fence_picket",
+    600
+   ],
+   [
+    "dc_y_fence_picket_v",
+    600
+   ],
+   [
+    "dc_y_fence_stone",
+    260
+   ],
+   [
+    "dc_y_fence_stone_v",
+    260
+   ],
+   [
+    "dc_y_fence_wood",
+    600
+   ],
+   [
+    "dc_y_fence_wood_v",
+    600
+   ],
+   [
+    "dc_y_fire_pit",
+    260
+   ],
+   [
+    "dc_y_firefly_jar",
+    100
+   ],
+   [
+    "dc_y_fish_vane",
+    260
+   ],
+   [
+    "dc_y_grill",
+    600
+   ],
+   [
+    "dc_y_hay_wall",
+    600
+   ],
+   [
+    "dc_y_hedge_run",
+    600
+   ],
+   [
+    "dc_y_herb_box",
+    600
+   ],
+   [
+    "dc_y_hook_lantern",
+    600
+   ],
+   [
+    "dc_y_hoop",
+    260
+   ],
+   [
+    "dc_y_hydrant",
+    600
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
+   ],
+   [
+    "dc_y_igloo_lantern",
+    260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_lantern_post_kit",
+    260
+   ],
+   [
+    "dc_y_leaf_pile",
+    600
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
+   ],
+   [
+    "dc_y_lounger",
+    600
+   ],
+   [
+    "dc_y_neon_arrow",
+    260
+   ],
+   [
+    "dc_y_neon_frame",
+    260
+   ],
+   [
+    "dc_y_neon_palm",
+    100
+   ],
+   [
+    "dc_y_paper_lantern_post",
+    260
+   ],
+   [
+    "dc_y_path_checker",
+    600
+   ],
+   [
+    "dc_y_path_ice_brick",
+    600
+   ],
+   [
+    "dc_y_path_light",
+    600
+   ],
+   [
+    "dc_y_path_neon_asphalt",
+    260
+   ],
+   [
+    "dc_y_path_pebble",
+    260
+   ],
+   [
+    "dc_y_penguin_statue",
+    100
+   ],
+   [
+    "dc_y_penguin_topiary",
+    260
+   ],
+   [
+    "dc_y_picnic_set",
+    600
+   ],
+   [
+    "dc_y_pin_statue",
+    100
+   ],
+   [
+    "dc_y_rain_barrel",
+    600
+   ],
+   [
+    "dc_y_shell_bed",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag",
+    600
+   ],
+   [
+    "dc_y_sleeping_bag_b",
+    600
+   ],
+   [
+    "dc_y_snow_fort",
+    600
+   ],
+   [
+    "dc_y_speakers",
+    260
+   ],
+   [
+    "dc_y_star_planter",
+    260
+   ],
+   [
+    "dc_y_stepping_stones",
+    600
+   ],
+   [
+    "dc_y_string_posts",
+    260
+   ],
+   [
+    "dc_y_sundial",
+    260
+   ],
+   [
+    "dc_y_tag_wall",
+    600
+   ],
+   [
+    "dc_y_tiki_torch",
+    600
+   ],
+   [
+    "dc_y_tulip_barrow",
+    260
+   ],
+   [
+    "dc_y_twin_lamp",
+    100
+   ],
+   [
+    "dc_y_tyre_stack",
+    600
+   ],
+   [
+    "dc_y_vending",
+    260
+   ],
+   [
+    "dc_y_wheelbarrow",
+    260
+   ],
+   [
+    "dc_y_wind_spinner",
+    260
+   ],
+   [
     "wr_bandana",
     600
    ],
@@ -40692,6 +44521,10 @@
     100
    ],
    [
+    "dc_lucky_cat_gold",
+    100
+   ],
+   [
     "dc_master_hearth",
     30
    ],
@@ -41612,6 +45445,206 @@
     260
    ],
    [
+    "dc_y_arbor_swing",
+    100
+   ],
+   [
+    "dc_y_bulb_poles",
+    260
+   ],
+   [
+    "dc_y_camp_tent",
+    100
+   ],
+   [
+    "dc_y_candle_stand",
+    260
+   ],
+   [
+    "dc_y_car_lift",
+    30
+   ],
+   [
+    "dc_y_cat_tower",
+    260
+   ],
+   [
+    "dc_y_cat_tower_b",
+    100
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_fence_gold",
+    30
+   ],
+   [
+    "dc_y_fence_ice",
+    260
+   ],
+   [
+    "dc_y_fence_ice_v",
+    260
+   ],
+   [
+    "dc_y_fence_iron",
+    260
+   ],
+   [
+    "dc_y_fence_iron_v",
+    260
+   ],
+   [
+    "dc_y_fence_neon",
+    100
+   ],
+   [
+    "dc_y_fence_neon_v",
+    100
+   ],
+   [
+    "dc_y_fence_stone",
+    260
+   ],
+   [
+    "dc_y_fence_stone_v",
+    260
+   ],
+   [
+    "dc_y_fire_pit",
+    260
+   ],
+   [
+    "dc_y_firefly_jar",
+    100
+   ],
+   [
+    "dc_y_fish_vane",
+    260
+   ],
+   [
+    "dc_y_hoop",
+    260
+   ],
+   [
+    "dc_y_ice_slide",
+    30
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
+   ],
+   [
+    "dc_y_igloo_lantern",
+    260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_lantern_post_kit",
+    260
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
+   ],
+   [
+    "dc_y_lowrider_purple",
+    30
+   ],
+   [
+    "dc_y_lowrider_teal",
+    30
+   ],
+   [
+    "dc_y_neon_arch",
+    30
+   ],
+   [
+    "dc_y_neon_arrow",
+    260
+   ],
+   [
+    "dc_y_neon_chase_arch",
+    30
+   ],
+   [
+    "dc_y_neon_frame",
+    260
+   ],
+   [
+    "dc_y_neon_palm",
+    100
+   ],
+   [
+    "dc_y_paper_lantern_post",
+    260
+   ],
+   [
+    "dc_y_path_neon_asphalt",
+    260
+   ],
+   [
+    "dc_y_path_pebble",
+    260
+   ],
+   [
+    "dc_y_penguin_statue",
+    100
+   ],
+   [
+    "dc_y_penguin_topiary",
+    260
+   ],
+   [
+    "dc_y_pin_statue",
+    100
+   ],
+   [
+    "dc_y_speakers",
+    260
+   ],
+   [
+    "dc_y_star_planter",
+    260
+   ],
+   [
+    "dc_y_string_posts",
+    260
+   ],
+   [
+    "dc_y_sundial",
+    260
+   ],
+   [
+    "dc_y_tulip_barrow",
+    260
+   ],
+   [
+    "dc_y_twin_lamp",
+    100
+   ],
+   [
+    "dc_y_vending",
+    260
+   ],
+   [
+    "dc_y_wheelbarrow",
+    260
+   ],
+   [
+    "dc_y_wind_spinner",
+    260
+   ],
+   [
     "wr_cape_black",
     260
    ],
@@ -42294,6 +46327,10 @@
     100
    ],
    [
+    "dc_lucky_cat_gold",
+    100
+   ],
+   [
     "dc_master_hearth",
     30
    ],
@@ -42724,6 +46761,102 @@
    [
     "dc_vault_open",
     30
+   ],
+   [
+    "dc_y_arbor_swing",
+    100
+   ],
+   [
+    "dc_y_aurora_lamp",
+    8
+   ],
+   [
+    "dc_y_camp_tent",
+    100
+   ],
+   [
+    "dc_y_car_lift",
+    30
+   ],
+   [
+    "dc_y_cat_tower_b",
+    100
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_crystal_fountain",
+    2
+   ],
+   [
+    "dc_y_fence_gold",
+    30
+   ],
+   [
+    "dc_y_fence_neon",
+    100
+   ],
+   [
+    "dc_y_fence_neon_v",
+    100
+   ],
+   [
+    "dc_y_firefly_jar",
+    100
+   ],
+   [
+    "dc_y_ice_slide",
+    30
+   ],
+   [
+    "dc_y_koi_pond",
+    8
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
+   ],
+   [
+    "dc_y_lowrider_bounce",
+    8
+   ],
+   [
+    "dc_y_lowrider_purple",
+    30
+   ],
+   [
+    "dc_y_lowrider_teal",
+    30
+   ],
+   [
+    "dc_y_neon_arch",
+    30
+   ],
+   [
+    "dc_y_neon_chase_arch",
+    30
+   ],
+   [
+    "dc_y_neon_palm",
+    100
+   ],
+   [
+    "dc_y_penguin_statue",
+    100
+   ],
+   [
+    "dc_y_pin_statue",
+    100
+   ],
+   [
+    "dc_y_star_well",
+    2
+   ],
+   [
+    "dc_y_twin_lamp",
+    100
    ],
    [
     "wr_aurora_hood",
@@ -43412,6 +47545,30 @@
     260
    ],
    [
+    "dc_y_fish_vane",
+    260
+   ],
+   [
+    "dc_y_hook_lantern",
+    600
+   ],
+   [
+    "dc_y_igloo_lantern",
+    260
+   ],
+   [
+    "dc_y_lantern_post_kit",
+    260
+   ],
+   [
+    "dc_y_paper_lantern_post",
+    260
+   ],
+   [
+    "dc_y_shell_bed",
+    600
+   ],
+   [
     "wr_fisher_gloves",
     600
    ],
@@ -43556,6 +47713,26 @@
    [
     "dc_tt_wisp_lantern",
     8
+   ],
+   [
+    "dc_y_arbor_swing",
+    100
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_crystal_fountain",
+    2
+   ],
+   [
+    "dc_y_koi_pond",
+    8
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
    ],
    [
     "wr_cape_crystal",
@@ -43949,6 +48126,50 @@
    ],
    [
     "dc_wp_coral_shell",
+    260
+   ],
+   [
+    "dc_y_arbor_swing",
+    100
+   ],
+   [
+    "dc_y_fish_vane",
+    260
+   ],
+   [
+    "dc_y_hay_wall",
+    600
+   ],
+   [
+    "dc_y_icicle_lamp",
+    260
+   ],
+   [
+    "dc_y_kiddie_pool",
+    260
+   ],
+   [
+    "dc_y_leaf_pile",
+    600
+   ],
+   [
+    "dc_y_lemonade_stand",
+    100
+   ],
+   [
+    "dc_y_lounger",
+    600
+   ],
+   [
+    "dc_y_picnic_set",
+    600
+   ],
+   [
+    "dc_y_shell_bed",
+    600
+   ],
+   [
+    "dc_y_tulip_barrow",
     260
    ],
    [
@@ -44632,6 +48853,10 @@
    [
     "dc_wardrobe_b",
     600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
    ]
   ],
   "mine_t3": [
@@ -44990,6 +49215,18 @@
    [
     "dc_wardrobe_b",
     600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_pin_statue",
+    100
    ]
   ],
   "mine_t4": [
@@ -45388,6 +49625,18 @@
    [
     "dc_wardrobe_b",
     600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_pin_statue",
+    100
    ],
    [
     "wr_cape_crystal",
@@ -45806,6 +50055,18 @@
    [
     "dc_wardrobe_b",
     600
+   ],
+   [
+    "dc_y_crystal_cluster",
+    260
+   ],
+   [
+    "dc_y_crystal_cluster_b",
+    100
+   ],
+   [
+    "dc_y_pin_statue",
+    100
    ],
    [
     "wr_cape_crystal",
@@ -46367,30 +50628,6 @@
     "money": 6000
    }
   },
-  "casino": {
-   "arc": "gangsters",
-   "comfort": 31,
-   "name": "Lucky Lounge Set",
-   "pieces": [
-    "dc_casino_ace_sign",
-    "dc_casino_booth",
-    "dc_casino_cards_art",
-    "dc_casino_chip_frame",
-    "dc_casino_chips",
-    "dc_casino_dice",
-    "dc_casino_lamp",
-    "dc_casino_marquee",
-    "dc_casino_rope",
-    "dc_casino_roulette",
-    "dc_casino_slot",
-    "dc_casino_stool",
-    "dc_casino_table"
-   ],
-   "reward": {
-    "comfort": 31,
-    "money": 2510
-   }
-  },
   "catkins": {
    "arc": "penguins",
    "comfort": 31,
@@ -46882,6 +51119,30 @@
     "money": 1030
    }
   },
+  "velvet_lounge": {
+   "arc": "gangsters",
+   "comfort": 31,
+   "name": "Velvet Lounge Set",
+   "pieces": [
+    "dc_casino_ace_sign",
+    "dc_casino_booth",
+    "dc_casino_cards_art",
+    "dc_casino_chip_frame",
+    "dc_casino_chips",
+    "dc_casino_dice",
+    "dc_casino_lamp",
+    "dc_casino_marquee",
+    "dc_casino_rope",
+    "dc_casino_roulette",
+    "dc_casino_slot",
+    "dc_casino_stool",
+    "dc_casino_table"
+   ],
+   "reward": {
+    "comfort": 31,
+    "money": 2510
+   }
+  },
   "wear_farmer": {
    "arc": "",
    "comfort": 17,
@@ -47016,6 +51277,185 @@
    "reward": {
     "comfort": 17,
     "money": 260
+   }
+  },
+  "yard_fence": {
+   "arc": "gangsters",
+   "comfort": 33,
+   "name": "Yard Fence Set",
+   "pieces": [
+    "dc_y_fence_gold",
+    "dc_y_fence_ice",
+    "dc_y_fence_ice_v",
+    "dc_y_fence_iron",
+    "dc_y_fence_iron_v",
+    "dc_y_fence_neon",
+    "dc_y_fence_neon_v",
+    "dc_y_fence_picket",
+    "dc_y_fence_picket_v",
+    "dc_y_fence_stone",
+    "dc_y_fence_stone_v",
+    "dc_y_fence_wood",
+    "dc_y_fence_wood_v",
+    "dc_y_hedge_run"
+   ],
+   "reward": {
+    "comfort": 33,
+    "money": 1750
+   }
+  },
+  "yard_gang": {
+   "arc": "gangsters",
+   "comfort": 37,
+   "name": "Yard Gang Set",
+   "pieces": [
+    "dc_y_bulb_poles",
+    "dc_y_car_lift",
+    "dc_y_cones",
+    "dc_y_grill",
+    "dc_y_hoop",
+    "dc_y_hydrant",
+    "dc_y_lowrider_purple",
+    "dc_y_lowrider_teal",
+    "dc_y_neon_arch",
+    "dc_y_neon_arrow",
+    "dc_y_neon_frame",
+    "dc_y_neon_palm",
+    "dc_y_speakers",
+    "dc_y_tag_wall",
+    "dc_y_tyre_stack",
+    "dc_y_vending"
+   ],
+   "reward": {
+    "comfort": 37,
+    "money": 4200
+   }
+  },
+  "yard_garden": {
+   "arc": "",
+   "comfort": 21,
+   "name": "Yard Garden Set",
+   "pieces": [
+    "dc_y_arbor_swing",
+    "dc_y_herb_box",
+    "dc_y_pin_statue",
+    "dc_y_rain_barrel",
+    "dc_y_stepping_stones",
+    "dc_y_sundial",
+    "dc_y_wheelbarrow",
+    "dc_y_wind_spinner"
+   ],
+   "reward": {
+    "comfort": 21,
+    "money": 690
+   }
+  },
+  "yard_kit": {
+   "arc": "",
+   "comfort": 21,
+   "name": "Yard Kit Set",
+   "pieces": [
+    "dc_y_boulder",
+    "dc_y_boulder_b",
+    "dc_y_cairn",
+    "dc_y_camp_tent",
+    "dc_y_fire_pit",
+    "dc_y_lantern_post_kit",
+    "dc_y_sleeping_bag",
+    "dc_y_sleeping_bag_b"
+   ],
+   "reward": {
+    "comfort": 21,
+    "money": 430
+   }
+  },
+  "yard_lights": {
+   "arc": "",
+   "comfort": 21,
+   "name": "Yard Lights Set",
+   "pieces": [
+    "dc_y_candle_stand",
+    "dc_y_firefly_jar",
+    "dc_y_hook_lantern",
+    "dc_y_paper_lantern_post",
+    "dc_y_path_light",
+    "dc_y_string_posts",
+    "dc_y_tiki_torch",
+    "dc_y_twin_lamp"
+   ],
+   "reward": {
+    "comfort": 21,
+    "money": 590
+   }
+  },
+  "yard_path": {
+   "arc": "gangsters",
+   "comfort": 13,
+   "name": "Yard Path Set",
+   "pieces": [
+    "dc_y_path_checker",
+    "dc_y_path_ice_brick",
+    "dc_y_path_neon_asphalt",
+    "dc_y_path_pebble"
+   ],
+   "reward": {
+    "comfort": 13,
+    "money": 200
+   }
+  },
+  "yard_penguin": {
+   "arc": "penguins",
+   "comfort": 21,
+   "name": "Yard Penguin Set",
+   "pieces": [
+    "dc_y_fish_vane",
+    "dc_y_ice_slide",
+    "dc_y_igloo_lantern",
+    "dc_y_penguin_statue",
+    "dc_y_penguin_topiary",
+    "dc_y_shell_bed",
+    "dc_y_snow_fort",
+    "dc_y_star_planter"
+   ],
+   "reward": {
+    "comfort": 21,
+    "money": 1270
+   }
+  },
+  "yard_seasonal": {
+   "arc": "",
+   "comfort": 21,
+   "name": "Yard Seasonal Set",
+   "pieces": [
+    "dc_y_hay_wall",
+    "dc_y_icicle_lamp",
+    "dc_y_kiddie_pool",
+    "dc_y_leaf_pile",
+    "dc_y_lemonade_stand",
+    "dc_y_lounger",
+    "dc_y_picnic_set",
+    "dc_y_tulip_barrow"
+   ],
+   "reward": {
+    "comfort": 21,
+    "money": 550
+   }
+  },
+  "yard_show": {
+   "arc": "penguins",
+   "comfort": 17,
+   "name": "Yard Show Set",
+   "pieces": [
+    "dc_y_aurora_lamp",
+    "dc_y_crystal_fountain",
+    "dc_y_koi_pond",
+    "dc_y_lowrider_bounce",
+    "dc_y_neon_chase_arch",
+    "dc_y_star_well"
+   ],
+   "reward": {
+    "comfort": 17,
+    "money": 6000
    }
   }
  },
@@ -47154,7 +51594,30 @@
      "dc_wardrobe2_a",
      "dc_wardrobe2_b",
      "dc_wardrobe_a",
-     "dc_wardrobe_b"
+     "dc_wardrobe_b",
+     "dc_y_boulder",
+     "dc_y_boulder_b",
+     "dc_y_cairn",
+     "dc_y_fence_picket",
+     "dc_y_fence_picket_v",
+     "dc_y_fence_wood",
+     "dc_y_fence_wood_v",
+     "dc_y_hay_wall",
+     "dc_y_hedge_run",
+     "dc_y_herb_box",
+     "dc_y_hook_lantern",
+     "dc_y_leaf_pile",
+     "dc_y_lounger",
+     "dc_y_path_ice_brick",
+     "dc_y_path_light",
+     "dc_y_picnic_set",
+     "dc_y_rain_barrel",
+     "dc_y_shell_bed",
+     "dc_y_sleeping_bag",
+     "dc_y_sleeping_bag_b",
+     "dc_y_snow_fort",
+     "dc_y_stepping_stones",
+     "dc_y_tiki_torch"
     ]
    ],
    [
@@ -47240,7 +51703,31 @@
      "dc_table_long_cloth",
      "dc_table_round_cloth",
      "dc_table_square_cloth",
-     "dc_trophy_shelf"
+     "dc_trophy_shelf",
+     "dc_y_candle_stand",
+     "dc_y_cat_tower",
+     "dc_y_crystal_cluster",
+     "dc_y_fence_ice",
+     "dc_y_fence_ice_v",
+     "dc_y_fence_iron",
+     "dc_y_fence_iron_v",
+     "dc_y_fence_stone",
+     "dc_y_fence_stone_v",
+     "dc_y_fire_pit",
+     "dc_y_fish_vane",
+     "dc_y_icicle_lamp",
+     "dc_y_igloo_lantern",
+     "dc_y_kiddie_pool",
+     "dc_y_lantern_post_kit",
+     "dc_y_paper_lantern_post",
+     "dc_y_path_pebble",
+     "dc_y_penguin_topiary",
+     "dc_y_star_planter",
+     "dc_y_string_posts",
+     "dc_y_sundial",
+     "dc_y_tulip_barrow",
+     "dc_y_wheelbarrow",
+     "dc_y_wind_spinner"
     ]
    ],
    [
@@ -47267,7 +51754,16 @@
      "dc_out_hedge2_arch",
      "dc_out_lamp2_tall_2",
      "dc_out_stone_arch",
-     "dc_out_wedding_arch"
+     "dc_out_wedding_arch",
+     "dc_y_arbor_swing",
+     "dc_y_camp_tent",
+     "dc_y_cat_tower_b",
+     "dc_y_crystal_cluster_b",
+     "dc_y_firefly_jar",
+     "dc_y_lemonade_stand",
+     "dc_y_penguin_statue",
+     "dc_y_pin_statue",
+     "dc_y_twin_lamp"
     ]
    ],
    [
@@ -47278,7 +51774,8 @@
      "dc_out_flower_cart",
      "dc_out_fountain",
      "dc_out_gold_fence_a",
-     "dc_sofa_velvet"
+     "dc_sofa_velvet",
+     "dc_y_ice_slide"
     ]
    ]
   ],
@@ -47418,7 +51915,33 @@
      "dc_wardrobe2_b",
      "dc_wardrobe_a",
      "dc_wardrobe_b",
-     "dc_wp_brick_neon"
+     "dc_wp_brick_neon",
+     "dc_y_boulder",
+     "dc_y_boulder_b",
+     "dc_y_cairn",
+     "dc_y_cones",
+     "dc_y_fence_picket",
+     "dc_y_fence_picket_v",
+     "dc_y_fence_wood",
+     "dc_y_fence_wood_v",
+     "dc_y_grill",
+     "dc_y_hay_wall",
+     "dc_y_hedge_run",
+     "dc_y_herb_box",
+     "dc_y_hook_lantern",
+     "dc_y_hydrant",
+     "dc_y_leaf_pile",
+     "dc_y_lounger",
+     "dc_y_path_checker",
+     "dc_y_path_light",
+     "dc_y_picnic_set",
+     "dc_y_rain_barrel",
+     "dc_y_sleeping_bag",
+     "dc_y_sleeping_bag_b",
+     "dc_y_stepping_stones",
+     "dc_y_tag_wall",
+     "dc_y_tiki_torch",
+     "dc_y_tyre_stack"
     ]
    ],
    [
@@ -47524,7 +52047,30 @@
      "dc_table_round_cloth",
      "dc_table_square_cloth",
      "dc_trophy_shelf",
-     "dc_wp_red_velvet"
+     "dc_wp_red_velvet",
+     "dc_y_bulb_poles",
+     "dc_y_candle_stand",
+     "dc_y_fence_iron",
+     "dc_y_fence_iron_v",
+     "dc_y_fence_stone",
+     "dc_y_fence_stone_v",
+     "dc_y_fire_pit",
+     "dc_y_hoop",
+     "dc_y_icicle_lamp",
+     "dc_y_kiddie_pool",
+     "dc_y_lantern_post_kit",
+     "dc_y_neon_arrow",
+     "dc_y_neon_frame",
+     "dc_y_paper_lantern_post",
+     "dc_y_path_neon_asphalt",
+     "dc_y_path_pebble",
+     "dc_y_speakers",
+     "dc_y_string_posts",
+     "dc_y_sundial",
+     "dc_y_tulip_barrow",
+     "dc_y_vending",
+     "dc_y_wheelbarrow",
+     "dc_y_wind_spinner"
     ]
    ],
    [
@@ -47566,7 +52112,16 @@
      "dc_out_taxi",
      "dc_out_wedding_arch",
      "dc_safe_safe",
-     "dc_wp_deco_gold"
+     "dc_wp_deco_gold",
+     "dc_y_arbor_swing",
+     "dc_y_camp_tent",
+     "dc_y_fence_neon",
+     "dc_y_fence_neon_v",
+     "dc_y_firefly_jar",
+     "dc_y_lemonade_stand",
+     "dc_y_neon_palm",
+     "dc_y_pin_statue",
+     "dc_y_twin_lamp"
     ]
    ],
    [
@@ -47589,7 +52144,13 @@
      "dc_out_lux_car_red",
      "dc_rec_pinball_a",
      "dc_sofa_velvet",
-     "dc_wp_circuit"
+     "dc_wp_circuit",
+     "dc_y_car_lift",
+     "dc_y_fence_gold",
+     "dc_y_lowrider_purple",
+     "dc_y_lowrider_teal",
+     "dc_y_neon_arch",
+     "dc_y_neon_chase_arch"
     ]
    ]
   ],
@@ -47634,6 +52195,7 @@
     [
      "dc_cat_statue",
      "dc_ice_penguin",
+     "dc_lucky_cat_gold",
      "dc_part_snow_globe_shelf",
      "dc_tt_snow_heart"
     ]
@@ -47691,6 +52253,9 @@
      "dc_noir_desk",
      "dc_rec_neon_0",
      "dc_rec_neon_3",
+     "dc_y_neon_arrow",
+     "dc_y_neon_frame",
+     "dc_y_path_neon_asphalt",
      "wr_neon_gloves_b",
      "wr_neon_scarf_b",
      "wr_neon_shoes_b"
@@ -47706,7 +52271,6 @@
      "dc_arcade_cab_1",
      "dc_casino_ace_sign",
      "dc_casino_slot",
-     "dc_casino_table",
      "dc_glight_arcade",
      "dc_neon_sign_2",
      "dc_neon_sign_3",
@@ -47719,6 +52283,9 @@
      "dc_rec_neon_1",
      "dc_rec_neon_2",
      "dc_safe_neon_arrow",
+     "dc_y_fence_neon",
+     "dc_y_fence_neon_v",
+     "dc_y_neon_palm",
      "wr_outfit_neon"
     ]
    ],
@@ -47728,6 +52295,7 @@
      "dc_arc_claw",
      "dc_arcade_cab_3",
      "dc_arcade_cab_4",
+     "dc_casino_roulette",
      "dc_glight_jukebox",
      "dc_jukebox_a",
      "dc_neon_sign_5",
@@ -47735,7 +52303,9 @@
      "dc_noir_neon_palm",
      "dc_organ",
      "dc_piano",
-     "dc_rec_pinball_a"
+     "dc_rec_pinball_a",
+     "dc_y_neon_arch",
+     "dc_y_neon_chase_arch"
     ]
    ]
   ],
@@ -47779,6 +52349,7 @@
      "dc_floor_concrete",
      "dc_floor_grate",
      "dc_gart_car_plate",
+     "dc_gart_car_plate_navy",
      "dc_gart_city_map",
      "dc_gart_cyber_poster",
      "dc_gart_fedora_hook",
@@ -47821,6 +52392,12 @@
      "dc_tt_bottle_cap",
      "dc_wall_concrete",
      "dc_wp_brick_neon",
+     "dc_y_cones",
+     "dc_y_grill",
+     "dc_y_hydrant",
+     "dc_y_path_checker",
+     "dc_y_tag_wall",
+     "dc_y_tyre_stack",
      "wr_neon_gloves",
      "wr_neon_scarf",
      "wr_neon_shoes"
@@ -47883,6 +52460,13 @@
      "dc_top_typewriter",
      "dc_tt_first_dollar",
      "dc_wp_red_velvet",
+     "dc_y_bulb_poles",
+     "dc_y_hoop",
+     "dc_y_neon_arrow",
+     "dc_y_neon_frame",
+     "dc_y_path_neon_asphalt",
+     "dc_y_speakers",
+     "dc_y_vending",
      "wr_fedora",
      "wr_flatcap",
      "wr_jacket",
@@ -47938,6 +52522,9 @@
      "dc_tv_off",
      "dc_tv_on",
      "dc_wp_deco_gold",
+     "dc_y_fence_neon",
+     "dc_y_fence_neon_v",
+     "dc_y_neon_palm",
      "wr_jacket_patch",
      "wr_outfit_neon"
     ]
@@ -47971,6 +52558,12 @@
      "dc_top_gold_bar",
      "dc_tt_lantern_gold",
      "dc_wp_circuit",
+     "dc_y_car_lift",
+     "dc_y_fence_gold",
+     "dc_y_lowrider_purple",
+     "dc_y_lowrider_teal",
+     "dc_y_neon_arch",
+     "dc_y_neon_chase_arch",
      "wr_outfit_armored"
     ]
    ]
@@ -47988,6 +52581,7 @@
      "dc_chrome_plant",
      "dc_chrome_tools",
      "dc_gart_car_plate",
+     "dc_gart_car_plate_navy",
      "dc_out_crates_pallet",
      "dc_out_oil_drums",
      "dc_safe_drum",
@@ -47996,6 +52590,11 @@
      "dc_stool_green",
      "dc_stool_red",
      "dc_stool_wood",
+     "dc_y_cones",
+     "dc_y_grill",
+     "dc_y_hydrant",
+     "dc_y_tag_wall",
+     "dc_y_tyre_stack",
      "wr_neon_scarf"
     ]
    ],
@@ -48010,16 +52609,22 @@
      "dc_chrome_terminal",
      "dc_fl_casino_carpet",
      "dc_out_rusted_car",
+     "dc_y_bulb_poles",
+     "dc_y_hoop",
+     "dc_y_neon_arrow",
+     "dc_y_neon_frame",
+     "dc_y_speakers",
+     "dc_y_vending",
      "wr_neon_scarf_b"
     ]
    ],
    [
     3,
     [
-     "dc_casino_table",
      "dc_chrome_bed",
      "dc_gart_deco_clock",
-     "dc_out_taxi"
+     "dc_out_taxi",
+     "dc_y_neon_palm"
     ]
    ],
    [
@@ -48027,7 +52632,11 @@
     [
      "dc_chrome_robot",
      "dc_jukebox_a",
-     "dc_out_lux_car_red"
+     "dc_out_lux_car_red",
+     "dc_y_car_lift",
+     "dc_y_lowrider_purple",
+     "dc_y_lowrider_teal",
+     "dc_y_neon_arch"
     ]
    ]
   ],
@@ -48296,6 +52905,7 @@
      "dc_arc_neon_joystick",
      "dc_arc_pinball",
      "dc_casino_ace_sign",
+     "dc_casino_slot",
      "dc_neon_sign_2",
      "dc_neon_sign_3",
      "dc_neon_sign_4",
@@ -49035,6 +53645,7 @@
      "dc_library_ladder",
      "dc_light_chandelier",
      "dc_light_stained",
+     "dc_lucky_cat_gold",
      "dc_moon_bed",
      "dc_moon_clock",
      "dc_orch_table",
@@ -49156,6 +53767,7 @@
      "dc_library_ladder",
      "dc_light_chandelier",
      "dc_light_stained",
+     "dc_lucky_cat_gold",
      "dc_moon_bed",
      "dc_moon_clock",
      "dc_moon_constellation",
@@ -49224,7 +53836,19 @@
      "dc_wall_marble",
      "dc_wp_deco_gold",
      "dc_wp_penguin_print",
-     "dc_wp_star_navy"
+     "dc_wp_star_navy",
+     "dc_y_arbor_swing",
+     "dc_y_camp_tent",
+     "dc_y_cat_tower_b",
+     "dc_y_crystal_cluster_b",
+     "dc_y_fence_neon",
+     "dc_y_fence_neon_v",
+     "dc_y_firefly_jar",
+     "dc_y_lemonade_stand",
+     "dc_y_neon_palm",
+     "dc_y_penguin_statue",
+     "dc_y_pin_statue",
+     "dc_y_twin_lamp"
     ]
    ],
    [
@@ -49293,7 +53917,17 @@
      "dc_tt_wisp_lantern",
      "dc_vault_closed",
      "dc_vault_open",
-     "dc_wp_circuit"
+     "dc_wp_circuit",
+     "dc_y_aurora_lamp",
+     "dc_y_car_lift",
+     "dc_y_fence_gold",
+     "dc_y_ice_slide",
+     "dc_y_koi_pond",
+     "dc_y_lowrider_bounce",
+     "dc_y_lowrider_purple",
+     "dc_y_lowrider_teal",
+     "dc_y_neon_arch",
+     "dc_y_neon_chase_arch"
     ]
    ]
   ],
@@ -49698,6 +54332,7 @@
      "dc_globe3",
      "dc_ink_brushes",
      "dc_library_ladder",
+     "dc_lucky_cat_gold",
      "dc_pelt_bear",
      "dc_pelt_leopard",
      "dc_pelt_wolf",
@@ -49882,6 +54517,7 @@
      "dc_top_chess",
      "dc_top_globe",
      "dc_top_radio_tube",
+     "dc_top_snow_globe",
      "dc_top_teapot",
      "dc_top_typewriter",
      "dc_tt_first_dollar",
@@ -49917,6 +54553,7 @@
      "dc_globe3",
      "dc_ink_brushes",
      "dc_library_ladder",
+     "dc_lucky_cat_gold",
      "dc_neon_sign_2",
      "dc_neon_sign_3",
      "dc_neon_sign_4",
@@ -50148,6 +54785,7 @@
     2,
     [
      "dc_catkins_mat_bed",
+     "dc_light_candelabra",
      "dc_orch_hutch",
      "dc_plant_fiddle",
      "dc_plant_lemon"
@@ -50215,6 +54853,7 @@
    [
     2,
     [
+     "dc_light_candelabra",
      "dc_orch_hutch",
      "dc_plant_fiddle",
      "dc_plant_lemon"
@@ -50675,6 +55314,7 @@
      "dc_safe_table",
      "dc_stat_globe_bar",
      "dc_top_globe",
+     "dc_top_snow_globe",
      "dc_tt_painting_landscape",
      "dc_tt_painting_portrait",
      "dc_tt_snow_globe"
@@ -50736,7 +55376,6 @@
      "dc_gilt_mirror",
      "dc_glight_jukebox",
      "dc_light_firefly",
-     "dc_moon_telescope",
      "dc_orch_tree",
      "dc_out_ds_sun_obelisk",
      "dc_plant_glow",
@@ -50911,7 +55550,8 @@
      "dc_stat_lion",
      "dc_top_ice_crystal",
      "dc_tt_lantern_crystal",
-     "dc_tt_snow_heart"
+     "dc_tt_snow_heart",
+     "dc_y_firefly_jar"
     ]
    ],
    [
@@ -50928,7 +55568,8 @@
      "dc_show_gold_jukebox",
      "dc_show_grand_piano",
      "dc_stat_penguin_gold",
-     "dc_stat_trophy"
+     "dc_stat_trophy",
+     "dc_y_ice_slide"
     ]
    ]
   ],
@@ -50936,6 +55577,9 @@
    [
     3,
     [
+     "dc_casino_ace_sign",
+     "dc_casino_slot",
+     "dc_casino_table",
      "dc_cat_statue",
      "dc_fl_checker_gold",
      "dc_floor_marble",
@@ -50946,6 +55590,7 @@
      "dc_gilt_sofa",
      "dc_gilt_table",
      "dc_light_chandelier",
+     "dc_lucky_cat_gold",
      "dc_noir_sofa",
      "dc_noir_sofa_navy",
      "dc_out_cat_statue",
@@ -50953,13 +55598,17 @@
      "dc_stat_bust",
      "dc_tt_statue_head",
      "dc_wall_marble",
-     "dc_wp_deco_gold"
+     "dc_wp_deco_gold",
+     "dc_y_penguin_statue",
+     "dc_y_pin_statue"
     ]
    ],
    [
     4,
     [
      "dc_arcade_cab_2",
+     "dc_casino_marquee",
+     "dc_casino_roulette",
      "dc_chandelier",
      "dc_gilt_bed",
      "dc_gilt_mirror",
@@ -50972,7 +55621,8 @@
      "dc_stat_penguin_gold",
      "dc_statue2_crystal",
      "dc_top_gold_bar",
-     "dc_tt_lantern_gold"
+     "dc_tt_lantern_gold",
+     "dc_y_fence_gold"
     ]
    ]
   ],
@@ -50997,7 +55647,10 @@
      "dc_out_glow_pond",
      "dc_out_lamp2_tall_2",
      "dc_rug_moon",
-     "dc_tt_lantern_crystal"
+     "dc_tt_lantern_crystal",
+     "dc_y_crystal_cluster_b",
+     "dc_y_firefly_jar",
+     "dc_y_twin_lamp"
     ]
    ],
    [
@@ -51011,7 +55664,8 @@
      "dc_tt_lantern_gold",
      "dc_tt_lantern_moon",
      "dc_tt_wisp_bottle",
-     "dc_tt_wisp_lantern"
+     "dc_tt_wisp_lantern",
+     "dc_y_aurora_lamp"
     ]
    ]
   ],
@@ -51054,7 +55708,10 @@
      "dc_rug_red",
      "dc_rustic_lamp",
      "dc_safe_crates",
-     "dc_top_desk_lamp_green"
+     "dc_top_desk_lamp_green",
+     "dc_y_hook_lantern",
+     "dc_y_path_light",
+     "dc_y_tiki_torch"
     ]
    ],
    [
@@ -51082,7 +55739,12 @@
      "dc_rug_round_blue",
      "dc_rug_round_green",
      "dc_rug_round_red",
-     "dc_sea_lamp"
+     "dc_sea_lamp",
+     "dc_y_candle_stand",
+     "dc_y_icicle_lamp",
+     "dc_y_lantern_post_kit",
+     "dc_y_paper_lantern_post",
+     "dc_y_string_posts"
     ]
    ],
    [
@@ -51095,7 +55757,9 @@
      "dc_pelt_leopard",
      "dc_pelt_wolf",
      "dc_rug_moon",
-     "dc_rug_star"
+     "dc_rug_star",
+     "dc_y_firefly_jar",
+     "dc_y_twin_lamp"
     ]
    ]
   ],
@@ -51111,7 +55775,8 @@
      "dc_moon_clock",
      "dc_out_dock_lantern",
      "dc_safe_safe",
-     "dc_tt_lantern_crystal"
+     "dc_tt_lantern_crystal",
+     "dc_y_twin_lamp"
     ]
    ],
    [
@@ -51164,7 +55829,10 @@
      "dc_noir_desk",
      "dc_rec_neon_0",
      "dc_rec_neon_3",
-     "dc_rug_neon"
+     "dc_rug_neon",
+     "dc_y_neon_arrow",
+     "dc_y_neon_frame",
+     "dc_y_path_neon_asphalt"
     ]
    ],
    [
@@ -51174,6 +55842,7 @@
      "dc_arc_neon_joystick",
      "dc_arc_pinball",
      "dc_casino_ace_sign",
+     "dc_casino_slot",
      "dc_glight_arcade",
      "dc_neon_sign_2",
      "dc_neon_sign_3",
@@ -51184,7 +55853,10 @@
      "dc_noir_sofa_navy",
      "dc_rec_neon_1",
      "dc_rec_neon_2",
-     "dc_safe_neon_arrow"
+     "dc_safe_neon_arrow",
+     "dc_y_fence_neon",
+     "dc_y_fence_neon_v",
+     "dc_y_neon_palm"
     ]
    ]
   ],
@@ -51201,7 +55873,9 @@
      "dc_sea_wheel",
      "dc_top_music_box",
      "dc_tt_bottled_wind",
-     "dc_tt_echo_shell"
+     "dc_tt_echo_shell",
+     "dc_y_arbor_swing",
+     "dc_y_lemonade_stand"
     ]
    ],
    [
@@ -51778,6 +56452,7 @@
      "dc_bloom_sofa_sky",
      "dc_grotto_lamp",
      "dc_grotto_shelf",
+     "dc_light_candelabra",
      "dc_orch_hutch",
      "dc_plant_fiddle",
      "dc_plant_lemon"
@@ -51877,6 +56552,7 @@
      "dc_bloom_sofa_sage",
      "dc_bloom_sofa_sky",
      "dc_lamp_tall_a",
+     "dc_light_candelabra",
      "dc_neon_sign_0",
      "dc_neon_sign_1",
      "dc_noir_armchair",
@@ -51894,6 +56570,7 @@
      "dc_arc_pinball",
      "dc_bloom_flowers",
      "dc_bulb_plant",
+     "dc_casino_slot",
      "dc_crystal_ball",
      "dc_crystal_cage",
      "dc_light_chandelier",

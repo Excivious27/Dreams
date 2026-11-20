@@ -15084,7 +15084,7 @@
   "value": 0,
   "rarity": "legendary",
   "tier": 4,
-  "icon": "items/painting_landscape",
+  "icon": "decor/dc_koi_scroll",
   "desc": "A keepsake from the museum and your collections.",
   "decor": true
  },
@@ -15104,7 +15104,7 @@
   "value": 0,
   "rarity": "epic",
   "tier": 4,
-  "icon": "furniture/fireplace2",
+  "icon": "decor/dc_master_hearth",
   "desc": "A keepsake from the museum and your collections.",
   "decor": true
  },
@@ -15124,7 +15124,7 @@
   "value": 0,
   "rarity": "rare",
   "tier": 3,
-  "icon": "furniture/trophy_shelf",
+  "icon": "decor/dc_collectors_shelf",
   "desc": "A keepsake from the museum and your collections.",
   "decor": true
  },
@@ -15144,7 +15144,7 @@
   "value": 0,
   "rarity": "unique",
   "tier": 5,
-  "icon": "furniture/globe3",
+  "icon": "decor/dc_founders_orrery",
   "desc": "One of a kind. The founders charted the valley sky with it.",
   "decor": true,
   "keep": true
@@ -15249,7 +15249,7 @@
   "arc": "gangsters"
  },
  "dc_arc_pinball": {
-  "name": "Pinball Table II",
+  "name": "Arcade Pinball Table",
   "type": "decor",
   "value": 202,
   "rarity": "rare",
@@ -15343,7 +15343,7 @@
   "decor": true
  },
  "dc_art_round_mirror": {
-  "name": "Round Mirror II",
+  "name": "Gilt Round Mirror",
   "type": "decor",
   "value": 28,
   "rarity": "common",
@@ -15649,7 +15649,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_ace_sign",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15660,40 +15660,40 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_booth",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_cards_art": {
-  "name": "Royal Flush Art",
+  "name": "Playing Card Art",
   "type": "decor",
   "value": 11,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_cards_art",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_chip_frame": {
-  "name": "Framed Lucky Chip",
+  "name": "Framed Lucky Token",
   "type": "decor",
   "value": 57,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_chip_frame",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_chips": {
-  "name": "Chip Tower Stand",
+  "name": "Token Tower",
   "type": "decor",
   "value": 20,
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_chips",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15704,7 +15704,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_dice",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15715,7 +15715,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_lamp",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15726,7 +15726,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_marquee",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -15737,51 +15737,51 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_casino_rope",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_roulette": {
-  "name": "Roulette Wheel",
+  "name": "Lucky Prize Wheel",
   "type": "decor",
   "value": 1035,
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_casino_roulette",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_slot": {
-  "name": "Lucky Slot Machine",
+  "name": "Neon Fruit Machine",
   "type": "decor",
   "value": 180,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_slot",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_stool": {
-  "name": "High-Roller Stool",
+  "name": "Velvet Bar Stool",
   "type": "decor",
   "value": 53,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_casino_stool",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
  "dc_casino_table": {
-  "name": "Card Table",
+  "name": "Velvet Game Table",
   "type": "decor",
   "value": 375,
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_casino_table",
-  "desc": "Part of the Lucky Lounge Set.",
+  "desc": "Part of the Velvet Lounge Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -16797,7 +16797,7 @@
   "arc": "gangsters"
  },
  "dc_glight_streetlamp": {
-  "name": "Indoor Street Lamp",
+  "name": "Mini Street Lamp",
   "type": "decor",
   "value": 26,
   "rarity": "common",
@@ -17072,7 +17072,7 @@
   "arc": "penguins"
  },
  "dc_ice_snowman": {
-  "name": "Tiny Snowman II",
+  "name": "Igloo Snowman",
   "type": "decor",
   "value": 28,
   "rarity": "common",
@@ -17268,7 +17268,7 @@
   "decor": true
  },
  "dc_kit_dining": {
-  "name": "Round Dining Table II",
+  "name": "Family Dining Table",
   "type": "decor",
   "value": 21,
   "rarity": "common",
@@ -17338,7 +17338,7 @@
   "decor": true
  },
  "dc_light_candelabra": {
-  "name": "Candelabra II",
+  "name": "Five-Candle Candelabra",
   "type": "decor",
   "value": 69,
   "rarity": "uncommon",
@@ -17378,7 +17378,7 @@
   "decor": true
  },
  "dc_light_fireplace": {
-  "name": "Stone Fireplace II",
+  "name": "Hearthstone Fireplace",
   "type": "decor",
   "value": 80,
   "rarity": "uncommon",
@@ -17529,7 +17529,7 @@
   "arc": "penguins"
  },
  "dc_moon_telescope": {
-  "name": "Brass Telescope II",
+  "name": "Moonlit Telescope",
   "type": "decor",
   "value": 1200,
   "rarity": "epic",
@@ -18207,7 +18207,7 @@
   "arc": "gangsters"
  },
  "dc_safe_bunk": {
-  "name": "Bunk Bed II",
+  "name": "Safehouse Bunk Bed",
   "type": "decor",
   "value": 111,
   "rarity": "uncommon",
@@ -18553,7 +18553,7 @@
   "arc": "penguins"
  },
  "dc_show_crystal_tree": {
-  "name": "Crystal Tree",
+  "name": "Glow Glass Tree",
   "type": "decor",
   "value": 11625,
   "rarity": "mythic",
@@ -18641,7 +18641,7 @@
   "arc": "penguins"
  },
  "dc_stat_bust": {
-  "name": "Marble Bust II",
+  "name": "Gallery Marble Bust",
   "type": "decor",
   "value": 188,
   "rarity": "rare",
@@ -18712,7 +18712,7 @@
   "decor": true
  },
  "dc_stat_trophy": {
-  "name": "Team Cup Trophy",
+  "name": "Champion's Cup",
   "type": "decor",
   "value": 802,
   "rarity": "epic",
@@ -18804,7 +18804,7 @@
   "decor": true
  },
  "dc_top_dice_cup": {
-  "name": "Lucky Dice Cup",
+  "name": "Dice Cup",
   "type": "decor",
   "value": 18,
   "rarity": "common",
@@ -18825,7 +18825,7 @@
   "decor": true
  },
  "dc_top_globe": {
-  "name": "Desk Globe II",
+  "name": "Little Desk Globe",
   "type": "decor",
   "value": 104,
   "rarity": "uncommon",
@@ -18866,7 +18866,7 @@
   "decor": true
  },
  "dc_top_ice_crystal": {
-  "name": "Ice Crystal",
+  "name": "Ice Cube Paperweight",
   "type": "decor",
   "value": 262,
   "rarity": "rare",
@@ -18930,15 +18930,14 @@
   "arc": "gangsters"
  },
  "dc_top_snow_globe": {
-  "name": "Penguin Snow Globe",
+  "name": "Snowy Village Globe",
   "type": "decor",
   "value": 74,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_top_snow_globe",
   "desc": "A finishing touch for a room.",
-  "decor": true,
-  "arc": "penguins"
+  "decor": true
  },
  "dc_top_teapot": {
   "name": "Teapot Set",
@@ -19937,5 +19936,941 @@
   "desc": "Street-style yard dressing.",
   "decor": true,
   "arc": "gangsters"
+ },
+ "dc_gart_car_plate_navy": {
+  "name": "Navy Licence Plate",
+  "type": "decor",
+  "value": 24,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_gart_car_plate_navy",
+  "desc": "Hangs on a wall.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_lucky_cat_gold": {
+  "name": "Golden Lucky Cat",
+  "type": "decor",
+  "value": 330,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_lucky_cat_gold",
+  "desc": "A finishing touch for a room.",
+  "decor": true
+ },
+ "dc_y_arbor_swing": {
+  "name": "Arbor Swing Seat",
+  "type": "decor",
+  "value": 278,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_arbor_swing",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_aurora_lamp": {
+  "name": "Northern-Lights Lamp",
+  "type": "decor",
+  "value": 3225,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "decor/dc_y_aurora_lamp_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_boulder": {
+  "name": "Mossy Boulder",
+  "type": "decor",
+  "value": 26,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_boulder",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_boulder_b": {
+  "name": "Mossy Boulder Pair",
+  "type": "decor",
+  "value": 17,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_boulder_b",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_bulb_poles": {
+  "name": "Bulb-String Poles",
+  "type": "decor",
+  "value": 103,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_bulb_poles",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_cairn": {
+  "name": "Trail Cairn",
+  "type": "decor",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_cairn",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_camp_tent": {
+  "name": "Camping Tent",
+  "type": "decor",
+  "value": 225,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_camp_tent",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_candle_stand": {
+  "name": "Candle Lantern Stand",
+  "type": "decor",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_candle_stand",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_car_lift": {
+  "name": "Car on a Lift",
+  "type": "decor",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_car_lift",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_cat_tower": {
+  "name": "Garden Cat Tower",
+  "type": "decor",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_cat_tower",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_cat_tower_b": {
+  "name": "Tall Cat Tower",
+  "type": "decor",
+  "value": 458,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_cat_tower_b",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_cones": {
+  "name": "Cones and Barricade",
+  "type": "decor",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_cones",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_crystal_cluster": {
+  "name": "Yard Crystal Cluster",
+  "type": "decor",
+  "value": 82,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_crystal_cluster",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_crystal_cluster_b": {
+  "name": "Glowing Crystal Spire",
+  "type": "decor",
+  "value": 210,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_crystal_cluster_b",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_crystal_fountain": {
+  "name": "Crystal Plaza Fountain",
+  "type": "decor",
+  "value": 14100,
+  "rarity": "mythic",
+  "tier": 5,
+  "icon": "decor/dc_y_crystal_fountain_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_fence_gold": {
+  "name": "Gilded Fence II",
+  "type": "decor",
+  "value": 885,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_fence_gold",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_fence_ice": {
+  "name": "Ice-Brick Fence",
+  "type": "decor",
+  "value": 125,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_ice",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_fence_ice_v": {
+  "name": "Ice-Brick Fence (side)",
+  "type": "decor",
+  "value": 118,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_ice_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_fence_iron": {
+  "name": "Iron Railing",
+  "type": "decor",
+  "value": 63,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_iron",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_iron_v": {
+  "name": "Iron Fence (side)",
+  "type": "decor",
+  "value": 86,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_iron_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_neon": {
+  "name": "Neon-Trim Fence",
+  "type": "decor",
+  "value": 428,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_fence_neon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_fence_neon_v": {
+  "name": "Neon-Trim Fence (side)",
+  "type": "decor",
+  "value": 210,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_fence_neon_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_fence_picket": {
+  "name": "White Picket Fence",
+  "type": "decor",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_fence_picket",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_picket_v": {
+  "name": "Picket Fence (side)",
+  "type": "decor",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_fence_picket_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_stone": {
+  "name": "Low Stone Wall",
+  "type": "decor",
+  "value": 76,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_stone",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_stone_v": {
+  "name": "Stone Wall (side)",
+  "type": "decor",
+  "value": 76,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fence_stone_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_wood": {
+  "name": "Wood Rail Fence",
+  "type": "decor",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_fence_wood",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fence_wood_v": {
+  "name": "Wood Fence (side)",
+  "type": "decor",
+  "value": 23,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_fence_wood_v",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fire_pit": {
+  "name": "Stone Fire Pit",
+  "type": "decor",
+  "value": 80,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fire_pit",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_firefly_jar": {
+  "name": "Firefly Jar Post",
+  "type": "decor",
+  "value": 270,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_firefly_jar",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_fish_vane": {
+  "name": "Fish Weathervane",
+  "type": "decor",
+  "value": 77,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_fish_vane",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_grill": {
+  "name": "Charcoal Grill",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_grill",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_hay_wall": {
+  "name": "Hay Bale Wall",
+  "type": "decor",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_hay_wall",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_hedge_run": {
+  "name": "Clipped Hedge Run",
+  "type": "decor",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_hedge_run",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_herb_box": {
+  "name": "Herb Planter Box",
+  "type": "decor",
+  "value": 11,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_herb_box",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_hook_lantern": {
+  "name": "Hook Lantern Post",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_hook_lantern",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_hoop": {
+  "name": "Basketball Hoop",
+  "type": "decor",
+  "value": 71,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_hoop",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_hydrant": {
+  "name": "Fire Hydrant",
+  "type": "decor",
+  "value": 11,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_hydrant",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_ice_slide": {
+  "name": "Penguin Ice Slide",
+  "type": "decor",
+  "value": 915,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_ice_slide",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_icicle_lamp": {
+  "name": "Icicle Lamp Post",
+  "type": "decor",
+  "value": 116,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_icicle_lamp",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_igloo_lantern": {
+  "name": "Igloo Lantern",
+  "type": "decor",
+  "value": 114,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_igloo_lantern",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_kiddie_pool": {
+  "name": "Kiddie Pool",
+  "type": "decor",
+  "value": 101,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_kiddie_pool",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_koi_pond": {
+  "name": "Koi Pond",
+  "type": "decor",
+  "value": 2925,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "decor/dc_y_koi_pond_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_lantern_post_kit": {
+  "name": "Cat Lantern Post",
+  "type": "decor",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_lantern_post_kit",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_leaf_pile": {
+  "name": "Leaf Pile with Rake",
+  "type": "decor",
+  "value": 11,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_leaf_pile",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_lemonade_stand": {
+  "name": "Lemonade Stand",
+  "type": "decor",
+  "value": 345,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_lemonade_stand",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_lounger": {
+  "name": "Striped Lounger",
+  "type": "decor",
+  "value": 15,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_lounger",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_lowrider_bounce": {
+  "name": "Lowrider Bounce",
+  "type": "decor",
+  "value": 5100,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "decor/dc_y_lowrider_bounce_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_lowrider_purple": {
+  "name": "Purple Lowrider",
+  "type": "decor",
+  "value": 1215,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_lowrider_purple",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_lowrider_teal": {
+  "name": "Teal Lowrider",
+  "type": "decor",
+  "value": 900,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_lowrider_teal",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_neon_arch": {
+  "name": "Neon Arch",
+  "type": "decor",
+  "value": 772,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_neon_arch",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_neon_arrow": {
+  "name": "Neon Arrow Pole Sign",
+  "type": "decor",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_neon_arrow",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_neon_chase_arch": {
+  "name": "Neon Chase Arch",
+  "type": "decor",
+  "value": 1305,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "decor/dc_y_neon_chase_arch_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_neon_frame": {
+  "name": "Neon Sign Frame",
+  "type": "decor",
+  "value": 64,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_neon_frame",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_neon_palm": {
+  "name": "Neon Palm Pole",
+  "type": "decor",
+  "value": 300,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_neon_palm",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_paper_lantern_post": {
+  "name": "Paper Lantern Post",
+  "type": "decor",
+  "value": 82,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_paper_lantern_post",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_path_checker": {
+  "name": "Checker Plate Path",
+  "type": "decor",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_path_checker_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_path_ice_brick": {
+  "name": "Ice Brick Path",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_path_ice_brick_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_path_light": {
+  "name": "Solar Path Light",
+  "type": "decor",
+  "value": 16,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_path_light",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_path_neon_asphalt": {
+  "name": "Neon Fleck Asphalt",
+  "type": "decor",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_path_neon_asphalt_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_path_pebble": {
+  "name": "Pebble Mosaic Path",
+  "type": "decor",
+  "value": 116,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_path_pebble_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_penguin_statue": {
+  "name": "Penguin Garden Statue",
+  "type": "decor",
+  "value": 210,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_penguin_statue",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_penguin_topiary": {
+  "name": "Penguin Topiary",
+  "type": "decor",
+  "value": 112,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_penguin_topiary",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_picnic_set": {
+  "name": "Picnic Blanket Set",
+  "type": "decor",
+  "value": 32,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_picnic_set",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_pin_statue": {
+  "name": "Lawn Bowling Pin",
+  "type": "decor",
+  "value": 285,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_pin_statue",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_rain_barrel": {
+  "name": "Rain Barrel",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_rain_barrel",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_shell_bed": {
+  "name": "Shell and Coral Bed",
+  "type": "decor",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_shell_bed",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_sleeping_bag": {
+  "name": "Sleeping Bag",
+  "type": "decor",
+  "value": 26,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_sleeping_bag",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_sleeping_bag_b": {
+  "name": "Striped Sleeping Bag",
+  "type": "decor",
+  "value": 19,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_sleeping_bag_b",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_snow_fort": {
+  "name": "Snow Fort Wall",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_snow_fort",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_speakers": {
+  "name": "Speaker Stack",
+  "type": "decor",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_speakers",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_star_planter": {
+  "name": "Star-Crystal Planter",
+  "type": "decor",
+  "value": 118,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_star_planter",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "dc_y_star_well": {
+  "name": "Wishing-Star Well",
+  "type": "decor",
+  "value": 14325,
+  "rarity": "mythic",
+  "tier": 5,
+  "icon": "decor/dc_y_star_well_icon",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_stepping_stones": {
+  "name": "Stepping Stones",
+  "type": "decor",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_stepping_stones",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_string_posts": {
+  "name": "String-Light Posts",
+  "type": "decor",
+  "value": 62,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_string_posts",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_sundial": {
+  "name": "Garden Sundial",
+  "type": "decor",
+  "value": 108,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_sundial",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_tag_wall": {
+  "name": "Tagged Brick Wall",
+  "type": "decor",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_tag_wall",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_tiki_torch": {
+  "name": "Tiki Torch",
+  "type": "decor",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_tiki_torch",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_tulip_barrow": {
+  "name": "Tulip Barrow",
+  "type": "decor",
+  "value": 59,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_tulip_barrow",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_twin_lamp": {
+  "name": "Twin Iron Lamp Post",
+  "type": "decor",
+  "value": 180,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "decor/dc_y_twin_lamp",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_tyre_stack": {
+  "name": "Tyre Stack",
+  "type": "decor",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "decor/dc_y_tyre_stack",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_u_bell_tower": {
+  "name": "Bell Tower Miniature",
+  "type": "decor",
+  "value": 0,
+  "rarity": "unique",
+  "tier": 5,
+  "icon": "decor/dc_y_u_bell_tower",
+  "desc": "One of a kind. There is only one in the whole valley.",
+  "decor": true,
+  "keep": true
+ },
+ "dc_y_u_gold_lowrider": {
+  "name": "Golden Lowrider",
+  "type": "decor",
+  "value": 0,
+  "rarity": "unique",
+  "tier": 5,
+  "icon": "decor/dc_y_u_gold_lowrider",
+  "desc": "One of a kind. There is only one in the whole valley.",
+  "decor": true,
+  "arc": "gangsters",
+  "keep": true
+ },
+ "dc_y_u_star_shrine": {
+  "name": "Star Crystal Shrine",
+  "type": "decor",
+  "value": 0,
+  "rarity": "unique",
+  "tier": 5,
+  "icon": "decor/dc_y_u_star_shrine",
+  "desc": "One of a kind. There is only one in the whole valley.",
+  "decor": true,
+  "arc": "penguins",
+  "keep": true
+ },
+ "dc_y_vending": {
+  "name": "Street Snack Machine",
+  "type": "decor",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_vending",
+  "desc": "A piece for the yard outside.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "dc_y_wheelbarrow": {
+  "name": "Wheelbarrow Planter",
+  "type": "decor",
+  "value": 85,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_wheelbarrow",
+  "desc": "A piece for the yard outside.",
+  "decor": true
+ },
+ "dc_y_wind_spinner": {
+  "name": "Wind Spinner",
+  "type": "decor",
+  "value": 58,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_y_wind_spinner",
+  "desc": "A piece for the yard outside.",
+  "decor": true
  }
 }
