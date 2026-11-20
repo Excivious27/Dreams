@@ -166,6 +166,13 @@ func _week(arc: String) -> void:
 	clear_toasts(farm)
 	GameState.select_slot(s)
 	farm.interact(sb, farm.things.get(sb, {}))
+	# C8 P2: a stack asks how many: pick "All".
+	var sd := Dialogue.instance(farm.get_tree())
+	for i in 120:
+		if sd.active and sd._in_choice:
+			sd._choose("", 0)
+			break
+		await frames(1)
 	await frames(2)
 	t = toasts(farm)
 	if verbose:
