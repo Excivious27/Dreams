@@ -4,6 +4,15 @@ extends RefCounted
 ## and can be synced for co-op later. Everything that changes the world goes here.
 
 const SAVE_KEY := "run"
+## C9: bump when _migrate gains a step; written into every run, checked by save codes
+## (SaveTransfer refuses codes/farms from a newer build).
+const SAVE_VERSION := 9
+## Run blocks that must be containers; a JSON null here (hand-edited/partial import)
+## is dropped by _migrate so the lazy accessors rebuild it.
+const RUN_BLOCKS := ["campaign", "cfarm", "mega", "romance", "coll", "project", "arcade", "arcade_hub",
+	"pet", "party", "mail", "chests", "opts", "weather", "buffs", "status", "look",
+	"animals", "flags", "inventory", "farm", "friendship", "skills", "quests", "equip",
+	"decisions", "gifted_today", "talked_today", "sellbox", "mine_pace", "hidden_at", "earned_by"]
 const DAY_START := 6 * 60      # 6:00
 const DAY_END := 26 * 60       # 2:00 next day: pass out
 ## Real minutes for the waking day (6am-2am, 1200 game minutes), per save
@@ -171,6 +180,12 @@ const SKILL_VER := 8
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	# C9: null blocks (a damaged import or partly-written run) crash ~15 accessors
+	# that read run.get(k, {}) as a Dictionary: drop them so defaults rebuild.
+	for k in RUN_BLOCKS:
+		if run.has(k) and not (run[k] is Dictionary or run[k] is Array):
+			run.erase(k)
+	run["save_ver"] = maxi(int(run.get("save_ver", 0)) if (run.get("save_ver", 0) is int or run.get("save_ver", 0) is float) else 0, SAVE_VERSION)
 	# C4: difficulty and day length are per slot (the old global Easy switch -> Easy).
 	if not run.get("opts", null) is Dictionary:
 		run["opts"] = {"difficulty": 1 if Difficulty.legacy_easy() else Difficulty.DEFAULT}
@@ -338,38 +353,24 @@ static func use_slot(n: int) -> void:
 	SaveGame.set_value("slot", clampi(n, 1, 3))
 
 
-## A save as one text code (gzip + base64) to move it to another phone.
-static func export_code() -> String:
-	var raw := JSON.stringify(Net.save_view(run) if not run.is_empty() else SaveGame.get_value(save_key(), {})).to_utf8_buffer()
-	return "DRM1:" + Marshalls.raw_to_base64(raw.compress(FileAccess.COMPRESSION_GZIP))
+## A save as one text code to move it to another device (SaveTransfer has the
+## format). slot 0 = the slot being played; "" when that slot holds no farm.
+static func export_code(n: int = 0) -> String:
+	return SaveTransfer.encode_slot(slot() if n <= 0 else n)
 
 
-## Loads a code into the current slot; the slot's old farm goes to Restore. "" on success.
-static func import_code(code: String) -> String:
-	var c := code.strip_edges()
-	if not c.begins_with("DRM1:"):
-		return "That doesn't look like a Dreams save code."
-	var buf := Marshalls.base64_to_raw(c.substr(5))
-	if buf.is_empty():
-		return "The code is cut off or has a typo."
-	var txt := buf.decompress_dynamic(8 * 1024 * 1024, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
-	var d: Variant = JSON.parse_string(txt)
-	if not d is Dictionary or not (d as Dictionary).has("names") or not (d as Dictionary).has("arc") or not (d as Dictionary).has("playable"):
-		return "The code is cut off or has a typo."
-	var cur: Variant = SaveGame.get_value(save_key(), null)
-	var old_prev: Variant = SaveGame.get_value(prev_key(), null)
-	if cur is Dictionary and not (cur as Dictionary).is_empty():
-		SaveGame.set_value(prev_key(), cur)
-	run = {}
-	SaveGame.set_value(save_key(), d)
-	if not has_run():
-		if cur is Dictionary and not (cur as Dictionary).is_empty():
-			SaveGame.set_value(save_key(), cur)
-			SaveGame.set_value(prev_key(), old_prev)  # the older Restore farm comes back too
-			run = {}
-			has_run()
-		return "That save couldn't be read."
-	return ""
+## Loads a code into a slot (0 = the slot being played; another slot becomes the
+## one being played); the slot's old farm goes to its Restore. "" on success,
+## else a line for the player. UIs that confirm first use SaveTransfer.decode /
+## confirm_text / apply_one directly.
+static func import_code(code: String, n: int = 0) -> String:
+	var dec := SaveTransfer.decode(code)
+	if not bool(dec["ok"]):
+		return str(dec["why"])
+	if str(dec["kind"]) != "one":
+		return str(SaveTransfer.WHY["all_here"])
+	var r := SaveTransfer.apply_one(dec["data"], slot() if n <= 0 else n)
+	return "" if bool(r["ok"]) else str(r["why"])
 
 
 ## A guest's morning when the host's day rolls over: pay their own sell box,
@@ -1770,6 +1771,15 @@ static func rarity_color(id: String) -> Color:
 	return Color(0.9, 0.9, 0.9)
 
 
+## C9 (colour-blind safe): rarity as a count, 0 common .. 4 legendary, so slots can
+## draw rank dots beside the colour (char_sheet / chest_screen pips).
+const RARITY_RANKS := ["common", "uncommon", "rare", "epic", "legendary"]
+
+
+static func rarity_rank(id: String) -> int:
+	return maxi(0, RARITY_RANKS.find(str(items.get(id, {}).get("rarity", "common"))))
+
+
 # ---- energy / hp -------------------------------------------------------------
 
 static func spend_energy(n: int) -> bool:
@@ -1940,6 +1950,10 @@ static func now_abs() -> int:
 ## Co-op: switching between our own clock and a host's moves timers set on the other clock.
 ## dd: the real day gap (callers pass it, so time of day doesn't round into it);
 ## into: shift this run copy instead of the live run (save_view).
+## Day stamps in run.romance that shift_clock moves (C9 co-op).
+const ROMANCE_DAYS := ["since", "engaged_day", "wedding_day", "married_day", "talk_day", "chore_day", "invite_day"]
+
+
 static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) -> void:
 	var r: Dictionary = run if into == null else into
 	if r.is_empty():
@@ -1983,6 +1997,27 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 		var pd: Variant = r.get("passed_day", null)
 		if pd is Dictionary and (pd as Dictionary).has("day"):
 			pd["day"] = int(pd["day"]) + dd
+		# C9 (c9_11): romance and community-farm day stamps made while visiting are the host's days.
+		var ro: Variant = r.get("romance", null)
+		if ro is Dictionary:
+			for k in ROMANCE_DAYS:
+				if (ro as Dictionary).get(k) is int or (ro as Dictionary).get(k) is float:
+					if int(ro[k]) > 0:
+						ro[k] = int(ro[k]) + dd
+			if ro.get("ex") is Dictionary:
+				for id in (ro["ex"] as Dictionary).keys():
+					ro["ex"][id] = int(ro["ex"][id]) + dd
+			if ro.get("date") is Dictionary and (ro["date"] as Dictionary).has("day"):
+				ro["date"]["day"] = int(ro["date"]["day"]) + dd
+		var cf: Variant = r.get("cfarm", null)
+		if cf is Dictionary:
+			if int((cf as Dictionary).get("drank", -1)) > 0:
+				cf["drank"] = int(cf["drank"]) + dd
+			if cf.get("gw_day") is Array and (cf["gw_day"] as Array).size() > 0 and int(cf["gw_day"][0]) > 0:
+				cf["gw_day"][0] = int(cf["gw_day"][0]) + dd
+			if cf.get("helped") is Dictionary:
+				for id in (cf["helped"] as Dictionary).keys():
+					cf["helped"][id] = int(cf["helped"][id]) + dd
 		# Board jobs carry their pin day in the id (the host's day if pinned while visiting): keep it on the quest.
 		for q: Variant in r.get("quests", []):
 			if q is Dictionary and not bool(q.get("done", false)) and str(q.get("id", "")).begins_with("board_") and str(q["id"]).get_slice("_", 1).is_valid_int():
@@ -2895,6 +2930,11 @@ static func weather_for(day: int) -> String:
 	if day == 1 and not is_penguins() and pick in ["clear", "fog", "wind", "petals"]:
 		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
 	w[key] = pick
+	# C9: only yesterday/today/tomorrow are ever read; older days would grow the save forever.
+	var keep_from := mini(day, int(run.get("day", day))) - 2
+	for k in w.keys():
+		if str(k).is_valid_int() and int(k) < keep_from:
+			w.erase(k)
 	run["weather"] = w
 	return pick
 

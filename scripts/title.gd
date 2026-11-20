@@ -3,6 +3,7 @@ extends Control
 ## Built from plain Controls so it works with touch and keyboard on the web build.
 
 const FARM_SCENE := "res://scenes/farm.tscn"
+const IOS_NOTE_TIMES := 5  # the iPhone Safari note shows on this many title visits
 
 var _arc := ""
 var _playable := ""
@@ -23,6 +24,7 @@ func _ready() -> void:
 	if nn and (nn.online() or nn.room != "" or not nn._solo_backup.is_empty()):
 		nn.leave()  # back at the title: put our own world back before any slot/new/restore
 	Hud.skin_buttons(self)
+	add_to_group("pad_cursor")  # C9: P1's PadCursor/PadFocus may drive this screen
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
@@ -68,6 +70,37 @@ func _clear() -> void:
 	for c in _page.get_children():
 		c.queue_free()
 	_preview = null
+	_focus_first.call_deferred()
+
+
+## C9: a pad or keyboard can play the title: the page's first button takes focus
+## (not on touch screens, where a focus ring would just look odd), B = Back.
+func _focus_first() -> void:
+	if DisplayServer.is_touchscreen_available() and not Input.get_connected_joypads().size() > 0:
+		return
+	var first: Button = null
+	for b in _page.find_children("*", "Button", true, false):
+		if b.is_queued_for_deletion() or not (b as Button).visible or (b as Button).disabled:
+			continue
+		if (b as Button).text.begins_with("Continue") or (b as Button).text == "Start":
+			first = b  # the page's main step (names keep their defaults)
+			break
+		if first == null:
+			first = b
+	if first != null:
+		first.grab_focus()
+
+
+func _process(_dt: float) -> void:
+	if _page == null or not Input.is_action_just_pressed("b"):
+		return
+	if get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
+		get_viewport().gui_get_focus_owner().release_focus()  # B leaves a text field first
+		return
+	for b in _page.find_children("*", "Button", true, false):
+		if not b.is_queued_for_deletion() and (b as Button).text == "Back":
+			(b as Button).pressed.emit()
+			return
 
 
 func _label(text: String, size: int = 10, center := true) -> Label:
@@ -90,12 +123,23 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 	b.add_theme_stylebox_override("normal", Hud.panel_stylebox("panel_wood"))
 	b.add_theme_stylebox_override("hover", Hud.panel_stylebox("panel_wood"))
 	b.add_theme_stylebox_override("pressed", Hud.panel_stylebox("panel_parchment"))
+	b.add_theme_stylebox_override("focus", _focus_box())
 	b.custom_minimum_size = Vector2(0, 30 if big else 24)
 	b.size_flags_horizontal = SIZE_EXPAND_FILL
 	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.pressed.connect(on_press)
 	return b
+
+
+## A gold outline drawn over a focused button (pad/keyboard), so the pick is obvious.
+func _focus_box() -> StyleBoxFlat:
+	var f := StyleBoxFlat.new()
+	f.draw_center = false
+	f.border_color = Color(1, 0.85, 0.35)
+	f.set_border_width_all(2)
+	f.set_corner_radius_all(4)
+	return f
 
 
 func _show_title() -> void:
@@ -133,7 +177,13 @@ func _show_title() -> void:
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
 	_page.add_child(_button("Save slots (slot %d)" % GameState.slot(), _show_slots))
-	_page.add_child(_button("Sound", _show_sound))
+	if SaveTransfer.ios_tab() and int(SaveGame.get_value("ios_note", 0)) < IOS_NOTE_TIMES:
+		# C9: Safari may clear a tab's storage after a week away; the Home Screen app keeps it.
+		SaveGame.set_value("ios_note", int(SaveGame.get_value("ios_note", 0)) + 1)
+		_page.add_child(_label("Playing in Safari? Add Dreams to your Home Screen (Share > Add to Home Screen) so your farm is kept, and back it up in Save slots.", 8, false))
+	_page.add_child(_button("Sound and options", _show_sound))
+	if not OS.has_feature("web") and not OS.has_feature("mobile"):
+		_page.add_child(_button("Quit", func() -> void: get_tree().quit()))  # C9: native builds (Deck/desktop) need a way out
 	if OS.is_debug_build():
 		_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
 
@@ -147,45 +197,72 @@ func _show_sound() -> void:
 	box.size_flags_horizontal = SIZE_EXPAND_FILL
 	_page.add_child(box)
 	Settings.audio_rows(box, get_tree(), _show_sound)
+	# C9: the other packages' shared rows, when present (P2 general options, P4 vibration).
+	for sp: Array in [["res://scripts/settings.gd", "general_rows"], ["res://scripts/haptics.gd", "rows"]]:
+		if ResourceLoader.exists(str(sp[0])):
+			var sc: Script = load(str(sp[0]))
+			if sc != null and sc.has_method(str(sp[1])):
+				if str(sp[1]) == "rows":
+					sc.call("rows", box)
+				else:
+					sc.call(str(sp[1]), box, get_tree(), _show_sound)
 	_page.add_child(_button("Back", _show_title))
 
 
-func _show_slots() -> void:
+func _show_slots(msg := "") -> void:
 	_clear()
 	if is_inside_tree():
 		Music.instance(get_tree()).play("title_musicbox" if Music.has_track("title_musicbox") else "title")
 	_page.add_child(_label("Save slots", 16))
 	_page.add_child(_label("Three farms side by side. Tap one to play it.", 8, false))
-	for n in [1, 2, 3]:
+	for n in SaveTransfer.SLOTS:
 		var here: bool = int(n) == GameState.slot()
 		_page.add_child(_button("%s%d: %s" % ["▶ " if here else "", n, GameState.slot_info(n)], func() -> void:
 			GameState.use_slot(n)
 			_show_title(), here))
-	_page.add_child(_label("Move a farm to another phone: copy its code here, then paste it on the other phone.", 8, false))
-	_page.add_child(_button("Copy this slot's save code", func() -> void:
-		var code := GameState.export_code()
-		if OS.has_feature("web"):
-			# Phones only allow copying from the tap itself: show the code in a
-			# real page box with the phone's own Share / Copy.
-			JavaScriptBridge.eval(_web_code_box(code))
-			_slot_msg.text = "Your code is on screen: tap Copy or Share and keep it somewhere safe."
+		if GameState.slot_info(n) != "Empty":
+			_page.add_child(_pair("Copy slot %d's code" % n, func() -> void: _export_code(n),
+				"Save to a file", func() -> void: _export_file(SaveTransfer.encode_slot(n))))
+	_page.add_child(_label("Move or back up a farm", 11))
+	_page.add_child(_label("Keep a code or file somewhere safe, then load it here or on another phone or computer. Loading goes into slot %d (you'll be asked first)." % GameState.slot(), 8, false))
+	if OS.has_feature("web"):
+		_page.add_child(_button("Paste a save code", func() -> void:
+			SaveTransfer.web_paste(func(txt: String) -> void:
+				if txt.strip_edges() != "":
+					_try_load(txt))))
+	else:
+		_slot_code = TextEdit.new()
+		_slot_code.placeholder_text = "Paste a save code here"
+		_slot_code.custom_minimum_size = Vector2(220, 46)
+		_slot_code.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+		_slot_code.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+		_slot_code.add_theme_font_size_override("font_size", 7)
+		_field_style(_slot_code)
+		_page.add_child(_slot_code)
+		_slot_code.text_changed.connect(func() -> void:
+			var t := _slot_code.text
+			if t.strip_edges() == "":
+				_slot_msg.text = ""
+				return
+			var d := SaveTransfer.decode(t)
+			_slot_msg.text = ("Looks good: " + _code_summary(d)) if bool(d["ok"]) else str(d["why"]))
+		_page.add_child(_pair("Load the code", func() -> void: _try_load(_slot_code.text),
+			"Clear", func() -> void:
+				_slot_code.text = ""
+				_slot_msg.text = ""))
+	_page.add_child(_button("Load from a file", func() -> void:
+		SaveTransfer.open_file(self, func(txt: String) -> void:
+			if txt.strip_edges() != "":
+				_try_load(txt))))
+	_page.add_child(_button("Back up all farms to a file", func() -> void:
+		var all := SaveTransfer.encode_all()
+		if all == "":
+			_slot_msg.text = "There are no farms to back up yet."
 		else:
-			DisplayServer.clipboard_set(code)
-			_slot_msg.text = "Copied. Paste it somewhere safe (a note or a message to yourself)."))
-	_slot_code = TextEdit.new()
-	_slot_code.placeholder_text = "Paste a save code here"
-	_slot_code.custom_minimum_size = Vector2(220, 46)
-	_slot_code.add_theme_font_size_override("font_size", 7)
-	_field_style(_slot_code)
-	_page.add_child(_slot_code)
-	_page.add_child(_button("Load the code into slot %d" % GameState.slot(), func() -> void:
-		var txt := _slot_code.text
-		if OS.has_feature("web") and txt.strip_edges() == "":
-			var got: Variant = JavaScriptBridge.eval("prompt('Paste your Dreams save code') || ''")
-			txt = str(got) if got != null else ""
-		var err := GameState.import_code(txt)
-		_slot_msg.text = err if err != "" else "Loaded. The farm that was here can be brought back with Restore."))
-	_slot_msg = _label("", 8, false)
+			_export_file(all)))
+	if SaveTransfer.ios_tab():
+		_page.add_child(_label("On iPhone, add Dreams to your Home Screen (Share > Add to Home Screen): Safari can clear a tab's farms after a week away. Keep a backup file too.", 8, false))
+	_slot_msg = _label(msg, 8, false)
 	_page.add_child(_slot_msg)
 	_page.add_child(_button("Back", _show_title))
 
@@ -194,19 +271,102 @@ var _slot_code: TextEdit
 var _slot_msg: Label
 
 
-## An HTML overlay with the code in a text box and Copy / Share buttons (web).
-func _web_code_box(code: String) -> String:
-	var js := """(function(){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:9999;background:#000c;display:flex;align-items:center;justify-content:center';
-var b=document.createElement('div');b.style.cssText='background:#f4e6c4;border-radius:12px;padding:14px;width:86%;max-width:420px;font:15px sans-serif;color:#2a1a10';
-b.innerHTML='<b>Your Dreams save code</b><br><small>Keep it in a note or message. Paste it on the other phone.</small>';
-var t=document.createElement('textarea');t.readOnly=true;t.value=CODE;t.style.cssText='width:100%;height:120px;margin:8px 0;font:11px monospace';
-var row=document.createElement('div');row.style.cssText='display:flex;gap:8px';
-function btn(l,f){var x=document.createElement('button');x.textContent=l;x.style.cssText='flex:1;padding:10px;font:bold 15px sans-serif;border-radius:8px;border:0;background:#c98a3a;color:#fff';x.onclick=f;row.appendChild(x);}
-btn('Copy',function(){t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}});
-if(navigator.share)btn('Share',function(){navigator.share({text:t.value}).catch(function(){});});
-btn('Close',function(){o.remove();});
-b.appendChild(t);b.appendChild(row);o.appendChild(b);document.body.appendChild(o);t.focus();t.select();})();"""
-	return js.replace("CODE", JSON.stringify(code))
+## Two buttons side by side (per-slot export, load/clear).
+func _pair(t1: String, f1: Callable, t2: String, f2: Callable) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.size_flags_horizontal = SIZE_EXPAND_FILL
+	row.add_child(_button(t1, f1))
+	row.add_child(_button(t2, f2))
+	return row
+
+
+func _code_summary(d: Dictionary) -> String:
+	if str(d.get("kind", "")) == "all":
+		var data: Dictionary = d["data"]
+		return "a backup of %d farm%s" % [(data["slots"] as Dictionary).size(), "" if (data["slots"] as Dictionary).size() == 1 else "s"]
+	return SaveTransfer.summary(d["data"])
+
+
+func _export_code(n: int) -> void:
+	var code := SaveTransfer.encode_slot(n)
+	if code == "":
+		_slot_msg.text = str(SaveTransfer.WHY["no_farm"])
+		return
+	if OS.has_feature("web"):
+		# Phones only allow copying from the tap itself: show the code in a
+		# real page box with the phone's own Copy / Share / Save file.
+		SaveTransfer.web_code_box(code)
+		_slot_msg.text = "Your code is on screen: Copy, Share or Save it somewhere safe."
+	else:
+		DisplayServer.clipboard_set(code)
+		_slot_msg.text = "Copied slot %d's code. Paste it somewhere safe (a note or a message to yourself)." % n
+
+
+func _export_file(code: String) -> void:
+	if code == "":
+		_slot_msg.text = str(SaveTransfer.WHY["no_farm"])
+		return
+	SaveTransfer.save_file(self, code, func(ok: bool, where: String) -> void:
+		if is_instance_valid(_slot_msg):
+			_slot_msg.text = ("Saved %s. Keep it somewhere safe." % where) if ok else ("" if where == "" else "That file couldn't be written."))
+
+
+## A pasted/loaded code: check it, then ask before anything is replaced.
+func _try_load(text: String) -> void:
+	var d := SaveTransfer.decode(text)
+	if not bool(d["ok"]):
+		_slot_msg.text = str(d["why"])
+		return
+	if str(d["kind"]) == "all":
+		_confirm_all(d["data"])
+	else:
+		_confirm_one(d["data"], GameState.slot())
+
+
+func _confirm_one(farm: Dictionary, n: int) -> void:
+	var plan := SaveTransfer.plan_one(farm, n)
+	if bool(plan["same"]):
+		_show_slots(SaveTransfer.confirm_text(farm, n))
+		return
+	if str(plan["replaces"]) == "":
+		_finish_one(farm, n)  # empty slot: nothing to lose, no question
+		return
+	_clear()
+	_page.add_child(_label("Load this farm?", 16))
+	_page.add_child(_label(SaveTransfer.confirm_text(farm, n), 8, false))
+	_page.add_child(_button("Replace slot %d" % n, func() -> void: _finish_one(farm, n), true))
+	for e in SaveTransfer.empty_slots():
+		_page.add_child(_button("Put it in empty slot %d instead" % int(e), func() -> void: _finish_one(farm, int(e))))
+	_page.add_child(_button("Back", _show_slots))
+
+
+func _finish_one(farm: Dictionary, n: int) -> void:
+	var r := SaveTransfer.apply_one(farm, n)
+	_show_slots(SaveTransfer.done_text(r, n))  # rebuilt, so the slot list shows the new farm
+
+
+func _confirm_all(data: Dictionary) -> void:
+	_clear()
+	_page.add_child(_label("Load the backup?", 16))
+	var lines: Array = []
+	for n in SaveTransfer.SLOTS:
+		var f: Dictionary = (data["slots"] as Dictionary).get(str(n), {})
+		if f.is_empty():
+			lines.append("Slot %d: not in the backup, left as it is." % n)
+			continue
+		var cur := SaveTransfer.farm_of(n)
+		if SaveTransfer.same_farm(cur, f):
+			lines.append("Slot %d: already holds %s." % [n, SaveTransfer.summary(f)])
+		elif cur.is_empty():
+			lines.append("Slot %d: %s." % [n, SaveTransfer.summary(f)])
+		else:
+			lines.append("Slot %d: %s replaces %s (who moves to Restore)." % [n, SaveTransfer.summary(f), SaveTransfer.summary(cur)])
+	_page.add_child(_label("\n".join(lines), 8, false))
+	_page.add_child(_button("Load the backup", func() -> void:
+		var r := SaveTransfer.apply_all(data)
+		_show_slots(("Loaded the backup into slot%s %s." % ["" if (r["loaded"] as Array).size() == 1 else "s", ", ".join((r["loaded"] as Array).map(func(x: Variant) -> String: return str(x)))]) if bool(r["ok"]) and not (r["loaded"] as Array).is_empty() else ("Every farm in the backup is already here." if bool(r["ok"]) else str(r["why"]))), true))
+	_page.add_child(_button("Back", _show_slots))
 
 
 ## Starting over never loses a farm: the current one is kept to restore.
@@ -616,9 +776,10 @@ func _show_names() -> void:
 	_clear()
 	_page.add_child(_label("Name things", 16))
 	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero")).get_slice(" (", 0)
-	_name_edit = _edit("Your name", pname)
-	_town_edit = _edit("Town name", "Dreamhollow")
-	_pet_edit = _edit("Pet name", "Kitty" if str(_look_full.get("pet", "")).begins_with("cat_") else "Pup")
+	_name_edit = _edit("Your name", pname, "hero")
+	_town_edit = _edit("Town name", "Dreamhollow", "town")
+	var cat := str(_look_full.get("pet", "")).begins_with("cat_")
+	_pet_edit = _edit("Pet name", "Kitty" if cat else "Pup", "kitty" if cat else "pet")
 	# C4: difficulty (fights only) and day length, kept with this save slot.
 	var diff_btn := _button("Difficulty: " + Difficulty.name_of(_new_diff), func() -> void: pass)
 	var diff_note := _label(Difficulty.words(_new_diff), 7, false)
@@ -633,6 +794,8 @@ func _show_names() -> void:
 		_new_len = Difficulty.next_day_len(_new_len)
 		len_btn.text = "Day length: %d real min" % _new_len)
 	_page.add_child(len_btn)
+	if OS.get_environment("SteamDeck") == "1":
+		_page.add_child(_label("Typing a name: Steam + X opens the keyboard (or tap Random).", 7, false))
 	_page.add_child(_button("Start", _begin, true))
 	var made_look := bool(_playables[_playable].get("custom", false)) or GameState.sprite_for_playable(_playable, _arc) == "penguin"
 	_page.add_child(_button("Back", _show_look if made_look else _show_characters))  # back to the look you made, not the hero grid
@@ -653,17 +816,44 @@ func _field_style(c: Control) -> void:
 	c.add_theme_color_override("font_placeholder_color", Color(0.4, 0.3, 0.2, 0.8))
 
 
-func _edit(label_text: String, default_text: String) -> LineEdit:
+func _edit(label_text: String, default_text: String, pool: String = "") -> LineEdit:
 	_page.add_child(_label(label_text, 9, false))
 	var e := LineEdit.new()
 	e.text = default_text
 	e.max_length = 16
 	e.add_theme_font_size_override("font_size", 11)
 	e.custom_minimum_size = Vector2(0, 28)
+	e.size_flags_horizontal = SIZE_EXPAND_FILL
 	_field_style(e)
 	e.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_page.add_child(e)
+	if pool == "" or not RANDOM_NAMES.has(pool):
+		_page.add_child(e)
+		return e
+	# C9: a Random button beside the field, so a controller (or a player who
+	# doesn't want to type) never needs a keyboard.
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.add_child(e)
+	var dice := _button("Random", func() -> void:
+		var names: Array = RANDOM_NAMES[pool]
+		var pick := e.text
+		while pick == e.text and names.size() > 1:
+			pick = str(names[randi() % names.size()])
+		e.text = pick)
+	dice.size_flags_horizontal = SIZE_SHRINK_END
+	dice.custom_minimum_size = Vector2(56, 28)
+	row.add_child(dice)
+	_page.add_child(row)
 	return e
+
+
+## Name ideas for the Random buttons (all ages, original).
+const RANDOM_NAMES := {
+	"hero": ["Ash", "Robin", "Juniper", "Sky", "Rowan", "Wren", "Milo", "Ivy", "Quinn", "Sage", "Remy", "Nova", "Ellis", "Poppy", "Jasper", "Kit"],
+	"town": ["Dreamhollow", "Willowmere", "Brightbrook", "Mossford", "Starfall", "Honeyvale", "Lanternby", "Cobble Cove", "Fernwick", "Sunmeadow"],
+	"pet": ["Pup", "Biscuit", "Pepper", "Scout", "Maple", "Pickles", "Comet", "Waffles", "Bean", "Rusty"],
+	"kitty": ["Kitty", "Mittens", "Pepper", "Luna", "Biscuit", "Socks", "Whiskers", "Clover", "Pumpkin", "Noodle"],
+}
 
 
 var _new_diff := Difficulty.DEFAULT   # new-game page choices

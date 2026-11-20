@@ -11,6 +11,27 @@ extends RefCounted
 ## run["mail"] = [{id, day, from, text, kind, item, n, pay, got, read, until}]
 
 const MAX_KEEP := 30
+## C9: "a new place opened" letters (Rec opening, mega keepers' invitations; the
+## community farm letter can join) land at most this many per day, so a save
+## from before those systems isn't buried under them on its first morning.
+const INTROS_PER_DAY := 2
+
+
+## May another system-intro letter go out today? (Callers send it, then call intro_sent.)
+static func intro_ok() -> bool:
+	if GameState.run.is_empty():
+		return false
+	var f: Dictionary = GameState.run.get("flags", {})
+	return int(f.get("intro_day", -1)) != int(GameState.run.get("day", 1)) or int(f.get("intro_n", 0)) < INTROS_PER_DAY
+
+
+static func intro_sent() -> void:
+	var f: Dictionary = GameState.run["flags"]
+	var day := int(GameState.run.get("day", 1))
+	if int(f.get("intro_day", -1)) != day:
+		f["intro_day"] = day
+		f["intro_n"] = 0
+	f["intro_n"] = int(f["intro_n"]) + 1
 
 
 static func list() -> Array:

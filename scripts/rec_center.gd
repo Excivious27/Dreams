@@ -45,6 +45,9 @@ static func morning() -> void:
 	var day := int(GameState.run["day"])
 	if day < int(data().get("building", {}).get("open_day", 7)) or not GameState.quest_done("meet_town"):
 		return
+	if not Mail.intro_ok():
+		return  # C9: another "new place" letter came today; the Rec opens tomorrow
+	Mail.intro_sent()
 	open_now()
 
 
@@ -381,13 +384,33 @@ static func stand_cells(interior_id: String) -> Dictionary:
 			continue  # still at work: their slot waits
 		var kind := str(data()["visitors"][id].get("spot", "lobby"))
 		var pool: Array = st.get(kind, []) + st.get("lobby", [])
-		for c in pool:
-			var cc := Vector2i(int(c[0]), int(c[1]))
-			if not used.has(cc):
-				used[cc] = true
-				out[str(id)] = cc
+		# C9: lobby visitors stand STAND_GAP cells from anyone (their bubbles piled up);
+		# a crowded floor still takes any free cell.
+		var pick := Vector2i(-1, -1)
+		for pass_i in 2:
+			for c in pool:
+				var cc := Vector2i(int(c[0]), int(c[1]))
+				if used.has(cc):
+					continue
+				var near := false
+				if pass_i == 0 and c in st.get("lobby", []):  # cabinet/lane spots belong to their machine
+					for u: Vector2i in used:
+						if maxi(absi(u.x - cc.x), absi(u.y - cc.y)) < STAND_GAP:
+							near = true
+							break
+				if not near:
+					pick = cc
+					break
+			if pick.x >= 0:
 				break
+		if pick.x >= 0:
+			used[pick] = true
+			out[str(id)] = pick
 	return out
+
+
+## Visitors stand at least this many cells apart (Chebyshev) when the floor allows.
+const STAND_GAP := 2
 
 
 ## Interior hook: a villager may stand on this thing's cell (a lane approach: the

@@ -117,6 +117,7 @@ func _run() -> void:
 	(dl._pin.get_child(0) as Button).pressed.emit()
 	await frames(4)
 	check(not dl.active and dl.last_choice == opts.size() - 1, "the pinned row picks the way out (%d)" % dl.last_choice)
+	await _c9(farm)
 	# The mines: the compass always points to the way down.
 	GameState.run["flags"]["mine_seen"] = true
 	(load("res://scripts/mine.gd") as Variant).force_seed = 3
@@ -213,3 +214,72 @@ func _c7(farm: GameMap) -> void:
 		GameState.run["flags"]["hideout_seen"] = true
 		check(GoalLine.goal_place() == ["hideout", "npc:deuce"], "gang crew step in Hideout -> Deuce")
 	GameState.run = keep
+
+
+## C9 (c9_08): spouse at home, story fallback for a placeless tracked quest, Sel's
+## home, short compass captions, Quests-tab subs never over the text, route aim,
+## the way home from a mega region.
+func _c9(farm: GameMap) -> void:
+	check(QuestTracker.short_progress("Breezehaven · Storm Glass 0/3") == "0/3", "short caption keeps the count")
+	check(QuestTracker.short_progress("Foes 12/12, beacons 1/3.") == "1/3", "short caption: the first count still short")
+	check(QuestTracker.short_progress("Wake the star crystal.") == "wake", "short caption: first word")
+	check(QuestTracker.short_progress("best 2400/3000") == "2400/3000", "short caption: a score")
+	check(QuestTracker.npc_scene("sel") == "ruins", "Sel's jobs point at the Ruins (%s)" % QuestTracker.npc_scene("sel"))
+	check(GoalLine.via_thing("meadow", "hollow_heart") == "mine", "the Hollow Heart is reached down the mine")
+	# Every side quest's sub fits: short ones in the right column, long ones on their own line.
+	var bad := 0
+	for q in GameState.quests_data.get("side", []):
+		var sub := str(q.get("id", "")).capitalize() + " · " + "Storm Glass 0/3"
+		var row := QuestTracker.checkbox_row(str(q.get("text", "")), false, false, sub, func() -> void: pass)
+		var sb := row.get_theme_stylebox("normal") as StyleBoxFlat
+		var w := row.get_theme_default_font().get_string_size(sub, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x
+		if not (sb.content_margin_right >= w or sb.content_margin_bottom >= QuestTracker.SUB_LINE):
+			bad += 1
+		row.free()
+	check(bad == 0, "Quests-tab subs have room of their own (%d spill)" % bad)
+	# A tracked quest with no giver and no place follows the story.
+	GameState.add_quest("c9_free_note", "A note with nowhere to go.")
+	GameState.run["pinned_quest"] = "c9_free_note"
+	check(GoalLine.target(farm) == Vector2.ZERO, "the story arrow itself is off while a side quest is tracked")
+	check(QuestTracker.target(farm) == GoalLine.target(farm, true), "placeless tracked quest -> the story's arrow (%s)" % str(QuestTracker.target(farm)))
+	GameState.complete_quest("c9_free_note")
+	GameState.run["pinned_quest"] = ""
+	# The spouse off work is at home: the farm house door, not the town road.
+	var town_npc := ""
+	for id: String in GameState.npcs:
+		if QuestTracker.npc_scene(id) == "" and not str(id).begins_with("_"):
+			town_npc = id
+			break
+	var rs := Romance.st()
+	var keep_sp := str(rs["spouse"])
+	rs["spouse"] = town_npc
+	var keep_t := int(GameState.run["time"])
+	GameState.run["time"] = 23 * 60
+	if Romance.spouse_place(town_npc) == "farm_home":
+		var tg := QuestTracker._giver_target(farm, town_npc)
+		check(tg == farm.cell_center(farm.get("door_c")), "spouse at home -> the farmhouse door (%s)" % str(tg))
+	else:
+		check(false, "spouse_place is farm_home at night (%s)" % Romance.spouse_place(town_npc))
+	rs["spouse"] = keep_sp
+	GameState.run["time"] = keep_t
+	# Route aim on the farm toward the town exit: a point along a walkable route.
+	var ex := GoalLine.exit_toward(farm, "town")
+	var aim := QuestTracker.route_aim(farm, ex)
+	check(aim == Vector2.ZERO or not farm.blocked.has(farm.world_to_cell(aim)), "route aim lands on a walkable cell (%s)" % str(aim))
+	# From a mega hub the story arrow still has a way home.
+	var rid := ""
+	for k: String in MegaTravel.data():
+		if MegaTravel.hub_of(k) != "" and ResourceLoader.exists("res://scenes/%s.tscn" % MegaTravel.hub_of(k)):
+			rid = k
+			break
+	if rid != "":
+		GameState.run["quests"] = [{"id": "meet_town", "text": "", "done": false}]
+		GameMap.next_spawn = Vector2.ZERO
+		change_scene_to_file("res://scenes/%s.tscn" % MegaTravel.hub_of(rid))
+		await frames(30)
+		var hub := current_scene as GameMap
+		if hub:
+			check(GoalLine.target(hub) != Vector2.ZERO, "story arrow from mega hub %s points the way home" % hub.scene_id())
+		GameMap.next_spawn = Vector2.ZERO
+		change_scene_to_file("res://scenes/farm.tscn")
+		await frames(30)
