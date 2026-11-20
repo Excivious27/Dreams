@@ -1,0 +1,140 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  94% ] [90m[1mreimport[22m | dc_y_neon_arch.png[39m[0m
+[  94% ] [90m[1mreimport[22m | dc_y_lowrider_teal.png[39m[0m
+[  94% ] [90m[1mreimport[22m | dc_y_lowrider_purple.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lowrider_bounce_icon.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lowrider_bounce.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lounger.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lemonade_stand.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_leaf_pile.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_lantern_post_kit.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_koi_pond_icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_koi_pond.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_kiddie_pool.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_igloo_lantern.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_icicle_lamp.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_ice_slide.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_hydrant.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_hoop.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_y_hook_lantern.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_y_herb_box_winter.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (342 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 91.9s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 41.9s
+
+#### step 11: C8 core curves: levels, caps, swings, food, prices, sleep (shard 4/6)
+== C8 core curves: levels, caps, swings, food, prices, sleep ==
+  pacing (level reached with steady XP/day): xp/day | d28 | d112 | d224 | d336
+  swings by tool tier (level 1): tree [7, 5, 4, 3, 2, 2, 1, 1], stone [3, 2, 2, 1, 1, 1, 1, 1], ore [6, 5, 4, 3, 2, 2, 1, 1]
+c8_curve_test: 0 failures
+#### step 11 C8 core curves: levels, caps, swings, food, prices, sleep: PASS in 3.3s
+
+#### step 17: performance guards (batched cliffs, texture cache) (shard 4/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 17 performance guards (batched cliffs, texture cache): PASS in 3.1s
+
+#### step 23: storage_test (shard 4/6)
+storage_test: 0 failures
+#### step 23 storage_test: PASS in 3.3s
+
+#### step 29: rec_links_test (shard 4/6)
+rec_links_test: 0 failures
+#### step 29 rec_links_test: PASS in 3.2s
+
+#### step 35: coop_test (shard 4/6)
+coop_test: 0 failures
+#### step 35 coop_test: PASS in 3.3s
+
+#### step 41: anim_test (shard 4/6)
+anim_test: 0 failures
+#### step 41 anim_test: PASS in 3.5s
+
+#### step 47: cf_volunteer_test (shard 4/6)
+cf_volunteer_test: 0 failures
+#### step 47 cf_volunteer_test: PASS in 9.4s
+
+#### step 53: art prompts: at most 3 images each (shard 4/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 53 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 59: C10a decor art: every catalogue piece and rotation exists (shard 4/6)
+== C10a decor art: every catalogue piece and rotation exists ==
+check ok: 462 catalogue pieces
+#### step 59 C10a decor art: every catalogue piece and rotation exists: PASS in 0.3s
+
+#### step 65: mix_test (shard 4/6)
+mix_test: 0 failures
+#### step 65 mix_test: PASS in 5.2s
+
+#### step 71: gifts: the Marked and boss powers (shard 4/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 71 gifts: the Marked and boss powers: PASS in 7.5s
+
+#### step 77: campaign: battles, projects, colonies, big mines (shard 4/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 77 campaign: battles, projects, colonies, big mines: PASS in 8.0s
+
+#### step 83: street_bat_test (shard 4/6)
+street_bat_test: 0 fails
+#### step 83 street_bat_test: PASS in 3.2s
+
+#### step 89: campaign_c3_test (shard 4/6)
+campaign_c3_test: 0 fails
+#### step 89 campaign_c3_test: PASS in 3.3s
+
+#### step 95: story: every chapter plays to the end (shard 4/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 95 story: every chapter plays to the end: PASS in 14.2s
+
+#### step 101: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 4/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 101 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 5.5s
+
+#### step 107: hidden areas stay put day to day (C5) (shard 4/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 107 hidden areas stay put day to day (C5): PASS in 5.8s
+
+#### step 113: softlocks: every menu/screen leaves on B, dialogues always finish (shard 4/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 113 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 7.7s
+
+#### step 119: C7 P3: endings and epilogue (shard 4/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 119 C7 P3: endings and epilogue: PASS in 3.3s
+
+#### step 125: C10a P3: decor catalogue (shard 4/6)
+== C10a P3: decor catalogue ==
+decor_catalogue_test: 0 failures
+#### step 125 C10a P3: decor catalogue: PASS in 4.0s
+
+#### step 131: C10a P5: wardrobe (shard 4/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 131 C10a P5: wardrobe: PASS in 5.7s
+
+#### shard 4/6 done in 236s: PASS

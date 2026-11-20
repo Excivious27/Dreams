@@ -1,0 +1,10 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 10 start arc=penguins hero=pax style=story progress=5 difficulty=2 day_len=15
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+BOT 10 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon", "meadow", "town", "lake", "gloam_lanternfall"], day 4, ◆9785

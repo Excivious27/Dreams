@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 1 start arc=penguins hero=kairi style=wander progress=0 difficulty=0 day_len=15
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+BOT 1 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_storm_shelf", "farm", "frost_glacier", "meadow", "mine", "quarry"], day 4, ◆1653

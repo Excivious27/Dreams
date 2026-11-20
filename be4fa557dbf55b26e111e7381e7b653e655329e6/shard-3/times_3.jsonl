@@ -1,0 +1,23 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 117.8}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 18.9}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 4.0}
+{"step": 16, "name": "touch_ui_test", "rc": 0, "secs": 40.0}
+{"step": 22, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 5.7}
+{"step": 28, "name": "ticket_econ_test", "rc": 0, "secs": 3.1}
+{"step": 34, "name": "gang_play_test", "rc": 0, "secs": 22.7}
+{"step": 40, "name": "crop_test", "rc": 0, "secs": 33.6}
+{"step": 46, "name": "decor_sources_test", "rc": 0, "secs": 3.4}
+{"step": 52, "name": "workshop: no dead ends", "rc": 0, "secs": 6.1}
+{"step": 58, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 64, "name": "danger_music_test", "rc": 0, "secs": 29.5}
+{"step": 70, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.5}
+{"step": 76, "name": "every script compiles", "rc": 0, "secs": 4.2}
+{"step": 82, "name": "quest_tracker_test", "rc": 0, "secs": 4.7}
+{"step": 88, "name": "campaign_words_test", "rc": 0, "secs": 3.4}
+{"step": 94, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 20.7}
+{"step": 100, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 9.7}
+{"step": 106, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 25.9}
+{"step": 112, "name": "rec_games_test", "rc": 0, "secs": 3.2}
+{"step": 118, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 5.7}
+{"step": 124, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 4.6}
+{"step": 130, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 32.4}

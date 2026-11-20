@@ -1,0 +1,137 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  94% ] [90m[1mreimport[22m | dc_y_neon_arch.png[39m[0m
+[  94% ] [90m[1mreimport[22m | dc_y_lowrider_teal.png[39m[0m
+[  94% ] [90m[1mreimport[22m | dc_y_lowrider_purple.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lowrider_bounce_icon.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lowrider_bounce.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lounger.png[39m[0m
+[  95% ] [90m[1mreimport[22m | dc_y_lemonade_stand.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_leaf_pile.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_lantern_post_kit.png[39m[0m
+[  96% ] [90m[1mreimport[22m | dc_y_koi_pond_icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_koi_pond.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_kiddie_pool.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_igloo_lantern.png[39m[0m
+[  97% ] [90m[1mreimport[22m | dc_y_icicle_lamp.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_ice_slide.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_hydrant.png[39m[0m
+[  98% ] [90m[1mreimport[22m | dc_y_hoop.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_y_hook_lantern.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_y_herb_box_winter.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (342 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 157.7s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 5.9s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 3.6s
+
+#### step 15: phone_ui_test (shard 2/6)
+glyphs ok: 53 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 15 phone_ui_test: PASS in 12.4s
+
+#### step 21: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 21 gangster interior skins (c5_04): PASS in 3.4s
+
+#### step 27: rec_test (shard 2/6)
+rec_test: 0 failures
+#### step 27 rec_test: PASS in 6.4s
+
+#### step 33: cash_test (shard 2/6)
+cash_test: scanned 80793 strings, 0 failures
+#### step 33 cash_test: PASS in 4.5s
+
+#### step 39: house_exterior_test (shard 2/6)
+house exterior test: PASS (0 fails)
+#### step 39 house_exterior_test: PASS in 7.1s
+
+#### step 45: shop_econ_test (shard 2/6)
+shop_econ_test: 0 failures
+#### step 45 shop_econ_test: PASS in 3.5s
+
+#### step 51: town_first_test (shard 2/6)
+town_first_test: 0 failures
+#### step 51 town_first_test: PASS in 5.1s
+
+#### step 57: text size floors (7 px) (shard 2/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 57 text size floors (7 px): PASS in 0.1s
+
+#### step 63: music_stream_test (shard 2/6)
+music_stream_test: 0 failures
+#### step 63 music_stream_test: PASS in 9.7s
+
+#### step 69: arcs: path cards, arc building intros, locked-plan hints (shard 2/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 69 arcs: path cards, arc building intros, locked-plan hints: PASS in 4.6s
+
+#### step 75: early combat: clinic, pup lesson, telegraph, first boss (shard 2/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 75 early combat: clinic, pup lesson, telegraph, first boss: PASS in 8.8s
+
+#### step 81: goal_line_test (shard 2/6)
+goal_line_test: 0 fails
+#### step 81 goal_line_test: PASS in 3.1s
+
+#### step 87: campaign_gate_test (shard 2/6)
+campaign_gate_test: 0 fails
+#### step 87 campaign_gate_test: PASS in 6.5s
+
+#### step 93: settings, slots, quality, discovery, perks, birthdays (shard 2/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 93 settings, slots, quality, discovery, perks, birthdays: PASS in 3.7s
+
+#### step 99: C7 text: gift articles, plurals, quest wording (shard 2/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 99 C7 text: gift articles, plurals, quest wording: PASS in 3.0s
+
+#### step 105: fish critters only in deep water (C2 P4) (shard 2/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 105 fish critters only in deep water (C2 P4): PASS in 11.0s
+
+#### step 111: stack_whack_test (shard 2/6)
+stack_whack_test: 0 failures
+#### step 111 stack_whack_test: PASS in 3.6s
+
+#### step 117: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 2/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 117 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 3.3s
+
+#### step 123: C9 P1: controller bindings and field play (shard 2/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 123 C9 P1: controller bindings and field play: PASS in 4.1s
+
+#### step 129: C9 P6: forest border buckets (shard 2/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 129 C9 P6: forest border buckets: PASS in 4.9s
+
+#### shard 2/6 done in 276s: PASS
