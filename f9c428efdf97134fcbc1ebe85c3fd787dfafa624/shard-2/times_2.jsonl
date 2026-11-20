@@ -1,0 +1,15 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 123.4}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.6}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.2}
+{"step": 15, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.1}
+{"step": 21, "name": "rec_reno_test", "rc": 0, "secs": 2.2}
+{"step": 27, "name": "farm_week_test", "rc": 0, "secs": 5.0}
+{"step": 33, "name": "gang_flavour_test", "rc": 0, "secs": 2.3}
+{"step": 39, "name": "every sound the game asks for exists", "rc": 1, "secs": 0.1}
+{"step": 45, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.6}
+{"step": 51, "name": "every script compiles", "rc": 0, "secs": 3.1}
+{"step": 57, "name": "quest_tracker_test", "rc": 0, "secs": 3.2}
+{"step": 63, "name": "campaign_c3_test", "rc": 0, "secs": 2.3}
+{"step": 69, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 3.9}
+{"step": 75, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 81, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 7.3}

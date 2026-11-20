@@ -1,0 +1,438 @@
+{
+ "sha": "f9c428efdf97134fcbc1ebe85c3fd787dfafa624",
+ "ref": "ci/verify2-5b94d905",
+ "run": "44676284255",
+ "finished": 1795150283.7914498,
+ "pass": false,
+ "check_pass": false,
+ "bots_pass": true,
+ "max_job_secs": 284,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 173,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 168,
+   "failed_steps": [
+    "every sound the game asks for exists"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 156,
+   "failed_steps": [
+    "music: every map has a song; web streaming works offline"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 284,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 1,
+   "secs": 110,
+   "failed_steps": [
+    "move_target_test"
+   ]
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 194,
+   "failed_steps": []
+  }
+ ],
+ "bots": [
+  {
+   "bot": 1,
+   "spec": "1 penguins kairi wander 0",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, scenes [\"lake\", \"neon\", \"wind_storm_shelf\", \"orchard_hills\", "
+  },
+  {
+   "bot": 2,
+   "spec": "2 penguins penguin_f story 1",
+   "days": 3,
+   "rc": 0,
+   "secs": 84,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"mountain\", \"mine\", \"lake\", \"sky\", \"crystal_meadow\", "
+  },
+  {
+   "bot": 3,
+   "spec": "3 penguins penguin_m fighter 2",
+   "days": 3,
+   "rc": 0,
+   "secs": 90,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"ruins\", \"quarry\", \"mine\", \"sky\", \"colony_kelp\", \"mea"
+  },
+  {
+   "bot": 4,
+   "spec": "4 penguins merry farmer 0",
+   "days": 3,
+   "rc": 0,
+   "secs": 58,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 420 steps, scenes [\"town\", \"desert_dune_sea\", \"farm\", \"house\"], day 4, \u25c6"
+  },
+  {
+   "bot": 5,
+   "spec": "5 penguins coco menus 1",
+   "days": 3,
+   "rc": 0,
+   "secs": 76,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 322 steps, scenes [\"highlands\", \"colony_ice\", \"gloam_crystal_thicket\", \""
+  },
+  {
+   "bot": 6,
+   "spec": "6 penguins mer story 3",
+   "days": 3,
+   "rc": 0,
+   "secs": 95,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, scenes [\"lake\", \"town\", \"farm\", \"meadow\", \"desert_mirage_post"
+  },
+  {
+   "bot": 7,
+   "spec": "7 penguins coldy fighter 4",
+   "days": 3,
+   "rc": 0,
+   "secs": 88,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"ruins\", \"sky\", \"frost_hearthhold\", \"quarry\", \"mine\","
+  },
+  {
+   "bot": 8,
+   "spec": "8 penguins big_jim wander 5",
+   "days": 3,
+   "rc": 0,
+   "secs": 94,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, scenes [\"forest\", \"house\", \"bf_frostfield\", \"countryside\", \"c"
+  },
+  {
+   "bot": 9,
+   "spec": "9 penguins custom farmer 2",
+   "days": 3,
+   "rc": 0,
+   "secs": 57,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, scenes [\"house\", \"farm\", \"bf_shattered_vale\"], day 4, \u25c62265"
+  },
+  {
+   "bot": 10,
+   "spec": "10 penguins pax story 5",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 629 steps, scenes [\"crystal_meadow\", \"sky\", \"meadow\", \"town\", \"lake\", \"m"
+  },
+  {
+   "bot": 11,
+   "spec": "11 gangsters dad wander 0",
+   "days": 3,
+   "rc": 0,
+   "secs": 89,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"moon\", \"iron_freight_yards\", \"meadow\", \"marsh\", \"bf_"
+  },
+  {
+   "bot": 12,
+   "spec": "12 gangsters mom story 1",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 629 steps, scenes [\"lake\", \"town\", \"mine\", \"hideout\", \"sky\", \"farm\", \"co"
+  },
+  {
+   "bot": 13,
+   "spec": "13 gangsters june fighter 2",
+   "days": 3,
+   "rc": 0,
+   "secs": 90,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 629 steps, scenes [\"desert_sunken_temple\", \"mine\", \"ruins\", \"wastes\", \"s"
+  },
+  {
+   "bot": 14,
+   "spec": "14 gangsters rafe farmer 0",
+   "days": 3,
+   "rc": 0,
+   "secs": 58,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 420 steps, scenes [\"town\", \"farm\"], day 4, \u25c680"
+  },
+  {
+   "bot": 15,
+   "spec": "15 gangsters nia menus 3",
+   "days": 3,
+   "rc": 0,
+   "secs": 70,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 320 steps, scenes [\"uptown\", \"house\", \"neon\", \"highlands\", \"bf_rail_yard"
+  },
+  {
+   "bot": 16,
+   "spec": "16 gangsters ollie story 4",
+   "days": 3,
+   "rc": 0,
+   "secs": 88,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, scenes [\"town\", \"meadow\", \"farm\", \"lake\", \"hideout\", \"mountai"
+  },
+  {
+   "bot": 17,
+   "spec": "17 gangsters marisol fighter 5",
+   "days": 3,
+   "rc": 0,
+   "secs": 86,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"jungle\", \"mine\", \"bf_rail_yards\", \"ruins\", \"quarry\"]"
+  },
+  {
+   "bot": 18,
+   "spec": "18 gangsters bo wander 3",
+   "days": 3,
+   "rc": 0,
+   "secs": 88,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, scenes [\"highlands\", \"mountain\", \"neon\", \"frost_falls\", \"stat"
+  },
+  {
+   "bot": 19,
+   "spec": "19 gangsters custom story 2",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 1,
+   "pauses": 0,
+   "line": "0 fails, 1 warns, 630 steps, scenes [\"sky\", \"hideout\", \"mountain\", \"town\", \"meadow\"], day "
+  },
+  {
+   "bot": 20,
+   "spec": "20 gangsters pax menus 5",
+   "days": 3,
+   "rc": 0,
+   "secs": 73,
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 323 steps, scenes [\"meadow\", \"docks\", \"beach\", \"hideout\", \"frost_hearthh"
+  }
+ ],
+ "errors": [
+  [
+   "BOT WARN player boxed in at town at cell (40, 2), frozen=true paused=false story_pending=",
+   6
+  ],
+  [
+   "BOT WARN player boxed in at town at cell (40, 3), frozen=true paused=false story_pending=",
+   2
+  ],
+  [
+   "FAIL regions.json[gloam_moonpool].music -> 'mega_gloam_moonpool' has no song",
+   1
+  ],
+  [
+   "FAIL regions.json[desert_glass_canyon].music -> 'mega_desert_canyon' has no song",
+   1
+  ],
+  [
+   "FAIL regions.json[desert_sunken_temple].music -> 'mega_desert_temple' has no song",
+   1
+  ],
+  [
+   "FAIL villager from (-1, 1): target is the villager (got (34, 45), stood (34, 46) facing up)",
+   1
+  ],
+  [
+   "BOT WARN player boxed in at town at cell (39, 2), frozen=true paused=false story_pending=",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 132.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 123.4
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 55.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 55.2
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 46.4
+  },
+  {
+   "step": 11,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 45.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 43.6
+  },
+  {
+   "step": 31,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 38.6
+  },
+  {
+   "step": 14,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 38.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 37.7
+  },
+  {
+   "step": 70,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 35.9
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 33.2
+  },
+  {
+   "step": 40,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 1,
+   "secs": 24.6
+  },
+  {
+   "step": 17,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 22.2
+  },
+  {
+   "step": 73,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 20.7
+  }
+ ]
+}

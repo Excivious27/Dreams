@@ -1,0 +1,14 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 55.8}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 7.8}
+{"step": 13, "name": "phone_ui_test", "rc": 0, "secs": 9.9}
+{"step": 19, "name": "ticket_econ_test", "rc": 0, "secs": 2.1}
+{"step": 25, "name": "gang_play_test", "rc": 0, "secs": 16.2}
+{"step": 31, "name": "commons_test", "rc": 0, "secs": 38.6}
+{"step": 37, "name": "workshop: no dead ends", "rc": 0, "secs": 2.0}
+{"step": 43, "name": "footstep_test", "rc": 0, "secs": 4.4}
+{"step": 49, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 7.9}
+{"step": 55, "name": "campaign_story_test", "rc": 0, "secs": 2.3}
+{"step": 61, "name": "campaign_gate_test", "rc": 0, "secs": 5.2}
+{"step": 67, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 18.9}
+{"step": 73, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 20.7}
+{"step": 79, "name": "rec_games_test", "rc": 0, "secs": 2.2}

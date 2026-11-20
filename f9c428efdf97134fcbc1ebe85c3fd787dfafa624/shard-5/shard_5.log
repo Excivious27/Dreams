@@ -1,0 +1,97 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  81% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  82% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  85% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  86% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  87% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  90% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  91% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  96% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (109 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 43.6s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 18.6s
+
+#### step 12: crops wired in (shard 5/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 12 crops wired in: PASS in 4.2s
+
+#### step 18: rec_test (shard 5/6)
+rec_test: 0 failures
+#### step 18 rec_test: PASS in 3.5s
+
+#### step 24: cash_test (shard 5/6)
+cash_test: scanned 61351 strings, 0 failures
+#### step 24 cash_test: PASS in 1.9s
+
+#### step 30: move_target_test (shard 5/6)
+  FAIL villager from (-1, 1): target is the villager (got (34, 45), stood (34, 46) facing up)
+move_target_test: 1 failures
+Movement/targeting test failed
+#### step 30 move_target_test: FAIL rc=1 in 7.2s
+
+#### step 36: town_first_test (shard 5/6)
+town_first_test: 0 failures
+#### step 36 town_first_test: PASS in 2.5s
+
+#### step 42: danger_music_test (shard 5/6)
+danger_music_test: 0 failures
+#### step 42 danger_music_test: PASS in 11.5s
+
+#### step 48: mine: keeper, shaft, tiers (shard 5/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 48 mine: keeper, shaft, tiers: PASS in 2.4s
+
+#### step 54: region campaigns: boards, locks, convoy (shard 5/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 54 region campaigns: boards, locks, convoy: PASS in 4.5s
+
+#### step 60: campaign_gate_test (shard 5/6)
+campaign_gate_test: 0 fails
+#### step 60 campaign_gate_test: PASS in 3.3s
+
+#### step 66: settings, slots, quality, discovery, perks, birthdays (shard 5/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 66 settings, slots, quality, discovery, perks, birthdays: PASS in 1.6s
+
+#### step 72: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 5/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 72 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 3.4s
+
+#### step 78: stack_whack_test (shard 5/6)
+stack_whack_test: 0 failures
+#### step 78 stack_whack_test: PASS in 1.8s
+
+#### shard 5/6 done in 110s: FAIL (move_target_test)

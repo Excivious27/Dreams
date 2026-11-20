@@ -1,0 +1,14 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 55.2}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 12.0}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 1.8}
+{"step": 16, "name": "storage_test", "rc": 0, "secs": 1.6}
+{"step": 22, "name": "rec_audio_test", "rc": 0, "secs": 1.7}
+{"step": 28, "name": "crop_test", "rc": 0, "secs": 3.3}
+{"step": 34, "name": "cf_layout_test", "rc": 0, "secs": 7.0}
+{"step": 40, "name": "music: every map has a song; web streaming works offline", "rc": 1, "secs": 24.6}
+{"step": 46, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 2.8}
+{"step": 52, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 4.5}
+{"step": 58, "name": "street_bat_test", "rc": 0, "secs": 1.6}
+{"step": 64, "name": "meow_gate_test", "rc": 0, "secs": 2.3}
+{"step": 70, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 35.9}
+{"step": 76, "name": "jumper_test", "rc": 0, "secs": 1.7}

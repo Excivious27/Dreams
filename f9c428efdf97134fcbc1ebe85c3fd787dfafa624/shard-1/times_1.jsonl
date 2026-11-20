@@ -1,0 +1,15 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 37.7}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 46.4}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 2.0}
+{"step": 14, "name": "touch_ui_test", "rc": 0, "secs": 38.0}
+{"step": 20, "name": "rec_links_test", "rc": 0, "secs": 1.5}
+{"step": 26, "name": "coop_test", "rc": 0, "secs": 1.5}
+{"step": 32, "name": "cf_volunteer_test", "rc": 0, "secs": 4.0}
+{"step": 38, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 44, "name": "workshop: stations at run time", "rc": 0, "secs": 2.3}
+{"step": 50, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 7.1}
+{"step": 56, "name": "goal_line_test", "rc": 0, "secs": 1.5}
+{"step": 62, "name": "campaign_words_test", "rc": 0, "secs": 1.7}
+{"step": 68, "name": "story: every chapter plays to the end", "rc": 0, "secs": 17.6}
+{"step": 74, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 6.6}
+{"step": 80, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 5.6}
