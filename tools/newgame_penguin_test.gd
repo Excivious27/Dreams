@@ -57,7 +57,7 @@ func _run() -> void:
 			seen += 1
 	check(seen == 2, "both visitors stand in view while they ask (%d)" % seen)
 	said = await talk_through(0)
-	check(said.any(func(t: String) -> bool: return t.find("followed the light") >= 0), "Pip-Pip and Nova ask to stay")
+	check(said.any(func(t: String) -> bool: return t.findn("can we stay") >= 0 or t.findn("can i stay") >= 0), "Pip-Pip and Nova ask to stay")
 	check(not said.any(func(t: String) -> bool: return t.find("at dawn") >= 0), "no 'at dawn' when it can be any hour")
 	check(Companion.active_id() == "penguin_m", "Pip-Pip joined (%s)" % Companion.active_id())
 	check(farm.companion != null and is_instance_valid(farm.companion), "the new partner follows you right away")
