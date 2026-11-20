@@ -1,0 +1,149 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  97% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  98% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  98% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (695 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 217.3s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 6.1s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 3.6s
+
+#### step 15: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 15 phone_ui_test: PASS in 12.8s
+
+#### step 21: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 21 gangster interior skins (c5_04): PASS in 3.5s
+
+#### step 27: held-tool rules: right tool acts, wrong tool hints (shard 2/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+tool_rules_test: 0 failures
+#### step 27 held-tool rules: right tool acts, wrong tool hints: PASS in 24.8s
+
+#### step 33: bowling_test (shard 2/6)
+bowling_test: OK
+#### step 33 bowling_test: PASS in 18.4s
+
+#### step 39: pen_test (shard 2/6)
+pen_test: PASS
+#### step 39 pen_test: PASS in 4.8s
+
+#### step 45: move_target_test (shard 2/6)
+move_target_test: 0 failures
+#### step 45 move_target_test: PASS in 18.6s
+
+#### step 51: gang_flavour_test (shard 2/6)
+gang_flavour_test: 0 failures
+#### step 51 gang_flavour_test: PASS in 3.4s
+
+#### step 57: every sound the game asks for exists (shard 2/6)
+== every sound the game asks for exists ==
+unused sfx (10, warning): alarm cannon cave_in drain j_birthday j_skill monster save_done shop_bell unsheathe
+sfx asked for: 153 names, real recordings/ACE files: 467
+music: 79 tracks wired, 105/105 real (ACE)
+ambience: 32 beds, 17 spots
+sfx_audit: 0 missing
+#### step 57 every sound the game asks for exists: PASS in 4.2s
+
+#### step 63: C10b decor art: outdoor pieces, seams, names (shard 2/6)
+== C10b decor art: outdoor pieces, seams, names ==
+c10b check ok: 87 outdoor pieces
+check ok: 462 catalogue pieces
+#### step 63 C10b decor art: outdoor pieces, seams, names: PASS in 0.3s
+
+#### step 69: mix_test (shard 2/6)
+mix_test: 0 failures
+#### step 69 mix_test: PASS in 5.3s
+
+#### step 75: gifts: the Marked and boss powers (shard 2/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 75 gifts: the Marked and boss powers: PASS in 7.5s
+
+#### step 81: campaign: battles, projects, colonies, big mines (shard 2/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 81 campaign: battles, projects, colonies, big mines: PASS in 8.2s
+
+#### step 87: street_bat_test (shard 2/6)
+street_bat_test: 0 fails
+#### step 87 street_bat_test: PASS in 3.3s
+
+#### step 93: campaign_c3_test (shard 2/6)
+campaign_c3_test: 0 fails
+#### step 93 campaign_c3_test: PASS in 3.4s
+
+#### step 99: story: every chapter plays to the end (shard 2/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 99 story: every chapter plays to the end: PASS in 15.5s
+
+#### step 105: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 2/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 105 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 5.6s
+
+#### step 111: hidden areas stay put day to day (C5) (shard 2/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 111 hidden areas stay put day to day (C5): PASS in 6.1s
+
+#### step 117: softlocks: every menu/screen leaves on B, dialogues always finish (shard 2/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 117 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 7.9s
+
+#### step 123: C7 P3: endings and epilogue (shard 2/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 123 C7 P3: endings and epilogue: PASS in 3.5s
+
+#### step 129: C9 P1: controller bindings and field play (shard 2/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 129 C9 P1: controller bindings and field play: PASS in 4.5s
+
+#### step 135: C9 P6: forest border buckets (shard 2/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 135 C9 P6: forest border buckets: PASS in 5.4s
+
+#### shard 2/6 done in 394s: PASS

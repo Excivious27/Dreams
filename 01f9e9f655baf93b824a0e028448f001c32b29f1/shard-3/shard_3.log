@@ -1,0 +1,147 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  97% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  98% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  98% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (695 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 76.3s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 14.1s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 3.2s
+
+#### step 16: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 16 touch_ui_test: PASS in 39.3s
+
+#### step 22: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 22 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 4.6s
+
+#### step 28: rec_test (shard 3/6)
+rec_test: 0 failures
+#### step 28 rec_test: PASS in 4.8s
+
+#### step 34: cash_test (shard 3/6)
+cash_test: scanned 82846 strings, 0 failures
+#### step 34 cash_test: PASS in 3.4s
+
+#### step 40: make_house_parts (shard 3/6)
+#### step 40 make_house_parts: PASS in 0.7s
+
+#### step 46: commons_test (shard 3/6)
+commons_test: 0 failures
+#### step 46 commons_test: PASS in 35.6s
+
+#### step 52: cf_layout_test (shard 3/6)
+cf_layout_test: 0 failures
+#### step 52 cf_layout_test: PASS in 8.1s
+
+#### step 58: music loop seams (join click + level jump) (shard 3/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 101
+#### step 58 music loop seams (join click + level jump): PASS in 7.6s
+
+#### step 64: C11a ranch art: species strips, building looks, icons, stations (shard 3/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 64 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.3s
+
+#### step 70: ambience_test (shard 3/6)
+ambience_test: 0 failures (40 checks)
+#### step 70 ambience_test: PASS in 4.8s
+
+#### step 76: mine: keeper, shaft, tiers (shard 3/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 76 mine: keeper, shaft, tiers: PASS in 3.9s
+
+#### step 82: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 3/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 82 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 6.9s
+
+#### step 88: c6_cue_test (shard 3/6)
+c6_cue_test: 0 fails
+#### step 88 c6_cue_test: PASS in 2.4s
+
+#### step 94: meow_gate_test (shard 3/6)
+meow_gate_test: 0 fails
+#### step 94 meow_gate_test: PASS in 3.2s
+
+#### step 100: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 3/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 100 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 5.5s
+
+#### step 106: mega regions: the new worlds walk end to end (shard 3/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 106 mega regions: the new worlds walk end to end: PASS in 16.9s
+
+#### step 112: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 3/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 112 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.7s
+
+#### step 118: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 3/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 118 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.8s
+
+#### step 124: C7 P4: heart scene content (shard 3/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 124 C7 P4: heart scene content: PASS in 2.8s
+
+#### step 130: C9 P2: game menu with keys/pad (shard 3/6)
+== C9 P2: game menu with keys/pad ==
+menu_pad_test: 0 failures
+#### step 130 C9 P2: game menu with keys/pad: PASS in 3.7s
+
+#### step 136: C9 P6: generated data in sync (shard 3/6)
+== C9 P6: generated data in sync ==
+regen_data: ok (21 generators)
+data_sync_check: 0 failures
+#### step 136 C9 P6: generated data in sync: PASS in 21.6s
+
+#### shard 3/6 done in 276s: PASS

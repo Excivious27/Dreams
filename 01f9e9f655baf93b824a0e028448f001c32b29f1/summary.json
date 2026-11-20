@@ -1,0 +1,170 @@
+{
+ "sha": "01f9e9f655baf93b824a0e028448f001c32b29f1",
+ "ref": "ci/c11ai-cdcbaa3d",
+ "run": "44828214878",
+ "finished": 1795214138.051024,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 64,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "cdcbaa3dab84d361d78a12cc037554b69d146d9d",
+  "label": "c11ai",
+  "branch": "",
+  "shards": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 457,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 457,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 394,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 277,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 223,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 366,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 244,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 260.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 217.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 172.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 108.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 76.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.4
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 51.9
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.3
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.3
+  },
+  {
+   "step": 66,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 37.2
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 35.6
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 34.2
+  },
+  {
+   "step": 42,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 33.7
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 32.2
+  },
+  {
+   "step": 27,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 24.8
+  }
+ ]
+}

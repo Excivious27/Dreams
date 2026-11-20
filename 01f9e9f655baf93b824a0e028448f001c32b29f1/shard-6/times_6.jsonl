@@ -1,0 +1,23 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 108.2}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 7.1}
+{"step": 13, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 42.3}
+{"step": 19, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 3.7}
+{"step": 25, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.5}
+{"step": 31, "name": "rec_reno_test", "rc": 0, "secs": 2.5}
+{"step": 37, "name": "farm_week_test", "rc": 0, "secs": 5.3}
+{"step": 43, "name": "anim_test", "rc": 0, "secs": 2.8}
+{"step": 49, "name": "decor_sources_test", "rc": 0, "secs": 2.8}
+{"step": 55, "name": "workshop: no dead ends", "rc": 0, "secs": 8.7}
+{"step": 61, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 67, "name": "music_stream_test", "rc": 0, "secs": 9.2}
+{"step": 73, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.9}
+{"step": 79, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.2}
+{"step": 85, "name": "goal_line_test", "rc": 0, "secs": 2.5}
+{"step": 91, "name": "campaign_gate_test", "rc": 0, "secs": 5.2}
+{"step": 97, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 3.1}
+{"step": 103, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.5}
+{"step": 109, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 8.9}
+{"step": 115, "name": "stack_whack_test", "rc": 0, "secs": 3.1}
+{"step": 121, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.7}
+{"step": 127, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 2.6}
+{"step": 133, "name": "C9 P4: haptics", "rc": 0, "secs": 2.4}
