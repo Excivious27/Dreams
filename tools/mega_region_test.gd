@@ -69,9 +69,8 @@ func _tabs_shown() -> Array:
 	var box := VBoxContainer.new()
 	MegaMap.tab_row(box, func() -> void: pass)
 	var names: Array = []
-	for row in box.get_children():
-		for b in row.get_children():
-			names.append(str(b.name).trim_prefix("MapTab_"))
+	for b in box.find_children("MapTab_*", "Button", true, false):  # inside the sideways strip (C4)
+		names.append(str(b.name).trim_prefix("MapTab_"))
 	box.free()
 	return names
 
