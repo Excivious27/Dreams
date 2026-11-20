@@ -73,11 +73,14 @@ func vehicle_def() -> Dictionary:
 	return GameState.items.get(vehicle, {}) if vehicle != "" else {}
 
 
-func ride(id: String) -> void:
+func ride(id: String, quiet := false) -> void:
 	if mounted:
 		dismount()
 	vehicle = id
 	GameState.run["flags"]["vehicle"] = id
+	# Hopping on (c6_06): each vehicle its own cue.
+	if not quiet and is_inside_tree():
+		Music.instance(get_tree()).sfx(str(VEH_ON.get(id, "cloth")), "pickup")
 	if _veh == null:
 		_veh = Sprite2D.new()
 		_veh.show_behind_parent = true
@@ -107,7 +110,14 @@ func _veh_face() -> void:
 	_veh.position = Vector2(0, -tex.get_height() * sc * 0.5 + 4)
 
 
-func unride() -> void:
+## Hop-on cue and moving tick (step-voice word) per vehicle.
+const VEH_ON := {"getaway_car": "car_door", "scooter": "keys", "motor_scooter": "car_start", "crystal_sled": "sled_bells", "rowboat": "step_water", "balloon": "airship_whoosh"}
+const VEH_TICK := {"rowboat": ["water", 0.6], "crystal_sled": ["snow", 0.45], "scooter": ["wheels", 0.5], "motor_scooter": ["wheels", 0.4], "getaway_car": ["wheels", 0.4]}
+
+
+func unride(quiet := false) -> void:
+	if vehicle != "" and not quiet and is_inside_tree():
+		Music.instance(get_tree()).sfx("thud")
 	vehicle = ""
 	GameState.run["flags"].erase("vehicle")
 	if _veh:
@@ -121,12 +131,14 @@ func mount() -> void:
 		return
 	mounted = true
 	GameState.run["flags"]["mounted"] = true
+	Music.instance(get_tree()).sfx("horse_whinny", "horse")
 	_show_idle()
 
 
 func dismount() -> void:
 	mounted = false
 	GameState.run["flags"].erase("mounted")
+	Music.instance(get_tree()).sfx("thud")
 	if map:
 		map.hud.toast("%s waits here." % str(GameState.run.get("names", {}).get("horse", "Your horse")))
 		var c: Vector2i = cell()
@@ -330,9 +342,9 @@ func set_character(id: String) -> void:
 	mounted = GameState.run.get("flags", {}).has("mounted") and has_anim("ride")
 	var vid := str(GameState.run.get("flags", {}).get("vehicle", ""))
 	if vid != "" and GameState.count(vid) > 0 and map and map.has_sky:
-		ride(vid)
+		ride(vid, true)  # carried over from the last map: no hop-on sound
 	elif vehicle != "":
-		unride()
+		unride(true)
 	_show_idle()
 
 
@@ -624,6 +636,11 @@ func _physics_process(delta: float) -> void:
 			GameState.run["hp"] = int(GameState.run["hp"]) - sdmg
 			_flash = 0.6
 			map.damage_number(position + Vector2(0, -22), sdmg, Color(0.6, 0.9, 0.4))
+			# A quiet tick so poison/burn isn't silent; at most one a second (c6_08_25).
+			var tk := Time.get_ticks_msec()
+			if tk - _status_sfx_ms > 1000:
+				_status_sfx_ms = tk
+				Music.instance(get_tree()).sfx("status_tick", "scroll_tick")
 			_last_stand()
 			if int(GameState.run["hp"]) <= 0:
 				map.player_down("hurt")
@@ -839,12 +856,25 @@ func _physics_process(delta: float) -> void:
 	if dir != Vector2.ZERO and position.distance_to(before) > 0.1:
 		_step_t -= delta
 		if _step_t <= 0.0:
-			_step_t = 0.25 if running else 0.33  # footsteps keep pace with the slower stride
+			# Footsteps follow the real speed (buffs, gear, exhaustion, swimming), not a fixed beat (c6_06).
+			var base_spd := RUN_SPEED if running else WALK_SPEED
+			var pace := clampf(position.distance_to(before) / maxf(0.0001, delta) / base_spd, 0.5, 1.8)
+			_step_t = (0.25 if running else 0.33) / pace
 			if swimming:
+				# Strokes are a soft paddle on the step voice; the big splash is for jumping in (c6_10-17).
 				_step_t = 0.7
-				Music.instance(get_tree()).sfx("splash")
+				Music.instance(get_tree()).step(step_or(get_tree(), "swim", "water"))
+			elif mounted:
+				# Hooves, not boots (c6_10-25): a slower canter on the step voice.
+				_step_t = 0.3 if running else 0.4
+				Music.instance(get_tree()).step(step_or(get_tree(), "hoof", _ground_word()))
 			elif vehicle == "":
 				Music.instance(get_tree()).step(_ground_word())
+			elif VEH_TICK.has(vehicle):
+				var vt: Array = VEH_TICK[vehicle]
+				_step_t = float(vt[1])
+				var w := str(vt[0])
+				Music.instance(get_tree()).step(step_or(get_tree(), w, "gravel") if w == "wheels" else w)
 	if auto:
 		# Give up if a wall stops us.
 		if position.distance_to(before) < 0.2:
@@ -1048,6 +1078,11 @@ func _work_walk(dir: Vector2, delta: float) -> bool:
 			var before := position
 			_move(velocity * delta)
 			_apply(("walk_" + facing) if facing in ["up", "down"] and has_anim("walk_" + facing) else "walk", facing == "left")
+			# Work-walking steps too (c6_06).
+			_step_t -= delta
+			if _step_t <= 0.0:
+				_step_t = 0.36
+				Music.instance(get_tree()).step(_ground_word())
 			if position.distance_to(before) < 0.05:
 				_ww_target = Vector2.INF  # something in the way: work from here
 			return true
@@ -1141,6 +1176,11 @@ func do_action(mode := "a") -> void:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
 		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]  # scythe -> sweep in play_tool
 		if play_tool(act):
+			# A light whoosh (a dribble for the can) so the empty swing isn't silent (c6_10-09).
+			if held == "can":
+				Music.instance(get_tree()).step("water")
+			else:
+				Music.instance(get_tree()).sfx("scythe" if held == "scythe" else "swing", "swing")
 			return
 		return
 	if held == "" or GameState.is_sword(held):
@@ -1201,11 +1241,30 @@ var _step_t := 0.0
 ## Which report a gun makes: shotguns boom, rifles crack, the rest pop.
 ## The shot's sound follows the gun in your hand (C3: it used to read an
 ## equipment slot no gun ever sits in, so every gun went "shot").
+## The Tommy Gun's cue: its own short SMG shot once imported, else the pistol (never the 1 s rifle).
+const SMG_TAKES := ["shot_smg", "shot"]
+
+
+## First of `names` with a file in audio/sfx (the last one is the safe fallback).
+static func first_sfx(names: Array) -> String:
+	for n: String in names:
+		if ResourceLoader.exists("res://audio/sfx/%s.ogg" % n) or ResourceLoader.exists("res://audio/sfx/%s.wav" % n):
+			return n
+	return str(names[-1])
+
+
+## Footstep word `want` when its step_<want> sound exists, else `other`.
+static func step_or(tree: SceneTree, want: String, other: String) -> String:
+	return want if Music.instance(tree).has_sfx("step_" + want) else other
+
+
 static func gun_sound(id: String) -> String:
 	var w := id.to_lower()
 	if "shotgun" in w or "blunder" in w or "scatter" in w:
 		return "shot_shotgun"
-	if "rifle" in w or "sniper" in w or "long" in w or "tommy" in w:
+	if "tommy" in w or "smg" in w:
+		return first_sfx(SMG_TAKES)  # short bursts: a 1 s rifle tail at 5 shots/s ate every voice (c6_08_17)
+	if "rifle" in w or "sniper" in w or "long" in w:
 		return "shot_rifle"
 	if "laser" in w or "ray" in w or "plasma" in w:
 		return "laser"
@@ -1267,9 +1326,10 @@ func _move(step: Vector2) -> void:
 	_update_wade()
 	if swimming and not was:
 		map.fx("splash", position, 12.0, 0.5)
-		Music.instance(get_tree()).sfx("splash", "bite")
+		Music.instance(get_tree()).sfx("splash", "step_water")
 	elif was and not swimming:
 		map.fx("splash", position, 12.0, 0.4)
+		Music.instance(get_tree()).step("water")
 
 
 var _wade: Node2D
@@ -1424,6 +1484,9 @@ func _swing_arc(center: Vector2) -> void:
 		sl.animation_finished.connect(sl.queue_free)
 
 
+var _status_sfx_ms := -10000
+
+
 func take_damage(n: int, from: Vector2) -> void:
 	if invuln > 0.0:
 		return
@@ -1431,7 +1494,7 @@ func take_damage(n: int, from: Vector2) -> void:
 		invuln = 0.4
 		if map:
 			map.hud.toast("Blocked!", Color(0.8, 0.9, 1.0))
-			Music.instance(get_tree()).sfx("dry_click", "thud")
+			Music.instance(get_tree()).sfx("block", "thud")
 		return
 	if int(GameState.run["flags"].get("shield", 0)) > 0:
 		GameState.run["flags"]["shield"] = int(GameState.run["flags"]["shield"]) - 1

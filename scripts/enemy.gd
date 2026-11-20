@@ -540,6 +540,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 		damage += 1
 		map.emote(self, "angry", 1.0, -26.0)
 		map.fx("enrage", position + Vector2(0, -10), 12.0, 0.6)
+		_near_sfx("grunt" if _is_person() else "growl", "stun")
 	if _shield > 0.0:
 		_set_aura("aura_shield")
 	elif _enraged:
@@ -554,10 +555,12 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 			_regen_t = 0.0
 			hp = mini(max_hp, hp + maxi(1, max_hp / 25))
 			map.fx("regen", position + Vector2(0, -8), 12.0, 0.5)
+			_near_sfx("heal", "sparkle", 120.0)
 	if abilities.has("shield") and _shield <= 0.0 and _shield_cd <= 0.0 and dist < 60.0 and _stun <= 0.0 and not (_gift and _gift.open_t > 0.0):
 		_shield = 1.4
 		_shield_cd = 6.0
 		map.fx("shield_up" if Art.has("fx", "shield_up") else "sparkle", position + Vector2(0, -12), 14.0, 0.5)
+		_near_sfx("block", "thud")
 	if _lunge_tele > 0.0:
 		_lunge_tele -= delta
 		if _lunge_tele <= 0.0 and _stun > 0.05:
@@ -583,6 +586,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 	if abilities.has("lunge") and _lunge_cd <= 0.0 and _stun <= 0.0 and dist > 28.0 and dist < 70.0 and randf() < 0.6 * delta and map.line_clear(position, position + to):
 		_lunge_tele = 0.25
 		_lunge_cd = 3.0
+		_near_sfx("swing_heavy", "swing")
 		map.fx("lunge_tele" if Art.has("fx", "lunge_tele") else "poof", position + Vector2(0, -4), 20.0, 0.5, to.x < 0)
 	if _stomp_tele > 0.0:
 		# Telegraphed: it rears up (tint) for a moment, then lands.
@@ -592,6 +596,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 			modulate = Color.WHITE
 			map.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", position, 16.0, 0.7)
 			map.shake(2.0)
+			_near_sfx("stomp", "thud")
 			if player.invuln <= 0.0 and position.distance_to(player.position) < 30.0:
 				player.take_damage(GameState.enemy_damage(damage + 1), position)
 			for ally: Node2D in map.allies():
@@ -629,7 +634,8 @@ func _shoot(dir: Vector2) -> void:
 		_sprite.play("attack")
 		_attacking = 0.4
 	if map.player and position.distance_to(map.player.position) < 170.0:
-		Music.instance(get_tree()).sfx("shot" if sh.flavour == "dark" and Racket.on() else "zap", "thud")
+		var snd := _shot_sound(sh.flavour)
+		Music.instance(get_tree()).sfx(snd, "swing" if snd == "bow" else "zap")
 
 
 func _blink() -> void:
@@ -640,6 +646,7 @@ func _blink() -> void:
 			map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 16.0, 0.5)
 			position = c
 			_knock = Vector2.ZERO
+			_near_sfx("teleport", "pop")
 			map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 16.0, 0.5)
 			_tele_flash = 0.5
 			_tele_name = "blink"
@@ -668,6 +675,7 @@ func _summon() -> void:
 		map.fx("poof", at + Vector2(0, -8), 14.0, 0.5)
 	_tele_flash = 0.6
 	_tele_name = "summon"
+	_near_sfx("spell_dark", "spell", 260.0)
 	map.hud.toast("It calls for help!", Color(1, 0.8, 0.7))
 
 
@@ -733,7 +741,11 @@ func _die() -> void:
 	var big := bossy or is_guardian or has_meta("boss_name")
 	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
 	if big or (map.player and position.distance_to(map.player.position) < 200.0):
-		Music.instance(get_tree()).sfx("boss_down" if big else _death_sound(), "thud")
+		# Bosses fall with a heavy impact; DangerMusic plays the one victory sting (c6_08_03).
+		if big:
+			Music.instance(get_tree()).sfx("boss_fall", "stomp")
+		else:
+			Music.instance(get_tree()).sfx(_death_sound(), "thud")
 	if big:
 		map.shake(5.0)
 	# Sheets with a "die" strip play it, then fade; the rest get the squash.
@@ -831,19 +843,59 @@ func display_name() -> String:
 	return kind.replace("thug_", "").replace("_", " ").capitalize()
 
 
-## A small foe's send-off, by what it is.
+## A foe's cue, only when the player is close enough to care (and to hear it).
+func _near_sfx(name: String, fallback: String, reach := 170.0) -> void:
+	if map == null or map.player == null or position.distance_to(map.player.position) > reach:
+		return
+	Music.instance(get_tree()).sfx(name, fallback)
+
+
+## People (thugs, soldiers, grumps, captains): they grunt and get knocked out, never "die".
+func _is_person() -> bool:
+	var k := kind.to_lower()
+	if "cyber" in k:
+		return false
+	for w in ["thug", "soldier", "archer", "knight", "grump", "captain", "guard", "goon", "bandit", "commander", "president", "lieutenant"]:
+		if w in k:
+			return true
+	return false
+
+
+## Ranged shots by shooter: thugs fire guns, archers loose arrows, the rest spit bolts.
+func _shot_sound(flavour: String) -> String:
+	var k := kind.to_lower()
+	if "archer" in k or "bow" in k:
+		return "bow"
+	if flavour == "dark" and Racket.on():
+		return "shot"
+	return {"fire": "spell_fire", "ice": "spell_ice", "poison": "slime"}.get(flavour, "zap")
+
+
+## A small foe's send-off, by what it is (c6_08_06: the bubble-pop "die" is the last resort).
 func _death_sound() -> String:
 	var k := kind.to_lower()
 	if "slime" in k or "blob" in k or "ooze" in k:
 		return "slime"
 	if "bat" in k:
 		return "bat"
-	if "golem" in k or "rock" in k or "stone" in k or "crystal" in k:
+	if "mirror" in k or "glass" in k or "prism" in k:
+		return "glass"
+	if "golem" in k or "rock" in k or "stone" in k or "crystal" in k or "shard" in k or "guardian" in k or "sentinel" in k or "obsidian" in k:
 		return "rock_break"
-	if "bot" in k or "drone" in k or "robot" in k or "cyber" in k:
+	if "cyber" in k:
+		return "zap"  # the common gangster summon: short, not the 1.9 s power-down every time
+	if "bot" in k or "drone" in k or "robot" in k:
 		return "power_off"
 	if "spirit" in k or "ghost" in k or "wisp" in k or "shade" in k:
 		return "spirit"
-	if "bug" in k or "beetle" in k or "wasp" in k or "spider" in k:
+	if "bug" in k or "beetle" in k or "wasp" in k or "spider" in k or "moth" in k:
 		return "bug"
+	if _is_person():
+		return Player.first_sfx(PERSON_DOWN)  # all-ages: a bonk and down
+	if "wolf" in k or "hound" in k or "crab" in k or "serpent" in k or "eel" in k or "boar" in k:
+		return Player.first_sfx(BEAST_DOWN)
 	return "die"
+
+
+const PERSON_DOWN := ["knockout", "thud"]
+const BEAST_DOWN := ["beast_down", "thud"]

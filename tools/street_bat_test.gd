@@ -22,7 +22,7 @@ func _initialize() -> void:
 	check(GameState.weapon_word() == "bat", "gang hints say bat")
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	check(GameState.item_name("sword") == "Wooden Sword" and Hud.icon_for("sword") == "sword_wood", "penguins keep the Wooden Sword")
-	check(Player.gun_sound("scattergun") == "shot_shotgun" and Player.gun_sound("tommy_gun") == "shot_rifle" and Player.gun_sound("six_shooter") == "shot", "gun sounds follow the gun in hand")
+	check(Player.gun_sound("scattergun") == "shot_shotgun" and Player.gun_sound("tommy_gun") in ["shot_smg", "shot"] and Player.gun_sound("six_shooter") == "shot", "gun sounds follow the gun in hand")
 	check(Player.gun_sound("gold_revolver") == "shot_heavy" and FileAccess.file_exists("res://audio/sfx/shot_heavy.ogg"), "the gold revolver booms deeper than the six-shooter")
 	var pl := Player.new()
 	pl._count_shot("six_shooter")

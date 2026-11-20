@@ -139,6 +139,9 @@ static func _run_heist(m: GameMap, id: String) -> void:
 	odds = clampf(odds, 0.2, 0.95)
 	# Quiet takes the night's best hours; fast is over in no time.
 	GameState.run["time"] = int(GameState.run["time"]) + (120 if c == 0 else 30)
+	# The job has its own music (c6_02): the raid groove while it plays out, then home.
+	var mu := Music.instance(m.get_tree())
+	mu.play("raid" if Music.has_track("raid") else m.area_track(), 0.6)
 	if randf() < odds:
 		GameState.run["flags"]["heist_" + id] = true
 		GameState.add_arc_xp(60)
@@ -153,12 +156,15 @@ static func _run_heist(m: GameMap, id: String) -> void:
 			extra = ", +◆%d and a %s grabbed on the way out" % [bonus, GameState.item_name(grab)]
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
 		m.hud.toast("%s done: %s%s" % [str(h["name"]), Perks._list(h["reward"]), extra], Color(1, 0.9, 0.4))
-		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+		mu.sfx("j_victory", "quest_done")
+		mu.play(m.area_track(), 2.0)
 		if c == 1:
 			Racket.add_heat(m, 1)
 	else:
 		await m.say([{"who": "", "text": "A guard changes his route. A dog barks. You're out the back with empty hands and a siren somewhere behind you."}, {"who": who, "text": "Nobody's hurt. That's what matters. We go again another night."}])
 		m.hud.toast("The heist went wrong. Try again another day.", Color(1, 0.6, 0.5))
+		mu.sfx("siren", "j_battle_lost")
+		mu.play(m.area_track(), 2.0)
 		Racket.add_heat(m, 1)
 
 

@@ -81,6 +81,32 @@ static func name_of() -> String:
 	return str(GameState.names().get("pet", "Pup"))
 
 
+## Cats (look pet cat_* / cat2_*) meow and purr; every other look is a dog.
+static func is_cat() -> bool:
+	return str(GameState.look_d().get("pet", "")).begins_with("cat")
+
+
+## "pup" or "cat", for lines that talk about the pet.
+static func kind_word() -> String:
+	return "cat" if is_cat() else "pup"
+
+
+## The pet's voice for a moment: "call" (alert, answer, fight), "happy" (petted,
+## back up) or "hurt" (knocked down, going home). Cats meow/purr, dogs bark/whimper.
+static func voice(moment := "call") -> String:
+	if is_cat():
+		return {"happy": "purr", "hurt": "meow"}.get(moment, "meow")
+	return {"hurt": "whimper"}.get(moment, "bark")
+
+
+## Play the pet's voice (falls back to the dog's sound if a cat take is missing).
+static func say(tree: SceneTree, moment := "call") -> void:
+	if tree == null:
+		return
+	var dog: String = {"hurt": "whimper"}.get(moment, "bark")
+	Music.instance(tree).sfx(voice(moment), dog)
+
+
 const GEAR_OVERLAYS := false
 
 
@@ -185,6 +211,11 @@ func set_mode(mode: String) -> void:
 		st["wait"] = [map.scene_id(), position.x, position.y]
 	else:
 		st["wait"] = []
+	# A whistle, then the pet answers (c6_10-24).
+	Music.instance(get_tree()).sfx("whistle", "ui_tap")
+	get_tree().create_timer(0.25, false).timeout.connect(func() -> void:
+		if is_inside_tree():
+			Pet.say(get_tree(), "call"))
 	if map and map.hud:
 		map.hud.toast("%s: %s." % [name_of(), {"follow": "heel", "attack": "attack!", "guard": "guard this spot", "wait": "stay"}.get(mode, mode)], Color(0.85, 1.0, 0.85))
 	if anim and mode == "wait" and anim.sprite_frames.has_animation("sit"):
@@ -217,6 +248,8 @@ func recall() -> void:
 		map.hud.toast("%s came running from %s. (an hour passed)" % [name_of(), from_where], Color(0.85, 1.0, 0.85))
 	else:
 		map.hud.toast("%s is here." % name_of(), Color(0.85, 1.0, 0.85))
+	Music.instance(get_tree()).sfx("whistle", "ui_tap")
+	Pet.say(get_tree(), "call")
 	position = map.player.position + Vector2(-14, 4)
 	map.fx("sparkle", position + Vector2(0, -8), 14.0, 0.5)
 
@@ -249,7 +282,7 @@ func _show_down() -> void:
 
 
 func _knock_down() -> void:
-	Music.instance(get_tree()).sfx("whimper")
+	Pet.say(get_tree(), "hurt")
 	state()["hp"] = 0
 	_down_t = DOWN_WINDOW
 	state()["down_until"] = Time.get_ticks_msec() / 1000.0 + DOWN_WINDOW
@@ -275,6 +308,8 @@ func revive_with(n: int) -> void:
 		_down_t = -1.0
 		st["hp"] = maxi(int(st["hp"]), max_hp() / 3)
 		map.hud.toast("%s is back on its feet!" % name_of(), Color(0.8, 1, 0.8))
+		Music.instance(get_tree()).sfx("heal", "sparkle")
+		Pet.say(get_tree(), "happy")
 		map.emote(self, "heart", 1.2)
 		anim.play("idle")
 	_hp_bar.queue_redraw()
@@ -291,6 +326,7 @@ func _go_home() -> void:
 	st["rest_until"] = int(GameState.run["day"]) + 1
 	st["mode"] = "follow"
 	st["wait"] = []
+	Pet.say(get_tree(), "hurt")
 	map.hud.toast("%s has gone back to the dog house on your farm to rest%s." % [name_of(), " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
 	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), "in a few hours" if best else "tomorrow morning"])
 	map.emote(self, "sleep", 1.5)
@@ -344,6 +380,7 @@ func _process(delta: float) -> void:
 				var t := str(map.things[c].get("type", ""))
 				if t in ["mrock", "forage", "rock"] and (c as Vector2i).distance_to(pc) <= 8.0 and (t == "forage" or str(map.things[c].get("ore", "")) in ["silver", "gold", "ruby", "crystal", "mithril"]):
 					map.emote(self, "surprise", 0.8)
+					Pet.say(get_tree(), "call")
 					if anim.sprite_frames.has_animation("bark"):
 						anim.play("bark")
 					break
@@ -504,8 +541,11 @@ func _bite(e: Enemy) -> void:
 	anim.flip_h = e.position.x < position.x
 	e.provoke(self)  # it turns to fight back
 	if randf() < 0.35:
-		Music.instance(get_tree()).sfx("bark")
+		Pet.say(get_tree(), "call")
 	var landed := e.hit(dmg, position, false, true)
+	# The bite itself (c6_08_26): only when the player is near enough to hear it.
+	if landed and map.player and position.distance_to(map.player.position) < 170.0:
+		Music.instance(get_tree()).sfx("bite", "hit")
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
 	if landed:
@@ -515,6 +555,8 @@ func _bite(e: Enemy) -> void:
 func _dig() -> void:
 	busy = true
 	anim.play("dig" if anim.sprite_frames.has_animation("dig") else "play")
+	if map and map.player and position.distance_to(map.player.position) < 170.0:
+		Music.instance(get_tree()).sfx("dig", "step_dirt")
 	await get_tree().create_timer(1.6, false).timeout
 	if not is_inside_tree() or not is_instance_valid(anim):
 		return
@@ -537,6 +579,7 @@ func _dig() -> void:
 		GameState.add_item(found)
 		GameState.add_xp("pup", 3)
 		map.hud.toast("%s dug up a %s!" % [name_of(), GameState.item_name(found)], Color(0.8, 1, 0.8))
+		Music.instance(get_tree()).sfx("pickup")
 		map.fx("dust_puff", position, 12.0, 0.4)
 
 

@@ -986,7 +986,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if int(thing["hp"]) <= 0:
 				_tremor(c, swing)
 				hitstop = maxf(hitstop, 0.05)
-				Music.instance(get_tree()).sfx("crate_break", "thud")
+				Music.instance(get_tree()).sfx("rock_break", "crate_break")
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)

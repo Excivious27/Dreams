@@ -168,7 +168,7 @@ func _cycle_rally() -> void:
 	if i >= points.size():
 		i = -2
 	_set_rally(i)
-	Music.instance(map.get_tree()).sfx("pickup")
+	_rally_sfx(i)
 
 
 ## One tap: pick where the helpers go from a list (instead of cycling through every point).
@@ -187,7 +187,34 @@ func _pick_rally() -> void:
 	await dl.finished
 	if dl.last_choice >= 0 and dl.last_choice < o.size() - 1 and not _over:
 		_set_rally(dl.last_choice - 2)
-		Music.instance(map.get_tree()).sfx("pickup")
+		_rally_sfx(dl.last_choice - 2)
+
+
+## Each rally order has its own call (c6_11): follow me = a whistle, guard = a
+## confirm, send to a point = the war drum / horn.
+func _rally_sfx(i: int) -> void:
+	var mu := Music.instance(map.get_tree())
+	if i == -1:
+		mu.sfx("whistle", "j_confirm")
+	elif i == -2:
+		mu.sfx("j_confirm", "pickup")
+	else:
+		mu.sfx("war_drum", "j_confirm")
+
+
+## First cue that exists (new sounds land from P3; until then the fallback plays).
+static func pick_sfx(mu: Music, names: Array) -> String:
+	for n: String in names:
+		if mu.has_sfx(n):
+			return n
+	return str(names[-1])
+
+
+## A field cue heard only near the player (spawns and deaths across the field stay quiet).
+func _near_sfx(at: Vector2, name: String, fallback: String, reach := 220.0) -> void:
+	if map == null or map.player == null or map.player.position.distance_to(at) > reach:
+		return
+	Music.instance(get_tree()).sfx(name, fallback)
 
 
 func _helpers() -> int:
@@ -241,6 +268,14 @@ func _rally_toast(text: String) -> void:
 func _exit_tree() -> void:
 	if camp != "" and not _over and not _guest and not Net.visiting():
 		Campaign.retreat(supply)  # walked off the field mid-fight
+		# Say what the retreat cost once the next map is up (c6_11).
+		var tree := get_tree()
+		if tree:
+			tree.create_timer(1.2).timeout.connect(func() -> void:
+				var nm := tree.current_scene as GameMap
+				if nm and is_instance_valid(nm) and nm.hud:
+					nm.hud.toast("You fell back from the field: morale -15, most supply lost.", Color(1, 0.7, 0.6))
+					Music.instance(tree).sfx("j_battle_lost", "nope"))
 	elif is_drill and not _over:
 		CampaignGate.drill_quit()
 	Hud.extra_rects.erase(RALLY_RECT)
@@ -250,6 +285,7 @@ func _exit_tree() -> void:
 		map.remove_meta("team_push")
 
 
+var _mass_ms := -100000
 var _bleed_e := 0.0
 var _rate := 0.0   # supply per second after upkeep (HUD)
 var _bleed_a := 0.0
@@ -376,6 +412,10 @@ func _capture(delta: float) -> void:
 			elif str(p["owner"]) == "enemy":
 				map.hud.toast("We lost %s." % str(p["name"]), Color(1, 0.6, 0.5))
 				Music.instance(get_tree()).sfx("alert", "thud")
+			elif was == "ally" and str(p["owner"]) == "neutral":
+				# Knocked to neutral (no spawner to lose): still a loss you should hear.
+				map.hud.toast("%s is slipping: retake it!" % str(p["name"]), Color(1, 0.75, 0.55))
+				Music.instance(get_tree()).sfx("alert", "thud")
 
 
 func _tick() -> void:
@@ -426,7 +466,7 @@ func _tick() -> void:
 			else:
 				var h := HelperUnit.make(map, str(p["spawner"]), p["pos"] + Vector2(randf_range(-16, 16), 10), p["pos"])
 				if (p["made"] as Array).is_empty() or randf() < 0.5:
-					Music.instance(get_tree()).sfx("craft_done", "pop")
+					_near_sfx(p["pos"], "teleport", "pop")  # a helper steps out (craft_done is the player's own Build)
 				if bool(d.get("inspired", false)):
 					h.max_hp = int(h.max_hp * 1.25)  # an inspired army (campaign morale 85+)
 					h.hp = h.max_hp
@@ -463,8 +503,9 @@ func _tick() -> void:
 			map.shake(3.0)
 			# A full boss theme, the horn, and DangerMusic holds it till the captain falls.
 			var bt := map.boss_track(bb.kind)
-			Music.instance(get_tree()).sfx("horn", "alert")
-			Music.instance(get_tree()).play(bt, 0.4)
+			var hm := Music.instance(get_tree())
+			hm.sfx(pick_sfx(hm, ["war_horn", "j_battle_start"] if GameState.is_penguins() else ["war_horn_gang", "war_horn", "j_battle_start"]), "alert")  # never the bicycle 'horn'
+			hm.play(bt, 0.4)
 			DangerMusic.boss_started(map, bt)
 	if camp != "":
 		_keep()
@@ -598,6 +639,10 @@ func _enemy_wave() -> void:
 			_target_pt = bestp
 			if str(bestp["owner"]) == "ally":
 				map.hud.toast("They're massing on %s!" % str(bestp["name"]), Color(1, 0.6, 0.45))
+				var nw := Time.get_ticks_msec()
+				if nw - _mass_ms > 8000:
+					_mass_ms = nw
+					Music.instance(get_tree()).sfx("war_drum", "alert")
 	var held: Array = points.filter(func(p: Dictionary) -> bool: return str(p["owner"]) == "enemy")
 	var guards := {}
 	for e in map.enemies:
@@ -752,6 +797,7 @@ func interact(id: String) -> void:
 		return
 	if str(p["owner"]) != "ally":
 		map.hud.toast("Take %s first: stand in the ring with no foes on it." % str(p["name"]), Color(1, 0.85, 0.6))
+		Music.instance(get_tree()).sfx("nope", "thud")
 		return
 	var crystal := GameState.is_penguins()
 	var opts: Array = []
@@ -1132,6 +1178,7 @@ func _resume(cf: Dictionary) -> void:
 		_elapsed = maxf(_elapsed, 7.0)
 		_resume_boss_hp = int(stt.get("boss_hp", -1))  # the captain comes back as hurt as you left them
 	map.hud.toast("The fight picks up where you left it.", Color(0.8, 0.95, 1.0))
+	Music.instance(get_tree()).sfx("war_drum", "alert")
 
 
 func _goal_text() -> String:
@@ -1160,12 +1207,11 @@ func _goal_text() -> String:
 
 ## The fight's over: the song drops under the jingle and the closing lines.
 func _duck_music() -> void:
+	# Dip the music 9 dB for 4 s so the win/loss jingle cuts through: a named duck
+	# layer (P1's Music.set_duck_layer) that Ambience can't undo.
 	var mu := Music.instance(get_tree())
-	var was: float = mu._duck
-	mu.set_duck(was - 9.0)
-	get_tree().create_timer(4.0).timeout.connect(func() -> void:
-		if is_instance_valid(mu) and is_equal_approx(mu._duck, was - 9.0):
-			mu.set_duck(was))
+	if mu.has_method("set_duck_layer"):
+		mu.call("set_duck_layer", "battle", -9.0, 0.12, 0.8, 4.0)
 
 
 ## The drill can't hurt you: knocked out, worn out or up too late, the trainer

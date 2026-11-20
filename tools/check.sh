@@ -418,6 +418,11 @@ echo "$sbout" | grep -E "FAIL|SCRIPT ERROR|street_bat_test" || true
 if ! echo "$sbout" | grep -q "street_bat_test: 0 fails"; then
   echo "Street bat test failed"; exit 1
 fi
+c6cout="$("$GODOT" --headless --path . -s res://tools/c6_cue_test.gd 2>&1)"
+echo "$c6cout" | grep -E "FAIL|SCRIPT ERROR|c6_cue_test" || true
+if ! echo "$c6cout" | grep -q "c6_cue_test: 0 fails"; then
+  echo "C6 gameplay cue test failed"; exit 1
+fi
 fdout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/farm_debris_test.gd 2>&1)"
 echo "$fdout" | grep -E "FAIL|SCRIPT ERROR|farm_debris_test" || true
 if ! echo "$fdout" | grep -q "farm_debris_test: 0 fails"; then

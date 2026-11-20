@@ -10,6 +10,8 @@ extends GameMap
 ## What stands depends on the stage (the map reloads when a stage is done).
 
 const TOWN_EXIT := Rect2i(51, 18, 1, 4)
+var _site_at := Vector2.INF   # the build under way (hammering after dark, c6_11)
+var _work_t := 3.0
 const PLAZA_C := Vector2(29.0, 20.5)
 const PLAZA_R := 4.3
 const BOARD := Vector2i(45, 17)
@@ -354,6 +356,8 @@ func _place_site() -> void:
 	var first := true
 	for e: Array in SITES.get(str(Commons.stages()[b]["id"]), []):
 		var c: Vector2i = e[1]
+		if _site_at == Vector2.INF:
+			_site_at = cell_center(c)
 		prop("props", str(e[0]), c, 1, 0.0, true, 0.5)
 		for x in range(c.x, c.x + 2):
 			set_thing(x, c.y, {"type": "cf_note", "text": note, "hint": "A: the build site"})
@@ -367,6 +371,21 @@ func _place_site() -> void:
 				prop("props", "cf_build_sawhorse", sc, 1, 0.0, true, 0.5)
 				for x in range(sc.x, sc.x + 2):
 					set_thing(x, sc.y, {"type": "cf_note", "text": note, "hint": "A: the build site"})
+
+
+## The crew at work: after dark, while a build is under way, hammer/saw sounds
+## from the site when you're near it.
+func _process(delta: float) -> void:
+	super(delta)
+	if _site_at == Vector2.INF or player == null or get_tree().paused:
+		return
+	_work_t -= delta
+	if _work_t > 0.0:
+		return
+	_work_t = randf_range(4.0, 9.0)
+	if Commons.pending() >= 0 and GameState.is_night() and player.position.distance_to(_site_at) < 170.0:
+		var mu := Music.instance(get_tree())
+		mu.sfx("saw" if randf() < 0.4 else "hammer", "hammer")
 
 
 ## Nights the crew has already worked on stage `id` (0 unless it is the build under way).
@@ -857,6 +876,7 @@ func _clear_debris(c: Vector2i, thing: Dictionary) -> void:
 	(Commons.st()["cleared"] as Dictionary)[str(thing["key"])] = true
 	if str(j[4]) == "":
 		GameState.add_money(int(j[5]), "commons")
+		Music.instance(get_tree()).sfx("cash", "coin")
 		hud.toast("The scrap dealer pays ◆%d for those." % int(j[5]), Color(1, 0.9, 0.5))
 	else:
 		pop_items(cell_center(c), str(j[4]), int(j[5]))

@@ -176,7 +176,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			thing["hp"] = int(thing["hp"]) - 1
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
-				Music.instance(get_tree()).sfx("crate_break", "thud")
+				Music.instance(get_tree()).sfx("rock_break", "crate_break")
 				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				var ore := str(thing["ore"])
 				things.erase(c)

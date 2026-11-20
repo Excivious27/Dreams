@@ -59,7 +59,10 @@ func after_ready() -> void:
 		if nx != "":
 			hud.toast("Next: " + nx, Color(1, 0.95, 0.7))
 	var note := str(GameState.run["flags"].get("wake_note", ""))
-	var kept := SleepReport.take_kept()  # a pass-out night: what sold, grew, arrived
+	var kept_rep: Variant = GameState.run["flags"].get("wake_report", null)
+	var kept := SleepReport.take_kept()
+	if kept_rep is Dictionary and not kept.is_empty():
+		morning_cues(get_tree(), kept_rep as Dictionary, true)  # a pass-out night still gets its morning sounds  # a pass-out night: what sold, grew, arrived
 	if note != "" or not kept.is_empty():
 		GameState.run["flags"].erase("wake_note")
 		player.frozen = true
@@ -110,15 +113,46 @@ func _sleep() -> void:
 		Net.i().clear_beds()
 	var lines := SleepReport.lines(report)
 	await hud.fade_in(0.8)
-	if int(report.get("earned", 0)) > 0:
-		Music.instance(get_tree()).sfx("cash_register" if Money.cash() else "coin", "pickup")
-	if not (report.get("built", []) as Array).is_empty():
-		Music.instance(get_tree()).sfx("craft_done", "levelup")
+	morning_cues(get_tree(), report, false)
 	await say(lines)
 	_changing = false
 	_morning_events()
 	Story.on_morning(self)
 	player.frozen = false
+
+
+## The morning's sounds (c6_10-02/-14): the wake-up jingle (a softer stretch after
+## a pass-out), then the till for sales, the hammer for builds, the ripe-crop chime,
+## spaced so they don't stack.
+const WAKE_ROUGH := ["yawn", "snore"]
+
+
+static func morning_cues(tree: SceneTree, report: Dictionary, passed_out: bool) -> void:
+	if tree == null:
+		return
+	var mu := Music.instance(tree)
+	var cues: Array = []
+	var wake := "j_morning"
+	if passed_out:
+		wake = "snore"
+		for n: String in WAKE_ROUGH:
+			if mu.has_sfx(n):
+				wake = n
+				break
+	cues.append(wake)
+	if int(report.get("earned", 0)) > 0:
+		cues.append("cash_register" if Money.cash() else "coin")
+	if not (report.get("built", []) as Array).is_empty():
+		cues.append("craft_done")
+	if int(report.get("ripe", 0)) > 0:
+		cues.append("crop_ready")
+	var at := 0.0
+	for c: String in cues:
+		if at <= 0.0:
+			mu.sfx(c, "pickup")
+		else:
+			tree.create_timer(at, false).timeout.connect(func() -> void: mu.sfx(c, "pickup"))
+		at += 0.9
 
 
 func _morning_events() -> void:

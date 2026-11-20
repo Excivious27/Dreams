@@ -118,7 +118,8 @@ func _process(delta: float) -> void:
 		if _done_t < 0.4:
 			return
 		_done_t = 0.0
-		Music.instance(get_tree()).sfx("quest_done", "levelup")
+		if step < STEPS.size() - 1:
+			Music.instance(get_tree()).sfx("quest_done", "levelup")  # the last step: the win jingle covers it (c6_11)
 		xp += 8
 		if step == STEPS.size() - 1:
 			b._end(true)

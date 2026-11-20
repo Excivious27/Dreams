@@ -148,7 +148,7 @@ func _ready() -> void:
 	_go.custom_minimum_size = Vector2(110, 24)
 	_go.add_theme_font_size_override("font_size", 9)
 	_go.focus_mode = Control.FOCUS_NONE
-	_go.pressed.connect(_close)
+	_go.pressed.connect(_fight)
 	row.add_child(_go)
 	if seen(mode) and mode != "drill":
 		_hide = Button.new()
@@ -215,7 +215,7 @@ func _process(delta: float) -> void:
 	if _go:
 		_go.disabled = _arm < _min_t
 	if _arm >= _min_t and Input.is_action_just_pressed("a"):
-		_close()
+		_fight()
 	elif _arm >= 0.3 and Input.is_action_just_pressed("b"):
 		_not_now()
 
@@ -232,6 +232,7 @@ func _not_now() -> void:
 		Campaign.st()["fight"] = {}
 	var back: Array = d.get("back", [])
 	_arm = maxf(_arm, _min_t)
+	Music.instance(get_tree()).sfx("menu_close", "ui_tap")  # (c6_11, P5 hook)
 	_close()
 	if m and is_instance_valid(m):
 		m.hud.toast("You can come back to this fight from the campaign map.", Color(1, 0.9, 0.6))
@@ -241,6 +242,13 @@ func _not_now() -> void:
 			m.go_to(str(back[0]), Vector2(float(back[1]) * GameMap.TILE, float(back[2]) * GameMap.TILE) if float(back[1]) > 0 else Vector2.ZERO, "down")
 		else:
 			m.go_to("farm", Vector2.ZERO, "down")
+
+
+## Fight: a confirm cue, then close (c6_11, P5 hook).
+func _fight() -> void:
+	if is_inside_tree() and _arm >= _min_t:
+		Music.instance(get_tree()).sfx("j_confirm", "ui_tap")
+	_close()
 
 
 func _close() -> void:
