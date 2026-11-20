@@ -44,6 +44,8 @@ func _process(delta: float) -> void:
 	_cd -= delta
 	if life <= 0.0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
+		if map.player and map.player.position.distance_to(position) < 220.0:
+			Music.instance(get_tree()).sfx("power_off", "pop")  # runs out (c6_11)
 		queue_free()
 		return
 	if _cd <= 0.0:
@@ -56,8 +58,13 @@ func _process(delta: float) -> void:
 			e.hit(dmg, position, true, true)
 			if Art.has("fx", "cy_bot_zap"):
 				map.fx("cy_bot_zap", e.position + Vector2(0, -8), 16.0, 0.35)
-			Music.instance(get_tree()).sfx("zap", "hit")
+			_fire_sfx()
 	queue_redraw()
+
+
+## Overridden by BattleTurret (gun / pylon); a bot zaps.
+func _fire_sfx() -> void:
+	Music.instance(get_tree()).sfx("zap", "hit")
 
 
 func _draw() -> void:

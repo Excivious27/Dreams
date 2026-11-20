@@ -22,6 +22,9 @@ const HIT_GAP := 0.4
 var _hurt := 0.0
 var _t := 0.0
 var _face := 1.0
+var _roll_t := 0.0        # rolling sound tick
+var _warned := false      # "badly hurt" said once
+var _honk_t := 0.0        # left-behind honk throttle
 
 
 static func make(m: GameMap, waypoints: Array, life: int) -> CampaignConvoy:
@@ -60,6 +63,10 @@ func take_damage(n: int, _from: Vector2) -> void:
 	if _hit_cd <= 0.0:
 		_hit_cd = HIT_GAP
 		_sfx("crate_break" if hp <= 0 else "hit")
+	if not _warned and hp > 0 and hp < max_hp / 3:
+		_warned = true
+		map.hud.toast("The convoy is badly hurt!", Color(1, 0.6, 0.5))
+		Music.instance(get_tree()).sfx("alert", "thud")  # heard anywhere: it's yours
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -8), 12.0, 0.6)
 
@@ -79,6 +86,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	_hurt = maxf(0.0, _hurt - delta)
 	_hit_cd = maxf(0.0, _hit_cd - delta)
+	_honk_t = maxf(0.0, _honk_t - delta)
 	var friend := map.player.position.distance_to(position) < ESCORT_R
 	if not friend:
 		for h in get_tree().get_nodes_in_group("allies"):
@@ -93,7 +101,22 @@ func _process(delta: float) -> void:
 			_sfx("alert", "thud")  # foes on the convoy
 		elif state == "roll" and not _rolled:
 			_rolled = true
-			_sfx("car_start" if not GameState.is_penguins() else "j_confirm")  # it sets off
+			_sfx("car_start" if not GameState.is_penguins() else "sled_bells", "j_confirm")  # it sets off
+		elif state == "wait" and was == "roll" and _honk_t <= 0.0:
+			# Left behind: a honk / bell to call you back (throttled).
+			_honk_t = 6.0
+			Music.instance(get_tree()).sfx("car_horn" if not GameState.is_penguins() else "sled_bells", "nope")
+	if state == "roll":
+		# Rolling: cart wheels / sled runners every ~0.6 s, near the player only.
+		_roll_t -= delta
+		if _roll_t <= 0.0:
+			_roll_t = 0.6
+			if position.distance_to(map.player.position) < 200.0:
+				var mu := Music.instance(get_tree())
+				if GameState.is_penguins():
+					mu.step("snow")
+				else:
+					mu.step("wheels" if mu.has_sfx("step_wheels") else "gravel")
 	if state == "roll" and _i < path.size():
 		var goal: Vector2 = path[_i]
 		if position.distance_to(goal) < 14.0:
@@ -101,7 +124,7 @@ func _process(delta: float) -> void:
 			if _i >= path.size():
 				arrived = true
 				map.fx("levelup", position + Vector2(0, -10), 10.0, 0.6)
-				_sfx("horn", "levelup")
+				_sfx("car_horn" if not GameState.is_penguins() else "sled_bells", "levelup")  # never the bicycle horn
 				queue_redraw()
 				return
 			goal = path[_i]
@@ -130,8 +153,12 @@ func _draw() -> void:
 	var bob := sin(_t * 8.0) * 0.6 if state == "roll" else 0.0
 	draw_circle(Vector2(0, 1), 9.0, Color(0, 0, 0, 0.22))
 	var tex: Texture2D = null
+	var flip := GameState.is_penguins()
 	if GameState.is_penguins():
 		tex = Art.tex("props", "veh_crystal_sled_side")
+	elif Art.has("props", "lux_car_black"):
+		tex = Art.tex("props", "lux_car_black")  # the crew's convoy is a car (its engine and horn match)
+		flip = true  # drawn facing left
 	if tex == null:
 		tex = Art.tex("props", "cart_covered")
 	if tex == null:
@@ -140,7 +167,7 @@ func _draw() -> void:
 	if tex:
 		var w := 30.0
 		var h := w * tex.get_height() / tex.get_width()
-		draw_set_transform(Vector2(0, bob), 0.0, Vector2(-_face if GameState.is_penguins() else _face, 1))
+		draw_set_transform(Vector2(0, bob), 0.0, Vector2(-_face if flip else _face, 1))
 		draw_texture_rect(tex, Rect2(Vector2(-w / 2.0, 3 - h), Vector2(w, h)), false, mod)
 		draw_set_transform(Vector2.ZERO)
 	else:

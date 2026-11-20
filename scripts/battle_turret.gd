@@ -46,8 +46,22 @@ static func make_at(m: GameMap, at: Vector2, it: Dictionary) -> Bot:
 		b.add_child(b._spr)
 	b.add_to_group("allies")
 	m.add_child(b)
-	Music.instance(m.get_tree()).sfx("power_up", "pop")
+	if m.player and m.player.position.distance_to(b.position) < 220.0:
+		Music.instance(m.get_tree()).sfx("power_up", "pop")
 	return b
+
+
+## Gangster Gun Turret fires a gun; the penguin pylon hums a crystal bolt (c6_11).
+func _fire_sfx() -> void:
+	if map.player and map.player.position.distance_to(position) > 220.0:
+		return
+	if GameState.is_penguins():
+		Music.instance(get_tree()).sfx("laser", "zap")
+	else:
+		Music.instance(get_tree()).sfx("shot_smg", "shot")
+
+
+var _hit_ms := -10000
 
 
 func take_damage(n: int, _from: Vector2) -> void:
@@ -55,9 +69,14 @@ func take_damage(n: int, _from: Vector2) -> void:
 	_hurt = 0.2
 	if _spr:
 		_spr.modulate = Color(1.8, 1.8, 1.8)
+	var near := map.player != null and map.player.position.distance_to(position) < 220.0
+	if hp > 0 and near and Time.get_ticks_msec() - _hit_ms > 400:
+		_hit_ms = Time.get_ticks_msec()
+		Music.instance(get_tree()).sfx("glass" if GameState.is_penguins() else "hit", "thud")
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
-		Music.instance(get_tree()).sfx("glass" if GameState.is_penguins() else "power_off", "pop")
+		if near:
+			Music.instance(get_tree()).sfx("glass" if GameState.is_penguins() else "power_off", "pop")
 		queue_free()
 
 

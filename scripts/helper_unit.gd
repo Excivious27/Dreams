@@ -153,9 +153,12 @@ func take_damage(n: int, _from: Vector2) -> void:
 	_hurt = 0.2
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
-		Music.instance(get_tree()).sfx("power_off" if style == "drone" else "glass", "pop")
 		if team_id != "":
+			# A person, not a machine: knocked out, falls back (always heard: they're yours).
+			Music.instance(get_tree()).sfx("knockout", "thud")
 			map.hud.toast("%s falls back to camp." % team_name, Color(1, 0.8, 0.6))
+		elif map.player and position.distance_to(map.player.position) < 220.0:
+			Music.instance(get_tree()).sfx("power_off" if style == "drone" else "glass", "pop")
 		queue_free()
 
 
@@ -249,7 +252,11 @@ func _process(delta: float) -> void:
 				_zap_t = 0.12
 				foe.provoke(self)
 				foe.hit((2 if team_id == "" else 3) + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true, true)
-				_sfx("laser" if style == "drone" else "spell_lightning", 0.35)
+				if team_id != "":
+					# Mustered people swing or shoot like people (c6_11).
+					_sfx("swing" if GameState.is_penguins() else "shot", 0.35)
+				else:
+					_sfx("laser" if style == "drone" else "spell_lightning", 0.35)
 			else:
 				_cd = 0.3
 		"healer":

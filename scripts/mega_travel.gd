@@ -167,12 +167,14 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 	var who := str(r.get("keeper", ""))
 	var L: Dictionary = r.get("lines", {})
 	if not arc_ok(r):
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		m.hud.toast(str(L.get("wrong_arc", "Not for you.")))
 		return
 	if is_open(id):
 		await _travel_menu(m, id)
 		return
 	if not can_start(r):
+		Music.instance(m.get_tree()).sfx("locked", "nope")
 		await m.say([{"who": who, "text": str(L.get("locked", "Not yet."))}])
 		var hint := str(r.get("unlock", {}).get("hint", {}).get(str(GameState.run.get("arc", "")), ""))
 		m.hud.toast(hint if hint != "" else gate_words(r), Color(1, 0.85, 0.6))
@@ -191,6 +193,7 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		await dlg.finished
 		if dlg.last_choice == 0:
 			GameState.add_quest(qid, str(d.get("text", "Help the keeper.")))
+			Music.instance(m.get_tree()).sfx("j_confirm", "pickup")
 			m.hud.toast("New quest: %s" % str(d.get("text", "")), Color(1, 0.9, 0.4))
 			await m.say([{"who": who, "text": str(L.get("yes", "Good. I'll be here."))}])
 		return
@@ -211,6 +214,7 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		if GameState.complete_quest(qid):
 			m.hud.toast(GameMap.quest_done_text(qid), Color(1, 0.9, 0.4))
 	GameState.run["flags"]["mega_%s_open" % id] = true  # (the quest reward sets it too)
+	Music.instance(m.get_tree()).sfx("unlock", "j_region")  # the route opens
 	for nid in MegaRegion.check_unlocks():  # its map tab opens now, not on arrival (c4_11)
 		m.hud.toast("New map tab: %s (Menu > Map)" % str(MegaRegion.get_r(str(nid)).get("name", nid)), Color(0.85, 0.95, 1.0))
 	await _travel_menu(m, id)
@@ -226,7 +230,7 @@ static func _travel_menu(m: GameMap, id: String) -> void:
 
 
 ## The ride's sound, both ways (C4 c4_12 #5): data "sfx_go"/"sfx_back" win, else these.
-const TRAVEL_SFX := {"gloamwood": ["sparkle", "sparkle"], "sunscorch": ["horse", "horse"], "ironline": ["train_depart", "train_depart"],
+const TRAVEL_SFX := {"gloamwood": ["fairy_ring", "fairy_ring"], "sunscorch": ["horse", "horse"], "ironline": ["train_depart", "train_depart"],
 	"frostpeak": ["sled_bells", "sled_bells"], "windward": ["airship_whoosh", "airship_whoosh"], "giltcity": ["car_start", "car_door"]}
 
 
@@ -241,10 +245,19 @@ static func travel_sfx(id: String, back: bool) -> String:
 	return str(r.get("sfx", "door"))
 
 
+## Play the ride sound; a new cue not imported yet falls back to the older one.
+static func ride_sfx(m: GameMap, id: String, back: bool) -> void:
+	var mu := Music.instance(m.get_tree())
+	var n := travel_sfx(id, back)
+	if not mu.has_sfx(n):
+		n = {"fairy_ring": "teleport"}.get(n, "door")
+	mu.sfx(n, "door")
+
+
 static func go_hub(m: GameMap, id: String) -> void:
 	var r := reg(id)
 	var sp: Array = r.get("hub_spawn", [10, 10])
-	Music.instance(m.get_tree()).sfx(travel_sfx(id, false), "door")
+	ride_sfx(m, id, false)
 	m.go_to(hub_of(id), Vector2((float(sp[0]) + 0.5) * GameMap.TILE, (float(sp[1]) + 0.5) * GameMap.TILE), "up")
 
 
@@ -269,5 +282,5 @@ static func _hub_gate(m: GameMap, id: String) -> void:
 		go_hub(m, str(dests[i]))
 		return
 	var hs: Array = e.get("spawn", [e["cell"][0], int(e["cell"][1]) + 2])
-	Music.instance(m.get_tree()).sfx(travel_sfx(id, true), "door")
+	ride_sfx(m, id, true)
 	m.go_to(str(e["scene"]), Vector2((float(hs[0]) + 0.5) * GameMap.TILE, (float(hs[1]) + 0.5) * GameMap.TILE), "down")
