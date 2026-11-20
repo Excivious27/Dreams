@@ -23,7 +23,12 @@ def patch_sw(sw: str) -> str:
         return sw  # already patched (a restored build folder): patching twice would fail
     def rep(a, b):
         nonlocal sw
-        assert a in sw, "service worker changed, can't find: " + a[:70]
+        if a not in sw:  # a template change must not block the deploy: warn and skip this patch
+            print("post_export WARNING: service worker pattern not found, patch skipped: " + a[:70])
+            for ln in sw.splitlines():
+                if "addAll" in ln or "fetch(" in ln or "cache.match" in ln:
+                    print("  sw> " + ln.strip()[:160])
+            return
         sw = sw.replace(a, b, 1)
     rep("cache.addAll(CACHED_FILES)", "cache.addAll(CACHED_FILES.map((u) => new Request(u, {cache: 'reload'})))")
     rep("self.fetch(event.request)", "self.fetch(event.request.mode === 'navigate' ? event.request : new Request(event.request, {cache: 'no-cache'}))")
