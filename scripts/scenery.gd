@@ -21,6 +21,15 @@ var weather := "clear":
 	set(v):
 		weather = v
 		raining = v == "rain"
+		_parts.clear()
+		# Today's calendar weather follows the day; a region's own weather stays put.
+		follow_day = not GameState.run.is_empty() and v == GameState.weather_today()
+		_day = int(GameState.run.get("day", -1)) if not GameState.run.is_empty() else -1
+## true while `weather` is the calendar's: refreshed when the day changes (c5_11 #8).
+var follow_day := false
+var _day := -1
+## Weathers with no birds overhead.
+const NO_FLOCKS := ["rain", "storm", "snow", "blizzard", "sandstorm", "ash", "fog"]
 var _drops: Array = []
 var _parts: Array = []
 var _ov_t := 0.0
@@ -35,6 +44,8 @@ func _overlay() -> Texture2D:
 		return null
 	if weather == "fireflies":
 		return null  # drifting glow particles (CONDUCT 4: the tiled strip read as a grid of orbs)
+	if weather in ["leaves", "petals"] and Art.has("fx", _pkind()):
+		return null  # drifting particles too: the tiled leaf/petal strips read as a grid (c5_11 #1)
 	var pk := "firefly" if weather == "fireflies" else "snowflake"
 	if weather in ["fireflies", "snow"] and Art.has("fx", pk) and int(Art.info("fx", pk).get("h", 0)) <= 48:  # (fx/firefly is a mis-cut 393x137 slab: use the overlay strip)
 		return null  # drifting particles; a tiled frame reads as a grid
@@ -46,6 +57,16 @@ func _overlay() -> Texture2D:
 	if not Art.has("fx", nm):
 		return null
 	return Art.tex("fx", nm)
+
+
+## The particle art for leaves/petals/snow (petal_pink when sliced, else a tinted leaf).
+func _pkind() -> String:
+	match weather:
+		"snow": return "snowflake"
+		"leaves": return "leaf_orange"
+		"petals": return "petal_pink" if Art.has("fx", "petal_pink") else "leaf_green"
+		"fireflies": return "firefly"
+	return ""
 
 
 func _ready() -> void:
@@ -73,8 +94,19 @@ func _process(delta: float) -> void:
 		c["pos"].x += c["speed"] * delta
 		if c["pos"].x > _w + 70:
 			c["pos"].x = -70
+	if follow_day and not GameState.run.is_empty() and int(GameState.run.get("day", -1)) != _day:
+		weather = GameState.weather_today()
+	_tint_acc += delta
+	if overhead and _tint_acc >= 0.5:
+		# Layer 3 sits above the map's CanvasModulate: dim it with the night, lifted (c5_11 #2).
+		_tint_acc = 0.0
+		var host := get_parent()
+		if host is GameMap and not GameState.run.is_empty() and GameState.run.has("time"):
+			_canvas.modulate = (host as GameMap).sky_tint(int(GameState.run["time"])).lerp(Color.WHITE, 0.3)
 	_next_flock -= delta
-	if _next_flock <= 0.0 and not raining:
+	if _next_flock <= 0.0 and (raining or weather in NO_FLOCKS):
+		_next_flock = 3.0
+	elif _next_flock <= 0.0:
 		_spawn_flock()
 		_next_flock = randf_range(7.0, 16.0)
 	for b: Dictionary in _birds:
@@ -84,12 +116,7 @@ func _process(delta: float) -> void:
 		var bx: float = _birds[i]["pos"].x
 		if bx <= -40 or bx >= _w + 40:
 			_birds.remove_at(i)
-	var pkind := ""
-	match weather:
-		"snow": pkind = "snowflake"
-		"leaves": pkind = "leaf_orange"
-		"petals": pkind = "leaf_green"
-		"fireflies": pkind = "firefly"
+	var pkind := _pkind()
 	if weather == "fireflies":
 		# Fireflies: soft glows that wander on their own slow loops, pulse, and wrap.
 		if _parts.is_empty() or str(_parts[0].get("k", "")) != "glow":
@@ -107,19 +134,29 @@ func _process(delta: float) -> void:
 	elif _overlay() != null:
 		_parts.clear()
 	elif pkind != "" and Art.has("fx", pkind):
-		var want := 40 if weather != "fireflies" else 14
+		var leafy := weather in ["leaves", "petals"]
+		var want := 40 if weather == "snow" else (18 if leafy else 14)
 		while _parts.size() < want:
-			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind})
+			# Each leaf/petal has its own fall speed, sway, spin and flutter rate, so
+			# they drift loose instead of marching down in a grid.
+			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind,
+				"fall": randf_range(14.0, 30.0) if leafy else 18.0, "sway": randf_range(6.0, 16.0) if leafy else 8.0, "wob": randf_range(0.6, 1.4) if leafy else 1.0,
+				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": randf_range(0.35, 0.55) if leafy else 0.5})
 		for p: Dictionary in _parts:
 			if weather == "fireflies":
 				p["t"] += delta
 				p["pos"] += Vector2(sin(p["t"] * 1.3) * 12.0, cos(p["t"] * 0.9) * 8.0) * delta
 			else:
-				var fall := 18.0 if weather == "snow" else 26.0
-				p["pos"] += Vector2(sin(p["t"] + _t) * 8.0, fall) * delta
+				var fall: float = p.get("fall", 18.0)
+				var sway: float = p.get("sway", 8.0)
+				p["t"] += delta * float(p.get("wob", 1.0))
+				p["pos"] += Vector2(sin(p["t"]) * sway + (6.0 if leafy else 0.0), fall) * delta
+				p["rot"] = float(p.get("rot", 0.0)) + float(p.get("spin", 0.0)) * delta
 				if p["pos"].y > _h + 10:
-					p["pos"] = Vector2(randf_range(0, _w + 40), -10)
-			p["f"] = int(_t * 4.0 + p["t"]) % 4
+					p["pos"] = Vector2(randf_range(-20, _w + 20), -10)
+				if p["pos"].x > _w + 20:
+					p["pos"].x = -20.0
+			p["f"] = int(_t * float(p.get("fps", 4.0)) + float(p["t"])) % 4
 	else:
 		_parts.clear()
 	if raining and _overlay() == null:
@@ -137,6 +174,7 @@ func _process(delta: float) -> void:
 
 
 var _redraw_acc := 0.0
+var _tint_acc := 1.0
 var _flash_t := 0.0
 var _next_flash := 4.0
 
@@ -154,7 +192,17 @@ func _draw_weather_extras() -> void:
 	if weather == "wind" and Art.has("fx", "wind_streak_0"):
 		for i in 4:
 			var x := fmod(_ov_t * (120.0 + i * 25.0) + i * 90.0, _w + 120.0) - 60.0
-			_canvas.draw_texture_rect(Art.tex("fx", "wind_streak_%d" % i), Rect2(Vector2(x, 60 + i * 95 + sin(_ov_t + i) * 6.0), Vector2(40, 24)), false, Color(1, 1, 1, 0.5))
+			var wt := Art.tex("fx", "wind_streak_%d" % i)
+			# Its own aspect (squashing it to 40x24 crushed the streak), half size.
+			var wsz := Vector2(wt.get_width(), wt.get_height()) * 0.5
+			if wsz.x > 90.0:
+				wsz *= 90.0 / wsz.x
+			_canvas.draw_texture_rect(wt, Rect2(Vector2(x, 60 + i * 95 + sin(_ov_t + i) * 6.0), wsz), false, Color(1, 1, 1, 0.65))
+	# Storms are dark and blizzards white out a little (c5_11 #3): a soft wash.
+	if weather == "storm":
+		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.08, 0.1, 0.16, 0.18))
+	elif weather == "blizzard":
+		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.92, 0.95, 1.0, 0.12))
 	# Lightning in storms: a quick 4-frame flash every few seconds.
 	if weather == "storm" and Art.has("fx", "lightning_flash"):
 		_next_flash -= get_process_delta_time()
@@ -169,8 +217,10 @@ func _draw_weather_extras() -> void:
 			var info := Art.info("fx", "lightning_flash")
 			var fw := float(info.get("cell_w", 188))
 			var fh := float(info.get("cell_h", 136))
-			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, 0.8))
-			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, 0.12 if fr < 2 else 0.04))
+			# With screen shake off (Settings), the bolt stays but the whole-screen flash is gentle.
+			var calm := not bool(Settings.get_v("shake"))
+			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, 0.5 if calm else 0.8))
+			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, (0.03 if calm else 0.12) if fr < 2 else (0.0 if calm else 0.04)))
 
 
 var _puff: Texture2D
@@ -261,7 +311,7 @@ func _on_draw() -> void:
 	for p: Dictionary in _parts:
 		if str(p["k"]) == "glow":
 			var pulse := 0.5 + 0.5 * sin(float(p["t"]) * 2.3)
-			var a := (0.25 + 0.75 * pulse) * (0.45 + 0.55 * dark)
+			var a := (0.25 + 0.75 * pulse) * dark  # fireflies glow only after sunset
 			var gp: Vector2 = p["pos"]
 			var ft := Art.tex("fx", "firefly_%d" % int(p["f"]))
 			if ft != null and ft.get_height() <= 48:
@@ -280,6 +330,13 @@ func _on_draw() -> void:
 		var ch := float(info.get("cell_h", t.get_height()))
 		var n := int(info.get("frames", 4))
 		var f: int = int(p["f"]) % n
+		if p.has("rot") and weather in ["leaves", "petals"]:
+			var sz := Vector2(cw, ch) * float(p.get("sz", 0.5))
+			var tint := Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else Color.WHITE  # no petal art: pink leaves
+			_canvas.draw_set_transform(p["pos"], float(p["rot"]), Vector2.ONE)
+			_canvas.draw_texture_rect_region(t, Rect2(-sz / 2.0, sz), Rect2(f * cw, 0, cw, ch), tint)
+			_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+			continue
 		_canvas.draw_texture_rect_region(t, Rect2(p["pos"], Vector2(cw, ch) * 0.5), Rect2(f * cw, 0, cw, ch))
 	for c: Dictionary in _clouds:
 		if overhead:
