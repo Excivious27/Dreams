@@ -2,8 +2,11 @@ class_name FarmAnimal
 extends AnimatedSprite2D
 ## A farm animal from art/gen/animals/<kind>: idle, walk, eat (and baby) strips.
 ## Wanders slowly inside its pen, grazes, and can be petted (A) for friendship.
+## C11a: roster animals come from Ranch (setup_uid: node name = uid, look/height from data/ranch.json,
+## a small need bubble over the head, a fixed huddle slot at night/in bad weather, tap spots never stacked).
 
 var kind := ""
+var uid := ""  # Ranch roster id ("" = an old-style kind-only animal)
 var map: GameMap
 var pen := Rect2i()
 var _target := Vector2.ZERO
@@ -22,10 +25,54 @@ var _at := Vector2i(-999, -999)  # the cell that holds this animal's interact th
 ## made the Big Barn goat twice a cow. Babies are 60% of their parent.
 const TARGET_H := {"chicken2": 16.0, "rooster": 17.0, "duck2": 15.0, "chick": 10.0,
 	"cow_brown": 26.0, "cow_bw": 26.0, "calf": 16.0, "sheep_woolly": 20.0, "lamb": 12.0,
-	"goat": 20.0, "goat2": 20.0, "goat_kid": 12.0, "llama": 30.0, "pig_a": 18.0, "horse3": 32.0}
+	"goat": 20.0, "goat2": 20.0, "goat_kid": 12.0, "llama": 30.0, "pig_a": 18.0, "horse3": 32.0,
+	"llama_b": 30.0, "llama_cria": 16.0, "pig_b": 18.0, "piglet": 10.0, "rabbit_brown": 10.0, "rabbit_white": 10.0,
+	"donkey": 24.0, "donkey_b": 24.0, "foal": 16.0, "foal_b": 16.0, "sheep": 18.0, "kid_goat": 12.0, "bee_swarm": 8.0}
 const BABY_SHARE := 0.6
 static var _h_cache := {}  # kind -> [drawn height, drawn width] of idle frame 0 at scale 1
 var _shadow: Node2D
+
+
+## A roster animal (Ranch uid): its look, height and tint come from Ranch.art_for (data/ranch.json).
+func setup_uid(m: GameMap, id: String, c: Vector2i, p: Rect2i) -> void:
+	uid = id
+	var art := Ranch.art_for(id)
+	var g := str(art.get("group", "animals/chicken2"))
+	var k := g.trim_prefix("animals/")
+	_height = float(art.get("height_px", 0.0))
+	_strip = str(art.get("strip", "idle"))
+	setup(m, k, c, p, bool(art.get("baby", false)))
+	name = id
+	if art.get("tint", null) is Color:
+		modulate = art["tint"]
+	_refresh_thing()
+
+
+var _height := 0.0  # Ranch height override (px)
+## The building's door cell (P2 sets it from the farm layout): roster animals walk there and go in at
+## night / in storms / in winter (Ranch.indoors), and come back out in the morning. (-999 = no door: huddle.)
+var door := Vector2i(-999, -999)
+var inside := false
+var _strip := "idle"
+var _bubble: Sprite2D
+var _need := "-"
+var _need_t := 0.0
+
+
+## Drawn scale for an art kind at its true-to-life height (followers, menus): 0.5 when unknown.
+static func scale_for(k: String, tex: Texture2D = null) -> float:
+	if not TARGET_H.has(k):
+		return 0.5
+	var h := 0.0
+	if _h_cache.has(k):
+		h = (_h_cache[k] as Vector2).y
+	elif tex:
+		var img := tex.get_image()
+		if img:
+			if img.is_compressed():
+				img.decompress()
+			h = float(img.get_used_rect().size.y)
+	return float(TARGET_H[k]) / h if h > 4.0 else 0.5
 
 
 func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> void:
@@ -37,6 +84,8 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	var g := "animals/" + k
 	var sc := 0.5
 	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") and not Art.has(g, "idle") else "idle"}
+	if _strip != "idle" and Art.has(g, _strip):
+		anims["idle"] = _strip  # a hatchling drawn from its parent's baby strip (Ranch art.baby)
 	var fps := {"idle": 3.0}
 	if BABY_OF.has(k):
 		# The chick cut is an unusable scrap: a hatchling from the hen's baby strip.
@@ -53,7 +102,9 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	sprite_frames = Art.frames(g, anims, fps)
 	animation = "idle"
 	var hw := _drawn_size(k)
-	if TARGET_H.has(k) and hw.y > 0.0:
+	if _height > 0.0 and hw.y > 0.0:
+		sc = _height / hw.y  # Ranch: species/baby height from data
+	elif TARGET_H.has(k) and hw.y > 0.0:
 		sc = float(TARGET_H[k]) / hw.y
 		if is_baby and not k in ["calf", "lamb", "goat_kid", "chick"]:
 			sc *= BABY_SHARE  # a young one drawn from its parent's strip
@@ -68,7 +119,119 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	_target = position
 	z_index = 0
 	play("idle")
-	m.set_thing(c.x, c.y, {"type": "pet_animal", "hint": "A: pet the %s" % k.split("_")[0].rstrip("0123456789"), "animal": self}, false)
+	var fc := _free_cell(c)
+	if fc != c:
+		position = m.cell_center(fc)
+		_target = position
+	_at = fc
+	m.set_thing(fc.x, fc.y, {"type": "pet_animal", "hint": "A: pet the %s" % k.split("_")[0].rstrip("0123456789"), "animal": self, "uid": uid}, false)
+
+
+## The nearest cell in the pen with no thing on it (two animals never share a tap spot, c11a_05-17).
+func _free_cell(c: Vector2i) -> Vector2i:
+	if not map.things.has(c):
+		return c
+	var best := c
+	var bd := 1 << 30
+	for x in range(pen.position.x, pen.end.x):
+		for y in range(pen.position.y, pen.end.y):
+			var q := Vector2i(x, y)
+			if map.things.has(q) or map.blocked.has(q):
+				continue
+			var dd := (q - c).length_squared()
+			if dd < bd:
+				bd = dd
+				best = q
+	return best
+
+
+## The interact thing's hint/uid kept in step with Ranch (name, hungry, goods ready).
+func _refresh_thing() -> void:
+	if uid == "" or map == null or not map.things.has(_at):
+		return
+	var t: Dictionary = map.things[_at]
+	if t.get("animal", null) != self:
+		return
+	t["uid"] = uid
+	t["hint"] = Ranch.hint(uid, GameState.held_item())
+
+
+## The need bubble (goods / hungry / pet) over the head; hidden when content. Uses existing emote art.
+func refresh_need() -> void:
+	if uid == "":
+		return
+	var nd := Ranch.need(uid)
+	if GameState.is_night():
+		nd = ""
+	_refresh_thing()
+	if nd == _need:
+		return
+	_need = nd
+	var tex: Texture2D = null
+	match nd:
+		"goods":
+			var r := Ranch.ready(uid)
+			tex = Art.tex("items", str(r.get("item", ""))) if Art.has("items", str(r.get("item", ""))) else null
+		"hungry":
+			tex = Art.tex("items", "hay") if Art.has("items", "hay") else null
+		"pet":
+			tex = Art.tex("emotes", "heart") if Art.has("emotes", "heart") else null
+	if tex == null:
+		if _bubble:
+			_bubble.visible = false
+		return
+	if _bubble == null:
+		_bubble = Sprite2D.new()
+		_bubble.z_index = 2
+		add_child(_bubble)
+	_bubble.texture = tex
+	var want := 9.0 if nd != "pet" else 7.0  # px on screen, phone readable but small
+	var s2 := want / maxf(1.0, float(tex.get_height())) / scale.y
+	_bubble.scale = Vector2(s2, s2)
+	_bubble.position = Vector2(0, -(_drawn_size(kind).y + 6.0) / scale.y)
+	_bubble.modulate = Color(1, 1, 1, 0.9 if nd != "pet" else 0.7)
+	_bubble.visible = true
+
+
+## Going in / coming out (c11a_03-05). True while the walk to the door owns this frame.
+func _shelter_step() -> bool:
+	var want := Ranch.indoors(uid)
+	if want and not inside:
+		var dp := map.cell_center(door)
+		if position.distance_to(dp) < 3.0:
+			inside = true
+			visible = false
+			if map.things.has(_at) and map.things[_at].get("animal", null) == self:
+				map.things.erase(_at)  # asleep in the barn: no tap spot outside
+			_at = Vector2i(-999, -999)
+		else:
+			_target = dp
+			_state = "walk"
+			_play("walk")
+		return false
+	if not want and inside:
+		inside = false
+		visible = true
+		position = map.cell_center(door)
+		var c := _free_cell(Vector2i(clampi(door.x, pen.position.x, pen.end.x - 1), clampi(door.y, pen.position.y, pen.end.y - 1)))
+		_target = map.cell_center(c)
+		_state = "walk"
+		_play("walk")
+		_at = c
+		map.set_thing(c.x, c.y, {"type": "pet_animal", "hint": Ranch.hint(uid), "animal": self, "uid": uid}, false)
+	return false
+
+
+## Fixed huddle cell: the pen's animals by name fill rows back to front (no stacking, c11a_06).
+func _huddle_cell() -> Vector2i:
+	var mates: Array = []
+	for ch in get_parent().get_children() if get_parent() else []:
+		if ch is FarmAnimal and (ch as FarmAnimal).pen == pen:
+			mates.append(str(ch.name))
+	mates.sort()
+	var i := maxi(0, mates.find(str(name)))
+	var w := maxi(1, pen.size.x)
+	return Vector2i(pen.position.x + i % w, pen.position.y + mini(pen.size.y - 1, i / w))
 
 
 func _process(delta: float) -> void:
@@ -76,6 +239,14 @@ func _process(delta: float) -> void:
 		return
 	# Y-sort like props: z by feet.
 	z_index = 0
+	_need_t -= delta
+	if _need_t <= 0.0 and uid != "":
+		_need_t = 0.5
+		refresh_need()
+		if door.x > -999 and _shelter_step():
+			return
+	if inside:
+		return
 	_wait -= delta
 	if _state == "walk":
 		var d := _target - position
@@ -87,7 +258,7 @@ func _process(delta: float) -> void:
 			position += d.normalized() * 10.0 * delta
 			if absf(d.x) > 0.5:
 				flip_h = d.x < 0
-	elif _wait <= 0.0:
+	elif _wait <= 0.0 and not (door.x > -999 and uid != "" and Ranch.indoors(uid)):
 		var r := _rng.randf()
 		if r < 0.45:
 			_state = "walk"
@@ -95,7 +266,7 @@ func _process(delta: float) -> void:
 			# At night, in rain and in winter they huddle at the back of the pen, by the barn.
 			# Two rows (and spread along them), so a herd never stacks into one line.
 			if GameState.is_night() or GameState.is_wet() or GameState.season() == "winter":
-				c.y = pen.position.y + (absi(hash(name)) % 2 if pen.size.y > 1 else 0)
+				c = _huddle_cell()
 			if map.blocked.has(c):
 				_wait = 0.5
 				_state = "idle"

@@ -285,7 +285,8 @@
   "value": 45,
   "heal": 1,
   "rarity": "uncommon",
-  "tier": 2
+  "tier": 2,
+  "ranch": true
  },
  "wheat": {
   "name": "Wheat",
@@ -649,7 +650,8 @@
   "value": 141,
   "rarity": "rare",
   "tier": 3,
-  "family": "mushroom"
+  "family": "mushroom",
+  "ranch": true
  },
  "glowcap": {
   "name": "Glow-cap",
@@ -6629,7 +6631,8 @@
   "tier": 1,
   "energy": 20,
   "desc": "From the coop.",
-  "family": "egg"
+  "family": "egg",
+  "ranch": true
  },
  "milk": {
   "name": "Milk",
@@ -6639,7 +6642,8 @@
   "tier": 1,
   "energy": 25,
   "desc": "From the barn.",
-  "family": "milk"
+  "family": "milk",
+  "ranch": true
  },
  "cheese": {
   "name": "Cheese",
@@ -6706,7 +6710,7 @@
   "value": 5,
   "rarity": "common",
   "tier": 1,
-  "desc": "Scythe tall grass to get it."
+  "desc": "Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam. A silo keeps it for the feeders."
  },
  "bone": {
   "name": "Bone",
@@ -7074,7 +7078,8 @@
   "type": "material",
   "value": 25,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "ranch": true
  },
  "lamp_oil": {
   "name": "Lamp Oil",
@@ -7152,7 +7157,8 @@
   "tier": 1,
   "energy": 32,
   "heal": 0,
-  "family": "milk"
+  "family": "milk",
+  "ranch": true
  },
  "mushroom_stew": {
   "name": "Mushroom Stew",
@@ -10263,7 +10269,8 @@
   "tier": 1,
   "energy": 14,
   "family": "egg",
-  "desc": "Big, rich and blue-green."
+  "desc": "Big, rich and blue-green.",
+  "ranch": true
  },
  "dc_antler_hooks": {
   "name": "Antler Hooks",
@@ -20872,5 +20879,34 @@
   "icon": "decor/dc_y_wind_spinner",
   "desc": "A piece for the yard outside.",
   "decor": true
+ },
+ "feather": {
+  "name": "Feather",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Soft and light. Ducks shed them; roosters too.",
+  "ranch": true
+ },
+ "rabbit_fur": {
+  "name": "Rabbit Fur",
+  "type": "material",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 1,
+  "sprite": "wool",
+  "desc": "Brushed from a happy rabbit. Rabbits shed it every few days.",
+  "ranch": true
+ },
+ "beeswax": {
+  "name": "Beeswax",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "sprite": "wax",
+  "desc": "From the hives, now and then, with the honey.",
+  "ranch": true
  }
 }
