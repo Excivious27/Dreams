@@ -34,9 +34,10 @@ var _walk_h := {}  # walker anim -> source height (per-animation scale normalise
 
 ## Cells cut through by the slice or drawn as someone else (c5_08 #2): a pose
 ## here is skipped; a walker idle here borrows frame 0 of the matching walk.
+## (Mabel's idle, Bram's festival idle_up, Juniper's winter idle_side and
+## Benno/Marlowe's poses were redrawn/resliced in C5: tools/slice_c5_p5.py.)
 const BAD_CELLS := {
-	"npc_mabel": ["idle"], "npc_bram_festival": ["idle_up"], "npc_juniper_winter": ["idle_side"],
-	"npc_benno": ["counter", "fish", "umbrella"], "npc_marlowe": ["dance", "eat", "umbrella"],
+	"npc_bram_festival": ["idle"],
 }
 const IDLE_FROM := {"idle": "walk_down", "idle_up": "walk_up", "idle_side": "walk"}
 

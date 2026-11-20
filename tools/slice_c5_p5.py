@@ -140,6 +140,98 @@ def portraits():
         print("portraits", v)
 
 
+def _stand_h(rgba, b):
+    """Head-top-to-feet height of a figure, read over the columns its feet
+    stand on (a raised rod or umbrella off to the side doesn't count)."""
+    a = rgba[b[1]:b[3], b[0]:b[2], 3] > 40
+    ys = np.nonzero(a.any(axis=1))[0]
+    low = a[ys.max() - max(2, (ys.max() - ys.min()) // 12): ys.max() + 1].any(axis=0)
+    xs = np.nonzero(low)[0]
+    cols = a[:, xs.min(): xs.max() + 1]
+    top = np.nonzero(cols.any(axis=1))[0].min()
+    return ys.max() + 1 - top
+
+
+# (render, sheet, [pose per figure, left to right], figure whose head-to-feet
+# height is scaled to the sheet's standing height, or None = use its bbox)
+POSE_FIX = [
+    ("c5/p5_pose_mabel.png", "npc_mabel", ["idle"], 0),
+    ("c5/p5_pose_bram_festival.png", "npc_bram_festival", ["idle_up"], 0),
+    ("c5/p5_pose_juniper_winter.png", "npc_juniper_winter", ["idle_side"], 0),
+]
+
+
+# w490_life_poses_hats.png has 17 figures a row (an extra standing pose
+# between fish and counter), which shifted every pose after "sleep" by one cell
+# for Marlowe (row 1) and Benno (row 2) in slice_world5.life_sheet.
+W490_X = [60, 151, 240, 320, 411, 498, 578, 666, 760, 848, 935, 1022, 1116, 1211, 1290, 1388, 1472]
+W490_POSE = ["work", "work_2", "sit", "talk", "talk_2", "laugh", "wave", "sleep", "carry", "eat", "dance", "dance_2",
+             "umbrella", "shiver", "fish", None, "counter"]
+
+
+def w490_fix():
+    """Reslice Marlowe's and Benno's life poses from w490 by figure slots
+    (cuts halfway between figure centres; touching figures are split there).
+    The fisher's slot also takes the extra figure's slot (his rod reaches
+    over it) minus that figure's own body."""
+    rgba = S.load("w490_life_poses_hats.png")
+    X = W490_X
+    cuts = [0] + [(X[i] + X[i + 1]) // 2 for i in range(len(X) - 1)] + [rgba.shape[1]]
+    for who, (y0, y1) in [("marlowe", (150, 400)), ("benno", (540, 790))]:
+        band = rgba[y0:y1]
+        pieces = {}
+        for k, pose in enumerate(W490_POSE):
+            if pose is None:
+                continue
+            x0, x1 = cuts[k], cuts[k + 2] if pose == "fish" else cuts[k + 1]
+            sub = band[:, x0:x1].copy()
+            m = sub[..., 3] > 40
+            lab, n = ndimage.label(m)
+            if n:
+                sizes = ndimage.sum(m, lab, range(1, n + 1))
+                cms = ndimage.center_of_mass(m, lab, range(1, n + 1))
+                big = int(np.argmax(sizes))
+                for i in range(n):
+                    far = pose == "fish" and cms[i][1] + x0 > cuts[k + 1] and sizes[i] > 1500
+                    tiny_edge = sizes[i] < 0.03 * sizes[big]
+                    if far or (tiny_edge and i != big):
+                        sub[lab == i + 1] = 0
+            if not (sub[..., 3] > 40).any():  # fisher and the extra figure touch: plain slot
+                sub = band[:, cuts[k]:cuts[k + 1]].copy()
+            ys, xs = np.nonzero(sub[..., 3] > 40)
+            pieces[pose] = Image.fromarray(sub[ys.min():ys.max() + 1, xs.min():xs.max() + 1])
+        stand = sorted(pieces[p].height for p in ("talk", "talk_2", "wave"))
+        f = 100.0 / stand[1]
+        g = "characters/npc_" + who
+        for pose, im in pieces.items():
+            im = S.scale_to(im, width=max(1, round(im.width * f)), height=max(1, round(im.height * f)))
+            _rm(g, pose)
+            S.save(im, g, pose)
+            S.manifest[g][pose].update({"cell_w": im.width, "cell_h": im.height, "frames": 1})
+        print("w490", who, len(pieces))
+
+
+def poses():
+    """Redraws of the cells Npc.BAD_CELLS used to hide (c5_08 #2)."""
+    for src, sheet, names, ref in POSE_FIX:
+        rgba = _load_keep_alpha(src)
+        rgba, rows = C.sheet_rows(None, merge=6, min_area=3000, rgba=rgba)
+        boxes = sorted([b for r in rows for b in r], key=lambda b: b[0])
+        assert len(boxes) == len(names), (src, len(boxes))
+        g = "characters/" + sheet
+        m = S.manifest[g]
+        stand = [int(m[p]["cell_h"]) for p in ("talk", "wave", "talk_2", "idle", "walk_down") if p in m and p not in names]
+        stand.sort()
+        target = stand[len(stand) // 2]
+        f = target / float(_stand_h(rgba, boxes[ref]))
+        for nm, b in zip(names, boxes):
+            _rm(g, nm)
+            im = C.piece(rgba, b, factor=f)
+            S.save(im, g, nm)
+            S.manifest[g][nm].update({"cell_w": im.width, "cell_h": im.height, "frames": 1})
+        print("poses", sheet, names, "target", target)
+
+
 def _rekey_arr(a):
     """Leftover magenta key under the feet: pixels in the bottom band of a
     frame whose hue sits near magenta (red and blue well above green, blue
@@ -255,7 +347,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases, portraits]
+STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

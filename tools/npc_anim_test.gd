@@ -111,15 +111,13 @@ func _run() -> void:
 	check(not wj.in_outfit() and wj.pose_ok("wave"), "wren_jr in her base design plays every pose")
 	wj.set_pose("wave")
 	check(str(wj._anim.animation).begins_with("pose_npc_wren_jr"), "wren_jr's pose comes from her own sheet")
-	# 7. Broken cells: never shown.
-	if GameState.npcs.has("mabel"):
-		var mb := _make("mabel")
-		var sf := mb._anim.sprite_frames
-		check(sf.get_frame_texture("idle", 0) == sf.get_frame_texture("walk_down", 0), "mabel's cut idle borrows her walk_down frame")
+	# 7. Broken cells: redrawn ones show, the rest borrow a walk frame.
+	check(Npc.bad_cell("npc_bram_festival", "idle") and not Npc.bad_cell("npc_mabel", "idle"), "BAD_CELLS lists only what's still broken")
 	if GameState.npcs.has("benno"):
 		var bn := _make("benno")
 		bn.set_pose("counter")
-		check(bn._pose == "", "benno's broken counter cell is skipped")
+		check(bn._pose == "counter", "benno's resliced counter pose plays")
+		check(int(Art.info("characters/npc_benno", "sleep").get("w", 0)) > int(Art.info("characters/npc_benno", "talk").get("w", 0)), "benno's sleep cell is the bed (w490 reslice)")
 	# 8. Pose frame 0 of a multi-frame strip is one cell.
 	var multi := ""
 	for k: String in Art.manifest().get("characters/catkins", {}).keys():
