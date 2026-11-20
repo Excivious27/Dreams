@@ -86,12 +86,15 @@ func _setup_round() -> void:
 ## How hard the claw holds: centring matters most (a few pixels off halves it),
 ## big plushes are heavier, wins today loosen it, luck (gear + popcorn) and a
 ## long dry run firm it up again (the old dialogue claw's pity win, kept fair).
+const LUCK_GRIP_MAX := 0.12
+
+
 static func grip_for(dx: float, r: float, tight: float, lk: float, dry: int) -> float:
 	var c := clampf(1.0 - dx / (r * 1.1), 0.0, 1.0)
 	var heavy := 0.84 if r > 12.5 else 0.94
 	var g := pow(c, 1.5) * heavy * tight
 	if c > 0.0:
-		g += 0.03 * lk + minf(0.25, 0.05 * maxi(0, dry - 2))
+		g += minf(LUCK_GRIP_MAX, 0.03 * lk) + minf(0.25, 0.05 * maxi(0, dry - 2))  # luck capped (c10_07; gen_rec CLAW_LUCK_CAP)
 	return clampf(g, 0.0, 0.97)
 
 

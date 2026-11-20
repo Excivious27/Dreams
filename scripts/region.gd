@@ -884,6 +884,8 @@ func on_enemy_died(e: Enemy) -> void:
 		var reward := str(_boss_thing.get("reward", ""))
 		if reward != "":
 			give(reward, int(_boss_thing.get("reward_n", 1)))
+		if DecorSources.grant_key(self, "boss:" + region_id) == "":  # C10a P4: a trophy for the house (decor.json grants, else the "boss" pool)
+			DecorSources.roll_grant(self, "boss", 0.0, "boss")
 		if _boss_thing.has("max_hp"):
 			# Data says hearts (old 6-heart scale); one heart is 20 health now.
 			GameState.grow_vital("hp", int(_boss_thing["max_hp"]) * GameState.HEART_HP)

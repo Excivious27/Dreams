@@ -188,7 +188,7 @@ func _icon(id: String, s := 22.0) -> Control:
 	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if id != "":
-		tr.texture = Art.tex("items", Hud.icon_for(id))
+		tr.texture = DecorSources.icon_tex(id)
 	return tr
 
 

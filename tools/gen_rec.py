@@ -513,6 +513,13 @@ FENCE = 1.2       # Marlene's fence on treasure/drop/junk (gangster arc), on top
 FENCED = ("treasure", "drop", "junk")
 SNACK_ENERGY_PER_CRYSTAL = (0.55, 1.0)  # snack bar energy per crystal must sit on the shop curve
 CLAW_WIN = 0.8    # a keen player's first claw try of the day (the grip loosens after each win)
+# Steady state after many wins in a day (c10_07): ArcadeClaw.grip_for = heavy x tightness
+# (floor 0.45) + luck (capped, ArcadeClaw.LUCK_GRIP_MAX); a lift-and-carry of CLAW_CARRY_S
+# seconds slips at (1-g)^2 x 1.4 per second. A go at that grip must stay under the fee.
+CLAW_LUCK_CAP = 0.12
+CLAW_TIGHT_FLOOR = 0.45
+CLAW_HEAVY = 0.94
+CLAW_CARRY_S = 2.0
 
 # What the claw machine's plushes hide: [item, weight]. Mostly counter prizes; a few small
 # treasures keep it exciting, but its average prize stays under what a go costs.
@@ -564,6 +571,15 @@ def check_economy(items):
     ev = CLAW_WIN * (avg_fenced * MAX_SELL + tickets * worst_ticket) + (1 - CLAW_WIN) * 2 * worst_ticket
     if ev >= FEES["claw"]:
         errs.append("claw: a go is worth %.1f at best (fee %d); average prize %.1f" % (ev, FEES["claw"], avg))
+    import math
+    g = min(0.97, CLAW_HEAVY * CLAW_TIGHT_FLOOR + CLAW_LUCK_CAP)
+    win_steady = math.exp(-(1 - g) * (1 - g) * 1.4 * CLAW_CARRY_S)
+    ev_steady = win_steady * (avg_fenced * MAX_SELL + tickets * worst_ticket) + (1 - win_steady) * 2 * worst_ticket
+    if ev_steady >= FEES["claw"]:
+        errs.append("claw: with max luck a go keeps paying %.1f all day (fee %d)" % (ev_steady, FEES["claw"]))
+    src = open(os.path.join(ROOT, "scripts/arcade_claw.gd")).read()
+    if "LUCK_GRIP_MAX := %s" % CLAW_LUCK_CAP not in src:
+        errs.append("claw: ArcadeClaw.LUCK_GRIP_MAX must equal CLAW_LUCK_CAP (%s)" % CLAW_LUCK_CAP)
     for i, _ in CLAW_POOL:
         if i not in ITEMS and i not in items:
             errs.append("claw pool: no item " + i)

@@ -41,6 +41,17 @@ static func name_of(id: String) -> String:
 	return GameState.item_name(id)
 
 
+## Icon for any item: a catalogue entry's "icon"/"art" ("group/name", any art group)
+## when that art exists, else the ordinary items icon (c10_01-02 / c10_11).
+static func icon_tex(id: String) -> Texture2D:
+	var e := Decor.entry(id)
+	for k in ["icon", "art"]:
+		var gn := str(e.get(k, ""))
+		if gn.contains("/") and Art.has(gn.get_slice("/", 0), gn.get_slice("/", 1)):
+			return Art.tex(gn.get_slice("/", 0), gn.get_slice("/", 1))
+	return Art.tex("items", Hud.icon_for(id))
+
+
 static func rarity_word(id: String) -> String:
 	return Decor.rarity(id).capitalize()
 

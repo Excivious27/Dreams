@@ -79,7 +79,8 @@ static func koi_open() -> bool:
 	if GameState.has_seen("legendary_koi"):
 		return false
 	var coll: Variant = GameState.run.get("coll", {})
-	return not (coll is Dictionary and (coll as Dictionary).get("caught", {}) is Dictionary and ((coll as Dictionary)["caught"] as Dictionary).has("legendary_koi"))
+	var caught: Variant = (coll as Dictionary).get("caught", {}) if coll is Dictionary else {}
+	return not (caught is Dictionary and (caught as Dictionary).has("legendary_koi"))
 
 
 static func luck() -> float:

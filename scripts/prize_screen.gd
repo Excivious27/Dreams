@@ -240,7 +240,7 @@ func _draw_it() -> void:
 		c.draw_rect(r, Color(1, 0.85, 0.35, 0.22) if i == sel else Color(1, 1, 1, 0.06))
 		if i == sel:
 			c.draw_rect(r, Color(1, 0.85, 0.35, 0.9), false, 1.0)
-		var ic := Art.tex("items", Hud.icon_for(item))
+		var ic := DecorSources.icon_tex(item)
 		if ic:
 			var s := 24.0 / maxf(1.0, float(maxi(ic.get_width(), ic.get_height())))
 			var sz := Vector2(ic.get_width(), ic.get_height()) * s

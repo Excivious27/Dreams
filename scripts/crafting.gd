@@ -283,7 +283,9 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 		var give_id := str(j["give"])
 		var it: Dictionary = GameState.items.get(give_id, {})
 		var n := int(j.get("n", 1))
-		if bool(j.get("tool", false)) or str(it.get("type", "")) == "tool":
+		if Decor.is_decor(give_id):
+			DecorSources.grant(m, give_id, n, "craft")  # decor goes to the decor box (C10a)
+		elif bool(j.get("tool", false)) or str(it.get("type", "")) == "tool":
 			GameState.add_tool(give_id)
 			m.hud.toast("Made the %s!" % GameState.item_name(give_id), Color(1, 0.9, 0.4))
 		else:
@@ -340,16 +342,35 @@ static func summary() -> Array:
 
 # ---- the menu ------------------------------------------------------------------
 
+const SLOT_CHIP := {"head": "Head & body", "body": "Head & body", "legs": "Head & body",
+	"hands": "Hands & feet", "feet": "Hands & feet", "back": "Back & belt", "belt": "Back & belt",
+	"offhand": "Back & belt", "ring": "Rings & charms", "charm": "Rings & charms"}
+
+
+## Decor recipes share at most three chips per station (C10a P4): wearables, wall and
+## floor pieces, everything else.
+static func decor_cat(id: String) -> String:
+	if DecorSources.is_wear(id):
+		return "Wardrobe"
+	var e := Decor.entry(id)
+	if str(e.get("cat", "")) in ["wallpaper", "flooring", "rug", "wall_art"] or str(e.get("layer", "")) in ["wall", "window", "under"]:
+		return "Wall & floor"
+	return "Furniture"
+
+
 static func _cat(rc: Dictionary) -> String:
 	if rc.has("cat"):
 		return str(rc["cat"])
-	var it: Dictionary = GameState.items.get(str(rc["give"]), {})
+	var gid := str(rc["give"])
+	if Decor.is_decor(gid):
+		return decor_cat(gid)
+	var it: Dictionary = GameState.items.get(gid, {})
 	match str(it.get("type", "")):
 		"equip":
-			var nm := str(it.get("name", "Other"))
-			if str(rc["give"]).begins_with("outfit_"):
+			if gid.begins_with("outfit_"):
 				return "Outfits"
-			return nm.get_slice(" ", 0) + " gear"
+			# c10_05-12: a few slot groups, not one chip per metal (armory had 13 chips at 270 px).
+			return str(SLOT_CHIP.get(str(it.get("slot", "")), "Gear"))
 		"tool":
 			return "Weapons & tools"
 		"petgear":
