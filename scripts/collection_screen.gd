@@ -271,8 +271,15 @@ static func _grid(gm: Node, cat: String, ents: Array) -> void:
 	if card != "":
 		_card_line(gm, card)
 	if pages > 1:
+		var prow := HBoxContainer.new()
+		prow.add_theme_constant_override("separation", 2)
+		gm._body.add_child(prow)
+		var bk: Button = gm._button("‹ Page", func() -> void: part = posmod(part - 1, pages); sel = ""; _page_sfx(gm); gm._refresh())
+		bk.set_meta("pc_key", "book:page_prev")
+		bk.reparent(prow)
 		var pb: Button = gm._button("Page %d/%d ›" % [part + 1, pages], func() -> void: part = (part + 1) % pages; sel = ""; _page_sfx(gm); gm._refresh())
 		pb.set_meta("pc_key", "book:page")
+		pb.reparent(prow)
 
 
 static func _card_line(gm: Node, text: String) -> void:
