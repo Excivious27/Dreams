@@ -75,7 +75,51 @@ func _run() -> void:
 	check(far.x >= 0 and grass.x >= 0, "found a far rock and a tall-grass clump")
 	check(m.call("regrow_days", "rock", Vector2i(m.get("DOOR")) + Vector2i(3, 3)) == 0, "stone never regrows by the house")
 	check(int(m.call("regrow_days", "grass", far)) < int(m.call("regrow_days", "rock", far)) and int(m.call("regrow_days", "rock", far)) < int(m.call("regrow_days", "tree", far)), "rarity ladder: grass < rock < tree")
-	check(float(m.things[grass].get("hay", 0.0)) >= 1.0, "tall grass gives hay to the scythe")
+	check(float(m.things[grass].get("hay", 0.0)) >= 0.5, "tall grass gives hay to the scythe")
+	# C4 P6: tall grass is walk-through, weeds stay solid; meadow clumps hay ~half the time.
+	var gw := 0
+	var gb := 0
+	var wb := 0
+	var wn := 0
+	var hays := []
+	for c: Vector2i in m.things:
+		var t: Dictionary = m.things[c]
+		if str(t.get("type", "")) != "weeds":
+			continue
+		if bool(t.get("grass", false)):
+			gw += 1
+			if m.blocked.has(c) and not m.hard.has(c):
+				gb += 1  # (a building's body row may cover a clump: that's the building)
+			hays.append(float(t.get("hay", 0.0)))
+		else:
+			wn += 1
+			if m.blocked.has(c):
+				wb += 1
+	for c: Vector2i in m.things:
+		if bool(m.things[c].get("grass", false)) and m.blocked.has(c) and not m.hard.has(c):
+			print("  (blocked grass %s hard=%s prop=%s)" % [str(c), str(m.hard.has(c)), str(m.props.get(c))])
+	check(gw > 0 and gb == 0, "tall grass never blocks (%d of %d)" % [gb, gw])
+	check(wn == 0 or wb == wn, "weeds stay solid (%d of %d)" % [wb, wn])
+	check(hays.has(0.5), "meadow clumps: hay half the time")
+	# Walking into grass sways it; the scythe cuts three cells across your facing.
+	var row := Vector2i(-1, -1)
+	for c: Vector2i in m.things:
+		if bool(m.things[c].get("walk", false)) and bool(m.things.get(c + Vector2i(1, 0), {}).get("walk", false)) and bool(m.things.get(c - Vector2i(1, 0), {}).get("walk", false)):
+			row = c
+			break
+	if row.x >= 0:
+		m.player.position = m.cell_center(row - Vector2i(1, 0)) - Vector2(0, 5)
+		m.player.facing = "up"
+		await frames(1)
+		await frames(1)
+		var sp: Node2D = m.props.get(row - Vector2i(1, 0), null)
+		await frames(3)
+		check(sp != null and absf(sp.skew) > 0.01, "tall grass sways when you walk in (%s %s %s)" % [str(sp), str(m.get("_grass_cell")), str(m.world_to_cell(m.player.position))])
+		m.player.position = m.cell_center(row + Vector2i(0, 1))
+		m.call("scythe_sweep", row)
+		check(not m.things.has(row + Vector2i(1, 0)) and not m.things.has(row - Vector2i(1, 0)), "the scythe sweeps the cells beside the aim")
+	else:
+		check(false, "found a row of three tall-grass cells")
 	m.call("_mark_cleared", far)
 	m.call("_mark_cleared", grass)
 	GameState.run["day"] = 30 + 5
