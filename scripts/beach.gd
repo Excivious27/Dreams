@@ -100,6 +100,9 @@ func after_ready() -> void:
 		cs.offset = Vector2(0, -32)
 		add_child(cs)
 		cs.play("idle")
+		# The fire and tent are solid: no walking through the camp (c5_03 #8).
+		for x in range(cols - 12, cols - 10):
+			blocked[Vector2i(x, 10)] = true
 		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead down to the water, and a little way off, a rowing boat's keel-mark in the sand.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
@@ -299,6 +302,8 @@ func _place_props() -> void:
 			if sp:
 				to_under(sp)
 	_anim("props", "bonfire", Vector2i(36, 15), 0, 8.0)
+	if Art.has("props", "bonfire"):
+		blocked[Vector2i(36, 15)] = true  # you walk round a fire, not through it
 	_anim("props", "buoy", Vector2i(8, 29), 0, 2.0)
 	_anim("props", "buoy", Vector2i(44, 30), 0, 2.0)
 	_anim("props", "buoy", Vector2i(58, 26), 0, 2.0)

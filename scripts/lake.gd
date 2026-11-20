@@ -125,8 +125,10 @@ func after_ready() -> void:
 		var wp := AnimatedSprite2D.new()
 		wp.sprite_frames = Art.frames("props", {"idle": "waterfall_pool"}, {"idle": 6.0})
 		wp.animation = "idle"
-		wp.scale = Vector2(0.5, 0.5)
-		wp.position = cell_center(Vector2i(9, 2)) + Vector2(0, -4)
+		# Smaller and a row lower: it spills from the bank below the north road,
+		# not over it (c5_03 #7).
+		wp.scale = Vector2(0.4, 0.4)
+		wp.position = cell_center(Vector2i(9, 3)) + Vector2(0, 4)
 		wp.offset = Vector2(0, -48)
 		add_child(wp)
 		wp.play("idle")

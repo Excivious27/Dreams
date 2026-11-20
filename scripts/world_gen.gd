@@ -343,6 +343,10 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 		m.add_child(cr)
 
 
+## Ground birds whose walk strip is a flying pose: they take off only when startled.
+const TAKE_OFF := ["duck", "heron"]
+
+
 ## Kinds that live in water only: spawned on water cells and kept there.
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
@@ -381,10 +385,14 @@ class Critter:
 	var _flee := false
 	var _anim: AnimatedSprite2D
 	var _flyer := false
+	## Waders/swimmers (duck, heron): stand and potter on the ground, and only
+	## take off (their walk strip is a flying pose) when startled (c5_09 #3).
+	var _lifts := false
 
 	func _ready() -> void:
 		var g := "wildlife/" + kind
-		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "heron", "jelly"]
+		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "jelly"]
+		_lifts = kind in TAKE_OFF
 		if Art.has(g, "idle"):
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
@@ -427,12 +435,15 @@ class Critter:
 			if position.distance_to(home) > 80.0:
 				_dir = (home - position).normalized()
 		var spd := 60.0 if _flee else 14.0
-		if _flyer and _flee:
+		if _lifts and not _flee:
+			# A heron stands still in the shallows; a duck potters slowly.
+			spd = 0.0 if kind == "heron" else 6.0
+		if (_flyer or _lifts) and _flee:
 			spd = 110.0
 		if kind.begins_with("butterfly") or kind == "bee":
 			spd = 18.0
 		var np := position + _dir * spd * delta
-		if _flyer and _flee:
+		if (_flyer or _lifts) and _flee:
 			position = np
 			if position.distance_to(home) > 400.0:
 				queue_free()
@@ -445,8 +456,10 @@ class Critter:
 		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
 			position = np
 		if _anim:
-			var moving := _dir != Vector2.ZERO
+			var moving := _dir != Vector2.ZERO and spd > 0.0
 			var want := "walk" if moving else "idle"
+			if _lifts:
+				want = "walk" if _flee else "idle"  # the walk strip is the flight
 			if _anim.animation != want:
 				_anim.play(want)
 			# Legs keep pace with the ground (no sliding at a stroll, no
@@ -455,7 +468,7 @@ class Critter:
 			# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
 			if absf(_dir.x) > 0.25:
 				_anim.flip_h = _dir.x < 0
-			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if _flyer and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
+			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if (_flyer or _lifts) and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
 		else:
 			queue_redraw()  # the sprite animates itself; its shadow follows position
 
