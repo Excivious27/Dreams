@@ -10,7 +10,9 @@
   "skee_ball": "Skee-Ball"
  },
  "game_names_gang": {
-  "stack": "Neon Stack"
+  "stack": "Neon Stack",
+  "whack": "Whack-a-Snitch",
+  "gallery": "Neon Range"
  },
  "order": [
   "rp_candy",

@@ -40,6 +40,7 @@ BUILDING = {
     "fee": 25,                  # crystals for one game of bowling
     "soda": 12,                 # vending machine price
     "hours": [9, 24],           # doors open 9am to midnight (closed 9am-6pm on festival days)
+    "hours_gang": [9, 26],      # gangster Rec Hall: 9am to 2am (Tom, Guide 26 #5); past 24 = after midnight
     "house_lane": 4,            # lane villagers never take: always free for a walk-in
     # Upstairs snack bar (RecCenter._snack): item, price, what the menu says it does.
     # Item values stay well under the price, so buying to sell always loses.
@@ -56,8 +57,8 @@ BUILDING = {
 CABINETS = [
     {"id": "jumper", "name": "Block Jumper", "sprite": "arcade_cab_0", "cell": [8, 2]},
     {"id": "stack", "name": "Crystal Stack", "gang_name": "Neon Stack", "sprite": "arcade_cab_5", "cell": [9, 2]},
-    {"id": "whack", "name": "Whack-a-Grump", "sprite": "arcade_cab_whack", "cell": [11, 2]},
-    {"id": "gallery", "name": "Duck Pond", "sprite": "arcade_cab_gallery", "cell": [12, 2]},
+    {"id": "whack", "name": "Whack-a-Grump", "gang_name": "Whack-a-Snitch", "sprite": "arcade_cab_whack", "cell": [11, 2]},
+    {"id": "gallery", "name": "Duck Pond", "gang_name": "Neon Range", "sprite": "arcade_cab_gallery", "cell": [12, 2]},
 ]
 
 LANES = [  # upper floor: left cell of each 2-wide lane; pins at the top, foul line at y 11
@@ -157,7 +158,7 @@ def room_up():
 
 # ---------------------------------------------------------------- items & prizes
 ITEMS = {
-    "rp_candy": {"name": "Prize Candy", "type": "food", "value": 2, "rarity": "common", "tier": 1, "energy": 12, "icon": "candy", "desc": "A paper twist of prize-counter candy. The kids will trade anything for it."},
+    "rp_candy": {"name": "Prize Candy", "type": "food", "value": 2, "rarity": "common", "tier": 1, "energy": 12, "icon": "candy", "loved_by": "candy", "desc": "A paper twist of prize-counter candy. Anyone with a sweet tooth loves it."},
     "rp_sprout_fizz": {"name": "Sprout Fizz", "type": "consumable", "effect": "growth", "value": 50, "rarity": "rare", "tier": 3, "icon": "harvest_potion", "desc": "Prize-counter plant tonic: pour it out and every crop on your farm grows a day. One a week."},
     "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the vending machine at the rec. Fizzes up your nose."},
     "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "snack_cotton_candy", "desc": "Pure sugar cloud. A spring in your step for an hour."},
@@ -371,11 +372,11 @@ QUESTS = [
     # Condition keys arcade_ms / rec_best / tickets_won are read by Tickets.cond_ok; reward "tickets" by GameState._give_reward.
     {"id": "rec_pip_jumper", "giver": "pip", "text": "Pip is stuck on Block Jumper. Clear level 3 to show how it's done.", "when": {"flag": "rec_visited", "day": 10},
      "done_when": {"arcade_ms": "jumper_3"}, "reward": {"tickets": 40, "friend": ["pip", 15]}},
-    {"id": "rec_theo_stack", "giver": "theo", "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.", "when": {"flag": "rec_visited", "day": 12},
+    {"id": "rec_theo_stack", "giver": "theo", "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.", "text_gangsters": "Theo wants proof his Neon Stack pattern works: score 3,000 points.", "when": {"flag": "rec_visited", "day": 12},
      "done_when": {"rec_best": ["stack", 3000]}, "reward": {"crystals": 120, "tickets": 30, "friend": ["theo", 15]}},
-    {"id": "rec_wren_jr_duck", "giver": "wren_jr", "text": "Wren jr wants a Duck Pond score of 300 for the class chart.", "when": {"flag": "rec_visited", "day": 11},
+    {"id": "rec_wren_jr_duck", "giver": "wren_jr", "text": "Wren jr wants a Duck Pond score of 300 for the class chart.", "text_gangsters": "Wren jr wants a Neon Range score of 300 for the class chart.", "when": {"flag": "rec_visited", "day": 11},
      "done_when": {"rec_best": ["gallery", 300]}, "reward": {"tickets": 35, "friend": ["wren_jr", 15]}},
-    {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "when": {"flag": "rec_visited", "day": 14},
+    {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "text_gangsters": "Sal wants initials on the Whack-a-Snitch board: score 400.", "when": {"flag": "rec_visited", "day": 14},
      "done_when": {"rec_best": ["whack", 400]}, "reward": {"tickets": 60, "item": ["luck_potion", 1], "friend": ["sal", 15]}},
     {"id": "rec_maple_league", "giver": "maple", "text": "Maple dares you onto league night: bowl 150 or better.", "when": {"flag": "rec_visited", "day": 16, "quest": "rec_bowl_120"},
      "done_when": {"rec_best": ["bowling", 150]}, "reward": {"crystals": 250, "friend": ["maple", 20]}},
@@ -419,12 +420,18 @@ QUEST_LINES.update({
                            "done": ["Every cabinet works! Diligence! Civic spirit!", "A small reward from the town purse, and tickets from the front desk."]},
 })
 QUEST_LINES_GANG = {
+    "rec_wren_jr_duck@gangsters": {"offer": ["Our class has a chart of Neon Range scores and mine is the lowest. By a LOT.", "If you get three hundred I can say a friend did it. That counts. I asked."],
+                                   "wait": "Three hundred on Neon Range! For the chart!"},
+    "rec_theo_stack@gangsters": {"offer": ["I've written down a pattern for Neon Stack. Flat rows first, a well on the right, wait for the long bar.", "I can't test it. My hands panic. Would you score three thousand with it, for science?"],
+                                 "wait": "Three thousand points on Neon Stack. The pattern holds, I'm nearly sure."},
     "rec_bowl_120@gangsters": {"offer": ["You been up the Rec Hall? Bet you can't bowl a hundred and twenty.", "Do it and Dad pays you. He says everybody in this town owes somebody. Now he owes you."],
                                "done": ["You did NOT. ...The chalk wall says you did.", "Fine. Dad, pay up. A deal's a deal."]},
     "rec_teddy@gangsters": {"offer": ["The Teddy Bear. At the Rec Hall counter. With the bow.", "I need eighty tickets and I have four. Win him for me? I'll give you my kite."]},
     "rec_alder_cabinets@gangsters": {"offer": ["The Rec Hall cabinets keep this town calm, and I have personally tried... one.", "Play every cabinet once and tell me they all work. The town pays for diligence, whatever else it's paying for."],
                                      "done": ["Every cabinet works. Good. A town that plays doesn't fight.", "Something from the town purse, and tickets from the front desk."]},
-    "rec_sal_whack@gangsters": {"offer": ["Board over Whack-a-Grump. Top score's four hundred and the initials are from a crew I don't like.", "Knock them off. I'll make it worth your while."],
+    "rec_sal_whack@gangsters": {"offer": ["Board over Whack-a-Snitch. Top score's four hundred and the initials are from a crew I don't like.", "Knock them off. I'll make it worth your while."],
+                                "yes": "Bop the snitches, leave the bunnies. The bunnies cost you.",
+                                "wait": "Four hundred on Whack-a-Snitch. Their initials are still up.",
                                 "done": ["Four hundred. Their initials are gone. They'll notice. Good.", "Tickets, and something for luck."]},
 }
 

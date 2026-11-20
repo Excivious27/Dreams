@@ -1278,12 +1278,28 @@
  },
  "rec_sal_whack@gangsters": {
   "offer": [
-   "Board over Whack-a-Grump. Top score's four hundred and the initials are from a crew I don't like.",
+   "Board over Whack-a-Snitch. Top score's four hundred and the initials are from a crew I don't like.",
    "Knock them off. I'll make it worth your while."
   ],
+  "yes": "Bop the snitches, leave the bunnies. The bunnies cost you.",
+  "wait": "Four hundred on Whack-a-Snitch. Their initials are still up.",
   "done": [
    "Four hundred. Their initials are gone. They'll notice. Good.",
    "Tickets, and something for luck."
   ]
+ },
+ "rec_wren_jr_duck@gangsters": {
+  "offer": [
+   "Our class has a chart of Neon Range scores and mine is the lowest. By a LOT.",
+   "If you get three hundred I can say a friend did it. That counts. I asked."
+  ],
+  "wait": "Three hundred on Neon Range! For the chart!"
+ },
+ "rec_theo_stack@gangsters": {
+  "offer": [
+   "I've written down a pattern for Neon Stack. Flat rows first, a well on the right, wait for the long bar.",
+   "I can't test it. My hands panic. Would you score three thousand with it, for science?"
+  ],
+  "wait": "Three thousand points on Neon Stack. The pattern holds, I'm nearly sure."
  }
 }

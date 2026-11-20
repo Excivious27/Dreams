@@ -93,6 +93,8 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 	var offer := GameState.side_quest_for(id)
 	if offer.is_empty() or GameState.run["talked_today"].has("decline_" + id):
 		return false
+	if not GameState.is_penguins() and offer.has("text_gangsters"):
+		offer = offer.merged({"text": offer["text_gangsters"]}, true)  # arc wording (P5 hook)
 	var qid2 := str(offer["id"])
 	var ql2 := lines(qid2)
 	var seq2 := _as_lines(name, ql2.get("offer", [str(offer["text"])]))

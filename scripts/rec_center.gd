@@ -214,17 +214,26 @@ static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 
 # ---- hours ------------------------------------------------------------------------
 
-## [open hour, close hour] (close may be 24 = midnight).
+## [open hour, close hour] (close may be 24 = midnight, 26 = 2am: the gangster Rec Hall).
 static func hours() -> Array:
-	var h: Array = data().get("building", {}).get("hours", [9, 24])
+	var b: Dictionary = data().get("building", {})
+	var h: Array = b.get("hours", [9, 24])
+	if not GameState.run.is_empty() and not GameState.is_penguins():
+		h = b.get("hours_gang", h)
 	return [int(h[0]), int(h[1])]
+
+
+## The clock as hours on the day's own scale: 0:30am reads 24.5 (the day runs to 2am).
+static func day_hour() -> float:
+	var h := (int(GameState.run.get("time", 0)) % 1440) / 60.0
+	return h + 24.0 if h < 6.0 else h
 
 
 ## "" while the doors are open, else the sign (closed for the night, or festival day).
 static func why_closed() -> String:
 	if GameState.run.is_empty():
 		return ""
-	var h := (int(GameState.run.get("time", 0)) % 1440) / 60.0
+	var h := day_hour()
 	var oh := hours()
 	if h < float(oh[0]) or h >= float(oh[1]):
 		return "%s: closed for the night. Open %s." % [name(), TownHours.hours_text(int(oh[0]), int(oh[1]))]

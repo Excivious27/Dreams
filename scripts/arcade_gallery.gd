@@ -27,7 +27,7 @@ var cork_fx: Array = []
 func _init() -> void:
 	super()
 	game_id = "gallery"
-	title = "Duck Pond"
+	title = Tickets.game_name("gallery")  # Neon Range in the gangster arc
 	fee = 10
 	accent = Color(1.0, 0.8, 0.3)
 	howto = ["Aim with the arrows (or tap) · A pop", "Back lane 30 · middle 20 · front 10", "Golden duck 60 · frog -20", "40 corks, 45 seconds."]

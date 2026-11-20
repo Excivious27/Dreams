@@ -1879,7 +1879,9 @@ static func gift_value(npc: String, item: String) -> int:
 	if fam == "#tree" or fam == "#berry":
 		if "#fruit" in likes:
 			fam = "#fruit"
-	if item in likes or (kind != "" and kind in likes) or fam in likes:
+	if str(it.get("loved_by", "-")) in likes:
+		base = 20  # loved: e.g. Prize Candy for anyone who likes candy (gen_rec ITEMS "loved_by")
+	elif item in likes or (kind != "" and kind in likes) or fam in likes:
 		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
 	elif item in dislikes or (kind != "" and kind in dislikes) or fam in dislikes:
 		base = -8

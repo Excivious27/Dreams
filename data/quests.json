@@ -2989,6 +2989,7 @@
    "id": "rec_theo_stack",
    "giver": "theo",
    "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.",
+   "text_gangsters": "Theo wants proof his Neon Stack pattern works: score 3,000 points.",
    "when": {
     "flag": "rec_visited",
     "day": 12
@@ -3012,6 +3013,7 @@
    "id": "rec_wren_jr_duck",
    "giver": "wren_jr",
    "text": "Wren jr wants a Duck Pond score of 300 for the class chart.",
+   "text_gangsters": "Wren jr wants a Neon Range score of 300 for the class chart.",
    "when": {
     "flag": "rec_visited",
     "day": 11
@@ -3034,6 +3036,7 @@
    "id": "rec_sal_whack",
    "giver": "sal",
    "text": "Sal wants initials on the Whack-a-Grump board: score 400.",
+   "text_gangsters": "Sal wants initials on the Whack-a-Snitch board: score 400.",
    "when": {
     "flag": "rec_visited",
     "day": 14

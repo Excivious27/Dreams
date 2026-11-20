@@ -28,6 +28,10 @@
    9,
    24
   ],
+  "hours_gang": [
+   9,
+   26
+  ],
   "house_lane": 4,
   "snacks": [
    [
@@ -75,6 +79,7 @@
   {
    "id": "whack",
    "name": "Whack-a-Grump",
+   "gang_name": "Whack-a-Snitch",
    "sprite": "arcade_cab_whack",
    "cell": [
     11,
@@ -84,6 +89,7 @@
   {
    "id": "gallery",
    "name": "Duck Pond",
+   "gang_name": "Neon Range",
    "sprite": "arcade_cab_gallery",
    "cell": [
     12,
