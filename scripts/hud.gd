@@ -35,6 +35,19 @@ var _boss_on := false  # the boss bar is up: toasts start under it
 var _font: Font
 
 
+
+## HUD money text: whole numbers up to 9,999, then 12.3k / 123k / 1.2M (C5 c5_13 #1).
+static func short_money(n: int) -> String:
+	var a := absi(n)
+	var sg := "-" if n < 0 else ""
+	if a < 10000:
+		return str(n)
+	if a < 100000:
+		return sg + ("%.1fk" % (floorf(a / 100.0) / 10.0)).replace(".0k", "k")
+	if a < 1000000:
+		return sg + "%dk" % (a / 1000)
+	return sg + ("%.1fM" % (floorf(a / 100000.0) / 10.0)).replace(".0M", "M")
+
 func _ready() -> void:
 	layer = 5
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -434,28 +447,33 @@ func _draw_hud() -> void:
 	var sicon := Art.tex("ui", "season2_" + GameState.season()) if Art.has("ui", "season2_" + GameState.season()) else Art.tex("ui", "season_" + GameState.season())
 	if sicon:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
-	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
-	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
+	var dtxt := "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()]
+	var dx := box.position.x + (15 if sicon else 6)
+	c.draw_string(_font, Vector2(dx, box.position.y + 11), dtxt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
+	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 23), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
+	# Weather sits beside the date (C5 c5_13 #1: under the money it was hidden by 5-digit sums).
 	var wx := GameState.weather_today()
 	if str(GameState.run.get("scene", "")) in ["moon", "station", "jungle"]:
 		wx = "sun"  # no rain in space
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
 	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")
+	var wxx := dx + _font.get_string_size(dtxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 8).x + 4
 	if Art.has("ui", wxa):
-		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(box.position.x + 50, box.position.y + 14, 11, 11), false)
+		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(wxx, box.position.y + 2, 11, 11), false)
 	else:
-		c.draw_string(_font, Vector2(box.position.x + 52, box.position.y + 22), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
+		c.draw_string(_font, Vector2(wxx, box.position.y + 11), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
+	# Money: bottom right, a fixed area; big sums shorten (12.3k) so they never reach the clock.
 	var crystal := Art.tex("ui", "crystal")
 	var cx := box.end.x - 6
-	var ctext := str(int(r["crystals"]))
+	var ctext := short_money(int(r["crystals"]))
 	var tw := _font.get_string_size(ctext, HORIZONTAL_ALIGNMENT_RIGHT, -1, 8).x
-	c.draw_string(_font, Vector2(cx - tw, box.position.y + 17), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
+	c.draw_string(_font, Vector2(cx - tw, box.position.y + 23), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
 	if Money.cash():
-		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 8, 11, 11))
+		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 14, 11, 11))
 	elif crystal:
-		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 9, 9, 9), false)
+		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 15, 9, 9), false)
 	else:
-		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 17), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
+		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 23), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
 	c.draw_set_transform(Vector2(0, y_offset))
 	# Toolbar
 	var tb: Array = r["toolbar"]
