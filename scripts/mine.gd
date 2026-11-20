@@ -153,7 +153,7 @@ func _threshold() -> int:
 	if floor_no <= 3:
 		# A share of this floor's rock (rocks 1, crates 1, kills 3): this layout's.
 		var share: float = [0.0, 0.17, 0.15, 0.13][floor_no]
-		var lo: int = [0, 22, 20, 18][floor_no]
+		var lo: int = EARLY_LO[floor_no]
 		lo = mini(lo, int(_rock_total * 0.4) + 6)   # a small, rock-poor layout still opens
 		var m3 := float(_pace()["thr"])
 		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 14) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
@@ -338,7 +338,7 @@ func build() -> void:
 				ore = str(tb[rng.randi() % tb.size()])
 		# Ore gathers in veins: rich rocks pull neighbours toward the same ore.
 		var oi := ores.find(ore)
-		var hard := (2 if ore == "stone" and floor_no < 15 else (3 if ore == "stone" else 3 + (oi if oi >= 0 else ores.size()) / 2)) + floor_no / 15
+		var hard := (Mining.STONE_HP if ore == "stone" else 3 + (oi if oi >= 0 else ores.size()) / 2) + floor_no / Mining.HP_PER_FLOORS
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 		if ore != "stone":
 			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
@@ -368,6 +368,7 @@ var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
 static var force_style := ""   # tools/tests: carve this style every time
+const EARLY_LO := [0, 14, 13, 12]   # floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
 const KEEPER_MIN_HP := 8  # a keeper encounter's total hp is never below this
 static var force_encounter := ""  # tools/tests: this keeper encounter id instead of a roll ("" = roll)
 static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
@@ -980,7 +981,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
+			var swing := Mining.pick_swing()
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
@@ -1005,7 +1006,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if ore != "stone" and int(GameState.run["flags"].get("ore_bonus_day", -1)) == int(GameState.run["day"]):
 					lumps += 1
 				pop_items(cell_center(c), ore, lumps)
-				if randf() < GameState.bonus("mining", "gem_chance") + GameState.bonus("magic", "gem_chance"):
+				if randf() < Mining.gem_chance(ore == "stone"):
 					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
 					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
 				xp("mining", (3 if ore == "stone" else 6) + mine_tier)

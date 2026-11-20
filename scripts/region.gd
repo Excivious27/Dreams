@@ -26,6 +26,11 @@ const NO_FRUIT := ["hollow_heart", "wastes", "jungle", "quarry", "highlands", "s
 
 var _rect_water := {}  # shore -> cells of painted water rects
 
+## Fishing tier of this area's water (Fishing.T cap_per_area_tier, commons, treasure).
+func fish_tier() -> int:
+	return int(R.get("tier", AREA_TIER.get(region_id, 1)))
+
+
 func _place_secrets() -> void:
 	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
 	var ha := HiddenArea.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
@@ -289,7 +294,7 @@ func build() -> void:
 			for x in range(0, cols):  # to the edge: no grass rim between island sea and border sea
 				var c := Vector2i(x, y)
 				if not land.has(c) and not things.has(c):
-					set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": R.get("fish", ["minnow", "trout", "salmon"]), "shore": str(R.get("island_shore", "sand"))})
+					set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": R.get("fish", Fishing.T["sea_pool"]), "shore": str(R.get("island_shore", "sand"))})
 					_water_cells[c] = true
 	# Painted water rects ("water": [{"rect": [x, y, w, h], "fish": [...]}]) are real
 	# water too: no walking on the sea, and you can fish off the dock.
@@ -746,7 +751,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			# fish_at casts with the rod in hand, else says how to get it there
 			var pool: Array = thing.get("pool", [])
 			if pool.is_empty():
-				pool = ["carp", "bass", "catfish", "salmon", "eel"]
+				pool = R.get("fish", Fishing.T["fresh_pool"])
 			fish_at(c, pool)
 			return true
 		"shop":
@@ -805,7 +810,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hitstop = maxf(hitstop, 0.025)
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 2)) - 1
+			if not thing.has("hp_scaled"):  # C8 P4: the pickaxe matters on mega ore too
+				thing["hp_scaled"] = true
+				thing["hp"] = Mining.mega_rock_hp(str(thing.get("ore", "stone")), int(thing.get("hp", 2)))
+			GameState.toughen(thing, "pickaxe")
+			thing["hp"] = int(thing.get("hp", 2)) - Mining.swing_roll()
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
 				Music.instance(get_tree()).sfx("rock_break", "thud")  # mega ore rocks shatter like stone (c6_10-12)
@@ -817,8 +826,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					(props[c] as Node).queue_free()
 					props.erase(c)
 				GameState.run["flags"][mrock_key(c)] = maxi(1, int(GameState.run["day"]))
-				give(str(thing.get("ore", "stone")), int(thing.get("n", 1)))
-				xp("mining", 3)
+				var mo := str(thing.get("ore", "stone"))
+				give(mo, int(thing.get("n", 1)) if mo == "stone" else Mining.lumps(int(thing.get("n", 1))))
+				if mo != "stone" and randf() < Mining.gem_chance(false) * 0.5:
+					give(["amethyst", "ruby", "emerald", "sapphire"][clampi(fish_tier() - 2, 0, 3)])
+				xp("mining", 3 if mo == "stone" else 6 + int(GameState.ORE_TIER.get(mo, 0)))
 			return true
 	return false
 
