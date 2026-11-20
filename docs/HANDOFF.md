@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 12:45 PT, personal account.
-- **Done:** CONDUCT 1-10b (C10b exteriors, yard decor, Tess the carpenter, casino The Gilded Ace, wardrobe on every hero; CI c10b2 PASS). C10a package sent.
-- **In progress:** C10b package (low subagent); C11a audit (14 auditors, /home/claude/wt/c11a_reports), then checklist 15-20 and packages.
-- **Next step:** C11a packages (docs/reports/C11A-PACKAGES.md: write a contract stub for any new shared ranch system before branching), 6 fix agents, merge, ci_run.sh c11a, package; then C11b.
-- **Jobs running elsewhere:** none besides subagents in the personal sandbox.
-- **WIP branches:** none. Note: the web service-worker patches are skipped (template text differs, deploy logs it); look at web/post_export.py in C11/C22.
+- **Last update:** 2026-11-20 13:25 PT, personal account. **Paused for optimization round 3** (Tom 13:00: CI deps/pre-merge CI/flaky reruns/shallow+cached import, rolling merges, slim CLAUDE.md + docs/TOOLS.md, STATUS rotation, one package builder, art lane + music budget). Running agents keep going; next stage waits for the changes.
+- **Done:** CONDUCT 1-10b (all packages sent; C10b CI c10b2 PASS).
+- **In progress:** C11a fix agents P1-P4, P6 (resumed after a server restart; worktrees /home/claude/wt/c11af_pN, reports /home/claude/wt/c11af_reports); P5 (villagers/audio) to launch after the optimization changes. Optimization round 3 changes.
+- **Next step:** finish round 3 (spec: Tom's message, summarised in HANDOFF "CONDUCT operating rules"), push, then launch C11a P5, rolling-merge C11a, CI, package; then C11b.
+- **Jobs running elsewhere:** subagents only. Images used today: ~150 of 300 (limit drops to 60/day on Nov 25). ACE credits: 664 until Dec 1.
+- **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
