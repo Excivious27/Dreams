@@ -124,12 +124,22 @@ func _sleep() -> void:
 ## The morning's sounds (c6_10-02/-14): the wake-up jingle (a softer stretch after
 ## a pass-out), then the till for sales, the hammer for builds, the ripe-crop chime,
 ## spaced so they don't stack.
+const WAKE_ROUGH := ["yawn", "snore"]
+
+
 static func morning_cues(tree: SceneTree, report: Dictionary, passed_out: bool) -> void:
 	if tree == null:
 		return
 	var mu := Music.instance(tree)
 	var cues: Array = []
-	cues.append("yawn" if passed_out and mu.has_sfx("yawn") else ("snore" if passed_out else "j_morning"))
+	var wake := "j_morning"
+	if passed_out:
+		wake = "snore"
+		for n: String in WAKE_ROUGH:
+			if mu.has_sfx(n):
+				wake = n
+				break
+	cues.append(wake)
 	if int(report.get("earned", 0)) > 0:
 		cues.append("cash_register" if Money.cash() else "coin")
 	if not (report.get("built", []) as Array).is_empty():

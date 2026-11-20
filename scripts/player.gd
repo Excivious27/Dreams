@@ -850,13 +850,11 @@ func _physics_process(delta: float) -> void:
 			if swimming:
 				# Strokes are a soft paddle on the step voice; the big splash is for jumping in (c6_10-17).
 				_step_t = 0.7
-				var mu := Music.instance(get_tree())
-				mu.step("swim" if mu.has_sfx("step_swim") else "water")
+				Music.instance(get_tree()).step(step_or(get_tree(), "swim", "water"))
 			elif mounted:
 				# Hooves, not boots (c6_10-25): a slower canter on the step voice.
 				_step_t = 0.3 if running else 0.4
-				var mh := Music.instance(get_tree())
-				mh.step("hoof" if mh.has_sfx("step_hoof") else _ground_word())
+				Music.instance(get_tree()).step(step_or(get_tree(), "hoof", _ground_word()))
 			elif vehicle == "":
 				Music.instance(get_tree()).step(_ground_word())
 	if auto:
@@ -1220,12 +1218,29 @@ var _step_t := 0.0
 ## Which report a gun makes: shotguns boom, rifles crack, the rest pop.
 ## The shot's sound follows the gun in your hand (C3: it used to read an
 ## equipment slot no gun ever sits in, so every gun went "shot").
+## The Tommy Gun's cue: its own short SMG shot once imported, else the pistol (never the 1 s rifle).
+const SMG_TAKES := ["shot_smg", "shot"]
+
+
+## First of `names` with a file in audio/sfx (the last one is the safe fallback).
+static func first_sfx(names: Array) -> String:
+	for n: String in names:
+		if ResourceLoader.exists("res://audio/sfx/%s.ogg" % n) or ResourceLoader.exists("res://audio/sfx/%s.wav" % n):
+			return n
+	return str(names[-1])
+
+
+## Footstep word `want` when its step_<want> sound exists, else `other`.
+static func step_or(tree: SceneTree, want: String, other: String) -> String:
+	return want if Music.instance(tree).has_sfx("step_" + want) else other
+
+
 static func gun_sound(id: String) -> String:
 	var w := id.to_lower()
 	if "shotgun" in w or "blunder" in w or "scatter" in w:
 		return "shot_shotgun"
 	if "tommy" in w or "smg" in w:
-		return "shot_smg"  # short bursts: a 1 s rifle tail at 5 shots/s ate every voice (c6_08_17)
+		return first_sfx(SMG_TAKES)  # short bursts: a 1 s rifle tail at 5 shots/s ate every voice (c6_08_17)
 	if "rifle" in w or "sniper" in w or "long" in w:
 		return "shot_rifle"
 	if "laser" in w or "ray" in w or "plasma" in w:

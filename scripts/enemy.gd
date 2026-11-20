@@ -891,7 +891,11 @@ func _death_sound() -> String:
 	if "bug" in k or "beetle" in k or "wasp" in k or "spider" in k or "moth" in k:
 		return "bug"
 	if _is_person():
-		return "knockout"  # all-ages: a bonk and down (falls back to thud)
+		return Player.first_sfx(PERSON_DOWN)  # all-ages: a bonk and down
 	if "wolf" in k or "hound" in k or "crab" in k or "serpent" in k or "eel" in k or "boar" in k:
-		return "poof"
+		return Player.first_sfx(BEAST_DOWN)
 	return "die"
+
+
+const PERSON_DOWN := ["knockout", "thud"]
+const BEAST_DOWN := ["beast_down", "thud"]

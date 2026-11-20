@@ -1232,7 +1232,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			net_act({"a": "farm_tile", "key": key, "tile": tile})
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")  # seeds go in by hand (a hoe swing read as tilling)
-			Music.instance(get_tree()).sfx("plant_pat" if Music.instance(get_tree()).has_sfx("plant_pat") else "plant", "dig")
+			Music.instance(get_tree()).sfx("plant_pat", "plant")
 			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
 			_soil.queue_redraw() if _soil else queue_redraw()
@@ -1288,7 +1288,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		var hm := Music.instance(get_tree())
 		hm.sfx("harvest", "pickup")
 		# The reward pop on top of the rustle (c6_10-13).
-		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck" if hm.has_sfx("harvest_pluck") else "pop", "pickup"))
+		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck", "pop"))
 		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.

@@ -385,7 +385,7 @@ func _process(delta: float) -> void:
 	_work_t = randf_range(4.0, 9.0)
 	if Commons.pending() >= 0 and GameState.is_night() and player.position.distance_to(_site_at) < 170.0:
 		var mu := Music.instance(get_tree())
-		mu.sfx("saw" if randf() < 0.4 and mu.has_sfx("saw") else "hammer", "tools")
+		mu.sfx("saw" if randf() < 0.4 else "hammer", "hammer")
 
 
 ## Nights the crew has already worked on stage `id` (0 unless it is the build under way).

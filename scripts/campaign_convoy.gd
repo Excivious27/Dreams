@@ -116,7 +116,7 @@ func _process(delta: float) -> void:
 				if GameState.is_penguins():
 					mu.step("snow")
 				else:
-					mu.step("wheels" if mu.has_sfx("step_wheels") else "gravel")
+					mu.step(Player.step_or(get_tree(), "wheels", "gravel"))
 	if state == "roll" and _i < path.size():
 		var goal: Vector2 = path[_i]
 		if position.distance_to(goal) < 14.0:

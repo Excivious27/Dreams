@@ -544,7 +544,7 @@ func _bite(e: Enemy) -> void:
 		Pet.say(get_tree(), "call")
 	var landed := e.hit(dmg, position, false, true)
 	# The bite itself (c6_08_26): only when the player is near enough to hear it.
-	if landed and position.distance_to(player.position) < 170.0:
+	if landed and map.player and position.distance_to(map.player.position) < 170.0:
 		Music.instance(get_tree()).sfx("bite", "hit")
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
