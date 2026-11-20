@@ -125,8 +125,58 @@ jobs:
           path: out/
           retention-days: 7
 
+  playtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Godot (same key as deploy.yml)
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web
+      - name: Download Godot if the cache missed
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          mkdir -p "$HOME/godot"; cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip; mv "Godot_v${V}_linux.x86_64" godot; chmod +x godot; rm godot.zip
+      - run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Restore imported assets (same key as deploy.yml)
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: Scripted playtest with screenshots
+        run: |
+          sudo apt-get install -y -qq xvfb > /dev/null 2>&1 || true
+          mkdir -p out/shots
+          godot --headless --path . --import > /dev/null 2>&1 || true
+          start=$(date +%s)
+          set +e
+          XDG_DATA_HOME="$PWD/out/data" timeout 1500 xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/playtest.gd -- "$PWD/out/shots" > out/playtest.log 2>&1
+          rc=$?
+          set -e
+          echo "{\"rc\": $rc, \"secs\": $(( $(date +%s) - start )), \"shots\": $(ls out/shots | wc -l)}" > out/playtest.json
+          rm -rf out/data
+          tail -n 8 out/playtest.log
+          exit $rc
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playtest
+          path: out/
+          retention-days: 7
+
   report:
-    needs: [check, bots]
+    needs: [check, bots, playtest]
     if: always()
     runs-on: ubuntu-latest
     steps:

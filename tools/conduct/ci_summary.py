@@ -34,10 +34,18 @@ for f in sorted(glob.glob(os.path.join(d, "bot-*", "bot*.json")), key=lambda p: 
     for m in re.findall(r"(BOT FAIL.{0,140}|BOT WARN.{0,140}|SCRIPT ERROR.{0,140}|paused with nothing on screen.{0,140})", txt):
         errs[re.sub(r"\[\d+ [a-z]+\] ", "", m)[:160]] += 1
     bots.append(j)
+pt = {"rc": -1, "secs": 0, "shots": 0, "fails": []}
+pj = glob.glob(os.path.join(d, "playtest", "playtest.json"))
+if pj:
+    pt.update(json.load(open(pj[0])))
+    pl = os.path.join(d, "playtest", "playtest.log")
+    if os.path.exists(pl):
+        pt["fails"] = re.findall(r"(?:FAIL|SCRIPT ERROR).{0,140}", open(pl, errors="replace").read())[:20]
+ok_pt = pt["rc"] == 0
 ok_sh = len(shards) == 6 and all(s["rc"] == 0 for s in shards)
 ok_bt = len(bots) == 20 and all(b["done"] and b["fails"] == 0 and b["script_errors"] == 0 for b in bots)
 wall = max([s["secs"] for s in shards] + [b["secs"] for b in bots] + [0])
-res = {"sha": sha, "ref": ref, "run": run, "finished": time.time(), "pass": ok_sh and ok_bt,
+res = {"sha": sha, "ref": ref, "run": run, "finished": time.time(), "pass": ok_sh and ok_bt and ok_pt, "playtest": pt, "playtest_pass": ok_pt,
        "check_pass": ok_sh, "bots_pass": ok_bt, "max_job_secs": wall, "shards": shards, "bots": bots,
        "errors": errs.most_common(40), "slowest_steps": sorted(times, key=lambda t: -t["secs"])[:15]}
 json.dump(res, open(os.path.join(d, "summary.json"), "w"), indent=1)
@@ -51,6 +59,9 @@ for b in bots:
     L.append("  bot%-2s %-36s %s errors=%d fails=%d warns=%d pauses=%d %ss  %s" % (b["bot"], b.get("spec", ""),
              "OK  " if b["done"] and not b["fails"] and not b["script_errors"] else "FAIL",
              b["script_errors"], b["fails"], b["warns"], b["pauses"], b["secs"], b["line"]))
+L.append("playtest: %s  %ss  %s screenshots (results playtest/shots/)" % ("PASS" if ok_pt else ("MISSING" if pt["rc"] == -1 else "FAIL"), pt["secs"], pt["shots"]))
+for f in pt["fails"]:
+    L.append("  " + f)
 L.append("")
 L.append("longest job: %ss" % wall)
 if res["slowest_steps"]:
