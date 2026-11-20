@@ -123,9 +123,9 @@ const LOOT := [
 	{"#gold": 2500, "storm_glass": 2, "wonder_elixir": 1},  # C8 P4: moon shards stay a moon find
 ]
 ## Buried caches: one item kind per dig (hash), count = the tier's value budget / its value.
-const CACHE := ["copper", "iron", "gold", "fossil", "amethyst", "shard", "relic_mask"]
+const CACHE := ["copper", "iron", "gold", "fossil", "amethyst", "shard", "relic_mask", "ancient_urn"]
 const CACHE_BUDGET := [80, 150, 250, 400, 600, 900]
-const CACHE_RELIC_TIER := 4     # relic masks only from this tier, one at a time
+const CACHE_SINGLE := {"relic_mask": 4, "ancient_urn": 2}  # one at a time, from this tier (museum relics)
 const HUB_TIER_DROP := 2        # areas with no foes (hubs) hide loot this many tiers lower
 const PAGE_SPACING := [10.0, 6.0, 3.0]  # path-side picks keep apart; looser until the page fits
 
@@ -136,22 +136,24 @@ static func loot_tier(area_tier: int, has_foes: bool) -> int:
 
 
 ## [item, n] for one buried cache: a kind worth between 1/8 and all of the tier's
-## budget (relic masks only from CACHE_RELIC_TIER, one at a time), n = budget / value.
+## budget (CACHE_SINGLE relics one at a time from their tier), n = budget / value.
 static func cache_for(key: String, tier: int) -> Array:
 	var t := clampi(tier, 0, CACHE_BUDGET.size() - 1)
 	var b := int(CACHE_BUDGET[t])
 	var kinds: Array = []
 	for it: String in CACHE:
+		if not GameState.items.has(it):
+			continue
 		var v := GameState.item_value(it)
-		if it == "relic_mask":
-			if t >= CACHE_RELIC_TIER and v <= b:
+		if CACHE_SINGLE.has(it):
+			if t >= int(CACHE_SINGLE[it]) and v <= b:
 				kinds.append(it)
 		elif v * 8 >= b and v <= b:
 			kinds.append(it)
 	if kinds.is_empty():
 		kinds = ["copper"]
 	var item: String = kinds[(hash(key) % kinds.size() + kinds.size()) % kinds.size()]
-	if item == "relic_mask":
+	if CACHE_SINGLE.has(item):
 		return [item, 1]
 	return [item, maxi(1, int(round(float(b) / float(maxi(1, GameState.item_value(item))))))]
 

@@ -100,7 +100,7 @@ func _run() -> void:
 	for t in 6:
 		var c := Secrets.cache_for("secret_dig_x_%d" % t, t)
 		var v := GameState.item_value(str(c[0])) * int(c[1])
-		check(v <= Secrets.CACHE_BUDGET[t] * 2 + 10 and (str(c[0]) != "relic_mask" or int(c[1]) == 1), "cache tier %d: %s x%d (%d)" % [t, c[0], c[1], v])
+		check(v <= Secrets.CACHE_BUDGET[t] * 2 + 10 and (not Secrets.CACHE_SINGLE.has(str(c[0])) or int(c[1]) == 1), "cache tier %d: %s x%d (%d)" % [t, c[0], c[1], v])
 	check(Secrets.loot_tier(4, false) == 2 and Secrets.loot_tier(4, true) == 4, "safe hubs hide loot two tiers lower")
 	check(not (Secrets.LOOT[5] as Dictionary).has("moon_shard"), "moon shards stay a moon find")
 	var peng := Secrets.pages_total()
