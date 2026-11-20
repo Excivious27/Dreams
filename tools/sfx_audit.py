@@ -29,7 +29,7 @@ for m in re.finditer(r'sfx\("([a-z_0-9]+)"(?:\s*,\s*"([a-z_0-9]+)")?\)', allsrc)
     used_sfx.add(n)
     if not have("sfx", n) and not (fb and have("sfx", fb)):
         bad.append(f"sfx {n}" + (f" (fallback {fb})" if fb else ""))
-for fn in ["spell_sound", "_death_sound", "station_sound", "_gun_sound"]:
+for fn in ["spell_sound", "_death_sound", "station_sound", "_gun_sound", "gun_sound"]:
     m = None
     for body in src.values():
         m = re.search(r'func %s\([^\n]*\n(.*?)(?=\n(?:static )?func |\Z)' % re.escape(fn), body, re.S)

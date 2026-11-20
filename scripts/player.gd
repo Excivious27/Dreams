@@ -1163,15 +1163,37 @@ var _step_t := 0.0
 
 ## Which footstep sound fits the ground under us.
 ## Which report a gun makes: shotguns boom, rifles crack, the rest pop.
-func _gun_sound() -> String:
-	var w := GameState.equipped("weapon").to_lower()
+## The shot's sound follows the gun in your hand (C3: it used to read an
+## equipment slot no gun ever sits in, so every gun went "shot").
+static func gun_sound(id: String) -> String:
+	var w := id.to_lower()
 	if "shotgun" in w or "blunder" in w or "scatter" in w:
 		return "shot_shotgun"
-	if "rifle" in w or "sniper" in w or "long" in w:
+	if "rifle" in w or "sniper" in w or "long" in w or "tommy" in w:
 		return "shot_rifle"
 	if "laser" in w or "ray" in w or "plasma" in w:
 		return "laser"
 	return "shot"
+
+
+func _gun_sound() -> String:
+	return gun_sound(GameState.held_tool())
+
+
+## Rounds per load: after this many shots the hero reloads (a sound only; the
+## gun's own cooldown already paces it). Unknown guns load six.
+const MAG := {"six_shooter": 6, "gold_revolver": 6, "scattergun": 2, "tommy_gun": 12}
+var _mag_used := {}
+
+
+## Counts a shot; true when this one emptied the load (time to reload).
+func _count_shot(id: String) -> bool:
+	var n := int(_mag_used.get(id, 0)) + 1
+	if n >= int(MAG.get(id, 6)):
+		_mag_used[id] = 0
+		return true
+	_mag_used[id] = n
+	return false
 
 
 func _ground_word() -> String:
@@ -1260,7 +1282,7 @@ func _attack_hit() -> void:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 			if GameState.tool_fight_damage(GameState.held_tool(), 10) < 10 and not GameState.run["flags"].has("tip_tool_fight"):
 				GameState.run["flags"]["tip_tool_fight"] = true
-				ToolHint.say(map, "Tools only scratch foes: hold your sword to fight.")
+				ToolHint.say(map, "Tools only scratch foes: hold your %s to fight." % GameState.weapon_word())
 		_swing_arc(center)
 		if hit:
 			map.hitstop = maxf(map.hitstop, 0.05)  # attack_at already shook the camera
@@ -1316,6 +1338,10 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	tw.tween_callback(ln.queue_free)
 	map.fx("sparkle", muzzle, 6.0, 0.15)
 	Music.instance(get_tree()).sfx(_gun_sound(), "shot")
+	if _count_shot(GameState.held_tool()) and GameState.count("rounds") > 0:
+		get_tree().create_timer(0.28).timeout.connect(func() -> void:
+			if is_inside_tree():
+				Music.instance(get_tree()).sfx("reload", "dry_click"))
 	if hit:
 		map.hitstop = maxf(map.hitstop, 0.03)
 	map.shake(1.0)

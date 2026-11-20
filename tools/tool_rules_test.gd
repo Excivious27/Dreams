@@ -324,6 +324,8 @@ func _tips() -> void:
 	await _frames(4)
 	check(_toasts(m).contains("Axe: chop"), "first axe pick: tip shown (%s)" % _toasts(m))
 	check(GameState.run["flags"].has("tip_axe"), "tip remembered")
+	check(ToolHint.tip_fits_here("hoe", m) and not ToolHint.tip_fits_here("hoe", null), "hoe tip: on the farm only")
+	check(ToolHint.tip_fits_here("axe", null), "axe tip: anywhere outside battles")
 	GameState.run["toolbar"][1] = "hoe"
 	GameState.select_slot(1)
 	await _frames(3)

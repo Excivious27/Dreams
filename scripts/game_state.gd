@@ -396,6 +396,8 @@ static func sprite_for_playable(playable_id: String, arc := "") -> String:
 # ---- items -------------------------------------------------------------------
 
 static func item_name(id: String) -> String:
+	if id == "sword" and street_bat():
+		return ("%s Street Bat" % TOOL_TIERS[tool_tier(id)].capitalize()) if tool_tier(id) > 0 else "Street Bat"
 	if TOOL_KINDS.has(id) and tool_tier(id) > 0:
 		return "%s %s" % [TOOL_TIERS[tool_tier(id)].capitalize(), str(items.get(id, {}).get("name", id.capitalize()))]
 	return str(items.get(id, {}).get("name", id.capitalize()))
@@ -469,7 +471,21 @@ static func tool_icon(kind: String) -> String:
 	var k := "sword" if is_sword(kind) else kind
 	if not TOOL_KINDS.has(k):
 		return kind
+	if kind == "sword" and street_bat():
+		return "bat_%s" % TOOL_TIERS[tool_tier(k)]
 	return "%s_%s" % [k, TOOL_TIERS[tool_tier(k)]]
+
+
+## Tom (Guide 26 #1): the gangster arc starts with a Street Bat, not a sword.
+## It is the same starter weapon underneath (id "sword": tiers, Gideon's bench,
+## damage), only named and drawn as a bat (items/bat_<tier>).
+static func street_bat() -> bool:
+	return not run.is_empty() and str(run.get("arc", "")) == "gangsters"
+
+
+## The starter weapon's word for hints ("sword" / "bat").
+static func weapon_word() -> String:
+	return "bat" if street_bat() else "sword"
 
 
 ## Gideon's friendship knocks crystals off an upgrade (10/20/30%).
