@@ -13,7 +13,7 @@ items = J("items.json"); enemies = J("enemies.json").get("enemies", {}); npcs = 
 crew = J("crew.json")["members"]; builds = J("buildings.json")
 out = {}
 # items: icon by id or the item's own "icon" alias (as Hud.icon_for does; seeds share "seeds"; tools have tier icons)
-miss = [i for i, d in items.items() if not has("items", i) and not has("items", str(d.get("icon", ""))) and not i.endswith("_seed") and d.get("type") not in ("tool",)]
+miss = [i for i, d in items.items() if not has("items", i) and not has("items", str(d.get("icon", ""))) and not has(*(str(d.get("icon", "")).rsplit("/", 1) + [""])[:2]) and not i.endswith("_seed") and d.get("type") not in ("tool",)]
 out["Item icons"] = miss
 # enemies: characters/<sprite or kind>
 miss = []

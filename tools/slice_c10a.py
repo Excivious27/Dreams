@@ -778,12 +778,15 @@ def write_catalog():
     S = _S()
     settle_rot()
     path = os.path.join(S.OUT, GROUP, "_catalog.json")
+    old = json.load(open(path)) if os.path.exists(path) else []
     if os.path.exists(path):
         os.remove(path)
     rows = []
     for e in sorted(CATALOG.values(), key=lambda e: e["id"]):
         rows.append({k: e[k] for k in ("id", "name", "cat", "rarity", "arc", "layer", "size", "rot", "glow", "set")}
                     | {k: e[k] for k in ("frames", "fps", "icon", "px", "tile", "sheet", "colourway_of") if k in e})
+    import slice_c10b   # C10b: keep its outdoor rows, apply its names/arcs (c10b_13)
+    rows = slice_c10b.merge_into(rows, old)
     with open(path, "w") as fh:
         json.dump(rows, fh, indent=1, sort_keys=True)
     return rows

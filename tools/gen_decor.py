@@ -345,8 +345,9 @@ for icon, name, rar, tier, arc in TABLETOP:
     if icon in M['items']:
         glow = 'lantern' in icon or 'candle' in icon or 'wisp' in icon
         add('dc_tt_' + icon, name, 'light' if glow else ('wall_art' if icon.startswith('painting') else 'decor'), rar,
-            'items/' + icon, 'wall' if icon.startswith('painting') else 'floor', tier, arc,
-            sub='tabletop', glow=glow, surface=not icon.startswith('painting'), fp=[1, 1])
+            ('decor/dc_tt_' + icon) if art_ok('decor/dc_tt_' + icon) else 'items/' + icon,  # C10b P6: glint-free placed copy
+            'wall' if icon.startswith('painting') else 'floor', tier, arc,
+            sub='tabletop', glow=glow, surface=not icon.startswith('painting'), fp=[1, 1], icon='items/' + icon)
 
 # ---- 4) wallpaper and flooring ------------------------------------------------------------------------
 WALL_NAMES = {'floral': 'Rose Floral', 'floral_blue': 'Blue Floral', 'brick': 'Red Brick', 'library': 'Library Panel', 'bakery': 'Bakery Cream',
@@ -499,11 +500,11 @@ COLL = [  # id, name, art, cat, layer, rarity, source ref
     ('dc_curio_jar', 'Curio Jar', 'props/curio_jar', 'decor', 'floor', 'uncommon', 'curio_jar'),
     ('dc_fish_trophy', 'Fish Trophy', 'props/fish_trophy', 'wall_art', 'wall', 'rare', 'fish_trophy'),
     ('dc_shipper_ribbon', 'Shipper Ribbon', 'props/shipper_ribbon', 'wall_art', 'wall', 'uncommon', 'shipper_ribbon'),
-    ('dc_koi_scroll', 'Koi Scroll', 'items/painting_landscape', 'wall_art', 'wall', 'legendary', 'legendary_koi'),
+    ('dc_koi_scroll', 'Koi Scroll', 'decor/dc_koi_scroll', 'wall_art', 'wall', 'legendary', 'legendary_koi'),
     ('dc_golden_rod_mount', 'Golden Rod Mount', 'furniture/rod_a', 'wall_art', 'wall', 'epic', 'fish_all'),
-    ('dc_master_hearth', 'Master Hearth', 'furniture/fireplace2', 'furniture', 'floor', 'epic', 'cook_all'),
+    ('dc_master_hearth', 'Master Hearth', 'decor/dc_master_hearth', 'furniture', 'floor', 'epic', 'cook_all'),
     ('dc_golden_crate', 'Golden Crate', 'furniture/crate', 'decor', 'floor', 'epic', 'ship_150'),
-    ('dc_collectors_shelf', 'Collector\'s Shelf', 'furniture/trophy_shelf', 'furniture', 'floor', 'rare', 'decor_50'),
+    ('dc_collectors_shelf', 'Collector\'s Shelf', 'decor/dc_collectors_shelf', 'furniture', 'floor', 'rare', 'decor_50'),
     ('dc_grand_catalogue_stand', 'Grand Catalogue Stand', 'furniture/lectern', 'furniture', 'floor', 'legendary', 'decor_200'),
 ]
 for cid, name, art, cat, layer, rar, ref in COLL:
@@ -513,7 +514,7 @@ for cid, name, art, cat, layer, rar, ref in COLL:
             desc='A keepsake from the museum and your collections.')
         ENTRIES[cid]['order'] = False
 if art_ok('furniture/globe3'):
-    add('dc_founders_orrery', 'Founder\'s Orrery', 'decor', 'unique', 'furniture/globe3', 'floor', 5, sub='showpiece',
+    add('dc_founders_orrery', 'Founder\'s Orrery', 'decor', 'unique', 'decor/dc_founders_orrery', 'floor', 5, sub='showpiece',
         sources=[{'kind': 'collection', 'ref': 'mus_all', 'once': True}], fp=[1, 1],
         desc='One of a kind. The founders charted the valley sky with it.')
 

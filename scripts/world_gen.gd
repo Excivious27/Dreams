@@ -444,7 +444,11 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 ## props/fountain2_frozen, props/planter2_N_winter, nature/log_snow (C5 P3).
 const WINTER_LOOKS := {"house": "house_snow", "house_2": "house_2_snow", "house_3": "house_3_snow", "woodcutter_hut": "woodcutter_hut_snow",
 	"fountain": "fountain_frozen", "fountain2": "fountain2_frozen", "planter2_0": "planter2_0_winter", "planter2_1": "planter2_1_winter",
-	"planter2_2": "planter2_2_winter", "planter2_3": "planter2_3_winter", "log": "log_snow"}
+	"planter2_2": "planter2_2_winter", "planter2_3": "planter2_3_winter", "log": "log_snow",
+	"flowerbed_pink": "flowerbed_pink_winter", "hedge2_h": "hedge2_h_winter", "topiary_a": "topiary_a_winter", "hedge2_ball": "hedge2_ball_winter", "bench2_wood_a": "bench2_wood_a_winter", "statue": "statue_winter", "trellis": "trellis_winter", "stone_arch": "stone_arch_winter",
+	"flowerbed_blue": "flowerbed_blue_winter", "flowerbed_red": "flowerbed_red_winter", "flowerbed_yellow": "flowerbed_yellow_winter", "topiary_b": "topiary_b_winter", "bench2_iron_a": "bench2_iron_a_winter", "wedding_arch": "wedding_arch_winter", "cat_statue": "cat_statue_winter", "statue_cane": "statue_cane_winter",
+	"picket2_h": "picket2_h_winter", "fence2_wood_h": "fence2_wood_h_winter", "fence2_iron_h": "fence2_iron_h_winter", "fence2_stone_h": "fence2_stone_h_winter", "bench2_green_a": "bench2_green_a_winter", "well_stone": "well_stone_winter", "birdbath": "birdbath_winter", "scarecrow_knight": "scarecrow_knight_winter",
+	"dc_y_arbor_swing": "dc_y_arbor_swing_winter", "dc_y_herb_box": "dc_y_herb_box_winter", "dc_y_wheelbarrow": "dc_y_wheelbarrow_winter", "dc_y_sundial": "dc_y_sundial_winter", "dc_y_rain_barrel": "dc_y_rain_barrel_winter", "dc_y_pin_statue": "dc_y_pin_statue_winter", "dc_y_twin_lamp": "dc_y_twin_lamp_winter", "dc_y_penguin_topiary": "dc_y_penguin_topiary_winter"}
 
 
 static func winter_look(group: String, name: String) -> String:

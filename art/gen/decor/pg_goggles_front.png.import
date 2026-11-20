@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/pg_goggles_front.png-a9c4ab5d5f195d5d259c0bb5
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

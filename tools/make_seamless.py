@@ -38,8 +38,34 @@ def stats(a):
 # Patterned floors (checker squares, brick bond) can't be cross-faded: the blend
 # ghosts the pattern at the joins (c5_12 #2). Right after a fresh slice, rebuild them
 # from a clean crop of whole periods (box in the sliced 256 texture, repeats x/y):
-#   python3 tools/make_seamless.py --periodic
+#   python3 tools/make_seamless.py --periodic   (--periodic-auto: only PERIODIC_AUTO, any time)
 PERIODIC = {"floor_checker": ((59, 58, 195, 196), (2, 2)), "city_pavement": ((81, 61, 169, 207), (3, 2))}
+# Plank floors whose period is found in the clean centre (the cross-fade only touches the edges):
+# one or more whole periods are cut from the middle and tiled (c10b_08-22). Safe to re-run.
+PERIODIC_AUTO = ["floor_light", "floor_dark"]
+
+
+def _period(l, axis, lo=12, hi=128):
+    x = l - l.mean()
+    best, bk = -1, 0
+    for k in range(lo, hi):
+        a = x[:, :-k] if axis == 1 else x[:-k]
+        b = x[:, k:] if axis == 1 else x[k:]
+        d = np.sqrt((a * a).sum() * (b * b).sum())
+        c = (a * b).sum() / d if d else 0
+        if c > best:
+            best, bk = c, k
+    return bk if best > 0.6 else 0
+
+
+def auto_box(f):
+    """Box of whole periods inside the centre 128 px (axes without a period keep the centre 128)."""
+    a = np.asarray(Image.open(f).convert("RGBA")).astype(float)
+    c = a[64:192, 64:192, :3].mean(2)
+    px, py = _period(c, 1), _period(c, 0)
+    w = (128 // px) * px if px else 128
+    h = (128 // py) * py if py else 128
+    return (64, 64, 64 + w, 64 + h), (max(1, round(256 / w)), max(1, round(256 / h)))
 
 
 def periodic(f, box, reps):
@@ -62,6 +88,11 @@ def periodic(f, box, reps):
 if "--periodic" in sys.argv:
     for nm, (box, reps) in PERIODIC.items():
         periodic(os.path.join(ROOT, "art/gen/seamless/%s.png" % nm), box, reps)
+if "--periodic" in sys.argv or "--periodic-auto" in sys.argv:
+    for nm in PERIODIC_AUTO:
+        f = os.path.join(ROOT, "art/gen/seamless/%s.png" % nm)
+        if os.path.exists(f):
+            periodic(f, *auto_box(f))
 check = "--check" in sys.argv
 bad = 0
 for f in sorted(glob.glob(os.path.join(ROOT, "art/gen/seamless/*.png"))):
@@ -73,7 +104,7 @@ for f in sorted(glob.glob(os.path.join(ROOT, "art/gen/seamless/*.png"))):
         bad += flag
         print("%-28s step %5.1f wrap %5.1f %s" % (os.path.basename(f), step, wrap, "SEAM" if flag else ""))
         continue
-    if wrap <= 1.3 * step + 1 or os.path.basename(f)[:-4] in PERIODIC:
+    if wrap <= 1.3 * step + 1 or os.path.basename(f)[:-4] in PERIODIC or os.path.basename(f)[:-4] in PERIODIC_AUTO:
         continue  # already wraps (patterned floors: --periodic)
     o = seamless(a)
     o[..., 3] = a[..., 3]  # keep the alpha as it was (water edges etc.)
