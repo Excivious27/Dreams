@@ -6,13 +6,13 @@ extends RefCounted
 const SAVE_KEY := "run"
 ## C9: bump when _migrate gains a step; written into every run, checked by save codes
 ## (SaveTransfer refuses codes/farms from a newer build).
-const SAVE_VERSION := 9
+const SAVE_VERSION := 10  # 10: run.decor (C10a decor box/wardrobe; Decor.migrate)
 ## Run blocks that must be containers; a JSON null here (hand-edited/partial import)
 ## is dropped by _migrate so the lazy accessors rebuild it.
 const RUN_BLOCKS := ["campaign", "cfarm", "mega", "romance", "coll", "project", "arcade", "arcade_hub",
 	"pet", "party", "mail", "chests", "opts", "weather", "buffs", "status", "look",
 	"animals", "flags", "inventory", "farm", "friendship", "skills", "quests", "equip",
-	"decisions", "gifted_today", "talked_today", "sellbox", "mine_pace", "hidden_at", "earned_by"]
+	"decisions", "gifted_today", "talked_today", "sellbox", "mine_pace", "hidden_at", "earned_by", "decor"]
 const DAY_START := 6 * 60      # 6:00
 const DAY_END := 26 * 60       # 2:00 next day: pass out
 ## Real minutes for the waking day (6am-2am, 1200 game minutes), per save
@@ -196,6 +196,8 @@ static func _migrate() -> void:
 	Collections.st()  # museum + logs (old saves: fish/recipes backfilled from seen/known_recipes)
 	Romance.st()  # dating/marriage state (old saves: single, friendship untouched)
 	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
+	if run.get("inventory") is Dictionary:
+		Decor.migrate()  # C10a: decor/wear out of the bag and chests into run.decor (idempotent)
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
 	for sk in (run["skills"] as Dictionary).keys():
@@ -657,6 +659,8 @@ static func sell_price(id: String, n := 1) -> int:
 ## saturation (C8 P1: shop floors read this, so dumping a stack on the fence
 ## doesn't make the same item cheap in the shops for the rest of the day).
 static func unit_sell_value(id: String) -> float:
+	if Decor.is_decor(id):
+		return float(Decor.sell_value(id))  # C10a: flat sell-back, no perks (no buy-sell loop)
 	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
 	if family(id) != "":
 		unit *= 1.0 + bonus("farming", "crop_value")
@@ -683,6 +687,8 @@ static func shop_price(id: String, listed: int) -> int:
 
 
 static func buy_price(id: String) -> int:
+	if Decor.is_decor(id) and Decor.price(id) > 0:
+		return Decor.buy_price(id)  # C10a: decor list price (decor.json), small discounts only
 	var base := item_value(id)
 	var it: Dictionary = items.get(id, {})
 	var tier := int(it.get("tier", 1))
@@ -703,7 +709,18 @@ static func buy_price(id: String) -> int:
 
 
 static func count(id: String) -> int:
+	if Decor.is_decor(id):
+		return Decor.total(id)  # C10a: decor/wear live in run.decor (box + placed + worn), never the bag
 	return int(run["inventory"].get(id, 0))
+
+
+## Never sold, trashed, gifted or shipped: one-of-a-kind decor, items with "keep", story keys, vehicles.
+## Sell box / Commons stand / Sal's fence / gift checks call this (toast KEEP_TEXT).
+const KEEP_TEXT := "One of a kind. You keep it."
+
+static func keeps(id: String) -> bool:
+	var it: Dictionary = items.get(id, {})
+	return bool(it.get("keep", false)) or Decor.is_unique(id) or str(it.get("type", "")) in ["key", "vehicle"]
 
 
 ## Bag size (Sun Haven style): slots for different items; tools on their own.
@@ -731,7 +748,7 @@ static func bag_free() -> int:
 ## flowers, forage, rings and gear), then name, then the better stack (gold /
 ## silver stars), then the bigger stack. Stacks of one kind are always merged
 ## (one bag slot per kind), and the toolbar row never moves.
-const SORT_RANK := {"tool": 0, "weapon": 1, "gem": 2, "mineral": 2, "fish": 3, "animal": 4, "egg": 4, "milk": 4, "food": 5, "dish": 5, "tonic": 5, "potion": 5, "drink": 5, "placeable": 6, "craft": 6, "station": 6, "ore": 7, "bar": 8, "material": 9, "resource": 9, "seed": 10, "crop": 11, "fruit": 12, "flower": 13, "forage": 14, "equip": 15, "petgear": 16, "gift": 17, "key": 19, "quest": 19}
+const SORT_RANK := {"tool": 0, "weapon": 1, "gem": 2, "mineral": 2, "fish": 3, "animal": 4, "egg": 4, "milk": 4, "food": 5, "dish": 5, "tonic": 5, "potion": 5, "drink": 5, "placeable": 6, "craft": 6, "station": 6, "ore": 7, "bar": 8, "material": 9, "resource": 9, "seed": 10, "crop": 11, "fruit": 12, "flower": 13, "forage": 14, "equip": 15, "petgear": 16, "gift": 17, "decor": 18, "wear": 18, "key": 19, "quest": 19}
 
 
 static func item_order(a: String, b: String) -> bool:
@@ -805,7 +822,7 @@ static func toggle_lock(id: String) -> void:
 
 static func can_trash(id: String) -> bool:
 	var t := str(items.get(id, {}).get("type", ""))
-	return count(id) > 0 and not has_tool(id) and not t in ["tool", "key", "quest", "upgrade", "vehicle"] and not is_locked(id)
+	return count(id) > 0 and not has_tool(id) and not t in ["tool", "key", "quest", "upgrade", "vehicle"] and not is_locked(id) and not keeps(id)
 
 
 ## Throw n away. Returns how many went.
@@ -836,6 +853,14 @@ static var overflow_note := ""
 
 
 static func add_item(id: String, n: int = 1, force := false) -> void:
+	# C10a: decor and wearables go to the decor box / wardrobe (run.decor), never the bag; every
+	# existing reward path (quests, prizes, mail, shops) works unchanged through this one branch.
+	if Decor.is_decor(id):
+		if n > 0:
+			Decor.give(id, n, "item")
+		elif n < 0:
+			Decor.take(id, mini(-n, Decor.owned(id)))
+		return
 	var inv: Dictionary = run["inventory"]
 	# Bag full: a new kind of item goes to the farm chest instead of vanishing.
 	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar") \
@@ -1764,21 +1789,24 @@ static func _roll_forage_once(region: String) -> String:
 
 
 static func rarity_color(id: String) -> Color:
-	match str(items.get(id, {}).get("rarity", "common")):
-		"uncommon": return Color(0.5, 0.9, 0.5)
-		"rare": return Color(0.45, 0.65, 1.0)
-		"epic": return Color(0.8, 0.5, 1.0)
-		"legendary": return Color(1.0, 0.75, 0.3)
-	return Color(0.9, 0.9, 0.9)
+	# C10a: one table for all seven levels (Decor.RARITY_COLORS, CVD-safe ramp), items and decor alike.
+	return Decor.rarity_color(rarity_of(id))
+
+
+static func rarity_of(id: String) -> String:
+	var r := str(Decor.entry(id).get("rarity", items.get(id, {}).get("rarity", "common")))
+	return r if r in RARITY_RANKS else "common"
 
 
 ## C9 (colour-blind safe): rarity as a count, 0 common .. 4 legendary, so slots can
 ## draw rank dots beside the colour (char_sheet / chest_screen pips).
-const RARITY_RANKS := ["common", "uncommon", "rare", "epic", "legendary"]
+## C10a: mythic (5) and unique (6) join; slots draw 5 dots for mythic + its star, unique a diamond
+## (Decor.rarity_glyph). Same order as Decor.RARITIES.
+const RARITY_RANKS := ["common", "uncommon", "rare", "epic", "legendary", "mythic", "unique"]
 
 
 static func rarity_rank(id: String) -> int:
-	return maxi(0, RARITY_RANKS.find(str(items.get(id, {}).get("rarity", "common"))))
+	return maxi(0, RARITY_RANKS.find(rarity_of(id)))
 
 
 # ---- energy / hp -------------------------------------------------------------
@@ -2075,13 +2103,13 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 
 ## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
 ## Gifts: one per villager per day, and never tools, seeds, story keys or gear.
-const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor", "romance"]
+const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor", "wear", "romance"]
 
 
 static func can_gift(npc: String, item: String) -> bool:
 	if item == "" or count(item) <= 0 or not items.has(item):
 		return false
-	if str(items[item].get("type", "")) in NO_GIFT_TYPES:
+	if str(items[item].get("type", "")) in NO_GIFT_TYPES or keeps(item) or Decor.is_decor(item):
 		return false
 	if (run.get("gifted_today", {}) as Dictionary).has(npc):
 		return false
@@ -2278,7 +2306,7 @@ static func gift_value(npc: String, item: String) -> int:
 		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
 	elif item in dislikes or (kind != "" and kind in dislikes) or fam in dislikes:
 		base = -8
-	elif str(it.get("rarity", "common")) in ["rare", "epic", "legendary"]:
+	elif rarity_rank(item) >= 2:
 		base = 8
 	if base > 0:
 		base += int(bonus("bartering", "gift_bonus")) + int(it.get("friend", 0))

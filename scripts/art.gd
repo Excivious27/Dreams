@@ -21,15 +21,39 @@ static func manifest() -> Dictionary:
 	return _manifest
 
 
+## C10a: a name may carry its own group ("furniture/sofa_red", "decor/neon_bar"): item icons may live in any
+## art group, so Art.tex("items", Hud.icon_for(id)) works for decor whose icon is group-qualified.
+## Manifest names never contain "/" (subgroups such as animals/pup are their own keys), so this is safe.
+static func split(group: String, name: String) -> PackedStringArray:
+	var i := name.rfind("/")
+	if i <= 0:
+		return PackedStringArray([group, name])
+	return PackedStringArray([name.substr(0, i), name.substr(i + 1)])
+
+
 static func has(group: String, name: String) -> bool:
+	if name.contains("/"):
+		var gn := split(group, name)
+		if gn[0] == "decor" and not manifest().has("decor"):
+			return ResourceLoader.exists(ROOT + gn[0] + "/" + gn[1] + ".png")
+		return manifest().get(gn[0], {}).has(gn[1])
+	if group == "decor" and not manifest().has("decor"):
+		return ResourceLoader.exists(ROOT + "decor/" + name + ".png")  # P6 renders before a manifest entry
 	return manifest().get(group, {}).has(name)
 
 
 static func info(group: String, name: String) -> Dictionary:
+	if name.contains("/"):
+		var gn := split(group, name)
+		return manifest().get(gn[0], {}).get(gn[1], {})
 	return manifest().get(group, {}).get(name, {})
 
 
 static func tex(group: String, name: String) -> Texture2D:
+	if name.contains("/"):
+		var gn := split(group, name)
+		group = gn[0]
+		name = gn[1]
 	var key := group + "/" + name
 	_used[key] = true
 	if _tex.has(key):
