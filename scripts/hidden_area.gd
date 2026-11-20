@@ -24,6 +24,13 @@ const WALL_PROPS := {"gloam": ["bush2_blue", "bush2_green"], "sky": ["bush2_gree
 	"desert": ["boulder2_m_a", "boulder2_m_b"], "frost": ["bush_snow", "boulder2_m_b"], "city": ["crates_a", "barrel_a", "crates_b"], "garden": ["hedge2_ball", "hedge2_tree_s"],
 	"space": ["boulder2_m_b", "boulder2_s_b"], "cave": ["boulder2_m_a", "boulder2_m_b"]}
 
+## Sealed rooms behind a guardian: open once its boss flag is set.
+const SANCTUMS := {
+	"desert_sunken_temple": {"need": "boss_desert_sunken_temple", "hint": "A: a sealed sun door",
+		"shut": "A sun door, sealed. Sand trickles from its seams. The Colossus stands between you and it; while it stands, it won't open.",
+		"page": "Page: The inner sanctum. The last spark of the old sun sleeps in a bowl of glass here, small as a firefly. The Colossus guarded it so long it forgot why. Now you know."},
+}
+
 var map: GameMap = null
 var spots: Array = []  # [cell, kind] still to be found (sniff/sparkle)
 var _t := 0.0
@@ -62,6 +69,14 @@ static func place(m: GameMap, rid: String, tier: int) -> HiddenArea:
 	var pocket: Dictionary = {}
 	if want.x > 0:
 		pocket = _place_pocket(m, rid, tier, theme, rng, reach, node)
+	if SANCTUMS.has(rid):
+		var sd: Dictionary = SANCTUMS[rid]
+		var near := Vector2i(-1, -1)
+		for c: Vector2i in m.things:
+			if str(m.things[c].get("type", "")) == "boss":
+				near = c
+		if near.x >= 0:
+			_place_pocket(m, rid, tier + 1, theme, rng, _reach(m, _start(m)), node, near, "_sanctum", sd)
 	if want.y > 0:
 		_place_way(m, rid, theme, rng, _reach(m, _start(m)), pocket, node)
 	m.add_child(node)
@@ -104,7 +119,7 @@ static func _keep(m: GameMap) -> Dictionary:
 	return keep
 
 
-static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng: RandomNumberGenerator, reach: Dictionary, node: HiddenArea) -> Dictionary:
+static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng: RandomNumberGenerator, reach: Dictionary, node: HiddenArea, near := Vector2i(-1, -1), tag := "", sanctum: Dictionary = {}) -> Dictionary:
 	var keep := _keep(m)
 	var best: Dictionary = {}
 	var best_score := -1.0
@@ -114,7 +129,7 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 		return {}
 	for tries in 260:
 		var e: Vector2i = cand[rng.randi() % cand.size()]  # where you stand to open it
-		if keep.has(e):
+		if keep.has(e) or (near.x >= 0 and e.distance_to(near) > 7.0):
 			continue
 		var d: Vector2i = dirs[rng.randi() % dirs.size()]
 		var mouth := e + d
@@ -180,7 +195,7 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 		best_score = score
 	if best.is_empty():
 		return {}
-	var key := "hidden_open_" + rid
+	var key := "hidden_open_" + rid + tag
 	var open: bool = GameState.run["flags"].has(key)
 	var walls: Array = WALL_PROPS.get(theme, WALL_PROPS["cave"])
 	for c: Vector2i in best["added"]:
@@ -194,25 +209,28 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 			m.prop(g, wn, c, 0, 0.0, false)
 	var mouth: Vector2i = best["mouth"]
 	var kind := "vine" if theme in VINE_THEMES else "crack"
+	if not sanctum.is_empty():
+		kind = "door"
 	if not open:
-		m.set_thing(mouth.x, mouth.y, {"type": "hidden_mouth", "key": key, "kind": kind,
-			"hint": "A: the vines stir in a draft" if kind == "vine" else "A: a cracked wall (pickaxe)"}, true)
+		m.set_thing(mouth.x, mouth.y, {"type": "hidden_mouth", "key": key, "kind": kind, "need": str(sanctum.get("need", "")), "shut": str(sanctum.get("shut", "")),
+			"hint": str(sanctum.get("hint", "")) if kind == "door" else ("A: the vines stir in a draft" if kind == "vine" else "A: a cracked wall (pickaxe)")}, true)
 		m.hard[mouth] = true
 		node._mouth_art(mouth, kind, theme)
 		node.spots.append([mouth, "pocket"])
 	# Inside: the chest at the back middle, the page beside it.
 	var back: Vector2i = mouth + (best["d"] as Vector2i) * 2
-	var ck := "hidden_chest_" + rid
+	var ck := "hidden_chest_" + rid + tag
 	var got: bool = GameState.run["flags"].has(ck)
 	var loot: Dictionary = Secrets.LOOT[clampi(tier + 1, 0, Secrets.LOOT.size() - 1)]
 	m.set_thing(back.x, back.y, {"type": "secret_chest", "key": ck, "give": loot, "hint": "" if got else "A: an old chest"}, true)
 	m.prop("props", "chest_open" if got else "chest_closed", back)
-	if Secrets.POCKET_PAGES.has(rid):
+	var page_txt := str(sanctum.get("page", Secrets.POCKET_PAGES.get(rid, "")))
+	if page_txt != "":
 		var side := Vector2i((best["d"] as Vector2i).y, (best["d"] as Vector2i).x)
 		var pc: Vector2i = mouth + (best["d"] as Vector2i) + side
-		var pk := "page_" + rid
+		var pk := "page_" + rid + tag
 		if not GameState.run["flags"].has(pk):
-			m.set_thing(pc.x, pc.y, {"type": "page", "key": pk, "text": Secrets.POCKET_PAGES[rid], "hint": "A: a torn page"}, false)
+			m.set_thing(pc.x, pc.y, {"type": "page", "key": pk, "text": page_txt, "hint": "A: a torn page"}, false)
 			m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
 	return best
 
@@ -278,7 +296,7 @@ static func _place_way(m: GameMap, rid: String, theme: String, rng: RandomNumber
 ## ---- art (P5 names, drawn fallback) -------------------------------------------
 
 func _mouth_art(c: Vector2i, kind: String, theme: String) -> void:
-	var nm := "hidden_vine_curtain" if kind == "vine" else "hidden_crack_wall"
+	var nm := "hidden_vine_curtain" if kind == "vine" else ("hidden_sun_door" if kind == "door" else "hidden_crack_wall")
 	if Art.has("props", nm):
 		map.prop("props", nm, c, 0, 0.0, false)
 		return
@@ -327,6 +345,11 @@ class _Drawn extends Node2D:
 					draw_line(Vector2(x, -18), Vector2(x + sin(i * 1.7) * 1.5, -1), leaf.darkened(0.2), 1.5)
 					for k in 3:
 						draw_circle(Vector2(x + sin(i + k) * 1.2, -15 + k * 5 + i % 2 * 2), 1.4, leaf)
+			"door":
+				draw_rect(Rect2(-9, -20, 18, 20), stone.darkened(0.15))
+				draw_rect(Rect2(-6, -17, 12, 17), Color(0.85, 0.65, 0.25))
+				draw_circle(Vector2(0, -10), 3.5, Color(1.0, 0.85, 0.4))
+				draw_line(Vector2(0, -17), Vector2(0, 0), dark, 1.0)
 			"crack":
 				draw_rect(Rect2(-8, -16, 16, 16), stone)
 				draw_rect(Rect2(-8, -16, 16, 16), stone.darkened(0.35), false, 1.0)
@@ -381,6 +404,12 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 	var node := m.get_node_or_null("HiddenArea") as HiddenArea
 	match str(thing.get("type", "")):
 		"hidden_mouth":
+			if str(thing.get("kind", "")) == "door":
+				if str(thing.get("need", "")) != "" and not GameState.run["flags"].has(str(thing["need"])):
+					m.tell([{"text": str(thing.get("shut", "Sealed."))}])
+					return true
+				Music.instance(m.get_tree()).sfx("crate_break", "thud")
+				m.fx("poof", m.cell_center(c) + Vector2(0, -8), 16.0, 0.6)
 			if str(thing.get("kind", "")) == "crack" and GameState.held_tool() != "pickaxe":
 				return ToolHint.need(m, "pickaxe", "to break through")
 			if str(thing.get("kind", "")) == "crack":
@@ -403,7 +432,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			m._flows.clear()
 			if node:
 				node.found_spot(c)
-			m.hud.toast("A hidden nook!" if str(thing.get("kind", "")) == "vine" else "The wall gives way: a hidden nook!", Color(1, 0.95, 0.6))
+			m.hud.toast({"vine": "A hidden nook!", "door": "The sun door grinds open: the inner sanctum!"}.get(str(thing.get("kind", "")), "The wall gives way: a hidden nook!"), Color(1, 0.95, 0.6))
 			Music.instance(m.get_tree()).sfx("j_secret", "j_treasure")
 			return true
 		"secret_way":

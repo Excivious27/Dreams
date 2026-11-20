@@ -112,23 +112,30 @@ func _run() -> void:
 					var nc: Vector2i = (n as Npc).cell()
 					if not seen_sw.has(nc) and not _near(seen_sw, nc):
 						fail("%s (%s): villager %s stands in a wall at %s" % [scene, arc, (n as Npc).id, nc])
-				var mouth := Vector2i(-1, -1)
+				var mouths: Array = []
 				var wayc: Array = []
-				var chest := Vector2i(-1, -1)
+				var chests := {}
 				for c: Vector2i in m.things:
 					match str(m.things[c].get("type", "")):
-						"hidden_mouth": mouth = c
+						"hidden_mouth": mouths.append(c)
 						"secret_way": wayc.append(c)
 						"secret_chest":
-							if str(m.things[c].get("key", "")).begins_with("hidden_chest_"):
-								chest = c
-				var line := "%-24s %s pocket=%s way=%d" % [scene, arc[0], str(mouth), wayc.size()]
-				if mouth.x >= 0:
+							var ck := str(m.things[c].get("key", ""))
+							if ck.begins_with("hidden_chest_"):
+								chests[ck.trim_prefix("hidden_chest_")] = c
+				var line := "%-24s %s pockets=%s way=%d" % [scene, arc[0], str(mouths), wayc.size()]
+				if mouths.is_empty():
+					fail("%s (%s): no pocket placed" % [scene, arc])
+				if HiddenArea.SANCTUMS.has(scene) and mouths.size() < 2:
+					fail("%s: no sanctum" % scene)
+				for mouth: Vector2i in mouths:
 					pockets += 1
+					var tagk := str(m.things[mouth]["key"]).trim_prefix("hidden_open_")
+					var chest: Vector2i = chests.get(tagk, Vector2i(-1, -1))
 					if not _near(seen, mouth):
 						fail("%s: pocket mouth %s not reachable" % [scene, mouth])
 					if chest.x < 0:
-						fail("%s: pocket has no chest" % scene)
+						fail("%s: pocket %s has no chest" % [scene, tagk])
 					elif _near(seen, chest):
 						fail("%s: chest %s reachable before opening (pocket not closed)" % [scene, chest])
 					if shots != "":
@@ -137,11 +144,22 @@ func _run() -> void:
 							(cam as Camera2D).reset_smoothing()
 						for i in 20:
 							await process_frame
-						get_root().get_texture().get_image().save_png("%s/%s_pocket.png" % [shots, scene])
+						get_root().get_texture().get_image().save_png("%s/%s_%s.png" % [shots, scene, "sanctum" if tagk.ends_with("_sanctum") else "pocket"])
 					var tb: Array = GameState.run["toolbar"]
 					if not "pickaxe" in tb:
 						tb[0] = "pickaxe"
 					GameState.run["slot"] = tb.find("pickaxe")
+					var need := str(m.things[mouth].get("need", ""))
+					if need != "":
+						HiddenArea.interact(m, mouth, m.things[mouth])
+						if not m.things.has(mouth):
+							fail("%s: sanctum opened before %s" % [scene, need])
+						var dlg := Dialogue.instance(self)
+						for k in 8:
+							if dlg.active:
+								dlg._advance()
+								await process_frame
+						GameState.run["flags"][need] = true
 					HiddenArea.interact(m, mouth, m.things[mouth])
 					var after := _flood(m, start)
 					if chest.x >= 0 and not _near(after, chest):
@@ -150,8 +168,7 @@ func _run() -> void:
 						if not after.has(c):
 							fail("%s: opening lost cell %s" % [scene, c])
 							break
-				else:
-					fail("%s (%s): no pocket placed" % [scene, arc])
+					seen = after
 				if wayc.size() == 2:
 					ways += 1
 					for c: Vector2i in wayc:

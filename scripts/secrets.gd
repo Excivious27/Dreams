@@ -39,6 +39,8 @@ static func chests_total() -> int:
 		n += 1
 		if mr != "" and int(r.get("hidden", {}).get("pockets", 1)) > 0:
 			n += 1
+		if HiddenArea.SANCTUMS.has(rid):
+			n += 1
 	return n
 
 
