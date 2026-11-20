@@ -1139,6 +1139,8 @@ static func dress_house(m: GameMap) -> void:
 	for id in deco:
 		if Tickets.have(str(id)) < 1:
 			continue  # bag, chests or the decor box all count (c10_02/13: Deposit All no longer strips the house)
+		if Decor.is_decor(str(id)) and Decor.placed_count(str(id)) > 0:
+			continue  # C10b P1 (c10b_07): placed by the player: the decor layer draws it (no double draw)
 		var d: Dictionary = deco[id]
 		if d.has("wall"):
 			var w := RecDecor.new()

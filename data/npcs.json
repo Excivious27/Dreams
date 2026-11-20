@@ -937,7 +937,7 @@
    "2": "Rook shows tracks: a Pelt each week",
    "4": "Rook sells arrows and traps",
    "6": "Rook's map of the quarry path: a Map Scrap",
-   "8": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Bear Pelt Rug",
+   "8": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting",
    "10": "Rook's lucky arrowhead: a Light Charm"
   },
   "home": "lodge",
@@ -1255,7 +1255,7 @@
    "2": "Marlowe sells you lamp oil: 2 each week",
    "4": "Marlowe's charts: a Luck Potion",
    "6": "Night fishing at the lighthouse: 10 Bait each week",
-   "8": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Bottled Breeze",
+   "8": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Echo Shell",
    "10": "Marlowe's old tackle box: 3 Luck Potions"
   },
   "home": "lighthouse",
@@ -1562,7 +1562,7 @@
    "2": "Sel reads the first rune: a Memory Tea",
    "4": "+10 max mana",
    "6": "Sel opens the stone door: 2 Mana Potions",
-   "8": "Sel's translation: +10 max mana, and a keepsake for your home: Manor Pine Bookcase",
+   "8": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel",
    "10": "Sel's staff: +20 max mana"
   },
   "home": "sel_camp",

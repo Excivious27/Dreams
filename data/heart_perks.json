@@ -277,9 +277,9 @@
   "8": {
    "give": {
     "greater_potion": 2,
-    "#decor:dc_pelt_bear": 1
+    "#decor:dc_painting2_a": 1
    },
-   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Bear Pelt Rug"
+   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting"
   },
   "10": {
    "give": {
@@ -475,9 +475,9 @@
   "8": {
    "give": {
     "moonlight_elixir": 1,
-    "#decor:dc_tt_bottled_wind": 1
+    "#decor:dc_tt_echo_shell": 1
    },
-   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Bottled Breeze"
+   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Echo Shell"
   },
   "10": {
    "give": {
@@ -686,9 +686,9 @@
     "mana": 10
    },
    "give": {
-    "#decor:dc_bookcase3_b": 1
+    "#decor:dc_easel2": 1
    },
-   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Manor Pine Bookcase"
+   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel"
   },
   "10": {
    "bonus": {

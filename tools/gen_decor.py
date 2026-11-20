@@ -850,18 +850,29 @@ KEEPERS = {  # key: (cats, words (any; empty = every piece of those cats))
     'maple': (('decor', 'light', 'rug', 'wallpaper', 'flooring'), ()),
     'gideon': (('furniture', 'light'), ('iron', 'lantern', 'lamp', 'stove', 'safe', 'storage', 'chandelier', 'clock', 'steel', 'metal', 'forge')),
     'wren': (('decor', 'light', 'furniture'), ('plant', 'potion', 'bottle', 'wisp', 'herb', 'crystal', 'jar', 'candle', 'flower', 'bloom')),
-    'granite': (('decor', 'furniture', 'flooring', 'wallpaper'), ('stone', 'statue', 'fireplace', 'hearth', 'brick', 'marble', 'cobble', 'flagstone', 'quarry', 'bust')),
+    'granite': (('decor', 'furniture', 'flooring', 'wallpaper', 'light'), ('stone', 'statue', 'fireplace', 'hearth', 'brick', 'marble', 'cobble', 'flagstone', 'quarry', 'bust', 'rock', 'gem', 'geode', 'mineral', 'iron', 'ore', 'lamp', 'urn')),
     'sel': (('decor', 'wall_art', 'furniture'), ('study', 'globe', 'book', 'scroll', 'painting', 'telescope', 'relic', 'ink', 'easel', 'library', 'map')),
     'tam': (('rug', 'furniture', 'top', 'acc', 'hat'), ('rug', 'wool', 'quilt', 'knit', 'scarf', 'sweater', 'bed', 'beanie', 'pelt', 'mat')),
     'orla': (('furniture', 'decor', 'flooring'), ('kitchen', 'table', 'jug', 'kettle', 'coffee', 'mug', 'bread', 'pantry', 'tile')),
     'marlowe': (('light', 'wall_art', 'decor'), ('lantern', 'window', 'shell', 'sea', 'bottle', 'lighthouse', 'lamp', 'boat', 'anchor')),
-    'rook': (('rug', 'wall_art', 'furniture', 'hat', 'acc'), ('pelt', 'antler', 'lodge', 'hood', 'cloak', 'log', 'trophy', 'cabin', 'hunt')),
-    'old_moss': (('decor', 'rug', 'furniture'), ('plant', 'reed', 'cattail', 'frog', 'moss', 'hut', 'mat', 'ivy', 'fern')),
+    'rook': (('rug', 'wall_art', 'furniture', 'hat', 'acc', 'decor', 'light'), ('pelt', 'antler', 'lodge', 'hood', 'cloak', 'log', 'trophy', 'cabin', 'hunt', 'plaid', 'fur', 'hide', 'bear', 'deer', 'axe', 'rustic', 'country', 'lantern', 'camp')),
+    'old_moss': (('decor', 'rug', 'furniture', 'light'), ('plant', 'reed', 'cattail', 'frog', 'moss', 'mat', 'ivy', 'fern', 'jar', 'herb', 'mushroom', 'root', 'bottle', 'candle', 'bonsai', 'leaf')),
     'catkins': (('decor', 'furniture', 'rug', 'wall_art'), ('cat', 'paw', 'penguin', 'snow', 'cushion', 'figurine', 'yarn')),
-    'finn': (('decor', 'wall_art', 'rug'), ('fish', 'shell', 'sea', 'net', 'boat', 'koi', 'rod', 'anchor', 'coral', 'echo')),
+    'finn': (('decor', 'wall_art', 'rug', 'light', 'furniture'), ('fish', 'shell', 'sea', 'net', 'boat', 'koi', 'rod', 'anchor', 'coral', 'echo', 'bottle', 'lantern', 'reed', 'wave', 'seaside', 'pier', 'dock')),
     # Tess the carpenter (Tom 2026-11-20: a new villager runs the furniture shop, not Hazel): workshop by the farm road.
     'carpenter': (('furniture', 'rug', 'wallpaper', 'flooring'), ('bed', 'chair', 'table', 'sofa', 'armchair', 'stool', 'dresser', 'wardrobe', 'shelf', 'bench', 'cottage', 'country')),
 }
+# c10b_10_19: theme words match whole words (ids/subs split on "_"), plural allowed.
+def has_word(t, words):
+    t = t.replace('_', ' ')
+    return any(re.search(r'(^|[^a-z])' + re.escape(w) + r's?($|[^a-z])', t) for w in words)
+# c10b_10_08: a gangster keeper shelf keeps a theme of its own (gangster-only pieces need one of these words).
+GANG_WORDS = {'maple': ('crate', 'lamp', 'rug', 'sign', 'clock', 'plant'), 'gideon': ('chrome', 'steel', 'safe', 'locker', 'tool', 'iron', 'metal'),
+              'wren': ('bottle', 'plant', 'neon', 'jar', 'candle'), 'granite': ('stone', 'marble', 'brick', 'statue', 'concrete'),
+              'sel': ('book', 'screen', 'map', 'painting', 'globe', 'study'), 'tam': ('rug', 'jacket', 'cap', 'bed', 'scarf', 'hoodie'),
+              'orla': ('kitchen', 'stove', 'diner', 'coffee', 'mug', 'table'), 'marlowe': ('neon', 'harbour', 'crate', 'lantern', 'anchor', 'boat'),
+              'rook': ('leather', 'hunt', 'trophy', 'garage', 'jacket', 'pelt'), 'old_moss': ('plant', 'jar', 'bottle', 'herb'),
+              'finn': ('fish', 'neon', 'harbour', 'boat', 'net'), 'carpenter': ()}
 for key, (cats, words) in KEEPERS.items():
     def keep_f(k, e, cats=cats, words=words, gang=False):
         if e['cat'] not in cats or e['rarity'] in ('legendary',):
@@ -870,9 +881,11 @@ for key, (cats, words) in KEEPERS.items():
             return False
         if not gang and e['sub'] in ('tech', 'neon', 'music'):  # arcade/neon pieces live on the crew shelves
             return False
-        return not words or any(w in text(k, e) for w in words)
+        return not words or has_word(text(k, e), words)
     SHOPS[key] = shop_rows(keep_f)
-    g = shop_rows(lambda k, e, f=keep_f: f(k, e, gang=True) or (e['arc'] == 'gangsters' and e['cat'] in cats and e['rarity'] != 'legendary'))
+    gw = GANG_WORDS.get(key, ())
+    g = shop_rows(lambda k, e, f=keep_f, gw=gw: f(k, e, gang=True) or (e['arc'] == 'gangsters' and e['cat'] in cats and e['rarity'] != 'legendary'
+                                                                        and (not gw or has_word(text(k, e), gw))))
     if g != SHOPS[key] and key != 'catkins':  # Catkins is penguin-only
         SHOPS[key + '_gang'] = g
 # C10b: yard pieces at Tess's workshop (the carpenter, decor key "carpenter"; c10b_10_03), exterior parts at Gideon's (he builds the

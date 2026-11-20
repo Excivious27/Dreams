@@ -295,7 +295,7 @@ static func stock(shop: String) -> Array:
 	var every := maxi(1, int((data().get("shop_days", {}) as Dictionary).get(shop, 1)))
 	var period := int(GameState.run.get("day", 1)) / every
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash("%s:%d:%d" % [shop, period, int(GameState.run.get("seed", 0))])
+	rng.seed = hash("%s:%d" % [shop, period])  # c10b_14_14: day-only, so a co-op guest sees the host's shelf
 	var left := pool.duplicate()
 	var out: Array = []
 	while out.size() < slots and not left.is_empty():
