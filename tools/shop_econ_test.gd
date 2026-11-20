@@ -99,5 +99,18 @@ func _run() -> void:
 	check(int(mountain.mrock_regrow("stone")) < int(mountain.mrock_regrow("iron")), "ore rocks take longer to come back")
 	check(int(mountain.pick_damage()) >= 1, "pick damage")
 
+	# The Valley Fund: a repeatable late sink with marks and friendship.
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	check(Shops.fund_next() == 0, "fund starts at its first mark")
+	check(Shops.fund_add(4999).is_empty(), "no project below the mark")
+	var got := Shops.fund_add(1)
+	check(got == [0] and GameState.run["flags"].has("fund_lamps"), "first project paid at 5,000")
+	check(Shops.fund_next() == 1, "fund moves to the next mark")
+	check(Shops.fund_add(1000000).size() == Shops.FUND.size() - 1 and Shops.fund_next() == -1, "a big gift completes the rest once")
+	check(Shops.fund_add(10).is_empty(), "no project twice")
+	check(Shops.fund_status() == "complete", "fund status complete")
+	GameState.run["arc"] = "gangsters"
+	check(Shops.fund_name() == "Neighbourhood Fund", "gangster fund name")
+
 	print("shop_econ_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

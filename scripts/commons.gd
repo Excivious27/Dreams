@@ -690,6 +690,7 @@ static func is_produce(id: String) -> bool:
 ## (neighbours take them), never back on sale.
 const STAND_MARKUP := 1.35
 const PANTRY_TAKE := 40  # donated pieces neighbours take a night
+const COMPOST_DAY_CAP := 5  # fertilizer the compost makes for you a day
 const MARKET_BONUS := 1.25
 
 
@@ -901,9 +902,15 @@ static func compost(m: GameMap) -> void:
 	if GameState.count_any("#veg") >= 3:
 		opts.append("Add 3 vegetable scraps (→ 1 fertilizer)")
 		acts.append("veg")
+	var cday: Array = st().get("compost_day", [0, 0])
+	if int(cday[0]) != int(GameState.run["day"]):
+		cday = [int(GameState.run["day"]), 0]
+	if int(cday[1]) >= COMPOST_DAY_CAP:
+		opts.clear()
+		acts.clear()  # a side source, not a fertilizer factory (C8 P6, c8_04_10)
 	opts.append("Leave it")
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Compost", "text": "Warm and busy with worms. It turns scraps into fertilizer, and drops a little in your share crate every few days by itself.", "choice": opts, "key": ""}])
+	d.say([{"who": "Compost", "text": "Warm and busy with worms. It turns scraps into fertilizer (up to %d a day), and drops a little in your share crate every few days by itself." % COMPOST_DAY_CAP, "choice": opts, "key": ""}])
 	await d.finished
 	if d.last_choice < 0 or d.last_choice >= acts.size():
 		return
@@ -911,6 +918,8 @@ static func compost(m: GameMap) -> void:
 		GameState.add_item("fiber", -5)
 	else:
 		GameState.take_any("#veg", 3)
+	cday[1] = int(cday[1]) + 1
+	st()["compost_day"] = cday
 	Music.instance(m.get_tree()).sfx("dig", "pickup")
 	m.give("fertilizer", 1)
 	m.xp("farming", 2)

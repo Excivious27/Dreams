@@ -281,11 +281,16 @@ static func hall(m: GameMap) -> void:
 			var have := Builds.permitted(id) >= int(nd["tier"])
 			opts.append("%s%s permit · %s%s" % ["✓ " if have else "", str(nd["name"]), Money.fmt(Builds.permit_price(id)), "" if not have else " (held)"])
 			ids.append(id)
+		var fund_i := opts.size()
+		opts.append("%s (%s)" % [fund_name(), fund_status()])
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "Mayor Alder", "text": "Permits. %s on you.%s" % [Money.fmt(int(r["crystals"])), "  (friends of the office pay 20% less)" if GameState.has_friend_perk("alder", 4) else ""], "choice": opts, "key": ""}])
 		await d.finished
 		var i := d.last_choice
+		if i == fund_i:
+			await fund(m)
+			continue
 		if i < 0 or i >= ids.size():
 			return
 		var msg := Builds.buy_permit(str(ids[i]))
@@ -293,4 +298,93 @@ static func hall(m: GameMap) -> void:
 		if msg.begins_with("Permit stamped"):
 			Music.instance(m.get_tree()).sfx("coin", "pickup")
 
+
+# ---- the Valley Fund (C8 P6, c8_14): a long, repeatable money sink ------------
+## Year-2/3 goal at the town hall: chip in any amount; each mark the town reaches
+## brings a project, a letter from Alder and +FUND_FRIEND with every villager.
+## [id, penguin name, gangster name, running total needed].
+const FUND := [
+	["lamps", "new plaza lamps", "new street lamps", 5000],
+	["bridge", "the river bridge repaired", "the river bridge fixed up", 15000],
+	["bandstand", "a festival bandstand", "a block-party stage", 40000],
+	["library", "a new library wing", "a new library wing", 90000],
+	["fireworks", "founders' fireworks every year", "fireworks over the block every year", 200000],
+]
+const FUND_FRIEND := 10
+const FUND_STEPS := [500, 5000]
+
+
+static func fund_name() -> String:
+	return "Valley Fund" if GameState.is_penguins() else "Neighbourhood Fund"
+
+
+static func fund_paid() -> int:
+	return int(GameState.run.get("fund_paid", 0))
+
+
+## The next mark the fund is saving for (-1 = all done).
+static func fund_next() -> int:
+	for i in FUND.size():
+		if fund_paid() < int(FUND[i][3]):
+			return i
+	return -1
+
+
+static func fund_status() -> String:
+	var n := fund_next()
+	if n < 0:
+		return "complete"
+	return "%s / %s" % [Money.fmt(fund_paid()), Money.fmt(int(FUND[n][3]))]
+
+
+static func _fund_what(i: int) -> String:
+	return str(FUND[i][1] if GameState.is_penguins() else FUND[i][2])
+
+
+## Adds n to the fund and returns the projects that just completed (tests use it).
+static func fund_add(n: int) -> Array:
+	var before := fund_next()
+	GameState.run["fund_paid"] = fund_paid() + n
+	var done: Array = []
+	for i in FUND.size():
+		if (before < 0 or i >= before) and fund_paid() >= int(FUND[i][3]) and not GameState.run["flags"].has("fund_" + str(FUND[i][0])):
+			GameState.run["flags"]["fund_" + str(FUND[i][0])] = true
+			done.append(i)
+			for npc in GameState.npcs:
+				GameState.add_friend(str(npc), FUND_FRIEND)
+			Mail.send("Mayor Alder", "The %s paid for %s. People keep asking who chipped in the most. I tell them. Thank you." % [fund_name(), _fund_what(i)], "chat")
+	return done
+
+
+static func fund(m: GameMap) -> void:
+	var n := fund_next()
+	if n < 0:
+		await m.say([{"who": "Mayor Alder", "text": "The %s is done. Every project paid for. The town won't forget it." % fund_name()}])
+		return
+	var have := int(GameState.run["crystals"])
+	var opts: Array = []
+	var amts: Array = []
+	for a: int in FUND_STEPS:
+		if have >= a:
+			opts.append("Give %s" % Money.fmt(a))
+			amts.append(a)
+	var left := int(FUND[n][3]) - fund_paid()
+	if have > 0:
+		opts.append("Give %s" % Money.fmt(mini(have, left)))
+		amts.append(mini(have, left))
+	opts.append("Back")
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": "Mayor Alder", "text": "The %s: %s raised. Next up, %s at %s. Every bit helps." % [fund_name(), Money.fmt(fund_paid()), _fund_what(n), Money.fmt(int(FUND[n][3]))], "choice": opts, "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice >= amts.size():
+		return
+	var give := int(amts[d.last_choice])
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - give
+	Music.instance(m.get_tree()).sfx("cash", "coin")
+	var done := fund_add(give)
+	if done.is_empty():
+		m.hud.toast("%s raised for the %s." % [Money.fmt(fund_paid()), fund_name()], Color(1, 0.9, 0.5))
+	else:
+		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+		await m.say([{"who": "Mayor Alder", "text": "That does it: %s. I'll have the crew start in the morning. Everyone in town will hear who made it happen." % _fund_what(int(done[-1]))}])
 
