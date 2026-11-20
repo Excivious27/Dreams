@@ -1376,7 +1376,10 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 	if tag != "" and not frame_nums:
 		# The opponent's whole name along the row's free top strip, never cut (c3_17 #4).
 		var tw := 9 * 24.0 - 4.0
-		c.draw_string(_font, Vector2(9, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, tw, fit_size(tag, tw, 6), Color(0.6, 0.85, 1))
+		var fs := fit_size(tag, tw, 6)
+		var wide := _font.get_string_size(tag, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x if _font != null else 30.0
+		c.draw_rect(Rect2(8.5, top + 0.5, wide + 3.0, 8.0), bg)  # a plate so the frame lines don't cut the name
+		c.draw_string(_font, Vector2(9.5, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, tw, fs, Color(0.6, 0.85, 1))
 
 
 ## The ten-pin chart (standing / down) beside the lane.

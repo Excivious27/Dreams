@@ -9,6 +9,7 @@
 - Community farm builds take 2-4 nights each (shed 2, beds 2, well 3, orchard 2, greenhouse 4): nightly progress lines in the sleep report, journal/board "night 2 of 4", Hazel's words, and half-built pieces on the map (new art cf_build_frame/well/greenhouse/sawhorse, tools/slice_r13_c3_p5.py).
 - Good friends (4+ hearts) let you into their home until midnight, with a wave-in toast (TownHours.late_friend).
 - Tickets drawn as a ticket stub (`Tickets.draw_ticket/draw_amount`), no more ♦ next to crystals' ◆. Bowling versus sheet shows the opponent's full name (fitted). Lambda-capture-freed errors fixed (weakrefs in RecAudio.lane_sound, CfVolunteers._back). cf_volunteer_test is deterministic (game-time waits, seed, --fixed-fps 60).
+- Whack-a-Snitch critters: original fedora snitch rats (plain, gold, hard hat, dizzy) for the gangster arc (art/gen/arcade/whack_snitch*, `ArcadeWhack.sprite_for`). Screenshots checked: whack play, prize counter stubs, versus sheet (full "MAYOR ALDER" on a plate), half-built shed/well/greenhouse on the farm.
 - Tests: new tools/rec_reno_test.gd; extended gang_flavour_test, town_first_test, commons_test.
 ## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
 - Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
