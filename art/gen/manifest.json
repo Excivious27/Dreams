@@ -33753,6 +33753,56 @@
    "w": 46
   }
  },
+ "characters/npc_wren_jr_base": {
+  "idle": {
+   "cell_h": 63,
+   "cell_w": 43,
+   "file": "characters/npc_wren_jr_base/idle.png",
+   "frames": 1,
+   "h": 63,
+   "w": 43
+  },
+  "idle_side": {
+   "cell_h": 64,
+   "cell_w": 46,
+   "file": "characters/npc_wren_jr_base/idle_side.png",
+   "frames": 1,
+   "h": 64,
+   "w": 46
+  },
+  "idle_up": {
+   "cell_h": 64,
+   "cell_w": 44,
+   "file": "characters/npc_wren_jr_base/idle_up.png",
+   "frames": 1,
+   "h": 64,
+   "w": 44
+  },
+  "walk": {
+   "cell_h": 67,
+   "cell_w": 49,
+   "file": "characters/npc_wren_jr_base/walk.png",
+   "frames": 4,
+   "h": 67,
+   "w": 196
+  },
+  "walk_down": {
+   "cell_h": 69,
+   "cell_w": 46,
+   "file": "characters/npc_wren_jr_base/walk_down.png",
+   "frames": 4,
+   "h": 69,
+   "w": 184
+  },
+  "walk_up": {
+   "cell_h": 72,
+   "cell_w": 48,
+   "file": "characters/npc_wren_jr_base/walk_up.png",
+   "frames": 4,
+   "h": 72,
+   "w": 192
+  }
+ },
  "characters/npc_young_farmer": {
   "idle": {
    "cell_h": 48,
