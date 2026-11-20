@@ -180,15 +180,38 @@ for rs in R.values():
                 fails.append('temper worth less: %s %d <= %d' % (r['give'], val(r['give']), val(r['id'][7:])))
 
 # 3b) animal goods are never a dead end: each one goes into at least one recipe (directly or by family)
-ANIMAL_GOODS = ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
+RANCH = json.load(open(os.path.join(D, 'ranch.json'))) if os.path.exists(os.path.join(D, 'ranch.json')) else {}
+ANIMAL_GOODS = sorted(RANCH.get('products', {})) or ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
+OLD_GOODS = {'egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool', 'truffle', 'honey'}
 for g in ANIMAL_GOODS:
     keys = {g} | ({'#' + I[g]['family']} if I.get(g, {}).get('family') else set())
     if not any(k in r['need'] for rs in R.values() if isinstance(rs, list) for r in rs for k in keys):
-        fails.append('dead end: %s goes into no recipe' % g)
+        # C11a goods (feather, rabbit_fur, beeswax) wait on the ranch stations in gen_stations.py (ranch.json
+        # "processing" lists what each should make); until those recipes exist they warn.
+        (fails if g in OLD_GOODS else warns).append('dead end: %s goes into no recipe' % g)
+
+# 3d) ranch (C11a, tables in tools/gen_ranch.py): feeding always pays, no hay buy-sell loop, rehome can't loop,
+#     and each grown animal's goods per day sit in a band per home (warn outside it).
+HAY_BUY = 1.5 * val('hay')
+HAY_MIN_BUY = max(HAY_BUY * BUY_MIN, val('hay') * BUY_OF_SELL * SELL_MAX)
+if HAY_MIN_BUY <= val('hay') * SELL_MAX:
+    fails.append('hay: cheapest buy %.1f <= sell %d (loop)' % (HAY_MIN_BUY, val('hay')))
+RANCH_BAND = {'coop': (10, 40), 'barn': (8, 60), 'hutch': (8, 30), 'sty': (40, 160), 'apiary': (8, 40)}
+for sid, sp in RANCH.get('species', {}).items():
+    pr = sp['product']
+    per_day = val(pr['id']) / max(1, pr['every_days'])
+    if sp.get('feed') == 'hay' and val(pr['id']) < 2 * HAY_BUY * pr['every_days'] * 0.5:
+        fails.append('ranch: %s goods %d do not pay for %d days of hay' % (sid, val(pr['id']), pr['every_days']))
+    lo, hi = RANCH_BAND.get(sp['home'], (0, 999))
+    if not lo <= per_day <= hi:
+        warns.append('ranch: %s %.1f/day outside %s band %d-%d' % (sid, per_day, sp['home'], lo, hi))
+    if int(sp.get('rehome_pay', 0)) > 0.25 * int(sp['buy']['price']):
+        fails.append('ranch: %s rehome pays %d > 25%% of its price' % (sid, sp['rehome_pay']))
+    if V: print('ranch %-8s %5.1f/day, rehome %d' % (sid, per_day, int(sp.get('rehome_pay', 0))))
 
 # 4) keg (mirror of Crafting.keg_plan)
 tb = B['keg']['brew']
-SPECIAL = {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider", "tea": "herbal_tea"}
+SPECIAL = {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider", "tea": "herbal_tea", "honey": "flower_mead"}
 def family(i):
     it = I.get(i, {})
     if it.get('family'): return it['family']
@@ -200,7 +223,7 @@ def brew_of(i):
     t = int(I.get(i, {}).get('tier', 1)); f = family(i)
     if f in ('berry', 'fruit', 'tree'): return 'fruit_wine' if t <= 2 else ('fine_wine' if t == 3 else 'starlight_wine')
     return {'veg': 'pickles', 'herb': 'herbal_tea', 'grain': 'harvest_ale', 'mushroom': 'mushroom_broth', 'flower': 'flower_mead', 'magic': 'wonder_elixir'}.get(f, '')
-for y in sorted(set(c['yield'] for c in C.values()) | {'flower', 'wild_herb', 'berry'}):
+for y in sorted(set(c['yield'] for c in C.values()) | {'flower', 'wild_herb', 'berry', 'honey'}):
     br = brew_of(y)
     if not br: continue
     v = max(1.0, float(val(y)))

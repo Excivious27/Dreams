@@ -22,6 +22,14 @@ Everything below shows a code-drawn stand-in today.
 
 - none
 
+## Skill node icons (0)
+
+- none
+
+## Ranch (0)
+
+- none
+
 ## Broken art to redraw (0)
 
 - none

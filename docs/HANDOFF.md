@@ -87,6 +87,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 C11a ranching core: 9 classic animals both arcs (gen_ranch, Ranch, RanchFarm), coop/barn/hutch/sty/apiary/silo tiers, grazing + silo feeder, goods with stars, breeding (no gender checks) + incubator, rehome (never meat), Ranching skill tree (14th), Mayo Machine + Honey Extractor, team animals (TeamAnimals/TeamBeast) + overnight Chores, Bramble, Animal Show/Best Egg, market stalls, 25 renders (slice_c11a); integration CI 2x PASS, final CI pending; report docs/reports/CONDUCT-11a.md, Guide 36.
 - 2026-11-20 12:45 CONDUCT 10b pushed (61 farmhouse styles, yard decorating with 169 outdoor pieces, Tess the carpenter, The Gilded Ace casino in Gilt City, wardrobe on every hero, shop rotation fix); CI c10b2 PASS.
 - 2026-11-20 10:55 CONDUCT 10a pushed (Decor catalogue 862 pieces incl. 373 new renders, decorate mode with rooms/walls/floors, catalogue + re-order + sets, wardrobe, decor shelves and loot); CI c10a PASS; deploy SW patch made idempotent.
 - 2026-11-20 09:40 CONDUCT 9 pushed (controllers on every screen, Steam Deck prep, haptics, save export/import codes+files, web deploy unblocked, compass routes, forest 3x lighter); CI c9c PASS.
