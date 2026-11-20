@@ -67,6 +67,8 @@ static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
 
 ## Who speaks the brief / win / lose lines: a crew member only once recruited.
 func _who() -> String:
+	if camp != "":
+		return Campaign.who(camp)  # per-campaign leader, always someone you've met (P1 hook)
 	var w := str(d.get("who", ""))
 	var id := w.to_lower().replace(" ", "_")
 	return w if not Crew.members().has(id) or Crew.recruited(id) else ""

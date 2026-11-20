@@ -25,7 +25,7 @@ const LOSE := {
 	"defend": "You lose every point, or your tickets run out.",
 	"": "Your tickets run out (they bleed while they hold more points), or you're knocked out.",
 }
-const CONTROLS := "Walk into a ring to take a point. USE on a banner you hold: build helpers, Upgrade, Fortify, Mend, Barrage (costs ◇ supply). RALLY (top left): guard posts, follow me, or send everyone to a point. Points you hold earn supply. Fall back: the ▼ exit at the bottom."
+const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). RALLY (top left) moves your helpers. Leave by the ▼ exit to fall back."
 
 var d: Dictionary = {}
 var mode := ""
@@ -34,6 +34,7 @@ var _arm := 0.0
 var _min_t := 0.0
 var _go: Button
 var _hide: Button
+var _later: Button
 var _rects: Array = []
 
 
@@ -125,7 +126,8 @@ func _ready() -> void:
 	hv.add_child(tl)
 	var brief := str(d.get("brief", ""))
 	if brief != "":
-		var who := str(d.get("who", ""))
+		var cid0 := str(d.get("campaign", ""))
+		var who := Campaign.who(cid0) if cid0 != "" else str(d.get("who", ""))
 		v.add_child(_label(("%s: \"%s\"" % [who, brief]) if who != "" else brief, 7, Color(0.95, 0.93, 0.88)))
 	v.add_child(_head("HOW TO WIN"))
 	v.add_child(_label(str(WIN.get(mode, WIN[""])), 7, Color(0.75, 1, 0.8)))
@@ -133,10 +135,10 @@ func _ready() -> void:
 	v.add_child(_label(str(LOSE.get(mode, LOSE[""])), 7, Color(1, 0.8, 0.75)))
 	var army := _army_line()
 	if army != "":
-		v.add_child(_head("YOUR ARMY"))
+		v.add_child(_head("YOUR " + Campaign.force_word().to_upper()))
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
 	v.add_child(_head("CONTROLS"))
-	v.add_child(_label(CONTROLS, 6, Color(0.88, 0.88, 0.92)))
+	v.add_child(_label(CONTROLS, 7, Color(0.88, 0.88, 0.92)))
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 6)
@@ -158,12 +160,20 @@ func _ready() -> void:
 			GameState.run["flags"]["bb_hide_" + mode] = true
 			_close())
 		row.add_child(_hide)
+	# A way out (B): leave before the fight starts, at no cost.
+	_later = Button.new()
+	_later.text = "Not now"
+	_later.custom_minimum_size = Vector2(60, 24)
+	_later.add_theme_font_size_override("font_size", 7)
+	_later.focus_mode = Control.FOCUS_NONE
+	_later.pressed.connect(_not_now)
+	row.add_child(_later)
 	Music.instance(get_tree()).sfx("page", "pickup")
 	_track_rects.call_deferred()
 
 
 func _track_rects() -> void:
-	for b in [_go, _hide]:
+	for b in [_go, _hide, _later]:
 		if b != null and is_instance_valid(b):
 			var r := Rect2(b.global_position, b.size)
 			_rects.append(r)
@@ -204,8 +214,33 @@ func _process(delta: float) -> void:
 	_arm += delta
 	if _go:
 		_go.disabled = _arm < _min_t
-	if _arm >= _min_t and (Input.is_action_just_pressed("a") or Input.is_action_just_pressed("b")):
+	if _arm >= _min_t and Input.is_action_just_pressed("a"):
 		_close()
+	elif _arm >= 0.3 and Input.is_action_just_pressed("b"):
+		_not_now()
+
+
+## Back out before the fight: no loss, no morale cost; home to where you came from.
+func _not_now() -> void:
+	if not is_inside_tree():
+		return
+	var m := get_parent() as GameMap
+	var cid := str(d.get("campaign", ""))
+	if mode == "drill":
+		CampaignGate.drill_quit()
+	else:
+		Campaign.st()["fight"] = {}
+	var back: Array = d.get("back", [])
+	_arm = maxf(_arm, _min_t)
+	_close()
+	if m and is_instance_valid(m):
+		m.hud.toast("You can come back to this fight from the campaign map.", Color(1, 0.9, 0.6))
+		if cid != "":
+			Campaign.reopen_later(m.get_tree(), cid)
+		if back.size() >= 3:
+			m.go_to(str(back[0]), Vector2(float(back[1]) * GameMap.TILE, float(back[2]) * GameMap.TILE) if float(back[1]) > 0 else Vector2.ZERO, "down")
+		else:
+			m.go_to("farm", Vector2.ZERO, "down")
 
 
 func _close() -> void:

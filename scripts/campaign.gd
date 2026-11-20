@@ -554,6 +554,9 @@ static func finish(won: bool, supply_left: int) -> Array:
 		lines.append({"who": w, "text": ("%s is ours. The " + force_word() + " moves up. Morale %d (%s), supply ◇%d.") % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"])), int(s["supply"])]})
 		if not got.is_empty():
 			lines.append({"text": "+" + ", ".join(got)})
+		var fl := flavour(cid, nid, true)
+		if fl != "":
+			lines.insert(1, {"who": w, "text": fl})
 		if str(n.get("type", "")) == "gate":
 			lines.append_array(_unlock(cid))
 	else:
@@ -566,8 +569,38 @@ static func finish(won: bool, supply_left: int) -> Array:
 			s["at"] = "n0"
 			lines.append({"who": w, "text": "We're routed. Everyone back to %s to regroup. The ground we took is still ours." % str(node(cid, "n0").get("name", "camp"))})
 		else:
+			var lf := flavour(cid, nid, false)
+			if lf != "":
+				lines.append({"who": w, "text": lf})
 			lines.append({"who": w, "text": "We fall back from %s. Morale %d (%s). Rest at a camp, or try again." % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"]))]})
 	return lines
+
+
+## Penguin-arc colour after a campaign fight (Tom C3): the Grumps were Crystopia
+## crystals the Dark Crystal turned, so winning turns them back. Meow Pow Wow is
+## only mentioned once Nova knows it. Gangster fights need no extra line ("").
+static func flavour(cid: String, nid: String, won: bool) -> String:
+	if arc() != "penguins":
+		return ""
+	var n := node(cid, nid)
+	var typ := str(n.get("type", ""))
+	var i := absi(hash(cid + nid)) % 3
+	if not won:
+		return ["They're not bad, you know. They've forgotten what they were. We'll come back and remind them.",
+			"Their hearts are frozen hard today. Rest, and we'll try again.",
+			"The Dark Crystal's hold is strong here. Not for ever."][i]
+	if typ in ["boss", "gate"]:
+		var bk := boss_of(cid, nid)
+		var nm := str(GameState.enemy_data.get("enemies", {}).get(bk, {}).get("name", "Their captain"))
+		if Companion.meow_known():
+			return "%s sways, and when Nova's purr reaches it, the frown cracks. A crystal sits where it stood, glowing warm again." % nm
+		return "%s crumbles into a heap of warm, glowing crystal. Whatever it was before the Dark Crystal got it, it's free now." % nm
+	var lines := ["The Grumps we beat shimmer and turn back into crystals. Somewhere inside, they remembered.",
+		"One by one, the frowns melt. Little crystals lie in the grass where the Grumps stood.",
+		"A Grump stops mid-swing, blinks, and turns back into a crystal. Hearts melt, if you're patient."]
+	if Companion.meow_known():
+		lines[2] = "Nova's purr rolls over the field, and the last Grumps sit down and sparkle. That's what they were all along."
+	return lines[i]
 
 
 ## Walking off the field mid-fight: a retreat (morale, but no loss).
