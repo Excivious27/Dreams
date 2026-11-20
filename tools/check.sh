@@ -337,6 +337,9 @@ python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="
 python3 tools/drink_rule_test.py || { echo "Drink rule failed"; exit 1; }
 
+echo "== economy: no money loops, crops and brews inside their bands =="
+python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }
+
 echo "== music: every map has a song; web streaming works offline =="
 mmout="$("$GODOT" --headless --path . -s res://tools/music_map_test.gd 2>&1)"
 echo "$mmout" | grep -E "FAIL|SCRIPT ERROR|music_map_test" | head -n 40 || true

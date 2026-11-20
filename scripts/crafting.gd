@@ -16,11 +16,13 @@ extends RefCounted
 ## Times are absolute game minutes, so jobs run while you sleep.
 
 const ALIAS := {"smith": ["furnace", "anvil", "tannery"], "alchemy": ["cauldron"]}
-const TOWN_KEEPER := {"furnace": "gideon", "anvil": "gideon", "tannery": "rook", "cauldron": "wren", "mill": "orla", "kitchen": "posy", "workbench": "hazel", "loom": "lumi", "jeweler": "ivy", "kiln": "granite"}
+const TOWN_KEEPER := {"furnace": "gideon", "anvil": "gideon", "tannery": "gideon", "cauldron": "wren", "mill": "orla", "kitchen": "posy", "workbench": "hazel", "loom": "lumi", "jeweler": "ivy", "kiln": "granite"}
+## A town bench (Gideon's forge, Wren's pot...) tops out at this tier (recipe tier 3): owning the station pays (C8 P2).
+const TOWN_TIER_CAP := 2
 const SPEED := [1.0, 0.85, 0.7, 0.55]
 const BONUS := [0.0, 0.05, 0.10, 0.20]
 const BASE_MINUTES := {1: 20, 2: 45, 3: 90, 4: 180, 5: 360}
-const STATION_SPEED := {"workbench": 1.0, "furnace": 1.2, "anvil": 1.4, "kitchen": 0.6, "cauldron": 1.2, "mill": 0.8, "loom": 1.2, "kiln": 1.5, "sawmill": 0.7, "tannery": 1.2, "press": 1.5, "jeweler": 1.6, "garage": 3.0, "launchpad": 3.0, "print_shop": 1.0, "armory": 1.6, "soda": 0.6, "resonator": 1.0, "shaper": 1.6, "litter": 0.8, "campfire": 0.5}
+const STATION_SPEED := {"workbench": 1.0, "furnace": 1.2, "anvil": 1.4, "kitchen": 0.6, "cauldron": 1.2, "mill": 0.8, "loom": 1.2, "kiln": 1.5, "sawmill": 0.7, "tannery": 1.2, "press": 1.5, "jeweler": 1.6, "garage": 3.0, "launchpad": 3.0, "print_shop": 1.0, "armory": 1.6, "soda": 0.6, "resonator": 1.0, "shaper": 1.6, "litter": 0.8, "campfire": 0.5, "terminal": 1.2, "clinic": 1.6, "robotics": 1.6}
 
 
 # ---- station facts -------------------------------------------------------------
@@ -54,7 +56,7 @@ static func own_tier(station: String) -> int:
 static func town_tier(station: String) -> int:
 	var keeper := str(TOWN_KEEPER.get(station, ""))
 	var t := 1 + int(GameState.friend_hearts(keeper) / 3) if keeper != "" else 1
-	return clampi(mini(t, GameState.progress_tier() + 1), 1, 3)
+	return clampi(mini(t, GameState.progress_tier() + 1), 1, TOWN_TIER_CAP)
 
 
 static func cap(tier: int) -> int:
@@ -94,17 +96,45 @@ static func _all(station: String) -> Array:
 
 
 ## The keg takes anything you grow: one recipe per kind of produce in your pack.
+## Each brew is worth about mult x its produce (table in buildings.json keg.brew, from gen_stations.py):
+## cheap produce takes several per brew, dear produce gives several brews or the family's premium good.
 static func _keg_recipes() -> Array:
 	var out: Array = []
 	var ids: Array = GameState.run["inventory"].keys()
 	ids.sort()
 	for id in ids:
-		var brew := GameState.keg_brew(str(id))
-		if brew == "" or GameState.count(str(id)) <= 0:
+		if GameState.count(str(id)) <= 0:
+			continue
+		var kb := keg_plan(str(id))
+		if kb.is_empty():
 			continue
 		var t := clampi(int(GameState.items.get(str(id), {}).get("tier", 1)), 1, 5)
-		out.append({"id": "brew_" + str(id), "name": "%s → %s" % [GameState.item_name(str(id)), GameState.item_name(brew)], "need": {str(id): 1}, "give": brew, "tier": t, "days": 1 + mini(3, t)})
+		var k := int(kb["k"])
+		var n := int(kb["n"])
+		var nm := "%s%s → %s%s" % ["%d " % k if k > 1 else "", GameState.item_name(str(id)), "%d " % n if n > 1 else "", GameState.item_name(str(kb["give"]))]
+		var rc := {"id": "brew_" + str(id), "name": nm, "need": {str(id): k}, "give": str(kb["give"]), "tier": t, "days": 1 + mini(3, t)}
+		if n > 1:
+			rc["n"] = n
+		out.append(rc)
 	return out
+
+
+## {give, k (produce per brew), n (brews out)} for one produce id, or {} if it can't be brewed.
+static func keg_plan(id: String) -> Dictionary:
+	var brew := GameState.keg_brew(id)
+	if brew == "":
+		return {}
+	var tb: Dictionary = Builds.all().get("keg", {}).get("brew", {})
+	var v := maxf(1.0, float(GameState.items.get(id, {}).get("value", 1)))
+	var prem: Dictionary = tb.get("premium", {})
+	var fam := GameState.family(id)
+	if v >= float(tb.get("premium_at", 1e9)) and prem.has(fam) and GameState.items.has(str(prem[fam])):
+		brew = str(prem[fam])
+	var d := maxf(1.0, float(GameState.items.get(brew, {}).get("value", 1)))
+	var mult := float(tb.get("mult", 2.0))
+	if d >= mult * v:
+		return {"give": brew, "k": maxi(1, ceili(d / (float(tb.get("cap", 3.0)) * v))), "n": 1}
+	return {"give": brew, "k": 1, "n": clampi(roundi(mult * v / d), 1, int(tb.get("max_out", 12)))}
 
 
 ## "" if you can make it here, else what's missing ("Needs Smithy", "Needs Mining Lv 5").

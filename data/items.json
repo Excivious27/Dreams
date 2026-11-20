@@ -64,7 +64,7 @@
   "value": 10,
   "crop": "strawberry",
   "rarity": "common",
-  "tier": 1
+  "tier": 2
  },
  "corn_seed": {
   "name": "Corn Seeds",
@@ -72,7 +72,7 @@
   "value": 12,
   "crop": "corn",
   "rarity": "common",
-  "tier": 1
+  "tier": 2
  },
  "dream_seed": {
   "name": "Dream Flower Seeds",
@@ -80,7 +80,7 @@
   "value": 40,
   "crop": "dreamflower",
   "rarity": "common",
-  "tier": 1
+  "tier": 4
  },
  "turnip": {
   "name": "Turnip",
@@ -95,7 +95,7 @@
   "type": "crop",
   "value": 20,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "family": "berry"
  },
  "corn": {
@@ -103,7 +103,7 @@
   "type": "crop",
   "value": 22,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "family": "grain"
  },
  "dreamflower": {
@@ -111,7 +111,7 @@
   "type": "crop",
   "value": 110,
   "rarity": "common",
-  "tier": 1,
+  "tier": 4,
   "family": "flower"
  },
  "berry": {
@@ -152,7 +152,7 @@
   "value": 74,
   "heal": 2,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "family": "tree"
  },
  "crystal_bloom": {
@@ -244,21 +244,21 @@
  "copper_bar": {
   "name": "Copper Bar",
   "type": "material",
-  "value": 85,
+  "value": 77,
   "rarity": "common",
   "tier": 1
  },
  "iron_bar": {
   "name": "Iron Bar",
   "type": "material",
-  "value": 140,
+  "value": 148,
   "rarity": "uncommon",
   "tier": 2
  },
  "sprinkler": {
   "name": "Sprinkler",
   "type": "placeable",
-  "value": 180,
+  "value": 270,
   "rarity": "common",
   "tier": 1,
   "desc": "Place it on the farm (hold it, USE on open ground). Waters the 4 tiles beside it every morning. USE it again to pick it up."
@@ -322,7 +322,7 @@
  "dream_tonic": {
   "name": "Dream Tonic",
   "type": "potion",
-  "value": 260,
+  "value": 408,
   "heal": 6,
   "energy": 60,
   "rarity": "rare",
@@ -416,7 +416,7 @@
  "potion": {
   "name": "Red Potion",
   "type": "potion",
-  "value": 30,
+  "value": 32,
   "heal": 4,
   "rarity": "common",
   "tier": 1
@@ -537,15 +537,15 @@
   "type": "seed",
   "value": 30,
   "rarity": "common",
-  "tier": 2,
+  "tier": 3,
   "crop": "melon"
  },
  "melon": {
   "name": "Melon",
   "type": "crop",
-  "value": 90,
+  "value": 140,
   "rarity": "common",
-  "tier": 2,
+  "tier": 3,
   "family": "fruit"
  },
  "wheat_seed": {
@@ -561,7 +561,7 @@
   "type": "fruit",
   "value": 22,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "tree"
  },
@@ -604,7 +604,7 @@
   "type": "fruit",
   "value": 240,
   "rarity": "epic",
-  "tier": 4,
+  "tier": 3,
   "heal": 1,
   "family": "fruit"
  },
@@ -697,14 +697,14 @@
  "silver_bar": {
   "name": "Silver Bar",
   "type": "bar",
-  "value": 220,
+  "value": 253,
   "rarity": "rare",
   "tier": 3
  },
  "gold_bar": {
   "name": "Gold Bar",
   "type": "bar",
-  "value": 320,
+  "value": 368,
   "rarity": "rare",
   "tier": 3
  },
@@ -924,7 +924,7 @@
  "bread": {
   "name": "Bread",
   "type": "food",
-  "value": 30,
+  "value": 34,
   "rarity": "common",
   "tier": 1,
   "heal": 1,
@@ -933,7 +933,7 @@
  "salad": {
   "name": "Garden Salad",
   "type": "food",
-  "value": 40,
+  "value": 50,
   "rarity": "common",
   "tier": 1,
   "heal": 2,
@@ -942,7 +942,7 @@
  "fish_stew": {
   "name": "Fish Stew",
   "type": "food",
-  "value": 90,
+  "value": 106,
   "rarity": "uncommon",
   "tier": 2,
   "heal": 3,
@@ -960,7 +960,7 @@
  "pumpkin_soup": {
   "name": "Pumpkin Soup",
   "type": "food",
-  "value": 110,
+  "value": 138,
   "rarity": "uncommon",
   "tier": 2,
   "heal": 3,
@@ -969,7 +969,7 @@
  "truffle_pasta": {
   "name": "Truffle Pasta",
   "type": "food",
-  "value": 260,
+  "value": 282,
   "rarity": "rare",
   "tier": 3,
   "heal": 5,
@@ -978,7 +978,7 @@
  "moon_cake": {
   "name": "Moon Cake",
   "type": "food",
-  "value": 400,
+  "value": 663,
   "rarity": "epic",
   "tier": 4,
   "heal": 6,
@@ -987,7 +987,7 @@
  "herb_remedy": {
   "name": "Herb Remedy",
   "type": "food",
-  "value": 45,
+  "value": 78,
   "rarity": "common",
   "tier": 1,
   "heal": 3,
@@ -996,14 +996,14 @@
  "fertilizer": {
   "name": "Fertilizer",
   "type": "craft",
-  "value": 20,
+  "value": 7,
   "rarity": "common",
   "tier": 1
  },
  "sprinkler_quality": {
   "name": "Quality Sprinkler",
   "type": "placeable",
-  "value": 300,
+  "value": 1037,
   "rarity": "rare",
   "tier": 3,
   "desc": "Waters the 8 tiles around it every morning."
@@ -1011,7 +1011,7 @@
  "sprinkler_iridium": {
   "name": "Iridium Sprinkler",
   "type": "placeable",
-  "value": 1500,
+  "value": 1959,
   "rarity": "epic",
   "tier": 4,
   "desc": "Waters a 5x5 square around it every morning."
@@ -1061,7 +1061,7 @@
  "crystal_lens": {
   "name": "Crystal Lens",
   "type": "craft",
-  "value": 260,
+  "value": 391,
   "rarity": "rare",
   "tier": 3
  },
@@ -1111,7 +1111,7 @@
   "slot": "head",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 335,
   "stats": {
    "defense": 2
   },
@@ -1157,7 +1157,7 @@
  "iron_mail": {
   "name": "Iron Mail",
   "type": "equip",
-  "value": 600,
+  "value": 670,
   "rarity": "rare",
   "tier": 3,
   "slot": "body",
@@ -1337,7 +1337,7 @@
   "type": "fruit",
   "value": 26,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "tree"
  },
@@ -1354,7 +1354,7 @@
   "type": "fruit",
   "value": 22,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "tree"
  },
@@ -1371,7 +1371,7 @@
   "type": "fruit",
   "value": 26,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "tree"
  },
@@ -1396,7 +1396,7 @@
   "type": "fruit",
   "value": 26,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "berry"
  },
@@ -1405,7 +1405,7 @@
   "type": "fruit",
   "value": 22,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "berry"
  },
@@ -1414,7 +1414,7 @@
   "type": "fruit",
   "value": 22,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "berry"
  },
@@ -1423,7 +1423,7 @@
   "type": "fruit",
   "value": 74,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "tree"
  },
@@ -1432,7 +1432,7 @@
   "type": "fruit",
   "value": 36,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "fruit"
  },
@@ -1441,7 +1441,7 @@
   "type": "fruit",
   "value": 48,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "fruit"
  },
@@ -1450,7 +1450,7 @@
   "type": "fruit",
   "value": 26,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "fruit"
  },
@@ -1459,7 +1459,7 @@
   "type": "fruit",
   "value": 65,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "tree"
  },
@@ -1476,7 +1476,7 @@
   "type": "fruit",
   "value": 47,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "fruit"
  },
@@ -1485,7 +1485,7 @@
   "type": "fruit",
   "value": 65,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "tree"
  },
@@ -1494,7 +1494,7 @@
   "type": "fruit",
   "value": 16,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "berry"
  },
@@ -1511,7 +1511,7 @@
   "type": "fruit",
   "value": 65,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "berry"
  },
@@ -1520,7 +1520,7 @@
   "type": "fruit",
   "value": 65,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "heal": 1,
   "family": "tree"
  },
@@ -1585,7 +1585,7 @@
   "type": "fruit",
   "value": 56,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "heal": 2,
   "family": "fruit"
  },
@@ -1594,7 +1594,7 @@
   "type": "fruit",
   "value": 47,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "heal": 2,
   "family": "fruit"
  },
@@ -1603,7 +1603,7 @@
   "type": "fruit",
   "value": 65,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "heal": 2,
   "family": "tree"
  },
@@ -1612,7 +1612,7 @@
   "type": "fruit",
   "value": 74,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "heal": 2,
   "family": "tree"
  },
@@ -1645,7 +1645,7 @@
   "type": "fruit",
   "value": 74,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "heal": 2,
   "family": "tree"
  },
@@ -1670,7 +1670,7 @@
   "type": "fruit",
   "value": 398,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 4,
   "heal": 2,
   "family": "fruit"
  },
@@ -1687,7 +1687,7 @@
   "type": "fruit",
   "value": 156,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 4,
   "heal": 2,
   "family": "berry"
  },
@@ -1792,7 +1792,7 @@
   "type": "fruit",
   "value": 174,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 4,
   "heal": 2,
   "family": "fruit"
  },
@@ -2297,7 +2297,7 @@
   "type": "crop",
   "value": 44,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "veg"
  },
@@ -2385,7 +2385,7 @@
   "type": "crop",
   "value": 18,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "grain"
  },
@@ -2418,7 +2418,7 @@
   "type": "crop",
   "value": 14,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "veg"
  },
@@ -2436,7 +2436,7 @@
   "type": "crop",
   "value": 18,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "veg"
  },
@@ -2489,7 +2489,7 @@
   "type": "crop",
   "value": 36,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "veg"
  },
@@ -2498,7 +2498,7 @@
   "type": "crop",
   "value": 44,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "heal": 1,
   "family": "veg"
  },
@@ -2523,7 +2523,7 @@
   "type": "crop",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "heal": 2,
   "family": "veg"
  },
@@ -2550,7 +2550,7 @@
   "type": "crop",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "heal": 2,
   "family": "veg"
  },
@@ -2575,7 +2575,7 @@
   "type": "crop",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "heal": 2,
   "family": "veg"
  },
@@ -3302,7 +3302,7 @@
   "type": "flower",
   "value": 40,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "family": "flower"
  },
  "tulip": {
@@ -3514,7 +3514,7 @@
   "type": "herb",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "family": "herb"
  },
  "basil": {
@@ -3522,7 +3522,7 @@
   "type": "herb",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "family": "herb"
  },
  "thyme": {
@@ -3558,7 +3558,7 @@
   "type": "herb",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "family": "herb"
  },
  "parsley": {
@@ -3566,7 +3566,7 @@
   "type": "herb",
   "value": 35,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "family": "herb"
  },
  "chives": {
@@ -3700,7 +3700,7 @@
  "tea_leaf": {
   "name": "Tea Leaf",
   "type": "herb",
-  "value": 35,
+  "value": 30,
   "rarity": "uncommon",
   "tier": 2
  },
@@ -3730,7 +3730,7 @@
   "type": "herb",
   "value": 123,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "family": "herb"
  },
  "moonflower": {
@@ -3738,7 +3738,7 @@
   "type": "flower",
   "value": 380,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 4,
   "family": "flower"
  },
  "sunflower_gold": {
@@ -4245,7 +4245,7 @@
   "type": "seed",
   "value": 4,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "crop": "rice"
  },
  "sunflower_seed": {
@@ -4261,7 +4261,7 @@
   "type": "seed",
   "value": 4,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "crop": "cotton"
  },
  "cabbage_seed": {
@@ -4427,9 +4427,9 @@
  "grape_seed": {
   "name": "Grape Seeds",
   "type": "seed",
-  "value": 11,
+  "value": 40,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "crop": "grape"
  },
  "apple_seed": {
@@ -4613,7 +4613,7 @@
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 1,
   "crop": "flax"
  },
  "chia_seed": {
@@ -4789,7 +4789,7 @@
   "type": "seed",
   "value": 40,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 2,
   "crop": "hops"
  },
  "aloe_seed": {
@@ -4813,7 +4813,7 @@
   "type": "seed",
   "value": 40,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 4,
   "crop": "lotus"
  },
  "watercress_seed": {
@@ -5323,7 +5323,7 @@
   "slot": "head",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 143,
   "stats": {
    "defense": 1
   },
@@ -5347,7 +5347,7 @@
   "slot": "body",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 262,
   "stats": {
    "defense": 1
   },
@@ -5371,7 +5371,7 @@
   "slot": "legs",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 203,
   "stats": {
    "defense": 1
   }
@@ -5393,7 +5393,7 @@
   "slot": "feet",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 143,
   "stats": {
    "defense": 1
   }
@@ -5415,7 +5415,7 @@
   "slot": "hands",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 84,
   "stats": {
    "energy": 5
   }
@@ -5437,7 +5437,7 @@
   "slot": "offhand",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 203,
   "stats": {
    "defense": 1
   }
@@ -5459,7 +5459,7 @@
   "slot": "back",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 143,
   "stats": {
    "speed": 1
   }
@@ -5482,7 +5482,7 @@
   "slot": "belt",
   "rarity": "common",
   "tier": 1,
-  "value": 40,
+  "value": 84,
   "stats": {
    "luck": 1
   }
@@ -5516,7 +5516,7 @@
   "slot": "body",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 438,
   "stats": {
    "defense": 2
   },
@@ -5540,7 +5540,7 @@
   "slot": "legs",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 335,
   "stats": {
    "defense": 2
   }
@@ -5562,7 +5562,7 @@
   "slot": "feet",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 231,
   "stats": {
    "defense": 2
   }
@@ -5606,7 +5606,7 @@
   "slot": "offhand",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 335,
   "stats": {
    "defense": 2
   }
@@ -5628,7 +5628,7 @@
   "slot": "back",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 231,
   "stats": {
    "speed": 1
   }
@@ -5673,7 +5673,7 @@
   "slot": "head",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 534,
   "stats": {
    "defense": 3
   },
@@ -5697,7 +5697,7 @@
   "slot": "body",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 1043,
   "stats": {
    "defense": 3
   },
@@ -5721,7 +5721,7 @@
   "slot": "legs",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 788,
   "stats": {
    "defense": 3
   }
@@ -5743,7 +5743,7 @@
   "slot": "feet",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 534,
   "stats": {
    "defense": 3
   }
@@ -5765,7 +5765,7 @@
   "slot": "hands",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 279,
   "stats": {
    "energy": 10
   }
@@ -5787,7 +5787,7 @@
   "slot": "offhand",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 788,
   "stats": {
    "defense": 3
   }
@@ -5809,7 +5809,7 @@
   "slot": "back",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 534,
   "stats": {
    "speed": 1
   }
@@ -5832,7 +5832,7 @@
   "slot": "belt",
   "rarity": "uncommon",
   "tier": 2,
-  "value": 160,
+  "value": 279,
   "stats": {
    "luck": 2
   }
@@ -5854,7 +5854,7 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 378,
   "stats": {
    "defense": 3
   },
@@ -5878,7 +5878,7 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 732,
   "stats": {
    "defense": 3
   },
@@ -5902,7 +5902,7 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 555,
   "stats": {
    "defense": 3
   }
@@ -5924,7 +5924,7 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 378,
   "stats": {
    "defense": 3
   }
@@ -5968,7 +5968,7 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 555,
   "stats": {
    "defense": 3
   }
@@ -5990,7 +5990,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 378,
   "stats": {
    "speed": 1
   }
@@ -6035,7 +6035,7 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 539,
   "stats": {
    "defense": 4
   },
@@ -6059,7 +6059,7 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 1054,
   "stats": {
    "defense": 4
   },
@@ -6083,7 +6083,7 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 797,
   "stats": {
    "defense": 4
   }
@@ -6105,7 +6105,7 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 539,
   "stats": {
    "defense": 4
   }
@@ -6149,7 +6149,7 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 797,
   "stats": {
    "defense": 4
   }
@@ -6171,7 +6171,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 539,
   "stats": {
    "speed": 1
   }
@@ -6575,7 +6575,7 @@
  "steel_bar": {
   "name": "Steel Bar",
   "type": "bar",
-  "value": 160,
+  "value": 364,
   "rarity": "uncommon",
   "tier": 2
  },
@@ -6616,7 +6616,7 @@
  "flour": {
   "name": "Flour",
   "type": "material",
-  "value": 18,
+  "value": 20,
   "rarity": "common",
   "tier": 1,
   "desc": "Milled at the lake. Posy pays well for it."
@@ -6628,7 +6628,8 @@
   "rarity": "common",
   "tier": 1,
   "energy": 20,
-  "desc": "From the coop."
+  "desc": "From the coop.",
+  "family": "egg"
  },
  "milk": {
   "name": "Milk",
@@ -6637,7 +6638,8 @@
   "rarity": "common",
   "tier": 1,
   "energy": 25,
-  "desc": "From the barn."
+  "desc": "From the barn.",
+  "family": "milk"
  },
  "cheese": {
   "name": "Cheese",
@@ -6647,7 +6649,7 @@
   "tier": 2,
   "energy": 35,
   "heal": 1,
-  "desc": "Aged in the cellar."
+  "desc": "Pressed from fresh milk."
  },
  "wine": {
   "name": "Wine",
@@ -6736,7 +6738,7 @@
   "type": "forage",
   "value": 398,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 4,
   "desc": "Only grows where the crystal fell.",
   "family": "flower"
  },
@@ -6753,7 +6755,7 @@
   "type": "food",
   "value": 74,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "energy": 30,
   "desc": "Sal's lifeblood.",
   "family": "herb"
@@ -6763,7 +6765,7 @@
   "type": "food",
   "value": 56,
   "rarity": "common",
-  "tier": 1,
+  "tier": 3,
   "energy": 20,
   "desc": "Juniper's cure for most things.",
   "family": "herb"
@@ -6857,7 +6859,7 @@
  "mana_potion": {
   "name": "Mana Potion",
   "type": "potion",
-  "value": 60,
+  "value": 152,
   "rarity": "uncommon",
   "tier": 2,
   "mana": 20,
@@ -7149,7 +7151,8 @@
   "rarity": "common",
   "tier": 1,
   "energy": 32,
-  "heal": 0
+  "heal": 0,
+  "family": "milk"
  },
  "mushroom_stew": {
   "name": "Mushroom Stew",
@@ -7183,7 +7186,7 @@
   "type": "crop",
   "value": 40,
   "rarity": "common",
-  "tier": 2,
+  "tier": 3,
   "energy": 8,
   "family": "berry"
  },
@@ -7193,7 +7196,7 @@
   "crop": "tea_leaf",
   "value": 16,
   "rarity": "common",
-  "tier": 1
+  "tier": 2
  },
  "cotton": {
   "name": "Cotton",
@@ -7218,7 +7221,7 @@
   "type": "crop",
   "value": 48,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "energy": 8,
   "family": "veg"
  },
@@ -7228,12 +7231,12 @@
   "crop": "sugar_beet",
   "value": 17,
   "rarity": "common",
-  "tier": 1
+  "tier": 2
  },
  "lotus": {
   "name": "Lotus",
   "type": "crop",
-  "value": 120,
+  "value": 300,
   "rarity": "rare",
   "tier": 4,
   "energy": 8,
@@ -7244,7 +7247,7 @@
   "type": "crop",
   "value": 24,
   "rarity": "common",
-  "tier": 1,
+  "tier": 2,
   "energy": 8,
   "family": "veg"
  },
@@ -7254,14 +7257,14 @@
   "crop": "snow_pea",
   "value": 14,
   "rarity": "common",
-  "tier": 1
+  "tier": 2
  },
  "ghost_pepper": {
   "name": "Ghost Pepper",
   "type": "crop",
   "value": 90,
   "rarity": "rare",
-  "tier": 3,
+  "tier": 4,
   "energy": 8,
   "family": "veg"
  },
@@ -7271,14 +7274,14 @@
   "crop": "ghost_pepper",
   "value": 35,
   "rarity": "common",
-  "tier": 1
+  "tier": 4
  },
  "moon_melon": {
   "name": "Moon Melon",
   "type": "crop",
   "value": 400,
   "rarity": "legendary",
-  "tier": 11,
+  "tier": 5,
   "energy": 8,
   "family": "fruit"
  },
@@ -7288,7 +7291,7 @@
   "crop": "moon_melon",
   "value": 138,
   "rarity": "common",
-  "tier": 1
+  "tier": 5
  },
  "pup_collar_leather": {
   "name": "Leather Collar",
@@ -7349,7 +7352,7 @@
  },
  "pup_treat": {
   "name": "Pup Treat",
-  "value": 15,
+  "value": 18,
   "type": "food",
   "heal": 0,
   "energy": 0,
@@ -7838,7 +7841,7 @@
  "fine_wine": {
   "name": "Fine Wine",
   "type": "gift",
-  "value": 240,
+  "value": 306,
   "rarity": "uncommon",
   "tier": 3,
   "desc": "Alder keeps one bottle back for the fair toast. A trade good: sold and gifted, never drunk."
@@ -7926,7 +7929,7 @@
  "berry_jam_toast": {
   "name": "Jam on Toast",
   "type": "food",
-  "value": 60,
+  "value": 80,
   "rarity": "common",
   "tier": 1,
   "heal": 1,
@@ -7963,7 +7966,7 @@
  "tropical_smoothie": {
   "name": "Tropical Smoothie",
   "type": "food",
-  "value": 180,
+  "value": 198,
   "rarity": "uncommon",
   "tier": 3,
   "energy": 80
@@ -7990,7 +7993,7 @@
  "saffron_rice": {
   "name": "Saffron Rice",
   "type": "food",
-  "value": 210,
+  "value": 213,
   "rarity": "rare",
   "tier": 3,
   "heal": 3,
@@ -7999,7 +8002,7 @@
  "starlight_salad": {
   "name": "Starlight Salad",
   "type": "food",
-  "value": 520,
+  "value": 1304,
   "rarity": "rare",
   "tier": 4,
   "heal": 5,
@@ -8057,49 +8060,49 @@
  "wheel": {
   "name": "Cart Wheel",
   "type": "craft",
-  "value": 90,
+  "value": 258,
   "rarity": "uncommon",
   "tier": 2
  },
  "veneer": {
   "name": "Fine Veneer",
   "type": "craft",
-  "value": 160,
+  "value": 167,
   "rarity": "rare",
   "tier": 3
  },
  "ironwood_beam": {
   "name": "Ironwood Beam",
   "type": "craft",
-  "value": 420,
+  "value": 506,
   "rarity": "epic",
   "tier": 4
  },
  "dark_bar": {
   "name": "Shadowsteel Bar",
   "type": "bar",
-  "value": 520,
+  "value": 564,
   "rarity": "epic",
   "tier": 4
  },
  "moon_bar": {
   "name": "Moonsilver Bar",
   "type": "bar",
-  "value": 2400,
+  "value": 2652,
   "rarity": "legendary",
   "tier": 5
  },
  "nails": {
   "name": "Nails",
   "type": "craft",
-  "value": 7,
+  "value": 10,
   "rarity": "common",
   "tier": 1
  },
  "horseshoe": {
   "name": "Horseshoe",
   "type": "craft",
-  "value": 80,
+  "value": 98,
   "rarity": "common",
   "tier": 1,
   "stats": {},
@@ -8108,63 +8111,63 @@
  "gear": {
   "name": "Gear",
   "type": "craft",
-  "value": 110,
+  "value": 171,
   "rarity": "uncommon",
   "tier": 2
  },
  "spring": {
   "name": "Spring",
   "type": "craft",
-  "value": 95,
+  "value": 182,
   "rarity": "uncommon",
   "tier": 2
  },
  "plating": {
   "name": "Steel Plating",
   "type": "craft",
-  "value": 380,
+  "value": 861,
   "rarity": "rare",
   "tier": 3
  },
  "yarn": {
   "name": "Yarn",
   "type": "craft",
-  "value": 34,
+  "value": 27,
   "rarity": "common",
   "tier": 1
  },
  "linen": {
   "name": "Linen",
   "type": "craft",
-  "value": 48,
+  "value": 69,
   "rarity": "common",
   "tier": 1
  },
  "cotton_cloth": {
   "name": "Cotton Cloth",
   "type": "craft",
-  "value": 75,
+  "value": 104,
   "rarity": "uncommon",
   "tier": 2
  },
  "fine_fabric": {
   "name": "Fine Fabric",
   "type": "craft",
-  "value": 220,
+  "value": 230,
   "rarity": "rare",
   "tier": 3
  },
  "moonweave": {
   "name": "Moonweave",
   "type": "craft",
-  "value": 700,
+  "value": 702,
   "rarity": "epic",
   "tier": 4
  },
  "sail": {
   "name": "Sailcloth",
   "type": "craft",
-  "value": 150,
+  "value": 273,
   "rarity": "uncommon",
   "tier": 2
  },
@@ -8178,7 +8181,7 @@
  "brick": {
   "name": "Brick",
   "type": "craft",
-  "value": 12,
+  "value": 9,
   "rarity": "common",
   "tier": 1
  },
@@ -8206,7 +8209,7 @@
  "butter": {
   "name": "Butter",
   "type": "food",
-  "value": 55,
+  "value": 70,
   "rarity": "common",
   "tier": 1,
   "energy": 20
@@ -8229,14 +8232,14 @@
  "crystal_battery": {
   "name": "Crystal Battery",
   "type": "craft",
-  "value": 560,
+  "value": 593,
   "rarity": "rare",
   "tier": 3
  },
  "swift_draught": {
   "name": "Swift Draught",
   "type": "potion",
-  "value": 120,
+  "value": 130,
   "rarity": "uncommon",
   "tier": 2,
   "buff": {
@@ -8262,7 +8265,7 @@
  "stoneskin_tonic": {
   "name": "Stoneskin Tonic",
   "type": "potion",
-  "value": 200,
+  "value": 449,
   "rarity": "rare",
   "tier": 3,
   "buff": {
@@ -8275,7 +8278,7 @@
  "hearth_brew": {
   "name": "Hearth Brew",
   "type": "potion",
-  "value": 90,
+  "value": 128,
   "rarity": "common",
   "tier": 1,
   "buff": {
@@ -8289,7 +8292,7 @@
  "growth_elixir": {
   "name": "Growth Elixir",
   "type": "consumable",
-  "value": 300,
+  "value": 630,
   "rarity": "rare",
   "tier": 3,
   "effect": "growth",
@@ -8391,21 +8394,21 @@
  "hull_plate": {
   "name": "Hull Plate",
   "type": "craft",
-  "value": 900,
+  "value": 2110,
   "rarity": "rare",
   "tier": 3
  },
  "rocket_engine": {
   "name": "Rocket Engine",
   "type": "craft",
-  "value": 2600,
+  "value": 7012,
   "rarity": "epic",
   "tier": 4
  },
  "fuel_cell": {
   "name": "Fuel Cell",
   "type": "craft",
-  "value": 150,
+  "value": 132,
   "rarity": "rare",
   "tier": 3,
   "desc": "One launch each."
@@ -8413,14 +8416,14 @@
  "nav_computer": {
   "name": "Nav Computer",
   "type": "craft",
-  "value": 2200,
+  "value": 4290,
   "rarity": "epic",
   "tier": 4
  },
  "heat_shield": {
   "name": "Heat Shield",
   "type": "craft",
-  "value": 1500,
+  "value": 2573,
   "rarity": "epic",
   "tier": 4
  },
@@ -8436,7 +8439,7 @@
  "ink": {
   "name": "Printing Ink",
   "type": "craft",
-  "value": 10,
+  "value": 8,
   "rarity": "common",
   "tier": 1,
   "arc": "gangsters"
@@ -8720,7 +8723,7 @@
  "marshmallow": {
   "name": "Marshmallow",
   "type": "food",
-  "value": 20,
+  "value": 21,
   "rarity": "common",
   "tier": 1,
   "energy": 15,
@@ -8738,7 +8741,7 @@
  "smore": {
   "name": "S'more",
   "type": "food",
-  "value": 140,
+  "value": 144,
   "rarity": "uncommon",
   "tier": 2,
   "energy": 55,
@@ -8773,7 +8776,7 @@
  "starlight_smore": {
   "name": "Starlight S'more",
   "type": "food",
-  "value": 520,
+  "value": 705,
   "rarity": "rare",
   "tier": 3,
   "energy": 100,
@@ -8789,7 +8792,7 @@
  "scented_litter": {
   "name": "Scented Litter Box",
   "type": "consumable",
-  "value": 40,
+  "value": 57,
   "rarity": "uncommon",
   "tier": 2,
   "effect": "stink",
@@ -8801,7 +8804,7 @@
  "mega_litter": {
   "name": "Mega Litter Box",
   "type": "consumable",
-  "value": 110,
+  "value": 168,
   "rarity": "rare",
   "tier": 3,
   "effect": "stink",
@@ -8824,7 +8827,7 @@
  "paw_lantern": {
   "name": "Paw Lantern",
   "type": "consumable",
-  "value": 90,
+  "value": 216,
   "rarity": "uncommon",
   "tier": 2,
   "buff": {
@@ -8839,7 +8842,7 @@
  "heart_spark": {
   "name": "Heart Spark",
   "type": "consumable",
-  "value": 420,
+  "value": 977,
   "rarity": "rare",
   "tier": 3,
   "mana": 60,
@@ -9086,7 +9089,7 @@
  "circuit_board": {
   "name": "Circuit Board",
   "type": "craft",
-  "value": 60,
+  "value": 67,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters"
@@ -9094,7 +9097,7 @@
  "data_chip": {
   "name": "Data Chip",
   "type": "craft",
-  "value": 160,
+  "value": 308,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9103,7 +9106,7 @@
  "servo": {
   "name": "Servo",
   "type": "craft",
-  "value": 90,
+  "value": 302,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters"
@@ -9111,7 +9114,7 @@
  "scrambler": {
   "name": "Signal Scrambler",
   "type": "consumable",
-  "value": 180,
+  "value": 380,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9122,7 +9125,7 @@
  "ghost_ledger": {
   "name": "Ghost Ledger",
   "type": "consumable",
-  "value": 900,
+  "value": 2334,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",
@@ -9133,7 +9136,7 @@
  "emp_charge": {
   "name": "EMP Charge",
   "type": "consumable",
-  "value": 140,
+  "value": 202,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9145,7 +9148,7 @@
  "emp_heavy": {
   "name": "Blackout Charge",
   "type": "consumable",
-  "value": 420,
+  "value": 1185,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9158,7 +9161,7 @@
  "spy_drone": {
   "name": "Spy Drone",
   "type": "consumable",
-  "value": 1200,
+  "value": 2091,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9168,7 +9171,7 @@
  "scrap_bot": {
   "name": "Scrap Bot",
   "type": "consumable",
-  "value": 220,
+  "value": 1120,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9180,7 +9183,7 @@
  "guard_bot": {
   "name": "Guard Bot",
   "type": "consumable",
-  "value": 600,
+  "value": 4410,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9193,7 +9196,7 @@
  "drone_swarm": {
   "name": "Drone Swarm",
   "type": "consumable",
-  "value": 1500,
+  "value": 6636,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",
@@ -9718,7 +9721,7 @@
  "echo_pudding": {
   "name": "Gloam Pudding",
   "type": "food",
-  "value": 260,
+  "value": 290,
   "tier": 3,
   "rarity": "rare",
   "heal": 5,
@@ -9781,7 +9784,7 @@
  "sun_loaf": {
   "name": "Sun Loaf",
   "type": "food",
-  "value": 240,
+  "value": 262,
   "tier": 3,
   "rarity": "rare",
   "heal": 5,
@@ -10172,5 +10175,68 @@
    "luck": 2
   },
   "desc": "Theo's old loupe. It always finds the lucky things."
+ },
+ "reserve_ale": {
+  "name": "Reserve Ale",
+  "type": "gift",
+  "value": 450,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Brewed from the finest grain. A trade good: shops and collectors pay well."
+ },
+ "royal_mead": {
+  "name": "Royal Mead",
+  "type": "gift",
+  "value": 450,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Brewed from rare blossoms. A trade good: shops and collectors pay well."
+ },
+ "gourmet_pickles": {
+  "name": "Gourmet Pickles",
+  "type": "food",
+  "value": 420,
+  "rarity": "epic",
+  "tier": 4,
+  "energy": 70,
+  "desc": "Crisp, bright, impossible to stop eating."
+ },
+ "herbal_cordial": {
+  "name": "Herbal Cordial",
+  "type": "food",
+  "value": 420,
+  "rarity": "epic",
+  "tier": 4,
+  "energy": 60,
+  "heal": 3,
+  "desc": "A sweet, green, restoring syrup."
+ },
+ "truffle_broth": {
+  "name": "Truffle Broth",
+  "type": "food",
+  "value": 420,
+  "rarity": "epic",
+  "tier": 4,
+  "energy": 90,
+  "desc": "Deep, earthy and warming."
+ },
+ "goat_cheese": {
+  "name": "Goat Cheese",
+  "type": "food",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 30,
+  "desc": "Tangy and soft, pressed from goat milk."
+ },
+ "duck_egg": {
+  "name": "Duck Egg",
+  "type": "food",
+  "value": 34,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 14,
+  "family": "egg",
+  "desc": "Big, rich and blue-green."
  }
 }

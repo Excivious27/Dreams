@@ -595,7 +595,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					st["last_pet"] = day
 					emote(a, "heart", 1.4, -18.0)
 					if not fed_now:
-						hud.toast("%s loves that." % species, Color(1, 0.8, 0.9))
+						hud.toast("%s loves that.%s" % [species, " %d days running." % int(st["streak"]) if int(st["streak"]) > 1 else ""] + (" Silver goods from now on!" if int(st["streak"]) == 5 else (" Gold goods from now on!" if int(st["streak"]) == 14 else "")), Color(1, 0.8, 0.9))
 					xp("farming", 2)
 				else:
 					emote(a, "happy", 1.0, -18.0)
@@ -603,7 +603,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["animals"] = all
 				# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
 				var k := str(a.kind)
-				var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") or k.begins_with("llama") else "")))
+				var prod := "duck_egg" if k.begins_with("duck") else "egg" if k.begins_with("chicken") or k.begins_with("hen") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") or k.begins_with("llama") else "")))
 				if prod != "" and not bool(a.get("baby")) and int(st.get("made", -9)) != day:
 					if int(st["fed"]) != day:
 						hud.toast("%s is too hungry to give anything today. Hay first." % species, Color(1, 0.85, 0.7))

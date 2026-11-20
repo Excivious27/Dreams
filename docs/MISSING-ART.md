@@ -2,9 +2,15 @@
 
 Everything below shows a code-drawn stand-in today.
 
-## Item icons (0)
+## Item icons (7)
 
-- none
+- reserve_ale
+- royal_mead
+- gourmet_pickles
+- herbal_cordial
+- truffle_broth
+- goat_cheese
+- duck_egg
 
 ## Enemy sprites (0)
 

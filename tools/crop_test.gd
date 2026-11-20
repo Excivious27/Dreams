@@ -91,5 +91,14 @@ func _run() -> void:
 		if GameState.family(str(j["item"])) != "":
 			has_crop = true
 	check(has_crop, "the board posts a crop order")
+	# C8 P2 harvest curve: level terms stop at the cap; a maxed farmer averages <= 2.5 crops a pick.
+	var FS: Script = load("res://scripts/farm.gd")
+	var tot := 0
+	for i in 4000:
+		tot += int(FS.call("harvest_count", 60, float(GameState.BONUS_CAPS.get("extra_crop", 0.3)), float(GameState.BONUS_CAPS.get("double_harvest", 0.6)), randf(), randf()))
+	check(tot / 4000.0 <= 2.5, "maxed farmer averages %.2f crops a pick (<= 2.5)" % (tot / 4000.0))
+	var qd: Dictionary = FS.call("quality_odds", 60, true, float(GameState.BONUS_CAPS.get("star_chance", 0.5)))
+	check(float(qd["gold"]) <= 0.65, "gold-star odds stay below 65%% at the top (%.2f)" % float(qd["gold"]))
+	check(int(FS.call("harvest_xp", GameState.crops["scallion"])) < int(FS.call("harvest_xp", GameState.crops["melon"])), "a slow crop gives more harvest XP than a 2-day one")
 	print("crop_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

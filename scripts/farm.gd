@@ -9,6 +9,10 @@ extends GameMap
 ## tall; it was 0.5 and read as a doll's house, C2). Solid over its walls and lower
 ## roof; the upper roof is walk-behind (it fades).
 const HOUSE := Rect2i(9, 6, 8, 5)
+## Harvest economy (C8 P2): level terms stop at lv_cap (20, same as P1's GameState.skill_level_eff) so yield and quality can't run away;
+## star_chance is gold-star odds only; XP scales with how long the crop took.
+const HARVEST := {"lv_cap": 20, "extra_per_lv": 0.012, "star_gold_share": 0.5, "gold_per_lv": 0.0075, "silver_per_lv": 0.025,
+	"fert_gold": 0.10, "fert_silver": 0.20, "xp_base": 2, "xp_per_day": 0.8, "xp_per_tier": 2}
 const HOUSE_SCALE := 0.667
 const DOOR := Vector2i(13, 10)
 const MAILBOX := Vector2i(16, 11)  # in the front yard (the wider house fills x9-16)
@@ -41,6 +45,8 @@ const FOREST_EXIT := Rect2i(34, 0, 4, 2)
 const LAKE_EXIT := Rect2i(0, 28, 2, 4)
 ## Animal pens (kept clear of debris; the barn pen stops short of the cliff at x38).
 const COOP_PEN := Rect2i(25, 9, 6, 4)  # bigger since C5 (fenced: posts x24/x31, rail y13 with a gate)
+## Animal pacing (C8 P2): every youngster grows up in young_days; the Big Coop hatches up to hatch_max.
+const ANIMAL := {"young_days": 7, "hatch_max": 4, "silver_streak": 5, "gold_streak": 14}
 const BARN_PEN := Rect2i(31, 6, 4, 3)  # fenced on x30/x35 and y9 (C5); x31-35: the north track runs on x36 (C1), keep the herd off it
 ## The river: in from the west edge, under the footbridge (the house path's line)
 ## and the stone bridge (the town road), past the pond and out the east edge.
@@ -946,11 +952,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"beehive":
 			_daily_pickup("beehive", "honey", "The bees are still working.")
 			return true
-		"keg":
-			_keg(sel)
-			return true
-		"resonator":
-			_resonator(sel)
+		"keg", "resonator":
+			later(_station.bind(str(thing.get("type", "keg"))))  # old things: the station screen (C8 P2)
 			return true
 		"silo":
 			_silo(sel)
@@ -959,7 +962,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_coop(sel)
 			return true
 		"barn":
-			hud.toast("The animals live out in the pen: hold hay and tap them, pet them daily for milk and wool.%s" % (" The Big Barn feeds them from the silo." if Builds.built_tier("barn") >= 2 else ""))
+			hud.toast("The animals live out in the pen: hold hay and tap them, pet them daily for milk and wool. %d days running: silver goods; %d: gold. A missed day starts over.%s" % [int(ANIMAL["silver_streak"]), int(ANIMAL["gold_streak"]), " The Big Barn feeds them from the silo each morning." if Builds.built_tier("barn") >= 2 else ""])
 			return true
 		"greenhouse":
 			hud.toast("Plant in the stone-bordered plot in front: crops there grow in any season.")
@@ -1202,7 +1205,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		player.play_tool("hold")
 		Music.instance(get_tree()).sfx("plant")
-		hud.toast("Fertilised: grows half again as fast.", Color(0.7, 1, 0.7))
+		hud.toast("Fertilised: grows half again as fast, better stars. Lasts until the next harvest.", Color(0.7, 1, 0.7))
 		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
 	if crop == "":
@@ -1255,30 +1258,33 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		return true
 	var cd: Dictionary = GameState.crops[crop]
 	if int(tile["days"]) >= int(cd["days"]):
-		var n := 1 + (1 if randf() < 0.03 * (GameState.skill_level("farming") - 1) + GameState.bonus("farming", "extra_crop") else 0)  # C6 P7: no bonus crop at level 1
-		if randf() < GameState.bonus("farming", "double_harvest"):
-			n *= 2
-		if randf() < GameState.bonus("farming", "star_chance"):
-			n += 2
-			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
+		var flv := mini(GameState.skill_level("farming"), int(HARVEST["lv_cap"]))
+		var n := harvest_count(flv, GameState.bonus("farming", "extra_crop"), GameState.bonus("farming", "double_harvest"), randf(), randf())
 		pop_items(cell_center(c), str(cd["yield"]), n)  # the crop hops out to you
 		if str(cd["yield"]) == "wheat" and not Net.visiting():
 			Builds.silo_add(1)  # chaff goes to the silo
 		# Quality: farming skill and fertiliser raise the odds of silver and gold.
-		var flv := GameState.skill_level("farming")
 		var fert := bool(tile.get("fert", false))
+		var qd := quality_odds(flv, fert, GameState.bonus("farming", "star_chance"))
 		var qr := randf()
-		var gold_p := 0.015 * flv + (0.10 if fert else 0.0) + GameState.bonus("farming", "star_chance")
-		var silver_p := gold_p + 0.05 * flv + (0.20 if fert else 0.0)
-		if qr < gold_p:
+		# Star toasts once a day each (a field of gold stars shouldn't bury the screen).
+		var told: Dictionary = GameState.run["flags"].get("star_told", {})
+		if int(told.get("day", -1)) != int(GameState.run.get("day", 0)):
+			told = {"day": int(GameState.run.get("day", 0))}
+		if qr < float(qd["gold"]):
 			GameState.add_quality(str(cd["yield"]), "g", n)
-			hud.toast("★ Gold-star %s! Sells for half again as much." % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
+			if not told.has("g"):
+				told["g"] = true
+				hud.toast("★ Gold-star %s! Sells for half again as much." % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
 			Music.instance(get_tree()).sfx("crit", "coin")
 			fx("sparkle", cell_center(c) + Vector2(0, -10), 14.0, 0.6)
-		elif qr < silver_p:
+		elif qr < float(qd["silver"]):
 			GameState.add_quality(str(cd["yield"]), "s", n)
-			hud.toast("☆ Silver-star %s: sells for a quarter more." % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
+			if not told.has("s"):
+				told["s"] = true
+				hud.toast("☆ Silver-star %s: sells for a quarter more." % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
 			Music.instance(get_tree()).sfx("sparkle", "coin")
+		GameState.run["flags"]["star_told"] = told
 		if GameState.log_grown(crop):
 			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
 		if randf() < GameState.bonus("farming", "seed_back"):
@@ -1290,7 +1296,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		hm.sfx("harvest", "pickup")
 		# The reward pop on top of the rustle (c6_10-13).
 		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck", "pop"))
-		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
+		xp("farming", harvest_xp(cd))
+		tile.erase("fert")  # fertiliser feeds one growth cycle, regrowing crops included
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.
 			tile["days"] = int(cd["days"]) - int(cd["regrow"])
@@ -1301,7 +1308,6 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		else:
 			tile["crop"] = ""
 			tile["days"] = 0
-			tile.erase("fert")
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
 		_soil.queue_redraw() if _soil else queue_redraw()
@@ -1454,6 +1460,15 @@ func _sellbox(sel: String) -> void:
 		return
 	if sel != "" and GameState.count(sel) > 0 and stype != "tool":
 		var n := GameState.count(sel)
+		if n > 1 and not Net.visiting():
+			# Ship part of a stack: keep a few for gifts, quests and cooking (C8 P2).
+			var amounts: Array = [n, n - 1, maxi(1, n / 2), 1]
+			var dlg := Dialogue.instance(get_tree())
+			dlg.say([{"text": "Sell how many %s? (you have %d)" % [GameState.item_name(sel), n], "choice": ["All %d" % n, "All but 1", "Half (%d)" % amounts[2], "Just 1", "Back"], "key": ""}])
+			await dlg.finished
+			if dlg.last_choice < 0 or dlg.last_choice >= amounts.size():
+				return
+			n = int(amounts[dlg.last_choice])
 		var prev := int(box.get(sel, 0))
 		box[sel] = prev + n
 		var tq := GameState.take_quality(sel, n)
@@ -1680,7 +1695,7 @@ func _silo(sel: String) -> void:
 ## The Big Coop's incubator: hold an egg and tap the coop; a chick in 3 days.
 func _coop(sel: String) -> void:
 	if Builds.built_tier("coop") < 2:
-		hud.toast("The hens cluck at you. (The Big Coop has an incubator.)")
+		hud.toast("The hens cluck at you. Feed and pet them daily: %d days running gives silver eggs, %d gold. (The Big Coop has an incubator.)" % [int(ANIMAL["silver_streak"]), int(ANIMAL["gold_streak"])])
 		Music.instance(get_tree()).sfx("cluck", "critter")
 		return
 	if Net.visiting():
@@ -1692,8 +1707,8 @@ func _coop(sel: String) -> void:
 		if int(hd) > day:
 			hud.toast("An egg is warming: %d more day%s." % [int(hd) - day, "" if int(hd) - day == 1 else "s"])
 			return
-	if hatch.size() >= 4:
-		hud.toast("The coop is full.")
+	if hatch.size() >= int(ANIMAL["hatch_max"]):
+		hud.toast("The coop has room for %d hatchlings, and it's full." % int(ANIMAL["hatch_max"]))
 		return
 	if sel != "egg" or GameState.count("egg") <= 0:
 		hud.toast("Hold an egg and tap the coop to hatch a chick (3 days).")
@@ -1704,43 +1719,6 @@ func _coop(sel: String) -> void:
 	hud.toast("The egg is in the incubator. A chick in 3 days.", Color(0.9, 1, 0.8))
 	Music.instance(get_tree()).sfx("pop", "pickup")
 	get_tree().create_timer(0.3, false).timeout.connect(func() -> void: Music.instance(get_tree()).sfx("cluck", "critter"))
-
-
-func _keg(sel: String) -> void:
-	var keg: Dictionary = GameState.run["flags"].get("keg", {})
-	var day := int(GameState.run["day"])
-	if not keg.is_empty():
-		if day >= int(keg["ready"]):
-			GameState.run["flags"]["keg"] = {}
-			give(str(keg["out"]))
-			xp("farming", 5)
-		else:
-			hud.toast("Fermenting... %d more day(s)." % (int(keg["ready"]) - day))
-		return
-	var brew := GameState.keg_brew(sel)
-	if brew != "" and GameState.count(sel) > 0:
-		GameState.add_item(sel, -1)
-		var t := int(GameState.items.get(sel, {}).get("tier", 1))
-		var days := 2 + mini(4, t)
-		GameState.run["flags"]["keg"] = {"out": brew, "ready": day + days}
-		hud.toast("%s → %s. Ready in %d days." % [GameState.item_name(sel), GameState.item_name(brew), days])
-		Music.instance(get_tree()).sfx("bubble", "pot")
-	else:
-		hud.toast("Hold produce (fruit, vegetables, herbs, grain, mushrooms, flowers) and tap USE to brew.")
-
-
-
-
-
-func _resonator(sel: String) -> void:
-	if sel == "shard" and GameState.count("shard") >= 3:
-		GameState.add_item("shard", -3)
-		give("crystal_refined")
-		xp("mining", 8)
-		fx("pawring", cell_center(Vector2i(int(Builds.data()["resonator"]["cell"][0]), int(Builds.data()["resonator"]["cell"][1]))) + Vector2(0, -12), 10.0, 0.6)
-		Music.instance(get_tree()).sfx("spell", "sparkle")
-	else:
-		hud.toast("Hold 3 Crystal Shards to refine one.")
 
 
 # ---- fishing -----------------------------------------------------------------
@@ -2021,9 +1999,9 @@ func _place_props() -> void:
 	if Builds.built_tier("barn") >= 2 and not fl.has("barn2_day"):
 		fl["barn2_day"] = int(GameState.run["day"])
 	var today := int(GameState.run["day"])
-	var coop_kids := today < int(fl.get("coop_day", 0)) + 14
-	var barn_kids := today < int(fl.get("barn_day", 0)) + 14
-	var goat_kids := today < int(fl.get("barn2_day", 0)) + 14
+	var coop_kids := today < int(fl.get("coop_day", 0)) + int(ANIMAL["young_days"])
+	var barn_kids := today < int(fl.get("barn_day", 0)) + int(ANIMAL["young_days"])
+	var goat_kids := today < int(fl.get("barn2_day", 0)) + int(ANIMAL["young_days"])
 	for f: Array in _fences:
 		var fp := prop("props", str(f[1]), f[0], 0, 0.0, bool(f[2]), float(f[3]))
 		if fp and str(f[1]).ends_with("_v"):
@@ -2038,7 +2016,7 @@ func _place_props() -> void:
 			for hi in hatch.size():
 				var hd := int(hatch[hi])
 				if int(GameState.run["day"]) >= hd:
-					var young := int(GameState.run["day"]) < hd + 7
+					var young := int(GameState.run["day"]) < hd + int(ANIMAL["young_days"])
 					if hud and int(GameState.run["day"]) == hd and not GameState.run["flags"].has("hatch_peep_%d" % hd):
 						GameState.run["flags"]["hatch_peep_%d" % hd] = true
 						hud.toast("A chick hatched in the coop!", Color(0.9, 1, 0.8))
@@ -2050,6 +2028,7 @@ func _place_props() -> void:
 		if Builds.built_tier("barn") >= 2:
 			# The Big Barn: goats and a llama.
 			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(32, 6), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")
+	_silo_feed()
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():
@@ -2387,3 +2366,48 @@ func _draw_kerb(ci: CanvasItem, gp: Rect2i) -> void:
 		ci.draw_rect(st, base)
 		ci.draw_rect(Rect2(st.position, Vector2(st.size.x, 1.5)), base.lightened(0.25))
 		ci.draw_rect(Rect2(st.position + Vector2(0, st.size.y - 1.5), Vector2(st.size.x, 1.5)), base.darkened(0.25))
+
+
+## Crops per pick: 1, a bonus crop from (capped) level and skills, doubled by double_harvest.
+static func harvest_count(flv: int, extra_crop: float, double_p: float, r1: float, r2: float) -> int:
+	var lv := mini(flv, int(HARVEST["lv_cap"]))
+	var n := 1 + (1 if r1 < float(HARVEST["extra_per_lv"]) * (lv - 1) + extra_crop else 0)  # C6 P7: no bonus crop at level 1
+	if r2 < double_p:
+		n *= 2
+	return n
+
+
+## Gold/silver odds (cumulative): capped level, fertiliser, star_chance (gold only).
+static func quality_odds(flv: int, fert: bool, star_chance: float) -> Dictionary:
+	var lv := mini(flv, int(HARVEST["lv_cap"]))
+	var g := float(HARVEST["gold_per_lv"]) * lv + (float(HARVEST["fert_gold"]) if fert else 0.0) + star_chance * float(HARVEST["star_gold_share"])
+	var sv := g + float(HARVEST["silver_per_lv"]) * lv + (float(HARVEST["fert_silver"]) if fert else 0.0)
+	return {"gold": g, "silver": sv}
+
+
+## Harvest XP grows with the wait (a 2-day crop gives less than a 10-day one).
+static func harvest_xp(cd: Dictionary) -> int:
+	var wait := int(cd.get("regrow", cd.get("days", 1)))
+	return int(HARVEST["xp_base"]) + int(float(HARVEST["xp_per_day"]) * wait) + int(HARVEST["xp_per_tier"]) * int(cd.get("tier", 1))
+
+
+## The Big Barn (and the Big Coop) feed their grown animals from the silo once each morning, 1 hay each (C8 P2).
+func _silo_feed() -> void:
+	if Net.visiting() or Builds.silo_hay() <= 0:
+		return
+	var day := int(GameState.run["day"])
+	var all: Dictionary = GameState.run.get("animals", {})
+	for ch in get_children():
+		if not (ch is FarmAnimal) or (ch as FarmAnimal).baby or Builds.silo_hay() <= 0:
+			continue
+		var k := str((ch as FarmAnimal).kind)
+		var bird := k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") or k == "rooster"
+		if k == "rooster" or Builds.built_tier("coop" if bird else "barn") < 2:
+			continue
+		var st: Dictionary = all.get(str(ch.name), {"streak": 0, "last_pet": -9, "fed": -9})
+		if int(st["fed"]) == day:
+			continue
+		st["fed"] = day
+		GameState.run["silo"] = Builds.silo_hay() - 1
+		all[str(ch.name)] = st
+	GameState.run["animals"] = all

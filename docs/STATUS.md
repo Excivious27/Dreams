@@ -39,6 +39,15 @@
 - Mining: swing per pick tier 1..8 (every upgrade matters), smooth rock hp (no floor-15 sawtooth), gems mostly from ore rocks, floors 1-3 keeper thresholds 14/13/12 and no long waits there, mega ore uses the pick (scaled hp, lumps, gems, xp), moon rocks respawn (3/7 days) and Moon Shards need their gate, mountain ore stays broken (hook).
 - Rewards: hubs hide loot two tiers lower, caches on a value budget (relic masks single, tier 4+), page spacing retry + per-arc pages_total (gangster journal completable), LOOT[5] storm glass instead of moon shards, mega bosses 1000/1800/2800, main-line pay x3-6 (arcs equal), side quests sal_coffee/sal_bread/hazel_potatoes on curve, thugs on the per-hp kill curve, gangster story bosses give hearts + better items, Gilt job max hp, island kit pay by tier. Dad's Haul: x2 chop + 2 wood (no one-swing trees).
 - Test tools/c8_p4_test.gd (check.sh).
+## 2026-11-20 — CONDUCT 8 P2: crops, crafting, items, animals economy
+
+- Crops: every seed and yield item carries its crop's tier (buy markup, keg product, board XP now agree); outliers retuned (tea leaf yields its own Tea Leaf 30, hops regrow 4, grape seed 40, moonberry regrow 6, melon 140, lotus 300, rice/sunflower 5 days, the 11-day herbs 6 days); fertiliser value 7 and it feeds one growth cycle on every crop (regrowers included).
+- Harvest: level terms stop at Farming 10 (`farm.HARVEST` table), star_chance is gold-star odds only (no +2 crops), star toasts once a day, harvest XP grows with the wait (`farm.harvest_xp`).
+- Keg: a brew is worth about 2x its produce, at most 3x (cheap produce takes several per brew, dear produce gives several brews or the family's premium good: Reserve Ale, Royal Mead, Gourmet Pickles, Herbal Cordial, Truffle Broth); table `buildings.json keg.brew` from gen_stations.py, `Crafting.keg_plan`. Old keg/resonator props open the station screen.
+- Recipes: gen_stations.py economy pass (intermediates >= 1.15x inputs, goods >= 1.2x, metal/leather armour >= 0.7x its bars, anything made only from shop goods <= 1.1x: no buy-craft-sell loop); mill 1 wheat -> 1 flour; cheaper iron sword / copper ring / potion; tier-1 skill gates lowered; Rocket Yard gate never drops; station cards say "every recipe already open" when a tier adds none; town benches cap at tier 2 (`Crafting.TOWN_TIER_CAP`); terminal/clinic/robotics speeds.
+- Animals: goat cheese (press), duck eggs (ducks), `#milk`/`#egg` families so goat milk and duck eggs work in every milk/egg recipe; butter 70; the Big Barn/Big Coop feed grown animals from the silo each morning (`farm._silo_feed`); petting shows the streak and the silver/gold milestones; young animals grow in 7 days; the coop says its 4-hatchling limit.
+- Sell box: a stack asks how many (all, all but 1, half, 1).
+- `tools/econ_check.py` (check.sh): seed/yield tiers, crop profit bands, loops, losing intermediates, keg ratios, animal goods with no use.
 
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 

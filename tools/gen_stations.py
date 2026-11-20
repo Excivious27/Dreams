@@ -29,6 +29,13 @@ G = [  # id, name, type, value, tier, extra
  ('crystal_glass', 'Crystal Glass', 'craft', 330, 3, {}),
  ('butter', 'Butter', 'food', 55, 1, {'energy': 20}), ('cooking_oil', 'Cooking Oil', 'craft', 50, 1, {}), ('dried_fruit', 'Dried Fruit', 'food', 70, 2, {'energy': 35}),
  ('crystal_battery', 'Crystal Battery', 'craft', 560, 3, {}),
+ # premium keg goods (C8 P2): what a keg makes from produce worth KEG_BREW['premium_at'] or more
+ ('reserve_ale', 'Reserve Ale', 'gift', 450, 4, {'desc': 'Brewed from the finest grain. A trade good: shops and collectors pay well.'}),
+ ('royal_mead', 'Royal Mead', 'gift', 450, 4, {'desc': 'Brewed from rare blossoms. A trade good: shops and collectors pay well.'}),
+ ('gourmet_pickles', 'Gourmet Pickles', 'food', 420, 4, {'energy': 70, 'desc': 'Crisp, bright, impossible to stop eating.'}),
+ ('herbal_cordial', 'Herbal Cordial', 'food', 420, 4, {'energy': 60, 'heal': 3, 'desc': 'A sweet, green, restoring syrup.'}),
+ ('truffle_broth', 'Truffle Broth', 'food', 420, 4, {'energy': 90, 'desc': 'Deep, earthy and warming.'}),
+ ('goat_cheese', 'Goat Cheese', 'food', 95, 2, {'energy': 30, 'desc': 'Tangy and soft, pressed from goat milk.'}),
  # potions (the magic potion station)
  ('swift_draught', 'Swift Draught', 'potion', 120, 2, {'buff': {'kind': 'speed', 'minutes': 180, 'amount': 1}, 'desc': 'Quick feet for three hours.'}),
  ('luck_potion', 'Luck Potion', 'potion', 180, 2, {'buff': {'kind': 'luck', 'minutes': 240, 'amount': 2}, 'desc': 'Better finds, kinder dice.'}),
@@ -80,7 +87,7 @@ for id, name, typ, val, tier, extra in G:
     item(id, name, typ, val, tier, **extra)
 # Penguin arc only: crystal-shaped gear, Cat-topia's litter works, the campfire.
 for id, name, typ, val, tier, extra in [
- ('marshmallow', 'Marshmallow', 'food', 20, 1, {'energy': 12}), ('toasted_marshmallow', 'Toasted Marshmallow', 'food', 45, 1, {'energy': 30}),
+ ('marshmallow', 'Marshmallow', 'food', 20, 1, {'energy': 15}), ('toasted_marshmallow', 'Toasted Marshmallow', 'food', 45, 1, {'energy': 30}),
  ('smore', "S'more", 'food', 140, 2, {'energy': 55, 'heal': 2}), ('hot_cocoa', 'Hot Cocoa', 'food', 160, 2, {'energy': 45, 'buff': {'kind': 'warm', 'minutes': 480, 'amount': 1}, 'desc': 'Big Jim makes it too sweet. Warm for hours.'}),
  ('campfire_stew', "Big Jim's Stew", 'food', 240, 3, {'energy': 80, 'heal': 5}), ('starlight_smore', "Starlight S'more", 'food', 520, 3, {'energy': 100, 'heal': 4, 'buff': {'kind': 'luck', 'minutes': 300, 'amount': 2}, 'friend': 4}),
  ('scented_litter', 'Scented Litter Box', 'consumable', 40, 2, {'effect': 'stink', 'radius': 84, 'stun': 5.0, 'desc': 'Lavender. Somehow worse. A wider cloud, a longer nose-hold.'}),
@@ -220,6 +227,12 @@ station('launchpad', 'Rocket Yard', 'projects', [15, 27], 'building', 'Assemble'
  ('Starship', ['rocket_4'], {'nav_computer': 1, 'rocket_engine': 2, 'moon_bar': 2, 'moonweave': 4}, d(3, 'Also flies to the star station.'))], w=1, h=3, book='rocket')
 for t, pr in zip(B['launchpad']['tiers'], [1, 2, 3, 3]): t.setdefault('unlock', {})['progress'] = pr
 B['launchpad']['tiers'][0]['unlock']['skill'] = ['building', 4]
+for t, sk in zip(B['launchpad']['tiers'][1:], [5, 7, 9]): t['unlock']['skill'] = ['building', sk]  # the gate never drops (C8 P2)
+# Keg brews carry the input's value (C8 P2; read by Crafting._keg_recipes and tools/econ_check.py):
+# a brew is worth about `mult` x its produce, never more than `cap` x (cheap produce takes several per brew),
+# produce worth premium_at or more makes the family's premium good, and one brew gives at most max_out.
+B['keg']['brew'] = {'mult': 2.0, 'cap': 3.0, 'max_out': 12, 'premium_at': 200,
+                    'premium': {'grain': 'reserve_ale', 'flower': 'royal_mead', 'veg': 'gourmet_pickles', 'herb': 'herbal_cordial', 'mushroom': 'truffle_broth'}}
 # ---- gangster arc only ---------------------------------------------------------
 station('print_shop', 'Back-Room Press', 'operation', [9, 24], 'bartering', 'Print', 'Specs', [
  ('Back-Room Press', ['press_1'], {'plank': 16, 'nails': 8, 'copper_bar': 2}, d(0, 'Crude bills: hold one and USE it in town to pass it. Risky: a noticed bill raises heat.')),
@@ -430,6 +443,93 @@ for bk in ('anvil', 'tannery', 'armory'):
         if r['id'].startswith(('crystal_', 'moon_', 'temper_', 'neon_')):
             I[r['give']]['value'] = max(int(I[r['give']].get('value', 0)), int(0.8 * val(r['need'])))
 
+# ---- economy pass (C8 P2) ---------------------------------------------------------
+# Every number here is checked by tools/econ_check.py (in check.sh).
+ECON = {'craft_floor': 1.15,   # intermediates (craft/material/bar) sell for >= 1.15 x their inputs
+        'goods_floor': 1.2,    # food/potion/consumable/placeable/gift made at a station: >= 1.2 x inputs
+        'armour_floor': 0.7,   # metal/leather set pieces: >= 0.7 x their bars (slot and metal both show)
+        'loop_cap': 1.1}       # anything made only from shop-bought goods sells for <= 1.1 x them (no buy-craft-sell loop)
+FLOOR_TYPES = {'craft': 'craft_floor', 'material': 'craft_floor', 'bar': 'craft_floor',
+               'food': 'goods_floor', 'potion': 'goods_floor', 'consumable': 'goods_floor', 'placeable': 'goods_floor', 'gift': 'goods_floor'}
+NO_FLOOR = {'bills_crude', 'bills_passable', 'bills_fine', 'bills_perfect', 'forged_permit', 'rounds'}  # face value / ammo, priced by hand
+import re
+def shop_goods():
+    """Every item id a town shop sells (mirror of the static lists in scripts/shops.gd offers())."""
+    src = open(os.path.join(D, '..', 'scripts', 'shops.gd')).read()
+    a = src.index('static func offers'); b = src.index('static func run', a)
+    out = set()
+    for m in re.finditer(r'\[([^\[\]]*)\]', src[a:b]):
+        if src[a:b][:m.start()].rstrip().endswith(' in'): continue  # `cid in [...]` filters name crops, not goods
+        out |= {w for w in re.findall(r'"([a-z0-9_]+)"', m.group(1)) if w in I}
+    return out
+SHOP = shop_goods()
+# Recipe fixes: milling adds value, made goods cost less than the shop's, tier-1 gates match tier 1.
+I['flour']['value'] = 20
+books['mill'] = [dict(r, need={'wheat': 1}) if r['id'] == 'flour' else (dict(r, need={'oat': 1}) if r['id'] == 'oat_flour' else r) for r in books['mill']]
+for bk, rid, need in [('anvil', 'iron_sword', {'iron_bar': 1, 'hardwood_plank': 1}), ('jeweler', 'copper_ring', {'copper_bar': 1}),
+                      ('cauldron', 'potion', {'berry': 3, 'slime_gel': 1})]:
+    for r in books[bk]:
+        if r['id'] == rid: r['need'] = need
+GATES = {'fertilizer': ['farming', 2], 'herb_remedy': ['foraging', 2], 'sprinkler_quality': None}
+for b in books.values():
+    for r in b:
+        if r['id'] in GATES:
+            r.pop('skill', None)
+            if GATES[r['id']]: r['skill'] = GATES[r['id']]
+# Milk and eggs: goat milk and duck eggs work wherever milk or eggs do.
+for k, fam in (('milk', 'milk'), ('goat_milk', 'milk'), ('egg', 'egg')):
+    I[k]['family'] = fam
+item('duck_egg', 'Duck Egg', 'food', 34, 1, energy=14, family='egg', desc='Big, rich and blue-green.')
+for b in books.values():
+    for r in b:
+        for raw, fam in (('milk', '#milk'), ('egg', '#egg')):
+            if raw in r['need'] and r['id'] not in ('cheese', 'butter'):
+                r['need'][fam] = r['need'].pop(raw)
+books['press'].insert(2, rc('goat_cheese', 'Goat Cheese', {'goat_milk': 1}))
+I['butter']['value'] = 70; I['cheese']['desc'] = 'Pressed from fresh milk.'
+def fval(k):  # value of a need key ('#fam' = its cheapest member)
+    if k.startswith('#'):
+        vs = [int(v.get('value', 5)) for v in I.values() if v.get('family') == k[1:] or (k == '#fruit' and v.get('family') in ('tree', 'berry'))]
+        return min(vs) if vs else 5
+    return int(I.get(k, {}).get('value', 5))
+def need_val(need): return sum(fval(k) * n for k, n in need.items())
+def all_shop(need): return all((not k.startswith('#')) and k in SHOP for k in need)
+ARMOUR = ('copper_', 'iron_', 'steel_', 'silver_', 'gold_', 'leather_')
+econ_log = []
+for _ in range(3):  # upstream values move downstream ones: settle in a few passes
+    floor, cap = {}, {}
+    for bk, b in books.items():
+        if bk == 'keg': continue
+        for r in sorted(b, key=lambda r: r.get('tier', 1)):
+            g = r['give']; it = I.get(g)
+            if not it or g in NO_FLOOR: continue
+            per = need_val(r['need']) / float(r.get('n', 1))
+            if all_shop(r['need']):
+                cap[g] = min(cap.get(g, 1e9), int(ECON['loop_cap'] * per))
+            if it.get('type') == 'equip' and g.startswith(ARMOUR) and not g.endswith('_plus'):
+                f = int(ECON['armour_floor'] * per)
+            elif it.get('type') in FLOOR_TYPES and not r.get('tool') and not r.get('vehicle'):
+                f = -(-int(ECON[FLOOR_TYPES[it['type']]] * per * 100) // 100)
+            else:
+                continue
+            floor[g] = min(floor.get(g, 1e9), f)  # the cheapest way to make it must not lose money
+    for g in set(floor) | set(cap):
+        cur = int(I[g].get('value', 0)); new = cur
+        if g in floor: new = max(new, int(floor[g]))
+        if g in cap: new = min(new, cap[g])
+        if new != cur:
+            econ_log.append('%s %d -> %d' % (g, cur, new)); I[g]['value'] = new
+# Station cards don't promise recipes a tier doesn't add.
+for sid, st in B.items():
+    if not isinstance(st, dict) or 'station' not in st or st['station'].get('book') == 'keg': continue
+    rts = [int(r.get('tier', 1)) for r in books.get(st['station'].get('book', sid), [])]
+    if not rts: continue
+    top = max(rts)
+    for i, t in enumerate(st['tiers']):
+        c = min(5, i + 2)
+        if i > 0 and min(5, i + 1) >= top:
+            t['desc'] = t['desc'].replace(' recipes up to tier %d.' % c, ' every recipe already open.')
+
 used = {r['id'] for b in books.values() for r in b}
 lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence_kit', 'crab_pot')]
 for i in lost: books['workbench'].append(old[i])
@@ -445,4 +545,5 @@ for k, d in (('sprinkler', 'Place it on the farm (hold it, USE on open ground). 
         I[k]['type'] = 'placeable'; I[k]['desc'] = d
 json.dump(I, open(D + 'items.json', 'w'), indent=1, ensure_ascii=False)
 print('stations', sum(1 for v in B.values() if isinstance(v, dict) and v.get('thing') == 'station'), 'recipes', {k: len(v) for k, v in R.items() if isinstance(v, list)}, 'moved to workbench:', lost)
+print('economy pass:', len(econ_log), 'values changed'); open('/tmp/econ_pass.log', 'w').write('\n'.join(econ_log))
 print('art missing:', [(k, t['name']) for k, v in B.items() if isinstance(v, dict) for t in v.get('tiers', []) if t.get('art_missing')])

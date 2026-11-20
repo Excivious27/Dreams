@@ -2057,7 +2057,7 @@ static func can_gift(npc: String, item: String) -> bool:
 ## Every crop (and what it yields) belongs to a family: veg, herb, berry, fruit,
 ## tree, grain, mushroom, flower, magic. Recipes can ask for "#veg", villagers
 ## can like "#berry", the keg brews by family, the fair and journal count them.
-const FAMILY_NAMES := {"veg": "Vegetable", "herb": "Herb", "berry": "Berry", "fruit": "Fruit", "tree": "Orchard Fruit", "grain": "Grain", "mushroom": "Mushroom", "flower": "Flower", "magic": "Wonder Crop"}
+const FAMILY_NAMES := {"veg": "Vegetable", "herb": "Herb", "berry": "Berry", "fruit": "Fruit", "tree": "Orchard Fruit", "grain": "Grain", "mushroom": "Mushroom", "flower": "Flower", "magic": "Wonder Crop", "milk": "Milk", "egg": "Egg"}
 
 static func family(id: String) -> String:
 	var it: Dictionary = items.get(id, {})

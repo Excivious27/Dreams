@@ -63414,6 +63414,11 @@
    "h": 32,
    "w": 30
   },
+  "duck_egg": {
+   "file": "items/duck_egg.png",
+   "h": 28,
+   "w": 32
+  },
   "dumpling": {
    "file": "items/dumpling.png",
    "h": 32,
@@ -64844,6 +64849,11 @@
    "h": 29,
    "w": 32
   },
+  "goat_cheese": {
+   "file": "items/goat_cheese.png",
+   "h": 25,
+   "w": 32
+  },
   "goat_horn": {
    "file": "items/goat_horn.png",
    "h": 31,
@@ -65073,6 +65083,11 @@
    "file": "items/gooseberry.png",
    "h": 30,
    "w": 32
+  },
+  "gourmet_pickles": {
+   "file": "items/gourmet_pickles.png",
+   "h": 32,
+   "w": 22
   },
   "grape": {
    "file": "items/grape.png",
@@ -65453,6 +65468,11 @@
    "file": "items/herb_roast.png",
    "h": 25,
    "w": 32
+  },
+  "herbal_cordial": {
+   "file": "items/herbal_cordial.png",
+   "h": 32,
+   "w": 23
   },
   "herbal_tea": {
    "file": "items/herbal_tea.png",
@@ -69279,6 +69299,11 @@
    "h": 31,
    "w": 32
   },
+  "reserve_ale": {
+   "file": "items/reserve_ale.png",
+   "h": 32,
+   "w": 16
+  },
   "resin": {
    "file": "items/resin.png",
    "h": 29,
@@ -69638,6 +69663,11 @@
    "file": "items/rowboat.png",
    "h": 22,
    "w": 32
+  },
+  "royal_mead": {
+   "file": "items/royal_mead.png",
+   "h": 32,
+   "w": 21
   },
   "ruby": {
    "file": "items/ruby.png",
@@ -72028,6 +72058,11 @@
    "file": "items/truffle.png",
    "h": 27,
    "w": 32
+  },
+  "truffle_broth": {
+   "file": "items/truffle_broth.png",
+   "h": 32,
+   "w": 30
   },
   "truffle_pasta": {
    "file": "items/truffle_pasta.png",
