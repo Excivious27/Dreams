@@ -391,6 +391,44 @@ func _c10b(items: Dictionary) -> void:
 			dm.close()
 			await frames(2)
 			check(cam == null or cam.offset == Vector2.ZERO, "closing resets the camera")
+	# Heavy yard: 120 paths + 30 statues, then one more piece: incremental dress, no re-bake.
+	Decor.give("t_path", 200)
+	Decor.give("t_statue", 40)
+	var laid := 0
+	var stood := 0
+	for y in range(30, 56):
+		for x in range(3, 34):
+			var c := Vector2i(x, y)
+			if laid < 120 and (x + y) % 2 == 0 and DecorMode.place(f, "t_path", c) == "":
+				laid += 1
+			elif stood < 30 and (x * 3 + y) % 7 == 0 and DecorMode.place(f, "t_statue", c) == "":
+				stood += 1
+	var nodes0: Array = f.get_meta("decor_nodes", [])
+	var keep_node: Variant = nodes0[0] if not nodes0.is_empty() else null
+	var free_c := Vector2i(-1, -1)
+	for y in range(20, 30):
+		for x in range(40, 60):
+			if free_c.x < 0 and DecorMode.why_not(f, "t_statue", Vector2i(x, y)) == "":
+				free_c = Vector2i(x, y)
+	var t0 := Time.get_ticks_usec()
+	DecorMode.why_not(f, "t_statue", free_c)
+	var why_ms := (Time.get_ticks_usec() - t0) / 1000.0
+	t0 = Time.get_ticks_usec()
+	DecorMode.place(f, "t_statue", free_c)
+	var one_ms := (Time.get_ticks_usec() - t0) / 1000.0
+	print("  why_not (ghost check) %.1f ms" % why_ms)
+	print("  yard perf: %d paths + %d statues; one more piece %.1f ms (dress + walk check)" % [laid, stood, one_ms])
+	check(keep_node == null or is_instance_valid(keep_node) and not (keep_node as Node).is_queued_for_deletion(), "unchanged pieces keep their nodes")
+	t0 = Time.get_ticks_usec()
+	DecorMode.relayout(f)
+	var r1 := (Time.get_ticks_usec() - t0) / 1000.0
+	t0 = Time.get_ticks_usec()
+	DecorMode.relayout(f)
+	var r2 := (Time.get_ticks_usec() - t0) / 1000.0
+	print("  relayout %.1f ms, again (nothing changed) %.1f ms" % [r1, r2])
+	check(r2 < r1 or r2 < 5.0, "an unchanged layout skips the full check")
+	var jd := JSON.stringify(Decor.st()["placed"].get("farm", []))
+	print("  yard save: %d pieces, %d bytes" % [DecorMode.placed("farm").size(), jd.length()])
 	# Built pens and service fronts are never tilled.
 	var farm_v: Variant = f
 	check(not f.can_till((farm_v.mail_c as Vector2i) + Vector2i(0, 1)), "no soil in front of the mailbox")

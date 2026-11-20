@@ -1997,13 +1997,23 @@ func _place_props() -> void:
 		var hl := house_look(Builds.built_tier("house"))
 		var hs := str(hl["sprite"]) if Art.has("buildings", str(hl["sprite"])) else "house"
 		var hn := hs + "_night"  # lit windows after dark (the night pictures were cut but unused)
-		var night_pic := GameState.is_night() and Art.has("buildings", hn)
 		var hsc := float(hl["scale"]) if hs == str(hl["sprite"]) else HOUSE_SCALE
 		var hday := WorldGen.winter_look("buildings", hs)  # snowy roof in winter (C5 P3 art)
-		_house_pics = [hday, hn if Art.has("buildings", hn) else hday, night_pic]
+		# Winter nights keep the snowy roof (the _night redraw has none, c10b_01-05):
+		# the lit-window mask glows on it instead (c10b_01-36).
+		var winter := hday != hs
+		var night_pic := GameState.is_night() and Art.has("buildings", hn) and not winter
+		_house_pics = [hday, hday if winter else (hn if Art.has("buildings", hn) else hday), night_pic]
 		var hp := prop("buildings", hn if night_pic else hday, Vector2i(house_r.position.x, house_r.end.y - 1), house_r.size.x - 1, 0.0, false, hsc)
 		_house_sprite = hp
 		_house_scale = hsc
+		if winter and glow and hp is Sprite2D:
+			glow.add_windows(hp, hs)
+		# P3's farmhouse exterior styles (palette swap + parts), when that script exists.
+		if ResourceLoader.exists("res://scripts/house_exterior.gd"):
+			var hx: Script = load("res://scripts/house_exterior.gd")
+			if hx and hx.get_script_method_list().any(func(md: Dictionary) -> bool: return str(md["name"]) == "apply"):
+				hx.call("apply", self, hp)
 		if night_pic:
 			_fit_house_pic()
 		prop("buildings", "mailbox", mail_c)

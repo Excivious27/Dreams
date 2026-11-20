@@ -35,6 +35,9 @@ const BAD_COL := Color(1.0, 0.3, 0.3, 0.42)
 static var undo_stack: Array = []
 ## relayout/load checks skip "someone stands there" (it is about taps, not saves).
 static var _no_people := false
+## relayout outdoors: every piece passed the walk check when it was placed; only
+## reserved/blocked cells are re-checked (one farm-wide flood per piece was ~250 ms).
+static var _no_reach := false
 ## Last relayout signature per room (house entry skips the full check when nothing changed).
 static var _lay_sig := {}
 
@@ -279,7 +282,7 @@ static func why_not(m: GameMap, id: String, cell: Vector2i, rot := 0, skip := -1
 	var extra := {}
 	for c: Vector2i in fp:
 		extra[c] = true
-	if not reach_ok(m, extra, skip):
+	if not _no_reach and not reach_ok(m, extra, skip):
 		return "That would block the way through."
 	return ""
 
@@ -637,6 +640,7 @@ static func relayout(m: GameMap) -> Array:
 		keep.append(p)
 	list.clear()
 	_no_people = true
+	_no_reach = outdoor(m)
 	for p: Dictionary in keep:
 		var id := str(p["id"])
 		list.append(p)
@@ -645,6 +649,7 @@ static func relayout(m: GameMap) -> Array:
 			_box_back(id)
 			gone.append(nm(id))
 	_no_people = false
+	_no_reach = false
 	list.append_array(unknown)
 	_lay_sig[room_key(m)] = hash([bounds(m), wall_row(m), (_map_call(m, "decor_reserved", {}) as Dictionary).keys(), _map_call(m, "decor_must_reach", []), _map_call(m, "decor_windows", []), fixed_blocked(m).keys(), list])
 	return gone
@@ -693,16 +698,19 @@ static func dress(m: GameMap) -> void:
 		return
 	var yard := outdoor(m)
 	var fixed := fixed_blocked(m)
+	# Incremental: a piece whose id/cell/facing/look didn't change keeps its node
+	# (a full house no longer rebuilds 160 sprites per tap: c10b_12 / c10b_02_06).
 	var old: Variant = m.get_meta("decor_nodes", [])
-	var dead := {}
+	var reuse := {}
 	for n in old:
-		if is_instance_valid(n):
-			dead[n] = true
-			(n as Node).queue_free()
-	if not dead.is_empty():
-		if m.glow:
-			m.glow.lights = m.glow.lights.filter(func(l: Array) -> bool: return not dead.has(l[0]))
-		m._canopies = m._canopies.filter(func(c: Variant) -> bool: return is_instance_valid(c) and not dead.has(c))
+		if is_instance_valid(n) and not (n as Node).is_queued_for_deletion():
+			var k := str((n as Node).get_meta("decor_sig", ""))
+			if k != "" and not reuse.has(k):
+				reuse[k] = n
+			else:
+				reuse[str((n as Node).get_instance_id())] = n
+	var dead := {}
+	var looks := "%s|%s" % [GameState.look_se() if yard else "", GameState.is_night()]
 	for c in m.get_meta("decor_cells", {}):
 		if not fixed.has(c):
 			m.blocked.erase(c)
@@ -721,16 +729,27 @@ static func dress(m: GameMap) -> void:
 			continue  # drawn into the baked map (draw_flat): no node, no draw call of its own
 		if yard and layer == "under":
 			continue  # the yard's flat layer draws it (_yard_flat)
-		var s := sprite_for(id, rot, yard)
+		var sig := "%s|%d,%d|%d|%s" % [id, cell.x, cell.y, rot, looks]
+		var fresh := false
+		var s: Node2D = null
+		if reuse.has(sig):
+			s = reuse[sig]
+			reuse.erase(sig)
+		else:
+			s = sprite_for(id, rot, yard)
+			fresh = true
 		if s == null:
 			continue
 		var sz := size_of(id, rot)
-		s.position = m.cell_pos(cell.x + sz.x / 2.0, cell.y + 1)
-		s.set_meta("decor_id", id)
-		m.add_child(s)
 		var h := node_height(s)
+		if fresh:
+			s.position = m.cell_pos(cell.x + sz.x / 2.0, cell.y + 1)
+			s.set_meta("decor_id", id)
+			s.set_meta("decor_sig", sig)
+			m.add_child(s)
 		if layer == "under":
-			m.to_under(s)
+			if fresh:
+				m.to_under(s)
 		elif layer in ["wall", "window"]:
 			s.position.y = m.cell_pos(0, wall_row(m) + 1).y - 2.0  # hangs on the wall, bottom just above the floor line
 		else:
@@ -740,12 +759,19 @@ static func dress(m: GameMap) -> void:
 				cells[c] = true
 				m.blocked[c] = true
 				m.hard[c] = true
-			if yard and h > 30.0:
+			if fresh and yard and h > 30.0:
 				m._canopies.append(s)  # tall yard pieces fade when you walk behind them
-		if bool(Decor.entry(id).get("glow", false)) and m.glow and h > 0.0:
+		if fresh and bool(Decor.entry(id).get("glow", false)) and m.glow and h > 0.0:
 			var gr := float(Decor.entry(id).get("glow_r", 56.0 if yard else 34.0))
 			m.glow.lights.append([s, gr, h * 0.7])
 		nodes.append(s)
+	for k in reuse:
+		dead[reuse[k]] = true
+		(reuse[k] as Node).queue_free()
+	if not dead.is_empty():
+		if m.glow:
+			m.glow.lights = m.glow.lights.filter(func(l: Array) -> bool: return not dead.has(l[0]))
+		m._canopies = m._canopies.filter(func(c: Variant) -> bool: return is_instance_valid(c) and not dead.has(c))
 	if yard:
 		var fl: Node2D = m.get_meta("decor_flat", null) if m.has_meta("decor_flat") else null
 		if fl == null or not is_instance_valid(fl):
