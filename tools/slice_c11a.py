@@ -13,6 +13,8 @@ Steps
   items     c11_items (3x8 icons) -> items/<id>
   stations  c11_stations (2 rows x 4 stations x 4 frames) -> stations/<id>
   interior  c11_int_pieces (3x8) -> furniture/rn_<id>; c11_int_tex (2x3) -> seamless/rn_<id>
+  team      c11_team_a/b -> follower poses walk_down/up, run, attack, downed, getup, guard, fetch,
+            idle_down/up, sit, cheer for goat/llama/donkey/pig/lamb/hen/rabbit/duck; c11_team_ui -> ui/cmd_* etc.
   nodes     nodes_<tree>.png -> ui/node_<skill>_<id> (NODE_SHEETS, grid order)
   fixes     -02 drop the adult-drawn 'baby' strips (cow_brown, cow_bw, sheep_woolly),
             -11 clear neighbour-row slivers on goat2 idle/walk, pig_a idle, pig_b idle
@@ -100,6 +102,7 @@ PIECES = ["nest_box", "nest_box_eggs", "perch", "feed_bench", "feed_bench_hay", 
           "salt_lick", "brush_hook", "pitchfork_bale", "feed_sacks", "water_trough", "lantern_post", "hay_round", "barn_gate"]
 TEXTURES = ["straw_bed", "coop_plank", "barn_timber", "hay_floor", "mud_patch", "barn_cobble"]
 
+TEAM_UI = ["cmd_fetch", "cmd_train", "cmd_guard_pet", "cmd_stay_pet", "bond_heart", "team_badge", "animal_brush", "feed_scoop"]
 NODE_SHEETS = {  # render -> ui/node_<skill>_<id> in grid order (c11a_07: icons for the 7 trees that had none)
     "nodes_bartering.png": ["bartering_trader", "bartering_bartering_0_1", "bartering_bartering_0_3", "bartering_appraiser", "bartering_bartering_0_5", "bartering_monopolist", "bartering_bartering_0_7", "bartering_bartering_0_8", "bartering_bartering_0_9", "bartering_haggler", "bartering_bartering_1_1", "bartering_stall_plans", "bartering_bartering_1_3", "bartering_tycoon", "bartering_bartering_1_5", "bartering_bartering_1_6", "bartering_bartering_1_7", "bartering_bartering_1_8", "bartering_bartering_2_0", "bartering_bartering_2_1", "bartering_smooth_talker", "bartering_bartering_2_3", "bartering_festival_favorite", "bartering_patron", "bartering_bartering_2_7", "bartering_bartering_2_8", "bartering_bartering_2_9", "bartering_bartering_3_0", "bartering_bartering_3_1", "bartering_networker", "bartering_bartering_3_3", "bartering_bartering_3_4", "bartering_bartering_3_5", "bartering_crystal_baron", "bartering_bartering_3_7", "bartering_magnate", "bartering_bartering_3_9"],
     "nodes_building.png": ["building_carpenter", "building_engineer", "building_building_0_3", "building_building_0_4", "building_building_0_5", "building_bridgewright", "building_building_0_7", "building_building_0_8", "building_building_0_9", "building_mason", "building_building_1_1", "building_architect", "building_building_1_4", "building_building_1_5", "building_grand_architect", "building_building_1_7", "building_building_1_8", "building_building_1_9", "building_building_2_0", "building_tinkerer", "building_building_2_3", "building_decorator", "building_building_2_5", "building_homemaker", "building_building_2_7", "building_building_2_8", "building_building_2_9", "building_building_3_0", "building_building_3_1", "building_building_3_2", "building_building_3_3", "building_foreman", "building_master_builder", "building_building_3_6", "building_building_3_7", "building_city_planner"],
@@ -126,6 +129,9 @@ SHEETS = [  # the render list (dreams-image connector, n=1, 1536x1024, magenta)
     ("c11_bld_r1_night.png", "edit c11_bld_r1.png", "same picture at night, warm lit windows, magenta kept"),
     ("c11_bld_r2_night.png", "edit c11_bld_r2.png", "same picture at night, warm lit windows, magenta kept"),
     ("c11_bld_w517_night.png", "edit art/incoming/w517_farm_coop_barn.png", "same picture at night, warm lit windows, magenta kept"),
+    ("c11_team_a.png", "edit art/incoming/w175_animals_c.png", "follower poses: goat, llama, donkey, pig (2 rows each)"),
+    ("c11_team_b.png", "edit c11_animals_a.png", "follower poses: lamb, hen, rabbit, duck (2 rows each)"),
+    ("c11_team_ui.png", "generate", "8 icons: " + ", ".join(TEAM_UI)),
 ] + [(f, "generate", "skill node badges, 8 columns, gold-framed rounded squares: " + ", ".join(ids)) for f, ids in NODE_SHEETS.items()]
 
 
@@ -404,6 +410,48 @@ def nodes(man):
         print(sheet, len(ids))
 
 
+TEAM_ROWS = {"c11_team_a.png": ["goat", "llama", "donkey", "pig"], "c11_team_b.png": ["lamb", "chicken_white", "rabbit_white", "duck_white"]}
+TEAM_ROW1 = {"walk_down": (0, 4), "walk_up": (4, 8), "run": (8, 12), "attack": (12, 16)}
+TEAM_ROW2 = {"downed": (0, 2), "getup": (2, 4), "guard": (4, 6), "fetch": (6, 8), "idle_down": (8, 10), "idle_up": (10, 12), "sit": (12, 14), "cheer": (14, 16)}
+
+
+def team(man):
+    """Follower poses for trainable animals (c11a_09/-18): pup-style strip names, scaled so idle_down
+    runs as tall as the kind's side walk. Run after `animals` (it rebuilds the C11 kinds)."""
+    for sheet, kinds in TEAM_ROWS.items():
+        a = load(sheet)
+        bs, rows = bands(a, 8)
+        assert len(bs) == 8, (sheet, len(bs))
+        for i, kind in enumerate(kinds):
+            g = "animals/" + kind
+            fr = []
+            for band, row in ((bs[2 * i], rows[2 * i]), (bs[2 * i + 1], rows[2 * i + 1])):
+                for b in cells16(a, band, row):
+                    c = keep_main(a, b) if b else None
+                    fr.append(Image.fromarray(c[b[1]:b[3], b[0]:b[2]]) if b else Image.new("RGBA", (8, 8)))
+            # side-view run frames match the kind's side-view walk height
+            walk = Image.open(os.path.join(GEN, man[g]["walk"]["file"]))
+            wa = np.array(walk)[..., 3] > 40
+            ys = np.nonzero(wa.any(1))[0]; ref = float(ys.max() - ys.min() + 1)
+            tall = float(np.median([f.height for f in fr[8:12]]))
+            sc = ref / max(1, tall)
+            fr = [hard(f.resize((max(1, round(f.width * sc)), max(1, round(f.height * sc))), Image.LANCZOS)) for f in fr]
+            for anim, (i0, i1) in TEAM_ROW1.items():
+                man[g][anim] = pack(fr[i0:i1], f"{g}/{anim}.png")
+            for anim, (i0, i1) in TEAM_ROW2.items():
+                man[g][anim] = pack(fr[16 + i0:16 + i1], f"{g}/{anim}.png")
+            print("team", kind, round(sc, 2))
+    a = load("c11_team_ui.png")
+    bs = sorted(blobs(a, merge=4, min_area=300), key=lambda b: b[0])
+    assert len(bs) == len(TEAM_UI), len(bs)
+    for name, b in zip(TEAM_UI, bs):
+        im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+        s = 32 / max(im.width, im.height)
+        im = hard(im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS))
+        man["ui"][name] = single(im, f"ui/{name}.png")
+    print("team ui", len(TEAM_UI))
+
+
 def fixes(man):
     for kind in ("cow_brown", "cow_bw", "sheep_woolly"):  # -02: these 'baby' strips are adults
         g = "animals/" + kind
@@ -513,7 +561,7 @@ def doc():
     print("wrote", p)
 
 
-STEPS = ["animals", "buildings", "items", "stations", "interior", "nodes", "fixes", "meta"]
+STEPS = ["animals", "team", "buildings", "items", "stations", "interior", "nodes", "fixes", "meta"]
 
 if __name__ == "__main__":
     man = json.load(open(MAN))

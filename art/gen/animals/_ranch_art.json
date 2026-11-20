@@ -183,13 +183,25 @@
  "chicken": {
   "alias": {},
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "idle",
+   "idle_down",
+   "idle_up",
    "produce",
+   "run",
    "sad",
+   "sit",
    "sleep",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "chick",
   "height": {
@@ -248,13 +260,25 @@
     "walk"
    ],
    "chicken_white": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "idle",
+    "idle_down",
+    "idle_up",
     "produce",
+    "run",
     "sad",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ]
   },
   "rare": [
@@ -335,13 +359,25 @@
  "duck": {
   "alias": {},
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "idle",
+   "idle_down",
+   "idle_up",
    "produce",
+   "run",
    "sad",
+   "sit",
    "sleep",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "duckling",
   "height": {
@@ -361,13 +397,25 @@
     "walk"
    ],
    "duck_white": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "idle",
+    "idle_down",
+    "idle_up",
     "produce",
+    "run",
     "sad",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ],
    "duckling": [
     "eat",
@@ -391,13 +439,25 @@
    "sad": "hurt"
   },
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "hurt",
    "idle",
    "idle_b",
+   "idle_down",
+   "idle_up",
+   "run",
+   "sit",
    "sleep",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "goat_kid",
   "height": {
@@ -407,13 +467,25 @@
   "kind": "goat",
   "kind_anims": {
    "goat": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "hurt",
     "idle",
     "idle_b",
+    "idle_down",
+    "idle_up",
+    "run",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ],
    "goat_kid": [
     "eat",
@@ -435,14 +507,26 @@
    "sad": "hurt"
   },
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "hurt",
    "idle",
    "idle_b",
+   "idle_down",
+   "idle_up",
+   "run",
+   "sit",
    "sleep",
    "spit",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "llama_cria",
   "height": {
@@ -452,14 +536,26 @@
   "kind": "llama",
   "kind_anims": {
    "llama": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "hurt",
     "idle",
     "idle_b",
+    "idle_down",
+    "idle_up",
+    "run",
+    "sit",
     "sleep",
     "spit",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ],
    "llama_cria": [
     "eat",
@@ -478,13 +574,25 @@
  "pig": {
   "alias": {},
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "idle",
+   "idle_down",
+   "idle_up",
    "produce",
+   "run",
    "sad",
+   "sit",
    "sleep",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "piglet",
   "height": {
@@ -496,13 +604,25 @@
   "kind": "pig",
   "kind_anims": {
    "pig": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "idle",
+    "idle_down",
+    "idle_up",
     "produce",
+    "run",
     "sad",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ],
    "pig_kunekune": [
     "eat",
@@ -543,13 +663,25 @@
  "rabbit": {
   "alias": {},
   "anims": [
+   "attack",
+   "cheer",
+   "downed",
    "eat",
+   "fetch",
+   "getup",
+   "guard",
    "happy",
    "idle",
+   "idle_down",
+   "idle_up",
    "produce",
+   "run",
    "sad",
+   "sit",
    "sleep",
-   "walk"
+   "walk",
+   "walk_down",
+   "walk_up"
   ],
   "baby": "bunny",
   "height": {
@@ -588,13 +720,25 @@
     "walk"
    ],
    "rabbit_white": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "idle",
+    "idle_down",
+    "idle_up",
     "produce",
+    "run",
     "sad",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ]
   },
   "rare": [
@@ -629,13 +773,25 @@
   "kind": "sheep",
   "kind_anims": {
    "lamb": [
+    "attack",
+    "cheer",
+    "downed",
     "eat",
+    "fetch",
+    "getup",
+    "guard",
     "happy",
     "hurt",
     "idle",
     "idle_b",
+    "idle_down",
+    "idle_up",
+    "run",
+    "sit",
     "sleep",
-    "walk"
+    "walk",
+    "walk_down",
+    "walk_up"
    ],
    "sheep": [
     "eat",
