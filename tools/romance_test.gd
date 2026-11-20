@@ -87,7 +87,7 @@ func _flow(arc: String, body: String) -> void:
 	check(not Romance.can_bouquet(a), "bouquet refused at ♥7")
 	await _talk(m, a)
 	check(GameState.count("bouquet") == 1 and Romance.status(a) == "", "bouquet kept after a no")
-	check("bouquet" in Shops.offers("store") == false, "no bouquet in the store before anyone's ♥8")
+	check(not ("bouquet" in Shops.offers("store")), "no bouquet in the store before anyone's ♥8")
 	fr[a] = 8 * 25
 	check("bouquet" in Shops.offers("store"), "bouquet sold at Maple's once someone's ♥8")
 	await _talk(m, a)
@@ -174,23 +174,23 @@ func _flow(arc: String, body: String) -> void:
 	await _talk(m, a)
 	check(int(Romance.st()["talk_day"]) == int(GameState.run["day"]) and int(fr[a]) >= f0, "daily spouse talk")
 	# (6) chores over a week; the water chore waters every planted tile
-	GameState.run["farm"]["9,9"] = {"crop": "turnip", "days": 0, "watered": false}
 	var got := {}
 	var watered_ok := true
-	for i in 14:
-		var rep := {}
-		var w := Romance.overnight(rep)
+	var saw_water := false
+	for i in 40:
+		GameState.run["farm"]["9,9"] = {"crop": "turnip", "days": 0, "watered": false}
+		var rep := GameState.sleep()
 		if rep.has("spouse"):
-			got[str(rep["spouse"]["chore"])] = true
+			var ch := str(rep["spouse"]["chore"])
+			got[ch] = true
 			if Romance.chore_line(rep) == "":
-				check(false, "chore line for %s" % str(rep["spouse"]["chore"]))
-		GameState.run["day"] = int(GameState.run["day"]) + 1
-		if w:
-			var r2 := GameState.sleep()
-			if not bool(GameState.run["farm"]["9,9"].get("watered", false)) and not r2.is_empty():
-				watered_ok = false
+				check(false, "chore line for %s" % ch)
+			if ch == "water":
+				saw_water = true
+				if not bool(GameState.run["farm"]["9,9"].get("watered", false)):
+					watered_ok = false
 	check(got.size() >= 2, "a week of chores: %s" % str(got.keys()))
-	check(watered_ok, "water chore waters planted tiles")
+	check(watered_ok and saw_water, "water chore waters planted tiles (seen: %s)" % str(saw_water))
 	m.queue_free()
 	await frames(2)
 

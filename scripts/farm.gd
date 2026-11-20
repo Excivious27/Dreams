@@ -759,6 +759,7 @@ func after_ready() -> void:
 		_partner_scene.call_deferred()
 	WorldGen.add_backdrop(self, "hills")
 	_place_props()
+	SpouseFarm.place(self)  # married: the spouse on the porch in the morning (C7 P1)
 	WorldGen.dress_band(self, 5150)
 	WorldGen.clear_stairs.call_deferred(self)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):

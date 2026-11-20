@@ -135,6 +135,13 @@ if ! echo "$maout" | grep -q "mine_arrival_test: 0 failures"; then
   echo "mine_arrival_test failed"; exit 1
 fi
 
+echo "== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) =="
+roout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/romance_test.gd 2>&1)"
+echo "$roout" | grep -E "FAIL|SCRIPT ERROR|ROMANCE DONE" || true
+if echo "$roout" | grep -q "SCRIPT ERROR" || ! echo "$roout" | grep -q "ROMANCE DONE, failures: 0"; then
+  echo "romance_test failed"; exit 1
+fi
+
 echo "== night lighting: windows, festival fires, underground, mines (c5_10) =="
 nlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/night_light_test.gd 2>&1)"
 echo "$nlout" | grep -E "FAIL|SCRIPT ERROR|night_light_test" || true

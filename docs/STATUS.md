@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P1: dating and marriage
+
+- New system (both arcs, G-rated): `Romance` (scripts/romance.gd, run.romance), `Dates` (scripts/dates.gd), `Wedding` (scripts/wedding.gd); data from `tools/gen_romance.py` (data/romance.json + bouquet / sea_locket items). 10 candidates open to every hero body (Lumi, Theo, Finn, Rook, Juniper, Posy, Ivy, Benno, Tam, Sel), one partner at a time, no ♥8 cap for anyone, no divorce in v1.
+- Bouquet at ♥8 (Maple's, once anyone is ♥8) starts dating; invitations every 3 days; 3 dates each (fountain, pier, lake, meadow, forest, mountain, stargazing on your farm) with a kind question (+10..+20); stay-friends choice (14-day cooldown, no friendship loss).
+- Proposal with the Sea-Glass Locket (Marlowe in the penguin arc, Maple's in the gangster arc) at ♥10 + 2 dates + a Farmhouse; wedding 3 days later (never a festival or Sunday), played from the house morning (chapel panel / plaza bandstand panel), vows, wedding song (wedding / wedding_gang), j_proposal / j_wedding cues; slept through = next morning.
+- Spouse: lives in the house (kitchen in the morning, their corner piece by day, table in the evening, bed at night), daily line + hug, anniversary, home in town routines (`Npc.place_now` -> farm_home) except 9-5 on their job days; overnight chores (water every planted tile, feed animals, mend, breakfast, play with the pup) in the morning report.
+- UI: Social tab line (single / dating with what's missing / engaged / spouse), Hero tab line, `Romance.tracker_rows()` for the Quests tab. Art: 10 spouse corners, wedding arch/bench/heart sign, 5 blush portraits, 3 story panels (tools/slice_c7_romance.py). Songs: date_evening, wedding, wedding_gang (ACE). Test: tools/romance_test.gd.
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.
