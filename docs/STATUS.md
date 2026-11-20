@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P5: gameplay cues (farm, pets, combat, campaigns, travel)
+
+- Rocks/ore/stone break with `rock_break` everywhere (mine, moon, mountain, Big Jim, hidden cracks); crates keep `crate_break`.
+- Pet voice by look: `Pet.is_cat/voice/say/kind_word` (cats meow/purr, dogs bark/whimper); commands/recall whistle then the pet answers; bite, dig, find, revive, go-home and sniff cues.
+- Combat: enemy send-offs by family (`Enemy._death_sound`: glass, rock, bug, short zap for thug_cyber, people knocked out), telegraph cues (lunge, stomp, shield, enrage, summon, blink, regen; distance-gated `_near_sfx`), archers/elemental shots, boss falls are an impact (one victory sting from DangerMusic). Block = `block`. Tommy Gun `shot_smg`. Status ticks a quiet tick. Spells (`Spells.SPELL_SFX`), Gift blasts by family (`Gift.family/sfx_for`), Rio's audible beat, Fortune's dice, partner/lent-Gift cues (`Companion.ABILITY_SFX`). Marked arrival registers with DangerMusic; yield plays one sting and winds the theme down.
+- Battles: war horn (gangster stab) for commanders, rally whistle/confirm/drum, massing drum (8 s throttle), knocked-to-neutral warning, refusal nope, retreat cost toast on the next map, helper/turret sounds only near you, gangster Gun Turret fires a gun, mustered people swing/shoot and get knocked out. Convoy: car art for the crew, wheels/runners while rolling, badly-hurt warning, left-behind honk, car horn / sled bells on arrival.
+- Farm/house: morning cues (`House.morning_cues`: j_morning or a rough wake after a pass-out, till, build, crop_ready), harvest pop, silver-star sparkle, seed refusal, silo/coop/keg/resonator/place cues; steps follow real speed, swim strokes and hooves on the step voice, work-walking steps, vehicle hop-on and moving cues.
+- Mega keeper cues (locked, wrong arc, accept, route open), fairy-ring ride (`MegaTravel.ride_sfx`), campaign border bump, heist music (raid, then home), community farm build-site hammering after dark, refusal nopes, commons/market/secret/Sal/Marked money via `GameState.add_money`.
+- New sound names wait on P3 with fallbacks (sfx_audit 0 missing). Test: tools/c6_cue_test.gd (check.sh).
+
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
