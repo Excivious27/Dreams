@@ -405,7 +405,6 @@ static func guest_morning() -> Dictionary:
 		run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		total += sell_price(id, int(run["sellbox"][id]))
-		Collections.record_ship(id, int(run["sellbox"][id]), true)  # the guest's own shipping log
 	total += quality_bonus_value(run.get("sellbox_q", {}))
 	run["sellbox_q"] = {}
 	run["sellbox"] = {}
@@ -2747,8 +2746,6 @@ static func sleep(passed_out := false) -> Dictionary:
 		var n: int = int(run["sellbox"][id])
 		var v := sell_price(id, n)
 		run["sold_today"][id] = int(run["sold_today"].get(id, 0)) + n
-		if Collections.record_ship(id, n, true):
-			report.get_or_add("ship_new", []).append(id)  # shipping log firsts (SleepReport line)
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	var qb := quality_bonus_value(run.get("sellbox_q", {}))

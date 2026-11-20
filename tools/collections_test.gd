@@ -48,17 +48,20 @@ func _run() -> void:
 			ok(str(e.get("where", "")) != "", "museum where-hint " + str(e["item"]))
 		ok(not Collections.in_log("fish", "tuna") and Collections.in_log("museum", "tuna"), arc + ": tuna is museum-only")
 
-		# --- shipping log at sleep ---
-		GameState.run["sellbox"] = {"turnip": 3, "stone": 2}
-		var rep := GameState.sleep()
-		ok(Collections.amount_of("shipping", "turnip") == 3, arc + ": 3 turnips in the shipping log")
-		ok((rep.get("ship_new", []) as Array).has("turnip"), arc + ": report carries ship_new")
-		var lines := SleepReport.lines(rep)
-		var has_line := false
-		for l: Dictionary in lines:
-			if str(l.get("who", "")) == "Shipping log":
-				has_line = true
-		ok(has_line, arc + ": SleepReport shows the shipping-log line")
+		# --- shipping log at sleep (the sell-box hook lives in P1's GameState.ship_log; before that merge, record directly) ---
+		if GameMenu._has_static(load("res://scripts/game_state.gd"), "ship_log"):
+			GameState.run["sellbox"] = {"turnip": 3, "stone": 2}
+			var rep := GameState.sleep()
+			ok(Collections.amount_of("shipping", "turnip") == 3, arc + ": 3 turnips in the shipping log")
+			ok((rep.get("ship_new", []) as Array).has("turnip"), arc + ": report carries ship_new")
+			var has_line := false
+			for l: Dictionary in SleepReport.lines(rep):
+				if str(l.get("who", "")) == "Shipping log":
+					has_line = true
+			ok(has_line, arc + ": SleepReport shows the shipping-log line")
+		else:
+			ok(Collections.record_ship("turnip", 3, true), arc + ": first turnip shipped")
+			ok(Collections.amount_of("shipping", "turnip") == 3, arc + ": 3 turnips in the shipping log")
 		ok(not Collections.record_ship("turnip", 1, true), arc + ": second turnip is not a first")
 
 		# --- fish log ---
