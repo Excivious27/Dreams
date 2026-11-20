@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 77.6}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 8.4}
+{"step": 13, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.4}
+{"step": 19, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.1}
+{"step": 25, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 5.4}
+{"step": 31, "name": "rec_audio_test", "rc": 0, "secs": 3.1}
+{"step": 37, "name": "farm_look_test", "rc": 0, "secs": 5.1}
+{"step": 43, "name": "move_target_test", "rc": 0, "secs": 18.1}
+{"step": 49, "name": "cf_layout_test", "rc": 0, "secs": 10.0}
+{"step": 55, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 9.3}
+{"step": 61, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.1}
+{"step": 67, "name": "footstep_test", "rc": 0, "secs": 6.9}
+{"step": 73, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 4.4}
+{"step": 79, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 8.7}
+{"step": 85, "name": "farm_debris_test", "rc": 0, "secs": 5.1}
+{"step": 91, "name": "skill_glow_test", "rc": 0, "secs": 4.5}
+{"step": 97, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 13.4}
+{"step": 103, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 11.5}
+{"step": 109, "name": "jumper_test", "rc": 0, "secs": 3.3}
+{"step": 115, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.2}
+{"step": 121, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 4.3}
+{"step": 127, "name": "C9 P4: haptics", "rc": 0, "secs": 3.0}

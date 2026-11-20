@@ -1,0 +1,40 @@
+CONDUCT CI FAIL  4541b1ddca  (ci/c10b-0b81194a, run 44807608880)
+
+check shards (6/6):
+  shard 1: FAIL  331s  failed: make_house_parts
+  shard 2: PASS  162s
+  shard 3: PASS  305s
+  shard 4: PASS  172s
+  shard 5: PASS  330s
+  shard 6: PASS  258s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 131s  0 fails, 0 warns, 630 steps, 2 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 317 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "fore
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 166s  0 fails, 0 warns, 630 steps, 9 kills, 0 ownerless pauses, scenes ["ruins", "desert_glass_c
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 101s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 63s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "town",
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "forest", "lake"
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 180s  0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "house",
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 87s  0 fails, 0 warns, 332 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "quarry", "mar
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 173s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["jungle", "uptown", "min
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "mountain",
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 326 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "marsh", "sky"
+playtest: FAIL  42s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (7 away)
+  FAIL gangster intro reaches the letter choice
+  FAIL letter decision stored
+  FAIL boss appeared after 5 kills
+  FAIL collapsing wakes you in the clinic (meadow)
+
+longest job: 331s
+slowest check steps: import 224.9s; import 77.6s; import 75.2s; import 70.8s; import 68.6s; import 64.3s; smoke test 55.7s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.4s
+distinct errors/fails/warns:
