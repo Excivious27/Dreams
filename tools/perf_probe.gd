@@ -96,15 +96,19 @@ func _run() -> void:
 		var bake_draws := 0
 		var bake_ms := 0.0
 		if m and not m._bake.is_empty():
-			# Median of 5 single-chunk renders (one is noisy on a shared CPU).
+			# Median of 5 single-chunk re-bakes (one is noisy on a shared CPU); ms = that whole frame.
 			var bds: Array = []
 			var bms: Array = []
 			for rep in 5:
 				await process_frame
 				var base := int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
-				var ch: Array = m._bake.values()[0]
+				# Re-bake one chunk the way the game does (stale, alone in its frame:
+				# a clipped painter pass when GameMap.bake_clip is on).
+				var key: Vector2i = m._bake.keys()[rep % m._bake.size()]
 				var tb := Time.get_ticks_usec()
-				(ch[0] as SubViewport).render_target_update_mode = SubViewport.UPDATE_ONCE
+				m._bake[key][2] = true
+				m._bake_busy = true
+				m._bake_last = Vector2(INF, INF)
 				await process_frame
 				bms.append(_ms(tb, Time.get_ticks_usec()))
 				bds.append(int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)) - base)
