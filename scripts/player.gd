@@ -26,6 +26,10 @@ var anim_name := ""
 var velocity := Vector2.ZERO
 var map: GameMap
 var frozen := false
+## Seconds frozen with nothing on screen (no dialogue, not paused): a scene that
+## forgot to let go. After FREEZE_SAFETY the hero is released (c6_18: bots boxed in at town).
+var _frozen_idle := 0.0
+const FREEZE_SAFETY := 12.0
 var invuln := 0.0
 ## Tap-to-move target in world space; INF when none.
 var auto_target := Vector2.INF
@@ -625,6 +629,14 @@ var _status_shield := 0.0   # secs; Not Today washes statuses off for this long
 
 
 func _physics_process(delta: float) -> void:
+	if frozen and not get_tree().paused and not Dialogue.instance(get_tree()).active and not GameMenu.story_busy:
+		_frozen_idle += delta
+		if _frozen_idle > FREEZE_SAFETY:
+			_frozen_idle = 0.0
+			frozen = false
+			push_warning("Player: frozen with nothing on screen for %d s; released" % int(FREEZE_SAFETY))
+	else:
+		_frozen_idle = 0.0
 	if not is_puppet and map and not frozen:
 		_refresh_status_fx()
 		# Not Today's grace: the knockout hit's own poison/burn can't stick.
