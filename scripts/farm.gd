@@ -220,6 +220,9 @@ func _plan_fences() -> void:
 	var h_name := "chain_fence_h" if gang else "fence2_wood_h"
 	var v_name := "chain_fence_v" if gang else "fence2_wood_end"
 	var gate := "fence2_iron_gate_open" if gang else "fence2_wood_gate_open"
+	var fs := HouseExterior.fence_set()  # C10b P3 pen fence style
+	if fs.size() == 3:
+		h_name = str(fs[0]); v_name = str(fs[1]); gate = str(fs[2])
 	var specs: Array = []
 	if Builds.is_built("coop"):
 		specs.append([COOP_PEN, Vector2i(COOP_PEN.position.x + COOP_PEN.size.x / 2, COOP_PEN.end.y)])
@@ -1086,12 +1089,17 @@ func _plans() -> void:
 			if n > 0:
 				copts.append("%s  (%d of %d built)" % [str(pair[1]), have, n])
 				cids.append(str(pair[0]))
+		copts.append(HouseExterior.menu_word())  # C10b P3 style picker
+		cids.append("@house")
 		copts.append("Leave")
 		d.say([{"who": "Plans", "text": "Build it from materials, or buy it ready-made. Each tier opens as your story, skills and friendships grow.", "choice": copts, "key": ""}])
 		await d.finished
 		if d.last_choice < 0 or d.last_choice >= cids.size():
 			return
 		var cat := str(cids[d.last_choice])
+		if cat == "@house":
+			HouseExterior.open(self)
+			return
 		# Inside a category: a plan's "← Back" returns to this list, not the top (C4 P6).
 		while true:
 			var ids: Array = []
@@ -1970,6 +1978,7 @@ func _place_props() -> void:
 		_house_scale = hsc
 		if night_pic:
 			_fit_house_pic()
+		HouseExterior.apply(self, hp)  # C10b P3 exterior style (palette, door, porch, smoke)
 		prop("buildings", "mailbox", mail_c)
 		prop("buildings", "sellbox", SELLBOX)
 	prop("props", "notice_board", PLANS)

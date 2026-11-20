@@ -32,7 +32,12 @@ PREVIEW = {1: (40, 90, 230), 2: (240, 200, 40), 3: (40, 230, 230), 4: (200, 60, 
 DOORS = {"house": (80, 119, 111, 157), "house_2": (85, 97, 116, 140), "house_3": (179, 118, 213, 166)}
 
 
-def parts(img, door=None):
+# Lowest roof row (eave line) per picture: dark red-brown wood shade under the eaves
+# and porch passes the tile test too, so nothing below this is roof.
+ROOF_MAX_Y = {"house": 114, "house_2": 95, "house_3": 119}
+
+
+def parts(img, door=None, roof_y=None):
     a = np.asarray(img.convert("RGBA")).astype(np.float32)
     r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
     op = al > 40
@@ -40,9 +45,9 @@ def parts(img, door=None):
     mn = np.minimum(np.minimum(r, g), b)
     sat = (mx - mn) / np.maximum(mx, 1)
     lum = 0.3 * r + 0.59 * g + 0.11 * b
-    warm = op & (r >= g) & (g >= b * 0.8) & (sat > 0.25)
+    warm = op & (r >= g) & (r > b + 20) & (sat > 0.25)
     gr = g / np.maximum(r, 1)
-    core = warm & (r > 110) & (gr < 0.42)
+    core = warm & (r > 55) & (gr < 0.42)
     core = ndimage.binary_opening(core, iterations=1)
     lab, n = ndimage.label(core)
     if n:
@@ -50,6 +55,8 @@ def parts(img, door=None):
         core = np.isin(lab, [i + 1 for i, s in enumerate(sizes) if s >= 40])
     if door:
         core[door[1]:door[3], door[0]:door[2]] = False
+    if roof_y:
+        core[roof_y:, :] = False
     roof = ndimage.binary_closing(core, iterations=3)
     holes = ndimage.binary_fill_holes(roof) & ~roof
     hl, hn = ndimage.label(holes)
@@ -65,6 +72,8 @@ def parts(img, door=None):
     roof &= (warm | (lum < 70)) & ~((b > r + 15) & (b > 80))
     if door:
         roof[door[1]:door[3], door[0]:door[2]] = False
+    if roof_y:
+        roof[roof_y:, :] = False
     out = np.zeros(a.shape[:2], np.uint8)
     out[roof] = 1
     glass = op & (b > r + 20) & (b > 90) & ~roof
@@ -92,7 +101,7 @@ def main():
                 print("house parts: %s missing or wrong size" % dst)
                 bad += 1
             continue
-        p = parts(src, DOORS.get(h))
+        p = parts(src, DOORS.get(h), ROOF_MAX_Y.get(h))
         im = np.zeros(p.shape + (4,), np.uint8)
         im[..., 0] = p * STEP
         im[..., 3] = 255
