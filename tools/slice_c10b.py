@@ -715,6 +715,7 @@ RENAME = {
     "dc_casino_chip_frame": "Framed Lucky Token", "dc_top_dice_cup": "Dice Cup",
     "dc_top_snow_globe": "Snowy Village Globe", "dc_show_crystal_tree": "Glow Glass Tree",
     "dc_top_ice_crystal": "Ice Cube Paperweight", "dc_stat_trophy": "Champion's Cup",
+    "dc_glight_streetlamp": "Mini Street Lamp", "dc_ice_snowman": "Igloo Snowman",
 }
 SET_RENAME = {"casino": "velvet_lounge"}
 REARC = {"dc_top_penguin_plush": "penguins", "dc_rug_penguin": "penguins", "dc_stat_penguin_gold": "penguins"}

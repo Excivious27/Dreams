@@ -3159,7 +3159,7 @@
   "glow": 44,
   "id": "dc_glight_streetlamp",
   "layer": "floor",
-  "name": "Indoor Street Lamp",
+  "name": "Mini Street Lamp",
   "px": [
    30,
    66
@@ -3659,7 +3659,7 @@
   "glow": 0,
   "id": "dc_ice_snowman",
   "layer": "floor",
-  "name": "Tiny Snowman",
+  "name": "Igloo Snowman",
   "px": [
    30,
    33
