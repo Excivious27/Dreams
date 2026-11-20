@@ -21,12 +21,20 @@ static func tab_row(body: Control, refresh: Callable) -> String:
 		tab = "valley"
 	if open.is_empty():
 		return tab
-	var row := HFlowContainer.new()
-	row.add_theme_constant_override("h_separation", 2)
-	row.add_theme_constant_override("v_separation", 2)
-	row.custom_minimum_size = Vector2(W, 0)
-	body.add_child(row)
+	# One strip that scrolls sideways (C4 c4_02: two wrapped rows pushed the map below the fold).
+	var sc := ScrollContainer.new()
+	sc.name = "MapTabs"
+	sc.custom_minimum_size = Vector2(W, 26)
+	sc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	sc.scroll_deadzone = 8
+	sc.mouse_filter = Control.MOUSE_FILTER_PASS
+	body.add_child(sc)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 2)
+	sc.add_child(row)
 	var all: Array = ["valley"] + open
+	var sel_btn: Button = null
 	for id: String in all:
 		var b := Button.new()
 		b.text = "Valley" if id == "valley" else str(MegaRegion.get_r(id).get("short", id))
@@ -37,21 +45,168 @@ static func tab_row(body: Control, refresh: Callable) -> String:
 		b.button_pressed = id == tab
 		b.modulate = Color(1, 0.9, 0.5) if id == tab else Color(0.85, 0.85, 0.85)
 		b.name = "MapTab_" + id
+		b.mouse_filter = Control.MOUSE_FILTER_PASS  # a sideways drag scrolls the strip
 		var tid := id
 		b.pressed.connect(func() -> void:
 			tab = tid
+			sel = ""
 			refresh.call())
 		row.add_child(b)
+		if id == tab:
+			sel_btn = b
+	if sel_btn:
+		# Keep the open tab in view.
+		(func() -> void:
+			if is_instance_valid(sc) and is_instance_valid(sel_btn):
+				sc.ensure_control_visible(sel_btn)).call_deferred()
 	return tab
 
 
-## The map control for a region tab.
-static func make_map(id: String) -> Control:
+## The pin picked on the open region map ("" = none): its card shows under the map.
+static var sel := ""
+static var _press := Vector2.INF
+
+
+## The map control for a region tab. Tapping a pin picks it (its card is drawn by
+## the menu under the map); a drag still scrolls the tab (the map passes it on).
+static func make_map(id: String, refresh: Callable = Callable()) -> Control:
 	var m := Control.new()
 	m.custom_minimum_size = Vector2(W, H)
 	m.name = "MegaMap_" + id
+	m.mouse_filter = Control.MOUSE_FILTER_PASS
 	m.draw.connect(func() -> void: draw_region(m, id))
+	m.gui_input.connect(func(ev: InputEvent) -> void:
+		var p := TapInput.press_pos(ev)
+		if p != Vector2.INF:
+			_press = p
+			return
+		if TapInput.is_release(ev) and _press != Vector2.INF:
+			var rp: Vector2 = (ev as Variant).position
+			var moved := rp.distance_to(_press) > 10.0
+			_press = Vector2.INF
+			if moved:
+				return
+			var hit := pin_at(id, rp)
+			if hit != sel:
+				sel = hit
+				if hit != "":
+					Music.instance(m.get_tree()).sfx("ui_tap", "pickup")
+				if refresh.is_valid():
+					refresh.call()
+				else:
+					m.queue_redraw())
 	return m
+
+
+## Pin positions on a region map (control space).
+static func pin_spots(id: String) -> Dictionary:
+	var inner := Rect2(0, 0, W, H).grow(-3)
+	var out := {}
+	for a in MegaRegion.areas(id):
+		out[str(a["id"])] = inner.position + Vector2(float(a["pos"][0]), float(a["pos"][1])) * inner.size
+	return out
+
+
+## The area pin under p (within a finger's reach), or "".
+static func pin_at(id: String, p: Vector2) -> String:
+	var best := ""
+	var bd := 18.0
+	var spots := pin_spots(id)
+	for aid: String in spots:
+		var d := (spots[aid] as Vector2).distance_to(p + Vector2(0, 2))
+		if d < bd:
+			bd = d
+			best = aid
+	return best
+
+
+static var _regions := {}
+
+
+static func _area_data(aid: String) -> Dictionary:
+	if _regions.is_empty():
+		_regions = GameState.load_json("res://data/regions.json")
+	var r: Variant = _regions.get(aid, {})
+	return r if r is Dictionary else {}
+
+
+## The card for a picked pin: [[text, size, colour], ...] (Tom C4: pins tap to a card
+## with the name, whether you've been, what holds it, its danger tier, how to get
+## there, and the open quests that are handed in there: "Next here:").
+static func pin_card(id: String, aid: String) -> Array:
+	var a: Dictionary = {}
+	for x in MegaRegion.areas(id):
+		if str(x["id"]) == aid:
+			a = x
+	if a.is_empty():
+		return []
+	var out: Array = []
+	var here := str(GameState.run.get("scene", ""))
+	var seen := MegaRegion.seen(aid) or aid == here
+	var cid := Campaign.gate_of(aid)
+	var held := cid != "" and not Campaign.region_open(aid)
+	var nm := str(a.get("name", aid))
+	if held and not seen:
+		nm = str(Campaign.get_c(cid).get("region_name", nm))
+	if not seen and not held:
+		nm = "Somewhere unexplored"
+	out.append(["▸ " + nm + ("  (you are here)" if aid == here else ""), 9, Color(1, 0.92, 0.6)])
+	var bits: Array = ["Visited" if seen else "Not visited yet"]
+	var tier := int(_area_data(aid).get("tier", 0))
+	if tier > 0:
+		bits.append("Danger " + "★".repeat(clampi(tier, 1, 5)))
+	out.append(["   " + " · ".join(bits), 8, Color(0.85, 0.85, 0.8)])
+	if seen and str(a.get("blurb", "")) != "":
+		out.append(["   " + str(a["blurb"]), 8, Color(0.8, 0.85, 0.9)])
+	if held:
+		var gw: Dictionary = Campaign.gate_words(cid)
+		var ls: Array = gw.get("lines", [])
+		out.append(["   Held: " + str(ls[ls.size() - 1] if ls.size() > 1 else (ls[0] if not ls.is_empty() else "the way is closed.")), 8, Color(1, 0.75, 0.6)])
+	var how := how_to(id, aid)
+	if how != "" and aid != here:
+		out.append(["   Getting there: " + how, 8, Color(0.75, 0.95, 0.75)])
+	var qs: Array = QuestTracker.quests_at(aid)
+	if not qs.is_empty():
+		for q: Dictionary in qs.slice(0, 2):
+			var pr := "ready to hand in" if bool(q["ready"]) else QuestTracker.progress(str(q["id"]))
+			out.append(["   Next here: %s%s" % [str(q["text"]), (" (%s)" % pr) if pr != "" else ""], 8, Color(1, 0.9, 0.5)])
+	return out
+
+
+## How to reach an area: the way in from the Valley, then the walk through linked areas.
+static func how_to(id: String, aid: String) -> String:
+	var r := MegaRegion.get_r(id)
+	for e in r.get("entries", []):
+		if str(e.get("to", "")) == aid:
+			return "%s from %s" % [str(e.get("how", "the road")), str(e.get("label", str(e.get("from", "")).capitalize()))]
+	# Walk the links back to an entry area.
+	var links: Array = r.get("links", [])
+	var prev := {aid: ""}
+	var queue: Array = [aid]
+	var entry_to := {}
+	for e in r.get("entries", []):
+		entry_to[str(e.get("to", ""))] = e
+	while not queue.is_empty():
+		var s: String = queue.pop_front()
+		if entry_to.has(s):
+			var path: Array = []
+			var k := s
+			while k != aid and k != "":
+				path.append(MegaRegion.area_name(k))
+				k = str(prev.get(k, ""))
+			path.reverse()
+			var e: Dictionary = entry_to[s]
+			return "%s from %s, then walk on through %s" % [str(e.get("how", "the road")), str(e.get("label", "")), " > ".join(path)]
+		for l in links:
+			var o := ""
+			if str(l[0]) == s:
+				o = str(l[1])
+			elif str(l[1]) == s:
+				o = str(l[0])
+			if o != "" and not prev.has(o):
+				prev[o] = s
+				queue.append(o)
+	return ""
 
 
 ## "You are in: ..." line for the map tab.
@@ -87,6 +242,13 @@ static func draw_region(m: Control, id: String) -> void:
 		m.draw_rect(inner, bg)
 		_backdrop(m, str(th.get("style", "")), inner, bg, land, acc, rng)
 	m.draw_rect(inner, Color(0.2, 0.12, 0.06), false, 2.0)
+	# Title ribbon first, so pins near the top sit over it, never under it (c4_02 #3).
+	var title := str(r.get("name", id))
+	var tsz := font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10)
+	var tr := Rect2(Vector2((W - tsz.x) / 2.0 - 8, 6), Vector2(tsz.x + 16, 15))
+	m.draw_rect(tr, Color(0.12, 0.08, 0.05, 0.7))
+	m.draw_rect(tr, acc, false, 1.0)
+	m.draw_string(font, tr.position + Vector2(8, 11), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, acc)
 	var areas := MegaRegion.areas(id)
 	var pos := {}
 	for a in areas:
@@ -111,8 +273,11 @@ static func draw_region(m: Control, id: String) -> void:
 		m.draw_dashed_line(hub, pos[k], Color(1, 1, 1, 0.55), 1.0, 3.0)
 	# The way home: a gate marker at the hub.
 	if not entries.is_empty():
-		var e0: Dictionary = entries[0]
-		var lbl := "▼ Valley · %s" % str(e0.get("how", "road"))
+		var hows: Array = []
+		for e in entries:
+			if MegaRegion.area_in_arc(id, {"arc": str(e.get("arc", "both"))}) and not hows.has(str(e.get("how", "road"))):
+				hows.append(str(e.get("how", "road")))
+		var lbl := "▼ Valley · %s" % " / ".join(hows)
 		m.draw_circle(hub, 4.0, Color(0.2, 0.12, 0.06))
 		m.draw_circle(hub, 2.6, Color(0.75, 1.0, 0.65))
 		var tw := font.get_string_size(lbl, HORIZONTAL_ALIGNMENT_LEFT, -1, 6).x
@@ -126,7 +291,14 @@ static func draw_region(m: Control, id: String) -> void:
 		var seen := MegaRegion.seen(aid) or aid == here
 		var cid := Campaign.gate_of(aid)
 		var held := cid != "" and not Campaign.region_open(aid)
-		_blob(m, p, land, aid, str(th.get("style", "")), seen)
+		if painted:
+			# A painted map keeps its landmarks: a small plate under the pin, no solid blob (c4_02 #4).
+			m.draw_circle(p + Vector2(0, -3), 8.5, Color(0.1, 0.07, 0.04, 0.45 if seen else 0.3))
+			m.draw_arc(p + Vector2(0, -3), 8.5, 0, TAU, 20, Color(acc.r, acc.g, acc.b, 0.9 if seen else 0.5), 1.2)
+		else:
+			_blob(m, p, land, aid, str(th.get("style", "")), seen)
+		if aid == sel:
+			m.draw_arc(p + Vector2(0, -3), 11.5, 0, TAU, 24, Color(1, 0.95, 0.4), 2.0)
 		if seen or (held and Campaign.why_locked(cid) == ""):
 			var icon := str(a.get("icon", ""))
 			if icon != "" and Art.has("ui", icon):
@@ -139,7 +311,8 @@ static func draw_region(m: Control, id: String) -> void:
 				nm = str(Campaign.get_c(cid).get("region_name", nm))
 			_text(m, font, p + Vector2(-34, 11), nm, 7, ink, 68)
 		else:
-			_text(m, font, p + Vector2(-10, 4), "?", 10, Color(ink.r, ink.g, ink.b, 0.7), 20)
+			var qc := Color(1, 1, 1, 0.75) if painted else Color(ink.r, ink.g, ink.b, 0.7)
+			_text(m, font, p + Vector2(-10, 1), "?", 10, qc, 20)
 		if held:
 			_lock(m, p + Vector2(7, -9))
 	# You.
@@ -147,15 +320,6 @@ static func draw_region(m: Control, id: String) -> void:
 		var p: Vector2 = pos[here] + Vector2(0, -14)
 		m.draw_circle(p, 3.2, Color(1, 0.2, 0.2))
 		m.draw_arc(p, 4.6, 0, TAU, 16, Color.WHITE, 1.0)
-	# Title ribbon.
-	var title := str(r.get("name", id))
-	var tsz := font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10)
-	var tr := Rect2(Vector2((W - tsz.x) / 2.0 - 8, 6), Vector2(tsz.x + 16, 15))
-	m.draw_rect(tr, Color(0.12, 0.08, 0.05, 0.85))
-	m.draw_rect(tr, acc, false, 1.0)
-	m.draw_string(font, tr.position + Vector2(8, 11), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, acc)
-
-
 static func _text(m: Control, font: Font, p: Vector2, s: String, size: int, col: Color, width: float) -> void:
 	var align := HORIZONTAL_ALIGNMENT_CENTER if width > 0 else HORIZONTAL_ALIGNMENT_LEFT
 	var dark := col.get_luminance() > 0.5

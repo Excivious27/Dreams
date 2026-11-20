@@ -21,6 +21,28 @@ const ADJ := {
 
 
 static var _thing_cache := {}
+static var _mega_adj := {}
+
+
+## Neighbours of a scene: ADJ for the Valley, plus every mega area's own exits
+## (read from data/regions.json "exits" of areas with "mega", so new areas join by themselves).
+static func adj(s: String) -> Array:
+	if ADJ.has(s):
+		return ADJ[s]
+	if _mega_adj.is_empty():
+		var regs: Dictionary = GameState.load_json("res://data/regions.json")
+		for k: String in regs:
+			var r: Variant = regs[k]
+			if not (r is Dictionary) or not (r as Dictionary).has("mega"):
+				continue
+			var out: Array = []
+			for e in (r as Dictionary).get("exits", []):
+				var sc := str(e.get("scene", "")) if e is Dictionary else ""
+				if sc != "" and not out.has(sc):
+					out.append(sc)
+			_mega_adj[k] = out
+		_mega_adj["_"] = []
+	return _mega_adj.get(s, [])
 
 
 static func _scene() -> String:
@@ -147,7 +169,7 @@ static func target(m: GameMap) -> Vector2:
 	var gp := goal_place()
 	var goal := str(gp[0])
 	var here := m.scene_id()
-	if goal == "" or not ADJ.has(here):
+	if goal == "" or adj(here).is_empty():
 		return Vector2.ZERO
 	if here == goal:
 		var what := str(gp[1])
@@ -196,13 +218,13 @@ static func exit_toward(m: GameMap, goal: String) -> Vector2:
 
 ## The first scene on the shortest walk from `from` to `to` ("" if none).
 static func next_hop(from: String, to: String) -> String:
-	if from == to or not ADJ.has(from):
+	if from == to or adj(from).is_empty():
 		return ""
 	var prev := {from: ""}
 	var queue: Array = [from]
 	while not queue.is_empty():
 		var s: String = queue.pop_front()
-		for n: String in ADJ.get(s, []):
+		for n: String in adj(s):
 			if prev.has(n):
 				continue
 			prev[n] = s

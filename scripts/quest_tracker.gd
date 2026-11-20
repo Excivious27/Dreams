@@ -67,10 +67,57 @@ static func open_quests() -> Array:
 ## Progress of an item quest, "3/5" ("" when it isn't an item count).
 static func progress(id: String) -> String:
 	var dw: Variant = GameState._quest_def(id).get("done_when", {})
-	if not (dw is Dictionary) or not (dw as Dictionary).has("item"):
+	if not (dw is Dictionary):
 		return ""
-	var it: Array = dw["item"]
-	return "%d/%d" % [mini(GameState.count(str(it[0])), int(it[1])), int(it[1])]
+	if (dw as Dictionary).has("item"):
+		var it: Array = dw["item"]
+		return "%d/%d" % [mini(GameState.count(str(it[0])), int(it[1])), int(it[1])]
+	if (dw as Dictionary).has("items"):
+		# Several kinds (mega hooks/jobs, C4): all done = the total; else the first one still short, by name.
+		var have := 0
+		var need := 0
+		var short := ""
+		for pair in dw["items"]:
+			var n := int(pair[1])
+			var c := mini(GameState.count(str(pair[0])), n)
+			have += c
+			need += n
+			if short == "" and c < n:
+				short = "%s %d/%d" % [str(GameState.items.get(str(pair[0]), {}).get("name", str(pair[0]).replace("_", " ").capitalize())), c, n]
+		return short if short != "" and (dw["items"] as Array).size() > 1 else "%d/%d" % [have, need]
+	return ""
+
+
+static var _npc_home := {}
+
+
+## The mega area a region villager (regions.json npcs) lives in, or "".
+static func npc_scene(npc: String) -> String:
+	if _npc_home.is_empty():
+		var regs: Dictionary = GameState.load_json("res://data/regions.json")
+		for k: String in regs:
+			if regs[k] is Dictionary:
+				for n in (regs[k] as Dictionary).get("npcs", []):
+					if n is Dictionary:
+						_npc_home[str(n.get("id", ""))] = k
+		_npc_home["_"] = ""
+	return str(_npc_home.get(npc, ""))
+
+
+## Open quests that are handed in (or picked up) in this scene: its villagers' jobs,
+## and a keeper's hook at its travel point. Used by the map's pin card ("Next here:").
+static func quests_at(scene: String) -> Array:
+	var out: Array = []
+	for oq: Dictionary in open_quests():
+		var g := str(oq["giver"])
+		if g == "":
+			continue
+		var at := npc_scene(g)
+		if g.begins_with("gate_"):
+			at = str(MegaTravel.reg(g.substr(5)).get("entry", {}).get("scene", ""))
+		if at == scene:
+			out.append(oq)
+	return out
 
 
 ## Where the compass points on map m (Vector2.ZERO = nowhere to point).
@@ -95,10 +142,48 @@ static func _giver_target(m: GameMap, giver: String) -> Vector2:
 	for ch in m.get_children():
 		if ch is Npc and (ch as Npc).id == giver and (ch as Node2D).visible:
 			return (ch as Node2D).position
-	# Valley villagers live in town; region keepers (gate_*, mg_*) stay where they are.
-	if not GameState.npcs.has(giver) or m.scene_id() == "town":
+	var here := m.scene_id()
+	# A keeper's hook (gate_<region>): the travel point in the home world.
+	if giver.begins_with("gate_"):
+		var e: Dictionary = MegaTravel.reg(giver.substr(5)).get("entry", {})
+		if e.is_empty():
+			return Vector2.ZERO
+		if str(e.get("scene", "")) == here:
+			return m.cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
+		return _toward(m, str(e.get("scene", "")))
+	# A region villager (mg_*): their area, or the way back to their hub.
+	var home := npc_scene(giver)
+	if home != "":
+		return Vector2.ZERO if home == here else _toward(m, home)
+	# Valley villagers live in town.
+	if not GameState.npcs.has(giver) or here == "town":
 		return Vector2.ZERO
-	return GoalLine.exit_toward(m, "town")
+	return _toward(m, "town")
+
+
+## The exit toward `goal`; from inside a mega region bound elsewhere, the way to its hub
+## (its vehicle goes home); from the Valley to a mega area, the region's travel point.
+static func _toward(m: GameMap, goal: String) -> Vector2:
+	var p := GoalLine.exit_toward(m, goal)
+	if p != Vector2.ZERO:
+		return p
+	var here := m.scene_id()
+	var rid := MegaTravel.region_of(here)
+	if rid != "":
+		var hub := MegaTravel.hub_of(rid)
+		if hub == here:
+			for c: Vector2i in m.things:
+				if str((m.things[c] as Dictionary).get("type", "")) == "mega_gate":
+					return m.cell_center(c)
+			return Vector2.ZERO
+		return GoalLine.exit_toward(m, hub)
+	var grid := MegaTravel.region_of(goal)
+	if grid != "":
+		var e: Dictionary = MegaTravel.reg(grid).get("entry", {})
+		if str(e.get("scene", "")) == here:
+			return m.cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
+		return GoalLine.exit_toward(m, str(e.get("scene", "")))
+	return Vector2.ZERO
 
 
 ## Small words under the compass: cells to go, or the job's count when it isn't ready.

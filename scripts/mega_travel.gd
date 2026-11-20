@@ -60,6 +60,8 @@ static func on_enter(m: GameMap) -> void:
 		var e: Dictionary = r.get("entry", {})
 		if str(e.get("scene", "")) != sid:
 			continue
+		if not shows(id, r):
+			continue  # Tom (C4): no "locked" limo in the field from day 1 — it arrives with the keeper's letter
 		var c := Vector2i(int(e["cell"][0]), int(e["cell"][1]))
 		if m.things.has(c):
 			# Weeds, stones or forage that grew on the spot make way; anything else stays.
@@ -103,6 +105,48 @@ static func on_enter(m: GameMap) -> void:
 				m.add_child(sp)
 
 
+## The travel point is out in the world once the keeper's letter has come (or the way is open).
+static func shows(id: String, r: Dictionary) -> bool:
+	if is_open(id):
+		return true
+	if r.has("mail"):
+		return GameState.run["flags"].has("mega_%s_mail" % id)
+	return can_start(r)
+
+
+## The story steps that raise GameState.progress_tier, worded per arc (C4 c4_11 #3:
+## "chapter N" was wrong in the gangster arc; name the real step instead).
+const TIER_STEPS := {
+	"penguins": [["clear_meadow", "you find what's howling in the east meadow"],
+		["spark", "you build the Crystal Resonator (or beat the Grump Commander)"],
+		["sky_stair", "you climb the great tree in the forest"],
+		["teleporter", "you power the moon teleporter"]],
+	"gangsters": [["clear_meadow", "you check out the east meadow"],
+		["docks", "you beat the Docks boss"],
+		["neon", "you put out Flame in the neon district"],
+		["uptown", "you beat the President's Enforcer"]],
+}
+const TIER_ALT := {"spark": ["wastes_gate", "docks"], "sky_stair": ["neon"], "teleporter": ["uptown"]}
+
+
+## "Opens after you beat the Docks boss." — the next story step this way waits for.
+static func gate_words(r: Dictionary) -> String:
+	var need := int(r.get("unlock", {}).get("tier", 0))
+	var arc := str(GameState.run.get("arc", "penguins"))
+	var steps: Array = TIER_STEPS.get(arc, TIER_STEPS["penguins"])
+	var have := GameState.progress_tier()
+	if have < need:
+		# The tier counts steps done in any order: name the first one not done yet.
+		for st: Array in steps:
+			var done := GameState.quest_done(str(st[0]))
+			for alt in TIER_ALT.get(str(st[0]), []):
+				done = done or GameState.quest_done(str(alt))
+			if not done:
+				return "Opens after %s." % str(st[1])
+	var hint := str(r.get("unlock", {}).get("hint", ""))
+	return hint if hint != "" else "Opens a little later in the story."
+
+
 ## One letter from the keeper when their way first opens up for you.
 static func _mail(id: String, r: Dictionary) -> void:
 	var key := "mega_%s_mail" % id
@@ -130,7 +174,7 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		return
 	if not can_start(r):
 		await m.say([{"who": who, "text": str(L.get("locked", "Not yet."))}])
-		m.hud.toast("Opens at story chapter %d." % (int(r.get("unlock", {}).get("tier", 0)) + 1), Color(1, 0.85, 0.6))
+		m.hud.toast(gate_words(r), Color(1, 0.85, 0.6))
 		return
 	var qid := str(r.get("quest", ""))
 	var d := GameState._quest_def(qid)

@@ -406,6 +406,43 @@
    }
   ]
  },
+ "boss_colossus": {
+  "chosen": "so_64170190c4c44591ae8f3bbb",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_colossus__so_64170190c4c44591ae8f3bbb.mp3",
+    "id": "so_64170190c4c44591ae8f3bbb",
+    "page": "https://acemusic.ai/song/ryg2k9ye575w",
+    "score": {
+     "dur": 107.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_colossus__so_64170190c4c44591ae8f3bbb.mp3",
+     "holes": 0,
+     "lvl_diff": 5.400000095367432,
+     "peak": 1.26,
+     "score": 91.12,
+     "seam": 0.992
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_colossus__so_e412fb667ab44c1b82c137ef.mp3",
+    "id": "so_e412fb667ab44c1b82c137ef",
+    "page": "https://acemusic.ai/song/t8ra7upen9xv",
+    "score": {
+     "dur": 105.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_colossus__so_e412fb667ab44c1b82c137ef.mp3",
+     "holes": 0,
+     "lvl_diff": 6.0,
+     "peak": 1.317,
+     "score": 90.2,
+     "seam": 0.992
+    }
+   }
+  ]
+ },
  "boss_gang": {
   "chosen": "so_0876d91f44134347a9ed501b",
   "kind": "music",
@@ -476,6 +513,117 @@
      "peak": 0.993,
      "score": 76.74,
      "seam": 0.997
+    }
+   }
+  ]
+ },
+ "boss_roc": {
+  "chosen": "so_884fef73c51d4585b5a85e87",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_roc__so_547c3b132127491988116486.mp3",
+    "id": "so_547c3b132127491988116486",
+    "page": "https://acemusic.ai/song/k37arkqs6kxk",
+    "score": {
+     "dur": 108.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_roc__so_547c3b132127491988116486.mp3",
+     "holes": 0,
+     "lvl_diff": 4.699999809265137,
+     "peak": 0.993,
+     "score": 92.4,
+     "seam": 0.994
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_roc__so_884fef73c51d4585b5a85e87.mp3",
+    "id": "so_884fef73c51d4585b5a85e87",
+    "page": "https://acemusic.ai/song/6hwi9ce78bfe",
+    "score": {
+     "dur": 105.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_roc__so_884fef73c51d4585b5a85e87.mp3",
+     "holes": 0,
+     "lvl_diff": 2.4000000953674316,
+     "peak": 0.928,
+     "score": 96.08,
+     "seam": 0.996
+    }
+   }
+  ]
+ },
+ "boss_thornmother": {
+  "chosen": "so_960d02925eec4cb9a0f7fee7",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_thornmother__so_960d02925eec4cb9a0f7fee7.mp3",
+    "id": "so_960d02925eec4cb9a0f7fee7",
+    "page": "https://acemusic.ai/song/9ginx57bm6j7",
+    "score": {
+     "dur": 107.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_thornmother__so_960d02925eec4cb9a0f7fee7.mp3",
+     "holes": 0,
+     "lvl_diff": 1.0,
+     "peak": 1.174,
+     "score": 96.32,
+     "seam": 0.978
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_thornmother__so_b4afff76882e40d297809839.mp3",
+    "id": "so_b4afff76882e40d297809839",
+    "page": "https://acemusic.ai/song/zbbvmnsiqv5s",
+    "score": {
+     "dur": 106.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_thornmother__so_b4afff76882e40d297809839.mp3",
+     "holes": 0,
+     "lvl_diff": 7.300000190734863,
+     "peak": 1.191,
+     "score": 79.46,
+     "seam": 0.905
+    }
+   }
+  ]
+ },
+ "boss_wyrm": {
+  "chosen": "so_85964abbcda043389f623d77",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_wyrm__so_b18477955dad4c10b5c4d92b.mp3",
+    "id": "so_b18477955dad4c10b5c4d92b",
+    "page": "https://acemusic.ai/song/3z42zvyfmt37",
+    "score": {
+     "dur": 107.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_wyrm__so_b18477955dad4c10b5c4d92b.mp3",
+     "holes": 0,
+     "lvl_diff": 5.099999904632568,
+     "peak": 1.028,
+     "score": 91.27,
+     "seam": 0.989
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_wyrm__so_85964abbcda043389f623d77.mp3",
+    "id": "so_85964abbcda043389f623d77",
+    "page": "https://acemusic.ai/song/atpp3atsvheg",
+    "score": {
+     "dur": 108.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_wyrm__so_85964abbcda043389f623d77.mp3",
+     "holes": 0,
+     "lvl_diff": 1.7999999523162842,
+     "peak": 0.947,
+     "score": 94.03,
+     "seam": 0.968
     }
    }
   ]
