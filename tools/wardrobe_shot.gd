@@ -32,6 +32,15 @@ func _run() -> void:
 			Wardrobe.dress_penguin_hero(holder, sp, spr)
 			x += 85.0
 		x = 50.0
+	# Skin tones on painted outfits (light / medium / dark), build-your-own hero
+	var bx := 30.0
+	for o in ["outfit_neon", "outfit_farmer", "outfit_scholar"]:
+		for tone in ["light_slim", "medium_slim", "dark_broad"]:
+			var h := Node2D.new()
+			h.position = Vector2(bx, 470)
+			root.add_child(h)
+			PaperDoll.build_preview(h, {"body": tone, "hair": PaperDoll.hair_styles()[3], "hair_color": "black", "hat": "", "outfit": o}, 3.0, "idle", true)
+			bx += 56.0
 	for i in 8:
 		await process_frame
 	await RenderingServer.frame_post_draw
