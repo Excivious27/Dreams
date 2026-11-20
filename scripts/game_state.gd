@@ -100,7 +100,30 @@ static func has_run() -> bool:
 				run["flags"].erase("st_" + str(run["story_pending"]))
 				run.erase("story_pending")
 			board_restore()
+			battle_resume_fix()
 	return not run.is_empty()
+
+
+## C3 (saves F1/F2/F4): a save made on a battlefield (Save & title mid-fight, or
+## the app closed during the win/loss lines) must not reopen a free battle.
+## Only a fight or drill still under way resumes there; otherwise the run goes
+## back where the fight was launched from (its record's "back"), or the farm.
+static func battle_resume_fix() -> void:
+	var sc := str(run.get("scene", ""))
+	if not sc.begins_with("bf_"):
+		return
+	if not Campaign.fight_for(sc).is_empty() or not CampaignGate.drill_for(sc).is_empty():
+		return
+	var f: Dictionary = (run.get("campaign", {}) as Dictionary).get("fight", {}) if run.get("campaign", {}) is Dictionary else {}
+	var back: Array = f.get("back", []) if f.get("back", []) is Array else []
+	if back.size() >= 3 and str(back[0]) != "" and not str(back[0]).begins_with("bf_") and ResourceLoader.exists("res://scenes/%s.tscn" % str(back[0])):
+		run["scene"] = str(back[0])
+		run["spawn"] = [float(back[1]), float(back[2]), "down"] if float(back[1]) > 0.0 else []
+	else:
+		run["scene"] = "farm"
+		run["spawn"] = []
+	if run.get("campaign", {}) is Dictionary:
+		(run["campaign"] as Dictionary)["fight"] = {}  # the fight is over (or was left)
 
 
 ## Unlock ids are name slugs: add an entry whenever an unlock is renamed.
