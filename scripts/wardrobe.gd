@@ -21,10 +21,12 @@ const SHOWN_SLOTS := ["outfit", "hat", "acc"]
 ## and its width as a share of the body's opaque width. Hats stay off: both heroes
 ## wear their own crown / wizard hat.
 const PENGUIN_ANCHOR := {
-	"penguin_king": {"neck": 0.44, "face": 0.62, "w": 0.78},
+	"penguin_king": {"neck": 0.42, "face": 0.62, "w": 0.78},
 	"penguin_wizard": {"neck": 0.40, "face": 0.55, "w": 0.78},
 	"penguin": {"neck": 0.50, "face": 0.70, "w": 0.80}}
-const PIECE_W := {"pg_scarf": 1.0, "pg_bowtie": 0.42, "pg_goggles": 0.78}
+## Piece width as a share of the anchor width; neck pieces hang from their top edge
+## (the loop sits on the neck line), face pieces are centred on the eye line.
+const PIECE_W := {"pg_scarf": 0.6, "pg_bowtie": 0.36, "pg_goggles": 0.78}
 
 
 static func data() -> Dictionary:
@@ -222,9 +224,10 @@ static func sync_unlocks() -> Array:
 static func dress_penguin_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: String) -> void:
 	for ch in parent.get_children():
 		if ch.name.begins_with("PenguinAcc"):
+			ch.name = "OldAcc%d" % ch.get_instance_id()  # free the name for the new holder
 			ch.queue_free()
 	var pieces: Array = []
-	for slot: String in ["acc"]:
+	for slot: String in ["acc", "hat"]:
 		var id := worn_id(slot)
 		if id == "" or not shows_on(id):
 			continue
@@ -281,6 +284,7 @@ static func dress_penguin_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: S
 			var fy: float = bb[2] - (bb[2] - bb[1]) * float(anc[kind])
 			var fx: float = bb[0] + (bb[3] * 0.12 * (-1.0 if flip else 1.0) if v == "side" else 0.0)
 			s.flip_h = flip if v == "side" else false
+			s.offset = Vector2(0, t.get_height() * 0.5 - 2.0) if kind == "neck" and base != "pg_bowtie" else Vector2.ZERO
 			s.position = Vector2((fx - tex.get_width() / 2.0) * sc * (-1.0 if flip and v != "side" else 1.0), (fy - tex.get_height()) * sc)
 	anim.frame_changed.connect(upd)
 	anim.animation_changed.connect(upd)

@@ -296,7 +296,7 @@
   "wr_goggles_brass": {
    "arc": "penguins",
    "art": "decor/pg_goggles",
-   "cat": "acc",
+   "cat": "hat",
    "desc": "For flying very fast. Or pretending to.",
    "doll": {},
    "glow": false,
@@ -318,7 +318,7 @@
     1,
     1
    ],
-   "slot": "acc",
+   "slot": "hat",
    "sources": [],
    "starter": false,
    "stats": {}
@@ -326,7 +326,7 @@
   "wr_goggles_ice": {
    "arc": "penguins",
    "art": "decor/pg_goggles",
-   "cat": "acc",
+   "cat": "hat",
    "desc": "Frosty lenses, perfect for snow.",
    "doll": {},
    "glow": false,
@@ -348,7 +348,7 @@
     1,
     1
    ],
-   "slot": "acc",
+   "slot": "hat",
    "sources": [],
    "starter": false,
    "stats": {}

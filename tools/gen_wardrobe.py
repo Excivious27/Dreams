@@ -68,8 +68,8 @@ for col, rar in [("red", "common"), ("blue", "common"), ("green", "common"), ("y
     add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col], "plain": "scarf_" + col}, "snowfolk", col == "red", "Knitted with room for flippers.")
 add("wr_bowtie_red", "acc", "Red Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "d8403a", "plain": "bowtie_red"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
 add("wr_bowtie_blue", "acc", "Blue Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "3f6fd8", "plain": "bowtie_blue"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
-add("wr_goggles_brass", "acc", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff", "plain": "goggles_a"}, "snowfolk", False, "For flying very fast. Or pretending to.")
-add("wr_goggles_ice", "acc", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff", "plain": "goggles_b"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
+add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff", "plain": "goggles_a"}, "snowfolk", False, "For flying very fast. Or pretending to.")
+add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff", "plain": "goggles_b"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
 
 
 def main():

@@ -767,3 +767,10 @@ echo "$dsout" | tail -3
 if ! echo "$dsout" | grep -q "data_sync_check: 0 failures"; then
   echo "data_sync_check failed"; exit 1
 fi
+
+echo "== C10a P5: wardrobe =="
+wrout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/wardrobe_test.gd 2>&1)"
+echo "$wrout" | grep -E "FAIL|SCRIPT ERROR|wardrobe_test" || true
+if ! echo "$wrout" | grep -q "wardrobe_test: OK (0 failures)"; then
+  echo "wardrobe_test failed"; exit 1
+fi

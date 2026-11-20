@@ -33,7 +33,7 @@ const SLOT_NAMES := {"head": "Head", "body": "Body", "legs": "Legs", "feet": "Fe
 	"offhand": "Shield", "back": "Cape", "belt": "Belt", "ring": "Ring", "charm": "Trinket"}
 ## Gangster arc slot words (Chrome Arm is not a shield, a trench coat is not a cape).
 const GANG_SLOT_NAMES := {"head": "Head", "body": "Body", "legs": "Legs", "feet": "Feet", "hands": "Hands",
-	"offhand": "Off-hand", "back": "Coat", "belt": "Belt", "ring": "Ring", "charm": "Piece"}
+	"offhand": "Arm", "back": "Coat", "belt": "Belt", "ring": "Ring", "charm": "Piece"}
 
 
 static func slot_name(slot: String) -> String:
@@ -1006,8 +1006,8 @@ static func _doll(body: Control) -> void:
 		mid.add_child(dv)
 		var dh := Node2D.new()
 		dv.add_child(dh)
-		dv.resized.connect(func() -> void: dh.position = Vector2(dv.size.x / 2.0, 112))
-		PaperDoll.build_preview(dh, GameState.run.get("look", {}), 4.0, "idle")
+		dv.resized.connect(func() -> void: dh.position = Vector2(dv.size.x / 2.0, 114))
+		PaperDoll.build_preview(dh, GameState.run.get("look", {}), 3.3, "idle")
 		ht = null
 	var hr := TextureRect.new()
 	hr.texture = ht

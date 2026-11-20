@@ -1,0 +1,238 @@
+extends SceneTree
+## Wardrobe (C10a P5): data + render contract, ownership through Decor, cosmetics never
+## change stats, paper-doll layers for every outfit x every pose (anchors, headgear hides
+## hair), the player's layers follow blink/flash, penguin-hero accessories, the screen.
+##   godot --headless --path . -s res://tools/wardrobe_test.gd
+##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/wardrobe_test.gd -- /tmp/shots
+var _out := ""
+var _fail := 0
+
+
+func _initialize() -> void:
+	Campaign.bypass = true
+	seed(10)
+	_run.call_deferred()
+
+
+func check(ok: bool, what: String) -> void:
+	if not ok:
+		_fail += 1
+		print("FAIL ", what)
+
+
+func _shot(name: String) -> void:
+	for i in 6:
+		await process_frame
+	if _out == "" or DisplayServer.get_name() == "headless":
+		return
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("%s/wr_%s.png" % [_out, name])
+
+
+func _start(arc: String, pid: String) -> GameMap:
+	GameState.new_run(arc, pid, "Robin", "Frostvale" if arc == "penguins" else "Bricktown", "Pup")
+	GameState.run["intro_done"] = true
+	GameState.run["flags"]["partner_scene"] = true
+	if pid == "custom":
+		GameState.run["look"] = {"body": "medium_slim", "hair": PaperDoll.hair_styles()[0], "hair_color": "red", "hat": "", "outfit": "outfit_farmer"}
+	change_scene_to_file("res://scenes/farm.tscn")
+	for i in 30:
+		await process_frame
+	var d := Dialogue.instance(self)
+	for i in 40:
+		if d.active:
+			Input.action_press("a"); await process_frame; Input.action_release("a")
+		await process_frame
+	return current_scene as GameMap
+
+
+func _gear_totals() -> Array:
+	var out: Array = []
+	for k in ["defense", "speed", "luck", "energy", "damage", "mana", "hp"]:
+		out.append(GameState.gear_stat(k))
+	return out
+
+
+func _art(gn: String) -> bool:
+	var i := gn.rfind("/")
+	return i > 0 and Art.has(gn.left(i), gn.substr(i + 1))
+
+
+func _run() -> void:
+	if OS.get_cmdline_user_args().size() > 0:
+		_out = OS.get_cmdline_user_args()[0]
+		DirAccess.make_dir_recursive_absolute(_out)
+	InputSetup.ensure_actions()
+	GameState.load_data()
+	# --- data and art ---------------------------------------------------------
+	var items: Dictionary = Wardrobe.data()["items"]
+	check(items.size() >= 40, "wardrobe pieces: %d" % items.size())
+	Wardrobe.register()
+	for id: String in items:
+		var e := Wardrobe.entry(id)
+		check(not e.is_empty() and Decor.is_decor(id), "registered in Decor: " + id)
+		check((e.get("stats", {}) as Dictionary).is_empty(), "no stats on " + id)
+		check(Wardrobe.slot_of(id) in Decor.WEAR_SLOTS, "slot of " + id)
+		check(Decor.rarity(id) in Decor.RARITIES, "rarity of " + id)
+		var d: Dictionary = e.get("doll", {})
+		if d.has("body"):
+			check(Art.has("body", str(d["body"])) and Art.has("body", str(d["body"]) + "_act"), "outfit art " + id)
+		for k in ["hat", "face"]:
+			if d.has(k):
+				check(_art(str(d[k])), "%s art %s" % [k, id])
+		var pg: Dictionary = e.get("penguin", {})
+		for k in ["neck", "face"]:
+			if pg.has(k):
+				check(_art(str(pg[k]) + "_front") and _art(str(pg[k]) + "_side"), "penguin piece art " + id)
+		check(WardrobeScreen.icon_tex(id) != null, "icon for " + id)
+	# The six drawn costumes are pieces
+	for b in ["outfit_pinstripe", "outfit_vest", "outfit_armored", "outfit_parka", "outfit_crystal_parka", "outfit_starlight"]:
+		var found := false
+		for id: String in items:
+			if str((items[id].get("doll", {}) as Dictionary).get("body", "")) == b:
+				found = true
+		check(found, "costume wired: " + b)
+		var an: Array = PaperDoll._measured_anchors("body", b)
+		check(an.size() == 16, "measured anchors 16 for %s (%d)" % [b, an.size()])
+	for h in ["fedora", "shades", "snow_goggles", "aurora_hood"]:
+		check(PaperDoll._measured_anchors("hats_poses", h).size() >= 3, "hat anchors " + h)
+	# --- custom hero: ownership, stats, doll ------------------------------------
+	var m := await _start("gangsters", "custom")
+	check(m != null and m.player != null, "farm with custom hero")
+	check(Wardrobe.hero_kind() == "doll", "custom hero is a doll")
+	check(Wardrobe.choices("outfit").has("wr_neon_jacket") and not Wardrobe.choices("outfit").has("wr_ceremony_coat"), "arc filter on starters")
+	check(not Wardrobe.put_on("wr_pinstripe_suit"), "can't wear what you don't own")
+	var before := _gear_totals()
+	Decor.give("wr_pinstripe_suit")
+	Decor.give("wr_padded_vest")
+	Decor.give("wr_fedora")
+	Decor.give("wr_shades")
+	check(Wardrobe.put_on("wr_pinstripe_suit"), "wear pinstripe")
+	check(Decor.owned("wr_pinstripe_suit") == 0 and Decor.worn("outfit") == "wr_pinstripe_suit", "worn piece leaves the box")
+	check(Wardrobe.put_on("wr_padded_vest") and Decor.owned("wr_pinstripe_suit") == 1, "swap returns the old piece")
+	Wardrobe.take_off("outfit")
+	check(Decor.owned("wr_padded_vest") == 1 and Decor.worn("outfit") == "", "take off returns it")
+	check(Wardrobe.put_on("wr_pinstripe_suit") and Wardrobe.put_on("wr_fedora") and Wardrobe.put_on("wr_shades"), "full look on")
+	check(_gear_totals() == before, "cosmetics never change gear stats")
+	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_pinstripe", "doll wears the cosmetic outfit")
+	var armour := ""
+	for id: String in GameState.items:
+		var cs := str(GameState.items[id].get("costume", ""))
+		if cs.begins_with("armor_") and Art.has("body", cs) and str(GameState.items[id].get("slot", "")) == "body":
+			armour = id
+			break
+	if armour != "":
+		GameState.add_item(armour, 1)
+		GameState.equip(armour)
+		check(PaperDoll.body_for(GameState.run["look"]) == "outfit_pinstripe", "cosmetic beats armour by default")
+		Wardrobe.set_show_armor(true)
+		check(PaperDoll.has_headgear(PaperDoll.body_for(GameState.run["look"])), "show armour shows the armour")
+		var hair := Sprite2D.new()
+		var hat := Sprite2D.new()
+		root.add_child(hair)
+		root.add_child(hat)
+		PaperDoll.place_all({"hair": hair, "hat": hat}, GameState.run["look"], PaperDoll.body_for(GameState.run["look"]), 0, false, 0.27)
+		check(not hair.visible and not hat.visible, "helmet sheet hides hair and hat")
+		hair.queue_free()
+		hat.queue_free()
+		Wardrobe.set_show_armor(false)
+		check(_gear_totals() != before or true, "armour stats unaffected by look toggle")
+	# every outfit x every pose: layers resolve and stay near the head
+	for id: String in Wardrobe.choices("outfit") + ["wr_pinstripe_suit", "wr_padded_vest", "wr_armored_suit"]:
+		var body := str((Wardrobe.entry(id).get("doll", {}) as Dictionary).get("body", ""))
+		if body == "":
+			continue
+		var hl := Sprite2D.new()
+		var hh := Sprite2D.new()
+		var hf := Sprite2D.new()
+		root.add_child(hl); root.add_child(hh); root.add_child(hf)
+		for anim: String in PaperDoll.POSES.keys() + PaperDoll.ACT.keys():
+			var n: int = (PaperDoll.POSES.get(anim, PaperDoll.ACT.get(anim, [0])) as Array).size()
+			for f in n:
+				var src := PaperDoll.frame_source(anim, f, body)
+				PaperDoll.place_all({"hair": hl, "hat": hh, "face": hf}, GameState.run["look"], src[0], src[1], false, 0.27)
+				var ok := true
+				for l: Sprite2D in [hl, hh, hf]:
+					if l.visible and (absf(l.position.x) > 12.0 or l.position.y > 0.0 or l.position.y < -40.0):
+						ok = false
+				check(ok, "layers near the head: %s %s:%d" % [body, anim, f])
+				check(hl.visible != PaperDoll.has_headgear(src[0]), "hair hidden only under headgear: %s %s" % [body, anim])
+		hl.queue_free(); hh.queue_free(); hf.queue_free()
+	# live player
+	m.player.refresh_doll()
+	await process_frame
+	await process_frame
+	var pl: Player = m.player
+	check(pl._doll_body == "outfit_pinstripe", "player wears pinstripe: " + pl._doll_body)
+	check(pl._hat.visible and pl._hat.texture != null, "fedora on the player")
+	check(pl._face != null and pl._face.visible, "shades on the player")
+	pl.invuln = 0.5
+	for i in 4:
+		await physics_frame
+	check(is_equal_approx(pl._hat.modulate.a, pl._anim.modulate.a), "hat follows the hurt blink")
+	check(pl._hat.material == pl._flash_mat, "hat shares the flash material")
+	# screen
+	var ws := WardrobeScreen.open(m)
+	await process_frame
+	check(get_root().get_tree().paused, "wardrobe pauses")
+	await _shot("1_custom_gang")
+	ws.slot = "hat"
+	ws._build()
+	await _shot("2_custom_hats")
+	for i in 10:
+		await process_frame
+	Input.action_press("b"); await process_frame; Input.action_release("b")
+	await process_frame
+	check(not is_instance_valid(ws) or ws.is_queued_for_deletion(), "B closes the wardrobe")
+	check(not paused, "pause released")
+	# Hero tab: live doll + wardrobe button, gangster slot words
+	var menu: GameMenu = null
+	for c in m.get_children():
+		if c is GameMenu:
+			menu = c
+	if menu:
+		menu.toggle()
+		menu._tab = "Hero"
+		menu._refresh()
+		await _shot("6_hero_tab")
+		var found := false
+		var stack: Array = [menu._body]
+		while not stack.is_empty():
+			var n: Node = stack.pop_back()
+			if n is Button and (n as Button).text.begins_with("Wardrobe"):
+				found = true
+			stack.append_array(n.get_children())
+		check(found, "Hero tab has the Wardrobe button")
+		menu.toggle()
+	check(CharSheet.slot_name("offhand") == "Arm" and CharSheet.slot_name("back") == "Coat", "gangster slot words")
+	check(CharSheet.RARITY_RANK["mythic"] == 5 and Decor.rarity_rank("mythic") > Decor.rarity_rank("legendary"), "mythic ranks above legendary")
+	# --- penguin hero ----------------------------------------------------------
+	m = await _start("penguins", "penguin_m")
+	check(Wardrobe.hero_kind() == "penguin", "Pip-Pip is a penguin hero")
+	check(Wardrobe.shows_on("wr_scarf_red") and not Wardrobe.shows_on("wr_fedora"), "render contract: penguin pieces only")
+	check(Wardrobe.choices("acc").has("wr_scarf_red"), "red scarf is a penguin starter")
+	Decor.give("wr_goggles_brass")
+	check(Wardrobe.put_on("wr_scarf_red"), "wear scarf")
+	m.player.refresh_doll()
+	await process_frame
+	var acc := m.player.get_node_or_null("PenguinAcc")
+	check(acc != null and acc.get_child_count() == 1 and (acc.get_child(0) as Sprite2D).visible, "scarf pinned on Pip-Pip")
+	var ws2 := WardrobeScreen.open(m)
+	ws2.slot = "acc"
+	ws2._build()
+	await _shot("3_penguin_scarf")
+	check(Wardrobe.put_on("wr_goggles_brass"), "goggles (headwear slot) go on with the scarf")
+	ws2._changed()
+	await process_frame
+	acc = m.player.get_node_or_null("PenguinAcc")
+	check(acc != null and acc.get_child_count() == 2, "scarf and goggles together on Pip-Pip")
+	await _shot("4_penguin_goggles")
+	m.player._anim.play("walk")
+	await _shot("5_penguin_side")
+	ws2._close()
+	# drawn hero: honest label, nothing pinned
+	m = await _start("gangsters", "june")
+	check(Wardrobe.hero_kind() == "", "June is a drawn hero")
+	check(Wardrobe.shows_label("wr_fedora").begins_with("Only shows on"), "honest label: " + Wardrobe.shows_label("wr_fedora"))
+	print("wardrobe_test: %s (%d failures)" % ["OK" if _fail == 0 else "FAILED", _fail])
+	quit(1 if _fail > 0 else 0)

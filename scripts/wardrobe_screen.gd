@@ -32,6 +32,7 @@ static func open(m: Node) -> WardrobeScreen:
 func _ready() -> void:
 	layer = 72
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("toast_hold")  # HUD toasts wait while the wardrobe owns the screen
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "wardrobe")
@@ -112,11 +113,11 @@ func _build() -> void:
 	_btn(top, "Close", _close, 44).set_meta("pc_key", "close")
 	# Preview
 	var pv := Control.new()
-	pv.custom_minimum_size = Vector2(0, 92)
+	pv.custom_minimum_size = Vector2(0, 104)
 	pv.clip_contents = true
 	v.add_child(pv)
 	var holder := Node2D.new()
-	holder.position = Vector2(123, 88)
+	holder.position = Vector2(123, 100)
 	pv.add_child(holder)
 	_preview(holder)
 	var kind := Wardrobe.hero_kind()
@@ -157,7 +158,11 @@ func _build() -> void:
 	var sets := _set_lines()
 	if not sets.is_empty():
 		_lab(v, "  ".join(sets), 7, INK_SOFT)
-	# Look toggle
+	# Look toggle (only the build-your-own hero wears armour sheets)
+	if kind != "doll":
+		if is_instance_valid(_cursor):
+			_cursor.resync.call_deferred()
+		return
 	var lt := HBoxContainer.new()
 	v.add_child(lt)
 	var ll := _lab(lt, "When you wear armour or a helm:", 7, INK)
@@ -265,7 +270,7 @@ func _preview(holder: Node2D) -> void:
 	var kind := Wardrobe.hero_kind()
 	var look: Dictionary = GameState.run.get("look", {})
 	if kind == "doll" and PaperDoll.available():
-		PaperDoll.build_preview(holder, look, 3.2, "walk_down")
+		PaperDoll.build_preview(holder, look, 2.7, "walk_down")
 		return
 	var pid := str(GameState.run.get("playable", ""))
 	var spr := GameState.sprite_for_playable(pid)
