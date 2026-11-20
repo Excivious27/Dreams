@@ -66,6 +66,7 @@ var _doll_scale := 0.34
 var _doll_body := "medium_slim"
 var _hair: Sprite2D
 var _hat: Sprite2D
+var _face: Sprite2D
 
 
 # ---- vehicles (built at the Vehicle Workshop) -----------------------------------
@@ -260,12 +261,18 @@ func _update_doll() -> void:
 	var body: String = src[0]
 	var pose: int = src[1]
 	var flip := _anim.flip_h
-	PaperDoll.place_layer(_hair, "hair", str(look.get("hair", "")), body, pose, flip, _doll_scale)
-	var hat_id := GameState.equipped("head")
-	var hat_sprite := str(GameState.items.get(hat_id, {}).get("sprite", hat_id))
-	PaperDoll.place_layer(_hat, "hats", hat_sprite if Art.has("hats", hat_sprite) else str(look.get("hat", "")), body, pose, flip, _doll_scale)
+	var layers := {"hair": _hair, "hat": _hat}
+	if _face:
+		layers["face"] = _face
+	PaperDoll.place_all(layers, look, body, pose, flip, _doll_scale)
 	if _hat.visible and _hair.visible:
 		_hair.modulate.a = 1.0
+	# Hurt blink and hit flash follow the body (c10_04): modulate + the shared flash material.
+	for l: CanvasItem in [_hair, _hat, _face]:
+		if l:
+			PaperDoll.sync_layer(l, _anim)
+	if _hair.material is ShaderMaterial:
+		(_hair.material as ShaderMaterial).set_shader_parameter("flash", _flash)
 
 
 func set_character(id: String) -> void:
@@ -285,13 +292,20 @@ func set_character(id: String) -> void:
 		_doll_body = PaperDoll.body_for(look)
 		_anim.sprite_frames = PaperDoll.body_frames(look)
 		_anim.centered = true
-		_anim.offset = Vector2(0, -48)
+		_anim.offset = Vector2(0, -float(Art.info("body", _doll_body).get("cell_h", 96)) / 2.0)
 		var h := float(PaperDoll.anchor_of("body", _doll_body, 0)[4])
-		_doll_scale = CharacterLibrary.HERO_H / maxf(40.0, h)
+		_doll_scale = CharacterLibrary.HERO_H / maxf(20.0, h)
+		var da := _anim
+		var fit := func() -> void:  # cells differ per sheet (act/ride/water, low-res costumes): keep feet planted
+			var tx := da.sprite_frames.get_frame_texture(da.animation, da.frame)
+			if tx:
+				da.offset = Vector2(0, -tx.get_height() / 2.0)
+		_anim.frame_changed.connect(fit)
+		_anim.animation_changed.connect(fit)
 		_anim.scale = Vector2(_doll_scale, _doll_scale)
 		_anim.animation_finished.connect(_on_animation_finished)
 		_sprite = _anim
-		for l in [_hair, _hat]:
+		for l in [_hair, _hat, _face]:
 			if l:
 				l.queue_free()
 		_hair = Sprite2D.new()
@@ -299,11 +313,15 @@ func set_character(id: String) -> void:
 		_hair.material = PaperDoll.hair_material(str(look.get("hair_color", "brown")))
 		_hat = Sprite2D.new()
 		_hat.centered = true
+		_face = Sprite2D.new()
+		_face.centered = true
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
 			_flash_mat = ShaderMaterial.new()
 			_flash_mat.shader = sh
 			_anim.material = _flash_mat
+			_hat.material = _flash_mat
+			_face.material = _flash_mat
 	elif id == "" or not CharacterLibrary.has_character(id):
 		var ph := PlaceholderSprite.new()
 		ph.tint = Color(str(pdata.get("color", "2b3a67")))
@@ -319,6 +337,8 @@ func set_character(id: String) -> void:
 		_sprite = _anim
 		if id == "penguin":
 			Player.dress_penguin(self, _anim, GameState.run.get("look", {}), 1.0)
+		if PaperDoll.is_penguin(id):
+			Wardrobe.dress_penguin_hero(self, _anim, id)  # wardrobe scarves/bowties/goggles (c10_04)
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
 			_flash_mat = ShaderMaterial.new()
@@ -333,8 +353,10 @@ func set_character(id: String) -> void:
 	if _doll:
 		add_child(_hair)
 		add_child(_hat)
+		add_child(_face)
 		_hair.z_index = 1
 		_hat.z_index = 2
+		_face.z_index = 2
 		_update_doll()
 	if _wear == null:
 		_wear = WearLayer.new()

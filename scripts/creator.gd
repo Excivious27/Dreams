@@ -166,10 +166,7 @@ func _build() -> void:
 		_picker("Pet", ppets, "pet", func(v: String) -> String: return "Pup (classic)" if v == "" else v.replace("_", " ").capitalize())
 	elif PaperDoll.available():
 		# The look's outfit is what the hero wears (PaperDoll.body_for), so that's the picker (the bare skin/build bases never show).
-		var outs: Array = []
-		for o: String in PaperDoll.OUTFITS:
-			if Art.has("body", o):
-				outs.append(o)
+		var outs: Array = PaperDoll.starter_outfits()
 		_picker("Outfit", outs, "outfit", func(v: String) -> String: return v.trim_prefix("outfit_").capitalize())
 		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.trim_suffix("_b").trim_suffix("_c").replace("_", " ").capitalize() + (" 2" if v.ends_with("_b") else (" 3" if v.ends_with("_c") else "")))
 		_picker("Hair colour", PaperDoll.HAIR_COLORS.keys(), "hair_color", func(v: String) -> String: return v.capitalize())
@@ -277,33 +274,8 @@ func _refresh_preview() -> void:
 		Player.dress_penguin(_preview, pg, look, 3.0)
 		return
 	if PaperDoll.available():
-		PaperDoll.preview_bare = true  # the outfit you're picking, not the armour you wear
-		var body := AnimatedSprite2D.new()
-		body.sprite_frames = PaperDoll.body_frames(look)
-		body.centered = true
-		body.offset = Vector2(0, -48)
-		var h := float(PaperDoll.anchor_of("body", PaperDoll.body_for(look), 0)[4])
-		var sc := 2.4 * CharacterLibrary.HERO_H / maxf(40.0, h)
-		body.scale = Vector2(sc, sc)
-		body.play("walk_down")
-		body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-		_preview.add_child(body)
-		var hair := Sprite2D.new()
-		hair.material = PaperDoll.hair_material(str(look.get("hair_color", "brown")))
-		hair.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-		var hat := Sprite2D.new()
-		hat.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-		_preview.add_child(hair)
-		_preview.add_child(hat)
-		var upd := func() -> void:
-			var pose := PaperDoll.pose_index(body.animation, body.frame)
-			PaperDoll.preview_bare = true
-			PaperDoll.place_layer(hair, "hair", str(look.get("hair", "")), PaperDoll.body_for(look), pose, false, sc)
-			PaperDoll.place_layer(hat, "hats", str(look.get("hat", "")), PaperDoll.body_for(look), pose, false, sc)
-			PaperDoll.preview_bare = false
-		body.frame_changed.connect(upd)
-		upd.call()
-		PaperDoll.preview_bare = false
+		# The outfit you're picking, not the armour or wardrobe piece you wear.
+		PaperDoll.build_preview(_preview, look, 2.4, "walk_down", true)
 	elif _playable_sprite != "":
 		var sp := CharacterLibrary.make_sprite(_playable_sprite)
 		sp.scale *= 1.6

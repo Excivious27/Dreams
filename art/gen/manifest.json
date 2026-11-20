@@ -44332,6 +44332,48 @@
    "w": 64
   }
  },
+ "decor": {
+  "pg_bowtie_front": {
+   "file": "decor/pg_bowtie_front.png",
+   "h": 24,
+   "w": 47
+  },
+  "pg_bowtie_side": {
+   "file": "decor/pg_bowtie_side.png",
+   "h": 27,
+   "w": 25
+  },
+  "pg_goggles_back": {
+   "file": "decor/pg_goggles_back.png",
+   "h": 32,
+   "w": 65
+  },
+  "pg_goggles_front": {
+   "file": "decor/pg_goggles_front.png",
+   "h": 34,
+   "w": 68
+  },
+  "pg_goggles_side": {
+   "file": "decor/pg_goggles_side.png",
+   "h": 32,
+   "w": 56
+  },
+  "pg_scarf_back": {
+   "file": "decor/pg_scarf_back.png",
+   "h": 29,
+   "w": 48
+  },
+  "pg_scarf_front": {
+   "file": "decor/pg_scarf_front.png",
+   "h": 51,
+   "w": 48
+  },
+  "pg_scarf_side": {
+   "file": "decor/pg_scarf_side.png",
+   "h": 47,
+   "w": 45
+  }
+ },
  "edges": {
   "ash_lava_inner_tl": {
    "file": "edges/ash_lava_inner_tl.png",
