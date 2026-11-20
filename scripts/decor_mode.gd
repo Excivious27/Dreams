@@ -35,6 +35,8 @@ const BAD_COL := Color(1.0, 0.3, 0.3, 0.42)
 static var undo_stack: Array = []
 ## relayout/load checks skip "someone stands there" (it is about taps, not saves).
 static var _no_people := false
+## Undo survives closing and re-opening on the same map (c10b_09-09); a new map starts clean.
+static var _undo_map := 0
 ## relayout outdoors: every piece passed the walk check when it was placed; only
 ## reserved/blocked cells are re-checked (one farm-wide flood per piece was ~250 ms).
 static var _no_reach := false
@@ -1134,7 +1136,9 @@ static func open(m: GameMap) -> DecorMode:
 func _ready() -> void:
 	layer = 12
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	undo_stack.clear()
+	if _undo_map != map.get_instance_id():
+		undo_stack.clear()
+		_undo_map = map.get_instance_id()
 	var b := bounds(map)
 	cursor = map.player.cell() if map.player and b.has_point(map.player.cell()) else b.position + b.size / 2
 	if map.player and b.has_point(map.player.cell() + Vector2i.UP):
@@ -1201,7 +1205,6 @@ func close() -> void:
 		if map.hud._toasts:
 			map.hud._toasts.visible = true
 	Dialogue.block_input()
-	undo_stack.clear()
 	queue_free()
 
 
