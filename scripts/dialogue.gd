@@ -298,7 +298,7 @@ func _next() -> void:
 
 
 ## Per-line cues (CONDUCT 6): "sfx" plays as the line shows, "music" starts a song
-## (slow fade, held by the scene: Music.hold when the engine has it). Letters,
+## (slow fade, held by the scene: Music.play_held when the engine has it). Letters,
 ## notes, boards and journals have no voice: a paper sound instead of a talk blip.
 static func line_cues(tree: SceneTree, line: Dictionary) -> void:
 	var mu := Music.instance(tree)
@@ -336,17 +336,20 @@ static func line_music(tree: SceneTree, track: String) -> void:
 		return
 	var m := tree.current_scene as GameMap
 	if track == "area":
+		if mu.has_method("release_hold"):
+			mu.call("release_hold")
 		if m:
 			mu.play(m.area_track(), 2.0)
-		if mu.has_method("hold"):
-			mu.call("hold", "")
 		return
 	if track == "stop":
 		mu.stop_all()
 		return
-	mu.play(track, 2.0)
-	if mu.has_method("hold"):
-		mu.call("hold", track)
+	# A scene's song is held (Music.play_held, C6 P1): DangerMusic's calm re-ask
+	# leaves it alone until the map changes or another song is asked for.
+	if mu.has_method("play_held"):
+		mu.call("play_held", track, 2.0)
+	else:
+		mu.play(track, 2.0)
 	# A play-once song (merkitty_song, an ending) hands back to the map's song.
 	if track in Music.ONCE and m:
 		mu.queue_after(m.area_track())
