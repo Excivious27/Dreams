@@ -11,7 +11,7 @@ extends GameMap
 const HOUSE := Rect2i(9, 6, 8, 5)
 ## Harvest economy (C8 P2): level terms stop at lv_cap so yield and quality can't run away;
 ## star_chance is gold-star odds only; XP scales with how long the crop took.
-const HARVEST := {"lv_cap": 10, "extra_per_lv": 0.03, "gold_per_lv": 0.015, "silver_per_lv": 0.05,
+const HARVEST := {"lv_cap": 10, "extra_per_lv": 0.025, "star_gold_share": 0.5, "gold_per_lv": 0.015, "silver_per_lv": 0.05,
 	"fert_gold": 0.10, "fert_silver": 0.20, "xp_base": 2, "xp_per_day": 0.8, "xp_per_tier": 2}
 const HOUSE_SCALE := 0.667
 const DOOR := Vector2i(13, 10)
@@ -2368,7 +2368,7 @@ static func harvest_count(flv: int, extra_crop: float, double_p: float, r1: floa
 ## Gold/silver odds (cumulative): capped level, fertiliser, star_chance (gold only).
 static func quality_odds(flv: int, fert: bool, star_chance: float) -> Dictionary:
 	var lv := mini(flv, int(HARVEST["lv_cap"]))
-	var g := float(HARVEST["gold_per_lv"]) * lv + (float(HARVEST["fert_gold"]) if fert else 0.0) + star_chance
+	var g := float(HARVEST["gold_per_lv"]) * lv + (float(HARVEST["fert_gold"]) if fert else 0.0) + star_chance * float(HARVEST["star_gold_share"])
 	var sv := g + float(HARVEST["silver_per_lv"]) * lv + (float(HARVEST["fert_silver"]) if fert else 0.0)
 	return {"gold": g, "silver": sv}
 

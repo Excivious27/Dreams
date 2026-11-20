@@ -87,11 +87,18 @@ func _run() -> void:
 	check(GameState.count("copper_bar") > 215, "tier 4 turns out bonus pieces (%d from 200)" % GameState.count("copper_bar"))
 	# The keg takes whatever you grow.
 	GameState.run["builds"]["keg"] = 1
-	GameState.run["inventory"] = {"blueberry": 2, "beet": 1, "stone": 5}
+	GameState.run["inventory"] = {"turnip": 2, "beet": 1, "stone": 5}  # tier-1 produce (tier-2 needs Farming Lv 3)
 	var kr := Crafting.available("keg", 1)
 	check(kr.size() == 2, "keg offers a brew per kind of produce (%d)" % kr.size())
 	var j := Crafting.start("keg", "keg", kr[0], 1, 1)
 	check(int(j["done_at"]) - Crafting.now_abs() >= 1440, "brews take days, not minutes")
+	# C8 P2: a brew is worth about twice its produce, never more than 3x (cheap produce takes several).
+	for pid in ["pea", "flower", "turnip", "tomato", "lumiflora", "ethereal_corn", "sunfruit", "blueberry"]:
+		var kp := Crafting.keg_plan(pid)
+		var ratio := float(GameState.items[str(kp["give"])]["value"]) * int(kp["n"]) / (float(GameState.items[pid]["value"]) * int(kp["k"]))
+		check(ratio >= 1.3 and ratio <= 3.01, "keg %s -> %d %s pays %.2fx its produce" % [pid, int(kp["n"]), str(kp["give"]), ratio])
+	check(int(Crafting.keg_plan("pea")["k"]) >= 3, "cheap peas take several per brew")
+	check(str(Crafting.keg_plan("lumiflora")["give"]) == "royal_mead", "rare blossoms brew royal mead")
 	# Vehicles.
 	GameState.add_item("scooter", 1)
 	check(m.use_consumable("scooter") and m.player.vehicle == "scooter", "USE rides the scooter")
