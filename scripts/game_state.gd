@@ -2679,6 +2679,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			var is_tree := bool(cd.get("tree", false))
 			var dies := (next_se != se and not crop_fits_season(cd, next_se)) or (se == "winter" and not fits)
 			if dies and not glass and not is_tree:
+				tile["dead"] = str(cd.get("art", crop_id))  # a withered plant stays on the bed until cleared (C5)
 				tile["crop"] = ""
 				tile["days"] = 0
 				tile["acc"] = 0.0

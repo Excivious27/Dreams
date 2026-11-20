@@ -54,6 +54,7 @@ const BUILDS := {
 	"greenhouse": {"cell": Vector2i(20, 4), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse2", "anim": "greenhouse2", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
 }
 
+const WITHERED_KITS := 5  # crops/withered_any_0..4 (copied from kits/crops/withered_kit_*)
 var _pond_cells := {}
 var _ledge_cells := {}
 var _path_cells := {}
@@ -992,6 +993,24 @@ func _plans() -> void:
 			return
 
 
+## A crop that died at the season's turn stays as a withered plant (Stardew-style)
+## until it's pulled: any tool or a bare hand clears it, leaving tilled soil.
+func _clear_withered(c: Vector2i, key: String, tile: Dictionary) -> bool:
+	var dead := str(tile.get("dead", ""))
+	tile.erase("dead")
+	tile["fert"] = false
+	net_act({"a": "farm_tile", "key": key, "tile": tile})
+	player.play_tool("hoe" if GameState.held_tool() == "hoe" else "hold")
+	Music.instance(get_tree()).sfx("pickup", "dig")
+	fx("crop_wilt", cell_center(c), 8.0, 0.5)
+	if GameState.items.has("fiber") and randf() < 0.5:
+		GameState.add_item("fiber", 1)
+	var nm := GameState.item_name(str(GameState.crops.get(dead, {}).get("yield", dead)))
+	hud.toast("Pulled up the withered %s." % nm.to_lower(), Color(0.9, 0.85, 0.7))
+	_soil.queue_redraw() if _soil else queue_redraw()
+	return true
+
+
 func _farm_tile(c: Vector2i, sel: String) -> bool:
 	var key := "%d,%d" % [c.x, c.y]
 	var farm: Dictionary = GameState.run["farm"]
@@ -1007,8 +1026,13 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		player.play_tool("hoe")
 		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
-		_soil.queue_redraw() if _soil else queue_redraw()
+		# The soil turns when the hoe bites (0.25 s into the swing), with a puff of dirt.
+		_later(0.25, func() -> void:
+			fx("dirt_puff", cell_center(c) + Vector2(0, 3), 14.0, 0.4)
+			_soil.queue_redraw() if _soil else queue_redraw())
 		return true
+	if str(tile.get("dead", "")) != "":
+		return _clear_withered(c, key, tile)
 	var crop := str(tile.get("crop", ""))
 	var ripe := crop != "" and GameState.crops.has(crop) and int(tile.get("days", 0)) >= int(GameState.crops[crop]["days"])
 	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "" and not ripe:
@@ -1049,7 +1073,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			tile["days"] = 0
 			net_act({"a": "farm_tile", "key": key, "tile": tile})
 			GameState.add_item(sel, -1)
-			player.play_tool("hoe")
+			player.play_tool("hold")  # seeds go in by hand (a hoe swing read as tilling)
 			Music.instance(get_tree()).sfx("plant")
 			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
@@ -1194,8 +1218,18 @@ func _water(tile: Dictionary, key := "") -> bool:
 				net_act({"a": "farm_tile", "key": k2, "tile": t2})
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
-	_soil.queue_redraw() if _soil else queue_redraw()
+	if key != "":
+		var wp := key.split(",")
+		_later(0.3, func() -> void: fx("splash", cell_center(Vector2i(int(wp[0]), int(wp[1]))) + Vector2(0, 2), 14.0, 0.35))
+	_later(0.3, func() -> void: _soil.queue_redraw() if _soil else queue_redraw())  # the soil darkens as the water lands
 	return true
+
+
+## Run f after `sec` seconds of game time (tool timing: soil changes when the swing lands).
+func _later(sec: float, f: Callable) -> void:
+	get_tree().create_timer(sec, false).timeout.connect(func() -> void:
+		if is_instance_valid(self):
+			f.call())
 
 
 ## Crops with no painted sheet yet: a drawn plant that grows (a trunk and canopy
@@ -2054,6 +2088,9 @@ func _draw_soil(ci: CanvasItem) -> void:
 	for c: Vector2i in cells:
 		var tile: Dictionary = tiles[c]
 		var crop := str(tile.get("crop", ""))
+		if crop == "" and str(tile.get("dead", "")) != "":
+			_draw_withered(ci, c, str(tile["dead"]))
+			continue
 		if crop != "":
 			var cd: Dictionary = GameState.crops.get(crop, {})
 			if cd.is_empty():
@@ -2089,3 +2126,21 @@ func _draw_soil(ci: CanvasItem) -> void:
 				ci.draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
 			else:
 				_draw_plain_crop(c, cd, frac, ci)
+
+
+## A withered plant: the crop's own *_withered sprite, else one of the shared kit plants.
+func _draw_withered(ci: CanvasItem, c: Vector2i, art: String) -> void:
+	var tex: Texture2D = null
+	if Art.has("crops", art + "_withered"):
+		tex = Art.tex("crops", art + "_withered")
+	else:
+		var n := posmod(c.x * 7 + c.y * 3, WITHERED_KITS)
+		if Art.has("crops", "withered_any_%d" % n):
+			tex = Art.tex("crops", "withered_any_%d" % n)
+	if tex == null:
+		ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(5, 7), Vector2(6, 7)), Color("6b5a3a"))
+		return
+	var ks := minf(0.5, 22.0 / float(maxi(1, tex.get_width())))
+	var w := tex.get_width() * ks
+	var h := tex.get_height() * ks
+	ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h - 1, w, h), false)

@@ -43093,6 +43093,31 @@
    "file": "crops/zucchini_young.png",
    "h": 67,
    "w": 86
+  },
+  "withered_any_0": {
+   "file": "crops/withered_any_0.png",
+   "h": 33,
+   "w": 35
+  },
+  "withered_any_1": {
+   "file": "crops/withered_any_1.png",
+   "h": 40,
+   "w": 35
+  },
+  "withered_any_2": {
+   "file": "crops/withered_any_2.png",
+   "h": 33,
+   "w": 48
+  },
+  "withered_any_3": {
+   "file": "crops/withered_any_3.png",
+   "h": 73,
+   "w": 36
+  },
+  "withered_any_4": {
+   "file": "crops/withered_any_4.png",
+   "h": 71,
+   "w": 38
   }
  },
  "decals": {
