@@ -1,0 +1,170 @@
+{
+ "sha": "b95bf2b7ee9fd002f4ef11612b5634f9a9f062ef",
+ "ref": "ci/c11afix2-4b0e3a65",
+ "run": "44836850539",
+ "finished": 1795217755.7217577,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 53,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "4b0e3a651d3e475494ca40e43bf384427f351114",
+  "label": "c11afix2",
+  "branch": "c11a/fix2",
+  "shards": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 351,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 351,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 240,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 252,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 281,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 197,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 327,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 181.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 162.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 101.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 69.9
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 48.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 47.3
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 44.3
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.8
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 38.9
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 35.1
+  },
+  {
+   "step": 42,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 24.6
+  },
+  {
+   "step": 66,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 24.6
+  },
+  {
+   "step": 27,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 24.4
+  },
+  {
+   "step": 35,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 22.9
+  }
+ ]
+}

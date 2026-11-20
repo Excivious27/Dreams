@@ -1,0 +1,15 @@
+CONDUCT CI PASS  b95bf2b7ee  (ci/c11afix2-4b0e3a65, run 44836850539)
+
+subset run: shards [1, 2, 3, 4, 5, 6], bots off, playtest on
+check shards (6/6):
+  shard 1: PASS  351s
+  shard 2: PASS  240s
+  shard 3: PASS  252s
+  shard 4: PASS  281s
+  shard 5: PASS  197s
+  shard 6: PASS  327s
+playtest: PASS  53s  21 screenshots (results playtest/shots/)
+
+longest job: 351s
+slowest check steps: import 181.3s; import 162.5s; import 101.8s; import 75.3s; import 69.9s; smoke test 48.8s; import 47.3s; exits and spawns 44.3s
+distinct errors/fails/warns:
