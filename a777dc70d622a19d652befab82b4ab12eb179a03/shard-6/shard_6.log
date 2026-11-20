@@ -1,0 +1,144 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  97% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  97% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  97% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  97% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  98% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  98% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (703 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 70.8s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 6.6s
+
+#### step 13: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 6/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 13 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 42.3s
+
+#### step 19: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 19 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 4.0s
+
+#### step 25: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 6/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6660 checks, 0 failures
+#### step 25 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 5.5s
+
+#### step 31: rec_reno_test (shard 6/6)
+rec_reno_test: 0 failures
+#### step 31 rec_reno_test: PASS in 2.4s
+
+#### step 37: farm_week_test (shard 6/6)
+farm_week_test: OK (0 fails)
+#### step 37 farm_week_test: PASS in 5.2s
+
+#### step 43: anim_test (shard 6/6)
+anim_test: 0 failures
+#### step 43 anim_test: PASS in 2.8s
+
+#### step 49: decor_sources_test (shard 6/6)
+decor_sources_test: 0 failures
+#### step 49 decor_sources_test: PASS in 2.7s
+
+#### step 55: workshop: no dead ends (shard 6/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 55 workshop: no dead ends: PASS in 4.9s
+
+#### step 61: all ages: alcohol is a trade good, never drunk (shard 6/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 12 alcoholic items checked
+ok
+#### step 61 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 67: music_stream_test (shard 6/6)
+music_stream_test: 0 failures
+#### step 67 music_stream_test: PASS in 9.1s
+
+#### step 73: arcs: path cards, arc building intros, locked-plan hints (shard 6/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 73 arcs: path cards, arc building intros, locked-plan hints: PASS in 3.7s
+
+#### step 79: early combat: clinic, pup lesson, telegraph, first boss (shard 6/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 79 early combat: clinic, pup lesson, telegraph, first boss: PASS in 8.1s
+
+#### step 85: goal_line_test (shard 6/6)
+goal_line_test: 0 fails
+#### step 85 goal_line_test: PASS in 2.4s
+
+#### step 91: campaign_gate_test (shard 6/6)
+campaign_gate_test: 0 fails
+#### step 91 campaign_gate_test: PASS in 5.5s
+
+#### step 97: settings, slots, quality, discovery, perks, birthdays (shard 6/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 97 settings, slots, quality, discovery, perks, birthdays: PASS in 3.1s
+
+#### step 103: C7 text: gift articles, plurals, quest wording (shard 6/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 103 C7 text: gift articles, plurals, quest wording: PASS in 2.3s
+
+#### step 109: fish critters only in deep water (C2 P4) (shard 6/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 109 fish critters only in deep water (C2 P4): PASS in 8.5s
+
+#### step 115: stack_whack_test (shard 6/6)
+stack_whack_test: 0 failures
+#### step 115 stack_whack_test: PASS in 2.9s
+
+#### step 121: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 6/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 121 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 2.6s
+
+#### step 127: C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou (shard 6/6)
+== C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal counter ==
+ranch_p3_test: OK (0 fails)
+#### step 127 C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou: PASS in 2.5s
+
+#### step 133: C9 P3: full-screen screens with actions only (shard 6/6)
+== C9 P3: full-screen screens with actions only ==
+screens_pad_test: 0 failures
+#### step 133 C9 P3: full-screen screens with actions only: PASS in 3.3s
+
+#### step 139: C10b P4: casino (shard 6/6)
+== C10b P4: casino ==
+casino_test: 0 failures
+#### step 139 C10b P4: casino: PASS in 2.6s
+
+#### shard 6/6 done in 204s: PASS

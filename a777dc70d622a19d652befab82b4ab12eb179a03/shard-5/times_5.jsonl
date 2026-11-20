@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 189.4}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 21.4}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 4.4}
+{"step": 18, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 2.8}
+{"step": 24, "name": "team animals + chores: lessons, team, muster, overnight chores, Animal", "rc": 0, "secs": 3.5}
+{"step": 30, "name": "rec_links_test", "rc": 0, "secs": 2.4}
+{"step": 36, "name": "coop_test", "rc": 0, "secs": 2.4}
+{"step": 42, "name": "crop_test", "rc": 0, "secs": 25.4}
+{"step": 48, "name": "ranch_test", "rc": 0, "secs": 2.4}
+{"step": 54, "name": "town_first_test", "rc": 0, "secs": 3.6}
+{"step": 60, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 66, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 25.7}
+{"step": 72, "name": "workshop: stations at run time", "rc": 0, "secs": 3.5}
+{"step": 78, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 6.6}
+{"step": 84, "name": "campaign_story_test", "rc": 0, "secs": 2.6}
+{"step": 90, "name": "campaign_gate_test", "rc": 0, "secs": 5.4}
+{"step": 96, "name": "move_speed_test", "rc": 0, "secs": 3.7}
+{"step": 102, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 5.1}
+{"step": 108, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.2}
+{"step": 114, "name": "arcade_test", "rc": 0, "secs": 2.7}
+{"step": 120, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 3.6}
+{"step": 126, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.4}
+{"step": 132, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 3.0}
+{"step": 138, "name": "C10a P5: wardrobe", "rc": 0, "secs": 4.1}

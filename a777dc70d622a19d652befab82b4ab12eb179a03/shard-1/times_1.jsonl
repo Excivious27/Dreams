@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 92.9}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 51.3}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.3}
+{"step": 14, "name": "crops wired in", "rc": 0, "secs": 5.7}
+{"step": 20, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.7}
+{"step": 26, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.4}
+{"step": 32, "name": "rec_audio_test", "rc": 0, "secs": 2.6}
+{"step": 38, "name": "farm_look_test", "rc": 0, "secs": 4.1}
+{"step": 44, "name": "npc_anim_test", "rc": 0, "secs": 2.6}
+{"step": 50, "name": "cf_volunteer_test", "rc": 0, "secs": 7.0}
+{"step": 56, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 62, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 68, "name": "danger_music_test", "rc": 0, "secs": 23.3}
+{"step": 74, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.7}
+{"step": 80, "name": "every script compiles", "rc": 0, "secs": 3.5}
+{"step": 86, "name": "quest_tracker_test", "rc": 0, "secs": 3.8}
+{"step": 92, "name": "campaign_words_test", "rc": 0, "secs": 2.8}
+{"step": 98, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 19.0}
+{"step": 104, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.4}
+{"step": 110, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 20.5}
+{"step": 116, "name": "rec_games_test", "rc": 0, "secs": 2.6}
+{"step": 122, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 4.7}
+{"step": 128, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 2.6}
+{"step": 134, "name": "C9 P4: haptics", "rc": 0, "secs": 2.5}
