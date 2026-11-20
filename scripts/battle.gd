@@ -379,7 +379,9 @@ func _tick() -> void:
 		p["made"] = (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
 		p["t"] = float(p["t"]) + 1.0
 		var plv := int(p.get("lvl", 1))
-		if float(p["t"]) >= 12.0 - 3.0 * (plv - 1) and (p["made"] as Array).size() < (mini(2, plv) if str(p["spawner"]) == "turret" else MAX_PER_SPAWNER + plv - 1):
+		# (The drill's first helper steps out at once: the next step needs one to follow you.)
+		var first := is_drill and (p["made"] as Array).is_empty() and float(p["t"]) >= 10.0
+		if (first or float(p["t"]) >= 12.0 - 3.0 * (plv - 1)) and (p["made"] as Array).size() < (mini(2, plv) if str(p["spawner"]) == "turret" else MAX_PER_SPAWNER + plv - 1):
 			p["t"] = 0.0
 			if str(p["spawner"]) == "turret":
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
