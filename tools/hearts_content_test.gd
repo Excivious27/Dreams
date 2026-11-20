@@ -31,9 +31,9 @@ func _run() -> void:
 		var ms: Dictionary = H[id]["milestones"]
 		for n in ["2", "4", "6", "8", "10"]:
 			check(ms.has(n) and (ms[n] as Array).size() >= 2, "%s ♥%s has a scene" % [id, n])
+			check(ms.has(n) and str((ms[n] as Array)[0].get("who", "x")) == "", "%s ♥%s opens with narration" % [id, n])
 		for n in ["8", "10"]:
 			check((ms[n] as Array).size() >= 4, "%s ♥%s is staged (%d lines)" % [id, n, (ms[n] as Array).size()])
-			check(str((ms[n] as Array)[0].get("who", "x")) == "", "%s ♥%s opens with narration" % [id, n])
 		for n in ms:
 			for l: Dictionary in ms[n]:
 				check(str(l.get("text", "")).length() <= 300, "%s ♥%s line fits the box" % [id, n])

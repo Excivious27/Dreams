@@ -6,6 +6,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Maple is restocking the seed rack and keeps glancing at you over the packets."
+     },
+     {
       "who": "Maple",
       "text": "You keep coming back. Most people buy seeds once and then I see them at the sell box, counting."
      },
@@ -16,6 +20,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Maple is dusting the top shelf she can't quite reach, standing on a crate."
+     },
+     {
       "who": "Maple",
       "text": "My brother used to stock these shelves. Taller than me, could reach the top row. He ran from something, never said what, and now he's a baker in the capital."
      },
@@ -25,6 +33,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "A plank in the shop floor creaks under you. Maple winces at it like it's an old friend letting her down."
+     },
      {
       "who": "Maple",
       "text": "The back storeroom's falling in. I've been pretending it isn't since spring."
@@ -86,6 +98,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Gideon watches you swing at the anvil for a long, silent moment, then takes the hammer out of your hands."
+     },
+     {
       "who": "Gideon",
       "text": "You swing like a farmer. Shoulders. It's the wrists; the hammer does the work if you let it."
      },
@@ -96,6 +112,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Gideon turns an old hammer over in his big hands, slowly, like it might have something to say."
+     },
+     {
       "who": "Gideon",
       "text": "My father's hammer. This one. Head's been replaced twice and the handle three times, so you tell me whose hammer it is."
      },
@@ -105,6 +125,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Gideon is filing something tiny at the back of the forge. He hides it the moment you walk in."
+     },
      {
       "who": "Gideon",
       "text": "There's a ring I've been making for eleven years. It needs a ruby. I don't talk about who it's for."
@@ -171,6 +195,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Wren doesn't look up from her mortar and pestle. \"You're doing it wrong,\" she says, before you've done anything."
+     },
+     {
       "who": "Wren",
       "text": "You pick herbs like you're apologising to them. Don't. They're herbs. Pull."
      },
@@ -181,6 +209,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Wren is murmuring to a pot of mint. She stops, mid-word, when she sees you."
+     },
+     {
       "who": "Wren",
       "text": "My daughter thinks I talk to the plants. I do. They don't answer, which is restful, which is the point."
      },
@@ -190,6 +222,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Wren is sorting dried flowers into jars and stops at one that's empty."
+     },
      {
       "who": "Wren",
       "text": "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another.",
@@ -256,6 +292,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Alder is stamping forms at the hall desk. He stamps yours twice, then looks at it, then at you."
+     },
+     {
       "who": "Alder",
       "text": "The town records show you've paid every fee on time. I mention it because nobody else has, in my term."
      },
@@ -266,6 +306,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Alder stands in front of the row of mayors' portraits with his hands behind his back."
+     },
+     {
       "who": "Alder",
       "text": "My father was mayor. His father. The portraits in the hall; you've seen them. I'm the small one at the end."
      },
@@ -275,6 +319,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Alder looks out of the hall window at the bell tower for a long time before he says anything."
+     },
      {
       "who": "Alder",
       "text": "The bell. Twenty-one years. I was there when it stopped: the clapper cracked in the middle of the harvest ring and fell and nearly took my father's foot."
@@ -335,6 +383,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Sal watches you walk up the road the way you'd watch weather coming in."
+     },
+     {
       "who": "Sal",
       "text": "You walk like somebody who's been followed. Shoulders up. Relax them; it's a tell."
      },
@@ -345,6 +397,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Sal is turning a worn coin over his knuckles, not really looking at it."
+     },
+     {
       "who": "Sal",
       "text": "River cities. Ran with a crew. We weren't good people but we were good at it, and then the man with the stone came, and we weren't anything."
      },
@@ -354,6 +410,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Sal is sitting with his bad leg out straight and an empty plate beside him."
+     },
      {
       "who": "Sal",
       "text": "I don't eat much. Bad knee, bad habits. If you brought me a fish I'd probably cook it. Probably."
@@ -414,6 +474,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Finn hands you his spare rod without a word and nods at the water."
+     },
+     {
       "who": "Finn",
       "text": "You cast like you're angry at the water. Water doesn't care. Cast like you're asking."
      },
@@ -424,6 +488,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Finn is mending a net and keeps tying the same knot over and over."
+     },
+     {
       "who": "Finn",
       "text": "Had a brother. Tomas. Went to the river cities to make money for a boat we were going to build together."
      },
@@ -433,6 +501,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Finn is staring out at the middle of the lake, where the water's darkest."
+     },
      {
       "who": "Finn",
       "text": "There's a pearl in the lake. Marlowe says so, and Marlowe doesn't say things."
@@ -493,6 +565,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Lumi is squinting at you over the top of a sketchbook, pencil moving fast."
+     },
+     {
       "who": "Lumi",
       "text": "Hold still. No— don't hold still, that's worse. Just... exist near the window. Good."
      },
@@ -503,6 +579,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Lumi is tidying brushes into a jar, a smear of blue on her nose."
+     },
+     {
       "who": "Lumi",
       "text": "Alder bought my first painting. Paid too much. Hung it in the hall where nobody looks."
      },
@@ -512,6 +592,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Lumi holds up a scrap of canvas covered in blue swatches, every one of them crossed out."
+     },
      {
       "who": "Lumi",
       "text": "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year.",
@@ -576,6 +660,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Theo is pinning a very small notice to the plaza board with a very small pin."
+     },
+     {
       "who": "Theo",
       "text": "You read the board notices. All of them. Nobody reads the small ones."
      },
@@ -586,6 +674,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Theo has two thick books open side by side and a magnifying glass in each hand."
+     },
+     {
       "who": "Theo",
       "text": "The library has four hundred books and I've read three hundred and ninety-eight. The other two are in a language I'm inventing as I go."
      },
@@ -595,6 +687,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Theo is pacing between the library shelves, stopping every few steps to look at the floor, as if it goes down further than it should."
+     },
      {
       "who": "Theo",
       "text": "There's a book in the mine. Old. The miners' log, from before the bell stopped. It would explain... a great many small notices."
@@ -656,6 +752,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Hazel leans on your fence and watches you plant a row, saying nothing until the end of it."
+     },
+     {
       "who": "Hazel",
       "text": "Your rows are crooked. I'm not criticising; mine were worse. Pull the string tight and walk it."
      },
@@ -666,6 +766,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Hazel is plaiting a little girl's ribbon into a length of twine, absent-mindedly."
+     },
+     {
       "who": "Hazel",
       "text": "Mabel's mine. My girl. Her father went to the quarry for one season and the season's been nine years."
      },
@@ -675,6 +779,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Hazel leads you round the back of the house to a low wooden door set into the hill."
+     },
      {
       "who": "Hazel",
       "text": "The cheese cellar. I built it for two. Four milk would fill it. Nobody's filled it in nine years."
@@ -735,6 +843,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Bram sets a bowl of stew in front of you before you've ordered, in the corner seat."
+     },
+     {
       "who": "Bram",
       "text": "You always sit in the corner. Back to the wall. I had a brother-in-law like that."
      },
@@ -745,6 +857,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Bram is wiping down the bar for the third time, though it's already clean."
+     },
+     {
       "who": "Bram",
       "text": "This inn was my wife's. Posy's mother. She ran it like a ship and I ran the kitchen like a man hiding in a kitchen."
      },
@@ -754,6 +870,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Bram is standing by the inn's front window, looking at an empty sill."
+     },
      {
       "who": "Bram",
       "text": "Festival night. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
@@ -829,6 +949,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "The bakery smells of the first batch. Posy waves you to wait with a floury hand."
+     },
+     {
       "who": "Posy",
       "text": "You smell the bread before you come in. Everyone does. You're the only one who waits for the second batch."
      },
@@ -839,6 +963,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Posy is kneading dough hard enough to shake the table."
+     },
+     {
       "who": "Posy",
       "text": "Mum made the bread. I made the cakes. Dad hid in the inn kitchen, which is where he's happiest, so that's fine."
      },
@@ -848,6 +976,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Posy has a scrap of old paper flattened under a rolling pin on the counter."
+     },
      {
       "who": "Posy",
       "text": "Twelve strawberries. Jam. Mum's jam, actually; I found the recipe in a drawer under the receipts."
@@ -909,6 +1041,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Juniper points at the clinic stool. It isn't a suggestion."
+     },
+     {
       "who": "Juniper",
       "text": "Sit. No, you're not hurt; sit anyway. I like to see people sit who aren't hurt. It's rare."
      },
@@ -919,6 +1055,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Juniper is folding clean sheets with sharp, exact corners."
+     },
+     {
       "who": "Juniper",
       "text": "I trained in the capital. Twelve years. Came back because the capital had enough nurses and this town had none and a blacksmith who'd broken his arm on an anvil like an idiot."
      },
@@ -928,6 +1068,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Juniper is writing in a notebook, crossing things out with the same neat line."
+     },
      {
       "who": "Juniper",
       "text": "Glow caps. Two. I've a theory about fevers and I need to be wrong about it in a controlled way."
@@ -988,6 +1132,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Rook appears from behind a tree you'd have sworn was too thin to hide anyone."
+     },
+     {
       "who": "Rook",
       "text": "You walk loud. Heel first. Toe first, roll, and the forest stops noticing you."
      },
@@ -999,6 +1147,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Rook is cleaning an old knife by the lodge fire, very carefully."
+     },
+     {
       "who": "Rook",
       "text": "I came out of the river cities on foot. Took a season. Ate what I could catch, which taught me to catch things."
      },
@@ -1008,6 +1160,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Rook is crouched at the orchard edge, studying a line of torn-up grass."
+     },
      {
       "who": "Rook",
       "text": "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.",
@@ -1021,7 +1177,7 @@
     "8": [
      {
       "who": "",
-      "text": "Rook crouches by your pup at the orchard edge and lets it sniff her glove for a long moment."
+      "text": "Rook crouches by your pup at the orchard edge and lets it sniff his glove for a long moment."
      },
      {
       "who": "Rook",
@@ -1039,7 +1195,7 @@
     "10": [
      {
       "who": "",
-      "text": "Rook is sitting on a fence rail with a blank letter on her knee and a pencil she keeps not using."
+      "text": "Rook is sitting on a fence rail with a blank letter on his knee and a pencil he keeps not using."
      },
      {
       "who": "Rook",
@@ -1069,6 +1225,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Pip skids to a stop in front of you, out of breath and very pleased."
+     },
+     {
       "who": "Pip",
       "text": "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH.",
       "text_gangsters": "You're the new one! Mabel says you're a spy and Wren jr says you're a frog in a coat and I say it's BOTH."
@@ -1080,6 +1240,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Pip is sitting on the store steps with a pencil and a letter, tongue out in concentration."
+     },
+     {
       "who": "Pip",
       "text": "Mum runs the store. Maple. She doesn't know I know she cries at the letters. I know everything; I'm nine."
      },
@@ -1089,6 +1253,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Pip beckons you over to the fountain with a whole-arm wave and a very secret face."
+     },
      {
       "who": "Pip",
       "text": "If you throw a candy in the fountain and say a wish the fountain does it. It did it for Tobin's kite. It's SCIENCE."
@@ -1150,6 +1318,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Wren jr is crouched at the pond edge, nose almost in the water."
+     },
+     {
       "who": "Wren jr",
       "text": "Mum talks to plants. I talk to frogs. Frogs talk BACK, so I think I'm winning."
      },
@@ -1160,6 +1332,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Wren jr is sitting on the potion shop step, kicking her heels and looking serious."
+     },
+     {
       "who": "Wren jr",
       "text": "I was sick once. Really sick. I don't remember it but Mum does; she gets a face."
      },
@@ -1169,6 +1345,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Wren jr is at the pond with an empty jar and a very wobbly lip."
+     },
      {
       "who": "Wren jr",
       "text": "Gerald's gone. From the pond. Frogs go, Mum says, but Gerald wouldn't; he's the mayor."
@@ -1229,6 +1409,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Tobin comes barrelling out of the inn kitchen with a ladle he isn't supposed to have."
+     },
+     {
       "who": "Tobin",
       "text": "I live at the inn. Dad cooks. He says I'm the best thing in the kitchen, which is a joke, because I'm not allowed in the kitchen."
      },
@@ -1239,6 +1423,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Tobin is drawing kites on the inn steps in chalk, big ones, with long tails."
+     },
+     {
       "who": "Tobin",
       "text": "My real dad was a sailor. Mum said. Mum's not here. Bram is. That's the whole thing; it's not complicated."
      },
@@ -1248,6 +1436,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Tobin is standing at the very edge of the dock rope, toes exactly on the line."
+     },
      {
       "who": "Tobin",
       "text": "Shells. Five. The beach has them but you have to go past the dock and I'm not allowed past the dock.",
@@ -1310,6 +1502,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Mabel is humming to the cows over the fence. They seem to be listening."
+     },
+     {
       "who": "Mabel",
       "text": "I sing to the cows. They give more milk. Mum says it's the singing. It's definitely the singing."
      },
@@ -1320,6 +1516,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Mabel is sitting on the farm gate, looking up the quarry road."
+     },
+     {
       "who": "Mabel",
       "text": "Dad's at the quarry. He's been at the quarry a long time. Mum does a thing with her mouth when I say it."
      },
@@ -1329,6 +1529,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Mabel is picking flowers by the lane, one of every colour, very carefully."
+     },
      {
       "who": "Mabel",
       "text": "Flowers. For the cellar. Mum built it for two and it's empty and I think flowers would make it less empty while we wait for cheese.",
@@ -1390,6 +1594,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Marlowe is on the lighthouse step, squinting out over the water at nothing in particular."
+     },
+     {
       "who": "Marlowe",
       "text": "Thirty years I lit that lamp. Nobody's needed it for twenty. I'd light it tonight if it had oil."
      },
@@ -1400,6 +1608,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Marlowe is polishing an old brass telescope with the corner of his coat."
+     },
+     {
       "who": "Marlowe",
       "text": "There's a pearl in the lake. I've seen it, once, from the top, in the right moon. Finn doesn't believe me. Finn believes in fish."
      },
@@ -1409,6 +1621,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Marlowe runs a thumb along a crack in a big glass lens, the way you'd touch a scar."
+     },
      {
       "who": "Marlowe",
       "text": "The lens is cracked. Has been since the night the bell stopped. Same night, you know. I heard it from up here.",
@@ -1471,6 +1687,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "The mill wheel creaks round. Orla is sweeping flour off the step with a stiff broom."
+     },
+     {
       "who": "Orla",
       "text": "The wheel turns whether I'm here or not. That's the thing about mills. I just keep it honest."
      },
@@ -1481,6 +1701,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Orla is sitting on a sack of grain, rubbing her knees and watching the wheel turn."
+     },
+     {
       "who": "Orla",
       "text": "My husband built the wheel. My son rebuilt it. I've only ever kept it turning, which is the longest job and the one nobody paints."
      },
@@ -1490,6 +1714,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Orla is looking across the lake toward the dark lighthouse with her arms folded."
+     },
      {
       "who": "Orla",
       "text": "Marlowe's lamp wants oil. He won't ask. He'd row the lake in a storm before he'd ask."
@@ -1550,6 +1778,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "A horse in the stable stretches its neck out to sniff your sleeve. Benno watches, nodding."
+     },
+     {
       "who": "Benno",
       "text": "Horses know. Before you've decided to be cruel or kind, the horse knows. Yours knows you're all right."
      },
@@ -1560,6 +1792,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Benno is brushing a horse he never rides, in long slow strokes."
+     },
+     {
       "who": "Benno",
       "text": "I was a jockey. Smaller then; I know. Fell at the capital track, three years ago, and the horse was fine and I wasn't."
      },
@@ -1569,6 +1805,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Benno is watching your pup trot about, chin on his folded arms on the fence."
+     },
      {
       "who": "Benno",
       "text": "That pup wants to carry things. I can see it in the shoulders. A pack, small, and it'd feel like a job.",
@@ -1630,6 +1870,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Ivy runs a finger down a column of your bank book, then closes it with a satisfied snap."
+     },
+     {
       "who": "Ivy",
       "text": "Your account is in order. I say that to everyone. It's true of almost nobody."
      },
@@ -1640,6 +1884,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Ivy is straightening a framed letter on the bank wall that is already perfectly straight."
+     },
+     {
       "who": "Ivy",
       "text": "I came from the capital with a letter of introduction and a reputation for honesty, which in the capital is a reason to leave."
      },
@@ -1649,6 +1897,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Ivy is holding a small tarnished coin up to the light by the window."
+     },
      {
       "who": "Ivy",
       "text": "Old coins. Theo collects them; I value them. There's a set from before the bell that would settle a question of dates."
@@ -1710,6 +1962,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "A flock of identical sheep crowds round you. Tam doesn't even try to call them off."
+     },
+     {
       "who": "Tam",
       "text": "Sheep don't care who you are. That's why I keep sheep. Also the wool."
      },
@@ -1720,6 +1976,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Tam is looking up at the hills, leaning on a shepherd's crook."
+     },
+     {
       "who": "Tam",
       "text": "Grew up in the highlands. Came down when the ice wisps got bad; a flock can't outrun a wisp."
      },
@@ -1729,6 +1989,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Tam is crouched in the straw beside a very round ewe, talking to her softly."
+     },
      {
       "who": "Tam",
       "text": "A lamb's due. First of the year. If you're about when it comes, you can name it, and it won't be Dolly."
@@ -1789,6 +2053,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Old Moss is sitting by a bubbling pot at the marsh edge, listening to the frogs."
+     },
+     {
       "who": "Old Moss",
       "text": "You stepped around the black water. Most don't. Most come out of it with something that wasn't theirs."
      },
@@ -1799,6 +2067,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Old Moss is turning an old doctor's bag over in his hands, the leather cracked."
+     },
+     {
       "who": "Old Moss",
       "text": "I was the town's doctor before Juniper. Before her mother. I came out here when I got tired of promising cures I didn't have."
      },
@@ -1808,6 +2080,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Old Moss is peering into the fog over the deep marsh, his face very still."
+     },
      {
       "who": "Old Moss",
       "text": "Glow caps. The witch in the deep marsh uses them for the fog. I use them for the opposite."
@@ -1868,6 +2144,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Granite is at the quarry ledge with a tin mug of terrible coffee, watching you work."
+     },
+     {
       "who": "Granite",
       "text": "You swing a pick like you're mad at the rock. The rock's fine with that; the rock doesn't care. Your shoulder does."
      },
@@ -1878,6 +2158,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Granite is sitting on a block of stone, looking down the road toward the farms."
+     },
+     {
       "who": "Granite",
       "text": "Nine years foreman. Was a hand before that. There was a rockfall, first year. A good man got us all out and paid for it with his back. Hazel's man."
      },
@@ -1887,6 +2171,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Granite drops a cracked old bone on the table in front of you with a thud."
+     },
      {
       "who": "Granite",
       "text": "Bones in the mine. Old beast bones, from before the quarry. Rook wants them for arrowheads and I want them out of my quarry's reputation."
@@ -1947,6 +2235,10 @@
    "milestones": {
     "2": [
      {
+      "who": "",
+      "text": "Sel is lying flat in the ruins, reading the underside of a fallen stone."
+     },
+     {
       "who": "Sel",
       "text": "Don't touch that. Or do; it's been here three thousand years, it can survive a farmer."
      },
@@ -1957,6 +2249,10 @@
     ],
     "4": [
      {
+      "who": "",
+      "text": "Sel is sketching a carving by lamplight, muttering in a language nobody speaks any more."
+     },
+     {
       "who": "Sel",
       "text": "The ruins were a town. Like yours. Same shape; same plaza, same well. Then one night, from the east, something came, and they wrote about it in the walls because the paper burned."
      },
@@ -1966,6 +2262,10 @@
      }
     ],
     "6": [
+     {
+      "who": "",
+      "text": "Sel is pacing among the ruin walls, tapping her pencil on each stone she passes."
+     },
      {
       "who": "Sel",
       "text": "There's a fossil in the quarry that isn't a fossil. It's a stone with a record in it, same hand as the ruin walls, and I need it to finish the sentence."

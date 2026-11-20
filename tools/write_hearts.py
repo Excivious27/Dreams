@@ -275,8 +275,8 @@ EXTRA = {
           "10": (N("Posy is on the bakery step at closing time with a paper bag of crusts, the way you'd leave them out for someone."), L("Posy", "I still put crusts out. Just in case Biscuit's nose works better than my hope. Sit with me a minute?"))},
  "juniper": {"8": (N("Juniper is rolling bandages at the clinic desk. The ring catches the lamplight every time her hands move."), L("Juniper", "If you say 'congratulations' I'll take your temperature in the least dignified way I know.")),
              "10": (N("The clinic is quiet. Juniper shows you a ledger, then a second, much shorter list tucked in the back."), L("Juniper", "Gideon's on it. Maple. Granite. You, at the top. It's a short list. It's a good list."))},
- "rook": {"8": (N("Rook crouches by your pup at the orchard edge and lets it sniff her glove for a long moment."), L("Rook", "Good nose. Better heart. Don't let anyone tell you those aren't the same thing.")),
-          "10": (N("Rook is sitting on a fence rail with a blank letter on her knee and a pencil she keeps not using."), L("Rook", "First line's done. 'I'm alive, and I'm sorry, and I live somewhere with apples.' The rest is just walking."))},
+ "rook": {"8": (N("Rook crouches by your pup at the orchard edge and lets it sniff his glove for a long moment."), L("Rook", "Good nose. Better heart. Don't let anyone tell you those aren't the same thing.")),
+          "10": (N("Rook is sitting on a fence rail with a blank letter on his knee and a pencil he keeps not using."), L("Rook", "First line's done. 'I'm alive, and I'm sorry, and I live somewhere with apples.' The rest is just walking."))},
  "pip": {"8": (N("Pip runs up waving a letter over their head so fast it's nearly a flag."), L("Pip", "Six lines! I'm going to write SEVEN. Then he'll have to write eight. It's a war. A nice war.")),
          "10": (N("Pip drags you to the foot of the bell tower and points up, very seriously, like a mayor."), L("Pip", "Every day at noon. That's the law. You can ring it on Sundays. That's also the law. I just made it."))},
  "wren_jr": {"8": (N("Wren jr has a jar with holes in the lid and a very large, very calm frog inside it, wearing a leaf like a hat."), L("Wren jr", "He's the mayor of the pond. Don't tell Alder. He gets jealous.")),
@@ -331,6 +331,39 @@ H["tobin"]["milestones"]["6"][1]["if_done"] = "The kite's nearly built. The wind
 H["mabel"]["milestones"]["6"][0]["if_done"] = "Your flowers were my crown. Now they're in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
 H["marlowe"]["milestones"]["6"][0]["if_done"] = "The new lens holds. I still look for the crack every night. It was there since the night the bell stopped. Same night, you know."
 H["benno"]["milestones"]["6"][0]["if_done"] = "That pup wears the pack like a medal. I can see it in the shoulders. It's got a job now."
+
+# ---- C7 P4: a narrated opening for every ♥2/♥4/♥6 scene too (applied last, so
+# the if_done/if_gone line indexes above still point at the spoken lines).
+OPEN = {
+ "maple": ["Maple is restocking the seed rack and keeps glancing at you over the packets.", "Maple is dusting the top shelf she can't quite reach, standing on a crate.", "A plank in the shop floor creaks under you. Maple winces at it like it's an old friend letting her down."],
+ "gideon": ["Gideon watches you swing at the anvil for a long, silent moment, then takes the hammer out of your hands.", "Gideon turns an old hammer over in his big hands, slowly, like it might have something to say.", "Gideon is filing something tiny at the back of the forge. He hides it the moment you walk in."],
+ "wren": ["Wren doesn't look up from her mortar and pestle. \"You're doing it wrong,\" she says, before you've done anything.", "Wren is murmuring to a pot of mint. She stops, mid-word, when she sees you.", "Wren is sorting dried flowers into jars and stops at one that's empty."],
+ "alder": ["Alder is stamping forms at the hall desk. He stamps yours twice, then looks at it, then at you.", "Alder stands in front of the row of mayors' portraits with his hands behind his back.", "Alder looks out of the hall window at the bell tower for a long time before he says anything."],
+ "sal": ["Sal watches you walk up the road the way you'd watch weather coming in.", "Sal is turning a worn coin over his knuckles, not really looking at it.", "Sal is sitting with his bad leg out straight and an empty plate beside him."],
+ "finn": ["Finn hands you his spare rod without a word and nods at the water.", "Finn is mending a net and keeps tying the same knot over and over.", "Finn is staring out at the middle of the lake, where the water's darkest."],
+ "lumi": ["Lumi is squinting at you over the top of a sketchbook, pencil moving fast.", "Lumi is tidying brushes into a jar, a smear of blue on her nose.", "Lumi holds up a scrap of canvas covered in blue swatches, every one of them crossed out."],
+ "theo": ["Theo is pinning a very small notice to the plaza board with a very small pin.", "Theo has two thick books open side by side and a magnifying glass in each hand.", "Theo is pacing between the library shelves, stopping every few steps to look at the floor, as if it goes down further than it should."],
+ "hazel": ["Hazel leans on your fence and watches you plant a row, saying nothing until the end of it.", "Hazel is plaiting a little girl's ribbon into a length of twine, absent-mindedly.", "Hazel leads you round the back of the house to a low wooden door set into the hill."],
+ "bram": ["Bram sets a bowl of stew in front of you before you've ordered, in the corner seat.", "Bram is wiping down the bar for the third time, though it's already clean.", "Bram is standing by the inn's front window, looking at an empty sill."],
+ "posy": ["The bakery smells of the first batch. Posy waves you to wait with a floury hand.", "Posy is kneading dough hard enough to shake the table.", "Posy has a scrap of old paper flattened under a rolling pin on the counter."],
+ "juniper": ["Juniper points at the clinic stool. It isn't a suggestion.", "Juniper is folding clean sheets with sharp, exact corners.", "Juniper is writing in a notebook, crossing things out with the same neat line."],
+ "rook": ["Rook appears from behind a tree you'd have sworn was too thin to hide anyone.", "Rook is cleaning an old knife by the lodge fire, very carefully.", "Rook is crouched at the orchard edge, studying a line of torn-up grass."],
+ "pip": ["Pip skids to a stop in front of you, out of breath and very pleased.", "Pip is sitting on the store steps with a pencil and a letter, tongue out in concentration.", "Pip beckons you over to the fountain with a whole-arm wave and a very secret face."],
+ "wren_jr": ["Wren jr is crouched at the pond edge, nose almost in the water.", "Wren jr is sitting on the potion shop step, kicking her heels and looking serious.", "Wren jr is at the pond with an empty jar and a very wobbly lip."],
+ "tobin": ["Tobin comes barrelling out of the inn kitchen with a ladle he isn't supposed to have.", "Tobin is drawing kites on the inn steps in chalk, big ones, with long tails.", "Tobin is standing at the very edge of the dock rope, toes exactly on the line."],
+ "mabel": ["Mabel is humming to the cows over the fence. They seem to be listening.", "Mabel is sitting on the farm gate, looking up the quarry road.", "Mabel is picking flowers by the lane, one of every colour, very carefully."],
+ "marlowe": ["Marlowe is on the lighthouse step, squinting out over the water at nothing in particular.", "Marlowe is polishing an old brass telescope with the corner of his coat.", "Marlowe runs a thumb along a crack in a big glass lens, the way you'd touch a scar."],
+ "orla": ["The mill wheel creaks round. Orla is sweeping flour off the step with a stiff broom.", "Orla is sitting on a sack of grain, rubbing her knees and watching the wheel turn.", "Orla is looking across the lake toward the dark lighthouse with her arms folded."],
+ "benno": ["A horse in the stable stretches its neck out to sniff your sleeve. Benno watches, nodding.", "Benno is brushing a horse he never rides, in long slow strokes.", "Benno is watching your pup trot about, chin on his folded arms on the fence."],
+ "ivy": ["Ivy runs a finger down a column of your bank book, then closes it with a satisfied snap.", "Ivy is straightening a framed letter on the bank wall that is already perfectly straight.", "Ivy is holding a small tarnished coin up to the light by the window."],
+ "tam": ["A flock of identical sheep crowds round you. Tam doesn't even try to call them off.", "Tam is looking up at the hills, leaning on a shepherd's crook.", "Tam is crouched in the straw beside a very round ewe, talking to her softly."],
+ "old_moss": ["Old Moss is sitting by a bubbling pot at the marsh edge, listening to the frogs.", "Old Moss is turning an old doctor's bag over in his hands, the leather cracked.", "Old Moss is peering into the fog over the deep marsh, his face very still."],
+ "granite": ["Granite is at the quarry ledge with a tin mug of terrible coffee, watching you work.", "Granite is sitting on a block of stone, looking down the road toward the farms.", "Granite drops a cracked old bone on the table in front of you with a thud."],
+ "sel": ["Sel is lying flat in the ruins, reading the underside of a fallen stone.", "Sel is sketching a carving by lamplight, muttering in a language nobody speaks any more.", "Sel is pacing among the ruin walls, tapping her pencil on each stone she passes."],
+}
+for vid, ops in OPEN.items():
+    for n, t in zip(["2", "4", "6"], ops):
+        H[vid]["milestones"][n] = N(t) + H[vid]["milestones"][n]
 
 out = {"_": "Villager heart arcs. milestones: lines at ♥2/4/6/8/10 (play when you next talk to them). quest6: side quest promoted at ♥6 (offered with its own lines). after: a daily line used once a milestone has passed. fall: what they'd do if the town fell (endings).", "villagers": H}
 json.dump(out, open("data/hearts.json", "w"), indent=1, ensure_ascii=False)
