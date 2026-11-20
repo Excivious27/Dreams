@@ -2764,6 +2764,8 @@ func _decor_after() -> void:
 				# a puddle / drift / leaf pile under a new path goes
 				if props.has(c) and is_instance_valid(props[c]) and not blocked.has(c):
 					var pn := str((props[c] as Node).name).to_lower()
+					if props[c] is Sprite2D and (props[c] as Sprite2D).texture:
+						pn += (props[c] as Sprite2D).texture.resource_path.to_lower()  # dressing props are unnamed: read the art
 					if pn.contains("puddle") or pn.contains("drift") or pn.contains("leaf"):
 						(props[c] as Node).queue_free()
 						props.erase(c)
