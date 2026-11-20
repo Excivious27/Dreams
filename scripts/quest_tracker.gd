@@ -70,8 +70,19 @@ static func progress(id: String) -> String:
 	if not (dw is Dictionary):
 		return ""
 	if (dw as Dictionary).has("item"):
-		var it: Array = dw["item"]
+		var iv: Variant = dw["item"]
+		var it: Array = iv if iv is Array else [str(iv), 1]
 		return "%d/%d" % [mini(GameState.count(str(it[0])), int(it[1])), int(it[1])]
+	if (dw as Dictionary).has("skill"):  # C7: "Combat Lv 2/3" (pup skills too)
+		var sk: Array = dw["skill"]
+		return "%s Lv %d/%d" % [str(sk[0]).capitalize(), mini(GameState.skill_level(str(sk[0])), int(sk[1])), int(sk[1])]
+	if (dw as Dictionary).has("rec_best"):
+		var rb: Array = dw["rec_best"]
+		return "best %d/%d" % [mini(Tickets.best_score(str(rb[0])), int(rb[1])), int(rb[1])]
+	if id.begins_with("colony_"):
+		var cs := _colony_short(id.substr(7))
+		if cs != "":
+			return cs
 	if (dw as Dictionary).has("items"):
 		# Several kinds (mega hooks/jobs, C4): all done = the total; else the first one still short, by name.
 		var have := 0
@@ -88,6 +99,18 @@ static func progress(id: String) -> String:
 	return ""
 
 
+## A colony quest's steps in a few words ("" when the colony isn't known). Read-only on Colony.
+static func _colony_short(cid: String) -> String:
+	if not Colony.data().has(cid):
+		return ""
+	var c: Dictionary = Colony.data()[cid]
+	var st: Dictionary = Colony.st(cid)
+	if Colony.ready_to_wake(cid):
+		return "wake the crystal"
+	return "%s %d/%d, beacons %d/%d%s" % [str(c.get("foe_word", "foes")), mini(int(st.get("kills", 0)), int(c.get("kills", 0))), int(c.get("kills", 0)),
+		(st.get("beacons", {}) as Dictionary).size(), int(c.get("beacons", 3)), "" if bool(st.get("gave", false)) else ", supplies"]
+
+
 static var _npc_home := {}
 
 
@@ -101,7 +124,14 @@ static func npc_scene(npc: String) -> String:
 					if n is Dictionary:
 						_npc_home[str(n.get("id", ""))] = k
 		_npc_home["_"] = ""
-	return str(_npc_home.get(npc, ""))
+	if _npc_home.has(npc):
+		return str(_npc_home[npc])
+	# Valley villagers who don't live in town (C7: Marlowe's lighthouse, Orla's water mill).
+	return str(HOME_SCENE.get(str(GameState.npcs.get(npc, {}).get("home", "")), ""))
+
+
+## Valley homes outside town -> the scene they stand in.
+const HOME_SCENE := {"lighthouse": "lake", "water_mill": "lake"}
 
 
 ## Open quests that are handed in (or picked up) in this scene: its villagers' jobs,
@@ -132,11 +162,19 @@ static func target(m: GameMap) -> Vector2:
 	var id := tracked()
 	if id == "" or is_main(id):
 		return GoalLine.target(m)
-	return _giver_target(m, str(GameState._quest_def(id).get("giver", "")))
+	var tg := _giver_target(m, str(GameState._quest_def(id).get("giver", "")), id)
+	if tg == Vector2.ZERO and str(GameState._quest_def(id).get("giver", "")) == "" and job_place(id).is_empty():
+		return GoalLine.target(m)  # a tracked quest with no place: follow the story's arrow
+	return tg
 
 
 ## A townsfolk job: walk to the person who asked (they hand it in face to face).
-static func _giver_target(m: GameMap, giver: String) -> Vector2:
+## C7: before a job is ready, a job done somewhere else points there first (`job_place`).
+static func _giver_target(m: GameMap, giver: String, qid: String = "") -> Vector2:
+	if qid != "":
+		var jp := job_place(qid)
+		if not jp.is_empty():
+			return _place_target(m, jp)
 	if giver == "":
 		return Vector2.ZERO
 	for ch in m.get_children():
@@ -151,14 +189,79 @@ static func _giver_target(m: GameMap, giver: String) -> Vector2:
 		if str(e.get("scene", "")) == here:
 			return m.cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
 		return _toward(m, str(e.get("scene", "")))
-	# A region villager (mg_*): their area, or the way back to their hub.
+	# A region villager (mg_*, Tam, Granite...) or a Valley villager who lives out of town
+	# (Marlowe, Orla at the lake): their area, or the way there.
 	var home := npc_scene(giver)
 	if home != "":
-		return Vector2.ZERO if home == here else _toward(m, home)
-	# Valley villagers live in town.
-	if not GameState.npcs.has(giver) or here == "town":
+		return _door_of(m, giver, "home") if home == here else _toward(m, home)
+	if not GameState.npcs.has(giver) or here == "interior":
 		return Vector2.ZERO
-	return _toward(m, "town")
+	# Valley villagers: where they are right now (C7: indoors, the community farm, the Rec Center).
+	var place := Npc.place_now(GameState.npcs[giver].get("routine", []), giver)
+	if place.begins_with("cf_"):
+		return Vector2.ZERO if here == "community_farm" else _toward(m, "community_farm")
+	if here != "town":
+		return _toward(m, "town")
+	return _door_of(m, giver, place)
+
+
+## The door on map m that a villager is behind at `place` ("home"/"work" = their own
+## buildings, otherwise the interior of that name, "rec" = the Rec Center).
+static func _door_of(m: GameMap, giver: String, place: String) -> Vector2:
+	var d: Dictionary = GameState.npcs.get(giver, {})
+	var want := str(d.get("work", "")) if place == "work" else (str(d.get("home", "")) if place == "home" else place)
+	if want == "":
+		return Vector2.ZERO
+	for c: Vector2i in m.things:
+		var t: Dictionary = m.things[c]
+		if str(t.get("type", "")) in ["door", "shop", "hall", "rec"] and str(t.get("interior", "")) == want:
+			return m.cell_center(c)
+	return Vector2.ZERO
+
+
+## Where a job is done when that isn't the giver ({} = hand it in to the giver). C7.
+## {scene, what} like GoalLine.goal_place ("thing:x", "cell:x,y", "door:<interior>", "" = the map).
+static func job_place(qid: String) -> Dictionary:
+	var d := GameState._quest_def(qid)
+	var dw: Variant = d.get("done_when", {})
+	var ready := dw is Dictionary and not (dw as Dictionary).is_empty() and GameState._cond_ok(dw)
+	if qid == "rec_visit":
+		return {"scene": "town", "what": "door:rec"}
+	if qid == "cf_main":
+		return {"scene": "community_farm", "what": ""}
+	if qid.begins_with("colony_"):
+		var cs := qid.substr(7) if qid.substr(7).begins_with("colony_") else qid  # quest colony_<id>, id = scene (colony_coral)
+		return {"scene": cs, "what": ""} if ResourceLoader.exists("res://scenes/%s.tscn" % cs) else {}
+	if ready or not (dw is Dictionary):
+		return {}
+	var w: Dictionary = dw
+	if w.has("rec_best") or w.has("arcade_ms") or str(w.get("flag", "")).begins_with("rec_") or str(w.get("flag", "")).begins_with("bowl"):
+		return {"scene": "town", "what": "door:rec"}
+	if str(w.get("flag", "")) == "rook_orchard_clear":
+		return {"scene": "town", "what": "cell:78,16"}  # Rook's orchard (75..81, 10..22)
+	if str(w.get("flag", "")) == "grotto_done" or qid == "mer_crystals":
+		return {"scene": "meadow", "what": "thing:mine"}
+	return {}
+
+
+## The compass spot for a job place on map m.
+static func _place_target(m: GameMap, jp: Dictionary) -> Vector2:
+	var sc := str(jp.get("scene", ""))
+	var what := str(jp.get("what", ""))
+	if sc != m.scene_id():
+		return Vector2.ZERO if m.scene_id() == "interior" else _toward(m, sc)
+	if what.begins_with("door:"):
+		for c: Vector2i in m.things:
+			var t: Dictionary = m.things[c]
+			if str(t.get("interior", "")) == what.substr(5):
+				return m.cell_center(c)
+		return Vector2.ZERO
+	if what.begins_with("thing:"):
+		return GoalLine.thing_near(m, what.substr(6))
+	if what.begins_with("cell:"):
+		var xy := what.substr(5).split(",")
+		return m.cell_center(Vector2i(int(xy[0]), int(xy[1])))
+	return Vector2.ZERO
 
 
 ## The exit toward `goal`; from inside a mega region bound elsewhere, the way to its hub

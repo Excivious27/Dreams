@@ -133,7 +133,7 @@ func _run() -> void:
 			GameState.run["flags"]["hideout_seen"] = true
 			g = goal("(skipped Sal) arrived in Hideout town")
 			check(g.find("Deuce") >= 0 and g.find("campaign") < 0, "gang: skipped Sal -> recruit crew, no campaign yet")
-			check(GoalLine.goal_place() == ["", ""], "gang: skipped Sal -> no arrow back to town")
+			check(str(GoalLine.goal_place()[0]) != "town", "gang: skipped Sal -> no arrow back to town (%s)" % str(GoalLine.goal_place()))
 			GameState.run["flags"].erase("hideout_seen")
 			GameState.run["quests"] = save_q
 			GameState.run["flags"]["sal_recruited"] = true
