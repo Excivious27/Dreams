@@ -245,8 +245,10 @@ static func _redraw_soil(m: GameMap) -> void:
 	var soil = m.get("_soil")
 	if soil is CanvasItem:
 		(soil as CanvasItem).queue_redraw()
-	else:
+	elif m.scene_id() == "farm":
 		m.queue_redraw()
+	# Elsewhere no farm soil is drawn: a full map redraw would re-bake every
+	# ground chunk for nothing (c3_16 #6).
 
 
 ## The sound for a spell, from its id/element words (fire, ice, heal...).

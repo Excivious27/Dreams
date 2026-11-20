@@ -102,10 +102,85 @@ func arc(c: Vector2, rad: float, from: float, to: float, n: int, col: Color, w: 
 func flush(ci: CanvasItem, tex: Texture2D = null) -> void:
 	if idx.is_empty():
 		return
-	RenderingServer.canvas_item_add_triangle_array(ci.get_canvas_item(), idx, pts, cols,
+	if recording:
+		var bb := Rect2(pts[0], Vector2.ZERO)
+		for p in pts:
+			bb = bb.expand(p)
+		rec.append(["tri", idx, pts, cols, uvs if uvs.size() == pts.size() else PackedVector2Array(), tex, bb.grow(2.0)])
+	if not Art.clipped(_last_bb(pts)):
+		RenderingServer.canvas_item_add_triangle_array(ci.get_canvas_item(), idx, pts, cols,
 		uvs if uvs.size() == pts.size() else PackedVector2Array(), PackedInt32Array(), PackedFloat32Array(),
 		tex.get_rid() if tex != null else RID())
 	pts = PackedVector2Array()
 	cols = PackedColorArray()
 	uvs = PackedVector2Array()
 	idx = PackedInt32Array()
+
+
+# ---- recorded drawing (geometry memo for the baked ground, c3_16 #2) ----------
+## While `recording`, flush() and the draw helpers below also append what they
+## draw to `rec`; replay() re-issues the same commands in the same order (helpers
+## skip those wholly outside Art.clip), with none of the geometry work again.
+static var recording := false
+static var rec: Array = []
+
+
+static func _last_bb(p: PackedVector2Array) -> Rect2:
+	if not Art.clip.has_area() or p.is_empty():
+		return Rect2(Vector2.ZERO, Vector2(1, 1))  # (not clipping: never skipped)
+	var bb := Rect2(p[0], Vector2.ZERO)
+	for q in p:
+		bb = bb.expand(q)
+	return bb.grow(2.0)
+
+
+static func begin_rec() -> void:
+	recording = true
+	rec = []
+
+
+static func end_rec() -> Array:
+	recording = false
+	var out := rec
+	rec = []
+	return out
+
+
+static func tex_rect_region(ci: CanvasItem, tex: Texture2D, r: Rect2, src: Rect2, col := Color.WHITE) -> void:
+	if recording:
+		rec.append(["trr", tex, r, src, col])
+	if not Art.clipped(r):
+		ci.draw_texture_rect_region(tex, r, src, col)
+
+
+static func tex_rect(ci: CanvasItem, tex: Texture2D, r: Rect2) -> void:
+	if recording:
+		rec.append(["tr", tex, r])
+	if not Art.clipped(r):
+		ci.draw_texture_rect(tex, r, false)
+
+
+static func solid(ci: CanvasItem, r: Rect2, col: Color) -> void:
+	if recording:
+		rec.append(["rect", r, col])
+	if not Art.clipped(r):
+		ci.draw_rect(r, col)
+
+
+static func replay(ci: CanvasItem, cmds: Array) -> void:
+	var item := ci.get_canvas_item()
+	for c: Array in cmds:
+		match str(c[0]):
+			"tri":
+				if not Art.clipped(c[6]):
+					RenderingServer.canvas_item_add_triangle_array(item, c[1], c[2], c[3], c[4], PackedInt32Array(), PackedFloat32Array(),
+						(c[5] as Texture2D).get_rid() if c[5] != null else RID())
+			"trr":
+				if not Art.clipped(c[2]):
+					ci.draw_texture_rect_region(c[1], c[2], c[3], c[4])
+			"tr":
+				if not Art.clipped(c[2]):
+					ci.draw_texture_rect(c[1], c[2], false)
+			"rect":
+				if not Art.clipped(c[1]):
+					ci.draw_rect(c[1], c[2])

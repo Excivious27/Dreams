@@ -47,11 +47,20 @@ func _run() -> void:
 		var t0 := Time.get_ticks_usec()
 		change_scene_to_file("res://scenes/%s.tscn" % file)
 		var fts: Array = []
-		for k in 4:
+		var uncover := -1  # frames until the arrival cover lifts (baked maps; GameMap._fade_in_when_baked)
+		for k in 60:
 			await process_frame
 			fts.append(Time.get_ticks_usec())
+			var lm := current_scene as GameMap
+			if uncover < 0 and lm != null and k >= 1 and not bool(lm.get("_bake_covered")):
+				uncover = k
+			if k >= 3 and uncover >= 0:
+				break
 		var t1: int = fts[1]
-		print("  %s load frames: %.0f / %.0f / %.0f / %.0f ms" % [sc, _ms(t0, fts[0]), _ms(fts[0], fts[1]), _ms(fts[1], fts[2]), _ms(fts[2], fts[3])])
+		var fmax := 0.0
+		for k in range(1, fts.size()):
+			fmax = maxf(fmax, _ms(fts[k - 1], fts[k]))
+		print("  %s load frames: %.0f / %.0f / %.0f / %.0f ms; longest load frame after the first %.0f ms; cover lifts at frame %d (%.0f ms)" % [sc, _ms(t0, fts[0]), _ms(fts[0], fts[1]), _ms(fts[1], fts[2]), _ms(fts[2], fts[3]), fmax, uncover, _ms(t0, fts[maxi(uncover, 0)])])
 		for k in 18:
 			await process_frame
 		var d := Dialogue.instance(self)
@@ -87,28 +96,45 @@ func _run() -> void:
 		var bake_draws := 0
 		var bake_ms := 0.0
 		if m and not m._bake.is_empty():
-			await process_frame
-			var base := int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
-			var ch: Array = m._bake.values()[0]
-			var tb := Time.get_ticks_usec()
-			(ch[0] as SubViewport).render_target_update_mode = SubViewport.UPDATE_ONCE
-			await process_frame
-			bake_ms = _ms(tb, Time.get_ticks_usec())
-			bake_draws = int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)) - base
+			# Median of 5 single-chunk re-bakes (one is noisy on a shared CPU); ms = that whole frame.
+			var bds: Array = []
+			var bms: Array = []
+			for rep in 5:
+				await process_frame
+				var base := int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
+				# Re-bake one chunk the way the game does (stale, alone in its frame:
+				# a clipped painter pass when GameMap.bake_clip is on).
+				var key: Vector2i = m._bake.keys()[rep % m._bake.size()]
+				var tb := Time.get_ticks_usec()
+				m._bake[key][2] = true
+				m._bake_busy = true
+				m._bake_last = Vector2(INF, INF)
+				await process_frame
+				bms.append(_ms(tb, Time.get_ticks_usec()))
+				bds.append(int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)) - base)
+			bds.sort()
+			bms.sort()
+			bake_draws = bds[2]
+			bake_ms = bms[2]
 		# A full ground redraw (the painter's _draw in GDScript + the visible chunks): what a
 		# map pays on its first frame and on every season/tilling redraw.
 		var redraw_ms := 0.0
 		if m and m.get("_painter") != null:
-			await process_frame
-			var tq := Time.get_ticks_usec()
-			await process_frame
-			var plain := _ms(tq, Time.get_ticks_usec())
-			tq = Time.get_ticks_usec()
-			m.queue_redraw()
-			await process_frame
-			await process_frame
-			redraw_ms = _ms(tq, Time.get_ticks_usec()) - 2.0 * plain
-			print("  %s full redraw %.0f ms (plain frame %.0f ms)" % [sc, redraw_ms, plain])
+			var rds: Array = []
+			var plain := 0.0
+			for rep in 3:  # median of 3
+				await process_frame
+				var tq := Time.get_ticks_usec()
+				await process_frame
+				plain = _ms(tq, Time.get_ticks_usec())
+				tq = Time.get_ticks_usec()
+				m.queue_redraw()
+				await process_frame
+				await process_frame
+				rds.append(_ms(tq, Time.get_ticks_usec()) - 2.0 * plain)
+			rds.sort()
+			redraw_ms = rds[1]
+			print("  %s full redraw %.0f ms (median of 3; plain frame %.0f ms)" % [sc, redraw_ms, plain])
 		if OS.get_environment("BREAKDOWN") != "" and m:
 			await _breakdown(m)
 		var n := times.size()
@@ -173,6 +199,10 @@ func _dc() -> int:
 ## BREAKDOWN=1: hide each visible CanvasItem under the map (two levels deep) in turn and
 ## print what it costs in draw calls (largest first): where a scene's draws go.
 func _breakdown(m: Node) -> void:
+	# Freeze the battle (units spawning/moving change the draw count between samples).
+	var bt = m.get("battle")
+	if bt is Node:
+		(bt as Node).process_mode = Node.PROCESS_MODE_DISABLED
 	var base := await _dc()
 	var rows: Array = []
 	var items: Array = []
@@ -192,3 +222,5 @@ func _breakdown(m: Node) -> void:
 	print("  breakdown (%d draws):" % base)
 	for r in rows.slice(0, 12):
 		print("    %5d  %s" % [r[0], r[1]])
+	if bt is Node and is_instance_valid(bt):
+		(bt as Node).process_mode = Node.PROCESS_MODE_INHERIT

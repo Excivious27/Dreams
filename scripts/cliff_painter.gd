@@ -151,7 +151,31 @@ static func lip_colour(pset: String, ground := Color(0, 0, 0, 0)) -> Color:
 ## where a stair set is cut in. opts: {"style": "grass"/"sand"/"snow",
 ## "skip_rect": Rect2i (outline pieces on this rect's border are not drawn, e.g.
 ## the outer edge of a border band), "no_front": true, "stair_set": name}
+## Drawn geometry per input (cells, stairs, opts, season): a redraw or a clipped
+## chunk bake replays the recorded commands instead of tracing loops again.
+## GameMap._ready clears it (one map's worth).
+static var memo := {}
+
+
+static func _memo_key(parts: Array) -> String:
+	return str(hash(parts))
+
+
 static func draw(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, opts: Dictionary = {}) -> bool:
+	if TriBatch.recording:
+		return _draw_impl(ci, cells, stairs, opts)
+	var key := "d" + _memo_key([cells.size(), cells.hash(), stairs.hash(), opts.hash(), GameState.look_se()])
+	if memo.has(key):
+		var m: Array = memo[key]
+		TriBatch.replay(ci, m[1])
+		return m[0]
+	TriBatch.begin_rec()
+	var ok := _draw_impl(ci, cells, stairs, opts)
+	memo[key] = [ok, TriBatch.end_rec()]
+	return ok
+
+
+static func _draw_impl(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, opts: Dictionary = {}) -> bool:
 	var style := str(opts.get("style", "grass"))
 	var pset := piece_set(style)
 	var strip := Art.tex("cliffs", pset + "_strip")
@@ -330,8 +354,8 @@ static func draw_stairs(ci: CanvasItem, stairs: Dictionary, base: String) -> voi
 		var h := clampf(nat, FACE_H + T * 0.9, FACE_H + T * 1.4)
 		var left: Vector2i = run[0]
 		# Shadow under the steps' foot, then the set.
-		ci.draw_rect(Rect2(left.x * T - 6.0, foot - 2.0, w - 2.0, 3.0), Color(0.05, 0.04, 0.08, 0.22))
-		ci.draw_texture_rect(t, Rect2(left.x * T - 7.0, foot - h, w, h), false)
+		TriBatch.solid(ci, Rect2(left.x * T - 6.0, foot - 2.0, w - 2.0, 3.0), Color(0.05, 0.04, 0.08, 0.22))
+		TriBatch.tex_rect(ci, t, Rect2(left.x * T - 7.0, foot - h, w, h))
 
 
 ## Cells drawn as one patch of a seamless texture with rounded outer corners and
@@ -340,6 +364,19 @@ static func draw_stairs(ci: CanvasItem, stairs: Dictionary, base: String) -> voi
 static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D, period: float, col := Color.WHITE) -> void:
 	if tex == null:
 		return
+	if TriBatch.recording:
+		_rounded_impl(ci, cells, tex, period, col)
+		return
+	var key := "r" + _memo_key([cells.size(), cells.hash(), tex.get_rid(), period, col])
+	if memo.has(key):
+		TriBatch.replay(ci, memo[key])
+		return
+	TriBatch.begin_rec()
+	_rounded_impl(ci, cells, tex, period, col)
+	memo[key] = TriBatch.end_rec()
+
+
+static func _rounded_impl(ci: CanvasItem, cells: Dictionary, tex: Texture2D, period: float, col := Color.WHITE) -> void:
 	var r := T * 0.5
 	# Inner cells first as plain rects (they batch on their own), then every rounded
 	# edge piece and fillet as one triangle array: no cell overlaps another, so the
@@ -350,7 +387,7 @@ static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D
 		if cells.has(c + Vector2i(0, -1)) and cells.has(c + Vector2i(0, 1)) and cells.has(c + Vector2i(-1, 0)) and cells.has(c + Vector2i(1, 0)):
 			var o0 := Vector2(c) * T
 			var base := Vector2(fposmod(o0.x, period), fposmod(o0.y, period))
-			ci.draw_texture_rect_region(tex, Rect2(o0, Vector2(T, T)), Rect2(base / period * tsz, Vector2(T, T) / period * tsz), col)
+			TriBatch.tex_rect_region(ci, tex, Rect2(o0, Vector2(T, T)), Rect2(base / period * tsz, Vector2(T, T) / period * tsz), col)
 	for c: Vector2i in cells:
 		var n := cells.has(c + Vector2i(0, -1))
 		var s := cells.has(c + Vector2i(0, 1))
