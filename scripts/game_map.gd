@@ -580,55 +580,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("The host's animals. They're happy to see you.", Color(1, 0.8, 0.9))
 				return true
 			if a != null and is_instance_valid(a):
-				var nm := str(a.name)
-				var all: Dictionary = GameState.run.get("animals", {})
-				var st: Dictionary = all.get(nm, {"streak": 0, "last_pet": -9, "fed": -9})
-				var day := int(GameState.run["day"])
-				var species := str(a.kind).split("_")[0].rstrip("0123456789").capitalize()
-				var fed_now := false
-				# Big Barn auto-feeder: barn animals eat from the silo by themselves.
-				var bird := str(a.kind).begins_with("chicken") or str(a.kind).begins_with("hen") or str(a.kind).begins_with("duck") or str(a.kind) in ["rooster", "chick"]
-				if int(st["fed"]) != day and not bird and not bool(a.get("baby")) and Builds.built_tier("barn") >= 2 and Builds.silo_hay() > 0:
-					GameState.run["silo"] = Builds.silo_hay() - 1
-					st["fed"] = day
-				# Holding hay: feed it (once a day), then the same tap pets it.
-				var no_hay := bool(a.get("baby")) or str(a.kind) == "rooster"  # babies and the rooster give nothing: no hay, no nagging
-				if GameState.held_item() == "hay" and int(st["fed"]) != day and not no_hay:
-					GameState.add_item("hay", -1)
-					st["fed"] = day
-					fed_now = true
-					Music.instance(get_tree()).sfx("eat", "pickup")
-					hud.toast("%s munches the hay." % species, Color(0.9, 1, 0.8))
-				Music.instance(get_tree()).sfx(animal_voice(str(a.kind)), "sheep" if not bird else "pickup")
-				if int(st["last_pet"]) == day and not fed_now:
-					hud.toast("Already happy today." if int(st["fed"]) == day or no_hay else ("%s is hungry. Bring hay (hold it and tap)%s." % [species, ", or fill the silo" if Builds.built_tier("barn") >= 2 and not bird else ""]))
-					return true
-				if int(st["last_pet"]) != day:
-					st["streak"] = int(st["streak"]) + 1 if int(st["last_pet"]) == day - 1 else 1
-					st["last_pet"] = day
-					emote(a, "heart", 1.4, -18.0)
-					if not fed_now:
-						hud.toast("%s loves that.%s" % [species, " %d days running." % int(st["streak"]) if int(st["streak"]) > 1 else ""] + (" Silver goods from now on!" if int(st["streak"]) == 5 else (" Gold goods from now on!" if int(st["streak"]) == 14 else "")), Color(1, 0.8, 0.9))
-					xp("farming", 2)
-				else:
-					emote(a, "happy", 1.0, -18.0)
-				all[nm] = st
-				GameState.run["animals"] = all
-				# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
-				var k := str(a.kind)
-				var prod := "duck_egg" if k.begins_with("duck") else "egg" if k.begins_with("chicken") or k.begins_with("hen") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") or k.begins_with("llama") else "")))
-				if prod != "" and not bool(a.get("baby")) and int(st.get("made", -9)) != day:
-					if int(st["fed"]) != day:
-						hud.toast("%s is too hungry to give anything today. Hay first." % species, Color(1, 0.85, 0.7))
-					else:
-						st["made"] = day
-						var ay := GameState.bonus("ranching", "animal_yield")
-						var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
-						pop_items(a.position, prod, n)
-						# Friendship shows in the goods: silver after 5 days running, gold after 14.
-						var q := "g" if int(st["streak"]) >= 14 else ("s" if int(st["streak"]) >= 5 else "")
-						if q != "":
-							GameState.add_quality(prod, q, n)
+				pet_farm_animal(a)
+				animal_hint(a)
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool that swings): fiber, Stardew-style.
@@ -636,10 +589,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if ToolHint.is_soft(GameState.held_tool()):
 				ToolHint.say(self, "Pull weeds by hand or with a blade, hoe or scythe.")
 				return true
-			if not GameState.spend_for("weed"):
+			var ht := GameState.held_tool()
+			if not GameState.spend_for("scythe" if ht == "scythe" and GameState.ENERGY_COST.has("scythe") else "weed"):  # the scythe's own (tier-discounted) cost (c11a_08)
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
-			var ht := GameState.held_tool()
 			if ht == "scythe" or GameState.is_sword(ht):
 				player.play_tool("axe")
 			else:
@@ -648,7 +601,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < float(thing.get("hay", 0.5)):  # farm: old weed-spot grass always, meadow clumps half
-				if not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo)
+				if quest_wants("hay") or not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo), unless a quest still wants bag hay (c11a_08)
 					pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.
 			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
@@ -1045,6 +998,109 @@ static func notify(text: String, sfx := "") -> void:
 	(GameState.run["notes"] as Array).append({"text": text, "sfx": sfx} if sfx != "" else text)
 
 
+## An open quest asks for more of this item than the bag holds (hay goes to the bag, not the silo).
+static func quest_wants(item: String) -> bool:
+	for q in GameState.run.get("quests", []):
+		if not (q is Dictionary) or bool((q as Dictionary).get("done", false)):
+			continue
+		var dw: Variant = GameState._quest_def(str(q["id"])).get("done_when", {})
+		if dw is Dictionary and (dw as Dictionary).get("item", null) is Array:
+			var it: Array = (dw as Dictionary)["item"]
+			if it.size() >= 2 and str(it[0]) == item and GameState.count(item) < int(it[1]):
+				return true
+	return false
+
+
+## Pet / feed / collect one farm animal (C11a P2). Rules live in RanchFarm (one feeder rule,
+## one quality table, care days that need both a pet and a meal, missed days cost a little).
+func pet_farm_animal(a: Node2D) -> void:
+	var st := RanchFarm.state_of(a)
+	var uid := RanchFarm.uid_of(a)
+	var day := int(GameState.run["day"])
+	var kind := str(a.get("kind"))
+	var baby := bool(a.get("baby"))
+	var species := str(Ranch.animal(uid).get("name", "")) if uid != "" else ""
+	if species == "":
+		species = kind.split("_")[0].rstrip("0123456789").capitalize()
+	var bird := RanchFarm.is_bird(kind)
+	var no_hay := baby or kind == "rooster"  # babies and the rooster give nothing: no hay, no nagging
+	var hungry_before := int(st["fed"]) != day and int(st["fed"]) < day - 1 and int(st["fed"]) >= 0
+	var fed_now := false
+	# Pasture on dry days, then the Big Coop / Big Barn feeders: the same rules the farm uses on arrival.
+	if not RanchFarm.graze(st, kind, baby, day):
+		RanchFarm.feed_from_silo(st, kind, baby, day)
+	# Holding hay: feed it (once a day), then the same tap pets it.
+	if GameState.held_item() == "hay" and int(st["fed"]) != day and not no_hay:
+		GameState.add_item("hay", -1)
+		st["fed"] = day
+		fed_now = true
+		Music.instance(get_tree()).sfx("eat", "pickup")
+	Music.instance(get_tree()).sfx(animal_voice(kind), "sheep" if not bird else "pickup")
+	var newly := int(st["last_pet"]) != day
+	if newly:
+		st["last_pet"] = day
+		if uid != "":
+			Ranch.pet(uid)
+	var care := RanchFarm.tend(st, day, not no_hay)
+	var words := RanchFarm.streak_words(st, str(care["milestone"])) if bool(care["up"]) else ""
+	if fed_now:
+		hud.toast("%s munches the hay.%s" % [species, words], Color(0.9, 1, 0.8))
+	elif newly:
+		emote(a, "cry" if hungry_before and int(st["fed"]) != day else "heart", 1.4, -18.0)
+		if int(st["fed"]) != day and not no_hay:
+			hud.toast("%s loves that, but is hungry. Hold hay and tap%s." % [species, _feeder_hint(kind)], Color(1, 0.85, 0.7))
+		else:
+			hud.toast("%s loves that.%s" % [species, words], Color(1, 0.8, 0.9))
+	elif int(st["fed"]) != day and not no_hay:
+		hud.toast("%s is hungry. Bring hay (hold it and tap)%s." % [species, _feeder_hint(kind)])
+		RanchFarm.save_state(a, st)
+		return
+	else:
+		emote(a, "happy", 1.0, -18.0)
+		if bool(care["up"]):
+			hud.toast("%s is fed and happy.%s" % [species, words], Color(1, 0.8, 0.9))
+		elif int(st.get("made", -9)) == day or RanchFarm.product_for(kind, uid) == "" or baby:
+			hud.toast("Already happy today.")
+	if newly:
+		xp(RanchFarm.care_skill(), 2)
+	if bool(care["up"]):
+		xp(RanchFarm.care_skill(), 2)  # a full care day (fed + petted) trains ranching too (c11a_07)
+	RanchFarm.save_state(a, st)
+	# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
+	var prod := RanchFarm.product_for(kind, uid)
+	if prod == "" or baby or int(st.get("made", -9)) == day or int(st["fed"]) != day:
+		return
+	st["made"] = day
+	var ay := RanchFarm.yield_bonus()
+	var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
+	if prod == "truffle":
+		n = 1 if randf() < 0.4 + 0.2 * float(["", "s", "g"].find(RanchFarm.quality_for(int(st["streak"])))) else 0  # pigs dig, not always
+	RanchFarm.save_state(a, st)
+	if n <= 0:
+		return
+	pop_items(a.position, prod, n)
+	# Care shows in the goods: silver and gold from RanchFarm.silver()/gold() care days.
+	var q := RanchFarm.lift_quality(RanchFarm.quality_for(int(st["streak"])))
+	if q != "":
+		GameState.add_quality(prod, q, n)
+
+
+## Keep an animal's tap hint current ("A: Clover (hungry)"); the thing dict moves with the animal.
+func animal_hint(a: Node) -> void:
+	var day := int(GameState.run.get("day", 1))
+	for c: Vector2i in things:
+		var t: Dictionary = things[c]
+		if t.get("animal", null) == a:
+			t["hint"] = RanchFarm.hint_for(a, day)
+			return
+
+
+func _feeder_hint(kind: String) -> String:
+	if Builds.built_tier("coop" if RanchFarm.is_bird(kind) else "barn") >= 2:
+		return ", or fill the silo: the Big %s feeds from it" % ("Coop" if RanchFarm.is_bird(kind) else "Barn")
+	return ""
+
+
 ## A farm animal's voice when petted/fed (c6_10-01). Names come from P3's CC0 set; a missing
 ## file falls back (sheep for the big animals, pickup for birds) through Music.sfx.
 static func animal_voice(kind: String) -> String:
@@ -1056,7 +1112,11 @@ static func animal_voice(kind: String) -> String:
 	for pre: String in ["chicken", "hen"]:
 		if k.begins_with(pre):
 			return "cluck"
-	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "bleat", "pig": "bleat", "horse": "whinny"}
+	if k == "calf":
+		return "moo"
+	if k == "lamb":
+		return "sheep"
+	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "rabbit", "bee": "bees", "horse": "whinny", "donkey": "bray"}
 	for pre: String in voices:
 		if k.begins_with(pre):
 			return str(voices[pre])
@@ -5107,12 +5167,20 @@ func _crisp_hook() -> void:
 	get_tree().node_added.connect(_crisp_added)
 	(func() -> void:
 		for n in find_children("*", "AnimatedSprite2D", true, false):
-			CrispArt.apply_anim(n)).call_deferred()
+			if is_instance_valid(n):
+				CrispArt.apply_anim(n)).call_deferred()
 
 
 func _crisp_added(n: Node) -> void:
 	if n is AnimatedSprite2D and is_ancestor_of(n):
-		CrispArt.apply_anim.call_deferred(n)
+		_crisp_later.call_deferred(weakref(n))
+
+
+## Deferred CrispArt for a sprite that may be freed before the next idle frame (c11a_14_12).
+static func _crisp_later(w: WeakRef) -> void:
+	var n: Variant = w.get_ref()
+	if n != null and is_instance_valid(n):
+		CrispArt.apply_anim(n as AnimatedSprite2D)
 
 
 ## Underground places keep one steady dimness instead of the outdoor sky clock,
