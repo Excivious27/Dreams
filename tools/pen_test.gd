@@ -170,10 +170,10 @@ func _run() -> void:
 
 	# --- 3. Roster mode (ranch.json filled: P1) ---
 	Ranch._data = {"species": {
-		"chicken": {"name": "Chicken", "home": "coop", "art": {"adult": "chicken", "baby": "chick"}, "egg_item": "egg", "product": {"id": "egg"}},
-		"duck": {"name": "Duck", "home": "coop", "art": {"adult": "duck2", "baby": "duck2"}, "egg_item": "duck_egg", "product": {"id": "duck_egg"}, "hatch_days": 4},
+		"chicken": {"name": "Chicken", "home": "coop", "art": {"adult": "chicken", "baby": "chick"}, "egg_item": "egg", "breed": {"egg": "egg", "days": 3}, "product": {"id": "egg"}},
+		"duck": {"name": "Duck", "home": "coop", "art": {"adult": "duck2", "baby": "duck2"}, "egg_item": "duck_egg", "breed": {"egg": "duck_egg", "days": 4}, "product": {"id": "duck_egg"}, "hatch_days": 4},
 		"cow": {"name": "Cow", "home": "barn", "art": {"adult": "cow2", "baby": "calf"}, "product": {"id": "milk"}}},
-		"buildings": {"coop": [{"tier": 1, "cap": 4, "pen": [25, 9, 6, 4]}, {"tier": 2, "cap": 6, "pen": [25, 9, 6, 4]}],
+		"buildings": {"coop": [{"tier": 1, "cap": 4, "pen": [25, 9, 6, 4]}, {"tier": 2, "cap": 6, "adds": ["feeder", "incubator"], "pen": [25, 9, 6, 4]}],
 			"barn": [{"tier": 1, "cap": 4, "pen": [31, 6, 4, 3]}, {"tier": 2, "cap": 8, "pen": [31, 6, 4, 3]}]},
 		"rules": {"silver_streak": 4, "gold_streak": 10}, "products": {}, "processing": {}}
 	check(RanchFarm.silver() == 4 and RanchFarm.gold() == 10, "thresholds come from ranch.json rules")
@@ -212,7 +212,7 @@ func _run() -> void:
 	# Roster incubator: duck egg -> duckling in 4 days, capacity counted.
 	GameState.add_item("duck_egg", 1)
 	m._coop("duck_egg")
-	check(RanchFarm.incubator().size() == 1 and int((RanchFarm.incubator()[0] as Dictionary)["day"]) == 34, "duck egg warming (4 days)")
+	check(RanchFarm.incubator().size() == 1 and RanchFarm.egg_day(RanchFarm.incubator()[0]) == 34, "duck egg warming (4 days, Ranch.incubate)")
 	check(RanchFarm.coop_room() == 6 - 2 - 1, "coop room = cap - birds - eggs (%d)" % RanchFarm.coop_room())
 	GameState.run["day"] = 34
 	GameState.run["weather"] = {"34": "rain"}

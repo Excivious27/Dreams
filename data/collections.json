@@ -416,6 +416,24 @@
     "where": "Happy pigs dig them up outdoors; old forests too."
    },
    {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
     "item": "cheese",
     "arc": "",
     "family": "Artisan goods",
@@ -466,7 +484,7 @@
    {
     "item": "beeswax",
     "arc": "",
-    "family": "Artisan goods",
+    "family": "Animal goods",
     "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
    },
    {
@@ -3443,6 +3461,20 @@
     "arc": ""
    },
    {
+    "recipe": "down_pillow",
+    "station": "loom",
+    "item": "down_pillow",
+    "name": "Down Pillow",
+    "arc": ""
+   },
+   {
+    "recipe": "angora_yarn",
+    "station": "loom",
+    "item": "yarn",
+    "name": "Yarn (rabbit fur)",
+    "arc": ""
+   },
+   {
     "recipe": "dc_rug_rect_blue",
     "station": "loom",
     "item": "dc_rug_rect_blue",
@@ -4899,6 +4931,24 @@
     "arc": "",
     "family": "Animal goods",
     "where": "Happy pigs dig them up outdoors; old forests too."
+   },
+   {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
    }
   ]
  },

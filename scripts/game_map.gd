@@ -1036,7 +1036,8 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	Music.instance(get_tree()).sfx(animal_voice(kind), "sheep" if not bird else "pickup")
+	Music.instance(get_tree()).sfx(animal_voice(kind), "pickup")
+	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
 	if newly:
 		st["last_pet"] = day
@@ -1080,10 +1081,29 @@ func pet_farm_animal(a: Node2D) -> void:
 	if n <= 0:
 		return
 	pop_items(a.position, prod, n)
+	Collections.record_ranch(prod, n)
 	# Care shows in the goods: silver and gold from RanchFarm.silver()/gold() care days.
 	var q := RanchFarm.lift_quality(RanchFarm.quality_for(int(st["streak"])))
 	if q != "":
 		GameState.add_quality(prod, q, n)
+
+
+## Pick up goods the night made (Ranch.overnight sets animal.ready): pop them with their star.
+func _ranch_goods(a: Node2D, uid: String) -> void:
+	if uid == "" or Net.visiting():
+		return
+	var got := Ranch.collect(uid)
+	if got.is_empty():
+		return
+	var item := str(got["item"])
+	pop_items(a.position, item, int(got["n"]))
+	if str(got.get("q", "")) != "":
+		GameState.add_quality(item, str(got["q"]), int(got["n"]))
+	Collections.record_ranch(item, int(got["n"]))
+	if str(got.get("extra", "")) != "":
+		pop_items(a.position, str(got["extra"]), 1)
+		Collections.record_ranch(str(got["extra"]), 1)
+	xp(RanchFarm.care_skill(), 1)
 
 
 ## Keep an animal's tap hint current ("A: Clover (hungry)"); the thing dict moves with the animal.
@@ -1117,11 +1137,17 @@ static func animal_voice(kind: String) -> String:
 		return "moo"
 	if k == "lamb":
 		return "sheep"
-	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "rabbit", "bee": "bees", "horse": "whinny", "donkey": "bray"}
+	if k in ["kid_goat", "goat_kid"]:
+		return "bleat"
+	if k == "piglet":
+		return "oink"
+	if k == "bunny":
+		return "thump"
+	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "thump", "bee": "buzz", "horse": "whinny", "foal": "whinny", "donkey": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):
 			return str(voices[pre])
-	return "sheep"
+	return "pickup"  # an unknown kind never borrows another species' voice (c11a_13-15)
 
 
 func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") -> void:

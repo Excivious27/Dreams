@@ -272,6 +272,9 @@ static func sprite_group(uid: String) -> String:
 	var sp := str(a.get("species", ""))
 	var art: Dictionary = Ranch.species(sp).get("art", {})
 	var cands: Array = []
+	var ra := Ranch.art_for(uid)  # the roster look (variant art, baby strip): P6 team poses live on these kinds
+	if not bool(ra.get("baby", false)) and str(ra.get("group", "")) != "" and Art.has(str(ra["group"]), "idle"):
+		return str(ra["group"])
 	var v := str(a.get("variant", ""))
 	if art.has("adult"):
 		if v != "":
@@ -430,6 +433,9 @@ static func _detail(menu: Variant, uid: String) -> void:
 	else:
 		var rb: Button = menu._button("  Rename", func() -> void: _rename_uid = uid; menu._refresh())
 		rb.set_meta("pc_key", "animals:%s:rename" % uid)
+	if bool(Ranch.animal(uid).get("keepsake", false)):
+		menu._line("  %s is a keepsake: a gift that stays with you." % name_of(uid), 8, Color(0.85, 0.85, 0.75))
+		return
 	var arm := _rehome_arm == uid
 	var hb: Button = menu._button("  Sure? %s goes to a villager farm for good" % name_of(uid) if arm else "  Rehome…", func() -> void:
 		if _rehome_arm != uid:

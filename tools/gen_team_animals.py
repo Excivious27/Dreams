@@ -59,7 +59,7 @@ SPECIES = {
               "voice": "bleat", "job_word": "spits"},
     "donkey": {"name": "Donkey", "name_gang": "Donkey", "lessons": ["carry", "fetch", "attack"],
                "hp": 22, "dmg": 1, "speed": 0.9, "carry": True, "treat": ["carrot", "apple", "hay"],
-               "voice": "horse_whinny", "job_word": "kicks"},
+               "voice": "whinny", "job_word": "kicks"},
     "sheep": {"name": "Sheep", "name_gang": "Sheep", "lessons": ["fetch", "guard"],
               "hp": 16, "dmg": 1, "speed": 1.0, "carry": False, "treat": ["hay", "carrot", "apple"],
               "voice": "sheep", "job_word": "bumps"},

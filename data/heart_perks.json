@@ -540,9 +540,9 @@
   },
   "10": {
    "weekly": {
-    "sheep_wool": 3
+    "hay": 6
    },
-   "text": "Benno's llama wool: 3 Wool each week"
+   "text": "Benno's feed run: 6 Hay each week for your animals"
   }
  },
  "ivy": {
@@ -574,7 +574,7 @@
    "weekly": {
     "tea_leaf": 2
    },
-   "text": "Tam's sheepdog finds forage: a Tea Leaf each week"
+   "text": "Tam's sheepdog finds forage: 2 Tea Leaves each week"
   },
   "6": {
    "give": {
@@ -583,13 +583,14 @@
    "text": "Tam gives you a lamb's worth of wool: 5 Wool"
   },
   "8": {
+   "flag": "tam_lamb",
    "weekly": {
     "cider": 2
    },
    "give": {
     "#decor:dc_bed2_double_blue": 1
    },
-   "text": "Tam's cider: 2 each week, and a keepsake for your home: Blue Quilt Double Bed"
+   "text": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed"
   },
   "10": {
    "give": {

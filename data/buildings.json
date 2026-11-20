@@ -84,22 +84,22 @@
    {
     "tier": 1,
     "name": "Coop",
-    "sprite": "coop_small",
-    "group": "props",
+    "sprite": "coop_1",
+    "group": "buildings",
     "cost": {
      "wood": 120,
      "stone": 40
     },
     "permit": 100,
     "days": 1,
-    "desc": "Chickens: eggs every morning you care for them.",
+    "desc": "Chickens: eggs every morning you care for them. Room for 4.",
     "price": 850
    },
    {
     "tier": 2,
     "name": "Big Coop",
-    "sprite": "coop_big",
-    "group": "props",
+    "sprite": "coop_2",
+    "group": "buildings",
     "cost": {
      "plank": 60,
      "nails": 30,
@@ -107,7 +107,7 @@
     },
     "permit": 400,
     "days": 2,
-    "desc": "Room for ducks too; birds eat silo hay.",
+    "desc": "Room for ducks too; birds eat silo hay. Room for 8. Adds a silo feeder, an incubator.",
     "price": 2360,
     "unlock": {
      "skill": [
@@ -119,8 +119,8 @@
    {
     "tier": 3,
     "name": "Deluxe Coop",
-    "sprite": "coop_big",
-    "group": "props",
+    "sprite": "coop_3",
+    "group": "buildings",
     "cost": {
      "hardwood_plank": 20,
      "glass": 12,
@@ -128,7 +128,7 @@
     },
     "permit": 900,
     "days": 3,
-    "desc": "The biggest flock, warm all winter.",
+    "desc": "The biggest flock, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
     "price": 6080,
     "unlock": {
      "skill": [
@@ -157,22 +157,22 @@
    {
     "tier": 1,
     "name": "Barn",
-    "sprite": "barn_small",
-    "group": "props",
+    "sprite": "barn_1",
+    "group": "buildings",
     "cost": {
      "wood": 200,
      "stone": 80
     },
     "permit": 200,
     "days": 2,
-    "desc": "Cows and sheep: milk and wool.",
+    "desc": "Cows and sheep: milk and wool. Room for 4.",
     "price": 1380
    },
    {
     "tier": 2,
     "name": "Big Barn",
-    "sprite": "barn_big",
-    "group": "props",
+    "sprite": "barn_2",
+    "group": "buildings",
     "cost": {
      "beam": 30,
      "brick": 60,
@@ -180,7 +180,7 @@
     },
     "permit": 800,
     "days": 3,
-    "desc": "Goats and llamas too; barn animals eat silo hay.",
+    "desc": "Goats and llamas too; barn animals eat silo hay. Room for 8. Adds a silo feeder, a breeding pen.",
     "price": 6130,
     "unlock": {
      "skill": [
@@ -192,8 +192,8 @@
    {
     "tier": 3,
     "name": "Deluxe Barn",
-    "sprite": "barn_big",
-    "group": "props",
+    "sprite": "barn_3",
+    "group": "buildings",
     "cost": {
      "beam": 40,
      "tile": 30,
@@ -201,7 +201,7 @@
     },
     "permit": 1600,
     "days": 3,
-    "desc": "The biggest herd, warm all winter.",
+    "desc": "The biggest herd, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
     "price": 13630,
     "unlock": {
      "skill": [
@@ -878,22 +878,22 @@
    {
     "tier": 1,
     "name": "Beehive",
-    "sprite": "beehive3_a",
-    "group": "props",
+    "sprite": "apiary_1",
+    "group": "buildings",
     "cost": {
      "wood": 15,
      "fiber": 10
     },
     "permit": 0,
     "days": 0,
-    "desc": "Honey every few days; flowers nearby make it finer.",
+    "desc": "Honey every few days; flowers nearby make it finer. Holds 2 hives.",
     "price": 240
    },
    {
     "tier": 2,
     "name": "Bee House",
-    "sprite": "beehive2",
-    "group": "props",
+    "sprite": "apiary_2",
+    "group": "buildings",
     "cost": {
      "plank": 20,
      "nails": 10,
@@ -901,7 +901,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "More hives, more honey.",
+    "desc": "More hives, more honey. Holds 4 hives. Adds a breeding pen.",
     "price": 1280,
     "unlock": {
      "skill": [
@@ -914,8 +914,8 @@
    {
     "tier": 3,
     "name": "Apiary",
-    "sprite": "ri_beehive4",
-    "group": "props",
+    "sprite": "apiary_2",
+    "group": "buildings",
     "cost": {
      "hardwood_plank": 10,
      "glass": 10,
@@ -923,7 +923,7 @@
     },
     "permit": 200,
     "days": 2,
-    "desc": "A whole row of hives.",
+    "desc": "A whole row of hives. Holds 6 hives.",
     "price": 3480,
     "unlock": {
      "skill": [
@@ -3596,8 +3596,8 @@
    {
     "tier": 1,
     "name": "Rabbit Hutch",
-    "sprite": "coop_small",
-    "group": "props",
+    "sprite": "hutch_1",
+    "group": "buildings",
     "cost": {
      "wood": 60,
      "fiber": 20,
@@ -3605,7 +3605,7 @@
     },
     "permit": 80,
     "days": 1,
-    "desc": "Rabbits: soft fur for the loom.",
+    "desc": "Rabbits: soft fur for the loom. Room for 4. Adds a breeding pen.",
     "price": 590,
     "unlock": {
      "hint": "learn the Hutch Blueprint (Ranching tree)"
@@ -3614,8 +3614,8 @@
    {
     "tier": 2,
     "name": "Big Hutch",
-    "sprite": "coop_small",
-    "group": "props",
+    "sprite": "hutch_2",
+    "group": "buildings",
     "cost": {
      "plank": 30,
      "nails": 16,
@@ -3623,7 +3623,7 @@
     },
     "permit": 300,
     "days": 2,
-    "desc": "More rabbits.",
+    "desc": "More rabbits. Room for 8. Adds a silo feeder, a heater for winter.",
     "price": 1580,
     "unlock": {
      "skill": [
@@ -3652,15 +3652,15 @@
    {
     "tier": 1,
     "name": "Pig Sty",
-    "sprite": "pig_pen",
-    "group": "props",
+    "sprite": "sty_1",
+    "group": "buildings",
     "cost": {
      "wood": 100,
      "stone": 40
     },
     "permit": 150,
     "days": 1,
-    "desc": "Pigs: they dig up truffles outdoors.",
+    "desc": "Pigs: they dig up truffles outdoors. Room for 2.",
     "price": 770,
     "unlock": {
      "hint": "learn the Sty Blueprint (Ranching tree)"
@@ -3669,8 +3669,8 @@
    {
     "tier": 2,
     "name": "Big Sty",
-    "sprite": "pig_pen",
-    "group": "props",
+    "sprite": "sty_2",
+    "group": "buildings",
     "cost": {
      "plank": 40,
      "brick": 30,
@@ -3678,7 +3678,7 @@
     },
     "permit": 500,
     "days": 2,
-    "desc": "More pigs.",
+    "desc": "More pigs. Room for 4. Adds a breeding pen, a silo feeder.",
     "price": 2900,
     "unlock": {
      "skill": [
@@ -3711,8 +3711,8 @@
    {
     "tier": 1,
     "name": "Mayo Machine",
-    "sprite": "mayo_machine",
-    "group": "props",
+    "sprite": "mayo_machine_1",
+    "group": "stations",
     "cost": {
      "plank": 15,
      "copper_bar": 2,
@@ -3727,8 +3727,8 @@
    {
     "tier": 2,
     "name": "Deluxe Mayo Machine",
-    "sprite": "mayo_machine",
-    "group": "props",
+    "sprite": "mayo_machine_2",
+    "group": "stations",
     "cost": {
      "iron_bar": 4,
      "glass": 6,

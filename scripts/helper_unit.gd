@@ -156,9 +156,10 @@ const TEAM_ANIMAL_H := 22.0
 static func animal_sprite(group: String) -> AnimatedSprite2D:
 	var anims := {"idle": "idle"}
 	var fps := {"idle": 3.0}
-	if Art.has(group, "walk"):
-		anims["walk"] = "walk"
-		fps["walk"] = 6.0
+	for a: String in ["walk", "run", "attack", "guard", "fetch", "downed", "sit", "cheer"]:  # P6 team poses when drawn
+		if Art.has(group, a):
+			anims[a] = a
+			fps[a] = 8.0 if a in ["run", "attack"] else 6.0
 	var spr := AnimatedSprite2D.new()
 	spr.sprite_frames = Art.frames(group, anims, fps)
 	var tex := spr.sprite_frames.get_frame_texture("idle", 0) if spr.sprite_frames.get_frame_count("idle") > 0 else null

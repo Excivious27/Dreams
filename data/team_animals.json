@@ -104,7 +104,7 @@
     "apple",
     "hay"
    ],
-   "voice": "horse_whinny"
+   "voice": "whinny"
   },
   "duck": {
    "carry": false,

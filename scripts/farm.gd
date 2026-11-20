@@ -1850,8 +1850,8 @@ func _coop(sel: String) -> void:
 	var egg_sp := RanchFarm.hatch_species(sel) if GameState.count(sel) > 0 else ""
 	if RanchFarm.uses_roster("coop") and Ranch.capacity("coop") > 0:
 		for e in RanchFarm.incubator():
-			if e is Dictionary and int((e as Dictionary).get("day", 0)) > day:
-				var left := int((e as Dictionary)["day"]) - day
+			if e is Dictionary and RanchFarm.egg_day(e) > day:
+				var left := RanchFarm.egg_day(e) - day
 				hud.toast("An egg is warming: %d more day%s." % [left, "" if left == 1 else "s"])
 				return
 		if RanchFarm.coop_room() <= 0:
@@ -1860,10 +1860,11 @@ func _coop(sel: String) -> void:
 		if egg_sp == "":
 			hud.toast("The incubator takes a hen's or a duck's egg: hold one and tap the coop.")
 			return
-		RanchFarm.take_egg(sel)
-		var hd := RanchFarm.hatch_days(egg_sp)
-		RanchFarm.incubator().append({"species": egg_sp, "day": day + hd})
-		_egg_in(egg_sp, hd)
+		var why := Ranch.incubate(sel)  # the one incubator path (C11a integ): Ranch hatches it overnight
+		if why != "":
+			hud.toast(why)
+			return
+		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(RanchFarm.incubator()[-1]) - day))
 		return
 	var hatch: Array = GameState.run.get("coop_hatch", [])
 	var growing := 0
@@ -2171,7 +2172,14 @@ func _place_props() -> void:
 			var ssc := 0.5 if str(b["thing"]) != "station" or sw <= 0.0 else minf(0.5, float(int(b["w"]) + 3) * TILE / sw)  # a wide top-tier station stays in its slot (one cell spare each side)
 			if id in ["coop", "barn"] and sw > 0.0:
 				ssc = minf(0.667, float(int(b["w"]) + 2) * TILE / sw)  # the farmhouse's scale (at 0.5 they read as toys, C5), one cell spare
-			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]), 0.0, true, ssc)
+			var bpic := str(b["sprite"])
+			if str(b["group"]) == "buildings":  # P6 ranch tiers: snowy roof in winter, night picture after dark
+				bpic = WorldGen.winter_look("buildings", bpic)
+				if bpic == str(b["sprite"]) and GameState.is_night() and Art.has("buildings", bpic + "_night"):
+					bpic += "_night"
+			var bsp := prop(str(b["group"]), bpic, c, int(b["w"]), 0.0, true, ssc)
+			if bsp and glow and str(b["group"]) == "buildings":
+				glow.add_windows(bsp, str(b["sprite"]))
 	# Starter babies grow up young_days (7) after their coop/barn goes up (names kept, so friendship carries over).
 	# A visiting guest reads, never writes, these (the host's farm: c11a_06/14_06); a guest
 	# without them sees the starter herd grown.
@@ -2641,7 +2649,7 @@ func _place_incubator() -> void:
 	var warming := false
 	var eggs: Array = RanchFarm.incubator() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
 	for e in eggs:
-		var d := int((e as Dictionary).get("day", 0)) if e is Dictionary else int(e)
+		var d := RanchFarm.egg_day(e)
 		warming = warming or d > day
 		hatched = hatched or d == day
 	for c: Vector2i in [Vector2i(pen.position.x + 1, pen.end.y + 1), Vector2i(pen.position.x, pen.end.y + 1), Vector2i(pen.position.x - 2, pen.end.y - 1)]:

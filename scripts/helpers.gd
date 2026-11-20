@@ -67,6 +67,8 @@ static func workers() -> Array:
 			out.append(["crew:" + str(id), str(Crew.members().get(id, {}).get("name", str(id).capitalize())), "crew"])
 	for id in Companion.party().get("known", []):
 		out.append(["partner:" + str(id), str(Companion.defs().get(str(id), {}).get("name", str(id).capitalize())), "partner"])
+	for i in int(GameState.ranch_bonus("hand_slot")):  # Ranching: Farm Hand / Second Farm Hand
+		out.append(["hand:%d" % (i + 1), "Farm Hand %d" % (i + 1), "hand"])
 	return out
 
 
@@ -176,6 +178,8 @@ static func units(wkey: String, chore_id: String) -> int:
 		return 0
 	var w: Dictionary = (data()["workers"] as Dictionary).get(kind_of(wkey), {})
 	var by_level := int(c.get("base", 1)) + int(c.get("per_level", 0)) * (level(wkey, chore_id) - 1)
+	if chore_id in ["feed", "pet"]:
+		by_level = int(round(by_level * (1.0 + GameState.ranch_bonus("hand_work"))))  # Ranching: more ranch chores
 	var by_energy := int(w.get("energy", 0)) / maxi(1, int(c.get("energy", 1)))
 	return clampi(mini(by_level, by_energy), 0, int(data().get("max_units", 20)))
 

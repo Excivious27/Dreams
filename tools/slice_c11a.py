@@ -53,7 +53,7 @@ INC = os.path.join(ROOT, "art", "incoming", "c11a")
 MAN = os.path.join(GEN, "manifest.json")
 
 C11_LAYOUT = {"idle": (0, 2), "walk": (2, 6), "eat": (6, 8), "sleep": (8, 10), "sad": (10, 11), "happy": (11, 14), "produce": (14, 16)}
-BEE_LAYOUT = {"hover": (0, 4), "fly": (4, 8), "enter": (8, 12), "queen": (12, 16)}
+BEE_LAYOUT = {"hover": (0, 4), "fly": (4, 8), "enter": (8, 12), "queen": (12, 16), "idle": (0, 4)}  # idle = hover (gen_ranch/FarmAnimal need idle)
 ANIMAL_ROWS = {
     "c11_animals_a.png": ["chicken_white", "chicken_brown", "chicken_rooster", "duck_white", "chick", "duckling", "chicken_golden", "chicken_blue"],
     "c11_animals_b.png": ["cow_jersey", "cow_holstein", "cow_calf", "pig", "piglet", "pig_spotted", "sheep_shorn", "sheep_black"],
@@ -415,6 +415,40 @@ TEAM_ROW1 = {"walk_down": (0, 4), "walk_up": (4, 8), "run": (8, 12), "attack": (
 TEAM_ROW2 = {"downed": (0, 2), "getup": (2, 4), "guard": (4, 6), "fetch": (6, 8), "idle_down": (8, 10), "idle_up": (10, 12), "sit": (12, 14), "cheer": (14, 16)}
 
 
+def bee_idle(man):
+    """animals/bee_swarm/idle: a NEW file copied from hover (Ranch art needs an idle strip for every kind)."""
+    g = man.get("animals/bee_swarm", {})
+    if "hover" not in g:
+        return
+    src = os.path.join(GEN, g["hover"]["file"])
+    rel = "animals/bee_swarm/idle.png"
+    dst = os.path.join(GEN, rel)
+    if os.path.exists(dst):
+        os.remove(dst)  # hardlinked art: never write in place
+    with open(src, "rb") as fi, open(dst, "wb") as fo:
+        fo.write(fi.read())
+    g["idle"] = dict(g["hover"], file=rel)
+    print("bee idle", g["idle"])
+
+
+NODE_ALIAS = {"node_farming_farming_2_4": "node_foraging_foraging_1_7"}  # Farming's new "Experience" filler (C11a P3 row move)
+
+
+def node_alias(man):
+    """New skill-node icons that reuse an existing node's picture (written as NEW files)."""
+    for new, src in NODE_ALIAS.items():
+        if src not in man.get("ui", {}):
+            continue
+        rel = f"ui/{new}.png"
+        dst = os.path.join(GEN, rel)
+        if os.path.exists(dst):
+            os.remove(dst)
+        with open(os.path.join(GEN, man["ui"][src]["file"]), "rb") as fi, open(dst, "wb") as fo:
+            fo.write(fi.read())
+        man["ui"][new] = dict(man["ui"][src], file=rel)
+        print("node alias", new, "<-", src)
+
+
 def team(man):
     """Follower poses for trainable animals (c11a_09/-18): pup-style strip names, scaled so idle_down
     runs as tall as the kind's side walk. Run after `animals` (it rebuilds the C11 kinds)."""
@@ -561,7 +595,7 @@ def doc():
     print("wrote", p)
 
 
-STEPS = ["animals", "team", "buildings", "items", "stations", "interior", "nodes", "fixes", "meta"]
+STEPS = ["animals", "bee_idle", "team", "buildings", "items", "stations", "interior", "nodes", "node_alias", "fixes", "meta"]
 
 if __name__ == "__main__":
     man = json.load(open(MAN))

@@ -1353,12 +1353,12 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
 	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
-	"animal_yield": 1.0, "ranch_value": 0.35, "animal_friend": 0.5, "breed_chance": 0.3, "grow_speed": 0.4, "rare_breed": 0.1, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
+	"animal_yield": 1.0, "ranch_value": 0.35, "animal_friend": 0.3, "breed_chance": 0.3, "grow_speed": 3.0, "rare_breed": 0.1, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
 	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 12.0,
-	"ani_double": 0.3, "ani_quality": 3.0, "ranch_value": 0.35, "breed_chance": 0.3, "grow_fast": 3.0, "ani_friend": 0.3, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
+	"big_goods": 0.3, "animal_quality": 3.0, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
 const SKILL_CAPS := {"combat": {"hp": 140.0, "energy": 60.0}}
@@ -2555,8 +2555,8 @@ static func board_today() -> Array:
 		var item: String = pool[rng.randi_range(0, mini(pool.size(), 2 + tier) - 1)]
 		if not items.has(item) or not crop_in_season(item):
 			continue
-		if (item == "egg" and not Builds.is_built("coop")) or (item in ["milk", "butter"] and not Builds.is_built("barn")):
-			continue  # nothing to get it from yet
+		if Mail.needs_source(item) and not Mail.ranch_source_ok(item):
+			continue  # nothing to get it from yet (one source rule with favour letters)
 		var n := rng.randi_range(2, 4 + tier * 2)
 		var val := maxi(2, item_value(item))
 		var pay := int(val * n * (1.15 if item in BOARD_SHOP_GOODS else 1.6)) + 20 * tier  # shop goods: pay for the errand, not a markup
@@ -3231,7 +3231,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			report["ripe"] = int(report.get("ripe", 0)) + 1
 	# Sprinklers and Hazel water again so the morning starts with wet soil.
 	_sprinklers_water()
-	if hazel_waters:
+	if hazel_waters or Project.waters_morning():  # the crew's "Mind the farm" job waters too (c11a_10)
 		var hw := 0
 		for k2 in run["farm"].keys():
 			if str(run["farm"][k2].get("crop", "")) != "":

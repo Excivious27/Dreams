@@ -35,6 +35,7 @@ WORKERS = {
     "animal": {"energy": 14, "chores": ["forage", "pet", "harvest"]},
     "crew": {"energy": 24, "chores": ["water", "harvest", "feed", "pet", "forage"]},
     "partner": {"energy": 20, "chores": ["water", "harvest", "feed", "pet"]},
+    "hand": {"energy": 16, "chores": ["feed", "pet"]},   # Ranching Farm Hand nodes (hand_slot); ranch chores only
 }
 
 LEVELS = [12, 30, 60, 100]  # xp for level 2, 3, 4, 5

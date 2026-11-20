@@ -762,6 +762,13 @@ if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
 
+echo "== C11a P5: ranch villagers, mail, festivals, pen sounds =="
+rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villagers_test.gd 2>&1)"
+echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true
+if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep -q "SCRIPT ERROR"; then
+  echo "Ranch villagers test failed"; exit 1
+fi
+
 echo "== C8 P3: collections (museum, logs, Book tab) =="
 clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
@@ -774,6 +781,13 @@ rp3out="$("$GODOT" --headless --path . -s res://tools/ranch_p3_test.gd 2>&1)"
 echo "$rp3out" | grep -E "FAIL|SCRIPT ERROR|ranch_p3_test" || true
 if ! echo "$rp3out" | grep -q "ranch_p3_test: OK"; then
   echo "Ranch P3 test failed"; exit 1
+fi
+
+echo "== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art =="
+ciout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c11a_integ_test.gd 2>&1)"
+echo "$ciout" | grep -E "FAIL|SCRIPT ERROR|c11a_integ_test" || true
+if ! echo "$ciout" | grep -q "c11a_integ_test: [0-9]* checks, 0 failures"; then
+  echo "C11a integration test failed"; exit 1
 fi
 
 echo "== C8 P4: fishing rules, mining curve, reward tables =="

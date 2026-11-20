@@ -44,6 +44,7 @@ G = [  # id, name, type, value, tier, extra
  ('beeswax_candle', 'Beeswax Candle', 'craft', 75, 2, {'icon': 'candle', 'desc': 'Burns long and smells of summer.'}),
  ('cream', 'Cream', 'food', 60, 1, {'energy': 25, 'desc': 'Skimmed from fresh milk.'}),
  ('yogurt', 'Honey Yogurt', 'food', 110, 2, {'energy': 40, 'heal': 1, 'icon': 'yogurt', 'desc': 'Thick, tangy and sweetened with honey.'}),
+ ('down_pillow', 'Down Pillow', 'craft', 90, 1, {'icon': 'feather', 'desc': 'Soft as a cloud, stuffed with feathers. A fine trade good.'}),
  ('truffle_oil', 'Truffle Oil', 'craft', 320, 3, {'icon': 'cooking_oil', 'desc': 'A few drops make any dish taste rich.'}),
  # potions (the magic potion station)
  ('swift_draught', 'Swift Draught', 'potion', 120, 2, {'buff': {'kind': 'speed', 'minutes': 180, 'amount': 1}, 'desc': 'Quick feet for three hours.'}),
@@ -226,8 +227,8 @@ station('press', 'Pantry Press', 'pantry', [6, 24], 'farming', 'Press', 'Tam', [
  ('Creamery', ['creamery', 'cheese_press'], {'plating': 3, 'crystal_glass': 4, 'tile': 20}, d(3))])
 # Ranch processing (C11a P3): two-tier stations beside the pantry row.
 station('mayo', 'Mayo Machine', 'pantry', [13, 24], 'ranching', 'Whip', 'Hazel', [
- ('Mayo Machine', ['mayo_1', 'mayo_machine'], {'plank': 15, 'copper_bar': 2, 'clay_pot': 2}, d(0, 'Eggs into mayonnaise.')),
- ('Deluxe Mayo Machine', ['mayo_2', 'mayo_machine'], {'iron_bar': 4, 'glass': 6, 'gear': 2}, d(1, 'Duck eggs and big eggs too.'))])
+ ('Mayo Machine', ['mayo_1', 'mayo_machine_1', 'mayo_machine'], {'plank': 15, 'copper_bar': 2, 'clay_pot': 2}, d(0, 'Eggs into mayonnaise.')),
+ ('Deluxe Mayo Machine', ['mayo_2', 'mayo_machine_2', 'mayo_machine_1', 'mayo_machine'], {'iron_bar': 4, 'glass': 6, 'gear': 2}, d(1, 'Duck eggs and big eggs too.'))])
 station('extractor', 'Honey Extractor', 'pantry', [13, 21], 'ranching', 'Spin', 'Hazel', [
  ('Honey Extractor', ['extractor_1', 'honey_extractor'], {'plank': 12, 'copper_bar': 2, 'glass': 4}, d(0, 'Honeycomb into honey and beeswax.')),
  ('Honey House', ['extractor_2', 'honey_extractor'], {'iron_bar': 4, 'glass': 10, 'gear': 2}, d(1, 'Jars of honey and beeswax candles.'))])
@@ -393,7 +394,7 @@ RANCH = {
  'beehive': ('Apiary', 'Hazel', 'The crew', 'beehive', ([29, 19], 0, 1), [
    ('Beehive', 'Beehive', ['apiary_1', 'beehive3_a'], {'wood': 15, 'fiber': 10}, 0, 0, {}, 'Honey every few days; flowers nearby make it finer.'),
    ('Bee House', 'Bee House', ['apiary_2', 'beehive2', 'beehive3_b'], {'plank': 20, 'nails': 10, 'glass': 4}, 0, 1, {'skill': ['ranching', 3]}, 'More hives, more honey.'),
-   ('Apiary', 'Apiary', ['apiary_3', 'ri_beehive4', 'beehive3_b'], {'hardwood_plank': 10, 'glass': 10, 'gear': 2}, 200, 2, {'skill': ['ranching', 6]}, 'A whole row of hives.')]),
+   ('Apiary', 'Apiary', ['apiary_3', 'apiary_2', 'ri_beehive4', 'beehive3_b'], {'hardwood_plank': 10, 'glass': 10, 'gear': 2}, 200, 2, {'skill': ['ranching', 6]}, 'A whole row of hives.')]),
  'silo': ('Silo', 'Benno', 'The crew', 'silo', ([30, 4], 1, 3), [
    ('Silo', 'Silo', ['silo_1', 'silo2'], {'stone': 60, 'wood': 30}, 50, 1, {}, 'Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.'),
    ('Tall Silo', 'Tall Silo', ['silo_2', 'farm_silo_b', 'silo2'], {'brick': 60, 'plank': 30, 'iron_bar': 2}, 200, 1, {'skill': ['ranching', 2]}, 'Stores 480 hay: enough for a winter with a full coop.'),
@@ -482,6 +483,7 @@ books['extractor'] = [rc('honey_comb', 'Honey (from honeycomb)', {'honeycomb': 1
 # Raw goods that only exist once tools/gen_ranch.py has written them (C11a P1): recipes join when their inputs do.
 for bk, r in [('mayo', rc('big_mayo', 'Mayonnaise (big egg)', {'large_egg': 1}, 'mayonnaise', 2, 2)),
               ('mayo', rc('golden_mayo', 'Mayonnaise (golden egg)', {'golden_egg': 1}, 'duck_mayonnaise', 2, 6)),
+              ('loom', rc('down_pillow', 'Down Pillow', {'feather': 2, 'cloth': 1})),
               ('loom', rc('angora_yarn', 'Yarn (rabbit fur)', {'rabbit_fur': 1}, 'yarn', 1, 3)),
               ('press', rc('big_cheese', 'Cheese (big milk)', {'large_milk': 1}, 'cheese', 1, 2))]:
     if all(k in I for k in r['need']):

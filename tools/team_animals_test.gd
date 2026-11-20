@@ -48,6 +48,7 @@ func _arc(arc: String) -> void:
 	check(TeamAnimals.trainable(goat) and not TeamAnimals.trainable(cow), "goat trains, cow is a homebody")
 	check(TeamAnimals.why_not(goat, "attack").contains("little"), "a baby can't train yet: " + TeamAnimals.why_not(goat, "attack"))
 	Ranch.animal(goat)["born_day"] = day - 10
+	Ranch.animal(goat)["adult_day"] = day - 3  # Ranch records carry adult_day (grown() reads it first)
 	check(TeamAnimals.why_not(goat, "attack").contains("trust"), "trust gate: " + TeamAnimals.why_not(goat, "attack"))
 	Ranch.animal(goat)["friend"] = 250
 	GameState.run["inventory"].erase("carrot")
@@ -92,6 +93,7 @@ func _arc(arc: String) -> void:
 	var third := Ranch.add("goat", "barn", "", day - 30)
 	Ranch.animal(third)["friend"] = 900
 	Ranch.animal(third)["born_day"] = -30
+	Ranch.animal(third)["adult_day"] = -23
 	GameState.run["day"] = int(GameState.run["day"]) + 1
 	GameState.run["energy"] = 100
 	var tl := TeamAnimals.teach(third, "fetch")

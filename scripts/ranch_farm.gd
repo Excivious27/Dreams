@@ -31,14 +31,13 @@ static func care_skill() -> String:
 ## Extra goods from both trees (effect key animal_yield) and a chance to lift the star one step
 ## (animal_quality, Ranching tree) on top of the care quality.
 static func yield_bonus() -> float:
-	var b := GameState.bonus("farming", "animal_yield")
-	if care_skill() == "ranching":
-		b += GameState.bonus("ranching", "animal_yield")
-	return b
+	return GameState.ranch_bonus("animal_yield") + GameState.ranch_bonus("big_goods")
 
 
+## animal_quality is days sooner to silver/gold (whole days in quality_for); its fraction is a
+## chance to lift the star one step.
 static func lift_quality(q: String) -> String:
-	if care_skill() != "ranching" or randf() >= GameState.bonus("ranching", "animal_quality"):
+	if q == "g" or randf() >= fmod(GameState.ranch_bonus("animal_quality"), 1.0):
 		return q
 	return "s" if q == "" else "g"
 
@@ -57,6 +56,7 @@ static func gold() -> int:
 
 
 static func quality_for(streak: int) -> String:
+	streak += int(GameState.ranch_bonus("animal_quality"))
 	return "g" if streak >= gold() else ("s" if streak >= silver() else "")
 
 
@@ -169,7 +169,8 @@ static func tend(st: Dictionary, day: int, needs_food: bool) -> Dictionary:
 	var last := int(st.get("cared", -9))
 	var s := int(st.get("streak", 0))
 	if last >= 0 and day - last > 1:
-		s = maxi(0, s - MISS_COST * (day - last - 1))
+		var missed := maxi(0, day - last - 1 - int(GameState.ranch_bonus("care_grace")))  # Steady Routine
+		s = maxi(0, s - MISS_COST * missed)
 	var before := quality_for(s)
 	s += 1
 	st["streak"] = s
@@ -295,7 +296,7 @@ static func hatch_species(item: String) -> String:
 
 static func hatch_days(sid: String) -> int:
 	var sp := Ranch.species(sid)
-	return int(sp.get("hatch_days", HATCH_DAYS.get(sid, 3)))
+	return maxi(1, int(sp.get("hatch_days", HATCH_DAYS.get(sid, 3))) - int(GameState.ranch_bonus("hatch_fast")))
 
 
 ## Incubator slots (roster mode): run.ranch.houses.coop.incubator = [{species, day}].
@@ -307,6 +308,13 @@ static func incubator() -> Array:
 	if not (c.get("incubator", null) is Array):
 		c["incubator"] = []
 	return c["incubator"]
+
+
+## An incubator entry's hatch day (Ranch.incubate writes "due"; older entries used "day").
+static func egg_day(e: Variant) -> int:
+	if e is Dictionary:
+		return int((e as Dictionary).get("due", (e as Dictionary).get("day", 0)))
+	return int(e)
 
 
 ## Free incubator places: the coop's capacity minus the birds living there and eggs warming.
@@ -322,10 +330,11 @@ static func hatch_due(day: int) -> Array:
 	var out: Array = []
 	var inc := incubator()
 	for e in inc.duplicate():
-		if not (e is Dictionary) or int((e as Dictionary).get("day", 0)) > day:
+		var due := int((e as Dictionary).get("due", (e as Dictionary).get("day", 0))) if e is Dictionary else 0
+		if not (e is Dictionary) or due > day:
 			continue
 		var sid := str((e as Dictionary).get("species", "chicken"))
-		var uid := Ranch.add(sid, "coop", "", int((e as Dictionary)["day"]))
+		var uid := Ranch.add(sid, "coop", "", due)
 		if uid != "":
 			inc.erase(e)
 			out.append(str(Ranch.animal(uid).get("name", sid)))
