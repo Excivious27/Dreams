@@ -316,7 +316,8 @@ func _place_buildings() -> void:
 	if GameState.run["flags"].has("shop_2") and Art.has("buildings", "gang_shop_specs"):
 		_crew_door("gang_shop_specs", Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", "cottage_a", 1.3)
 	else:
-		_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
+		# Lumi & Theo have their own painter's cottage (c5_02 #5), not a copy of Wren's.
+		_door("cottage_c" if Art.has("buildings", "cottage_c") else "cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.05 if Art.has("buildings", "cottage_c") else 1.3)
 	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
 	if GameState.run["flags"].has("crew_halo") and Art.has("buildings", "gang_shop_halo"):
 		_crew_door("gang_shop_halo", Vector2i(27, 85), "stable", "A: Halo's garage", "stable", 1.25)

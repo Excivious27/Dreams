@@ -15605,6 +15605,22 @@
    "h": 100,
    "w": 128
   },
+  "cottage_c": {
+   "file": "buildings/cottage_c.png",
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_lit": {
+   "file": "buildings/cottage_c_lit.png",
+   "glow_mask": true,
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_night": {
+   "file": "buildings/cottage_c_night.png",
+   "h": 125,
+   "w": 136
+  },
   "fence_h": {
    "file": "buildings/fence_h.png",
    "h": 23,
