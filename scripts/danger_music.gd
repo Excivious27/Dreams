@@ -276,7 +276,7 @@ static func boss_started(m: GameMap, t: String) -> void:
 ## down over BOSS_WIND seconds into the area song (unless the map already
 ## changed the song itself, e.g. a story beat), then a victory sting plays.
 ## Called by tick when the boss it tracks dies, and by Battle for field commanders.
-static func boss_ended(m: GameMap, play_area := true) -> void:
+static func boss_ended(m: GameMap, play_area := true, sting := true) -> void:
 	if m.get_instance_id() != _map_id:
 		_map_id = m.get_instance_id()
 		reset()
@@ -290,7 +290,7 @@ static func boss_ended(m: GameMap, play_area := true) -> void:
 	_low_t = 0.0
 	_boss_wr = null
 	_area_t = AREA_EVERY
-	_sting_t = BOSS_WIND
+	_sting_t = BOSS_WIND if sting else -1.0
 	if play_area and (mu.wanted() == was or mu.wanted() in GameMap.BOSS_TRACKS or was == ""):
 		mu.play(m.area_track(), BOSS_WIND)
 
