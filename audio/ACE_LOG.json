@@ -4580,8 +4580,8 @@
  },
  "wedding": {
   "chosen": "so_3377eae838de4eecab7266b5",
-  "kind": "once",
-  "note": "",
+  "kind": "music",
+  "note": "looping: the vows scene has no fixed length (was once; C7 CI fix)",
   "versions": [
    {
     "file": "/home/claude/work/ace_raw/wedding__so_3377eae838de4eecab7266b5.mp3",
@@ -4627,8 +4627,8 @@
  },
  "wedding_gang": {
   "chosen": "so_1906b6fe8008414b84ef30be",
-  "kind": "once",
-  "note": "",
+  "kind": "music",
+  "note": "looping: the vows scene has no fixed length (was once; C7 CI fix)",
   "versions": [
    {
     "file": "/home/claude/work/ace_raw/wedding_gang__so_1906b6fe8008414b84ef30be.mp3",
