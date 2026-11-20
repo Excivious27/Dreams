@@ -102,6 +102,7 @@ func _show_title() -> void:
 	_clear()
 	if is_inside_tree():
 		_mood(false)
+		Music.instance(get_tree()).play("title")  # back from the save slots / sound page
 	var spacer := Control.new()
 	spacer.custom_minimum_size = Vector2(0, 150 if not Art.has("ui", "wordmark_glow") else 30)
 	_page.add_child(spacer)
@@ -132,12 +133,27 @@ func _show_title() -> void:
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
 	_page.add_child(_button("Save slots (slot %d)" % GameState.slot(), _show_slots))
+	_page.add_child(_button("Sound", _show_sound))
 	if OS.is_debug_build():
 		_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
 
 
+## Volumes and mute before any save is loaded (the title song plays first).
+func _show_sound() -> void:
+	_clear()
+	_page.add_child(_label("Sound", 16))
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	box.size_flags_horizontal = SIZE_EXPAND_FILL
+	_page.add_child(box)
+	Settings.audio_rows(box, get_tree(), _show_sound)
+	_page.add_child(_button("Back", _show_title))
+
+
 func _show_slots() -> void:
 	_clear()
+	if is_inside_tree():
+		Music.instance(get_tree()).play("title_musicbox" if Music.has_track("title_musicbox") else "title")
 	_page.add_child(_label("Save slots", 16))
 	_page.add_child(_label("Three farms side by side. Tap one to play it.", 8, false))
 	for n in [1, 2, 3]:
@@ -586,6 +602,7 @@ func _show_look() -> void:
 	elif _look_full.is_empty() or not _look_full.has("body"):
 		_look_full = PaperDoll.random_look()
 		_look_full["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"  # the preview matches the game
+	Music.instance(get_tree()).play("title_musicbox" if Music.has_track("title_musicbox") else "title")
 	var cr := Creator.new(_look_full, sprite_id, false)
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
 	_page.add_child(cr)

@@ -310,6 +310,11 @@ echo "$dmout" | grep -E "FAIL|SCRIPT ERROR|danger_music_test" || true
 if ! echo "$dmout" | grep -q "danger_music_test: 0 failures"; then
   echo "Combat music test failed"; exit 1
 fi
+mxout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mix_test.gd 2>&1)"
+echo "$mxout" | grep -E "FAIL|SCRIPT ERROR|mix_test" || true
+if ! echo "$mxout" | grep -q "mix_test: 0 failures"; then
+  echo "Music mix test failed"; exit 1
+fi
 
 fsout="$("$GODOT" --headless --path . -s res://tools/footstep_test.gd 2>&1)"
 echo "$fsout" | grep -E "FAIL|SCRIPT ERROR|footstep_test" || true

@@ -52,6 +52,31 @@ func _run() -> void:
 		check(FileAccess.file_exists("res://audio/music/%s.ogg" % t), "streamed '%s' has no file to deploy" % t)
 	for t: String in ["farm", "house", "title"]:
 		check(t not in Music._stream_list() and ResourceLoader.exists("res://audio/music/%s.ogg" % t), "stand-in '%s' must be packed" % t)
+	# Stream list, export excludes and audio/music agree (C6 c6_03 #9): an excluded
+	# song not in the stream list would be silent on the site; a song neither
+	# streamed nor embedded means tools/music_stream.py wasn't rerun.
+	var sj: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/music_stream.json"))
+	var embed: Array = (sj as Dictionary).get("embed", []) if sj is Dictionary else []
+	check(not embed.is_empty(), "music_stream.json lists its embedded songs")
+	var cfg := FileAccess.get_file_as_string("res://export_presets.cfg")
+	var excl: Array = []
+	var rx := RegEx.create_from_string('exclude_filter="([^"]*)"')
+	var mt := rx.search(cfg)
+	if mt:
+		for part: String in mt.get_string(1).split(","):
+			var pp := part.strip_edges()
+			if pp.begins_with("audio/music/") and pp.ends_with(".ogg"):
+				excl.append(pp.trim_prefix("audio/music/").trim_suffix(".ogg"))
+	var sl: Array = Music._stream_list().duplicate()
+	excl.sort()
+	sl.sort()
+	check(excl == sl, "export excludes == stream list (%d excluded, %d streamed)" % [excl.size(), sl.size()])
+	for f: String in DirAccess.get_files_at("res://audio/music"):
+		if f.ends_with(".ogg"):
+			var nm := f.trim_suffix(".ogg")
+			check(nm in sl or nm in embed, "audio/music/%s is neither streamed nor embedded: rerun tools/music_stream.py" % f)
+			if nm in sl:
+				check(Music.stream_ver(nm) != "", "%s has a cache version in music_stream.json" % nm)
 	# Songs the game picks by situation.
 	for t: String in ["night", "rain", "winter", "farm_fall", "festival", "danger", "raid", "mine_deep", "battle",
 			"battle_siege", "battle_escort", "campaign_map", "title", "title_musicbox", "arc_gangsters", "arc_penguins",

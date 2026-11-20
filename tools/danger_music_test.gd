@@ -110,7 +110,7 @@ func _arc(arc: String) -> void:
 	print("== ", arc)
 	var gang := arc == "gangsters"
 	var light := "combat_light_gang" if gang else "combat_light"
-	var danger := "raid" if gang else "danger"
+	var danger := "danger" if gang else "danger"  # C6: raid is the collectors' theme only
 	var elite := "combat_elite_gang" if gang else "combat_elite"
 	var small := "thug_lookout" if gang else "grump"
 	var m: GameMap = await go(arc, "meadow")
@@ -198,6 +198,20 @@ func _arc(arc: String) -> void:
 	var b := foe(m, bk, Vector2(60, 0))
 	await wait(0.8)
 	check(DangerMusic.tier == 4 and mu().wanted() == m.boss_track(bk), "a boss nearby: its theme (%s)" % mu().wanted())
+	# C6: a summoned minion left when the boss falls must not yank combat music back
+	# over the wind-down and the sting.
+	var mn := foe(m, small, Vector2(-30, 0))
+	mn.set_meta("minion", true)
+	mn.provoke(m.player)
+	await wait(0.6)
+	b._alive = false
+	await wait(1.0)
+	check(DangerMusic.tier == 0, "boss down, minion left: the wind-down holds (tier %d, %s)" % [DangerMusic.tier, mu().wanted()])
+	mn.provoke(m.player)
+	await wait(DangerMusic.POST_BOSS + 0.6)
+	mn.provoke(m.player)
+	await wait(0.6)
+	check(DangerMusic.tier >= 1, "after the hold a live minion counts again (tier %d)" % DangerMusic.tier)
 	clear(m)
 	await wait(DangerMusic.BOSS_GRACE + 1.0)
 	check(mu().wanted() == m.area_track(), "boss gone: back to the area song after the grace (%s)" % mu().wanted())

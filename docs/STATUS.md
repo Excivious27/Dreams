@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
+
+- Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.
+- Talk blips have their own voice (never cut a jingle); voice stealing spares jingles/long sounds; cash_ trimmed like the coin and never pitch-drifted (UI clicks, money, musical cues stay in key); scroll_tick/tab/nope trimmed; long footstep takes no longer swallow every other step.
+- Songs resume where they were left (90 s; boss intros start from the top); mute/unmute keeps the song's place; the app/page hidden mutes (Options/Title "Sound in background", default off; web visibilitychange hook).
+- Title screen: "Sound" page (all sound, three volumes, background, reset to defaults; `Settings.audio_rows` helper); the music-box Dreams plays on the save slots and in the character creator.
+- Streaming: versioned cache (`music_stream.json` ver/size/embed; user://mcache/<name>.<ver>.ogg, `?v=` fetch), LRU of 4 songs in memory, 40 MB cache cap, `Music.prefetch(list)` (DangerMusic queues each map's boss songs, combat tiers, next areas, and the ending/credits from chapter 4), wanted song pre-empts a background prefetch, stalled downloads dropped after 20 s of no bytes (no 45 s whole-file limit), failed prefetch never stalls the queue, muted music never downloads, title themes / finished fights / endings never carry over a downloading song (a packed stand-in plays), the stand-in already playing isn't restarted. Deploy: pipefail + music file count check.
+- DangerMusic: a fallen boss holds the calm for 5 s (leftover minions don't yank combat back), boss death and the sting are watched while a dialogue pauses the tree (Music's paused hook), one victory sting (skipped after boss_down / j_battle_won / during a scene), "raid" is never a boss song (collector raids play raid at tiers 1-2; gangster packs use danger), the boss holding the music keeps it while alive and near (no ping-pong), story songs can be held (`Music.play_held`), a finished play-once track hands back to the area song, queue_after cleared by any calm song; the ending opens on its own stand-in and closes with a 2.5 s wind-down.
+- Tests: tools/mix_test.gd (new, check.sh), music_stream_test (versions, prefetch, carry rules, LRU, cache cap, URL builder), music_map_test (stream list = export excludes = files), danger_music_test (minion hold).
+
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
