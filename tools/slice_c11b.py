@@ -50,6 +50,8 @@ UNIQUES = {"c11b_uniques.png": ["peacock_albino", "star_sheep_rainbow", "ostrich
                                 "komodo_gold", "alpaca_midnight", "aurora_fox_sunfire", "circuit_cow_gold"]}
 UNIQUE_OF = {"peacock_albino": "peacock", "star_sheep_rainbow": "star_sheep", "ostrich_crystal": "ostrich", "chrome_hen_gold": "chrome_hen",
              "komodo_gold": "komodo", "alpaca_midnight": "alpaca", "aurora_fox_sunfire": "aurora_fox", "circuit_cow_gold": "circuit_cow"}
+SHORN = {"c11b_shorn.png": ["alpaca_shorn", "glow_sheep_shorn", "star_sheep_shorn", "cloud_sheep_shorn", "snow_yak_shorn"]}  # 5 rows
+SHORN_OF = {k.rsplit("_shorn", 1)[0]: k for k in SHORN["c11b_shorn.png"]}
 FAMILY = {}
 for _sheet, _kinds in ANIMAL_ROWS.items():
     for _k in _kinds:
@@ -120,6 +122,7 @@ _COMMON = ("dreams-image edit, n=1, 1536x1024, opaque flat #FF00FF magenta; neve
            "(glows cyan/teal/lime/amber/warm pink); all ages")
 SHEETS = [(f, "edit art/incoming/c11a/c11_animals_c.png", "adults: " + ", ".join(k)) for f, k in ANIMAL_ROWS.items()] + \
     [(f, "edit the matching _adult sheet", "babies (~55%): " + ", ".join(k)) for f, k in BABY_SHEETS.items()] + \
+    [("c11b_shorn.png", "edit exotics/fantastic_b/lab adult sheets", "5 rows shorn: " + ", ".join(SHORN["c11b_shorn.png"]))] + \
     [("c11b_uniques.png", "edit exotics/fantastic_b/lab adult sheets", "show winners: " + ", ".join(UNIQUES["c11b_uniques.png"]))] + \
     [(f, "edit art/incoming/c11a/c11_team_a.png + adult sheet", "team rows (walk_down4 walk_up4 run4 attack4 / downed getup guard special idle_down idle_up hurt cheer): " + ", ".join(k)) for f, k in TEAM_ROWS.items()] + \
     [(BLD_FILES[k][0], "edit art/incoming/c11a/c11_bld_r1.png" + (" + w311_cyber_stations.png" if k == "lab" else ""),
@@ -155,7 +158,7 @@ def _kinds_all():
     out = []
     for kinds in ANIMAL_ROWS.values():
         out += kinds + [k + "_baby" for k in kinds]
-    for kinds in UNIQUES.values():
+    for kinds in list(UNIQUES.values()) + list(SHORN.values()):
         out += kinds
     return out
 
@@ -166,8 +169,8 @@ def _variant_kinds():
 
 def _slice_rows(man, sheet, names):
     a = load(sheet)
-    bs, rows = A.bands(a, 8)
-    assert len(bs) == 8, (sheet, len(bs))
+    bs, rows = A.bands(a, len(names))
+    assert len(bs) == len(names), (sheet, len(bs))
     for name, band, row in zip(names, bs, rows):
         assert "animals/" + name not in man or name in _kinds_all(), name
         frames = []
@@ -210,7 +213,7 @@ def animals(man):
         _slice_rows(man, sheet, names)
     for sheet, names in BABY_SHEETS.items():
         _slice_rows(man, sheet, [n + "_baby" for n in names])
-    for sheet, names in UNIQUES.items():
+    for sheet, names in list(UNIQUES.items()) + list(SHORN.items()):
         _slice_rows(man, sheet, names)
 
 
@@ -381,11 +384,12 @@ def meta(man):
             var = [f"{sp}_{v}" for v in VARIANTS.get(sp, {})]
             rare = [u for u, s in UNIQUE_OF.items() if s == sp]
             baby = sp + "_baby"
-            kinds_all = [sp] + var + rare + [baby]
+            shorn = SHORN_OF.get(sp, "")
+            kinds_all = [sp] + var + rare + [baby] + ([shorn] if shorn else [])
             anims = {k: sorted(x for x in man.get("animals/" + k, {}) if x != "icon") for k in kinds_all}
             h = HEIGHT.get(sp, 16)
-            out[sp] = {"kind": sp, "anims": anims[sp], "kind_anims": anims, "variants": var, "rare": rare, "baby": baby, "shorn": "",
-                       "height": {**{k: h for k in [sp] + var + rare}, baby: max(5, round(h * 0.55))},
+            out[sp] = {"kind": sp, "anims": anims[sp], "kind_anims": anims, "variants": var, "rare": rare, "baby": baby, "shorn": shorn,
+                       "height": {**{k: h for k in [sp] + var + rare + ([shorn] if shorn else [])}, baby: max(5, round(h * 0.55))},
                        "alias": {}, "family": FAMILY[sp], "arc": ARC[FAMILY[sp]], "long_low": sp in LONG_LOW,
                        "team": sp in SPECIAL, "special": SPECIAL.get(sp, "")}
     out["_buildings"] = {}

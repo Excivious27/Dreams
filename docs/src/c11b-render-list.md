@@ -12,6 +12,7 @@ All renders: dreams-image edit, n=1, 1536x1024, opaque flat #FF00FF magenta; nev
 | c11b_fantastic_a_baby.png | edit the matching _adult sheet | babies (~55%): moon_hare, moon_cow, star_jelly, glow_gecko, coral_seahorse, kelp_calf, frost_otter, ember_newt |
 | c11b_fantastic_b_baby.png | edit the matching _adult sheet | babies (~55%): cloud_sheep, storm_roc, lantern_moth, frost_wyrmling, deep_glowworm, crystal_hen, star_sheep, aurora_fox |
 | c11b_lab_baby.png | edit the matching _adult sheet | babies (~55%): chrome_hen, glow_sheep, circuit_goat, turbo_bunny, circuit_cow, drone_hog, volt_gecko, chrome_runner |
+| c11b_shorn.png | edit exotics/fantastic_b/lab adult sheets | 5 rows shorn: alpaca_shorn, glow_sheep_shorn, star_sheep_shorn, cloud_sheep_shorn, snow_yak_shorn |
 | c11b_uniques.png | edit exotics/fantastic_b/lab adult sheets | show winners: peacock_albino, star_sheep_rainbow, ostrich_crystal, chrome_hen_gold, komodo_gold, alpaca_midnight, aurora_fox_sunfire, circuit_cow_gold |
 | c11b_team_exotic.png | edit art/incoming/c11a/c11_team_a.png + adult sheet | team rows (walk_down4 walk_up4 run4 attack4 / downed getup guard special idle_down idle_up hurt cheer): ostrich, emu, alpaca, komodo |
 | c11b_team_fantastic.png | edit art/incoming/c11a/c11_team_a.png + adult sheet | team rows (walk_down4 walk_up4 run4 attack4 / downed getup guard special idle_down idle_up hurt cheer): storm_roc, frost_wyrmling, frost_otter, coral_seahorse |

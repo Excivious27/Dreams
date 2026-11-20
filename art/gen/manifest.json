@@ -477,6 +477,69 @@
    "w": 316
   }
  },
+ "animals/alpaca_shorn": {
+  "eat": {
+   "cell_h": 80,
+   "cell_w": 86,
+   "file": "animals/alpaca_shorn/eat.png",
+   "frames": 2,
+   "h": 80,
+   "w": 172
+  },
+  "happy": {
+   "cell_h": 104,
+   "cell_w": 71,
+   "file": "animals/alpaca_shorn/happy.png",
+   "frames": 3,
+   "h": 104,
+   "w": 213
+  },
+  "icon": {
+   "file": "animals/alpaca_shorn/icon.png",
+   "h": 96,
+   "w": 67
+  },
+  "idle": {
+   "cell_h": 96,
+   "cell_w": 70,
+   "file": "animals/alpaca_shorn/idle.png",
+   "frames": 2,
+   "h": 96,
+   "w": 140
+  },
+  "produce": {
+   "cell_h": 96,
+   "cell_w": 84,
+   "file": "animals/alpaca_shorn/produce.png",
+   "frames": 2,
+   "h": 96,
+   "w": 168
+  },
+  "sad": {
+   "cell_h": 71,
+   "cell_w": 76,
+   "file": "animals/alpaca_shorn/sad.png",
+   "frames": 1,
+   "h": 71,
+   "w": 76
+  },
+  "sleep": {
+   "cell_h": 59,
+   "cell_w": 79,
+   "file": "animals/alpaca_shorn/sleep.png",
+   "frames": 2,
+   "h": 59,
+   "w": 158
+  },
+  "walk": {
+   "cell_h": 94,
+   "cell_w": 75,
+   "file": "animals/alpaca_shorn/walk.png",
+   "frames": 4,
+   "h": 94,
+   "w": 300
+  }
+ },
  "animals/alpaca_white": {
   "attack": {
    "cell_h": 103,
@@ -3620,6 +3683,69 @@
    "frames": 4,
    "h": 63,
    "w": 296
+  }
+ },
+ "animals/cloud_sheep_shorn": {
+  "eat": {
+   "cell_h": 65,
+   "cell_w": 78,
+   "file": "animals/cloud_sheep_shorn/eat.png",
+   "frames": 2,
+   "h": 65,
+   "w": 156
+  },
+  "happy": {
+   "cell_h": 114,
+   "cell_w": 75,
+   "file": "animals/cloud_sheep_shorn/happy.png",
+   "frames": 3,
+   "h": 114,
+   "w": 225
+  },
+  "icon": {
+   "file": "animals/cloud_sheep_shorn/icon.png",
+   "h": 84,
+   "w": 93
+  },
+  "idle": {
+   "cell_h": 84,
+   "cell_w": 95,
+   "file": "animals/cloud_sheep_shorn/idle.png",
+   "frames": 2,
+   "h": 84,
+   "w": 190
+  },
+  "produce": {
+   "cell_h": 83,
+   "cell_w": 96,
+   "file": "animals/cloud_sheep_shorn/produce.png",
+   "frames": 2,
+   "h": 83,
+   "w": 192
+  },
+  "sad": {
+   "cell_h": 71,
+   "cell_w": 76,
+   "file": "animals/cloud_sheep_shorn/sad.png",
+   "frames": 1,
+   "h": 71,
+   "w": 76
+  },
+  "sleep": {
+   "cell_h": 45,
+   "cell_w": 80,
+   "file": "animals/cloud_sheep_shorn/sleep.png",
+   "frames": 2,
+   "h": 45,
+   "w": 160
+  },
+  "walk": {
+   "cell_h": 84,
+   "cell_w": 96,
+   "file": "animals/cloud_sheep_shorn/walk.png",
+   "frames": 4,
+   "h": 84,
+   "w": 384
   }
  },
  "animals/coral_seahorse": {
@@ -8433,6 +8559,69 @@
    "w": 252
   }
  },
+ "animals/glow_sheep_shorn": {
+  "eat": {
+   "cell_h": 55,
+   "cell_w": 84,
+   "file": "animals/glow_sheep_shorn/eat.png",
+   "frames": 2,
+   "h": 55,
+   "w": 168
+  },
+  "happy": {
+   "cell_h": 104,
+   "cell_w": 75,
+   "file": "animals/glow_sheep_shorn/happy.png",
+   "frames": 3,
+   "h": 104,
+   "w": 225
+  },
+  "icon": {
+   "file": "animals/glow_sheep_shorn/icon.png",
+   "h": 71,
+   "w": 76
+  },
+  "idle": {
+   "cell_h": 71,
+   "cell_w": 78,
+   "file": "animals/glow_sheep_shorn/idle.png",
+   "frames": 2,
+   "h": 71,
+   "w": 156
+  },
+  "produce": {
+   "cell_h": 77,
+   "cell_w": 87,
+   "file": "animals/glow_sheep_shorn/produce.png",
+   "frames": 2,
+   "h": 77,
+   "w": 174
+  },
+  "sad": {
+   "cell_h": 62,
+   "cell_w": 76,
+   "file": "animals/glow_sheep_shorn/sad.png",
+   "frames": 1,
+   "h": 62,
+   "w": 76
+  },
+  "sleep": {
+   "cell_h": 46,
+   "cell_w": 81,
+   "file": "animals/glow_sheep_shorn/sleep.png",
+   "frames": 2,
+   "h": 46,
+   "w": 162
+  },
+  "walk": {
+   "cell_h": 70,
+   "cell_w": 77,
+   "file": "animals/glow_sheep_shorn/walk.png",
+   "frames": 4,
+   "h": 70,
+   "w": 308
+  }
+ },
  "animals/goat": {
   "attack": {
    "cell_h": 100,
@@ -12910,6 +13099,69 @@
    "w": 344
   }
  },
+ "animals/snow_yak_shorn": {
+  "eat": {
+   "cell_h": 65,
+   "cell_w": 93,
+   "file": "animals/snow_yak_shorn/eat.png",
+   "frames": 2,
+   "h": 65,
+   "w": 186
+  },
+  "happy": {
+   "cell_h": 105,
+   "cell_w": 86,
+   "file": "animals/snow_yak_shorn/happy.png",
+   "frames": 3,
+   "h": 105,
+   "w": 258
+  },
+  "icon": {
+   "file": "animals/snow_yak_shorn/icon.png",
+   "h": 83,
+   "w": 90
+  },
+  "idle": {
+   "cell_h": 84,
+   "cell_w": 92,
+   "file": "animals/snow_yak_shorn/idle.png",
+   "frames": 2,
+   "h": 84,
+   "w": 184
+  },
+  "produce": {
+   "cell_h": 84,
+   "cell_w": 96,
+   "file": "animals/snow_yak_shorn/produce.png",
+   "frames": 2,
+   "h": 84,
+   "w": 192
+  },
+  "sad": {
+   "cell_h": 74,
+   "cell_w": 85,
+   "file": "animals/snow_yak_shorn/sad.png",
+   "frames": 1,
+   "h": 74,
+   "w": 85
+  },
+  "sleep": {
+   "cell_h": 52,
+   "cell_w": 91,
+   "file": "animals/snow_yak_shorn/sleep.png",
+   "frames": 2,
+   "h": 52,
+   "w": 182
+  },
+  "walk": {
+   "cell_h": 83,
+   "cell_w": 88,
+   "file": "animals/snow_yak_shorn/walk.png",
+   "frames": 4,
+   "h": 83,
+   "w": 352
+  }
+ },
  "animals/star_jelly": {
   "eat": {
    "cell_h": 59,
@@ -13349,6 +13601,69 @@
    "frames": 4,
    "h": 69,
    "w": 336
+  }
+ },
+ "animals/star_sheep_shorn": {
+  "eat": {
+   "cell_h": 57,
+   "cell_w": 86,
+   "file": "animals/star_sheep_shorn/eat.png",
+   "frames": 2,
+   "h": 57,
+   "w": 172
+  },
+  "happy": {
+   "cell_h": 96,
+   "cell_w": 78,
+   "file": "animals/star_sheep_shorn/happy.png",
+   "frames": 3,
+   "h": 96,
+   "w": 234
+  },
+  "icon": {
+   "file": "animals/star_sheep_shorn/icon.png",
+   "h": 71,
+   "w": 72
+  },
+  "idle": {
+   "cell_h": 71,
+   "cell_w": 74,
+   "file": "animals/star_sheep_shorn/idle.png",
+   "frames": 2,
+   "h": 71,
+   "w": 148
+  },
+  "produce": {
+   "cell_h": 78,
+   "cell_w": 89,
+   "file": "animals/star_sheep_shorn/produce.png",
+   "frames": 2,
+   "h": 78,
+   "w": 178
+  },
+  "sad": {
+   "cell_h": 64,
+   "cell_w": 77,
+   "file": "animals/star_sheep_shorn/sad.png",
+   "frames": 1,
+   "h": 64,
+   "w": 77
+  },
+  "sleep": {
+   "cell_h": 42,
+   "cell_w": 82,
+   "file": "animals/star_sheep_shorn/sleep.png",
+   "frames": 2,
+   "h": 42,
+   "w": 164
+  },
+  "walk": {
+   "cell_h": 70,
+   "cell_w": 78,
+   "file": "animals/star_sheep_shorn/walk.png",
+   "frames": 4,
+   "h": 70,
+   "w": 312
   }
  },
  "animals/storm_roc": {

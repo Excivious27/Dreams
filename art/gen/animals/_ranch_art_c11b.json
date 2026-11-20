@@ -288,6 +288,7 @@
    "alpaca_baby": 14,
    "alpaca_brown": 26,
    "alpaca_midnight": 26,
+   "alpaca_shorn": 26,
    "alpaca_white": 26
   },
   "kind": "alpaca",
@@ -352,6 +353,15 @@
     "sleep",
     "walk"
    ],
+   "alpaca_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
    "alpaca_white": [
     "attack",
     "cheer",
@@ -378,7 +388,7 @@
   "rare": [
    "alpaca_midnight"
   ],
-  "shorn": "",
+  "shorn": "alpaca_shorn",
   "special": "spit",
   "team": true,
   "variants": [
@@ -859,7 +869,8 @@
   "height": {
    "cloud_sheep": 20,
    "cloud_sheep_baby": 11,
-   "cloud_sheep_dusk": 20
+   "cloud_sheep_dusk": 20,
+   "cloud_sheep_shorn": 20
   },
   "kind": "cloud_sheep",
   "kind_anims": {
@@ -889,11 +900,20 @@
     "sad",
     "sleep",
     "walk"
+   ],
+   "cloud_sheep_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
    ]
   },
   "long_low": false,
   "rare": [],
-  "shorn": "",
+  "shorn": "cloud_sheep_shorn",
   "special": "",
   "team": false,
   "variants": [
@@ -1619,7 +1639,8 @@
   "height": {
    "glow_sheep": 20,
    "glow_sheep_amber": 20,
-   "glow_sheep_baby": 11
+   "glow_sheep_baby": 11,
+   "glow_sheep_shorn": 20
   },
   "kind": "glow_sheep",
   "kind_anims": {
@@ -1649,11 +1670,20 @@
     "sad",
     "sleep",
     "walk"
+   ],
+   "glow_sheep_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
    ]
   },
   "long_low": false,
   "rare": [],
-  "shorn": "",
+  "shorn": "glow_sheep_shorn",
   "special": "",
   "team": false,
   "variants": [
@@ -2191,7 +2221,8 @@
   "height": {
    "snow_yak": 28,
    "snow_yak_baby": 15,
-   "snow_yak_brown": 28
+   "snow_yak_brown": 28,
+   "snow_yak_shorn": 28
   },
   "kind": "snow_yak",
   "kind_anims": {
@@ -2221,11 +2252,20 @@
     "sad",
     "sleep",
     "walk"
+   ],
+   "snow_yak_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
    ]
   },
   "long_low": false,
   "rare": [],
-  "shorn": "",
+  "shorn": "snow_yak_shorn",
   "special": "",
   "team": false,
   "variants": [
@@ -2308,7 +2348,8 @@
    "star_sheep": 20,
    "star_sheep_baby": 11,
    "star_sheep_mint": 20,
-   "star_sheep_rainbow": 20
+   "star_sheep_rainbow": 20,
+   "star_sheep_shorn": 20
   },
   "kind": "star_sheep",
   "kind_anims": {
@@ -2347,13 +2388,22 @@
     "sad",
     "sleep",
     "walk"
+   ],
+   "star_sheep_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
    ]
   },
   "long_low": false,
   "rare": [
    "star_sheep_rainbow"
   ],
-  "shorn": "",
+  "shorn": "star_sheep_shorn",
   "special": "",
   "team": false,
   "variants": [
