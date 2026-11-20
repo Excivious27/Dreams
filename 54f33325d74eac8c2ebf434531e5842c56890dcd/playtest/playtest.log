@@ -1,0 +1,701 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:90)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio_server.cpp:244)
+
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/wear_layer.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/save_game.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/skill_glow.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/storage.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/tool_hint.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/world_gen.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/sanctuary.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/events.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/dates.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/romance.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/money.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/item_words.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/region_data.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/perks.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/ops.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/racket.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/mail.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/quests.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/mega_travel.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/goal_line.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/ranch.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/shops.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/colony.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/quest_tracker.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/mega_map.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/mega_region.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/place_names.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/decor_catalogue.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/collections.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/commons.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/npc.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/bowling.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/rec_audio.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/rec_decor.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/town_hours.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/rec_glow.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/prize_screen.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/arcade_stack.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/arcade_whack.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/arcade_skee.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/arcade_claw.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/arcade_hub.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/rec_center.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/rec_reno.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/tickets.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/decor_shop_screen.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/decor_sources.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/companion.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/helpers.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/team_animals.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/campaign_gate.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/difficulty.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/campaign.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/campaign_screen.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/project.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/story.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/danger_music.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/decor_mode.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/net.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/net_api.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/builds.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/marked.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/crew.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/decor.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/wardrobe.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/paper_doll.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/dialogue.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/sleep_report.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/chest_screen.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/crafting.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/craft_screen.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/epilogue.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/battle_brief.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/team_beast.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/helper_unit.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/battle_drill.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/campaign_convoy.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/bot.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/battle_turret.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/hearts.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/battle.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/spells.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/water_can.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/hud.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/haptics.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/pup_mine.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/pet.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/touch_controls.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/slot_drag.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/hidden_area.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/fishing.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/secrets.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/collection_screen.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/scenery.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/ambience.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/move_speed.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/wardrobe_screen.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/char_sheet.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/game_menu.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/settings.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/music.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/gift.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/enemy.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/footsteps.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/pup_intro.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/player.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/cliff_painter.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/mining.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/ranch_farm.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/building_access.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/puppet.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/faint.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/game_map.gd:0)
+SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+          at: GDScript::reload (res://scripts/game_state.gd:1361)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/playtest.gd:0)
+ERROR: Failed to load script "res://tools/playtest.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3041)
+SCRIPT ERROR: Invalid access to property or key 'run' on a base object of type 'GDScript'.
+          at: cash (res://scripts/money.gd:50)
+          GDScript backtrace (most recent call first):
+              [0] cash (res://scripts/money.gd:50)
+              [1] _get_message (res://scripts/money_tr.gd:7)
+SCRIPT ERROR: Invalid access to property or key 'run' on a base object of type 'GDScript'.
+          at: cash (res://scripts/money.gd:50)
+          GDScript backtrace (most recent call first):
+              [0] cash (res://scripts/money.gd:50)
+              [1] _get_message (res://scripts/money_tr.gd:7)
+SCRIPT ERROR: Invalid call. Nonexistent function 'new_run' in base 'GDScript'.
+          at: _run (res://tools/playtest.gd:22)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tools/playtest.gd:22)

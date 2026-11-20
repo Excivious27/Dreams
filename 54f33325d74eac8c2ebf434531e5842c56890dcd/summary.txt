@@ -1,0 +1,29 @@
+CONDUCT CI FAIL  54f33325d7  (ci/c11bart-pre-66c7b83a, run 44831190604)
+
+subset run: shards [1, 4], bots off, playtest on
+check shards (0/2):
+playtest: FAIL (twice in a row)  3000s  0 screenshots (results playtest/shots/)
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "breed_chance" was already used in this dictionary (at line 1356).
+  SCRIPT ERROR: Parse Error: Key "ranch_value" was already used in this dictionary (at line 1356).
+
+longest job: 0s
+slowest check steps: import 98.5s; import 93.7s
+distinct errors/fails/warns:

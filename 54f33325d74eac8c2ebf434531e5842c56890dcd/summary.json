@@ -1,0 +1,72 @@
+{
+ "sha": "54f33325d74eac8c2ebf434531e5842c56890dcd",
+ "ref": "ci/c11bart-pre-66c7b83a",
+ "run": "44831190604",
+ "finished": 1795218060.758228,
+ "pass": false,
+ "playtest": {
+  "rc": 124,
+  "secs": 3000,
+  "shots": 0,
+  "fails": [
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"breed_chance\" was already used in this dictionary (at line 1356).",
+   "SCRIPT ERROR: Parse Error: Key \"ranch_value\" was already used in this dictionary (at line 1356)."
+  ],
+  "attempts": 2,
+  "first_rc": 124,
+  "first_fail": "SCRIPT ERROR: Parse Error: Key ranch_value was already used in this dictionary (at line 1356)."
+ },
+ "playtest_pass": false,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "66c7b83af064395318f1c0d0bd96425c9059f35a",
+  "label": "c11bart-pre",
+  "branch": "",
+  "shards": [
+   1,
+   4
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 0,
+ "shards": [],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 98.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 93.7
+  }
+ ]
+}
