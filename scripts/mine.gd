@@ -2195,6 +2195,9 @@ func _open_way() -> void:
 	GameState.add_hint("The way down to floor %d is open." % (floor_no + 1))
 	if floor_no % 5 == 0:
 		hud.toast("The lift can reach floor %d now." % floor_no, Color(0.8, 0.9, 1.0))
+	if floor_no >= 100 and not GameState.run["flags"].has("hh_mail"):
+		GameState.run["flags"]["hh_mail"] = true  # the Hollow Heart hint letter (CONDUCT 4)
+		Mail.send("Granite", "Floor 100! Nobody's been that deep since my grandad. He wrote that at floor 150 the shaft stops being a shaft and starts being a heartbeat. Bring lamps. Bring snacks. Tell me what you find. - Granite")
 
 
 
@@ -2298,15 +2301,27 @@ func _use_lift() -> void:
 	if GameState.run["flags"].has("hollow_heart_open"):
 		floors.append(-1)
 		labels.append("The Hollow Heart")
+	elif _deepest() >= 50:
+		floors.append(-2)  # a hint, not a stop: the Hollow Heart lies past floor 150
+		labels.append("Floor 150 · ???")
 	labels.append("Stay")
 	player.frozen = true
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "", "text": "Granite's lift. Rope creaks, lamp swings.", "choice": labels, "key": ""}])
+	var lift_text := "Granite's lift. Rope creaks, lamp swings."
+	if not GameState.run["flags"].has("hollow_heart_open"):
+		if _deepest() >= 100:
+			lift_text += " Granite's chalk on the cart: \"150. The rope ends there. Below it, the rock is warm.\""
+		elif _deepest() >= 50:
+			lift_text += " Scratched in the cart rail: \"Keep going, kid. Something at the very bottom still hums. G.\""
+	d.say([{"who": "", "text": lift_text, "choice": labels, "key": ""}])
 	await d.finished
 	player.frozen = false
 	if d.last_choice >= 0 and d.last_choice < floors.size():
 		if int(floors[d.last_choice]) == -1:
 			go_to("hollow_heart", Vector2.ZERO, "down")
+			return
+		if int(floors[d.last_choice]) == -2:
+			tell([{"text": "The lever won't go that far. Granite's note on it: \"Floor 150 you walk to. The heart of the mountain opens for feet, not carts.\""}])
 			return
 		GameState.run["mine_floor"] = int(floors[d.last_choice])
 		go_to("mine", Vector2.ZERO)
