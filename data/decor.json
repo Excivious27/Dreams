@@ -11924,7 +11924,7 @@
    "glow": false,
    "icon": "items/aurora_hood",
    "layer": "wear",
-   "name": "Aurora Hood",
+   "name": "Aurora Hood (Look)",
    "price": 36000,
    "rarity": "legendary",
    "renders": "doll",
@@ -12162,7 +12162,7 @@
    "glow": false,
    "icon": "items/cape_crystal",
    "layer": "wear",
-   "name": "Crystal Cape",
+   "name": "Crystal Cape (Look)",
    "price": 9600,
    "rarity": "epic",
    "renders": "icon",
@@ -12290,7 +12290,7 @@
    "glow": false,
    "icon": "items/cape_gold",
    "layer": "wear",
-   "name": "Gold Cape",
+   "name": "Gold Cape (Look)",
    "price": 2500,
    "rarity": "rare",
    "renders": "icon",
@@ -12358,7 +12358,7 @@
    "glow": false,
    "icon": "items/cape_moon",
    "layer": "wear",
-   "name": "Moon Cape",
+   "name": "Moon Cape (Look)",
    "price": 9600,
    "rarity": "epic",
    "renders": "icon",
@@ -14672,6 +14672,488 @@
    "sub": "shoes",
    "tier": 2
   },
+  "wr_outfit_armored": {
+   "arc": "gangsters",
+   "art": "portraits/hero_outfit_armored/neutral",
+   "cat": "outfit",
+   "comfort": 5,
+   "costume": "outfit_armored",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_armored/neutral",
+   "layer": "wear",
+   "name": "Armored Suit (Look)",
+   "price": 9250,
+   "rarity": "epic",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 1388,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 4
+  },
+  "wr_outfit_crystal_parka": {
+   "arc": "penguins",
+   "art": "portraits/hero_outfit_crystal_parka/neutral",
+   "cat": "outfit",
+   "comfort": 5,
+   "costume": "outfit_crystal_parka",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_crystal_parka/neutral",
+   "layer": "wear",
+   "name": "Crystal Parka (Look)",
+   "price": 9450,
+   "rarity": "epic",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 1418,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "loot",
+     "ref": "chest_t4"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 4
+  },
+  "wr_outfit_farmer": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_farmer/neutral",
+   "cat": "outfit",
+   "comfort": 1,
+   "costume": "outfit_farmer",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_farmer/neutral",
+   "layer": "wear",
+   "name": "Farmhand Overalls",
+   "price": 130,
+   "rarity": "common",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 20,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 1
+  },
+  "wr_outfit_fisher": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_fisher/neutral",
+   "cat": "outfit",
+   "comfort": 1,
+   "costume": "outfit_fisher",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_fisher/neutral",
+   "layer": "wear",
+   "name": "Angler Outfit",
+   "price": 120,
+   "rarity": "common",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 18,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 1
+  },
+  "wr_outfit_forester": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_forester/neutral",
+   "cat": "outfit",
+   "comfort": 1,
+   "costume": "outfit_forester",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_forester/neutral",
+   "layer": "wear",
+   "name": "Forester Outfit",
+   "price": 125,
+   "rarity": "common",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 19,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 1
+  },
+  "wr_outfit_merchant": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_merchant/neutral",
+   "cat": "outfit",
+   "comfort": 2,
+   "costume": "outfit_merchant",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_merchant/neutral",
+   "layer": "wear",
+   "name": "Merchant Coat",
+   "price": 600,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 90,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 2
+  },
+  "wr_outfit_miner": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_miner/neutral",
+   "cat": "outfit",
+   "comfort": 1,
+   "costume": "outfit_miner",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_miner/neutral",
+   "layer": "wear",
+   "name": "Miner Outfit",
+   "price": 130,
+   "rarity": "common",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 20,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t1"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 1
+  },
+  "wr_outfit_neon": {
+   "arc": "gangsters",
+   "art": "portraits/hero_outfit_neon/neutral",
+   "cat": "outfit",
+   "comfort": 3,
+   "costume": "outfit_neon",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_neon/neutral",
+   "layer": "wear",
+   "name": "Neon Street Outfit",
+   "price": 2550,
+   "rarity": "rare",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 382,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 3
+  },
+  "wr_outfit_parka": {
+   "arc": "penguins",
+   "art": "portraits/hero_outfit_parka/neutral",
+   "cat": "outfit",
+   "comfort": 2,
+   "costume": "outfit_parka",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_parka/neutral",
+   "layer": "wear",
+   "name": "Puffy Parka (Look)",
+   "price": 590,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 88,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 2
+  },
+  "wr_outfit_penguin": {
+   "arc": "penguins",
+   "art": "portraits/hero_outfit_penguin/neutral",
+   "cat": "outfit",
+   "comfort": 3,
+   "costume": "outfit_penguin",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_penguin/neutral",
+   "layer": "wear",
+   "name": "Snowfolk Outfit",
+   "price": 2450,
+   "rarity": "rare",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 368,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 3
+  },
+  "wr_outfit_pinstripe": {
+   "arc": "gangsters",
+   "art": "portraits/hero_outfit_pinstripe/neutral",
+   "cat": "outfit",
+   "comfort": 3,
+   "costume": "outfit_pinstripe",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_pinstripe/neutral",
+   "layer": "wear",
+   "name": "Pinstripe Suit (Look)",
+   "price": 1950,
+   "rarity": "rare",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 292,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 2
+  },
+  "wr_outfit_scholar": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_scholar/neutral",
+   "cat": "outfit",
+   "comfort": 2,
+   "costume": "outfit_scholar",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_scholar/neutral",
+   "layer": "wear",
+   "name": "Scholar Robe",
+   "price": 630,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 94,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "wardrobe"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 2
+  },
+  "wr_outfit_starlight": {
+   "arc": "both",
+   "art": "portraits/hero_outfit_starlight/neutral",
+   "cat": "outfit",
+   "comfort": 8,
+   "costume": "outfit_starlight",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_starlight/neutral",
+   "layer": "wear",
+   "name": "Starlight Mantle (Look)",
+   "price": 36500,
+   "rarity": "legendary",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 5475,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "loot",
+     "ref": "chest_t5"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 5
+  },
+  "wr_outfit_vest": {
+   "arc": "gangsters",
+   "art": "portraits/hero_outfit_vest/neutral",
+   "cat": "outfit",
+   "comfort": 2,
+   "costume": "outfit_vest",
+   "desc": "A full outfit. Looks only, no stats.",
+   "glow": false,
+   "icon": "portraits/hero_outfit_vest/neutral",
+   "layer": "wear",
+   "name": "Padded Vest (Look)",
+   "price": 590,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 88,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t2"
+    }
+   ],
+   "sub": "outfit",
+   "tier": 2
+  },
   "wr_overalls": {
    "arc": "both",
    "art": "items/overalls",
@@ -15540,7 +16022,7 @@
    "glow": false,
    "icon": "items/snow_goggles",
    "layer": "wear",
-   "name": "Snow Goggles",
+   "name": "Snow Goggles (Look)",
    "price": 640,
    "rarity": "uncommon",
    "renders": "doll",
@@ -15869,6 +16351,18 @@
    [
     "wr_halo",
     2
+   ],
+   [
+    "wr_outfit_armored",
+    30
+   ],
+   [
+    "wr_outfit_crystal_parka",
+    30
+   ],
+   [
+    "wr_outfit_starlight",
+    8
    ]
   ],
   "chest_t1": [
@@ -16474,6 +16968,22 @@
    ],
    [
     "wr_neon_shoes",
+    600
+   ],
+   [
+    "wr_outfit_farmer",
+    600
+   ],
+   [
+    "wr_outfit_fisher",
+    600
+   ],
+   [
+    "wr_outfit_forester",
+    600
+   ],
+   [
+    "wr_outfit_miner",
     600
    ],
    [
@@ -17568,6 +18078,42 @@
    ],
    [
     "wr_neon_shoes_b",
+    260
+   ],
+   [
+    "wr_outfit_farmer",
+    600
+   ],
+   [
+    "wr_outfit_fisher",
+    600
+   ],
+   [
+    "wr_outfit_forester",
+    600
+   ],
+   [
+    "wr_outfit_merchant",
+    260
+   ],
+   [
+    "wr_outfit_miner",
+    600
+   ],
+   [
+    "wr_outfit_parka",
+    260
+   ],
+   [
+    "wr_outfit_pinstripe",
+    100
+   ],
+   [
+    "wr_outfit_scholar",
+    260
+   ],
+   [
+    "wr_outfit_vest",
     260
    ],
    [
@@ -18973,6 +19519,50 @@
     260
    ],
    [
+    "wr_outfit_farmer",
+    600
+   ],
+   [
+    "wr_outfit_fisher",
+    600
+   ],
+   [
+    "wr_outfit_forester",
+    600
+   ],
+   [
+    "wr_outfit_merchant",
+    260
+   ],
+   [
+    "wr_outfit_miner",
+    600
+   ],
+   [
+    "wr_outfit_neon",
+    100
+   ],
+   [
+    "wr_outfit_parka",
+    260
+   ],
+   [
+    "wr_outfit_penguin",
+    100
+   ],
+   [
+    "wr_outfit_pinstripe",
+    100
+   ],
+   [
+    "wr_outfit_scholar",
+    260
+   ],
+   [
+    "wr_outfit_vest",
+    260
+   ],
+   [
     "wr_overalls",
     600
    ],
@@ -19871,6 +20461,42 @@
     260
    ],
    [
+    "wr_outfit_armored",
+    30
+   ],
+   [
+    "wr_outfit_crystal_parka",
+    30
+   ],
+   [
+    "wr_outfit_merchant",
+    260
+   ],
+   [
+    "wr_outfit_neon",
+    100
+   ],
+   [
+    "wr_outfit_parka",
+    260
+   ],
+   [
+    "wr_outfit_penguin",
+    100
+   ],
+   [
+    "wr_outfit_pinstripe",
+    100
+   ],
+   [
+    "wr_outfit_scholar",
+    260
+   ],
+   [
+    "wr_outfit_vest",
+    260
+   ],
+   [
     "wr_penguin_gloves_b",
     260
    ],
@@ -20331,6 +20957,26 @@
    [
     "wr_mask",
     100
+   ],
+   [
+    "wr_outfit_armored",
+    30
+   ],
+   [
+    "wr_outfit_crystal_parka",
+    30
+   ],
+   [
+    "wr_outfit_neon",
+    100
+   ],
+   [
+    "wr_outfit_penguin",
+    100
+   ],
+   [
+    "wr_outfit_starlight",
+    8
    ],
    [
     "wr_tophat",
@@ -20865,6 +21511,10 @@
    [
     "wr_fisher_shoes_b",
     260
+   ],
+   [
+    "wr_outfit_fisher",
+    600
    ]
   ],
   "mine_t1": [
@@ -21961,6 +22611,10 @@
    [
     "wr_crystal_crown",
     30
+   ],
+   [
+    "wr_outfit_crystal_parka",
+    30
    ]
   ],
   "mine_t5": [
@@ -22346,6 +23000,10 @@
    ],
    [
     "wr_crystal_crown",
+    30
+   ],
+   [
+    "wr_outfit_crystal_parka",
     30
    ]
   ]
@@ -23116,6 +23774,8 @@
      "wr_neon_gloves_b",
      "wr_neon_scarf_b",
      "wr_neon_shoes_b",
+     "wr_outfit_pinstripe",
+     "wr_outfit_vest",
      "wr_shades"
     ]
    ],
@@ -23134,7 +23794,8 @@
      "dc_rec_neon_2",
      "dc_tv_off",
      "dc_tv_on",
-     "wr_jacket_patch"
+     "wr_jacket_patch",
+     "wr_outfit_neon"
     ]
    ],
    [
@@ -23150,7 +23811,8 @@
      "dc_piano",
      "dc_rec_pinball_a",
      "dc_sofa_velvet",
-     "dc_tt_lantern_gold"
+     "dc_tt_lantern_gold",
+     "wr_outfit_armored"
     ]
    ]
   ],
@@ -23626,6 +24288,10 @@
      "wr_miner_scarf",
      "wr_miner_shoes",
      "wr_necklace_a",
+     "wr_outfit_farmer",
+     "wr_outfit_fisher",
+     "wr_outfit_forester",
+     "wr_outfit_miner",
      "wr_overalls",
      "wr_penguin_gloves",
      "wr_penguin_scarf",
@@ -23679,6 +24345,9 @@
      "wr_miner_scarf_b",
      "wr_miner_shoes_b",
      "wr_necklace_b",
+     "wr_outfit_merchant",
+     "wr_outfit_parka",
+     "wr_outfit_scholar",
      "wr_penguin_gloves_b",
      "wr_penguin_scarf_b",
      "wr_penguin_shoes_b",
@@ -23698,6 +24367,7 @@
      "wr_cape_storm",
      "wr_dancing_shoes",
      "wr_mask",
+     "wr_outfit_penguin",
      "wr_tophat",
      "wr_witch"
     ]

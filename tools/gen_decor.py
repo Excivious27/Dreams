@@ -54,6 +54,7 @@ TIER_PRICE = {1: 0.0, 2: 0.25, 3: 0.5, 4: 0.75, 5: 1.0}   # where in the rarity 
 
 ENTRIES = {}
 NAMES = {}
+ITEM_NAMES = {v.get('name') for k, v in I.items() if not k.startswith(('dc_', 'wr_', 'rp_'))}
 
 
 def art_ok(ref):
@@ -100,6 +101,8 @@ def add(id, name, cat, rarity, art, layer='floor', tier=1, arc='both', sub='', s
     assert re.match(r'^(dc|wr|rp)_[a-z0-9_]+$', id), id
     assert id not in ENTRIES, 'duplicate id ' + id
     assert cat in CATS, (id, cat)
+    if name in ITEM_NAMES:  # never share a name with a non-decor item (gear, goods): cosmetics say "(Look)"
+        name = name + (' (Look)' if cat in WEAR_CATS else ' Ornament')
     if name in NAMES:
         raise SystemExit('duplicate decor name %r (%s, %s)' % (name, id, NAMES[name]))
     NAMES[name] = id
@@ -409,9 +412,10 @@ COSTUMES = [  # costume key (portraits/hero_outfit_<k> + PaperDoll outfit), name
     ('neon', 'Neon Street Outfit', 'rare', 3, 'gangsters'), ('penguin', 'Snowfolk Outfit', 'rare', 3, 'penguins'),
 ]
 for k, name, rar, tier, arc in COSTUMES:
-    art = 'portraits/hero_outfit_' + k
+    art = 'portraits/hero_outfit_' + k + '/neutral'
     if art_ok(art):
-        add('wr_outfit_' + k, name, 'outfit', rar, art, 'wear', tier, arc, renders='doll', costume=k, fp=[1, 1])
+        add('wr_outfit_' + k, name, 'outfit', rar, art, 'wear', tier, arc, renders='doll' if ('outfit_' + k) in M.get('body', {}) else 'icon',
+            costume=('outfit_' + k) if ('outfit_' + k) in M.get('body', {}) else '', fp=[1, 1])
 # Icon-only wearables (shown as a badge on the Hero tab; the drawn heroes show nothing: honestly labelled)
 SETS8 = ['farmer', 'fisher', 'forester', 'merchant', 'miner', 'scholar', 'neon', 'penguin']
 SET_ARC = {'neon': 'gangsters', 'penguin': 'penguins'}

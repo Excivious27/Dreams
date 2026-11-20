@@ -8604,7 +8604,8 @@
    "luck": 1
   },
   "arc": "gangsters",
-  "sprite": "cowboy"
+  "sprite": "cowboy",
+  "desc": "A sharp felt hat. Every crew boss has one."
  },
  "shades": {
   "name": "Shades",
@@ -8618,7 +8619,8 @@
    "speed": 1
   },
   "arc": "gangsters",
-  "sprite": "goggles"
+  "sprite": "goggles",
+  "desc": "Dark lenses for bright neon nights."
  },
  "pinstripe_suit": {
   "name": "Pinstripe Suit",
@@ -8631,7 +8633,9 @@
    "defense": 2,
    "luck": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "costume": "outfit_pinstripe",
+  "desc": "A sharp suit with a little padding sewn in."
  },
  "padded_vest": {
   "name": "Padded Vest",
@@ -8643,7 +8647,9 @@
   "stats": {
    "defense": 4
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "costume": "outfit_vest",
+  "desc": "Quilted plates under plain cloth."
  },
  "armored_suit": {
   "name": "Armored Suit",
@@ -8656,7 +8662,9 @@
    "defense": 6,
    "luck": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "costume": "outfit_armored",
+  "desc": "Looks like a suit, stops like a wall."
  },
  "steel_toes": {
   "name": "Steel-Toe Shoes",
@@ -8668,7 +8676,8 @@
   "stats": {
    "defense": 2
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "desc": "Kick a crate, keep your toes."
  },
  "knuckle_gloves": {
   "name": "Knuckle Gloves",
@@ -8680,7 +8689,8 @@
   "stats": {
    "damage": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "desc": "Leather gloves with a hard knuckle."
  },
  "trench_coat": {
   "name": "Trench Coat",
@@ -8693,7 +8703,8 @@
    "defense": 2,
    "speed": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "desc": "Long coat, deep pockets, quick feet."
  },
  "tool_belt": {
   "name": "Driver's Belt",
@@ -8706,7 +8717,8 @@
    "speed": 1,
    "damage": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "desc": "A driver's belt: tools close, hands free."
  },
  "gold_chain": {
   "name": "Gold Chain",
@@ -8718,7 +8730,8 @@
   "stats": {
    "luck": 2
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "desc": "Heavy, shiny and oddly lucky."
  },
  "marshmallow": {
   "name": "Marshmallow",
@@ -8912,7 +8925,8 @@
    "luck": 1
   },
   "arc": "penguins",
-  "sprite": "goggles"
+  "sprite": "goggles",
+  "desc": "Keeps the glare and the snow out."
  },
  "aurora_hood": {
   "name": "Aurora Hood",
@@ -8926,7 +8940,8 @@
    "speed": 1
   },
   "arc": "penguins",
-  "sprite": "hood"
+  "sprite": "hood",
+  "desc": "Shimmers like the northern lights."
  },
  "puffy_parka": {
   "name": "Puffy Parka",
@@ -8939,7 +8954,9 @@
    "defense": 2,
    "luck": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "costume": "outfit_parka",
+  "desc": "Warm, round and surprisingly tough."
  },
  "crystal_parka": {
   "name": "Crystal Parka",
@@ -8951,7 +8968,9 @@
   "stats": {
    "defense": 4
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "costume": "outfit_crystal_parka",
+  "desc": "A parka laced with crystal threads."
  },
  "starlight_mantle": {
   "name": "Starlight Mantle",
@@ -8964,7 +8983,9 @@
    "defense": 6,
    "luck": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "costume": "outfit_starlight",
+  "desc": "Woven from moonweave. It glows a little."
  },
  "ice_cleats": {
   "name": "Ice Cleats",
@@ -8976,7 +8997,8 @@
   "stats": {
    "defense": 2
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "desc": "Spiked soles that never slip."
  },
  "mitten_paws": {
   "name": "Mitten Paws",
@@ -8988,7 +9010,8 @@
   "stats": {
    "damage": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "desc": "Cosy mittens with a firm grip."
  },
  "courage_scarf": {
   "name": "Scarf of Courage",
@@ -9001,7 +9024,8 @@
    "defense": 2,
    "speed": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "desc": "A scarf that makes you stand taller."
  },
  "flipper_belt": {
   "name": "Flipper Belt",
@@ -9014,7 +9038,8 @@
    "speed": 1,
    "damage": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "desc": "A belt with a little paddle flair."
  },
  "bell_collar": {
   "name": "Bell Collar",
@@ -9026,7 +9051,8 @@
   "stats": {
    "luck": 2
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "desc": "Jingles softly. Lucky, they say."
  },
  "rounds": {
   "name": "Rounds",
@@ -13812,7 +13838,7 @@
   "arc": "gangsters"
  },
  "wr_snow_goggles": {
-  "name": "Snow Goggles",
+  "name": "Snow Goggles (Look)",
   "type": "wear",
   "value": 96,
   "rarity": "uncommon",
@@ -13823,7 +13849,7 @@
   "arc": "penguins"
  },
  "wr_aurora_hood": {
-  "name": "Aurora Hood",
+  "name": "Aurora Hood (Look)",
   "type": "wear",
   "value": 5400,
   "rarity": "legendary",
@@ -14376,7 +14402,7 @@
   "decor": true
  },
  "wr_cape_gold": {
-  "name": "Gold Cape",
+  "name": "Gold Cape (Look)",
   "type": "wear",
   "value": 375,
   "rarity": "rare",
@@ -14418,7 +14444,7 @@
   "decor": true
  },
  "wr_cape_moon": {
-  "name": "Moon Cape",
+  "name": "Moon Cape (Look)",
   "type": "wear",
   "value": 1440,
   "rarity": "epic",
@@ -14478,7 +14504,7 @@
   "decor": true
  },
  "wr_cape_crystal": {
-  "name": "Crystal Cape",
+  "name": "Crystal Cape (Look)",
   "type": "wear",
   "value": 1440,
   "rarity": "epic",
@@ -14855,5 +14881,152 @@
   "desc": "One of a kind. There is only one in the whole valley.",
   "decor": true,
   "keep": true
+ },
+ "wr_outfit_pinstripe": {
+  "name": "Pinstripe Suit (Look)",
+  "type": "wear",
+  "value": 292,
+  "rarity": "rare",
+  "tier": 2,
+  "icon": "portraits/hero_outfit_pinstripe/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "wr_outfit_vest": {
+  "name": "Padded Vest (Look)",
+  "type": "wear",
+  "value": 88,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "portraits/hero_outfit_vest/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "wr_outfit_armored": {
+  "name": "Armored Suit (Look)",
+  "type": "wear",
+  "value": 1388,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "portraits/hero_outfit_armored/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "wr_outfit_parka": {
+  "name": "Puffy Parka (Look)",
+  "type": "wear",
+  "value": 88,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "portraits/hero_outfit_parka/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "wr_outfit_crystal_parka": {
+  "name": "Crystal Parka (Look)",
+  "type": "wear",
+  "value": 1418,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "portraits/hero_outfit_crystal_parka/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "penguins"
+ },
+ "wr_outfit_starlight": {
+  "name": "Starlight Mantle (Look)",
+  "type": "wear",
+  "value": 5475,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "portraits/hero_outfit_starlight/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_farmer": {
+  "name": "Farmhand Overalls",
+  "type": "wear",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "portraits/hero_outfit_farmer/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_fisher": {
+  "name": "Angler Outfit",
+  "type": "wear",
+  "value": 18,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "portraits/hero_outfit_fisher/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_forester": {
+  "name": "Forester Outfit",
+  "type": "wear",
+  "value": 19,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "portraits/hero_outfit_forester/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_merchant": {
+  "name": "Merchant Coat",
+  "type": "wear",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "portraits/hero_outfit_merchant/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_miner": {
+  "name": "Miner Outfit",
+  "type": "wear",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "portraits/hero_outfit_miner/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_scholar": {
+  "name": "Scholar Robe",
+  "type": "wear",
+  "value": 94,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "portraits/hero_outfit_scholar/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true
+ },
+ "wr_outfit_neon": {
+  "name": "Neon Street Outfit",
+  "type": "wear",
+  "value": 382,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "portraits/hero_outfit_neon/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "gangsters"
+ },
+ "wr_outfit_penguin": {
+  "name": "Snowfolk Outfit",
+  "type": "wear",
+  "value": 368,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "portraits/hero_outfit_penguin/neutral",
+  "desc": "A full outfit. Looks only, no stats.",
+  "decor": true,
+  "arc": "penguins"
  }
 }

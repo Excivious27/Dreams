@@ -120,6 +120,26 @@ for id, name, slot, stats, val, tier in [
  ('trench_coat', 'Trench Coat', 'back', {'defense': 2, 'speed': 1}, 700, 3), ('tool_belt', "Driver's Belt", 'belt', {'speed': 1, 'damage': 1}, 480, 3), ('gold_chain', 'Gold Chain', 'charm', {'luck': 2}, 800, 3)]:
     item(id, name, 'equip', val, tier, slot=slot, stats=stats, arc='gangsters')
 
+# C10a (c10_09): the six drawn arc costume sheets show when the suit is worn (PaperDoll outfit key), and
+# every arc apparel piece says what it is.
+for k, c in (('pinstripe_suit', 'pinstripe'), ('padded_vest', 'vest'), ('armored_suit', 'armored'),
+             ('puffy_parka', 'parka'), ('crystal_parka', 'crystal_parka'), ('starlight_mantle', 'starlight')):
+    if 'outfit_' + c in M.get('body', {}):
+        I[k]['costume'] = 'outfit_' + c  # body sheet name (PaperDoll.body_for)
+ARC_DESC = {'fedora': 'A sharp felt hat. Every crew boss has one.', 'shades': 'Dark lenses for bright neon nights.',
+            'pinstripe_suit': 'A sharp suit with a little padding sewn in.', 'padded_vest': 'Quilted plates under plain cloth.',
+            'armored_suit': 'Looks like a suit, stops like a wall.', 'steel_toes': 'Kick a crate, keep your toes.',
+            'knuckle_gloves': 'Leather gloves with a hard knuckle.', 'trench_coat': 'Long coat, deep pockets, quick feet.',
+            'tool_belt': "A driver's belt: tools close, hands free.", 'gold_chain': 'Heavy, shiny and oddly lucky.',
+            'snow_goggles': 'Keeps the glare and the snow out.', 'aurora_hood': 'Shimmers like the northern lights.',
+            'puffy_parka': 'Warm, round and surprisingly tough.', 'crystal_parka': 'A parka laced with crystal threads.',
+            'starlight_mantle': 'Woven from moonweave. It glows a little.', 'ice_cleats': 'Spiked soles that never slip.',
+            'mitten_paws': 'Cosy mittens with a firm grip.', 'courage_scarf': 'A scarf that makes you stand taller.',
+            'flipper_belt': 'A belt with a little paddle flair.', 'bell_collar': 'Jingles softly. Lucky, they say.'}
+for k, d in ARC_DESC.items():
+    if k in I and not I[k].get('desc'):
+        I[k]['desc'] = d
+
 # ---- stations ------------------------------------------------------------------
 SK = [1, 3, 5, 7]
 def art(*names):
