@@ -135,6 +135,18 @@ func _gang(n: String) -> String:
 	return n
 
 
+## A crew shop in the slot of the building it replaced (c5_02 #2): about as wide
+## as that building (0.75-0.95, never a shed), its base row and door kept where
+## the old one stood, so lanes and door checks don't move.
+func _crew_door(name: String, c: Vector2i, interior: String, hint: String, old_name: String, old_scale: float) -> void:
+	var gi := Art.info("buildings", name)
+	var oi := Art.info("buildings", old_name)
+	var sc := clampf(float(oi.get("w", 112)) * old_scale / maxf(1.0, float(gi.get("w", 160))), 0.75, 0.95)
+	var old_h := maxi(1, int(round(float(oi.get("h", 64)) * old_scale / TILE)))
+	var new_h := maxi(1, int(round(float(gi.get("h", 64)) * sc / TILE)))
+	_door(_gang(name), Vector2i(c.x, c.y + old_h - new_h), interior, hint, sc)
+
+
 ## The first time you're free in town, someone meets you and explains who's who.
 func _town_tour() -> void:
 	# Let the arrival scene finish first.
@@ -252,7 +264,7 @@ func _place_buildings() -> void:
 	_door("store", Vector2i(10, 18), "store", "A: General Store")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
 	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
-		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's arcade", 0.6)
+		_crew_door("gang_shop_deuce", Vector2i(45, 17), "bakery", "A: Deuce's arcade", "bakery", 1.35)
 	else:
 		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
@@ -261,7 +273,7 @@ func _place_buildings() -> void:
 	# South-east: potions, inn, library, school.
 	_door("potions", Vector2i(45, 53), "potions", "A: Potion Shop", 1.15)
 	if GameState.run["flags"].has("crew_mama_rosa") and Art.has("buildings", "gang_shop_mama_rosa"):
-		_door(_gang("gang_shop_mama_rosa"), Vector2i(57, 52), "inn", "A: Mama Rosa's kitchen", 0.6)
+		_crew_door("gang_shop_mama_rosa", Vector2i(57, 52), "inn", "A: Mama Rosa's kitchen", "inn", 1.15)
 	else:
 		_door("inn", Vector2i(57, 52), "inn", "A: the Inn", 1.15)
 	_door("library", Vector2i(45, 64), "library", "A: Library", 1.35)
@@ -270,12 +282,12 @@ func _place_buildings() -> void:
 	_door("cottage_a", Vector2i(8, 52), "cottage_a", "A: Wren's cottage", 1.3)
 	_door("cottage_b", Vector2i(19, 59), "cottage_b", "A: Finn's cottage", 1.3)
 	if GameState.run["flags"].has("shop_2") and Art.has("buildings", "gang_shop_specs"):
-		_door(_gang("gang_shop_specs"), Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", 0.6)
+		_crew_door("gang_shop_specs", Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", "cottage_a", 1.3)
 	else:
 		_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
 	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
 	if GameState.run["flags"].has("crew_halo") and Art.has("buildings", "gang_shop_halo"):
-		_door(_gang("gang_shop_halo"), Vector2i(27, 85), "stable", "A: Halo's garage", 0.6)
+		_crew_door("gang_shop_halo", Vector2i(27, 85), "stable", "A: Halo's garage", "stable", 1.25)
 	else:
 		_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
@@ -285,11 +297,11 @@ func _place_buildings() -> void:
 		_doors.append(rd)
 	# Across the river: clinic, chapel, Rook's lodge.
 	if GameState.run["flags"].has("shop_3") and Art.has("buildings", "gang_shop_doc"):
-		_door(_gang("gang_shop_doc"), Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
+		_crew_door("gang_shop_doc", Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", "clinic", 1.35)
 	else:
 		_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
 	if GameState.run["flags"].has("crew_marlene") and Art.has("buildings", "gang_shop_marlene"):
-		_door(_gang("gang_shop_marlene"), Vector2i(75, 53), "chapel", "A: Marlene's trading post", 0.6)
+		_crew_door("gang_shop_marlene", Vector2i(75, 53), "chapel", "A: Marlene's trading post", "chapel", 1.4)
 	else:
 		_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
 	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
@@ -545,7 +557,7 @@ func _place_props() -> void:
 	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
 	if Art.has("props", "statue2_horse"):
 		prop("props", "statue2_horse", Vector2i(12, 36), 1)
-	if Art.has("props", "statue2_crystal"):
+	if Art.has("props", "statue2_crystal") and GameState.is_penguins():  # a crystal monument is penguin-arc lore (c5_02 #3)
 		prop("props", "statue2_crystal", Vector2i(58, 60), 1)
 	for c: Vector2i in [Vector2i(31, 43), Vector2i(49, 43), Vector2i(31, 53), Vector2i(49, 53)]:
 		var bn: String = ["bench2_wood_a", "bench2_green_a", "bench2_iron_a"][(c.x + c.y) % 3]
