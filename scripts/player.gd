@@ -917,6 +917,22 @@ func _physics_process(delta: float) -> void:
 ## facing direction if the character has it. Returns true if it played.
 func play_tool(action: String, restart := true) -> bool:
 	var d := "right" if facing in ["left", "right"] else facing
+	# A scythe or sword cutting weeds (GameMap) or swung at nothing is a sweep:
+	# the attack pose with the blade arcing across the front, never an axe chop
+	# (c5_15 #6).
+	var ht := GameState.held_tool()
+	if action == "axe" and (ht == "scythe" or GameState.is_sword(ht)) and has_anim("attack"):
+		var sa := "attack_down" if facing == "down" and has_anim("attack_down") else ("attack_up" if facing == "up" and has_anim("attack_up") else "attack")
+		_busy = true
+		_busy_t = 0.0
+		velocity = Vector2.ZERO
+		_sprite.position.y = 0
+		_attack_hit_done = true  # a work swing, not a blow
+		_apply(sa, facing == "left", restart)
+		if _anim:
+			_anim.speed_scale = 1.35
+		HeldSwing.spawn(self, ht, "sweep", 0.4, facing)
+		return true
 	var a := action + "_" + d
 	if not has_anim(a) and has_anim(action + "_right"):
 		a = action + "_right"
@@ -1123,7 +1139,7 @@ func do_action(mode := "a") -> void:
 		return
 	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
-		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]
+		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]  # scythe -> sweep in play_tool
 		if play_tool(act):
 			return
 		return
