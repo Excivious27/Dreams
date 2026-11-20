@@ -16314,19 +16314,19 @@
   },
   "walk_down": {
    "cell_h": 96,
-   "cell_w": 84,
+   "cell_w": 76,
    "file": "characters/big_jim/walk_down.png",
-   "frames": 3,
+   "frames": 4,
    "h": 96,
-   "w": 252
+   "w": 304
   },
   "walk_up": {
-   "cell_h": 90,
-   "cell_w": 72,
+   "cell_h": 96,
+   "cell_w": 76,
    "file": "characters/big_jim/walk_up.png",
-   "frames": 2,
-   "h": 90,
-   "w": 144
+   "frames": 4,
+   "h": 96,
+   "w": 304
   },
   "water_down": {
    "cell_h": 96,
@@ -17580,19 +17580,19 @@
   },
   "walk_down": {
    "cell_h": 96,
-   "cell_w": 68,
+   "cell_w": 62,
    "file": "characters/coco/walk_down.png",
-   "frames": 2,
+   "frames": 4,
    "h": 96,
-   "w": 136
+   "w": 248
   },
   "walk_up": {
    "cell_h": 96,
-   "cell_w": 71,
+   "cell_w": 61,
    "file": "characters/coco/walk_up.png",
-   "frames": 2,
+   "frames": 4,
    "h": 96,
-   "w": 142
+   "w": 244
   },
   "water_down": {
    "cell_h": 96,
@@ -17840,17 +17840,17 @@
    "cell_h": 96,
    "cell_w": 58,
    "file": "characters/coldy/walk_down.png",
-   "frames": 2,
+   "frames": 4,
    "h": 96,
-   "w": 116
+   "w": 232
   },
   "walk_up": {
-   "cell_h": 94,
-   "cell_w": 52,
+   "cell_h": 96,
+   "cell_w": 59,
    "file": "characters/coldy/walk_up.png",
-   "frames": 2,
-   "h": 94,
-   "w": 104
+   "frames": 4,
+   "h": 96,
+   "w": 236
   },
   "water_down": {
    "cell_h": 96,
@@ -24139,19 +24139,19 @@
   },
   "walk_down": {
    "cell_h": 96,
-   "cell_w": 71,
+   "cell_w": 67,
    "file": "characters/mer/walk_down.png",
-   "frames": 3,
+   "frames": 4,
    "h": 96,
-   "w": 213
+   "w": 268
   },
   "walk_up": {
    "cell_h": 96,
-   "cell_w": 64,
+   "cell_w": 68,
    "file": "characters/mer/walk_up.png",
-   "frames": 3,
+   "frames": 4,
    "h": 96,
-   "w": 192
+   "w": 272
   },
   "water_down": {
    "cell_h": 96,
@@ -24613,17 +24613,17 @@
    "cell_h": 96,
    "cell_w": 67,
    "file": "characters/merry/walk_down.png",
-   "frames": 3,
+   "frames": 4,
    "h": 96,
-   "w": 201
+   "w": 268
   },
   "walk_up": {
    "cell_h": 96,
-   "cell_w": 67,
+   "cell_w": 65,
    "file": "characters/merry/walk_up.png",
-   "frames": 2,
+   "frames": 4,
    "h": 96,
-   "w": 134
+   "w": 260
   },
   "water_down": {
    "cell_h": 96,

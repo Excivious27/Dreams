@@ -605,7 +605,48 @@ def marks():
     print("marks: %d portraits" % n)
 
 
-STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs, "nova": nova, "marks": marks}
+# ---- c5_07 #3: 4-frame walk_down / walk_up for the 12B companions (their
+# walk_down was the idle copied, walk_up 2 frames). Sheets p4_walk_<id>.png.
+WALK12 = ["big_jim", "coldy", "mer", "coco", "merry"]
+
+
+def walks12():
+    man = json.load(open(MAN))
+    done = []
+    for cid in WALK12:
+        rel = "c5/p4_walk_%s.png" % cid
+        if not os.path.exists(os.path.join(INC, rel)):
+            continue
+        g = "characters/" + cid
+        a = _load_sheet(rel)
+        rows = _figs(a, 2, merge=14)
+        if len(rows) < 2 or any(len(r) < 4 for r in rows):
+            print("walks12: %s rows %s, skipped" % (cid, [len(r) for r in rows]))
+            continue
+        info = man[g]["idle_down"]
+        keep = os.path.join(ORIG, info["file"])
+        if not os.path.exists(keep):
+            os.makedirs(os.path.dirname(keep), exist_ok=True)
+            shutil.copyfile(os.path.join(GEN, info["file"]), keep)
+        im0 = Image.open(keep).convert("RGBA")
+        cw = int(info["cell_w"])
+        ref = _used_h(im0.crop((0, 0, cw, im0.height)))
+        f = ref / float(np.median([b[3] - b[1] for b in rows[0]]))
+        for name, r in (("walk_down", rows[0]), ("walk_up", rows[1])):
+            fr = []
+            for b in r[:4]:
+                im = Image.fromarray(a[b[1]:b[3], b[0]:b[2]])
+                im = im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS)
+                pad = Image.new("RGBA", (im.width + 4, im.height), (0, 0, 0, 0))
+                pad.alpha_composite(im, (2, 0))
+                fr.append(pad)
+            _save_strip(fr, g, name, man, int(info["cell_h"]))
+        done.append(cid)
+    _write_dump(man)
+    print("walks12: %s" % ", ".join(done))
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers, "tools": tools, "redraw": redraw, "thugs": thugs, "nova": nova, "marks": marks, "walks12": walks12}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):
