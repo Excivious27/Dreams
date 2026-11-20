@@ -7,7 +7,7 @@ extends RefCounted
 const SPELLS := {
 	"spark": {"name": "Spark", "cost": 5, "desc": "A bolt of light at the nearest enemy."},
 	"glow": {"name": "Glow", "cost": 8, "desc": "Light the night and the mine until you sleep."},
-	"haste": {"name": "Haste", "cost": 10, "desc": "Run 30% faster for a game hour."},
+	"haste": {"name": "Haste", "cost": 10, "desc": "Run 30% faster for about 40 seconds."},
 	"rain_call": {"name": "Rain Call", "cost": 15, "desc": "Water every crop on the farm."},
 	"growth": {"name": "Growth", "cost": 12, "desc": "The crop in front of you grows a day."},
 	"crystal_shield": {"name": "Crystal Shield", "cost": 15, "desc": "Absorb the next 3 hits."},
@@ -167,7 +167,7 @@ static func _cast(m: GameMap, id: String) -> bool:
 			GameState.run["flags"]["glow_day"] = int(GameState.run["day"])
 			m.hud.toast("The dark pulls back.", Color(0.9, 0.95, 1.0))
 		"haste":
-			GameState.run["flags"]["haste_abs"] = GameState.now_abs() + GameState.real_min(42.0)  # 42 real s on any day length (survives sleep)
+			GameState.run["flags"]["haste_abs"] = GameState.now_abs() + GameState.real_min(haste_secs())  # real seconds on any day length (survives sleep)
 			m.hud.toast("Haste!", Color(0.8, 1.0, 0.8))
 		"rain_call":
 			var n := 0
@@ -270,3 +270,11 @@ static func spell_sound(id: String) -> String:
 		if str(pair[0]) in words:
 			return str(pair[1])
 	return "spell"
+
+
+const HASTE_SECS := 42.0  # real seconds; Blink Step (Sorcery) adds haste_time x this
+
+
+## How long Haste lasts, in real seconds (MoveSpeed.HASTE is how much faster).
+static func haste_secs() -> float:
+	return HASTE_SECS * (1.0 + GameState.bonus("magic", "haste_time"))

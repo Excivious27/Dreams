@@ -59,6 +59,7 @@ var _doll := false
 ## Swimming (in a water cell) and riding (on the horse) change speed, anims and what you can do.
 var swimming := false
 var mounted := false
+var _running_now := false  # run input this frame (anim strip choice)
 var _swim_t := 0.0
 var _repeat_cd := 0.0
 var _doll_scale := 0.34
@@ -806,7 +807,7 @@ func _physics_process(delta: float) -> void:
 	var auto := false
 	if dir == Vector2.ZERO and auto_target != Vector2.INF:
 		var to := auto_target - position
-		if to.length() < 3.0:
+		if to.length() < maxf(3.0, velocity.length() * delta * 1.5):
 			auto_target = Vector2.INF
 			if auto_cell != Vector2i(-1, -1):
 				face_toward(map.cell_center(auto_cell))
@@ -821,13 +822,7 @@ func _physics_process(delta: float) -> void:
 				move8 = Player.dir8(dir)
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
-	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed") + GameState.move_bonus()
-	if int(GameState.run["flags"].get("haste_abs", -1)) > GameState.now_abs():
-		spd_mult *= 1.3
-	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
-		spd_mult *= 0.9
-	if GameState.exhausted():
-		spd_mult *= 0.85  # exhausted (under 15%): heavy feet, the HUD bar flashes red
+	# One speed ladder with caps (MoveSpeed, c8_10): the Hero tab reads the same parts.
 	var vd := vehicle_def()
 	if _veh and vehicle != "":
 		_veh_face()
@@ -836,15 +831,17 @@ func _physics_process(delta: float) -> void:
 			if _veh_puff <= 0.0 and map:
 				_veh_puff = 0.28
 				map.fx("veh_wake" if swimming else "veh_dust", position - dir * 8.0 + Vector2(0, -2), 12.0, 0.5, dir.x > 0)
+	var mv_mode := "foot"
+	var vs := 1.0
 	if swimming and float(vd.get("water", 0.0)) > 0.0:
-		spd_mult *= float(vd["water"])  # rowing: quick, dry, no effort
+		mv_mode = "swim"  # rowing: quick, dry, no effort
 		running = false
 	elif swimming:
 		if vehicle != "":
 			unride()  # wheels don't float
 			if map:
 				map.hud.toast("You hop off at the water's edge.")
-		spd_mult *= 1.25 if Colony.has_ability("tideswim") else (1.0 if Companion.has_ability("tail") else 0.55)  # Kelp Hollow's Tideswim (C7 P5)
+		mv_mode = "swim"
 		running = false
 		_swim_t += delta
 		if _swim_t > 2.0 and not Companion.has_ability("tail"):
@@ -852,16 +849,23 @@ func _physics_process(delta: float) -> void:
 			if not GameState.spend_for("swim"):
 				map.player_down("tired")
 	elif mounted:
-		spd_mult *= (1.8 if running else 1.5) * (1.1 if Perks.flag("ride_fast") else 1.0) * (1.1 if Builds.is_built("stable") else 1.0)
+		mv_mode = "mount"
 	elif vehicle != "":
-		var vs := float(vd.get("speed", 1.0))
+		mv_mode = "vehicle"
+		vs = float(vd.get("speed", 1.0))
 		if vd.has("snow") and (GameState.season() == "winter" or (map and map.scene_id() in ["mountain", "sky", "highlands"])):
 			vs = float(vd["snow"])
-		spd_mult *= vs
-	spd_mult *= GameState.status_speed()
-	spd_mult *= 1.0 + 0.05 * mini(2, Crew.perk_level("run_speed"))
+	_running_now = running
+	var spd_mult: float = MoveSpeed.calc(map, running, mv_mode, vs, float(vd.get("water", 0.0)) if swimming and vehicle != "" else 0.0)["total"]
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
+	if auto and auto_target != Vector2.INF:
+		# Brake on approach so fast rides stop on the tap, never overshoot and bounce (c8_10).
+		var brake := sqrt(2.0 * DECEL * auto_target.distance_to(position)) + 8.0
+		if target.length() > brake:
+			target = target.normalized() * brake
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
+	if dir != Vector2.ZERO and velocity.dot(target) > 0.0 and target.length() < velocity.length():
+		rate = DECEL  # slowing down (braking for a tap target, a cap kicking in) uses the brake rate
 	velocity = velocity.move_toward(target, rate * delta)
 	var before := position
 	_move(velocity * delta)
@@ -910,7 +914,8 @@ func _physics_process(delta: float) -> void:
 	# way you were going, never re-read from a sliding velocity.
 	if dir != Vector2.ZERO:
 		facing = facing_for(dir)
-	var is_run := speed > WALK_SPEED * 1.15
+	# Run strip follows the run input (gear speed no longer makes a walk look like a run), c8_10.
+	var is_run := _running_now if speed > 4.0 else false
 	var pre := ""
 	if swimming and has_anim("swim") and float(vehicle_def().get("water", 0.0)) <= 0.0:
 		pre = "swim"
@@ -947,7 +952,7 @@ func _physics_process(delta: float) -> void:
 			_sprite.position.y = -absf(sin(_bob)) * 2.0
 			_sprite.rotation = sin(_bob) * 0.07
 	if _anim:
-		_anim.speed_scale = clampf(speed / (RUN_SPEED if is_run else WALK_SPEED), 0.6, 1.3)
+		_anim.speed_scale = clampf(speed / (RUN_SPEED if is_run else WALK_SPEED), 0.6, 1.6)
 
 	_dust_timer -= delta
 	if is_run and _dust_timer <= 0.0:
