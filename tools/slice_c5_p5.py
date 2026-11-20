@@ -9,7 +9,7 @@ Steps:
   rekey     magenta key residue post-pass on wildlife walks and pet anims
             (drops r>150, g<110, b>120 pixels) -- c5_09 #4
   blobs     ward_*/hq_* buildings: keep the main blob, drop stray specks/beams,
-            then hard alpha + outline (tools/crispen.py) -- c5_05 #1 #2
+            then a hard outer rim (crispen's palette pass ate their glows) -- c5_05 #1 #2
 Every write removes the old file first (art/gen is hardlinked to the main repo).
 """
 import os, sys, json, glob
@@ -118,24 +118,51 @@ def rekey(report=False):
     print("rekey pixels", total)
 
 
-def _keep_main(a, frac=0.04):
-    """Drop opaque islands smaller than `frac` of the largest one (stray specks,
-    a beam that floated off the art), then trim to what's left."""
-    m = a[..., 3] > 40
-    lab, n = ndimage.label(ndimage.binary_dilation(m, iterations=2))
+def _keep_main(a):
+    """Drop stray islands: specks (< 1.5% of the main piece), a cut-off
+    neighbour touching the left/right edge (< 20%), and anything floating
+    wholly below the main piece (a beam that fell off the art). Then the
+    caller trims the empty bottom rows."""
+    m = a[..., 3] > 100
+    lab, n = ndimage.label(m)
     if n <= 1:
         return a, 0
     sizes = ndimage.sum(m, lab, range(1, n + 1))
-    big = sizes.max()
-    keep = np.isin(lab, [i + 1 for i, s in enumerate(sizes) if s >= frac * big])
-    dropped = int((m & ~keep).sum())
+    objs = ndimage.find_objects(lab)
+    big = int(np.argmax(sizes))
+    main_bottom = objs[big][0].stop
+    w = a.shape[1]
+    drop = []
+    for i, sl in enumerate(objs):
+        if i == big:
+            continue
+        s = sizes[i] / sizes[big]
+        at_edge = sl[1].start == 0 or sl[1].stop >= w
+        if s < 0.015 or (at_edge and s < 0.2) or sl[0].start >= main_bottom - 4:
+            drop.append(i + 1)
+    gone = np.isin(lab, drop)
+    # take the soft fringe around dropped islands too
+    gone = ndimage.binary_dilation(gone, iterations=2) & ~ndimage.binary_dilation(m & ~gone, iterations=1)
     a = a.copy()
-    a[~keep] = 0
+    dropped = int((gone & (a[..., 3] > 0)).sum())
+    a[gone] = 0
     return a, dropped
 
 
+def _hard_rim(a, depth=2):
+    """Half-transparent pixels within `depth` px of the outside go fully
+    opaque or fully clear; inner translucency (beams, glass) stays."""
+    a = a.copy()
+    al = a[..., 3]
+    outside = al < 20
+    near = ndimage.binary_dilation(outside, iterations=depth) & ~outside
+    soft = near & (al < 255)
+    a[..., 3] = np.where(soft, np.where(al >= 120, 255, 0), al)
+    a[a[..., 3] == 0] = 0
+    return a
+
+
 def blobs(names=None):
-    import crispen
     names = names or [f"{p}_{i}" for p in ("ward", "hq") for i in range(1, 7)]
     for nm in names:
         for group in ("buildings", "props"):
@@ -145,10 +172,18 @@ def blobs(names=None):
             path = os.path.join(S.OUT, info["file"])
             a = np.asarray(Image.open(path).convert("RGBA"))
             a2, dropped = _keep_main(a)
-            im = crispen.crispen(Image.fromarray(a2))
-            # Keep the canvas (footprint and anchor unchanged).
+            # A floating piece below the art had stretched the canvas down (the
+            # building stood high above its feet): cut empty rows off the bottom
+            # only, so the width and the x anchor stay.
+            a2 = _hard_rim(a2)
+            a2[a2[..., 3] < 20] = 0
+            rows = np.nonzero((a2[..., 3] > 0).any(axis=1))[0]
+            if len(rows) and rows[-1] < a2.shape[0] - 1:
+                a2 = a2[: rows[-1] + 1]
+            im = Image.fromarray(a2)
             _write(im, path)
-            print(group, nm, "dropped", dropped)
+            info["w"], info["h"] = im.width, im.height
+            print(group, nm, "dropped", dropped, "size", im.size)
 
 
 STEPS = [wren_jr, rekey, blobs]
