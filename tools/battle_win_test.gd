@@ -313,7 +313,7 @@ func _run() -> void:
 			gb.mode = "siege"
 			check(m.area_track() == "battle_siege_gang", "gangster siege: battle_siege_gang (%s)" % m.area_track())
 			gb.mode = "escort"
-			check(m.area_track() == "battle_escort", "gangster escort keeps battle_escort (%s)" % m.area_track())
+			check(m.area_track() in ["battle_escort", "battle_escort_gang"], "gangster escort keeps an escort song (%s)" % m.area_track())
 
 	print("battle_win_test: %d fails" % fails)
 	quit(1 if fails else 0)

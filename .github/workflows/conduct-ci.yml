@@ -51,6 +51,8 @@ jobs:
           key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
           restore-keys: |
             godot-import-${{ env.GODOT_VERSION }}-
+      - name: Python deps (numpy for the music/sfx checks)
+        run: pip install --quiet numpy
       - name: check.sh shard ${{ matrix.shard }}/6
         run: |
           mkdir -p out

@@ -164,7 +164,7 @@ func _first_run() -> void:
 	check(not Settings.DEFAULTS.has("easy") and is_equal_approx(Settings.night_strength(), 1.0) and is_equal_approx(Settings.btn_scale(), 1.0), "first run: normal mode, full nights, normal buttons")
 	Settings.apply_audio()
 	var mi := AudioServer.get_bus_index("Music")
-	check(mi >= 0 and is_equal_approx(AudioServer.get_bus_volume_db(mi), linear_to_db(0.8)) and not AudioServer.is_bus_mute(mi), "first run: music bus at the default volume")
+	check(mi >= 0 and is_equal_approx(AudioServer.get_bus_volume_db(mi), Settings._db(int(Settings.DEFAULTS["music_vol"]))) and not AudioServer.is_bus_mute(mi), "first run: music bus at the default volume")
 	var t: Node = (load("res://scenes/title.tscn") as PackedScene).instantiate()
 	_set_scene(t)
 	await frames(3)

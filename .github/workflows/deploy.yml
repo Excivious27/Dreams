@@ -62,6 +62,8 @@ jobs:
           restore-keys: |
             godot-import-${{ env.GODOT_VERSION }}-
 
+      - name: Python deps (numpy for the music/sfx checks)
+        run: pip install --quiet numpy
       - name: Import project and run smoke test
         run: bash tools/check.sh
 
