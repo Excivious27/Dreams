@@ -460,6 +460,17 @@ static func launch(m: GameMap, cid: String, nid: String) -> void:
 	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 
 
+## Kill pay for a campaign node or the drill on this field: [flag key, kills that
+## pay] (each node has its own pool; [] for a free field battle).
+static func kill_pool(field: String) -> Array:
+	var f := fight_for(field)
+	if not f.is_empty():
+		return ["bfk_%s_%s" % [str(f["cid"]), str(f["nid"])], 80]
+	if not CampaignGate.drill_for(field).is_empty():
+		return ["bfk_drill", 40]
+	return []
+
+
 ## The campaign fight on this field, if one is under way ({} otherwise).
 static func fight_for(field: String) -> Dictionary:
 	var f: Dictionary = st().get("fight", {})

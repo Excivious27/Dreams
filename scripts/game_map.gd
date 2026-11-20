@@ -2294,14 +2294,19 @@ func on_enemy_died(e: Enemy) -> void:
 	# use up the map's 12.
 	var boss: bool = e.is_guardian or e.has_meta("boss_name") or e.has_meta("story_flag") or e.has_meta("colony_boss") or e.kind.begins_with("lt_") or e.kind.begins_with("cboss_") or e.kind.begins_with("marked_")
 	var fkey := "bfk_" + kkey  # kept in flags: an unwon battle pays its first 160 kills in all, not 80 every day
-	var first_battle: bool = scene_id().begins_with("bf_") and not GameState.run["flags"].has("battle_" + scene_id()) and int(GameState.run["flags"].get(fkey, 0)) < 160
+	var fcap := 160
+	var kpool: Array = Campaign.kill_pool(scene_id()) if scene_id().begins_with("bf_") else []  # campaign node / drill: its own pool
+	if not kpool.is_empty():
+		fkey = str(kpool[0])
+		fcap = int(kpool[1])
+	var first_battle: bool = scene_id().begins_with("bf_") and (not kpool.is_empty() or not GameState.run["flags"].has("battle_" + scene_id())) and int(GameState.run["flags"].get(fkey, 0)) < fcap
 	var quota: bool = e.has_meta("colony_foe") and Colony.data().has(scene_id()) and int(Colony.st(scene_id()).get("kills", 0)) < int((Colony.data()[scene_id()] as Dictionary).get("kills", 0))
 	var exempt := boss or first_battle or quota
 	if first_battle:
 		GameState.run["flags"][fkey] = int(GameState.run["flags"].get(fkey, 0)) + 1
 		kt["bf:" + kkey] = int(kt.get("bf:" + kkey, 0)) + 1  # today's count (Fortune's "picked clean" reads it)
-		if int(GameState.run["flags"][fkey]) == 160:
-			hud.toast("This field has paid what it will until you win it.", Color(0.8, 0.8, 0.9))
+		if int(GameState.run["flags"][fkey]) == fcap:
+			hud.toast("These foes have paid all the crystals they will. Win the fight to move on.", Color(0.8, 0.8, 0.9))
 	elif not exempt:
 		kt[kkey] = int(kt.get(kkey, 0)) + 1
 	GameState.run["kills_today"] = kt
