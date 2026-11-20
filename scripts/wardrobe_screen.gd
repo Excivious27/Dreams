@@ -115,11 +115,11 @@ func _build() -> void:
 	_btn(top, "Close", _close, 44).set_meta("pc_key", "close")
 	# Preview
 	var pv := Control.new()
-	pv.custom_minimum_size = Vector2(0, 104)
+	pv.custom_minimum_size = Vector2(0, 112)
 	pv.clip_contents = true
 	v.add_child(pv)
 	var holder := Node2D.new()
-	holder.position = Vector2(123, 100)
+	holder.position = Vector2(123, 108)
 	pv.add_child(holder)
 	_preview(holder)
 	var kind := Wardrobe.hero_kind()
@@ -150,7 +150,7 @@ func _build() -> void:
 	for id: String in Wardrobe.choices(slot):
 		_row(list, id, id == cur)
 	# Detail
-	var d := sel if sel != "" else cur
+	var d: String = sel if sel != "" and Wardrobe.slot_of(sel) == slot else cur
 	if d != "":
 		var e := Wardrobe.entry(d)
 		var r := Decor.rarity(d)
@@ -184,6 +184,11 @@ func _row(list: Control, id: String, worn: bool) -> void:
 	ic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	ic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	ic.texture = icon_tex(id)
+	var tint := str((Wardrobe.entry(id).get("doll", {}) as Dictionary).get("tint", ""))
+	if tint != "":
+		ic.material = PaperDoll.hair_material("brown")
+		(ic.material as ShaderMaterial).set_shader_parameter("tint", Color(tint))
+		(ic.material as ShaderMaterial).set_shader_parameter("on", true)
 	ic.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	h.add_child(ic)

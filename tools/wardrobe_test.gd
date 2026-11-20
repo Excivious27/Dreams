@@ -157,6 +157,13 @@ func _run() -> void:
 	PaperDoll.place_all({"hair": h1, "hat": h2}, GameState.run["look"], "outfit_pinstripe", 0, false, 0.27)
 	check(h2.visible and not h1.visible, "knight helm covers the hair")
 	h1.queue_free(); h2.queue_free()
+	Decor.give("wr_hat_beanie_blue")
+	Wardrobe.put_on("wr_hat_beanie_blue")
+	var h3 := Sprite2D.new()
+	root.add_child(h3)
+	PaperDoll.place_all({"hat": h3}, GameState.run["look"], "outfit_pinstripe", 0, false, 0.27)
+	check(h3.material is ShaderMaterial and (h3.material as ShaderMaterial).get_shader_parameter("on") == true, "colourway hat recoloured")
+	h3.queue_free()
 	Wardrobe.put_on("wr_fedora")
 	# every outfit x every pose: layers resolve and stay near the head
 	for id: String in Wardrobe.choices("outfit") + ["wr_pinstripe_suit", "wr_padded_vest", "wr_armored_suit"]:
@@ -221,7 +228,8 @@ func _run() -> void:
 	ws._cursor.press()
 	await process_frame
 	check(Decor.worn("outfit") == "wr_padded_vest", "A on a row puts it on")
-	Wardrobe.put_on("wr_pinstripe_suit")
+	check(Wardrobe.put_on("wr_pinstripe_suit") and Decor.worn("outfit") == "wr_pinstripe_suit", "back in the pinstripe")
+	Wardrobe.put_on("wr_hat_beanie_blue")
 	ws.slot = "hat"
 	ws._build()
 	await _shot("2_custom_hats")

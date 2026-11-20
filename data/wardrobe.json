@@ -381,6 +381,93 @@
    "starter": false,
    "stats": {}
   },
+  "wr_hat_bandana_blue": {
+   "arc": "",
+   "art": "hats/bandana",
+   "cat": "hat",
+   "desc": "Same cosy bandana, new colour.",
+   "doll": {
+    "hat": "hats/bandana",
+    "tint": "5c84e0"
+   },
+   "glow": false,
+   "icon": "hats/bandana",
+   "layer": "wear",
+   "name": "Blue Bandana",
+   "penguin": {},
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
+  "wr_hat_bandana_gold": {
+   "arc": "",
+   "art": "hats/bandana",
+   "cat": "hat",
+   "desc": "Same cosy bandana, new colour.",
+   "doll": {
+    "hat": "hats/bandana",
+    "tint": "f2d27a"
+   },
+   "glow": false,
+   "icon": "hats/bandana",
+   "layer": "wear",
+   "name": "Gold Bandana",
+   "penguin": {},
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
+  "wr_hat_bandana_green": {
+   "arc": "",
+   "art": "hats/bandana",
+   "cat": "hat",
+   "desc": "Same cosy bandana, new colour.",
+   "doll": {
+    "hat": "hats/bandana",
+    "tint": "62b266"
+   },
+   "glow": false,
+   "icon": "hats/bandana",
+   "layer": "wear",
+   "name": "Green Bandana",
+   "penguin": {},
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
   "wr_hat_beanie": {
    "arc": "",
    "art": "hats/beanie",
@@ -399,6 +486,93 @@
    "renders": "doll",
    "rot": 1,
    "sell": 30,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
+  "wr_hat_beanie_blue": {
+   "arc": "",
+   "art": "hats/beanie",
+   "cat": "hat",
+   "desc": "Same cosy beanie, new colour.",
+   "doll": {
+    "hat": "hats/beanie",
+    "tint": "5c84e0"
+   },
+   "glow": false,
+   "icon": "hats/beanie",
+   "layer": "wear",
+   "name": "Blue Beanie",
+   "penguin": {},
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
+  "wr_hat_beanie_gold": {
+   "arc": "",
+   "art": "hats/beanie",
+   "cat": "hat",
+   "desc": "Same cosy beanie, new colour.",
+   "doll": {
+    "hat": "hats/beanie",
+    "tint": "f2d27a"
+   },
+   "glow": false,
+   "icon": "hats/beanie",
+   "layer": "wear",
+   "name": "Gold Beanie",
+   "penguin": {},
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "hat",
+   "sources": [],
+   "starter": false,
+   "stats": {}
+  },
+  "wr_hat_beanie_green": {
+   "arc": "",
+   "art": "hats/beanie",
+   "cat": "hat",
+   "desc": "Same cosy beanie, new colour.",
+   "doll": {
+    "hat": "hats/beanie",
+    "tint": "62b266"
+   },
+   "glow": false,
+   "icon": "hats/beanie",
+   "layer": "wear",
+   "name": "Green Beanie",
+   "penguin": {},
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll",
+   "rot": 1,
+   "sell": 80,
    "set": "",
    "size": [
     1,

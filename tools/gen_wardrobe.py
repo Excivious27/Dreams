@@ -63,6 +63,10 @@ for hid, nm, rar, desc in [("straw", "Straw Hat", "common", "Keeps the sun off."
                            ("crystal_crown", "Crystal Crown", "legendary", "Rings softly in the wind."), ("halo", "Halo", "mythic", "Nobody knows where it came from.")]:
     add("wr_hat_" + hid, "hat", nm, rar, "", "doll", {"hat": "hats/" + hid}, "", hid in ("straw", "cap"), desc)
 SCARF = {"red": "d8403a", "blue": "3f6fd8", "green": "4aa84a", "yellow": "e8c23a", "purple": "8a5ad8", "white": "f4f4f4"}
+# Colourways of the knit/cloth hats (luma recolour, PaperDoll._colourway)
+for hid, nm in [("beanie", "Beanie"), ("bandana", "Bandana")]:
+    for col, hexv, rar in [("blue", "5c84e0", "uncommon"), ("green", "62b266", "uncommon"), ("gold", "f2d27a", "rare")]:
+        add("wr_hat_%s_%s" % (hid, col), "hat", "%s %s" % (col.capitalize(), nm), rar, "", "doll", {"hat": "hats/" + hid, "tint": hexv}, "", False, "Same cosy %s, new colour." % nm.lower())
 # Penguin accessories (pinned on Pip-Pip / Nova; whole-penguin wear sheets on the plain penguin)
 for col, rar in [("red", "common"), ("blue", "common"), ("green", "common"), ("yellow", "uncommon"), ("purple", "uncommon"), ("white", "rare")]:
     add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col], "plain": "scarf_" + col}, "snowfolk", col == "red", "Knitted with room for flippers.")

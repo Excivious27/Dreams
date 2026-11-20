@@ -195,6 +195,14 @@ static func doll_layer(kind: String) -> Array:
 	return []
 
 
+## Colourway hex of the worn hat ("" = as drawn); only while the cosmetic hat is what shows.
+static func doll_tint(slot: String) -> String:
+	var id := worn_id(slot)
+	if id == "" or (show_armor() and GameState.equipped("head") != ""):
+		return ""
+	return str((entry(id).get("doll", {}) as Dictionary).get("tint", ""))
+
+
 ## Gear you own whose costume matches a wardrobe outfit unlocks that look (kept even
 ## after you sell the gear). Returns the ids newly unlocked.
 static func sync_unlocks() -> Array:

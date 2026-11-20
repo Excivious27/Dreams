@@ -195,6 +195,24 @@ static func sync_layer(layer: CanvasItem, anim: CanvasItem) -> void:
 	layer.modulate = Color(anim.modulate, a * anim.modulate.a)
 
 
+## Colourway of a layer (wardrobe "tint"): the luma recolour of hair_tint.gdshader
+## (it also carries the hit flash); "" puts the layer's own material back.
+static func _colourway(layer: Sprite2D, tint: String) -> void:
+	if not layer.has_meta("base_mat"):
+		layer.set_meta("base_mat", layer.material)
+	if tint == "":
+		if layer.material != layer.get_meta("base_mat"):
+			layer.material = layer.get_meta("base_mat")
+		return
+	if str(layer.get_meta("tint", "")) != tint or not (layer.material is ShaderMaterial):
+		var m := ShaderMaterial.new()
+		m.shader = load("res://shaders/hair_tint.gdshader")
+		m.set_shader_parameter("tint", Color(tint))
+		m.set_shader_parameter("on", true)
+		layer.material = m
+		layer.set_meta("tint", tint)
+
+
 ## Pin hair/hat/face layers for a body frame. Layers: {"hair": Sprite2D, "hat": .., "face": ..}.
 static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: int, flip: bool, sc: float) -> void:
 	var hg := has_headgear(body)
@@ -209,6 +227,7 @@ static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: 
 			(layers["hat"] as Sprite2D).visible = false
 		else:
 			place_layer(layers["hat"], hl[0], hl[1], body, pose, flip, sc)
+			_colourway(layers["hat"], Wardrobe.doll_tint("hat"))
 			if str(hl[1]) in FULL_HATS and layers.has("hair"):
 				(layers["hair"] as Sprite2D).visible = false  # helms and hoods cover the hair
 	if layers.has("face"):

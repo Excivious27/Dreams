@@ -277,6 +277,8 @@ func _update_doll() -> void:
 		(_hair.material as ShaderMaterial).set_shader_parameter("flash", _flash)
 	if _layer_mat:
 		_layer_mat.set_shader_parameter("flash", _flash)
+	if _hat.material is ShaderMaterial and _hat.material != _layer_mat:
+		(_hat.material as ShaderMaterial).set_shader_parameter("flash", _flash)  # colourway hats
 	if body != _skin_sheet:
 		_skin_sheet = body
 		PaperDoll.apply_skin(_flash_mat, body)
