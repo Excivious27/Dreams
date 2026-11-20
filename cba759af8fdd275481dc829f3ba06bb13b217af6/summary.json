@@ -1,0 +1,138 @@
+{
+ "sha": "cba759af8fdd275481dc829f3ba06bb13b217af6",
+ "ref": "ci/r3sub-81c4c213",
+ "run": "44819208899",
+ "finished": 1795210219.6904137,
+ "pass": false,
+ "playtest": {
+  "rc": 1,
+  "secs": 86,
+  "shots": 21,
+  "fails": [
+   "FAIL tap-to-move walks to the tapped cell (13 away)",
+   "FAIL boss appeared after 5 kills"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL boss appeared after 5 kills"
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "81c4c2137a49aeb78b2875125a6b50bce96dcf45",
+  "label": "r3sub",
+  "branch": "main",
+  "shards": [
+   1
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 335,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 335,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 113.3
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 51.0
+  },
+  {
+   "step": 44,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 36.7
+  },
+  {
+   "step": 62,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 29.5
+  },
+  {
+   "step": 26,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 23.0
+  },
+  {
+   "step": 32,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 13.4
+  },
+  {
+   "step": 122,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 8.8
+  },
+  {
+   "step": 74,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 7.4
+  },
+  {
+   "step": 98,
+   "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)",
+   "rc": 0,
+   "secs": 5.9
+  },
+  {
+   "step": 14,
+   "name": "crops wired in",
+   "rc": 0,
+   "secs": 5.5
+  },
+  {
+   "step": 86,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 5.4
+  },
+  {
+   "step": 116,
+   "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ",
+   "rc": 0,
+   "secs": 3.9
+  },
+  {
+   "step": 92,
+   "name": "move_speed_test",
+   "rc": 0,
+   "secs": 3.8
+  },
+  {
+   "step": 68,
+   "name": "workshop: stations at run time",
+   "rc": 0,
+   "secs": 3.6
+  },
+  {
+   "step": 20,
+   "name": "night lighting: windows, festival fires, underground, mines (c5_10)",
+   "rc": 0,
+   "secs": 3.4
+  }
+ ]
+}

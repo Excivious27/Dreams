@@ -1,0 +1,12 @@
+CONDUCT CI FAIL  cba759af8f  (ci/r3sub-81c4c213, run 44819208899)
+
+subset run: shards [1], bots off, playtest on
+check shards (1/1):
+  shard 1: PASS  335s
+playtest: FAIL  86s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (13 away)
+  FAIL boss appeared after 5 kills
+
+longest job: 335s
+slowest check steps: import 113.3s; smoke test 51.0s; commons_test 36.7s; music: every map has a song; web streaming works offline 29.5s; held-tool rules: right tool acts, wrong tool hints 23.0s; bowling_test 13.4s; C8 P4: fishing rules, mining curve, reward tables 8.8s; mine keepers: tool damage, crates, keeper variety/pace, way-down arrow 7.4s
+distinct errors/fails/warns:
