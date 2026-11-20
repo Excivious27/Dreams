@@ -106,6 +106,8 @@ func build() -> void:
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
 	music_track = str(R.get("music", "meadow"))
+	if R.has("music_fallback") and not Music.has_track(music_track):
+		music_track = str(R["music_fallback"])  # a new area song not imported yet
 	has_sky = bool(R.get("sky", true))
 	has_pet = bool(R.get("pet", true))
 	pad = int(R.get("pad", 5))

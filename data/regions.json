@@ -14093,7 +14093,8 @@
     "ore": "amethyst",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -14104,7 +14105,8 @@
     "ore": "stone",
     "hp": 2,
     "n": 3,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 3
    }
   ],
   "npcs": [],
@@ -14134,12 +14136,13 @@
  "gloam_crystal_thicket": {
   "cols": 48,
   "rows": 42,
-  "music": "hollow_heart",
+  "music": "mega_gloam_thicket",
   "tier": 2,
   "pad": 6,
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "Crystal Thicket",
+  "music_fallback": "hollow_heart",
   "ground": "crystal_grass",
   "ground_seam": "crystal_grass",
   "path": "flagstone",
@@ -14368,7 +14371,8 @@
     "ore": "amethyst",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -14379,7 +14383,8 @@
     "ore": "amethyst",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -14390,7 +14395,8 @@
     "ore": "shard",
     "hp": 4,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 4
    },
    {
     "type": "mrock",
@@ -14401,7 +14407,8 @@
     "ore": "silver",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "loot",
@@ -14454,12 +14461,13 @@
  "gloam_moonpool": {
   "cols": 48,
   "rows": 44,
-  "music": "marsh",
+  "music": "mega_gloam_moonpool",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "The Moonpool",
+  "music_fallback": "marsh",
   "ground": "teal_moss_wet",
   "ground_seam": "teal_moss_wet",
   "path": "flagstone",
@@ -15128,7 +15136,7 @@
      9
     ],
     "hint": "A: read the caravan board",
-    "text": "Caravan board: 'DUNE SEA west. GLASS CANYON north, and past it the SUNKEN TEMPLE, where the Colossus walks at noon. Water before you go. Water after you go.'",
+    "text": "Caravan board: 'DUNE SEA west. GLASS CANYON north, and past it the SUNKEN TEMPLE, where the Colossus guards the door. Water before you go. Water after you go.'",
     "solid": false,
     "who": ""
    }
@@ -15162,7 +15170,7 @@
     "lines": [
      "Fifty years at this well. Never once seen it run dry.",
      "The temple builders drew suns on everything. Even the spoons.",
-     "Bring me sunstones and I'll pay you in shade. And crystals."
+     "Bring me sunstones and I'll pay you in shade. And something better than shade."
     ],
     "wander": 10.0
    },
@@ -15481,7 +15489,8 @@
     "ore": "sunstone",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -15492,7 +15501,8 @@
     "ore": "stone",
     "hp": 2,
     "n": 3,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 3
    },
    {
     "type": "note",
@@ -15533,12 +15543,13 @@
  "desert_glass_canyon": {
   "cols": 50,
   "rows": 44,
-  "music": "quarry",
+  "music": "mega_desert_canyon",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "Glass Canyon",
+  "music_fallback": "quarry",
   "ground": "cave_earth_floor",
   "ground_seam": "cave_earth_floor",
   "path": "cobble_warm",
@@ -15783,7 +15794,8 @@
     "ore": "sunstone",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -15794,7 +15806,8 @@
     "ore": "sunstone",
     "hp": 3,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -15805,7 +15818,8 @@
     "ore": "gold",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -15816,7 +15830,8 @@
     "ore": "copper",
     "hp": 2,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 3
    },
    {
     "type": "loot",
@@ -15881,12 +15896,13 @@
  "desert_sunken_temple": {
   "cols": 46,
   "rows": 42,
-  "music": "ruins",
+  "music": "mega_desert_temple",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "Sunken Temple",
+  "music_fallback": "ruins",
   "ground": "pale_stone",
   "ground_seam": "pale_stone",
   "path": "flagstone",
@@ -16225,7 +16241,8 @@
     "ore": "sunstone",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "note",
@@ -16984,7 +17001,8 @@
     "ore": "tin",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -16995,7 +17013,8 @@
     "ore": "iron",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 4
    },
    {
     "type": "note",
@@ -17284,7 +17303,8 @@
     "ore": "tin",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -17295,7 +17315,8 @@
     "ore": "coal",
     "hp": 2,
     "n": 3,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 3
    },
    {
     "type": "heal",
@@ -17610,7 +17631,8 @@
     "ore": "tin",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -17621,7 +17643,8 @@
     "ore": "gold",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -17632,7 +17655,8 @@
     "ore": "coal",
     "hp": 2,
     "n": 3,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 3
    },
    {
     "type": "loot",
@@ -18022,15 +18046,15 @@
     "items": [
      [
       "frost_sorbet",
-      460
+      580
      ],
      [
       "ring_warmth",
       1600
      ],
      [
-      "hot_chocolate",
-      120
+      "hot_cocoa",
+      200
      ],
      [
       "greater_potion",
@@ -18401,7 +18425,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "mrock",
@@ -18412,7 +18437,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "mrock",
@@ -18423,7 +18449,8 @@
     "ore": "silver",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "loot",
@@ -18739,7 +18766,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "mrock",
@@ -18750,7 +18778,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "mrock",
@@ -18761,7 +18790,8 @@
     "ore": "sapphire",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -18772,7 +18802,8 @@
     "ore": "silver",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "loot",
@@ -19042,7 +19073,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "note",
@@ -19313,7 +19345,8 @@
     "ore": "frost",
     "hp": 4,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 6
    },
    {
     "type": "loot",
@@ -19638,11 +19671,11 @@
      ],
      [
       "charm_sky",
-      1900
+      1700
      ],
      [
       "storm_fluff",
-      300
+      480
      ],
      [
       "greater_potion",
@@ -19710,7 +19743,7 @@
      19
     ],
     "lines": [
-     "You can fish off the edge of the island. Skyfin bite at dawn.",
+     "There's a cloud pool on Sunrise Shelf. Skyfin bite there at dawn.",
      "Storm Fluff makes a souffle rise like a cloud. Because it is one.",
      "I came up in a balloon forty years ago. Never found the way down. Never looked."
     ],
@@ -19981,7 +20014,8 @@
     "ore": "storm_glass",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 7
    },
    {
     "type": "mrock",
@@ -19992,7 +20026,8 @@
     "ore": "silver",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "note",
@@ -20029,12 +20064,13 @@
  "wind_storm_shelf": {
   "cols": 48,
   "rows": 42,
-  "music": "danger",
+  "music": "mega_wind_storm",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "windward",
   "area_name": "Storm Shelf",
+  "music_fallback": "danger",
   "ground": "starry_cloud",
   "ground_seam": "starry_cloud",
   "path": "float_stone",
@@ -20282,7 +20318,8 @@
     "ore": "storm_glass",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 7
    },
    {
     "type": "mrock",
@@ -20293,7 +20330,8 @@
     "ore": "storm_glass",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 7
    },
    {
     "type": "mrock",
@@ -20304,7 +20342,8 @@
     "ore": "gold",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "loot",
@@ -20929,8 +20968,8 @@
       2100
      ],
      [
-      "fine_wine",
-      150
+      "grape_cordial",
+      320
      ],
      [
       "greater_potion",
@@ -21302,7 +21341,8 @@
     "ore": "gold",
     "hp": 4,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "note",
@@ -21933,7 +21973,8 @@
     "ore": "platinum",
     "hp": 5,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 7
    },
    {
     "type": "mrock",
@@ -21944,7 +21985,8 @@
     "ore": "platinum",
     "hp": 5,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 7
    },
    {
     "type": "note",
@@ -22254,7 +22296,8 @@
     "ore": "sapphire",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -22265,7 +22308,8 @@
     "ore": "amethyst",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -22276,7 +22320,8 @@
     "ore": "shard",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 4
    },
    {
     "type": "mrock",
@@ -22287,7 +22332,8 @@
     "ore": "gold",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "loot",
@@ -22611,7 +22657,8 @@
     "ore": "silver",
     "hp": 3,
     "n": 2,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "mrock",
@@ -22622,7 +22669,8 @@
     "ore": "star_dust",
     "hp": 4,
     "n": 1,
-    "hint": "A: mine it"
+    "hint": "A: mine it",
+    "every": 5
    },
    {
     "type": "heal",

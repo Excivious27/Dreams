@@ -9740,8 +9740,8 @@
   "rarity": "epic",
   "slot": "charm",
   "stats": {
-   "luck": 2,
-   "mana": 10
+   "luck": 3,
+   "mana": 15
   },
   "desc": "The Thornmother's last bud, closed tight."
  },
@@ -9803,7 +9803,7 @@
   "rarity": "epic",
   "slot": "charm",
   "stats": {
-   "damage": 1,
+   "damage": 2,
    "defense": 2
   },
   "desc": "A chip of the Colossus's heart. Still warm."
@@ -9854,7 +9854,7 @@
   "slot": "charm",
   "stats": {
    "speed": 2,
-   "energy": 15
+   "energy": 25
   },
   "desc": "Runs eight minutes fast. Every train in Ironline ran by it."
  },
@@ -9894,7 +9894,7 @@
  "frost_sorbet": {
   "name": "Frost Sorbet",
   "type": "food",
-  "value": 380,
+  "value": 480,
   "tier": 4,
   "rarity": "epic",
   "heal": 6,
@@ -9908,7 +9908,7 @@
   "rarity": "legendary",
   "slot": "charm",
   "stats": {
-   "defense": 3,
+   "defense": 4,
    "speed": 1
   },
   "desc": "One scale of the Rime Wyrm, frosted over for good."
@@ -9973,18 +9973,19 @@
   "slot": "charm",
   "stats": {
    "speed": 2,
-   "luck": 2
+   "luck": 3
   }
  },
  "charm_sky": {
   "name": "Windward Charm",
   "type": "equip",
   "value": 1600,
-  "tier": 5,
+  "tier": 4,
   "rarity": "rare",
   "slot": "charm",
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "luck": 1
   }
  },
  "lucky_coin": {
@@ -10000,7 +10001,7 @@
   "value": 180,
   "tier": 5,
   "rarity": "uncommon",
-  "desc": "House chips from the Gilt casinos. Good as cash on Casino Row."
+  "desc": "A house chip from the Gilt casinos, gold-edged and heavy. Collectors pay well for them."
  },
  "platinum": {
   "name": "Platinum Ore",
@@ -10040,8 +10041,8 @@
   "rarity": "legendary",
   "slot": "ring",
   "stats": {
-   "damage": 2,
-   "luck": 2
+   "damage": 3,
+   "luck": 3
   },
   "desc": "Madame Aurum's seal. Doors open for whoever wears it."
  },
@@ -10132,5 +10133,23 @@
   "icon": "snack_pretzel",
   "desc": "Warm, salty, as big as your face. Bowling fuel.",
   "rec": true
+ },
+ "grape_cordial": {
+  "name": "Sparkling Grape Cordial",
+  "type": "food",
+  "value": 240,
+  "tier": 4,
+  "rarity": "uncommon",
+  "energy": 40,
+  "icon": "soda",
+  "desc": "Fizzy, purple and served in a crystal glass. The Maison's house toast."
+ },
+ "ember_koi": {
+  "name": "Ember Koi",
+  "type": "fish",
+  "value": 260,
+  "tier": 5,
+  "rarity": "rare",
+  "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."
  }
 }

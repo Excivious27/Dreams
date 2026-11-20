@@ -2873,6 +2873,31 @@
    }
   },
   {
+   "id": "mega_sunscorch_rahim",
+   "giver": "mg_rahim",
+   "arc": "both",
+   "text": "Old Rahim wants 4 Sunstones to keep the well's night lamps warm.",
+   "when": {
+    "flag": "mega_sunscorch_open"
+   },
+   "done_when": {
+    "items": [
+     [
+      "sunstone",
+      4
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 900,
+    "item": [
+     "sun_loaf",
+     2
+    ]
+   }
+  },
+  {
    "id": "mega_ironline_hook",
    "giver": "gate_ironline",
    "arc": "gangsters",
@@ -3029,7 +3054,7 @@
    "id": "mega_giltcity_hook",
    "giver": "gate_giltcity",
    "arc": "gangsters",
-   "text": "Mister Pell wants 12 thug cash and a gold bar for the invitation to Gilt City.",
+   "text": "Mister Pell wants 12 Rolled Bills and a Gold Bar for the invitation to Gilt City.",
    "when": {},
    "done_when": {
     "items": [
