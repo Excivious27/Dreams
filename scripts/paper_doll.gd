@@ -321,6 +321,8 @@ static func build_preview(parent: Node2D, look: Dictionary, mult: float, anim :=
 	body.animation_changed.connect(upd)
 	upd.call()
 	preview_bare = false
+	if not bare:
+		Wardrobe.dress_hero(parent, body, "doll")  # capes/cloaks (back layer)
 	return body
 
 

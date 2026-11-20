@@ -17286,6 +17286,18 @@
    "w": 160
   }
  },
+ "capes": {
+  "cape_back": {
+   "file": "capes/cape_back.png",
+   "h": 64,
+   "w": 52
+  },
+  "cape_side": {
+   "file": "capes/cape_side.png",
+   "h": 64,
+   "w": 52
+  }
+ },
  "characters/alder": {
   "view_front": {
    "file": "characters/alder/view_front.png",

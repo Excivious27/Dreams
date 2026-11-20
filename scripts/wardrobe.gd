@@ -256,7 +256,7 @@ static func shows_on(id: String, pid := "") -> bool:
 	var k := hero_kind(pid)
 	if k == PIN_KIND:
 		var d: Dictionary = entry(id).get("doll", {})
-		return r.contains("doll") and (d.has("hat") or d.has("face"))
+		return (r.contains("doll") or r.contains("pin")) and (d.has("hat") or d.has("face") or d.has("back"))
 	if k == "" or not r.contains(k):
 		return false
 	return not hidden_by_helmet(id, pid)
@@ -387,14 +387,22 @@ const PIN_KIND := "pin"
 ## each frame, use the facing's idle box on effect-heavy frames and hide where no spot fits.
 static func dress_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: String, mat: Material = null) -> void:
 	for ch in parent.get_children():
-		if ch.name.begins_with("PenguinAcc") or ch.name.begins_with("HeroPins"):
+		if ch.name.begins_with("PenguinAcc") or ch.name.begins_with("HeroPins") or ch.name.begins_with("HeroBack"):
 			ch.name = "OldAcc%d" % ch.get_instance_id()  # free the name for the new holder
 			ch.queue_free()
 	var penguin := PaperDoll.is_penguin(sprite)
+	var doll := sprite == "doll"  # build-your-own hero: only back pieces pin (hats/face are PaperDoll layers)
 	var pieces: Array = []
+	var backs: Array = []
 	for slot: String in ["acc", "hat"]:
 		var id := worn_id(slot)
 		if id == "" or not shows_on(id):
+			continue
+		var bd: Dictionary = entry(id).get("penguin" if penguin else "doll", {})
+		if bd.has("back"):
+			backs.append([str(bd["back"]), str(bd.get("tint", ""))])
+			continue
+		if doll:
 			continue
 		if penguin:
 			var pg: Dictionary = entry(id).get("penguin", {})
@@ -406,10 +414,12 @@ static func dress_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: String, m
 			for kind2: String in ["hat", "face"]:
 				if dl.has(kind2):
 					pieces.append([kind2, str(dl[kind2]), Color(str(dl.get("tint", "ffffff"))) if dl.has("tint") else Color.WHITE])
-	if pieces.is_empty():
-		return
 	var anc: Dictionary = PENGUIN_ANCHOR.get(sprite, PENGUIN_ANCHOR["penguin"])
 	var head: Dictionary = HEAD.get(sprite, HEAD["default"])
+	if not backs.is_empty():
+		_dress_back(parent, anim, backs[0], penguin, anc, head)
+	if pieces.is_empty():
+		return
 	var holder := Node2D.new()
 	holder.name = "PenguinAcc" if penguin else "HeroPins"
 	holder.z_index = 1
@@ -455,6 +465,73 @@ static func dress_hero(parent: Node2D, anim: AnimatedSprite2D, sprite: String, m
 				_pin_penguin(s, kind, gn, view, bb, anc, tex, sc, flip)
 			else:
 				_pin_drawn(s, kind, gn, view, bb, head, tex, sc, flip)
+	anim.frame_changed.connect(upd)
+	anim.animation_changed.connect(upd)
+	upd.call()
+
+
+## A cape/cloak (back layer): behind the body on front/side frames, over it on back
+## frames; hangs from the neck line to just above the feet; colour by luma recolour.
+static func _dress_back(parent: Node2D, anim: AnimatedSprite2D, piece: Array, penguin: bool, anc: Dictionary, head: Dictionary) -> void:
+	var gn := str(piece[0])
+	var i := gn.rfind("/")
+	var g := gn.left(i)
+	var base := gn.substr(i + 1)
+	if i <= 0 or not Art.has(g, base + "_back"):
+		return
+	var holder := Node2D.new()
+	holder.name = "HeroBack"
+	parent.add_child(holder)
+	var s := Sprite2D.new()
+	s.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	if str(piece[1]) != "":
+		var m := ShaderMaterial.new()
+		m.shader = load("res://shaders/hair_tint.gdshader")
+		m.set_shader_parameter("tint", Color(str(piece[1])))
+		m.set_shader_parameter("on", true)
+		s.material = m
+	holder.add_child(s)
+	var upd := func() -> void:
+		if not is_instance_valid(holder) or not is_instance_valid(anim) or anim.sprite_frames == null:
+			return
+		var an := str(anim.animation)
+		var tex := anim.sprite_frames.get_frame_texture(an, anim.frame)
+		if tex == null:
+			return
+		holder.position = anim.position
+		holder.modulate = anim.modulate
+		holder.visible = anim.visible and not an in PIN_HIDE
+		if not holder.visible:
+			return
+		var view := view_of(an)
+		var bb := frame_box(tex)
+		if an in PIN_REF:
+			var ref := ref_anim(anim.sprite_frames, view)
+			if ref != "":
+				var rt := anim.sprite_frames.get_frame_texture(ref, 0)
+				var rb := frame_box(rt)
+				bb = [rb[0], float(tex.get_height()) - (rt.get_height() - rb[1]), float(tex.get_height()) - (rt.get_height() - rb[2]), rb[3]]
+		# Draw order: before the body (behind) unless we see the hero's back.
+		if anim.get_parent() == holder.get_parent():
+			var want := anim.get_index() + (1 if view == "back" else 0)
+			var cur := holder.get_index()
+			if (view == "back" and cur < anim.get_index()) or (view != "back" and cur > anim.get_index()):
+				holder.get_parent().move_child(holder, want if view == "back" else anim.get_index())
+		holder.z_index = 1 if view == "back" else 0
+		var t := Art.tex(g, base + ("_side" if view == "side" else "_back"))
+		s.texture = t
+		var body_h: float = bb[2] - bb[1]
+		var top: float = (bb[2] - body_h * float(anc["neck"])) if penguin else (bb[1] + body_h * float(head["h"]) * 0.9)
+		var bottom: float = bb[2] - body_h * 0.05
+		var k := maxf(4.0, bottom - top) / float(t.get_height())
+		k = minf(k, bb[3] * (0.95 if view == "side" else 1.1) / float(t.get_width()))
+		var sc := anim.scale.x
+		s.scale = Vector2(k, k) * sc
+		var flip := anim.flip_h
+		s.flip_h = flip if view == "side" else false
+		var cx: float = bb[0] - tex.get_width() / 2.0 - (bb[3] * 0.18 if view == "side" else 0.0)
+		s.offset = Vector2(0, t.get_height() / 2.0)  # hang from the collar
+		s.position = Vector2(cx * sc * (-1.0 if flip else 1.0), (top - tex.get_height()) * sc)
 	anim.frame_changed.connect(upd)
 	anim.animation_changed.connect(upd)
 	upd.call()

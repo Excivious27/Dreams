@@ -250,6 +250,618 @@
    "starter_arc": "",
    "stats": {}
   },
+  "wr_cape_black": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "3a3440"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Black Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "3a3440"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_blue": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "3f6fd8"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Blue Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "3f6fd8"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_cloud": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "e8eef6"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Cloud Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "e8eef6"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_crystal": {
+   "arc": "penguins",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "9fe0ff"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Crystal Cape (Look)",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "9fe0ff"
+   },
+   "pools": [],
+   "price": 2000,
+   "rarity": "epic",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 400,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_dream": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "c79bf0"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Dream Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "c79bf0"
+   },
+   "pools": [],
+   "price": 4500,
+   "rarity": "legendary",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 900,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_ember": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "e8673a"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Ember Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "e8673a"
+   },
+   "pools": [],
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_frost": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "bfe6ff"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Frost Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "bfe6ff"
+   },
+   "pools": [],
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_gold": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "f2c94c"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Gold Cape (Look)",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "f2c94c"
+   },
+   "pools": [],
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_green": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "4aa84a"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Green Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "4aa84a"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_moon": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "d8d8ec"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Moon Cape (Look)",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "d8d8ec"
+   },
+   "pools": [],
+   "price": 2000,
+   "rarity": "epic",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 400,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_paw": {
+   "arc": "penguins",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "f4a6c8"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Paw Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "f4a6c8"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_penguin": {
+   "arc": "penguins",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "2e3446"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Penguin Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "2e3446"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_red": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "d8403a"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Red Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "d8403a"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_star": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "f6d860"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Star Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "f6d860"
+   },
+   "pools": [],
+   "price": 2000,
+   "rarity": "epic",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 400,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_storm": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "6a7088"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Storm Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "6a7088"
+   },
+   "pools": [],
+   "price": 900,
+   "rarity": "rare",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 180,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cape_white": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "f4f4f4"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "White Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "f4f4f4"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_cloak": {
+   "arc": "",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "7a6a4a"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Wanderer Cloak",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "7a6a4a"
+   },
+   "pools": [],
+   "price": 400,
+   "rarity": "uncommon",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 80,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
+  "wr_commander_cape": {
+   "arc": "gangsters",
+   "art": "capes/cape",
+   "cat": "acc",
+   "desc": "An accessory. Looks only, no stats.",
+   "doll": {
+    "back": "capes/cape",
+    "tint": "8a2030"
+   },
+   "glow": false,
+   "icon": "capes/cape",
+   "layer": "wear",
+   "name": "Commander Cape",
+   "penguin": {
+    "back": "capes/cape",
+    "tint": "8a2030"
+   },
+   "pools": [],
+   "price": 4500,
+   "rarity": "legendary",
+   "renders": "doll,penguin,pin",
+   "rot": 1,
+   "sell": 900,
+   "set": "",
+   "size": [
+    1,
+    1
+   ],
+   "slot": "acc",
+   "sources": [],
+   "starter": false,
+   "starter_arc": "",
+   "stats": {}
+  },
   "wr_cowboy": {
    "arc": "",
    "art": "hats/cowboy",

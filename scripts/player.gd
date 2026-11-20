@@ -420,6 +420,7 @@ func set_character(id: String) -> void:
 		add_child(_hair)
 		add_child(_hat)
 		add_child(_face)
+		Wardrobe.dress_hero(self, _anim, "doll")  # capes/cloaks behind the doll (c10b_11-03)
 		_hair.z_index = 1
 		_hat.z_index = 2
 		_face.z_index = 2

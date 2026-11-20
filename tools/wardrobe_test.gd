@@ -91,7 +91,7 @@ func _run() -> void:
 		var de: Dictionary = Decor.entry(id)
 		if str(de.get("layer", "")) == "wear" and str(de.get("renders", "")).contains("doll"):
 			var dd: Dictionary = de.get("doll", {})
-			check(dd.has("body") or dd.has("hat") or dd.has("face"), "doll piece yields a layer: " + id)
+			check(dd.has("body") or dd.has("hat") or dd.has("face") or dd.has("back"), "doll piece yields a layer: " + id)
 	check(items.size() >= 40, "wardrobe pieces: %d" % items.size())
 	Wardrobe.register()
 	for id: String in items:
@@ -249,6 +249,18 @@ func _run() -> void:
 	check(pl._doll_body == "outfit_pinstripe", "player wears pinstripe: " + pl._doll_body)
 	check(pl._hat.visible and pl._hat.texture != null, "fedora on the player")
 	check(pl._face != null and pl._face.visible, "shades on the player")
+	Decor.give("wr_cape_red")
+	Wardrobe.put_on("wr_cape_red")
+	check(Wardrobe.shows_on("wr_cape_red") and Wardrobe.shows_label("wr_cape_red") == "Shows on your hero.", "capes draw on the doll")
+	pl.refresh_doll()
+	await process_frame
+	var cb := pl.get_node_or_null("HeroBack")
+	check(cb != null and (cb.get_child(0) as Sprite2D).texture != null, "cape layer behind the doll")
+	check(Art.has("capes", "cape_back") and Art.has("capes", "cape_side"), "cape art sliced")
+	Wardrobe.put_on("wr_shades")
+	pl.refresh_doll()
+	await process_frame
+	check(pl.get_node_or_null("HeroBack") == null, "cape off when another accessory goes on")
 	GameState.run["look"]["body"] = "dark_slim"
 	pl.refresh_doll()
 	await process_frame

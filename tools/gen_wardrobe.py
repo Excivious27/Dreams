@@ -100,7 +100,32 @@ add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {
 add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
 
 
+# Capes and cloaks (C10b P5, c10b_11-03/28): P1's decor pieces get a drawn back layer
+# (art/gen/capes/cape_back + cape_side, recoloured by tint) on every hero kind.
+CAPE_TINT = {"wr_cape_black": "3a3440", "wr_cape_blue": "3f6fd8", "wr_cape_cloud": "e8eef6", "wr_cape_crystal": "9fe0ff",
+             "wr_cape_dream": "c79bf0", "wr_cape_ember": "e8673a", "wr_cape_frost": "bfe6ff", "wr_cape_gold": "f2c94c",
+             "wr_cape_green": "4aa84a", "wr_cape_moon": "d8d8ec", "wr_cape_paw": "f4a6c8", "wr_cape_penguin": "2e3446",
+             "wr_cape_red": "d8403a", "wr_cape_star": "f6d860", "wr_cape_storm": "6a7088", "wr_cape_white": "f4f4f4",
+             "wr_cloak": "7a6a4a", "wr_commander_cape": "8a2030"}
+
+
+def add_capes():
+    dpath = os.path.join(ROOT, "data", "decor.json")
+    if not os.path.exists(dpath):
+        return
+    decor = json.load(open(dpath))["items"]
+    for cid, tint in CAPE_TINT.items():
+        e = decor.get(cid)
+        if not e:
+            continue
+        draw = {"back": "capes/cape", "tint": tint}
+        P.append(dict(id=cid, slot=e.get("cat", "acc"), name=e["name"], rarity=e["rarity"], arc=e.get("arc", ""),
+                      renders="doll,penguin,pin", doll=dict(draw), penguin=dict(draw), set="", starter=False,
+                      desc=e.get("desc", "A cape.")))
+
+
 def main():
+    add_capes()
     ids = set()
     items = {}
     for p in P:
@@ -112,7 +137,7 @@ def main():
         assert p["set"] in ("", "everyday") or p["set"] in SETS, p
         price = PRICE[p["rarity"]]
         d = p["doll"]
-        art = ("body/" + d["body"]) if "body" in d else (d.get("hat") or d.get("face") or (p["penguin"].get("neck") or p["penguin"].get("face") or ""))
+        art = ("body/" + d["body"]) if "body" in d else (d.get("hat") or d.get("face") or d.get("back") or (p["penguin"].get("neck") or p["penguin"].get("face") or ""))
         items[p["id"]] = {
             "name": p["name"], "cat": p["slot"], "slot": p["slot"], "rarity": p["rarity"], "arc": p["arc"], "layer": "wear",
             "size": [1, 1], "rot": 1, "glow": False, "art": art, "icon": art, "price": price, "sell": int(price * SELL_SHARE),

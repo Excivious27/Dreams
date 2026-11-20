@@ -35,11 +35,15 @@ func _run() -> void:
 	bg.size = Vector2(1000, 1000)
 	root.add_child(bg)
 	var A := ["idle", "walk_down", "walk_up", "walk", "walk_left", "attack", "hoe_down", "ride", "faint"]
-	_row(110, "gangsters", "june", ["wr_fedora", "wr_shades"], A)
-	_row(220, "gangsters", "rafe", ["wr_cowboy"], A)
-	_row(330, "penguins", "big_jim", ["wr_beanie", "wr_snow_goggles"], A)
-	_row(440, "penguins", "penguin_m", ["wr_scarf_red", "wr_goggles_brass"], A)
-	_row(530, "penguins", "penguin_f", ["wr_bowtie_red"], A)
+	var only := OS.get_environment("ROWS")
+	if only == "b":
+		_row(110, "penguins", "penguin_f", ["wr_cape_red"], A)
+		_row(220, "penguins", "big_jim", ["wr_beanie", "wr_cape_green"], A)
+	else:
+		_row(110, "gangsters", "june", ["wr_fedora", "wr_shades"], A)
+		_row(220, "gangsters", "rafe", ["wr_cowboy"], A)
+		_row(330, "gangsters", "june", ["wr_cape_blue"], A)
+		_row(440, "penguins", "penguin_m", ["wr_scarf_red", "wr_goggles_brass"], A)
 	for i in 8:
 		await process_frame
 	await RenderingServer.frame_post_draw
