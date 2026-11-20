@@ -1,0 +1,21 @@
+01 Crop economy: every crop's seed price, growth days, regrowth, sell price, quality, per-season profit/day; outliers (too good/useless), greenhouse, fertiliser; both arcs (cash vs crystals). Table + fixes.
+02 Mining economy and pacing: rock/ore hits by tool tier (after C6 P7's early slowdown), ore drops by floor tier, bars/smelting cost/time, gem prices, mine floor rewards; is the curve "work for it" without being a slog (Tom 22:37)?
+03 Fishing: fish list per place/season/time/weather, difficulty curve, prices, rods/bait/tackle, deep-water rule, charters (C14 later); outliers.
+04 Crafting and stations: every recipe's inputs vs output value (gen_stations.py), processing times (keg, preserves, smelter...), loops that print money, recipes that lose money, unlock order.
+05 Skills, levels and caps: XP per action per skill, level curve, BONUS_CAPS, skill tree node values, unlock pacing over 3 in-game years; skills nobody can level.
+06 Energy, food and health: energy costs (ENERGY_COST/SKILL, C6 P7 x1.15 early), food restore values vs price, passing out, clinic fees, early-day length vs day length setting (15/20/30/40).
+07 Prices and shops: every shop's buy/sell price vs item value, Money.fmt per arc, cash vs crystals parity, ticket economy (gen_rec check_economy), mega-region shop prices, sell box; inflation/deflation over 3 years.
+08 COLLECTIONS DESIGN (to be built this CONDUCT, Tom 18:43): museum (donations: minerals, artifacts, fish, bugs?), shipping log, fish log, cooking/crafting logs, rewards per milestone, UI tab; read existing code (journal pages, Secrets totals, shipping) and write a concrete build plan per file as findings.
+09 Progression over 30 in-game days via bots (data only): run 4 bots for 30 days each (bot.gd; both arcs, farmer + story) and log money, skill levels, energy, unlocks per week vs the intended curve; find walls and floods.
+10 Speed boosts (Tom C8 note): gear, potions, foods, mounts, skills that raise move speed: what exists, caps, stacking, missing tiers; propose a coherent ladder.
+11 Rewards from quests, campaigns, mega regions, bosses, chests, secrets: value per hour vs farming; outliers after C3-C7 data changes (gen_battles, gen_mega_new, gen_colonies).
+12 Animals and ranching economy (base; C11 deepens): animal prices, produce values, feed costs, happiness, artisan goods; profit per day vs crops.
+13 Early game (days 1-14) feel after C6 P7: money in hand, first upgrades, first tool upgrade day, energy limits; both arcs; compare with Stardew's first two weeks.
+14 Late game (year 2-3): money sinks (houses, decor, upgrades, casino later), what's left to buy, prestige goals; propose sinks.
+15 REGRESSION CONDUCT 7 (story/dating): run story_test, story_flow_test, romance_test, epilogue_test, hearts_test, hearts_content_test, c7_colony_crew_test, c7_text_test (--fixed-fps 60); log only what is broken.
+16 REGRESSION CONDUCT 7 (quests/pointers/first hours): run quest_tracker_test, goal_line_test, first_hours_test, gang_start_test, newgame_penguin_test, town_first_test (--fixed-fps 60); one area_shot of the Social tab with a sweetheart; log only what is broken.
+17 REGRESSION CONDUCT 6+7 data: rerun every generator (gen_stations, gen_rec, gen_battles, gen_mega_new, gen_colonies, gen_gifts, gen_romance, gen_side_stories, gen_epilogue, gen_heart_perks) and report any diff vs committed JSON; drink_rule_test.
+18 Bugs sweep after C7: 4 single bots (1 day, both arcs, Hard + Very easy) on farm, town, lake, colony_kelp; script errors, freezes, ownerless pauses, softlocks around romance/side stories.
+19 Performance after C7 on CI-like quiet run: perf_probe farm/town/forest/lake/mine (FRAMES=60) vs C5 numbers; thresholds load +25%, median/p95 +3 ms, nodes +15%.
+20 Docs/inventory after C7: inventory.csv rows (story, dating, side stories, colonies), INVENTORY.md regenerated, CONDUCT-7 Still open, PROJECT-MEMORY C7 entry; report only.
+Note: 01-14 medium; 15-20 low with the listed checks after the C7 push.
