@@ -255,7 +255,7 @@ static func banner(m: GameMap, id: String, sid: String, line: String) -> void:
 	sb.content_margin_top = 5
 	sb.content_margin_bottom = 6
 	box.add_theme_stylebox_override("panel", sb)
-	box.position = Vector2(20, 70)
+	box.position = Vector2(20, 100)  # under the goal line's two rows (C4 c4_07 #8)
 	box.size = Vector2(230, 0)
 	box.custom_minimum_size = Vector2(230, 0)
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -265,7 +265,9 @@ static func banner(m: GameMap, id: String, sid: String, line: String) -> void:
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(v)
 	var title := Label.new()
-	title.text = str(r.get("name", "The Valley")) if id != VALLEY else "%s Valley" % str(GameState.run.get("names", {}).get("town", "Home"))
+	# Area-level title: an area of a sub-region (the Ironline inside the Cities tab) says its own name.
+	var sub_r := MegaTravel.reg(MegaTravel.region_of(sid)) if id != VALLEY else {}
+	title.text = str(sub_r.get("name", r.get("name", "The Valley"))) if id != VALLEY else "%s Valley" % str(GameState.run.get("names", {}).get("town", "Home"))
 	title.add_theme_font_size_override("font_size", 14)
 	title.add_theme_color_override("font_color", acc if id != VALLEY else Color(0.75, 1.0, 0.65))
 	title.add_theme_color_override("font_outline_color", Color(0, 0, 0))

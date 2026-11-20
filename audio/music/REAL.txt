@@ -77,3 +77,13 @@ combat_elite
 combat_elite_gang
 battle_gang
 battle_siege_gang
+boss_thornmother
+boss_colossus
+boss_wyrm
+boss_roc
+boss_coalbrook
+boss_aurum
+boss_light_eater
+mega_wind_storm
+mega_station
+mega_gloam_thicket

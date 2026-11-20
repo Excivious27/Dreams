@@ -11,7 +11,17 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | battle_siege | music | https://acemusic.ai/song/7nvdxwep3f6r |
 | beach | music | https://acemusic.ai/song/y8qhavxjy8zw |
 | boss | music | https://acemusic.ai/song/7ebx3u8sswt8 |
+| boss_aurum | music | https://acemusic.ai/song/hwpanzrvrn4y |
+| boss_coalbrook | music | https://acemusic.ai/song/mer98nus8mhc |
+| boss_colossus | music | https://acemusic.ai/song/ryg2k9ye575w |
 | boss_gang | music | https://acemusic.ai/song/d3jve5e2z3qa |
+| boss_light_eater | music | https://acemusic.ai/song/fvd5bjxxzq83 |
+| boss_roc | music | https://acemusic.ai/song/6hwi9ce78bfe |
+| boss_thornmother | music | https://acemusic.ai/song/9ginx57bm6j7 |
+| boss_wyrm | music | https://acemusic.ai/song/atpp3atsvheg |
+| mega_gloam_thicket | music | https://acemusic.ai/song/veidvprskdpy |
+| mega_station | music | https://acemusic.ai/song/num8cwzk26s4 |
+| mega_wind_storm | music | https://acemusic.ai/song/hn9izjmqbsjr |
 | boss_penguin | music | https://acemusic.ai/song/w62e3k5q83hb |
 | campaign_map | music | https://acemusic.ai/song/rmtce9uus2jm |
 | cattopia | music | https://acemusic.ai/song/vvzy8uy55v8x |
@@ -122,6 +132,8 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [Beach Ocean Waves](https://opengameart.org/content/beach-ocean-waves) | qubodup | CC0 | wave, waves |
 | [Bear Growls](https://opengameart.org/content/bear-growls) | AntumDeluge | CC0 | growl |
 | [Bicycle Horn](https://opengameart.org/content/bicycle-horn) | AntumDeluge | CC0 | horn |
+| [Air whoosh](https://opengameart.org/content/air-whoosh) | pyranostudios | CC0 | airship_whoosh, train_depart (mixed) |
+| [Bell dings/chimes](https://opengameart.org/content/bell-dingschimes) | PWL | CC0 | sled_bells, train_depart (mixed) |
 | [Bird chirping sounds](https://opengameart.org/content/bird-chirping-sounds) | syncopika | CC0 | birds_dawn |
 | [Bird,cricket,frog and mosquito sounds](https://opengameart.org/content/birdcricketfrog-and-mosquito-sounds) | Aj_ | CC0 | bird_chirp, owl |
 | [Blacksmith's Hammer](https://opengameart.org/content/blacksmiths-hammer) | VishwaJai | CC0 | anvil |

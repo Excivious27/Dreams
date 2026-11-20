@@ -544,35 +544,51 @@ func _refresh() -> void:
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
 			# Mega region tabs (MegaMap): Valley + one per unlocked region; hidden until unlocked.
+			# The map sits right under the tab strip; the Campaign button and blurb go below it (c4_02).
 			MegaRegion.check_unlocks()
 			var mtab := MegaMap.tab_row(_body, _refresh)
+			if mtab != "valley":
+				_body.add_child(MegaMap.make_map(mtab, _refresh))
+				if MegaMap.sel != "":
+					var last_l: Label = null
+					for cl: Array in MegaMap.pin_card(mtab, MegaMap.sel):
+						last_l = _line(str(cl[0]), int(cl[1]), cl[2])
+					# Scroll the card into view under the map (a tap that changes nothing looks broken).
+					var scr := _body.get_parent() as ScrollContainer
+					if last_l and scr:
+						(func() -> void:
+							await get_tree().process_frame
+							if is_instance_valid(scr) and is_instance_valid(last_l):
+								scr.ensure_control_visible(last_l)).call()
+				else:
+					_line("Tap a place on the map for its card.", 8, Color(0.75, 0.75, 0.7))
+				_line(MegaMap.where_line(), 8)
+				_line(str(MegaRegion.get_r(mtab).get("blurb", "")), 8, Color(0.85, 0.85, 0.8))
+			else:
+				var m := Control.new()
+				m.custom_minimum_size = Vector2(228, 246 if Art.has("ui", "world_map") else 190)
+				m.mouse_filter = Control.MOUSE_FILTER_PASS
+				m.draw.connect(func() -> void: _draw_map(m))
+				_body.add_child(m)
+				_line(MegaMap.where_line(), 8)
 			# Region campaigns: the board that opens new regions (locked pins show a padlock).
 			var ready_c := 0
 			for cid: String in Campaign.for_arc():
 				if not Campaign.is_won(cid) and Campaign.why_locked(cid) == "":
 					ready_c += 1
 			var ctag := (" (%d ready)" % ready_c) if ready_c > 0 else ""
-			if not CampaignGate.story_ok():
+			var c_locked := not CampaignGate.story_ok()
+			if c_locked:
 				ctag = " (locked)"
 			elif not CampaignGate.trained():
 				ctag = " (training ready)"
-			_button("Campaign map%s" % ctag, func() -> void:
-				var gm := get_tree().current_scene as GameMap
-				if gm == null or gm.scene_id().begins_with("bf_"):
-					return
-				toggle()  # close the menu (unpauses), then the board pauses again
-				CampaignScreen.open(gm))
-			if mtab != "valley":
-				_body.add_child(MegaMap.make_map(mtab))
-				_line(str(MegaRegion.get_r(mtab).get("blurb", "")), 8, Color(0.85, 0.85, 0.8))
-				_line(MegaMap.where_line(), 8)
-				_pass_drags(_body)
-				return
-			var m := Control.new()
-			m.custom_minimum_size = Vector2(228, 246 if Art.has("ui", "world_map") else 190)
-			m.draw.connect(func() -> void: _draw_map(m))
-			_body.add_child(m)
-			_line(MegaMap.where_line(), 8)
+			if not (c_locked and mtab != "valley"):  # no "locked" button on a region tab
+				_button("Campaign map%s" % ctag, func() -> void:
+					var gm := get_tree().current_scene as GameMap
+					if gm == null or gm.scene_id().begins_with("bf_"):
+						return
+					toggle()  # close the menu (unpauses), then the board pauses again
+					CampaignScreen.open(gm))
 		"Quests":
 			if r["quests"].is_empty():
 				_line("No quests yet.")
@@ -585,11 +601,13 @@ func _refresh() -> void:
 			_line("Tick a quest: the compass by the clock points the way.", 8, Color(0.85, 0.85, 0.8))
 			_line("Story", 9, Color(1, 0.9, 0.5))
 			var any := false
+			# One radio row for the story (c4_18 #4: a tick on every story line read as several choices).
+			_body.add_child(QuestTracker.checkbox_row("Follow the story", trk == "", false, "", func() -> void:
+				r["pinned_quest"] = ""
+				_refresh()))
 			for oq: Dictionary in QuestTracker.open_quests():
 				if oq["main"] or str(oq["giver"]) == "":
-					_body.add_child(QuestTracker.checkbox_row(str(oq["text"]), trk == "" or trk == str(oq["id"]), false, "", func() -> void:
-						r["pinned_quest"] = ""
-						_refresh()))
+					_line("   • " + str(oq["text"]), 8, Color(0.92, 0.88, 0.75))
 			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
 			for oq: Dictionary in QuestTracker.open_quests():
 				if not (oq["main"] or str(oq["giver"]) == ""):

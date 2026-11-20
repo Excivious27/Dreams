@@ -95,7 +95,11 @@ func _run() -> void:
 		for b in menu.find_children("*", "Button", true, false):
 			if (b as Button).draw.get_connections().size() > 0 and (b as Button).custom_minimum_size.y == 24:
 				rows += 1
-		check(rows >= QuestTracker.open_quests().size(), "every open quest has a checkbox row (%d rows)" % rows)
+		var want := 1  # one "Follow the story" row (C4), then one per townsfolk job
+		for oq: Dictionary in QuestTracker.open_quests():
+			if not (oq["main"] or str(oq["giver"]) == ""):
+				want += 1
+		check(rows >= want, "story row + every townsfolk job has a checkbox row (%d rows, want %d)" % [rows, want])
 		await shot("menu_quests")
 		menu.toggle()
 		await frames(3)

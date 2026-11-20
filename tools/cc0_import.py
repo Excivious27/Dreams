@@ -150,6 +150,10 @@ MAP = {
     "frog": ("sfx", ["frog-croaks/croak_02*", "frog-croaks/croak_03*", "frog-croaks/croak_04*"], {"cap": 1.0}),
     "seagull": ("sfx", ["solo-seagull-sound-effects/*Ambient%201*", "solo-seagull-sound-effects/*Ambient%203*", "solo-seagull-sound-effects/*Ambient%205*"], {"cap": 1.6}),
     "horse": ("sfx", ["horse-trotting/*"], {"cap": 2.0}),
+    # --- mega travel (C4 P4): derived mixes of the CC0 bell dings + the air whoosh ---
+    "airship_whoosh": ("sfx", ["air-whoosh/whoosh2_0.*"], {"cap": 2.6}),
+    "sled_bells": ("sfx", ["bell-dingschimes/sled_jingle.*"], {"cap": 2.2}),
+    "train_depart": ("sfx", ["bell-dingschimes/station_depart.*"], {"cap": 3.2}),
     "snore": ("sfx", ["80-cc0-creature-sfx/snore*", "80-cc0-creture-sfx-2/snore_02*"], {"cap": 2.0}),
     # --- ambience spots (Ambience plays these off to the side) ---------------
     "thunder": ("spot", ["100-cc0-sfx-2/*thunder_01*"], {"cap": 5.0}),

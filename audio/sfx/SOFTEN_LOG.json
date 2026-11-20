@@ -1,4 +1,20 @@
 {
+ "airship_whoosh": {
+  "after": {
+   "hf": 0.095,
+   "peak": -4.2,
+   "rms": -15.3
+  },
+  "before": {
+   "hf": 0.155,
+   "peak": -0.5,
+   "rms": -12.4
+  },
+  "gain_db": -2.4,
+  "lowpass": 12000,
+  "md5": "a4c29e7c4aa97487495aa8e3a701f653",
+  "shelf_db": -3.0
+ },
  "alarm": {
   "after": {
    "hf": 0.023,
@@ -3647,6 +3663,22 @@
   "md5": "804e2648614d315589421c5e3e9a7916",
   "shelf_db": -1.5
  },
+ "sled_bells": {
+  "after": {
+   "hf": 0.042,
+   "peak": -1.8,
+   "rms": -16.2
+  },
+  "before": {
+   "hf": 0.058,
+   "peak": -1.5,
+   "rms": -16.2
+  },
+  "gain_db": 0.15,
+  "lowpass": 14000,
+  "md5": "f54f2aa02407cefc8539eb4491d38cd2",
+  "shelf_db": -1.5
+ },
  "sleep": {
   "after": {
    "hf": 0.003,
@@ -5262,6 +5294,22 @@
   "lowpass": 8500,
   "md5": "993a307dd2f1b9e4f4c0da1468812bdc",
   "shelf_db": -6.0
+ },
+ "train_depart": {
+  "after": {
+   "hf": 0.095,
+   "peak": -1.7,
+   "rms": -18.3
+  },
+  "before": {
+   "hf": 0.113,
+   "peak": -1.4,
+   "rms": -18.7
+  },
+  "gain_db": 0.9,
+  "lowpass": 14000,
+  "md5": "e1e9caf01c3f6e95d7f857a845633a31",
+  "shelf_db": -1.5
  },
  "twig": {
   "after": {

@@ -60,6 +60,8 @@ static func on_enter(m: GameMap) -> void:
 		var e: Dictionary = r.get("entry", {})
 		if str(e.get("scene", "")) != sid:
 			continue
+		if not shows(id, r):
+			continue  # Tom (C4): no "locked" limo in the field from day 1 — it arrives with the keeper's letter
 		var c := Vector2i(int(e["cell"][0]), int(e["cell"][1]))
 		if m.things.has(c):
 			# Weeds, stones or forage that grew on the spot make way; anything else stays.
@@ -103,6 +105,48 @@ static func on_enter(m: GameMap) -> void:
 				m.add_child(sp)
 
 
+## The travel point is out in the world once the keeper's letter has come (or the way is open).
+static func shows(id: String, r: Dictionary) -> bool:
+	if is_open(id):
+		return true
+	if r.has("mail"):
+		return GameState.run["flags"].has("mega_%s_mail" % id)
+	return can_start(r)
+
+
+## The story steps that raise GameState.progress_tier, worded per arc (C4 c4_11 #3:
+## "chapter N" was wrong in the gangster arc; name the real step instead).
+const TIER_STEPS := {
+	"penguins": [["clear_meadow", "you find what's howling in the east meadow"],
+		["spark", "you build the Crystal Resonator (or beat the Grump Commander)"],
+		["sky_stair", "you climb the great tree in the forest"],
+		["teleporter", "you power the moon teleporter"]],
+	"gangsters": [["clear_meadow", "you check out the east meadow"],
+		["docks", "you beat the Docks boss"],
+		["neon", "you put out Flame in the neon district"],
+		["uptown", "you beat the President's Enforcer"]],
+}
+const TIER_ALT := {"spark": ["wastes_gate", "docks"], "sky_stair": ["neon"], "teleporter": ["uptown"]}
+
+
+## "Opens after you beat the Docks boss." — the next story step this way waits for.
+static func gate_words(r: Dictionary) -> String:
+	var need := int(r.get("unlock", {}).get("tier", 0))
+	var arc := str(GameState.run.get("arc", "penguins"))
+	var steps: Array = TIER_STEPS.get(arc, TIER_STEPS["penguins"])
+	var have := GameState.progress_tier()
+	if have < need:
+		# The tier counts steps done in any order: name the first one not done yet.
+		for st: Array in steps:
+			var done := GameState.quest_done(str(st[0]))
+			for alt in TIER_ALT.get(str(st[0]), []):
+				done = done or GameState.quest_done(str(alt))
+			if not done:
+				return "Opens after %s." % str(st[1])
+	var hint := str(r.get("unlock", {}).get("hint", ""))
+	return hint if hint != "" else "Opens a little later in the story."
+
+
 ## One letter from the keeper when their way first opens up for you.
 static func _mail(id: String, r: Dictionary) -> void:
 	var key := "mega_%s_mail" % id
@@ -130,7 +174,8 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		return
 	if not can_start(r):
 		await m.say([{"who": who, "text": str(L.get("locked", "Not yet."))}])
-		m.hud.toast(str(r.get("unlock", {}).get("hint", {}).get(str(GameState.run.get("arc", "")), "Opens later in your story.")), Color(1, 0.85, 0.6))
+		var hint := str(r.get("unlock", {}).get("hint", {}).get(str(GameState.run.get("arc", "")), ""))
+		m.hud.toast(hint if hint != "" else gate_words(r), Color(1, 0.85, 0.6))
 		return
 	var qid := str(r.get("quest", ""))
 	var d := GameState._quest_def(qid)
@@ -166,6 +211,8 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		if GameState.complete_quest(qid):
 			m.hud.toast(GameMap.quest_done_text(qid), Color(1, 0.9, 0.4))
 	GameState.run["flags"]["mega_%s_open" % id] = true  # (the quest reward sets it too)
+	for nid in MegaRegion.check_unlocks():  # its map tab opens now, not on arrival (c4_11)
+		m.hud.toast("New map tab: %s (Menu > Map)" % str(MegaRegion.get_r(str(nid)).get("name", nid)), Color(0.85, 0.95, 1.0))
 	await _travel_menu(m, id)
 
 
@@ -178,10 +225,26 @@ static func _travel_menu(m: GameMap, id: String) -> void:
 		go_hub(m, id)
 
 
+## The ride's sound, both ways (C4 c4_12 #5): data "sfx_go"/"sfx_back" win, else these.
+const TRAVEL_SFX := {"gloamwood": ["sparkle", "sparkle"], "sunscorch": ["horse", "horse"], "ironline": ["train_depart", "train_depart"],
+	"frostpeak": ["sled_bells", "sled_bells"], "windward": ["airship_whoosh", "airship_whoosh"], "giltcity": ["car_start", "car_door"]}
+
+
+static func travel_sfx(id: String, back: bool) -> String:
+	var r := reg(id)
+	var key := "sfx_back" if back else "sfx_go"
+	if r.has(key):
+		return str(r[key])
+	var pair: Array = TRAVEL_SFX.get(id, [])
+	if not pair.is_empty():
+		return str(pair[1 if back else 0])
+	return str(r.get("sfx", "door"))
+
+
 static func go_hub(m: GameMap, id: String) -> void:
 	var r := reg(id)
 	var sp: Array = r.get("hub_spawn", [10, 10])
-	Music.instance(m.get_tree()).sfx(str(r.get("sfx", "door")), "door")
+	Music.instance(m.get_tree()).sfx(travel_sfx(id, false), "door")
 	m.go_to(hub_of(id), Vector2((float(sp[0]) + 0.5) * GameMap.TILE, (float(sp[1]) + 0.5) * GameMap.TILE), "up")
 
 
@@ -206,4 +269,5 @@ static func _hub_gate(m: GameMap, id: String) -> void:
 		go_hub(m, str(dests[i]))
 		return
 	var hs: Array = e.get("spawn", [e["cell"][0], int(e["cell"][1]) + 2])
+	Music.instance(m.get_tree()).sfx(travel_sfx(id, true), "door")
 	m.go_to(str(e["scene"]), Vector2((float(hs[0]) + 0.5) * GameMap.TILE, (float(hs[1]) + 0.5) * GameMap.TILE), "down")

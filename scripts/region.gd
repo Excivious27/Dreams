@@ -733,8 +733,7 @@ func _boss(thing: Dictionary) -> void:
 	var b := spawn_enemy(bk, player.position + Vector2(40, 0), int(thing.get("tier", -1)))
 	if b:
 		b.set_meta("boss_name", bw if bw != "" else str(thing.get("title", "")))
-	boss_card(bk, str(thing.get("title_gangsters", thing.get("title", bw))) if gang else str(thing.get("title", bw)))
-	Music.instance(get_tree()).play(boss_music)
+	boss_card(bk, str(thing.get("title_gangsters", thing.get("title", bw))) if gang else str(thing.get("title", bw)))  # boss_card starts the boss's song (C4: no second play)
 	player.frozen = false
 	_boss_node = b
 	_boss_thing = thing

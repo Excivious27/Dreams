@@ -1,4 +1,7 @@
 {
+ "airship_whoosh": [
+  "air-whoosh/whoosh2_0.wav"
+ ],
  "alarm": [
   "alarm-2/alarm_0.wav",
   "30-cc0-sfx-loops/sfx_loops_x/alarm_01.ogg"
@@ -531,6 +534,9 @@
  "siren": [
   "sirens-and-alarm-noise/siren_0.mp3"
  ],
+ "sled_bells": [
+  "bell-dingschimes/sled_jingle.wav"
+ ],
  "slime": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_slime_01.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_slime_02.ogg",
@@ -692,6 +698,9 @@
   "68-workshop-sounds/workshop_x/workshop/workshop - tool clatter.wav",
   "68-workshop-sounds/workshop_x/workshop/workshop - tool rummaging.wav",
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/tools_01.ogg"
+ ],
+ "train_depart": [
+  "bell-dingschimes/station_depart.wav"
  ],
  "twig": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/wood-twigs-break-01.wav",
