@@ -1903,8 +1903,9 @@ func _place_props() -> void:
 		var hn := hs + "_night"  # lit windows after dark (the night pictures were cut but unused)
 		var night_pic := GameState.is_night() and Art.has("buildings", hn)
 		var hsc := float(hl["scale"]) if hs == str(hl["sprite"]) else HOUSE_SCALE
-		_house_pics = [hs, hn if Art.has("buildings", hn) else hs, night_pic]
-		var hp := prop("buildings", hn if night_pic else hs, Vector2i(house_r.position.x, house_r.end.y - 1), house_r.size.x - 1, 0.0, false, hsc)
+		var hday := WorldGen.winter_look("buildings", hs)  # snowy roof in winter (C5 P3 art)
+		_house_pics = [hday, hn if Art.has("buildings", hn) else hday, night_pic]
+		var hp := prop("buildings", hn if night_pic else hday, Vector2i(house_r.position.x, house_r.end.y - 1), house_r.size.x - 1, 0.0, false, hsc)
 		_house_sprite = hp
 		_house_scale = hsc
 		if night_pic:
@@ -2034,7 +2035,7 @@ func _place_props() -> void:
 					nm = nm.replace("rock_", "rock_snow_")
 				prop("nature", nm, c)
 			"log":
-				var nm: String = {"fall": "log_fall", "summer": "logs"}.get(season, "log")
+				var nm: String = {"fall": "log_fall", "summer": "logs", "winter": "log_snow"}.get(season, "log")
 				prop("nature", nm if Art.has("nature", nm) else "log", c)
 			"stump":
 				var nm: String = {"fall": "stump_fall", "winter": "stump_snow"}.get(season, "stump")
