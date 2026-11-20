@@ -41,7 +41,7 @@ static func state() -> Dictionary:
 
 
 static func max_hp() -> int:
-	var hp := 30 + int(GameState.bonus("pup", "pet_hp")) + int(GameState.bonus("leadership", "pet_bond")) + 4 * (GameState.skill_level("pup") - 1)
+	var hp := 30 + int(GameState.bonus("pup", "pet_hp")) + int(GameState.bonus("leadership", "pet_bond")) + 4 * (GameState.skill_level_eff("pup") - 1)
 	for slot in ["collar", "pack", "boots"]:
 		var g := str(state()["gear"].get(slot, ""))
 		hp += int(GameState.items.get(g, {}).get("pet_hp", 0))

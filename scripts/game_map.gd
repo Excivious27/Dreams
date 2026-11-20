@@ -2083,7 +2083,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 		# Enemies have a body ~12px wide, 14 tall above their feet.
 		var body := Rect2(e.position + Vector2(-6, -14), Vector2(12, 14))
 		if r.intersects(body) and line_clear(from + Vector2(0, -4), e.position + Vector2(0, -4)):
-			var crit := randf() < minf(0.40, 0.01 * GameState.skill_level("combat") + GameState.bonus("combat", "crit"))
+			var crit := randf() < minf(0.40, 0.01 * GameState.skill_level_eff("combat") + GameState.bonus("combat", "crit"))
 			var dmg := int(round(damage * (1.5 if crit else 1.0)))
 			if e.kind.begins_with("thug_") and Crew.perk_level("doors") >= 2:
 				dmg += 2

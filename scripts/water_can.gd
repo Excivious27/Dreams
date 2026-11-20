@@ -16,7 +16,7 @@ const SOURCE_WORDS := ["well", "trough", "fountain", "pump"]
 
 
 static func cap() -> int:
-	var lvl := GameState.skill_level("farming") if GameState.run.has("skills") else 1
+	var lvl := GameState.skill_level_eff("farming") if GameState.run.has("skills") else 1
 	return BASE + PER_TIER * GameState.tool_tier("can") + PER_LEVEL * (lvl - 1)
 
 

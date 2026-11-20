@@ -1140,7 +1140,7 @@ const XP_FLAT_END := 13
 const XP_GROWTH := 1.03
 ## Per-level terms (hp/mana per level, crop quality, can size, spell power,
 ## crit, player tier) stop growing here: past it, levels buy tree points only.
-const LEVEL_EFFECT_CAP := 30
+const LEVEL_EFFECT_CAP := 20
 ## Leadership's team_xp nodes stack across the tree: one ceiling.
 const TEAM_XP_CAP := 0.25
 

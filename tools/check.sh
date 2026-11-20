@@ -87,6 +87,13 @@ if ! echo "$fwout" | grep -q "first_week_test: 0 failures"; then
   echo "First week test failed"; exit 1
 fi
 
+echo "== C8 core curves: levels, caps, swings, food, prices, sleep =="
+ccout="$("$GODOT" --headless --path . -s res://tools/c8_curve_test.gd 2>&1)"
+echo "$ccout" | grep -E "FAIL|c8_curve_test|pacing|swings by|SCRIPT ERROR" || true
+if ! echo "$ccout" | grep -q "c8_curve_test: 0 failures"; then
+  echo "C8 curve test failed"; exit 1
+fi
+
 echo "== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) =="
 fhout="$("$GODOT" --headless --path . -s res://tools/first_hours_test.gd 2>&1)"
 echo "$fhout" | grep -E "FAIL|first_hours_test|SCRIPT ERROR" || true
