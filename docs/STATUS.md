@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
+
 ## 2026-11-20 — CONDUCT 11a (2026-11-20): ranching core. 9 classic animals both arcs (tools/gen_ranch.py -> data/ranch.json, Ranch, RanchFarm), coop/barn 1-3, hutch/sty 1-2, apiary 1-3, silo 1-3; grazing on dry days + one silo feeder rule; petting/friendship, goods with stars; breeding without gender checks + incubator; rehome to Tam's pasture (never meat); Ranching skill tree (14th); Mayo Machine, Honey Extractor, Down Pillow, Ranch log; TeamAnimals/TeamBeast (lessons, team of 2) and Chores (overnight helpers, day 8); Bramble, Animal Show/Best Egg, Benno/Hazel stalls, CC0 oink/buzz/thump; 25 renders (tools/slice_c11a.py). Integration CI 2x PASS, final CI pending. Report docs/reports/CONDUCT-11a.md, docs/guides/GUIDE-36.md. Gap: only Tam's shop opens the animal counter (Hazel/Posy have no shop id).
 
 ## 2026-11-20 — C11a P5 (2026-11-20): ranch villagers: favour/board sources by tier (Mail.ranch_source_ok), storm letter only with animals, ranch welcome/first-goods letters both arcs, Tam's lamb Bramble (keepsake, never rehomed) and highland letters, spouse feeds the roster, Harvest Fair crop contest fixes + Animal Show/Best Egg, Benno and Hazel market stalls, heart perks fixed, quest gates, Tam intro (also at his hut), ambience pen spots from real animals, CC0 oink/buzz/thump. Test tools/ranch_villagers_test.gd.

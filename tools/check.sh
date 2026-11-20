@@ -783,6 +783,13 @@ if ! echo "$rp3out" | grep -q "ranch_p3_test: OK"; then
   echo "Ranch P3 test failed"; exit 1
 fi
 
+echo "== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster =="
+rsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_shop_test.gd 2>&1)"
+echo "$rsout" | grep -E "FAIL|SCRIPT ERROR|ranch_shop_test" || true
+if ! echo "$rsout" | grep -q "ranch_shop_test: [0-9]* checks, 0 failures" || echo "$rsout" | grep -q "SCRIPT ERROR"; then
+  echo "ranch_shop_test failed"; exit 1
+fi
+
 echo "== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art =="
 ciout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c11a_integ_test.gd 2>&1)"
 echo "$ciout" | grep -E "FAIL|SCRIPT ERROR|c11a_integ_test" || true

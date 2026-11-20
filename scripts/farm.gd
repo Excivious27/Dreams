@@ -2197,9 +2197,14 @@ func _place_props() -> void:
 		var fp := prop("props", str(f[1]), f[0], 0, 0.0, bool(f[2]), float(f[3]))
 		if fp and str(f[1]).ends_with("_v"):
 			fp.offset.y += 4.0  # a side post stands on its cell, not above it
+	if not Net.visiting():
+		for bk in ["coop", "barn"]:
+			if builds.has(bk):
+				Ranch.starter_gift(bk)  # fix2: Hazel's hens / the first barn animals live in the roster
 	_spawn_roster(builds)
 	_place_incubator()
-	if builds.has("coop") and not RanchFarm.uses_roster("coop"):
+	# The old hard-coded herd is only a guest's view of a host whose roster is empty (fix2).
+	if builds.has("coop") and Net.visiting() and not RanchFarm.uses_roster("coop"):
 		var pen := COOP_PEN
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick" if coop_kids else "chicken", Vector2i(28, 11), pen, coop_kids, "chick_28_11")
 		if Builds.built_tier("coop") >= 2:
@@ -2214,7 +2219,7 @@ func _place_props() -> void:
 						GameState.run["flags"]["hatch_peep_%d" % hd] = true
 						_hatch_news(["A chick"])
 					_animal("chick" if young else "chicken", RanchFarm.pen_cells(pen, hatch.size())[hi] if hi >= 4 else Vector2i(26 + hi, 9), pen, young, "hatch_%d" % hi)
-	if builds.has("barn") and not RanchFarm.uses_roster("barn"):
+	if builds.has("barn") and Net.visiting() and not RanchFarm.uses_roster("barn"):
 		var pen := BARN_PEN
 		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(31, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(34, 6), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(31, 7), pen, barn_kids, "lamb_36_7")  # (name kept: friendship)
 		if Builds.built_tier("barn") >= 2:

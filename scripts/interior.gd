@@ -112,6 +112,9 @@ func build() -> void:
 		I = RecCenter.build_room(self, I)  # arc skin, lane cells
 	else:
 		I = arc_skin(I)
+	var rc := Shops.ranch_counters(interior_id)  # fix2: Hazel's / Posy's animal counters (ranch.json sellers)
+	if not rc.is_empty():
+		I = I.duplicate(); I["things"] = (I.get("things", []) as Array) + rc
 	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))

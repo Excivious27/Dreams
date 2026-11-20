@@ -154,6 +154,27 @@ LEGACY = [
     ['goat_32_8', 'goat', 'white', 'barn', 2, ''], ['llama_32_6', 'llama', 'cream', 'barn', 2, ''],
     ['goat_kid_33_6', 'goat', 'white', 'barn', 2, 'barn2_day'],
 ]
+# ---- sellers (fix2): every species.buy.seller has a counter Shops.run reaches, in both arcs ---------------
+# seller -> where the counter stands (interior id + cell; Shops.ranch_counters injects it, TownHours.counter_shut
+# keeps the hours), the keeper's words per arc, and who takes over when the seller is away (any away flag set;
+# "gang:" flags only count in the gangster arc). Hazel also sells from her morning market stall (Town.MARKET_STALLS).
+SELLERS = {
+    'tam': dict(name='Tam', interior='', cell=None, away=[], fallback='',
+                greet="Wool, hay, and saplings for the orchard. The sheep did most of the work.",
+                greet_gang="Wool, hay, and saplings for the orchard. The sheep did most of the work."),
+    'hazel': dict(name='Hazel', interior='hazel_house', cell=[5, 5], away=[], fallback='',
+                  greet="Hens, ducks, cows and pigs, all hand-raised in my yard. Who's coming home with you?",
+                  greet_gang="Birds, cattle and hogs off my own yard. Cash, and treat them right."),
+    'posy': dict(name='Posy', interior='bakery', cell=[5, 5], away=['posy_gone', 'gang:shop_1'], fallback='hazel',
+                 greet="Rabbits from out back and hives for honey. Bees make the best cakes, you know.",
+                 greet_gang="Rabbits and hives off the back lot. Honey sells, and nobody asks where from."),
+}
+# Hazel's welcome gift (Mail RANCH_LETTERS "Your hens are settled"): animals that join the roster the first
+# time a home reaches a tier (Ranch.starter_gift), always leaving room to buy more (check() keeps it under cap).
+STARTER = {
+    'coop': {'1': [['chicken', 'white'], ['chicken', 'white']], '2': [['duck', 'mallard']]},
+    'barn': {'1': [['cow', 'brown'], ['sheep', 'white']], '2': [['goat', 'white']]},
+}
 LEGACY_MOVED = {'cow_bw_36_8': 'cow_bw_31_8'}  # spawn cells that moved before C11 (keep the higher streak)
 
 # ---- processing (the stations P3 builds; listed here so recipes and quests share one table) --------------
@@ -220,7 +241,7 @@ def build():
             if s['home'] not in p['home']:
                 p['home'].append(s['home'])
     return dict(species=species, buildings=BUILDINGS, products=products, rules=RULES, processing=PROCESSING,
-                legacy=LEGACY, legacy_moved=LEGACY_MOVED, planned=PLANNED), man
+                legacy=LEGACY, legacy_moved=LEGACY_MOVED, planned=PLANNED, sellers=SELLERS, starter=STARTER), man
 
 
 def check(data, man, items):
@@ -269,6 +290,28 @@ def check(data, man, items):
             fails.append('legacy %s: unknown species %s' % (row[0], row[1]))
         elif not any(v['id'] == row[2] for v in data['species'][row[1]]['art']['variants']):
             fails.append('legacy %s: unknown variant %s' % (row[0], row[2]))
+    for sid, s in data['species'].items():   # fix2: every seller has a counter (or a fallback that has one)
+        sel = s['buy']['seller']
+        if sel not in SELLERS:
+            fails.append('%s: seller %s has no SELLERS row' % (sid, sel))
+        elif SELLERS[sel]['fallback'] and SELLERS[sel]['fallback'] not in SELLERS:
+            fails.append('seller %s: fallback %s unknown' % (sel, SELLERS[sel]['fallback']))
+    for sel, r in SELLERS.items():
+        for w in (r['greet'], r['greet_gang']):
+            if BANNED.search(w):
+                fails.append('seller %s: banned word' % sel)
+    for home, tiers in STARTER.items():
+        got = 0
+        for t, rows in sorted(tiers.items()):
+            got += len(rows)
+            cap = next((b['cap'] for b in BUILDINGS[home] if b['tier'] == int(t)), 0)
+            if got >= cap:
+                fails.append('starter %s tier %s: %d animals leave no room (cap %d)' % (home, t, got, cap))
+            for sp, var in rows:
+                if sp not in data['species'] or data['species'][sp]['home'] != home:
+                    fails.append('starter %s: %s does not live there' % (home, sp))
+                elif not any(v['id'] == var for v in data['species'][sp]['art']['variants']):
+                    fails.append('starter %s: unknown variant %s' % (sp, var))
     for k, it in NEW_ITEMS.items():
         if BANNED.search(it['desc']):
             fails.append('item %s: banned word' % k)

@@ -768,6 +768,35 @@ static func _legacy_one(nm: String, sid: String, variant: String, home: String, 
 		a["mood"] = 70 if a["last_fed"] >= _day() - 1 else 50
 
 
+## Hazel's welcome gift (fix2, ranch.json "starter"): the first time a home reaches a tier, its starter
+## animals join the roster grown (record "gift": true), so the farm never needs the old hard-coded herd.
+## A home that already holds migrated legacy animals had its gift. Returns the new uids.
+static func starter_gift(home: String) -> Array:
+	var out: Array = []
+	var all: Dictionary = data().get("starter", {}) if data().get("starter", null) is Dictionary else {}
+	var rows: Dictionary = all.get(home, {}) if all.get(home, null) is Dictionary else {}
+	var t := tier(home)
+	if rows.is_empty() or t <= 0:
+		return out
+	var h := house(home)
+	var given := int(h.get("gift", 0))
+	if given >= t:
+		return out
+	for uid in roster(home):
+		if str(animal(uid).get("legacy", "")) != "":
+			h["gift"] = t
+			return out
+	for tt in range(given + 1, t + 1):
+		for r in rows.get(str(tt), []):
+			var uid := add(str(r[0]), home)
+			if uid != "":
+				animal(uid)["variant"] = str(r[1])
+				animal(uid)["gift"] = true
+				out.append(uid)
+	h["gift"] = t
+	return out
+
+
 ## Legacy node name -> uid (P2 can keep old node names working while it moves spawns to the roster).
 static func uid_of_legacy(nm: String) -> String:
 	for uid in animals():

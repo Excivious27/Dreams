@@ -168,7 +168,7 @@ static func food_note(id: String) -> String:
 
 
 static func run(m: GameMap, shop: String, absent := false) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel", "carpenter": "Tess", "lumi": "Lumi", "crew_marlene": "Marlene", "crew_deuce": "Deuce", "crew_specs": "Specs", "crew_halo": "Halo"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "posy": "Posy", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel", "carpenter": "Tess", "lumi": "Lumi", "crew_marlene": "Marlene", "crew_deuce": "Deuce", "crew_specs": "Specs", "crew_halo": "Halo"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
@@ -188,7 +188,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"crew_deuce": "Signs, cabinets, lights. Make your place look like a winner's.",
 		"crew_specs": "Screens and gadgets, tested twice. Mostly.",
 		"crew_halo": "Garage stock. Chrome, drums, and the odd car for the yard.",
-	}.get(shop, "What'll it be?")
+	}.get(shop, seller_greet(shop) if seller_greet(shop) != "" else "What'll it be?")
 	if absent:
 		# Nobody at the counter: a note on the till, no keeper's voice.
 		greet = "A note on the till: \"Back soon. Prices on the tags. - %s\"" % keeper
@@ -201,6 +201,13 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
 		m.give("turnip_seed", 10)
 		m.give("energy_tea", 1)
+	# A ranch-only counter (Hazel's farmhouse, Posy's back room: fix2) opens the animal counter straight away.
+	if offers(shop).is_empty() and DecorSources.today(shop).is_empty() and not seller_row(shop).is_empty():
+		if absent:
+			await m.say([{"text": greet}])
+		else:
+			await animal_counter(m, shop, keeper)
+		return
 	# A decor-only counter (Hazel, Lumi, crew shops: no item offers) opens its shelf straight away (C10b P1).
 	if offers(shop).is_empty() and not DecorSources.today(shop).is_empty():
 		await DecorSources.shelf(m, shop, keeper if keeper != "" else "Shelf")
@@ -285,7 +292,58 @@ static func ranch_supplies() -> Array:
 	return RANCH_SUPPLIES.filter(func(i: String) -> bool: return GameState.items.has(i))
 
 
-## Ranch species a keeper sells (data/ranch.json species.buy.seller = shop/keeper id), this arc only.
+## A ranch seller's row (ranch.json "sellers", tools/gen_ranch.py SELLERS) or {}.
+static func seller_row(seller: String) -> Dictionary:
+	var all: Dictionary = Ranch.data().get("sellers", {}) if Ranch.data().get("sellers", null) is Dictionary else {}
+	return all.get(seller.to_lower(), {}) if all.get(seller.to_lower(), null) is Dictionary else {}
+
+
+## The seller's greeting in this arc ("" = not a ranch seller).
+static func seller_greet(seller: String) -> String:
+	var r := seller_row(seller)
+	return str(r.get("greet" if GameState.is_penguins() else "greet_gang", r.get("greet", "")))
+
+
+## Is a seller away today (an away flag set: "gang:<flag>" only counts in the gangster arc)?
+static func seller_away(seller: String) -> bool:
+	var fl: Dictionary = GameState.run.get("flags", {}) if GameState.run.get("flags", null) is Dictionary else {}
+	for f in seller_row(seller).get("away", []):
+		var fs := str(f)
+		if fs.begins_with("gang:"):
+			if not GameState.is_penguins() and fl.has(fs.trim_prefix("gang:")):
+				return true
+		elif fl.has(fs):
+			return true
+	return false
+
+
+## Who actually sells a species today: its buy.seller, or that seller's fallback while they're away.
+static func seller_of(sid: String) -> String:
+	var buy: Variant = Ranch.species(sid).get("buy", {})
+	var sel := str((buy as Dictionary).get("seller", "")).to_lower() if buy is Dictionary else ""
+	if sel != "" and seller_away(sel):
+		var fb := str(seller_row(sel).get("fallback", ""))
+		if fb != "":
+			return fb
+	return sel
+
+
+## Counter things for a room (fix2): every ranch seller whose counter stands in this interior and who is
+## in today. Interior.build appends them to the room's things (the till asks TownHours.counter_shut).
+static func ranch_counters(iid: String) -> Array:
+	var out: Array = []
+	var all: Dictionary = Ranch.data().get("sellers", {}) if Ranch.data().get("sellers", null) is Dictionary else {}
+	for sel in all:
+		var r: Dictionary = all[sel]
+		if str(r.get("interior", "")) != iid or iid == "" or not (r.get("cell", null) is Array) or seller_away(str(sel)):
+			continue
+		var c: Array = r["cell"]
+		out.append({"type": "counter", "shop": str(sel), "cell": [int(c[0]), int(c[1])], "hint": "A: animals", "solid": false})
+	return out
+
+
+## Ranch species a keeper sells (data/ranch.json species.buy.seller = shop/keeper id, or the keeper standing
+## in for an away seller: Shops.seller_of), this arc only.
 static func animals_for(seller: String) -> Array:
 	var out: Array = []
 	var arc := str(GameState.run.get("arc", ""))
@@ -293,7 +351,7 @@ static func animals_for(seller: String) -> Array:
 	for sid in sp_all:
 		var sp: Dictionary = sp_all[sid]
 		var buy: Dictionary = sp.get("buy", {}) if sp.get("buy", {}) is Dictionary else {}
-		if buy.is_empty() or str(buy.get("seller", "")).to_lower() != seller.to_lower() or int(buy.get("price", 0)) <= 0:
+		if buy.is_empty() or seller_of(str(sid)) != seller.to_lower() or int(buy.get("price", 0)) <= 0:
 			continue
 		if str(sp.get("arc", "")) not in ["", arc]:
 			continue
@@ -336,6 +394,8 @@ static func animal_counter(m: GameMap, seller: String, keeper: String) -> void:
 		var d := Dialogue.instance(m.get_tree())
 		var gang: bool = str(GameState.run.get("arc", "")) == "gangsters"
 		var greet := "Healthy stock, raised right. Nobody asks questions about a farm." if gang else "Healthy animals, raised with care. Who's coming home with you?"
+		if offers(seller).is_empty() and seller_greet(seller) != "":
+			greet = seller_greet(seller)  # a ranch-only counter speaks for itself (fix2)
 		d.say([{"who": keeper, "text": "%s  (you have %s)" % [greet, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
 		await d.finished
 		var pick := d.last_choice
