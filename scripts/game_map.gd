@@ -9,6 +9,7 @@ const TILE := 16
 static var next_spawn := Vector2.ZERO
 static var next_facing := "down"
 static var next_interior := ""
+static var exits_off := false  # probes (perf_probe) walk without leaving the map
 
 var cols := 20
 var rows := 30
@@ -1278,7 +1279,7 @@ func descent_near(c: Vector2i) -> Vector2i:
 
 
 func check_exits() -> void:
-	if player == null or _changing:
+	if player == null or _changing or exits_off:
 		return
 	var c := player.cell()
 	if not _exit_init:
@@ -4408,30 +4409,54 @@ var _bake_stripes := {}
 
 
 func _border_stripes() -> void:
-	# One Sprite2D per border tree under a y-sorted holder: a chunk render then draws
-	# only the trees that touch it (Godot culls each sprite), still in y order.
+	# Border trees as a few canvas items: one per (tile row, 256 px column) bucket that
+	# draws its trees itself (C9 P6: was one Sprite2D per tree, ~1000 nodes on the forest
+	# for the whole visit). Rows go top to bottom so the y order holds; trees in one row
+	# share a y (their order was free before too), and Godot still culls each bucket
+	# against the chunk being rendered.
 	var holder: Node2D = _bake_stripes.get("trees")
-	if holder != null and holder.get_child_count() == _border_draw.size():
+	var sig := _border_draw.size()
+	if holder != null and int(holder.get_meta("sig", -1)) == sig:
 		return  # the band never changes after _build_border
 	if holder == null:
 		holder = Node2D.new()
-		holder.y_sort_enabled = true
 		holder.texture_filter = texture_filter
 		add_child(holder)
 		_bake_stripes["trees"] = holder
 	for ch in holder.get_children():
 		holder.remove_child(ch)
 		ch.free()
+	holder.set_meta("sig", sig)
+	var buckets := {}  # Vector2i(col bucket, row) -> BorderBucket
+	var order: Array[Vector2i] = []
 	for item: Array in _border_draw:
 		var t := Art.tex(str(item[1]), str(item[2]))
-		var s := Sprite2D.new()
-		if t != null:
-			s.texture = t
-			s.centered = false
-			s.scale = Vector2(0.5, 0.5)
-			s.offset = Vector2(-t.get_width() / 2.0, -t.get_height())
-		s.position = offset() + Vector2((item[0] as Vector2i) * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
-		holder.add_child(s)
+		if t == null:
+			continue
+		var c: Vector2i = item[0]
+		var base := offset() + Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
+		var sz := Vector2(t.get_width(), t.get_height()) * 0.5
+		var key := Vector2i(floori(base.x / BORDER_BUCKET_W), c.y)
+		var b: BorderBucket = buckets.get(key)
+		if b == null:
+			b = BorderBucket.new()
+			buckets[key] = b
+			order.append(key)
+		b.items.append([t, Rect2(base - Vector2(sz.x / 2.0, sz.y), sz)])
+	order.sort_custom(func(a: Vector2i, b2: Vector2i) -> bool: return a.y < b2.y or (a.y == b2.y and a.x < b2.x))
+	for key in order:
+		holder.add_child(buckets[key])
+
+
+const BORDER_BUCKET_W := 256.0  # px: border-tree bucket width (one bake chunk)
+
+
+## A bucket of border trees on one tile row: one canvas item, drawn in one go.
+class BorderBucket extends Node2D:
+	var items: Array = []  # [Texture2D, Rect2]
+	func _draw() -> void:
+		for it: Array in items:
+			draw_texture_rect(it[0], it[1], false)
 
 
 ## Shared fishing minigame: cast, wait for the bite, press A. `pool` is the
