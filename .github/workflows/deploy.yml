@@ -30,6 +30,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.same.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -113,27 +115,38 @@ jobs:
           size=$(stat -c %s build/web/index.pck)
           echo "index.pck: $((size / 1048576)) MB"
           echo "### index.pck: $((size / 1048576)) MB" >> "$GITHUB_STEP_SUMMARY"
-          test "$size" -lt 167772160 || { echo "pck over 160 MB: is new art imported lossless? run tools/set_import_lossy.py"; exit 1; }
+          test "$size" -lt 146800640 || { echo "pck over 140 MB: is new art imported lossless? run tools/set_import_lossy.py"; exit 1; }
 
-      # Phones must get the NEW game when they update: the service worker's own
-      # downloads skip the browser's 10-minute HTTP cache.
-      - name: Make updates bypass the HTTP cache
+      # Service worker (cache bypass, offline launch from /Dreams/), maskable
+      # icons, build.json (web/post_export.py).
+      - name: Patch the export
+        run: python3 web/post_export.py build/web "${{ github.sha }}"
+
+      # An unchanged game (same pck, wasm and songs) is not re-uploaded: every
+      # deploy makes phones download the whole pack again.
+      - name: Skip an unchanged game
+        id: same
         run: |
-          sw=build/web/index.service.worker.js
-          grep -q "cache.addAll(CACHED_FILES)" "$sw"
-          grep -q "self.fetch(event.request)" "$sw"
-          sed -i "s|cache.addAll(CACHED_FILES)|cache.addAll(CACHED_FILES.map((u) => new Request(u, {cache: 'reload'})))|" "$sw"
-          sed -i "s|self.fetch(event.request)|self.fetch(event.request.mode === 'navigate' ? event.request : new Request(event.request, {cache: 'no-cache'}))|" "$sw"
-          grep -q "cache: 'reload'" "$sw"
+          live=$(curl -fsS "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/build.json" 2>/dev/null || echo '{}')
+          now=$(python3 -c "import json;print(json.dumps(json.load(open('build/web/build.json'))['game'],sort_keys=True))")
+          was=$(echo "$live" | python3 -c "import json,sys;d=json.load(sys.stdin);print(json.dumps(d.get('game',{}),sort_keys=True))" 2>/dev/null || echo "")
+          if [ "$now" = "$was" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "### game unchanged: deploy skipped" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"; echo "### deploying ${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - uses: actions/configure-pages@v5
+        if: steps.same.outputs.changed == 'true'
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.same.outputs.changed == 'true'
         with:
           path: build/web
 
   deploy:
     needs: build
+    if: needs.build.outputs.changed == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -150,3 +163,56 @@ jobs:
             sleep 20
           done
           echo "music/town.ogg not reachable on the deployed site"; exit 1
+
+  # Steam Deck / Linux native build: export with the "Linux" preset and start it
+  # headless for a few seconds, so the preset stays valid (docs/STEAM-DECK.md).
+  # Runs beside the web build; it never blocks the web deploy.
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Godot and Linux export templates
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-linux
+      - name: Download Godot and Linux export templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          T="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$HOME/godot" "$T"
+          cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip
+          mv "Godot_v${V}_linux.x86_64" godot
+          chmod +x godot
+          rm godot.zip
+          curl -fsSL -o templates.tpz "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_export_templates.tpz"
+          unzip -q templates.tpz
+          mv templates/linux_release.x86_64 templates/linux_debug.x86_64 "$T/"
+          rm -rf templates templates.tpz
+      - name: Add Godot to PATH
+        run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Cache imported assets
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-import-linux-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          restore-keys: |
+            godot-import-linux-${{ env.GODOT_VERSION }}-
+      - name: Export and start the Linux build
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --import 2>&1 | tail -n 5
+          mkdir -p build/linux
+          godot --headless --path . --export-release "Linux" build/linux/Dreams.x86_64 2>&1 | tail -n 20
+          test -x build/linux/Dreams.x86_64
+          echo "### Linux build: $(( $(stat -c %s build/linux/Dreams.x86_64) / 1048576 )) MB" >> "$GITHUB_STEP_SUMMARY"
+          out="$(timeout 120 build/linux/Dreams.x86_64 --headless --quit-after 300 2>&1)"; echo "$out" | tail -n 30
+          if echo "$out" | grep -E "SCRIPT ERROR|Parse Error|Failed to load" ; then exit 1; fi
