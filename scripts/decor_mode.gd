@@ -1776,6 +1776,12 @@ func _pan() -> void:
 			off[ax] += cp[ax] - (centre - inner)
 		elif cp[ax] > centre + inner:
 			off[ax] += cp[ax] - (centre + inner)
+		# Never past the room/yard edge: no black void beside the Manor (c10b_09-11).
+		var lo := (area.position.x if ax == 0 else area.position.y) + span / 2.0
+		var hi := (area.end.x if ax == 0 else area.end.y) - span / 2.0
+		var shift := 0.0 if ax == 0 else (480.0 - _bar_rect.position.y) / 2.0
+		var c2 := map.player.position[ax] + off[ax] - shift
+		off[ax] += clampf(c2, lo, hi) - c2
 	cam.offset = off
 
 
