@@ -1049,6 +1049,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
 				hud.toast("Not on a growing crop. Put it on open ground or empty soil.")
 				return true
+			# A spot kept clear (decor, pen, service front, parking): say why, never a silent hoe.
+			if GameState.held_tool() == "hoe" and not things.has(c) and not blocked.has(c) and till_why(c) != "" and not (GameState.run["farm"] as Dictionary).has("%d,%d" % [c.x, c.y]):
+				ToolHint.say(self, till_why(c))
+				return true
 			# Open grass in front of you: farm it (hoe / seeds / water / harvest).
 			if _tillable(c) and _farm_tile(c, sel):
 				return true
@@ -1072,6 +1076,8 @@ func till_why(c: Vector2i) -> String:
 		return "Keep that spot clear: it's in front of %s." % str(_apron_cells()[c])
 	if _mega_cells().has(c):
 		return "Leave room here: something will park on this spot."
+	if c.y < house_r.position.y and c.y >= house_r.position.y - 3 and c.x >= house_r.position.x and c.x < house_r.end.x:
+		return "It would be hidden behind the roof."  # the picture reaches above the footprint (c10b_02_23)
 	return ""
 
 
@@ -1099,8 +1105,8 @@ func _tillable(c: Vector2i) -> bool:
 	for e in exits:
 		if (e["rect"] as Rect2i).has_point(c):
 			return false
-	if till_why(c) != "":
-		return false  # decor, built pens, service fronts, travel spots (c10b_02_16/19/20)
+	if till_why(c) != "" and not (GameState.run.get("farm", {}) as Dictionary).has("%d,%d" % [c.x, c.y]):
+		return false  # new soil only: decor, built pens, service fronts, travel spots (c10b_02_16/19/20); old fields stay farmable
 	return true
 
 
