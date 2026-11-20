@@ -142,6 +142,14 @@ if ! echo "$nlout" | grep -q "night_light_test: 0 failures"; then
   echo "night_light_test failed"; exit 1
 fi
 
+echo "== gangster interior skins (c5_04) =="
+isout="$("$GODOT" --headless --path . -s res://tools/interior_skin_test.gd 2>&1)"
+echo "$isout" | grep -E "FAIL|SCRIPT ERROR|interior_skin_test" || true
+if ! echo "$isout" | grep -q "interior_skin_test: 0 failures"; then
+  echo "interior_skin_test failed"; exit 1
+fi
+
+
 
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true

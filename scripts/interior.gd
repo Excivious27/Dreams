@@ -109,6 +109,8 @@ func build() -> void:
 	rows = int(I.get("rows", 11))
 	if bool(I.get("rec", false)):
 		I = RecCenter.build_room(self, I)  # arc skin, lane cells
+	else:
+		I = arc_skin(I)
 	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))
@@ -123,6 +125,57 @@ func build() -> void:
 			if k != "cell":
 				dd[k] = t[k]
 		set_thing(int(c[0]), int(c[1]), dd, bool(t.get("solid", true)))
+
+
+## Gangster-town look for a room (c5_04 #1): interiors.json "gangsters" block.
+## Plain keys replace the room's (floor, wall, intro, music, windows...);
+## "prop_swap" {old: new} renames props, "props_add" appends props,
+## "props_drop" [names] removes them, "texts" {thing index: text} rewords notes,
+## "if_flag" {flag: block} applies a further block once that flag is set
+## (a crew member's shop moved in). Never writes into the loaded data.
+static func arc_skin(d: Dictionary) -> Dictionary:
+	if GameState.is_penguins() or not (d.get("gangsters") is Dictionary):
+		return d
+	var out := d.duplicate(true)
+	var g: Dictionary = d["gangsters"]
+	_skin_merge(out, g)
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var ifs: Dictionary = g.get("if_flag", {})
+	for f: String in ifs:
+		if fl.has(f):
+			_skin_merge(out, ifs[f])
+	out.erase("gangsters")
+	return out
+
+
+static func _skin_merge(out: Dictionary, g: Dictionary) -> void:
+	for k: String in g:
+		match k:
+			"if_flag":
+				pass
+			"prop_swap":
+				var sw: Dictionary = g[k]
+				for p: Dictionary in out.get("props", []):
+					if sw.has(str(p.get("name", ""))):
+						p["name"] = sw[str(p["name"])]
+			"props_drop":
+				var keep: Array = []
+				for p: Dictionary in out.get("props", []):
+					if not (str(p.get("name", "")) in g[k]):
+						keep.append(p)
+				out["props"] = keep
+			"props_add":
+				var ps: Array = out.get("props", [])
+				for p: Dictionary in g[k]:
+					ps.append(p.duplicate(true))
+				out["props"] = ps
+			"texts":
+				var th: Array = out.get("things", [])
+				for i: String in g[k]:
+					if int(i) < th.size():
+						(th[int(i)] as Dictionary)["text"] = g[k][i]
+			_:
+				out[k] = g[k]
 
 
 func after_ready() -> void:
