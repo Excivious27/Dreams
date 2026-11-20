@@ -185,7 +185,7 @@
   "glow": 28,
   "id": "dc_arc_pinball",
   "layer": "floor",
-  "name": "Pinball Table",
+  "name": "Arcade Pinball Table",
   "px": [
    30,
    59
@@ -365,7 +365,7 @@
   "glow": 0,
   "id": "dc_art_round_mirror",
   "layer": "wall",
-  "name": "Round Mirror",
+  "name": "Gilt Round Mirror",
   "px": [
    45,
    48
@@ -4019,7 +4019,7 @@
   "glow": 0,
   "id": "dc_kit_dining",
   "layer": "floor",
-  "name": "Round Dining Table",
+  "name": "Family Dining Table",
   "px": [
    60,
    50
@@ -4159,7 +4159,7 @@
   "glow": 36,
   "id": "dc_light_candelabra",
   "layer": "floor",
-  "name": "Candelabra",
+  "name": "Five-Candle Candelabra",
   "px": [
    30,
    56
@@ -4239,7 +4239,7 @@
   "glow": 56,
   "id": "dc_light_fireplace",
   "layer": "floor",
-  "name": "Stone Fireplace",
+  "name": "Hearthstone Fireplace",
   "px": [
    60,
    65
@@ -4540,7 +4540,7 @@
   "glow": 0,
   "id": "dc_moon_telescope",
   "layer": "floor",
-  "name": "Brass Telescope",
+  "name": "Moonlit Telescope",
   "px": [
    30,
    47
@@ -5848,7 +5848,7 @@
   "glow": 0,
   "id": "dc_safe_bunk",
   "layer": "floor",
-  "name": "Bunk Bed",
+  "name": "Safehouse Bunk Bed",
   "px": [
    60,
    69
@@ -6703,7 +6703,7 @@
   "glow": 0,
   "id": "dc_stat_bust",
   "layer": "floor",
-  "name": "Marble Bust",
+  "name": "Gallery Marble Bust",
   "px": [
    30,
    57
@@ -7063,7 +7063,7 @@
   "glow": 0,
   "id": "dc_top_globe",
   "layer": "top",
-  "name": "Desk Globe",
+  "name": "Little Desk Globe",
   "px": [
    21,
    29

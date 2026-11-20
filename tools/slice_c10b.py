@@ -716,6 +716,11 @@ RENAME = {
     "dc_top_snow_globe": "Snowy Village Globe", "dc_show_crystal_tree": "Glow Glass Tree",
     "dc_top_ice_crystal": "Ice Cube Paperweight", "dc_stat_trophy": "Champion's Cup",
     "dc_glight_streetlamp": "Mini Street Lamp", "dc_ice_snowman": "Igloo Snowman",
+    # names gen_decor already uses (its merge would append " II")
+    "dc_arc_pinball": "Arcade Pinball Table", "dc_art_round_mirror": "Gilt Round Mirror", "dc_kit_dining": "Family Dining Table",
+    "dc_light_candelabra": "Five-Candle Candelabra", "dc_light_fireplace": "Hearthstone Fireplace",
+    "dc_moon_telescope": "Moonlit Telescope", "dc_safe_bunk": "Safehouse Bunk Bed", "dc_stat_bust": "Gallery Marble Bust",
+    "dc_top_globe": "Little Desk Globe",
 }
 SET_RENAME = {"casino": "velvet_lounge"}
 REARC = {"dc_top_penguin_plush": "penguins", "dc_rug_penguin": "penguins", "dc_stat_penguin_gold": "penguins"}
