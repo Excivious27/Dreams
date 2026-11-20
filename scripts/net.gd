@@ -355,16 +355,57 @@ static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
 			var pd := {}
 			for r in np:
 				if not op.has(r) or op[r] != np[r]:
-					pd[r] = np[r]
+					# A big room (the yard: hundreds of path cells) sends only the pieces
+					# that came and went (c10b_02_07), a small one the whole list.
+					if op.get(r) is Array and np[r] is Array and (np[r] as Array).size() > 40:
+						pd[r] = _piece_ops(op[r], np[r])
+					else:
+						pd[r] = np[r]
 			for r in op:
 				if not np.has(r):
 					pd[r] = null
 			out["decor_home_d"] = {"placed": pd, "wall": (now[k] as Dictionary).get("wall", {}), "floor": (now[k] as Dictionary).get("floor", {})}
+			if (now[k] as Dictionary).has("ext"):
+				out["decor_home_d"]["ext"] = (now[k] as Dictionary)["ext"]  # P3's exterior look (c10b_01-06)
 		else:
 			out[k] = now[k]
 	for k in old:
 		if not now.has(k):
 			out["_gone"].append(k)
+	return out
+
+
+static func _piece_key(p: Variant) -> String:
+	return JSON.stringify(p) if p is Dictionary else str(p)
+
+
+## Pieces removed (by key) and added between two placed lists of one room.
+static func _piece_ops(a: Array, b: Array) -> Dictionary:
+	var ak := {}
+	for p in a:
+		ak[_piece_key(p)] = int(ak.get(_piece_key(p), 0)) + 1
+	var add: Array = []
+	for p in b:
+		var k := _piece_key(p)
+		if int(ak.get(k, 0)) > 0:
+			ak[k] = int(ak[k]) - 1
+		else:
+			add.append(p)
+	var del: Array = []
+	for k in ak:
+		for i in int(ak[k]):
+			del.append(k)
+	return {"_ops": true, "del": del, "add": add}
+
+
+static func _apply_ops(list: Variant, ops: Dictionary) -> Array:
+	var out: Array = (list as Array).duplicate(true) if list is Array else []
+	for k in ops.get("del", []):
+		for i in out.size():
+			if _piece_key(out[i]) == str(k):
+				out.remove_at(i)
+				break
+	out.append_array((ops.get("add", []) as Array).duplicate(true))
 	return out
 
 
@@ -397,10 +438,14 @@ static func merge_delta(run: Dictionary, d: Dictionary) -> void:
 			for r in pv:
 				if pv[r] == null:
 					(home["placed"] as Dictionary).erase(r)
+				elif pv[r] is Dictionary and (pv[r] as Dictionary).has("_ops"):
+					home["placed"][r] = _apply_ops((home["placed"] as Dictionary).get(r, []), pv[r])
 				else:
 					home["placed"][r] = pv[r]
 		home["wall"] = (dh as Dictionary).get("wall", {})
 		home["floor"] = (dh as Dictionary).get("floor", {})
+		if (dh as Dictionary).has("ext"):
+			home["ext"] = (dh as Dictionary)["ext"]
 	var gv: Variant = d.get("_gone", [])
 	if gv is Array:
 		for k in gv:

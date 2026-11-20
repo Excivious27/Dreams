@@ -448,7 +448,14 @@ const WINTER_LOOKS := {"house": "house_snow", "house_2": "house_2_snow", "house_
 
 
 static func winter_look(group: String, name: String) -> String:
-	if GameState.look_se() != "winter" or not WINTER_LOOKS.has(name):
+	if GameState.look_se() != "winter":
+		return name
+	if not WINTER_LOOKS.has(name):
+		# New outdoor art (yard decor, c10b_03) needs no table entry: a drawn
+		# <name>_winter / <name>_snow twin is used when it exists.
+		for suf in ["_winter", "_snow"]:
+			if Art.has(group, name + suf):
+				return name + suf
 		return name
 	var w: String = WINTER_LOOKS[name]
 	return w if Art.has(group, w) else name

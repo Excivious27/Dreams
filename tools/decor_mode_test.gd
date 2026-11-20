@@ -429,6 +429,19 @@ func _c10b(items: Dictionary) -> void:
 	check(r2 < r1 or r2 < 5.0, "an unchanged layout skips the full check")
 	var jd := JSON.stringify(Decor.st()["placed"].get("farm", []))
 	print("  yard save: %d pieces, %d bytes" % [DecorMode.placed("farm").size(), jd.length()])
+	# Co-op: a big yard sends only the pieces that changed.
+	var ya: Array = []
+	for k in 60:
+		ya.append({"id": "t_path", "cell": [k, 3], "rot": 0})
+	var yb := ya.duplicate(true)
+	yb.remove_at(10)
+	yb.append({"id": "t_statue", "cell": [5, 9], "rot": 0})
+	var yd := NetNode.world_delta({"decor_home": {"placed": {"farm": ya}, "wall": {}, "floor": {}}}, {"decor_home": {"placed": {"farm": yb}, "wall": {}, "floor": {}}})
+	var yops: Variant = yd["decor_home_d"]["placed"]["farm"]
+	check(yops is Dictionary and (yops["add"] as Array).size() == 1 and (yops["del"] as Array).size() == 1, "yard delta: one added, one removed")
+	var gy := {"decor_home": {"placed": {"farm": ya.duplicate(true)}, "wall": {}, "floor": {}}}
+	NetNode.merge_delta(gy, yd)
+	check((gy["decor_home"]["placed"]["farm"] as Array).size() == 60 and JSON.stringify(gy["decor_home"]["placed"]["farm"]).contains("t_statue"), "yard delta merges on the guest")
 	# Built pens and service fronts are never tilled.
 	var farm_v: Variant = f
 	check(not f.can_till((farm_v.mail_c as Vector2i) + Vector2i(0, 1)), "no soil in front of the mailbox")
