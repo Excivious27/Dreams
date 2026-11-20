@@ -34,6 +34,31 @@ jobs:
       changed: ${{ steps.same.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/ci-requirements.txt
+      - name: Restore apt downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ci-apt
+          key: ci-apt-${{ runner.os }}-${{ hashFiles('tools/ci_deps_check.py') }}
+      # ONE apt line: the package list lives in tools/ci_deps_check.py (BINARIES); apt runs only for missing tools.
+      - name: CI deps (pip + apt, cached) + ci_deps_check
+        run: |
+          mkdir -p ~/.cache/ci-apt/partial
+          pip install --quiet -r tools/ci-requirements.txt
+          miss="$(python3 tools/ci_deps_check.py --apt-missing)"
+          if [ -n "$miss" ]; then
+            echo "apt: $miss"
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq -o Dir::Cache::Archives="$HOME/.cache/ci-apt" $miss > /dev/null
+            sudo chown -R "$(id -u):$(id -g)" ~/.cache/ci-apt
+          fi
+          python3 tools/ci_deps_check.py
 
       - name: Cache Godot and export templates
         id: cache-godot
@@ -65,17 +90,18 @@ jobs:
       - name: Add Godot to PATH
         run: echo "$HOME/godot" >> "$GITHUB_PATH"
 
-      # Re-importing ~15k textures takes minutes; keep them between deploys.
-      - name: Cache imported assets
-        uses: actions/cache@v4
+      # Re-importing ~20k textures takes minutes; keep them between deploys. Keyed on the
+      # .import files, so a restore from an older key re-imports only changed art. Saved
+      # below only after the smoke test passes (a green main run); conduct-ci.yml restores
+      # the same key (its plan job computes it the same way).
+      - name: Restore imported assets
+        id: import-cache
+        uses: actions/cache/restore@v4
         with:
           path: .godot
-          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}
           restore-keys: |
             godot-import-${{ env.GODOT_VERSION }}-
-
-      - name: Python deps (numpy for the music/sfx checks)
-        run: pip install --quiet numpy pillow scipy && (command -v ffmpeg >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null))
       # The full tools/check.sh gates merges on the CONDUCT CI shards
       # (.github/workflows/conduct-ci.yml); the deploy only needs a clean
       # import and the smoke test, so it can't be blocked by a slow or
@@ -94,6 +120,13 @@ jobs:
           fi
           python3 tools/web_head.py --check
           python3 tools/music_stream.py --check
+
+      - name: Save imported assets (green main run)
+        if: steps.import-cache.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: .godot
+          key: ${{ steps.import-cache.outputs.cache-primary-key }}
 
       - name: Export web build
         shell: bash
@@ -171,6 +204,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/ci-requirements.txt
+      - name: Restore apt downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ci-apt
+          key: ci-apt-${{ runner.os }}-${{ hashFiles('tools/ci_deps_check.py') }}
+      # ONE apt line: the package list lives in tools/ci_deps_check.py (BINARIES); apt runs only for missing tools.
+      - name: CI deps (pip + apt, cached) + ci_deps_check
+        run: |
+          mkdir -p ~/.cache/ci-apt/partial
+          pip install --quiet -r tools/ci-requirements.txt
+          miss="$(python3 tools/ci_deps_check.py --apt-missing)"
+          if [ -n "$miss" ]; then
+            echo "apt: $miss"
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq -o Dir::Cache::Archives="$HOME/.cache/ci-apt" $miss > /dev/null
+            sudo chown -R "$(id -u):$(id -g)" ~/.cache/ci-apt
+          fi
+          python3 tools/ci_deps_check.py
       - name: Cache Godot and Linux export templates
         id: cache-godot
         uses: actions/cache@v4
@@ -202,7 +260,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .godot
-          key: godot-import-linux-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          key: godot-import-linux-${{ env.GODOT_VERSION }}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}
           restore-keys: |
             godot-import-linux-${{ env.GODOT_VERSION }}-
       - name: Export and start the Linux build
