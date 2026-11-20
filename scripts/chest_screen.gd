@@ -116,6 +116,10 @@ func _ready() -> void:
 	_drag.on_lift = func(pl: Dictionary) -> void: _hold(str(pl["grid"]), int(pl["i"]))
 	if key.begins_with("p:"):
 		row2.add_child(_btn("Pick up", _pick_up))
+	# C10a P3: decor never stacks in chests or the bag: it lives in the decor box.
+	var dbx := _btn("Decor box", func() -> void: DecorCatalogue.open(self, "box"))
+	dbx.set_meta("pc_key", "decor_box")
+	row2.add_child(dbx)
 	# Long-press an item: pick it up to place it, or lock / trash / move half.
 	_acts = HBoxContainer.new()
 	_acts.add_theme_constant_override("separation", 2)
@@ -208,6 +212,9 @@ func _process(_d: float) -> void:
 		_hold(str(pr["grid"]), int(pr["i"]))
 	if _arm < 8:
 		return
+	for ch in get_children():
+		if ch is DecorCatalogue:
+			return  # the decor box screen on top owns B/MENU
 	if Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu"):
 		if not _pick.is_empty():
 			_pick = {}
@@ -289,7 +296,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.25, 0.17, 0.1) if id != "" else Color(0.19, 0.13, 0.08)
 	var picked := not _pick.is_empty() and str(_pick["grid"]) == grid and int(_pick["i"]) == idx
-	sb.border_color = Color(1, 0.85, 0.3) if picked else (GameState.rarity_color(id).darkened(0.3) if id != "" else Color(0.1, 0.07, 0.04))
+	sb.border_color = Color(1, 0.85, 0.3) if picked else (DecorCatalogue.rarity_col(id).darkened(0.3) if id != "" else Color(0.1, 0.07, 0.04))
 	sb.set_border_width_all(2 if picked else 1)
 	sb.set_corner_radius_all(2)
 	for st in ["normal", "hover", "pressed", "focus"]:
@@ -343,29 +350,10 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 	return b
 
 
-## Rarity said by count too, not colour alone (c9_07): uncommon 1 dot .. legendary 4,
-## along the slot's bottom-left edge, in the rarity colour with a dark rim.
-const RARITY_RANK := {"uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
-
-
+## Rarity said by count too, not colour alone (c9_07): one shared helper for every slot drawer
+## (C10a P3: mythic 5 dots, unique a star; DecorCatalogue.rarity_dots).
 func _rarity_dots(b: Control, id: String) -> void:
-	var n := int(RARITY_RANK.get(str(GameState.items.get(id, {}).get("rarity", "common")), 0))
-	if n == 0:
-		return
-	var col := GameState.rarity_color(id)
-	for k in n:
-		var dot := ColorRect.new()
-		dot.color = Color(0.05, 0.03, 0.02)
-		dot.size = Vector2(4, 4)
-		dot.position = Vector2(2 + k * 4, SLOT - 6)
-		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var inner := ColorRect.new()
-		inner.color = col
-		inner.size = Vector2(2, 2)
-		inner.position = Vector2(1, 1)
-		inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		dot.add_child(inner)
-		b.add_child(dot)
+	DecorCatalogue.rarity_dots(b, id, SLOT)
 
 
 func _refresh() -> void:

@@ -4513,6 +4513,7 @@
    "need": "all",
    "from": "theo",
    "give": {
+    "decor": "dc_founders_orrery",
     "money": 5000,
     "item": "curators_loupe",
     "n": 1
@@ -4549,6 +4550,7 @@
    "need": 150,
    "from": "maple",
    "give": {
+    "decor": "dc_golden_crate",
     "money": 4000
    },
    "text": "A hundred and fifty kinds! I've run out of shelf labels. - Maple",
@@ -4572,6 +4574,7 @@
    "need": "all",
    "from": "finn",
    "give": {
+    "decor": "dc_golden_rod_mount",
     "money": 3000
    },
    "text": "Every fish the rod can find. You're the best angler this lake has seen. - Finn",
@@ -4594,6 +4597,7 @@
    "need": "all",
    "from": "posy",
    "give": {
+    "decor": "dc_master_hearth",
     "money": 3000
    },
    "text": "You've cooked every recipe there is. Teach me something now! - Posy",
@@ -4634,6 +4638,60 @@
    "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Willow"
   }
  ],
+ "decor_milestones": [
+  {
+   "id": "decor_10",
+   "need": 10,
+   "from": "maple",
+   "give": {
+    "money": 300
+   },
+   "text": "Ten different pieces in your home! It's starting to feel lived in. A little something for the next one. - Maple",
+   "text_gangsters": "Ten pieces in your place already. Starting to look like somebody lives there. Here's a little something. - Maple"
+  },
+  {
+   "id": "decor_25",
+   "need": 25,
+   "from": "maple",
+   "give": {
+    "money": 800
+   },
+   "text": "Twenty-five pieces! Folks have started asking who does your decorating. - Maple",
+   "text_gangsters": "Twenty-five pieces. People ask who does your decorating. I tell them it's a secret. - Maple"
+  },
+  {
+   "id": "decor_50",
+   "need": 50,
+   "from": "maple",
+   "give": {
+    "money": 1500,
+    "decor": "dc_collectors_shelf"
+   },
+   "text": "Fifty pieces collected. Here's a collector's shelf, to show off the little ones. - Maple",
+   "text_gangsters": "Fifty pieces. A collector's shelf for your place: put the good stuff where folks can see it. - Maple"
+  },
+  {
+   "id": "decor_100",
+   "need": 100,
+   "from": "maple",
+   "give": {
+    "money": 3000
+   },
+   "text": "A hundred pieces! You could open a showroom. - Maple",
+   "text_gangsters": "A hundred pieces. You could run a showroom out of there. - Maple"
+  },
+  {
+   "id": "decor_200",
+   "need": 200,
+   "from": "maple",
+   "give": {
+    "money": 5000,
+    "decor": "dc_grand_catalogue_stand"
+   },
+   "text": "Two hundred pieces. I had the catalogue's own display stand sent over: you've earned it. - Maple",
+   "text_gangsters": "Two hundred pieces. The catalogue's own display stand is yours now. You earned it. - Maple"
+  }
+ ],
  "letters": {
   "open": "The library's east wing is a museum now. Bring me anything old, shiny or scaly: there's a donation tray by the door. - Theo",
   "open_gangsters": "The library's east wing is the Curio Room now. Bring me anything old, shiny or scaly; the tray's by the door. I keep the ledger. - Theo",
@@ -4650,7 +4708,8 @@
    "scene": "lake",
    "lvl": 8,
    "when": "rain_or_winter_dawn",
-   "chance": 0.04
+   "chance": 0.04,
+   "first_decor": "dc_koi_scroll"
   }
  }
 }

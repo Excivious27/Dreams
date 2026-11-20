@@ -10,6 +10,7 @@ static var page := ""      # "" = hub, else a cat id
 static var sub := ""       # wing / family / station (grouped pages)
 static var part := 0       # page within a long group
 static var sel := ""       # the tapped entry key
+static var _just_opened := ""  # a group header to scroll to after its tap
 
 
 static func open(cat: String) -> void:
@@ -31,6 +32,22 @@ static func back() -> bool:
 		part = 0
 		return true
 	return false
+
+
+## Opens the Decor catalogue screen over the menu (it owns B/MENU while open).
+static func open_catalogue(gm: Node, v := "grid") -> void:
+	var host: Node = gm.get_parent() if gm.get_parent() else gm
+	DecorCatalogue.open(host, v)
+
+
+static func _page_sfx(gm: Node) -> void:
+	Music.instance(gm.get_tree()).sfx("page", "ui_tap")
+
+
+## New run / load / arc switch: the Book opens on its hub again (stale-state finding).
+static func reset() -> void:
+	open("")
+	DecorCatalogue.reset()
 
 
 static func build(gm: Node) -> void:
@@ -83,7 +100,8 @@ static func _hub(gm: Node) -> void:
 		_badge(gm, row, str(c.get("badge", "")), _top_claimed(cid))
 		var got := Collections.count(cid)
 		var tot := Collections.total(cid)
-		var b: Button = gm._button("%s%s  %d/%d ›" % [str(c["title"]), "  • New!" if Collections.is_new(cid) else "", got, tot], func() -> void: open(cid); gm._refresh())
+		var b: Button = gm._button("%s%s  %d/%d ›" % [str(c["title"]), "  • New!" if Collections.is_new(cid) else "", got, tot], func() -> void: open(cid); _page_sfx(gm); gm._refresh())
+		b.set_meta("pc_key", "book:" + cid)
 		gm._body.remove_child(b)
 		row.add_child(b)
 		var bar := ProgressBar.new()
@@ -93,6 +111,23 @@ static func _hub(gm: Node) -> void:
 		bar.max_value = maxi(1, tot)
 		bar.value = got
 		row.add_child(bar)
+	# C10a P3: the Decor catalogue has its own page and % (never a Book cat: it would swamp percent()).
+	var dp := DecorCatalogue.progress()
+	var ds := DecorCatalogue.set_counts()
+	var drow := HBoxContainer.new()
+	gm._body.add_child(drow)
+	_badge(gm, drow, "medal_collector", int(dp[1]) > 0 and int(dp[0]) >= int(dp[1]))
+	var db: Button = gm._button("Decor catalogue  %d/%d · sets %d/%d ›" % [dp[0], dp[1], ds[0], ds[1]], func() -> void: open_catalogue(gm))
+	db.set_meta("pc_key", "book:decor")
+	gm._body.remove_child(db)
+	drow.add_child(db)
+	var dbar := ProgressBar.new()
+	dbar.show_percentage = false
+	dbar.custom_minimum_size = Vector2(36, 6)
+	dbar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	dbar.max_value = maxi(1, int(dp[1]))
+	dbar.value = int(dp[0])
+	drow.add_child(dbar)
 	var r: Dictionary = GameState.run
 	gm._button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: gm._tab = "FieldLog"; gm._refresh())
 	gm._line("Wayfarer's Journal: %d/%d pages · hidden chests %d/%d" % [Secrets.found("page_"), Secrets.pages_total(), Secrets.found("secret_chest_") + Secrets.found("hidden_chest_"), Secrets.chests_total()], 8, Color(0.85, 0.85, 0.8))
@@ -132,8 +167,9 @@ static func _page(gm: Node) -> void:
 	if groups.is_empty():
 		ents = Collections.entries(cat)
 	else:
-		if sub == "":
-			sub = str(groups[0][0])
+		if sub == "" or not groups.any(func(g0: Array) -> bool: return str(g0[0]) == sub):
+			sub = str(groups[0][0])  # a sub from another arc/run opens the first group
+			part = 0
 		for g: Array in groups:
 			var gid := str(g[0])
 			var open_g := gid == sub
@@ -143,7 +179,11 @@ static func _page(gm: Node) -> void:
 				t += 1
 				if Collections.have(cat, _key(cat, e)):
 					n += 1
-			gm._button("%s %s  %d/%d" % ["▾" if open_g else "▸", str(g[1]), n, t], func() -> void: sub = gid; part = 0; sel = ""; gm._refresh())
+			var hb: Button = gm._button("%s %s  %d/%d" % ["▾" if open_g else "▸", str(g[1]), n, t], func() -> void: sub = gid; _just_opened = gid; part = 0; sel = ""; _page_sfx(gm); gm._refresh())
+			hb.set_meta("pc_key", "grp:" + gid)
+			if open_g and _just_opened == gid:
+				_just_opened = ""
+				_show.call_deferred(gm, hb)
 			if open_g:
 				ents = _of_group(cat, gid)
 				_grid(gm, cat, ents)
@@ -155,7 +195,8 @@ static func _page(gm: Node) -> void:
 		gm._line("Next: " + str(nx[0]), 8, Color(0.8, 1, 0.8))
 	if cat == "shipping":
 		gm._line("Counts start the day the log arrived.", 7, Color(0.65, 0.65, 0.65))
-	gm._button("← Back to Book", func() -> void: page = ""; sub = ""; sel = ""; gm._refresh())
+	var bb: Button = gm._button("← Back to Book", func() -> void: page = ""; sub = ""; sel = ""; _page_sfx(gm); gm._refresh())
+	bb.set_meta("pc_key", "book:back")
 
 
 static func _of_group(cat: String, gid: String) -> Array:
@@ -176,18 +217,28 @@ static func _grid(gm: Node, cat: String, ents: Array) -> void:
 	var pages := int(ceil(ents.size() / float(PAGE)))
 	part = clampi(part, 0, maxi(0, pages - 1))
 	var shown := ents.slice(part * PAGE, part * PAGE + PAGE)
-	var g := GridContainer.new()
-	g.columns = COLS
-	g.add_theme_constant_override("h_separation", 2)
-	g.add_theme_constant_override("v_separation", 2)
-	gm._body.add_child(g)
+	# One GridContainer per row, so the tapped cell's card sits right under its row (on a full
+	# 48-cell page a card after the whole grid fell below the scroll window: c10_08).
+	var g: GridContainer = null
 	var card := ""
-	for e: Dictionary in shown:
+	for i in shown.size():
+		if i % COLS == 0:
+			if card != "":
+				_card_line(gm, card)
+				card = ""
+			g = GridContainer.new()
+			g.columns = COLS
+			g.add_theme_constant_override("h_separation", 2)
+			g.add_theme_constant_override("v_separation", 2)
+			gm._body.add_child(g)
+		var e: Dictionary = shown[i]
 		var key := _key(cat, e)
 		var got := Collections.have(cat, key)
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(38, 30)
 		b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
+		b.focus_mode = Control.FOCUS_NONE
+		b.set_meta("pc_key", "cell:" + key)
 		var item := str(e["item"])
 		var ic := Hud.icon_for(item)
 		if Art.has("items", ic):
@@ -211,16 +262,31 @@ static func _grid(gm: Node, cat: String, ents: Array) -> void:
 				b.text = str(mini(n, 999))
 				b.alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				b.vertical_icon_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		b.add_theme_font_size_override("font_size", 7)
+		b.add_theme_font_size_override("font_size", mini(Settings.font(7), 10))
 		if key == sel:
 			b.modulate = Color(1, 0.95, 0.6)
 			card = _card(cat, e, got)
-		b.pressed.connect(func() -> void: sel = key; Music.instance(gm.get_tree()).sfx("ui_tap"); gm._refresh())
+		b.pressed.connect(func() -> void: sel = "" if sel == key else key; Music.instance(gm.get_tree()).sfx("ui_tap"); gm._refresh())
 		g.add_child(b)
 	if card != "":
-		gm._line(card, 8, Color(0.95, 0.95, 0.85))
+		_card_line(gm, card)
 	if pages > 1:
-		gm._button("Page %d/%d ›" % [part + 1, pages], func() -> void: part = (part + 1) % pages; sel = ""; gm._refresh())
+		var pb: Button = gm._button("Page %d/%d ›" % [part + 1, pages], func() -> void: part = (part + 1) % pages; sel = ""; _page_sfx(gm); gm._refresh())
+		pb.set_meta("pc_key", "book:page")
+
+
+static func _card_line(gm: Node, text: String) -> void:
+	var l: Label = gm._line(text, 8, Color(0.95, 0.95, 0.85))
+	_show.call_deferred(gm, l)
+
+
+## Scrolls the menu so c is on screen (the tapped card, the opened group's header).
+static func _show(gm: Node, c: Control) -> void:
+	if not is_instance_valid(c) or not c.is_inside_tree():
+		return
+	var sc := gm._body.get_parent() as ScrollContainer
+	if sc:
+		sc.ensure_control_visible(c)
 
 
 static func _card(cat: String, e: Dictionary, got: bool) -> String:
