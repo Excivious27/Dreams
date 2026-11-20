@@ -900,7 +900,7 @@ func _talk(n: Npc) -> void:
 		return
 	if GameState.can_gift(id, sel) and await confirm_gift(name, sel):
 		var gain := GameState.give_gift(id, sel)  # plays the gift sound (the heart jingle on a new heart) itself
-		await say([{"who": name, "text": _gift_line(id, sel, gain)}])
+		await say([{"who": name, "text": GameState.articled(_gift_line(id, sel, gain), GameState.item_name(sel))}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return

@@ -172,7 +172,7 @@ func _journal() -> void:
 		lines.append({"who": "Journal", "text": "A crystal fell in my field and talked to me about the end of the universe. %s" % said})
 	else:
 		var l := "sold" if r["flags"].has("letter_sold") else ("used" if r["flags"].has("doors_by_letter") or r["flags"].has("st_g5_doors_letter") else str(r["flags"].get("letter", "")))
-		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "used": "The letter I kept opened the tower doors. He wrote it for exactly that.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
+		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "used": "The letter I kept opened the tower doors. He wrote it for exactly that.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorised the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
 		lines.append({"who": "Journal", "text": "Someone knows I'm here. %s" % said})
 	var open_q: Array = r["quests"].filter(func(q: Dictionary) -> bool: return not q["done"])
 	if not open_q.is_empty():

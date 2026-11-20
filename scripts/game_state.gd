@@ -2057,7 +2057,7 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 	_gift_lines = d
 	var n := item_name(item)
 	if is_birthday(id) and gain > 0 and d.get("birthday", {}).has(id):
-		return str(d["birthday"][id]).replace("{item}", n)
+		return articled(str(d["birthday"][id]).replace("{item}", n), n)
 	var ls: Array = d.get("lines", {}).get(id, [])
 	if ls.size() < 4:
 		return ""
@@ -2066,10 +2066,48 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 	if g > 0:
 		g = maxi(0, g - int(bonus("bartering", "gift_bonus")) - int(items.get(item, {}).get("friend", 0)))  # react to the gift itself, not the bonuses
 	var idx := 3 if g < 0 else (0 if g >= 20 else (1 if g >= 12 else 2))
-	return str(ls[idx]).replace("{item}", n)
+	return articled(str(ls[idx]).replace("{item}", n), n)
 
 
 static var _gift_lines := {}
+
+
+## Mass nouns and plural-looking names that take "some", never "a".
+const SOME_WORDS := ["wood", "stone", "hay", "fiber", "fibre", "milk", "honey", "flour", "coal", "sand", "clay", "rice", "wheat", "wool", "bait", "slime", "goo", "tea", "coffee", "sugar", "salt", "oil", "cash", "glass"]
+
+
+## "an Apple" / "a Carrot" / "some Turnip Seeds" (cap = capital first letter). C7.
+static func with_article(name: String, cap := false) -> String:
+	var low := name.to_lower()
+	var last := low.split(" ")[-1] if low != "" else ""
+	var art := "a"
+	if (last.ends_with("s") and not last.ends_with("ss")) or SOME_WORDS.has(last):
+		art = "some"
+	elif low != "" and "aeiou".contains(low.left(1)):
+		art = "an"
+	return (art.capitalize() if cap else art) + " " + name
+
+
+## A reaction line with the right article before the item's name ("A Apple" -> "An Apple").
+static func articled(text: String, name: String) -> String:
+	if name == "":
+		return text
+	return text.replace("A " + name, with_article(name, true)).replace(" a " + name, " " + with_article(name))
+
+
+## "4 Turnips", "1 Turnip", "3 Berries"; names already plural or mass nouns stay. C7.
+static func plural_name(id: String, n: int) -> String:
+	var nm := item_name(id)
+	if n == 1 or nm == "":
+		return nm
+	var last := nm.to_lower().split(" ")[-1]
+	if last.ends_with("s") or SOME_WORDS.has(last):
+		return nm
+	if last.ends_with("y") and not "aeiou".contains(last.substr(last.length() - 2, 1)):
+		return nm.left(nm.length() - 1) + "ies"
+	if last.ends_with("sh") or last.ends_with("ch") or last.ends_with("x"):
+		return nm + "es"
+	return nm + "s"
 
 
 static func birthday_today() -> String:

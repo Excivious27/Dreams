@@ -495,23 +495,37 @@ if ! echo "$svout" | grep -q "save_test: [0-9]* checks, 0 failures"; then
 fi
 
 echo "== story: every chapter plays to the end =="
-tout="$("$GODOT" --headless --path . -s res://tools/story_test.gd 2>&1)"
-echo "$tout" | grep -E "FAIL|STORY DONE" || true
-if ! echo "$tout" | grep -q "STORY DONE, failures: 0"; then
+tout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/story_test.gd 2>&1)"
+echo "$tout" | grep -E "FAIL|SCRIPT ERROR|STORY DONE" || true
+if ! echo "$tout" | grep -q "STORY DONE, failures: 0" || echo "$tout" | grep -q "SCRIPT ERROR"; then
   echo "Story test failed"; exit 1
 fi
 echo "== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) =="
 npout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/newgame_penguin_test.gd 2>&1)"
 echo "$npout" | grep -E "FAIL|SCRIPT ERROR|newgame_penguin_test" || true
-if ! echo "$npout" | grep -q "newgame_penguin_test: 0 failures"; then
+if ! echo "$npout" | grep -q "newgame_penguin_test: 0 failures" || echo "$npout" | grep -q "SCRIPT ERROR"; then
   echo "New-game penguin test failed"; exit 1
 fi
 
 echo "== gangster first hours: intro, day 2, meadow, Hideout, first crew =="
-gsout="$("$GODOT" --headless --path . -s res://tools/gang_start_test.gd 2>&1)"
+gsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/gang_start_test.gd 2>&1)"
 echo "$gsout" | grep -E "FAIL|SCRIPT ERROR|gang_start_test" || true
-if ! echo "$gsout" | grep -q "gang_start_test: 0 failures"; then
+if ! echo "$gsout" | grep -q "gang_start_test: 0 failures" || echo "$gsout" | grep -q "SCRIPT ERROR"; then
   echo "Gang start test failed"; exit 1
+fi
+
+echo "== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) =="
+hout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/hearts_test.gd 2>&1)"
+echo "$hout" | grep -E "FAIL|SCRIPT ERROR|HEARTS DONE" || true
+if ! echo "$hout" | grep -q "HEARTS DONE, failures: 0" || echo "$hout" | grep -q "SCRIPT ERROR"; then
+  echo "Hearts test failed"; exit 1
+fi
+
+echo "== C7 text: gift articles, plurals, quest wording =="
+c7tout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c7_text_test.gd 2>&1)"
+echo "$c7tout" | grep -E "FAIL|SCRIPT ERROR|c7_text_test" || true
+if ! echo "$c7tout" | grep -q "c7_text_test: 0 fails"; then
+  echo "C7 text test failed"; exit 1
 fi
 
 echo "== mega regions: map tabs, unlocks, travel =="

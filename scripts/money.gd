@@ -11,6 +11,8 @@ extends RefCounted
 
 const PHRASES := [
 	["a crystal a dozen", "a dime a dozen"],
+	["loose crystals", "loose cash"],  # C7 (c7_08): penguin texts say crystals, never coins
+	["I count crystals", "I count cash"],
 	["Not enough crystals", "Not enough cash"],
 	["not enough crystals", "not enough cash"],
 	["paid in crystals", "paid in cash"],

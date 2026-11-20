@@ -9,6 +9,7 @@ var fails := 0
 
 
 func _initialize() -> void:
+	seed(7)
 	Campaign.bypass = true
 	_run.call_deferred()
 
@@ -27,7 +28,7 @@ func _run() -> void:
 	check(GameState.has_quest("first_harvest") and GameState.has_quest("meet_town"), "first quests given")
 	check(GameState.next_step().find("hoe") >= 0, "goal line starts with the hoe step (%s)" % GameState.next_step())
 	# Day 1: Maple's letter waits, so the mailbox marker shows.
-	await create_timer(0.7).timeout
+	await _wait_game(0.7)
 	check(Mail.waiting(), "a letter waits on day 1")
 	var mark: Sprite2D = farm.get("_mail_mark")
 	check(mark != null and mark.visible, "mailbox marker shows while a letter waits")
@@ -35,7 +36,7 @@ func _run() -> void:
 	farm.later(farm._mailbox)
 	said = await talk_through()
 	check(said.any(func(t: String) -> bool: return t.find("Maple") >= 0), "Maple's letter read")
-	await create_timer(0.7).timeout
+	await _wait_game(0.7)
 	check(not Mail.waiting(), "nothing waits after reading (unread=%d)" % Mail.unread())
 	check(not mark.visible, "mailbox marker hides after reading")
 	# Talking to the crystal before the harvest gives the next crop step and idle ideas.
@@ -61,7 +62,7 @@ func _run() -> void:
 	check(Companion.active_id() == "penguin_m", "Pip-Pip joined (%s)" % Companion.active_id())
 	check(farm.companion != null and is_instance_valid(farm.companion), "the new partner follows you right away")
 	check(said.any(func(t: String) -> bool: return t.find("round button") >= 0), "partner button explained by where it is")
-	await create_timer(2.5).timeout
+	await _wait_game(2.5)
 	var left := 0
 	for c in farm.get_children():
 		if c.has_meta("partner_visitor") and not c.is_queued_for_deletion():
@@ -82,7 +83,7 @@ func talk_through(pick := 0) -> Array:
 		var m := current_scene as GameMap
 		if not d.active and m and m.player and m.player.frozen:
 			idle = 0  # a fade between parts of a scene
-			await create_timer(0.1).timeout
+			await _wait_game(0.1)
 			continue
 		if not d.active:
 			idle += 1
@@ -116,3 +117,11 @@ func check(ok: bool, what: String) -> void:
 func frames(k: int) -> void:
 	for i in k:
 		await process_frame
+
+
+## Wait game time, not the wall clock (C2 determinism rule; check.sh runs this at --fixed-fps 60).
+func _wait_game(sec: float) -> void:
+	var gt := 0.0
+	while gt < sec:
+		await process_frame
+		gt += root.get_process_delta_time()

@@ -20,7 +20,7 @@ const HEISTS := {
 		"pitch": "The arcade under the dragon sign is the President's counting room: every Friday the district's takings go to a back room. Vic stands at the door looking big. I open the safe. Nobody gets hurt; that's the deal.",
 		"reward": {"#gold": 1400, "data_chip": 3}},
 	"vault": {"name": "The Vault", "where": "uptown", "planner": "specs", "crew": ["specs", "sasha"], "after": "crew_sasha",
-		"pitch": "The bank uptown has a sub-basement on its own wire, and in it, a crystal the size of a car. I get us past the wire. Sasha gets us past the doors. We take a battery's worth and leave the rest humming.",
+		"pitch": "The bank next to the tower has a vault the tower's crates pass through, on its own wire, and in it, a crystal the size of a car. I get us past the wire. Sasha gets us past the doors. We take a battery's worth and leave the rest humming.",
 		"reward": {"#gold": 2500, "crystal_battery": 2}},
 }
 
