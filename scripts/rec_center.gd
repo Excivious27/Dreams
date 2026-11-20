@@ -1106,6 +1106,7 @@ const HOME_USE := {"rp_music_box": "A: wind the music box", "rp_jukebox": "A: pl
 
 
 static func dress_house(m: GameMap) -> void:
+	Collections.dress_house(m)  # museum/log milestone decor (C8 P3)
 	var deco: Dictionary = data().get("house_decor", {})
 	var shelves := {}
 	for id in deco:

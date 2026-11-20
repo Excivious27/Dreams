@@ -42,6 +42,8 @@ static func for_id(id: String, m: GameMap = null) -> String:
 			var sk: String = load("res://scripts/interior.gd").skin_name(iid)  # crew shop moved in (C5 P2 hook)
 			if sk != "":
 				return sk
+			if iid == "museum":
+				return Collections.room_name()
 			if iid == "rec":
 				return RecCenter.name()
 			if iid == "rec_up":

@@ -162,6 +162,21 @@ QUESTS = [
      "done_when": {"museum_wing": ["fish", 5]}, "reward": {"item": ["bait", 10], "friend": ["finn", 15]}},
 ]
 
+QUEST_LINES = {
+    "coll_pip_fossil": {"offer": ["Theo has a museum now! A real one, with glass cases!", "Could you put a fossil in it? I want to see one with a little card under it."],
+                        "yes": "Yes! With a card!", "no": "Okay. But the cases look so empty...",
+                        "wait": "A fossil, in the museum tray! Theo does the card.",
+                        "done": ["I saw it! It has a card and everything!", "I read the card four times. Here, I saved this for you."]},
+    "coll_finn_tanks": {"offer": ["Theo's got tanks in that museum, and nothing swimming in them.", "Five kinds of fish in there and I'll stock you up on bait."],
+                        "yes": "Good. Fish deserve an audience.", "no": "Suit yourself. They're patient.",
+                        "wait": "Five kinds in the tanks. Any five.",
+                        "done": ["Saw the tanks. Looks like a proper aquarium now.", "Bait, as promised."]},
+}
+QUEST_LINES_GANG = {
+    "coll_pip_fossil@gangsters": {"offer": ["Theo turned the east wing into a Curio Room! With glass cases!", "Could you put a fossil in there? I want to see it with a little card."]},
+    "coll_finn_tanks@gangsters": {"offer": ["Theo's got tanks in that Curio Room and nothing swimming in them.", "Five kinds of fish in there and I'll stock you up on bait."]},
+}
+
 # Curator's Loupe: +2 luck charm (luck flows through GameState.gear_stat into drop rolls).
 LOUPE = {"name": "Curator's Loupe", "type": "equip", "value": 0, "tier": 3, "rarity": "legendary", "slot": "charm",
          "stats": {"luck": 2}, "desc": "Theo's old loupe. It always finds the lucky things."}
@@ -338,6 +353,10 @@ def main():
     have = {x["id"] for x in q["side"]}
     q["side"] = [mine.get(x["id"], x) for x in q["side"]] + [x for x in QUESTS if x["id"] not in have]
     save("quests.json", q)
+    ql = load("quest_lines.json")
+    ql.update(QUEST_LINES)
+    ql.update(QUEST_LINES_GANG)
+    save("quest_lines.json", ql)
     for arc in ("penguins", "gangsters"):
         ok = lambda e: e["arc"] in ("", arc)
         print("collections %s: museum %d, shipping %d, fish %d, cooking %d, crafting %d, forage %d" % (

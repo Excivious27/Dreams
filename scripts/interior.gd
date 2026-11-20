@@ -195,6 +195,8 @@ static func _skin_merge(out: Dictionary, g: Dictionary) -> void:
 func after_ready() -> void:
 	if bool(I.get("rec", false)):
 		RecCenter.dress(self, interior_id)
+	if bool(I.get("museum", false)):
+		Museum.attach.call_deferred(self)  # donated items in their cases (C8 P3)
 	for p in I.get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "furniture"))
@@ -358,6 +360,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"rec":
 			later(RecCenter.use.bind(self, thing, c))
+			return true
+		"museum":
+			later(Museum.use.bind(self, thing, c))
 			return true
 		"counter":
 			later(_counter.bind(str(thing.get("shop", ""))))

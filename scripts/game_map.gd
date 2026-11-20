@@ -4535,7 +4535,9 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.
+		fish = Collections.legend_roll(scene_id(), fish, night)  # legends past the ceiling (C8 P3)
 		pop_items(bob_at, fish, 2 if randf() < GameState.bonus("fishing", "double_fish") else 1)
+		Collections.record_catch(fish, 1, night, GameState.weather_today() in ["rain", "storm"])  # fish log
 		if fish == "boot":
 			Music.instance(get_tree()).sfx("thud", "nope")
 		elif open.find(fish) >= maxi(3, reach - 1) or not open.has(fish):

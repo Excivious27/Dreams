@@ -26,6 +26,9 @@ static func lines(report: Dictionary) -> Array:
 	var lines: Array = []
 	if int(report.get("earned", 0)) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report.get("sold", [])), int(report.get("earned", 0))]})
+	if not (report.get("ship_new", []) as Array).is_empty():
+		var sn: Array = report["ship_new"]
+		lines.append({"who": "Shipping log", "text": "New: " + ", ".join(sn.slice(0, 3).map(func(i: Variant) -> String: return GameState.item_name(str(i)))) + (" +%d more" % (sn.size() - 3) if sn.size() > 3 else "")})
 	if int(report.get("left", 0)) > 0:
 		lines.append({"text": Sanctuary.morning_line()})
 	if int(report.get("washed", 0)) > 0:

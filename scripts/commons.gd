@@ -841,8 +841,8 @@ static func _sell(m: GameMap) -> void:
 	var n := GameState.count(id)
 	var pay := market_pay(id, n)
 	GameState.add_item(id, -n)
-	GameState.add_money(pay, "market")
-	GameState.run["earned_total"] = int(GameState.run.get("earned_total", 0)) + pay
+	GameState.add_money(pay, "market")  # add_money already counts earned_total (c8_08: was counted twice)
+	Collections.record_ship(id, n)
 	Music.instance(m.get_tree()).sfx("cash", "coin")
 	m.xp("bartering", mini(20, pay / 15 + 1))
 	m.hud.toast("Sold %d %s for ◆%d." % [n, GameState.item_name(id), pay], Color(1, 0.9, 0.5))

@@ -177,6 +177,7 @@ static func _migrate() -> void:
 		run["opts"]["difficulty"] = Difficulty.DEFAULT
 	run["day_len"] = _valid_len(int(run.get("day_len", DAY_LEN_DEFAULT)))
 	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
+	Collections.st()  # museum + logs (old saves: fish/recipes backfilled from seen/known_recipes)
 	Romance.st()  # dating/marriage state (old saves: single, friendship untouched)
 	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
 	if not (run.get("skills") is Dictionary):
@@ -404,6 +405,7 @@ static func guest_morning() -> Dictionary:
 		run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		total += sell_price(id, int(run["sellbox"][id]))
+		Collections.record_ship(id, int(run["sellbox"][id]), true)  # the guest's own shipping log
 	total += quality_bonus_value(run.get("sellbox_q", {}))
 	run["sellbox_q"] = {}
 	run["sellbox"] = {}
@@ -2392,6 +2394,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 			return false
 	if when.has("chapter") and Story.chapter_no() < int(when["chapter"]):
 		return false
+	if Collections.cond_keys(when) and not Collections.cond_ok(when):
+		return false  # museum / log counts (C8 P3)
 	if (when.has("arcade_ms") or when.has("rec_best") or when.has("tickets_won")) and not Tickets.cond_ok(when):
 		return false  # Rec Center / arcade progress
 	if (when.has("heat_min") or when.has("heat_max") or when.has("loyalty") or when.has("clean_break")) and not Epilogue.cond_ok(when):
@@ -2743,6 +2747,8 @@ static func sleep(passed_out := false) -> Dictionary:
 		var n: int = int(run["sellbox"][id])
 		var v := sell_price(id, n)
 		run["sold_today"][id] = int(run["sold_today"].get(id, 0)) + n
+		if Collections.record_ship(id, n, true):
+			report.get_or_add("ship_new", []).append(id)  # shipping log firsts (SleepReport line)
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	var qb := quality_bonus_value(run.get("sellbox_q", {}))
