@@ -24,19 +24,21 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 17:26 PT, personal account.
-- **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
-- **In progress:** CONDUCT 3 fix phase: all 20 audits in, 20 bots clean (5 ownerless-pause warnings). 6 fix agents launched 17:25 PT in the personal sandbox (/home/claude/wt/c3f_p1..p6, branches c3f/p1..p6, never pushed); plan committed as docs/reports/C3-PACKAGES.md. If the sandbox is lost on a switch, relaunch the packages from that file on fresh worktrees.
-- **Next step:** when the 6 fix agents report (~18:40 PT): merge c3f/p1..p6, one check.sh, 20 bots, playtest, push with Baton, then the CONDUCT 3 package (report docs/reports/CONDUCT-3.md, GUIDE-27, xlsx, art prompts or none, artifact page). Then CONDUCT 4-18 back to back (no waits), then the final package.
-- **Jobs running elsewhere:** personal sandbox: 11 C3 auditors + 20 bots (lost on a switch; rerun from C3_SCOPES if so). Tom is answering the 31 Guide 11 story questions (sent 16:57; defaults until then; feed into C7/C12).
+- **Last update:** 2026-11-19 18:50 PT, personal account.
+- **Done:** Round 13, CONDUCT 1, CONDUCT 2, CONDUCT 3 merged (6 fix packages c3f/p1..p6; full check.sh rc 0 at 18:49 PT). Report docs/reports/CONDUCT-3.md, guide docs/guides/GUIDE-27.md, plan docs/reports/C3-PACKAGES.md.
+- **In progress:** CONDUCT 3 wrap-up: 20 bots + scripted playtest on the merged tree, then the package (xlsx via tools/package/build_progress_c3.py, page via build_page_c2.py 3, artifact).
+- **Next step:** after the C3 package: CONDUCT 4 (mega regions) + the extra package Tom asked for (difficulty Very easy/Easy/Default/Hard for combat/battles only; day length 15/20/30/40 min in the new-game menu). Then C5..C22 back to back (docs/CONDUCT-PLAN.md), then the final package.
+- **Jobs running elsewhere:** none (C3 fix worktrees merged).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
-- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), then the fully updated artifact.
+- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (polish + code cleanup), CONDUCT 22 (art direction), then the fully updated artifact.
 
 ## Decisions (newest first)
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 18:48 Tom: hazards in hazardous regions (rising spikes, gaps to jump, rolling rocks, pouring lava), a new LAVA mega region, and a Sun Haven-style jump plus brief flight/glide that grows with progress tiers, themed to Dreams; embellished thoroughly: CONDUCT 20 (polish moves to C21, art direction to C22).
+- 2026-11-19 18:43 Tom: make sure these have a run: dating/marriage (C7 build, C12 writing), quest tracker (done C3, polish C9), collections museum/shipping/fish logs (C8), haptics + save export/import (C9); then after the queue CONDUCT 21 polish pass (economy, menus, saves) + cleanup of the two biggest code files, CONDUCT 22 one consistent art direction; then the final package. See docs/CONDUCT-PLAN.md.
 - 2026-11-19 18:24-18:25 Tom: add difficulty modes Very easy / Easy / Default / Hard that apply ONLY to combat and battle campaigns (everything else unchanged), and a day-length option in the opening (new game) menu: 15, 20, 30 or 40 real minutes per in-game day. Built in CONDUCT 4 as an extra package (settings per save slot, changeable later in Settings).
 - 2026-11-19 17:39 Tom: a sophisticated, progressive, tiered fast-travel system that must be EARNED and feels organic (mine carts, planes, trains, clouds, boats, etc., not menu teleports). Planned in CONDUCT 14 (exploration/world) with pacing checked in CONDUCT 16.
 - 2026-11-19 17:21 Tom added a trading card system: extremely sophisticated, booster packs to buy, trade with NPCs and other players, region-specific cards/sets, tiered and progressive, unified with the whole game. Planned as CONDUCT 19 (after C18, before the final package; multiplayer trading checked with C17's net layer).
