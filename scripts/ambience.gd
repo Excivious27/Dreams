@@ -309,6 +309,11 @@ func _evaluate() -> Dictionary:
 			out["boiling"] = -22.0
 		if "smith" in kind or "forge" in kind or "workshop" in kind:
 			out["machines"] = -24.0
+		# Room tones (P3 C6 beds; silent until the files exist): shop murmur, chapel/library hush.
+		if kind in ["store", "potions", "bakery", "bank", "inn"]:
+			out["room_shop"] = -22.0
+		elif kind in ["chapel", "library", "school"]:
+			out["room_chapel"] = -22.0
 		if kind in ["rec", "rec_up"]:
 			out.merge(RecAudio.beds(kind), true)  # arcade cabinets downstairs, rolling balls and pins upstairs
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
@@ -433,6 +438,13 @@ func _spots(delta: float) -> void:
 		rules.append(["frog", 6.0, 16.0, -12.0])
 	if outdoors and calm and ph == "day" and GameState.look_se() == "summer" and id in ["jungle", "forest", "meadow", "orchard_hills"]:
 		rules.append(["cicada", 20.0, 45.0, -16.0])
+	if outdoors and calm and id == "farm" and ph == "day":
+		# Pen spots when the farm keeps those animals (C6 P3 recordings; quiet, low rate).
+		var owned := str((GameState.run.get("animals", {}) as Dictionary).keys())
+		if "chicken" in owned or "hen" in owned:
+			rules.append(["hens", 25.0, 60.0, -20.0])
+		if "cow" in owned:
+			rules.append(["cow", 40.0, 90.0, -20.0])
 	if outdoors and calm and id in ["jungle", "marsh"] and se != "winter":
 		rules.append(["insect", 12.0, 30.0, -16.0])
 	if not outdoors and id in ["house", "interior"] and GameState.weather_today() == "storm":

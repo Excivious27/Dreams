@@ -808,7 +808,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			thing["hp"] = int(thing.get("hp", 2)) - 1
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
-				Music.instance(get_tree()).sfx("crate_break", "thud")
+				Music.instance(get_tree()).sfx("rock_break", "thud")  # mega ore rocks shatter like stone (c6_10-12)
 				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				things.erase(c)
 				blocked.erase(c)

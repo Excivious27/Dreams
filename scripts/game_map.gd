@@ -625,7 +625,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				player.play_tool("axe")
 			else:
 				player.play_tool("hold")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("scythe" if ht == "scythe" or GameState.is_sword(ht) else "step_leaves", "swing" if ht == "scythe" or GameState.is_sword(ht) else "pickup")  # grass swish, not an axe (c6_10-07)
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < float(thing.get("hay", 0.5)):  # farm: old weed-spot grass always, meadow clumps half
@@ -1034,7 +1034,7 @@ static func animal_voice(kind: String) -> String:
 	for pre: String in ["chicken", "hen"]:
 		if k.begins_with(pre):
 			return "cluck"
-	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "horse": "whinny"}
+	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "bleat", "pig": "bleat", "horse": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):
 			return str(voices[pre])
@@ -1291,6 +1291,10 @@ func check_exits() -> void:
 			if Campaign.blocks(self, str(e["scene"])):
 				_exit_grace[i] = true  # stay put; step out of the strip and back in to be asked again
 				continue
+			if _retreat_needs_ok():
+				_exit_grace[i] = true
+				_ask_retreat(e)
+				return
 			go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
 			return
 		_exit_grace.erase(i)
@@ -1301,6 +1305,22 @@ func check_exits() -> void:
 		try_interact(c)
 	elif not on_desc:
 		_desc_armed = true
+
+
+## Walking off a live campaign battlefield is a retreat (costs morale/supply): ask first (c6_11).
+func _retreat_needs_ok() -> bool:
+	var bt: Variant = get("battle")
+	return bt is Battle and str((bt as Battle).camp) != "" and not (bt as Battle)._over and not (bt as Battle).is_drill and not Net.visiting()
+
+
+func _ask_retreat(e: Dictionary) -> void:
+	var d := Dialogue.instance(get_tree())
+	Music.instance(get_tree()).sfx("nope", "ui_tap")
+	d.say([{"who": "", "text": "Leave the field? That's a retreat: the campaign loses morale and the supplies you brought.", "choice": ["Retreat", "Stay and fight"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0 and not _changing:
+		Music.instance(get_tree()).sfx("j_battle_lost", "nope")
+		go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
 
 
 func draw_exits() -> void:
@@ -2584,7 +2604,8 @@ func player_down(reason := "hurt") -> void:
 			Marked.mark_try(str(e.get_meta("marked")))
 	var why := "You collapsed..." if reason == "hurt" else ("Too tired to go on... you pass out." if reason == "tired" else "It's so late... you pass out.")
 	hud.toast(why, Color(1, 0.6, 0.6))
-	Music.instance(get_tree()).sfx("die" if reason == "hurt" else "sleep")
+	Music.instance(get_tree()).sfx("knockout" if reason == "hurt" else "thud", "hurt")  # a KO is not an enemy pop, a pass-out not a bedtime (c6_08-23, c6_10-14)
+	DangerMusic.reset()  # combat tiers end with the knockout (the next map picks its own song)
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
 	if Net.visiting():
@@ -2991,7 +3012,8 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 		PlaceNames.entering(self)  # the HUD labels the room as its door read
 	# A creak only for real doors (in or out of a building, a mine), not road edges or ferries.
 	if not force and (scene.contains("house") or scene.contains("interior") or scene.contains("mine") or scene_id() in ["house", "interior", "mine"]):
-		Music.instance(get_tree()).sfx("door")
+		var leaving := scene_id() in ["house", "interior"] and not (scene.contains("house") or scene.contains("interior"))
+		Music.instance(get_tree()).sfx("door_close" if leaving else "door", "door")  # out: the door shuts behind you (c6_10-16)
 	_changing = true
 	player.frozen = true
 	next_spawn = spawn
@@ -4432,6 +4454,8 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		bob.play("bobber")
 	hud.toast("Casting...")
 	Music.instance(get_tree()).sfx("cast")
+	var plop_tree := get_tree()
+	plop_tree.create_timer(0.35).timeout.connect(func() -> void: Music.instance(plop_tree).sfx("step_water", "splash"))  # bobber plop (c6_10-18)
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
