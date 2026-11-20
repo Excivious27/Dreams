@@ -202,7 +202,7 @@ func _ready() -> void:
 	Music.instance(get_tree()).play(area_track())
 	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
-	hud.fade_in(0.5)
+	_fade_in_when_baked()
 	after_ready()
 	_lock_untouched_buildings()
 	Story.restore_spawns(self)
@@ -4408,7 +4408,50 @@ var _bake_busy := true           # chunks still to bake (or dirty)
 var _bake_frame := -1            # budgets below are per drawn frame (_bake_update runs from _process AND call_deferred)
 var _bake_budget := 0
 var _bake_redo := 0
+var _bake_cover_left := 0
 var _bake_pool: Array = []       # freed chunks [SubViewport, Sprite2D] kept for reuse
+var _bake_covered := false       # the arrival fade is still opaque: visible chunks may spread over frames
+const BAKE_COVER_PER_FRAME := 2  # missing on-screen chunks per frame while covered (player's chunk first)
+const BAKE_COVER_MAX_FRAMES := 45  # never hold the arrival fade longer than this
+
+
+## The arrival fade stays opaque until the on-screen ground chunks are baked
+## (c3_16 #3): the bake is spread over a few short frames under the cover instead
+## of one long hitch, and the first thing seen is the finished ground.
+func _fade_in_when_baked() -> void:
+	if not _bake_on():
+		hud.fade_in(0.5)
+		return
+	_bake_covered = true
+	var cover: ColorRect = hud.get("_fade")
+	if cover != null:  # a new Hud starts clear: hold it black over the first bake
+		cover.color.a = 1.0
+		cover.visible = true
+	for i in BAKE_COVER_MAX_FRAMES:
+		await get_tree().process_frame
+		if not is_inside_tree() or hud == null:
+			return
+		if _painter != null and not _bake_visible_missing():
+			break
+	_bake_covered = false
+	hud.fade_in(0.2)
+
+
+func _bake_visible_missing() -> bool:
+	var xf := get_viewport().get_canvas_transform() * get_global_transform()
+	var vis := xf.affine_inverse() * get_viewport_rect()
+	var bounds := Rect2(Vector2.ZERO, Vector2((cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE)).grow(TILE * 2)
+	var want := vis.intersection(bounds)
+	if want.size.x <= 0.0 or want.size.y <= 0.0:
+		return false
+	var k0 := Vector2i((want.position / BAKE_CHUNK).floor())
+	var k1 := Vector2i((want.end / BAKE_CHUNK).floor())
+	for ky in range(k0.y, k1.y + 1):
+		for kx in range(k0.x, k1.x + 1):
+			var ch = _bake.get(Vector2i(kx, ky))
+			if ch == null or ch[2]:
+				return true
+	return false
 
 
 ## Holds the chunk sprites; first child of the map, sorted above nothing.
@@ -4504,12 +4547,18 @@ func _bake_update() -> void:
 		_bake_frame = f
 		_bake_budget = BAKE_PER_FRAME
 		_bake_redo = BAKE_REDO_PER_FRAME
+		_bake_cover_left = BAKE_COVER_PER_FRAME
 	for k in keys:
 		var on_screen := Rect2(Vector2(k * BAKE_CHUNK), Vector2(BAKE_CHUNK, BAKE_CHUNK)).intersects(vis)
 		var ch = _bake.get(k)
 		if ch != null and not ch[2]:
 			continue
-		if on_screen and ch != null:
+		if on_screen and ch == null and _bake_covered:
+			if _bake_cover_left <= 0:
+				_bake_busy = true
+				continue
+			_bake_cover_left -= 1
+		elif on_screen and ch != null:
 			if _bake_redo <= 0:
 				_bake_busy = true
 				continue

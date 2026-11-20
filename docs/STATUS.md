@@ -3,6 +3,7 @@
 **Play:** https://excivious27.github.io/Dreams/
 
 ## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
+- CONDUCT 3 fix P3 (map drawing speed, partial): arrival cover holds black until the on-screen ground chunks are baked (2 per frame, player chunk first; `GameMap._fade_in_when_baked`, max 45 frames) - longest load frame after the first: farm 644->375 ms, bf_orchard_line 166->87 ms (c3_16 measure), cover lifts at frame 2-4; rain_call no longer re-bakes non-farm maps; PlaceNames.for_id names mega areas from MegaRegion; perf_probe: median-of-5 chunk bake, median-of-3 redraw, longest load frame + cover frame, battle frozen for BREAKDOWN. Open: per-chunk painter clip + geometry memo (chunk draws still 54-209, full redraw 64-175 ms).
 - Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
 - Mine stones/ore (55 props: mine_*_rock/bigrock/ore, node_*) crispened by tools/crispen.py: hard alpha (no magenta-tinted soft fringe), clean dark 1px outline, small palette, light unsharp. Same canvas sizes.
 - Code-side blur: phones draw the 270x480 canvas at 3-4x, so LINEAR smeared every 2x-detail texel (buildings are drawn at scale 1.0 = 1 texel per game pixel, worst hit). New `CrispArt` + shaders/sharp_pixel.gdshader (sharp-bilinear: solid texels, 1-pixel blended seams; plain bilinear at 1:1/minified) on every buildings/props/nature sprite from GameMap.prop().
