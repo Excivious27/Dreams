@@ -285,6 +285,13 @@ static func sprite_group(uid: String) -> String:
 	return ""
 
 
+## One view of the whole team (the API later automation targets): the pup slot, the partner slot
+## (Companion.active_id), the animal slots (team()) and the battle muster (CampaignGate.team()).
+static func slots() -> Dictionary:
+	return {"pup": Pet.name_of(), "partner": Companion.active_id(), "animals": team(),
+		"animal_max": int(rule("team_max", 2)), "muster": CampaignGate.team()}
+
+
 ## CampaignGate.team rows: [id, name, "animal"] for every team animal.
 static func gate_rows() -> Array:
 	var out: Array = []
