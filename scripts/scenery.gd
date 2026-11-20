@@ -33,6 +33,8 @@ func _overlay() -> Texture2D:
 	var nm := str(OVERLAYS.get(weather, ""))
 	if nm == "":
 		return null
+	if weather == "fireflies":
+		return null  # drifting glow particles (CONDUCT 4: the tiled strip read as a grid of orbs)
 	var pk := "firefly" if weather == "fireflies" else "snowflake"
 	if weather in ["fireflies", "snow"] and Art.has("fx", pk) and int(Art.info("fx", pk).get("h", 0)) <= 48:  # (fx/firefly is a mis-cut 393x137 slab: use the overlay strip)
 		return null  # drifting particles; a tiled frame reads as a grid
@@ -88,7 +90,21 @@ func _process(delta: float) -> void:
 		"leaves": pkind = "leaf_orange"
 		"petals": pkind = "leaf_green"
 		"fireflies": pkind = "firefly"
-	if _overlay() != null:
+	if weather == "fireflies":
+		# Fireflies: soft glows that wander on their own slow loops, pulse, and wrap.
+		if _parts.is_empty() or str(_parts[0].get("k", "")) != "glow":
+			_parts.clear()
+		while _parts.size() < 16:
+			_parts.append({"pos": Vector2(randf_range(0, _w), randf_range(30, _h - 30)), "t": randf() * TAU, "k": "glow",
+				"sp": randf_range(0.5, 1.1), "r": randf_range(6.0, 14.0), "f": 0})
+		for p: Dictionary in _parts:
+			p["t"] += delta * float(p["sp"])
+			var tt: float = p["t"]
+			p["pos"] += Vector2(sin(tt * 1.1) + 0.35 * sin(tt * 2.7), cos(tt * 0.8) * 0.8 - 0.15) * float(p["r"]) * delta
+			p["pos"].x = fposmod(p["pos"].x + 10.0, _w + 20.0) - 10.0
+			p["pos"].y = fposmod(p["pos"].y + 10.0, _h + 20.0) - 10.0
+			p["f"] = int(tt * 3.0) % 4
+	elif _overlay() != null:
 		_parts.clear()
 	elif pkind != "" and Art.has("fx", pkind):
 		var want := 40 if weather != "fireflies" else 14
@@ -241,7 +257,21 @@ func _on_draw() -> void:
 				_canvas.draw_texture_rect_region(rd, Rect2(d, Vector2(5, 12)), Rect2(0, 0, rd.get_width() / 3.0, rd.get_height()), Color(1, 1, 1, 0.7))
 			else:
 				_canvas.draw_line(d, d + Vector2(-2, 9), Color(0.75, 0.85, 1.0, 0.35), 1.0)
+	var dark := clampf(GameState.darkness() if GameState.run.has("time") else 0.5, 0.0, 1.0)
 	for p: Dictionary in _parts:
+		if str(p["k"]) == "glow":
+			var pulse := 0.5 + 0.5 * sin(float(p["t"]) * 2.3)
+			var a := (0.25 + 0.75 * pulse) * (0.45 + 0.55 * dark)
+			var gp: Vector2 = p["pos"]
+			var ft := Art.tex("fx", "firefly_%d" % int(p["f"]))
+			if ft != null and ft.get_height() <= 48:
+				var sz := Vector2(ft.get_width(), ft.get_height()) * 0.5
+				_canvas.draw_texture_rect(ft, Rect2(gp - sz / 2.0, sz), false, Color(1, 1, 1, a))
+			else:
+				_canvas.draw_circle(gp, 4.5, Color(1.0, 0.85, 0.35, a * 0.18))
+				_canvas.draw_circle(gp, 2.5, Color(1.0, 0.9, 0.45, a * 0.35))
+				_canvas.draw_circle(gp, 1.1, Color(1.0, 1.0, 0.8, a))
+			continue
 		var t := Art.tex("fx", str(p["k"]))
 		if t == null:
 			continue
