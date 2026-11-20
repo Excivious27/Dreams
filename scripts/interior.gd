@@ -770,8 +770,8 @@ func _counter(shop: String) -> void:
 	elif shop in ["smith", "potions"]:
 		var d := Dialogue.instance(get_tree())
 		var ch: Array = ["Buy", "Craft" if shop == "smith" else "Brew"]
-		if shop == "smith":
-			ch.append("Upgrade a tool")
+		if shop == "smith" and not keeper_out:
+			ch.append("Upgrade a tool")  # Gideon's own job: not while he's away (C8 P6)
 		ch.append("Leave")
 		d.say([{"who": "" if keeper_out else ("Gideon" if shop == "smith" else "Wren"), "text": "The shop's empty. Buy off the tags, or use the bench?" if keeper_out else "Buying, or making something?", "choice": ch, "key": ""}])
 		await d.finished
@@ -798,12 +798,27 @@ func _upgrade_tools() -> void:
 			GameState.run["flags"].erase("tool_away_" + k0)
 			hud.toast("%s upgraded!" % GameState.item_name(k0), Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("quest_done", "levelup")
-			xp("mining", 6)
+			xp(str(UPGRADE_XP.get(k0, "mining")), 6)  # the tool's own skill (C8 P6)
 			if player:
 				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
 			await say([{"who": "Gideon", "text": "There. Try not to break it before lunch."}])
 		else:
-			await say([{"who": "Gideon", "text": "Your %s is on the bench. %s. Come back then." % [GameState.item_name(str(pend["kind"])), Crafting.fmt_minutes(int(pend["done_at"]) - Crafting.now_abs())]}])
+			# Pay to hurry (C8 P6, c8_14_16): a late-game sink that scales with the metal.
+			var k1 := str(pend["kind"])
+			var fee := rush_fee(GameState.tool_tier(k1))
+			var dr := Dialogue.instance(get_tree())
+			dr.say([{"who": "Gideon", "text": "Your %s is on the bench. %s. Come back then.  (Or I drop everything for %s.)" % [GameState.item_name(k1), Crafting.fmt_minutes(int(pend["done_at"]) - Crafting.now_abs()), Money.fmt(fee)], "choice": ["Rush it (%s)" % Money.fmt(fee), "Not now"], "key": ""}])
+			await dr.finished
+			if dr.last_choice != 0:
+				return
+			if int(GameState.run["crystals"]) < fee:
+				hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				Music.instance(get_tree()).sfx("nope", "thud")
+				return
+			GameState.run["crystals"] = int(GameState.run["crystals"]) - fee
+			pend["done_at"] = Crafting.now_abs()
+			Music.instance(get_tree()).sfx("cash", "coin")
+			await _upgrade_tools()
 			return
 	while true:
 		var opts: Array = []
@@ -832,15 +847,36 @@ func _upgrade_tools() -> void:
 		if GameState.upgrade_tool(kind):
 			# Paid and handed over: the tool is away until tomorrow morning.
 			var t := GameState.tool_tier(kind)
-			var hours := 6 + 4 * t
 			GameState.run["jobs"] = GameState.run.get("jobs", {})
-			GameState.run["jobs"]["smith_upgrade"] = {"kind": kind, "done_at": Crafting.now_abs() + hours * 60}
+			GameState.run["jobs"]["smith_upgrade"] = {"kind": kind, "done_at": upgrade_ready_at(t)}
 			GameState.run["flags"]["tool_away_" + kind] = true
-			hud.toast("Gideon takes the %s. Ready in %dh." % [GameState.item_name(kind), hours], Color(1, 0.9, 0.4))
+			var nights := upgrade_nights(t)
+			hud.toast("Gideon takes the %s. Ready %s." % [GameState.item_name(kind), "tomorrow morning" if nights == 1 else "in two mornings"], Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("plant")
 			return
 		else:
 			hud.toast("Not enough for that yet.", Color(1, 0.7, 0.7))
+
+
+## Gideon's bench (C8 P6, c8_13): the job is day-based like his intro promises:
+## copper and iron are ready the next morning, steel and up the morning after.
+const UPGRADE_NIGHTS := [1, 1, 1, 2, 2, 2, 2, 2]
+## Rush fee by the tier the tool is going to (wood..moon): a scaling sink.
+const RUSH_FEE := [0, 150, 400, 900, 2000, 4000, 8000, 15000]
+## Collecting an upgraded tool trains the skill that uses it.
+const UPGRADE_XP := {"hoe": "farming", "can": "farming", "scythe": "farming", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "hammer": "building"}
+
+
+static func upgrade_nights(new_tier: int) -> int:
+	return int(UPGRADE_NIGHTS[clampi(new_tier, 0, UPGRADE_NIGHTS.size() - 1)])
+
+
+static func upgrade_ready_at(new_tier: int) -> int:
+	return (int(GameState.run["day"]) + upgrade_nights(new_tier)) * 1440 + GameState.DAY_START
+
+
+static func rush_fee(new_tier: int) -> int:
+	return int(RUSH_FEE[clampi(new_tier, 0, RUSH_FEE.size() - 1)])
 
 
 ## Benno's stable: buy a horse, then ride out from here whenever you like.
@@ -848,7 +884,7 @@ func _stable() -> void:
 	var d := Dialogue.instance(get_tree())
 	if not GameState.run["flags"].has("horse"):
 		var price := 1000 if GameState.has_friend_perk("benno", 2) else 2000
-		d.say([{"who": "Benno", "text": "Four in the stalls. All steady. ◆%d, saddle included.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["The bay", "The grey", "The black", "The palomino", "Not yet"], "key": ""}])
+		d.say([{"who": "Benno", "text": "Four in the stalls. All steady. %s, saddle included.  (you have %s)" % [Money.fmt(price), Money.fmt(int(GameState.run["crystals"]))], "choice": ["The bay", "The grey", "The black", "The palomino", "Not yet"], "key": ""}])
 		await d.finished
 		if d.last_choice >= 0 and d.last_choice < 4:
 			if int(GameState.run["crystals"]) < price:
@@ -870,12 +906,21 @@ func _stable() -> void:
 		go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")
 
 
+## What the bank really pays (C8 P6, c8_07/c8_14_01): nothing before Ivy 2 hearts,
+## then 1% a night (2% at 6 hearts) up to the cap GameState.sleep uses.
+static func bank_terms(bal: int) -> String:
+	var rate := GameState.bank_rate()  # P1's helpers: the same numbers GameState.sleep pays
+	if rate <= 0.0:
+		return "No interest yet: I open savings accounts for friends."
+	var cap := GameState.bank_interest_cap()
+	return "%d%% a night, up to %s (tonight: %s)." % [int(round(rate * 100.0)), Money.fmt(cap), Money.fmt(mini(int(round(bal * rate)), cap))]
+
+
 ## Ivy's bank: deposit crystals for interest (1% a day, 2% at 6 hearts), withdraw any time.
 func _bank() -> void:
 	var d := Dialogue.instance(get_tree())
 	var bal := int(GameState.run.get("bank", 0))
-	var rate := 2 if GameState.has_friend_perk("ivy", 6) else 1
-	d.say([{"who": "Ivy", "text": "Balance ◆%d, %d%% a day.  You're carrying ◆%d." % [bal, rate, int(GameState.run["crystals"])], "choice": ["Deposit 100", "Deposit all", "Withdraw all", "Leave"], "key": ""}])
+	d.say([{"who": "Ivy", "text": "Balance %s. %s  You're carrying %s." % [Money.fmt(bal), bank_terms(bal), Money.fmt(int(GameState.run["crystals"]))], "choice": ["Deposit 100", "Deposit all", "Withdraw all", "Leave"], "key": ""}])
 	await d.finished
 	match d.last_choice:
 		0:
@@ -892,7 +937,7 @@ func _bank() -> void:
 		2:
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + bal
 			GameState.run["bank"] = 0
-			hud.toast("Withdrew ◆%d." % bal)
+			hud.toast("Withdrew %s." % Money.fmt(bal))
 
 
 ## Out the door: back to the map named in "back" (["in_<id>", x, y] is another room,

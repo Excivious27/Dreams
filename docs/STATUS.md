@@ -9,6 +9,16 @@
 - Food: `consume_blocked`/`full_text` keep anything that would do nothing (potion at full health, pup treat, full bar vs daily cap, each with its own words). Heat wave outdoors only (`in_the_heat`). Shop floor never above the plain price and saturation-free (`unit_sell_value`, `SHOP_FLOOR`). Sell-box star bonus priced before the box saturates. Bartering nightly XP flat (`BARTER_XP_NIGHT`). Bed after midnight wakes up to 15% short (`late_wake_mult`). Bank: `bank_rate/bank_interest_cap/bank_interest`, interest counts in earned_by.bank.
 - Faint: a waived clinic bill keeps the free first visit and names why; collapsing in your own house costs nothing (`Faint.at_home/home_note`). SleepReport: late line, forge-ready line, unpetted animals, Shipping log `ship_new` line.
 - Tests: tools/c8_curve_test.gd (new, check.sh), tools/month_curve_test.gd (new 30-day curve), first_week_test on real swing counts (+ day-7 max energy band), sim.gd on real costs.
+## 2026-11-20 — CONDUCT 8 fix P6: shops, prices, money sinks
+
+- Shop floors are P1's (`GameState.unit_sell_value`, saturation-free, capped at the plain price); P6 prices the community stand, rec snacks and stalls on them and tests that perks never raise a shop price.
+- Community stand: sells at 1.35x sell price (`Commons.STAND_MARKUP`), above the market-day 1.25x, donations go to a `pantry` neighbours empty overnight (never back on sale); market sales pay gold/silver stars, count toward saturation and earned_total once (`Commons.sell_at_market`); the well uses the shared rest half-bar and refuses at a full bar.
+- Rec snack bar and vending machine priced on the shop energy curve (popcorn 25, pretzel 55, cotton candy 45, fizzy pop/soda 30); gen_rec check_economy checks snacks (no resale loop, energy per crystal band), MAX_SELL 2.23 + Marlene's fence on claw loot (old_coin weight 3 -> 2).
+- Mountain ore rocks stay broken (stone 3 / copper 4 / iron 5 / shard 6 days, same ore when they return), take toughen + pick tier damage; smuggler blade priced at 0.9x the smithy, the camp stays open with cash/nope sounds and bartering XP.
+- Gideon: upgrades ready next morning (copper/iron) or in two mornings (steel+), a rush fee (`Interior.RUSH_FEE`, 150..15,000), no upgrades while he's away, collecting trains the tool's own skill. Ivy's bank states its real terms (no interest before 2 hearts, nightly cap); interest counts in earned_total/earned_by.
+- Shops: seed lines show grow days, sell value, regrowth and "!" when it won't ripen this season; food lines show energy/hp; "all you can afford" seed quantity; Gideon/Wren/Granite stock grows with progress (`Shops.GROWN`); Tam's greeting fixed. Plaza fountain: the day's first toss gives 2 h of luck.
+- Valley Fund (gangsters: Neighbourhood Fund) at the town hall: chip in any amount toward five projects (5k..200k running total), each brings a letter from Alder and +10 friendship with every villager (`Shops.FUND`, run.fund_paid, flags fund_<id>). Compost makes at most 5 fertilizer a day. Gangster hall: "Lose a file" (heat -1 once a day, 300 x (tier + heat) cash). Shared stall loop `Shops.stall` for region/colony stalls (hooks pending in their files).
+- Money: `Money.group` (1,234,567) in fmt/amount/num; cash conversion keeps grouped amounts. Test tools/shop_econ_test.gd (check.sh).
 
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 

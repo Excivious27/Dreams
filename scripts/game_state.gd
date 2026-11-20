@@ -2411,7 +2411,7 @@ static func crop_in_season(item: String) -> bool:
 
 
 ## Board items any shop sells at 1.5x value: no markup on them, or buy-and-hand-in is free money.
-const BOARD_SHOP_GOODS := ["coal", "copper", "iron", "stone", "brick", "old_coin", "book", "meat", "bait", "flour", "hay", "bread", "coffee"]
+const BOARD_SHOP_GOODS := ["coal", "copper", "iron", "stone", "brick", "old_coin", "book", "meat", "bait", "flour", "hay", "bread", "coffee", "slime_goo"]
 
 
 static func board_today() -> Array:

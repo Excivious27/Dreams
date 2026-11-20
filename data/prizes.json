@@ -290,7 +290,7 @@
   }
  },
  "resale": 8,
- "max_sell": 2.15,
+ "max_sell": 2.23,
  "claw_pool": [
   [
    "rp_teddy",
@@ -322,7 +322,7 @@
   ],
   [
    "old_coin",
-   3
+   2
   ],
   [
    "toy",
@@ -334,7 +334,7 @@
   ]
  ],
  "check": {
-  "claw_avg": 9.6,
-  "claw_ev_best": 18.8
+  "claw_avg": 9.3,
+  "claw_ev_best": 19.5
  }
 }
