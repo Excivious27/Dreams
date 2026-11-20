@@ -1,0 +1,16 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 95.4}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 19.0}
+{"step": 12, "name": "crops wired in", "rc": 0, "secs": 4.1}
+{"step": 18, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 1.6}
+{"step": 24, "name": "rec_reno_test", "rc": 0, "secs": 1.5}
+{"step": 30, "name": "farm_week_test", "rc": 0, "secs": 3.8}
+{"step": 36, "name": "commons_test", "rc": 1, "secs": 32.8}
+{"step": 42, "name": "workshop: no dead ends", "rc": 0, "secs": 1.1}
+{"step": 48, "name": "music_stream_test", "rc": 0, "secs": 6.9}
+{"step": 54, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 5.4}
+{"step": 60, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 5.0}
+{"step": 66, "name": "farm_debris_test", "rc": 0, "secs": 3.0}
+{"step": 72, "name": "skill_glow_test", "rc": 0, "secs": 2.8}
+{"step": 78, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 7.1}
+{"step": 84, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 9.2}
+{"step": 90, "name": "rec_games_test", "rc": 0, "secs": 1.7}

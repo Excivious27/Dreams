@@ -1,0 +1,108 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  98% ] [90m[1mreimport[22m | cast_right.png[39m[0m
+[  98% ] [90m[1mreimport[22m | burst.png[39m[0m
+[  98% ] [90m[1mreimport[22m | axe_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | axe_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | axe_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ride.png[39m[0m
+[  99% ] [90m[1mreimport[22m | reel_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | powerup.png[39m[0m
+[  99% ] [90m[1mreimport[22m | pickaxe_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | pickaxe_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (1787 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 95.4s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 19.0s
+
+#### step 12: crops wired in (shard 5/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 12 crops wired in: PASS in 4.1s
+
+#### step 18: gangster interior skins (c5_04) (shard 5/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 18 gangster interior skins (c5_04): PASS in 1.6s
+
+#### step 24: rec_reno_test (shard 5/6)
+rec_reno_test: 0 failures
+#### step 24 rec_reno_test: PASS in 1.5s
+
+#### step 30: farm_week_test (shard 5/6)
+farm_week_test: OK (0 fails)
+#### step 30 farm_week_test: PASS in 3.8s
+
+#### step 36: commons_test (shard 5/6)
+  FAIL [pen] stage 4 reveal played on the visit
+  FAIL [pen] stage 5 reveal played on the visit
+commons_test: 2 failures
+Community farm test failed
+#### step 36 commons_test: FAIL rc=1 in 32.8s
+
+#### step 42: workshop: no dead ends (shard 5/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 42 workshop: no dead ends: PASS in 1.1s
+
+#### step 48: music_stream_test (shard 5/6)
+music_stream_test: 0 failures
+#### step 48 music_stream_test: PASS in 6.9s
+
+#### step 54: gifts: the Marked and boss powers (shard 5/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 54 gifts: the Marked and boss powers: PASS in 5.4s
+
+#### step 60: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 5/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 60 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 5.0s
+
+#### step 66: farm_debris_test (shard 5/6)
+farm_debris_test: 0 fails
+#### step 66 farm_debris_test: PASS in 3.0s
+
+#### step 72: skill_glow_test (shard 5/6)
+skill_glow_test: 0 fails
+#### step 72 skill_glow_test: PASS in 2.8s
+
+#### step 78: mega regions: map tabs, unlocks, travel (shard 5/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 78 mega regions: map tabs, unlocks, travel: PASS in 7.1s
+
+#### step 84: menu sweep: every menu button, both arcs (C2) (shard 5/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 149 buttons pressed, 0 failures
+#### step 84 menu sweep: every menu button, both arcs (C2): PASS in 9.2s
+
+#### step 90: rec_games_test (shard 5/6)
+rec_games_test: 0 failures
+#### step 90 rec_games_test: PASS in 1.7s
+
+#### shard 5/6 done in 200s: FAIL (commons_test)

@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 5 start arc=penguins hero=coco style=menus progress=1 difficulty=1 day_len=15
+WARNING: Hud: the game was paused with nothing on screen; resuming (scene meadow, layers @CanvasLayer@68002, @CanvasLayer@68005, @CanvasLayer@68015, @CanvasLayer@68020, @CanvasLayer@68022, last menu press: Items > slot , paused by: GameMenu 41 frames ago)
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _pause_watch (res://scripts/hud.gd:252)
+         [1] _process (res://scripts/hud.gd:161)
+BOT 5 done: 0 fails, 0 warns, 255 steps, 0 kills, 1 ownerless pauses, scenes ["meadow", "mine", "riverlands", "quarry", "sky", "bf_frostfield", "colony_coral"], day 4, ◆135

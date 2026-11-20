@@ -1,0 +1,17 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 116.6}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.6}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.3}
+{"step": 15, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.2}
+{"step": 21, "name": "rec_test", "rc": 0, "secs": 5.4}
+{"step": 27, "name": "cash_test", "rc": 0, "secs": 3.1}
+{"step": 33, "name": "anim_test", "rc": 0, "secs": 2.7}
+{"step": 39, "name": "cf_layout_test", "rc": 1, "secs": 9.8}
+{"step": 45, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 51, "name": "workshop: stations at run time", "rc": 0, "secs": 3.5}
+{"step": 57, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.0}
+{"step": 63, "name": "goal_line_test", "rc": 0, "secs": 2.2}
+{"step": 69, "name": "campaign_words_test", "rc": 0, "secs": 2.6}
+{"step": 75, "name": "story: every chapter plays to the end", "rc": 0, "secs": 21.3}
+{"step": 81, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 11.1}
+{"step": 87, "name": "jumper_test", "rc": 0, "secs": 2.4}
+{"step": 93, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.1}
