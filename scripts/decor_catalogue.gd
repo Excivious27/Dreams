@@ -349,6 +349,9 @@ static func hint(id: String) -> String:
 			src.append(str(s))
 	src = src.filter(func(x: String) -> bool: return x != "")
 	var exact := ", ".join(src.slice(0, 2)) if not src.is_empty() else str(e.get("where", ""))
+	var gate := str(e.get("gate", ""))
+	if state(id) == "missing" and gate != "" and not (GameState.run.get("flags", {}) as Dictionary).has(gate):
+		return "???"  # from a system not open yet (campaigns, mega regions): no spoilers
 	if state(id) != "missing" and r != "unique":
 		return exact if exact != "" else str(e.get("hint", "Found around the valley."))  # seen/owned: no riddles
 	match r:

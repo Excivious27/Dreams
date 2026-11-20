@@ -96,6 +96,10 @@ func _run() -> void:
 	check(DecorCatalogue.hint("dc_peng_only") == "Cold places.", "rare uses its vague hint")
 	check(DecorCatalogue.hint("dc_t_legendary_0") == "???", "legendary without a hint stays ???")
 	check(not DecorCatalogue.hint("dc_t_unique_0").contains("Maple"), "unique never names its source")
+	Decor._data["items"]["dc_t_common_5"]["gate"] = "test_gate"
+	check(DecorCatalogue.hint("dc_t_common_5") == "???", "a gated source stays ??? until its flag")
+	GameState.run["flags"]["test_gate"] = true
+	check(DecorCatalogue.hint("dc_t_common_5") == "Maple's Mercantile", "gate open: the source shows")
 	DecorCatalogue.mark_seen("dc_t_legendary_1")
 	check(DecorCatalogue.hint("dc_t_legendary_1") == "Maple's Mercantile", "a seen legendary names where it was seen")
 	# Orders.
