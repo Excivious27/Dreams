@@ -49,6 +49,10 @@ func setup_uid(m: GameMap, id: String, c: Vector2i, p: Rect2i) -> void:
 
 
 var _height := 0.0  # Ranch height override (px)
+## The building's door cell (P2 sets it from the farm layout): roster animals walk there and go in at
+## night / in storms / in winter (Ranch.indoors), and come back out in the morning. (-999 = no door: huddle.)
+var door := Vector2i(-999, -999)
+var inside := false
 var _strip := "idle"
 var _bubble: Sprite2D
 var _need := "-"
@@ -189,6 +193,35 @@ func refresh_need() -> void:
 	_bubble.visible = true
 
 
+## Going in / coming out (c11a_03-05). True while the walk to the door owns this frame.
+func _shelter_step() -> bool:
+	var want := Ranch.indoors(uid)
+	if want and not inside:
+		var dp := map.cell_center(door)
+		if position.distance_to(dp) < 3.0:
+			inside = true
+			visible = false
+			if map.things.has(_at) and map.things[_at].get("animal", null) == self:
+				map.things.erase(_at)  # asleep in the barn: no tap spot outside
+			_at = Vector2i(-999, -999)
+		else:
+			_target = dp
+			_state = "walk"
+			_play("walk")
+		return false
+	if not want and inside:
+		inside = false
+		visible = true
+		position = map.cell_center(door)
+		var c := _free_cell(Vector2i(clampi(door.x, pen.position.x, pen.end.x - 1), clampi(door.y, pen.position.y, pen.end.y - 1)))
+		_target = map.cell_center(c)
+		_state = "walk"
+		_play("walk")
+		_at = c
+		map.set_thing(c.x, c.y, {"type": "pet_animal", "hint": Ranch.hint(uid), "animal": self, "uid": uid}, false)
+	return false
+
+
 ## Fixed huddle cell: the pen's animals by name fill rows back to front (no stacking, c11a_06).
 func _huddle_cell() -> Vector2i:
 	var mates: Array = []
@@ -210,6 +243,10 @@ func _process(delta: float) -> void:
 	if _need_t <= 0.0 and uid != "":
 		_need_t = 0.5
 		refresh_need()
+		if door.x > -999 and _shelter_step():
+			return
+	if inside:
+		return
 	_wait -= delta
 	if _state == "walk":
 		var d := _target - position
@@ -221,7 +258,7 @@ func _process(delta: float) -> void:
 			position += d.normalized() * 10.0 * delta
 			if absf(d.x) > 0.5:
 				flip_h = d.x < 0
-	elif _wait <= 0.0:
+	elif _wait <= 0.0 and not (door.x > -999 and uid != "" and Ranch.indoors(uid)):
 		var r := _rng.randf()
 		if r < 0.45:
 			_state = "walk"

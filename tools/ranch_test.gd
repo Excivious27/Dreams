@@ -21,6 +21,7 @@ func _initialize() -> void:
 		_care(arc)
 		_breed(arc)
 	_empty_data()
+	_indoors_rule()
 	_migration()
 	print("ranch_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails > 0 else 0)
@@ -198,3 +199,15 @@ func _has(lines: Array, s: String) -> bool:
 		if str(l).contains(s):
 			return true
 	return false
+
+
+func _indoors_rule() -> void:
+	_fresh("penguins")
+	var c := Ranch.add("cow")
+	var h := Ranch.add("chicken")
+	GameState.run["time"] = 12 * 60
+	var day_out := not Ranch.indoors(c) or GameState.weather_today() in ["storm", "snow", "blizzard"]
+	check(day_out, "midday: the herd is out")
+	GameState.run["time"] = GameState.sunset() + 60
+	check(Ranch.indoors(c) and Ranch.indoors(h), "after sunset: everyone goes in")
+	GameState.run["time"] = 12 * 60

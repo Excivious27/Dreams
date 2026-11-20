@@ -768,3 +768,22 @@ static func uid_of_legacy(nm: String) -> String:
 ## Is an item a ranch product (raw animal goods: sell perk, bag sort)?
 static func is_good(item: String) -> bool:
 	return (data()["products"] as Dictionary).has(item)
+
+
+## Should this animal be inside its building now? After sunset (+30 min) until sunrise, storms and snow,
+## and in winter (birds, rabbits and bees stay in; the herd only comes out on clear midday hours).
+## Light rain: they stay out and huddle (FarmAnimal). Never on a co-op guest's own clock rules: same rule.
+static func indoors(uid: String) -> bool:
+	var a := animal(uid)
+	if a.is_empty():
+		return false
+	var t := int(GameState.run.get("time", 360))
+	if t >= GameState.sunset() + 30 or t < GameState.sunrise():
+		return true
+	var w := GameState.weather_today()
+	if w in ["storm", "snow", "blizzard"]:
+		return true
+	if GameState.season() == "winter":
+		var g := str(species(str(a.get("species", ""))).get("group", ""))
+		return g != "beast" or t < 11 * 60 or t >= 15 * 60
+	return false
