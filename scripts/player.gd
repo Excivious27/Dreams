@@ -917,12 +917,37 @@ func _physics_process(delta: float) -> void:
 ## facing direction if the character has it. Returns true if it played.
 func play_tool(action: String, restart := true) -> bool:
 	var d := "right" if facing in ["left", "right"] else facing
+	# A scythe or sword cutting weeds (GameMap) or swung at nothing is a sweep:
+	# the attack pose with the blade arcing across the front, never an axe chop
+	# (c5_15 #6).
+	var ht := GameState.held_tool()
+	if action == "axe" and (ht == "scythe" or GameState.is_sword(ht)) and has_anim("attack"):
+		var sa := "attack_down" if facing == "down" and has_anim("attack_down") else ("attack_up" if facing == "up" and has_anim("attack_up") else "attack")
+		_busy = true
+		_busy_t = 0.0
+		velocity = Vector2.ZERO
+		_sprite.position.y = 0
+		_attack_hit_done = true  # a work swing, not a blow
+		_apply(sa, facing == "left", restart)
+		if _anim:
+			_anim.speed_scale = 1.35
+		HeldSwing.spawn(self, ht, "sweep", 0.4, facing)
+		return true
 	var a := action + "_" + d
 	if not has_anim(a) and has_anim(action + "_right"):
 		a = action + "_right"
 	if not has_anim(a) and has_anim(action + "_down"):
 		a = action + "_down"
 	var drawn := has_anim(a) and not CharacterLibrary.is_alias(_anim.sprite_frames, a)
+	# Only a _down strip for this tool (the 12B heroes) while facing right/up:
+	# never swing toward the camera. Turn the way you face and draw the tool
+	# over the attack (side) or back pose instead (c5_15 #3).
+	if has_anim(a) and not a.ends_with("_" + d) and _tool_overlay(action):
+		var turn := _facing_work_pose(d)
+		if turn != "":
+			a = turn
+			drawn = false
+			_attack_hit_done = true
 	if not has_anim(a):
 		# No pose for this tool at all: swing the attack frames and draw the tool.
 		if not _tool_overlay(action) or not has_anim("attack"):
@@ -952,6 +977,17 @@ func play_tool(action: String, restart := true) -> bool:
 
 ## How long one work swing takes (seconds), for every hero alike.
 const TOOL_TIME := {"pickaxe": 0.46, "axe": 0.46, "hoe": 0.4, "water": 0.5}
+
+
+## A real (drawn) pose that faces `d` for a work swing with no tool strip that
+## way: the attack frames, else the back/side rest. "" when there is none.
+func _facing_work_pose(d: String) -> String:
+	var sf := _anim.sprite_frames if _anim else null
+	var opts: Array = ["attack", "idle_side", "view_right"] if d == "right" else (["attack_up", "idle_up", "view_back"] if d == "up" else [])
+	for o: String in opts:
+		if has_anim(o) and not CharacterLibrary.is_alias(sf, o):
+			return o
+	return ""
 
 
 static func _tool_overlay(action: String) -> bool:
@@ -1103,7 +1139,7 @@ func do_action(mode := "a") -> void:
 		return
 	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
-		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]
+		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]  # scythe -> sweep in play_tool
 		if play_tool(act):
 			return
 		return

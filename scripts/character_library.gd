@@ -23,7 +23,7 @@ const TOOL_FPS := {"hoe": 10.0, "water": 8.0, "axe": 10.0, "pickaxe": 10.0, "cas
 ## Characters that exist only in art/gen (no pack folder). Value = the strips to load.
 const HERO2_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "hoe_down", "hoe_right", "hoe_up", "axe_down", "axe_right", "axe_up", "pickaxe_down", "pickaxe_right", "pickaxe_up", "water_down", "water_right", "water_up", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "wave", "swim", "swim_down", "swim_up", "float", "ride", "ride_run", "ride_down", "ride_up", "powerup", "view_front", "view_right", "view_back", "view_left"]
 const HERO3_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "powerup", "swim", "cheer", "sit", "sleep", "wave", "view_front", "view_right", "view_back", "view_left"]
-const HERO12_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "hurt", "attack", "faint", "celebrate", "cheer", "powerup", "burst", "hoe_down", "axe_down", "pickaxe_down", "water_down", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "sleep_bed", "wave", "swim", "float", "ride", "ability", "view_front", "view_right", "view_back", "view_left"]
+const HERO12_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "hurt", "attack", "faint", "celebrate", "cheer", "powerup", "burst", "hoe_down", "axe_down", "pickaxe_down", "water_down", "hoe_right", "hoe_up", "axe_right", "axe_up", "pickaxe_right", "pickaxe_up", "water_right", "water_up", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "sleep_bed", "wave", "swim", "float", "ride", "ability", "view_front", "view_right", "view_back", "view_left"]
 const GEN_ONLY := {
 	"merkitty_a": ["idle", "walk", "walk_down", "walk_up", "swim", "dive", "surface", "sing"],
 	"merkitty_b": ["idle", "walk", "walk_down", "walk_up", "swim", "dive", "surface", "sing"],
@@ -165,7 +165,7 @@ static func frames_for(id: String) -> SpriteFrames:
 				for pair in [["_right", "attack"], ["_down", "attack_down"], ["_up", "attack_up"]]:
 					var an: String = tool + str(pair[0])
 					if not gsf.has_animation(an):
-						_alias(gsf, an, "celebrate" if tool in ["hold", "eat"] and gsf.has_animation("celebrate") else ("idle" if tool in ["cast", "reel"] else str(pair[1])))
+						_alias(gsf, an, _gang_tool_src(gsf, tool, str(pair[0]), str(pair[1])))
 						gsf.set_animation_loop(an, false)
 		# A gangster-arc outfit with no tool poses borrows the farm hero's.
 		elif id.ends_with("_gang") and has_character(id.trim_suffix("_gang")):
@@ -217,6 +217,27 @@ static func frames_for(id: String) -> SpriteFrames:
 	Art.add_frames(sf, "characters/" + id, extra, tfps, tloops)
 	_frames_cache[id] = sf
 	return sf
+
+
+## Stand-in strip for a redrawn gangster hero's missing tool pose (c5_15 #4/#5):
+## fishing any way uses the drawn rod cast/reel (never an empty-handed idle),
+## watering pours from a standing pose (HeldSwing draws the can), never a punch.
+static func _gang_tool_src(gsf: SpriteFrames, tool: String, dir: String, attack: String) -> String:
+	var pick := func(opts: Array) -> String:
+		for o: String in opts:
+			if gsf.has_animation(o) and not is_alias(gsf, o):
+				return o
+		return str(opts[-1])
+	match tool:
+		"hold", "eat":
+			return pick.call(["hold_down", "celebrate", "idle"])
+		"cast":
+			return pick.call(["cast_right", "idle"])
+		"reel":
+			return pick.call(["reel_right", "cast_right", "idle"])
+		"water":
+			return pick.call({"_down": ["hold_down", "idle_down", "idle"], "_up": ["idle_up", "idle"], "_right": ["idle", "idle_down"]}[dir])
+	return attack
 
 
 ## True when `anim` is a borrowed stand-in (not drawn for this action).

@@ -104,7 +104,58 @@ func _run() -> void:
 				check(n > 150.0, "%s %s frame %d holds a figure" % [id, a, i])
 				if a != "power":
 					check(cx > 0.3 and cx < 0.7, "%s %s frame %d is centred (%.2f)" % [id, a, i, cx])
+	# 8. C5 P4: gangster heroes fish with the drawn rod pose any way they face
+	#    and pour water from a standing pose, never a punch (c5_15 #4/#5).
+	for id: String in ["june_gang", "ollie_gang", "rafe_gang"]:
+		var sf := CharacterLibrary.frames_for(id)
+		var al: Dictionary = sf.get_meta("aliased", {})
+		for an: String in ["cast_down", "cast_up", "reel_down", "reel_up", "reel_right"]:
+			if al.has(an):
+				check(str(al[an]) in ["cast_right", "reel_right"], "%s %s borrows the rod pose (got %s)" % [id, an, al[an]])
+		for an: String in ["water_down", "water_up", "water_right"]:
+			if al.has(an):
+				check(not str(al[an]).begins_with("attack"), "%s %s is no punch (got %s)" % [id, an, al[an]])
+	# 9. C5 P4: crew strips rebuilt - walk_down frames hold whole figures and
+	#    the twins' view_front is a front view (c5_06 #3).
+	for c: String in ["deuce", "vic", "val", "specs", "sasha"]:
+		var info := Art.info("characters/" + c, "walk_down")
+		var img := Art.tex("characters/" + c, "walk_down").get_image()
+		if img.is_compressed():
+			img.decompress()
+		var cw := int(info["cell_w"])
+		for i in int(info["frames"]):
+			var xs: Array[int] = []
+			for x in range(i * cw, (i + 1) * cw):
+				for y in range(0, img.get_height(), 3):
+					if img.get_pixel(x, y).a > 0.5:
+						xs.append(x - i * cw)
+						break
+			check(xs.size() > cw * 0.45 and xs.min() > 0 and xs.max() < cw - 1, "%s walk_down frame %d is a whole figure" % [c, i])
+	for c: String in ["vic", "val"]:
+		var f := Art.tex("characters/" + c, "view_front").get_image()
+		var d := Art.tex("characters/" + c, "idle_down").get_image()
+		check(f.get_width() * 2 == d.get_width() or f.get_width() == int(Art.info("characters/" + c, "idle_down")["cell_w"]), "%s view_front is the front idle" % c)
+	# 11. C5 P4: the playable penguins have drawn tool poses right and up;
+	#     Coldy and Big Jim have a drawn pickaxe_down.
+	for id: String in ["penguin_king", "penguin_wizard"]:
+		var sf := CharacterLibrary.frames_for(id)
+		for t: String in ["hoe", "axe", "pickaxe", "water"]:
+			for d: String in ["right", "up"]:
+				var an := t + "_" + d
+				check(sf.has_animation(an) and not CharacterLibrary.is_alias(sf, an) and sf.get_frame_count(an) == 3, "%s has a drawn %s" % [id, an])
+	for id: String in ["coldy", "big_jim"]:
+		var sf := CharacterLibrary.frames_for(id)
+		check(sf.has_animation("pickaxe_down") and sf.get_frame_count("pickaxe_down") == 3, "%s has a drawn pickaxe_down" % id)
 	GameState.load_data()  # enemies.json (GameState is static: nothing loads it in a bare tree)
+	# 10. C5 P4: thugs stand at hero height (heroes are drawn 24 px; c5_06 #1
+	#     measured 0.5-scale cells against unscaled hero cells, so no data scale).
+	for k: String in ["thug_brute", "thug_cyber", "thug_lookout"]:
+		var th := Enemy.new()
+		th.setup(k)
+		var tex := th._sprite.sprite_frames.get_frame_texture("idle", 0) if th._sprite else null
+		var hgt := float(tex.get_height()) * th._sprite.scale.y if tex else 0.0
+		check(hgt >= 20.0 and hgt <= 32.0, "%s drawn %.0f px tall (heroes are 24)" % [k, hgt])
+		th.free()
 	var ember := Enemy.new()
 	ember.setup("marked_ember")
 	check(ember._sprite != null and ember._sprite.sprite_frames.has_animation("power"), "marked_ember loads its power pose")

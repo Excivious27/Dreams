@@ -120,6 +120,14 @@ func _run() -> void:
 	await frames(1)
 	var hs: Node = m.player.get_node_or_null("HeldSwing")
 	check(hs is HeldSwing and (hs as HeldSwing).kind == "sweep", "gang sword swing shows the blade")
+	# C5 P4 (c5_15 #6): a blade cutting weeds (GameMap calls play_tool("axe")) sweeps
+	# from the attack pose; it never plays the axe chop.
+	await secs(0.6)
+	m.player._busy = false
+	check(m.player.play_tool("axe") and m.player.anim_name.begins_with("attack"), "a blade on weeds plays the attack pose (got %s)" % m.player.anim_name)
+	await frames(1)
+	var hs2: Node = m.player.get_node_or_null("HeldSwing")
+	check(hs2 is HeldSwing and (hs2 as HeldSwing).kind == "sweep", "a blade on weeds sweeps")
 	m = await _mine("penguins", "kairi")
 	GameState.select_slot((GameState.run["toolbar"] as Array).find("sword"))
 	m.player._attack_cd = 0.0
