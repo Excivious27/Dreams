@@ -222,9 +222,21 @@ func _camp() -> void:
 	var ch: Array = []
 	for pk in picks:
 		ch.append("%s  ◆%d" % [GameState.item_name(str(pk[0])), int(pk[1])])
+	# The gangster road to Space (CONDUCT 4): the smugglers run a cargo rocket to the
+	# moon, and once you've ridden it the farm's launchpad has a beacon to fly to.
+	var moon_i := -1
+	if GameState.quest_done("clear_meadow"):
+		moon_i = ch.size()
+		ch.append("Ride the cargo rocket to the moon")
 	ch.append("Leave")
 	d.say([{"who": "Smuggler", "text": "No names, no questions. You have ◆%d." % int(GameState.run["crystals"]), "choice": ch, "key": ""}])
 	await d.finished
+	if moon_i >= 0 and d.last_choice == moon_i:
+		await say([{"who": "Smuggler", "text": "Moon run leaves when you sit down. We drop a landing beacon up there for regulars, so your own rocket can find it after. Don't touch the crates with the stamp on."}])
+		GameState.run["flags"]["moon_unlocked"] = true
+		fx("levelup", cell_center(PAD) + Vector2(0, -8), 10.0, 0.8)
+		go_to("moon", Vector2(12 * TILE, 18 * TILE), "down")
+		return
 	if d.last_choice >= 0 and d.last_choice < picks.size():
 		var id: String = picks[d.last_choice][0]
 		var price: int = picks[d.last_choice][1]

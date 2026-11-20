@@ -650,7 +650,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					var txt := str(thing.get("text_after", thing.get("text", "..."))) if thing.has("after_flag") and GameState.run["flags"].has(str(thing["after_flag"])) else str(thing.get("text", "..."))
 					tell([{"who": str(thing.get("who", "")), "text": txt, "mood": str(thing.get("mood", "neutral"))}]))
 				return true
-			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
+			var who := str(thing.get("who", ""))
+			if who == "Star Crystal" and not GameState.is_penguins():
+				who = ""  # no Star Crystal in the gangster arc: the note reads as narration
+			tell([{"who": who, "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"water":
 			# fish_at casts with the rod in hand, else says how to get it there
