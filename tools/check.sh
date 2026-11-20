@@ -142,6 +142,11 @@ echo "$cout" | grep -E "FAIL|SCRIPT ERROR|rec_links_test" || true
 if ! echo "$cout" | grep -q "rec_links_test: 0 failures"; then
   echo "rec_links_test failed"; exit 1
 fi
+rrout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/rec_reno_test.gd 2>&1)"
+echo "$rrout" | grep -E "FAIL|SCRIPT ERROR|rec_reno_test" || true
+if ! echo "$rrout" | grep -q "rec_reno_test: 0 failures"; then
+  echo "rec_reno_test failed"; exit 1
+fi
 raout="$("$GODOT" --headless --path . -s res://tools/rec_audio_test.gd 2>&1)"
 echo "$raout" | grep -E "FAIL|SCRIPT ERROR|rec_audio_test" || true
 if ! echo "$raout" | grep -q "rec_audio_test: 0 failures"; then

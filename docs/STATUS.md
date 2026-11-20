@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 3 fix P5: rec, arcade, community farm, town (Guide 26 answers)
+- Gangster cabinet names: Whack-a-Snitch and Neon Range (Tickets.game_name; game titles, how-to, quests via `text_gangsters` + a small hook in quests.gd).
+- Rec keeps growing for months (Tom #3): `RecReno` (scripts/rec_reno.gd; gen_rec RENOVATIONS) announces five renovations after the opening (arcade wing day +18: Whack/Neon Range; Skee-Ball Alley +42; jukebox lounge +66; prize gallery +92: top prize shelf; trophy hall +120). Each has a start letter, 3-5 days taped off ("A: under renovation"), an open letter; then a seasonal Rec Cup (score to beat, ticket pot, once a season). Desk board lists work and the cup.
+- Gangster Rec Hall open 9am-2am (`hours_gang`, `RecCenter.day_hour`). Prize Candy is a loved gift for anyone who likes candy (item `loved_by`, GameState.gift_value hook).
+- Community farm builds take 2-4 nights each (shed 2, beds 2, well 3, orchard 2, greenhouse 4): nightly progress lines in the sleep report, journal/board "night 2 of 4", Hazel's words, and half-built pieces on the map (new art cf_build_frame/well/greenhouse/sawhorse, tools/slice_r13_c3_p5.py).
+- Good friends (4+ hearts) let you into their home until midnight, with a wave-in toast (TownHours.late_friend).
+- Tickets drawn as a ticket stub (`Tickets.draw_ticket/draw_amount`), no more ♦ next to crystals' ◆. Bowling versus sheet shows the opponent's full name (fitted). Lambda-capture-freed errors fixed (weakrefs in RecAudio.lane_sound, CfVolunteers._back). cf_volunteer_test is deterministic (game-time waits, seed, --fixed-fps 60).
+- Tests: new tools/rec_reno_test.gd; extended gang_flavour_test, town_first_test, commons_test.
 ## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
 - Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
 - Mine stones/ore (55 props: mine_*_rock/bigrock/ore, node_*) crispened by tools/crispen.py: hard alpha (no magenta-tinted soft fringe), clean dark 1px outline, small palette, light unsharp. Same canvas sizes.
