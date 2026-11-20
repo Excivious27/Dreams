@@ -110,10 +110,17 @@ func leave(why := "left") -> void:
 	disconnected.emit(why)
 
 
+const LOOK_EVERY := 2.0
+var _look_hash := 0
+var _look_t := 0.0
+
+
 func _my_look() -> Dictionary:
 	var lk: Variant = GameState.run.get("look", {})
 	var eq: Variant = GameState.run.get("equip", {})
-	return {"playable": GameState.run.get("playable", ""), "arc": str(GameState.run.get("arc", "")), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}}
+	var dv: Variant = GameState.run.get("decor", {})
+	var wr: Variant = (dv as Dictionary).get("wear", {}) if dv is Dictionary else {}
+	return {"playable": GameState.run.get("playable", ""), "arc": str(GameState.run.get("arc", "")), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}, "wear": wr if wr is Dictionary else {}}
 
 
 func _send(o: Dictionary) -> void:
@@ -188,6 +195,7 @@ func _process(delta: float) -> void:
 func _on_msg(m: Dictionary) -> void:
 	match str(m.get("t", "")):
 		"joined":
+			_look_hash = 0
 			my_id = int(m["id"])
 			room = str(m["room"])
 			_last_room = room
@@ -218,6 +226,7 @@ func _on_msg(m: Dictionary) -> void:
 		"no_room":
 			leave("No game with that code. Check the code with your host.")
 		"peer_joined":
+			_look_hash = 0  # the newcomer gets our look with the next state packet
 			var p: Dictionary = m["peer"]
 			peers[int(p["id"])] = p
 			if str(p.get("arc", "")) != str(GameState.run["arc"]):
@@ -276,7 +285,17 @@ func _broadcast_state() -> void:
 	if not (m is GameMap) or (m as GameMap).player == null:
 		return
 	var p := (m as GameMap).player
-	send_all({"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false, "look": _my_look()})
+	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false}
+	# The look (and wardrobe) rides along only when it changed, or every LOOK_EVERY s for
+	# late joiners: receivers keep the last one (c10_10: it was sent whole 10x a second).
+	var lk := _my_look()
+	var h := hash(lk)
+	_look_t += TICK
+	if h != _look_hash or _look_t >= LOOK_EVERY:
+		_look_hash = h
+		_look_t = 0.0
+		st["look"] = lk
+	send_all(st)
 
 
 # ---- world sync (host -> guests) ---------------------------------------------
