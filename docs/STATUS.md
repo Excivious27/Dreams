@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
+
+- Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).
+- Mine: keeper encounters total at least `Mine.KEEPER_MIN_HP` (8): a floor-1 bat swarm was 5 hp; `Mine.force_encounter` test hook; tools/keeper_min_hp_test.gd (check.sh).
+- Wedding songs re-imported as seamless loops (the vows scene has no fixed length); music_stream refreshed.
+- Town tour: the guide walks up from 3-5 cells for at most 2.5 s game time (the player stood frozen up to 5 s wall clock; bots called it "boxed in").
+- Tests brought in line with C7 behaviour: first-week gift letters give n items (systems_test), partner scene "can we/I stay" (newgame_penguin_test), romance chore week uses an in-season crop and seeded nights, music_stream_test holds the winter download before the stand-in re-ask (race).
+
 ## 2026-11-20 — CONDUCT 7 fix P2: penguin story canon + beat flow
 
 - Story engine: one beat at a time (`Story.is_playing()`, `_queue`), quest-done beats have a level-triggered backstop in `Story.tick` (a missed moment plays as soon as the screen is free), beats wait for full-screen UIs/pauses (`_screen_busy`), gated choices re-arm with no effects, a beat cut off by a scene change re-arms instead of applying effects on the wrong map, every beat is skippable (Skip/MENU up to the next choice), `"pre"` effects (p5_win clears the boss first), `only_hero`/`not_hero` line filters. `story_busy` also covers a skippable scene (opening fades); the player's freeze-safety release (dead since it tested a Callable) now works. `data/story_gang.json` (P3) overrides story.json keys.
