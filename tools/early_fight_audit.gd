@@ -4,6 +4,7 @@ extends SceneTree
 ## the meadow: "naive" stands and swings, "careful" steps back while the foe
 ## winds up (the red tint / ! telegraph). Reports health lost per fight.
 ## Run: godot --headless --path . -s res://tools/early_fight_audit.gd
+## DIFF=0..3 env plays a difficulty mode (0 Very easy .. 3 Hard; default 2).
 
 const FOES := {
 	"penguins": [["grump", -1], ["big_grump", -1], ["slime", 0], ["bat", 0], ["mud_slime", 0], ["golem", 0], ["keeper1", 0]],
@@ -32,7 +33,7 @@ func _run() -> void:
 
 
 func _fight(arc: String, kind: String, tier: int, style: String) -> void:
-	GameState.new_run(arc, "kairi" if arc == "penguins" else "vic", "Kai", "Town", "Pup")
+	GameState.new_run(arc, "kairi" if arc == "penguins" else "vic", "Kai", "Town", "Pup", {"difficulty": int(OS.get_environment("DIFF")) if OS.get_environment("DIFF") != "" else Difficulty.DEFAULT})
 	GameState.run["intro_done"] = true
 	GameState.run["flags"]["meadow_seen"] = true
 	GameState.run["energy"] = 999

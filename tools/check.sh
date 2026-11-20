@@ -174,6 +174,13 @@ echo "$cout" | grep -E "FAIL|gang_play_test" || true
 if ! echo "$cout" | grep -q "gang_play_test: 0 failures"; then
   echo "gang_play_test failed"; exit 1
 fi
+for t in difficulty_test day_length_test; do
+  cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/$t.gd 2>&1)"
+  echo "$cout" | grep -E "FAIL|$t:" || true
+  if ! echo "$cout" | grep -q "$t: [0-9]* checks, 0 failures"; then
+    echo "$t failed"; exit 1
+  fi
+done
 cout="$("$GODOT" --headless --path . -s res://tools/coop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|coop_test" || true
 if ! echo "$cout" | grep -q "coop_test: 0 failures"; then

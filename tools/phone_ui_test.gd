@@ -73,11 +73,36 @@ func _run() -> void:
 	if df is FontFile:
 		(df as FontFile).allow_system_fallback = false
 	_glyphs(df)
+	await _title_pass()
 	for a: String in ["penguins", "gangsters"]:
 		arc = a
 		await _arc_pass()
 	print("phone_ui_test: %d issue(s)" % issues.size())
 	quit(1 if issues.size() > 0 else 0)
+
+
+## C4: the new-game page with its Difficulty / Day length buttons, and the
+## save slots page (two-line slot info with mode and day length).
+func _title_pass() -> void:
+	arc = "title"
+	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit", {"difficulty": 0, "day_len": 40})
+	GameState.save()
+	change_scene_to_file("res://scenes/title.tscn")
+	await _frames(10)
+	var t := current_scene
+	t.set("_arc", "penguins")
+	t.set("_playable", "kairi")
+	t.call("_show_names")
+	await _check("newgame_names", t)
+	for i in 1:  # Default -> Hard: the longest description
+		for b in t.find_children("*", "Button", true, false):
+			if (b as Button).text.begins_with("Difficulty"):
+				(b as Button).pressed.emit()
+				break
+	await _check("newgame_names_hard", t)
+	t.call("_show_slots")
+	await _check("slots", t)
+	GameState.run = {}
 
 
 ## Every non-ASCII character the game prints has a glyph (Open Sans + fonts/symbols.ttf).

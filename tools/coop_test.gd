@@ -195,6 +195,13 @@ func _run() -> void:
 	check(Crafting.job_left("kitchen") == 600, "job keeps 600 min after leaving")
 	check(int(GameState.run["buffs"]["luck"]["until"]) - GameState.now_abs() == 120, "buff keeps 120 min after leaving")
 	_reset(n)
+	# C4: the guest plays at the host's difficulty and day length, then goes home with its own.
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup", {"difficulty": 3, "day_len": 20})
+	_join(n, {"day": 9, "time": 600, "farm": {}, "opts": {"difficulty": 0}, "day_len": 40})
+	check(Difficulty.level() == 0 and GameState.day_len() == 40, "guest uses the host's difficulty and day length")
+	n._restore_solo()
+	check(Difficulty.level() == 3 and GameState.day_len() == 20, "home again: our own difficulty and day length")
+	_reset(n)
 	_more(n)
 	n.my_id = -1
 	n._host = false
