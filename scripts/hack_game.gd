@@ -93,10 +93,35 @@ func _process(delta: float) -> void:
 		return
 	if _showing:
 		return
+	if PadInput.using_pad():
+		# A stick wobbles and crosses diagonals: one arrow per push, by its main
+		# direction, and only after it came back to the middle (C9 c9_02).
+		var pv := Input.get_vector("left", "right", "up", "down")
+		var dir := HackGame.pad_dir(pv)
+		if pv.length() < PAD_REST:
+			_neutral = true
+		elif dir != "" and _neutral:
+			_neutral = false
+			_press(dir)
+		return
 	for d in DIRS:
 		if Input.is_action_just_pressed(d):
 			_press(d)
 			break  # one arrow per frame: a diagonal must not press two
+
+
+## The arrow a stick/d-pad vector means ("" near the middle).
+const PAD_PUSH := 0.5
+const PAD_REST := 0.3
+static func pad_dir(v: Vector2) -> String:
+	if v.length() < PAD_PUSH:
+		return ""
+	if absf(v.x) >= absf(v.y):
+		return "right" if v.x > 0.0 else "left"
+	return "down" if v.y > 0.0 else "up"
+
+
+var _neutral := true
 
 
 func _tap(ev: InputEvent) -> void:

@@ -95,7 +95,7 @@ static func first_pick(hud: Node) -> void:
 	if k == "sword":
 		var id := str(GameState.run["toolbar"][int(GameState.run["slot"])])
 		txt = ("%s: tap USE to fire at foes. It uses rounds." if GameState.items.get(id, {}).has("range") else "%s: tap USE to swing at foes.") % GameState.item_name(id)
-	hud.toast(txt, Color(0.85, 0.95, 1.0))
+	hud.toast(PadInput.words(txt), Color(0.85, 0.95, 1.0))  # "tap USE" -> "press A" / "press Z" off the phone
 
 
 ## C3: a tool tip only where it makes sense: none on battlefields (the battle

@@ -83,6 +83,9 @@ func _who() -> String:
 		return Campaign.who(camp)  # per-campaign leader, always someone you've met (P1 hook)
 	var w := str(d.get("who", ""))
 	var id := w.to_lower().replace(" ", "_")
+	# A field's speaker from the other arc (Catkins in a gangster run) narrates instead (C9 c9_14).
+	if not Hearts.in_arc(id) or (id == "catkins" and not GameState.is_penguins()):
+		return ""
 	return w if not Crew.members().has(id) or Crew.recruited(id) else ""
 
 func _setup() -> void:
@@ -162,6 +165,32 @@ var _rally_given := false
 var _push_said := false
 
 
+## "RALLY", plus the key/button when the touch pad is hidden ("RALLY (L3)").
+func _rally_word() -> String:
+	return "RALLY" if TouchControls.visible_controls else "RALLY (%s)" % InputSetup.prompt("rally")
+
+
+## Rally from keys/pad (C9): a tap of the rally action cycles guard -> follow ->
+## each point; holding it RALLY_HOLD s opens the picker list.
+const RALLY_HOLD := 0.35
+var _rally_hold := -1.0
+
+
+func _rally_input(delta: float) -> void:
+	if not InputMap.has_action("rally"):
+		return
+	if Input.is_action_just_pressed("rally") and not Dialogue.input_blocked():
+		_rally_hold = 0.0
+	elif _rally_hold >= 0.0 and Input.is_action_pressed("rally"):
+		_rally_hold += delta
+		if _rally_hold >= RALLY_HOLD:
+			_rally_hold = -1.0
+			map.later(_pick_rally)
+	elif _rally_hold >= 0.0:
+		_rally_hold = -1.0
+		_cycle_rally()
+
+
 ## Cycle: guard posts → follow me → each point in turn → guard posts.
 func _cycle_rally() -> void:
 	var i := _rally + 1
@@ -237,19 +266,19 @@ func _set_rally(i: int, quiet := false) -> void:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
 		map.set_meta("follow_me", true)
-		_rally_btn.text = "RALLY: follow me"
+		_rally_btn.text = _rally_word() + ": follow me"
 		_rally_btn.icon = Art.tex("ui", "rally_follow")
 		_rally_toast("Helpers: on me!")
 	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
-		_rally_btn.text = "RALLY: guard posts"
+		_rally_btn.text = _rally_word() + ": guard posts"
 		_rally_btn.icon = Art.tex("ui", "rally_guard")
 		if not quiet:
 			_rally_toast("Helpers: hold your posts.")
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
-		_rally_btn.text = "RALLY ▸ %s" % str(points[i]["name"])
+		_rally_btn.text = "%s ▸ %s" % [_rally_word(), str(points[i]["name"])]
 		_rally_btn.icon = Art.tex("ui", "rally_send")
 		_rally_toast("Helpers: everyone to %s!" % str(points[i]["name"]))
 	_rally_flash = 1.0
@@ -335,6 +364,7 @@ func _process(delta: float) -> void:
 	if _over or get_tree().paused or map.player == null or _briefing:
 		return
 	_capture(delta)
+	_rally_input(delta)
 	_sec += delta
 	if _sec >= 1.0:
 		_sec = 0.0
@@ -974,7 +1004,13 @@ func _draw() -> void:
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.85, 0.85, 0.85))
 		# A dark under-stroke so a white (open) ring reads on pavement, snow and ash.
 		draw_arc(pos, CAP_R, 0, TAU, 48, Color(0.05, 0.05, 0.08, 0.55), 4.0, true)
-		draw_arc(pos, CAP_R, 0, TAU, 48, Color(col.r, col.g, col.b, (0.75 if str(p["owner"]) == "neutral" else 0.45) + 0.1 * sin(t * 2.0)), 2.0, true)
+		var ring_c := Color(col.r, col.g, col.b, (0.75 if str(p["owner"]) == "neutral" else 0.45) + 0.1 * sin(t * 2.0))
+		if str(p["owner"]) == "enemy":
+			# Theirs: a dashed ring, so it never relies on red vs blue alone (C9 c9_07).
+			for k in 8:
+				draw_arc(pos, CAP_R, TAU * k / 8.0, TAU * k / 8.0 + TAU / 14.0, 6, ring_c, 2.0, false)
+		else:
+			draw_arc(pos, CAP_R, 0, TAU, 48, ring_c, 2.0, true)
 		if bool(p.get("gate", false)):
 			# An enemy gate (defend): a spiked double ring; it can't be taken.
 			draw_arc(pos, CAP_R + 4, 0, TAU, 48, Color(0.55, 0.1, 0.12, 0.7), 2.0, true)
@@ -1072,8 +1108,16 @@ func _draw_hud() -> void:
 	for i in points.size():
 		var p: Dictionary = points[i]
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.8, 0.8, 0.8))
-		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 6.5, Color(0, 0, 0, 0.7))
-		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 5.5, col)
+		# Shape as well as colour (C9 c9_07): ours a filled disc, theirs a disc with
+		# a dark slash, open points a hollow ring.
+		var pc := Vector2(x0 + i * 14 + 7, y + 3)
+		Art.draw_disc(_hud, pc, 6.5, Color(0, 0, 0, 0.7))
+		if str(p["owner"]) == "neutral":
+			Art.draw_ring(_hud, pc, 5.0, 1.5, col)
+		else:
+			Art.draw_disc(_hud, pc, 5.5, col)
+		if str(p["owner"]) == "enemy":
+			_hud.draw_line(pc + Vector2(-4.5, 4.5), pc + Vector2(4.5, -4.5), Color(0.15, 0.02, 0.02, 0.9), 1.5)
 	for i in points.size():
 		_hud.draw_string(f, Vector2(x0 + i * 14 + 2, y + 5.5), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_CENTER, 10, 7, Color(0.08, 0.08, 0.08))
 	# Who is bleeding tickets (the side holding fewer points), and supply income.

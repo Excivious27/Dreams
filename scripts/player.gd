@@ -381,6 +381,9 @@ var _prev8 := Vector2i.ZERO       # the input before _cur8
 var _prev8_t := 0.0               # how long that one lasted
 
 
+var _pad_run := false  # full stick tilt on a controller (C9)
+
+
 static func dir8(v: Vector2) -> Vector2i:
 	if v.length() < 0.2:
 		return Vector2i.ZERO
@@ -508,7 +511,7 @@ func cell_has_target(c: Vector2i) -> bool:
 
 
 func update_aim() -> void:
-	if map == null or TouchControls.visible_controls or DisplayServer.is_touchscreen_available():
+	if map == null or TouchControls.visible_controls or DisplayServer.is_touchscreen_available() or PadInput.using_pad():
 		aim_cell = Vector2i(-1, -1)
 		return
 	if Time.get_ticks_msec() - Player.last_mouse_motion_ms > 4000:
@@ -685,7 +688,10 @@ func _physics_process(delta: float) -> void:
 		if not (_busy and _anim and _anim.is_playing() and not anim_name.begins_with("walk") and not anim_name.begins_with("run")):
 			_show_idle()
 		return
-	var dir := Input.get_vector("left", "right", "up", "down")
+	var raw_dir := Input.get_vector("left", "right", "up", "down")
+	# A controller stick: no creeping below the deadzone, a real walk above it (C9).
+	var dir := PadInput.shape(raw_dir)
+	_pad_run = PadInput.wants_run(raw_dir)
 	_track_input(dir, delta)
 	if dir != Vector2.ZERO:
 		auto_target = Vector2.INF
@@ -746,7 +752,7 @@ func _physics_process(delta: float) -> void:
 			_buffered = ""
 			do_action(b)
 			return
-		elif not _busy and _repeat_cd <= 0.0 and (Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and TouchControls.visible_controls)) and _hold_t > 0.25 and (GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"] or GameState.is_sword(GameState.held_tool())):
+		elif not _busy and _repeat_cd <= 0.0 and (Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and (TouchControls.visible_controls or PadInput.using_pad()))) and _hold_t > 0.25 and (GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"] or GameState.is_sword(GameState.held_tool())):
 			# Holding the tool button (or USE on the phone) keeps swinging.
 			if mouse_held and map:
 				face_toward(map.get_global_mouse_position())
@@ -757,14 +763,15 @@ func _physics_process(delta: float) -> void:
 	# A release missed while a menu/dialogue was up must not leave the mouse "held".
 	if mouse_held and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		mouse_held = false
-	if Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and TouchControls.visible_controls):
+	if Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and (TouchControls.visible_controls or PadInput.using_pad())):
 		_hold_t += delta
 	else:
 		_hold_t = 0.0
 	# Companion ability: hold B still for a second.
 	var has_ab: bool = Companion.active_id() != "" or (GameState.is_penguins() and GameState.run["flags"].has("meow_taught"))
-	if TouchControls.ability_pressed and has_ab and not _busy and not Dialogue.input_blocked() and map:
-		# The phone's ♥ button: one tap, no hold.
+	var ab_key := InputMap.has_action("ability") and Input.is_action_just_pressed("ability")
+	if (TouchControls.ability_pressed or ab_key) and has_ab and not _busy and not Dialogue.input_blocked() and map:
+		# The phone's ♥ button (or R / pad RT): one tap, no hold.
 		TouchControls.ability_pressed = false
 		Companion.use_ability(map, self)
 	elif Input.is_action_pressed("b") and dir == Vector2.ZERO and not _busy and has_ab and not Dialogue.input_blocked():
@@ -821,7 +828,8 @@ func _physics_process(delta: float) -> void:
 			if Player.dir8(dir) != Vector2i.ZERO:
 				move8 = Player.dir8(dir)
 
-	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
+	# On a pad B is "back": a full stick tilt runs instead (C9 c9_01 plan 4).
+	var running := (Input.is_action_pressed("b") and not PadInput.using_pad()) or _pad_run or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
 	# One speed ladder with caps (MoveSpeed, c8_10): the Hero tab reads the same parts.
 	var vd := vehicle_def()
 	if _veh and vehicle != "":

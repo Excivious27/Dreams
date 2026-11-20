@@ -131,9 +131,10 @@ func _draw_place(c: Control) -> void:
 
 
 func set_hint(text: String) -> void:
-	# The phone has no A/B buttons: name the ones it has.
-	if TouchControls.visible_controls:
-		text = text.replace("A: ", "USE: ").replace("B: ", "CHECK: ")
+	# Name the buttons of the device in use: USE/CHECK on the phone, the keys
+	# on a keyboard, the pad's own buttons (A / Cross / B...) on a controller.
+	if TouchControls.visible_controls or PadInput.using_pad():
+		text = text.replace("A: ", InputSetup.prompt("a") + ": ").replace("B: ", InputSetup.prompt("action") + ": ")
 	if text != _hint:
 		_hint = text
 		if _canvas:
@@ -175,7 +176,9 @@ func _process(delta: float) -> void:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):
 			GameState.select_slot(i)
 	if Input.is_action_just_pressed("cycle_tool") and not Dialogue.input_blocked():
-		GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
+		GameState.select_slot(Hud.next_slot(1))
+	if InputMap.has_action("cycle_back") and Input.is_action_just_pressed("cycle_back") and not Dialogue.input_blocked():
+		GameState.select_slot(Hud.next_slot(-1))
 	ToolHint.first_pick(self)  # first time each tool is in hand: one line on what it does
 	# Redraw when what's shown changes, and at 10 Hz for the rest (boss bar, buffs, pointer).
 	var r := GameState.run
@@ -554,15 +557,10 @@ func _draw_hud() -> void:
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters
 	if nxt != "" and not Dialogue.instance(get_tree()).active:  # indoors too, under the held-item line
-		# Up to two lines, cut at a word, so the how-to half of a long goal isn't lost.
-		var gl: Array = [nxt]
-		if nxt.length() > 54:
-			var cut := nxt.rfind(" ", 54)
-			if cut < 24:
-				cut = 54
-			var rest := nxt.substr(cut).strip_edges()
-			gl = [nxt.left(cut), rest if rest.length() <= 58 else rest.left(56) + "…"]
+		# Wrapped by measured width at a word, up to GOAL_LINES lines, so the end
+		# of a long goal ("...by the cat statue") is never cut off (C9 c9_13).
 		var gw: float = QuestTracker.GOAL_W if _compass_on else 240.0
+		var gl: Array = Hud.wrap_goal(_font, nxt, gw - 12.0, 7)
 		for gi in gl.size():
 			var gy := TOOLBAR_Y + SLOT + 21 + gi * 9
 			var gs := ("▸ " if gi == 0 else "   ") + str(gl[gi])
@@ -769,6 +767,33 @@ static func panel_stylebox(name: String) -> StyleBox:
 	return sb
 
 
+## The toolbar slot one step along (LB/RB, Tab/Q). On a pad empty slots are
+## skipped so the shoulder buttons only land on things you carry.
+static func next_slot(step: int) -> int:
+	var cur := int(GameState.run.get("slot", 0))
+	var bar: Array = GameState.run.get("toolbar", [])
+	var i := cur
+	for _n in 12:
+		i = posmod(i + step, 12)
+		if not PadInput.using_pad() or i >= bar.size() or str(bar[i]) != "":
+			return i
+	return posmod(cur + step, 12)
+
+
+## Reading time for a toast (C9 c9_07): ~18 chars/s, 2-7 s, times Options >
+## Message time when that setting exists; item pickups ("+1 Wood") stay short.
+const TOAST_CPS := 18.0
+const TOAST_MIN := 2.0
+const TOAST_MAX := 7.0
+static func toast_hold(text: String) -> float:
+	if text.begins_with("+"):
+		return clampf(1.2 + text.length() * 0.03, 1.6, 4.0)
+	var f := 1.0
+	if Settings.DEFAULTS.has("msg_time"):
+		f = maxf(0.5, float(Settings.get_v("msg_time")))
+	return clampf(1.2 + text.length() / TOAST_CPS, TOAST_MIN, TOAST_MAX) * f
+
+
 func toast(text: String, color := Color.WHITE) -> void:
 	# The same message again: bump a counter instead of stacking a copy.
 	for c in _toasts.get_children():
@@ -783,7 +808,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 				(otw as Tween).kill()
 			(c as Label).modulate.a = 1.0
 			var ntw := (c as Label).create_tween()
-			ntw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))
+			ntw.tween_interval(Hud.toast_hold(text))
 			ntw.tween_property(c, "modulate:a", 0.0, 0.5)
 			ntw.tween_callback(c.queue_free)
 			c.set_meta("tw", ntw)
@@ -834,9 +859,31 @@ func toast(text: String, color := Color.WHITE) -> void:
 	_place_toasts()
 	var tw := l.create_tween()
 	l.set_meta("tw", tw)
-	tw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))  # long messages stay long enough to read
+	tw.tween_interval(Hud.toast_hold(text))  # long messages stay long enough to read
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(l.queue_free)
+
+
+const GOAL_LINES := 3
+static func wrap_goal(font: Font, text: String, w: float, fs: int) -> Array:
+	var out: Array = []
+	var line := ""
+	for word in text.split(" ", false):
+		var t := word if line == "" else line + " " + word
+		if line != "" and font.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > w:
+			out.append(line)
+			line = word
+		else:
+			line = t
+	if line != "":
+		out.append(line)
+	if out.size() > GOAL_LINES:
+		var last := " ".join(out.slice(GOAL_LINES - 1))
+		while last.length() > 4 and font.get_string_size(last + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > w:
+			last = last.left(last.length() - 1)
+		out = out.slice(0, GOAL_LINES - 1)
+		out.append(last.strip_edges() + "…")
+	return out
 
 
 func fade_out(seconds := 0.4) -> void:

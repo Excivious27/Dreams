@@ -29,9 +29,19 @@ func _ready() -> void:
 
 
 var _cancel_armed := 0
+## Keys/pad (C9 c9_02): a row cursor. Up/down picks a picker row (or the
+## bottom Random/Done/Cancel row), left/right steps that row's choice (or the
+## bottom button), A presses the bottom button. The current row is lit.
+const LIT := Color(1.3, 1.2, 0.8)
+var _rows_cb: Array = []    # [prev Callable, next Callable, HBoxContainer]
+var _bottom: Array = []     # [Control, Callable]
+var _row := 0
+var _col := 1               # bottom row: Done first
+var _nav_arm := 0
 
 
 func _process(_delta: float) -> void:
+	_nav()
 	# The dresser can be left with B (the press that opened it doesn't count).
 	if not _show_cancel or not is_visible_in_tree():
 		return
@@ -39,6 +49,43 @@ func _process(_delta: float) -> void:
 	if _cancel_armed > 6 and Input.is_action_just_pressed("b"):
 		_cancel_armed = -999
 		cancelled.emit()
+
+
+func _nav() -> void:
+	if not is_visible_in_tree():
+		return
+	_nav_arm += 1
+	if _nav_arm < 6 or not PadFocus.wants_focus():
+		_light(false)
+		return
+	var n := _rows_cb.size() + 1
+	if PadInput.nav_pressed("up"):
+		_row = (_row - 1 + n) % n
+	elif PadInput.nav_pressed("down"):
+		_row = (_row + 1) % n
+	elif PadInput.nav_pressed("left") or PadInput.nav_pressed("right"):
+		var step := -1 if Input.is_action_pressed("left") else 1
+		if _row < _rows_cb.size():
+			Music.instance(get_tree()).sfx("ui_tap")
+			(_rows_cb[_row][0 if step < 0 else 1] as Callable).call()
+			return  # _build() rebuilt the rows (the cursor stays on this row)
+		_col = clampi(_col + step, 0, _bottom.size() - 1)
+	elif Input.is_action_just_pressed("a") and _row == _rows_cb.size() and not _bottom.is_empty():
+		Music.instance(get_tree()).sfx("ui_tap")
+		(_bottom[clampi(_col, 0, _bottom.size() - 1)][1] as Callable).call()
+		return
+	_light(true)
+
+
+func _light(on: bool) -> void:
+	for i in _rows_cb.size():
+		var h: Control = _rows_cb[i][2]
+		if is_instance_valid(h):
+			h.modulate = LIT if on and i == _row else Color.WHITE
+	for i in _bottom.size():
+		var b: Control = _bottom[i][0]
+		if is_instance_valid(b):
+			b.modulate = LIT if on and _row == _rows_cb.size() and i == _col else Color.WHITE
 
 
 func _draw() -> void:
@@ -66,6 +113,7 @@ func _icon_btn(piece: String, text: String, cb: Callable, primary := false) -> C
 	var h := 22.0
 	b.custom_minimum_size = Vector2(t.get_width() * h / t.get_height(), h)
 	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	b.focus_mode = Control.FOCUS_NONE  # the row cursor drives keys/pad (no second focus ring)
 	b.pressed.connect(cb)
 	return b
 
@@ -73,6 +121,8 @@ func _icon_btn(piece: String, text: String, cb: Callable, primary := false) -> C
 func _build() -> void:
 	for c in get_children():
 		c.queue_free()
+	_rows_cb.clear()
+	_bottom.clear()
 	var title := Label.new()
 	title.text = "" if Art.has("ui_creator2", "panel") else "Your look"
 	title.add_theme_font_size_override("font_size", 16)
@@ -141,7 +191,7 @@ func _build() -> void:
 	h.alignment = BoxContainer.ALIGNMENT_CENTER
 	h.add_theme_constant_override("separation", 6)
 	add_child(h)
-	h.add_child(_icon_btn("dice", "Random", func() -> void:
+	var rnd := func() -> void:
 		if _playable_sprite == "penguin":
 			look["tint_name"] = PaperDoll.PENGUIN_TINTS.keys()[randi() % PaperDoll.PENGUIN_TINTS.size()]
 			look["scarf"] = PaperDoll.SCARF_COLORS.keys()[randi() % PaperDoll.SCARF_COLORS.size()]
@@ -152,10 +202,22 @@ func _build() -> void:
 			look = PaperDoll.random_look()
 			if keep_outfit != null:
 				look["outfit"] = keep_outfit  # dice re-rolls hair and face, not the arc's clothes
-		_build()))
-	h.add_child(_icon_btn("done", "Done", func() -> void: done.emit(look), true))
+		_build()
+	var fin := func() -> void: done.emit(look)
+	var bb := _icon_btn("dice", "Random", rnd)
+	h.add_child(bb)
+	_bottom.append([bb, rnd])
+	bb = _icon_btn("done", "Done", fin, true)
+	h.add_child(bb)
+	_bottom.append([bb, fin])
 	if _show_cancel:
-		h.add_child(_icon_btn("x", "Cancel", func() -> void: cancelled.emit()))
+		var cc := func() -> void: cancelled.emit()
+		bb = _icon_btn("x", "Cancel", cc)
+		h.add_child(bb)
+		_bottom.append([bb, cc])
+	_row = clampi(_row, 0, _rows_cb.size())
+	_col = clampi(_col, 0, _bottom.size() - 1)
+	_light(PadFocus.wants_focus() and _nav_arm >= 6)
 
 
 func _picker(label: String, options: Array, key: String, pretty: Callable) -> void:
@@ -175,7 +237,10 @@ func _picker(label: String, options: Array, key: String, pretty: Callable) -> vo
 	if idx < 0:
 		idx = 0
 		look[key] = options[0]
-	h.add_child(_icon_btn("arrow_l", "<", func() -> void: look[key] = options[(idx - 1 + options.size()) % options.size()]; _build()))
+	var prev := func() -> void: look[key] = options[(idx - 1 + options.size()) % options.size()]; _build()
+	var nxt := func() -> void: look[key] = options[(idx + 1) % options.size()]; _build()
+	_rows_cb.append([prev, nxt, h])
+	h.add_child(_icon_btn("arrow_l", "<", prev))
 	var nm := Label.new()
 	nm.text = str(pretty.call(str(options[idx])))
 	nm.add_theme_font_size_override("font_size", 9)
@@ -184,7 +249,7 @@ func _picker(label: String, options: Array, key: String, pretty: Callable) -> vo
 	nm.custom_minimum_size = Vector2(84, 0)
 	nm.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	h.add_child(nm)
-	h.add_child(_icon_btn("arrow_r", ">", func() -> void: look[key] = options[(idx + 1) % options.size()]; _build()))
+	h.add_child(_icon_btn("arrow_r", ">", nxt))
 	_rows.add_child(h)
 
 
@@ -193,6 +258,7 @@ func _btn(text: String, cb: Callable, primary := false) -> Button:
 	b.text = text
 	b.add_theme_font_size_override("font_size", 10 if primary else 9)
 	b.custom_minimum_size = Vector2(26 if text.length() == 1 else 64, 22)
+	b.focus_mode = Control.FOCUS_NONE
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.pressed.connect(cb)
 	return b
