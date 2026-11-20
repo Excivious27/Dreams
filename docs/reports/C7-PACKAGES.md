@@ -1,0 +1,28 @@
+# CONDUCT 7 fix packages: story, quests, writing + dating/marriage build
+Findings: /home/claude/wt/c7_reports/c7_NN.jsonl (one JSON per line). Take every finding whose files/scope fall in your package from ALL files (filter by "files" and by the scope numbers named). Tom's canon: docs/HANDOFF.md Decisions (17:12 story answers, 18:43 dating, 20:03 wine rule). All ages; cosy tone; gangster arc has no mature themes. File ownership is strict; hooks in another package's file are one or two lines and reported.
+Story file split (to avoid conflicts): P2 owns data/story.json and scripts/story.gd and edits PENGUIN beats (p*) and shared beats; P3 writes every GANGSTER beat change (g*) into a NEW data/story_gang.json that overrides story.json keys (P2 adds the 3-line merge in Story.data, like campaign_story.json; P3 may add it in its own branch with the same lines if P2 hasn't).
+Art: dreams-image up to 25 images per package (P1 up to 35). Audio: ACE up to 4 songs for P1 (wedding song, date theme), CC0 as needed. Look at every result once.
+
+## P1 Dating and marriage (new system, both arcs)
+OWNS: new scripts/romance.gd, new scripts/dates.gd, new data/romance.json (+ generator tools/gen_romance.py if you want one), scripts/hearts.gd, scripts/house.gd (spouse room/bed, spouse in the house), new tools/romance_test.gd, art via new tools/slice_c7_romance.py.
+DO: c7_04 all (the build plan): bouquet at 8 hearts (shop item), dating state, 2-3 date events per candidate type, 9-10 heart romance scenes (write content for each marriage candidate: pick the adult singles in npcs.json; both arcs; same- and opposite-sex), the pendant/locket at 10 hearts, proposal, wedding day (festival-style scene, guests, wedding song), spouse moves in (house tier rules), spouse daily routine + farm help (water some crops, feed animals, gift), spouse dialogue lines, anniversary, rejection/cooldown, save fields + migration, UI in the Hearts/Friends tab. G-rated (hugs, holding hands, a kiss on the cheek at most). Hooks: npc.gd schedule for spouse (one line, P5 owns npc.gd? no: npc.gd is unowned -> you own its spouse hook), game_menu friends tab (one line). Art: bouquet, pendant, wedding arch/decor, spouse bed. Romance-related c7_03 items.
+
+## P2 Penguin story (data/story.json owner)
+OWNS: data/story.json, scripts/story.gd, docs/PENGUIN-ARC.md, docs/STORY.md.
+DO: c7_01 all (canon gaps: Star Crystal visit at the start, tower bell tie-in, Grumps = converted Crystopia crystals, Nova's dream, Pip-Pip, timeline/plot holes), c7_11 all (Catkins' guardian line/monastery/meditation lore, the four elders, the Finargle queen's longer storyline: write the scenes/lines), c7_13 all beat-flow items (double/never-fire beats, skippable scenes, story_busy, missing pic panels), penguin-side text fixes from c7_08 that live in story.json, story.json parts of c7_07 (penguin ending beats). Add the story_gang.json merge (Story.data) on day one.
+
+## P3 Gangster story + endings/epilogue (both arcs)
+OWNS: new data/story_gang.json, data/campaign_story.json, tools/gen_epilogue.py (+ data/epilogue.json), scripts/epilogue.gd, new tools/epilogue_test.gd.
+DO: c7_02 all (origin: set out to take down the gangs, built a crew, partly corrupted, redeemable via choices; lieutenants' Dark Crystal powers as a late reveal; Inspector Hale; M's cooler name; timeline/plot holes) as g* beats in story_gang.json; gangster-side text fixes from c7_09 that live in story data; c7_07 all endings/epilogue items (both arcs: slides, pictures (ART for missing ones), Big Jim's tail epilogue with art, credits timing, choices reflected).
+
+## P4 Villagers: hearts, mail, board, talk
+OWNS: data/hearts.json, tools/write_hearts.py, data/talk.json, data/gift_lines.json, data/npcs.json (text only; P1 reads it), scripts/mail.gd, scripts/intros.gd, scripts/town.gd (board/heart hooks only), new tools/hearts_content_test.gd.
+DO: c7_03 non-romance (missing 2/4/6/8 heart scenes: write them; side stories 21-28), c7_05 all (letters: tone, typos, repeats, broken conditions, letters about missing things; board jobs), villager text fixes from c7_08/c7_09 in these files.
+
+## P5 Colonies, companions, crew and recruits
+OWNS: tools/gen_colonies.py (+ outputs), scripts/colony.gd, data/companions.json, data/crew.json, scripts/crew.gd, scripts/marked.gd, tools/gen_gifts.py, scripts/companion.gd.
+DO: c7_10 all (one story per colony, island side quests, underwater/glow cave hooks: build what fits in the window, write the rest as data stubs with clear TODO in the report; ART for colony scenes/props as needed), c7_14 all (recruit/intro scenes for crew, Marked, helpers, partners; gangster redemption choices and like-minded recruits: their beats go to P3's story_gang.json via a message in the report, the crew/companion data side is yours), companion/crew text fixes from c7_08/09.
+
+## P6 Quests, pointers, tests, remaining text
+OWNS: data/quests.json, data/quest_lines.json, scripts/goal_line.gd, scripts/quest_tracker.gd, scripts/dialogue.gd (text/flow only), scripts/char_sheet.gd, tools/story_test.gd, tools/campaign_story_test.gd, tools/gang_start_test.gd, tools/newgame_penguin_test.gd, tools/save_test.gd (story fields), tools/check.sh (new blocks from every package go in at merge; you add yours), plus every .gd file NOT owned above for text-only fixes (c7_08/c7_09 lines in scripts/*.gd).
+DO: c7_06 all (every quest has a next step, tracker target and goal line; quests that can't finish; wrong givers), c7_12 all (the exact asserts listed: add them; chapter flow, choices, heart scenes, endings, romance asserts once P1's API is known: add a romance assert stub that P1's romance_test covers), c7_08 + c7_09 text fixes in unowned .gd files.

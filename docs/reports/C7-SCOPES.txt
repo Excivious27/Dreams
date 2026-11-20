@@ -1,0 +1,21 @@
+01 Penguin arc main story vs Tom's canon (docs/HANDOFF.md Decisions 17:12 + the book spine): chapters in data/story.json / story.gd, plot holes, timeline, Star Crystal visit at the start, tower bell tie-in, Grumps = converted Crystopia crystals, Nova's dream, Pip-Pip. List every gap with the beat id and the fix.
+02 Gangster arc main story vs Tom's origin (set out to take down the gangs, built a crew, partly corrupted, can redeem), lieutenants' Dark Crystal powers (late reveal), Inspector Hale, M's cooler name; chapters, plot holes, timeline.
+03 Heart scenes and villager arcs (2/4/6/8/10 hearts, both arcs): which exist, which are missing, quality, triggers, repeats; side stories 21-28 status.
+04 Dating and marriage DESIGN (to be built this CONDUCT): G-rated, Stardew-like (bouquet at 8 hearts, dates, proposal at 10 with a pendant/locket, wedding, spouse moves in, spouse helps on the farm, both arcs, same- and opposite-sex). Read the existing friendship/hearts/perks/house code; write a concrete build plan per file (data keys, scripts, art and audio needed) as findings.
+05 Mail and the town board: letters (story, first week, villagers, rec, commons), board jobs: tone, typos, repeats, broken conditions, letters that reference missing things.
+06 Quest pointers and quest log: every main and side quest has a clear next step, a tracker target (QuestTracker) and a goal line; quests with no way to finish; wrong givers.
+07 Endings and epilogue: both arcs' endings, choices, epilogue slides (data/epilogue.json), pictures present, Big Jim's tail, credits; consistency with the story.
+08 Dialogue text quality pass A (penguin-side files): typos, grammar, tone (cosy, all ages), names/places consistent (PlaceNames, Maple's Mercantile), money words per arc; list file+key+fix.
+09 Dialogue text quality pass B (gangster-side files): same as 08 for gangster texts (cash words, crew names, no mature themes).
+10 Colony stories and island side quests (merkitty islands): one story per colony (Tom 17:12 #9), side quests, underwater/glow cave hooks; what exists, what is missing.
+11 Catkins and the guardian line, the four elders, Finargle queen: lore present vs Tom's answers; scenes and lines needed.
+12 Story/quest tests: story_test, campaign_story_test, gang_start_test, newgame tests: coverage gaps; propose new asserts for chapter flow, romance and endings.
+13 Cutscene and beat flow mechanics: skippable scenes, beat ordering, story_busy, softlocks, beats that can fire twice or never, pic panels missing.
+14 Recruits/helpers story hooks (Tom #20 automation is C11; here: recruit scenes, crew/teammate introductions, redemption choices in the gangster arc, like-minded recruits).
+15 REGRESSION CONDUCT 6 (music engine/songs): run mix_test, music_loops_test, music_map_test, music_stream_test, danger_music_test (--fixed-fps 60); python3 tools/music_loop_check.py; one area_shot per arc with the song name printed; log only what is broken.
+16 REGRESSION CONDUCT 6 (sfx/ambience/footsteps): run python3 tools/sfx_audit.py, ambience_test, footstep_test, rec_audio_test (--fixed-fps 60); check 5 new sounds exist and play (war_horn, cluck, town_bell, knockout, chest_close) via a probe; log only what is broken.
+17 REGRESSION CONDUCT 6 (cues/UI/playtest fixes): run c6_cue_test, ui_audio_test, tom_playtest_c6_test, storage_test, touch_ui_test, phone_ui_test (--fixed-fps 60); screenshot the bag with drag-and-drop mid-drag, the toolbar can bar, the chest Organise button; log only what is broken.
+18 Bugs sweep after C6: 4 single bots (tools/bot.gd, 1 day, both arcs, Hard + Very easy) starting on farm, town, mountain, community_farm; log script errors, freezes ("frozen with nothing on screen"), ownerless pauses.
+19 Performance after C6: perf_probe farm/town/forest/lake/mine (FRAMES=60) vs C5 numbers (farm 601/15.2/25.1/1812, town 456/15.8/24.7/1487, forest 269/15.7/23/1304, lake 271/17/22/798, mine 376/18.3/25); threshold load +25%, median/p95 +3 ms, nodes +15%; find the source of the forest node growth (1304 -> ~1741 since C5): count nodes by type.
+20 Docs/inventory after C6: inventory.csv audio + story rows, AUDIO-PLAN numbers, AUDIO-CREDITS rows vs ACE_LOG/CC0_USED, CONDUCT-6 Still open; report only.
+Note: 01-14 medium effort, start now; 15-20 low effort with the listed checks, after the C6 push.

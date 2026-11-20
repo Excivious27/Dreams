@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 22:52 PT, personal account.
-- **Done:** CONDUCT 1-5 (C5 merged, CI c5b PASS: 6 shards + 20 bots + playtest). Report docs/reports/CONDUCT-5.md, Guide 29.
-- **In progress:** CONDUCT 6 (audio). Auditors 01-14 done; 15-20 (low effort, checklists) running; 7 fix agents (medium) launched 22:58, cap ~00:15 (plan docs/reports/C6-PACKAGES.md; worktrees /home/claude/wt/c6f_p1..p7; reports /home/claude/wt/c6f_reports/pN.md). C5 package sent.
-- **Next step:** watchdog; merge C6 packages as they finish (merge_c.sh), local smoke, ci_run.sh c6, C6 package (low-effort subagent), C7 auditors at the merge (code map first).
-- **Jobs running elsewhere:** 6 auditors + 7 fix agents in the personal sandbox (lost on a switch: relaunch from C6-PACKAGES.md / C6-SCOPES.txt).
+- **Last update:** 2026-11-20 00:55 PT, personal account.
+- **Done:** CONDUCT 1-6 (C6 audio merged: P1-P7; CI c6b all green except the loop-seam step, which only lacked ffmpeg on the runner: fixed in the workflows; deploy.yml now installs numpy + ffmpeg).
+- **In progress:** C6 package (low-effort subagent). CONDUCT 7 (story/quests + dating build): 14 focus auditors done (/home/claude/wt/c7_reports/*.jsonl), fix plan /home/claude/wt/C7_PACKAGES.md (copy docs/reports/C7-PACKAGES.md); next: C7 auditors 15-20 (low) + 6 fix agents (medium).
+- **Next step:** launch C7 fix agents from this pushed main; watchdog 45-60 min; merge, ci_run.sh c7, C7 package.
+- **Jobs running elsewhere:** none yet (C7 agents start right after this push).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
