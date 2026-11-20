@@ -125,6 +125,7 @@ static func _after_paths(m: GameMap, seed_v: int, avoid: Dictionary) -> void:
 	if not is_instance_valid(m):
 		return
 	clear_paths(m)
+	mark_dead_ends(m)
 	weather_dressing(m, seed_v, avoid)
 
 
@@ -148,6 +149,69 @@ static func clear_paths(m: GameMap) -> int:
 	if n > 0:
 		m._flows.clear()
 	return n
+
+
+## A path that just stops reads as a bug: give each dead end a reason to walk there
+## (a bench, a milestone or a lantern) (c5_12 #4). Ends by an exit, a door, a sign
+## or anything you can use are left alone. Returns the cells marked.
+const DEAD_END_LOOKS := ["bench_wood", "milestone", "lantern_lit", "ri_cairn"]
+
+
+static func mark_dead_ends(m: GameMap, most := 3) -> Array:
+	var path := {}
+	for c: Vector2i in m.step_word:
+		if on_path(m, c):
+			path[c] = true
+	for c: Vector2i in m.ground_seam:
+		if on_path(m, c):
+			path[c] = true
+	var cands: Array = []
+	for c: Vector2i in path:
+		if c.x < 3 or c.y < 3 or c.x > m.cols - 4 or c.y > m.rows - 4:
+			continue
+		var off := Vector2.ZERO
+		var n := 0
+		for dy in range(-4, 5):
+			for dx in range(-4, 5):
+				if (dx != 0 or dy != 0) and path.has(c + Vector2i(dx, dy)):
+					off += Vector2(dx, dy)
+					n += 1
+		if n < 10:
+			continue
+		off /= n
+		if off.length() < 1.9:
+			continue
+		cands.append([off.length(), c, off])
+	cands.sort_custom(func(a, b): return a[0] > b[0])
+	var marked: Array = []
+	for cd in cands:
+		if marked.size() >= most:
+			break
+		var c: Vector2i = cd[1]
+		var near := false
+		for o: Vector2i in marked:
+			if (o - c).length() < 8.0:
+				near = true
+		for e in m.exits:
+			var r: Rect2i = e["rect"]
+			if r.grow(5).has_point(c):
+				near = true
+		for dy in range(-3, 4):
+			for dx in range(-3, 4):
+				var t := str(m.things.get(c + Vector2i(dx, dy), {}).get("type", ""))
+				if t != "" and not t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove", "water"]:
+					near = true  # a door, sign, npc spot or station is already the reason
+		for bp: Array in m._bprops:
+			if (Vector2(bp[1]) - Vector2(c)).length() < 6.0:
+				near = true
+		if near or m.blocked.has(c) or m.things.has(c) or m.props.has(c) or m.is_water_cell(c):
+			continue
+		var look: String = DEAD_END_LOOKS[absi(hash(Vector2i(c.x, c.y + m.cols))) % DEAD_END_LOOKS.size()]
+		if not Art.has("props", look):
+			look = "milestone"
+		if m.prop("props", look, c, 0, 0.0, false) != null:  # never solid: it can't wall off anything
+			marked.append(c)
+	return marked
 
 
 ## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts
@@ -186,11 +250,12 @@ const WARM_WEATHER := ["sun", "dust", "fireflies"]
 ## A drawn path, road or paved cell (tile paths mark step_word, soft paths ground_seam,
 ## exit corridors _ext_paths). Weather dressing and decor keep off these.
 static func on_path(m: GameMap, c: Vector2i) -> bool:
-	if m.step_word.has(c) or m._ext_paths.has(c):
+	if m._ext_paths.has(c):
 		return true
 	var sm := str(m.ground_seam.get(c, ""))
 	if sm == "":
-		return false
+		# Tile paths mark a step word; soft grass/snow/moss patches mark one too.
+		return m.step_word.has(c) and not str(m.step_word[c]) in ["grass", "snow", "moss", "leaves", "water"]
 	# A soft ground patch that is the map's base (grass/moss/snow fields) is not a path.
 	for w in ["path", "road", "pave", "cobble", "stone", "flag", "brick", "plank", "trodden", "dirt", "sand_path", "asphalt"]:
 		if w in sm:
