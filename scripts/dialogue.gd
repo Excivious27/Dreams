@@ -608,7 +608,8 @@ func _process(delta: float) -> void:
 		_skip_btn.position = Vector2(_panel.position.x + _panel.size.x - SKIP_SIZE.x, _panel.position.y - SKIP_SIZE.y - 3)
 	_process_input()
 	if _typing:
-		_shown += delta * 45.0
+		var cps := Settings.text_cps()  # Options > Text speed (C9); 0 = instant
+		_shown += delta * cps if cps > 0.0 else float(_full.length())
 		var n := mini(int(_shown), _full.length())
 		_text.text = _full.substr(0, n)
 		if n >= _full.length():

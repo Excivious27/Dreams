@@ -1789,7 +1789,7 @@ static func quit_offered() -> bool:
 
 ## Options > This farm: a backup code of this farm (P5's GameState.export_code).
 func _backup_row() -> void:
-	if Net.visiting() or not _has_static(GameState, "export_code"):
+	if Net.visiting() or not _has_static(_sc("game_state"), "export_code"):
 		return
 	_button("Back up this farm (copy code)", func() -> void:
 		_save_now()
@@ -1799,19 +1799,26 @@ func _backup_row() -> void:
 			return
 		DisplayServer.clipboard_set(code)
 		_toast("Backup code copied. Paste it somewhere safe; Save slots on the title screen restores it."))
-	if _has_static(GameState, "export_file"):
+	if _has_static(_sc("game_state"), "export_file"):
 		_button("Back up this farm (save a file)", func() -> void:
 			_save_now()
-			GameState.call("export_file", GameState.slot()))
+			_sc("game_state").call("export_file", GameState.slot()))
 
 
 func _call_export() -> Variant:
-	for md in (GameState as Script).get_script_method_list():
+	var sc := _sc("game_state")
+	for md in sc.get_script_method_list():
 		if str(md.get("name", "")) == "export_code":
 			if (md.get("args", []) as Array).size() > 0:
-				return GameState.call("export_code", GameState.slot())
-			return GameState.call("export_code")
+				return sc.call("export_code", GameState.slot())
+			return sc.call("export_code")
 	return ""
+
+
+## A script by name, so optional static API from other packages is called without
+## a parse-time dependency.
+static func _sc(name: String) -> Script:
+	return load("res://scripts/%s.gd" % name) as Script
 
 
 ## The Options how-to line, per input: touch, mouse, keyboard, controller (C9 c9_02/c9_07).
@@ -1849,20 +1856,20 @@ static func key_owner(action: String, key: int) -> String:
 
 ## Pad button name for an action through P1's InputSetup.pad_label when it exists.
 static func pad_name(action: String) -> String:
-	if _has_static(InputSetup, "pad_label"):
-		return str(InputSetup.call("pad_label", action))
+	if _has_static(_sc("input_setup"), "pad_label"):
+		return str(_sc("input_setup").call("pad_label", action))
 	return {"a": "A", "b": "B", "menu": "Start", "tab_prev": "LB", "tab_next": "RB", "tool": "X", "action": "Y", "map": "View", "journal": "—", "cycle_tool": "RB", "dodge": "RT"}.get(action, "—")
 
 
 ## Pad rebind through P1's API; "" when done, else why it was refused.
 ## Back and Menu keep at least one button so a player can always get out.
 static func pad_rebind(action: String, button: int) -> String:
-	if not _has_static(InputSetup, "rebind_pad"):
+	if not _has_static(_sc("input_setup"), "rebind_pad"):
 		return "Controller buttons can't be changed in this build yet."
 	for keep: String in ["b", "menu"]:
 		if keep != action and _pad_only_button(keep, button):
 			return "That button is the only one for %s; it stays there so you can always back out." % action_label(keep)
-	InputSetup.call("rebind_pad", action, button)
+	_sc("input_setup").call("rebind_pad", action, button)
 	return ""
 
 
@@ -1881,7 +1888,7 @@ static func _pad_only_button(action: String, button: int) -> bool:
 func _pad_page() -> void:
 	var have_pad := not Input.get_connected_joypads().is_empty()
 	_line("Controller buttons. Pick a row, then press the new button on your controller. B or Menu on screen cancels." if have_pad else "No controller connected. Plug one in or pair it, then pick a row and press the new button.", 8, Color(0.8, 0.8, 0.8))
-	var can := _has_static(InputSetup, "rebind_pad")
+	var can := _has_static(_sc("input_setup"), "rebind_pad")
 	for pair in InputSetup.SHOWN:
 		var action: String = pair[0]
 		if action in ["up", "down", "left", "right"]:
@@ -1893,8 +1900,8 @@ func _pad_page() -> void:
 		var b := _button(txt, func() -> void: _rebinding = action; _refresh())
 		b.disabled = not can or not have_pad
 	_line("Move: left stick or d-pad (fixed).", 8, Color(0.75, 0.75, 0.75))
-	if can and _has_static(InputSetup, "reset_pad"):
-		_button("Reset controller to defaults", func() -> void: InputSetup.call("reset_pad"); _rebinding = ""; _refresh())
+	if can and _has_static(_sc("input_setup"), "reset_pad"):
+		_button("Reset controller to defaults", func() -> void: _sc("input_setup").call("reset_pad"); _rebinding = ""; _refresh())
 	_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _refresh())
 
 
