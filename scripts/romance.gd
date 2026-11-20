@@ -349,7 +349,15 @@ static func is_job_time() -> bool:
 	if not is_married():
 		return false
 	var hour := int(GameState.run["time"]) / 60.0
-	return int(GameState.run["day"]) % 7 in (cand(spouse()).get("job_days", []) as Array) and hour >= 9.0 and hour < 17.0
+	return is_job_day(int(GameState.run["day"])) and hour >= 9.0 and hour < 17.0
+
+
+## JSON numbers are floats: compare as ints (Array.has(2) misses 2.0).
+static func is_job_day(day: int) -> bool:
+	for jd: Variant in cand(spouse()).get("job_days", []):
+		if int(jd) == day % 7:
+			return true
+	return false
 
 
 ## GameState.sleep hook: pick tonight's chore. Returns true when the spouse waters.

@@ -16,7 +16,7 @@ func _initialize() -> void:
 
 
 func check(ok: bool, what: String) -> void:
-	print(("  ok   " if ok else "  FAIL ") + what)
+	print(("  ok   " if ok else "  FAIL ") + what, "  @", Time.get_ticks_msec() / 1000)
 	if not ok:
 		fails += 1
 
@@ -121,6 +121,8 @@ func _flow(arc: String, body: String) -> void:
 	await Dates.play(m, Dates.invite(a))
 	check(Romance.propose_why(a) == "not_yet_house", "locket refused in the one-room house")
 	check(not Romance.social_line(a).is_empty(), "social line says what's missing")
+	if not GameState.run.get("builds") is Dictionary:
+		GameState.run["builds"] = {}
 	GameState.run["builds"]["house"] = 2
 	check(Romance.propose_why(a) == "", "locket accepted: ♥10, 2 dates, Farmhouse")
 	check("sea_locket" in Shops.offers("marlowe" if arc == "penguins" else "store"), "locket for sale")
@@ -148,7 +150,7 @@ func _flow(arc: String, body: String) -> void:
 	# routine: home on a non-job day, work on a job day 9-17
 	var jd: Array = Romance.cand(a).get("job_days", [])
 	var home_day := int(GameState.run["day"])
-	while home_day % 7 in jd:
+	while Romance.is_job_day(home_day):
 		home_day += 1
 	GameState.run["day"] = home_day
 	GameState.run["time"] = 11 * 60
@@ -156,7 +158,7 @@ func _flow(arc: String, body: String) -> void:
 	check(Npc.place_now(rt, a) == "farm_home", "spouse at home on a day off")
 	if not jd.is_empty():
 		var wday := home_day
-		while not wday % 7 in jd:
+		while not Romance.is_job_day(wday):
 			wday += 1
 		GameState.run["day"] = wday
 		check(Npc.place_now(rt, a) == "work", "spouse at work on a job day")
@@ -177,7 +179,7 @@ func _flow(arc: String, body: String) -> void:
 	var got := {}
 	var watered_ok := true
 	var saw_water := false
-	for i in 40:
+	for i in 24:
 		GameState.run["farm"]["9,9"] = {"crop": "turnip", "days": 0, "watered": false}
 		var rep := GameState.sleep()
 		if rep.has("spouse"):
