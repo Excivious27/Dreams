@@ -110,6 +110,36 @@ def bases():
         print("base", v)
 
 
+PORTS = ["maple", "gideon", "wren", "alder", "finn", "hazel", "posy", "rook"]
+MOODS = ["neutral", "happy", "sad", "angry", "surprised", "worried"]
+
+
+def portraits():
+    """c5/p5_port_<id>.png (2 rows x 3 moods, matching the new design) ->
+    portraits/npc_<id>_normal/<mood>. Their seasonal portraits were a third,
+    older design: they leave the manifest so Dialogue uses _normal all year
+    (the files stay on disk)."""
+    for v in PORTS:
+        rgba = _load_keep_alpha("c5/p5_port_%s.png" % v)
+        rgba, rows = C.sheet_rows(None, merge=6, min_area=2000, rgba=rgba)
+        rows = [r for r in rows if len(r) >= 3]
+        assert len(rows) == 2 and all(len(r) == 3 for r in rows), (v, [len(r) for r in rows])
+        boxes = rows[0] + rows[1]
+        g = "portraits/npc_%s_normal" % v
+        old = os.path.join(S.OUT, g)
+        if os.path.isdir(old):
+            for fn in os.listdir(old):
+                if fn.endswith(".png"):
+                    os.remove(os.path.join(old, fn))
+        S.manifest[g] = {}
+        f = 96.0 / C.med_h(boxes)
+        for mood, b in zip(MOODS, boxes):
+            S.save(C.piece(rgba, b, factor=f), g, mood)
+        for se in ("spring", "summer", "fall", "winter", "festival"):
+            S.manifest.pop("portraits/npc_%s_%s" % (v, se), None)
+        print("portraits", v)
+
+
 def _rekey_arr(a):
     """Leftover magenta key under the feet: pixels in the bottom band of a
     frame whose hue sits near magenta (red and blue well above green, blue
@@ -225,7 +255,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases]
+STEPS = [wren_jr, rekey, blobs, bases, portraits]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

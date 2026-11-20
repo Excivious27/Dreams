@@ -82156,92 +82156,36 @@
    "w": 64
   }
  },
- "portraits/npc_alder_festival": {
-  "happy": {
-   "file": "portraits/npc_alder_festival/happy.png",
-   "h": 96,
-   "w": 77
-  },
-  "neutral": {
-   "file": "portraits/npc_alder_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_alder_festival/sad.png",
-   "h": 96,
-   "w": 75
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_alder_normal": {
+  "angry": {
+   "file": "portraits/npc_alder_normal/angry.png",
+   "h": 96,
+   "w": 97
+  },
   "happy": {
    "file": "portraits/npc_alder_normal/happy.png",
    "h": 96,
-   "w": 80
+   "w": 98
   },
   "neutral": {
    "file": "portraits/npc_alder_normal/neutral.png",
    "h": 96,
-   "w": 81
+   "w": 95
   },
   "sad": {
    "file": "portraits/npc_alder_normal/sad.png",
    "h": 96,
-   "w": 79
+   "w": 99
   },
   "surprised": {
    "file": "portraits/npc_alder_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_alder_summer": {
-  "happy": {
-   "file": "portraits/npc_alder_summer/happy.png",
-   "h": 96,
-   "w": 74
+   "w": 99
   },
-  "neutral": {
-   "file": "portraits/npc_alder_summer/neutral.png",
-   "h": 96,
-   "w": 75
-  },
-  "sad": {
-   "file": "portraits/npc_alder_summer/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_alder_winter": {
-  "happy": {
-   "file": "portraits/npc_alder_winter/happy.png",
-   "h": 96,
-   "w": 77
-  },
-  "neutral": {
-   "file": "portraits/npc_alder_winter/neutral.png",
-   "h": 96,
-   "w": 81
-  },
-  "sad": {
-   "file": "portraits/npc_alder_winter/sad.png",
-   "h": 96,
-   "w": 79
-  },
-  "surprised": {
-   "file": "portraits/npc_alder_winter/surprised.png",
-   "h": 96,
-   "w": 74
+  "worried": {
+   "file": "portraits/npc_alder_normal/worried.png",
+   "h": 95,
+   "w": 98
   }
  },
  "portraits/npc_benno": {
@@ -82414,195 +82358,68 @@
    "w": 82
   }
  },
- "portraits/npc_finn_festival": {
-  "happy": {
-   "file": "portraits/npc_finn_festival/happy.png",
-   "h": 96,
-   "w": 70
-  },
-  "neutral": {
-   "file": "portraits/npc_finn_festival/neutral.png",
-   "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_finn_festival/sad.png",
-   "h": 96,
-   "w": 71
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_festival/surprised.png",
-   "h": 96,
-   "w": 71
-  }
- },
  "portraits/npc_finn_normal": {
+  "angry": {
+   "file": "portraits/npc_finn_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_finn_normal/happy.png",
    "h": 96,
-   "w": 77
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_finn_normal/neutral.png",
    "h": 96,
-   "w": 79
+   "w": 93
   },
   "sad": {
    "file": "portraits/npc_finn_normal/sad.png",
    "h": 96,
-   "w": 77
+   "w": 92
   },
   "surprised": {
    "file": "portraits/npc_finn_normal/surprised.png",
    "h": 96,
-   "w": 73
-  }
- },
- "portraits/npc_finn_summer": {
-  "happy": {
-   "file": "portraits/npc_finn_summer/happy.png",
-   "h": 96,
-   "w": 73
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_finn_summer/neutral.png",
-   "h": 96,
-   "w": 73
-  },
-  "sad": {
-   "file": "portraits/npc_finn_summer/sad.png",
-   "h": 96,
-   "w": 72
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_summer/surprised.png",
-   "h": 96,
-   "w": 68
-  }
- },
- "portraits/npc_finn_winter": {
-  "happy": {
-   "file": "portraits/npc_finn_winter/happy.png",
-   "h": 96,
-   "w": 70
-  },
-  "neutral": {
-   "file": "portraits/npc_finn_winter/neutral.png",
-   "h": 96,
-   "w": 70
-  },
-  "sad": {
-   "file": "portraits/npc_finn_winter/sad.png",
-   "h": 96,
-   "w": 70
-  },
-  "surprised": {
-   "file": "portraits/npc_finn_winter/surprised.png",
-   "h": 96,
-   "w": 69
-  }
- },
- "portraits/npc_gideon_festival": {
-  "happy": {
-   "file": "portraits/npc_gideon_festival/happy.png",
-   "h": 96,
-   "w": 62
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_festival/neutral.png",
-   "h": 96,
-   "w": 62
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_festival/sad.png",
-   "h": 23,
-   "w": 1
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_festival/surprised.png",
-   "h": 23,
-   "w": 1
+  "worried": {
+   "file": "portraits/npc_finn_normal/worried.png",
+   "h": 95,
+   "w": 92
   }
  },
  "portraits/npc_gideon_normal": {
+  "angry": {
+   "file": "portraits/npc_gideon_normal/angry.png",
+   "h": 95,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_gideon_normal/happy.png",
    "h": 96,
-   "w": 81
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_gideon_normal/neutral.png",
    "h": 96,
-   "w": 68
+   "w": 93
   },
   "sad": {
    "file": "portraits/npc_gideon_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 93
   },
   "surprised": {
    "file": "portraits/npc_gideon_normal/surprised.png",
    "h": 96,
-   "w": 71
-  }
- },
- "portraits/npc_gideon_summer": {
-  "angry": {
-   "file": "portraits/npc_gideon_summer/angry.png",
-   "h": 96,
-   "w": 125
-  },
-  "happy": {
-   "file": "portraits/npc_gideon_summer/happy.png",
-   "h": 96,
-   "w": 120
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_summer/neutral.png",
-   "h": 96,
-   "w": 125
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_summer/sad.png",
-   "h": 96,
-   "w": 119
-  },
-  "sly": {
-   "file": "portraits/npc_gideon_summer/sly.png",
-   "h": 96,
-   "w": 117
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_summer/surprised.png",
-   "h": 96,
-   "w": 116
+   "w": 94
   },
   "worried": {
-   "file": "portraits/npc_gideon_summer/worried.png",
+   "file": "portraits/npc_gideon_normal/worried.png",
    "h": 96,
-   "w": 118
-  }
- },
- "portraits/npc_gideon_winter": {
-  "happy": {
-   "file": "portraits/npc_gideon_winter/happy.png",
-   "h": 96,
-   "w": 76
-  },
-  "neutral": {
-   "file": "portraits/npc_gideon_winter/neutral.png",
-   "h": 96,
-   "w": 80
-  },
-  "sad": {
-   "file": "portraits/npc_gideon_winter/sad.png",
-   "h": 96,
-   "w": 65
-  },
-  "surprised": {
-   "file": "portraits/npc_gideon_winter/surprised.png",
-   "h": 96,
-   "w": 63
+   "w": 94
   }
  },
  "portraits/npc_granite": {
@@ -82637,92 +82454,36 @@
    "w": 96
   }
  },
- "portraits/npc_hazel_festival": {
-  "happy": {
-   "file": "portraits/npc_hazel_festival/happy.png",
-   "h": 96,
-   "w": 78
-  },
-  "neutral": {
-   "file": "portraits/npc_hazel_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_festival/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_hazel_normal": {
+  "angry": {
+   "file": "portraits/npc_hazel_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_hazel_normal/happy.png",
    "h": 96,
-   "w": 83
+   "w": 92
   },
   "neutral": {
    "file": "portraits/npc_hazel_normal/neutral.png",
    "h": 96,
-   "w": 88
+   "w": 92
   },
   "sad": {
    "file": "portraits/npc_hazel_normal/sad.png",
    "h": 96,
-   "w": 82
+   "w": 92
   },
   "surprised": {
    "file": "portraits/npc_hazel_normal/surprised.png",
    "h": 96,
-   "w": 79
-  }
- },
- "portraits/npc_hazel_summer": {
-  "happy": {
-   "file": "portraits/npc_hazel_summer/happy.png",
-   "h": 96,
-   "w": 79
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_hazel_summer/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_summer/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_summer/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_hazel_winter": {
-  "happy": {
-   "file": "portraits/npc_hazel_winter/happy.png",
-   "h": 96,
-   "w": 75
-  },
-  "neutral": {
-   "file": "portraits/npc_hazel_winter/neutral.png",
-   "h": 96,
-   "w": 77
-  },
-  "sad": {
-   "file": "portraits/npc_hazel_winter/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_hazel_winter/surprised.png",
-   "h": 96,
-   "w": 72
+  "worried": {
+   "file": "portraits/npc_hazel_normal/worried.png",
+   "h": 95,
+   "w": 92
   }
  },
  "portraits/npc_ivy": {
@@ -82966,92 +82727,36 @@
    "w": 72
   }
  },
- "portraits/npc_maple_festival": {
-  "happy": {
-   "file": "portraits/npc_maple_festival/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_maple_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_maple_festival/sad.png",
-   "h": 96,
-   "w": 75
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_festival/surprised.png",
-   "h": 96,
-   "w": 74
-  }
- },
  "portraits/npc_maple_normal": {
+  "angry": {
+   "file": "portraits/npc_maple_normal/angry.png",
+   "h": 96,
+   "w": 79
+  },
   "happy": {
    "file": "portraits/npc_maple_normal/happy.png",
    "h": 96,
-   "w": 79
+   "w": 78
   },
   "neutral": {
    "file": "portraits/npc_maple_normal/neutral.png",
    "h": 96,
-   "w": 79
+   "w": 78
   },
   "sad": {
    "file": "portraits/npc_maple_normal/sad.png",
    "h": 96,
-   "w": 77
+   "w": 79
   },
   "surprised": {
    "file": "portraits/npc_maple_normal/surprised.png",
    "h": 96,
-   "w": 74
-  }
- },
- "portraits/npc_maple_summer": {
-  "happy": {
-   "file": "portraits/npc_maple_summer/happy.png",
-   "h": 96,
    "w": 78
   },
-  "neutral": {
-   "file": "portraits/npc_maple_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_maple_normal/worried.png",
    "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_maple_summer/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_summer/surprised.png",
-   "h": 96,
-   "w": 73
-  }
- },
- "portraits/npc_maple_winter": {
-  "happy": {
-   "file": "portraits/npc_maple_winter/happy.png",
-   "h": 96,
-   "w": 67
-  },
-  "neutral": {
-   "file": "portraits/npc_maple_winter/neutral.png",
-   "h": 96,
-   "w": 70
-  },
-  "sad": {
-   "file": "portraits/npc_maple_winter/sad.png",
-   "h": 96,
-   "w": 68
-  },
-  "surprised": {
-   "file": "portraits/npc_maple_winter/surprised.png",
-   "h": 96,
-   "w": 66
+   "w": 78
   }
  },
  "portraits/npc_marlowe": {
@@ -83269,180 +82974,68 @@
    "w": 72
   }
  },
- "portraits/npc_posy_festival": {
-  "happy": {
-   "file": "portraits/npc_posy_festival/happy.png",
-   "h": 96,
-   "w": 78
-  },
-  "neutral": {
-   "file": "portraits/npc_posy_festival/neutral.png",
-   "h": 96,
-   "w": 80
-  },
-  "sad": {
-   "file": "portraits/npc_posy_festival/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_festival/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
  "portraits/npc_posy_normal": {
-  "happy": {
-   "file": "portraits/npc_posy_normal/happy.png",
+  "angry": {
+   "file": "portraits/npc_posy_normal/angry.png",
    "h": 96,
    "w": 81
   },
+  "happy": {
+   "file": "portraits/npc_posy_normal/happy.png",
+   "h": 95,
+   "w": 82
+  },
   "neutral": {
    "file": "portraits/npc_posy_normal/neutral.png",
-   "h": 96,
+   "h": 95,
    "w": 81
   },
   "sad": {
    "file": "portraits/npc_posy_normal/sad.png",
-   "h": 96,
-   "w": 80
+   "h": 95,
+   "w": 82
   },
   "surprised": {
    "file": "portraits/npc_posy_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_posy_summer": {
-  "happy": {
-   "file": "portraits/npc_posy_summer/happy.png",
-   "h": 96,
-   "w": 76
+   "w": 82
   },
-  "neutral": {
-   "file": "portraits/npc_posy_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_posy_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_posy_summer/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_summer/surprised.png",
-   "h": 96,
-   "w": 70
-  }
- },
- "portraits/npc_posy_winter": {
-  "happy": {
-   "file": "portraits/npc_posy_winter/happy.png",
-   "h": 96,
-   "w": 75
-  },
-  "neutral": {
-   "file": "portraits/npc_posy_winter/neutral.png",
-   "h": 96,
-   "w": 77
-  },
-  "sad": {
-   "file": "portraits/npc_posy_winter/sad.png",
-   "h": 96,
-   "w": 77
-  },
-  "surprised": {
-   "file": "portraits/npc_posy_winter/surprised.png",
-   "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_rook_festival": {
-  "happy": {
-   "file": "portraits/npc_rook_festival/happy.png",
-   "h": 96,
-   "w": 80
-  },
-  "neutral": {
-   "file": "portraits/npc_rook_festival/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_rook_festival/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_festival/surprised.png",
-   "h": 96,
-   "w": 76
+   "w": 82
   }
  },
  "portraits/npc_rook_normal": {
+  "angry": {
+   "file": "portraits/npc_rook_normal/angry.png",
+   "h": 96,
+   "w": 100
+  },
   "happy": {
    "file": "portraits/npc_rook_normal/happy.png",
    "h": 96,
-   "w": 79
+   "w": 100
   },
   "neutral": {
    "file": "portraits/npc_rook_normal/neutral.png",
    "h": 96,
-   "w": 81
+   "w": 100
   },
   "sad": {
    "file": "portraits/npc_rook_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 100
   },
   "surprised": {
    "file": "portraits/npc_rook_normal/surprised.png",
    "h": 96,
-   "w": 77
-  }
- },
- "portraits/npc_rook_summer": {
-  "happy": {
-   "file": "portraits/npc_rook_summer/happy.png",
-   "h": 96,
-   "w": 77
+   "w": 100
   },
-  "neutral": {
-   "file": "portraits/npc_rook_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_rook_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_rook_summer/sad.png",
-   "h": 96,
-   "w": 74
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_rook_winter": {
-  "happy": {
-   "file": "portraits/npc_rook_winter/happy.png",
-   "h": 96,
-   "w": 76
-  },
-  "neutral": {
-   "file": "portraits/npc_rook_winter/neutral.png",
-   "h": 96,
-   "w": 79
-  },
-  "sad": {
-   "file": "portraits/npc_rook_winter/sad.png",
-   "h": 96,
-   "w": 76
-  },
-  "surprised": {
-   "file": "portraits/npc_rook_winter/surprised.png",
-   "h": 96,
-   "w": 74
+   "w": 100
   }
  },
  "portraits/npc_sal": {
@@ -83748,28 +83341,6 @@
    "w": 83
   }
  },
- "portraits/npc_wren_festival": {
-  "happy": {
-   "file": "portraits/npc_wren_festival/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_wren_festival/neutral.png",
-   "h": 96,
-   "w": 78
-  },
-  "sad": {
-   "file": "portraits/npc_wren_festival/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_festival/surprised.png",
-   "h": 96,
-   "w": 73
-  }
- },
  "portraits/npc_wren_jr": {
   "angry": {
    "file": "portraits/npc_wren_jr/angry.png",
@@ -83825,69 +83396,35 @@
   }
  },
  "portraits/npc_wren_normal": {
+  "angry": {
+   "file": "portraits/npc_wren_normal/angry.png",
+   "h": 96,
+   "w": 93
+  },
   "happy": {
    "file": "portraits/npc_wren_normal/happy.png",
    "h": 96,
-   "w": 80
+   "w": 93
   },
   "neutral": {
    "file": "portraits/npc_wren_normal/neutral.png",
    "h": 96,
-   "w": 80
+   "w": 94
   },
   "sad": {
    "file": "portraits/npc_wren_normal/sad.png",
    "h": 96,
-   "w": 78
+   "w": 93
   },
   "surprised": {
    "file": "portraits/npc_wren_normal/surprised.png",
    "h": 96,
-   "w": 75
-  }
- },
- "portraits/npc_wren_summer": {
-  "happy": {
-   "file": "portraits/npc_wren_summer/happy.png",
-   "h": 96,
-   "w": 76
+   "w": 93
   },
-  "neutral": {
-   "file": "portraits/npc_wren_summer/neutral.png",
+  "worried": {
+   "file": "portraits/npc_wren_normal/worried.png",
    "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_wren_summer/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_summer/surprised.png",
-   "h": 96,
-   "w": 72
-  }
- },
- "portraits/npc_wren_winter": {
-  "happy": {
-   "file": "portraits/npc_wren_winter/happy.png",
-   "h": 96,
-   "w": 74
-  },
-  "neutral": {
-   "file": "portraits/npc_wren_winter/neutral.png",
-   "h": 96,
-   "w": 76
-  },
-  "sad": {
-   "file": "portraits/npc_wren_winter/sad.png",
-   "h": 96,
-   "w": 73
-  },
-  "surprised": {
-   "file": "portraits/npc_wren_winter/surprised.png",
-   "h": 96,
-   "w": 73
+   "w": 93
   }
  },
  "portraits/nurse": {
