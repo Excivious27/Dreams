@@ -48963,6 +48963,11 @@
    "h": 145,
    "w": 320
   },
+  "lamp_mechanism_unlit": {
+   "file": "furniture/lamp_mechanism_unlit.png",
+   "h": 145,
+   "w": 80
+  },
   "lamp_table_a": {
    "file": "furniture/lamp_table_a.png",
    "h": 44,

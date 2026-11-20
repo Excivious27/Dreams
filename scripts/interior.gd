@@ -187,8 +187,12 @@ func after_ready() -> void:
 		var nm := str(p["name"])
 		if nm == "window_day" and GameState.is_night() and Art.has(g, "window_night"):
 			nm = "window_night"
+		var anim := bool(p.get("anim", false))
+		if nm == "lamp_mechanism" and not GameState.run["flags"].has("lighthouse_lit") and Art.has(g, "lamp_mechanism_unlit"):
+			nm = "lamp_mechanism_unlit"  # dark lens until the lighthouse is relit (c5_04 #4)
+			anim = false
 		var w := int(p.get("w", 0))
-		if bool(p.get("anim", false)) and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
+		if anim and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 5.0))})
 			a.animation = "idle"
