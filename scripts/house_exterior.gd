@@ -85,9 +85,9 @@ const STYLES := {
 		{"id": "ext_porch_sunflowers", "name": "Sunflower Barrels", "price": 450, "art": "porch_sunflowers", "pair": true, "h": 20},
 		{"id": "ext_porch_bench", "name": "Porch Bench", "price": 500, "art": "porch_bench", "h": 17},
 		{"id": "ext_porch_mat", "name": "Woven Mat", "price": 200, "art": "porch_mat", "mat": true, "h": 9},
-		{"id": "ext_porch_lamp_post", "name": "Lamp Post", "price": 800, "art": "porch_lamp_post", "h": 30, "glow": true},
+		{"id": "ext_porch_lamp_post", "name": "Lamp Post", "price": 800, "art": "porch_lamp_post", "h": 30, "glow": true, "glow_at": [0.22, 0.28]},
 		{"id": "ext_porch_birdbath", "name": "Birdbath", "price": 700, "art": "porch_birdbath", "h": 22},
-		{"id": "ext_porch_penguin_lamp", "name": "Penguin Lantern", "price": 900, "arc": "penguins", "art": "porch_penguin_lamp", "h": 20, "glow": true},
+		{"id": "ext_porch_penguin_lamp", "name": "Penguin Lantern", "price": 900, "arc": "penguins", "art": "porch_penguin_lamp", "h": 20, "glow": true, "glow_at": [0.5, 0.6]},
 		{"id": "ext_porch_crates", "name": "Crate Planter", "price": 400, "arc": "gangsters", "art": "porch_crates", "h": 20},
 	],
 	"mailbox": [
@@ -393,10 +393,12 @@ func _build() -> void:
 				_add(t2, Vector2(cx - w * 0.5, bottom - h + 1.0), Vector2(w, h))
 			else:
 				var gap := (float(door[2]) - float(door[0])) * 0.5 + 10.0
-				_add(t2, Vector2(cx + gap, bottom - h), Vector2(w, h))
+				var one := _add(t2, Vector2(cx + gap, bottom - h), Vector2(w, h))
 				if bool(ps.get("pair", false)):
 					var s := _add(t2, Vector2(cx - gap - w, bottom - h), Vector2(w, h))
 					s.flip_h = true
+				if bool(ps.get("glow", false)):
+					_lamp(one, Vector2(ps.get("glow_at", [0.5, 0.3])[0], ps.get("glow_at", [0.5, 0.3])[1]))
 	_smoke_build()
 	_refit()
 
@@ -410,6 +412,16 @@ func _add(t: Texture2D, day_px: Vector2, size_px: Vector2) -> Sprite2D:
 	add_child(s)
 	_kids.append([s, day_px, size_px])
 	return s
+
+
+## A glowing porch piece lights up after dark through the map's NightGlow.
+func _lamp(s: Sprite2D, at: Vector2) -> void:
+	if _map == null or not ("glow" in _map) or not (_map.glow is NightGlow):
+		return
+	var mk := Node2D.new()
+	mk.position = Vector2(s.texture.get_width() * at.x, s.texture.get_height() * at.y)
+	s.add_child(mk)
+	(_map.glow as NightGlow).lights.append([mk, 20.0, 0.0])
 
 
 func _smoke_build() -> void:

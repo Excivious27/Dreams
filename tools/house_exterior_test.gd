@@ -198,6 +198,16 @@ func _run() -> void:
 	GameState.run["builds"] = {"house": 3}
 	m = await load_farm()
 
+	# --- a lamp-post porch lights up through NightGlow ---
+	HouseExterior.choose("porch", "ext_porch_lamp_post")
+	m = await load_farm()
+	var lit := false
+	for l: Array in m.glow.lights:
+		lit = lit or (is_instance_valid(l[0]) and (l[0] as Node).get_parent() is Sprite2D and (l[0] as Node).get_parent().get_parent() is HouseExterior)
+	check(lit, "lamp post porch registers a NightGlow light")
+	HouseExterior.choose("porch", "ext_porch_fern")
+	m = await load_farm()
+
 	# --- picker opens, previews, closes back to the saved look ---
 	var was_paused := paused
 	var pk := HouseExterior.open(m)
