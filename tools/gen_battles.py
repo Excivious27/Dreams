@@ -163,6 +163,13 @@ battle("bf_neon_block", "The Neon Block", "gangsters", 3, 104, 84, "wet_asphalt_
 # caches are resolved on the board. Scripts: Campaign (rules, save under
 # run["campaign"]), CampaignScreen (the board), Battle (node objectives).
 import random
+# Region-themed fields (P4, tools/bf_themes.py): each campaign fights on its own region's field.
+try:
+    import sys as _sys
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from bf_themes import campaign_field
+except ImportError:
+    campaign_field = lambda r: None
 EN = json.load(open(D + "/data/enemies.json"))["enemies"]
 COL = json.load(open(D + "/data/colonies.json"))
 IT = json.load(open(D + "/data/items.json"))
@@ -246,7 +253,7 @@ NOT_PENGUIN = ("soldier", "archer", "knight")
 # Crystal Kin (Tom C3): crystal babies start as foes; after a campaign battle with
 # them, proving your purpose (a gift, or Meow Pow Wow) turns them into a helper
 # kind you can raise at spawners. HelperUnit reads "_helper_kinds" generically.
-KIN = {"kin": {"crystal": "Crystal Kin", "drone": "Crystal Kin", "hp": 30, "colour": "9fe8ff", "act": "striker", "arc": "penguins",
+KIN = {"crystal_kin": {"crystal": "Crystal Kin", "drone": "Crystal Kin", "hp": 30, "colour": "9fe8ff", "act": "striker", "arc": "penguins",
                "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 10, "does": "stomps foes"}}
 KIN_GIFT = {"item": "crystal_refined", "n": 2}
 
@@ -544,6 +551,9 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     arc = "penguins" if region in PENG_ONLY else ("gangsters" if region in GANG_ONLY else "both")
     arcs = ["penguins", "gangsters"] if arc == "both" else [arc]
     fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
+    _rf = campaign_field(region)
+    if _rf and _rf in R:
+        fl = {a: [_rf] for a in arcs}
     n = SIZE[tier]
     L = _layout(n, cid)
     pools = POOL_T1 if tier <= 1 else POOL

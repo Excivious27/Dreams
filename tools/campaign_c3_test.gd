@@ -96,7 +96,7 @@ func _initialize() -> void:
 	check(GameState.run["flags"].has(Campaign.KIN_FLAG) and GameState.count("crystal_refined") == 0 and not kl.is_empty(), "a gift turns them into Crystal Kin")
 	check(not Campaign.kin_due(kin_cid), "the nest is done once they've joined")
 	var kinds: Dictionary = GameState.load_json("res://data/battles.json").get("_helper_kinds", {})
-	check(kinds.has("kin") and str(kinds["kin"].get("flag", "")) == Campaign.KIN_FLAG, "Crystal Kin helper kind data")
+	check(kinds.has("crystal_kin") and str(kinds["crystal_kin"].get("flag", "")) == Campaign.KIN_FLAG, "Crystal Kin helper kind data")
 	# penguin win lines: crystals turned back; captain named
 	var fl := Campaign.flavour(kin_cid, nid, true)
 	check(fl.contains("crystal") and not fl.contains("Meow"), "penguin win line turns them back (%s)" % fl)
