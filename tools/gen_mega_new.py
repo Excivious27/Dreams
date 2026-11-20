@@ -249,6 +249,8 @@ BORDER_TREES = {
     "gloam": {"mid": ["props/mushroom_tree_a", "props/crystal_tree_pink"], "big": ["props/mushroom_tree_b", "props/crystal_tree"]},
     "snow": {"mid": ["mid_snowpine", "mid_snowpine_b"], "big": ["big_snowpine_a", "big_snowpine_b"]},
 }
+# Darkness per underground area (C5 tuned by eye; default 0.5).
+LIGHT = {"desert_sunken_temple": 0.5, "iron_tunnels": 0.6, "frost_caverns": 0.55, "gilt_vaults": 0.55, "hollow_deeps": 0.6}
 # Underground areas (c4_05 #6): "cave": true (Ambience/P4), no surface critters or mounds,
 # cave scatter instead of the look's.
 CAVE = {
@@ -826,8 +828,6 @@ def build_area(aid, mega, spec, links_geom):
     R["ground"] = R["ground_seam"]  # not "grass": that would draw the valley's grass instead of the seamless ground
     R["amb"] = dict(AMB.get(spec["look"], {}))
     R["amb"].update(AREA_AMB.get(aid, {}))
-    if aid in CAVE or aid.startswith("hollow_"):
-        R["light"] = 0.5  # C5: fixed darkness 0..1 underground (P2's runtime reads it)
     if aid in CAVE:  # C5: underground areas drop the look's surface beds (wind, streets); Ambience skips them too
         for k in ("wind_soft", "wind_strong", "town_day", "crowd", "city_hum", "neon_street", "birds_day", "birds_dawn", "waves", "leaves"):
             R["amb"].pop(k, None)
@@ -1090,6 +1090,9 @@ def build_area(aid, mega, spec, links_geom):
         R["spawn"] = [int(sp[0]), int(sp[1])]
     if spec.get("intro"):
         R["intro"] = spec["intro"]
+    if aid in CAVE or aid.startswith("hollow_"):
+        # C5: fixed darkness 0..1 underground (GameMap reads it); written last so reruns match the file (c6_17-1)
+        R["light"] = LIGHT.get(aid, 0.5)
     return R
 
 EXT_NAME = {"hollow_heart": "the Hollow Heart", "sky": "the Cloud Isles"}

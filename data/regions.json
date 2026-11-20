@@ -16023,7 +16023,6 @@
   "amb": {
    "cave": -20.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "boulder2_s_a",
@@ -17510,7 +17509,6 @@
    "cave": -14.0,
    "basement_drips": -18.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -18693,7 +18691,6 @@
    "cave": -14.0,
    "crystal_hum": -22.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "cave_stalag_l",
@@ -21974,7 +21971,6 @@
    "cave": -18.0,
    "basement_drips": -22.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "crates_a",
@@ -22305,7 +22301,6 @@
    "crickets": -15.0,
    "crystal_hum": -26.0
   },
-  "light": 0.5,
   "gen": {
    "region_props": [
     "gmush_blue",
