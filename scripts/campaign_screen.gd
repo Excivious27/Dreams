@@ -470,7 +470,7 @@ func _march_attack() -> void:
 
 func _march() -> void:
 	if Campaign.march(cid, sel):
-		Music.instance(get_tree()).sfx("step", "pickup")
+		Music.instance(get_tree()).sfx("war_drum", "step_gravel")  # the march (c6_11, P5 hook)
 		_flash_msg("The %s marches to %s." % [Campaign.force_word(), str(Campaign.node(cid, sel)["name"])])
 		GameState.save()
 	_refresh()
@@ -482,13 +482,13 @@ func _kin(choice: String) -> void:
 	GameState.save()
 	_refresh()
 	if not lines.is_empty():
-		Music.instance(get_tree()).sfx("j_battle_won" if choice != "later" else "pickup", "levelup")
+		Music.instance(get_tree()).sfx({"meow": "meow", "later": "pickup"}.get(choice, "j_secret"), "sparkle")  # a magical settle, not the battle win (c6_11, P5 hook)
 		_flash_msg(str(lines[lines.size() - 1].get("text", "")))
 
 
 func _settle(choice: String) -> void:
 	var line := Campaign.settle(cid, sel, choice)
-	Music.instance(get_tree()).sfx("coin", "pickup")
+	Music.instance(get_tree()).sfx({"take": "chest_open", "rest": "j_confirm", "forage": "harvest"}.get(choice, "coin"), "pickup")  # (c6_11, P5 hook)
 	GameState.save()
 	_refresh()
 	_flash_msg(line)

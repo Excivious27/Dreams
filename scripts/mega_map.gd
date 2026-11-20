@@ -48,6 +48,8 @@ static func tab_row(body: Control, refresh: Callable) -> String:
 		b.mouse_filter = Control.MOUSE_FILTER_PASS  # a sideways drag scrolls the strip
 		var tid := id
 		b.pressed.connect(func() -> void:
+			if b.is_inside_tree():
+				Music.instance(b.get_tree()).sfx("tab", "ui_tap")  # (c6_11, P5 hook)
 			GameMenu.last_press = "map > %s" % tid
 			tab = tid
 			sel = ""

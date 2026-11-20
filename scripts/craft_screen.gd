@@ -361,8 +361,17 @@ func _wait() -> void:
 
 
 ## What a station sounds like at work (anvils ring, pots bubble, terminals beep).
+## Every station in data/recipes.json by id (c6_10-06, P5); others match words below.
+const STATION_SFX := {"kitchen": "cooking", "campfire": "cooking", "cauldron": "bubble", "soda": "bubble", "furnace": "anvil",
+	"kiln": "anvil", "anvil": "anvil", "implant": "servo", "armory": "reload", "mill": "drill", "press": "drill", "garage": "drill",
+	"rocket": "power_up", "resonator": "spell", "shaper": "hammer", "tannery": "cloth", "litter": "dig", "sawmill": "hammer",
+	"workbench": "hammer", "loom": "cloth", "jeweler": "gem", "hack": "typing", "robot": "drill", "print": "beep"}
+
+
 static func station_sound(st: String) -> String:
 	var k := st.to_lower()
+	if STATION_SFX.has(k):
+		return str(STATION_SFX[k])
 	for pair: Array in [["smith", "anvil"], ["forge", "anvil"], ["anvil", "anvil"], ["kitchen", "pot"], ["cook", "pot"], ["stove", "pot"],
 			["bake", "pot"], ["brew", "bubble"], ["alchem", "bubble"], ["potion", "bubble"], ["hack", "typing"], ["terminal", "typing"],
 			["robot", "drill"], ["chrome", "servo"], ["work", "hammer"], ["carpent", "hammer"], ["saw", "hammer"], ["loom", "cloth"],

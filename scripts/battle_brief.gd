@@ -232,6 +232,7 @@ func _not_now() -> void:
 		Campaign.st()["fight"] = {}
 	var back: Array = d.get("back", [])
 	_arm = maxf(_arm, _min_t)
+	Music.instance(get_tree()).sfx("menu_close", "ui_tap")  # (c6_11, P5 hook)
 	_close()
 	if m and is_instance_valid(m):
 		m.hud.toast("You can come back to this fight from the campaign map.", Color(1, 0.9, 0.6))

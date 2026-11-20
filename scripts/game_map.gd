@@ -2004,7 +2004,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 		if crit_any:  # a kill already gets Enemy._die's thud
 			Music.instance(get_tree()).sfx("crit")
 	elif guarded:
-		Music.instance(get_tree()).sfx("dry_click", "thud")
+		Music.instance(get_tree()).sfx("block", "thud")  # a shield, not an empty gun (c6_08_07, P5 hook)
 	return hit
 
 
