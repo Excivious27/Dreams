@@ -50,9 +50,10 @@ func build() -> void:
 
 func after_ready() -> void:
 	_place_props()
-	_romance_props()
-	spouse_refresh()
-	RecCenter.dress_house(self)  # prize decor from the Rec Center
+	if not GameState.visiting():  # a guest's spouse, wedding corner and Rec decor stay in the guest's own house
+		_romance_props()
+		spouse_refresh()
+		RecCenter.dress_house(self)  # prize decor from the Rec Center
 	if int(GameState.run["time"]) <= GameState.DAY_START + 5:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
 		if GameState.festival_today() != "":
@@ -342,7 +343,9 @@ static func spouse_cell(t: int, hour: int) -> Vector2i:
 
 ## Spawn / move / hide the spouse for the hour (also called after the wedding).
 func spouse_refresh() -> void:
-	if not Romance.is_married():
+	if not Romance.is_married() or GameState.visiting():
+		if _spouse != null and is_instance_valid(_spouse):
+			_spouse.visible = false
 		return
 	var id := Romance.spouse()
 	var at := spouse_cell(tier(), int(GameState.run["time"]) / 60)
@@ -375,7 +378,7 @@ var _corner_done := false
 
 ## The spouse's corner piece (romance.json corner) and, the first week, wedding decor.
 func _romance_props() -> void:
-	if _corner_done or not Romance.is_married():
+	if _corner_done or not Romance.is_married() or GameState.visiting():
 		return
 	_corner_done = true
 	var c := SPOUSE_CORNER[tier()] as Vector2i

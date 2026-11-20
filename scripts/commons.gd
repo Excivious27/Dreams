@@ -273,6 +273,17 @@ static func help_def(kind: String) -> Dictionary:
 	return (data().get("help", {}) as Dictionary).get(kind, {})
 
 
+## Co-op: a guest's run.cfarm is its OWN commons, not the host's on screen, so a guest
+## can look but not act (C9 P6). True (and a toast) when we're visiting.
+static func guest_blocked(m: GameMap, what := "board") -> bool:
+	if not Net.visiting():
+		return false
+	if m != null and m.hud != null:
+		m.hud.toast("This is your host's valley: their farm, their %s." % what, Color(1, 0.85, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
+	return true
+
+
 static func helped_today(npc: String) -> bool:
 	return GameState.run.is_empty() or int((st().get("helped", {}) as Dictionary).get(npc, -1)) == int(GameState.run["day"])
 
@@ -280,6 +291,11 @@ static func helped_today(npc: String) -> bool:
 ## A finished help task: friendship, a little goodwill, xp and a cut of the produce
 ## (stand stock first, else a seed packet). Returns what you got, for the thank-you line.
 static func reward_help(npc: String) -> Array:
+	if Net.visiting():  # the host's commons: friendship and xp are ours, the stand and goodwill are theirs
+		if GameState.npcs.has(npc):
+			GameState.add_friend(npc, 10)
+		GameState.add_xp("farming", 8)
+		return [["seed_packet", 1]]
 	var h: Dictionary = st().get("helped", {})
 	h[npc] = int(GameState.run["day"])
 	st()["helped"] = h
@@ -657,6 +673,8 @@ static func open_board(m: GameMap) -> void:
 					return
 				sync_quest()
 			"finish":
+				if guest_blocked(m):
+					continue
 				await bundle_full(m)
 				return
 			"ask":
@@ -708,6 +726,8 @@ static func _bag_produce() -> Array:
 
 
 static func open_stand(m: GameMap) -> void:
+	if guest_blocked(m, "stand"):
+		return
 	var stock: Dictionary = st()["stock"]
 	while true:
 		var opts: Array = []
@@ -880,6 +900,8 @@ static func sell_at_market(id: String, n: int) -> int:
 
 
 static func collect_share(m: GameMap) -> void:
+	if guest_blocked(m, "share crate"):
+		return
 	var sh: Dictionary = st()["share"]
 	if sh.is_empty():
 		m.hud.toast("Your share crate is empty. Volunteers fill it as the beds come in.", Color(0.95, 0.9, 0.8))
@@ -895,6 +917,8 @@ static func collect_share(m: GameMap) -> void:
 
 
 static func compost(m: GameMap) -> void:
+	if guest_blocked(m, "compost"):
+		return
 	var opts: Array = []
 	var acts: Array = []
 	if GameState.count("fiber") >= 5:
@@ -934,7 +958,8 @@ static func drink(m: GameMap) -> void:
 	if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
 		m.hud.toast("Cold and clear. You're not thirsty.", Color(0.85, 0.95, 1))
 		return
-	st()["drank"] = int(GameState.run["day"])
+	if not Net.visiting():  # a host-day stamp would block our own well at home
+		st()["drank"] = int(GameState.run["day"])
 	var got := GameState.rest_energy(15)  # the shared rest half-bar (C8 P6)
 	Music.instance(m.get_tree()).sfx("drink", "pickup")
 	m.hud.toast(("You drink from the well. +%d energy." % got) if got > 0 else "Cold and clear. You've rested enough today.", Color(0.8, 0.95, 1))

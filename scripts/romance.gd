@@ -304,6 +304,9 @@ static func _locket(m: GameMap, id: String) -> void:
 static func _spouse_talk(m: GameMap, id: String) -> bool:
 	var s := st()
 	var today := int(GameState.run["day"])
+	if GameState.visiting():  # the host's day must not stamp talk_day (it would skip our own days at home)
+		await m.say(_lines([{"who": name_of(id), "text": "Fancy meeting you here! Say hi to your friends for me.", "mood": "happy"}], id))
+		return true
 	if int(s["talk_day"]) == today:
 		await m.say(_lines([{"who": name_of(id), "text": ["Love you.", "Go on, the farm's waiting. I'll be here.", "Come here, you. ...There. A hug for the road."][today % 3], "mood": "love"}], id))
 		return true

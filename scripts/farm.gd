@@ -1479,8 +1479,7 @@ func _sellbox(sel: String) -> void:
 			bq["g"] = int(bq.get("g", 0)) + int(tq["g"])
 			bq["s"] = int(bq.get("s", 0)) + int(tq["s"])
 			GameState.run["sellbox_q"][sel] = bq
-		GameState.add_item(sel, -n)
-		net_act({"a": "sellbox", "id": sel, "n": n})
+		GameState.add_item(sel, -n)  # the sell box is our own (guest_morning pays a guest); nothing to send the host
 		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev) + GameState.quality_bonus_value({sel: tq})
 		hud.toast("Put %s x%d in the sell box (about ◆%d tonight%s)." % [GameState.item_name(sel), n, est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("coin", "pickup")
@@ -1583,6 +1582,9 @@ func _station(id: String) -> void:
 
 ## The rocket yard: build parts here; from tier 3 it flies.
 func _launchpad() -> void:
+	if Net.visiting():  # the host's rocket: flying it would earn the guest rocket_flown and Space
+		hud.toast("Your host's rocket. Ask them to fly it; yours waits on your own farm.", Color(1, 0.85, 0.6))
+		return
 	var t := Builds.built_tier("launchpad")
 	var opts: Array = ["Build rocket parts"]
 	var dests: Array = []

@@ -7,9 +7,11 @@
 //   server -> {t:"peer_joined", peer:{...}} / {t:"peer_left", id}
 //   client -> {t:"to", id, d:{...}}      // to one peer (host sync replies)
 //   client -> {t:"all", d:{...}}         // to everyone else in the room
-//   server -> {t:"msg", from:id, d:{...}}
-//   client -> {t:"host_save", d:{...}}   // host snapshot kept so late joiners get it
+//   server -> {t:"msg", from:id, host:bool, d:{...}}   // host = sent by the room's host
+//   client -> {t:"host_save", d:{...}}   // host snapshot kept so late joiners get it (full keys; deltas merge in)
+//   HTTP GET -> 200 "dreams relay ok" (health checks)
 //   server -> {t:"world", d:{...}}       // on join: the host's last snapshot
+const http = require("http");
 const { WebSocketServer } = require("ws");
 const PORT = process.env.PORT || 8787;
 const MAX = parseInt(process.env.MAX_PLAYERS || "8", 10);
@@ -21,7 +23,12 @@ let nextId = 1;
 const code = () => { const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let s = ""; for (let i = 0; i < 4; i++) s += a[Math.floor(Math.random() * a.length)]; return rooms.has(s) ? code() : s; };
 const send = (ws, o) => { if (ws.readyState === 1) ws.send(JSON.stringify(o)); };
 
-const wss = new WebSocketServer({ port: PORT });
+const GUEST_CAP = 65536;      // a guest only sends small state/act frames
+const HOST_CAP = 1048576;     // the host's world snapshot/deltas can be bigger on a late farm
+// Plain HTTP answers 200 so Render/Fly health checks pass (instead of a 426 upgrade error).
+const server = http.createServer((req, res) => { res.writeHead(200, { "Content-Type": "text/plain" }); res.end("dreams relay ok\n"); });
+const wss = new WebSocketServer({ server, maxPayload: HOST_CAP });
+server.listen(PORT);
 console.log("dreams relay on", PORT);
 
 wss.on("connection", (ws) => {
@@ -29,7 +36,8 @@ wss.on("connection", (ws) => {
   ws.on("pong", () => { ws.isAlive = true; });
   ws.on("error", () => {});  // a malformed frame must not take the relay down
   ws.on("message", (buf) => {
-    if (buf.length > 65536) return;                 // nothing in the protocol is this big
+    const r0 = ws.room && rooms.get(ws.room);
+    if (buf.length > (r0 && r0.host === ws.id ? HOST_CAP : GUEST_CAP)) return;  // only the host sends big frames
     if (--ws.budget < 0) return;                     // flood guard: ~120 msgs/s (refilled below)
     let m; try { m = JSON.parse(buf.toString()); } catch { return; }
     if (!m || typeof m !== "object") return;
@@ -64,10 +72,17 @@ wss.on("connection", (ws) => {
       return;
     }
     const room = ws.room && rooms.get(ws.room); if (!room) return;
-    if (m.t === "host_save" && room.host === ws.id) { room.world = m.d; return; }
+    if (m.t === "host_save" && room.host === ws.id) {
+      // A delta ({..., _delta:true}) merges into the kept snapshot; a full one replaces it.
+      if (m.d && m.d._delta && room.world) { for (const k of Object.keys(m.d)) if (k !== "_delta") room.world[k] = m.d[k]; }
+      else room.world = m.d;
+      return;
+    }
     if (m.t === "scene") { ws.info.scene = m.scene; for (const p of room.peers.values()) if (p !== ws) send(p, { t: "peer_scene", id: ws.id, scene: m.scene }); return; }
-    if (m.t === "to") { const p = room.peers.get(Number(m.id)); if (p) send(p, { t: "msg", from: ws.id, d: m.d }); return; }
-    if (m.t === "all") { for (const p of room.peers.values()) if (p !== ws) send(p, { t: "msg", from: ws.id, d: m.d }); return; }
+    // host:true marks frames from the room's host, so guests only take world/toast from the host.
+    const fromHost = room.host === ws.id;
+    if (m.t === "to") { const p = room.peers.get(Number(m.id)); if (p) send(p, { t: "msg", from: ws.id, host: fromHost, d: m.d }); return; }
+    if (m.t === "all") { for (const p of room.peers.values()) if (p !== ws) send(p, { t: "msg", from: ws.id, host: fromHost, d: m.d }); return; }
   });
   ws.on("close", () => {
     const room = ws.room && rooms.get(ws.room); if (!room) return;

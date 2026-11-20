@@ -51,6 +51,8 @@ static func invite(id: String) -> Dictionary:
 
 ## Romance.talk while dating (no item held). True = handled.
 static func talk(m: GameMap, id: String) -> bool:
+	if GameState.visiting():
+		return false  # dates run on our own days and maps; the host's day would stamp run.romance (C9 P6)
 	var s := Romance.st()
 	var d: Dictionary = s.get("date", {})
 	if not d.is_empty() and int(d.get("day", -1)) < int(GameState.run["day"]):
@@ -89,6 +91,8 @@ static func tick(m: GameMap, delta: float) -> void:
 	if _t > 0.0 or _busy:
 		return
 	_t = 0.5
+	if GameState.visiting():
+		return
 	var d := pending()
 	if d.is_empty() or m.player == null or m.player.frozen or m.get_tree().paused or Dialogue.instance(m.get_tree()).active:
 		return
