@@ -243,7 +243,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 		b.add_theme_stylebox_override(st, sb)
 	if grid != "" and _drag:
 		# Long press lifts (SlotDrag): drop on a slot here or across, or the trash.
-		_drag.add(b, {"grid": grid, "i": idx, "id": id} if id != "" else {}, _drop_on.bind(grid, idx))
+		_drag.add(b, {"grid": grid, "i": idx, "id": id} if id != "" else {}, _drop_on.bind(grid, idx), "%s:%d" % [grid, idx])
 	b.pressed.connect(_tap.bind(grid, idx, cb))
 	if id != "":
 		if grid == "b" and GameState.is_locked(id):
@@ -290,7 +290,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 func _refresh() -> void:
 	if _drag:
 		_drag.clear()
-		_drag.add(_trash_btn, {}, _drop_trash)
+		_drag.add(_trash_btn, {}, _drop_trash, "trash")
 	_trash_btn.modulate = Color(1, 0.55, 0.5) if _trash_arm != "" else Color.WHITE
 	_trash_icon.texture = Art.tex("ui", "trash_can_open" if (_trash_arm != "" or str(_pick.get("grid", "")) == "b") else "trash_can")
 	for g in [_top, _bot]:
@@ -369,7 +369,7 @@ func _tap(grid: String, i: int, cb: Callable) -> void:
 
 
 ## C6 P7: an item dragged from (grid, i) and let go over slot (grid2, i2).
-func _drop_on(grid2: String, i2: int, pl: Dictionary) -> void:
+func _drop_on(pl: Dictionary, grid2: String, i2: int) -> void:
 	_pick = pl
 	_tap_now(grid2, i2, Callable())
 

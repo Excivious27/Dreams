@@ -40,10 +40,26 @@ func clear() -> void:
 	_targets.clear()
 
 
-func add(ctrl: Control, payload: Dictionary, drop: Callable) -> void:
-	_targets.append({"ctrl": ctrl, "payload": payload, "drop": drop})
+func add(ctrl: Control, payload: Dictionary, drop: Callable, tag := "") -> void:
+	_targets.append({"ctrl": ctrl, "payload": payload, "drop": drop, "tag": tag})
 	if not payload.is_empty() and ctrl is BaseButton:
 		(ctrl as BaseButton).button_down.connect(func() -> void: begin(payload))
+
+
+## The slot registered with this tag ("bag:3", "bar:0", "trash", "c:2"...), for tests.
+func find(tag: String) -> Control:
+	for t: Dictionary in _targets:
+		if str(t["tag"]) == tag and is_instance_valid(t["ctrl"]):
+			return t["ctrl"]
+	return null
+
+
+## The payload a tagged slot would lift ({} if none).
+func payload_of(tag: String) -> Dictionary:
+	for t: Dictionary in _targets:
+		if str(t["tag"]) == tag:
+			return t["payload"]
+	return {}
 
 
 ## A press landed on a liftable slot (button_down; tests call it directly).
@@ -140,7 +156,9 @@ func _finish() -> void:
 			continue
 		if (c as Control).get_global_rect().has_point(at):
 			if t["payload"] == payload:
-				return  # dropped back where it came from: stays picked
+				if on_drop_nowhere.is_valid():
+					on_drop_nowhere.call(payload)  # dropped back where it came from: stays picked
+				return
 			(t["drop"] as Callable).call(payload)
 			return
 	if on_drop_nowhere.is_valid():

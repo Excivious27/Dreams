@@ -346,7 +346,7 @@ func _refresh() -> void:
 			for i in 12:
 				var id := str(tb[i])
 				var tsb := _slot_button(id, i == slot, _toolbar_tap.bind(i))
-				dr.add(tsb, {"id": id, "bar": i} if id != "" else {}, _drop_on_bar.bind(i))
+				dr.add(tsb, {"id": id, "bar": i} if id != "" else {}, _drop_on_bar.bind(i), "bar:%d" % i)
 				g.add_child(tsb)
 			var bh := HBoxContainer.new()
 			bh.add_theme_constant_override("separation", 3)
@@ -366,14 +366,14 @@ func _refresh() -> void:
 				sb2.autowrap_mode = TextServer.AUTOWRAP_OFF
 			var trs := _trash_slot()
 			bh.add_child(trs)
-			dr.add(trs, {}, _drop_trash)
+			dr.add(trs, {}, _drop_trash, "trash")
 			_line("Bag: tap one, then a slot. Hold and drag to move or trash.", 8, Color(0.9, 0.85, 0.7))
 			var bs := GameState.bag_slots()
 			var g2 := _grid(6)
 			for i in bs.size():
 				var bid := str(bs[i])
 				var bb := _slot_button(bid, bid != "" and bid == _bag_pick, _bag_tap.bind(i))
-				dr.add(bb, {"id": bid, "bar": -1} if bid != "" else {}, _drop_on_bag.bind(i))
+				dr.add(bb, {"id": bid, "bar": -1} if bid != "" else {}, _drop_on_bag.bind(i), "bag:%d" % i)
 				if bid != "" and bid != _bag_pick and tb.has(bid):
 					bb.modulate = Color(1, 1, 1, 0.55)  # also on the toolbar above
 				if bid != "" and GameState.is_locked(bid):
@@ -390,7 +390,7 @@ func _refresh() -> void:
 				var g3 := _grid(6)
 				for t: String in lt:
 					var tlb := _slot_button(t, t == _bag_pick, _tool_tap.bind(t))
-					dr.add(tlb, {"id": t, "bar": -1}, func(_p: Dictionary) -> void: pass)
+					dr.add(tlb, {"id": t, "bar": -1}, func(_p: Dictionary) -> void: pass, "tool:" + t)
 					g3.add_child(tlb)
 			if _bag_pick != "" and not GameState.has_tool(_bag_pick):
 				var ah := HBoxContainer.new()
@@ -1202,22 +1202,24 @@ func _items_drag() -> SlotDrag:
 	if _drag == null or not is_instance_valid(_drag):
 		_drag = SlotDrag.new()
 		add_child(_drag)
+		# Lifting doesn't rebuild the tab (nothing moves under the finger); a
+		# drop back on the slot or outside any slot leaves it picked (actions shown).
 		_drag.on_lift = func(pl: Dictionary) -> void:
 			_bag_pick = str(pl.get("id", ""))
 			_pick_bar = int(pl.get("bar", -1))
 			_trash_arm = ""
-			_refresh()
+		_drag.on_drop_nowhere = func(_pl: Dictionary) -> void: _refresh()
 	_drag.clear()
 	return _drag
 
 
-func _drop_on_bar(i: int, pl: Dictionary) -> void:
+func _drop_on_bar(pl: Dictionary, i: int) -> void:
 	_bag_pick = str(pl.get("id", ""))
 	_pick_bar = int(pl.get("bar", -1))
 	_assign_toolbar(_bag_pick, i)
 
 
-func _drop_on_bag(i: int, pl: Dictionary) -> void:
+func _drop_on_bag(pl: Dictionary, i: int) -> void:
 	var id := str(pl.get("id", ""))
 	if GameState.has_tool(id) and int(pl.get("bar", -1)) < 0:
 		_bag_pick = ""
