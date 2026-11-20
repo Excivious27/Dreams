@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 fix P4: mining, fishing, rewards
+- Fishing rebuilt on a rules table (`Fishing`): mega/sea waters keep their own fish (no forced minnow/sunfish), fish chosen at the bite with a shorter window for rarer fish, area-tier ceiling (Glacier Pike ~Fishing 5, Ember Koi ~8), Rare Catch from the top, rod tier and luck count, lighthouse only at lake/sea, treasure by water (no pond pearls), XP by fish value, Legendary Koi at the lit lake (night, bait, Fishing 10), bait only where it helps, a hit snaps the line, sea says "Fish". Colony seas get sea fish.
+- Mining: swing per pick tier 1..8 (every upgrade matters), smooth rock hp (no floor-15 sawtooth), gems mostly from ore rocks, floors 1-3 keeper thresholds 14/13/12 and no long waits there, mega ore uses the pick (scaled hp, lumps, gems, xp), moon rocks respawn (3/7 days) and Moon Shards need their gate, mountain ore stays broken (hook).
+- Rewards: hubs hide loot two tiers lower, caches on a value budget (relic masks single, tier 4+), page spacing retry + per-arc pages_total (gangster journal completable), LOOT[5] storm glass instead of moon shards, mega bosses 1000/1800/2800, main-line pay x3-6 (arcs equal), side quests sal_coffee/sal_bread/hazel_potatoes on curve, thugs on the per-hp kill curve, gangster story bosses give hearts + better items, Gilt job max hp, island kit pay by tier. Dad's Haul: x2 chop + 2 wood (no one-swing trees).
+- Test tools/c8_p4_test.gd (check.sh).
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).

@@ -3077,11 +3077,11 @@ func xp(skill: String, n: int) -> void:
 	var up := GameState.add_xp(skill, n)
 	GameState._xp_loud = false
 	if up:
-		hud.toast("%s level %d! A skill point to spend." % [str(GameState.skills_data.get(skill, {}).get("name", skill.capitalize())), GameState.skill_level(skill)], Color(1, 0.9, 0.4))
+		hud.toast(GameState.level_up_text(skill), Color(1, 0.9, 0.4))  # C8 P1 words (plural points, full tree, mastered)
 		Music.instance(get_tree()).sfx("levelup")
 		if player:
 			fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
-			if GameState.skill_level(skill) % 5 == 0 and Art.has("fx", "levelup2"):
+			if GameState.last_crossed5 and Art.has("fx", "levelup2"):
 				fx("levelup2", player.position + Vector2(0, -20), 12.0, 0.4)
 
 
