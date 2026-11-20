@@ -171,7 +171,7 @@ func _run() -> void:
 	for w in ["Crystopia", "Celestica", "Mount Prismatica", "Teacher.", "kingdoms", "I am Fennimore", "C-O-L-D-Y", "That bell broke for me", "twenty-one years"]:
 		check(w in txt, "penguin story says '%s'" % w)
 	check(not ("somebody's dog. It still is" in txt) and not ("C-O-L-D-I-E" in txt), "old contradictions gone")
-	for id in ["p2_nova_dream", "p3_whisper", "p5_elder_coral", "p5_elder_kelp", "p5_elder_ice", "p5_elder_ember"]:
+	for id in ["p2_nova_dream", "p3_whisper", "p4_fennimore_sky", "p4_old_one", "p5_elder_coral", "p5_elder_kelp", "p5_elder_ice", "p5_elder_ember"]:
 		check(not _beat(id).is_empty(), "beat %s exists" % id)
 	# Each elder beat keys on the flag colony.gd really sets.
 	for pair in [["coral", "colony_coral_ward"], ["kelp", "colony_tideswim"], ["ice", "colony_frost_step"], ["ember", "colony_starfire"]]:

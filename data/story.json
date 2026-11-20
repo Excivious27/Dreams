@@ -1169,6 +1169,93 @@
      }
     },
     {
+     "id": "p4_fennimore_sky",
+     "trigger": {
+      "scene": "sky"
+     },
+     "when": {
+      "flag": "prison_done",
+      "not_flag": "final_started"
+     },
+     "after": "p4_prison",
+     "lines": [
+      {
+       "who": "",
+       "text": "Every shadow between the islands has eyes in it again. Then the eyes part, politely, and one pair comes forward: bigger, and ringed with a faint purple light, like a crown that hasn't been made yet."
+      },
+      {
+       "who": "",
+       "text": "*You escaped my prison. Nobody has ever escaped my prison.*"
+      },
+      {
+       "who": "Coldy",
+       "text": "Nobody escaped because nobody was in it before. Is new prison.",
+       "if_flag": "babies_done"
+      },
+      {
+       "who": "",
+       "text": "*...It is a very good prison.*"
+      },
+      {
+       "who": "",
+       "text": "*He has not answered me since I told him I had you. Not once. Is that what he does, after?*",
+       "if_flag": "fennimore_doubt"
+      },
+      {
+       "who": "",
+       "text": "*Go on, then. Climb. He is waiting at the top, and so am I.*",
+       "unless_flag": "fennimore_doubt"
+      },
+      {
+       "who": "",
+       "text": "The eyes close, one pair at a time, until the shadows are only shadows."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "fennimore_seen"
+      ]
+     }
+    },
+    {
+     "id": "p4_old_one",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flags": [
+       "merkitty_done",
+       "fennimore_seen"
+      ],
+      "not_flag": "final_started"
+     },
+     "after": "p4_fennimore_sky",
+     "lines": [
+      {
+       "who": "",
+       "text": "You dream of a grey, very small finargle sitting on your windowsill, so old its fuzz has gone white at the edges."
+      },
+      {
+       "who": "",
+       "text": "*I am the oldest of us on the mountain. I remember the last queen. She sang to the mountain, and the mountain sang back.*"
+      },
+      {
+       "who": "",
+       "text": "*Fennimore wants the mountain to sing to her. That is not the same thing. Someone should tell her, kindly. We have no mouths; we were never good at kindly.*"
+      },
+      {
+       "who": "",
+       "text": "In the morning there is a single white tuft of fuzz on the sill. %pet sniffs it and sneezes."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "finargle_old_met"
+      ],
+      "hint": "Fennimore is listening. If she doubts the Dark Crystal, the Meow Pow Wow can turn her back at the top."
+     }
+    },
+    {
      "id": "p4_tele",
      "trigger": {
       "quest_done": "teleporter"
