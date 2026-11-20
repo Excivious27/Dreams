@@ -5889,6 +5889,30 @@
   "mode": "jingle",
   "src_md5": "afb99eaae2e94afe39ee1289ae3f2e41"
  },
+ "j_proposal": {
+  "after": {
+   "dur": 3.217,
+   "hf": 0.0,
+   "lk": -15.6,
+   "low": 0.449,
+   "peak": -7.2,
+   "phone_loss": 0.1,
+   "rms": -15.7
+  },
+  "before": {
+   "dur": 3.217,
+   "hf": 0.0,
+   "lk": -20.6,
+   "low": 0.449,
+   "peak": -12.2,
+   "phone_loss": 0.1,
+   "rms": -20.7
+  },
+  "gain_db": 5.0,
+  "md5": "c4ce40da742201052f43b70d68bf362b",
+  "mode": "jingle",
+  "src_md5": "77822edcb32fc3e30f72a98c489f8b32"
+ },
  "j_region": {
   "after": {
    "dur": 2.26,
@@ -6008,6 +6032,30 @@
   "md5": "180b0d8a0b4460cca7546c2369879cc9",
   "mode": "jingle",
   "src_md5": "f94bffe84af48db0406492848141f6f9"
+ },
+ "j_wedding": {
+  "after": {
+   "dur": 4.692,
+   "hf": 0.0,
+   "lk": -14.3,
+   "low": 0.414,
+   "peak": -5.9,
+   "phone_loss": 5.9,
+   "rms": -13.0
+  },
+  "before": {
+   "dur": 4.692,
+   "hf": 0.0,
+   "lk": -14.1,
+   "low": 0.414,
+   "peak": -5.7,
+   "phone_loss": 5.9,
+   "rms": -12.8
+  },
+  "gain_db": -0.2,
+  "md5": "9fb3949bbde04a6f55e0b851ea5f18b1",
+  "mode": "jingle",
+  "src_md5": "86827cbaa0cbb782fd624659d20ce8bb"
  },
  "juke_needle": {
   "after": {

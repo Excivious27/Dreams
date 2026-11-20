@@ -40,6 +40,7 @@
   "countryside",
   "credits",
   "danger",
+  "date_evening",
   "docks",
   "ending_gangster",
   "ending_penguin",
@@ -97,6 +98,8 @@
   "underground",
   "uptown",
   "wastes",
+  "wedding",
+  "wedding_gang",
   "winter"
  ],
  "embed": [
@@ -146,6 +149,7 @@
   "countryside": "b1bac86c",
   "credits": "e85e26ef",
   "danger": "d0ad3967",
+  "date_evening": "9eec4496",
   "docks": "9a9ff2c1",
   "ending_gangster": "8478b041",
   "ending_penguin": "0157ac2f",
@@ -203,6 +207,8 @@
   "underground": "67ee5152",
   "uptown": "a53392cd",
   "wastes": "07c4aabd",
+  "wedding": "12597f1c",
+  "wedding_gang": "a2ec6754",
   "winter": "1b6f145a"
  },
  "size": {
@@ -246,6 +252,7 @@
   "countryside": 1942090,
   "credits": 1939072,
   "danger": 1996421,
+  "date_evening": 1036922,
   "docks": 1925276,
   "ending_gangster": 2034929,
   "ending_penguin": 2050225,
@@ -303,6 +310,8 @@
   "underground": 1820991,
   "uptown": 1992623,
   "wastes": 1882541,
+  "wedding": 1110698,
+  "wedding_gang": 1174442,
   "winter": 1619806
  }
 }

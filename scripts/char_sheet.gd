@@ -643,6 +643,7 @@ static func milestones() -> Array:
 		up += GameState.tool_tier(t)
 	out.append(["Tool upgrades", "%d of %d" % [up, GameState.TOOL_KINDS.size() * (GameState.TOOL_TIERS.size() - 1)], float(up) / (GameState.TOOL_KINDS.size() * (GameState.TOOL_TIERS.size() - 1))])
 	out.append(["Days lived", str(int(r.get("day", 1))), -1.0])
+	if Romance.hero_line() != "": out.append(["Heart", Romance.hero_line(), -1.0])  # dating/engaged/married (C7 P1)
 	return out
 
 

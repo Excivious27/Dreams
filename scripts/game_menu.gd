@@ -566,6 +566,7 @@ func _refresh() -> void:
 						break
 				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
+				if Romance.social_line(str(id)) != "": _line(Romance.social_line(str(id)), 8, Color(1, 0.7, 0.85))
 		"Map":
 			# Mega region tabs (MegaMap): Valley + one per unlocked region; hidden until unlocked.
 			# The map sits right under the tab strip; the Campaign button and blurb go below it (c4_02).

@@ -76,7 +76,7 @@ static func offers(shop: String) -> Array:
 				base.append("backpack_%d" % (int(GameState.run.get("bag_up", 0)) + 1))
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
-			return base
+			return base + Romance.shop_extra("store")
 		"smith":
 			return ["iron_sword", "coal", "copper_ring"]
 		"potions":
@@ -84,7 +84,7 @@ static func offers(shop: String) -> Array:
 		"orla":
 			return ["flour", "wheat_seed", "bread"]
 		"marlowe":
-			return ["lamp_oil", "bait", "rope"]
+			return ["lamp_oil", "bait", "rope"] + Romance.shop_extra("marlowe")
 		"tam":
 			# Orchard stock: saplings and berry canes for the season.
 			return ["sheep_wool", "hay"] + ({"summer": ["blueberry_seed"], "fall": ["pear_seed"]}.get(GameState.season(), []) as Array) + _seeds(func(cid: String, cd: Dictionary) -> bool: return not (cid in ["blueberry", "pear"]) and int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)

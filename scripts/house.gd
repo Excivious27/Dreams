@@ -50,6 +50,8 @@ func build() -> void:
 
 func after_ready() -> void:
 	_place_props()
+	_romance_props()
+	spouse_refresh()
 	RecCenter.dress_house(self)  # prize decor from the Rec Center
 	if int(GameState.run["time"]) <= GameState.DAY_START + 5:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
@@ -71,9 +73,14 @@ func after_ready() -> void:
 		if not kept.is_empty():
 			_morning_events()
 			Story.on_morning(self)
+	if int(GameState.run["time"]) / 60 < 12 and Romance.wedding_due():
+		await Wedding.check_morning(self)  # e.g. after a pass-out night at the clinic... or a reload
 
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
+	if _spouse and is_instance_valid(_spouse) and _spouse.visible and (_spouse.cell() == _c or (thing.is_empty() and _spouse.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
+		later(_talk_spouse)
+		return true
 	match str(thing.get("type", "")):
 		"door":
 			var fd: Vector2i = (load("res://scripts/farm.gd") as GDScript).house_look(Builds.built_tier("house"))["door"]  # the door of this tier's picture
@@ -112,6 +119,9 @@ func _sleep() -> void:
 	if Net.online():
 		Net.i().clear_beds()
 	var lines := SleepReport.lines(report)
+	var chore := Romance.chore_line(report)  # the spouse helped overnight
+	if chore != "":
+		lines.append({"text": chore})
 	await hud.fade_in(0.8)
 	morning_cues(get_tree(), report, false)
 	await say(lines)
@@ -119,6 +129,8 @@ func _sleep() -> void:
 	_morning_events()
 	Story.on_morning(self)
 	player.frozen = false
+	spouse_refresh()
+	await Wedding.check_morning(self)
 
 
 ## The morning's sounds (c6_10-02/-14): the wake-up jingle (a softer stretch after
@@ -305,3 +317,73 @@ func _draw_rug(nm: String, r: Rect2i, fallback: Color) -> void:
 	for y in range(r.position.y, r.end.y):
 		for x in range(r.position.x, r.end.x):
 			draw_texture_rect_region(t, Rect2(Vector2(x * TILE, y * TILE), Vector2(TILE, TILE)), Rect2((22.0 + float(x % 2) * 26.0) * kc, (22.0 + float(y % 2) * 26.0) * kc, 26.0 * kc, 26.0 * kc))
+
+
+# ---- spouse (CONDUCT 7 P1: Romance) --------------------------------------------
+
+var _spouse: Npc = null
+
+## Their corner piece per tier (east rooms): tier 2 Farmhouse, tier 3 Manor.
+const SPOUSE_CORNER := {1: Vector2i(14, 5), 2: Vector2i(18, 5), 3: Vector2i(23, 8)}
+
+
+## Where the spouse stands now (Vector2i(-1,-1) = out: at work on a job day).
+static func spouse_cell(t: int, hour: int) -> Vector2i:
+	if Romance.is_job_time():
+		return Vector2i(-1, -1)
+	if hour >= 22 or hour < 6:
+		return Vector2i(BED.x + 2, BED.y + 1)    # beside the bed
+	if hour < 9:
+		return Vector2i(11, 9)                   # the kitchen, by the stove
+	if hour < 17:
+		return SPOUSE_CORNER[t] + Vector2i(0, 2) # their corner
+	return Vector2i(4, 9)                        # by the table
+
+
+## Spawn / move / hide the spouse for the hour (also called after the wedding).
+func spouse_refresh() -> void:
+	if not Romance.is_married():
+		return
+	var id := Romance.spouse()
+	var at := spouse_cell(tier(), int(GameState.run["time"]) / 60)
+	if _spouse == null or not is_instance_valid(_spouse):
+		_spouse = Npc.new()
+		_spouse.map = self
+		_spouse.setup(id, GameState.npcs.get(id, {}), cell_center(at if at.x >= 0 else DOOR))
+		_spouse.routine = []  # hold them here: their town routine never pulls them out
+		_spouse.hold = true
+		_spouse.wander = 0.0
+		add_child(_spouse)
+		_romance_props()
+	_spouse.visible = at.x >= 0
+	if at.x >= 0:
+		_spouse.position = cell_center(at)
+		_spouse.home = _spouse.position
+		_spouse._target = _spouse.position
+
+
+func _talk_spouse() -> void:
+	player.frozen = true
+	_spouse.face(player.position)
+	emote(_spouse, "heart", 1.2)
+	await Romance.talk(self, Romance.spouse())
+	player.frozen = false
+
+
+var _corner_done := false
+
+
+## The spouse's corner piece (romance.json corner) and, the first week, wedding decor.
+func _romance_props() -> void:
+	if _corner_done or not Romance.is_married():
+		return
+	_corner_done = true
+	var c := SPOUSE_CORNER[tier()] as Vector2i
+	var art := str(Romance.cand(Romance.spouse()).get("corner", ""))
+	if Art.has("furniture", art):
+		prop("furniture", art, c, 1)
+	if int(GameState.run["day"]) - int(Romance.st()["married_day"]) < 7:
+		if Art.has("props", "wedding_heart_sign"):
+			prop("props", "wedding_heart_sign", Vector2i(DOOR.x + 2, DOOR.y - 1))
+	if tier() == 2 and Art.has("props", "wedding_bench"):
+		prop("props", "wedding_bench", Vector2i(17, 9), 1)

@@ -15457,6 +15457,12 @@
    "h": 112,
    "w": 112
   },
+  "bakery_lit": {
+   "file": "buildings/bakery_lit.png",
+   "glow_mask": true,
+   "h": 112,
+   "w": 112
+  },
   "bakery_night": {
    "file": "buildings/bakery_night.png",
    "h": 112,
@@ -15467,6 +15473,12 @@
    "h": 128,
    "w": 144
   },
+  "bandstand_lit": {
+   "file": "buildings/bandstand_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 144
+  },
   "bandstand_night": {
    "file": "buildings/bandstand_night.png",
    "h": 128,
@@ -15474,6 +15486,12 @@
   },
   "bank": {
    "file": "buildings/bank.png",
+   "h": 110,
+   "w": 144
+  },
+  "bank_lit": {
+   "file": "buildings/bank_lit.png",
+   "glow_mask": true,
    "h": 110,
    "w": 144
   },
@@ -15507,6 +15525,12 @@
    "h": 128,
    "w": 96
   },
+  "chapel_lit": {
+   "file": "buildings/chapel_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 96
+  },
   "chapel_night": {
    "file": "buildings/chapel_night.png",
    "h": 128,
@@ -15517,6 +15541,12 @@
    "h": 102,
    "w": 112
   },
+  "clinic_lit": {
+   "file": "buildings/clinic_lit.png",
+   "glow_mask": true,
+   "h": 102,
+   "w": 112
+  },
   "clinic_night": {
    "file": "buildings/clinic_night.png",
    "h": 102,
@@ -15524,6 +15554,12 @@
   },
   "clock_tower": {
    "file": "buildings/clock_tower.png",
+   "h": 160,
+   "w": 79
+  },
+  "clock_tower_lit": {
+   "file": "buildings/clock_tower_lit.png",
+   "glow_mask": true,
    "h": 160,
    "w": 79
   },
@@ -15542,6 +15578,12 @@
    "h": 96,
    "w": 128
   },
+  "cottage_a_lit": {
+   "file": "buildings/cottage_a_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 128
+  },
   "cottage_a_night": {
    "file": "buildings/cottage_a_night.png",
    "h": 96,
@@ -15552,10 +15594,32 @@
    "h": 100,
    "w": 128
   },
+  "cottage_b_lit": {
+   "file": "buildings/cottage_b_lit.png",
+   "glow_mask": true,
+   "h": 100,
+   "w": 128
+  },
   "cottage_b_night": {
    "file": "buildings/cottage_b_night.png",
    "h": 100,
    "w": 128
+  },
+  "cottage_c": {
+   "file": "buildings/cottage_c.png",
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_lit": {
+   "file": "buildings/cottage_c_lit.png",
+   "glow_mask": true,
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_night": {
+   "file": "buildings/cottage_c_night.png",
+   "h": 125,
+   "w": 136
   },
   "fence_h": {
    "file": "buildings/fence_h.png",
@@ -15579,6 +15643,12 @@
   },
   "fishing_hut": {
    "file": "buildings/fishing_hut.png",
+   "h": 105,
+   "w": 112
+  },
+  "fishing_hut_lit": {
+   "file": "buildings/fishing_hut_lit.png",
+   "glow_mask": true,
    "h": 105,
    "w": 112
   },
@@ -15682,6 +15752,12 @@
    "h": 216,
    "w": 238
   },
+  "hall_lit": {
+   "file": "buildings/hall_lit.png",
+   "glow_mask": true,
+   "h": 216,
+   "w": 238
+  },
   "hall_night": {
    "file": "buildings/hall_night.png",
    "h": 216,
@@ -15721,6 +15797,12 @@
    "file": "buildings/house_3_snow.png",
    "h": 201,
    "w": 392
+  },
+  "house_lit": {
+   "file": "buildings/house_lit.png",
+   "glow_mask": true,
+   "h": 174,
+   "w": 192
   },
   "house_night": {
    "file": "buildings/house_night.png",
@@ -15767,6 +15849,12 @@
    "h": 128,
    "w": 171
   },
+  "inn_lit": {
+   "file": "buildings/inn_lit.png",
+   "glow_mask": true,
+   "h": 128,
+   "w": 171
+  },
   "inn_night": {
    "file": "buildings/inn_night.png",
    "h": 128,
@@ -15779,6 +15867,12 @@
   },
   "library": {
    "file": "buildings/library.png",
+   "h": 112,
+   "w": 116
+  },
+  "library_lit": {
+   "file": "buildings/library_lit.png",
+   "glow_mask": true,
    "h": 112,
    "w": 116
   },
@@ -15812,6 +15906,12 @@
   },
   "mansion": {
    "file": "buildings/mansion.png",
+   "h": 127,
+   "w": 208
+  },
+  "mansion_lit": {
+   "file": "buildings/mansion_lit.png",
+   "glow_mask": true,
    "h": 127,
    "w": 208
   },
@@ -15874,6 +15974,12 @@
    "h": 136,
    "w": 160
   },
+  "potions_lit": {
+   "file": "buildings/potions_lit.png",
+   "glow_mask": true,
+   "h": 136,
+   "w": 160
+  },
   "potions_night": {
    "file": "buildings/potions_night.png",
    "h": 136,
@@ -15909,6 +16015,12 @@
    "h": 101,
    "w": 160
   },
+  "school_lit": {
+   "file": "buildings/school_lit.png",
+   "glow_mask": true,
+   "h": 101,
+   "w": 160
+  },
   "school_night": {
    "file": "buildings/school_night.png",
    "h": 101,
@@ -15939,6 +16051,12 @@
    "h": 162,
    "w": 192
   },
+  "smith_lit": {
+   "file": "buildings/smith_lit.png",
+   "glow_mask": true,
+   "h": 162,
+   "w": 192
+  },
   "smith_night": {
    "file": "buildings/smith_night.png",
    "h": 162,
@@ -15946,6 +16064,12 @@
   },
   "stable": {
    "file": "buildings/stable.png",
+   "h": 91,
+   "w": 128
+  },
+  "stable_lit": {
+   "file": "buildings/stable_lit.png",
+   "glow_mask": true,
    "h": 91,
    "w": 128
   },
@@ -15961,6 +16085,12 @@
   },
   "store": {
    "file": "buildings/store.png",
+   "h": 163,
+   "w": 192
+  },
+  "store_lit": {
+   "file": "buildings/store_lit.png",
+   "glow_mask": true,
    "h": 163,
    "w": 192
   },
@@ -16012,6 +16142,12 @@
    "h": 111,
    "w": 144
   },
+  "warehouse_a_lit": {
+   "file": "buildings/warehouse_a_lit.png",
+   "glow_mask": true,
+   "h": 111,
+   "w": 144
+  },
   "warehouse_a_night": {
    "file": "buildings/warehouse_a_night.png",
    "h": 111,
@@ -16053,6 +16189,12 @@
    "h": 101,
    "w": 160
   },
+  "woodcutter_hut_lit": {
+   "file": "buildings/woodcutter_hut_lit.png",
+   "glow_mask": true,
+   "h": 101,
+   "w": 160
+  },
   "woodcutter_hut_night": {
    "file": "buildings/woodcutter_hut_night.png",
    "h": 101,
@@ -16060,148 +16202,6 @@
   },
   "woodcutter_hut_snow": {
    "file": "buildings/woodcutter_hut_snow.png",
-   "h": 101,
-   "w": 160
-  },
-  "bakery_lit": {
-   "file": "buildings/bakery_lit.png",
-   "glow_mask": true,
-   "h": 112,
-   "w": 112
-  },
-  "bandstand_lit": {
-   "file": "buildings/bandstand_lit.png",
-   "glow_mask": true,
-   "h": 128,
-   "w": 144
-  },
-  "bank_lit": {
-   "file": "buildings/bank_lit.png",
-   "glow_mask": true,
-   "h": 110,
-   "w": 144
-  },
-  "chapel_lit": {
-   "file": "buildings/chapel_lit.png",
-   "glow_mask": true,
-   "h": 128,
-   "w": 96
-  },
-  "clinic_lit": {
-   "file": "buildings/clinic_lit.png",
-   "glow_mask": true,
-   "h": 102,
-   "w": 112
-  },
-  "clock_tower_lit": {
-   "file": "buildings/clock_tower_lit.png",
-   "glow_mask": true,
-   "h": 160,
-   "w": 79
-  },
-  "cottage_a_lit": {
-   "file": "buildings/cottage_a_lit.png",
-   "glow_mask": true,
-   "h": 96,
-   "w": 128
-  },
-  "cottage_b_lit": {
-   "file": "buildings/cottage_b_lit.png",
-   "glow_mask": true,
-   "h": 100,
-   "w": 128
-  },
-  "cottage_c": {
-   "file": "buildings/cottage_c.png",
-   "h": 125,
-   "w": 136
-  },
-  "cottage_c_lit": {
-   "file": "buildings/cottage_c_lit.png",
-   "glow_mask": true,
-   "h": 125,
-   "w": 136
-  },
-  "cottage_c_night": {
-   "file": "buildings/cottage_c_night.png",
-   "h": 125,
-   "w": 136
-  },
-  "fishing_hut_lit": {
-   "file": "buildings/fishing_hut_lit.png",
-   "glow_mask": true,
-   "h": 105,
-   "w": 112
-  },
-  "hall_lit": {
-   "file": "buildings/hall_lit.png",
-   "glow_mask": true,
-   "h": 216,
-   "w": 238
-  },
-  "house_lit": {
-   "file": "buildings/house_lit.png",
-   "glow_mask": true,
-   "h": 174,
-   "w": 192
-  },
-  "inn_lit": {
-   "file": "buildings/inn_lit.png",
-   "glow_mask": true,
-   "h": 128,
-   "w": 171
-  },
-  "library_lit": {
-   "file": "buildings/library_lit.png",
-   "glow_mask": true,
-   "h": 112,
-   "w": 116
-  },
-  "mansion_lit": {
-   "file": "buildings/mansion_lit.png",
-   "glow_mask": true,
-   "h": 127,
-   "w": 208
-  },
-  "potions_lit": {
-   "file": "buildings/potions_lit.png",
-   "glow_mask": true,
-   "h": 136,
-   "w": 160
-  },
-  "school_lit": {
-   "file": "buildings/school_lit.png",
-   "glow_mask": true,
-   "h": 101,
-   "w": 160
-  },
-  "smith_lit": {
-   "file": "buildings/smith_lit.png",
-   "glow_mask": true,
-   "h": 162,
-   "w": 192
-  },
-  "stable_lit": {
-   "file": "buildings/stable_lit.png",
-   "glow_mask": true,
-   "h": 91,
-   "w": 128
-  },
-  "store_lit": {
-   "file": "buildings/store_lit.png",
-   "glow_mask": true,
-   "h": 163,
-   "w": 192
-  },
-  "warehouse_a_lit": {
-   "file": "buildings/warehouse_a_lit.png",
-   "glow_mask": true,
-   "h": 111,
-   "w": 144
-  },
-  "woodcutter_hut_lit": {
-   "file": "buildings/woodcutter_hut_lit.png",
-   "glow_mask": true,
    "h": 101,
    "w": 160
   }
@@ -50067,6 +50067,11 @@
    "h": 145,
    "w": 320
   },
+  "lamp_mechanism_unlit": {
+   "file": "furniture/lamp_mechanism_unlit.png",
+   "h": 145,
+   "w": 80
+  },
   "lamp_table_a": {
    "file": "furniture/lamp_table_a.png",
    "h": 44,
@@ -51785,11 +51790,6 @@
    "file": "furniture/wool_pile.png",
    "h": 94,
    "w": 124
-  },
-  "lamp_mechanism_unlit": {
-   "file": "furniture/lamp_mechanism_unlit.png",
-   "h": 145,
-   "w": 80
   }
  },
  "fx": {
@@ -78952,6 +78952,11 @@
    "h": 96,
    "w": 75
   },
+  "love": {
+   "file": "portraits/artist/love.png",
+   "h": 96,
+   "w": 83
+  },
   "neutral": {
    "file": "portraits/artist/neutral.png",
    "h": 96,
@@ -78985,6 +78990,11 @@
    "file": "portraits/baker/happy.png",
    "h": 96,
    "w": 75
+  },
+  "love": {
+   "file": "portraits/baker/love.png",
+   "h": 96,
+   "w": 80
   },
   "neutral": {
    "file": "portraits/baker/neutral.png",
@@ -80071,6 +80081,11 @@
    "file": "portraits/fisherman/happy.png",
    "h": 96,
    "w": 75
+  },
+  "love": {
+   "file": "portraits/fisherman/love.png",
+   "h": 96,
+   "w": 86
   },
   "neutral": {
    "file": "portraits/fisherman/neutral.png",
@@ -83891,6 +83906,11 @@
    "h": 96,
    "w": 75
   },
+  "love": {
+   "file": "portraits/nurse/love.png",
+   "h": 96,
+   "w": 80
+  },
   "neutral": {
    "file": "portraits/nurse/neutral.png",
    "h": 96,
@@ -84317,6 +84337,11 @@
    "file": "portraits/scholar/happy.png",
    "h": 96,
    "w": 75
+  },
+  "love": {
+   "file": "portraits/scholar/love.png",
+   "h": 96,
+   "w": 81
   },
   "neutral": {
    "file": "portraits/scholar/neutral.png",
@@ -126037,6 +126062,11 @@
    "h": 178,
    "w": 267
   },
+  "cut_proposal": {
+   "file": "ui/cut_proposal.png",
+   "h": 355,
+   "w": 500
+  },
   "cut_quiet_mountain": {
    "file": "ui/cut_quiet_mountain.png",
    "h": 180,
@@ -126075,6 +126105,16 @@
   "cut_war_table": {
    "file": "ui/cut_war_table.png",
    "h": 333,
+   "w": 500
+  },
+  "cut_wedding_gangsters": {
+   "file": "ui/cut_wedding_gangsters.png",
+   "h": 355,
+   "w": 500
+  },
+  "cut_wedding_penguins": {
+   "file": "ui/cut_wedding_penguins.png",
+   "h": 355,
    "w": 500
   },
   "dark_touched": {

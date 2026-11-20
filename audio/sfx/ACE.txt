@@ -39,3 +39,5 @@ tell
 ui_tap
 ui_tap_2
 ui_tap_3
+j_proposal
+j_wedding
