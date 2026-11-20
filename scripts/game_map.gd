@@ -3048,6 +3048,8 @@ func seam_cell(ci: CanvasItem, name: String, c: Vector2i, col := Color.WHITE, sc
 	return true
 
 
+var tuft_skip := {}  # cells draw_grass leaves without tall-grass tufts (set by the map before drawing)
+var dry_patches := true  # summer dry-grass cells (hard squares on an open field: the farm turns them off)
 func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	if r.size == Vector2i.ZERO:
 		r = Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
@@ -3132,7 +3134,8 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 			else:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
 	for d: Vector3i in dry_cells:
-		seam_cell(self, "dry_grass", Vector2i(d.x, d.y), Color(1, 1, 1, d.z / 1000.0))
+		if dry_patches:  # (C5 P1 hook: the farm turns the per-cell summer dry squares off)
+			seam_cell(self, "dry_grass", Vector2i(d.x, d.y), Color(1, 1, 1, d.z / 1000.0))
 	# Flower drifts as cut-out decals with a little jitter (the old gv_flower tiles
 	# were opaque squares on the grass). One pass per flower texture: picking one of
 	# eight per cell broke the batch at almost every flower.
@@ -3146,6 +3149,8 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 				Art.draw_prop(self, "nature", nm, Vector2(fc * TILE) + Vector2(8 + (hv0 >> 4) % 7 - 3, 14 + (hv0 >> 8) % 5 - 2))
 	# Tall grass as cut-out tufts on top of the base grass (the gv_tall tiles were
 	# opaque squares that showed as a grid of light patches).
+	for sk: Vector2i in tuft_skip:
+		_tall.erase(sk)  # (C5 P1 hook: a map's grazed pens/beds get no tall tufts)
 	if not _tall.is_empty() and Art.has("nature", "gdeco_tuft_a"):
 		var tufts := ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c"]
 		# One pass per tuft texture: alternating textures broke the batch on every tuft.

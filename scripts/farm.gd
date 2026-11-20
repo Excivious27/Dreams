@@ -1846,6 +1846,12 @@ func _intro_gangsters(n: Dictionary) -> void:
 # ---- drawing -----------------------------------------------------------------
 
 func draw_map() -> void:
+	dry_patches = false  # the per-cell dry squares read as hard tan boxes in the field (c5_01 #6)
+	tuft_skip.clear()
+	for pen_t: Array in [["coop", COOP_PEN], ["barn", BARN_PEN], ["greenhouse", GameState.GREENHOUSE_PLOT]]:
+		if Builds.is_built(str(pen_t[0])):
+			for tc: Vector2i in cells_of([(pen_t[1] as Rect2i).grow(1)]):
+				tuft_skip[tc] = true  # grazed pens and the bed: short grass (C5)
 	draw_grass(1)
 	# No decor, forage, puddles or drifts on tilled soil, paths or the greenhouse plot.
 	var av := {}
