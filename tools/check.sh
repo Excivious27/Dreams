@@ -94,6 +94,13 @@ if ! echo "$ccout" | grep -q "c8_curve_test: 0 failures"; then
   echo "C8 curve test failed"; exit 1
 fi
 
+echo "== C8 month curve: 30 days, both arcs (energy still binds, purse grows) =="
+mcout="$("$GODOT" --headless --path . -s res://tools/month_curve_test.gd 2>&1)"
+echo "$mcout" | grep -E "FAIL|month_curve_test|bar left|SCRIPT ERROR" || true
+if ! echo "$mcout" | grep -q "month_curve_test: 0 failures"; then
+  echo "Month curve test failed"; exit 1
+fi
+
 echo "== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) =="
 fhout="$("$GODOT" --headless --path . -s res://tools/first_hours_test.gd 2>&1)"
 echo "$fhout" | grep -E "FAIL|first_hours_test|SCRIPT ERROR" || true
