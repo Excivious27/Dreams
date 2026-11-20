@@ -707,6 +707,8 @@ clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
 if ! echo "$clout" | grep -q "collections_test: 0 failures"; then
   echo "Collections test failed"; exit 1
+fi
+
 echo "== C8 P4: fishing rules, mining curve, reward tables =="
 p4out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c8_p4_test.gd 2>&1)"
 echo "$p4out" | grep -E "FAIL|SCRIPT ERROR|c8_p4_test" || true
