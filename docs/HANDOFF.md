@@ -24,10 +24,10 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 19:01 PT, personal account.
+- **Last update:** 2026-11-19 20:25 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2, CONDUCT 3 merged (6 fix packages c3f/p1..p6; full check.sh rc 0 at 18:49 PT). Report docs/reports/CONDUCT-3.md, guide docs/guides/GUIDE-27.md, plan docs/reports/C3-PACKAGES.md.
-- **In progress:** CONDUCT 4 (mega regions + difficulty modes + day length): 20 auditors launched 19:00 PT in the personal sandbox (/home/claude/wt/c4_NN; scopes docs/reports/C4-SCOPES.txt). C3 package delivered (files + artifact). C3 bots 20/20 0 fails, playtest 0 failures.
-- **Next step:** collect the 20 C4 audit reports -> 5-6 fix packages (include difficulty Very easy/Easy/Default/Hard for combat+battles only, day length 15/20/30/40 in the new-game menu, bot 16 Plans-menu dialogue stuck, ownerless pause after Options/Pup menu) -> merge, check.sh, bots, playtest, push -> C4 package. Then C5..C23 back to back, then the final package.
+- **In progress:** PAUSED for CONDUCT optimization (Tom 20:18, OPTIMIZE CONDUCT: move check.sh shards + 20 bots to GitHub Actions via .github/workflows/conduct-ci.yml + tools/conduct/ci_run.sh; resilient .jsonl auditors; tools/conduct/cluster.py; pipeline; split C10/C11/C18; timing tables; target ~1.5 h per CONDUCT). CONDUCT 4 is merged locally in the personal sandbox (/home/claude/dreams, not yet pushed: one move_target_test failure being checked); C5 auditors already running finish their reports.
+- **Next step:** build + verify the CI pipeline (conduct-ci.yml, sharded check.sh, ci_run.sh), then resume: push C4 via ci_run.sh, C4 package, then C5 on the new process.
 - **Jobs running elsewhere:** 20 C4 auditors in the personal sandbox (lost on a switch: relaunch from docs/reports/C4-SCOPES.txt).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
