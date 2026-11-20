@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 9 fix P3: full-screen screens and games with a pad
+- `ScreenCursor` (scripts/screen_cursor.gd): action-driven cursor for Button screens (spatial d-pad walk, gold frame after key/pad input, hidden on touch, A presses; hooks on_alt/on_tool/on_page/on_move; `pc_key` meta keeps it across rebuilds) + `ScreenCursor.Rep` held-direction repeat (0.35 s, then 0.09 s). `pad_active()` asks P1's PadInput when present.
+- ChestScreen: A = move across, X (action) = pick up / put down (slots and the trash), TOOL = move amount; CraftScreen: A picks a recipe, left/right = quantity, A again = MAKE, X = Max, cycle_tool = category. Both join toast_hold (c9_14) and show their own feedback in a message line.
+- Campaign: list rows by cursor, board d-pad picks the nearest node that way (`pick_dir`), cycle_tool/tool frame the card's actions, X = briefing; hard/deadly pips are diamonds + HARD/DEADLY word. Prize counter scrolls (VISIBLE 7, ▲▼, wrap, repeat). Map tab: `MegaMap.step_sel(id, dir)`, the map is a focus stop.
+- SlotDrag pad carry: `pad_lift/pad_hover/pad_drop/pad_cancel`. Arcade: decks hide for a pad (`deck_hidden`), left-handed `mirror_deck`, Screen shake off reaches cabinets, `repeat_pressed` in the picker, gangster blurbs (`ArcadeHub.blurb`). Bowling: left-handed deck (DECK_LH), buttons hide for a pad, hints per device.
+- Test: tools/screens_pad_test.gd.
 ## 2026-11-20 — CONDUCT 8 fix P1: core curves (levels, energy, swings, food, faint, sleep)
 - Level curve has a shape and an end: 40..400 by lv 13 as before, then x1.03 a level, `GameState.MAX_LEVEL` 100 (mastered: XP stops). Steady 420 XP/day: lv 30 d28, 62 end of year 1, 95 year 3 (was 124 in year 1). `points_free` capped by `ranks_left` (a full tree stops glowing); `add_xp` sets `last_levels`/`last_crossed5`, `level_up_text` (plural points, "mastered").
 - Per-level terms stop at `LEVEL_EFFECT_CAP` 20 via `skill_level_eff` (hp/mana per level, crit, water can, spell power, pup hp, toughness); player_tier caps level shares. Trees together: `TREE_HP_CAP` 200, `TREE_EN_CAP` 120; team_xp `TEAM_XP_CAP` 0.25; passive energy `level_energy` = 1.5 a summed level up to 30 (+45; was +3 up to 40).

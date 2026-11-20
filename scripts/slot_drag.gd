@@ -96,6 +96,8 @@ func _touch() -> bool:
 
 
 func _process(delta: float) -> void:
+	if pad_carry:
+		return  # carried by the cursor: no pointer to follow or release
 	if not dragging.is_empty():
 		_hold_scrolls()
 		if _ghost:
@@ -178,3 +180,66 @@ func _hold_scrolls() -> void:
 	for s: Array in _scrolls:
 		if is_instance_valid(s[0]):
 			(s[0] as ScrollContainer).scroll_vertical = int(s[1])
+
+
+# --- C9 P3: carry by pad / keyboard (no pointer) -------------------------------
+# A screen with a cursor maps one button to "pick up / put down":
+#   pad_lift(tag)   lifts the tagged slot's item (ghost over the slot, on_lift runs)
+#   pad_hover(tag)  the cursor moved: the ghost follows to that slot
+#   pad_drop(tag)   drops on that slot (its on_drop, like a finger let go there;
+#                   on the slot it came from = on_drop_nowhere, it stays picked)
+#   pad_cancel()    puts it back (on_drop_nowhere)
+var pad_carry := false
+const PAD_GHOST_OFF := Vector2(2, -12)  # the ghost floats just above the slot
+
+
+func pad_lift(tag: String) -> bool:
+	var pl := payload_of(tag)
+	if pl.is_empty() or not dragging.is_empty():
+		return false
+	_pending = {}
+	pad_carry = true
+	_lift(pl)
+	pad_hover(tag)
+	return true
+
+
+func pad_hover(tag: String) -> void:
+	if not pad_carry or _ghost == null:
+		return
+	var c := find(tag)
+	if c:
+		_ghost.global_position = c.get_global_rect().position + PAD_GHOST_OFF
+
+
+func pad_drop(tag: String) -> void:
+	if not pad_carry:
+		return
+	var payload := dragging
+	_end_pad()
+	for t: Dictionary in _targets:
+		if str(t["tag"]) == tag and is_instance_valid(t["ctrl"]):
+			if t["payload"] == payload:
+				break
+			(t["drop"] as Callable).call(payload)
+			return
+	if on_drop_nowhere.is_valid():
+		on_drop_nowhere.call(payload)
+
+
+func pad_cancel() -> void:
+	if not pad_carry:
+		return
+	var payload := dragging
+	_end_pad()
+	if on_drop_nowhere.is_valid():
+		on_drop_nowhere.call(payload)
+
+
+func _end_pad() -> void:
+	pad_carry = false
+	dragging = {}
+	if _ghost and is_instance_valid(_ghost):
+		_ghost.queue_free()
+	_ghost = null
+	_swallow_until = Time.get_ticks_msec() + SWALLOW_MS
