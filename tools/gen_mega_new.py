@@ -1073,6 +1073,9 @@ def main():
              "abilities": list(b.get("abilities", [])), "name": nm, "art": extra.get("art", b.get("art", base))}
         if tint:
             d["tint"] = tint
+        if has_art("enemies/" + k, "idle"):  # its own strips (C4 P5 art): no borrowed art, no tint
+            d["art"] = k
+            d.pop("tint", None)
         if base.startswith("thug_"):
             d.pop("art")
         if b.get("status"):

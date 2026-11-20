@@ -2407,8 +2407,7 @@
     "lunge"
    ],
    "name": "The Thornmother",
-   "art": "marsh_witch",
-   "tint": "#c898ff",
+   "art": "thornmother",
    "status": "poison",
    "boss": true,
    "scale": 1.2
@@ -2423,8 +2422,7 @@
     "shield"
    ],
    "name": "Dune Crab",
-   "art": "rock_crab",
-   "tint": "#f4d898"
+   "art": "dune_crab"
   },
   "sand_hound": {
    "hp": 22,
@@ -2437,8 +2435,7 @@
     "lunge"
    ],
    "name": "Sand Hound",
-   "art": "ash_hound",
-   "tint": "#e8c080",
+   "art": "sand_hound",
    "status": "burn"
   },
   "sun_moth": {
@@ -2451,8 +2448,7 @@
     "blink"
    ],
    "name": "Sun Moth",
-   "art": "lantern_moth",
-   "tint": "#ffc860",
+   "art": "sun_moth",
    "status": "blind"
   },
   "glass_golem": {
@@ -2466,8 +2462,7 @@
     "regen"
    ],
    "name": "Glass Golem",
-   "art": "quarry_golem",
-   "tint": "#a8f0ff"
+   "art": "glass_golem"
   },
   "sun_colossus": {
    "hp": 190,
@@ -2484,8 +2479,7 @@
     "lunge"
    ],
    "name": "The Sun Colossus",
-   "art": "ruin_warden",
-   "tint": "#ffd868",
+   "art": "sun_colossus",
    "status": "weak",
    "boss": true,
    "scale": 1.15
@@ -2501,8 +2495,7 @@
     "lunge"
    ],
    "name": "Rail Bot",
-   "art": "rust_knight",
-   "tint": "#c89060"
+   "art": "rail_bot"
   },
   "coal_crawler": {
    "hp": 20,

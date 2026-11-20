@@ -24630,20 +24630,20 @@
    "w": 45
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 48,
+   "cell_h": 48,
+   "cell_w": 35,
    "file": "characters/mg_bramble/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 48
+   "h": 48,
+   "w": 35
   },
   "walk": {
    "cell_h": 47,
-   "cell_w": 45,
+   "cell_w": 38,
    "file": "characters/mg_bramble/walk.png",
-   "frames": 2,
+   "frames": 4,
    "h": 47,
-   "w": 90
+   "w": 152
   },
   "walk_down": {
    "cell_h": 48,
@@ -24652,6 +24652,14 @@
    "frames": 4,
    "h": 48,
    "w": 192
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/mg_bramble/walk_up.png",
+   "frames": 4,
+   "h": 48,
+   "w": 140
   }
  },
  "characters/mg_brannoch": {
@@ -24857,19 +24865,19 @@
   },
   "idle_up": {
    "cell_h": 47,
-   "cell_w": 38,
+   "cell_w": 29,
    "file": "characters/mg_fenn/idle_up.png",
    "frames": 1,
    "h": 47,
-   "w": 38
+   "w": 29
   },
   "walk": {
    "cell_h": 48,
-   "cell_w": 36,
+   "cell_w": 29,
    "file": "characters/mg_fenn/walk.png",
-   "frames": 2,
+   "frames": 4,
    "h": 48,
-   "w": 72
+   "w": 116
   },
   "walk_down": {
    "cell_h": 48,
@@ -24878,6 +24886,14 @@
    "frames": 4,
    "h": 48,
    "w": 152
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 29,
+   "file": "characters/mg_fenn/walk_up.png",
+   "frames": 4,
+   "h": 48,
+   "w": 116
   }
  },
  "characters/mg_gull": {
@@ -25024,20 +25040,20 @@
    "w": 35
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 37,
+   "cell_h": 48,
+   "cell_w": 32,
    "file": "characters/mg_liesl/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 37
+   "h": 48,
+   "w": 32
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 35,
+   "cell_h": 48,
+   "cell_w": 33,
    "file": "characters/mg_liesl/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 70
+   "frames": 4,
+   "h": 48,
+   "w": 132
   },
   "walk_down": {
    "cell_h": 48,
@@ -25046,6 +25062,14 @@
    "frames": 4,
    "h": 48,
    "w": 148
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 32,
+   "file": "characters/mg_liesl/walk_up.png",
+   "frames": 4,
+   "h": 48,
+   "w": 128
   }
  },
  "characters/mg_nadia": {
@@ -38615,6 +38639,21 @@
    "h": 126,
    "w": 765
   },
+  "cloudstone_side_l": {
+   "file": "cliffs/cloudstone_side_l.png",
+   "h": 119,
+   "w": 53
+  },
+  "cloudstone_side_r": {
+   "file": "cliffs/cloudstone_side_r.png",
+   "h": 111,
+   "w": 50
+  },
+  "cloudstone_strip": {
+   "file": "cliffs/cloudstone_strip.png",
+   "h": 138,
+   "w": 664
+  },
   "grass_inner_l": {
    "file": "cliffs/grass_inner_l.png",
    "h": 143,
@@ -43056,6 +43095,23 @@
    "w": 86
   }
  },
+ "decals": {
+  "glass_a": {
+   "file": "decals/glass_a.png",
+   "h": 47,
+   "w": 63
+  },
+  "glass_b": {
+   "file": "decals/glass_b.png",
+   "h": 58,
+   "w": 64
+  },
+  "glass_c": {
+   "file": "decals/glass_c.png",
+   "h": 39,
+   "w": 64
+  }
+ },
  "edges": {
   "ash_lava_inner_tl": {
    "file": "edges/ash_lava_inner_tl.png",
@@ -43847,6 +43903,40 @@
    "w": 316
   }
  },
+ "enemies/casino_guard": {
+  "attack": {
+   "cell_h": 62,
+   "cell_w": 52,
+   "file": "enemies/casino_guard/attack.png",
+   "frames": 3,
+   "h": 62,
+   "w": 156
+  },
+  "hurt": {
+   "cell_h": 60,
+   "cell_w": 48,
+   "file": "enemies/casino_guard/hurt.png",
+   "frames": 1,
+   "h": 60,
+   "w": 48
+  },
+  "idle": {
+   "cell_h": 62,
+   "cell_w": 46,
+   "file": "enemies/casino_guard/idle.png",
+   "frames": 4,
+   "h": 62,
+   "w": 184
+  },
+  "walk": {
+   "cell_h": 62,
+   "cell_w": 46,
+   "file": "enemies/casino_guard/walk.png",
+   "frames": 2,
+   "h": 62,
+   "w": 92
+  }
+ },
  "enemies/cboss_coral": {
   "attack": {
    "cell_h": 96,
@@ -44317,6 +44407,40 @@
    "w": 436
   }
  },
+ "enemies/dune_crab": {
+  "attack": {
+   "cell_h": 53,
+   "cell_w": 61,
+   "file": "enemies/dune_crab/attack.png",
+   "frames": 3,
+   "h": 53,
+   "w": 183
+  },
+  "hurt": {
+   "cell_h": 38,
+   "cell_w": 49,
+   "file": "enemies/dune_crab/hurt.png",
+   "frames": 1,
+   "h": 38,
+   "w": 49
+  },
+  "idle": {
+   "cell_h": 46,
+   "cell_w": 57,
+   "file": "enemies/dune_crab/idle.png",
+   "frames": 4,
+   "h": 46,
+   "w": 228
+  },
+  "walk": {
+   "cell_h": 46,
+   "cell_w": 57,
+   "file": "enemies/dune_crab/walk.png",
+   "frames": 2,
+   "h": 46,
+   "w": 114
+  }
+ },
  "enemies/fennimore": {
   "attack": {
    "cell_h": 90,
@@ -44451,6 +44575,108 @@
    "w": 140
   }
  },
+ "enemies/gang_boss_desert": {
+  "attack": {
+   "cell_h": 82,
+   "cell_w": 82,
+   "file": "enemies/gang_boss_desert/attack.png",
+   "frames": 3,
+   "h": 82,
+   "w": 246
+  },
+  "hurt": {
+   "cell_h": 77,
+   "cell_w": 61,
+   "file": "enemies/gang_boss_desert/hurt.png",
+   "frames": 1,
+   "h": 77,
+   "w": 61
+  },
+  "idle": {
+   "cell_h": 82,
+   "cell_w": 58,
+   "file": "enemies/gang_boss_desert/idle.png",
+   "frames": 4,
+   "h": 82,
+   "w": 232
+  },
+  "walk": {
+   "cell_h": 82,
+   "cell_w": 58,
+   "file": "enemies/gang_boss_desert/walk.png",
+   "frames": 2,
+   "h": 82,
+   "w": 116
+  }
+ },
+ "enemies/gang_boss_frost": {
+  "attack": {
+   "cell_h": 80,
+   "cell_w": 76,
+   "file": "enemies/gang_boss_frost/attack.png",
+   "frames": 3,
+   "h": 80,
+   "w": 228
+  },
+  "hurt": {
+   "cell_h": 76,
+   "cell_w": 55,
+   "file": "enemies/gang_boss_frost/hurt.png",
+   "frames": 1,
+   "h": 76,
+   "w": 55
+  },
+  "idle": {
+   "cell_h": 80,
+   "cell_w": 54,
+   "file": "enemies/gang_boss_frost/idle.png",
+   "frames": 4,
+   "h": 80,
+   "w": 216
+  },
+  "walk": {
+   "cell_h": 80,
+   "cell_w": 54,
+   "file": "enemies/gang_boss_frost/walk.png",
+   "frames": 2,
+   "h": 80,
+   "w": 108
+  }
+ },
+ "enemies/gang_boss_gloam": {
+  "attack": {
+   "cell_h": 80,
+   "cell_w": 78,
+   "file": "enemies/gang_boss_gloam/attack.png",
+   "frames": 3,
+   "h": 80,
+   "w": 234
+  },
+  "hurt": {
+   "cell_h": 73,
+   "cell_w": 56,
+   "file": "enemies/gang_boss_gloam/hurt.png",
+   "frames": 1,
+   "h": 73,
+   "w": 56
+  },
+  "idle": {
+   "cell_h": 80,
+   "cell_w": 45,
+   "file": "enemies/gang_boss_gloam/idle.png",
+   "frames": 4,
+   "h": 80,
+   "w": 180
+  },
+  "walk": {
+   "cell_h": 80,
+   "cell_w": 45,
+   "file": "enemies/gang_boss_gloam/walk.png",
+   "frames": 2,
+   "h": 80,
+   "w": 90
+  }
+ },
  "enemies/geode_golem": {
   "attack": {
    "cell_h": 64,
@@ -44499,6 +44725,40 @@
    "frames": 4,
    "h": 64,
    "w": 264
+  }
+ },
+ "enemies/glass_golem": {
+  "attack": {
+   "cell_h": 76,
+   "cell_w": 74,
+   "file": "enemies/glass_golem/attack.png",
+   "frames": 3,
+   "h": 76,
+   "w": 222
+  },
+  "hurt": {
+   "cell_h": 75,
+   "cell_w": 58,
+   "file": "enemies/glass_golem/hurt.png",
+   "frames": 1,
+   "h": 75,
+   "w": 58
+  },
+  "idle": {
+   "cell_h": 76,
+   "cell_w": 68,
+   "file": "enemies/glass_golem/idle.png",
+   "frames": 4,
+   "h": 76,
+   "w": 272
+  },
+  "walk": {
+   "cell_h": 76,
+   "cell_w": 68,
+   "file": "enemies/glass_golem/walk.png",
+   "frames": 2,
+   "h": 76,
+   "w": 136
   }
  },
  "enemies/golem": {
@@ -45385,6 +45645,40 @@
    "w": 340
   }
  },
+ "enemies/rail_bot": {
+  "attack": {
+   "cell_h": 59,
+   "cell_w": 53,
+   "file": "enemies/rail_bot/attack.png",
+   "frames": 3,
+   "h": 59,
+   "w": 159
+  },
+  "hurt": {
+   "cell_h": 54,
+   "cell_w": 46,
+   "file": "enemies/rail_bot/hurt.png",
+   "frames": 1,
+   "h": 54,
+   "w": 46
+  },
+  "idle": {
+   "cell_h": 59,
+   "cell_w": 46,
+   "file": "enemies/rail_bot/idle.png",
+   "frames": 4,
+   "h": 59,
+   "w": 184
+  },
+  "walk": {
+   "cell_h": 59,
+   "cell_w": 46,
+   "file": "enemies/rail_bot/walk.png",
+   "frames": 2,
+   "h": 59,
+   "w": 92
+  }
+ },
  "enemies/rime_wyrm": {
   "attack": {
    "cell_h": 112,
@@ -45645,6 +45939,40 @@
    "w": 264
   }
  },
+ "enemies/sand_hound": {
+  "attack": {
+   "cell_h": 54,
+   "cell_w": 57,
+   "file": "enemies/sand_hound/attack.png",
+   "frames": 3,
+   "h": 54,
+   "w": 171
+  },
+  "hurt": {
+   "cell_h": 49,
+   "cell_w": 39,
+   "file": "enemies/sand_hound/hurt.png",
+   "frames": 1,
+   "h": 49,
+   "w": 39
+  },
+  "idle": {
+   "cell_h": 54,
+   "cell_w": 50,
+   "file": "enemies/sand_hound/idle.png",
+   "frames": 4,
+   "h": 54,
+   "w": 200
+  },
+  "walk": {
+   "cell_h": 54,
+   "cell_w": 50,
+   "file": "enemies/sand_hound/walk.png",
+   "frames": 2,
+   "h": 54,
+   "w": 100
+  }
+ },
  "enemies/shard": {
   "attack": {
    "cell_h": 59,
@@ -45829,6 +46157,108 @@
    "frames": 2,
    "h": 116,
    "w": 244
+  }
+ },
+ "enemies/sun_colossus": {
+  "attack": {
+   "cell_h": 174,
+   "cell_w": 159,
+   "file": "enemies/sun_colossus/attack.png",
+   "frames": 3,
+   "h": 174,
+   "w": 477
+  },
+  "hurt": {
+   "cell_h": 162,
+   "cell_w": 142,
+   "file": "enemies/sun_colossus/hurt.png",
+   "frames": 1,
+   "h": 162,
+   "w": 142
+  },
+  "idle": {
+   "cell_h": 170,
+   "cell_w": 131,
+   "file": "enemies/sun_colossus/idle.png",
+   "frames": 2,
+   "h": 170,
+   "w": 262
+  },
+  "walk": {
+   "cell_h": 174,
+   "cell_w": 131,
+   "file": "enemies/sun_colossus/walk.png",
+   "frames": 4,
+   "h": 174,
+   "w": 524
+  }
+ },
+ "enemies/sun_moth": {
+  "attack": {
+   "cell_h": 64,
+   "cell_w": 80,
+   "file": "enemies/sun_moth/attack.png",
+   "frames": 3,
+   "h": 64,
+   "w": 240
+  },
+  "hurt": {
+   "cell_h": 49,
+   "cell_w": 55,
+   "file": "enemies/sun_moth/hurt.png",
+   "frames": 1,
+   "h": 49,
+   "w": 55
+  },
+  "idle": {
+   "cell_h": 58,
+   "cell_w": 71,
+   "file": "enemies/sun_moth/idle.png",
+   "frames": 4,
+   "h": 58,
+   "w": 284
+  },
+  "walk": {
+   "cell_h": 58,
+   "cell_w": 71,
+   "file": "enemies/sun_moth/walk.png",
+   "frames": 2,
+   "h": 58,
+   "w": 142
+  }
+ },
+ "enemies/thornmother": {
+  "attack": {
+   "cell_h": 162,
+   "cell_w": 141,
+   "file": "enemies/thornmother/attack.png",
+   "frames": 3,
+   "h": 162,
+   "w": 423
+  },
+  "hurt": {
+   "cell_h": 143,
+   "cell_w": 100,
+   "file": "enemies/thornmother/hurt.png",
+   "frames": 1,
+   "h": 143,
+   "w": 100
+  },
+  "idle": {
+   "cell_h": 150,
+   "cell_w": 98,
+   "file": "enemies/thornmother/idle.png",
+   "frames": 2,
+   "h": 150,
+   "w": 196
+  },
+  "walk": {
+   "cell_h": 150,
+   "cell_w": 98,
+   "file": "enemies/thornmother/walk.png",
+   "frames": 4,
+   "h": 150,
+   "w": 392
   }
  },
  "enemies/void_eel": {
@@ -50710,6 +51140,26 @@
    "frames": 1,
    "h": 137,
    "w": 393
+  },
+  "firefly_0": {
+   "file": "fx/firefly_0.png",
+   "h": 24,
+   "w": 24
+  },
+  "firefly_1": {
+   "file": "fx/firefly_1.png",
+   "h": 24,
+   "w": 24
+  },
+  "firefly_2": {
+   "file": "fx/firefly_2.png",
+   "h": 24,
+   "w": 24
+  },
+  "firefly_3": {
+   "file": "fx/firefly_3.png",
+   "h": 24,
+   "w": 24
   },
   "firefly_cluster": {
    "cell_h": 32,
@@ -74706,6 +75156,38 @@
    "w": 88
   }
  },
+ "kits/station": {
+  "station_console": {
+   "file": "kits/station/station_console.png",
+   "h": 66,
+   "w": 83
+  },
+  "station_corner": {
+   "file": "kits/station/station_corner.png",
+   "h": 72,
+   "w": 50
+  },
+  "station_door": {
+   "file": "kits/station/station_door.png",
+   "h": 64,
+   "w": 78
+  },
+  "station_pipes": {
+   "file": "kits/station/station_pipes.png",
+   "h": 66,
+   "w": 78
+  },
+  "station_wall": {
+   "file": "kits/station/station_wall.png",
+   "h": 64,
+   "w": 78
+  },
+  "station_window": {
+   "file": "kits/station/station_window.png",
+   "h": 64,
+   "w": 78
+  }
+ },
  "kits/ui": {
   "leftover_kit_00": {
    "file": "kits/ui/leftover_kit_00.png",
@@ -75915,6 +76397,21 @@
   }
  },
  "nature": {
+  "alien_tree_a": {
+   "file": "nature/alien_tree_a.png",
+   "h": 96,
+   "w": 78
+  },
+  "alien_tree_b": {
+   "file": "nature/alien_tree_b.png",
+   "h": 96,
+   "w": 93
+  },
+  "alien_tree_c": {
+   "file": "nature/alien_tree_c.png",
+   "h": 96,
+   "w": 81
+  },
   "apple_tree": {
    "file": "nature/apple_tree.png",
    "h": 94,
@@ -84218,6 +84715,11 @@
    "h": 18,
    "w": 20
   },
+  "boutique_gold": {
+   "file": "props/boutique_gold.png",
+   "h": 82,
+   "w": 104
+  },
   "boxing_ring": {
    "file": "props/boxing_ring.png",
    "h": 106,
@@ -84679,6 +85181,16 @@
    "h": 55,
    "w": 232
   },
+  "cf_bed_halfdug_a": {
+   "file": "props/cf_bed_halfdug_a.png",
+   "h": 50,
+   "w": 64
+  },
+  "cf_bed_halfdug_b": {
+   "file": "props/cf_bed_halfdug_b.png",
+   "h": 51,
+   "w": 64
+  },
   "cf_build_frame": {
    "file": "props/cf_build_frame.png",
    "h": 111,
@@ -84783,6 +85295,26 @@
    "file": "props/cf_sapling.png",
    "h": 60,
    "w": 31
+  },
+  "cf_sapling_staked_a": {
+   "file": "props/cf_sapling_staked_a.png",
+   "h": 55,
+   "w": 29
+  },
+  "cf_sapling_staked_b": {
+   "file": "props/cf_sapling_staked_b.png",
+   "h": 55,
+   "w": 27
+  },
+  "cf_sapling_staked_c": {
+   "file": "props/cf_sapling_staked_c.png",
+   "h": 56,
+   "w": 28
+  },
+  "cf_saplings_staked": {
+   "file": "props/cf_saplings_staked.png",
+   "h": 56,
+   "w": 91
   },
   "cf_shed_ruin": {
    "file": "props/cf_shed_ruin.png",
@@ -87283,6 +87815,46 @@
    "frames": 4,
    "h": 44,
    "w": 164
+  },
+  "hidden_cave_mouth_cave": {
+   "file": "props/hidden_cave_mouth_cave.png",
+   "h": 63,
+   "w": 72
+  },
+  "hidden_cave_mouth_city": {
+   "file": "props/hidden_cave_mouth_city.png",
+   "h": 62,
+   "w": 72
+  },
+  "hidden_cave_mouth_desert": {
+   "file": "props/hidden_cave_mouth_desert.png",
+   "h": 63,
+   "w": 72
+  },
+  "hidden_cave_mouth_frost": {
+   "file": "props/hidden_cave_mouth_frost.png",
+   "h": 65,
+   "w": 72
+  },
+  "hidden_cave_mouth_gloam": {
+   "file": "props/hidden_cave_mouth_gloam.png",
+   "h": 65,
+   "w": 72
+  },
+  "hidden_crack_wall": {
+   "file": "props/hidden_crack_wall.png",
+   "h": 56,
+   "w": 64
+  },
+  "hidden_stairs": {
+   "file": "props/hidden_stairs.png",
+   "h": 45,
+   "w": 48
+  },
+  "hidden_vine_curtain": {
+   "file": "props/hidden_vine_curtain.png",
+   "h": 53,
+   "w": 56
   },
   "highway_bridge": {
    "file": "props/highway_bridge.png",
@@ -94312,6 +94884,11 @@
    "file": "props/stall_green.png",
    "h": 56,
    "w": 64
+  },
+  "stall_knit": {
+   "file": "props/stall_knit.png",
+   "h": 81,
+   "w": 92
   },
   "stall_red": {
    "file": "props/stall_red.png",
@@ -123750,6 +124327,21 @@
    "h": 354,
    "w": 768
   },
+  "card_gang_boss_desert": {
+   "file": "ui/card_gang_boss_desert.png",
+   "h": 322,
+   "w": 764
+  },
+  "card_gang_boss_frost": {
+   "file": "ui/card_gang_boss_frost.png",
+   "h": 322,
+   "w": 764
+  },
+  "card_gang_boss_gloam": {
+   "file": "ui/card_gang_boss_gloam.png",
+   "h": 322,
+   "w": 764
+  },
   "card_golem_king": {
    "file": "ui/card_golem_king.png",
    "h": 237,
@@ -124029,6 +124621,16 @@
    "file": "ui/card_ruin_warden.png",
    "h": 237,
    "w": 1174
+  },
+  "card_sun_colossus": {
+   "file": "ui/card_sun_colossus.png",
+   "h": 322,
+   "w": 764
+  },
+  "card_thornmother": {
+   "file": "ui/card_thornmother.png",
+   "h": 322,
+   "w": 764
   },
   "card_thug_brute": {
    "file": "ui/card_thug_brute.png",
