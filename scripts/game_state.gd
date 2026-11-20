@@ -861,6 +861,7 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 		elif n < 0:
 			Decor.take(id, mini(-n, Decor.owned(id)))
 		return
+	if n > 0 and str(items.get(id, {}).get("costume", "")) != "": Wardrobe.unlock_for_item(id)  # C10b P5: gear unlocks its wardrobe look
 	var inv: Dictionary = run["inventory"]
 	# Bag full: a new kind of item goes to the farm chest instead of vanishing.
 	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar") \

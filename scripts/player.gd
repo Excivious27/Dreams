@@ -254,8 +254,57 @@ func refresh_doll() -> void:
 		set_character(char_id)
 
 
+## Co-op puppets: the friend's sent look {playable, arc, look, equip, wear} (empty = yours).
+var peer_look: Dictionary = {}
+
+
+## Runs `cb` with the run's look/playable/equip/wardrobe swapped for peer_look, so every
+## doll/wardrobe read (body_for, hat_layer, doll_layer, pins) sees the friend's (c10b_11-13).
+func with_look(cb: Callable) -> void:
+	if peer_look.is_empty():
+		cb.call()
+		return
+	var r: Dictionary = GameState.run
+	var saved := {}
+	for k: String in ["look", "playable", "equip"]:
+		saved[k] = r.get(k, null)
+	var sl: Variant = peer_look.get("look", {})
+	var se: Variant = peer_look.get("equip", saved["equip"])
+	r["look"] = sl if sl is Dictionary else {}
+	r["playable"] = peer_look.get("playable", saved["playable"])
+	r["equip"] = se if se is Dictionary else {}
+	var dv: Variant = r.get("decor", null)
+	var saved_wear: Variant = null
+	if dv is Dictionary:
+		saved_wear = (dv as Dictionary).get("wear", null)
+		var sw: Variant = peer_look.get("wear", {})
+		dv["wear"] = sw if sw is Dictionary else {}
+	var saved_arc := Wardrobe.arc_override
+	if str(peer_look.get("arc", "")) != "":
+		Wardrobe.arc_override = str(peer_look["arc"])
+	cb.call()
+	Wardrobe.arc_override = saved_arc
+	if dv is Dictionary:
+		if saved_wear == null:
+			(dv as Dictionary).erase("wear")
+		else:
+			dv["wear"] = saved_wear
+	for k: String in saved:
+		if saved[k] == null:
+			r.erase(k)
+		else:
+			r[k] = saved[k]
+
+
 ## Pin hair and hat to the current body frame (paper doll only).
 func _update_doll() -> void:
+	if not peer_look.is_empty():
+		with_look(_update_doll_now)
+	else:
+		_update_doll_now()
+
+
+func _update_doll_now() -> void:
 	if not _doll or _anim == null or _hair == null:
 		return
 	var look: Dictionary = GameState.run.get("look", {})
@@ -277,6 +326,8 @@ func _update_doll() -> void:
 		(_hair.material as ShaderMaterial).set_shader_parameter("flash", _flash)
 	if _layer_mat:
 		_layer_mat.set_shader_parameter("flash", _flash)
+	if _face and _face.material is ShaderMaterial and _face.material != _layer_mat:
+		(_face.material as ShaderMaterial).set_shader_parameter("flash", _flash)
 	if _hat.material is ShaderMaterial and _hat.material != _layer_mat:
 		(_hat.material as ShaderMaterial).set_shader_parameter("flash", _flash)  # colourway hats
 	if body != _skin_sheet:
@@ -350,13 +401,15 @@ func set_character(id: String) -> void:
 		if id == "penguin":
 			Player.dress_penguin(self, _anim, GameState.run.get("look", {}), 1.0)
 		var plain_dressed := id == "penguin" and (str(GameState.run.get("look", {}).get("scarf", "")) != "" or str(GameState.run.get("look", {}).get("hat", "")) != "")
-		if PaperDoll.is_penguin(id) and not plain_dressed:  # the plain penguin's creator scarf/hat overlays win
-			Wardrobe.dress_penguin_hero(self, _anim, id)  # wardrobe scarves/bowties/goggles (c10_04)
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
 			_flash_mat = ShaderMaterial.new()
 			_flash_mat.shader = sh
 			_anim.material = _flash_mat
+		if not plain_dressed:  # the plain penguin's creator scarf/hat overlays win
+			# Wardrobe pins: penguin scarves/bowties/goggles, drawn heroes' hats and face pieces;
+			# they share the body's flash material so a hit flashes them too (c10b_11-27).
+			Wardrobe.dress_hero(self, _anim, id, _flash_mat)
 	if _shadow == null:
 		_shadow = Node2D.new()
 		_shadow.draw.connect(func() -> void: _shadow.draw_circle(Vector2(0, -0.5), 5.0, Color(0, 0, 0, 0.22)))

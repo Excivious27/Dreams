@@ -123,54 +123,79 @@ func _build() -> void:
 	pv.add_child(holder)
 	_preview(holder)
 	var kind := Wardrobe.hero_kind()
-	var who: String = {"doll": "Your hero wears what you pick.", "penguin": "Scarves, bowties and goggles show on your penguin hero."}.get(kind, "Your hero's clothes are drawn in. Pieces here show on the build-your-own and penguin heroes; they still count toward sets.")
+	var others := "the build-your-own and penguin heroes" if Wardrobe.arc() == "penguins" else "the build-your-own hero"
+	var who: String = {"doll": "Your hero wears what you pick.", "penguin": "Scarves, bowties and goggles show on your penguin hero.",
+		"pin": "Hats, shades and goggles show on your hero; outfits show on the build-your-own hero."}.get(kind,
+		"Your hero's clothes are drawn in. Pieces here show on %s; they still count toward sets." % others)
 	_lab(v, str(who), 7, INK_SOFT).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# Slot tabs
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 3)
 	v.add_child(tabs)
 	for s: String in Wardrobe.SHOWN_SLOTS:
-		var cnt := Wardrobe.choices(s).size()
+		var cnt := _choices(s).size()
 		var b := _btn(tabs, "%s %d" % [str(Wardrobe.SLOT_NAMES.get(s, s)), cnt], func() -> void: slot = s; sel = ""; _build(), 0.0, s == slot)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.set_meta("pc_key", "tab_" + s)
 	# List
+	# The list takes what's left, so bigger text shrinks it instead of pushing the toggle off (c10b_11-21).
 	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(0, 190)
+	sc.custom_minimum_size = Vector2(0, 84)
+	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	v.add_child(sc)
 	var list := VBoxContainer.new()
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	list.add_theme_constant_override("separation", 2)
 	sc.add_child(list)
-	var cur := Wardrobe.worn_id(slot)
-	var off := _btn(list, "Take off (%s)" % (_name(cur) if cur != "" else "nothing worn"), func() -> void: Wardrobe.take_off(slot); _changed(), 0.0, cur == "")
+	var worn: Array = []
+	for ss: String in _slots(slot):
+		if Wardrobe.worn_id(ss) != "":
+			worn.append(Wardrobe.worn_id(ss))
+	var cur: String = worn[0] if not worn.is_empty() else ""
+	var off := _btn(list, "Take off (%s)" % (", ".join(worn.map(func(i: String) -> String: return _name(i))) if cur != "" else "nothing worn"), func() -> void:
+		for ss: String in _slots(slot):
+			Wardrobe.take_off(ss)
+		_changed(), 0.0, cur == "")
 	off.set_meta("pc_key", "off")
 	off.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	for id: String in Wardrobe.choices(slot):
-		_row(list, id, id == cur)
+	off.mouse_filter = Control.MOUSE_FILTER_PASS
+	for id: String in _choices(slot):
+		_row(list, id, id in worn)
 	# Detail
-	var d: String = sel if sel != "" and Wardrobe.slot_of(sel) == slot else cur
+	var d: String = sel if sel != "" and Wardrobe.slot_of(sel) in _slots(slot) else cur
 	if d != "":
 		var e := Wardrobe.entry(d)
 		var r := Decor.rarity(d)
-		_lab(v, "%s · %s%s" % [_name(d), r.capitalize(), "" if str(e.get("set", "")) == "" else " · " + _set_name(str(e["set"]))], 8, _ink(r))
-		_lab(v, "%s %s No stats: looks only." % [str(e.get("desc", "")), Wardrobe.shows_label(d)], 7, INK_SOFT)
-	# Sets
+		var sn := _set_of(d)
+		_lab(v, "%s · %s%s" % [_name(d), r.capitalize(), "" if sn == "" else " · " + sn], 8, _ink(r))
+		var desc := str(e.get("desc", ""))
+		_lab(v, "%s %s%s" % [desc, Wardrobe.shows_label(d), "" if desc.contains("stats") else " No stats: looks only."], 7, INK_SOFT)
+	# Sets: this arc's wear sets you've started, from the decor catalogue (one set list, c10b_11-14).
 	var sets := _set_lines()
 	if not sets.is_empty():
 		_lab(v, "  ".join(sets), 7, INK_SOFT)
+	for sid: String in _claimable():
+		var cb := _btn(v, "Claim %s: %s" % [_set_name(sid), DecorCatalogue.reward_text(sid)], func() -> void:
+			var why := DecorCatalogue.claim_set(sid)
+			_note(why if why != "" else "%s complete!" % _set_name(sid))
+			_changed())
+		cb.set_meta("pc_key", "claim_" + sid)
 	# Look toggle (only the build-your-own hero wears armour sheets)
 	if kind != "doll":
 		if is_instance_valid(_cursor):
 			_cursor.resync.call_deferred()
 		return
+	# Two-option toggle: the highlighted one is what shows (c10b_11-24).
 	var lt := HBoxContainer.new()
+	lt.add_theme_constant_override("separation", 3)
 	v.add_child(lt)
-	var ll := _lab(lt, "When you wear armour or a helm:", 7, INK)
+	var ll := _lab(lt, "With armour on, show:", 7, INK)
 	ll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var tg := _btn(lt, "Show armour" if Wardrobe.show_armor() else "Show wardrobe", func() -> void: Wardrobe.set_show_armor(not Wardrobe.show_armor()); _changed(), 92)
-	tg.set_meta("pc_key", "look_toggle")
+	var ta := _btn(lt, "Armour", func() -> void: Wardrobe.set_show_armor(true); _changed(), 52, Wardrobe.show_armor())
+	ta.set_meta("pc_key", "look_toggle")
+	var tw := _btn(lt, "Wardrobe", func() -> void: Wardrobe.set_show_armor(false); _changed(), 60, not Wardrobe.show_armor())
+	tw.set_meta("pc_key", "look_wardrobe")
 	if is_instance_valid(_cursor):
 		_cursor.resync.call_deferred()
 
@@ -185,6 +210,8 @@ func _row(list: Control, id: String, worn: bool) -> void:
 	ic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	ic.texture = icon_tex(id)
 	var tint := str((Wardrobe.entry(id).get("doll", {}) as Dictionary).get("tint", ""))
+	if tint == "":
+		tint = str((Wardrobe.entry(id).get("penguin", {}) as Dictionary).get("tint", ""))  # c10b_11-11
 	if tint != "":
 		ic.material = PaperDoll.hair_material("brown")
 		(ic.material as ShaderMaterial).set_shader_parameter("tint", Color(tint))
@@ -195,7 +222,7 @@ func _row(list: Control, id: String, worn: bool) -> void:
 	var r := Decor.rarity(id)
 	var txt := "%s %s%s" % [rank_glyphs(r), _name(id), "  (wearing)" if worn else ""]
 	if not Wardrobe.shows_on(id):
-		txt += "  ·  doesn't show"
+		txt += "  ·  hidden" if Wardrobe.hidden_by_helmet(id) else "  ·  doesn't show"
 	var b := _btn(h, txt, func() -> void:
 		sel = id
 		Wardrobe.put_on(id)
@@ -204,6 +231,7 @@ func _row(list: Control, id: String, worn: bool) -> void:
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_color_override("font_color", _ink(r))
 	b.set_meta("pc_key", "w_" + id)
+	b.mouse_filter = Control.MOUSE_FILTER_PASS  # a finger drag on a row scrolls the list (c10b_11-26)
 
 
 ## Rank dots for the rarity (colour-blind safe, like the Hero tab): ● per rank, ★ unique.
@@ -221,27 +249,63 @@ static func _ink(r: String) -> Color:
 	return Decor.rarity_color(r).darkened(0.62)
 
 
-func _set_name(s: String) -> String:
-	return str((Wardrobe.data()["sets"] as Dictionary).get(s, {}).get("name", s.capitalize()))
+## Wardrobe tabs -> wear slots ("more" = tops, bottoms and shoes: collection pieces, c10b_11-03).
+static func _slots(tab: String) -> Array:
+	return ["top", "bottom", "shoes"] if tab == "more" else [tab]
+
+
+static func _choices(tab: String) -> Array:
+	var out: Array = []
+	for ss: String in _slots(tab):
+		out.append_array(Wardrobe.choices(ss))
+	return out
+
+
+func _set_name(sid: String) -> String:
+	return str(((Decor.data()["sets"] as Dictionary).get(sid, {}) as Dictionary).get("name", sid.capitalize())).trim_suffix(" Set")
+
+
+## This arc's wear sets: a set is "wear" when its pieces are wearables.
+static func wear_sets() -> Array:
+	var out: Array = []
+	var sets: Dictionary = Decor.data()["sets"]
+	for sid: String in sets:
+		var st: Dictionary = sets[sid]
+		var a := str(st.get("arc", ""))
+		if a != "" and a != Wardrobe.arc():
+			continue
+		var pcs: Array = st.get("pieces", [])
+		if not pcs.is_empty() and Wardrobe.is_wear(str(pcs[0])):
+			out.append(sid)
+	out.sort()
+	return out
+
+
+func _set_of(id: String) -> String:
+	for sid: String in wear_sets():
+		if id in DecorCatalogue.set_pieces(sid):
+			return _set_name(sid) + " Set"
+	return ""
 
 
 func _set_lines() -> Array:
 	var out: Array = []
-	var sets: Dictionary = Wardrobe.data()["sets"]
-	for s: String in sets:
-		if s == "everyday":
+	for sid: String in wear_sets():
+		var pr := DecorCatalogue.set_progress(sid)
+		var mine := bool(((Decor.data()["sets"] as Dictionary)[sid] as Dictionary).get("wardrobe", false))
+		if int(pr[0]) == 0 and not mine:
 			continue
-		var a := str(sets[s].get("arc", ""))
-		if a != "" and a != Wardrobe.arc():
-			continue
-		var tot := 0
-		var have := 0
-		for id: String in Wardrobe.data()["items"]:
-			if str(Wardrobe.data()["items"][id].get("set", "")) == s:
-				tot += 1
-				if Wardrobe.owns(id):
-					have += 1
-		out.append("%s %d/%d" % [str(sets[s].get("name", s)), have, tot])
+		var done := DecorCatalogue.sets_done().has(sid)
+		out.append("%s %s" % [_set_name(sid), "done" if done else "%d/%d" % [int(pr[0]), int(pr[1])]])
+	return out
+
+
+func _claimable() -> Array:
+	var out: Array = []
+	for sid: String in wear_sets():
+		var pr := DecorCatalogue.set_progress(sid)
+		if int(pr[1]) > 0 and int(pr[0]) >= int(pr[1]) and not DecorCatalogue.sets_done().has(sid):
+			out.append(sid)
 	return out
 
 
@@ -253,7 +317,12 @@ static func icon_tex(id: String) -> Texture2D:
 		var info := Art.info("body", str(d["body"]))
 		var at := AtlasTexture.new()
 		at.atlas = Art.tex("body", str(d["body"]))
-		at.region = Rect2(0, 0, int(info.get("cell_w", 96)), int(info.get("cell_h", 96)))
+		# Crop below the bald head (hair is a separate layer): shoulders down to the knees (c10b_11-11).
+		var an := PaperDoll.anchor_of("body", str(d["body"]), 0)
+		var y0 := float(an[1]) + float(an[4]) * 0.24
+		var cw := float(info.get("cell_w", 96))
+		var hh := float(an[4]) * 0.55
+		at.region = Rect2(maxf(0.0, float(an[0]) - hh / 2.0), y0, minf(cw, hh), hh)
 		return at
 	var gn := str(d.get("hat", d.get("face", "")))
 	if gn == "":
@@ -270,7 +339,7 @@ static func icon_tex(id: String) -> Texture2D:
 			at2.region = Rect2(0, 0, int(info2["cell_w"]), int(info2.get("cell_h", info2.get("h", 96))))
 			return at2
 		return Art.tex(g, n)
-	return null
+	return DecorCatalogue.icon_tex(id)  # collection pieces: their catalogue icon
 
 
 func _preview(holder: Node2D) -> void:
@@ -288,8 +357,7 @@ func _preview(holder: Node2D) -> void:
 	sp.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	holder.add_child(sp)
 	sp.play("walk_down" if sp.sprite_frames.has_animation("walk_down") else "idle")
-	if PaperDoll.is_penguin(spr):
-		Wardrobe.dress_penguin_hero(holder, sp, spr)
+	Wardrobe.dress_hero(holder, sp, spr)
 
 
 func _changed() -> void:
