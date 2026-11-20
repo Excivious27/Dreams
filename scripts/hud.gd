@@ -187,6 +187,7 @@ func _process(delta: float) -> void:
 
 
 var _orphan_pause := 0
+static var orphan_count := 0  # ownerless pauses let go this session (bots print it; C5 c5_19 #1)
 
 
 ## Softlock guard: every pauser shows something (a dialogue, the menu, or a
@@ -242,6 +243,7 @@ func _pause_watch(sc: Node) -> void:
 	_orphan_pause += 1
 	if _orphan_pause >= 20:
 		_orphan_pause = 0
+		orphan_count += 1
 		# Name what's on screen, so the bots' log shows who left the pause behind.
 		var kids: Array = []
 		for n in sc.get_children():
