@@ -149,6 +149,15 @@ func _run() -> void:
 		hat.queue_free()
 		Wardrobe.set_show_armor(false)
 		check(_gear_totals() != before or true, "armour stats unaffected by look toggle")
+	# full helms/hoods hide the hair
+	Decor.give("wr_hat_knight")
+	Wardrobe.put_on("wr_hat_knight")
+	var h1 := Sprite2D.new(); var h2 := Sprite2D.new()
+	root.add_child(h1); root.add_child(h2)
+	PaperDoll.place_all({"hair": h1, "hat": h2}, GameState.run["look"], "outfit_pinstripe", 0, false, 0.27)
+	check(h2.visible and not h1.visible, "knight helm covers the hair")
+	h1.queue_free(); h2.queue_free()
+	Wardrobe.put_on("wr_fedora")
 	# every outfit x every pose: layers resolve and stay near the head
 	for id: String in Wardrobe.choices("outfit") + ["wr_pinstripe_suit", "wr_padded_vest", "wr_armored_suit"]:
 		var body := str((Wardrobe.entry(id).get("doll", {}) as Dictionary).get("body", ""))

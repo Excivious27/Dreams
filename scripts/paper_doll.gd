@@ -149,6 +149,10 @@ static func body_for(look: Dictionary) -> String:
 	return body if Art.has("body", body) else "medium_slim"
 
 
+## Hat layers that cover the whole head: no hair drawn under them.
+const FULL_HATS := ["knight", "hood", "aurora_hood", "crystal_helm", "gold_helm", "moon_helm", "silver_helm"]
+
+
 ## Body sheets with a helmet/hood painted in: no hair, no hat layer on top (c10_04).
 static func has_headgear(body: String) -> bool:
 	var b := body.trim_suffix("_act").trim_suffix("_life").trim_suffix("_water").trim_suffix("_ride")
@@ -205,6 +209,8 @@ static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: 
 			(layers["hat"] as Sprite2D).visible = false
 		else:
 			place_layer(layers["hat"], hl[0], hl[1], body, pose, flip, sc)
+			if str(hl[1]) in FULL_HATS and layers.has("hair"):
+				(layers["hair"] as Sprite2D).visible = false  # helms and hoods cover the hair
 	if layers.has("face"):
 		var fl := face_layer(look)
 		if fl.is_empty() or hg:
