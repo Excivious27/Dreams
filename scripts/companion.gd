@@ -327,7 +327,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				var sold: Dictionary = GameState.run.get("sold_today", {})
 				sold[best] = int(sold.get(best, 0)) + n
 				GameState.run["sold_today"] = sold
-				GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
+				GameState.add_money(pay, "sales")
 				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
 				Music.instance(m.get_tree()).sfx("coin", "pickup")
 				m.fx("sparkle", p.position + Vector2(0, -12), 10.0, 0.5)

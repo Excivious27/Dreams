@@ -72,7 +72,7 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	e.modulate.a = 1.0
 	if e._sprite:
 		e._sprite.modulate.a = 1.0
-	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
+	GameState.add_money(e.reward, "kills")
 	m.hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	m.xp("combat", int(GameState.enemy_data["enemies"]["marked_" + id].get("xp", 40)))
 	Music.instance(m.get_tree()).sfx("boss_down")

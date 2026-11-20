@@ -474,7 +474,7 @@ static func finish_stage(m: GameMap, save := true) -> void:
 	GameState.run["flags"]["cf_stage_" + str(sd["id"])] = true
 	var got: Array = []
 	if int(sd.get("crystals", 0)) > 0:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(sd["crystals"])
+		GameState.add_money(int(sd["crystals"]), "commons")
 		got.append("◆%d" % int(sd["crystals"]))
 	for it: String in sd.get("give", {}):
 		GameState.add_item(it, int(sd["give"][it]), true)
@@ -586,7 +586,7 @@ static func give_ask() -> String:
 	var rw: Dictionary = data().get("ask_reward", {})
 	var got: Array = []
 	if int(rw.get("crystals", 0)) > 0:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(rw["crystals"])
+		GameState.add_money(int(rw["crystals"]), "commons")
 		got.append(Money.amount(int(rw["crystals"])))
 	for it: String in rw.get("give", {}):
 		GameState.add_item(it, int(rw["give"][it]), true)
@@ -642,6 +642,7 @@ static func open_board(m: GameMap) -> void:
 			"give":
 				if Net.visiting():
 					m.hud.toast("This is your host's valley: their farm, their board.", Color(1, 0.85, 0.7))
+					Music.instance(m.get_tree()).sfx("nope", "thud")
 					continue
 				var put := contribute()
 				if put > 0:
@@ -650,6 +651,7 @@ static func open_board(m: GameMap) -> void:
 					GameState.add_friend(keeper(), mini(10, put / 3 + 1))
 				else:
 					m.hud.toast("You carry nothing this stage still needs.", Color(1, 0.85, 0.7))
+					Music.instance(m.get_tree()).sfx("nope", "thud")
 				if stage_ready():
 					await bundle_full(m)
 					return
@@ -660,10 +662,12 @@ static func open_board(m: GameMap) -> void:
 			"ask":
 				if Net.visiting():
 					m.hud.toast("This is your host's valley: their farm, their board.", Color(1, 0.85, 0.7))
+					Music.instance(m.get_tree()).sfx("nope", "thud")
 					continue
 				var got := give_ask()
 				if got == "":
 					m.hud.toast("Not enough yet: %s." % ask_need(), Color(1, 0.85, 0.7))
+					Music.instance(m.get_tree()).sfx("nope", "thud")
 					continue
 				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				await m.say([{"who": keeper_name(), "text": ("That'll feed a lot of people. Here, from the commons: %s." if arc() == "penguins" else "That feeds the whole block. Here, from all of us: %s.") % got}])
@@ -764,10 +768,12 @@ static func _buy(m: GameMap, stock: Dictionary) -> void:
 static func _donate(m: GameMap) -> void:
 	if Net.visiting():
 		m.hud.toast("This is your host's valley: give to your own %s." % short_name(), Color(1, 0.85, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var ids := _bag_produce()
 	if ids.is_empty():
 		m.hud.toast("You carry no produce to give.", Color(1, 0.85, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var opts: Array = []
 	for id in ids:
@@ -820,6 +826,7 @@ static func _sell(m: GameMap) -> void:
 	var ids := _bag_produce()
 	if ids.is_empty():
 		m.hud.toast("You carry no produce to sell.", Color(1, 0.85, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var opts: Array = []
 	for id in ids:
@@ -834,7 +841,7 @@ static func _sell(m: GameMap) -> void:
 	var n := GameState.count(id)
 	var pay := market_pay(id, n)
 	GameState.add_item(id, -n)
-	GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
+	GameState.add_money(pay, "market")
 	GameState.run["earned_total"] = int(GameState.run.get("earned_total", 0)) + pay
 	Music.instance(m.get_tree()).sfx("cash", "coin")
 	m.xp("bartering", mini(20, pay / 15 + 1))
@@ -849,6 +856,7 @@ static func collect_share(m: GameMap) -> void:
 	var sh: Dictionary = st()["share"]
 	if sh.is_empty():
 		m.hud.toast("Your share crate is empty. Volunteers fill it as the beds come in.", Color(0.95, 0.9, 0.8))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	var bits: Array = []
 	for id: String in sh.keys():
@@ -886,6 +894,7 @@ static func compost(m: GameMap) -> void:
 static func drink(m: GameMap) -> void:
 	if int(st().get("drank", -1)) == int(GameState.run["day"]):
 		m.hud.toast("Cold and clear. You've had your fill today.", Color(0.85, 0.95, 1))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
 		return
 	st()["drank"] = int(GameState.run["day"])
 	GameState.run["energy"] = mini(int(GameState.run["max_energy"]), int(GameState.run["energy"]) + 15)

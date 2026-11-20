@@ -737,6 +737,7 @@ static func blocks(m: GameMap, scene: String) -> bool:
 	var now := Time.get_ticks_msec()
 	if now - _last_offer > 1500 and not Dialogue.instance(m.get_tree()).active:
 		_last_offer = now
+		Music.instance(m.get_tree()).sfx("locked", "nope")  # a held border: bump, then the gate words
 		m.later(offer.bind(m, gate_of(scene)))
 	return true
 

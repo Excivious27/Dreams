@@ -233,6 +233,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			var key := str(thing["key"])
 			if GameState.run["flags"].has(key):
 				m.hud.toast("Empty. You already found what was in it.")
+				Music.instance(m.get_tree()).sfx("chest_open", "thud")
 				return true
 			GameState.run["flags"][key] = true
 			thing["hint"] = ""
@@ -244,7 +245,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			var g: Dictionary = thing["give"]
 			for id: String in g:
 				if id == "#gold":
-					GameState.run["crystals"] = int(GameState.run["crystals"]) + int(g[id])
+					GameState.add_money(int(g[id]), "secret")
 					m.hud.toast("+◆%d" % int(g[id]), Color(1, 0.9, 0.5))
 				else:
 					m.give(id, int(g[id]))
@@ -278,7 +279,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			if n >= pages_total() and not GameState.run["flags"].has("journal_done"):
 				GameState.run["flags"]["journal_done"] = true
 				m.give("relic_crown", 1)
-				GameState.run["crystals"] = int(GameState.run["crystals"]) + 5000
+				GameState.add_money(5000, "secret")
 				GameState.notify("The journal is whole. Tucked in its spine: a map to a crown, and ◆5000.")
 			return true
 	return false
