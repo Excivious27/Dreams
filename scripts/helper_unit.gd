@@ -104,6 +104,7 @@ var _act_t := 0.0   # the action pose plays for a moment after each zap / heal /
 var act := "striker"       # the job it does (kinds()[kind].act)
 var team_id := ""          # a mustered ally (make_team): their id, else ""
 var team_name := ""
+var tag_row := 0           # team name tags alternate rows so neighbours never overlap
 var _spr: AnimatedSprite2D = null
 var _last_pos := Vector2.ZERO
 
@@ -176,7 +177,9 @@ func _process(delta: float) -> void:
 	if foe and not foe._alive:
 		foe = null
 	var want := home
-	var following := map.has_meta("follow_me") or (team_id != "" and not map.has_meta("rally_pos"))
+	# Early fights: with no order given, the team pushes on its own (Battle sets team_push).
+	var pushing := team_id != "" and map.has_meta("team_push") and not map.has_meta("rally_pos") and not map.has_meta("follow_me")
+	var following := not pushing and (map.has_meta("follow_me") or (team_id != "" and not map.has_meta("rally_pos")))
 	if following:
 		# Following you means following you, fight or no fight (team members always
 		# walk with you unless sent to a point: they have no post of their own).
@@ -191,6 +194,9 @@ func _process(delta: float) -> void:
 			foe = map.nearest_enemy_to(position, 70.0)
 			if foe and not foe._alive:
 				foe = null
+	if pushing:
+		var tp: Vector2 = map.get_meta("team_push")
+		want = tp + Vector2(cos(get_instance_id() % 11), sin(get_instance_id() % 13)) * 20.0
 	if foe and act == "striker":
 		want = foe.position + (position - foe.position).normalized() * 40.0
 	var step := (want - position)
@@ -206,6 +212,8 @@ func _process(delta: float) -> void:
 				dir = map.flow_dir(position, home)
 			elif map.has_meta("rally_pos"):
 				dir = map.flow_dir(position, map.get_meta("rally_pos"))
+			elif pushing and not map.line_clear(position, want):
+				dir = map.flow_dir(position, (want - map.offset()).snapped(Vector2(32, 32)) + map.offset())
 			elif following and (not map.line_clear(position, want) or not _can_step(position + step.normalized() * 8.0)):
 				# Near you: the bounded chase field. Left far behind (outside its 14-cell
 				# window): a coarse unbounded field, so it still walks round cliffs/water.
@@ -405,7 +413,7 @@ func _draw_team(c: Color) -> void:
 	if _spr:
 		_spr.modulate = Color(1.6, 1.6, 1.6) if _hurt > 0.0 else Color.WHITE
 	var f := ThemeDB.fallback_font
-	var top := -30.0
+	var top := -30.0 - 7.0 * tag_row
 	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, 3, Color(0, 0, 0, 0.8))
 	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, Color(0.75, 0.95, 1.0))
 	if hp < max_hp:

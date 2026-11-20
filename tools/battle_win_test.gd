@@ -106,6 +106,15 @@ func _run() -> void:
 	check(Battle.boss_hp(40, 4, 3) >= 240, "T4 commander floor (%d)" % Battle.boss_hp(40, 4, 3))
 	check(Battle.boss_hp(40, 1, 3) > t1, "outgrown campaign: tougher captain (%d)" % Battle.boss_hp(40, 1, 3))
 
+	# --- spawner kinds (C4 P6): Crystal Kin once befriended, penguins only
+	check(not ("crystal_kin" in Battle.spawner_kinds()), "no Crystal Kin before the flag")
+	GameState.run["flags"]["crystal_kin"] = true
+	check("crystal_kin" in Battle.spawner_kinds(), "Crystal Kin at spawners once befriended")
+	var cb := Battle.new()
+	check(cb._cost("crystal_kin") == 10, "Crystal Kin costs its data cost (%d)" % cb._cost("crystal_kin"))
+	cb.free()
+	check(Art.tex("helpers", "crystal_kin_crystal_idle_0") != null, "Crystal Kin art present")
+
 	# --- ticket drain (war-table field)
 	var m := await go("bf_frostfield")
 	var b: Battle = m.get("battle")
@@ -191,6 +200,36 @@ func _run() -> void:
 			check(DangerMusic.tier == 4, "DangerMusic holds the boss tier")
 			await frames(30)
 			check(Music.instance(self).wanted() in GameMap.BOSS_TRACKS, "boss theme holds on the field")
+			check(not b._goal_text().to_lower().contains("captain captain"), "goal line names the captain once (%s)" % b._goal_text())
+			var tms: Array = b.team
+			if tms.size() >= 2:
+				check((tms[0] as HelperUnit).tag_row != (tms[1] as HelperUnit).tag_row, "team name tags alternate rows")
+			b._elapsed = 10.0
+			b._team_push()
+			check(m.has_meta("team_push"), "early fight: the team pushes on its own")
+			# Close the game mid-fight with the captain hurt: it comes back hurt.
+			bb.hp = 30
+			b._keep()
+			check(int(Campaign.st()["fight"]["state"].get("boss_hp", -1)) == 30, "the fight record keeps the captain's health")
+			var bf: Dictionary = Campaign.st()["fight"].duplicate(true)
+			b._over = true
+			Campaign.st()["fight"] = bf
+			var mr := await go(str(bf["field"]))
+			var br: Battle = mr.get("battle") if mr else null
+			if br:
+				br._briefing = false
+				mr.player.invuln = 9999.0
+				for i in 10:
+					br._tick()
+					if br._boss_ref != null:
+						break
+				check(br._boss_ref != null and br._boss_ref.hp == 30, "reopened fight: the captain is as hurt as you left them (%s)" % (str(br._boss_ref.hp) if br._boss_ref else "none"))
+				if br._boss_ref:
+					b = br
+					m = mr
+					bb = br._boss_ref
+					b._count_kills()
+					await frames(10)
 			bb.hit(99999, bb.position + Vector2(10, 0), false, false)
 			await frames(3)
 			b._count_kills()
@@ -264,6 +303,8 @@ func _run() -> void:
 	# --- gangster battles play their own funk/noir variants
 	GameState.new_run("gangsters", "dad", "T", "Town", "Pup")
 	GameState.run["flags"]["proj_war_table"] = true
+	GameState.run["flags"]["crystal_kin"] = true
+	check(not ("crystal_kin" in Battle.spawner_kinds()), "no Crystal Kin in the gangster arc")
 	m = await go("bf_frostfield")
 	if m:
 		check(Music.instance(self).wanted() == "battle_gang", "gangster field: battle_gang (%s)" % Music.instance(self).wanted())
