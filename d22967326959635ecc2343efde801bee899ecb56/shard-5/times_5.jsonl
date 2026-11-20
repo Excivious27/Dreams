@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 74.6}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 24.8}
+{"step": 12, "name": "crops wired in", "rc": 0, "secs": 4.9}
+{"step": 18, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.0}
+{"step": 24, "name": "ticket_econ_test", "rc": 0, "secs": 1.9}
+{"step": 30, "name": "gang_play_test", "rc": 0, "secs": 13.7}
+{"step": 36, "name": "npc_anim_test", "rc": 0, "secs": 2.0}
+{"step": 42, "name": "early_gating_test", "rc": 0, "secs": 2.0}
+{"step": 48, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.0}
+{"step": 54, "name": "mix_test", "rc": 0, "secs": 3.9}
+{"step": 60, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.0}
+{"step": 66, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 4.9}
+{"step": 72, "name": "street_bat_test", "rc": 0, "secs": 1.9}
+{"step": 78, "name": "campaign_c3_test", "rc": 0, "secs": 1.9}
+{"step": 84, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 4.3}
+{"step": 90, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 16.6}
+{"step": 96, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.3}
+{"step": 102, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.2}
+{"step": 108, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.2}

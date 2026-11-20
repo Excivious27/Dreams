@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 163.3}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 50.8}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 2.8}
+{"step": 14, "name": "touch_ui_test", "rc": 0, "secs": 38.6}
+{"step": 20, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 3.1}
+{"step": 26, "name": "rec_reno_test", "rc": 0, "secs": 1.9}
+{"step": 32, "name": "farm_week_test", "rc": 0, "secs": 4.6}
+{"step": 38, "name": "commons_test", "rc": 0, "secs": 36.3}
+{"step": 44, "name": "workshop: no dead ends", "rc": 0, "secs": 1.8}
+{"step": 50, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 56, "name": "footstep_test", "rc": 0, "secs": 5.2}
+{"step": 62, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 2.9}
+{"step": 68, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.7}
+{"step": 74, "name": "farm_debris_test", "rc": 0, "secs": 3.5}
+{"step": 80, "name": "skill_glow_test", "rc": 0, "secs": 3.2}
+{"step": 86, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 4.8}
+{"step": 92, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 2.7}
+{"step": 98, "name": "arcade_test", "rc": 0, "secs": 2.4}
+{"step": 104, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 3.4}

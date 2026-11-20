@@ -1,0 +1,17 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 20 start arc=gangsters hero=pax style=menus progress=5 difficulty=2 day_len=15
+ERROR: Parameter "data.tree" is null.
+   at: get_tree (scene/main/node.h:507)
+   GDScript backtrace (most recent call first):
+       [0] <anonymous lambda> (res://scripts/game_menu.gd:73)
+       [1] _menu_crawl (res://tools/bot.gd:426)
+       [2] frames (res://tools/bot.gd:543)
+WARNING: Hud: the game was paused with nothing on screen; resuming (scene town, layers @CanvasLayer@176240, @CanvasLayer@176243, @CanvasLayer@176253, @CanvasLayer@176258, @CanvasLayer@176260, MegaBanner, last menu press: , paused by: GameMenu 27 frames ago)
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _pause_watch (res://scripts/hud.gd:256)
+         [1] _process (res://scripts/hud.gd:162)
+BOT 20 done: 0 fails, 0 warns, 325 steps, 0 kills, 1 ownerless pauses, scenes ["meadow", "lake", "beach", "uptown", "docks", "countryside", "desert_glass_canyon", "interior"], day 4, ◆3995
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

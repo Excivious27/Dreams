@@ -1,0 +1,122 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2388 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 74.6s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 24.8s
+
+#### step 12: crops wired in (shard 5/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 12 crops wired in: PASS in 4.9s
+
+#### step 18: night lighting: windows, festival fires, underground, mines (c5_10) (shard 5/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 18 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 3.0s
+
+#### step 24: ticket_econ_test (shard 5/6)
+ticket_econ_test: 0 failures
+#### step 24 ticket_econ_test: PASS in 1.9s
+
+#### step 30: gang_play_test (shard 5/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 30 gang_play_test: PASS in 13.7s
+
+#### step 36: npc_anim_test (shard 5/6)
+npc_anim_test: OK (0 fails)
+#### step 36 npc_anim_test: PASS in 2.0s
+
+#### step 42: early_gating_test (shard 5/6)
+early_gating_test: PASS (0 fails)
+#### step 42 early_gating_test: PASS in 2.0s
+
+#### step 48: music: loop points are applied (data/music_loops.json) (shard 5/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 50 entries, 0 failures
+#### step 48 music: loop points are applied (data/music_loops.json): PASS in 2.0s
+
+#### step 54: mix_test (shard 5/6)
+mix_test: 0 failures
+#### step 54 mix_test: PASS in 3.9s
+
+#### step 60: gifts: the Marked and boss powers (shard 5/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 60 gifts: the Marked and boss powers: PASS in 6.0s
+
+#### step 66: campaign: battles, projects, colonies, big mines (shard 5/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 66 campaign: battles, projects, colonies, big mines: PASS in 4.9s
+
+#### step 72: street_bat_test (shard 5/6)
+street_bat_test: 0 fails
+#### step 72 street_bat_test: PASS in 1.9s
+
+#### step 78: campaign_c3_test (shard 5/6)
+campaign_c3_test: 0 fails
+#### step 78 campaign_c3_test: PASS in 1.9s
+
+#### step 84: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 5/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 84 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 4.3s
+
+#### step 90: mega regions: the new worlds walk end to end (shard 5/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 90 mega regions: the new worlds walk end to end: PASS in 16.6s
+
+#### step 96: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 5/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 96 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.3s
+
+#### step 102: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 5/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 102 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.2s
+
+#### step 108: C7 P4: heart scene content (shard 5/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 108 C7 P4: heart scene content: PASS in 2.2s
+
+#### shard 5/6 done in 176s: PASS

@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 82.2}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 17.6}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 2.6}
+{"step": 16, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 3.0}
+{"step": 22, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 23.5}
+{"step": 28, "name": "bowling_test", "rc": 0, "secs": 17.1}
+{"step": 34, "name": "crop_test", "rc": 0, "secs": 4.8}
+{"step": 40, "name": "gang_flavour_test", "rc": 0, "secs": 2.5}
+{"step": 46, "name": "every sound the game asks for exists", "rc": 0, "secs": 3.9}
+{"step": 52, "name": "music_stream_test", "rc": 0, "secs": 9.3}
+{"step": 58, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.9}
+{"step": 64, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.3}
+{"step": 70, "name": "goal_line_test", "rc": 0, "secs": 2.4}
+{"step": 76, "name": "campaign_gate_test", "rc": 0, "secs": 5.6}
+{"step": 82, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 19.6}
+{"step": 88, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 9.0}
+{"step": 94, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 14.8}
+{"step": 100, "name": "rec_games_test", "rc": 0, "secs": 2.5}
+{"step": 106, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 4.7}

@@ -1,0 +1,19 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 79.9}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.7}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.5}
+{"step": 15, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.3}
+{"step": 21, "name": "storage_test", "rc": 0, "secs": 2.3}
+{"step": 27, "name": "rec_audio_test", "rc": 0, "secs": 2.5}
+{"step": 33, "name": "farm_look_test", "rc": 0, "secs": 3.8}
+{"step": 39, "name": "cf_volunteer_test", "rc": 0, "secs": 6.9}
+{"step": 45, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 51, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 36.5}
+{"step": 57, "name": "workshop: stations at run time", "rc": 0, "secs": 3.7}
+{"step": 63, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 8.2}
+{"step": 69, "name": "campaign_story_test", "rc": 0, "secs": 2.5}
+{"step": 75, "name": "campaign_gate_test", "rc": 0, "secs": 5.6}
+{"step": 81, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 2.4}
+{"step": 87, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.3}
+{"step": 93, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 10.5}
+{"step": 99, "name": "stack_whack_test", "rc": 0, "secs": 3.1}
+{"step": 105, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.5}

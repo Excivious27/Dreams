@@ -1,0 +1,119 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2388 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 101.4s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 40.2s
+
+#### step 11: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 4/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 11 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 42.6s
+
+#### step 17: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 4/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 17 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 3.2s
+
+#### step 23: rec_test (shard 4/6)
+rec_test: 0 failures
+#### step 23 rec_test: PASS in 5.3s
+
+#### step 29: cash_test (shard 4/6)
+cash_test: scanned 66320 strings, 0 failures
+#### step 29 cash_test: PASS in 3.4s
+
+#### step 35: anim_test (shard 4/6)
+anim_test: 0 failures
+#### step 35 anim_test: PASS in 3.0s
+
+#### step 41: cf_layout_test (shard 4/6)
+cf_layout_test: 0 failures
+#### step 41 cf_layout_test: PASS in 9.4s
+
+#### step 47: music loop seams (join click + level jump) (shard 4/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 101
+#### step 47 music loop seams (join click + level jump): PASS in 9.7s
+
+#### step 53: danger_music_test (shard 4/6)
+danger_music_test: 0 failures
+#### step 53 danger_music_test: PASS in 20.8s
+
+#### step 59: allies: enemies fight back, pup commands (shard 4/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 59 allies: enemies fight back, pup commands: PASS in 3.7s
+
+#### step 65: every script compiles (shard 4/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 65 every script compiles: PASS in 3.5s
+
+#### step 71: quest_tracker_test (shard 4/6)
+quest_tracker_test: 0 fails
+#### step 71 quest_tracker_test: PASS in 3.5s
+
+#### step 77: campaign_words_test (shard 4/6)
+campaign_words_test: 0 fails
+#### step 77 campaign_words_test: PASS in 2.9s
+
+#### step 83: story: every chapter plays to the end (shard 4/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 83 story: every chapter plays to the end: PASS in 12.1s
+
+#### step 89: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 4/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 89 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.8s
+
+#### step 95: hidden areas stay put day to day (C5) (shard 4/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 95 hidden areas stay put day to day (C5): PASS in 4.9s
+
+#### step 101: softlocks: every menu/screen leaves on B, dialogues always finish (shard 4/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 101 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.8s
+
+#### step 107: C7 P3: endings and epilogue (shard 4/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 107 C7 P3: endings and epilogue: PASS in 2.5s
+
+#### shard 4/6 done in 284s: PASS
