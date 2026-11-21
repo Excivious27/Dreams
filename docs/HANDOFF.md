@@ -92,6 +92,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 - 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
 
 ## Log (newest first, 30 lines max)
+- 2026-11-21 00:40 C12 docs: report docs/reports/CONDUCT-12.md (379 findings, 7 packages + integration, final CI c12i PENDING), Guide 39 (hero-aware scenes, choices that come back, festival days, side-story list, town letters, gift refusals, compass on side stories), TEXTS['12'] in build_package.py, 3 new inventory rows (talk conditions, writing checks, mail) + 8 rows raised, PROJECT-MEMORY C12 entry; Tom's calls: Juniper back?, rename kid Pip. Branch c12/docs.
 - 2026-11-21, C12 integ: P5+P6 merged into c12/integ, cross-package hooks (partner guard on gangster shop deals, gift block toast, penguin post-ending letters, one bell cause, colony elder moon lines, heart keepsakes, rare herbs typed herb, told_town/kept_quiet and Sal after-ending talk, Rook/Bram tracker words, Benno ring, Bram festival eve, festival-eve letters, side-story compass, arrival verbs); continuity_check reads compound talk keys.
 
 - 2026-11-20 23:15 S1 docs: report docs/reports/CONDUCT-S1.md (264 findings, 6 packages + integration, final CI s1i2 PASS, steam-builds green, Steam readiness 92/4/4), Guide 38, TEXTS['S1'] + Steam readiness tab in build_package.py, 10 new inventory rows (whole game ~81%), PROJECT-MEMORY S1 entry, STATUS entry; branch s1/docs.
