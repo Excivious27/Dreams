@@ -636,6 +636,15 @@
      "crystals": 100,
      "supply": 25
     },
+    "need_gang": {
+     "team": 2,
+     "items": {
+      "rounds": 20,
+      "stone": 10
+     },
+     "crystals": 100,
+     "supply": 25
+    },
     "min_battles": 2,
     "long_way": {
      "kind": "quest",
@@ -1128,7 +1137,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -1250,7 +1259,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -1426,8 +1435,8 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
-         "thug_flame"
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -1486,6 +1495,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -1833,7 +1851,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -1997,7 +2015,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -2172,8 +2190,8 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
-         "thug_flame"
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -2232,6 +2250,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -2616,7 +2643,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -2789,7 +2816,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -2963,8 +2990,8 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
-         "thug_flame"
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -3023,6 +3050,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -3374,7 +3410,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -3547,7 +3583,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute"
+         "thug_flame"
         ]
        }
       },
@@ -3721,8 +3757,8 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
-         "thug_flame"
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -3781,6 +3817,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -4589,6 +4634,15 @@
      "crystals": 500,
      "supply": 35
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 60,
+      "iron_bar": 4
+     },
+     "crystals": 500,
+     "supply": 35
+    },
     "min_battles": 1,
     "long_way": {
      "kind": "quest",
@@ -5009,6 +5063,15 @@
      "team": 2,
      "items": {
       "wood": 20,
+      "stone": 10
+     },
+     "crystals": 100,
+     "supply": 25
+    },
+    "need_gang": {
+     "team": 2,
+     "items": {
+      "rounds": 20,
       "stone": 10
      },
      "crystals": 100,
@@ -5543,6 +5606,15 @@
      "items": {
       "iron_bar": 4,
       "stone": 40
+     },
+     "crystals": 500,
+     "supply": 35
+    },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 60,
+      "iron_bar": 4
      },
      "crystals": 500,
      "supply": 35
@@ -6132,6 +6204,16 @@
      "crystals": 900,
      "supply": 40
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 80,
+      "gold_bar": 2,
+      "iron_bar": 6
+     },
+     "crystals": 900,
+     "supply": 40
+    },
     "min_battles": 3,
     "long_way": {
      "kind": "story",
@@ -6691,6 +6773,16 @@
      "crystals": 900,
      "supply": 40
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 80,
+      "gold_bar": 2,
+      "iron_bar": 6
+     },
+     "crystals": 900,
+     "supply": 40
+    },
     "min_battles": 2,
     "long_way": {
      "kind": "travel",
@@ -7217,6 +7309,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -7819,6 +7920,15 @@
      "crystals": 500,
      "supply": 35
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 60,
+      "iron_bar": 4
+     },
+     "crystals": 500,
+     "supply": 35
+    },
     "min_battles": 2,
     "long_way": {
      "kind": "quest",
@@ -8370,6 +8480,16 @@
     "need": {
      "team": 4,
      "items": {
+      "gold_bar": 2,
+      "iron_bar": 6
+     },
+     "crystals": 900,
+     "supply": 40
+    },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 80,
       "gold_bar": 2,
       "iron_bar": 6
      },
@@ -8971,6 +9091,16 @@
      "crystals": 1400,
      "supply": 45
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 100,
+      "gold_bar": 5,
+      "data_chip": 2
+     },
+     "crystals": 1400,
+     "supply": 45
+    },
     "min_battles": 2,
     "long_way": {
      "kind": "story",
@@ -9391,6 +9521,15 @@
      "crystals": 100,
      "supply": 25
     },
+    "need_gang": {
+     "team": 2,
+     "items": {
+      "rounds": 20,
+      "stone": 10
+     },
+     "crystals": 100,
+     "supply": 25
+    },
     "min_battles": 3,
     "long_way": {
      "kind": "quest",
@@ -9642,7 +9781,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
+         "thug_flame",
          "rust_knight"
         ]
        }
@@ -9723,7 +9862,7 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
+         "thug_flame",
          "rust_knight"
         ]
        }
@@ -9825,9 +9964,9 @@
          "thug_speedster",
          "thug_cyber",
          "thug_gambler",
-         "thug_brute",
+         "thug_flame",
          "rust_knight",
-         "thug_flame"
+         "thug_brute"
         ]
        }
       },
@@ -9883,6 +10022,15 @@
      "team": 3,
      "items": {
       "wood": 30,
+      "copper_bar": 3
+     },
+     "crystals": 250,
+     "supply": 30
+    },
+    "need_gang": {
+     "team": 3,
+     "items": {
+      "rounds": 40,
       "copper_bar": 3
      },
      "crystals": 250,
@@ -10416,6 +10564,15 @@
      "items": {
       "iron_bar": 4,
       "stone": 40
+     },
+     "crystals": 500,
+     "supply": 35
+    },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 60,
+      "iron_bar": 4
      },
      "crystals": 500,
      "supply": 35
@@ -11032,6 +11189,16 @@
      "crystals": 900,
      "supply": 40
     },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 80,
+      "gold_bar": 2,
+      "iron_bar": 6
+     },
+     "crystals": 900,
+     "supply": 40
+    },
     "min_battles": 2,
     "long_way": {
      "kind": "story",
@@ -11623,6 +11790,16 @@
     "need": {
      "team": 4,
      "items": {
+      "gold_bar": 2,
+      "iron_bar": 6
+     },
+     "crystals": 900,
+     "supply": 40
+    },
+    "need_gang": {
+     "team": 4,
+     "items": {
+      "rounds": 80,
       "gold_bar": 2,
       "iron_bar": 6
      },

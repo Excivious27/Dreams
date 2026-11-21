@@ -298,7 +298,7 @@ GANG_CAPTAINS = {
 # own kinds, the gate brings one signature kind. Region extras join from layer 2.
 GANG_ROSTER = {
     1: {1: ["thug_lookout", "thug_speedster"], 2: ["thug_brute"], 3: ["thug_cyber"]},
-    2: {1: ["thug_speedster", "thug_cyber", "thug_gambler"], 2: ["thug_brute"], 3: ["thug_flame"]},
+    2: {1: ["thug_speedster", "thug_cyber", "thug_gambler"], 2: ["thug_flame"], 3: ["thug_brute"]},
     3: {1: ["thug_cyber", "thug_gambler", "thug_flame"], 2: ["thug_brute"], 3: ["thug_enforcer"]},
     4: {1: ["thug_flame", "thug_brute", "thug_gambler"], 2: ["thug_enforcer"], 3: ["rust_knight"]},
     5: {1: ["thug_flame", "thug_brute", "thug_enforcer"], 2: ["rust_knight"], 3: ["gilt_guard"]},
@@ -649,6 +649,10 @@ NEED = {1: {"team": 2, "items": {"wood": 20, "stone": 10}, "crystals": 100, "sup
         3: {"team": 4, "items": {"iron_bar": 4, "stone": 40}, "crystals": 500, "supply": 35},
         4: {"team": 4, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 40},
         5: {"team": 4, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 45}}
+# Gang-arc provisions (C16b P5: c16b_18-13): rounds and parts in place of the farm wood
+# and stone; CampaignGate uses need_gang in the gangster arc (same team/crystals/supply).
+NEED_GANG = {t: dict(NEED[t], items={1: {"rounds": 20, "stone": 10}, 2: {"rounds": 40, "copper_bar": 3}, 3: {"rounds": 60, "iron_bar": 4},
+                                     4: {"rounds": 80, "gold_bar": 2, "iron_bar": 6}, 5: {"rounds": 100, "gold_bar": 5, "data_chip": 2}}[t]) for t in NEED}
 # The training drill (CampaignGate / BattleDrill): a short guided fight on the
 # orchard field with three points close to the camp.
 DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters": "Sal"},
@@ -912,7 +916,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     lead = {a: LEAD[region][a] for a in arcs}
     C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
               "who": {a: lead[a][0] for a in arcs}, "lead": lead, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
-              "need": NEED[tier], "min_battles": best[gate_id], "long_way": _long_way(region, tier, arcs), "sense": {a: SENSE[region][a] for a in arcs},
+              "need": NEED[tier], "need_gang": NEED_GANG[tier], "min_battles": best[gate_id], "long_way": _long_way(region, tier, arcs), "sense": {a: SENSE[region][a] for a in arcs},
               "region_name": REGION_NAME.get(region) or COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
     # sanity: every reward item exists, every enemy exists, every field exists
     for nd in nodes:
@@ -954,7 +958,7 @@ for cid, c in C.items():
         mine = [t for t in dict.fromkeys(nd["type"] for nd in c["nodes"]) if t not in ("start", "gate") and t not in lower]
         c["new_here"][a] = [TYPE_WORDS[t] for t in mine]
 
-for k in [k for nd in NEED.values() for k in nd["items"]] + list(DRILL["reward"]["items"]):
+for k in [k for nd in list(NEED.values()) + list(NEED_GANG.values()) for k in nd["items"]] + list(DRILL["reward"]["items"]):
     assert k in IT, k
 for a, ks in DRILL["enemies"].items():
     assert all(k in EN for k in ks), ks

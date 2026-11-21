@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16b P5: campaign content: long_way rows for all 19 campaigns (contract 2), 11 named gang captains gcap_g_* + 25 captain boss cards (slice_c16b_p5.py), gang rosters by tier (people only), thug names, gang node names/briefs, tier-1 ramp (no escort, tier-1 foes), cache < battle pay, pay curve, sieges/gates open one point, T4+ captain preview, field variety, rail yards/neon dressing, Cloud Stair lanes, need_gang/unlocks/new_here data; test tools/c16b_p5_test.py
+
 ## 2026-11-21 — C16a integ: energy filler re-spread against P3's cap 60; mega hook quests wait for the gate floors (sim first mega day ~50); Spark migrate; net energy row; fishing caps; gang helper meadow/forest/lake
 
 ## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd
