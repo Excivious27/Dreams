@@ -207,6 +207,8 @@ static func _check_stage(m: GameMap) -> void:
 # ---- war table ------------------------------------------------------------------
 
 static func war_table(m: GameMap) -> void:
+	if Net.visiting():  # c16b_16-01: same guard as Campaign.launch
+		m.hud.toast("You're visiting a friend's farm. Battles wait until you're home.", Color(1, 0.8, 0.6)); return
 	var all: Dictionary = GameState.load_json("res://data/battles.json")
 	var opts: Array = ["Campaign map (open new regions)"]
 	var ids: Array = [["_campaign", true]]

@@ -230,7 +230,16 @@ static func muster(cid: String) -> String:
 # ---- the drill ----------------------------------------------------------------------
 
 ## Can the drill be started now ("" yes, else why not)?
+## "Eight" for the drill's step count (c16b_15-06: the brief always matches BattleDrill.STEPS).
+static func _steps_word() -> String:
+	var n: int = BattleDrill.STEPS.size()
+	var w := ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"]
+	return str(w[n]) if n < w.size() else str(n)
+
+
 static func drill_lock() -> String:
+	if Net.visiting():  # c16b_16-02: a guest's drill would run unsynced on the host's world
+		return "You're visiting a friend's farm. Training waits until you're home."
 	if not story_ok():
 		return story_need()
 	return ""
@@ -261,7 +270,7 @@ static func drill_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["mode"] = "drill"
 	d["drill"] = true
 	d["title"] = "Training: First Muster"
-	d["brief"] = "Three points, a few sleepy foes, and me talking you through it. Six steps, then you're ready to lead." if GameState.is_penguins() else "Three points, a couple of lookouts, and me in your ear. Six steps and you can run a crew in a fight."
+	d["brief"] = "Three points, a few sleepy foes, and me talking you through it. %s steps, then you're ready to lead." % _steps_word() if GameState.is_penguins() else "Three points, a couple of lookouts, and me in your ear. %s steps and you can run a crew in a fight." % _steps_word()
 	d["who"] = trainer()
 	d["points"] = (dd.get("points", []) as Array).duplicate(true)
 	d["enemies"] = dd.get("enemies", {}).get(Campaign.arc(), ["grump"])

@@ -189,7 +189,7 @@ static func cond(c: Dictionary) -> bool:
 			return false
 		return Campaign.is_won(cid) or Campaign.started(cid) or Campaign.why_locked(cid) == ""
 	if c.has("campaign_won"):
-		return Campaign.is_won(str(c["campaign_won"]))
+		return Campaign.is_won(str(c["campaign_won"])) or Campaign.long_way_taken(str(c["campaign_won"]))  # C16b long way
 	if c.has("arc"):
 		return str(c["arc"]) == _arc()
 	return false

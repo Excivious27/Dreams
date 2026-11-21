@@ -978,7 +978,8 @@ static func story_pointer(qid: String) -> String:
 		var st := first.left(1).to_lower() + first.substr(1)
 		var has_map := first.contains("campaign map")
 		if not long_way(cid).is_empty():  # C16b: never battle as the only way
-			for ln in ["First: %s Then win \"%s\", or take the long way round at its border." % [st, str(c["title"])],
+			for ln in ["First: %s Then win \"%s\", or take the long way round." % [st, str(c["title"])],
+					"First: %s Then win \"%s\", or take the long way." % [st, str(c["title"])],
 					"Open %s: win \"%s\" (train first), or take the long way round at its border." % [region_phrase(c), str(c["title"])],
 					"Open %s: win \"%s\", or take the long way round." % [region_phrase(c), str(c["title"])]]:
 				if ln.length() <= 112:

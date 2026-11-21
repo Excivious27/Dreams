@@ -53,7 +53,7 @@ static func ferry(m: GameMap) -> void:
 		var held := not Campaign.region_open(str(id))  # the island's campaign comes first
 		var why := ""
 		if held:
-			why = " (held: campaign map)"
+			why = " (held: campaign, or the long way)"
 		elif not ok:
 			why = " (rough seas until story chapter %d)" % (int(c.get("tier", 1)) + 1)
 		opts.append("%s%s%s" % ["✓ " if bool(st(str(id))["done"]) else "", str(c["name"]), why])

@@ -39,7 +39,7 @@ func _initialize() -> void:
 					GameState.run["flags"]["campfire_done"] = true
 					GameState.run["flags"]["babies_done"] = true
 				var ptr := GameState.next_step()
-				check(ptr.contains("campaign map"), "%s/%s: goal line points at the campaign: %s" % [arc, qid, ptr])
+				check(ptr.contains("campaign map") or ptr.contains("long way"), "%s/%s: goal line points at the campaign: %s" % [arc, qid, ptr])
 				check(Campaign.story_pointer(qid).length() <= 112, "%s/%s: goal line fits (%d chars)" % [arc, qid, Campaign.story_pointer(qid).length()])
 				check(CampaignGate.story_ok(), "%s/%s: chapter 2 comes before the first held story region" % [arc, qid])
 				# Win the chain, first campaign first, as the pointer leads.
