@@ -151,6 +151,14 @@ func _process(delta: float) -> void:
 		var bx: float = _birds[i]["pos"].x
 		if bx <= -40 or bx >= _w + 40:
 			_birds.remove_at(i)
+	# C14b (c14b_06-10): world-space particles (fireflies, leaves, petals) stay put
+	# in the world when the camera moves instead of sliding with the screen.
+	var co := get_viewport().get_canvas_transform().origin if overhead else Vector2.ZERO
+	var cd := co - _cam_prev if _cam_prev.x < INF else Vector2.ZERO
+	_cam_prev = co
+	if cd.length_squared() > 0.0 and cd.length_squared() < 400.0 * 400.0:
+		for p: Dictionary in _parts:
+			p["pos"] += cd
 	var pkind := _pkind()
 	if weather == "fireflies":
 		# Fireflies: soft glows that wander on their own slow loops, pulse, and wrap.
@@ -196,6 +204,10 @@ func _process(delta: float) -> void:
 					p["pos"] = Vector2(randf_range(-20, _w + 20), -10)
 				if p["pos"].x > _w + 20:
 					p["pos"].x = -20.0
+				elif p["pos"].x < -24.0:
+					p["pos"].x = _w + 20.0
+				if p["pos"].y < -30.0:
+					p["pos"].y = randf_range(0.0, _h)  # camera walked down: refill
 			p["f"] = int(_t * float(p.get("fps", 4.0)) + float(p["t"])) % 4
 	else:
 		_parts.clear()
@@ -363,6 +375,7 @@ var _flash_t := 0.0
 var _next_flash := 4.0
 var _flash_x := 40.0
 var _streak_x := 0.0
+var _cam_prev := Vector2(INF, INF)
 
 
 func _draw_weather_extras() -> void:

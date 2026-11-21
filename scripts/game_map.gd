@@ -549,6 +549,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var old: Node = props[c]
 				var sh := anim_prop("nature", "ftree_%s_shake" % kind, c, 0, 8.0)
 				if sh:
+					sh.frame = 0  # one-shot: no random start (C14b Anim.apply)
+					sh.speed_scale = 1.0
 					sh.sprite_frames.set_animation_loop("idle", false)
 					old.visible = false
 					sh.animation_finished.connect(func() -> void:
@@ -557,7 +559,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 							old.visible = true
 							var after := "ftree_%s_green" % kind if Art.has("nature", "ftree_%s_green" % kind) else "ftree_%s_late" % kind
 							if old is Sprite2D and Art.has("nature", after):
-								(old as Sprite2D).texture = Art.tex("nature", after))
+								_swap_fit(old as Sprite2D, Art.tex("nature", after)))
 			else:
 				wobble(c, 0.08)
 			var n := 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0)
@@ -1489,6 +1491,33 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 		for i in extra_w + 1:
 			blocked[Vector2i(c.x + i, c.y)] = true
 	return a
+
+
+## Swap a prop's texture keeping its drawn content the same size and foot line when
+## the two canvases pad differently (c14b_03-07: the after-shake fruit tree popped
+## bigger because *_green fills its canvas while *_fruit has 3 px padding).
+func _swap_fit(sp: Sprite2D, nt: Texture2D) -> void:
+	var ot := sp.texture
+	sp.texture = nt
+	if ot == null or nt == null or ot.get_size() != nt.get_size():
+		return
+	var oi := ot.get_image()
+	var ni := nt.get_image()
+	if oi == null or ni == null:
+		return
+	if oi.is_compressed():
+		oi.decompress()
+	if ni.is_compressed():
+		ni.decompress()
+	var orc := oi.get_used_rect()
+	var nrc := ni.get_used_rect()
+	if orc.size.x <= 0 or nrc.size.x <= 0 or orc == nrc:
+		return
+	var k := Vector2(float(orc.size.x) / nrc.size.x, float(orc.size.y) / nrc.size.y)
+	sp.scale *= k
+	# keep the content's bottom on the same line (local y of a texel row r = offset - h/2 + r, times scale)
+	var h := float(nt.get_height())
+	sp.offset.y = (sp.offset.y - h / 2.0 + orc.end.y) / k.y - nrc.end.y + h / 2.0
 
 
 func ch_tall(a: AnimatedSprite2D, scale: float) -> bool:
