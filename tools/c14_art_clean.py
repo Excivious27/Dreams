@@ -103,6 +103,48 @@ def clean_shadow(a, cell_w):
     return out
 
 
+# holes (c14_17-21, -03, -17, -19, -10, -20): enclosed see-through specks left by the key are
+# filled with the mean of their ring. Folder entries cover every strip inside.
+HOLES = {"nature/mid_cherry.png": 8, "nature/mid_cherry_b.png": 8, "nature/big_cherry_a.png": 8, "nature/big_cherry_b.png": 8,
+         "hats/witch.png": 6, "stations/cauldron_4.png": 10, "enemies/dark_crystal": 400, "enemies/finargle": 6,
+         "enemies/cboss_coral": 6, "helpers/shade_drone_act_2.png": 8, "helpers/shade_drone_act_3.png": 8,
+         "helpers/shade_crystal_act_2.png": 8}
+for _k in ("elder_brine", "elder_cinderpaw", "elder_icewhisker", "elder_tidewhisker") + tuple(
+        "%s_kit_%d" % (c, i) for c in ("coral", "ice", "ember", "kelp") for i in (1, 2, 3)):
+    HOLES["characters/" + _k] = 6
+
+
+def fill_holes(a, most):
+    al = a[..., 3] > 30
+    holes = ndimage.binary_fill_holes(al) & ~al
+    hl, hk = ndimage.label(holes)
+    if hk == 0:
+        return None
+    out = a.copy()
+    n = 0
+    for i in range(1, hk + 1):
+        m = hl == i
+        if m.sum() > most:
+            continue
+        ring = ndimage.binary_dilation(m, iterations=1) & al
+        if ring.any():
+            out[m, :3] = np.median(out[ring, :3], axis=0).astype(np.uint8)
+            out[m, 3] = 255
+            n += 1
+    return out if n else None
+
+
+def hole_files():
+    for k, most in HOLES.items():
+        p = os.path.join(GEN, k)
+        if os.path.isdir(p):
+            for f in sorted(os.listdir(p)):
+                if f.endswith(".png"):
+                    yield k + "/" + f, most
+        elif os.path.exists(p):
+            yield k, most
+
+
 def files(kind):
     for group, items in MAN.items():
         if not isinstance(items, dict):
@@ -123,7 +165,17 @@ def main():
     sheet = sys.argv[sys.argv.index("--sheet") + 1] if "--sheet" in sys.argv else ""
     pairs = []
     seen = set()
-    for rel, info in files(kind):
+    if kind == "holes":
+        for rel, most in hole_files():
+            a = np.array(Image.open(os.path.join(GEN, rel)).convert("RGBA"))
+            out = fill_holes(a, most)
+            if out is None:
+                continue
+            print(rel)
+            pairs.append((a, out))
+            if not dry:
+                write(rel, out)
+    for rel, info in ([] if kind == "holes" else files(kind)):
         if rel in seen or not os.path.exists(os.path.join(GEN, rel)):
             continue
         seen.add(rel)
