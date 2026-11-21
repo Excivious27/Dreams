@@ -251,9 +251,9 @@ BUILDINGS = {
               dict(tier=2, cap=8, adds=['breeding', 'feeder', 'heater'], cell=[40, 13], w=2, h=2, pen=[40, 15, 4, 2])],
     'sty': [dict(tier=1, cap=2, adds=[], cell=[45, 13], w=3, h=2, pen=[45, 15, 3, 2]),
             dict(tier=2, cap=4, adds=['breeding', 'feeder'], cell=[45, 13], w=3, h=2, pen=[45, 15, 4, 2])],
-    'apiary': [dict(tier=1, cap=2, adds=[], pen=[16, 5, 2, 1]),
-               dict(tier=2, cap=4, adds=['breeding'], pen=[16, 5, 4, 1]),
-               dict(tier=3, cap=6, adds=['breeding'], pen=[16, 5, 6, 1])],
+    'apiary': [dict(tier=1, cap=2, adds=[], pen=[29, 19, 2, 1]),
+               dict(tier=2, cap=4, adds=['breeding'], pen=[29, 19, 4, 1]),
+               dict(tier=3, cap=6, adds=['breeding'], pen=[29, 19, 6, 1])],
     # v2 homes (C11b): exotics, birds that fly, reptiles/insects, and the penguin-arc habitats
     'enclosure': [dict(tier=1, cap=2, adds=['feeder'], cell=[50, 13], w=4, h=3, pen=[50, 16, 6, 2]),
                   dict(tier=2, cap=4, adds=['feeder', 'incubator', 'breeding', 'heater'], cell=[50, 13], w=4, h=3, pen=[50, 16, 6, 2])],
