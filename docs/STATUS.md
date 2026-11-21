@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C15 P2: seasonal goods: 19 seasonal forage items with art and per-season valley forage pools (winter drops berries/flowers), 10 winter crops (Maple 4 winter seeds + 4 rare), 19 seasonal dishes, seasonal shop goods + year-2 goods in 7 shops, greenhouse off-season seeds, stall seeds filtered by season, festival stall season treats, seasonal decor sells in season (carpenter shelf all season, gang names), off-season sell premium 1.35 -> 1.1, book season hints, helper chores forage the season (tools/gen_seasons.py, scripts/season_goods.gd, tools/season_goods_test.gd)
+
 ## 2026-11-21 — C15 P1: Calendar engine (scripts/calendar.gd; festivals.json/calendar.json/marina/birthdays, year gates), calendar screen (board, menu, HUD date tap + pip), seasonal weather (per-save seed, city odds, specials, snow depth, heat wave, weather_here), tests calendar/calendar_screen/weather_c15
 
 ## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).

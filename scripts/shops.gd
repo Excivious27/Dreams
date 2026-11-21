@@ -17,8 +17,7 @@ static func _seeds(keep: Callable, n: int, salt: int) -> Array:
 		if not GameState.crops.has(cid):
 			continue
 		var cd: Dictionary = GameState.crops[cid]
-		var cs := str(cd.get("season", "any"))
-		if cs != "any" and cs != se:
+		if not GameState.crop_fits_season(cd, se):  # crop "season" may be a list (c15_08-16)
 			continue
 		if keep.call(cid, cd):
 			pool.append(str(sid))
@@ -157,9 +156,8 @@ static func line(id: String) -> String:
 		bits += " · sells %s" % Money.fmt(GameState.item_value(y))
 	if int(cd.get("regrow", 0)) > 0:
 		bits += " · again %dd" % int(cd["regrow"])
-	var cs := str(cd.get("season", "any"))
 	var left := GameState.DAYS_PER_SEASON - GameState.day_of_season()  # same rule as the farm's warning (c15_08-05)
-	if cs != "any" and (cs != GameState.season() or days > left):
+	if str(cd.get("season", "any")) != "any" and (not GameState.crop_fits_season(cd, GameState.season()) or days > left):
 		bits += " !"
 	return bits
 
