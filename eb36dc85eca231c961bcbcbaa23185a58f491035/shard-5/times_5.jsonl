@@ -1,0 +1,26 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 71.8}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 23.0}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 4.6}
+{"step": 18, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.3}
+{"step": 24, "name": "storage_test", "rc": 0, "secs": 2.5}
+{"step": 30, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.3}
+{"step": 36, "name": "rec_audio_test", "rc": 0, "secs": 2.5}
+{"step": 42, "name": "farm_look_test", "rc": 0, "secs": 3.9}
+{"step": 48, "name": "npc_anim_test", "rc": 0, "secs": 2.5}
+{"step": 54, "name": "ranch_gift_test", "rc": 0, "secs": 2.5}
+{"step": 60, "name": "town_first_test", "rc": 0, "secs": 3.9}
+{"step": 66, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 72, "name": "slice_c11b_chores", "rc": 0, "secs": 0.5}
+{"step": 78, "name": "ambience_test", "rc": 0, "secs": 4.8}
+{"step": 84, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.9}
+{"step": 90, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.7}
+{"step": 96, "name": "c6_cue_test", "rc": 0, "secs": 2.4}
+{"step": 102, "name": "meow_gate_test", "rc": 0, "secs": 3.2}
+{"step": 108, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.5}
+{"step": 114, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 16.3}
+{"step": 120, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 126, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.8}
+{"step": 132, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.0}
+{"step": 138, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.4}
+{"step": 144, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.6}
+{"step": 150, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 21.9}

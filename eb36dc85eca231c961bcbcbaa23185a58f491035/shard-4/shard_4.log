@@ -1,0 +1,159 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 68.6s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 33.8s
+
+#### step 11: C8 core curves: levels, caps, swings, food, prices, sleep (shard 4/6)
+== C8 core curves: levels, caps, swings, food, prices, sleep ==
+  pacing (level reached with steady XP/day): xp/day | d28 | d112 | d224 | d336
+  swings by tool tier (level 1): tree [7, 5, 4, 3, 2, 2, 1, 1], stone [3, 2, 2, 1, 1, 1, 1, 1], ore [6, 5, 4, 3, 2, 2, 1, 1]
+c8_curve_test: 0 failures
+#### step 11 C8 core curves: levels, caps, swings, food, prices, sleep: PASS in 2.7s
+
+#### step 17: touch_ui_test (shard 4/6)
+touch_ui_test: 0 failures
+#### step 17 touch_ui_test: PASS in 39.5s
+
+#### step 23: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 4/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 23 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 4.6s
+
+#### step 29: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 4/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 29 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 5.5s
+
+#### step 35: rec_reno_test (shard 4/6)
+rec_reno_test: 0 failures
+#### step 35 rec_reno_test: PASS in 2.5s
+
+#### step 41: farm_week_test (shard 4/6)
+farm_week_test: OK (0 fails)
+#### step 41 farm_week_test: PASS in 5.4s
+
+#### step 47: anim_test (shard 4/6)
+anim_test: 0 failures
+#### step 47 anim_test: PASS in 2.9s
+
+#### step 53: ranch_p2_test (shard 4/6)
+ranch_p2_test: 0 failures
+#### step 53 ranch_p2_test: PASS in 2.5s
+
+#### step 59: early_gating_test (shard 4/6)
+early_gating_test: PASS (0 fails)
+#### step 59 early_gating_test: PASS in 3.5s
+
+#### step 65: music: loop points are applied (data/music_loops.json) (shard 4/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 51 entries, 0 failures
+#### step 65 music: loop points are applied (data/music_loops.json): PASS in 2.7s
+
+#### step 71: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 4/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 71 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.6s
+
+#### step 77: mix_test (shard 4/6)
+mix_test: 0 failures
+#### step 77 mix_test: PASS in 4.6s
+
+#### step 83: gifts: the Marked and boss powers (shard 4/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 83 gifts: the Marked and boss powers: PASS in 6.8s
+
+#### step 89: campaign: battles, projects, colonies, big mines (shard 4/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 89 campaign: battles, projects, colonies, big mines: PASS in 6.3s
+
+#### step 95: street_bat_test (shard 4/6)
+street_bat_test: 0 fails
+#### step 95 street_bat_test: PASS in 2.6s
+
+#### step 101: campaign_c3_test (shard 4/6)
+campaign_c3_test: 0 fails
+#### step 101 campaign_c3_test: PASS in 2.6s
+
+#### step 107: story: every chapter plays to the end (shard 4/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 107 story: every chapter plays to the end: PASS in 10.9s
+
+#### step 113: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 4/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 113 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.8s
+
+#### step 119: hidden areas stay put day to day (C5) (shard 4/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 119 hidden areas stay put day to day (C5): PASS in 4.7s
+
+#### step 125: softlocks: every menu/screen leaves on B, dialogues always finish (shard 4/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 125 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.9s
+
+#### step 131: C7 P3: endings and epilogue (shard 4/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 131 C7 P3: endings and epilogue: PASS in 2.6s
+
+#### step 137: C11b P6: C11b creature voices and ranch sound (shard 4/6)
+== C11b P6: C11b creature voices and ranch sound ==
+ranch_audio_c11b_test: OK
+#### step 137 C11b P6: C11b creature voices and ranch sound: PASS in 2.5s
+
+#### step 143: C9 P1: controller bindings and field play (shard 4/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 143 C9 P1: controller bindings and field play: PASS in 3.4s
+
+#### step 149: C9 P6: forest border buckets (shard 4/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 149 C9 P6: forest border buckets: PASS in 4.0s
+
+#### shard 4/6 done in 237s: PASS

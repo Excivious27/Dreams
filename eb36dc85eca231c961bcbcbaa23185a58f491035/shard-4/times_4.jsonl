@@ -1,0 +1,26 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 68.6}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 33.8}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.7}
+{"step": 17, "name": "touch_ui_test", "rc": 0, "secs": 39.5}
+{"step": 23, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 4.6}
+{"step": 29, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.5}
+{"step": 35, "name": "rec_reno_test", "rc": 0, "secs": 2.5}
+{"step": 41, "name": "farm_week_test", "rc": 0, "secs": 5.4}
+{"step": 47, "name": "anim_test", "rc": 0, "secs": 2.9}
+{"step": 53, "name": "ranch_p2_test", "rc": 0, "secs": 2.5}
+{"step": 59, "name": "early_gating_test", "rc": 0, "secs": 3.5}
+{"step": 65, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.7}
+{"step": 71, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.6}
+{"step": 77, "name": "mix_test", "rc": 0, "secs": 4.6}
+{"step": 83, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.8}
+{"step": 89, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 6.3}
+{"step": 95, "name": "street_bat_test", "rc": 0, "secs": 2.6}
+{"step": 101, "name": "campaign_c3_test", "rc": 0, "secs": 2.6}
+{"step": 107, "name": "story: every chapter plays to the end", "rc": 0, "secs": 10.9}
+{"step": 113, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.8}
+{"step": 119, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 4.7}
+{"step": 125, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 6.9}
+{"step": 131, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 2.6}
+{"step": 137, "name": "C11b P6: C11b creature voices and ranch sound", "rc": 0, "secs": 2.5}
+{"step": 143, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 3.4}
+{"step": 149, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 4.0}

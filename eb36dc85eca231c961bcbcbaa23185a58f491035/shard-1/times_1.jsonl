@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 185.0}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 49.7}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.2}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 42.3}
+{"step": 20, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 4.1}
+{"step": 26, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 0, "secs": 2.5}
+{"step": 32, "name": "rec_test", "rc": 0, "secs": 4.9}
+{"step": 38, "name": "cash_test", "rc": 0, "secs": 3.5}
+{"step": 44, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 50, "name": "commons_test", "rc": 0, "secs": 37.5}
+{"step": 56, "name": "cf_volunteer_test", "rc": 0, "secs": 6.7}
+{"step": 62, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 68, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 74, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 25.9}
+{"step": 80, "name": "workshop: stations at run time", "rc": 0, "secs": 3.9}
+{"step": 86, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 7.1}
+{"step": 92, "name": "campaign_story_test", "rc": 0, "secs": 3.0}
+{"step": 98, "name": "campaign_gate_test", "rc": 0, "secs": 5.8}
+{"step": 104, "name": "move_speed_test", "rc": 0, "secs": 4.2}
+{"step": 110, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 6.1}
+{"step": 116, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.5}
+{"step": 122, "name": "arcade_test", "rc": 0, "secs": 3.1}
+{"step": 128, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.2}
+{"step": 134, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 2.6}
+{"step": 140, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.3}
+{"step": 146, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.6}
+{"step": 152, "name": "C10b P4: casino", "rc": 0, "secs": 2.9}

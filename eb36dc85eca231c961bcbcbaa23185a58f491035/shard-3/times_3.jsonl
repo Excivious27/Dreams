@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 201.0}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 19.5}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 4.5}
+{"step": 16, "name": "phone_ui_test", "rc": 0, "secs": 12.9}
+{"step": 22, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 3.7}
+{"step": 28, "name": "C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli", "rc": 0, "secs": 3.5}
+{"step": 34, "name": "rec_links_test", "rc": 0, "secs": 3.6}
+{"step": 40, "name": "coop_test", "rc": 0, "secs": 3.6}
+{"step": 46, "name": "crop_test", "rc": 0, "secs": 37.0}
+{"step": 52, "name": "ranch_test", "rc": 0, "secs": 4.1}
+{"step": 58, "name": "cf_layout_test", "rc": 0, "secs": 11.4}
+{"step": 64, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 11.2}
+{"step": 70, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.6}
+{"step": 76, "name": "danger_music_test", "rc": 0, "secs": 32.0}
+{"step": 82, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 5.0}
+{"step": 88, "name": "every script compiles", "rc": 0, "secs": 4.9}
+{"step": 94, "name": "quest_tracker_test", "rc": 0, "secs": 5.3}
+{"step": 100, "name": "campaign_words_test", "rc": 0, "secs": 3.7}
+{"step": 106, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 21.2}
+{"step": 112, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 10.2}
+{"step": 118, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 28.9}
+{"step": 124, "name": "rec_games_test", "rc": 0, "secs": 3.5}
+{"step": 130, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 6.3}
+{"step": 136, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 3.4}
+{"step": 142, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 12.0}
+{"step": 148, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.4}
+{"step": 154, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 5.4}

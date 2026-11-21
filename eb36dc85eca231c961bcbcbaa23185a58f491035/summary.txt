@@ -1,0 +1,75 @@
+CONDUCT CI FAIL  eb36dc85ec  (ci/c11bi-517d365a, run 44857384777)
+
+check shards (6/6):
+  shard 1: PASS  420s
+  shard 2: PASS  210s
+  shard 3: PASS  462s
+  shard 4: PASS  237s
+  shard 5: PASS  205s
+  shard 6: FAIL  341s  failed: workshop: no dead ends
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 88s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 147s  0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 95s  0 fails, 0 warns, 359 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "colony_kelp",
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 164s  0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes ["ruins", "wastes", "stat
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "colony
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 161s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 56s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "hollow_
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 108s  0 fails, 0 warns, 360 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 144s  0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes ["jungle", "mine", "ruins
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 113s  0 fails, 0 warns, 360 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon
+playtest: PASS  65s  21 screenshots (results playtest/shots/)
+RELAY: ok, 34ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 17s
+
+longest job: 462s
+slowest check steps: import 201.0s; import 185.0s; import 143.9s; import 87.5s; import 71.8s; import 68.6s; smoke test 49.7s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 42.3s
+distinct errors/fails/warns:
+    1  FAIL penguins: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+    1  FAIL penguins: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+    1  FAIL penguins: recipe star_yarn at loom can never be made; missing ['star_wool']
+    1  FAIL penguins: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+    1  FAIL penguins: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+    1  FAIL penguins: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+    1  FAIL penguins: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+    1  FAIL penguins: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+    1  FAIL penguins: recipe feather_fan_plume at loom can never be made; missing ['plume']
+    1  FAIL penguins: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+    1  FAIL penguins: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+    1  FAIL penguins: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL penguins: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+    1  FAIL penguins: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL penguins: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+    1  FAIL penguins: recipe moon_cheese at press can never be made; missing ['moon_milk']
+    1  FAIL penguins: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+    1  FAIL penguins: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+    1  FAIL penguins: recipe ember_charm at jeweler can never be made; missing ['ember_scale']
+    1  FAIL gangsters: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+    1  FAIL gangsters: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+    1  FAIL gangsters: recipe star_yarn at loom can never be made; missing ['star_wool']
+    1  FAIL gangsters: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+    1  FAIL gangsters: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+    1  FAIL gangsters: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+    1  FAIL gangsters: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+    1  FAIL gangsters: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+    1  FAIL gangsters: recipe feather_fan_plume at loom can never be made; missing ['plume']
+    1  FAIL gangsters: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+    1  FAIL gangsters: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+    1  FAIL gangsters: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL gangsters: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+    1  FAIL gangsters: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL gangsters: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+    1  FAIL gangsters: recipe moon_cheese at press can never be made; missing ['moon_milk']
+    1  FAIL gangsters: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+    1  FAIL gangsters: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+    1  FAIL gangsters: recipe ember_charm at jeweler can never be made; missing ['ember_scale']
