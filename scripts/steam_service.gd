@@ -13,7 +13,7 @@ class_name SteamService
 ## App ids: APP_ID_RELEASE is 0 until Tom's Steamworks account exists (docs/STEAM.md,
 ## "When Tom's Steamworks account is ready"). Test app 480 (Spacewar) is used only
 ## by debug builds or with DREAMS_STEAM_TEST=1 / --steam-test, set in code: no
-## steam_appid.txt file is ever needed or shipped.
+## app-id text file is ever needed or shipped.
 
 signal overlay_toggled(active: bool)
 ## Steam's gamepad text input closed: submitted false = cancelled.

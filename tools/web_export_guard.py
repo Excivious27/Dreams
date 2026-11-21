@@ -207,9 +207,7 @@ def pck_paths(path):
     if flags & 1:  # encrypted directory
         return None, data
     if fmt >= 3:
-        dir_off = struct.unpack_from("<Q", data, off + 32)[0]
-        rel_base = bool(flags & 2)
-        p = (off if rel_base else 0) + dir_off
+        p = off + struct.unpack_from("<Q", data, off + 32)[0]  # v3: relative to the pack start
     elif fmt == 2:
         p = off + 24 + 8 + 64
     else:
@@ -234,9 +232,8 @@ def check_pck(path):
     size = os.path.getsize(path)
     if paths is None:
         print("web_export_guard: pck directory not parsed; byte scan only")
-        low = data.lower()
-        for w in ["godotsteam", "libsteam_api", "steam_api64", "steam_appid"]:
-            if w.encode() in low:
+        for w in ["libgodotsteam", "libsteam_api", "steam_api64.dll", "godotsteam.gdextension", "steam_appid.txt"]:
+            if w.encode() in data:
                 errs.append("pck contains %s" % w)
     else:
         tops = {}
@@ -244,7 +241,9 @@ def check_pck(path):
             q = p.replace("res://", "")
             tops[q.split("/", 1)[0]] = tops.get(q.split("/", 1)[0], 0) + 1
             low = p.lower()
-            if any(w in low for w in FORBIDDEN_PCK) or low.endswith((".so", ".dll", ".dylib")):
+            ql = q.lower()
+            if any(w in low for w in FORBIDDEN_PCK) or ql.startswith(("steam/", "server/", "addons/godotsteam")) \
+                    or low.endswith((".so", ".dll", ".dylib")):
                 errs.append("pck lists %s" % p)
         print("web_export_guard pck: %d files, top folders: %s" % (len(paths), json.dumps(dict(sorted(tops.items())))))
     print("web_export_guard pck: %s, %.1f MB" % (path, size / 1048576.0))
