@@ -103758,6 +103758,51 @@
    "h": 60,
    "w": 80
   },
+  "c14p2_bench_curved": {
+   "file": "props/c14p2_bench_curved.png",
+   "h": 47,
+   "w": 84
+  },
+  "c14p2_bench_iron": {
+   "file": "props/c14p2_bench_iron.png",
+   "h": 54,
+   "w": 70
+  },
+  "c14p2_cafe_table": {
+   "file": "props/c14p2_cafe_table.png",
+   "h": 64,
+   "w": 84
+  },
+  "c14p2_cafe_umbrella": {
+   "file": "props/c14p2_cafe_umbrella.png",
+   "h": 134,
+   "w": 92
+  },
+  "c14p2_drink_fountain": {
+   "file": "props/c14p2_drink_fountain.png",
+   "h": 71,
+   "w": 40
+  },
+  "c14p2_flower_kiosk": {
+   "file": "props/c14p2_flower_kiosk.png",
+   "h": 127,
+   "w": 104
+  },
+  "c14p2_mosaic": {
+   "file": "props/c14p2_mosaic.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p2_signpost": {
+   "file": "props/c14p2_signpost.png",
+   "h": 84,
+   "w": 52
+  },
+  "c14p2_tree_planter": {
+   "file": "props/c14p2_tree_planter.png",
+   "h": 146,
+   "w": 92
+  },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
    "h": 125,
@@ -117068,6 +117113,14 @@
    "frames": 4,
    "h": 32,
    "w": 84
+  },
+  "c14p2_flag": {
+   "cell_h": 32,
+   "cell_w": 32,
+   "cols": 8,
+   "file": "tiles/c14p2_flag.png",
+   "h": 64,
+   "w": 256
   },
   "cave_chasm_bl_0": {
    "file": "tiles/cave_chasm_bl_0.png",

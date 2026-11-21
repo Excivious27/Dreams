@@ -8,6 +8,7 @@ extends GameMap
 ## the river, an orchard on the far bank. Buildings are drawn at 0.8 scale so a
 ## house is a house next to a 26 px hero. Villagers follow routines (npcs.json).
 
+const TriBatch := preload("res://scripts/tri_batch.gd")  # the plaza kerb ring: one draw call
 const FOUNTAIN_LUCK_MIN := 120  # the plaza fountain's daily luck (C8 P6)
 const FARM_EXIT := Rect2i(38, 0, 6, 2)
 const BEACH_EXIT := Rect2i(38, 94, 6, 2)
@@ -20,6 +21,10 @@ const PLAZA_R := 9.5
 const RIVER_X := Rect2i(68, 0, 5, 96)
 const BRIDGES := [Rect2i(68, 45, 5, 6), Rect2i(68, 76, 5, 3)]
 const FOUNTAIN_C := Vector2i(38, 46)
+## Dirt side lanes to the districts (draw_map paints them; props and lamps keep off them, c14_03-20).
+const LANES := [Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)]
+## The town hall's front steps: stone, not a dirt blob (c14_03-10).
+const HALL_STEPS := Rect2i(53, 42, 2, 3)
 
 ## Where each villager stands when their routine says "outside" (see npcs.json
 ## "routine": places map to these spots; "work"/"home" are indoors).
@@ -41,6 +46,12 @@ var npcs: Array = []
 var _orchard_watch := false
 var _plaza := {}
 var _river := {}
+## C14 P2 (c14_03-14/-18/-20): visual footprints of placed props (anchor rows c.y-1..c.y,
+## sprite width), so festival props, plaza dressing, lamps and shop clutter never stack.
+var _occ := {}
+## Every guarded placement: [name, Rect2i footprint, festival?] (town_props_test reads it).
+var placed: Array = []
+var _lane_cells := {}
 
 
 func scene_id() -> String:
@@ -385,9 +396,11 @@ func _place_festival(fest: String) -> void:
 	var pf := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
 		if Art.has(P, name):
 			prop(P, name, c, w, 0.0, solid)
+			_claim(_foot(P, name, c, w), name, true)
 	var af := func(name: String, c: Vector2i, fps := 5.0) -> void:
 		if Art.has(P, name):
 			anim_prop(P, name, c, 0, fps)
+			_claim(_foot(P, name, c, 0), name, true)
 	match fest:
 		"egg":
 			pf.call("fest_ss_02", Vector2i(40, 38), 1); pf.call("fest_ss_06", Vector2i(39, 58), 2); pf.call("fest_ss_07", Vector2i(44, 36), 3)
@@ -405,8 +418,8 @@ func _place_festival(fest: String) -> void:
 				pf.call("fest_ss_72", c, 1)
 		"harvest":
 			pf.call("fest_fw_00", Vector2i(33, 42)); pf.call("fest_fw_01", Vector2i(47, 42)); pf.call("fest_fw_02", Vector2i(40, 38), 1)
-			pf.call("fest_fw_05", Vector2i(34, 56)); pf.call("fest_fw_04", Vector2i(46, 56)); pf.call("fest_fw_13", Vector2i(39, 55), 2)
-			pf.call("fest_fw_09", Vector2i(31, 48)); pf.call("fest_fw_10", Vector2i(49, 48)); pf.call("fest_fw_11", Vector2i(31, 56)); pf.call("fest_fw_12", Vector2i(49, 56))
+			pf.call("fest_fw_05", Vector2i(35, 56)); pf.call("fest_fw_04", Vector2i(46, 56)); pf.call("fest_fw_13", Vector2i(39, 55), 2)
+			pf.call("fest_fw_09", Vector2i(31, 48)); pf.call("fest_fw_10", Vector2i(49, 48)); pf.call("fest_fw_11", Vector2i(32, 59)); pf.call("fest_fw_12", Vector2i(49, 56))
 			pf.call("fest_fw_15", Vector2i(44, 60)); pf.call("fest_fw_16", Vector2i(36, 60))
 			for c: Vector2i in [Vector2i(34, 36), Vector2i(46, 36)]:
 				pf.call("fest_fw_22", c, 1, false)
@@ -837,10 +850,7 @@ func _dress_buildings() -> void:
 	var pl := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
 		name = WorldGen.winter_look("props", name)  # winter planters
 		if Art.has("props", name) and not things.has(c) and not _door_paths.has(c) and not _river.has(c) and not _river.has(c + Vector2i(w, 0)):
-			if int(Art.info("props", name).get("frames", 1)) > 1:
-				anim_prop("props", name, c, w, 4.0, solid)
-			else:
-				prop("props", name, c, w, 0.0, solid)
+			_pp("props", name, c, w, 0.0, solid, 4.0 if int(Art.info("props", name).get("frames", 1)) > 1 else 0.0)
 	# Crew shops that moved in dress their own lot (c5_02 #2): a crew flag in the gangster arc.
 	var crew := func(flag: String) -> bool:
 		return not GameState.is_penguins() and GameState.run["flags"].has(flag)
@@ -858,7 +868,7 @@ func _dress_buildings() -> void:
 	# Town hall: lamps and benches either side of the steps.
 	pl.call("bench2_iron_a", Vector2i(44, 43), 1); pl.call("bench2_iron_b", Vector2i(60, 43), 1)
 	# Potions (Wren): cauldron, herb planters, preserves.
-	pl.call("cauldron2", Vector2i(44, 62)); pl.call("planter2_3", Vector2i(57, 62)); pl.call("preserves_jar", Vector2i(45, 63))
+	pl.call("cauldron2", Vector2i(44, 60)); pl.call("planter2_3", Vector2i(58, 60)); pl.call("preserves_jar", Vector2i(46, 60))  # off the potion lane (c14_03-20)
 	# Inn (Bram): barrels, a card table, umbrellas for the terrace.
 	pl.call("barrel2_a", Vector2i(56, 61)); pl.call("barrel_a", Vector2i(57, 62)); pl.call("umbrella_red", Vector2i(64, 61), 1); pl.call("card_table", Vector2i(65, 62), 1)
 	# Library (Theo): a bench under a lamp.
@@ -898,10 +908,15 @@ func _dress_buildings() -> void:
 
 
 func _place_props() -> void:
-	_dress_buildings()
+	_occ.clear()
+	placed.clear()
+	_lane_cells = cells_of(LANES + [HALL_STEPS, RecCenter.lane_rect(), AVENUE_X, AVENUE_Y])
+	for c in _plaza:
+		_lane_cells.erase(c)
 	var fest := GameState.festival_today()
 	if fest != "":
-		_place_festival(fest)
+		_place_festival(fest)  # first: its props claim their cells, permanent ones step aside (c14_03-14)
+	_dress_buildings()
 	# Market stalls on the plaza's north-west, a notice board, benches, flowers.
 	var i := 0
 	var open_hours := int(GameState.run["time"]) >= 8 * 60 and int(GameState.run["time"]) < 18 * 60
@@ -916,25 +931,25 @@ func _place_props() -> void:
 			if (MARKET_STALLS[ms][0] as Vector2i) == c:
 				set_thing(c.x + 1, c.y, {"type": "market_stall", "who": ms, "hint": "A: %s's stall" % str(GameState.npcs.get(ms, {}).get("name", ms))}, false)
 		i += 1
-	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
+	_pp("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
 	for bx in [35, 36]:
 		# On the board itself (its cells are solid) and the row in front of it,
 		# so it answers whether you face it or stand right at it.
 		things[Vector2i(bx, 42)] = {"type": "board", "hint": "A: community board"}
 		set_thing(bx, 43, {"type": "board", "hint": "A: community board"}, false)
-	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
-	if Art.has("props", "statue2_horse"):
-		prop("props", "statue2_horse", Vector2i(12, 36), 1)
+	_pp("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
+	if Art.has("props", "statue2_horse"):  # on the park's open lawn, clear of the bandstand (c14_03-18)
+		_pp("props", "statue2_horse", Vector2i(16, 41), 1)
 	if Art.has("props", "statue2_crystal") and GameState.is_penguins():  # a crystal monument is penguin-arc lore (c5_02 #3)
-		prop("props", "statue2_crystal", Vector2i(58, 60), 1)
+		_pp("props", "statue2_crystal", Vector2i(58, 60), 1)
 	for c: Vector2i in [Vector2i(31, 43), Vector2i(49, 43), Vector2i(31, 53), Vector2i(49, 53)]:
 		var bn: String = ["bench2_wood_a", "bench2_green_a", "bench2_iron_a"][(c.x + c.y) % 3]
-		prop("props", bn if Art.has("props", bn) else ["bench_wood", "bench_green"][c.x % 2], c, 1)
+		_pp("props", bn if Art.has("props", bn) else ["bench_wood", "bench_green"][c.x % 2], c, 1)
 	# Planters and bunting around the plaza, a hedge arch into the park.
 	if Art.has("props", "planter2_0"):
 		i = 0
 		for c: Vector2i in [Vector2i(33, 38), Vector2i(47, 38), Vector2i(33, 58), Vector2i(47, 58)]:
-			prop("props", WorldGen.winter_look("props", "planter2_%d" % (i % 4)), c)
+			_pp("props", WorldGen.winter_look("props", "planter2_%d" % (i % 4)), c)
 			i += 1
 	if Art.has("props", "bunting_red"):
 		i = 0
@@ -945,42 +960,46 @@ func _place_props() -> void:
 		prop("props", "hedge2_arch", Vector2i(28, 44), 1, 0.0, false)
 	if Art.has("props", "bed2_long_0"):
 		for c: Vector2i in [Vector2i(14, 46), Vector2i(14, 49), Vector2i(26, 46), Vector2i(26, 49)]:
-			prop("props", "bed2_long_%d" % ((c.x + c.y) % 8), c, 1)
+			_pp("props", "bed2_long_%d" % ((c.x + c.y) % 8), c, 1)
 	var fb := ["flowerbed_red", "flowerbed_blue", "flowerbed_pink", "flowerbed_yellow"]
 	i = 0
-	for c: Vector2i in [Vector2i(30, 40), Vector2i(50, 40), Vector2i(30, 56), Vector2i(50, 56), Vector2i(36, 36), Vector2i(44, 36), Vector2i(36, 59), Vector2i(44, 59)]:
-		prop("props", fb[i % 4], c, 1)
+	for c: Vector2i in [Vector2i(30, 40), Vector2i(50, 40), Vector2i(28, 57), Vector2i(50, 56), Vector2i(36, 36), Vector2i(44, 36), Vector2i(36, 59), Vector2i(44, 59)]:  # (28,57): off the well
+		_pp("props", fb[i % 4], c, 1)
 		i += 1
 	for c: Vector2i in [Vector2i(50, 42), Vector2i(55, 42), Vector2i(60, 25), Vector2i(63, 25)]:
-		prop("props", ["topiary_a", "topiary_b"][c.x % 2], c)
+		_pp("props", ["topiary_a", "topiary_b"][c.x % 2], c)
 	# Lamps along both avenues.
 	for y in range(6, 92, 8):
 		if y > 40 and y < 56:
 			continue
-		prop("props", _lamp_name(y), Vector2i(36, y))
-		prop("props", _lamp_name(y), Vector2i(45, y))
+		_lamp(Vector2i(36, y), Vector2i(0, 1))
+		_lamp(Vector2i(45, y), Vector2i(0, 1))
 	for x in range(6, 80, 8):
 		if (x > 28 and x < 54) or (x > 66 and x < 74) or x == 78:  # 78: the clinic/chapel lane crosses there
 			continue
-		prop("props", _lamp_name(x), Vector2i(x, 43))
-		prop("props", _lamp_name(x), Vector2i(x, 52))
+		if x == 14:
+			x = 16  # not in front of the bandstand (c14_03-18)
+		_lamp(Vector2i(x, 43), Vector2i(1, 0))
+		_lamp(Vector2i(x, 52), Vector2i(1, 0))
 	# Across the bridge the east road ran dark and flat at night (c5_02 #10): lamps there too.
 	for x in [75, 82]:
 		for y in [43, 52]:
 			if not things.has(Vector2i(x, y)) and not _river.has(Vector2i(x, y)) and not blocked.has(Vector2i(x, y)):
-				prop("props", _lamp_name(x), Vector2i(x, y))
+				_lamp(Vector2i(x, y), Vector2i(1, 0))
+	_dress_plaza()
 	# Wells, carts, crates: the working edges of town.
-	prop("buildings", "well", Vector2i(30, 56), 2)
-	prop("props", "well_stone", Vector2i(60, 32), 1)
-	prop("props", "cart_full", Vector2i(23, 31), 1)
-	prop("props", "crates_a", Vector2i(36, 22))
-	prop("props", "crates_b", Vector2i(36, 23))
-	prop("props", "barrel_a", Vector2i(24, 29))
-	prop("props", "hay", Vector2i(35, 89))
+	if prop("buildings", "well", Vector2i(30, 56), 2):
+		_claim(_foot("buildings", "well", Vector2i(30, 56), 2), "well", false)
+	_pp("props", "well_stone", Vector2i(60, 32), 1)
+	_pp("props", "cart_full", Vector2i(23, 31), 1)
+	_pp("props", "crates_a", Vector2i(37, 24))  # off the avenue lamp (c14_03-20)
+	_pp("props", "crates_b", Vector2i(37, 26))
+	_pp("props", "barrel_a", Vector2i(24, 29))
+	_pp("props", "hay", Vector2i(35, 89))
 	prop("props", "farm_cart" if Art.has("props", "farm_cart") else "cart", Vector2i(26, 90), 1)
-	prop("props", "signpost_cluster" if Art.has("props", "signpost_cluster") else "signpost", Vector2i(44, 4))
+	_pp("props", "signpost_cluster" if Art.has("props", "signpost_cluster") else "signpost", Vector2i(44, 4))
 	for c: Vector2i in [Vector2i(8, 56), Vector2i(8, 70), Vector2i(76, 68)]:
-		prop("props", "lantern_lit", c)
+		_pp("props", "lantern_lit", c)
 	# Garden fences and hedges around the cottages' plots.
 	_fence_rect(Rect2i(7, 52, 12, 11), Vector2i(13, 62))
 	_fence_rect(Rect2i(18, 59, 11, 10), Vector2i(23, 68))
@@ -1018,6 +1037,94 @@ func _place_props() -> void:
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 33, 22, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 34, 30, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 35, 18, ["pigeon", "pigeon", "sparrow", "cat_orange", "cat_grey", "butterfly_blue", "butterfly_yellow", "duck"])
+
+
+## C14 P2: a placed prop's visual footprint: its two bottom rows, as wide as the sprite.
+func _foot(group: String, name: String, c: Vector2i, w := 0) -> Rect2i:
+	var inf := Art.info(group, name)
+	var fr := maxi(1, int(inf.get("frames", 1)))
+	var tw := float(inf.get("cell_w", float(inf.get("w", 32)) / fr)) * 0.5
+	var wc := maxi(w + 1, int(round(tw / TILE)))
+	return Rect2i(c.x + (w + 1) / 2 - wc / 2, c.y - 1, wc, 2)
+
+
+func _free(r: Rect2i) -> bool:
+	for y in range(r.position.y, r.end.y):
+		for x in range(r.position.x, r.end.x):
+			if _occ.has(Vector2i(x, y)):
+				return false
+	return true
+
+
+func _claim(r: Rect2i, name: String, fest: bool) -> void:
+	for y in range(r.position.y, r.end.y):
+		for x in range(r.position.x, r.end.x):
+			_occ[Vector2i(x, y)] = true
+	placed.append([name, r, fest])
+
+
+## Guarded prop: skipped when its footprint meets one already placed (festival props
+## first) or, if solid, its base row sits on a lane/avenue. True when placed.
+func _pp(group: String, name: String, c: Vector2i, w := 0, dy := 0.0, solid := true, fps := 0.0) -> bool:
+	if not Art.has(group, name):
+		return false
+	var r := _foot(group, name, c, w)
+	if not _free(r) or things.has(c):
+		return false
+	if solid:
+		for x in range(c.x, c.x + w + 1):
+			if _lane_cells.has(Vector2i(x, c.y)):
+				return false
+	if fps > 0.0:
+		anim_prop(group, name, c, w, fps, solid)
+	else:
+		prop(group, name, c, w, dy, solid)
+	_claim(r, name, false)
+	return true
+
+
+## A street lamp: tries the cell, then one step either way along `along` (c14_03-20).
+func _lamp(c: Vector2i, along: Vector2i) -> bool:
+	for d in [0, 1, -1]:
+		var cc: Vector2i = c + along * d
+		if not blocked.has(cc) and not _river.has(cc) and _pp("props", _lamp_name(cc.x + cc.y), cc):
+			return true
+	return false
+
+
+## C14 P2 (c14_03-04/-05/-19): the plaza is dressed: a lamp ring on the rim (it was the
+## darkest place in town at night), shade trees in iron planters, curved benches facing the
+## fountain, a flower kiosk and a cafe terrace, a drinking fountain and signposts at the
+## avenue mouths. Festival props claim their cells first; the cross of the avenues to the
+## fountain stays open (town_props_test walks it).
+func _dress_plaza() -> void:
+	for k in 8:
+		var a := deg_to_rad([30.0, 60.0, 120.0, 150.0, 210.0, 240.0, 300.0, 330.0][k])
+		var c := Vector2i(floori(PLAZA_C.x + cos(a) * 8.2), floori(PLAZA_C.y + sin(a) * 8.2))
+		if not _cross(c):
+			_pp("props", _lamp_name(k), c)
+	for c: Vector2i in [Vector2i(35, 42), Vector2i(46, 42), Vector2i(35, 53), Vector2i(46, 53)]:
+		if not _cross(c):
+			_pp("props", "c14p2_tree_planter", c)
+	_pp("props", "c14p2_bench_curved", Vector2i(40, 43), 1)
+	_pp("props", "c14p2_bench_curved", Vector2i(40, 53), 1)
+	_pp("props", "c14p2_flower_kiosk", Vector2i(33, 51), 1)
+	_pp("props", "c14p2_cafe_umbrella", Vector2i(47, 51), 1)
+	_pp("props", "c14p2_cafe_table", Vector2i(46, 56), 1)
+	_pp("props", "c14p2_drink_fountain", Vector2i(34, 40))
+	if GameState.is_penguins():
+		for c: Vector2i in [Vector2i(37, 34), Vector2i(46, 61), Vector2i(27, 44), Vector2i(53, 53)]:
+			if _pp("props", "c14p2_signpost", c):
+				set_thing(c.x, c.y, {"type": "sign", "text": _sign_words(c), "hint": "A: read the sign"}, false)
+
+
+func _sign_words(c: Vector2i) -> String:
+	return "▲ farm   ▼ beach\n◀ %s   mountain ▶" % Commons.short_name()
+
+
+## The avenue cross into the fountain (kept walkable).
+func _cross(c: Vector2i) -> bool:
+	return (c.x >= AVENUE_X.position.x and c.x < AVENUE_X.end.x) or (c.y >= AVENUE_Y.position.y and c.y < AVENUE_Y.end.y)
 
 
 func _fence_rect(r: Rect2i, gate: Vector2i) -> void:
@@ -1373,7 +1480,7 @@ func draw_map() -> void:
 		var r_roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
 		for c in _plaza:
 			r_roads.erase(c)
-		var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2), RecCenter.lane_rect()])
+		var lanes_base := cells_of(LANES + [HALL_STEPS, RecCenter.lane_rect()])
 		var all_roads := r_roads.duplicate()
 		all_roads.merge(lanes_base)
 		_carve_door_paths(all_roads)
@@ -1384,17 +1491,12 @@ func draw_map() -> void:
 	var roads: Dictionary = rm["roads"]
 	var lanes: Dictionary = rm["lanes"]
 	draw_ground("cobble", roads)
-	draw_ground("dirt", lanes)
-	# The plaza: flagstones in a circle, a ring of brick at the edge.
-	Footsteps.mark(self, _plaza, "stone")
-	if Art.has("tiles", "flagstone"):
-		for ring in [false, true]:  # flagstones, then the brick ring: each tile is its own cell, so two batches
-			for c: Vector2i in _plaza:
-				var d := Vector2(c.x + 0.5, c.y + 0.5).distance_to(PLAZA_C)
-				if (d > PLAZA_R - 1.2 and Art.has("tiles", "brick_road")) == ring:
-					Art.draw_tile(self, "tiles", "brick_road" if ring else "flagstone", Vector2(c * TILE), 4)
-	else:
-		draw_ground("stone", _plaza)
+	var steps := cells_of([HALL_STEPS])
+	var dirt := lanes.duplicate()
+	for c in steps:
+		dirt.erase(c)
+	draw_ground("dirt", dirt)
+	_draw_plaza(steps)
 	# The river and the pond.
 	if border_water_extra.is_empty():
 		draw_water(_river, "river" if Art.has("tiles", "river_top_0") else "grass")
@@ -1407,6 +1509,56 @@ func draw_map() -> void:
 		draw_building(46, 30, 12, 11, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
 	if pad == 0:
 		draw_fence_border()
+
+
+## C14 P2 (c14_03-02/-03): the plaza floor is four flagstone variants picked per 2x2 block
+## by hash, a compass-star mosaic round the fountain, and a smooth brick kerb ring (a
+## TriBatch annulus over the cell steps, lighter stone thresholds at the four avenue mouths).
+func _draw_plaza(steps: Dictionary) -> void:
+	Footsteps.mark(self, _plaza, "stone")
+	Footsteps.mark(self, steps, "stone")
+	if not Art.has("tiles", "c14p2_flag"):
+		draw_ground("stone", _plaza)
+		draw_ground("stone", steps)
+		return
+	for src: Dictionary in [_plaza, steps]:
+		for c: Vector2i in src:
+			Art.draw_tile(self, "tiles", "c14p2_flag", Vector2(c * TILE), plaza_flag_index(c))
+	var ctr := PLAZA_C * TILE
+	var mt := Art.tex("props", "c14p2_mosaic")
+	if mt:
+		var ms := 8.0 * TILE
+		TriBatch.tex_rect(self, mt, Rect2(ctr - Vector2(ms, ms) / 2.0, Vector2(ms, ms)))
+	var tb := TriBatch.new()
+	var r_in := (PLAZA_R - 0.45) * TILE
+	var r_out := (PLAZA_R + 0.78) * TILE
+	var mid := (r_in + r_out) / 2.0
+	var wid := r_out - r_in
+	tb.arc(ctr, mid, 0.0, TAU, 72, Color("a3543e"), wid)
+	tb.arc(ctr, mid + wid * 0.22, 0.0, TAU, 72, Color("bf6a50"), wid * 0.3)  # the cap's sunlit top
+	for k in 4:  # paved thresholds where the avenues come in
+		var a0 := k * PI / 2.0
+		tb.arc(ctr, mid, a0 - 0.30, a0 + 0.30, 8, Color("d8c09a"), wid)
+	for k in 96:  # mortar joints
+		var a := k * TAU / 96.0
+		var near_mouth := false
+		for q in 4:
+			if absf(angle_difference(a, q * PI / 2.0)) < 0.31:
+				near_mouth = true
+		if near_mouth:
+			continue
+		var dv := Vector2(cos(a), sin(a))
+		tb.seg(ctr + dv * r_in, ctr + dv * r_out, Color(0.36, 0.17, 0.12, 0.7), 0.8)
+	tb.arc(ctr, r_out, 0.0, TAU, 72, Color(0.22, 0.14, 0.09, 0.85), 1.2)
+	tb.arc(ctr, r_in, 0.0, TAU, 72, Color(0.3, 0.18, 0.12, 0.6), 1.0)
+	tb.flush(self)
+
+
+## Flagstone cell index in tiles/c14p2_flag: variant (plain/cracked/moss/brass) per 2x2 block.
+static func plaza_flag_index(c: Vector2i) -> int:
+	var h := absi(hash(Vector2i(c.x >> 1, c.y >> 1))) % 100
+	var v := 0 if h < 58 else (1 if h < 76 else (2 if h < 92 else 3))
+	return v * 2 + (c.x & 1) + (c.y & 1) * 8
 
 
 ## The avenues are cobbled out through the band (draw_map); the base dirt corridor would cover them.

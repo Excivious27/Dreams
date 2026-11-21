@@ -1186,3 +1186,10 @@ echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
 if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
   echo "UI cue test failed"; exit 1
 fi
+
+echo "== town props (C14 P2) =="
+tpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/town_props_test.gd 2>&1)"
+echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
+if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
+  echo "town_props_test failed"; exit 1
+fi
