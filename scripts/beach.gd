@@ -25,7 +25,7 @@ var _tip := Vector2i.ZERO
 var _quay := {}  # the marina quay (boardwalk / concrete), drawn over the sand
 ## HiddenArea reads m.R["hidden"]: one sea-cave pocket in the west rocks (c14_04-23).
 ## Its "paths" keep the pocket off the family beach and the marina footprint.
-var R := {"hidden": {"pockets": 1, "ways": 1}, "paths": [[24, 8, 22, 16], [64, 8, 36, 16]]}
+var R := {"hidden": {"pockets": 1, "ways": 1}, "paths": [[24, 8, 22, 16], [64, 8, 36, 16], [7, 16, 12, 9]]}
 
 
 func scene_id() -> String:
@@ -543,6 +543,14 @@ func _dress_marina() -> void:
 		prop("props", "crane", Vector2i(ox + 28, QUAY_Y - 4), 2, 0.0, true, 0.5)
 		for i in 3:
 			prop("props", ["cargo_red", "cargo_grey", "cargo_yellow"][i], Vector2i(ox + 1 + i * 3, 12), 2, 0.0, true, 0.35)
+	# The marina's people at their posts (baked at load: who is on shift now).
+	var hr := Marina.hour_now()
+	if Marina.npc_here("hollis", hr):
+		prop("props", "c14p3_hollis", Vector2i(ox + 5, QUAY_Y - 3), 0, 0.0, true, 0.3)
+	if mt < 2 or Marina.npc_here("roz", hr):
+		prop("props", "c14p3_roz", Vector2i(CAMP.x + 3, CAMP.y + 1), 0, 0.0, true, 0.3)
+	if Marina.npc_here("ines", hr):
+		prop("props", "c14p3_ines", Vector2i(ox + 18, QUAY_Y - 3), 0, 0.0, true, 0.3)
 	if mt < 1:
 		prop("props", "rowboat2_c" if Art.has("props", "rowboat2_c") else "beached_boat", Vector2i(PIER_X + 3, QUAY_Y - 1), 1, 0.0, false, 0.3)
 		return
@@ -567,6 +575,11 @@ func _dress_marina() -> void:
 			prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4)
 	else:
 		prop("buildings", "lighthouse_broken", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
+	# Lantern Boats (c14_04-13): on the Lantern Festival evening, paper lanterns
+	# float out round the main pier (glow: "lantern" in the name).
+	if GameState.festival_today() == "lantern" and pen:
+		for i in 8:
+			prop("props", "lantern_lit", Vector2i(PIER_X - 4 + (i % 4) * 4, QUAY_Y + 4 + (i / 4) * 6 + i % 2), 0, 0.0, false, 0.4)
 	if mt >= 4:
 		prop("props", "stall2_white", Vector2i(ox + 9, 12), 2, 0.0, true, 0.35)
 		prop("props", "umbrella_yellow", Vector2i(ox + 13, 13), 1, 0.0, true, 0.5)

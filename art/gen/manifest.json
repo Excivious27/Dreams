@@ -103758,6 +103758,21 @@
    "h": 60,
    "w": 80
   },
+  "c14p3_hollis": {
+   "file": "props/c14p3_hollis.png",
+   "h": 96,
+   "w": 45
+  },
+  "c14p3_ines": {
+   "file": "props/c14p3_ines.png",
+   "h": 96,
+   "w": 43
+  },
+  "c14p3_roz": {
+   "file": "props/c14p3_roz.png",
+   "h": 96,
+   "w": 42
+  },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
    "h": 125,
