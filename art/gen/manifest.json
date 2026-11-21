@@ -62588,6 +62588,21 @@
    "file": "decor/ui_tab_decor_sel.png",
    "h": 75,
    "w": 100
+  },
+  "c15p5_winter_wreath": {
+   "file": "decor/c15p5_winter_wreath.png",
+   "h": 48,
+   "w": 46
+  },
+  "c15p5_harvest_table": {
+   "file": "decor/c15p5_harvest_table.png",
+   "h": 54,
+   "w": 64
+  },
+  "c15p5_spring_garland": {
+   "file": "decor/c15p5_spring_garland.png",
+   "h": 30,
+   "w": 64
   }
  },
  "edges": {
@@ -97979,6 +97994,11 @@
    "file": "nature/wood_pile.png",
    "h": 40,
    "w": 48
+  },
+  "c15p5_mid_oak_fall": {
+   "file": "nature/c15p5_mid_oak_fall.png",
+   "h": 96,
+   "w": 87
   }
  },
  "portraits/alien_trader": {
@@ -115823,6 +115843,76 @@
    "file": "props/worm_bin.png",
    "h": 44,
    "w": 65
+  },
+  "c15p5_tree_planter_winter": {
+   "file": "props/c15p5_tree_planter_winter.png",
+   "h": 146,
+   "w": 92
+  },
+  "c15p5_rose_arbour_winter": {
+   "file": "props/c15p5_rose_arbour_winter.png",
+   "h": 84,
+   "w": 76
+  },
+  "c15p5_flower_kiosk_winter": {
+   "file": "props/c15p5_flower_kiosk_winter.png",
+   "h": 127,
+   "w": 104
+  },
+  "c15p5_cafe_umbrella_winter": {
+   "file": "props/c15p5_cafe_umbrella_winter.png",
+   "h": 134,
+   "w": 92
+  },
+  "c15p5_bench_curved_winter": {
+   "file": "props/c15p5_bench_curved_winter.png",
+   "h": 47,
+   "w": 84
+  },
+  "c15p5_bench_iron_winter": {
+   "file": "props/c15p5_bench_iron_winter.png",
+   "h": 54,
+   "w": 70
+  },
+  "c15p5_tree_planter_fall": {
+   "file": "props/c15p5_tree_planter_fall.png",
+   "h": 146,
+   "w": 92
+  },
+  "c15p5_tree_planter_spring": {
+   "file": "props/c15p5_tree_planter_spring.png",
+   "h": 146,
+   "w": 92
+  },
+  "c15p5_flower_kiosk_fall": {
+   "file": "props/c15p5_flower_kiosk_fall.png",
+   "h": 127,
+   "w": 104
+  },
+  "c15p5_city_street_tree_winter": {
+   "file": "props/c15p5_city_street_tree_winter.png",
+   "h": 96,
+   "w": 50
+  },
+  "c15p5_city_street_tree_fall": {
+   "file": "props/c15p5_city_street_tree_fall.png",
+   "h": 96,
+   "w": 50
+  },
+  "c15p5_hedge2_tree_winter": {
+   "file": "props/c15p5_hedge2_tree_winter.png",
+   "h": 111,
+   "w": 83
+  },
+  "c15p5_planter2_mums_fall": {
+   "file": "props/c15p5_planter2_mums_fall.png",
+   "h": 106,
+   "w": 95
+  },
+  "c15p5_planter2_asters_fall": {
+   "file": "props/c15p5_planter2_asters_fall.png",
+   "h": 106,
+   "w": 94
   }
  },
  "riding": {

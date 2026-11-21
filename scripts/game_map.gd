@@ -1819,6 +1819,7 @@ func sky_tint(t: int) -> Color:
 
 
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
+	name = SeasonLook.pick(group, name)  # C15 P5: every outdoor prop takes its look-season twin
 	if _painter_of != null:  # e.g. WorldGen.draw_ground_detail places forage from draw_map
 		return _painter_of.prop(group, name, c, extra_w, dy, solid, scale)
 	var s := Art.sprite(group, name)
