@@ -279,6 +279,7 @@ func _run() -> void:
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["visited"] = {"marsh": [10, 10]}
 	GameState.run["flags"]["sky_seen"] = true
+	GameState.run.erase("campaign")  # an old save has no campaign block (new_run's save already made one)
 	check(Campaign.region_open("marsh") and Campaign.region_open("sky"), "an old save keeps the regions it has seen")
 	check(not Campaign.region_open("quarry"), "but not the ones it hasn't")
 	# ---- gangster arc --------------------------------------------------------------

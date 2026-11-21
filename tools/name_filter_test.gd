@@ -16,5 +16,12 @@ func _initialize() -> void:
 			print("FAIL: should allow %s" % good); fails += 1
 	if NF.clean("sh1t", "Daisy") != "Daisy" or NF.clean("Daisy", "x") != "Daisy":
 		print("FAIL: clean fallback"); fails += 1
+	# Co-op guests clean animal names from the host's ranch delta (net.gd, S1 integ).
+	var r := {"animals": {"a1": {"species": "hen", "name": "sh1t"}, "a2": {"species": "hen", "name": "Daisy"}}, "houses": {}}
+	var c: Dictionary = NetNode.clean_ranch_names(r)
+	if str(c["animals"]["a1"]["name"]) == "sh1t" or str(c["animals"]["a1"]["name"]) == "" or str(c["animals"]["a2"]["name"]) != "Daisy":
+		print("FAIL: ranch names cleaned for guests %s" % [c]); fails += 1
+	if str(r["animals"]["a1"]["name"]) != "sh1t":
+		print("FAIL: clean_ranch_names must not touch the host's dictionary"); fails += 1
 	print("NAME FILTER DONE, failures: %d" % fails)
 	quit(1 if fails > 0 else 0)
