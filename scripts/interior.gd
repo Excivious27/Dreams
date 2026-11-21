@@ -95,6 +95,13 @@ func scene_id() -> String:
 	return "interior"
 
 
+## C17 P3 (c17_06-24, c17_11-22): the co-op room key is the room itself, so a
+## partner upstairs at the lanes or in another house is never a ghost in yours.
+## scene_id() stays "interior" for music, saves and tests.
+func net_scene() -> String:
+	return "interior:" + (interior_id if interior_id != "" else str(GameState.run.get("interior", "store")))
+
+
 func default_spawn() -> Vector2:
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	return cell_center(Vector2i(int(d[0]), int(d[1]) - 1))

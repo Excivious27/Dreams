@@ -383,8 +383,8 @@ static func long_way_done(cid: String) -> Array:
 
 
 static func _long_settle(cid: String) -> void:
-	if GameState.run.is_empty():
-		return
+	if GameState.run.is_empty() or Net.visiting():
+		return   # C17 P3 (c17_05-03): the long way arrives on your own clock, at home
 	var ls := long_state(cid)
 	if ls.is_empty() or bool(ls.get("done", false)):
 		return
@@ -847,6 +847,8 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 
 ## A campaign battle ended. Applies morale/supply/rewards; returns dialogue lines.
 static func finish(won: bool, supply_left: int) -> Array:
+	if Net.visiting():
+		return []   # C17 P3 (c17_05-02): no campaign progress or pay from a friend's world
 	var f: Dictionary = st().get("fight", {})
 	var cid := str(f.get("cid", ""))
 	var nid := str(f.get("nid", ""))

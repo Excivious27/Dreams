@@ -727,7 +727,7 @@ func _physics_process(delta: float) -> void:
 	var ab_tap_frame: bool = TouchControls.ability_pressed and not is_puppet
 	if not is_puppet:
 		TouchControls.ability_pressed = false
-	if frozen and not get_tree().paused and not Dialogue.instance(get_tree()).active and not Story.is_playing() and not Dialogue.instance(get_tree()).skippable:  # C7: was the Callable GameMenu.story_busy (always truthy)
+	if frozen and not is_puppet and not get_tree().paused and not Dialogue.instance(get_tree()).active and not Story.is_playing() and not Dialogue.instance(get_tree()).skippable:  # C7: was the Callable GameMenu.story_busy (always truthy)
 		_frozen_idle += delta
 		if _frozen_idle > FREEZE_SAFETY:
 			_frozen_idle = 0.0

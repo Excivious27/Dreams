@@ -89,8 +89,12 @@ func _who() -> String:
 	return w if not Crew.members().has(id) or Crew.recruited(id) else ""
 
 func _setup() -> void:
-	var cf := Campaign.fight_for(bid)
-	var df := CampaignGate.drill_for(bid)
+	# C17 P3 (c17_05-02): a guest never runs their own parked campaign fight or
+	# drill on a friend's world: they stand on a plain field (watch/assist), and the
+	# fight stays parked in their own save for when they're home.
+	var vis := Net.visiting()
+	var cf: Dictionary = {} if vis else Campaign.fight_for(bid)
+	var df: Dictionary = {} if vis else CampaignGate.drill_for(bid)
 	if not cf.is_empty():
 		d = Campaign.battle_data(d, cf)
 		camp = str(cf["cid"])
@@ -117,9 +121,8 @@ func _setup() -> void:
 	if camp != "":
 		_resume(cf)
 		map.later(_field_team)
-	_guest = Net.visiting()
-	if not _guest:
-		map.later(weapon_out)
+	_guest = vis
+	map.later(weapon_out)   # C17 P3: a visiting guest draws their own blade too (assist), never a hoe
 	var layer := CanvasLayer.new()
 	layer.layer = 5
 	map.add_child(layer)

@@ -61,16 +61,26 @@ var _ci: CanvasItem = null   # canvas the floor is being drawn on right now
 var _clip := Rect2i()        # cells being drawn
 var _clip_px := Rect2()      # the same, in content pixels
 
+## C17 P3 (c17_04-04): the day this floor visit began. Floor progress (digging
+## count, pace, keeper threshold) is keyed by it, so a host going to bed while a
+## guest is down here never restarts the guest's floor mid-fight.
+var _build_day := -1
+
+
+func _kday() -> int:
+	return _build_day if _build_day >= 0 else int(GameState.run["day"])
+
+
 func _tried() -> int:
-	return int(GameState.run.get("mine_tried", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0))
+	return int(GameState.run.get("mine_tried", {}).get("%d_%d" % [floor_no, _kday()], 0))
 
 
 func _try_more(n: int) -> void:
-	var k := "%d_%d" % [floor_no, int(GameState.run["day"])]
+	var k := "%d_%d" % [floor_no, _kday()]
 	var d: Dictionary = GameState.run.get("mine_tried", {})
 	if not d.has(k):
 		for ok in d.keys():
-			if not str(ok).ends_with("_%d" % int(GameState.run["day"])):
+			if not str(ok).ends_with("_%d" % _kday()):
 				d.erase(ok)   # a new day: yesterday's counts go
 	d[k] = int(d.get(k, 0)) + n
 	GameState.run["mine_tried"] = d
@@ -98,7 +108,7 @@ func _keeper_due() -> bool:
 
 ## Seconds spent on this floor today (across visits).
 func _secs() -> float:
-	return float(GameState.run.get("mine_secs", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0.0)) + _secs_live
+	return float(GameState.run.get("mine_secs", {}).get("%d_%d" % [floor_no, _kday()], 0.0)) + _secs_live
 
 
 var _secs_live := 0.0   # not yet written to the save
@@ -107,7 +117,7 @@ var _secs_live := 0.0   # not yet written to the save
 func _bank_secs() -> void:
 	if _secs_live <= 0.0:
 		return
-	var day := int(GameState.run["day"])
+	var day := _kday()
 	var k := "%d_%d" % [floor_no, day]
 	var old: Dictionary = GameState.run.get("mine_secs", {})
 	var d := {}
@@ -127,7 +137,7 @@ func _min_secs() -> float:
 
 
 func _pace() -> Dictionary:
-	var day := int(GameState.run["day"])
+	var day := _kday()
 	var key := "%d_%d" % [floor_no, day]
 	var old: Dictionary = GameState.run.get("mine_pace", {})
 	if old.has(key):
@@ -152,7 +162,7 @@ func _pace() -> Dictionary:
 ## How much digging and fighting wakes the keeper: random per floor and day,
 ## and on the first floors a real share of the rock on the floor.
 func _threshold() -> int:
-	var day := int(GameState.run["day"])
+	var day := _kday()
 	var key := "%d_%d" % [floor_no, day]
 	var old: Dictionary = GameState.run.get("mine_thresh", {})
 	if floor_no <= 3:
@@ -179,6 +189,36 @@ func scene_id() -> String:
 	return "mine"
 
 
+## C17 P3 (c17_04-02, c17_11-22, c17_18-19): the co-op room key. Puppets show only
+## for a partner on this very floor and cave; a guest entering this floor while a
+## partner is on it carves the same cave from these fields (_shared_floor).
+func net_scene() -> String:
+	return "mine:%d:%d:%s:%s:%d" % [floor_no, _seed, _pick_id, _dress, _rng_state]
+
+
+## "mine:<floor>:<seed>:<style>:<dress>:<state>" -> its fields ({} if not a mine key).
+static func parse_net_scene(s: String) -> Dictionary:
+	var p := s.split(":")
+	if p.size() < 6 or p[0] != "mine" or not p[1].is_valid_int() or not p[2].is_valid_int() or not p[5].is_valid_int():
+		return {}
+	return {"floor": int(p[1]), "seed": int(p[2]), "style": p[3], "dress": p[4], "state": int(p[5])}
+
+
+## A partner (the host first) already on this floor: their cave's fields, else {}.
+func _shared_floor() -> Dictionary:
+	if not Net.online() or force_solo_layout:
+		return {}
+	var best := {}
+	for id in Net.peers:
+		var info: Dictionary = Net.peers[id]
+		var f := parse_net_scene(str(info.get("scene", "")))
+		if f.is_empty() or int(f["floor"]) != floor_no or MineLayouts.style(str(f["style"])).is_empty():
+			continue
+		if best.is_empty() or bool(info.get("host", false)):
+			best = f
+	return best
+
+
 func default_spawn() -> Vector2:
 	return cell_center(_nearest_open(_entry + Vector2i(1, 1)))
 
@@ -198,19 +238,33 @@ func build() -> void:
 	# (scripts/mine_layouts.gd), never one of the last few you saw.
 	theme = theme.duplicate(true)
 	var rng := RandomNumberGenerator.new()
+	_build_day = int(GameState.run["day"])
 	_seed = _layout_seed()
 	rng.seed = _seed
 	var recent: Array = (GameState.run.get("mine_recent", []) as Array).duplicate()
-	_style = MineLayouts.pick(floor_no, rng, recent)
-	for i in 12:
-		if floor_no != 5 or not _style.has("haz"):
-			break
-		_style = MineLayouts.pick(floor_no, rng, recent)   # Mer's grotto floods its own way
-	if floor_no == 5 and _style.has("haz"):
-		_style = MineLayouts.style("caverns")
-	if force_style != "":
-		_style = MineLayouts.style(force_style)   # tools/tests
-	_dress = MineLayouts.pick_dress(_style, rng, str(theme.get("name", "")))
+	# C17 P3 (c17_04-02): a partner already on this floor? Carve their cave: same
+	# seed, style, dressing and generator state, so both phones see the same rock.
+	var shared := _shared_floor()
+	if not shared.is_empty():
+		_seed = int(shared["seed"])
+		rng.seed = _seed
+		_style = MineLayouts.style(str(shared["style"]))
+		_dress = str(shared["dress"])
+		rng.state = int(shared["state"])
+		_rng_state = rng.state
+	else:
+		_style = MineLayouts.pick(floor_no, rng, recent)
+		for i in 12:
+			if floor_no != 5 or not _style.has("haz"):
+				break
+			_style = MineLayouts.pick(floor_no, rng, recent)   # Mer's grotto floods its own way
+		if floor_no == 5 and _style.has("haz"):
+			_style = MineLayouts.style("caverns")
+		if force_style != "":
+			_style = MineLayouts.style(force_style)   # tools/tests
+		_dress = MineLayouts.pick_dress(_style, rng, str(theme.get("name", "")))
+		_rng_state = rng.state
+	_pick_id = str(_style["id"])
 	recent.append(str(_style["id"]))
 	while recent.size() > 5:
 		recent.pop_front()
@@ -375,6 +429,8 @@ const MineLayouts := preload("res://scripts/mine_layouts.gd")
 var _style: Dictionary = {}
 var _dress := "plain"
 var _seed := 0
+var _pick_id := ""           # C17 P3: the style picked before any carve fallback (shared floors)
+var _rng_state := 0          # C17 P3: generator state after the style/dress picks (shared floors)
 var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
@@ -382,6 +438,7 @@ static var force_style := ""   # tools/tests: carve this style every time
 const EARLY_LO := [0, 10, 10, 9]   # C16a P3 (was 14/13/12): floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
 const KEEPER_MIN_HP := 8  # a keeper encounter's total hp is never below this
 static var force_encounter := ""  # tools/tests: this keeper encounter id instead of a roll ("" = roll)
+static var force_solo_layout := false  # tools/tests: never take a partner's cave
 static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
 
 
@@ -816,6 +873,7 @@ func _walk_dist(a: Vector2i, b: Vector2i, max_steps: int) -> int:
 
 
 func after_ready() -> void:
+	_net_hook()
 	MineLife.attach.call_deferred(self)  # C14b P2: drips and lamp-light dust motes (after every prop is placed)
 	if CHUNKED:
 		_make_chunks()
@@ -1060,6 +1118,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if drawn:
 					redraw_cell(c)
 				_try_more(1)
+				_net_break(c)
 			return true
 	return false
 
@@ -1492,11 +1551,79 @@ func redraw_all() -> void:
 
 
 ## Guests: the host changed the world.
+## C17 P3 (c17_04-01): nothing on a mine floor is drawn from the host's world, so
+## a time-only delta (every push) redraws nothing; only a new day (season look) or
+## changed options repaint the floor.
 func on_world_sync(d: Dictionary) -> void:
+	if not (d.has("day") or d.has("opts")):
+		return
+	world_redraws += 1
 	if CHUNKED:
 		redraw_all()
 	else:
 		super(d)
+
+
+# ---- C17 P3 (c17_04-02): shared floor breaks -------------------------------------
+## Rocks and crates broken on a shared floor go to the host, which applies them and
+## tells everyone on the same cave. Each player keeps their own loot (fair loot:
+## the remote side only loses the rock, it never drops anything); the host's keeper
+## count includes a guest's digging.
+const BREAK_TYPES := ["rock", "crate"]
+var _break_cb := Callable()
+var world_redraws := 0   # tests: host world syncs that repainted the floor
+
+
+func _net_hook() -> void:
+	if Net.has_method("on_msg") and not _break_cb.is_valid():
+		_break_cb = _on_net_break
+		Net.call("on_msg", "mine_break", _break_cb)
+
+
+func _net_unhook() -> void:
+	if _break_cb.is_valid() and Net.has_method("off_msg"):
+		Net.call("off_msg", "mine_break", _break_cb)
+	_break_cb = Callable()
+
+
+func _net_break(c: Vector2i) -> void:
+	if not Net.online() or not Net.has_method("on_msg"):
+		return
+	var d := {"scene": net_scene(), "c": [c.x, c.y]}
+	if Net.is_host():
+		Net.call("broadcast", "mine_break", d)
+	else:
+		Net.call("send_host", "mine_break", d)
+
+
+func _on_net_break(_from: Variant, d: Dictionary) -> void:
+	if str(d.get("scene", "")) != net_scene():
+		return
+	var cv: Variant = d.get("c", [])
+	if not (cv is Array) or (cv as Array).size() < 2:
+		return
+	var c := Vector2i(int(cv[0]), int(cv[1]))
+	if apply_remote_break(c) and Net.is_host():
+		_try_more(1)   # the guest's digging wakes the keeper here too
+		Net.call("broadcast", "mine_break", d)
+
+
+## Take a partner's broken rock or crate off this floor (no loot, no xp). True if one went.
+func apply_remote_break(c: Vector2i) -> bool:
+	var t: Dictionary = things.get(c, {})
+	if not str(t.get("type", "")) in BREAK_TYPES:
+		return false
+	things.erase(c)
+	blocked.erase(c)
+	hard.erase(c)
+	var drawn := not props.has(c)
+	if props.has(c):
+		(props[c] as Node).queue_free()
+		props.erase(c)
+	fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
+	if drawn and is_inside_tree():
+		redraw_cell(c)
+	return true
 
 
 func _place_props() -> void:
@@ -1889,6 +2016,7 @@ func _down_label() -> String:
 
 func _exit_tree() -> void:
 	_bank_secs()
+	_net_unhook()
 	Hud.extra_rects.erase(DOWN_RECT)
 
 
@@ -2326,6 +2454,7 @@ func hit_crate(c: Vector2i, thing: Dictionary) -> void:
 	else:
 		pop_items(cell_center(c), "plank" if GameState.items.has("plank") else "wood", 1)
 	_try_more(1)
+	_net_break(c)
 
 
 var crate_hits := 0   # every blow that landed on a crate (tests)
