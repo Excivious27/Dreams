@@ -104,6 +104,8 @@ var _act_t := 0.0   # the action pose plays for a moment after each zap / heal /
 var act := "striker"       # the job it does (kinds()[kind].act)
 var team_id := ""          # a mustered ally (make_team): their id, else ""
 var team_name := ""
+var team_dmg := 0          # a team animal's own bite (TeamAnimals.stats dmg: lesson ranks count), 0 = people
+var team_spd := 1.0
 var tag_row := 0           # team name tags alternate rows so neighbours never overlap
 var _spr: AnimatedSprite2D = null
 var _last_pos := Vector2.ZERO
@@ -134,12 +136,59 @@ static func make_team(m: GameMap, member: Array, a: String, at: Vector2, sprite 
 	h.team_name = str(member[1])
 	h.max_hp = 36 + 8 * GameState.progress_tier() + int(GameState.bonus("strategist", "helper_hp"))
 	h.hp = h.max_hp
-	if sprite != "" and CharacterLibrary.has_character(sprite):
+	if sprite.begins_with("animals/") and member.size() > 2 and str(member[2]) == "animal":
+		# C11a P4: a trained team animal, drawn from its own farm strip at the pen's size.
+		var st := TeamAnimals.stats(str(member[0]).trim_prefix("animal:"))
+		h.max_hp = int(st["hp"]) + int(GameState.bonus("strategist", "helper_hp"))  # stats() already counts the tier
+		h.team_dmg = int(st.get("dmg", 1))
+		h.team_spd = float(st.get("speed", 1.0))
+		h.hp = h.max_hp
+		h._spr = animal_sprite(sprite)
+		h.add_child(h._spr)
+	elif sprite != "" and CharacterLibrary.has_character(sprite):
 		h._spr = CharacterLibrary.make_sprite(sprite)
 		h._spr.scale *= 0.85
 		h._spr.play("idle")
 		h.add_child(h._spr)
 	return h
+
+
+## An AnimatedSprite2D for an animals/<strip> group with idle (+ walk when drawn) at ~TEAM_ANIMAL_H px.
+const TEAM_ANIMAL_H := 22.0
+
+
+static func animal_sprite(group: String) -> AnimatedSprite2D:
+	var anims := {"idle": "idle"}
+	var fps := {"idle": 3.0}
+	for a: String in ["walk", "run", "attack", "guard", "fetch", "downed", "sit", "cheer", "hurt", "happy"]:  # P6 team poses when drawn
+		if Art.has(group, a):
+			anims[a] = a
+			fps[a] = 8.0 if a in ["run", "attack"] else 6.0
+	if not anims.has("attack"):  # farm strips: spit / butt / happy stand in for an attack pose
+		for alt: String in ["spit", "butt", "happy"]:
+			if Art.has(group, alt):
+				anims["attack"] = alt
+				fps["attack"] = 8.0
+				break
+	var spr := AnimatedSprite2D.new()
+	spr.sprite_frames = Art.frames(group, anims, fps)
+	var tex := spr.sprite_frames.get_frame_texture("idle", 0) if spr.sprite_frames.get_frame_count("idle") > 0 else null
+	var sc := 0.5
+	if tex != null and tex.get_height() > 0:
+		sc = TEAM_ANIMAL_H / float(tex.get_height())
+	spr.scale = Vector2(sc, sc)
+	spr.offset = Vector2(0, -float(tex.get_height()) * 0.5) if tex != null else Vector2.ZERO
+	spr.play("idle")
+	return spr
+
+
+## One striker hit. People: 3 + tier; spawned helpers 2 + tier; team animals their own bite
+## (lesson ranks) + half the tier, kept under a crew member's hit at the same tier.
+func strike_damage() -> int:
+	var bonus := int(GameState.bonus("strategist", "helper_damage"))
+	if team_dmg > 0:
+		return mini(team_dmg + GameState.progress_tier() / 2, 2 + GameState.progress_tier()) + bonus
+	return (2 if team_id == "" else 3) + GameState.progress_tier() + bonus
 
 
 func label() -> String:
@@ -153,7 +202,12 @@ func take_damage(n: int, _from: Vector2) -> void:
 	_hurt = 0.2
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
-		if team_id != "":
+		if team_id.begins_with("animal:"):
+			# A team animal trots home to rest, never knocked out like a person (c11b_09-14).
+			var voice := str(TeamAnimals.spec(team_id.trim_prefix("animal:")).get("voice", ""))
+			Music.instance(get_tree()).sfx(voice if voice != "" else "pop", "pop")
+			map.hud.toast("%s trots back to camp to rest." % team_name, Color(1, 0.85, 0.6))
+		elif team_id != "":
 			# A person, not a machine: knocked out, falls back (always heard: they're yours).
 			Music.instance(get_tree()).sfx("knockout", "thud")
 			map.hud.toast("%s falls back to camp." % team_name, Color(1, 0.8, 0.6))
@@ -235,6 +289,10 @@ func _process(delta: float) -> void:
 	if _spr:
 		var moved := position.distance_to(_last_pos) > 0.05
 		var an := "walk" if moved and _spr.sprite_frames.has_animation("walk") else "idle"
+		if _hurt > 0.0 and _spr.sprite_frames.has_animation("hurt"):
+			an = "hurt"
+		elif _act_t > 0.0 and _spr.sprite_frames.has_animation("attack"):
+			an = "attack"
 		if _spr.animation != an:
 			_spr.play(an)
 		if absf(position.x - _last_pos.x) > 0.05:
@@ -251,7 +309,7 @@ func _process(delta: float) -> void:
 				_zap_to = foe.position + Vector2(0, -8)
 				_zap_t = 0.12
 				foe.provoke(self)
-				foe.hit((2 if team_id == "" else 3) + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true, true)
+				foe.hit(strike_damage(), position, true, true)
 				if team_id != "":
 					# Mustered people swing or shoot like people (c6_11).
 					_sfx("swing" if GameState.is_penguins() else "shot", 0.35)
@@ -269,6 +327,9 @@ func _process(delta: float) -> void:
 			for o in get_tree().get_nodes_in_group("allies"):
 				if o is HelperUnit and o != self and o.position.distance_to(position) < 70.0 and o.hp < o.max_hp:
 					o.hp = mini(o.max_hp, o.hp + 4)
+					healed = true
+				elif o is TeamBeast and o.position.distance_to(position) < 70.0 and (o as TeamBeast).hp < (o as TeamBeast).max_hp:
+					(o as TeamBeast).heal(4)  # C11a P4: team animals out with you
 					healed = true
 			# The pup too (it fights beside you and has its own health).
 			var pet: Variant = map.get("pet")

@@ -53,6 +53,12 @@ static func gate(id: String) -> String:
 		if bl != "":
 			return bl
 	var ul: Dictionary = nd.get("unlock", {})
+	# Any tier may need a skill-tree blueprint (c11a_02_11): unlock.blueprint = a blueprint id from
+	# gen_skill_trees UNLOCKS (e.g. "coop_3"); every unlock kind is checked in turn.
+	if ul.has("blueprint"):
+		var tbl := GameState.blueprint_lock(str(ul["blueprint"]))
+		if tbl != "":
+			return tbl
 	if ul.has("progress") and GameState.progress_tier() < int(ul["progress"]):
 		return "story chapter %d first" % (int(ul["progress"]) + 1)
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
