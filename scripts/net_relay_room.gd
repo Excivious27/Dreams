@@ -57,15 +57,19 @@ func join(id: int, m: Dictionary, deliver: Callable) -> void:
 		me["proto"] = m["proto"]
 	var others: Array = []
 	for pid: int in info:
-		others.append(info[pid])
+		var o: Dictionary = (info[pid] as Dictionary).duplicate()
+		o["host"] = pid == host
+		others.append(o)
 	info[id] = me
 	var is_host := host == id
-	_send(id, {"t": "joined", "id": id, "room": code, "host": is_host, "peers": others})
+	_send(id, {"t": "joined", "id": id, "room": code, "host": is_host, "host_id": host, "peers": others})
 	if not is_host and world != null:
 		_send(id, {"t": "world", "d": world})
+	var me_out := me.duplicate()
+	me_out["host"] = is_host
 	for pid: int in info:
 		if pid != id:
-			_send(pid, {"t": "peer_joined", "peer": me})
+			_send(pid, {"t": "peer_joined", "peer": me_out})
 
 
 ## Any other frame from a member. size = its bytes on the wire (for the guards).

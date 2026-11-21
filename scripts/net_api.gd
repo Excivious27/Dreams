@@ -76,9 +76,80 @@ static func send_all(d: Dictionary) -> void:
 	if n: n.send_all(d)
 
 
-static func send_host(d: Dictionary) -> void:
+## send_host(d) = a legacy world act; send_host(t, d) = a router message.
+static func send_host(a: Variant, b: Variant = null) -> void:
 	var n := i()
-	if n: n.send_host(d)
+	if n: n.send_host(a, b)
+
+
+# ---- C17 message router (contract section 2) ----
+## cb(from_peer: String, d: Dictionary). Works offline too (local delivery).
+static func on_msg(t: String, cb: Callable) -> void:
+	var n := i()
+	if n: n.on_msg(t, cb)
+
+
+static func off_msg(t: String, cb: Callable) -> void:
+	var n := i()
+	if n: n.off_msg(t, cb)
+
+
+static func send_peer(peer: String, t: String, d: Dictionary) -> void:
+	var n := i()
+	if n: n.send_peer(peer, t, d)
+
+
+static func broadcast(t: String, d: Dictionary, include_self := false) -> void:
+	var n := i()
+	if n: n.broadcast(t, d, include_self)
+
+
+## False while we're a visiting guest and the host is away (grace / reconnecting).
+static func host_present() -> bool:
+	var n := i()
+	return n == null or n.host_present()
+
+
+## peer (String) -> {name, arc, scene, ping_ms, host, me}, ourselves included.
+## (Contract "Net.peers()": the name Net.peers is the legacy id -> info property.)
+static func roster() -> Dictionary:
+	var n := i()
+	return n.roster() if n else {}
+
+
+static func my_peer() -> String:
+	var n := i()
+	return n.my_peer() if n else "local"
+
+
+static func acked_seq() -> int:
+	var n := i()
+	return n.acked_seq() if n else 0
+
+
+static func last_seq() -> int:
+	var n := i()
+	return n.last_seq() if n else 0
+
+
+static var host_away: Signal:
+	get:
+		return i().host_away
+
+
+static var host_back: Signal:
+	get:
+		return i().host_back
+
+
+static var peer_joined: Signal:
+	get:
+		return i().peer_joined
+
+
+static var peer_left: Signal:
+	get:
+		return i().peer_left
 
 
 static func _send(o: Dictionary) -> void:
