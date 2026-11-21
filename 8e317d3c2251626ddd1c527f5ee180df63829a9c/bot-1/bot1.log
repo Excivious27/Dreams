@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 1 start arc=penguins hero=kairi style=wander progress=0 difficulty=0 day_len=15
+BOT 1 done: 0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_storm_shelf", "farm", "riverlands", "desert_sunken_temple", "jungle", "countryside"], day 4, ◆50
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
