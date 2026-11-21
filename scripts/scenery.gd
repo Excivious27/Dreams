@@ -22,6 +22,9 @@ var weather := "clear":
 		weather = v
 		raining = v == "rain"
 		_parts.clear()
+		_drops.clear()
+		_snow.clear()
+		_fade = 0.0
 		# Today's calendar weather follows the day; a region's own weather stays put.
 		follow_day = not GameState.run.is_empty() and v == GameState.weather_today()
 		_day = int(GameState.run.get("day", -1)) if not GameState.run.is_empty() else -1
@@ -30,7 +33,14 @@ var follow_day := false
 var _day := -1
 ## Weathers with no birds overhead.
 const NO_FLOCKS := ["rain", "storm", "snow", "blizzard", "sandstorm", "ash", "fog"]
-var _drops: Array = []
+var _drops: Array = []  # rain/storm/drizzle/hail: {p, v, len, a}
+var _snow: Array = []  # snow/blizzard flakes: {p, layer, fall, sway, fq, ph}
+## C14b: drop count, fall velocity (px/s) and streak length per wet weather.
+const PRECIP := {"rain": [140, Vector2(-40, 260), 10.0], "drizzle": [60, Vector2(-20, 200), 6.0],
+	"storm": [220, Vector2(-90, 380), 14.0], "hail": [80, Vector2(-30, 320), 4.0]}
+## Snow depth layers: [count, size px, alpha, fall min, fall max, sway px] (c14b_18-03).
+const SNOW_LAYERS := [[50, 1.5, 0.75, 10.0, 14.0, 3.0], [40, 2.0, 0.9, 18.0, 26.0, 6.0], [20, 3.0, 1.0, 30.0, 40.0, 10.0]]
+var _fade := 1.0  # weather particles fade in after a change (c14b_18-09)
 var _parts: Array = []
 var _ov_t := 0.0
 ## Painted aurora band across the top of the sky (crystal meadow / moon nights).
@@ -44,6 +54,8 @@ func _overlay() -> Texture2D:
 	var nm := str(OVERLAYS.get(weather, ""))
 	if nm == "":
 		return null
+	if PRECIP.has(weather) or weather in ["snow", "blizzard"]:
+		return null  # C14b: falling drops/flakes in code (the tiled strips strobed in place: c14b_16-04, c14b_18-04)
 	if weather == "fireflies":
 		return null  # drifting glow particles (CONDUCT 4: the tiled strip read as a grid of orbs)
 	if weather in ["leaves", "petals"] and Art.has("fx", _pkind()):
@@ -64,10 +76,27 @@ func _overlay() -> Texture2D:
 ## The particle art for leaves/petals/snow (petal_pink when sliced, else a tinted leaf).
 func _pkind() -> String:
 	match weather:
-		"snow": return "snowflake"
+		"snow": return ""  # C14b: code-drawn depth layers (_snow)
 		"leaves": return "leaf_orange"
 		"petals": return "petal_pink" if Art.has("fx", "petal_pink") else "leaf_green"
 		"fireflies": return "firefly"
+	var sp := _sprinkle()
+	return sp
+
+
+## C14b (c14b_18-05): a light seasonal sprinkle on clear/sun/wind days outdoors:
+## spring petals, fall leaves. Not in cities, caves or under a fixed dark.
+func _sprinkle() -> String:
+	if not overhead or not (weather in ["clear", "sun", "wind"]) or GameState.run.is_empty():
+		return ""
+	var host := get_parent()
+	if host is GameMap:
+		var gm := host as GameMap
+		if gm.fixed_dark >= 0.0 or gm.scene_id() in Ambience.CITY_MAPS:
+			return ""
+	match GameState.look_se():
+		"spring": return "petal_pink" if Art.has("fx", "petal_pink") else ""
+		"fall": return "leaf_orange" if Art.has("fx", "leaf_orange") else ""
 	return ""
 
 
@@ -140,8 +169,13 @@ func _process(delta: float) -> void:
 	elif _overlay() != null:
 		_parts.clear()
 	elif pkind != "" and Art.has("fx", pkind):
-		var leafy := weather in ["leaves", "petals"]
-		var want := 40 if weather == "snow" else (18 if leafy else 14)
+		var sprinkle := not (weather in ["leaves", "petals"])
+		var leafy := true
+		var want := 18
+		if sprinkle:
+			want = (10 if weather == "wind" else (5 if pkind == "petal_pink" else 7))
+		if Settings.reduced_motion():
+			want = maxi(10, want / 2) if not sprinkle else maxi(2, want / 2)
 		while _parts.size() < want:
 			# Each leaf/petal has its own fall speed, sway, spin and flutter rate, so
 			# they drift loose instead of marching down in a grid.
@@ -156,7 +190,7 @@ func _process(delta: float) -> void:
 				var fall: float = p.get("fall", 18.0)
 				var sway: float = p.get("sway", 8.0)
 				p["t"] += delta * float(p.get("wob", 1.0))
-				p["pos"] += Vector2(sin(p["t"]) * sway + (6.0 if leafy else 0.0), fall) * delta
+				p["pos"] += Vector2(sin(p["t"]) * sway + 6.0 + Anim.wind() * 30.0, fall) * delta * (0.6 if Settings.reduced_motion() else 1.0)
 				p["rot"] = float(p.get("rot", 0.0)) + float(p.get("spin", 0.0)) * delta
 				if p["pos"].y > _h + 10:
 					p["pos"] = Vector2(randf_range(-20, _w + 20), -10)
@@ -165,24 +199,158 @@ func _process(delta: float) -> void:
 			p["f"] = int(_t * float(p.get("fps", 4.0)) + float(p["t"])) % 4
 	else:
 		_parts.clear()
-	if raining and _overlay() == null:
-		while _drops.size() < 90:
-			_drops.append(Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)))
-		for i in _drops.size():
-			_drops[i] += Vector2(-40, 260) * delta
-			if _drops[i].y > _h + 10:
-				_drops[i] = Vector2(randf_range(0, _w + 40), -10)
+	_fade = minf(1.0, _fade + delta / 1.0)
+	_streak_x += delta * (0.6 + Anim.wind() * 0.6)
+	_tick_precip(delta)
 	# Clear calm sky: clouds drift a few px/s, so 20 redraws a second is plenty.
 	_redraw_acc += delta
-	if not _drops.is_empty() or not _parts.is_empty() or not _birds.is_empty() or (_overlay() != null and weather != "fog") or aurora or weather in ["wind", "storm"] or _redraw_acc >= 0.05:
+	if not _drops.is_empty() or not _snow.is_empty() or not _parts.is_empty() or not _birds.is_empty() or (_overlay() != null and weather != "fog") or aurora or weather in ["wind", "storm"] or _redraw_acc >= 0.05:
 		_redraw_acc = 0.0
 		_canvas.queue_redraw()
+
+
+## C14b: rain/storm/drizzle/hail as real falling streaks and snow/blizzard as 3
+## parallax depth layers, all on one wind (Anim.wind) and fewer/slower with reduced motion.
+func _tick_precip(delta: float) -> void:
+	var calm := Settings.reduced_motion()
+	var wv := Anim.wind()
+	if PRECIP.has(weather) and overhead:
+		var pr: Array = PRECIP[weather]
+		var want := int(pr[0]) / (2 if calm else 1)
+		var v: Vector2 = pr[1] * (0.6 if calm else 1.0)
+		v.x -= wv * 40.0
+		while _drops.size() < want:
+			var dep := randf_range(0.6, 1.0)
+			_drops.append({"p": Vector2(randf_range(-20, _w + 60), randf_range(-20, _h)), "d": dep, "len": float(pr[2]) * randf_range(0.7, 1.2) * dep, "a": randf_range(0.4, 0.75) * dep})
+		while _drops.size() > want:
+			_drops.pop_back()
+		for dr: Dictionary in _drops:
+			dr["p"] += v * float(dr["d"]) * delta
+			if dr["p"].y > _h + 10 or dr["p"].x < -30:
+				dr["p"] = Vector2(randf_range(0, _w + 80), randf_range(-30, -5))
+	elif not _drops.is_empty():
+		_drops.clear()
+	if weather in ["snow", "blizzard"] and overhead:
+		var bl := weather == "blizzard"
+		var k := (1.45 if bl else 1.0) * (0.5 if calm else 1.0)
+		if _snow.is_empty():
+			for li in SNOW_LAYERS.size():
+				var L: Array = SNOW_LAYERS[li]
+				for i in int(float(L[0]) * k):
+					_snow.append({"p": Vector2(randf_range(-20, _w + 20), randf_range(-10, _h)), "l": li,
+						"fall": randf_range(float(L[3]), float(L[4])) * (3.0 if bl else 1.0), "sw": float(L[5]), "fq": randf_range(0.5, 1.3), "ph": randf() * TAU})
+		var drift := (4.0 + 6.0 * sin(_ov_t * 0.13)) + wv * 20.0
+		if bl:
+			drift = -70.0 - 40.0 * (0.5 + 0.5 * sin(_ov_t * 0.4))
+		var sp := 0.6 if calm else 1.0
+		for f: Dictionary in _snow:
+			var par := 0.5 + 0.5 * float(f["l"])  # far layers drift less (parallax)
+			f["ph"] += delta * float(f["fq"])
+			f["p"] += Vector2(drift * par + cos(float(f["ph"])) * float(f["sw"]) * float(f["fq"]), float(f["fall"])) * delta * sp
+			if f["p"].y > _h + 6:
+				f["p"] = Vector2(randf_range(-20, _w + 20), -6)
+			f["p"].x = fposmod(f["p"].x + 20.0, _w + 40.0) - 20.0
+	elif not _snow.is_empty():
+		_snow.clear()
+
+
+## C14b (c14b_05-01/02/07): the aurora as soft code-drawn light ribbons, not a boxed
+## picture: each ribbon's crest follows slow sums of sines, its colour fades to 0 at
+## the top, bottom and both ends (no hard edge), hues drift, and it breathes. One
+## mesh, one draw call. Reduced motion: held still and dimmer.
+const AURORA_COLS := [Color(0.35, 1.0, 0.75), Color(0.45, 0.8, 1.0), Color(0.75, 0.5, 1.0)]
+var _aur_mesh := ArrayMesh.new()
+
+
+func _draw_aurora(dark: float) -> void:
+	var calm := Settings.reduced_motion()
+	var t := 0.0 if calm else Anim.t()
+	var verts := PackedVector2Array()
+	var cols := PackedColorArray()
+	var n := 28
+	var breath := (0.8 + 0.2 * sin(t * 0.4)) * (0.6 if calm else 1.0)
+	for r in 3:
+		var base := 70.0 + r * 26.0
+		var hgt := 46.0 - r * 8.0
+		var c: Color = AURORA_COLS[r].lerp(AURORA_COLS[(r + 1) % 3], 0.5 + 0.5 * sin(t * 0.05 + r * 2.0))
+		var amax := (0.20 - r * 0.04) * dark * breath
+		var x0 := -20.0 + sin(t * 0.07 + r) * 12.0
+		var w := _w + 40.0
+		for i in n:
+			var ua := float(i) / n
+			var ub := float(i + 1) / n
+			for pair in [[ua, ub]]:
+				var xs := [x0 + pair[0] * w, x0 + pair[1] * w]
+				var ys := []
+				var es := []
+				for k in 2:
+					var u: float = pair[k]
+					var crest: float = base + sin(u * 5.0 + t * 0.21 + r * 1.3) * 10.0 + sin(u * 11.0 - t * 0.33 + r) * 4.0
+					ys.append(crest)
+					es.append(sin(u * PI) * (0.75 + 0.25 * sin(u * 17.0 + t * 0.5 + r)))  # ends fade, vertical streaks shimmer
+				var top0 := Vector2(xs[0], ys[0] - hgt)
+				var top1 := Vector2(xs[1], ys[1] - hgt)
+				var mid0 := Vector2(xs[0], ys[0])
+				var mid1 := Vector2(xs[1], ys[1])
+				var bot0 := Vector2(xs[0], ys[0] + 8.0)
+				var bot1 := Vector2(xs[1], ys[1] + 8.0)
+				var c0 := Color(c, 0.0)
+				var cm0 := Color(c, amax * float(es[0]))
+				var cm1 := Color(c, amax * float(es[1]))
+				# upper curtain: transparent top -> bright crest
+				verts.append_array([top0, top1, mid1, top0, mid1, mid0])
+				cols.append_array([c0, c0, cm1, c0, cm1, cm0])
+				# short soft fall-off below the crest
+				verts.append_array([mid0, mid1, bot1, mid0, bot1, bot0])
+				cols.append_array([cm0, cm1, c0, cm0, c0, c0])
+	_aur_mesh.clear_surfaces()
+	var arr := []
+	arr.resize(Mesh.ARRAY_MAX)
+	arr[Mesh.ARRAY_VERTEX] = verts
+	arr[Mesh.ARRAY_COLOR] = cols
+	_aur_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	_canvas.draw_mesh(_aur_mesh, null)
+
+
+func _draw_precip() -> void:
+	if not _drops.is_empty():
+		var pts := PackedVector2Array()
+		var cols := PackedColorArray()
+		var pr: Array = PRECIP.get(weather, PRECIP["rain"])
+		var dir: Vector2 = (pr[1] as Vector2) + Vector2(-Anim.wind() * 40.0, 0)
+		dir = dir.normalized()
+		var hail := weather == "hail"
+		for dr: Dictionary in _drops:
+			var p: Vector2 = dr["p"]
+			pts.append(p)
+			pts.append(p + dir * float(dr["len"]))
+			var c := Color(0.85, 0.9, 1.0, float(dr["a"]) * _fade) if not hail else Color(0.95, 0.97, 1.0, 0.8 * _fade)
+			cols.append(c)
+		_canvas.draw_multiline_colors(pts, cols, 2.0 if hail else 1.0)
+	if not _snow.is_empty():
+		var bl := weather == "blizzard"
+		for f: Dictionary in _snow:
+			var L: Array = SNOW_LAYERS[int(f["l"])]
+			var sz := float(L[1])
+			var a := float(L[2]) * _fade
+			var p: Vector2 = f["p"]
+			if bl and int(f["l"]) == 2:
+				_canvas.draw_line(p, p + Vector2(4, -1.2), Color(1, 1, 1, a), 1.0)  # near blizzard flakes streak along the wind
+			elif sz >= 3.0:
+				_canvas.draw_circle(p, 2.5, Color(1, 1, 1, a * 0.3))
+				_canvas.draw_circle(p, 1.5, Color(1, 1, 1, a))
+			else:
+				_canvas.draw_rect(Rect2(p, Vector2(sz, sz)), Color(1, 1, 1, a))
+		if bl:
+			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.92, 0.95, 1.0, 0.04 * (sin(_ov_t * 0.7) + sin(_ov_t * 1.9) + 2.0) * _fade))
 
 
 var _redraw_acc := 0.0
 var _tint_acc := 1.0
 var _flash_t := 0.0
 var _next_flash := 4.0
+var _flash_x := 40.0
+var _streak_x := 0.0
 
 
 func _draw_weather_extras() -> void:
@@ -198,7 +366,7 @@ func _draw_weather_extras() -> void:
 	# Wind streaks race across on windy days.
 	if weather == "wind" and Art.has("fx", "wind_streak_0"):
 		for i in 4:
-			var x := fmod(_ov_t * (120.0 + i * 25.0) + i * 90.0, _w + 120.0) - 60.0
+			var x := fmod(_streak_x * (120.0 + i * 25.0) + i * 90.0, _w + 120.0) - 60.0  # C14b: speed follows Anim.wind
 			var wt := Art.tex("fx", "wind_streak_%d" % i)
 			# Its own aspect (squashing it to 40x24 crushed the streak), half size.
 			var wsz := Vector2(wt.get_width(), wt.get_height()) * 0.5
@@ -218,6 +386,7 @@ func _draw_weather_extras() -> void:
 		_next_flash -= get_process_delta_time()
 		if _next_flash <= 0.0:
 			_flash_t = 0.5
+			_flash_x = randf_range(-20, _w - 150)  # one spot per bolt (it jumped sideways every redraw: c14b_14-15)
 			_next_flash = randf_range(3.0, 9.0)
 			if Settings.reduced_motion():
 				_next_flash = maxf(_next_flash, Settings.CALM_FLASH_GAP)  # C9: never more than one per 6 s
@@ -231,7 +400,7 @@ func _draw_weather_extras() -> void:
 			var fh := float(info.get("cell_h", 136))
 			# Reduced motion and flashes (Settings, C9): the bolt stays soft, the screen flash is gentle.
 			var calm := Settings.reduced_motion()
-			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, Settings.CALM_FLASH_ALPHA if calm else 0.8))
+			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(_flash_x, 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, Settings.CALM_FLASH_ALPHA if calm else 0.8))
 			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, (0.03 if calm else 0.12) if fr < 2 else (0.0 if calm else 0.04)))
 
 
@@ -279,13 +448,12 @@ func _on_draw() -> void:
 		# Soft cloud shadows drifting over the ground on clear days.
 		var cs := Art.tex("fx", "cloud_shadow")
 		var fr := 2  # the one frame whose blobs aren't cut by the frame edge (frames swapping made the shadows jump)
-		var ox := fmod(_ov_t * 6.0, 512.0)
-		for i in range(-1, 2):
-			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 2, 0, 252, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
-	if aurora and overhead and GameState.darkness() > 0.0 and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
-		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
-		var fr := int(_ov_t * 3.0) % 4
-		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55 * GameState.darkness()))  # a night sky thing: fades in after sunset
+		var span := maxf(768.0, _w + 512.0)
+		for i in 3:
+			var sx := fposmod(i * span / 3.0 + _ov_t * 6.0, span) - 256.0  # each shadow keeps its own path across the wrap (c14b_16-25)
+			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(sx, 120 + sin(_ov_t * 0.1 + i * 2.1) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 2, 0, 252, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
+	if aurora and overhead and GameState.darkness() > 0.0:
+		_draw_aurora(GameState.darkness())
 	if overhead:
 		_draw_weather_extras()
 	var ov := _overlay()
@@ -312,18 +480,13 @@ func _on_draw() -> void:
 		for y in range(-1, int(_h / fh) + 2):
 			for x in range(-1, int(_w / fw) + 2):
 				_canvas.draw_texture_rect_region(ov, Rect2(Vector2(x * fw, y * fh) + drift, Vector2(fw, fh)), src, Color(1, 1, 1, alpha))
-	if raining and ov == null:
-		var rd := Art.tex("fx", "raindrop")
-		for d: Vector2 in _drops:
-			if rd:
-				_canvas.draw_texture_rect_region(rd, Rect2(d, Vector2(5, 12)), Rect2(0, 0, rd.get_width() / 3.0, rd.get_height()), Color(1, 1, 1, 0.7))
-			else:
-				_canvas.draw_line(d, d + Vector2(-2, 9), Color(0.75, 0.85, 1.0, 0.35), 1.0)
+	if overhead:
+		_draw_precip()
 	var dark := clampf(GameState.darkness() if GameState.run.has("time") else 0.5, 0.0, 1.0)
 	for p: Dictionary in _parts:
 		if str(p["k"]) == "glow":
 			var pulse := 0.5 + 0.5 * sin(float(p["t"]) * 2.3)
-			var a := (0.25 + 0.75 * pulse) * dark  # fireflies glow only after sunset
+			var a := (0.25 + 0.75 * pulse) * dark * _fade  # fireflies glow only after sunset
 			var gp: Vector2 = p["pos"]
 			var ft := Art.tex("fx", "firefly_%d" % int(p["f"]))
 			if ft != null and ft.get_height() <= 48:
@@ -342,9 +505,10 @@ func _on_draw() -> void:
 		var ch := float(info.get("cell_h", t.get_height()))
 		var n := int(info.get("frames", 4))
 		var f: int = int(p["f"]) % n
-		if p.has("rot") and weather in ["leaves", "petals"]:
+		if p.has("rot") and (weather in ["leaves", "petals"] or _sprinkle() != ""):
 			var sz := Vector2(cw, ch) * float(p.get("sz", 0.5))
 			var tint := Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else Color.WHITE  # no petal art: pink leaves
+			tint.a *= _fade
 			_canvas.draw_set_transform(p["pos"], float(p["rot"]), Vector2.ONE)
 			_canvas.draw_texture_rect_region(t, Rect2(-sz / 2.0, sz), Rect2(f * cw, 0, cw, ch), tint)
 			_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
