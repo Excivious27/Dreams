@@ -1,0 +1,4335 @@
+{
+ "_doc": "written by tools/gen_travel.py; edit the generator",
+ "kinds": {
+  "boat": {
+   "name": "Boat Landing",
+   "prop": "c14p4_ferry_kiosk",
+   "sfx": "ferry_horn",
+   "veh": "c14p4_veh_ferry"
+  },
+  "bus": {
+   "name": "Bus Stop",
+   "prop": "c14p4_bus_stop",
+   "sfx": "car_start",
+   "veh": "c14p4_veh_bus"
+  },
+  "cart": {
+   "gang_name": "Freight Trolley Stop",
+   "name": "Cart Stop",
+   "prop": "c14p4_cart_stop",
+   "sfx": "cart_rattle",
+   "veh": "c14p4_veh_cart"
+  },
+  "cloud": {
+   "name": "Cloud Dock",
+   "prop": "c14p4_cloud_dock",
+   "sfx": "airship_whoosh",
+   "veh": "c14p4_veh_cloud"
+  },
+  "current": {
+   "name": "Current Pool",
+   "prop": "c14p4_current_pool",
+   "sfx": "splash",
+   "veh": "c14p4_veh_bubble"
+  },
+  "ferry": {
+   "name": "Ferry Landing",
+   "prop": "c14p4_ferry_kiosk",
+   "sfx": "ferry_horn",
+   "veh": "c14p4_veh_ferry"
+  },
+  "hop": {
+   "name": "Waystone",
+   "prop": "c14p4_waystone",
+   "sfx": "teleport",
+   "veh": ""
+  },
+  "ladder": {
+   "name": "Ladder",
+   "prop": "c14p4_ladder",
+   "sfx": "door",
+   "veh": ""
+  },
+  "mast": {
+   "name": "Balloon Mast",
+   "prop": "c14p4_balloon_mast",
+   "sfx": "airship_whoosh",
+   "veh": "c14p4_veh_balloon"
+  },
+  "mega": {
+   "name": "",
+   "prop": "",
+   "sfx": "door",
+   "veh": "c14p4_veh_caravan"
+  },
+  "plane": {
+   "name": "Airstrip",
+   "prop": "c14p4_airstrip",
+   "sfx": "airship_whoosh",
+   "veh": "c14p4_veh_plane"
+  },
+  "rail": {
+   "name": "Rail Halt",
+   "prop": "c14p4_rail_halt",
+   "sfx": "train_depart",
+   "veh": "c14p4_veh_train"
+  },
+  "stairs": {
+   "name": "Cliff Stairs",
+   "prop": "c14p4_stairs",
+   "sfx": "door",
+   "veh": ""
+  },
+  "subway": {
+   "name": "Subway Entrance",
+   "prop": "c14p4_subway",
+   "sfx": "train_depart",
+   "veh": "c14p4_veh_subway"
+  },
+  "taxi": {
+   "name": "Taxi Stand",
+   "prop": "c14p4_taxi_stand",
+   "sfx": "car_start",
+   "veh": "c14p4_veh_taxi"
+  },
+  "zip": {
+   "name": "Zip Line",
+   "prop": "c14p4_zip_pad",
+   "sfx": "airship_whoosh",
+   "veh": ""
+  }
+ },
+ "links": [
+  {
+   "a": "farm_hedge_gap",
+   "b": "meadow_hedge_gap",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_farm_meadow",
+   "kind": "hop",
+   "minutes": 5,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.549,
+     0.447
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "id": "foraging",
+    "n": 3,
+    "type": "skill"
+   }
+  },
+  {
+   "a": "town_cliff_stairs",
+   "b": "beach_cliff_stairs",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_town_beach",
+   "kind": "stairs",
+   "minutes": 5,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.476,
+     0.81
+    ],
+    [
+     0.4,
+     0.9
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "type": "project"
+   }
+  },
+  {
+   "a": "forest_log_bridge",
+   "b": "lake_log_bridge",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_forest_lake",
+   "kind": "ladder",
+   "minutes": 5,
+   "path": [
+    [
+     0.3,
+     0.24
+    ],
+    [
+     0.233,
+     0.333
+    ],
+    [
+     0.14,
+     0.4
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "type": "project"
+   }
+  },
+  {
+   "a": "mountain_zip",
+   "b": "farm_zip",
+   "both_ways": false,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_mountain_farm",
+   "kind": "zip",
+   "minutes": 3,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.572,
+     0.609
+    ],
+    [
+     0.44,
+     0.47
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 1,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "hideout_backdoor",
+   "b": "town_alley",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_hideout_town",
+   "kind": "ladder",
+   "minutes": 5,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.749,
+     0.644
+    ],
+    [
+     0.52,
+     0.7
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "id": "docks",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "neon_fire_escape",
+   "b": "uptown_fire_escape",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t1_neon_uptown",
+   "kind": "ladder",
+   "minutes": 5,
+   "path": [
+    [
+     0.72,
+     0.92
+    ],
+    [
+     0.653,
+     0.951
+    ],
+    [
+     0.58,
+     0.96
+    ]
+   ],
+   "tier": 1,
+   "unlock": {
+    "id": "neon",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "quarry_cart",
+   "b": "meadow_cart",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 50
+   },
+   "free_after": {
+    "id": "c_quarry",
+    "type": "campaign"
+   },
+   "id": "t2_cart_quarry_meadow",
+   "kind": "cart",
+   "minutes": 30,
+   "path": [
+    [
+     0.58,
+     0.84
+    ],
+    [
+     0.59,
+     0.644
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "granite_bones",
+      "type": "quest"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "meadow_cart",
+   "b": "mountain_cart",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 50
+   },
+   "free_after": {
+    "id": "c_quarry",
+    "type": "campaign"
+   },
+   "id": "t2_cart_meadow_mountain",
+   "kind": "cart",
+   "minutes": 30,
+   "path": [
+    [
+     0.66,
+     0.46
+    ],
+    [
+     0.719,
+     0.574
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "granite_bones",
+      "type": "quest"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "quarry_cart",
+   "b": "mountain_cart",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 50
+   },
+   "free_after": {
+    "id": "c_quarry",
+    "type": "campaign"
+   },
+   "id": "t2_cart_quarry_mountain",
+   "kind": "cart",
+   "minutes": 30,
+   "path": [
+    [
+     0.58,
+     0.84
+    ],
+    [
+     0.649,
+     0.757
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "granite_bones",
+      "type": "quest"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "farm_dock",
+   "b": "lake_dock",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 50
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t2_ferry_farm_lake",
+   "kind": "ferry",
+   "minutes": 30,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.284,
+     0.459
+    ],
+    [
+     0.14,
+     0.4
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "finn_trout",
+      "type": "quest"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "lake_dock",
+   "b": "riverlands_dock",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 50
+   },
+   "free_after": {
+    "id": "c_riverlands",
+    "type": "campaign"
+   },
+   "id": "t2_ferry_lake_river",
+   "kind": "ferry",
+   "minutes": 40,
+   "path": [
+    [
+     0.14,
+     0.4
+    ],
+    [
+     0.128,
+     0.515
+    ],
+    [
+     0.08,
+     0.62
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "riverlands",
+      "type": "explore"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "beach_colony_ferry",
+   "b": "colony_coral_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 30
+   },
+   "free_after": {
+    "id": "c_colony_coral",
+    "type": "campaign"
+   },
+   "id": "t2_colony_coral",
+   "kind": "ferry",
+   "minutes": 45,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.357,
+     0.953
+    ],
+    [
+     0.3,
+     0.99
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "colony_coral",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "beach_colony_ferry",
+   "b": "colony_kelp_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 30
+   },
+   "free_after": {
+    "id": "c_colony_kelp",
+    "type": "campaign"
+   },
+   "id": "t2_colony_kelp",
+   "kind": "ferry",
+   "minutes": 45,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.437,
+     0.94
+    ],
+    [
+     0.46,
+     0.99
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "colony_kelp",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "beach_colony_ferry",
+   "b": "colony_ice_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 30
+   },
+   "free_after": {
+    "id": "c_colony_ice",
+    "type": "campaign"
+   },
+   "id": "t2_colony_ice",
+   "kind": "ferry",
+   "minutes": 45,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.307,
+     0.961
+    ],
+    [
+     0.2,
+     0.99
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "colony_ice",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "beach_colony_ferry",
+   "b": "colony_ember_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 30
+   },
+   "free_after": {
+    "id": "c_colony_ember",
+    "type": "campaign"
+   },
+   "id": "t2_colony_ember",
+   "kind": "ferry",
+   "minutes": 45,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.487,
+     0.932
+    ],
+    [
+     0.56,
+     0.99
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "colony_ember",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "colony_coral_jetty",
+   "b": "colony_kelp_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t3_current_coral_kelp",
+   "kind": "current",
+   "minutes": 20,
+   "path": [
+    [
+     0.3,
+     0.99
+    ],
+    [
+     0.38,
+     0.977
+    ],
+    [
+     0.46,
+     0.99
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "id": "colony_coral_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_kelp_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ice_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ember_done",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "colony_kelp_jetty",
+   "b": "colony_ice_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t3_current_kelp_ice",
+   "kind": "current",
+   "minutes": 20,
+   "path": [
+    [
+     0.46,
+     0.99
+    ],
+    [
+     0.33,
+     1.011
+    ],
+    [
+     0.2,
+     0.99
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "id": "colony_coral_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_kelp_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ice_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ember_done",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "colony_ice_jetty",
+   "b": "colony_ember_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t3_current_ice_ember",
+   "kind": "current",
+   "minutes": 20,
+   "path": [
+    [
+     0.2,
+     0.99
+    ],
+    [
+     0.38,
+     0.961
+    ],
+    [
+     0.56,
+     0.99
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "id": "colony_coral_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_kelp_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ice_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ember_done",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "colony_ember_jetty",
+   "b": "colony_coral_jetty",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t3_current_ember_coral",
+   "kind": "current",
+   "minutes": 20,
+   "path": [
+    [
+     0.56,
+     0.99
+    ],
+    [
+     0.43,
+     1.011
+    ],
+    [
+     0.3,
+     0.99
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "id": "colony_coral_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_kelp_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ice_done",
+      "type": "flag"
+     },
+     {
+      "id": "colony_ember_done",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "bus_hideout",
+   "b": "bus_docks",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 10
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t2_bus_hideout_docks",
+   "kind": "bus",
+   "minutes": 20,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.931,
+     0.687
+    ],
+    [
+     0.86,
+     0.84
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "docks",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "taxi_town",
+   "b": "taxi_farm",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "id": "rides",
+    "n": 2,
+    "type": "crew_perk"
+   },
+   "id": "t2_taxi_town_farm",
+   "kind": "taxi",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.462,
+     0.591
+    ],
+    [
+     0.44,
+     0.47
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "farm",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "taxi_town",
+   "b": "taxi_docks",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "id": "rides",
+    "n": 2,
+    "type": "crew_perk"
+   },
+   "id": "t2_taxi_town_docks",
+   "kind": "taxi",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.701,
+     0.743
+    ],
+    [
+     0.86,
+     0.84
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "docks",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "taxi_town",
+   "b": "taxi_neon",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "id": "rides",
+    "n": 2,
+    "type": "crew_perk"
+   },
+   "id": "t2_taxi_town_neon",
+   "kind": "taxi",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.638,
+     0.794
+    ],
+    [
+     0.72,
+     0.92
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "neon",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "taxi_town",
+   "b": "taxi_uptown",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "id": "rides",
+    "n": 2,
+    "type": "crew_perk"
+   },
+   "id": "t2_taxi_town_uptown",
+   "kind": "taxi",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.571,
+     0.825
+    ],
+    [
+     0.58,
+     0.96
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "uptown",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "taxi_town",
+   "b": "taxi_hideout",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "id": "rides",
+    "n": 2,
+    "type": "crew_perk"
+   },
+   "id": "t2_taxi_town_hideout",
+   "kind": "taxi",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.721,
+     0.576
+    ],
+    [
+     0.95,
+     0.52
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "hideout",
+    "type": "explore"
+   }
+  },
+  {
+   "a": "beach_tidewater",
+   "b": "docks_water_taxi",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 40
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t2_harbor_shuttle",
+   "kind": "boat",
+   "minutes": 25,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.625,
+     0.833
+    ],
+    [
+     0.86,
+     0.84
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "docks",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "gloamwood_home",
+   "b": "gloamwood_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_gloamwood",
+   "kind": "mega",
+   "minutes": 40,
+   "path": [
+    [
+     0.3,
+     0.24
+    ],
+    [
+     0.382,
+     0.114
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_gloamwood_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "sunscorch_home",
+   "b": "sunscorch_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_sunscorch",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.4,
+     0.9
+    ],
+    [
+     0.38,
+     0.452
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_sunscorch_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "ironline_home",
+   "b": "ironline_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_ironline",
+   "kind": "mega",
+   "minutes": 40,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.456,
+     0.362
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_ironline_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "frostpeak_home",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_frostpeak",
+   "kind": "mega",
+   "minutes": 40,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_frostpeak_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "windward_home",
+   "b": "windward_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_windward",
+   "kind": "mega",
+   "minutes": 40,
+   "path": [
+    [
+     0.66,
+     0.46
+    ],
+    [
+     0.545,
+     0.253
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_windward_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "giltcity_home",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "mega_giltcity",
+   "kind": "mega",
+   "minutes": 20,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.434,
+     0.24
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "id": "mega_giltcity_open",
+    "type": "flag"
+   }
+  },
+  {
+   "a": "gloamwood_hub",
+   "b": "sunscorch_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_gloamwood_sunscorch",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "gloamwood_hub",
+   "b": "ironline_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_gloamwood_ironline",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "gloamwood_hub",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_gloamwood_frostpeak",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "gloamwood_hub",
+   "b": "windward_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_gloamwood_windward",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_windward_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "gloamwood_hub",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_gloamwood_giltcity",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_giltcity_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "sunscorch_hub",
+   "b": "ironline_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_sunscorch_ironline",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "sunscorch_hub",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_sunscorch_frostpeak",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "sunscorch_hub",
+   "b": "windward_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_sunscorch_windward",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_windward_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "sunscorch_hub",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_sunscorch_giltcity",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_giltcity_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "ironline_hub",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_ironline_frostpeak",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "ironline_hub",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_ironline_giltcity",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_giltcity_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "frostpeak_hub",
+   "b": "windward_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_frostpeak_windward",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_windward_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "frostpeak_hub",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 150
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_frostpeak_giltcity",
+   "kind": "mega",
+   "minutes": 60,
+   "path": [
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     },
+     {
+      "id": "mega_giltcity_open",
+      "type": "flag"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airship",
+   "b": "gloamwood_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airship_gloamwood",
+   "kind": "cloud",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airstrip",
+   "b": "gloamwood_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airstrip_gloamwood",
+   "kind": "plane",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_gloamwood_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airship",
+   "b": "sunscorch_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airship_sunscorch",
+   "kind": "cloud",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airstrip",
+   "b": "sunscorch_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airstrip_sunscorch",
+   "kind": "plane",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_sunscorch_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airstrip",
+   "b": "ironline_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airstrip_ironline",
+   "kind": "plane",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airship",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airship_frostpeak",
+   "kind": "cloud",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airstrip",
+   "b": "frostpeak_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airstrip_frostpeak",
+   "kind": "plane",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_frostpeak_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airship",
+   "b": "windward_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airship_windward",
+   "kind": "cloud",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_windward_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mountain_airstrip",
+   "b": "giltcity_hub",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 200
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t4_mountain_airstrip_giltcity",
+   "kind": "plane",
+   "minutes": 50,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.566,
+     0.379
+    ],
+    [
+     0.5,
+     0.02
+    ]
+   ],
+   "tier": 4,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 3,
+      "type": "tier"
+     },
+     {
+      "id": "mega_giltcity_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "uptown_subway",
+   "b": "iron_mill_subway",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 30
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t3_red_line",
+   "kind": "subway",
+   "minutes": 25,
+   "path": [],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "id": "neon",
+      "type": "quest"
+     },
+     {
+      "id": "mega_ironline_open",
+      "type": "flag"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_farm",
+   "b": "mast_town",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_farm_town",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.498,
+     0.579
+    ],
+    [
+     0.52,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_farm",
+   "b": "pad_town",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_farm_town",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.498,
+     0.579
+    ],
+    [
+     0.52,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_farm",
+   "b": "mast_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_farm_mountain",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.608,
+     0.561
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_farm",
+   "b": "pad_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_farm_mountain",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.608,
+     0.561
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_farm",
+   "b": "mast_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_farm_meadow",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.549,
+     0.447
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_farm",
+   "b": "pad_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_farm_meadow",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.549,
+     0.447
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_town",
+   "b": "mast_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_town_mountain",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.63,
+     0.682
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_town",
+   "b": "pad_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_town_mountain",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.63,
+     0.682
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_town",
+   "b": "mast_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_town_meadow",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.571,
+     0.569
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_town",
+   "b": "pad_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_town_meadow",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.571,
+     0.569
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "mast_mountain",
+   "b": "mast_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_mast_mountain_meadow",
+   "kind": "mast",
+   "minutes": 30,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.681,
+     0.586
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "pad_mountain",
+   "b": "pad_meadow",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 60
+   },
+   "free_after": {
+    "id": "foraging",
+    "n": 8,
+    "type": "skill"
+   },
+   "id": "t3_pad_mountain_meadow",
+   "kind": "plane",
+   "minutes": 20,
+   "path": [
+    [
+     0.74,
+     0.7
+    ],
+    [
+     0.681,
+     0.586
+    ],
+    [
+     0.66,
+     0.46
+    ]
+   ],
+   "tier": 3,
+   "unlock": {
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
+   }
+  },
+  {
+   "a": "way_farm",
+   "b": "way_town",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_way_farm_town",
+   "kind": "hop",
+   "minutes": 0,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.498,
+     0.579
+    ],
+    [
+     0.52,
+     0.7
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "teleporter",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "way_farm",
+   "b": "way_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_way_farm_mountain",
+   "kind": "hop",
+   "minutes": 0,
+   "path": [
+    [
+     0.44,
+     0.47
+    ],
+    [
+     0.608,
+     0.561
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "teleporter",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "way_town",
+   "b": "way_mountain",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_way_town_mountain",
+   "kind": "hop",
+   "minutes": 0,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.63,
+     0.682
+    ],
+    [
+     0.74,
+     0.7
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "teleporter",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "dispatch_hideout",
+   "b": "taxi_farm",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_dispatch_farm",
+   "kind": "taxi",
+   "minutes": 0,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.691,
+     0.536
+    ],
+    [
+     0.44,
+     0.47
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "uptown",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "dispatch_hideout",
+   "b": "taxi_docks",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_dispatch_docks",
+   "kind": "taxi",
+   "minutes": 0,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.931,
+     0.687
+    ],
+    [
+     0.86,
+     0.84
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "uptown",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "dispatch_hideout",
+   "b": "taxi_neon",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_dispatch_neon",
+   "kind": "taxi",
+   "minutes": 0,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.867,
+     0.738
+    ],
+    [
+     0.72,
+     0.92
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "uptown",
+    "type": "quest"
+   }
+  },
+  {
+   "a": "dispatch_hideout",
+   "b": "taxi_uptown",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 0
+   },
+   "free_after": {},
+   "id": "t5_dispatch_uptown",
+   "kind": "taxi",
+   "minutes": 0,
+   "path": [
+    [
+     0.95,
+     0.52
+    ],
+    [
+     0.8,
+     0.77
+    ],
+    [
+     0.58,
+     0.96
+    ]
+   ],
+   "tier": 5,
+   "unlock": {
+    "id": "uptown",
+    "type": "quest"
+   }
+  }
+ ],
+ "pos": {
+  "beach": [
+   0.4,
+   0.9
+  ],
+  "colony_coral": [
+   0.3,
+   0.99
+  ],
+  "colony_ember": [
+   0.56,
+   0.99
+  ],
+  "colony_ice": [
+   0.2,
+   0.99
+  ],
+  "colony_kelp": [
+   0.46,
+   0.99
+  ],
+  "community_farm": [
+   0.36,
+   0.72
+  ],
+  "countryside": [
+   0.98,
+   0.66
+  ],
+  "crystal_meadow": [
+   0.86,
+   0.4
+  ],
+  "desert_mirage_post": [
+   0.5,
+   0.02
+  ],
+  "docks": [
+   0.86,
+   0.84
+  ],
+  "farm": [
+   0.44,
+   0.47
+  ],
+  "forest": [
+   0.3,
+   0.24
+  ],
+  "frost_hearthhold": [
+   0.5,
+   0.02
+  ],
+  "gilt_grand_plaza": [
+   0.5,
+   0.02
+  ],
+  "gloam_lanternfall": [
+   0.5,
+   0.02
+  ],
+  "hideout": [
+   0.95,
+   0.52
+  ],
+  "highlands": [
+   0.5,
+   0.12
+  ],
+  "iron_junction": [
+   0.5,
+   0.02
+  ],
+  "jungle": [
+   0.66,
+   0.04
+  ],
+  "lake": [
+   0.14,
+   0.4
+  ],
+  "marsh": [
+   0.22,
+   0.86
+  ],
+  "meadow": [
+   0.66,
+   0.46
+  ],
+  "mine": [
+   0.72,
+   0.2
+  ],
+  "moon": [
+   0.9,
+   0.08
+  ],
+  "mountain": [
+   0.74,
+   0.7
+  ],
+  "neon": [
+   0.72,
+   0.92
+  ],
+  "orchard_hills": [
+   0.24,
+   0.12
+  ],
+  "quarry": [
+   0.58,
+   0.84
+  ],
+  "riverlands": [
+   0.08,
+   0.62
+  ],
+  "ruins": [
+   0.6,
+   0.3
+  ],
+  "sky": [
+   0.28,
+   0.06
+  ],
+  "station": [
+   0.8,
+   0.03
+  ],
+  "town": [
+   0.52,
+   0.7
+  ],
+  "underground": [
+   0.7,
+   0.98
+  ],
+  "uptown": [
+   0.58,
+   0.96
+  ],
+  "wastes": [
+   0.95,
+   0.26
+  ],
+  "wind_breezehaven": [
+   0.5,
+   0.02
+  ]
+ },
+ "stations": [
+  {
+   "arc": "both",
+   "cell": [
+    70,
+    28
+   ],
+   "id": "farm_hedge_gap",
+   "keeper": "",
+   "kind": "hop",
+   "name": "Hedge Gap",
+   "placed": true,
+   "prop": "c14p4_hedge_gap",
+   "scene": "farm"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    1,
+    14
+   ],
+   "id": "meadow_hedge_gap",
+   "keeper": "",
+   "kind": "hop",
+   "name": "Hedge Gap",
+   "placed": true,
+   "prop": "c14p4_hedge_gap",
+   "scene": "meadow"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "plank": 20,
+     "stone": 30
+    },
+    "money": 500
+   },
+   "cell": [
+    47,
+    92
+   ],
+   "id": "town_cliff_stairs",
+   "keeper": "",
+   "kind": "stairs",
+   "name": "Cliff Stairs",
+   "placed": true,
+   "prop": "c14p4_stairs",
+   "scene": "town"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    30,
+    1
+   ],
+   "id": "beach_cliff_stairs",
+   "keeper": "",
+   "kind": "stairs",
+   "name": "Cliff Stairs",
+   "placed": true,
+   "prop": "c14p4_stairs",
+   "scene": "beach"
+  },
+  {
+   "arc": "both",
+   "build": {
+    "items": {
+     "wood": 20
+    },
+    "money": 0
+   },
+   "cell": [
+    2,
+    30
+   ],
+   "id": "forest_log_bridge",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Log Bridge",
+   "placed": true,
+   "prop": "c14p4_log_bridge",
+   "scene": "forest"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    46,
+    20
+   ],
+   "id": "lake_log_bridge",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Log Bridge",
+   "placed": true,
+   "prop": "c14p4_log_bridge",
+   "scene": "lake"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "iron_bar": 10,
+     "rope": 4
+    },
+    "money": 2000
+   },
+   "cell": [
+    30,
+    4
+   ],
+   "id": "mountain_zip",
+   "keeper": "",
+   "kind": "zip",
+   "name": "Zip Line",
+   "placed": true,
+   "prop": "c14p4_zip_pad",
+   "scene": "mountain"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    50,
+    3
+   ],
+   "id": "farm_zip",
+   "keeper": "",
+   "kind": "zip",
+   "name": "Zip Line",
+   "placed": true,
+   "prop": "c14p4_zip_pad",
+   "scene": "farm"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    3,
+    10
+   ],
+   "id": "hideout_backdoor",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Back Door",
+   "placed": true,
+   "prop": "c14p4_ladder",
+   "scene": "hideout"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    80,
+    60
+   ],
+   "id": "town_alley",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Alley Door",
+   "placed": true,
+   "prop": "c14p4_ladder",
+   "scene": "town"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    46,
+    20
+   ],
+   "id": "neon_fire_escape",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Fire Escape",
+   "placed": true,
+   "prop": "c14p4_ladder",
+   "scene": "neon"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    4,
+    30
+   ],
+   "id": "uptown_fire_escape",
+   "keeper": "",
+   "kind": "ladder",
+   "name": "Fire Escape",
+   "placed": true,
+   "prop": "c14p4_ladder",
+   "scene": "uptown"
+  },
+  {
+   "arc": "both",
+   "build": {
+    "items": {
+     "iron_bar": 10,
+     "plank": 20
+    },
+    "money": 800
+   },
+   "cell": [
+    26,
+    20
+   ],
+   "id": "quarry_cart",
+   "keeper": "",
+   "kind": "cart",
+   "name": "Cart Stop",
+   "placed": true,
+   "prop": "c14p4_cart_stop",
+   "scene": "quarry"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    30,
+    4
+   ],
+   "id": "meadow_cart",
+   "keeper": "",
+   "kind": "cart",
+   "name": "Cart Stop",
+   "placed": true,
+   "prop": "c14p4_cart_stop",
+   "scene": "meadow"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    10,
+    6
+   ],
+   "id": "mountain_cart",
+   "keeper": "",
+   "kind": "cart",
+   "name": "Cart Stop",
+   "placed": true,
+   "prop": "c14p4_cart_stop",
+   "scene": "mountain"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "plank": 25
+    },
+    "money": 300
+   },
+   "cell": [
+    6,
+    56
+   ],
+   "id": "farm_dock",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Ferry Landing",
+   "placed": true,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "farm"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    24,
+    36
+   ],
+   "id": "lake_dock",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Ferry Landing",
+   "placed": true,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "lake"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    26,
+    30
+   ],
+   "id": "riverlands_dock",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Ferry Landing",
+   "placed": true,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "riverlands"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    40,
+    30
+   ],
+   "id": "beach_marina",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Marina Passage Desk",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "beach"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    44,
+    32
+   ],
+   "id": "beach_colony_ferry",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Colony Ferry",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "beach"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    36,
+    32
+   ],
+   "id": "beach_tidewater",
+   "keeper": "",
+   "kind": "boat",
+   "name": "Tidewater Launch",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "beach"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    20,
+    40
+   ],
+   "id": "colony_coral_jetty",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Jetty",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "colony_coral"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    20,
+    40
+   ],
+   "id": "colony_kelp_jetty",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Jetty",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "colony_kelp"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    20,
+    40
+   ],
+   "id": "colony_ice_jetty",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Jetty",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "colony_ice"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    20,
+    40
+   ],
+   "id": "colony_ember_jetty",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Jetty",
+   "placed": false,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "colony_ember"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    10,
+    4
+   ],
+   "id": "bus_hideout",
+   "keeper": "",
+   "kind": "bus",
+   "name": "Bus Stop",
+   "placed": true,
+   "prop": "c14p4_bus_stop",
+   "scene": "hideout"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    4,
+    12
+   ],
+   "id": "bus_docks",
+   "keeper": "",
+   "kind": "bus",
+   "name": "Bus Stop",
+   "placed": true,
+   "prop": "c14p4_bus_stop",
+   "scene": "docks"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    60,
+    50
+   ],
+   "id": "taxi_town",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "town"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    44,
+    40
+   ],
+   "id": "taxi_farm",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "farm"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    10,
+    20
+   ],
+   "id": "taxi_docks",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "docks"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    6,
+    12
+   ],
+   "id": "taxi_neon",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "neon"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    6,
+    16
+   ],
+   "id": "taxi_uptown",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "uptown"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    16,
+    8
+   ],
+   "id": "taxi_hideout",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Taxi Stand",
+   "placed": true,
+   "prop": "c14p4_taxi_stand",
+   "scene": "hideout"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    30,
+    36
+   ],
+   "id": "docks_water_taxi",
+   "keeper": "",
+   "kind": "boat",
+   "name": "Harbor Shuttle",
+   "placed": true,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "docks"
+  },
+  {
+   "arc": "both",
+   "cell": [
+    24,
+    38
+   ],
+   "id": "gloamwood_home",
+   "keeper": "Liesl",
+   "kind": "mega",
+   "name": "Lanternfall ride",
+   "placed": false,
+   "prop": "",
+   "scene": "forest",
+   "spawn": [
+    24,
+    40
+   ]
+  },
+  {
+   "arc": "both",
+   "cell": [
+    17,
+    34
+   ],
+   "id": "gloamwood_hub",
+   "keeper": "Liesl",
+   "kind": "mega",
+   "name": "Lanternfall",
+   "placed": false,
+   "prop": "",
+   "scene": "gloam_lanternfall",
+   "spawn": [
+    17,
+    34
+   ]
+  },
+  {
+   "arc": "both",
+   "cell": [
+    24,
+    14
+   ],
+   "id": "sunscorch_home",
+   "keeper": "Sefa",
+   "kind": "mega",
+   "name": "Mirage Post ride",
+   "placed": false,
+   "prop": "",
+   "scene": "beach",
+   "spawn": [
+    24,
+    16
+   ]
+  },
+  {
+   "arc": "both",
+   "cell": [
+    17,
+    36
+   ],
+   "id": "sunscorch_hub",
+   "keeper": "Sefa",
+   "kind": "mega",
+   "name": "Mirage Post",
+   "placed": false,
+   "prop": "",
+   "scene": "desert_mirage_post",
+   "spawn": [
+    17,
+    36
+   ]
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    50,
+    4
+   ],
+   "id": "ironline_home",
+   "keeper": "Conductor Hollis",
+   "kind": "mega",
+   "name": "Junction City ride",
+   "placed": false,
+   "prop": "",
+   "scene": "town",
+   "spawn": [
+    50,
+    6
+   ]
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    17,
+    36
+   ],
+   "id": "ironline_hub",
+   "keeper": "Conductor Hollis",
+   "kind": "mega",
+   "name": "Junction City",
+   "placed": false,
+   "prop": "",
+   "scene": "iron_junction",
+   "spawn": [
+    17,
+    36
+   ]
+  },
+  {
+   "arc": "both",
+   "cell": [
+    7,
+    35
+   ],
+   "id": "frostpeak_home",
+   "keeper": "Brannoch",
+   "kind": "mega",
+   "name": "Hearthhold ride",
+   "placed": false,
+   "prop": "",
+   "scene": "mountain",
+   "spawn": [
+    7,
+    37
+   ]
+  },
+  {
+   "arc": "both",
+   "cell": [
+    17,
+    36
+   ],
+   "id": "frostpeak_hub",
+   "keeper": "Brannoch",
+   "kind": "mega",
+   "name": "Hearthhold",
+   "placed": false,
+   "prop": "",
+   "scene": "frost_hearthhold",
+   "spawn": [
+    17,
+    36
+   ]
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    42,
+    24
+   ],
+   "id": "windward_home",
+   "keeper": "Captain Zephyr",
+   "kind": "mega",
+   "name": "Breezehaven ride",
+   "placed": false,
+   "prop": "",
+   "scene": "meadow",
+   "spawn": [
+    42,
+    26
+   ]
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    17,
+    36
+   ],
+   "id": "windward_hub",
+   "keeper": "Captain Zephyr",
+   "kind": "mega",
+   "name": "Breezehaven",
+   "placed": false,
+   "prop": "",
+   "scene": "wind_breezehaven",
+   "spawn": [
+    17,
+    36
+   ]
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    40,
+    31
+   ],
+   "id": "giltcity_home",
+   "keeper": "Mister Pell",
+   "kind": "mega",
+   "name": "Grand Plaza ride",
+   "placed": false,
+   "prop": "",
+   "scene": "farm",
+   "spawn": [
+    40,
+    29
+   ]
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    14,
+    34
+   ],
+   "id": "giltcity_hub",
+   "keeper": "Mister Pell",
+   "kind": "mega",
+   "name": "Grand Plaza",
+   "placed": false,
+   "prop": "",
+   "scene": "gilt_grand_plaza",
+   "spawn": [
+    14,
+    34
+   ]
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "crystal_refined": 10,
+     "plank": 60,
+     "sail": 20
+    },
+    "money": 8000
+   },
+   "cell": [
+    44,
+    10
+   ],
+   "id": "mountain_airship",
+   "keeper": "",
+   "kind": "cloud",
+   "name": "Airship Dock",
+   "placed": true,
+   "prop": "c14p4_cloud_dock",
+   "scene": "mountain"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 10,
+     "iron_bar": 20,
+     "plank": 40
+    },
+    "money": 8000
+   },
+   "cell": [
+    44,
+    10
+   ],
+   "id": "mountain_airstrip",
+   "keeper": "",
+   "kind": "plane",
+   "name": "Charter Airstrip",
+   "placed": true,
+   "prop": "c14p4_airstrip",
+   "scene": "mountain"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 10,
+     "iron_bar": 40
+    },
+    "money": 6000
+   },
+   "cell": [
+    24,
+    22
+   ],
+   "id": "uptown_subway",
+   "keeper": "",
+   "kind": "subway",
+   "name": "Red Line",
+   "placed": true,
+   "prop": "c14p4_subway",
+   "scene": "uptown"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    25,
+    30
+   ],
+   "id": "iron_mill_subway",
+   "keeper": "",
+   "kind": "subway",
+   "name": "Red Line",
+   "placed": true,
+   "prop": "c14p4_subway",
+   "scene": "iron_mill_district"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "cloth": 6,
+     "plank": 20,
+     "rope": 8
+    },
+    "money": 1500
+   },
+   "cell": [
+    36,
+    6
+   ],
+   "id": "mast_farm",
+   "keeper": "",
+   "kind": "mast",
+   "name": "Balloon Mast",
+   "placed": true,
+   "prop": "c14p4_balloon_mast",
+   "scene": "farm"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 4,
+     "iron_bar": 8,
+     "plank": 20
+    },
+    "money": 1500
+   },
+   "cell": [
+    38,
+    6
+   ],
+   "id": "pad_farm",
+   "keeper": "",
+   "kind": "plane",
+   "name": "Charter Pad",
+   "placed": true,
+   "prop": "c14p4_airstrip",
+   "scene": "farm"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "cloth": 6,
+     "plank": 20,
+     "rope": 8
+    },
+    "money": 1500
+   },
+   "cell": [
+    30,
+    30
+   ],
+   "id": "mast_town",
+   "keeper": "",
+   "kind": "mast",
+   "name": "Balloon Mast",
+   "placed": true,
+   "prop": "c14p4_balloon_mast",
+   "scene": "town"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 4,
+     "iron_bar": 8,
+     "plank": 20
+    },
+    "money": 1500
+   },
+   "cell": [
+    32,
+    30
+   ],
+   "id": "pad_town",
+   "keeper": "",
+   "kind": "plane",
+   "name": "Charter Pad",
+   "placed": true,
+   "prop": "c14p4_airstrip",
+   "scene": "town"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "cloth": 6,
+     "plank": 20,
+     "rope": 8
+    },
+    "money": 1500
+   },
+   "cell": [
+    20,
+    30
+   ],
+   "id": "mast_mountain",
+   "keeper": "",
+   "kind": "mast",
+   "name": "Balloon Mast",
+   "placed": true,
+   "prop": "c14p4_balloon_mast",
+   "scene": "mountain"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 4,
+     "iron_bar": 8,
+     "plank": 20
+    },
+    "money": 1500
+   },
+   "cell": [
+    22,
+    30
+   ],
+   "id": "pad_mountain",
+   "keeper": "",
+   "kind": "plane",
+   "name": "Charter Pad",
+   "placed": true,
+   "prop": "c14p4_airstrip",
+   "scene": "mountain"
+  },
+  {
+   "arc": "penguins",
+   "build": {
+    "items": {
+     "cloth": 6,
+     "plank": 20,
+     "rope": 8
+    },
+    "money": 1500
+   },
+   "cell": [
+    18,
+    22
+   ],
+   "id": "mast_meadow",
+   "keeper": "",
+   "kind": "mast",
+   "name": "Balloon Mast",
+   "placed": true,
+   "prop": "c14p4_balloon_mast",
+   "scene": "meadow"
+  },
+  {
+   "arc": "gangsters",
+   "build": {
+    "items": {
+     "gear": 4,
+     "iron_bar": 8,
+     "plank": 20
+    },
+    "money": 1500
+   },
+   "cell": [
+    20,
+    22
+   ],
+   "id": "pad_meadow",
+   "keeper": "",
+   "kind": "plane",
+   "name": "Charter Pad",
+   "placed": true,
+   "prop": "c14p4_airstrip",
+   "scene": "meadow"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    38,
+    30
+   ],
+   "id": "way_farm",
+   "keeper": "",
+   "kind": "hop",
+   "name": "Waystone",
+   "placed": true,
+   "prop": "c14p4_waystone",
+   "scene": "farm"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    44,
+    48
+   ],
+   "id": "way_town",
+   "keeper": "",
+   "kind": "hop",
+   "name": "Waystone",
+   "placed": true,
+   "prop": "c14p4_waystone",
+   "scene": "town"
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    28,
+    24
+   ],
+   "id": "way_mountain",
+   "keeper": "",
+   "kind": "hop",
+   "name": "Waystone",
+   "placed": true,
+   "prop": "c14p4_waystone",
+   "scene": "mountain"
+  },
+  {
+   "arc": "gangsters",
+   "cell": [
+    20,
+    6
+   ],
+   "id": "dispatch_hideout",
+   "keeper": "",
+   "kind": "taxi",
+   "name": "Dispatch Board",
+   "placed": true,
+   "prop": "c14p4_dispatch",
+   "scene": "hideout"
+  }
+ ]
+}

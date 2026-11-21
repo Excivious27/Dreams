@@ -30276,6 +30276,257 @@
    "w": 160
   }
  },
+ "c14p4": {
+  "c14p4_airstrip": {
+   "file": "c14p4/c14p4_airstrip.png",
+   "h": 64,
+   "w": 52
+  },
+  "c14p4_balloon_mast": {
+   "file": "c14p4/c14p4_balloon_mast.png",
+   "h": 120,
+   "w": 44
+  },
+  "c14p4_bus_stop": {
+   "file": "c14p4/c14p4_bus_stop.png",
+   "h": 64,
+   "w": 47
+  },
+  "c14p4_cart_stop": {
+   "file": "c14p4/c14p4_cart_stop.png",
+   "h": 72,
+   "w": 43
+  },
+  "c14p4_cloud_dock": {
+   "file": "c14p4/c14p4_cloud_dock.png",
+   "h": 64,
+   "w": 41
+  },
+  "c14p4_current_pool": {
+   "file": "c14p4/c14p4_current_pool.png",
+   "h": 56,
+   "w": 54
+  },
+  "c14p4_dispatch": {
+   "file": "c14p4/c14p4_dispatch.png",
+   "h": 64,
+   "w": 43
+  },
+  "c14p4_ferry_kiosk": {
+   "file": "c14p4/c14p4_ferry_kiosk.png",
+   "h": 72,
+   "w": 42
+  },
+  "c14p4_hedge_gap": {
+   "file": "c14p4/c14p4_hedge_gap.png",
+   "h": 64,
+   "w": 56
+  },
+  "c14p4_ladder": {
+   "file": "c14p4/c14p4_ladder.png",
+   "h": 64,
+   "w": 38
+  },
+  "c14p4_log_bridge": {
+   "file": "c14p4/c14p4_log_bridge.png",
+   "h": 56,
+   "w": 45
+  },
+  "c14p4_page_bottle": {
+   "file": "c14p4/c14p4_page_bottle.png",
+   "h": 36,
+   "w": 31
+  },
+  "c14p4_page_stake": {
+   "file": "c14p4/c14p4_page_stake.png",
+   "h": 40,
+   "w": 27
+  },
+  "c14p4_page_stone": {
+   "file": "c14p4/c14p4_page_stone.png",
+   "h": 30,
+   "w": 32
+  },
+  "c14p4_rail_halt": {
+   "file": "c14p4/c14p4_rail_halt.png",
+   "h": 56,
+   "w": 40
+  },
+  "c14p4_stairs": {
+   "file": "c14p4/c14p4_stairs.png",
+   "h": 64,
+   "w": 47
+  },
+  "c14p4_subway": {
+   "file": "c14p4/c14p4_subway.png",
+   "h": 72,
+   "w": 44
+  },
+  "c14p4_taxi_stand": {
+   "file": "c14p4/c14p4_taxi_stand.png",
+   "h": 72,
+   "w": 32
+  },
+  "c14p4_trolley_stop": {
+   "file": "c14p4/c14p4_trolley_stop.png",
+   "h": 56,
+   "w": 40
+  },
+  "c14p4_veh_airship": {
+   "cell_h": 48,
+   "cell_w": 67,
+   "file": "c14p4/c14p4_veh_airship.png",
+   "frames": 3,
+   "h": 48,
+   "w": 201
+  },
+  "c14p4_veh_balloon": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "c14p4/c14p4_veh_balloon.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "c14p4_veh_bubble": {
+   "cell_h": 48,
+   "cell_w": 75,
+   "file": "c14p4/c14p4_veh_bubble.png",
+   "frames": 3,
+   "h": 48,
+   "w": 225
+  },
+  "c14p4_veh_bus": {
+   "cell_h": 48,
+   "cell_w": 128,
+   "file": "c14p4/c14p4_veh_bus.png",
+   "frames": 3,
+   "h": 48,
+   "w": 384
+  },
+  "c14p4_veh_caravan": {
+   "cell_h": 48,
+   "cell_w": 77,
+   "file": "c14p4/c14p4_veh_caravan.png",
+   "frames": 3,
+   "h": 48,
+   "w": 231
+  },
+  "c14p4_veh_cart": {
+   "cell_h": 48,
+   "cell_w": 91,
+   "file": "c14p4/c14p4_veh_cart.png",
+   "frames": 3,
+   "h": 48,
+   "w": 273
+  },
+  "c14p4_veh_cloud": {
+   "cell_h": 48,
+   "cell_w": 76,
+   "file": "c14p4/c14p4_veh_cloud.png",
+   "frames": 3,
+   "h": 48,
+   "w": 228
+  },
+  "c14p4_veh_ferry": {
+   "cell_h": 48,
+   "cell_w": 77,
+   "file": "c14p4/c14p4_veh_ferry.png",
+   "frames": 3,
+   "h": 48,
+   "w": 231
+  },
+  "c14p4_veh_launch": {
+   "cell_h": 48,
+   "cell_w": 125,
+   "file": "c14p4/c14p4_veh_launch.png",
+   "frames": 3,
+   "h": 48,
+   "w": 375
+  },
+  "c14p4_veh_night_train": {
+   "cell_h": 48,
+   "cell_w": 85,
+   "file": "c14p4/c14p4_veh_night_train.png",
+   "frames": 3,
+   "h": 48,
+   "w": 255
+  },
+  "c14p4_veh_plane": {
+   "cell_h": 48,
+   "cell_w": 118,
+   "file": "c14p4/c14p4_veh_plane.png",
+   "frames": 3,
+   "h": 48,
+   "w": 354
+  },
+  "c14p4_veh_ring": {
+   "cell_h": 48,
+   "cell_w": 98,
+   "file": "c14p4/c14p4_veh_ring.png",
+   "frames": 3,
+   "h": 48,
+   "w": 294
+  },
+  "c14p4_veh_sedan": {
+   "cell_h": 48,
+   "cell_w": 159,
+   "file": "c14p4/c14p4_veh_sedan.png",
+   "frames": 3,
+   "h": 48,
+   "w": 477
+  },
+  "c14p4_veh_sled": {
+   "cell_h": 48,
+   "cell_w": 105,
+   "file": "c14p4/c14p4_veh_sled.png",
+   "frames": 3,
+   "h": 48,
+   "w": 315
+  },
+  "c14p4_veh_subway": {
+   "cell_h": 48,
+   "cell_w": 100,
+   "file": "c14p4/c14p4_veh_subway.png",
+   "frames": 3,
+   "h": 48,
+   "w": 300
+  },
+  "c14p4_veh_taxi": {
+   "cell_h": 48,
+   "cell_w": 115,
+   "file": "c14p4/c14p4_veh_taxi.png",
+   "frames": 3,
+   "h": 48,
+   "w": 345
+  },
+  "c14p4_veh_train": {
+   "cell_h": 48,
+   "cell_w": 85,
+   "file": "c14p4/c14p4_veh_train.png",
+   "frames": 3,
+   "h": 48,
+   "w": 255
+  },
+  "c14p4_veh_trolley": {
+   "cell_h": 48,
+   "cell_w": 90,
+   "file": "c14p4/c14p4_veh_trolley.png",
+   "frames": 3,
+   "h": 48,
+   "w": 270
+  },
+  "c14p4_waystone": {
+   "file": "c14p4/c14p4_waystone.png",
+   "h": 64,
+   "w": 41
+  },
+  "c14p4_zip_pad": {
+   "file": "c14p4/c14p4_zip_pad.png",
+   "h": 96,
+   "w": 84
+  }
+ },
  "capes": {
   "cape_back": {
    "file": "capes/cape_back.png",
@@ -115335,6 +115586,11 @@
   },
   "brick_herring": {
    "file": "seamless/brick_herring.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p4_quarry_gravel": {
+   "file": "seamless/c14p4_quarry_gravel.png",
    "h": 256,
    "w": 256
   },

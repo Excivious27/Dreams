@@ -1776,6 +1776,7 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), 3, Color(1, 0.95, 0.8, 0.9))
 		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), Color(0.1, 0.08, 0.05))
 	MegaMap.valley_gates(m, font, PINS, org, sz)
+	TravelNet.map_layer(m, font, PINS, org, sz)  # C14 (P4 hook): travel stations + open lines
 	if PINS.has(here) and MegaRegion.region_of(here) == "":
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz
 		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))

@@ -2321,7 +2321,7 @@ func _use_vehicle(id: String, it: Dictionary) -> bool:
 		hud.toast("Not indoors.")
 		return true
 	if bool(it.get("fly", false)):
-		later(_balloon)
+		later(TravelNet.balloon.bind(self))  # C14 (P4 hook): flies only between built masts/pads
 		return true
 	if player.vehicle == id:
 		player.unride()

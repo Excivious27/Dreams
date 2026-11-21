@@ -4779,7 +4779,7 @@
   "rows": 44,
   "music": "quarry",
   "backdrop": "mountains",
-  "ground": "grass",
+  "ground": "g_gravel",
   "path": "stone",
   "spawn": [
    2,
@@ -5028,7 +5028,7 @@
    }
   ],
   "gen": {
-   "scatter": 4,
+   "scatter": 0,
    "critters": [
     "crow",
     "bat",
@@ -5274,7 +5274,8 @@
     ],
     "upper": []
    }
-  ]
+  ],
+  "ground_seam": "c14p4_quarry_gravel"
  },
  "marsh": {
   "cols": 52,

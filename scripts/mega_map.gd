@@ -395,6 +395,7 @@ static func draw_region(m: Control, id: String) -> void:
 			_text(m, font, p + Vector2(-10, 1), "?", 10, qc, 20)
 		if held:
 			_lock(m, p + Vector2(7, -9))
+	TravelNet.region_layer(m, pos)  # C14 (P4 hook): travel stations on the region map
 	# You.
 	if pos.has(here):
 		var p: Vector2 = pos[here] + Vector2(0, -14)
