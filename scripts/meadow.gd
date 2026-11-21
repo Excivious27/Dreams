@@ -258,20 +258,34 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 	return false
 
 
+## C15 P5: flower-bed share (of 20) and the tall-grass corner's tuft per look season.
+const FLOWER_DENSITY := {"spring": 9, "summer": 6, "fall": 3, "winter": 0}
+const SEASON_TUFT := {"summer": "grass_tuft_summer", "fall": "grass_tuft_fall", "winter": "grass_tuft_winter"}
+
+
 func draw_map() -> void:
 	draw_grass(5)
 	WorldGen.draw_ground_detail(self, 51, 0.18)
 	if Art.has("nature", "gdeco_tuft_a") and Art.has("nature", "fdeco_0"):
 		# Flower beds and the tall-grass corner as cut-out decals on the grass
 		# (raw g_flower / g_tall tiles showed as hard-edged squares).
+		# C15 P5 (c15_13-11): the beds follow the look season: full in spring, fewer in
+		# summer, a few late asters in fall, none under winter snow.
+		var se := GameState.look_se()
 		var fl: Array = ["gdeco_dandelion", "gdeco_clover", "fdeco_0", "fdeco_1", "fdeco_2", "fdeco_3", "fdeco_4", "fdeco_5"]
+		if se == "fall":
+			fl = ["fdeco_2", "fdeco_4", "grass_tuft_fall"]
+		var dens: int = int(FLOWER_DENSITY.get(se, 9))
 		for c: Vector2i in cells_of([Rect2i(4, 18, 9, 6), Rect2i(20, 3, 7, 4)]):
 			var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
-			if not blocked.has(c) and hv % 20 < 9:
+			if not blocked.has(c) and hv % 20 < dens:
 				var nm: String = fl[hv % fl.size()]
 				if Art.has("nature", nm):
 					Art.draw_prop(self, "nature", nm, Vector2(c * TILE) + Vector2(8 + (hv >> 4) % 7 - 3, 14 + (hv >> 8) % 5 - 2))
 		var tufts := ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c"]
+		var st: String = str(SEASON_TUFT.get(se, ""))
+		if st != "" and Art.has("nature", st):
+			tufts = [st, st, "gdeco_tuft_b" if se == "summer" else st]  # dry fall / snowy winter tall grass
 		for c: Vector2i in cells_of([Rect2i(14, 20, 8, 5)]):
 			if not blocked.has(c):
 				var hv := absi((c.x * 73856093) ^ (c.y * 19349663))

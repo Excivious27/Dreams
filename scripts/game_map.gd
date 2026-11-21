@@ -4460,7 +4460,7 @@ func _build_border() -> void:
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
 			prop(bg, nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
 		else:
-			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0), depth])
+			_border_draw.append([c, bg, SeasonLook.pick(bg, nm), rng.randf_range(-3.0, 3.0), depth])  # C15 P5: themed city/region stands take season twins
 	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
 
 
