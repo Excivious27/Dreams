@@ -1,0 +1,188 @@
+{
+ "sha": "15f885eed82d43f88a9d3dcd6438fa9672904366",
+ "ref": "ci/s1p3b-4319501c",
+ "run": "44867787293",
+ "finished": 1795237007.4287188,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 14,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 14,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 121,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 121ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 66,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "4319501cb634d805ed563555071f97b5b9383414",
+  "label": "s1p3b",
+  "branch": "s1f/p3",
+  "shards": [
+   2,
+   3
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 327,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 327,
+   "failed_steps": [
+    "C11b P6: C11b creature voices and ranch sound"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 192,
+   "failed_steps": [
+    "farm_look_test"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL animal_voice asks the C11b table",
+   1
+  ],
+  [
+   "FAIL pens fenced (41 pieces, 3 gates)",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 184.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.7
+  },
+  {
+   "step": 112,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 16.7
+  },
+  {
+   "step": 105,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 15.4
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 13.8
+  },
+  {
+   "step": 16,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 87,
+   "name": "campaign: battles, projects, colonies, big mines",
+   "rc": 0,
+   "secs": 8.5
+  },
+  {
+   "step": 123,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 8.0
+  },
+  {
+   "step": 81,
+   "name": "gifts: the Marked and boss powers",
+   "rc": 0,
+   "secs": 7.7
+  },
+  {
+   "step": 27,
+   "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10",
+   "rc": 0,
+   "secs": 7.5
+  },
+  {
+   "step": 15,
+   "name": "crops wired in",
+   "rc": 0,
+   "secs": 7.2
+  },
+  {
+   "step": 88,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 6.9
+  },
+  {
+   "step": 39,
+   "name": "farm_week_test",
+   "rc": 0,
+   "secs": 6.7
+  },
+  {
+   "step": 117,
+   "name": "hidden areas stay put day to day (C5)",
+   "rc": 0,
+   "secs": 6.4
+  },
+  {
+   "step": 3,
+   "name": "interior reachability",
+   "rc": 0,
+   "secs": 6.2
+  }
+ ]
+}
