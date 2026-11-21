@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b P7 (Tom's playtest): training drill can always be left (Leave training button + pause-menu row), drill helpers follow by default, HELPERS orders in plain words (Follow me / Hold here / Go to), banner menu says Build helper with cost, 8 one-order steps; test battle_drill_flow_test (both arcs).
+
 ## 2026-11-20 — 2026-11-20 relay/live: Play together uses the live relay wss://dreams-64-23-239-63.sslip.io by default (custom field + Reset to default); GET /version (code hash + commit) on server.js; server/deploy/ reference box setup (dreams-update.sh writes .deployed_commit); tools/relay_test.js in check.sh; tools/net_e2e.sh two-instance Godot test vs live relay; CI relay job (RELAY: ok, Xms; waits for server/ deploys; main pushes touching server/net.gd run it).
 
 ## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
