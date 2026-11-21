@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14b P4: Orchard Hills/Breezehaven windmills now a still body with code-rotated sails (new split art)
+
 ## 2026-11-21 — C14b P4: magic areas get ground sparkles, sky veils, motes and cloud wisps (MagicFx); region strips play out of step with ping-pong; colony crystal glow and wake burst; moon dusk + aurora; neon hum, boats bob, drones glide (RegionAnim)
 
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)

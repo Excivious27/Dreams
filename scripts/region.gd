@@ -566,6 +566,8 @@ func after_ready() -> void:
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "props"))
 		var nm := str(p["name"])
+		if RegionAnim.SPLIT.has(nm) and Art.has(g, str(RegionAnim.SPLIT[nm])):
+			nm = str(RegionAnim.SPLIT[nm])  # C14b P4: still body + code-rotated sails
 		var w := int(p.get("w", 0))
 		# Buildings carry a "scale" (round 13) so they stand at town size next to the
 		# hero (town buildings are ~1.0); everything else is drawn at the usual 0.5.

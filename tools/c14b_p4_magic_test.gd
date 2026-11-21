@@ -128,6 +128,19 @@ func _run() -> void:
 			steam += 1
 	if steam < 1:
 		fail("frost_hearthhold: hot spring has no steam")
+	# Windmills: a still body with code-rotated sails that turn on game time.
+	if Art.has("props", "c14bp4_windmill_sails"):
+		var mo := await _load("orchard_hills")
+		var sails: Node2D = null
+		for n in mo.find_children("Sails", "Sprite2D", true, false):
+			sails = n
+		if sails == null:
+			fail("orchard_hills: windmill has no rotating sails")
+		else:
+			var r0 := sails.rotation
+			await _wait_game(1.0)
+			if absf(sails.rotation - r0) < 0.05:
+				fail("windmill sails do not turn (%.3f -> %.3f)" % [r0, sails.rotation])
 	# Moon: dusk tint and aurora.
 	var mm := await _load("moon")
 	if mm.get_node_or_null("MagicTint") == null:
@@ -135,13 +148,19 @@ func _run() -> void:
 	if mm.sky and not mm.sky.aurora:
 		fail("moon: aurora off")
 	# Code motion: a boat bobs on game time (helper level, deterministic).
+	var dlg := Dialogue.instance(self)
+	for k in 30:
+		if dlg.active:
+			dlg._advance()
+		await process_frame
+	paused = false
 	var ra := RegionAnim.new()
 	root.add_child(ra)
 	var boat := Node2D.new()
 	root.add_child(boat)
 	ra.add(boat, "rowboat", Vector2i(3, 4))
 	var ys := {}
-	for i in 40:
+	for i in 90:
 		await process_frame
 		ys[snappedf(boat.position.y, 0.5)] = true
 	if ys.size() < 2 and not Settings.reduced_motion():

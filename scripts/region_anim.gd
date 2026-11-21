@@ -17,11 +17,15 @@ extends Node
 ## blade angles, the boiling helicopter, street lamps that are an on-switch): frame 0
 ## rather than a choppy loop until split art exists (c14b_16-11, c14b_13-22, c14b_04-10).
 const STILL_STRIPS := ["windmill", "wind_turbine", "helicopter", "lamp2_", "airlock", "cryo_pod", "door", "gate"]  # also state strips (open/closed)
+const JUMBLED := ["windmill", "wind_turbine", "helicopter"]
+## Strips replaced by split art: a still body plus a code-rotated rotor (c14b_13-04, c14b_16-11).
+const SPLIT := {"windmill3": "c14bp4_windmill_body"}
 const PINGPONG := ["glow_pond", "glow_pool", "star_crater", "warp_pad", "tide_pool", "giant_flower", "aurora", "moon_spire", "crystal_tree"]
 const FPS := {"fire": 8.0, "barrel": 8.0, "bonfire": 8.0, "cauldron": 5.0, "fountain": 7.0, "glow_pond": 4.0, "glow_pool": 4.0,
 	"crystal_tree": 3.0, "giant_flower": 2.5, "carnivore": 2.5, "star_crater": 4.0, "warp_pad": 5.0, "console": 1.5, "arcade": 3.0}
 
 var _items: Array = []  # [node, kind, base_pos, phase, extra]
+var _anim_s: Script = null
 
 
 static func of(m: Node) -> RegionAnim:
@@ -41,6 +45,9 @@ static func hcell(c: Vector2i) -> int:
 static func wants_anim(p: Dictionary, g: String, nm: String) -> bool:
 	if not Art.has(g, nm):
 		return false
+	for j: String in JUMBLED:  # never play a jumbled rotor loop, even when the data asks
+		if nm.contains(j):
+			return false
 	if p.has("anim"):
 		return bool(p["anim"])
 	if bool(p.get("still", false)):
@@ -123,6 +130,17 @@ func add(node: Node2D, nm: String, c: Vector2i) -> void:
 		gmode = "lit"
 		gcol = Color("6fe0ff")
 		grad = 24.0
+	if nm == "c14bp4_windmill_body" and node is Sprite2D and Art.has("props", "c14bp4_windmill_sails"):
+		var info := Art.info("props", nm)
+		var hub: Array = info.get("hub", [float(info.get("w", 61)) / 2.0, 32.0])
+		var rs := Sprite2D.new()
+		rs.name = "Sails"
+		rs.texture = Art.tex("props", "c14bp4_windmill_sails")
+		rs.position = Vector2(float(hub[0]) - float(info.get("w", 61)) / 2.0, float(hub[1]) - float(info.get("h", 104)))
+		rs.rotation = float(hcell(c) % 628) / 100.0
+		node.add_child(rs)
+		_items.append([rs, "rotor", rs.position, 0.85 + float(hcell(c) % 31) / 100.0, {"last": PlayClock.now()}])
+		return
 	if gmode != "" and (node is AnimatedSprite2D or node is Sprite2D):
 		var gw := Glow.new()
 		gw.col = gcol
@@ -173,6 +191,16 @@ func _process(_d: float) -> void:
 				var a: Vector2 = spots[posmod(seg, 3)]
 				var b: Vector2 = spots[posmod(seg + 1, 3)]
 				n.position = base + a.lerp(b, u) * amp + Vector2(0, roundf(sin(t * 3.0 + ph) * 2.0) / 2.0)
+			"rotor":
+				# Sails turn smoothly with the wind (integrated, so a wind change never jumps the angle).
+				var dt := clampf(t - float(ex["last"]), 0.0, 0.1)
+				ex["last"] = t
+				var w := 0.6
+				if _anim_s == null and ResourceLoader.exists("res://scripts/anim.gd"):
+					_anim_s = load("res://scripts/anim.gd")
+				if _anim_s != null and _anim_s.has_method("wind"):
+					w = float(_anim_s.call("wind"))
+				n.rotation += dt * 0.7 * ph * (0.5 + w) * (0.25 if rm else 1.0)
 			"drift":
 				n.position = base + Vector2(0, roundf(sin(t * 0.6 + ph) * 1.0 * amp * 2.0) / 2.0)
 			"breathe":

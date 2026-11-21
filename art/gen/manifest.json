@@ -103534,6 +103534,26 @@
   }
  },
  "props": {
+  "c14bp4_windmill_body": {
+   "cell_h": 104,
+   "cell_w": 61,
+   "file": "props/c14bp4_windmill_body.png",
+   "frames": 1,
+   "h": 104,
+   "hub": [
+    31.6,
+    32.3
+   ],
+   "w": 61
+  },
+  "c14bp4_windmill_sails": {
+   "cell_h": 78,
+   "cell_w": 78,
+   "file": "props/c14bp4_windmill_sails.png",
+   "frames": 1,
+   "h": 78,
+   "w": 78
+  },
   "abandoned_cart": {
    "file": "props/abandoned_cart.png",
    "h": 48,
