@@ -56,6 +56,9 @@ func _run() -> void:
 	GameState.run["time"] = 11 * 60
 
 	_check(not WorldGen.DEAD_END_LOOKS.has("milestone"), "dead-end looks never use the gravestone-like milestone")
+	for nm in ["ri_cairn", "ri_eagle_nest", "ri_mountain_flower", "ri_boulder4_0", "ri_pine_stump"]:
+		var t := Art.tex("props", nm)
+		_check(t != null and t.get_height() <= 44, "%s carries no sheet name plate (h %d)" % [nm, t.get_height() if t else -1])
 
 	var m := await _load("riverlands")
 	var water := 0
