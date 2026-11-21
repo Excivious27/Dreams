@@ -2594,11 +2594,11 @@ func effect_text(at: Vector2, fx_in: Dictionary) -> void:
 		i += 1
 
 
-func damage_number(at: Vector2, n: int, col := Color.WHITE) -> void:
-	if n <= 0:
+func damage_number(at: Vector2, n: int, col := Color.WHITE, blocked := false) -> void:
+	if n < 0 or (n == 0 and not blocked):
 		return
 	var l := Label.new()
-	l.text = str(n)
+	l.text = "BLOCK" if blocked and n == 0 else str(n)  # blocked hits say so (c16b_11-03)
 	l.position = at + Vector2(-8, 0)
 	l.z_index = 20
 	l.add_theme_font_size_override("font_size", 9)

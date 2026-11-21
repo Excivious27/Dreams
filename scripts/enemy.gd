@@ -505,6 +505,17 @@ func provoke(by: Node2D) -> void:
 	_noticed = true
 
 
+## A blocked hit near you is heard (at most every 0.25 s, c16b_11-03).
+func _block_cue() -> void:
+	if map.player == null or position.distance_to(map.player.position) > 170.0:
+		return
+	var now := PlayClock.ms()
+	if map.has_meta("block_ms") and now - int(map.get_meta("block_ms")) < 250:
+		return
+	map.set_meta("block_ms", now)
+	Music.instance(get_tree()).sfx("block", "thud")
+
+
 ## The "noticed you" sting: on a battlefield, once per 1.5 s map-wide, so a wave
 ## arriving doesn't stack a dozen stings (c16b_11-13). The emote still shows.
 func _alert_sting() -> void:
@@ -546,13 +557,16 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 		return false
 	if _shield > 0.0:
 		map.fx("sparkle", position + Vector2(0, -10), 14.0, 0.4)
-		map.damage_number(position + Vector2(0, -20), 0, Color(0.6, 0.8, 1.0))
+		map.damage_number(position + Vector2(0, -20), 0, Color(0.6, 0.8, 1.0), true)
+		_block_cue()
 		return false
 	if _gift:
 		var mult := _gift.vuln(from, magic)
 		if mult <= 0.0:
 			if not tick:
 				_gift.on_blocked()  # a burn tick bouncing off isn't a swing to answer
+				map.damage_number(position + Vector2(0, -20), 0, Color(0.6, 0.8, 1.0), true)
+				_block_cue()
 			return false
 		n = maxi(1, int(round(n * mult)))
 		if not tick: _gift.on_hit(mult)

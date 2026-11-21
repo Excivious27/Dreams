@@ -451,8 +451,7 @@ func _capture(delta: float) -> void:
 				p["spawner"] = ""
 				# Whatever it built goes down with it (turrets included).
 				for mm in p["made"]:
-					if is_instance_valid(mm):
-						(mm as Node).queue_free()
+					BattleFx.stand_down(map, mm)  # a poof and a fade, not a blink (c16b_11-08)
 				p["made"] = []
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
 				Music.instance(get_tree()).sfx("power_off" if not GameState.is_penguins() else "glass", "thud")
@@ -1018,13 +1017,7 @@ func _end(won: bool, travel := true) -> void:
 	_duck_music()
 	if won:
 		GameState.add_arc_xp(25 if rematch else 80)
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	if not travel:
 		return
 	var key := "battle_" + bid
@@ -1224,7 +1217,7 @@ func _hud_pointer(txt: Array) -> void:
 		var c := Vector2(135, 310) + dir * Vector2(110.0, 80.0)
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
 		# 90 px wide (kept on screen) so names like "Scarecrow Post" aren't cut short.
-		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 6, Color(1, 0.95, 0.8)])
+		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 7, Color(1, 0.95, 0.8)])  # 7 px floor (c16b_11-06)
 
 
 # ---- campaign nodes --------------------------------------------------------------
@@ -1356,17 +1349,12 @@ func _end_drill(won: bool, travel: bool) -> void:
 	Music.instance(get_tree()).sfx(drill_end_cue(won, _rescued), "j_page")
 	if won:
 		_duck_music()
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	var lines := CampaignGate.drill_finish(won)
 	GameState.save()
 	if not travel:
 		return
+	await BattleFx.beat(self)
 	await map.say(lines)
 	var back: Array = d.get("back", ["town", 0, 0])
 	Campaign.reopen_later(get_tree(), "")
@@ -1383,13 +1371,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	_duck_music()
 	if won:
 		GameState.add_arc_xp(30)
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit or h is CampaignConvoy:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	var cid := camp
 	var lines := Campaign.finish(won, supply)
 	if won:
@@ -1398,6 +1380,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	if not travel:
 		return
 	if not lines.is_empty():
+		await BattleFx.beat(self)
 		await map.say(lines)
 	GameState.save()
 	var back: Array = d.get("back", ["town", 0, 0])
