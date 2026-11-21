@@ -329,8 +329,8 @@ func _go_home() -> void:
 	st["mode"] = "follow"
 	st["wait"] = []
 	Pet.say(get_tree(), "hurt")
-	map.hud.toast("%s has gone back to the dog house on your farm to rest%s." % [name_of(), " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
-	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), "in a few hours" if best else "tomorrow morning"])
+	map.hud.toast("%s has gone back to the dog house on your farm to rest. Back %s." % [name_of(), GameMenu.pup_back_text()], Color(1, 0.8, 0.7))
+	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), GameMenu.pup_back_text()])
 	map.emote(self, "sleep", 1.5)
 	visible = false
 	busy = true

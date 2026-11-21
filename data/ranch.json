@@ -35,10 +35,9 @@
      },
      {
       "id": "golden",
-      "art": "chicken2",
+      "art": "chicken_golden",
       "weight": 4,
-      "rare": true,
-      "tint": "#f2c45a"
+      "rare": true
      }
     ],
     "anims": [
@@ -126,10 +125,13 @@
      },
      {
       "id": "snow",
-      "art": "duck2",
+      "art": "duck_snow",
       "weight": 6,
       "rare": true,
-      "tint": "#e8eef5"
+      "baby": [
+       "duck_snow",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -226,10 +228,9 @@
      },
      {
       "id": "highland",
-      "art": "cow_brown",
+      "art": "cow_highland",
       "weight": 5,
-      "rare": true,
-      "tint": "#c8783c"
+      "rare": true
      }
     ],
     "anims": [
@@ -306,10 +307,9 @@
      },
      {
       "id": "black",
-      "art": "sheep_woolly",
+      "art": "sheep_black",
       "weight": 8,
-      "rare": true,
-      "tint": "#4a4450"
+      "rare": true
      }
     ],
     "anims": [
@@ -389,10 +389,13 @@
      },
      {
       "id": "chocolate",
-      "art": "goat2",
+      "art": "goat_chocolate",
       "weight": 5,
       "rare": true,
-      "tint": "#7a4a30"
+      "baby": [
+       "goat_chocolate",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -484,10 +487,9 @@
      },
      {
       "id": "white",
-      "art": "llama",
+      "art": "llama_white",
       "weight": 5,
-      "rare": true,
-      "tint": "#f4f0ea"
+      "rare": true
      }
     ],
     "anims": [
@@ -580,10 +582,13 @@
      },
      {
       "id": "ginger",
-      "art": "pig_a",
+      "art": "pig_ginger",
       "weight": 5,
       "rare": true,
-      "tint": "#d0703a"
+      "baby": [
+       "pig_ginger",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -676,10 +681,9 @@
      },
      {
       "id": "silver",
-      "art": "rabbit_white",
+      "art": "rabbit_silver",
       "weight": 5,
-      "rare": true,
-      "tint": "#b8bcc8"
+      "rare": true
      }
     ],
     "anims": [

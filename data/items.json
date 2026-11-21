@@ -21339,5 +21339,46 @@
   "tier": 3,
   "desc": "A whole big egg baked into a wobbly custard.",
   "energy": 47
+ },
+ "dc_show_ribbon_blue": {
+  "name": "Blue Show Ribbon",
+  "type": "decor",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "props/show_ribbon_blue",
+  "desc": "Won at the Harvest Fair Animal Show.",
+  "decor": true
+ },
+ "dc_show_ribbon_red": {
+  "name": "Red Show Ribbon",
+  "type": "decor",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 3,
+  "icon": "props/show_ribbon_red",
+  "desc": "Won at the Harvest Fair Animal Show.",
+  "decor": true
+ },
+ "dc_show_ribbon_yellow": {
+  "name": "Yellow Show Ribbon",
+  "type": "decor",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 3,
+  "icon": "props/show_ribbon_yellow",
+  "desc": "Won at the Harvest Fair Animal Show.",
+  "decor": true
+ },
+ "dc_show_trophy": {
+  "name": "Best in Show Trophy",
+  "type": "decor",
+  "value": 0,
+  "rarity": "unique",
+  "tier": 5,
+  "icon": "props/show_trophy",
+  "desc": "One of a kind: three blue ribbons at the Animal Show.",
+  "decor": true,
+  "keep": true
  }
 }

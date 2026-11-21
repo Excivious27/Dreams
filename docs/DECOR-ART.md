@@ -1,6 +1,6 @@
 # Decor art coverage (written by tools/gen_decor.py; do not edit)
 
-Entries: 1034 (decor 908, wear 126). P6 renders merged: 462.
+Entries: 1038 (decor 912, wear 126). P6 renders merged: 462.
 
 | sub | have | target | gap |
 |---|---|---|---|
@@ -28,7 +28,7 @@ Entries: 1034 (decor 908, wear 126). P6 renders merged: 462.
 | hat | 22 | 0 | 0 |
 | hedge | 6 | 0 | 0 |
 | ice_palace | 9 | 0 | 0 |
-| keepsake | 12 | 0 | 0 |
+| keepsake | 15 | 0 | 0 |
 | kitchen | 14 | 28 | 14 |
 | lamp | 22 | 0 | 0 |
 | light | 11 | 30 | 19 |
@@ -52,7 +52,7 @@ Entries: 1034 (decor 908, wear 126). P6 renders merged: 462.
 | seasonal | 17 | 0 | 0 |
 | seating | 26 | 40 | 14 |
 | shoes | 20 | 0 | 0 |
-| showpiece | 10 | 10 | 0 |
+| showpiece | 11 | 10 | 0 |
 | sign | 1 | 0 | 0 |
 | snowdrift_igloo | 9 | 0 | 0 |
 | statue | 9 | 10 | 1 |
@@ -69,6 +69,6 @@ Entries: 1034 (decor 908, wear 126). P6 renders merged: 462.
 | yard_gang | 19 | 0 | 0 |
 | yard_penguin | 10 | 0 | 0 |
 
-By category: acc 63, bottom 1, decor 93, flooring 47, furniture 362, hat 22, light 34, outdoor 169, outfit 14, rug 33, shoes 20, top 6, wall_art 134, wallpaper 36
-By rarity: common 412, uncommon 328, rare 175, epic 75, legendary 22, mythic 8, unique 14
-By arc:  690, gangsters 198, penguins 146
+By category: acc 63, bottom 1, decor 94, flooring 47, furniture 362, hat 22, light 34, outdoor 169, outfit 14, rug 33, shoes 20, top 6, wall_art 137, wallpaper 36
+By rarity: common 412, uncommon 330, rare 176, epic 75, legendary 22, mythic 8, unique 15
+By arc:  694, gangsters 198, penguins 146
