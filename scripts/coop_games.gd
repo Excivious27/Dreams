@@ -39,6 +39,9 @@ var host_ok := true
 var sessions := {}
 ## The house board as last heard from the host (guests); hosts use board_store.
 var board_cache := {}
+## The host's Rec Center as a guest last heard it ({} = not heard: use our own flags).
+## {open: bool, reno: [open phase ids], arc: "penguins"|"gangsters"}; visit-only, never saved.
+var rec_view := {}
 ## Where a host keeps its board (GameState.run["coop_board"] in the game; tests pass their own).
 var board_store: Dictionary = {}
 var _next := 1
@@ -108,6 +111,8 @@ func _attach() -> void:
 	var n := node if node != null else Net.i()
 	if n != null and n.has_signal("peer_left"):
 		n.connect("peer_left", func(p: Variant) -> void: peer_gone(str(p)))
+	if n != null and n.has_signal("peer_joined"):
+		n.connect("peer_joined", func(p: Variant) -> void: welcome(str(p)))
 
 
 ## Our router id and role (they change as we host, join or go home).
@@ -258,6 +263,23 @@ func post_best(game: String, score: int) -> void:
 		_out("", "game_post", {"game": game, "score": score, "name": my_name()})
 
 
+## Host: what a guest needs to see the host's Rec Center as it is (c17_06-05).
+static func rec_summary() -> Dictionary:
+	var f: Dictionary = GameState.run.get("flags", {})
+	var reno := []
+	for k in f:
+		if str(k).begins_with("rec_reno_"):
+			reno.append(str(k).trim_prefix("rec_reno_"))
+	return {"open": f.has("rec_open"), "reno": reno, "arc": str(GameState.run.get("arc", "penguins"))}
+
+
+## The host's rec summary while we visit, else {} (callers then use our own flags).
+static func host_rec() -> Dictionary:
+	if not GameState.visiting() or _me == null:
+		return {}
+	return _me.rec_view
+
+
 ## The board's #1 for a game: {name, score} or {}.
 func top(game: String) -> Dictionary:
 	var b := board(game)
@@ -280,7 +302,7 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 			"game_start": _ref_start(from, d)
 			"game_turn": _ref_turn(from, d)
 			"game_score": _ref_score(from, d)
-			"game_board_ask": _out(from, "game_board", {"board": board_store.duplicate(true)})
+			"game_board_ask": _out(from, "game_board", {"board": board_store.duplicate(true), "rec": rec_summary()})
 			"game_post":
 				if submit_board(str(d.get("game", "")), str(d.get("name", "")), int(d.get("score", 0))):
 					_out("*", "game_board", {"board": board_store.duplicate(true)})
@@ -293,6 +315,8 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 		"game_board":
 			if d.get("board") is Dictionary:
 				board_cache = (d["board"] as Dictionary).duplicate(true)
+			if d.get("rec") is Dictionary:
+				rec_view = (d["rec"] as Dictionary).duplicate(true)
 
 
 func _apply_state(d: Dictionary) -> void:
@@ -364,6 +388,16 @@ func _ref_leave(from: String, d: Dictionary) -> void:
 		s["owner"] = s["players"][0]["peer"]
 	_push(sid)
 	_maybe_done(sid)
+
+
+## Host: a partner just joined: send them the house board, the rec as it stands, and open lobbies.
+func welcome(peer: String) -> void:
+	_sync_role()
+	if not host:
+		return
+	_out(peer, "game_board", {"board": board_store.duplicate(true), "rec": rec_summary()})
+	for sid in sessions:
+		_out(peer, "game_state", sessions[sid])
 
 
 ## A partner who dropped out of the room leaves every session (the others carry on).

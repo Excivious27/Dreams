@@ -221,6 +221,13 @@ func _over_loop() -> void:
 	await _pump(4)
 	ok(got.size() == 1 and str(got[0][0]["name"]) == "Guesty", "loop: the guest gets the result, guest won")
 	ok(gc.board("gallery").size() == 2, "loop: the house board reached the guest")
+	GameState.run["flags"]["rec_open"] = true
+	GameState.run["flags"]["rec_reno_arcade_wing"] = true
+	gc.ask_board()
+	await _pump(4)
+	ok(bool(gc.rec_view.get("open", false)) and "arcade_wing" in gc.rec_view.get("reno", []), "loop: the guest hears the host's rec (open, renovations)")
+	GameState.run["flags"].erase("rec_open")
+	GameState.run["flags"].erase("rec_reno_arcade_wing")
 	hn.leave()
 	gn.leave()
 	hn.queue_free()
@@ -255,6 +262,11 @@ func _visit_guards() -> void:
 	ok(AnimalShowLib.animal_entries().is_empty(), "no host animals at the show for a guest")
 	ok(AnimalShowLib.done_key("spring", "c1").begins_with("visit_"), "festival keys namespaced while visiting")
 	ok(RecReno.cup().is_empty(), "no Rec Cup on the host's season")
+	GameState.run["flags"].erase("rec_open")
+	CoopGames.i().rec_view = {"open": true, "reno": ["skee_alley"], "arc": "gangsters"}
+	ok(RecCenter.is_open() and RecReno.is_open("skee_alley") and int(RecCenter.hours()[1]) == 26, "visiting: the host's rec is open with its renovations and hours")
+	ok(not GameState.run["flags"].has("rec_open"), "the guest's own rec flags untouched")
+	CoopGames.i().rec_view = {}
 	GameState.run["day"] = 400  # host in a later year
 	ok(FestivalExtra.own_year() == 1, "festival scaling uses the lower (our) year")
 	ok(FestivalExtra.once_a_year("visit_fest_derby_400", 300) == 300, "a friend's festival pays")

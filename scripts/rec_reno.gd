@@ -44,6 +44,9 @@ static func is_open(id: String) -> bool:
 	var known := false
 	for ph: Dictionary in phases():
 		known = known or str(ph["id"]) == id
+	var hv := CoopGames.host_rec()  # C17 P4 (c17_06-05): the host's renovations while visiting
+	if not hv.is_empty():
+		return not known or id in (hv.get("reno", []) as Array)
 	return not known or GameState.run["flags"].has("rec_reno_" + id)
 
 

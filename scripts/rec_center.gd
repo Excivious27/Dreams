@@ -31,6 +31,9 @@ static func fee() -> int:
 
 
 static func is_open() -> bool:
+	var hv := CoopGames.host_rec()  # C17 P4 (c17_06-05): visiting = the host's building
+	if not hv.is_empty():
+		return bool(hv.get("open", false))
 	return not GameState.run.is_empty() and GameState.run.get("flags", {}).has("rec_open")
 
 
@@ -220,6 +223,8 @@ static func soon_for(npc_id: String) -> Array:
 
 ## Town door: shut (with a word about the opening) until the grand opening.
 static func door_closed(m: GameMap, thing: Dictionary) -> bool:
+	if GameState.visiting():
+		CoopGames.i().ask_board()  # C17 P4: refresh the host's rec view (board + open state)
 	if str(thing.get("interior", "")) != "rec":
 		return false
 	if is_open():
@@ -242,8 +247,9 @@ static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 static func hours() -> Array:
 	var b: Dictionary = data().get("building", {})
 	var h: Array = b.get("hours", [9, 24])
-	if not GameState.run.is_empty() and not GameState.is_penguins():
-		h = b.get("hours_gang", h)
+	var hv := CoopGames.host_rec()
+	if (not hv.is_empty() and str(hv.get("arc", "")) == "gangsters") or (hv.is_empty() and not GameState.run.is_empty() and not GameState.is_penguins()):
+		h = b.get("hours_gang", h)  # the host's town keeps the host's hours
 	return [int(h[0]), int(h[1])]
 
 
