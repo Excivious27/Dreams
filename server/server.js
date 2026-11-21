@@ -3,7 +3,7 @@
 //   PORT (default 8787), MAX_PLAYERS (8), ROOM_TTL_MS (30 min empty), HOST_GRACE_MS (30 s).
 // Protocol (JSON text frames):
 //   client -> {t:"join", room:"ABCD", name, look, arc}   // room "" = create
-//   server -> {t:"joined", id, room, host:true|false, peers:[{id,name,look,arc}]}
+//   server -> {t:"joined", id, room, host:true|false, host_id, peers:[{id,name,look,arc,host}]}
 //   server -> {t:"old_build", need} when the joiner's proto differs from the room creator's (no proto = 0)
 //   server -> {t:"peer_joined", peer:{...}} / {t:"peer_left", id}
 //   client -> {t:"to", id, d:{...}}      // to one peer (host sync replies)
@@ -100,9 +100,9 @@ wss.on("connection", (ws) => {
       ws.room = r; ws.info = { id: ws.id, name: String(m.name || "Player").slice(0, 24), look: m.look || {}, arc: m.arc || "penguins", scene: "farm" };
       room.peers.set(ws.id, ws); room.emptySince = 0;
       const isHost = room.host === ws.id;
-      send(ws, { t: "joined", id: ws.id, room: r, host: isHost, peers: [...room.peers.values()].filter(p => p !== ws).map(p => p.info) });
+      send(ws, { t: "joined", id: ws.id, room: r, host: isHost, host_id: room.host, peers: [...room.peers.values()].filter(p => p !== ws).map(p => ({ ...p.info, host: p.id === room.host })) });
       if (!isHost && room.world) send(ws, { t: "world", d: room.world });
-      for (const p of room.peers.values()) if (p !== ws) send(p, { t: "peer_joined", peer: ws.info });
+      for (const p of room.peers.values()) if (p !== ws) send(p, { t: "peer_joined", peer: { ...ws.info, host: isHost } });
       return;
     }
     const room = ws.room && rooms.get(ws.room); if (!room) return;
