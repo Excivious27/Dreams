@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ci_run.sh <label> [days] [focus] [--shards 1,3] [--no-bots] [--playtest-only] [--branch <b>]
+# ci_run.sh <label> [days] [focus] [--shards 1,3] [--no-bots] [--playtest-only] [--branch <b>] [--relay|--no-relay]
 # Run check.sh (6 shards) + 20 bots + the scripted playtest on GitHub Actions for HEAD,
 # wait for the results on branch ci-results/<sha>/, print summary.txt, exit 0 on pass / 1 on fail.
 #   --shards 1,3     only these check shards (+ the playtest; bots off). Fix agents' pre-merge
@@ -7,6 +7,10 @@
 #   --no-bots        skip the 20 bots
 #   --playtest-only  only the playtest (plus --shards if given)
 #   --branch <b>     test origin/<b> merged onto current origin/main (temp worktree) instead of HEAD
+#   --relay / --no-relay  force the live relay check on/off. Default: on for full runs (bots on,
+#                    i.e. post-merge) and whenever the diff vs origin/main touches server/,
+#                    scripts/net.gd or the relay tests; the Godot NET E2E runs when net.gd or
+#                    server/ changed (tools/conduct/relay_live_check.py)
 #   - writes ci/params.json in a throwaway commit on top of the base (HEAD itself is untouched)
 #   - pushes it to ci/<label>-<shortsha> (conduct-ci.yml runs on ci/**), deletes it afterwards
 #   - polls `git fetch origin ci-results` every 60 s, 45 min timeout
@@ -14,13 +18,15 @@
 # if that fails too, exits 3 so the caller runs check.sh + bots.sh locally.
 # Results land in /tmp/ci_<sha>/ (summary.txt, summary.json, logs).
 set -uo pipefail
-POS=(); SHARDS=""; BOTS=1; PTONLY=0; BRANCH=""
+POS=(); SHARDS=""; BOTS=1; PTONLY=0; BRANCH=""; RELAY=auto
 while [ $# -gt 0 ]; do
   case "$1" in
     --shards) SHARDS="$2"; shift 2 ;;
     --shards=*) SHARDS="${1#*=}"; shift ;;
     --no-bots) BOTS=0; shift ;;
     --playtest-only) PTONLY=1; shift ;;
+    --relay) RELAY=1; shift ;;
+    --no-relay) RELAY=0; shift ;;
     --branch) BRANCH="$2"; shift 2 ;;
     --branch=*) BRANCH="${1#*=}"; shift ;;
     -*) echo "unknown option $1"; exit 2 ;;
@@ -56,17 +62,27 @@ else
   git worktree add -q --detach "$TMP" "$BASE" 2>/dev/null || { echo "worktree failed"; exit 3; }
 fi
 mkdir -p "$TMP/ci"
+# Live relay check: what changed against origin/main decides it (relay_live_check.py).
+git fetch -q origin main 2>/dev/null || true
+CHANGED=$(git diff --name-only "$(git rev-parse origin/main 2>/dev/null || echo "$BASE")" "$BASE" 2>/dev/null)
+SRV=0; NETC=0; RTOOLS=0
+echo "$CHANGED" | grep -q '^server/' && SRV=1
+echo "$CHANGED" | grep -q '^scripts/net\.gd$' && NETC=1
+echo "$CHANGED" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)' && RTOOLS=1
+if [ "$RELAY" = auto ]; then RELAY=0; { [ "$BOTS" = 1 ] || [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && RELAY=1; fi
+E2E=0; { [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY
 python3 - "$TMP/ci/params.json" <<PY
 import json, sys
 json.dump({"days": int("$DAYS"), "focus": "$FOCUS", "base": "$BASE", "label": "$LABEL", "branch": "$BRANCH",
-           "shards": json.loads("$SJSON"), "bots": bool($BOTS), "playtest": True}, open(sys.argv[1], "w"))
+           "shards": json.loads("$SJSON"), "bots": bool($BOTS), "playtest": True,
+           "relay": bool($RELAY), "server_changed": bool($SRV), "e2e": bool($E2E), "e2e_strict": bool($NETC)}, open(sys.argv[1], "w"))
 PY
 (cd "$TMP" && git add ci/params.json && git -c user.name=conduct -c user.email=conduct@local commit -qm "CI params: $LABEL ($DAYS days, shards $SJSON, bots $BOTS)")
 SHA=$(git -C "$TMP" rev-parse HEAD)
 BR="ci/${LABEL}-${BASE:0:8}"
 git -C "$TMP" push -q -f origin "HEAD:refs/heads/$BR" 2>&1 | grep -v -i "moved\|new location" || true
 git worktree remove --force "$TMP" 2>/dev/null
-echo "pushed $BR ($SHA; shards $SJSON, bots $BOTS, playtest 1) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
+echo "pushed $BR ($SHA; shards $SJSON, bots $BOTS, playtest 1, relay $RELAY e2e $E2E) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
 OUT="/tmp/ci_$SHA"; rm -rf "$OUT"; mkdir -p "$OUT"
 T0=$(date +%s); got=""
 while [ $(( $(date +%s) - T0 )) -lt 2700 ]; do

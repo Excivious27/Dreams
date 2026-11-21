@@ -876,3 +876,17 @@ echo "$csout" | grep -E "FAIL|SCRIPT ERROR|casino_test" || true
 if ! echo "$csout" | grep -q "casino_test: 0 failures"; then
   echo "casino_test failed"; exit 1
 fi
+
+echo "== relay: server/server.js protocol (tools/relay_test.js; a push of server/ to main deploys the live relay) =="
+rtout="$(timeout 120 node tools/relay_test.js 2>&1)"
+echo "$rtout" | grep -E "FAIL|RELAY TEST" || true
+if ! echo "$rtout" | grep -q "RELAY TEST OK"; then
+  echo "relay_test failed"; exit 1
+fi
+
+echo "== relay: Play together uses the live relay by default, custom server + Reset to default =="
+nuout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_url_test.gd 2>&1)"
+echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
+if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
+  echo "net_url_test failed"; exit 1
+fi

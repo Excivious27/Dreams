@@ -1,0 +1,16 @@
+# Reference unit for the live relay (installed at setup as /etc/systemd/system/dreams-relay.service).
+[Unit]
+Description=Dreams multiplayer relay (Node, behind Caddy)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/opt/dreams/server
+ExecStart=/usr/bin/node server.js
+Environment=PORT=8787
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

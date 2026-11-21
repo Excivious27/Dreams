@@ -1,0 +1,8 @@
+# Reference unit: one auto-deploy pass (server/deploy/dreams-update.sh).
+[Unit]
+Description=Dreams relay auto-deploy (pull server/ from main)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/dreams-update.sh

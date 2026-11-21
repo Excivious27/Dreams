@@ -24,6 +24,7 @@ BINARIES = {
     "curl": "curl",          # Godot download, deploy checks
     "unzip": "unzip",        # Godot + export templates
     "timeout": "coreutils",  # bots, playtest
+    "node": "nodejs",        # tools/relay_test.js (check.sh), CI relay job (preinstalled on ubuntu-latest)
 }
 
 
