@@ -1,0 +1,197 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 72.7s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 6.8s
+
+#### step 13: C11b P2 long ranch curve: three years of ranching, both arcs (shard 6/6)
+== C11b P2 long ranch curve: three years of ranching, both arcs ==
+  year 1 ranch income 20118, year 3 83452
+  year 1 ranch income 20118, year 3 83452
+month_curve_test long: 0 failures
+#### step 13 C11b P2 long ranch curve: three years of ranching, both arcs: PASS in 4.8s
+
+#### step 19: mine arrival: no black cover (c5_16) (shard 6/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 19 mine arrival: no black cover (c5_16): PASS in 3.1s
+
+#### step 25: team animals + chores: lessons, team, muster, overnight chores, Animal (shard 6/6)
+== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) ==
+team_animals_test: OK
+#### step 25 team animals + chores: lessons, team, muster, overnight chores, Animal: PASS in 4.0s
+
+#### step 31: ticket_econ_test (shard 6/6)
+ticket_econ_test: 0 failures
+#### step 31 ticket_econ_test: PASS in 2.6s
+
+#### step 37: gang_play_test (shard 6/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 37 gang_play_test: PASS in 19.0s
+
+#### step 43: house_exterior_test (shard 6/6)
+house exterior test: PASS (0 fails)
+#### step 43 house_exterior_test: PASS in 5.7s
+
+#### step 49: shop_econ_test (shard 6/6)
+shop_econ_test: 0 failures
+#### step 49 shop_econ_test: PASS in 2.8s
+
+#### step 55: gang_flavour_test (shard 6/6)
+  FAIL ranch: 'crystal' in "Crystal Hen"
+gang_flavour_test: 1 failures
+Gangster flavour test (rec hall / lot garden) failed
+#### step 55 gang_flavour_test: FAIL rc=1 in 2.6s
+
+#### step 61: every sound the game asks for exists (shard 6/6)
+== every sound the game asks for exists ==
+unused sfx (12, warning): alarm cannon cave_in drain egg_crack feeder_fill j_birthday j_skill monster save_done shop_bell unsheathe
+sfx asked for: 164 names, real recordings/ACE files: 499
+music: 80 tracks wired, 107/107 real (ACE)
+ambience: 32 beds, 15 spots
+MISSING: ranch.json aurora_fox: voice purr not in RanchVoice.VOICE_FILES; ranch.json chrome_runner: voice hoot not in RanchVoice.VOICE_FILES; ranch.json coral_seahorse: voice bubble not in RanchVoice.VOICE_FILES; ranch.json deep_glowworm: voice critter not in RanchVoice.VOICE_FILES; ranch.json ember_newt: voice critter not in RanchVoice.VOICE_FILES; ranch.json emu: voice drum not in RanchVoice.VOICE_FILES; ranch.json frost_wyrmling: voice whistle not in RanchVoice.VOICE_FILES; ranch.json glow_gecko: voice critter not in RanchVoice.VOICE_FILES; ranch.json komodo: voice hiss not in RanchVoice.VOICE_FILES; ranch.json ostrich: voice hoot not in RanchVoice.VOICE_FILES; ranch.json star_jelly: voice bubble not in RanchVoice.VOICE_FILES; ranch.json storm_roc: voice whistle not in RanchVoice.VOICE_FILES; ranch.json tortoise: voice critter not in RanchVoice.VOICE_FILES; ranch.json volt_gecko: voice zap not in RanchVoice.VOICE_FILES
+Sound audit failed
+#### step 61 every sound the game asks for exists: FAIL rc=1 in 2.7s
+
+#### step 67: C10b decor art: outdoor pieces, seams, names (shard 6/6)
+== C10b decor art: outdoor pieces, seams, names ==
+c10b check ok: 87 outdoor pieces
+check ok: 462 catalogue pieces
+#### step 67 C10b decor art: outdoor pieces, seams, names: PASS in 0.2s
+
+#### step 73: music_stream_test (shard 6/6)
+music_stream_test: 0 failures
+#### step 73 music_stream_test: PASS in 9.2s
+
+#### step 79: arcs: path cards, arc building intros, locked-plan hints (shard 6/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 79 arcs: path cards, arc building intros, locked-plan hints: PASS in 3.9s
+
+#### step 85: early combat: clinic, pup lesson, telegraph, first boss (shard 6/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 85 early combat: clinic, pup lesson, telegraph, first boss: PASS in 8.3s
+
+#### step 91: goal_line_test (shard 6/6)
+goal_line_test: 0 fails
+#### step 91 goal_line_test: PASS in 2.6s
+
+#### step 97: campaign_gate_test (shard 6/6)
+campaign_gate_test: 0 fails
+#### step 97 campaign_gate_test: PASS in 5.7s
+
+#### step 103: settings, slots, quality, discovery, perks, birthdays (shard 6/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 103 settings, slots, quality, discovery, perks, birthdays: PASS in 3.1s
+
+#### step 109: C7 text: gift articles, plurals, quest wording (shard 6/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 109 C7 text: gift articles, plurals, quest wording: PASS in 2.5s
+
+#### step 115: fish critters only in deep water (C2 P4) (shard 6/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 115 fish critters only in deep water (C2 P4): PASS in 8.7s
+
+#### step 121: stack_whack_test (shard 6/6)
+stack_whack_test: 0 failures
+#### step 121 stack_whack_test: PASS in 3.0s
+
+#### step 127: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 6/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 127 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 2.7s
+
+#### step 133: C11b P6: battle line-up and team jobs (shard 6/6)
+== C11b P6: battle line-up and team jobs ==
+battle_team_test: OK
+#### step 133 C11b P6: battle line-up and team jobs: PASS in 2.5s
+
+#### step 139: C11a integration: one care path, ranching keys, incubator, farm hands, (shard 6/6)
+== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art ==
+c11a_integ_test: 41 checks, 0 failures
+#### step 139 C11a integration: one care path, ranching keys, incubator, farm hands,: PASS in 2.6s
+
+#### step 145: S1 P3: Steam Deck text floor (every screen at 1280x800) (shard 6/6)
+== S1 P3: Steam Deck text floor (every screen at 1280x800) ==
+ISSUE tap|p_menu_items|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_hero|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_skills|@Button@161'Pup'|18x30
+ISSUE tap|p_menu_pup|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_party|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_social|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_map|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_quests|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_book|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_options|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_keys|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_fieldlog|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_workshop|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_foes|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_messages|@Button@161'Pup'|17x30
+ISSUE tap|p_menu_mail|@Button@161'Pup'|17x30
+ISSUE tap|g_menu_items|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_hero|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_skills|@Button@3352'Pup'|18x30
+ISSUE tap|g_menu_pup|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_party|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_social|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_map|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_quests|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_book|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_options|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_keys|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_fieldlog|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_workshop|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_foes|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_messages|@Button@3352'Pup'|17x30
+ISSUE tap|g_menu_mail|@Button@3352'Pup'|17x30
+deck_text_test: smallest Control text cap 9.5 px at 1280x800
+deck_text_test: 0 issue(s)
+#### step 145 S1 P3: Steam Deck text floor (every screen at 1280x800): PASS in 11.1s
+
+#### step 151: C9 P6: forest border buckets (shard 6/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 151 C9 P6: forest border buckets: PASS in 4.1s
+
+#### shard 6/6 done in 197s: FAIL (gang_flavour_test, every sound the game asks for exists)

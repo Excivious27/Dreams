@@ -1,0 +1,207 @@
+{
+ "sha": "9437b39b701ed135527e0c8cc131afbdb1073960",
+ "ref": "ci/s1p3-35a7d2e9",
+ "run": "44865404476",
+ "finished": 1795235176.7598011,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 8,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 8,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 131,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 131ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 55,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "35a7d2e9fc270c6769667a99c64f8124766a90c4",
+  "label": "s1p3",
+  "branch": "s1f/p3",
+  "shards": [
+   2,
+   3,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 300,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 300,
+   "failed_steps": [
+    "C11b P6: C11b creature voices and ranch sound",
+    "C9 P1: controller bindings and field play"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 196,
+   "failed_steps": [
+    "farm_look_test"
+   ]
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 197,
+   "failed_steps": [
+    "gang_flavour_test",
+    "every sound the game asks for exists"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL animal_voice asks the C11b table",
+   1
+  ],
+  [
+   "FAIL fishing bite words on a pad",
+   1
+  ],
+  [
+   "FAIL pens fenced (41 pieces, 3 gates)",
+   1
+  ],
+  [
+   "FAIL ranch: 'crystal' in \"Crystal Hen\"",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 201.4
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 73.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.7
+  },
+  {
+   "step": 37,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 19.0
+  },
+  {
+   "step": 112,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 17.6
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 14.9
+  },
+  {
+   "step": 16,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 11.2
+  },
+  {
+   "step": 145,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 11.1
+  },
+  {
+   "step": 105,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 9.7
+  },
+  {
+   "step": 73,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.2
+  },
+  {
+   "step": 115,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 8.7
+  },
+  {
+   "step": 85,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 8.3
+  },
+  {
+   "step": 88,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 7.3
+  },
+  {
+   "step": 7,
+   "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+   "rc": 0,
+   "secs": 6.8
+  },
+  {
+   "step": 123,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 6.5
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+CONDUCT CI FAIL  9437b39b70  (ci/s1p3-35a7d2e9, run 44865404476)
+
+subset run: shards [2, 3, 6], bots off, playtest on
+check shards (3/3):
+  shard 2: FAIL  300s  failed: C11b P6: C11b creature voices and ranch sound, C9 P1: controller bindings and field play
+  shard 3: FAIL  196s  failed: farm_look_test
+  shard 6: FAIL  197s  failed: gang_flavour_test, every sound the game asks for exists
+playtest: PASS  55s  21 screenshots (results playtest/shots/)
+RELAY: ok, 131ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 17s
+
+longest job: 300s
+slowest check steps: import 201.4s; import 73.8s; import 72.7s; gang_play_test 19.0s; mega regions: the new worlds walk end to end 17.6s; building doors 14.9s; phone_ui_test 11.2s; S1 P3: Steam Deck text floor (every screen at 1280x800) 11.1s
+distinct errors/fails/warns:
+    1  FAIL animal_voice asks the C11b table
+    1  FAIL fishing bite words on a pad
+    1  FAIL pens fenced (41 pieces, 3 gates)
+    1  FAIL ranch: 'crystal' in "Crystal Hen"
