@@ -329,4 +329,4 @@ func _draw() -> void:
 		var c := Vector2(r.end.x - 7 - (STEPS.size() - 1 - k) * 7, r.position.y + 8)
 		var green := k < step or (k == step and done_now)
 		Art.draw_disc(self, c, 3.0, Color(0.5, 1, 0.6) if green else (Color(1, 0.88, 0.5, 0.6 + 0.4 * sin(_t * 5.0)) if k == step else Color(1, 1, 1, 0.25)))
-	draw_multiline_string(f, r.position + Vector2(6, 23), body, HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 12, 7, 3, Color(0.95, 0.93, 0.88))
+	draw_multiline_string(f, r.position + Vector2(6, 23), body, HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 12, DisplayMode.df(7), 3, Color(0.95, 0.93, 0.88))

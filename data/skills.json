@@ -520,7 +520,7 @@
     {
      "id": "mining_0_3",
      "name": "Grit",
-     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
+     "desc": "+1 toward an extra stone per rock; 3 make one more (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
@@ -971,7 +971,7 @@
     {
      "id": "foraging_0_1",
      "name": "Keen Nose",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
+     "desc": "+1 toward an extra log per tree; 4 make one more (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
@@ -1005,7 +1005,7 @@
     {
      "id": "foraging_0_4",
      "name": "Basket Weaver",
-     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
+     "desc": "+6% chance of a double pick (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
@@ -1039,7 +1039,7 @@
     {
      "id": "foraging_0_7",
      "name": "Berry Picker",
-     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
+     "desc": "+6% chance of a double pick (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
@@ -1050,7 +1050,7 @@
     {
      "id": "foraging_0_8",
      "name": "Mushroom Eye",
-     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
+     "desc": "+6% chance of a double pick (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
@@ -1061,7 +1061,7 @@
     {
      "id": "foraging_0_9",
      "name": "Wild Bounty",
-     "desc": "+2 (each = +6% chance of a double pick)",
+     "desc": "+12% chance of a double pick",
      "ranks": 1,
      "tier": 9,
      "row": 0,
@@ -1329,7 +1329,7 @@
     {
      "id": "tracker",
      "name": "Tracker",
-     "desc": "Forage spots respawn every day instead of every 2",
+     "desc": "Forage spots refill every day instead of every 2 days.",
      "ranks": 1,
      "tier": 2,
      "row": 3
@@ -2224,7 +2224,7 @@
     {
      "id": "combat_u_not_today",
      "name": "Not Today",
-     "desc": "Once a day, a hit that would knock you out leaves you on 1 HP.",
+     "desc": "Once a day, a hit that would knock you out leaves you with 1 health instead.",
      "ranks": 1,
      "tier": 9,
      "row": 2,
@@ -2367,7 +2367,7 @@
     {
      "id": "bartering_0_1",
      "name": "Fair Price",
-     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
+     "desc": "+0.3% daily interest on savings, capped by your progress (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
@@ -2390,7 +2390,7 @@
     {
      "id": "bartering_0_3",
      "name": "Good Pitch",
-     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
+     "desc": "+0.3% daily interest on savings, capped by your progress (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
@@ -2437,7 +2437,7 @@
     {
      "id": "bartering_0_7",
      "name": "Display Skill",
-     "desc": "+0.3% daily interest on savings (a day's interest is capped by your progress) (per rank)",
+     "desc": "+0.3% daily interest on savings, capped by your progress (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
@@ -4572,8 +4572,8 @@
      }
     },
     {
-     "id": "ranching_u_rare_bloodlines",
-     "name": "Rare Bloodlines",
+     "id": "ranching_u_rare_lineages",
+     "name": "Rare Lineages",
      "desc": "Rare looks turn up twice as often in births and hatchlings.",
      "ranks": 1,
      "tier": 9,

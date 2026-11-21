@@ -1,0 +1,269 @@
+name: Steam desktop builds
+
+# S1 P1: Windows x64 + Linux x64 builds for Steam (docs/STEAM.md). Own workflow and
+# concurrency group, so the web deploy (deploy.yml, group "pages") never waits for it.
+# Records sizes, first-launch time (scripts/boot_probe.gd) and a headless boot on both
+# OSes, proves GodotSteam loads (tools/steam_load_probe.gd) and uploads the builds as
+# CI artifacts (never committed). steam_appid.txt is never shipped
+# (tools/desktop_build_report.py fails on it). Web stays the default deploy.
+on:
+  push:
+    # main = post-merge builds; ci/** = ci_run.sh pre-merge runs (the plan job
+    # builds those only when Steam/desktop files changed).
+    branches: [main, 'ci/**']
+    paths-ignore:
+      - "docs/**"
+      - "reference/**"
+      - "art/incoming/**"
+      - "audio/incoming/**"
+      - "ci/**"
+      - "*.md"
+  workflow_dispatch:
+
+concurrency:
+  group: steam-builds-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "4.5.1"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.p.outputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: p
+        shell: bash
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "build=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git fetch -q origin main
+          ch="$(git diff --name-only origin/main...HEAD || true)"
+          if echo "$ch" | grep -qE '^(export_presets\.cfg|project\.godot|steam/|addons/|scripts/(steam_|boot_probe)|tools/(desktop_build_report|web_export_guard|stage_godotsteam|fetch_godotsteam|steam_load_probe)|\.github/workflows/steam-builds\.yml)'; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=false" >> "$GITHUB_OUTPUT"; echo "### no Steam/desktop changes: desktop builds skipped" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  desktop:
+    needs: plan
+    if: needs.plan.outputs.build == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/ci-requirements.txt
+      - name: Restore apt downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ci-apt
+          key: ci-apt-${{ runner.os }}-${{ hashFiles('tools/ci_deps_check.py') }}
+      # ONE apt line: the package list lives in tools/ci_deps_check.py (BINARIES).
+      - name: CI deps (pip + apt, cached) + ci_deps_check
+        run: |
+          mkdir -p ~/.cache/ci-apt/partial
+          pip install --quiet -r tools/ci-requirements.txt
+          miss="$(python3 tools/ci_deps_check.py --apt-missing)"
+          if [ -n "$miss" ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq -o Dir::Cache::Archives="$HOME/.cache/ci-apt" $miss > /dev/null
+            sudo chown -R "$(id -u):$(id -g)" ~/.cache/ci-apt
+          fi
+          python3 tools/ci_deps_check.py
+      # Own key: never touches deploy.yml's godot-*-web key (S1 audit 18-06).
+      - name: Cache Godot and desktop export templates
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-desktop-v1
+      - name: Download Godot and desktop export templates (by file presence)
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          T="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$HOME/godot" "$T"
+          if [ ! -x "$HOME/godot/godot" ]; then
+            cd "$HOME/godot"
+            curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+            unzip -q godot.zip && mv "Godot_v${V}_linux.x86_64" godot && chmod +x godot && rm godot.zip
+          fi
+          if [ ! -f "$T/linux_release.x86_64" ] || [ ! -f "$T/windows_release_x86_64.exe" ]; then
+            cd "$RUNNER_TEMP"
+            curl -fsSL -o templates.tpz "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_export_templates.tpz"
+            unzip -q templates.tpz 'templates/linux_*.x86_64' 'templates/windows_*_x86_64*.exe'
+            mv templates/* "$T/" && rm -rf templates templates.tpz
+          fi
+          ls -la "$T"
+      - name: Add Godot to PATH
+        run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      # Restore-only: reuse the web job's import cache, never save a second one (18-06/01-06).
+      - name: Restore imported assets
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: Stage GodotSteam (desktop only) and import
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 tools/web_export_guard.py --static
+          bash tools/stage_godotsteam.sh
+          godot --headless --path . --import 2>&1 | tail -n 5
+          grep -q godotsteam .godot/extension_list.cfg && echo "extension listed" || echo "extension_list.cfg has no godotsteam"
+      - name: GodotSteam load probe (no Steam client = clean init failure)
+        shell: bash
+        run: |
+          out="$(timeout 60 godot --headless --path . -s res://tools/steam_load_probe.gd 2>&1)"; code=$?
+          echo "$out" | tail -n 20 | tee build-steam-load.txt
+          echo "### $(echo "$out" | grep 'STEAM LOAD' || echo 'STEAM LOAD: no result')" >> "$GITHUB_STEP_SUMMARY"
+          test $code -eq 0
+      - name: Export Linux and Windows
+        shell: bash
+        run: |
+          set -eo pipefail
+          VER=$(sed -n 's/^config\/version="\(.*\)"/\1/p' project.godot)
+          echo "{\"version\": \"$VER\", \"sha\": \"${GITHUB_SHA}\", \"run\": \"${GITHUB_RUN_NUMBER}\"}" > build-info.json
+          mkdir -p build/linux build/windows
+          godot --headless --path . --export-release "Linux" build/linux/Dreams.x86_64 2>&1 | tail -n 20
+          godot --headless --path . --export-release "Windows Desktop" build/windows/Dreams.exe 2>&1 | tail -n 20
+          ls -la build/linux build/windows
+      - name: Linux headless boot + first launch
+        shell: bash
+        run: |
+          export XDG_DATA_HOME="$(mktemp -d)"
+          start=$(date +%s%3N)
+          timeout 180 build/linux/Dreams.x86_64 --headless --fixed-fps 60 -- --boot-probe > boot-linux.txt 2>&1; code=$?
+          echo "wall ms: $(( $(date +%s%3N) - start )) exit $code" | tee -a boot-linux.txt
+          tail -n 30 boot-linux.txt
+      - name: Report and checks
+        shell: bash
+        run: |
+          python3 tools/desktop_build_report.py build/linux linux --steam --boot-log boot-linux.txt --load-log build-steam-load.txt --json build/linux-report.json --summary "$GITHUB_STEP_SUMMARY"
+          python3 tools/desktop_build_report.py build/windows windows --steam --json build/windows-report.json --summary "$GITHUB_STEP_SUMMARY"
+          cp build-info.json build/linux/ ; cp build-info.json build/windows/
+          # upload-artifact drops the executable bit: ship Linux as a tarball (01-08).
+          tar -C build -czf build/dreams-linux-x64.tar.gz linux
+          python3 tools/web_export_guard.py --static
+          bash tools/stage_godotsteam.sh --clean
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dreams-linux-x64
+          path: build/dreams-linux-x64.tar.gz
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dreams-windows-x64
+          path: build/windows
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-reports
+          path: |
+            build/linux-report.json
+            build/windows-report.json
+            boot-linux.txt
+            build-steam-load.txt
+          retention-days: 14
+
+  windows-boot:
+    needs: desktop
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dreams-windows-x64
+          path: win
+      - name: Windows headless boot + first launch
+        shell: bash
+        run: |
+          export APPDATA="$(mktemp -d)"
+          ls -la win
+          test ! -f win/steam_appid.txt
+          start=$(date +%s%3N)
+          timeout 240 ./win/Dreams.exe --headless --fixed-fps 60 -- --boot-probe > boot-windows.txt 2>&1; code=$?
+          echo "wall ms: $(( $(date +%s%3N) - start )) exit $code" | tee -a boot-windows.txt
+          tail -n 30 boot-windows.txt
+          echo "### Windows boot: $(grep -E 'DREAMS BOOT (title|farm|OK|FAIL)' boot-windows.txt | tr '\n' ' ')" >> "$GITHUB_STEP_SUMMARY"
+          grep -q "DREAMS BOOT OK" boot-windows.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: boot-windows
+          path: boot-windows.txt
+          retention-days: 14
+
+  # Pre-merge proof that the web build is still Steam-free (S1 audit 18-18): the same
+  # Web export deploy.yml makes, then tools/web_export_guard.py --pck. Read-only caches;
+  # never uploads to Pages.
+  web-export:
+    needs: plan
+    if: needs.plan.outputs.build == 'true' && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore Godot and web templates (read-only)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web
+      - name: Download what is missing (by file presence)
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          T="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$HOME/godot" "$T"
+          if [ ! -x "$HOME/godot/godot" ]; then
+            cd "$HOME/godot"
+            curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+            unzip -q godot.zip && mv "Godot_v${V}_linux.x86_64" godot && chmod +x godot && rm godot.zip
+          fi
+          if [ ! -f "$T/web_nothreads_release.zip" ]; then
+            cd "$RUNNER_TEMP"
+            curl -fsSL -o templates.tpz "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_export_templates.tpz"
+            unzip -q templates.tpz 'templates/web_nothreads_*.zip'
+            mv templates/* "$T/" && rm -rf templates templates.tpz
+          fi
+          echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Restore imported assets
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: Web export + guard
+        shell: bash
+        run: |
+          set -eo pipefail
+          python3 tools/web_export_guard.py --static
+          godot --headless --path . --import 2>&1 | tail -n 5
+          mkdir -p build/web
+          godot --headless --path . --export-release "Web" build/web/index.html 2>&1 | tail -n 20
+          python3 tools/web_export_guard.py --pck build/web/index.pck | tee guard.txt
+          size=$(stat -c %s build/web/index.pck)
+          echo "### Web export (pre-merge): $((size / 1048576)) MB, $(grep 'files, top' guard.txt | cut -c1-200)" >> "$GITHUB_STEP_SUMMARY"
+          test "$size" -lt 146800640 || { echo "pck over the deploy's 140 MB gate"; exit 1; }

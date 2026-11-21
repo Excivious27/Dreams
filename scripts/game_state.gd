@@ -320,6 +320,7 @@ static func _migrate() -> void:
 
 
 static func save() -> void:
+	Achievements.scan()  # S1 P2: state-derived achievements, written into the same flush
 	# A copy: the save cache must never share the live day in progress.
 	SaveGame.set_value(save_key(), (Net.save_view(run) as Dictionary).duplicate(true))
 
@@ -2364,6 +2365,8 @@ static func notify(text: String) -> void:
 	if not run.has("notes"):
 		run["notes"] = []
 	(run["notes"] as Array).append(text)
+	while (run["notes"] as Array).size() > 40:
+		(run["notes"] as Array).pop_front()  # S1 P2 (s1_05-06): keeps cloud saves small when no map reads them
 
 
 static func gift_value(npc: String, item: String) -> int:
@@ -3319,14 +3322,14 @@ static func sleep(passed_out := false) -> Dictionary:
 	if comfort_line != "":
 		notify(comfort_line)
 	DecorSources.sweep(null)  # C10b P1: state-based home pieces (secret flags, campaigns, quests, set master)
-	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
+	# Bramble brushes (item id trap) in the bag comb shed fur overnight, never catch an animal (Rook's design): up to 3 work.
 	var caught := 0
 	for i in mini(count("trap"), 3):
 		if randf() < 0.4:
 			caught += 1
 	if caught > 0:
 		add_item("pelt", caught)
-		notify("Your traps caught something overnight: +%d Pelt." % caught)
+		notify("Your bramble brushes combed shed fur overnight: +%d." % caught)
 	var nm := Mail.morning()
 	if nm > 0:
 		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])

@@ -10,7 +10,7 @@ extends RefCounted
 ##   Map                      M
 ##   Toolbar slots            1 2 3 4 5 6 7 8 9 0 - =
 ##   Shift toolbar row        Tab  (mouse wheel cycles the selected slot)
-##   Emote menu               Y
+##   (Emote / Y: dropped in S1, nothing read it; saved "emote" keys are ignored)
 ##   Toolbar back             Q   (C9: LB on a pad)
 ##   Partner ability          R   (C9: RT on a pad; B-hold still works)
 ##   Pup command (cycle)      G   (C9: R3 on a pad)
@@ -38,7 +38,6 @@ const DEFAULTS := {
 	"dodge": [KEY_V],
 	"journal": [KEY_F],
 	"map": [KEY_M],
-	"emote": [KEY_Y],
 	"cycle_tool": [KEY_TAB],
 	"cycle_back": [KEY_Q],
 	"ability": [KEY_R],
@@ -77,6 +76,8 @@ const UI_PAD := {"ui_accept": [JOY_BUTTON_A], "ui_cancel": [JOY_BUTTON_B]}
 const PAD_NAMES := {
 	"xbox": {JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y", JOY_BUTTON_LEFT_SHOULDER: "LB", JOY_BUTTON_RIGHT_SHOULDER: "RB", JOY_BUTTON_BACK: "View", JOY_BUTTON_START: "Menu", JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", "lt": "LT", "rt": "RT"},
 	"ps": {JOY_BUTTON_A: "Cross", JOY_BUTTON_B: "Circle", JOY_BUTTON_X: "Square", JOY_BUTTON_Y: "Triangle", JOY_BUTTON_LEFT_SHOULDER: "L1", JOY_BUTTON_RIGHT_SHOULDER: "R1", JOY_BUTTON_BACK: "Share", JOY_BUTTON_START: "Options", JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", "lt": "L2", "rt": "R2"},
+	# S1 s1_08-02: the Steam Deck's built-in controls (Steam's Deck glyph names).
+	"deck": {JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y", JOY_BUTTON_LEFT_SHOULDER: "L1", JOY_BUTTON_RIGHT_SHOULDER: "R1", JOY_BUTTON_BACK: "View", JOY_BUTTON_START: "Menu", JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", "lt": "L2", "rt": "R2"},
 	# Nintendo layout: Godot's A (bottom) is the Switch's B.
 	"switch": {JOY_BUTTON_A: "B", JOY_BUTTON_B: "A", JOY_BUTTON_X: "Y", JOY_BUTTON_Y: "X", JOY_BUTTON_LEFT_SHOULDER: "L", JOY_BUTTON_RIGHT_SHOULDER: "R", JOY_BUTTON_BACK: "-", JOY_BUTTON_START: "+", JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", "lt": "ZL", "rt": "ZR"},
 }
@@ -87,7 +88,7 @@ const TOUCH_WORDS := {"a": "USE", "action": "CHECK", "menu": "MENU", "dodge": "R
 const SHOWN := [
 	["up", "Move Up"], ["left", "Move Left"], ["down", "Move Down"], ["right", "Move Right"],
 	["tool", "Use Tool"], ["action", "Action"], ["b", "Run"], ["menu", "Menu"],
-	["journal", "Journal"], ["map", "Map"], ["emote", "Emote"], ["cycle_tool", "Shift Toolbar"],
+	["journal", "Journal"], ["map", "Map"], ["cycle_tool", "Shift Toolbar"],
 	["cycle_back", "Toolbar Back"], ["dodge", "Dodge"], ["ability", "Partner Ability"], ["pup", "Pup Command"],
 	["rally", "Battle Rally"],
 	["a", "Confirm (mobile A)"],

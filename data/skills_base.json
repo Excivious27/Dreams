@@ -357,7 +357,7 @@
     {
      "id": "tracker",
      "name": "Tracker",
-     "desc": "Forage spots respawn every day instead of every 2",
+     "desc": "Forage spots refill every day instead of every 2 days.",
      "ranks": 1,
      "tier": 1,
      "requires": [

@@ -597,7 +597,7 @@ func close() -> void:
 
 func _label(t: String, sz: int, c: Color) -> Label:
 	var l := Label.new()
-	l.text = t
+	l.text = PadInput.words(t)  # S1 s1_08-06
 	l.add_theme_font_size_override("font_size", Settings.font(sz))
 	l.add_theme_color_override("font_color", c)
 	l.clip_text = true

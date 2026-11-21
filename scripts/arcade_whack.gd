@@ -49,9 +49,9 @@ func _init() -> void:
 	title = Tickets.game_name("whack")  # Whack-a-Snitch in the gangster arc
 	fee = 10
 	accent = Color(0.55, 0.88, 0.35)
-	howto = ["Tap a grump, or aim with the arrows + BOP.", "Grump 5 · Gold 15 · Helmet 10 (two bops)", "Don't bop the bunnies! (-10)", "10 in a row: double points. B pauses."]
+	howto = ["Tap a Grump, or aim with the arrows and BOP.", "Grump 5 · Gold 15 · Helmet 10 (two bops)", "Don't bop the bunnies! (-10)", "10 in a row: double points. B pauses."]
 	if not GameState.run.is_empty() and not GameState.is_penguins():
-		howto = ["Tap a snitch, or aim with the arrows + BOP.", "Snitch 5 · Gold 15 · Helmet 10 (two bops)", "Don't bop the bunnies! (-10)", "10 in a row: double points. B pauses."]
+		howto = ["Tap a snitch, or aim with the arrows and BOP.", "Snitch 5 · Gold 15 · Helmet 10 (two bops)", "Don't bop the bunnies! (-10)", "10 in a row: double points. B pauses."]
 
 
 func _deck_buttons() -> Array:

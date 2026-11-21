@@ -9,8 +9,10 @@ Nothing here changes the phone/web build.
   every song bundled (native builds have no stream URL; `tools/music_stream.py`
   only edits the Web preset and fails if another preset excludes songs).
   Output `build/linux/Dreams.x86_64`.
-- **CI**: the `linux` job in `.github/workflows/deploy.yml` exports it and starts
-  it headless for a few seconds on every game push (never blocks the web deploy).
+- **CI**: `.github/workflows/steam-builds.yml` (S1) exports Linux and Windows on every
+  game push to main, boots both headless (`--boot-probe`), records sizes and first-launch
+  time, and uploads them as artifacts `dreams-linux-x64` / `dreams-windows-x64` (own
+  concurrency group: never blocks the web deploy).
 - **App icon**: `config/icon` = `res://web/icon_512.png` (window/taskbar, Deck desktop mode).
 - **Deck detection**: `DisplayMode.is_deck()` (env `SteamDeck=1`, gamescope, or a
   landscape screen of 1280x800 or smaller).
@@ -28,7 +30,7 @@ Nothing here changes the phone/web build.
   Rumble comes from `Haptics` (joypad motors) like phone vibration.
 
 ## How to play on a Deck today
-1. Copy `Dreams.x86_64` (from the `linux` CI job, or export locally with the
+1. Copy `Dreams.x86_64` (the `dreams-linux-x64` artifact of the Steam desktop builds CI run, or export locally with the
    "Linux" preset) to the Deck, Desktop Mode > Add a Non-Steam Game.
 2. Game Mode: it opens fullscreen. Until the controller packages are merged,
    pick the Steam Input template **Keyboard (WASD) and Mouse** and map:

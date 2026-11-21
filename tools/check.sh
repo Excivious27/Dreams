@@ -124,6 +124,29 @@ bad = [k for k, v in I.items() if isinstance(v, dict) and "back" in v and not (i
 print("interior_back:", len(bad), "bad", bad[:5])
 sys.exit(1 if bad else 0)
 PY
+echo "== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) =="
+python3 tools/web_export_guard.py --static || { echo "web_export_guard failed"; exit 1; }
+bash tools/fetch_godotsteam.sh --check || { echo "godotsteam files changed"; exit 1; }
+
+echo "== S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-backend routing =="
+ssout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/steam_service_test.gd 2>&1)"
+echo "$ssout" | grep -E "FAIL|SCRIPT ERROR|STEAM SERVICE TEST" || true
+if ! echo "$ssout" | grep -q "STEAM SERVICE TEST DONE, failures: 0"; then
+  echo "steam_service_test failed"; exit 1
+fi
+
+echo "== S1 P1: the game boots to the title and plays 600 frames on the farm with Steam absent (BootProbe) =="
+bpdir="$(mktemp -d)"
+bpout="$(XDG_DATA_HOME="$bpdir" timeout 300 "$GODOT" --headless --path . --fixed-fps 60 -- --boot-probe 2>&1)"
+rm -rf "$bpdir"
+echo "$bpout" | grep -E "DREAMS BOOT|SCRIPT ERROR" || true
+if ! echo "$bpout" | grep -q "DREAMS BOOT OK" || ! echo "$bpout" | grep -q "DREAMS BOOT steam backend=local"; then
+  echo "boot probe failed"; exit 1
+fi
+if echo "$bpout" | grep -qE "SCRIPT ERROR|Parse Error"; then
+  echo "boot probe: script errors"; exit 1
+fi
+
 # Phone UI at 270x480: every menu tab, dialogue, toasts, chest, craft, prizes, campaign board, arcade, bowling;
 # also every printed symbol has a glyph without system fonts (the web build has none).
 dout="$("$GODOT" --headless --path . -s res://tools/desktop_layout_test.gd 2>&1)"
@@ -424,6 +447,28 @@ echo "== text size floors (7 px) =="
 python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="
 python3 tools/drink_rule_test.py || { echo "Drink rule failed"; exit 1; }
+
+echo "== all ages: no animal dies, is harvested or sold for meat (beasts drop no parts) =="
+python3 tools/animal_rule_test.py || { echo "Animal rule failed"; exit 1; }
+
+echo "== Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) =="
+python3 tools/steam_vdf_check.py --templates || { echo "Steam VDF check failed"; exit 1; }
+
+echo "== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) =="
+python3 tools/steam_handoff.py --check || { echo "Steam handoff check failed (python3 tools/steam_handoff.py --write after merging docs/steam/ fragments)"; exit 1; }
+
+echo "== Steam: ratings / AI disclosure answers still true (S1 P5) =="
+python3 tools/ratings_facts_check.py || { echo "Ratings facts check failed"; exit 1; }
+
+echo "== all ages: name filter for player-typed names (S1 P5) =="
+nfout="$("$GODOT" --headless --path . -s res://tools/name_filter_test.gd 2>&1)"
+echo "$nfout" | grep -E "FAIL|SCRIPT ERROR" || true
+echo "$nfout" | grep -q "NAME FILTER DONE, failures: 0" || { echo "Name filter test failed"; exit 1; }
+
+echo "== credits and licences page: Godot MIT, font notice, no family names (S1 P5) =="
+lcout="$("$GODOT" --headless --path . -s res://tools/licences_test.gd 2>&1)"
+echo "$lcout" | grep -E "FAIL|SCRIPT ERROR" || true
+echo "$lcout" | grep -q "LICENCES DONE, failures: 0" || { echo "Licences test failed"; exit 1; }
 
 echo "== C10a decor art: every catalogue piece and rotation exists =="
 python3 tools/slice_c10a.py check || { echo "Decor art check failed"; exit 1; }
@@ -896,6 +941,26 @@ if ! echo "$padout" | grep -q "pad_test: 0 failures"; then
   echo "pad_test failed"; exit 1
 fi
 
+echo "== S1 P3: Deck typing, glyphs, text floor, desktop display =="
+dkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/deck_input_test.gd 2>&1)"
+echo "$dkout" | grep -E "FAIL|SCRIPT ERROR|deck_input_test" || true
+if echo "$dkout" | grep -q "SCRIPT ERROR" || ! echo "$dkout" | grep -q "deck_input_test: 0 failures"; then
+  echo "deck_input_test failed"; exit 1
+fi
+
+echo "== S1 P3: no new touch words outside PadInput.words =="
+python3 tools/prompt_words_check.py || { echo "prompt_words_check failed"; exit 1; }
+
+echo "== S1 P3: Steam Deck text floor (drawn text scan) =="
+python3 tools/deck_font_scan.py || { echo "deck_font_scan failed"; exit 1; }
+
+echo "== S1 P3: Steam Deck text floor (every screen at 1280x800) =="
+dtout="$("$GODOT" --headless --path . -s res://tools/deck_text_test.gd 2>&1)"
+echo "$dtout" | grep -E "ISSUE|SCRIPT ERROR|deck_text_test" | head -40 || true
+if echo "$dtout" | grep -q "SCRIPT ERROR" || ! echo "$dtout" | grep -q "deck_text_test: 0 issue(s)"; then
+  echo "deck_text_test failed"; exit 1
+fi
+
 echo "== C9 P2: game menu with keys/pad =="
 mpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_pad_test.gd 2>&1)"
 echo "$mpout" | grep -E "FAIL|SCRIPT ERROR|menu_pad_test" || true
@@ -929,6 +994,13 @@ stout="$("$GODOT" --headless --path . -s res://tools/save_transfer_test.gd 2>&1)
 echo "$stout" | grep -E "FAIL|SCRIPT ERROR|SAVE TRANSFER DONE" || true
 if ! echo "$stout" | grep -q "SAVE TRANSFER DONE 0"; then
   echo "save_transfer_test failed"; exit 1
+fi
+
+echo "== S1 P2: achievements, stats, rich presence =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/achievements_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|achievements_test" || true
+if ! echo "$acout" | grep -q "achievements_test: 0 failures"; then
+  echo "achievements_test failed"; exit 1
 fi
 
 echo "== C9 P6: forest border buckets =="
@@ -971,4 +1043,56 @@ nuout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_url_test
 echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
 if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
   echo "net_url_test failed"; exit 1
+fi
+
+echo "== net transport: NetNode over the in-memory relay twin (NetRelayRoom = server.js rules) =="
+ntout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_transport_test.gd 2>&1)"
+echo "$ntout" | grep -E "FAIL|SCRIPT ERROR|net_transport_test" || true
+if ! echo "$ntout" | grep -q "net_transport_test: [0-9]* checks, 0 failures"; then
+  echo "net_transport_test failed"; exit 1
+fi
+
+echo "== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) =="
+nsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_steam_test.gd 2>&1)"
+echo "$nsout" | grep -E "FAIL|SCRIPT ERROR|net_steam_test" || true
+if ! echo "$nsout" | grep -q "net_steam_test: [0-9]* checks, 0 failures"; then
+  echo "net_steam_test failed"; exit 1
+fi
+
+echo "== steam co-op: web build never parses Steam code (backend object, load by path) =="
+python3 tools/net_web_safety_check.py || { echo "net_web_safety_check failed"; exit 1; }
+
+echo "== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) =="
+python3 tools/steam_input_check.py || { echo "steam_input_check failed"; exit 1; }
+
+echo "== deck window: 1280x800 with no window manager fills the screen (xvfb) =="
+dwout="$(SteamDeck=1 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path . --rendering-driver opengl3 -s res://tools/deck_window_test.gd 2>&1)"
+echo "$dwout" | grep -E "FAIL|SCRIPT ERROR|deck_window_test" || true
+if ! echo "$dwout" | grep -q "deck_window_test: .*0 failures"; then
+  echo "deck_window_test failed"; exit 1
+fi
+
+echo "== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) =="
+python3 tools/store_text_check.py || { echo "store_text_check failed"; exit 1; }
+
+echo "== S1 P6: Steam capsule/library art (sizes, formats, no text on hero, safe area) =="
+python3 tools/steam_capsules_check.py || { echo "steam_capsules_check failed"; exit 1; }
+
+echo "== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) =="
+python3 tools/steam_shots_test.py || { echo "steam_shots_test failed"; exit 1; }
+
+echo "== C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) =="
+python3 tools/cond_schema_test.py || { echo "cond_schema_test failed"; exit 1; }
+
+echo "== C12 P7: story continuity (no other-arc words, no later-chapter names before their beat) =="
+python3 tools/continuity_check.py --strict || { echo "continuity_check failed"; exit 1; }
+
+echo "== C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brands, counts) =="
+python3 tools/text_style_check.py || { echo "text_style_check failed"; exit 1; }
+
+echo "== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) =="
+dsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/dialogue_state_test.gd 2>&1)"
+echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
+if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
+  echo "dialogue_state_test failed"; exit 1
 fi

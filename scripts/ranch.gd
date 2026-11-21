@@ -352,7 +352,7 @@ static func rename(uid: String, nm: String) -> bool:
 		if ch == " " or ch == "-" or ch == "'" or (ch.to_lower() != ch.to_upper()):
 			clean += ch
 	clean = clean.strip_edges().left(12)
-	if a.is_empty() or clean == "":
+	if a.is_empty() or clean == "" or not preload("res://scripts/name_filter.gd").is_ok(clean):  # s1_13-10: names travel to co-op partners
 		return false
 	a["name"] = clean
 	a["named"] = true

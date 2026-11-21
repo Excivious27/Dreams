@@ -269,7 +269,7 @@ func toggle() -> void:
 
 func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = PadInput.words(text)  # S1 s1_08-06: no touch words on a pad
 	l.add_theme_font_size_override("font_size", Settings.font(size))  # Options > Text size (C9)
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -789,7 +789,7 @@ func _refresh() -> void:
 				busy += (w["jobs"] as Array).size()
 			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
-			_button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: _tab = "Foes"; _refresh())
+			_button("Foes & Gifts: %s met ›" % ItemWords.count("kind", (r.get("kill_counts", {}) as Dictionary).size()), func() -> void: _tab = "Foes"; _refresh())
 			_button("Mail: %d unread ›" % Mail.unread(), func() -> void: _tab = "Mail"; _refresh())
 			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
@@ -896,7 +896,7 @@ func _refresh() -> void:
 						Mail.act(mm)
 						_refresh())
 				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
-					_button("  Send %d %s for ◆%d (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+					_button("  Send %s for ◆%d (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
 						var err := Mail.act(mm)
 						var mp := get_tree().current_scene as GameMap
 						if mp and err != "":
@@ -1329,7 +1329,7 @@ func _trash_tap(id: String) -> void:
 		_trash_arm = id
 		var gm := get_tree().current_scene as GameMap
 		if gm and gm.hud:
-			gm.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+			gm.hud.toast("Throw away %s? Tap the trash again to confirm." % ItemWords.count_id(id, GameState.count(id)), Color(1, 0.8, 0.6))
 	_refresh()
 
 
@@ -1587,7 +1587,7 @@ func _pup_tab() -> void:
 					st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				_refresh())
 	if not any_gear:
-		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 8, Color(0.7, 0.7, 0.7))
+		_line("  Collars and packs come from the workbench and the smithy (shed fur, rope, bars).", 8, Color(0.7, 0.7, 0.7))
 	var cap := Pet.pack_size()
 	if cap > 0 or not (st.get("pack", {}) as Dictionary).is_empty():
 		var pack: Dictionary = st["pack"]
@@ -1706,7 +1706,7 @@ func _draw_map(m: Control) -> void:
 		var nm := str(names.get(k, k.capitalize()))
 		if not visited:
 			nm = "?"
-		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), nm, HORIZONTAL_ALIGNMENT_CENTER, b.size.x, 7, Color(0.1, 0.1, 0.1))
+		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), nm, HORIZONTAL_ALIGNMENT_CENTER, b.size.x, DisplayMode.df(7), Color(0.1, 0.1, 0.1))
 	if boxes.has(here):
 		var scene := get_tree().current_scene
 		var b: Rect2 = boxes[here]
@@ -1746,8 +1746,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 			_draw_lock(m, p + Vector2(0, -5))
 			if not visited:
 				var cn := str(Campaign.get_c(Campaign.gate_of(k)).get("region_name", k.capitalize()))
-				m.draw_string_outline(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, 3, Color(1, 0.95, 0.8, 0.8))
-				m.draw_string(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, Color(0.35, 0.1, 0.05))
+				m.draw_string_outline(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, DisplayMode.df(6), 3, Color(1, 0.95, 0.8, 0.8))
+				m.draw_string(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, DisplayMode.df(6), Color(0.35, 0.1, 0.05))
 				continue
 		var icon := str(PIN_ICON.get(k, ""))
 		if icon != "" and Art.has("ui", icon):
@@ -1757,8 +1757,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		else:
 			m.draw_circle(p, 3.0, Color(0.9, 0.3, 0.2))
 		var nm := str(names.get(k, k.capitalize()))
-		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, 3, Color(1, 0.95, 0.8, 0.9))
-		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
+		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), 3, Color(1, 0.95, 0.8, 0.9))
+		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), Color(0.1, 0.08, 0.05))
 	MegaMap.valley_gates(m, font, PINS, org, sz)
 	if PINS.has(here) and MegaRegion.region_of(here) == "":
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz

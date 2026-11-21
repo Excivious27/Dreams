@@ -52,6 +52,8 @@ static func on_enter(m: GameMap) -> void:
 	if data().is_empty() or not GameState.run.has("flags"):
 		return
 	var sid := m.scene_id()
+	if region_of(sid) != "":
+		GameState.run["flags"]["mseen_" + region_of(sid)] = true  # S1 P2: Wide World / Gilt Edge
 	for id: String in data():
 		var r: Dictionary = data()[id]
 		if not arc_ok(r):

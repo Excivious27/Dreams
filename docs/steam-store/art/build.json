@@ -1,0 +1,273 @@
+{
+ "_hero_safe_full": [
+  1720,
+  760
+ ],
+ "_sources": {
+  "icon": "art/incoming/steam/icon.png",
+  "logo": "art/incoming/steam/logo-2.png",
+  "tall": "art/incoming/steam/key_tall.png",
+  "wide": "art/incoming/steam/key_wide.png"
+ },
+ "app_icon": {
+  "bg": [
+   32,
+   10,
+   115
+  ],
+  "file": "app_icon.jpg",
+  "logo": false,
+  "sha": "9d12109ac66a",
+  "size": [
+   184,
+   184
+  ]
+ },
+ "header_capsule": {
+  "crop": [
+   502,
+   0,
+   2693,
+   1024
+  ],
+  "file": "header_capsule.png",
+  "grid": [
+   460,
+   215
+  ],
+  "logo": true,
+  "logo_rect": [
+   256,
+   26,
+   408,
+   154
+  ],
+  "scale": 2,
+  "sha": "b202b5dcc4a9",
+  "size": [
+   920,
+   430
+  ],
+  "src": "wide"
+ },
+ "icon_256": {
+  "bg": [
+   32,
+   10,
+   115
+  ],
+  "file": "icon_256.ico",
+  "logo": false,
+  "sha": "ff3070422949",
+  "size": [
+   256,
+   256
+  ]
+ },
+ "library_capsule": {
+  "crop": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "file": "library_capsule.png",
+  "grid": [
+   300,
+   450
+  ],
+  "logo": true,
+  "logo_rect": [
+   42,
+   36,
+   516,
+   196
+  ],
+  "scale": 2,
+  "sha": "6a1a1bade8b8",
+  "size": [
+   600,
+   900
+  ],
+  "src": "tall"
+ },
+ "library_header": {
+  "crop": [
+   502,
+   0,
+   2693,
+   1024
+  ],
+  "file": "library_header.png",
+  "grid": [
+   460,
+   215
+  ],
+  "logo": true,
+  "logo_rect": [
+   256,
+   26,
+   408,
+   154
+  ],
+  "scale": 2,
+  "sha": "b202b5dcc4a9",
+  "size": [
+   920,
+   430
+  ],
+  "src": "wide"
+ },
+ "library_hero": {
+  "crop": [
+   0,
+   16,
+   3072,
+   1008
+  ],
+  "file": "library_hero.png",
+  "focal": [
+   1536,
+   492,
+   2381,
+   978
+  ],
+  "grid": [
+   960,
+   310
+  ],
+  "logo": false,
+  "scale": 4,
+  "sha": "839dff97d3d6",
+  "size": [
+   3840,
+   1240
+  ],
+  "src": "wide"
+ },
+ "library_logo": {
+  "file": "library_logo.png",
+  "logo": true,
+  "sha": "aa1ea462a3ba",
+  "size": [
+   1280,
+   485
+  ]
+ },
+ "main_capsule": {
+  "crop": [
+   704,
+   0,
+   2491,
+   1024
+  ],
+  "file": "main_capsule.png",
+  "grid": [
+   616,
+   353
+  ],
+  "logo": true,
+  "logo_rect": [
+   336,
+   42,
+   558,
+   212
+  ],
+  "scale": 2,
+  "sha": "2a7ef1e39ca5",
+  "size": [
+   1232,
+   706
+  ],
+  "src": "wide"
+ },
+ "page_background": {
+  "crop": [
+   627,
+   0,
+   2445,
+   1024
+  ],
+  "file": "page_background.png",
+  "grid": [
+   719,
+   405
+  ],
+  "logo": false,
+  "scale": 2,
+  "sha": "7abfa6220246",
+  "size": [
+   1438,
+   810
+  ],
+  "src": "wide"
+ },
+ "shortcut_icon": {
+  "bg": [
+   32,
+   10,
+   115
+  ],
+  "file": "shortcut_icon.png",
+  "logo": false,
+  "sha": "c94eeac93b53",
+  "size": [
+   512,
+   512
+  ]
+ },
+ "small_capsule": {
+  "crop": [
+   299,
+   0,
+   3018,
+   1024
+  ],
+  "file": "small_capsule.png",
+  "grid": [
+   462,
+   174
+  ],
+  "logo": true,
+  "logo_rect": [
+   16,
+   6,
+   430,
+   163
+  ],
+  "scale": 1,
+  "sha": "76e307bb9b9b",
+  "size": [
+   462,
+   174
+  ],
+  "src": "wide"
+ },
+ "vertical_capsule": {
+  "crop": [
+   0,
+   155,
+   1024,
+   1381
+  ],
+  "file": "vertical_capsule.png",
+  "grid": [
+   374,
+   448
+  ],
+  "logo": true,
+  "logo_rect": [
+   90,
+   36,
+   568,
+   216
+  ],
+  "scale": 2,
+  "sha": "f89cf0df1990",
+  "size": [
+   748,
+   896
+  ],
+  "src": "tall"
+ }
+}

@@ -203,14 +203,14 @@ func _ready() -> void:
 	if Net.online():
 		Net.peers_changed.connect(_sync_puppets)
 		_sync_puppets()
-		Net._send({"t": "scene", "scene": scene_id()})
+		Net.send_scene(scene_id())
 	elif Net.i() != null:
 		# Still connecting when the scene loaded: hook up once we're online.
 		Net.connected.connect(func(_h: bool) -> void:
 			if not Net.peers_changed.is_connected(_sync_puppets):
 				Net.peers_changed.connect(_sync_puppets)
 			_sync_puppets()
-			Net._send({"t": "scene", "scene": scene_id()}))
+			Net.send_scene(scene_id()))
 
 	var cam := Camera2D.new()
 	fit_camera(cam)
@@ -1002,6 +1002,8 @@ static func notify(text: String, sfx := "") -> void:
 	if not GameState.run.has("notes"):
 		GameState.run["notes"] = []
 	(GameState.run["notes"] as Array).append({"text": text, "sfx": sfx} if sfx != "" else text)
+	while (GameState.run["notes"] as Array).size() > 40:
+		(GameState.run["notes"] as Array).pop_front()  # S1 P2: newest 40 only
 
 
 ## An open quest asks for more of this item than the bag holds (hay goes to the bag, not the silo).
@@ -2970,7 +2972,7 @@ func read_mail() -> void:
 					opts = ["Take the %s" % GameState.item_name(str(m["item"])), "Later"]
 			"favour":
 				if not bool(m.get("done", false)):
-					opts = ["Send %d %s (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), GameState.count(str(m["item"]))], "Not now"]
+					opts = ["Send %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), GameState.count(str(m["item"]))], "Not now"]
 		var line := {"who": "Letter from " + str(m["from"]), "text": str(m["text"])}
 		if not opts.is_empty():
 			line["choice"] = opts
@@ -2983,7 +2985,7 @@ func read_mail() -> void:
 			if err != "":
 				hud.toast(err, Color(1, 0.8, 0.6))
 			elif str(m["kind"]) == "gift":
-				hud.toast("+%d %s" % [int(m.get("n", 1)), GameState.item_name(str(m["item"]))], Color(0.85, 1, 0.85))
+				hud.toast("+" + ItemWords.count_id(str(m["item"]), int(m.get("n", 1))), Color(0.85, 1, 0.85))
 			else:
 				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
 
@@ -3193,7 +3195,7 @@ func later(cb: Callable) -> void:
 func give(id: String, n := 1, quiet := false) -> void:
 	_check_quests.call_deferred()
 	GameState.add_item(id, n)
-	hud.toast("+%d %s" % [n, GameState.item_name(id)], Color(0.85, 1, 0.85))
+	hud.toast("+" + ItemWords.count_id(id, n), Color(0.85, 1, 0.85))
 	if not quiet:
 		Music.instance(get_tree()).sfx("pickup")
 		if player:
@@ -3952,12 +3954,12 @@ func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, lab
 	var dx := (x + w / 2.0) * TILE - TILE / 2.0
 	draw_rect(Rect2(dx, (y + h - 1) * TILE, TILE, TILE), Color("3a2412"))
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, 7, Color(1, 1, 0.85))
+	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 func label(text: String, at: Vector2, w := 64.0) -> void:
 	var font := ThemeDB.fallback_font
-	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, 7, Color(1, 1, 0.85))
+	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 ## Raised ground with a real cliff face under its southern edge (W28/W29 sets).

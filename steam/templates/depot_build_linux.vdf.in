@@ -1,0 +1,20 @@
+"DepotBuild"
+{
+	"DepotID" "${DEPOT_LINUX}"
+	"ContentRoot" "../content/linux/"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"Recursive" "1"
+	}
+	"FileExclusion" "steam_appid.txt"
+	"FileExclusion" "*.pdb"
+	"FileExclusion" "*.console.exe"
+	"FileExclusion" "*.console.sh"
+	"FileExclusion" "*.debug"
+	"FileExclusion" "*.import"
+	"FileExclusion" ".DS_Store"
+	"FileExclusion" "*.log"
+	"FileExclusion" ".gitkeep"
+}

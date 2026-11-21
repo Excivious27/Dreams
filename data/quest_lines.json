@@ -547,7 +547,7 @@
  },
  "bram_meat": {
   "offer": [
-   "Five game meat. Rook sells it, if he's in a selling mood. He usually isn't.",
+   "Five trail rations. Rook sells them, if he's in a selling mood. He usually isn't.",
    "Or you hunt. I don't judge how the meat arrives."
   ],
   "yes": "Good. Fresh. I'll know.",
@@ -598,12 +598,12 @@
  },
  "rook_pelts": {
   "offer": [
-   "Three pelts.",
+   "Three bundles of shed fur.",
    "Traps, or hunt. Don't bring me anything you didn't kill clean."
   ],
   "yes": "Good.",
   "no": "...Fine.",
-  "wait": "Pelts. Three.",
+  "wait": "Shed fur. Three.",
   "done": [
    "...Clean. Good.",
    "Traps. Two. You know how to use them now."
@@ -843,11 +843,11 @@
  "benno_pup_pack": {
   "offer": [
    "A dog can carry. Mine carried my lunch for six years and only ate it twice.",
-   "Tanning rack. Two pelts, a rope, some wood. Make a pack and it'll haul for you."
+   "Tanning rack. Two shed fur, a rope, some wood. Make a pack and it'll haul for you."
   ],
-  "yes": "Good. Rook sells the rack. Pelts are on the hill wolves.",
+  "yes": "Good. Rook sells the rack. Hill wolves leave shed fur on the brambles when you drive them off.",
   "no": "Then you carry your own lunch.",
-  "wait": "The pack. Tanning rack. Pelts, rope, wood.",
+  "wait": "The pack. Tanning rack. Shed fur, rope, wood.",
   "done": [
    "Look at that. Proud as anything.",
    "Here. And a bit of a tip for a job well made."
