@@ -200,6 +200,8 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 	# The chest likes a tucked-away spot: walled in on most sides (behind a rock,
 	# in a hedge corner, at a dead end), not in plain view by the road.
 	var tucked: Array = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 4)
+	if tucked.is_empty():  # C14 c14_13-12: else at least half walled in, never out in plain view when a nook exists
+		tucked = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 3)
 	if not tucked.is_empty():
 		picks.append(tucked[rng.randi() % tucked.size()])
 	for spacing: float in PAGE_SPACING:  # C8 P4: loosen the spacing so the page always lands
@@ -242,7 +244,13 @@ static func _put(m: GameMap, rid: String, tier: int, picks: Array) -> void:
 		var pk := "page_" + rid
 		if not GameState.run["flags"].has(pk):
 			m.set_thing(pc.x, pc.y, {"type": "page", "key": pk, "text": PAGES[rid], "hint": "A: a torn page"}, false)
-			m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
+			# C14 c14_13-12: a page you can read as a page (pinned under a stone, tied to a
+			# stake, or in a bottle), not a quarter-size signpost.
+			var pv: String = ["c14p4_page_stone", "c14p4_page_stake", "c14p4_page_bottle"][absi(hash(rid)) % 3]
+			if Art.has("c14p4", pv):
+				m.prop("c14p4", pv, pc, 0, 0.0, false, 0.5)
+			else:
+				m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
 
 
 static func _walls(m: GameMap, c: Vector2i) -> int:

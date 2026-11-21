@@ -30332,6 +30332,21 @@
    "h": 56,
    "w": 45
   },
+  "c14p4_page_bottle": {
+   "file": "c14p4/c14p4_page_bottle.png",
+   "h": 36,
+   "w": 31
+  },
+  "c14p4_page_stake": {
+   "file": "c14p4/c14p4_page_stake.png",
+   "h": 40,
+   "w": 27
+  },
+  "c14p4_page_stone": {
+   "file": "c14p4/c14p4_page_stone.png",
+   "h": 30,
+   "w": 32
+  },
   "c14p4_rail_halt": {
    "file": "c14p4/c14p4_rail_halt.png",
    "h": 56,

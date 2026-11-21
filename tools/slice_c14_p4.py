@@ -30,6 +30,7 @@ PROPS = {
     "c14p4_shortcuts.png": [("c14p4_stairs", 64), ("c14p4_log_bridge", 56), ("c14p4_ladder", 64), ("c14p4_hedge_gap", 64), ("c14p4_current_pool", 56)],
     "c14p4_stations_gang.png": [("c14p4_taxi_stand", 72), ("c14p4_bus_stop", 64), ("c14p4_subway", 72), ("c14p4_airstrip", 64),
                                 ("c14p4_dispatch", 64), ("c14p4_rail_halt", 56)],
+    "c14p4_pages.png": [("c14p4_page_stone", 30), ("c14p4_page_stake", 40), ("c14p4_page_bottle", 36)],
 }
 # Extra ids that reuse a slice (gangster cart stop = trolley stop art).
 ALIAS = {"c14p4_bus_stop": [], "c14p4_rail_halt": ["c14p4_trolley_stop"]}
