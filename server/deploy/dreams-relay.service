@@ -11,6 +11,14 @@ Environment=PORT=8787
 Restart=always
 RestartSec=2
 NoNewPrivileges=true
+# C17 hardening (c17_17-18): no root, a read-only system, a memory ceiling on the 512 MB droplet.
+# The live box runs its setup copy; a rebuilt box installs this one (server.js only reads its
+# checkout and binds 8787, so it needs no privileges).
+DynamicUser=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+MemoryMax=384M
 
 [Install]
 WantedBy=multi-user.target
