@@ -574,7 +574,7 @@ func _nowin_step() -> void:
 			elif Campaign.can_take_long_way(cid):
 				Campaign.take_long_way(cid)
 			elif Campaign.long_way_offerable(cid):
-				_warn("can't afford the long way to %s yet: %s" % [reg, Campaign.long_way_lock(cid)])
+				print("BOT NOWIN saving up for the long way to %s: %s" % [reg, Campaign.long_way_lock(cid)])
 		if Campaign.region_open(reg):
 			reached += 1
 	if not (Campaign.st()["won"] as Dictionary).is_empty():
