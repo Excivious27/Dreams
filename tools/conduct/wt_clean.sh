@@ -8,6 +8,7 @@
 #     godot.lock*, and systemd/snap dirs.
 #  -n  dry run: print what would go.  Prints free disk before/after.
 set -uo pipefail
+{ # whole body parsed before it runs: editing this file never breaks a run in progress
 M=/home/claude/dreams; DRY=0
 [ "${1:-}" = "-n" ] && { DRY=1; shift; }
 NAMED=" $* "
@@ -56,3 +57,4 @@ for d in /tmp/*/; do
 done
 git worktree prune
 echo "free after: $(free_gb) GB"
+}

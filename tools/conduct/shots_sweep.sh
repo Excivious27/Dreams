@@ -10,6 +10,7 @@
 # sections: comma list of title,maps,interiors,screens,shops,npcs,festival,night,battle (default all)
 # Env: SWEEP_MAPS=a,b (only these maps), SWEEP_ARCS="penguins gangsters", SWEEP_T=900 (s per arc).
 set -uo pipefail
+{ # whole body parsed before it runs: editing this file never breaks a run in progress
 N="${1:?usage: shots_sweep.sh <N> [sections]}"; SECS="${2:-all}"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 OUT=/home/claude/wt/shots_$N
@@ -52,3 +53,4 @@ PY
 for a in $ARCS; do grep -h "^shots_sweep" "$OUT/$a.log" || echo "$a: no finish line (see $OUT/$a.log)"; done
 echo "shots_sweep: wall ${WALL}s"
 exit $rc
+}

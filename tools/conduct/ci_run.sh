@@ -16,13 +16,15 @@
 #                    i.e. post-merge) and whenever the diff vs origin/main touches server/,
 #                    scripts/net.gd or the relay tests; the Godot NET E2E runs when net.gd or
 #                    server/ changed (tools/conduct/relay_live_check.py)
-#   - writes ci/params.json in a throwaway commit on top of the base (HEAD itself is untouched)
+#   - builds a throwaway commit (base + ci/params.json) with git plumbing: no checkout, no disk
 #   - pushes it to ci/<label>-<shortsha> (conduct-ci.yml runs on ci/**), deletes it afterwards
-#   - polls `git fetch origin ci-results` every 60 s, 45 min timeout
-# Fallbacks: if results never appear on ci-results, tries `gh run view/download`;
-# if that fails too, exits 3 so the caller runs check.sh + bots.sh locally.
-# Results land in /tmp/ci_<sha>/ (summary.txt, summary.json, logs).
+#   - polls ci-results/<sha>/summary.json through `gh api` every 60 s, 45 min timeout.
+#     NEVER `git fetch origin ci-results` (GBs of shots; it filled the disk on 2026-11-20).
+# Fallback: if results never appear, reads the run's conclusion with `gh run view` (no artifact
+# download); if that fails too, exits 3 so the caller runs check.sh + bots.sh locally.
+# Results land in /tmp/ci_<sha>/ (summary.txt, summary.json, small text logs; no images).
 set -uo pipefail
+{ # whole body parsed before it runs: editing this file never breaks a run in progress
 POS=(); SHARDS=""; BOTS=1; PTONLY=0; BRANCH=""; RELAY=auto; KEEPBOTS=0; BOTSONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -109,23 +111,38 @@ git push -q -f origin "$SHA:refs/heads/$BR" 2>&1 | grep -v -i "moved\|new locati
 rm -rf "$TMP"
 echo "pushed $BR ($SHA; tested sha ${BASE}; shards $SJSON, bots $BOTS, playtest $PT, relay $RELAY e2e $E2E) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
 OUT="/tmp/ci_$SHA"; rm -rf "$OUT"; mkdir -p "$OUT"
+# R4: NEVER `git fetch origin ci-results` (that branch holds every run's shots + logs: each fetch
+# pulled hundreds of MB to GBs and filled the disk). Results are read through the GitHub API, one
+# small file at a time: summary.txt/summary.json, plus the small text logs (no images).
+REPO=$(git remote get-url origin | sed -E 's#^.*github\.com[:/]##; s#\.git$##')
+raw() { gh api -H "Accept: application/vnd.github.raw" "repos/$REPO/contents/$1?ref=ci-results" 2>/dev/null; }
 T0=$(date +%s); got=""
 while [ $(( $(date +%s) - T0 )) -lt 2700 ]; do
   sleep 60
-  if git fetch -q origin ci-results 2>/dev/null && git cat-file -e "FETCH_HEAD:$SHA/summary.txt" 2>/dev/null; then
-    got=branch; break
+  if raw "$SHA/summary.json" > "$OUT/summary.json" && python3 -c "import json;json.load(open('$OUT/summary.json'))" 2>/dev/null; then
+    raw "$SHA/summary.txt" > "$OUT/summary.txt"; got=api; break
   fi
   printf "."
 done
 echo
-if [ "$got" = branch ]; then
-  git archive FETCH_HEAD "$SHA" | tar -x -C "$OUT" --strip-components=1
+if [ "$got" = api ]; then
+  # small text files only (logs/json/txt under 300 KB), top level and one folder down
+  ls_dir() { gh api "repos/$REPO/contents/$1?ref=ci-results" -q '.[] | "\(.type)\t\(.size)\t\(.path)"' 2>/dev/null; }
+  { ls_dir "$SHA"; ls_dir "$SHA" | awk -F'\t' '$1=="dir"{print $3}' | while read -r d; do ls_dir "$d"; done; } \
+    | awk -F'\t' '$1=="file" && $2<300000 {print $3}' | grep -E '\.(txt|log|json|md)$' | sed "s#^$SHA/##" \
+    | grep -v -E '^summary\.(txt|json)$' | head -80 | while read -r f; do
+      mkdir -p "$OUT/$(dirname "$f")"; raw "$SHA/$f" > "$OUT/$f"; done
+  echo "full results (shots etc.): https://github.com/$REPO/tree/ci-results/$SHA (never git fetch ci-results)"
 elif command -v gh >/dev/null; then
-  echo "no results on ci-results; trying gh run download"
+  echo "no results on ci-results; reading the run's conclusion (gh run view, no artifact download)"
   RID=$(gh run list --branch "$BR" --json databaseId -q '.[0].databaseId' 2>/dev/null)
-  if [ -n "$RID" ] && gh run download "$RID" -D "$OUT" 2>/dev/null; then
-    git show "$SHA:ci/params.json" > "$OUT/params.json" 2>/dev/null
-    python3 tools/conduct/ci_summary.py "$OUT" "$SHA" "$BR" "$RID" "$OUT/params.json" >/dev/null && got=gh
+  if [ -n "$RID" ]; then
+    gh run view "$RID" --json conclusion,jobs -q '"conclusion: \(.conclusion)", (.jobs[] | "\(.conclusion)\t\(.name)")' > "$OUT/summary.txt" 2>/dev/null
+    C=$(head -1 "$OUT/summary.txt" | sed 's/conclusion: //')
+    if [ -n "$C" ] && [ "$C" != null ]; then
+      python3 -c "import json;json.dump({'pass': '$C' == 'success', 'run': '$RID', 'via': 'gh run view'}, open('$OUT/summary.json','w'))"
+      echo "logs: gh run view $RID --log-failed"; got=gh
+    fi
   fi
 fi
 git push -q origin --delete "$BR" 2>/dev/null || true
@@ -135,3 +152,4 @@ fi
 echo "results via $got after $(( ($(date +%s) - T0) / 60 )) min in $OUT (tested sha $BASE)"
 cat "$OUT/summary.txt"
 python3 -c "import json,sys;sys.exit(0 if json.load(open('$OUT/summary.json'))['pass'] else 1)"
+}

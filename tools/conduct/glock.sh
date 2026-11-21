@@ -11,6 +11,7 @@
 # second lane. At most 2 godot runs at once on the 2 CPUs. Never kill lock holders you did not start.
 # Exit code: the command's (124 on timeout, 125 if no slot within GLOCK_WAIT secs, default 3600).
 set -uo pipefail
+{ # whole body parsed before it runs: editing this file never breaks a run in progress
 T=600; NI=5; XV=0; SLOTS="0 1"
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -62,3 +63,4 @@ CPID=$!
 wait "$CPID"; RC=$?
 CPID=""
 exit $RC
+}
