@@ -1394,3 +1394,10 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P4: bug net + Critter log (catch, log, let go; net tiers, Foraging gates, legends, Live Exhibit) =="
+c16p4cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/critter_net_test.gd 2>&1)"
+echo "$c16p4cout" | grep -E "FAIL|SCRIPT ERROR|critter_net_test" || true
+if echo "$c16p4cout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4cout" | grep -q "critter_net_test: 0 failures"; then
+  echo "C16a P4 critter net test failed"; exit 1
+fi

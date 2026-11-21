@@ -143,6 +143,9 @@ static func _groups(cat: String) -> Array:
 		"museum":
 			for w: Dictionary in Collections.data().get("wings", []):
 				out.append([str(w["id"]), str(w["title"])])
+			var lw: Dictionary = Collections.data().get("live_wing", {})
+			if not lw.is_empty():
+				out.append([str(lw["id"]), str(lw["title"])])  # C16a P4 Live Exhibit (critters)
 		"shipping":
 			var seen := {}
 			for e: Dictionary in Collections.entries("shipping"):
@@ -309,7 +312,11 @@ static func _card(cat: String, e: Dictionary, got: bool) -> String:
 	var c := Collections.st()
 	match cat:
 		"museum":
+			if bool(e.get("live", false)):
+				return "%s · in the Live Exhibit (logged and let go) ✓" % Critters.name_of(key)
 			return "%s · Donated on day %d ✓" % [name, int(c["donated"].get(key, 0))]
+		"critters":
+			return "%s · caught and let go %d time%s" % [Critters.name_of(key), Collections.amount_of(cat, key), "" if Collections.amount_of(cat, key) == 1 else "s"]
 		"fish":
 			var f: Dictionary = c["caught"].get(key, {})
 			return "%s · caught %d · first on day %d%s" % [name, int(f.get("n", 1)), int(f.get("first", 0)), " · at night" if bool(f.get("night", false)) else ""]

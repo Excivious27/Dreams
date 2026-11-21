@@ -831,7 +831,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
 				if Crew.perk_level("sell_bonus") >= 3:
 					GameState.add_money(25, "loot")
-					hud.toast("Deuce taught you where people hide coins. +◆25", Color(1, 0.9, 0.5))
+					hud.toast("Deuce taught you where people hide coins. +" + Money.amount(25), Color(1, 0.9, 0.5))
 			else:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true

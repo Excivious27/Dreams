@@ -8,7 +8,8 @@ const T := {
 	"cheap_value": 30,          # a fish this cheap or less counts as a "common"
 	"commons_min": 2,           # valley waters with fewer commons get minnow + sunfish
 	"commons": ["minnow", "sunfish"],
-	"cap_base": 25, "cap_per_level": 15, "cap_night": 40, "cap_bait": 10,
+	"cap_base": 25, "cap_per_level": 12,  # C16a P4: 15 -> 12, on skill_level_eff (cap 20)
+	 "cap_night": 40, "cap_bait": 10,
 	"cap_per_rod": 10,          # each rod upgrade lifts the value ceiling
 	"cap_per_luck": 5,          # luck (buff + gear) lifts the ceiling
 	"cap_per_area_tier": 30,    # a mega water's own fish are within reach of its tier
@@ -29,8 +30,7 @@ const T := {
 	"sea_waters": ["beach", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "docks", "the_shoals", "blue_deep"],
 	# XP per catch: base + value / per (capped); boots give the floor.
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
-	# Legendary Koi: the lake at night under the lit lighthouse, baited, Fishing 10+.
-	"koi": {"scene": "lake", "level": 10, "chance": 0.012},
+	# (C16a P4: the Legendary Koi's one rule set is Collections LEGENDS / gen_collections.py.)
 	# Time of day: these only bite by night / by day (the rest any time). Sorted pools
 	# that would lose every fish keep them all.
 	"when": {"mooncarp": "night", "starfin": "night", "ghost_fish": "night", "sun_trout": "day", "goldfish": "day"},
@@ -134,7 +134,8 @@ static func seasons_of(fish: String) -> Array:
 	return (s as Array).duplicate() if s is Array and not (s as Array).is_empty() else ["spring", "summer", "fall", "winter"]
 
 
-## The koi is one of a kind: only under the lit lighthouse, and only until you have one (c10_07).
+## The koi is one of a kind: true while it can still be caught (lighthouse lit, not caught yet). The bite
+## itself is Collections.legend_roll (one rule set, C16a P4).
 static func koi_open() -> bool:
 	if not GameState.run.get("flags", {}).has("lighthouse_lit"):
 		return false
@@ -171,10 +172,7 @@ static func bait_helps(pool: Array, lvl: int, night: bool, area_tier: int) -> bo
 
 ## Picks the fish at the bite (so the window can fit it). Returns "boot" for junk.
 ## rare: chance of a Rare Catch roll (skill + perks); picks from the top of reach.
-static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: int, rare: float, scene := "") -> String:
-	var k: Dictionary = T["koi"]
-	if scene == str(k["scene"]) and night and baited and lvl >= int(k["level"]) and koi_open() and randf() < float(k["chance"]):
-		return "legendary_koi"
+static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: int, rare: float, _scene := "") -> String:
 	if randf() < float(T["boot"]):
 		return "boot"
 	var cap := ceiling(lvl, night, baited, area_tier)
@@ -182,7 +180,8 @@ static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: in
 	if open.is_empty():
 		open = [pool[0]]
 	var reach := mini(open.size(), reach_n(lvl, night, baited))
-	var ratio := 0.8 if baited else 0.67
+	# C16a P4 (c16a_05-05): skill shifts the mix up (0.67 + 0.01/eff level, bait +0.08, cap 0.92).
+	var ratio := minf(0.92, 0.67 + 0.01 * mini(lvl, GameState.LEVEL_EFFECT_CAP) + (0.08 if baited else 0.0))
 	if randf() < rare + minf(float(T["rare_luck_cap"]), float(T["rare_per_luck"]) * luck()):
 		# Rare Catch: one more fish and +40 ceiling, picked from the TOP down.
 		var up := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap + 40)

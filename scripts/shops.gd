@@ -89,7 +89,7 @@ static func _offers_base(shop: String) -> Array:
 				base.append("backpack_%d" % (int(GameState.run.get("bag_up", 0)) + 1))
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
-			return base + Romance.shop_extra("store")
+			return base + BugNet.shop_offer() + Romance.shop_extra("store")  # C16a P4: the next bug net
 		"smith":
 			return ["iron_sword", "coal", "copper_ring"] + grown("smith")
 		"potions":
@@ -286,6 +286,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			m.hud.toast("%s! Bag now holds %d kinds of item." % [GameState.item_name(id), GameState.bag_size()], Color(1, 0.9, 0.4))
 		elif GameState.items[id].get("type", "") == "tool":
 			GameState.add_tool(id)
+			BugNet.after_buy(id)  # C16a P4: a better net takes the old one's slot
 			m.hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:
 			m.give(id, qty)

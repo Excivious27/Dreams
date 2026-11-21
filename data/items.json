@@ -24334,5 +24334,206 @@
   "tier": 5,
   "rarity": "legendary",
   "desc": "Winter legend of the forest stream, seen only in a second winter or later."
+ },
+ "bug_net": {
+  "name": "Twig Net",
+  "name_gang": "Wire Net",
+  "type": "tool",
+  "value": 230,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Swing at a bug or a little critter close by to log it in the Book. It's let go right after.",
+  "icon": "c16ap4_bug_net"
+ },
+ "silk_net": {
+  "name": "Silk Net",
+  "name_gang": "Mesh Net",
+  "type": "tool",
+  "value": 1000,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Reaches two steps. Catches the shy ones the Twig Net misses. Foraging 15.",
+  "icon": "c16ap4_silk_net"
+ },
+ "star_net": {
+  "name": "Star Net",
+  "name_gang": "Neon Net",
+  "type": "tool",
+  "value": 3300,
+  "rarity": "uncommon",
+  "tier": 3,
+  "desc": "Three steps, never spooks. Catches night bugs and the once-a-season legends. Foraging 35.",
+  "icon": "c16ap4_star_net"
+ },
+ "cr_ladybug": {
+  "name": "Ladybug",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net.",
+  "icon": "c16ap4_ladybug",
+  "no_sell": true
+ },
+ "cr_lemon_wing": {
+  "name": "Lemon Wing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring; out by day. Twig Net.",
+  "icon": "c16ap4_lemon_wing",
+  "no_sell": true
+ },
+ "cr_orange_flutter": {
+  "name": "Orange Flutter",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out by day. Twig Net.",
+  "icon": "c16ap4_orange_flutter",
+  "no_sell": true
+ },
+ "cr_sky_wing": {
+  "name": "Sky Wing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net, Foraging 2.",
+  "icon": "c16ap4_sky_wing",
+  "no_sell": true
+ },
+ "cr_bumble_bee": {
+  "name": "Bumble Bee",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net, Foraging 3.",
+  "icon": "c16ap4_bumble_bee",
+  "no_sell": true
+ },
+ "cr_meadow_hopper": {
+  "name": "Meadow Hopper",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer, Fall; out by day. Twig Net.",
+  "icon": "c16ap4_meadow_hopper",
+  "no_sell": true
+ },
+ "cr_garden_snail": {
+  "name": "Garden Snail",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out any time. Twig Net.",
+  "icon": "c16ap4_garden_snail",
+  "no_sell": true
+ },
+ "cr_violet_duchess": {
+  "name": "Violet Duchess",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer; out by day. Silk Net, Foraging 8.",
+  "icon": "c16ap4_violet_duchess",
+  "no_sell": true
+ },
+ "cr_pond_dragonfly": {
+  "name": "Pond Dragonfly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer; out by day. Silk Net, Foraging 10.",
+  "icon": "c16ap4_pond_dragonfly",
+  "no_sell": true
+ },
+ "cr_green_frog": {
+  "name": "Green Frog",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out any time. Silk Net, Foraging 6.",
+  "icon": "c16ap4_green_frog",
+  "no_sell": true
+ },
+ "cr_shore_crab": {
+  "name": "Shore Crab",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. All year; out any time. Silk Net, Foraging 12.",
+  "icon": "c16ap4_shore_crab",
+  "no_sell": true
+ },
+ "cr_firefly": {
+  "name": "Firefly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out at night. Star Net, Foraging 20.",
+  "icon": "c16ap4_firefly",
+  "no_sell": true
+ },
+ "cr_sky_jelly": {
+  "name": "Sky Jelly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. All year; out any time. Star Net, Foraging 30.",
+  "icon": "c16ap4_sky_jelly",
+  "no_sell": true,
+  "arc": "penguins"
+ },
+ "cr_petal_emperor": {
+  "name": "Petal Emperor",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Spring, 6-10 o'clock, rain weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_petal_emperor",
+  "no_sell": true
+ },
+ "cr_sunwing": {
+  "name": "Sunwing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Summer, 11-14 o'clock, clear/sun weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_sunwing",
+  "no_sell": true
+ },
+ "cr_ember_moth": {
+  "name": "Ember Moth",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Fall, 17-21 o'clock, fog/leaves/rain weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_ember_moth",
+  "no_sell": true
+ },
+ "cr_snow_sylph": {
+  "name": "Snow Sylph",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Winter, 6-18 o'clock, snow/blizzard weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_snow_sylph",
+  "no_sell": true
  }
 }

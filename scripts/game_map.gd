@@ -4750,7 +4750,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		wait = 0.3
 		hud.toast("Tidecall!", Color(0.6, 0.9, 1))
 	var baited := false
-	var lvl := GameState.skill_level("fishing")
+	var lvl := GameState.skill_level_eff("fishing")  # C16a P4: effects follow LEVEL_EFFECT_CAP
 	# Bait: quicker bites and a shot at better fish, only spent where it opens one.
 	if GameState.count("bait") > 0 and Fishing.bait_helps(pool, lvl, night, area_tier):
 		GameState.add_item("bait", -1)

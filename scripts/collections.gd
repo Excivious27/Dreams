@@ -23,7 +23,7 @@ static func st() -> Dictionary:
 		r["coll"] = {}
 	var c: Dictionary = r["coll"]
 	var fresh := not c.has("made")
-	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor", "ranch"]:
+	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor", "ranch", "critters"]:
 		if not (c.get(k, null) is Dictionary):
 			c[k] = {}
 	for k in ["pending", "today"]:
@@ -79,6 +79,15 @@ static func entries(cat: String, wing := "") -> Array:
 					var x := e.duplicate()
 					x["wing"] = str(w["id"])
 					out.append(x)
+		# C16a P4: the Live Exhibit wing shows every logged critter (nothing is kept: released and logged).
+		var lw: Dictionary = data().get("live_wing", {})
+		if not lw.is_empty() and (wing == "" or wing == str(lw["id"])):
+			for e: Dictionary in data().get("logs", {}).get("critters", []):
+				if arc_ok(e):
+					var y := e.duplicate()
+					y["wing"] = str(lw["id"])
+					y["live"] = true
+					out.append(y)
 		return out
 	for e: Dictionary in data().get("logs", {}).get(cat, []):
 		if arc_ok(e) and (wing == "" or str(e.get("station", e.get("family", ""))) == wing):
@@ -109,12 +118,13 @@ static func in_log(cat: String, key: String) -> bool:
 static func have(cat: String, key: String) -> bool:
 	var c := st()
 	match cat:
-		"museum": return c["donated"].has(key)
+		"museum": return c["donated"].has(key) or (key.begins_with("cr_") and c["critters"].has(key))
 		"shipping": return c["shipped"].has(key)
 		"fish": return c["caught"].has(key)
 		"cooking", "crafting": return c["made"].has(key)
 		"forage": return GameState.has_seen(key)
 		"ranch": return c["ranch"].has(key)
+		"critters": return c["critters"].has(key)
 	return false
 
 
@@ -137,6 +147,7 @@ static func amount_of(cat: String, key: String) -> int:
 		"fish": return int((c["caught"].get(key, {}) as Dictionary).get("n", 0))
 		"cooking", "crafting": return int(c["made"].get(key, 0))
 		"ranch": return int(c["ranch"].get(key, 0))
+		"critters": return int(c["critters"].get(key, 0))
 	return 1 if have(cat, key) else 0
 
 
@@ -196,6 +207,19 @@ static func record_catch(id: String, n := 1, night := false, rain := false) -> b
 		if L is Dictionary and str((L as Dictionary).get("first_decor", "")) != "":
 			if give_decor(str(L["first_decor"]), "legend:" + id):
 				GameState.notify("A keepsake of the %s is waiting in your decor box." % GameState.item_name(id))
+	return first
+
+
+## C16a P4: a critter caught with the bug net (BugNet.swing), logged and let go. True on a first.
+static func record_critter(id: String) -> bool:
+	if not in_log("critters", id):
+		return false
+	var c := st()
+	var first: bool = not c["critters"].has(id)
+	c["critters"][id] = int(c["critters"].get(id, 0)) + 1
+	if first:
+		_first("critters", id, false, "Critter log")
+		st()["new"]["museum"] = true  # the Live Exhibit grows too
 	return first
 
 
@@ -524,6 +548,8 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 			"night": ok = night
 		if str(L.get("when", "")).begins_with("season:"):  # C15 P4: season legends (+ "year" gate)
 			ok = GameState.season() == str(L["when"]).substr(7) and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 >= int(L.get("year", 1))
+		if ok and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 < int(L.get("year", 1)):
+			ok = false  # C16a P4: every legend may carry a first year (the koi is a year-3 goal)
 		if ok and randf() < float(L.get("chance", 0.05)):
 			return str(id)
 	return fish

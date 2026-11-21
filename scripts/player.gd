@@ -1291,6 +1291,9 @@ func do_action(mode := "a") -> void:
 			(map.pet as Pet).set_mode("attack")
 			(map.pet as Pet)._target = e
 		return
+	if BugNet.is_net(held):  # C16a P4: the bug net logs a critter in reach and lets it go
+		BugNet.swing(map, self)
+		return
 	if held == "rod":
 		# The rod only casts into water: say so instead of a cast at the grass.
 		ToolHint.say(map, "Face water and tap USE to cast.")
