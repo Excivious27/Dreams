@@ -151,29 +151,29 @@
    "visit": ""
   },
   {
-   "arc": "penguins",
+   "arc": "",
    "energy_mult": 1.2,
    "id": "meadow",
    "name": "the meadow",
-   "name_gang": "",
+   "name_gang": "the meadow",
    "pool": "meadow",
    "visit": "meadow"
   },
   {
-   "arc": "penguins",
+   "arc": "",
    "energy_mult": 1.3,
    "id": "forest",
    "name": "the forest",
-   "name_gang": "",
+   "name_gang": "the woods",
    "pool": "forest",
    "visit": "forest"
   },
   {
-   "arc": "penguins",
+   "arc": "",
    "energy_mult": 1.3,
    "id": "lake",
    "name": "the lake shore",
-   "name_gang": "",
+   "name_gang": "the lake shore",
    "pool": "lake",
    "visit": "lake"
   },

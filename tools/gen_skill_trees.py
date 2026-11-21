@@ -451,6 +451,8 @@ for key, cap in TREE_TOTAL_CAPS.items():
     for sk, n in cands:
         if max(_arc_total(a, key) for a in ("penguins", "gangsters")) <= cap:
             break
+        if all(_arc_total(a, key) <= cap for a in ("penguins", "gangsters") if sk in _arc_trees(a)):
+            continue  # C16a integ: this tree's arcs are already under the cap (Hustle vs Harmony, c16a_03-13)
         caps = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
         for gk, gv in GEN_CAPS.get(sk, {}).items():
             caps[gk] = min(caps.get(gk, gv), gv)
@@ -486,6 +488,8 @@ for key, cap in TREE_TOTAL_CAPS.items():
     for sk, n in cands:
         if max(_arc_total(a, key) for a in ("penguins", "gangsters")) <= cap:
             break
+        if all(_arc_total(a, key) <= cap for a in ("penguins", "gangsters") if sk in _arc_trees(a)):
+            continue  # C16a integ: this tree's arcs are already under the cap (Hustle vs Harmony, c16a_03-13)
         caps = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
         for gk, gv in GEN_CAPS.get(sk, {}).items():
             caps[gk] = min(caps.get(gk, gv), gv)

@@ -2894,7 +2894,13 @@
    "giver": "gate_gloamwood",
    "arc": "both",
    "text": "Liesl the moth-keeper needs 12 flowers, 8 wild herbs and 6 mushrooms to wake the fairy ring.",
-   "when": {},
+   "when": {
+    "day": 22,
+    "skill": [
+     "foraging",
+     4
+    ]
+   },
    "done_when": {
     "items": [
      [
@@ -2956,7 +2962,9 @@
    "giver": "gate_sunscorch",
    "arc": "both",
    "text": "Sefa the sand-sailor needs 8 bread, 6 rope and a Sailcloth before the caravan can cross.",
-   "when": {},
+   "when": {
+    "day": 43
+   },
    "done_when": {
     "items": [
      [
@@ -3039,7 +3047,9 @@
    "giver": "gate_ironline",
    "arc": "gangsters",
    "text": "Conductor Hollis needs 30 coal, 10 iron bars and 4 gears to run the night train to Ironline.",
-   "when": {},
+   "when": {
+    "day": 43
+   },
    "done_when": {
     "items": [
      [
@@ -3096,7 +3106,9 @@
    "giver": "gate_frostpeak",
    "arc": "both",
    "text": "Brannoch the guide needs 12 wool, 20 coal and 6 timber beams before he'll take you up to Frostpeak.",
-   "when": {},
+   "when": {
+    "day": 85
+   },
    "done_when": {
     "items": [
      [
@@ -3155,7 +3167,9 @@
    "giver": "gate_windward",
    "arc": "penguins",
    "text": "Captain Zephyr needs 12 cloth, 2 Sailcloth and 3 Refined Crystals to patch the balloon and lift it.",
-   "when": {},
+   "when": {
+    "year": 2
+   },
    "done_when": {
     "items": [
      [
@@ -3218,7 +3232,9 @@
    "giver": "gate_giltcity",
    "arc": "gangsters",
    "text": "Mister Pell wants 40 Rolled Bills, 4 Gold Bars and a Pearl Necklace for the invitation to Gilt City.",
-   "when": {},
+   "when": {
+    "year": 2
+   },
    "done_when": {
     "items": [
      [

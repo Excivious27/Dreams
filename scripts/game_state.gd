@@ -326,6 +326,8 @@ static func _migrate() -> void:
 	for id in skills_data.keys():
 		if not run["skills"].has(id):
 			run["skills"][id] = {"level": 1, "xp": 0, "nodes": {}}
+	if run["skills"].get("magic") is Dictionary and (run["skills"]["magic"] as Dictionary).get("nodes") is Dictionary:
+		starter_spark()  # C16a P6: old saves get the free Spark too (idempotent)
 	Storage._all()  # moves an old flags.chest stash into the farm chest now
 	var old_max := int(run.get("max_energy", 100))
 	_apply_max_stats()
@@ -1434,16 +1436,16 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## Ceilings for stacking effects (the big trees can't make costs negative or
 ## chances certain).
 const BONUS_CAPS := {"farm_energy": 0.3, "mine_energy": 0.3, "wood_energy": 0.5, "kill_energy": 8.0, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
-	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
-	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.25, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.25,
-	"sell_bonus": 0.30, "crop_value": 0.25, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.15, "forage_bonus": 12.0,
-	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.2, "extra_day": 0.10, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
+	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.3, "pass_risk": 0.2,
+	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.25, "double_fish": 0.25,
+	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.45, "interest": 0.05, "buy_discount": 0.25,
+	"sell_bonus": 0.30, "crop_value": 0.25, "fish_value": 0.35, "ore_bonus": 0.6, "extra_crop": 0.15, "forage_bonus": 12.0,
+	"rare_fish": 0.25, "rare_forage": 0.3, "growth": 0.2, "extra_day": 0.10, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
 	"animal_yield": 1.0, "ranch_value": 0.35, "animal_friend": 0.3, "breed_chance": 0.3, "grow_speed": 3.0, "rare_breed": 0.1, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.25, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 6.0, "damage": 8.0, "flower_value": 0.5, "bounty": 0.4, "loot_value": 0.3, "kill_energy": 8.0, "team_heal": 15.0, "team_damage": 8.0, "pet_bond": 40.0,
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 6.0, "damage": 8.0, "flower_value": 0.5, "bounty": 0.4, "loot_value": 0.3, "team_heal": 15.0, "team_damage": 8.0, "pet_bond": 40.0,
 	"big_goods": 0.3, "animal_quality": 3.0, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
@@ -1637,8 +1639,8 @@ static func gear_stat(stat: String) -> int:
 ##   half of floor 2 with their fights) is ~42 = 35% of the bar (was ~82 = 68%),
 ##   measured on real layouts by tools/energy_route_probe.gd. tools/first_week_test.gd
 ##   models a week with the measured keeper thresholds.
-const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 8.0}
-const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building", "spar": "combat", "teach": "ranching"}
+const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "net": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 8.0}
+const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "net": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building", "spar": "combat", "teach": "ranching"}
 const ENERGY_BASE := 120
 ## C16a P3: no action ever costs less than this share of its base (was 0.25).
 const ENERGY_FLOOR := 0.35

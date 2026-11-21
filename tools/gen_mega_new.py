@@ -1480,7 +1480,8 @@ def main():
     for r in REGIONS:
         C = CONTENT[r["id"]]
         hk = C["hook"]
-        Q["side"].append({"id": r["unlock"]["quest"], "giver": "gate_" + r["id"], "arc": r["arc"], "text": hk["text"], "when": {},
+        Q["side"].append({"id": r["unlock"]["quest"], "giver": "gate_" + r["id"], "arc": r["arc"], "text": hk["text"],
+                          "when": dict(r["unlock"].get("when", {})),  # C16a integ: the hook waits for the same calendar/skill floor as the gate
                           "done_when": {"items": hk["items"]}, "take": True, "reward": {"crystals": hk["crystals"], "flag": r["unlock"]["flag"]}})
         hub = AREAS[r["hub"]]
         job = hub["job"]

@@ -87,7 +87,7 @@ static func swing(m: Node, p: Node2D) -> String:
 	var t := tier()
 	if t < 0:
 		return "none"
-	if not GameState.spend_for("weed"):  # a light swing (energy row "net" is P3's to add; weed = 0.25)
+	if not GameState.spend_for("net"):  # a light swing (energy row "net", 0.25, foraging)
 		if m.get("hud"):
 			m.hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return "tired"

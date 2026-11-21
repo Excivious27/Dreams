@@ -69,11 +69,11 @@ SECOND_CHORE_ENERGY = 24  # c11b_06-07: a worker with this much energy can take 
 
 # c11b_06-05: forage where the worker can go: the farm edges (seasonal) plus every region you have been to.
 # id: forage.json pool key; visit: scene id that must be in run.visited ("" = always); arc: "", penguins, gangsters.
-FORAGE_REGIONS = [
+FORAGE_REGIONS = [  # C16a integ (c16a_08-10): both arcs visit meadow, forest and lake
     {"id": "edges", "pool": "", "visit": "", "arc": "", "name": "the farm edges", "name_gang": "the lot edges", "energy_mult": 1.0},
-    {"id": "meadow", "pool": "meadow", "visit": "meadow", "arc": "penguins", "name": "the meadow", "name_gang": "", "energy_mult": 1.2},
-    {"id": "forest", "pool": "forest", "visit": "forest", "arc": "penguins", "name": "the forest", "name_gang": "", "energy_mult": 1.3},
-    {"id": "lake", "pool": "lake", "visit": "lake", "arc": "penguins", "name": "the lake shore", "name_gang": "", "energy_mult": 1.3},
+    {"id": "meadow", "pool": "meadow", "visit": "meadow", "arc": "", "name": "the meadow", "name_gang": "the meadow", "energy_mult": 1.2},
+    {"id": "forest", "pool": "forest", "visit": "forest", "arc": "", "name": "the forest", "name_gang": "the woods", "energy_mult": 1.3},
+    {"id": "lake", "pool": "lake", "visit": "lake", "arc": "", "name": "the lake shore", "name_gang": "the lake shore", "energy_mult": 1.3},
     {"id": "beach", "pool": "beach", "visit": "beach", "arc": "penguins", "name": "the beach", "name_gang": "", "energy_mult": 1.4},
     {"id": "mountain", "pool": "mountain", "visit": "mountain", "arc": "penguins", "name": "the mountain path", "name_gang": "", "energy_mult": 1.5},
     {"id": "orchard_hills", "pool": "orchard_hills", "visit": "orchard_hills", "arc": "", "name": "the orchard hills", "name_gang": "the orchard hills", "energy_mult": 1.5},

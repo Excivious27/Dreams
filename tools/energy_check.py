@@ -62,7 +62,7 @@ def cost(task, lv, tier, perk):
         l = float(lv - 1)
         early = 0.15 if task in FIELD else 0.0
         skill_mult = max(0.7, 1.0 - 0.035 * l) * (1.0 + early * max(0.0, 1.0 - l / 4.0))
-    t = 0 if task in ("sword", "dodge", "spar", "teach", "weed", "rod") else tier
+    t = 0 if task in ("sword", "dodge", "spar", "teach", "weed", "net", "rod") else tier
     per = 0.12 if task in FIELD else (0.03 if task in ("axe", "pickaxe") else 0.08)
     p = perk if task in ("hoe", "can", "plant", "pickaxe") else 0.0
     return base * max(FLOOR, skill_mult * (1.0 - per * t) * (1.0 - p))

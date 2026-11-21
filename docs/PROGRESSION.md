@@ -46,8 +46,9 @@ crops. Year 2: deluxe barn, grand marina, legendary fish. Year 3: final decor se
 FIGHTER / EXPLORER. Year 1 Spring: east meadow (day 3), mine floors 1-20, the drill and tier-1
 campaigns; Gloamwood from Spring 22 with Foraging 4. Summer: the commander / Docks boss, mine 40,
 Sunscorch / Ironline from Summer 15. Fall: knight / neon, mine 60. Winter: Frostpeak from
-Winter 1, mine 80. Year 2: Windward / Gilt City, teleporter / uptown, T4 hub links, mine 150 and
-the Hollow. Year 3: comet festival, master nodes.
+Winter 1, mine 80 (floors 1-100 are year 1). Year 2: Windward / Gilt City, teleporter / uptown,
+T4 hub links, mine floors 101-149 (Mine.deep_lock). Year 3: the Hollow Heart (floor 150), comet
+festival, master nodes.
 
 SOCIAL / CREATIVE. Year 1: Rec Center day 7, festivals, about 4 hearts in Spring and 8 in
 Summer (bouquet), decor sets. Year 2: wedding, casino tiers (gang arc), museum half. Year 3:
@@ -64,10 +65,10 @@ all (Gilt City); each still waits for the same calendar day.
   + 6 mushroom); T2 carts/ferries; T3 masts/pads (tier 2 + ~2600 build); Sunscorch / Ironline
   (day 43); Marina T2-T3.
 - Fall - Winter year 1 (long): Frostpeak (day 85, hook 12 wool + 20 coal + 6 beam); every open
-  region's hub job; Hollow Heart (floor 150).
+  region's hub job; mine floors to 100 (101+ wait for year 2, the Hollow Heart for year 3).
 - Year 2: Windward and Gilt City; T4 hub links (300 fare until 20 rides) and the airship /
   airstrip (400 fare until 20 rides); T5 instant hops; grand marina.
-- Year 3: comet festival, master skill nodes, last museum milestone, the C20 lava region slot.
+- Year 3: Hollow Heart (floor 150), comet festival, master skill nodes, last museum milestone, the C20 lava region slot.
 
 ## Real play time per year by day length
 
