@@ -259,7 +259,7 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 				a.offset = dk.offset
 				a.name = "LighthouseLit"
 				add_child(a)
-				a.play("idle")
+				LighthouseBeam.fit(a)  # C14b P2: still tower, smooth turning beam at night
 				dk.queue_free()
 				tm.queue_free()
 				Music.instance(get_tree()).sfx("power_up", "sparkle")
@@ -274,7 +274,7 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		if name == "lighthouse":
 			a.name = "LighthouseLit"
 		add_child(a)
-		a.play("idle")
+		a.play("idle"); AmbientFx.shore_building(a, name)  # C14b P2: smooth lighthouse beam, mill never boils
 	else:
 		prop("buildings", winter_look(name), base, w_cells - 1, 0.0, false, 1.0)
 	if name == "lighthouse":

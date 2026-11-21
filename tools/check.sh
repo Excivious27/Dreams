@@ -1274,3 +1274,10 @@ fi
 
 echo "== strip registration (C14b P2: fire strips keep their base still) =="
 python3 tools/register_strip.py --check props/bonfire furniture/bubbling_pot || { echo "strip registration check failed"; exit 1; }
+
+echo "== shore_motion_test (C14b P2: lighthouse beam sweep, still water mill) =="
+smout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/shore_motion_test.gd 2>&1)"
+echo "$smout" | grep -E "FAIL|SCRIPT ERROR|shore_motion_test" || true
+if ! echo "$smout" | grep -q "shore_motion_test: PASS"; then
+  echo "shore_motion_test failed"; exit 1
+fi

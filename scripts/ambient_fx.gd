@@ -87,3 +87,17 @@ static func steam(parent: Node2D, at: Vector2, rate := 3.0, rise := 10.0, size :
 	p.color_ramp = g
 	parent.add_child(p)
 	return p
+
+
+## Lake shore buildings drawn as 4 separate renders (c14b_13-02, 13-03): the
+## lighthouse holds its lit frame with a code beam (LighthouseBeam); the water
+## mill holds frame 0 (its house, roof and lantern jumped 2-4 px a frame) with
+## its wheel turned in code when a wheel sprite exists (MillWheel).
+static func shore_building(a: AnimatedSprite2D, name: String) -> void:
+	if a == null:
+		return
+	if name == "lighthouse":
+		LighthouseBeam.fit(a)
+	elif "water_mill" in name:
+		a.stop()
+		a.frame = 0
