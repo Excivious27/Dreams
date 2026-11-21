@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 65.7}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 33.1}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 6.0}
+{"step": 18, "name": "S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b", "rc": 0, "secs": 3.1}
+{"step": 24, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 3.8}
+{"step": 30, "name": "team animals + chores: lessons, team, muster, overnight chores, Animal", "rc": 0, "secs": 5.0}
+{"step": 36, "name": "ticket_econ_test", "rc": 0, "secs": 3.3}
+{"step": 42, "name": "gang_play_test", "rc": 0, "secs": 23.5}
+{"step": 48, "name": "house_exterior_test", "rc": 0, "secs": 7.5}
+{"step": 54, "name": "shop_econ_test", "rc": 0, "secs": 3.5}
+{"step": 60, "name": "gang_flavour_test", "rc": 1, "secs": 3.3}
+{"step": 66, "name": "every sound the game asks for exists", "rc": 1, "secs": 3.8}
+{"step": 72, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.3}
+{"step": 78, "name": "music_stream_test", "rc": 0, "secs": 9.9}
+{"step": 84, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 4.8}
+{"step": 90, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 9.0}
+{"step": 96, "name": "goal_line_test", "rc": 0, "secs": 3.3}
+{"step": 102, "name": "campaign_gate_test", "rc": 0, "secs": 7.4}
+{"step": 108, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 4.0}
+{"step": 114, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 3.2}
+{"step": 120, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 11.9}
+{"step": 126, "name": "stack_whack_test", "rc": 0, "secs": 3.9}
+{"step": 132, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 3.4}
+{"step": 138, "name": "C11b P6: battle line-up and team jobs", "rc": 0, "secs": 3.2}
+{"step": 144, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 3.2}
+{"step": 150, "name": "C9 P4: haptics", "rc": 0, "secs": 3.1}
+{"step": 156, "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve", "rc": 0, "secs": 5.6}

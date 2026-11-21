@@ -1,0 +1,202 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 84.6s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 18.8s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 4.3s
+
+#### step 16: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s (shard 3/6)
+== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) ==
+web_export_guard static: ok (0 problems)
+#### step 16 S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s: PASS in 0.5s
+
+#### step 22: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 22 touch_ui_test: PASS in 37.5s
+
+#### step 28: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 28 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 6.0s
+
+#### step 34: held-tool rules: right tool acts, wrong tool hints (shard 3/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+tool_rules_test: 0 failures
+#### step 34 held-tool rules: right tool acts, wrong tool hints: PASS in 24.6s
+
+#### step 40: bowling_test (shard 3/6)
+bowling_test: OK
+#### step 40 bowling_test: PASS in 17.8s
+
+#### step 46: pen_test (shard 3/6)
+pen_test: PASS
+#### step 46 pen_test: PASS in 4.7s
+
+#### step 52: move_target_test (shard 3/6)
+move_target_test: 0 failures
+#### step 52 move_target_test: PASS in 20.9s
+
+#### step 58: decor_sources_test (shard 3/6)
+decor_sources_test: 0 failures
+#### step 58 decor_sources_test: PASS in 3.6s
+
+#### step 64: workshop: no dead ends (shard 3/6)
+== workshop: no dead ends ==
+  FAIL penguins: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+  FAIL penguins: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+  FAIL penguins: recipe star_yarn at loom can never be made; missing ['star_wool']
+  FAIL penguins: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+  FAIL penguins: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+  FAIL penguins: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+  FAIL penguins: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+  FAIL penguins: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+  FAIL penguins: recipe feather_fan_plume at loom can never be made; missing ['plume']
+  FAIL penguins: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+  FAIL penguins: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+  FAIL penguins: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+  FAIL penguins: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+  FAIL penguins: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+  FAIL penguins: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+  FAIL penguins: recipe moon_cheese at press can never be made; missing ['moon_milk']
+  FAIL penguins: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+  FAIL penguins: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+  FAIL penguins: recipe ember_charm at jeweler can never be made; missing ['ember_scale']
+  FAIL gangsters: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+  FAIL gangsters: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+  FAIL gangsters: recipe star_yarn at loom can never be made; missing ['star_wool']
+  FAIL gangsters: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+  FAIL gangsters: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+  FAIL gangsters: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+  FAIL gangsters: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+  FAIL gangsters: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+  FAIL gangsters: recipe feather_fan_plume at loom can never be made; missing ['plume']
+  FAIL gangsters: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+  FAIL gangsters: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+  FAIL gangsters: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+  FAIL gangsters: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+  FAIL gangsters: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+  FAIL gangsters: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+  FAIL gangsters: recipe moon_cheese at press can never be made; missing ['moon_milk']
+  FAIL gangsters: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+  FAIL gangsters: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+  FAIL gangsters: recipe ember_charm at jeweler can never be made; missing ['ember_scale']
+station_check: 38 failures
+Station check failed
+#### step 64 workshop: no dead ends: FAIL rc=1 in 10.5s
+
+#### step 70: all ages: alcohol is a trade good, never drunk (shard 3/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 12 alcoholic items checked
+ok
+#### step 70 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 76: economy: no money loops, crops and brews inside their bands (shard 3/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 433 recipes, 2 warnings, 0 failures
+#### step 76 economy: no money loops, crops and brews inside their bands: PASS in 0.1s
+
+#### step 82: footstep_test (shard 3/6)
+footstep_test: 0 failures
+#### step 82 footstep_test: PASS in 7.3s
+
+#### step 88: keeper encounters keep real hp (floor-1 swarms topped up) (shard 3/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 88 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 4.6s
+
+#### step 94: region campaigns: boards, locks, convoy (shard 3/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 94 region campaigns: boards, locks, convoy: PASS in 9.7s
+
+#### step 100: farm_debris_test (shard 3/6)
+farm_debris_test: 0 fails
+#### step 100 farm_debris_test: PASS in 5.7s
+
+#### step 106: skill_glow_test (shard 3/6)
+skill_glow_test: 0 fails
+#### step 106 skill_glow_test: PASS in 4.7s
+
+#### step 112: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 3/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 112 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 13.7s
+
+#### step 118: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 3/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 118 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 12.4s
+
+#### step 124: jumper_test (shard 3/6)
+jumper_test: 0 failures
+#### step 124 jumper_test: PASS in 3.5s
+
+#### step 130: toasts: never over a boss card, a region card, the pup strip or the en (shard 3/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 130 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 8.3s
+
+#### step 136: C11a P5: ranch villagers, mail, festivals, pen sounds (shard 3/6)
+== C11a P5: ranch villagers, mail, festivals, pen sounds ==
+ranch_villagers_test: OK
+#### step 136 C11a P5: ranch villagers, mail, festivals, pen sounds: PASS in 3.8s
+
+#### step 142: C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou (shard 3/6)
+== C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal counter ==
+ranch_p3_test: OK (0 fails)
+#### step 142 C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou: PASS in 3.4s
+
+#### step 148: C10a P3: decor catalogue (shard 3/6)
+== C10a P3: decor catalogue ==
+decor_catalogue_test: 0 failures
+#### step 148 C10a P3: decor catalogue: PASS in 4.0s
+
+#### step 154: C10a P5: wardrobe (shard 3/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 154 C10a P5: wardrobe: PASS in 5.8s
+
+#### shard 3/6 done in 321s: FAIL (workshop: no dead ends)

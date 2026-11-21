@@ -1,0 +1,344 @@
+{
+ "sha": "8d3c74f0e659d67ffd6e5388ea54176c06e02884",
+ "ref": "ci/s1p1-4f848349",
+ "run": "44864021502",
+ "finished": 1795234297.109594,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": true,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 2,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 2,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 295,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 18s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 295ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 61,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "4f8483499a172ad027ff74152f5557e7812dd3f1",
+  "label": "s1p1",
+  "branch": "s1f/p1",
+  "shards": [
+   3,
+   4,
+   5
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 342,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 320,
+   "failed_steps": [
+    "workshop: no dead ends"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 342,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 1,
+   "secs": 238,
+   "failed_steps": [
+    "gang_flavour_test",
+    "every sound the game asks for exists"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL penguins: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe star_yarn at loom can never be made; missing ['star_wool']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe glow_yarn at loom can never be made; missing ['glow_wool']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe feather_fan at loom can never be made; missing ['peacock_feather']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe feather_fan_plume at loom can never be made; missing ['plume']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe moon_cheese at press can never be made; missing ['moon_milk']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe moss_tea_blend at press can never be made; missing ['shell_moss']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe scale_charm at jeweler can never be made; missing ['shed_scale']",
+   1
+  ],
+  [
+   "FAIL penguins: recipe ember_charm at jeweler can never be made; missing ['ember_scale']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe star_yarn at loom can never be made; missing ['star_wool']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe glow_yarn at loom can never be made; missing ['glow_wool']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe feather_fan at loom can never be made; missing ['peacock_feather']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe feather_fan_plume at loom can never be made; missing ['plume']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe moon_cheese at press can never be made; missing ['moon_milk']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe moss_tea_blend at press can never be made; missing ['shell_moss']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe scale_charm at jeweler can never be made; missing ['shed_scale']",
+   1
+  ],
+  [
+   "FAIL gangsters: recipe ember_charm at jeweler can never be made; missing ['ember_scale']",
+   1
+  ],
+  [
+   "FAIL ranch: 'crystal' in \"Crystal Hen\"",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 155.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 84.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 65.7
+  },
+  {
+   "step": 53,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 39.4
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 37.5
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 35.3
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 33.1
+  },
+  {
+   "step": 77,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 31.0
+  },
+  {
+   "step": 34,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 24.6
+  },
+  {
+   "step": 42,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 23.5
+  },
+  {
+   "step": 52,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 20.9
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 18.8
+  },
+  {
+   "step": 40,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 17.8
+  },
+  {
+   "step": 112,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 13.7
+  },
+  {
+   "step": 118,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 12.4
+  }
+ ]
+}

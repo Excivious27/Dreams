@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 155.6}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 35.3}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.8}
+{"step": 17, "name": "step 17", "rc": 0, "secs": 0.0}
+{"step": 23, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.7}
+{"step": 29, "name": "storage_test", "rc": 0, "secs": 2.8}
+{"step": 35, "name": "rec_test", "rc": 0, "secs": 5.4}
+{"step": 41, "name": "cash_test", "rc": 0, "secs": 3.7}
+{"step": 47, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 53, "name": "commons_test", "rc": 0, "secs": 39.4}
+{"step": 59, "name": "cf_volunteer_test", "rc": 0, "secs": 7.3}
+{"step": 65, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 71, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 77, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 31.0}
+{"step": 83, "name": "workshop: stations at run time", "rc": 0, "secs": 4.0}
+{"step": 89, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 7.8}
+{"step": 95, "name": "campaign_story_test", "rc": 0, "secs": 2.9}
+{"step": 101, "name": "campaign_gate_test", "rc": 0, "secs": 6.1}
+{"step": 107, "name": "move_speed_test", "rc": 0, "secs": 4.2}
+{"step": 113, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 6.4}
+{"step": 119, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.5}
+{"step": 125, "name": "arcade_test", "rc": 0, "secs": 3.2}
+{"step": 131, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.3}
+{"step": 137, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 2.7}
+{"step": 143, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.4}
+{"step": 149, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.7}
+{"step": 155, "name": "C10b P4: casino", "rc": 0, "secs": 2.9}
