@@ -794,7 +794,7 @@ func _refresh() -> void:
 				busy += (w["jobs"] as Array).size()
 			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
-			_button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: _tab = "Foes"; _refresh())
+			_button("Foes & Gifts: %s met ›" % ItemWords.count("kind", (r.get("kill_counts", {}) as Dictionary).size()), func() -> void: _tab = "Foes"; _refresh())
 			_button("Mail: %d unread ›" % Mail.unread(), func() -> void: _tab = "Mail"; _refresh())
 			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
@@ -901,7 +901,7 @@ func _refresh() -> void:
 						Mail.act(mm)
 						_refresh())
 				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
-					_button("  Send %d %s for ◆%d (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+					_button("  Send %s for ◆%d (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
 						var err := Mail.act(mm)
 						var mp := get_tree().current_scene as GameMap
 						if mp and err != "":
@@ -1334,7 +1334,7 @@ func _trash_tap(id: String) -> void:
 		_trash_arm = id
 		var gm := get_tree().current_scene as GameMap
 		if gm and gm.hud:
-			gm.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+			gm.hud.toast("Throw away %s? Tap the trash again to confirm." % ItemWords.count_id(id, GameState.count(id)), Color(1, 0.8, 0.6))
 	_refresh()
 
 

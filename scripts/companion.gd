@@ -317,7 +317,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			if p.has_anim("powerup"):
 				p._busy = true
 				p._apply("powerup", false, true)
-			m.hud.toast("Power Pose! +5 mana, grumps stunned.", Color(0.85, 0.9, 1.0))
+			m.hud.toast("Power Pose! +5 mana, Grumps stunned.", Color(0.85, 0.9, 1.0))
 		"haul":
 			m.hud.toast("Dad: 'Just point at the tree.' (Trees fall twice as fast and give 2 more wood while he's with you.)", Color(0.9, 0.9, 0.9))
 		"scout":

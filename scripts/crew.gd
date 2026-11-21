@@ -410,7 +410,7 @@ static func _partner_ask(m: GameMap, cid: String) -> bool:
 	var nm := str(Companion.defs().get(cid, {}).get("name", cid.capitalize()))
 	var d := Dialogue.instance(m.get_tree())
 	var first: String = {"big_jim": "You paid me in silence last time. Silence doesn't buy fuel. ...Truck's still running, though."}.get(cid, "Still looking for someone to ride with?")
-	d.say([{"who": nm, "text": first, "choice": ["Ride with me?", "Not now."], "key": ""}])
+	d.say([{"who": nm, "text": first, "choice": ["Ride with me?", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		Companion.recruit(cid)

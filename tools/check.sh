@@ -1101,3 +1101,19 @@ python3 tools/steam_capsules_check.py || { echo "steam_capsules_check failed"; e
 
 echo "== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) =="
 python3 tools/steam_shots_test.py || { echo "steam_shots_test failed"; exit 1; }
+
+echo "== C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) =="
+python3 tools/cond_schema_test.py || { echo "cond_schema_test failed"; exit 1; }
+
+echo "== C12 P7: story continuity (no other-arc words, no later-chapter names before their beat) =="
+python3 tools/continuity_check.py --strict || { echo "continuity_check failed"; exit 1; }
+
+echo "== C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brands, counts) =="
+python3 tools/text_style_check.py || { echo "text_style_check failed"; exit 1; }
+
+echo "== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) =="
+dsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/dialogue_state_test.gd 2>&1)"
+echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
+if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
+  echo "dialogue_state_test failed"; exit 1
+fi

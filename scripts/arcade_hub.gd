@@ -10,7 +10,7 @@ extends ArcadeGame
 const GAMES := [
 	{"id": "jumper", "name": "Block Jumper", "blurb": "Run, jump, duck! 8 levels + endless", "col": Color(0.35, 0.8, 1.0)},
 	{"id": "stack", "name": "Crystal Stack", "blurb": "Drop the gems, clear the rows", "gang_blurb": "Drop the neon blocks, clear the rows", "col": Color(0.75, 0.45, 1.0)},
-	{"id": "whack", "name": "Whack-a-Grump", "blurb": "Bop the grumps, spare the bunnies", "gang_blurb": "Bop the snitches, spare the bunnies", "col": Color(0.55, 0.85, 0.35)},
+	{"id": "whack", "name": "Whack-a-Grump", "blurb": "Bop the Grumps, spare the bunnies", "gang_blurb": "Bop the snitches, spare the bunnies", "col": Color(0.55, 0.85, 0.35)},
 	{"id": "claw", "name": "Claw Machine", "blurb": "Grab a real prize", "col": Color(1.0, 0.5, 0.7)},
 	{"id": "gallery", "name": "Duck Pond", "blurb": "Pop the toy ducks with corks", "gang_blurb": "Pop the tin targets with corks", "col": Color(1.0, 0.8, 0.3)},
 ]
@@ -164,8 +164,20 @@ static func set_milestone(id: String) -> bool:
 	if tree and Music.instance(tree):
 		Music.instance(tree).sfx("j_secret", "sparkle")
 	if tree and tree.current_scene is GameMap and (tree.current_scene as GameMap).hud:
-		(tree.current_scene as GameMap).hud.toast("Arcade milestone: " + str(MILESTONES.get(id, id)).replace("Crystal Stack", Tickets.game_name("stack")), Color(1, 0.85, 0.4))
+		(tree.current_scene as GameMap).hud.toast("Arcade milestone: " + milestone_text(id), Color(1, 0.85, 0.4))
 	return true
+
+
+## A milestone's words in this save's arc: every cabinet name goes through
+## Tickets.game_name, so the gangster arc reads Neon Stack / Whack-a-Snitch / Neon Range (C12 P7).
+static func milestone_text(id: String) -> String:
+	var t := str(MILESTONES.get(id, id))
+	var base: Dictionary = Tickets.prizes().get("game_names", {})
+	for g in base:
+		var nm := str(base[g])
+		if t.contains(nm):
+			t = t.replace(nm, Tickets.game_name(str(g)))
+	return t
 
 
 static func mark_played(game_id: String) -> void:

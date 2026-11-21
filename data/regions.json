@@ -4277,7 +4277,7 @@
     ],
     "item": "stamina_root",
     "n": 1,
-    "hint": "A: something grows between the stones",
+    "hint": "A: something growing between the stones",
     "every": 4,
     "solid": false
    }
@@ -15026,7 +15026,7 @@
     "when": {
      "quest": "mega_gloamwood_job"
     },
-    "locked": "It hasn't noticed you yet. Help Liesl in Lanternfall first, and the way to it will open.",
+    "locked": "The moonpool is still and black, and something among the roses is waiting. Help Liesl in Lanternfall first.",
     "kind_gangsters": "garden_boss",
     "who_gangsters": "Rosa Thorne",
     "title_gangsters": "Rosa Thorne",
@@ -16543,7 +16543,7 @@
     "when": {
      "quest": "mega_sunscorch_job"
     },
-    "locked": "It hasn't noticed you yet. Help Nadia in Mirage Post first, and the way to it will open.",
+    "locked": "Sand has buried the temple door to the lintel. Help Nadia in Mirage Post, and the dunes will shift.",
     "kind_gangsters": "smuggler_king",
     "who_gangsters": "Dune King Vasco",
     "title_gangsters": "Dune King Vasco",
@@ -17981,7 +17981,7 @@
     "when": {
      "quest": "mega_ironline_job"
     },
-    "locked": "It hasn't noticed you yet. Help Hollis in Junction City first, and the way to it will open.",
+    "locked": "The private platform is roped off: NO PASSENGERS. Help Hollis in Junction City first, and you'll get a ticket.",
     "type": "boss",
     "cell": [
      21,
@@ -19763,7 +19763,7 @@
     "when": {
      "quest": "mega_frostpeak_job"
     },
-    "locked": "It hasn't noticed you yet. Help Ingrid in Hearthhold first, and the way to it will open.",
+    "locked": "The snowfield above is quiet. Too quiet. Help Ingrid in Hearthhold before you climb.",
     "kind_gangsters": "ice_hauler",
     "who_gangsters": "Big Ike Frost",
     "title_gangsters": "Big Ike Frost",
@@ -21131,7 +21131,7 @@
     "when": {
      "quest": "mega_windward_job"
     },
-    "locked": "It hasn't noticed you yet. Help Nimbus in Breezehaven first, and the way to it will open.",
+    "locked": "The garden gate is held shut by a wind you can lean on. Help Nimbus in Breezehaven first.",
     "type": "boss",
     "cell": [
      21,
@@ -22547,7 +22547,7 @@
     "when": {
      "quest": "mega_giltcity_job"
     },
-    "locked": "It hasn't noticed you yet. Help Odette in Grand Plaza first, and the way to it will open.",
+    "locked": "The vault doors are shut and the guards won't look at you. Help Odette in the Grand Plaza first.",
     "type": "boss",
     "cell": [
      21,

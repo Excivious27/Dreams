@@ -234,7 +234,7 @@ static func lock_text(prize_id: String) -> String:
 	var ms: Variant = need.get("ms", [])
 	for id in (ms if ms is Array else [ms]):
 		if not ArcadeHub.milestone(str(id)):
-			return str(ArcadeHub.MILESTONES.get(str(id), str(id)))
+			return ArcadeHub.milestone_text(str(id))
 	if need.has("once") and bought(prize_id) > 0 and have(str(p.get("item", prize_id))) > 0:
 		return "Already yours"  # a once-prize lost before C10 (sold/trashed) can be bought back (c10_06)
 	if need.has("weekly") and Net.visiting():
