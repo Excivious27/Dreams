@@ -1,0 +1,104 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:90)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio_server.cpp:244)
+
+  ok   saved 01_intro
+  ok   intro reached the crystal's question
+  ok   saved 02_choice
+  ok   intro finished
+  ok   intro_done flag set
+  ok   quests added
+  ok   saved 03_after_intro
+  ok   facing open grass to till ((19, 13))
+  ok   tilled a tile
+  ok   planted turnip
+  ok   watered the tile
+  ok   saved 04_farming
+  ok   moving down-right (a true diagonal) faces down (down)
+  ok   moving down shows the toward-you walk (walk_down)
+  ok   penguin's walk_down is not the sideways walk
+  ok   saved r11_facing_down
+  ok   USE with the pup in front swings, no pup menu
+  ok   CHECK on the pup opens its menu when no foe is near
+  ok   pup menu is up
+  ok   CHECK on the pup with a foe 3 tiles away doesn't open the menu
+  ok   no pup menu mid-fight
+  ok   holding down + USE with the hoe tills a row while stepping (5 tiles)
+  ok   saved r11_hoe_row
+  ok   10 pickaxe swings cost ~6 energy at level 1 (6)
+  ok   a sword swing costs a little (0.17)
+  ok   a new farmer starts with 120 energy (120)
+  ok   under 15%% is Exhausted
+  ok   saved r11_exhausted_hud
+  ok   running is faster than walking (96, busy=false frozen=false)
+  ok   joystick pushed far runs (96)
+  ok   joystick pushed a little walks (52)
+  ok   releasing the joystick stops
+  ok   saved 05_running
+  ok   touch A talks to the sell box
+  ok   tapping the dialogue box advances/closes it
+  ok   tap-to-move walks to the tapped cell (1 away)
+  ok   tapping the toolbar selects seeds (turnip_seed)
+  ok   number key selects the hoe
+  ok   MENU pauses and opens the menu
+  ok   saved 05b_menu
+  ok   MENU closes the menu
+  ok   facing the door
+  ok   entered the house
+  ok   saved 06_house
+  ok   slept to the next day
+  ok   crop grew overnight
+  ok   saved 07_morning
+  ok   farm's town exit is wider than its strip
+  ok   stepping into the exit zone beside the strip leaves for town
+  ok   in town
+  ok   saved 08_town
+  ok   Maple is outside at noon (market)
+  ok   Maple talks
+  ok   saved 09_talk
+  ok   meet_town quest completed
+  ok   entered the general store
+  ok   saved 10a_store
+  ok   shop menu open
+  ok   saved 10_shop
+  ok   bought something
+  ok   left the shop
+  ok   grumps spawned (3)
+  ok   saved 11_meadow
+  ok   defeated a grump
+  ok   saved 12_fight
+  ok   in the mine
+  ok   saved 13_mine
+  ok   gangster intro reaches the letter choice
+  ok   saved 14_gangster_choice
+  ok   letter decision stored
+  ok   boss appeared after 5 kills
+  ok   saved 15_boss
+  ok   boss defeated completes the meadow quest
+  ok   axe can't upgrade with nothing
+  ok   axe upgrades to copper with 3 bars + 300 crystals
+  ok   upgrade consumed the bars (tier 1)
+  ok   copper axe has its own icon (axe_copper)
+  ok   upgraded tool is named by tier (Copper Axe)
+  ok   collapsing wakes you in the clinic (interior)
+  ok   you wake at 10pm the same day (day 0, 1320)
+  ok   no clinic bill in the first week (1000 left)
+  ok   the clinic explains what happened
+  ok   saved r11_clinic
+  ok   clinic wake spot is open floor
+PLAYTEST DONE, failures: 0, screenshots: 21
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
