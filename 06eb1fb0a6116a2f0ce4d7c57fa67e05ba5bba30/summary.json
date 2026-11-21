@@ -1,0 +1,142 @@
+{
+ "sha": "06eb1fb0a6116a2f0ce4d7c57fa67e05ba5bba30",
+ "ref": "ci/c11bp6b-e3548862",
+ "run": "44848535461",
+ "finished": 1795224096.9361668,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 57,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "e35488624345776723acbe38e470177d5d1883f0",
+  "label": "c11bp6b",
+  "branch": "c11bf/p6",
+  "shards": [
+   1,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 469,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 469,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 282,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 297.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 89.5
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 56.6
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.7
+  },
+  {
+   "step": 67,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 37.4
+  },
+  {
+   "step": 110,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 12.1
+  },
+  {
+   "step": 68,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 10.1
+  },
+  {
+   "step": 55,
+   "name": "workshop: no dead ends",
+   "rc": 0,
+   "secs": 10.0
+  },
+  {
+   "step": 50,
+   "name": "cf_volunteer_test",
+   "rc": 0,
+   "secs": 9.5
+  },
+  {
+   "step": 79,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 9.3
+  },
+  {
+   "step": 7,
+   "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+   "rc": 0,
+   "secs": 9.2
+  },
+  {
+   "step": 80,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 9.1
+  },
+  {
+   "step": 92,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 7.6
+  },
+  {
+   "step": 91,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 7.3
+  },
+  {
+   "step": 103,
+   "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)",
+   "rc": 0,
+   "secs": 7.2
+  }
+ ]
+}

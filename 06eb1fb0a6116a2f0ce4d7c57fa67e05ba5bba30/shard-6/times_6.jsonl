@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 89.5}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 9.2}
+{"step": 13, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.7}
+{"step": 19, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.0}
+{"step": 25, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 7.0}
+{"step": 31, "name": "rec_reno_test", "rc": 0, "secs": 3.1}
+{"step": 37, "name": "farm_week_test", "rc": 0, "secs": 6.3}
+{"step": 43, "name": "anim_test", "rc": 0, "secs": 3.5}
+{"step": 49, "name": "decor_sources_test", "rc": 0, "secs": 3.4}
+{"step": 55, "name": "workshop: no dead ends", "rc": 0, "secs": 10.0}
+{"step": 61, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 67, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 37.4}
+{"step": 73, "name": "workshop: stations at run time", "rc": 0, "secs": 4.7}
+{"step": 79, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 9.3}
+{"step": 85, "name": "campaign_story_test", "rc": 0, "secs": 3.3}
+{"step": 91, "name": "campaign_gate_test", "rc": 0, "secs": 7.3}
+{"step": 97, "name": "move_speed_test", "rc": 0, "secs": 4.7}
+{"step": 103, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 7.2}
+{"step": 109, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 4.0}
+{"step": 115, "name": "arcade_test", "rc": 0, "secs": 3.7}
+{"step": 121, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 5.0}
+{"step": 127, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 3.1}
+{"step": 133, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.7}
+{"step": 139, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 4.3}
+{"step": 145, "name": "C10b P4: casino", "rc": 0, "secs": 3.4}

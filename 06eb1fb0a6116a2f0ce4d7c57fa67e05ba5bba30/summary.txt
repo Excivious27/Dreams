@@ -1,0 +1,11 @@
+CONDUCT CI PASS  06eb1fb0a6  (ci/c11bp6b-e3548862, run 44848535461)
+
+subset run: shards [1, 6], bots off, playtest on
+check shards (2/2):
+  shard 1: PASS  469s
+  shard 6: PASS  282s
+playtest: PASS  57s  21 screenshots (results playtest/shots/)
+
+longest job: 469s
+slowest check steps: import 297.0s; import 89.5s; smoke test 56.6s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.7s; music: every map has a song; web streaming works offline 37.4s; fish critters only in deep water (C2 P4) 12.1s; music_stream_test 10.1s; workshop: no dead ends 10.0s
+distinct errors/fails/warns:
