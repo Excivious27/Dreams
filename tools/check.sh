@@ -1394,3 +1394,16 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P2: 3-year simulator smoke (one season, farmer + explorer, both arcs) and its bands =="
+simdir="$(mktemp -d)"
+for simrun in "farmer penguins" "explorer gangsters"; do
+  set -- $simrun
+  simout="$("$GODOT" --headless --path . -s res://tools/sim.gd -- --days 28 --style "$1" --arc "$2" --day-len 15 --out "$simdir/$1_$2.csv" 2>&1)"
+  echo "$simout" | grep -E "SCRIPT ERROR|^SIM" || true
+  if echo "$simout" | grep -q "SCRIPT ERROR" || ! echo "$simout" | grep -q "^SIM"; then
+    echo "sim.gd smoke failed ($1 $2)"; rm -rf "$simdir"; exit 1
+  fi
+done
+python3 tools/sim_bands.py "$simdir/farmer_penguins.csv" "$simdir/explorer_gangsters.csv" || { echo "sim bands failed"; rm -rf "$simdir"; exit 1; }
+rm -rf "$simdir"
