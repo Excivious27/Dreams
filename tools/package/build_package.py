@@ -167,10 +167,21 @@ def build_xlsx():
     for l in g.splitlines():
         if l.startswith('## '): sec=l[3:]
         m=re.match(r'^(\d+)\. (.*)',l)
-        if m and not sec.startswith('What to test') and not sec.startswith('Already'): items.append([int(m.group(1)),sec,re.sub(r'\*\*','',m.group(2))])
+        # c17_18-18: only the question sections feed the sheet (numbered how-to steps elsewhere are not questions).
+        if m and (sec.startswith('New this round') or sec.startswith('Still open')): items.append([int(m.group(1)),sec,re.sub(r'\*\*','',m.group(2))])
     s4=wb.create_sheet('Still needed from Tom')
     sheet(s4,['#','Group','Question (default runs until you answer)','Your answer'],[[a,b,c,''] for a,b,c in items],[5,30,90,30],f'Still needed from Tom (Guide {GNUM})')
     for i in range(4,4+len(items)): s4.cell(i,4).fill=PatternFill('solid',fgColor='FFF2A8')
+    cf=os.path.join(os.path.dirname(GUIDE),'COOP-FRIENDS.md')  # c17_18-04: Tom's co-op checklist, Result cells to fill
+    if os.path.exists(cf):
+        ct=[];sec2=''
+        for l in open(cf).read().splitlines():
+            if l.startswith('## '): sec2=l[3:]
+            elif sec2.startswith('What to test') and l.startswith('- '): ct.append(l[2:])
+        if ct:
+            s5=wb.create_sheet('Co-op tests')
+            sheet(s5,['#','Test and what should happen','Result'],[[i+1,t,''] for i,t in enumerate(ct)],[5,100,30],'Co-op tests with friends (docs/guides/COOP-FRIENDS.md)')
+            for i in range(4,4+len(ct)): s5.cell(i,3).fill=PatternFill('solid',fgColor='FFF2A8')
     pr=[]
     if os.path.exists(TP):
         tp=open(TP).read()

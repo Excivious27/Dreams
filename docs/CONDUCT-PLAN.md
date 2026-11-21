@@ -133,7 +133,7 @@ After CONDUCT 15, then the final package and artifact. A sophisticated evaluatio
 
 After CONDUCT 16, then the final package and artifact. A full review of the whole game engine so co-op is enjoyable, smooth and seamless: every system checked for host/guest sync, saves, joining mid-session, shared vs personal progress, latency on phones.
 - Some activities become real two-player (or more) experiences: challenge each other at bowling, Skee-Ball and arcade games (versus and co-op modes, shared high scores), plus co-op farming, mining, fights, campaigns and festivals where it fits. Not everything has to be multiplayer.
-- When this is done, Tom sets up a ~$4/month server for the relay (server/ in the repo); Claude then writes the exact step-by-step setup in the guide and turns online co-op on, and Tom starts testing with friends.
+- (Server done 2026-11-20, live on DigitalOcean: the guide covers only the in-game steps, docs/guides/COOP-FRIENDS.md; no server work for Tom.) When this is done, Tom sets up a ~$4/month server for the relay (server/ in the repo); Claude then writes the exact step-by-step setup in the guide and turns online co-op on, and Tom starts testing with friends.
 
 
 ## Game controller support (Tom, 2026-11-19 15:49-15:50)

@@ -74,8 +74,8 @@ jobs:
             ch="$(git diff --name-only "$before" HEAD 2>/dev/null || git diff --name-only HEAD~1 HEAD 2>/dev/null || echo server/)"
             srv=false; netc=false; rel=false
             echo "$ch" | grep -q '^server/' && srv=true
-            echo "$ch" | grep -qE '^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.gd$' && netc=true
-            if [ $srv = true ] || [ $netc = true ] || echo "$ch" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)'; then rel=true; fi
+            echo "$ch" | grep -qE '^scripts/(net[a-z_]*|puppet|presence|travel_net|house|farm|builds|spells|game_map|game_state)\.gd$' && netc=true
+            if [ $srv = true ] || [ $netc = true ] || echo "$ch" | grep -qE '^tools/(relay_test\.js|net_e2e|coop_test\.gd|net_[a-z_]*\.gd|conduct/relay_live_check\.py)'; then rel=true; fi
             mkdir -p ci
             echo "{\"label\": \"main-push\", \"shards\": [], \"bots\": false, \"playtest\": false, \"relay\": $rel, \"server_changed\": $srv, \"e2e\": $rel, \"e2e_strict\": $netc}" > ci/params.json
           fi

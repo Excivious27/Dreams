@@ -30,11 +30,10 @@ Rich presence while in a Steam lobby: `steam_display=#Status_Coop`, `players`, `
 - The WebSocket path was re-verified end to end after the split: `tools/net_e2e.sh` against a local relay (NET E2E: ok) and `node tools/relay_test.js` (RELAY TEST OK, with the new old_build case).
 - App 480 (Spacewar) lets lobbies and messages work before the App ID exists, but CI has no Steam client and two Steam accounts are needed, so the two-machine smoke test is staged below, not CI.
 
-### Not done here (hooks for other packages)
-- Title > Play together Steam branch ("Host with Steam friends", "Invite friends", room-code block kept under "Phones and web (room code)") and the `join_requested` signal / `+connect_lobby` launch argument: needs SteamService (P1) and the title screen (P3). The game side is ready: `Net.steam_ready()`, `Net.host_steam()`, `Net.join_steam(lobby_id)`; invite overlay = `Steam.activateGameOverlayInviteDialog(lobby_id)` (lobby id = `Net.i().tr.lobby_id`).
-- SteamService (P1) should expose `ready() -> bool` and `backend` (the Steam singleton) and pump `Steam.run_callbacks()` with `process_mode = PROCESS_MODE_ALWAYS` so callbacks keep flowing while menus pause the tree. NetNode finds it at /root/SteamService.
-- conduct-ci.yml (P1): change the `netc` regex to `^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.gd$` (ci_run.sh already changed), add `python3 tools/deck_perf_check.py` to a post-merge job, and call `bash tools/linux_boot_check.sh build/linux/Dreams.x86_64` in deploy.yml's Linux job instead of the inline grep.
-- Web preset (P1): adding `scripts/net_transport_steam.gd, steam/*` to the Web exclude_filter is optional hygiene (the file has no Steam symbols).
+### Done since (C17)
+- Title > Play together has the Steam branch ("Host with Steam friends"); invites (`join_requested`), friends-list Join Game while running (`join_game_requested`, rich presence `connect`), and the `+connect_lobby` launch argument all land in `Net.on_join_requested`. SteamService is the autoload `/root/SteamSvc`; it pumps `run_callbacks()` and warms Steam Datagram Relay (`initRelayNetworkAccess`) at start. Persona names go through NameFilter.
+- Transport hardening (C17 P6): guest join resent every 2 s, gives up after 15 s with words; owner holds session requests from members its lobby list hasn't caught up with (10 s); guest liveness 20 s / owner lets a silent guest go after 45 s; `network_messages_session_failed` / `steam_server_disconnected` close the link; a deliberate host leave sends guests home at once (a drop keeps the 30 s grace); a rejoin reuses its own seat (never "full"); only the host advertises `connect`; non-Dreams lobbies refused; EChatRoomEnterResponse shown as words; Back during "Starting a Steam lobby" leaves the late lobby.
+- Still open: an in-game "Invite Steam friends" row (game menu, P5) and Steam-specific status/privacy text on the title (P5).
 
 ### Steam Input (controller config)
 - Launch default, no code: Steamworks > Application > Steam Input: default configuration = the "Gamepad" template; Steam Input on for Xbox/PlayStation/Switch/generic pads, so every pad reaches the game as an Xbox layout and InputSetup.PAD_DEFAULTS apply one to one (A use/confirm, B back/run, X tool, Y check, Menu menu, View map, LB/RB toolbar, LT dodge, RT partner ability, L3 rally, R3 pup, d-pad/left stick move).
@@ -61,10 +60,10 @@ Rich presence while in a Steam lobby: `steam_display=#Status_Coop`, `players`, `
 | Smooth at 40/90 Hz | NOT DONE | physics interpolation (see above) |
 
 ### When Tom's Steamworks account is ready (co-op and controller items, in order)
-1. Put the real App ID in SteamService.APP_ID (dev builds keep reading steam_appid.txt, which is never shipped).
+1. Put the real App ID in SteamService.APP_ID_RELEASE (debug and test builds use App 480 via pick_app_id).
 2. Rename steam/input/game_actions_480.vdf to game_actions_<appid>.vdf (edit OUT in tools/gen_steam_input.py, rerun it).
 3. Steamworks > Application > Steam Input: default = Gamepad template; enable Steam Input for all pad types; build the back-grip layer above; Configs > Set as official.
 4. Steamworks > Community > Rich Presence: upload steam/rich_presence_english.vdf (with the #Status_Coop token).
 5. Optional: nothing else in Steamworks is needed for lobbies or networking messages.
-6. Two-account smoke test by a playtester with two Steam machines (Tom only reads the result): host invites from the overlay; friend joins from the friends list; cold start from an invite (+connect_lobby); owner quits -> friend goes home after 30 s; a Steam player joins a phone room by code.
+6. Two-account smoke test by a playtester with two Steam machines (Tom only reads the result): host invites from the overlay; friend joins from the friends list; cold start from an invite (+connect_lobby); owner quits -> friend goes home at once (owner's network pulled -> after 30 s); friends-list Join Game while Dreams is running; a join while the owner's lobby list is slow still gets in; the friend's network pulled -> back home within ~20 s; after the host leaves, a third friend can't join through a guest's presence; a Steam player joins a phone room by code.
 7. Steamworks > Steam Deck compatibility: request the review (Valve gives the Verified badge).

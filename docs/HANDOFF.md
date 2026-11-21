@@ -92,7 +92,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 - 2026-11-18: Handoffs are automatic; Tom never writes or sends one. Each chat keeps this file current itself.
 - 2026-11-18: Both accounts use the same Claude Project instructions (below) so every new chat starts on Dreams.
 - 2026-11-18: dreams-image default quality is high; 300 images/day through Nov 25, then 60.
-- 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
+- 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed. (Superseded 2026-11-20: live on DigitalOcean.)
 
 ## Log (newest first, 30 lines max)
 - 2026-11-21 09:50 C16a docs: report docs/reports/CONDUCT-16a.md (269 findings, 6 packages + hook integration, 4 images, ACE 0; energy route 68% -> 35%, first mega ~day 50 in the sim; final CI c16ai PASS at doc time), docs/PROGRESSION.md timeline by style + year gates in code + test guards, Guide 44 (progression section + phone tests, 3 new Tom calls), TEXTS['16a'] (C16a done, C16b next), 7 inventory rows (whole game ~82%), PROJECT-MEMORY C16a entry.

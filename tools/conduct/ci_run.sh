@@ -94,10 +94,12 @@ fi
 CHANGED=$(git diff --name-only "$(git rev-parse origin/main 2>/dev/null || echo "$BASE")" "$BASE" 2>/dev/null)
 SRV=0; NETC=0; RTOOLS=0
 echo "$CHANGED" | grep -q '^server/' && SRV=1
-echo "$CHANGED" | grep -qE '^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.gd$' && NETC=1
-echo "$CHANGED" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)' && RTOOLS=1
+# c17_15-01 / c17_10-25: the scripts that build or apply co-op frames count as net changes too.
+echo "$CHANGED" | grep -qE '^scripts/(net[a-z_]*|puppet|presence|travel_net|house|farm|builds|spells|game_map|game_state)\.gd$' && NETC=1
+echo "$CHANGED" | grep -qE '^tools/(relay_test\.js|net_e2e|coop_test\.gd|net_[a-z_]*\.gd|conduct/relay_live_check\.py)' && RTOOLS=1
 if [ "$RELAY" = auto ]; then RELAY=0; { [ "$BOTS" = 1 ] || [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && RELAY=1; fi
-E2E=0; { [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY
+# c17_15-01: every full run (bots on) also runs one NET E2E (two light clients, no load).
+E2E=0; { [ "$BOTS" = 1 ] || [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY
 python3 - "$TMP/params.json" <<PY
 import json, sys
 json.dump({"days": int("$DAYS"), "focus": "$FOCUS", "base": "$BASE", "label": "$LABEL", "branch": "$BRANCH",
