@@ -59,3 +59,5 @@ rain_roof
 room_chapel
 room_shop
 town_day
+aviary_room
+terrarium_room

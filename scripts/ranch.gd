@@ -124,7 +124,34 @@ static func capacity(home: String) -> int:
 
 
 static func has_add(home: String, add_id: String) -> bool:
-	return (tier_row(home).get("adds", []) as Array).has(add_id)
+	if (tier_row(home).get("adds", []) as Array).has(add_id):
+		return true
+	var hs: Dictionary = st()["houses"]
+	return tier(home) >= 1 and hs.get(home, null) is Dictionary and ((hs[home] as Dictionary).get("installed", []) as Array).has(add_id)
+
+
+## Crafted add-ons placed in a built home (c11b_05-11): item -> the add it gives. Tiers stay the base.
+const ADDON_ITEMS := {"hay_hopper": "feeder", "coop_heater": "heater", "water_trough": "auto_water", "incubator": "incubator",
+	"tide_pool_kit": "tide_pool", "moon_lamp": "moon_lamp", "perch": "perch", "terrarium_kit": "terrarium"}
+
+
+## Install an add-on item in a home: spends the item, returns "" or the reason it can't.
+static func install(home: String, item: String) -> String:
+	var add_id := str(ADDON_ITEMS.get(item, ""))
+	if add_id == "":
+		return "That isn't an animal add-on."
+	if tier(home) < 1:
+		return "Build the %s first." % home
+	if has_add(home, add_id):
+		return "The %s already has that." % home
+	if GameState.count(item) <= 0:
+		return "You need %s." % ItemWords.with_article(GameState.item_name(item))
+	GameState.add_item(item, -1)
+	var h := house(home)
+	if not (h.get("installed", null) is Array):
+		h["installed"] = []
+	(h["installed"] as Array).append(add_id)
+	return ""
 
 
 ## Room left in a home (a newborn needs a free place).
@@ -151,6 +178,107 @@ static func variant_row(uid: String) -> Dictionary:
 		if v is Dictionary and str(v.get("id", "")) == str(a.get("variant", "")):
 			return v
 	return vs[0] if not vs.is_empty() and vs[0] is Dictionary else {}
+
+
+## Is this animal a rare look (golden hen, black sheep...)?
+static func is_rare(uid: String) -> bool:
+	return bool(variant_row(uid).get("rare", false))
+
+
+## The variant in words: "Golden hen", "Black sheep" (variant.name / name_gang when the data gives one).
+## The common look is just the species name.
+static func variant_name(uid: String) -> String:
+	var a := animal(uid)
+	var sid := str(a.get("species", ""))
+	var v := variant_row(uid)
+	if v.is_empty():
+		return display_name(sid)
+	var nm := str(v.get("name_gang" if _gang() and v.has("name_gang") else "name", ""))
+	if nm != "":
+		return nm
+	var vs: Array = (species(sid).get("art", {}) as Dictionary).get("variants", [])
+	var vid := str(v.get("id", ""))
+	if vs.is_empty() or str((vs[0] as Dictionary).get("id", "")) == vid or vid.begins_with(sid):
+		return display_name(sid)
+	return "%s %s" % [vid.replace("_", " ").capitalize(), display_name(sid).to_lower()]
+
+
+## Lineage (c11b_11-07): {parents: [{uid, name, variant, rehomed}], kids: [...], gen, born_day}.
+## Rehomed animals keep a small record in st().past so a family tree still reads.
+static func family(uid: String) -> Dictionary:
+	var a := animal(uid)
+	if a.is_empty():
+		a = _past(uid)
+	var out := {"parents": [], "kids": [], "gen": _gen(uid, 0), "born_day": int(a.get("born_day", 0))}
+	for p in a.get("parents", []):
+		if str(p) != "":
+			out["parents"].append(_kin(str(p)))
+	for k in animals():
+		if (animals()[k].get("parents", []) as Array).has(uid):
+			out["kids"].append(_kin(str(k)))
+	var past: Dictionary = st().get("past", {})
+	for k in past:
+		if (past[k].get("parents", []) as Array).has(uid):
+			out["kids"].append(_kin(str(k)))
+	return out
+
+
+static func _past(uid: String) -> Dictionary:
+	var past: Variant = st().get("past", {})
+	return (past as Dictionary).get(uid, {}) if past is Dictionary else {}
+
+
+static func _kin(uid: String) -> Dictionary:
+	var a := animal(uid)
+	var gone := a.is_empty()
+	if gone:
+		a = _past(uid)
+	return {"uid": uid, "name": str(a.get("name", "?")), "variant": str(a.get("variant", "")), "rehomed": gone,
+		"where": str(a.get("where", ""))}
+
+
+static func _gen(uid: String, depth: int) -> int:
+	var a := animal(uid)
+	if a.is_empty():
+		a = _past(uid)
+	var g := 1
+	if depth < 12:
+		for p in a.get("parents", []):
+			if str(p) != "":
+				g = maxi(g, 1 + _gen(str(p), depth + 1))
+	return g
+
+
+## The one-line pregnancy status ("" when not expecting): "Expecting with Bramble · 3 days".
+static func expecting_text(uid: String) -> String:
+	var e: Variant = animal(uid).get("expecting", null)
+	if not (e is Dictionary):
+		return ""
+	var left := maxi(0, int((e as Dictionary).get("due", 0)) - _day())
+	var mate := str(animal(str((e as Dictionary).get("with", ""))).get("name", ""))
+	var when := "tonight" if left <= 1 else "%d days" % left
+	return ("Expecting with %s · %s" % [mate, when]) if mate != "" else "Expecting · %s" % when
+
+
+## A Harvest Fair show (c11b_10-13): a show-only bump, never today's pet. Returns the line.
+static func shown(uid: String, place: int) -> String:
+	var a := animal(uid)
+	if a.is_empty():
+		return ""
+	_friend_add(a, [0, 20, 10, 5][clampi(place, 0, 3)])
+	a["mood"] = clampi(int(a.get("mood", 0)) + 10, 0, 100)
+	if not (st().get("shows", null) is Array):
+		st()["shows"] = []
+	(st()["shows"] as Array).append({"uid": uid, "place": place, "day": _day()})
+	return "%s comes home proud." % str(a.get("name", ""))
+
+
+## Which species hatches from an egg item (breed.egg), "" when none (the one lookup every incubator uses).
+static func egg_species(item: String) -> String:
+	for id in data()["species"]:
+		if str(((data()["species"][id] as Dictionary).get("breed", {}) as Dictionary).get("egg", "")) == item:
+			return str(id)
+	return ""
 
 
 static func display_name(sid: String) -> String:
@@ -183,6 +311,8 @@ static func add(species_id: String, home := "", name := "", born_day := -1) -> S
 	if h == "" or roster(h).size() >= capacity(h):
 		return ""
 	var day := _day() if born_day < 0 else born_day
+	if name != "" and _name_used(name):
+		name += " II"  # a gift whose name the player already gave another animal
 	var uid := _make(species_id, h, name, day)
 	if born_day < 0:
 		animal(uid)["adult_day"] = day  # bought grown
@@ -190,8 +320,21 @@ static func add(species_id: String, home := "", name := "", born_day := -1) -> S
 
 
 ## A free name from the species list (nobody on the farm has it yet).
+## Names kept for gift animals (Tam's lamb) so a random pick never takes them.
+const GIFT_NAMES := ["Bramble"]
+
+
+static func _name_used(nm: String) -> bool:
+	for u in animals():
+		if str((animals()[u] as Dictionary).get("name", "")) == nm:
+			return true
+	return false
+
+
 static func _pick_name(sid: String) -> String:
 	var used := {}
+	for g in GIFT_NAMES + (rule("gift_names", []) as Array):
+		used[str(g)] = true
 	for u in animals():
 		used[str((animals()[u] as Dictionary).get("name", ""))] = true
 	var names: Array = species(sid).get("names", [])
@@ -209,7 +352,7 @@ static func rename(uid: String, nm: String) -> bool:
 		if ch == " " or ch == "-" or ch == "'" or (ch.to_lower() != ch.to_upper()):
 			clean += ch
 	clean = clean.strip_edges().left(12)
-	if a.is_empty() or clean == "":
+	if a.is_empty() or clean == "" or not preload("res://scripts/name_filter.gd").is_ok(clean):  # s1_13-10: names travel to co-op partners
 		return false
 	a["name"] = clean
 	a["named"] = true
@@ -234,6 +377,10 @@ static func rehome(uid: String) -> bool:
 		GameState.add_money(pay, "rehome")
 	var where := str(rule("rehome_to_gang" if _gang() else "rehome_to", "a friend's pasture"))
 	(st()["news"] as Array).append("%s settled in at %s. A thank-you note came with %s." % [str(a.get("name", "")), where, Money.amount(pay) if pay > 0 else "a drawing"])
+	if not (st().get("past", null) is Dictionary):
+		st()["past"] = {}
+	st()["past"][uid] = {"name": str(a.get("name", "")), "species": str(a.get("species", "")), "variant": str(a.get("variant", "")),
+		"parents": a.get("parents", []), "born_day": int(a.get("born_day", 0)), "where": where}
 	for other in animals():
 		var e: Variant = (animals()[other] as Dictionary).get("expecting", null)
 		if e is Dictionary and str((e as Dictionary).get("with", "")) == uid:
@@ -278,27 +425,157 @@ static func needs_hay(uid: String) -> bool:
 	return not a.is_empty() and str(species(str(a.get("species", ""))).get("feed", "hay")) == "hay"
 
 
+## Every item a species eats (c11b_02-01 / 01-06). species.feed: "hay" | "forage"/"flowers" (bees: none) |
+## an item id | "item" with feed_item | a list of ids and "#tags" (a tag matches item ids containing it).
+static func _feeds(sid: String) -> Array:
+	var sp := species(sid)
+	var f: Variant = sp.get("feed", "hay")
+	if f is Array:
+		return (f as Array).map(func(x: Variant) -> String: return str(x))
+	var fs := str(f)
+	if fs == "forage" or fs == "flowers" or fs == "":
+		return []
+	if fs == "item":
+		return [str(sp.get("feed_item", "hay"))]
+	return [fs]
+
+
+## What an animal eats in words-id: "hay", "flowers" (bees: never hand-fed, rest in winter), an item id, or "".
+static func feed_item(uid: String) -> String:
+	var a := animal(uid)
+	if a.is_empty():
+		return ""
+	var sid := str(a.get("species", ""))
+	var f: Variant = species(sid).get("feed", "hay")
+	if not (f is Array) and (str(f) == "forage" or str(f) == "flowers"):
+		return "flowers"
+	var fs := _feeds(sid)
+	for x in fs:
+		if not str(x).begins_with("#"):
+			return str(x)
+	return str(fs[0]).substr(1) if not fs.is_empty() else ""
+
+
+## Does this animal eat that item?
+static func feeds_on(uid: String, item: String) -> bool:
+	if item == "":
+		return false
+	for x in _feeds(str(animal(uid).get("species", ""))):
+		var xs := str(x)
+		if xs == item or (xs.begins_with("#") and item.contains(xs.substr(1))):
+			return true
+	return false
+
+
+## Does this animal need feeding at all (anything but the bees' flowers)?
+static func eats(uid: String) -> bool:
+	var f := feed_item(uid)
+	return f != "" and f != "flowers"
+
+
 static func fed_today(uid: String, day := -1) -> bool:
 	var a := animal(uid)
 	if a.is_empty():
 		return false
-	if not needs_hay(uid):
+	if not eats(uid):
 		return GameState.season() != "winter"  # bees live on flowers (winter: they rest)
 	return int(a.get("last_fed", -1)) >= (_day() if day < 0 else day)
 
 
-## Feed one animal for a day (src: "hand" spends a hay from the bag, "silo"/"trough"/"graze"/"spouse" are free here).
+## Feed one animal for a day (src: "hand" spends its feed from the bag, "silo"/"trough"/"graze"/"spouse" are
+## free here but serve hay eaters only; themed feeds come by hand or feed_with).
 static func feed(uid: String, src := "hand", day := -1) -> bool:
 	var a := animal(uid)
 	var d := _day() if day < 0 else day
-	if a.is_empty() or not needs_hay(uid) or int(a.get("last_fed", -1)) >= d:
+	if a.is_empty() or not eats(uid) or int(a.get("last_fed", -1)) >= d:
 		return false
 	if src == "hand":
-		if GameState.count("hay") <= 0:
+		var it := _held_feed(uid)
+		if it == "":
 			return false
-		GameState.add_item("hay", -1)
+		GameState.add_item(it, -1)
+	elif not needs_hay(uid):
+		return false
 	a["last_fed"] = d
 	return true
+
+
+## Feed with one particular item from the bag (tap while holding it). False when it won't eat it.
+static func feed_with(uid: String, item: String) -> bool:
+	var a := animal(uid)
+	if a.is_empty() or not eats(uid) or not feeds_on(uid, item) or fed_today(uid) or GameState.count(item) <= 0:
+		return false
+	GameState.add_item(item, -1)
+	a["last_fed"] = _day()
+	return true
+
+
+## The first feed item the bag has for this animal ("" = none).
+static func _held_feed(uid: String) -> String:
+	var fi := feed_item(uid)
+	if fi != "" and GameState.count(fi) > 0:
+		return fi
+	for x in _feeds(str(animal(uid).get("species", ""))):
+		if not str(x).begins_with("#") and GameState.count(str(x)) > 0:
+			return str(x)
+	return ""
+
+
+## The feed in words for hints ("hay", "Moonberry").
+static func feed_word(uid: String) -> String:
+	var fi := feed_item(uid)
+	return "hay" if fi == "hay" else GameState.item_name(fi)
+
+
+## Comfort for tonight's mood (c11b_02-02 / 01-06). Classic species keep today's numbers exactly
+## (winter without a heater 5, else 20). Optional species.habitat {likes_season[], hates_heater, needs_add,
+## night_goods} and species.climate {cold: "heater", hot_bonus}.
+static func comfort(uid: String, winter := false) -> int:
+	var a := animal(uid)
+	var sp := species(str(a.get("species", "")))
+	var home := str(a.get("home", ""))
+	var hab: Dictionary = sp.get("habitat", {}) if sp.get("habitat", null) is Dictionary else {}
+	var cl: Dictionary = sp.get("climate", {}) if sp.get("climate", null) is Dictionary else {}
+	var low := int(rule("mood_winter_no_heater", 5))
+	var c := int(rule("mood_comfort", 20))
+	if bool(hab.get("hates_heater", false)):
+		c = low if has_add(home, "heater") else c
+	elif winter and not has_add(home, "heater"):
+		c = low
+	if (hab.get("likes_season", []) as Array).has(GameState.season()):
+		c += 10
+	if GameState.season() == "summer":
+		c += int(cl.get("hot_bonus", 0))
+	return c
+
+
+## Can the home give this species what it needs for goods? ("" = yes, else the reason for the hint).
+static func habitat_block(uid: String, winter := false) -> String:
+	var a := animal(uid)
+	var sp := species(str(a.get("species", "")))
+	var home := str(a.get("home", ""))
+	var hab: Dictionary = sp.get("habitat", {}) if sp.get("habitat", null) is Dictionary else {}
+	var cl: Dictionary = sp.get("climate", {}) if sp.get("climate", null) is Dictionary else {}
+	var need := str(hab.get("needs_add", ""))
+	if need != "" and not has_add(home, need):
+		return "needs a %s" % need.replace("_", " ").capitalize()
+	if winter and str(cl.get("cold", "")) == "heater" and not has_add(home, "heater"):
+		return "needs a heater in winter"
+	return ""
+
+
+## The animal card's habitat line ("Likes: winter. Needs: a Tide Pool"); "" for classic species.
+static func habitat_text(uid: String) -> String:
+	var sp := species(str(animal(uid).get("species", "")))
+	var hab: Dictionary = sp.get("habitat", {}) if sp.get("habitat", null) is Dictionary else {}
+	var bits: Array = []
+	if not (hab.get("likes_season", []) as Array).is_empty():
+		bits.append("Likes: %s." % ", ".join(hab["likes_season"]))
+	if bool(hab.get("hates_heater", false)):
+		bits.append("No heater, please.")
+	if str(hab.get("needs_add", "")) != "":
+		bits.append("Needs: a %s." % str(hab["needs_add"]).replace("_", " ").capitalize())
+	return " ".join(bits)
 
 
 ## Pasture grass eaten in the pen (P2 calls it when an animal grazes a grass cell).
@@ -328,6 +605,12 @@ static func collect(uid: String) -> Dictionary:
 	if r.is_empty():
 		return {}
 	a.erase("ready")
+	if egg_species(str(r.get("item", ""))) != "":
+		if not (st().get("laid", null) is Dictionary):
+			st()["laid"] = {}
+		var lst: Array = (st()["laid"] as Dictionary).get(str(r["item"]), [])
+		lst.append({"hen": uid, "variant": str(a.get("variant", ""))})
+		st()["laid"][str(r["item"])] = lst.slice(maxi(0, lst.size() - 8))
 	if str(species(str(a.get("species", ""))).get("art", {}).get("shorn", "")) != "":
 		a["shorn_day"] = _day()
 	return r
@@ -353,20 +636,20 @@ static func tap(uid: String, held := "") -> Dictionary:
 	if a.is_empty():
 		return out
 	var nm := str(a.get("name", ""))
-	if held == "hay" and needs_hay(uid) and not fed_today(uid):
-		out["fed"] = feed(uid, "hand")
+	if held != "" and eats(uid) and feeds_on(uid, held) and not fed_today(uid):
+		out["fed"] = feed_with(uid, held)
 	out["petted"] = pet(uid)
 	out["got"] = take(uid)
-	out["hungry"] = needs_hay(uid) and not fed_today(uid) and is_adult(uid)
+	out["hungry"] = eats(uid) and not fed_today(uid) and is_adult(uid)
 	var bits: Array = []
 	if out["fed"]:
-		bits.append("%s munches the hay." % nm)
+		bits.append("%s munches the %s." % [nm, "hay" if held == "hay" else GameState.item_name(held)])
 	if out["petted"]:
 		bits.append("%s loves that." % nm if str(species(str(a["species"])).get("pet_word", "pet")) == "pet" else "The %s hums along." % nm)
 	if not (out["got"] as Dictionary).is_empty():
 		bits.append("Got %s%s." % [ItemWords.count_id(str(out["got"]["item"]), int(out["got"]["n"])), (" and " + ItemWords.count_id(str(out["got"]["extra"]), 1)) if str(out["got"].get("extra", "")) != "" else ""])
 	if out["hungry"]:
-		bits.append("%s is hungry: hold hay and tap%s." % [nm, ", or fill the silo" if has_add(str(a["home"]), "feeder") else ""])
+		bits.append("%s is hungry: hold %s and tap%s." % [nm, feed_word(uid), ", or fill the silo" if needs_hay(uid) and has_add(str(a["home"]), "feeder") else ""])
 	if bits.is_empty():
 		bits.append("%s is happy today." % nm)
 	out["text"] = " ".join(bits)
@@ -381,11 +664,12 @@ static func hint(uid: String, held := "") -> String:
 	var nm := str(a.get("name", ""))
 	if not ready(uid).is_empty():
 		return "A: %s (goods ready)" % nm
-	if is_adult(uid) and needs_hay(uid) and not fed_today(uid):
-		return "A: feed %s" % nm if held == "hay" else "A: %s (hungry)" % nm
+	if is_adult(uid) and eats(uid) and not fed_today(uid):
+		return "A: feed %s" % nm if feeds_on(uid, held) else ("A: %s (hungry)" % nm if needs_hay(uid) else "A: %s (hungry: hold %s)" % [nm, feed_word(uid)])
+	var ex := expecting_text(uid)
 	if int(a.get("last_pet", -1)) != _day():
-		return "A: %s %s" % [str(species(str(a["species"])).get("pet_word", "pet")), nm]
-	return "%s (happy)" % nm
+		return "A: %s %s%s" % [str(species(str(a["species"])).get("pet_word", "pet")), nm, (" (expecting: %s)" % ex.get_slice(" · ", 1)) if ex != "" else ""]
+	return "%s (%s)" % [nm, ("expecting: %s" % ex.get_slice(" · ", 1)) if ex != "" else "happy"]
 
 
 ## Which bubble an animal shows: "goods", "hungry", "pet", "sleep" or "".
@@ -394,7 +678,7 @@ static func need(uid: String) -> String:
 		return ""
 	if not ready(uid).is_empty():
 		return "goods"
-	if is_adult(uid) and needs_hay(uid) and not fed_today(uid):
+	if is_adult(uid) and eats(uid) and not fed_today(uid):
 		return "hungry"
 	if int(animal(uid).get("last_pet", -1)) != _day():
 		return "pet"
@@ -413,7 +697,7 @@ static func art_for(uid: String) -> Dictionary:
 	var out := {"group": "animals/" + src, "strip": "idle", "baby": false, "height_px": float(sp.get("height_px", 16)),
 		"tint": Color(str(v["tint"])) if v.has("tint") else null, "species": str(a.get("species", ""))}
 	if not is_adult(uid):
-		var b: Array = art.get("baby", [src, "idle"])
+		var b: Array = v.get("baby", art.get("baby", [src, "idle"]))
 		out["group"] = "animals/" + str(b[0])
 		out["strip"] = str(b[1])
 		out["baby"] = true
@@ -445,10 +729,7 @@ static func _product_of(uid: String) -> Dictionary:
 
 ## Incubate an egg (Big Coop): one slot, hatches overnight in breed.days.
 static func incubate(egg_item: String, q := "") -> String:
-	var sid := ""
-	for id in data()["species"]:
-		if str(((data()["species"][id] as Dictionary).get("breed", {}) as Dictionary).get("egg", "")) == egg_item:
-			sid = id
+	var sid := egg_species(egg_item)
 	if sid == "":
 		return "That won't hatch."
 	var home := str(species(sid).get("home", "coop"))
@@ -463,7 +744,14 @@ static func incubate(egg_item: String, q := "") -> String:
 		return "Hold an egg to put it in."
 	GameState.add_item(egg_item, -1)
 	var days := int(species(sid)["breed"].get("days", 3)) - _days_off("hatch_fast")
-	inc.append({"species": sid, "due": _day() + maxi(1, days), "q": q})
+	var row := {"species": sid, "due": _day() + maxi(1, days), "q": q}
+	var laid: Variant = (st().get("laid", {}) as Dictionary).get(egg_item, [])
+	if laid is Array and not (laid as Array).is_empty():
+		var l: Dictionary = (laid as Array).pop_back()  # the hen who laid it (lineage and her look, c11b_11-05)
+		if animals().has(str(l.get("hen", ""))):
+			row["hen"] = str(l["hen"])
+			row["variant"] = str(l.get("variant", ""))
+	inc.append(row)
 	return ""
 
 
@@ -534,7 +822,7 @@ static func overnight(report: Dictionary) -> Array:
 		var sp := species(str(a.get("species", "")))
 		var home := str(a.get("home", ""))
 		var fed := fed_today(uid, day)
-		var petted := int(a.get("last_pet", -1)) == day
+		var petted := int(a.get("last_pet", -1)) == day or int(a.get("last_helper_pet", -1)) == day  # P5 hook c11b_06-12: a helper's company counts
 		var adult := day >= int(a.get("adult_day", 0))
 		# Mood: fed, petted, sheltered (a heater in winter), fresh water.
 		var mood := 0
@@ -542,13 +830,13 @@ static func overnight(report: Dictionary) -> Array:
 			mood += int(rule("mood_fed", 45))
 		if petted:
 			mood += int(rule("mood_pet", 35))
-		mood += int(rule("mood_winter_no_heater", 5)) if winter and not has_add(home, "heater") else int(rule("mood_comfort", 20))
+		mood += comfort(uid, winter)
 		if has_add(home, "auto_water"):
 			mood += int(rule("mood_auto_water", 5))
 		a["mood"] = clampi(mood, 0, 100)
 		if fed:
 			_friend_add(a, int(rule("fed_friend", 10)))
-		elif adult and needs_hay(uid):
+		elif adult and eats(uid):
 			_friend_add(a, int(rule("unfed_friend", -15)))
 			hungry += 1
 		if not petted:
@@ -559,7 +847,7 @@ static func overnight(report: Dictionary) -> Array:
 		var p := _product_of(uid)
 		if adult and fed and str(p.get("id", "")) != "" and int(a.get("mood", 0)) >= int(p.get("needs_mood", 0)) \
 				and day - int(a.get("made_day", -99)) >= int(p.get("every_days", 1)) and ready(uid).is_empty() \
-				and not (bool(p.get("dig", false)) and (winter or wet)):
+				and not (bool(p.get("dig", false)) and (winter or wet)) and habitat_block(uid, winter) == "":
 			var ay := GameState.ranch_bonus("animal_yield")
 			var n := 1 + int(ay) + (1 if rng.randf() < fmod(ay, 1.0) else 0)
 			n += 1 if rng.randf() < GameState.ranch_bonus("big_goods") else 0
@@ -572,7 +860,15 @@ static func overnight(report: Dictionary) -> Array:
 					a["extra_ready"] = str(ex[0])
 			if p.has("large_at") and int(a.get("friend", 0)) >= int(p["large_at"]):
 				n += 1 if rng.randf() < 0.5 else 0
-			a["ready"] = {"item": item, "n": n, "q": quality(a)}
+			var q := quality(a)
+			var vr := variant_row(uid)
+			if bool(vr.get("rare", false)) and q != "g" and rng.randf() < float(vr.get("quality_bonus", 0.25)):
+				q = "s" if q == "" else "g"  # rare looks: a chance of one star step better (c11b_11-13)
+			var pe: Array = vr.get("product_extra", [])
+			if pe.size() == 2 and GameState.items.has(str(pe[0])) and day - int(a.get("extra_day", -99)) >= int(pe[1]):
+				a["extra_ready"] = str(pe[0])
+				a["extra_day"] = day
+			a["ready"] = {"item": item, "n": n, "q": q}
 			a["made_day"] = day  # the night it was made: ready in the morning
 			made[item] = int(made.get(item, 0)) + n
 		# Growing up (tomorrow).
@@ -630,9 +926,14 @@ static func _births(day: int, rng: RandomNumberGenerator) -> Array:
 				break
 			var v := _child_variant(sid, str(a.get("variant", "")), str(animal(other).get("variant", "")), rng)
 			var kid := _make(sid, home, "", day + 1, v, [uid, other])
-			names.append(str(animal(kid)["name"]))
+			names.append(str(animal(kid)["name"]) + _rare_note(kid))
 		if not names.is_empty():
 			lines.append("%s had %s! Say hello in the %s (rename on the Animals page)." % [str(a["name"]), ("a baby, %s" % names[0]) if names.size() == 1 else "%d babies: %s" % [names.size(), _list(names)], home])
+	# The night before a birth: a heads-up line in the morning.
+	for uid in animals().keys():
+		var e2: Variant = (animals()[uid] as Dictionary).get("expecting", null)
+		if e2 is Dictionary and int((e2 as Dictionary).get("due", 0)) == day + 2:
+			lines.append("%s's little one comes tonight." % str(animals()[uid].get("name", "")))
 	# New pairs (no gender checks: any two content adults of a species in a breeding home).
 	for home in (data()["buildings"] as Dictionary):
 		if not has_add(home, "breeding"):
@@ -662,6 +963,11 @@ static func _births(day: int, rng: RandomNumberGenerator) -> Array:
 	return lines
 
 
+## " (a rare golden hen!)" for a rare newborn, else "".
+static func _rare_note(uid: String) -> String:
+	return " (a rare %s!)" % variant_name(uid).to_lower() if is_rare(uid) else ""
+
+
 static func _hatch(day: int, rng: RandomNumberGenerator) -> Array:
 	var lines: Array = []
 	for home in (st()["houses"] as Dictionary).keys():
@@ -672,9 +978,10 @@ static func _hatch(day: int, rng: RandomNumberGenerator) -> Array:
 				keep.append(e)
 				continue
 			var sid := str(e["species"])
-			var v := _child_variant(sid, "", "", rng)
-			var kid := _make(sid, home, "", day + 1, v, [])
-			lines.append("A %s hatched in the %s: meet %s!" % [("chick" if sid == "chicken" else "duckling" if sid == "duck" else display_name(sid).to_lower()), home, str(animal(kid)["name"])])
+			var hen := str(e.get("hen", ""))
+			var v := _child_variant(sid, str(e.get("variant", "")), "", rng)
+			var kid := _make(sid, home, "", day + 1, v, [hen, ""] if hen != "" else [])
+			lines.append("A %s hatched in the %s: meet %s!%s" % [("chick" if sid == "chicken" else "duckling" if sid == "duck" else display_name(sid).to_lower()), home, str(animal(kid)["name"]), _rare_note(kid)])
 		house(home)["incubator"] = keep
 	return lines
 

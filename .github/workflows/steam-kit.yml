@@ -1,0 +1,40 @@
+name: Steam kit (draft release for the Steamworks session)
+
+# Manual only (s1_17-12). Builds build/steam_kit/ (app + shortcut icons, achievements CSV + icons,
+# rich presence VDF, P6 capsules/screenshots if present) and attaches each file to a DRAFT release
+# "steam-kit-<sha>", so the Steamworks Chrome session can download them without touching the play site
+# and capsules stay unrevealed (drafts are visible only to repo collaborators).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  kit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+      - name: Build kit
+        run: |
+          python3 tools/steam_handoff.py --kit build/steam_kit
+          for d in docs/steam-store/capsules docs/steam-store/screenshots art/store; do
+            [ -d "$d" ] && cp -r "$d" build/steam_kit/ || true
+          done
+          (cd build/steam_kit && find . -type f | sort) | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Draft release with every file as an asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="steam-kit-${GITHUB_SHA::7}"
+          gh release create "$tag" --draft --title "$tag" --notes "Steamworks session kit (docs/STEAM.md). Draft: never publish." --target "$GITHUB_SHA"
+          cd build/steam_kit
+          find . -type f | while read f; do n="$(echo "${f#./}" | tr '/' '_')"; cp "$f" "/tmp/$n"; gh release upload "$tag" "/tmp/$n"; done
+          echo "### Draft release $tag" >> "$GITHUB_STEP_SUMMARY"

@@ -74,6 +74,10 @@ static func team() -> Array:
 			if not seen.has(str(id)):
 				seen[str(id)] = true
 				out.append([str(id), str(Crew.members()[id].get("name", str(id).capitalize())), "crew"])
+	# C11b P6 (c11b_09-04): trained team animals muster before village friends, so they are fielded too.
+	out.append_array(TeamAnimals.gate_rows())  # C11a P4: trained team animals muster too
+	for r: Variant in out:
+		seen[str((r as Array)[0])] = true
 	var fr: Dictionary = GameState.run.get("friendship", {})
 	for id: String in fr:
 		if seen.has(id) or not GameState.npcs.has(id):
@@ -81,7 +85,47 @@ static func team() -> Array:
 		if GameState.friend_hearts(id) >= FRIEND_HEARTS:
 			seen[id] = true
 			out.append([id, str(GameState.npcs[id].get("name", id.capitalize())), "friend"])
-	out.append_array(TeamAnimals.gate_rows())  # C11a P4: trained team animals muster too
+	return out
+
+
+## C11b P6 (c11b_08-09): the battle line-up you picked on the battle card (ids, in pick order, at most
+## LINE_MAX), kept in the campaign block. Empty = the muster order.
+const LINE_MAX := 4
+
+
+static func picked() -> Array:
+	if GameState.run.is_empty():
+		return []
+	var c: Dictionary = Campaign.st()
+	if not (c.get("line_up", null) is Array):
+		c["line_up"] = []
+	return c["line_up"]
+
+
+## Tap a member on the battle card: in or out of the line-up. True when they're now in it.
+static func toggle_pick(id: String) -> bool:
+	var p := picked()
+	if id in p:
+		p.erase(id)
+		return false
+	if p.size() >= LINE_MAX:
+		p.pop_front()  # full: the earliest pick makes room
+	p.append(id)
+	return true
+
+
+## The team in fielding order: your picks first (those still on the team), then everyone else in
+## muster order (partners, crew, team animals, friends).
+static func line_up() -> Array:
+	var all := team()
+	var out: Array = []
+	for id: Variant in picked():
+		for r: Array in all:
+			if str(r[0]) == str(id):
+				out.append(r)
+	for r: Array in all:
+		if not r in out:
+			out.append(r)
 	return out
 
 
@@ -180,7 +224,7 @@ static func muster(cid: String) -> String:
 	s["supply"] = mini(Campaign.SUPPLY_CAP, int(s["supply"]) + int(nd.get("supply", 10)) + (20 if cid.begins_with("c_colony_") and Project.has("sky_lens") else 0))
 	s["started"] = int(GameState.run.get("day", 1))
 	GameState.add_xp("strategist", 20)
-	return "%d allies answer the call. The provisions are loaded: supply ◇%d. Pick a territory next to your camp and attack." % [team().size(), int(s["supply"])]
+	return "%d allies answer the call: partners, crew, team animals and friends. The provisions are loaded: supply ◇%d. Pick a territory next to your camp and attack." % [team().size(), int(s["supply"])]
 
 
 # ---- the drill ----------------------------------------------------------------------

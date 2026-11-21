@@ -5,3 +5,7 @@ build/
 export_credentials.cfg
 tools/conduct/__pycache__/
 server/.deployed_commit
+
+# Steam: dev-only app id file and SteamPipe output never committed (s1_11)
+steam_appid.txt
+**/steam_appid.txt

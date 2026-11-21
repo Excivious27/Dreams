@@ -102,7 +102,13 @@ T = {
 # Names for filler nodes whose row hit its caps and fell back to a general effect.
 OFF_NAMES = {"xp_gain": ["Practice", "Study", "Lessons", "Know-How", "Experience", "Insight", "Drills", "Homework"],
              "energy": ["Stamina", "Endurance", "Early Riser", "Deep Breath"],
-             "hp": ["Hardy", "Sturdy Frame", "Tough Hide", "Good Health"]}
+             "hp": ["Hardy", "Sturdy Frame", "Tough Hide", "Good Health"],
+             # Body/Nose rows that hit the health/defence caps fall back to bite damage: bite names (c11b_07-08).
+             "pet_dmg": ["Strong Jaw", "Firm Grip", "Sharp Bite", "Big Chomp", "Steel Jaw", "Hard Bite"]}
+# Base-node wording fixes: pack nodes add to the pack's own room (they stack), c11b_07-08.
+DESC_FIX = {"pack_1": "+6 pack stacks for your pup (needs a pack from the workbench; adds to the pack's own stacks)",
+            "pack_2": "+6 more pup pack stacks (they add up with the pack and Saddle Pack)",
+            "pack_3": "+6 more pup pack stacks and a bedroll: resting by the pup restores 20 energy once a day"}
 # The arcs' own trees (only shown in their arc).
 T["hustle"] = ([("Street", ["pass_risk", "heat_cool"], ["Blend In", "Smooth Hands", "Know the Beat", "Quiet Money", "Low Profile", "Cold Trail", "Ghost of the Avenue", "Clean Record", "Nobody Saw Nothing"]),
                 ("Money", ["wash_bonus", "job_pay"], ["Small Change", "Spin Cycle", "Payroll", "Clean Sheets", "Fat Envelope", "Good Books", "Front Business", "Silent Partner", "Empire Ledger"]),
@@ -187,7 +193,8 @@ GEN_CAPS = {"mining": {"gem_chance": 0.12}, "magic": {"gem_chance": 0.04}, "fish
             "leadership": {"team_xp": 0.25}}
 # Ranching keys: mirror of GameState.BONUS_CAPS (the generator also refuses to run if they drift).
 RANCH_CAPS = {"animal_yield": 1.0, "big_goods": 0.3, "animal_quality": 3.0, "ranch_value": 0.35, "breed_chance": 0.3, "grow_speed": 3.0,
-              "animal_friend": 0.3, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
+              "animal_friend": 0.3, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0,
+              "rare_breed": 0.1}
 for _k, _v in RANCH_CAPS.items():
     assert abs(BASE_CAPS.get(_k, -1) - _v) < 1e-9, "GameState.BONUS_CAPS must carry %s: %s (Ranching)" % (_k, _v)
 # Trees whose filler never falls back to hp/energy (a new tree must not rescale the others' hp/energy nodes).
@@ -253,7 +260,9 @@ UNLOCKS = {
                  (1, 6, "Steady Routine", "One missed day of care no longer breaks an animal's friendship streak.", {"care_grace": 1}),
                  (2, 7, "Warm Incubator", "Eggs hatch a day sooner.", {"hatch_fast": 1}),
                  (3, 8, "Second Farm Hand", "One more farm hand slot for ranch chores.", {"hand_slot": 1}),
-                 (1, 9, "Golden Touch", "Animal goods reach gold quality a whole day sooner.", {"animal_quality": 1})],
+                 (1, 9, "Golden Touch", "Animal goods reach gold quality a whole day sooner.", {"animal_quality": 1}),
+                 # rare_breed was read by Ranch._child_variant with no node to learn it (c11b_11-11).
+                 (2, 9, "Rare Bloodlines", "Rare looks turn up twice as often in births and hatchlings.", {"rare_breed": 0.1})],
     "magic": [(2, 3, "Blink Step", "Haste lasts half as long again.", {"haste_time": 0.5}),
               (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),
@@ -295,6 +304,8 @@ for sk, sd in base["skills"].items():
             while grid[r][c] is not None:
                 c -= 1
         m = dict(n)
+        if n["id"] in DESC_FIX:
+            m["desc"] = DESC_FIX[n["id"]]
         m.pop("requires", None)
         m["tier"] = c
         m["row"] = r

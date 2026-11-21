@@ -206,7 +206,16 @@ func _show_sound() -> void:
 					sc.call("rows", box)
 				else:
 					sc.call(str(sp[1]), box, get_tree(), _show_sound)
+	_page.add_child(_button("Credits and licences", _show_licences))  # s1_13-09
 	_page.add_child(_button("Back", _show_title))
+
+
+## s1_13-09: credits + Godot/font/GodotSteam licence notices (Licences.text()); scrolls in the title page.
+func _show_licences() -> void:
+	_clear()
+	_page.add_child(_label("Credits and licences", 14))
+	_page.add_child(_label(preload("res://scripts/licences.gd").text(), 7, false))
+	_page.add_child(_button("Back", _show_sound))
 
 
 func _show_slots(msg := "") -> void:
@@ -882,6 +891,8 @@ func _begin() -> void:
 	var cname := _name_edit.text.strip_edges()
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
+	var nf := preload("res://scripts/name_filter.gd")
+	cname = nf.clean(cname, ""); town = nf.clean(town, ""); pet = nf.clean(pet, "")  # s1_13-03: co-op partners see these
 	if GameState.has_run():
 		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup", {"difficulty": _new_diff, "day_len": _new_len})

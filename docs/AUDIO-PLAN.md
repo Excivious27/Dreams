@@ -354,3 +354,38 @@ Added as each track arrives:
 | 7 | Music variants and fight layers | 0 | 2 h |
 
 Every wave ends with the full check, bots, a push and an updated Audio tab in the progress sheet.
+
+## C11b creature voices and ranch sound (CONDUCT 11b P6)
+
+Naming rule (c11b_14-01): every new creature voice is `cv_<group>`, never a name an effect already
+uses (the planned ostrich "boom" was the firework bang). One shared table: `scripts/ranch_voices.gd`
+(VOICES kind -> voice, NIGHT kinds); `GameMap.animal_voice` and `Ambience` read it.
+
+| voice | species | source (local CC0, tools/cc0_import.py MAP) |
+|---|---|---|
+| cv_ostrich x3 | ostrich, chrome_runner | 80-cc0-creture-sfx-2 misc_10/11/12, pitched 0.7 |
+| cv_emu x2 | emu | misc_11/10, pitched 0.85 |
+| cv_komodo x2 | komodo, tortoise, ember_newt | 80-cc0-creature-sfx nose + breath (soft snort) |
+| cv_moon x3 | moon_cow, moon_hare, star_jelly, star_sheep | alien_02/03/08 |
+| cv_merkitty x3 | coral_seahorse, kelp_calf | cute_02/06 + burble_01 |
+| cv_gloam x2 | deep_glowworm, glow_gecko, lantern_moth, volt_gecko | insect-sounds insect0/4 |
+| cv_frost x2 | aurora_fox, frost_otter, frost_wyrmling | ooh + weird_07 |
+| cv_sky x2 | peacock, storm_roc | bird-chirping slices |
+| classic | alpaca/cloud_sheep/glow_sheep sheep, buffalo/snow_yak/circuit_cow moo, crystal_hen/chrome_hen cluck, circuit_goat bleat, drone_hog oink, turbo_bunny thump | existing |
+
+Cues (c11b_14-09): egg_crack x3 (7-eating-crunches 2/4/5, pitched 1.3), feeder_fill x2 (workshop
+rummaging, low-passed). Still to wire: the morning hatch cue (House.morning_cues / Ranch hatch) and the
+feeder add (ranch.json adds[].sfx) when those systems call them.
+
+Beds (c11b_14-04): aviary_room (bird-chirping, -6), terrarium_room (30-cc0-sfx-loops ambient_02 + noise_01,
+low-passed); Ambience.HOME_BEDS maps interior ids (aviary, drone_loft, terrarium, grow_tank, enclosure,
+bio_dome, lab_barn, star_dome) to room tones. Outdoor positional enclosure beds wait for the buildings.
+
+Pen calls (c11b_14-11): a C11b species with no PEN_SPOTS row calls with its voice (50-110 s, -22 dB);
+after dark only NIGHT kinds call (-4 dB), day kinds by day.
+
+Music (c11b_14-05, no new song, no credits): `ranch` = the unused countryside take (so_08dc2510...),
+coop/barn/hutch/aviary/terrarium/enclosure interiors; `animal_show` = the unused festival take
+(so_2b45c6a9...), played within 5 cells of the fair ribbon stand. Both logged in ACE_LOG with alt_of.
+Not yet re-fetched: amb_space / amb_crystal second takes (habitat_moon / habitat_crystal beds),
+kit second takes (creature chimes), jin_warm second (j_ranch_up), gang lab pen take.
