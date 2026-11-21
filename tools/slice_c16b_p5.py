@@ -43,9 +43,12 @@ def cards():
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
+    keep = json.load(open(mpath))  # keep its key order: only the new card entries change
     S.manifest.update(json.load(open(mpath)))
     print("ok cards", cards())
-    data = json.dumps(S.manifest, indent=1, sort_keys=True)
+    for k, v in S.manifest.get("ui", {}).items():
+        keep.setdefault("ui", {})[k] = v
+    data = json.dumps(keep, indent=1) + "\n"
     os.remove(mpath)  # hardlinked across worktrees: never write it in place
     with open(mpath, "w") as fh:
         fh.write(data)
