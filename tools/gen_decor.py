@@ -990,6 +990,9 @@ def grant(key, id):
         GRANTS[key] = id
         if ENTRIES[id]['rarity'] != 'unique' or not ENTRIES[id]['sources']:
             ENTRIES[id]['sources'].append({'kind': key.split(':')[0], 'ref': key.split(':', 1)[1]})
+for _cid, _n, _a, _c, _l, _r, _ref in SHOW:  # C11b P2: show prizes keep a live grant key (DecorSources.show_prize)
+    if _r == 'unique':
+        grant('festival:' + _ref, _cid)
 def first(f, any_arc=False):
     for k, e in sorted(ENTRIES.items()):
         if not e.get('ext') and e.get('order') is not False and e['rarity'] not in ('unique',) and (any_arc or e['arc'] == 'both') and f(k, e) and k not in GRANTS.values():
