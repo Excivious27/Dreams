@@ -153,13 +153,13 @@ static func luck() -> float:
 static func ceiling(lvl: int, night: bool, baited: bool, area_tier: int) -> int:
 	return int(T["cap_base"]) + int(T["cap_per_level"]) * lvl + (int(T["cap_night"]) if night else 0) \
 		+ (int(T["cap_bait"]) if baited else 0) + int(T["cap_per_rod"]) * GameState.tool_tier("rod") \
-		+ int(float(T["cap_per_luck"]) * luck()) + int(T["cap_per_area_tier"]) * maxi(0, area_tier)
+		+ int(float(T["cap_per_luck"]) * luck()) + int(T["cap_per_area_tier"]) * maxi(0, area_tier) + bait_ceiling_bonus(night)
 
 
 static func reach_n(lvl: int, night: bool, baited: bool) -> int:
 	var wx := GameState.weather_today()
 	var w := 1 if wx == "storm" else (-1 if wx == "blizzard" else 0)  # C15 P4: storms stir the deep fish up
-	return maxi(1, 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2 + w)
+	return maxi(1, 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2 + w + bait_reach_bonus())
 
 
 ## True when bait would open a fish the bare hook can't reach here (bait is
@@ -202,7 +202,7 @@ static func window_for(fish: String) -> float:
 ## Treasure after a catch, or "" (chest_chance scaled by where you fish).
 static func treasure(scene: String, area_tier: int) -> String:
 	var mults: Array = T["treasure_mult"]
-	var ch := GameState.bonus("fishing", "chest_chance") * float(mults[clampi(area_tier, 0, mults.size() - 1)])
+	var ch := GameState.bonus("fishing", "chest_chance") * float(mults[clampi(area_tier, 0, mults.size() - 1)]) * (2.0 if cur_bait == "magnet_bait" else 1.0)
 	if randf() >= ch:
 		return ""
 	# C10a P4: some treasure catches are a home piece instead (decor box, toast queued).
@@ -277,3 +277,45 @@ static func size_for(fish: String, q := "") -> int:
 		base = (float(sz[0]) + float(sz[1])) * 0.5
 	var lo := 0.75 + (0.15 if q == "g" else (0.08 if q == "s" else 0.0))
 	return maxi(1, roundi(base * randf_range(lo, 1.25)))
+
+
+## C16a P4 (c16a_05-03): special baits (items from gen_collections SPECIAL_BAITS, sold by Finn once your Fishing
+## level allows). The best one in the bag goes on the hook with each cast (Fishing.cur_bait for that cast):
+## glow +1 reach and half the night ceiling by day; deep +1 area tier of ceiling; magnet treasure x2;
+## wild +0.15 double catch. Each also works as plain bait (faster bite, bait ceiling).
+const SPECIAL_BAITS := ["wild_bait", "magnet_bait", "deep_bait", "glow_bait"]
+static var cur_bait := ""
+
+
+static func shop_baits() -> Array:
+	var out := []
+	for id: String in ["glow_bait", "deep_bait", "magnet_bait", "wild_bait"]:
+		if GameState.items.has(id) and GameState.skill_level("fishing") >= int(GameState.items[id].get("bait_lvl", 99)):
+			out.append(id)
+	return out
+
+
+## Takes the best special bait from the bag for this cast ("" = none); sets cur_bait.
+static func take_special_bait() -> String:
+	cur_bait = ""
+	for id: String in SPECIAL_BAITS:
+		if GameState.count(id) > 0:
+			GameState.add_item(id, -1)
+			cur_bait = id
+			break
+	return cur_bait
+
+
+static func bait_ceiling_bonus(night: bool) -> int:
+	match cur_bait:
+		"glow_bait": return 0 if night else int(T["cap_night"]) / 2
+		"deep_bait": return int(T["cap_per_area_tier"])
+	return 0
+
+
+static func bait_reach_bonus() -> int:
+	return 1 if cur_bait == "glow_bait" else 0
+
+
+static func double_chance() -> float:
+	return GameState.bonus("fishing", "double_fish") + (0.15 if cur_bait == "wild_bait" else 0.0)

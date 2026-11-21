@@ -91745,6 +91745,26 @@
    "file": "items/c16ap4_star_net.png",
    "h": 32,
    "w": 32
+  },
+  "c16ap4_glow_bait": {
+   "file": "items/c16ap4_glow_bait.png",
+   "h": 32,
+   "w": 25
+  },
+  "c16ap4_deep_bait": {
+   "file": "items/c16ap4_deep_bait.png",
+   "h": 32,
+   "w": 30
+  },
+  "c16ap4_magnet_bait": {
+   "file": "items/c16ap4_magnet_bait.png",
+   "h": 32,
+   "w": 32
+  },
+  "c16ap4_wild_bait": {
+   "file": "items/c16ap4_wild_bait.png",
+   "h": 32,
+   "w": 29
   }
  },
  "kits/backdrops": {

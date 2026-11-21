@@ -114,6 +114,13 @@ CRITTERS = [
     {"id": "cr_snow_sylph", "kind": "", "name": "Snow Sylph", "seasons": ["winter"], "time": "", "net": 2, "lvl": 40,
      "legend": {"weather": ["snow", "blizzard"], "hours": [6, 18], "chance": 0.04}},
 ]
+# C16a P4 (c16a_05-03): special baits at Finn's (Fishing.SPECIAL_BAITS has the rules; "lvl" = Fishing level to buy).
+SPECIAL_BAITS = {
+    "glow_bait": {"name": "Glow Bait", "value": 10, "lvl": 6, "desc": "Glows on the hook: one more kind of fish in reach, and day casts pull like dusk."},
+    "deep_bait": {"name": "Deep Bait", "value": 17, "lvl": 10, "desc": "Sinks deep: bigger, pricier fish come up to the hook."},
+    "magnet_bait": {"name": "Magnet Bait", "value": 20, "lvl": 12, "desc": "Treasure sticks to the line twice as often."},
+    "wild_bait": {"name": "Wild Bait", "value": 27, "lvl": 15, "desc": "Fish can't resist it: a better shot at two fish on one line."},
+}
 CRITTER_WHERE = {"day": "Out by day", "night": "Out at night", "": "Out any time"}
 LIVE_WING = {"id": "critters", "title": "Live Exhibit"}
 
@@ -129,6 +136,9 @@ def critter_where(c):
 
 
 def critter_items(items):
+    for bid, b in SPECIAL_BAITS.items():
+        items[bid] = {"name": b["name"], "type": "misc", "value": b["value"], "rarity": "uncommon", "tier": 1,
+                      "desc": b["desc"], "icon": "c16ap4_" + bid, "bait_lvl": b["lvl"]}
     for nid, n in NETS.items():
         items[nid] = {"name": n["name"], "name_gang": n["name_gang"], "type": "tool", "value": n["value"], "rarity": "uncommon",
                       "tier": 1 + n["tier"], "desc": n["desc"], "icon": "c16ap4_" + nid}
@@ -173,9 +183,12 @@ MILESTONES = [
     {"id": "mus_5", "cat": "museum", "need": 5, "from": "theo", "give": {"money": 300, "item": "bait", "n": 3},
      "text": "Five pieces in the cases already! Here's a little thank-you, and some bait: fish make fine exhibits. - Theo",
      "text_gangsters": "Five pieces on the shelves. People are already asking where we got them. A little something for you, and bait: fish count too. - Theo"},
-    {"id": "mus_10", "cat": "museum", "need": 10, "from": "theo", "give": {"item": "luminous_starfruit_seed", "n": 1},
-     "text": "Ten exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
-     "text_gangsters": "Ten pieces in the Curio Room. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"},
+    {"id": "mus_10", "cat": "museum", "need": 10, "from": "theo", "give": {"money": 500, "item": "bait", "n": 10},
+     "text": "Ten exhibits! The donation box had a good week. Your share, and bait for more tank fish. - Theo",
+     "text_gangsters": "Ten pieces in the Curio Room. The jar by the door filled up. Your cut, and bait. - Theo"},
+    {"id": "mus_15", "cat": "museum", "need": 15, "from": "theo", "give": {"money": 500},
+     "text": "Fifteen! I've started writing little cards for every case. - Theo",
+     "text_gangsters": "Fifteen pieces. I'm writing proper labels now. - Theo"},
     {"id": "mus_20", "cat": "museum", "need": 20, "from": "theo", "give": {"money": 1000},
      "text": "Twenty! School trips have started asking. Consider this your curator's pay. - Theo",
      "text_gangsters": "Twenty pieces. Folks pay to look now, so you get a cut. Fair's fair. - Theo"},
@@ -194,6 +207,15 @@ MILESTONES = [
     {"id": "wing_fish", "cat": "museum", "need": "wing:fish", "from": "finn", "give": {"money": 1500, "decor": "fish_trophy"},
      "text": "Every fish in the tanks. Even the koi! Mounted one for your wall, a pretend one. - Finn",
      "text_gangsters": "Every fish in the tanks. I had a wooden one carved for your wall. - Finn"},
+    {"id": "mus_40", "cat": "museum", "need": 40, "from": "theo", "give": {"item": "luminous_starfruit_seed", "n": 1},
+     "text": "Forty exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
+     "text_gangsters": "Forty pieces. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"},
+    {"id": "mus_50", "cat": "museum", "need": 50, "from": "theo", "give": {"money": 2500},
+     "text": "Fifty! The town council wants to call it a real museum now. This is from them. - Theo",
+     "text_gangsters": "Fifty pieces. People come from across the city now. Your cut. - Theo"},
+    {"id": "mus_65", "cat": "museum", "need": 65, "from": "theo", "give": {"money": 4000},
+     "text": "Sixty-five exhibits. I keep a chair by the tanks now, just to sit and look. - Theo",
+     "text_gangsters": "Sixty-five pieces. I sit in here after closing sometimes. Here's your share. - Theo"},
     {"id": "mus_all", "cat": "museum", "need": "all", "from": "theo", "give": {"decor": "dc_founders_orrery", "money": 5000, "item": "curators_loupe", "n": 1},
      "text": "The museum is complete. I didn't think I'd live to write that. Please take my old loupe: it always finds the lucky things. - Theo",
      "text_gangsters": "The Curio Room is complete. Take my old loupe. It has a habit of spotting the good stuff. - Theo"},
@@ -209,6 +231,18 @@ MILESTONES = [
     {"id": "fish_10", "cat": "fish", "need": 10, "from": "finn", "give": {"item": "bait", "n": 20},
      "text": "Ten kinds of fish caught! Bait's on me. - Finn",
      "text_gangsters": "Ten kinds of fish. Bait's on me. - Finn"},
+    {"id": "fish_5", "cat": "fish", "need": 5, "from": "finn", "give": {"item": "bait", "n": 10},
+     "text": "Five kinds already. Here's bait, the good stuff. - Finn",
+     "text_gangsters": "Five kinds in your log. Bait's on me. - Finn"},
+    {"id": "fish_15", "cat": "fish", "need": 15, "from": "finn", "give": {"money": 1000, "item": "glow_bait", "n": 10},
+     "text": "Fifteen kinds! Try these glow baits after dark. Or before. They don't care. - Finn",
+     "text_gangsters": "Fifteen kinds. Glow bait, ten of them. Works any hour. - Finn"},
+    {"id": "fish_25", "cat": "fish", "need": 25, "from": "finn", "give": {"money": 1500, "item": "deep_bait", "n": 10, "decor": "fish_trophy"},
+     "text": "Twenty-five kinds. Deep bait for the big ones, and a trophy for the wall. - Finn",
+     "text_gangsters": "Twenty-five kinds. Deep bait, and a trophy for your wall. - Finn"},
+    {"id": "fish_30", "cat": "fish", "need": 30, "from": "finn", "give": {"money": 3000, "item": "wild_bait", "n": 10},
+     "text": "Thirty kinds. You're an angler now, a real one. - Finn",
+     "text_gangsters": "Thirty kinds. You're a real angler. Don't let it go to your head. - Finn"},
     {"id": "fish_all", "cat": "fish", "need": "all", "from": "finn", "give": {"decor": "dc_golden_rod_mount", "money": 3000},
      "text": "Every fish the rod can find. You're the best angler this lake has seen. - Finn",
      "text_gangsters": "Every fish a rod can find. Best angler on the waterfront. - Finn"},
@@ -316,7 +350,7 @@ QUEST_LINES_GANG = {
 
 # Curator's Loupe: +2 luck charm (luck flows through GameState.gear_stat into drop rolls).
 LOUPE = {"name": "Curator's Loupe", "type": "equip", "value": 0, "tier": 3, "rarity": "legendary", "slot": "charm",
-         "stats": {"luck": 2}, "desc": "Theo's old loupe. It always finds the lucky things."}
+         "stats": {"luck": 4}, "desc": "Theo's old loupe. It always finds the lucky things."}  # C16a P4: luck 2 -> 4
 
 
 # ---------------------------------------------------------------- museum room

@@ -4757,6 +4757,9 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		wait *= 0.6
 		baited = true
 		hud.toast("Bait on the hook (%d left)" % GameState.count("bait"), Color(0.8, 0.95, 1))
+	if Fishing.take_special_bait() != "":  # C16a P4: the best special bait in the bag goes on too
+		baited = true
+		hud.toast("%s on the hook (%d left)" % [GameState.item_name(Fishing.cur_bait), GameState.count(Fishing.cur_bait)], Color(0.8, 0.95, 1))
 	# The fish is chosen at the bite, so rarer fish give a shorter window (rod/skill widen it).
 	var fish: String = Fishing.pick(pool, lvl, night, baited, area_tier, GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0), scene_id())
 	var window := Fishing.window_for(fish)
@@ -4803,7 +4806,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		player.play_tool("reel")
 		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.
 		fish = Collections.legend_roll(scene_id(), fish, night)  # legends past the ceiling (C8 P3)
-		pop_items(bob_at, fish, 2 if randf() < GameState.bonus("fishing", "double_fish") else 1)
+		pop_items(bob_at, fish, 2 if randf() < Fishing.double_chance() else 1)
 		var fq := Fishing.quality_for((t - wait) / maxf(0.01, window), fish)  # C16a P4: a quick reel earns a star
 		if fq != "":
 			GameState.add_quality(fish, fq, 1)
@@ -4829,6 +4832,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")
 	player.remove_meta("reel_early")
+	Fishing.cur_bait = ""  # C16a P4: the special bait lasts one cast
 
 
 ## Tier of this map's water for Fishing (0 = the Valley; Region returns its area tier).

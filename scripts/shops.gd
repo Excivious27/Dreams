@@ -63,7 +63,7 @@ static func offers(shop: String) -> Array:
 static func _offers_base(shop: String) -> Array:
 	match shop:
 		"bait":
-			return ["bait", "energy_tea", "bread"]
+			return ["bait", "energy_tea", "bread"] + Fishing.shop_baits()  # C16a P4: special baits by Fishing level
 		"store":
 			# Maple stocks this season's seeds (and next season's in the last week).
 			var by_season := {

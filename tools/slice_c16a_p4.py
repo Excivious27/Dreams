@@ -44,11 +44,26 @@ def crop_main(rgba):
     return out[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 
 
+BAITS = (os.path.join(ROOT, "art", "incoming", "c16ap4", "c16ap4_baits_sheet.png"), 4, 1,
+         ["glow_bait", "deep_bait", "magnet_bait", "wild_bait"])
+
+
 def main():
-    sheet = key(Image.open(SHEET))
-    H, W = sheet.shape[:2]
     man_p = os.path.join(GEN, "manifest.json")
     man = json.load(open(man_p))
+    n = 0
+    for path, cols, rows, names in [(SHEET, COLS, ROWS, NAMES), BAITS]:
+        n += cut(path, cols, rows, names, man)
+    with open(man_p + ".tmp", "w") as fh:
+        json.dump(man, fh, indent=1)
+        fh.write("\n")
+    os.replace(man_p + ".tmp", man_p)
+    print("slice_c16a_p4: %d icons" % n)
+
+
+def cut(path, COLS, ROWS, NAMES, man):
+    sheet = key(Image.open(path))
+    H, W = sheet.shape[:2]
     for i, name in enumerate(NAMES):
         cx, cy = i % COLS, i // COLS
         cell = sheet[cy * H // ROWS:(cy + 1) * H // ROWS, cx * W // COLS:(cx + 1) * W // COLS]
@@ -62,11 +77,7 @@ def main():
             os.remove(out)
         im.save(out)
         man["items"]["c16ap4_" + name] = {"file": "items/c16ap4_%s.png" % name, "h": nh, "w": nw}
-    with open(man_p + ".tmp", "w") as fh:
-        json.dump(man, fh, indent=1)
-        fh.write("\n")
-    os.replace(man_p + ".tmp", man_p)
-    print("slice_c16a_p4: %d icons" % len(NAMES))
+    return len(NAMES)
 
 
 if __name__ == "__main__":

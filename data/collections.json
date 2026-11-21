@@ -6402,11 +6402,23 @@
    "need": 10,
    "from": "theo",
    "give": {
-    "item": "luminous_starfruit_seed",
-    "n": 1
+    "money": 500,
+    "item": "bait",
+    "n": 10
    },
-   "text": "Ten exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
-   "text_gangsters": "Ten pieces in the Curio Room. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"
+   "text": "Ten exhibits! The donation box had a good week. Your share, and bait for more tank fish. - Theo",
+   "text_gangsters": "Ten pieces in the Curio Room. The jar by the door filled up. Your cut, and bait. - Theo"
+  },
+  {
+   "id": "mus_15",
+   "cat": "museum",
+   "need": 15,
+   "from": "theo",
+   "give": {
+    "money": 500
+   },
+   "text": "Fifteen! I've started writing little cards for every case. - Theo",
+   "text_gangsters": "Fifteen pieces. I'm writing proper labels now. - Theo"
   },
   {
    "id": "mus_20",
@@ -6479,6 +6491,40 @@
    "text_gangsters": "Every fish in the tanks. I had a wooden one carved for your wall. - Finn"
   },
   {
+   "id": "mus_40",
+   "cat": "museum",
+   "need": 40,
+   "from": "theo",
+   "give": {
+    "item": "luminous_starfruit_seed",
+    "n": 1
+   },
+   "text": "Forty exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
+   "text_gangsters": "Forty pieces. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"
+  },
+  {
+   "id": "mus_50",
+   "cat": "museum",
+   "need": 50,
+   "from": "theo",
+   "give": {
+    "money": 2500
+   },
+   "text": "Fifty! The town council wants to call it a real museum now. This is from them. - Theo",
+   "text_gangsters": "Fifty pieces. People come from across the city now. Your cut. - Theo"
+  },
+  {
+   "id": "mus_65",
+   "cat": "museum",
+   "need": 65,
+   "from": "theo",
+   "give": {
+    "money": 4000
+   },
+   "text": "Sixty-five exhibits. I keep a chair by the tanks now, just to sit and look. - Theo",
+   "text_gangsters": "Sixty-five pieces. I sit in here after closing sometimes. Here's your share. - Theo"
+  },
+  {
    "id": "mus_all",
    "cat": "museum",
    "need": "all",
@@ -6538,6 +6584,58 @@
    },
    "text": "Ten kinds of fish caught! Bait's on me. - Finn",
    "text_gangsters": "Ten kinds of fish. Bait's on me. - Finn"
+  },
+  {
+   "id": "fish_5",
+   "cat": "fish",
+   "need": 5,
+   "from": "finn",
+   "give": {
+    "item": "bait",
+    "n": 10
+   },
+   "text": "Five kinds already. Here's bait, the good stuff. - Finn",
+   "text_gangsters": "Five kinds in your log. Bait's on me. - Finn"
+  },
+  {
+   "id": "fish_15",
+   "cat": "fish",
+   "need": 15,
+   "from": "finn",
+   "give": {
+    "money": 1000,
+    "item": "glow_bait",
+    "n": 10
+   },
+   "text": "Fifteen kinds! Try these glow baits after dark. Or before. They don't care. - Finn",
+   "text_gangsters": "Fifteen kinds. Glow bait, ten of them. Works any hour. - Finn"
+  },
+  {
+   "id": "fish_25",
+   "cat": "fish",
+   "need": 25,
+   "from": "finn",
+   "give": {
+    "money": 1500,
+    "item": "deep_bait",
+    "n": 10,
+    "decor": "fish_trophy"
+   },
+   "text": "Twenty-five kinds. Deep bait for the big ones, and a trophy for the wall. - Finn",
+   "text_gangsters": "Twenty-five kinds. Deep bait, and a trophy for your wall. - Finn"
+  },
+  {
+   "id": "fish_30",
+   "cat": "fish",
+   "need": 30,
+   "from": "finn",
+   "give": {
+    "money": 3000,
+    "item": "wild_bait",
+    "n": 10
+   },
+   "text": "Thirty kinds. You're an angler now, a real one. - Finn",
+   "text_gangsters": "Thirty kinds. You're a real angler. Don't let it go to your head. - Finn"
   },
   {
    "id": "fish_all",

@@ -72,6 +72,21 @@ func _run() -> void:
 	ok(int(Collections.st()["caught"]["carp"]["best"]) == 40, "fish log keeps the biggest")
 	# Effects cap: level 100 = level 20 on the ceiling.
 	ok(Fishing.ceiling(GameState.skill_level_eff("fishing"), false, false, 0) == Fishing.ceiling(GameState.LEVEL_EFFECT_CAP, false, false, 0), "ceiling uses the effect cap")
+	# Special baits (c16a_05-03): sold by Fishing level, best one goes on, effects last one cast.
+	(GameState.run["skills"] as Dictionary)["fishing"] = {"level": 5, "xp": 0}
+	ok(Fishing.shop_baits().is_empty(), "no special baits at Fishing 5")
+	(GameState.run["skills"] as Dictionary)["fishing"] = {"level": 12, "xp": 0}
+	ok(Fishing.shop_baits() == ["glow_bait", "deep_bait", "magnet_bait"], "Fishing 12: glow, deep, magnet")
+	for b in ["glow_bait", "deep_bait", "magnet_bait", "wild_bait"]:
+		ok(Art.has("items", Hud.icon_for(b)), "bait icon " + b)
+	var base_cap := Fishing.ceiling(10, false, false, 0)
+	var base_reach := Fishing.reach_n(10, false, false)
+	GameState.add_item("glow_bait", 1)
+	GameState.add_item("deep_bait", 1)
+	ok(Fishing.take_special_bait() == "deep_bait" and GameState.count("deep_bait") == 0, "the best bait goes on first")
+	ok(Fishing.ceiling(10, false, false, 0) == base_cap + int(Fishing.T["cap_per_area_tier"]), "deep bait lifts the ceiling one area tier")
+	ok(Fishing.take_special_bait() == "glow_bait" and Fishing.reach_n(10, false, false) == base_reach + 1, "glow bait: one more kind in reach")
+	ok(Fishing.take_special_bait() == "" and Fishing.ceiling(10, false, false, 0) == base_cap, "no bait left: back to normal")
 	# Forage (c16a_08-01/08-08): a spot's find never re-rolls on re-entry; the wait follows the picked tier.
 	var a := ForageRoll.spot("meadow", "forage_meadow_5_5", false)
 	var same := true

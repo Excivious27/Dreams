@@ -12090,7 +12090,7 @@
   "rarity": "legendary",
   "slot": "charm",
   "stats": {
-   "luck": 2
+   "luck": 4
   },
   "desc": "Theo's old loupe. It always finds the lucky things."
  },
@@ -24535,5 +24535,45 @@
   "desc": "Logged in the Book and let go. Legend: Winter, 6-18 o'clock, snow/blizzard weather. Star Net, Foraging 40.",
   "icon": "c16ap4_snow_sylph",
   "no_sell": true
+ },
+ "glow_bait": {
+  "name": "Glow Bait",
+  "type": "misc",
+  "value": 10,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Glows on the hook: one more kind of fish in reach, and day casts pull like dusk.",
+  "icon": "c16ap4_glow_bait",
+  "bait_lvl": 6
+ },
+ "deep_bait": {
+  "name": "Deep Bait",
+  "type": "misc",
+  "value": 17,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Sinks deep: bigger, pricier fish come up to the hook.",
+  "icon": "c16ap4_deep_bait",
+  "bait_lvl": 10
+ },
+ "magnet_bait": {
+  "name": "Magnet Bait",
+  "type": "misc",
+  "value": 20,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Treasure sticks to the line twice as often.",
+  "icon": "c16ap4_magnet_bait",
+  "bait_lvl": 12
+ },
+ "wild_bait": {
+  "name": "Wild Bait",
+  "type": "misc",
+  "value": 27,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Fish can't resist it: a better shot at two fish on one line.",
+  "icon": "c16ap4_wild_bait",
+  "bait_lvl": 15
  }
 }
