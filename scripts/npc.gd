@@ -811,6 +811,8 @@ func _chat(delta: float, to: Vector2) -> void:
 		var o := other as Npc
 		if not o.visible or o._chat_partner != null or o.position.distance_to(position) > 30.0 or o.position.distance_to(position) < 8.0:
 			continue
+		if o.hold or not o._path.is_empty() or hold or not _path.is_empty():
+			continue  # C15 integ: nobody is stopped mid-walk (a volunteer walking in for a shift, a scene speaker)
 		if randf() < 0.24 * delta:  # ~once per 4 s of standing together, at any frame rate
 			_start_chat(o)
 			o._start_chat(self)
@@ -868,5 +870,10 @@ func _end_chat() -> void:
 	_chat_partner = null
 	_wander_t = randf_range(3.0, 6.0)
 	set_pose("")
+	# C15 integ: a chat that caught them on the way somewhere (a shift, their spot) must
+	# not strand them: walk on to `home` (the chat cleared the path and parked _target).
+	if map != null and is_inside_tree() and position.distance_to(home) > 48.0:
+		_target = home
+		_path = map.find_path(cell(), map.world_to_cell(home))
 	if _bubble:
 		_bubble.visible = false

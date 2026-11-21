@@ -15,6 +15,7 @@ const BOX_H := 72.0
 ## Game code ignores A for a moment after a dialogue/menu closes so the press
 ## that closed it doesn't also swing a sword or reopen a shop.
 static var block_until_ms := 0
+static var block_until_frame := 0
 
 var active := false
 var last_choice := -1
@@ -628,10 +629,15 @@ func _choose(key: String, index: int) -> void:
 
 static func block_input(seconds := 0.25) -> void:
 	block_until_ms = Time.get_ticks_msec() + int(seconds * 1000)
+	block_until_frame = Engine.get_process_frames() + ceili(seconds * 60.0)
 
 
+## Blocked while neither the wall-clock span nor the same span in 60 fps frames has
+## passed (C15 integ): on a fast machine running --fixed-fps (CI) the 0.25 s block
+## used to outlast a 20-frame wait and swallow the next A; now it ends by 15 frames
+## (and by 0.25 s on a slow phone, as before).
 static func input_blocked() -> bool:
-	return Time.get_ticks_msec() < block_until_ms
+	return Time.get_ticks_msec() < block_until_ms and Engine.get_process_frames() < block_until_frame
 
 
 ## A painted story panel above the box ("pic": "cut_star" -> ui/cut_star).

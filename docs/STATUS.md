@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C15 integ CI fix 2: NPC chats never stop someone mid-walk and a chat re-paths them home (volunteer stranded on the road); Dialogue.input_blocked frame-bounded (fast CI outlasted the playtest's 20-frame wait)
+
 ## 2026-11-21 — C15 integ: plaza-only festivals pull the town (Calendar.town_festival_today), gilt_gala -> winter 23, SeasonCal wraps Calendar, crew birthdays on the gang calendar, Crew at festivals, festival row icons/where, talk lines for new festivals, row music stand-ins; test tools/c15_integ_test.gd
 
 ## 2026-11-21 — C14b docs: CONDUCT-14b report, Guide 42, ART-PROMPTS-CONDUCT-14b, TEXTS['14b'], 6 inventory rows (animation core, water features, weather FX, character idles, creature motion, magic FX), PROJECT-MEMORY entry; final CI c14bi pending.

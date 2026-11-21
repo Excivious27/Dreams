@@ -51,5 +51,15 @@ func _run() -> void:
 	TouchControls.ability_pressed = true
 	await _frames(3)
 	check(GameState.run["flags"].has("meow_wait_hint"), "a tap while free uses the ability")
+	# C15 integ: the after-menu input block is frame-bounded too (a fast --fixed-fps
+	# machine used to outlast a 20-frame wait and swallow the playtest's door press).
+	Dialogue.block_until_ms = Time.get_ticks_msec() + 600000  # wall clock "never" passes
+	Dialogue.block_until_frame = Engine.get_process_frames() + 15
+	check(Dialogue.input_blocked(), "input is blocked right after a menu closes")
+	await _frames(16)
+	check(not Dialogue.input_blocked(), "and free again within 15 frames, however fast the machine")
+	Dialogue.block_input(0.25)
+	await _frames(16)
+	check(not Dialogue.input_blocked(), "block_input(0.25) ends by 16 frames")
 	print("ability_tap_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)
