@@ -207,7 +207,7 @@ func _on_session_failed(info: Variant = null, _a: Variant = null) -> void:
 
 func _on_steam_down(_a: Variant = null) -> void:
 	if _open or not _closed:
-		_fail("Lost the connection to Steam.")
+		_fail("Lost the connection to Steam, check that it is online.")
 
 
 ## Owner: a seated guest is gone (session failed or silent).
