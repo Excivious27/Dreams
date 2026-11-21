@@ -1,32 +1,488 @@
 {
- "_": "Campaign lead-in beats (CampaignGate). Merged into story.json's 'both' list by Story.data(). Hand-edited.",
+ "_": "Campaign lead-in beats (CampaignGate). Merged into story.json's 'both' list by Story.data(). Hand-edited. C16b P3: 'penguins'/'gangsters' hold the morning beats after a region opens (win or the long way).",
  "both": [
-  {"id": "campaign_leadin", "title": "Campaigns", "beats": [
-   {"id": "bt_invite_p", "trigger": {"quest_done": "cattopia"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},
-    "lines": [
-     {"who": "Catkins", "text": "One more thing before you go. The Grumps don't just wander: they hold roads, ridges, whole valleys. One brave farmer can't take a valley alone."},
-     {"who": "Catkins", "pic": "cut_drill_catkins", "text": "Cat-topia has had to stand together before, every paw in its place. Come and practise with me in the orchard field: points, helpers, rallies. Nobody gets hurt. Grumps get turned back, not beaten."},
-     {"who": "", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
-    "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training. Campaigns open new regions."}},
-   {"id": "bt_invite_p_late", "trigger": {"scene": "crystal_meadow"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},
-    "lines": [
-     {"who": "Catkins", "text": "Farmer! The Grumps hold the roads out of here. Drill with me before you try to take one: MENU > Map > Campaign map > Training."}],
-    "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training."}},
-   {"id": "bt_invite_g", "trigger": {"quest_done": "gang"}, "when": {"flag": "hideout_seen", "not_flags": ["bt_invited", "bt_trained"]},
-    "lines": [
-     {"who": "", "sfx": "buzz", "text": "The burner phone from the coat buzzes. Not the number that was in it: a new one. It's Sal. Of course Sal has the number."},
-     {"who": "Sal", "text": "Lying low's fine. But the President's people hold every road out of here, and you don't take a road with one pair of fists."},
-     {"who": "Sal", "pic": "cut_drill_sal", "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then I'll show you the real job: the highway out of here."},
-     {"who": "", "pic": "none", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
-    "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you on running a crew in a fight: MENU > Map > Campaign map > Training. Campaigns open new turf."}},
-   {"id": "bt_invite_g_late", "trigger": {"scene": "hideout"}, "when": {"flag": "hideout_seen", "quest": "gang", "not_flags": ["bt_invited", "bt_trained"]},
-    "lines": [
-     {"who": "Sal", "text": "Boss. Before you try for the docks or the highway: a drill with me. MENU > Map > Campaign map > Training. The highway's the real job; I'll show you after."}],
-    "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you: MENU > Map > Campaign map > Training."}},
-   {"id": "bt_ready", "trigger": {"sleep": true}, "when": {"flag": "bt_trained", "not_flag": "bt_ready_note"},
-    "lines": [
-     {"who": "", "text": "You dream of a board covered in little flags. Every region past home has its own campaign, and each one asks for a team and provisions. The campaign map lists what's missing."}],
-    "effects": {"flags": ["bt_ready_note"]}}
-  ]}
+  {
+   "id": "campaign_leadin",
+   "title": "Campaigns",
+   "beats": [
+    {
+     "id": "bt_invite_p",
+     "trigger": {
+      "quest_done": "cattopia"
+     },
+     "when": {
+      "flag": "meow_taught",
+      "not_flags": [
+       "bt_invited",
+       "bt_trained"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Catkins",
+       "text": "One more thing before you go. The Grumps don't just wander: they hold roads, ridges, whole valleys. One brave farmer can't take a valley alone."
+      },
+      {
+       "who": "Catkins",
+       "pic": "cut_drill_catkins",
+       "text": "Cat-topia has had to stand together before, every paw in its place. Come and practise with me in the orchard field: points, helpers, rallies. Nobody gets hurt. Grumps get turned back, not beaten."
+      },
+      {
+       "who": "",
+       "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "bt_invited"
+      ],
+      "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training. Campaigns open new regions."
+     }
+    },
+    {
+     "id": "bt_invite_p_late",
+     "trigger": {
+      "scene": "crystal_meadow"
+     },
+     "when": {
+      "flag": "meow_taught",
+      "not_flags": [
+       "bt_invited",
+       "bt_trained"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Catkins",
+       "text": "Farmer! The Grumps hold the roads out of here. Drill with me before you try to take one: MENU > Map > Campaign map > Training."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "bt_invited"
+      ],
+      "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training."
+     }
+    },
+    {
+     "id": "bt_invite_g",
+     "trigger": {
+      "quest_done": "gang"
+     },
+     "when": {
+      "flag": "hideout_seen",
+      "not_flags": [
+       "bt_invited",
+       "bt_trained"
+      ]
+     },
+     "lines": [
+      {
+       "who": "",
+       "sfx": "buzz",
+       "text": "The burner phone from the coat buzzes. Not the number that was in it: a new one. It's Sal. Of course Sal has the number."
+      },
+      {
+       "who": "Sal",
+       "text": "Lying low's fine. But the President's people hold every road out of here, and you don't take a road with one pair of fists."
+      },
+      {
+       "who": "Sal",
+       "pic": "cut_drill_sal",
+       "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then I'll show you the real job: the highway out of here."
+      },
+      {
+       "who": "",
+       "pic": "none",
+       "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "bt_invited"
+      ],
+      "hint": "Sal will drill you on running a crew in a fight: MENU > Map > Campaign map > Training. Campaigns open new turf."
+     }
+    },
+    {
+     "id": "bt_invite_g_late",
+     "trigger": {
+      "scene": "hideout"
+     },
+     "when": {
+      "flag": "hideout_seen",
+      "quest": "gang",
+      "not_flags": [
+       "bt_invited",
+       "bt_trained"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "Boss. Before you try for the docks or the highway: a drill with me. MENU > Map > Campaign map > Training. The highway's the real job; I'll show you after."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "bt_invited"
+      ],
+      "hint": "Sal will drill you: MENU > Map > Campaign map > Training."
+     }
+    },
+    {
+     "id": "bt_ready",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "bt_trained",
+      "not_flag": "bt_ready_note"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "You dream of a board covered in little flags. Every region past home has its own campaign, and each one asks for a team and provisions. The campaign map lists what's missing."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "bt_ready_note"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "penguins": [
+  {
+   "id": "c16b_regions_p",
+   "title": "Open roads",
+   "beats": [
+    {
+     "id": "c16b_won_wastes",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_wastes",
+      "not_flag": "long_way_wastes"
+     },
+     "lines": [
+      {
+       "who": "Catkins",
+       "text": "The Ember Grumps along the ridge are warm crystals now, glowing in the snow. Nobody had to be scared of that road again."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_wastes"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_wastes",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_wastes"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "We came round by the frozen ridge, under the stars. The Grumps never even looked up. Slow, but nobody got hurt."
+      },
+      {
+       "who": "Catkins",
+       "text": "The campaign's still out there if you want its prizes. No rush."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_wastes"
+      ]
+     }
+    },
+    {
+     "id": "c16b_won_sky",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_sky",
+      "not_flag": "long_way_sky"
+     },
+     "lines": [
+      {
+       "who": "Big Jim",
+       "text": "The great tree's branches are quiet. The Storm Grumps sat down in the clouds and sparkled. Climb it from the forest when you're ready."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_sky"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_sky",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_sky"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Big Jim led you up the inside of the great tree while the Storm Grumps slept. The branches creaked like an old friend."
+      },
+      {
+       "who": "Big Jim",
+       "text": "The campaign's still out there if you want its prizes. No rush."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_sky"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "gangsters": [
+  {
+   "id": "c16b_regions_g",
+   "title": "Open roads",
+   "beats": [
+    {
+     "id": "c16b_won_countryside",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_countryside",
+      "not_flag": "long_way_countryside"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "The back roads hum again. A farmer waves from her porch, and the President's lookouts are nowhere to be seen."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_countryside"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_countryside",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_countryside"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "A trucker owed Sal a favour. You rode out under a tarp in the sleeper cab, and the countryside opened up past the toll booth."
+      },
+      {
+       "who": "Sal",
+       "text": "The campaign's still out there if you want the prize money. Your call, boss."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_countryside"
+      ]
+     }
+    },
+    {
+     "id": "c16b_won_docks",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_docks",
+      "not_flag": "long_way_docks"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "The piers are ours. The fishers tie up without paying anyone, and somebody's already singing on the boardwalk."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_docks"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_docks",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_docks"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "A fisher rowed you in under the piers at night. Nobody on the docks saw a thing. Sal grins: that's how you do it."
+      },
+      {
+       "who": "Sal",
+       "text": "The campaign's still out there if you want the prize money. Your call, boss."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_docks"
+      ]
+     }
+    },
+    {
+     "id": "c16b_won_neon",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_neon",
+      "not_flag": "long_way_neon"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "The signs on the strip flicker to new colours. Shopkeepers stand in their doorways, watching the street like it's theirs again."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_neon"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_neon",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_neon"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Halo mapped the service alleys behind the strip. You slipped through by the bins and the back doors, and the neon district let you in."
+      },
+      {
+       "who": "Sal",
+       "text": "The campaign's still out there if you want the prize money. Your call, boss."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_neon"
+      ]
+     }
+    },
+    {
+     "id": "c16b_won_underground",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_underground",
+      "not_flag": "long_way_underground"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "The pumps run, the tunnels are lit, and the people down here can walk home without looking over their shoulders."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_underground"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_underground",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_underground"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "An old pump worker owed Doc a kindness. A maintenance key, a ladder, a long dark walk, and you're in the underground."
+      },
+      {
+       "who": "Sal",
+       "text": "The campaign's still out there if you want the prize money. Your call, boss."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_underground"
+      ]
+     }
+    },
+    {
+     "id": "c16b_won_uptown",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "campaign_uptown",
+      "not_flag": "long_way_uptown"
+     },
+     "lines": [
+      {
+       "who": "Sal",
+       "text": "Uptown's doormen don't stop you any more. Somewhere up in the tower, the President has noticed."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_uptown"
+      ]
+     }
+    },
+    {
+     "id": "c16b_long_uptown",
+     "trigger": {
+      "sleep": true
+     },
+     "when": {
+      "flag": "long_way_uptown"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Sasha's old cleaning shift pass still works. A clean uniform, a nod at the staff entrance, and Uptown is open to you."
+      },
+      {
+       "who": "Sal",
+       "text": "The campaign's still out there if you want the prize money. Your call, boss."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "c16b_seen_uptown"
+      ]
+     }
+    }
+   ]
+  }
  ]
 }

@@ -6,7 +6,7 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/bot.gd -- <seed> <arc> <playable> <style> <progress> [<difficulty 0-3> <day_len>] <days>
 ##   (C5: the bots.sh / tools/conduct/bot_spec.sh tables give every bot a difficulty and a day length)
 ##
-## style: wander | farmer | fighter | menus | story
+## style: wander | farmer | fighter | menus | story | nowin (C16b: never wins a battle, opens regions by the long way)
 ## progress: 0..5 — how far the story is pushed before starting (flags/quests),
 ##           so late chapters, deep mine floors and the moon get exercised too.
 ## Prints "BOT FAIL ..." for broken invariants and "BOT WARN ..." for suspicious
@@ -74,12 +74,16 @@ func _run() -> void:
 	_apply_progress()
 	print("BOT %d start arc=%s hero=%s style=%s progress=%d difficulty=%d day_len=%d" % [seed_, arc, playable, style, progress, Difficulty.level(), GameState.day_len()])
 	for d in days:
+		if style == "nowin":
+			_nowin_step()
 		var n_scenes := 3 if style != "farmer" else 2
 		for s in n_scenes:
 			var sc := _pick_scene()
 			await _go(sc)
 			await _play_scene(sc)
 		await _sleep_and_roundtrip()
+	if style == "nowin":
+		_nowin_step()
 	for t in Dialogue.audit_log:
 		_warn("menu B can't leave: " + str(t))
 	print("BOT %d done: %d fails, %d warns, %d steps, %d kills, %d ownerless pauses, scenes %s, day %d, ◆%d" % [seed_, fails, warns, steps, kills, Hud.orphan_count, str(scenes_visited.keys()), int(GameState.run["day"]), int(GameState.run["crystals"])])
@@ -549,3 +553,31 @@ func press(action: String, hold_frames: int) -> void:
 func frames(n: int) -> void:
 	for i in n:
 		await process_frame
+
+
+## C16b P3 'nowin' persona: each morning, with real locks, take every long way it
+## can afford (it earns the toll by playing) and check the invariants: nothing is
+## ever marked won, every held region has a long way, a paid long way opens.
+func _nowin_step() -> void:
+	var bp := Campaign.bypass
+	Campaign.bypass = false
+	var reached := 0
+	var total := 0
+	for cid: String in Campaign.for_arc():
+		total += 1
+		var reg := str(Campaign.get_c(cid)["region"])
+		if Campaign.long_way_taken(cid) and not Campaign.region_open(reg):
+			_fail("long way to %s taken but the region is still held" % reg)
+		if not Campaign.region_open(reg):
+			if Campaign.long_way(cid).is_empty():
+				_fail("%s is held and has no long way" % reg)
+			elif Campaign.can_take_long_way(cid):
+				Campaign.take_long_way(cid)
+			elif Campaign.long_way_offerable(cid):
+				_warn("can't afford the long way to %s yet: %s" % [reg, Campaign.long_way_lock(cid)])
+		if Campaign.region_open(reg):
+			reached += 1
+	if not (Campaign.st()["won"] as Dictionary).is_empty():
+		_fail("a nowin bot has a campaign marked won: %s" % str(Campaign.st()["won"].keys()))
+	print("BOT NOWIN reached=%d/%d wins=0" % [reached, total])
+	Campaign.bypass = bp

@@ -85,6 +85,10 @@ func _initialize() -> void:
 				GameState.run["flags"]["hideout_seen"] = true
 			if qid == "clear_meadow" and arc == "gangsters":
 				GameState.run["flags"]["sal_recruited"] = true
+		var ids: Array = Story.beats().map(func(b: Dictionary) -> String: return str(b.get("id", "")))
+		for r2 in (["wastes", "sky"] if arc == "penguins" else ["countryside", "docks", "neon", "underground", "uptown"]):
+			check(("c16b_long_" + r2) in ids and ("c16b_won_" + r2) in ids, "%s: the story notices %s opening (win and long-way beats)" % [arc, r2])
+			check(GameState.run["flags"].has("long_way_" + r2), "%s: long_way_%s flag set for the morning beat" % [arc, r2])
 		check(GameState.progress_tier() >= 4, "%s: progress tier reaches 4 with zero wins (%d)" % [arc, GameState.progress_tier()])
 		# --- every other campaign-held region too ---
 		for cid: String in Campaign.for_arc():
