@@ -32112,56 +32112,56 @@
  },
  "characters/coral_kit_1": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 67,
+   "cell_h": 98,
+   "cell_w": 86,
    "file": "characters/coral_kit_1/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 268
+   "h": 98,
+   "w": 344
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 67,
+   "cell_h": 98,
+   "cell_w": 86,
    "file": "characters/coral_kit_1/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 268
+   "h": 98,
+   "w": 344
   }
  },
  "characters/coral_kit_2": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 70,
+   "cell_h": 100,
+   "cell_w": 82,
    "file": "characters/coral_kit_2/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 280
+   "h": 100,
+   "w": 328
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 70,
+   "cell_h": 100,
+   "cell_w": 82,
    "file": "characters/coral_kit_2/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 280
+   "h": 100,
+   "w": 328
   }
  },
  "characters/coral_kit_3": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 79,
+   "cell_h": 97,
+   "cell_w": 85,
    "file": "characters/coral_kit_3/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 316
+   "h": 97,
+   "w": 340
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 79,
+   "cell_h": 97,
+   "cell_w": 85,
    "file": "characters/coral_kit_3/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 316
+   "h": 97,
+   "w": 340
   }
  },
  "characters/cyber": {
@@ -33136,44 +33136,44 @@
  },
  "characters/elder_brine": {
   "happy": {
-   "cell_h": 106,
-   "cell_w": 98,
+   "cell_h": 107,
+   "cell_w": 99,
    "file": "characters/elder_brine/happy.png",
    "frames": 2,
-   "h": 106,
-   "w": 196
+   "h": 107,
+   "w": 198
   },
   "idle": {
-   "cell_h": 106,
-   "cell_w": 98,
+   "cell_h": 107,
+   "cell_w": 99,
    "file": "characters/elder_brine/idle.png",
    "frames": 4,
-   "h": 106,
-   "w": 392
+   "h": 107,
+   "w": 396
   },
   "sad": {
-   "cell_h": 106,
-   "cell_w": 98,
+   "cell_h": 107,
+   "cell_w": 99,
    "file": "characters/elder_brine/sad.png",
    "frames": 2,
-   "h": 106,
-   "w": 196
+   "h": 107,
+   "w": 198
   },
   "talk": {
-   "cell_h": 106,
-   "cell_w": 98,
+   "cell_h": 107,
+   "cell_w": 99,
    "file": "characters/elder_brine/talk.png",
    "frames": 4,
-   "h": 106,
-   "w": 392
+   "h": 107,
+   "w": 396
   },
   "walk": {
-   "cell_h": 106,
-   "cell_w": 98,
+   "cell_h": 107,
+   "cell_w": 99,
    "file": "characters/elder_brine/walk.png",
    "frames": 4,
-   "h": 106,
-   "w": 392
+   "h": 107,
+   "w": 396
   }
  },
  "characters/elder_cinderpaw": {
@@ -33319,56 +33319,56 @@
  },
  "characters/ember_kit_1": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 70,
+   "cell_h": 97,
+   "cell_w": 91,
    "file": "characters/ember_kit_1/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 280
+   "h": 97,
+   "w": 364
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 70,
+   "cell_h": 97,
+   "cell_w": 91,
    "file": "characters/ember_kit_1/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 280
+   "h": 97,
+   "w": 364
   }
  },
  "characters/ember_kit_2": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 71,
+   "cell_h": 97,
+   "cell_w": 87,
    "file": "characters/ember_kit_2/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 284
+   "h": 97,
+   "w": 348
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 71,
+   "cell_h": 97,
+   "cell_w": 87,
    "file": "characters/ember_kit_2/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 284
+   "h": 97,
+   "w": 348
   }
  },
  "characters/ember_kit_3": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 72,
+   "cell_h": 100,
+   "cell_w": 101,
    "file": "characters/ember_kit_3/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 288
+   "h": 100,
+   "w": 404
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 72,
+   "cell_h": 100,
+   "cell_w": 101,
    "file": "characters/ember_kit_3/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 288
+   "h": 100,
+   "w": 404
   }
  },
  "characters/enforcer": {
@@ -34148,56 +34148,56 @@
  },
  "characters/ice_kit_1": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 100,
+   "cell_w": 88,
    "file": "characters/ice_kit_1/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 100,
+   "w": 352
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 100,
+   "cell_w": 88,
    "file": "characters/ice_kit_1/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 100,
+   "w": 352
   }
  },
  "characters/ice_kit_2": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 99,
+   "cell_w": 104,
    "file": "characters/ice_kit_2/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 99,
+   "w": 416
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 99,
+   "cell_w": 104,
    "file": "characters/ice_kit_2/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 99,
+   "w": 416
   }
  },
  "characters/ice_kit_3": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 91,
+   "cell_h": 97,
+   "cell_w": 87,
    "file": "characters/ice_kit_3/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 364
+   "h": 97,
+   "w": 348
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 91,
+   "cell_h": 97,
+   "cell_w": 87,
    "file": "characters/ice_kit_3/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 364
+   "h": 97,
+   "w": 348
   }
  },
  "characters/jax": {
@@ -34869,56 +34869,56 @@
  },
  "characters/kelp_kit_1": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 125,
+   "cell_h": 101,
+   "cell_w": 108,
    "file": "characters/kelp_kit_1/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 500
+   "h": 101,
+   "w": 432
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 125,
+   "cell_h": 101,
+   "cell_w": 108,
    "file": "characters/kelp_kit_1/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 500
+   "h": 101,
+   "w": 432
   }
  },
  "characters/kelp_kit_2": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 114,
+   "cell_h": 103,
+   "cell_w": 106,
    "file": "characters/kelp_kit_2/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 456
+   "h": 103,
+   "w": 424
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 114,
+   "cell_h": 103,
+   "cell_w": 106,
    "file": "characters/kelp_kit_2/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 456
+   "h": 103,
+   "w": 424
   }
  },
  "characters/kelp_kit_3": {
   "idle": {
-   "cell_h": 96,
-   "cell_w": 118,
+   "cell_h": 103,
+   "cell_w": 110,
    "file": "characters/kelp_kit_3/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 472
+   "h": 103,
+   "w": 440
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 118,
+   "cell_h": 103,
+   "cell_w": 110,
    "file": "characters/kelp_kit_3/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 472
+   "h": 103,
+   "w": 440
   }
  },
  "characters/ladder": {
@@ -62920,28 +62920,28 @@
  },
  "enemies/dark_crystal": {
   "attack": {
-   "cell_h": 139,
-   "cell_w": 170,
+   "cell_h": 142,
+   "cell_w": 174,
    "file": "enemies/dark_crystal/attack.png",
    "frames": 4,
-   "h": 139,
-   "w": 680
+   "h": 142,
+   "w": 696
   },
   "hurt": {
-   "cell_h": 139,
-   "cell_w": 170,
+   "cell_h": 142,
+   "cell_w": 174,
    "file": "enemies/dark_crystal/hurt.png",
    "frames": 2,
-   "h": 139,
-   "w": 340
+   "h": 142,
+   "w": 348
   },
   "idle": {
-   "cell_h": 139,
-   "cell_w": 170,
+   "cell_h": 142,
+   "cell_w": 174,
    "file": "enemies/dark_crystal/idle.png",
    "frames": 4,
-   "h": 139,
-   "w": 680
+   "h": 142,
+   "w": 696
   }
  },
  "enemies/dark_crystal2": {

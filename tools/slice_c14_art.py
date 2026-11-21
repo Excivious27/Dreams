@@ -282,6 +282,44 @@ def redraw_jobs(check, man):
     return made
 
 
+# Merkitty colony kits (c14_17-20: pinholed, and walk was a byte copy of idle): 4 per sheet,
+# one per row, 8 cells = idle x4 (front) + walk x4 (side hop, facing right).
+KIT_SHEETS = {
+    "kits_a.png": ["coral_kit_1", "coral_kit_2", "coral_kit_3", "ice_kit_1"],
+    "kits_b.png": ["ice_kit_2", "ice_kit_3", "ember_kit_1", "ember_kit_2"],
+    "kits_c.png": ["ember_kit_3", "kelp_kit_1", "kelp_kit_2", "kelp_kit_3"],
+}
+
+
+def kit_jobs(check, man):
+    made = []
+    for sheet, ids in KIT_SHEETS.items():
+        src = os.path.join(INC, sheet)
+        if not os.path.exists(src):
+            continue
+        a = load(src)
+        for (y0, y1), cid in zip(row_bands(a, len(ids)), ids):
+            grp = "characters/" + cid
+            ps = cells12(a[y0:y1], 8)
+            old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
+            rh = int((np.array(old)[..., 3] > 40).any(axis=1).sum())
+            s = rh / float(np.median([p.shape[0] for p in ps[:4]]))
+            fr = [shrink(p, (max(1, round(p.shape[1] * s)), max(1, round(p.shape[0] * s)))) for p in ps]
+            cw = max(f.width for f in fr) + 2
+            ch = max(f.height for f in fr) + 1
+            for anim, part in (("idle", fr[:4]), ("walk", fr[4:])):
+                im = strip(part, cw, ch)
+                rel = "%s/%s.png" % (grp, anim)
+                if not check:
+                    dst = os.path.join(GEN, rel)
+                    if os.path.exists(dst):
+                        os.remove(dst)
+                    im.save(dst)
+                    man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": 4, "cell_w": cw, "cell_h": ch}
+                made.append("%s %s x4 %dx%d" % (grp, anim, cw, ch))
+    return made
+
+
 def main():
     check = "--check" in sys.argv
     man = json.load(open(MAN))
@@ -306,6 +344,7 @@ def main():
     made += seamless_jobs(check)
     made += mg_jobs(check, man)
     made += redraw_jobs(check, man)
+    made += kit_jobs(check, man)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)
