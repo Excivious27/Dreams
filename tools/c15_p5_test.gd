@@ -134,6 +134,17 @@ func _run() -> void:
 		for i in 30:
 			await process_frame
 		check((sk._splashes as Array).is_empty(), "clear: splashes gone")
+	# --- fall leaf rustle beyond the forest ---
+	GameState.run["day"] = 2 * GameState.DAYS_PER_SEASON + 5
+	GameState.run["time"] = 12 * 60
+	GameState.run["weather"] = {str(int(GameState.run["day"])): "clear"}
+	var mm: GameMap = await _load("meadow")
+	var amb := Ambience.instance(self)
+	check(amb != null and mm.sky != null, "ambience and sky present")
+	if amb != null and mm.sky != null:
+		mm.sky.weather = "clear"
+		var b: Dictionary = amb._evaluate()
+		check(b.has("leaves"), "fall meadow rustles (%s)" % [b.keys()])
 	# --- sprinkle ---
 	check(Scenery.sprinkle_kind("spring") == "petal_pink" and Scenery.sprinkle_kind("fall") == "leaf_orange", "spring petals, fall leaves")
 	check(Scenery.sprinkle_kind("summer") == "leaf_green" and Scenery.sprinkle_kind("winter") == "snowflake", "summer leaves, winter flurries")
