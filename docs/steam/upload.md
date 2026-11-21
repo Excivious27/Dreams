@@ -27,11 +27,17 @@
   icon, rich presence VDF from P2's data), `--set-ids` to record the ids after the session.
 - Ratings: `docs/steam-store/ratings.md` (Content Survey + IARC answers with evidence, expected ratings),
   `docs/steam-store/ai-disclosure.md`, `docs/steam-store/privacy.md`, kept true by `tools/ratings_facts_check.py`.
-- Game fixes behind the answers: beasts drop no animal parts (Pelt/Game Meat/Bone are now Shed Fur/Trail
+- Game fixes behind the answers: beaten beasts run off instead of the defeat puff (Enemy.is_beast); beasts drop no animal parts (Pelt/Game Meat/Bone are now Shed Fur/Trail
   Rations/Old Antler, hill wolves drop wild herbs, traps are Bramble Brushes that comb shed fur, Rook's lodge has a
   woven rug, pelt rugs became pattern rugs; `tools/animal_rule_test.py`), wine descriptions no longer imply
-  toasting (drink rule now checks descriptions), in-game credits name no family members and match the AI disclosure.
-- `scripts/name_filter.gd` (+ `tools/name_filter_test.gd`): all-ages name filter, ready for the co-op/title hooks.
+  toasting (drink rule now checks descriptions), in-game credits name no family members and match the AI disclosure;
+  Title > Sound and options > Credits and licences shows the credits, the Godot MIT notice and engine components,
+  the symbol-font notice and GodotSteam's notice when the addon ships (scripts/licences.gd); the co-op page says what
+  the relay sees (privacy).
+- `scripts/name_filter.gd` (+ `tools/name_filter_test.gd`): all-ages name filter, hooked into new-game names,
+  ranch animal renames and peers' name labels (received ranch deltas and the relay still to hook).
+- `tools/ai_provenance.py`: the art/music/sound counts behind the AI disclosure (73 shipped audio files still lack a
+  provenance row: mostly synthesized j_* jingles and older effects).
 
 ### Staged (waiting on Tom's Steamworks account)
 

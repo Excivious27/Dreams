@@ -44,6 +44,16 @@ def main():
                 bad.append("room %s places prop %s" % (rid, n))
         if PART.search(str(r.get("intro", ""))):
             bad.append("room %s intro mentions animal parts" % rid)
+    # beaten beasts flee instead of the defeat puff (scripts/enemy.gd is_beast + the flee tween in _die)
+    eg = open(os.path.join(ROOT, "scripts", "enemy.gd")).read()
+    m = re.search(r"func is_beast\(\) -> bool:.*?for w in \[([^\]]*)\]", eg, re.S)
+    words = re.findall(r'"(\w+)"', m.group(1)) if m else []
+    if not m or "is_beast()" not in eg.split("func _die", 1)[-1][:1500]:
+        bad.append("enemy.gd: beaten beasts must flee (is_beast check in _die)")
+    for kind in en.get("enemies", {}):
+        roc = kind.endswith("_roc") and 'ends_with("_roc")' in eg
+        if BEAST.search(kind) and not roc and not any(w in kind for w in words):
+            bad.append("beast %s is not covered by Enemy.is_beast (it would be killed, not driven off)" % kind)
     if not drops:
         bad.append("enemies.json has no drops table (test out of date)")
     for b in bad:

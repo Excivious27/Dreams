@@ -173,6 +173,20 @@ def check():
         bad = [k for k, v in h["ledger"].items() if "PLACEHOLDER" in str(v) and k in ("app_id", "depot_windows", "depot_linux", "builder_account")]
         if bad:
             errs.append("steam-upload enabled while the ledger still has placeholders: %s" % bad)
+    # s1_17-06: rich presence tokens in code and data stay in step (once P2's files exist)
+    rp = os.path.join(ROOT, "data", "rich_presence.json")
+    if os.path.isfile(rp):
+        d = json.load(open(rp))
+        toks = set((d.get("tokens", d) if isinstance(d, dict) else {}).keys())
+        used = set()
+        for fn in os.listdir(os.path.join(ROOT, "scripts")):
+            if fn.endswith(".gd"):
+                used |= set(re.findall(r'"(#Status_\w+)"', open(os.path.join(ROOT, "scripts", fn)).read()))
+        for t in sorted(used - toks):
+            errs.append("rich presence token %s used in scripts but missing from data/rich_presence.json" % t)
+        for t in sorted(t for t in toks if t.startswith("#")):
+            if len(str((d.get("tokens", d))[t])) > 60:
+                errs.append("rich presence %s longer than 60 chars" % t)
     for f in ["steam/templates/app_build.vdf.in", ".github/workflows/steam-upload.yml", ".github/workflows/steam-login.yml", "tools/steam/upload.sh"]:
         if not os.path.exists(os.path.join(ROOT, f)):
             errs.append("missing " + f)

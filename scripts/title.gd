@@ -410,6 +410,7 @@ func _show_net() -> void:
 	_clear()
 	_page.add_child(_label("Play together", 16))
 	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
+	_page.add_child(_label("About co-op: your character's name and look and the world changes go to the players in your room. The server keeps them in memory only and forgets them 30 minutes after the room empties. No accounts, no chat, nothing stored.", 7, false))  # s1_13-08, docs/steam-store/privacy.md
 	# The Dreams server works out of the box; a custom wss:// address can still be typed,
 	# and "Reset to default" puts the Dreams server back.
 	_net_url = _edit("Server (the Dreams server is filled in; change only for your own)", NetNode.server_url())

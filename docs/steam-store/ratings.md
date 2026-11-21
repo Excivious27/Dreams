@@ -29,7 +29,7 @@ Until Tom picks, every answer below is written for Option B with the Option A di
 |---|---|---|
 | Violence | Yes, frequent, player-initiated, stylised. Penguin arc: swords, lances and spells against fantasy creatures (Grumps, slimes, golems, wisps, crystal foes); a calming spell turns some Grumps friendly. Gangster arc: melee weapons and firearms (Six-Shooter, Gold Revolver, Scattergun, Tommy Gun, using "rounds") against thugs, rivals and robots. | data/items.json tools (scattergun, tommy_gun, gold_revolver); audio/sfx/shot*.ogg; scripts/enemy.gd |
 | Blood and gore | None. No blood, gore, dismemberment or bodies: defeated foes vanish in a puff, people are knocked out and wake up, the player is "knocked out" and wakes at the clinic. The Marked never die. | scripts/enemy.gd `_die`; CLAUDE.md content rules |
-| Violence against animals | None. Beasts are driven off and never harvested; nothing drops meat, pelts or bones; farm animals are rehomed, never slaughtered or sold for meat. | tools/animal_rule_test.py; scripts/ranch.gd `rehome` |
+| Violence against animals | None. Beaten beasts (wolves, hounds, crabs, serpents, eels, the roc) turn tail and run off; nothing drops meat, pelts or bones (shed fur combed from brambles instead); farm animals are rehomed, never slaughtered or sold for meat. | tools/animal_rule_test.py; scripts/enemy.gd `is_beast`; scripts/ranch.gd `rehome` |
 | Fear | Mild: spooky wisps and ghosts, a marsh witch, dark mines. No jump scares, no horror. | |
 | Sexual content and nudity | None. Romance is dating and marriage (no gender checks, one partner), with no kissing scenes and no nudity. | scripts/romance.gd |
 | Language | None. No profanity; mild teasing only ("shut up" once, affectionate). | data/*.json scan in ratings_facts_check.py |
@@ -52,7 +52,7 @@ cartoon firearms; simulated casino games played with in-game money only; referen
 
 | Question | Answer |
 |---|---|
-| Users interact online | Yes: optional online co-op, invite by room code (later Steam invites), up to 8 players. No text or voice chat. Player-chosen names (character, town, pet, ranch animals) are visible to co-op partners. Name filter and host kick: **not yet in the game** (s1_13-03 / s1_13-10, staged for the co-op package); answer "no moderation tools" until they ship. |
+| Users interact online | Yes: optional online co-op, invite by room code (later Steam invites), up to 8 players. No text or voice chat. Player-chosen names (character, town, pet, ranch animals) are visible to co-op partners. Typed names pass an all-ages word filter (scripts/name_filter.gd: new-game names, ranch animal renames, and peers' names shown over co-op). Host kick: **not yet in the game** (staged for the co-op package); answer "no moderation tools beyond a name filter" until it ships. |
 | Shares location | No. |
 | Digital purchases | No in-game purchases, no DLC, no ads, no loot boxes. |
 | Unrestricted internet | No. The game only talks to its own co-op relay (and, on web, fetches its own music files). |
@@ -71,11 +71,10 @@ Do NOT enter any PEGI/USK rating in the Steamworks Ratings section unless a real
 
 ## Open items (staged)
 
-- s1_13-03 / s1_13-10: name filter for every typed name + host kick + 6-character room codes. Touches
-  scripts/net.gd, scripts/title.gd, scripts/puppet.gd, scripts/team_animals.gd and server/server.js, which belong to
-  the co-op and title packages this round; `scripts/name_filter.gd` + `tools/name_filter_test.gd` are in the repo
-  ready for those hooks.
-- Beasts still "poof" when beaten (scripts/enemy.gd `_die`); a flee tween for wolf/hound/crab/serpent/eel would
-  match the "driven off" wording better.
+- s1_13-03 / s1_13-10: the name filter is hooked in title.gd (new game), Ranch.rename and puppet labels. Still to
+  hook (co-op package files): clean animal names inside received 'ranch' deltas in scripts/net.gd, mirror the list in
+  server/server.js join, host kick (net.gd message + server handler + Players list), 6-character room codes, a
+  "show other players' names" setting.
+- Steam builds should show Steam persona names and use invite-only Steam lobbies (co-op transport package).
 - Item names "Blood Orange" (fruit), skill "Rare Bloodlines" and "Sal's lifeblood" are harmless but could be renamed
   for a clean "no blood" scan.
