@@ -161,7 +161,7 @@ func _arc(arc: String) -> void:
 	check(TeamAnimals.rename(goat, "  Captain Hooves 99!  ") and TeamAnimals.name_of(goat).length() <= 12 and bool(Ranch.animal(goat).get("named", false)), "one rename path (Ranch.rename): %s" % TeamAnimals.name_of(goat))
 	check(TeamAnimals.suggest_name(cow) != "", "name suggestion")
 	check(TeamAnimals.tint(goat) is Color, "tint")
-	GameState.run["energy"] = 3
+	GameState.run["energy"] = 0  # C16a P3: lessons go through spend_for (work until 0)
 	Ranch.animal(goat)["friend"] = 900
 	Ranch.animal(goat)["lessons"] = {}
 	GameState.add_item("carrot", 3)

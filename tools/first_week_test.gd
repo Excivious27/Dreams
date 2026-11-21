@@ -1,5 +1,5 @@
 extends SceneTree
-const F_TRIES := [0, 10, 8]  # C16a P3: measured keeper thresholds, floors 1-2 (energy_bands.json)
+const F_TRIES := [0, 10, 11]  # C16a P3: measured keeper thresholds, floors 1-2 (energy_bands.json)
 ## First week, both arcs (headless, GameState API only): a modest phone player
 ## plays days 1-7 and the money/energy curve is checked against the pacing we
 ## want (generous but purposeful), then the faint/clinic/sleep rules are checked.

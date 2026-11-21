@@ -1554,7 +1554,7 @@ static func gear_stat(stat: String) -> int:
 ##   floor (~90 for three); hoeing, planting and watering 15 tiles is ~27. The
 ##   keeper thresholds on floors 1-3 (mine.gd, P4) decide how many rocks a floor
 ##   really asks. tools/first_week_test.gd models a week with these numbers.
-const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 6.0}
+const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 8.0}
 const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building", "spar": "combat", "teach": "ranching"}
 const ENERGY_BASE := 120
 ## C16a P3: no action ever costs less than this share of its base (was 0.25).

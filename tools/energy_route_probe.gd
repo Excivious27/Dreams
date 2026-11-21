@@ -37,7 +37,12 @@ func _run() -> void:
 		var hi := 0
 		for s in SEEDS:
 			GameState.run["mine_floor"] = fl
-			GameState.run["mine_pace"] = {}
+			# The game rolls the keeper pace from the clock: roll it here from a fixed
+			# seed (same table, MineKeepers.roll_pace) so the probe repeats exactly.
+			var prng := RandomNumberGenerator.new()
+			prng.seed = 500 + s * 13 + fl
+			GameState.run["mine_pace"] = {"%d_%d" % [fl, int(GameState.run["day"])]: MineKeepers.roll_pace(fl, prng, [])}
+			GameState.run["mine_pace_last"] = []
 			GameState.run["mine_thresh"] = {}
 			(load("res://scripts/mine.gd") as Variant).force_seed = 1000 + s * 37 + fl
 			GameMap.next_spawn = Vector2.ZERO
