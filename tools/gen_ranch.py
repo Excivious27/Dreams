@@ -101,13 +101,13 @@ BUILDINGS = {
     'barn': [dict(tier=1, cap=4, adds=[], pen=[31, 6, 4, 3]),
              dict(tier=2, cap=8, adds=['feeder', 'breeding'], pen=[31, 5, 4, 4]),
              dict(tier=3, cap=12, adds=['feeder', 'breeding', 'auto_water', 'heater'], pen=[30, 5, 6, 4])],
-    'hutch': [dict(tier=1, cap=4, adds=['breeding'], pen=[20, 9, 3, 2]),
-              dict(tier=2, cap=8, adds=['breeding', 'feeder', 'heater'], pen=[20, 9, 4, 2])],
-    'sty': [dict(tier=1, cap=2, adds=[], pen=[20, 5, 3, 2]),
-            dict(tier=2, cap=4, adds=['breeding', 'feeder'], pen=[20, 5, 4, 2])],
-    'apiary': [dict(tier=1, cap=2, adds=[], pen=[16, 5, 2, 1]),
-               dict(tier=2, cap=4, adds=['breeding'], pen=[16, 5, 4, 1]),
-               dict(tier=3, cap=6, adds=['breeding'], pen=[16, 5, 6, 1])],
+    'hutch': [dict(tier=1, cap=4, adds=['breeding'], pen=[40, 15, 3, 2]),  # pens on open ground east of the track (c11b_05-01)
+              dict(tier=2, cap=8, adds=['breeding', 'feeder', 'heater'], pen=[40, 15, 4, 2])],
+    'sty': [dict(tier=1, cap=2, adds=[], pen=[46, 15, 3, 2]),
+            dict(tier=2, cap=4, adds=['breeding', 'feeder'], pen=[46, 15, 4, 2])],
+    'apiary': [dict(tier=1, cap=2, adds=[], pen=[29, 19, 2, 1]),
+               dict(tier=2, cap=4, adds=['breeding'], pen=[29, 19, 4, 1]),
+               dict(tier=3, cap=6, adds=['breeding'], pen=[29, 19, 6, 1])],
 }
 HOME_SPACE = {'coop': 1, 'barn': 1.5, 'hutch': 0.75, 'sty': 1.5, 'apiary': 1}  # min cells per animal (pen check)
 

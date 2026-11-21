@@ -208,7 +208,7 @@ func _plan_fences() -> void:
 		h_name = str(fs[0]); v_name = str(fs[1]); gate = str(fs[2])
 	var specs: Array = []
 	for home: String in _ranch_homes():
-		if not Builds.is_built(home):
+		if not Builds.is_built(Ranch.build_of(home)):
 			continue
 		var pr := pen_of(home)
 		if pr.size == Vector2i.ZERO:
@@ -373,6 +373,7 @@ func _make_river() -> void:
 		return y
 	var keep_out := {}  # never under a building (built or not yet), the house, pens, the pond's bank or the track
 	keep_out.merge(cells_of([house_r.grow(2), pen_of("coop").grow(1), pen_of("barn").grow(1), GameState.GREENHOUSE_PLOT.grow(1), Rect2i(0, 28, cols, 4)]))
+	keep_out.merge(_pen_cells())  # every built ranch pen (hutch, sty, apiary...), not just coop and barn (c11b_05-01)
 	for bid: String in Builds.all():
 		var bd: Dictionary = Builds.all()[bid]
 		if bd.has("cell"):
@@ -566,6 +567,7 @@ func _place_debris() -> void:
 			var ch := int(cbd.get("h", 1))
 			for kc: Vector2i in cells_of([Rect2i(cc0.x - 1, cc0.y - ch + 1, int(cbd.get("w", 0)) + 3, ch + 2)]):
 				keep_clear[kc] = true  # the crew's site: footprint, sign and front
+	keep_clear.merge(_pen_cells())  # every built ranch pen and its gate (hutch, sty, apiary too: c11b_05-01)
 	for y in range(1, rows - 1):
 		for x in range(1, cols - 1):
 			var c := Vector2i(x, y)
@@ -1849,22 +1851,31 @@ func _coop(sel: String) -> void:
 	var day := int(GameState.run["day"])
 	var egg_sp := RanchFarm.hatch_species(sel) if GameState.count(sel) > 0 else ""
 	if RanchFarm.uses_roster("coop") and Ranch.capacity("coop") > 0:
-		for e in RanchFarm.incubator():
+		# One incubator for every egg in ranch.json (breed.egg): the hatchling goes to its species' home (c11b_01-03, 05-07).
+		var home := RanchFarm.egg_home(sel) if egg_sp != "" else "coop"
+		if home == "":
+			home = "coop"
+		for e in RanchFarm.incubator(home):
 			if e is Dictionary and RanchFarm.egg_day(e) > day:
 				var left := RanchFarm.egg_day(e) - day
 				hud.toast("An egg is warming: %d more day%s." % [left, "" if left == 1 else "s"])
 				return
-		if RanchFarm.coop_room() <= 0:
-			hud.toast("The coop is full (%d/%d). A bigger coop or rehoming a bird makes room." % [Ranch.roster("coop").size(), Ranch.capacity("coop")])
-			return
 		if egg_sp == "":
-			hud.toast("The incubator takes a hen's or a duck's egg: hold one and tap the coop.")
+			hud.toast("The incubator takes an egg: hold one and tap it.")
+			return
+		if not RanchFarm.has_incubator(home):
+			hud.toast("The incubator for that egg comes with the %s." % RanchFarm.incubator_tier_name(home))
+			return
+		if RanchFarm.room_for_egg(home) <= 0:
+			var hn := str(Builds.current_def(Ranch.build_of(home)).get("name", home))
+			hud.toast("The %s is full (%d/%d). A bigger one or rehoming an animal makes room." % [hn, Ranch.roster(home).size(), Ranch.capacity(home)])
 			return
 		var why := Ranch.incubate(sel)  # the one incubator path (C11a integ): Ranch hatches it overnight
 		if why != "":
 			hud.toast(why)
 			return
-		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(RanchFarm.incubator()[-1]) - day))
+		var inc := RanchFarm.incubator(home)
+		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(inc[-1]) - day) if not inc.is_empty() else RanchFarm.hatch_days(egg_sp))
 		return
 	var hatch: Array = GameState.run.get("coop_hatch", [])
 	var growing := 0
@@ -1888,7 +1899,7 @@ func _coop(sel: String) -> void:
 
 
 func _egg_in(sp: String, days: int) -> void:
-	hud.toast("The egg is in the incubator. A %s in %d days." % ["duckling" if sp == "duck" else ("chick" if sp == "chicken" else "baby"), days], Color(0.9, 1, 0.8))
+	hud.toast("The egg is in the incubator. A %s in %d day%s." % [RanchFarm.baby_word(sp), days, "" if days == 1 else "s"], Color(0.9, 1, 0.8))
 	Music.instance(get_tree()).sfx("pop", "pickup")
 	get_tree().create_timer(0.3, false).timeout.connect(func() -> void: Music.instance(get_tree()).sfx("cluck", "critter"))
 
@@ -2652,7 +2663,7 @@ func _place_incubator() -> void:
 	var day := int(GameState.run["day"])
 	var hatched := false
 	var warming := false
-	var eggs: Array = RanchFarm.incubator() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
+	var eggs: Array = RanchFarm.all_eggs() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
 	for e in eggs:
 		var d := RanchFarm.egg_day(e)
 		warming = warming or d > day
@@ -2674,7 +2685,7 @@ func _spawn_roster(builds: Dictionary) -> void:
 		if not born.is_empty():
 			_hatch_news(born)
 	for home: String in _ranch_homes():
-		if not builds.has(home) or not RanchFarm.uses_roster(home):
+		if not (builds.has(home) or builds.has(Ranch.build_of(home))) or not RanchFarm.uses_roster(home):
 			continue
 		var pen := pen_of(home)
 		var ids := Ranch.roster(home)
@@ -2684,6 +2695,15 @@ func _spawn_roster(builds: Dictionary) -> void:
 			var a := Ranch.animal(uid)
 			if bool(a.get("team", false)) and not bool(a.get("home_today", false)):
 				continue  # out with the team (P4): not in the pen twice (c11a_09)
+			# ranch.json look first: variant art, tint, baby strip and height (Ranch.art_for; c11b_01-10).
+			var ra := Ranch.art_for(uid)
+			var rg := str(ra.get("group", ""))
+			if rg != "" and (Art.has(rg, "idle") or Art.has(rg, str(ra.get("strip", "idle")))):
+				var fa := FarmAnimal.new()
+				fa.set_meta("uid", uid)
+				fa.setup_uid(self, uid, cells[i], pen)
+				add_child(fa)
+				continue
 			var adult := RanchFarm.is_adult(uid)
 			var kind := RanchFarm.art_for(str(a.get("species", "")), adult, str(a.get("variant", "")))
 			_animal(kind, cells[i], pen, not adult, "", uid)
@@ -2708,7 +2728,7 @@ func pen_of(home: String) -> Rect2i:
 func _hatch_news(names: Array) -> void:
 	if hud == null or names.is_empty():
 		return
-	var text := ("%s hatched in the coop!" % str(names[0])) if names.size() == 1 else ("%d chicks hatched in the coop!" % names.size())
+	var text := ("%s hatched!" % str(names[0])) if names.size() == 1 else ("%d little ones hatched!" % names.size())
 	get_tree().create_timer(1.2, false).timeout.connect(func() -> void:
 		if is_instance_valid(hud):
 			hud.toast(text, Color(0.9, 1, 0.8))
@@ -2738,7 +2758,7 @@ func _read_decor_cells() -> Dictionary:
 func _pen_cells() -> Dictionary:
 	var out := {}
 	for home: String in _ranch_homes():
-		if not Builds.is_built(home):
+		if not Builds.is_built(Ranch.build_of(home)):
 			continue
 		var pr := pen_of(home)
 		if pr.size == Vector2i.ZERO:

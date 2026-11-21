@@ -23,6 +23,8 @@ func _initialize() -> void:
 	_empty_data()
 	_indoors_rule()
 	_migration()
+	_pen_layout()
+	_incubator_view()
 	print("ranch_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails > 0 else 0)
 
@@ -212,3 +214,64 @@ func _indoors_rule() -> void:
 	GameState.run["time"] = GameState.sunset() + 60
 	check(Ranch.indoors(c) and Ranch.indoors(h), "after sunset: everyone goes in")
 	GameState.run["time"] = 12 * 60
+
+
+## Every pen of every tier sits on open ground (c11b_05-01): never inside a farmhouse tier, another
+## home's pen, another building's footprint, the greenhouse bed, the north track (x36) or the terrace.
+func _pen_layout() -> void:
+	var blds: Dictionary = Ranch.data()["buildings"]
+	var pens: Array = []  # [home, tier, rect]
+	for home in blds:
+		for row in (blds[home] as Array):
+			var p: Array = (row as Dictionary).get("pen", [])
+			if p.size() == 4:
+				pens.append([str(home), int(row["tier"]), Rect2i(int(p[0]), int(p[1]), int(p[2]), int(p[3]))])
+	var farm_s: GDScript = load("res://scripts/farm.gd")
+	var houses: Dictionary = farm_s.get_script_constant_map()["HOUSE_TIERS"]
+	for pe in pens:
+		var r: Rect2i = pe[2]
+		var who := "%s tier %d pen %s" % [pe[0], pe[1], str(r)]
+		for t in houses:
+			check(not r.intersects(houses[t]["rect"]), "%s clear of farmhouse tier %d" % [who, t])
+		check(not r.intersects(GameState.GREENHOUSE_PLOT.grow(1)), "%s clear of the greenhouse bed" % who)
+		check(not r.intersects(Rect2i(36, 0, 1, 60)), "%s off the north track" % who)
+		check(not r.intersects(Rect2i(38, 0, 34, 12)), "%s not up on the terrace" % who)
+		for pe2 in pens:
+			if pe2[0] != pe[0]:
+				check(not r.intersects(pe2[2]), "%s clear of %s tier %d pen" % [who, pe2[0], pe2[1]])
+		var own := Ranch.build_of(str(pe[0]))
+		for bid in Builds.all():
+			var bd: Dictionary = Builds.all()[bid]
+			if bid == own or not bd.has("cell") or Ranch.data()["buildings"].has(str(bd.get("ranch", ""))) and str(bd.get("ranch", "")) == str(pe[0]):
+				continue
+			if str(bd.get("ranch", "")) != "" or bid in ["hutch", "sty"]:
+				continue  # other ranch homes' buildings move with their pens (gen_stations, P1 c11b_05-02)
+			var w := maxi(1, int(bd.get("w", 1)))
+			var h := maxi(1, int(bd.get("h", 1)))
+			var fp := Rect2i(int(bd["cell"][0]), int(bd["cell"][1]) - h + 1, w, h)
+			check(not r.intersects(fp), "%s clear of %s at %s" % [who, bid, str(fp)])
+
+
+## The incubator is a view over Ranch (c11b_01-03, 05-07): eggs come from breed.egg, warm in their
+## species' home, and RanchFarm sees Ranch's own entries.
+func _incubator_view() -> void:
+	_fresh("penguins")
+	GameState.run["builds"] = {"coop": 2, "barn": 1}
+	Ranch.migrate()
+	for sid in Ranch.data()["species"]:
+		var br: Variant = Ranch.species(sid).get("breed", null)
+		if br is Dictionary and str((br as Dictionary).get("egg", "")) != "":
+			check(RanchFarm.hatch_species(str(br["egg"])) == sid, "breed.egg %s hatches %s" % [br["egg"], sid])
+			check(RanchFarm.hatch_days(sid) == maxi(1, int(br.get("days", 3))), "%s warms breed.days" % sid)
+			check(RanchFarm.egg_home(str(br["egg"])) == str(Ranch.species(sid)["home"]), "%s egg goes to its home" % sid)
+	check(RanchFarm.hatch_species("milk") == "", "milk is not an egg")
+	check(RanchFarm.incubator_homes().has("coop"), "Big Coop has an incubator")
+	check(RanchFarm.incubator_tier_name("coop") != "", "incubator tier name (%s)" % RanchFarm.incubator_tier_name("coop"))
+	GameState.add_item("duck_egg", 1)
+	check(Ranch.incubate("duck_egg") == "", "duck egg in")
+	check(RanchFarm.incubator("coop").size() == 1 and RanchFarm.all_eggs().size() == 1, "RanchFarm sees Ranch's entry")
+	check(RanchFarm.room_for_egg("coop") == Ranch.room("coop") - 1, "room counts warming eggs")
+	var due := RanchFarm.egg_day(RanchFarm.incubator("coop")[0])
+	var names := RanchFarm.hatch_due(due)
+	check(names.size() == 1 and RanchFarm.all_eggs().is_empty(), "due egg hatches through RanchFarm (%s)" % str(names))
+	check(RanchFarm.baby_word("duck") == "duckling" and RanchFarm.baby_word("cow").begins_with("baby"), "baby words")
