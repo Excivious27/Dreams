@@ -43621,9 +43621,9 @@
    "cell_h": 48,
    "cell_w": 39,
    "file": "characters/npc_drifter/walk_up.png",
-   "frames": 3,
+   "frames": 4,
    "h": 48,
-   "w": 117
+   "w": 156
   },
   "wave": {
    "cell_h": 48,

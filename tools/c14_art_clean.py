@@ -201,6 +201,23 @@ def debleed(a, cw):
     return out if n else None
 
 
+# frames (c14_17-09): rebuild a strip from some of its own frames (Drifter's walk_up ended
+# on a side-facing pose: back0, back1, back0, back1).
+REFRAME = {"characters/npc_drifter/walk_up.png": [0, 1, 0, 1]}
+
+
+def reframe(rel, order):
+    grp, nm = rel.rsplit("/", 1)
+    info = MAN[grp][nm[:-4]]
+    a = np.array(Image.open(os.path.join(GEN, rel)).convert("RGBA"))
+    cw = int(info["cell_w"])
+    if int(info.get("frames", 1)) == len(order):
+        return None, info
+    out = np.concatenate([a[:, i * cw:(i + 1) * cw] for i in order], axis=1)
+    info = dict(info, frames=len(order), w=cw * len(order))
+    return out, info
+
+
 def hole_files():
     for k, most in HOLES.items():
         p = os.path.join(GEN, k)
@@ -266,7 +283,19 @@ def main():
             pairs.append((a, out))
             if not dry:
                 write(rel, out)
-    for rel, info in ([] if kind in ("holes", "fringe", "bleed") else files(kind)):
+    if kind == "frames":
+        for rel, order in REFRAME.items():
+            out, info = reframe(rel, order)
+            if out is None:
+                continue
+            print(rel)
+            if not dry:
+                write(rel, out)
+                grp, nm = rel.rsplit("/", 1)
+                MAN[grp][nm[:-4]] = info
+                with open(os.path.join(GEN, "manifest.json"), "w") as fh:
+                    json.dump(MAN, fh, indent=1, sort_keys=True)
+    for rel, info in ([] if kind in ("holes", "fringe", "bleed", "frames") else files(kind)):
         if rel in seen or not os.path.exists(os.path.join(GEN, rel)):
             continue
         seen.add(rel)
