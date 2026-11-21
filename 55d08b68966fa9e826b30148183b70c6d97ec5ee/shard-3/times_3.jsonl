@@ -1,0 +1,38 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 77.3}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 15.5}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 4.2}
+{"step": 16, "name": "S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s", "rc": 0, "secs": 0.3}
+{"step": 22, "name": "touch_ui_test", "rc": 0, "secs": 39.8}
+{"step": 28, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 5.1}
+{"step": 34, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.8}
+{"step": 40, "name": "rec_reno_test", "rc": 0, "secs": 2.8}
+{"step": 46, "name": "farm_week_test", "rc": 0, "secs": 5.7}
+{"step": 52, "name": "anim_test", "rc": 0, "secs": 3.1}
+{"step": 58, "name": "ranch_p2_test", "rc": 0, "secs": 2.8}
+{"step": 64, "name": "early_gating_test", "rc": 0, "secs": 4.7}
+{"step": 70, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 15.1}
+{"step": 76, "name": "Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (", "rc": 0, "secs": 0.0}
+{"step": 82, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.6}
+{"step": 88, "name": "danger_music_test", "rc": 0, "secs": 27.9}
+{"step": 94, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.1}
+{"step": 100, "name": "every script compiles", "rc": 0, "secs": 3.8}
+{"step": 106, "name": "quest_tracker_test", "rc": 0, "secs": 4.1}
+{"step": 112, "name": "battle_drill_flow_test", "rc": 0, "secs": 8.9}
+{"step": 118, "name": "skill_glow_test", "rc": 0, "secs": 4.2}
+{"step": 124, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 12.0}
+{"step": 130, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 9.7}
+{"step": 136, "name": "jumper_test", "rc": 0, "secs": 3.0}
+{"step": 142, "name": "C12 story conditions: hero-as-character lines, choice payoffs, watcher", "rc": 0, "secs": 3.5}
+{"step": 148, "name": "C12 P2: gangster story text matches state", "rc": 0, "secs": 3.0}
+{"step": 154, "name": "C11b P6: battle line-up and team jobs", "rc": 0, "secs": 2.8}
+{"step": 160, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 3.1}
+{"step": 166, "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)", "rc": 0, "secs": 11.3}
+{"step": 172, "name": "S1 P2: achievements, stats, rich presence", "rc": 0, "secs": 0.0}
+{"step": 178, "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve", "rc": 0, "secs": 8.7}
+{"step": 184, "name": "deck window: 1280x800 with no window manager fills the screen (xvfb)", "rc": 0, "secs": 12.4}
+{"step": 190, "name": "C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand", "rc": 0, "secs": 0.6}
+{"step": 196, "name": "C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, i", "rc": 0, "secs": 1.8}
+{"step": 202, "name": "C14 P3: beach marina (tiers, routes, passages, charters, both arcs)", "rc": 0, "secs": 6.4}
+{"step": 208, "name": "town props (C14 P2)", "rc": 0, "secs": 7.4}
+{"step": 214, "name": "mine_life_test (C14b P2: mine drips, lamp motes, fire lamps)", "rc": 0, "secs": 3.5}
+{"step": 220, "name": "creature idle life (C14b P6)", "rc": 0, "secs": 4.7}
