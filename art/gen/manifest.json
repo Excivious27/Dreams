@@ -29236,9 +29236,19 @@
    "h": 135,
    "w": 112
   },
+  "c14p2_chandlery_gang": {
+   "file": "buildings/c14p2_chandlery_gang.png",
+   "h": 144,
+   "w": 112
+  },
   "c14p2_fish_market": {
    "file": "buildings/c14p2_fish_market.png",
    "h": 131,
+   "w": 112
+  },
+  "c14p2_fish_market_gang": {
+   "file": "buildings/c14p2_fish_market_gang.png",
+   "h": 140,
    "w": 112
   },
   "c14p2_greenhouse": {
@@ -29249,6 +29259,11 @@
   "c14p2_ticket_office": {
    "file": "buildings/c14p2_ticket_office.png",
    "h": 135,
+   "w": 112
+  },
+  "c14p2_ticket_office_gang": {
+   "file": "buildings/c14p2_ticket_office_gang.png",
+   "h": 145,
    "w": 112
   },
   "chapel": {

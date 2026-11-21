@@ -134,7 +134,7 @@ func _run() -> void:
 			if day == 1:  # c14_03-13: Harbour Row: the town grew south, the beach road still meets the exit
 				_ok(t.rows == 124 and t.BEACH_EXIT.position.y == 122, "%s: town is 124 rows, beach exit at the new south edge" % tag)
 				for b: String in ["c14p2_fish_market", "c14p2_chandlery", "c14p2_ticket_office"]:
-					_ok(t.get("_bprops").any(func(e: Array) -> bool: return str(e[0]) == b), "%s: Harbour Row has %s" % [tag, b])
+					_ok(t.get("_bprops").any(func(e: Array) -> bool: return str(e[0]).begins_with(b)), "%s: Harbour Row has %s" % [tag, b])
 				_ok(not t.blocked.has(Vector2i(40, 120)) and _reach2b(t, Vector2i(40, 120), Vector2i(40, 60)), "%s: beach arrival walks up the avenue to the plaza" % tag)
 			if day == 1:  # c14_03-13: the Mayor's garden maze is walkable to its heart and gives its keepsake once
 				var pc: Vector2i = t.MAZE_AT + Vector2i(4, 4)

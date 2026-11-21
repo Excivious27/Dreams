@@ -111,13 +111,15 @@ def garden():
 
 
 def harbour():
-    """Harbour Row buildings (1x, like the town's): fish market, chandlery, ticket office."""
-    rgba, rows = C.sheet_rows(INC + "/harbour.png", merge=6, min_area=3000)
-    pieces = sorted([b for r in rows for b in r], key=lambda b: (b[2] - b[0]) * (b[3] - b[1]), reverse=True)[:3]
-    pieces.sort(key=lambda b: b[0])
-    assert len(pieces) == 3, pieces
-    for nm, b in zip(["c14p2_fish_market", "c14p2_chandlery", "c14p2_ticket_office"], pieces):
-        _rm_save(C.piece(rgba, C.tight(rgba, b), w=112), "buildings", nm)
+    """Harbour Row buildings (1x, like the town's): fish market, chandlery, ticket office;
+    <id>_gang: the gangster arc's docks-end twins (warehouse market, neon chandlery, taxi rank)."""
+    for file, suf in [("harbour.png", ""), ("harbour_gang.png", "_gang")]:
+        rgba, rows = C.sheet_rows(INC + "/" + file, merge=6, min_area=3000)
+        pieces = sorted([b for r in rows for b in r], key=lambda b: (b[2] - b[0]) * (b[3] - b[1]), reverse=True)[:3]
+        pieces.sort(key=lambda b: b[0])
+        assert len(pieces) == 3, pieces
+        for nm, b in zip(["c14p2_fish_market", "c14p2_chandlery", "c14p2_ticket_office"], pieces):
+            _rm_save(C.piece(rgba, C.tight(rgba, b), w=112), "buildings", nm + suf)
 
 
 STEPS = [flagstones, cobbles, mosaic, props, snow, garden, harbour]

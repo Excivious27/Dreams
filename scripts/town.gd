@@ -1185,7 +1185,8 @@ func _harbour() -> void:
 	for nm: String in signs:
 		var at: Vector2i = signs[nm][0]
 		if Art.has("buildings", nm):
-			building(nm, at)
+			var look := nm + "_gang" if not GameState.is_penguins() and Art.has("buildings", nm + "_gang") else nm
+			building(WorldGen.winter_look("buildings", look), at)
 			var w := int(round(float(Art.info("buildings", nm).get("w", 112)) / TILE))
 			set_thing(at.x + w / 2 + 2, 109, {"type": "sign", "text": str(signs[nm][1]), "hint": "A: read the sign"}, false)
 	for x in range(12, 66, 8):
