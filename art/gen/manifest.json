@@ -115913,6 +115913,21 @@
    "file": "props/c15p5_planter2_asters_fall.png",
    "h": 106,
    "w": 94
+  },
+  "c15p5_hedge2_pot_winter": {
+   "file": "props/c15p5_hedge2_pot_winter.png",
+   "h": 100,
+   "w": 76
+  },
+  "c15p5_topiary_c_winter": {
+   "file": "props/c15p5_topiary_c_winter.png",
+   "h": 56,
+   "w": 29
+  },
+  "c15p5_hedge2_tree_s_winter": {
+   "file": "props/c15p5_hedge2_tree_s_winter.png",
+   "h": 93,
+   "w": 72
   }
  },
  "riding": {

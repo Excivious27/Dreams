@@ -13,7 +13,7 @@ extends SceneTree
 var fails := 0
 
 const FOLIAGE := ["c14p2_tree_planter", "c14p2_rose_arbour", "c14p2_flower_kiosk", "c14p2_cafe_umbrella", "c14p2_bench_curved", "c14p2_bench_iron",
-	"planter2_0", "planter2_1", "planter2_2", "planter2_3", "flowerbed_pink", "topiary_a", "topiary_b", "hedge2_h", "hedge2_ball", "hedge2_tree", "city_street_tree"]
+	"planter2_0", "planter2_1", "planter2_2", "planter2_3", "flowerbed_pink", "topiary_a", "topiary_b", "hedge2_h", "hedge2_ball", "hedge2_tree", "hedge2_tree_s", "hedge2_pot", "topiary_c", "city_street_tree"]
 ## Foliage with no winter twin yet (art queue): reported, not failed.
 const WINTER_ALLOW := []
 
