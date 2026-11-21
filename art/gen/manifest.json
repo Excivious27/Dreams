@@ -153460,6 +153460,11 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
+  },
+  "buff2_stamina": {
+   "file": "ui/buff2_stamina.png",
+   "w": 26,
+   "h": 32
   }
  },
  "ui_creator": {

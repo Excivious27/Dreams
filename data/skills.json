@@ -128,11 +128,11 @@
     {
      "id": "quick_hands",
      "name": "Quick Hands",
-     "desc": "Hoeing and watering cost 15% less energy (per rank)",
+     "desc": "Hoeing and watering cost 5% less energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "farm_energy": 0.15
+      "farm_energy": 0.05
      },
      "row": 1
     },
@@ -593,12 +593,12 @@
     {
      "id": "mining_0_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -712,12 +712,12 @@
     {
      "id": "mining_1_9",
      "name": "Endurance",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -834,11 +834,11 @@
     {
      "id": "iron_will",
      "name": "Iron Will",
-     "desc": "Mining costs 15% less energy (per rank)",
+     "desc": "Mining costs 5% less energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "mine_energy": 0.15
+      "mine_energy": 0.05
      },
      "row": 3
     },
@@ -1181,12 +1181,12 @@
     {
      "id": "foraging_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -1296,12 +1296,12 @@
     {
      "id": "foraging_2_9",
      "name": "Early Riser",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -1370,9 +1370,12 @@
     {
      "id": "keeper_of_the_woods",
      "name": "Keeper of the Woods",
-     "desc": "Chopping costs no energy",
+     "desc": "Chopping costs half the energy",
      "ranks": 1,
      "tier": 6,
+     "effect": {
+      "wood_energy": 0.5
+     },
      "row": 3
     },
     {
@@ -2246,20 +2249,20 @@
     },
     {
      "id": "combat_3_1",
-     "name": "Battle Cry",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 3,
+     "name": "Sturdy Frame",
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "kill_energy": 1
+      "hp": 2
      }
     },
     {
      "id": "combat_3_2",
      "name": "Hunter's Eye",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 3,
+     "desc": "+1 energy back per foe beaten",
+     "ranks": 1,
      "tier": 2,
      "row": 3,
      "effect": {
@@ -2268,13 +2271,13 @@
     },
     {
      "id": "combat_3_3",
-     "name": "Chain Fighter",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 3,
+     "name": "Drills",
+     "desc": "+2% faster levelling in this skill",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "kill_energy": 1
+      "xp_gain": 0.02
      }
     },
     {
@@ -2289,11 +2292,11 @@
     {
      "id": "second_wind",
      "name": "Second Wind",
-     "desc": "Beating an enemy restores 5 energy (per rank)",
+     "desc": "Beating an enemy restores 2 energy (per rank)",
      "ranks": 2,
      "tier": 5,
      "effect": {
-      "kill_energy": 5
+      "kill_energy": 2
      },
      "row": 3
     },
@@ -2311,8 +2314,8 @@
     {
      "id": "combat_3_7",
      "name": "Adrenaline",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 2,
+     "desc": "+1 energy back per foe beaten",
+     "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
@@ -2322,12 +2325,12 @@
     {
      "id": "combat_3_8",
      "name": "Fury",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 2,
+     "desc": "+3% critical hit chance",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "kill_energy": 1
+      "crit": 0.03
      }
     },
     {
@@ -3484,12 +3487,12 @@
     {
      "id": "magic_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -3601,12 +3604,12 @@
     {
      "id": "magic_2_9",
      "name": "Endurance",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -3991,12 +3994,12 @@
     {
      "id": "pup_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -4115,12 +4118,12 @@
     {
      "id": "pup_2_9",
      "name": "Early Riser",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -4810,12 +4813,12 @@
     {
      "id": "strategist_0_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -5832,12 +5835,12 @@
     {
      "id": "hustle_1_9",
      "name": "Empire Ledger",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -5947,12 +5950,12 @@
     {
      "id": "hustle_2_9",
      "name": "Second Wind",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {

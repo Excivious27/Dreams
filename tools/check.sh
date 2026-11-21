@@ -1394,3 +1394,19 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P3: energy (energy_check bands, Tom's day-1 mine route on real layouts, energy fixes) =="
+python3 tools/energy_check.py | grep -E "ROUTE|BAR|FAIL|energy_check:" || true
+if ! python3 tools/energy_check.py > /dev/null; then
+  echo "energy_check failed"; exit 1
+fi
+c16ep="$("$GODOT" --headless --path . -s res://tools/energy_route_probe.gd -- 40 2>&1)"
+echo "$c16ep" | grep -E "FLOOR|ROUTE|FAIL|SCRIPT ERROR|energy_route_probe" || true
+if echo "$c16ep" | grep -q "SCRIPT ERROR" || ! echo "$c16ep" | grep -q "energy_route_probe: OK"; then
+  echo "C16a energy route probe failed"; exit 1
+fi
+c16et="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_energy_test.gd 2>&1)"
+echo "$c16et" | grep -E "FAIL|SCRIPT ERROR|c16a_energy_test" || true
+if echo "$c16et" | grep -q "SCRIPT ERROR" || ! echo "$c16et" | grep -q "c16a_energy_test: 0 failures"; then
+  echo "C16a energy test failed"; exit 1
+fi

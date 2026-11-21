@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd
+
 ## 2026-11-21 — C15 integ CI fix 2: NPC chats never stop someone mid-walk and a chat re-paths them home (volunteer stranded on the road); Dialogue.input_blocked frame-bounded (fast CI outlasted the playtest's 20-frame wait)
 ## 2026-11-21 — C15 seasons docs: CONDUCT-15 report (350 findings, 6 packages + hooks + first-week weather fix, 50 images, ACE 0), Guide 43 (Seasons section, 1 new call: bug net + critter log), ART-PROMPTS-CONDUCT-15, TEXTS['15'], 7 new inventory rows (calendar, festival year, seasonal goods, seasonal fish/critters, villager seasons, seasonal look, weather by save), PROJECT-MEMORY C15 entry; final CI c15i pending
 

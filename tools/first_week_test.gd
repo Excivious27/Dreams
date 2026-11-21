@@ -1,4 +1,5 @@
 extends SceneTree
+const F_TRIES := [0, 10, 11]  # C16a P3: measured keeper thresholds, floors 1-2 (energy_bands.json)
 ## First week, both arcs (headless, GameState API only): a modest phone player
 ## plays days 1-7 and the money/energy curve is checked against the pacing we
 ## want (generous but purposeful), then the faint/clinic/sleep rules are checked.
@@ -190,15 +191,18 @@ func _week(arc: String) -> void:
 		_sell("minnow", 2)
 		_sell("carp", 1)
 		GameState.add_xp("fishing", 12)
-		# 6. Mine from day 3: two floors (about 10 stone rocks at the real swing
-		# count, 3 with the wood pick at level 1, 40 sword swings, 4 dodges each).
+		# 6. Mine from day 3: floors 1 and 2 with the keeper thresholds measured on
+		# real layouts (C16a P3: data/energy_bands.json route.floor_tries, from
+		# tools/energy_route_probe.gd: ~10 and ~8 tries; 1 rock in 6 is ore), at the
+		# real swing counts, plus 40 sword swings and 4 dodges a floor.
 		if d >= 3:
 			if not GameState.has_quest("clear_meadow"):
 				GameState.tick_quests()
 			GameState.complete_quest("clear_meadow")
 			for fl in 2:
-				for i in 10 * GameState.hits_for(2, "pickaxe"):
-					GameState.spend_for("pickaxe")
+				for i in F_TRIES[fl + 1]:
+					for s in GameState.hits_for(4 if i % 6 == 5 else 2, "pickaxe"):
+						GameState.spend_for("pickaxe")
 				for i in 40:
 					GameState.spend_for("sword")
 				for i in 4:

@@ -212,7 +212,7 @@ NO_TAIL = {"ranching", "farming"}
 # end a little over the cap: the last few ranks bought are then dead). Keep in step with
 # GameState.TREE_HP_CAP / TREE_EN_CAP / TEAM_XP_CAP (MAX_LEVEL 100; level effects
 # stop at level 20 via GameState.skill_level_eff).
-TREE_TOTAL_CAPS = {"hp": 200, "energy": 120}
+TREE_TOTAL_CAPS = {"hp": 200, "energy": 60}  # energy: C16a P3 (was 120, = GameState.TREE_EN_CAP)
 TOTAL_FLOOR = {"hp": 2, "energy": 2}  # a scaled filler rank never drops below this (a +1 node reads as junk)
 TEAM_XP_CAP = 0.25
 # Columns from here on never get "faster levelling": by then it buys nothing (c8_05).

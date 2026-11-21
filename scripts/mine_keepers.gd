@@ -12,6 +12,8 @@ class_name MineKeepers
 ## Pace buckets: w = weight, thr = multiplier on the floor's digging threshold,
 ## secs = seconds on the floor before it can wake.
 const EARLY_THR_MAX := 1.15
+## C16a P3: floors 1-3 never roll a long/marathon wait in seconds either (was uncapped: 120-320 s).
+const EARLY_SECS_MAX := 110.0
 const PACES := {
 	"quick": {"w": 26, "thr": [0.3, 0.5], "secs": [4.0, 16.0]},
 	"normal": {"w": 36, "thr": [0.8, 1.15], "secs": [35.0, 80.0]},
@@ -99,6 +101,7 @@ static func roll_pace(floor_no: int, rng: RandomNumberGenerator, last: Array) ->
 	var secs := rng.randf_range(float(p["secs"][0]), float(p["secs"][1]))
 	if floor_no <= 3:
 		thr = minf(thr, EARLY_THR_MAX)  # C8 P4: no long/marathon keeper wait on floors 1-3 (3-swing rocks)
+		secs = minf(secs, EARLY_SECS_MAX)
 	if floor_no == 1:
 		# Tom (earlier): floor 1's keeper came up far too easily. Floor 1 is never quick.
 		thr = maxf(thr, 0.85)

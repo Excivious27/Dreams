@@ -194,7 +194,8 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 static func on_enter(m: GameMap) -> void:
 	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]):
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
-		var got := GameState.extra_energy(int(GameState.run["max_energy"]))
+		var got := GameState.extra_energy(40)  # C16a P3: one bowl like Bram's soup (was a full bar)
+		GameState.heal_points(20)
 		m.hud.toast("Mama Rosa left a hot plate out for you. +%d energy." % got if got > 0 else "Mama Rosa left a hot plate out for you. You're too full to eat.", Color(1, 0.9, 0.6))
 	if on() and m.scene_id() == "hideout":
 		season_word(m)
@@ -342,7 +343,7 @@ static func training(m: GameMap) -> void:
 	await d.finished
 	if d.last_choice != 0 or done:
 		return
-	if not GameState.spend_energy(10):
+	if not GameState.spend_for("spar"):  # C16a P3: skill-discounted, works until 0 (was a flat 10)
 		m.hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		Music.instance(m.get_tree()).sfx("nope")
 		return
