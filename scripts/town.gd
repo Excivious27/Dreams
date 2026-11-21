@@ -706,17 +706,24 @@ func _lantern_float(key: String) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(GameState.run["day"]) * 31 + 7
 	var clear := 0
-	for snag in ["a floating branch", "the old bridge post"]:
+	# C15 P6 (c15_06-02/03): read the water: the ripples tell you the clear side (no more coin flip);
+	# from year 2 a third snag, the lantern boats.
+	var snags: Array = ["a floating branch", "the old bridge post"]
+	if FestivalWords.year_of(int(GameState.run["day"])) >= 2:
+		snags.append("the lantern boats moored mid-river")
+	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
+	if snags.size() == 3:
+		lines = [lines[0], lines[1], "Your lantern weaves past two of them and sails on.", "Your lantern threads all three and leads the whole river of lights out under the bridge. People clap."]
+	for snag: String in snags:
 		var safe := rng.randi() % 2
 		var c := Dialogue.instance(get_tree())
-		c.say([{"text": "Your lantern bobs toward %s. The current tugs it..." % snag, "choice": ["Nudge it left", "Nudge it right", "Let it drift"], "key": ""}])
+		c.say([{"text": "Your lantern bobs toward %s. %s" % [snag, ["Smooth water runs down its left side; the right side churns.", "The left side churns white; there's a smooth run on the right."][safe]], "choice": ["Nudge it left", "Nudge it right", "Let it drift"], "key": ""}])
 		await c.finished
 		if c.last_choice == safe or (c.last_choice == 2 and rng.randf() < 0.5):
 			clear += 1
 			hud.toast("Clear!", Color(1, 0.95, 0.6))
 		else:
 			hud.toast("Bump! It wobbles on.", Color(1, 0.8, 0.6))
-	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
 	await say([{"text": lines[clear] + FestivalWords.lantern_tail()}])
 	if GameState.is_night():
 		Music.instance(get_tree()).sfx("fireworks", "levelup")
@@ -724,7 +731,7 @@ func _lantern_float(key: String) -> void:
 			FestivalSky.of(self).fireworks(player.position)  # C14b P3 (c14b_18-02c)
 	else:
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
-	var gain := 3 + clear
+	var gain := mini(5, 3 + clear)
 	GameState.grow_vital(wish, gain)
 	hud.toast("Max %s +%d" % [{"hp": "health", "energy": "energy", "mana": "mana"}[wish], gain], Color(0.8, 0.9, 1.0))
 	fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
