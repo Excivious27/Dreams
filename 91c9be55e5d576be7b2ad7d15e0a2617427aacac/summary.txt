@@ -1,0 +1,15 @@
+CONDUCT CI FAIL  91c9be55e5  (ci/s1p5b-d7ff2e0e, run 44865612006)
+
+subset run: shards [1, 6], bots off, playtest on
+check shards (2/2):
+  shard 1: FAIL  403s  failed: C11b P5: chores rework (hay, spots, value cap, regions, levels), team 
+  shard 6: FAIL  373s  failed: gang_flavour_test, every sound the game asks for exists
+playtest: PASS  59s  21 screenshots (results playtest/shots/)
+RELAY: ok, 131ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 18s
+
+longest job: 403s
+slowest check steps: import 245.1s; import 86.1s; smoke test 56.0s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.8s; crop_test 36.0s; danger_music_test 30.7s; menu sweep: every menu button, both arcs (C2) 26.1s; saves: first run, slots, opening Skip, reopen at early milestones, old 20.8s
+distinct errors/fails/warns:
+    2  FAIL moon cow has its own pitched moo
+    1  FAIL ranch: 'crystal' in "Crystal Hen"

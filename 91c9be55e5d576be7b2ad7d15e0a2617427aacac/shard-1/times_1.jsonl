@@ -1,0 +1,28 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 86.1}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 56.0}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.2}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.8}
+{"step": 20, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.2}
+{"step": 26, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 1, "secs": 3.3}
+{"step": 32, "name": "rec_links_test", "rc": 0, "secs": 3.3}
+{"step": 38, "name": "coop_test", "rc": 0, "secs": 3.3}
+{"step": 44, "name": "crop_test", "rc": 0, "secs": 36.0}
+{"step": 50, "name": "ranch_test", "rc": 0, "secs": 3.7}
+{"step": 56, "name": "cf_layout_test", "rc": 0, "secs": 11.0}
+{"step": 62, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.9}
+{"step": 68, "name": "Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (", "rc": 0, "secs": 0.0}
+{"step": 74, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.6}
+{"step": 80, "name": "danger_music_test", "rc": 0, "secs": 30.7}
+{"step": 86, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.7}
+{"step": 92, "name": "every script compiles", "rc": 0, "secs": 4.4}
+{"step": 98, "name": "quest_tracker_test", "rc": 0, "secs": 4.9}
+{"step": 104, "name": "campaign_words_test", "rc": 0, "secs": 3.5}
+{"step": 110, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 20.8}
+{"step": 116, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 9.9}
+{"step": 122, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 26.1}
+{"step": 128, "name": "rec_games_test", "rc": 0, "secs": 3.4}
+{"step": 134, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 5.9}
+{"step": 140, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 3.3}
+{"step": 146, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.8}
+{"step": 152, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.2}
+{"step": 158, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 3.5}

@@ -1,0 +1,189 @@
+{
+ "sha": "91c9be55e5d576be7b2ad7d15e0a2617427aacac",
+ "ref": "ci/s1p5b-d7ff2e0e",
+ "run": "44865612006",
+ "finished": 1795235446.2331393,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 10,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 10,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 131,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 18s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 131ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 59,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "d7ff2e0eb9e177c4aed49caf4ae549da00be2e1a",
+  "label": "s1p5b",
+  "branch": "s1f/p5",
+  "shards": [
+   1,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 403,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 403,
+   "failed_steps": [
+    "C11b P5: chores rework (hay, spots, value cap, regions, levels), team "
+   ]
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 373,
+   "failed_steps": [
+    "gang_flavour_test",
+    "every sound the game asks for exists"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL moon cow has its own pitched moo",
+   2
+  ],
+  [
+   "FAIL ranch: 'crystal' in \"Crystal Hen\"",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 245.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 86.1
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 56.0
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.8
+  },
+  {
+   "step": 44,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 36.0
+  },
+  {
+   "step": 80,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 30.7
+  },
+  {
+   "step": 122,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 26.1
+  },
+  {
+   "step": 110,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 20.8
+  },
+  {
+   "step": 37,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 20.2
+  },
+  {
+   "step": 146,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 11.8
+  },
+  {
+   "step": 56,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 62,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 10.9
+  },
+  {
+   "step": 116,
+   "name": "mega regions: map tabs, unlocks, travel",
+   "rc": 0,
+   "secs": 9.9
+  },
+  {
+   "step": 121,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 9.8
+  },
+  {
+   "step": 79,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.7
+  }
+ ]
+}
