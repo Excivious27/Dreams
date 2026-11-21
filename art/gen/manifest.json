@@ -155205,6 +155205,16 @@
    "file": "ui/card_gcap_wastes.png",
    "w": 764,
    "h": 322
+  },
+  "c16bp1_mend": {
+   "file": "ui/c16bp1_mend.png",
+   "w": 28,
+   "h": 28
+  },
+  "c16bp1_barrage": {
+   "file": "ui/c16bp1_barrage.png",
+   "w": 27,
+   "h": 28
   }
  },
  "ui_creator": {

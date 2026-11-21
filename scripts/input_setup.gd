@@ -82,7 +82,7 @@ const PAD_NAMES := {
 	"switch": {JOY_BUTTON_A: "B", JOY_BUTTON_B: "A", JOY_BUTTON_X: "Y", JOY_BUTTON_Y: "X", JOY_BUTTON_LEFT_SHOULDER: "L", JOY_BUTTON_RIGHT_SHOULDER: "R", JOY_BUTTON_BACK: "-", JOY_BUTTON_START: "+", JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", "lt": "ZL", "rt": "ZR"},
 }
 ## What the touch pad calls each action (TouchControls.BUTTONS labels).
-const TOUCH_WORDS := {"a": "USE", "action": "CHECK", "menu": "MENU", "dodge": "ROLL", "pup": "CALL", "tool": "USE", "b": "B", "ability": "♥", "rally": "RALLY"}
+const TOUCH_WORDS := {"a": "USE", "action": "CHECK", "menu": "MENU", "dodge": "ROLL", "pup": "CALL", "tool": "USE", "b": "B", "ability": "♥", "rally": "HELPERS"}
 
 ## What the bindings page shows, in Stardew's order, with Stardew's labels.
 const SHOWN := [
@@ -90,7 +90,7 @@ const SHOWN := [
 	["tool", "Use Tool"], ["action", "Action"], ["b", "Run"], ["menu", "Menu"],
 	["journal", "Journal"], ["map", "Map"], ["cycle_tool", "Shift Toolbar"],
 	["cycle_back", "Toolbar Back"], ["dodge", "Dodge"], ["ability", "Partner Ability"], ["pup", "Pup Command"],
-	["rally", "Battle Rally"],
+	["rally", "Helpers: orders"],
 	["a", "Confirm (mobile A)"],
 	["slot_1", "Toolbar 1"], ["slot_2", "Toolbar 2"], ["slot_3", "Toolbar 3"], ["slot_4", "Toolbar 4"],
 	["slot_5", "Toolbar 5"], ["slot_6", "Toolbar 6"], ["slot_7", "Toolbar 7"], ["slot_8", "Toolbar 8"],

@@ -104,6 +104,7 @@ var _act_t := 0.0   # the action pose plays for a moment after each zap / heal /
 var act := "striker"       # the job it does (kinds()[kind].act)
 var team_id := ""          # a mustered ally (make_team): their id, else ""
 var team_name := ""
+var rank_dmg := 0  # C16b P1 hook: an ally's rank adds to their hit (Battle.apply_rank)
 var team_dmg := 0          # a team animal's own bite (TeamAnimals.stats dmg: lesson ranks count), 0 = people
 var team_spd := 1.0
 var tag_row := 0           # team name tags alternate rows so neighbours never overlap
@@ -201,7 +202,7 @@ func strike_damage() -> int:
 	var bonus := int(GameState.bonus("strategist", "helper_damage"))
 	if team_dmg > 0:
 		return mini(team_dmg + GameState.progress_tier() / 2, 2 + GameState.progress_tier()) + bonus
-	return (2 if team_id == "" else 3) + GameState.progress_tier() + bonus
+	return (2 if team_id == "" else 3) + GameState.progress_tier() + bonus + rank_dmg
 
 
 func label() -> String:
@@ -249,7 +250,7 @@ func _process(delta: float) -> void:
 	var want := home
 	# Early fights: with no order given, the team pushes on its own (Battle sets team_push).
 	var pushing := team_id != "" and map.has_meta("team_push") and not map.has_meta("rally_pos") and not map.has_meta("follow_me")
-	var following := not pushing and (map.has_meta("follow_me") or (team_id != "" and not map.has_meta("rally_pos")))
+	var following := not pushing and (map.has_meta("follow_me") or (team_id != "" and not map.has_meta("rally_pos") and not map.has_meta("team_hold")))  # C16b P1 hook: Hold here holds the team at home
 	if following:
 		# Following you means following you, fight or no fight (team members always
 		# walk with you unless sent to a point: they have no post of their own).

@@ -1475,3 +1475,10 @@ echo "$c16bp5out" | grep -E "FAIL|c16b_p5_test" || true
 if ! echo "$c16bp5out" | grep -q "c16b_p5_test: 0 fails"; then
   echo "C16b P5 campaign content test failed"; exit 1
 fi
+
+echo "== C16b P1: battle commands, army building, allies (hold holds the team, MEND/BARRAGE, upkeep, ranks) =="
+c16bp1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/battle_army_test.gd 2>&1)"
+echo "$c16bp1out" | grep -E "FAIL|SCRIPT ERROR|battle_army_test" || true
+if echo "$c16bp1out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp1out" | grep -q "battle_army_test: OK"; then
+  echo "C16b P1 battle army test failed"; exit 1
+fi
