@@ -5,6 +5,11 @@ stdin lines:  <name> <kind music|jingle|kit|raw> <song_id> <download_url> [song_
 Raw files go to $ACE_RAW (default /home/claude/work/ace_raw). audio/ACE_LOG.json keeps
 every version id, the chosen one and its score, so any track can be swapped later:
     python3 tools/ace_batch.py --swap <name>   (imports the other version)
+    python3 tools/ace_batch.py --alt <src> <new>  (imports src's NON-chosen version as <new>;
+        logs {kind, chosen, versions, alt_of: src}; prints the id to re-download if the raw is gone)
+    ... | python3 tools/ace_batch.py --pair [--suffix _2]   (stdin import; when the second take
+        also passes the accept rule it becomes <name>_2 with alt_of: <name>)
+Accept rule for a second take: score >= ACCEPT (60) and within 15 of the chosen take.
 """
 import json, os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +18,41 @@ RAW = os.environ.get("ACE_RAW", "/home/claude/work/ace_raw")
 LOG = os.path.join(ROOT, "audio", "ACE_LOG.json")
 sys.path.insert(0, HERE)
 import ace_pick
+
+ACCEPT = 60.0      # minimum ace_pick score for a non-chosen take to become a rotation partner
+ACCEPT_GAP = 15.0  # ... and no more than this far below the chosen take
+
+
+def accept_alt(best, other):
+    b = best.get("score", {}).get("score", 0.0)
+    o = other.get("score", {}).get("score", -1e9)
+    return o >= ACCEPT and o >= b - ACCEPT_GAP
+
+
+def alt_entry(log, src, new, other):
+    """ACE_LOG row for <new> = the non-chosen take <other> of <src>."""
+    e = log[src]
+    return {"kind": e["kind"], "chosen": other["id"], "versions": [dict(other)],
+            "alt_of": src, "note": f"second take of {src}"}
+
+
+def do_alt(log, src, new):
+    e = log.get(src)
+    if not e:
+        print(f"--alt: {src} is not in ACE_LOG"); return 2
+    others = [v for v in e["versions"] if v["id"] != e["chosen"]]
+    if not others:
+        print(f"--alt: {src} has no other version"); return 2
+    other = max(others, key=lambda v: v.get("score", {}).get("score", -1e9))
+    if not os.path.exists(other["file"]):
+        print(f"--alt: raw gone, re-download {other['id']} with download_song to {other['file']}"); return 3
+    if "score" not in other:
+        other["score"] = ace_pick.score(other["file"])
+    imp(new, e["kind"], other["file"])
+    log[new] = alt_entry(log, src, new, other)
+    save_log(log)
+    print(f"{new}: imported {other['id']} (alt_of {src}, score {other['score']['score']})")
+    return 0
 
 def load_log():
     return json.load(open(LOG)) if os.path.exists(LOG) else {}
@@ -64,6 +104,10 @@ def main():
         e = log[sys.argv[2]]
         other = [v for v in e["versions"] if v["id"] != e["chosen"]][0]
         e["chosen"] = other["id"]; imp(sys.argv[2], e["kind"], other["file"]); save_log(log); return
+    if len(sys.argv) > 3 and sys.argv[1] == "--alt":
+        sys.exit(do_alt(log, sys.argv[2], sys.argv[3]))
+    pair = "--pair" in sys.argv
+    suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else "_2"
     groups = {}
     for line in sys.stdin:
         p = line.split()
@@ -87,6 +131,13 @@ def main():
         if prev:
             log[name]["previous"] = prev
         imp(name, kind, best["file"])
+        if pair:
+            rest = [v for v in vers if v is not best]
+            if rest and accept_alt(best, max(rest, key=lambda v: v["score"]["score"])):
+                other = max(rest, key=lambda v: v["score"]["score"])
+                imp(name + suffix, kind, other["file"])
+                log[name + suffix] = alt_entry(log, name, name + suffix, other)
+                print(f"{name + suffix}: second take {other['id']} score {other['score']['score']}")
         print(f"{name}: chose {best['id']} score {best['score']['score']} (others: " +
               ", ".join(str(v['score']['score']) for v in vers if v is not best) + ")")
     save_log(log)

@@ -13,8 +13,12 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | animal_show | music |  |
 | arc_gangsters | music |  |
 | arc_penguins | music |  |
+| arcade_gallery | music | https://acemusic.ai/song/jt3g4zxu9p8b |
 | arcade_hall | music | https://acemusic.ai/song/rdqqmx6iybpx |
 | arcade_jumper | music | https://acemusic.ai/song/8ar5jhqydzs5 |
+| arcade_stack | music | https://acemusic.ai/song/au6fct8zme3r |
+| arcade_whack | music | https://acemusic.ai/song/2seybxhbe797 |
+| bakery | music | https://acemusic.ai/song/96q2im97gy77 |
 | battle | music | https://acemusic.ai/song/awb4pde7wdpz |
 | battle_escort | music | https://acemusic.ai/song/v2wmrg9ddny4 |
 | battle_escort_gang | music | https://acemusic.ai/song/v7nz572744pb |
@@ -39,9 +43,13 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | boss_aurum | music | https://acemusic.ai/song/hwpanzrvrn4y |
 | boss_coalbrook | music | https://acemusic.ai/song/mer98nus8mhc |
 | boss_colossus | music | https://acemusic.ai/song/ryg2k9ye575w |
+| boss_dark_crystal | music | https://acemusic.ai/song/ru8w4xqgenbk |
+| boss_dark_crystal_2 | music | https://acemusic.ai/song/zrimxr5736af |
 | boss_gang | music | https://acemusic.ai/song/7hdexihve9dw |
 | boss_light_eater | music | https://acemusic.ai/song/fvd5bjxxzq83 |
 | boss_penguin | music | https://acemusic.ai/song/pcjzxg3xvzgt |
+| boss_president | music | https://acemusic.ai/song/2hxp2hz2dt4y |
+| boss_president_2 | music | https://acemusic.ai/song/fvqmy4k4ksrq |
 | boss_roc | music | https://acemusic.ai/song/6hwi9ce78bfe |
 | boss_thornmother | music | https://acemusic.ai/song/9ginx57bm6j7 |
 | boss_wyrm | music | https://acemusic.ai/song/atpp3atsvheg |
@@ -49,6 +57,7 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | campaign_map | music | https://acemusic.ai/song/evhyjcywh88j |
 | campaign_map_gang | music | https://acemusic.ai/song/vag7quwqs6xw |
 | campaign_map_gang_2 | music | https://acemusic.ai/song/r4x5gqgvkr6s |
+| casino | music | https://acemusic.ai/song/4v4wg487zja4 |
 | cattopia | music | https://acemusic.ai/song/vvzy8uy55v8x |
 | cattopia_2 | music |  |
 | chapel | music | https://acemusic.ai/song/vrmzwkxjyvej |
@@ -69,12 +78,16 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | countryside | music | https://acemusic.ai/song/ny7pm4tqju5a |
 | credits | once | https://acemusic.ai/song/px9ergikphz6 |
 | danger | music | https://acemusic.ai/song/d8mam4n6c4ts |
-| date_evening | music | https://acemusic.ai/song/56ixpcrrwjsr |
+| danger_gang | music | https://acemusic.ai/song/9g5hwquinw7t |
+| date_evening | music | https://acemusic.ai/song/xm7fiiyzbt27 |
+| date_evening_gang | music | https://acemusic.ai/song/6f6xtgwixt4w |
+| deuce_arcade | music | https://acemusic.ai/song/5i9kaygbjzia |
 | docks | music | https://acemusic.ai/song/j6494uferehi |
 | docks_2 | music | https://acemusic.ai/song/kkafi2su2uaa |
 | ending_gangster | once | https://acemusic.ai/song/dwdcy9se7a66 |
 | ending_penguin | once | https://acemusic.ai/song/yb4awtjgr59m |
 | farm | music | https://acemusic.ai/song/qdqecpre6gv2 |
+| farm_after | music | https://acemusic.ai/song/uhj9uy7specr |
 | farm_fall | music | https://acemusic.ai/song/dkvfz8sxv6d2 |
 | farm_fall_gang | music |  |
 | farm_fall_gang_2 | music |  |
@@ -83,8 +96,11 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | farm_summer | music |  |
 | farm_winter_gang | music |  |
 | festival | music | https://acemusic.ai/song/gj7ju8yps8yj |
+| festival_egg | music | https://acemusic.ai/song/c84jbnswfuru |
+| festival_lantern | music | https://acemusic.ai/song/fe7wrseqnrqp |
 | festival_night | music | https://acemusic.ai/song/r8gc2ma49rz8 |
 | festival_night_2 | music | https://acemusic.ai/song/zhrfbrpv479h |
+| festival_star | music | https://acemusic.ai/song/jmt449hxat4p |
 | finargle | music | https://acemusic.ai/song/nfesspv2vjd3 |
 | finargle_2 | music |  |
 | forest | music |  |
@@ -95,22 +111,32 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | hollow_heart | music | https://acemusic.ai/song/x95ajiu3sfmd |
 | house | music | https://acemusic.ai/song/pyq9qeiakksx |
 | house_2 | music | https://acemusic.ai/song/iqr96dyxjbtn |
+| house_gang | music | https://acemusic.ai/song/9umj2rqywknf |
 | inn | music | https://acemusic.ai/song/6yx6mmbkm23z |
 | inn_2 | music |  |
+| inn_gang | music | https://acemusic.ai/song/y5by2nnhn8ft |
 | jin_battle | raw | https://acemusic.ai/song/p4e9fqksdmhz |
 | jin_bright | raw | https://acemusic.ai/song/uzqe2yr4ryzi |
+| jin_casino | raw | https://acemusic.ai/song/cmsd3yeqswdm |
 | jin_disc | raw | https://acemusic.ai/song/57sqjphieair |
+| jin_gang_a | raw | https://acemusic.ai/song/eitgm9fyykhz |
+| jin_gang_b | raw | https://acemusic.ai/song/wekqjsagtzjm |
+| jin_gang_c | raw | https://acemusic.ai/song/bu9r7c2486p7 |
+| jin_gang_d | raw | https://acemusic.ai/song/uiy3iu5rrb3f |
 | jin_warm | raw | https://acemusic.ai/song/f8cjpzis4izs |
 | jukebox_oldie | music | https://acemusic.ai/song/t5jqvugac8y9 |
 | jungle | music | https://acemusic.ai/song/h3y96gvehikq |
 | keeper | music | https://acemusic.ai/song/76txe3nudk8z |
+| keeper_2 | music | https://acemusic.ai/song/2xragx67rfv9 |
 | kit_bells | raw | https://acemusic.ai/song/zz572cuqw6rh |
+| kit_gang_ui | raw | https://acemusic.ai/song/xjgcrkp6zt4s |
 | kit_marimba | raw | https://acemusic.ai/song/4x2wh259yxt8 |
 | lake | music |  |
 | lake_fall | music |  |
 | lake_fall_2 | music |  |
 | lake_gang | music |  |
 | lake_winter | music |  |
+| library | music | https://acemusic.ai/song/m9g6wmv89xy4 |
 | marked | music | https://acemusic.ai/song/bxw4sitt3c9m |
 | marsh | music |  |
 | marsh_2 | music |  |
@@ -149,6 +175,18 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | merkitty_song | once | https://acemusic.ai/song/hdm2pbsr7u52 |
 | mine | music | https://acemusic.ai/song/gue87adqakpd |
 | mine_deep | music | https://acemusic.ai/song/ykcnig7rmjn5 |
+| mood_comic | music | https://acemusic.ai/song/irpawbbkykv8 |
+| mood_comic_gang | music | https://acemusic.ai/song/myg3s8gmrngv |
+| mood_mystery | music | https://acemusic.ai/song/iiiuecxd6wvg |
+| mood_mystery_gang | music | https://acemusic.ai/song/4qetdd8id7v7 |
+| mood_sad | music | https://acemusic.ai/song/s4dgfgn9z766 |
+| mood_sad_gang | music | https://acemusic.ai/song/vhnadusfb6jh |
+| mood_tender | music | https://acemusic.ai/song/degsbf73v2p4 |
+| mood_tender_gang | music | https://acemusic.ai/song/se443vnmewqr |
+| mood_tense | music | https://acemusic.ai/song/cvk97m8vm8sd |
+| mood_tense_gang | music | https://acemusic.ai/song/4iicfykkttyb |
+| mood_triumph | music | https://acemusic.ai/song/dmk8waw87de6 |
+| mood_triumph_gang | music | https://acemusic.ai/song/jimv2xk2qmsb |
 | moon | music | https://acemusic.ai/song/zmird3g8txum |
 | morning | music |  |
 | mountain | music | https://acemusic.ai/song/9jbp9gwcgmqn |
@@ -156,9 +194,11 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | mountain_fall_2 | music |  |
 | mountain_gang | music |  |
 | mountain_winter | music |  |
+| museum | music | https://acemusic.ai/song/z3z4uwpkevpz |
 | neon | music | https://acemusic.ai/song/7d6vre5q3fe7 |
 | neon_2 | music |  |
 | neon_night | music |  |
+| net_cafe | music | https://acemusic.ai/song/p326h47s637z |
 | night | music |  |
 | night_gang | music |  |
 | night_summer | music |  |
@@ -179,8 +219,6 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | rain | music |  |
 | rain_2 | music |  |
 | rain_gang | music |  |
-
-| rain | music | https://acemusic.ai/song/y7xdgde87bp8 |
 | ranch | music | https://acemusic.ai/song/g2nb7pvhtcyt |
 | rec_center | music | https://acemusic.ai/song/kv8pmgk64bhe |
 | ruins | music | https://acemusic.ai/song/edbnbft4geyb |
@@ -199,6 +237,7 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | title_musicbox | music | https://acemusic.ai/song/xx6ywzchyfdf |
 | town | music | https://acemusic.ai/song/3ai5yh9iia8n |
 | town_2 | music | https://acemusic.ai/song/ |
+| town_after | music | https://acemusic.ai/song/kg36sapimscp |
 | town_fall | music |  |
 | town_fall_2 | music |  |
 | town_gang | music |  |
@@ -206,6 +245,7 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | town_winter | music |  |
 | town_winter_2 | music |  |
 | town_winter_gang | music |  |
+| trading_post | music | https://acemusic.ai/song/zthtjwee3hwn |
 | underground | music | https://acemusic.ai/song/xedgark9qydx |
 | uptown | music | https://acemusic.ai/song/tarq7dev5wbn |
 | uptown_night | music |  |
@@ -214,6 +254,7 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | wedding_gang | music | https://acemusic.ai/song/fezjtrxm87dg |
 | winter | music | https://acemusic.ai/song/7d6g6jhyxw5p |
 | winter_gang | music |  |
+| workshop | music | https://acemusic.ai/song/m6bdx2eprrug |
 
 ## Recorded sound effects and ambience: CC0
 

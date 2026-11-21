@@ -100,5 +100,21 @@
  "uptown": 6.16,
  "uptown_night": 7.32,
  "wastes": 9.1,
- "wedding": 6.04
+ "wedding": 6.04,
+ "arcade_gallery": 6.18,
+ "boss_dark_crystal": 7.12,
+ "boss_dark_crystal_2": 9.4,
+ "festival_egg": 7.4,
+ "festival_lantern": 8.48,
+ "festival_star": 6.76,
+ "keeper_2": 10.78,
+ "mood_mystery": 6.4,
+ "mood_mystery_gang": 6.26,
+ "mood_sad": 5.6,
+ "mood_sad_gang": 5.64,
+ "mood_tender": 6.42,
+ "mood_tender_gang": 6.4,
+ "mood_tense": 8.96,
+ "mood_triumph": 10.32,
+ "night": 6.84
 }
