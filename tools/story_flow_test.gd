@@ -168,7 +168,7 @@ func _run() -> void:
 			stack.append_array(x)
 	check(missing.is_empty(), "every story pic exists %s" % str(missing))
 	var txt := JSON.stringify(Story.data().get("penguins", []))
-	for w in ["Crystopia", "Celestica", "Mount Prismatica", "Teacher.", "kingdoms", "I am Fennimore", "C-O-L-D-Y", "That bell broke for me", "twenty-one years"]:
+	for w in ["Crystopia", "Celestica", "Mount Prismatica", "Teacher.", "kingdoms", "I am Fennimore", "That is my real name", "That bell broke for me", "twenty-one years"]:
 		check(w in txt, "penguin story says '%s'" % w)
 	check(not ("somebody's dog. It still is" in txt) and not ("C-O-L-D-I-E" in txt), "old contradictions gone")
 	for id in ["p2_nova_dream", "p3_whisper", "p4_fennimore_sky", "p4_old_one", "p5_elder_coral", "p5_elder_kelp", "p5_elder_ice", "p5_elder_ember"]:

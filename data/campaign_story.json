@@ -5,7 +5,7 @@
    {"id": "bt_invite_p", "trigger": {"quest_done": "cattopia"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},
     "lines": [
      {"who": "Catkins", "text": "One more thing before you go. The Grumps don't just wander: they hold roads, ridges, whole valleys. One brave farmer can't take a valley alone."},
-     {"who": "Catkins", "pic": "cut_drill_catkins", "text": "I led Cat-topia's armies once. Come and drill with me in the orchard field: points, helpers, rallies. It won't take long, and nobody gets hurt."},
+     {"who": "Catkins", "pic": "cut_drill_catkins", "text": "Cat-topia has had to stand together before, every paw in its place. Come and practise with me in the orchard field: points, helpers, rallies. Nobody gets hurt. Grumps get turned back, not beaten."},
      {"who": "", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
     "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training. Campaigns open new regions."}},
    {"id": "bt_invite_p_late", "trigger": {"scene": "crystal_meadow"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},

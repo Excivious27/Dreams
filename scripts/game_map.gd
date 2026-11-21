@@ -2004,6 +2004,7 @@ func boss_card(kind: String, title := "") -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 11
 	layer.add_to_group("toast_hold")  # Hud: toasts wait until the card is gone
+	layer.add_to_group("boss_card")  # C12: a story beat starting clears it (Story._play_beat)
 	var tr := TextureRect.new()
 	tr.texture = Art.tex("ui", nm)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

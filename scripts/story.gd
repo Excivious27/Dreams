@@ -122,12 +122,44 @@ static func tick(m: GameMap, delta: float) -> void:
 		return
 	# Backstop (C7): a quest-done beat whose moment was missed (a faint or a scene
 	# change right after the quest, the app closed) plays as soon as the screen is free.
+	# C12: never in the middle of a live story boss fight, and a beat from an
+	# earlier chapter than one already played fires silently (effects, no lines).
+	if _story_boss_alive(m):
+		return
 	for b in beats():
 		var q := str(b.get("trigger", {}).get("quest_done", ""))
 		if q == "" or not GameState.quest_done(q) or not _ready_beat(b, m):
 			continue
+		if _chapter_passed(b):
+			GameState.run["flags"]["st_" + str(b["id"])] = true
+			_apply(m, b.get("effects", {}))
+			continue
 		_queue(m, b)
 		return
+
+
+## A story enemy (a spawn with a story flag) still standing on this map.
+static func _story_boss_alive(m: GameMap) -> bool:
+	for e in m.enemies:
+		if is_instance_valid(e) and (e as Node).has_meta("story_flag") and (e as Node).is_inside_tree() and not GameState.run["flags"].has(str((e as Node).get_meta("story_flag"))):
+			return true
+	return false
+
+
+## True when a beat of a later chapter of this arc has already fired.
+static func _chapter_passed(b: Dictionary) -> bool:
+	var arc := str(GameState.run.get("arc", "penguins"))
+	var mine := -1
+	var latest := -1
+	var i := 0
+	for ch in data().get(arc, []):
+		for bb in ch.get("beats", []):
+			if str(bb["id"]) == str(b["id"]):
+				mine = i
+			if fired(str(bb["id"])):
+				latest = i
+		i += 1
+	return mine >= 0 and latest > mine
 
 
 static func _queue(m: GameMap, b: Dictionary) -> void:
@@ -215,6 +247,9 @@ static func _play_beat(m: GameMap, b: Dictionary) -> void:
 	m.player.velocity = Vector2.ZERO
 	# A scene owns the moment: a boss victory sting still waiting must not land after it.
 	_cancel_sting()
+	# ...and a boss card still sliding (its tween stops while the dialogue pauses) goes now.
+	for bc in m.get_tree().get_nodes_in_group("boss_card"):
+		bc.queue_free()
 	_prefetch_for(m, b)
 	# "pre": effects that run before the lines (p5_win clears the boss and adds
 	# so the quiet ending scene isn't played over a live boss bar).
@@ -350,9 +385,22 @@ static func _fill(lines: Array) -> Array:
 		if me != "" and str(l.get("who", "")) == me and lines.size() > 1 and not l.has("choice") and not l.has("branches"):
 			continue
 		# "if_flag": only said when that flag is set; "unless_flag": only when it isn't.
-		if l.has("if_flag") and not GameState.run["flags"].has(str(l["if_flag"])):
+		# Either may be a list (C12): if_flag needs every one, unless_flag none of them.
+		if l.has("if_flag") and not _flags_all(l["if_flag"]):
 			continue
-		if l.has("unless_flag") and GameState.run["flags"].has(str(l["unless_flag"])):
+		if l.has("unless_flag") and _flags_any(l["unless_flag"]):
+			continue
+		# "if_known": that companion walks with you (party, not the hero) (C12).
+		if l.has("if_known") and not _knows(str(l["if_known"])):
+			continue
+		# "if_partner": the active partner right now ("none" = nobody out) (C12).
+		if l.has("if_partner"):
+			var act := Companion.active_id() if Companion.active_id() != "" else "none"
+			var want := str(l["if_partner"])
+			if not (want == act or (want == "any" and act != "none")):
+				continue
+		# "if_item": only said while the pack holds that item (the collar, the locket).
+		if l.has("if_item") and GameState.count(str(l["if_item"])) <= 0:
 			continue
 		# "only_hero"/"not_hero": a playable id or list (penguin_f, penguin_m, big_jim...).
 		var hero := str(GameState.run.get("playable", ""))
@@ -368,6 +416,8 @@ static func _fill(lines: Array) -> Array:
 			if l.has(k):
 				var s := str(l[k])
 				s = s.replace("%hero", str(names.get("character", "you"))).replace("%pet", str(names.get("pet", "Pup"))).replace("%town", str(names.get("town", "town"))).replace("%partner", partner)
+				if s.contains("%bitter"):
+					s = s.replace("%bitter", bitter_name())
 				l[k] = s
 		# Very long lines are split at a sentence so they fit a phone screen;
 		# a choice stays on the last part.
@@ -380,6 +430,40 @@ static func _fill(lines: Array) -> Array:
 				out.append(first)
 		out.append(l)
 	return out
+
+
+static func _knows(cid: String) -> bool:
+	if cid == str(GameState.run.get("playable", "")):
+		return false
+	return Companion.active_id() == cid or (Companion.party().get("known", []) as Array).has(cid)
+
+
+static func _flags_all(v: Variant) -> bool:
+	var fl: Dictionary = GameState.run["flags"]
+	for f in (v as Array if v is Array else [v]):
+		if not fl.has(str(f)):
+			return false
+	return true
+
+
+static func _flags_any(v: Variant) -> bool:
+	var fl: Dictionary = GameState.run["flags"]
+	for f in (v as Array if v is Array else [v]):
+		if fl.has(str(f)):
+			return true
+	return false
+
+
+## %bitter (C12): the friend you turned away at the gate who went east to the dark.
+static func bitter_name() -> String:
+	var fl: Dictionary = GameState.run["flags"]
+	var ids: Array = Companion.party().get("bitter", [])
+	for cid in ids:
+		if fl.has("gone_east_" + str(cid)):
+			return str(Companion.defs().get(str(cid), {}).get("name", str(cid).capitalize()))
+	for cid in ids:
+		return str(Companion.defs().get(str(cid), {}).get("name", str(cid).capitalize()))
+	return "someone you know"
 
 
 static func _hero_in(v: Variant, hero: String) -> bool:
@@ -395,6 +479,10 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		if str(f).ends_with("_gone"):
 			var who := str(f).trim_suffix("_gone")
 			GameState.run["quests"] = (GameState.run["quests"] as Array).filter(func(q: Dictionary) -> bool: return q["done"] or str(GameState._quest_def(str(q["id"])).get("giver", "")) != who)
+	# All four colony elders on the moon ridge (C12: p5_win's "four lights").
+	var fl0: Dictionary = GameState.run["flags"]
+	if fl0.has("elder_came_coral") and fl0.has("elder_came_kelp") and fl0.has("elder_came_ice") and fl0.has("elder_came_ember"):
+		fl0["elder_came_all"] = true
 	# {"needs_flag": ["flag to set", ...]}: set only when the first is already set.
 	var fi: Dictionary = fx.get("flags_if", {})
 	if not fi.is_empty():
@@ -424,7 +512,9 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	if fx.has("crystals"):
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(fx["crystals"])
 	if fx.has("hint"):
-		GameState.add_hint(str(fx["hint"]))
+		# "hint_hero": {playable: text} (C12) replaces the hint for that hero.
+		var hh: Dictionary = fx.get("hint_hero", {})
+		GameState.add_hint(str(hh.get(str(GameState.run.get("playable", "")), fx["hint"])))
 	if fx.has("companion"):
 		Companion.recruit(str(fx["companion"]))
 		if m.has_method("_refresh_party"):
@@ -561,6 +651,9 @@ static func _spawn_list(m: GameMap, spawns: Array) -> void:
 		if sp.size() > 5:
 			e.max_hp = int(e.max_hp * float(sp[5]))
 			e.hp = e.max_hp
+		# 7th field (C12): the name on the boss bar ("Fennimore, Who Would Be Queen").
+		if sp.size() > 6 and str(sp[6]) != "":
+			e.set_meta("boss_name", str(sp[6]).replace("%bitter", bitter_name()))
 		# The bell: the town's help cracks the Dark Crystal's shell (half health).
 		if sp.size() > 4 and str(sp[4]) == "boss_dark_crystal" and GameState.run["flags"].has("final_town_help"):
 			e.max_hp = maxi(1, e.max_hp / 2)

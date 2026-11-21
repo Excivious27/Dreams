@@ -822,6 +822,13 @@ echo "$sfout" | grep -E "FAIL|SCRIPT ERROR|STORY FLOW DONE" || true
 if ! echo "$sfout" | grep -q "STORY FLOW DONE, failures: 0"; then
   echo "Story flow test failed"; exit 1
 fi
+echo "== C12 story conditions: hero-as-character lines, choice payoffs, watcher, elders, %bitter, backstop order =="
+c12sout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_story_cond_test.gd 2>&1)"
+echo "$c12sout" | grep -E "FAIL|SCRIPT ERROR|c12_story_cond_test" || true
+if ! echo "$c12sout" | grep -q "c12_story_cond_test: 0 fails"; then
+  echo "C12 story condition test failed"; exit 1
+fi
+
 echo "== toasts: never over a boss card, a region card, the pup strip or the energy bar =="
 tlout="$("$GODOT" --headless --path . -s res://tools/toast_layout_test.gd 2>&1)"
 echo "$tlout" | grep -E "FAIL|SCRIPT ERROR|toast_layout_test" || true
