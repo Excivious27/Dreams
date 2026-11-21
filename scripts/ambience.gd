@@ -19,13 +19,14 @@ var _rooster_day := -1
 var _thunder_in := -1.0
 var _cache := {}
 const OFF_DB := -45.0
+const FADE_SPAN_DB := 30.0  # dB covered in one _fade
 const MAX_BEDS := 4
 
 const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp"]
 const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice", "quarry"]
-const CITY_MAPS := ["neon", "uptown", "docks", "hideout", "bf_neon_block"]
+const CITY_MAPS := ["neon", "uptown", "docks", "bf_neon_block"]  # c13_10-01: the Hideout is a forest clearing, not a city
 const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone
-const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake", "community_farm"]
+const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake", "community_farm", "hideout"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
 ## C11a P5: maps that can hold farm animals (pen spots, the rooster). A pasture scene joins here.
 const RANCH_MAPS := ["farm"]
@@ -79,6 +80,18 @@ const OLD_BASE := {"birds_dawn": -10.0, "birds_day": -16.0, "crickets": -14.0, "
 	"basement_drips": -20.0, "space": -16.0, "river": -16.0, "jungle_insects": -14.0, "marsh": -16.0,
 	"neon_street": -16.0, "boiling": -22.0, "machines": -24.0, "room_shop": -22.0, "room_chapel": -22.0}
 ## Rooms with a fireplace (the hearth bed plays only here, plus the farmhouse) (c6_07).
+## C13 P6 (c13_10-05 / c13_03-07 / c13_12-13): room tones per interior, in OLD_BASE dB terms
+## (rebased like every bed). Arc-specific rows win: "<id>@gang" for the gang arc's room behind
+## the same door (the stable door is Halo's garage in the gang arc).
+const ROOM_TONES := {
+	"gilt_casino": {"crowd": -18.0, "arcade_floor": -24.0}, "water_mill": {"river": -20.0, "machines": -28.0},
+	"clinic": {"room_chapel": -26.0}, "hall": {"room_shop": -26.0}, "museum": {"room_chapel": -24.0},
+	"quarry_office": {"machines": -28.0, "wind_soft": -26.0}, "stable": {"room_shop": -26.0}, "stable@gang": {"machines": -26.0},
+	"lighthouse": {"waves": -22.0}, "fishing_hut": {"water_lap": -20.0}, "river_hut": {"river": -22.0},
+	"sel_camp": {"campfire": -22.0, "wind_soft": -26.0}, "moss_hut": {"boiling": -24.0}, "smith": {"machines": -24.0},
+}
+## The quiet floor every room keeps when nothing else plays (no interior is bed-less).
+const ROOM_FLOOR := {"room_chapel": -28.0}
 const HEARTH_ROOMS := ["cottage_a", "cottage_b", "cottage_c", "hazel_house", "inn", "lodge", "mansion", "moss_hut",
 	"tam_hut", "river_hut", "fishing_hut", "sel_camp", "lighthouse"]
 ## Themed battlefields (bf_themes FIELDS): their own beds, and whether wildlife/caves apply (c6_07).
@@ -99,6 +112,8 @@ const URBAN_STYLES := ["city", "chrome", "clockwork"]
 const URBAN_REGIONS := ["giltcity", "ironline"]
 ## Beds that stop under rain and snow, and the ones that are night/day only, wherever they come from.
 const NIGHT_BEDS := ["crickets", "frogs", "campfire"]
+## Region spots that belong above ground.
+const SURFACE_SPOTS := ["owl", "gull", "bird_chirp", "crow", "cicada", "wave"]
 
 
 ## The map's region data (regions.json entry), or {}.
@@ -199,11 +214,8 @@ func _process(delta: float) -> void:
 	for b: String in _beds.keys():
 		var p: AudioStreamPlayer = _beds[b]
 		var want: float = _target.get(b, OFF_DB)
-		var cur := db_to_linear(p.volume_db)
-		var goal := db_to_linear(want)
-		var step := delta / maxf(0.1, _fade)
-		cur = move_toward(cur, goal, step)
-		p.volume_db = linear_to_db(maxf(cur, 0.0001))
+		# c13_10-08: fade in dB, so a full fade (OFF_DB to a bed's level, ~30 dB) takes _fade seconds.
+		p.volume_db = move_toward(p.volume_db, maxf(want, OFF_DB), delta * FADE_SPAN_DB / maxf(0.1, _fade))
 		if want <= OFF_DB and p.volume_db <= OFF_DB + 1.0:
 			p.stop()
 			p.queue_free()
@@ -296,13 +308,26 @@ func _evaluate() -> Dictionary:
 			out["wind_soft"] = -12.0  # dry lands: a hot wind instead of birds
 		if (w == "leaves" or (se == "fall" and id == "forest")) and not wet and not snowy:
 			out["leaves"] = -18.0 - (6.0 if ph == "night" else 0.0)
-		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and not wet:
+		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and (not wet or GameState.festival_today() != ""):
 			if GameState.festival_today() != "":
-				out["crowd"] = -14.0 - (10.0 * clampf(float(t - 22 * 60) / 60.0, 0.0, 1.0))  # tapers 22:00-23:00
+				# c13_10-10: a rainy festival keeps its crowd (under awnings), 6 dB down.
+				out["crowd"] = -14.0 - (10.0 * clampf(float(t - 22 * 60) / 60.0, 0.0, 1.0)) - (6.0 if wet else 0.0)  # tapers 22:00-23:00
 			else:
 				out["town_day"] = -20.0
 		if gang and id in CITY_MAPS:
 			out["city_hum"] = -18.0
+		elif id in ["neon", "uptown", "bf_neon_block"] and not wet:
+			# c13_10-07: the penguin arc's city has a voice too (no gang neon buzz).
+			if ph in ["dawn", "day"]:
+				out["town_day"] = -20.0
+			else:
+				out["city_hum"] = -22.0
+		if id == "hideout":
+			# c13_10-01: a woodland edge by a quiet road; the city hum only reaches it on gang nights.
+			if ph in ["dawn", "day"]:
+				out["wind_soft"] = maxf(float(out.get("wind_soft", -40.0)), -18.0)
+			elif gang:
+				out["city_hum"] = -24.0
 		if id == "community_farm" and not wet and ph in ["day", "dusk"]:
 			# Market day draws a crowd; otherwise the volunteers' campfire crackles in the picnic corner.
 			if Commons.market_day() and ph == "day":
@@ -363,6 +388,17 @@ func _evaluate() -> Dictionary:
 			if str(hb[0]) in kind:
 				out[str(hb[1])] = float(hb[2])
 				break  # arcade cabinets downstairs, rolling balls and pins upstairs
+		var rt: Dictionary = ROOM_TONES.get(kind + "@gang", ROOM_TONES.get(kind, {})) if gang else ROOM_TONES.get(kind, {})
+		for k: String in rt:
+			out[k] = float(rt[k])
+	if not outdoors and not cave and not deep:
+		# No interior is ever bed-less (hearth homes on spring/summer days, the farmhouse): a soft hush.
+		var tone := false
+		for k: String in out:
+			if k not in ["rain_roof"]:
+				tone = true
+		if not tone:
+			out.merge(ROOM_FLOOR)
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
 	# "amb_day" / "amb_night" (C4) take over from "amb" by time of day (a casino street is busy by
 	# day and quiet at night); caves and quiet lands never take birds, crickets or frogs.
@@ -392,6 +428,13 @@ func _evaluate() -> Dictionary:
 			if night and bed_key == "amb" and k in ["crowd", "town_day"]:
 				db -= 10.0  # no night list: the streets thin out after dark
 			out[k] = db
+	if not gang and out.has("neon_street"):
+		# The neon buzz is the gang arc's city; the penguin arc hears a plain street instead.
+		var nd := float(out["neon_street"]) - 2.0
+		out.erase("neon_street")
+		out["city_hum"] = maxf(float(out.get("city_hum", -60.0)), nd)
+	if outdoors and out.is_empty():
+		out["wind_soft"] = -22.0  # c13_10-12: no outdoor moment is dead silent (a light air)
 	# Equal-loudness beds (C6 P3: every bed file is a -26 LUFS loop): the dB above are relative
 	# choices; rebase each onto its LEVEL so no per-file compensation is left (c6_07).
 	for k: String in out.keys():
@@ -408,8 +451,13 @@ func _evaluate() -> Dictionary:
 	# Let night sounds and storms through by dipping the music a little.
 	var duck := 0.0
 	if outdoors and ph == "night" and not deep:
-		duck = -4.0
-	if w in ["storm", "blizzard"] and outdoors:
+		# c13_10-11: dip only to let real night sounds through (-2 for one bed, -4 for two or more).
+		var nb := 0
+		for k: String in out:
+			if k in ["crickets", "frogs", "campfire", "marsh", "jungle_insects"]:
+				nb += 1
+		duck = -2.0 * float(mini(nb, 2))
+	if w in ["storm", "blizzard"] and outdoors and (out.has("rain_heavy") or out.has("wind_strong")):
 		duck = minf(duck, -3.0) - (1.0 if duck < 0.0 else 0.0)  # a night storm dips more than a calm night
 	if cave or not outdoors:
 		duck = 0.0
@@ -471,7 +519,9 @@ func _spots(delta: float) -> void:
 	var t := int(GameState.run.get("time", 480))
 	var ph := phase(t)
 	var outdoors := m.has_sky and id not in ["house", "interior"]
-	var w := m.sky.weather if m.sky and m.has_sky and id != "hollow_heart" else GameState.weather_today()
+	var w := m.sky.weather if m.sky and m.has_sky else GameState.weather_today()
+	if id == "hollow_heart" or is_cave(m):
+		w = "clear"  # c13_10-04: underground spots never stop for surface rain (matches _evaluate)
 	var calm := w not in ["rain", "storm", "blizzard", "snow"]
 	var rules := []  # [spot, min_s, max_s, dB]
 	if outdoors and calm and ph == "night" and id in OWL_MAPS:
@@ -514,6 +564,8 @@ func _spots(delta: float) -> void:
 					continue
 				if not calm or (str(ra[0]) in ["frog", "insect", "cicada"] and se == "winter"):
 					continue
+				if is_cave(m) and str(ra[0]) in SURFACE_SPOTS:
+					continue  # c13_10-03: no owls or gulls inside a cave
 				rules.append([str(ra[0]), float(ra[1]), float(ra[2]), float(ra[3])])
 	if id == "interior" and m.get("interior_id") != null:
 		rules.append_array(RecAudio.spots(str(m.get("interior_id"))))  # pins through the ceiling, a cabinet win

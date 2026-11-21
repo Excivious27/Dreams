@@ -20,7 +20,7 @@ const BEDS := {
 ## Spot sounds per room: [spot, min seconds, max seconds, dB].
 const SPOTS := {
 	"rec": [["pins_far", 12.0, 30.0, -14.0], ["cabinet_win", 20.0, 45.0, -16.0]],
-	"rec_up": [["pins_near", 9.0, 24.0, -15.0], ["cabinet_win", 40.0, 90.0, -26.0]],
+	"rec_up": [["cabinet_win", 40.0, 90.0, -26.0]],  # c13_10-16: the lanes upstairs already sound (no ghost pins)
 }
 ## The jukebox's records (track -> label). Order = the order A steps through.
 const RECORDS := {
