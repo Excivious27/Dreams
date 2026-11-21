@@ -178,7 +178,7 @@ FIELDS = [
          win="The guardians bow their stone heads. The court is quiet and warm in the sun.", lose="The stones are stubborn today. Back to the stair.",
          reward={"crystals": 720, "items": {"gold_bar": 3, "amethyst": 2}}),
     dict(id="bf_cloud_stair", region="sky", title="The Cloud Stair", arc="penguins", tier=3, family="plain", seed=441, water=False, plateaus=False,
-         ground="cloud", ground_seam="cloud", path="float_stone", backdrop="hills",
+         ground="cloud", ground_seam="cloud", path="stone", backdrop="hills",  # C16b P5 (c16b_04-12): grey stone lanes read on cloud (was float_stone)
          border={"n": "trees", "s": "trees", "w": "trees", "e": "trees"}, border_trees=BT_CLOUD, theme=CLOUD,
          scatter=["skydeco_0", "skydeco_1", "skydeco_2", "skydeco_3", "cloud_tree_a"],
          props=[_p("bf_sky_pillar", 26, 32, 2), _p("bf_sky_pillar", 84, 36, 2), _p("bf_sky_pillar", 60, 48, 2)],

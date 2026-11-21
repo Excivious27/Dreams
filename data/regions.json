@@ -12702,7 +12702,7 @@
   "music": "battle",
   "backdrop": "hills",
   "ground": "cloud",
-  "path": "float_stone",
+  "path": "stone",
   "spawn": [
    54,
    77
