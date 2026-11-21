@@ -812,7 +812,8 @@ for sid, st in B.items():
     if sid in T1_GATE:
         t1['unlock'] = dict(t1.get('unlock', {}), **T1_GATE[sid])
     # ready-made tier 1 costs 1.5x: buying is a choice, not a skip
-    t1['price'] = int(round(int(t1['price']) * 1.5 / 10.0)) * 10
+    base = int(t1.get('price_base', t1['price'])); t1['price_base'] = base  # idempotent for stations kept across runs
+    t1['price'] = int(round(base * 1.5 / 10.0)) * 10
     # c16a_10-02 / c16a_09-17: the top tier of a 4-tier station waits for year 2
     if len(st['tiers']) >= 4:
         st['tiers'][3].setdefault('unlock', {})['year'] = 2

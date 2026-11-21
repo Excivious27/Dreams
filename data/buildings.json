@@ -428,7 +428,8 @@
      ]
     },
     "desc": "Grinds wheat to flour overnight; sugar beet to sugar.",
-    "price": 81540
+    "price": 1410,
+    "price_base": 940
    }
   ],
   "thing": "station",
@@ -570,6 +571,7 @@
     "desc": "1 job at once, normal speed, recipes up to tier 2.",
     "price": 360,
     "art_missing": false,
+    "price_base": 240,
     "name_gang": "Work Bench"
    },
    {
@@ -706,6 +708,7 @@
     "desc": "1 job at once, normal speed, recipes up to tier 2. Ore into bars.",
     "price": 560,
     "art_missing": false,
+    "price_base": 370,
     "name_gang": "Scrap Furnace"
    },
    {
@@ -813,7 +816,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Anything you grow, given time.",
     "price": 680,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 450
    },
    {
     "tier": 2,
@@ -1010,6 +1014,7 @@
     "unlock": {
      "progress": 1
     },
+    "price_base": 290,
     "name_gang": "Signal Booster"
    },
    {
@@ -1152,7 +1157,8 @@
       "building",
       2
      ]
-    }
+    },
+    "price_base": 330
    },
    {
     "tier": 2,
@@ -1264,7 +1270,8 @@
       "mining",
       2
      ]
-    }
+    },
+    "price_base": 700
    },
    {
     "tier": 2,
@@ -1370,7 +1377,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Cloth, yarn, rope.",
     "price": 450,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1476,7 +1484,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Pelts into leather.",
     "price": 450,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1582,6 +1591,7 @@
     "desc": "1 job at once, normal speed, recipes up to tier 2. Also sets what the house kitchen can do.",
     "price": 330,
     "art_missing": false,
+    "price_base": 220,
     "name_gang": "Hot Plate"
    },
    {
@@ -1692,7 +1702,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Cheese, butter, jam, oil.",
     "price": 450,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1797,7 +1808,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Bricks, pots, glass.",
     "price": 620,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 410
    },
    {
     "tier": 2,
@@ -1902,7 +1914,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Rings and charms.",
     "price": 930,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 620
    },
    {
     "tier": 2,
@@ -2010,6 +2023,7 @@
     "desc": "1 job at once, normal speed, recipes up to tier 2. Remedies and red potions.",
     "price": 990,
     "art_missing": false,
+    "price_base": 660,
     "name_gang": "Chem Pot"
    },
    {
@@ -2120,7 +2134,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. A kick scooter.",
     "price": 1780,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 1190
    },
    {
     "tier": 2,
@@ -2234,7 +2249,8 @@
       "building",
       4
      ]
-    }
+    },
+    "price_base": 4110
    },
    {
     "tier": 2,
@@ -2348,7 +2364,8 @@
       "bartering",
       2
      ]
-    }
+    },
+    "price_base": 820
    },
    {
     "tier": 2,
@@ -2461,7 +2478,8 @@
       "combat",
       2
      ]
-    }
+    },
+    "price_base": 1140
    },
    {
     "tier": 2,
@@ -2574,7 +2592,8 @@
       "bartering",
       2
      ]
-    }
+    },
+    "price_base": 1070
    },
    {
     "tier": 2,
@@ -2679,7 +2698,8 @@
     "art_missing": false,
     "unlock": {
      "progress": 1
-    }
+    },
+    "price_base": 1130
    },
    {
     "tier": 2,
@@ -2760,7 +2780,8 @@
     "art_missing": false,
     "unlock": {
      "progress": 1
-    }
+    },
+    "price_base": 1270
    },
    {
     "tier": 2,
@@ -2849,7 +2870,8 @@
       "combat",
       2
      ]
-    }
+    },
+    "price_base": 1040
    },
    {
     "tier": 2,
@@ -2956,7 +2978,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Litter boxes: Cat-topia's secret weapon.",
     "price": 720,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 480
    },
    {
     "tier": 2,
@@ -3062,7 +3085,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Marshmallows on a stick.",
     "price": 440,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 290
    },
    {
     "tier": 2,
@@ -3168,7 +3192,8 @@
     "unlock": {
      "flag": "merkitty_done",
      "hint": "meet the merkitties at the lake shore"
-    }
+    },
+    "price_base": 570
    },
    {
     "tier": 2,
@@ -3251,7 +3276,8 @@
      "progress": 2,
      "flag": "babies_done",
      "hint": "turn back the crystal babies on the mountain"
-    }
+    },
+    "price_base": 1160
    },
    {
     "tier": 2,
@@ -3334,7 +3360,8 @@
      "progress": 1,
      "flag": "meow_taught",
      "hint": "learn the Meow Pow Wow from Catkins"
-    }
+    },
+    "price_base": 1500
    },
    {
     "tier": 2,
@@ -3417,7 +3444,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
     "price": 1830,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 1220
    },
    {
     "tier": 2,
@@ -3524,7 +3552,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
     "price": 2520,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 1680
    },
    {
     "tier": 2,
@@ -3631,7 +3660,8 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
     "price": 3020,
-    "art_missing": false
+    "art_missing": false,
+    "price_base": 2010
    },
    {
     "tier": 2,
@@ -3870,7 +3900,8 @@
       "ranching",
       2
      ]
-    }
+    },
+    "price_base": 800
    },
    {
     "tier": 2,
@@ -3935,7 +3966,8 @@
       "ranching",
       3
      ]
-    }
+    },
+    "price_base": 910
    },
    {
     "tier": 2,
@@ -4331,7 +4363,8 @@
       "ranching",
       4
      ]
-    }
+    },
+    "price_base": 1980
    },
    {
     "tier": 2,
