@@ -64,4 +64,7 @@ check(CP["drill"]["enemies"]["gangsters"] == ["thug_lookout"], "gang drill foe i
 check(all(str(t) in CP.get("unlocks", {}) for t in range(1, 6)), "tier unlocks table")
 for k in ("thug_speedster", "thug_brute", "thug_cyber", "thug_flame"):
     check(bool(E[k].get("name")), k + " has a display name")
+for k in E:
+    if k.startswith("gcap_"):
+        check(os.path.exists(os.path.join(D, "art", "gen", "ui", "card_%s.png" % k)), k + " has a boss card (tools/slice_c16b_p5.py)")
 print("c16b_p5_test: %d fails" % len(fails))

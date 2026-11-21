@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""C16b P5 art: boss cards for the named gang captains (gcap_g_<region>).
+"""C16b P5 art: boss cards for the named campaign captains: gang gcap_g_<region> and penguin gcap_<region>.
 
 No render needed: each card is composed like tools/slice_c5_p6.py cards() (the shared
 ornate frame ui/card_big_grump, a dark panel, the boss on the left with a soft glow),
@@ -16,11 +16,14 @@ from PIL import Image
 D = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
 
-def char_frame(ch, tint):
+def char_frame(ch, col):
     info = S.manifest["characters/" + ch]["idle"]
     im = Image.open(os.path.join(S.OUT, info["file"])).convert("RGBA")
-    im = im.crop((0, 0, info["cell_w"], info["cell_h"]))
-    t = tint.lstrip("#")
+    return tint(im.crop((0, 0, info["cell_w"], info["cell_h"])), col)
+
+
+def tint(im, col):
+    t = col.lstrip("#")
     r, g, b = int(t[0:2], 16), int(t[2:4], 16), int(t[4:6], 16)
     px = im.load()
     for y in range(im.height):
@@ -37,6 +40,15 @@ def cards():
     for k, e in sorted(E.items()):
         if k.startswith("gcap_g_") and e.get("char"):
             C5.card(k, char_frame(e["char"], e.get("tint", "#ffffff")))
+            n += 1
+        elif k.startswith("gcap_") and not k.startswith("gcap_g_"):
+            # penguin Grump captains: their variant's idle frame (or the plain grump, tinted)
+            art = str(e.get("art", k))
+            if ("enemies/" + art) in S.manifest:
+                spr = C5.first_frame(art)
+            else:
+                spr = tint(C5.first_frame(str(e.get("art_fallback", "grump"))), e.get("fallback_tint", "#ffffff"))
+            C5.card(k, spr)
             n += 1
     return n
 

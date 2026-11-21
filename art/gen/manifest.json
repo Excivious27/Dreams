@@ -153650,6 +153650,76 @@
    "file": "ui/card_gcap_g_uptown.png",
    "w": 764,
    "h": 322
+  },
+  "card_gcap_colony_coral": {
+   "file": "ui/card_gcap_colony_coral.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_colony_ember": {
+   "file": "ui/card_gcap_colony_ember.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_colony_ice": {
+   "file": "ui/card_gcap_colony_ice.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_colony_kelp": {
+   "file": "ui/card_gcap_colony_kelp.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_highlands": {
+   "file": "ui/card_gcap_highlands.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_jungle": {
+   "file": "ui/card_gcap_jungle.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_marsh": {
+   "file": "ui/card_gcap_marsh.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_orchard_hills": {
+   "file": "ui/card_gcap_orchard_hills.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_quarry": {
+   "file": "ui/card_gcap_quarry.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_riverlands": {
+   "file": "ui/card_gcap_riverlands.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_ruins": {
+   "file": "ui/card_gcap_ruins.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_sky": {
+   "file": "ui/card_gcap_sky.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_station": {
+   "file": "ui/card_gcap_station.png",
+   "w": 764,
+   "h": 322
+  },
+  "card_gcap_wastes": {
+   "file": "ui/card_gcap_wastes.png",
+   "w": 764,
+   "h": 322
   }
  },
  "ui_creator": {

@@ -501,7 +501,7 @@ CAMPS = [
 
 # Gangster lines for the campaigns both arcs share (the CAMPS text is the penguin one).
 GANG_TEXT = {
-    "orchard_hills": ("The President's lookouts have the orchard road. Every row of trees hides a parked car. Push them out, row by row.",
+    "orchard_hills": ("The President's lookouts have the orchard road: a car at every farm gate, a watcher in every packing shed. Push them out, row by row.",
                       "The orchard road is ours. The lookouts drove off in a hurry, and the pickers are waving from the ladders."),
     "highlands": ("Up on the ridge the President's crews watch every switchback. Climb, take the lookouts, and the high country is open.",
                   "The high gate is ours. Up here the radio finally gets a signal, and it's playing our song."),
