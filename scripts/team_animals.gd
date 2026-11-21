@@ -105,12 +105,20 @@ static func lessons(uid: String) -> Dictionary:
 static func rank(uid: String, lid: String) -> int:
 	var n := int(lessons(uid).get(lid, 0))
 	var r := 0
-	for need in (rule("rank_at", [3, 5, 7]) as Array):
+	for need in (rule("rank_at", [1, 4, 7]) as Array):  # c11b_09-05: rank 1 on the first lesson
 		if n >= int(need):
 			r += 1
-	if n > 0:
-		r = maxi(r, 1)  # the first lesson already teaches it at rank 1
 	return mini(r, int(rule("max_rank", 3)))
+
+
+## Lessons still needed to the next rank of a lesson (0 = mastered).
+static func lessons_left(uid: String, lid: String) -> int:
+	var n := int(lessons(uid).get(lid, 0))
+	var at: Array = rule("rank_at", [1, 4, 7])
+	var r := rank(uid, lid)
+	if r >= at.size() or r >= int(rule("max_rank", 3)):
+		return 0
+	return maxi(0, int(at[r]) - n)
 
 
 static func learned(uid: String) -> Array:
@@ -156,7 +164,7 @@ static func why_not(uid: String, lid := "") -> String:
 	if treat_for(uid) == "":
 		var t: Array = spec(uid).get("treat", [])
 		return "Bring a treat: %s." % " or ".join(t.map(func(x: Variant) -> String: return GameState.item_name(str(x))))
-	if int(GameState.run.get("energy", 0)) < int(rule("energy", 8)):
+	if int(GameState.run.get("energy", 0)) < int(rule("energy", 8)):  # same bar GameState.spend_energy checks
 		return "You're too tired to teach today."
 	return ""
 
@@ -169,8 +177,9 @@ static func teach(uid: String, lid: String) -> String:
 	var a := Ranch.animal(uid)
 	var before := rank(uid, lid)
 	var t := treat_for(uid)
+	if not GameState.spend_energy(int(rule("energy", 8))):  # c11b_09-12: the energy rules (warning), not a raw write
+		return "You're too tired to teach today."
 	GameState.add_item(t, -1)
-	GameState.run["energy"] = maxi(0, int(GameState.run["energy"]) - int(rule("energy", 8)))
 	lessons(uid)[lid] = int(lessons(uid).get(lid, 0)) + 1
 	a["lesson_day"] = _day()
 	a["friend"] = mini(1000, int(a.get("friend", 0)) + int(rule("bond_per_lesson", 20)))
@@ -179,12 +188,7 @@ static func teach(uid: String, lid: String) -> String:
 	var after := rank(uid, lid)
 	if after > before:
 		return "%s learned %s (rank %d)!" % [nm, ln, after] if before == 0 else "%s's %s is rank %d now!" % [nm, ln, after]
-	var at: Array = rule("rank_at", [3, 5, 7])
-	var left := 0
-	for need in at:
-		if int(lessons(uid)[lid]) < int(need):
-			left = int(need) - int(lessons(uid)[lid])
-			break
+	var left := lessons_left(uid, lid)
 	return "%s practised %s. %d more lesson%s to the next rank." % [nm, ln, left, "" if left == 1 else "s"]
 
 
@@ -239,8 +243,7 @@ static func stats(uid: String) -> Dictionary:
 		hp += int(l.get("hp", 0)) * rank(uid, lid)
 		dmg += int(l.get("dmg", 0)) * rank(uid, lid)
 	hp += int(GameState.bonus("leadership", "pet_bond"))
-	var pup_hp := Pet.max_hp() + int(rule("hp_per_tier", 6)) * GameState.progress_tier()
-	hp = mini(hp, pup_hp - int(rule("pup_margin", 4)))
+	hp = mini(hp, Pet.max_hp() - int(rule("pup_margin", 4)))  # c11b_09-03: under the pup's real max hp
 	return {"hp": maxi(8, hp), "dmg": maxi(1, dmg), "speed": float(s.get("speed", 1.0))}
 
 
@@ -288,6 +291,12 @@ static func sprite_group(uid: String) -> String:
 	return ""
 
 
+## The variant tint of this animal (Color, or white): rare tints show on the team too (c11b_09-06).
+static func tint(uid: String) -> Color:
+	var t: Variant = Ranch.art_for(uid).get("tint", null)
+	return t if t is Color else Color.WHITE
+
+
 ## One view of the whole team (the API later automation targets): the pup slot, the partner slot
 ## (Companion.active_id), the animal slots (team()) and the battle muster (CampaignGate.team()).
 static func slots() -> Dictionary:
@@ -305,16 +314,18 @@ static func gate_rows() -> Array:
 	return out
 
 
+## c11b_11-09: one rename path (Ranch.rename: cleaning, 12 letters, "named").
 static func rename(uid: String, nm: String) -> bool:
-	var t := nm.strip_edges().left(14)
-	if t == "" or Ranch.animal(uid).is_empty():
-		return false
-	Ranch.animal(uid)["name"] = t
-	return true
+	return Ranch.rename(uid, nm)
 
 
-## A fresh default name (data names list), skipping names already on the ranch.
+## A fresh default name from the animal's species list (Ranch), else the team list.
 static func suggest_name(uid: String) -> String:
+	var sid := str(Ranch.animal(uid).get("species", ""))
+	if sid != "" and not (Ranch.species(sid).get("names", []) as Array).is_empty():
+		var pick := Ranch._pick_name(sid)
+		if pick != Ranch.display_name(sid):
+			return pick
 	var used := {}
 	for u: String in Ranch.animals():
 		used[str(Ranch.animal(u).get("name", ""))] = true
@@ -337,6 +348,64 @@ static func rehome(uid: String) -> bool:
 	return Ranch.rehome(uid)
 
 
+# ---- CHECK on a farm animal (c11b_09-13) -------------------------------------------
+
+## CHECK (the hand) on a trainable ranch animal: Teach <lesson> / Team / Pet / Close. Returns true
+## when it took the press (GameMap.try_interact). USE still pets it as before.
+static func check_menu(m: GameMap, thing: Dictionary) -> bool:
+	if str(thing.get("type", "")) != "pet_animal" or GameState.visiting():
+		return false
+	var a: Variant = thing.get("animal", null)
+	if a == null or not is_instance_valid(a):
+		return false
+	var uid := RanchFarm.uid_of(a)
+	if uid == "" or not trainable(uid):
+		return false
+	_check_dialog(m, a, uid)
+	return true
+
+
+static func _check_dialog(m: GameMap, a: Node2D, uid: String) -> void:
+	var opts: Array = []
+	var acts: Array = []
+	for lid in (spec(uid).get("lessons", []) as Array):
+		var l := str(lid)
+		opts.append("Teach %s · %s" % [str(lesson(l).get("name", l)), lesson_note(uid, l)])
+		acts.append(["teach", l])
+	if not learned(uid).is_empty():
+		opts.append("Take off the team" if on_team(uid) else "Put on the team")
+		acts.append(["team", ""])
+	opts.append("Pet")
+	acts.append(["pet", ""])
+	opts.append("Close")
+	acts.append(["close", ""])
+	var why := why_not(uid)
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": name_of(uid), "text": "%s · %s%s" % [species_name(uid), _hearts_text(hearts(uid)), "" if why == "" else "\n" + why], "choice": opts, "key": ""}])
+	await d.finished
+	var i := d.last_choice
+	if i < 0 or i >= acts.size() or not is_instance_valid(a):
+		return
+	match str(acts[i][0]):
+		"teach":
+			m.hud.toast(teach(uid, str(acts[i][1])), Color(0.85, 1, 0.85))
+		"team":
+			var r := set_team(uid, not on_team(uid))
+			m.hud.toast(r if r != "" else ("%s joined the team." % name_of(uid) if on_team(uid) else "%s is back to pen life." % name_of(uid)), Color(0.85, 1, 0.85))
+		"pet":
+			m.pet_farm_animal(a)
+
+
+## One-time hint that training exists (the first time an animal can learn): a toast, once a save.
+static func hint_once(m: GameMap, uid: String) -> void:
+	var f: Dictionary = GameState.run.get("flags", {})
+	if f.has("team_hint") or not trainable(uid) or why_not(uid).begins_with("Build") or not grown(uid):
+		return
+	f["team_hint"] = true
+	if m != null and m.hud:
+		m.hud.toast("%s trusts you now: CHECK it to teach a lesson." % name_of(uid), Color(0.9, 1, 0.8))
+
+
 # ---- Animals page (Menu > Party > Animals) -----------------------------------------
 
 static var _rename_uid := ""
@@ -352,14 +421,30 @@ static func _hearts_text(n: int) -> String:
 static func build_page(menu: Variant) -> void:
 	menu._line("Animals", 10, Color(1, 0.95, 0.8))
 	var all: Array = Ranch.animals().keys()
-	all.sort()
+	all.sort_custom(func(x: String, y: String) -> bool:  # c11b_11-10: by home, then species, then number
+		var ax := Ranch.animal(x)
+		var ay := Ranch.animal(y)
+		var hx := str(ax.get("home", ""))
+		var hy := str(ay.get("home", ""))
+		if hx != hy:
+			return hx < hy
+		var sx := str(ax.get("species", ""))
+		var sy := str(ay.get("species", ""))
+		if sx != sy:
+			return sx < sy
+		return x.substr(1).to_int() < y.substr(1).to_int())
 	if all.is_empty():
 		menu._line("  No animals yet. Build a coop or barn on the farm and buy or raise one.", 8, Color(0.7, 0.7, 0.7))
 		menu._button("Back to Party", func() -> void: menu._tab = "Party"; menu._refresh())
 		return
 	menu._line("Team: %d of %d  ·  tap an animal for lessons, name and team" % [team().size(), int(rule("team_max", 2))], 8, Color(0.85, 0.85, 0.8))
+	var last_home := "?"
 	for uid: String in all:
 		var u := uid
+		var hm := str(Ranch.animal(u).get("home", ""))
+		if hm != last_home:
+			last_home = hm
+			menu._line("%s · %d of %d" % [(hm if hm != "" else "pen").capitalize(), Ranch.roster(hm).size(), Ranch.capacity(hm)] if hm != "" else "Pen", 9, Color(0.9, 0.85, 0.7))
 		var tag := " ★" if on_team(u) else ""
 		var b: Button = menu._button("%s%s  %s  %s" % ["▶ " if _sel == u else "", name_of(u) + tag, Ranch.variant_name(u) + (" ✦" if Ranch.is_rare(u) else ""), _hearts_text(hearts(u))], func() -> void:
 			_sel = "" if _sel == u else u
@@ -370,6 +455,41 @@ static func build_page(menu: Variant) -> void:
 		if _sel == u:
 			_detail(menu, u)
 	menu._button("Back to Party", func() -> void: _sel = ""; menu._tab = "Party"; menu._refresh())
+
+
+## The short note after a Teach button (c11b_09-16: shown, not a tooltip a phone never shows).
+static func lesson_note(uid: String, lid: String) -> String:
+	var r := rank(uid, lid)
+	if r >= int(rule("max_rank", 3)):
+		return "rank %d (mastered)" % r
+	var why := why_not(uid, lid)
+	var left := lessons_left(uid, lid)
+	var base := ("rank %d · %d more to rank %d" % [r, left, r + 1]) if r > 0 else "new"
+	if why == "":
+		return base
+	if why.begins_with("One lesson a day"):
+		return base + " · tomorrow"
+	if why.begins_with("Bring a treat"):
+		return base + " · needs a treat"
+	if why.contains("tired"):
+		return base + " · too tired"
+	if why.contains("trust"):
+		return "needs more trust"
+	if why.contains("little"):
+		return "when grown"
+	return base
+
+
+## What a lesson does, in this arc's words, plus the chore it opens and its battle job (c11b_09-10).
+static func lesson_desc(lid: String) -> String:
+	var l := lesson(lid)
+	var d := str(l.get("desc" if GameState.is_penguins() else "desc_gang", l.get("desc", "")))
+	var bits: Array = []
+	var c := str(l.get("chore", ""))
+	if c != "":
+		bits.append("chore: " + Chores.chore_name(c).to_lower())
+	bits.append("in battle: " + str(l.get("job", "striker")))
+	return "%s (%s)" % [d, ", ".join(bits)]
 
 
 static func _detail(menu: Variant, uid: String) -> void:
@@ -388,13 +508,11 @@ static func _detail(menu: Variant, uid: String) -> void:
 			menu._line("  Health %d · power %d · in battle: %s" % [int(st["hp"]), int(st["dmg"]), battle_job(uid)], 8, Color(0.8, 0.85, 0.9))
 		for lid in (spec(uid).get("lessons", []) as Array):
 			var l := str(lid)
-			var why := why_not(uid, l)
-			var tb: Button = menu._button("  Teach %s%s" % [str(lesson(l).get("name", l)), "" if why == "" else " (not now)"], func() -> void:
+			var tb: Button = menu._button("  Teach %s · %s" % [str(lesson(l).get("name", l)), lesson_note(uid, l)], func() -> void:
 				menu._toast(teach(uid, l))
 				menu._refresh())
 			tb.set_meta("pc_key", "animals:%s:t:%s" % [uid, l])
-			if why != "":
-				tb.tooltip_text = why
+			menu._line("    " + lesson_desc(l), 7, Color(0.75, 0.8, 0.75))
 		var why_today := why_not(uid)
 		if why_today != "":
 			menu._line("  " + why_today, 8, Color(1, 0.85, 0.6))
@@ -412,7 +530,7 @@ static func _detail(menu: Variant, uid: String) -> void:
 		menu._body.add_child(row)
 		var le := LineEdit.new()
 		le.text = name_of(uid)
-		le.max_length = 14
+		le.max_length = 12
 		le.custom_minimum_size = Vector2(150, 22)
 		le.add_theme_font_size_override("font_size", Settings.font(8))
 		row.add_child(le)

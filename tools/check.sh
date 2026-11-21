@@ -199,6 +199,13 @@ if ! echo "$taout" | grep -q "team_animals_test: OK" || echo "$taout" | grep -q 
   echo "team_animals_test failed"; exit 1
 fi
 
+echo "== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice =="
+p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c11b_p5_test.gd 2>&1)"
+echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|c11b_p5_test" || true
+if ! echo "$p5out" | grep -q "c11b_p5_test: [0-9]* checks, 0 failures" || echo "$p5out" | grep -q "SCRIPT ERROR"; then
+  echo "c11b_p5_test failed"; exit 1
+fi
+
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
 dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
 echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true
@@ -415,6 +422,7 @@ python3 tools/slice_c11a.py check || { echo "C11a ranch art check failed"; exit 
 
 echo "== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard =="
 python3 tools/slice_c11b.py check || { echo "C11b ranch art check failed"; exit 1; }
+python3 tools/slice_c11b_chores.py check || { echo "C11b chore icons missing"; exit 1; }
 
 echo "== economy: no money loops, crops and brews inside their bands =="
 python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }

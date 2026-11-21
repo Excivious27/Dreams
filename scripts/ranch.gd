@@ -822,7 +822,7 @@ static func overnight(report: Dictionary) -> Array:
 		var sp := species(str(a.get("species", "")))
 		var home := str(a.get("home", ""))
 		var fed := fed_today(uid, day)
-		var petted := int(a.get("last_pet", -1)) == day
+		var petted := int(a.get("last_pet", -1)) == day or int(a.get("last_helper_pet", -1)) == day  # P5 hook c11b_06-12: a helper's company counts
 		var adult := day >= int(a.get("adult_day", 0))
 		# Mood: fed, petted, sheltered (a heater in winter), fresh water.
 		var mood := 0

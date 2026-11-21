@@ -462,6 +462,8 @@ func pup_menu_allowed() -> bool:
 		return false
 	if player._busy or player._attack_cd > 0.0 or player.anim_name.begins_with("attack"):
 		return false
+	if pet != null and is_instance_valid(pet) and pet is Pet and (pet as Pet).is_down():
+		return true  # c11b_07-09: a downed pup's menu (food/potions/Leave) opens even mid-fight
 	for e in enemies:
 		if is_instance_valid(e) and e._alive and e.position.distance_to(player.position) < 5.0 * TILE:
 			return false
@@ -477,6 +479,8 @@ func try_interact(c: Vector2i, check := false) -> bool:
 	if not check and WaterCan.try_refill(self, c):
 		return true  # C6 P7: USE with the can on water (or a well/trough) fills it
 	var thing: Dictionary = things.get(c, {})
+	if check and TeamAnimals.check_menu(self, thing):
+		return true  # c11b_09-13: CHECK a trainable animal for lessons and the team
 	if interact(c, thing):
 		return true
 	if thing.is_empty() and scene_id() != "farm" and use_consumable(str(GameState.run["selected"])):
@@ -583,6 +587,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if a != null and is_instance_valid(a):
 				pet_farm_animal(a)
 				animal_hint(a)
+				TeamAnimals.hint_once(self, RanchFarm.uid_of(a))
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool that swings): fiber, Stardew-style.
@@ -1036,7 +1041,8 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice first (C11b P2)
+	if kind == "rooster" or baby or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "call", ""):  # c11b_14-10: species voice + lab layer
+		Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice from data (C11b P2)
 	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
 	if newly:
@@ -1143,6 +1149,9 @@ static func animal_voice(kind: String) -> String:
 		return "oink"
 	if k == "bunny":
 		return "thump"
+	var rv := RanchVoice.file_of(k)  # c11b_14-10: species by id / art alias first, never by prefix
+	if rv != "":
+		return rv
 	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "thump", "bee": "buzz", "horse": "whinny", "foal": "whinny", "donkey": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):

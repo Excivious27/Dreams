@@ -144111,6 +144111,36 @@
    "h": 22,
    "w": 182
   },
+  "chore_feed": {
+   "file": "ui/chore_feed.png",
+   "h": 16,
+   "w": 15
+  },
+  "chore_forage": {
+   "file": "ui/chore_forage.png",
+   "h": 16,
+   "w": 15
+  },
+  "chore_guard": {
+   "file": "ui/chore_guard.png",
+   "h": 16,
+   "w": 13
+  },
+  "chore_harvest": {
+   "file": "ui/chore_harvest.png",
+   "h": 16,
+   "w": 15
+  },
+  "chore_pet": {
+   "file": "ui/chore_pet.png",
+   "h": 16,
+   "w": 15
+  },
+  "chore_water": {
+   "file": "ui/chore_water.png",
+   "h": 16,
+   "w": 15
+  },
   "climb": {
    "file": "ui/climb.png",
    "h": 24,

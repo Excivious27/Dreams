@@ -147,7 +147,7 @@ func _arc(arc: String) -> void:
 	GameState.run["day"] = 11
 	var rep2 := {}
 	Chores.overnight(rep2)
-	check(int(Ranch.animal(cow).get("last_pet", -1)) == 11, "pup kept the animals company")
+	check(int(Ranch.animal(cow).get("last_helper_pet", -1)) == 11 and int(Ranch.animal(cow).get("last_pet", -1)) != 11, "pup kept the animals company (helper pet, your own pet still open: c11b_06-12)")
 	# Leaving the team frees the slot.
 	TeamAnimals.set_team(llama, false)
 	check(Chores.assignment("animal:" + llama).is_empty(), "off the team = off its chore")
@@ -265,9 +265,9 @@ func _menu_pages() -> void:
 		await frames(10)
 		for i in 900:
 			await process_frame
-			if not gm.things.has(fc):
+			if not gm.things.has(fc) and GameState.count("berry") > had:
 				break
-		check(not gm.things.has(fc) and GameState.count("berry") > had, "Fetch lesson picks forage near you")
+		check(not gm.things.has(fc) and GameState.count("berry") > had, "Fetch lesson picks forage near you and brings it back")
 		for x in b2:
 			(x as Node).queue_free()
 		m.toggle()

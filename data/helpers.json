@@ -1,4 +1,31 @@
 {
+ "bond": {
+  "animal": {
+   "cap": 10,
+   "per": 2,
+   "src": "rank of the lesson that opens the chore + half its hearts"
+  },
+  "crew": {
+   "cap": 9,
+   "per": 3,
+   "src": "loyalty hearts (0..3)"
+  },
+  "hand": {
+   "cap": 0,
+   "per": 0,
+   "src": "none"
+  },
+  "partner": {
+   "cap": 10,
+   "per": 1,
+   "src": "friendship hearts"
+  },
+  "pup": {
+   "cap": 10,
+   "per": 2,
+   "src": "pup skill level"
+  }
+ },
  "chores": {
   "feed": {
    "base": 4,
@@ -6,17 +33,41 @@
    "name": "Feed the animals",
    "needs": "",
    "per_level": 2,
+   "sfx": [
+    "hay_toss",
+    "eat"
+   ],
+   "short": "feeds",
    "verb": "fed",
    "xp": 1
   },
   "forage": {
    "base": 2,
    "energy": 6,
-   "name": "Forage the edges",
+   "name": "Forage",
    "needs": "chest",
    "per_level": 1,
+   "sfx": [
+    "pick",
+    "pickup"
+   ],
+   "short": "forages",
    "verb": "foraged",
    "xp": 2
+  },
+  "guard": {
+   "base": 3,
+   "energy": 1,
+   "name": "Watch over the pens",
+   "needs": "",
+   "per_level": 2,
+   "sfx": [
+    "bark",
+    "pickup"
+   ],
+   "short": "guards",
+   "verb": "watched over",
+   "xp": 1
   },
   "harvest": {
    "base": 3,
@@ -24,6 +75,11 @@
    "name": "Harvest ripe crops",
    "needs": "chest",
    "per_level": 2,
+   "sfx": [
+    "harvest_pluck",
+    "harvest"
+   ],
+   "short": "harvests",
    "verb": "harvested",
    "xp": 2
   },
@@ -33,6 +89,11 @@
    "name": "Keep the animals company",
    "needs": "",
    "per_level": 2,
+   "sfx": [
+    "voice",
+    "pickup"
+   ],
+   "short": "keeps company",
    "verb": "kept company",
    "xp": 1
   },
@@ -42,10 +103,136 @@
    "name": "Water the crops",
    "needs": "",
    "per_level": 3,
+   "sfx": [
+    "water",
+    "splash"
+   ],
+   "short": "waters",
    "verb": "watered",
    "xp": 1
   }
  },
+ "forage_regions": [
+  {
+   "arc": "",
+   "energy_mult": 1.0,
+   "id": "edges",
+   "name": "the farm edges",
+   "name_gang": "the lot edges",
+   "pool": "",
+   "visit": ""
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.2,
+   "id": "meadow",
+   "name": "the meadow",
+   "name_gang": "",
+   "pool": "meadow",
+   "visit": "meadow"
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.3,
+   "id": "forest",
+   "name": "the forest",
+   "name_gang": "",
+   "pool": "forest",
+   "visit": "forest"
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.3,
+   "id": "lake",
+   "name": "the lake shore",
+   "name_gang": "",
+   "pool": "lake",
+   "visit": "lake"
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.4,
+   "id": "beach",
+   "name": "the beach",
+   "name_gang": "",
+   "pool": "beach",
+   "visit": "beach"
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.5,
+   "id": "mountain",
+   "name": "the mountain path",
+   "name_gang": "",
+   "pool": "mountain",
+   "visit": "mountain"
+  },
+  {
+   "arc": "",
+   "energy_mult": 1.5,
+   "id": "orchard_hills",
+   "name": "the orchard hills",
+   "name_gang": "the orchard hills",
+   "pool": "orchard_hills",
+   "visit": "orchard_hills"
+  },
+  {
+   "arc": "penguins",
+   "energy_mult": 1.7,
+   "id": "jungle",
+   "name": "the jungle",
+   "name_gang": "",
+   "pool": "jungle",
+   "visit": "jungle"
+  },
+  {
+   "arc": "gangsters",
+   "energy_mult": 1.2,
+   "id": "countryside",
+   "name": "",
+   "name_gang": "the countryside",
+   "pool": "wild",
+   "visit": "countryside"
+  },
+  {
+   "arc": "gangsters",
+   "energy_mult": 1.4,
+   "id": "docks",
+   "name": "",
+   "name_gang": "the docks",
+   "pool": "beach",
+   "visit": "docks"
+  },
+  {
+   "arc": "gangsters",
+   "energy_mult": 1.5,
+   "id": "underground",
+   "name": "",
+   "name_gang": "the underground",
+   "pool": "mountain",
+   "visit": "underground"
+  },
+  {
+   "arc": "",
+   "energy_mult": 1.7,
+   "id": "wastes",
+   "name": "the wastes",
+   "name_gang": "the wastes",
+   "pool": "wastes",
+   "visit": "wastes"
+  },
+  {
+   "arc": "",
+   "energy_mult": 1.6,
+   "id": "quarry",
+   "name": "the quarry",
+   "name_gang": "the quarry",
+   "pool": "quarry",
+   "visit": "quarry"
+  }
+ ],
+ "level_discount": 0.1,
+ "level_energy": 2,
  "levels": [
   12,
   30,
@@ -59,6 +246,8 @@
    "chest",
    "shed"
   ],
+  "cue_dist": 170.0,
+  "cue_gap": 1.5,
   "forage": {
    "fall": [
     "mushroom",
@@ -80,17 +269,58 @@
     "wild_herb"
    ]
   },
+  "forage_gang": {
+   "fall": [
+    "fiber",
+    "mushroom",
+    "wild_herb"
+   ],
+   "spring": [
+    "fiber",
+    "wild_herb",
+    "berry"
+   ],
+   "summer": [
+    "fiber",
+    "wild_herb",
+    "berry"
+   ],
+   "winter": [
+    "fiber",
+    "wild_herb"
+   ]
+  },
+  "guard_pet_share": 0.25,
+  "helper_pet_share": 0.5,
   "lead_xp_cap": 4,
+  "night_value_cap": [
+   150,
+   300,
+   600,
+   1000,
+   1500
+  ],
+  "slots_by_tier": [
+   3,
+   3,
+   4,
+   5,
+   5
+  ],
+  "slots_hut": "hand_hut",
+  "slots_max": 6,
   "unlock_day": 8
  },
+ "second_chore_energy": 24,
  "workers": {
   "animal": {
    "chores": [
     "forage",
     "pet",
-    "harvest"
+    "harvest",
+    "guard"
    ],
-   "energy": 14
+   "energy": 16
   },
   "crew": {
    "chores": [
