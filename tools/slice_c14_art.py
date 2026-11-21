@@ -47,10 +47,10 @@ def load(path):
     return a
 
 
-def pieces(a, n):
+def pieces(a, n, join=24):
     """The n biggest alpha blobs (specks within 24 px join), left to right."""
     solid = a[..., 3] > 40
-    lab, k = ndimage.label(ndimage.binary_dilation(solid, iterations=24))
+    lab, k = ndimage.label(ndimage.binary_dilation(solid, iterations=join))
     sizes = ndimage.sum(solid, lab, range(1, k + 1))
     keep = list(np.argsort(sizes)[::-1][:n] + 1)
     boxes = []
@@ -132,6 +132,118 @@ def seamless_jobs(check):
     return out
 
 
+# Mega-region villagers (c14_17-08): 4 per sheet, one per row, 12 cells = walk down x4,
+# walk side (facing right; NPCs flip for left) x4, walk up (back view) x4. Writes walk (4),
+# walk_up (4), idle_up (back still), idle_side (side still); walk_down stays (it matches idle).
+MG_SHEETS = {
+    "mg_walk_a.png": ["mg_liesl", "mg_fenn", "mg_bramble", "mg_sefa"],
+    "mg_walk_b.png": ["mg_rahim", "mg_nadia", "mg_hollis", "mg_dot"],
+    "mg_walk_c.png": ["mg_skip", "mg_brannoch", "mg_ingrid", "mg_tove"],
+    "mg_walk_d.png": ["mg_zephyr", "mg_gull", "mg_nimbus", "mg_pell"],
+    "mg_walk_e.png": ["mg_odette", "mg_cass", "mg_aurum", "mg_coalbrook"],
+}
+
+
+def row_bands(a, n):
+    rows = (a[..., 3] > 40).any(axis=1)
+    lab, k = ndimage.label(rows)
+    bands = [(np.where(lab == i)[0].min(), np.where(lab == i)[0].max() + 1) for i in range(1, k + 1)]
+    bands = sorted(bands, key=lambda b: b[1] - b[0], reverse=True)[:n]
+    return sorted(bands)
+
+
+def cells12(a):
+    """12 evenly spaced figures in a row: cut at the emptiest column near each expected
+    boundary (wide hats and staffs can touch, so blobs alone don't separate them)."""
+    col = (a[..., 3] > 40).sum(axis=0).astype(float)
+    xs = np.where(col > 0)[0]
+    x0, x1 = xs.min(), xs.max() + 1
+    cw = (x1 - x0) / 12.0
+    cuts = [x0]
+    for i in range(1, 12):
+        e = x0 + cw * i
+        lo, hi = int(e - cw * 0.3), int(e + cw * 0.3)
+        cuts.append(lo + int(np.argmin(col[lo:hi])))
+    cuts.append(x1)
+    out = []
+    for i in range(12):
+        c = a[:, cuts[i]:cuts[i + 1]].copy()
+        solid = c[..., 3] > 40
+        lab, k = ndimage.label(ndimage.binary_dilation(solid, iterations=2))
+        if k > 1:  # keep the figure (biggest blob) and what touches it, drop neighbour slivers
+            sizes = ndimage.sum(solid, lab, range(1, k + 1))
+            keep = int(np.argmax(sizes)) + 1
+            for j in range(1, k + 1):
+                if j != keep and sizes[j - 1] < sizes[keep - 1] * 0.08:
+                    c[lab == j, 3] = 0
+        ys, xs2 = np.where(c[..., 3] > 40)
+        out.append(c[ys.min():ys.max() + 1, xs2.min():xs2.max() + 1])
+    return out
+
+
+OLD_SIDE = {}  # villager -> its old side still (read once, before this slicer replaces it)
+
+
+def faces_left(f, grp, man):
+    """Does this side frame face the other way from the villager's old side art?"""
+    if grp not in OLD_SIDE:
+        info = man[grp].get("idle_side") or man[grp]["walk"]
+        o = Image.open(os.path.join(GEN, info["file"])).convert("RGBA")
+        OLD_SIDE[grp] = o.crop((0, 0, int(info.get("cell_w", o.width)), o.height))
+    o = OLD_SIDE[grp]
+    def prof(im):
+        a = np.array(im.resize((32, 40), Image.BOX)).astype(float)
+        return (a[..., :3] * (a[..., 3:4] / 255.0)).ravel()
+    po = prof(o)
+    same = np.abs(prof(f) - po).mean()
+    flip = np.abs(prof(f.transpose(Image.FLIP_LEFT_RIGHT)) - po).mean()
+    return flip < same
+
+
+def strip(frames, cw, ch):
+    out = Image.new("RGBA", (cw * len(frames), ch), (0, 0, 0, 0))
+    for i, f in enumerate(frames):
+        out.alpha_composite(f, (i * cw + (cw - f.width) // 2, ch - f.height))
+    return out
+
+
+def mg_jobs(check, man):
+    made = []
+    for sheet, ids in MG_SHEETS.items():
+        src = os.path.join(INC, sheet)
+        if not os.path.exists(src):
+            continue
+        a = load(src)
+        for (y0, y1), cid in zip(row_bands(a, len(ids)), ids):
+            ps = cells12(a[y0:y1])
+            if len(ps) != 12:
+                print("skip", cid, len(ps))
+                continue
+            grp = "characters/" + cid
+            ref = Image.open(os.path.join(GEN, man[grp]["walk_down"]["file"])).convert("RGBA")
+            rh = int((np.array(ref)[..., 3] > 40).any(axis=1).sum())  # figure height in the old art
+            s = rh / float(np.median([p.shape[0] for p in ps]))
+            fr = [shrink(p, (max(1, round(p.shape[1] * s)), max(1, round(p.shape[0] * s)))) for p in ps]
+            side, up = fr[4:8], fr[8:12]
+            if faces_left(side[0], grp, man):  # the game's side strips face right (NPCs flip for left)
+                side = [f.transpose(Image.FLIP_LEFT_RIGHT) for f in side]
+            cw = max(f.width for f in fr[4:]) + 2
+            ch = max(f.height for f in fr[4:]) + 1
+            outs = {"walk": strip(side, cw, ch), "walk_up": strip(up, cw, ch),
+                    "idle_up": strip(up[:1], cw, ch), "idle_side": strip(side[:1], cw, ch)}
+            for nm, im in outs.items():
+                rel = "%s/%s.png" % (grp, nm)
+                n = im.width // cw
+                if not check:
+                    dst = os.path.join(GEN, rel)
+                    if os.path.exists(dst):
+                        os.remove(dst)
+                    im.save(dst)
+                    man.setdefault(grp, {})[nm] = {"file": rel, "w": im.width, "h": im.height, "frames": n, "cell_w": cw, "cell_h": ch}
+                made.append("%s %s x%d %dx%d" % (grp, nm, n, cw, ch))
+    return made
+
+
 def main():
     check = "--check" in sys.argv
     man = json.load(open(MAN))
@@ -154,6 +266,7 @@ def main():
                 man.setdefault(group, {})[name] = {"file": rel, "w": im.width, "h": im.height}
             made.append(f"{group}/{name} {im.width}x{im.height}")
     made += seamless_jobs(check)
+    made += mg_jobs(check, man)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)

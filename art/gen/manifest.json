@@ -38917,28 +38917,28 @@
    "w": 40
   },
   "idle_side": {
-   "cell_h": 56,
-   "cell_w": 44,
+   "cell_h": 57,
+   "cell_w": 38,
    "file": "characters/mg_aurum/idle_side.png",
    "frames": 1,
-   "h": 56,
-   "w": 44
+   "h": 57,
+   "w": 38
   },
   "idle_up": {
-   "cell_h": 55,
-   "cell_w": 40,
+   "cell_h": 57,
+   "cell_w": 38,
    "file": "characters/mg_aurum/idle_up.png",
    "frames": 1,
-   "h": 55,
-   "w": 40
+   "h": 57,
+   "w": 38
   },
   "walk": {
-   "cell_h": 56,
-   "cell_w": 44,
+   "cell_h": 57,
+   "cell_w": 38,
    "file": "characters/mg_aurum/walk.png",
-   "frames": 2,
-   "h": 56,
-   "w": 88
+   "frames": 4,
+   "h": 57,
+   "w": 152
   },
   "walk_down": {
    "cell_h": 56,
@@ -38947,6 +38947,14 @@
    "frames": 4,
    "h": 56,
    "w": 160
+  },
+  "walk_up": {
+   "cell_h": 57,
+   "cell_w": 38,
+   "file": "characters/mg_aurum/walk_up.png",
+   "frames": 4,
+   "h": 57,
+   "w": 152
   }
  },
  "characters/mg_bramble": {
@@ -38959,28 +38967,28 @@
    "w": 48
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 45,
+   "cell_h": 50,
+   "cell_w": 36,
    "file": "characters/mg_bramble/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 45
+   "h": 50,
+   "w": 36
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 35,
+   "cell_h": 50,
+   "cell_w": 36,
    "file": "characters/mg_bramble/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 35
+   "h": 50,
+   "w": 36
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 38,
+   "cell_h": 50,
+   "cell_w": 36,
    "file": "characters/mg_bramble/walk.png",
    "frames": 4,
-   "h": 47,
-   "w": 152
+   "h": 50,
+   "w": 144
   },
   "walk_down": {
    "cell_h": 48,
@@ -38991,12 +38999,12 @@
    "w": 192
   },
   "walk_up": {
-   "cell_h": 48,
-   "cell_w": 35,
+   "cell_h": 50,
+   "cell_w": 36,
    "file": "characters/mg_bramble/walk_up.png",
    "frames": 4,
-   "h": 48,
-   "w": 140
+   "h": 50,
+   "w": 144
   }
  },
  "characters/mg_brannoch": {
@@ -39009,28 +39017,28 @@
    "w": 46
   },
   "idle_side": {
-   "cell_h": 50,
-   "cell_w": 45,
+   "cell_h": 51,
+   "cell_w": 41,
    "file": "characters/mg_brannoch/idle_side.png",
    "frames": 1,
-   "h": 50,
-   "w": 45
+   "h": 51,
+   "w": 41
   },
   "idle_up": {
-   "cell_h": 49,
-   "cell_w": 46,
+   "cell_h": 51,
+   "cell_w": 41,
    "file": "characters/mg_brannoch/idle_up.png",
    "frames": 1,
-   "h": 49,
-   "w": 46
+   "h": 51,
+   "w": 41
   },
   "walk": {
-   "cell_h": 50,
-   "cell_w": 45,
+   "cell_h": 51,
+   "cell_w": 41,
    "file": "characters/mg_brannoch/walk.png",
-   "frames": 2,
-   "h": 50,
-   "w": 90
+   "frames": 4,
+   "h": 51,
+   "w": 164
   },
   "walk_down": {
    "cell_h": 50,
@@ -39039,6 +39047,14 @@
    "frames": 4,
    "h": 50,
    "w": 184
+  },
+  "walk_up": {
+   "cell_h": 51,
+   "cell_w": 41,
+   "file": "characters/mg_brannoch/walk_up.png",
+   "frames": 4,
+   "h": 51,
+   "w": 164
   }
  },
  "characters/mg_cass": {
@@ -39051,28 +39067,28 @@
    "w": 32
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 34,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_cass/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 34
+   "h": 49,
+   "w": 33
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_cass/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 32
+   "h": 49,
+   "w": 33
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 34,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_cass/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 68
+   "frames": 4,
+   "h": 49,
+   "w": 132
   },
   "walk_down": {
    "cell_h": 48,
@@ -39080,6 +39096,14 @@
    "file": "characters/mg_cass/walk_down.png",
    "frames": 4,
    "h": 48,
+   "w": 132
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 33,
+   "file": "characters/mg_cass/walk_up.png",
+   "frames": 4,
+   "h": 49,
    "w": 132
   }
  },
@@ -39110,27 +39134,27 @@
   },
   "idle_side": {
    "cell_h": 56,
-   "cell_w": 40,
+   "cell_w": 35,
    "file": "characters/mg_coalbrook/idle_side.png",
    "frames": 1,
    "h": 56,
-   "w": 40
+   "w": 35
   },
   "idle_up": {
-   "cell_h": 54,
-   "cell_w": 39,
+   "cell_h": 56,
+   "cell_w": 35,
    "file": "characters/mg_coalbrook/idle_up.png",
    "frames": 1,
-   "h": 54,
-   "w": 39
+   "h": 56,
+   "w": 35
   },
   "walk": {
    "cell_h": 56,
-   "cell_w": 40,
+   "cell_w": 35,
    "file": "characters/mg_coalbrook/walk.png",
-   "frames": 2,
+   "frames": 4,
    "h": 56,
-   "w": 80
+   "w": 140
   },
   "walk_down": {
    "cell_h": 55,
@@ -39139,6 +39163,14 @@
    "frames": 4,
    "h": 55,
    "w": 160
+  },
+  "walk_up": {
+   "cell_h": 56,
+   "cell_w": 35,
+   "file": "characters/mg_coalbrook/walk_up.png",
+   "frames": 4,
+   "h": 56,
+   "w": 140
   }
  },
  "characters/mg_dot": {
@@ -39151,28 +39183,28 @@
    "w": 32
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 35,
+   "cell_h": 49,
+   "cell_w": 29,
    "file": "characters/mg_dot/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 35
+   "h": 49,
+   "w": 29
   },
   "idle_up": {
-   "cell_h": 46,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 29,
    "file": "characters/mg_dot/idle_up.png",
    "frames": 1,
-   "h": 46,
-   "w": 32
+   "h": 49,
+   "w": 29
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 35,
+   "cell_h": 49,
+   "cell_w": 29,
    "file": "characters/mg_dot/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 70
+   "frames": 4,
+   "h": 49,
+   "w": 116
   },
   "walk_down": {
    "cell_h": 48,
@@ -39181,6 +39213,14 @@
    "frames": 4,
    "h": 48,
    "w": 128
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 29,
+   "file": "characters/mg_dot/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 116
   }
  },
  "characters/mg_fenn": {
@@ -39193,28 +39233,28 @@
    "w": 38
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 36,
+   "cell_h": 50,
+   "cell_w": 34,
    "file": "characters/mg_fenn/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 36
+   "h": 50,
+   "w": 34
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 29,
+   "cell_h": 50,
+   "cell_w": 34,
    "file": "characters/mg_fenn/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 29
+   "h": 50,
+   "w": 34
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 29,
+   "cell_h": 50,
+   "cell_w": 34,
    "file": "characters/mg_fenn/walk.png",
    "frames": 4,
-   "h": 48,
-   "w": 116
+   "h": 50,
+   "w": 136
   },
   "walk_down": {
    "cell_h": 48,
@@ -39225,12 +39265,12 @@
    "w": 152
   },
   "walk_up": {
-   "cell_h": 48,
-   "cell_w": 29,
+   "cell_h": 50,
+   "cell_w": 34,
    "file": "characters/mg_fenn/walk_up.png",
    "frames": 4,
-   "h": 48,
-   "w": 116
+   "h": 50,
+   "w": 136
   }
  },
  "characters/mg_gull": {
@@ -39243,28 +39283,28 @@
    "w": 50
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 53,
+   "cell_h": 49,
+   "cell_w": 43,
    "file": "characters/mg_gull/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 53
+   "h": 49,
+   "w": 43
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 50,
+   "cell_h": 49,
+   "cell_w": 43,
    "file": "characters/mg_gull/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 50
+   "h": 49,
+   "w": 43
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 53,
+   "cell_h": 49,
+   "cell_w": 43,
    "file": "characters/mg_gull/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 106
+   "frames": 4,
+   "h": 49,
+   "w": 172
   },
   "walk_down": {
    "cell_h": 48,
@@ -39273,6 +39313,14 @@
    "frames": 4,
    "h": 48,
    "w": 200
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 43,
+   "file": "characters/mg_gull/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 172
   }
  },
  "characters/mg_hollis": {
@@ -39285,28 +39333,28 @@
    "w": 34
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 30,
+   "cell_h": 49,
+   "cell_w": 31,
    "file": "characters/mg_hollis/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 30
+   "h": 49,
+   "w": 31
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 34,
+   "cell_h": 49,
+   "cell_w": 31,
    "file": "characters/mg_hollis/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 34
+   "h": 49,
+   "w": 31
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 30,
+   "cell_h": 49,
+   "cell_w": 31,
    "file": "characters/mg_hollis/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 60
+   "frames": 4,
+   "h": 49,
+   "w": 124
   },
   "walk_down": {
    "cell_h": 48,
@@ -39315,6 +39363,14 @@
    "frames": 4,
    "h": 48,
    "w": 136
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 31,
+   "file": "characters/mg_hollis/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 124
   }
  },
  "characters/mg_ingrid": {
@@ -39327,28 +39383,28 @@
    "w": 32
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 34,
+   "cell_h": 50,
+   "cell_w": 32,
    "file": "characters/mg_ingrid/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 34
+   "h": 50,
+   "w": 32
   },
   "idle_up": {
-   "cell_h": 48,
+   "cell_h": 50,
    "cell_w": 32,
    "file": "characters/mg_ingrid/idle_up.png",
    "frames": 1,
-   "h": 48,
+   "h": 50,
    "w": 32
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 34,
+   "cell_h": 50,
+   "cell_w": 32,
    "file": "characters/mg_ingrid/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 68
+   "frames": 4,
+   "h": 50,
+   "w": 128
   },
   "walk_down": {
    "cell_h": 48,
@@ -39356,6 +39412,14 @@
    "file": "characters/mg_ingrid/walk_down.png",
    "frames": 4,
    "h": 48,
+   "w": 128
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 32,
+   "file": "characters/mg_ingrid/walk_up.png",
+   "frames": 4,
+   "h": 50,
    "w": 128
   }
  },
@@ -39369,28 +39433,28 @@
    "w": 37
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 35,
+   "cell_h": 49,
+   "cell_w": 34,
    "file": "characters/mg_liesl/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 35
+   "h": 49,
+   "w": 34
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 34,
    "file": "characters/mg_liesl/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 32
+   "h": 49,
+   "w": 34
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 33,
+   "cell_h": 49,
+   "cell_w": 34,
    "file": "characters/mg_liesl/walk.png",
    "frames": 4,
-   "h": 48,
-   "w": 132
+   "h": 49,
+   "w": 136
   },
   "walk_down": {
    "cell_h": 48,
@@ -39401,12 +39465,12 @@
    "w": 148
   },
   "walk_up": {
-   "cell_h": 48,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 34,
    "file": "characters/mg_liesl/walk_up.png",
    "frames": 4,
-   "h": 48,
-   "w": 128
+   "h": 49,
+   "w": 136
   }
  },
  "characters/mg_nadia": {
@@ -39419,28 +39483,28 @@
    "w": 43
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 40,
+   "cell_h": 49,
+   "cell_w": 39,
    "file": "characters/mg_nadia/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 40
+   "h": 49,
+   "w": 39
   },
   "idle_up": {
-   "cell_h": 46,
-   "cell_w": 43,
+   "cell_h": 49,
+   "cell_w": 39,
    "file": "characters/mg_nadia/idle_up.png",
    "frames": 1,
-   "h": 46,
-   "w": 43
+   "h": 49,
+   "w": 39
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 40,
+   "cell_h": 49,
+   "cell_w": 39,
    "file": "characters/mg_nadia/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 80
+   "frames": 4,
+   "h": 49,
+   "w": 156
   },
   "walk_down": {
    "cell_h": 48,
@@ -39449,6 +39513,14 @@
    "frames": 4,
    "h": 48,
    "w": 172
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 39,
+   "file": "characters/mg_nadia/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 156
   }
  },
  "characters/mg_nimbus": {
@@ -39461,28 +39533,28 @@
    "w": 47
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 50,
+   "cell_h": 50,
+   "cell_w": 43,
    "file": "characters/mg_nimbus/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 50
+   "h": 50,
+   "w": 43
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 47,
+   "cell_h": 50,
+   "cell_w": 43,
    "file": "characters/mg_nimbus/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 47
+   "h": 50,
+   "w": 43
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 50,
+   "cell_h": 50,
+   "cell_w": 43,
    "file": "characters/mg_nimbus/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 100
+   "frames": 4,
+   "h": 50,
+   "w": 172
   },
   "walk_down": {
    "cell_h": 48,
@@ -39491,6 +39563,14 @@
    "frames": 4,
    "h": 48,
    "w": 188
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 43,
+   "file": "characters/mg_nimbus/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 172
   }
  },
  "characters/mg_odette": {
@@ -39503,28 +39583,28 @@
    "w": 38
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 38,
+   "cell_h": 49,
+   "cell_w": 36,
    "file": "characters/mg_odette/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 38
+   "h": 49,
+   "w": 36
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 38,
+   "cell_h": 49,
+   "cell_w": 36,
    "file": "characters/mg_odette/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 38
+   "h": 49,
+   "w": 36
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 38,
+   "cell_h": 49,
+   "cell_w": 36,
    "file": "characters/mg_odette/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 76
+   "frames": 4,
+   "h": 49,
+   "w": 144
   },
   "walk_down": {
    "cell_h": 47,
@@ -39533,6 +39613,14 @@
    "frames": 4,
    "h": 47,
    "w": 156
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 36,
+   "file": "characters/mg_odette/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 144
   }
  },
  "characters/mg_pell": {
@@ -39545,28 +39633,28 @@
    "w": 28
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 29,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_pell/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 29
+   "h": 50,
+   "w": 31
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 28,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_pell/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 28
+   "h": 50,
+   "w": 31
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 29,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_pell/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 58
+   "frames": 4,
+   "h": 50,
+   "w": 124
   },
   "walk_down": {
    "cell_h": 48,
@@ -39575,6 +39663,14 @@
    "frames": 4,
    "h": 48,
    "w": 112
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 31,
+   "file": "characters/mg_pell/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 124
   }
  },
  "characters/mg_rahim": {
@@ -39587,28 +39683,28 @@
    "w": 34
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_rahim/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 32
+   "h": 49,
+   "w": 33
   },
   "idle_up": {
-   "cell_h": 46,
-   "cell_w": 34,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_rahim/idle_up.png",
    "frames": 1,
-   "h": 46,
-   "w": 34
+   "h": 49,
+   "w": 33
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 32,
+   "cell_h": 49,
+   "cell_w": 33,
    "file": "characters/mg_rahim/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 64
+   "frames": 4,
+   "h": 49,
+   "w": 132
   },
   "walk_down": {
    "cell_h": 48,
@@ -39617,6 +39713,14 @@
    "frames": 4,
    "h": 48,
    "w": 136
+  },
+  "walk_up": {
+   "cell_h": 49,
+   "cell_w": 33,
+   "file": "characters/mg_rahim/walk_up.png",
+   "frames": 4,
+   "h": 49,
+   "w": 132
   }
  },
  "characters/mg_sefa": {
@@ -39629,28 +39733,28 @@
    "w": 34
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 36,
+   "cell_h": 50,
+   "cell_w": 33,
    "file": "characters/mg_sefa/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 36
+   "h": 50,
+   "w": 33
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 34,
+   "cell_h": 50,
+   "cell_w": 33,
    "file": "characters/mg_sefa/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 34
+   "h": 50,
+   "w": 33
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 36,
+   "cell_h": 50,
+   "cell_w": 33,
    "file": "characters/mg_sefa/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 72
+   "frames": 4,
+   "h": 50,
+   "w": 132
   },
   "walk_down": {
    "cell_h": 48,
@@ -39659,6 +39763,14 @@
    "frames": 4,
    "h": 48,
    "w": 136
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 33,
+   "file": "characters/mg_sefa/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 132
   }
  },
  "characters/mg_skip": {
@@ -39671,28 +39783,28 @@
    "w": 33
   },
   "idle_side": {
-   "cell_h": 47,
-   "cell_w": 33,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_skip/idle_side.png",
    "frames": 1,
-   "h": 47,
-   "w": 33
+   "h": 50,
+   "w": 31
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 33,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_skip/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 33
+   "h": 50,
+   "w": 31
   },
   "walk": {
-   "cell_h": 47,
-   "cell_w": 33,
+   "cell_h": 50,
+   "cell_w": 31,
    "file": "characters/mg_skip/walk.png",
-   "frames": 2,
-   "h": 47,
-   "w": 66
+   "frames": 4,
+   "h": 50,
+   "w": 124
   },
   "walk_down": {
    "cell_h": 48,
@@ -39701,6 +39813,14 @@
    "frames": 4,
    "h": 48,
    "w": 132
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 31,
+   "file": "characters/mg_skip/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 124
   }
  },
  "characters/mg_tove": {
@@ -39713,28 +39833,28 @@
    "w": 41
   },
   "idle_side": {
-   "cell_h": 46,
+   "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/idle_side.png",
    "frames": 1,
-   "h": 46,
+   "h": 50,
    "w": 38
   },
   "idle_up": {
-   "cell_h": 47,
-   "cell_w": 41,
+   "cell_h": 50,
+   "cell_w": 38,
    "file": "characters/mg_tove/idle_up.png",
    "frames": 1,
-   "h": 47,
-   "w": 41
+   "h": 50,
+   "w": 38
   },
   "walk": {
-   "cell_h": 46,
+   "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/walk.png",
-   "frames": 2,
-   "h": 46,
-   "w": 76
+   "frames": 4,
+   "h": 50,
+   "w": 152
   },
   "walk_down": {
    "cell_h": 48,
@@ -39743,6 +39863,14 @@
    "frames": 4,
    "h": 48,
    "w": 164
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 38,
+   "file": "characters/mg_tove/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 152
   }
  },
  "characters/mg_zephyr": {
@@ -39755,28 +39883,28 @@
    "w": 44
   },
   "idle_side": {
-   "cell_h": 48,
-   "cell_w": 47,
+   "cell_h": 50,
+   "cell_w": 41,
    "file": "characters/mg_zephyr/idle_side.png",
    "frames": 1,
-   "h": 48,
-   "w": 47
+   "h": 50,
+   "w": 41
   },
   "idle_up": {
-   "cell_h": 48,
-   "cell_w": 44,
+   "cell_h": 50,
+   "cell_w": 41,
    "file": "characters/mg_zephyr/idle_up.png",
    "frames": 1,
-   "h": 48,
-   "w": 44
+   "h": 50,
+   "w": 41
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 47,
+   "cell_h": 50,
+   "cell_w": 41,
    "file": "characters/mg_zephyr/walk.png",
-   "frames": 2,
-   "h": 48,
-   "w": 94
+   "frames": 4,
+   "h": 50,
+   "w": 164
   },
   "walk_down": {
    "cell_h": 48,
@@ -39785,6 +39913,14 @@
    "frames": 4,
    "h": 48,
    "w": 180
+  },
+  "walk_up": {
+   "cell_h": 50,
+   "cell_w": 41,
+   "file": "characters/mg_zephyr/walk_up.png",
+   "frames": 4,
+   "h": 50,
+   "w": 164
   }
  },
  "characters/mk_atlas": {
