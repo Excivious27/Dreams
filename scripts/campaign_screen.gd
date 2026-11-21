@@ -434,6 +434,13 @@ func _refresh() -> void:
 		var nx := _next_campaign()
 		if nx != "":
 			_acts.append(["Next: %s" % str(Campaign.get_c(nx)["title"]), _show_board.bind(nx)])
+	# C17 P3 (c17_05-04, c17_14-18): visiting a friend, the board is look-only: no
+	# Muster/Attack/March/camp/kin/long-way/rematch buttons that would only refuse.
+	if Net.visiting():
+		_acts = _acts.filter(func(a: Array) -> bool: return not (a[1] as Callable).get_method() in GUEST_NO)
+		_body.text = "Visiting a friend: look only. Your campaigns run on your own farm.\n\n" + _body.text
+		if not Campaign.is_won(cid) and _acts.filter(func(a: Array) -> bool: return (a[1] as Callable).get_method() == "_show_brief").is_empty():
+			_acts.append(["Briefing", _show_brief])
 	if _acts.is_empty() and not Campaign.is_won(cid):
 		if why != "":
 			_acts.append(["What's needed", _show_brief])
@@ -587,6 +594,8 @@ func _next_campaign() -> String:
 
 
 func _long_way() -> void:
+	if _guest_no():
+		return
 	if not _lw_ok(cid):
 		_no()
 		var why := str((Campaign as Script).call("long_way_lock", cid)) if _api("long_way_lock") else ""
@@ -604,6 +613,8 @@ func _long_way() -> void:
 
 
 func _rematch() -> void:
+	if _guest_no():
+		return
 	var id := cid
 	var nid := sel
 	_close_now(false)
@@ -633,7 +644,21 @@ func _attack() -> void:
 
 
 ## Walk the army to the held node next to sel, then attack (or settle) sel.
+const GUEST_NO := ["_muster", "_attack", "_march_attack", "_march", "_settle", "_kin", "_long_way", "_rematch"]
+
+
+## C17 P3: a refused board tap while visiting: a soft no and the reason, no success sound or save.
+func _guest_no() -> bool:
+	if not Net.visiting():
+		return false
+	_no()
+	_flash_msg("You're visiting a friend's farm. Campaigns wait until you're home.")
+	return true
+
+
 func _march_attack() -> void:
+	if _guest_no():
+		return
 	Campaign.march(cid, Campaign.staging(cid, sel))
 	if str(Campaign.node(cid, sel).get("type", "")) in ["camp", "cache"]:
 		_refresh()
@@ -643,6 +668,8 @@ func _march_attack() -> void:
 
 
 func _march() -> void:
+	if _guest_no():
+		return
 	if Campaign.march(cid, sel):
 		Music.instance(get_tree()).sfx("march", "war_drum")
 		_flash_msg("The %s marches to %s." % [Campaign.force_word(), Campaign.node_name(cid, sel)])
@@ -652,6 +679,8 @@ func _march() -> void:
 
 ## Crystal babies: prove your purpose (Campaign.kin_settle).
 func _kin(choice: String) -> void:
+	if _guest_no():
+		return
 	var lines := Campaign.kin_settle(cid, choice)
 	GameState.save()
 	_refresh()
@@ -663,6 +692,8 @@ func _kin(choice: String) -> void:
 
 
 func _settle(choice: String) -> void:
+	if _guest_no():
+		return
 	var line := Campaign.settle(cid, sel, choice)
 	Music.instance(get_tree()).sfx(str(SETTLE_SFX.get(choice, "pickup")), "pickup")
 	GameState.save()

@@ -237,6 +237,8 @@ func _map_tests() -> void:
 	nn.peers = {1: {"name": "H", "scene": key.replace("mine:3:", "mine:4:"), "pos": [0, 0], "anim": "idle"}}
 	var m3 := await _go("res://scenes/mine.tscn")
 	check(str(m3.call("net_scene")) != key, "a partner on another floor never shares our cave")
+	var pf: Array = m3.call("partner_floors")
+	check(pf.size() == 1 and int(pf[0]["floor"]) == 4 and str(pf[0]["name"]) == "H", "the lift can offer 'Join H · Floor 4' (%s)" % str(pf))
 	# A remote break takes the rock away without loot.
 	var rc: Vector2i = _rocks(m3)[0]
 	var bag := JSON.stringify(GameState.run.get("inventory", {}))
@@ -251,6 +253,36 @@ func _map_tests() -> void:
 	GameMap.next_interior = "store"
 	var mi := await _go("res://scenes/interior.tscn")
 	check(mi.scene_id() == "interior" and str(mi.call("net_scene")) == "interior:store", "interior key is the room (%s), scene_id unchanged" % str(mi.call("net_scene")))
+	# Campaign board while visiting: look only (no Muster/Attack/March buttons that refuse).
+	var c0: String = Campaign.for_arc()[0]
+	CampaignScreen.open(mi, "")
+	await process_frame
+	await process_frame
+	var scr: CampaignScreen = null
+	for n in current_scene.get_children():
+		if n is CampaignScreen and not n.is_queued_for_deletion():
+			scr = n
+	check(scr != null, "campaign board opens")
+	if scr != null:
+		scr._show_board(c0)
+		scr._brief.visible = false
+		scr._refresh()
+		var solo_has := false
+		for a: Array in scr._all_acts:
+			solo_has = solo_has or (a[1] as Callable).get_method() in CampaignScreen.GUEST_NO
+		var ob: Dictionary = nn._solo_backup
+		var oh: bool = nn._host
+		nn._host = false
+		nn._solo_backup = {"probe": true}
+		scr._refresh()
+		var bad: Array = []
+		for a: Array in scr._all_acts:
+			if (a[1] as Callable).get_method() in CampaignScreen.GUEST_NO:
+				bad.append(str(a[0]))
+		check(solo_has and bad.is_empty() and scr._body.text.begins_with("Visiting a friend"), "visiting: board is look-only (solo had acts; guest acts left: %s)" % str(bad))
+		nn._solo_backup = ob
+		nn._host = oh
+		scr.queue_free()
 
 
 func _guard_tests() -> void:

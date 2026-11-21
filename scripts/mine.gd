@@ -306,7 +306,7 @@ func build() -> void:
 		things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "Step in or tap USE: climb down to floor %d" % (floor_no + 1))}
 	# The lift: once you've opened floor 5, Granite's cart takes you straight to
 	# any floor you've opened the way to (every 5th).
-	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
+	if (floor_no == 1 or floor_no % 5 == 0) and (_deepest() >= 5 or (floor_no == 1 and Net.online())):  # C17 P3: co-op: the cart can take you to a partner
 		var lc := _nearest_open(_entry + Vector2i(3, 0))
 		set_thing(lc.x, lc.y, {"type": "lift", "hint": "A: the mine lift"})
 	# C16a P3: a miner's bench near the ladder on floor 1 and every 5th floor: rest
@@ -2522,6 +2522,12 @@ func _use_lift() -> void:
 	var labels: Array = []
 	for n in floors:
 		labels.append("Floor %d · %s" % [n, str(theme_for(int(n))["name"])])
+	# C17 P3 (c17_04-07): ride down to a partner's floor (visit-only: your own
+	# checkpoints and deepest floor are not raised; you share their cave).
+	for pf: Dictionary in partner_floors():
+		if int(pf["floor"]) != floor_no:
+			floors.append(PARTNER_LIFT + int(pf["floor"]))
+			labels.append("Join %s · Floor %d" % [str(pf["name"]), int(pf["floor"])])
 	if GameState.run["flags"].has("hollow_heart_open"):
 		floors.append(-1)
 		labels.append("The Hollow Heart")
@@ -2547,8 +2553,35 @@ func _use_lift() -> void:
 		if int(floors[d.last_choice]) == -2:
 			tell([{"text": "The lever won't go that far. Granite's note on it: \"Floor 150 you walk to. The heart of the mountain opens for feet, not carts.\""}])
 			return
-		GameState.run["mine_floor"] = int(floors[d.last_choice])
+		var pick := int(floors[d.last_choice])
+		if pick > PARTNER_LIFT:
+			pick -= PARTNER_LIFT
+		GameState.run["mine_floor"] = pick
 		go_to("mine", Vector2.ZERO)
+
+
+const PARTNER_LIFT := 100000
+
+
+## Partners on a mine floor right now: [{name, floor}] (the host first).
+func partner_floors() -> Array:
+	var out: Array = []
+	if not Net.online():
+		return out
+	var all: Dictionary = Net.roster()
+	for id in all:
+		var info: Dictionary = all[id]
+		if bool(info.get("me", false)):
+			continue
+		var f := parse_net_scene(str(info.get("scene", "")))
+		if f.is_empty():
+			continue
+		var row := {"name": NameFilter.clean(str(info.get("name", "")), "Your partner"), "floor": int(f["floor"])}
+		if bool(info.get("host", false)):
+			out.push_front(row)
+		else:
+			out.append(row)
+	return out
 
 
 ## Mer, the mercat of the grotto. Join her and the water opens.
