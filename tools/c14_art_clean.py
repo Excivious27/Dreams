@@ -168,6 +168,39 @@ def fringe_files():
                 yield info["file"]
 
 
+# bleed (c14_17-11): neighbour slivers on any cell edge (top/bottom too: the next row's hat
+# tips) and detached bursts: islands under 15% of the figure that touch a cell edge go.
+BLEED = ["characters/penguin_wizard/swim.png", "characters/penguin_king/swim.png"]
+
+
+def debleed(a, cw):
+    out = a.copy()
+    n = 0
+    for x0 in range(0, a.shape[1], cw):
+        cell = out[:, x0:x0 + cw]
+        solid = cell[..., 3] > 20
+        lab, k = ndimage.label(solid, structure=np.ones((3, 3)))
+        if k < 2:
+            continue
+        sz = ndimage.sum(solid, lab, range(1, k + 1))
+        big = int(np.argmax(sz)) + 1
+        bx = np.where((lab == big).any(axis=0))[0]
+        for i in range(1, k + 1):
+            mx = np.where((lab == i).any(axis=0))[0]
+            if i != big and sz[i - 1] > 6 and (mx.max() < bx.min() or mx.min() > bx.max()):
+                cell[lab == i, 3] = 0  # a burst or figure beside the frame's own figure
+                n += 1
+                continue
+            if i == big or sz[i - 1] > 0.4 * sz[big - 1]:
+                continue
+            m = lab == i
+            touches = m[0].any() or m[-1].any() or m[:, 0].any() or m[:, -1].any()
+            if (touches and sz[i - 1] > 6) or (0.04 * sz[big - 1] < sz[i - 1] <= 0.15 * sz[big - 1]):
+                cell[m, 3] = 0
+                n += 1
+    return out if n else None
+
+
 def hole_files():
     for k, most in HOLES.items():
         p = os.path.join(GEN, k)
@@ -221,7 +254,19 @@ def main():
             pairs.append((a, out))
             if not dry:
                 write(rel, out)
-    for rel, info in ([] if kind in ("holes", "fringe") else files(kind)):
+    if kind == "bleed":
+        for rel in BLEED:
+            grp, nm = rel.rsplit("/", 1)
+            info = MAN[grp][nm[:-4]]
+            a = np.array(Image.open(os.path.join(GEN, rel)).convert("RGBA"))
+            out = debleed(a, int(info.get("cell_w", a.shape[1])))
+            if out is None:
+                continue
+            print(rel)
+            pairs.append((a, out))
+            if not dry:
+                write(rel, out)
+    for rel, info in ([] if kind in ("holes", "fringe", "bleed") else files(kind)):
         if rel in seen or not os.path.exists(os.path.join(GEN, rel)):
             continue
         seen.add(rel)
