@@ -172,6 +172,14 @@ func _run() -> void:
 	check(not BattleBrief.controls_text({"mode": "skirmish"}).contains("pushes on its own"), "no push promise outside tier-1 campaigns")
 	check(BattleBrief.build_line({}).contains("◇0.2/s") and BattleBrief.build_line({}).begins_with("Build crystals"), "brief says helpers can be built and what upkeep costs")
 
+	# ---- the build ladder (c16b_07-06), both arcs
+	for arc: String in ["penguins", "gangsters"]:
+		GameState.run["arc"] = arc
+		check(Battle.spawner_kinds(1).slice(0, 2) == ["striker", "healer"] and not ("warden" in Battle.spawner_kinds(1)), "%s tier 1: striker and healer only (%s)" % [arc, Battle.spawner_kinds(1)])
+		check("warden" in Battle.spawner_kinds(2) and not ("shade" in Battle.spawner_kinds(2)) and "shade" in Battle.spawner_kinds(3), "%s: ward at tier 2, shade at tier 3" % arc)
+	GameState.run["arc"] = "penguins"
+	check(Battle.ladder_new(2).begins_with("New: "), "the brief names what tier 2 opens (%s)" % Battle.ladder_new(2))
+
 	# ---- reduced motion (c16b_12-01)
 	Settings.set_v("shake", false)
 	check(Battle.pulse_k() == 0.0, "reduced motion: battle rings stop pulsing")

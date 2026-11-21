@@ -182,12 +182,12 @@ static func rally_rect() -> Rect2:
 ## C16b P1 (c16b_06-03): Mend pulse and Barrage are battle commands of their own, under HELPERS.
 static func mend_rect() -> Rect2:
 	var r := rally_rect()
-	return Rect2(r.position.x, r.end.y + 3, r.size.x * 0.5 - 2, 20)
+	return Rect2(r.position.x, r.end.y + 3, 60, 20)
 
 
 static func barrage_rect() -> Rect2:
 	var r := mend_rect()
-	return Rect2(r.end.x + 4, r.position.y, r.size.x, 20)
+	return Rect2(r.end.x + 4, r.position.y, 76, 20)
 
 
 var _rects: Array = []      # the Hud.extra_rects this fight registered (removed on exit)
@@ -211,10 +211,11 @@ func _small_btn(r: Rect2, cmd: String, icon: String, layer: CanvasLayer) -> Butt
 	b.add_theme_constant_override("icon_max_width", 12)
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.clip_text = true
-	var tx := Art.tex("ui", icon)
-	if tx == null:
-		tx = Art.tex("ui", "rally_guard" if cmd == "mend" else "rally_send")
-	b.icon = tx
+	var tx := Art.tex("ui", icon)  # (icons queued in docs/ART-QUEUE.md; text-only until they land)
+	if tx != null:
+		b.icon = tx
+	b.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	b.add_theme_constant_override("h_separation", 2)
 	b.pressed.connect(func() -> void: command(cmd))
 	layer.add_child(b)
 	_rects.append(r)
@@ -596,11 +597,14 @@ func _cost(k: String) -> int:
 ## The helper kinds this run can build at a spawner: the four built-ins, then
 ## data kinds (battles.json "_helper_kinds") whose "arc" matches and whose
 ## "flag" (if any) is set: e.g. Crystal Kin once the penguins befriend them.
-static func spawner_kinds() -> Array:
-	var out: Array = ["striker", "healer", "warden", "shade"]
+static func spawner_kinds(tier := 5) -> Array:
+	var out: Array = []
+	for k: String in ["striker", "healer", "warden", "shade"]:
+		if tier >= int(LADDER.get(k, 1)):
+			out.append(k)
 	var all := HelperUnit.kinds()
 	for k: String in all:
-		if k in out:
+		if k in out or LADDER.has(k):
 			continue
 		var kd: Dictionary = all[k]
 		var arc := str(kd.get("arc", ""))
@@ -611,6 +615,26 @@ static func spawner_kinds() -> Array:
 			continue
 		out.append(k)
 	return out
+
+
+## C16b P1 (c16b_07-06): something new to build as campaigns climb. The campaign tier a
+## built-in kind / action opens at (the drill counts as tier 1; data kinds keep their own flag).
+const LADDER := {"striker": 1, "healer": 1, "warden": 2, "shade": 3, "turret": 2, "fortify": 2, "lvl3": 3}
+
+
+## The tier the banner menu uses: the campaign's, the drill 1, a war-table field its own.
+func build_tier() -> int:
+	return 1 if is_drill else ctier()
+
+
+## "New at this tier" words for the brief (one line per unlock).
+static func ladder_new(tier: int) -> String:
+	var names := {"warden": "Ward helper: shields you", "shade": "Shade helper: hides you", "turret": "Turret / Pylon: guards a point", "fortify": "Fortify: points fall slower", "lvl3": "Upgrade to level 3"}
+	var bits: Array = []
+	for k: String in LADDER:
+		if int(LADDER[k]) == tier and names.has(k):
+			bits.append(str(names[k]))
+	return ("New: " + ", ".join(bits) + ". Build it at a banner.") if not bits.is_empty() else ""
 
 
 func point(id: String) -> Dictionary:
@@ -1179,25 +1203,27 @@ func interact(id: String) -> void:
 	elif sp != "":
 		now_nm = str(HelperUnit.kinds().get(sp, {}).get("crystal" if crystal else "drone", sp.capitalize()))
 	# c16b_07-03/07-10: what an upgrade gives and what it costs to keep.
-	if sp != "" and sp != "turret" and lvl < 3:
+	var bt := build_tier()
+	if sp != "" and sp != "turret" and lvl < (3 if bt >= int(LADDER["lvl3"]) else 2):
 		opts.append("Upgrade to level %d (◇%d): +1 %s, faster; upkeep +0.2/s" % [lvl + 1, _disc(30 * lvl), unit_word(false)])
 		keys.append("upgrade")
-	if not bool(p.get("fort", false)):
+	if not bool(p.get("fort", false)) and bt >= int(LADDER["fortify"]):
 		opts.append("Fortify (◇%d): they take it 50%% slower" % _disc(40))
 		keys.append("fortify")
 	# Builds (c16b_07-05: switching never destroys what you paid for: the old ones fight on till they fall).
 	var does := {"striker": "zaps foes", "healer": "mends you, your pup and helpers", "warden": "shields you", "shade": "hides you"}
 	var bo: Array = []
 	var bk: Array = []
-	for k: String in spawner_kinds():
+	for k: String in spawner_kinds(bt):
 		var kd: Dictionary = HelperUnit.kinds()[k]
 		var knm := str(kd.get("crystal" if crystal else "drone", k.capitalize()))
 		var mark := "▸ building now: " if k == sp else ("Switch to " if sp != "" else "Build helper: ")
 		var tail := (" (your %d %s here fight on till they fall)" % [made_n, now_nm]) if sp != "" and k != sp and made_n > 0 else ""
 		bo.append("%s%s (◇%d): %s%s" % [mark, knm, _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps"))), tail])
 		bk.append(k)
-	bo.append("%s%s (◇%d): guards this point, a new one every 45 s" % ["▸ building now: " if sp == "turret" else ("Switch to " if sp != "" else "Build guard: "), "Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
-	bk.append("turret")
+	if bt >= int(LADDER["turret"]) or sp == "turret":
+		bo.append("%s%s (◇%d): guards this point, a new one every 45 s" % ["▸ building now: " if sp == "turret" else ("Switch to " if sp != "" else "Build guard: "), "Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
+		bk.append("turret")
 	if sp == "":
 		opts = bo + opts
 		keys = bk + keys
@@ -1365,7 +1391,14 @@ func _draw() -> void:
 				draw_line(pos + Vector2.from_angle(an) * (CAP_R + 4), pos + Vector2.from_angle(an) * (CAP_R + 10), Color(0.55, 0.1, 0.12, 0.7), 2.0)
 		var pr := float(p["prog"])
 		if absf(pr) > 0.01:
-			draw_arc(pos, CAP_R - 3, -PI / 2, -PI / 2 + TAU * absf(pr), 48, Color(0.5, 0.9, 1.0) if pr > 0 else Color(1, 0.45, 0.4), 3.0, true)
+			if pr > 0:
+				draw_arc(pos, CAP_R - 3, -PI / 2, -PI / 2 + TAU * pr, 48, Color(0.5, 0.9, 1.0), 3.0, true)
+			else:
+				# Theirs fills counter-clockwise and dashed (c16b_12-11: not red vs blue alone).
+				var segs := ceili(absf(pr) * 16.0)
+				for q in segs:
+					var a0 := -PI / 2 - TAU * q / 16.0
+					draw_arc(pos, CAP_R - 3, a0 - TAU / 26.0, a0, 4, Color(1, 0.45, 0.4), 3.0, false)
 	for p in points:
 		var pos: Vector2 = p["pos"]
 		if not view.has_point(pos):
@@ -1525,10 +1558,13 @@ func count_line() -> String:
 
 ## The second line under the count: how to build when nothing is built, else the order key.
 func count_hint() -> String:
-	if _built() == 0 and not is_drill:
-		return "build at a banner ◇%d" % _cost("striker")
+	var bits: Array = []
 	var k := _rally_key()
-	return ("%s: orders" % k) if k != "" else ""
+	if k != "":
+		bits.append("%s: orders" % k)
+	if _built() == 0 and not is_drill:
+		bits.append(("build ◇%d" if k != "" else "build at a banner ◇%d") % _cost("striker"))
+	return " · ".join(bits)
 
 
 ## c16b_06-10: a cyan edge arrow toward an off-screen order point.
@@ -1739,6 +1775,20 @@ func rewards_on_win(cid: String, nid: String, stats: Dictionary) -> Array:
 	return out if out is Array else []
 
 
+## c16b_13-03: fighting side by side brings people closer: each fielded partner or friend
+## who saw the win gets friendship (a small step, once per fight). Crew loyalty keeps its talks.
+func bond_step() -> Array:
+	var who: Array = []
+	for m: Array in team_members().slice(0, TEAM_MAX):
+		var kind := str(m[2]) if m.size() > 2 else ""
+		if (kind == "partner" or kind == "friend") and str(m[0]) != Companion.active_id() and GameState.npcs.has(str(m[0])):
+			GameState.add_friend(str(m[0]), 15)
+			who.append(str(m[1]))
+	if who.is_empty():
+		return []
+	return [{"text": "%s grew closer to you, fighting side by side." % _and_list(who)}]
+
+
 ## c16b_07-09: after a fight, point at the lasting ways to grow the army.
 func after_lines(_won: bool) -> Array:
 	var pts := GameState.points_free("strategist") if not GameState.run.is_empty() else 0
@@ -1771,6 +1821,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	if won:
 		map.xp("combat", 30)
 		lines.append_array(rewards_on_win(cid, nid, stats))
+		lines.append_array(bond_step())
 	lines.append_array(after_lines(won))
 	GameState.save()
 	if not travel:

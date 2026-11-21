@@ -286,7 +286,7 @@ func _place_toasts() -> void:
 			if cc is Control and (cc as Control).visible:
 				y = maxf(y, (cc as Control).position.y + (cc as Control).size.y + 3.0)
 	if sc and sc.get("battle") != null and y_offset == 0.0:
-		y = 178.0 if _boss_on else 168.0  # under the battle bar (tickets, objective, RALLY)
+		y = Battle.barrage_rect().end.y + (13.0 if _boss_on else 3.0)  # under the battle bar, HELPERS and MEND/BARRAGE (C16b P1 hook)
 		var bt0: Variant = sc.get("battle")
 		if is_instance_valid(bt0) and bt0 is Battle and (bt0 as Battle).drill != null:
 			y = 214.0  # under the training card

@@ -301,7 +301,7 @@ func _run() -> void:
 		print("  (creator has no picker rows here: body sheets missing)")
 	cl.queue_free()
 
-	# 11. Battle rally on the pad (L3): a tap cycles, a hold opens the list;
+	# 11. Battle rally on the pad (L3): a tap or a hold opens the list (C16b P1);
 	# a penguin-only speaker narrates a gangster run's field brief.
 	GameState.new_run("gangsters", "mom", "T", "Town", "Pup")
 	GameMap.next_spawn = Vector2.ZERO
@@ -331,8 +331,19 @@ func _run() -> void:
 		await _btn(JOY_BUTTON_LEFT_STICK, true)
 		await _btn(JOY_BUTTON_LEFT_STICK, false)
 		await _frames(2)
-		ok(b._rally != r0, "tap L3 cycles the rally (%d -> %d)" % [r0, b._rally])
-		ok(b._rally_btn.text.contains("(L3)"), "rally button names L3 off touch: %s" % b._rally_btn.text)
+		# C16b P1 (c16b_06-06): a tap opens the same orders list as touch (no silent cycling).
+		ok(Dialogue.instance(self).active and b._rally == r0, "tap L3 opens the orders list (rally %d -> %d)" % [r0, b._rally])
+		ok(b.count_hint().contains("L3"), "the count line names L3 off touch: %s" % b.count_hint())
+		var dl1 := Dialogue.instance(self)
+		for i in 30:
+			if not dl1.active:
+				break
+			if dl1._in_choice:
+				dl1._choose("", dl1._choices.get_child_count() - 1)
+			else:
+				dl1._advance()
+			await _frames(1)
+		await _frames(2)
 		Dialogue.block_until_ms = 0
 		await _btn(JOY_BUTTON_LEFT_STICK, true)
 		var ht := 0.0

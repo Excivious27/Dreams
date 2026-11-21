@@ -340,7 +340,8 @@ func _army_line() -> String:
 	var bits: Array = ["Tickets %d" % int(d.get("tickets", 0)), "supply ◇%d" % int(d.get("supply", 0))]
 	if bool(d.get("inspired", false)):
 		bits.append("inspired: helpers +25% health")
-	return ", ".join(bits) + ". Morale sets your tickets; supply buys helpers.\n" + build_line(d)
+	var nw := Battle.ladder_new(clampi(int(Campaign.get_c(str(d.get("campaign", ""))).get("tier", 1)), 1, 5))
+	return ", ".join(bits) + ". Morale sets your tickets; supply buys helpers.\n" + build_line(d) + ("\n" + nw if nw != "" else "")
 
 
 ## c16b_07-01/07-03/07-09: yes, you can build helpers; what they cost to build and keep, and the
@@ -348,7 +349,8 @@ func _army_line() -> String:
 static func build_line(data: Dictionary) -> String:
 	var crystal := GameState.is_penguins()
 	var costs: Array = []
-	for k: String in ["striker", "healer", "warden", "shade"]:
+	var tier := clampi(int(Campaign.get_c(str(data.get("campaign", ""))).get("tier", 1)), 1, 5) if str(data.get("campaign", "")) != "" else 5
+	for k: String in Battle.spawner_kinds(tier).filter(func(x: String) -> bool: return x in ["striker", "healer", "warden", "shade"]):
 		var kd: Dictionary = HelperUnit.kinds().get(k, {})
 		var c := maxi(1, int(round(int(Battle.SPAWNER_COST.get(k, 20)) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
 		costs.append("%s ◇%d" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())).split(" ")[0], c])
