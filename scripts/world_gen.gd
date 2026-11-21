@@ -410,12 +410,17 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 
 
 ## Wildlife: small critters that hop around and flee from the player.
-static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
+## `filter` false (c15_09-16: Meow Pow Wow true forms) places exactly the kinds given,
+## ignoring the time-of-day/season rules, and they stay.
+static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = [], filter := true) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"])
+	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]) if filter or kinds.is_empty() else kinds.duplicate()
 	var wet: Array[Vector2i] = []  # water cells in the rect, for fish (never on land)
-	for i in count:
+	var placed := 0
+	for i in (count if filter else count * 10):  # a true form retries blocked cells (c15_09-16)
+		if not filter and placed >= count:
+			break
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
 		var kind: String = pool[rng.randi_range(0, pool.size() - 1)]
 		if kind in WATER_CRITTERS:
@@ -431,15 +436,16 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 				continue
 		elif m.blocked.has(c) or m.is_water_cell(c):
 			continue
-		elif kind in TAKE_OFF and not _near_water(m, c, 2):
+		elif kind in TAKE_OFF and not _near_water(m, c, 2) and filter:
 			continue  # c14b_09-23 / 11-15: waders stay by the water
 		var cr := Critter.new()
 		cr.map = m
 		cr.kind = kind
-		cr.ruled = true
+		cr.ruled = filter
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
+		placed += 1
 
 
 ## The winter look of a sprite when the look season is winter and the art exists:

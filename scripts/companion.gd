@@ -300,7 +300,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				elif str(rv[0]).begins_with("@"):
 					revert_show(m, e, str(rv[0]))
 				else:
-					WorldGen.add_critters(m, Rect2i(m.world_to_cell(e.position) - Vector2i(2, 2), Vector2i(5, 5)), int(Time.get_ticks_msec()), 1, [str(rv[0])])
+					WorldGen.add_critters(m, Rect2i(m.world_to_cell(e.position) - Vector2i(2, 2), Vector2i(5, 5)), int(Time.get_ticks_msec()), 1, [str(rv[0])], false)  # C15 P4: true form as-is
 				e.set_meta("reverted", true)
 				e._die()
 				n += 1
