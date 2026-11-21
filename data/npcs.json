@@ -1355,7 +1355,7 @@
    "4": "Benno's saddle care: your horse runs 10% faster",
    "6": "Benno's oats: +20 max energy",
    "8": "Benno's spare tack sells for ◆250",
-   "10": "Benno's llama wool: 3 Wool each week"
+   "10": "Benno's feed run: 6 Hay each week for your animals"
   },
   "home": "stable",
   "work": "stable",
@@ -1449,9 +1449,9 @@
   ],
   "perks": {
    "2": "Tam's wool: 2 each week",
-   "4": "Tam's sheepdog finds forage: a Tea Leaf each week",
+   "4": "Tam's sheepdog finds forage: 2 Tea Leaves each week",
    "6": "Tam gives you a lamb's worth of wool: 5 Wool",
-   "8": "Tam's cider: 2 each week, and a keepsake for your home: Blue Quilt Double Bed",
+   "8": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed",
    "10": "Tam's hills: 2 Golden Apples"
   },
   "home": "tam_hut",

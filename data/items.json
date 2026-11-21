@@ -285,7 +285,10 @@
   "value": 45,
   "heal": 1,
   "rarity": "uncommon",
-  "tier": 2
+  "tier": 2,
+  "ranch": true,
+  "desc": "From your beehives, or found in the Meadow.",
+  "energy": 20
  },
  "wheat": {
   "name": "Wheat",
@@ -649,7 +652,9 @@
   "value": 141,
   "rarity": "rare",
   "tier": 3,
-  "family": "mushroom"
+  "family": "mushroom",
+  "ranch": true,
+  "desc": "Dug up by happy pigs, or found in old forests."
  },
  "glowcap": {
   "name": "Glow-cap",
@@ -6629,7 +6634,8 @@
   "tier": 1,
   "energy": 20,
   "desc": "From the coop.",
-  "family": "egg"
+  "family": "egg",
+  "ranch": true
  },
  "milk": {
   "name": "Milk",
@@ -6639,7 +6645,8 @@
   "tier": 1,
   "energy": 25,
   "desc": "From the barn.",
-  "family": "milk"
+  "family": "milk",
+  "ranch": true
  },
  "cheese": {
   "name": "Cheese",
@@ -6706,7 +6713,7 @@
   "value": 5,
   "rarity": "common",
   "tier": 1,
-  "desc": "Scythe tall grass to get it."
+  "desc": "Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam."
  },
  "bone": {
   "name": "Bone",
@@ -7072,9 +7079,11 @@
  "sheep_wool": {
   "name": "Wool",
   "type": "material",
-  "value": 25,
+  "value": 48,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "ranch": true,
+  "desc": "Shorn from a happy sheep or llama. Spin it into yarn at the Loom."
  },
  "lamp_oil": {
   "name": "Lamp Oil",
@@ -7125,7 +7134,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "energy": 40,
-  "heal": 1
+  "heal": 1,
+  "desc": "Straight from the hive. Spin it at the Honey Extractor for honey and beeswax."
  },
  "cider": {
   "name": "Cider",
@@ -7152,7 +7162,9 @@
   "tier": 1,
   "energy": 32,
   "heal": 0,
-  "family": "milk"
+  "family": "milk",
+  "ranch": true,
+  "desc": "From the barn goats."
  },
  "mushroom_stew": {
   "name": "Mushroom Stew",
@@ -8132,9 +8144,10 @@
  "yarn": {
   "name": "Yarn",
   "type": "craft",
-  "value": 27,
+  "value": 34,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Soft and warm. Spun from wool or rabbit fur at the Loom."
  },
  "linen": {
   "name": "Linen",
@@ -8153,14 +8166,14 @@
  "fine_fabric": {
   "name": "Fine Fabric",
   "type": "craft",
-  "value": 230,
+  "value": 239,
   "rarity": "rare",
   "tier": 3
  },
  "moonweave": {
   "name": "Moonweave",
   "type": "craft",
-  "value": 702,
+  "value": 723,
   "rarity": "epic",
   "tier": 4
  },
@@ -8212,7 +8225,8 @@
   "value": 70,
   "rarity": "common",
   "tier": 1,
-  "energy": 20
+  "energy": 20,
+  "desc": "Churned from fresh milk."
  },
  "cooking_oil": {
   "name": "Cooking Oil",
@@ -8232,7 +8246,7 @@
  "crystal_battery": {
   "name": "Crystal Battery",
   "type": "craft",
-  "value": 584,
+  "value": 560,
   "rarity": "rare",
   "tier": 3
  },
@@ -8401,7 +8415,7 @@
  "rocket_engine": {
   "name": "Rocket Engine",
   "type": "craft",
-  "value": 7143,
+  "value": 7088,
   "rarity": "epic",
   "tier": 4
  },
@@ -8416,7 +8430,7 @@
  "nav_computer": {
   "name": "Nav Computer",
   "type": "craft",
-  "value": 4269,
+  "value": 4214,
   "rarity": "epic",
   "tier": 4
  },
@@ -9115,7 +9129,7 @@
  "circuit_board": {
   "name": "Circuit Board",
   "type": "craft",
-  "value": 62,
+  "value": 60,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters"
@@ -9123,7 +9137,7 @@
  "data_chip": {
   "name": "Data Chip",
   "type": "craft",
-  "value": 302,
+  "value": 299,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9140,7 +9154,7 @@
  "scrambler": {
   "name": "Signal Scrambler",
   "type": "consumable",
-  "value": 372,
+  "value": 369,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9151,7 +9165,7 @@
  "ghost_ledger": {
   "name": "Ghost Ledger",
   "type": "consumable",
-  "value": 2295,
+  "value": 2252,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",
@@ -9162,7 +9176,7 @@
  "emp_charge": {
   "name": "EMP Charge",
   "type": "consumable",
-  "value": 196,
+  "value": 194,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9174,7 +9188,7 @@
  "emp_heavy": {
   "name": "Blackout Charge",
   "type": "consumable",
-  "value": 1172,
+  "value": 1138,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9187,7 +9201,7 @@
  "spy_drone": {
   "name": "Spy Drone",
   "type": "consumable",
-  "value": 2153,
+  "value": 2145,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9197,7 +9211,7 @@
  "scrap_bot": {
   "name": "Scrap Bot",
   "type": "consumable",
-  "value": 1155,
+  "value": 1152,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
@@ -9209,7 +9223,7 @@
  "guard_bot": {
   "name": "Guard Bot",
   "type": "consumable",
-  "value": 4580,
+  "value": 4547,
   "rarity": "rare",
   "tier": 3,
   "arc": "gangsters",
@@ -9222,7 +9236,7 @@
  "drone_swarm": {
   "name": "Drone Swarm",
   "type": "consumable",
-  "value": 6838,
+  "value": 6770,
   "rarity": "epic",
   "tier": 4,
   "arc": "gangsters",
@@ -10261,9 +10275,10 @@
   "value": 34,
   "rarity": "common",
   "tier": 1,
-  "energy": 14,
+  "energy": 26,
   "family": "egg",
-  "desc": "Big, rich and blue-green."
+  "desc": "Big, rich and blue-green.",
+  "ranch": true
  },
  "dc_antler_hooks": {
   "name": "Antler Hooks",
@@ -20872,5 +20887,457 @@
   "icon": "decor/dc_y_wind_spinner",
   "desc": "A piece for the yard outside.",
   "decor": true
+ },
+ "feather": {
+  "name": "Feather",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Soft and light. Ducks shed them; roosters too.",
+  "ranch": true
+ },
+ "rabbit_fur": {
+  "name": "Rabbit Fur",
+  "type": "material",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 1,
+  "sprite": "wool",
+  "desc": "Brushed from a happy rabbit. Rabbits shed it every few days.",
+  "ranch": true
+ },
+ "beeswax": {
+  "name": "Beeswax",
+  "type": "craft",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "sprite": "wax",
+  "desc": "Spun from honeycomb. Candles, polish and fine goods.",
+  "ranch": true,
+  "icon": "wax"
+ },
+ "mayonnaise": {
+  "name": "Mayonnaise",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "desc": "Whipped from fresh eggs in the Mayo Machine."
+ },
+ "duck_mayonnaise": {
+  "name": "Duck Mayonnaise",
+  "type": "food",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "icon": "mayonnaise",
+  "desc": "Rich and golden, from duck eggs."
+ },
+ "honey_jar": {
+  "name": "Jar of Honey",
+  "type": "food",
+  "value": 198,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 60,
+  "heal": 2,
+  "desc": "Clear, golden honey, sealed in glass."
+ },
+ "beeswax_candle": {
+  "name": "Beeswax Candle",
+  "type": "craft",
+  "value": 75,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "candle",
+  "desc": "Burns long and smells of summer."
+ },
+ "cream": {
+  "name": "Cream",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 25,
+  "desc": "Skimmed from fresh milk."
+ },
+ "yogurt": {
+  "name": "Honey Yogurt",
+  "type": "food",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1,
+  "icon": "yogurt",
+  "desc": "Thick, tangy and sweetened with honey."
+ },
+ "truffle_oil": {
+  "name": "Truffle Oil",
+  "type": "craft",
+  "value": 320,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "cooking_oil",
+  "desc": "A few drops make any dish taste rich."
+ },
+ "down_pillow": {
+  "name": "Down Pillow",
+  "type": "craft",
+  "value": 98,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "feather",
+  "desc": "Soft as a cloud, stuffed with feathers. A fine trade good."
+ },
+ "ostrich_egg": {
+  "name": "Ostrich Egg",
+  "type": "food",
+  "value": 320,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Huge and cream-coloured. One makes breakfast for a whole table.",
+  "family": "egg",
+  "energy": 50,
+  "ranch": true
+ },
+ "emu_egg": {
+  "name": "Emu Egg",
+  "type": "food",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Deep green and glossy, like a polished stone.",
+  "family": "egg",
+  "energy": 37,
+  "ranch": true
+ },
+ "plume": {
+  "name": "Plume",
+  "type": "material",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A long, soft plume dropped by a big bird. Hat makers love them.",
+  "ranch": true
+ },
+ "alpaca_fleece": {
+  "name": "Alpaca Fleece",
+  "type": "material",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Silky and warm. Spins into fine yarn.",
+  "ranch": true
+ },
+ "shed_scale": {
+  "name": "Shed Scale",
+  "type": "material",
+  "value": 600,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A shiny scale shed by a happy drake. It grows a new one.",
+  "ranch": true
+ },
+ "yak_wool": {
+  "name": "Yak Wool",
+  "type": "material",
+  "value": 110,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Thick winter wool, brushed out, never cut close.",
+  "ranch": true
+ },
+ "peacock_feather": {
+  "name": "Peacock Feather",
+  "type": "material",
+  "value": 140,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "An eye-patterned feather the peacock dropped while showing off.",
+  "ranch": true
+ },
+ "shell_moss": {
+  "name": "Shell Moss",
+  "type": "forage",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Soft green moss that grows on a tortoise shell. Brewers prize it.",
+  "ranch": true
+ },
+ "buffalo_milk": {
+  "name": "Buffalo Milk",
+  "type": "food",
+  "value": 75,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Rich, creamy milk. Makes the best soft cheese.",
+  "family": "milk",
+  "energy": 19,
+  "ranch": true
+ },
+ "crystal_egg": {
+  "name": "Crystal Egg",
+  "type": "food",
+  "value": 160,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A faceted egg that rings softly when tapped.",
+  "family": "egg",
+  "energy": 30,
+  "ranch": true
+ },
+ "star_wool": {
+  "name": "Star Wool",
+  "type": "material",
+  "value": 200,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Lavender wool with tiny twinkles in it.",
+  "ranch": true
+ },
+ "moon_fluff": {
+  "name": "Moon Fluff",
+  "type": "material",
+  "value": 140,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Fluff so light it floats for a moment before landing.",
+  "ranch": true
+ },
+ "sea_milk": {
+  "name": "Sea Milk",
+  "type": "food",
+  "value": 110,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Cool, faintly salty and very creamy.",
+  "family": "milk",
+  "energy": 23,
+  "ranch": true
+ },
+ "ember_scale": {
+  "name": "Ember Scale",
+  "type": "material",
+  "value": 150,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Still warm. A little fuel that never smokes.",
+  "ranch": true
+ },
+ "roc_feather": {
+  "name": "Roc Feather",
+  "type": "material",
+  "value": 240,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A storm-grey flight feather that crackles in the wind.",
+  "ranch": true
+ },
+ "roc_egg": {
+  "name": "Roc Egg",
+  "type": "material",
+  "value": 400,
+  "rarity": "legendary",
+  "tier": 5,
+  "desc": "Too precious to cook. The incubator in an Aviary can hatch it."
+ },
+ "aurora_tuft": {
+  "name": "Aurora Tuft",
+  "type": "material",
+  "value": 180,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A tuft of fox fur that shimmers green and gold.",
+  "ranch": true
+ },
+ "glow_silk": {
+  "name": "Glow Silk",
+  "type": "material",
+  "value": 140,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Fine thread spun by glowworms, faintly lit.",
+  "ranch": true
+ },
+ "moon_milk": {
+  "name": "Moon Milk",
+  "type": "food",
+  "value": 150,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Pale silver milk from a moon cow.",
+  "family": "milk",
+  "energy": 28,
+  "ranch": true
+ },
+ "circuit_egg": {
+  "name": "Circuit Egg",
+  "type": "material",
+  "value": 48,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Warm, smooth and faintly humming. Crack it for parts.",
+  "ranch": true
+ },
+ "glow_wool": {
+  "name": "Glow Wool",
+  "type": "material",
+  "value": 56,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Soft wool that glows after dark.",
+  "ranch": true
+ },
+ "coolant": {
+  "name": "Coolant",
+  "type": "material",
+  "value": 48,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Cold blue and never spills. Bots love it.",
+  "ranch": true
+ },
+ "static_fluff": {
+  "name": "Static Fluff",
+  "type": "material",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "It sticks to everything and crackles when you pet it.",
+  "ranch": true
+ },
+ "synth_milk": {
+  "name": "Synth Milk",
+  "type": "material",
+  "value": 43,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Smooth and blue-white. Machines run cooler on it.",
+  "ranch": true
+ },
+ "static_scale": {
+  "name": "Static Scale",
+  "type": "material",
+  "value": 90,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A tiny scale with a spark trapped inside.",
+  "ranch": true
+ },
+ "alloy_egg": {
+  "name": "Alloy Egg",
+  "type": "material",
+  "value": 300,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A heavy metal-shelled egg. Crack it for rare parts.",
+  "ranch": true
+ },
+ "grand_omelette": {
+  "name": "Grand Omelette",
+  "type": "food",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "One giant egg, folded with herbs. Feeds everyone.",
+  "energy": 62
+ },
+ "fine_yarn": {
+  "name": "Fine Yarn",
+  "type": "craft",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Silky yarn from alpaca fleece or yak wool."
+ },
+ "scale_charm": {
+  "name": "Scale Charm",
+  "type": "gift",
+  "value": 1011,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A polished drake scale on a cord. Said to bring warm days."
+ },
+ "moon_cheese": {
+  "name": "Moon Cheese",
+  "type": "food",
+  "value": 240,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A pale round cheese with little craters.",
+  "energy": 40
+ },
+ "glow_yarn": {
+  "name": "Glow Yarn",
+  "type": "craft",
+  "value": 80,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Yarn that glows softly. Neon tailors want it."
+ },
+ "moss_tea_blend": {
+  "name": "Moss Tea Blend",
+  "type": "food",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Shell moss and herbs, dried for a calming tea.",
+  "energy": 26
+ },
+ "buffalo_mozzarella": {
+  "name": "Buffalo Mozzarella",
+  "type": "food",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Soft, fresh and milky.",
+  "energy": 25
+ },
+ "star_yarn": {
+  "name": "Star Yarn",
+  "type": "craft",
+  "value": 280,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Yarn spun from star wool. It twinkles."
+ },
+ "cloud_yarn": {
+  "name": "Cloud Yarn",
+  "type": "craft",
+  "value": 300,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Lighter than air, nearly."
+ },
+ "ember_charm": {
+  "name": "Ember Charm",
+  "type": "gift",
+  "value": 273,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "A warm scale charm. Good company on a cold night."
+ },
+ "feather_fan": {
+  "name": "Feather Fan",
+  "type": "gift",
+  "value": 288,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A showy fan of dropped feathers."
+ },
+ "giant_egg_custard": {
+  "name": "Giant Egg Custard",
+  "type": "food",
+  "value": 300,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A whole big egg baked into a wobbly custard.",
+  "energy": 47
  }
 }

@@ -1,0 +1,129 @@
+{
+ "chores": {
+  "feed": {
+   "base": 4,
+   "energy": 1,
+   "name": "Feed the animals",
+   "needs": "",
+   "per_level": 2,
+   "verb": "fed",
+   "xp": 1
+  },
+  "forage": {
+   "base": 2,
+   "energy": 6,
+   "name": "Forage the edges",
+   "needs": "chest",
+   "per_level": 1,
+   "verb": "foraged",
+   "xp": 2
+  },
+  "harvest": {
+   "base": 3,
+   "energy": 3,
+   "name": "Harvest ripe crops",
+   "needs": "chest",
+   "per_level": 2,
+   "verb": "harvested",
+   "xp": 2
+  },
+  "pet": {
+   "base": 3,
+   "energy": 1,
+   "name": "Keep the animals company",
+   "needs": "",
+   "per_level": 2,
+   "verb": "kept company",
+   "xp": 1
+  },
+  "water": {
+   "base": 6,
+   "energy": 2,
+   "name": "Water the crops",
+   "needs": "",
+   "per_level": 3,
+   "verb": "watered",
+   "xp": 1
+  }
+ },
+ "levels": [
+  12,
+  30,
+  60,
+  100
+ ],
+ "max_level": 5,
+ "max_units": 20,
+ "rules": {
+  "chests": [
+   "chest",
+   "shed"
+  ],
+  "forage": {
+   "fall": [
+    "mushroom",
+    "blackberry",
+    "fiber"
+   ],
+   "spring": [
+    "berry",
+    "wild_herb",
+    "fiber"
+   ],
+   "summer": [
+    "berry",
+    "wild_herb",
+    "fiber"
+   ],
+   "winter": [
+    "fiber",
+    "wild_herb"
+   ]
+  },
+  "lead_xp_cap": 4,
+  "unlock_day": 8
+ },
+ "workers": {
+  "animal": {
+   "chores": [
+    "forage",
+    "pet",
+    "harvest"
+   ],
+   "energy": 14
+  },
+  "crew": {
+   "chores": [
+    "water",
+    "harvest",
+    "feed",
+    "pet",
+    "forage"
+   ],
+   "energy": 24
+  },
+  "hand": {
+   "chores": [
+    "feed",
+    "pet"
+   ],
+   "energy": 16
+  },
+  "partner": {
+   "chores": [
+    "water",
+    "harvest",
+    "feed",
+    "pet"
+   ],
+   "energy": 20
+  },
+  "pup": {
+   "chores": [
+    "forage",
+    "pet"
+   ],
+   "energy": 18
+  }
+ }
+}

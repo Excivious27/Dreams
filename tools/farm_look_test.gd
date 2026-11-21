@@ -77,6 +77,8 @@ func _run() -> void:
 		GameState.run["flags"]["coop_day"] = 1
 		GameState.run["flags"]["barn_day"] = 1
 		GameState.run["flags"]["barn2_day"] = 1
+		Ranch.st()["legacy_done"] = false  # fix2: the farm draws the roster only; an old save's full herd
+		Ranch.migrate()
 		if tier == 3:
 			GameState.run["farm"]["18,8"] = {"watered": false, "crop": "turnip", "days": 2}  # old greenhouse plot, now under the Manor
 		m = await load_farm()

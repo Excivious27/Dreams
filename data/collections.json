@@ -36,6 +36,12 @@
    "title": "Forage log",
    "kind": "seen",
    "badge": "medal_explorer"
+  },
+  {
+   "id": "ranch",
+   "title": "Ranch log",
+   "kind": "count",
+   "badge": "medal_green_thumb"
   }
  ],
  "wings": [
@@ -362,6 +368,360 @@
  "logs": {
   "shipping": [
    {
+    "item": "egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your coop hens, every morning you care for them."
+   },
+   {
+    "item": "duck_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Ducks in the Big Coop."
+   },
+   {
+    "item": "milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Cows in your barn."
+   },
+   {
+    "item": "goat_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Goats in the Big Barn."
+   },
+   {
+    "item": "sheep_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Sheep and llamas in your barn."
+   },
+   {
+    "item": "honey",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives on the farm; sometimes found in the Meadow."
+   },
+   {
+    "item": "honeycomb",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives, now and then."
+   },
+   {
+    "item": "truffle",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Happy pigs dig them up outdoors; old forests too."
+   },
+   {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "ostrich_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "plume",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "emu_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "alpaca_fleece",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "shed_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "yak_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "peacock_feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "shell_moss",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "buffalo_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "crystal_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "star_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "star_dust",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Forage: Crystal Meadow, Moon"
+   },
+   {
+    "item": "glowcap",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Forage: Forest, Jungle"
+   },
+   {
+    "item": "pearl",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Old chests, buried caches and lucky catches."
+   },
+   {
+    "item": "tide_pearl",
+    "arc": "penguins",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "sea_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "ice_pike",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Somewhere in the water, at night with bait, fishing 9+"
+   },
+   {
+    "item": "ember_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "storm_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "roc_feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "storm_eye",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Old chests, buried caches and lucky catches."
+   },
+   {
+    "item": "wisp_thread",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "aurora_tuft",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "glow_silk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_shard",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "circuit_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "glow_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "coolant",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "static_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "synth_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "circuit_board",
+    "arc": "gangsters",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "data_chip",
+    "arc": "gangsters",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "static_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "alloy_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "cheese",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "butter",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "goat_cheese",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "mayonnaise",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "duck_mayonnaise",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "cream",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "yogurt",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "honey_jar",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "beeswax_candle",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "yarn",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "truffle_oil",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
     "item": "turnip",
     "arc": "",
     "family": "Crops",
@@ -432,12 +792,6 @@
     "arc": "",
     "family": "Fish",
     "where": "Crystal Meadow, Farm"
-   },
-   {
-    "item": "honey",
-    "arc": "",
-    "family": "Crops",
-    "where": "Forage: Meadow"
    },
    {
     "item": "wheat",
@@ -608,18 +962,6 @@
     "where": "Out in the world somewhere."
    },
    {
-    "item": "truffle",
-    "arc": "",
-    "family": "Forage",
-    "where": "Forage: Forest"
-   },
-   {
-    "item": "glowcap",
-    "arc": "",
-    "family": "Forage",
-    "where": "Forage: Forest, Jungle"
-   },
-   {
     "item": "driftwood",
     "arc": "",
     "family": "Forage",
@@ -717,6 +1059,12 @@
    },
    {
     "item": "lemon",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lime",
     "arc": "",
     "family": "Fruit",
     "where": "Grow it on the farm."
@@ -1172,12 +1520,6 @@
     "where": "Forage: Crystal Meadow, Moon"
    },
    {
-    "item": "pearl",
-    "arc": "",
-    "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
-   },
-   {
     "item": "map_scrap",
     "arc": "",
     "family": "Treasure",
@@ -1610,12 +1952,6 @@
     "where": "The mines, or rocks out in the wilds."
    },
    {
-    "item": "ice_pike",
-    "arc": "",
-    "family": "Fish",
-    "where": "Somewhere in the water, at night with bait, fishing 9+"
-   },
-   {
     "item": "storm_glass",
     "arc": "",
     "family": "Minerals",
@@ -1626,12 +1962,6 @@
     "arc": "",
     "family": "Fish",
     "where": "Somewhere in the water, at night with bait, fishing 11+"
-   },
-   {
-    "item": "storm_eye",
-    "arc": "",
-    "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
    },
    {
     "item": "lucky_coin",
@@ -1938,6 +2268,34 @@
     "station": "kitchen",
     "item": "sun_flan",
     "name": "Gilded Flan",
+    "arc": ""
+   },
+   {
+    "recipe": "grand_omelette",
+    "station": "kitchen",
+    "item": "grand_omelette",
+    "name": "Grand Omelette",
+    "arc": ""
+   },
+   {
+    "recipe": "grand_omelette_emu",
+    "station": "kitchen",
+    "item": "grand_omelette",
+    "name": "Grand Omelette (emu egg)",
+    "arc": ""
+   },
+   {
+    "recipe": "giant_egg_custard",
+    "station": "kitchen",
+    "item": "giant_egg_custard",
+    "name": "Giant Egg Custard",
+    "arc": ""
+   },
+   {
+    "recipe": "giant_egg_custard_emu",
+    "station": "kitchen",
+    "item": "giant_egg_custard",
+    "name": "Giant Egg Custard (emu egg)",
     "arc": ""
    },
    {
@@ -3329,6 +3687,111 @@
     "arc": ""
    },
    {
+    "recipe": "down_pillow",
+    "station": "loom",
+    "item": "down_pillow",
+    "name": "Down Pillow",
+    "arc": ""
+   },
+   {
+    "recipe": "angora_yarn",
+    "station": "loom",
+    "item": "yarn",
+    "name": "Yarn (rabbit fur)",
+    "arc": ""
+   },
+   {
+    "recipe": "fine_yarn",
+    "station": "loom",
+    "item": "fine_yarn",
+    "name": "Fine Yarn",
+    "arc": ""
+   },
+   {
+    "recipe": "fine_yarn_yak",
+    "station": "loom",
+    "item": "fine_yarn",
+    "name": "Fine Yarn (yak wool)",
+    "arc": ""
+   },
+   {
+    "recipe": "star_yarn",
+    "station": "loom",
+    "item": "star_yarn",
+    "name": "Star Yarn",
+    "arc": ""
+   },
+   {
+    "recipe": "star_yarn_moon",
+    "station": "loom",
+    "item": "star_yarn",
+    "name": "Star Yarn (moon fluff)",
+    "arc": ""
+   },
+   {
+    "recipe": "star_yarn_aurora",
+    "station": "loom",
+    "item": "star_yarn",
+    "name": "Star Yarn (aurora tuft)",
+    "arc": ""
+   },
+   {
+    "recipe": "cloud_yarn",
+    "station": "loom",
+    "item": "cloud_yarn",
+    "name": "Cloud Yarn",
+    "arc": ""
+   },
+   {
+    "recipe": "glow_yarn",
+    "station": "loom",
+    "item": "glow_yarn",
+    "name": "Glow Yarn",
+    "arc": ""
+   },
+   {
+    "recipe": "glow_yarn_static",
+    "station": "loom",
+    "item": "glow_yarn",
+    "name": "Glow Yarn (static fluff)",
+    "arc": ""
+   },
+   {
+    "recipe": "wisp_silk",
+    "station": "loom",
+    "item": "glow_silk",
+    "name": "Glow Silk (wisp thread)",
+    "arc": ""
+   },
+   {
+    "recipe": "glow_silk_fabric",
+    "station": "loom",
+    "item": "fine_fabric",
+    "name": "Fine Fabric (glow silk)",
+    "arc": ""
+   },
+   {
+    "recipe": "feather_fan",
+    "station": "loom",
+    "item": "feather_fan",
+    "name": "Feather Fan",
+    "arc": ""
+   },
+   {
+    "recipe": "feather_fan_plume",
+    "station": "loom",
+    "item": "feather_fan",
+    "name": "Feather Fan (plumes)",
+    "arc": ""
+   },
+   {
+    "recipe": "feather_fan_roc",
+    "station": "loom",
+    "item": "feather_fan",
+    "name": "Feather Fan (roc feather)",
+    "arc": ""
+   },
+   {
     "recipe": "dc_rug_rect_blue",
     "station": "loom",
     "item": "dc_rug_rect_blue",
@@ -3658,6 +4121,55 @@
     "arc": ""
    },
    {
+    "recipe": "buffalo_mozzarella",
+    "station": "press",
+    "item": "buffalo_mozzarella",
+    "name": "Buffalo Mozzarella",
+    "arc": ""
+   },
+   {
+    "recipe": "moon_cheese",
+    "station": "press",
+    "item": "moon_cheese",
+    "name": "Moon Cheese",
+    "arc": ""
+   },
+   {
+    "recipe": "sea_cheese",
+    "station": "press",
+    "item": "cheese",
+    "name": "Cheese (sea milk)",
+    "arc": ""
+   },
+   {
+    "recipe": "moss_tea_blend",
+    "station": "press",
+    "item": "moss_tea_blend",
+    "name": "Moss Tea Blend",
+    "arc": ""
+   },
+   {
+    "recipe": "cream",
+    "station": "press",
+    "item": "cream",
+    "name": "Cream",
+    "arc": ""
+   },
+   {
+    "recipe": "yogurt",
+    "station": "press",
+    "item": "yogurt",
+    "name": "Honey Yogurt",
+    "arc": ""
+   },
+   {
+    "recipe": "truffle_oil",
+    "station": "press",
+    "item": "truffle_oil",
+    "name": "Truffle Oil",
+    "arc": ""
+   },
+   {
     "recipe": "brick",
     "station": "kiln",
     "item": "brick",
@@ -3802,6 +4314,20 @@
     "station": "jeweler",
     "item": "dream_charm",
     "name": "Dream Charm",
+    "arc": ""
+   },
+   {
+    "recipe": "scale_charm",
+    "station": "jeweler",
+    "item": "scale_charm",
+    "name": "Scale Charm",
+    "arc": ""
+   },
+   {
+    "recipe": "ember_charm",
+    "station": "jeweler",
+    "item": "ember_charm",
+    "name": "Ember Charm",
     "arc": ""
    },
    {
@@ -4414,6 +4940,20 @@
     "arc": ""
    },
    {
+    "recipe": "crack_circuit_egg",
+    "station": "hack",
+    "item": "circuit_board",
+    "name": "Crack a Circuit Egg",
+    "arc": ""
+   },
+   {
+    "recipe": "crack_alloy_egg",
+    "station": "hack",
+    "item": "circuit_board",
+    "name": "Crack an Alloy Egg",
+    "arc": ""
+   },
+   {
     "recipe": "dc_neon_sign_0",
     "station": "hack",
     "item": "dc_neon_sign_0",
@@ -4510,6 +5050,69 @@
     "item": "drone_swarm",
     "name": "Drone Swarm",
     "arc": ""
+   },
+   {
+    "recipe": "battery_coolant",
+    "station": "robot",
+    "item": "crystal_battery",
+    "name": "Crystal Battery (coolant)",
+    "arc": ""
+   },
+   {
+    "recipe": "battery_synth",
+    "station": "robot",
+    "item": "crystal_battery",
+    "name": "Crystal Battery (synth milk)",
+    "arc": ""
+   },
+   {
+    "recipe": "battery_static",
+    "station": "robot",
+    "item": "crystal_battery",
+    "name": "Crystal Battery (static scales)",
+    "arc": ""
+   },
+   {
+    "recipe": "mayonnaise",
+    "station": "mayo",
+    "item": "mayonnaise",
+    "name": "Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "duck_mayonnaise",
+    "station": "mayo",
+    "item": "duck_mayonnaise",
+    "name": "Duck Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_comb",
+    "station": "extractor",
+    "item": "honey",
+    "name": "Honey (from honeycomb)",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax",
+    "station": "extractor",
+    "item": "beeswax",
+    "name": "Beeswax",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_jar",
+    "station": "extractor",
+    "item": "honey_jar",
+    "name": "Jar of Honey",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax_candle",
+    "station": "extractor",
+    "item": "beeswax_candle",
+    "name": "Beeswax Candle",
+    "arc": ""
    }
   ],
   "forage": [
@@ -4566,7 +5169,7 @@
    {
     "item": "truffle",
     "arc": "",
-    "where": "Forage: Forest"
+    "where": "Happy pigs dig them up outdoors; old forests too."
    },
    {
     "item": "glowcap",
@@ -4672,6 +5275,295 @@
     "item": "spice",
     "arc": "",
     "where": "Forage: Desert Dune Sea, Desert Glass Canyon"
+   },
+   {
+    "item": "shell_moss",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   }
+  ],
+  "ranch": [
+   {
+    "item": "egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your coop hens, every morning you care for them."
+   },
+   {
+    "item": "duck_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Ducks in the Big Coop."
+   },
+   {
+    "item": "milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Cows in your barn."
+   },
+   {
+    "item": "goat_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Goats in the Big Barn."
+   },
+   {
+    "item": "sheep_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Sheep and llamas in your barn."
+   },
+   {
+    "item": "honey",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives on the farm; sometimes found in the Meadow."
+   },
+   {
+    "item": "honeycomb",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives, now and then."
+   },
+   {
+    "item": "truffle",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Happy pigs dig them up outdoors; old forests too."
+   },
+   {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "ostrich_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "plume",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "emu_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "alpaca_fleece",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "shed_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "yak_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "peacock_feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "shell_moss",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "buffalo_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "crystal_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "star_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "star_dust",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Forage: Crystal Meadow, Moon"
+   },
+   {
+    "item": "glowcap",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Forage: Forest, Jungle"
+   },
+   {
+    "item": "pearl",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Old chests, buried caches and lucky catches."
+   },
+   {
+    "item": "tide_pearl",
+    "arc": "penguins",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "sea_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "ice_pike",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Somewhere in the water, at night with bait, fishing 9+"
+   },
+   {
+    "item": "ember_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "storm_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "roc_feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "storm_eye",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Old chests, buried caches and lucky catches."
+   },
+   {
+    "item": "wisp_thread",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "aurora_tuft",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "glow_silk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "moon_shard",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "circuit_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "glow_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "coolant",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "static_fluff",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "synth_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "circuit_board",
+    "arc": "gangsters",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "data_chip",
+    "arc": "gangsters",
+    "family": "Animal goods",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "static_scale",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "alloy_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
    }
   ]
  },
@@ -4679,6 +5571,7 @@
   "anvil",
   "armory",
   "cauldron",
+  "extractor",
   "furnace",
   "garage",
   "hack",
@@ -4687,6 +5580,7 @@
   "kiln",
   "litter",
   "loom",
+  "mayo",
   "mill",
   "press",
   "print",
@@ -4889,6 +5783,31 @@
    },
    "text": "You've cooked every recipe there is. Teach me something now! - Posy",
    "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy"
+  },
+  {
+   "id": "ranch_3",
+   "cat": "ranch",
+   "need": 3,
+   "from": "benno",
+   "give": {
+    "money": 400,
+    "item": "hay",
+    "n": 40
+   },
+   "text": "Three kinds of animal goods from your own ranch! Here's hay for the herd, on the house. - Benno",
+   "text_gangsters": "Three kinds of goods off your own ranch. Nobody looks twice at a real farm. Hay's on me. - Benno"
+  },
+  {
+   "id": "ranch_all",
+   "cat": "ranch",
+   "need": "all",
+   "from": "benno",
+   "give": {
+    "money": 2500,
+    "decor": "dc_tt_trophy_farm_a"
+   },
+   "text": "Every good a ranch can give, from your own animals. The fair made you a trophy. - Benno",
+   "text_gangsters": "Every good a ranch can give, all yours. The block chipped in for a trophy. - Benno"
   },
   {
    "id": "craft_25",
