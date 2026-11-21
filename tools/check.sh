@@ -428,6 +428,11 @@ nfout="$("$GODOT" --headless --path . -s res://tools/name_filter_test.gd 2>&1)"
 echo "$nfout" | grep -E "FAIL|SCRIPT ERROR" || true
 echo "$nfout" | grep -q "NAME FILTER DONE, failures: 0" || { echo "Name filter test failed"; exit 1; }
 
+echo "== credits and licences page: Godot MIT, font notice, no family names (S1 P5) =="
+lcout="$("$GODOT" --headless --path . -s res://tools/licences_test.gd 2>&1)"
+echo "$lcout" | grep -E "FAIL|SCRIPT ERROR" || true
+echo "$lcout" | grep -q "LICENCES DONE, failures: 0" || { echo "Licences test failed"; exit 1; }
+
 echo "== C10a decor art: every catalogue piece and rotation exists =="
 python3 tools/slice_c10a.py check || { echo "Decor art check failed"; exit 1; }
 

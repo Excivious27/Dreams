@@ -24,7 +24,7 @@ func setup(id: int, m: GameMap) -> void:
 	add_child(_p)
 	_apply_look(info)
 	_label = Label.new()
-	_label.text = str(info.get("name", "Player"))
+	_label.text = preload("res://scripts/name_filter.gd").clean(str(info.get("name", "Player")))  # s1_13-03: a peer's typed name
 	_label.add_theme_font_size_override("font_size", 7)
 	_label.add_theme_color_override("font_color", Color(1, 1, 0.9))
 	_label.add_theme_constant_override("outline_size", 2)
