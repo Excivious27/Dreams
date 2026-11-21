@@ -1,0 +1,35 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 177.0}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 35.7}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 8.1}
+{"step": 18, "name": "S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b", "rc": 0, "secs": 3.5}
+{"step": 24, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 4.3}
+{"step": 30, "name": "team animals + chores: lessons, team, muster, overnight chores, Animal", "rc": 0, "secs": 5.7}
+{"step": 36, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 25.1}
+{"step": 42, "name": "bowling_test", "rc": 0, "secs": 18.2}
+{"step": 48, "name": "pen_test", "rc": 0, "secs": 5.1}
+{"step": 54, "name": "move_target_test", "rc": 0, "secs": 21.3}
+{"step": 60, "name": "decor_sources_test", "rc": 0, "secs": 4.1}
+{"step": 66, "name": "talk conditions (C12 P3)", "rc": 0, "secs": 5.2}
+{"step": 72, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 78, "name": "all ages: name filter for player-typed names (S1 P5)", "rc": 0, "secs": 3.5}
+{"step": 84, "name": "slice_c11b_chores", "rc": 0, "secs": 0.5}
+{"step": 90, "name": "ambience_test", "rc": 0, "secs": 6.9}
+{"step": 96, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 5.6}
+{"step": 102, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 10.6}
+{"step": 108, "name": "c6_cue_test", "rc": 0, "secs": 3.6}
+{"step": 114, "name": "campaign_words_test", "rc": 0, "secs": 4.2}
+{"step": 120, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 4.4}
+{"step": 126, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 3.6}
+{"step": 132, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 13.7}
+{"step": 138, "name": "stack_whack_test", "rc": 0, "secs": 4.5}
+{"step": 144, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 5.8}
+{"step": 150, "name": "C12 P4: hearts, romance and gift words match game state", "rc": 0, "secs": 3.8}
+{"step": 156, "name": "C11b P6: C11b creature voices and ranch sound", "rc": 0, "secs": 3.5}
+{"step": 162, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 4.8}
+{"step": 168, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 4.9}
+{"step": 174, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 5.7}
+{"step": 180, "name": "net transport: NetNode over the in-memory relay twin (NetRelayRoom = s", "rc": 0, "secs": 3.6}
+{"step": 186, "name": "S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf", "rc": 0, "secs": 0.1}
+{"step": 192, "name": "C13 P4: story, scene and minigame audio cues (live beats, endings, moo", "rc": 0, "secs": 3.6}
+{"step": 198, "name": "C13 P6: ambience map (no silent place, both arcs, seasons, times, rain", "rc": 0, "secs": 45.6}
+{"step": 204, "name": "C14 P5: gang cities, mega regions, sky, colony jetties", "rc": 0, "secs": 4.0}

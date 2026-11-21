@@ -1,0 +1,39 @@
+CONDUCT CI FAIL  1d5fcbfa55  (ci/c14i-23f70206, run 44899186752)
+
+check shards (6/6):
+  shard 1: PASS  542s
+  shard 2: PASS  329s
+  shard 3: FAIL  332s  failed: C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand
+  shard 4: PASS  509s
+  shard 5: PASS  460s
+  shard 6: FAIL  345s  failed: footstep_test
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 131s  0 fails, 0 warns, 629 steps, 3 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 75s  0 fails, 0 warns, 270 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "colony_kelp",
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "crystal
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 155s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["ruins", "quarry", "mead
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 99s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 63s  0 fails, 0 warns, 419 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "town",
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 95s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 152s  0 fails, 0 warns, 630 steps, 4 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "house",
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 83s  0 fails, 0 warns, 298 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 171s  0 fails, 0 warns, 629 steps, 6 kills, 0 ownerless pauses, scenes ["jungle", "wastes", "rui
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 95s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 107s  0 fails, 0 warns, 344 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon
+playtest: PASS  64s  21 screenshots (results playtest/shots/)
+RELAY: ok, 34ms (live code a29f453d8be9, this server/)
+
+longest job: 542s
+slowest check steps: import 323.0s; import 268.5s; import 177.0s; import 102.8s; import 99.0s; import 93.4s; smoke test 53.5s; C13 P6: ambience map (no silent place, both arcs, seasons, times, rain 45.6s
+distinct errors/fails/warns:
+    1  FAIL gangsters/uptown/d1 grass share 0.00 not in [0.20, 1.00]
+    1  FAIL gangsters/uptown/d1 stone share 1.00 not in [0.02, 0.80]
+    1  FAIL penguins/quarry/d1 grass share 0.00 not in [0.30, 1.00]
