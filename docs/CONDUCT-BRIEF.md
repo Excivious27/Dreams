@@ -20,6 +20,7 @@ Dreams: Tom's Godot 4.5.1 phone game (GDScript, portrait 270x480); Tom plays on 
 - At the end write /home/claude/wt/cN_reports/<id>.done. Final message is ONE line: "done, N findings in /home/claude/wt/cN_reports/<id>.jsonl".
 
 ## Fix agents (step 4: one package of file-disjoint fixes)
+- Steam (S1): call Steam only through `SteamApi` (never the engine singleton by name; web_export_guard lints it). Never load or verify the GodotSteam libraries in the sandbox (auto-mode blocks it): they live gdignored in steam/godotsteam and are proven only in CI (steam-builds.yml). Steam-only files and art go under steam/ (gdignored), never into res://.
 - Fix exactly the findings in your package plus anything directly broken by your change; do not re-audit. Stay inside your owned files; a hook in another package's file is one or two lines and reported. Keep edits to big shared files (game_map.gd, game_state.gd, hud.gd, region.gd) small and surgical; prefer new scripts with small hooks.
 - Window: 60-75 minutes of real clock time (`TZ=America/Los_Angeles date`). Do not stop early. If you must stop (tool limit), write what is left in your report; the main chat resumes you.
 - Tests: only the targeted tests your package names, plus `--check-only` on changed scripts. Add a focused headless test per fix (deterministic: game time, `--fixed-fps 60`, `seed(n)`); wire it into check.sh as its own block (blank line before and after) only if it runs in < 60 s.
