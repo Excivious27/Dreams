@@ -1043,7 +1043,7 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	if kind == "rooster" or baby or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "call", ""):  # c11b_14-10: species voice + lab layer
+	if kind == "rooster" or (baby and kind in ["chick", "chicken2"]) or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "baby" if baby else "call", ""):  # c11b_14-10 + c13_09-02: babies sound like their parents
 		Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice from data (C11b P2)
 	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day

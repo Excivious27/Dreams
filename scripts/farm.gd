@@ -934,7 +934,9 @@ func _grass_step() -> void:
 	if not bool(t.get("walk", false)):
 		return
 	sway_grass(pc)
-	Music.instance(get_tree()).sfx("step_grass", "step_leaves")  # (level: Music GROUP_DB "step_", P1)
+	# The swish sits just over the footsteps, not ~10 dB above them (c13_07-23).
+	var mu := Music.instance(get_tree())
+	mu.sfx_pitched("step_grass", "step_leaves", 1.0, Music.STEP_DB + 3.0 - mu._group_db("step_grass"))
 	if randf() < 0.35:
 		_leaf(cell_center(pc) + Vector2(randf_range(-5, 5), -6))
 
@@ -1371,7 +1373,7 @@ func _clear_withered(c: Vector2i, key: String, tile: Dictionary) -> bool:
 	tile["fert"] = false
 	net_act({"a": "farm_tile", "key": key, "tile": tile})
 	player.play_tool("hoe" if GameState.held_tool() == "hoe" else "hold")
-	Music.instance(get_tree()).sfx("pickup", "dig")
+	Music.instance(get_tree()).sfx("harvest", "dig")  # a rustle, not the item blip (c13_07-24)
 	fx("crop_wilt", cell_center(c), 8.0, 0.5)
 	if GameState.items.has("fiber") and randf() < 0.5:
 		GameState.add_item("fiber", 1)
@@ -1394,10 +1396,11 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		farm[key] = {"watered": false, "crop": "", "days": 0}
 		net_act({"a": "farm_tile", "key": key, "tile": farm[key]})
 		player.play_tool("hoe")
-		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
-		# The soil turns when the hoe bites (0.25 s into the swing), with a puff of dirt.
+		# The soil turns when the hoe bites (0.25 s into the swing), with a puff of dirt, and the dig
+		# sound lands with it, not at the swing's start (c13_07-01).
 		_later(0.25, func() -> void:
+			Music.instance(get_tree()).sfx("dig")
 			fx("dirt_puff", cell_center(c) + Vector2(0, 3), 14.0, 0.4)
 			_soil.queue_redraw() if _soil else queue_redraw())
 		return true
@@ -1486,7 +1489,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			if not told.has("g"):
 				told["g"] = true
 				hud.toast("★ Gold-star %s! Sells for half again as much." % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
-			Music.instance(get_tree()).sfx("crit", "coin")
+			# A bright double chime, not the combat crit punch (c13_07-22).
+			Music.instance(get_tree()).sfx("gem", "sparkle")
+			Music.instance(get_tree()).sfx_pitched("sparkle", "", 1.25, -2.0, 0.08)
+			Haptics.buzz("harvest_star")
 			fx("sparkle", cell_center(c) + Vector2(0, -10), 14.0, 0.6)
 		elif qr < float(qd["silver"]):
 			GameState.add_quality(str(cd["yield"]), "s", n)

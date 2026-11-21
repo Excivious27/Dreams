@@ -32,13 +32,15 @@ const VOICE_FILES := {
 	# C11b P6 CC0 creature recordings (scripts/ranch_voices.gd): real takes win over pitched stand-ins
 	"cv_ostrich": ["cv_ostrich", 1.0, 0.0], "cv_emu": ["cv_emu", 1.0, 0.0], "cv_komodo": ["cv_komodo", 1.0, 0.0],
 	"cv_moon": ["cv_moon", 1.0, 0.0], "cv_merkitty": ["cv_merkitty", 1.0, 0.0], "cv_gloam": ["cv_gloam", 1.0, 0.0],
-	"cv_frost": ["cv_frost", 1.0, 0.0], "cv_sky": ["cv_sky", 1.0, 0.0],
+	"cv_frost": ["cv_frost", 1.0, 0.0], "cv_sky": ["cv_sky", 1.0, 0.0], "cv_crystal_baby": ["cv_crystal_baby", 1.0, 0.0],
 }
 
 ## Species with no ranch.json voice yet (the C11b species, until gen_ranch carries a voice for each).
 const SPECIES_VOICE := {
 	"alpaca": "alpaca_hum", "buffalo": "buffalo_low", "emu": "emu_drum", "komodo": "komodo_hiss", "ostrich": "ostrich_boom",
 	"peacock": "peacock_call", "snow_yak": "yak_grunt", "tortoise": "tortoise_hum",
+	# C13 P5 (c13_09-25): the penguin arc's signature creatures (pool, burrow, colonies call these words).
+	"merkitty": "cv_merkitty", "crystal_baby": "cv_crystal_baby",
 	"aurora_fox": "fox_yip", "cloud_sheep": "cloud_baa", "coral_seahorse": "seahorse_click", "crystal_hen": "crystal_cluck",
 	"deep_glowworm": "glowworm_chime", "ember_newt": "newt_crackle", "frost_otter": "otter_chirp", "frost_wyrmling": "wyrm_chirp",
 	"glow_gecko": "gecko_chirp", "kelp_calf": "seacalf_hum", "lantern_moth": "moth_flutter", "moon_cow": "moon_moo",
@@ -52,7 +54,16 @@ const SPECIES_VOICE := {
 const LAYERS := {"lab_whirr": ["servo", 1.2, -9.0, 0.06], "lab_bleep": ["beep", 1.3, -9.0, 0.06]}
 
 ## Moment -> [pitch multiplier, dB]; hurt is soft and cartoonish (all ages).
-const MOMENTS := {"call": [1.0, 0.0], "happy": [1.08, -1.0], "hurt": [1.1, -4.0], "attack": [0.95, 0.0]}
+## C13 P5: "baby" (a lifted, softer call: every species' young sounds like its parents, c13_09-02),
+## "sad" (hungry/unhappy greeting, lower and quieter, c13_09-24).
+const MOMENTS := {"call": [1.0, 0.0], "happy": [1.08, -1.0], "hurt": [1.1, -4.0], "attack": [0.95, 0.0],
+	"baby": [1.3, -3.0], "sad": [0.9, -4.0]}
+## Per-species pitch/dB on top of a shared CC0 take, so species sharing one cv_ file differ (c13_09-03).
+const CV_PITCH := {"moon_hare": [1.35, 0.0], "star_jelly": [1.5, -4.0], "star_sheep": [1.15, 0.0], "tortoise": [0.7, 0.0],
+	"ember_newt": [1.3, 0.0], "glow_gecko": [1.4, 0.0], "lantern_moth": [1.6, -5.0], "frost_wyrmling": [0.8, 0.0],
+	"storm_roc": [0.8, 0.0], "moon_cow": [0.75, 0.0], "deep_glowworm": [1.25, -3.0], "frost_otter": [1.2, 0.0]}
+## Kinds whose knock-down is a whimper (dogs, foxes); every other team animal says its own voice, low.
+const WHIMPER_KINDS := ["dog", "pup", "fox", "aurora_fox", "wolf", "coyote"]
 const HURT_GAP := 0.8
 
 static var _alias: Dictionary = {}   # art kind -> species
@@ -142,8 +153,22 @@ static func say(tree: SceneTree, kind: String, moment := "call", fallback := "pi
 	var mus := Music.instance(tree)
 	if mus == null:
 		return false
+	if kind.begins_with("baby_"):
+		kind = kind.substr(5)  # "baby_<species>" voice words (C13 contract section 3)
+		if moment == "call":
+			moment = "baby"
 	if moment == "down":
-		mus.sfx("whimper", "pickup")
+		# c13_09-09: the animal's own voice, low and soft, then a soft thud; only canines whimper.
+		var dv := voice_id(kind)
+		var sp := species_of(kind)
+		if dv == "" or sp in WHIMPER_KINDS or kind in WHIMPER_KINDS:
+			mus.sfx("whimper", "pickup")
+		else:
+			var dr: Array = VOICE_FILES[dv]
+			mus.sfx_pitched(str(dr[0]), "whimper", float(dr[1]) * 0.8, float(dr[2]) - 4.0)
+			mus.sfx_pitched("thud", "", 1.1, -8.0, 0.18)
+			if layer_of(kind) != "":
+				mus.sfx_pitched("power_off", "", 1.0, -10.0, 0.1)
 		return true
 	if moment == "hurt":
 		var now := PlayClock.now()
@@ -158,7 +183,8 @@ static func say(tree: SceneTree, kind: String, moment := "call", fallback := "pi
 		mus.sfx_pitched(fallback, "pickup", float(m[0]), float(m[1]))
 		return true
 	var row: Array = VOICE_FILES[v]
-	mus.sfx_pitched(str(row[0]), fallback, float(row[1]) * float(m[0]), float(row[2]) + float(m[1]))
+	var cp: Array = CV_PITCH.get(species_of(kind), [1.0, 0.0]) if v.begins_with("cv_") else [1.0, 0.0]
+	mus.sfx_pitched(str(row[0]), fallback, float(row[1]) * float(m[0]) * float(cp[0]), float(row[2]) + float(m[1]) + float(cp[1]))
 	var l := layer_of(kind)
 	if l != "":
 		var lr: Array = LAYERS[l]

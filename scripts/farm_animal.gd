@@ -87,11 +87,15 @@ var _need_t := 0.0
 
 ## The voice for a tap (c11b_03-06): the Ranch species' voice for roster animals (lab strains included),
 ## else the art-kind prefix table (GameMap.animal_voice). Ranch voice words map to sfx names.
-const VOICE_SFX := {"baa": "sheep", "hum": "llama", "squeak": "thump", "chirp_bot": "beep", "hum_baa": "sheep",
+const VOICE_SFX := {"baa": "sheep", "hum": "bleat", "squeak": "thump", "chirp_bot": "beep", "hum_baa": "sheep",
 	"servo_bleat": "bleat", "bunny_beep": "beep"}
 
 
 static func voice_for(k: String, id := "") -> String:
+	# c13_09-02: one answer for every species and its babies (RanchVoice), the old tables after it.
+	var rv := RanchVoice.file_of(id if id != "" else k)
+	if rv != "" and not k in ["chick"]:
+		return rv
 	if id != "":
 		var a := Ranch.animal(id)
 		var sid := str(a.get("species", ""))

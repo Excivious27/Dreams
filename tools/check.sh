@@ -1138,3 +1138,10 @@ echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
 fi
+
+echo "== C13 P5: actions map to their own sounds (pets, ranch voices and babies, goods, vehicles, contract sfx) =="
+aaout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/action_audio_test.gd 2>&1)"
+echo "$aaout" | grep -E "FAIL|SCRIPT ERROR|action_audio_test" || true
+if ! echo "$aaout" | grep -q "action_audio_test: 0 failures"; then
+  echo "action_audio_test failed"; exit 1
+fi
