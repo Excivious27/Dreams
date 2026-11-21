@@ -170,6 +170,8 @@ func after_ready() -> void:
 			if not _water.has(c + d):
 				edge = true
 		var nm := ("reeds_%d" % rng.randi_range(0, 3)) if edge else ("lily_%d" % rng.randi_range(0, 7))
+		if GameState.look_se() == "winter" and not edge:
+			continue  # C14 P1: no lily pads on winter water
 		var sp := Art.sprite("nature", nm)
 		if sp:
 			sp.position = cell_center(c)
@@ -204,6 +206,13 @@ func after_ready() -> void:
 
 ## A building whose sprite has water in it: placed at full scale, the cells
 ## under it stay water (it's "in" the lake), and the door cell is a dock plank.
+## C14 P1 (c14_02-18): snow-roofed looks for the hut and the mill in winter
+## (buildings/c14p1_<name>_winter, same frame size; tools/slice_c14p1.py).
+static func winter_look(name: String) -> String:
+	var wn := "c14p1_%s_winter" % name
+	return wn if GameState.look_se() == "winter" and Art.has("buildings", wn) else name
+
+
 func _shore_building(name: String, c: Vector2i, interior: String, hint: String, door: Vector2i, animated := false) -> void:
 	if not Art.has("buildings", name):
 		return
@@ -252,7 +261,7 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		add_child(tm)
 	elif animated and int(info.get("frames", 1)) > 1:
 		var a := AnimatedSprite2D.new()
-		a.sprite_frames = Art.frames("buildings", {"idle": name}, {"idle": 4.0})
+		a.sprite_frames = Art.frames("buildings", {"idle": winter_look(name)}, {"idle": 4.0})
 		a.animation = "idle"
 		a.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
 		a.offset = Vector2(0, -fh / 2.0)
@@ -261,7 +270,7 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		add_child(a)
 		a.play("idle")
 	else:
-		prop("buildings", name, base, w_cells - 1, 0.0, false, 1.0)
+		prop("buildings", winter_look(name), base, w_cells - 1, 0.0, false, 1.0)
 	if name == "lighthouse":
 		# Only the rock island and the tower's foot are solid (the old box ran ten rows up
 		# the tower and walled off open ground round it, C2): the lamp rises over you.

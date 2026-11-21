@@ -29216,6 +29216,19 @@
    "h": 93,
    "w": 120
   },
+  "c14p1_fishing_hut_winter": {
+   "file": "buildings/c14p1_fishing_hut_winter.png",
+   "h": 105,
+   "w": 112
+  },
+  "c14p1_water_mill_winter": {
+   "cell_h": 200,
+   "cell_w": 163,
+   "file": "buildings/c14p1_water_mill_winter.png",
+   "frames": 4,
+   "h": 200,
+   "w": 652
+  },
   "chapel": {
    "file": "buildings/chapel.png",
    "h": 128,

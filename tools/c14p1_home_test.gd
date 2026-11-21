@@ -107,7 +107,14 @@ func _run() -> void:
 	_check(green == 0, "no green hedge in a winter border band (%d)" % green)
 
 	GameState.run["arc"] = "penguins"
+	m = await _load("lake")  # still winter
+	_check(m.call("winter_look", "water_mill") == "c14p1_water_mill_winter", "the lake mill has its snow roof in winter")
+	_check(m.call("winter_look", "fishing_hut") == "c14p1_fishing_hut_winter", "Finn's hut has its snow roof in winter")
+	m = await _load("community_farm")
+	_check(GameState.look_se() == "winter", "winter look on the commons")
 	GameState.run["day"] = 10
+	m = await _load("lake")
+	_check(m.call("winter_look", "water_mill") == "water_mill", "the mill keeps its plain roof in spring")
 	m = await _load("highlands")
 	var rd: Dictionary = (m.get("R") as Dictionary)
 	_check(str(rd.get("patch_set", "")) != "snowpatch", "highlands spring has no wide snow patch set")
