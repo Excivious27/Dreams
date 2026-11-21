@@ -1,0 +1,210 @@
+{
+ "sha": "e19585be9c48bdabde678f58d8334368aeb2c95b",
+ "ref": "ci/s1p1b-d7a95cfe",
+ "run": "44865287683",
+ "finished": 1795235219.762743,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": true,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 47,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 47ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 71,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "d7a95cfe785c9b2cc634cd5524364c02acf70abc",
+  "label": "s1p1b",
+  "branch": "s1f/p1",
+  "shards": [
+   1,
+   2,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 321,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 321,
+   "failed_steps": [
+    "C11b P6: C11b creature voices and ranch sound"
+   ]
+  },
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 207,
+   "failed_steps": [
+    "farm_look_test",
+    "C9 P6: generated data in sync"
+   ]
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 267,
+   "failed_steps": [
+    "C11b P5: chores rework (hay, spots, value cap, regions, levels), team "
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL moon cow has its own pitched moo",
+   2
+  ],
+  [
+   "FAIL animal_voice asks the C11b table",
+   1
+  ],
+  [
+   "FAIL pens fenced (41 pieces, 3 gates)",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Invalid access to property or key 'root' on a base object of type 'null instance'.",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Invalid call. Nonexistent function 'say' in base 'Nil'.",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 93.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.2
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 56.1
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.9
+  },
+  {
+   "step": 49,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 28.2
+  },
+  {
+   "step": 153,
+   "name": "C9 P6: generated data in sync",
+   "rc": 1,
+   "secs": 26.7
+  },
+  {
+   "step": 79,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 24.9
+  },
+  {
+   "step": 121,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 22.7
+  },
+  {
+   "step": 109,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 18.9
+  },
+  {
+   "step": 117,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 17.5
+  },
+  {
+   "step": 110,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 14.8
+  },
+  {
+   "step": 21,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 11.1
+  },
+  {
+   "step": 145,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 10.9
+  },
+  {
+   "step": 115,
+   "name": "mega regions: map tabs, unlocks, travel",
+   "rc": 0,
+   "secs": 8.5
+  }
+ ]
+}

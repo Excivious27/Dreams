@@ -1,0 +1,19 @@
+CONDUCT CI FAIL  e19585be9c  (ci/s1p1b-d7a95cfe, run 44865287683)
+
+subset run: shards [1, 2, 6], bots off, playtest on
+check shards (3/3):
+  shard 1: FAIL  321s  failed: C11b P6: C11b creature voices and ranch sound
+  shard 2: FAIL  207s  failed: farm_look_test, C9 P6: generated data in sync
+  shard 6: FAIL  267s  failed: C11b P5: chores rework (hay, spots, value cap, regions, levels), team 
+playtest: PASS  71s  21 screenshots (results playtest/shots/)
+RELAY: ok, 47ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 17s
+
+longest job: 321s
+slowest check steps: import 93.8s; import 75.6s; import 75.2s; smoke test 56.1s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.9s; crop_test 28.2s; C9 P6: generated data in sync 26.7s; danger_music_test 24.9s
+distinct errors/fails/warns:
+    2  FAIL moon cow has its own pitched moo
+    1  FAIL animal_voice asks the C11b table
+    1  FAIL pens fenced (41 pieces, 3 gates)
+    1  SCRIPT ERROR: Invalid access to property or key 'root' on a base object of type 'null instance'.
+    1  SCRIPT ERROR: Invalid call. Nonexistent function 'say' in base 'Nil'.

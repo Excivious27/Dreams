@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 75.6}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.9}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.9}
+{"step": 15, "name": "crops wired in", "rc": 0, "secs": 0.0}
+{"step": 21, "name": "phone_ui_test", "rc": 0, "secs": 11.1}
+{"step": 27, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.7}
+{"step": 33, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.5}
+{"step": 39, "name": "rec_audio_test", "rc": 0, "secs": 2.6}
+{"step": 45, "name": "farm_look_test", "rc": 1, "secs": 4.1}
+{"step": 51, "name": "npc_anim_test", "rc": 0, "secs": 2.6}
+{"step": 57, "name": "ranch_gift_test", "rc": 0, "secs": 2.6}
+{"step": 63, "name": "town_first_test", "rc": 0, "secs": 4.1}
+{"step": 69, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 75, "name": "slice_c11b_chores", "rc": 0, "secs": 0.4}
+{"step": 81, "name": "ambience_test", "rc": 0, "secs": 4.9}
+{"step": 87, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 4.0}
+{"step": 93, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 7.2}
+{"step": 99, "name": "c6_cue_test", "rc": 0, "secs": 2.5}
+{"step": 105, "name": "meow_gate_test", "rc": 0, "secs": 3.3}
+{"step": 111, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.6}
+{"step": 117, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 17.5}
+{"step": 123, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.9}
+{"step": 129, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.9}
+{"step": 135, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.1}
+{"step": 141, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.5}
+{"step": 147, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.7}
+{"step": 153, "name": "C9 P6: generated data in sync", "rc": 1, "secs": 26.7}

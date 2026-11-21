@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 75.2}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 6.7}
+{"step": 13, "name": "C11b P2 long ranch curve: three years of ranching, both arcs", "rc": 0, "secs": 4.8}
+{"step": 19, "name": "S1 P1: the game boots to the title and plays 600 frames on the farm wi", "rc": 0, "secs": 3.3}
+{"step": 25, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 4.1}
+{"step": 31, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 1, "secs": 2.6}
+{"step": 37, "name": "rec_links_test", "rc": 0, "secs": 2.6}
+{"step": 43, "name": "coop_test", "rc": 0, "secs": 2.6}
+{"step": 49, "name": "crop_test", "rc": 0, "secs": 28.2}
+{"step": 55, "name": "ranch_test", "rc": 0, "secs": 3.0}
+{"step": 61, "name": "cf_layout_test", "rc": 0, "secs": 8.2}
+{"step": 67, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 7.7}
+{"step": 73, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.7}
+{"step": 79, "name": "danger_music_test", "rc": 0, "secs": 24.9}
+{"step": 85, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.8}
+{"step": 91, "name": "every script compiles", "rc": 0, "secs": 3.5}
+{"step": 97, "name": "quest_tracker_test", "rc": 0, "secs": 3.9}
+{"step": 103, "name": "campaign_words_test", "rc": 0, "secs": 2.9}
+{"step": 109, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 18.9}
+{"step": 115, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.5}
+{"step": 121, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 22.7}
+{"step": 127, "name": "rec_games_test", "rc": 0, "secs": 2.7}
+{"step": 133, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 4.8}
+{"step": 139, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 2.6}
+{"step": 145, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 10.9}
+{"step": 151, "name": "C9 P5: save codes and files", "rc": 0, "secs": 2.6}
+{"step": 157, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 4.0}

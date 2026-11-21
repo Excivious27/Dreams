@@ -1,0 +1,250 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 93.8s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 56.1s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 4.2s
+
+#### step 14: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 1/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 14 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 43.9s
+
+#### step 20: desktop_layout_test (shard 1/6)
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 20 desktop_layout_test: PASS in 6.8s
+
+#### step 26: night lighting: windows, festival fires, underground, mines (c5_10) (shard 1/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 26 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 4.7s
+
+#### step 32: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 1/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 32 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 7.2s
+
+#### step 38: rec_reno_test (shard 1/6)
+rec_reno_test: 0 failures
+#### step 38 rec_reno_test: PASS in 3.3s
+
+#### step 44: farm_week_test (shard 1/6)
+farm_week_test: OK (0 fails)
+#### step 44 farm_week_test: PASS in 6.5s
+
+#### step 50: anim_test (shard 1/6)
+anim_test: 0 failures
+#### step 50 anim_test: PASS in 3.6s
+
+#### step 56: ranch_p2_test (shard 1/6)
+ranch_p2_test: 0 failures
+#### step 56 ranch_p2_test: PASS in 3.2s
+
+#### step 62: early_gating_test (shard 1/6)
+early_gating_test: PASS (0 fails)
+#### step 62 early_gating_test: PASS in 4.6s
+
+#### step 68: music: loop points are applied (data/music_loops.json) (shard 1/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 51 entries, 0 failures
+#### step 68 music: loop points are applied (data/music_loops.json): PASS in 3.5s
+
+#### step 74: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 1/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 74 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.6s
+
+#### step 80: mix_test (shard 1/6)
+mix_test: 0 failures
+#### step 80 mix_test: PASS in 5.2s
+
+#### step 86: gifts: the Marked and boss powers (shard 1/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 86 gifts: the Marked and boss powers: PASS in 7.6s
+
+#### step 92: campaign: battles, projects, colonies, big mines (shard 1/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 92 campaign: battles, projects, colonies, big mines: PASS in 8.2s
+
+#### step 98: street_bat_test (shard 1/6)
+street_bat_test: 0 fails
+#### step 98 street_bat_test: PASS in 3.4s
+
+#### step 104: campaign_c3_test (shard 1/6)
+campaign_c3_test: 0 fails
+#### step 104 campaign_c3_test: PASS in 3.4s
+
+#### step 110: story: every chapter plays to the end (shard 1/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 110 story: every chapter plays to the end: PASS in 14.8s
+
+#### step 116: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 1/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 116 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 5.6s
+
+#### step 122: hidden areas stay put day to day (C5) (shard 1/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 122 hidden areas stay put day to day (C5): PASS in 6.1s
+
+#### step 128: softlocks: every menu/screen leaves on B, dialogues always finish (shard 1/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 128 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 7.9s
+
+#### step 134: C7 P3: endings and epilogue (shard 1/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 134 C7 P3: endings and epilogue: PASS in 3.4s
+
+#### step 140: C11b P6: C11b creature voices and ranch sound (shard 1/6)
+== C11b P6: C11b creature voices and ranch sound ==
+  FAIL animal_voice asks the C11b table
+ranch_audio_c11b_test: 1 FAILED
+ranch_audio_c11b_test failed
+#### step 140 C11b P6: C11b creature voices and ranch sound: FAIL rc=1 in 3.2s
+
+#### step 146: C9 P1: controller bindings and field play (shard 1/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 146 C9 P1: controller bindings and field play: PASS in 4.5s
+
+#### step 152: C9 P6: forest border buckets (shard 1/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 152 C9 P6: forest border buckets: PASS in 5.2s
+
+#### shard 1/6 done in 320s: FAIL (C11b P6: C11b creature voices and ranch sound)

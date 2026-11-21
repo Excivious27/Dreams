@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 93.8}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 56.1}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.2}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.9}
+{"step": 20, "name": "desktop_layout_test", "rc": 0, "secs": 6.8}
+{"step": 26, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 4.7}
+{"step": 32, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 7.2}
+{"step": 38, "name": "rec_reno_test", "rc": 0, "secs": 3.3}
+{"step": 44, "name": "farm_week_test", "rc": 0, "secs": 6.5}
+{"step": 50, "name": "anim_test", "rc": 0, "secs": 3.6}
+{"step": 56, "name": "ranch_p2_test", "rc": 0, "secs": 3.2}
+{"step": 62, "name": "early_gating_test", "rc": 0, "secs": 4.6}
+{"step": 68, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 3.5}
+{"step": 74, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.6}
+{"step": 80, "name": "mix_test", "rc": 0, "secs": 5.2}
+{"step": 86, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 7.6}
+{"step": 92, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 8.2}
+{"step": 98, "name": "street_bat_test", "rc": 0, "secs": 3.4}
+{"step": 104, "name": "campaign_c3_test", "rc": 0, "secs": 3.4}
+{"step": 110, "name": "story: every chapter plays to the end", "rc": 0, "secs": 14.8}
+{"step": 116, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 5.6}
+{"step": 122, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 6.1}
+{"step": 128, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 7.9}
+{"step": 134, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 3.4}
+{"step": 140, "name": "C11b P6: C11b creature voices and ranch sound", "rc": 1, "secs": 3.2}
+{"step": 146, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 4.5}
+{"step": 152, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 5.2}
