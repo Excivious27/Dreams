@@ -1,0 +1,251 @@
+{
+ "sha": "109aa0a6105c1e065d61131eb240bc174d9811f7",
+ "ref": "ci/c17p1-516a99c0",
+ "run": "44940100595",
+ "finished": 1795289398.2003841,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [
+   "server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)"
+  ],
+  "fail": true,
+  "local_code": "5c1b580cdd5b",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "deployed": false,
+  "ms": 96,
+  "live_ok": true,
+  "e2e": "NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)",
+  "e2e_ok": false,
+  "line": "RELAY: FAIL, 96ms (server/ change not on main yet: live result is the current server's (relay_test.js tests the new one))"
+ },
+ "relay_pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 60,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "516a99c082dca88386f4732a377dacf35cc218b6",
+  "label": "c17p1",
+  "branch": "c17f/p1",
+  "shards": [
+   1,
+   4,
+   5
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 495,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 475,
+   "failed_steps": [
+    "story: every chapter plays to the end"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 429,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 495,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL penguins: beat c16b_won_countryside ready ({ \"flag\": \"campaign_countryside\", \"not_flag\": \"long_way_countryside\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_countryside ready ({ \"flag\": \"long_way_countryside\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_docks ready ({ \"flag\": \"campaign_docks\", \"not_flag\": \"long_way_docks\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_docks ready ({ \"flag\": \"long_way_docks\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_neon ready ({ \"flag\": \"campaign_neon\", \"not_flag\": \"long_way_neon\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_neon ready ({ \"flag\": \"long_way_neon\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_underground ready ({ \"flag\": \"campaign_underground\", \"not_flag\": \"long_way_underground\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_underground ready ({ \"flag\": \"long_way_underground\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_uptown ready ({ \"flag\": \"campaign_uptown\", \"not_flag\": \"long_way_uptown\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_uptown ready ({ \"flag\": \"long_way_uptown\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: all 61 beats played",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_won_wastes ready ({ \"flag\": \"campaign_wastes\", \"not_flag\": \"long_way_wastes\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_long_wastes ready ({ \"flag\": \"long_way_wastes\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_won_sky ready ({ \"flag\": \"campaign_sky\", \"not_flag\": \"long_way_sky\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_long_sky ready ({ \"flag\": \"long_way_sky\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: all 63 beats played",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 215.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 168.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 100.0
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 59.0
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 50.4
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 46.1
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 45.1
+  },
+  {
+   "step": 198,
+   "name": "C13 P6: ambience map (no silent place, both arcs, seasons, times, rain",
+   "rc": 0,
+   "secs": 33.5
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 27.8
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 26.5
+  },
+  {
+   "step": 36,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 24.1
+  },
+  {
+   "step": 54,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 17.8
+  },
+  {
+   "step": 122,
+   "name": "story: every chapter plays to the end",
+   "rc": 1,
+   "secs": 17.0
+  },
+  {
+   "step": 113,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 14.2
+  },
+  {
+   "step": 42,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 14.1
+  }
+ ]
+}

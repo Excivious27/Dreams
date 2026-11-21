@@ -1,0 +1,43 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 100.0}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 59.0}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.9}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 45.1}
+{"step": 20, "name": "desktop_layout_test", "rc": 0, "secs": 8.2}
+{"step": 26, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 5.6}
+{"step": 32, "name": "C11b P1: the heart (ability) tap is dropped while busy, frozen or in d", "rc": 0, "secs": 5.0}
+{"step": 38, "name": "ticket_econ_test", "rc": 0, "secs": 3.9}
+{"step": 44, "name": "gang_play_test", "rc": 0, "secs": 26.5}
+{"step": 50, "name": "house_exterior_test", "rc": 0, "secs": 8.3}
+{"step": 56, "name": "shop_econ_test", "rc": 0, "secs": 4.4}
+{"step": 62, "name": "gang_flavour_test", "rc": 0, "secs": 3.9}
+{"step": 68, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 74, "name": "all ages: no animal dies, is harvested or sold for meat (beasts drop n", "rc": 0, "secs": 0.1}
+{"step": 80, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.2}
+{"step": 86, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 46.1}
+{"step": 92, "name": "workshop: stations at run time", "rc": 0, "secs": 5.6}
+{"step": 98, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 10.5}
+{"step": 104, "name": "campaign_story_test", "rc": 0, "secs": 4.1}
+{"step": 110, "name": "campaign_gate_test", "rc": 0, "secs": 10.7}
+{"step": 116, "name": "campaign_c3_test", "rc": 0, "secs": 4.0}
+{"step": 122, "name": "story: every chapter plays to the end", "rc": 1, "secs": 17.0}
+{"step": 128, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 6.3}
+{"step": 134, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 6.7}
+{"step": 140, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 8.4}
+{"step": 146, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 6.5}
+{"step": 152, "name": "C12 P5: mail, side stories and quest text match game state", "rc": 0, "secs": 4.3}
+{"step": 158, "name": "C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou", "rc": 0, "secs": 3.9}
+{"step": 164, "name": "S1 P3: no new touch words outside PadInput.words", "rc": 0, "secs": 0.3}
+{"step": 170, "name": "C9 P4: haptics", "rc": 0, "secs": 3.7}
+{"step": 176, "name": "C10a P5: wardrobe", "rc": 0, "secs": 6.6}
+{"step": 182, "name": "steam co-op: web build never parses Steam code (backend object, load b", "rc": 0, "secs": 0.2}
+{"step": 188, "name": "C12 P7: 'when' condition schema (unknown keys, bad values, typo flags)", "rc": 0, "secs": 0.3}
+{"step": 194, "name": "C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle", "rc": 0, "secs": 3.8}
+{"step": 200, "name": "C14 P4: fast-travel network (TravelNet tiers, build/ride, fares, holds", "rc": 0, "secs": 5.1}
+{"step": 206, "name": "prop_dress_test", "rc": 0, "secs": 5.3}
+{"step": 212, "name": "water_feature_test (C14b P2: smooth seamless fountain)", "rc": 0, "secs": 5.8}
+{"step": 218, "name": "C14b P4: magic and tech areas (ground sparkles, sky veils, motes, stri", "rc": 0, "secs": 8.9}
+{"step": 224, "name": "C15 P6: festival year (festivals.json, arc names, year gates, rules)", "rc": 0, "secs": 4.2}
+{"step": 230, "name": "C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, fes", "rc": 0, "secs": 8.9}
+{"step": 236, "name": "C16a P6 skill trees + recruits/allies/team/pup progression", "rc": 0, "secs": 3.9}
+{"step": 242, "name": "C16a P4: fishing (one koi rule set, legend year gates, reel quality, s", "rc": 0, "secs": 4.6}
+{"step": 248, "name": "C16b P4: battle reward ladder (stars, rematch pay, chests, first clear", "rc": 0, "secs": 4.1}

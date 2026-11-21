@@ -1,0 +1,30 @@
+{
+ "url": "wss://dreams-64-23-239-63.sslip.io",
+ "strict": false,
+ "notes": [
+  "server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)"
+ ],
+ "fail": true,
+ "local_code": "5c1b580cdd5b",
+ "main_code": "a29f453d8be9",
+ "live_before": {
+  "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+  "code": "a29f453d8be9",
+  "started": "2026-11-21T07:03:51.291Z",
+  "rooms": 6,
+  "players": 0
+ },
+ "live": {
+  "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+  "code": "a29f453d8be9",
+  "started": "2026-11-21T07:03:51.291Z",
+  "rooms": 6,
+  "players": 0
+ },
+ "deployed": false,
+ "ms": 96,
+ "live_ok": true,
+ "e2e": "NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)",
+ "e2e_ok": false,
+ "line": "RELAY: FAIL, 96ms (server/ change not on main yet: live result is the current server's (relay_test.js tests the new one))"
+}
