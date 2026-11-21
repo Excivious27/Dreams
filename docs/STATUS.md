@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14b P6: creature/foe/animal idle life (CreatureMotion helpers, no-lockstep starts, breath, held idles, perching birds, fish leaps, pet naps, farm sleep/cheer, team flip fix) + 12 new idle strips (president, 6 critters, 5 bosses); test creature_life_test
+
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
 
 ## 2026-11-21 — C14 P4: fast-travel network TravelNet (62 stations, 74 links, tiers 1-5 per arc, build/unlock/fare/free-after, ride scene), mega keeper rides + hub-to-hub as per-link lines, balloon only between built masts, Map-tab station layer, save v13 (run.travel + run.marina), classic-region pockets/ways + pages, quarry gravel ground; 36 travel art images.

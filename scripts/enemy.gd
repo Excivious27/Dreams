@@ -477,6 +477,7 @@ func _process(delta: float) -> void:
 		_sprite.scale = Vector2(bs * (1.0 + sq * 0.25) * br.x, bs * (1.0 - sq * 0.3) * br.y) if kind != "big_grump" else Vector2(bs, bs) * br
 		if _floater:
 			_sprite.position.y = CreatureMotion.hover(_life_ph, 2.5, 3.2 + _life_ph)
+			queue_redraw()  # the shadow follows the hover (one floater, cheap)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
 	# Packed into one int (no per-frame string format): hp, max_hp, 8 flags, tier, shadow, telegraph/regen.
 	var flags := int(_shield > 0.0) | int(_lunge_tele > 0.0 or _lunge > 0.0) << 1 | int(_range_tele > 0.0) << 2 | int(_stomp_tele > 0.0) << 3 \
@@ -866,7 +867,21 @@ func _walk_clear(a: Vector2, b: Vector2) -> bool:
 
 
 func _draw() -> void:
-	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
+	var hov := _sprite.position.y if _sprite and _floater else 0.0
+	# Floaters' shadow shrinks as they rise (c14b_05-14).
+	draw_circle(Vector2(0, 0), _shadow_r * (1.0 + hov / 14.0), Color(0, 0, 0, 0.2))
+	if kind == "dark_crystal" and _alive:
+		# A slow violet under-glow and dark motes spiralling in (game time, own phase).
+		var tt := PlayClock.now() + _life_ph * 4.0
+		var red := CreatureMotion.reduced()
+		var g := 0.25 + (0.08 if red else 0.25) * (0.5 + 0.5 * sin(tt * PI))
+		draw_circle(Vector2(0, -4), _shadow_r * 1.4, Color(0.55, 0.3, 0.9, g * 0.5))
+		draw_circle(Vector2(0, -4), _shadow_r * 0.9, Color(0.65, 0.4, 1.0, g * 0.6))
+		for i in 7:
+			var u := fposmod(tt * 0.25 + i / 7.0, 1.0)
+			var ang := i * TAU / 7.0 + tt * 1.2
+			var rr := (1.0 - u) * 26.0 + 4.0
+			draw_circle(Vector2(cos(ang) * rr, -18.0 + hov + sin(ang) * rr * 0.5), 1.2, Color(0.25, 0.1, 0.4, 0.8 * u))
 	if max_hp > 3 and _alive:
 		var top := _bar_top()
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
