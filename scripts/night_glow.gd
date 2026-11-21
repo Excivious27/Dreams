@@ -59,6 +59,25 @@ func _ready() -> void:
 
 
 ## A light that follows a node (it moves with it): colour null = the warm lamp glow. Freed nodes drop out.
+## The light colour a prop casts, by its art name (c14_16-09): neon signs pink or
+## cyan, crystal lamps their own crystal colour, the gangster arc's street lamps a
+## cool sodium-teal; [] = the default warm amber. prop() appends this to its light row.
+static func tint_of(name: String) -> Array:
+	if "neon" in name:
+		return [Color(1.0, 0.35, 0.85)] if name.hash() % 2 == 0 else [Color(0.3, 0.9, 1.0)]
+	if "crystal" in name or "beacon_on" in name:
+		if name.begins_with("ice") or "frost" in name:
+			return [Color(0.55, 0.85, 1.0)]
+		if name.begins_with("coral"):
+			return [Color(1.0, 0.55, 0.7)]
+		if name.begins_with("kelp"):
+			return [Color(0.45, 1.0, 0.7)]
+		return [Color(0.75, 0.6, 1.0)]
+	if ("lamp" in name or "streetlight" in name) and not GameState.run.is_empty() and not GameState.is_penguins():
+		return [Color(0.7, 0.9, 1.0)]
+	return []
+
+
 static func add_light(m: GameMap, node: Node2D, radius: float, lift: float, colour: Variant = null) -> void:
 	if m == null or m.glow == null or not is_instance_valid(node):
 		return

@@ -13,5 +13,6 @@ for g in $ORDER; do
 done
 # C14 P3: the beach marina (data/marina.json; its routes are TravelNet links).
 python3 -B tools/gen_marina.py >/dev/null || { echo "regen_data: gen_marina failed"; exit 1; }
+python3 -B tools/gen_props_c14.py >/dev/null || { echo "regen_data: gen_props_c14 failed"; exit 1; }  # C14 P6 dressing (reads regions.json: last)
 python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"
