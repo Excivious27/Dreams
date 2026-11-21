@@ -36,8 +36,12 @@ func _initialize() -> void:
 		BattleRewards.on_win(cid, nid, 1, {})
 		check(BattleRewards.stars(cid, nid) == 1, "%s: 1 star stored" % arc)
 		check(int(GameState.run.get("crystals", 0)) == m0, "%s: 1 star pays no ladder extra" % arc)
-		# repeat same day, same stars: rematch pay once
 		var lines := BattleRewards.on_win(cid, nid, 1, {})
+		check(int(GameState.run.get("crystals", 0)) == m0, "%s: a repeat call the same day pays nothing" % arc)
+		check(BattleRewards.stars_for(cid, nid, {}) == 1, "%s: no stats = 1 star" % arc)
+		# next day, same stars: rematch pay once
+		GameState.run["day"] = int(GameState.run.get("day", 1)) + 1
+		lines = BattleRewards.on_win(cid, nid, 1, {})
 		var m1 := int(GameState.run.get("crystals", 0))
 		check(m1 > m0 and not lines.is_empty(), "%s: rematch pays once a day (%d -> %d)" % [arc, m0, m1])
 		BattleRewards.on_win(cid, nid, 1, {})

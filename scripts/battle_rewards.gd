@@ -10,8 +10,9 @@ class_name BattleRewards
 ## per-arc mastery track on total stars; battle bonds for allies in the line-up.
 ## State lives under the campaign state: run.campaign.ladder (no new run block).
 ##
-## Callers (P3 campaign.gd / P1 battle.gd) call on_win() once per won fight; calling it
-## twice for the same result pays nothing more (rank-ups pay deltas, rematch pay once a day).
+## Campaign.finish calls on_win() for every won fight (and on_loss for a lost one); calling it
+## twice for the same result pays nothing more (rank-ups pay deltas, rematch pay once a day,
+## and never on the day of a win).
 
 const STAR := "★"
 const NO_STAR := "☆"
@@ -77,14 +78,16 @@ static func par(cid: String, nid: String) -> float:
 
 
 ## Stars a fight earned from Battle's stats: tickets_left, tickets_max, player_ko,
-## allies_lost, elapsed (seconds of game time). Missing keys never cost a star.
+## allies_lost, elapsed (seconds of game time). No ticket stats: 1 star; no elapsed: at most 2.
 static func stars_for(cid: String, nid: String, stats: Dictionary) -> int:
 	var n := 1
+	if not stats.has("tickets_left") or not stats.has("tickets_max"):
+		return 1
 	var tl := int(stats.get("tickets_left", 1))
 	var tm := maxi(1, int(stats.get("tickets_max", 1)))
 	if not bool(stats.get("player_ko", false)) and int(stats.get("allies_lost", 0)) == 0 and tl * 2 >= tm:
 		n = 2
-		if float(stats.get("elapsed", 0.0)) <= par(cid, nid):
+		if stats.has("elapsed") and float(stats["elapsed"]) <= par(cid, nid):
 			n = 3
 	return n
 
@@ -110,6 +113,15 @@ static func _mmss(sec: float) -> String:
 static func chest_name(kind: String) -> String:
 	var ch: Dictionary = data().get("chests", {}).get(kind, {})
 	return str(ch.get("name_gang" if gang() else "name", kind.capitalize()))
+
+
+## The chest's icon for this arc (art/gen/ui/c16bp4_chest_<kind>_<pen|gang>, tools/slice_c16bp4.py).
+static func chest_icon(kind: String) -> Texture2D:
+	return Art.tex("ui", "c16bp4_chest_%s_%s" % [kind, "gang" if gang() else "pen"])
+
+
+static func first_chest(cid: String) -> String:
+	return str(camp(cid).get("first_clear", {}).get("chest", "supply"))
 
 
 ## Opens a chest at once: money + a material bundle (arc items swapped in) + a chance at
@@ -147,6 +159,8 @@ static func on_win(cid: String, mission_id: String, stars_in: int, stats: Dictio
 		return []
 	var nst := stars_in if stars_in > 0 else stars_for(cid, mission_id, stats)
 	nst = clampi(nst, 1, 3)
+	if int(stats.get("assist", 0)) > 0:  # P3's assist (easier retry): at most 2 stars
+		nst = mini(nst, 2)
 	var l := st()
 	if not (l["stars"].get(cid) is Dictionary):
 		l["stars"][cid] = {}
@@ -168,8 +182,7 @@ static func on_win(cid: String, mission_id: String, stars_in: int, stats: Dictio
 		lines.append({"text": "%s %s%s" % [star_text(nst), "New best! " if old > 0 else "", ("+" + ", ".join(bits)) if not bits.is_empty() else ""]})
 		if nst == 3 and old < 3:
 			lines.append({"text": "Three stars! " + open_chest(str(data().get("gold_node_chest", "supply")), m)})
-		if old > 0:
-			l["rematch"][cid + "/" + mission_id] = day
+		l["rematch"][cid + "/" + mission_id] = day  # a win today: a repeat call or rematch today pays no rematch share
 	elif old > 0 and int(l["rematch"].get(cid + "/" + mission_id, -1)) != day:
 		l["rematch"][cid + "/" + mission_id] = day
 		var rp := int(round(cr * float(data().get("rematch", {}).get("share", 0.2))))

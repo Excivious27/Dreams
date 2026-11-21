@@ -1475,3 +1475,6 @@ echo "$c16bp4bout" | grep -E "FAIL|SCRIPT ERROR|c16b_p4_board_test" || true
 if echo "$c16bp4bout" | grep -q "SCRIPT ERROR" || ! echo "$c16bp4bout" | grep -q "c16b_p4_board_test: 0 fails"; then
   echo "C16b P4 board test failed"; exit 1
 fi
+if ! python3 tools/slice_c16bp4.py check; then
+  echo "C16b P4 chest icons missing"; exit 1
+fi

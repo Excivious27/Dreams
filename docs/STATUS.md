@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16b P4: battle reward ladder (BattleRewards + gen_battle_rewards: stars 1-3, rank-up/rematch pay, 4 chest tiers per arc with icons, first-clear trophies, mastery pieces + legacy uniques, star track, battle bonds) and campaign board fixes (optional-battle intro, earned stars vs foe-level dots, row states, YOU WIN brief, next campaign, long way/rematch buttons, actions fit, 7 px floor).
+
 ## 2026-11-21 — C16a integ: energy filler re-spread against P3's cap 60; mega hook quests wait for the gate floors (sim first mega day ~50); Spark migrate; net energy row; fishing caps; gang helper meadow/forest/lake
 
 ## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd

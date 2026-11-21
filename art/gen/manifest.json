@@ -153595,6 +153595,46 @@
    "file": "ui/chore_mine.png",
    "h": 16,
    "w": 14
+  },
+  "c16bp4_chest_commander_gang": {
+   "file": "ui/c16bp4_chest_commander_gang.png",
+   "h": 32,
+   "w": 31
+  },
+  "c16bp4_chest_commander_pen": {
+   "file": "ui/c16bp4_chest_commander_pen.png",
+   "h": 32,
+   "w": 33
+  },
+  "c16bp4_chest_field_gang": {
+   "file": "ui/c16bp4_chest_field_gang.png",
+   "h": 32,
+   "w": 37
+  },
+  "c16bp4_chest_field_pen": {
+   "file": "ui/c16bp4_chest_field_pen.png",
+   "h": 32,
+   "w": 38
+  },
+  "c16bp4_chest_supply_gang": {
+   "file": "ui/c16bp4_chest_supply_gang.png",
+   "h": 32,
+   "w": 36
+  },
+  "c16bp4_chest_supply_pen": {
+   "file": "ui/c16bp4_chest_supply_pen.png",
+   "h": 32,
+   "w": 39
+  },
+  "c16bp4_chest_war_gang": {
+   "file": "ui/c16bp4_chest_war_gang.png",
+   "h": 32,
+   "w": 35
+  },
+  "c16bp4_chest_war_pen": {
+   "file": "ui/c16bp4_chest_war_pen.png",
+   "h": 32,
+   "w": 38
   }
  },
  "ui_creator": {

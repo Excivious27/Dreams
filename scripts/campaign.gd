@@ -590,8 +590,10 @@ static func finish(won: bool, supply_left: int) -> Array:
 			lines.insert(1, {"who": w, "text": fl})
 		if str(n.get("type", "")) == "gate":
 			lines.append_array(_unlock(cid))
+		lines.append_array(BattleRewards.on_win(cid, nid, int(f.get("stars", 0)), f.get("perf", {})))  # C16b P4 hook: reward ladder
 	else:
 		s["losses"] = int(s.get("losses", 0)) + 1
+		BattleRewards.on_loss(cid, nid)  # C16b P4 hook
 		s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)  # never too poor to place one helper
 		s["morale"] = int(s["morale"]) - Difficulty.add("morale_loss")
 		if int(s["morale"]) <= 0:

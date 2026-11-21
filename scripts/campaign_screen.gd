@@ -168,6 +168,15 @@ static func _lw_ok(id: String) -> bool:
 	return _api("can_take_long_way") and bool((Campaign as Script).call("can_take_long_way", id))
 
 
+## Shown (maybe greyed by its lock reason) when takeable or only short of the toll.
+static func _lw_offer(id: String) -> bool:
+	if _api("long_way_pending") and bool((Campaign as Script).call("long_way_pending", id)):
+		return false
+	if _api("long_way_offerable"):
+		return bool((Campaign as Script).call("long_way_offerable", id))
+	return _lw_ok(id)
+
+
 func _label(t: String, size: int, col: Color) -> Label:
 	var l := Label.new()
 	l.text = t
@@ -278,6 +287,11 @@ func _show_list() -> void:
 		b.add_theme_font_size_override("font_size", 7)
 		if plan != "" and not won and not opened:
 			b.modulate = Color(0.7, 0.7, 0.72)
+		if not BattleRewards.st()["first"].has(id):
+			# C16b P4: the first-clear chest this campaign still holds.
+			b.icon = BattleRewards.chest_icon(BattleRewards.first_chest(id))
+			b.expand_icon = true
+			b.add_theme_constant_override("icon_max_width", 18)
 		v.add_child(b)
 	_board.queue_redraw()
 
@@ -396,8 +410,9 @@ func _refresh() -> void:
 		for ch in Campaign.kin_choices(cid):
 			_acts.append([str(ch[1]), _kin.bind(str(ch[0]))])
 	# C16b P4 (c16b_10-02/05/15): the long way, rematches and the next campaign.
-	if not Campaign.is_won(cid) and not Campaign.region_open(str(c["region"])) and _lw_ok(cid):
-		_acts.append(["⇢ Take the long way", _long_way])
+	if not Campaign.is_won(cid) and not Campaign.region_open(str(c["region"])) and _lw_offer(cid):
+		var lab := str((Campaign as Script).call("long_way_label", cid)) if _api("long_way_label") else "Take the long way"
+		_acts.append(["⇢ " + lab, _long_way])
 	if typ not in Campaign.NONBATTLE and Campaign.taken(cid, sel) and _api("can_rematch") and _api("rematch") \
 			and bool((Campaign as Script).call("can_rematch", cid, sel)):
 		_acts.append(["⚔ Rematch for %s" % BattleRewards.STAR if BattleRewards.stars(cid, sel) < 3 else "⚔ Rematch", _rematch])
@@ -517,7 +532,20 @@ func _show_brief() -> void:
 	_brief_box.add_child(_label("HOW IT WORKS", 7, Color(1, 0.8, 0.4)))
 	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the " + Campaign.force_word() + ", caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens fast, with its rewards. Lose and you keep what you took; you can try again, try easier, or take the long way in." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
 	_brief_box.add_child(_label("YOU WIN", 7, Color(1, 0.8, 0.4)))
-	_brief_box.add_child(_label("\n".join(BattleRewards.preview(cid)), 7, Color(1, 0.93, 0.7)))
+	var prow := HBoxContainer.new()
+	prow.add_theme_constant_override("separation", 4)
+	var ctex := BattleRewards.chest_icon(BattleRewards.first_chest(cid))
+	if ctex:
+		var ci := TextureRect.new()
+		ci.texture = ctex
+		ci.custom_minimum_size = Vector2(24, 24)
+		ci.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		ci.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		prow.add_child(ci)
+	var pl := _label("\n".join(BattleRewards.preview(cid)), 7, Color(1, 0.93, 0.7))
+	pl.custom_minimum_size.x = 214 if ctex else 244
+	prow.add_child(pl)
+	_brief_box.add_child(prow)
 	_brief_box.add_child(_label("LENGTH: %d territories · at least %d battle%s to the gate" % [(c["nodes"] as Array).size() - 1, int(c.get("min_battles", 3)), "" if int(c.get("min_battles", 3)) == 1 else "s"], 7, Color(0.7, 0.92, 1)))
 	if not Campaign.started(cid) and not Campaign.is_won(cid):
 		_brief_box.add_child(_label("TO MUSTER", 7, Color(1, 0.8, 0.4)))
@@ -545,13 +573,20 @@ func _next_campaign() -> String:
 
 
 func _long_way() -> void:
-	var lw: Variant = (Campaign as Script).call("long_way", cid) if _api("long_way") else {}
-	(Campaign as Script).call("take_long_way", cid)
+	if not _lw_ok(cid):
+		_no()
+		var why := str((Campaign as Script).call("long_way_lock", cid)) if _api("long_way_lock") else ""
+		_flash_msg(why if why != "" else "The long way isn't open yet.")
+		return
+	var res: Variant = (Campaign as Script).call("take_long_way", cid)
 	var t := ""
-	if lw is Dictionary:
-		t = str((lw as Dictionary).get("text_gang" if not GameState.is_penguins() else "text", (lw as Dictionary).get("text", "")))
-	_flash_msg(t if t != "" else "You set off the long way round. It takes longer, but it gets you there.")
+	if res is Array and not (res as Array).is_empty():
+		var parts: Array = []
+		for ln: Variant in res:
+			parts.append(str((ln as Dictionary).get("text", "")) if ln is Dictionary else str(ln))
+		t = " ".join(parts)
 	_refresh()
+	_flash_msg(t if t != "" else "You set off the long way round. It takes longer, but it gets you there.")
 
 
 func _rematch() -> void:
