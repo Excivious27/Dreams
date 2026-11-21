@@ -58,20 +58,30 @@ SFX = os.path.join(ROOT, "audio", "sfx")
 AMB = os.path.join(ROOT, "audio", "amb")
 LOG = os.path.join(SFX, "SOFTEN_LOG.json")
 JINGLES = ("j_",)
-JINGLE_NAMES = {"levelup", "quest_done", "craft_done", "sleep"}
+JINGLE_NAMES = {"levelup", "quest_done", "craft_done", "sleep", "ach_unlock"}
 JINGLE_LUFS = -17.0
 # K-weighted loudest-100ms targets by name prefix; Music.GROUP_DB sits on top in game.
 TARGETS = [("step_", -21.0), ("ui_", -20.0), ("menu_", -20.0), ("talk_blip", -20.0), ("keypress", -19.0),
            ("scroll_tick", -21.0), ("tab", -20.0), ("nope", -19.0),
            ("page", -19.0), ("equip", -19.0), ("coin", -18.0), ("pickup", -18.0), ("cash_pickup", -19.0),
-           ("cash_register", -18.0), ("cash", -19.0), ("reel", -21.0), ("tools", -19.0), ("rock_break", -18.0),
+           ("cash_register", -18.0), ("cash", -19.0), ("reel", -13.0), ("tools", -19.0), ("rock_break", -15.0),
            ("servo", -21.0), ("bowl_roll", -20.0), ("sparkle", -20.0), ("fairy_ring", -18.0), ("heartbeat", -17.0), ("hoof", -20.0), ("beat_tick", -18.0), ("status_tick", -23.0), ("yawn", -19.0),
-           ("spot_", -22.0)]
+           ("spot_", -22.0), ("cv_gloam", -12.0)]
 DEFAULT_TARGET = -16.0
 STEP_CAP = 0.28
 LONG_STEPS = ("step_swim", "step_wheels")  # strokes / rolling, not footfalls: no 0.28 s cap
 BRIGHT_OK = ("sparkle", "fairy_ring", "reel", "spot_cicada", "spot_insect", "spot_bird")  # meant to shimmer: level them normally
 TAKE_BAND = 1.5
+# C13 11-05: takes are matched on the mean of full-band (K-weighted) and phone-proxy (300 Hz HP)
+# loudness, so a bass-heavy take no longer drops 7-11 dB against its siblings on a phone speaker
+TAKE_PHONE_W = 0.5
+# C13 11-10: impact cues must land on the haptic: lead-in trimmed to 5 ms before the point the
+# sound first reaches peak-20 dB (a slow swell or near-silent lead-in no longer lags the buzz)
+IMPACT = ("block", "crit", "hit", "reload", "shot", "pin_", "bat", "punch", "stomp", "smash")
+LEAD_DB = 40.0  # every other non-ambient file: lead-in under peak-40 dB is cut (was 45)
+# C13 11-14: functional low cues that still lose > 5 dB on a phone get (phone_loss - 3) dB, up to +6
+PHONE_CUES = ("heartbeat", "stomp", "war_drum", "boss_down", "roar", "grunt", "alert", "block", "amb/spot_thunder")
+RETARGET_MAX = 10.0  # --retarget: largest lift toward a (changed) group target, before the limiter
 SR = 44100
 _KW_SOS = _kweight_sos(SR)
 _PH_SOS = butter(4, 300, "highpass", fs=SR, output="sos")  # what a phone speaker reproduces
@@ -151,7 +161,34 @@ def target(name):
 
 
 def is_jingle(name):
-    return name.startswith(JINGLES) or name in JINGLE_NAMES
+    base = name[:-5] if name.endswith("_gang") else name  # arc variants (levelup_gang) are jingles too
+    return name.startswith(JINGLES) or base in JINGLE_NAMES
+
+
+def lead_trim(x, name):
+    """Cut the lead-in only (5 ms fade kept by fades()): impact groups to 5 ms before peak-20 dB."""
+    m = np.abs(mono(x))
+    if not len(m):
+        return x
+    pk = m.max() + 1e-9
+    lvl = 20.0 if name.startswith(IMPACT) else LEAD_DB
+    on = np.nonzero(m > pk * 10 ** (-lvl / 20))[0]
+    if not len(on):
+        return x
+    a = max(0, on[0] - int(0.005 * SR))
+    return x[a:]
+
+
+def onset_ms(x):
+    m = np.abs(mono(x))
+    if not len(m):
+        return 0.0
+    on = np.nonzero(m > (m.max() + 1e-9) * 10 ** (-40 / 20))[0]
+    return 1000.0 * (on[0] / SR if len(on) else 0.0)
+
+
+def phone_lk(meas):
+    return (1 - TAKE_PHONE_W) * meas["lk"] + TAKE_PHONE_W * (meas["rms"] - meas["phone_loss"])
 
 
 def trim(x, name):
@@ -159,7 +196,7 @@ def trim(x, name):
     if not len(m):
         return x
     pk = m.max() + 1e-9
-    on = np.nonzero(m > pk * 10 ** (-45 / 20))[0]
+    on = np.nonzero(m > pk * 10 ** (-LEAD_DB / 20))[0]
     off = np.nonzero(m > pk * 10 ** (-50 / 20))[0]
     if not len(on):
         return x
@@ -251,11 +288,41 @@ def full_pass(x, name, before):
     return y, {"gain_db": round(gain, 2), "lowpass": lp, "shelf_db": shelf, "extra": extra}
 
 
+JINGLE_SHORT = 0.5      # s: ebur128 gates clips this short to -70 LUFS (its blocks are 400 ms)
+JINGLE_SHORT_LK = -18.0 # short UI stings level like coin/pickup on the loudest-100 ms K-weighted path
+JINGLE_MAX_GAIN = 12.0
+JINGLE_MAX_RMS = -9.0   # loudest-100 ms RMS ceiling for any jingle (sfx_level_check fails above -8)  # never boost a jingle more than this (j_buy/j_confirm once got +53 dB)
+
+
 def jingle_pass(x, name):
     ch = x.shape[1] if x.ndim > 1 else 1
-    g = JINGLE_LUFS - lufs_i(x, ch)
+    li = lufs_i(x, ch)
+    dur = (len(x) / SR)
+    if dur < JINGLE_SHORT or li <= -69.0:
+        lk = measure(x)["lk"]
+        g = max(-16.0, min(6.0, JINGLE_SHORT_LK - lk))
+        mode = "jingle_short"
+    else:
+        g = JINGLE_LUFS - li
+        mode = "jingle"
+    g = min(g, JINGLE_MAX_GAIN)
+    extra = []
+    b = measure(x)
+    if b["phone_loss"] > 8.0:
+        # bass-led sting (upright bass, low brass): a phone speaker drops it; same presence
+        # lift + exciter as full_pass, then re-measure so the level still follows the result
+        x = excite(filt(x, "highpass=f=90,equalizer=f=1800:t=o:w=1.5:g=5", ch))
+        extra = ["presence", "exciter"]
+        if mode == "jingle":
+            g = min(JINGLE_MAX_GAIN, JINGLE_LUFS - lufs_i(x, ch))
+        else:
+            g = max(-16.0, min(6.0, JINGLE_SHORT_LK - measure(x)["lk"]))
     y = soft_limit(x * 10 ** (g / 20))
-    return y, {"gain_db": round(g, 2), "mode": "jingle"}
+    r = measure(y)["rms"]
+    if r > JINGLE_MAX_RMS:  # dense bass-led sting: integrated LUFS under-reads it; keep it off the wall
+        y = y * 10 ** ((JINGLE_MAX_RMS - r) / 20)
+        g += JINGLE_MAX_RMS - r
+    return y, {"gain_db": round(g, 2), "mode": mode, "extra": extra}
 
 
 def write(path, x, ch):
@@ -286,13 +353,55 @@ def all_files():
     return sorted(glob.glob(os.path.join(SFX, "*.ogg"))) + sorted(glob.glob(os.path.join(AMB, "spot_*.ogg")))
 
 
+META = os.path.join(ROOT, "data", "sfx_meta.json")
+AUDIBLE_DB = 35.0  # a sound "ends" at its last 50 ms window within this many dB of its loudest one
+
+
+def len_audible(x):
+    """Seconds from the start to the end of the last audible 50 ms window (Music ducks only that long)."""
+    m = mono(x).astype(np.float64)
+    w = int(0.05 * SR)
+    n = len(m) // w
+    if n < 1:
+        return round(len(m) / SR, 3)
+    db = 10 * np.log10(np.mean(m[:n * w].reshape(n, w) ** 2, axis=1) + 1e-12)
+    loud = np.nonzero(db > db.max() - AUDIBLE_DB)[0]
+    end = (int(loud[-1]) + 1) * w if len(loud) else len(m)
+    return round(min(len(m), end) / SR, 3)
+
+
+def write_meta(names=None):
+    """data/sfx_meta.json {name: {len_audible, dur}} for every audio/sfx file (names: refresh only these)."""
+    meta = json.load(open(META)) if os.path.exists(META) and names is not None else {}
+    for p in sorted(glob.glob(os.path.join(SFX, "*.ogg"))):
+        name = os.path.basename(p)[:-4]
+        if names is not None and name not in names and name in meta:
+            continue
+        x = decode(p, 1)
+        meta[name] = {"len_audible": len_audible(x), "dur": round(len(x) / SR, 3)}
+    have = {os.path.basename(p)[:-4] for p in glob.glob(os.path.join(SFX, "*.ogg"))}
+    meta = {k: v for k, v in sorted(meta.items()) if k in have}
+    with open(META + ".new", "w") as fh:
+        json.dump(meta, fh, indent=0, sort_keys=True)
+    if os.path.exists(META):
+        os.remove(META)
+    os.rename(META + ".new", META)
+    return meta
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--meta", action="store_true", help="only rebuild data/sfx_meta.json (len_audible per sfx)")
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--only", default="")
     ap.add_argument("--force", action="store_true", help="re-level done files (gain only, no new filter pass)")
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--retarget", action="store_true", help="with --force: re-trim the lead-in, lift lone phone cues")
+    ap.add_argument("--retarget-level", action="store_true", help="with --retarget: also move toward the group target")
     a = ap.parse_args()
+    if a.meta:
+        print(f"sfx_meta: {len(write_meta())} files -> data/sfx_meta.json")
+        return
     log = json.load(open(LOG)) if os.path.exists(LOG) else {}
     only = set(x for x in a.only.split(",") if x)
     files = all_files()
@@ -316,6 +425,16 @@ def main():
         elif done:
             y, rec = x, {"gain_db": 0.0, "mode": "relevel"}
             rec.update({kk: log[k].get(kk) for kk in ("lowpass", "shelf_db", "extra") if kk in log[k]})
+            if a.retarget:
+                y = fades(lead_trim(x, name), name) if not k.startswith("amb/") else x
+                cur = measure(y)
+                g = max(-16.0, min(RETARGET_MAX, (target(name) - cur["lk"]) * 0.75)) if a.retarget_level else 0.0
+                single = not any(base_of(key_of(q)) == base_of(k) and key_of(q) != k for q in files)
+                if (name.startswith(PHONE_CUES) or k.startswith(PHONE_CUES)) and cur["phone_loss"] > 5.0 and single:
+                    g = max(g, min(6.0, cur["phone_loss"] - 3.0))
+                    rec["phone_lift"] = True
+                y = soft_limit(y * 10 ** (g / 20))
+                rec.update({"gain_db": round(g, 2), "mode": "retarget"})
         else:
             y, rec = full_pass(x, name, before)
         rec["before"] = log[k]["before"] if done and "before" in log[k] else before
@@ -339,7 +458,8 @@ def main():
             if None in lks:
                 print(f"{g:24s} (not measured)")
                 continue
-            print(f"{g:24s} spread {max(lks) - min(lks):4.1f} dB  {lks}")
+            ph = [round(phone_lk(log[k]["after"]) * 2 - log[k]["after"]["lk"], 1) for k, _ in mem]  # pure phone proxy
+            print(f"{g:24s} spread {max(lks) - min(lks):4.1f} dB  phone {max(ph) - min(ph):4.1f} dB  {lks} {ph}")
         return
     for g, mem in groups.items():
         if len(mem) < 2 or not any(k in touched for k, _ in mem):
@@ -352,7 +472,7 @@ def main():
                     log[k] = {}
                 log[k].setdefault("mode", "relevel")
                 touched.add(k)
-        lks = {k: measure(sig[k])["lk"] for k, _ in mem}
+        lks = {k: phone_lk(measure(sig[k])) for k, _ in mem}
         med = float(np.median(list(lks.values())))
         for k, _ in mem:
             d = lks[k] - med
@@ -381,6 +501,7 @@ def main():
         if os.path.exists(LOG):
             os.remove(LOG)
         os.rename(LOG + ".new", LOG)
+        write_meta({k for k in touched if "/" not in k})
     print(f"processed {n} files, wrote {len(touched)}" + (" (dry run)" if a.dry else ""))
 
 

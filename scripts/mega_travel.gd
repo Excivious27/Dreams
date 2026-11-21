@@ -198,8 +198,7 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		await dlg.finished
 		if dlg.last_choice == 0:
 			GameState.add_quest(qid, str(d.get("text", "Help the keeper.")))
-			Music.instance(m.get_tree()).sfx("j_confirm", "pickup")
-			m.hud.toast("New quest: %s" % str(d.get("text", "")), Color(1, 0.9, 0.4))
+			Quests.announce(m, str(d.get("text", "")))
 			await m.say([{"who": who, "text": str(L.get("yes", "Good. I'll be here."))}])
 		return
 	if not GameState.quest_done(qid):

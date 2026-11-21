@@ -237,7 +237,7 @@ func move(dir: Vector2) -> bool:
 			best = c
 	if best:
 		_place(best)
-		Music.instance(get_tree()).sfx("ui_tap", "")
+		Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")  # c13_12-25: a move is softer than a confirm
 		return true
 	return false
 

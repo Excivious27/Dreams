@@ -131,8 +131,7 @@ func _pad_qty(d: int) -> void:
 	var mx := mini(Crafting.max_qty(_sel), 10 * tier)
 	if Crafting._single(_sel):
 		mx = mini(mx, 1)
-	_qty = clampi(_qty + d, 1, maxi(1, mx))
-	_show_detail()
+	_step_qty(_qty + d, mx)
 
 
 func _pad_cat(d: int) -> void:
@@ -143,6 +142,7 @@ func _pad_cat(d: int) -> void:
 	if cats.size() <= 2:
 		return
 	_cat = str(cats[posmod(cats.find(_cat) + d, cats.size())])
+	_sfx("tab")
 	_refresh()
 	_cur.select_key("r:0")
 
@@ -172,13 +172,29 @@ func close() -> void:
 	queue_free()
 
 
-func _btn(text: String, cb: Callable) -> Button:
+## c13_08-04: every craft control sounds; `cue` "" when the callback plays its own.
+func _btn(text: String, cb: Callable, cue := "ui_tap") -> Button:
 	var b := Button.new()
 	b.text = text
 	b.add_theme_font_size_override("font_size", 8)
+	if cue != "":
+		b.pressed.connect(func() -> void: _sfx(cue))
 	b.pressed.connect(cb)
 	b.focus_mode = Control.FOCUS_NONE
 	return b
+
+
+func _sfx(n: String) -> void:
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx(n, "ui_tap")
+
+
+## A quantity step: a soft tick, or a refusal at the 1 / max limit.
+func _step_qty(want: int, mx: int) -> void:
+	var nq := clampi(want, 1, maxi(1, mx))
+	_sfx("nope" if nq == _qty else "scroll_tick")
+	_qty = nq
+	_show_detail()
 
 
 func _icon(id: String, s := 22.0) -> Control:
@@ -213,7 +229,7 @@ func _refresh() -> void:
 			cats.append(Crafting._cat(rc))
 	if cats.size() > 1:
 		for c in ["All"] + cats:
-			var cb := _btn(str(c), func() -> void: _cat = "" if c == "All" else str(c); _refresh())
+			var cb := _btn(str(c), func() -> void: _cat = "" if c == "All" else str(c); _refresh(), "tab")
 			cb.add_theme_font_size_override("font_size", 7)
 			cb.custom_minimum_size = Vector2(22, 20)  # finger-sized on the phone (was 17x19)
 			cb.modulate = Color(1, 0.9, 0.5) if (c == "All" and _cat == "") or str(c) == _cat else Color(0.8, 0.8, 0.8)
@@ -289,11 +305,13 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 	h.add_child(l)
 	b.pressed.connect(func() -> void:
 		if not disc:
+			_sfx("nope")
 			_say("Hold every ingredient once to learn this recipe: %s." % Crafting.discover_hint(rc), Color(0.9, 0.85, 1.0))
 			return
 		if not _sel.is_empty() and str(_sel["id"]) == str(rc["id"]) and _cur and _cur.shown:
 			_pad_make_or_jump()  # a second A on the picked card: go to MAKE
 			return
+		_sfx("ui_tap")
 		_sel = rc
 		_qty = 1
 		_refresh()
@@ -332,7 +350,7 @@ func _show_detail() -> void:
 		_detail.add_child(row)
 		if mx > 1:
 			# Finger-sized: these were 17 px wide at 270.
-			var mb := _btn("−", func() -> void: _qty = maxi(1, _qty - 1); _show_detail())
+			var mb := _btn("−", func() -> void: _step_qty(_qty - 1, mx), "")
 			mb.custom_minimum_size = Vector2(28, 26)
 			row.add_child(mb)
 			var ql := Label.new()
@@ -341,15 +359,19 @@ func _show_detail() -> void:
 			ql.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			ql.add_theme_font_size_override("font_size", 10)
 			row.add_child(ql)
-			var pb := _btn("+", func() -> void: _qty = mini(mx, _qty + 1); _show_detail())
+			var pb := _btn("+", func() -> void: _step_qty(_qty + 1, mx), "")
 			pb.custom_minimum_size = Vector2(28, 26)
 			row.add_child(pb)
-			var xb := _btn("Max", func() -> void: _qty = mx; _show_detail())
+			var xb := _btn("Max", func() -> void: _step_qty(mx, mx), "")
 			xb.custom_minimum_size = Vector2(34, 26)
 			row.add_child(xb)
-		var make := _btn("MAKE", _make)
+		var make := _btn("MAKE", _make, "")  # the station's own work sound plays on success
 		make.set_meta("pc_key", "make")
 		make.disabled = why != "" or not Crafting.can_make(rc, _qty) or Crafting._owned(rc) or js.size() >= Crafting.slots(tier)
+		# A greyed MAKE still answers a tap: the game-wide refusal.
+		make.gui_input.connect(func(ev: InputEvent) -> void:
+			if make.disabled and TapInput.is_release(ev):
+				_sfx("nope"))
 		make.add_theme_font_size_override("font_size", 10)
 		make.custom_minimum_size = Vector2(72, 26)
 		make.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -374,6 +396,7 @@ func _show_detail() -> void:
 
 func _pad_make_or_jump() -> void:
 	if not _cur.select_key("make"):
+		_sfx("nope")
 		_say("Can't make that yet: see what it needs below.", Color(1, 0.75, 0.6))
 
 
@@ -410,6 +433,7 @@ func _make() -> void:
 	if town:
 		var fee := 5 * int(rc.get("tier", 1)) * _qty
 		if int(GameState.run["crystals"]) < fee:
+			_sfx("nope")
 			_say("The bench fee is ◆%d." % fee, Color(1, 0.7, 0.7))
 			return
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - fee

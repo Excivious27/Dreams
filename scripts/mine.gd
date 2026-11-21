@@ -993,7 +993,6 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("pick", "chop")
 			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
@@ -1003,6 +1002,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			swing += int(GameState.bonus("mining", "mine_power"))
 			GameState.toughen(thing, "pickaxe")  # C6 P7: early rocks take more swings
 			thing["hp"] = int(thing["hp"]) - swing
+			if int(thing["hp"]) > 0:
+				Music.instance(get_tree()).sfx("pick", "chop")  # the breaking swing plays rock_break alone (c13_07-18)
 			if int(thing["hp"]) <= 0:
 				_tremor(c, swing)
 				hitstop = maxf(hitstop, 0.05)
@@ -1025,6 +1026,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if randf() < Mining.gem_chance(ore == "stone"):
 					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
 					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
+					Music.instance(get_tree()).sfx_pitched("gem", "sparkle", 1.0, -2.0, 0.2)  # a gem lands with its own chime (c13_07-09)
+				elif ore in ["gold", "crystal", "mithril", "ruby"]:
+					Music.instance(get_tree()).sfx_pitched("sparkle", "", 1.15, -6.0, 0.2)
 				xp("mining", (3 if ore == "stone" else 6) + mine_tier)
 				if drawn:
 					redraw_cell(c)

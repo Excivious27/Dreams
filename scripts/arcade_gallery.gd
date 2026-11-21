@@ -151,9 +151,9 @@ func shoot() -> int:
 		"frog":
 			pts = -20
 			frogs += 1
-			sfx("croak", "pop")
+			sfx("frog", "pop")
 		_:
-			sfx("gallery_ding", "anvil")
+			sfx("target_tin", "anvil")
 	score = maxi(0, score + pts)
 	if pts > 0:
 		hits += 1

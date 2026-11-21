@@ -68,7 +68,7 @@ func _run() -> void:
 							bad_cues.append("%s line sfx %s" % [b["id"], l["sfx"]])
 					if l.has("music"):
 						n_line_cues += 1
-						if not _song_ok(str(l["music"])):
+						if not _song_ok(str(l["music"])) and not _song_ok(str(l.get("music_fallback", ""))):  # C13 P4: songs may land later
 							bad_cues.append("%s line music %s" % [b["id"], l["music"]])
 	check(boss_music.is_empty(), "no beat sets a generic song beside its boss_card %s" % str(boss_music))
 	check(bad_cues.is_empty(), "every story cue exists or falls back to one that does %s" % str(bad_cues))

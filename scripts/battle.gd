@@ -249,6 +249,11 @@ func _rally_sfx(i: int) -> void:
 
 
 ## First cue that exists (new sounds land from P3; until then the fallback plays).
+## Capturing a point: the arc's banner sound, else a whistle, else the confirm chime.
+static func capture_cues() -> Array:
+	return ["banner_capture" if GameState.is_penguins() else "banner_capture_gang", "whistle", "j_confirm"]
+
+
 static func pick_sfx(mu: Music, names: Array) -> String:
 	for n: String in names:
 		if mu.has_sfx(n):
@@ -456,7 +461,8 @@ func _capture(delta: float) -> void:
 				map.hud.toast("%s is ours." % str(p["name"]), Color(0.6, 1, 0.7))
 				_caps += 1
 				map.fx("levelup", p["pos"] + Vector2(0, -10), 10.0, 0.6)
-				Music.instance(get_tree()).sfx("coin", "pickup")  # many per battle: keep levelup for real level-ups
+				var mu := Music.instance(get_tree())  # C13 05_25: a banner cue, never the money coin
+				mu.sfx(pick_sfx(mu, capture_cues()), "j_confirm")
 			elif str(p["owner"]) == "enemy":
 				map.hud.toast("We lost %s." % str(p["name"]), Color(1, 0.6, 0.5))
 				Music.instance(get_tree()).sfx("alert", "thud")
@@ -1326,15 +1332,29 @@ func drill_rescue(_reason := "hurt") -> void:
 	map.player.invuln = 2.0
 	var tr := CampaignGate.trainer()
 	map.hud.toast("%s pulls you out of the drill. No harm done." % (tr if tr != "" else "Your trainer"), Color(1, 0.9, 0.6))
+	_rescued = true
 	_end(false)
+
+
+## The training drill's closing cue: a win jingle, else a whistle (left) or a soft page (rescued).
+static func drill_end_cue(won: bool, rescued: bool) -> String:
+	if won:
+		return "j_battle_won"
+	return "j_page" if rescued else "whistle"
+
+
+var _rescued := false
 
 
 func _end_drill(won: bool, travel: bool) -> void:
 	_over = true
 	if drill != null and drill.xp > 0:
 		GameState.add_xp("strategist", drill.xp)
-	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
-	_duck_music()
+	# The drill can't be lost (C13 05_09): leaving or being pulled out closes softly,
+	# never the defeat jingle, and only a win ducks the song under its jingle.
+	Music.instance(get_tree()).sfx(drill_end_cue(won, _rescued), "j_page")
+	if won:
+		_duck_music()
 	for e in map.enemies.duplicate():
 		if is_instance_valid(e):
 			e.queue_free()

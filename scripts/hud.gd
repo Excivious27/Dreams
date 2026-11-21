@@ -174,11 +174,11 @@ func _process(delta: float) -> void:
 	# Keyboard: number keys pick a toolbar slot (1-9, 0, -, =).
 	for i in 12:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):
-			GameState.select_slot(i)
+			pick_slot(i)
 	if Input.is_action_just_pressed("cycle_tool") and not Dialogue.input_blocked():
-		GameState.select_slot(Hud.next_slot(1))
+		pick_slot(Hud.next_slot(1))
 	if InputMap.has_action("cycle_back") and Input.is_action_just_pressed("cycle_back") and not Dialogue.input_blocked():
-		GameState.select_slot(Hud.next_slot(-1))
+		pick_slot(Hud.next_slot(-1))
 	ToolHint.first_pick(self)  # first time each tool is in hand: one line on what it does
 	# Redraw when what's shown changes, and at 10 Hz for the rest (boss bar, buffs, pointer).
 	var r := GameState.run
@@ -345,6 +345,29 @@ func _hold_toasts(hold: bool) -> void:
 				(tw as Tween).play()
 
 
+## c13_07-07 / c13_08-08 / c13_12-18: one cue for a toolbar slot change, whatever the
+## device (touch, mouse, number keys, pad LB/RB, wheel): only when the slot really changes,
+## a blade drawn rings its unsheathe take. Auto-switches (mine.gd) stay silent.
+var _slot_cue_ms := -1000
+
+
+func pick_slot(i: int) -> void:
+	var was := int(GameState.run.get("slot", 0))
+	GameState.select_slot(i)
+	var now_s := int(GameState.run.get("slot", 0))
+	if now_s == was or not is_inside_tree():
+		return
+	var now := Time.get_ticks_msec()
+	if now - _slot_cue_ms < 70:
+		return  # a fast wheel spin is one tick
+	_slot_cue_ms = now
+	var id := str(GameState.run["toolbar"][now_s]) if now_s < (GameState.run["toolbar"] as Array).size() else ""
+	var blade := false
+	for w: String in ["sword", "blade", "sabre", "cleaver", "katana", "dagger"]:
+		blade = blade or id.contains(w)
+	Music.instance(get_tree()).sfx("unsheathe" if blade else "equip", "ui_tap")
+
+
 func _input(event: InputEvent) -> void:
 	# Menus, dialogue and shops sit on top: their taps are theirs.
 	if GameState.run.is_empty() or get_tree().paused or Dialogue.instance(get_tree()).active:
@@ -352,20 +375,19 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
 		var p: Vector2 = (event as InputEventScreenTouch).position
 		if p.y >= y_offset + TOOLBAR_Y - 2 and p.y <= y_offset + TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
-			GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
-			Music.instance(get_tree()).sfx("ui_tap", "plant")
+			pick_slot(int((p.x - TOOLBAR_X) / SLOT))
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.device != InputEvent.DEVICE_ID_EMULATION:
 			var p := mb.position
 			if p.y >= y_offset + TOOLBAR_Y - 2 and p.y <= y_offset + TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
-				GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
+				pick_slot(int((p.x - TOOLBAR_X) / SLOT))
 				get_viewport().set_input_as_handled()
 		if mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
+			pick_slot((int(GameState.run["slot"]) + 1) % 12)
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP:
-			GameState.select_slot((int(GameState.run["slot"]) + 11) % 12)
+			pick_slot((int(GameState.run["slot"]) + 11) % 12)
 
 
 ## Mana matters once a spell is known or the partner casts a Gift with it.

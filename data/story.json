@@ -26,7 +26,8 @@
      ],
      "effects": {
       "hint": "Talk to everyone once. Maple sells seeds; Gideon fixes tools; the penguins keep to themselves, mostly."
-     }
+     },
+     "title_card": true
     },
     {
      "id": "p1_howl",
@@ -251,7 +252,8 @@
         "penguin_f",
         "penguin_m"
        ],
-       "if_partner": "any"
+       "if_partner": "any",
+       "sfx": "airship_whoosh"
       },
       {
        "who": "",
@@ -261,7 +263,8 @@
         "penguin_f",
         "penguin_m"
        ],
-       "if_partner": "none"
+       "if_partner": "none",
+       "sfx": "airship_whoosh"
       },
       {
        "who": "",
@@ -270,7 +273,8 @@
        "only_hero": [
         "penguin_f",
         "penguin_m"
-       ]
+       ],
+       "sfx": "airship_whoosh"
       },
       {
        "who": "",
@@ -283,7 +287,9 @@
       },
       {
        "who": "",
-       "text": "And purring. Definitely purring. A dark figure walks out of the fog, takes down its hood, and is a cat."
+       "text": "And purring. Definitely purring. A dark figure walks out of the fog, takes down its hood, and is a cat.",
+       "sfx": "purr",
+       "sfx_fallback": "meow"
       },
       {
        "who": "Catkins",
@@ -292,7 +298,8 @@
      ],
      "effects": {
       "hint": "Talk to Catkins, by the cat statue in the crystal meadow."
-     }
+     },
+     "title_card": true
     },
     {
      "id": "p2_catkins",
@@ -405,7 +412,8 @@
      "lines": [
       {
        "who": "",
-       "text": "You dream you're standing on a floor that breathes. Somewhere, something enormous beats, slow, like a heart that's been asleep a long while. The mountain's heart. You've never heard its name, but in the dream you know it: Prismatica."
+       "text": "You dream you're standing on a floor that breathes. Somewhere, something enormous beats, slow, like a heart that's been asleep a long while. The mountain's heart. You've never heard its name, but in the dream you know it: Prismatica.",
+       "sfx": "heartbeat"
       },
       {
        "who": "",
@@ -417,7 +425,11 @@
       }
      ],
      "effects": {
-      "hint": "The mine is the inside of the mountain. The heart it dreams about is at the very top."
+      "hint": "The mine is the inside of the mountain. The heart it dreams about is at the very top.",
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -436,7 +448,9 @@
       },
       {
        "who": "",
-       "text": "Then the cave shakes. Crystals fall from the ceiling. Catkins meows loudly."
+       "text": "Then the cave shakes. Crystals fall from the ceiling. Catkins meows loudly.",
+       "sfx": "cave_in",
+       "sfx_fallback": "stone_grind"
       },
       {
        "who": "Catkins",
@@ -478,7 +492,8 @@
       },
       {
        "who": "",
-       "text": "The catship circles once over the Wastes, purring like an engine, and sets you down by the meadow's east gate. The cats wave from every window. Some of them wave from outside the windows, flying."
+       "text": "The catship circles once over the Wastes, purring like an engine, and sets you down by the meadow's east gate. The cats wave from every window. Some of them wave from outside the windows, flying.",
+       "sfx": "purr"
       },
       {
        "who": "Catkins",
@@ -615,7 +630,11 @@
       "friend": {
        "penguin_f": 10,
        "penguin_m": 10
-      }
+      },
+      "music": "area"
+     },
+     "pre": {
+      "music": "night"
      }
     },
     {
@@ -754,7 +773,9 @@
      "lines": [
       {
        "who": "",
-       "text": "In your pack, the brass locket starts to hum, loud enough to hear. Down on the jetty, Tomas turns his head toward the sound like someone hearing his name across a field."
+       "text": "In your pack, the brass locket starts to hum, loud enough to hear. Down on the jetty, Tomas turns his head toward the sound like someone hearing his name across a field.",
+       "sfx": "locket_hum",
+       "sfx_fallback": "sparkle"
       },
       {
        "who": "Finn",
@@ -813,7 +834,8 @@
      ],
      "effects": {
       "hint": "Climb. The pass is blocked by something small and loud."
-     }
+     },
+     "title_card": true
     },
     {
      "id": "p3_campfire",
@@ -834,7 +856,8 @@
        "who": "",
        "text": "That night, by the farm gate, something comes down the lane after you, all the way from the mountain path. Bushes. Footsteps. The penguins press close together. Out of the shadows jumps a large figure.",
        "pic": "cut_campfire",
-       "not_hero": "big_jim"
+       "not_hero": "big_jim",
+       "sfx": "step_leaves"
       },
       {
        "who": "Big Jim",
@@ -881,7 +904,11 @@
       "hint_hero": {
        "big_jim": "Both penguins can come on the climb now: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥.",
        "penguin_f": "Big Jim tags along on the climb (he doesn't fight), and Pip-Pip can come too: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥."
-      }
+      },
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -906,7 +933,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Round the corner: a baby girl, two feet tall, covered in crystals, angry, silent. Then she stamps. STAMP. STAMP. STAMP. And chants, deafeningly: BEE BOP BOO BABY. BEE BOP BOO BABY."
+       "text": "Round the corner: a baby girl, two feet tall, covered in crystals, angry, silent. Then she stamps. STAMP. STAMP. STAMP. And chants, deafeningly: BEE BOP BOO BABY. BEE BOP BOO BABY.",
+       "sfx": "stomp"
       },
       {
        "who": "Big Jim",
@@ -915,7 +943,8 @@
       },
       {
        "who": "",
-       "text": "From every cave on every side: stamp, stamp, stamp. Hundreds of them pour out and block the path, and the leader GROWS, to five feet, and the circle closes. There's no room to run."
+       "text": "From every cave on every side: stamp, stamp, stamp. Hundreds of them pour out and block the path, and the leader GROWS, to five feet, and the circle closes. There's no room to run.",
+       "sfx": "stomp"
       },
       {
        "who": "Big Jim",
@@ -1035,7 +1064,8 @@
       {
        "who": "",
        "text": "The penguins chirp for some time. The babies stamp, once, all together: thank you. The sacred key to the heart of Mount Prismatica is warm in your hand, and the way up is yours to show them. There are finargles in these hills. You go quiet.",
-       "only_hero": "coldy"
+       "only_hero": "coldy",
+       "sfx": "stomp"
       }
      ],
      "effects": {
@@ -1069,7 +1099,8 @@
       },
       {
        "who": "Coldy",
-       "text": "We are surrounded. The finargles are here."
+       "text": "We are surrounded. The finargles are here.",
+       "sfx": "alert"
       },
       {
        "who": "",
@@ -1108,7 +1139,8 @@
       },
       {
        "who": "",
-       "text": "*So you are the ones. You are smaller than he said.*"
+       "text": "*So you are the ones. You are smaller than he said.*",
+       "sfx": "spell_dark"
       },
       {
        "who": "Coldy",
@@ -1119,7 +1151,11 @@
      "effects": {
       "flags": [
        "fennimore_whisper"
-      ]
+      ],
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -1151,7 +1187,8 @@
         "penguin_m",
         "penguin_f"
        ],
-       "if_known": "penguin_m"
+       "if_known": "penguin_m",
+       "sfx": "heartbeat"
       },
       {
        "who": "Nova",
@@ -1207,7 +1244,8 @@
       {
        "who": "",
        "text": "The mountain didn't. You can feel him in there, under the glass.",
-       "only_hero": "penguin_f"
+       "only_hero": "penguin_f",
+       "sfx": "heartbeat"
       },
       {
        "who": "",
@@ -1247,7 +1285,9 @@
        "only_hero": "penguin_f"
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_heart"
+     }
     },
     {
      "id": "p3_knight_done",
@@ -1452,7 +1492,8 @@
        "down"
       ],
       "hint": "You washed out at the lake. Someone pulled you from the water."
-     }
+     },
+     "title_card": true
     },
     {
      "id": "p4_merkitties",
@@ -1585,7 +1626,11 @@
      "effects": {
       "flags": [
        "fennimore_seen"
-      ]
+      ],
+      "music": "area"
+     },
+     "pre": {
+      "music": "finargle"
      }
     },
     {
@@ -1623,7 +1668,11 @@
       "flags": [
        "finargle_old_met"
       ],
-      "hint": "Fennimore is listening. If she doubts the Dark Crystal, the Meow Pow Wow can turn her back at the top."
+      "hint": "Fennimore is listening. If she doubts the Dark Crystal, the Meow Pow Wow can turn her back at the top.",
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -1761,7 +1810,8 @@
      ],
      "effects": {
       "hint": "Mountain pad → moon → the crystal spire (just north of the teleporter).",
-      "heal": true
+      "heal": true,
+      "sfx": "j_page"
      }
     }
    ]
@@ -1803,7 +1853,9 @@
        "who": "",
        "text": "The sacred key goes still in your pack, humming, like it knows this place.",
        "unless_flag": "babies_done",
-       "pic": "none"
+       "pic": "none",
+       "sfx": "locket_hum",
+       "sfx_fallback": "sparkle"
       },
       {
        "who": "Dark Crystal",
@@ -1853,6 +1905,9 @@
        "final_started"
       ],
       "shake": 4
+     },
+     "pre": {
+      "music": "mood_tense"
      }
     },
     {
@@ -1944,12 +1999,14 @@
       {
        "who": "",
        "text": "On the ridge, frost glowing blue-white on his feathers, an old penguin who stands taller than he should. Grandfather Auk. He doesn't fight. He stands between the shards and Nova, and the shards won't go near him.",
-       "not_hero": "penguin_f"
+       "not_hero": "penguin_f",
+       "sfx": "j_heart"
       },
       {
        "who": "",
        "text": "On the ridge, frost glowing blue-white on his feathers, an old penguin who stands taller than he should. Grandfather Auk. He stands between the shards and you, and the shards won't go near him. \"Grandfather,\" you say.",
-       "only_hero": "penguin_f"
+       "only_hero": "penguin_f",
+       "sfx": "j_heart"
       },
       {
        "who": "Nova",
@@ -1968,7 +2025,12 @@
      "effects": {
       "heal": true,
       "toast": "Grandfather Auk holds the shards off.",
-      "clear_kind": "shard"
+      "clear_kind": "shard",
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_tender",
+      "music_fallback": "title_musicbox"
      }
     },
     {
@@ -2121,7 +2183,8 @@
      "lines": [
       {
        "who": "",
-       "text": "And beside the crystal, in the dark, %bitter. They don't look at you. You did that, a long time ago now, at a gate."
+       "text": "And beside the crystal, in the dark, %bitter. They don't look at you. You did that, a long time ago now, at a gate.",
+       "sfx": "alert"
       },
       {
        "who": "Dark Crystal",
@@ -2141,6 +2204,9 @@
        ]
       ],
       "toast": "%bitter stands with the Dark Crystal."
+     },
+     "pre": {
+      "music": "mood_tense"
      }
     },
     {
@@ -2178,12 +2244,14 @@
          {
           "who": "",
           "text": "You put your hands at your chest, and you think about the collar, and the locket, and the bell, and the gate, and the babies stamping, and Big Jim screaming about tails, and rainbow hearts and cat paws come out of you so bright they can see them from the island.",
-          "not_hero": "big_jim"
+          "not_hero": "big_jim",
+          "music": "title_musicbox"
          },
          {
           "who": "",
           "text": "You put your hands at your chest, and you think about the collar, and the locket, and the bell, and the gate, and the babies stamping, and your own screaming about tails, which you'd rather not remember, and rainbow hearts and cat paws come out of you so bright they can see them from the island.",
-          "only_hero": "big_jim"
+          "only_hero": "big_jim",
+          "music": "title_musicbox"
          },
          {
           "who": "",
@@ -2208,7 +2276,9 @@
           "who": "",
           "text": "In your pack, the locket goes warm, then hot, and hums a whole tune at last. Far below, down toward the river cities, something hums back.",
           "if_flag": "locket_keep",
-          "if_item": "brass_locket"
+          "if_item": "brass_locket",
+          "sfx": "locket_hum",
+          "sfx_fallback": "sparkle"
          },
          {
           "who": "",
@@ -2253,7 +2323,9 @@
           "text": "You let the light go the other way. The dark comes apart the way ice goes on a pond in spring: all at once, and then quietly, for a long time.",
           "sfx": "glass",
           "sfx_fallback": "thud",
-          "pic": "cut_quiet_mountain"
+          "pic": "cut_quiet_mountain",
+          "music": "mood_sad",
+          "music_fallback": "night"
          },
          {
           "who": "Star Crystal",
@@ -2307,7 +2379,6 @@
       }
      ],
      "effects": {
-      "music": "title_musicbox",
       "flags": [
        "final_done",
        "boss_fennimore",
@@ -2331,7 +2402,8 @@
        "finargle_elder",
        "shard",
        "knight"
-      ]
+      ],
+      "music": "mood_tender"
      }
     },
     {

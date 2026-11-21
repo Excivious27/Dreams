@@ -226,6 +226,38 @@ func _c9(n: Variant) -> void:
 	n._restore_solo()
 
 
+## C13 P6: the guest clock waits while the host is paused and never steps back a few
+## minutes; ranch names in a delta are filtered; a guest rollover plays the morning cues.
+func _c13(n: Variant) -> void:
+	print("C13: guest clock, delta names, guest morning")
+	Music.instance(self)
+	await process_frame
+	await process_frame
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	_join(n, {"day": 40, "time": 600, "farm": {}})
+	check(not NetNode.guest_hold(), "a guest's clock runs normally")
+	n._apply_world({"_delta": true, "_gone": [], "time": 600, "_paused": true})
+	check(NetNode.guest_hold(), "host paused: the guest clock waits")
+	n._apply_world({"_delta": true, "_gone": [], "time": 600, "_paused": false})
+	check(not NetNode.guest_hold(), "host unpaused: it runs again")
+	GameState.run["time"] = 606
+	n._apply_world({"_delta": true, "_gone": [], "time": 602, "_paused": false})
+	check(int(GameState.run["time"]) == 606 and NetNode.guest_hold(), "a guest a few minutes ahead holds instead of rewinding")
+	n._apply_world({"_delta": true, "_gone": [], "time": 607, "_paused": false})
+	check(int(GameState.run["time"]) == 607 and not NetNode.guest_hold(), "the host catches up: back in step")
+	var bad := {"animals": {"a1": {"kind": "cow", "name": "fuck"}}}
+	n._apply_world({"_delta": true, "_gone": [], "time": 608, "ranch": bad})
+	var nm := str(((GameState.run.get("ranch", {}) as Dictionary).get("animals", {}) as Dictionary).get("a1", {}).get("name", ""))
+	check(nm != "fuck", "a host-typed animal name in a delta is filtered (%s)" % nm)
+	var mu := Music.instance(self)
+	OS.delay_msec(80)
+	mu._last_sfx.clear()
+	n._apply_world({"_delta": true, "_gone": [], "day": 41, "time": 360})
+	check(mu._last_sfx.has("j_morning") or mu._last_sfx.has("snore"), "a guest rollover plays the wake cue")
+	n._restore_solo()
+	_reset(n)
+
+
 func _run() -> void:
 	var n: Variant = Net.i()
 	if n == null:
@@ -271,6 +303,8 @@ func _run() -> void:
 	_more(n)
 	_reset(n)
 	_c9(n)
+	_reset(n)
+	await _c13(n)
 	n.my_id = -1
 	n._host = false
 	n._last_world = {}

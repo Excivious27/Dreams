@@ -981,7 +981,11 @@ func _physics_process(delta: float) -> void:
 			var base_spd := RUN_SPEED if running else WALK_SPEED
 			var pace := clampf(position.distance_to(before) / maxf(0.0001, delta) / base_spd, 0.5, 1.8)
 			_step_t = (0.25 if running else 0.33) / pace
-			if swimming:
+			if vehicle != "" and float(vehicle_def().get("water", 0.0)) > 0.0:
+				# The rowboat (c13_07-03): oar strokes on water, a soft wooden drag on land.
+				_step_t = 0.6 / pace
+				Music.instance(get_tree()).step(step_or(get_tree(), "row", "water") if swimming else "wood")
+			elif swimming:
 				# Strokes are a soft paddle on the step voice; the big splash is for jumping in (c6_10-17).
 				_step_t = 0.7
 				Music.instance(get_tree()).step(step_or(get_tree(), "swim", "water"))
@@ -993,9 +997,9 @@ func _physics_process(delta: float) -> void:
 				Music.instance(get_tree()).step(_ground_word())
 			elif VEH_TICK.has(vehicle):
 				var vt: Array = VEH_TICK[vehicle]
-				_step_t = float(vt[1])
-				var w := str(vt[0])
-				Music.instance(get_tree()).step(step_or(get_tree(), w, "gravel") if w == "wheels" else w)
+				_step_t = float(vt[1]) / pace  # the same pace the boots use (c13_07-04)
+				Music.instance(get_tree()).step(veh_tick_word(vehicle, _ground_word(), Music.instance(get_tree()).has_sfx("step_wheels")))
+		_veh_sound(delta, pace_of(position.distance_to(before), delta))
 	if auto:
 		# Give up if a wall stops us.
 		if position.distance_to(before) < 0.2:
@@ -1376,6 +1380,41 @@ static func first_sfx(names: Array) -> String:
 
 
 ## Footstep word `want` when its step_<want> sound exists, else `other`.
+## The tick a vehicle makes on this ground (c13_07-04): the sled crunches only on snow or ice and
+## slides softly elsewhere; wheels tick (or gravel when there is no wheel take).
+static func veh_tick_word(id: String, ground: String, has_wheels := true) -> String:
+	var vt: Array = VEH_TICK.get(id, ["gravel", 0.5])
+	var w := str(vt[0])
+	if id == "crystal_sled":
+		return ground if ground in ["snow", "ice"] else ("sand" if ground == "sand" else "gravel")
+	if w == "wheels":
+		return w if has_wheels else "gravel"
+	return w
+
+
+## Engine and runner beds under the ticks (C13 P5): motor scooter putters, the getaway car hums,
+## the sled hisses on snow. Played as short repeating takes on the effect voices, quiet.
+const VEH_LOOP := {"motor_scooter": ["scooter_ride", 1.1, -12.0], "getaway_car": ["motor_loop", 1.4, -13.0], "crystal_sled": ["sled_snow", 0.75, -11.0]}
+var _veh_snd_t := 0.0
+
+
+static func pace_of(dist: float, delta: float) -> float:
+	return clampf(dist / maxf(0.0001, delta) / WALK_SPEED, 0.5, 2.5)
+
+
+func _veh_sound(delta: float, pace: float) -> void:
+	if not VEH_LOOP.has(vehicle) or not is_inside_tree():
+		return
+	_veh_snd_t -= delta
+	if _veh_snd_t > 0.0:
+		return
+	var row: Array = VEH_LOOP[vehicle]
+	_veh_snd_t = float(row[1])
+	if vehicle == "crystal_sled" and not (_ground_word() in ["snow", "ice"]):
+		return
+	Music.instance(get_tree()).sfx_pitched(str(row[0]), "", clampf(0.85 + 0.12 * pace, 0.8, 1.25), float(row[2]))
+
+
 static func step_or(tree: SceneTree, want: String, other: String) -> String:
 	return want if Music.instance(tree).has_sfx("step_" + want) else other
 
@@ -1401,6 +1440,7 @@ func _gun_sound() -> String:
 
 ## Rounds per load: after this many shots the hero reloads (a sound only; the
 ## gun's own cooldown already paces it). Unknown guns load six.
+const RELOAD_S := 0.7
 const MAG := {"six_shooter": 6, "gold_revolver": 6, "scattergun": 2, "tommy_gun": 12}
 const MAG_KEY := "mag_used"
 ## Rounds fired from the current load, kept in the run (survives a scene change / save).
@@ -1448,7 +1488,11 @@ func _move(step: Vector2) -> void:
 	_update_wade()
 	if swimming and not was:
 		map.fx("splash", position, 12.0, 0.5)
-		Music.instance(get_tree()).sfx("splash", "step_water")
+		# A boat slides onto the water: a soft lap, not the jump-in splash (c13_07-03).
+		if float(vehicle_def().get("water", 0.0)) > 0.0:
+			Music.instance(get_tree()).step("water")
+		else:
+			Music.instance(get_tree()).sfx("splash", "step_water")
 	elif was and not swimming:
 		map.fx("splash", position, 12.0, 0.4)
 		Music.instance(get_tree()).step("water")
@@ -1569,7 +1613,9 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	Music.instance(get_tree()).sfx(_gun_sound(), "shot")
 	Haptics.buzz("recoil_big" if _gun_sound() == "shot_shotgun" else "recoil")
 	if _count_shot(GameState.held_tool()) and GameState.count("rounds") > 0:
-		get_tree().create_timer(0.28).timeout.connect(func() -> void:
+		# The reload really takes time now (c13_07-17): no shot fires through it; timer on game time.
+		_attack_cd = maxf(_attack_cd, 0.28 + RELOAD_S)
+		get_tree().create_timer(0.28, false).timeout.connect(func() -> void:
 			if is_inside_tree():
 				Music.instance(get_tree()).sfx("reload", "dry_click"))
 	if hit:

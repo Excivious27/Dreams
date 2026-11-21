@@ -50,6 +50,7 @@ func _ready() -> void:
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	_was_paused = get_tree().paused
 	Hud.pause(get_tree(), "decor_shop")
+	Music.instance(get_tree()).sfx("shop_bell", "menu_open")  # c13_08-05
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_canvas.draw.connect(_draw_it)

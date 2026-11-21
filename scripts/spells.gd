@@ -253,9 +253,10 @@ static func _redraw_soil(m: GameMap) -> void:
 
 ## The sound for a spell, from its id/element words (fire, ice, heal...).
 ## Each player spell's own cue (c6_08_08); spells not listed match words below.
-const SPELL_SFX := {"spark": "spell_lightning", "glow": "sparkle", "haste": "swing_heavy", "rain_call": "bubble",
-	"growth": "spell_nature", "crystal_shield": "glass", "warp_home": "teleport", "radiance": "spell_fire",
-	"lull": "bubble", "bloom": "spell_nature", "resonance": "spell_earth", "dreamwalk": "teleport"}
+## C13 P5 (c13_14-08): wind spells a light air swish (not the heavy sword), water spells a pour, light a chime.
+const SPELL_SFX := {"spark": "spell_lightning", "glow": "sparkle", "haste": "swing", "rain_call": "water",
+	"growth": "spell_nature", "crystal_shield": "glass", "warp_home": "teleport", "radiance": "heal",
+	"lull": "water", "bloom": "spell_nature", "resonance": "spell_earth", "dreamwalk": "teleport"}
 
 
 static func spell_sound(id: String) -> String:

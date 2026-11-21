@@ -1,0 +1,6 @@
+# Stand-ins tools/sfx_audit.py allows for now: an asked-for sound with no file whose fallback plays.
+# A stand-in NOT listed here fails the audit; `sfx_audit.py --release` fails while any is left.
+# Drop a line once its sound exists (the audit prints "stand-ins now real").
+# name        owner / plan
+j_recruit     P3/P4 jingle to make (j_skill plays)
+quake         P5 sound to make (stone_grind plays)

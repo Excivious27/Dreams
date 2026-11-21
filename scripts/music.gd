@@ -83,11 +83,11 @@ func _ready() -> void:
 		_voice_t.append(0)
 		_voice_long.append(false)
 	_steps = AudioStreamPlayer.new()
-	_steps.bus = "SFX"
+	_steps.bus = "Steps"
 	_steps.volume_db = STEP_DB
 	add_child(_steps)
 	_blip = AudioStreamPlayer.new()
-	_blip.bus = "SFX"
+	_blip.bus = "Voices"
 	add_child(_blip)
 	_muted = bool(SaveGame.get_value("muted", false))
 	_apply_master_mute()
@@ -359,6 +359,11 @@ func _standin(track: String) -> String:
 		for c: String in [fight, "combat_light", "combat_light_gang"]:
 			if _stream_for(c) != null:
 				return c
+	# Gang arc: a calm gang song already in memory or the cache beats the pastoral farm/house (c13_02-11/15-09).
+	if not GameState.run.is_empty() and not GameState.is_penguins() and not t.begins_with("ending") and t != "credits":
+		for c: String in GANG_STANDINS:
+			if c != track and _stream_for(c) != null:
+				return c
 	if t in ["house", "shop", "shop_gang", "inn", "chapel", "clinic", "hideout", "merkitty_song", "credits"] or t.begins_with("ending"):
 		t = "house"
 	else:
@@ -399,7 +404,9 @@ static var cache_cap := 40 * 1024 * 1024
 const WEB_CACHE_CAP := 16 * 1024 * 1024
 ## Songs heard often, fetched quietly one by one once the first song is in.
 const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
-const PREFETCH_GANG := ["combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
+## Calm gang songs that stand in (when cached) while a gang song downloads.
+const GANG_STANDINS := ["night_gang", "hideout", "shop_gang", "outskirts", "neon", "uptown", "docks"]
+const PREFETCH_GANG := ["night_gang", "combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
 const PREFETCH_PENGUIN := ["combat_light", "danger", "cattopia", "boss_penguin", "beach", "mountain", "combat_elite"]
 ## Before a run exists (the title screen) the arc themes come first.
 const PREFETCH_TITLE := ["arc_penguins", "arc_gangsters"]
@@ -717,23 +724,44 @@ func _trim_cache() -> void:
 
 
 var _prefetching := ""
+## Songs prefetched (or found cached) this session: never fetched ahead twice (c13_16-10).
+var _prefetched := {}
+var _prefetch_bytes := 0
+## Background prefetch fills at most this share of cache_cap, so it never evicts itself.
+const PREFETCH_SHARE := 0.75
+## Fetches started by the prefetcher this session, per song (tests).
+var prefetch_fetches := 0
+var prefetch_count := {}
 
 
 func _prefetch_next() -> void:
 	if _prefetching != "" or not _fetching.is_empty() or _base_url() == "" or _silent():
 		return
-	var list: Array = _queue.duplicate()
+	var asked: Array = _queue.duplicate()
+	var list: Array = asked.duplicate()
 	if GameState.run.is_empty():
 		list.append_array(PREFETCH_TITLE)
 	else:
 		list.append_array(PREFETCH_PENGUIN if GameState.is_penguins() else PREFETCH_GANG)
 	list.append_array(PREFETCH)
 	for t: String in list:
+		if _prefetched.has(t):
+			_queue.erase(t)
+			continue
 		if t in _stream_list() and not _streamed.has(t) and int(_tries.get(t, 0)) < 2:
 			if FileAccess.file_exists(_cache_path(t)):
 				_queue.erase(t)
+				_prefetched[t] = true
+				_prefetch_bytes += int(_stream_size.get(t, 0))
 				continue  # cached from an earlier visit
+			var sz := int(_stream_size.get(t, 0))
+			if not (t in asked) and _prefetch_bytes + sz > int(cache_cap * PREFETCH_SHARE):
+				return  # the background lists stop once the cache share is full
 			_prefetching = t
+			_prefetched[t] = true
+			_prefetch_bytes += sz
+			prefetch_fetches += 1
+			prefetch_count[t] = int(prefetch_count.get(t, 0)) + 1
 			_fetch(t)
 			return
 		_queue.erase(t)
@@ -779,35 +807,166 @@ var _last_sfx := {}
 func sfx(name: String, fallback := "") -> void:
 	# Big moments buzz even with the sound off (Haptics.JINGLES whitelist, C9 P4).
 	Haptics.from_sfx(name)
+	var asked := name
 	if _muted or _sfx.is_empty():
+		_log_sfx(asked, "", false, false, true)
 		return
 	# Gangster arc: money is cash, so coin clinks become bills (Money.SFX).
 	name = Money.sfx_name(name)
+	# Gangster arc: its own take of a cue when one exists (j_<x>_gang, C13 contract).
+	var swapped := false
+	if not GameState.run.is_empty() and not GameState.is_penguins() and not name.ends_with("_gang") and _load_sfx(name + "_gang") != null:
+		name = name + "_gang"
+		swapped = true
 	# The same sound twice within 70 ms is one sound (a burst of pickups mustn't eat every voice).
 	var now := Time.get_ticks_msec()
 	if now - int(_last_sfx.get(name, -1000)) < 70:
+		_log_sfx(asked, name, false, swapped, true)
 		return
 	_last_sfx[name] = now
 	var st := _load_sfx(name)
+	var used_fb := false
 	if st == null and fallback != "":
 		st = _load_sfx(fallback)
+		if st != null:
+			name = fallback  # mix rules follow the PLAYED sound (12-27/14-16)
+			used_fb = true
 	if st == null:
+		_log_sfx(asked, "", fallback != "", swapped, true)
 		return
 	var ln := st.get_length()
 	var jingle := _is_jingle(name)
+	if jingle and ln > 0.8 and not _jingle_ok(name, now):
+		_log_sfx(asked, name, used_fb, swapped, true)
+		return
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name)
+	pick.volume_db = -4.0 + _group_db(name) + Settings.loud_db(name)
+	pick.bus = _bus_for(name)
+	Captions.for_sfx(name)
 	# A little pitch drift so repeated swings and steps don't sound stamped out;
 	# UI clicks, money and musical cues stay in key.
 	pick.pitch_scale = 1.0 if (ln > 0.55 or _no_drift(name)) else randf_range(0.93, 1.07)
 	pick.play()
 	_voice_t[vi] = now
 	_voice_long[vi] = jingle or ln > 1.0
+	_log_sfx(asked, name, used_fb, swapped, false)
 	if jingle and ln > 0.8:
-		# The song dips under a jingle (two pieces of music at once clash).
-		set_duck_layer("jingle", JINGLE_DUCK, 0.12, 0.8, ln)
+		# The song dips under a jingle while it is audible (sfx_meta len_audible), and
+		# not at all when effects are muted (nothing to make room for).
+		var aud := audible_len(name, ln)
+		if not _sfx_bus_muted():
+			set_duck_layer("jingle", JINGLE_DUCK, 0.12, 0.8, aud)
+		_jingle_until = now + maxi(int(aud * 1000.0), JINGLE_GAP_MS)
+		_jingle_name = name
+
+
+# ---- C13 contract: sfx log, jingle arbitration, sfx meta/bus tables ----
+## Last 64 sounds asked: {asked, played, fallback, arc_swap, dropped} (P5/P6 tests).
+var sfx_log: Array = []
+var _jingle_until := 0
+var _jingle_name := ""
+## A second musical sting within this window is dropped unless it outranks the one playing.
+const JINGLE_GAP_MS := 2500
+## Higher wins: achievement > levelup > quest_done > heart > others.
+const JINGLE_RANK := {"ach_unlock": 5, "achievement": 5, "levelup": 4, "quest_done": 3, "heart": 2, "j_heart": 2}
+static var _meta := {}
+static var _buses := {}
+static var _tables_read := false
+
+
+func clear_sfx_log() -> void:
+	sfx_log.clear()
+
+
+func _log_sfx(asked: String, played: String, fb: bool, swap: bool, dropped: bool) -> void:
+	sfx_log.append({"asked": asked, "played": played, "fallback": fb, "arc_swap": swap, "dropped": dropped})
+	if sfx_log.size() > 64:
+		sfx_log.pop_front()
+
+
+static func _jingle_rank(n: String) -> int:
+	var b := n.trim_suffix("_gang")
+	for k: String in JINGLE_RANK:
+		if b == k or b.begins_with(k):
+			return int(JINGLE_RANK[k])
+	return 1
+
+
+## One jingle at a time: while a sting sounds (and at least JINGLE_GAP_MS after it starts), a lower or
+## equal ranked one is dropped; a higher one cuts in.
+func _jingle_ok(n: String, now: int) -> bool:
+	if _jingle_name == "" or now >= _jingle_until:
+		return true
+	return _jingle_rank(n) > _jingle_rank(_jingle_name)
+
+
+static func _read_tables() -> void:
+	if _tables_read:
+		return
+	_tables_read = true
+	for pr: Array in [["res://data/sfx_meta.json", "m"], ["res://data/sfx_buses.json", "b"]]:
+		if FileAccess.file_exists(str(pr[0])):
+			var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(pr[0])))
+			if d is Dictionary:
+				if pr[1] == "m":
+					_meta = d
+				else:
+					_buses = d
+
+
+## Seconds a sound is audible (data/sfx_meta.json len_audible, P3), else its length.
+static func audible_len(n: String, ln: float) -> float:
+	_read_tables()
+	var e: Variant = _meta.get(n, {})
+	if e is Dictionary and (e as Dictionary).has("len_audible"):
+		return minf(ln, float((e as Dictionary)["len_audible"]))
+	return ln
+
+
+## The bus a sound plays on: data/sfx_buses.json (P6) {"groups": {prefix: bus}} or
+## {prefix: bus}; longest matching prefix wins; buses that don't exist fall back to SFX.
+static func _bus_for(n: String) -> String:
+	# C13 integration: one bus table owner (Settings.sfx_bus reads data/sfx_buses.json exact/prefix).
+	var b := Settings.sfx_bus(n)
+	return b if AudioServer.get_bus_index(b) >= 0 else "SFX"
+
+
+static func _sfx_bus_muted() -> bool:
+	var i := AudioServer.get_bus_index("SFX")
+	return i >= 0 and (AudioServer.is_bus_mute(i) or AudioServer.get_bus_volume_db(i) <= -60.0)
+
+
+## C13 resolver (contract section 1): see MusicResolve.pick.
+static func resolve(base: String, ctx := {}) -> String:
+	return MusicResolve.pick(base, ctx)
+
+
+## play(resolve(base)).
+func play_area(base: String) -> void:
+	var t := resolve(base)
+	if t != "":
+		play(t)
+
+
+## A scene mood: plays mood_<name> (arc variant via the resolver), held so DangerMusic
+## leaves it alone; the area song returns when the scene ends (release_mood / next map).
+## Returns the song played ("" when no mood song exists: the area song carries on).
+func mood(name: String) -> String:
+	if name.strip_edges() == "":
+		return ""
+	var b := name if name.begins_with("mood_") else "mood_" + name
+	var t := MusicResolve.pick(b, {"weather": "clear", "phase": "day", "season": "", "stage": 0})
+	if t == "" or not has_track(t):
+		return ""  # missing file: the area song carries on, nothing held
+	play_held(t)
+	return t
+
+
+## End a mood: the hold lets go and the next DangerMusic re-ask brings the area song back.
+func release_mood() -> void:
+	release_hold()
 
 
 ## The first name in the list that has a file plays (C11b chore cues: "hay_toss" until it lands, then "eat").
@@ -825,12 +984,16 @@ func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay :=
 		get_tree().create_timer(delay, false).timeout.connect(func() -> void: sfx_pitched(name, fallback, pitch, db, 0.0))
 		return
 	if _muted or _sfx.is_empty():
+		_log_sfx(name, "", false, false, true)
 		return
 	var st := _load_sfx(name)
+	var fb := false
 	if st == null and fallback != "":
 		st = _load_sfx(fallback)
+		fb = st != null
 	if st == null:
 		return
+	_log_sfx(name, fallback if fb else name, fb, false, false)  # pitched voices show in sfx_log too (P5 test)
 	var now := Time.get_ticks_msec()
 	var key := "%s@%.2f" % [name, pitch]
 	if now - int(_last_sfx.get(key, -1000)) < 70:
@@ -839,7 +1002,8 @@ func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay :=
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name) + db
+	pick.bus = Settings.sfx_bus(name)
+	pick.volume_db = -4.0 + _group_db(name) + db + Settings.loud_db(name)
 	pick.pitch_scale = clampf(pitch, 0.5, 2.0)
 	pick.play()
 	_voice_t[vi] = now
@@ -865,9 +1029,10 @@ func _voice_for() -> AudioStreamPlayer:
 
 
 static func _is_jingle(name: String) -> bool:
-	if name in ["j_buy", "j_confirm"]:
+	var b := name.trim_suffix("_gang")  # gang twins duck and arbitrate like the base jingle
+	if b in ["j_buy", "j_confirm"]:
 		return false
-	return name.begins_with("j_") or name in JINGLE_NAMES
+	return b.begins_with("j_") or b in JINGLE_NAMES
 
 
 static func _no_drift(name: String) -> bool:
@@ -879,7 +1044,7 @@ static func _no_drift(name: String) -> bool:
 
 ## Footstep level, and per ground on top: grass and leaves are a soft swish.
 const STEP_DB := -10.0  # footsteps were ~-41 LUFS, under every bed (c6_06)
-const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0}
+const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0, "carpet": -4.0, "metal": -1.5, "ice": -2.0}
 ## A step may cut the previous one's tail after this long (long gravel/leaf takes
 ## used to swallow every other step).
 const STEP_MIN := 0.18

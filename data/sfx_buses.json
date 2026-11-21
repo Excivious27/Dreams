@@ -1,0 +1,22 @@
+{
+  "_note": "C13 P6: which bus each effect plays on (Settings.sfx_bus). Exact names win, then prefixes; anything else plays on SFX. Voices/UI/Steps send into SFX.",
+  "exact": {
+    "talk_blip": "Voices",
+    "scroll_tick": "UI",
+    "tab": "UI",
+    "nope": "UI",
+    "page": "UI",
+    "keypress": "UI",
+    "equip": "UI",
+    "shop_bell": "UI",
+    "save_done": "UI"
+  },
+  "prefix": {
+    "ui_": "UI",
+    "menu_": "UI",
+    "step_": "Steps",
+    "cv_": "Voices",
+    "baby_": "Voices",
+    "voice_": "Voices"
+  }
+}

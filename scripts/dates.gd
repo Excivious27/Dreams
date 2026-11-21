@@ -137,7 +137,8 @@ static func play(m: GameMap, d: Dictionary) -> void:
 		npc._path.clear()
 		npc.face(m.player.position)
 		m.player.face_toward(npc.position)
-		Music.instance(m.get_tree()).play_held("date_evening" if Music.has_track("date_evening") else m.area_track())
+		var ds := Dialogue.scene_song("date_evening")  # C13 15-14: the gang arc's own date song when it lands
+		Music.instance(m.get_tree()).play_held(ds if ds != "" else m.area_track())
 		m.emote(npc, "heart", 1.2)
 		await m.say(Romance._lines(dd.get("lines", []), id))
 		if not is_instance_valid(m) or not m.is_inside_tree():
