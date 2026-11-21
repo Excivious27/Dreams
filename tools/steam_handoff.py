@@ -158,9 +158,9 @@ def check():
         errs.append("docs/STEAM.md is stale: run python3 tools/steam_handoff.py --write (never edit it by hand)")
     blob = json.dumps(h)
     for ref in set(re.findall(r"((?:docs|steam|tools|data|web|scripts)/[A-Za-z0-9_./-]+\.(?:md|txt|json|in|py|gd|png|yml))", blob)):
-        # store drafts are written by other S1 packages: warn until merged; repo tools must exist now
+        # every referenced file must exist (the S1 store drafts are merged since the integration)
         p = os.path.join(ROOT, ref)
-        if not os.path.exists(p) and not ref.startswith(("docs/steam-store/", "docs/steam/", "data/")):
+        if not os.path.exists(p):
             errs.append("handoff.json references missing %s" % ref)
     for part, ss in steps(h):
         if not ss:

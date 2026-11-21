@@ -28,13 +28,13 @@
    {"root": "LinuxXdgDataHome", "subdir": "godot/app_userdata/Dreams", "pattern": "save.bak.json", "os": "Linux", "recursive": false}
   ],
   "never_sync": ["save.tmp.json", "save.bad*.json", "mcache/", "logs/"],
-  "note": "Paths are Godot's default user:// for config/name 'Dreams' (no custom user dir). If config/name ever changes before release, pin application/config/use_custom_user_dir first (s1_17-03) and re-render these rows. P2's docs/steam/backends.md has the measured save sizes."
+  "note": "Paths are Godot's default user:// for config/name 'Dreams' (no custom user dir). If config/name ever changes before release, pin application/config/use_custom_user_dir first (s1_17-03) and re-render these rows. P2's docs/steam/p2.md has the measured save sizes."
  },
  "store": {
-  "Short description": "docs/steam-store/short.txt",
-  "About This Game": "docs/steam-store/long.md",
+  "Short description": "docs/steam-store/short-description.md",
+  "About This Game": "docs/steam-store/long-description.md",
   "Tags": "docs/steam-store/tags.md",
-  "System requirements": "docs/steam-store/sysreq.md",
+  "System requirements": "docs/steam-store/system-requirements.md",
   "Content survey + IARC": "docs/steam-store/ratings.md",
   "Generative AI disclosure": "docs/steam-store/ai-disclosure.md",
   "Privacy policy (text for the Pages URL)": "docs/steam-store/privacy.md",
