@@ -103,7 +103,7 @@ RIDES5 = {"type": "rides", "n": 5}
 st("farm_hedge_gap", "both", "farm", [70, 28], "hop", name="Hedge Gap", prop="c14p4_hedge_gap")
 st("meadow_hedge_gap", "both", "meadow", [1, 14], "hop", name="Hedge Gap", prop="c14p4_hedge_gap")
 ln("t1_farm_meadow", "farm_hedge_gap", "meadow_hedge_gap", 1, "hop", {"type": "skill", "id": "foraging", "n": 3}, minutes=5)
-st("town_cliff_stairs", "penguins", "town", [40, 94], "stairs", build=money(500, plank=20, stone=30))
+st("town_cliff_stairs", "penguins", "town", [47, 92], "stairs", build=money(500, plank=20, stone=30))
 st("beach_cliff_stairs", "penguins", "beach", [30, 1], "stairs")
 ln("t1_town_beach", "town_cliff_stairs", "beach_cliff_stairs", 1, "stairs", {"type": "project"}, minutes=5)
 st("forest_log_bridge", "both", "forest", [2, 30], "ladder", name="Log Bridge", prop="c14p4_log_bridge", build=money(0, wood=20))
@@ -111,7 +111,7 @@ st("lake_log_bridge", "both", "lake", [46, 20], "ladder", name="Log Bridge", pro
 ln("t1_forest_lake", "forest_log_bridge", "lake_log_bridge", 1, "ladder", {"type": "project"}, minutes=5)
 st("mountain_zip", "penguins", "mountain", [30, 4], "zip", build=money(2000, rope=4, iron_bar=10))
 st("farm_zip", "penguins", "farm", [50, 3], "zip")
-ln("t1_mountain_farm", "mountain_zip", "farm_zip", 1, "zip", {"type": "project"}, minutes=3, both=False)
+ln("t1_mountain_farm", "mountain_zip", "farm_zip", 1, "zip", {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 1}]}, minutes=3, both=False)
 # Gangster T1: the Hideout's back door, fire escapes.
 st("hideout_backdoor", "gangsters", "hideout", [3, 10], "ladder", name="Back Door", prop="c14p4_ladder")
 st("town_alley", "gangsters", "town", [80, 60], "ladder", name="Alley Door", prop="c14p4_ladder")
@@ -208,9 +208,9 @@ for sc, cell in MASTS:
     st("pad_" + sc, "gangsters", sc, [cell[0] + 2, cell[1]], "plane", name="Charter Pad", build=money(1500, plank=20, iron_bar=8, gear=4))
 for i, (a, _) in enumerate(MASTS):
     for b, _ in MASTS[i + 1:]:
-        ln("t3_mast_%s_%s" % (a, b), "mast_" + a, "mast_" + b, 3, "mast", {"type": "project"}, money(60),
+        ln("t3_mast_%s_%s" % (a, b), "mast_" + a, "mast_" + b, 3, "mast", {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 2}]}, money(60),
            {"type": "skill", "id": "foraging", "n": 8}, minutes=30)
-        ln("t3_pad_%s_%s" % (a, b), "pad_" + a, "pad_" + b, 3, "plane", {"type": "project"}, money(60),
+        ln("t3_pad_%s_%s" % (a, b), "pad_" + a, "pad_" + b, 3, "plane", {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 2}]}, money(60),
            {"type": "skill", "id": "foraging", "n": 8}, minutes=20)
 
 # ---- T5 instant hops: Star Crystal waystones / the Hideout dispatch board ---------------

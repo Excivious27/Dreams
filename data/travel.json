@@ -223,7 +223,16 @@
    ],
    "tier": 1,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 1,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2414,7 +2423,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2449,7 +2467,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2484,7 +2511,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2519,7 +2555,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2554,7 +2599,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2589,7 +2643,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2624,7 +2687,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2659,7 +2731,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2694,7 +2775,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2729,7 +2819,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2764,7 +2863,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -2799,7 +2907,16 @@
    ],
    "tier": 3,
    "unlock": {
-    "type": "project"
+    "of": [
+     {
+      "type": "project"
+     },
+     {
+      "n": 2,
+      "type": "tier"
+     }
+    ],
+    "type": "all"
    }
   },
   {
@@ -3216,8 +3333,8 @@
     "money": 500
    },
    "cell": [
-    40,
-    94
+    47,
+    92
    ],
    "id": "town_cliff_stairs",
    "keeper": "",

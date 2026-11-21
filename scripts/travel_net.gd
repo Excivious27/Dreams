@@ -575,6 +575,27 @@ static func map_layer(m: Control, font: Font, pins: Dictionary, org: Vector2, sz
 			m.draw_rect(Rect2(p - Vector2(2, 2), Vector2(4, 4)), Color(0.4, 0.85, 1.0) if open and is_built(sid) else Color(0.55, 0.55, 0.55))
 
 
+## A region map tab (MegaMap.draw_region hook): a small station badge beside every
+## area pin with a station you know of (blue = built and running, grey = not yet).
+static func region_layer(m: Control, pins: Dictionary) -> void:
+	if GameState.run.is_empty() or data().is_empty():
+		return
+	for aid: String in pins:
+		var known := false
+		var open := false
+		for s in stations_at(aid):
+			for l in links_from(str(s["id"])):
+				if is_known(str(l["id"])):
+					known = true
+					if is_unlocked(str(l["id"])):
+						open = true
+		if not known:
+			continue
+		var p: Vector2 = (pins[aid] as Vector2) + Vector2(-10, -12)
+		m.draw_rect(Rect2(p - Vector2(3, 3), Vector2(6, 6)), Color(0.12, 0.08, 0.05))
+		m.draw_rect(Rect2(p - Vector2(2, 2), Vector2(4, 4)), Color(0.4, 0.85, 1.0) if open else Color(0.55, 0.55, 0.55))
+
+
 ## How many stations/lines of the arc are open (Map tab line, reports).
 static func counts() -> Dictionary:
 	var n_open := 0

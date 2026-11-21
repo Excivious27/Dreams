@@ -112,6 +112,20 @@ func _run() -> void:
 	await process_frame
 	Input.action_release("b")
 	check(e2[0], "a seen ride skips on B")
+	# Map layers draw (Valley painting + a region tab) without errors.
+	var cv := Control.new()
+	cv.size = Vector2(240, 190)
+	var drew := [0]
+	cv.draw.connect(func() -> void:
+		TravelNet.map_layer(cv, ThemeDB.fallback_font, {"town": Vector2(0.52, 0.70), "beach": Vector2(0.40, 0.90)}, Vector2(0, 0), Vector2(240, 190))
+		TravelNet.region_layer(cv, {"frost_hearthhold": Vector2(100, 100)})
+		drew[0] += 1)
+	root.add_child(cv)
+	cv.queue_redraw()
+	for i in 3:
+		await process_frame
+	check(drew[0] > 0, "map layers drew")
+	cv.queue_free()
 	# A real map: the built stairs' desk is placed in town (a mega_gate thing with a station key).
 	GameMap.next_spawn = Vector2.ZERO
 	GameState.run["scene"] = "town"
