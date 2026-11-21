@@ -1,0 +1,15 @@
+CONDUCT CI PASS  ec534a2aa0  (ci/relay-f5370442, run 44844892984)
+
+subset run: shards [2, 3, 5], bots off, playtest on
+check shards (3/3):
+  shard 2: PASS  265s
+  shard 3: PASS  347s
+  shard 5: PASS  235s
+playtest: PASS  65s  21 screenshots (results playtest/shots/)
+RELAY: ok, 97ms (live code pre-/version)
+NET E2E: ok, 17s
+  relay note: server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)
+
+longest job: 347s
+slowest check steps: import 119.7s; import 94.4s; import 71.8s; commons_test 40.6s; touch_ui_test 40.2s; crop_test 27.1s; music: every map has a song; web streaming works offline 26.3s; held-tool rules: right tool acts, wrong tool hints 24.3s
+distinct errors/fails/warns:
