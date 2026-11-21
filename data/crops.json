@@ -1393,7 +1393,7 @@
   "top": "fff0a0",
   "season": "any",
   "tier": 5,
-  "regrow": 6,
+  "regrow": 8,
   "tree": true,
   "family": "tree"
  },
@@ -1453,7 +1453,7 @@
   "top": "ffd8f0",
   "season": "any",
   "tier": 5,
-  "regrow": 6,
+  "regrow": 8,
   "tree": true,
   "family": "tree"
  },
@@ -1693,7 +1693,7 @@
   "family": "tree",
   "art": "apple",
   "c15": true,
-  "regrow": 6,
+  "regrow": 7,
   "tree": true
  }
 }

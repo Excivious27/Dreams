@@ -171,14 +171,15 @@
    [
     "drip_crawler",
     "lantern_moth",
-    "rust_knight",
+    "hill_wolf",
     "golem"
    ],
    [
     "shard_spider",
     "prism_wisp",
     "geode_golem",
-    "knight"
+    "knight",
+    "rust_knight"
    ],
    [
     "ash_hound",

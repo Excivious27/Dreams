@@ -61,6 +61,8 @@ static func gate(id: String) -> String:
 			return tbl
 	if ul.has("progress") and GameState.progress_tier() < int(ul["progress"]):
 		return "story chapter %d first" % (int(ul["progress"]) + 1)
+	if ul.has("year") and GameState.year() < int(ul["year"]):  # C16a P5 (c16a_10-02): top tiers wait for year 2
+		return "opens in year %d" % int(ul["year"])
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
 		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
 	if ul.has("flag") and not GameState.run["flags"].has(str(ul["flag"])):

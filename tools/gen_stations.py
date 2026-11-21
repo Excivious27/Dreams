@@ -107,7 +107,7 @@ for id, name, typ, val, tier, extra in [
  ('heart_spark', 'Heart Spark', 'consumable', 420, 3, {'mana': 60, 'heal': 6, 'desc': 'A rainbow heart in a bottle. Mana and health at once.'})]:
     extra['arc'] = 'penguins'; item(id, name, typ, val, tier, **extra)
 I['litter_box'].update({'radius': 56, 'stun': 3.0})
-for id, name, dmg, val, tier in [('icicle_blade', 'Icicle Blade', 3, 150, 1), ('fishbone_sabre', 'Fish-Bone Sabre', 4, 320, 2), ('aurora_blade', 'Aurora Blade', 6, 900, 2), ('prism_lance', 'Prism Lance', 8, 2200, 3), ('starheart_blade', 'Starheart Blade', 11, 5200, 4)]:
+for id, name, dmg, val, tier in [('icicle_blade', 'Icicle Blade', 3, 150, 1), ('fishbone_sabre', 'Fish-Bone Sabre', 5, 320, 2), ('aurora_blade', 'Aurora Blade', 5, 900, 2), ('prism_lance', 'Prism Lance', 7, 2200, 3), ('starheart_blade', 'Starheart Blade', 11, 5200, 4)]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='penguins')
 for id, name, slot, stats, val, tier in [
  ('snow_goggles', 'Snow Goggles', 'head', {'defense': 1, 'luck': 1}, 140, 1), ('aurora_hood', 'Aurora Hood', 'head', {'luck': 2, 'speed': 1}, 520, 3),
@@ -116,12 +116,12 @@ for id, name, slot, stats, val, tier in [
  ('courage_scarf', 'Scarf of Courage', 'back', {'defense': 2, 'speed': 1}, 700, 3), ('flipper_belt', 'Flipper Belt', 'belt', {'speed': 1, 'damage': 1}, 480, 3), ('bell_collar', 'Bell Collar', 'charm', {'luck': 2}, 800, 3)]:
     item(id, name, 'equip', val, tier, slot=slot, stats=stats, arc='penguins')
 # Gangster weapons (melee; "weapon" makes them swing like a sword) and street armor.
-for id, name, dmg, val, tier in [('brass_knuckles', 'Brass Knuckles', 3, 150, 1), ('crowbar', 'Crowbar', 4, 320, 2), ('lucky_bat', 'Lucky Bat', 6, 900, 2), ('chrome_blade', 'Chrome Blade', 8, 2200, 3), ('neon_cleaver', 'Neon Cleaver', 11, 5200, 4)]:
+for id, name, dmg, val, tier in [('brass_knuckles', 'Brass Knuckles', 3, 150, 1), ('crowbar', 'Crowbar', 5, 320, 2), ('lucky_bat', 'Lucky Bat', 5, 900, 2), ('chrome_blade', 'Chrome Blade', 7, 2200, 3), ('neon_cleaver', 'Neon Cleaver', 11, 5200, 4)]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters')
 # Guns (gangster arc): ranged, one round a shot; out of rounds they're a clumsy club. Cartoon puffs, no blood.
 item('rounds', 'Rounds', 'craft', 3, 1, arc='gangsters', desc='One per shot.')
 for id, name, dmg, val, tier, extra in [('six_shooter', 'Six-Shooter', 4, 700, 2, {'range': 110, 'cd': 2.0}), ('scattergun', 'Scattergun', 6, 2000, 3, {'range': 64, 'spread': True, 'cd': 1.6}),
-                                         ('tommy_gun', 'Tommy Gun', 3, 2600, 3, {'range': 120, 'cd': 0.6}), ('gold_revolver', 'Gold Revolver', 10, 5600, 4, {'range': 140, 'cd': 2.5})]:
+                                         ('tommy_gun', 'Tommy Gun', 2, 2600, 3, {'range': 120, 'cd': 0.6}), ('gold_revolver', 'Gold Revolver', 12, 5600, 4, {'range': 140, 'cd': 1.6})]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters', **extra)
 for id, name, slot, stats, val, tier in [
  ('fedora', 'Fedora', 'head', {'defense': 1, 'luck': 1}, 60, 1), ('shades', 'Shades', 'head', {'luck': 2, 'speed': 1}, 520, 3),
@@ -151,7 +151,7 @@ for k, d in ARC_DESC.items():
         I[k]['desc'] = d
 
 # ---- stations ------------------------------------------------------------------
-SK = [1, 3, 5, 7]
+SK = [1, 4, 9, 16]  # C16a P5 (c16a_09-17, c16a_10-12): was [1, 3, 5, 7] (all maxed in the first weeks)
 def art(*names):
     for n in names:
         if n in M.get('stations', {}): return ('stations', n)
@@ -501,7 +501,7 @@ books['tannery'] = [rc('leather', 'Leather', {'pelt': 1}, tier=1), rc('leather_s
 books['kitchen'] = R['kitchen'] if 'kitchen' in R else []
 books['mill'] = R['mill']
 books['press'] = [rc('cheese', 'Cheese', {'milk': 1}), rc('butter', 'Butter', {'milk': 1}), rc('jam', 'Jam', {'#berry': 3}), rc('cooking_oil', 'Cooking Oil', {'sunflower': 2}), rc('sesame_oil', 'Cooking Oil (sesame)', {'sesame': 2}, 'cooking_oil', 2, 2),
- rc('pickles', 'Pickles', {'#veg': 2, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fine Wine (from fruit wine)', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
+ rc('pickles', 'Pickles', {'#veg': 4, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fine Wine (from fruit wine)', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
 books['kiln'] = [rc('brick', 'Brick', {'clay': 1}, n=2), rc('stone_brick', 'Brick (from stone)', {'stone': 4, 'coal': 1}, 'brick', 1, 2), rc('clay_pot', 'Clay Pot', {'clay': 2}), rc('glass', 'Glass', {'sand': 3, 'coal': 1}),
  rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Glass Lens', {'glass': 2, 'sand': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
 books['mayo'] = [rc('mayonnaise', 'Mayonnaise', {'egg': 1}), rc('duck_mayonnaise', 'Duck Mayonnaise', {'duck_egg': 1}, tier=2)]
@@ -525,19 +525,19 @@ books['rocket'] = [rc('fuel_cell', 'Fuel Cell', {'lamp_oil': 4, 'glass': 2, 'coa
 books['print'] = [rc('blank_stock', 'Blank Stock', {'fiber': 8}, n=4), rc('ink', 'Printing Ink', {'coal': 1, 'sap': 1}, n=2), rc('bills_crude', 'Crude Bills', {'blank_stock': 2, 'ink': 1}, n=2),
  rc('bills_passable', 'Passable Bills', {'blank_stock': 2, 'ink': 2, 'linen': 1}, tier=2, n=2), rc('forged_permit', 'Forged Permit', {'blank_stock': 3, 'ink': 2, 'old_coin': 1}, tier=2),
  rc('bills_fine', 'Fine Bills', {'blank_stock': 2, 'ink': 2, 'fine_fabric': 1}, tier=3, n=2), rc('bills_perfect', 'Perfect Bills', {'blank_stock': 2, 'ink': 3, 'moonweave': 1, 'gold_bar': 1}, tier=5, n=4)]
-books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('rounds', 'Rounds', {'copper_bar': 1, 'coal': 1}, n=30), rc('six_shooter', 'Six-Shooter', {'iron_bar': 4, 'gear': 2, 'hardwood_plank': 1}, tier=2, tool=True), rc('scattergun', 'Scattergun', {'steel_bar': 4, 'spring': 3, 'hardwood_plank': 2}, tier=3, tool=True), rc('tommy_gun', 'Tommy Gun', {'steel_bar': 5, 'spring': 6, 'gear': 6}, tier=3, tool=True), rc('gold_revolver', 'Gold Revolver', {'gold_bar': 4, 'dark_bar': 2, 'spring': 4}, tier=4, tool=True), rc('fedora', 'Fedora', {'fiber': 6, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
- rc('lucky_bat', 'Lucky Bat', {'hardwood_plank': 3, 'nails': 10, 'horseshoe': 1}, tier=2, tool=True), rc('pinstripe_suit', 'Pinstripe Suit', {'cotton_cloth': 4, 'linen': 2}, tier=2),
+books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('rounds', 'Rounds', {'copper_bar': 1, 'coal': 1}, n=40), rc('six_shooter', 'Six-Shooter', {'iron_bar': 4, 'gear': 2, 'hardwood_plank': 1}, tier=2, tool=True), rc('scattergun', 'Scattergun', {'steel_bar': 4, 'spring': 3, 'hardwood_plank': 2}, tier=3, tool=True), rc('tommy_gun', 'Tommy Gun', {'steel_bar': 5, 'spring': 6, 'gear': 6}, tier=3, tool=True), rc('gold_revolver', 'Gold Revolver', {'gold_bar': 4, 'dark_bar': 2, 'spring': 4}, tier=4, tool=True), rc('fedora', 'Fedora', {'fiber': 6, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
+ rc('lucky_bat', 'Lucky Bat', {'hardwood_plank': 3, 'nails': 10, 'horseshoe': 1, 'iron_bar': 1}, tier=2, tool=True), rc('pinstripe_suit', 'Pinstripe Suit', {'cotton_cloth': 4, 'linen': 2}, tier=2),
  rc('steel_toes', 'Steel-Toe Shoes', {'leather': 2, 'iron_bar': 1}, tier=2), rc('knuckle_gloves', 'Knuckle Gloves', {'leather': 2, 'copper_bar': 2}, tier=2),
- rc('chrome_blade', 'Chrome Blade', {'steel_bar': 5, 'plating': 1, 'fine_leather': 1}, tier=3, tool=True), rc('padded_vest', 'Padded Vest', {'fine_leather': 3, 'cotton_cloth': 4, 'plating': 1}, tier=3),
+ rc('chrome_blade', 'Chrome Blade', {'steel_bar': 5, 'plating': 1, 'fine_leather': 1}, tier=3, tool=True, skill=['combat', 5]), rc('padded_vest', 'Padded Vest', {'fine_leather': 3, 'cotton_cloth': 4, 'plating': 1}, tier=3),
  rc('trench_coat', 'Trench Coat', {'fine_fabric': 3, 'fine_leather': 1}, tier=3), rc('tool_belt', "Driver's Belt", {'fine_leather': 2, 'gear': 2}, tier=3), rc('shades', 'Shades', {'crystal_glass': 1, 'silver_bar': 1}, tier=3),
- rc('gold_chain', 'Gold Chain', {'gold_bar': 2}, tier=3), rc('neon_cleaver', 'Neon Cleaver', {'dark_bar': 4, 'crystal_battery': 1, 'plating': 2}, tier=4, tool=True),
+ rc('gold_chain', 'Gold Chain', {'gold_bar': 2}, tier=3), rc('neon_cleaver', 'Neon Cleaver', {'dark_bar': 4, 'crystal_battery': 1, 'plating': 2}, tier=4, tool=True, skill=['combat', 8]),
  rc('armored_suit', 'Armored Suit', {'pinstripe_suit': 1, 'plating': 4, 'moonweave': 1}, tier=4)]
 books['shaper'] = [rc('icicle_blade', 'Icicle Blade', {'shard': 3, 'copper_bar': 1}, tool=True), rc('snow_goggles', 'Snow Goggles', {'glass': 2, 'leather': 1}), rc('fishbone_sabre', 'Fish-Bone Sabre', {'iron_bar': 2, 'bone': 6}, tier=2, tool=True),
  rc('aurora_blade', 'Aurora Blade', {'iron_bar': 3, 'crystal_refined': 2, 'light_mote': 2}, tier=2, tool=True), rc('puffy_parka', 'Puffy Parka', {'cotton_cloth': 4, 'yarn': 3}, tier=2),
  rc('ice_cleats', 'Ice Cleats', {'leather': 2, 'iron_bar': 1}, tier=2), rc('mitten_paws', 'Mitten Paws', {'yarn': 4, 'leather': 1}, tier=2),
- rc('prism_lance', 'Prism Lance', {'steel_bar': 4, 'crystal_glass': 2, 'fine_leather': 1}, tier=3, tool=True), rc('crystal_parka', 'Crystal Parka', {'puffy_parka': 1, 'crystal_refined': 4, 'plating': 1}, tier=3),
+ rc('prism_lance', 'Prism Lance', {'steel_bar': 4, 'crystal_glass': 2, 'fine_leather': 1}, tier=3, tool=True, skill=['combat', 5]), rc('crystal_parka', 'Crystal Parka', {'puffy_parka': 1, 'crystal_refined': 4, 'plating': 1}, tier=3),
  rc('courage_scarf', 'Scarf of Courage', {'fine_fabric': 3, 'yarn': 4}, tier=3), rc('flipper_belt', 'Flipper Belt', {'fine_leather': 2, 'gear': 2}, tier=3), rc('aurora_hood', 'Aurora Hood', {'fine_fabric': 2, 'crystal_glass': 1}, tier=3),
- rc('bell_collar', 'Bell Collar', {'gold_bar': 2}, tier=3), rc('starheart_blade', 'Starheart Blade', {'dark_bar': 3, 'crystal_battery': 2, 'star_dust': 2}, tier=4, tool=True),
+ rc('bell_collar', 'Bell Collar', {'gold_bar': 2}, tier=3), rc('starheart_blade', 'Starheart Blade', {'dark_bar': 3, 'crystal_battery': 2, 'star_dust': 2}, tier=4, tool=True, skill=['combat', 8]),
  rc('starlight_mantle', 'Starlight Mantle', {'crystal_parka': 1, 'moonweave': 2, 'crystal_battery': 1}, tier=4)]
 books['litter'] = [rc('litter_box', 'Litter Box', {'sand': 4, 'clay': 1}, n=2), rc('tuna_treat', 'Tuna Treat', {'minnow': 2}), rc('scented_litter', 'Scented Litter Box', {'litter_box': 1, '#herb': 1}, tier=2),
  rc('paw_lantern', 'Paw Lantern', {'glass': 1, 'light_mote': 1, 'crystal_bloom': 1}, tier=2), rc('mega_litter', 'Mega Litter Box', {'scented_litter': 2, 'clay_pot': 1}, tier=3), rc('heart_spark', 'Heart Spark', {'paw_lantern': 1, 'crystal_refined': 1, 'starflower': 1}, tier=3)]
@@ -770,6 +770,97 @@ for bk2 in ('anvil', 'tannery', 'armory', 'shaper'):
                 want = max(int(int(I[base].get('value', 0)) * 1.08), int(I[base].get('value', 0)) + 1)
                 if int(I[r['give']].get('value', 0)) < want:
                     econ_log.append('%s %s -> %d (temper)' % (r['give'], I[r['give']].get('value'), want)); I[r['give']]['value'] = want
+# ---- C16a P5: gear ladders, station gates and gang words ------------------------------------
+# c16a_07-04/05: one damage per weapon tier for every source, both arcs (T1 3, T2 5, T3 7, T4 10, arc signature 11);
+# the smith's swords are penguin-arc (the gang smith sells the crowbar line, shops.gd).
+for k, dmg, tier, v in (('iron_sword', 5, 2, 320), ('steel_sword', 7, 3, 800), ('crystal_sword', 10, 4, 2400)):
+    I[k].update({'damage': dmg, 'tier': tier, 'value': max(v, int(I[k].get('value', 0))), 'arc': 'penguins',
+                 'rarity': ['common', 'common', 'uncommon', 'rare', 'epic', 'legendary'][tier]})
+# c16a_07-06: armour defence per metal 1..8, steel is a tier-3 set, values rise with every metal.
+METALS = ['leather', 'copper', 'iron', 'steel', 'silver', 'gold', 'crystal', 'moon']
+for mi, m in enumerate(METALS):
+    for sl in SLOTS:
+        for k, add in (('%s_%s' % (m, sl), 0), ('%s_%s_plus' % (m, sl), 1)):
+            it = I.get(k)
+            if not it: continue
+            st = it.get('stats', {})
+            if set(st) == {'defense'}:
+                it['stats'] = {'defense': mi + 1 + add}
+            if m == 'steel': it['tier'] = 3
+for sl in SLOTS:
+    prev = 0
+    for m in METALS:
+        k = '%s_%s' % (m, sl)
+        if k not in I: continue
+        want = max(int(I[k].get('value', 0)), int(prev * 1.15) + 1)
+        if want != int(I[k].get('value', 0)): econ_log.append('%s %s -> %d (armour ladder)' % (k, I[k].get('value'), want)); I[k]['value'] = want
+        prev = want
+        kp = k + '_plus'
+        if kp in I:
+            I[kp]['value'] = max(int(I[kp].get('value', 0)), int(want * 1.08) + 1)
+for k, twin in (('iron_mail', 'iron_chest'), ('crystal_plate', 'crystal_chest')):
+    if k in I and twin in I:
+        I[k]['stats'] = dict(I[k].get('stats', {}), defense=I[twin]['stats'].get('defense', 0))
+# c16a_10-01: tier-1 stations open over season 1, not all on day 1 (day 1: workbench, cooking pot, furnace, keg).
+T1_GATE = {'anvil': {'skill': ['mining', 2]}, 'sawmill': {'skill': ['building', 2]}, 'mayo': {'skill': ['ranching', 2]},
+           'extractor': {'skill': ['ranching', 3]}, 'resonator': {'progress': 1}, 'armory': {'skill': ['combat', 2]},
+           'shaper': {'skill': ['combat', 2]}, 'soda': {'skill': ['bartering', 2]}, 'print_shop': {'skill': ['bartering', 2]},
+           'gene_splicer': {'progress': 1, 'skill': ['ranching', 4]}, 'laundromat': {'progress': 1}, 'training': {'progress': 1}}
+for sid, st in B.items():
+    if not isinstance(st, dict) or st.get('thing') != 'station' or not st.get('tiers'): continue
+    t1 = st['tiers'][0]
+    if sid in T1_GATE:
+        t1['unlock'] = dict(t1.get('unlock', {}), **T1_GATE[sid])
+    # ready-made tier 1 costs 1.5x: buying is a choice, not a skip
+    base = int(t1.get('price_base', t1['price'])); t1['price_base'] = base  # idempotent for stations kept across runs
+    t1['price'] = int(round(base * 1.5 / 10.0)) * 10
+    # c16a_10-02 / c16a_09-17: the top tier of a 4-tier station waits for year 2
+    if len(st['tiers']) >= 4:
+        st['tiers'][3].setdefault('unlock', {})['year'] = 2
+# c16a_09-02 / c16a_10-06: every tier-2+ kitchen dish gets a role (a buff by theme, bigger and longer by tier);
+# authored buffs (harvest_cobbler, campfire goods) stay. Kinds the game reads: luck, defense, speed, warm.
+BUFF_TIER = {2: (1, 180), 3: (2, 300), 4: (2, 420), 5: (3, 600)}
+def _dish_kind(k, name):
+    t = (k + ' ' + name).lower()
+    if any(w in t for w in ('stew', 'soup', 'chili', 'roast', 'beef', 'omelette', 'risotto', 'pasta', 'rice')): return 'defense'
+    if any(w in t for w in ('sorbet', 'salad', 'smoothie', 'greens', 'stir', 'fizz', 'tea')): return 'speed'
+    if any(w in t for w in ('frost', 'snow', 'cocoa', 'chestnut', 'citrus')): return 'warm'
+    return 'luck'
+for r in books.get('kitchen', []):
+    it = I.get(r['give'])
+    if not it or it.get('type') != 'food': continue
+    t = int(r.get('tier', 1))
+    if it.get('buff') and not it.get('buff_auto'): continue
+    if t < 2:
+        if it.get('buff_auto'): it.pop('buff', None); it.pop('buff_auto', None)
+        continue
+    amt, mins = BUFF_TIER[min(5, t)]
+    it['buff'] = {'kind': _dish_kind(r['give'], it.get('name', '')), 'minutes': mins, 'amount': amt}
+    it['buff_auto'] = True
+# c16a_06-09: the top farm and ranch tiers wait for year 2 (Builds.gate reads unlock.year).
+YEAR2_TIERS = {'Grand Barn', 'Grand Enclosure', 'Grand Aviary', 'Grand Terrarium', 'Star Dome'}
+for bid, bd in B.items():
+    if isinstance(bd, dict):
+        for t in bd.get('tiers', []):
+            if t.get('name') in YEAR2_TIERS:
+                t.setdefault('unlock', {})['year'] = 2
+for bk, b in books.items():
+    for r in b:
+        if r['id'] == 'sprinkler_iridium': r['year'] = 2
+# c16a_10-03 / c16a_09-05: both-arc stations in the gangster arc's own words (Builds._arc_words reads name_gang).
+GANG_TIER = {'Workbench': 'Work Bench', "Carpenter's Bench": 'Shop Bench', 'Workshop': 'Garage Shop', 'Master Workshop': 'Fab Shop',
+             'Stone Furnace': 'Scrap Furnace', 'Brick Furnace': 'Smelter', 'Starfire Furnace': 'Arc Furnace',
+             'Crystal Resonator': 'Signal Booster', 'Twin Resonator': 'Twin Booster', 'Prism Array': 'Relay Array', 'Star Array': 'Satellite Array',
+             'Cooking Pot': 'Hot Plate', 'Iron Stove': 'Diner Stove', 'Kitchen Range': 'Line Kitchen', 'Grand Range': "Chef's Line",
+             'Moon Loom': 'Power Loom', 'Crystal Kiln': 'Glass Kiln', 'Star Setting Bench': 'Diamond Bench', 'Starforge': 'Arc Forge',
+             'Bubbling Pot': 'Chem Pot', 'Cauldron': 'Chem Lab', 'Arcane Cauldron': 'Lab Bench', 'Starfire Cauldron': 'Clean Lab', 'Sky Dock': 'Air Dock'}
+GANG_LABEL = {'resonator': 'Signal Booster', 'kitchen': 'Hot Plate', 'cauldron': 'Chem Lab'}
+for sid, st in B.items():
+    if not isinstance(st, dict) or st.get('thing') != 'station' or st.get('arc'): continue
+    for t in st.get('tiers', []):
+        if t['name'] in GANG_TIER: t['name_gang'] = GANG_TIER[t['name']]
+    if sid in GANG_LABEL: st['label_gang'] = GANG_LABEL[sid]
+
 # Station cards don't promise recipes a tier doesn't add.
 for sid, st in B.items():
     if not isinstance(st, dict) or 'station' not in st or st['station'].get('book') == 'keg': continue

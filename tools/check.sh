@@ -1420,3 +1420,10 @@ fi
 
 echo "== C16a P6 chore icons (fish, mine) =="
 python3 tools/slice_c16ap6_chores.py check || { echo "C16a P6 chore icons missing"; exit 1; }
+
+echo "== C16a P5: gear ladders, pick swings, station gates and year tiers, deep mine years, winter any-crops, helper watering, decor set arcs =="
+c16ap5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p5_test.gd 2>&1)"
+echo "$c16ap5out" | grep -E "FAIL|SCRIPT ERROR|c16a_p5_test" || true
+if ! echo "$c16ap5out" | grep -q "c16a_p5_test: 0 failures"; then
+  echo "C16a P5 ecosystems test failed"; exit 1
+fi

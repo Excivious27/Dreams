@@ -234,7 +234,8 @@
       9
      ],
      "progress": 3,
-     "hint": "Ranching level 9"
+     "hint": "Ranching level 9",
+     "year": 2
     },
     "name_gang": "Freight Barn"
    }
@@ -427,7 +428,8 @@
      ]
     },
     "desc": "Grinds wheat to flour overnight; sugar beet to sugar.",
-    "price": 940
+    "price": 1410,
+    "price_base": 940
    }
   ],
   "thing": "station",
@@ -567,8 +569,10 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2.",
-    "price": 240,
-    "art_missing": false
+    "price": 360,
+    "art_missing": false,
+    "price_base": 240,
+    "name_gang": "Work Bench"
    },
    {
     "tier": 2,
@@ -588,10 +592,11 @@
      "progress": 1,
      "skill": [
       "building",
-      3
+      4
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Shop Bench"
    },
    {
     "tier": 3,
@@ -611,10 +616,11 @@
      "progress": 2,
      "skill": [
       "building",
-      5
+      9
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Garage Shop"
    },
    {
     "tier": 4,
@@ -634,10 +640,12 @@
      "progress": 3,
      "skill": [
       "building",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Fab Shop"
    }
   ]
  },
@@ -698,8 +706,10 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Ore into bars.",
-    "price": 370,
-    "art_missing": false
+    "price": 560,
+    "art_missing": false,
+    "price_base": 370,
+    "name_gang": "Scrap Furnace"
    },
    {
     "tier": 2,
@@ -719,10 +729,11 @@
      "progress": 1,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Smelter"
    },
    {
     "tier": 3,
@@ -742,7 +753,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -765,10 +776,12 @@
      "progress": 3,
      "skill": [
       "mining",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Arc Furnace"
    }
   ]
  },
@@ -802,8 +815,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Anything you grow, given time.",
-    "price": 450,
-    "art_missing": false
+    "price": 680,
+    "art_missing": false,
+    "price_base": 450
    },
    {
     "tier": 2,
@@ -823,7 +837,7 @@
      "progress": 1,
      "skill": [
       "farming",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -846,7 +860,7 @@
      "progress": 2,
      "skill": [
       "farming",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -869,8 +883,9 @@
      "progress": 3,
      "skill": [
       "farming",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -994,8 +1009,13 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Shards into refined crystal.",
-    "price": 290,
-    "art_missing": false
+    "price": 440,
+    "art_missing": false,
+    "unlock": {
+     "progress": 1
+    },
+    "price_base": 290,
+    "name_gang": "Signal Booster"
    },
    {
     "tier": 2,
@@ -1015,10 +1035,11 @@
      "progress": 1,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Twin Booster"
    },
    {
     "tier": 3,
@@ -1038,10 +1059,11 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Relay Array"
    },
    {
     "tier": 4,
@@ -1061,12 +1083,15 @@
      "progress": 3,
      "skill": [
       "mining",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Satellite Array"
    }
-  ]
+  ],
+  "label_gang": "Signal Booster"
  },
  "scarecrow": {
   "label": "Scarecrow",
@@ -1125,8 +1150,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Planks from logs.",
-    "price": 330,
-    "art_missing": false
+    "price": 500,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "building",
+      2
+     ]
+    },
+    "price_base": 330
    },
    {
     "tier": 2,
@@ -1146,7 +1178,7 @@
      "progress": 1,
      "skill": [
       "building",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1169,7 +1201,7 @@
      "progress": 2,
      "skill": [
       "building",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1193,8 +1225,9 @@
      "progress": 3,
      "skill": [
       "building",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -1230,8 +1263,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nails, tools, copper gear.",
-    "price": 700,
-    "art_missing": false
+    "price": 1050,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "mining",
+      2
+     ]
+    },
+    "price_base": 700
    },
    {
     "tier": 2,
@@ -1251,7 +1291,7 @@
      "progress": 1,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1274,7 +1314,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1297,10 +1337,12 @@
      "progress": 3,
      "skill": [
       "mining",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Arc Forge"
    }
   ]
  },
@@ -1334,8 +1376,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Cloth, yarn, rope.",
-    "price": 300,
-    "art_missing": false
+    "price": 450,
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1355,7 +1398,7 @@
      "progress": 1,
      "skill": [
       "farming",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1378,7 +1421,7 @@
      "progress": 2,
      "skill": [
       "farming",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1401,10 +1444,12 @@
      "progress": 3,
      "skill": [
       "farming",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Power Loom"
    }
   ]
  },
@@ -1438,8 +1483,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Pelts into leather.",
-    "price": 300,
-    "art_missing": false
+    "price": 450,
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1459,7 +1505,7 @@
      "progress": 1,
      "skill": [
       "combat",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1482,7 +1528,7 @@
      "progress": 2,
      "skill": [
       "combat",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1505,8 +1551,9 @@
      "progress": 3,
      "skill": [
       "combat",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -1542,8 +1589,10 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Also sets what the house kitchen can do.",
-    "price": 220,
-    "art_missing": false
+    "price": 330,
+    "art_missing": false,
+    "price_base": 220,
+    "name_gang": "Hot Plate"
    },
    {
     "tier": 2,
@@ -1563,10 +1612,11 @@
      "progress": 1,
      "skill": [
       "farming",
-      3
+      4
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Diner Stove"
    },
    {
     "tier": 3,
@@ -1586,10 +1636,11 @@
      "progress": 2,
      "skill": [
       "farming",
-      5
+      9
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Line Kitchen"
    },
    {
     "tier": 4,
@@ -1609,12 +1660,15 @@
      "progress": 3,
      "skill": [
       "farming",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Chef's Line"
    }
-  ]
+  ],
+  "label_gang": "Hot Plate"
  },
  "press": {
   "label": "Pantry Press",
@@ -1647,8 +1701,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Cheese, butter, jam, oil.",
-    "price": 300,
-    "art_missing": false
+    "price": 450,
+    "art_missing": false,
+    "price_base": 300
    },
    {
     "tier": 2,
@@ -1668,7 +1723,7 @@
      "progress": 1,
      "skill": [
       "farming",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1691,7 +1746,7 @@
      "progress": 2,
      "skill": [
       "farming",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1714,8 +1769,9 @@
      "progress": 3,
      "skill": [
       "farming",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -1751,8 +1807,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Bricks, pots, glass.",
-    "price": 410,
-    "art_missing": false
+    "price": 620,
+    "art_missing": false,
+    "price_base": 410
    },
    {
     "tier": 2,
@@ -1771,7 +1828,7 @@
      "progress": 1,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1794,7 +1851,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1817,10 +1874,12 @@
      "progress": 3,
      "skill": [
       "mining",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Glass Kiln"
    }
   ]
  },
@@ -1854,8 +1913,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Rings and charms.",
-    "price": 620,
-    "art_missing": false
+    "price": 930,
+    "art_missing": false,
+    "price_base": 620
    },
    {
     "tier": 2,
@@ -1875,7 +1935,7 @@
      "progress": 1,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -1898,7 +1958,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -1921,10 +1981,12 @@
      "progress": 3,
      "skill": [
       "mining",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Diamond Bench"
    }
   ]
  },
@@ -1959,8 +2021,10 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Remedies and red potions.",
-    "price": 660,
-    "art_missing": false
+    "price": 990,
+    "art_missing": false,
+    "price_base": 660,
+    "name_gang": "Chem Pot"
    },
    {
     "tier": 2,
@@ -1980,10 +2044,11 @@
      "progress": 1,
      "skill": [
       "foraging",
-      3
+      4
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Chem Lab"
    },
    {
     "tier": 3,
@@ -2003,10 +2068,11 @@
      "progress": 2,
      "skill": [
       "foraging",
-      5
+      9
      ]
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Lab Bench"
    },
    {
     "tier": 4,
@@ -2026,12 +2092,15 @@
      "progress": 3,
      "skill": [
       "foraging",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Clean Lab"
    }
-  ]
+  ],
+  "label_gang": "Chem Lab"
  },
  "garage": {
   "label": "Vehicle Workshop",
@@ -2064,8 +2133,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. A kick scooter.",
-    "price": 1190,
-    "art_missing": false
+    "price": 1780,
+    "art_missing": false,
+    "price_base": 1190
    },
    {
     "tier": 2,
@@ -2085,7 +2155,7 @@
      "progress": 1,
      "skill": [
       "building",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2108,7 +2178,7 @@
      "progress": 2,
      "skill": [
       "building",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2131,10 +2201,12 @@
      "progress": 3,
      "skill": [
       "building",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
-    "art_missing": false
+    "art_missing": false,
+    "name_gang": "Air Dock"
    }
   ]
  },
@@ -2169,7 +2241,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Build rocket parts here.",
-    "price": 4110,
+    "price": 6160,
     "art_missing": false,
     "unlock": {
      "progress": 1,
@@ -2177,7 +2249,8 @@
       "building",
       4
      ]
-    }
+    },
+    "price_base": 4110
    },
    {
     "tier": 2,
@@ -2245,7 +2318,8 @@
      "skill": [
       "building",
       9
-     ]
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2283,8 +2357,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills: hold one and USE it in town to pass it. Risky: a noticed bill raises heat.",
-    "price": 820,
-    "art_missing": false
+    "price": 1230,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "bartering",
+      2
+     ]
+    },
+    "price_base": 820
    },
    {
     "tier": 2,
@@ -2304,7 +2385,7 @@
      "progress": 1,
      "skill": [
       "bartering",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2327,7 +2408,7 @@
      "progress": 2,
      "skill": [
       "bartering",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2350,8 +2431,9 @@
      "progress": 3,
      "skill": [
       "bartering",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2389,8 +2471,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Knuckles, a fedora, rounds.",
-    "price": 1140,
-    "art_missing": false
+    "price": 1710,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "combat",
+      2
+     ]
+    },
+    "price_base": 1140
    },
    {
     "tier": 2,
@@ -2410,7 +2499,7 @@
      "progress": 1,
      "skill": [
       "combat",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2433,7 +2522,7 @@
      "progress": 2,
      "skill": [
       "combat",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2456,8 +2545,9 @@
      "progress": 3,
      "skill": [
       "combat",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2495,8 +2585,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Root beer. A front with a real queue.",
-    "price": 1070,
-    "art_missing": false
+    "price": 1600,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "bartering",
+      2
+     ]
+    },
+    "price_base": 1070
    },
    {
     "tier": 2,
@@ -2516,7 +2613,7 @@
      "progress": 1,
      "skill": [
       "bartering",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2539,7 +2636,7 @@
      "progress": 2,
      "skill": [
       "bartering",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2562,8 +2659,9 @@
      "progress": 3,
      "skill": [
       "bartering",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2596,8 +2694,12 @@
     "permit": 0,
     "days": 0,
     "desc": "Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.",
-    "price": 1130,
-    "art_missing": false
+    "price": 1700,
+    "art_missing": false,
+    "unlock": {
+     "progress": 1
+    },
+    "price_base": 1130
    },
    {
     "tier": 2,
@@ -2617,7 +2719,7 @@
      "progress": 1,
      "skill": [
       "bartering",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2640,7 +2742,7 @@
      "progress": 2,
      "skill": [
       "bartering",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2674,8 +2776,12 @@
     "permit": 0,
     "days": 0,
     "desc": "Spar once a day for combat XP. +10 max health.",
-    "price": 1270,
-    "art_missing": false
+    "price": 1900,
+    "art_missing": false,
+    "unlock": {
+     "progress": 1
+    },
+    "price_base": 1270
    },
    {
     "tier": 2,
@@ -2695,7 +2801,7 @@
      "progress": 1,
      "skill": [
       "combat",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2718,7 +2824,7 @@
      "progress": 2,
      "skill": [
       "combat",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2757,8 +2863,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. An icicle blade, snow goggles.",
-    "price": 1040,
-    "art_missing": false
+    "price": 1560,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "combat",
+      2
+     ]
+    },
+    "price_base": 1040
    },
    {
     "tier": 2,
@@ -2778,7 +2891,7 @@
      "progress": 1,
      "skill": [
       "combat",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2801,7 +2914,7 @@
      "progress": 2,
      "skill": [
       "combat",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2824,8 +2937,9 @@
      "progress": 3,
      "skill": [
       "combat",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2863,8 +2977,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Litter boxes: Cat-topia's secret weapon.",
-    "price": 480,
-    "art_missing": false
+    "price": 720,
+    "art_missing": false,
+    "price_base": 480
    },
    {
     "tier": 2,
@@ -2884,7 +2999,7 @@
      "progress": 1,
      "skill": [
       "foraging",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -2907,7 +3022,7 @@
      "progress": 2,
      "skill": [
       "foraging",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -2930,8 +3045,9 @@
      "progress": 3,
      "skill": [
       "foraging",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -2968,8 +3084,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Marshmallows on a stick.",
-    "price": 290,
-    "art_missing": false
+    "price": 440,
+    "art_missing": false,
+    "price_base": 290
    },
    {
     "tier": 2,
@@ -2989,7 +3106,7 @@
      "progress": 1,
      "skill": [
       "foraging",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3012,7 +3129,7 @@
      "progress": 2,
      "skill": [
       "foraging",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3035,8 +3152,9 @@
      "progress": 3,
      "skill": [
       "foraging",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -3069,12 +3187,13 @@
     "permit": 0,
     "days": 0,
     "desc": "The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.",
-    "price": 570,
+    "price": 860,
     "art_missing": false,
     "unlock": {
      "flag": "merkitty_done",
      "hint": "meet the merkitties at the lake shore"
-    }
+    },
+    "price_base": 570
    },
    {
     "tier": 2,
@@ -3094,7 +3213,7 @@
      "progress": 1,
      "skill": [
       "fishing",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3117,7 +3236,7 @@
      "progress": 2,
      "skill": [
       "fishing",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3151,13 +3270,14 @@
     "permit": 0,
     "days": 0,
     "desc": "The babies you turned back dig for you overnight: stone, coal, copper, a shard.",
-    "price": 1160,
+    "price": 1740,
     "art_missing": false,
     "unlock": {
      "progress": 2,
      "flag": "babies_done",
      "hint": "turn back the crystal babies on the mountain"
-    }
+    },
+    "price_base": 1160
    },
    {
     "tier": 2,
@@ -3177,7 +3297,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3200,7 +3320,7 @@
      "progress": 2,
      "skill": [
       "mining",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3234,13 +3354,14 @@
     "permit": 0,
     "days": 0,
     "desc": "Practise once a day: mana back and magic XP. +5 max mana.",
-    "price": 1500,
+    "price": 2250,
     "art_missing": false,
     "unlock": {
      "progress": 1,
      "flag": "meow_taught",
      "hint": "learn the Meow Pow Wow from Catkins"
-    }
+    },
+    "price_base": 1500
    },
    {
     "tier": 2,
@@ -3260,7 +3381,7 @@
      "progress": 1,
      "skill": [
       "magic",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3283,7 +3404,7 @@
      "progress": 2,
      "skill": [
       "magic",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3322,8 +3443,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
-    "price": 1220,
-    "art_missing": false
+    "price": 1830,
+    "art_missing": false,
+    "price_base": 1220
    },
    {
     "tier": 2,
@@ -3343,7 +3465,7 @@
      "progress": 1,
      "skill": [
       "bartering",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3366,7 +3488,7 @@
      "progress": 2,
      "skill": [
       "bartering",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3389,8 +3511,9 @@
      "progress": 3,
      "skill": [
       "bartering",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -3428,8 +3551,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
-    "price": 1680,
-    "art_missing": false
+    "price": 2520,
+    "art_missing": false,
+    "price_base": 1680
    },
    {
     "tier": 2,
@@ -3449,7 +3573,7 @@
      "progress": 1,
      "skill": [
       "combat",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3472,7 +3596,7 @@
      "progress": 2,
      "skill": [
       "combat",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3495,8 +3619,9 @@
      "progress": 3,
      "skill": [
       "combat",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -3534,8 +3659,9 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
-    "price": 2010,
-    "art_missing": false
+    "price": 3020,
+    "art_missing": false,
+    "price_base": 2010
    },
    {
     "tier": 2,
@@ -3555,7 +3681,7 @@
      "progress": 1,
      "skill": [
       "building",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3578,7 +3704,7 @@
      "progress": 2,
      "skill": [
       "building",
-      5
+      9
      ]
     },
     "art_missing": false
@@ -3601,8 +3727,9 @@
      "progress": 3,
      "skill": [
       "building",
-      7
-     ]
+      16
+     ],
+     "year": 2
     },
     "art_missing": false
    }
@@ -3766,8 +3893,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Eggs into mayonnaise.",
-    "price": 800,
-    "art_missing": false
+    "price": 1200,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "ranching",
+      2
+     ]
+    },
+    "price_base": 800
    },
    {
     "tier": 2,
@@ -3787,7 +3921,7 @@
      "progress": 1,
      "skill": [
       "ranching",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3825,8 +3959,15 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Honeycomb into honey and beeswax.",
-    "price": 910,
-    "art_missing": false
+    "price": 1360,
+    "art_missing": false,
+    "unlock": {
+     "skill": [
+      "ranching",
+      3
+     ]
+    },
+    "price_base": 910
    },
    {
     "tier": 2,
@@ -3846,7 +3987,7 @@
      "progress": 1,
      "skill": [
       "ranching",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -3910,7 +4051,8 @@
       8
      ],
      "progress": 2,
-     "hint": "Ranching level 8"
+     "hint": "Ranching level 8",
+     "year": 2
     },
     "name_gang": "Big Exotics Yard",
     "cell": [
@@ -3979,7 +4121,8 @@
       7
      ],
      "progress": 2,
-     "hint": "Ranching level 7"
+     "hint": "Ranching level 7",
+     "year": 2
     },
     "name_gang": "Big Drone Loft",
     "cell": [
@@ -4048,7 +4191,8 @@
       7
      ],
      "progress": 2,
-     "hint": "Ranching level 7"
+     "hint": "Ranching level 7",
+     "year": 2
     },
     "name_gang": "Big Grow Tank",
     "cell": [
@@ -4172,7 +4316,8 @@
       "ranching",
       7
      ],
-     "progress": 3
+     "progress": 3,
+     "year": 2
     }
    }
   ]
@@ -4210,8 +4355,16 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Chrome hens and turbo bunnies.",
-    "price": 1980,
-    "art_missing": false
+    "price": 2970,
+    "art_missing": false,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "ranching",
+      4
+     ]
+    },
+    "price_base": 1980
    },
    {
     "tier": 2,
@@ -4232,7 +4385,7 @@
      "progress": 1,
      "skill": [
       "ranching",
-      3
+      4
      ]
     },
     "art_missing": false
@@ -4256,7 +4409,7 @@
      "progress": 2,
      "skill": [
       "ranching",
-      5
+      9
      ]
     },
     "art_missing": false

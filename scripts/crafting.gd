@@ -67,8 +67,17 @@ static func slots(tier: int) -> int:
 	return maxi(1, tier)
 
 
+## C16a P5 (c16a_09-17): skill level a recipe tier needs, spread over the years (was 1/3/5/7/9).
+const RECIPE_LV := [1, 3, 8, 14, 20]
+
+
 static func skill_tier(station: String) -> int:
-	return 1 + int((GameState.skill_level(skill_of(station)) - 1) / 2)
+	var lv := GameState.skill_level(skill_of(station))
+	var t := 1
+	for i in RECIPE_LV.size():
+		if lv >= int(RECIPE_LV[i]):
+			t = i + 1
+	return t
 
 
 ## Kept for older callers: the recipe tier you can reach at a station you own.
@@ -145,7 +154,9 @@ static func why_locked(station: String, tier: int, rc: Dictionary) -> String:
 		var td := Builds.tier_def(station, need)
 		return "needs %s" % str(td.get("name", "%s tier %d" % [label(station), need]))
 	if rt > skill_tier(station):
-		return "needs %s Lv %d" % [skill_of(station).capitalize(), (rt - 1) * 2 + 1]
+		return "needs %s Lv %d" % [skill_of(station).capitalize(), int(RECIPE_LV[clampi(rt - 1, 0, RECIPE_LV.size() - 1)])]
+	if rc.has("year") and GameState.year() < int(rc["year"]):  # C16a P5: a few top recipes wait for year 2-3
+		return "opens in year %d" % int(rc["year"])
 	if rc.has("flag") and not GameState.run["flags"].has(str(rc["flag"])):
 		return str(rc.get("flag_hint", "not learned yet"))
 	if rc.has("skill") and GameState.skill_level(str(rc["skill"][0])) < int(rc["skill"][1]):
