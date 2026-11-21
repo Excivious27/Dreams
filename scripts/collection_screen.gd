@@ -319,7 +319,8 @@ static func _card(cat: String, e: Dictionary, got: bool) -> String:
 			return "%s · caught and let go %d time%s" % [Critters.name_of(key), Collections.amount_of(cat, key), "" if Collections.amount_of(cat, key) == 1 else "s"]
 		"fish":
 			var f: Dictionary = c["caught"].get(key, {})
-			return "%s · caught %d · first on day %d%s" % [name, int(f.get("n", 1)), int(f.get("first", 0)), " · at night" if bool(f.get("night", false)) else ""]
+			return "%s · caught %d · first on day %d%s%s" % [name, int(f.get("n", 1)), int(f.get("first", 0)), " · at night" if bool(f.get("night", false)) else "",
+				(" · biggest %d cm" % int(f["best"])) if int(f.get("best", 0)) > 0 else ""]
 		"forage":
 			return "%s · found" % name
 	return "%s · %d" % [name, Collections.amount_of(cat, key)]

@@ -244,3 +244,36 @@ static func weighted(lo: int, hi: int, ratio := 0.67) -> int:
 		if r <= 0.0:
 			return i
 	return maxi(lo, hi - 1)
+
+
+## C16a P4 (c16a_05-02): quality from the reel. react = time from the bite to your tap / the bite window
+## (0 = at once). A quick tap is silver, a very quick one gold; rarer fish give a little more room for a star
+## (their windows are shorter). Boots and legends never take a star (legends are one of a kind already).
+const QUALITY_GOLD := 0.22
+const QUALITY_SILVER := 0.5
+
+
+static func quality_for(react: float, fish: String) -> String:
+	if fish == "boot" or not GameState.items.has(fish) or str(GameState.items[fish].get("type", "")) != "fish":
+		return ""
+	if Collections.data().get("legends", {}).has(fish):
+		return ""
+	var room := 0.03 * band(fish)
+	if react <= QUALITY_GOLD + room:
+		return "g"
+	if react <= QUALITY_SILVER + room:
+		return "s"
+	return ""
+
+
+## A catch's size in cm: from the fish's value (bigger fish are worth more), +-25%, skewed up by quality.
+static func size_for(fish: String, q := "") -> int:
+	if fish == "boot" or not GameState.items.has(fish):
+		return 0
+	var it: Dictionary = GameState.items[fish]
+	var base := 8.0 + 3.2 * sqrt(float(maxi(1, int(it.get("value", 10)))))
+	if it.get("size", null) is Array:
+		var sz: Array = it["size"]
+		base = (float(sz[0]) + float(sz[1])) * 0.5
+	var lo := 0.75 + (0.15 if q == "g" else (0.08 if q == "s" else 0.0))
+	return maxi(1, roundi(base * randf_range(lo, 1.25)))

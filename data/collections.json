@@ -331,7 +331,8 @@
     {
      "item": "tuna",
      "arc": "",
-     "where": "A gift from the Sanctuary pool, or a lucky weekly perk."
+     "where": "A gift from the Sanctuary pool, or a lucky weekly perk.",
+     "where_gangsters": "The docks charters and the cold colonies."
     },
     {
      "item": "crab",

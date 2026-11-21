@@ -384,11 +384,9 @@ func build() -> void:
 			if things.has(c) or blocked.has(c):
 				continue
 			var key := "forage_%s_%d_%d" % [region_id, c.x, c.y]
-			var item := GameState.roll_forage(region_id)
-			# Respawn: common forage every 1-2 days, rare finds take most of a week.
-			var tier := int(GameState.items.get(item, {}).get("tier", 1))
-			var every := (1 if GameState.has_perk("foraging", "Tracker") else 2) + maxi(0, tier - 1) * 2
-			if not GameState.respawned(key, every):
+			# Respawn: common forage every 1-2 days, rare finds most of a week; the find is fixed per cycle (C16a P4).
+			var item := ForageRoll.spot(region_id, key, GameState.has_perk("foraging", "Tracker"))
+			if item == "":
 				continue
 			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 			_forage_n += 1

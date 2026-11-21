@@ -60,10 +60,9 @@ func build() -> void:
 		if things.has(c) or _grove.has(c) or _on_path(c):
 			continue
 		var key := "forage_forest_%d_%d" % [c.x, c.y]
-		var every := 1 if GameState.has_perk("foraging", "Tracker") else 2
-		if not GameState.respawned(key, every):  # Honey Sense shortens it
+		var item := ForageRoll.spot("forest", key, GameState.has_perk("foraging", "Tracker"))  # C16a P4: fixed per cycle, rare waits longer
+		if item == "":
 			continue
-		var item := GameState.roll_forage("forest")
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 
 

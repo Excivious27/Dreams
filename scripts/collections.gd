@@ -78,6 +78,8 @@ static func entries(cat: String, wing := "") -> Array:
 				if arc_ok(e):
 					var x := e.duplicate()
 					x["wing"] = str(w["id"])
+					if x.has("where_gangsters") and not GameState.is_penguins():
+						x["where"] = x["where_gangsters"]  # C16a P4: per-arc hint
 					out.append(x)
 		# C16a P4: the Live Exhibit wing shows every logged critter (nothing is kept: released and logged).
 		var lw: Dictionary = data().get("live_wing", {})
@@ -192,14 +194,17 @@ static func record_ranch(id: String, n := 1, quiet := false) -> bool:
 
 
 ## A fish on the line (GameMap.fish_at). True on a first.
-static func record_catch(id: String, n := 1, night := false, rain := false) -> bool:
+static func record_catch(id: String, n := 1, night := false, rain := false, size := 0) -> bool:
 	if not in_log("fish", id):
 		return false
 	var c := st()
 	var first: bool = not c["caught"].has(id)
 	var e: Dictionary = c["caught"].get(id, {"n": 0, "first": int(GameState.run.get("day", 1)), "night": night, "rain": rain})
 	e["n"] = int(e.get("n", 0)) + n
+	if size > int(e.get("best", 0)):
+		e["best"] = size  # C16a P4: biggest catch (fish log card, Derby)
 	c["caught"][id] = e
+
 	if first:
 		_first("fish", id, false, "Fish log")
 		# C10a P3: a legend's first catch leaves a keepsake in the decor box (once per run).
@@ -536,7 +541,15 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 		return fish
 	for id in data().get("legends", {}):
 		var L: Dictionary = data()["legends"][id]
-		if str(L.get("scene", "")) != scene or st()["caught"].has(str(id)) or GameState.has_seen(str(id)):
+		var lost := false
+		if st()["caught"].has(str(id)) or GameState.has_seen(str(id)):
+			# C16a P4 (c16a_14-03): a one-of-a-kind legend given or sold away before it was donated can come
+			# back (at a quarter of the chance), so the museum can always be finished.
+			lost = in_log("museum", str(id)) and not st()["donated"].has(str(id)) and GameState.count(str(id)) == 0 \
+				and Storage.amount("chest", str(id)) == 0
+			if not lost:
+				continue
+		if str(L.get("scene", "")) != scene:
 			continue
 		if GameState.skill_level("fishing") < int(L.get("lvl", 0)):
 			continue
@@ -550,7 +563,7 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 			ok = GameState.season() == str(L["when"]).substr(7) and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 >= int(L.get("year", 1))
 		if ok and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 < int(L.get("year", 1)):
 			ok = false  # C16a P4: every legend may carry a first year (the koi is a year-3 goal)
-		if ok and randf() < float(L.get("chance", 0.05)):
+		if ok and randf() < float(L.get("chance", 0.05)) * (0.25 if lost else 1.0):
 			return str(id)
 	return fish
 

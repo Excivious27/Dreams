@@ -49,6 +49,7 @@ WINGS = [
 WHERE = {
     "legendary_koi": "The lake, at dawn in rain or winter, from year 3. Fishing 30+. Only one exists.",
     "tuna": "A gift from the Sanctuary pool, or a lucky weekly perk.",
+    "tuna@gangsters": "The docks charters and the cold colonies.",  # C16a P4 (c16a_14-08): no penguin places in the gang arc
     "crab": "The beach shallows (forage).",
     "ancient_urn": "Buried caches (dig with the hoe where the ground looks turned).",
     "eagle_feather": "Mountain forage, now and then.",
@@ -496,6 +497,9 @@ def main():
     wings = []
     for w in WINGS:
         ents = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)} for i in w["items"]]
+        for e in ents:
+            if e["item"] + "@gangsters" in WHERE:
+                e["where_gangsters"] = WHERE[e["item"] + "@gangsters"]
         wings.append({"id": w["id"], "title": w["title"], "entries": ents})
 
     ranch_json = load("ranch.json") if os.path.exists(os.path.join(ROOT, "data", "ranch.json")) else {}
