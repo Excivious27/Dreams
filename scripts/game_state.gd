@@ -3404,9 +3404,14 @@ static func sleep(passed_out := false) -> Dictionary:
 	report["earned"] = total
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
-	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
-	var hazel_perk := hazel_waters
-	hazel_waters = Romance.overnight(report) or hazel_waters  # the spouse's chore (water: every planted tile)
+	# C16a P5 (c16a_06-08): helpers water a capped number of crops (Hazel 4 hearts 12, 6 hearts 30; the
+	# spouse's and the crew's chores 30), so sprinklers and can tiers keep their point.
+	var hazel_cap := hazel_water_cap()
+	var hazel_perk := hazel_cap > 0
+	if Romance.overnight(report):  # the spouse's chore
+		hazel_cap = maxi(hazel_cap, HELPER_WATER_CAP[1])
+	var hazel_waters := hazel_cap > 0
+	var helper_tiles := _helper_tiles(hazel_cap) if hazel_waters else {}
 	_sprinklers_water()
 	Project.overnight(report)
 	Commons.overnight(report)
@@ -3440,6 +3445,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				var yid := str(cd["yield"])
 				run["sellbox"][yid] = int(run["sellbox"].get(yid, 0)) + 1
 				log_grown(crop_id)
+				add_xp("farming", maxi(1, int(load("res://scripts/farm.gd").harvest_xp(cd)) / 2))  # C16a P5: half the harvest XP
 				if cd.has("regrow"):
 					tile["days"] = int(cd["days"]) - int(cd["regrow"])
 				else:
@@ -3448,7 +3454,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = 0.0
 				tile["watered"] = false
 				continue
-			if tile.get("watered", false) or (sky_waters() and not glass) or hazel_waters:  # c15_14-19: no rain under glass
+			if tile.get("watered", false) or (sky_waters() and not glass) or helper_tiles.has(key):  # c15_14-19: no rain under glass
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
@@ -3486,11 +3492,11 @@ static func sleep(passed_out := false) -> Dictionary:
 	_sprinklers_water()
 	if hazel_waters or Project.waters_morning():  # the crew's "Mind the farm" job waters too (c11a_10)
 		var hw := 0
-		for k2 in run["farm"].keys():
-			if str(run["farm"][k2].get("crop", "")) != "":
-				if not bool(run["farm"][k2].get("watered", false)):
-					hw += 1
-				run["farm"][k2]["watered"] = true
+		var mcap := maxi(hazel_cap, HELPER_WATER_CAP[1] if Project.waters_morning() else 0)
+		for k2 in _helper_tiles(mcap):
+			if not bool(run["farm"][k2].get("watered", false)):
+				hw += 1
+			run["farm"][k2]["watered"] = true
 		if hazel_perk and hw > 0 and str((report.get("spouse", {}) as Dictionary).get("chore", "")) != "water":
 			report["hazel"] = {"watered": hw}  # C11a (c11a_10): helpers' overnight work shows in the morning
 	for nm in Builds.tick_overnight():
@@ -3859,6 +3865,35 @@ static func crop_fits_season(cd: Dictionary, se: String) -> bool:
 	if str(cs) == "any":
 		return se != "winter" or bool(cd.get("winter_hardy", false)) or str(cd.get("yield", "")) in WINTER_HARDY
 	return str(cs) == se
+
+
+## C16a P5 (c16a_06-08): how many crops helpers water a night: [Hazel 4 hearts, 6 hearts / spouse / crew].
+const HELPER_WATER_CAP := [12, 30]
+
+
+static func hazel_water_cap() -> int:
+	if has_friend_perk("hazel", 6):
+		return HELPER_WATER_CAP[1]
+	if has_friend_perk("hazel", 4):
+		return HELPER_WATER_CAP[0]
+	return 0
+
+
+## The planted, still-dry tiles helpers water tonight (at most `cap`, in a stable order: the field's
+## first rows first).
+static func _helper_tiles(cap: int) -> Dictionary:
+	var out := {}
+	if cap <= 0:
+		return out
+	var keys: Array = run["farm"].keys().filter(func(k: Variant) -> bool: return str(run["farm"][k].get("crop", "")) != "" and not bool(run["farm"][k].get("watered", false)))
+	keys.sort_custom(func(a: Variant, b: Variant) -> bool:
+		var pa := str(a).split(","); var pb := str(b).split(",")
+		return int(pa[1]) < int(pb[1]) or (int(pa[1]) == int(pb[1]) and int(pa[0]) < int(pb[0])) if pa.size() > 1 and pb.size() > 1 else str(a) < str(b))
+	for k in keys:
+		if out.size() >= cap:
+			break
+		out[k] = true
+	return out
 
 
 static func _sprinklers_water() -> void:

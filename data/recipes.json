@@ -3269,7 +3269,7 @@
    "id": "pickles",
    "name": "Pickles",
    "need": {
-    "#veg": 2,
+    "#veg": 4,
     "clay_pot": 1
    },
    "give": "pickles",

@@ -94,7 +94,7 @@ WINTER = {
     "winter_cabbage": (12, 0, 5, "cabbage", "veg", False, 600, None),
     "winter_snowdrop": (12, 0, 5, "moonflower", "flower", False, 600, None),
     "penguin_snowberry": (13, 6, 5, "frostberry", "berry", False, 700, None),
-    "winter_rose_apple": (14, 6, 5, "apple", "tree", True, 700, None),
+    "winter_rose_apple": (14, 7, 5, "apple", "tree", True, 700, None),  # C16a P5 (c16a_06-01): regrow 6 -> 7
 }
 BANDS = {1: (2, 4), 2: (4, 7), 3: (7, 10), 4: (10, 18), 5: (18, 45)}  # mirror of econ_check BANDS
 

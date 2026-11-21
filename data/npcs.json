@@ -676,8 +676,8 @@
   ],
   "perks": {
    "2": "Hazel shares seeds: a seed pack each week",
-   "4": "Hazel waters your crops every other day",
-   "6": "Hazel waters your crops every day",
+   "4": "Hazel waters up to 12 of your crops each night",
+   "6": "Hazel waters up to 30 of your crops each night",
    "8": "Hazel harvests ripe crops into your sell box",
    "10": "Hazel's heirloom seeds: 5 Dream Seeds, the lumpy cheese, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   },

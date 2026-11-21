@@ -1394,3 +1394,10 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P5: gear ladders, pick swings, station gates and year tiers, deep mine years, winter any-crops, helper watering, decor set arcs =="
+c16ap5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p5_test.gd 2>&1)"
+echo "$c16ap5out" | grep -E "FAIL|SCRIPT ERROR|c16a_p5_test" || true
+if ! echo "$c16ap5out" | grep -q "c16a_p5_test: 0 failures"; then
+  echo "C16a P5 ecosystems test failed"; exit 1
+fi
