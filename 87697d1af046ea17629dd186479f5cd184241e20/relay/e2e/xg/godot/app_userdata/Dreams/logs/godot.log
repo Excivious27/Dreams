@@ -1,0 +1,10 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+  ok   guest: got the room code (HA6J)
+  ok   guest: late joiner gets the host's world snapshot from the relay (day 7.0, 386 ms)
+  ok   guest: joined room HA6J by code
+  ok   guest: guest runs on the host's day and clock (day 7, time 780)
+  ok   guest: guest sees the host's puppet
+NET E2E guest OK
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+   at: cleanup (core/object/object.cpp:2514)

@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 82.9}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 6.9}
+{"step": 13, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 42.3}
+{"step": 19, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 3.9}
+{"step": 25, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.5}
+{"step": 31, "name": "rec_reno_test", "rc": 0, "secs": 2.5}
+{"step": 37, "name": "farm_week_test", "rc": 0, "secs": 5.2}
+{"step": 43, "name": "anim_test", "rc": 0, "secs": 2.8}
+{"step": 49, "name": "decor_sources_test", "rc": 0, "secs": 2.8}
+{"step": 55, "name": "workshop: no dead ends", "rc": 0, "secs": 8.7}
+{"step": 61, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 67, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 28.8}
+{"step": 73, "name": "workshop: stations at run time", "rc": 0, "secs": 3.6}
+{"step": 79, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 7.2}
+{"step": 85, "name": "campaign_story_test", "rc": 0, "secs": 2.6}
+{"step": 91, "name": "campaign_gate_test", "rc": 0, "secs": 5.7}
+{"step": 97, "name": "move_speed_test", "rc": 0, "secs": 3.7}
+{"step": 103, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 5.5}
+{"step": 109, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.2}
+{"step": 115, "name": "arcade_test", "rc": 0, "secs": 2.9}
+{"step": 121, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 3.9}
+{"step": 127, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.4}
+{"step": 133, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.6}
+{"step": 139, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 29.1}

@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+  ok   host: hosted room HA6J on wss://dreams-64-23-239-63.sslip.io
+  ok   host: guest joined the room
+  ok   host: host sees the guest's puppet
+  ok   host: host sees the guest move to (212.0, 300.0) (last [212.0, 300.0])
+NET E2E host OK
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 100.4}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 5.0}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.8}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 11.2}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.7}
+{"step": 27, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 23.4}
+{"step": 33, "name": "bowling_test", "rc": 0, "secs": 13.9}
+{"step": 39, "name": "pen_test", "rc": 0, "secs": 3.6}
+{"step": 45, "name": "move_target_test", "rc": 0, "secs": 14.0}
+{"step": 51, "name": "gang_flavour_test", "rc": 0, "secs": 2.7}
+{"step": 57, "name": "every sound the game asks for exists", "rc": 0, "secs": 3.1}
+{"step": 63, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.2}
+{"step": 69, "name": "danger_music_test", "rc": 0, "secs": 24.0}
+{"step": 75, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.7}
+{"step": 81, "name": "every script compiles", "rc": 0, "secs": 3.4}
+{"step": 87, "name": "quest_tracker_test", "rc": 0, "secs": 3.7}
+{"step": 93, "name": "campaign_words_test", "rc": 0, "secs": 2.8}
+{"step": 99, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 18.8}
+{"step": 105, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.4}
+{"step": 111, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 20.6}
+{"step": 117, "name": "rec_games_test", "rc": 0, "secs": 2.6}
+{"step": 123, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 4.6}
+{"step": 129, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.0}
+{"step": 135, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.5}
+{"step": 141, "name": "C10b P4: casino", "rc": 0, "secs": 2.7}
