@@ -208,6 +208,79 @@ async function localSuite(url, httpUrl) {
   G.close();
 }
 
+
+// C17 (proto 2 rooms): host bye ends the room at once for every guest; a host lost for good
+// ends it for everyone when the grace runs out (not one guest per grace); host peer_left is
+// marked; ping/pong; one join per socket; refused joins keep the host; failed-join limit;
+// byte budget answers slow; a relay restart: the host recreates its code, the guest rejoins.
+async function c17Suite(url) {
+  const P = { proto: 2 };
+  const H = await new Client(url, "H2").open();
+  const hj = await H.join("", { ...P, token: "c17h" });
+  ok(hj && hj.host === true && hj.host_id === hj.id, "proto 2 host creates a room, joined carries host_id");
+  const room = hj.room;
+  const gs = [];
+  for (let i = 0; i < 3; i++) { const g = await new Client(url, "G" + i).open(); const j = await g.join(room, { ...P, create: false, token: "c17g" + i }); gs.push(g); ok(j && j.host === false && j.host_id === hj.id && j.peers.some((p) => p.id === hj.id && p.host === true), "guest " + i + " joined, sees the host marked"); }
+  const pj = await gs[0].wait((m) => m.t === "peer_joined" && m.peer.name === "G1");
+  ok(pj && pj.peer.host === false, "peer_joined carries host:false for a guest");
+  H.send({ t: "ping", s: 42 });
+  const po = await H.waitT("pong");
+  ok(po && po.s === 42, "ping -> pong");
+  H.send({ t: "join", room: "", name: "again", proto: 2 });
+  ok(!(await H.wait((m) => m.t === "joined", 400)), "a second join on one socket is ignored (no ghost)");
+  const O = await new Client(url, "Old").open();
+  const oj = await O.join(room, { proto: 1, create: false, token: "c17old" });
+  ok(oj && oj.t === "old_build", "other proto refused");
+  H.send({ t: "all", d: { k: "still-host" } });
+  const sh = await gs[1].wait((m) => m.t === "msg" && m.d.k === "still-host");
+  ok(sh && sh.host === true, "a refused join did not take the host role");
+  O.close();
+  const t0 = Date.now();
+  H.send({ t: "bye" });
+  const ends = await Promise.all(gs.map((g) => g.waitT("host_left", 1000)));
+  ok(ends.every((e) => !!e) && Date.now() - t0 < 1000, "host bye: all 3 guests get host_left at once (" + (Date.now() - t0) + " ms)");
+  const X = await new Client(url, "X").open();
+  const xj = await X.join(room, { ...P, create: false, token: "c17x" });
+  ok(xj && xj.t === "no_room", "the room is gone after the host's bye");
+  for (const g of gs) g.close(); H.close(); X.close();
+  // Host lost for good: everyone is released together when the grace ends.
+  const H2 = await new Client(url, "H3").open();
+  const h2 = await H2.join("", { ...P, token: "c17h3" });
+  const g2 = [];
+  for (let i = 0; i < 3; i++) { const g = await new Client(url, "K" + i).open(); await g.join(h2.room, { ...P, create: false, token: "c17k" + i }); g2.push(g); }
+  await sleep(200);
+  H2.kill();
+  const pl = await g2[0].waitT("peer_left", 2000);
+  ok(pl && pl.host === true && pl.grace === GRACE, "host drop: peer_left marked host:true with the grace");
+  const t1 = Date.now();
+  const e2 = await Promise.all(g2.map((g) => g.waitT("host_left", GRACE + 1500)));
+  ok(e2.every((e) => !!e) && Date.now() - t1 < GRACE + 1200, "grace over: all 3 guests get host_left together (" + (Date.now() - t1) + " ms)");
+  ok(!g2.some((g) => g.inbox.some((m) => m.t === "you_are_host")), "nobody gets you_are_host in a proto 2 room");
+  for (const g of g2) g.close();
+  // A guest's bye: peer_left bye:true, the room goes on.
+  const H4 = await new Client(url, "H4").open();
+  const h4 = await H4.join("", { ...P, token: "c17h4" });
+  const G4 = await new Client(url, "G4").open();
+  await G4.join(h4.room, { ...P, create: false, token: "c17g4" });
+  await H4.waitT("peer_joined");
+  G4.send({ t: "bye" });
+  const bl = await H4.waitT("peer_left", 1000);
+  ok(bl && bl.bye === true, "guest bye: host sees peer_left bye:true");
+  G4.close();
+  // Byte budget: > 256 KB/s from a guest answers slow.
+  const G5 = await new Client(url, "G5").open();
+  await G5.join(h4.room, { ...P, create: false, token: "c17g5" });
+  for (let i = 0; i < 6; i++) G5.send({ t: "all", d: { k: "fat", pad: "x".repeat(60000) } });
+  ok(!!(await G5.waitT("slow", 1500)), "guest over the byte budget gets slow");
+  G5.close(); H4.close();
+  // Failed joins per IP are limited (code sweeps).
+  const S = await new Client(url, "Sweep").open();
+  let slow = false;
+  for (let i = 0; i < 25 && !slow; i++) { const r = await S.join("Q" + i + "ZZ", { create: false, token: "sw" }); if (!r || S.inbox.some((m) => m.t === "slow")) slow = true; }
+  ok(slow || S.closed, "a code sweep from one IP gets slowed down after 20 misses");
+  S.close();
+}
+
 (async () => {
   let srv = null;
   try {
@@ -229,6 +302,7 @@ async function localSuite(url, httpUrl) {
     if (!/dreams relay on/.test(log)) throw new Error("server did not start: " + log.slice(0, 300));
     console.log("relay test: server/server.js on port " + port);
     await localSuite("ws://127.0.0.1:" + port, "http://127.0.0.1:" + port);
+    await c17Suite("ws://127.0.0.1:" + port);
     if (/Error|TypeError/.test(log)) { fails++; console.log("  FAIL server logged an error: " + log.slice(0, 300)); }
   } catch (e) {
     fails++;

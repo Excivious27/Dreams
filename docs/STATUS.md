@@ -3,6 +3,7 @@
 **Play:** https://excivious27.github.io/Dreams/
 
 ## 2026-11-21 — C17 P4: co-op minigames: CoopGames referee (arcade/Snowball Roll score duels on a shared seed, 2-4 player bowling versus in lockstep frames, host-only house board with filtered names), visit guards (own-day counters, casino day/break, animal show, Rec Cup, festival keys, laundromat bills, training tier), Skee-Ball renamed Snowball Roll / Alley Roll
+## 2026-11-21 — C17 P1 net core: router (Net.on_msg/send_host/send_peer/broadcast, seq acks, host_away/back, roster), PROTO 2 bye/host_left (room ends at once), 60 s reconnect + resume, liveness pings, coalesced host pushes + throttled host_save, world seq resync, host rejoin full resync, act validation, relay abuse limits; tests net_router_test, net_c17_test, relay_test c17Suite
 
 ## 2026-11-21 — C16b integ: P1-P5 merged; one on_win per win via Campaign.finish with Battle perf stats; rematch API; gang node names/provisions; captain boss cards; drill gang point names; brief NEW HERE and STARS rows; test tools/c16b_integ_test.gd
 

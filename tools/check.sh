@@ -1514,6 +1514,20 @@ if ! python3 tools/slice_c16bp4.py check; then
   echo "C16b P4 chest icons missing"; exit 1
 fi
 
+echo "== C17 P1 net router: on_msg/send_host/send_peer/broadcast, seq acks, host_away/host_back (tools/net_router_test.gd) =="
+nrout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_router_test.gd 2>&1)"
+echo "$nrout" | grep -E "FAIL|SCRIPT ERROR|net_router_test" || true
+if ! echo "$nrout" | grep -q "net_router_test: [0-9]* checks, 0 failures"; then
+  echo "net_router_test failed"; exit 1
+fi
+
+echo "== C17 P1 net core: coalesced pushes, world seq resync, act checks, bye/host_left, 60 s reconnect, host resync (tools/net_c17_test.gd) =="
+nc17out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_c17_test.gd 2>&1)"
+echo "$nc17out" | grep -E "FAIL|SCRIPT ERROR|net_c17_test" || true
+if ! echo "$nc17out" | grep -q "net_c17_test: [0-9]* checks, 0 failures"; then
+  echo "net_c17_test failed"; exit 1
+fi
+
 echo "== C17 P4: co-op minigames (duels, bowling lockstep, house board, visit guards) =="
 c17p4cgout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/coop_games_test.gd 2>&1)"
 echo "$c17p4cgout" | grep -E "FAIL|SCRIPT ERROR|coop_games_test" || true

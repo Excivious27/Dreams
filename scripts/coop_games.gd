@@ -51,16 +51,27 @@ static func i() -> CoopGames:
 	if _me == null:
 		_me = CoopGames.new()
 		_me._attach()
+	elif not GameState.run.is_empty() and not (GameState.run.get("coop_board") is Dictionary and is_same(GameState.run["coop_board"], _me.board_store)):
+		_me.board_store = {}  # another save was loaded: its own house board
+		_me._attach_board()
 	return _me
 
 
-## The Net facade as a plain object, so router calls compile before P1's router lands.
-static func _R() -> Object:
+## A specific NetNode (tests run two in one process); null = the Net facade (the game).
+var node: NetNode = null
+
+
+## The router as a plain object, so calls compile whichever side lands first.
+func _R() -> Object:
+	if node != null:
+		return node
 	var s: Object = Net
 	return s
 
 
-static func _router_has(m: String) -> bool:
+func _router_has(m: String) -> bool:
+	if node != null:
+		return node.has_method(m)
 	var s: Script = Net
 	for f in s.get_script_method_list():
 		if str(f.get("name", "")) == m:
@@ -68,26 +79,49 @@ static func _router_has(m: String) -> bool:
 	return false
 
 
-func _attach() -> void:
+## Tests: referee/play through this NetNode (over NetTransportLoop) instead of NetSvc.
+func bind_node(n: NetNode) -> void:
+	node = n
+	_attach()
+
+
+func _attach_board() -> void:
 	var r: Variant = GameState.run.get("coop_board")
 	if not (r is Dictionary):
 		r = {}
 		GameState.run["coop_board"] = r
 	board_store = r
+
+
+func _attach() -> void:
+	if node == null:
+		_attach_board()
 	if not _router_has("on_msg"):
 		return
 	for t in TYPES:
 		_R().call("on_msg", t, Callable(self, "_on_router").bind(t))
 	send = Callable(self, "_router_send")
+	_sync_role()
+	var n := node if node != null else Net.i()
+	if n != null and n.has_signal("peer_left"):
+		n.connect("peer_left", func(p: Variant) -> void: peer_gone(str(p)))
+
+
+## Our router id and role (they change as we host, join or go home).
+func _sync_role() -> void:
+	host = bool(_R().call("is_host"))
+	if _router_has("my_peer"):
+		me = str(_R().call("my_peer"))
+	host_ok = (not _router_has("host_present")) or bool(_R().call("host_present"))
 
 
 func _on_router(from_peer: Variant, d: Dictionary, t: String) -> void:
-	host = Net.is_host()
-	host_ok = (not _router_has("host_present")) or bool(_R().call("host_present"))
+	_sync_role()
 	handle(str(from_peer), t, d)
 
 
 func _router_send(to: String, t: String, d: Dictionary) -> void:
+	_sync_role()
 	if to == "":
 		if host:
 			handle(me, t, d)  # the host is its own referee

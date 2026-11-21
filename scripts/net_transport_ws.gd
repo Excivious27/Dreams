@@ -17,6 +17,8 @@ func open(target: String, _join_msg: Dictionary) -> bool:
 	ws = WebSocketPeer.new()
 	ws.inbound_buffer_size = BUFFER_BYTES   # a late farm's world is bigger than the 64 KB default
 	ws.outbound_buffer_size = BUFFER_BYTES
+	if "heartbeat_interval" in ws:
+		ws.set("heartbeat_interval", 5.0)  # C17: native builds notice a dead link (web: NetNode's app ping)
 	var err := ws.connect_to_url(url)
 	if err != OK:
 		ws = null

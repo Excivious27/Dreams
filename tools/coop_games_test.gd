@@ -24,6 +24,7 @@ func _run() -> void:
 	_bowl()
 	_leave_and_away()
 	await _bowling_screen()
+	await _over_loop()
 	_visit_guards()
 	_laundromat()
 	print("coop_games_test: %d fails" % fails)
@@ -77,6 +78,10 @@ func _duel() -> void:
 		h.submit_board("stack", "R%d" % i, 10 + i)
 	ok(h.board("stack").size() == CoopGames.BOARD_LEN, "board keeps the best %d" % CoopGames.BOARD_LEN)
 	ok(not h.open("claw"), "claw stays solo")
+	var f := CoopGames.new()
+	f._sync_role()  # through the static Net facade (the game's path)
+	ok(f.host and f.me != "" and f.host_ok, "facade: solo is host, has an id, host present")
+	ok(not CoopGames.available(), "offline: no versus rows")
 
 
 func _bowl() -> void:
@@ -163,6 +168,59 @@ func _bowling_screen() -> void:
 	paused = false
 	Hud.modal_rect = Rect2()
 	await process_frame
+
+
+func _pump(n: int) -> void:
+	for i in n:
+		await process_frame
+
+
+## The same duel through the real router (P1) over NetTransportLoop: host + guest NetNodes.
+func _over_loop() -> void:
+	var bus := NetTransportLoop.Bus.new()
+	var hn := NetNode.new()
+	root.add_child(hn)
+	hn._host = true
+	hn._pending_join = {"t": "join", "room": "", "token": "cgh", "name": "H", "look": {}, "arc": "penguins", "proto": NetNode.PROTO}
+	hn.tr = NetTransportLoop.new(bus)
+	hn.tr.open("", hn._pending_join)
+	await _pump(3)
+	var gn := NetNode.new()
+	root.add_child(gn)
+	gn._host = false
+	gn._pending_join = {"t": "join", "room": hn.room, "create": false, "token": "cgg", "name": "G", "look": {}, "arc": "gangsters", "proto": NetNode.PROTO}
+	gn.tr = NetTransportLoop.new(bus)
+	gn.tr.open("", gn._pending_join)
+	await _pump(4)
+	ok(hn.online() and gn.online() and not gn.is_host(), "loop: host and guest online")
+	var hc := CoopGames.new()
+	hc.board_store = {}
+	hc.bind_node(hn)
+	var gc := CoopGames.new()
+	gc.bind_node(gn)
+	ok(hc.host and not gc.host and gc.me == str(gn.my_id), "loop: roles and peer ids from the router")
+	gc.open("gallery", "Guesty")
+	await _pump(4)
+	var sid := hc.open_lobby("gallery")
+	ok(sid != "" and gc.sessions.has(sid), "loop: the guest's lobby is refereed by the host and echoed back")
+	hc.join(sid, "Hosty")
+	await _pump(4)
+	ok(gc.sessions.get(sid, {}).get("players", []).size() == 2, "loop: the host joined (guest sees 2)")
+	gc.start(sid)
+	await _pump(4)
+	ok(str(hc.sessions[sid]["state"]) == "play" and str(gc.sessions[sid]["state"]) == "play", "loop: started on both")
+	var got := []
+	gc.finished.connect(func(_s: String, r: Array) -> void: got.append(r))
+	gc.post_score(sid, 210)
+	hc.post_score(sid, 180)
+	await _pump(4)
+	ok(got.size() == 1 and str(got[0][0]["name"]) == "Guesty", "loop: the guest gets the result, guest won")
+	ok(gc.board("gallery").size() == 2, "loop: the house board reached the guest")
+	hn.leave()
+	gn.leave()
+	hn.queue_free()
+	gn.queue_free()
+	await _pump(2)
 
 
 func _visit_guards() -> void:
