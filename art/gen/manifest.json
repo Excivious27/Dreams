@@ -35073,6 +35073,14 @@
    "frames": 2,
    "h": 112,
    "w": 162
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 68,
+   "file": "characters/june/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 136
   }
  },
  "characters/june_gang": {
@@ -38078,6 +38086,14 @@
    "frames": 2,
    "h": 112,
    "w": 162
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 70,
+   "file": "characters/marisol/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 140
   }
  },
  "characters/marisol_gang": {
@@ -42613,6 +42629,14 @@
    "cell_h": 112,
    "cell_w": 55,
    "file": "characters/nia/wave.png",
+   "frames": 2,
+   "h": 112,
+   "w": 110
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 55,
+   "file": "characters/nia/c14bp5_blink_idle_down.png",
    "frames": 2,
    "h": 112,
    "w": 110
@@ -50056,6 +50080,14 @@
    "frames": 2,
    "h": 112,
    "w": 200
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 65,
+   "file": "characters/ollie/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 130
   }
  },
  "characters/ollie_gang": {
@@ -51156,6 +51188,14 @@
    "frames": 3,
    "h": 97,
    "w": 375
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 96,
+   "cell_w": 100,
+   "file": "characters/penguin_king/c14bp5_blink_idle_down.png",
+   "frames": 3,
+   "h": 96,
+   "w": 300
   }
  },
  "characters/penguin_wear": {
@@ -52371,6 +52411,14 @@
    "frames": 2,
    "h": 112,
    "w": 168
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 82,
+   "file": "characters/rafe/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 164
   }
  },
  "characters/rafe_gang": {

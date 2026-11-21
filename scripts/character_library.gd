@@ -150,7 +150,7 @@ static func frames_for(id: String) -> SpriteFrames:
 		if id == "penguin_wizard" and gsf.get_frame_count("idle_down") == 3:
 			_drop_frame(gsf, "idle_down", 1)  # Nova's frame 1 is an off-model tilt (c14b_07-05)
 			_drop_frame(gsf, "idle", 1)
-		_breath_timing(gsf)
+		_breath_timing(gsf, g)
 		# Fallbacks so every character can idle/walk even with a partial set.
 		if not gsf.has_animation("idle") and gsf.has_animation("view_front"):
 			_alias(gsf, "idle", "view_front")
@@ -267,12 +267,16 @@ const MISCUT_IDLE := {"bo": ["idle", "idle_down", "idle_up"], "president": ["idl
 const IDLE_ANIMS := ["idle", "idle_down", "idle_up", "idle_side"]
 
 
-static func _breath_timing(sf: SpriteFrames) -> void:
+static func _breath_timing(sf: SpriteFrames, g := "") -> void:
 	for a: String in IDLE_ANIMS:
 		if not sf.has_animation(a) or sf.get_meta("breath_" + a, false):
 			continue
 		sf.set_meta("breath_" + a, true)
 		var n := sf.get_frame_count(a)
+		var blink := _blink_tex(g, a, sf)
+		if blink != null:
+			_weave_blink(sf, a, blink)
+			continue
 		if n < 2:
 			continue
 		if n >= 3 and n <= 4:
@@ -280,6 +284,42 @@ static func _breath_timing(sf: SpriteFrames) -> void:
 				sf.add_frame(a, sf.get_frame_texture(a, i), sf.get_frame_duration(a, i))
 		sf.set_frame(a, 0, sf.get_frame_texture(a, 0), 2.2)
 		sf.set_animation_speed(a, 3.0 if n >= 3 else 2.4)
+
+
+## C14b P5: a blink frame (tools/slice_c14b_p5.py: the drawn idle with the eyes
+## closed, everything else pixel-identical) for a front idle, else null.
+static func _blink_tex(g: String, a: String, sf: SpriteFrames) -> Texture2D:
+	if g == "" or not a in ["idle", "idle_down"]:
+		return null
+	for src: String in ["idle_down", "idle"]:
+		var b := "c14bp5_blink_" + src
+		if Art.has(g, b):
+			var bt := Art.tex(g, b)
+			var inf := Art.info(g, b)
+			var n := maxi(1, int(inf.get("frames", 1)))
+			# Only when the idle shows that strip's first cell (sizes match).
+			var f0 := sf.get_frame_texture(a, 0)
+			if f0 == null or absi(f0.get_height() - int(inf.get("cell_h", 0))) > 1:
+				return null
+			if n == 1:
+				return bt
+			var at := AtlasTexture.new()
+			at.atlas = bt
+			at.region = Rect2(0, 0, float(inf.get("cell_w", bt.get_width() / n)), float(inf.get("cell_h", bt.get_height())))
+			return at
+	return null
+
+
+## The breath with a blink about every 4.6 s: rest (held), inhale, rest, a
+## quick blink, rest, inhale. One-frame idles get rest + blink.
+static func _weave_blink(sf: SpriteFrames, a: String, blink: Texture2D) -> void:
+	var f0 := sf.get_frame_texture(a, 0)
+	var f1 := sf.get_frame_texture(a, 1) if sf.get_frame_count(a) > 1 else f0
+	sf.clear(a)
+	sf.set_animation_speed(a, 4.0)
+	sf.set_animation_loop(a, true)
+	for fr: Array in [[f0, 6.0], [f1, 3.0], [f0, 4.0], [blink, 0.6], [f0, 2.0], [f1, 3.0]]:
+		sf.add_frame(a, fr[0], fr[1])
 
 
 static func _drop_frame(sf: SpriteFrames, a: String, i: int) -> void:

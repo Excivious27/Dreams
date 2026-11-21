@@ -34,7 +34,30 @@ func _run() -> void:
 		check(n >= 2, id + ": idle has %d frames (needs 2+)" % n)
 		if n >= 2:
 			check(sf.get_frame_duration("idle", 0) > sf.get_frame_duration("idle", 1), id + ": rest frame held longer (a breath, not a tick)")
-			check(sf.get_animation_speed("idle") <= 3.0, id + ": idle at most 3 fps")
+			check(sf.get_frame_duration("idle", 0) / sf.get_animation_speed("idle") >= 0.6, id + ": the rest frame lasts 0.6 s or more")
+	# Blinks (tools/slice_c14b_p5.py) are woven into the front idle: one short
+	# blink frame per loop, body pixels identical to the rest frame.
+	var blinkers := 0
+	for g: String in Art.manifest().keys():
+		if not g.begins_with("characters/"):
+			continue
+		for an: String in (Art.manifest()[g] as Dictionary).keys():
+			if not an.begins_with("c14bp5_blink_"):
+				continue
+			blinkers += 1
+			var cid := g.get_file()
+			var sf := CharacterLibrary.frames_for(cid)
+			var n := sf.get_frame_count("idle")
+			var short := 0
+			for i in n:
+				if sf.get_frame_duration("idle", i) < 1.0:
+					short += 1
+			check(short == 1, "%s: idle has one short blink frame (got %d of %d)" % [cid, short, n])
+			var bimg := Art.tex(g, an).get_image()
+			var src := an.trim_prefix("c14bp5_blink_")
+			var oimg := Art.tex(g, src).get_image()
+			check(bimg.get_size() == oimg.get_size(), "%s %s blink strip matches its idle's size" % [cid, an])
+	check(blinkers >= 5, "blink frames exist for the heroes (%d)" % blinkers)
 	# Bo's mis-cut idles are not used (c14b_14-07).
 	var bo := CharacterLibrary.frames_for("bo")
 	check(bo.get_frame_texture("idle", 0) == bo.get_frame_texture("view_front", 0), "bo rests on his clean front view")
