@@ -3,8 +3,8 @@ name: CONDUCT CI (check shards + 20 bots + live relay)
 # Heavy CONDUCT runs off the 2-CPU sandbox: push a commit to ci/<label>-<sha>
 # (tools/conduct/ci_run.sh does it). Never deploys; deploy.yml stays the only deploy.
 # ci/params.json (from ci_run.sh) picks the jobs: "shards" (check shards to run),
-# "bots" (20 bots on/off), "playtest". Fix agents' pre-merge runs: ci_run.sh --shards a,b
-# (bots off) = at most 3 jobs. A failing bot or playtest is retried once (FLAKY if it passes).
+# "bots" (20 bots on/off), "playtest". Fix agents' pre-merge runs: ci_run.sh --shards a,b [--bots]
+# (bots off unless --bots; --bots-only = bots alone). A failing bot or playtest is retried once (FLAKY if it passes).
 on:
   push:
     branches: ['ci/**', 'main']

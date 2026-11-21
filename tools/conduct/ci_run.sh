@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# ci_run.sh <label> [days] [focus] [--shards 1,3] [--no-bots] [--playtest-only] [--branch <b>] [--relay|--no-relay]
+# ci_run.sh <label> [days] [focus] [--shards 1,3] [--bots] [--bots-only] [--no-bots] [--playtest-only] [--branch <b>] [--relay|--no-relay]
 # Run check.sh (6 shards) + 20 bots + the scripted playtest on GitHub Actions for HEAD,
 # wait for the results on branch ci-results/<sha>/, print summary.txt, exit 0 on pass / 1 on fail.
-#   --shards 1,3     only these check shards (+ the playtest; bots off). Fix agents' pre-merge
-#                    runs: at most 3 jobs, e.g. --shards "$(python3 tools/conduct/check_shard.py --for-files a.gd b.py)"
+#   --shards 1,3     only these check shards (+ the playtest; bots off unless --bots). Fix agents' pre-merge
+#                    runs: e.g. --shards "$(python3 tools/conduct/check_shard.py --for-files a.gd b.py | tr ' ' ,)"
+#   --bots           keep the 20 bots on with --shards (R4: required pre-merge for any fix branch that
+#                    touches scripts/*.gd UI/menu/screen/map code)
+#   --bots-only      only the 20 bots (no check shards, no playtest)
 #   --no-bots        skip the 20 bots
 #   --playtest-only  only the playtest (plus --shards if given)
-#   --branch <b>     test origin/<b> merged onto current origin/main (temp worktree) instead of HEAD
+#   --branch <b>     test origin/<b> merged onto current origin/main (temp worktree) instead of HEAD.
+#                    Always refetches +refs/heads/<b> and main (deepening main in a shallow clone) and
+#                    REFUSES (exit 2) when a local branch <b> exists and its head != origin/<b>: push first.
 #   --relay / --no-relay  force the live relay check on/off. Default: on for full runs (bots on,
 #                    i.e. post-merge) and whenever the diff vs origin/main touches server/,
 #                    scripts/net.gd or the relay tests; the Godot NET E2E runs when net.gd or
@@ -18,12 +23,14 @@
 # if that fails too, exits 3 so the caller runs check.sh + bots.sh locally.
 # Results land in /tmp/ci_<sha>/ (summary.txt, summary.json, logs).
 set -uo pipefail
-POS=(); SHARDS=""; BOTS=1; PTONLY=0; BRANCH=""; RELAY=auto
+POS=(); SHARDS=""; BOTS=1; PTONLY=0; BRANCH=""; RELAY=auto; KEEPBOTS=0; BOTSONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --shards) SHARDS="$2"; shift 2 ;;
     --shards=*) SHARDS="${1#*=}"; shift ;;
     --no-bots) BOTS=0; shift ;;
+    --bots) KEEPBOTS=1; shift ;;
+    --bots-only) BOTSONLY=1; shift ;;
     --playtest-only) PTONLY=1; shift ;;
     --relay) RELAY=1; shift ;;
     --no-relay) RELAY=0; shift ;;
@@ -38,19 +45,33 @@ LABEL="${POS[0]:-run}"; DAYS="${POS[1]:-3}"; FOCUS="${POS[2]:-}"
 if [ -n "$SHARDS" ]; then
   SHARDS=$(echo "$SHARDS" | tr -c '0-9,\n' ',' | tr -s ',' | sed 's/^,//; s/,$//')
   [ -n "$SHARDS" ] || { echo "--shards needs numbers 1-6"; exit 2; }
-  SJSON="[$SHARDS]"; BOTS=0
-elif [ "$PTONLY" = 1 ]; then SJSON="[]"
+  SJSON="[$SHARDS]"; [ "$KEEPBOTS" = 1 ] || BOTS=0
+elif [ "$PTONLY" = 1 ] || [ "$BOTSONLY" = 1 ]; then SJSON="[]"
 else SJSON="[1,2,3,4,5,6]"; fi
 [ "$PTONLY" = 1 ] && BOTS=0
-NJOBS=$(( $(python3 -c "import json;print(len(json.loads('$SJSON')))") + 1 + BOTS * 20 ))
-if [ "$BOTS" = 0 ] && [ "$NJOBS" -gt 3 ]; then
+PT=1
+if [ "$BOTSONLY" = 1 ]; then BOTS=1; PT=0; SJSON="[]"; fi
+NJOBS=$(( $(python3 -c "import json;print(len(json.loads('$SJSON')))") + PT + BOTS * 20 ))
+if [ "$BOTS" = 0 ] && [ "$NJOBS" -gt 3 ] && [ -n "$SHARDS" ]; then
   echo "note: $NJOBS jobs (pre-merge runs should stay at 3: pick at most 2 shards)"
 fi
 cd "$(git rev-parse --show-toplevel)"
+# Fresh refs (R4): explicit refspecs so origin/<b> is never stale; deepen main in a shallow clone.
+DEEP=""; [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = true ] && DEEP="--deepen=300"
+git fetch -q $DEEP origin "+refs/heads/main:refs/remotes/origin/main" || { echo "fetch of main failed"; exit 3; }
 TMP=$(mktemp -d)
 if [ -n "$BRANCH" ]; then
-  git fetch -q origin main "$BRANCH" || { echo "fetch of main/$BRANCH failed"; exit 3; }
+  git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || { echo "fetch of $BRANCH failed (pushed?)"; rm -rf "$TMP"; exit 3; }
+  RHEAD=$(git rev-parse "refs/remotes/origin/$BRANCH")
+  if git show-ref -q --verify "refs/heads/$BRANCH"; then
+    LHEAD=$(git rev-parse "refs/heads/$BRANCH")
+    if [ "$LHEAD" != "$RHEAD" ]; then
+      echo "REFUSED: local $BRANCH is ${LHEAD:0:10} but origin/$BRANCH is ${RHEAD:0:10}: commit and push first (git push origin $BRANCH)"
+      rm -rf "$TMP"; exit 2
+    fi
+  fi
   MAIN=$(git rev-parse origin/main)
+  echo "testing $BRANCH@${RHEAD:0:10} merged onto main@${MAIN:0:10}"
   git worktree add -q --detach "$TMP" "$MAIN" 2>/dev/null || { echo "worktree failed"; exit 3; }
   if ! git -C "$TMP" -c user.name=conduct -c user.email=conduct@local merge -q --no-edit "origin/$BRANCH" >/dev/null 2>&1; then
     echo "origin/$BRANCH does not merge cleanly onto origin/main:"; git -C "$TMP" diff --name-only --diff-filter=U | sed 's/^/  /'
@@ -59,11 +80,11 @@ if [ -n "$BRANCH" ]; then
   BASE=$(git -C "$TMP" rev-parse HEAD)
 else
   BASE=$(git rev-parse HEAD)
+  echo "testing HEAD ${BASE:0:10} ($(git rev-parse --abbrev-ref HEAD))"
   git worktree add -q --detach "$TMP" "$BASE" 2>/dev/null || { echo "worktree failed"; exit 3; }
 fi
 mkdir -p "$TMP/ci"
 # Live relay check: what changed against origin/main decides it (relay_live_check.py).
-git fetch -q origin main 2>/dev/null || true
 CHANGED=$(git diff --name-only "$(git rev-parse origin/main 2>/dev/null || echo "$BASE")" "$BASE" 2>/dev/null)
 SRV=0; NETC=0; RTOOLS=0
 echo "$CHANGED" | grep -q '^server/' && SRV=1
@@ -74,15 +95,15 @@ E2E=0; { [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY
 python3 - "$TMP/ci/params.json" <<PY
 import json, sys
 json.dump({"days": int("$DAYS"), "focus": "$FOCUS", "base": "$BASE", "label": "$LABEL", "branch": "$BRANCH",
-           "shards": json.loads("$SJSON"), "bots": bool($BOTS), "playtest": True,
+           "shards": json.loads("$SJSON"), "bots": bool($BOTS), "playtest": bool($PT),
            "relay": bool($RELAY), "server_changed": bool($SRV), "e2e": bool($E2E), "e2e_strict": bool($NETC)}, open(sys.argv[1], "w"))
 PY
-(cd "$TMP" && git add ci/params.json && git -c user.name=conduct -c user.email=conduct@local commit -qm "CI params: $LABEL ($DAYS days, shards $SJSON, bots $BOTS)")
+(cd "$TMP" && git add ci/params.json && git -c user.name=conduct -c user.email=conduct@local commit -qm "CI params: $LABEL ($DAYS days, shards $SJSON, bots $BOTS, playtest $PT)")
 SHA=$(git -C "$TMP" rev-parse HEAD)
 BR="ci/${LABEL}-${BASE:0:8}"
 git -C "$TMP" push -q -f origin "HEAD:refs/heads/$BR" 2>&1 | grep -v -i "moved\|new location" || true
 git worktree remove --force "$TMP" 2>/dev/null
-echo "pushed $BR ($SHA; shards $SJSON, bots $BOTS, playtest 1, relay $RELAY e2e $E2E) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
+echo "pushed $BR ($SHA; tested sha ${BASE}; shards $SJSON, bots $BOTS, playtest $PT, relay $RELAY e2e $E2E) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
 OUT="/tmp/ci_$SHA"; rm -rf "$OUT"; mkdir -p "$OUT"
 T0=$(date +%s); got=""
 while [ $(( $(date +%s) - T0 )) -lt 2700 ]; do
@@ -107,6 +128,6 @@ git push -q origin --delete "$BR" 2>/dev/null || true
 if [ -z "$got" ]; then
   echo "CI results unavailable after $(( ($(date +%s) - T0) / 60 )) min: run tools/check.sh + tools/bots.sh locally"; exit 3
 fi
-echo "results via $got after $(( ($(date +%s) - T0) / 60 )) min in $OUT"
+echo "results via $got after $(( ($(date +%s) - T0) / 60 )) min in $OUT (tested sha $BASE)"
 cat "$OUT/summary.txt"
 python3 -c "import json,sys;sys.exit(0 if json.load(open('$OUT/summary.json'))['pass'] else 1)"
