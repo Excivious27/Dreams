@@ -100,5 +100,12 @@ func _run() -> void:
 	ok(ForageRoll.spot("meadow", "forage_meadow_5_5", false) == "", "a tier-3 find waits longer than 2 days")
 	GameState.run["day"] = int(GameState.run["day"]) + 4
 	ok(ForageRoll.spot("meadow", "forage_meadow_5_5", false) != "", "and comes back after its wait")
+	ok(not ForageRoll.shows_icon("mushroom") and not ForageRoll.shows_icon("flower"), "common clumps keep the clump look")
+	var rare_shown := false
+	for id: String in GameState.items:
+		if str(GameState.items[id].get("type", "")) == "forage" and int(GameState.items[id].get("tier", 1)) >= 2 and ForageRoll.shows_icon(id):
+			rare_shown = true
+			break
+	ok(rare_shown, "a rare forage find draws as its own icon")
 	print("c16a_p4_fish_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

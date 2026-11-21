@@ -158,6 +158,9 @@ func after_ready() -> void:
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
+			if ForageRoll.shows_icon(it):  # C16a P4 (c16a_08-11): a rare find looks like itself
+				prop("items", Hud.icon_for(it), k, 0, 0.0, false, 0.5)
+				continue
 			prop("nature", nm, k)
 	# Sparse, purposeful ground props only in clearings.
 	var avoid := _grove.duplicate()

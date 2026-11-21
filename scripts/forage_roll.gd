@@ -28,3 +28,11 @@ static func roll(region: String, key: String) -> String:
 	var item := GameState.roll_forage(region)
 	seed(keep)
 	return item
+
+
+## C16a P4 (c16a_08-11): rare finds (tier 2+) draw as their own item icon, so a rare is visible on the map;
+## common clumps (flower, wild herb, mushroom) keep the generic look.
+static func shows_icon(item: String) -> bool:
+	if item in ["flower", "wild_herb", "mushroom"]:
+		return false
+	return int(GameState.items.get(item, {}).get("tier", 1)) >= 2 and Art.has("items", Hud.icon_for(item))
