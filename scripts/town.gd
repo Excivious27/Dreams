@@ -871,7 +871,7 @@ func _animal_show(fest: String) -> void:
 		return
 	var entries: Array = AnimalShowLib.animal_entries() if str(c["kind"]) == "animal" else AnimalShowLib.good_entries(c)
 	if entries.is_empty():
-		var why := "Bring a grown animal and you're in." if str(c["kind"]) == "animal" else "Bring something from the list and the table's yours. Gold stars win."
+		var why := ("Bring one of your own animals next time. Today you can cheer!" if GameState.visiting() else "Bring a grown animal and you're in.") if str(c["kind"]) == "animal" else "Bring something from the list and the table's yours. Gold stars win."
 		await say([{"who": host, "text": "The %s! %s" % [ttl, why]}])
 		player.frozen = false
 		return

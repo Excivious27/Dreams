@@ -115,7 +115,7 @@ func _tightness() -> float:
 ## Prizes won from the machine today (run["arcade_hub"]["claw_today"] = [day, wins]).
 static func wins_today() -> int:
 	var ct: Variant = ArcadeHub._data().get("claw_today", [])
-	if ct is Array and (ct as Array).size() == 2 and int(ct[0]) == int(GameState.run.get("day", 0)):
+	if ct is Array and (ct as Array).size() == 2 and int(ct[0]) == CoopGames.own_day():
 		return int(ct[1])
 	return 0
 
@@ -244,7 +244,7 @@ func _win(i: int) -> void:
 	won_item = str(p["item"])
 	pile.remove_at(i)
 	held_i = -1
-	ArcadeHub._data()["claw_today"] = [int(GameState.run.get("day", 0)), wins_today() + 1]
+	ArcadeHub._data()["claw_today"] = [CoopGames.own_day(), wins_today() + 1]
 	ArcadeHub._data()["claw_dry"] = 0
 	if not DecorSources.grant(null, won_item, 1, "claw"):  # C10a P4 hook: plush decor to the decor box
 		GameState.add_item(won_item, 1)

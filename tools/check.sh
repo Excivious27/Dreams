@@ -1513,3 +1513,10 @@ fi
 if ! python3 tools/slice_c16bp4.py check; then
   echo "C16b P4 chest icons missing"; exit 1
 fi
+
+echo "== C17 P4: co-op minigames (duels, bowling lockstep, house board, visit guards) =="
+c17p4cgout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/coop_games_test.gd 2>&1)"
+echo "$c17p4cgout" | grep -E "FAIL|SCRIPT ERROR|coop_games_test" || true
+if echo "$c17p4cgout" | grep -q "SCRIPT ERROR" || ! echo "$c17p4cgout" | grep -q "coop_games_test: 0 fails"; then
+  echo "C17 P4 coop games test failed"; exit 1
+fi

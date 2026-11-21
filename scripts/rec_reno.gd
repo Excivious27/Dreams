@@ -124,7 +124,7 @@ static func morning() -> void:
 
 ## The Rec Cup: the season's game and the score to beat (grows each year), or {}.
 static func cup() -> Dictionary:
-	if GameState.run.is_empty() or not is_open("trophy_hall"):
+	if GameState.run.is_empty() or not is_open("trophy_hall") or GameState.visiting():  # the host's season isn't ours (c17_06-07)
 		return {}
 	var c: Dictionary = RecCenter.data().get("cup", {})
 	var games: Array = c.get("games", [])

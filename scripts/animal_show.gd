@@ -90,7 +90,7 @@ static func year() -> int:
 
 
 static func done_key(fest: String, cid: String) -> String:
-	return "fest_show_%s_%s_%d" % [fest, cid, int(GameState.run.get("day", 1))]
+	return ("visit_" if GameState.visiting() else "") + "fest_show_%s_%s_%d" % [fest, cid, int(GameState.run.get("day", 1))]  # C17 P4 (c17_07-06)
 
 
 ## Can this animal go to the show? Grown, and its species travels (bees, hives: no; species "show": false: no).
@@ -216,6 +216,8 @@ static func giver_line(uid: String) -> Array:
 
 ## Animal entries: up to 3 showable grown animals, best first. [[label, uid]].
 static func animal_entries() -> Array:
+	if GameState.visiting():
+		return []  # C17 P4 (c17_07-07): Ranch is the HOST's herd while visiting; guests cheer instead
 	var uids: Array = (Ranch.animals() as Dictionary).keys()
 	uids = uids.filter(func(u: Variant) -> bool: return can_show(str(u)))
 	uids.sort_custom(func(x: Variant, y: Variant) -> bool: return score_animal(str(x)) > score_animal(str(y)))

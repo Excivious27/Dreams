@@ -256,7 +256,7 @@ static func overnight(report: Dictionary) -> void:
 		var rate := float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(it.get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")
 		rate = minf(rate, 0.92)  # washing always costs something
 		for k in int(wash[id]):
-			if face > face_left:
+			if face > face_left or lt <= 0:  # no laundromat of our own: the bills come back (c17_07-20)
 				back[id] = int(back.get(id, 0)) + 1
 				continue
 			face_left -= face
@@ -287,6 +287,12 @@ static func wash_room_left() -> int:
 static func laundromat(m: GameMap) -> void:
 	var lt := Builds.built_tier("laundromat")
 	var d := Dialogue.instance(m.get_tree())
+	if GameState.visiting():  # C17 P4 (c17_07-20): the wash is paid at OUR tier overnight, so quote and cap with it
+		lt = NetNode.own_tier("laundromat")
+		if lt <= 0:
+			d.say([{"who": "", "text": "Your host's machines. Wash at your own Laundromat (build one on your farm)."}])
+			await d.finished
+			return
 	while true:
 		var wash: Dictionary = GameState.run.get("wash", {})
 		GameState.run["wash"] = wash

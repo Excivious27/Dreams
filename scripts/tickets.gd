@@ -230,7 +230,6 @@ static func lock_text(prize_id: String) -> String:
 		return "Play %d arcade games (%d/%d)" % [int(arc["plays"]), arcade_plays(), int(arc["plays"])]
 	if arc.has("games") and arcade_games() < int(arc["games"]):
 		return "Try %d different cabinets (%d/%d)" % [int(arc["games"]), arcade_games(), int(arc["games"])]
-		return "Try %d different cabinets" % int(arc["games"])
 	var ms: Variant = need.get("ms", [])
 	for id in (ms if ms is Array else [ms]):
 		if not ArcadeHub.milestone(str(id)):

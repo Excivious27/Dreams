@@ -289,7 +289,9 @@ func frame() -> void:
 	_step_fx()
 	match state:
 		"title":
-			if pressed("a"):
+			if _duel_step():
+				pass
+			elif pressed("a"):
 				start()
 			elif pressed("b"):
 				close()
@@ -310,6 +312,86 @@ func frame() -> void:
 
 
 var _over_t := 0.0
+
+
+# --- C17 P4: score duels with co-op partners (same seed, best score wins) -------
+## The duel this cabinet is in ("" = solo). Rewards stay personal: each player's own
+## fee, tickets and best; the duel only ranks the scores (CoopGames referees).
+var duel_sid := ""
+
+
+func duel_session() -> Dictionary:
+	if duel_sid == "":
+		return {}
+	return CoopGames.i().sessions.get(duel_sid, {})
+
+
+## Title card while partners are online: UP opens (or joins) a duel; in the lobby the
+## owner's A starts it and everyone's round begins on the shared seed. True = handled.
+func _duel_step() -> bool:
+	if free_play or not (game_id in CoopGames.DUEL_GAMES):
+		return false
+	var cg := CoopGames.i()
+	if duel_sid != "" and not cg.sessions.has(duel_sid):
+		duel_sid = ""
+	if duel_sid == "":
+		if CoopGames.available() and pressed("up"):
+			var sid := cg.open_lobby(game_id)
+			if sid != "" and cg.join(sid):
+				duel_sid = sid
+				say("Joined the duel")
+			elif cg.open(game_id):
+				_duel_wait = true
+				say("Duel open: friends press UP here")
+			sfx("j_confirm", "ui_tap")
+			return true
+		if _duel_wait:
+			for sid in cg.sessions:
+				var s: Dictionary = cg.sessions[sid]
+				if s["game"] == game_id and str(s["owner"]) == cg.me and s["state"] == "lobby":
+					duel_sid = sid
+					_duel_wait = false
+		return false
+	var s := duel_session()
+	if s["state"] == "done":
+		duel_sid = ""  # back on the title card after the results: solo again
+		return false
+	if s["state"] == "play" and not (s["scores"] as Dictionary).has(cg.me):
+		if not start():
+			cg.leave(duel_sid)  # can't pay the fee: out of this duel, the others carry on
+			duel_sid = ""
+		return true
+	if pressed("b"):
+		cg.leave(duel_sid)
+		duel_sid = ""
+		return true
+	if s["state"] == "lobby" and str(s["owner"]) == cg.me and pressed("a"):
+		if s["players"].size() >= 2:
+			cg.start(duel_sid)
+		else:
+			say("Waiting for a friend to press UP")
+		return true
+	return true  # lobby, or waiting for the others' scores
+
+
+var _duel_wait := false
+
+
+## Lines for the title/results cards while in a duel.
+func duel_lines() -> Array:
+	var s := duel_session()
+	if s.is_empty():
+		if free_play or not (game_id in CoopGames.DUEL_GAMES) or not CoopGames.available():
+			return []
+		return [PadInput.words("UP: duel your friends")]
+	if s["state"] == "done" or s.has("ranking"):
+		return ["DUEL RESULT"] + CoopGames.result_lines(CoopGames.ranking_of(s))
+	var out := ["DUEL (%d/%d)" % [s["players"].size(), CoopGames.MAX_PLAYERS]]
+	for r in CoopGames.i().rows(duel_sid):
+		out.append("%s  %s" % [r["name"], ("%d" % r["score"]) if r["score"] >= 0 else ("..." if s["state"] == "play" else "ready")])
+	if s["state"] == "lobby":
+		out.append(PadInput.words("A: start" if str(s["owner"]) == CoopGames.i().me else "Waiting for the host of the duel"))
+	return out
 
 
 ## The results card dispenses its tickets: the number counts up over ~0.8 s with
@@ -350,6 +432,9 @@ func _begin() -> bool:
 	_parts.clear()
 	_floats.clear()
 	ArcadeHub.mark_played(game_id)
+	var ds := duel_session()
+	if not ds.is_empty():
+		rng.seed = int(ds.get("seed", 1))  # C17 P4: every player in a duel gets the same round
 	_setup_round()
 	state = "play"
 	return true
@@ -366,6 +451,9 @@ func game_over(extra_lines: Array = [], best_value := -1) -> void:
 	new_best = false if free_play else Tickets.set_best(game_id, score if best_value < 0 else best_value)
 	if not free_play:
 		ArcadeHub.check_milestones(game_id, score, self)
+	var ds := duel_session()
+	if not ds.is_empty() and str(ds.get("state")) == "play":
+		CoopGames.i().post_score(duel_sid, score if best_value < 0 else best_value)
 	_over_t = 0.0
 	_shown_tickets = 0
 	_tick_t = 0.0
@@ -773,6 +861,13 @@ func _draw_title(c: Control) -> void:
 		text(c, Vector2(16, y), PadInput.words(str(line)), W - 32, 8, Color(0.92, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)  # S1 s1_08-06
 		y += 12.0
 	text(c, Vector2(0, 272), "Best: %d" % Tickets.best_score(game_id), W, 9, Color(1, 0.9, 0.6), HORIZONTAL_ALIGNMENT_CENTER)
+	var dl := duel_lines()
+	if not dl.is_empty():  # C17 P4: the duel lobby covers the how-to lines
+		c.draw_rect(Rect2(14, 186, W - 28, 76), Color(0.05, 0.03, 0.08, 0.92))
+		var dy := 198.0
+		for line in dl.slice(0, 6):
+			text(c, Vector2(16, dy), str(line), W - 32, 8, Color(0.75, 1, 0.85), HORIZONTAL_ALIGNMENT_CENTER)
+			dy += 11.0
 	var blink := fmod(t, 1.0) < 0.65
 	panel(c, Rect2(55, 284, 160, 24), Color(0.1, 0.05, 0.12), accent)
 	if blink:
@@ -792,6 +887,10 @@ func _draw_over(c: Control) -> void:
 	else:
 		text(c, Vector2(r.position.x, r.position.y + 64), "Best  %d" % Tickets.best_score(game_id), r.size.x, 9, Color(0.8, 0.8, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 	var y := r.position.y + 82
+	var dl := duel_lines() if duel_sid != "" else []
+	for line in dl.slice(0, 5):
+		text(c, Vector2(r.position.x + 6, y), str(line), r.size.x - 12, 8, Color(0.75, 1, 0.85), HORIZONTAL_ALIGNMENT_CENTER)
+		y += 11
 	for line in over_lines:
 		if str(line).begins_with("!"):
 			continue

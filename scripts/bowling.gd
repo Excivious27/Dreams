@@ -634,6 +634,10 @@ const POWER_PERIOD := 1.5   # seconds for the power bar to rise and fall
 
 var lane := 1
 var opp_id := ""             # villager challenged ("" = solo)
+## C17 P4: a CoopGames bowling session with co-op partners ("" = none). Frames go in
+## lockstep: after each frame we post our total and wait until everyone has caught up.
+var coop_sid := ""
+var coop: CoopGames = null   # tests may hand in their own instance
 var manual := false          # tests: drive tick() by hand
 var bot := -1.0              # tests: >= 0 plays itself at this skill
 var sim := Sim.new()
@@ -678,10 +682,11 @@ var _bot_rng := RandomNumberGenerator.new()
 var _btn_quit := Rect2(6, 72, 30, 24)
 
 
-static func play(m: GameMap, lane_no: int, versus := "") -> Dictionary:
+static func play(m: GameMap, lane_no: int, versus := "", coop_session := "") -> Dictionary:
 	var g := Bowling.new()
 	g.lane = lane_no
 	g.opp_id = versus
+	g.coop_sid = coop_session
 	m.add_child(g)
 	await g.closed
 	return g.result
@@ -734,10 +739,25 @@ func opp_name() -> String:
 	return str(GameState.npcs.get(opp_id, {}).get("name", opp_id.capitalize()))
 
 
+func _cg() -> CoopGames:
+	if coop == null:
+		coop = CoopGames.i()
+	return coop
+
+
+## Partners' rows for the sheet: [{name, frames, score, me}] (empty when solo).
+func coop_rows() -> Array:
+	return [] if coop_sid == "" else _cg().rows(coop_sid)
+
+
 func _new_ball() -> void:
 	var ns := next_state(rolls)
 	if bool(ns["over"]):
 		_game_over()
+		return
+	if coop_sid != "" and int(ns["ball"]) == 0 and _cg().sessions.has(coop_sid) and not _cg().may_bowl(coop_sid, int(ns["frame"]) + 1):
+		phase = "wait"  # a partner is still on the last frame
+		_phase_t = 0.0
 		return
 	if bool(ns["reset"]):
 		sim.rack()
@@ -853,6 +873,9 @@ func tick(delta: float) -> void:
 			if _phase_t >= 0.75 or (go and _phase_t > 0.2):
 				sim.sweep()
 				if _frame_done():
+					if coop_sid != "":
+						var fdone := int(next_state(rolls.slice(0, rolls.size() - 1))["frame"]) + 1
+						_cg().post_frame(coop_sid, fdone, score_of(rolls))
 					if opp_id != "":
 						_start_opp()
 						return
@@ -864,6 +887,9 @@ func tick(delta: float) -> void:
 				var v := int(opp_rolls[_opp_from + _opp_show - 1])
 				Music.instance(get_tree()).sfx(RecAudio.opp_roll(v), "thud")
 			if _opp_show >= shown and (go or _phase_t > 0.55 * (shown + 1) + 1.1):
+				_new_ball()
+		"wait":
+			if not _cg().sessions.has(coop_sid) or _cg().may_bowl(coop_sid, int(next_state(rolls)["frame"]) + 1):
 				_new_ball()
 		"over":
 			if go or (live and Input.is_action_just_pressed("b")):
@@ -996,6 +1022,8 @@ func _game_over() -> void:
 		result["opp_score"] = os
 		result["won"] = sc > os
 		result["bonus"] = int(opponent(opp_id)["bonus"]) if sc > os else (2 if sc == os else 0)
+	if coop_sid != "":
+		result["coop"] = coop_sid  # tickets stay personal (own score); the session ranks us
 	if GameState.run.size() > 0 and sc > Tickets.best_score("bowling"):
 		_burst(48)
 	var new_best := GameState.run.size() > 0 and sc > Tickets.best_score("bowling")
@@ -1129,6 +1157,8 @@ func _quad(x0q: float, x1q: float, y0q: float, y1q: float, c: Color, h := 0.0) -
 
 
 func _sheet_rect() -> Rect2:
+	if coop_sid != "":
+		return Rect2(4, 4, 262, 62 + 11 * clampi(coop_rows().size() - 1, 0, CoopGames.MAX_PLAYERS - 1))
 	return Rect2(4, 4, 262, 62 if opp_id == "" else 90)
 
 
@@ -1374,6 +1404,16 @@ func _draw_sheet() -> void:
 		c.draw_string(_font, Vector2(9, 15), "%s · LANE %d" % [pname.to_upper(), lane], HORIZONTAL_ALIGNMENT_LEFT, 120, 8, Color(0.75, 0.9, 1))
 		c.draw_string(_font, Vector2(130, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, Color(1, 0.85, 0.4))
 		_sheet_row(rolls, 20, 40, cur, true)
+		var py := 72.0
+		for row: Dictionary in coop_rows():  # C17 P4: one line per partner: name, frame, total
+			if bool(row["me"]):
+				continue
+			var fr: Array = row["frames"]
+			var ln := "%s   frame %d   %d" % [str(row["name"]).to_upper(), mini(fr.size() + 1, 10) if fr.size() < 10 else 10, int(fr[-1]) if not fr.is_empty() else 0]
+			if fr.size() >= 10:
+				ln += "  done"
+			c.draw_string(_font, Vector2(9, py), ln, HORIZONTAL_ALIGNMENT_LEFT, 250, 8, Color(0.6, 0.85, 1))
+			py += 11.0
 	else:
 		var head := "LANE %d · VS %s" % [lane, opp_name().to_upper()]
 		c.draw_string(_font, Vector2(9, 15), head, HORIZONTAL_ALIGNMENT_LEFT, 170, fit_size(head, 170.0, 8), Color(0.75, 0.9, 1))
@@ -1458,6 +1498,7 @@ func _draw_controls() -> void:
 		"aim": tip = _verb("Tap", "Press A") + " when the line hits the pocket"
 		"power": tip = _verb("Tap", "Press A") + " in the gold band for a clean release"
 		"opp": tip = _verb("Tap", "Press A") + " to carry on"
+		"wait": tip = wait_text()
 	c.draw_rect(Rect2(0, 372, 270, 108), Color(0.05, 0.04, 0.08, 0.9))
 	if tip != "":
 		c.draw_string(_font, Vector2(0, 388), tip, HORIZONTAL_ALIGNMENT_CENTER, 270, 8, Color(0.85, 0.85, 1))
@@ -1599,3 +1640,9 @@ func _prize_unlock(old_best: int, sc: int) -> String:
 	if names.is_empty():
 		return ""
 	return "Prize counter: %s unlocked!" % ", ".join(names)
+
+
+## Line for the bottom card while waiting on partners (C17 P4).
+func wait_text() -> String:
+	var who := _cg().waiting_on(coop_sid, int(next_state(rolls)["frame"]) + 1)
+	return "Waiting for %s" % ", ".join(who) if not who.is_empty() else "Next frame"

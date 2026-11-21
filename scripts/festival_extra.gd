@@ -110,7 +110,7 @@ static func _venue_play(m: GameMap, fest: String) -> void:
 	if fh.y > 0.0 and (h < fh.x or h >= fh.y):
 		m.hud.toast(FestivalWords.not_open_text(fest, fh, h < fh.x), Color(1, 0.9, 0.6))
 		return
-	var key := "fest_%s_%d" % [fest, int(GameState.run["day"])]
+	var key := ("visit_" if GameState.visiting() else "") + "fest_%s_%d" % [fest, int(GameState.run["day"])]  # C17 P4 (c17_07-06): a host's festival never blocks our own
 	if m.player:
 		m.player.frozen = true
 	if GameState.run["flags"].has(key):

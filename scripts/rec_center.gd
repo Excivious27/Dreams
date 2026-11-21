@@ -771,8 +771,17 @@ static func _lane(m: GameMap, lane: int) -> void:
 		var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
 		if best > 0:
 			txt += "  Your best: %d." % best
-		d.say([{"who": "", "text": txt, "choice": ["Bowl", "How to play", "Not now"], "key": ""}])
+		var ch := ["Bowl", "How to play", "Not now"]
+		if CoopGames.available():
+			ch.insert(1, "Bowl with friends")  # C17 P4: 2-4 player versus with co-op partners
+		d.say([{"who": "", "text": txt, "choice": ch, "key": ""}])
 	await d.finished
+	if versus == "" and CoopGames.available():
+		if d.last_choice == 1:
+			await bowl_party(m, lane, cost)
+			return
+		if d.last_choice > 1:
+			d.last_choice -= 1
 	if d.last_choice == 1:
 		await m.say([{"who": "", "text": "1) Drag the ball (or LEFT/RIGHT) along the foul line. The spin buttons (or UP/DOWN) set the hook: it bites late, on the dry end of the lane. Then GO."},
 			{"who": "", "text": "2) The dotted path sweeps across the lane: tap when it ends in the pocket, just right of the head pin.  3) Stop the power bar in the gold band for a clean release."},
@@ -791,6 +800,61 @@ static func _lane(m: GameMap, lane: int) -> void:
 	GameState.run["flags"].erase("rec_free_game")
 	var res: Dictionary = await Bowling.play(m, lane)
 	finish_game(m, res)
+
+
+## C17 P4: bowling versus with co-op partners (2-4). Open or join the lane's session,
+## wait in a small lobby (the opener starts it), then everyone bowls on their own
+## phone in lockstep frames. Each player pays their own fee and earns their own
+## tickets/best; the session only ranks (CoopGames referees on the room host).
+static func bowl_party(m: GameMap, lane: int, cost: int) -> void:
+	if why_closed() != "":
+		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		return
+	if int(GameState.run["crystals"]) < cost:
+		m.hud.toast("Not enough %s for a game (%s)." % [Money.word(), Money.amount(cost)], Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
+		return
+	var cg := CoopGames.i()
+	var sid := cg.open_lobby("bowling")
+	if sid == "" or not cg.join(sid):
+		if not cg.open("bowling"):
+			m.hud.toast("Your host is away. Try again in a moment.", Color(1, 0.8, 0.7))
+			return
+		sid = ""
+	var d := Dialogue.instance(m.get_tree())
+	for _try in 40:
+		if sid == "":
+			sid = cg.open_lobby("bowling")
+		var s: Dictionary = cg.sessions.get(sid, {})
+		if not s.is_empty() and str(s["state"]) == "play":
+			break
+		var names := []
+		for r: Dictionary in cg.rows(sid):
+			names.append(str(r["name"]))
+		var owner := not s.is_empty() and str(s["owner"]) == cg.me
+		var txt := "Lane %d, a game for up to %d. Bowling: %s." % [lane, CoopGames.MAX_PLAYERS, ", ".join(names) if not names.is_empty() else "just you so far"]
+		var ch := (["Start the game"] if owner and names.size() >= 2 else ["Check again"]) + ["Leave"]
+		d.say([{"who": "", "text": txt + ("" if owner else "  The first bowler starts it."), "choice": ch, "key": ""}])
+		await d.finished
+		if d.last_choice != 0:
+			if sid != "":
+				cg.leave(sid)
+			return
+		if owner and names.size() >= 2:
+			cg.start(sid)
+		for _f in 30:  # a beat for the room host's answer
+			await m.get_tree().process_frame
+	var st: Dictionary = cg.sessions.get(sid, {})
+	if st.is_empty() or str(st["state"]) != "play":
+		if sid != "":
+			cg.leave(sid)
+		return
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+	GameState.run["flags"].erase("rec_free_game")
+	var res: Dictionary = await Bowling.play(m, lane, "", sid)
+	finish_game(m, res)
+	if res.is_empty() or not bool(res.get("done", false)):
+		cg.leave(sid)
 
 
 static func house_lane() -> int:
@@ -842,9 +906,9 @@ static func together_result(npc_id: String, you: int, them: int) -> Array:
 static func bowl_friend(npc_id: String, won: bool) -> int:
 	var f: Dictionary = GameState.run["flags"]
 	var key := "rec_bowled_" + npc_id
-	if int(f.get(key, -1)) == int(GameState.run["day"]):
+	if int(f.get(key, -1)) == CoopGames.own_day():  # C17 P4: own day, not the host's (c17_06-16)
 		return 0
-	f[key] = int(GameState.run["day"])
+	f[key] = CoopGames.own_day()
 	var gain := 8 if won else 5
 	GameState.add_friend(npc_id, gain)
 	return gain

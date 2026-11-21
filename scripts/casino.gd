@@ -56,8 +56,8 @@ static func _st() -> Dictionary:
 		GameState.run["casino"] = st
 	# Co-op: run.day is the host's calendar while visiting, so a visit never starts a
 	# new casino day (it can't reset limits or lift a break early): own_day() stays put.
-	if int(st.get("day", -1)) != int(GameState.run.get("day", 1)) and (not GameState.visiting() or int(st.get("day", -1)) < 0):
-		st["day"] = int(GameState.run.get("day", 1))
+	if int(st.get("day", -1)) != CoopGames.own_day() and (not GameState.visiting() or int(st.get("day", -1)) < 0):
+		st["day"] = CoopGames.own_day()  # C17 P4: a first visit starts at OUR day, never the host's (c17_06-26)
 		st["today"] = {"hands": 0, "staked": 0, "won": 0, "lost": 0}
 	return st
 
@@ -236,8 +236,8 @@ static func after_hand_note() -> String:
 
 
 static func _advance_clock() -> void:
-	if GameState.visiting():
-		return  # a guest's hands never move the host's shared clock
+	if GameState.visiting() or (Net.online() and Net.peers.size() > 0):
+		return  # a guest's hands never move the host's shared clock; with partners on, time already runs (c17_06-06)
 	var t := int(GameState.run.get("time", 0)) + int(data().get("hand_min", 3))
 	GameState.run["time"] = mini(t, GameState.DAY_END - 15)
 
@@ -274,6 +274,8 @@ static func why_shut() -> String:
 	if GameState.run.is_empty():
 		return ""
 	var st := _st()
+	if int(st.get("break_until", 0)) > own_day() + int(lim("break_days")):
+		st["break_until"] = own_day() + int(lim("break_days"))  # repairs a break set on a host's calendar
 	if int(st.get("break_until", 0)) > own_day():
 		return line("doorman_break") % int(st["break_until"])
 	var h: Array = data().get("hours", [18, 26])
