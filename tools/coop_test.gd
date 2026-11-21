@@ -37,7 +37,7 @@ func _reset(n: Variant) -> void:
 	n._last_room = ""
 	n._retries = 0
 	n._retry_t = 0.0
-	n.ws = null
+	n.tr = null
 
 
 func _host_world(day: int, builds: Dictionary) -> Dictionary:
@@ -93,7 +93,7 @@ func _more(n: Variant) -> void:
 	_snap(n)
 	n._apply_world(_host_world(40, {"barn": 2}))
 	n.my_id = -1
-	n.ws = null
+	n.tr = null
 	n._retry_t = 2.0
 	check(Net.visiting() and not Net.online(), "visiting during reconnect")
 	GameState.save()
@@ -119,7 +119,7 @@ func _more(n: Variant) -> void:
 	_snap(n)
 	n._apply_world(_host_world(40, {}))
 	n.my_id = -1
-	n.ws = null
+	n.tr = null
 	n._retries = 2
 	n._retry_t = 0.01
 	n._process(0.1)

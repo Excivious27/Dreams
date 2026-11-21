@@ -331,6 +331,11 @@ H["tobin"]["milestones"]["6"][1]["if_done"] = "The kite's nearly built. The wind
 H["mabel"]["milestones"]["6"][0]["if_done"] = "Your flowers were my crown. Now they're in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
 H["marlowe"]["milestones"]["6"][0]["if_done"] = "The new lens holds. I still look for the crack every night. It was there since the night the bell stopped. Same night, you know."
 H["benno"]["milestones"]["6"][0]["if_done"] = "That pup wears the pack like a medal. I can see it in the shoulders. It's got a job now."
+# C11b P4 (c11b_04-05): the villagers who keep animals give one (Perks "animal" fx, heart_perks.json).
+# Appended last, so the if_done/if_gone indexes above still point at the same lines.
+H["hazel"]["milestones"]["10"].append({"who": "Hazel", "text": "And take Saffron. My best layer, gold as a yolk. Nine years she's laid for me; she's earned a good coop. If it's full, she can wait here till you've room."})
+H["posy"]["milestones"]["6"].append({"who": "Posy", "text": "Oh, and Crumpet. My silver rabbit. She sits in the flour sacks and I can't sell flour with fur in it. She'd love a hutch of her own. When you have room, she's yours."})
+H["benno"]["milestones"]["8"].append({"who": "Benno", "text": "One more thing. Tinker, the goat kid I bottle-fed this spring. She follows me everywhere and the mare's jealous. Give her a corner of your barn when there's room."})
 
 # ---- C7 P4: a narrated opening for every ♥2/♥4/♥6 scene too (applied last, so
 # the if_done/if_gone line indexes above still point at the spoken lines).

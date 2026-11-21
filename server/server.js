@@ -4,6 +4,7 @@
 // Protocol (JSON text frames):
 //   client -> {t:"join", room:"ABCD", name, look, arc}   // room "" = create
 //   server -> {t:"joined", id, room, host:true|false, peers:[{id,name,look,arc}]}
+//   server -> {t:"old_build", need} when the joiner's proto differs from the room creator's (no proto = 0)
 //   server -> {t:"peer_joined", peer:{...}} / {t:"peer_left", id}
 //   client -> {t:"to", id, d:{...}}      // to one peer (host sync replies)
 //   client -> {t:"all", d:{...}}         // to everyone else in the room
@@ -75,7 +76,7 @@ wss.on("connection", (ws) => {
     if (m.t === "join") {
       let r = m.room ? String(m.room).toUpperCase().slice(0, 8) : "";
       if (r && !rooms.has(r) && m.create === false) return send(ws, { t: "no_room" });
-      if (!r || !rooms.has(r)) { r = r && !rooms.has(r) ? r : code(); rooms.set(r, { host: ws.id, hostToken: String(m.token || ""), peers: new Map(), world: null, emptySince: 0 }); }
+      if (!r || !rooms.has(r)) { r = r && !rooms.has(r) ? r : code(); rooms.set(r, { host: ws.id, hostToken: String(m.token || ""), peers: new Map(), world: null, emptySince: 0, proto: Number(m.proto) || 0 }); }
       const room = rooms.get(r);
       const token = String(m.token || "");
       // Reconnect: the same device replaces its old socket (no ghost) and keeps the host role.
@@ -92,6 +93,8 @@ wss.on("connection", (ws) => {
       }
       // A room whose host is gone (left alone, timed out) gets a new host: whoever comes in.
       if (!room.peers.has(room.host) && room.host !== ws.id && !(room.hostGoneAt && Date.now() - room.hostGoneAt < GRACE)) { room.host = ws.id; room.hostToken = token; room.hostGoneAt = 0; }
+      // Build check (S1): a client on another protocol would desync silently; no proto = 0 (old clients).
+      if ((Number(m.proto) || 0) !== (room.proto || 0)) return send(ws, { t: "old_build", need: room.proto || 0 });
       if (room.peers.size >= MAX) return send(ws, { t: "full" });
       ws.token = token;
       ws.room = r; ws.info = { id: ws.id, name: String(m.name || "Player").slice(0, 24), look: m.look || {}, arc: m.arc || "penguins", scene: "farm" };

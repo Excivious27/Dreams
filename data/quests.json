@@ -2902,6 +2902,15 @@
    },
    "take": true,
    "reward": {
+    "animal": [
+     "lantern_moth",
+     "Liesl"
+    ],
+    "animal_gang": [
+     "peacock",
+     "Liesl"
+    ],
+    "gift_key": "mega:gloam_job",
     "crystals": 300,
     "item": [
      "luna_moth",
@@ -2951,6 +2960,11 @@
    },
    "take": true,
    "reward": {
+    "animal": [
+     "ostrich",
+     "Nadia"
+    ],
+    "gift_key": "mega:desert_job",
     "crystals": 700,
     "item": [
      "greater_potion",
@@ -3082,6 +3096,11 @@
    },
    "take": true,
    "reward": {
+    "animal": [
+     "snow_yak",
+     "Ingrid"
+    ],
+    "gift_key": "mega:frost_job",
     "crystals": 1100,
     "max_energy": 10
    }
@@ -3132,6 +3151,15 @@
    },
    "take": true,
    "reward": {
+    "animal": [
+     "cloud_sheep",
+     "Nimbus"
+    ],
+    "animal_gang": [
+     "emu",
+     "Nimbus"
+    ],
+    "gift_key": "mega:wind_job",
     "crystals": 1500,
     "max_hp": 20
    }

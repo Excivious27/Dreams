@@ -810,6 +810,42 @@ func sfx(name: String, fallback := "") -> void:
 		set_duck_layer("jingle", JINGLE_DUCK, 0.12, 0.8, ln)
 
 
+## The first name in the list that has a file plays (C11b chore cues: "hay_toss" until it lands, then "eat").
+func sfx_chain(names: Array) -> void:
+	for n in names:
+		if has_sfx(str(n)):
+			sfx(str(n))
+			return
+
+
+## A sound at a set pitch and level, optionally a moment later (C11b RanchVoice: creature voices
+## made from existing files, and the lab strains' soft layered whirr). Same 70 ms de-dupe as sfx.
+func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay := 0.0) -> void:
+	if delay > 0.0 and is_inside_tree():
+		get_tree().create_timer(delay, false).timeout.connect(func() -> void: sfx_pitched(name, fallback, pitch, db, 0.0))
+		return
+	if _muted or _sfx.is_empty():
+		return
+	var st := _load_sfx(name)
+	if st == null and fallback != "":
+		st = _load_sfx(fallback)
+	if st == null:
+		return
+	var now := Time.get_ticks_msec()
+	var key := "%s@%.2f" % [name, pitch]
+	if now - int(_last_sfx.get(key, -1000)) < 70:
+		return
+	_last_sfx[key] = now
+	var pick := _voice_for()
+	var vi := _sfx.find(pick)
+	pick.stream = st
+	pick.volume_db = -4.0 + _group_db(name) + db
+	pick.pitch_scale = clampf(pitch, 0.5, 2.0)
+	pick.play()
+	_voice_t[vi] = now
+	_voice_long[vi] = st.get_length() > 1.0
+
+
 ## A free voice, else the oldest one playing a short sound, else the oldest.
 func _voice_for() -> AudioStreamPlayer:
 	for p in _sfx:

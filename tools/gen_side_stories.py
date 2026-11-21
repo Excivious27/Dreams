@@ -69,7 +69,9 @@ chain("coldy_key", "penguins", "Coldy's key", {"flag": "st_p3_coldy"}, [
      "hint": "Bring Theo 2 Old Coins to date the vault."},
     {"giver": "alder",
      "lines": N("Coldy's key turns in the snowflake lock with a sound like ice cracking on a pond. The little room smells of cold stone and old paper.") + L("Alder", "The town's first bell rope. A bundle of seed packets, still good. And a letter: 'If you are reading this, you remembered. Ring the bell.'", "Twenty-one years we forgot. I'll put the rope back on the bell myself."),
-     "give": ["gold_bar", 1], "friend": ["alder", 20], "flag": "ss_vault_open", "hint": ""},
+     "give": ["gold_bar", 1], "friend": ["alder", 20], "flag": "ss_vault_open", "hint": "",
+     # c11b_04-06: a snow duck nesting in the cold vault goes home with you.
+     "animal": {"species": "duck", "variant": "snow", "name": "Frost", "keepsake": True, "toast": "A snow duck was nesting in the cold vault. She's coming to your coop."}},
 ])
 
 # 23 — The Wastes Commander (penguins). He left Tomas's locket where he fell
@@ -100,7 +102,9 @@ chain("rosa", "gangsters", "Mama Rosa's restaurant", {"flag": "st_g2_rosa"}, [
      "hint": "Bring Mama Rosa 3 Trout for the cook-off."},
     {"giver": "mama_rosa",
      "lines": N("The whole block crowds into Rosa's kitchen to taste. Bellamy takes one spoonful, puts the spoon down, and doesn't pick it up again.") + L("Mama Rosa", "He shook my hand. He's going to buy his bread from Posy now. Honest, see? Honest wins, it just needs a good stew behind it.", "There's a table by the window with your name on it. Nobody else sits there. Not even me."),
-     "money": 250, "flag": "ss_rosa_won", "hint": ""},
+     "money": 250, "flag": "ss_rosa_won", "hint": "",
+     # c11b_04-06: two of Rosa's kitchen hens retire to your coop (RanchGift: they wait for room).
+     "animal": {"species": "chicken", "count": 2, "toast": "Mama Rosa is sending two of her kitchen hens to your coop: they lay better in the country."}},
 ])
 
 # 25 — The Kid's school (gangsters)
@@ -115,7 +119,9 @@ chain("kid_school", "gangsters", "The Kid's school", {"flag": "st_g4_kid"}, [
      "hint": "Bring Mayor Alder 20 Planks for the school crossing."},
     {"giver": "the_kid",
      "lines": N("The Kid shows up at the gate in a clean shirt, hair flattened with water, a satchel that's clearly new.") + L("The Kid", "First day. The teacher's mean about spelling. It's the best.", "You didn't have to do that. You did it anyway. That's the kind of crew I want to be in."),
-     "money": 150, "flag": "ss_kid_school", "hint": ""},
+     "money": 150, "flag": "ss_kid_school", "hint": "",
+     # c11b_04-06: the class rabbit comes to your hutch for good.
+     "animal": {"species": "rabbit", "name": "Professor", "keepsake": True, "toast": "The class rabbit, Professor, is coming to live in your hutch for good."}},
 ])
 
 # 26 — Specs and the wire (gangsters)

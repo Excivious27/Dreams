@@ -101,6 +101,13 @@ if ! echo "$mcout" | grep -q "month_curve_test: 0 failures"; then
   echo "Month curve test failed"; exit 1
 fi
 
+echo "== C11b P2 long ranch curve: three years of ranching, both arcs =="
+lcout="$("$GODOT" --headless --path . -s res://tools/month_curve_test.gd -- long 2>&1)"
+echo "$lcout" | grep -E "FAIL|month_curve_test|year 1|SCRIPT ERROR" || true
+if ! echo "$lcout" | grep -q "month_curve_test long: 0 failures"; then
+  echo "Long ranch curve test failed"; exit 1
+fi
+
 echo "== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) =="
 fhout="$("$GODOT" --headless --path . -s res://tools/first_hours_test.gd 2>&1)"
 echo "$fhout" | grep -E "FAIL|first_hours_test|SCRIPT ERROR" || true
@@ -190,6 +197,13 @@ taout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/team_animals
 echo "$taout" | grep -E "FAIL|SCRIPT ERROR|team_animals_test" || true
 if ! echo "$taout" | grep -q "team_animals_test: OK" || echo "$taout" | grep -q "SCRIPT ERROR"; then
   echo "team_animals_test failed"; exit 1
+fi
+
+echo "== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice =="
+p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c11b_p5_test.gd 2>&1)"
+echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|c11b_p5_test" || true
+if ! echo "$p5out" | grep -q "c11b_p5_test: [0-9]* checks, 0 failures" || echo "$p5out" | grep -q "SCRIPT ERROR"; then
+  echo "c11b_p5_test failed"; exit 1
 fi
 
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
@@ -331,6 +345,18 @@ if ! echo "$cout" | grep -q "ranch_test: [0-9]* checks, 0 failures"; then
   echo "Ranch test failed"; exit 1
 fi
 
+cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ranch_p2_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_p2_test" || true
+if ! echo "$cout" | grep -q "ranch_p2_test: 0 failures"; then
+  echo "Ranch P2 test failed"; exit 1
+fi
+
+cout="$("$GODOT" --headless --path . -s res://tools/ranch_gift_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_gift_test" || true
+if ! echo "$cout" | grep -q "ranch_gift_test: [0-9]* checks, 0 failures"; then
+  echo "Ranch gift test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/decor_sources_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|decor_sources_test" || true
 if ! echo "$cout" | grep -q "decor_sources_test: 0 failures"; then
@@ -396,6 +422,7 @@ python3 tools/slice_c11a.py check || { echo "C11a ranch art check failed"; exit 
 
 echo "== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard =="
 python3 tools/slice_c11b.py check || { echo "C11b ranch art check failed"; exit 1; }
+python3 tools/slice_c11b_chores.py check || { echo "C11b chore icons missing"; exit 1; }
 
 echo "== economy: no money loops, crops and brews inside their bands =="
 python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }
@@ -772,6 +799,34 @@ if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep 
   echo "Ranch villagers test failed"; exit 1
 fi
 
+echo "== C11b P6: fair ribbon tables =="
+asout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/animal_show_test.gd 2>&1)"
+echo "$asout" | grep -E "FAIL|SCRIPT ERROR|animal_show_test" || true
+if ! echo "$asout" | grep -q "animal_show_test: OK" || echo "$asout" | grep -q "SCRIPT ERROR"; then
+  echo "animal_show_test failed"; exit 1
+fi
+
+echo "== C11b P6: battle line-up and team jobs =="
+btout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_team_test.gd 2>&1)"
+echo "$btout" | grep -E "FAIL|SCRIPT ERROR|battle_team_test" || true
+if ! echo "$btout" | grep -q "battle_team_test: OK" || echo "$btout" | grep -q "SCRIPT ERROR"; then
+  echo "battle_team_test failed"; exit 1
+fi
+
+echo "== C11b P6: ranch building arc words and footprints =="
+bwout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/builds_words_test.gd 2>&1)"
+echo "$bwout" | grep -E "FAIL|SCRIPT ERROR|builds_words_test" || true
+if ! echo "$bwout" | grep -q "builds_words_test: OK" || echo "$bwout" | grep -q "SCRIPT ERROR"; then
+  echo "builds_words_test failed"; exit 1
+fi
+
+echo "== C11b P6: C11b creature voices and ranch sound =="
+raout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_audio_c11b_test.gd 2>&1)"
+echo "$raout" | grep -E "FAIL|SCRIPT ERROR|ranch_audio_c11b_test" || true
+if ! echo "$raout" | grep -q "ranch_audio_c11b_test: OK" || echo "$raout" | grep -q "SCRIPT ERROR"; then
+  echo "ranch_audio_c11b_test failed"; exit 1
+fi
+
 echo "== C8 P3: collections (museum, logs, Book tab) =="
 clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
@@ -889,4 +944,31 @@ nuout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_url_test
 echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
 if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
   echo "net_url_test failed"; exit 1
+fi
+
+echo "== net transport: NetNode over the in-memory relay twin (NetRelayRoom = server.js rules) =="
+ntout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_transport_test.gd 2>&1)"
+echo "$ntout" | grep -E "FAIL|SCRIPT ERROR|net_transport_test" || true
+if ! echo "$ntout" | grep -q "net_transport_test: [0-9]* checks, 0 failures"; then
+  echo "net_transport_test failed"; exit 1
+fi
+
+echo "== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) =="
+nsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_steam_test.gd 2>&1)"
+echo "$nsout" | grep -E "FAIL|SCRIPT ERROR|net_steam_test" || true
+if ! echo "$nsout" | grep -q "net_steam_test: [0-9]* checks, 0 failures"; then
+  echo "net_steam_test failed"; exit 1
+fi
+
+echo "== steam co-op: web build never parses Steam code (backend object, load by path) =="
+python3 tools/net_web_safety_check.py || { echo "net_web_safety_check failed"; exit 1; }
+
+echo "== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) =="
+python3 tools/steam_input_check.py || { echo "steam_input_check failed"; exit 1; }
+
+echo "== deck window: 1280x800 with no window manager fills the screen (xvfb) =="
+dwout="$(SteamDeck=1 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path . --rendering-driver opengl3 -s res://tools/deck_window_test.gd 2>&1)"
+echo "$dwout" | grep -E "FAIL|SCRIPT ERROR|deck_window_test" || true
+if ! echo "$dwout" | grep -q "deck_window_test: .*0 failures"; then
+  echo "deck_window_test failed"; exit 1
 fi
