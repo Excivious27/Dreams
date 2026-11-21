@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 111.8}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 6.1}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 3.7}
+{"step": 15, "name": "crops wired in", "rc": 0, "secs": 6.9}
+{"step": 21, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 4.8}
+{"step": 27, "name": "C11b P1: the heart (ability) tap is dropped while busy, frozen or in d", "rc": 0, "secs": 4.3}
+{"step": 33, "name": "ticket_econ_test", "rc": 0, "secs": 3.4}
+{"step": 39, "name": "gang_play_test", "rc": 0, "secs": 24.8}
+{"step": 45, "name": "house_exterior_test", "rc": 0, "secs": 7.4}
+{"step": 51, "name": "shop_econ_test", "rc": 0, "secs": 3.7}
+{"step": 57, "name": "gang_flavour_test", "rc": 0, "secs": 3.4}
+{"step": 63, "name": "every sound the game asks for exists", "rc": 0, "secs": 4.0}
+{"step": 69, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.3}
+{"step": 75, "name": "music_stream_test", "rc": 0, "secs": 10.0}
+{"step": 81, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 4.8}
+{"step": 87, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.9}
+{"step": 93, "name": "goal_line_test", "rc": 0, "secs": 3.4}
+{"step": 99, "name": "campaign_gate_test", "rc": 0, "secs": 8.8}
+{"step": 105, "name": "skill_glow_test", "rc": 0, "secs": 4.8}
+{"step": 111, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 14.0}
+{"step": 117, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 12.0}
+{"step": 123, "name": "jumper_test", "rc": 0, "secs": 3.4}
+{"step": 129, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.4}
+{"step": 135, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 4.0}
+{"step": 141, "name": "C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou", "rc": 0, "secs": 3.4}
+{"step": 147, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 4.3}
+{"step": 153, "name": "C10a P5: wardrobe", "rc": 0, "secs": 5.9}
