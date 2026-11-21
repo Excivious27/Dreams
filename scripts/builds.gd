@@ -90,8 +90,73 @@ static func is_built(id: String) -> bool:
 static func tier_def(id: String, tier: int) -> Dictionary:
 	for t in all().get(id, {}).get("tiers", []):  # any arc: a co-op host can own the other story's builds
 		if int(t["tier"]) == tier:
-			return t
+			return _arc_words(t)
 	return {}
+
+
+## C11b P6 (c11b_05-09): ranch buildings in the gangster arc's own words. The tier's name_gang (from
+## gen_stations RANCH) wins when it differs; else GANG_NAMES; the penguin arc keeps the storybook names.
+const GANG_NAMES := {
+	"Coop": "Roost", "Big Coop": "Big Roost", "Deluxe Coop": "Rooftop Roost",
+	"Barn": "Stock Shed", "Big Barn": "Big Stock Shed", "Deluxe Barn": "Stock Warehouse", "Grand Barn": "Lab Barn",
+	"Rabbit Hutch": "Bunny Crates", "Big Hutch": "Bunny Stack",
+	"Pig Sty": "Pig Pen", "Big Sty": "Big Pig Pen",
+	"Beehive": "Rooftop Hive", "Bee House": "Hive Rack", "Apiary": "Hive Wall",
+	"Exotic Enclosure": "Exotics Yard", "Enclosure": "Exotics Yard", "Grand Enclosure": "Big Exotics Yard",
+}
+
+
+static func _gang() -> bool:
+	return not GameState.run.is_empty() and str(GameState.run.get("arc", "")) == "gangsters"
+
+
+static func _arc_words(t: Dictionary) -> Dictionary:
+	if not _gang():
+		return t
+	var nm := str(t.get("name", ""))
+	var g := str(t.get("name_gang", ""))
+	var want := g if g != "" and g != nm else str(GANG_NAMES.get(nm, nm))
+	# The gangster look of the building (buildings/<sprite>_gang: corrugated metal, chain-link, neon).
+	var gs := str(t.get("sprite", "")) + "_gang"
+	var look := str(t.get("group", "")) == "buildings" and Art.has("buildings", gs)
+	if want == nm and not look:
+		return t
+	var out := t.duplicate()
+	out["name"] = want
+	if look:
+		out["sprite"] = gs
+	return out
+
+
+## A building's label in this arc's words ("Coop" / "Roost").
+static func label(id: String) -> String:
+	var bd: Dictionary = all().get(id, {})
+	var nm := str(bd.get("label", id.capitalize()))
+	if not _gang():
+		return nm
+	var g := str(bd.get("label_gang", ""))
+	return g if g != "" else str(GANG_NAMES.get(nm, nm))
+
+
+## Who builds or sells it in this arc (gangster arc: seller_gang, "The crew").
+static func seller(id: String) -> String:
+	var bd: Dictionary = all().get(id, {})
+	if _gang() and str(bd.get("seller_gang", "")) != "":
+		return str(bd["seller_gang"])
+	return str(bd.get("seller", "Hazel"))
+
+
+## C11b P6 (c11b_05-04): the map footprint of a building at a tier (default: the built tier, or tier 1).
+## A tier row may carry its own cell/w/h (a Grand Barn grows); else the building's. Rect2i(cell, Vector2i(w, h)).
+static func footprint(id: String, tier := -1) -> Rect2i:
+	var bd: Dictionary = all().get(id, {})
+	var t := tier if tier >= 0 else maxi(1, built_tier(id))
+	var td := {}
+	for row in bd.get("tiers", []):
+		if int(row["tier"]) == t:
+			td = row
+	var c: Array = td.get("cell", bd.get("cell", [0, 0]))
+	return Rect2i(int(c[0]), int(c[1]), int(td.get("w", bd.get("w", 0))), int(td.get("h", bd.get("h", 1))))
 
 
 static func current_def(id: String) -> Dictionary:
@@ -160,7 +225,7 @@ static func start(id: String, buy := false) -> String:
 		return "Built the %s." % str(nd["name"])
 	GameState.run["construction"] = GameState.run.get("construction", {})
 	GameState.run["construction"][id] = {"tier": int(nd["tier"]), "done_day": int(GameState.run["day"]) + days}
-	return "Hazel's crew starts on the %s. %d day%s." % [str(nd["name"]), days, "" if days == 1 else "s"]
+	return "%s starts on the %s. %d day%s." % ["The crew" if _gang() else "Hazel's crew", str(nd["name"]), days, "" if days == 1 else "s"]
 
 
 static func _finish(id: String, tier: int) -> void:

@@ -21,6 +21,12 @@ func _ok(cond: bool, what: String) -> void:
 func _initialize() -> void:
 	verbose = "verbose" in OS.get_cmdline_user_args()
 	GameState.load_data()
+	if "long" in OS.get_cmdline_user_args():
+		for arc in ["penguins", "gangsters"]:
+			_ranch_years(arc)
+		print("month_curve_test long: %d failures" % fails)
+		quit(1 if fails > 0 else 0)
+		return
 	for arc in ["penguins", "gangsters"]:
 		_week(arc)
 	print("month_curve_test: %d failures" % fails)
@@ -228,3 +234,66 @@ func _week(arc: String) -> void:
 	var p28 := int(curve[27][1])
 	_ok(p14 >= 500 and p28 > p14, "%s: the purse grows (d14 %d, d28 %d)" % [arc, p14, p28])
 	_ok(p28 < 40000, "%s: no flood by day 28 (%d)" % [arc, p28])
+
+
+# ---- long run: three years of ranching (c11b_12-05) ---------------------------
+## A modest rancher on the Ranch API only: a coop by day 10, a barn by day 25, both homes upgraded each
+## year, every animal fed and petted daily, goods sold. Prints income per season (Tom's table) and checks
+## the curve: goods per animal-day stay within 2x the species' base good (animal_yield caps at 1.0),
+## ranch income never jumps more than 2.5x season over season after the first year, and grows overall.
+func _ranch_years(arc: String) -> void:
+	seed(12)
+	GameState.new_run(arc, "kairi" if arc == "penguins" else "dad", "T", "Town", "Pup")
+	var r := GameState.run
+	r["intro_done"] = true
+	_ok(float(GameState.BONUS_CAPS.get("animal_yield", 1.0)) <= 1.0, "%s: animal_yield cap stays at 1.0 (x2 goods)" % arc)
+	var plan := {10: ["coop", 1, [["chicken", 2]]], 25: ["barn", 1, [["cow", 1], ["sheep", 1]]],
+		60: ["coop", 2, [["chicken", 2], ["duck", 2]]], 90: ["barn", 2, [["cow", 1], ["goat", 2]]],
+		150: ["coop", 3, [["chicken", 4]]], 200: ["barn", 3, [["sheep", 2], ["llama", 1]]]}
+	var season_inc: Array = []
+	var cur := 0
+	var animal_days := 0
+	var goods_val := 0
+	var base_val := 0.0
+	print("%s ranch: season | animals | income" % arc)
+	for d in range(1, 337):
+		r["day"] = d
+		if plan.has(d):
+			var p: Array = plan[d]
+			Ranch.house(str(p[0]))["tier"] = int(p[1])
+			for pr: Array in p[2]:
+				for i in int(pr[1]):
+					Ranch.add(str(pr[0]))
+		for uid in Ranch.animals().keys():
+			var a := Ranch.animal(str(uid))
+			if Ranch.eats(str(uid)):
+				a["last_fed"] = d
+			Ranch.pet(str(uid))
+			var got := Ranch.collect(str(uid))
+			if not got.is_empty():
+				var v := GameState.sell_price(str(got["item"]), int(got["n"]))
+				cur += v
+				goods_val += v
+				if str(got.get("extra", "")) != "":
+					cur += GameState.sell_price(str(got["extra"]), 1)
+			if Ranch.is_adult(str(uid)):
+				animal_days += 1
+				var pd: Dictionary = Ranch.species(str(a.get("species", ""))).get("product", {})
+				base_val += float(GameState.unit_sell_value(str(pd.get("id", "")))) / float(maxi(1, int(pd.get("every_days", 1))))
+		Ranch.overnight({})
+		if d % 28 == 0:
+			season_inc.append(cur)
+			if verbose or d % 112 == 0 or d <= 112:
+				print("  %d | %d | %d" % [d / 28, Ranch.animals().size(), cur])
+			cur = 0
+	_ok(base_val <= 0.0 or float(goods_val) <= base_val * 2.2, "%s: goods stay within 2x the base good (%d vs base %.0f)" % [arc, goods_val, base_val])
+	for i in range(4, season_inc.size()):
+		var prev := maxi(1, int(season_inc[i - 1]))
+		_ok(int(season_inc[i]) <= prev * 5 / 2, "%s: season %d income %d jumps > 2.5x (%d)" % [arc, i + 1, int(season_inc[i]), prev])
+	var y1 := 0
+	var y3 := 0
+	for i in 4:
+		y1 += int(season_inc[i])
+		y3 += int(season_inc[8 + i])
+	print("  year 1 ranch income %d, year 3 %d" % [y1, y3])
+	_ok(y3 > y1, "%s: ranch income grows over three years (%d -> %d)" % [arc, y1, y3])

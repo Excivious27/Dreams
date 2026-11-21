@@ -353,8 +353,10 @@ static func animals_for(seller: String) -> Array:
 		var buy: Dictionary = sp.get("buy", {}) if sp.get("buy", {}) is Dictionary else {}
 		if buy.is_empty() or seller_of(str(sid)) != seller.to_lower() or int(buy.get("price", 0)) <= 0:
 			continue
-		if str(sp.get("arc", "")) not in ["", arc]:
+		if str(sp.get("arc", "")) not in ["", arc, "both"]:
 			continue
+		if str(buy.get("flag", "")) != "" and not (GameState.run.get("flags", {}) as Dictionary).has(str(buy["flag"])):
+			continue  # C11b P3 (c11b_02-08): a story gate (e.g. the Moon Hare after Gideon's moon quest)
 		out.append(str(sid))
 	out.sort_custom(func(a: String, b: String) -> bool: return int(sp_all[a]["buy"]["price"]) < int(sp_all[b]["buy"]["price"]))
 	return out
@@ -372,10 +374,10 @@ static func animal_why(sid: String) -> String:
 	var sp := Ranch.species(sid)
 	var home := str(sp.get("home", ""))
 	var need := maxi(1, int((sp.get("buy", {}) as Dictionary).get("tier", 1)))
-	var bid := "beehive" if home == "apiary" else home
+	var bid := Ranch.build_of(home)  # c11b_01-04: any home whose Plans build has another id (apiary -> beehive)
 	if Ranch.tier(home) < need:
 		var td := Builds.tier_def(bid, need)
-		return "needs a %s" % str(td.get("name", bid.capitalize())) if not td.is_empty() else "needs a %s" % bid
+		return "needs " + ItemWords.with_article(str(td.get("name", bid.capitalize())) if not td.is_empty() else bid)  # "an Aviary"
 	if Ranch.roster(home).size() >= Ranch.capacity(home):
 		return "the %s is full" % str(Builds.current_def(bid).get("name", bid))
 	return ""

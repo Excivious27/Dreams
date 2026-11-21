@@ -23,6 +23,11 @@ func _initialize() -> void:
 	_empty_data()
 	_indoors_rule()
 	_migration()
+	_pen_layout()
+	_incubator_view()
+	_sleep_order()
+	_reap_tile()
+	_gift_perk()
 	print("ranch_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails > 0 else 0)
 
@@ -212,3 +217,129 @@ func _indoors_rule() -> void:
 	GameState.run["time"] = GameState.sunset() + 60
 	check(Ranch.indoors(c) and Ranch.indoors(h), "after sunset: everyone goes in")
 	GameState.run["time"] = 12 * 60
+
+
+## Every pen of every tier sits on open ground (c11b_05-01): never inside a farmhouse tier, another
+## home's pen, another building's footprint, the greenhouse bed, the north track (x36) or the terrace.
+func _pen_layout() -> void:
+	var blds: Dictionary = Ranch.data()["buildings"]
+	var pens: Array = []  # [home, tier, rect]
+	for home in blds:
+		for row in (blds[home] as Array):
+			var p: Array = (row as Dictionary).get("pen", [])
+			if p.size() == 4:
+				pens.append([str(home), int(row["tier"]), Rect2i(int(p[0]), int(p[1]), int(p[2]), int(p[3]))])
+	var farm_s: GDScript = load("res://scripts/farm.gd")
+	var houses: Dictionary = farm_s.get_script_constant_map()["HOUSE_TIERS"]
+	for pe in pens:
+		var r: Rect2i = pe[2]
+		var who := "%s tier %d pen %s" % [pe[0], pe[1], str(r)]
+		for t in houses:
+			check(not r.intersects(houses[t]["rect"]), "%s clear of farmhouse tier %d" % [who, t])
+		check(not r.intersects(GameState.GREENHOUSE_PLOT.grow(1)), "%s clear of the greenhouse bed" % who)
+		check(not r.intersects(Rect2i(36, 0, 1, 60)), "%s off the north track" % who)
+		check(not r.intersects(Rect2i(38, 0, 34, 12)), "%s not up on the terrace" % who)
+		for pe2 in pens:
+			if pe2[0] != pe[0]:
+				check(not r.intersects(pe2[2]), "%s clear of %s tier %d pen" % [who, pe2[0], pe2[1]])
+		var own := Ranch.build_of(str(pe[0]))
+		for bid in Builds.all():
+			var bd: Dictionary = Builds.all()[bid]
+			if bid == own or not bd.has("cell") or Ranch.data()["buildings"].has(str(bd.get("ranch", ""))) and str(bd.get("ranch", "")) == str(pe[0]):
+				continue
+			if str(bd.get("ranch", "")) != "" or bid in ["hutch", "sty"]:
+				continue  # other ranch homes' buildings move with their pens (gen_stations, P1 c11b_05-02)
+			var w := maxi(1, int(bd.get("w", 1)))
+			var h := maxi(1, int(bd.get("h", 1)))
+			var fp := Rect2i(int(bd["cell"][0]), int(bd["cell"][1]) - h + 1, w, h)
+			check(not r.intersects(fp), "%s clear of %s at %s" % [who, bid, str(fp)])
+
+
+## The incubator is a view over Ranch (c11b_01-03, 05-07): eggs come from breed.egg, warm in their
+## species' home, and RanchFarm sees Ranch's own entries.
+func _incubator_view() -> void:
+	_fresh("penguins")
+	GameState.run["builds"] = {"coop": 2, "barn": 1}
+	Ranch.migrate()
+	_empty_home("coop")
+	for sid in Ranch.data()["species"]:
+		var br: Variant = Ranch.species(sid).get("breed", null)
+		if br is Dictionary and str((br as Dictionary).get("egg", "")) != "":
+			check(RanchFarm.hatch_species(str(br["egg"])) == sid, "breed.egg %s hatches %s" % [br["egg"], sid])
+			check(RanchFarm.hatch_days(sid) == maxi(1, int(br.get("days", 3))), "%s warms breed.days" % sid)
+			check(RanchFarm.egg_home(str(br["egg"])) == str(Ranch.species(sid)["home"]), "%s egg goes to its home" % sid)
+	check(RanchFarm.hatch_species("milk") == "", "milk is not an egg")
+	check(RanchFarm.incubator_homes().has("coop"), "Big Coop has an incubator")
+	check(RanchFarm.incubator_tier_name("coop") != "", "incubator tier name (%s)" % RanchFarm.incubator_tier_name("coop"))
+	GameState.add_item("duck_egg", 1)
+	var why := Ranch.incubate("duck_egg")
+	check(why == "", "duck egg in (%s)" % why)
+	check(RanchFarm.incubator("coop").size() == 1 and RanchFarm.all_eggs().size() == 1, "RanchFarm sees Ranch's entry")
+	check(RanchFarm.room_for_egg("coop") == Ranch.room("coop") - 1, "room counts warming eggs")
+	if RanchFarm.incubator("coop").is_empty():
+		return
+	var due: int = RanchFarm.egg_day(RanchFarm.incubator("coop")[0])
+	var names: Array = RanchFarm.hatch_due(due)
+	check(names.size() == 1 and RanchFarm.all_eggs().is_empty(), "due egg hatches through RanchFarm (%s)" % str(names))
+	check(RanchFarm.baby_word("duck") == "duckling" and RanchFarm.baby_word("cow").begins_with("baby"), "baby words")
+
+
+## GameState.sleep runs Project, Commons, Chores, then Ranch, then the crops, then the crows (c11b_06-02):
+## a helper's feed/pet/guard chore lands before the ranch night, a guard before the crows.
+func _sleep_order() -> void:
+	var src := FileAccess.get_file_as_string("res://scripts/game_state.gd")
+	var at := src.find("static func sleep(")
+	var order: Array = []
+	for k in ["Project.overnight(report)", "Commons.overnight(report)", "Chores.overnight(report)", "Ranch.overnight(report)", "_crows(report)"]:
+		order.append(src.find(k, at))
+	var ok := not order.has(-1)
+	for i in range(1, order.size()):
+		ok = ok and int(order[i]) > int(order[i - 1])
+	check(ok, "sleep order Project < Commons < Chores < Ranch < crows (%s)" % str(order))
+
+
+## The shared bed reset (c11b_06-03): fertiliser used up, regrow or clear, first log once.
+func _reap_tile() -> void:
+	_fresh("penguins")
+	var crop := ""
+	var regrow := ""
+	for cid in GameState.crops:
+		var cd: Dictionary = GameState.crops[cid]
+		if cd.has("regrow") and regrow == "" and not bool(cd.get("tree", false)):
+			regrow = str(cid)
+		elif not cd.has("regrow") and crop == "" and str(cd.get("yield", "")) != "wheat":
+			crop = str(cid)
+	var t := {"crop": crop, "days": int(GameState.crops[crop]["days"]), "fert": true}
+	var r: Dictionary = GameState.reap_tile(t)
+	check(str(t["crop"]) == "" and not t.has("fert") and bool(r["first"]), "reap clears the bed, uses the fertiliser, logs the crop (%s)" % crop)
+	check(not bool(GameState.reap_tile({"crop": crop, "days": 9})["first"]), "a crop is logged once")
+	var t2 := {"crop": regrow, "days": int(GameState.crops[regrow]["days"])}
+	GameState.reap_tile(t2)
+	check(str(t2["crop"]) == regrow and int(t2["days"]) == int(GameState.crops[regrow]["days"]) - int(GameState.crops[regrow]["regrow"]), "a regrowing crop goes back a few days (%s)" % regrow)
+
+
+## Heart perks and side stories give animals through Perks.gift_animal, once per source (c11b_04-05/06).
+func _gift_perk() -> void:
+	_fresh("penguins")
+	Ranch.migrate()
+	_empty_home("coop")
+	var hp: Dictionary = Perks.data()
+	check(hp.get("hazel", {}).get("10", {}).get("animal", null) is Dictionary and hp.get("benno", {}).get("8", {}).get("animal", null) is Dictionary, "Hazel and Benno heart perks carry an animal")
+	var n0 := Ranch.roster("coop").size()
+	var uid := Perks.gift_animal({"species": "chicken", "variant": "golden", "name": "Saffron", "keepsake": true}, "heart:hazel_10", "Hazel")
+	check(uid != "" and Ranch.roster("coop").size() == n0 + 1, "the gift hen moves into the coop (%s)" % uid)
+	if uid != "":
+		check(str(Ranch.animal(uid).get("variant", "")) == "golden" and bool(Ranch.animal(uid).get("keepsake", false)), "golden keepsake hen")
+	check(Perks.gift_animal({"species": "chicken"}, "heart:hazel_10", "Hazel") == "" and Ranch.roster("coop").size() == n0 + 1, "a source gives once")
+	var ss: Array = JSON.parse_string(FileAccess.get_file_as_string("res://data/side_stories.json")).get("chains", [])
+	var with_animal := 0
+	for c in ss:
+		for stp in (c as Dictionary).get("steps", []):
+			if (stp as Dictionary).get("animal", null) is Dictionary:
+				with_animal += 1
+	check(with_animal >= 3, "three side stories end with an animal (%d)" % with_animal)
+
+
+func _empty_home(home: String) -> void:
+	for uid in Ranch.roster(home):
+		Ranch.animals().erase(uid)

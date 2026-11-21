@@ -146,6 +146,16 @@ MILESTONES = [
     {"id": "ranch_3", "cat": "ranch", "need": 3, "from": "benno", "give": {"money": 400, "item": "hay", "n": 40},
      "text": "Three kinds of animal goods from your own ranch! Here's hay for the herd, on the house. - Benno",
      "text_gangsters": "Three kinds of goods off your own ranch. Nobody looks twice at a real farm. Hay's on me. - Benno"},
+    # C11b P6 (c11b_10-10): fair ribbons. need "flag:<counter>:<n>" reads run.flags (AnimalShow.record).
+    {"id": "ribbon_1", "cat": "ranch", "need": "flag:show_blue:1", "from": "benno", "give": {"money": 300, "decor": "dc_tt_medal_bronze"},
+     "text": "Your first blue ribbon! The fair sent a little medal for your wall. - Benno",
+     "text_gangsters": "First blue ribbon. The fair sent a medal. Hang it somewhere people see. - Benno"},
+    {"id": "ribbon_3", "cat": "ranch", "need": "flag:show_blue:3", "from": "benno", "give": {"money": 800, "decor": "dc_tt_medal_silver"},
+     "text": "Three blue ribbons. Folks are starting to ask your secret. - Benno",
+     "text_gangsters": "Three blues. The other ranchers are asking questions. Say nothing. - Benno"},
+    {"id": "ribbon_8", "cat": "ranch", "need": "flag:show_blue:8", "from": "benno", "give": {"money": 2000, "decor": "dc_tt_trophy_crystal"},
+     "text": "Eight blue ribbons! The fair had a crystal trophy made with your name on it. - Benno",
+     "text_gangsters": "Eight blues. They had a trophy made with your name on it. Champion of the pens. - Benno"},
     {"id": "ranch_all", "cat": "ranch", "need": "all", "from": "benno", "give": {"money": 2500, "decor": "dc_tt_trophy_farm_a"},
      "text": "Every good a ranch can give, from your own animals. The fair made you a trophy. - Benno",
      "text_gangsters": "Every good a ranch can give, all yours. The block chipped in for a trophy. - Benno"},
@@ -374,8 +384,13 @@ def main():
     fish_log = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)}
                 for i in WINGS[3]["items"] if i not in NOT_ROD]
 
+    book_arc = {}  # a book's arc from the station that owns it (book 'robot' -> Robotics Bench, gangsters)
+    for _bid, _b in buildings.items():
+        if isinstance(_b, dict) and isinstance(_b.get("station"), dict) and _b.get("arc"):
+            book_arc.setdefault(str(_b["station"].get("book", _bid)), str(_b["arc"]))
+
     def station_arc(s):
-        return str(buildings.get(s, {}).get("arc", "") or "")
+        return str(buildings.get(s, {}).get("arc", "") or book_arc.get(s, "") or "")
 
     cook, craft = [], []
     for s, lst in recipes.items():

@@ -157,7 +157,16 @@ func _run() -> void:
 		# Headless frames can be slow enough that every tap reads as a hold (the tap
 		# limit is wall-clock time); the walking itself is what this checks.
 		farm.handle_tap(screen)
-	await frames(80)
+	# Wait on game time and state, not a frame count: CI runs without --fixed-fps, so on a fast runner
+	# 80 frames were less game time than the 3-cell walk takes (the C11 "14 away" flake).
+	var gt := 0.0
+	var retapped := false
+	while gt < 6.0 and p.position.distance_to(dest) >= 6.0:
+		if not retapped and gt > 2.0 and p.auto_target == Vector2.INF:
+			retapped = true
+			farm.handle_tap(screen)  # the walk was cut short (a toast/dialogue frame): ask once more
+		await frames(1)
+		gt += root.get_process_delta_time()
 	check(p.position.distance_to(dest) < 6.0, "tap-to-move walks to the tapped cell (%.0f away)" % p.position.distance_to(dest))
 	# Toolbar: tapping slot 7 (turnip seeds) puts seeds in hand.
 	touch(0, Vector2(Hud.TOOLBAR_X + 6 * Hud.SLOT + 10, Hud.TOOLBAR_Y + 10), true)
@@ -436,9 +445,17 @@ func _run() -> void:
 		await frames(6)
 	await frames(10)
 	var boss: Enemy = null
-	for e in m2.enemies:
-		if e.kind == "big_grump" or e.kind == "thug_brute":
-			boss = e
+	var bt := 0.0
+	while bt < 12.0:  # game time (fades and the boss lines take real seconds): closing any dialogue on the way
+		for e in m2.enemies:
+			if is_instance_valid(e) and (e.kind == "big_grump" or e.kind == "thug_brute"):
+				boss = e
+		if boss != null:
+			break
+		if d.active:
+			await press("a", 2)
+		await frames(2)
+		bt += root.get_process_delta_time() * 2.0
 	check(boss != null, "boss appeared after 5 kills")
 	await shot("15_boss")
 	if boss:

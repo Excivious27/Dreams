@@ -215,6 +215,19 @@ MAP = {
     "cicada": ("spot", ["swamp-environment-audio/cicada_1*", "swamp-environment-audio/cicada_2*"], {"cap": 4.0}),
     "insect": ("spot", ["insect-sounds/insect1*", "insect-sounds/insect3*"], {"cap": 2.5}),
     "wave": ("spot", ["beach-ocean-waves/wave_01*", "beach-ocean-waves/wave_03*"], {"cap": 6.0}),
+    # --- C11b P6: creature voices (cv_<group>, never a name an effect already uses: c11b_14-01) --------
+    # All ages: soft hoots, chirrs, burbles and snorts; never roar/growl/monster/scream files.
+    "cv_ostrich": ("sfx", ["80-cc0-creture-sfx-2/misc_10*", "80-cc0-creture-sfx-2/misc_11*", "80-cc0-creture-sfx-2/misc_12*"], {"cap": 0.9, "af": "asetrate=44100*0.7,aresample=44100,lowpass=f=3000"}),
+    "cv_emu": ("sfx", ["80-cc0-creture-sfx-2/misc_11*", "80-cc0-creture-sfx-2/misc_10*"], {"cap": 0.8, "af": "asetrate=44100*0.85,aresample=44100,lowpass=f=3200"}),
+    "cv_komodo": ("sfx", ["80-cc0-creature-sfx/nose.*", "80-cc0-creature-sfx/breath.*"], {"cap": 0.8, "af": "highpass=f=200"}),
+    "cv_moon": ("sfx", ["80-cc0-creature-sfx/alien_02*", "80-cc0-creature-sfx/alien_03*", "80-cc0-creture-sfx-2/alien_08*"], {"cap": 0.9}),
+    "cv_merkitty": ("sfx", ["80-cc0-creature-sfx/cute_02*", "80-cc0-creature-sfx/cute_06*", "80-cc0-creature-sfx/burble_01*"], {"cap": 0.8}),
+    "cv_gloam": ("sfx", ["insect-sounds/insect0*", "insect-sounds/insect4*"], {"cap": 1.0, "af": "highpass=f=400"}),
+    "cv_frost": ("sfx", ["80-cc0-creature-sfx/ooh.*", "80-cc0-creture-sfx-2/weird_07*"], {"cap": 0.9, "af": "asetrate=44100*0.9,aresample=44100"}),
+    "cv_sky": ("sfx", ["bird-chirping-sounds/birdchirping071414.wav"], {"cap": 0.7, "slice": True, "takes": 2, "min": 0.12, "floor": -28}),
+    # --- C11b P6: ranch machine cues (c11b_14-09) ---------------------------------------------------
+    "egg_crack": ("sfx", ["7-eating-crunches/crunch.2.*", "7-eating-crunches/crunch.4.*", "7-eating-crunches/crunch.5.*"], {"cap": 0.25, "af": "asetrate=44100*1.3,aresample=44100,highpass=f=300"}),
+    "feeder_fill": ("sfx", ["68-workshop-sounds/*rummaging through nails*", "68-workshop-sounds/*tool rummaging*"], {"cap": 1.0, "af": "lowpass=f=2400"}),
     # --- ambience beds (loops) ------------------------------------------------
     "rain_light": ("bed", ["amb-rain-loop-1/amb_rain_loop_1.*"], {}),
     "rain_heavy": ("bed", ["amb-rain-loop-2/amb_rain2.*"], {}),
@@ -236,6 +249,8 @@ MAP = {
     "marsh": ("bed", ["bigsoundbank/0691"], {}),
     "basement_drips": ("bed", ["dripping-water-loop/*"], {}),
     "boiling": ("bed", ["bigsoundbank/0149", "bigsoundbank/0492"], {"join": True}),
+    "aviary_room": ("bed", ["bird-chirping-sounds/birdchirping071414.wav"], {"af": "volume=-6dB"}),  # C11b P6 (c11b_14-04)
+    "terrarium_room": ("bed", ["30-cc0-sfx-loops/ambient_02*", "30-cc0-sfx-loops/noise_01*"], {"join": True, "af": "lowpass=f=1800"}),
     "machines": ("bed", ["bigsoundbank/0502", "30-cc0-sfx-loops/machine_03*"], {}),
     "purr_loop": ("bed", ["bigsoundbank/0436", "cat-purr-meow/cat_purrsleepy_loop*"], {"join": True}),
     # C6: real recordings for the last synth placeholders, plus room tones

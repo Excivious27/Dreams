@@ -334,7 +334,9 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 		var give_id := str(j["give"])
 		var it: Dictionary = GameState.items.get(give_id, {})
 		var n := int(j.get("n", 1))
-		if Decor.is_decor(give_id):
+		if str(it.get("type", "")) == "splice":
+			_hand_over_splice(m, give_id, n)  # C11b integ: a finished Gene Splicer job is the animal itself
+		elif Decor.is_decor(give_id):
 			DecorSources.grant(m, give_id, n, "craft")  # decor goes to the decor box (C10a)
 		elif bool(j.get("tool", false)) or str(it.get("type", "")) == "tool":
 			GameState.add_tool(give_id)
@@ -362,6 +364,19 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 	if got > 0:
 		Music.instance(m.get_tree()).sfx("craft_done", "levelup")
 	return got
+
+
+## Gene Splicer (C11b integ): each finished splice gives its lab strain through RanchGift (one source per
+## splice, so every splice counts); no room = it waits in run.ranch.pending with one letter.
+static func _hand_over_splice(m: GameMap, give_id: String, n: int) -> void:
+	var sid := give_id.trim_prefix("splice_")
+	for i in n:
+		var d := Ranch.st()
+		d["splices"] = int(d.get("splices", 0)) + 1
+		var uid := RanchGift.give(sid, "splice:%s:%d" % [sid, int(d["splices"])], {"giver": "the Gene Splicer"})
+		if m != null and m.hud != null:
+			m.hud.toast(("%s is ready: say hello in the %s." % [Ranch.display_name(sid), str(Ranch.species(sid).get("home", "pen"))]) if uid != "" \
+				else "The %s waits for room (see the letter)." % Ranch.display_name(sid), Color(0.8, 1, 0.9))
 
 
 ## Jobs that finished since you were last told (for a toast), across all stations.

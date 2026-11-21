@@ -123,7 +123,7 @@ func _run() -> void:
 			for f: Array in fences:
 				if not bool(f[2]):
 					gates += 1
-			check(fences.size() >= 16 and gates == 2, "pens fenced (%d pieces, %d gates)" % [fences.size(), gates])
+			check(fences.size() >= 16 and gates == 3, "pens fenced (%d pieces, %d gates: coop, barn, beehive)" % [fences.size(), gates])  # C11b: the apiary pen [29,19] is fenced too
 	# --- 3. Debris never on a path (c5_12 #1) ---
 	var pm := m
 	var on_path := 0

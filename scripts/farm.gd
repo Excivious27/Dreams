@@ -208,7 +208,7 @@ func _plan_fences() -> void:
 		h_name = str(fs[0]); v_name = str(fs[1]); gate = str(fs[2])
 	var specs: Array = []
 	for home: String in _ranch_homes():
-		if not Builds.is_built(home):
+		if not Builds.is_built(Ranch.build_of(home)):
 			continue
 		var pr := pen_of(home)
 		if pr.size == Vector2i.ZERO:
@@ -566,6 +566,7 @@ func _place_debris() -> void:
 			var ch := int(cbd.get("h", 1))
 			for kc: Vector2i in cells_of([Rect2i(cc0.x - 1, cc0.y - ch + 1, int(cbd.get("w", 0)) + 3, ch + 2)]):
 				keep_clear[kc] = true  # the crew's site: footprint, sign and front
+	keep_clear.merge(_pen_cells())  # every built ranch pen and its gate (hutch, sty, apiary too: c11b_05-01)
 	for y in range(1, rows - 1):
 		for x in range(1, cols - 1):
 			var c := Vector2i(x, y)
@@ -1111,7 +1112,8 @@ func _build_rec(id: String) -> Dictionary:
 	var td := Builds.current_def(id)
 	if td.is_empty():
 		return {}
-	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
+	var fp := Builds.footprint(id)  # C11b P6: a tier may grow the building (c11b_05-04)
+	var rec := {"cell": fp.position, "w": fp.size.x, "h": fp.size.y, "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
 	if not Builds.data().has(id):
@@ -1132,10 +1134,79 @@ func _tillable(c: Vector2i) -> bool:
 	return true
 
 
+## The Plans board group of a build: animal homes (and the silo that feeds them) get their own
+## "Ranch" list instead of growing the farm list (c11b_05-10); everything else keeps its data cat.
+func _plan_cat(id: String) -> String:
+	var cat := str(Builds.data()[id].get("cat", "farm"))
+	if cat != "farm":
+		return cat
+	if id == "silo" or str(Builds.data()[id].get("ranch", "")) != "":
+		return "ranch"
+	for h in (Ranch.data()["buildings"] as Dictionary):
+		if Ranch.build_of(str(h)) == id:
+			return "ranch"
+	return cat
+
+
+## A ranch home's one-line summary for its plan page: who lives there now, what it has, what the
+## next tier adds ("Houses 3/8 · feeder, incubator · next: room for 12, adds heater").
+func _ranch_line(id: String) -> String:
+	var home := ""
+	for h in (Ranch.data()["buildings"] as Dictionary):
+		if Ranch.build_of(str(h)) == id:
+			home = str(h)
+	if home == "":
+		return ""
+	var t := Builds.built_tier(id)
+	var parts: Array = []
+	var have: Array = []
+	if t > 0:
+		parts.append("Houses %d/%d" % [Ranch.roster(home).size(), Ranch.capacity(home)])
+		have = Ranch.tier_row(home, t).get("adds", [])
+		if not have.is_empty():
+			parts.append(", ".join(have).replace("_", " "))
+	var nxt := Ranch.tier_row(home, t + 1)
+	if not nxt.is_empty():
+		var adds: Array = []
+		for a in nxt.get("adds", []):
+			if not have.has(a):
+				adds.append(str(a).replace("_", " "))
+		parts.append("next: room for %d%s" % [int(nxt.get("cap", 0)), (", adds " + ", ".join(adds)) if not adds.is_empty() else ""])
+	return " · ".join(parts)
+
+
+## Crafted add-ons you hold that a built home doesn't have yet: [[home, item], ...] (Ranch.install).
+func _addon_pairs() -> Array:
+	var out: Array = []
+	for item: String in Ranch.ADDON_ITEMS:
+		if GameState.count(item) <= 0:
+			continue
+		for home: String in (Ranch.data()["buildings"] as Dictionary):
+			if Ranch.tier(home) >= 1 and not Ranch.has_add(home, str(Ranch.ADDON_ITEMS[item])):
+				out.append([home, item])
+	return out
+
+
+## The Plans board's "Install an add-on" page: pick one, Ranch.install places it (spends the item).
+func _install_addon(d: Dialogue) -> void:
+	var pairs := _addon_pairs()
+	var opts: Array = []
+	for p: Array in pairs:
+		opts.append("%s in the %s" % [GameState.item_name(str(p[1])), str(Builds.current_def(Ranch.build_of(str(p[0]))).get("name", p[0]))])
+	opts.append("← Back")
+	d.say([{"who": "Plans", "text": "Place an add-on you made in a home you've built. It stays with the home.", "choice": opts, "key": ""}])
+	await d.finished
+	var i: int = d.last_choice
+	if i < 0 or i >= pairs.size():
+		return
+	var why := Ranch.install(str(pairs[i][0]), str(pairs[i][1]))
+	hud.toast(why if why != "" else "Installed: %s." % GameState.item_name(str(pairs[i][1])), Color(1, 0.7, 0.7) if why != "" else Color(0.8, 1, 0.8))
+
+
 func _plans() -> void:
 	# The plans board. Everything on the farm is made from materials or bought
 	# ready-made, tier by tier; each tier has its own gate (story, skill, friend).
-	const CATS := [["farm", "Farm buildings"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"], ["sanctuary", "The sanctuary"]]
+	var CATS := [["farm", "Farm buildings"], ["ranch", "Ranch (animal homes)" if GameState.is_penguins() else "Livestock (animal homes)"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"], ["sanctuary", "The sanctuary"]]
 	var d := Dialogue.instance(get_tree())
 	while true:
 		var copts: Array = []
@@ -1144,7 +1215,7 @@ func _plans() -> void:
 			var n := 0
 			var have := 0
 			for id: String in Builds.data():
-				if str(Builds.data()[id].get("cat", "farm")) == str(pair[0]):
+				if _plan_cat(id) == str(pair[0]):
 					n += 1
 					have += 1 if Builds.is_built(id) else 0
 			if n > 0:
@@ -1174,12 +1245,12 @@ func _plans() -> void:
 			var ids: Array = []
 			var opts: Array = []
 			for id: String in Builds.data():
-				if str(Builds.data()[id].get("cat", "farm")) != cat:
+				if _plan_cat(id) != cat:
 					continue
 				var bt := Builds.built_tier(id)
 				var nd := Builds.next_def(id)
 				var uc := Builds.under_construction(id)
-				var label := str(Builds.data()[id]["label"])
+				var label := Builds.label(id)  # C11b P6: arc words (c11b_05-09)
 				if not uc.is_empty():
 					var dl := int(uc["done_day"]) - int(GameState.run["day"])
 					opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
@@ -1199,6 +1270,9 @@ func _plans() -> void:
 					tag = "  [%s]" % g
 				opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
 				ids.append(id)
+			if cat == "ranch" and not Net.visiting() and not _addon_pairs().is_empty():
+				opts.append("Install an add-on (%d ready)" % _addon_pairs().size())  # C11b integ: Ranch.install
+				ids.append("@install")
 			opts.append("← Back")
 			var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
 			if cat == "operation":
@@ -1212,6 +1286,9 @@ func _plans() -> void:
 				break  # "← Back" (or B): back to the categories
 			if str(ids[i]) == "":
 				continue
+			if str(ids[i]) == "@install":
+				await _install_addon(d)
+				continue
 			var id := str(ids[i])
 			var nd2 := Builds.next_def(id)
 			var parts: Array = []
@@ -1220,6 +1297,9 @@ func _plans() -> void:
 				parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
 			var g2 := Builds.gate(id)
 			var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
+			var rl := _ranch_line(id)
+			if rl != "":
+				text += "\n" + rl
 			if int(nd2.get("days", 0)) > 0:
 				var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
 				text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
@@ -1407,17 +1487,13 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		# The reward pop on top of the rustle (c6_10-13).
 		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck", "pop"))
 		xp("farming", harvest_xp(cd))
-		tile.erase("fert")  # fertiliser feeds one growth cycle, regrowing crops included
+		GameState.reap_tile(tile, false, false)  # the one bed reset (fert used up, regrow or clear), shared with the Harvest chore (c11b_06-03)
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.
-			tile["days"] = int(cd["days"]) - int(cd["regrow"])
 			var rk := "regrow_told_" + crop
 			if not GameState.run["flags"].has(rk):  # say it once per crop, not every pick
 				GameState.run["flags"][rk] = true
 				hud.toast("%s will fruit again in %d days." % [str(cd["name"]), int(cd["regrow"])])
-		else:
-			tile["crop"] = ""
-			tile["days"] = 0
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
 		_soil.queue_redraw() if _soil else queue_redraw()
@@ -1849,22 +1925,31 @@ func _coop(sel: String) -> void:
 	var day := int(GameState.run["day"])
 	var egg_sp := RanchFarm.hatch_species(sel) if GameState.count(sel) > 0 else ""
 	if RanchFarm.uses_roster("coop") and Ranch.capacity("coop") > 0:
-		for e in RanchFarm.incubator():
+		# One incubator for every egg in ranch.json (breed.egg): the hatchling goes to its species' home (c11b_01-03, 05-07).
+		var home := RanchFarm.egg_home(sel) if egg_sp != "" else "coop"
+		if home == "":
+			home = "coop"
+		for e in RanchFarm.incubator(home):
 			if e is Dictionary and RanchFarm.egg_day(e) > day:
 				var left := RanchFarm.egg_day(e) - day
 				hud.toast("An egg is warming: %d more day%s." % [left, "" if left == 1 else "s"])
 				return
-		if RanchFarm.coop_room() <= 0:
-			hud.toast("The coop is full (%d/%d). A bigger coop or rehoming a bird makes room." % [Ranch.roster("coop").size(), Ranch.capacity("coop")])
-			return
 		if egg_sp == "":
-			hud.toast("The incubator takes a hen's or a duck's egg: hold one and tap the coop.")
+			hud.toast("The incubator takes an egg: hold one and tap it.")
+			return
+		if not RanchFarm.has_incubator(home):
+			hud.toast("The incubator for that egg comes with the %s." % RanchFarm.incubator_tier_name(home))
+			return
+		if RanchFarm.room_for_egg(home) <= 0:
+			var hn := str(Builds.current_def(Ranch.build_of(home)).get("name", home))
+			hud.toast("The %s is full (%d/%d). A bigger one or rehoming an animal makes room." % [hn, Ranch.roster(home).size(), Ranch.capacity(home)])
 			return
 		var why := Ranch.incubate(sel)  # the one incubator path (C11a integ): Ranch hatches it overnight
 		if why != "":
 			hud.toast(why)
 			return
-		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(RanchFarm.incubator()[-1]) - day))
+		var inc := RanchFarm.incubator(home)
+		_egg_in(egg_sp, maxi(1, RanchFarm.egg_day(inc[-1]) - day) if not inc.is_empty() else RanchFarm.hatch_days(egg_sp))
 		return
 	var hatch: Array = GameState.run.get("coop_hatch", [])
 	var growing := 0
@@ -1888,7 +1973,7 @@ func _coop(sel: String) -> void:
 
 
 func _egg_in(sp: String, days: int) -> void:
-	hud.toast("The egg is in the incubator. A %s in %d days." % ["duckling" if sp == "duck" else ("chick" if sp == "chicken" else "baby"), days], Color(0.9, 1, 0.8))
+	hud.toast("The egg is in the incubator. A %s in %d day%s." % [RanchFarm.baby_word(sp), days, "" if days == 1 else "s"], Color(0.9, 1, 0.8))
 	Music.instance(get_tree()).sfx("pop", "pickup")
 	get_tree().create_timer(0.3, false).timeout.connect(func() -> void: Music.instance(get_tree()).sfx("cluck", "critter"))
 
@@ -2327,7 +2412,7 @@ func _place_river_props() -> void:
 	WorldGen.add_critters(self, Rect2i(2, 38, cols - 4, 18), 7172, 8, ["dragonfly", "frog", "heron", "duck", "dragonfly", "butterfly_blue"])
 
 
-func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "", uid := "") -> void:
+func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "", uid := "", strip := "idle") -> Node:
 	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse3", "goat": "goat2"}.get(kind, kind)  # goat2: same sheet style as the cows and sheep (C5)
 	if not Art.has("animals/" + full, "idle") and kind != full and Art.has("animals/" + kind, "idle"):
 		full = kind  # ranch.json art names an animals/<id> strip directly
@@ -2335,6 +2420,8 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 		var fa := FarmAnimal.new()
 		if uid != "":
 			fa.set_meta("uid", uid)  # roster key (C11a): care state lives in run.ranch.animals[uid]
+		if strip != "idle":
+			fa.set("_strip", strip)  # a young one drawn from its parent's baby strip (Ranch art.baby)
 		fa.setup(self, str(full), c, pen, is_baby)
 		if nm == "" and kind == "goat":
 			nm = "goat_%d_%d" % [c.x, c.y]  # (drawn from goat2 since C5: the name, and its friendship, stay)
@@ -2343,9 +2430,9 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 		if nm != "":
 			fa.name = nm  # one name for life (a hatched chick keeps its friendship when grown)
 		add_child(fa)
-		return
+		return fa
 	if not Art.has("props", kind):
-		return
+		return null
 	var a := AnimatedSprite2D.new()
 	a.sprite_frames = Art.frames("props", {"idle": kind}, {"idle": 2.0})
 	a.animation = "idle"
@@ -2355,6 +2442,7 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 	add_child(a)
 	a.play("idle")
 	blocked[c] = true
+	return a
 
 
 ## Sprinklers and scarecrows: placed on open farm ground, picked up with USE.
@@ -2415,6 +2503,8 @@ var _decor_sig := 0
 
 func _show_placed(c: Vector2i, id: String) -> void:
 	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": ("A: open chest" if id == "chest" else "A twice: pick up %s" % GameState.item_name(id))})
+	if id == "chest":
+		Storage.box("p:%d,%d" % [c.x, c.y])  # C11b P3: a placed chest is listed (chores) before it's first opened
 	blocked[c] = true
 	var nm: String = {"sprinkler": "sprinkler_basic", "sprinkler_quality": "sprinkler_quality", "sprinkler_iridium": "sprinkler_iridium", "scarecrow": "scarecrow_classic"}.get(id, id)
 	if not Art.has("props", nm):
@@ -2652,7 +2742,7 @@ func _place_incubator() -> void:
 	var day := int(GameState.run["day"])
 	var hatched := false
 	var warming := false
-	var eggs: Array = RanchFarm.incubator() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
+	var eggs: Array = RanchFarm.all_eggs() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
 	for e in eggs:
 		var d := RanchFarm.egg_day(e)
 		warming = warming or d > day
@@ -2674,7 +2764,7 @@ func _spawn_roster(builds: Dictionary) -> void:
 		if not born.is_empty():
 			_hatch_news(born)
 	for home: String in _ranch_homes():
-		if not builds.has(home) or not RanchFarm.uses_roster(home):
+		if not (builds.has(home) or builds.has(Ranch.build_of(home))) or not RanchFarm.uses_roster(home):
 			continue
 		var pen := pen_of(home)
 		var ids := Ranch.roster(home)
@@ -2686,7 +2776,21 @@ func _spawn_roster(builds: Dictionary) -> void:
 				continue  # out with the team (P4): not in the pen twice (c11a_09)
 			var adult := RanchFarm.is_adult(uid)
 			var kind := RanchFarm.art_for(str(a.get("species", "")), adult, str(a.get("variant", "")))
-			_animal(kind, cells[i], pen, not adult, "", uid)
+			# ranch.json look first: variant art (a list), baby strip and tint (Ranch.art_for; c11b_01-10).
+			# Care, hints and goods stay on the one farm path (RanchFarm / pet_farm_animal).
+			var sart: Variant = Ranch.species(str(a.get("species", ""))).get("art", {})
+			var ra: Dictionary = {}
+			if sart is Dictionary and not ((sart as Dictionary).has("baby") and not ((sart as Dictionary)["baby"] is Array)):
+				ra = Ranch.art_for(uid)  # (Ranch.art_for needs art.baby as [strip group, strip]; older data skips it)
+			var rg := str(ra.get("group", ""))
+			var strip := str(ra.get("strip", "idle"))
+			if rg != "" and (Art.has(rg, "idle") or Art.has(rg, strip)):
+				kind = rg.trim_prefix("animals/")
+			else:
+				strip = "idle"
+			var fa := _animal(kind, cells[i], pen, not adult, "", uid, strip)
+			if fa is FarmAnimal and ra.get("tint", null) is Color:
+				(fa as FarmAnimal).modulate = ra["tint"]
 
 
 ## Homes with pens: the coop and barn always, plus any ranch.json building with a pen.
@@ -2708,7 +2812,7 @@ func pen_of(home: String) -> Rect2i:
 func _hatch_news(names: Array) -> void:
 	if hud == null or names.is_empty():
 		return
-	var text := ("%s hatched in the coop!" % str(names[0])) if names.size() == 1 else ("%d chicks hatched in the coop!" % names.size())
+	var text := ("%s hatched!" % str(names[0])) if names.size() == 1 else ("%d little ones hatched!" % names.size())
 	get_tree().create_timer(1.2, false).timeout.connect(func() -> void:
 		if is_instance_valid(hud):
 			hud.toast(text, Color(0.9, 1, 0.8))
@@ -2738,7 +2842,7 @@ func _read_decor_cells() -> Dictionary:
 func _pen_cells() -> Dictionary:
 	var out := {}
 	for home: String in _ranch_homes():
-		if not Builds.is_built(home):
+		if not Builds.is_built(Ranch.build_of(home)):
 			continue
 		var pr := pen_of(home)
 		if pr.size == Vector2i.ZERO:

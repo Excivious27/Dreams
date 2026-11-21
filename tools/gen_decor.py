@@ -522,6 +522,20 @@ for cid, name, art, cat, layer, rar, ref in COLL:
             sources=[{'kind': 'collection', 'ref': ref, 'once': True}], fp=[1, 1], price=0, sell=0,
             desc='A keepsake from the museum and your collections.')
         ENTRIES[cid]['order'] = False
+# ---- 7c) Harvest Fair Animal Show prizes (c11b_10-03): DecorSources.show_prize grants them ---------------
+SHOW = [  # id, name, art, cat, layer, rarity, source ref
+    ('dc_show_ribbon_blue', 'Blue Show Ribbon', 'props/show_ribbon_blue', 'wall_art', 'wall', 'rare', 'show_1'),
+    ('dc_show_ribbon_red', 'Red Show Ribbon', 'props/show_ribbon_red', 'wall_art', 'wall', 'uncommon', 'show_2'),
+    ('dc_show_ribbon_yellow', 'Yellow Show Ribbon', 'props/show_ribbon_yellow', 'wall_art', 'wall', 'uncommon', 'show_3'),
+    ('dc_show_trophy', 'Best in Show Trophy', 'props/show_trophy', 'decor', 'floor', 'unique', 'show_champion'),
+]
+for cid, name, art, cat, layer, rar, ref in SHOW:
+    if art_ok(art):
+        add(cid, name, cat, rar, art, layer, 5 if rar == 'unique' else 3, sub='showpiece' if rar == 'unique' else 'keepsake',
+            sources=[{'kind': 'festival', 'ref': ref, 'once': True}], fp=[1, 1], price=0, sell=0,
+            desc='Won at the Harvest Fair Animal Show.' if rar != 'unique' else 'One of a kind: three blue ribbons at the Animal Show.')
+        ENTRIES[cid]['order'] = False
+
 if art_ok('furniture/globe3'):
     add('dc_founders_orrery', 'Founder\'s Orrery', 'decor', 'unique', 'decor/dc_founders_orrery', 'floor', 5, sub='showpiece',
         sources=[{'kind': 'collection', 'ref': 'mus_all', 'once': True}], fp=[1, 1],
@@ -976,6 +990,9 @@ def grant(key, id):
         GRANTS[key] = id
         if ENTRIES[id]['rarity'] != 'unique' or not ENTRIES[id]['sources']:
             ENTRIES[id]['sources'].append({'kind': key.split(':')[0], 'ref': key.split(':', 1)[1]})
+for _cid, _n, _a, _c, _l, _r, _ref in SHOW:  # C11b P2: show prizes keep a live grant key (DecorSources.show_prize)
+    if _r == 'unique':
+        grant('festival:' + _ref, _cid)
 def first(f, any_arc=False):
     for k, e in sorted(ENTRIES.items()):
         if not e.get('ext') and e.get('order') is not False and e['rarity'] not in ('unique',) and (any_arc or e['arc'] == 'both') and f(k, e) and k not in GRANTS.values():

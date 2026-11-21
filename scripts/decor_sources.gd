@@ -124,6 +124,32 @@ static func grant(m: Node, id: String, n := 1, source := "") -> bool:
 	return true
 
 
+## Harvest Fair Animal Show prize (c11b_10-03): a ribbon for the wall the first time each colour is won
+## (repeats pay money only), the Best in Show trophy at three blue ribbons, and the shown animal's
+## show-only friendship bump (Ranch.shown, never today's pet). Returns the animal's line ("" for goods).
+static func show_prize(m: Node, place: int, uid := "") -> String:
+	place = clampi(place, 1, 3)
+	var fl: Dictionary = GameState.run.get("flags", {})
+	GameState.run["flags"] = fl
+	var colour: String = ["blue", "red", "yellow"][place - 1]
+	var rid := "dc_show_ribbon_" + colour
+	if not fl.has("show_won_" + colour) and Decor.is_decor(rid):
+		fl["show_won_" + colour] = true
+		grant(m, rid, 1, "festival")
+	if place == 1:
+		fl["show_blue_n"] = int(fl.get("show_blue_n", 0)) + 1
+		if int(fl["show_blue_n"]) >= 3 and not fl.has("show_champion") and Decor.is_decor("dc_show_trophy"):
+			fl["show_champion"] = true
+			grant(m, "dc_show_trophy", 1, "festival")
+	var line := Ranch.shown(uid, place) if uid != "" else ""
+	if line != "":
+		if m and m.get("hud"):
+			m.hud.toast(line, Color(1, 0.92, 0.7))
+		else:
+			GameMap.notify(line, "")
+	return line
+
+
 ## Rolls a pool (luck capped) and grants the result: the id given, or "".
 static func roll_grant(m: Node, pool: String, luck := 0.0, source := "") -> String:
 	var id := Decor.roll(pool, minf(luck, float(T["luck_cap"])))
