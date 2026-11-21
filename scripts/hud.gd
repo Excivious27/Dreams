@@ -490,6 +490,8 @@ func _draw_hud() -> void:
 	if sicon:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
 	var dtxt := "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()]
+	if Calendar.year() > 1:
+		dtxt += " Y%d" % Calendar.year()  # C15 P1: the year from year 2 on
 	var dx := box.position.x + (15 if sicon else 6)
 	c.draw_string(_font, Vector2(dx, box.position.y + 11), dtxt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	_date_box = Rect2(box.position + Vector2(ex, y_offset), box.size)  # C15 P1: tap opens the calendar
@@ -500,6 +502,8 @@ func _draw_hud() -> void:
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 23), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	# Weather sits beside the date (C5 c5_13 #1: under the money it was hidden by 5-digit sums).
 	var wx := GameState.weather_here()  # C15 P1: the map's own sky (regions), else the calendar weather
+	if wx == "fireflies" and not GameState.is_night():
+		wx = "clear"  # c15_14-16: a warm night is clear by day; the fireflies come out after dark
 	if str(GameState.run.get("scene", "")) in ["moon", "station"]:
 		wx = "sun"  # no rain in space
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
