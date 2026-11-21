@@ -4765,120 +4765,133 @@
  },
  "dreamleaf": {
   "name": "Dreamleaf",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Cut fresh from the field. Villagers love a bunch.",
-  "desc_auto": true
+  "desc": "Smells wonderful. Good for teas, stews and remedies.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "lantern_sage": {
   "name": "Lantern Sage",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "Smells wonderful. Good for teas, stews and remedies.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "singing_thyme": {
   "name": "Singing Thyme",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "mirror_mint": {
   "name": "Mirror Mint",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "thunder_nettle": {
   "name": "Thunder Nettle",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Cut fresh from the field. Villagers love a bunch.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "silver_sage": {
   "name": "Silver Sage",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "A pretty bloom. Lovely in a vase or as a gift.",
-  "desc_auto": true
+  "desc": "Smells wonderful. Good for teas, stews and remedies.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "gold_chamomile": {
   "name": "Gold Chamomile",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "A pretty bloom. Lovely in a vase or as a gift.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "prism_basil": {
   "name": "Prism Basil",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "A pretty bloom. Lovely in a vase or as a gift.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "moon_mugwort": {
   "name": "Moon Mugwort",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "Smells wonderful. Good for teas, stews and remedies.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "comet_dill": {
   "name": "Comet Dill",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Cut fresh from the field. Villagers love a bunch.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "wisp_rosemary": {
   "name": "Wisp Rosemary",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Cut fresh from the field. Villagers love a bunch.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "echo_yarrow": {
   "name": "Echo Yarrow",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "A pretty bloom. Lovely in a vase or as a gift.",
-  "desc_auto": true
+  "desc": "A fragrant herb. Cooks and potion-makers use it.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "star_lavender": {
   "name": "Star Lavender",
-  "type": "flower",
+  "type": "herb",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "Smells wonderful. Good for teas, stews and remedies.",
+  "desc_auto": true,
+  "family": "herb"
  },
  "heart_rose": {
   "name": "Heart Rose",
@@ -4900,12 +4913,14 @@
  },
  "memory_tea": {
   "name": "Memory Tea",
-  "type": "flower",
+  "type": "food",
   "value": 120,
   "rarity": "rare",
   "tier": 3,
-  "desc": "Bees adore it, and so do most neighbours.",
-  "desc_auto": true
+  "desc": "Good food for a long day.",
+  "desc_auto": true,
+  "family": "herb",
+  "energy": 30
  },
  "dream_essence_bloom": {
   "name": "Dream Essence Bloom",
@@ -8173,7 +8188,8 @@
   "rarity": "common",
   "tier": 1,
   "energy": 12,
-  "desc": "Every kid in town lights up for one."
+  "desc": "Every kid in town lights up for one.",
+  "loved_by": "candy"
  },
  "shell": {
   "name": "Shell",

@@ -52,3 +52,6 @@ tool_hint.gd:Seeds: face tilled soil and tap USE to plant.
 tool_hint.gd:Sword: tap USE to swing at foes.
 tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, face an
 town.gd:Cast with USE, wait for the splash, tap USE again. Patience 
+pad_input.gd:tap the ♥ button
+pad_input.gd:tap ♥
+pad_input.gd:Tap ♥

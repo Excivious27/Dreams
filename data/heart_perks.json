@@ -142,7 +142,10 @@
    "bonus": {
     "energy": 10
    },
-   "text": "Lumi teaches you to see: +10 max energy"
+   "give": {
+    "#decor:dc_easel2": 1
+   },
+   "text": "Lumi teaches you to see: +10 max energy, and a keepsake for your home: Painter's Easel"
   },
   "10": {
    "give": {
@@ -290,9 +293,9 @@
   "8": {
    "give": {
     "greater_potion": 2,
-    "#decor:dc_painting2_a": 1
+    "#decor:dc_out_log_bench": 1
    },
-   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting"
+   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Log Seat"
   },
   "10": {
    "give": {
@@ -607,9 +610,9 @@
     "cider": 2
    },
    "give": {
-    "#decor:dc_bed2_double_blue": 1
+    "#decor:dc_rug_braided": 1
    },
-   "text": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed"
+   "text": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Braided Rug"
   },
   "10": {
    "give": {
@@ -706,9 +709,9 @@
     "mana": 10
    },
    "give": {
-    "#decor:dc_easel2": 1
+    "#decor:dc_books_scrolls": 1
    },
-   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel"
+   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Books and Scrolls"
   },
   "10": {
    "bonus": {

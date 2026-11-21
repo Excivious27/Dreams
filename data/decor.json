@@ -72,15 +72,16 @@
   "festival:show_champion": "dc_show_trophy",
   "heart:catkins:8": "dc_lucky_cat_gold",
   "heart:finn:8": "dc_sea_shipbottle",
-  "heart:gideon:8": "dc_bookcase3_a",
+  "heart:gideon:8": "dc_stove_iron",
   "heart:granite:8": "dc_fire_pit2",
-  "heart:maple:8": "dc_books_scrolls",
+  "heart:lumi:8": "dc_easel2",
+  "heart:maple:8": "dc_orch_crate",
   "heart:marlowe:8": "dc_tt_echo_shell",
   "heart:old_moss:8": "dc_bookshelf_ivy",
   "heart:orla:8": "dc_kit_bread_oven",
-  "heart:rook:8": "dc_painting2_a",
-  "heart:sel:8": "dc_easel2",
-  "heart:tam:8": "dc_bed2_double_blue",
+  "heart:rook:8": "dc_out_log_bench",
+  "heart:sel:8": "dc_books_scrolls",
+  "heart:tam:8": "dc_rug_braided",
   "heart:tess:8": "dc_armchair_window",
   "heart:wren:8": "dc_bloom_flowers",
   "house:2": "dc_sofa_blue",
@@ -105,7 +106,7 @@
   "side:coldy_key": "dc_fest_snow_lantern",
   "side:commander": "dc_flag_a",
   "side:jim_brother": "dc_antler_hooks",
-  "side:kid_school": "dc_bookcase3_b",
+  "side:kid_school": "dc_bookcase3_a",
   "side:rosa": "dc_kit_stove",
   "side:specs_wire": "dc_chrome_screen"
  },
@@ -2379,11 +2380,6 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
-    },
-    {
-     "kind": "heart",
-     "ref": "tam:8",
-     "where": "a gift from Tam at ♥8"
     }
    ],
    "sub": "bed",
@@ -3779,9 +3775,9 @@
      "where": "treasure chests (tier 3)"
     },
     {
-     "kind": "heart",
-     "ref": "gideon:8",
-     "where": "a gift from Gideon at ♥8"
+     "kind": "side",
+     "ref": "kid_school",
+     "where": "a side story reward"
     }
    ],
    "sub": "storage",
@@ -3826,11 +3822,6 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
-    },
-    {
-     "kind": "side",
-     "ref": "kid_school",
-     "where": "a side story reward"
     }
    ],
    "sub": "storage",
@@ -4189,8 +4180,8 @@
     },
     {
      "kind": "heart",
-     "ref": "maple:8",
-     "where": "a gift from Maple at ♥8"
+     "ref": "sel:8",
+     "where": "a gift from Sel at ♥8"
     }
    ],
    "sub": "study",
@@ -8677,8 +8668,8 @@
     },
     {
      "kind": "heart",
-     "ref": "sel:8",
-     "where": "a gift from Sel at ♥8"
+     "ref": "lumi:8",
+     "where": "a gift from Lumi at ♥8"
     }
    ],
    "sub": "study",
@@ -18511,6 +18502,11 @@
      "kind": "loot",
      "ref": "chest_t1",
      "where": "treasure chests (tier 1)"
+    },
+    {
+     "kind": "heart",
+     "ref": "maple:8",
+     "where": "a gift from Maple at ♥8"
     }
    ],
    "sub": "orchard_harvest",
@@ -20895,6 +20891,11 @@
      "kind": "loot",
      "ref": "chest_t1",
      "where": "treasure chests (tier 1)"
+    },
+    {
+     "kind": "heart",
+     "ref": "rook:8",
+     "where": "a gift from Rook at ♥8"
     }
    ],
    "sub": "bench",
@@ -22172,11 +22173,6 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
-    },
-    {
-     "kind": "heart",
-     "ref": "rook:8",
-     "where": "a gift from Rook at ♥8"
     }
    ],
    "sub": "painting",
@@ -24879,6 +24875,11 @@
      "kind": "loot",
      "ref": "chest_t1",
      "where": "treasure chests (tier 1)"
+    },
+    {
+     "kind": "heart",
+     "ref": "tam:8",
+     "where": "a gift from Tam at ♥8"
     }
    ],
    "sub": "rug",
@@ -29313,6 +29314,11 @@
      "kind": "loot",
      "ref": "chest_t1",
      "where": "treasure chests (tier 1)"
+    },
+    {
+     "kind": "heart",
+     "ref": "gideon:8",
+     "where": "a gift from Gideon at ♥8"
     }
    ],
    "sub": "kitchen",

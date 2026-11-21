@@ -2495,6 +2495,31 @@
    }
   },
   {
+   "id": "tess_seat",
+   "giver": "tess",
+   "text": "Tess wants 8 Hardwood for a window seat she won't say who it's for.",
+   "when": {
+    "friend": [
+     "tess",
+     6
+    ]
+   },
+   "done_when": {
+    "item": [
+     "hardwood",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 250,
+    "friend": [
+     "tess",
+     20
+    ]
+   }
+  },
+  {
    "id": "lumi_linen",
    "giver": "lumi",
    "text": "Lumi wants 6 bolts of linen for canvases.",

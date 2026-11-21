@@ -308,7 +308,7 @@ for vid, ms in EXTRA.items():
         H[vid]["milestones"][n] = pre + H[vid]["milestones"][n] + post
 
 # Tess, the carpenter (C12 P4, c12 07-18): her ♥2-♥10 perks existed with no scenes.
-v("tess", "",
+v("tess", "tess_seat",
   N("Tess is planing a board outside the workshop, curls of wood piling round her boots.") + L("Tess", "You measure twice. I've watched you at the Plans board. Most people measure once and blame the saw.", "Here's a secret: the saw's never wrong. The saw's just honest about what you told it."),
   N("Tess runs her thumb along a cracked old chair leg, the way you'd check a pulse.") + L("Tess", "This was my gran's chair. Every chair in this town has a wobble I know by name, and this one taught me all of them.", "I keep it in the back. I sit in it when a job goes wrong. It still wobbles. It's still standing."),
   N("Tess has a pencil behind each ear and a stack of offcuts sorted by length on the bench.") + L("Tess", "Offcuts. Everyone throws them away. I save every one. A shelf for one house, a toy for the next, a wedge for a door that won't stay shut.", "Nothing that grew for forty years should end up as kindling because somebody got bored. That's my one rule. Wood first."),

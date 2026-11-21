@@ -47,7 +47,7 @@ func _pass(arc: String) -> void:
 	var vill := Hearts.data().keys().filter(func(x: String) -> bool: return Hearts.in_arc(x))  # Catkins: penguins only
 	check(vill.size() >= 25, "%s: %d villagers with arcs" % [arc, vill.size()])
 	# ♥8 can wait on another villager's ♥8 (Hearts.NEEDS_FLAG): those go first.
-	var first := ["granite", "bram", "gideon", "hazel"]
+	var first := ["granite", "bram", "gideon", "hazel", "theo", "mabel"]  # C12 P4: Ivy ♥8 waits on Theo ♥8, Granite ♥10 on Mabel ♥8
 	var rank := func(x: String) -> int: return first.find(x) if x in first else 99
 	vill.sort_custom(func(a: String, b: String) -> bool: return rank.call(a) < rank.call(b))
 	for id in vill:
@@ -67,6 +67,8 @@ func _pass(arc: String) -> void:
 							qq["done"] = true
 				if Hearts.NEEDS_FLAG.has(id) and not str(Hearts.NEEDS_FLAG[id]).begins_with("hv_"):
 					GameState.run["flags"][Hearts.NEEDS_FLAG[id]] = true
+			if n == 10 and Hearts.NEEDS10.has(id):
+				GameState.run["flags"][Hearts.NEEDS10[id]] = true  # C12 P4: the scene it retells (checked in hearts_content_test)
 			check(Hearts.due(id) == n, "%s %s: ♥%d due" % [arc, id, n])
 			m.later(func() -> void: await Hearts.talk(m, id))
 			await frames(2)

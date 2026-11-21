@@ -4,6 +4,3 @@ LEAK hearts.json:villagers/theo:gangsters:something fell in the east | The log s
 SPOILER hearts.json:villagers/catkins:penguins:merkitties | I made a decision. I'm going to teach again. The
 SPOILER quest_lines.json:gideon_moon/offer:penguins:the moon | People say there's metal up there. On the moon.
 SPOILER side_stories.json:chains/steps:penguins:the moon | Two Light Motes. The deep floors of the mine she
-SPOILER talk.json:bram/penguins:penguins:Big Jim | Big Jim came in for stew and ate the whole pot.
-SPOILER talk.json:ivy/penguins:penguins:merkitties | A merkitty tried to open an account with a shell
-SPOILER talk.json:juniper/penguins:penguins:Coldy | Coldy brought me a frostbitten pup. Carried it a

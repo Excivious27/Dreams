@@ -221,7 +221,7 @@
       },
       {
        "who": "Alder",
-       "text": "Twenty-one years we forgot. I'll put the rope back on the bell myself."
+       "text": "Twenty-one years we forgot. I'll hang it the day the bell has a clapper again."
       }
      ],
      "give": [
@@ -472,7 +472,7 @@
       "toast": "The class rabbit, Professor, is coming to live in your hutch for good."
      },
      "give": [
-      "dc_bookcase3_b",
+      "dc_bookcase3_a",
       1
      ]
     }

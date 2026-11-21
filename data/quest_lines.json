@@ -1311,6 +1311,19 @@
    "From the league kitty. The league doesn't need to know."
   ]
  },
+ "tess_seat": {
+  "offer": [
+   "Wood first, I said. I meant it.",
+   "Eight pieces of Hardwood. I'm building a window seat. Don't ask who for."
+  ],
+  "yes": "Good. Straight grain if you can find it. I'll know if you can't.",
+  "no": "Fine. The offcuts will keep.",
+  "wait": "The Hardwood. Eight. Straight grain.",
+  "done": [
+   "...That's good timber.",
+   "Measure twice. I'll take it from here."
+  ]
+ },
  "mega_gloamwood_job": {
   "offer": [
    "The moth nets are fraying and the moths keep wandering off to the Glade.",

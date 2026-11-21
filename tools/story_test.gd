@@ -58,6 +58,11 @@ func _run() -> void:
 			for f in when.get("flags", []): GameState.run["flags"][str(f)] = true
 			if when.has("flag"): GameState.run["flags"][str(when["flag"])] = true
 			if when.has("known"): Companion.recruit(str(when["known"]))
+			if when.has("item"):  # C12 P1: beats can ask for an item in the pack (the brass locket)
+				var wi = when["item"]
+				var wid := str(wi[0]) if wi is Array else str(wi)
+				var wn := int(wi[1]) if wi is Array else 1
+				if GameState.count(wid) < wn: GameState.add_item(wid, wn - GameState.count(wid), true)
 			# Choices made outside story beats (the farm intro's letter, skipped here) and mid-fight health.
 			if when.has("decision"): GameState.run["decisions"][str(when["decision"][0])] = int(when["decision"][1])
 			if when.has("heat_min") or when.has("heat_max"): Racket.set_heat(clampi(Racket.heat(), int(when.get("heat_min", 0)), int(when.get("heat_max", 5))))  # C7 P3 conditions
