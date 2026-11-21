@@ -11,7 +11,7 @@
    "give": {
     "growth_elixir": 3
    },
-   "text": "Maple gifts a Golden Watering Can's worth of growth: 3 Growth Elixirs"
+   "text": "Maple's best row in the shop: 3 Growth Elixirs"
   }
  },
  "gideon": {
@@ -19,13 +19,13 @@
    "give": {
     "copper_ring": 1
    },
-   "text": "Gideon forges you a free Copper Ring"
+   "text": "Gideon's practice ring (the eleventh-year one didn't come out right): a Copper Ring"
   },
   "10": {
    "bonus": {
     "hp": 20
    },
-   "text": "Gideon's last lesson: +20 max health"
+   "text": "Gideon's nail-loop thank-you, and his last lesson: +20 max health"
   }
  },
  "wren": {
@@ -136,7 +136,7 @@
    "bonus": {
     "energy": 10
    },
-   "text": "A portrait of you hangs in the hall (+10 max energy, you feel proud)"
+   "text": "Lumi's first sketch of you, pinned by the studio window: +10 max energy"
   },
   "8": {
    "bonus": {
@@ -148,7 +148,7 @@
    "give": {
     "dream_charm": 1
    },
-   "text": "Lumi paints the Dream mural: a Dream Charm"
+   "text": "Lumi's gate painting, with your face in it: a Dream Charm"
   }
  },
  "theo": {
@@ -156,7 +156,7 @@
    "give": {
     "memory_tea": 2
    },
-   "text": "Theo translates the ruin stones: 2 Memory Teas"
+   "text": "Theo reads you the miners' log: 2 Memory Teas"
   },
   "10": {
    "flag": "skill_point",
@@ -204,7 +204,8 @@
   },
   "10": {
    "give": {
-    "dream_seed": 5
+    "dream_seed": 5,
+    "cheese": 1
    },
    "animal": {
     "species": "chicken",
@@ -212,7 +213,7 @@
     "name": "Saffron",
     "keepsake": true
    },
-   "text": "Hazel's heirloom seeds: 5 Dream Seeds, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
+   "text": "Hazel's heirloom seeds: 5 Dream Seeds, the lumpy cheese, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   }
  },
  "bram": {
@@ -489,7 +490,7 @@
     "moonlight_elixir": 1,
     "#decor:dc_tt_echo_shell": 1
    },
-   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Echo Shell"
+   "text": "Marlowe's new lens shows the east: a Moonlight Elixir, and a keepsake for your home: Echo Shell"
   },
   "10": {
    "give": {
@@ -572,7 +573,7 @@
   },
   "8": {
    "flag": "no_clinic_fee",
-   "text": "Ivy's insurance: no clinic fee when you collapse"
+   "text": "The account Ivy opened in your name pays your clinic fee when you collapse"
   },
   "10": {
    "weekly": {
@@ -592,7 +593,7 @@
    "weekly": {
     "tea_leaf": 2
    },
-   "text": "Tam's sheepdog finds forage: 2 Tea Leaves each week"
+   "text": "The Dollys find forage on the hill: 2 Tea Leaves each week"
   },
   "6": {
    "give": {
@@ -713,7 +714,7 @@
    "bonus": {
     "mana": 20
    },
-   "text": "Sel's staff: +20 max mana"
+   "text": "Sel's rubbing of the wall: +20 max mana"
   }
  }
 }

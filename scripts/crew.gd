@@ -17,6 +17,7 @@ static func data() -> Dictionary:
 			if not GameState.npcs.has(id):
 				var mdef: Dictionary = mem[id]
 				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "root_beer", "coffee"], "dislikes": ["turnip"]}
+				GameState.apply_gift_tastes(id)  # C12 P4: per-member tastes (gift_lines.json "tastes")
 	return _data
 
 
