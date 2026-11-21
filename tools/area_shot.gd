@@ -19,6 +19,8 @@ func _run() -> void:
 		GameState.run["time"] = int(OS.get_environment("TIME"))
 	if OS.get_environment("MONEY") != "":
 		GameState.run["crystals"] = int(OS.get_environment("MONEY"))
+	if OS.get_environment("MARINA") != "":  # C14: the beach marina's tier (MARINA=0..4)
+		GameState.run["marina"] = {"tier": int(OS.get_environment("MARINA"))}
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 	for i in range(1, args.size()):

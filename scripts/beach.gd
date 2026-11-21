@@ -24,7 +24,8 @@ var _pier_sea := {}  # sea cells under the piers: the water runs on beneath the 
 var _tip := Vector2i.ZERO
 var _quay := {}  # the marina quay (boardwalk / concrete), drawn over the sand
 ## HiddenArea reads m.R["hidden"]: one sea-cave pocket in the west rocks (c14_04-23).
-var R := {"hidden": {"pockets": 1, "ways": 1}}
+## Its "paths" keep the pocket off the family beach and the marina footprint.
+var R := {"hidden": {"pockets": 1, "ways": 1}, "paths": [[24, 8, 22, 16], [64, 8, 36, 16]]}
 
 
 func scene_id() -> String:
@@ -327,7 +328,14 @@ func _fish(c: Vector2i) -> void:
 
 func draw_map() -> void:
 	draw_grass(8)
-	WorldGen.draw_ground_detail(self, 86, 0.1)
+	# No flowers/forage on or beside the piers and the marina quay (c14_04-19).
+	var keep_clear := _quay.duplicate()
+	for k: Vector2i in things:
+		if str(things[k].get("type", "")) in ["dock", "ferry", "marina"]:
+			for dx in range(-1, 2):
+				for dy in range(-2, 2):
+					keep_clear[k + Vector2i(dx, dy)] = true
+	WorldGen.draw_ground_detail(self, 86, 0.1, keep_clear)
 	# Sand (with grass transition), wet strip, then sea with foam.
 	var sand := _sand.duplicate()
 	# The sand runs on under the side border bands (no straight grass strips down the edges).
@@ -517,7 +525,7 @@ func _boardwalk() -> void:
 			to_under(sp)
 	prop("props", "stall2_red" if Marina.vendor_here() else "stall2_red_closed", Vector2i(40, 10), 2, 0.0, true, 0.3)
 	set_thing(41, 11, {"type": "hut", "hint": "A: boardwalk vendor"}, false)
-	prop("furniture", "stalls_closed", Vector2i(44, 10), 2, 0.0, true, 0.35)
+	prop("props", "stall2_yellow_closed", Vector2i(44, 10), 2, 0.0, true, 0.3)  # the shuttered pier arcade
 	anim_prop("props", "neon_open", Vector2i(39, 9), 0, 2.0, false, 0.4)
 	prop("props", "crates_b", Vector2i(48, 11), 0, 0.0, true, 0.3)
 
@@ -555,7 +563,6 @@ func _dress_marina() -> void:
 	if mt >= 3:
 		prop("props", "trawler", Vector2i(PIER_X + 5, QUAY_Y + 12), 2, 0.0, false, 0.5)
 		prop("buildings", "lighthouse", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
-		anim_prop("props", "lighthouse_lamp", Vector2i(95, QUAY_Y - 2), 0, 3.0, false, 0.3)
 		if Marina.npc_here("saffi", 12):
 			prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4)
 	else:
