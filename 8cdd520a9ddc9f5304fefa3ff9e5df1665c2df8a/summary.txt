@@ -1,0 +1,14 @@
+CONDUCT CI PASS  8cdd520a9d  (ci/c16bf-5ea1cce3, run 44938496536)
+
+subset run: shards [5, 6], bots off, playtest on
+check shards (2/2):
+  shard 5: PASS  351s
+  shard 6: PASS  430s
+playtest: PASS  67s  21 screenshots (results playtest/shots/)
+RELAY: ok, 121ms (live code a29f453d8be9, this server/)
+NET E2E: ok, 19s
+
+longest job: 430s
+slowest check steps: import 85.7s; import 79.5s; C9 P6: generated data in sync 50.0s; commons_test 45.1s; C13 P6: ambience map (no silent place, both arcs, seasons, times, rain 33.5s; menu sweep: every menu button, both arcs (C2) 29.7s; exits line up (top edge leads to the next map's bottom edge...) 27.2s; held-tool rules: right tool acts, wrong tool hints 23.9s
+distinct errors/fails/warns:
+    1  SCRIPT ERROR: Invalid access to property or key 'process_frame' on a base object of type 'null instance'.

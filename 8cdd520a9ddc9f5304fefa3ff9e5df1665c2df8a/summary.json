@@ -1,0 +1,180 @@
+{
+ "sha": "8cdd520a9ddc9f5304fefa3ff9e5df1665c2df8a",
+ "ref": "ci/c16bf-5ea1cce3",
+ "run": "44938496536",
+ "finished": 1795288321.611181,
+ "pass": true,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 6,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 121,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 19s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 121ms (live code a29f453d8be9, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 67,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "5ea1cce3afa5bc794ecd7b31d6512f9404a3e559",
+  "label": "c16bf",
+  "branch": "c16b/integ",
+  "shards": [
+   5,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 430,
+ "shards": [
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 351,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 430,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "SCRIPT ERROR: Invalid access to property or key 'process_frame' on a base object of type 'null instance'.",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 85.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 79.5
+  },
+  {
+   "step": 175,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 50.0
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 45.1
+  },
+  {
+   "step": 198,
+   "name": "C13 P6: ambience map (no silent place, both arcs, seasons, times, rain",
+   "rc": 0,
+   "secs": 33.5
+  },
+  {
+   "step": 133,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 29.7
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 27.2
+  },
+  {
+   "step": 36,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 23.9
+  },
+  {
+   "step": 121,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 22.2
+  },
+  {
+   "step": 54,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 17.4
+  },
+  {
+   "step": 42,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 14.0
+  },
+  {
+   "step": 67,
+   "name": "workshop: no dead ends",
+   "rc": 0,
+   "secs": 12.8
+  },
+  {
+   "step": 103,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 0,
+   "secs": 12.8
+  },
+  {
+   "step": 127,
+   "name": "mega regions: map tabs, unlocks, travel",
+   "rc": 0,
+   "secs": 11.2
+  },
+  {
+   "step": 132,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 10.6
+  }
+ ]
+}
