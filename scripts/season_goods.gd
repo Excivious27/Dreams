@@ -113,3 +113,27 @@ static func crop_seasons(cd: Dictionary) -> Array:
 	if str(cs) == "any":
 		return ["spring", "summer", "fall", "winter"]
 	return [str(cs)]
+
+
+## The everyday ground find on a map's grass for a season (WorldGen ground detail): mostly the
+## season's own forage, sometimes the old staple (flower / wild_herb / mushroom).
+const GROUND := {
+	"spring": [["flower", 0.35], ["fiddlehead", 0.25], ["crocus", 0.2], ["dandelion", 0.2]],
+	"summer": [["wild_herb", 0.35], ["honeysuckle", 0.3], ["chamomile", 0.15], ["cattail", 0.2]],
+	"fall": [["mushroom", 0.35], ["hazelnut", 0.25], ["rosehip", 0.2], ["leaf_bundle", 0.2]],
+	"winter": [["snow_yam", 0.4], ["holly_sprig", 0.4], ["wild_herb", 0.2]],
+}
+
+
+static func ground_item(se: String, r: float) -> String:
+	var rows: Array = GROUND.get(se, GROUND["fall"])
+	for row: Array in rows:
+		r -= float(row[1])
+		if r <= 0.0 and GameState.items.has(str(row[0])):
+			return str(row[0])
+	return str(rows[0][0])
+
+
+## An item the season tables added (it lists the seasons it's found in).
+static func is_seasonal_forage(id: String) -> bool:
+	return not (GameState.items.get(id, {}).get("forage_seasons", []) as Array).is_empty()

@@ -50,6 +50,14 @@ func _forage(arc: String) -> void:
 				if se == "winter" and region in ["farm", "meadow"]:
 					check(not id in ["berry", "flower", "wild_leek"], "%s winter %s: no %s under snow" % [arc, region, id])
 		check(own.size() >= 4, "%s %s: >= 4 season-only forage ids (got %s)" % [arc, se, str(own.keys())])
+	# Ground finds (WorldGen) follow the season too.
+	for se in SEASONS:
+		var seen := {}
+		for k in 40:
+			seen[SeasonGoods.ground_item(se, k / 40.0)] = true
+		check(seen.size() >= 3, "%s: >= 3 ground finds (%s)" % [se, str(seen.keys())])
+		if se == "winter":
+			check(not seen.has("flower") and not seen.has("mushroom"), "winter ground: no flowers or mushrooms")
 	# Always-winter maps forage winter whatever the calendar says.
 	_set_season(1)
 	GameState.look_season = "winter"

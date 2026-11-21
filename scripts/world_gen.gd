@@ -67,12 +67,15 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 			if r < density * 0.05 and m.resources_here and not m.things.has(c):
 				var key := "fg_%s_%d_%d" % [m.scene_id(), x, y]
 				if GameState.respawned(key, 2):  # Honey Sense shortens it
-					var item: String = {"spring": "flower", "summer": "wild_herb", "fall": "mushroom", "winter": "wild_leek"}.get(season, "mushroom")
+					var item := SeasonGoods.ground_item(season, rng.randf())  # C15 P2: the season's own ground finds (c15_03-01)
 					if season == "fall" and rng.randf() < 0.03 and GameState.skill_level("foraging") >= 5:
 						item = "truffle"
 					m.set_thing(x, y, {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}, false)
-					var nm: String = {"flower": "wildflowers2", "wild_herb": "wildflowers2", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "flowers")
-					m.prop("nature", nm if Art.has("nature", nm) else "flowers", c, 0, 0.0, false)
+					var nm: String = {"flower": "wildflowers2", "wild_herb": "wildflowers2", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "")
+					if nm == "" and Art.has("items", Hud.icon_for(item)):
+						m.prop("items", Hud.icon_for(item), c, 0, 0.0, false, 0.5)  # C15 P2 (c15_04-22): a seasonal find looks like itself
+					else:
+						m.prop("nature", nm if Art.has("nature", nm) else "flowers", c, 0, 0.0, false)
 				continue
 			if season == "spring" or season == "summer":
 				# (deco_N tiles are opaque squares in another green: they read as a checkerboard.)

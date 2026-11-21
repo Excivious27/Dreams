@@ -302,7 +302,38 @@ def source_text():
     return "\n".join(out)
 
 
+_SG = None
+_CROP_SE = None
+
+
 def where_hint(item_id, it, forage, pools):
+    """C15 P2 (c15_04-23): the book says when, too: seasonal forage places and a season tag."""
+    global _SG, _CROP_SE
+    if _SG is None:
+        p = os.path.join(ROOT, "data", "season_goods.json")
+        _SG = json.load(open(p)) if os.path.exists(p) else {}
+        _CROP_SE = {}
+        for c in load("crops.json").values():
+            if isinstance(c, dict) and c.get("season", "any") != "any" and isinstance(c.get("season"), str):
+                _CROP_SE.setdefault(c.get("yield"), c["season"])
+    h = _where_hint(item_id, it, forage, pools)
+    ses = list(it.get("forage_seasons") or [])
+    if ses:
+        places = []
+        for se in ses:
+            for reg, rows in _SG.get("forage", {}).get(se, {}).items():
+                if any(r[0] == item_id for r in rows) and reg not in places:
+                    places.append(reg)
+        if h.startswith("Out in the world") or not h.startswith("Forage"):
+            h = "Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
+    elif item_id in (_CROP_SE or {}) and it.get("type") in ("crop", "fruit", "flower"):
+        ses = [_CROP_SE[item_id]]
+    if ses and len(ses) < 4 and not item_id in WHERE:
+        h += " (" + ", ".join(x.title() for x in ses) + ")"
+    return h
+
+
+def _where_hint(item_id, it, forage, pools):
     if item_id in WHERE:
         return WHERE[item_id]
     if item_id in ANIMAL_WHERE:
