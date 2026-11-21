@@ -37,10 +37,10 @@ func _run() -> void:
 		if gm == null or not gm.has_meta("c14_dressed"):
 			continue
 		var n := int(gm.get_meta("c14_dressed"))
-		var plan := PropDress.entries(sc).size()
+		var plan := PropDress.entries(sc).filter(func(e): return str(e.get("layer", "")) != "under").size()
 		print("  %s: %d of %d placed" % [sc, n, plan])
 		check(n >= plan * 0.4, "%s placed most of its plan (%d of %d)" % [sc, n, plan])
-		check(PropDress.dress(gm, sc) == 0, "%s: a second pass adds nothing" % sc)
+		check(PropDress.dress(gm, sc, false) == 0, "%s: a second pass adds nothing" % sc)
 		var pc := gm.world_to_cell(gm.player.position)
 		check(not gm.props.has(pc), "%s: nothing on the spawn" % sc)
 	print("prop_dress_test: %d failures" % fails)

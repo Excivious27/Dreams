@@ -58,11 +58,38 @@ static func free_cell(host: GameMap, c: Vector2i, layer: String) -> bool:
 	return true
 
 
+## Ground-level pieces (rails, litter) are painted straight into the map's
+## drawing (baked with the ground: no nodes, perf), honouring Art.clipped.
+static func draw_under(m: GameMap, host: GameMap, scene_id: String) -> void:
+	var winter := GameState.look_se() == "winter"
+	for e: Dictionary in entries(scene_id):
+		if str(e.get("layer", "")) != "under":
+			continue
+		var gn := split_id(str(e.get("id", "")))
+		var name: String = gn[1]
+		if winter and Art.has(gn[0], name + "_winter"):
+			name += "_winter"
+		var tex := Art.tex(gn[0], name)
+		if tex == null:
+			continue
+		var cl: Array = e.get("cell", [-1, -1])
+		var c := Vector2i(int(cl[0]), int(cl[1]))
+		if not free_cell(host, c, "under"):
+			continue
+		var sz := tex.get_size() * 0.5
+		var r := Rect2(Vector2(c) * GameMap.TILE + Vector2((GameMap.TILE - sz.x) * 0.5, (GameMap.TILE - sz.y) * 0.5), sz)
+		if Art.clipped(r):
+			continue
+		m.draw_texture_rect(tex, r, false)
+
+
 ## Place this scene's dressing. Returns how many pieces went down (0 on a repeat call).
-static func dress(m: GameMap, scene_id: String) -> int:
+static func dress(m: GameMap, scene_id: String, drawing := true) -> int:
 	if m == null:
 		return 0
 	var host: GameMap = m._painter_of if m._painter_of != null else m
+	if drawing:
+		draw_under(m, host, scene_id)  # every pass: each baked chunk paints its own part
 	if host.has_meta("c14_dressed"):
 		return 0
 	host.set_meta("c14_dressed", 0)
@@ -82,12 +109,7 @@ static func dress(m: GameMap, scene_id: String) -> int:
 		if not free_cell(host, c, layer):
 			continue
 		if layer == "under":
-			var s := Art.sprite(group, name)
-			if s == null:
-				continue
-			s.scale = Vector2(0.5, 0.5)
-			s.position = host.cell_pos(c.x + 0.5, c.y + 0.92)  # bottom-anchored (Art.sprite offset)
-			host.to_under(s)
+			continue  # painted into the ground bake by draw_under (no nodes)
 		elif e.has("anim"):
 			if host.anim_prop(group, name, c, 0, float(e["anim"]), layer == "prop") == null:
 				continue
