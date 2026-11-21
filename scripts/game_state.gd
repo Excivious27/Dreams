@@ -125,7 +125,21 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 	}
 	add_item("turnip_seed", 6)
 	add_item("berry", 2)
+	starter_spark()
 	save()
+
+
+## C16a P6 (c16a_12-02): every new save knows Spark (a free gift rank in Sorcery / Tech), so the
+## magic tree can earn XP from day 1 in both arcs. A respec keeps it (gift_nodes).
+static func starter_spark() -> void:
+	if run.is_empty() or not skills_data.has("magic") or node("magic", "spark").is_empty():
+		return
+	var gn: Dictionary = run.get("gift_nodes", {}) if run.get("gift_nodes") is Dictionary else {}
+	if gn.has("magic|spark") or node_rank("magic", "spark") > 0:
+		return
+	gn["magic|spark"] = 1
+	run["gift_nodes"] = gn
+	(run["skills"]["magic"]["nodes"] as Dictionary)["spark"] = 1
 
 
 static func has_run() -> bool:
@@ -1364,11 +1378,33 @@ static func buy_node(skill: String, id: String) -> bool:
 	return true
 
 
+## C16a P6 (c16a_11-13/12-08): the first reset of a tree is free, then 40 per point spent (x the
+## number of earlier resets, at most x4), so a respec is a choice, not a free toggle.
+static func reset_cost(skill: String) -> int:
+	var n := int((run.get("flags", {}) as Dictionary).get("reset_n_" + skill, 0))
+	return 0 if n <= 0 else 40 * points_spent(skill) * mini(4, n)
+
+
+static func can_reset(skill: String) -> bool:
+	return int(run.get("crystals", 0)) >= reset_cost(skill)
+
+
 static func reset_tree(skill: String) -> void:
+	var fee := reset_cost(skill)
+	if fee > 0:
+		add_money(-fee, "respec")
+	var fl: Dictionary = run.get("flags", {})
+	fl["reset_n_" + skill] = int(fl.get("reset_n_" + skill, 0)) + 1
 	var keep := {}  # colony-gift spells were free: a respec keeps them
 	for gk in (run.get("gift_nodes", {}) as Dictionary):
 		if str(gk).get_slice("|", 0) == skill:
 			keep[str(gk).get_slice("|", 1)] = int(run["gift_nodes"][gk])
+	# A blueprint whose station is already built stays learned (its point stays spent): no
+	# learn-build-reset-respend loop (c16a_11-13).
+	for nd in nodes_of(skill):
+		var bp := str((nd.get("effect", {}) as Dictionary).get("blueprint", ""))
+		if bp != "" and node_rank(skill, str(nd["id"])) > 0 and Builds.built_tier(bp) > 0:
+			keep[str(nd["id"])] = node_rank(skill, str(nd["id"]))
 	run["skills"][skill]["nodes"] = keep
 	(run["skills"][skill] as Dictionary).erase("nm")
 	_bonus_frame = -1

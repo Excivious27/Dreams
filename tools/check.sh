@@ -1401,3 +1401,6 @@ echo "$c16p6out" | grep -E "FAIL|SCRIPT ERROR|c16a_p6_test" || true
 if echo "$c16p6out" | grep -q "SCRIPT ERROR" || ! echo "$c16p6out" | grep -q "c16a_p6_test: 0 failures"; then
   echo "C16a P6 test failed"; exit 1
 fi
+
+echo "== C16a P6 chore icons (fish, mine) =="
+python3 tools/slice_c16ap6_chores.py check || { echo "C16a P6 chore icons missing"; exit 1; }

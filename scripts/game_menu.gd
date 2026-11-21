@@ -1158,8 +1158,15 @@ func _skills_tab() -> void:
 	if sk == "magic":
 		_magic_casts()
 	if spent > 0:
-		var rb := _button("Sure? Tap again to reset %s" % str(sd["name"]) if _reset_arm == sk else ("Reset this tree (refund all points; colony spells stay)" if sk == "magic" and not (GameState.run.get("gift_nodes", {}) as Dictionary).is_empty() else "Reset this tree (refund all points)"), func() -> void:
+		var fee := GameState.reset_cost(sk)
+		var fee_txt := "free the first time" if fee == 0 else "costs " + Money.amount(fee)
+		var rb := _button("Sure? Tap again to reset %s (%s)" % [GameState.skill_name(sk), fee_txt] if _reset_arm == sk else ("Reset this tree (%s; colony spells stay)" % fee_txt if sk == "magic" and not (GameState.run.get("gift_nodes", {}) as Dictionary).is_empty() else "Reset this tree (%s)" % fee_txt), func() -> void:
 			if _reset_arm == sk:
+				if not GameState.can_reset(sk):
+					_reset_arm = ""
+					Music.instance(get_tree()).sfx("nope", "thud")
+					_refresh()
+					return
 				GameState.reset_tree(sk); _node_sel = ""; _reset_arm = ""
 			else:
 				_reset_arm = sk
