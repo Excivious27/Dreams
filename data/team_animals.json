@@ -43,7 +43,7 @@
    "name": "Fetch"
   },
   "guard": {
-   "chore": "pet",
+   "chore": "guard",
    "desc": "Holds its ground beside you and shoves foes back.",
    "desc_gang": "Plants its hooves by you and shoves anybody pushy back.",
    "dmg": 1,
@@ -79,8 +79,8 @@
   "max_rank": 3,
   "pup_margin": 4,
   "rank_at": [
-   3,
-   5,
+   1,
+   4,
    7
   ],
   "team_max": 2
@@ -180,7 +180,7 @@
     "carrot",
     "hay"
    ],
-   "voice": "bleat"
+   "voice": "hum"
   },
   "sheep": {
    "carry": false,
@@ -199,7 +199,7 @@
     "carrot",
     "apple"
    ],
-   "voice": "sheep"
+   "voice": "baa"
   }
  }
 }

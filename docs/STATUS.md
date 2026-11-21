@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b P5: chores rework (hay through Ranch.feed, helper spots, nightly value cap, forage regions by visit/arc, bond+level energy, two chores, helper pet share, guard chore, plain rows), team animals (ranks from first lesson, lesson words/notes, pup hp cap, Ranch rename, home-sorted page, CHECK menu, tint, keep-up/guard shove/fetch carry), RanchVoice (species voices + lab layer, no new files), pup menu when downed, tunnels leave a staying pup. Test tools/c11b_p5_test.gd.
+
 ## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
 ## 2026-11-20 — C11a fix: BattleBrief keeps an early B and takes MENU as back (bot 20 softlock in bf_orchard_line); campaign_gate_test checks both.
 
