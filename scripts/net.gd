@@ -35,7 +35,7 @@ var tr: NetTransport = null
 var steam_backend: Object = null
 ## Bump whenever WORLD_KEYS, the delta format, act names or frame shapes change:
 ## Steam builds update on their own schedule while the web build auto-deploys.
-const PROTO := 1
+const PROTO := 2  # C17: router frames, bye/host_left, world seq + resync, ping
 var url := ""
 var room := ""
 var my_id := -1
@@ -55,7 +55,38 @@ var _arc_mismatch := false
 var _retries := 0
 var _retry_t := 0.0
 var _last_room := ""
-const MAX_RETRIES := 3
+## C17: phones drop for longer than 12 s (a text, a lock screen, a tunnel): retry for about
+## a minute (1, 2, 4, 8, 15, 30 s), at once when the app comes back to the front.
+const RETRY_GAPS := [1.0, 2.0, 4.0, 8.0, 15.0, 30.0]
+const MAX_RETRIES := 6
+var _reconnecting := false   # a drop happened: the next "joined" is a rejoin
+const CONNECT_TIMEOUT := 10.0
+var _connect_t := 0.0
+const SILENCE_DROP := 12.0   # no frame at all from the relay this long: the socket is dead
+const HOST_SILENT := 6.0     # guests: no host frame this long: hold (the host pushes every 2 s)
+const APP_PING_EVERY := 4.0
+var _rx_t := 0.0             # seconds since any inbound frame
+var _host_rx_t := 0.0        # guests: seconds since a frame from the host
+var _app_ping_t := 0.0
+var _slow_t := 0.0           # the relay said slow: skip position ticks this long
+# Host push coalescing (C17): a guest act marks the world dirty; it goes out at most
+# every PUSH_GAP s; host_save at most every SAVE_EVERY s, never per act.
+const PUSH_GAP := 0.2
+var _dirty := false
+var _since_push := 0.0
+var _save_dirty := false
+var _resync_all := false     # host: after our own reconnect, everyone gets a full world
+var _wseq := 0               # host: world frame seq
+var _wseen := -1             # guests: last world seq applied (-1 = none yet)
+var _resync_t := 0.0
+# Outgoing budget (mirrors the relay's 120 msg/s with headroom): droppable ticks drop, the rest queue.
+const OUT_PER_SEC := 60
+var _out_budget := OUT_PER_SEC
+var _out_refill := 0.0
+var _outq: Array = []
+# State ticks: unchanged positions go out at most once a second.
+var _last_state := {}
+var _state_idle := 0.0
 const BUFFER_BYTES := NetTransportWs.BUFFER_BYTES
 const SAVE_EVERY := 10.0          # host_save (late joiners' snapshot): at most this often while only the clock moves
 var _pushed := {}                 # host: the world as last broadcast (deltas are against this)
@@ -243,6 +274,24 @@ func _note_seq(peer: String, d: Dictionary) -> void:
 		_acks[peer] = maxi(int(_acks.get(peer, 0)), int(d["seq"]))
 
 
+## Guests: world frame seq. False = an old frame, skip it. A gap asks the host for a full world.
+func _take_seq(wd: Dictionary) -> bool:
+	if not wd.has("_s"):
+		return true
+	var sq := int(wd["_s"])
+	wd.erase("_s")
+	if not bool(wd.get("_delta", false)):
+		_wseen = sq  # a full world
+		return true
+	if _wseen >= 0 and sq <= _wseen:
+		return false
+	if _wseen >= 0 and sq > _wseen + 1 and Time.get_ticks_msec() - _resync_t > 3000.0:
+		_resync_t = Time.get_ticks_msec()
+		send_host({"k": "act", "a": "resync"})
+	_wseen = sq
+	return true
+
+
 func _set_host_away(away: bool) -> void:
 	if _host or away == _host_away:
 		return
@@ -282,22 +331,27 @@ func _connect(u: String) -> bool:
 	url = u.strip_edges()
 	if url == "":
 		return false
+	_connect_t = 0.0
+	_rx_t = 0.0
 	tr = NetTransportWs.new()
 	if not tr.open(url, _pending_join):
 		tr = null
-		disconnected.emit("Couldn't reach %s" % url)
+		disconnected.emit(CANT_REACH)
 		return false
 	SaveGame.set_value("net_url", "" if url == DEFAULT_URL else url)
 	return true
 
 
+## A random token per app launch (C17): two tabs or two players on one browser never
+## share it (the joiner used to replace the host), and it can't be guessed.
 func _tok() -> String:
 	if _token == "":
-		_token = str(SaveGame.get_value("net_token", ""))
-		if _token == "":
-			_token = "%x%x" % [randi(), Time.get_ticks_usec()]
-			SaveGame.set_value("net_token", _token)
+		_token = Crypto.new().generate_random_bytes(16).hex_encode()
 	return _token
+
+
+const CANT_REACH := "Couldn't reach the co-op server. Check your signal and try again."
+const OLD_BUILD := "You and your friend are on different versions of Dreams. Close and reopen Dreams on both phones to update, then try again."
 
 
 func host(u: String) -> void:
@@ -308,6 +362,9 @@ func host(u: String) -> void:
 
 
 func join(u: String, code: String) -> void:
+	if code.strip_edges() == "":
+		disconnected.emit("Type your friend's room code first.")  # an empty code used to host a new room
+		return
 	_host = false
 	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
 	_connect(pick_url(u))
@@ -377,7 +434,7 @@ var _last_tr: NetTransport = null
 
 
 func _reconnect() -> bool:
-	if _last_tr != null and str(_last_tr.caps().get("kind", "")) == "steam":
+	if _last_tr != null and str(_last_tr.caps().get("kind", "")) in ["steam", "loop"]:
 		if _last_tr.reopen():
 			tr = _last_tr
 			return true
@@ -389,7 +446,11 @@ func leave(why := "left") -> void:
 	_retries = MAX_RETRIES  # a deliberate leave never reconnects
 	_last_room = ""
 	_restore_solo(why if why != "left" else "You left. You're back on your own farm.")
+	_reconnecting = false
+	_outq.clear()
 	if tr:
+		if tr.is_open() and why == "left":
+			tr.send({"t": "bye"})  # C17: a deliberate leave; a host's ends the room for everyone at once
 		tr.close()
 	tr = null
 	my_id = -1
@@ -417,7 +478,22 @@ func _my_look() -> Dictionary:
 
 func _send(o: Dictionary) -> void:
 	if tr and tr.is_open():
+		if _out_budget <= 0 or not _outq.is_empty():
+			if not NetTransport.droppable(o):
+				_outq.append(o)  # over our own budget: queue, never lose an act or a world frame
+			return
+		_out_budget -= 1
 		tr.send(o)
+
+
+func _flush_out(delta: float) -> void:
+	_out_refill += delta
+	if _out_refill >= 1.0 / OUT_PER_SEC:
+		_out_budget = mini(OUT_PER_SEC, _out_budget + int(_out_refill * OUT_PER_SEC))
+		_out_refill = fmod(_out_refill, 1.0 / OUT_PER_SEC)
+	while not _outq.is_empty() and _out_budget > 0 and tr and tr.is_open():
+		_out_budget -= 1
+		tr.send(_outq.pop_front())
 
 
 ## Tell the room which scene we're in (game_map.gd on every map change).
@@ -453,30 +529,45 @@ func _process(delta: float) -> void:
 		if _retry_t > 0.0:
 			_retry_t -= delta
 			if _retry_t <= 0.0 and _last_room != "" and _retries < MAX_RETRIES:
-				_retries += 1
-				_pending_join = {"t": "join", "room": _last_room, "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
-				if not _reconnect():
-					if _retries >= MAX_RETRIES:
-						_restore_solo()  # gave up: back to our own world, not the host's offline
-					else:
-						_retry_t = 2.0 * (_retries + 1)
+				_retry_now()
 		return
 	tr.poll(delta)
 	if tr.is_open():
 		if not _pending_join.is_empty():
-			_send(_pending_join)
+			tr.send(_pending_join)
 			_pending_join = {}
-		for m: Dictionary in tr.take():
+		_rx_t += delta
+		var got := tr.take()
+		if not got.is_empty():
+			_rx_t = 0.0
+		for m: Dictionary in got:
 			_on_msg(m)
 			if tr == null:
 				return  # a message made us leave
 		if tr == null:
 			return
+		_flush_out(delta)
+		# C17 liveness: a half-dead socket after a phone sleep or network switch.
+		_app_ping_t += delta
+		if _app_ping_t >= APP_PING_EVERY:
+			_app_ping_t = 0.0
+			tr.send({"t": "ping", "s": 0})
+		if _rx_t >= SILENCE_DROP:
+			_rx_t = 0.0
+			tr.close()
+			_on_drop("no answer from the server")
+			return
+		if my_id > 0 and not _host and visiting():
+			_host_rx_t += delta
+			if _host_rx_t >= HOST_SILENT:
+				_set_host_away(true)
 		if my_id > 0:
 			_t += delta
+			_slow_t = maxf(0.0, _slow_t - delta)
 			if _t >= TICK:
 				_t = 0.0
-				_broadcast_state()
+				if _slow_t <= 0.0:
+					_broadcast_state()
 			_ping_t += delta
 			if _ping_t >= PING_EVERY and not peers.is_empty():
 				_ping_t = 0.0
@@ -484,25 +575,65 @@ func _process(delta: float) -> void:
 			if _host:
 				_save_t += delta
 				_world_t += delta
-				if _world_t >= 2.0:
+				_since_push += delta
+				if peers.is_empty():
+					_world_t = 0.0  # alone in the room: nobody to push to (a joiner gets a full world)
+				elif _world_t >= 2.0 or (_dirty and _since_push >= PUSH_GAP) or _resync_all:
 					_world_t = 0.0
 					_push_world()
 	elif tr.closed():
-		var why := tr.close_reason()
-		_last_tr = tr
-		tr = null
-		_set_host_away(true)  # guests: nothing is spent until a host is back
-		my_id = -1
-		peers.clear()
-		peers_changed.emit()
-		if _last_room != "" and _retries < MAX_RETRIES:
-			_retry_t = 2.0 * (_retries + 1)
-			why += "; reconnecting (%d/%d)" % [_retries + 1, MAX_RETRIES]
+		_on_drop(tr.close_reason())
+	else:
+		_connect_t += delta
+		if _connect_t >= CONNECT_TIMEOUT:
+			tr.close()
+			_on_drop("timed out")
+
+
+## The line went down (closed, silent or never opened): reconnect, or go home.
+func _on_drop(why: String) -> void:
+	_last_tr = tr
+	tr = null
+	_set_host_away(true)  # guests: nothing is spent until a host is back
+	var was_online := my_id > 0
+	my_id = -1
+	peers.clear()
+	_outq.clear()
+	peers_changed.emit()
+	if _last_room != "" and _retries < MAX_RETRIES:
+		_reconnecting = true
+		_retry_t = float(RETRY_GAPS[mini(_retries, RETRY_GAPS.size() - 1)])
+		why = "Reconnecting..."
+		if was_online:
+			_toast("Connection lost. Reconnecting...", Color(1, 0.85, 0.6))
+	elif _last_room == "" and not was_online:
+		why = CANT_REACH
+	else:
+		_reconnecting = false
+		_restore_solo()
+	disconnected.emit(why)
+
+
+func _retry_now() -> void:
+	_retries += 1
+	_retry_t = 0.0
+	# The host asks to recreate its code (a relay restart forgets every room); guests only rejoin.
+	_pending_join = {"t": "join", "room": _last_room, "create": _host, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
+	if not _reconnect():
+		if _retries >= MAX_RETRIES or url == "" and (_last_tr == null or not (str(_last_tr.caps().get("kind", "")) in ["steam", "loop"])):
+			_reconnecting = false
+			_restore_solo()  # gave up: back to our own world, not the host's offline
 		else:
-			_restore_solo()
-		if why.contains("reconnecting"):
-			_toast("Connection lost, " + why.get_slice("; ", 1) + "...", Color(1, 0.85, 0.6))
-		disconnected.emit(why)
+			_retry_t = float(RETRY_GAPS[mini(_retries, RETRY_GAPS.size() - 1)])
+
+
+## Back to the front (phone unlocked, tab visible): reconnect at once instead of waiting.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_RESUMED or what == NOTIFICATION_APPLICATION_FOCUS_IN:
+		if tr == null and _retry_t > 0.0 and _last_room != "" and _retries < MAX_RETRIES:
+			_retry_now()
+		elif tr != null and tr.is_open() and _rx_t > 5.0:
+			tr.send({"t": "ping", "s": 0})  # check the line now
 
 
 func _on_msg(m: Dictionary) -> void:
@@ -512,7 +643,12 @@ func _on_msg(m: Dictionary) -> void:
 			my_id = int(m["id"])
 			room = str(m["room"])
 			_last_room = room
+			var rejoin := _reconnecting
+			_reconnecting = false
 			_retries = 0
+			_retry_t = 0.0
+			_host_rx_t = 0.0
+			_wseen = -1
 			_host = bool(m.get("host", false))
 			_host_id = my_id if _host else int(m.get("host_id", -1))
 			if _host_away:
@@ -525,6 +661,10 @@ func _on_msg(m: Dictionary) -> void:
 				# Rejoined a room whose host is gone: the host's farm goes with the host, we go home.
 				leave("Your host left. You're back on your own farm.")
 				return
+			if _host and rejoin:
+				_resync_all = true  # guests' acts in the gap were lost and deltas missed: full world to all
+			if rejoin:
+				_toast("Back online.", Color(0.8, 0.95, 1.0))
 			if not _host and _solo_backup.is_empty():
 				for k in WORLD_KEYS:
 					# null = the guest had no such key: drop it again later, never keep the host's.
@@ -544,9 +684,22 @@ func _on_msg(m: Dictionary) -> void:
 		"full":
 			leave("That room is full (8 players).")
 		"old_build":
-			leave("Your host is on a different version of Dreams. Update and try again.")
+			leave(OLD_BUILD)
 		"no_room":
+			if _reconnecting and _retries < MAX_RETRIES and not _host:
+				# The relay restarted: the host recreates the code in a moment, keep trying.
+				tr.close()
+				_last_tr = tr
+				tr = null
+				_retry_t = float(RETRY_GAPS[mini(_retries, RETRY_GAPS.size() - 1)])
+				return
 			leave("No game with that code. Check the code with your host.")
+		"host_left":
+			leave("Your host ended the game. You're back on your own farm." if visiting() else "The game ended.")
+		"slow":
+			_slow_t = 1.0  # over the relay's budget: hold position ticks a second
+		"pong":
+			pass
 		"peer_joined":
 			_look_hash = 0  # the newcomer gets our look with the next state packet
 			var p: Dictionary = m["peer"]
@@ -564,7 +717,9 @@ func _on_msg(m: Dictionary) -> void:
 			if _host:
 				_push_world(int(p["id"]))
 		"peer_left":
-			if peers.has(int(m["id"])):
+			if bool(m.get("host", false)) and not _host:
+				_toast("Your host lost signal. Waiting up to %d s..." % int(int(m.get("grace", 30000)) / 1000), Color(1, 0.85, 0.6))
+			elif peers.has(int(m["id"])):
 				_peer_cue(str((peers[int(m["id"])] as Dictionary).get("name", "")), false)
 			peers.erase(int(m["id"]))
 			_acks.erase(str(int(m["id"])))
@@ -595,6 +750,7 @@ func _on_msg(m: Dictionary) -> void:
 			var d: Dictionary = dv
 			if bool(m.get("host", false)) and from > 0:
 				_host_id = from
+				_host_rx_t = 0.0
 				_set_host_away(false)
 			match str(d.get("k", "")):
 				"r":
@@ -623,7 +779,10 @@ func _on_msg(m: Dictionary) -> void:
 				"act":
 					if _host:
 						_note_seq(str(from), d)
-						_handle_action(from, d)
+						if str(d.get("a", "")) == "resync":
+							_push_world(from)  # a guest missed a delta: a full world to it alone
+						else:
+							_handle_action(from, d)
 				"world":
 					var wd: Variant = d.get("d", {})
 					if not _host and wd is Dictionary and bool(m.get("host", false)):  # only the host's world counts
@@ -631,6 +790,8 @@ func _on_msg(m: Dictionary) -> void:
 						if ak is Dictionary:
 							_acked = maxi(_acked, int((ak as Dictionary).get(str(my_id), _acked)))
 							(wd as Dictionary).erase("_ack")
+						if not _take_seq(wd as Dictionary):
+							return
 						_apply_world(wd)
 				"toast":
 					if not bool(m.get("host", false)):
@@ -641,6 +802,8 @@ func _on_msg(m: Dictionary) -> void:
 
 
 func _broadcast_state() -> void:
+	if peers.is_empty():
+		return  # C17: alone in the room, nobody to tell
 	var m := get_tree().current_scene
 	if not (m is GameMap) or (m as GameMap).player == null:
 		return
@@ -656,6 +819,12 @@ func _broadcast_state() -> void:
 		_look_hash = h
 		_look_t = 0.0
 		st["look"] = lk
+	# C17: standing still or in a menu, the same state goes out once a second, not 10x.
+	_state_idle += TICK
+	if not st.has("look") and st == _last_state and _state_idle < 1.0:
+		return
+	_state_idle = 0.0
+	_last_state = st.duplicate()
 	send_all(st)
 
 
@@ -677,7 +846,22 @@ func _push_world(to_id := -1) -> void:
 		elif GameState.run.has(k):
 			d[k] = GameState.run[k]
 	if to_id > 0:
-		_send({"t": "to", "id": to_id, "d": {"k": "world", "d": d}})  # a new guest gets everything
+		var full := d.duplicate()
+		full["_s"] = _wseq
+		_send({"t": "to", "id": to_id, "d": {"k": "world", "d": full}})  # a new guest gets everything
+		return
+	_dirty = false
+	_since_push = 0.0
+	if _resync_all:
+		_resync_all = false
+		_pushed = d.duplicate(true)
+		var full_all := d.duplicate()
+		full_all["_s"] = _wseq
+		if not _acks.is_empty():
+			full_all["_ack"] = _acks.duplicate()
+		send_all({"k": "world", "d": full_all})
+		_save_t = 0.0
+		_send({"t": "host_save", "d": d})
 		return
 	# Everyone else gets only what changed since the last push (a late farm's full
 	# world passes the 64 KB frame size; the clock alone is a few bytes).
@@ -689,11 +873,17 @@ func _push_world(to_id := -1) -> void:
 	delta["_paused"] = is_inside_tree() and get_tree().paused
 	if not _acks.is_empty():
 		delta["_ack"] = _acks.duplicate()  # C17: each guest's highest applied seq (echo rollback)
+	_wseq += 1
+	delta["_s"] = _wseq  # guests spot a missed delta and ask for a full world
 	send_all({"k": "world", "d": delta})
-	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time", "_paused"]))
-	if busy or _save_t >= SAVE_EVERY:
+	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time", "_paused", "_ack", "_s"]))
+	if busy:
+		_save_dirty = true
+	# C17: the relay snapshot (late joiners, a restart) at most every SAVE_EVERY s, never per act.
+	if _save_t >= SAVE_EVERY and (_save_dirty or busy or delta.has("day")):
 		_save_t = 0.0
-		_send({"t": "host_save", "d": d})  # the relay keeps a full copy for late joiners
+		_save_dirty = false
+		_send({"t": "host_save", "d": d})
 
 
 ## What changed between two worlds: changed keys whole, the farm per tile
@@ -913,6 +1103,10 @@ static func clean_ranch_names(r: Dictionary) -> Dictionary:
 func _handle_action(from: int, d: Dictionary) -> void:
 	var a := str(d.get("a", ""))
 	var m := get_tree().current_scene
+	if not valid_act(d):
+		return  # C17: a modified client can't write junk into the host's save
+	if from != my_id and not peers.has(from):
+		return
 	match a:
 		"farm_tile":
 			var tv: Variant = d.get("tile", null)
@@ -946,7 +1140,36 @@ func _handle_action(from: int, d: Dictionary) -> void:
 				(m as GameMap).hud.toast("Everyone else is in bed. Sleep when you're ready.", Color(0.9, 0.95, 1.0))
 	if m is GameMap:
 		(m as GameMap).on_world_sync({})  # soil now, full redraw at most every 2 s
-	_push_world()
+	_dirty = true  # C17: coalesced, out within PUSH_GAP s (a held hoe no longer means a push per tile)
+
+
+## C17: shape checks on a guest's act before the host applies it (friends-only was the
+## old assumption; codes can be shared on). Static so tests can call it.
+static func valid_act(d: Dictionary) -> bool:
+	match str(d.get("a", "")):
+		"farm_tile", "farm_clear":
+			var key := str(d.get("key", ""))
+			var parts := key.split(",")
+			if parts.size() != 2 or not parts[0].is_valid_int() or not parts[1].is_valid_int():
+				return false
+			if absi(int(parts[0])) > 512 or absi(int(parts[1])) > 512:
+				return false
+			if str(d.get("a", "")) == "farm_tile":
+				var tv: Variant = d.get("tile", null)
+				return tv is Dictionary and JSON.stringify(tv).length() <= 1024
+			return true
+		"cleared":
+			var rx := RegEx.create_from_string("^[a-z0-9_:\\-]{1,48}$")
+			return rx.search(str(d.get("scene", ""))) != null and str(d.get("key", "")).length() in range(1, 49)
+		"permit":
+			var id := str(d.get("id", ""))
+			var tier := int(d.get("tier", 0))
+			return id != "" and tier >= 1 and tier <= 10 and not Builds.tier_def(id, tier).is_empty()
+		"build":
+			return str(d.get("id", "")) != "" and str(d.get("id", "")).length() <= 48
+		"sleep", "resync":
+			return true
+	return true  # other acts (other packages' handlers) check their own
 
 
 var _beds := {}  # guests in bed tonight (not saved)

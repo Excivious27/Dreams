@@ -20,6 +20,21 @@ var token := {}                # id -> device token / SteamID string
 var out := {}                  # id -> Callable(frame)
 var budget := {}               # id -> msgs left this second
 var _refill := 0.0
+var proto := -1                # the creator's proto (-1 = not set yet); 2+ = C17 rules
+var ended := false             # C17: the host left on purpose / for good: the room is gone
+
+
+## C17 (proto 2+): the host's bye or a grace run out ends the room for everyone at once.
+func _end(except := -1) -> void:
+	for pid: int in info.keys():
+		if pid != except:
+			_send(pid, {"t": "host_left"})
+	info.clear()
+	out.clear()
+	token.clear()
+	budget.clear()
+	world = null
+	ended = true
 
 
 func _send(id: int, o: Dictionary) -> void:
@@ -31,6 +46,11 @@ func _send(id: int, o: Dictionary) -> void:
 ## A member's "join" frame. deliver = Callable(frame) for that member.
 func join(id: int, m: Dictionary, deliver: Callable) -> void:
 	var tok := str(m.get("token", ""))
+	if proto < 0:
+		proto = int(m.get("proto", 0))
+	if proto >= 2 and int(m.get("proto", 0)) != proto:
+		deliver.call({"t": "old_build", "need": proto})  # refused before it can touch the host role
+		return
 	if tok != "":
 		for pid: int in info.keys():
 			if pid != id and str(token.get(pid, "")) == tok:
@@ -43,6 +63,8 @@ func join(id: int, m: Dictionary, deliver: Callable) -> void:
 			host = id
 			host_gone = -1.0
 	if host < 0 or (not info.has(host) and host != id and host_gone < 0.0) or (not info.has(host) and host != id and host_gone >= NetTransport.HOST_GRACE):
+		if host_token != tok:
+			world = null  # another device takes over: never the old host's farm
 		host = id
 		host_token = tok
 		host_gone = -1.0
@@ -83,6 +105,17 @@ func frame(id: int, m: Dictionary, size := 0) -> void:
 		if int(budget[id]) < 0:
 			return
 	var t := str(m.get("t", ""))
+	if t == "ping":
+		_send(id, {"t": "pong", "s": m.get("s", 0)})
+		return
+	if t == "bye":
+		if host == id and proto >= 2:
+			_end(id)
+			return
+		_drop(id)
+		for pid: int in info:
+			_send(pid, {"t": "peer_left", "id": id, "bye": true})
+		return
 	if t == "host_save":
 		if host == id:
 			var d: Variant = m.get("d")
@@ -123,7 +156,7 @@ func leave(id: int) -> void:
 		return
 	_drop(id)
 	for pid: int in info:
-		_send(pid, {"t": "peer_left", "id": id})
+		_send(pid, {"t": "peer_left", "id": id, "host": true, "grace": int(NetTransport.HOST_GRACE * 1000)} if host == id else {"t": "peer_left", "id": id})
 	if host == id and not info.is_empty():
 		host_gone = 0.0
 
@@ -137,6 +170,10 @@ func tick(delta: float) -> void:
 			budget[pid] = NetTransport.RATE_PER_SEC
 	if host_gone >= 0.0:
 		host_gone += delta
+		if host_gone >= NetTransport.HOST_GRACE and not info.has(host) and not info.is_empty() and proto >= 2:
+			host_gone = -1.0
+			_end()
+			return
 		if host_gone >= NetTransport.HOST_GRACE and not info.has(host) and not info.is_empty():
 			host = int(info.keys()[0])
 			host_token = str(token.get(host, ""))

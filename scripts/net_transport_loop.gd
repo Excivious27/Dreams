@@ -17,8 +17,11 @@ class Bus:
 		if f == _frame:
 			return
 		_frame = f
-		for r: NetRelayRoom in rooms.values():
+		for k: String in rooms.keys():
+			var r: NetRelayRoom = rooms[k]
 			r.tick(delta)
+			if r.ended:
+				rooms.erase(k)  # C17: a room the host ended is gone (next join: no_room)
 
 	func new_code() -> String:
 		_n += 1
@@ -78,6 +81,8 @@ func send(frame: Dictionary) -> void:
 	if str(m.get("t", "")) == "join":
 		_last_join = m
 		var code := str(m.get("room", "")).to_upper().substr(0, 8)
+		if bus.rooms.has(code) and (bus.rooms[code] as NetRelayRoom).ended:
+			bus.rooms.erase(code)
 		if code != "" and not bus.rooms.has(code) and m.get("create", true) == false:
 			_deliver({"t": "no_room"})
 			return
