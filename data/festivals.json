@@ -34,7 +34,7 @@
    },
    "line": "Planting Day: a free seed packet in the mail and Gideon's seeds are cheaper today.",
    "line_gang": "Fresh Start: an envelope and a seed bag left at the Hideout door. New season, clean slate.",
-   "icon": "holiday"
+   "icon": "flower"
   },
   {
    "id": "egg",
@@ -69,7 +69,7 @@
    },
    "line": "Egg Festival on the plaza: the egg hunt, the Best Egg table and spring treats.",
    "line_gang": "Block Party on the plaza! Twelve cash envelopes are hidden around town: the Stash Hunt.",
-   "icon": "festival"
+   "icon": "egg"
   },
   {
    "id": "blossom",
@@ -104,7 +104,8 @@
    },
    "line": "Blossom Dance in the park: ask a partner, follow the steps under the petals.",
    "line_gang": "Rooftop Bloom in the park: string lights, a DJ booth and a dance circle.",
-   "icon": "festival"
+   "icon": "flower",
+   "where": "park"
   },
   {
    "id": "longest_day",
@@ -139,7 +140,7 @@
    },
    "line": "Longest Day: the sun stays up an hour later tonight.",
    "line_gang": "Longest Day: the streetlights come on late tonight.",
-   "icon": "holiday"
+   "icon": "kite"
   },
   {
    "id": "founders",
@@ -174,7 +175,7 @@
    },
    "line": "Founders' Day parade on the plaza: the town's anniversary, floats and a history talk.",
    "line_gang": "Turf Day: the crew's anniversary. A drumline, a float and a long table on the plaza.",
-   "icon": "festival"
+   "icon": "music"
   },
   {
    "id": "lantern",
@@ -209,7 +210,7 @@
    },
    "line": "Lantern Festival: float your lantern down the river at dusk.",
    "line_gang": "Neon Night: paper lanterns and neon tubes over the plaza after dark.",
-   "icon": "festival"
+   "icon": "lantern"
   },
   {
    "id": "regatta",
@@ -244,7 +245,7 @@
    },
    "line": "Regatta at the marina: three legs round the buoys, bunting on every mast.",
    "line_gang": "Harbour Lights on the boardwalk: neon stalls and a ring toss.",
-   "icon": "marina"
+   "icon": "boat"
   },
   {
    "id": "tide_feast",
@@ -279,7 +280,7 @@
    },
    "line": "Tide Feast on the beach: add one dish to the big pot and see what the town thinks.",
    "line_gang": "Boardwalk Block Party: put one thing on the crew grill and hear the verdict.",
-   "icon": "festival"
+   "icon": "fish"
   },
   {
    "id": "moon_jellies",
@@ -314,7 +315,7 @@
    },
    "line": "Moon Jellies: at night the glowing jellies drift past the pier.",
    "line_gang": "Neon Tide: the glow buoys light up the bay tonight.",
-   "icon": "festival"
+   "icon": "moon"
   },
   {
    "id": "apple_day",
@@ -349,7 +350,7 @@
    },
    "line": "Apple Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
    "line_gang": "Apple Run: the crew presses a truckload of apples. Fresh juice on every stoop.",
-   "icon": "holiday"
+   "icon": "market"
   },
   {
    "id": "derby",
@@ -384,7 +385,7 @@
    },
    "line": "Fishing Derby: biggest fish on the pier by 2pm wins. Ines is judging.",
    "line_gang": "Fishing Derby: biggest catch by 2pm takes the pot.",
-   "icon": "marina"
+   "icon": "fish"
   },
   {
    "id": "harvest",
@@ -419,7 +420,7 @@
    },
    "line": "Harvest Fair: enter your best crop, the Animal Show and fall treats.",
    "line_gang": "Harvest Hustle: food trucks, a chili cook-off and the best-crate contest.",
-   "icon": "festival"
+   "icon": "wheat"
   },
   {
    "id": "hollow",
@@ -454,7 +455,7 @@
    },
    "line": "Hollow Night: lantern maze, treats at the cottage doors and a costume contest.",
    "line_gang": "Mask Night: costumes, candy and a friendly lantern walk through the garden maze.",
-   "icon": "festival"
+   "icon": "pumpkin"
   },
   {
    "id": "first_frost",
@@ -489,7 +490,7 @@
    },
    "line": "First Frost: the town lights its windows and Bram's cocoa is half price.",
    "line_gang": "First Frost: the block lights its windows. Hot cocoa on the house at the Hideout.",
-   "icon": "holiday"
+   "icon": "snow"
   },
   {
    "id": "winter_market",
@@ -524,7 +525,7 @@
    },
    "line": "Winter Market: guest stalls on the plaza and a snow-sculpt contest.",
    "line_gang": "Night Market: neon stalls down the plaza and a snow-sculpt contest.",
-   "icon": "festival"
+   "icon": "market"
   },
   {
    "id": "star",
@@ -559,7 +560,7 @@
    },
    "line": "Star Festival: the gift swap and one star-wish under the sky.",
    "line_gang": "Snowlight Street Party: wish wall, gift swap and lights on every fire escape.",
-   "icon": "festival"
+   "icon": "star"
   },
   {
    "id": "longest_night",
@@ -594,7 +595,7 @@
    },
    "line": "Longest Night: the darkest night of the year. Lamps in every window.",
    "line_gang": "Longest Night: the darkest night of the year. The block keeps its lights on.",
-   "icon": "holiday"
+   "icon": "moon"
   },
   {
    "id": "comet",
@@ -629,7 +630,7 @@
    },
    "line": "Comet Night: once every three years, crystals fall over the farm.",
    "line_gang": "Blackout Night: the city's power goes out and the stars come back.",
-   "icon": "festival"
+   "icon": "firework"
   },
   {
    "id": "gift_swap",
@@ -664,7 +665,7 @@
    },
    "line": "Gift Swap Feast: bring a gift for your secret partner and the year's-end speech.",
    "line_gang": "Year's End Swap: a name in the hat, a gift in a box and the crew's year-end toast.",
-   "icon": "festival"
+   "icon": "firework"
   },
   {
    "id": "spring_cleanup",
@@ -699,7 +700,7 @@
    },
    "line": "",
    "line_gang": "Spring Cleanup at the Hideout: repaint the walls, plant the lot. The crew pitches in.",
-   "icon": "holiday"
+   "icon": "flower"
   },
   {
    "id": "street_fair",
@@ -734,7 +735,7 @@
    },
    "line": "",
    "line_gang": "Neon Street Fair: food carts and arcade booths all down the strip.",
-   "icon": "festival"
+   "icon": "market"
   },
   {
    "id": "rooftop_cinema",
@@ -769,7 +770,7 @@
    },
    "line": "",
    "line_gang": "Rooftop Cinema tonight: an old movie on a bedsheet over the strip.",
-   "icon": "holiday"
+   "icon": "moon"
   },
   {
    "id": "payday_feast",
@@ -804,12 +805,12 @@
    },
    "line": "",
    "line_gang": "Payday Feast: Mama Rosa feeds the whole crew tonight.",
-   "icon": "holiday"
+   "icon": "market"
   },
   {
    "id": "gilt_gala",
    "season": "winter",
-   "day": 21,
+   "day": 23,
    "kind": "festival",
    "arc": "gangsters",
    "name": "Gilt Gala",
@@ -839,7 +840,7 @@
    },
    "line": "",
    "line_gang": "Gilt Gala at the casino: dress sharp, a one-night chip tournament, gold everywhere.",
-   "icon": "festival"
+   "icon": "star"
   },
   {
    "id": "new_year_count",
@@ -874,7 +875,7 @@
    },
    "line": "",
    "line_gang": "Countdown on the Hideout roof: the crew sees the year out together.",
-   "icon": "holiday"
+   "icon": "firework"
   }
  ]
 }

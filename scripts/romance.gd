@@ -368,7 +368,7 @@ static func spouse_place(npc_id: String) -> String:
 	if npc_id == "" or spouse() != npc_id:
 		return ""
 	var hour := int(GameState.run["time"]) / 60.0
-	if GameState.festival_today() != "" and Npc.in_festival(hour):
+	if Npc.in_festival(hour):
 		return ""  # the festival: with everyone on the plaza
 	if is_job_time():
 		return "work"

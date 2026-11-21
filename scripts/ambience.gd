@@ -311,8 +311,8 @@ func _evaluate() -> Dictionary:
 			out["leaves"] = -18.0 - (6.0 if ph == "night" else 0.0)
 		elif se == "fall" and wild and not wet and not snowy and not urban and id not in SEA_MAPS and Scenery.sprinkle_ok(id):
 			out["leaves"] = -24.0 - (6.0 if ph == "night" else 0.0)  # C15 P5: a soft leaf rustle wherever fall leaves drift
-		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and (not wet or GameState.festival_today() != ""):
-			if GameState.festival_today() != "":
+		if id == "town" and t >= 8 * 60 and t < (23 * 60 if Calendar.town_festival_today() != "" else 20 * 60) and (not wet or Calendar.town_festival_today() != ""):
+			if Calendar.town_festival_today() != "":
 				# c13_10-10: a rainy festival keeps its crowd (under awnings), 6 dB down.
 				out["crowd"] = -14.0 - (10.0 * clampf(float(t - 22 * 60) / 60.0, 0.0, 1.0)) - (6.0 if wet else 0.0)  # tapers 22:00-23:00
 			else:
@@ -373,7 +373,7 @@ func _evaluate() -> Dictionary:
 			out["neon_street"] = -16.0
 		if id in ["countryside", "highlands", "mountain"] and not wet and ph != "night":
 			out["wind_soft"] = maxf(float(out.get("wind_soft", -40.0)), -18.0)
-		if GameState.festival_today() != "" and id == "town" and ph == "night" and not wet:
+		if Calendar.town_festival_today() != "" and id == "town" and ph == "night" and not wet:
 			out["campfire"] = -20.0
 	elif id == "interior":
 		var kind := str(m.get("interior_id")) if m.get("interior_id") != null else ""

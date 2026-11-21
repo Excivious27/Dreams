@@ -135,8 +135,9 @@ func after_ready() -> void:
 		# The arc's own town beat (p1_town / g1_town) is the arrival scene; this
 		# flag lets it play. (It used to play a second intro here too.)
 		GameState.run["flags"]["town_seen"] = true
-	elif GameState.festival_today() != "":
-		hud.toast("%s today, on the plaza!" % FestivalWords.name_of(GameState.festival_today()), Color(1, 0.9, 0.5))
+	elif Calendar.town_festival_today() != "":
+		var fw := str(Calendar.festival_today().get("where", "plaza"))  # C15 integ: the park for the Blossom Dance
+		hud.toast("%s today, %s the %s!" % [FestivalWords.name_of(Calendar.town_festival_today()), "in" if fw == "park" else "on", fw], Color(1, 0.9, 0.5))
 	if not GameState.run["flags"].has("town_tour"):
 		later(_town_tour)
 
@@ -508,6 +509,8 @@ func _place_festival(fest: String) -> void:
 		if str(st[1]) != "":
 			pf.call(str(st[1]), sc, 2)
 		set_thing(sc.x, sc.y, {"type": "fest_stall", "fest": fest, "hint": "A: festival stall"}, false)
+	if not GameState.is_penguins():
+		Crew.place_festival(self, [Vector2i(36, 52), Vector2i(45, 53)])  # C15 integ: P4's crew at the festival
 
 
 ## Festival stall per festival: [cell, stall prop to place ("" = one is already there), host, season, treats].
@@ -925,7 +928,7 @@ const MARKET_STALLS := {
 
 static func market_open(who: String, minutes: int) -> bool:
 	var st: Array = MARKET_STALLS.get(who, [])
-	return not st.is_empty() and minutes >= int(st[1]) * 60 and minutes < int(st[2]) * 60 and GameState.festival_today() == ""
+	return not st.is_empty() and minutes >= int(st[1]) * 60 and minutes < int(st[2]) * 60 and Calendar.town_festival_today() == ""
 
 
 func _market_stall(who: String) -> void:
@@ -934,8 +937,8 @@ func _market_stall(who: String) -> void:
 		return
 	var nm := str(GameState.npcs.get(who, {}).get("name", who))
 	player.frozen = true
-	if GameState.festival_today() != "":
-		var fn := FestivalWords.name_of(GameState.festival_today())
+	if Calendar.town_festival_today() != "":
+		var fn := FestivalWords.name_of(Calendar.town_festival_today())
 		await say([{"text": ("%s's stall is packed away for the %s. Find %s on the plaza." % [nm, fn, "her" if who == "hazel" else "him"]) if GameState.is_penguins() else ("Stall's shut for the %s. %s's on the plaza." % [fn, nm])}])
 	elif not market_open(who, int(GameState.run["time"])):
 		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
@@ -1120,7 +1123,7 @@ func _place_props() -> void:
 	_lane_cells = cells_of(LANES + [QUAY, HALL_STEPS, RecCenter.lane_rect(), AVENUE_X, AVENUE_Y])
 	for c in _plaza:
 		_lane_cells.erase(c)
-	var fest := GameState.festival_today()
+	var fest := Calendar.town_festival_today()
 	if fest != "":
 		_place_festival(fest)  # first: its props claim their cells, permanent ones step aside (c14_03-14)
 	_dress_buildings()

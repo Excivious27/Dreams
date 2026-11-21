@@ -629,8 +629,11 @@ static func _tam_highlands(day: int) -> void:
 	if n == TAM_LETTERS.size() - 1:
 		# c12_09-06: the last letter waits for the week before a festival he can come down for.
 		var se := GameState.season_of(day)
-		var dos := (day - 1) % GameState.DAYS_PER_SEASON + 1
-		if dos < 7 or dos >= GameState.FESTIVAL_DAY or not (se in ["fall", "winter"]):
+		var soon := false  # C15 integ: a plaza festival in the coming week (Calendar, not day 14)
+		for k in range(1, 8):
+			var fe := Calendar.festival_for_day(day + k)
+			soon = soon or (not fe.is_empty() and Calendar.venue_of(fe) == "town" and Calendar.season_of(day + k) == se)
+		if not soon or not (se in ["fall", "winter"]):
 			return
 		if se == "winter":
 			text = TAM_WINTER

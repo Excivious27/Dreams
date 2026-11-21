@@ -490,6 +490,8 @@ static func festival_hours(fest: String = "") -> Vector2:
 
 
 static func in_festival(hour: float) -> bool:
+	if Calendar.town_festival_today() == "":
+		return false  # C15 integ: only plaza festivals pull the town out (beach/farm/city have their own)
 	var fh := festival_hours()
 	return fh.y > 0.0 and hour >= fh.x and hour < fh.y
 

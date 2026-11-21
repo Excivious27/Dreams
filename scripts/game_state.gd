@@ -2429,7 +2429,8 @@ static func gift_value(npc: String, item: String) -> int:
 
 ## [season, day] from data/npcs.json (tools/gen_heart_perks.py).
 static func birthday_of(npc: String) -> Array:
-	return npcs.get(npc, {}).get("birthday", [])
+	var b: Array = npcs.get(npc, {}).get("birthday", [])
+	return b if not b.is_empty() else CrewSeason.birthday_of(npc)  # C15 integ: crew birthdays (P4)
 
 
 static func is_birthday(npc: String) -> bool:

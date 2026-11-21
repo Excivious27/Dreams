@@ -26,6 +26,16 @@ NEON = {"scene": "neon", "cell": [20, 20]}
 UPTOWN = {"scene": "uptown", "cell": [20, 20]}
 
 
+# Calendar screen icons (Calendar.ICONS names; art ui/c15p1_ic_<name>). C15 integ.
+ICONS = {
+    "planting_day": "flower", "egg": "egg", "blossom": "flower", "longest_day": "kite", "founders": "music",
+    "lantern": "lantern", "regatta": "boat", "tide_feast": "fish", "moon_jellies": "moon", "apple_day": "market",
+    "derby": "fish", "harvest": "wheat", "hollow": "pumpkin", "first_frost": "snow", "winter_market": "market",
+    "star": "star", "longest_night": "moon", "comet": "firework", "gift_swap": "firework", "spring_cleanup": "flower",
+    "street_fair": "market", "rooftop_cinema": "moon", "payday_feast": "market", "gilt_gala": "star", "new_year_count": "firework",
+}
+
+
 def row(id, season, day, kind, name, name_gang, venue, hours, host, host_gang, line, line_gang,
         closes_shops=None, arc="both", year_min=1, every=1, weather="", handler=None, music_fallback=None,
         marina_tier=0, flag="", icon=""):
@@ -39,7 +49,7 @@ def row(id, season, day, kind, name, name_gang, venue, hours, host, host_gang, l
         "weather": weather, "host": host, "host_gang": host_gang, "handler": handler or id,
         "stall": "festival_" + id, "prize_pool": "festival_%s_prize" % id, "music": "festival_" + id,
         "music_fallback": music_fallback, "needs": {"marina_tier": marina_tier, "flag": flag},
-        "line": line, "line_gang": line_gang, "icon": icon or ("holiday" if kind == "holiday" else kind),
+        "line": line, "line_gang": line_gang, "icon": icon or ICONS.get(id, {"holiday": "firework", "marina": "boat"}.get(kind, "star")),
     }
 
 
@@ -116,11 +126,18 @@ ROWS = [
         "", "Rooftop Cinema tonight: an old movie on a bedsheet over the strip.", arc="gangsters"),
     row("payday_feast", "fall", 21, "holiday", "Payday Feast", "Payday Feast", HIDEOUT, "evening", "Mama Rosa", "Mama Rosa",
         "", "Payday Feast: Mama Rosa feeds the whole crew tonight.", arc="gangsters"),
-    row("gilt_gala", "winter", 21, "festival", "Gilt Gala", "Gilt Gala", UPTOWN, "evening", "Marlene", "Marlene",
+    row("gilt_gala", "winter", 23, "festival", "Gilt Gala", "Gilt Gala", UPTOWN, "evening", "Marlene", "Marlene",
         "", "Gilt Gala at the casino: dress sharp, a one-night chip tournament, gold everywhere.", arc="gangsters", closes_shops=False),
     row("new_year_count", "winter", 28, "holiday", "Countdown on the Roof", "Countdown on the Roof", HIDEOUT, "night", "Dice", "Dice",
         "", "Countdown on the Hideout roof: the crew sees the year out together.", arc="gangsters"),
 ]
+
+
+# Where a town festival is held when it is not the plaza (Calendar "where"; town toast). C15 integ.
+WHERE = {"blossom": "park"}
+for _r in ROWS:
+    if _r["id"] in WHERE:
+        _r["where"] = WHERE[_r["id"]]
 
 
 def main():

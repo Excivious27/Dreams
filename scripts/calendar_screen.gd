@@ -209,10 +209,10 @@ func _mark(parent: Control, e: Dictionary, p: Vector2) -> void:
 	if Art.has("ui", art):
 		var tr := TextureRect.new()
 		tr.texture = Art.tex("ui", art)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE  # before size: else the texture's own size wins (icons spilled over cells)
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		tr.position = p
 		tr.size = Vector2(15, 15)
-		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		parent.add_child(tr)
 		return

@@ -178,7 +178,7 @@ SEASON_FISH = {
 SEASON_LEGENDS = {
     "prism_trout": ("Prism Trout", 700, "Spring legend of the forest stream. Its scales split light into rainbows."),
     "sailfish": ("Sun Sailfish", 760, "Summer legend of the open bay. Leaps highest at noon."),
-    "soul_salmon": ("Lantern Salmon", 740, "Fall legend of the lake. Glows like a paper lantern on autumn nights."),
+    "soul_salmon": ("Lantern Salmon", 740, "Fall legend of the lake. Glows like a paper lantern on fall nights."),
     "frost_pike": ("Frost King Pike", 820, "Winter legend of the forest stream, seen only in a second winter or later."),
 }
 for _fid, (_nm, _v, _d) in SEASON_LEGENDS.items():

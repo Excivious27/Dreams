@@ -75,7 +75,7 @@ static func part_ok(part: String) -> bool:
 	if part == "heat":
 		return arc == "gangsters" and Racket.heat() >= 3
 	if part == "festival":
-		return GameState.festival_today() != ""
+		return Calendar.town_festival_today() != ""  # C15 integ: plaza festivals ("Are you going to the plaza?")
 	if part.begins_with("festival_"):
 		return GameState.festival_today() == part.substr(9)
 	if part in ["morning", "afternoon", "evening", "night"]:
@@ -130,13 +130,19 @@ static func own_pool(id: String) -> Array:
 static func festival_pool(id: String) -> Array:
 	_who = id
 	var pool: Array = []
-	if GameState.festival_today() == "":
+	if Calendar.town_festival_today() == "":
 		return pool
 	var d: Dictionary = data().get(id, data().get("_any", {}))
 	for key: String in d:
 		if "festival" in key and key_ok(key):
 			for l in d[key]:
 				pool.append(str(l))
+	if pool.is_empty() and data().has(id):  # C15 integ: new festivals' shared lines (_any) for anyone without their own
+		var an: Dictionary = data().get("_any", {})
+		for key: String in an:
+			if "festival" in key and key_ok(key):
+				for l in an[key]:
+					pool.append(str(l))
 	return pool
 
 

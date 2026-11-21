@@ -232,6 +232,9 @@ static func festival_candidates(fid: String, night: bool, gang: bool) -> Array:
 		return out
 	out.append("festival_%s%s" % [fid, n])
 	out += FESTIVAL_ALT.get(fid + n, []) as Array
+	var fb := str((Calendar.find(fid).get("row", {}) as Dictionary).get("music_fallback", ""))
+	if fb != "" and not fb in out:
+		out.append(fb)  # C15 integ: the festival row's stand-in song (gen_festivals music_fallback) until its own is made
 	out.append("festival" + n)
 	if night:
 		out.append("festival_" + fid)

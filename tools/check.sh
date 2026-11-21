@@ -1387,3 +1387,10 @@ echo "$c15p5out" | grep -E "FAIL|SCRIPT ERROR|c15_p5_test" || true
 if ! echo "$c15p5out" | grep -q "c15_p5_test: 0 failures"; then
   echo "C15 P5 seasonal look test failed"; exit 1
 fi
+
+echo "== C15 integ: calendar hooks (plaza-only festivals in town, crew birthdays, festival songs/talk, one festival a day) =="
+c15iout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_integ_test.gd 2>&1)"
+echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
+if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
+  echo "C15 integ test failed"; exit 1
+fi

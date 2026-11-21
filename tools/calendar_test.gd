@@ -103,7 +103,11 @@ func _run() -> void:
 				if e["kind"] in ["festival", "holiday", "event", "marina"]:
 					check(ml.contains(str(e["name"])), "%s day %d morning names %s" % [ar, day, e["name"]])
 					check(Calendar.pip_color().a > 0.0, "%s day %d HUD pip for %s" % [ar, day, e["name"]])
-			if not fest.is_empty() and bool(fest.get("closes_shops", false)) and str((fest["row"] as Dictionary).get("hours", "")) in ["day", "evening"]:
+			# C15 integ: only plaza (town-venue) festivals empty the town; beach/farm/city ones keep shops open.
+			if not fest.is_empty() and Calendar.venue_of(fest) != "town" and str((fest["row"] as Dictionary).get("hours", "")) in ["day", "evening"]:
+				GameState.run["time"] = int((Npc.festival_hours().x + 0.5) * 60.0)
+				check(TownHours.why_shut("store") == "" or not TownHours.why_shut("store").contains(str(fest["name"])), "%s day %d store not shut for the off-plaza %s" % [ar, day, fest["name"]])
+			if not fest.is_empty() and Calendar.venue_of(fest) == "town" and bool(fest.get("closes_shops", false)) and str((fest["row"] as Dictionary).get("hours", "")) in ["day", "evening"]:
 				var fh2 := Npc.festival_hours()
 				GameState.run["time"] = int((fh2.x + 0.5) * 60.0)
 				check(not TownHours.shop_open("store"), "%s day %d store shut for %s" % [ar, day, fest["name"]])

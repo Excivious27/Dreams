@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C15 integ: plaza-only festivals pull the town (Calendar.town_festival_today), gilt_gala -> winter 23, SeasonCal wraps Calendar, crew birthdays on the gang calendar, Crew at festivals, festival row icons/where, talk lines for new festivals, row music stand-ins; test tools/c15_integ_test.gd
+
 ## 2026-11-21 — C14b docs: CONDUCT-14b report, Guide 42, ART-PROMPTS-CONDUCT-14b, TEXTS['14b'], 6 inventory rows (animation core, water features, weather FX, character idles, creature motion, magic FX), PROJECT-MEMORY entry; final CI c14bi pending.
 ## 2026-11-21 — C15 P2: seasonal goods: 19 seasonal forage items with art and per-season valley forage pools (winter drops berries/flowers), 10 winter crops (Maple 4 winter seeds + 4 rare), 19 seasonal dishes, seasonal shop goods + year-2 goods in 7 shops, greenhouse off-season seeds, stall seeds filtered by season, festival stall season treats, seasonal decor sells in season (carpenter shelf all season, gang names), off-season sell premium 1.35 -> 1.1, book season hints, helper chores forage the season (tools/gen_seasons.py, scripts/season_goods.gd, tools/season_goods_test.gd)
 

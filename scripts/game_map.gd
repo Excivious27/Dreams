@@ -1681,9 +1681,9 @@ func area_track() -> String:
 	if not Music.has_track(t):
 		t = music_track
 	var now := int(GameState.run.get("time", 0)) % 1440 if not GameState.run.is_empty() else 720
-	if id == "town" and GameState.festival_today() != "":
-		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
-			var fid := GameState.festival_today()
+	if id == "town" and Calendar.town_festival_today() != "":
+		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:  # C15 integ: plaza festivals only (beach/farm/city venues play their own)
+			var fid := Calendar.town_festival_today()
 			if GameState.is_night():
 				var fn := MusicResolve.festival_track(fid, true)  # C15 P5: per-arc festival songs + stand-ins
 				if fn != "":

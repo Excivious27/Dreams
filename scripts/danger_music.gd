@@ -398,7 +398,7 @@ static func prefetch_for(m: GameMap) -> void:
 	var nxt := "night" if not GameState.is_night() else "dawn"
 	want.append(Music.resolve(base, m.music_ctx(sid).merged({"phase": nxt}, true)))
 	if not GameState.run.is_empty() and GameState.festival_today() != "":
-		want.append("festival_%s%s" % [GameState.festival_today(), "" if GameState.is_penguins() else "_gang"])
+		want.append(MusicResolve.festival_track(GameState.festival_today(), GameState.is_night()))  # C15 integ: the song it will really play
 	# The final chapter: endings and credits before the last fight.
 	if not GameState.run.is_empty() and Story.chapter_no() >= 4:
 		want.append_array(["ending_penguin" if GameState.is_penguins() else "ending_gangster", "credits"])

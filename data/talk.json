@@ -376,6 +376,46 @@
   ],
   "birthday": [
    "It's my birthday today! Nice of you to stop by."
+  ],
+  "penguins&festival_blossom": [
+   "The Blossom Dance tonight! The park's all petals and paper lights.",
+   "Save me a spot in the dance circle. I only know one step."
+  ],
+  "gangsters&festival_blossom": [
+   "Rooftop Bloom tonight. String lights in the park and a DJ booth.",
+   "Somebody's got to dance first at Rooftop Bloom. Not me."
+  ],
+  "penguins&festival_founders": [
+   "Founders' Day! The parade float goes round the plaza at noon.",
+   "Founders' Day always smells like pie. I'm not complaining."
+  ],
+  "gangsters&festival_founders": [
+   "Turf Day. The drumline's been practising all week.",
+   "Long table on the plaza for Turf Day. Bring an appetite."
+  ],
+  "penguins&festival_hollow": [
+   "Hollow Night! Pumpkin lanterns and the garden maze. Friendly scares only.",
+   "I'm going as a turnip. Don't laugh."
+  ],
+  "gangsters&festival_hollow": [
+   "Mask Night. Costumes, candy, and a lantern walk through the maze.",
+   "Under a mask, nobody knows you owe them money. Kidding."
+  ],
+  "penguins&festival_winter_market": [
+   "The Winter Market's up on the plaza. Guest stalls and a snow-sculpt contest!",
+   "Have you seen the snow sculptures? One of them looks like Alder."
+  ],
+  "gangsters&festival_winter_market": [
+   "Night Market's on. Neon stalls all down the plaza.",
+   "Snow-sculpt contest at the Night Market. Mine's a car. Ish."
+  ],
+  "penguins&festival_gift_swap": [
+   "Gift Swap Feast tonight! I wrapped mine three times.",
+   "Who did you draw for the swap? Don't tell me. Tell me."
+  ],
+  "gangsters&festival_gift_swap": [
+   "Year's End Swap. A name in the hat, a box with a bow.",
+   "Last night of the year. The crew toast is at the long table."
   ]
  },
  "maple": {

@@ -208,6 +208,19 @@ static func _birthdays(season: String, day: int) -> Array:
 	return out
 
 
+## C15 integ: crew birthdays (data/crew.json via CrewSeason, P4), gangster arc only.
+static func _crew_birthdays(season: String, day: int) -> Array:
+	var out: Array = []
+	for c: Dictionary in CrewSeason.birthdays_on(season, day):
+		var id := str(c.get("id", ""))
+		var nm := str(c.get("name", id.capitalize()))
+		var met := not GameState.run.is_empty() and Crew.recruited(id)
+		out.append({"id": "bday_" + id, "npc": id, "crew": true, "name": "%s's birthday" % nm, "kind": "birthday", "icon": "cake",
+			"where": "", "hours": Vector2.ZERO, "time": "all day", "line": "It's %s's birthday: a gift today counts triple." % nm,
+			"season": season, "day": day, "closes_shops": false, "met": met})
+	return out
+
+
 ## Marina rows from data/marina.json that carry a day (skipped when festivals.json has the id).
 static func _marina_rows(seen: Dictionary) -> Array:
 	var out: Array = []
@@ -258,6 +271,8 @@ static func events_on(season: String, day: int, yr := -1, ar := "") -> Array:
 	var order := {"festival": 0, "holiday": 1, "marina": 2, "event": 3, "market": 4}
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(order.get(a["kind"], 5)) < int(order.get(b["kind"], 5)))
 	out.append_array(_birthdays(season, day))
+	if ar == "gangsters":
+		out.append_array(_crew_birthdays(season, day))
 	# A special sky (GameState.special_weather) shows for today and tomorrow (the forecast).
 	if not GameState.run.is_empty():
 		var ad := abs_day(season, day, yr)
@@ -300,6 +315,21 @@ static func festival_today() -> Dictionary:
 
 static func festival_id_today() -> String:
 	return str(festival_today().get("id", ""))
+
+
+## Venue scene of a festival entry/row ("town" when unset).
+static func venue_of(e: Dictionary) -> String:
+	var r: Dictionary = e.get("row", e)
+	var v: Variant = r.get("venue", {})
+	var sc := str((v as Dictionary).get("scene", "town")) if v is Dictionary else str(v)
+	return "town" if sc == "" else sc
+
+
+## C15 integ: today's festival id only when it is held on the town plaza ("" otherwise:
+## beach, farm and city festivals have their own crowds and keep the town as it is).
+static func town_festival_today() -> String:
+	var f := festival_today()
+	return str(f.get("id", "")) if not f.is_empty() and venue_of(f) == "town" else ""
 
 
 ## Hours of a festival (by id; "" = today's). ZERO when none.
