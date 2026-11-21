@@ -1,6 +1,6 @@
 # CONDUCT 14 report: world aesthetics, town, beach + marina, earned fast travel, exploration (2026-11-21)
 
-A look-and-world pass over both arcs. The beach is twice as big, with a marina you build up in four tiers, boat routes, fishing charters and marina people. The town grew south with Harbour Row and gained a real plaza, warm cobbles, a winding river and the Mayor's garden maze. Fast travel is now earned: a network of stations and rides in five tiers per arc (TravelNet), with short ride scenes and fares that turn free. Classic regions have secrets, the home valley has rivers and orchard rows, the gang cities have real city blocks, lamps glow in their own colours, and many old sprites were redrawn or cleaned. 18 focus auditors (401 findings) fed 6 fix packages (scopes in /home/claude/wt/C14_SCOPES.txt, APIs and ownership fixed up front in C14_CONTRACT.md), then one hook integration pass. **Final full CI c14i: PENDING.**
+A look-and-world pass over both arcs. The beach is twice as big, with a marina you build up in four tiers, boat routes, fishing charters and marina people. The town grew south with Harbour Row and gained a real plaza, warm cobbles, a winding river and the Mayor's garden maze. Fast travel is now earned: a network of stations and rides in five tiers per arc (TravelNet), with short ride scenes and fares that turn free. Classic regions have secrets, the home valley has rivers and orchard rows, the gang cities have real city blocks, lamps glow in their own colours, and many old sprites were redrawn or cleaned. 18 focus auditors (401 findings) fed 6 fix packages (scopes in /home/claude/wt/C14_SCOPES.txt, APIs and ownership fixed up front in C14_CONTRACT.md), then one hook integration pass. **Final full CI c14i: PASS** (4 of 6 shards, 20 bots, the playtest and the live relay green on the first run; shards 3 and 6 caught one house-style word and two footstep expectations for the now-paved Uptown and gravel quarry; fixed, rerun green).
 
 **Whole game after C14: about 82% done, 18% remaining** (average of the 106 systems in docs/inventory.csv). New or moved rows: fast travel 10% -> 72%, marina 68% (new), town expansion 75% (new), prop dressing 70% (new), secrets 65% -> 74%, lighting 85% -> 87%.
 
@@ -39,7 +39,7 @@ A look-and-world pass over both arcs. The beach is twice as big, with a marina y
 | Fix agents P1-P6 in parallel, 02:05-03:00 | fixer | medium | ~55 |
 | Merges, 03:00-03:15 | integrator | medium | ~15 |
 | Hook agent, 03:15-03:30 | integrator | medium | ~15 |
-| Final full CI c14i, started ~03:32 | CI | | PENDING |
+| Final full CI c14i, started ~03:32 | CI | | PASS (after shard 3/6 rerun) |
 | **Total** | | | **~2 h wall clock (01:30-03:32) + final CI** |
 | Agents per effort | | | 18 medium auditors; 6 medium fixers; 1 hook integrator |
 | Images used | | | 80 |

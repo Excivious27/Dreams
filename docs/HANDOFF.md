@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-21 03:15 PT, personal account. CONDUCT 13 (audio depth) SHIPPED on main (final CI c13i + rerun c13i2 green).
-- **Done:** CONDUCT 1-13, S1, relay live, optimization rounds 1-4.
-- **In progress:** CONDUCT 14 (world aesthetics, town expansion, beach + tiered marina, earned fast travel TravelNet, exploration): 18 audits done (/home/claude/wt/c14_reports), packages /home/claude/wt/C14_PACKAGES.md + C14_CONTRACT.md (copies in docs/reports/), 6 fix branches c14f/p1..p6 merged into c14/integ + hook agent done (head 1f07f6706). Next: full CI on c14/integ.
-- **Next step:** ci_run c14i 3 --branch c14/integ (full + bots); docs agent writes CONDUCT-14.md/GUIDE-41 on c14/docs; ship C14; package 14 (art prompts from c14f_reports/p*.md). Then C14b animation life → C15 seasons → C16 (incl. optional battles) → C17 → C18a/b → C19 → C20 → C21 → C22 → C23 → C23b → final package.
-- **Jobs running elsewhere:** subagents only. Images used today: ~360 of 1000. ACE credits: 64 until Dec 1.
-- **WIP branches:** c14/integ (integration, not on main yet).
+- **Last update:** 2026-11-21 05:00 PT, personal account. CONDUCT 14 (world, town, beach marina, fast travel) SHIPPED on main (final CI c14i + shard 3/6 rerun green).
+- **Done:** CONDUCT 1-14, S1, relay live, optimization rounds 1-4.
+- **In progress:** CONDUCT 14b (animation life): 18 audits done (/home/claude/wt/c14b_reports), packages /home/claude/wt/C14B_PACKAGES.md + C14B_CONTRACT.md (copies in docs/reports/), 6 fix branches c14bf/p1..p6 pushed (based on c14/integ; reports /home/claude/wt/c14bf_reports). Next: merge into c14b/integ, hook agent, full CI, docs agent, ship, package 14b.
+- **Next step:** after C14b: C15 seasons → C16 (incl. optional battles, museum, skill ecosystems, energy, battle playability) → C17 → C18a/b → C19 → C20 → C21 → C22 → C23 → C23b → final package.
+- **Jobs running elsewhere:** subagents only. Images used today: ~480 of 1000. ACE credits: 64 until Dec 1.
+- **WIP branches:** c14bf/p1..p6 (C14b fix branches, not on main yet).
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
