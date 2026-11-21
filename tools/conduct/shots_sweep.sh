@@ -20,6 +20,14 @@ T0=$(date +%s)
 # c13_01-01: register new class_names first (a stale global class cache made town.gd fail
 # to parse, so every town shot was a blank frame).
 ( cd "$ROOT" && bash tools/conduct/glock.sh -- godot --headless --path . --import ) > "$OUT/import.log" 2>&1 || true
+# c14_16-07: the import alone left FestivalWords out of the cache once; check every class_name
+# made it in and fall back to an editor pass (which rebuilds the cache) when one is missing.
+miss=$(cd "$ROOT" && for c in $(grep -rhoE "^class_name [A-Za-z0-9_]+" scripts | awk '{print $2}'); do
+  grep -q "&\"$c\"" .godot/global_script_class_cache.cfg 2>/dev/null || echo "$c"; done)
+if [ -n "$miss" ]; then
+  echo "class cache missing: $miss (editor pass)" | tee -a "$OUT/import.log"
+  ( cd "$ROOT" && bash tools/conduct/glock.sh -- godot --headless --path . --editor --quit ) >> "$OUT/import.log" 2>&1 || true
+fi
 pids=()
 for a in $ARCS; do
   rm -rf "$OUT/$a"; mkdir -p "$OUT/$a"
@@ -31,6 +39,12 @@ for a in $ARCS; do
 done
 rc=0
 for p in "${pids[@]}"; do wait "$p" || rc=1; done
+# c14_16-07: a script that fails to parse makes blank shots: fail the sweep loudly.
+for a in $ARCS; do
+  if grep -q "Parse Error" "$OUT/$a.log" 2>/dev/null; then
+    echo "shots_sweep: $a had parse errors (blank shots likely):"; grep "Parse Error" "$OUT/$a.log" | sort -u | head -5; rc=1
+  fi
+done
 WALL=$(( $(date +%s) - T0 ))
 python3 - "$OUT" "$WALL" $ARCS <<'PY'
 import sys, os
