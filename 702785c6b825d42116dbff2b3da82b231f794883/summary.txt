@@ -1,0 +1,54 @@
+CONDUCT CI FAIL  702785c6b8  (ci/s1p6-75dce9e9, run 44867073033)
+
+subset run: shards [2, 3, 4], bots off, playtest on
+check shards (3/3):
+  shard 2: FAIL  164s  failed: C11b P6: C11b creature voices and ranch sound
+  shard 3: FAIL  203s  failed: farm_look_test, C9 P6: generated data in sync
+  shard 4: FAIL  432s  failed: workshop: no dead ends
+playtest: PASS  67s  21 screenshots (results playtest/shots/)
+RELAY: ok, 121ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 17s
+
+longest job: 432s
+slowest check steps: import 168.1s; import 72.2s; import 72.2s; exits and spawns 45.5s; touch_ui_test 37.7s; held-tool rules: right tool acts, wrong tool hints 24.7s; C9 P6: generated data in sync 22.1s; move_target_test 21.0s
+distinct errors/fails/warns:
+    1  FAIL animal_voice asks the C11b table
+    1  FAIL pens fenced (41 pieces, 3 gates)
+    1  FAIL penguins: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+    1  FAIL penguins: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+    1  FAIL penguins: recipe star_yarn at loom can never be made; missing ['star_wool']
+    1  FAIL penguins: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+    1  FAIL penguins: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+    1  FAIL penguins: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+    1  FAIL penguins: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+    1  FAIL penguins: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+    1  FAIL penguins: recipe feather_fan_plume at loom can never be made; missing ['plume']
+    1  FAIL penguins: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+    1  FAIL penguins: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+    1  FAIL penguins: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL penguins: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+    1  FAIL penguins: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL penguins: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+    1  FAIL penguins: recipe moon_cheese at press can never be made; missing ['moon_milk']
+    1  FAIL penguins: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+    1  FAIL penguins: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+    1  FAIL penguins: recipe ember_charm at jeweler can never be made; missing ['ember_scale']
+    1  FAIL gangsters: recipe fine_yarn at loom can never be made; missing ['alpaca_fleece']
+    1  FAIL gangsters: recipe fine_yarn_yak at loom can never be made; missing ['yak_wool']
+    1  FAIL gangsters: recipe star_yarn at loom can never be made; missing ['star_wool']
+    1  FAIL gangsters: recipe star_yarn_moon at loom can never be made; missing ['moon_fluff']
+    1  FAIL gangsters: recipe star_yarn_aurora at loom can never be made; missing ['aurora_tuft']
+    1  FAIL gangsters: recipe glow_yarn at loom can never be made; missing ['glow_wool']
+    1  FAIL gangsters: recipe glow_yarn_static at loom can never be made; missing ['static_fluff']
+    1  FAIL gangsters: recipe feather_fan at loom can never be made; missing ['peacock_feather']
+    1  FAIL gangsters: recipe feather_fan_plume at loom can never be made; missing ['plume']
+    1  FAIL gangsters: recipe feather_fan_roc at loom can never be made; missing ['roc_feather']
+    1  FAIL gangsters: recipe grand_omelette at kitchen can never be made; missing ['ostrich_egg']
+    1  FAIL gangsters: recipe grand_omelette_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL gangsters: recipe giant_egg_custard at kitchen can never be made; missing ['crystal_egg']
+    1  FAIL gangsters: recipe giant_egg_custard_emu at kitchen can never be made; missing ['emu_egg']
+    1  FAIL gangsters: recipe buffalo_mozzarella at press can never be made; missing ['buffalo_milk']
+    1  FAIL gangsters: recipe moon_cheese at press can never be made; missing ['moon_milk']
+    1  FAIL gangsters: recipe moss_tea_blend at press can never be made; missing ['shell_moss']
+    1  FAIL gangsters: recipe scale_charm at jeweler can never be made; missing ['shed_scale']
+    1  FAIL gangsters: recipe ember_charm at jeweler can never be made; missing ['ember_scale']

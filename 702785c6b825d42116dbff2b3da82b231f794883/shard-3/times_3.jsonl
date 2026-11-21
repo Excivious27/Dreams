@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 72.2}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 13.2}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 3.1}
+{"step": 16, "name": "phone_ui_test", "rc": 0, "secs": 10.8}
+{"step": 22, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.6}
+{"step": 28, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.2}
+{"step": 34, "name": "rec_audio_test", "rc": 0, "secs": 2.5}
+{"step": 40, "name": "farm_look_test", "rc": 1, "secs": 3.9}
+{"step": 46, "name": "npc_anim_test", "rc": 0, "secs": 2.5}
+{"step": 52, "name": "ranch_gift_test", "rc": 0, "secs": 2.5}
+{"step": 58, "name": "town_first_test", "rc": 0, "secs": 3.9}
+{"step": 64, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 70, "name": "slice_c11b_chores", "rc": 0, "secs": 0.5}
+{"step": 76, "name": "ambience_test", "rc": 0, "secs": 4.7}
+{"step": 82, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.8}
+{"step": 88, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.7}
+{"step": 94, "name": "c6_cue_test", "rc": 0, "secs": 2.4}
+{"step": 100, "name": "meow_gate_test", "rc": 0, "secs": 3.2}
+{"step": 106, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.4}
+{"step": 112, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 16.4}
+{"step": 118, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 124, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.8}
+{"step": 130, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.0}
+{"step": 136, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.4}
+{"step": 142, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.6}
+{"step": 148, "name": "C9 P6: generated data in sync", "rc": 1, "secs": 22.1}
+{"step": 154, "name": "S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf", "rc": 0, "secs": 0.1}

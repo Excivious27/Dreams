@@ -1,0 +1,164 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 72.2s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.6s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.4s
+
+#### step 15: crops wired in (shard 2/6)
+== crops wired in ==
+interior_back: 0 bad []
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 15 crops wired in: PASS in 5.0s
+
+#### step 21: night lighting: windows, festival fires, underground, mines (c5_10) (shard 2/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 21 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 3.1s
+
+#### step 27: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 2/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 27 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 4.9s
+
+#### step 33: rec_reno_test (shard 2/6)
+rec_reno_test: 0 failures
+#### step 33 rec_reno_test: PASS in 2.2s
+
+#### step 39: farm_week_test (shard 2/6)
+farm_week_test: OK (0 fails)
+#### step 39 farm_week_test: PASS in 4.9s
+
+#### step 45: anim_test (shard 2/6)
+anim_test: 0 failures
+#### step 45 anim_test: PASS in 2.4s
+
+#### step 51: ranch_p2_test (shard 2/6)
+ranch_p2_test: 0 failures
+#### step 51 ranch_p2_test: PASS in 2.1s
+
+#### step 57: early_gating_test (shard 2/6)
+early_gating_test: PASS (0 fails)
+#### step 57 early_gating_test: PASS in 3.1s
+
+#### step 63: music: loop points are applied (data/music_loops.json) (shard 2/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 51 entries, 0 failures
+#### step 63 music: loop points are applied (data/music_loops.json): PASS in 2.2s
+
+#### step 69: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 2/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 69 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.5s
+
+#### step 75: mix_test (shard 2/6)
+mix_test: 0 failures
+#### step 75 mix_test: PASS in 4.2s
+
+#### step 81: gifts: the Marked and boss powers (shard 2/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 81 gifts: the Marked and boss powers: PASS in 6.3s
+
+#### step 87: campaign: battles, projects, colonies, big mines (shard 2/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 87 campaign: battles, projects, colonies, big mines: PASS in 5.2s
+
+#### step 93: street_bat_test (shard 2/6)
+street_bat_test: 0 fails
+#### step 93 street_bat_test: PASS in 2.2s
+
+#### step 99: campaign_c3_test (shard 2/6)
+campaign_c3_test: 0 fails
+#### step 99 campaign_c3_test: PASS in 2.3s
+
+#### step 105: story: every chapter plays to the end (shard 2/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 105 story: every chapter plays to the end: PASS in 9.0s
+
+#### step 111: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 2/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 111 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.2s
+
+#### step 117: hidden areas stay put day to day (C5) (shard 2/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 117 hidden areas stay put day to day (C5): PASS in 3.7s
+
+#### step 123: softlocks: every menu/screen leaves on B, dialogues always finish (shard 2/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 123 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.3s
+
+#### step 129: C7 P3: endings and epilogue (shard 2/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 129 C7 P3: endings and epilogue: PASS in 2.3s
+
+#### step 135: C11b P6: C11b creature voices and ranch sound (shard 2/6)
+== C11b P6: C11b creature voices and ranch sound ==
+  FAIL animal_voice asks the C11b table
+ranch_audio_c11b_test: 1 FAILED
+ranch_audio_c11b_test failed
+#### step 135 C11b P6: C11b creature voices and ranch sound: FAIL rc=1 in 2.0s
+
+#### step 141: C9 P1: controller bindings and field play (shard 2/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 141 C9 P1: controller bindings and field play: PASS in 2.8s
+
+#### step 147: C9 P6: forest border buckets (shard 2/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 147 C9 P6: forest border buckets: PASS in 3.5s
+
+#### step 153: S1 P6: Steam store text drafts (tokens, limits, banned words, claims g (shard 2/6)
+== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) ==
+store_text_check: warn short-description.md [short]: 252 chars (> 250 leaves little room for translations)
+store_text_check: warn claims.md c4: 'Raise and rehome animals' is rough; review before the page goes live
+store_text_check: warn claims.md c11: 'Online co-op (GATED: use short ALT B until done)' is rough; review before the page goes live
+store_text_check: 5 fields, 0 failures
+#### step 153 S1 P6: Steam store text drafts (tokens, limits, banned words, claims g: PASS in 0.0s
+
+#### shard 2/6 done in 164s: FAIL (C11b P6: C11b creature voices and ranch sound)

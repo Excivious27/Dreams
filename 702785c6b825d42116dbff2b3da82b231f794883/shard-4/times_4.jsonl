@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 168.1}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 45.5}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 3.5}
+{"step": 17, "name": "touch_ui_test", "rc": 0, "secs": 37.7}
+{"step": 23, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 6.3}
+{"step": 29, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 24.7}
+{"step": 35, "name": "bowling_test", "rc": 0, "secs": 18.0}
+{"step": 41, "name": "pen_test", "rc": 0, "secs": 4.8}
+{"step": 47, "name": "move_target_test", "rc": 0, "secs": 21.0}
+{"step": 53, "name": "decor_sources_test", "rc": 0, "secs": 3.7}
+{"step": 59, "name": "workshop: no dead ends", "rc": 1, "secs": 10.5}
+{"step": 65, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 71, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.1}
+{"step": 77, "name": "footstep_test", "rc": 0, "secs": 7.4}
+{"step": 83, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 4.7}
+{"step": 89, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 9.7}
+{"step": 95, "name": "farm_debris_test", "rc": 0, "secs": 5.6}
+{"step": 101, "name": "skill_glow_test", "rc": 0, "secs": 4.9}
+{"step": 107, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 13.7}
+{"step": 113, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 12.6}
+{"step": 119, "name": "jumper_test", "rc": 0, "secs": 3.5}
+{"step": 125, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.4}
+{"step": 131, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 3.8}
+{"step": 137, "name": "C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou", "rc": 0, "secs": 3.4}
+{"step": 143, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 4.1}
+{"step": 149, "name": "C10a P5: wardrobe", "rc": 0, "secs": 5.8}
+{"step": 155, "name": "S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f", "rc": 0, "secs": 0.1}
