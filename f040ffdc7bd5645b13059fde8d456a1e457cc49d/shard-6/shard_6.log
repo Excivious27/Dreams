@@ -1,0 +1,236 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  94% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  96% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  96% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (272 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 236.9s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 6.9s
+
+#### step 13: C11b P2 long ranch curve: three years of ranching, both arcs (shard 6/6)
+== C11b P2 long ranch curve: three years of ranching, both arcs ==
+  year 1 ranch income 20404, year 3 85195
+  year 1 ranch income 20531, year 3 85563
+month_curve_test long: 0 failures
+#### step 13 C11b P2 long ranch curve: three years of ranching, both arcs: PASS in 5.5s
+
+#### step 19: S1 P1: the game boots to the title and plays 600 frames on the farm wi (shard 6/6)
+== S1 P1: the game boots to the title and plays 600 frames on the farm with Steam absent (BootProbe) ==
+DREAMS BOOT steam backend=local reason=headless
+DREAMS BOOT version=0.9.0
+DREAMS BOOT title ms=2812
+DREAMS BOOT farm ms=3457
+DREAMS BOOT OK
+#### step 19 S1 P1: the game boots to the title and plays 600 frames on the farm wi: PASS in 3.7s
+
+#### step 25: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 25 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 4.4s
+
+#### step 31: C11b P5: chores rework (hay, spots, value cap, regions, levels), team  (shard 6/6)
+== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice ==
+c11b_p5_test: 100 checks, 0 failures
+#### step 31 C11b P5: chores rework (hay, spots, value cap, regions, levels), team : PASS in 2.9s
+
+#### step 37: rec_test (shard 6/6)
+rec_test: 0 failures
+#### step 37 rec_test: PASS in 5.4s
+
+#### step 43: cash_test (shard 6/6)
+cash_test: scanned 97980 strings, 0 failures
+#### step 43 cash_test: PASS in 3.8s
+
+#### step 49: make_house_parts (shard 6/6)
+#### step 49 make_house_parts: PASS in 0.4s
+
+#### step 55: commons_test (shard 6/6)
+commons_test: 0 failures
+#### step 55 commons_test: PASS in 37.5s
+
+#### step 61: cf_volunteer_test (shard 6/6)
+  FAIL [shift] Hazel reached the orchard ((44, 20))
+cf_volunteer_test: 1 failures
+Community farm volunteer test failed
+#### step 61 cf_volunteer_test: FAIL rc=1 in 8.2s
+
+#### step 67: workshop: no dead ends (shard 6/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 67 workshop: no dead ends: PASS in 6.8s
+
+#### step 73: all ages: alcohol is a trade good, never drunk (shard 6/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 12 alcoholic items checked
+ok
+#### step 73 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 79: credits and licences page: Godot MIT, font notice, no family names (S1 (shard 6/6)
+== credits and licences page: Godot MIT, font notice, no family names (S1 P5) ==
+#### step 79 credits and licences page: Godot MIT, font notice, no family names (S1: PASS in 2.7s
+
+#### step 85: economy: no money loops, crops and brews inside their bands (shard 6/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 144 crops, 460 recipes, 2 warnings, 0 failures
+#### step 85 economy: no money loops, crops and brews inside their bands: PASS in 0.1s
+
+#### step 91: footstep_test (shard 6/6)
+footstep_test: 0 failures
+#### step 91 footstep_test: PASS in 6.7s
+
+#### step 97: keeper encounters keep real hp (floor-1 swarms topped up) (shard 6/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 97 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 3.8s
+
+#### step 103: region campaigns: boards, locks, convoy (shard 6/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 103 region campaigns: boards, locks, convoy: PASS in 8.4s
+
+#### step 109: farm_debris_test (shard 6/6)
+farm_debris_test: 0 fails
+#### step 109 farm_debris_test: PASS in 4.6s
+
+#### step 115: c12_items_ui_text_test (shard 6/6)
+c12_items_ui_text_test: 0 fails
+#### step 115 c12_items_ui_text_test: PASS in 3.1s
+
+#### step 121: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 6/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 171 checks, 0 failures
+#### step 121 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 19.6s
+
+#### step 127: mega regions: map tabs, unlocks, travel (shard 6/6)
+== mega regions: map tabs, unlocks, travel ==
+       [5] _arrive (res://tools/mega_region_test.gd:52)
+mega_region_test: 0 failures
+#### step 127 mega regions: map tabs, unlocks, travel: PASS in 9.0s
+
+#### step 133: menu sweep: every menu button, both arcs (C2) (shard 6/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 178 buttons pressed, 0 failures
+#### step 133 menu sweep: every menu button, both arcs (C2): PASS in 23.8s
+
+#### step 139: rec_games_test (shard 6/6)
+rec_games_test: 0 failures
+#### step 139 rec_games_test: PASS in 3.1s
+
+#### step 145: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 6/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 145 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 3.0s
+
+#### step 151: C11a P5: ranch villagers, mail, festivals, pen sounds (shard 6/6)
+== C11a P5: ranch villagers, mail, festivals, pen sounds ==
+ranch_villagers_test: OK
+#### step 151 C11a P5: ranch villagers, mail, festivals, pen sounds: PASS in 3.4s
+
+#### step 157: C8 P3: collections (museum, logs, Book tab) (shard 6/6)
+== C8 P3: collections (museum, logs, Book tab) ==
+collections_test: 0 failures
+#### step 157 C8 P3: collections (museum, logs, Book tab): PASS in 3.8s
+
+#### step 163: S1 P3: Deck typing, glyphs, text floor, desktop display (shard 6/6)
+== S1 P3: Deck typing, glyphs, text floor, desktop display ==
+deck_input_test: 0 failures
+#### step 163 S1 P3: Deck typing, glyphs, text floor, desktop display: PASS in 2.7s
+
+#### step 169: C9 P3: full-screen screens with actions only (shard 6/6)
+== C9 P3: full-screen screens with actions only ==
+screens_pad_test: 0 failures
+#### step 169 C9 P3: full-screen screens with actions only: PASS in 3.7s
+
+#### step 175: C9 P6: generated data in sync (shard 6/6)
+== C9 P6: generated data in sync ==
+regen_data: ok (25 generators)
+data_sync_check: 0 failures
+#### step 175 C9 P6: generated data in sync: PASS in 24.2s
+
+#### step 181: steam co-op: lobbies + networking messages over FakeSteam (no Steam cl (shard 6/6)
+== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) ==
+net_steam_test: 38 checks, 0 failures
+#### step 181 steam co-op: lobbies + networking messages over FakeSteam (no Steam cl: PASS in 3.9s
+
+#### step 187: S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f (shard 6/6)
+== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) ==
+steam_shots_test: 11 shots, 0 failures
+#### step 187 S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f: PASS in 0.0s
+
+#### step 193: C13 P5: actions map to their own sounds (pets, ranch voices and babies (shard 6/6)
+== C13 P5: actions map to their own sounds (pets, ranch voices and babies, goods, vehicles, contract sfx) ==
+action_audio_test: 0 failures
+#### step 193 C13 P5: actions map to their own sounds (pets, ranch voices and babies: PASS in 2.9s
+
+#### step 199: C13 P6: UI cues (every screen, touch and pad, no double cues) (shard 6/6)
+== C13 P6: UI cues (every screen, touch and pad, no double cues) ==
+ui_cue_test: 0 failures
+#### step 199 C13 P6: UI cues (every screen, touch and pad, no double cues): PASS in 4.9s
+
+#### step 205: C14 P6: prop dressing (props_c14.json in sync, art exists, dressed onc (shard 6/6)
+== C14 P6: prop dressing (props_c14.json in sync, art exists, dressed once, nothing on spawn) ==
+props_c14.json up to date
+#### step 205 C14 P6: prop dressing (props_c14.json in sync, art exists, dressed onc: PASS in 0.1s
+
+#### step 211: anim budget (C14b P1) (shard 6/6)
+== anim budget (C14b P1) ==
+anim_budget_test: 0 failures
+#### step 211 anim budget (C14b P1): PASS in 5.5s
+
+#### step 217: C14b P3 wind/town/farm/beach/festival motion (shard 6/6)
+== C14b P3 wind/town/farm/beach/festival motion ==
+c14b_p3_test: 0 failures
+#### step 217 C14b P3 wind/town/farm/beach/festival motion: PASS in 2.9s
+
+#### step 223: C15 P1: seasonal weather (per-save seed, season tables, city odds, spe (shard 6/6)
+== C15 P1: seasonal weather (per-save seed, season tables, city odds, specials, snow depth, heat) ==
+weather_c15_test: 0 failures
+#### step 223 C15 P1: seasonal weather (per-save seed, season tables, city odds, spe: PASS in 2.9s
+
+#### step 229: C15 P4: seasonal fish, critters, gang city weather/stalls, racket and  (shard 6/6)
+== C15 P4: seasonal fish, critters, gang city weather/stalls, racket and crew seasons ==
+c15_p4_seasons_test: PASS (0 fails)
+#### step 229 C15 P4: seasonal fish, critters, gang city weather/stalls, racket and : PASS in 3.2s
+
+#### shard 6/6 done in 474s: FAIL (cf_volunteer_test)

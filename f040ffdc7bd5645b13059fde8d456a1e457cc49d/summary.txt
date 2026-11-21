@@ -1,0 +1,18 @@
+CONDUCT CI FAIL  f040ffdc7b  (ci/c15i2-e3279011, run 44920603887)
+
+subset run: shards [1, 2, 3, 4, 6], bots off, playtest on
+check shards (5/5):
+  shard 1: PASS  516s
+  shard 2: PASS  470s
+  shard 3: PASS  413s
+  shard 4: PASS  374s
+  shard 6: FAIL  474s  failed: cf_volunteer_test
+playtest: FAIL (twice in a row)  87s  21 screenshots (results playtest/shots/)
+  FAIL entered the house
+  FAIL slept to the next day
+  FAIL crop grew overnight
+
+longest job: 516s
+slowest check steps: import 236.9s; import 186.2s; import 152.7s; import 136.2s; import 101.3s; smoke test 58.2s; exits and spawns 50.2s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 45.1s
+distinct errors/fails/warns:
+    1  FAIL [shift] Hazel reached the orchard ((44, 20))

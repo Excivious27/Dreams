@@ -1,0 +1,230 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  94% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  96% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  96% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (272 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 186.2s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 6.7s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 4.5s
+
+#### step 15: crops wired in (shard 2/6)
+== crops wired in ==
+interior_back: 0 bad []
+#### step 15 crops wired in: PASS in 0.0s
+
+#### step 21: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 21 phone_ui_test: PASS in 13.5s
+
+#### step 27: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 27 gangster interior skins (c5_04): PASS in 4.3s
+
+#### step 33: C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli (shard 2/6)
+== C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Splicer via RanchGift ==
+c11b_integ_test: 821 checks, 0 failures
+#### step 33 C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli: PASS in 4.5s
+
+#### step 39: rec_links_test (shard 2/6)
+rec_links_test: 0 failures
+#### step 39 rec_links_test: PASS in 4.1s
+
+#### step 45: coop_test (shard 2/6)
+coop_test: 0 failures
+#### step 45 coop_test: PASS in 4.5s
+
+#### step 51: crop_test (shard 2/6)
+crop_test: 0 failures
+#### step 51 crop_test: PASS in 40.0s
+
+#### step 57: ranch_test (shard 2/6)
+ranch_test: 1645 checks, 0 failures
+#### step 57 ranch_test: PASS in 5.0s
+
+#### step 63: cf_layout_test (shard 2/6)
+cf_layout_test: 0 failures
+#### step 63 cf_layout_test: PASS in 11.8s
+
+#### step 69: every sound the game asks for exists (shard 2/6)
+== every sound the game asks for exists ==
+sfx asked for: 193 names, real recordings/ACE files: 601
+music: 88 tracks wired, 233/233 real (ACE)
+ambience: 32 beds, 15 spots
+stand-ins (2: asked-for name has no file, its fallback plays): j_recruit->j_skill quake->stone_grind
+sfx_audit: 0 missing
+#### step 69 every sound the game asks for exists: PASS in 4.4s
+
+#### step 75: Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) (shard 2/6)
+== Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) ==
+steam_vdf_check: OK
+#### step 75 Steam: SteamPipe templates, depot exclusions, upload config (S1 P5): PASS in 0.0s
+
+#### step 81: C10b decor art: outdoor pieces, seams, names (shard 2/6)
+== C10b decor art: outdoor pieces, seams, names ==
+c10b check ok: 87 outdoor pieces
+check ok: 462 catalogue pieces
+#### step 81 C10b decor art: outdoor pieces, seams, names: PASS in 0.3s
+
+#### step 87: music_stream_test (shard 2/6)
+music_stream_test: 0 failures
+#### step 87 music_stream_test: PASS in 30.7s
+
+#### step 93: arcs: path cards, arc building intros, locked-plan hints (shard 2/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 93 arcs: path cards, arc building intros, locked-plan hints: PASS in 5.5s
+
+#### step 99: early combat: clinic, pup lesson, telegraph, first boss (shard 2/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 99 early combat: clinic, pup lesson, telegraph, first boss: PASS in 9.7s
+
+#### step 105: goal_line_test (shard 2/6)
+goal_line_test: 0 fails
+#### step 105 goal_line_test: PASS in 4.3s
+
+#### step 111: campaign_gate_test (shard 2/6)
+campaign_gate_test: 0 fails
+#### step 111 campaign_gate_test: PASS in 10.8s
+
+#### step 117: meow_gate_test (shard 2/6)
+meow_gate_test: 0 fails
+#### step 117 meow_gate_test: PASS in 5.0s
+
+#### step 123: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 2/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 123 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 8.5s
+
+#### step 129: mega regions: the new worlds walk end to end (shard 2/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 129 mega regions: the new worlds walk end to end: PASS in 23.7s
+
+#### step 135: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 2/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 135 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 4.4s
+
+#### step 141: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 2/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 141 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 6.1s
+
+#### step 147: C7 P3: endings and epilogue (shard 2/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 147 C7 P3: endings and epilogue: PASS in 4.2s
+
+#### step 153: C11b P6: fair ribbon tables (shard 2/6)
+== C11b P6: fair ribbon tables ==
+animal_show_test: OK
+#### step 153 C11b P6: fair ribbon tables: PASS in 4.0s
+
+#### step 159: C11a fix2: every ranch species buyable from its seller, both arcs, sta (shard 2/6)
+== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster ==
+ranch_shop_test: 292 checks, 0 failures
+#### step 159 C11a fix2: every ranch species buyable from its seller, both arcs, sta: PASS in 4.8s
+
+#### step 165: S1 P3: Steam Deck text floor (drawn text scan) (shard 2/6)
+== S1 P3: Steam Deck text floor (drawn text scan) ==
+deck_font_scan: 0 unwrapped
+#### step 165 S1 P3: Steam Deck text floor (drawn text scan): PASS in 0.1s
+
+#### step 171: C9 P5: save codes and files (shard 2/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 171 C9 P5: save codes and files: PASS in 3.9s
+
+#### step 177: C10b P4: casino (shard 2/6)
+== C10b P4: casino ==
+casino_test: 0 failures
+#### step 177 C10b P4: casino: PASS in 4.3s
+
+#### step 183: steam input: game_actions VDF matches InputSetup (generator + KeyValue (shard 2/6)
+== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) ==
+steam_input_check: ok
+#### step 183 steam input: game_actions VDF matches InputSetup (generator + KeyValue: PASS in 0.0s
+
+#### step 189: C12 P7: story continuity (no other-arc words, no later-chapter names b (shard 2/6)
+== C12 P7: story continuity (no other-arc words, no later-chapter names before their beat) ==
+continuity_check: 2 LEAK, 3 SPOILER (5 allowed, 0 new, 0 stale allow lines)
+#### step 189 C12 P7: story continuity (no other-arc words, no later-chapter names b: PASS in 0.2s
+
+#### step 195: C13 P3: audio tools (short-sting levelling, len_audible, gang jingles, (shard 2/6)
+== C13 P3: audio tools (short-sting levelling, len_audible, gang jingles, ace_batch --alt/--pair) ==
+x_2: imported b (alt_of x, score 70)
+--alt: nope is not in ACE_LOG
+--alt: raw gone, re-download b with download_song to /tmp/tmpv0oy_nqk/x__b.mp3
+audio_tools_test: ok
+#### step 195 C13 P3: audio tools (short-sting levelling, len_audible, gang jingles,: PASS in 1.6s
+
+#### step 201: C14 P4: classic regions' hidden pockets/ways, pages and opaque ways (shard 2/6)
+== C14 P4: classic regions' hidden pockets/ways, pages and opaque ways ==
+c14_secrets_test: 100 checks, 0 failures
+#### step 201 C14 P4: classic regions' hidden pockets/ways, pages and opaque ways: PASS in 8.3s
+
+#### step 207: C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons, (shard 2/6)
+== C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons, hearth glow, coloured lamps) ==
+c14_p6_art_test: 0 failures
+#### step 207 C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons,: PASS in 4.0s
+
+#### step 213: glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fa (shard 2/6)
+== glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fades, room fires) ==
+glow_kinds_test: PASS (0 fails)
+#### step 213 glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fa: PASS in 4.6s
+
+#### step 219: C14b P5: character idle life (front idles, breath, glances, villager p (shard 2/6)
+== C14b P5: character idle life (front idles, breath, glances, villager pose scheduler) ==
+c14b_p5_test: 0 failures
+#### step 219 C14b P5: character idle life (front idles, breath, glances, villager p: PASS in 4.4s
+
+#### step 225: C15 P6: festival activities driven (egg hunt persists + kids, lantern, (shard 2/6)
+== C15 P6: festival activities driven (egg hunt persists + kids, lantern, contest, star, new festivals) ==
+festival_events_test: OK
+#### step 225 C15 P6: festival activities driven (egg hunt persists + kids, lantern,: PASS in 22.5s
+
+#### step 231: C15 integ: calendar hooks (plaza-only festivals in town, crew birthday (shard 2/6)
+== C15 integ: calendar hooks (plaza-only festivals in town, crew birthdays, festival songs/talk, one festival a day) ==
+c15_integ_test: OK
+#### step 231 C15 integ: calendar hooks (plaza-only festivals in town, crew birthday: PASS in 4.4s
+
+#### shard 2/6 done in 470s: PASS

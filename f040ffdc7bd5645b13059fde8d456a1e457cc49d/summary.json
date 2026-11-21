@@ -1,0 +1,180 @@
+{
+ "sha": "f040ffdc7bd5645b13059fde8d456a1e457cc49d",
+ "ref": "ci/c15i2-e3279011",
+ "run": "44920603887",
+ "finished": 1795276615.815391,
+ "pass": false,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 1,
+  "secs": 87,
+  "shots": 21,
+  "fails": [
+   "FAIL entered the house",
+   "FAIL slept to the next day",
+   "FAIL crop grew overnight"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL entered the house"
+ },
+ "playtest_pass": false,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "e32790118b4aed2adf5cf96144d19b871080ae0f",
+  "label": "c15i2",
+  "branch": "c15/integ",
+  "shards": [
+   1,
+   2,
+   3,
+   4,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 516,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 516,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 470,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 413,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 374,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 474,
+   "failed_steps": [
+    "cf_volunteer_test"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL [shift] Hazel reached the orchard ((44, 20))",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 236.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 186.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 152.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 136.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 101.3
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 58.2
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 50.2
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 45.1
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 44.7
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 40.9
+  },
+  {
+   "step": 51,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 40.0
+  },
+  {
+   "step": 88,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 38.0
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 37.5
+  },
+  {
+   "step": 87,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 30.7
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 27.7
+  }
+ ]
+}
