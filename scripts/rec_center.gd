@@ -773,21 +773,24 @@ static func _lane(m: GameMap, lane: int) -> void:
 		var who := str(GameState.npcs.get(versus, {}).get("name", "Someone"))
 		var txt_v := "%s is bowling on lane %d. Challenge them to a game? (%s)  Lane %d is the house lane, always kept free." % [who, lane, "first game's free" if free else Money.amount(cost), house_lane()]
 		d.say([{"who": "", "text": txt_v, "choice": ["Challenge %s" % who, "How to play", "Not now"], "key": ""}])
+		await d.finished
 	else:
 		var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
 		if best > 0:
 			txt += "  Your best: %d." % best
-		var ch := ["Bowl", "How to play", "Not now"]
+		var ch := ["Bowl", "Pass and play (2-4)", "How to play", "Not now"]  # C17 P4 (c17_06-12): couch play
 		if CoopGames.available():
 			ch.insert(1, "Bowl with friends")  # C17 P4: 2-4 player versus with co-op partners
 		d.say([{"who": "", "text": txt, "choice": ch, "key": ""}])
-	await d.finished
-	if versus == "" and CoopGames.available():
-		if d.last_choice == 1:
+		await d.finished
+		var picked := str(ch[d.last_choice]) if d.last_choice >= 0 and d.last_choice < ch.size() else ""
+		if picked == "Bowl with friends":
 			await bowl_party(m, lane, cost)
 			return
-		if d.last_choice > 1:
-			d.last_choice -= 1
+		if picked.begins_with("Pass and play"):
+			await bowl_hotseat(m, lane, cost)
+			return
+		d.last_choice = ["Bowl", "How to play", "Not now"].find(picked)
 	if d.last_choice == 1:
 		await m.say([{"who": "", "text": "1) Drag the ball (or LEFT/RIGHT) along the foul line. The spin buttons (or UP/DOWN) set the hook: it bites late, on the dry end of the lane. Then GO."},
 			{"who": "", "text": "2) The dotted path sweeps across the lane: tap when it ends in the pocket, just right of the head pin.  3) Stop the power bar in the gold band for a clean release."},
@@ -806,6 +809,30 @@ static func _lane(m: GameMap, lane: int) -> void:
 	GameState.run["flags"].erase("rec_free_game")
 	var res: Dictionary = await Bowling.play(m, lane)
 	finish_game(m, res)
+
+
+## C17 P4 (c17_06-12): pass-and-play on one phone (or pads): 2-4 bowlers take frames in
+## turn with a "Pass to <name>" card between them. One fee; tickets and best come from
+## the owner's own line only (friends on the couch bowl for fun). Preset names, no typing.
+static func bowl_hotseat(m: GameMap, lane: int, cost: int) -> void:
+	if int(GameState.run["crystals"]) < cost:
+		m.hud.toast("Not enough %s for a game (%s)." % [Money.word(), Money.amount(cost)], Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope", "thud")
+		return
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": "", "text": "How many bowlers? You go first, then pass the phone along.", "choice": ["2 bowlers", "3 bowlers", "4 bowlers", "Not now"], "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice > 2:
+		return
+	var names := [CoopGames.my_name()]
+	for k in d.last_choice + 1:
+		names.append("Player %d" % (k + 2))
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+	GameState.run["flags"].erase("rec_free_game")
+	var res: Dictionary = await Bowling.play_hotseat(m, lane, names)
+	finish_game(m, res)
+	if res.has("hotseat"):
+		await m.say([{"who": "", "text": "Final scores: " + ", ".join(CoopGames.result_lines(res["hotseat"])) + "."}])
 
 
 ## C17 P4: bowling versus with co-op partners (2-4). Open or join the lane's session,

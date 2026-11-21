@@ -25,6 +25,7 @@ func _run() -> void:
 	_leave_and_away()
 	await _bowling_screen()
 	await _over_loop()
+	await _hotseat()
 	_solo_board()
 	_visit_guards()
 	_laundromat()
@@ -173,6 +174,42 @@ func _bowling_screen() -> void:
 	for i in 10:
 		g.tick(1.0 / 60.0)
 	ok(g.phase == "line", "frame 2 opens when they finish")
+	g.queue_free()
+	paused = false
+	Hud.modal_rect = Rect2()
+	await process_frame
+
+
+## Pass-and-play bowling: 3 bowlers, frames in turn, owner-only payout.
+func _hotseat() -> void:
+	var g := Bowling.new()
+	g.lane = 2
+	g.manual = true
+	g.bot = 0.8
+	g.set_seats(["Hosty", "Player 2", "Player 3"])
+	root.add_child(g)
+	await process_frame
+	var order := []
+	var passes := 0
+	var last := -1
+	var n := 0
+	while g.phase != "over" and n < 120000:
+		g.tick(1.0 / 30.0)
+		if g.phase == "pass" and last != g.seat:
+			passes += 1
+			if order.size() < 6:
+				order.append(g.seat)
+			if passes == 1:
+				ok(g.pass_text() == "Pass to Player 2", "the pass card names the next bowler")
+		last = g.seat if g.phase == "pass" else -1
+		n += 1
+	ok(g.phase == "over", "hot-seat game ends (%d ticks)" % n)
+	ok(order == [1, 2, 0, 1, 2, 0], "frames go 1-2-3 in turn (%s)" % str(order))
+	ok(g.seats.all(func(s: Dictionary) -> bool: return bool(Bowling.next_state(s["rolls"])["over"])), "every bowler's line is complete")
+	var res := g.result
+	ok(int(res.get("score", -1)) == Bowling.score_of(g.seats[0]["rolls"]), "the owner's line is the paid result")
+	ok((res.get("hotseat", []) as Array).size() == 3, "result carries all three ranked")
+	ok(g._sheet_rect().size.y == 84.0, "sheet has a line per other bowler")
 	g.queue_free()
 	paused = false
 	Hud.modal_rect = Rect2()
