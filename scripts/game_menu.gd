@@ -291,7 +291,8 @@ static func _has_static(sc: Script, fn: String) -> bool:
 var _centre_rows := false  # Options rows are centred like the shared sound rows
 
 
-func _button(text: String, cb: Callable) -> Button:
+## `cue` "" when the callback plays its own sound (c13_08-19: the Book's page turn).
+func _button(text: String, cb: Callable, cue := "ui_tap") -> Button:
 	var b := Button.new()
 	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
 	b.text = text
@@ -300,7 +301,8 @@ func _button(text: String, cb: Callable) -> Button:
 	# Release mode: a finger that lands on a button to scroll the list must not
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
-	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
+	if cue != "":
+		b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx(cue))
 	# A greyed-out row answers a tap with a soft refusal instead of silence.
 	b.gui_input.connect(func(ev: InputEvent) -> void:
 		if b.disabled and TapInput.is_release(ev):
