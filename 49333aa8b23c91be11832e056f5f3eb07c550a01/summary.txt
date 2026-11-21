@@ -1,0 +1,11 @@
+CONDUCT CI PASS  49333aa8b2  (ci/c12p3-80b19a56, run 44879521287)
+
+subset run: shards [1, 4], bots off, playtest on
+check shards (2/2):
+  shard 1: PASS  313s
+  shard 4: PASS  260s
+playtest: PASS  39s  21 screenshots (results playtest/shots/)
+
+longest job: 313s
+slowest check steps: import 83.9s; import 78.1s; smoke test 49.8s; exits and spawns 44.1s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 42.1s; music: every map has a song; web streaming works offline 26.3s; gang_play_test 18.4s; mega regions: the new worlds walk end to end 16.3s
+distinct errors/fails/warns:

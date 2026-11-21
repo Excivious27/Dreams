@@ -1,0 +1,148 @@
+{
+ "sha": "49333aa8b23c91be11832e056f5f3eb07c550a01",
+ "ref": "ci/c12p3-80b19a56",
+ "run": "44879521287",
+ "finished": 1795246017.702309,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 39,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "80b19a5675454e24e2db3d5e4826daceb9174bf3",
+  "label": "c12p3",
+  "branch": "c12f/p3",
+  "shards": [
+   1,
+   4
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 313,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 313,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 260,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 83.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 78.1
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 49.8
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 44.1
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.1
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 26.3
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 18.4
+  },
+  {
+   "step": 128,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 16.3
+  },
+  {
+   "step": 161,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 12.6
+  },
+  {
+   "step": 131,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 12.3
+  },
+  {
+   "step": 113,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 10.7
+  },
+  {
+   "step": 101,
+   "name": "campaign: battles, projects, colonies, big mines",
+   "rc": 0,
+   "secs": 8.2
+  },
+  {
+   "step": 95,
+   "name": "gifts: the Marked and boss powers",
+   "rc": 0,
+   "secs": 7.6
+  },
+  {
+   "step": 98,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 6.9
+  },
+  {
+   "step": 110,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 6.9
+  }
+ ]
+}
