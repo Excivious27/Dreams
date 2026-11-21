@@ -1,0 +1,1 @@
+{"days": 3, "focus": "", "base": "8baad2e31656a8adb23e6da65f249d288079950d", "label": "c16bi", "branch": "c16b/integ", "shards": [1, 2, 3, 4, 5, 6], "bots": true, "playtest": true, "relay": true, "server_changed": false, "e2e": true, "e2e_strict": true}
