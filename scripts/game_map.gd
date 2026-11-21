@@ -1528,7 +1528,7 @@ const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "b
 	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
 	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
-const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle", "boss_dark_crystal", "boss_president",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
 ## Mega bosses' own themes (C4): by kind (a gangster variant may share the stem), then by the
 ## region the fight is in, so a reskinned boss still gets its region's theme.
@@ -1553,6 +1553,10 @@ func boss_track(kind: String) -> String:
 	var peng := GameState.is_penguins()
 	var sid := scene_id()
 	var marked := k.begins_with("marked") or k.begins_with("mk_")
+	if k == "dark_crystal" and peng and Music.has_track("boss_dark_crystal"):
+		return "boss_dark_crystal"  # C13: the final bosses' own themes
+	if k == "president" and not peng and Music.has_track("boss_president"):
+		return "boss_president"
 	if not peng and k in GANG_RIVALS:
 		return "boss_gang" if Music.has_track("boss_gang") else "boss"
 	if k == "finargle" or k.begins_with("finargle_"):
@@ -1646,7 +1650,13 @@ func area_track() -> String:
 			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
 	if t != t0 or RecCenter.is_rec(self):
 		return t  # a jukebox/music-box record plays exactly as chosen
-	return Music.resolve(t, music_ctx(id))  # C13 resolver: arc, weather, phase, season, story, rotation
+	var ctx := music_ctx(id)
+	var own := str(MusicResolve.MAP_BASE.get(id, ""))
+	if own != "" and not (own.ends_with("_penguin") and not peng):
+		var r := Music.resolve(own, ctx)
+		if r != "":
+			return r  # this map's own song set (a shared region song is the fallback)
+	return Music.resolve(t, ctx)  # C13 resolver: arc, weather, phase, season, story, rotation
 
 
 ## Resolver context for this map (C13): which shared songs it used before.
@@ -1659,6 +1669,8 @@ func music_ctx(id: String) -> Dictionary:
 		c["weather"] = str(sky.weather)
 	if id == "farm":
 		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
+	if MusicResolve.NIGHT_GROUP.has(id):
+		c["night_group"] = MusicResolve.NIGHT_GROUP[id]
 	return c
 
 

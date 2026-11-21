@@ -6,8 +6,19 @@ class_name MusicResolve
 
 ## Penguin-toned shared songs the gang arc never hears (sleigh bells, harvest fiddle):
 ## it falls through to its own base instead (c13_02-02 / c13_04-03).
-const PENGUIN_ONLY := ["winter", "farm_fall", "sanctuary", "countryside_penguin", "morning"]
+const PENGUIN_ONLY := ["winter", "farm_fall", "sanctuary", "countryside_penguin", "morning", "evening_valley"]
 const SEASONS := ["spring", "summer", "fall", "winter"]
+## Maps that share a region song get their own song first when it exists (c13_01-05);
+## the shared region song (and its night/season takes) stays the fallback.
+const MAP_BASE := {"gloam_violet_glade": "mega_gloam_violet", "desert_dune_sea": "mega_desert_dunes",
+	"iron_freight_yards": "mega_iron_freight", "iron_mill_district": "mega_iron_mill", "iron_tunnels": "mega_iron_tunnels",
+	"frost_glacier": "mega_frost_glacier", "frost_falls": "mega_frost_falls", "wind_sunrise_shelf": "mega_wind_sunrise",
+	"wind_starfall_garden": "mega_wind_starfall", "gilt_casino_row": "mega_gilt_casino", "gilt_gardens": "mega_gilt_gardens",
+	"gilt_vaults": "mega_gilt_vaults", "riverlands": "riverlands", "highlands": "highlands",
+	"countryside": "countryside_penguin", "community_farm": "community_farm_penguin"}
+## A map group's shared night song (tried after <base>_night): sky islands, colonies.
+const NIGHT_GROUP := {"sky": "mega_sky_night", "station": "mega_sky_night", "sky_reaches": "mega_sky_night",
+	"colony_coral": "colony_night", "colony_kelp": "colony_night", "colony_ice": "colony_night", "colony_ember": "colony_night"}
 ## Highest rotation take tried (<pick>_2 .. _N).
 const MAX_TAKE := 5
 ## Tests: a fake track list (non-empty = only these names exist).
@@ -41,6 +52,9 @@ static func context(ctx := {}) -> Dictionary:
 		c["stage"] = GameState.story_stage()
 	if not c.has("day"):
 		c["day"] = int(GameState.run.get("day", 1)) if run_ok else 1
+	if not c.has("evening"):
+		var tm := int(GameState.run.get("time", 720)) % 1440 if run_ok else 720
+		c["evening"] = run_ok and str(c["phase"]) == "day" and tm >= GameState.sunset() - 90
 	if not c.has("weekday"):
 		c["weekday"] = (int(c["day"]) - 1) % 7
 	return c
@@ -91,12 +105,22 @@ static func candidates(base: String, c: Dictionary) -> Array:
 	var ph := str(c.get("phase", "day"))
 	if ph == "night":
 		out.append([base + "_night", true])
+		if str(c.get("night_group", "")) != "":
+			out.append([str(c["night_group"]), false])
 		if c.get("shared_night", false):
+			if str(c.get("season", "")) != "":
+				out.append(["night_" + str(c["season"]), false])  # night_summer / night_winter
 			out.append(["night", false])
 	elif ph == "dawn":
 		out.append([base + "_dawn", true])
 		if c.get("shared_night", false):
 			out.append(["morning", false])
+	elif ph == "day" and bool(c.get("evening", false)):
+		out.append([base + "_evening", true])  # dusk band: the hour before dark (inn_evening, evening_town)
+		if c.get("shared_night", false):
+			out.append(["evening_valley", false])
+	if int(c.get("weekday", 0)) >= 5:
+		out.append([base + "_weekend", true])  # Sat/Sun (shop_weekend)
 	var se := str(c.get("season", ""))
 	if se != "":
 		out.append([base + "_" + se, true])
@@ -127,8 +151,8 @@ static func pick(base: String, ctx := {}) -> String:
 			if has(n + "_gang"):
 				got = n + "_gang"
 				break
-			if n in PENGUIN_ONLY and n != root:
-				continue
+			if n != root and (n in PENGUIN_ONLY or (not fam and n.begins_with("night_"))):
+				continue  # penguin-toned shared songs (winter, night_summer...) never in the gang arc
 			if fam and fam_gang and n != root:
 				continue  # the area has gang songs: never its penguin seasonal/after/night take
 		if has(n):

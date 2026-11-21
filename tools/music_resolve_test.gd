@@ -48,6 +48,18 @@ func _run() -> void:
 	check(R.pick("docks", _ctx("gangsters", {"phase": "night"})) == "docks_night", "hub night song")
 	check(R.pick("uptown", _ctx("gangsters", {"phase": "night"})) == "uptown", "no hub night song -> base (no shared night off the valley)")
 	check(R.pick("nothing_here", _ctx("penguins")) == "", "unknown base -> ''")
+	R.fake_tracks = ["farm", "night", "night_gang", "night_summer", "town", "town_night", "sky", "mega_sky_night"]
+	check(R.pick("farm", _ctx("penguins", farm.merged({"phase": "night", "season": "summer"}))) == "night_summer", "shared seasonal night (penguin)")
+	check(R.pick("farm", _ctx("gangsters", farm.merged({"phase": "night", "season": "summer"}))) == "night_gang", "gang never hears night_summer")
+	check(R.pick("town", _ctx("penguins", {"shared_night": true, "phase": "night", "season": "summer"})) == "town_night", "an area's own night beats the shared one")
+	R.fake_tracks = ["inn", "inn_evening", "shop", "shop_weekend", "house", "house_rain", "house_winter"]
+	check(R.pick("inn", _ctx("penguins", {"evening": true})) == "inn_evening", "dusk band -> inn_evening")
+	check(R.pick("shop", _ctx("penguins", {"weekday": 5})) == "shop_weekend", "Saturday -> shop_weekend")
+	check(R.pick("shop", _ctx("penguins", {"weekday": 2})) == "shop", "Wednesday -> shop")
+	check(R.pick("house", _ctx("penguins", {"weather": "rain", "season": "winter"})) == "house_rain", "rain beats season indoors")
+	check(R.pick("house", _ctx("penguins", {"season": "winter"})) == "house_winter", "winter house")
+	R.fake_tracks = ["farm", "night", "night_gang", "night_summer", "town", "town_night", "sky", "mega_sky_night"]
+	check(R.pick("sky", _ctx("penguins", {"phase": "night", "night_group": "mega_sky_night"})) == "mega_sky_night", "group night (sky islands)")
 	# When gang family songs land, the penguin seasonal is skipped for the gang set.
 	R.fake_tracks = ["farm", "farm_fall", "farm_gang", "farm_fall_gang", "farm_spring_gang", "night_gang", "farm_after", "farm_after_gang"]
 	check(R.pick("farm", _ctx("gangsters", farm.merged({"season": "fall"}))) == "farm_fall_gang", "gang fall set -> farm_fall_gang")

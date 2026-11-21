@@ -359,6 +359,11 @@ func _standin(track: String) -> String:
 		for c: String in [fight, "combat_light", "combat_light_gang"]:
 			if _stream_for(c) != null:
 				return c
+	# Gang arc: a calm gang song already in memory or the cache beats the pastoral farm/house (c13_02-11/15-09).
+	if not GameState.run.is_empty() and not GameState.is_penguins() and not t.begins_with("ending") and t != "credits":
+		for c: String in GANG_STANDINS:
+			if c != track and _stream_for(c) != null:
+				return c
 	if t in ["house", "shop", "shop_gang", "inn", "chapel", "clinic", "hideout", "merkitty_song", "credits"] or t.begins_with("ending"):
 		t = "house"
 	else:
@@ -399,7 +404,9 @@ static var cache_cap := 40 * 1024 * 1024
 const WEB_CACHE_CAP := 16 * 1024 * 1024
 ## Songs heard often, fetched quietly one by one once the first song is in.
 const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
-const PREFETCH_GANG := ["combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
+## Calm gang songs that stand in (when cached) while a gang song downloads.
+const GANG_STANDINS := ["night_gang", "hideout", "shop_gang", "outskirts", "neon", "uptown", "docks"]
+const PREFETCH_GANG := ["night_gang", "combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
 const PREFETCH_PENGUIN := ["combat_light", "danger", "cattopia", "boss_penguin", "beach", "mountain", "combat_elite"]
 ## Before a run exists (the title screen) the arc themes come first.
 const PREFETCH_TITLE := ["arc_penguins", "arc_gangsters"]

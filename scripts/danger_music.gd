@@ -390,9 +390,15 @@ static func prefetch_for(m: GameMap) -> void:
 	for n: Variant in GoalLine.adj(sid):
 		var ns := str(n)
 		if GameMap.AREA_MUSIC.has(ns):
-			want.append(str(GameMap.AREA_MUSIC[ns]))
+			want.append(Music.resolve(str(GameMap.AREA_MUSIC[ns])))  # today's take of the neighbour's song (C13)
 		elif ns == "mine":
 			want.append("mine")
+	# C13: this map's song in the next time band (dusk -> night, night -> dawn) and the festival day's song.
+	var base := str(GameMap.AREA_MUSIC.get(sid, m.music_track))
+	var nxt := "night" if not GameState.is_night() else "dawn"
+	want.append(Music.resolve(base, m.music_ctx(sid).merged({"phase": nxt}, true)))
+	if not GameState.run.is_empty() and GameState.festival_today() != "":
+		want.append("festival_%s%s" % [GameState.festival_today(), "" if GameState.is_penguins() else "_gang"])
 	# The final chapter: endings and credits before the last fight.
 	if not GameState.run.is_empty() and Story.chapter_no() >= 4:
 		want.append_array(["ending_penguin" if GameState.is_penguins() else "ending_gangster", "credits"])
