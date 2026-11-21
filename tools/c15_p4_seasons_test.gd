@@ -96,6 +96,10 @@ func _critters() -> void:
 	check(not wn.has("frog") and not wn.has("heron") and not wn.has("duck") and not wn.is_empty(), "winter fallback: no frogs or herons in the snow (%s)" % [wn])
 	var noon := WorldGen.critter_pool(["bat", "owl", "rabbit"], 0, 0, 0, "summer")
 	check(not noon.has("bat") and not noon.has("owl") and noon.has("rabbit"), "no bats or owls at noon (%s)" % [noon])
+	_at("summer", "clear", false)
+	check(not WorldGen.critter_ok("bee") and WorldGen.critter_ok("owl"), "after dark a live map sends the bees home and keeps the owls")
+	_at("summer", "clear", true)
+	check(WorldGen.critter_ok("bee") and not WorldGen.critter_ok("bat"), "by day bees are fine, bats are not")
 	var desert := WorldGen.critter_pool(["snake", "hawk"], 0, 0, 0, "spring")
 	check(not desert.has("robin"), "season visitors only join meadow-type pools")
 

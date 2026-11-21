@@ -436,6 +436,7 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 		var cr := Critter.new()
 		cr.map = m
 		cr.kind = kind
+		cr.ruled = true
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
@@ -526,6 +527,14 @@ static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1, se :
 	if out.is_empty():
 		out = ["owl"] if is_night else (["crow", "rabbit"] if is_winter else ["rabbit"])
 	return out
+## C15 P4 (c15_09-19): may this kind still be out right now (night/winter rules)?
+static func critter_ok(k: String) -> bool:
+	var night := GameState.is_night()
+	if night and (k in DAY_ONLY or k.begins_with("butterfly")):
+		return false
+	if not night and k in NIGHT_ONLY:
+		return false
+	return not (GameState.look_se() == "winter" and (k in WARM_ONLY or k.begins_with("butterfly")))
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
 
@@ -573,6 +582,8 @@ const STILL_KINDS := ["six_deer"]  # idle-only art: they stand and graze, never 
 const CAT_ART := {"cat_grey": "animals/cat2_calico", "cat_orange": "animals/cat2_orange", "cat_black": "animals/cat2_black"}
 class Critter:
 	extends Node2D
+	var _rule_t := 4.0  # C15 P4 (c15_09-19): seconds until the next time-of-day/season rule check
+	var ruled := false  # set by add_critters: wildlife that follows the time-of-day/season rules (true forms etc. don't)
 	var map: GameMap
 	var kind := "bird"
 	var home := Vector2.ZERO
@@ -672,6 +683,12 @@ class Critter:
 	func _process(delta: float) -> void:
 		_t += delta
 		_timer -= delta
+		_rule_t -= delta
+		if ruled and _rule_t <= 0.0:
+			_rule_t = 4.0
+			if not WorldGen.critter_ok(kind):
+				queue_free()  # dusk sends the bees home (owls don't arrive mid-map: next visit)
+				return
 		# c14b_15-13: off-screen critters skip their wander / animation work.
 		if _away <= 0.0 and is_inside_tree():
 			var vr := get_viewport().get_visible_rect().grow(48.0)
