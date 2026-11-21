@@ -1,0 +1,148 @@
+{
+ "sha": "a92cb40fde0cec27f3c2b0baa7456f045fe09bcd",
+ "ref": "ci/c14i2-676a0048",
+ "run": "44901046806",
+ "finished": 1795262482.2304726,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 67,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "676a0048a17385f7e932c155e7e0f5246a4b75ec",
+  "label": "c14i2",
+  "branch": "c14/integ",
+  "shards": [
+   3,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 334,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 334,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 263,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 97.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 66.0
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.5
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 36.6
+  },
+  {
+   "step": 88,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 25.7
+  },
+  {
+   "step": 175,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 21.5
+  },
+  {
+   "step": 133,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 19.7
+  },
+  {
+   "step": 121,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 18.3
+  },
+  {
+   "step": 70,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 16.3
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 15.7
+  },
+  {
+   "step": 166,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 11.4
+  },
+  {
+   "step": 124,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 11.3
+  },
+  {
+   "step": 130,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 9.6
+  },
+  {
+   "step": 112,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 8.8
+  },
+  {
+   "step": 127,
+   "name": "mega regions: map tabs, unlocks, travel",
+   "rc": 0,
+   "secs": 8.2
+  }
+ ]
+}

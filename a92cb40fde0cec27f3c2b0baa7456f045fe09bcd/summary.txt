@@ -1,0 +1,11 @@
+CONDUCT CI PASS  a92cb40fde  (ci/c14i2-676a0048, run 44901046806)
+
+subset run: shards [3, 6], bots off, playtest on
+check shards (2/2):
+  shard 3: PASS  334s
+  shard 6: PASS  263s
+playtest: PASS  67s  21 screenshots (results playtest/shots/)
+
+longest job: 334s
+slowest check steps: import 97.1s; import 66.0s; touch_ui_test 39.5s; commons_test 36.6s; danger_music_test 25.7s; C9 P6: generated data in sync 21.5s; menu sweep: every menu button, both arcs (C2) 19.7s; saves: first run, slots, opening Skip, reopen at early milestones, old 18.3s
+distinct errors/fails/warns:

@@ -1,0 +1,35 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 66.0}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 5.6}
+{"step": 13, "name": "C11b P2 long ranch curve: three years of ranching, both arcs", "rc": 0, "secs": 4.5}
+{"step": 19, "name": "S1 P1: the game boots to the title and plays 600 frames on the farm wi", "rc": 0, "secs": 3.1}
+{"step": 25, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 3.6}
+{"step": 31, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 0, "secs": 2.4}
+{"step": 37, "name": "rec_test", "rc": 0, "secs": 4.5}
+{"step": 43, "name": "cash_test", "rc": 0, "secs": 3.2}
+{"step": 49, "name": "make_house_parts", "rc": 0, "secs": 0.4}
+{"step": 55, "name": "commons_test", "rc": 0, "secs": 36.6}
+{"step": 61, "name": "cf_volunteer_test", "rc": 0, "secs": 6.8}
+{"step": 67, "name": "workshop: no dead ends", "rc": 0, "secs": 5.9}
+{"step": 73, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 79, "name": "credits and licences page: Godot MIT, font notice, no family names (S1", "rc": 0, "secs": 2.3}
+{"step": 85, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.0}
+{"step": 91, "name": "footstep_test", "rc": 0, "secs": 5.7}
+{"step": 97, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 3.3}
+{"step": 103, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.9}
+{"step": 109, "name": "farm_debris_test", "rc": 0, "secs": 3.9}
+{"step": 115, "name": "c12_items_ui_text_test", "rc": 0, "secs": 2.5}
+{"step": 121, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 18.3}
+{"step": 127, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.2}
+{"step": 133, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 19.7}
+{"step": 139, "name": "rec_games_test", "rc": 0, "secs": 2.6}
+{"step": 145, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.6}
+{"step": 151, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 3.1}
+{"step": 157, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.4}
+{"step": 163, "name": "S1 P3: Deck typing, glyphs, text floor, desktop display", "rc": 0, "secs": 2.4}
+{"step": 169, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.3}
+{"step": 175, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 21.5}
+{"step": 181, "name": "steam co-op: lobbies + networking messages over FakeSteam (no Steam cl", "rc": 0, "secs": 3.3}
+{"step": 187, "name": "S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f", "rc": 0, "secs": 0.0}
+{"step": 193, "name": "C13 P5: actions map to their own sounds (pets, ranch voices and babies", "rc": 0, "secs": 2.4}
+{"step": 199, "name": "C13 P6: UI cues (every screen, touch and pad, no double cues)", "rc": 0, "secs": 4.3}
+{"step": 205, "name": "C14 P6: prop dressing (props_c14.json in sync, art exists, dressed onc", "rc": 0, "secs": 0.0}
