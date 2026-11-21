@@ -93,3 +93,6 @@ Run every queued CONDUCT back to back, no waits (docs/CONDUCT-PLAN.md has each o
 - Never leave work only in the chat or the sandbox: push, or a `wip/<topic>` branch named in the Baton.
 
 - 2026-11-20 Tom: C16 also covers tiered progression ecosystems per skill (player and allies; fishing as the flagship) and a Stardew-style museum donation/reward track built on the C8 Collections museum. See HANDOFF Decisions.
+
+- 2026-11-20 Relay LIVE: wss://dreams-64-23-239-63.sslip.io (DigitalOcean dreams-relay SFO3, Caddy+Node, auto-deploys server/ from main every 10 min; details in HANDOFF "Multiplayer relay" row). Any server/ change must pass tools/relay_test.js.
+- 2026-11-20 Tom added CONDUCT S1 (Steam prep without an account) to run after C11b; spec in docs/CONDUCT-PLAN.md.
