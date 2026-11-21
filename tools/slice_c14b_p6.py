@@ -22,10 +22,19 @@ GEN = os.path.join(ROOT, "art", "gen")
 # (sheet, group, anim, frames, cell height, extra manifest fields)
 JOBS = [
     ("c14bp6_president_idle.png", "characters/president", "idle", 4, 83, {"fps": 3.0, "pingpong": False}),
+    ("c14bp6_rabbit_idle.png", "wildlife/rabbit", "idle", 4, 37, {}),
+    ("c14bp6_squirrel_idle.png", "wildlife/squirrel", "idle", 4, 32, {}),
+    ("c14bp6_sparrow_idle.png", "wildlife/sparrow", "idle", 4, 26, {"_trim": 0.08}),
+    ("c14bp6_duck_idle.png", "wildlife/duck", "idle", 4, 46, {"_nogreen": 0.2}),
+    ("c14bp6_frog_idle.png", "wildlife/frog", "idle", 4, 26, {}),
+    ("c14bp6_fox_idle.png", "wildlife/fox", "idle", 4, 32, {}),
 ]
 
 
 def key(im):
+    rgba = np.asarray(im.convert("RGBA"))
+    if (rgba[..., 3] < 10).mean() > 0.5:
+        return rgba.copy()  # a real-alpha render: use it as is
     a = np.asarray(im.convert("RGB")).astype(np.int16)
     r, g, b = a[..., 0], a[..., 1], a[..., 2]
     mag = (r > 150) & (b > 150) & (g < 110) & (np.abs(r - b) < 90)
@@ -39,7 +48,19 @@ def key(im):
     return np.dstack([rgb, alpha])
 
 
-def frames_of(rgba, n):
+def strip_ground(crop, trim=0.0, nogreen=0.0):
+    h = crop.shape[0]
+    if nogreen > 0:
+        y0 = int(h * (1 - nogreen))
+        c = crop[y0:].astype(np.int16)
+        green = (c[..., 1] > c[..., 0] + 25) & (c[..., 1] > c[..., 2] + 25)
+        crop[y0:, :, 3] = np.where(green, 0, crop[y0:, :, 3])
+    if trim > 0:
+        crop[h - max(1, int(h * trim)):, :, 3] = 0
+    return crop
+
+
+def frames_of(rgba, n, trim=0.0, nogreen=0.0):
     solid = rgba[..., 3] > 200
     lab, cnt = ndimage.label(ndimage.binary_dilation(solid, iterations=6))
     boxes = ndimage.find_objects(lab)
@@ -57,8 +78,31 @@ def frames_of(rgba, n):
         crop = rgba[ys.start:ys.stop, xs.start:xs.stop].copy()
         m = ndimage.binary_dilation(solid[ys, xs], iterations=1)
         crop[..., 3] = np.where(m, crop[..., 3], 0)
-        out.append(crop)
+        out.append(clean(strip_ground(clean(crop), trim, nogreen)))
     return out
+
+
+def clean(crop):
+    """Drop the painted ground strip beside the feet and stray motion marks."""
+    al = crop[..., 3] > 128
+    rows = np.where(al.any(1))[0]
+    if len(rows) == 0:
+        return crop
+    top, bot = rows[0], rows[-1]
+    band = max(2, int((bot - top) * 0.10))
+    y0 = bot - band
+    feet = al[max(top, y0 - 4):y0].any(0)
+    feet = ndimage.binary_dilation(feet, iterations=3)
+    crop[y0:bot + 1, :, 3] = np.where(feet[None, :], crop[y0:bot + 1, :, 3], 0)
+    al = crop[..., 3] > 128
+    lab, n = ndimage.label(al, structure=np.ones((3, 3)))
+    if n > 1:
+        sizes = ndimage.sum(al, lab, range(1, n + 1))
+        keep = np.isin(lab, [i + 1 for i, v in enumerate(sizes) if v >= sizes.max() * 0.06])
+        crop[..., 3] = np.where(keep | (crop[..., 3] < 129) & ndimage.binary_dilation(keep, iterations=1), crop[..., 3], 0)
+    al = crop[..., 3] > 0
+    ys, xs = np.where(al)
+    return crop[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 
 
 def resize(arr, w, h):
@@ -74,8 +118,9 @@ def resize(arr, w, h):
 
 
 def build(sheet, group, anim, n, cell_h, extra, man):
+    extra = dict(extra)
     rgba = key(Image.open(os.path.join(INC, sheet)))
-    fr = frames_of(rgba, n)
+    fr = frames_of(rgba, n, float(extra.pop("_trim", 0.0)), float(extra.pop("_nogreen", 0.0)))
     tall = max(f.shape[0] for f in fr)
     k = cell_h / float(tall)
     scaled = [resize(f, max(1, round(f.shape[1] * k)), max(1, round(f.shape[0] * k))) for f in fr]

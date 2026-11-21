@@ -604,7 +604,7 @@ class Critter:
 			# first pose and only now and then glance (a copy: Art's cache is shared).
 			if not _flyer and kind in WATER_CRITTERS:
 				pass
-			elif not _flyer and sf.get_frame_count("idle") > 1:
+			elif (not _flyer or _percher) and sf.get_frame_count("idle") > 1:
 				_anim.sprite_frames = CreatureMotion.held_idle(sf, "idle", 4.0 if kind != "deer" else 6.0, 0.3 if kind != "deer" else 0.45)
 			_anim.animation = "idle"
 			# True-to-world sizes: the hero is ~16px wide, so a duck is a third of that.
