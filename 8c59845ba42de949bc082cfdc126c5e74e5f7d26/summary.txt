@@ -1,0 +1,17 @@
+CONDUCT CI FAIL  8c59845ba4  (ci/c12p7-f84b2ab9, run 44878160841)
+
+subset run: shards [3, 4, 6], bots off, playtest on
+check shards (3/3):
+  shard 3: FAIL  236s  failed: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s
+  shard 4: PASS  376s
+  shard 6: FAIL  329s  failed: C9 P3: full-screen screens with actions only
+playtest: PASS  52s  21 screenshots (results playtest/shots/)
+RELAY: FAIL, 78ms (NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e))
+NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)
+
+longest job: 376s
+slowest check steps: import 213.5s; import 102.3s; import 76.1s; commons_test 43.6s; touch_ui_test 39.1s; music: every map has a song; web streaming works offline 39.1s; exits and spawns 31.2s; mega regions: the new worlds walk end to end 21.5s
+distinct errors/fails/warns:
+   24  SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+   24  SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+    1  FAIL penguin blurb kept

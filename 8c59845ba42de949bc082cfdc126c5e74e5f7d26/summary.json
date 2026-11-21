@@ -1,0 +1,199 @@
+{
+ "sha": "8c59845ba42de949bc082cfdc126c5e74e5f7d26",
+ "ref": "ci/c12p7-f84b2ab9",
+ "run": "44878160841",
+ "finished": 1795245058.19804,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": true,
+  "notes": [],
+  "fail": true,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 78,
+  "live_ok": true,
+  "e2e": "NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)",
+  "e2e_ok": false,
+  "line": "RELAY: FAIL, 78ms (NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e))"
+ },
+ "relay_pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 52,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "f84b2ab9db268dfe0d8ca6b9d8bfd6279448c4a4",
+  "label": "c12p7",
+  "branch": "c12f/p7",
+  "shards": [
+   3,
+   4,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 376,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 236,
+   "failed_steps": [
+    "S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 376,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 329,
+   "failed_steps": [
+    "C9 P3: full-screen screens with actions only"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.",
+   24
+  ],
+  [
+   "SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')",
+   24
+  ],
+  [
+   "FAIL penguin blurb kept",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 213.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 102.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 76.1
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 43.6
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.1
+  },
+  {
+   "step": 85,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 39.1
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 31.2
+  },
+  {
+   "step": 127,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 21.5
+  },
+  {
+   "step": 131,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 20.6
+  },
+  {
+   "step": 119,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 18.5
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 13.5
+  },
+  {
+   "step": 160,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 10.9
+  },
+  {
+   "step": 155,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 10.4
+  },
+  {
+   "step": 97,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 9.9
+  },
+  {
+   "step": 7,
+   "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+   "rc": 0,
+   "secs": 9.6
+  }
+ ]
+}
