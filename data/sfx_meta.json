@@ -104,16 +104,16 @@
 "len_audible": 0.45
 },
 "block": {
-"dur": 0.416,
-"len_audible": 0.3
+"dur": 0.31,
+"len_audible": 0.2
 },
 "block_2": {
-"dur": 0.459,
-"len_audible": 0.45
+"dur": 0.239,
+"len_audible": 0.2
 },
 "block_3": {
-"dur": 0.588,
-"len_audible": 0.55
+"dur": 0.26,
+"len_audible": 0.2
 },
 "book": {
 "dur": 0.067,
@@ -136,11 +136,11 @@
 "len_audible": 0.7
 },
 "boss_down": {
-"dur": 0.892,
+"dur": 0.889,
 "len_audible": 0.8
 },
 "boss_down_2": {
-"dur": 0.891,
+"dur": 0.888,
 "len_audible": 0.85
 },
 "boss_fall": {
@@ -248,23 +248,23 @@
 "len_audible": 1.6
 },
 "cards": {
-"dur": 0.096,
+"dur": 0.093,
 "len_audible": 0.05
 },
 "cards_2": {
-"dur": 0.514,
+"dur": 0.511,
 "len_audible": 0.5
 },
 "cash": {
-"dur": 0.991,
+"dur": 0.988,
 "len_audible": 0.95
 },
 "cash_2": {
-"dur": 0.679,
+"dur": 0.676,
 "len_audible": 0.65
 },
 "cash_3": {
-"dur": 0.294,
+"dur": 0.291,
 "len_audible": 0.25
 },
 "cash_pickup": {
@@ -340,16 +340,16 @@
 "len_audible": 0.05
 },
 "cloth": {
-"dur": 0.689,
+"dur": 0.686,
 "len_audible": 0.65
 },
 "cloth_2": {
-"dur": 0.739,
+"dur": 0.736,
 "len_audible": 0.7
 },
 "cloth_3": {
-"dur": 0.3,
-"len_audible": 0.3
+"dur": 0.298,
+"len_audible": 0.25
 },
 "cluck": {
 "dur": 0.424,
@@ -396,16 +396,16 @@
 "len_audible": 0.35
 },
 "crit": {
-"dur": 0.161,
+"dur": 0.158,
 "len_audible": 0.15
 },
 "crit_2": {
-"dur": 0.489,
-"len_audible": 0.45
+"dur": 0.458,
+"len_audible": 0.4
 },
 "crit_3": {
-"dur": 0.545,
-"len_audible": 0.35
+"dur": 0.42,
+"len_audible": 0.2
 },
 "critter": {
 "dur": 0.31,
@@ -448,11 +448,11 @@
 "len_audible": 0.4
 },
 "cv_gloam": {
-"dur": 0.691,
-"len_audible": 0.65
+"dur": 0.71,
+"len_audible": 0.7
 },
 "cv_gloam_2": {
-"dur": 0.313,
+"dur": 0.311,
 "len_audible": 0.3
 },
 "cv_komodo": {
@@ -748,15 +748,15 @@
 "len_audible": 1.05
 },
 "grunt": {
-"dur": 0.619,
+"dur": 0.617,
 "len_audible": 0.6
 },
 "grunt_2": {
-"dur": 0.524,
+"dur": 0.521,
 "len_audible": 0.5
 },
 "grunt_3": {
-"dur": 0.436,
+"dur": 0.433,
 "len_audible": 0.4
 },
 "hammer": {
@@ -808,7 +808,7 @@
 "len_audible": 1.55
 },
 "heartbeat": {
-"dur": 0.894,
+"dur": 0.891,
 "len_audible": 0.85
 },
 "hit": {
@@ -887,6 +887,10 @@
 "dur": 2.72,
 "len_audible": 2.65
 },
+"j_birthday_gang": {
+"dur": 2.78,
+"len_audible": 2.7
+},
 "j_buy": {
 "dur": 0.304,
 "len_audible": 0.3
@@ -915,13 +919,25 @@
 "dur": 2.42,
 "len_audible": 2.35
 },
+"j_gift_gang": {
+"dur": 2.32,
+"len_audible": 2.25
+},
 "j_heart": {
 "dur": 2.94,
 "len_audible": 2.85
 },
+"j_heart_gang": {
+"dur": 2.78,
+"len_audible": 2.65
+},
 "j_morning": {
 "dur": 2.42,
 "len_audible": 2.35
+},
+"j_morning_gang": {
+"dur": 3.14,
+"len_audible": 3.05
 },
 "j_page": {
 "dur": 2.84,
@@ -1204,16 +1220,16 @@
 "len_audible": 1.75
 },
 "pin_tap": {
-"dur": 0.504,
-"len_audible": 0.4
+"dur": 0.329,
+"len_audible": 0.25
 },
 "pin_tap_2": {
-"dur": 0.356,
+"dur": 0.353,
 "len_audible": 0.3
 },
 "pin_tap_3": {
-"dur": 0.594,
-"len_audible": 0.55
+"dur": 0.56,
+"len_audible": 0.5
 },
 "plant": {
 "dur": 0.502,
@@ -1292,11 +1308,11 @@
 "len_audible": 2.9
 },
 "reel": {
-"dur": 0.642,
+"dur": 0.639,
 "len_audible": 0.6
 },
 "reel_2": {
-"dur": 0.68,
+"dur": 0.692,
 "len_audible": 0.65
 },
 "reload": {
@@ -1304,35 +1320,35 @@
 "len_audible": 1.35
 },
 "reload_2": {
-"dur": 0.785,
-"len_audible": 0.75
+"dur": 0.635,
+"len_audible": 0.6
 },
 "reload_3": {
-"dur": 1.343,
-"len_audible": 1.3
+"dur": 1.24,
+"len_audible": 1.2
 },
 "roar": {
-"dur": 0.541,
+"dur": 0.538,
 "len_audible": 0.5
 },
 "roar_2": {
-"dur": 0.825,
+"dur": 0.822,
 "len_audible": 0.8
 },
 "roar_3": {
-"dur": 0.814,
+"dur": 0.811,
 "len_audible": 0.75
 },
 "rock_break": {
-"dur": 0.423,
+"dur": 0.415,
 "len_audible": 0.4
 },
 "rock_break_2": {
-"dur": 0.341,
+"dur": 0.338,
 "len_audible": 0.3
 },
 "rock_break_3": {
-"dur": 0.34,
+"dur": 0.337,
 "len_audible": 0.3
 },
 "rooster": {
@@ -1776,15 +1792,15 @@
 "len_audible": 0.45
 },
 "stomp": {
-"dur": 0.345,
+"dur": 0.338,
 "len_audible": 0.3
 },
 "stomp_2": {
-"dur": 0.449,
+"dur": 0.445,
 "len_audible": 0.4
 },
 "stomp_3": {
-"dur": 0.376,
+"dur": 0.39,
 "len_audible": 0.35
 },
 "stone_grind": {

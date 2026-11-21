@@ -110,3 +110,9 @@ casino
 museum
 library
 workshop
+bakery
+house_gang
+inn_gang
+mood_tender
+mood_sad
+mood_tense

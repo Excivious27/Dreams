@@ -57,3 +57,7 @@ j_treasure_gang
 j_victory_gang
 levelup_gang
 quest_done_gang
+j_birthday_gang
+j_gift_gang
+j_heart_gang
+j_morning_gang
