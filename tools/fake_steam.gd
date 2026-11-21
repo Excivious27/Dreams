@@ -9,6 +9,9 @@ extends RefCounted
 var lobbies := {}     # id -> {owner, members: Array, data: {}, max}
 var users := {}       # sid -> User
 var loss := 0.0
+var late_member := false  # C17 (c17_12-11): joiners stay off the owner's member list until flush_late()
+var cut := {}             # sid -> true: everything that sid sends is lost (a dead link)
+var personas := {}        # sid -> Steam display name
 var _next_lobby := 109775241000000000
 
 
@@ -19,6 +22,9 @@ class User:
 	signal lobby_chat_update(lobby_id: int, changed_id: int, making_change_id: int, chat_state: int)
 	signal network_messages_session_request(remote_steam_id: int)
 	signal join_requested(lobby_id: int, steam_id: int)
+	signal join_game_requested(user_id: int, connect: String)
+	signal network_messages_session_failed(info: Dictionary)
+	signal steam_server_disconnected()
 
 	var bus: FakeSteam
 	var sid := 0
@@ -45,6 +51,11 @@ class User:
 		if (l["members"] as Array).size() >= int(l["max"]):
 			lobby_joined.emit(id, 0, false, 4)  # full
 			return
+		if bus.late_member:
+			if not (l.get("late", []) as Array).has(sid):
+				l["late"] = (l.get("late", []) as Array) + [sid]
+			lobby_joined.emit(id, 0, false, 1)
+			return
 		if not (l["members"] as Array).has(sid):
 			(l["members"] as Array).append(sid)
 		lobby_joined.emit(id, 0, false, 1)
@@ -64,6 +75,12 @@ class User:
 			l["owner"] = int(l["members"][0])  # Steam hands the lobby on at once
 		for m: int in l["members"]:
 			bus.users[m].lobby_chat_update.emit(id, sid, sid, 2)
+
+	func initRelayNetworkAccess() -> void:
+		bus.relay_warmed = true
+
+	func getFriendPersonaName(id: int) -> String:
+		return str(bus.personas.get(id, ""))
 
 	func getLobbyOwner(id: int) -> int:
 		return int(bus.lobbies[id]["owner"]) if bus.lobbies.has(id) else 0
@@ -96,6 +113,8 @@ class User:
 			return 3
 		if (flags & 8) == 0 and bus.loss > 0.0 and randf() < bus.loss:
 			return 1
+		if bus.cut.has(sid):
+			return 1  # looks sent; never arrives
 		(u.queue[channel] as Array).append({"payload": data, "identity": sid})
 		if not u.accepted.has(sid) and not u.requested.has(sid):
 			u.requested[sid] = true
@@ -131,6 +150,22 @@ class User:
 
 	func clearRichPresence() -> void:
 		presence.clear()
+
+
+var relay_warmed := false
+
+
+## The owner's lobby list catches up: late joiners become members and are announced.
+func flush_late() -> void:
+	for id in lobbies:
+		var l: Dictionary = lobbies[id]
+		for s: int in l.get("late", []):
+			if not (l["members"] as Array).has(s):
+				(l["members"] as Array).append(s)
+				for m: int in l["members"]:
+					if m != s:
+						users[m].lobby_chat_update.emit(id, s, s, 1)
+		l["late"] = []
 
 
 func user(sid: int) -> User:

@@ -115,7 +115,9 @@ func _start(obj: Object, id: int) -> void:
 	_hook("gamepad_text_input_dismissed", _on_text_dismissed)
 	_hook("floating_gamepad_text_input_dismissed", _on_floating_dismissed)
 	_hook("join_requested", _on_join_requested)
+	_hook("join_game_requested", _on_join_game_requested)  # c17_12-01: friends list > Join Game
 	_call("inputInit")
+	_call("initRelayNetworkAccess")  # c17_12-19: warm up Steam Datagram Relay before the first join
 	set_process(true)
 	# S1 P2: push every local unlock/stat once Steam is up (saves made off Steam).
 	Achievements.replay_to_steam.call_deferred()
@@ -341,9 +343,18 @@ func _on_join_requested(lobby_id: int, friend_id: int = 0) -> void:
 	if friend_id != 0:
 		var r: Variant = _call("getFriendPersonaName", [friend_id])
 		who = str(r) if r != null else ""
+	# c17_12-09: a Steam display name can be anything; partners see it, so it goes through NameFilter.
+	who = NameFilter.clean(who.substr(0, 24), "") if who != "" else ""
 	var n := Net.i()
 	if n != null:
 		n.on_join_requested(lobby_id, who)
+
+
+## Rich presence 'connect' (+connect_lobby <id>) while Dreams is already running.
+func _on_join_game_requested(user_id: int, connect: String = "") -> void:
+	var lid := NetNode.lobby_from_args(PackedStringArray(connect.split(" ", false)))
+	if lid != 0:
+		_on_join_requested(lid, user_id)
 
 
 func _on_text_dismissed(submitted: bool, text: String = "", _app := 0) -> void:

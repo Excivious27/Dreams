@@ -49,6 +49,111 @@ func _guest(fs: FakeSteam, n: int, lobby: int, proto := NetNode.PROTO) -> NetTra
 	return t
 
 
+## C17 P6: real-Steam failure modes (c17_12-01/02/03/04/09/16/18/23).
+func _c17(fs: FakeSteam) -> void:
+	print("C17: Steam joins that must not hang")
+	# Host leaves on purpose: guests go home at once (no 30 s of frozen world).
+	var hz := NetTransportSteam.new(fs.user(SID + 52))
+	hz.open("", {"proto": NetNode.PROTO})
+	hz.send({"t": "join", "room": "", "token": "hz", "name": "HZ", "look": {}, "arc": "penguins", "proto": NetNode.PROTO})
+	await _pump(1, [hz])
+	GameState.run["day"] = 4
+	var n4 := NetNode.new()
+	root.add_child(n4)
+	n4.steam_backend = fs.user(SID + 53)
+	var home := [false]
+	n4.went_home.connect(func() -> void: home[0] = true)
+	n4.join_steam(hz.lobby_id)
+	await _pump(4, [hz])
+	check(n4.online() and not fs.user(SID + 53).presence.get("connect", "").contains("connect_lobby"), "a guest never advertises Join Game (only the host does)")
+	check(fs.user(SID + 52).presence.get("connect", "").contains("connect_lobby"), "the host advertises Join Game")
+	hz.close()
+	await _pump(4, [])
+	check(home[0] and int(GameState.run["day"]) == 4, "host left on purpose: the guest goes home at once")
+	n4.queue_free()
+	# Late lobby list: the session request lands before the owner sees the member; the resend gets in.
+	var ow := NetTransportSteam.new(fs.user(SID + 54))
+	ow.open("", {"proto": NetNode.PROTO})
+	ow.send({"t": "join", "room": "", "token": "ow", "name": "OW", "look": {}, "arc": "penguins", "proto": NetNode.PROTO})
+	await _pump(1, [ow])
+	fs.late_member = true
+	var lg := _guest(fs, 55, ow.lobby_id)
+	await _pump(3, [lg, ow])
+	check(_has(lg, "joined").is_empty(), "late member: the first join is not answered yet")
+	fs.late_member = false
+	fs.flush_late()
+	for i in 150:
+		await _pump(1, [lg, ow])
+	check(_has(lg, "joined").size() == 1, "late member: the resent join gets in")
+	# A rejoin on its own seat in a full room is not 'full' (c17_12-16).
+	lg.send({"t": "join", "room": "", "create": false, "token": "x55", "name": "G55", "look": {}, "arc": "penguins", "proto": NetNode.PROTO})
+	await _pump(3, [lg, ow])
+	check(_has(lg, "full").is_empty() and ow.room.info.size() == 2, "a rejoin keeps its seat (%d seated)" % ow.room.info.size())
+	# The owner goes silent (a dead link): the guest notices instead of freezing forever.
+	fs.cut[SID + 54] = true
+	lg.poll(25.0)
+	check(lg.closed() and lg.close_reason().contains("connection"), "silent owner: the guest's link closes (%s)" % lg.close_reason())
+	fs.cut.erase(SID + 54)
+	ow.poll(50.0)
+	check(not ow.room.info.has(2), "owner lets a silent guest go")
+	# The owner never answers at all: a join gives up with words.
+	fs.cut[SID + 54] = true
+	var ng := _guest(fs, 56, ow.lobby_id)
+	for i in 8:
+		ng.poll(2.1)
+	check(ng.closed() and ng.close_reason() == "Your friend's game didn't answer.", "no answer: the join gives up (%s)" % ng.close_reason())
+	fs.cut.erase(SID + 54)
+	# A session failure from the owner closes the guest.
+	var sg := _guest(fs, 57, ow.lobby_id)
+	await _pump(3, [sg, ow])
+	fs.user(SID + 57).network_messages_session_failed.emit({"identity": SID + 54})
+	check(sg.closed(), "session_failed from the owner closes the guest")
+	ow.close()
+	# Not a Dreams lobby / ended lobby: words, never numbers.
+	var other := fs.user(SID + 58)
+	other.createLobby(1, 4)
+	var olid: int = fs._next_lobby - 1
+	var xg := NetTransportSteam.new(fs.user(SID + 59))
+	xg.open(str(olid), {"proto": NetNode.PROTO})
+	check(xg.closed() and xg.close_reason() == "That isn't a Dreams game.", "a non-Dreams lobby is refused")
+	var eg := NetTransportSteam.new(fs.user(SID + 62))
+	eg.open("123", {"proto": NetNode.PROTO})
+	check(eg.closed() and eg.close_reason() == "That game has ended.", "an ended lobby says so (%s)" % eg.close_reason())
+	# Back while 'Starting a Steam lobby': the lobby that arrives later is left, not orphaned.
+	var bus2 := FakeSteam.new()
+	var slow := bus2.user(SID + 63)
+	var bt := NetTransportSteam.new(slow)
+	bt._wire()
+	bt.owner = true
+	bt._waiting_create = true
+	bt.close()
+	bus2._next_lobby = 5000
+	bus2.lobbies[5000] = {"owner": SID + 63, "members": [SID + 63], "data": {}, "max": 8}
+	slow.lobby_created.emit(1, 5000)
+	check(not bus2.lobbies.has(5000), "closed before lobby_created: that lobby is left")
+	bus2.free_all()
+	# Friends list > Join Game while running, and a filtered persona name.
+	var ss: Node = root.get_node_or_null("SteamSvc")
+	var nn := Net.i()
+	if ss != null and nn != null:
+		var pu := fs.user(SID + 64)
+		fs.personas[SID + 64] = "fuck"
+		var keep: Object = ss._s
+		var kb: String = ss._backend
+		var kr: String = ss.reason
+		ss.inject(pu)
+		ss._on_join_game_requested(SID + 64, "+connect_lobby 777")
+		check(nn.pending_lobby == 777, "join_game_requested (rich presence connect) lands as a pending lobby")
+		check(not nn.pending_from.contains("fuck"), "Steam persona name filtered (%s)" % nn.pending_from)
+		nn.pending_lobby = 0
+		nn.pending_from = ""
+		ss._s = keep
+		ss._backend = kb
+		ss.reason = kr
+	else:
+		check(false, "SteamSvc / NetSvc autoloads present")
+
+
 func _run() -> void:
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	var fs := FakeSteam.new()
@@ -166,15 +271,17 @@ func _run() -> void:
 	check(n2.join_steam(hx.lobby_id), "join_steam")
 	await _pump(4, [hx])
 	check(n2.online() and not n2.is_host() and not n2._solo_backup.is_empty(), "guest NetNode visiting over Steam")
-	hx.close()
+	fs.user(SID + 51).lobby_chat_update.emit(hx.lobby_id, SID + 50, SID + 50, 4)  # the owner DROPPED (not a leave)
 	await _pump(2, [])
 	n2.tr.poll(10.0)
 	await _pump(2, [])
 	check(not home[0], "owner gone 10 s: still in the grace")
 	n2.tr.poll(21.0)
 	await _pump(3, [])
-	check(home[0] and int(GameState.run["day"]) == 4, "owner gone 31 s: guest went home to its own day")
+	check(home[0] and int(GameState.run["day"]) == 4, "owner gone 31 s: guest went home to its own day (home %s day %d)" % [str(home[0]), int(GameState.run["day"])])
 	n2.queue_free()
+	hx.close()
+	await _c17(fs)
 	# Invites: "+connect_lobby <id>" at launch, join_requested in game -> asked on the farm.
 	check(NetNode.lobby_from_args(PackedStringArray(["--x", "+connect_lobby", "1097752410000001"])) == 1097752410000001, "+connect_lobby <id> parsed")
 	check(NetNode.lobby_from_args(PackedStringArray(["+connect_lobby=42"])) == 42 and NetNode.lobby_from_args(PackedStringArray(["--y"])) == 0, "+connect_lobby=<id> parsed, none = 0")

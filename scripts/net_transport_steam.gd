@@ -31,6 +31,12 @@ const CHAT_GONE := 2 | 4 | 8 | 16   # left, disconnected, kicked, banned
 const ZSTD_OVER := 8 * 1024
 const CHUNK := 480 * 1024
 const OWNER_ID := 1
+const CHAT_LEFT := 2                # k_EChatMemberStateChangeLeft: a deliberate leave
+const JOIN_RESEND := 2.0            # c17_12-02: guest resends its join until the owner answers
+const JOIN_GIVE_UP := 15.0
+const GUEST_SILENT := 20.0          # c17_12-03: no packet from the owner this long = dropped
+const OWNER_SILENT := 45.0          # owner: a seated guest silent this long is let go
+const PENDING_FOR := 10.0           # owner: a session request from a not-yet-listed member waits
 
 var steam: Object
 var me := 0                         # my SteamID64
@@ -51,6 +57,15 @@ var _msg_id := 0
 var _owner_gone := -1.0
 var _wired := false
 var _code := ""
+var _waiting_create := false        # c17_12-17: only the transport that asked claims lobby_created
+var _cancel := false                # c17_12-18: closed before lobby_created: leave it on arrival
+var _join_frame := {}               # guest: our join, resent until the owner answers
+var _join_t := -1.0
+var _resend_t := 0.0
+var _heard := 0.0                   # guest: seconds since the owner's last packet
+var _seen := {}                     # owner: SteamID -> seconds since its last packet
+var _pending := {}                  # owner: SteamID -> seconds waiting for the lobby list
+var _warned := false
 
 
 func _init(backend: Object) -> void:
@@ -62,7 +77,7 @@ func _wire() -> void:
 	if _wired:
 		return
 	_wired = true
-	for pair: Array in [["lobby_created", _on_lobby_created], ["lobby_joined", _on_lobby_joined], ["lobby_chat_update", _on_chat_update], ["network_messages_session_request", _on_session_request]]:
+	for pair: Array in _signals():
 		if steam.has_signal(pair[0]) and not steam.is_connected(pair[0], pair[1]):
 			steam.connect(pair[0], pair[1])
 
@@ -71,9 +86,13 @@ func _unwire() -> void:
 	if not _wired:
 		return
 	_wired = false
-	for pair: Array in [["lobby_created", _on_lobby_created], ["lobby_joined", _on_lobby_joined], ["lobby_chat_update", _on_chat_update], ["network_messages_session_request", _on_session_request]]:
+	for pair: Array in _signals():
 		if steam.has_signal(pair[0]) and steam.is_connected(pair[0], pair[1]):
 			steam.disconnect(pair[0], pair[1])
+
+
+func _signals() -> Array:
+	return [["lobby_created", _on_lobby_created], ["lobby_joined", _on_lobby_joined], ["lobby_chat_update", _on_chat_update], ["network_messages_session_request", _on_session_request], ["network_messages_session_failed", _on_session_failed], ["steam_server_disconnected", _on_steam_down]]
 
 
 ## target "" = create a friends-only lobby; otherwise the lobby id to join.
@@ -81,9 +100,14 @@ func open(target: String, join_msg: Dictionary) -> bool:
 	proto = int(join_msg.get("proto", 0))
 	_open = false
 	_closed = false
+	_cancel = false
+	_join_frame = {}
+	_join_t = -1.0
+	_heard = 0.0
 	_wire()
 	if target == "":
 		owner = true
+		_waiting_create = true
 		steam.call("createLobby", LOBBY_FRIENDS_ONLY, MAX_MEMBERS)
 	else:
 		owner = false
@@ -93,10 +117,18 @@ func open(target: String, join_msg: Dictionary) -> bool:
 
 
 func _on_lobby_created(result: int, lid: int) -> void:
-	if not owner or lobby_id != 0 and lid != lobby_id:
+	if not owner or not _waiting_create or lobby_id != 0 and lid != lobby_id:
+		return
+	_waiting_create = false
+	if _cancel:
+		# Left the title before Steam answered: Steam already put us in it, so leave it now.
+		if result == 1:
+			steam.call("leaveLobby", lid)
+		_cancel = false
+		_unwire()
 		return
 	if result != 1:
-		_fail("Couldn't create a Steam lobby (%d)" % result)
+		_fail("Couldn't start a Steam lobby. Check that Steam is online, then try again.")
 		return
 	lobby_id = lid
 	owner_sid = me
@@ -119,21 +151,76 @@ func _on_lobby_joined(lid: int, _perms: int, _locked: bool, response: int) -> vo
 		_open = true
 		return
 	if response != ENTER_OK:
-		_fail("Couldn't join that Steam lobby (%d)" % response)
+		_fail(enter_words(response))
+		return
+	if str(steam.call("getLobbyData", lobby_id, "dreams")) != "1":
+		steam.call("leaveLobby", lobby_id)  # c17_12-23: not a Dreams lobby (App 480 is shared)
+		_fail("That isn't a Dreams game.")
 		return
 	owner_sid = int(steam.call("getLobbyOwner", lobby_id))
 	_owner_gone = -1.0
+	_heard = 0.0
 	var their := str(steam.call("getLobbyData", lobby_id, "proto"))
-	if their != "" and int(their) != proto:
-		_inbox.append({"t": "old_build", "need": int(their)})
+	if their == "" or int(their) != proto:
+		_inbox.append({"t": "old_build", "need": int(their) if their.is_valid_int() else 0})
 	_open = true
 	_presence()
+
+
+## c17_12-06 / c17_01-13: EChatRoomEnterResponse in words, never a raw number.
+static func enter_words(response: int) -> String:
+	match response:
+		2:
+			return "That game has ended."
+		3, 5:
+			return "You can't join that game."
+		4:
+			return "That room is full (8 players)."
+		6:
+			return "Your Steam account can't join lobbies yet (limited account)."
+	return "Couldn't join that game. Try again."
 
 
 func _fail(why: String) -> void:
 	_reason = why
 	_open = false
 	_closed = true
+	_waiting_create = false
+	_join_frame = {}
+	_join_t = -1.0
+	_clear_connect()  # c17_01-13: friends' Join Game must not lead to a dead lobby
+	if owner:
+		_unwire()  # c17_12-17: a failed host never claims the next lobby_created (a guest's reopen() rewires)
+
+
+func _on_session_failed(info: Variant = null, _a: Variant = null) -> void:
+	var sid := 0
+	if info is Dictionary:
+		sid = _sid_of((info as Dictionary).get("identity", (info as Dictionary).get("remote_steam_id", 0)))
+	else:
+		sid = _sid_of(info)
+	if owner:
+		_let_go(sid)
+	elif _open and (sid == 0 or sid == owner_sid):
+		_fail("Lost the connection to your friend's game.")
+
+
+func _on_steam_down(_a: Variant = null) -> void:
+	if _open or not _closed:
+		_fail("Lost the connection to Steam.")
+
+
+## Owner: a seated guest is gone (session failed or silent).
+func _let_go(sid: int) -> void:
+	var small := int(_ids.get(sid, 0))
+	if small > 0 and room:
+		room.leave(small)
+	_ids.erase(sid)
+	_sids.erase(small)
+	_parts.erase(sid)
+	_seen.erase(sid)
+	if sid != 0:
+		steam.call("closeSessionWithUser", sid)
 
 
 ## The 4-character room code shown in status text ("Connected. Room ABCD.").
@@ -160,8 +247,13 @@ func is_member(sid: int) -> bool:
 ## Only lobby members may open a session: strangers are never accepted.
 func _on_session_request(remote: Variant) -> void:
 	var sid := _sid_of(remote)
-	if sid != 0 and is_member(sid):
+	if sid == 0:
+		return
+	if is_member(sid):
 		steam.call("acceptSessionWithUser", sid)
+		_pending.erase(sid)
+	elif owner:
+		_pending[sid] = 0.0  # c17_12-02: the lobby list may not have caught up yet
 
 
 static func _sid_of(v: Variant) -> int:
@@ -178,17 +270,22 @@ func _on_chat_update(lid: int, changed: int, _by: int, state: int) -> void:
 		return
 	if state & CHAT_GONE:
 		if owner:
-			var small := int(_ids.get(changed, 0))
-			if small > 0:
-				room.leave(small)
-				_ids.erase(changed)
-				_sids.erase(small)
-			_parts.erase(changed)
-			steam.call("closeSessionWithUser", changed)
+			_let_go(changed)
+			_pending.erase(changed)
 		elif changed == owner_sid:
-			_owner_gone = 0.0   # the relay's 30 s host grace, then everyone's host is gone
+			_clear_connect()
+			if state & CHAT_LEFT:
+				# c17_12-04: the host left on purpose; a Steam owner can't come back, so no grace.
+				_owner_gone = -1.0
+				_heard = 0.0
+				_inbox.append({"t": "you_are_host"})
+			else:
+				_owner_gone = 0.0   # dropped: the relay's 30 s host grace, then home
 		_presence()
 	elif state & CHAT_ENTERED:
+		if owner and _pending.has(changed):
+			_pending.erase(changed)
+			steam.call("acceptSessionWithUser", changed)
 		if not owner and changed == owner_sid:
 			_owner_gone = -1.0
 		_presence()
@@ -205,10 +302,36 @@ func poll(delta: float) -> void:
 					_on_packet(_sid_of((m as Dictionary).get("identity", (m as Dictionary).get("remote_steam_id", 0))), (m as Dictionary).get("payload", PackedByteArray()))
 	if owner and room:
 		room.tick(delta)
-	elif _owner_gone >= 0.0:
+		for sid: int in _pending.keys():
+			_pending[sid] = float(_pending[sid]) + delta
+			if is_member(sid):
+				_pending.erase(sid)
+				steam.call("acceptSessionWithUser", sid)
+			elif float(_pending[sid]) > PENDING_FOR:
+				_pending.erase(sid)
+		for sid: int in _seen.keys():
+			_seen[sid] = float(_seen[sid]) + delta
+			if float(_seen[sid]) > OWNER_SILENT:
+				_let_go(sid)
+		return
+	_heard += delta
+	if _join_t >= 0.0:
+		_join_t += delta
+		_resend_t += delta
+		if _join_t > JOIN_GIVE_UP:
+			_fail("Your friend's game didn't answer.")
+			return
+		if _resend_t >= JOIN_RESEND and owner_sid != 0:
+			_resend_t = 0.0
+			_send_to(owner_sid, _join_frame)
+	elif _heard > GUEST_SILENT and _owner_gone < 0.0 and _inbox.is_empty():
+		_fail("Lost the connection to your friend's game.")
+		return
+	if _owner_gone >= 0.0:
 		_owner_gone += delta
 		if _owner_gone >= NetTransport.HOST_GRACE:
 			_owner_gone = -1.0
+			_heard = 0.0
 			_inbox.append({"t": "you_are_host"})
 
 
@@ -245,6 +368,10 @@ func send(frame: Dictionary) -> void:
 		else:
 			room.frame(OWNER_ID, frame, 0)
 	elif owner_sid != 0:
+		if str(frame.get("t", "")) == "join":
+			_join_frame = frame.duplicate(true)
+			_join_t = 0.0
+			_resend_t = 0.0
 		_send_to(owner_sid, frame)
 
 
@@ -272,7 +399,10 @@ func _send_to(sid: int, frame: Dictionary) -> void:
 		steam.call("sendMessageToUser", sid, pkts[0], SEND_UNRELIABLE, CH_FAST)
 		return
 	for p: PackedByteArray in pkts:
-		steam.call("sendMessageToUser", sid, p, SEND_RELIABLE, CH_RELIABLE)
+		var r: Variant = steam.call("sendMessageToUser", sid, p, SEND_RELIABLE, CH_RELIABLE)
+		if r != null and int(r) != 1 and not _warned:
+			_warned = true  # c17_12-20: say it once (e.g. 25 = LimitExceeded on a huge frame)
+			push_warning("NetTransportSteam: sendMessageToUser returned %d" % int(r))
 
 
 static func _u32(b: PackedByteArray, v: int) -> void:
@@ -335,6 +465,12 @@ func _on_packet(sid: int, pkt: PackedByteArray) -> void:
 		return  # guests only listen to the lobby owner
 	if owner and not is_member(sid):
 		return
+	if owner:
+		if _ids.has(sid):
+			_seen[sid] = 0.0
+	else:
+		_heard = 0.0
+		_join_t = -1.0  # the owner answered: stop resending the join
 	if pkt[0] == 2:
 		if pkt.size() < 10:
 			return
@@ -380,6 +516,9 @@ func _owner_frame(sid: int, m: Dictionary, size: int) -> void:
 			_next += 1
 			_ids[sid] = small
 			_sids[small] = sid
+		elif room.info.has(small):
+			room._drop(small)  # c17_12-16: a rejoin (or a resent join) reuses its own seat, never 'full'
+		_seen[sid] = 0.0
 		var jm := m.duplicate()
 		jm["token"] = str(sid)  # Steam identity, not the device token, is who this is
 		room.join(small, jm, _out_for(small))
@@ -399,10 +538,26 @@ func _presence() -> void:
 	steam.call("setRichPresence", "players", str(n))
 	steam.call("setRichPresence", "steam_player_group", str(lobby_id))
 	steam.call("setRichPresence", "steam_player_group_size", str(n))
-	steam.call("setRichPresence", "connect", "+connect_lobby %d" % lobby_id)
+	# c17_12-14 (Tom's call, default): only the host advertises Join Game, so friends of a
+	# guest (strangers to the host) can't walk into the host's friends-only lobby.
+	if owner:
+		steam.call("setRichPresence", "connect", "+connect_lobby %d" % lobby_id)
+	else:
+		steam.call("setRichPresence", "connect", "")
+
+
+func _clear_connect() -> void:
+	if steam.has_method("setRichPresence"):
+		steam.call("setRichPresence", "connect", "")
 
 
 func close() -> void:
+	if owner and lobby_id == 0 and _waiting_create:
+		_cancel = true  # c17_12-18: stay wired for lobby_created only, then leave that lobby
+		_open = false
+		if steam.has_method("clearRichPresence"):
+			steam.call("clearRichPresence")
+		return
 	if lobby_id != 0:
 		var n := int(steam.call("getNumLobbyMembers", lobby_id))
 		for i in n:
@@ -414,6 +569,10 @@ func close() -> void:
 		steam.call("clearRichPresence")
 	_unwire()
 	_open = false
+	_join_t = -1.0
+	_pending.clear()
+	_seen.clear()
+	Presence._last = ""  # c17_12-12: our normal status goes back up with the next push
 	if owner:
 		lobby_id = 0
 
