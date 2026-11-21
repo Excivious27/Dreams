@@ -206,7 +206,13 @@
    "give": {
     "dream_seed": 5
    },
-   "text": "Hazel's heirloom seeds: 5 Dream Seeds"
+   "animal": {
+    "species": "chicken",
+    "variant": "golden",
+    "name": "Saffron",
+    "keepsake": true
+   },
+   "text": "Hazel's heirloom seeds: 5 Dream Seeds, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   }
  },
  "bram": {
@@ -244,7 +250,13 @@
    "give": {
     "cake": 2
    },
-   "text": "Posy's recipes: 2 Cakes"
+   "animal": {
+    "species": "rabbit",
+    "variant": "silver",
+    "name": "Crumpet",
+    "keepsake": true
+   },
+   "text": "Posy's recipes: 2 Cakes, and Crumpet, her silver rabbit, moves into your hutch (she waits at the bakery until you have a hutch with room)"
   },
   "10": {
    "weekly": {
@@ -536,13 +548,19 @@
    "give": {
     "#gold": 250
    },
-   "text": "Benno's spare tack sells for \u25c6250"
+   "animal": {
+    "species": "goat",
+    "variant": "chocolate",
+    "name": "Tinker",
+    "keepsake": true
+   },
+   "text": "Benno's spare tack sells for \u25c6250, and Tinker, a goat kid he hand-reared, comes to your barn (when it has room)"
   },
   "10": {
    "weekly": {
-    "sheep_wool": 3
+    "hay": 6
    },
-   "text": "Benno's llama wool: 3 Wool each week"
+   "text": "Benno's feed run: 6 Hay each week for your animals"
   }
  },
  "ivy": {
@@ -574,7 +592,7 @@
    "weekly": {
     "tea_leaf": 2
    },
-   "text": "Tam's sheepdog finds forage: a Tea Leaf each week"
+   "text": "Tam's sheepdog finds forage: 2 Tea Leaves each week"
   },
   "6": {
    "give": {
@@ -583,13 +601,14 @@
    "text": "Tam gives you a lamb's worth of wool: 5 Wool"
   },
   "8": {
+   "flag": "tam_lamb",
    "weekly": {
     "cider": 2
    },
    "give": {
     "#decor:dc_bed2_double_blue": 1
    },
-   "text": "Tam's cider: 2 each week, and a keepsake for your home: Blue Quilt Double Bed"
+   "text": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed"
   },
   "10": {
    "give": {

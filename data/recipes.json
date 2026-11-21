@@ -2254,10 +2254,12 @@
    "id": "yarn",
    "name": "Yarn",
    "need": {
-    "sheep_wool": 1
+    "sheep_wool": 1,
+    "fiber": 1
    },
    "give": "yarn",
-   "tier": 1
+   "tier": 1,
+   "n": 2
   },
   {
    "id": "linen",
@@ -2402,6 +2404,26 @@
    },
    "give": "outfit_penguin",
    "tier": 4
+  },
+  {
+   "id": "down_pillow",
+   "name": "Down Pillow",
+   "need": {
+    "feather": 2,
+    "cloth": 1
+   },
+   "give": "down_pillow",
+   "tier": 1
+  },
+  {
+   "id": "angora_yarn",
+   "name": "Yarn (rabbit fur)",
+   "need": {
+    "rabbit_fur": 1
+   },
+   "give": "yarn",
+   "tier": 1,
+   "n": 3
   },
   {
    "id": "dc_rug_rect_blue",
@@ -2873,6 +2895,34 @@
     "#herb": 1
    },
    "give": "fine_wine",
+   "tier": 3
+  },
+  {
+   "id": "cream",
+   "name": "Cream",
+   "need": {
+    "#milk": 1
+   },
+   "give": "cream",
+   "tier": 1
+  },
+  {
+   "id": "yogurt",
+   "name": "Honey Yogurt",
+   "need": {
+    "#milk": 1,
+    "honey": 1
+   },
+   "give": "yogurt",
+   "tier": 2
+  },
+  {
+   "id": "truffle_oil",
+   "name": "Truffle Oil",
+   "need": {
+    "truffle": 1
+   },
+   "give": "truffle_oil",
    "tier": 3
   }
  ],
@@ -4353,6 +4403,68 @@
    },
    "give": "drone_swarm",
    "tier": 4
+  }
+ ],
+ "mayo": [
+  {
+   "id": "mayonnaise",
+   "name": "Mayonnaise",
+   "need": {
+    "#egg": 1
+   },
+   "give": "mayonnaise",
+   "tier": 1
+  },
+  {
+   "id": "duck_mayonnaise",
+   "name": "Duck Mayonnaise",
+   "need": {
+    "duck_egg": 1
+   },
+   "give": "duck_mayonnaise",
+   "tier": 2
+  }
+ ],
+ "extractor": [
+  {
+   "id": "honey_comb",
+   "name": "Honey (from honeycomb)",
+   "need": {
+    "honeycomb": 1
+   },
+   "give": "honey",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "beeswax",
+   "name": "Beeswax",
+   "need": {
+    "honeycomb": 1
+   },
+   "give": "beeswax",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "honey_jar",
+   "name": "Jar of Honey",
+   "need": {
+    "honey": 3,
+    "glass": 1
+   },
+   "give": "honey_jar",
+   "tier": 2
+  },
+  {
+   "id": "beeswax_candle",
+   "name": "Beeswax Candle",
+   "need": {
+    "beeswax": 2,
+    "fiber": 1
+   },
+   "give": "beeswax_candle",
+   "tier": 2
   }
  ]
 }
