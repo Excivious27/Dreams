@@ -79,6 +79,16 @@ func _run() -> void:
 	check(not NetNode.valid_act({"a": "farm_tile", "key": "3,4", "tile": {"x": "a".repeat(2000)}}), "huge farm tile refused")
 	check(not NetNode.valid_act({"a": "permit", "id": "nope_build", "tier": 99}), "permit for an unknown build / tier refused")
 	check(not NetNode.valid_act({"a": "cleared", "scene": "../../x", "key": "k"}), "cleared with a junk scene refused")
+	check(NetNode.valid_act({"a": "farm_tiles", "tiles": {"1,1": {"t": "tilled"}, "2,2": null}}) and not NetNode.valid_act({"a": "farm_tiles", "tiles": {"x": {}}}), "farm_tiles batch checked tile by tile")
+	# Decor piece keys survive the JSON round trip; the house look rides in deltas.
+	var pc := {"id": "lamp", "cell": [3, 4], "rot": 1}
+	var back: Dictionary = JSON.parse_string(JSON.stringify({"cell": [3, 4], "rot": 1, "id": "lamp"}))
+	check(NetNode._piece_key(pc) == NetNode._piece_key(back), "piece key equal after JSON (ints -> floats, key order)")
+	var dd := NetNode.world_delta({"decor_home": {"placed": {}, "wall": {}, "floor": {}, "house": "a"}}, {"decor_home": {"placed": {}, "wall": {}, "floor": {}, "house": "b"}})
+	var run := {"decor_home": {"placed": {}, "wall": {}, "floor": {}, "house": "a"}}
+	NetNode.merge_delta(run, dd)
+	check(str(run["decor_home"].get("house", "")) == "b", "decor_home 'house' reaches guests in a delta")
+	check(NetNode._toast_ok("Host: Coop built.") and not NetNode._toast_ok("Host: shit"), "host toast filter")
 	# Empty code join
 	var e := NetNode.new()
 	root.add_child(e)
@@ -110,6 +120,9 @@ func _run() -> void:
 	check(worlds.size() >= 2 and worlds.size() <= 8, "20 guest acts in 1 s -> %d world frames (coalesced)" % worlds.size())
 	check(saves.size() <= 1, "no host_save per act (%d)" % saves.size())
 	check((GameState.run["farm"] as Dictionary).has("19,5"), "every act applied on the host")
+	g.send_host({"k": "act", "a": "farm_tiles", "tiles": {"40,5": {"t": "tilled"}, "41,5": {"t": "tilled"}, "19,5": null}})
+	await _wait(0.3)
+	check((GameState.run["farm"] as Dictionary).has("41,5") and not (GameState.run["farm"] as Dictionary).has("19,5"), "farm_tiles: one act, many tiles applied")
 	check(g.acked_seq() >= 15, "guest got acks (%d)" % g.acked_seq())
 	# Seq gap -> resync request
 	spy.sent.clear()

@@ -68,6 +68,7 @@ const APP_PING_EVERY := 4.0
 var _rx_t := 0.0             # seconds since any inbound frame
 var _host_rx_t := 0.0        # guests: seconds since a frame from the host
 var _app_ping_t := 0.0
+var _pong_ok := false        # this relay answers {t:"ping"} (older ones don't)
 var _slow_t := 0.0           # the relay said slow: skip position ticks this long
 # Host push coalescing (C17): a guest act marks the world dirty; it goes out at most
 # every PUSH_GAP s; host_save at most every SAVE_EVERY s, never per act.
@@ -333,6 +334,7 @@ func _connect(u: String) -> bool:
 		return false
 	_connect_t = 0.0
 	_rx_t = 0.0
+	_pong_ok = false
 	tr = NetTransportWs.new()
 	if not tr.open(url, _pending_join):
 		tr = null
@@ -575,7 +577,7 @@ func _process(delta: float) -> void:
 		if _app_ping_t >= APP_PING_EVERY:
 			_app_ping_t = 0.0
 			tr.send({"t": "ping", "s": 0})
-		if _rx_t >= SILENCE_DROP:
+		if _rx_t >= SILENCE_DROP and (_pong_ok or not peers.is_empty()):  # an older relay never answers ping
 			_rx_t = 0.0
 			tr.close()
 			_on_drop("no answer from the server")
@@ -722,7 +724,7 @@ func _on_msg(m: Dictionary) -> void:
 		"slow":
 			_slow_t = 1.0  # over the relay's budget: hold position ticks a second
 		"pong":
-			pass
+			_pong_ok = true
 		"peer_joined":
 			_look_hash = 0  # the newcomer gets our look with the next state packet
 			var p: Dictionary = m["peer"]
@@ -821,7 +823,9 @@ func _on_msg(m: Dictionary) -> void:
 						return
 					var m2 := get_tree().current_scene
 					if m2 is GameMap:
-						(m2 as GameMap).hud.toast(str(d.get("text", "")), Color(0.8, 0.9, 1.0))
+						var tx := str(d.get("text", "")).substr(0, 120)
+						if tx.begins_with("Host: ") and _toast_ok(tx):  # C17: only our own host lines, filtered (no free-text channel)
+							(m2 as GameMap).hud.toast(tx, Color(0.8, 0.9, 1.0))
 
 
 func _broadcast_state() -> void:
@@ -944,8 +948,10 @@ static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
 				if not np.has(r):
 					pd[r] = null
 			out["decor_home_d"] = {"placed": pd, "wall": (now[k] as Dictionary).get("wall", {}), "floor": (now[k] as Dictionary).get("floor", {})}
-			if (now[k] as Dictionary).has("ext"):
-				out["decor_home_d"]["ext"] = (now[k] as Dictionary)["ext"]  # P3's exterior look (c10b_01-06)
+			# Every other part of the look (ext, house, ...) rides along whole (C17: "house" was dropped).
+			for hk in (now[k] as Dictionary):
+				if not (str(hk) in ["placed", "wall", "floor"]):
+					out["decor_home_d"][hk] = (now[k] as Dictionary)[hk]
 		else:
 			out[k] = now[k]
 	for k in old:
@@ -954,8 +960,26 @@ static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
 	return out
 
 
+## C17: the same piece keys the same on both sides of the wire (JSON turns ints into floats,
+## and key order may differ), so a removal always finds its piece.
 static func _piece_key(p: Variant) -> String:
-	return JSON.stringify(p) if p is Dictionary else str(p)
+	return JSON.stringify(_norm(p), "", true) if p is Dictionary or p is Array else str(p)
+
+
+static func _norm(v: Variant) -> Variant:
+	if v is float and is_equal_approx(v, roundf(v)) and absf(v) < 1e15:
+		return int(v)
+	if v is Dictionary:
+		var o := {}
+		for k in v:
+			o[str(k)] = _norm(v[k])
+		return o
+	if v is Array:
+		var a: Array = []
+		for x in v:
+			a.append(_norm(x))
+		return a
+	return v
 
 
 ## Pieces removed (by key) and added between two placed lists of one room.
@@ -1023,8 +1047,9 @@ static func merge_delta(run: Dictionary, d: Dictionary) -> void:
 					home["placed"][r] = pv[r]
 		home["wall"] = (dh as Dictionary).get("wall", {})
 		home["floor"] = (dh as Dictionary).get("floor", {})
-		if (dh as Dictionary).has("ext"):
-			home["ext"] = (dh as Dictionary)["ext"]
+		for hk in (dh as Dictionary):
+			if not (str(hk) in ["placed", "wall", "floor"]):
+				home[hk] = (dh as Dictionary)[hk]  # ext, house, ...
 	var gv: Variant = d.get("_gone", [])
 	if gv is Array:
 		for k in gv:
@@ -1137,6 +1162,14 @@ func _handle_action(from: int, d: Dictionary) -> void:
 				GameState.run["farm"][str(d["key"])] = tv
 		"farm_clear":
 			GameState.run["farm"].erase(str(d.get("key", "")))
+		"farm_tiles":
+			# C17: many tiles in one act (area spells, hold-to-repeat): key -> tile, null = cleared.
+			var tt: Dictionary = d.get("tiles", {})
+			for key in tt:
+				if tt[key] == null:
+					GameState.run["farm"].erase(str(key))
+				else:
+					GameState.run["farm"][str(key)] = tt[key]
 		"cleared":
 			var all_c: Dictionary = GameState.run.get("cleared", {})
 			var lst: Variant = all_c.get(str(d.get("scene", "")), {})
@@ -1166,6 +1199,16 @@ func _handle_action(from: int, d: Dictionary) -> void:
 	_dirty = true  # C17: coalesced, out within PUSH_GAP s (a held hoe no longer means a push per tile)
 
 
+## Host toast words: per word, the hard block list (whole-sentence squash hits "this hit").
+static func _toast_ok(tx: String) -> bool:
+	for w in tx.split(" ", false):
+		var sq := NameFilter.squash(w)
+		for b in NameFilter.BLOCK:
+			if sq.contains(b):
+				return false
+	return true
+
+
 ## C17: shape checks on a guest's act before the host applies it (friends-only was the
 ## old assumption; codes can be shared on). Static so tests can call it.
 static func valid_act(d: Dictionary) -> bool:
@@ -1190,6 +1233,15 @@ static func valid_act(d: Dictionary) -> bool:
 			return id != "" and tier >= 1 and tier <= 10 and not Builds.tier_def(id, tier).is_empty()
 		"build":
 			return str(d.get("id", "")) != "" and str(d.get("id", "")).length() <= 48
+		"farm_tiles":
+			var tv2: Variant = d.get("tiles", null)
+			if not (tv2 is Dictionary) or (tv2 as Dictionary).size() > 600:
+				return false
+			for key in tv2:
+				var t2: Variant = tv2[key]
+				if not valid_act({"a": "farm_clear" if t2 == null else "farm_tile", "key": str(key), "tile": t2}):
+					return false
+			return true
 		"sleep", "resync":
 			return true
 	return true  # other acts (other packages' handlers) check their own
