@@ -285,7 +285,7 @@ func _show_list() -> void:
 		else:
 			tag = "ready"
 		if not won and not opened and _lw_ok(id):
-			tag += " · ⇢ long way open"
+			tag += " · → long way open"
 		if not opened and story.has(str(c["region"])):
 			tag = "▶ your story goes here · " + tag
 		var plan := Campaign.plan_lock(id)
@@ -426,7 +426,7 @@ func _refresh() -> void:
 	# C16b P4 (c16b_10-02/05/15): the long way, rematches and the next campaign.
 	if not Campaign.is_won(cid) and not Campaign.region_open(str(c["region"])) and _lw_offer(cid):
 		var lab := str((Campaign as Script).call("long_way_label", cid)) if _api("long_way_label") else "Take the long way"
-		_acts.append(["⇢ " + lab, _long_way])
+		_acts.append(["→ " + lab, _long_way])
 	if typ not in Campaign.NONBATTLE and Campaign.taken(cid, sel) and _api("can_rematch") and _api("rematch") \
 			and bool((Campaign as Script).call("can_rematch", cid, sel)):
 		_acts.append(["⚔ Rematch for %s" % BattleRewards.STAR if BattleRewards.stars(cid, sel) < 3 else "⚔ Rematch", _rematch])
