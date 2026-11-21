@@ -264,6 +264,10 @@ func _run() -> void:
 
 	# --- escort: convoy lost, then convoy arrives
 	var ecid := "c_wastes"
+	for ec: String in Campaign.for_arc():  # C16b: tier-1 boards have no escort any more
+		if node_of(ec, "escort") != "":
+			ecid = ec
+			break
 	var en := node_of(ecid, "escort")
 	b = await fight(ecid, en)
 	if b:

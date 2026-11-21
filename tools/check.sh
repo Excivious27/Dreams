@@ -1468,3 +1468,10 @@ echo "$zwout" | grep -E "FAIL|SCRIPT ERROR|zero_win_test" || true
 if echo "$zwout" | grep -q "SCRIPT ERROR" || ! echo "$zwout" | grep -q "zero_win_test: 0 fails"; then
   echo "Zero-win test failed"; exit 1
 fi
+
+echo "== C16b P5: campaign content (long way rows, gang captains and rosters, tier-1 ramp, cache vs battle pay) =="
+c16bp5out="$(python3 tools/c16b_p5_test.py 2>&1)"
+echo "$c16bp5out" | grep -E "FAIL|c16b_p5_test" || true
+if ! echo "$c16bp5out" | grep -q "c16b_p5_test: 0 fails"; then
+  echo "C16b P5 campaign content test failed"; exit 1
+fi

@@ -7942,6 +7942,51 @@
     ],
     "w": 2,
     "h": 1
+   },
+   {
+    "name": "train_car",
+    "cell": [
+     12,
+     62
+    ],
+    "w": 5,
+    "h": 2
+   },
+   {
+    "name": "train_car",
+    "cell": [
+     84,
+     60
+    ],
+    "w": 5,
+    "h": 2
+   },
+   {
+    "name": "ir_coal_hopper",
+    "cell": [
+     6,
+     36
+    ],
+    "w": 3,
+    "h": 4
+   },
+   {
+    "name": "ir_signal_tower",
+    "cell": [
+     102,
+     38
+    ],
+    "w": 2,
+    "h": 5
+   },
+   {
+    "name": "rusted_car",
+    "cell": [
+     30,
+     70
+    ],
+    "w": 3,
+    "h": 1
    }
   ],
   "patch_set": "track",
@@ -7954,7 +7999,9 @@
     "drums",
     "tyres",
     "crates_a",
-    "oil_drums"
+    "oil_drums",
+    "cargo_red",
+    "cargo_grey"
    ],
    "region_count": 90,
    "critters": [
@@ -11084,6 +11131,78 @@
     ],
     "w": 2,
     "h": 1
+   },
+   {
+    "name": "neon_sign_0",
+    "cell": [
+     8,
+     40
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "neon_sign_3",
+    "cell": [
+     96,
+     40
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "neon_sign_5",
+    "cell": [
+     34,
+     66
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "neon_sign_6",
+    "cell": [
+     72,
+     64
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "neon_open",
+    "cell": [
+     70,
+     34
+    ],
+    "w": 3,
+    "h": 1
+   },
+   {
+    "name": "lamp2_tall_0",
+    "cell": [
+     40,
+     74
+    ],
+    "w": 2,
+    "h": 5
+   },
+   {
+    "name": "lamp2_tall_2",
+    "cell": [
+     64,
+     74
+    ],
+    "w": 2,
+    "h": 5
+   },
+   {
+    "name": "veh_getaway_car_side",
+    "cell": [
+     86,
+     76
+    ],
+    "w": 5,
+    "h": 2
    }
   ],
   "ground_threshold": 0.15,
@@ -11092,13 +11211,12 @@
    "clumps": 0,
    "scatter": 40,
    "region_props": [
-    "lamp2_short_3",
-    "vend_red",
-    "vend_blue",
-    "payphone2",
     "crates_a",
     "oil_drums",
-    "bench_green"
+    "neon_sign_1",
+    "neon_sign_2",
+    "neon_sign_4",
+    "lamp2_short_0"
    ],
    "region_count": 90,
    "critters": [
@@ -12584,7 +12702,7 @@
   "music": "battle",
   "backdrop": "hills",
   "ground": "cloud",
-  "path": "float_stone",
+  "path": "stone",
   "spawn": [
    54,
    77

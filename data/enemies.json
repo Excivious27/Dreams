@@ -1576,6 +1576,193 @@
     0.231,
     1
    ]
+  ],
+  "gcap_g_orchard_hills": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_countryside": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_highlands": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_quarry": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_marsh": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_riverlands": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_ruins": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_docks": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_neon": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_underground": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
+  ],
+  "gcap_g_uptown": [
+   [
+    "rounds",
+    1.0,
+    6
+   ],
+   [
+    "data_chip",
+    0.3,
+    1
+   ],
+   [
+    "cherry_fizz",
+    0.5,
+    1
+   ]
   ]
  },
  "enemies": {
@@ -1718,7 +1905,9 @@
     "ranged"
    ],
    "status": "blind",
-   "reward": 8
+   "reward": 8,
+   "name": "Goggles Lookout",
+   "blurb": "shoots, dazzles"
   },
   "thug_brute": {
    "hp": 20,
@@ -1730,7 +1919,9 @@
     "lunge",
     "enrage"
    ],
-   "reward": 16
+   "reward": 16,
+   "name": "Heavy",
+   "blurb": "big, hits hard"
   },
   "thug_flame": {
    "hp": 14,
@@ -1742,7 +1933,9 @@
     "ranged"
    ],
    "status": "burn",
-   "reward": 12
+   "reward": 12,
+   "name": "Flare Crew",
+   "blurb": "throws flares"
   },
   "thug_speedster": {
    "hp": 8,
@@ -1754,7 +1947,9 @@
     "lunge",
     "blink"
    ],
-   "reward": 7
+   "reward": 7,
+   "name": "Street Runner",
+   "blurb": "fast, darts in"
   },
   "thug_gambler": {
    "hp": 10,
@@ -1768,7 +1963,8 @@
    ],
    "status": "blind",
    "name": "Trickster",
-   "reward": 9
+   "reward": 9,
+   "blurb": "shoots, vanishes"
   },
   "thug_enforcer": {
    "hp": 26,
@@ -1780,7 +1976,9 @@
     "shield",
     "stomp"
    ],
-   "reward": 22
+   "reward": 22,
+   "name": "Enforcer",
+   "blurb": "shielded, stomps"
   },
   "president": {
    "hp": 200,
@@ -1966,7 +2164,9 @@
     "ranged"
    ],
    "status": "poison",
-   "reward": 10
+   "reward": 10,
+   "name": "Drip Crawler",
+   "blurb": "spits from range"
   },
   "lantern_moth": {
    "hp": 10,
@@ -1990,7 +2190,9 @@
     "shield",
     "lunge"
    ],
-   "reward": 14
+   "reward": 14,
+   "name": "Rust Knight",
+   "blurb": "shielded, charges"
   },
   "shard_spider": {
    "hp": 22,
@@ -2417,7 +2619,8 @@
    "abilities": [],
    "reward": 4,
    "name": "Lookout",
-   "char": "lookout"
+   "char": "lookout",
+   "blurb": "just watching"
   },
   "gloom_moth": {
    "hp": 10,
@@ -3339,6 +3542,212 @@
    "char": "speedster",
    "tint": "#ffd870",
    "reward": 22
+  },
+  "gcap_g_orchard_hills": {
+   "hp": 22,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 20,
+   "tier": 1,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Harlan \"Hayride\" Voss",
+   "reward": 14,
+   "boss": true,
+   "char": "brute",
+   "tint": "#d9a35c",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_countryside": {
+   "hp": 22,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 20,
+   "tier": 1,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Road Boss Dutch",
+   "reward": 14,
+   "boss": true,
+   "char": "brute",
+   "tint": "#e0c060",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_highlands": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Ridge Boss Kestrel",
+   "reward": 20,
+   "boss": true,
+   "char": "enforcer",
+   "tint": "#9fb8d8",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_quarry": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Crusher Kade",
+   "reward": 20,
+   "boss": true,
+   "char": "brute",
+   "tint": "#c8b090",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_marsh": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 28,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "enrage"
+   ],
+   "name": "Smuggler Queen Rook",
+   "reward": 20,
+   "boss": true,
+   "char": "gambler",
+   "tint": "#7fd0a0",
+   "scale": 1.3,
+   "gang_captain": true,
+   "status": "blind"
+  },
+  "gcap_g_riverlands": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 30,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "enrage"
+   ],
+   "name": "Toll Man Dukes",
+   "reward": 20,
+   "boss": true,
+   "char": "cyber",
+   "tint": "#7fc8ff",
+   "scale": 1.3,
+   "gang_captain": true,
+   "status": "blind"
+  },
+  "gcap_g_ruins": {
+   "hp": 38,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 36,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "enrage"
+   ],
+   "name": "The Curator",
+   "reward": 26,
+   "boss": true,
+   "char": "flame",
+   "tint": "#c9a0ff",
+   "scale": 1.3,
+   "gang_captain": true,
+   "status": "burn"
+  },
+  "gcap_g_docks": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Ironside Mae",
+   "reward": 20,
+   "boss": true,
+   "char": "enforcer",
+   "tint": "#ff9a6a",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_neon": {
+   "hp": 38,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 36,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "enrage"
+   ],
+   "name": "Neon Sable",
+   "reward": 26,
+   "boss": true,
+   "char": "flame",
+   "tint": "#ff6ad5",
+   "scale": 1.3,
+   "gang_captain": true,
+   "status": "burn"
+  },
+  "gcap_g_underground": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 44,
+   "tier": 4,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Old Pipes Mulgrew",
+   "reward": 32,
+   "boss": true,
+   "char": "enforcer",
+   "tint": "#a0c070",
+   "scale": 1.3,
+   "gang_captain": true
+  },
+  "gcap_g_uptown": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 44,
+   "tier": 4,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Mr. Gilt",
+   "reward": 32,
+   "boss": true,
+   "char": "enforcer",
+   "tint": "#ffd760",
+   "scale": 1.3,
+   "gang_captain": true
   }
  }
 }

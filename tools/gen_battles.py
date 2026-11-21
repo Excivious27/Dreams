@@ -276,6 +276,48 @@ CAPTAINS = {
     "colony_coral": ("Reefgrudge", "grump_coral"), "colony_kelp": ("Murkfin", "grump_coral"),
     "colony_ice": ("Hailbrute", "grump_brute"), "colony_ember": ("Ashmaw", "grump_ember"),
 }
+# Named gang captains, one per campaign the gangster arc fights (C16b P5: c16b_03-01/02,
+# 05-02, 18-01, 18-10, 04-05). Built on a thug's character strip ("char") with its own
+# tint and scale; never blink (a captain should stand and be fought). All ages: they
+# back off and leave, nobody is hurt.
+GANG_CAPTAINS = {
+    "orchard_hills": ('Harlan "Hayride" Voss', "thug_brute", "#d9a35c"),
+    "countryside": ("Road Boss Dutch", "thug_brute", "#e0c060"),
+    "highlands": ("Ridge Boss Kestrel", "thug_enforcer", "#9fb8d8"),
+    "quarry": ("Crusher Kade", "thug_brute", "#c8b090"),
+    "marsh": ("Smuggler Queen Rook", "thug_gambler", "#7fd0a0"),
+    "riverlands": ("Toll Man Dukes", "thug_cyber", "#7fc8ff"),
+    "ruins": ("The Curator", "thug_flame", "#c9a0ff"),
+    "docks": ("Ironside Mae", "thug_enforcer", "#ff9a6a"),
+    "neon": ("Neon Sable", "thug_flame", "#ff6ad5"),
+    "underground": ("Old Pipes Mulgrew", "thug_enforcer", "#a0c070"),
+    "uptown": ("Mr. Gilt", "thug_enforcer", "#ffd760"),
+}
+# Gang foes by campaign tier (C16b P5: c16b_03-03, 05-03, 18-02, 18-20, 04-01): people
+# only, never wildlife or monsters; layer 1 opens soft, deeper layers add the tier's
+# own kinds, the gate brings one signature kind. Region extras join from layer 2.
+GANG_ROSTER = {
+    1: {1: ["thug_lookout", "thug_speedster"], 2: ["thug_brute"], 3: ["thug_cyber"]},
+    2: {1: ["thug_speedster", "thug_cyber", "thug_gambler"], 2: ["thug_flame"], 3: ["thug_brute"]},
+    3: {1: ["thug_cyber", "thug_gambler", "thug_flame"], 2: ["thug_brute"], 3: ["thug_enforcer"]},
+    4: {1: ["thug_flame", "thug_brute", "thug_gambler"], 2: ["thug_enforcer"], 3: ["rust_knight"]},
+    5: {1: ["thug_flame", "thug_brute", "thug_enforcer"], 2: ["rust_knight"], 3: ["gilt_guard"]},
+}
+GANG_REGION_FOES = {"uptown": ["gilt_runner", "gilt_guard"], "docks": ["rust_knight"], "underground": ["coal_crawler"]}
+# Display names for the thugs (C16b P5: c16b_03-09, 18-15); "blurb" is the board tag.
+THUG_NAMES = {"thug_speedster": ("Street Runner", "fast, darts in"), "thug_brute": ("Heavy", "big, hits hard"),
+              "thug_cyber": ("Goggles Lookout", "shoots, dazzles"), "thug_gambler": ("Trickster", "shoots, vanishes"),
+              "thug_enforcer": ("Enforcer", "shielded, stomps"), "thug_flame": ("Flare Crew", "throws flares"),
+              "thug_lookout": ("Lookout", "just watching"), "rust_knight": ("Rust Knight", "shielded, charges"),
+              "drip_crawler": ("Drip Crawler", "spits from range")}
+def _gang_roster(tier, layer, region, gate):
+    R_ = GANG_ROSTER[min(5, max(1, tier))]
+    out = list(R_[1])
+    if layer >= 2:
+        out += R_[2] + GANG_REGION_FOES.get(region, [])
+    if gate or layer >= 4:
+        out += R_[3]
+    return [k for k in dict.fromkeys(out) if k in EN]
 # Penguin campaigns never field the gangster-world soldiers.
 NOT_PENGUIN = ("soldier", "archer", "knight")
 # Gangster campaigns field thugs, never the penguin-world soldiers/grumps (c4_17 #7).
@@ -311,6 +353,21 @@ def _write_grumps():
             e["status"] = g["status"]
         E["gcap_" + reg] = e
         EJ["drops"]["gcap_" + reg] = [["grump_dust", 1.0, 3], ["shard", 1.0, 2], ["light_mote", 0.3, 1]]
+    for k, (nm, blurb) in THUG_NAMES.items():
+        if k in E:
+            E[k]["name"] = nm
+            E[k]["blurb"] = blurb
+    for reg, (nm, base, tint) in GANG_CAPTAINS.items():
+        g = E[base]
+        t = next(c[1] for c in CAMPS if c[0] == reg)
+        ab = [a for a in dict.fromkeys(list(g.get("abilities", [])) + ["enrage"]) if a != "blink"]
+        e = {"hp": max(int(g.get("hp", 10)), 14 + 8 * t), "dmg": 1 + (t + 1) // 2, "speed": min(40, max(20, int(g.get("speed", 30)) - 4)),
+             "xp": 12 + 8 * t, "tier": t, "abilities": ab, "name": nm, "reward": 8 + 6 * t, "boss": True,
+             "char": base.replace("thug_", ""), "tint": tint, "scale": 1.3, "gang_captain": True}
+        if g.get("status"):
+            e["status"] = g["status"]
+        E["gcap_g_" + reg] = e
+        EJ["drops"]["gcap_g_" + reg] = [["rounds", 1.0, 6], ["data_chip", 0.3, 1], ["cherry_fizz", 0.5, 1]]
     json.dump(EJ, open(os.environ.get("DRY_OUT", D + "/data") + "/enemies.json", "w"), indent=1, ensure_ascii=False)
     return E
 # What you sense at the edge of a region its campaign still holds (Campaign.gate_words
@@ -349,9 +406,19 @@ SENSE = {
 }
 REWARD_ITEMS = {1: {"potion": 3, "copper_bar": 5}, 2: {"greater_potion": 2, "iron_bar": 5}, 3: {"gold_bar": 3, "crystal_refined": 3},
                 4: {"crystal_battery": 2, "ruby": 1, "sapphire": 1}, 5: {"crystal_battery": 3, "gold_bar": 6, "emerald": 1}}
-ARC_ITEMS = {"penguins": {"crystal_refined": 2}, "gangsters": {"servo": 4, "data_chip": 1}}
+ARC_ITEMS = {"penguins": {"crystal_refined": 2}, "gangsters": {"servo": 4, "data_chip": 1, "rounds": 40}}
 # Tier-3 node rewards: refined crystal is a penguin thing; gangsters get parts.
-GANG_SWAP = {"crystal_refined": "data_chip"}
+# Fantasy heals swap for the gang's sodas (C16b P5: c16b_03-10, 18-13).
+GANG_SWAP = {"crystal_refined": "data_chip", "potion": "cherry_fizz", "greater_potion": "golden_float"}
+# Items a campaign both arcs share may pay on a battle node (no potions or crystals: those are one arc's).
+SHARED_OK = ("copper_bar", "iron_bar", "gold_bar", "ruby", "sapphire", "emerald", "crystal_battery")
+# Gate win money by tier (C16b P5: c16b_17-05; was 500 + 400 * tier = 900/1300/1700/2100/2500).
+GATE_PAY = {1: 900, 2: 2000, 3: 3600, 4: 6000, 5: 9000}
+# Node pay curve by tier (was 0.6 + 0.4 * tier = 1.0/1.4/1.8/2.2/2.6).
+def _pay_k(tier):
+    return 0.5 + 0.5 * tier ** 1.5
+# Cache goods: a low item, never the tier's top one (C16b P5: c16b_04-04, 05-08).
+CACHE_ITEMS = {1: {"potion": 2}, 2: {"potion": 3}, 3: {"greater_potion": 1}, 4: {"greater_potion": 1}, 5: {"greater_potion": 2}}
 # (region, tier, after, title, fields, boss, start camp, names[7], intro, won)
 CAMPS = [
     ("orchard_hills", 1, [], "The Orchard Road", ["bf_orchard_line"], "big_grump", "Forest Edge Camp",
@@ -434,7 +501,7 @@ CAMPS = [
 
 # Gangster lines for the campaigns both arcs share (the CAMPS text is the penguin one).
 GANG_TEXT = {
-    "orchard_hills": ("The President's lookouts have the orchard road. Every row of trees hides a parked car. Push them out, row by row.",
+    "orchard_hills": ("The President's lookouts have the orchard road: a car at every farm gate, a watcher in every packing shed. Push them out, row by row.",
                       "The orchard road is ours. The lookouts drove off in a hurry, and the pickers are waving from the ladders."),
     "highlands": ("Up on the ridge the President's crews watch every switchback. Climb, take the lookouts, and the high country is open.",
                   "The high gate is ours. Up here the radio finally gets a signal, and it's playing our song."),
@@ -447,13 +514,94 @@ GANG_TEXT = {
     "ruins": ("Someone turned the old ruins into a fortress: floodlights, fences, a guard at every arch. Get in where nobody has.",
               "The floodlights go dark one by one. The ruins are quiet, and they belong to everyone again."),
 }
+# Gang-arc territory names for the shared campaigns (C16b P5: c16b_18-03); written as
+# node["name_gangsters"] (Campaign/CampaignScreen show it in the gang arc).
+NAMES_GANG = {
+    "orchard_hills": ["Packing Shed", "Fallen Fence", "Fruit Stand", "Picker's Rest", "Ridge Lay-by", "Long Barn", "The Cider Works"],
+    "highlands": ["Switchback One", "Cairn Lay-by", "Shepherd's Hut", "Windy Saddle", "Radio Mast", "Lookout Tor", "The High Gate"],
+    "quarry": ["Rubble Gate", "Crane Pit", "Crusher House", "Foreman's Hut", "Slag Hill", "Truck Ramp", "The Deep Cut"],
+    "marsh": ["Bait Shack", "Plank Causeway", "Boat Shed", "Dry Hummock", "Old Pump House", "Airboat Dock", "Smugglers' Landing"],
+    "riverlands": ["Ferry Steps", "Willow Bend", "Bridge Two", "Ford of Stones", "Mill Race", "Toll Bridge", "The Weir"],
+    "ruins": ["Broken Stair", "Floodlight Court", "Hall of Pillars", "Guard Hut", "Toppled Arch", "Fence Walk", "The Star Arch"],
+}
+# Region labels where the map name differs from the colony/region data (c16b_03-08).
+REGION_NAME = {"countryside": "The Highway"}
+# ---- The long way (C16b contract section 2; P3's Campaign.long_way reads it) ---------
+# Every campaign has a non-battle way into its region, both arcs, all ages: it opens
+# the region and its story exactly as a win does, but pays none of the win rewards.
+# kind: quest (a short favour), toll (pay and walk), travel (a guide or a ride),
+# story (a scene that finds another way). Cost scales with tier (LONG_COST).
+LONG_COST = {1: {"money": 150, "items": {"wood": 15}}, 2: {"money": 400, "items": {"copper_bar": 2}},
+             3: {"money": 900, "items": {"iron_bar": 3}}, 4: {"money": 1600, "items": {"iron_bar": 4, "gold_bar": 1}},
+             5: {"money": 2600, "items": {"gold_bar": 3}}}
+LONG_WAY = {
+    "orchard_hills": ("quest", ["Help the orchard keeper mend the back fence", "Follow the pickers' path round the rows"],
+                      "The orchard keeper knows a pickers' path round the back rows. Mend her fence first and she'll walk you through.",
+                      "The old orchard keeper hates the lookouts too. Fix her fence and she'll show you the farm track nobody watches."),
+    "countryside": ("quest", ["Fetch a spare tyre for the stranded trucker", "Ride in his cab past the roadblock"],
+                    None, "A trucker is stuck at the motel with a flat. Bring him a spare tyre and he'll take you past the roadblock in his cab."),
+    "highlands": ("travel", ["Pay the shepherd for a guide", "Take the sheep trail over the saddle"],
+                  "Big Jim's shepherd friend knows a sheep trail over the saddle. It's long and windy, but nobody guards it.",
+                  "A shepherd up the valley runs sheep over the saddle every week. Pay her for the trip and walk up with the flock."),
+    "quarry": ("toll", ["Pay the cutters' toll", "Walk the old cutters' path into the pit"],
+               "The old stone cutters still keep a path along the cliff. Pay their toll and they'll open the gate for you.",
+               "The quarry workers keep their own gate at the back. Pay their union fee and they'll let you in with the morning shift."),
+    "marsh": ("travel", ["Hire a flat-bottom boat", "Pole through the reeds at dawn"],
+              "A frog-catcher hires out a flat-bottom boat. Pole through the reeds at dawn, when the bog is quiet.",
+              "A bait-shack owner rents airboats by the hour. Pay up and slip through the reeds before the smugglers wake up."),
+    "riverlands": ("toll", ["Pay the ferry keeper", "Cross on the night ferry"],
+                   "The ferry keeper still runs one boat at night. Pay the fare and cross while the river sleeps.",
+                   "The ferry still runs one late boat. Pay the fare and cross while the bridge crews are changing shifts."),
+    "ruins": ("quest", ["Bring the scribe three old rubbings", "Take the scribes' tunnel under the arch"],
+              "An old scribe knows a tunnel under the arch. Bring her paper and charcoal for her rubbings and she'll lead the way.",
+              "A night watchman at the ruins wants out. Bring him the supplies he asks for and he'll unlock the service gate."),
+    "wastes": ("story", ["Ask the standing stones' keeper for the old road", "Walk the ash road by lantern light"],
+               "The keeper of the standing stones remembers an ash road from before the Grumps. Carry a lantern and walk it at night.",
+               "An old prospector draws you a map of a dry road round the patrols. It's slow going, but it gets you there."),
+    "sky": ("travel", ["Pay Finargle's balloon fare", "Float up past the cloud stair"],
+            "Finargle's balloon goes up past the cloud stair on clear days. Pay the fare, hold on, and don't look down.", None),
+    "station": ("story", ["Help Coldy fix the old shuttle", "Dock at the back airlock"],
+                "Coldy thinks the old shuttle still flies. Help fix it and you can dock at the back airlock, where nobody's looking.", None),
+    "jungle": ("travel", ["Pay for a seat on the supply pod", "Land in the quiet clearing"],
+               "A supply pod lands in a quiet clearing once a week. Buy a seat and you're down below the canopy.", None),
+    "colony_coral": ("travel", ["Pay the boatman", "Sail round the reef at high tide"],
+                     "At high tide a boat can slip round the reef. The boatman knows when. Pay him and sail round.", None),
+    "colony_kelp": ("quest", ["Bring the colony lamps for the dark path", "Follow the lamps through the kelp"],
+                    "The colony would light a path through the kelp if someone brought them lamp oil and wicks.", None),
+    "colony_ice": ("travel", ["Pay the icebreaker's captain", "Ride in the icebreaker's wake"],
+                   "An icebreaker cuts a channel to the island every few days. Pay the captain and ride in its wake.", None),
+    "colony_ember": ("story", ["Ask Lady Cinderpaw for the cool path", "Cross the old stone bridge at low smoke"],
+                     "Lady Cinderpaw remembers a cool stone bridge where the lava never reaches. Cross it when the smoke is low.", None),
+    "docks": ("toll", ["Pay the harbour pilot", "Come in by the fishing boats' slip"],
+              None, "A harbour pilot owes Sal a favour, almost. Pay the rest and come in with the fishing boats at dawn."),
+    "neon": ("quest", ["Fix the arcade owner's sign", "Walk through the back of the arcade"],
+             None, "The arcade owner's sign keeps blowing a fuse. Fix it and she'll let you through the back door onto the next block."),
+    "underground": ("story", ["Buy Sal's old sewer map", "Follow the map through the dry tunnels"],
+                    None, "Sal still has a sewer map from the old days. It costs, but it shows dry tunnels the crews forgot about."),
+    "uptown": ("story", ["Get a caterer's uniform", "Walk in through the service entrance"],
+               None, "Every party uptown needs caterers. Rent a uniform, carry a tray, and walk right in through the service entrance."),
+}
+def _long_way(region, tier, arcs):
+    kind, steps, pt, gt = LONG_WAY[region]
+    lw = {"kind": kind, "id": "lw_" + region, "cost": {"money": LONG_COST[tier]["money"], "items": dict(LONG_COST[tier]["items"])},
+          "steps": list(steps), "text": pt or gt, "text_gang": gt or pt, "unlock_after": "always"}
+    return lw
+# What each tier adds to the banner menu (C16b P5: c16b_04-02, 02-13, 05-10); Battle
+# (P1) reads _campaigns.unlocks to tier-gate builds, the briefing names what is new.
+UNLOCKS = {1: {"builds": ["striker", "healer"], "orders": ["mend"], "words": "Strikers, healers and mending"},
+           2: {"builds": ["warden"], "orders": ["upgrade", "fortify"], "words": "Wardens, upgrades and fortify"},
+           3: {"builds": ["shade", "turret"], "orders": ["barrage"], "words": "Shades, turrets and barrage"},
+           4: {"builds": [], "orders": [], "words": ""}, 5: {"builds": [], "orders": [], "words": ""}}
 # Point names per arc / region, where a battlefield's own names don't fit.
 POINT_NAMES = {
     ("gangsters", "*", "bf_orchard_line"): {"a": "Old Silo", "c": "Feed Store", "d": "Pump House", "e": "Pickup Camp"},
+    ("gangsters", "countryside", "bf_rail_yards"): {"a": "Gas Station", "b": "Overpass", "c": "Billboard Bend", "d": "Truck Stop", "e": "Motel Lot"},
     ("gangsters", "countryside", "bf_orchard_line"): {"a": "Billboard Hill", "b": "Overpass Row", "c": "Gas Station", "d": "Truck Stop", "e": "Motel Lot"},
     ("gangsters", "*", "bf_bog_crossing"): {"a": "Bait Shack Isle", "c": "Old Boathouse", "f": "Airboat Camp"},
     ("penguins", "*", "bf_frostfield"): {"e": "Igloo Camp"},
     ("penguins", "*", "bf_ash_wastes"): {"a": "Cinder Gate"},
+    # C16b P5 (c16b_05-17): the Ember Isle finale has its own names on the ash field
+    ("penguins", "colony_ember", "bf_ash_wastes"): {"a": "Lava Bridge", "b": "Ember Market", "c": "Cinder Cone", "d": "Smoke Hollow", "e": "Cinder Cove"},
 }
 def _name_points(cfg, arc, region):
     m = dict(POINT_NAMES.get((arc, "*", cfg["field"]), {}))
@@ -488,9 +636,10 @@ def _layout(n, cid):
 # Node type pools by layer (the last layer is always the gate: a siege with a boss).
 POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
 # Tier 1 boards teach the basics: no sieges or defends before the gate.
-POOL_T1 = {1: ["skirmish", "skirmish", "skirmish", "cache"], 2: ["skirmish", "boss", "escort"], 3: ["camp", "boss", "skirmish"]}
+# C16b P5 (c16b_02-06): no untaught escort on a tier-1 board (layer 2 was skirmish/boss/escort).
+POOL_T1 = {1: ["skirmish", "skirmish", "skirmish", "cache"], 2: ["skirmish", "boss", "skirmish"], 3: ["camp", "boss", "skirmish"]}
 # Board size by tier: short early campaigns, growing modestly (territories, camp excluded).
-SIZE = {1: 4, 2: 5, 3: 5, 4: 6, 5: 7}
+SIZE = {1: 4, 2: 5, 3: 6, 4: 6, 5: 7}  # C16b: T3 now 6 (was 5), longer than T2
 # Battle length and pressure by tier: early fights are short and gentle.
 TICKET_K = {1: 0.6, 2: 0.8, 3: 1.0, 4: 1.15, 5: 1.3}
 # What a campaign asks before you can muster for it (CampaignGate): allies on your
@@ -498,17 +647,24 @@ TICKET_K = {1: 0.6, 2: 0.8, 3: 1.0, 4: 1.15, 5: 1.3}
 NEED = {1: {"team": 2, "items": {"wood": 20, "stone": 10}, "crystals": 100, "supply": 25},
         2: {"team": 3, "items": {"wood": 30, "copper_bar": 3}, "crystals": 250, "supply": 30},
         3: {"team": 4, "items": {"iron_bar": 4, "stone": 40}, "crystals": 500, "supply": 35},
-        4: {"team": 5, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 40},
-        5: {"team": 6, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 45}}
+        4: {"team": 4, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 40},
+        5: {"team": 4, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 45}}
+# Gang-arc provisions (C16b P5: c16b_18-13): rounds and parts in place of the farm wood
+# and stone; CampaignGate uses need_gang in the gangster arc (same team/crystals/supply).
+NEED_GANG = {t: dict(NEED[t], items={1: {"rounds": 20, "stone": 10}, 2: {"rounds": 40, "copper_bar": 3}, 3: {"rounds": 60, "iron_bar": 4},
+                                     4: {"rounds": 80, "gold_bar": 2, "iron_bar": 6}, 5: {"rounds": 100, "gold_bar": 5, "data_chip": 2}}[t]) for t in NEED}
 # The training drill (CampaignGate / BattleDrill): a short guided fight on the
 # orchard field with three points close to the camp.
 DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters": "Sal"},
          "points": [{"id": "e", "name": "Wagon Camp", "cell": [52, 74], "owner": "ally"},
                     {"id": "d", "name": "Scarecrow Post", "cell": [52, 56], "owner": "neutral"},
                     {"id": "b", "name": "Old Mill", "cell": [52, 38], "owner": "enemy"}],
-         "enemies": {"penguins": ["grump"], "gangsters": ["thug_speedster"]}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
+         "enemies": {"penguins": ["grump"], "gangsters": ["thug_lookout"]},
+         # gang drill point names (C16b P5: c16b_18-05; BattleDrill reads point_names[arc] when set)
+         "point_names": {"gangsters": {"e": "Getaway Car", "d": "Phone Booth", "b": "Corner Store"}}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
          "reward": {"crystals": 150, "items": {"potion": 3}}}
-STEP = {1: 0, 2: 0, 3: 1, 4: 1}
+# Foe tier step by layer (C16b P5 c16b_17-02: was {3: 1}; only a 5-layer board's last layer steps up now)
+STEP = {1: 0, 2: 0, 3: 0, 4: 1}
 BRIEF = {
     "skirmish": "A quick clash at %s. Take the points and their line breaks.",
     "siege": "%s is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
@@ -520,9 +676,21 @@ BRIEF = {
 
 # Penguin boss/gate briefs with the captain's name (CAPTAINS); "turn back" is the Meow Pow Wow's word.
 BRIEF_CAPTAIN = {
-    "boss": "%s holds %s. Turn the captain back and the rest will scatter.",
+    "boss": "%s holds %s. Turn the captain back and the rest will scatter, back to their gate.",
     "gate": "%s: the last wall before the region. Every point fortified, and %s takes the field.",
 }
+
+# Gang-arc node briefs (C16b P5: c16b_03-05): turf words, the captain by name.
+BRIEF_GANG = {
+    "skirmish": "Their lookouts hold %s. Take the corners and they pull out.",
+    "siege": "%s is locked down: their points take twice as long to turn. Bring the crew and a plan.",
+    "escort": "Our %s has to reach %s. Stay with it: it only rolls with the crew beside it and nobody in the way.",
+    "defend": "Hold %s. Their cars keep dropping off more of them; keep at least one point until the clock runs out.",
+    "boss": "%s runs %s. Make them back off and the crew falls back to their last block.",
+    "gate": "%s: the last block before the turf. Every point locked down, and %s steps in.",
+}
+# What the brief calls each convoy (C16b P5: c16b_02-20).
+VEHICLE_WORD = {"wagon": "crystal sled", "truck": "supply truck"}
 
 def _field_points(fid):
     return [dict(p) for p in R[fid]["battle"]["points"]]
@@ -544,9 +712,15 @@ def _cfg(fid, typ, side, rng, name):
             p["owner"] = "neutral" if dist(p) == min(dist(q) for q in use[1:]) else "enemy"
         cfg["points"] = use
     elif typ in ("siege", "gate"):
+        # C16b P5 (c16b_17-01, 05-16): the nearest point is open ground (neutral, not
+        # fortified), so you are never 1 point against 4-5 from the first second; a
+        # siege also leaves the far point unfortified, so it is not a copy of the gate.
+        near = min(others, key=dist)
+        far = max(others, key=dist)
         for p in others:
-            p["owner"] = "enemy"
-            p["efort"] = True
+            p["owner"] = "neutral" if p is near else "enemy"
+            if p is not near and not (typ == "siege" and p is far):
+                p["efort"] = True
         cfg["points"] = [camp] + others
     elif typ == "escort":
         side_pts = [p for p in others if (p["cell"][0] <= cx) == (side < 0.5)] or others
@@ -570,15 +744,19 @@ def _cfg(fid, typ, side, rng, name):
 
 def _reward(tier, typ, arc, rng):
     base = {"skirmish": 120, "siege": 220, "escort": 180, "defend": 200, "boss": 240, "gate": 0}[typ]
-    r = {"crystals": int(base * (0.6 + 0.4 * tier)), "supply": {"skirmish": 10, "siege": 6, "escort": 18, "defend": 8, "boss": 8, "gate": 0}[typ],
+    r = {"crystals": int(base * _pay_k(tier)), "supply": {"skirmish": 10, "siege": 6, "escort": 18, "defend": 8, "boss": 8, "gate": 0}[typ],
          "morale": {"skirmish": 8, "siege": 12, "escort": 10, "defend": 10, "boss": 15, "gate": 0}[typ], "items": {}}
     pick = list(REWARD_ITEMS[tier].items())
     k, n = pick[rng.randrange(len(pick))]
     if typ == "gate":  # the gate pays the campaign's big reward instead (no stray item)
         return r
+    if arc == "both" and k not in SHARED_OK:  # C16b: no potions/crystals in a shared reward
+        k, n = next(((a, b) for a, b in pick if a in SHARED_OK), ("copper_bar", 4))
     r["items"][k] = max(1, n // 2)
     if arc == "gangsters" and k in GANG_SWAP:
         r["items"] = {GANG_SWAP[k]: max(1, n // 2)}
+    if arc == "gangsters":  # C16b P5 (c16b_18-04): gang fights pay rounds
+        r["items"]["rounds"] = 10 * tier
     return r
 
 EN = _write_grumps()
@@ -591,7 +769,9 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
     _rf = campaign_field(region)
     if _rf and _rf in R:
-        fl = {a: [_rf] for a in arcs}
+        # C16b P5 (c16b_04-08): the region's own field first (it always hosts the gate),
+        # then one of the campaign's older fields, so a board is not one field throughout.
+        fl = {a: [_rf] + [f for f in fl[a] if f != _rf and f in R and B.get(f, {}).get("arc") in ("both", a)][:1] for a in arcs}
     n = SIZE[tier]
     L = _layout(n, cid)
     pools = POOL_T1 if tier <= 1 else POOL
@@ -607,6 +787,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
         if last:
             typ = "gate"
             name = nm[-1]
+            gname = NAMES_GANG.get(region, nm)[-1]
         else:
             pool = [t for t in pools[min(layer, 3)] if used.get(t, 0) < (2 if t in ("skirmish", "siege") else 1)] or ["skirmish"]
             if tier <= 2 and layer == 1:  # early boards open with an easy win, never an escort
@@ -617,23 +798,31 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                     or sum(1 for nn in nodes if nn["type"] in ("camp", "cache")) >= (1 if n <= 5 else 2):
                 pool = [t for t in pool if t not in ("camp", "cache")]
             typ = pool[rng.randrange(len(pool))]
+            # C16b P5 (c16b_05-11): from tier 4 the last layer before the gate always
+            # previews the captain, so the gate is never your first meeting.
+            if tier >= 4 and layer == max(L["layer"]) - 1 and not used.get("boss") and \
+                    not any(nn.get("type") == "boss" for nn in nodes) and i == max(j for j, ly in enumerate(L["layer"]) if ly == layer):
+                typ = "boss"
             name = nm[(i - 1) % (len(nm) - 1)]
+            gname = NAMES_GANG.get(region, nm)[(i - 1) % (len(nm) - 1)]
         used[typ] = used.get(typ, 0) + 1
         node = {"id": nid, "name": name, "type": typ, "x": pos[0], "y": pos[1], "layer": layer, "step": STEP[layer]}
+        if arc == "both" and region in NAMES_GANG:
+            node["name_gangsters"] = gname
         if typ in ("camp", "cache"):
             node["brief"] = {"camp": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
                              "cache": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale."}[typ]
-            li = dict([list(REWARD_ITEMS[tier].items())[0]])
+            li = dict(CACHE_ITEMS[tier])
             if arc == "gangsters":
-                li = {GANG_SWAP.get(k, k): v for k, v in li.items()}
-            # "share" pays about 0.8x what "take" is worth in goods (C3 economy)
-            worth = sum(int(IT[k].get("value", 50)) * v for k, v in li.items()) + 6 * (20 + 4 * tier)
-            node["loot"] = {"supply": 20 + 4 * tier, "morale": 15, "crystals": int(round(0.8 * worth / 10.0)) * 10, "items": li}
+                li = {"cherry_fizz": 2 + tier // 2, "rounds": 10 + 5 * tier}  # sodas, not the Golden Float
+            # C16b P5 (c16b_04-04, 05-08): "share" pays about 0.6x a skirmish's money and
+            # "take" is supply plus a low item, so a free node never out-pays a battle.
+            node["loot"] = {"supply": 20 + 4 * tier, "morale": 15, "crystals": int(round(0.6 * 120 * _pay_k(tier) / 10.0)) * 10, "items": li}
         else:
             cfgs = {}
             for a in arcs:
                 fs = fl[a]
-                fid = fs[(i - 1) % len(fs)]
+                fid = fs[0] if last else fs[(i - 1) % len(fs)]
                 cfg = _cfg(fid, typ, pos[0], rng, name)
                 _name_points(cfg, a, region)
                 ek = _kinds(region) + [k for k in R[fid]["battle"]["enemies"] if k in EN and int(EN[k].get("hp", 0)) < 45]
@@ -641,31 +830,36 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                     # grumps first (the variants of this region), then a few natives
                     ek = [k for k in GRUMP_AT.get(region, ["grump"]) if k in EN and (k != "crystal_baby" or layer >= 2)] + \
                          [k for k in ek if not k.startswith("thug_") and k not in NOT_PENGUIN and not k.startswith("grump")][:2]
+                    if tier <= 1 and typ != "gate":  # C16b P5 (c16b_02-07): tier-1 openers field tier-1 foes only
+                        ek = [k for k in ek if int(EN[k].get("tier", 1)) <= (1 if layer <= 1 else 2)] or ["grump"]
                     if typ in ("boss", "gate") and region in CAPTAINS:
                         cfg["boss"] = "gcap_" + region
                     if typ == "escort":
                         cfg["vehicle"] = "wagon"
-                elif typ == "escort":
-                    cfg["vehicle"] = "truck"
+                else:
+                    # C16b P5: the gang fields people by tier, never the field's wildlife
+                    ek = _gang_roster(tier, layer, region, typ == "gate")
+                    if typ in ("boss", "gate") and region in GANG_CAPTAINS:
+                        cfg["boss"] = "gcap_g_" + region
+                    if typ == "escort":
+                        cfg["vehicle"] = "truck"
                 if typ in ("siege", "gate"):
                     # Sieges pay for their size: every extra fortified point is time.
                     ne = sum(1 for p in cfg["points"] if p["owner"] == "enemy")
                     cfg["tickets"] = {"siege": 150, "gate": 170}[typ] + 40 * max(0, ne - 3)
-                if a == "gangsters" and region in GANG_ONLY:
-                    ek = [k for k in ek if k.startswith("thug_") or k in ("soldier", "archer", "rust_knight")] or ek
-                if a == "gangsters":
-                    ek = [gang_kind(k) for k in ek]
                 seen = []
                 for k in ek:
                     if k not in seen:
                         seen.append(k)
+                if a == "penguins" and tier >= 2:  # C16b P5 (c16b_04-01): the roster builds up layer by layer
+                    seen = seen[:3] if layer <= 1 else (seen[:5] if typ != "gate" else seen)
                 cfg["enemies"] = seen[:6]
                 cfgs[a] = cfg
             node["cfg"] = cfgs
             if typ in ("boss", "gate"):
-                node["boss"] = boss
+                node["boss"] = ("gcap_g_" + region) if arc == "gangsters" and region in GANG_CAPTAINS else boss
             if typ == "escort":
-                node["convoy_hp"] = 80 + 25 * tier
+                node["convoy_hp"] = 70 + 45 * tier  # C16b P5 (c16b_17-11): was 80 + 25 * tier
             if typ == "defend":
                 node["hold"] = 75 + 20 * tier
             k = TICKET_K[tier]
@@ -674,24 +868,26 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             node["tickets"] = {"skirmish": 110, "siege": 150, "escort": 130, "defend": 140, "boss": 130, "gate": 170}[typ]
             node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 7.5, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ] + max(0, 3 - tier) * 0.75
             node["enemy_cap"] = {"skirmish": 8, "siege": 11, "escort": 8, "defend": 12, "boss": 8, "gate": 12}[typ] + 2 * (tier - 1) + max(0, tier - 2)
-            if typ == "escort":
-                node["brief"] = {}
-                for a in arcs:
-                    cv = node["cfg"][a]["convoy"]
-                    pn = {p["id"]: p["name"] for p in node["cfg"][a]["points"]}
-                    node["brief"][a] = BRIEF["escort"] % (node["cfg"][a]["vehicle"], pn[cv[-1]])
-                if len(arcs) == 1:
-                    node["brief"] = node["brief"][arcs[0]]
-            elif typ in ("boss", "gate") and region in CAPTAINS and "penguins" in arcs:
-                # C12: the penguin brief names the region's Grump captain (and never says
-                # "commander": the Wastes' Grump Commander is a different, story fight).
-                cap = CAPTAINS[region][0]
-                pb = (BRIEF_CAPTAIN[typ] % (cap, name)) if typ == "boss" else (BRIEF_CAPTAIN[typ] % (name, cap))
-                node["brief"] = {a: (pb if a == "penguins" else BRIEF[typ] % name) for a in arcs}
-                if len(arcs) == 1:
-                    node["brief"] = node["brief"][arcs[0]]
-            else:
-                node["brief"] = BRIEF[typ] % name
+            node["brief"] = {}
+            for a in arcs:
+                cf_ = node["cfg"][a]
+                pn = {p["id"]: p["name"] for p in cf_["points"]}
+                nn_ = name if a == "penguins" else gname
+                if typ == "escort":
+                    words = BRIEF if a == "penguins" else BRIEF_GANG
+                    node["brief"][a] = words["escort"] % (VEHICLE_WORD.get(cf_["vehicle"], cf_["vehicle"]), pn[cf_["convoy"][-1]])
+                elif typ in ("boss", "gate") and a == "penguins" and region in CAPTAINS:
+                    # C12: the penguin brief names the region's Grump captain (and never says
+                    # "commander": the Wastes' Grump Commander is a different, story fight).
+                    cap = CAPTAINS[region][0]
+                    node["brief"][a] = (BRIEF_CAPTAIN[typ] % (cap, name)) if typ == "boss" else (BRIEF_CAPTAIN[typ] % (name, cap))
+                elif typ in ("boss", "gate") and a == "gangsters" and region in GANG_CAPTAINS:
+                    cap = GANG_CAPTAINS[region][0]
+                    node["brief"][a] = (BRIEF_GANG[typ] % (cap, nn_)) if typ == "boss" else (BRIEF_GANG[typ] % (nn_, cap))
+                else:
+                    node["brief"][a] = (BRIEF if a == "penguins" else BRIEF_GANG)[typ] % nn_
+            if len(arcs) == 1:
+                node["brief"] = node["brief"][arcs[0]]
             node["reward"] = _reward(tier, typ, arc, rng)
         nodes.append(node)
     links = [["n%d" % a, "n%d" % b] for a, b in L["links"]]
@@ -710,7 +906,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                 best[l] = w
                 heapq.heappush(hq, (w, l))
     gate_id = [nd["id"] for nd in nodes if nd["type"] == "gate"][0]
-    big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "strategist": 250 + 100 * tier,
+    big = {"crystals": GATE_PAY[tier], "items": dict(REWARD_ITEMS[tier]), "strategist": 250 + 100 * tier,
            "arc_items": {a: {k: v * ((tier + 1) // 2) for k, v in ARC_ITEMS[a].items()} for a in ARC_ITEMS}}
     if arc == "gangsters":
         big["items"] = {GANG_SWAP.get(k, k): v for k, v in big["items"].items()}
@@ -720,8 +916,8 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     lead = {a: LEAD[region][a] for a in arcs}
     C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
               "who": {a: lead[a][0] for a in arcs}, "lead": lead, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
-              "need": NEED[tier], "min_battles": best[gate_id], "sense": {a: SENSE[region][a] for a in arcs},
-              "region_name": COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
+              "need": NEED[tier], "need_gang": NEED_GANG[tier], "min_battles": best[gate_id], "long_way": _long_way(region, tier, arcs), "sense": {a: SENSE[region][a] for a in arcs},
+              "region_name": REGION_NAME.get(region) or COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
     # sanity: every reward item exists, every enemy exists, every field exists
     for nd in nodes:
         for k in list(nd.get("reward", {}).get("items", {})) + list(nd.get("loot", {}).get("items", {})):
@@ -736,12 +932,37 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             assert nd["boss"] in EN, nd["boss"]
     for k in big["items"]:
         assert k in IT, k
+    # C16b P5 checks: the long way exists and is all-ages text for every arc it serves;
+    # gang bosses are named gang captains; no free node out-pays a battle node.
+    lw = C[cid]["long_way"]
+    assert lw["text"] and lw["text_gang"] and lw["steps"] and all(k in IT for k in lw["cost"]["items"]), cid
+    battle_pay = [nd["reward"]["crystals"] for nd in nodes if nd.get("reward") and nd["type"] != "gate"]
+    for nd in nodes:
+        if "loot" in nd and battle_pay:
+            take = sum(int(IT[k].get("value", 50)) * v for k, v in nd["loot"]["items"].items())
+            assert nd["loot"]["crystals"] < min(battle_pay) and take < min(battle_pay), (cid, nd["id"], nd["loot"], min(battle_pay))
+        for a, cf in nd.get("cfg", {}).items():
+            if a == "gangsters" and nd["type"] in ("boss", "gate"):
+                assert str(cf.get("boss", "")).startswith("gcap_g_"), (cid, nd["id"], cf.get("boss"))
+            if a == "gangsters":
+                assert all(k.startswith(("thug_", "gilt_", "coal_")) or k == "rust_knight" for k in cf["enemies"]), (cid, cf["enemies"])
 
-for k in [k for nd in NEED.values() for k in nd["items"]] + list(DRILL["reward"]["items"]):
+# What a board brings that this arc's easier boards never did (C16b P5: c16b_04-10);
+# CampaignScreen can show it as "NEW HERE" on the briefing with the tier's unlocks.
+TYPE_WORDS = {"skirmish": "Skirmish", "siege": "Siege (fortified points turn at half speed)", "escort": "Escort (walk the convoy to its point)",
+              "defend": "Defend (keep one point until the clock ends)", "boss": "Captain fight", "camp": "Camp (rest)", "cache": "Cache (supplies)"}
+for cid, c in C.items():
+    c["new_here"] = {}
+    for a in (["penguins", "gangsters"] if c["arc"] == "both" else [c["arc"]]):
+        lower = {nd["type"] for c2 in C.values() if c2["tier"] < c["tier"] and c2["arc"] in ("both", a) for nd in c2["nodes"]}
+        mine = [t for t in dict.fromkeys(nd["type"] for nd in c["nodes"]) if t not in ("start", "gate") and t not in lower]
+        c["new_here"][a] = [TYPE_WORDS[t] for t in mine]
+
+for k in [k for nd in list(NEED.values()) + list(NEED_GANG.values()) for k in nd["items"]] + list(DRILL["reward"]["items"]):
     assert k in IT, k
 for a, ks in DRILL["enemies"].items():
     assert all(k in EN for k in ks), ks
-B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C, "drill": DRILL, "kin_gift": KIN_GIFT}
+B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C, "drill": DRILL, "kin_gift": KIN_GIFT, "unlocks": {str(k): v for k, v in UNLOCKS.items()}}
 B["_helper_kinds"] = KIN
 OUT = os.environ.get("DRY_OUT", D + "/data")  # DRY_OUT=/tmp/x: write the JSON elsewhere to compare
 json.dump(R, open(OUT + "/regions.json", "w"), indent=1, ensure_ascii=False)
