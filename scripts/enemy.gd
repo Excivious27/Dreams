@@ -253,9 +253,9 @@ func setup(k: String, tier_override := -1) -> void:
 const FLOATERS := ["dark_crystal", "dark_crystal_shard", "shard", "wisp", "prism_wisp", "light_eater", "bat"]
 ## Idles whose cells are mixed poses (an attack frame, a back view, jumbled or
 ## resized redraws): rest on frame 0 and let the code breath carry the motion.
-const STILL_IDLE := ["cboss_ice", "cboss_kelp", "cboss_coral", "storm_roc", "rime_wyrm", "slime", "casino_guard"]
-## 4-frame ramps that pop on the wrap: ping-pong.
-const PINGPONG_IDLE := {"dark_crystal": 3.5}
+const STILL_IDLE := ["slime", "casino_guard"]
+## 4-frame loops played as a ping-pong (no wrap pop); the C14b bosses' redrawn rest loops.
+const PINGPONG_IDLE := {"dark_crystal": 3.5, "storm_roc": 4.0, "rime_wyrm": 4.0, "cboss_coral": 4.0, "cboss_ice": 4.0, "cboss_kelp": 2.5}
 var _life_rng: RandomNumberGenerator = null
 var _life_ph := 0.0
 var _fidget_t := 8.0

@@ -28,6 +28,11 @@ JOBS = [
     ("c14bp6_duck_idle.png", "wildlife/duck", "idle", 4, 46, {"_nogreen": 0.2}),
     ("c14bp6_frog_idle.png", "wildlife/frog", "idle", 4, 26, {}),
     ("c14bp6_fox_idle.png", "wildlife/fox", "idle", 4, 32, {}),
+    ("c14bp6_storm_roc_idle.png", "enemies/storm_roc", "idle", 4, 116, {}),
+    ("c14bp6_rime_wyrm_idle.png", "enemies/rime_wyrm", "idle", 4, 112, {}),
+    ("c14bp6_cboss_kelp_idle.png", "enemies/cboss_kelp", "idle", 4, 99, {}),
+    ("c14bp6_cboss_coral_idle.png", "enemies/cboss_coral", "idle", 4, 96, {}),
+    ("c14bp6_cboss_ice_idle.png", "enemies/cboss_ice", "idle", 4, 101, {}),
 ]
 
 

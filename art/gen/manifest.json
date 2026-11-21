@@ -63236,11 +63236,11 @@
   },
   "idle": {
    "cell_h": 96,
-   "cell_w": 84,
+   "cell_w": 79,
    "file": "enemies/cboss_coral/idle.png",
    "frames": 4,
    "h": 96,
-   "w": 336
+   "w": 316
   },
   "walk": {
    "cell_h": 96,
@@ -63328,11 +63328,11 @@
   },
   "idle": {
    "cell_h": 101,
-   "cell_w": 191,
+   "cell_w": 135,
    "file": "enemies/cboss_ice/idle.png",
    "frames": 4,
    "h": 101,
-   "w": 764
+   "w": 540
   },
   "split": {
    "cell_h": 108,
@@ -63378,11 +63378,11 @@
   },
   "idle": {
    "cell_h": 99,
-   "cell_w": 150,
+   "cell_w": 135,
    "file": "enemies/cboss_kelp/idle.png",
    "frames": 4,
    "h": 99,
-   "w": 600
+   "w": 540
   },
   "walk": {
    "cell_h": 70,
@@ -64981,11 +64981,11 @@
   },
   "idle": {
    "cell_h": 112,
-   "cell_w": 109,
+   "cell_w": 119,
    "file": "enemies/rime_wyrm/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 112,
-   "w": 218
+   "w": 476
   },
   "walk": {
    "cell_h": 112,
@@ -65427,11 +65427,11 @@
   },
   "idle": {
    "cell_h": 116,
-   "cell_w": 122,
+   "cell_w": 106,
    "file": "enemies/storm_roc/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 116,
-   "w": 244
+   "w": 424
   },
   "walk": {
    "cell_h": 116,
