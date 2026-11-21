@@ -41,6 +41,44 @@ for fn in ["spell_sound", "_death_sound", "station_sound", "_gun_sound", "gun_so
         used_sfx.add(n)
         if not have("sfx", n):
             bad.append(f"{fn} -> {n}")
+# C11b P5: RanchVoice files, every voice id a species/team animal names, chore cues (c11b_14-03/-06/-07).
+rv = src.get(os.path.join(ROOT, "scripts", "ranch_voice.gd"), "")
+if rv:
+    vf = re.search(r'const VOICE_FILES := \{(.*?)\n\}', rv, re.S)
+    vids = set()
+    if vf:
+        for vid, fn in re.findall(r'"([a-z_0-9]+)": \["([a-z_0-9]+)"', vf.group(1)):
+            vids.add(vid)
+            used_sfx.add(fn)
+            if not have("sfx", fn):
+                bad.append(f"RanchVoice {vid} -> {fn}")
+    ly = re.search(r'const LAYERS := \{(.*?)\}\n', rv, re.S)
+    if ly:
+        for lid, fn in re.findall(r'"([a-z_0-9]+)": \["([a-z_0-9]+)"', ly.group(1)):
+            used_sfx.add(fn)
+            if not have("sfx", fn):
+                bad.append(f"RanchVoice layer {lid} -> {fn}")
+    sv = re.search(r'const SPECIES_VOICE := \{(.*?)\n\}', rv, re.S)
+    if sv:
+        for sp, vid in re.findall(r'"([a-z_0-9]+)": "([a-z_0-9]+)"', sv.group(1)):
+            if vid not in vids:
+                bad.append(f"RanchVoice species {sp}: voice {vid} has no file row")
+    for fn in ("ranch.json", "team_animals.json"):
+        pth = os.path.join(ROOT, "data", fn)
+        if os.path.exists(pth):
+            for sp, row in json.load(open(pth)).get("species", {}).items():
+                v = row.get("voice")
+                if v and v not in vids:
+                    bad.append(f"{fn} {sp}: voice {v} not in RanchVoice.VOICE_FILES")
+                l = row.get("voice_layer")
+                if l and not (ly and f'"{l}"' in ly.group(1)):
+                    bad.append(f"{fn} {sp}: voice_layer {l} not in RanchVoice.LAYERS")
+hp_ = os.path.join(ROOT, "data", "helpers.json")
+if os.path.exists(hp_):
+    for cid, c in json.load(open(hp_)).get("chores", {}).items():
+        cues = [x for x in c.get("sfx", []) if x != "voice"]
+        if cues and not any(have("sfx", x) for x in cues):
+            bad.append(f"chore {cid}: none of {cues} exists")
 for w in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves"]:
     if not have("sfx", "step_" + w):
         bad.append(f"step_{w}")

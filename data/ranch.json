@@ -35,10 +35,9 @@
      },
      {
       "id": "golden",
-      "art": "chicken2",
+      "art": "chicken_golden",
       "weight": 4,
-      "rare": true,
-      "tint": "#f2c45a"
+      "rare": true
      }
     ],
     "anims": [
@@ -83,7 +82,7 @@
    "pet_word": "pet",
    "names": [
     "Clementine",
-    "Pip",
+    "Dumpling",
     "Nugget",
     "Hazelnut",
     "Penny",
@@ -109,7 +108,7 @@
    "grow_days": 7,
    "buy": {
     "seller": "hazel",
-    "price": 600,
+    "price": 900,
     "tier": 2
    },
    "art": {
@@ -126,10 +125,13 @@
      },
      {
       "id": "snow",
-      "art": "duck2",
+      "art": "duck_snow",
       "weight": 6,
       "rare": true,
-      "tint": "#e8eef5"
+      "baby": [
+       "duck_snow",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -156,11 +158,11 @@
    },
    "product": {
     "id": "duck_egg",
-    "every_days": 2,
+    "every_days": 1,
     "needs_mood": 30,
     "extra": [
      "feather",
-     0.25
+     0.15
     ]
    },
    "feed": "hay",
@@ -178,7 +180,7 @@
    "pet_word": "pet",
    "names": [
     "Clementine",
-    "Pip",
+    "Dumpling",
     "Nugget",
     "Hazelnut",
     "Penny",
@@ -190,7 +192,7 @@
     "Butterbean",
     "Sprout"
    ],
-   "rehome_pay": 85
+   "rehome_pay": 170
   },
   "cow": {
    "name": "Cow",
@@ -226,10 +228,9 @@
      },
      {
       "id": "highland",
-      "art": "cow_brown",
+      "art": "cow_highland",
       "weight": 5,
-      "rare": true,
-      "tint": "#c8783c"
+      "rare": true
      }
     ],
     "anims": [
@@ -263,10 +264,10 @@
    "names": [
     "Clover",
     "Bramble",
-    "Maple",
+    "Acorn",
     "Thistle",
     "Buttons",
-    "Juniper",
+    "Hollyhock",
     "Truffle",
     "Bluebell",
     "Oakley",
@@ -306,10 +307,9 @@
      },
      {
       "id": "black",
-      "art": "sheep_woolly",
+      "art": "sheep_black",
       "weight": 8,
-      "rare": true,
-      "tint": "#4a4450"
+      "rare": true
      }
     ],
     "anims": [
@@ -324,7 +324,7 @@
    },
    "product": {
     "id": "sheep_wool",
-    "every_days": 3,
+    "every_days": 2,
     "needs_mood": 40
    },
    "feed": "hay",
@@ -342,10 +342,10 @@
    "names": [
     "Clover",
     "Bramble",
-    "Maple",
+    "Acorn",
     "Thistle",
     "Buttons",
-    "Juniper",
+    "Hollyhock",
     "Truffle",
     "Bluebell",
     "Oakley",
@@ -353,7 +353,7 @@
     "Pumpkin",
     "Willow"
    ],
-   "rehome_pay": 41
+   "rehome_pay": 120
   },
   "goat": {
    "name": "Goat",
@@ -389,10 +389,13 @@
      },
      {
       "id": "chocolate",
-      "art": "goat2",
+      "art": "goat_chocolate",
       "weight": 5,
       "rare": true,
-      "tint": "#7a4a30"
+      "baby": [
+       "goat_chocolate",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -419,7 +422,7 @@
    },
    "product": {
     "id": "goat_milk",
-    "every_days": 2,
+    "every_days": 1,
     "needs_mood": 40
    },
    "feed": "hay",
@@ -437,10 +440,10 @@
    "names": [
     "Clover",
     "Bramble",
-    "Maple",
+    "Acorn",
     "Thistle",
     "Buttons",
-    "Juniper",
+    "Hollyhock",
     "Truffle",
     "Bluebell",
     "Oakley",
@@ -448,7 +451,7 @@
     "Pumpkin",
     "Willow"
    ],
-   "rehome_pay": 100
+   "rehome_pay": 200
   },
   "llama": {
    "name": "Llama",
@@ -484,10 +487,9 @@
      },
      {
       "id": "white",
-      "art": "llama",
+      "art": "llama_white",
       "weight": 5,
-      "rare": true,
-      "tint": "#f4f0ea"
+      "rare": true
      }
     ],
     "anims": [
@@ -515,12 +517,8 @@
    },
    "product": {
     "id": "sheep_wool",
-    "every_days": 3,
-    "needs_mood": 50,
-    "extra": [
-     "sheep_wool",
-     0.5
-    ]
+    "every_days": 1,
+    "needs_mood": 50
    },
    "feed": "hay",
    "breed": {
@@ -537,10 +535,10 @@
    "names": [
     "Clover",
     "Bramble",
-    "Maple",
+    "Acorn",
     "Thistle",
     "Buttons",
-    "Juniper",
+    "Hollyhock",
     "Truffle",
     "Bluebell",
     "Oakley",
@@ -548,7 +546,7 @@
     "Pumpkin",
     "Willow"
    ],
-   "rehome_pay": 41
+   "rehome_pay": 240
   },
   "pig": {
    "name": "Pig",
@@ -562,8 +560,8 @@
    "grow_days": 10,
    "buy": {
     "seller": "hazel",
-    "price": 2400,
-    "tier": 1
+    "price": 3200,
+    "tier": 2
    },
    "art": {
     "adult": "pig_a",
@@ -584,10 +582,13 @@
      },
      {
       "id": "ginger",
-      "art": "pig_a",
+      "art": "pig_ginger",
       "weight": 5,
       "rare": true,
-      "tint": "#d0703a"
+      "baby": [
+       "pig_ginger",
+       "baby"
+      ]
      }
     ],
     "anims": [
@@ -614,7 +615,7 @@
    },
    "product": {
     "id": "truffle",
-    "every_days": 1,
+    "every_days": 2,
     "needs_mood": 50,
     "dig": true
    },
@@ -623,7 +624,7 @@
     "days": 6,
     "litter": [
      1,
-     3
+     2
     ],
     "min_friend": 300,
     "chance": 0.3
@@ -633,10 +634,10 @@
    "names": [
     "Clover",
     "Bramble",
-    "Maple",
+    "Acorn",
     "Thistle",
     "Buttons",
-    "Juniper",
+    "Hollyhock",
     "Truffle",
     "Bluebell",
     "Oakley",
@@ -644,7 +645,7 @@
     "Pumpkin",
     "Willow"
    ],
-   "rehome_pay": 600
+   "rehome_pay": 352
   },
   "rabbit": {
    "name": "Rabbit",
@@ -680,10 +681,9 @@
      },
      {
       "id": "silver",
-      "art": "rabbit_white",
+      "art": "rabbit_silver",
       "weight": 5,
-      "rare": true,
-      "tint": "#b8bcc8"
+      "rare": true
      }
     ],
     "anims": [
@@ -710,7 +710,7 @@
    },
    "product": {
     "id": "rabbit_fur",
-    "every_days": 4,
+    "every_days": 2,
     "needs_mood": 40
    },
    "feed": "hay",
@@ -735,7 +735,7 @@
     "Fluff",
     "Peanut"
    ],
-   "rehome_pay": 75
+   "rehome_pay": 150
   },
   "bees": {
    "name": "Bee Hive",
@@ -803,6 +803,2445 @@
     "Honeypot Hive"
    ],
    "rehome_pay": 75
+  },
+  "ostrich": {
+   "name": "Ostrich",
+   "name_gang": "Ostrich",
+   "home": "enclosure",
+   "group": "bird",
+   "space": 3,
+   "voice": "hoot",
+   "grow_days": 14,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 34,
+   "baby_h": 19,
+   "buy": {
+    "seller": "hazel",
+    "price": 4800,
+    "tier": 1
+   },
+   "art": {
+    "adult": "ostrich",
+    "baby": [
+     "ostrich_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "ostrich",
+      "weight": 70
+     },
+     {
+      "id": "tawny",
+      "art": "ostrich_tawny",
+      "weight": 25
+     },
+     {
+      "id": "crystal",
+      "art": "ostrich_crystal",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "ostrich_egg",
+    "every_days": 2,
+    "needs_mood": 60,
+    "extra": [
+     "plume",
+     0.2
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "ostrich_egg"
+   },
+   "source": "Hazel imports them once you have an Exotic Enclosure (Sunscorch stock)",
+   "team": true,
+   "special": "kick",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "summer"
+    ]
+   },
+   "names": [
+    "Dune",
+    "Sahara",
+    "Tumbleweed",
+    "Rocket",
+    "Twiggy",
+    "Bertha",
+    "Stilts",
+    "Duster"
+   ],
+   "rehome_pay": 800
+  },
+  "emu": {
+   "name": "Emu",
+   "name_gang": "Emu",
+   "home": "enclosure",
+   "group": "bird",
+   "space": 3,
+   "voice": "drum",
+   "grow_days": 12,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 30,
+   "baby_h": 16,
+   "buy": {
+    "seller": "hazel",
+    "price": 3600,
+    "tier": 1
+   },
+   "art": {
+    "adult": "emu",
+    "baby": [
+     "emu_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "emu",
+      "weight": 70
+     },
+     {
+      "id": "blueneck",
+      "art": "emu_blueneck",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "emu_egg",
+    "every_days": 2,
+    "needs_mood": 55,
+    "extra": [
+     "plume",
+     0.15
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 5,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "emu_egg"
+   },
+   "source": "Hazel, once you have an Exotic Enclosure",
+   "team": true,
+   "special": "kick",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "summer"
+    ]
+   },
+   "names": [
+    "Dune",
+    "Sahara",
+    "Tumbleweed",
+    "Rocket",
+    "Twiggy",
+    "Bertha",
+    "Stilts",
+    "Duster"
+   ],
+   "rehome_pay": 550
+  },
+  "alpaca": {
+   "name": "Alpaca",
+   "name_gang": "Alpaca",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "hum",
+   "grow_days": 10,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 26,
+   "baby_h": 14,
+   "buy": {
+    "seller": "tam",
+    "price": 1800,
+    "tier": 2
+   },
+   "art": {
+    "adult": "alpaca",
+    "baby": [
+     "alpaca_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "alpaca",
+      "weight": 70
+     },
+     {
+      "id": "brown",
+      "art": "alpaca_brown",
+      "weight": 12
+     },
+     {
+      "id": "white",
+      "art": "alpaca_white",
+      "weight": 12
+     },
+     {
+      "id": "midnight",
+      "art": "alpaca_midnight",
+      "weight": 4,
+      "rare": true
+     }
+    ],
+    "shorn": "alpaca_shorn"
+   },
+   "product": {
+    "id": "alpaca_fleece",
+    "every_days": 2,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 10,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 400,
+    "chance": 0.3
+   },
+   "source": "Tam, once you have the Big Barn",
+   "team": true,
+   "special": "spit",
+   "long_low": false,
+   "names": [
+    "Clover",
+    "Bramble",
+    "Acorn",
+    "Thistle",
+    "Buttons",
+    "Hollyhock",
+    "Truffle",
+    "Bluebell",
+    "Oakley",
+    "Mossy",
+    "Pumpkin",
+    "Willow"
+   ],
+   "rehome_pay": 225
+  },
+  "komodo": {
+   "name": "Sun Drake",
+   "name_gang": "Komodo Dragon",
+   "home": "enclosure",
+   "group": "beast",
+   "space": 4,
+   "voice": "hiss",
+   "grow_days": 20,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 14,
+   "baby_h": 8,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "komodo",
+    "baby": [
+     "komodo_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "komodo",
+      "weight": 70
+     },
+     {
+      "id": "teal",
+      "art": "komodo_teal",
+      "weight": 25
+     },
+     {
+      "id": "gold",
+      "art": "komodo_gold",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "shed_scale",
+    "every_days": 5,
+    "needs_mood": 70
+   },
+   "feed": "hay",
+   "pet_word": "scratch",
+   "breed": {
+    "days": 14,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 700,
+    "chance": 0.15
+   },
+   "source": "Quest: a Sun Drake hatchling (penguins) / a rescued Komodo (gangsters)",
+   "team": true,
+   "special": "tail_swipe",
+   "long_low": true,
+   "habitat": {
+    "likes": [
+     "summer"
+    ],
+    "needs_add": "heater"
+   },
+   "names": [
+    "Sunny",
+    "Ember",
+    "Pebble",
+    "Basil",
+    "Ziggy",
+    "Dusty",
+    "Gumdrop",
+    "Shelly"
+   ],
+   "rehome_pay": 0
+  },
+  "snow_yak": {
+   "name": "Snow Yak",
+   "name_gang": "Snow Yak",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "moo",
+   "grow_days": 12,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 28,
+   "baby_h": 15,
+   "buy": {
+    "seller": "tam",
+    "price": 2600,
+    "tier": 3
+   },
+   "art": {
+    "adult": "snow_yak",
+    "baby": [
+     "snow_yak_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "snow_yak",
+      "weight": 70
+     },
+     {
+      "id": "brown",
+      "art": "snow_yak_brown",
+      "weight": 25
+     }
+    ],
+    "shorn": "snow_yak_shorn"
+   },
+   "product": {
+    "id": "yak_wool",
+    "every_days": 2,
+    "needs_mood": 50,
+    "extra": [
+     "milk",
+     0.25
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 10,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 400,
+    "chance": 0.3
+   },
+   "source": "Tam, once you have the Deluxe Barn (Frostpeak stock)",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "winter",
+     "snow"
+    ],
+    "hates_heater": true
+   },
+   "names": [
+    "Frosty",
+    "Icicle",
+    "Sleet",
+    "Flurry",
+    "Snowdrop",
+    "Aurora",
+    "Blizzard",
+    "Chill"
+   ],
+   "rehome_pay": 275
+  },
+  "peacock": {
+   "name": "Peacock",
+   "name_gang": "Peacock",
+   "home": "aviary",
+   "group": "bird",
+   "space": 1,
+   "voice": "peep",
+   "grow_days": 9,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 18,
+   "baby_h": 10,
+   "buy": {
+    "seller": "hazel",
+    "price": 2400,
+    "tier": 1
+   },
+   "art": {
+    "adult": "peacock",
+    "baby": [
+     "peacock_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "peacock",
+      "weight": 70
+     },
+     {
+      "id": "emerald",
+      "art": "peacock_emerald",
+      "weight": 25
+     },
+     {
+      "id": "albino",
+      "art": "peacock_albino",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "peacock_feather",
+    "every_days": 2,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0
+   },
+   "source": "Hazel, once you have an Aviary",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "names": [
+    "Clementine",
+    "Dumpling",
+    "Nugget",
+    "Hazelnut",
+    "Penny",
+    "Biscuit",
+    "Daisy",
+    "Pickles",
+    "Marigold",
+    "Poppy",
+    "Butterbean",
+    "Sprout"
+   ],
+   "rehome_pay": 350
+  },
+  "tortoise": {
+   "name": "Tortoise",
+   "name_gang": "Tortoise",
+   "home": "terrarium",
+   "group": "small",
+   "space": 2,
+   "voice": "critter",
+   "grow_days": 20,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 14,
+   "baby_h": 8,
+   "buy": {
+    "seller": "posy",
+    "price": 1600,
+    "tier": 1
+   },
+   "art": {
+    "adult": "tortoise",
+    "baby": [
+     "tortoise_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "tortoise",
+      "weight": 70
+     },
+     {
+      "id": "olive",
+      "art": "tortoise_olive",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "shell_moss",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 14,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 400,
+    "chance": 0.2
+   },
+   "source": "Posy, once you have a Terrarium",
+   "team": false,
+   "special": "",
+   "long_low": true,
+   "names": [
+    "Sunny",
+    "Ember",
+    "Pebble",
+    "Basil",
+    "Ziggy",
+    "Dusty",
+    "Gumdrop",
+    "Shelly"
+   ],
+   "rehome_pay": 225
+  },
+  "buffalo": {
+   "name": "Buffalo",
+   "name_gang": "Buffalo",
+   "home": "barn",
+   "group": "beast",
+   "space": 3,
+   "voice": "moo",
+   "grow_days": 12,
+   "arc": "",
+   "family": "exotics",
+   "height_px": 28,
+   "baby_h": 15,
+   "buy": {
+    "seller": "tam",
+    "price": 3000,
+    "tier": 3
+   },
+   "art": {
+    "adult": "buffalo",
+    "baby": [
+     "buffalo_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "buffalo",
+      "weight": 70
+     },
+     {
+      "id": "umber",
+      "art": "buffalo_umber",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "buffalo_milk",
+    "every_days": 1,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 12,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 400,
+    "chance": 0.3
+   },
+   "source": "Tam, once you have the Deluxe Barn",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "rain"
+    ]
+   },
+   "names": [
+    "Clover",
+    "Bramble",
+    "Acorn",
+    "Thistle",
+    "Buttons",
+    "Hollyhock",
+    "Truffle",
+    "Bluebell",
+    "Oakley",
+    "Mossy",
+    "Pumpkin",
+    "Willow"
+   ],
+   "rehome_pay": 375
+  },
+  "crystal_hen": {
+   "name": "Crystal Hen",
+   "name_gang": "Crystal Hen",
+   "home": "coop",
+   "group": "bird",
+   "space": 1,
+   "voice": "cluck",
+   "grow_days": 7,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 12,
+   "baby_h": 7,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "crystal_hen",
+    "baby": [
+     "crystal_hen_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "crystal_hen",
+      "weight": 70
+     },
+     {
+      "id": "rose",
+      "art": "crystal_hen_rose",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "crystal_egg",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 4,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "crystal_egg"
+   },
+   "source": "Crystopia: a hen that pecks at crystal dust",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "names": [
+    "Prism",
+    "Facet",
+    "Glimmer",
+    "Quartzy",
+    "Twinkle",
+    "Geode"
+   ],
+   "rehome_pay": 0
+  },
+  "star_sheep": {
+   "name": "Star Sheep",
+   "name_gang": "Star Sheep",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "sheep",
+   "grow_days": 9,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 20,
+   "baby_h": 11,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "star_sheep",
+    "baby": [
+     "star_sheep_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "star_sheep",
+      "weight": 70
+     },
+     {
+      "id": "mint",
+      "art": "star_sheep_mint",
+      "weight": 25
+     },
+     {
+      "id": "rainbow",
+      "art": "star_sheep_rainbow",
+      "weight": 4,
+      "rare": true
+     }
+    ],
+    "shorn": "star_sheep_shorn"
+   },
+   "product": {
+    "id": "star_wool",
+    "every_days": 2,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 9,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "The Moon: a lamb from the Star Station",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Luna",
+    "Crater",
+    "Comet",
+    "Orbit",
+    "Selene",
+    "Moonbeam",
+    "Halo",
+    "Eclipse"
+   ],
+   "rehome_pay": 0
+  },
+  "moon_hare": {
+   "name": "Moon Hare",
+   "name_gang": "Moon Hare",
+   "home": "hutch",
+   "group": "small",
+   "space": 1,
+   "voice": "thump",
+   "grow_days": 6,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 10,
+   "baby_h": 6,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "moon_hare",
+    "baby": [
+     "moon_hare_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "moon_hare",
+      "weight": 70
+     },
+     {
+      "id": "rose",
+      "art": "moon_hare_rose",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "moon_fluff",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "The Moon pad: a hare that hopped aboard",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Luna",
+    "Crater",
+    "Comet",
+    "Orbit",
+    "Selene",
+    "Moonbeam",
+    "Halo",
+    "Eclipse"
+   ],
+   "rehome_pay": 0
+  },
+  "star_jelly": {
+   "name": "Star Jelly",
+   "name_gang": "Star Jelly",
+   "home": "tide_pool",
+   "group": "small",
+   "space": 1.5,
+   "voice": "bubble",
+   "grow_days": 8,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 14,
+   "baby_h": 8,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "star_jelly",
+    "baby": [
+     "star_jelly_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "star_jelly",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "star_jelly_amber",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "star_dust",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "tend",
+   "breed": {
+    "days": 8,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.25
+   },
+   "source": "Star Station: a jelly drifting in the tanks",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Coral",
+    "Ripple",
+    "Splash",
+    "Bubbles",
+    "Lagoon",
+    "Shoal",
+    "Marina",
+    "Wavelet"
+   ],
+   "rehome_pay": 0
+  },
+  "glow_gecko": {
+   "name": "Glow Gecko",
+   "name_gang": "Glow Gecko",
+   "home": "terrarium",
+   "group": "small",
+   "space": 1,
+   "voice": "critter",
+   "grow_days": 7,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 9,
+   "baby_h": 5,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "glow_gecko",
+    "baby": [
+     "glow_gecko_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "glow_gecko",
+      "weight": 70
+     },
+     {
+      "id": "aqua",
+      "art": "glow_gecko_aqua",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "glowcap",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 7,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "Green Planet: a gecko in the glowcap groves",
+   "team": false,
+   "special": "",
+   "long_low": true,
+   "habitat": {
+    "likes": [
+     "rain"
+    ]
+   },
+   "names": [
+    "Flicker",
+    "Lantern",
+    "Glimmer",
+    "Spark",
+    "Firefly",
+    "Wisp"
+   ],
+   "rehome_pay": 0
+  },
+  "coral_seahorse": {
+   "name": "Coral Seahorse",
+   "name_gang": "Coral Seahorse",
+   "home": "tide_pool",
+   "group": "small",
+   "space": 1.5,
+   "voice": "bubble",
+   "grow_days": 8,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 18,
+   "baby_h": 10,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "coral_seahorse",
+    "baby": [
+     "coral_seahorse_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "coral_seahorse",
+      "weight": 70
+     },
+     {
+      "id": "sunny",
+      "art": "coral_seahorse_sunny",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "pearl",
+    "every_days": 3,
+    "needs_mood": 50,
+    "extra": [
+     "tide_pearl",
+     0.03
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "tend",
+   "breed": {
+    "days": 9,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 300,
+    "chance": 0.25
+   },
+   "source": "Coral Reach: a seahorse that followed your boat",
+   "team": true,
+   "special": "bubble_shot",
+   "long_low": false,
+   "names": [
+    "Coral",
+    "Ripple",
+    "Splash",
+    "Bubbles",
+    "Lagoon",
+    "Shoal",
+    "Marina",
+    "Wavelet"
+   ],
+   "rehome_pay": 0
+  },
+  "kelp_calf": {
+   "name": "Kelp Calf",
+   "name_gang": "Kelp Calf",
+   "home": "tide_pool",
+   "group": "beast",
+   "space": 2,
+   "voice": "moo",
+   "grow_days": 10,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 18,
+   "baby_h": 10,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "kelp_calf",
+    "baby": [
+     "kelp_calf_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "kelp_calf",
+      "weight": 70
+     },
+     {
+      "id": "teal",
+      "art": "kelp_calf_teal",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "sea_milk",
+    "every_days": 1,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 10,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "Kelp Hollow: a gentle sea-calf",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "names": [
+    "Coral",
+    "Ripple",
+    "Splash",
+    "Bubbles",
+    "Lagoon",
+    "Shoal",
+    "Marina",
+    "Wavelet"
+   ],
+   "rehome_pay": 0
+  },
+  "frost_otter": {
+   "name": "Frost Otter",
+   "name_gang": "Frost Otter",
+   "home": "tide_pool",
+   "group": "small",
+   "space": 1.5,
+   "voice": "squeak",
+   "grow_days": 8,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 12,
+   "baby_h": 7,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "frost_otter",
+    "baby": [
+     "frost_otter_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "frost_otter",
+      "weight": 70
+     },
+     {
+      "id": "sable",
+      "art": "frost_otter_sable",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "ice_pike",
+    "every_days": 3,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 8,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "Frostfin Isle: an otter that brings you fish",
+   "team": true,
+   "special": "pounce",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "winter",
+     "snow"
+    ],
+    "hates_heater": true
+   },
+   "names": [
+    "Frosty",
+    "Icicle",
+    "Sleet",
+    "Flurry",
+    "Snowdrop",
+    "Aurora",
+    "Blizzard",
+    "Chill"
+   ],
+   "rehome_pay": 0
+  },
+  "ember_newt": {
+   "name": "Ember Newt",
+   "name_gang": "Ember Newt",
+   "home": "ember_pit",
+   "group": "small",
+   "space": 1,
+   "voice": "critter",
+   "grow_days": 7,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 10,
+   "baby_h": 6,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "ember_newt",
+    "baby": [
+     "ember_newt_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "ember_newt",
+      "weight": 70
+     },
+     {
+      "id": "gold",
+      "art": "ember_newt_gold",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "ember_scale",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 7,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "Emberclaw Atoll: a newt that loves warm rocks",
+   "team": false,
+   "special": "",
+   "long_low": true,
+   "habitat": {
+    "likes": [
+     "summer"
+    ],
+    "needs_add": "heater"
+   },
+   "names": [
+    "Cinder",
+    "Ash",
+    "Toasty",
+    "Blaze",
+    "Kindle",
+    "Sizzle"
+   ],
+   "rehome_pay": 0
+  },
+  "cloud_sheep": {
+   "name": "Cloud Sheep",
+   "name_gang": "Cloud Sheep",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "sheep",
+   "grow_days": 9,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 20,
+   "baby_h": 11,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "cloud_sheep",
+    "baby": [
+     "cloud_sheep_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "cloud_sheep",
+      "weight": 70
+     },
+     {
+      "id": "dusk",
+      "art": "cloud_sheep_dusk",
+      "weight": 25
+     }
+    ],
+    "shorn": "cloud_sheep_shorn"
+   },
+   "product": {
+    "id": "storm_fluff",
+    "every_days": 3,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 9,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "Cloud Isles: a lamb made mostly of fluff",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "rain"
+    ]
+   },
+   "names": [
+    "Gale",
+    "Stratus",
+    "Zephyr",
+    "Breeze",
+    "Thunder",
+    "Puff",
+    "Cirrus",
+    "Drizzle"
+   ],
+   "rehome_pay": 0
+  },
+  "storm_roc": {
+   "name": "Storm Roc",
+   "name_gang": "Storm Roc",
+   "home": "aviary",
+   "group": "bird",
+   "space": 1.5,
+   "voice": "whistle",
+   "grow_days": 14,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 26,
+   "baby_h": 14,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "storm_roc",
+    "baby": [
+     "storm_roc_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "storm_roc",
+      "weight": 70
+     },
+     {
+      "id": "sunset",
+      "art": "storm_roc_sunset",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "roc_feather",
+    "every_days": 2,
+    "needs_mood": 60,
+    "extra": [
+     "storm_eye",
+     0.01
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 8,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "roc_egg"
+   },
+   "source": "Windward: the egg from the Storm Roc nest",
+   "team": true,
+   "special": "wing_gust",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "rain"
+    ]
+   },
+   "names": [
+    "Gale",
+    "Stratus",
+    "Zephyr",
+    "Breeze",
+    "Thunder",
+    "Puff",
+    "Cirrus",
+    "Drizzle"
+   ],
+   "rehome_pay": 0
+  },
+  "lantern_moth": {
+   "name": "Lantern Moth",
+   "name_gang": "Lantern Moth",
+   "home": "aviary",
+   "group": "insect",
+   "space": 1,
+   "voice": "buzz",
+   "grow_days": 6,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 14,
+   "baby_h": 8,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "lantern_moth",
+    "baby": [
+     "lantern_moth_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "lantern_moth",
+      "weight": 70
+     },
+     {
+      "id": "mint",
+      "art": "lantern_moth_mint",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "wisp_thread",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "tend",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "Gloamwood: a moth that glows like a lamp",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Flicker",
+    "Lantern",
+    "Glimmer",
+    "Spark",
+    "Firefly",
+    "Wisp"
+   ],
+   "rehome_pay": 0
+  },
+  "moon_cow": {
+   "name": "Moon Cow",
+   "name_gang": "Moon Cow",
+   "home": "star_dome",
+   "group": "beast",
+   "space": 2,
+   "voice": "moo",
+   "grow_days": 10,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 26,
+   "baby_h": 14,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "moon_cow",
+    "baby": [
+     "moon_cow_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "moon_cow",
+      "weight": 70
+     },
+     {
+      "id": "mint",
+      "art": "moon_cow_mint",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "moon_milk",
+    "every_days": 1,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 10,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "The Moon: a calf from the low-gravity meadow",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Luna",
+    "Crater",
+    "Comet",
+    "Orbit",
+    "Selene",
+    "Moonbeam",
+    "Halo",
+    "Eclipse"
+   ],
+   "rehome_pay": 0
+  },
+  "aurora_fox": {
+   "name": "Aurora Fox",
+   "name_gang": "Aurora Fox",
+   "home": "star_dome",
+   "group": "small",
+   "space": 1.5,
+   "voice": "purr",
+   "grow_days": 9,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 15,
+   "baby_h": 8,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "aurora_fox",
+    "baby": [
+     "aurora_fox_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "aurora_fox",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "aurora_fox_amber",
+      "weight": 25
+     },
+     {
+      "id": "sunfire",
+      "art": "aurora_fox_sunfire",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "aurora_tuft",
+    "every_days": 2,
+    "needs_mood": 50
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 9,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 300,
+    "chance": 0.25
+   },
+   "source": "Frostpeak: a fox under the northern lights",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "winter"
+    ],
+    "night_goods": true
+   },
+   "names": [
+    "Frosty",
+    "Icicle",
+    "Sleet",
+    "Flurry",
+    "Snowdrop",
+    "Aurora",
+    "Blizzard",
+    "Chill"
+   ],
+   "rehome_pay": 0
+  },
+  "deep_glowworm": {
+   "name": "Deep Glowworm",
+   "name_gang": "Deep Glowworm",
+   "home": "terrarium",
+   "group": "insect",
+   "space": 1,
+   "voice": "critter",
+   "grow_days": 6,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 9,
+   "baby_h": 5,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "deep_glowworm",
+    "baby": [
+     "deep_glowworm_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "deep_glowworm",
+      "weight": 70
+     },
+     {
+      "id": "lime",
+      "art": "deep_glowworm_lime",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "glow_silk",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "tend",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "The Hollow: a glowworm from the deep caves",
+   "team": false,
+   "special": "",
+   "long_low": true,
+   "habitat": {
+    "night_goods": true
+   },
+   "names": [
+    "Flicker",
+    "Lantern",
+    "Glimmer",
+    "Spark",
+    "Firefly",
+    "Wisp"
+   ],
+   "rehome_pay": 0
+  },
+  "frost_wyrmling": {
+   "name": "Frost Wyrmling",
+   "name_gang": "Frost Wyrmling",
+   "home": "star_dome",
+   "group": "beast",
+   "space": 2,
+   "voice": "whistle",
+   "grow_days": 21,
+   "arc": "penguins",
+   "family": "fantastic",
+   "height_px": 18,
+   "baby_h": 10,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "frost_wyrmling",
+    "baby": [
+     "frost_wyrmling_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "frost_wyrmling",
+      "weight": 70
+     },
+     {
+      "id": "jade",
+      "art": "frost_wyrmling_jade",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "moon_shard",
+    "every_days": 14,
+    "needs_mood": 70
+   },
+   "feed": "hay",
+   "pet_word": "scratch",
+   "breed": {
+    "days": 28,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 900,
+    "chance": 0.05
+   },
+   "source": "Frostpeak Summit: the egg left after the summit boss (one per save)",
+   "team": true,
+   "special": "frost_breath",
+   "long_low": false,
+   "habitat": {
+    "likes": [
+     "winter",
+     "snow"
+    ],
+    "hates_heater": true
+   },
+   "unique": true,
+   "names": [
+    "Frosty",
+    "Icicle",
+    "Sleet",
+    "Flurry",
+    "Snowdrop",
+    "Aurora",
+    "Blizzard",
+    "Chill"
+   ],
+   "rehome_pay": 0
+  },
+  "chrome_hen": {
+   "name": "Chrome Hen",
+   "name_gang": "Chrome Hen",
+   "home": "coop",
+   "group": "bird",
+   "space": 1,
+   "voice": "cluck",
+   "grow_days": 7,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 12,
+   "baby_h": 7,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "chrome_hen",
+    "baby": [
+     "chrome_hen_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "chrome_hen",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "chrome_hen_amber",
+      "weight": 25
+     },
+     {
+      "id": "gold",
+      "art": "chrome_hen_gold",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "circuit_egg",
+    "every_days": 2,
+    "needs_mood": 30
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 3,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "circuit_egg"
+   },
+   "source": "Gene Splicer: a hen with a polished chrome comb",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 1,
+    "need": {
+     "egg": 1,
+     "circuit_board": 2
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "glow_sheep": {
+   "name": "Glow Sheep",
+   "name_gang": "Glow Sheep",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "sheep",
+   "grow_days": 8,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 20,
+   "baby_h": 11,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "glow_sheep",
+    "baby": [
+     "glow_sheep_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "glow_sheep",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "glow_sheep_amber",
+      "weight": 25
+     }
+    ],
+    "shorn": "glow_sheep_shorn"
+   },
+   "product": {
+    "id": "glow_wool",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 8,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.35
+   },
+   "source": "Gene Splicer: wool that glows after dark",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "habitat": {
+    "night_goods": true
+   },
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 2,
+    "need": {
+     "sheep_wool": 3,
+     "circuit_board": 2
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "circuit_goat": {
+   "name": "Circuit Goat",
+   "name_gang": "Circuit Goat",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "bleat",
+   "grow_days": 8,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 20,
+   "baby_h": 11,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "circuit_goat",
+    "baby": [
+     "circuit_goat_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "circuit_goat",
+      "weight": 70
+     },
+     {
+      "id": "teal",
+      "art": "circuit_goat_teal",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "coolant",
+    "every_days": 1,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 7,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 300,
+    "chance": 0.35
+   },
+   "source": "Gene Splicer: a goat with circuit-trace horns",
+   "team": true,
+   "special": "headbutt",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 2,
+    "need": {
+     "goat_milk": 2,
+     "circuit_board": 3
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "turbo_bunny": {
+   "name": "Turbo Bunny",
+   "name_gang": "Turbo Bunny",
+   "home": "hutch",
+   "group": "small",
+   "space": 1,
+   "voice": "thump",
+   "grow_days": 5,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 10,
+   "baby_h": 6,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "turbo_bunny",
+    "baby": [
+     "turbo_bunny_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "turbo_bunny",
+      "weight": 70
+     },
+     {
+      "id": "lime",
+      "art": "turbo_bunny_lime",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "static_fluff",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 5,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "Gene Splicer: a bunny with springy chrome feet",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 1,
+    "need": {
+     "rabbit_fur": 2,
+     "circuit_board": 2
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "circuit_cow": {
+   "name": "Circuit Cow",
+   "name_gang": "Circuit Cow",
+   "home": "barn",
+   "group": "beast",
+   "space": 2,
+   "voice": "moo",
+   "grow_days": 10,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 28,
+   "baby_h": 15,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "circuit_cow",
+    "baby": [
+     "circuit_cow_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "circuit_cow",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "circuit_cow_amber",
+      "weight": 25
+     },
+     {
+      "id": "gold",
+      "art": "circuit_cow_gold",
+      "weight": 4,
+      "rare": true
+     }
+    ]
+   },
+   "product": {
+    "id": "synth_milk",
+    "every_days": 1,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 10,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 300,
+    "chance": 0.35
+   },
+   "source": "Gene Splicer: a cow with a soft blue status light",
+   "team": false,
+   "special": "",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 2,
+    "need": {
+     "milk": 3,
+     "circuit_board": 3,
+     "data_chip": 1
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "drone_hog": {
+   "name": "Drone Hog",
+   "name_gang": "Drone Hog",
+   "home": "sty",
+   "group": "beast",
+   "space": 2,
+   "voice": "oink",
+   "grow_days": 10,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 17,
+   "baby_h": 9,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "drone_hog",
+    "baby": [
+     "drone_hog_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "drone_hog",
+      "weight": 70
+     },
+     {
+      "id": "teal",
+      "art": "drone_hog_teal",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "circuit_board",
+    "every_days": 1,
+    "needs_mood": 50,
+    "extra": [
+     "data_chip",
+     0.05
+    ]
+   },
+   "feed": "hay",
+   "pet_word": "pet",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     3
+    ],
+    "min_friend": 300,
+    "chance": 0.3
+   },
+   "source": "Gene Splicer: a hog with little drone rotors",
+   "team": true,
+   "special": "charge",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 3,
+    "need": {
+     "truffle": 2,
+     "circuit_board": 4,
+     "data_chip": 1
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "volt_gecko": {
+   "name": "Volt Gecko",
+   "name_gang": "Volt Gecko",
+   "home": "terrarium",
+   "group": "small",
+   "space": 2,
+   "voice": "zap",
+   "grow_days": 7,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 13,
+   "baby_h": 7,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "volt_gecko",
+    "baby": [
+     "volt_gecko_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "volt_gecko",
+      "weight": 70
+     },
+     {
+      "id": "cyan",
+      "art": "volt_gecko_cyan",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "static_scale",
+    "every_days": 2,
+    "needs_mood": 40
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 7,
+    "litter": [
+     1,
+     2
+    ],
+    "min_friend": 200,
+    "chance": 0.3
+   },
+   "source": "Gene Splicer: a gecko that hums with a tiny spark",
+   "team": true,
+   "special": "zap",
+   "long_low": true,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 3,
+    "need": {
+     "circuit_board": 3,
+     "data_chip": 1
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
+  },
+  "chrome_runner": {
+   "name": "Chrome Runner",
+   "name_gang": "Chrome Runner",
+   "home": "enclosure",
+   "group": "bird",
+   "space": 3,
+   "voice": "hoot",
+   "grow_days": 14,
+   "arc": "gangsters",
+   "family": "lab",
+   "height_px": 34,
+   "baby_h": 19,
+   "buy": {
+    "seller": "hazel",
+    "price": 0,
+    "tier": 1
+   },
+   "art": {
+    "adult": "chrome_runner",
+    "baby": [
+     "chrome_runner_baby",
+     "idle"
+    ],
+    "variants": [
+     {
+      "id": "common",
+      "art": "chrome_runner",
+      "weight": 70
+     },
+     {
+      "id": "amber",
+      "art": "chrome_runner_amber",
+      "weight": 25
+     }
+    ]
+   },
+   "product": {
+    "id": "alloy_egg",
+    "every_days": 2,
+    "needs_mood": 60
+   },
+   "feed": "hay",
+   "pet_word": "pat",
+   "breed": {
+    "days": 6,
+    "litter": [
+     1,
+     1
+    ],
+    "min_friend": 0,
+    "chance": 0.0,
+    "egg": "alloy_egg"
+   },
+   "source": "Gene Splicer: a runner bird with chrome legs",
+   "team": true,
+   "special": "dash_kick",
+   "long_low": false,
+   "lab": {
+    "station": "gene_splicer",
+    "tier": 3,
+    "need": {
+     "circuit_board": 6,
+     "data_chip": 2
+    }
+   },
+   "names": [
+    "Bolt",
+    "Widget",
+    "Sprocket",
+    "Byte",
+    "Pixel",
+    "Gizmo",
+    "Servo",
+    "Chip",
+    "Diode",
+    "Ratchet"
+   ],
+   "rehome_pay": 0
   }
  },
  "buildings": {
@@ -890,6 +3329,29 @@
      6,
      4
     ]
+   },
+   {
+    "tier": 4,
+    "cap": 16,
+    "adds": [
+     "feeder",
+     "breeding",
+     "auto_water",
+     "heater",
+     "big_stall"
+    ],
+    "pen": [
+     30,
+     5,
+     6,
+     4
+    ],
+    "paddock": [
+     39,
+     25,
+     12,
+     2
+    ]
    }
   ],
   "hutch": [
@@ -899,9 +3361,49 @@
     "adds": [
      "breeding"
     ],
+    "cell": [
+     40,
+     13
+    ],
+    "w": 2,
+    "h": 2,
     "pen": [
-     20,
-     9,
+     40,
+     15,
+     3,
+     2
+    ]
+   },
+   {
+    "tier": 2,
+    "cap": 8,
+    "adds": [
+     "breeding",
+     "feeder",
+     "heater"
+    ],
+    "cell": [
+     40,
+     13
+    ],
+    "w": 2,
+    "h": 2,
+    "pen": [
+     40,
+     15,
+     4,
+     2
+    ]
+   },
+   {
+    "tier": 1,
+    "cap": 4,
+    "adds": [
+     "breeding"
+    ],
+    "pen": [
+     40,
+     15,
      3,
      2
     ]
@@ -915,8 +3417,8 @@
      "heater"
     ],
     "pen": [
-     20,
-     9,
+     40,
+     15,
      4,
      2
     ]
@@ -927,9 +3429,46 @@
     "tier": 1,
     "cap": 2,
     "adds": [],
+    "cell": [
+     45,
+     13
+    ],
+    "w": 3,
+    "h": 2,
     "pen": [
-     20,
-     5,
+     45,
+     15,
+     3,
+     2
+    ]
+   },
+   {
+    "tier": 2,
+    "cap": 4,
+    "adds": [
+     "breeding",
+     "feeder"
+    ],
+    "cell": [
+     45,
+     13
+    ],
+    "w": 3,
+    "h": 2,
+    "pen": [
+     45,
+     15,
+     4,
+     2
+    ]
+   },
+   {
+    "tier": 1,
+    "cap": 2,
+    "adds": [],
+    "pen": [
+     46,
+     15,
      3,
      2
     ]
@@ -942,8 +3481,8 @@
      "feeder"
     ],
     "pen": [
-     20,
-     5,
+     46,
+     15,
      4,
      2
     ]
@@ -955,8 +3494,8 @@
     "cap": 2,
     "adds": [],
     "pen": [
-     16,
-     5,
+     29,
+     19,
      2,
      1
     ]
@@ -968,8 +3507,8 @@
      "breeding"
     ],
     "pen": [
-     16,
-     5,
+     29,
+     19,
      4,
      1
     ]
@@ -981,10 +3520,204 @@
      "breeding"
     ],
     "pen": [
-     16,
-     5,
+     29,
+     19,
      6,
      1
+    ]
+   }
+  ],
+  "enclosure": [
+   {
+    "tier": 1,
+    "cap": 2,
+    "adds": [
+     "feeder"
+    ],
+    "cell": [
+     50,
+     13
+    ],
+    "w": 4,
+    "h": 3,
+    "pen": [
+     50,
+     16,
+     6,
+     2
+    ]
+   },
+   {
+    "tier": 2,
+    "cap": 4,
+    "adds": [
+     "feeder",
+     "incubator",
+     "breeding",
+     "heater"
+    ],
+    "cell": [
+     50,
+     13
+    ],
+    "w": 4,
+    "h": 3,
+    "pen": [
+     50,
+     16,
+     6,
+     2
+    ]
+   }
+  ],
+  "aviary": [
+   {
+    "tier": 1,
+    "cap": 4,
+    "adds": [
+     "perch"
+    ],
+    "cell": [
+     57,
+     13
+    ],
+    "w": 3,
+    "h": 3,
+    "pen": [
+     57,
+     16,
+     4,
+     2
+    ]
+   },
+   {
+    "tier": 2,
+    "cap": 8,
+    "adds": [
+     "perch",
+     "feeder",
+     "incubator",
+     "heater"
+    ],
+    "cell": [
+     57,
+     13
+    ],
+    "w": 3,
+    "h": 3,
+    "pen": [
+     57,
+     16,
+     4,
+     2
+    ]
+   }
+  ],
+  "terrarium": [
+   {
+    "tier": 1,
+    "cap": 2,
+    "adds": [
+     "heater"
+    ],
+    "cell": [
+     40,
+     19
+    ],
+    "w": 3,
+    "h": 2,
+    "pen": [
+     40,
+     21,
+     4,
+     2
+    ]
+   },
+   {
+    "tier": 2,
+    "cap": 4,
+    "adds": [
+     "heater",
+     "breeding",
+     "auto_water"
+    ],
+    "cell": [
+     40,
+     19
+    ],
+    "w": 3,
+    "h": 2,
+    "pen": [
+     40,
+     21,
+     4,
+     2
+    ]
+   }
+  ],
+  "tide_pool": [
+   {
+    "tier": 1,
+    "cap": 4,
+    "adds": [
+     "breeding",
+     "auto_water"
+    ],
+    "cell": [
+     45,
+     19
+    ],
+    "w": 3,
+    "h": 2,
+    "pen": [
+     45,
+     21,
+     4,
+     3
+    ]
+   }
+  ],
+  "ember_pit": [
+   {
+    "tier": 1,
+    "cap": 4,
+    "adds": [
+     "breeding",
+     "heater"
+    ],
+    "cell": [
+     50,
+     19
+    ],
+    "w": 2,
+    "h": 2,
+    "pen": [
+     50,
+     21,
+     4,
+     2
+    ]
+   }
+  ],
+  "star_dome": [
+   {
+    "tier": 1,
+    "cap": 4,
+    "adds": [
+     "breeding",
+     "moon_lamp"
+    ],
+    "cell": [
+     55,
+     19
+    ],
+    "w": 3,
+    "h": 3,
+    "pen": [
+     55,
+     22,
+     4,
+     3
     ]
    }
   ]
@@ -1017,7 +3750,8 @@
   },
   "milk": {
    "species": [
-    "cow"
+    "cow",
+    "snow_yak"
    ],
    "home": [
     "barn"
@@ -1071,14 +3805,301 @@
    "home": [
     "apiary"
    ]
+  },
+  "ostrich_egg": {
+   "species": [
+    "ostrich"
+   ],
+   "home": [
+    "enclosure"
+   ]
+  },
+  "plume": {
+   "species": [
+    "ostrich",
+    "emu"
+   ],
+   "home": [
+    "enclosure"
+   ]
+  },
+  "emu_egg": {
+   "species": [
+    "emu"
+   ],
+   "home": [
+    "enclosure"
+   ]
+  },
+  "alpaca_fleece": {
+   "species": [
+    "alpaca"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "shed_scale": {
+   "species": [
+    "komodo"
+   ],
+   "home": [
+    "enclosure"
+   ]
+  },
+  "yak_wool": {
+   "species": [
+    "snow_yak"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "peacock_feather": {
+   "species": [
+    "peacock"
+   ],
+   "home": [
+    "aviary"
+   ]
+  },
+  "shell_moss": {
+   "species": [
+    "tortoise"
+   ],
+   "home": [
+    "terrarium"
+   ]
+  },
+  "buffalo_milk": {
+   "species": [
+    "buffalo"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "crystal_egg": {
+   "species": [
+    "crystal_hen"
+   ],
+   "home": [
+    "coop"
+   ]
+  },
+  "star_wool": {
+   "species": [
+    "star_sheep"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "moon_fluff": {
+   "species": [
+    "moon_hare"
+   ],
+   "home": [
+    "hutch"
+   ]
+  },
+  "star_dust": {
+   "species": [
+    "star_jelly"
+   ],
+   "home": [
+    "tide_pool"
+   ]
+  },
+  "glowcap": {
+   "species": [
+    "glow_gecko"
+   ],
+   "home": [
+    "terrarium"
+   ]
+  },
+  "pearl": {
+   "species": [
+    "coral_seahorse"
+   ],
+   "home": [
+    "tide_pool"
+   ]
+  },
+  "tide_pearl": {
+   "species": [
+    "coral_seahorse"
+   ],
+   "home": [
+    "tide_pool"
+   ]
+  },
+  "sea_milk": {
+   "species": [
+    "kelp_calf"
+   ],
+   "home": [
+    "tide_pool"
+   ]
+  },
+  "ice_pike": {
+   "species": [
+    "frost_otter"
+   ],
+   "home": [
+    "tide_pool"
+   ]
+  },
+  "ember_scale": {
+   "species": [
+    "ember_newt"
+   ],
+   "home": [
+    "ember_pit"
+   ]
+  },
+  "storm_fluff": {
+   "species": [
+    "cloud_sheep"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "roc_feather": {
+   "species": [
+    "storm_roc"
+   ],
+   "home": [
+    "aviary"
+   ]
+  },
+  "storm_eye": {
+   "species": [
+    "storm_roc"
+   ],
+   "home": [
+    "aviary"
+   ]
+  },
+  "wisp_thread": {
+   "species": [
+    "lantern_moth"
+   ],
+   "home": [
+    "aviary"
+   ]
+  },
+  "moon_milk": {
+   "species": [
+    "moon_cow"
+   ],
+   "home": [
+    "star_dome"
+   ]
+  },
+  "aurora_tuft": {
+   "species": [
+    "aurora_fox"
+   ],
+   "home": [
+    "star_dome"
+   ]
+  },
+  "glow_silk": {
+   "species": [
+    "deep_glowworm"
+   ],
+   "home": [
+    "terrarium"
+   ]
+  },
+  "moon_shard": {
+   "species": [
+    "frost_wyrmling"
+   ],
+   "home": [
+    "star_dome"
+   ]
+  },
+  "circuit_egg": {
+   "species": [
+    "chrome_hen"
+   ],
+   "home": [
+    "coop"
+   ]
+  },
+  "glow_wool": {
+   "species": [
+    "glow_sheep"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "coolant": {
+   "species": [
+    "circuit_goat"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "static_fluff": {
+   "species": [
+    "turbo_bunny"
+   ],
+   "home": [
+    "hutch"
+   ]
+  },
+  "synth_milk": {
+   "species": [
+    "circuit_cow"
+   ],
+   "home": [
+    "barn"
+   ]
+  },
+  "circuit_board": {
+   "species": [
+    "drone_hog"
+   ],
+   "home": [
+    "sty"
+   ]
+  },
+  "data_chip": {
+   "species": [
+    "drone_hog"
+   ],
+   "home": [
+    "sty"
+   ]
+  },
+  "static_scale": {
+   "species": [
+    "volt_gecko"
+   ],
+   "home": [
+    "terrarium"
+   ]
+  },
+  "alloy_egg": {
+   "species": [
+    "chrome_runner"
+   ],
+   "home": [
+    "enclosure"
+   ]
   }
  },
  "rules": {
   "friend_max": 1000,
-  "pet_friend": 30,
-  "fed_friend": 10,
-  "missed_pet_friend": -10,
-  "unfed_friend": -15,
+  "pet_friend": 15,
+  "fed_friend": 5,
   "silver_at": 250,
   "gold_at": 700,
   "mood_fed": 45,
@@ -1126,6 +4147,87 @@
   ],
   "truffle": [
    "truffle_broth"
+  ],
+  "ostrich_egg": [
+   "grand_omelette",
+   "giant_egg_custard"
+  ],
+  "emu_egg": [
+   "grand_omelette",
+   "giant_egg_custard"
+  ],
+  "plume": [
+   "feather_fan"
+  ],
+  "peacock_feather": [
+   "feather_fan"
+  ],
+  "roc_feather": [
+   "feather_fan"
+  ],
+  "alpaca_fleece": [
+   "fine_yarn"
+  ],
+  "yak_wool": [
+   "fine_yarn"
+  ],
+  "shed_scale": [
+   "scale_charm"
+  ],
+  "ember_scale": [
+   "ember_charm"
+  ],
+  "buffalo_milk": [
+   "buffalo_mozzarella"
+  ],
+  "moon_milk": [
+   "moon_cheese"
+  ],
+  "sea_milk": [
+   "cheese"
+  ],
+  "star_wool": [
+   "star_yarn"
+  ],
+  "moon_fluff": [
+   "star_yarn"
+  ],
+  "storm_fluff": [
+   "cloud_yarn"
+  ],
+  "glow_wool": [
+   "glow_yarn"
+  ],
+  "glow_silk": [
+   "fine_fabric"
+  ],
+  "aurora_tuft": [
+   "star_yarn"
+  ],
+  "crystal_egg": [
+   "giant_egg_custard"
+  ],
+  "shell_moss": [
+   "moss_tea_blend"
+  ],
+  "circuit_egg": [
+   "circuit_board"
+  ],
+  "alloy_egg": [
+   "circuit_board",
+   "data_chip"
+  ],
+  "coolant": [
+   "crystal_battery"
+  ],
+  "static_fluff": [
+   "glow_yarn"
+  ],
+  "synth_milk": [
+   "crystal_battery"
+  ],
+  "static_scale": [
+   "crystal_battery"
   ]
  },
  "legacy": [
@@ -1261,29 +4363,7 @@
  "legacy_moved": {
   "cow_bw_36_8": "cow_bw_31_8"
  },
- "planned": {
-  "chrome_hen": {
-   "arc": "gangsters",
-   "name": "Chrome Hen",
-   "home": "coop",
-   "source": "Robotics Bench chain",
-   "product": "circuit egg"
-  },
-  "moon_hare": {
-   "arc": "penguins",
-   "name": "Moon Hare",
-   "home": "hutch",
-   "source": "Moon pad quest",
-   "product": "moon fluff"
-  },
-  "ostrich": {
-   "arc": "",
-   "name": "Ostrich",
-   "home": "barn",
-   "source": "Sunscorch hub job",
-   "product": "big egg"
-  }
- },
+ "planned": {},
  "sellers": {
   "tam": {
    "name": "Tam",
@@ -1359,5 +4439,40 @@
     ]
    ]
   }
+ },
+ "home_arc": {
+  "tide_pool": "penguins",
+  "ember_pit": "penguins",
+  "star_dome": "penguins"
+ },
+ "pasture": [
+  39,
+  13,
+  22,
+  14
+ ],
+ "ladder": {
+  "classic": [
+   10,
+   40
+  ],
+  "exotic": [
+   20,
+   75
+  ],
+  "fantastic": [
+   25,
+   90
+  ],
+  "lab": [
+   10,
+   80
+  ],
+  "payback": [
+   20,
+   60
+  ],
+  "lab_vs_classic": 0.2,
+  "unique_cap": 200
  }
 }

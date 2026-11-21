@@ -109,6 +109,15 @@ func _run() -> void:
 		if str(a.get("kind")) == "cow_brown" and int(RanchFarm.state_of(a)["fed"]) == 30:
 			cow = a
 			break
+	if cow == null:
+		# C11b P1: wool (48) now outranks milk (36), so a short silo feeds sheep/llama/goats first; feed a cow by hand.
+		for a: Node in herd:
+			if str(a.get("kind")) == "cow_brown" and not bool(a.get("baby")):
+				var cst := RanchFarm.state_of(a)
+				cst["fed"] = 30
+				RanchFarm.save_state(a, cst)
+				cow = a
+				break
 	check(cow != null, "a fed cow")
 	if cow:
 		var before := GameState.count("milk")

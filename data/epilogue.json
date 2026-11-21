@@ -242,7 +242,7 @@
   "penguins": "cut_old_dog",
   "gangsters": "cut_rain_road"
  },
- "credits": "Made by Tom and his daughter: the story, the friends and the farm.\n\nMusic made with ACE Music.\n\nSound effects and ambience from CC0 packs on OpenGameArt.org (docs/AUDIO-CREDITS.md).\n\nBuilt with the Godot Engine.",
+ "credits": "Made by a small family team: the story, the friends and the farm.\n\nArt generated with OpenAI image models from our own designs, then cut, cleaned and finished by hand.\n\nWriting with Anthropic's Claude, from our own story outline.\n\nMusic made with ACE Music.\n\nSound effects and ambience from CC0 packs on OpenGameArt.org.\n\nBuilt with the Godot Engine (MIT licence).",
  "colonies": {
   "colony_coral": "Coral Reach glows rose-gold again, and Grandmother Brine tells the story of the farmer who came by ferry.",
   "colony_kelp": "In Kelp Hollow, the old song is sung every evening, and the kelp stays green.",

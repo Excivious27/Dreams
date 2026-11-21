@@ -1,0 +1,74 @@
+{
+ "_": "Single source of every value the Steamworks Chrome session enters (s1_17). tools/steam_handoff.py renders the 'When Tom's Steamworks account is ready' section of docs/STEAM.md from this file and checks it (--check in check.sh). Edit here, never in docs/STEAM.md between the steam-handoff markers.",
+ "app": {
+  "internal_id": "Dreams",
+  "store_name": "Dreams (working title; Tom picks the final title from docs/steam-store/ name check)",
+  "type": "Game",
+  "os": ["Windows 64-bit", "Linux + SteamOS"],
+  "developer": "WAITING ON TOM: studio name (no family names, no personal identity)",
+  "publisher": "WAITING ON TOM: same as developer unless he picks another"
+ },
+ "launch": [
+  {"exe": "Dreams.exe", "os": "Windows", "arch": "64-bit"},
+  {"exe": "Dreams.x86_64", "os": "Linux + SteamOS", "arch": "64-bit"}
+ ],
+ "depots": [
+  {"name": "Dreams Windows", "os": "Windows", "id_default": "APP_ID+1", "template": "steam/templates/depot_build_windows.vdf.in"},
+  {"name": "Dreams Linux", "os": "Linux + SteamOS", "id_default": "APP_ID+2", "template": "steam/templates/depot_build_linux.vdf.in"}
+ ],
+ "linux_runtime": "Steam Linux Runtime 3.0 (sniper) once the Linux CI boot test passes in the sniper container; otherwise leave 'none' and note it",
+ "branches": {"beta": "CI sets this live (SetLive beta)", "rc": "release candidate (Part B)", "default": "set live by hand in Steamworks only, never by CI"},
+ "cloud": {
+  "quota_bytes": 10485760,
+  "files_per_user": 10,
+  "rows": [
+   {"root": "WinAppDataRoaming", "subdir": "Godot/app_userdata/Dreams", "pattern": "save.json", "os": "Windows", "recursive": false},
+   {"root": "WinAppDataRoaming", "subdir": "Godot/app_userdata/Dreams", "pattern": "save.bak.json", "os": "Windows", "recursive": false},
+   {"root": "LinuxXdgDataHome", "subdir": "godot/app_userdata/Dreams", "pattern": "save.json", "os": "Linux", "recursive": false},
+   {"root": "LinuxXdgDataHome", "subdir": "godot/app_userdata/Dreams", "pattern": "save.bak.json", "os": "Linux", "recursive": false}
+  ],
+  "never_sync": ["save.tmp.json", "save.bad*.json", "mcache/", "logs/"],
+  "note": "Paths are Godot's default user:// for config/name 'Dreams' (no custom user dir). If config/name ever changes before release, pin application/config/use_custom_user_dir first (s1_17-03) and re-render these rows. P2's docs/steam/backends.md has the measured save sizes."
+ },
+ "store": {
+  "Short description": "docs/steam-store/short.txt",
+  "About This Game": "docs/steam-store/long.md",
+  "Tags": "docs/steam-store/tags.md",
+  "System requirements": "docs/steam-store/sysreq.md",
+  "Content survey + IARC": "docs/steam-store/ratings.md",
+  "Generative AI disclosure": "docs/steam-store/ai-disclosure.md",
+  "Privacy policy (text for the Pages URL)": "docs/steam-store/privacy.md",
+  "Price": "docs/steam-store/pricing.md",
+  "Supported languages": "English: interface + subtitles (no full audio)",
+  "Supported features": "Single-player; Steam Achievements; Steam Cloud; Family Sharing; Full controller support only after the Deck checklist row 'full controller play' passes; Online Co-op only after the Steam transport ships"
+ },
+ "price_usd": "WAITING ON TOM",
+ "launch_discount": "WAITING ON TOM (optional)",
+ "builder": {
+  "permissions": ["Edit App Metadata", "Publish App Changes To Steam"],
+  "group": "Builders (this app only; never 'Everyone'; never Manage Pricing & Discounts or financial rights)",
+  "github_environment": "steam (deployment branches: main only)",
+  "secrets": ["STEAM_USERNAME", "STEAM_PASSWORD (temporary, deleted after steam-login)", "STEAM_SECRET_WRITER (fine-grained PAT: this repo only, Environments read and write, 90 days)", "STEAM_CONFIG_VDF (written by the steam-login workflow, never by hand)"]
+ },
+ "ledger": {
+  "app_id": "PLACEHOLDER",
+  "store_package_id": "PLACEHOLDER",
+  "depot_windows": "PLACEHOLDER",
+  "depot_linux": "PLACEHOLDER",
+  "fee_paid_D0": "PLACEHOLDER",
+  "builder_account": "PLACEHOLDER (name only, never the password)",
+  "achievements_published": "PLACEHOLDER",
+  "rich_presence_uploaded": "PLACEHOLDER",
+  "store_submitted": "PLACEHOLDER",
+  "coming_soon_live": "PLACEHOLDER",
+  "first_beta_buildid": "PLACEHOLDER"
+ },
+ "kit": {
+  "app_icon_184.jpg": "Community/Client assets: App icon (184x184 JPG, flattened on the game's dark background)",
+  "shortcut_icon_512.png": "Client assets: Shortcut icon (512x512 PNG)",
+  "achievements/": "Stats & Achievements > Bulk import (CSV + 256x256 icons, from P2's data/achievements.json)",
+  "rich_presence_english.vdf": "Community > Rich Presence localization (from P2's data/rich_presence.json)",
+  "capsules/": "Store page graphical assets (P6 renders, exact sizes)",
+  "screenshots/": "Store page screenshots (1920x1080, P6)"
+ }
+}
