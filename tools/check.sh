@@ -1264,3 +1264,34 @@ echo "$about" | grep -E "FAIL|SCRIPT ERROR|anim_budget_test" || true
 if ! echo "$about" | grep -q "anim_budget_test: 0 failures"; then
   echo "anim_budget_test failed"; exit 1
 fi
+
+echo "== water_feature_test (C14b P2: smooth seamless fountain) =="
+wfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/water_feature_test.gd 2>&1)"
+echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|water_feature_test" || true
+if ! echo "$wfout" | grep -q "water_feature_test: PASS"; then
+  echo "water_feature_test failed"; exit 1
+fi
+
+echo "== glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fades, room fires) =="
+gkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/glow_kinds_test.gd 2>&1)"
+echo "$gkout" | grep -E "FAIL|SCRIPT ERROR|glow_kinds_test" || true
+if ! echo "$gkout" | grep -q "glow_kinds_test: PASS"; then
+  echo "glow_kinds_test failed"; exit 1
+fi
+
+echo "== mine_life_test (C14b P2: mine drips, lamp motes, fire lamps) =="
+mlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mine_life_test.gd 2>&1)"
+echo "$mlout" | grep -E "FAIL|SCRIPT ERROR|mine_life_test" || true
+if ! echo "$mlout" | grep -q "mine_life_test: PASS"; then
+  echo "mine_life_test failed"; exit 1
+fi
+
+echo "== strip registration (C14b P2: fire strips keep their base still) =="
+python3 tools/register_strip.py --check props/bonfire furniture/bubbling_pot || { echo "strip registration check failed"; exit 1; }
+
+echo "== shore_motion_test (C14b P2: lighthouse beam sweep, still water mill) =="
+smout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/shore_motion_test.gd 2>&1)"
+echo "$smout" | grep -E "FAIL|SCRIPT ERROR|shore_motion_test" || true
+if ! echo "$smout" | grep -q "shore_motion_test: PASS"; then
+  echo "shore_motion_test failed"; exit 1
+fi

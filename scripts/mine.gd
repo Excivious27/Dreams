@@ -805,6 +805,7 @@ func _walk_dist(a: Vector2i, b: Vector2i, max_steps: int) -> int:
 
 
 func after_ready() -> void:
+	MineLife.attach.call_deferred(self)  # C14b P2: drips and lamp-light dust motes (after every prop is placed)
 	if CHUNKED:
 		_make_chunks()
 	hud.toast("Floor %d · %s · %s" % [floor_no, str(theme.get("name", "")), str(_style.get("name", ""))], Color(0.9, 0.85, 1.0))
@@ -1162,7 +1163,7 @@ func _build_layers() -> void:
 	if not lava.is_empty() and Art.has("seamless", "lava") and soft_ground(lava, "lava", Color(0.12, 0.05, 0.03, 0.55), Color(1.1, 0.95, 0.9)):
 		if _anim_layer:
 			_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
-				var glow := 0.3 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
+				var glow := 0.3 + 0.15 * sin(PlayClock.now() * 2.5)
 				for c: Vector2i in _on_screen(lava):
 					if not lava.has(c + Vector2i(0, -1)):
 						# Soft round glow, not a hard bar (the shore itself is curved).
@@ -1171,12 +1172,12 @@ func _build_layers() -> void:
 						ci.draw_circle(gp, 4.0, Color(1, 0.55, 0.2, glow * 0.22)))
 	elif not lava.is_empty() and Art.has("tiles", "lava") and _anim_layer:
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
-			var frame := int(Time.get_ticks_msec() / 300) % 4
+			var frame := int(PlayClock.ms() / 250) % 4  # C14b P2: 2 anim-layer ticks per frame (even holds), game time
 			var vis := _on_screen(lava)
 			for c: Vector2i in vis:
 				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame)
 			# A dark rocky lip and a hot glow where lava meets floor, so it reads as a pit.
-			var glow := 0.35 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
+			var glow := 0.35 + 0.15 * sin(PlayClock.now() * 2.5)
 			for c: Vector2i in vis:
 				var o := Vector2(c * TILE)
 				if not lava.has(c + Vector2i(0, -1)):

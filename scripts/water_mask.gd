@@ -61,6 +61,24 @@ func _draw() -> void:
 	draw_rect(rect, Color.WHITE)
 
 
+## Game-time water (c14b_17-01): offsets wrapped to the seamless texture period
+## on the CPU (float64), so the scroll is seamless forever and pauses with the game.
+func _process(_d: float) -> void:
+	var mat := material as ShaderMaterial
+	if mat != null and is_visible_in_tree():
+		apply_time(mat, PlayClock.now())
+
+
+static func apply_time(mat: ShaderMaterial, t: float) -> void:
+	var dv: Variant = mat.get_shader_parameter("drift")
+	var d: Vector2 = dv if dv is Vector2 else Vector2(3.0, 1.2)
+	var cross := Vector2(-d.y * 1.7, d.x * 0.6)
+	mat.set_shader_parameter("off_a", Vector2(fposmod(d.x * t / 128.0, 1.0), fposmod(d.y * t / 128.0, 1.0)))
+	mat.set_shader_parameter("off_b", Vector2(fposmod(cross.x * t / 128.0, 1.0), fposmod(cross.y * t / 128.0, 1.0)))
+	mat.set_shader_parameter("off_d", Vector2(fposmod(d.x * t / 160.0, 1.0), fposmod(d.y * t / 160.0, 1.0)))
+	mat.set_shader_parameter("pulse_ph", fposmod(t * 2.0, TAU))
+
+
 ## Radius-1 square dilate (grow) or erode (shrink) of a 0/1 grid, as two 1-D
 ## passes. Outside the grid counts as no water.
 static func _morph(src: PackedByteArray, w: int, h: int, grow: bool) -> PackedByteArray:

@@ -6,6 +6,7 @@
 
 ## 2026-11-21 — CONDUCT 13 (audio depth) docs: report docs/reports/CONDUCT-13.md, Guide 40, TEXTS['13'], 7 audio inventory rows, PROJECT-MEMORY C13 entry. 398 findings, 6 packages + hooks; 140 songs, 20 jingles + gang UI kit, 22 CC0 sfx; ACE 64 credits left until Dec 1. Final CI c13i pending.
 ## 2026-11-21 — C14b P1: Anim core (scripts/anim.gd, shared sway shader on foliage/cloth, random start for every ambient strip), code rain/snow/blizzard, aurora ribbons, WaterLife ripples, AnimLayer on game time, animation budget test + probe gates
+## 2026-11-21 — C14b P2 (2026-11-21): Town Hall fountain smooth and seamless (still full-flow frame + water_flow shader + droplets); hot spring, glow pond, tide pools, lake waterfall, gold fountain the same; seamless water on game time; light kinds (fire flicker, steady lamps, neon dropouts, crystal breathe), room fires glow, homes go dark one by one; mine drips and lamp motes; lighthouse beam sweeps; mill holds still with smoke and spray; bonfire/bubbling pot registered.
 
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
 

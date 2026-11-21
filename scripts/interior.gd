@@ -226,6 +226,12 @@ func after_ready() -> void:
 			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
 			add_child(a)
 			a.play("idle")
+			AmbientFx.random_start(a, c)
+			if AmbientFx.steams(nm):
+				AmbientFx.steam(a, Vector2(0, -float(ai.get("cell_h", 48)) * 0.85), 2.5, 22.0, 1.0)  # twin candles/hearths never flicker in step (c14b_04-04, 15-15)
+			if glow and GameMap.glows(nm):  # room fires and lamps glow and flicker (c14b_04-06)
+				var ach := float(ai.get("cell_h", 48)) * asc
+				glow.lights.append([a, 26.0 + ach * 0.3, ach * 0.55])
 			if bool(p.get("solid", true)):
 				for i in w + 1:
 					blocked[Vector2i(c.x + i, c.y)] = true
@@ -255,6 +261,10 @@ func after_ready() -> void:
 		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
 		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and AmbientFx.hums(nm):  # casino/arcade lights hum (c14b_04-17)
+			AmbientFx.hum(ps, nm)
+		if ps and AmbientFx.steams(nm):  # kettles, stoves and pots steam softly (c14b_04-07)
+			AmbientFx.steam(ps, Vector2(0, -th * 0.85), 2.5, 22.0, 1.0)
 		if ps and nm in ["window_day", "window_night"]:
 			_win_props.append([ps, g])
 		if ps and crop.has_area():

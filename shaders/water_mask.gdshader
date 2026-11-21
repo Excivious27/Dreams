@@ -16,6 +16,13 @@ uniform float wobble = 0.3;
 // Deep water toward the middle of a big body (WATER_LOOK "deep": seamless/lake_deep).
 uniform sampler2D deep_tex : repeat_enable, filter_linear;
 uniform float deep_amt = 0.0;
+// C14b P2 (c14b_17-01, 15-07, 01-08): game-time scroll offsets, already wrapped
+// to the texture period by WaterMask._process (PlayClock), so the water stops
+// under menus and never jumps at the old hourly shader-clock rollover.
+uniform vec2 off_a = vec2(0.0);   // drift * t / 128, wrapped 0..1
+uniform vec2 off_b = vec2(0.0);   // cross drift * t / 128, wrapped
+uniform vec2 off_d = vec2(0.0);   // drift * t / 160, wrapped
+uniform float pulse_ph = 0.0;     // t * 2, wrapped to TAU
 varying vec2 wpos;
 
 void vertex() {
@@ -48,12 +55,12 @@ void fragment() {
 	// Open water: every texel the blur reads is water, so m == 1, a == 1 and the
 	// foam and bank bands are zero whatever the noise. Water colour only.
 	if (lut.b >= 0.999 && wobble < 0.6 && soft < 0.3) {
-		vec4 w0 = texture(water_tex, uv0 + drift * TIME / 128.0);
-		vec4 w1 = texture(water_tex, uv0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
+		vec4 w0 = texture(water_tex, uv0 + off_a);
+		vec4 w1 = texture(water_tex, uv0 + off_b + vec2(0.31, 0.55));
 		vec3 c0 = mix(w0.rgb, w1.rgb, 0.35) * tint.rgb;
 		if (deep_amt > 0.0) {
 			float md0 = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
-			c0 = mix(c0, texture(deep_tex, uv0 + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md0) * deep_amt);
+			c0 = mix(c0, texture(deep_tex, uv0 + off_d).rgb * tint.rgb, smoothstep(0.85, 1.0, md0) * deep_amt);
 		}
 		COLOR = vec4(c0, tint.a);
 	} else {
@@ -84,14 +91,14 @@ void fragment() {
 	vec3 col = vec3(0.0);
 	if (a > 0.0) {  // bank side (a == 0): the water colour is mixed out, skip its fetches
 		vec2 uv = wpos / 128.0;
-		vec4 w = texture(water_tex, uv + drift * TIME / 128.0);
-		vec4 w2 = texture(water_tex, uv * 1.0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
+		vec4 w = texture(water_tex, uv + off_a);
+		vec4 w2 = texture(water_tex, uv * 1.0 + off_b + vec2(0.31, 0.55));
 		col = mix(w.rgb, w2.rgb, 0.35) * tint.rgb;
 		if (deep_amt > 0.0) {
 			float md = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
-			col = mix(col, texture(deep_tex, uv + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md) * deep_amt);
+			col = mix(col, texture(deep_tex, uv + off_d).rgb * tint.rgb, smoothstep(0.85, 1.0, md) * deep_amt);
 		}
-		float pulse = 0.65 + 0.35 * sin(TIME * 2.0 + n * 6.0);
+		float pulse = 0.65 + 0.35 * sin(pulse_ph + n * 6.0);
 		float f = (smoothstep(0.46, 0.52, v) - smoothstep(0.55, 0.66, v)) * foam.a * pulse;
 		col = mix(col, foam.rgb, f);
 	}

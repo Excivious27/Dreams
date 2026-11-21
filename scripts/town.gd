@@ -391,7 +391,7 @@ func _place_buildings() -> void:
 	if WorldGen.winter_look("props", "fountain2") != "fountain2":  # frozen in winter (single frame)
 		prop("props", WorldGen.winter_look("props", "fountain2"), Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4)
 	elif Art.has("props", "fountain2"):
-		anim_prop("props", "fountain2", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4, 5.0)
+		WaterFeature.place(self, "props", "fountain2", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4, false)  # C14b P2: still basin, flowing water
 	elif Art.has("props", "fountain"):
 		prop("props", WorldGen.winter_look("props", "fountain"), Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 2), 4)
 
