@@ -809,7 +809,27 @@ static func dress(m: GameMap) -> void:
 		fl.queue_redraw()
 	m.set_meta("decor_nodes", nodes)
 	m.set_meta("decor_cells", cells)
+	_home_use_things(m, list, yard)
 	m._flows.clear()
+
+
+## c13_18-22: a placed Music Box / Jukebox / arcade cabinet can be used again: its cell
+## carries RecCenter's "rec_home" interaction (cleared when moved or stored). Guests
+## never get them in the host's house (house.gd's guest rule).
+static func _home_use_things(m: GameMap, list: Array, yard: bool) -> void:
+	for c: Vector2i in m.get_meta("decor_home_use", []):
+		var t: Variant = m.things.get(c)
+		if t is Dictionary and str((t as Dictionary).get("type", "")) == "rec_home":
+			m.things.erase(c)
+	var used: Array = []
+	if not yard and not Net.visiting():
+		for p in list:
+			if p is Dictionary and str(p.get("id", "")) in RecCenter.HOME_USE:
+				var id := str(p["id"])
+				var c := _cell_of(p)
+				m.things[c] = {"type": "rec_home", "what": id, "hint": str(RecCenter.HOME_USE[id])}
+				used.append(c)
+	m.set_meta("decor_home_use", used)
 
 
 ## Drawn height of a decor node (Sprite2D or AnimatedSprite2D), in world px.
