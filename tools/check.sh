@@ -1264,3 +1264,10 @@ echo "$mlout" | grep -E "FAIL|SCRIPT ERROR|mine_life_test" || true
 if ! echo "$mlout" | grep -q "mine_life_test: PASS"; then
   echo "mine_life_test failed"; exit 1
 fi
+
+echo "== anim core (C14b P1) =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_core_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|anim_core_test" || true
+if ! echo "$acout" | grep -q "anim_core_test: 0 failures"; then
+  echo "anim_core_test failed"; exit 1
+fi

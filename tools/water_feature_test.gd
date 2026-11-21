@@ -76,8 +76,7 @@ func _run() -> void:
 			await process_frame
 		_ok(is_equal_approx(t2, float(m.get_shader_parameter("t"))), "water stops while paused (game time)")
 		paused = false
-		var ph := float(m.get_shader_parameter("phase"))
-		_ok(ph >= 0.0 and ph < 1.0, "per-fountain phase in 0..1")
+		_ok(FileAccess.get_file_as_string("res://shaders/water_flow.gdshader").contains("MODEL_MATRIX[3]"), "per-fountain phase from world position (shared material)")
 		if wf:
 			_ok(Settings.reduced_motion() or wf.get_node_or_null("Drops") != null, "splash droplets when motion is on")
 		if out != "":
@@ -89,6 +88,12 @@ func _run() -> void:
 		for k in 8:
 			await process_frame
 		var hit := _find_look(current_scene, str(sc[1]))
+		if sc[0] == "beach":
+			var mats := {}
+			for n in current_scene.get_children():
+				if n.has_meta("water_look") and str(n.get_meta("water_look")) == "tide_pool":
+					mats[n.material] = true
+			_ok(mats.size() == 1, "the beach tide pools share one water material (%d)" % mats.size())
 		_ok(hit != null, "%s: %s is a still WaterFeature" % [sc[0], sc[1]])
 		if out != "" and hit is Node2D:
 			await _frames(hit, "%s/%s" % [out, sc[0]])

@@ -13,16 +13,18 @@ uniform float fall_top = 0.26;                   // local y where falling water 
 uniform float fall_bottom = 0.55;                // ... and where the basin begins
 uniform vec2 basin = vec2(0.5, 0.63);            // basin centre (local)
 uniform vec2 bowl = vec2(0.5, 0.18);             // upper bowl centre (local)
-uniform float phase = 0.0;                       // per-instance offset, 0..1
+uniform float phase = 0.0;                       // extra offset, 0..1 (the world-position phase is added)
 uniform float amp = 1.0;                         // 1 normal, ~0.3 reduced motion
 varying vec4 vcol;
-
-void vertex() {
-	vcol = COLOR;
-}
+varying float wph;  // per-fountain phase from its world position (one shared material per look)
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+void vertex() {
+	vcol = COLOR;
+	wph = hash(floor(MODEL_MATRIX[3].xy));
 }
 
 void fragment() {
@@ -38,7 +40,7 @@ void fragment() {
 	float h = cell.w * ts.y;                         // frame height in texels
 	// water = clearly blue pixels (stone, leaves and flowers stay untouched)
 	float w = smoothstep(0.10, 0.28, col.b - col.r) * col.a;
-	float tt = t + phase * 60.0;
+	float tt = t + fract(phase + wph) * 60.0;
 	float lift = 0.0;
 	if (lc.y > fall_top && lc.y < fall_bottom) {
 		// falling sheets: bright bands slide down each 2-texel column at its own pace

@@ -30,6 +30,7 @@ const LOOKS := {
 }
 
 static var _shader: Shader
+static var _mats := {}  # look name + frame rect -> ONE shared ShaderMaterial (P1 budget: few materials per map)
 var _mat: ShaderMaterial
 var _phase := 0.0
 var _drops: CPUParticles2D
@@ -86,16 +87,22 @@ static func still(a: AnimatedSprite2D, name: String) -> AnimatedSprite2D:
 
 func _make_mat(name: String, tex: Texture2D, reg: Rect2) -> void:
 	var look: Dictionary = LOOKS[name]
+	_look = name
+	_size = reg.size
+	var key := "%s|%s|%s" % [name, tex.resource_path, reg]
+	if _mats.has(key) and is_instance_valid(_mats[key]):
+		_mat = _mats[key]
+		return
 	if _shader == null:
 		_shader = load("res://shaders/water_flow.gdshader")
 	_mat = ShaderMaterial.new()
 	_mat.shader = _shader
+	_mats[key] = _mat
 	var ts := tex.get_size()
 	_mat.set_shader_parameter("cell", Vector4(reg.position.x / ts.x, reg.position.y / ts.y, reg.size.x / ts.x, reg.size.y / ts.y))
 	for k in ["fall_top", "fall_bottom", "basin", "bowl"]:
 		_mat.set_shader_parameter(k, look[k])
-	_look = name
-	_size = reg.size
+	_mat.set_shader_parameter("amp", 0.3 if Settings.reduced_motion() else 1.0)
 
 
 func setup(group: String, name: String, s: Sprite2D) -> void:
@@ -125,9 +132,7 @@ func _at(v: Vector2) -> Vector2:
 
 
 func _ready() -> void:
-	_phase = fposmod(sin(global_position.x * 12.9898 + global_position.y * 78.233) * 43758.5453, 1.0)
-	_mat.set_shader_parameter("phase", _phase)
-	_mat.set_shader_parameter("amp", 0.3 if Settings.reduced_motion() else 1.0)
+	_phase = fposmod(sin(global_position.x * 12.9898 + global_position.y * 78.233) * 43758.5453, 1.0)  # droplet seed; the shader takes its phase from the world position
 	if not Settings.reduced_motion():
 		if not (LOOKS[_look]["splash"] as Array).is_empty():
 			_add_drops()
