@@ -174,5 +174,46 @@ func _run() -> void:
 			t.later(t._festival_event.bind(fid))
 			await _drive()
 			check(GameState.run["flags"].has("fest_%s_%d" % [fid, int(f[1])]), "%s: %s played" % [arc, fid])
+	# Tide Feast on the beach (summer 24): the venue spot, alcohol refused, a dish lifts the town.
+	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
+	GameState.run["intro_done"] = true
+	GameState.run["day"] = 52
+	GameState.run["time"] = 12 * 60
+	check(FestivalExtra.is_alcohol("wine") and not FestivalExtra.is_alcohol("cake"), "wine is no potluck dish")
+	check(FestivalExtra.potluck_band("wine") == 0, "alcohol scores nothing")
+	GameState.run["flags"]["beach_seen"] = true
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/beach.tscn")
+	for k in 12:
+		await process_frame
+	var b := current_scene as GameMap
+	var spot := Vector2i(-1, -1)
+	for c: Vector2i in b.things:
+		if str(b.things[c].get("type", "")) == "festival_venue":
+			spot = c
+	check(spot.x >= 0, "Tide Feast spot on the beach")
+	var fr := ""
+	for id in GameState.npcs:
+		if Hearts.in_arc(str(id)):
+			fr = str(id)
+			break
+	GameState.run["friendship"][fr] = 10
+	GameState.add_item("cake", 1)
+	if spot.x >= 0:
+		picks = [0]
+		b.interact(spot, b.things[spot])
+		await _drive()
+		check(GameState.run["flags"].has("fest_tide_feast_52"), "potluck entered")
+		check(int(GameState.run["friendship"][fr]) > 10, "the pot lifts the town (%d)" % int(GameState.run["friendship"][fr]))
+	GameState.run["day"] = 53
+	b = null
+	change_scene_to_file("res://scenes/beach.tscn")
+	for k in 12:
+		await process_frame
+	var none := true
+	for c: Vector2i in (current_scene as GameMap).things:
+		if str((current_scene as GameMap).things[c].get("type", "")) == "festival_venue":
+			none = false
+	check(none, "no Tide Feast spot the next day")
 	print("festival_events_test: ", "OK" if fails == 0 else "FAILED (%d)" % fails)
 	quit(0 if fails == 0 else 1)

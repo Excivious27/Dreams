@@ -317,13 +317,13 @@
    "icon": "festival"
   },
   {
-   "id": "cider_day",
+   "id": "apple_day",
    "season": "fall",
    "day": 1,
    "kind": "holiday",
    "arc": "both",
-   "name": "Cider Pressing Day",
-   "name_gang": "Cider Run",
+   "name": "Apple Pressing Day",
+   "name_gang": "Apple Run",
    "venue": {
     "scene": "farm",
     "cell": [
@@ -338,17 +338,17 @@
    "weather": "",
    "host": "Hazel",
    "host_gang": "Halo",
-   "handler": "cider_day",
-   "stall": "festival_cider_day",
-   "prize_pool": "festival_cider_day_prize",
-   "music": "festival_cider_day",
+   "handler": "apple_day",
+   "stall": "festival_apple_day",
+   "prize_pool": "festival_apple_day_prize",
+   "music": "festival_apple_day",
    "music_fallback": "festival",
    "needs": {
     "marina_tier": 0,
     "flag": ""
    },
-   "line": "Cider Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
-   "line_gang": "Cider Run: the crew presses a truckload of apples. Fresh juice on every stoop.",
+   "line": "Apple Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
+   "line_gang": "Apple Run: the crew presses a truckload of apples. Fresh juice on every stoop.",
    "icon": "holiday"
   },
   {

@@ -75,9 +75,9 @@ ROWS = [
         "Moon Jellies: at night the glowing jellies drift past the pier.",
         "Neon Tide: the glow buoys light up the bay tonight.", year_min=2, music_fallback="festival_night_2"),
     # FALL
-    row("cider_day", "fall", 1, "holiday", "Cider Pressing Day", "Cider Run", FARM, "allday", "Hazel", "Halo",
-        "Cider Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
-        "Cider Run: the crew presses a truckload of apples. Fresh juice on every stoop."),
+    row("apple_day", "fall", 1, "holiday", "Apple Pressing Day", "Apple Run", FARM, "allday", "Hazel", "Halo",
+        "Apple Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
+        "Apple Run: the crew presses a truckload of apples. Fresh juice on every stoop."),
     row("derby", "fall", 9, "marina", "Fishing Derby", "Fishing Derby", {"scene": "beach", "cell": [30, 12]}, "day", "Ines", "Ines",
         "Fishing Derby: biggest fish on the pier by 2pm wins. Ines is judging.",
         "Fishing Derby: biggest catch by 2pm takes the pot.", marina_tier=2),

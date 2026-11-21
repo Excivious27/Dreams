@@ -5,7 +5,10 @@ extends RefCounted
 ## Winter Market / Night Market, Gift Swap Feast / Year's End Swap. One try per festival day (key);
 ## every choice is seeded by the day so a reload replays the same festival. All ages.
 
-const HANDLED := ["blossom", "founders", "hollow", "winter_market", "gift_swap"]
+const HANDLED := ["blossom", "founders", "hollow", "winter_market", "gift_swap", "tide_feast"]
+## Festivals held off the town plaza: their scene adds the festival spot through venue_thing(m)
+## (one hook line in the scene's build) and routes it through interact(m, thing).
+const VENUE := ["tide_feast"]
 const STEPS := ["up", "down", "left", "right"]
 
 
@@ -45,6 +48,136 @@ static func play(m: GameMap, fest: String, key: String) -> void:
 			await _winter_market(m, key)
 		"gift_swap":
 			await _gift_swap(m, key)
+		"tide_feast":
+			await _tide_feast(m, key)
+
+
+## Today's festival row held in this map's scene (venue.scene), {} when none.
+static func venue_today(scene: String) -> Dictionary:
+	if GameState.run.is_empty():
+		return {}
+	var d := int(GameState.run.get("day", 1))
+	for r: Dictionary in FestivalWords.rows_on(GameState.season(), (d - 1) % 28 + 1):
+		if str(r["kind"]) != "holiday" and str((r["venue"] as Dictionary).get("scene", "")) == scene and str(r["id"]) in VENUE:
+			return r
+	return {}
+
+
+## Hook for a venue scene's build: places the festival spot (A: <name>) at the row's cell.
+static func venue_thing(m: GameMap) -> void:
+	var r := venue_today(m.scene_id())
+	if r.is_empty():
+		return
+	var c0: Array = r["venue"]["cell"]
+	var at := Vector2i(int(c0[0]), int(c0[1]))
+	for rad in 12:  # nearest open cell to the row's cell (sea, props and things are skipped)
+		var found := false
+		for dy in range(-rad, rad + 1):
+			for dx in range(-rad, rad + 1):
+				var q := at + Vector2i(dx, dy)
+				if maxi(absi(dx), absi(dy)) == rad and not m.blocked.has(q) and not m.things.has(q) and q.x > 1 and q.y > 1 and q.x < m.cols - 2 and q.y < m.rows - 2:
+					at = q
+					found = true
+					break
+			if found:
+				break
+		if found:
+			break
+	var c: Array = [at.x, at.y]
+	m.set_thing(int(c[0]), int(c[1]), {"type": "festival_venue", "fest": str(r["id"]), "hint": "A: " + FestivalWords.name_of(str(r["id"]))}, false)
+
+
+## Hook for a venue scene's interact: true when it handled the thing.
+static func interact(m: GameMap, thing: Dictionary) -> bool:
+	if str(thing.get("type", "")) != "festival_venue":
+		return false
+	m.later(_venue_play.bind(m, str(thing.get("fest", ""))))
+	return true
+
+
+static func _venue_play(m: GameMap, fest: String) -> void:
+	var fh := FestivalWords.hours_of(fest)
+	var h := (int(GameState.run.get("time", 0)) % 1440) / 60.0
+	if fh.y > 0.0 and (h < fh.x or h >= fh.y):
+		m.hud.toast(FestivalWords.not_open_text(fest, fh, h < fh.x), Color(1, 0.9, 0.6))
+		return
+	var key := "fest_%s_%d" % [fest, int(GameState.run["day"])]
+	if m.player:
+		m.player.frozen = true
+	if GameState.run["flags"].has(key):
+		await m.say([{"who": FestivalWords.host_of(fest), "text": FestivalWords.again_text(fest)}])
+	else:
+		await play(m, fest, key)
+		if GameState.run["flags"].has(key):
+			RecCenter.festival_bonus(m, key)
+	if m.player:
+		m.player.frozen = false
+
+
+## Tide Feast / Boardwalk Block Party: one dish into the big pot (the crew grill). Score by value and
+## quality -> a town-wide friendship band (never a penalty). Alcohol is a trade good: never an entry.
+const ALCOHOL := ["wine", "ale", "mead", "cider", "beer", "lager", "whiskey", "whisky", "rum", "brandy", "sake", "champagne"]
+
+
+static func is_alcohol(id: String) -> bool:
+	var words := (id + " " + GameState.item_name(id)).to_lower().replace("_", " ").split(" ", false)
+	for w in words:
+		if w in ALCOHOL:
+			return true
+	return false
+
+
+static func potluck_band(id: String) -> int:
+	if is_alcohol(id) or not GameState.items.has(id):
+		return 0
+	var it: Dictionary = GameState.items[id]
+	var q: Dictionary = GameState.quality_of(id)
+	var qp := 30 if int(q.get("i", 0)) > 0 else (20 if int(q.get("g", 0)) > 0 else (10 if int(q.get("s", 0)) > 0 else 0))
+	var sc := GameState.item_value(id) + qp + (40 if str(it.get("type", "")) == "food" else 0)
+	return 4 if sc >= 400 else (3 if sc >= 200 else (2 if sc >= 90 else (1 if sc >= 30 else 0)))
+
+
+const POTLUCK_GAIN := [0, 10, 20, 40, 80]
+
+
+static func _tide_feast(m: GameMap, key: String) -> void:
+	var host := FestivalWords.host_of("tide_feast")
+	var opts: Array = []
+	for id in GameState.run["inventory"].keys():
+		var sid := str(id)
+		var ty := str(GameState.items.get(sid, {}).get("type", ""))
+		if GameState.count(sid) > 0 and not GameState.is_locked(sid) and (ty in ["food", "crop", "fruit", "fish"] or is_alcohol(sid)):
+			opts.append(sid)
+	opts.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) > GameState.item_value(b))
+	opts = opts.slice(0, 4)
+	if opts.is_empty():
+		await m.say([{"who": host, "text": "Bring something for the pot! A fish, a crop, a dish: anything you're proud of." if _pen() else "Bring something for the grill. Fish, veg, whatever you've got."}])
+		return
+	var nm: Array = []
+	for id: String in opts:
+		nm.append(GameState.item_name(id))
+	nm.append("Not now")
+	var c: int = await _ask(m, host, "One thing each into the big pot. What are you adding?" if _pen() else "One thing each on the grill. What's yours?", nm)
+	if c < 0 or c >= opts.size():
+		return
+	var pick: String = opts[c]
+	if is_alcohol(pick):
+		await m.say([{"who": host, "text": "That's for trading, not for the pot. Pick something we can all eat!"}])
+		return
+	GameState.run["flags"][key] = true
+	GameState.add_item(pick, -1)
+	var band := potluck_band(pick)
+	var gain: int = POTLUCK_GAIN[band]
+	var lines := ["A polite stir. Nobody minds.", "A nice touch. People go back for seconds.", "Lovely! The pot smells wonderful now.", "Wonderful! Everyone's talking about it.", "The best pot in years! The whole beach cheers."] if _pen() \
+		else ["It's on the grill. Nobody complains.", "Not bad. A few people come back.", "Good stuff. The line gets longer.", "Big hit. The whole boardwalk's talking.", "Best grill in years. The crew salutes you."]
+	await m.say([{"who": host, "text": lines[band]}])
+	if gain > 0:
+		for id in GameState.npcs:
+			if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
+				GameState.add_friend(str(id), gain)
+		m.hud.toast("Everyone you know +%d friendship" % gain, Color(1, 0.8, 0.9))
+	if band >= 3:
+		GameState.run["flags"][key + "_place"] = 1
 
 
 ## Villagers you could dance with: 4+ hearts, still in town, this arc; a partner (Romance) dances

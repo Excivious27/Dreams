@@ -269,6 +269,8 @@ func _palm_band() -> void:
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	if Marina.interact(self, c, thing):
 		return true
+	if FestivalExtra.interact(self, thing):  # C15 P6 hook: Tide Feast at the beach
+		return true
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
@@ -430,6 +432,7 @@ func _after_sea() -> void:
 
 
 func _place_props() -> void:
+	FestivalExtra.venue_thing(self)  # C15 P6 hook: today's beach festival spot (Tide Feast)
 	if not Art.has("buildings", "galleon"):
 		return
 	var pen := GameState.is_penguins()
