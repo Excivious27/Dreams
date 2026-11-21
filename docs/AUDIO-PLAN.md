@@ -389,3 +389,141 @@ coop/barn/hutch/aviary/terrarium/enclosure interiors; `animal_show` = the unused
 (so_2b45c6a9...), played within 5 cells of the fair ribbon stand. Both logged in ACE_LOG with alt_of.
 Not yet re-fetched: amb_space / amb_crystal second takes (habitat_moon / habitat_crystal beds),
 kit second takes (creature chimes), jin_warm second (j_ranch_up), gang lab pen take.
+
+## C13 P2 songs: outdoor seasons, night/weather, gang valley, hub nights, imports (CONDUCT 13 P2)
+
+Names follow C13_CONTRACT section 3 (all optional at runtime: `Music.resolve` falls back when a file is missing).
+Penguin seasonal `<map>_<season>`; gang day `<map>_gang`; gang seasonal `<map>_<season>_gang`; `morning` (dawn);
+`storm`/`storm_gang`; `<hub>_night`; second takes and rotation partners as `<name>_2`; re-renders replace the base
+file (old take stays in ACE_LOG `previous`, swap back with `tools/ace_batch.py --swap`).
+
+How they were made: ACE v1, 150 s, lyrics = six cue-tagged sections (intro, theme A, theme B, bridge, theme A,
+outro "no ritardando, ready to loop"), instrumental. Imported through `ace_import.py` (trim, -16 LUFS phone master,
+loop seam). Accept rule: ace_pick score >= 60 and r999 >= 6000 Hz; a re-render only replaced its base when it passed;
+a second take became `<name>_2` only at score >= 60.
+
+Finding from this batch (keep for every future calm render): the "hi-fi" phrase does NOT fix muffled renders on
+either model (C12's v1.1 re-renders of night/rain/chapel/sanctuary still measured r999 ~1.8-2.6 kHz). What sets the
+top end is the arrangement: a piano-, celesta-, harp- or cello-led calm song with no drums comes out band-limited;
+the same brief with a fingerpicked/strummed guitar or mandolin and a crisp shaker / brushed hi-hat / tambourine
+pulse measures 7-10 kHz. Rain on piano failed twice the r999 gate (1.4 and 2.1 kHz); rain on guitar + shaker passed
+(8.4 and 9.2 kHz). Every calm prompt here carries "crisp shaker and brushed hi-hat" and a plucked string lead.
+
+Two takes of one gang valley prompt were split across maps (forest_gang/meadow_gang, lake_gang/mountain_gang,
+forest_fall_gang/meadow_fall_gang, forest_winter_gang/meadow_winter_gang) so each valley map has its own song;
+countryside/riverlands/highlands fall back through the resolver (P1 maps them to a valley base).
+
+| Song | Kind | ACE id (chosen) | score | r999 Hz | from |
+|---|---|---|---|---|---|
+| battle_escort_gang_2 | import of unused take | so_64c97c92bb064fc2b918f443 | 75.83 | 10304 | ACE_LOG second take of battle_escort_gang |
+| battle_gang_2 | import of unused take | so_cf83d1537fcf4ba8af7e6f67 | 79.54 | 9363 | ACE_LOG second take of battle_gang |
+| battle_penguin_2 | import of unused take | so_0217f2f8cb7a49bc9a4ad78d | 89.06 | 9908 | ACE_LOG second take of battle_penguin |
+| battle_siege_gang_2 | import of unused take | so_a24de07c94ab43b9a5683208 | 77.32 | 9165 | ACE_LOG second take of battle_siege_gang |
+| beach_2 | import of unused take | so_33c672be2032459abfec3f79 | 95.77 | 9584 | ACE_LOG second take of beach |
+| beach_fall | new render | so_a9b9952198b44649a9b2f0ea | 94.21 | 7830 | beach_fall |
+| beach_fall_2 | new render | so_d766b9b93f4e4da38ee556e9 | 91.97 | 8566 | beach_fall |
+| beach_gang | new render | so_f356fef9b93e4430860081e4 | 94.36 | 8851 | beach_gang |
+| beach_gang_2 | new render | so_b2cb0e7239ad42d2b39d76a1 | 79.95 | 9739 | beach_gang |
+| beach_spring | new render | so_a6cf07b39756472c9906f468 | 94.29 | 9263 | beach_spring |
+| beach_spring_2 | new render | so_1f1c6444c27842238559e58b | 92.34 | 8379 | beach_spring |
+| campaign_map_gang_2 | import of unused take | so_b7b0059ee5e2471caf0b077e | 81.13 | 9125 | ACE_LOG second take of campaign_map_gang |
+| cattopia_2 | import of unused take | so_b502908c48b949dfb1b24747 | 91.05 | 7775 | ACE_LOG second take of cattopia |
+| colony_ember_2 | import of unused take | so_b0286c28d4294931a20ca39e | 75.92 | 9911 | ACE_LOG second take of colony_ember |
+| combat_elite_2 | import of unused take | so_931840c6750b475a8d6c7d9a | 90.72 | 9685 | ACE_LOG second take of combat_elite |
+| combat_elite_gang_2 | import of unused take | so_748b08ebbb4d4a35b455fef9 | 76.41 | 9239 | ACE_LOG second take of combat_elite_gang |
+| combat_light_2 | import of unused take | so_e616f10fc7aa422296c138f6 | 91.44 | 9365 | ACE_LOG second take of combat_light |
+| combat_light_gang_2 | import of unused take | so_37513ad16ec64be286506818 | 78.63 | 9947 | ACE_LOG second take of combat_light_gang |
+| docks_2 | import of unused take | so_a0677377e0ee4f28840516fa | 77.72 | 7119 | ACE_LOG second take of docks |
+| farm_fall_gang | new render | so_3041c6263181412bab9cbf57 | 97.17 | 9841 | farm_fall_gang |
+| farm_fall_gang_2 | new render | so_f9299b764d6641e49ac31555 | 81.4 | 9395 | farm_fall_gang |
+| farm_gang | new render | so_2b53b177fd704d7ea7334538 | 97.37 | 8715 | farm_gang |
+| farm_gang_2 | new render | so_18df151f3686476b96afced0 | 91.4 | 8737 | farm_gang |
+| farm_summer | new render | so_055c1168afa746e080e430da | 87.73 | 9603 | farm_summer |
+| farm_winter_gang | new render | so_0016b94948ee4ec181b22d75 | 74.92 | 7633 | farm_winter_gang |
+| festival_night_2 | import of unused take | so_64d77828112c4bc4a1d5767d | 85.33 | 8401 | ACE_LOG second take of festival_night |
+| finargle_2 | import of unused take | so_fc0d26604eae4f67a92a0b45 | 81.66 | 8360 | ACE_LOG second take of finargle |
+| forest | re-render | so_a0c5fc98b3fd4c27a5aabe24 | 89.5 | 8358 | forest(rerender) |
+| forest_fall_gang | new render | so_c1dd4bac48c5488cb2673322 | 93.47 | 8929 | valley_fall_gang |
+| forest_gang | new render | so_7f4d8088b9fd449eb61de722 | 81.86 | 9634 | valley_gang |
+| forest_winter_gang | new render | so_f32323d4a60b49f58839c2d5 | 94.6 | 7001 | valley_winter_gang |
+| hideout | re-render | so_416f5478cf0042f2a6190801 | 76.43 | 8106 | hideout(retry,cool jazz) |
+| house_2 | import of unused take | so_8b5dfc56175945479e5b0add | 82.4 | 8555 | ACE_LOG second take of house |
+| inn_2 | import of unused take | so_abddc00e18cd4952833a1db1 | 85.76 | 9432 | ACE_LOG second take of inn |
+| lake | re-render | so_7b1abfa3314746fd96aeebcd | 74.03 | 6583 | lake(rerender) |
+| lake_fall | new render | so_c92822a13a454b54a61c5f69 | 83.73 | 7290 | lake_fall(retry,guitar) |
+| lake_fall_2 | new render | so_e69e87c59e7941ecbe668337 | 80.42 | 8541 | lake_fall(retry,guitar) |
+| lake_gang | new render | so_6957b910cf56407082a0daf8 | 91.06 | 8629 | valley_gang_2 |
+| lake_winter | new render | so_c4b1fc3019ea440c920b1fd8 | 86.82 | 8484 | lake_winter |
+| marsh | re-render | so_ec9f8a85a292442a9d5a8555 | 91.64 | 9273 | marsh(rerender) |
+| marsh_2 | new render | so_8ac4fb59bc284eab9da4d60b | 90.6 | 7834 | marsh(rerender) |
+| meadow_2 | import of unused take | so_b9914927cd834d459fc6455c | 88.49 | 9592 | ACE_LOG second take of meadow |
+| meadow_fall | new render | so_89fde07a117f433d8a500f5b | 93.35 | 8266 | meadow_fall |
+| meadow_fall_2 | new render | so_f6ec74de03c74492816ed56e | 87.61 | 8275 | meadow_fall |
+| meadow_fall_gang | new render | so_254acc01f98c4abb8060434f | 77.55 | 9800 | valley_fall_gang |
+| meadow_gang | new render | so_b4a35532bffe4c85ade0cc7f | 73.45 | 9122 | valley_gang |
+| meadow_winter | new render | so_041ea613d76a421dabb022bc | 92.91 | 9283 | meadow_winter |
+| meadow_winter_2 | new render | so_359f3e03f71e445ca02fb483 | 91.55 | 6962 | meadow_winter |
+| meadow_winter_gang | new render | so_f6f50fd5923145ad97025035 | 81.43 | 8982 | valley_winter_gang |
+| mega_desert_2 | import of unused take | so_064380943990443781c0153d | 84.21 | 9473 | ACE_LOG second take of mega_desert |
+| mega_desert_canyon_2 | import of unused take | so_78f15a8b872b4fb1ba0ddec8 | 95.41 | 9000 | ACE_LOG second take of mega_desert_canyon |
+| mega_gilt_2 | import of unused take | so_ed8c7d6ad6d249cab4cfa488 | 76.5 | 6589 | ACE_LOG second take of mega_gilt |
+| mega_gloam | re-render | so_7b51e3a1f2484a3ba02638f7 | 72.03 | 6841 | mega_gloam(rerender) |
+| mega_hollow_deeps | re-render | so_b7b88e9c4e3041bb90b900db | 85.01 | 8417 | mega_hollow_deeps(rerender) |
+| mega_hollow_deeps_2 | new render | so_379983798f3748b4a01f1915 | 76.42 | 8952 | mega_hollow_deeps(rerender) |
+| mega_iron_2 | import of unused take | so_f82aa988f1e547639a094ad8 | 89.42 | 9326 | ACE_LOG second take of mega_iron |
+| mega_station_2 | import of unused take | so_603e8dcb11144ee19796ccbb | 83.05 | 10064 | ACE_LOG second take of mega_station |
+| mega_wind_2 | import of unused take | so_4001713a3c9341728f396c1e | 89.02 | 9430 | ACE_LOG second take of mega_wind |
+| morning | new render | so_c12601f0fc3349839ffcd9db | 73.21 | 9044 | morning |
+| mountain_fall | new render | so_f4403252b7014ba49e77ce1e | 88.57 | 8767 | mountain_fall |
+| mountain_fall_2 | new render | so_6c19bdadfd5343958daa60b3 | 71.02 | 9839 | mountain_fall |
+| mountain_gang | new render | so_277648162bfe41748ec237d5 | 71.85 | 9261 | valley_gang_2 |
+| mountain_winter | new render | so_37516c9ef06d46b186eb666d | 65.5 | 10294 | mountain_winter |
+| neon_2 | import of unused take | so_4edc36b94cf14541afc54ef7 | 79.06 | 10086 | ACE_LOG second take of neon |
+| neon_night | new render | so_6685f7569d944294ad4abe69 | 62.3 | 10293 | neon_night |
+| night | re-render | so_32d4cb3ae0824f2eb0b54f96 | 61.74 | 8416 | night(rerender) |
+| night_gang | re-render | so_3255160d23d0415e97348616 | 71.53 | 8045 | night_gang(rerender) |
+| night_summer | new render | so_2355895065f0455e866a43b1 | 90.74 | 7311 | night_summer |
+| night_winter | new render | so_88ea22291d084405a8b32bd3 | 69.65 | 7892 | night_winter |
+| night_winter_2 | new render | so_99bca08abd184db494568d11 | 64.32 | 8154 | night_winter |
+| night_winter_gang | new render | so_5456989509a3495284c5d7cc | 88.51 | 7635 | night_winter_gang |
+| night_winter_gang_2 | new render | so_2de22007982342b2b047952b | 83.78 | 6917 | night_winter_gang |
+| orchard_2 | import of unused take | so_f2032f939c1a43db84c4f836 | 94.96 | 9125 | ACE_LOG second take of orchard |
+| outskirts_2 | import of unused take | so_e91016b2d0be49aeb60203a4 | 73.34 | 9696 | ACE_LOG second take of outskirts |
+| outskirts_night | new render | so_3d9795b881c14168a3e2f98d | 77.98 | 10220 | outskirts_night |
+| outskirts_night_2 | new render | so_1145cf3dea054f6a96961823 | 67.27 | 9381 | outskirts_night |
+| quarry_2 | import of unused take | so_4e62e5b1cef84fd6b90cf7ea | 77.0 | 9540 | ACE_LOG second take of quarry |
+| raid_2 | import of unused take | so_106bd2c3dea9439dbba24201 | 76.76 | 10212 | ACE_LOG second take of raid |
+| rain | re-render | so_9a3504eb701640afbb2df7cb | 87.85 | 8363 | rain(retry,guitar) |
+| rain_2 | new render | so_fbfa8dfef4a649af9aef4af9 | 77.98 | 9155 | rain(retry,guitar) |
+| rain_gang | new render | so_3b7550df261e42b3ab66475d | 75.18 | 8914 | rain_gang |
+| sanctuary | re-render | so_9bdf63fc83b443868d8697b1 | 86.9 | 6353 | sanctuary(rerender) |
+| shop_2 | import of unused take | so_dc4053df76b44890a02a0463 | 77.46 | 7226 | ACE_LOG second take of shop |
+| shop_gang_2 | import of unused take | so_8650580e16b04317bdbb404a | 77.92 | 9306 | ACE_LOG second take of shop_gang |
+| sky | re-render | so_68a8b3a3688943a8847552dc | 91.02 | 9594 | sky(retry,guitar) |
+| sky_2 | new render | so_e4e54ec07bb3412dbec9be8f | 77.72 | 9496 | sky(retry,guitar) |
+| storm | new render | so_03cffc0d0ec04c9cbb7e88ba | 76.85 | 7651 | storm |
+| storm_2 | new render | so_8b22b8c16604472094d73098 | 68.98 | 7469 | storm |
+| storm_gang | new render | so_a340a460dc2148ada475dc61 | 71.54 | 9189 | storm_gang |
+| storm_gang_2 | new render | so_e1e43770284b4d41900788d0 | 69.92 | 9345 | storm_gang |
+| town | re-render | so_48d4ab28e17e4fc398dbe18f | 92.34 |  | ACE_LOG second take of town |
+| town_2 | import of unused take | so_0b8240c213be46339e892860 | 70.3 | 4008 | ACE_LOG second take of town |
+| town_fall | new render | so_d5c9d2a697334a699c6aa9e8 | 89.27 | 8295 | town_fall |
+| town_fall_2 | new render | so_8d32f3d613844ae9a3456099 | 86.92 | 8228 | town_fall |
+| town_gang | new render | so_95285d538bdc4f348d4b002b | 79.56 | 9059 | town_gang |
+| town_gang_2 | new render | so_ed684e4dc97b44baa92c3176 | 73.41 | 10165 | town_gang |
+| town_winter | new render | so_1231d87a7d5e435da7d2e39a | 81.49 | 10384 | town_winter |
+| town_winter_2 | new render | so_3378af41951e4bcaba57d64c | 76.63 | 9916 | town_winter |
+| town_winter_gang | new render | so_cc53979c3ead4e80b23f86f6 | 69.99 | 9058 | town_winter_gang |
+| uptown_night | new render | so_b781ed67f44f435b9366c0ab | 62.27 | 9319 | uptown_night |
+| wastes | re-render | so_e8a3db03bea44a5f820371a5 | 87.18 | 8344 | wastes(rerender) |
+| winter_gang | new render | so_4583c00e54e842498903c5c0 | 68.98 | 8640 | farm_winter_gang |
+
+Not shipped (failed the accept rule; raw takes stay in /home/claude/work/ace_raw, ids in the C13 P2 fix report):
+hideout_night (28/21), beach_winter (44/34, r999 1.3-2.0 kHz), forest_winter (50/14, clarinet lead, r999 1.8 kHz),
+docks_night (59.1), forest_fall (58.3), orchard_winter (54.0), lake_winter_2 (r999 4190), mega_frost_caverns and
+mega_frost_summit re-renders (both takes failed: base songs kept), the winter / lake / mega_frost / wastes / jungle
+unused takes (muffled or < 75), countryside/festival second takes (already shipped as ranch / animal_show).
+town: the unused take (so_48d4ab28..., score 92.3, r999 6886) is now the town song; the old one is town_2.
+Still to render (after the Dec 1 refill): hideout_night, beach_winter, forest_winter, orchard_winter, docks_night,
+forest_fall, farm_spring, town_summer, orchard_spring, mega hub nights (c13_13-10), mega gang variants (c13_13-24),
+town_after / town_gang_after (P3 owns town_after), chapel / clinic re-renders (interiors).
