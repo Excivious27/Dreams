@@ -79,7 +79,7 @@ ALIASES = {
     "chrome_hen": "hen", "glow_sheep": "sheep", "circuit_goat": "goat", "alpaca": "llama",  # C11b P1 hook (c11b_03-08)
 }
 
-NAMES = ["Biscuit", "Clover", "Pepper", "Maple", "Juniper", "Waffles", "Pebble", "Thistle", "Nutmeg", "Bramble",
+NAMES = ["Biscuit", "Clover", "Pepper", "Toffee", "Muffin", "Waffles", "Pebble", "Thistle", "Nutmeg", "Barley",
          "Dumpling", "Fern", "Tansy", "Hazelnut", "Sprout", "Button"]
 
 

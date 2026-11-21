@@ -263,7 +263,7 @@
    "pet_word": "pet",
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -341,7 +341,7 @@
    "pet_word": "pet",
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -439,7 +439,7 @@
    "pet_word": "pet",
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -534,7 +534,7 @@
    "pet_word": "pet",
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -633,7 +633,7 @@
    "pet_word": "pet",
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -798,7 +798,7 @@
     "Golden Hive",
     "Sunny Hive",
     "Meadow Hive",
-    "Bramble Hive",
+    "Thyme Hive",
     "Clover Hive",
     "Honeypot Hive"
    ],
@@ -1036,7 +1036,7 @@
    "long_low": false,
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -1419,7 +1419,7 @@
    },
    "names": [
     "Clover",
-    "Bramble",
+    "Barley",
     "Acorn",
     "Thistle",
     "Buttons",
@@ -2069,7 +2069,7 @@
     "needs_add": "heater"
    },
    "names": [
-    "Cinder",
+    "Smudge",
     "Ash",
     "Toasty",
     "Blaze",
@@ -2141,7 +2141,7 @@
     ]
    },
    "names": [
-    "Gale",
+    "Stormy",
     "Stratus",
     "Zephyr",
     "Breeze",
@@ -2219,7 +2219,7 @@
     ]
    },
    "names": [
-    "Gale",
+    "Stormy",
     "Stratus",
     "Zephyr",
     "Breeze",

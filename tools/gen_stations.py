@@ -309,6 +309,12 @@ station('robotics', 'Robotics Bench', 'operation', [12, 27], 'building', 'Assemb
  ('Robotics Bench', ['robotics_2'], {'iron_bar': 8, 'gear': 8, 'spring': 4}, d(1, 'Scrap bots and the spy drone.')),
  ('Drone Bay', ['robotics_3'], {'steel_bar': 8, 'plating': 3, 'crystal_battery': 1}, d(2, 'Guard bots.')),
  ('The Hive', ['robotics_4'], {'dark_bar': 4, 'crystal_battery': 4, 'plating': 6}, d(3, 'A drone swarm.'))], arc='gangsters', book='robot')
+# C11b integ: the Gene Splicer (gangster arc) makes the lab strains (ranch.json species[*].lab); a finished
+# splice is handed over by Crafting.collect as the animal itself, through RanchGift.give (book 'splice').
+station('gene_splicer', 'Gene Splicer', 'operation', [18, 23], 'ranching', 'Splice', 'Specs', [
+ ('Splice Rig', ['gene_splicer'], {'plank': 12, 'copper_bar': 6, 'glass': 6, 'circuit_board': 2}, d(0, 'Chrome hens and turbo bunnies.')),
+ ('Gene Splicer', ['gene_splicer'], {'iron_bar': 8, 'glass': 10, 'circuit_board': 4, 'gear': 4}, d(1, 'Glow sheep, circuit goats and cows.')),
+ ('Gene Lab', ['gene_splicer'], {'steel_bar': 8, 'crystal_glass': 2, 'data_chip': 3, 'plating': 2}, d(2, 'Drone hogs, volt geckos, chrome runners.'))], arc='gangsters', book='splice')
 # ---- penguin arc only ----------------------------------------------------------
 station('shaper', 'Crystal Shaper', 'sanctuary', [9, 24], 'combat', 'Shape', 'Catkins', [
  ('Shard Table', ['shaper_1'], {'plank': 12, 'shard': 4, 'copper_bar': 2}, d(0, 'An icicle blade, snow goggles.')),
@@ -547,6 +553,15 @@ books['implant'] = [rc('optic_implant', 'Optic Implant', {'lens': 2, 'circuit_bo
  rc('neural_link', 'Neural Link', {'data_chip': 4, 'gold_bar': 2, 'crystal_battery': 2}, tier=4)]
 books['robot'] = [rc('servo', 'Servo', {'gear': 2, 'spring': 1}, n=2), rc('scrap_bot', 'Scrap Bot', {'servo': 2, 'circuit_board': 1, 'iron_bar': 2}, tier=2), rc('spy_drone', 'Spy Drone', {'servo': 4, 'lens': 2, 'circuit_board': 2, 'data_chip': 1}, tier=2),
  rc('guard_bot', 'Guard Bot', {'servo': 4, 'plating': 2, 'data_chip': 1, 'crystal_battery': 1}, tier=3), rc('drone_swarm', 'Drone Swarm', {'servo': 12, 'data_chip': 3, 'crystal_battery': 2}, tier=4)]
+books['splice'] = []
+for _sid, _sp in sorted((RJ.get('species', {}) if isinstance(RJ.get('species'), dict) else {}).items()):
+    _lab = _sp.get('lab') or {}
+    if _lab.get('station') != 'gene_splicer':
+        continue
+    item('splice_' + _sid, '%s (splice)' % _sp.get('name_gang', _sid), 'splice', 0, min(5, int(_lab.get('tier', 1)) + 1),
+         arc='gangsters', icon=_sp.get('product', {}).get('id', 'circuit_board'),
+         desc='A finished splice: the %s moves into your %s (or waits for room).' % (_sp.get('name_gang', _sid), _sp.get('home', 'farm')))
+    books['splice'].append(rc('splice_' + _sid, 'Splice: %s' % _sp.get('name_gang', _sid), dict(_lab.get('need', {})), tier=int(_lab.get('tier', 1)), days=1))
 # The armour pieces nothing made before (audit loop 3): Crystal and Moon sets,
 # +1 tempering for every set, the Neon Jacket.
 SLOTS = {'helm': 2, 'chest': 4, 'legs': 3, 'boots': 2, 'gloves': 1, 'shield': 3, 'cape': 2, 'belt': 1}   # same bar counts as the copper..gold sets

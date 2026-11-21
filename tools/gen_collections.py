@@ -384,8 +384,13 @@ def main():
     fish_log = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)}
                 for i in WINGS[3]["items"] if i not in NOT_ROD]
 
+    book_arc = {}  # a book's arc from the station that owns it (book 'robot' -> Robotics Bench, gangsters)
+    for _bid, _b in buildings.items():
+        if isinstance(_b, dict) and isinstance(_b.get("station"), dict) and _b.get("arc"):
+            book_arc.setdefault(str(_b["station"].get("book", _bid)), str(_b["arc"]))
+
     def station_arc(s):
-        return str(buildings.get(s, {}).get("arc", "") or "")
+        return str(buildings.get(s, {}).get("arc", "") or book_arc.get(s, "") or "")
 
     cook, craft = [], []
     for s, lst in recipes.items():

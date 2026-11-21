@@ -120,7 +120,9 @@ func _process(delta: float) -> void:
 	if position.distance_to(map.player.position) > 260.0:
 		position = map.player.position + _slot_offset()  # left behind (door, cliff): catch up (off-screen by then)
 	var want := "walk" if moving and _spr.sprite_frames.has_animation("walk") else "idle"
-	if moving and to.length() > 60.0 and _spr.sprite_frames.has_animation("run"):
+	if PlayClock.now() < _hurt_until and _spr.sprite_frames.has_animation("hurt"):
+		want = "hurt"  # C11b integ: the hurt pose when the strip has one
+	elif moving and to.length() > 60.0 and _spr.sprite_frames.has_animation("run"):
 		want = "run"
 	elif _cd > HIT_CD - 0.3 and _spr.sprite_frames.has_animation("attack"):
 		want = "attack"  # a butt just landed
@@ -259,12 +261,16 @@ func _hit(e: Enemy) -> void:
 		RanchVoice.say(get_tree(), uid, "attack", "bleat")  # c11b_14-07/-08: the species voice from ranch.json
 
 
+var _hurt_until := -1.0  # PlayClock time the hurt pose ends
+
+
 func take_damage(n: int, _from: Vector2) -> void:
 	if hp <= 0:
 		return
 	hp = maxi(0, hp - n)
 	Ranch.animal(uid)["hp"] = hp
 	Ranch.animal(uid)["hp_day"] = int(GameState.run.get("day", 1))
+	_hurt_until = PlayClock.now() + 0.3
 	modulate = Color(1, 0.6, 0.6)
 	create_tween().tween_property(self, "modulate", Color.WHITE, 0.25)
 	if hp > 0 and position.distance_to(map.player.position) < 170.0:

@@ -1175,6 +1175,34 @@ func _ranch_line(id: String) -> String:
 	return " · ".join(parts)
 
 
+## Crafted add-ons you hold that a built home doesn't have yet: [[home, item], ...] (Ranch.install).
+func _addon_pairs() -> Array:
+	var out: Array = []
+	for item: String in Ranch.ADDON_ITEMS:
+		if GameState.count(item) <= 0:
+			continue
+		for home: String in (Ranch.data()["buildings"] as Dictionary):
+			if Ranch.tier(home) >= 1 and not Ranch.has_add(home, str(Ranch.ADDON_ITEMS[item])):
+				out.append([home, item])
+	return out
+
+
+## The Plans board's "Install an add-on" page: pick one, Ranch.install places it (spends the item).
+func _install_addon(d: Dialogue) -> void:
+	var pairs := _addon_pairs()
+	var opts: Array = []
+	for p: Array in pairs:
+		opts.append("%s in the %s" % [GameState.item_name(str(p[1])), str(Builds.current_def(Ranch.build_of(str(p[0]))).get("name", p[0]))])
+	opts.append("← Back")
+	d.say([{"who": "Plans", "text": "Place an add-on you made in a home you've built. It stays with the home.", "choice": opts, "key": ""}])
+	await d.finished
+	var i: int = d.last_choice
+	if i < 0 or i >= pairs.size():
+		return
+	var why := Ranch.install(str(pairs[i][0]), str(pairs[i][1]))
+	hud.toast(why if why != "" else "Installed: %s." % GameState.item_name(str(pairs[i][1])), Color(1, 0.7, 0.7) if why != "" else Color(0.8, 1, 0.8))
+
+
 func _plans() -> void:
 	# The plans board. Everything on the farm is made from materials or bought
 	# ready-made, tier by tier; each tier has its own gate (story, skill, friend).
@@ -1242,6 +1270,9 @@ func _plans() -> void:
 					tag = "  [%s]" % g
 				opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
 				ids.append(id)
+			if cat == "ranch" and not Net.visiting() and not _addon_pairs().is_empty():
+				opts.append("Install an add-on (%d ready)" % _addon_pairs().size())  # C11b integ: Ranch.install
+				ids.append("@install")
 			opts.append("← Back")
 			var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
 			if cat == "operation":
@@ -1254,6 +1285,9 @@ func _plans() -> void:
 			if i < 0 or i >= ids.size():
 				break  # "← Back" (or B): back to the categories
 			if str(ids[i]) == "":
+				continue
+			if str(ids[i]) == "@install":
+				await _install_addon(d)
 				continue
 			var id := str(ids[i])
 			var nd2 := Builds.next_def(id)

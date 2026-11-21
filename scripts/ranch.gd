@@ -558,7 +558,7 @@ static func habitat_block(uid: String, winter := false) -> String:
 	var cl: Dictionary = sp.get("climate", {}) if sp.get("climate", null) is Dictionary else {}
 	var need := str(hab.get("needs_add", ""))
 	if need != "" and not has_add(home, need):
-		return "needs a %s" % need.replace("_", " ").capitalize()
+		return "needs " + ItemWords.with_article(need.replace("_", " ").capitalize())
 	if winter and str(cl.get("cold", "")) == "heater" and not has_add(home, "heater"):
 		return "needs a heater in winter"
 	return ""
@@ -697,7 +697,8 @@ static func art_for(uid: String) -> Dictionary:
 	var out := {"group": "animals/" + src, "strip": "idle", "baby": false, "height_px": float(sp.get("height_px", 16)),
 		"tint": Color(str(v["tint"])) if v.has("tint") else null, "species": str(a.get("species", ""))}
 	if not is_adult(uid):
-		var b: Array = v.get("baby", art.get("baby", [src, "idle"]))
+		var bv: Variant = v.get("baby", art.get("baby", [src, "idle"]))
+		var b: Array = bv if bv is Array and (bv as Array).size() >= 2 else [str(bv) if bv is String and str(bv) != "" else src, "idle"]
 		out["group"] = "animals/" + str(b[0])
 		out["strip"] = str(b[1])
 		out["baby"] = true
@@ -734,7 +735,7 @@ static func incubate(egg_item: String, q := "") -> String:
 		return "That won't hatch."
 	var home := str(species(sid).get("home", "coop"))
 	if not has_add(home, "incubator"):
-		return "The incubator comes with the Big Coop."
+		return "The incubator comes with the %s." % RanchFarm.incubator_tier_name(home)
 	var inc: Array = house(home)["incubator"]
 	if inc.size() >= int(rule("incubator_slots", 4)):
 		return "The incubator is full."
@@ -882,7 +883,9 @@ static func overnight(report: Dictionary) -> Array:
 		a2.erase("extra_ready")
 	# Births: expecting animals whose day has come; new pairs in breeding homes.
 	lines.append_array(_births(day, rng))
-	lines.append_array(_hatch(day, rng))
+	var hatched := _hatch(day, rng)
+	lines.append_array(hatched)
+	report["ranch_hatched"] = hatched.size()  # House.morning_cues: egg_crack (C11b integ)
 	if hungry > 0:
 		lines.append("%d animal%s went hungry: hold hay and tap them, or fill a feeder." % [hungry, "" if hungry == 1 else "s"])
 	if missed.size() > 0:
@@ -893,6 +896,7 @@ static func overnight(report: Dictionary) -> Array:
 			bits.append(ItemWords.count_id(str(it), int(made[it])))
 		lines.append("Ready in the pens: %s." % _list(bits))
 	if silo_fed > 0:
+		report["ranch_feeders"] = silo_fed  # House.morning_cues: feeder_fill (C11b integ)
 		lines.append("The feeders took %d hay from the silo (%d left)." % [silo_fed, Builds.silo_hay()])
 	report["ranch"] = lines
 	return lines
@@ -981,7 +985,8 @@ static func _hatch(day: int, rng: RandomNumberGenerator) -> Array:
 			var hen := str(e.get("hen", ""))
 			var v := _child_variant(sid, str(e.get("variant", "")), "", rng)
 			var kid := _make(sid, home, "", day + 1, v, [hen, ""] if hen != "" else [])
-			lines.append("A %s hatched in the %s: meet %s!%s" % [("chick" if sid == "chicken" else "duckling" if sid == "duck" else display_name(sid).to_lower()), home, str(animal(kid)["name"]), _rare_note(kid)])
+			var hn := str(Builds.current_def(build_of(home)).get("name", home))
+			lines.append("A %s hatched in the %s: meet %s!%s" % [RanchFarm.baby_word(sid), hn, str(animal(kid)["name"]), _rare_note(kid)])
 		house(home)["incubator"] = keep
 	return lines
 

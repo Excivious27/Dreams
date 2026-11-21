@@ -26,6 +26,13 @@ const VOICE_FILES := {
 	"alpaca_hum": ["bleat", 0.85, -3.0], "buffalo_low": ["moo", 0.75, -1.0], "emu_drum": ["frog", 0.6, -2.0],
 	"ostrich_boom": ["frog", 0.5, -2.0], "komodo_hiss": ["critter", 0.6, -3.0], "peacock_call": ["seagull", 1.2, -2.0],
 	"tortoise_hum": ["thump", 0.7, -4.0], "yak_low": ["moo", 0.7, -2.0],
+	# C11b integ: gen_ranch's plain voice tags (ranch.json species.voice), soft and all ages
+	"hoot": ["frog", 0.55, -3.0], "drum": ["frog", 0.6, -2.0], "hiss": ["critter", 0.6, -4.0], "critter": ["critter", 1.0, -3.0],
+	"bubble": ["bubble", 1.0, -3.0], "whistle": ["whistle", 1.0, -4.0], "purr": ["purr", 1.0, -2.0], "zap": ["zap", 1.2, -8.0],
+	# C11b P6 CC0 creature recordings (scripts/ranch_voices.gd): real takes win over pitched stand-ins
+	"cv_ostrich": ["cv_ostrich", 1.0, 0.0], "cv_emu": ["cv_emu", 1.0, 0.0], "cv_komodo": ["cv_komodo", 1.0, 0.0],
+	"cv_moon": ["cv_moon", 1.0, 0.0], "cv_merkitty": ["cv_merkitty", 1.0, 0.0], "cv_gloam": ["cv_gloam", 1.0, 0.0],
+	"cv_frost": ["cv_frost", 1.0, 0.0], "cv_sky": ["cv_sky", 1.0, 0.0],
 }
 
 ## Species with no ranch.json voice yet (the C11b species, until gen_ranch carries a voice for each).
@@ -98,9 +105,12 @@ static func voice_id(kind: String) -> String:
 	var sp := species_of(kind)
 	if sp == "":
 		return ""
-	var v := str(Ranch.species(sp).get("voice", ""))
+	# C11b integ: P6's CC0 recording first, then the pitched table, then gen_ranch's plain tag.
+	var v: String = preload("res://scripts/ranch_voices.gd").voice(sp)
+	if not v.begins_with("cv_") or not VOICE_FILES.has(v):
+		v = str(SPECIES_VOICE.get(sp, ""))
 	if v == "" or not VOICE_FILES.has(v):
-		v = str(SPECIES_VOICE.get(sp, v))
+		v = str(Ranch.species(sp).get("voice", ""))
 	return v if VOICE_FILES.has(v) else ""
 
 

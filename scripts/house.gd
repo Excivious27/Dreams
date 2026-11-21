@@ -173,6 +173,10 @@ static func morning_cues(tree: SceneTree, report: Dictionary, passed_out: bool) 
 		cues.append("craft_done")
 	if int(report.get("ripe", 0)) > 0:
 		cues.append("crop_ready")
+	if int(report.get("ranch_hatched", 0)) > 0:
+		cues.append("egg_crack")  # C11b integ: an incubator egg hatched overnight
+	if int(report.get("ranch_feeders", 0)) > 0:
+		cues.append("feeder_fill")  # the feeders took silo hay
 	var at := 0.0
 	for c: String in cues:
 		if at <= 0.0:

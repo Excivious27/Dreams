@@ -4531,49 +4531,49 @@
     "station": "print",
     "item": "blank_stock",
     "name": "Blank Stock",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "ink",
     "station": "print",
     "item": "ink",
     "name": "Printing Ink",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "bills_crude",
     "station": "print",
     "item": "bills_crude",
     "name": "Crude Bills",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "bills_passable",
     "station": "print",
     "item": "bills_passable",
     "name": "Passable Bills",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "forged_permit",
     "station": "print",
     "item": "forged_permit",
     "name": "Forged Permit",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "bills_fine",
     "station": "print",
     "item": "bills_fine",
     "name": "Fine Bills",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "bills_perfect",
     "station": "print",
     "item": "bills_perfect",
     "name": "Perfect Bills",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "brass_knuckles",
@@ -4902,175 +4902,175 @@
     "station": "hack",
     "item": "circuit_board",
     "name": "Circuit Board",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "data_chip",
     "station": "hack",
     "item": "data_chip",
     "name": "Data Chip",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "scrambler",
     "station": "hack",
     "item": "scrambler",
     "name": "Signal Scrambler",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "emp_charge",
     "station": "hack",
     "item": "emp_charge",
     "name": "EMP Charge",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "emp_heavy",
     "station": "hack",
     "item": "emp_heavy",
     "name": "Blackout Charge",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "ghost_ledger",
     "station": "hack",
     "item": "ghost_ledger",
     "name": "Ghost Ledger",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "crack_circuit_egg",
     "station": "hack",
     "item": "circuit_board",
     "name": "Crack a Circuit Egg",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "crack_alloy_egg",
     "station": "hack",
     "item": "circuit_board",
     "name": "Crack an Alloy Egg",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "dc_neon_sign_0",
     "station": "hack",
     "item": "dc_neon_sign_0",
     "name": "Neon Sign: Moon",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "dc_neon_sign_1",
     "station": "hack",
     "item": "dc_neon_sign_1",
     "name": "Neon Sign: Star",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "optic_implant",
     "station": "implant",
     "item": "optic_implant",
     "name": "Optic Implant",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "reflex_wires",
     "station": "implant",
     "item": "reflex_wires",
     "name": "Reflex Wires",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "chrome_arm",
     "station": "implant",
     "item": "chrome_arm",
     "name": "Chrome Arm",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "subdermal_plating",
     "station": "implant",
     "item": "subdermal_plating",
     "name": "Subdermal Plating",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "optic_mk2",
     "station": "implant",
     "item": "optic_mk2",
     "name": "Optic Implant Mk II",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "reflex_mk2",
     "station": "implant",
     "item": "reflex_mk2",
     "name": "Reflex Wires Mk II",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "neural_link",
     "station": "implant",
     "item": "neural_link",
     "name": "Neural Link",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "servo",
     "station": "robot",
     "item": "servo",
     "name": "Servo",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "scrap_bot",
     "station": "robot",
     "item": "scrap_bot",
     "name": "Scrap Bot",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "spy_drone",
     "station": "robot",
     "item": "spy_drone",
     "name": "Spy Drone",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "guard_bot",
     "station": "robot",
     "item": "guard_bot",
     "name": "Guard Bot",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "drone_swarm",
     "station": "robot",
     "item": "drone_swarm",
     "name": "Drone Swarm",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "battery_coolant",
     "station": "robot",
     "item": "crystal_battery",
     "name": "Crystal Battery (coolant)",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "battery_synth",
     "station": "robot",
     "item": "crystal_battery",
     "name": "Crystal Battery (synth milk)",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "battery_static",
     "station": "robot",
     "item": "crystal_battery",
     "name": "Crystal Battery (static scales)",
-    "arc": ""
+    "arc": "gangsters"
    },
    {
     "recipe": "mayonnaise",
@@ -5113,6 +5113,62 @@
     "item": "beeswax_candle",
     "name": "Beeswax Candle",
     "arc": ""
+   },
+   {
+    "recipe": "splice_chrome_hen",
+    "station": "splice",
+    "item": "splice_chrome_hen",
+    "name": "Splice: Chrome Hen",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_chrome_runner",
+    "station": "splice",
+    "item": "splice_chrome_runner",
+    "name": "Splice: Chrome Runner",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_circuit_cow",
+    "station": "splice",
+    "item": "splice_circuit_cow",
+    "name": "Splice: Circuit Cow",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_circuit_goat",
+    "station": "splice",
+    "item": "splice_circuit_goat",
+    "name": "Splice: Circuit Goat",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_drone_hog",
+    "station": "splice",
+    "item": "splice_drone_hog",
+    "name": "Splice: Drone Hog",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_glow_sheep",
+    "station": "splice",
+    "item": "splice_glow_sheep",
+    "name": "Splice: Glow Sheep",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_turbo_bunny",
+    "station": "splice",
+    "item": "splice_turbo_bunny",
+    "name": "Splice: Turbo Bunny",
+    "arc": "gangsters"
+   },
+   {
+    "recipe": "splice_volt_gecko",
+    "station": "splice",
+    "item": "splice_volt_gecko",
+    "name": "Splice: Volt Gecko",
+    "arc": "gangsters"
    }
   ],
   "forage": [
@@ -5589,6 +5645,7 @@
   "rocket",
   "sawmill",
   "shaper",
+  "splice",
   "tannery",
   "workbench"
  ],

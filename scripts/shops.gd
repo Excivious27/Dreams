@@ -377,7 +377,7 @@ static func animal_why(sid: String) -> String:
 	var bid := Ranch.build_of(home)  # c11b_01-04: any home whose Plans build has another id (apiary -> beehive)
 	if Ranch.tier(home) < need:
 		var td := Builds.tier_def(bid, need)
-		return "needs a %s" % str(td.get("name", bid.capitalize())) if not td.is_empty() else "needs a %s" % bid
+		return "needs " + ItemWords.with_article(str(td.get("name", bid.capitalize())) if not td.is_empty() else bid)  # "an Aviary"
 	if Ranch.roster(home).size() >= Ranch.capacity(home):
 		return "the %s is full" % str(Builds.current_def(bid).get("name", bid))
 	return ""

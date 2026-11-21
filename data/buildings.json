@@ -4176,5 +4176,91 @@
     }
    }
   ]
+ },
+ "gene_splicer": {
+  "label": "Gene Splicer",
+  "cell": [
+   18,
+   23
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Specs",
+  "station": {
+   "skill": "ranching",
+   "verb": "Splice",
+   "book": "splice"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Splice Rig",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "plank": 12,
+     "copper_bar": 6,
+     "glass": 6,
+     "circuit_board": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Chrome hens and turbo bunnies.",
+    "price": 1980,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Gene Splicer",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 8,
+     "glass": 10,
+     "circuit_board": 4,
+     "gear": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Glow sheep, circuit goats and cows.",
+    "price": 5360,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "ranching",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Gene Lab",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "steel_bar": 8,
+     "crystal_glass": 2,
+     "data_chip": 3,
+     "plating": 2
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, every recipe already open. Drone hogs, volt geckos, chrome runners.",
+    "price": 11940,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "ranching",
+      5
+     ]
+    },
+    "art_missing": false
+   }
+  ]
  }
 }

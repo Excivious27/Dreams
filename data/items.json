@@ -21380,5 +21380,85 @@
   "desc": "One of a kind: three blue ribbons at the Animal Show.",
   "decor": true,
   "keep": true
+ },
+ "splice_chrome_hen": {
+  "name": "Chrome Hen (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "icon": "circuit_egg",
+  "desc": "A finished splice: the Chrome Hen moves into your coop (or waits for room)."
+ },
+ "splice_chrome_runner": {
+  "name": "Chrome Runner (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "icon": "alloy_egg",
+  "desc": "A finished splice: the Chrome Runner moves into your enclosure (or waits for room)."
+ },
+ "splice_circuit_cow": {
+  "name": "Circuit Cow (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "icon": "synth_milk",
+  "desc": "A finished splice: the Circuit Cow moves into your barn (or waits for room)."
+ },
+ "splice_circuit_goat": {
+  "name": "Circuit Goat (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "icon": "coolant",
+  "desc": "A finished splice: the Circuit Goat moves into your barn (or waits for room)."
+ },
+ "splice_drone_hog": {
+  "name": "Drone Hog (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "icon": "circuit_board",
+  "desc": "A finished splice: the Drone Hog moves into your sty (or waits for room)."
+ },
+ "splice_glow_sheep": {
+  "name": "Glow Sheep (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "icon": "glow_wool",
+  "desc": "A finished splice: the Glow Sheep moves into your barn (or waits for room)."
+ },
+ "splice_turbo_bunny": {
+  "name": "Turbo Bunny (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "icon": "static_fluff",
+  "desc": "A finished splice: the Turbo Bunny moves into your hutch (or waits for room)."
+ },
+ "splice_volt_gecko": {
+  "name": "Volt Gecko (splice)",
+  "type": "splice",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "icon": "static_scale",
+  "desc": "A finished splice: the Volt Gecko moves into your terrarium (or waits for room)."
  }
 }

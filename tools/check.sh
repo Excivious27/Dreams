@@ -206,6 +206,13 @@ if ! echo "$p5out" | grep -q "c11b_p5_test: [0-9]* checks, 0 failures" || echo "
   echo "c11b_p5_test failed"; exit 1
 fi
 
+echo "== C11b P1: the heart (ability) tap is dropped while busy, frozen or in dialogue =="
+atout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ability_tap_test.gd 2>&1)"
+echo "$atout" | grep -E "FAIL|SCRIPT ERROR|ability_tap_test" || true
+if ! echo "$atout" | grep -q "ability_tap_test: 0 fails" || echo "$atout" | grep -q "SCRIPT ERROR"; then
+  echo "ability_tap_test failed"; exit 1
+fi
+
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
 dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
 echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true

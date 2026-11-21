@@ -112,6 +112,54 @@ static func why_idle(wkey: String) -> String:
 	return ""
 
 
+## run.chores schema version (Chores.migrate, called from GameState._migrate).
+const VER := 1
+
+
+## Old saves: fill the run.chores shape, drop broken assignment rows, give rows a chest and a place.
+static func migrate() -> void:
+	var d := st()
+	if int(d.get("ver", 0)) >= VER:
+		return
+	var a: Dictionary = d["assign"]
+	for wk in a.keys():
+		if not (a[wk] is Dictionary) or str((a[wk] as Dictionary).get("chore", "")) == "":
+			a.erase(wk)
+			continue
+		var row: Dictionary = a[wk]
+		if str(row.get("chest", "")) == "":
+			row["chest"] = "chest"
+		if str(row.get("where", "")) == "":
+			row["where"] = "edges"
+	for wk in (d["xp"] as Dictionary).keys():
+		if not (d["xp"][wk] is Dictionary):
+			(d["xp"] as Dictionary).erase(wk)
+	d["ver"] = VER
+
+
+## Guard-chore watch circles for GameState._crows: one per worker on the guard chore, at the pen of a
+## built animal home (spread over the homes), radius 6 + 2 per guard level.
+static func guard_cells() -> Array:
+	var out: Array = []
+	if GameState.run.is_empty() or GameState.visiting():
+		return out
+	var homes: Array = []
+	for h: String in (Ranch.data()["buildings"] as Dictionary):
+		if Ranch.tier(h) >= 1:
+			homes.append(h)
+	if homes.is_empty():
+		return out
+	var i := 0
+	for wk: String in (st()["assign"] as Dictionary):
+		var row: Dictionary = st()["assign"][wk]
+		if str(row.get("chore", "")) != "guard" and str(row.get("chore2", "")) != "guard":
+			continue
+		var pen := RanchFarm.pen_of(str(homes[i % homes.size()]), Rect2i(30, 10, 2, 2))
+		out.append({"c": pen.get_center(), "r": 6.0 + 2.0 * level(wk, "guard")})
+		i += 1
+	return out
+
+
 static func assignment(wkey: String) -> Dictionary:
 	return (st()["assign"] as Dictionary).get(wkey, {})
 
@@ -547,15 +595,10 @@ static func _do(cid: String, n: int, chest: String, where := "edges") -> Diction
 					capped = true
 					break
 				put(chest, yid, 1)
-				if yid == "wheat" and not Builds.silo_add(1):  # c11b_06-15: chaff to the silo, else hay in the chest
-					put(chest, "hay", 1)
-				GameState.log_grown(str(t["crop"]))
-				t.erase("fert")  # c11b_06-15: fertiliser feeds one growth cycle
-				if cd.has("regrow"):
-					t["days"] = int(cd["days"]) - int(cd["regrow"])
-				else:
-					t["crop"] = ""
-					t["days"] = 0
+				var rr := GameState.reap_tile(t)  # c11b_06-03: the one bed reset (fert, chaff to the silo, regrow/clear, log)
+				if int(rr.get("hay", 0)) > 0:
+					put(chest, "hay", int(rr["hay"]))  # no silo room: the chaff's hay goes in the chest
+				GameState.add_xp("farming", int(rr.get("xp_share", 0)))
 				t["acc"] = 0.0
 				t["watered"] = false
 				k += 1

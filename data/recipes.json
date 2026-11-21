@@ -4735,5 +4735,97 @@
    "give": "beeswax_candle",
    "tier": 2
   }
+ ],
+ "splice": [
+  {
+   "id": "splice_chrome_hen",
+   "name": "Splice: Chrome Hen",
+   "need": {
+    "circuit_board": 2,
+    "#egg": 1
+   },
+   "give": "splice_chrome_hen",
+   "tier": 1,
+   "days": 1
+  },
+  {
+   "id": "splice_chrome_runner",
+   "name": "Splice: Chrome Runner",
+   "need": {
+    "circuit_board": 6,
+    "data_chip": 2
+   },
+   "give": "splice_chrome_runner",
+   "tier": 3,
+   "days": 1
+  },
+  {
+   "id": "splice_circuit_cow",
+   "name": "Splice: Circuit Cow",
+   "need": {
+    "circuit_board": 3,
+    "data_chip": 1,
+    "#milk": 3
+   },
+   "give": "splice_circuit_cow",
+   "tier": 2,
+   "days": 1
+  },
+  {
+   "id": "splice_circuit_goat",
+   "name": "Splice: Circuit Goat",
+   "need": {
+    "goat_milk": 2,
+    "circuit_board": 3
+   },
+   "give": "splice_circuit_goat",
+   "tier": 2,
+   "days": 1
+  },
+  {
+   "id": "splice_drone_hog",
+   "name": "Splice: Drone Hog",
+   "need": {
+    "truffle": 2,
+    "circuit_board": 4,
+    "data_chip": 1
+   },
+   "give": "splice_drone_hog",
+   "tier": 3,
+   "days": 1
+  },
+  {
+   "id": "splice_glow_sheep",
+   "name": "Splice: Glow Sheep",
+   "need": {
+    "sheep_wool": 3,
+    "circuit_board": 2
+   },
+   "give": "splice_glow_sheep",
+   "tier": 2,
+   "days": 1
+  },
+  {
+   "id": "splice_turbo_bunny",
+   "name": "Splice: Turbo Bunny",
+   "need": {
+    "rabbit_fur": 2,
+    "circuit_board": 2
+   },
+   "give": "splice_turbo_bunny",
+   "tier": 1,
+   "days": 1
+  },
+  {
+   "id": "splice_volt_gecko",
+   "name": "Splice: Volt Gecko",
+   "need": {
+    "circuit_board": 3,
+    "data_chip": 1
+   },
+   "give": "splice_volt_gecko",
+   "tier": 3,
+   "days": 1
+  }
  ]
 }

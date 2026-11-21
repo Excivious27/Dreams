@@ -169,7 +169,7 @@ func _arc(arc: String) -> void:
 	# ---- RanchVoice (c11b_14-10 / -03 / 02-12) ----
 	check(RanchVoice.voice_id("chrome_hen") == "cluck" and RanchVoice.layer_of("chrome_hen") != "", "chrome hen clucks with a lab layer")
 	check(GameMap.animal_voice("chrome_hen") == "cluck" and GameMap.animal_voice("glow_sheep") == "sheep", "lab strains never borrow by prefix")
-	check(GameMap.animal_voice("moon_cow") == "moo" and RanchVoice.voice_id("moon_cow") == "moon_moo", "moon cow has its own pitched moo")
+	check(GameMap.animal_voice("moon_cow") == "cv_moon" and RanchVoice.voice_id("moon_cow") == "cv_moon", "moon cow has its own voice (P6 CC0 take)")
 	check(GameMap.animal_voice("cow") == "moo" and GameMap.animal_voice("chick") == "peep", "classic voices unchanged")
 	check(RanchVoice.layer_of("cow") == "" and RanchVoice.layer_of("moon_cow") == "", "only lab strains get a layer")
 	check(RanchVoice.species_of(cow) == "cow", "uid resolves to its species")

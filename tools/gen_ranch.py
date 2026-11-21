@@ -227,6 +227,8 @@ C11B_ITEMS = {
 # Existing goods the ladder retunes (c11b_12-03): lifted, never lowered.
 VALUE_LIFT = {'sheep_wool': 48}
 STORY_NAMES = {'Pip', 'Pip-Pip', 'Nova', 'Catkins', 'Big Jim', 'Star Crystal'}
+# the Gifts' names (gen_gifts.py) are never pet names either (C11b integ: Bramble/Cinder/Gale)
+GIFT_NAMES = {'Bramble', 'Cinder', 'Fortune', 'Gale', 'Gravity', 'Iron', 'Mirror', 'Shade', 'Tempo', 'Volt'}
 LORE_BANNED = re.compile(r'grump|crystal_baby|crystal baby|finargle', re.I)
 BANNED_VOICE = {'roar', 'growl', 'monster', 'scream', 'die', 'hurt', 'beast_down', 'knockout', 'boom'}
 
@@ -296,7 +298,7 @@ RULES = dict(
 # ---- names (all ages, no real people) ---------------------------------------------------------------------
 NAMES = {
     'bird': ['Clementine', 'Dumpling', 'Nugget', 'Hazelnut', 'Penny', 'Biscuit', 'Daisy', 'Pickles', 'Marigold', 'Poppy', 'Butterbean', 'Sprout'],
-    'beast': ['Clover', 'Bramble', 'Acorn', 'Thistle', 'Buttons', 'Hollyhock', 'Truffle', 'Bluebell', 'Oakley', 'Mossy', 'Pumpkin', 'Willow'],
+    'beast': ['Clover', 'Barley', 'Acorn', 'Thistle', 'Buttons', 'Hollyhock', 'Truffle', 'Bluebell', 'Oakley', 'Mossy', 'Pumpkin', 'Willow'],
     'small': ['Thumper', 'Cotton', 'Mochi', 'Dandelion', 'Pudding', 'Nibbles', 'Fluff', 'Peanut'],
     'big_bird': ['Dune', 'Sahara', 'Tumbleweed', 'Rocket', 'Twiggy', 'Bertha', 'Stilts', 'Duster'],
     'reptile': ['Sunny', 'Ember', 'Pebble', 'Basil', 'Ziggy', 'Dusty', 'Gumdrop', 'Shelly'],
@@ -304,11 +306,11 @@ NAMES = {
     'moon': ['Luna', 'Crater', 'Comet', 'Orbit', 'Selene', 'Moonbeam', 'Halo', 'Eclipse'],
     'reef': ['Coral', 'Ripple', 'Splash', 'Bubbles', 'Lagoon', 'Shoal', 'Marina', 'Wavelet'],
     'glow': ['Flicker', 'Lantern', 'Glimmer', 'Spark', 'Firefly', 'Wisp'],
-    'ember': ['Cinder', 'Ash', 'Toasty', 'Blaze', 'Kindle', 'Sizzle'],
-    'sky': ['Gale', 'Stratus', 'Zephyr', 'Breeze', 'Thunder', 'Puff', 'Cirrus', 'Drizzle'],
+    'ember': ['Smudge', 'Ash', 'Toasty', 'Blaze', 'Kindle', 'Sizzle'],
+    'sky': ['Stormy', 'Stratus', 'Zephyr', 'Breeze', 'Thunder', 'Puff', 'Cirrus', 'Drizzle'],
     'frost': ['Frosty', 'Icicle', 'Sleet', 'Flurry', 'Snowdrop', 'Aurora', 'Blizzard', 'Chill'],
     'lab': ['Bolt', 'Widget', 'Sprocket', 'Byte', 'Pixel', 'Gizmo', 'Servo', 'Chip', 'Diode', 'Ratchet'],
-    'insect': ['Golden Hive', 'Sunny Hive', 'Meadow Hive', 'Bramble Hive', 'Clover Hive', 'Honeypot Hive'],
+    'insect': ['Golden Hive', 'Sunny Hive', 'Meadow Hive', 'Thyme Hive', 'Clover Hive', 'Honeypot Hive'],
 }
 
 # ---- legacy roster (pre-C11 node names -> species, used once by Ranch.migrate) ---------------------------
@@ -570,7 +572,7 @@ def check_c11b(data, items):
         npc_names = {str(v.get('name', '')) for v in json.load(open(os.path.join(D, 'npcs.json'))).values() if isinstance(v, dict)}
     except Exception:
         npc_names = set()
-    taken = STORY_NAMES | npc_names
+    taken = STORY_NAMES | npc_names | GIFT_NAMES
     for sid, s in data['species'].items():
         if LORE_BANNED.search(sid) or LORE_BANNED.search(s['name']) or LORE_BANNED.search(s['name_gang']):
             fails.append('%s: Grumps, crystal babies and foes are never ranch stock' % sid)
