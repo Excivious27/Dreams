@@ -2474,7 +2474,7 @@ func use_consumable(sel: String) -> bool:
 			hud.toast(GameState.full_text(), Color(1, 0.8, 0.6))
 			return true
 		player.play_tool("eat")
-		hud.toast("Ate %s.%s" % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
+		hud.toast(("Drank %s.%s" if ItemWords.is_drink(sel) else "Ate %s.%s") % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
 		Music.instance(get_tree()).sfx("eat", "pickup")
 		return true
 	return false
@@ -2988,7 +2988,7 @@ func read_mail() -> void:
 			elif str(m["kind"]) == "gift":
 				hud.toast("+" + ItemWords.count_id(str(m["item"]), int(m.get("n", 1))), Color(0.85, 1, 0.85))
 			else:
-				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
+				hud.toast("Sent. +%s" % Money.amount(int(m["pay"])), Color(1, 0.9, 0.5))
 
 
 func has_npc_at(_c: Vector2i) -> bool:
@@ -4774,7 +4774,6 @@ func gift_reaction(who_name: String, sel: String, gain: int) -> String:
 
 
 func _gift_reaction_raw(who_name: String, sel: String, gain: int) -> String:
-	var nm := GameState.item_name(sel)
 	var gid := ""
 	for k in GameState.npcs:
 		if str(GameState.npcs[k].get("name", "")) == who_name or str(k) == who_name:
@@ -4783,13 +4782,18 @@ func _gift_reaction_raw(who_name: String, sel: String, gain: int) -> String:
 	var own := GameState.gift_line(gid, sel, gain)
 	if own != "":
 		return own
-	if gain >= 20:
-		return "A %s! How did you know? This is my favourite thing." % nm
-	if gain >= 12:
-		return "A %s! That's a kindness. Thank you." % nm
-	if gain > 0:
-		return "A %s. That's nice of you." % nm
-	return "A %s? Oh. I really don't like these." % nm
+	return "Thank you for the %s." % GameState.item_name(sel)  # gift_line answers for every villager (C12 c12_08-18)
+
+
+## C12 c12_08-21: a short toast when the held item can't go today or this week, so the
+## chat that follows doesn't read as the gift being ignored. Returns true if it toasted.
+func gift_block_toast(npc_id: String, who_name: String, sel: String) -> bool:
+	var why := GameState.gift_block(npc_id, sel)
+	if why == "today":
+		hud.toast("%s already has a gift from you today." % who_name, Color(1, 0.85, 0.9))
+	elif why == "week":
+		hud.toast("You've given %s two gifts this week." % who_name, Color(1, 0.85, 0.9))
+	return why != ""
 
 
 # ---- elevation: plateaus with cliff faces and ramps --------------------------

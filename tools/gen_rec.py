@@ -106,8 +106,8 @@ RENOVATIONS = [
                 "Prize gallery's open. The big prizes, under glass. Only serious players need apply. - Front desk")},
     {"id": "trophy_hall", "after": 120, "build": 5, "opens": {"cup": True},
      "name": P2("the trophy hall", "the trophy hall"),
-     "start": P2("Last big job of the year: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
-                 "Last big job this year: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"),
+     "start": P2("Last big job on the list: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
+                 "Last big job on the list: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"),
      "done": P2("The trophy hall is open, and with it the Rec Cup: every season, beat the posted score and win the cup's tickets. Watch your mail. - The {hall} front desk",
                 "Trophy hall's open, and so is the Rec Cup. Every season, beat the posted score and take the pot. Watch your mail. - Front desk")},
 ]
@@ -425,13 +425,13 @@ DAY_WORDS = {"rest": "a rest day (the 6th and 7th of each week)", "league": "lea
 
 # ---------------------------------------------------------------- quests
 QUESTS = [
-    {"id": "rec_bowl_120", "giver": "tobin", "text": "Tobin bets you can't bowl 120 or more upstairs at the rec.", "when": {"flag": "rec_open"},
+    {"id": "rec_bowl_120", "giver": "tobin", "text": "Tobin bets you can't bowl 120 or more upstairs at the Rec Center.", "text_gangsters": "Tobin bets you can't bowl 120 or more upstairs at the Rec Hall.", "when": {"flag": "rec_open"},
      "done_when": {"flag": "bowl_120"}, "reward": {"crystals": 150, "friend": ["tobin", 15]}},
     {"id": "rec_teddy", "giver": "mabel", "text": "Mabel wants the Teddy Bear from the prize counter (80 tickets).", "when": {"flag": "rec_open", "day": 9},
      "done_when": {"item": ["rp_teddy", 1]}, "take": True, "reward": {"item": ["rp_kite", 1], "friend": ["mabel", 20]}},
     # Arcade challenges (CONDUCT 2, c2_14): the cabinets feed quests, friendship and tickets.
     # Condition keys arcade_ms / rec_best / tickets_won are read by Tickets.cond_ok; reward "tickets" by GameState._give_reward.
-    {"id": "rec_pip_jumper", "giver": "pip", "text": "Pip is stuck on Block Jumper. Clear level 3 to show how it's done.", "when": {"flag": "rec_visited", "day": 10},
+    {"id": "rec_pip_jumper", "giver": "pip", "text": "Pip is stuck on Block Jumper at the Rec Center arcade. Clear level 3 to show how it's done.", "text_gangsters": "Pip is stuck on Block Jumper at the Rec Hall arcade. Clear level 3 to show how it's done.", "when": {"flag": "rec_visited", "day": 10},
      "done_when": {"arcade_ms": "jumper_3"}, "reward": {"tickets": 40, "friend": ["pip", 15]}},
     {"id": "rec_theo_stack", "giver": "theo", "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.", "text_gangsters": "Theo wants proof his Neon Stack pattern works: score 3,000 points.", "when": {"flag": "rec_visited", "day": 12},
      "done_when": {"rec_best": ["stack", 3000]}, "reward": {"crystals": 120, "tickets": 30, "friend": ["theo", 15]}},
@@ -439,9 +439,9 @@ QUESTS = [
      "done_when": {"rec_best": ["gallery", 300]}, "reward": {"tickets": 35, "friend": ["wren_jr", 15]}},
     {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "text_gangsters": "Sal wants initials on the Whack-a-Snitch board: score 400.", "when": {"flag": "rec_reno_arcade_wing", "day": 14},
      "done_when": {"rec_best": ["whack", 400]}, "reward": {"tickets": 60, "item": ["luck_potion", 1], "friend": ["sal", 15]}},
-    {"id": "rec_maple_league", "giver": "maple", "text": "Maple dares you onto league night: bowl 150 or better.", "when": {"flag": "rec_visited", "day": 16, "quest": "rec_bowl_120"},
+    {"id": "rec_maple_league", "giver": "maple", "text": "Maple dares you onto league night (the third day of each week, upstairs at the Rec Center): bowl 150 or better.", "text_gangsters": "Maple dares you onto league night (the third day of each week, upstairs at the Rec Hall): bowl 150 or better.", "when": {"flag": "rec_visited", "day": 16, "quest": "rec_bowl_120"},
      "done_when": {"rec_best": ["bowling", 150]}, "reward": {"crystals": 250, "friend": ["maple", 20]}},
-    {"id": "rec_alder_cabinets", "giver": "alder", "text": "Mayor Alder wants every cabinet tried before he cuts the arcade ribbon twice.", "when": {"flag": "rec_reno_arcade_wing", "day": 9},
+    {"id": "rec_alder_cabinets", "giver": "alder", "text": "Mayor Alder wants every arcade cabinet at the Rec Center played once, so he can say they all work.", "text_gangsters": "Mayor Alder wants every arcade cabinet at the Rec Hall played once, so he can say they all work.", "when": {"flag": "rec_reno_arcade_wing", "day": 9},
      "done_when": {"arcade_ms": "all_games"}, "reward": {"crystals": 100, "tickets": 30, "friend": ["alder", 15]}},
 ]
 QUEST_LINES = {
@@ -482,7 +482,14 @@ QUEST_LINES.update({
 })
 QUEST_LINES_GANG = {
     "rec_wren_jr_duck@gangsters": {"offer": ["Our class has a chart of Neon Range scores and mine is the lowest. By a LOT.", "If you get three hundred I can say a friend did it. That counts. I asked."],
-                                   "wait": "Three hundred on Neon Range! For the chart!"},
+                                   "yes": "Hit the gold targets, they're worth more! Mum says aim small.",
+                                   "wait": "Three hundred on Neon Range! For the chart!",
+                                   "done": ["Three hundred! I'm putting a star next to it. A big one.", "These are my saved tickets. You earned them."]},
+    # c12_10-09/c12_09-16: Maple's terse gangster-arc voice on league night.
+    "rec_maple_league@gangsters": {"offer": ["Beat Tobin's bet, I hear. Tobin is eleven.", "League night's the third day of every week, upstairs at the Rec Hall. Bowl a hundred and fifty and I'll treat you like a real rival."],
+                                   "yes": "Lane one is mine. You can have lane two.", "no": "Scared of an old woman with a heavy ball. Smart.",
+                                   "wait": "A hundred and fifty. League night's the third day of the week.",
+                                   "done": ["A hundred and fifty. Gideon owes me a pie; he bet against you.", "From the league kitty. The league doesn't need to know."]},
     "rec_theo_stack@gangsters": {"offer": ["I've written down a pattern for Neon Stack. Flat rows first, a well on the right, wait for the long bar.", "I can't test it. My hands panic. Would you score three thousand with it, for science?"],
                                  "wait": "Three thousand points on Neon Stack. The pattern holds, I'm nearly sure."},
     "rec_bowl_120@gangsters": {"offer": ["You been up the Rec Hall? Bet you can't bowl a hundred and twenty.", "Do it and Dad pays you. He says everybody in this town owes somebody. Now he owes you."],

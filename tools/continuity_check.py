@@ -85,6 +85,10 @@ def beat_order():
                         rank.setdefault(str(w[k]), i)
                 for fl in w.get("flags", []):
                     rank.setdefault(str(fl), i)
+                # A flag a beat sets (effects) also proves the player got that far (C12 integ).
+                ef = b.get("effects", {}) or {}
+                for fl in (ef.get("flags", []) if isinstance(ef, dict) else []):
+                    rank.setdefault(str(fl), i)
         out[arc] = {"beats": beats, "rank": rank, "chap": chap_rank}
     return out
 
@@ -117,11 +121,30 @@ def gate_rank(gate, arc, order):
     return r
 
 
-def talk_key_gate(key):
-    m = re.match(r"(flag|after|chapter):(.+)$", key)
+def _talk_part_gate(part):
+    m = re.match(r"(flag|after|chapter|f|if|q):(.+)$", part)
     if not m:
         return None
-    return {"chapter": int(m.group(2))} if m.group(1) == "chapter" else {"flag": m.group(2)}
+    if m.group(1) == "chapter":
+        return {"chapter": int(m.group(2))}
+    if m.group(1) == "q":
+        return {"quest": m.group(2)}
+    return {"flag": m.group(2)}
+
+
+def talk_key_gate(key):
+    """The first gate in a talk.json pool key; compound keys ("penguins&f:told_town", C12 P3) too."""
+    for part in key.split("&"):
+        g = _talk_part_gate(part)
+        if g:
+            return g
+    return None
+
+
+def talk_key_arcs(key):
+    """Arc parts of a compound talk key ("penguins&if:x" -> ("penguins",)), or None."""
+    arcs = tuple(p for p in key.split("&") if p in ARCS)
+    return arcs if "&" in key and arcs else None
 
 
 def lines(src, o, path, arcs, gate, out):
@@ -147,6 +170,9 @@ def lines(src, o, path, arcs, gate, out):
             elif k in gang_keys:
                 a = tuple(x for x in local_arcs if x != "gangsters")
             if src == "talk.json":
+                ka = talk_key_arcs(k)
+                if ka is not None:
+                    a = tuple(x for x in local_arcs if x in ka)
                 tg = talk_key_gate(k)
                 if tg:
                     g = g + [tg]

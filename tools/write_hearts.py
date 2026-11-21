@@ -69,7 +69,7 @@ v("finn", "finn_pearl",
   L("Finn", "There's a pearl in the lake. Marlowe says so, and Marlowe doesn't say things.", "I don't want it to sell. I want it because Tomas always said there wasn't one."),
   L("Finn", "I finished the boat. Last week. Just... did it, one morning, before I'd thought about it.", "She floats. I haven't named her. You name a boat, it's real. I'll get there."),
   L("Finn", "Named the boat. 'Second Cast.' Because you don't catch anything on the first one; that's just asking the water.", "She's yours any time. Just say. I'll row."),
-  "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was Tuesday.",
+  "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was any other morning.",
   {"2": "Asking, not angry. Remember.", "4": "Half a boat. Still.", "6": "Marlowe says pearl. Marlowe doesn't say things.", "8": "She floats. That's all she has to do.", "10": "Second Cast. Any time."})
 
 v("lumi", "lumi_starflower",
@@ -103,12 +103,12 @@ v("hazel", "hazel_milk",
 v("bram", "bram_wine",
   L("Bram", "You always sit in the corner. Back to the wall. I had a brother-in-law like that.", "He was a terrible man. You're not. But the corner's yours."),
   L("Bram", "This inn was my wife's. Posy's mother. She ran it like a ship and I ran the kitchen like a man hiding in a kitchen.", "Still do. The kitchen part.", "And Tobin. His mum left him with me the winter she sailed. He thinks I don't know he steals the ladle. I leave it out."),
-  L("Bram", ("Festival night. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.", "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."), ("Two bottles, for the sill. Not for drinking; for remembering. I'll pay. I just can't walk to the lake for them. Every year I mean to.", "I'll pay for them. I just can't get to the soda fountain on the avenue. Every year I mean to.")),
+  L("Bram", ("Festival's coming. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.", "Festival's coming. I want two root beers on the sill, for once, for Posy's mother."), ("Two bottles, for the sill. Not for drinking; for remembering. I'll pay. I just can't walk to the lake for them. Every year I mean to.", "I'll pay for them. I just can't get to the soda fountain on the avenue. Every year I mean to.")),
   L("Bram", ("I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.", "I walked to the avenue. Myself. Halfway, then I sat down, then the rest of the way."), ("She used to walk it in forty minutes. Took me two hours. The sill was full again before I sat down.", "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down.")),
   L("Bram", "Posy's running that bakery like her mother ran this inn. Like a ship. Better, and I said so, and she threw a tea towel at me.", "Corner's still yours. Always will be. I've put your name on it; don't look, it's under the table."),
   "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and nobody would argue with the doorway.",
-  {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two bottles for the sill. Festival night.", "8": "Two hours. The sill's full.", "10": "Tea towel. Right in the face."},
-  q6g="bram_rootbeer", ag={"6": "Two root beers. Festival night.", "8": "Two hours. Her glass was full."})
+  {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two bottles for the sill, before the festival.", "8": "Two hours. The sill's full.", "10": "Tea towel. Right in the face."},
+  q6g="bram_rootbeer", ag={"6": "Two root beers, before the festival.", "8": "Two hours. Her glass was full."})
 
 v("posy", "posy_strawberries",
   L("Posy", "You smell the bread before you come in. Everyone does. You're the only one who waits for the second batch.", "Second batch is better. Oven's warm by then. Don't tell the first-batch people."),
@@ -130,7 +130,7 @@ v("juniper", "juniper_glowcap",
 
 v("rook", "rook_tracks",
   L("Rook", "You walk loud. Heel first. Toe first, roll, and the forest stops noticing you.", ("Try it. No. Try it again. ...Better. Grumps won't hear that.", "Try it. No. Try it again. ...Better. Nobody on the avenue will hear that.")),
-  L("Rook", "I came out of the river cities on foot. Took a season. Ate what I could catch, which taught me to catch things.", "The lodge was empty when I got here. Still is, mostly. I like mostly."),
+  L("Rook", "I came out of the river cities on foot. Took a season. Ate what I could forage, which taught me to read the woods.", "The lodge was empty when I got here. Still is, mostly. I like mostly."),
   L("Rook", ("The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.", "The orchard. Strangers in it, at night. They'll reach the north bridge by harvest, and the clinic's past the bridge."), "I can't hold it alone. I've tried, and I'm not a man who says that."),
   L("Rook", "Your pup's got a nose. I've watched it. It tracks the way I did before I learned to, which means it'll be better than me.", "Bring it by. I'll show it the orchard the right way; the way you don't get seen."),
   L("Rook", "I've a daughter in the river cities. Grown. She doesn't know I'm alive. I've decided she should.", "I'm writing it tonight. Toe first, roll. That's the only way I know to do hard things."),
@@ -196,7 +196,7 @@ v("benno", "benno_pup_pack",
   L("Benno", "I was a jockey. Smaller then; I know. Fell at the capital track, three years ago, and the horse was fine and I wasn't.", "Came here because nobody here had seen the race. Still haven't told anyone. Now you."),
   L("Benno", "That pup wants to carry things. I can see it in the shoulders. A pack, small, and it'd feel like a job.", "Everybody needs a job. Even the ones with four legs. ESPECIALLY those."),
   L("Benno", "I got back on. Yesterday. Just round the paddock. The grey mare; she's patient with cowards.", "Didn't fall. Didn't do anything. Sat there and shook and it was the best ride of my life."),
-  L("Benno", "Race at the festival. I'm riding. Alder's put it on the notice; Theo wrote it small, bless him.", "I'll lose. I'll lose on purpose if I have to, so I can say I finished one. Come and watch me finish."),
+  L("Benno", "Ring at the Harvest Fair. I'm riding Willow in, not just judging. Alder's put it on the notice; Theo wrote it small, bless him.", "I'll come last. I'll come last on purpose if I have to, so I can say I finished one. Come and watch me finish."),
   "Benno would open every stall and ride out at the head of the whole stable, and horses know, and they'd follow him anywhere.",
   {"2": "Horses know.", "4": "Nobody here saw the race.", "6": "A pack. Small. A job.", "8": "Sat there and shook.", "10": "Come watch me finish."})
 
@@ -291,7 +291,7 @@ EXTRA = {
  "orla": {"8": (N("Orla lifts the lid of the flour tin and shows you three folded scraps of paper, dusted white."), L("Orla", "He never writes more than five words. I've read them five hundred times each. That's the maths of it.")),
           "10": (N("Orla has her good shawl on and a basket of fresh rolls, and is looking at the lighthouse path."), L("Orla", "If I'm not back by supper, mind the wheel. It only needs feeding and talking to. Like the rest of us."))},
  "benno": {"8": (N("Benno leads the grey mare out of the stable, and she noses at his pocket for the apple she knows is there."), L("Benno", "She knew. Horses always know. She stood like a statue till I stopped shaking.")),
-           "10": (N("Benno is in the paddock at dawn, walking the race course on foot, counting the turns out loud."), L("Benno", "Fourteen turns. I'll take every one of them slow. Finishing's the race. The rest is just horses."))},
+           "10": (N("Benno is in the paddock at dawn, walking the show ring on foot, counting the strides out loud."), L("Benno", "Fourteen strides round the ring. I'll take every one of them slow. Finishing's the race. The rest is just horses."))},
  "ivy": {"8": (N("Ivy slides a small brass key across the bank counter, then a passbook with your name on it in her neat hand."), L("Ivy", "Don't thank me. Thanking is for people who haven't earned it. You have.")),
          "10": (N("Ivy is filing a letter into a drawer marked KEEP, with a small, satisfied click."), L("Ivy", "The capital can keep its vault. I've got a town that settles its accounts. That's worth more than interest."))},
  "tam": {"8": (N("Tam brings the lamb on a rope that the lamb plainly thinks is optional. It headbutts your knee, gently."), L("Tam", "I've been calling her Bramble. She's eaten two of my hats. Call her what you like once she's in your barn; she's yours for life.") + N("(Tam will bring her up to your farm once you have a barn with room. Rename her on the Animals page.)")),
@@ -308,7 +308,7 @@ for vid, ms in EXTRA.items():
         H[vid]["milestones"][n] = pre + H[vid]["milestones"][n] + post
 
 # Tess, the carpenter (C12 P4, c12 07-18): her ♥2-♥10 perks existed with no scenes.
-v("tess", "",
+v("tess", "tess_seat",
   N("Tess is planing a board outside the workshop, curls of wood piling round her boots.") + L("Tess", "You measure twice. I've watched you at the Plans board. Most people measure once and blame the saw.", "Here's a secret: the saw's never wrong. The saw's just honest about what you told it."),
   N("Tess runs her thumb along a cracked old chair leg, the way you'd check a pulse.") + L("Tess", "This was my gran's chair. Every chair in this town has a wobble I know by name, and this one taught me all of them.", "I keep it in the back. I sit in it when a job goes wrong. It still wobbles. It's still standing."),
   N("Tess has a pencil behind each ear and a stack of offcuts sorted by length on the bench.") + L("Tess", "Offcuts. Everyone throws them away. I save every one. A shelf for one house, a toy for the next, a wedge for a door that won't stay shut.", "Nothing that grew for forty years should end up as kindling because somebody got bored. That's my one rule. Wood first."),
@@ -377,7 +377,7 @@ OPEN = {
  "bram": ["Bram sets a bowl of stew in front of you before you've ordered, in the corner seat.", "Bram is wiping down the bar for the third time, though it's already clean.", "Bram is standing by the inn's front window, looking at an empty sill."],
  "posy": ["The bakery smells of the first batch. Posy waves you to wait with a floury hand.", "Posy is kneading dough hard enough to shake the table.", "Posy has a scrap of old paper flattened under a rolling pin on the counter."],
  "juniper": ["Juniper points at the clinic stool. It isn't a suggestion.", "Juniper is folding clean sheets with sharp, exact corners.", "Juniper is writing in a notebook, crossing things out with the same neat line."],
- "rook": ["Rook appears from behind a tree you'd have sworn was too thin to hide anyone.", "Rook is cleaning an old knife by the lodge fire, very carefully.", "Rook is crouched at the orchard edge, studying a line of torn-up grass."],
+ "rook": ["Rook appears from behind a tree you'd have sworn was too thin to hide anyone.", "Rook is whittling a tent peg by the lodge fire, very carefully.", "Rook is crouched at the orchard edge, studying a line of torn-up grass."],
  "pip": ["Pip skids to a stop in front of you, out of breath and very pleased.", "Pip is sitting on the store steps with a pencil and a letter, tongue out in concentration.", "Pip beckons you over to the fountain with a whole-arm wave and a very secret face."],
  "wren_jr": ["Wren jr is crouched at the pond edge, nose almost in the water.", "Wren jr is sitting on the potion shop step, kicking her heels and looking serious.", "Wren jr is at the pond with an empty jar and a very wobbly lip."],
  "tobin": ["Tobin comes barrelling out of the inn kitchen with a ladle he isn't supposed to have.", "Tobin is drawing kites on the inn steps in chalk, big ones, with long tails.", "Tobin is standing at the very edge of the dock rope, toes exactly on the line."],

@@ -85,8 +85,8 @@ ach("wedding_bells", "Wedding Bells", "Get married.", {"k": "flag", "f": "marrie
 # --- A3 campaigns (s1_03-04) ---
 ach("first_victory", "First Victory", "Win a campaign battle.", {"k": "wins", "n": 1}, "a small banner planted on a hill", area="battle")
 ach("way_is_open", "The Way Is Open", "Win a whole campaign and open a new region.", {"k": "won", "ids": CAMP_BOTH + CAMP_PENG + CAMP_GANG, "n": 1}, "an open wooden gate with a road beyond", area="battle")
-ach("six_fronts", "Six Fronts", "Win all six campaigns both stories share.", {"k": "won", "ids": CAMP_BOTH, "n": len(CAMP_BOTH)}, "six small banners in a fan", stat="shared_campaigns", goal=len(CAMP_BOTH), area="battle")
-ach("crystal_commander", "Crystal Commander", "Win every campaign in the penguins' story, colonies included.", {"k": "won", "ids": CAMP_PENG, "n": len(CAMP_PENG)}, "a blue crystal crown over crossed banners", arc="penguins", stat="penguin_campaigns", goal=len(CAMP_PENG), area="battle")
+ach("six_fronts", "Six Fronts", "Win the six campaigns found on both paths.", {"k": "won", "ids": CAMP_BOTH, "n": len(CAMP_BOTH)}, "six small banners in a fan", stat="shared_campaigns", goal=len(CAMP_BOTH), area="battle")
+ach("crystal_commander", "Crystal Commander", "Win the eight campaigns only the penguins fight, the four colonies included.", {"k": "won", "ids": CAMP_PENG, "n": len(CAMP_PENG)}, "a blue crystal crown over crossed banners", arc="penguins", stat="penguin_campaigns", goal=len(CAMP_PENG), area="battle")
 # --- A4 arcade (s1_03-05) ---
 ach("arcade_regular", "Arcade Regular", "Play every arcade cabinet at least once.", {"k": "arcade", "ms": "all_games"}, "a little arcade cabinet with a joystick", area="arcade")
 ach("jumper_champion", "Block Jumper Champion", "Clear all eight Block Jumper levels.", {"k": "arcade", "ms": "jumper_8"}, "a pixel block hero jumping over a flag", area="arcade")
@@ -100,12 +100,12 @@ ach("legend_of_the_lake", "Legend of the Lake", "Catch the legendary koi.", {"k"
 # --- A7 secrets (s1_03-08) ---
 ach("finders_keepers", "Finders Keepers", "Open a hidden chest.", {"k": "secrets", "p": ["secret_chest_", "hidden_chest_"], "n": 1}, "a small treasure chest half open with sparkles", area="secrets")
 ach("wayfarers_journal", "The Wayfarer's Journal", "Find every page of the Wayfarer's Journal.", {"k": "flag", "f": "journal_done"}, "an old leather journal with loose pages", area="secrets")
-ach("off_the_path", "Off the Beaten Path", "Find a hidden nook.", {"k": "flag_prefix", "p": "hidden_open_", "n": 1, "or": "hidden_way_"}, "a vine curtain parting to show a cave", hidden=True, area="secrets")
-ach("heart_of_the_mountain", "Heart of the Mountain", "Reach the very bottom of the mine.", {"k": "flag", "f": "hollow_heart_open"}, "a glowing crystal heart in dark rock", hidden=True, area="secrets")
+ach("off_the_path", "Off the Beaten Path", "Find a hidden nook.", {"k": "flag_prefix", "p": "hidden_open_", "n": 1, "or": "hidden_way_"}, "a vine curtain parting to show a cave", hidden=True, area="secrets", hint="Some walls are thinner than they look.")
+ach("heart_of_the_mountain", "Heart of the Mountain", "Reach the very bottom of the mine.", {"k": "flag", "f": "hollow_heart_open"}, "a glowing crystal heart in dark rock", hidden=True, area="secrets", hint="The mine goes deeper than anyone says.")
 # --- A8 ranching (s1_03-09) ---
 ach("new_arrival", "New Arrival", "Welcome your first farm animal.", {"k": "ranch_any"}, "a little barn with a happy chick", area="ranch")
 ach("growing_family", "Growing Family", "Have a baby born or an egg hatch on your ranch.", {"k": "ranch_baby"}, "a cracked egg with a fluffy chick", area="ranch")
-ach("one_in_a_million", "One in a Million", "Raise a rare-coloured animal.", {"k": "ranch_rare"}, "a sparkly rainbow-coloured lamb", hidden=True, area="ranch")
+ach("one_in_a_million", "One in a Million", "Raise a rare-coloured animal.", {"k": "ranch_rare"}, "a sparkly rainbow-coloured lamb", hidden=True, area="ranch", hint="Every so often, a newborn surprises you.")
 ach("blue_ribbon", "Blue Ribbon", "Win first place at the fair's animal show.", {"k": "show_blue"}, "a blue prize ribbon rosette", area="ranch")
 # --- A9 decor (s1_03-10) ---
 ach("making_it_home", "Making It Home", "Collect 25 different pieces of home decor.", {"k": "decor", "n": 25}, "a cosy armchair with a lamp", stat="decor_pieces", goal=25, area="decor")
@@ -113,39 +113,39 @@ ach("matching_set", "Matching Set", "Complete a decor set from the catalogue.", 
 # --- A10 penguin story (s1_03-11) ---
 ach("the_farm_goes_on", "The Farm Goes On", "Finish the penguins' story.", {"k": "flag_any", "f": ["epilogue_done", "st_p5_epilogue"]}, "two little penguins waving at a sunrise farm", arc="penguins", area="story")
 ach("lights_of_the_isles", "Lights of the Isles", "Wake all four merkitty colonies.", {"k": "colonies", "n": 4}, "four little lighthouses glowing on islands", arc="penguins", stat="colonies_saved", goal=4, area="story")
-ach("a_heart_for_the_knight", "A Heart for the Knight", "Choose mercy for the Crystal Knight.", {"k": "flag", "f": "st_p3_knight_mercy_after"}, "a crystal helmet with a small heart", arc="penguins", hidden=True, area="story")
-ach("over_the_moon", "Over the Moon", "Bring the moon cow home.", {"k": "ranch_gift", "key": "moon:cow"}, "a white cow floating by a crescent moon", arc="penguins", hidden=True, area="story")
+ach("a_heart_for_the_knight", "A Heart for the Knight", "Choose mercy for the Crystal Knight.", {"k": "flag", "f": "st_p3_knight_mercy_after"}, "a crystal helmet with a small heart", arc="penguins", hidden=True, area="story", hint="Not every fight has to end with a winner.")
+ach("over_the_moon", "Over the Moon", "Bring the moon cow home.", {"k": "ranch_gift", "key": "moon:cow"}, "a white cow floating by a crescent moon", arc="penguins", hidden=True, area="story", hint="Something on the moon would love a farm.")
 # --- B gangster arc (s1_04-02..06) ---
 ach("g_first_crew", "Strength in Numbers", "Recruit your first crew member.", {"k": "crew", "n": 1}, "two silhouettes doing a fist-bump", arc="gangsters", area="crew")
 ach("g_full_crew", "The Whole Family", "Recruit all twelve crew members.", {"k": "crew", "n": 12}, "a row of twelve tiny hats", arc="gangsters", stat="crew_recruited", goal=12, area="crew")
-ach("g_loyal", "Ride or Die", "Finish a crew member's loyalty favour.", {"k": "flag_prefix", "p": "mission_", "n": 1}, "a handshake with a small heart", arc="gangsters", area="crew")
+ach("g_loyal", "Got Your Back", "Finish a crew member's loyalty favour.", {"k": "flag_prefix", "p": "mission_", "n": 1}, "a handshake with a small heart", arc="gangsters", area="crew")
 ach("g_all_loyal", "Thick as Thieves", "Finish every crew member's loyalty favour.", {"k": "flag_prefix", "p": "mission_", "n": 12}, "an intertwined rope knot", arc="gangsters", stat="loyalty_done", goal=12, area="crew")
 ach("g_first_turf", "On the Map", "Clear a district block and hold it.", {"k": "turf", "n": 1}, "a map pin on a city block", arc="gangsters", area="turf")
 ach("g_all_turf", "Every Block", "Hold all four district blocks at once.", {"k": "turf", "n": 4}, "a four-block city map all lit up", arc="gangsters", stat="turf_held", goal=4, area="turf")
 ach("g_all_heists", "Nobody Got Hurt", "Pull off all three heists.", {"k": "flag_prefix", "p": "heist_", "n": 3, "only": ["heist_cannery", "heist_arcade", "heist_vault"]}, "an open safe door with a sparkle", arc="gangsters", stat="heists_done", goal=3, area="turf")
-ach("g_squeaky", "Squeaky Clean", "Wash $10,000 in face value at the laundromat in one save.", {"k": "washed", "n": 10000}, "soap bubbles over a banknote", arc="gangsters", area="racket")
+ach("g_squeaky", "Squeaky Clean", "Wash $10,000 through the laundromat in one save.", {"k": "washed", "n": 10000}, "soap bubbles over a banknote", arc="gangsters", area="racket")
 ach("g_good_neighbour", "Good Neighbour", "Turn down or give back every shop offered to you.", {"k": "shops_clean"}, "a shop awning with a key and a heart", arc="gangsters", area="racket")
 ach("g_going_home", "Going Home", "Send one of the Marked home.", {"k": "marked_free", "n": 1}, "a door opening onto a sunrise", arc="gangsters", area="marked")
-ach("g_none_left", "Nobody Left Behind", "Every one of the Marked went home.", {"k": "marked_free", "n": 10}, "a row of houses with lit windows", arc="gangsters", stat="marked_home", goal=10, area="marked")
+ach("g_none_left", "Nobody Left Behind", "Send every one of the Marked home.", {"k": "marked_free", "n": 10}, "a row of houses with lit windows", arc="gangsters", stat="marked_home", goal=10, area="marked")
 ach("g_first_lt", "First Lieutenant", "Beat a lieutenant in the Lieutenant Cities.", {"k": "flag_prefix", "p": "lt_", "n": 1, "only": ["lt_" + x for x in LIEUTENANTS]}, "a chess knight piece gently tipped over", arc="gangsters", area="marked")
 ach("g_all_lt", "Up the Ladder", "Beat all eight lieutenants.", {"k": "flag_prefix", "p": "lt_", "n": len(LIEUTENANTS), "only": ["lt_" + x for x in LIEUTENANTS]}, "a ladder with eight rungs and a star on top", arc="gangsters", stat="lieutenants_beaten", goal=len(LIEUTENANTS), area="marked")
-ach("g_top_floor", "Top Floor", "Beat the President on his own red carpet.", {"k": "flag", "f": "boss_president"}, "a tower top with an empty grand chair", arc="gangsters", hidden=True, area="marked")
+ach("g_top_floor", "Top Floor", "Face the President and win.", {"k": "flag", "f": "boss_president"}, "a tower top with an empty grand chair", arc="gangsters", hidden=True, area="marked", hint="Someone waits at the very top.")
 ach("g_wired", "Wired", "Build all three chrome stations.", {"k": "built", "ids": ["terminal", "clinic", "robotics"], "t": 1}, "a circuit plug with a lightning bolt", arc="gangsters", area="cyber")
 ach("g_the_hive", "The Hive", "Upgrade the Robotics Bench all the way.", {"k": "built", "ids": ["robotics"], "t": 4}, "a hexagon hive of tiny friendly drones", arc="gangsters", area="cyber")
 ach("g_streets", "Street by Street", "Win all five city campaigns.", {"k": "won", "ids": CAMP_GANG, "n": len(CAMP_GANG)}, "five street signs fanned out", arc="gangsters", stat="gang_campaigns", goal=len(CAMP_GANG), area="battle")
 ach("g_gilt", "Gilt Edge", "Reach Gilt City.", {"k": "regions", "ids": ["giltcity"], "n": 1}, "a golden city skyline", arc="gangsters", area="world")
-ach("g_clean_break", "A Clean Break", "End the story with no heat, every Marked sent home and no shop left taken.", {"k": "flag", "f": "ending_clean"}, "a broken chain turning into a bird", arc="gangsters", hidden=True, area="story")
+ach("g_clean_break", "A Clean Break", "End the story with no heat, every Marked home and every shop given back.", {"k": "flag", "f": "ending_clean"}, "a broken chain turning into a bird", arc="gangsters", hidden=True, area="story", hint="Leave the city better than you found it.")
 # --- co-op (s1_04-07, 04-19) ---
-ach("co_together", "Better Together", "Play together with a friend.", {"k": "net_online"}, "two hands holding one seedling", area="coop")
+ach("co_together", "Better Together", "Play online with a friend.", {"k": "net_online"}, "two hands holding one seedling", area="coop")
 ach("co_host", "Open House", "Host a friend on your farm.", {"k": "net_host", "n": 1}, "an open front door with a welcome mat", area="coop")
 ach("co_full_house", "Full House", "Play with three friends at once.", {"k": "net_peers", "n": 3}, "four little tents around a campfire", area="coop")
-ach("co_crossover", "Two Stories, One Farm", "Play together with a friend on the other path.", {"k": "net_mixed"}, "a penguin crown and a fedora on one fence post", area="coop")
+ach("co_crossover", "Two Stories, One Farm", "Play online with a friend from the other path.", {"k": "net_mixed"}, "a penguin crown and a fedora on one fence post", area="coop")
 # --- late game (s1_04-08) ---
 ach("l_second_spring", "Second Spring", "Reach spring of year two.", {"k": "year", "n": 2}, "a cherry blossom branch with two buds", area="late")
 ach("l_wide_world", "Wide World", "Visit every far region your path can reach.", {"k": "regions", "ids_peng": MEGA_PENG, "ids_gang": MEGA_GANG, "n": 0}, "a compass rose over a tiny globe", stat="regions_seen", goal=len(MEGA_GANG), area="late")
 ach("l_two_paths", "Two Paths", "Finish the story on both paths.", {"k": "arcs", "n": 2}, "a fork in a road with two signposts", stat="arcs_finished", goal=2, area="late")
-ach("l_every_ending", "Every Ending", "See all five endings across your saves.", {"k": "endings", "n": len(ENDINGS)}, "five little stars in a row over a book", hidden=True, stat="endings_seen", goal=len(ENDINGS), area="late")
-ach("l_fortune", "Fortune", "Earn 100,000 in one save.", {"k": "earned", "n": 100000}, "a tall stack of golden coins", area="late")
+ach("l_every_ending", "Every Ending", "See all five endings across your saves.", {"k": "endings", "n": len(ENDINGS)}, "five little stars in a row over a book", hidden=True, stat="endings_seen", goal=len(ENDINGS), area="late", hint="Every story can end more than one way.")
+ach("l_fortune", "Fortune", "Earn 100,000 crystals or cash in one save.", {"k": "earned", "n": 100000}, "a tall stack of golden coins", area="late")
 
 # Steam INT stats (window "max" = only ever raised; s1_04-09, s1_05-08).
 STATS = {
@@ -198,14 +198,17 @@ PRESENCE = {
         "Fishing": "Fishing",
         "Arcade": "At the arcade",
         "Bowling": "Bowling at the Rec Center",
+        "Rec": "At the Rec Center",
+        "Indoors": "Visiting in town",
+        "Underground": "Down in the underground",
         "Casino": "Playing cards at the casino",
         "Hideout": "At the hideout",
         "Status_Coop": "Playing together (%players% players)",
     },
     "scene_map": {
-        "farm": "Farm", "house": "Home", "interior": "Home", "town": "Town", "uptown": "Town",
-        "neon": "Town", "docks": "Town", "mine": "Mines", "underground": "Mines", "hideout": "Hideout",
-        "rec_center": "Bowling", "arcade": "Arcade", "casino": "Casino",
+        "farm": "Farm", "house": "Home", "interior": "Indoors", "town": "Town", "uptown": "Town",
+        "neon": "Town", "docks": "Town", "mine": "Mines", "underground": "Underground", "hideout": "Hideout",
+        "rec_center": "Rec", "arcade": "Arcade", "casino": "Casino",
     },
     "group_size_key": "steam_player_group_size",
 }

@@ -56,7 +56,8 @@
        "text": "Two Light Motes. The deep floors of the mine shed them, and the moon has a few lying about."
       }
      ],
-     "hint": "Bring Catkins 2 Light Motes for the crystal babies."
+     "hint": "Bring Catkins 2 Light Motes for the crystal babies.",
+     "done_hint": "Catkins is teaching the babies to shine. See her in the meadow tomorrow."
     },
     {
      "giver": "catkins",
@@ -67,7 +68,7 @@
       },
       {
        "who": "Catkins",
-       "text": "They'll stand with you now, when there's fighting to be done. Little helpers with big hearts. Like someone else I know."
+       "text": "They'll keep the meadow bright while you're away. Little guards with big hearts. Like someone else I know."
       },
       {
        "who": "Catkins",
@@ -131,7 +132,8 @@
        "text": "Five stone. For the rubbing board. Science is mostly carrying things."
       }
      ],
-     "hint": "Bring Sel 5 Stone to read the penguin carving."
+     "hint": "Bring Sel 5 Stone to read the penguin carving.",
+     "done_hint": "Sel is reading the carving. Come back to Sel tomorrow."
     },
     {
      "giver": "sel",
@@ -142,7 +144,7 @@
       },
       {
        "who": "Sel",
-       "text": "Somebody waited a long time for somebody to read that. Go and tell Big Jim. Then, if I were you, I'd go and look for a waterfall."
+       "text": "Somebody waited a long time for somebody to read that. Next time Big Jim sits by your fire, tell him. He'll know what it means."
       }
      ],
      "money": 150,
@@ -151,7 +153,7 @@
       20
      ],
      "flag": "ss_jim_cave",
-     "hint": "Tell Big Jim his brother's message. The cave is behind a waterfall high on Mount Prismatica.",
+     "hint": "",
      "give": [
       "dc_antler_hooks",
       1
@@ -200,10 +202,11 @@
      "ask": [
       {
        "who": "Theo",
-       "text": "Two old coins. Ivy at the bank sees them, and they turn up in the mine."
+       "text": "Two old coins. Sel trades them at the ruins camp, and they turn up when you dig out in the wild places."
       }
      ],
-     "hint": "Bring Theo 2 Old Coins to date the vault."
+     "hint": "Bring Theo 2 Old Coins (Sel sells them) to date the vault.",
+     "done_hint": "Theo dated the vault: it really is Coldy's lock. Take the news to Mayor Alder at the town hall tomorrow."
     },
     {
      "giver": "alder",
@@ -218,7 +221,7 @@
       },
       {
        "who": "Alder",
-       "text": "Twenty-one years we forgot. I'll put the rope back on the bell myself."
+       "text": "Twenty-one years we forgot. I'll hang it the day the bell has a clapper again."
       }
      ],
      "give": [
@@ -272,7 +275,7 @@
       },
       {
        "who": "Marlowe",
-       "text": "He's lost, not bad. Lost people need a light to walk toward. Bring me two flasks of lamp oil and I'll hang lanterns down the jetty."
+       "text": "He's lost, not bad. Lost people need a light to walk toward. I've the lanterns; I'm short on oil. Two flasks and I'll hang them down the jetty."
       }
      ],
      "need": [
@@ -282,10 +285,11 @@
      "ask": [
       {
        "who": "Marlowe",
-       "text": "Two flasks of lamp oil. Maple keeps it on the bottom shelf."
+       "text": "Two flasks of lamp oil. I sell it at the lighthouse counter, if your purse is lighter than your conscience."
       }
      ],
-     "hint": "Bring Marlowe 2 Lamp Oil to light the jetty."
+     "hint": "Bring Marlowe 2 Lamp Oil (sold at the lighthouse) to light the jetty.",
+     "done_hint": "Marlowe is hanging lanterns down Finn's jetty. Check on Finn at the lake tomorrow."
     },
     {
      "giver": "finn",
@@ -334,10 +338,10 @@
       },
       {
        "who": "Mama Rosa",
-       "text": "I told him my kitchen is honest. Honest kitchens don't get sold, they get beaten. In a cook-off. Saturday."
+       "text": "I told him my kitchen is honest. Honest kitchens don't get sold, they get beaten. In a cook-off. Come back tomorrow; we start cooking."
       }
      ],
-     "hint": "Mama Rosa challenged a rival to a cook-off. Help her get ready."
+     "hint": "Mama Rosa challenged Bellamy to a cook-off. See her in her kitchen tomorrow to get ready."
     },
     {
      "giver": "mama_rosa",
@@ -361,7 +365,8 @@
        "text": "Three trout. The river, the lake, wherever they're biting. Fresh!"
       }
      ],
-     "hint": "Bring Mama Rosa 3 Trout for the cook-off."
+     "hint": "Bring Mama Rosa 3 Trout for the cook-off.",
+     "done_hint": "The trout are in. The cook-off is tomorrow: see Mama Rosa in her kitchen."
     },
     {
      "giver": "mama_rosa",
@@ -372,11 +377,11 @@
       },
       {
        "who": "Mama Rosa",
-       "text": "He shook my hand. He's going to buy his bread from Posy now. Honest, see? Honest wins, it just needs a good stew behind it."
+       "text": "He shook my hand. He's going to send his overflow to my kitchen now. Honest, see? Honest wins, it just needs a good stew behind it."
       },
       {
        "who": "Mama Rosa",
-       "text": "There's a table by the window with your name on it. Nobody else sits there. Not even me."
+       "text": "You ever want a bowl, you come to my door. Nobody pays for it. Not you."
       }
      ],
      "money": 250,
@@ -435,10 +440,11 @@
      "ask": [
       {
        "who": "Alder",
-       "text": "Twenty planks for the school fence. Saw them at the workshop from wood."
+       "text": "Twenty planks for the school fence. A sawhorse on your farm turns two logs into a plank."
       }
      ],
-     "hint": "Bring Mayor Alder 20 Planks for the school crossing."
+     "hint": "Bring Mayor Alder 20 Planks for the school crossing.",
+     "done_hint": "The school crossing is going up. Look for The Kid tomorrow."
     },
     {
      "giver": "the_kid",
@@ -466,7 +472,7 @@
       "toast": "The class rabbit, Professor, is coming to live in your hutch for good."
      },
      "give": [
-      "dc_bookcase3_b",
+      "dc_bookcase3_a",
       1
      ]
     }
@@ -503,17 +509,17 @@
       },
       {
        "who": "Specs",
-       "text": "And there's more. Every one of the President's lieutenants has a page with the same word on it: 'gifted'. By the stone. Their tricks aren't tricks."
+       "text": "And there's more. Every one of the President's lieutenants has a page with the same word on it: 'gifted'. Gifted with what, the file doesn't say. Their tricks aren't tricks, boss."
       }
      ],
-     "hint": "Specs read M.'s files: each lieutenant's power was a gift from the stone. Talk to Sal about it."
+     "hint": "Specs read M.'s files: every lieutenant is marked 'gifted'. Talk to Sal about it."
     },
     {
      "giver": "sal",
      "lines": [
       {
        "who": "Sal",
-       "text": "So M. chose you, and the stone chose them. Doesn't matter who chose. What matters is what you do with the part that's yours."
+       "text": "So M. chose you, and somebody chose them. Doesn't matter who chose. What matters is what you do with the part that's yours."
       },
       {
        "who": "Sal",

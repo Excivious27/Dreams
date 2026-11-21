@@ -12,7 +12,7 @@ const DEFAULT := 2
 const WORDS := [
 	"Fights are gentle: foes have half the health and hit far softer.",
 	"Fights go easier: foes are weaker and slower to strike.",
-	"Fights as the game was made.",
+	"Fights play as the game was made: a fair challenge.",
 	"Fights bite: foes are tougher, hit harder and strike faster.",
 ]
 ## Campaign card danger words (Campaign.danger -1..2), the same in every mode.
@@ -85,7 +85,7 @@ static func legacy_easy() -> bool:
 ## and day length. A co-op guest plays at the host's settings: shown, locked.
 static func settings_rows(menu: Object) -> void:
 	if Net.visiting():
-		menu.call("_line", "Difficulty: %s · Day length: %d min" % [name_of(), GameState.day_len()], 9, Color(0.95, 0.9, 0.8))
+		menu.call("_line", "Difficulty: %s · Day length: %d real min" % [name_of(), GameState.day_len()], 9, Color(0.95, 0.9, 0.8))
 		menu.call("_line", "  Your host sets the difficulty and the day length.", 8, Color(0.85, 0.85, 0.9))
 		return
 	menu.call("_button", "Difficulty: %s" % name_of(), func() -> void:

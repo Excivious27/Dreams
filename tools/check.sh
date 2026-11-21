@@ -668,6 +668,13 @@ echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|campaign_words_test" || true
 if ! echo "$p5out" | grep -q "campaign_words_test: 0 fails"; then
   echo "Campaign gate words test failed"; exit 1
 fi
+
+c12p6out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_items_ui_text_test.gd 2>&1)"
+echo "$c12p6out" | grep -E "FAIL|SCRIPT ERROR|c12_items_ui_text_test" || true
+if ! echo "$c12p6out" | grep -q "c12_items_ui_text_test: 0 fails"; then
+  echo "C12 items/UI text test failed"; exit 1
+fi
+
 c3out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_c3_test.gd 2>&1)"
 echo "$c3out" | grep -E "FAIL|SCRIPT ERROR|campaign_c3_test" || true
 if ! echo "$c3out" | grep -q "campaign_c3_test: 0 fails"; then
@@ -897,6 +904,13 @@ rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villag
 echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true
 if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep -q "SCRIPT ERROR"; then
   echo "Ranch villagers test failed"; exit 1
+fi
+
+echo "== C12 P5: mail, side stories and quest text match game state =="
+c12mqout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_mail_quests_test.gd 2>&1)"
+echo "$c12mqout" | grep -E "FAIL|SCRIPT ERROR|c12_mail_quests_test" || true
+if ! echo "$c12mqout" | grep -q "c12_mail_quests_test: OK" || echo "$c12mqout" | grep -q "SCRIPT ERROR"; then
+  echo "C12 mail/quests test failed"; exit 1
 fi
 
 echo "== C11b P6: fair ribbon tables =="

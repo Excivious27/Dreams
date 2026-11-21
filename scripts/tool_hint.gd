@@ -16,8 +16,15 @@ static func line(tool: String, why := "for that") -> String:
 	if not GameState.has_tool(tool):
 		return "You need %s %s %s." % [_a(nm), nm, why]
 	if (GameState.run.get("toolbar", []) as Array).has(tool):
+		# c12_13-07: how to change slot depends on the device.
+		match PadInput.device_kind():
+			"pad":
+				return "Hold the %s %s: switch to it on your toolbar with %s / %s." % [nm, why, InputSetup.prompt("cycle_back"), InputSetup.prompt("cycle_tool")]
+			"keys":
+				return "Hold the %s %s: pick it on your toolbar with its number key or the mouse wheel." % [nm, why]
 		return "Hold the %s %s: tap it on your toolbar." % [nm, why]
-	return "Hold the %s %s: put it on your toolbar (MENU > Items)." % [nm, why]
+	# c12_13-06: the menu button named per device (InputSetup.prompt).
+	return "Hold the %s %s: put it on your toolbar (%s > Items)." % [nm, why, InputSetup.prompt("menu")]
 
 
 ## Show the hint for `tool` on `map`. Returns true (the action is used up).
@@ -51,7 +58,7 @@ static func _a(nm: String) -> String:
 ## What each tool does, said once the first time it's in hand (toolbar tutorial).
 const TIPS := {
 	"hoe": "Hoe: face grass on your farm and tap USE to till. Hold USE and walk to till a row.",
-	"can": "Watering Can: tap USE on dry soil. When it runs dry, USE it on any water to refill.",
+	"can": "Watering Can: tap USE on dry soil. When it runs dry, face any water and tap USE to refill.",
 	"axe": "Axe: chop trees, logs and stumps for wood.",
 	"pickaxe": "Pickaxe: break rocks for stone and ore.",
 	"scythe": "Scythe: cut weeds and tall grass. Cut weeds make hay for animals.",

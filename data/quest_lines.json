@@ -199,7 +199,7 @@
  },
  "maple_supply_run": {
   "offer": [
-   "The back shelves came down. All of them. Forty years of shelf and they chose a Tuesday.",
+   "The back shelves came down. All of them. Forty years of shelf and they chose market morning.",
    "Twenty wood, ten stone, and I can rebuild them properly this time."
   ],
   "yes": "You dear. I'll clear the floor.",
@@ -369,7 +369,7 @@
  },
  "alder_gold": {
   "offer": [
-   "The town bell has no clapper. It hasn't rung in twenty-one years.",
+   "The town bell's clapper split the night the red sky went over. It hasn't rung in twenty-one years.",
    "A gold bar, and it rings again. For weddings. For warnings. For the end of the thing in the east."
   ],
   "yes": "Then we'll hear it. All of us.",
@@ -378,7 +378,7 @@
   "done": [
    "...Listen.",
    "...",
-   "That's the bell. My father pulled that rope the last time it rang. Thank you."
+   "That's the bell. Thank you."
   ]
  },
  "finn_minnows": {
@@ -548,14 +548,14 @@
  "bram_meat": {
   "offer": [
    "Five trail rations. Rook sells them, if he's in a selling mood. He usually isn't.",
-   "Or you hunt. I don't judge how the meat arrives."
+   "Or forage the hills and pack your own. I don't judge how the rations arrive."
   ],
-  "yes": "Good. Fresh. I'll know.",
+  "yes": "Good. Fresh-packed. I'll know.",
   "no": "Vegetable stew. People will notice.",
-  "wait": "Five meat. Rook or the hills.",
+  "wait": "Five trail rations. Rook or the hills.",
   "done": [
    "Now THAT'S a stew.",
-   "Here. Meat money. Worth every crystal."
+   "Here. For the rations. Worth it."
   ]
  },
  "bram_wine": {
@@ -599,14 +599,14 @@
  "rook_pelts": {
   "offer": [
    "Three bundles of shed fur.",
-   "Traps, or hunt. Don't bring me anything you didn't kill clean."
+   "Set a bramble brush on a trail, or pick the burrs yourself. Bring it clean."
   ],
   "yes": "Good.",
   "no": "...Fine.",
   "wait": "Shed fur. Three.",
   "done": [
    "...Clean. Good.",
-   "Traps. Two. You know how to use them now."
+   "Brushes. Two. You know how to set them now."
   ]
  },
  "rook_bones": {
@@ -632,7 +632,7 @@
   "wait": "The orchard. Grumps. Still there.",
   "done": [
    "...Quiet over there now.",
-   "Here. You're a hunter. Don't let it go to your head."
+   "Here. You track like one of us now. Don't let it go to your head."
   ]
  },
  "theo_book": {
@@ -862,7 +862,7 @@
   "no": "...Soft dog, soft owner.",
   "wait": "Level three. Fight with it.",
   "done": [
-   "...Now that's a hunting dog.",
+   "...Now that's a tracking dog.",
    "Collar. Leather. I cut it myself."
   ]
  },
@@ -940,7 +940,7 @@
  },
  "orla_oil": {
   "offer": [
-   "Marlowe won't come ashore for bread, and he won't ask. Five wheat and I'll mill it and send a loaf out with the flour boat."
+   "Marlowe won't walk round to the mill for bread, and he won't ask. Five wheat and I'll mill it and leave a loaf on his step."
   ],
   "yes": "He'll pretend he didn't need it. Let him.",
   "no": "Then he'll eat ship's biscuit again. Stubborn man.",
@@ -1233,7 +1233,12 @@
    "Our class has a chart of Neon Range scores and mine is the lowest. By a LOT.",
    "If you get three hundred I can say a friend did it. That counts. I asked."
   ],
-  "wait": "Three hundred on Neon Range! For the chart!"
+  "yes": "Hit the gold targets, they're worth more! Mum says aim small.",
+  "wait": "Three hundred on Neon Range! For the chart!",
+  "done": [
+   "Three hundred! I'm putting a star next to it. A big one.",
+   "These are my saved tickets. You earned them."
+  ]
  },
  "rec_theo_stack@gangsters": {
   "offer": [
@@ -1291,6 +1296,32 @@
   "offer": [
    "Theo's got tanks in that Curio Room and nothing swimming in them.",
    "Five kinds of fish in there and I'll stock you up on bait."
+  ]
+ },
+ "rec_maple_league@gangsters": {
+  "offer": [
+   "Beat Tobin's bet, I hear. Tobin is eleven.",
+   "League night's the third day of every week, upstairs at the Rec Hall. Bowl a hundred and fifty and I'll treat you like a real rival."
+  ],
+  "yes": "Lane one is mine. You can have lane two.",
+  "no": "Scared of an old woman with a heavy ball. Smart.",
+  "wait": "A hundred and fifty. League night's the third day of the week.",
+  "done": [
+   "A hundred and fifty. Gideon owes me a pie; he bet against you.",
+   "From the league kitty. The league doesn't need to know."
+  ]
+ },
+ "tess_seat": {
+  "offer": [
+   "Wood first, I said. I meant it.",
+   "Eight pieces of Hardwood. I'm building a window seat. Don't ask who for."
+  ],
+  "yes": "Good. Straight grain if you can find it. I'll know if you can't.",
+  "no": "Fine. The offcuts will keep.",
+  "wait": "The Hardwood. Eight. Straight grain.",
+  "done": [
+   "...That's good timber.",
+   "Measure twice. I'll take it from here."
   ]
  },
  "mega_gloamwood_job": {

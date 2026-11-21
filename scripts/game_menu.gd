@@ -526,7 +526,7 @@ func _refresh() -> void:
 				if itd.has("desc"):
 					_line(str(itd["desc"]), 8, Color(0.8, 0.8, 0.8))
 				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):
-					var what := "Drink" if str(itd.get("type", "")) == "tonic" else "Eat"
+					var what := ItemWords.consume_verb(sel)
 					_button("%s %s" % [what, GameState.item_name(sel)], func() -> void: _eat(sel))
 				if str(itd.get("type", "")) == "equip":
 					var st: Dictionary = itd.get("stats", {})
@@ -783,6 +783,15 @@ func _refresh() -> void:
 						_refresh()))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
+			var ssl: Array = SideStory.open_lines()  # c12_10-17: side stories in the Quests tab
+			if not ssl.is_empty():
+				_line("Side stories", 9, Color(0.8, 0.9, 1.0))
+				for sl: Dictionary in ssl:
+					var ss_at := QuestTracker.npc_scene(str(sl["giver"]))
+					var ss_id := "ss:" + str(sl["id"])  # C12 P5/P6: tick it and the compass follows the side story
+					_body.add_child(QuestTracker.checkbox_row("%s: %s" % [str(sl["title"]), str(sl["text"])], trk == ss_id, false, PlaceNames.for_id(ss_at) if ss_at != "" else "", func() -> void:
+						QuestTracker.track(ss_id)
+						_refresh()))
 			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
 			if not fin.is_empty():
 				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))
@@ -799,7 +808,7 @@ func _refresh() -> void:
 			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
-				_line("Things people said (newest first)", 9, Color(0.95, 0.85, 1.0))
+				_line("Notes and tips (newest first)", 9, Color(0.95, 0.85, 1.0))
 				var hs := hints.duplicate()
 				hs.reverse()
 				for hnt in hs.slice(0, 12):
@@ -830,7 +839,7 @@ func _refresh() -> void:
 					_save_now()
 					get_tree().paused = false
 					get_tree().quit())
-			_button("Save & back to title", func() -> void:
+			_button("Save and back to title", func() -> void:
 				_save_now()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
@@ -894,14 +903,14 @@ func _refresh() -> void:
 			for m: Dictionary in ml:
 				m["read"] = true
 				_line("Day %d · %s" % [int(m.get("day", 0)), str(m["from"])], 8, Color(1, 0.95, 0.8))
-				_line("  " + str(m["text"]), 8, Color(0.9, 0.9, 0.85))
+				_line("  " + Money.t(str(m["text"])), 8, Color(0.9, 0.9, 0.85))
 				var mm := m
 				if str(m.get("kind", "")) == "gift" and not bool(m.get("got", false)):
 					_button("  Take the %s" % GameState.item_name(str(m["item"])), func() -> void:
 						Mail.act(mm)
 						_refresh())
 				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
-					_button("  Send %s for ◆%d (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+					_button("  Send %s for %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), Money.amount(int(m["pay"])), GameState.count(str(m["item"]))], func() -> void:
 						var err := Mail.act(mm)
 						var mp := get_tree().current_scene as GameMap
 						if mp and err != "":
@@ -1649,7 +1658,7 @@ func _eat(id: String) -> void:
 			if is_instance_valid(e) and e.position.distance_to(mp.player.position) < 120.0:
 				var now := Time.get_ticks_msec()
 				if now < _food_ready:
-					mp.hud.toast("Still chewing. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
+					mp.hud.toast("Still finishing the last one. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
 					return
 				in_fight = true
 				break

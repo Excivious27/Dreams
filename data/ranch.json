@@ -867,7 +867,8 @@
     "chance": 0.0,
     "egg": "ostrich_egg"
    },
-   "source": "Hazel imports them once you have an Exotic Enclosure (Sunscorch stock)",
+   "source": "Hazel imports them from Sunscorch once you have an Exotic Enclosure",
+   "source_gang": "Hazel imports them from Sunscorch once you have an Exotic Enclosure",
    "team": true,
    "special": "kick",
    "long_low": false,
@@ -945,7 +946,8 @@
     "chance": 0.0,
     "egg": "emu_egg"
    },
-   "source": "Hazel, once you have an Exotic Enclosure",
+   "source": "Hazel imports them once you have an Exotic Enclosure",
+   "source_gang": "Hazel imports them once you have an Exotic Enclosure",
    "team": true,
    "special": "kick",
    "long_low": false,
@@ -1031,6 +1033,7 @@
     "chance": 0.3
    },
    "source": "Tam, once you have the Big Barn",
+   "source_gang": "Tam, once you have the Big Barn",
    "team": true,
    "special": "spit",
    "long_low": false,
@@ -1108,7 +1111,8 @@
     "min_friend": 700,
     "chance": 0.15
    },
-   "source": "Quest: a Sun Drake hatchling (penguins) / a rescued Komodo (gangsters)",
+   "source": "Emberclaw quest: a Sun Drake hatchling that chose you",
+   "source_gang": "A rescued Komodo, handed over after a job went sideways",
    "team": true,
    "special": "tail_swipe",
    "long_low": true,
@@ -1188,6 +1192,7 @@
     "chance": 0.3
    },
    "source": "Tam, once you have the Deluxe Barn (Frostpeak stock)",
+   "source_gang": "Tam, once you have the Deluxe Barn (Frostpeak stock)",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1269,6 +1274,7 @@
     "chance": 0.0
    },
    "source": "Hazel, once you have an Aviary",
+   "source_gang": "Hazel, once you have an Aviary",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1341,6 +1347,7 @@
     "chance": 0.2
    },
    "source": "Posy, once you have a Terrarium",
+   "source_gang": "Posy, once you have a Terrarium",
    "team": false,
    "special": "",
    "long_low": true,
@@ -1409,6 +1416,7 @@
     "chance": 0.3
    },
    "source": "Tam, once you have the Deluxe Barn",
+   "source_gang": "Tam, once you have the Deluxe Barn",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1487,6 +1495,7 @@
     "egg": "crystal_egg"
    },
    "source": "Crystopia: a hen that pecks at crystal dust",
+   "source_gang": "Crystopia: a hen that pecks at crystal dust",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1559,7 +1568,8 @@
     "min_friend": 300,
     "chance": 0.3
    },
-   "source": "The Moon: a lamb from the Star Station",
+   "source": "Star Station: a lamb from the low-gravity pens",
+   "source_gang": "Star Station: a lamb from the low-gravity pens",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1631,6 +1641,7 @@
     "chance": 0.3
    },
    "source": "The Moon pad: a hare that hopped aboard",
+   "source_gang": "The Moon pad: a hare that hopped aboard",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1702,6 +1713,7 @@
     "chance": 0.25
    },
    "source": "Star Station: a jelly drifting in the tanks",
+   "source_gang": "Star Station: a jelly drifting in the tanks",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1773,6 +1785,7 @@
     "chance": 0.3
    },
    "source": "Green Planet: a gecko in the glowcap groves",
+   "source_gang": "Green Planet: a gecko in the glowcap groves",
    "team": false,
    "special": "",
    "long_low": true,
@@ -1848,6 +1861,7 @@
     "chance": 0.25
    },
    "source": "Coral Reach: a seahorse that followed your boat",
+   "source_gang": "Coral Reach: a seahorse that followed your boat",
    "team": true,
    "special": "bubble_shot",
    "long_low": false,
@@ -1916,6 +1930,7 @@
     "chance": 0.3
    },
    "source": "Kelp Hollow: a gentle sea-calf",
+   "source_gang": "Kelp Hollow: a gentle sea-calf",
    "team": false,
    "special": "",
    "long_low": false,
@@ -1984,6 +1999,7 @@
     "chance": 0.3
    },
    "source": "Frostfin Isle: an otter that brings you fish",
+   "source_gang": "Frostfin Isle: an otter that brings you fish",
    "team": true,
    "special": "pounce",
    "long_low": false,
@@ -2059,6 +2075,7 @@
     "chance": 0.3
    },
    "source": "Emberclaw Atoll: a newt that loves warm rocks",
+   "source_gang": "Emberclaw Atoll: a newt that loves warm rocks",
    "team": false,
    "special": "",
    "long_low": true,
@@ -2132,6 +2149,7 @@
     "chance": 0.3
    },
    "source": "Cloud Isles: a lamb made mostly of fluff",
+   "source_gang": "Cloud Isles: a lamb made mostly of fluff",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2209,7 +2227,8 @@
     "chance": 0.0,
     "egg": "roc_egg"
    },
-   "source": "Windward: the egg from the Storm Roc nest",
+   "source": "Windward: a young roc from the Storm Roc nest",
+   "source_gang": "Windward: a young roc from the Storm Roc nest",
    "team": true,
    "special": "wing_gust",
    "long_low": false,
@@ -2283,6 +2302,7 @@
     "chance": 0.3
    },
    "source": "Gloamwood: a moth that glows like a lamp",
+   "source_gang": "Gloamwood: a moth that glows like a lamp",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2352,6 +2372,7 @@
     "chance": 0.3
    },
    "source": "The Moon: a calf from the low-gravity meadow",
+   "source_gang": "The Moon: a calf from the low-gravity meadow",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2429,6 +2450,7 @@
     "chance": 0.25
    },
    "source": "Frostpeak: a fox under the northern lights",
+   "source_gang": "Frostpeak: a fox under the northern lights",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2503,6 +2525,7 @@
     "chance": 0.3
    },
    "source": "The Hollow: a glowworm from the deep caves",
+   "source_gang": "The Hollow: a glowworm from the deep caves",
    "team": false,
    "special": "",
    "long_low": true,
@@ -2571,7 +2594,8 @@
     "min_friend": 900,
     "chance": 0.05
    },
-   "source": "Frostpeak Summit: the egg left after the summit boss (one per save)",
+   "source": "Frostpeak Summit: a hatchling from the warm snow hollow",
+   "source_gang": "Frostpeak Summit: a hatchling from the warm snow hollow",
    "team": true,
    "special": "frost_breath",
    "long_low": false,
@@ -2655,6 +2679,7 @@
     "egg": "circuit_egg"
    },
    "source": "Gene Splicer: a hen with a polished chrome comb",
+   "source_gang": "Gene Splicer: a hen with a polished chrome comb",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2734,6 +2759,7 @@
     "chance": 0.35
    },
    "source": "Gene Splicer: wool that glows after dark",
+   "source_gang": "Gene Splicer: wool that glows after dark",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2815,6 +2841,7 @@
     "chance": 0.35
    },
    "source": "Gene Splicer: a goat with circuit-trace horns",
+   "source_gang": "Gene Splicer: a goat with circuit-trace horns",
    "team": true,
    "special": "headbutt",
    "long_low": false,
@@ -2893,6 +2920,7 @@
     "chance": 0.3
    },
    "source": "Gene Splicer: a bunny with springy chrome feet",
+   "source_gang": "Gene Splicer: a bunny with springy chrome feet",
    "team": false,
    "special": "",
    "long_low": false,
@@ -2977,6 +3005,7 @@
     "chance": 0.35
    },
    "source": "Gene Splicer: a cow with a soft blue status light",
+   "source_gang": "Gene Splicer: a cow with a soft blue status light",
    "team": false,
    "special": "",
    "long_low": false,
@@ -3060,6 +3089,7 @@
     "chance": 0.3
    },
    "source": "Gene Splicer: a hog with little drone rotors",
+   "source_gang": "Gene Splicer: a hog with little drone rotors",
    "team": true,
    "special": "charge",
    "long_low": false,
@@ -3138,7 +3168,8 @@
     "min_friend": 200,
     "chance": 0.3
    },
-   "source": "Gene Splicer: a gecko that hums with a tiny spark",
+   "source": "Gene Splicer, or a lost one in the Hollow: a gecko that hums with a tiny spark",
+   "source_gang": "Gene Splicer, or a lost one in the Hollow: a gecko that hums with a tiny spark",
    "team": true,
    "special": "zap",
    "long_low": true,
@@ -3218,6 +3249,7 @@
     "egg": "alloy_egg"
    },
    "source": "Gene Splicer: a runner bird with chrome legs",
+   "source_gang": "Gene Splicer: a runner bird with chrome legs",
    "team": true,
    "special": "dash_kick",
    "long_low": false,
@@ -4318,8 +4350,8 @@
    "cell": null,
    "away": [],
    "fallback": "",
-   "greet": "Wool, hay, and saplings for the orchard. The sheep did most of the work.",
-   "greet_gang": "Wool, hay, and saplings for the orchard. The sheep did most of the work."
+   "greet": "Wool, hay and saplings. And if your barn's big enough, an alpaca or a yak off the high pasture. The sheep did most of the work.",
+   "greet_gang": "Wool, hay, saplings. Big beasts off the high pasture if your barn can take them. Sheep don't haggle; neither do I."
   },
   "hazel": {
    "name": "Hazel",
