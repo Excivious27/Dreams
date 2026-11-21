@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 11 start arc=gangsters hero=dad style=wander progress=0 difficulty=0 day_len=15
+BOT ENERGY day=1 style=wander len=15 left=117 max=120 fed=0 rest=0 spent={"sword":3.72}
+BOT ENERGY day=2 style=wander len=15 left=118 max=120 fed=0 rest=0 spent={"sword":2.88}
+BOT ENERGY day=3 style=wander len=15 left=120 max=120 fed=2 rest=0 spent={"sword":2.64}
+BOT 11 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_yards", "meadow", "marsh", "docks", "crystal_meadow", "jungle", "wastes"], day 4, ◆64

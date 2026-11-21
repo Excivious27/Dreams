@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 8 start arc=penguins hero=big_jim style=wander progress=5 difficulty=2 day_len=30
+BOT ENERGY day=1 style=wander len=30 left=119 max=165 fed=0 rest=0 spent={"sword":1.84}
+BOT ENERGY day=2 style=wander len=30 left=164 max=165 fed=0 rest=0 spent={"sword":1.6}
+BOT ENERGY day=3 style=wander len=30 left=163 max=165 fed=0 rest=0 spent={"sword":2.16,"weed":0.18}
+BOT 8 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countryside", "meadow", "gloam_crystal_thicket", "sky", "colony_kelp", "marsh", "town"], day 4, ◆9785

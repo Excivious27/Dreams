@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 17 start arc=gangsters hero=marisol style=fighter progress=5 difficulty=3 day_len=40
+BOT ENERGY day=2 style=fighter len=40 left=123 max=165 fed=0 rest=0 spent={"sword":0.56}
+BOT ENERGY day=3 style=fighter len=40 left=162 max=165 fed=0 rest=0 spent={"sword":3.6}
+BOT ENERGY day=4 style=fighter len=40 left=164 max=165 fed=0 rest=1 spent={"sword":2.08}
+BOT 17 done: 0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["jungle", "quarry", "meadow", "mine"], day 5, ◆5909
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

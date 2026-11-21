@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 4 start arc=penguins hero=merry style=farmer progress=0 difficulty=2 day_len=30
+BOT ENERGY day=1 style=farmer len=30 left=120 max=120 fed=0 rest=0 spent={}
+BOT ENERGY day=2 style=farmer len=30 left=114 max=120 fed=0 rest=0 spent={"can":0.69,"hoe":5.52,"sword":0.24}
+BOT ENERGY day=3 style=farmer len=30 left=112 max=120 fed=0 rest=0 spent={"can":2.76,"hoe":5.52,"plant":0.51}
+BOT 4 done: 0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea", "desert_sunken_temple", "farm"], day 4, ◆70

@@ -1,0 +1,40 @@
+CONDUCT CI FAIL  5ee94da00d  (ci/c16ai-501d1561, run 44931502175)
+
+check shards (6/6):
+  shard 1: FAIL  447s  failed: workshop: stations at run time, S1 P3: no new touch words outside PadInput.words
+  shard 2: FAIL  252s  failed: faint at 10pm, dawn light, region names
+  shard 3: PASS  335s
+  shard 4: PASS  329s
+  shard 5: PASS  429s
+  shard 6: PASS  357s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 127s  0 fails, 0 warns, 628 steps, 2 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 62s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 105s  0 fails, 0 warns, 335 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "moon", "house
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 101s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "crystal
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 144s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["ruins", "wastes", "quar
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 102s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 64s  0 fails, 0 warns, 419 steps, 0 kills, 0 ownerless pauses, scenes ["house", "gloam_crystal_
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "moon", "country
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 147s  0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=1 pauses=0 60s  0 fails, 1 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "house"]
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 87s  0 fails, 0 warns, 302 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "lake", 
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 159s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["jungle", "quarry", "mea
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 344 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon
+playtest: PASS  58s  21 screenshots (results playtest/shots/)
+RELAY: ok, 39ms (live code a29f453d8be9, this server/)
+
+longest job: 447s
+slowest check steps: import 99.1s; import 89.2s; import 89.0s; import 82.8s; import 81.1s; smoke test 58.5s; import 52.8s; exits and spawns 49.7s
+distinct errors/fails/warns:
+    1  FAIL the training hall lifts crew perks (0 → 0)
+    1  FAIL patched up with energy to get home
+    1  SCRIPT ERROR: Invalid access to property or key 'process_frame' on a base object of type 'null instance'.
+    1  BOT WARN player boxed in at town at cell (39, 2), frozen=false paused=false

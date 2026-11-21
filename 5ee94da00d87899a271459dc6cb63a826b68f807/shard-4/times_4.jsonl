@@ -1,0 +1,41 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 89.0}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 49.7}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 4.2}
+{"step": 17, "name": "step 17", "rc": 0, "secs": 0.0}
+{"step": 23, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 3.6}
+{"step": 29, "name": "storage_test", "rc": 0, "secs": 3.8}
+{"step": 35, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 6.3}
+{"step": 41, "name": "rec_audio_test", "rc": 0, "secs": 3.8}
+{"step": 47, "name": "farm_look_test", "rc": 0, "secs": 6.0}
+{"step": 53, "name": "npc_anim_test", "rc": 0, "secs": 3.9}
+{"step": 59, "name": "ranch_gift_test", "rc": 0, "secs": 4.4}
+{"step": 65, "name": "town_first_test", "rc": 0, "secs": 6.3}
+{"step": 71, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 4.0}
+{"step": 77, "name": "Steam: ratings / AI disclosure answers still true (S1 P5)", "rc": 0, "secs": 0.7}
+{"step": 83, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.7}
+{"step": 89, "name": "mix_test", "rc": 0, "secs": 5.8}
+{"step": 95, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 8.4}
+{"step": 101, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 9.0}
+{"step": 107, "name": "street_bat_test", "rc": 0, "secs": 3.9}
+{"step": 113, "name": "battle_drill_flow_test", "rc": 0, "secs": 12.0}
+{"step": 119, "name": "move_speed_test", "rc": 0, "secs": 5.7}
+{"step": 125, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 9.9}
+{"step": 131, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 4.9}
+{"step": 137, "name": "arcade_test", "rc": 0, "secs": 4.4}
+{"step": 143, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 9.2}
+{"step": 149, "name": "C7 P4: heart scene content", "rc": 0, "secs": 4.9}
+{"step": 155, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 4.0}
+{"step": 161, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 12.8}
+{"step": 167, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 5.7}
+{"step": 173, "name": "C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/s", "rc": 0, "secs": 4.2}
+{"step": 179, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 3.9}
+{"step": 185, "name": "S1 P6: Steam store text drafts (tokens, limits, banned words, claims g", "rc": 0, "secs": 0.1}
+{"step": 191, "name": "C12 P7: dialogue conditions match game state (talk pools per snapshot,", "rc": 0, "secs": 5.3}
+{"step": 197, "name": "access_audio_test", "rc": 0, "secs": 3.9}
+{"step": 203, "name": "C14 P1: home regions (riverlands river + bridge, orchard rows, day cor", "rc": 0, "secs": 6.7}
+{"step": 209, "name": "anim core (C14b P1)", "rc": 0, "secs": 5.0}
+{"step": 215, "name": "strip registration (C14b P2: fire strips keep their base still)", "rc": 0, "secs": 0.1}
+{"step": 221, "name": "C15 P1: calendar (festivals/holidays/events/markets/birthdays, both ar", "rc": 0, "secs": 4.6}
+{"step": 227, "name": "season_goods_test", "rc": 0, "secs": 4.3}
+{"step": 233, "name": "energy_check", "rc": 0, "secs": 0.1}
+{"step": 239, "name": "C16a P1: progression timeline (mega region calendar/skill floors, non-", "rc": 0, "secs": 4.1}

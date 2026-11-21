@@ -1,0 +1,11 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 20 start arc=gangsters hero=pax style=menus progress=5 difficulty=2 day_len=15
+BOT ENERGY day=1 style=menus len=20 left=125 max=165 fed=5 rest=0 spent={"sword":0.16}
+BOT ENERGY day=2 style=menus len=20 left=165 max=165 fed=0 rest=0 spent={"sword":0.08}
+BOT ENERGY day=3 style=menus len=20 left=165 max=165 fed=0 rest=0 spent={}
+BOT 20 done: 0 fails, 0 warns, 344 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon", "bf_dockside", "hideout", "mine", "ruins", "house", "jungle"], day 4, ◆5895
+WARNING: 146 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2678)
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

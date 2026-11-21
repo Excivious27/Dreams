@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 7 start arc=penguins hero=coldy style=fighter progress=4 difficulty=3 day_len=40
+BOT ENERGY day=1 style=fighter len=40 left=118 max=165 fed=0 rest=0 spent={"sword":2.48}
+BOT ENERGY day=2 style=fighter len=40 left=120 max=165 fed=0 rest=0 spent={"sword":3.04}
+BOT ENERGY day=3 style=fighter len=40 left=122 max=165 fed=0 rest=0 spent={"sword":1.36}
+BOT 7 done: 0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["ruins", "wastes", "quarry", "mine", "desert_glass_canyon"], day 4, ◆5596

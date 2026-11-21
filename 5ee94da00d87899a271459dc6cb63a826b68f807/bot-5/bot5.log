@@ -1,0 +1,11 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 5 start arc=penguins hero=coco style=menus progress=1 difficulty=1 day_len=15
+BOT ENERGY day=1 style=menus len=15 left=120 max=120 fed=0 rest=0 spent={"sword":0.12}
+BOT ENERGY day=2 style=menus len=15 left=120 max=120 fed=0 rest=0 spent={"sword":0.48}
+BOT ENERGY day=3 style=menus len=20 left=120 max=120 fed=0 rest=0 spent={}
+BOT 5 done: 0 fails, 0 warns, 335 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "moon", "house", "wastes", "forest", "farm"], day 4, ◆135
+WARNING: 152 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2678)
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

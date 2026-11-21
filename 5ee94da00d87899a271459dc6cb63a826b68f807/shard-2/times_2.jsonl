@@ -1,0 +1,41 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 52.8}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.9}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 1, "secs": 3.0}
+{"step": 15, "name": "crops wired in", "rc": 0, "secs": 0.0}
+{"step": 21, "name": "phone_ui_test", "rc": 0, "secs": 10.8}
+{"step": 27, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.7}
+{"step": 33, "name": "C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli", "rc": 0, "secs": 2.9}
+{"step": 39, "name": "rec_links_test", "rc": 0, "secs": 2.6}
+{"step": 45, "name": "coop_test", "rc": 0, "secs": 2.9}
+{"step": 51, "name": "crop_test", "rc": 0, "secs": 27.6}
+{"step": 57, "name": "ranch_test", "rc": 0, "secs": 3.4}
+{"step": 63, "name": "cf_layout_test", "rc": 0, "secs": 7.7}
+{"step": 69, "name": "every sound the game asks for exists", "rc": 0, "secs": 2.8}
+{"step": 75, "name": "Steam: SteamPipe templates, depot exclusions, upload config (S1 P5)", "rc": 0, "secs": 0.0}
+{"step": 81, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.2}
+{"step": 87, "name": "music_stream_test", "rc": 0, "secs": 29.6}
+{"step": 93, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.8}
+{"step": 99, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.3}
+{"step": 105, "name": "goal_line_test", "rc": 0, "secs": 2.8}
+{"step": 111, "name": "campaign_gate_test", "rc": 0, "secs": 6.7}
+{"step": 117, "name": "meow_gate_test", "rc": 0, "secs": 3.3}
+{"step": 123, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.5}
+{"step": 129, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 15.6}
+{"step": 135, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 141, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.8}
+{"step": 147, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 2.7}
+{"step": 153, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 2.6}
+{"step": 159, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.1}
+{"step": 165, "name": "S1 P3: Steam Deck text floor (drawn text scan)", "rc": 0, "secs": 0.1}
+{"step": 171, "name": "C9 P5: save codes and files", "rc": 0, "secs": 2.6}
+{"step": 177, "name": "C10b P4: casino", "rc": 0, "secs": 2.8}
+{"step": 183, "name": "steam input: game_actions VDF matches InputSetup (generator + KeyValue", "rc": 0, "secs": 0.0}
+{"step": 189, "name": "C12 P7: story continuity (no other-arc words, no later-chapter names b", "rc": 0, "secs": 0.1}
+{"step": 195, "name": "C13 P3: audio tools (short-sting levelling, len_audible, gang jingles,", "rc": 0, "secs": 0.9}
+{"step": 201, "name": "C14 P4: classic regions' hidden pockets/ways, pages and opaque ways", "rc": 0, "secs": 4.9}
+{"step": 207, "name": "C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons,", "rc": 0, "secs": 2.6}
+{"step": 213, "name": "glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fa", "rc": 0, "secs": 3.2}
+{"step": 219, "name": "C14b P5: character idle life (front idles, breath, glances, villager p", "rc": 0, "secs": 3.0}
+{"step": 225, "name": "C15 P6: festival activities driven (egg hunt persists + kids, lantern,", "rc": 0, "secs": 14.0}
+{"step": 231, "name": "C15 integ: calendar hooks (plaza-only festivals in town, crew birthday", "rc": 0, "secs": 3.0}
+{"step": 237, "name": "C16a P6 chore icons (fish, mine)", "rc": 0, "secs": 0.3}
