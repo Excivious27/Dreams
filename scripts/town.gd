@@ -485,8 +485,8 @@ func _place_festival(fest: String) -> void:
 				["c15p6_crate_stack", Vector2i(30, 52), 1], ["c15p6_crate_stack", Vector2i(51, 52), 1], ["c15p6_neon_string", Vector2i(39, 63), 2]]:
 			if Art.has(P, str(g[0])) and _free(_foot(P, str(g[0]), g[1], int(g[2]))):
 				pf.call(str(g[0]), g[1], int(g[2]), str(g[0]) != "c15p6_neon_string")
-	if fest in ["lantern", "star"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
-		FestivalSky.make(AmbientMotion.of(self).get_parent(), fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
+	if fest in ["lantern", "star", "gift_swap"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
+		FestivalSky.make(AmbientMotion.of(self).get_parent(), "fireworks" if fest == "gift_swap" else fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
 	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + FestivalWords.name_of(fest)}, false)
 	# C11a P5: the Animal Show (Harvest Fair) and the Best Egg table (Egg Festival).
 	var sh: Array = SHOW.get(fest, [])

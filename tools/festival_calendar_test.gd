@@ -127,5 +127,19 @@ func _run() -> void:
 		GameState.run["flags"]["gift_swap_y%d" % (y - 1)] = FestivalExtra.secret_partner(y - 1)
 		check(FestivalExtra.secret_partner(y) != FestivalExtra.secret_partner(y - 1), "partner changes in year %d" % y)
 	check(FestivalExtra.handles("blossom") and not FestivalExtra.handles("egg"), "FestivalExtra handles the new town festivals")
+	# FestivalSky modes for the off-plaza festivals (jellies with a gold one from year 3, comet, fireworks).
+	GameState.run["day"] = 1 + 2 * 112 + 56 + 26
+	var host := Node2D.new()
+	root.add_child(host)
+	var fj := FestivalSky.make(host, "jellies", Rect2(0, 0, 200, 100))
+	var fc := FestivalSky.make(Node2D.new(), "comet")
+	var bad := FestivalSky.make(Node2D.new(), "nope")
+	await process_frame
+	check(fj._jel.size() >= 5 and bool(fj._jel[0][3]), "jellies drift, a gold one in year 3")
+	check(fc.mode == "comet" and bad.mode == "", "comet mode kept, unknown mode off")
+	var p0: Vector2 = fj._jel[1][0]
+	for k in 30:
+		await process_frame
+	check((fj._jel[1][0] as Vector2) != p0, "jellies move on game time")
 	print("festival_calendar_test: ", "OK" if fails == 0 else "FAILED (%d)" % fails)
 	quit(0 if fails == 0 else 1)
