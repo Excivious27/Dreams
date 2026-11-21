@@ -270,6 +270,13 @@ func _screens_pass() -> void:
 	await _frames(10)
 	await _shot("campaign_map", "screens", "campaign map/board")
 	await _shut(_child(m, "CampaignScreen"))
+	# C16b P3 (c16b_08-09/15-05): the list as a player sees it (real locks), not '(another way in)' everywhere.
+	Campaign.bypass = false
+	CampaignScreen.open(m)
+	await _frames(10)
+	await _shot("campaign_list_locked", "screens", "campaign list with real locks (long way)")
+	await _shut(_child(m, "CampaignScreen"))
+	Campaign.bypass = true
 	var hub := ArcadeHub.make("")
 	hub.manual = true
 	root.add_child(hub)
