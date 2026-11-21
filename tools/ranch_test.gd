@@ -25,6 +25,9 @@ func _initialize() -> void:
 	_migration()
 	_pen_layout()
 	_incubator_view()
+	_sleep_order()
+	_reap_tile()
+	_gift_perk()
 	print("ranch_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails > 0 else 0)
 
@@ -275,3 +278,58 @@ func _incubator_view() -> void:
 	var names: Array = RanchFarm.hatch_due(due)
 	check(names.size() == 1 and RanchFarm.all_eggs().is_empty(), "due egg hatches through RanchFarm (%s)" % str(names))
 	check(RanchFarm.baby_word("duck") == "duckling" and RanchFarm.baby_word("cow").begins_with("baby"), "baby words")
+
+
+## GameState.sleep runs Project, Commons, Chores, then Ranch, then the crops, then the crows (c11b_06-02):
+## a helper's feed/pet/guard chore lands before the ranch night, a guard before the crows.
+func _sleep_order() -> void:
+	var src := FileAccess.get_file_as_string("res://scripts/game_state.gd")
+	var at := src.find("static func sleep(")
+	var order: Array = []
+	for k in ["Project.overnight(report)", "Commons.overnight(report)", "Chores.overnight(report)", "Ranch.overnight(report)", "_crows(report)"]:
+		order.append(src.find(k, at))
+	var ok := not order.has(-1)
+	for i in range(1, order.size()):
+		ok = ok and int(order[i]) > int(order[i - 1])
+	check(ok, "sleep order Project < Commons < Chores < Ranch < crows (%s)" % str(order))
+
+
+## The shared bed reset (c11b_06-03): fertiliser used up, regrow or clear, first log once.
+func _reap_tile() -> void:
+	_fresh("penguins")
+	var crop := ""
+	var regrow := ""
+	for cid in GameState.crops:
+		var cd: Dictionary = GameState.crops[cid]
+		if cd.has("regrow") and regrow == "" and not bool(cd.get("tree", false)):
+			regrow = str(cid)
+		elif not cd.has("regrow") and crop == "" and str(cd.get("yield", "")) != "wheat":
+			crop = str(cid)
+	var t := {"crop": crop, "days": int(GameState.crops[crop]["days"]), "fert": true}
+	var r: Dictionary = GameState.reap_tile(t)
+	check(str(t["crop"]) == "" and not t.has("fert") and bool(r["first"]), "reap clears the bed, uses the fertiliser, logs the crop (%s)" % crop)
+	check(not bool(GameState.reap_tile({"crop": crop, "days": 9})["first"]), "a crop is logged once")
+	var t2 := {"crop": regrow, "days": int(GameState.crops[regrow]["days"])}
+	GameState.reap_tile(t2)
+	check(str(t2["crop"]) == regrow and int(t2["days"]) == int(GameState.crops[regrow]["days"]) - int(GameState.crops[regrow]["regrow"]), "a regrowing crop goes back a few days (%s)" % regrow)
+
+
+## Heart perks and side stories give animals through Perks.gift_animal, once per source (c11b_04-05/06).
+func _gift_perk() -> void:
+	_fresh("penguins")
+	Ranch.migrate()
+	var hp: Dictionary = Perks.data()
+	check(hp.get("hazel", {}).get("10", {}).get("animal", null) is Dictionary and hp.get("benno", {}).get("8", {}).get("animal", null) is Dictionary, "Hazel and Benno heart perks carry an animal")
+	var n0 := Ranch.roster("coop").size()
+	var uid := Perks.gift_animal({"species": "chicken", "variant": "golden", "name": "Saffron", "keepsake": true}, "heart:hazel_10", "Hazel")
+	check(uid != "" and Ranch.roster("coop").size() == n0 + 1, "the gift hen moves into the coop (%s)" % uid)
+	if uid != "":
+		check(str(Ranch.animal(uid).get("variant", "")) == "golden" and bool(Ranch.animal(uid).get("keepsake", false)), "golden keepsake hen")
+	check(Perks.gift_animal({"species": "chicken"}, "heart:hazel_10", "Hazel") == "" and Ranch.roster("coop").size() == n0 + 1, "a source gives once")
+	var ss: Array = JSON.parse_string(FileAccess.get_file_as_string("res://data/side_stories.json")).get("chains", [])
+	var with_animal := 0
+	for c in ss:
+		for stp in (c as Dictionary).get("steps", []):
+			if (stp as Dictionary).get("animal", null) is Dictionary:
+				with_animal += 1
+	check(with_animal >= 3, "three side stories end with an animal (%d)" % with_animal)

@@ -1134,10 +1134,51 @@ func _tillable(c: Vector2i) -> bool:
 	return true
 
 
+## The Plans board group of a build: animal homes (and the silo that feeds them) get their own
+## "Ranch" list instead of growing the farm list (c11b_05-10); everything else keeps its data cat.
+func _plan_cat(id: String) -> String:
+	var cat := str(Builds.data()[id].get("cat", "farm"))
+	if cat != "farm":
+		return cat
+	if id == "silo" or str(Builds.data()[id].get("ranch", "")) != "":
+		return "ranch"
+	for h in (Ranch.data()["buildings"] as Dictionary):
+		if Ranch.build_of(str(h)) == id:
+			return "ranch"
+	return cat
+
+
+## A ranch home's one-line summary for its plan page: who lives there now, what it has, what the
+## next tier adds ("Houses 3/8 · feeder, incubator · next: room for 12, adds heater").
+func _ranch_line(id: String) -> String:
+	var home := ""
+	for h in (Ranch.data()["buildings"] as Dictionary):
+		if Ranch.build_of(str(h)) == id:
+			home = str(h)
+	if home == "":
+		return ""
+	var t := Builds.built_tier(id)
+	var parts: Array = []
+	var have: Array = []
+	if t > 0:
+		parts.append("Houses %d/%d" % [Ranch.roster(home).size(), Ranch.capacity(home)])
+		have = Ranch.tier_row(home, t).get("adds", [])
+		if not have.is_empty():
+			parts.append(", ".join(have).replace("_", " "))
+	var nxt := Ranch.tier_row(home, t + 1)
+	if not nxt.is_empty():
+		var adds: Array = []
+		for a in nxt.get("adds", []):
+			if not have.has(a):
+				adds.append(str(a).replace("_", " "))
+		parts.append("next: room for %d%s" % [int(nxt.get("cap", 0)), (", adds " + ", ".join(adds)) if not adds.is_empty() else ""])
+	return " · ".join(parts)
+
+
 func _plans() -> void:
 	# The plans board. Everything on the farm is made from materials or bought
 	# ready-made, tier by tier; each tier has its own gate (story, skill, friend).
-	const CATS := [["farm", "Farm buildings"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"], ["sanctuary", "The sanctuary"]]
+	var CATS := [["farm", "Farm buildings"], ["ranch", "Ranch (animal homes)" if GameState.is_penguins() else "Livestock (animal homes)"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"], ["sanctuary", "The sanctuary"]]
 	var d := Dialogue.instance(get_tree())
 	while true:
 		var copts: Array = []
@@ -1146,7 +1187,7 @@ func _plans() -> void:
 			var n := 0
 			var have := 0
 			for id: String in Builds.data():
-				if str(Builds.data()[id].get("cat", "farm")) == str(pair[0]):
+				if _plan_cat(id) == str(pair[0]):
 					n += 1
 					have += 1 if Builds.is_built(id) else 0
 			if n > 0:
@@ -1176,7 +1217,7 @@ func _plans() -> void:
 			var ids: Array = []
 			var opts: Array = []
 			for id: String in Builds.data():
-				if str(Builds.data()[id].get("cat", "farm")) != cat:
+				if _plan_cat(id) != cat:
 					continue
 				var bt := Builds.built_tier(id)
 				var nd := Builds.next_def(id)
@@ -1222,6 +1263,9 @@ func _plans() -> void:
 				parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
 			var g2 := Builds.gate(id)
 			var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
+			var rl := _ranch_line(id)
+			if rl != "":
+				text += "\n" + rl
 			if int(nd2.get("days", 0)) > 0:
 				var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
 				text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
@@ -1409,17 +1453,13 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		# The reward pop on top of the rustle (c6_10-13).
 		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck", "pop"))
 		xp("farming", harvest_xp(cd))
-		tile.erase("fert")  # fertiliser feeds one growth cycle, regrowing crops included
+		GameState.reap_tile(tile, false, false)  # the one bed reset (fert used up, regrow or clear), shared with the Harvest chore (c11b_06-03)
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.
-			tile["days"] = int(cd["days"]) - int(cd["regrow"])
 			var rk := "regrow_told_" + crop
 			if not GameState.run["flags"].has(rk):  # say it once per crop, not every pick
 				GameState.run["flags"][rk] = true
 				hud.toast("%s will fruit again in %d days." % [str(cd["name"]), int(cd["regrow"])])
-		else:
-			tile["crop"] = ""
-			tile["days"] = 0
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
 		_soil.queue_redraw() if _soil else queue_redraw()

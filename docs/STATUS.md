@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b P4: ranch pens moved off the farmhouse (hutch/sty east of the track, apiary by the beehive) with a pen layout test; incubator is a Ranch view for every egg; roster animals show variant art/tints; animal gifts from Hazel/Posy/Benno hearts and three side stories; Plans board Ranch group; shared reap_tile; guard-chore crow watch hook; pup skill names, pack wording, Rare Bloodlines node; Specs notice perk at loyalty 3.
+
 ## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
 ## 2026-11-20 — C11a fix: BattleBrief keeps an early B and takes MENU as back (bot 20 softlock in bf_orchard_line); campaign_gate_test checks both.
 

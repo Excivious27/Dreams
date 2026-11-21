@@ -2244,6 +2244,29 @@ static func random_season_seed(max_tier := -1) -> String:
 
 
 ## The field log: first harvests of every crop, for the journal and the fair.
+## The bed half of a harvest, shared by the player (farm.gd) and the Harvest chore (Chores, c11b_06-03):
+## logs the crop (when log_it), sends wheat chaff to the silo (when chaff; no silo/full: "hay" 1 back),
+## uses up fertiliser, then regrows or clears the bed. Returns {first, hay, regrow, xp_share}.
+static func reap_tile(tile: Dictionary, log_it := true, chaff := true) -> Dictionary:
+	var crop := str(tile.get("crop", ""))
+	var cd: Dictionary = crops.get(crop, {})
+	var out := {"first": false, "hay": 0, "regrow": cd.has("regrow"), "xp_share": 0}
+	if cd.is_empty():
+		return out
+	if log_it:
+		out["first"] = log_grown(crop)
+	if chaff and str(cd.get("yield", "")) == "wheat" and not Builds.silo_add(1):
+		out["hay"] = 1
+	tile.erase("fert")  # fertiliser feeds one growth cycle, regrowing crops included
+	if cd.has("regrow"):
+		tile["days"] = int(cd["days"]) - int(cd["regrow"])
+	else:
+		tile["crop"] = ""
+		tile["days"] = 0
+	out["xp_share"] = maxi(1, (2 + int(cd.get("tier", 1))) / 2)  # a helper's pick: a small farming xp share
+	return out
+
+
 static func log_grown(crop: String) -> bool:
 	var g: Dictionary = run.get("grown", {})
 	var first := not g.has(crop)
