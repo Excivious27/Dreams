@@ -739,7 +739,7 @@
     "morning": [
      "Morning. I checked the fences. All good.",
      "Brought you wild berries. Don't eat the red ones. Those are mine.",
-     "Fox tracks by the barn. I scared it off. Gently."
+     "Fox tracks by the fence. I scared it off. Gently."
     ],
     "evening": [
      "You're home. Good.",
@@ -1443,7 +1443,7 @@
    "vows": "I promise to always be steady for you, like a good horse on a long road.",
    "spouse": {
     "morning": [
-     "Morning! The animals are fed. I couldn't help it.",
+     "Morning! I said good morning to every animal on the way in. They said it back.",
      "Brought you an apple. Polished it on my shirt.",
      "Big day? I believe in you."
     ],

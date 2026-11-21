@@ -472,7 +472,7 @@ static func _ranch_mail(day: int) -> void:
 const RANCH_LETTERS := [
 	["coop", 1, "hazel", "Your hens are settled; I walked them up myself. They like a pet first thing and a full feeder. Hay's on me this once.", "Your hens are in. Told you I'd find some. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once.", "hay", 3, "benno"],
 	["barn", 1, "benno", "The barn smells right already. Brush them, talk to them, keep the trough full; the rest is patience. Some hay to start you off.", "Barn's up. Animals don't care who you work for: feed them, pet them, and the milk comes. Hay to start.", "hay", 5],
-	["coop", 2, "posy", "A bigger coop! If any duck eggs come your way, I'll trade you a cake for every one. Here's an egg for luck.", "Bigger coop, I hear. Duck eggs make the best cakes in town and I don't say that lightly. An egg for luck.", "egg", 1],
+	["coop", 2, "posy", "A bigger coop! Ducks next, I hope: a duck egg makes the lightest sponge there is. Here's an egg for luck.", "Bigger coop, I hear. Duck eggs make the best cakes in town and I don't say that lightly. An egg for luck.", "egg", 1],
 	["barn", 2, "tam", "Goats now. They'll eat the fence, the gate and your hat. Worth it for the milk. Wool for the bedding.", "Goats. They'll eat everything you own. Worth it for the milk. Wool for the bedding.", "sheep_wool", 2],
 ]
 const COOP_NO_LEAD_GANG := "Your hens are in. Found you some through a friend. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once."
