@@ -1,0 +1,141 @@
+{
+ "sha": "988e3f77cc9fb6d422d3d409da5cba4fbec1e56c",
+ "ref": "ci/c14bi2-cb29616b",
+ "run": "44908892801",
+ "finished": 1795268426.0185547,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 65,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "cb29616b043a8eb5d95520eeda9adcd075cf2fb2",
+  "label": "c14bi2",
+  "branch": "c14b/integ",
+  "shards": [
+   1
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 522,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 522,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 171.8
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 57.9
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 45.0
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 44.9
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 27.6
+  },
+  {
+   "step": 122,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 16.8
+  },
+  {
+   "step": 110,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 10.6
+  },
+  {
+   "step": 98,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 10.5
+  },
+  {
+   "step": 218,
+   "name": "C14b P4: magic and tech areas (ground sparkles, sky veils, motes, stri",
+   "rc": 0,
+   "secs": 9.2
+  },
+  {
+   "step": 140,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 8.6
+  },
+  {
+   "step": 50,
+   "name": "house_exterior_test",
+   "rc": 0,
+   "secs": 8.3
+  },
+  {
+   "step": 20,
+   "name": "desktop_layout_test",
+   "rc": 0,
+   "secs": 8.1
+  },
+  {
+   "step": 134,
+   "name": "hidden areas stay put day to day (C5)",
+   "rc": 0,
+   "secs": 6.8
+  },
+  {
+   "step": 146,
+   "name": "C7 P5: colony stories and crew",
+   "rc": 0,
+   "secs": 6.8
+  },
+  {
+   "step": 176,
+   "name": "C10a P5: wardrobe",
+   "rc": 0,
+   "secs": 6.7
+  }
+ ]
+}
