@@ -91,7 +91,18 @@ def snow():
         _rm_save(out, "buildings", b + "_snow")
 
 
-STEPS = [flagstones, mosaic, props, snow]
+def garden():
+    """NE gardens: buildings/c14p2_greenhouse (1x like the town buildings, 96 wide) and
+    props/c14p2_rose_arbour (2x detail, drawn at 0.5)."""
+    rgba, rows = C.sheet_rows(INC + "/garden.png", merge=6, min_area=3000)
+    pieces = sorted([b for r in rows for b in r], key=lambda b: (b[2] - b[0]) * (b[3] - b[1]), reverse=True)[:2]
+    pieces.sort(key=lambda b: b[0])
+    assert len(pieces) == 2, pieces
+    _rm_save(C.piece(rgba, C.tight(rgba, pieces[0]), w=96), "buildings", "c14p2_greenhouse")
+    _rm_save(C.piece(rgba, C.tight(rgba, pieces[1]), w=76), "props", "c14p2_rose_arbour")
+
+
+STEPS = [flagstones, mosaic, props, snow, garden]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

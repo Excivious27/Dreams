@@ -21,8 +21,13 @@ const PLAZA_R := 9.5
 const RIVER_X := Rect2i(68, 0, 5, 96)
 const BRIDGES := [Rect2i(68, 45, 5, 6), Rect2i(68, 76, 5, 3)]
 const FOUNTAIN_C := Vector2i(38, 46)
+## C14 P2 (c14_03-13 #3): the Mayor's public garden north of the mansion: a hedge maze with
+## a bench and a keepsake at its heart, the glass conservatory, a rose arbour, lamps on the lane.
+const GARDEN := Rect2i(45, 1, 22, 13)
+const MAZE_AT := Vector2i(47, 2)
+const MAZE := ["#########", "#...#...#", "#.#.#.#.#", "#.#...#.#", "#.##P##.#", "#....#..#", "###.##.##", "#.....#.#", "####.####"]
 ## Dirt side lanes to the districts (draw_map paints them; props and lamps keep off them, c14_03-20).
-const LANES := [Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)]
+const LANES := [Rect2i(44, 11, 22, 2), Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)]
 ## The town hall's front steps: stone, not a dirt blob (c14_03-10).
 const HALL_STEPS := Rect2i(53, 42, 2, 3)
 
@@ -80,12 +85,10 @@ func build() -> void:
 				_plaza[Vector2i(x, y)] = true
 	# The river is one body, under the bridges too (they draw on top), and it runs
 	# on out through the north and south tree bands.
-	var rv := {}
-	for c: Vector2i in cells_of([RIVER_X]):
-		rv[c] = true
+	var rv := river_cells()
 	border_water_extra = rv
 	border_water_shore = "river" if Art.has("tiles", "river_top_0") else "grass"
-	for c: Vector2i in cells_of([RIVER_X]):
+	for c: Vector2i in rv:
 		var on_bridge := false
 		for b: Rect2i in BRIDGES:
 			if b.has_point(c):
@@ -987,6 +990,7 @@ func _place_props() -> void:
 			if not things.has(Vector2i(x, y)) and not _river.has(Vector2i(x, y)) and not blocked.has(Vector2i(x, y)):
 				_lamp(Vector2i(x, y), Vector2i(1, 0))
 	_dress_plaza()
+	_garden()
 	# Wells, carts, crates: the working edges of town.
 	if prop("buildings", "well", Vector2i(30, 56), 2):
 		_claim(_foot("buildings", "well", Vector2i(30, 56), 2), "well", false)
@@ -1025,11 +1029,26 @@ func _place_props() -> void:
 	for c: Vector2i in [Vector2i(75, 30), Vector2i(79, 30)]:
 		if Art.has("props", "beehive3_a"):
 			prop("props", "beehive3_a", c)
+	# The river banks (c14_03-06): reeds, cattails and a willow every few rows.
+	for y in range(4, 92, 5):
+		if y >= 42 and y <= 53 or y >= 73 and y <= 80:
+			continue
+		for side in [-1, 1]:
+			var xs := 67 if side < 0 else 72
+			while xs >= 66 and xs <= 73 and _river.has(Vector2i(xs, y)):
+				xs += side
+			var c := Vector2i(xs, y)
+			if not _river.has(c) and not blocked.has(c) and (y + side * 3) % 3 != 0:
+				var nm: String = ["reeds2_0", "cattail_1", "reeds2_2", "cattail_3"][(y / 5 + (side + 1)) % 4]
+				if Art.has("nature", nm):
+					prop("nature", nm, c, 0, 0.0, false)
+	if Art.has("nature", "mid_willow") and not blocked.has(Vector2i(73, 60)):
+		prop("nature", "mid_willow", Vector2i(73, 60))
 	# A tiny graveyard behind the chapel.
 	_fence_rect(Rect2i(74, 65, 8, 5), Vector2i(78, 65))
 	# Wild bits: tree clumps and scatter where nothing else is.
 	var avoid := {}
-	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12), RecCenter.lot_rect()]:
+	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12), GARDEN, RecCenter.lot_rect()]:
 		for c in cells_of([r]):
 			avoid[c] = true
 	for c in _plaza:
@@ -1122,6 +1141,41 @@ func _dress_plaza() -> void:
 
 func _sign_words(c: Vector2i) -> String:
 	return "▲ farm   ▼ beach\n◀ %s   mountain ▶" % Commons.short_name()
+
+
+func _garden() -> void:
+	for y in MAZE.size():
+		var row: String = MAZE[y]
+		for x in row.length():
+			var c := MAZE_AT + Vector2i(x, y)
+			match row[x]:
+				"#":
+					if Art.has("props", "hedge_short"):
+						prop("props", WorldGen.winter_look("props", "hedge_short"), c)
+				"P":
+					_pp("props", "c14p2_bench_iron", c + Vector2i(0, -1), 0, 0.0, false)
+					set_thing(c.x, c.y, {"type": "maze_prize", "hint": "A: look under the bench"}, false)
+	var gate := MAZE_AT + Vector2i(4, MAZE.size())
+	_pp("props", "c14p2_rose_arbour", gate, 0, 0.0, false)
+	if Art.has("buildings", "c14p2_greenhouse"):
+		building(WorldGen.winter_look("buildings", "c14p2_greenhouse"), Vector2i(59, 3))
+		set_thing(62, 10, {"type": "sign", "text": "The Conservatory: the Mayor's glasshouse. Palms, ferns and orchids, open for looking.", "hint": "A: read the sign"}, false)
+	for x in [47, 53, 59, 65]:
+		_lamp(Vector2i(x, 10), Vector2i(1, 0))
+	_pp("props", "c14p2_tree_planter", Vector2i(57, 11))
+	_pp("props", "bench2_wood_a", Vector2i(45, 10), 1)
+
+
+## The hedge maze's keepsake: a topiary for your yard, once per save.
+func _maze_prize() -> void:
+	var f: Dictionary = GameState.run["flags"]
+	if f.has("c14_maze_prize"):
+		Dialogue.instance(get_tree()).say([{"who": "", "text": "A quiet bench in the middle of the maze. The roses smell lovely."}])
+		return
+	f["c14_maze_prize"] = true
+	var id := "dc_y_penguin_topiary" if GameState.is_penguins() else "dc_out_topiary_b"
+	DecorSources.grant(self, id, 1, "garden maze")
+	Dialogue.instance(get_tree()).say([{"who": "", "text": "Tucked under the bench: a little potted topiary, with a note. \"For whoever finds the middle. Keep it growing!\""}])
 
 
 ## The avenue cross into the fountain (kept walkable).
@@ -1249,6 +1303,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_talk(n)
 			return true
 	match str(thing.get("type", "")):
+		"maze_prize":
+			_maze_prize()
+			return true
 		"shop", "hall", "door":
 			if RecCenter.door_closed(self, thing) or TownHours.door_closed(self, thing):
 				return true
@@ -1511,6 +1568,28 @@ func draw_map() -> void:
 		draw_building(46, 30, 12, 11, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
 	if pad == 0:
 		draw_fence_border()
+
+
+## C14 P2 (c14_03-06): the river meanders. Each row's channel shifts by up to a cell
+## and is 4 to 6 wide, kept inside x 67-72 (the kept-clear river strip); it runs straight
+## and 5 wide on both bridges and where it leaves the map (the border bands line up).
+static func river_cells() -> Dictionary:
+	var out := {}
+	for y in RIVER_X.size.y:
+		var calm := 4.0
+		for b: Rect2i in BRIDGES:
+			calm = minf(calm, maxf(0.0, maxf(b.position.y - y, y - (b.end.y - 1)) - 1.0))
+		calm = minf(calm, minf(float(y), float(RIVER_X.size.y - 1 - y)) - 1.0)
+		var k := clampf(calm / 4.0, 0.0, 1.0)
+		var off := roundi(k * (1.4 * sin(y / 9.0) + 0.9 * sin(y / 4.3 + 1.7)))
+		var wid := 5 + roundi(k * 1.2 * sin(y / 6.1 + 0.6))
+		var x0 := clampi(RIVER_X.position.x + off, 67, 69)
+		if y >= 26 and y <= 30:
+			x0 = maxi(x0, 68)  # the mansion hedge ends at x 67
+		var x1 := mini(x0 + clampi(wid, 4, 6), 73)
+		for x in range(x0, x1):
+			out[Vector2i(x, y)] = true
+	return out
 
 
 ## The street grid's lawns get no ground litter (pinecones, acorns, branches): the

@@ -29077,6 +29077,11 @@
    "h": 128,
    "w": 144
   },
+  "bandstand_snow": {
+   "file": "buildings/bandstand_snow.png",
+   "h": 128,
+   "w": 144
+  },
   "bank": {
    "file": "buildings/bank.png",
    "h": 110,
@@ -29090,6 +29095,11 @@
   },
   "bank_night": {
    "file": "buildings/bank_night.png",
+   "h": 110,
+   "w": 144
+  },
+  "bank_snow": {
+   "file": "buildings/bank_snow.png",
    "h": 110,
    "w": 144
   },
@@ -29221,6 +29231,11 @@
    "h": 93,
    "w": 120
   },
+  "c14p2_greenhouse": {
+   "file": "buildings/c14p2_greenhouse.png",
+   "h": 94,
+   "w": 96
+  },
   "chapel": {
    "file": "buildings/chapel.png",
    "h": 128,
@@ -29234,6 +29249,11 @@
   },
   "chapel_night": {
    "file": "buildings/chapel_night.png",
+   "h": 128,
+   "w": 96
+  },
+  "chapel_snow": {
+   "file": "buildings/chapel_snow.png",
    "h": 128,
    "w": 96
   },
@@ -29253,6 +29273,11 @@
    "h": 102,
    "w": 112
   },
+  "clinic_snow": {
+   "file": "buildings/clinic_snow.png",
+   "h": 102,
+   "w": 112
+  },
   "clock_tower": {
    "file": "buildings/clock_tower.png",
    "h": 160,
@@ -29266,6 +29291,11 @@
   },
   "clock_tower_night": {
    "file": "buildings/clock_tower_night.png",
+   "h": 160,
+   "w": 79
+  },
+  "clock_tower_snow": {
+   "file": "buildings/clock_tower_snow.png",
    "h": 160,
    "w": 79
   },
@@ -29368,6 +29398,11 @@
    "h": 96,
    "w": 128
   },
+  "cottage_a_snow": {
+   "file": "buildings/cottage_a_snow.png",
+   "h": 96,
+   "w": 128
+  },
   "cottage_b": {
    "file": "buildings/cottage_b.png",
    "h": 100,
@@ -29384,6 +29419,11 @@
    "h": 100,
    "w": 128
   },
+  "cottage_b_snow": {
+   "file": "buildings/cottage_b_snow.png",
+   "h": 100,
+   "w": 128
+  },
   "cottage_c": {
    "file": "buildings/cottage_c.png",
    "h": 125,
@@ -29397,6 +29437,11 @@
   },
   "cottage_c_night": {
    "file": "buildings/cottage_c_night.png",
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_snow": {
+   "file": "buildings/cottage_c_snow.png",
    "h": 125,
    "w": 136
   },
@@ -29617,6 +29662,11 @@
    "h": 216,
    "w": 238
   },
+  "hall_snow": {
+   "file": "buildings/hall_snow.png",
+   "h": 216,
+   "w": 238
+  },
   "house": {
    "file": "buildings/house.png",
    "h": 174,
@@ -29778,6 +29828,11 @@
    "h": 128,
    "w": 171
   },
+  "inn_snow": {
+   "file": "buildings/inn_snow.png",
+   "h": 128,
+   "w": 171
+  },
   "karaoke": {
    "file": "buildings/karaoke.png",
    "h": 96,
@@ -29811,6 +29866,11 @@
   },
   "library_night": {
    "file": "buildings/library_night.png",
+   "h": 112,
+   "w": 116
+  },
+  "library_snow": {
+   "file": "buildings/library_snow.png",
    "h": 112,
    "w": 116
   },
@@ -29923,6 +29983,11 @@
    "h": 136,
    "w": 160
   },
+  "potions_snow": {
+   "file": "buildings/potions_snow.png",
+   "h": 136,
+   "w": 160
+  },
   "president_tower": {
    "file": "buildings/president_tower.png",
    "h": 512,
@@ -29994,6 +30059,11 @@
    "h": 101,
    "w": 160
   },
+  "school_snow": {
+   "file": "buildings/school_snow.png",
+   "h": 101,
+   "w": 160
+  },
   "sellbox": {
    "file": "buildings/sellbox.png",
    "h": 40,
@@ -30048,6 +30118,11 @@
   },
   "stable_night": {
    "file": "buildings/stable_night.png",
+   "h": 91,
+   "w": 128
+  },
+  "stable_snow": {
+   "file": "buildings/stable_snow.png",
    "h": 91,
    "w": 128
   },
@@ -30240,6 +30315,11 @@
   },
   "warehouse_a_night": {
    "file": "buildings/warehouse_a_night.png",
+   "h": 111,
+   "w": 144
+  },
+  "warehouse_a_snow": {
+   "file": "buildings/warehouse_a_snow.png",
    "h": 111,
    "w": 144
   },
@@ -103812,6 +103892,11 @@
    "file": "props/c14p2_mosaic.png",
    "h": 256,
    "w": 256
+  },
+  "c14p2_rose_arbour": {
+   "file": "props/c14p2_rose_arbour.png",
+   "h": 84,
+   "w": 76
   },
   "c14p2_signpost": {
    "file": "props/c14p2_signpost.png",

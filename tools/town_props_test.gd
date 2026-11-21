@@ -40,6 +40,22 @@ func _reach(t: GameMap, from: Vector2i, to: Vector2i) -> bool:
 			q.append(n)
 	return false
 
+func _reach2(t: GameMap, from: Vector2i, to: Vector2i) -> bool:
+	var seen := {from: true}
+	var q: Array[Vector2i] = [from]
+	while not q.is_empty():
+		var c: Vector2i = q.pop_front()
+		if c == to:
+			return true
+		for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+			var n := c + d
+			if seen.has(n) or n.x < 40 or n.x > 70 or n.y < 0 or n.y > 14 or (t.blocked.has(n) and n != to):
+				continue
+			seen[n] = true
+			q.append(n)
+	return false
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
 	_ok(Art.has("tiles", "c14p2_flag") and Art.has("props", "c14p2_mosaic"), "plaza flagstone variants and mosaic art exist")
@@ -99,6 +115,22 @@ func _run() -> void:
 				_ok(green.is_empty(), "%s: green roofs in winter %s" % [tag, green])
 				for base: String in ["store", "smith", "bakery", "hall", "inn", "library", "school", "cottage_a", "chapel", "bank"]:
 					_ok(Art.has("buildings", base + "_snow"), "winter twin for " + base)
+			if day == 1:  # c14_03-13: the Mayor's garden maze is walkable to its heart and gives its keepsake once
+				var pc: Vector2i = t.MAZE_AT + Vector2i(4, 4)
+				_ok(str(t.things.get(pc, {}).get("type", "")) == "maze_prize", "%s: maze heart has its keepsake" % tag)
+				_ok(_reach2(t, Vector2i(51, 12), pc), "%s: the maze can be walked to its heart" % tag)
+				_ok(Art.has("buildings", "c14p2_greenhouse") and t.blocked.has(Vector2i(61, 7)), "%s: conservatory stands in the garden" % tag)
+				var before := Decor.owned("dc_y_penguin_topiary" if arc == "penguins" else "dc_out_topiary_b") if t.has_method("interact") else 0
+				t.interact(pc, t.things[pc])
+				var after := Decor.owned("dc_y_penguin_topiary" if arc == "penguins" else "dc_out_topiary_b")
+				_ok(after == before + 1, "%s: maze keepsake granted (%d -> %d)" % [tag, before, after])
+				t.interact(pc, t.things[pc])
+				_ok(Decor.owned("dc_y_penguin_topiary" if arc == "penguins" else "dc_out_topiary_b") == after, "%s: keepsake only once" % tag)
+				var dl := Dialogue.instance(self)
+				for k in 30:
+					if dl.active:
+						dl._advance()
+					await process_frame
 			# the four avenues still reach the fountain
 			var fc := Vector2i(40, 49)
 			for from: Vector2i in [Vector2i(40, 34), Vector2i(40, 62), Vector2i(27, 47), Vector2i(55, 47)]:
