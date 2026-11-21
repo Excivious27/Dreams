@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b integ (Nov 20): P1-P6 merged; cross-package hooks done (one voice table with P6 CC0 takes first, incubator/hatch words, art_for hardening, egg_crack/feeder_fill morning cues, Chores.migrate/guard_cells/reap_tile, Plans board Install add-on, Gene Splicer station (gangsters) handing lab strains over via RanchGift, gift names out of pet pools, needs an Aviary, gang book arcs in collections); new c11b_integ_test; playtest tap/boss waits on game state.
+
 ## 2026-11-20 — c11a/fix3: community farm reveal consumes cf_reveal_done before its 0.4 s pause (was a wall-clock race: fast CI checked the flags before the timer ended, flaky commons_test stage 4/5)
 
 ## 2026-11-20 — 2026-11-20 relay/live: Play together uses the live relay wss://dreams-64-23-239-63.sslip.io by default (custom field + Reset to default); GET /version (code hash + commit) on server.js; server/deploy/ reference box setup (dreams-update.sh writes .deployed_commit); tools/relay_test.js in check.sh; tools/net_e2e.sh two-instance Godot test vs live relay; CI relay job (RELAY: ok, Xms; waits for server/ deploys; main pushes touching server/net.gd run it).
