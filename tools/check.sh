@@ -1461,3 +1461,17 @@ echo "$c16p4fout" | grep -E "FAIL|SCRIPT ERROR|c16a_p4_fish_test" || true
 if echo "$c16p4fout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4fout" | grep -q "c16a_p4_fish_test: 0 failures"; then
   echo "C16a P4 fish test failed"; exit 1
 fi
+
+echo "== C16b P4: battle reward ladder (stars, rematch pay, chests, first clear, mastery, track) =="
+c16bp4rout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_rewards_test.gd 2>&1)"
+echo "$c16bp4rout" | grep -E "FAIL|SCRIPT ERROR|battle_rewards_test" || true
+if echo "$c16bp4rout" | grep -q "SCRIPT ERROR" || ! echo "$c16bp4rout" | grep -q "battle_rewards_test: 0 fails"; then
+  echo "C16b P4 battle rewards test failed"; exit 1
+fi
+
+echo "== C16b P4: campaign board (intro, row states, stars, ladder preview, next campaign, actions fit) =="
+c16bp4bout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c16b_p4_board_test.gd 2>&1)"
+echo "$c16bp4bout" | grep -E "FAIL|SCRIPT ERROR|c16b_p4_board_test" || true
+if echo "$c16bp4bout" | grep -q "SCRIPT ERROR" || ! echo "$c16bp4bout" | grep -q "c16b_p4_board_test: 0 fails"; then
+  echo "C16b P4 board test failed"; exit 1
+fi

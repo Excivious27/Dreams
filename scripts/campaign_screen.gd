@@ -21,7 +21,7 @@ var _card: VBoxContainer
 var _name: Label
 var _sub: Label
 var _body: Label
-var _btns: HBoxContainer
+var _btns: HFlowContainer
 var _list: ScrollContainer
 var _top_btns: Array = []
 var _was_paused := false
@@ -30,6 +30,8 @@ var _t := 0.0
 var _flash := ""
 var _flash_t := 0.0
 var _acts: Array = []   # [label, callable] for the card's buttons (A presses the framed one)
+var _all_acts: Array = []  # C16b P4: every action; _acts is the page on screen
+var _act_page := 0
 var _act_i := 0         # C9 P3: the framed action (PAGE/TOOL step it, A runs it)
 var _cur: ScreenCursor  # C9 P3: pad/keyboard cursor over the campaign list
 var _rep := ScreenCursor.Rep.new()
@@ -114,11 +116,19 @@ func _ready() -> void:
 	_sub = _label("", 7, Color(0.85, 0.85, 0.9))
 	_card.add_child(_sub)
 	_body = _label("", 7, Color(0.95, 0.93, 0.88))
-	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_card.add_child(_body)
-	_btns = HBoxContainer.new()
-	_btns.add_theme_constant_override("separation", 3)
-	_btns.alignment = BoxContainer.ALIGNMENT_CENTER
+	# C16b P4 (c16b_10-09): the card body scrolls in a fixed strip; buttons stay pinned below.
+	var bsc := ScrollContainer.new()
+	bsc.custom_minimum_size = Vector2(246, 34)
+	bsc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	bsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_body.custom_minimum_size = Vector2(236, 0)
+	bsc.add_child(_body)
+	_card.add_child(bsc)
+	# c16b_10-08: actions wrap two to a row instead of overflowing the panel.
+	_btns = HFlowContainer.new()
+	_btns.add_theme_constant_override("h_separation", 3)
+	_btns.add_theme_constant_override("v_separation", 2)
+	_btns.alignment = FlowContainer.ALIGNMENT_CENTER
 	_card.add_child(_btns)
 	# The campaign list (shown instead of the board when no campaign is picked).
 	_list = ScrollContainer.new()
@@ -143,6 +153,19 @@ func _ready() -> void:
 		_show_list()
 	else:
 		_show_board(cid)
+
+
+## C16b P4: P3's long-way API (contract section 2), called only once it exists so the board
+## works before and after the merge.
+static func _api(fn: String) -> bool:
+	for md: Dictionary in (Campaign as Script).get_script_method_list():
+		if str(md.get("name", "")) == fn:
+			return true
+	return false
+
+
+static func _lw_ok(id: String) -> bool:
+	return _api("can_take_long_way") and bool((Campaign as Script).call("can_take_long_way", id))
 
 
 func _label(t: String, size: int, col: Color) -> Label:
@@ -185,7 +208,7 @@ func _show_list() -> void:
 	v.add_theme_constant_override("separation", 3)
 	v.custom_minimum_size = Vector2(242, 0)  # room for the scroll bar
 	_list.add_child(v)
-	var intro := _label("Each new region is held. Win its campaign, battle by battle across the board, and the way opens.", 7, Color(0.9, 0.88, 0.8))
+	var intro := _label("Win a campaign to open its region fast and earn its rewards: stars, chests, trophies. Lost or skipped? You can still take the long way in. ★ %d/%d earned" % BattleRewards.arc_stars(), 7, Color(0.9, 0.88, 0.8))
 	intro.custom_minimum_size.x = 236
 	v.add_child(intro)
 	# The lead-in: the story, then training with the veteran.
@@ -225,27 +248,35 @@ func _show_list() -> void:
 		var c := Campaign.get_c(id)
 		var why := Campaign.why_locked(id)
 		var tag := ""
-		if Campaign.is_won(id):
-			tag = "✓ open"
-		elif Campaign.region_open(str(c["region"])):
-			tag = "✓ open (another way in)"
+		var won := Campaign.is_won(id)
+		var opened := Campaign.region_open(str(c["region"]))
+		var sg := BattleRewards.campaign_stars(id)
+		var sm := BattleRewards.max_stars(id)
+		# C16b P4 (c16b_09-12, 10-04/05): one row state drives the tag, icon and tint.
+		if won:
+			tag = "✓ won · ★ %d/%d" % [sg, sm] + (" · replay for more" if sg < sm else " · mastered")
 		elif Campaign.started(id):
-			tag = "%d/%d taken" % [Campaign.taken_count(id) - 1, (c["nodes"] as Array).size() - 1]
+			tag = "%d/%d taken" % [Campaign.taken_count(id) - 1, (c["nodes"] as Array).size() - 1] + (" · region open" if opened else "")
+		elif opened:
+			tag = "open · prize waiting: " + BattleRewards.chest_name(str(BattleRewards.camp(id).get("first_clear", {}).get("chest", "supply")))
 		elif why != "":
 			tag = "locked"
 		else:
 			tag = "ready"
+		if not won and not opened and _lw_ok(id):
+			tag += " · ⇢ long way open"
 		var plan := Campaign.plan_lock(id)
 		if why != "" and why == CampaignGate.lock(id):
 			why = "needs chapter 2" if not CampaignGate.story_ok() else "train first"  # said once, at the top
 		if tag == "locked" and plan == "":
 			tag = "gathering"
-		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else ("⚑" if plan == "" else "✕")), str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or Campaign.is_won(id) or Campaign.region_open(str(c["region"])) else " · " + why)], _show_board.bind(id))
+		var icon := "✓" if won or opened else ("⚔" if why == "" else ("⚑" if plan == "" else "✕"))
+		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % [icon, str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or won or opened else " · " + why)], _show_board.bind(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(242, 30)
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		b.add_theme_font_size_override("font_size", 7)
-		if plan != "" and not Campaign.is_won(id):
+		if plan != "" and not won and not opened:
 			b.modulate = Color(0.7, 0.7, 0.72)
 		v.add_child(b)
 	_board.queue_redraw()
@@ -288,7 +319,8 @@ func _refresh() -> void:
 	var st_txt := ""
 	var stars := Campaign.stars(cid, sel)
 	if stars > 0:
-		st_txt = " · " + "★".repeat(stars) + "☆".repeat(5 - stars) + " " + Difficulty.DANGER_WORDS[Campaign.danger(cid, sel) + 1]
+		# C16b P4 (c16b_10-03): foe level as dots; ★ is kept for stars you earn.
+		st_txt = " · Foe Lv " + "●".repeat(stars) + "○".repeat(5 - stars) + " " + Difficulty.DANGER_WORDS[Campaign.danger(cid, sel) + 1]
 	var state := "yours" if Campaign.taken(cid, sel) else ("can attack" if Campaign.can_attack(cid, sel) else ("march, then attack" if Campaign.staging(cid, sel) != "" else "out of reach"))
 	if str(Campaign.cs(cid)["at"]) == sel:
 		state = "your %s is here" % Campaign.force_word()
@@ -330,6 +362,14 @@ func _refresh() -> void:
 			for it: String in all_items:
 				bits.append("%s ×%d" % [GameState.item_name(it), int(all_items[it])])
 		body += "Reward: " + ", ".join(bits)
+		# C16b P4: the ladder on top of the node pay (stars, rematch, gate first clear).
+		body += "\n" + BattleRewards.node_words(cid, sel)
+		if BattleRewards.stars(cid, sel) < 3:
+			body += "\n" + " ".join(BattleRewards.goal_words(cid, sel))
+		if typ == "gate" and not BattleRewards.preview(cid).is_empty():
+			body += "\n" + str(BattleRewards.preview(cid)[0])
+	if Campaign.is_won(cid):
+		body += "\n" + "\n".join(BattleRewards.preview(cid))
 	_body.text = body
 	# Actions
 	for b in _btns.get_children():
@@ -355,6 +395,16 @@ func _refresh() -> void:
 	if Campaign.kin_due(cid):
 		for ch in Campaign.kin_choices(cid):
 			_acts.append([str(ch[1]), _kin.bind(str(ch[0]))])
+	# C16b P4 (c16b_10-02/05/15): the long way, rematches and the next campaign.
+	if not Campaign.is_won(cid) and not Campaign.region_open(str(c["region"])) and _lw_ok(cid):
+		_acts.append(["⇢ Take the long way", _long_way])
+	if typ not in Campaign.NONBATTLE and Campaign.taken(cid, sel) and _api("can_rematch") and _api("rematch") \
+			and bool((Campaign as Script).call("can_rematch", cid, sel)):
+		_acts.append(["⚔ Rematch for %s" % BattleRewards.STAR if BattleRewards.stars(cid, sel) < 3 else "⚔ Rematch", _rematch])
+	if Campaign.is_won(cid):
+		var nx := _next_campaign()
+		if nx != "":
+			_acts.append(["Next: %s" % str(Campaign.get_c(nx)["title"]), _show_board.bind(nx)])
 	if _acts.is_empty() and not Campaign.is_won(cid):
 		if why != "":
 			_acts.append(["What's needed", _show_brief])
@@ -363,16 +413,36 @@ func _refresh() -> void:
 				_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: tap one, then Attack or March.")])
 			else:
 				_acts.append(["Pick a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: move to one, then Attack or March.")])
+	_act_page = 0 if _acts != _all_acts else _act_page
+	_all_acts = _acts.duplicate()
+	_build_acts()
+	_board.queue_redraw()
+
+
+## C16b P4 (c16b_10-08): at most 4 buttons (two rows) on the card; more go behind "More…".
+func _build_acts() -> void:
+	for b in _btns.get_children():
+		b.queue_free()
+	_acts = _all_acts.duplicate()
+	if _all_acts.size() > 4:
+		var pages := ceili(_all_acts.size() / 3.0)
+		_act_page = _act_page % pages
+		_acts = _all_acts.slice(_act_page * 3, _act_page * 3 + 3)
+		_acts.append(["More… (%d/%d)" % [_act_page + 1, pages], _more_acts])
 	for a in _acts:
 		var b := _btn(str(a[0]), a[1])
 		b.custom_minimum_size = Vector2(0, 22)
 		if _acts.size() > 1:
 			b.add_theme_font_size_override("font_size", 7)
 			b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			b.custom_minimum_size = Vector2(120, 26)
+			b.custom_minimum_size = Vector2(118, 22)
 		_btns.add_child(b)
 	_frame_act(clampi(_act_i, 0, maxi(0, _acts.size() - 1)))
-	_board.queue_redraw()
+
+
+func _more_acts() -> void:
+	_act_page += 1
+	_build_acts()
 
 
 func _enemy_name(k: String) -> String:
@@ -445,7 +515,9 @@ func _show_brief() -> void:
 	_brief_box.add_child(_label(Campaign.text(c, "intro"), 7, Color(0.95, 0.93, 0.88)))
 	_brief_box.add_child(_label("Led by %s." % Campaign.who(cid), 7, Color(0.75, 0.9, 1)))
 	_brief_box.add_child(_label("HOW IT WORKS", 7, Color(1, 0.8, 0.4)))
-	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the " + Campaign.force_word() + ", caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens. Lose and you keep what you took." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
+	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the " + Campaign.force_word() + ", caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens fast, with its rewards. Lose and you keep what you took; you can try again, try easier, or take the long way in." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
+	_brief_box.add_child(_label("YOU WIN", 7, Color(1, 0.8, 0.4)))
+	_brief_box.add_child(_label("\n".join(BattleRewards.preview(cid)), 7, Color(1, 0.93, 0.7)))
 	_brief_box.add_child(_label("LENGTH: %d territories · at least %d battle%s to the gate" % [(c["nodes"] as Array).size() - 1, int(c.get("min_battles", 3)), "" if int(c.get("min_battles", 3)) == 1 else "s"], 7, Color(0.7, 0.92, 1)))
 	if not Campaign.started(cid) and not Campaign.is_won(cid):
 		_brief_box.add_child(_label("TO MUSTER", 7, Color(1, 0.8, 0.4)))
@@ -456,12 +528,37 @@ func _show_brief() -> void:
 			_brief_box.add_child(_label("✕ " + after, 7, Color(1, 0.75, 0.65)))
 		var tm := CampaignGate.team()
 		if not tm.is_empty():
-			_brief_box.add_child(_label("Your team: " + ", ".join(tm.map(func(x: Array) -> String: return str(x[1]))), 6, Color(0.85, 0.85, 0.8)))
+			_brief_box.add_child(_label("Your team: " + ", ".join(tm.map(func(x: Array) -> String: return str(x[1]))), 7, Color(0.85, 0.85, 0.8)))
 	var ok := _btn("Got it", func() -> void: _brief.visible = false)
 	ok.custom_minimum_size = Vector2(0, 22)
 	_brief_box.add_child(ok)
 	_brief.visible = true
 	_brief.size = Vector2(250, 0)
+
+
+## The campaign to look at after this one: the first unwon one of this arc that is ready.
+func _next_campaign() -> String:
+	for id: String in Campaign.for_arc():
+		if id != cid and not Campaign.is_won(id) and Campaign.why_locked(id) == "":
+			return id
+	return ""
+
+
+func _long_way() -> void:
+	var lw: Variant = (Campaign as Script).call("long_way", cid) if _api("long_way") else {}
+	(Campaign as Script).call("take_long_way", cid)
+	var t := ""
+	if lw is Dictionary:
+		t = str((lw as Dictionary).get("text_gang" if not GameState.is_penguins() else "text", (lw as Dictionary).get("text", "")))
+	_flash_msg(t if t != "" else "You set off the long way round. It takes longer, but it gets you there.")
+	_refresh()
+
+
+func _rematch() -> void:
+	var id := cid
+	var nid := sel
+	_close_now(false)
+	(Campaign as Script).call("rematch", m, id, nid)
 
 
 func _toggle_brief() -> void:
@@ -688,7 +785,7 @@ func _draw_board() -> void:
 	_text(cv, f, Vector2(110, y + 7), "◇ %d supply" % int(s["supply"]), 8, Color(1, 0.95, 0.7))
 	_text(cv, f, Vector2(110, y + 16), "⚑ %d/%d held" % [Campaign.taken_count(cid) - 1, (c["nodes"] as Array).size() - 1], 7, Color(0.7, 0.92, 1))
 	_text(cv, f, Vector2(186, y + 7), "%d won · %d lost" % [int(s.get("wins", 0)), int(s.get("losses", 0))], 7, Color(0.9, 0.9, 0.9))
-	_text(cv, f, Vector2(186, y + 16), "★ = foe level", 7, Color(0.7, 0.7, 0.75))
+	_text(cv, f, Vector2(186, y + 16), "★ %d/%d earned" % [BattleRewards.campaign_stars(cid), BattleRewards.max_stars(cid)], 7, Color(1, 0.88, 0.35))
 	# Board backdrop: this region's corner of the world map, under a tint.
 	var br := BOARD
 	cv.draw_rect(br.grow(2), Color(0.3, 0.2, 0.1) if peng else Color(0.5, 0.2, 0.45))
@@ -762,9 +859,13 @@ func _draw_board() -> void:
 				else:
 					Art.draw_disc(cv, pp, 1.8, dcol)
 			if str(PIP_WORDS[dg]) != "":
-				_text(cv, f, p + Vector2(-30, r + 14), str(PIP_WORDS[dg]), 6, dcol, 60, HORIZONTAL_ALIGNMENT_CENTER)
+				_text(cv, f, p + Vector2(-30, r + 14), str(PIP_WORDS[dg]), 7, dcol, 60, HORIZONTAL_ALIGNMENT_CENTER)
+		# C16b P4: earned stars (BattleRewards) under won battle nodes; foe level stays dots.
+		var es := BattleRewards.stars(cid, id)
+		if tk and es > 0:
+			_text(cv, f, p + Vector2(-20, r + 10), BattleRewards.star_text(es), 7, Color(1, 0.88, 0.35), 40, HORIZONTAL_ALIGNMENT_CENTER)
 		var nm := str(n["name"])
-		_text(cv, f, p + Vector2(-40, -r - 4), nm, 6, Color(1, 0.97, 0.88) if tk or att or id == sel else Color(0.9, 0.88, 0.82, 0.8), 80, HORIZONTAL_ALIGNMENT_CENTER)
+		_text(cv, f, p + Vector2(-40, -r - 4), nm, 7, Color(1, 0.97, 0.88) if tk or att or id == sel else Color(0.9, 0.88, 0.82, 0.8), 80, HORIZONTAL_ALIGNMENT_CENTER)
 	# The army's banner where it stands.
 	var ap := _npos(nodes[at])
 	var fl := Art.tex("battle", "flag_ally_%d" % (int(_t * 6.0) % 4))
