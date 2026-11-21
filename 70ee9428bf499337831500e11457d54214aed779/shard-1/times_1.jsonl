@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 45.5}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 47.4}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 2.8}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 41.6}
+{"step": 20, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 3.5}
+{"step": 26, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 0, "secs": 2.2}
+{"step": 32, "name": "rec_test", "rc": 0, "secs": 4.3}
+{"step": 38, "name": "cash_test", "rc": 0, "secs": 2.9}
+{"step": 44, "name": "make_house_parts", "rc": 0, "secs": 0.3}
+{"step": 50, "name": "commons_test", "rc": 0, "secs": 36.2}
+{"step": 56, "name": "cf_volunteer_test", "rc": 0, "secs": 6.0}
+{"step": 62, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 68, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 74, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 23.3}
+{"step": 80, "name": "workshop: stations at run time", "rc": 0, "secs": 3.2}
+{"step": 86, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 5.8}
+{"step": 92, "name": "campaign_story_test", "rc": 0, "secs": 2.2}
+{"step": 98, "name": "campaign_gate_test", "rc": 0, "secs": 5.5}
+{"step": 104, "name": "meow_gate_test", "rc": 0, "secs": 3.0}
+{"step": 110, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 4.7}
+{"step": 116, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 14.8}
+{"step": 122, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.4}
+{"step": 128, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.3}
+{"step": 134, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.6}
+{"step": 140, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.0}
+{"step": 146, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.2}
+{"step": 152, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 20.2}

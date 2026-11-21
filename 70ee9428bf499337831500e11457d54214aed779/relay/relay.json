@@ -1,0 +1,28 @@
+{
+ "url": "wss://dreams-64-23-239-63.sslip.io",
+ "strict": false,
+ "notes": [],
+ "fail": false,
+ "local_code": "e4b9aef5b57d",
+ "main_code": "e4b9aef5b57d",
+ "live_before": {
+  "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+  "code": "e4b9aef5b57d",
+  "started": "2026-11-21T02:24:17.488Z",
+  "rooms": 2,
+  "players": 0
+ },
+ "live": {
+  "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+  "code": "e4b9aef5b57d",
+  "started": "2026-11-21T02:24:17.488Z",
+  "rooms": 2,
+  "players": 0
+ },
+ "deployed": true,
+ "ms": 102,
+ "live_ok": true,
+ "e2e": "NET E2E: ok, 17s",
+ "e2e_ok": true,
+ "line": "RELAY: ok, 102ms (live code e4b9aef5b57d, this server/)"
+}
