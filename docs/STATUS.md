@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — CONDUCT 14 (world look, town, beach + marina, fast travel, exploration) docs: report docs/reports/CONDUCT-14.md, Guide 41, ART-PROMPTS-CONDUCT-14.md (80 images), TEXTS['14'], inventory rows (TravelNet 72%, marina, town expansion, prop dressing, secrets, lighting; whole game ~82%), PROJECT-MEMORY C14 entry. 401 findings, 6 packages + hooks. Final CI c14i pending.
+
 ## 2026-11-21 — CONDUCT 13 (audio depth) docs: report docs/reports/CONDUCT-13.md, Guide 40, TEXTS['13'], 7 audio inventory rows, PROJECT-MEMORY C13 entry. 398 findings, 6 packages + hooks; 140 songs, 20 jingles + gang UI kit, 22 CC0 sfx; ACE 64 credits left until Dec 1. Final CI c13i pending.
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
 
