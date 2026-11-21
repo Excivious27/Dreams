@@ -123,7 +123,7 @@ ITEMS = {
     "glass_frosted": ("Glacier Glass", "material", 200, 4, {"rarity": "rare"}),
     "ice_pike": ("Glacier Pike", "fish", 210, 4, {"rarity": "rare"}),
     "frost_sorbet": ("Frost Sorbet", "food", 480, 4, {"rarity": "epic", "heal": 6, "energy": 115}),
-    "charm_frost": ("Rimewyrm Charm", "equip", 2600, 5, {"rarity": "legendary", "slot": "charm", "stats": {"defense": 4, "speed": 1}, "desc": "One scale of the Rime Wyrm, frosted over for good."}),
+    "charm_frost": ("Rime Wyrm Charm", "equip", 2600, 5, {"rarity": "legendary", "slot": "charm", "stats": {"defense": 4, "speed": 1}, "desc": "One scale of the Rime Wyrm, frosted over for good."}),
     "ring_warmth": ("Hearth Ring", "equip", 1300, 4, {"rarity": "rare", "slot": "ring", "stats": {"defense": 1, "energy": 15}}),
     # Windward
     "storm_glass": ("Storm Glass", "ore", 300, 5, {"rarity": "epic", "desc": "Lightning, cooled into crystal."}),
@@ -141,7 +141,7 @@ ITEMS = {
     "gold_bundle": ("Gold Leaf", "material", 280, 5, {"rarity": "rare"}),
     "sun_flan": ("Gilded Flan", "food", 480, 5, {"rarity": "epic", "heal": 7, "energy": 130}),
     "ring_platinum": ("Aurum Signet", "equip", 3200, 5, {"rarity": "legendary", "slot": "ring", "stats": {"damage": 3, "luck": 3}, "desc": "Madame Aurum's seal. Doors open for whoever wears it."}),
-    "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."}),
+    "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. A trade good: sold, gifted or shelved, never drunk."}),
     "ember_koi": ("Ember Koi", "fish", 260, 5, {"rarity": "rare", "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."}),
     "golden_dice": ("Golden Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
 }

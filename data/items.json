@@ -11784,7 +11784,7 @@
   "desc_auto": true
  },
  "charm_frost": {
-  "name": "Rimewyrm Charm",
+  "name": "Rime Wyrm Charm",
   "type": "equip",
   "value": 2600,
   "tier": 5,
@@ -12056,7 +12056,7 @@
   "tier": 4,
   "rarity": "uncommon",
   "icon": "fine_wine",
-  "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."
+  "desc": "A gold-foiled bottle from the Maison. A trade good: sold, gifted or shelved, never drunk."
  },
  "bouquet": {
   "name": "Bouquet",

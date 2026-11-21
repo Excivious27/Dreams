@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P6 (items/ranch/decor/UI text): every item has a description; decor lines varied (518 distinct, was 81) with real catalogue sources; wardrobe flavour shows; creature where-from lines; region names with articles in gate words; device-correct button/menu words (PadInput '(MENU'/'Menu >', tool hints, battle brief, casino how-to, hud hint); achievements text; c12_items_ui_text_test.
+
 ## 2026-11-20 — CONDUCT 11b (ranching part 2): 32 new creatures (8 exotics both arcs, 16 fantastic penguin, 8 lab strains gangster via the Gene Splicer), homes v2 (Enclosure, Aviary, Terrarium, Tide Pool, Ember Pit, Star Dome, Grand Barn), RanchGift earned creatures, animal shows with ribbons/medals, chores with helper spots and a nightly cap, team animal CHECK/lessons, RanchVoice, battle training fix (P7: HELPERS orders, Leave training), bot20 decor softlock fix. 183 audit findings, 7 packages, ~41 images, 0 ACE credits. Final CI c11bi4b PASS (6 shards, 20/20 bots, playtest, relay, net e2e). Report docs/reports/CONDUCT-11b.md, Guide 37. Whole game ~79%.
 
 ## 2026-11-20 — C11b integ: bot20 softlock fixed (Decor catalogue restored a stale full-screen modal of a closed campaign board; closed-menu Book button opened it). decor_catalogue_test regression.
