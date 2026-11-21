@@ -24,10 +24,10 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 13:55 PT, personal account. Optimization round 3 DONE (see "CONDUCT operating rules"): CI r3full PASS 13.1 min wall / 134 job-min; subset runs 9-10 min; CLAUDE.md 84->14 KB (+docs/TOOLS.md), CONDUCT-BRIEF 12->6 KB, STATUS 292->209 KB (+STATUS-ARCHIVE), one package builder.
-- **Done:** CONDUCT 1-10b (all packages sent; C10b CI c10b2 PASS).
-- **In progress:** C11a fix agents P1-P6 (resumed after a 2nd server restart; worktrees /home/claude/wt/c11af_pN, reports /home/claude/wt/c11af_reports). C11b auditors 01-14 running in parallel (B1; worktrees /home/claude/wt/c11b_NN, findings /home/claude/wt/c11b_reports/*.jsonl; scopes /home/claude/wt/C11b_SCOPES.txt, 15-20 run low after the C11a push).
-- **Next step:** rolling-merge C11a packages as they finish (mrg.sh), regen_data, ci_run c11a, build_package.py 11a, push, package to Tom; then synthesize C11b findings into packages and launch fixes.
+- **Last update:** 2026-11-20 18:25 PT, personal account. CONDUCT 11a SHIPPED (ranching core + fixes, Hazel/Posy animal sellers, live-relay package: default server, relay_test.js, /version, live CI check, net e2e). Final CI c11afix3b PASS (RELAY ok 34 ms, NET E2E ok). Art limit 1000/day (images used today ~280).
+- **Done:** CONDUCT 1-10b, 11a (package sent), relay live integration, optimization round 3.
+- **In progress:** C11b fixes: P1, P3, P4, P5, P6, P2 done on c11bf/pN (reports /home/claude/wt/c11bf_reports); P7 battle-training fix (Tom 17:00) on c11bf/p7, CI rerun. C11b art already on main (c11b/art merged).
+- **Next step:** merge c11bf/p1..p7 into main (rolling, mrg.sh), integration agent for cross-package hooks (each p*.md "hooks" list), regen_data, full CI c11b, package 11b, push. Then CONDUCT S1 (Steam prep; scopes drafted at /home/claude/wt/S1_SCOPES.txt, copy in docs/reports when launched), then queue C12-C23. Known flaky: playtest "tap-to-move"/"boss after 5 kills" on some runs (one retry often passes).
 - **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.

@@ -1,6 +1,6 @@
 # CONDUCT 11a report: Ranching, part 1 (2026-11-20)
 
-Ranching is real now: 9 classic animals in both arcs, homes with tiers, feeding, grazing and the silo, petting and friendship, goods with stars, breeding and the incubator, rehoming (animals are never sold for meat), the 14th skill tree (Ranching), new stations and goods, team animals with lessons, overnight chores, and ranch villagers, letters and shows. 20 read/play-only auditors (c11a_01..20, 280 findings) fed 6 file-disjoint fix packages (docs/reports/C11A-PACKAGES.md, scopes in docs/reports/C11A-SCOPES.txt), then one integration pass. Two integration CI runs passed (6 shards + playtest). **Final full CI (shards, 20 bots, playtest): PENDING.**
+Ranching is real now: 9 classic animals in both arcs, homes with tiers, feeding, grazing and the silo, petting and friendship, goods with stars, breeding and the incubator, rehoming (animals are never sold for meat), the 14th skill tree (Ranching), new stations and goods, team animals with lessons, overnight chores, and ranch villagers, letters and shows. 20 read/play-only auditors (c11a_01..20, 280 findings) fed 6 file-disjoint fix packages (docs/reports/C11A-PACKAGES.md, scopes in docs/reports/C11A-SCOPES.txt), then one integration pass. Two integration CI runs passed (6 shards + playtest). **Final full CI (shards, 20 bots, playtest): PASS on c11afix3b (run 44852983412; live relay ok, 34 ms; NET E2E ok).**
 
 **Whole game after CONDUCT 11a: about 78% done, 22% remaining** (average of the 74 systems in docs/inventory.csv). The old animals row (45%) became the ranching core at 80%, with new rows for buildings and pens (75%), the Ranching tree (85%), ranch stations and goods (85%), team animals (60%), ranch villagers and events (75%) and ranch art (90%). Helper automation rose from 5% to 45%. Systems for later CONDUCTs (C14, C20, C21) still count at 0%.
 
@@ -35,13 +35,13 @@ Ranching is real now: 9 classic animals in both arcs, homes with tiers, feeding,
 | Package plan (sort) | conductor | medium | ~10 |
 | Fix agents (6 in parallel from ~12:30; two server restarts paused them) | fixer | medium | ~90 |
 | Integration (merge, hooks, regen, 2 subset CI runs), 14:00-14:47 | integrator | medium | ~47 |
-| Final CI (6 shards + 20 bots + playtest), started 14:50 | CI | | PENDING |
+| Final CI (6 shards + 20 bots + playtest), 14:50-19:20 | CI | | c11a FAIL (bot20 battle card), c11a2 FAIL (bot.gd freed map), c11a3 FAIL (commons reveal timing); c11afix3b PASS |
 | Package build (report, guide, progress, page) | packager | low | ~10 |
 | **Total** | | | **~200 + final CI** |
 | Gap since last CONDUCT | | | 0 (C11a auditors started during C10b's CI) |
 | Agents per effort | | | 14 medium + 6 low auditors; 6 medium fixers; 1 integrator |
-| CI first-run result | | | Integration run 1 PASS (6 shards + playtest); run 2 with P5 PASS (one-off mega_region_test script errors, test still 0 failures); final full run PENDING |
-| CI minutes | | | ~10 + ~10 (integration) + ~10 (P5 pre-merge) + final PENDING |
+| CI first-run result | | | Integration run 1 PASS (6 shards + playtest); run 2 with P5 PASS (one-off mega_region_test script errors, test still 0 failures); final full runs: 3 fails fixed (BattleBrief early B/MENU, CampaignScreen freed pause, commons reveal flags + test wait on game state), then PASS |
+| CI minutes | | | ~10 + ~10 (integration) + ~10 (P5 pre-merge) + ~6 final runs x ~14 min |
 | Images used | | | ~27 (25 P6 + 2 P3 skill icons); the C11b art lane is counted separately |
 | ACE credits used | | | 0 |
 
