@@ -1,0 +1,15 @@
+CONDUCT CI FAIL  cfed8c1569  (ci/s1p5c-5e16beea, run 44866842409)
+
+subset run: shards [2, 3], bots off, playtest on
+check shards (2/2):
+  shard 2: FAIL  176s  failed: C11b P6: C11b creature voices and ranch sound
+  shard 3: FAIL  293s  failed: farm_look_test, C9 P6: generated data in sync
+playtest: PASS  78s  21 screenshots (results playtest/shots/)
+RELAY: ok, 68ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 17s
+
+longest job: 293s
+slowest check steps: import 165.5s; import 72.4s; C9 P6: generated data in sync 20.2s; mega regions: the new worlds walk end to end 15.6s; building doors 13.1s; phone_ui_test 11.0s; story: every chapter plays to the end 10.7s; softlocks: every menu/screen leaves on B, dialogues always finish 6.8s
+distinct errors/fails/warns:
+    1  FAIL animal_voice asks the C11b table
+    1  FAIL pens fenced (41 pieces, 3 gates)

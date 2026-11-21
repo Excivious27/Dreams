@@ -1,0 +1,189 @@
+{
+ "sha": "cfed8c156938b00e10daa8637b8c5b5707271062",
+ "ref": "ci/s1p5c-5e16beea",
+ "run": "44866842409",
+ "finished": 1795236223.0889611,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 14,
+   "players": 1
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 14,
+   "players": 1
+  },
+  "deployed": true,
+  "ms": 68,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 68ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 78,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "5e16beeaef77396e911605a6bf57449d9917872b",
+  "label": "s1p5c",
+  "branch": "s1f/p5",
+  "shards": [
+   2,
+   3
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 293,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 176,
+   "failed_steps": [
+    "C11b P6: C11b creature voices and ranch sound"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 293,
+   "failed_steps": [
+    "farm_look_test",
+    "C9 P6: generated data in sync"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL animal_voice asks the C11b table",
+   1
+  ],
+  [
+   "FAIL pens fenced (41 pieces, 3 gates)",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 165.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.4
+  },
+  {
+   "step": 154,
+   "name": "C9 P6: generated data in sync",
+   "rc": 1,
+   "secs": 20.2
+  },
+  {
+   "step": 118,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 15.6
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 13.1
+  },
+  {
+   "step": 16,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 111,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 10.7
+  },
+  {
+   "step": 129,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 6.8
+  },
+  {
+   "step": 87,
+   "name": "gifts: the Marked and boss powers",
+   "rc": 0,
+   "secs": 6.6
+  },
+  {
+   "step": 94,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 6.4
+  },
+  {
+   "step": 93,
+   "name": "campaign: battles, projects, colonies, big mines",
+   "rc": 0,
+   "secs": 6.2
+  },
+  {
+   "step": 15,
+   "name": "crops wired in",
+   "rc": 0,
+   "secs": 5.6
+  },
+  {
+   "step": 27,
+   "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10",
+   "rc": 0,
+   "secs": 5.6
+  },
+  {
+   "step": 39,
+   "name": "farm_week_test",
+   "rc": 0,
+   "secs": 5.4
+  },
+  {
+   "step": 112,
+   "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene",
+   "rc": 0,
+   "secs": 5.0
+  }
+ ]
+}
