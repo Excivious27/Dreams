@@ -497,17 +497,11 @@ static func filtered() -> Array:
 
 # ---- the screen -----------------------------------------------------------------------------
 
-var _menu_was_open := false
-
-
 func _ready() -> void:
 	layer = 61
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
 	_prev_modal = Hud.modal_rect  # opened over a chest: give its modal back on close
-	for ch in (get_parent().get_children() if get_parent() else []):
-		if ch is GameMenu and (ch as GameMenu)._open:
-			_menu_was_open = true  # opened from the Book
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "decor_catalogue")
 	add_to_group("toast_hold")
@@ -585,13 +579,10 @@ func back() -> void:
 func close() -> void:
 	if not is_inside_tree():
 		return
-	# Opened from the Book: if the menu under it has closed meanwhile (B reached both on one frame), give
-	# back nothing of it: no full-screen modal and no pause with no screen up (bot softlock, C11b integ).
-	var menu_gone := false
-	for ch in (get_parent().get_children() if get_parent() else []):
-		if ch is GameMenu and _menu_was_open and not (ch as GameMenu)._open:
-			menu_gone = true
-	if menu_gone:
+	# Give back the modal/pause of what was under it only while that screen is still up: one that
+	# closed meanwhile (B reached both on one frame) left nothing to restore, and a stale full-screen
+	# modal with no screen would freeze the game with nothing to press (bot20 softlock, C11b integ).
+	if not Hud.keep_paused(get_tree(), self):
 		_prev_modal = Rect2()
 	Hud.modal_rect = _prev_modal
 	get_tree().paused = _was_paused and (Hud.keep_paused(get_tree(), self) or _prev_modal.size != Vector2.ZERO)

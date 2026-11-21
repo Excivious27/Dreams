@@ -24,9 +24,9 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 18:25 PT, personal account. CONDUCT 11a SHIPPED (ranching core + fixes, Hazel/Posy animal sellers, live-relay package: default server, relay_test.js, /version, live CI check, net e2e). Final CI c11afix3b PASS (RELAY ok 34 ms, NET E2E ok). Art limit 1000/day (images used today ~280).
+- **Last update:** 2026-11-20 21:13 PT, personal account (C11b integration fix agent on c11b/integ). bot20 softlock fixed (Decor catalogue gave back a stale full-screen modal); full CI c11bi4 on c11b/integ running.
 - **Done:** CONDUCT 1-10b, 11a (package sent), relay live integration, optimization round 3.
-- **In progress:** C11b fixes: P1, P3, P4, P5, P6, P2 done on c11bf/pN (reports /home/claude/wt/c11bf_reports); P7 battle-training fix (Tom 17:00) on c11bf/p7, CI rerun. C11b art already on main (c11b/art merged).
+- **In progress:** C11b integration on branch c11b/integ (P1-P7 merged there; c11bi3 failed only bot20 "screen won't close", fixed: DecorCatalogue.close restores the under-screen modal/pause only while `Hud.keep_paused` says it is up; CollectionScreen.open_catalogue refuses on a closed menu; decor_catalogue_test regression). Waiting on full CI c11bi4.
 - **Next step:** merge c11bf/p1..p7 into main (rolling, mrg.sh), integration agent for cross-package hooks (each p*.md "hooks" list), regen_data, full CI c11b, package 11b, push. Then CONDUCT S1 (Steam prep; scopes drafted at /home/claude/wt/S1_SCOPES.txt, copy in docs/reports when launched), then queue C12-C23. Known flaky: playtest "tap-to-move"/"boss after 5 kills" on some runs (one retry often passes).
 - **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
 - **WIP branches:** none.
@@ -91,6 +91,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 21:13 C11b integ: bot20 softlock root cause = Book button of an already-closed menu (under the campaign board) opened the Decor catalogue, whose close restored the board's full-screen modal after the board had gone; fixed in decor_catalogue.gd/collection_screen.gd + decor_catalogue_test.
 - 2026-11-20 C11a ranching core: 9 classic animals both arcs (gen_ranch, Ranch, RanchFarm), coop/barn/hutch/sty/apiary/silo tiers, grazing + silo feeder, goods with stars, breeding (no gender checks) + incubator, rehome (never meat), Ranching skill tree (14th), Mayo Machine + Honey Extractor, team animals (TeamAnimals/TeamBeast) + overnight Chores, Bramble, Animal Show/Best Egg, market stalls, 25 renders (slice_c11a); integration CI 2x PASS, final CI pending; report docs/reports/CONDUCT-11a.md, Guide 36.
 - 2026-11-20 12:45 CONDUCT 10b pushed (61 farmhouse styles, yard decorating with 169 outdoor pieces, Tess the carpenter, The Gilded Ace casino in Gilt City, wardrobe on every hero, shop rotation fix); CI c10b2 PASS.
 - 2026-11-20 10:55 CONDUCT 10a pushed (Decor catalogue 862 pieces incl. 373 new renders, decorate mode with rooms/walls/floors, catalogue + re-order + sets, wardrobe, decor shelves and loot); CI c10a PASS; deploy SW patch made idempotent.

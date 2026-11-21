@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b integ: bot20 softlock fixed (Decor catalogue restored a stale full-screen modal of a closed campaign board; closed-menu Book button opened it). decor_catalogue_test regression.
+
 ## 2026-11-20 — C11b integ (Nov 20): P1-P6 merged; cross-package hooks done (one voice table with P6 CC0 takes first, incubator/hatch words, art_for hardening, egg_crack/feeder_fill morning cues, Chores.migrate/guard_cells/reap_tile, Plans board Install add-on, Gene Splicer station (gangsters) handing lab strains over via RanchGift, gift names out of pet pools, needs an Aviary, gang book arcs in collections); new c11b_integ_test; playtest tap/boss waits on game state.
 
 ## 2026-11-20 — c11a/fix3: community farm reveal consumes cf_reveal_done before its 0.4 s pause (was a wall-clock race: fast CI checked the flags before the timer ended, flaky commons_test stage 4/5)
