@@ -478,6 +478,13 @@ func _place_festival(fest: String) -> void:
 			pf.call("fest_ss_02", Vector2i(40, 38), 1)
 			for c: Vector2i in [Vector2i(34, 48), Vector2i(46, 48)]:
 				pf.call("fest_ss_18", c, 1, false)
+	# C15 P6 (c15_06-04 / 07-08): the crew's version of the day: a food truck, neon strings and
+	# sprayed crates round the same plaza (guarded: only where the festival left room).
+	if not GameState.is_penguins():
+		for g: Array in [["c15p6_food_truck", Vector2i(30, 41), 3], ["c15p6_neon_string", Vector2i(36, 34), 2], ["c15p6_neon_string", Vector2i(44, 34), 2],
+				["c15p6_crate_stack", Vector2i(30, 52), 1], ["c15p6_crate_stack", Vector2i(51, 52), 1], ["c15p6_neon_string", Vector2i(39, 63), 2]]:
+			if Art.has(P, str(g[0])) and _free(_foot(P, str(g[0]), g[1], int(g[2]))):
+				pf.call(str(g[0]), g[1], int(g[2]), str(g[0]) != "c15p6_neon_string")
 	if fest in ["lantern", "star"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
 		FestivalSky.make(AmbientMotion.of(self).get_parent(), fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
 	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + FestivalWords.name_of(fest)}, false)
@@ -987,6 +994,10 @@ func _star_wish(key: String) -> void:
 		if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
 			GameState.add_friend(str(id), 10)
 	hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
+	var pt := Romance.partner()  # C15 P6 (c15_06-16): your partner watches the sky with you
+	if pt != "" and GameState.npcs.has(pt):
+		GameState.add_friend(pt, 20)
+		hud.toast("%s squeezes your hand under the stars. +20" % str(GameState.npcs[pt]["name"]), Color(1, 0.75, 0.85))
 
 
 ## Tall iron lamps on the avenues (Prompts 09 plaza sheet), the old lamp otherwise.

@@ -115823,6 +115823,66 @@
    "file": "props/worm_bin.png",
    "h": 44,
    "w": 65
+  },
+  "c15p6_golden_egg": {
+   "file": "props/c15p6_golden_egg.png",
+   "w": 57,
+   "h": 56
+  },
+  "c15p6_envelope_0": {
+   "file": "props/c15p6_envelope_0.png",
+   "w": 61,
+   "h": 48
+  },
+  "c15p6_envelope_1": {
+   "file": "props/c15p6_envelope_1.png",
+   "w": 60,
+   "h": 48
+  },
+  "c15p6_envelope_2": {
+   "file": "props/c15p6_envelope_2.png",
+   "w": 63,
+   "h": 48
+  },
+  "c15p6_parade_float": {
+   "file": "props/c15p6_parade_float.png",
+   "w": 206,
+   "h": 190
+  },
+  "c15p6_pumpkin_lantern_0": {
+   "file": "props/c15p6_pumpkin_lantern_0.png",
+   "w": 75,
+   "h": 78
+  },
+  "c15p6_pumpkin_lantern_1": {
+   "file": "props/c15p6_pumpkin_lantern_1.png",
+   "w": 75,
+   "h": 78
+  },
+  "c15p6_pumpkin_lantern_2": {
+   "file": "props/c15p6_pumpkin_lantern_2.png",
+   "w": 81,
+   "h": 82
+  },
+  "c15p6_feast_table": {
+   "file": "props/c15p6_feast_table.png",
+   "w": 162,
+   "h": 230
+  },
+  "c15p6_food_truck": {
+   "file": "props/c15p6_food_truck.png",
+   "w": 262,
+   "h": 230
+  },
+  "c15p6_neon_string": {
+   "file": "props/c15p6_neon_string.png",
+   "w": 239,
+   "h": 170
+  },
+  "c15p6_crate_stack": {
+   "file": "props/c15p6_crate_stack.png",
+   "w": 120,
+   "h": 150
   }
  },
  "riding": {
