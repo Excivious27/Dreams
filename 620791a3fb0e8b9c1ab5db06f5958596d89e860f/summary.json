@@ -1,0 +1,178 @@
+{
+ "sha": "620791a3fb0e8b9c1ab5db06f5958596d89e860f",
+ "ref": "ci/c12p4-ec4f8355",
+ "run": "44878499827",
+ "finished": 1795245355.6116662,
+ "pass": false,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 55,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "ec4f835593673d50c5cfcee27a0905cac5585c26",
+  "label": "c12p4",
+  "branch": "c12f/p4",
+  "shards": [
+   1,
+   4,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 424,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 424,
+   "failed_steps": [
+    "C12 P4: hearts, romance and gift words match game state"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 278,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 361,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL Pip's museum line after the museum opens",
+   1
+  ],
+  [
+   "FAIL no 'no museum yet'",
+   1
+  ],
+  [
+   "FAIL Maple isn't welcoming a friend of six hearts",
+   1
+  ],
+  [
+   "FAIL Stone on Maple's birthday is the plain line: Oh. Some Stone. I'll... find somewhere for it.",
+   1
+  ],
+  [
+   "FAIL Sal says 'boss' once he's crew",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 192.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 96.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.2
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 51.3
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 43.5
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 43.4
+  },
+  {
+   "step": 169,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 43.0
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.5
+  },
+  {
+   "step": 85,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 38.2
+  },
+  {
+   "step": 131,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 25.9
+  },
+  {
+   "step": 127,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 21.4
+  },
+  {
+   "step": 119,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 20.8
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 18.6
+  },
+  {
+   "step": 161,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 12.5
+  },
+  {
+   "step": 122,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 10.9
+  }
+ ]
+}
