@@ -1,0 +1,32 @@
+CONDUCT CI PASS  0002631d80  (ci/r4b-e6a9243f, run 44879127231)
+
+subset run: shards [1], bots 20, playtest on
+check shards (1/1):
+  shard 1: PASS  435s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 87s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 166s  0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 327 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "colony_kelp",
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 102s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 189s  0 fails, 0 warns, 630 steps, 9 kills, 0 ownerless pauses, scenes ["ruins", "colony_ember",
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 62s  0 fails, 0 warns, 419 steps, 0 kills, 0 ownerless pauses, scenes ["house", "colony_kelp", 
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 153s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "hollow_
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 110s  0 fails, 0 warns, 360 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 201s  0 fails, 0 warns, 630 steps, 16 kills, 0 ownerless pauses, scenes ["jungle", "neon", "wast
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 105s  0 fails, 0 warns, 360 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon
+playtest: PASS  59s  21 screenshots (results playtest/shots/)
+RELAY: ok, 4ms (live code a29f453d8be9, this server/)
+
+longest job: 435s
+slowest check steps: import 169.6s; smoke test 56.4s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 44.3s; gang_play_test 24.5s; gangster first hours: intro, day 2, meadow, Hideout, first crew 13.9s; hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) 12.6s; music_stream_test 10.2s; early combat: clinic, pup lesson, telegraph, first boss 9.3s
+distinct errors/fails/warns:
