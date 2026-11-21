@@ -26,6 +26,22 @@ func _frames(n: int) -> void:
 		await process_frame
 
 
+## Wait (game time, bounded at 8 s) for the stage reveal to take its flags and
+## finish its scene, clicking through its lines; never a fixed frame count.
+func _reveal_settled() -> void:
+	var d := Dialogue.instance(self)
+	var gt := 0.0
+	while gt < 8.0:
+		var f: Dictionary = GameState.run["flags"]
+		if not f.has("cf_reveal") and not f.has("cf_reveal_done") and not d.active and gt > 0.6:
+			break
+		if d.active:
+			d._advance()
+		await process_frame
+		gt += root.get_process_delta_time()
+	await _drain()
+
+
 ## Click through whatever dialogue is open (choices pick "Leave"/last).
 func _drain() -> void:
 	var d := Dialogue.instance(self)
@@ -255,8 +271,7 @@ func _arc(arc: String) -> void:
 			check(GameState.run["flags"].has("cf_reveal") and GameState.run["flags"].has("cf_reveal_done"), "[%s] the reveal waits for the next visit" % tag)
 			m.go_to(Commons.SCENE, m.player.position - m.offset())
 			m = await _wait_reload(m)
-			await _frames(40)
-			await _drain()
+			await _reveal_settled()
 			check(not GameState.run["flags"].has("cf_reveal") and not GameState.run["flags"].has("cf_reveal_done"), "[%s] stage %d reveal played on the visit" % [tag, s])
 		else:
 			Commons.finish_stage(m)
