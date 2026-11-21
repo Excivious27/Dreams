@@ -260,7 +260,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     },
     {
      "id": "g2_rosa",
@@ -323,7 +325,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     },
     {
      "id": "g2_shop1",
@@ -408,7 +412,8 @@
         "docks",
         "The docks move everything. Take them from Harbourmaster Vance."
        ]
-      ]
+      ],
+      "sfx": "j_page"
      }
     }
    ]
@@ -627,7 +632,8 @@
         "neon",
         "Put out Flame in the neon district."
        ]
-      ]
+      ],
+      "sfx": "j_page"
      }
     },
     {
@@ -713,7 +719,8 @@
         "neon",
         "Put out Flame in the neon district."
        ]
-      ]
+      ],
+      "sfx": "j_page"
      }
     },
     {
@@ -1209,7 +1216,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     },
     {
      "id": "g4_dice_knows",
@@ -1665,7 +1674,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     },
     {
      "id": "g4_return_2",
@@ -1741,7 +1752,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     },
     {
      "id": "g4_return_3",
@@ -1819,7 +1832,9 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "sfx": "j_page"
+     }
     }
    ]
   },

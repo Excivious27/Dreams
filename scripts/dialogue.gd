@@ -326,8 +326,7 @@ static func line_cues(tree: SceneTree, line: Dictionary) -> void:
 		if not line.has("sfx"):
 			mu.sfx("page", "mail")
 		return
-	# Narration that carries its own sound (a howl, a bell, glass) gets no blip on top (C13 06-08).
-	if who == "" and line.has("sfx"):
+	if not wants_blip(line):
 		return
 	# Crystals speak in a soft chime, not a villager's blip (C13 09-06).
 	var cv := creature_voice(who)
@@ -335,6 +334,11 @@ static func line_cues(tree: SceneTree, line: Dictionary) -> void:
 		mu.sfx_pitched(str(cv[0]), "", float(cv[1]), float(cv[2]))
 		return
 	mu.blip(who)
+
+
+## Narration that carries its own sound (a howl, a bell, glass) gets no blip on top (C13 06-08).
+static func wants_blip(line: Dictionary) -> bool:
+	return not (str(line.get("who", "")) == "" and line.has("sfx"))
 
 
 ## Speakers that are not people: [sfx, pitch, dB] instead of a talk blip.
