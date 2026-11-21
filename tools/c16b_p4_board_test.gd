@@ -44,6 +44,16 @@ func _fonts_ok(n: Node) -> bool:
 	return true
 
 
+func _shot(name: String) -> void:
+	var args := OS.get_cmdline_user_args()
+	if args.is_empty():
+		return
+	for k in 4:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("%s/%s.png" % [args[0], name])
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
 	Campaign.bypass = false
@@ -76,6 +86,7 @@ func _run() -> void:
 		var tx: Array = []
 		_texts(scr, tx)
 		var all := "\n".join(tx)
+		await _shot(arc + "_list")
 		check(not all.contains("Each new region is held"), "%s: intro no longer says regions are held" % arc)
 		check(all.contains("long way"), "%s: intro names the long way" % arc)
 		var row := ""
@@ -84,12 +95,26 @@ func _run() -> void:
 				row = t
 		check(row.begins_with("✓") and row.contains("won · ★ 3/") and row.contains("replay for more"), "%s: won row shows stars and what is left: %s" % [arc, row])
 		check(_fonts_ok(scr), "%s: list text >= 7 px" % arc)
+		# c16b_10-10: the campaign the story needs next is tagged.
+		var sreg := "wastes" if arc == "penguins" else "docks"
+		var sq := "wastes_gate" if arc == "penguins" else "docks"
+		GameState.run["quests"].append({"id": sq, "text": "x", "done": false})
+		scr._show_list()
+		await process_frame
+		tx = []
+		_texts(scr, tx)
+		var srow := ""
+		for t2: String in tx:
+			if t2.contains(str(Campaign.get_c(Campaign.gate_of(sreg))["title"])):
+				srow = t2
+		check(srow.contains("▶ your story goes here") or Campaign.region_open(sreg), "%s: story campaign tagged: %s" % [arc, srow])
 		# The won board: next campaign, ladder lines.
 		scr._show_board(c0)
 		scr._brief.visible = false
 		scr.sel = nid
 		scr._refresh()
 		await process_frame
+		await _shot(arc + "_won_board")
 		check(scr._sub.text.contains("Foe Lv") or not scr._sub.text.contains("★"), "%s: foe level is dots, not stars: %s" % [arc, scr._sub.text])
 		check(scr._body.text.contains("Best ★★★"), "%s: card shows best stars: %s" % [arc, scr._body.text])
 		check(scr._body.text.contains("First clear") and scr._body.text.contains("Mastery"), "%s: won card shows the ladder preview" % arc)
@@ -102,6 +127,7 @@ func _run() -> void:
 		await process_frame
 		tx = []
 		_texts(scr._brief_box, tx)
+		await _shot(arc + "_brief")
 		check("\n".join(tx).contains("YOU WIN") and "\n".join(tx).contains("First clear"), "%s: briefing says what winning gives" % arc)
 		check(_fonts_ok(scr._brief_box), "%s: brief text >= 7 px" % arc)
 		scr._brief.visible = false
@@ -113,6 +139,7 @@ func _run() -> void:
 			scr._all_acts.append(["A long action label number %d here" % k, func() -> void: pass])
 		scr._build_acts()
 		check(scr._acts.size() == 4 and str(scr._acts[3][0]).begins_with("More"), "%s: 6 actions page behind More" % arc)
+		await _shot(arc + "_more")
 		scr._more_acts()
 		check(str(scr._acts[0][0]).ends_with("3 here"), "%s: More shows the next page" % arc)
 		for i in 4:

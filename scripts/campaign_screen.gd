@@ -168,6 +168,17 @@ static func _lw_ok(id: String) -> bool:
 	return _api("can_take_long_way") and bool((Campaign as Script).call("can_take_long_way", id))
 
 
+## Regions the main story needs next (a story quest under way whose region is still held).
+static func _story_regions() -> Dictionary:
+	var out := {}
+	for q: Variant in GameState.run.get("quests", []):
+		if q is Dictionary and not bool((q as Dictionary).get("done", false)):
+			var reg := str(Campaign.STORY_REGION.get(str((q as Dictionary).get("id", "")), ""))
+			if reg != "":
+				out[reg] = true
+	return out
+
+
 ## Shown (maybe greyed by its lock reason) when takeable or only short of the toll.
 static func _lw_offer(id: String) -> bool:
 	if _api("long_way_pending") and bool((Campaign as Script).call("long_way_pending", id)):
@@ -250,8 +261,9 @@ func _show_list() -> void:
 			return 1
 		return 2 if Campaign.plan_lock(id) == "" else 3
 	var order := {}
+	var story := _story_regions()
 	for i in ids.size():
-		order[ids[i]] = rank.call(ids[i]) * 100 + i
+		order[ids[i]] = rank.call(ids[i]) * 100 + i - (50 if story.has(str(Campaign.get_c(ids[i])["region"])) else 0)
 	ids.sort_custom(func(a: String, b: String) -> bool: return int(order[a]) < int(order[b]))
 	for id: String in ids:
 		var c := Campaign.get_c(id)
@@ -274,6 +286,8 @@ func _show_list() -> void:
 			tag = "ready"
 		if not won and not opened and _lw_ok(id):
 			tag += " · ⇢ long way open"
+		if not opened and story.has(str(c["region"])):
+			tag = "▶ your story goes here · " + tag
 		var plan := Campaign.plan_lock(id)
 		if why != "" and why == CampaignGate.lock(id):
 			why = "needs chapter 2" if not CampaignGate.story_ok() else "train first"  # said once, at the top
@@ -792,7 +806,8 @@ func _frame_act(i: int) -> void:
 ## Board backdrop centres where the world map doesn't show the region (islands
 ## out at sea, highland peaks rather than the sky islands above them).
 const BOARD_PIN := {"colony_coral": Vector2(0.22, 0.80), "colony_kelp": Vector2(0.18, 0.86), "colony_ice": Vector2(0.30, 0.88),
-	"colony_ember": Vector2(0.26, 0.84), "highlands": Vector2(0.70, 0.24), "sky": Vector2(0.30, 0.10)}
+	"colony_ember": Vector2(0.26, 0.84), "highlands": Vector2(0.70, 0.24), "sky": Vector2(0.30, 0.10),
+	"orchard_hills": Vector2(0.50, 0.33)}  # C16b P4 (c16b_10-12): green hills, not the sky islands
 
 
 func _draw_board() -> void:
@@ -911,6 +926,11 @@ func _draw_board() -> void:
 	else:
 		cv.draw_line(ap + Vector2(8, 0), ap + Vector2(8, -22), Color(0.3, 0.2, 0.1), 2.0)
 		cv.draw_colored_polygon(PackedVector2Array([ap + Vector2(9, -22), ap + Vector2(22, -18), ap + Vector2(9, -14)]), Color(0.5, 0.9, 1.0))
+	# C16b P4 (c16b_10-13): pads/keys get the board's buttons in words.
+	if not TouchControls.visible_controls:
+		var ft := "%s act · %s briefing · %s next action · %s back" % [InputSetup.prompt("a"), InputSetup.prompt(ScreenCursor.CONFIRM_ALT), InputSetup.prompt(ScreenCursor.PAGE), InputSetup.prompt("b")]
+		cv.draw_rect(Rect2(br.position.x, br.end.y - 11, br.size.x, 11), Color(0, 0, 0, 0.55))
+		_text(cv, f, Vector2(br.position.x, br.end.y - 3), ft, 7, Color(0.95, 0.93, 0.85), br.size.x, HORIZONTAL_ALIGNMENT_CENTER)
 	if Campaign.is_won(cid):
 		_text(cv, f, br.position + Vector2(0, br.size.y / 2), "REGION OPEN", 16, Color(1, 0.9, 0.5), br.size.x, HORIZONTAL_ALIGNMENT_CENTER)
 
