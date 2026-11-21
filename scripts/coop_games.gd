@@ -16,7 +16,7 @@ extends RefCounted
 ## used only when present; tests drive two or more instances through `wire`.
 
 const TYPES := ["game_open", "game_join", "game_leave", "game_start", "game_turn",
-		"game_score", "game_state", "game_result", "game_board", "game_board_ask", "game_post", "game_fest"]
+		"game_score", "game_state", "game_result", "game_board", "game_board_ask", "game_post", "game_fest", "game_feat"]
 const MAX_PLAYERS := 4
 const BOARD_LEN := 8
 const BOWL_FRAMES := 10
@@ -265,6 +265,37 @@ func post_best(game: String, score: int) -> void:
 		_out("", "game_post", {"game": game, "score": score, "name": my_name()})
 
 
+## A cheer for partners ("Nova landed a Golden Trout!"); preset words only, never free text.
+signal cheered(text: String)
+
+
+func cheer(what: String, id: String, name := "") -> void:
+	if what != "fish" or not GameState.items.has(id):
+		return
+	var d := {"what": what, "id": id, "name": name if name != "" else my_name()}
+	if host:
+		_out("*", "game_feat", d)
+	else:
+		_out("", "game_feat", d)
+
+
+static func cheer_text(d: Dictionary) -> String:
+	if str(d.get("what", "")) != "fish" or not GameState.items.has(str(d.get("id", ""))):
+		return ""
+	return "%s landed %s!" % [NameFilter.clean(str(d.get("name", ""))), ItemWords.with_article(GameState.item_name(str(d["id"])))]
+
+
+func _show_cheer(d: Dictionary) -> void:
+	var t := cheer_text(d)
+	if t == "":
+		return
+	cheered.emit(t)
+	var tree := Engine.get_main_loop() as SceneTree
+	var gm := tree.current_scene as GameMap if tree else null
+	if gm and gm.hud:
+		gm.hud.toast(t, Color(0.7, 0.95, 1))
+
+
 ## Festival contests together (c17_06-08): post our score for today's contest; everyone's
 ## line then ranks all the players. Prizes stay per player against the NPC rivals only.
 func post_fest(fest_id: String, score: int, name := "") -> void:
@@ -349,6 +380,10 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 			"game_turn": _ref_turn(from, d)
 			"game_score": _ref_score(from, d)
 			"game_board_ask": _out(from, "game_board", {"board": board_store.duplicate(true), "rec": rec_summary()})
+			"game_feat":
+				if from != me:  # a guest's cheer: show it here and pass it to everyone
+					_show_cheer(d)
+					_out("*", "game_feat", d)
 			"game_fest":
 				_ref_fest(str(d.get("id", "")), str(d.get("name", "")), int(d.get("score", 0)))
 			"game_post":
@@ -360,6 +395,9 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 		"game_result":
 			_apply_state(d)
 			finished.emit(str(d.get("id", "")), d.get("ranking", []))
+		"game_feat":
+			if str(d.get("name", "")) != my_name():  # not our own cheer coming back
+				_show_cheer(d)
 		"game_fest":
 			if d.get("fest") is Dictionary:
 				fest = (d["fest"] as Dictionary).duplicate(true)

@@ -319,3 +319,42 @@ static func bait_reach_bonus() -> int:
 
 static func double_chance() -> float:
 	return GameState.bonus("fishing", "double_fish") + (0.15 if cur_bait == "wild_bait" else 0.0)
+
+
+# ---- C17 P4 (c17_07-17): fishing buddies ------------------------------------------
+const BUDDY_PX := 120.0   # about 6 tiles (map px)
+const BUDDY_MUL := 0.85   # bites come 15% sooner for both
+static var _feat_ms := -100000
+
+
+## A co-op partner standing near us on this map (pos from their state packets)?
+static func buddy_near(m: Node) -> bool:
+	if not Net.online() or m == null or not (m is GameMap) or (m as GameMap).player == null:
+		return false
+	var here := (m as GameMap).player.position
+	for id in Net.peers:
+		var p: Dictionary = Net.peers[id]
+		var pv: Variant = p.get("pos")
+		if str(p.get("scene", "")) == (m as GameMap).scene_id() and pv is Array and (pv as Array).size() >= 2 \
+				and here.distance_to(Vector2(float(pv[0]), float(pv[1]))) <= BUDDY_PX:
+			return true
+	return false
+
+
+## Bite-wait multiplier: a friend fishing beside you (once-a-day toast).
+static func buddy_mul(m: Node) -> float:
+	if not buddy_near(m):
+		return 1.0
+	var f: Dictionary = GameState.run["flags"]
+	if int(f.get("fish_buddy_day", -1)) != CoopGames.own_day():
+		f["fish_buddy_day"] = CoopGames.own_day()
+		(m as GameMap).hud.toast("Fishing with a friend: the bites come quicker.", Color(0.7, 0.95, 1))
+	return BUDDY_MUL
+
+
+## A big catch is shared with partners as a cheer (top value band or legendary; 1 per 5 s).
+static func buddy_catch(_m: Node, fish: String) -> void:
+	if not Net.online() or band(fish) < 3 or PlayClock.ms() - _feat_ms < 5000:
+		return
+	_feat_ms = PlayClock.ms()
+	CoopGames.i().cheer("fish", fish)

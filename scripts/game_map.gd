@@ -4753,6 +4753,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		GameState.run["flags"]["tide_day"] = int(GameState.run["day"])
 		wait = 0.3
 		hud.toast("Tidecall!", Color(0.6, 0.9, 1))
+	wait *= Fishing.buddy_mul(self)  # C17 P4: a friend fishing beside you
 	var baited := false
 	var lvl := GameState.skill_level_eff("fishing")  # C16a P4: effects follow LEVEL_EFFECT_CAP
 	# Bait: quicker bites and a shot at better fish, only spent where it opens one.
@@ -4829,6 +4830,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		if fish == "legendary_koi":
 			hud.toast("The Legendary Koi! The whole lake goes still.", Color(1, 0.9, 0.5))
 		xp("fishing", Fishing.xp_for(fish))
+		Fishing.buddy_catch(self, fish)  # C17 P4: partners cheer a big catch
 	elif snapped:
 		hud.toast("Hit! The line snaps.", Color(1, 0.7, 0.6))
 		Music.instance(get_tree()).sfx("fish_escape")

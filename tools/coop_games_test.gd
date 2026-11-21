@@ -86,6 +86,17 @@ func _duel() -> void:
 	a.post_fest("derby", 300, "Nova")
 	ok(h.fest_line("derby").begins_with("Players today: 1st") and b.fest_line("derby").contains("2nd"), "festival contest: every player ranked together")
 	ok(a.fest_line("regatta") == "", "no standings line with fewer than 2 players")
+	var heard := []
+	a.cheered.connect(func(t: String) -> void: heard.append(t))
+	var fishy := ""
+	for id in GameState.items:
+		if GameState.items[id].get("type", "") == "fish":
+			fishy = str(id)
+			break
+	b.cheer("fish", fishy, "Pip")
+	ok(heard.size() == 1 and str(heard[0]).ends_with("!"), "a partner's big catch is cheered on other phones (%s)" % str(heard))
+	b.cheer("fish", "not_an_item", "Pip")
+	ok(heard.size() == 1, "cheers only name real items (no free text)")
 	b.post_best("claw", 5)
 	ok(h.board("claw").is_empty(), "claw has no board")
 	var f := CoopGames.new()
