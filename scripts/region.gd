@@ -7,6 +7,7 @@ extends GameMap
 
 @export var region_id := "wastes"
 ## C14b P4 (c14b_05-03): the penguin magic areas whose nights carry the aurora.
+const COLONY_GLOW := {"coral": "ffb0c8", "kelp": "8ff0c8", "ice": "a8e4ff", "ember": "ffb050"}
 const AURORA_REGIONS := ["gloam_violet_glade", "gloam_moonpool", "gloam_crystal_thicket", "wind_starfall_garden", "sky_reaches", "sky", "colony_ice"]
 var R: Dictionary = {}
 var _patch_memo := {}  # region patch cells, worked out on the first draw
@@ -1349,6 +1350,7 @@ func _place_colony() -> void:
 				if sp:
 					sp.position = cell_center(c)
 					sp.play("happy" if done and sp.sprite_frames.has_animation("happy") else ("idle" if done else ("sad" if sp.sprite_frames.has_animation("sad") else "idle")))
+					RegionAnim.phase(sp, c)
 					add_child(sp)
 				_colony_village(cid, c, done)
 			"colony_jetty":  # C14 contract: the TravelNet station sign on this jetty
@@ -1366,6 +1368,8 @@ func _place_colony() -> void:
 					prop("props", cn, c, 1, 0.0, true, 0.3)
 				elif Art.has("props", nm):
 					prop("props", nm, c)
+				# C14b P4 (c14b_05-10): the lit crystal breathes light and sheds sparkles; the dim one barely flickers.
+				RegionAnim.glow(self, cell_center(c) + Vector2(8, -14), Color(COLONY_GLOW.get(cid, "9fe8ff")), "lit" if done else "dim", 16.0)
 			"beacon":
 				var lit := (Colony.st(region_id)["beacons"] as Dictionary).has(str(t.get("key", "")))
 				var bn := "%s_beacon_%s" % [cid, "on" if lit else "off"]
@@ -1374,6 +1378,8 @@ func _place_colony() -> void:
 					prop("props", bn, c, 0, 0.0, true, 0.22)
 				elif Art.has("props", ln):
 					prop("props", ln, c)
+				if lit:  # C14b P4: each lit beacon glows on its own phase, never in lockstep
+					RegionAnim.glow(self, cell_center(c) + Vector2(0, -12), Color(COLONY_GLOW.get(cid, "ffd88a")), "lit", 7.0)
 
 
 # Houses, villagers and (until the crystal wakes) the creeping blight around the elder.
@@ -1412,7 +1418,8 @@ func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 		var kc: Vector2i = at + Vector2i(-4 + i * 4, 3 + (i % 2))
 		sp.position = cell_center(kc)
 		sp.play("idle")
-		sp.speed_scale = 0.7 + 0.2 * i
+		RegionAnim.phase(sp, kc)  # C14b P4 (c14b_05-12): kits never idle in step
+		sp.speed_scale *= 0.7 + 0.2 * i
 		sp.y_sort_enabled = true
 		add_child(sp)
 	if done:

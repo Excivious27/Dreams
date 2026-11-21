@@ -155,3 +155,78 @@ func _process(_d: float) -> void:
 				var g := 0.88 + 0.12 * (0.5 + 0.5 * sin(t * TAU / 2.6 + ph)) * amp + 0.12 * (1.0 - amp)
 				var m2: Color = ex["mod"]
 				n.modulate = Color(m2.r * (0.94 + 0.08 * g), m2.g * (0.94 + 0.08 * g), m2.b * (0.94 + 0.08 * g), m2.a)
+
+
+## A soft additive light on a magic prop (c14b_05-10): lit = an eased 2.5 s pulse with
+## sparkles rising out of it; dim = a weak slow flicker and a dark mote now and then;
+## burst = a ring of sparkles flying outward over 1.2 s (the restore moment), then gone.
+class Glow extends Node2D:
+	var col := Color(1, 1, 1)
+	var mode := "lit"
+	var ph := 0.0
+	var born := 0.0
+	var radius := 16.0
+
+	func _ready() -> void:
+		var cm := CanvasItemMaterial.new()
+		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		material = cm
+		born = PlayClock.now()
+
+	func _process(_d: float) -> void:
+		if mode == "burst" and PlayClock.now() - born > 1.4:
+			queue_free()
+			return
+		queue_redraw()
+
+	func _draw() -> void:
+		var t := PlayClock.now()
+		var rm := Settings.reduced_motion()
+		var amp := 0.3 if rm else 1.0
+		match mode:
+			"lit":
+				var p := 0.5 + 0.5 * sin(t * TAU / 2.5 + ph)
+				p = p * p * (3.0 - 2.0 * p)
+				var a := lerpf(0.75, 0.55 + 0.45 * p, amp)
+				draw_circle(Vector2.ZERO, radius * 1.5, Color(col, 0.07 * a))
+				draw_circle(Vector2.ZERO, radius, Color(col, 0.12 * a))
+				draw_circle(Vector2.ZERO, radius * 0.5, Color(col, 0.18 * a))
+				for i in 4:
+					var life := 2.2
+					var age := fposmod(t + ph + i * life / 4.0, life)
+					var u := age / life
+					var x := sin(i * 2.3 + ph) * radius * 0.6 + sin(age * 2.0 + i) * 2.0 * amp
+					var y := -age * 9.0 * amp - 4.0
+					var e := pow(sin(PI * u), 1.5)
+					draw_circle(Vector2(x, y), 1.6, Color(col, 0.25 * e))
+					draw_circle(Vector2(x, y), 0.6, Color(1, 1, 1, 0.9 * e))
+			"dim":
+				var f := 0.5 + 0.5 * sin(t * TAU / 4.0 + ph) * (0.6 + 0.4 * sin(t * 1.7 + ph * 2.0))
+				var a2 := lerpf(0.2, 0.15 + 0.15 * f, amp)
+				draw_circle(Vector2.ZERO, radius * 0.9, Color(col, 0.10 * a2))
+				draw_circle(Vector2.ZERO, radius * 0.4, Color(col, 0.20 * a2))
+			"burst":
+				var u2 := clampf((t - born) / 1.2, 0.0, 1.0)
+				var ez := 1.0 - pow(1.0 - u2, 3.0)
+				var fade := 1.0 - u2
+				draw_circle(Vector2.ZERO, radius * (0.5 + 1.5 * ez), Color(col, 0.18 * fade))
+				for i in 12:
+					var ang := i * TAU / 12.0 + ph
+					var pos := Vector2(cos(ang), sin(ang) * 0.6) * radius * 2.4 * ez
+					draw_circle(pos, 1.8 * fade + 0.4, Color(col, 0.5 * fade))
+					draw_circle(pos, 0.7, Color(1, 1, 1, fade))
+
+
+## Adds a Glow over a map position (map coordinates).
+static func glow(m: GameMap, at: Vector2, col: Color, mode: String, radius := 16.0) -> Node2D:
+	if m == null:
+		return null
+	var g := Glow.new()
+	g.col = col
+	g.mode = mode
+	g.radius = radius
+	g.ph = float(absi(hash(at)) % 1000) / 1000.0 * TAU
+	g.position = at
+	g.z_index = 41
+	m.add_child(g)
+	return g

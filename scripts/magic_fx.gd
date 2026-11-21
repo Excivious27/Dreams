@@ -13,16 +13,16 @@ extends Node2D
 ## id; a regions.json "magic": {...} block overrides or adds one.
 
 const PROFILES := {
-	"crystal_meadow": {"pal": ["7ff0e6", "ff9fd6", "ffffff", "b9a6ff"], "spark": 16, "motes": 12, "veil": 0.10, "veil_pal": ["6fe8d8", "c7a0ff"], "day": 0.7, "glint": "crystal"},
+	"crystal_meadow": {"pal": ["7ff0e6", "ff9fd6", "ffffff", "b9a6ff"], "spark": 22, "motes": 12, "veil": 0.10, "veil_pal": ["6fe8d8", "c7a0ff"], "day": 0.7, "glint": "crystal"},
 	"moon": {"pal": ["d9c8ff", "ffffff", "a9c4ff"], "spark": 14, "motes": 8, "veil": 0.13, "veil_pal": ["b48cff", "7fd8ff"], "day": 0.9, "stars": 14, "kind": "dust"},
 	"gloam_violet_glade": {"pal": ["8ff3ff", "c58cff", "ff9be0"], "spark": 16, "motes": 12, "veil": 0.10, "veil_pal": ["9a7bff", "6fe0ff"], "day": 0.55},
 	"gloam_moonpool": {"pal": ["bfe8ff", "ffffff", "c9a8ff"], "spark": 14, "motes": 10, "veil": 0.12, "veil_pal": ["a8c8ff", "d0a0ff"], "day": 0.6, "stars": 8},
 	"gloam_crystal_thicket": {"pal": ["8ff3ff", "e0b0ff", "ffffff"], "spark": 18, "motes": 8, "veil": 0.07, "veil_pal": ["7fe8ff", "c49aff"], "day": 0.6, "glint": "crystal"},
 	"gloam_lanternfall": {"pal": ["ffd98a", "ffb0d8", "9ff0ff"], "spark": 12, "motes": 14, "veil": 0.08, "veil_pal": ["ffc88a", "b48cff"], "day": 0.55},
-	"sky": {"pal": ["fff2b0", "ffffff", "ffe08a"], "spark": 12, "motes": 6, "veil": 0.09, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8, "stars": 10},
-	"sky_reaches": {"pal": ["fff2b0", "ffffff", "cfe8ff"], "spark": 12, "motes": 6, "veil": 0.10, "veil_pal": ["ffeec0", "b8dcff"], "day": 0.8, "stars": 12},
-	"wind_starfall_garden": {"pal": ["fff6c8", "ffd0f0", "c8e8ff"], "spark": 16, "motes": 10, "veil": 0.11, "veil_pal": ["ffe6a0", "c8a8ff"], "day": 0.7, "stars": 14},
-	"bf_cloud_stair": {"pal": ["fff2b0", "ffffff"], "spark": 8, "motes": 4, "veil": 0.07, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8},
+	"sky": {"clouds": 5, "pal": ["fff2b0", "ffffff", "ffe08a"], "spark": 12, "motes": 6, "veil": 0.09, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8, "stars": 10},
+	"sky_reaches": {"clouds": 5, "pal": ["fff2b0", "ffffff", "cfe8ff"], "spark": 12, "motes": 6, "veil": 0.10, "veil_pal": ["ffeec0", "b8dcff"], "day": 0.8, "stars": 12},
+	"wind_starfall_garden": {"clouds": 5, "pal": ["fff6c8", "ffd0f0", "c8e8ff"], "spark": 16, "motes": 10, "veil": 0.11, "veil_pal": ["ffe6a0", "c8a8ff"], "day": 0.7, "stars": 14},
+	"bf_cloud_stair": {"clouds": 5, "pal": ["fff2b0", "ffffff"], "spark": 8, "motes": 4, "veil": 0.07, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8},
 	"colony_coral": {"pal": ["ffb0c0", "ffe0a8", "ffffff"], "spark": 10, "motes": 8, "veil": 0.05, "veil_pal": ["ffb0c8", "ffd8a8"], "day": 0.6},
 	"colony_ember": {"pal": ["ffb04a", "ff7a3a", "ffe08a"], "spark": 8, "motes": 14, "veil": 0.0, "day": 0.8, "kind": "ember"},
 	"colony_ice": {"pal": ["d8f4ff", "ffffff", "a8dcff"], "spark": 14, "motes": 8, "veil": 0.08, "veil_pal": ["a0f0e0", "b0c8ff"], "day": 0.7, "kind": "dust"},
@@ -71,6 +71,7 @@ static func attach(m: GameMap, key: String, extra: Dictionary = {}) -> MagicFx:
 	g.map = m
 	g.prof = p
 	g.air = false
+	g.material = _add_mat()
 	m.add_child(g)
 	m.to_under(g)
 	var a := MagicFx.new()
@@ -79,8 +80,16 @@ static func attach(m: GameMap, key: String, extra: Dictionary = {}) -> MagicFx:
 	a.prof = p
 	a.air = true
 	a.z_index = 40
+	a.material = _add_mat()
 	m.add_child(a)
 	return a
+
+
+## Light adds to what's under it: sparkles glow on dark grass instead of sitting on it.
+static func _add_mat() -> CanvasItemMaterial:
+	var cm := CanvasItemMaterial.new()
+	cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	return cm
 
 
 static func reduced() -> bool:
@@ -185,7 +194,7 @@ func _tick_sparks(t: float, vr: Rect2) -> void:
 		# Staggered births: a sparkle waits 0.2-2.4 s before it blooms, so they never pop together.
 		var delay := _rng.randf_range(0.2, 2.4)
 		var life := _rng.randf_range(0.9, 1.7) * (1.8 if reduced() else 1.0)
-		_sparks.append([pos.snapped(Vector2(0.5, 0.5)), t + delay, life + 0.0, _pick(), _rng.randf_range(2.5, 4.5), _rng.randf_range(-0.3, 0.3)])
+		_sparks.append([pos.snapped(Vector2(0.5, 0.5)), t + delay, life + 0.0, _pick(), _rng.randf_range(3.5, 6.0), _rng.randf_range(-0.3, 0.3)])
 
 
 func _tick_motes(t: float, vr: Rect2) -> void:
@@ -236,8 +245,9 @@ func _draw() -> void:
 		# Reduced motion: a gentle glow that brightens and dims, never a flash.
 		var a := e * st * (0.55 if reduced() else 1.0)
 		var r := float(s[4]) * (0.55 + 0.45 * e) if not reduced() else float(s[4]) * 0.7
-		draw_circle(pos, r * 0.9, Color(c, 0.10 * a))
-		draw_circle(pos, r * 0.45, Color(c, 0.22 * a))
+		draw_circle(pos, r * 1.3, Color(c, 0.08 * a))
+		draw_circle(pos, r * 0.7, Color(c, 0.18 * a))
+		draw_circle(pos, r * 0.35, Color(c, 0.35 * a))
 		_star(pos, r, float(s[5]) + u * 0.5 * amp, Color(c.lightened(0.35), 0.95 * a))
 		draw_circle(pos, 0.6, Color(1, 1, 1, a))
 
@@ -259,7 +269,7 @@ func _draw_air(t: float, st: float, amp: float) -> void:
 		return
 	# Sky veils: two soft ribbons of light ripple across the top of the view, each
 	# built from vertical slices whose alpha fades to nothing at both edges.
-	var va := float(prof.get("veil", 0.0)) * st
+	var va := float(prof.get("veil", 0.0)) * st * 2.2
 	if va > 0.0:
 		var vp: Array = prof.get("veil_pal", ["ffffff", "ffffff"])
 		for k in 2:
@@ -287,6 +297,19 @@ func _draw_air(t: float, st: float, amp: float) -> void:
 				draw_polygon(q, qc)
 				# A thin bright crest along the top of the ribbon: the shimmer you notice first.
 				draw_line(top[j], top[j + 1], Color(col.lightened(0.4), cols_top[j].a * 0.9), 1.0)
+	# Cloud-sea wisps (c14b_05-15, c14b_06-08): soft puffs drifting over the cloud
+	# ground at two speeds, wrapping through the view, so the sea under the isles moves.
+	var nc := int(prof.get("clouds", 0))
+	if nc > 0:
+		var span := vr.size.x + 120.0
+		for i in nc:
+			var spd := (3.0 if i % 2 == 0 else 6.0) * amp
+			var seed_x := float(hash(i * 977) % 1000) / 1000.0 * span
+			var x := vr.position.x - 60.0 + fposmod(seed_x + t * spd, span)
+			var y := vr.position.y + vr.size.y * (0.2 + 0.75 * float(hash(i * 131) % 1000) / 1000.0) + sin(t * 0.3 + i) * 2.0 * amp
+			var ca := 0.05 * (1.0 - 0.5 * GameState.darkness())
+			for j in 4:
+				draw_circle(Vector2(x + j * 9.0 - 13.0, y + (2.0 if j % 2 else 0.0)), 9.0 - absf(j - 1.5) * 2.0, Color(1, 1, 1, ca))
 	# High shimmer glints: tiny stars that breathe on their own phases (2-4 s).
 	for s: Array in _stars:
 		var p := Vector2(vr.position.x + vr.size.x * float(s[0]), vr.position.y + vr.size.y * float(s[1]))

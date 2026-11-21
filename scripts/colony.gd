@@ -472,6 +472,10 @@ static func _restore(m: GameMap, id: String) -> void:
 	if int(c.get("mana", 0)) > 0:
 		GameState.grow_vital("mana", int(c["mana"]))
 	m.fx("levelup", m.player.position + Vector2(0, -16), 12.0, 1.0)
+	if _crystal_burst(m, id):  # C14b P4 (c14b_05-10): the crystal wakes with a ring of light now, not on reload
+		await m.get_tree().create_timer(1.3, false).timeout  # let the burst play before the words
+		if not is_instance_valid(m):
+			return
 	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 	m.shake(3.0)
 	Music.instance(m.get_tree()).play(m.music_track)
@@ -495,6 +499,22 @@ static func _restore(m: GameMap, id: String) -> void:
 	# Reload the region so the lit crystal, open stall and cleared blight show now.
 	if m.player:
 		m.go_to(m.scene_id(), m.player.position - m.offset(), "down")
+
+
+## The waking crystal: a burst ring and the lit glow fade in over the dim one.
+static func _crystal_burst(m: GameMap, id: String) -> bool:
+	var R: Dictionary = m.get("R") if m.get("R") is Dictionary else {}
+	for t in R.get("things", []):
+		if str(t.get("type", "")) == "star_crystal":
+			var at := m.cell_center(Vector2i(int(t["cell"][0]), int(t["cell"][1]))) + Vector2(8, -14)
+			var col := Color(str({"coral": "ffb0c8", "kelp": "8ff0c8", "ice": "a8e4ff", "ember": "ffb050"}.get(id.trim_prefix("colony_"), "9fe8ff")))
+			RegionAnim.glow(m, at, col, "burst", 16.0)
+			var lit := RegionAnim.glow(m, at, col, "lit", 16.0)
+			if lit:
+				lit.modulate.a = 0.0
+				m.create_tween().tween_property(lit, "modulate:a", 1.0, 1.2).set_trans(Tween.TRANS_SINE)
+			return true
+	return false
 
 
 static func _shop(m: GameMap, id: String) -> void:
