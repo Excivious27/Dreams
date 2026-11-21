@@ -2435,7 +2435,9 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 	var bday := is_birthday(id) and gain > 0
 	var tier: Variant = "birthday" if bday and g >= 12 else idx
 	for w: Dictionary in d.get("when", []):
-		if str(w.get("id", "")) == id and str(w.get("tier", "")) == str(tier) and _gift_when_ok(id, w):
+		var wt: Variant = w.get("tier", -1)
+		var tier_ok := (str(wt) == str(tier)) if (wt is String or tier is String) else int(wt) == int(tier)  # JSON numbers are floats
+		if str(w.get("id", "")) == id and tier_ok and _gift_when_ok(id, w):
 			return ItemWords.fill(str(w["text"]), n)
 	if bday and g >= 12 and d.get("birthday", {}).has(id):
 		return ItemWords.fill(str(d["birthday"][id]), n)

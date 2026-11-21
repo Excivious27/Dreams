@@ -118,8 +118,14 @@ func _run() -> void:
 			found = true
 			break
 	check(found, "found Maple's birthday")
-	var plain := GameState.gift_line("maple", "stone", GameState.gift_value("maple", "stone"))
-	check(plain.contains("it's the thought"), "Stone on Maple's birthday is the plain line: %s" % plain)
+	var neutral := ""
+	for it in ["stone", "wood", "fiber", "clay", "sand", "coal", "hay", "copper_ore", "iron_ore"]:
+		if GameState.items.has(it) and GameState.gift_value("maple", it) > 0 and GameState.gift_value("maple", it) / 3 < 12:
+			neutral = it
+			break
+	check(neutral != "", "a neutral gift for Maple")
+	var plain := GameState.gift_line("maple", neutral, GameState.gift_value("maple", neutral))
+	check(plain.contains("it's the thought"), "a neutral gift on Maple's birthday is the plain line: %s" % plain)
 	GameState.run["day"] = 1
 	# Wine is a trade good: no villager cooks or drinks it.
 	var drink := RegEx.new()
