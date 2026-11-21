@@ -1,0 +1,15 @@
+CONDUCT CI FAIL  992b5caa1e  (ci/s1p4b-1a15f091, run 44866658472)
+
+subset run: shards [3], bots off, playtest on
+check shards (1/1):
+  shard 3: FAIL  344s  failed: farm_look_test, C9 P6: generated data in sync
+playtest: FAIL (twice in a row)  91s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (15 away)
+RELAY: ok, 49ms (live code e4b9aef5b57d)
+NET E2E: ok, 17s
+  relay note: server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)
+
+longest job: 344s
+slowest check steps: import 210.9s; C9 P6: generated data in sync 20.1s; mega regions: the new worlds walk end to end 16.4s; building doors 13.4s; phone_ui_test 10.8s; battle outcomes: drain, siege, boss, defend, convoy; team, helpers 6.6s; penguin arc: new game to day 2 (crystal, mailbox marker, partner scene 5.0s; ambience_test 4.7s
+distinct errors/fails/warns:
+    1  FAIL pens fenced (41 pieces, 3 gates)

@@ -1,0 +1,180 @@
+{
+ "sha": "992b5caa1e67c369da0f0bb226e8a38b85e06e89",
+ "ref": "ci/s1p4b-1a15f091",
+ "run": "44866658472",
+ "finished": 1795236129.1323357,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [
+   "server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)"
+  ],
+  "fail": false,
+  "local_code": "a29f453d8be9",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 12,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 12,
+   "players": 0
+  },
+  "deployed": false,
+  "ms": 49,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 49ms (live code e4b9aef5b57d)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 1,
+  "secs": 91,
+  "shots": 21,
+  "fails": [
+   "FAIL tap-to-move walks to the tapped cell (15 away)"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL boss appeared after 5 kills"
+ },
+ "playtest_pass": false,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "1a15f091ee46b2aad01d09420b24946c5ee69258",
+  "label": "s1p4b",
+  "branch": "s1f/p4",
+  "shards": [
+   3
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 344,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 344,
+   "failed_steps": [
+    "farm_look_test",
+    "C9 P6: generated data in sync"
+   ]
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL pens fenced (41 pieces, 3 gates)",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 210.9
+  },
+  {
+   "step": 148,
+   "name": "C9 P6: generated data in sync",
+   "rc": 1,
+   "secs": 20.1
+  },
+  {
+   "step": 112,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 16.4
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 13.4
+  },
+  {
+   "step": 16,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 10.8
+  },
+  {
+   "step": 88,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 6.6
+  },
+  {
+   "step": 106,
+   "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene",
+   "rc": 0,
+   "secs": 5.0
+  },
+  {
+   "step": 76,
+   "name": "ambience_test",
+   "rc": 0,
+   "secs": 4.7
+  },
+  {
+   "step": 28,
+   "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)",
+   "rc": 0,
+   "secs": 4.2
+  },
+  {
+   "step": 58,
+   "name": "town_first_test",
+   "rc": 0,
+   "secs": 4.1
+  },
+  {
+   "step": 40,
+   "name": "farm_look_test",
+   "rc": 1,
+   "secs": 3.9
+  },
+  {
+   "step": 124,
+   "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f",
+   "rc": 0,
+   "secs": 3.9
+  },
+  {
+   "step": 136,
+   "name": "C8 P3: collections (museum, logs, Book tab)",
+   "rc": 0,
+   "secs": 3.9
+  },
+  {
+   "step": 82,
+   "name": "mine: keeper, shaft, tiers",
+   "rc": 0,
+   "secs": 3.8
+  },
+  {
+   "step": 142,
+   "name": "C9 P2: game menu with keys/pad",
+   "rc": 0,
+   "secs": 3.7
+  }
+ ]
+}
