@@ -18,7 +18,7 @@
     reach it, dynamically): a direct reference is a parse error on web, where the addon is absent;
   * the Web preset options, project.godot [display]/[rendering] or the key [application] values
     differ from tools/web_baseline.json.
---pck fails when the exported pack lists anything Steam (godotsteam, steam_api, steam_appid,
+--pck fails when the exported pack lists anything Steam (godotsteam, libsteam_api/steam_api64, steam_appid,
   .gdextension, .so/.dll, res://steam/, server/), and prints size + files per top folder.
 """
 import json
@@ -33,7 +33,7 @@ BASELINE = os.path.join(ROOT, "tools", "web_baseline.json")
 WEB_MUST_EXCLUDE = ["addons/godotsteam/*", "steam/*", "steam_appid.txt", "server/*"]
 DESKTOP_PRESETS = ["Linux", "Windows Desktop"]
 DESKTOP_MUST_EXCLUDE = ["server/*", "steam/*", "steam_appid.txt", ".github/*"]
-FORBIDDEN_PCK = ["godotsteam", "steam_api", "steam_appid", ".gdextension", "res://steam/", "res://server/"]
+FORBIDDEN_PCK = ["godotsteam", "libsteam_api", "steam_api64", "steam_api.dll", "steam_appid", ".gdextension", "res://steam/", "res://server/"]
 APP_KEYS = ["config/name", "run/main_scene", "config/icon"]
 
 
