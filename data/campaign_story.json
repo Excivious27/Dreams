@@ -1,5 +1,5 @@
 {
- "_": "Campaign lead-in beats (CampaignGate). Merged into story.json's 'both' list by Story.data(). Hand-edited. C16b P3: 'penguins'/'gangsters' hold the morning beats after a region opens (win or the long way).",
+ "_": "Campaign lead-in beats (CampaignGate). Merged into story.json's 'both' list by Story.data(). Hand-edited. C16b: the morning beats after a region opens (win or the long way) live in 'both' chapters c16b_regions_p/g with an arc condition, so they never count as a story chapter (journal chapter number, silent backstop).",
  "both": [
   {
    "id": "campaign_leadin",
@@ -152,9 +152,7 @@
      }
     }
    ]
-  }
- ],
- "penguins": [
+  },
   {
    "id": "c16b_regions_p",
    "title": "Open roads",
@@ -166,7 +164,8 @@
      },
      "when": {
       "flag": "campaign_wastes",
-      "not_flag": "long_way_wastes"
+      "not_flag": "long_way_wastes",
+      "arc": "penguins"
      },
      "lines": [
       {
@@ -186,7 +185,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_wastes"
+      "flag": "long_way_wastes",
+      "arc": "penguins"
      },
      "lines": [
       {
@@ -212,7 +212,8 @@
      },
      "when": {
       "flag": "campaign_sky",
-      "not_flag": "long_way_sky"
+      "not_flag": "long_way_sky",
+      "arc": "penguins"
      },
      "lines": [
       {
@@ -232,7 +233,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_sky"
+      "flag": "long_way_sky",
+      "arc": "penguins"
      },
      "lines": [
       {
@@ -252,9 +254,7 @@
      }
     }
    ]
-  }
- ],
- "gangsters": [
+  },
   {
    "id": "c16b_regions_g",
    "title": "Open roads",
@@ -266,7 +266,8 @@
      },
      "when": {
       "flag": "campaign_countryside",
-      "not_flag": "long_way_countryside"
+      "not_flag": "long_way_countryside",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -286,7 +287,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_countryside"
+      "flag": "long_way_countryside",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -312,7 +314,8 @@
      },
      "when": {
       "flag": "campaign_docks",
-      "not_flag": "long_way_docks"
+      "not_flag": "long_way_docks",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -332,7 +335,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_docks"
+      "flag": "long_way_docks",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -358,7 +362,8 @@
      },
      "when": {
       "flag": "campaign_neon",
-      "not_flag": "long_way_neon"
+      "not_flag": "long_way_neon",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -378,7 +383,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_neon"
+      "flag": "long_way_neon",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -404,7 +410,8 @@
      },
      "when": {
       "flag": "campaign_underground",
-      "not_flag": "long_way_underground"
+      "not_flag": "long_way_underground",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -424,7 +431,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_underground"
+      "flag": "long_way_underground",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -450,7 +458,8 @@
      },
      "when": {
       "flag": "campaign_uptown",
-      "not_flag": "long_way_uptown"
+      "not_flag": "long_way_uptown",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -470,7 +479,8 @@
       "sleep": true
      },
      "when": {
-      "flag": "long_way_uptown"
+      "flag": "long_way_uptown",
+      "arc": "gangsters"
      },
      "lines": [
       {
@@ -491,5 +501,7 @@
     }
    ]
   }
- ]
+ ],
+ "penguins": [],
+ "gangsters": []
 }
