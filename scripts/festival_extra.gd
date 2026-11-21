@@ -1,8 +1,8 @@
 class_name FestivalExtra
 extends RefCounted
 ## C15 P6: the festivals added in C15 that are held in town (data/festivals.json handler ids):
-## Blossom Dance / Rooftop Bloom, Founders' Day / Turf Day, Hollow Night / Masquerade Alley,
-## Winter Market / Night Market, Gift Swap Feast / Gilt Gala. One try per festival day (key);
+## Blossom Dance / Rooftop Bloom, Founders' Day / Turf Day, Hollow Night / Mask Night,
+## Winter Market / Night Market, Gift Swap Feast / Year's End Swap. One try per festival day (key);
 ## every choice is seeded by the day so a reload replays the same festival. All ages.
 
 const HANDLED := ["blossom", "founders", "hollow", "winter_market", "gift_swap"]
@@ -173,7 +173,7 @@ static func _founders(m: GameMap, key: String) -> void:
 	await m.say([{"who": host, "text": "%d of 3! %s" % [right, ("Here's %s for knowing your town." % Money.amount(pay)) if pay > 0 else "Next year, then."]}])
 
 
-## Hollow Night / Masquerade Alley: a lantern walk with three forks (seeded), the Golden Gourd at the
+## Hollow Night / Mask Night: a lantern walk with three forks (seeded), the Golden Gourd at the
 ## end of the right path; treats either way; the costume judge likes any festival wear you have on.
 static func hollow_path() -> Array:
 	var r := _rng(27)
@@ -254,7 +254,7 @@ static func _winter_market(m: GameMap, key: String) -> void:
 	await m.say([{"who": host, "text": "The judges say %d points: %s place and %s!" % [sc, ["first", "second", "third"][place - 1], Money.amount(pay)]}])
 
 
-## Gift Swap Feast / Gilt Gala: your secret partner for the year (seeded by year, a villager you know,
+## Gift Swap Feast / Year's End Swap: your secret partner for the year (seeded by year, a villager you know,
 ## never the same two years running); their reaction counts double, and your own secret giver
 ## hands you something back.
 static func secret_partner(year := -1) -> String:

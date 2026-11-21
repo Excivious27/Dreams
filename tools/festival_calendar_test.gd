@@ -80,9 +80,9 @@ func _run() -> void:
 		check(FestivalWords.rows_on("summer", 18, 1, arc).is_empty(), "%s: regatta needs tier 3" % arc)
 		# Arc words.
 		var pen := arc == "penguins"
-		check(FestivalWords.name_of("egg") == ("Egg Festival" if pen else "Stash Hunt"), "%s egg name %s" % [arc, FestivalWords.name_of("egg")])
-		check(FestivalWords.name_of("gift_swap") == ("Gift Swap Feast" if pen else "Gilt Gala"), "%s gift swap name" % arc)
-		check(FestivalWords.host_of("egg") == ("Mayor Alder" if pen else "Halo"), "%s egg host %s" % [arc, FestivalWords.host_of("egg")])
+		check(FestivalWords.name_of("egg") == ("Egg Festival" if pen else "Block Party"), "%s egg name %s" % [arc, FestivalWords.name_of("egg")])
+		check(FestivalWords.name_of("gift_swap") == ("Gift Swap Feast" if pen else "Year's End Swap"), "%s gift swap name" % arc)
+		check(FestivalWords.host_of("egg") == ("Mayor Alder" if pen else "Dice"), "%s egg host %s" % [arc, FestivalWords.host_of("egg")])
 		check(("envelope" in FestivalWords.egg_hint(false)) != pen, "%s egg hint word" % arc)
 		check(not FestivalWords.again_text("hollow").is_empty(), "%s again line" % arc)
 	# Hours from the row.

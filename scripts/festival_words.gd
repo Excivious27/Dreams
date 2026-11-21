@@ -31,7 +31,7 @@ static func egg_call() -> String:
 static func egg_prize_text() -> String:
 	if GameState.is_penguins():
 		return "Every last egg! Mayor Alder hands you %s and a sticky handful of candy." % Money.amount(200)
-	return "Every last envelope. Halo peels %s off the roll." % Money.amount(200)
+	return "Every last envelope. Dice peels %s off the roll." % Money.amount(200)
 
 
 static func lantern_tail() -> String:
@@ -165,7 +165,7 @@ static func again_text(fest: String, eggs_left := 0) -> String:
 	var again := {
 		"egg": ["You've had your hunt. Go and eat your candy before the kids find it.", "You've had your run. Spend it somewhere nice."],
 		"lantern": ["Your lantern's on the water. Watch the river for a while.", "Your light's on the water. Watch it go."],
-		"harvest": ["The judges have your entry. Have a look round the Harvest Fair!", "Entry's in. Go walk the Street Fair."],
+		"harvest": ["The judges have your entry. Have a look round the Harvest Fair!", "Entry's in. Go walk the Hustle."],
 		"star": ["One wish a year. Enjoy the Star Festival!", "One wish. That's the deal. Enjoy the roof."],
 		"blossom": ["You've had your dance. Enjoy the petals!", "You've had your turn on the floor."],
 		"founders": ["You've had your questions. Enjoy the parade!", "You've had your questions. Enjoy Turf Day."],
@@ -211,7 +211,7 @@ static func kid_took_text(kid: String) -> String:
 static func egg_second_text(mine: int, kids: int) -> String:
 	if GameState.is_penguins():
 		return "Hunt over: you found %d, the kids found %d. Alder gives you %s for trying." % [mine, kids, Money.amount(80)]
-	return "Done: you got %d, the kids got %d. Halo hands you %s anyway." % [mine, kids, Money.amount(80)]
+	return "Done: you got %d, the kids got %d. Dice hands you %s anyway." % [mine, kids, Money.amount(80)]
 
 
 ## C15 P6 (c15_07-12): today's holiday row id (kind "holiday"), "" when none. Talk can key

@@ -43,7 +43,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Egg Festival",
-   "name_gang": "Stash Hunt",
+   "name_gang": "Block Party",
    "venue": {
     "scene": "town",
     "cell": [
@@ -57,7 +57,7 @@
    "every": 1,
    "weather": "",
    "host": "Alder",
-   "host_gang": "Halo",
+   "host_gang": "Dice",
    "handler": "egg",
    "stall": "festival_egg",
    "prize_pool": "festival_egg_prize",
@@ -68,7 +68,7 @@
     "flag": ""
    },
    "line": "Egg Festival on the plaza: the egg hunt, the Best Egg table and spring treats.",
-   "line_gang": "Stash Hunt on the plaza: twelve envelopes hidden, and the kids are fast.",
+   "line_gang": "Block Party on the plaza! Twelve cash envelopes are hidden around town: the Stash Hunt.",
    "icon": "festival"
   },
   {
@@ -183,7 +183,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Lantern Festival",
-   "name_gang": "River Lights",
+   "name_gang": "Neon Night",
    "venue": {
     "scene": "town",
     "cell": [
@@ -208,7 +208,7 @@
     "flag": ""
    },
    "line": "Lantern Festival: float your lantern down the river at dusk.",
-   "line_gang": "River Lights: float a light down the river at dusk and keep it off the snags.",
+   "line_gang": "Neon Night: paper lanterns and neon tubes over the plaza after dark.",
    "icon": "festival"
   },
   {
@@ -323,7 +323,7 @@
    "kind": "holiday",
    "arc": "both",
    "name": "Cider Pressing Day",
-   "name_gang": "Payday",
+   "name_gang": "Cider Run",
    "venue": {
     "scene": "farm",
     "cell": [
@@ -348,7 +348,7 @@
     "flag": ""
    },
    "line": "Cider Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
-   "line_gang": "Payday: the crew squares up. A little extra in your envelope today.",
+   "line_gang": "Cider Run: the crew presses a truckload of apples. Fresh juice on every stoop.",
    "icon": "holiday"
   },
   {
@@ -393,7 +393,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Harvest Fair",
-   "name_gang": "Street Fair",
+   "name_gang": "Harvest Hustle",
    "venue": {
     "scene": "town",
     "cell": [
@@ -407,7 +407,7 @@
    "every": 1,
    "weather": "",
    "host": "Alder",
-   "host_gang": "Halo",
+   "host_gang": "Mama Rosa",
    "handler": "harvest",
    "stall": "festival_harvest",
    "prize_pool": "festival_harvest_prize",
@@ -418,7 +418,7 @@
     "flag": ""
    },
    "line": "Harvest Fair: enter your best crop, the Animal Show and fall treats.",
-   "line_gang": "Street Fair: food carts, the produce contest and the show pen.",
+   "line_gang": "Harvest Hustle: food trucks, a chili cook-off and the best-crate contest.",
    "icon": "festival"
   },
   {
@@ -428,7 +428,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Hollow Night",
-   "name_gang": "Masquerade Alley",
+   "name_gang": "Mask Night",
    "venue": {
     "scene": "town",
     "cell": [
@@ -442,7 +442,7 @@
    "every": 1,
    "weather": "leaves",
    "host": "Theo",
-   "host_gang": "Halo",
+   "host_gang": "Deuce",
    "handler": "hollow",
    "stall": "festival_hollow",
    "prize_pool": "festival_hollow_prize",
@@ -453,7 +453,7 @@
     "flag": ""
    },
    "line": "Hollow Night: lantern maze, treats at the cottage doors and a costume contest.",
-   "line_gang": "Masquerade Alley: masks on, a lantern walk and a masquerade judged by the crew.",
+   "line_gang": "Mask Night: costumes, candy and a friendly lantern walk through the garden maze.",
    "icon": "festival"
   },
   {
@@ -533,7 +533,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Star Festival",
-   "name_gang": "Rooftop Wishes",
+   "name_gang": "Snowlight Street Party",
    "venue": {
     "scene": "town",
     "cell": [
@@ -547,7 +547,7 @@
    "every": 1,
    "weather": "",
    "host": "Alder",
-   "host_gang": "Halo",
+   "host_gang": "Marlene",
    "handler": "star",
    "stall": "festival_star",
    "prize_pool": "festival_star_prize",
@@ -558,7 +558,7 @@
     "flag": ""
    },
    "line": "Star Festival: the gift swap and one star-wish under the sky.",
-   "line_gang": "Rooftop Wishes: one gift each, one wish under the sky.",
+   "line_gang": "Snowlight Street Party: wish wall, gift swap and lights on every fire escape.",
    "icon": "festival"
   },
   {
@@ -638,7 +638,7 @@
    "kind": "festival",
    "arc": "both",
    "name": "Gift Swap Feast",
-   "name_gang": "Gilt Gala",
+   "name_gang": "Year's End Swap",
    "venue": {
     "scene": "town",
     "cell": [
@@ -663,8 +663,218 @@
     "flag": ""
    },
    "line": "Gift Swap Feast: bring a gift for your secret partner and the year's-end speech.",
-   "line_gang": "Gilt Gala: black tie, chips only, a secret gift and the year's-end toast.",
+   "line_gang": "Year's End Swap: a name in the hat, a gift in a box and the crew's year-end toast.",
    "icon": "festival"
+  },
+  {
+   "id": "spring_cleanup",
+   "season": "spring",
+   "day": 7,
+   "kind": "holiday",
+   "arc": "gangsters",
+   "name": "Spring Cleanup",
+   "name_gang": "Spring Cleanup",
+   "venue": {
+    "scene": "hideout",
+    "cell": [
+     10,
+     10
+    ]
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "Mama Rosa",
+   "host_gang": "Mama Rosa",
+   "handler": "spring_cleanup",
+   "stall": "festival_spring_cleanup",
+   "prize_pool": "festival_spring_cleanup_prize",
+   "music": "festival_spring_cleanup",
+   "music_fallback": "festival",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Spring Cleanup at the Hideout: repaint the walls, plant the lot. The crew pitches in.",
+   "icon": "holiday"
+  },
+  {
+   "id": "street_fair",
+   "season": "spring",
+   "day": 18,
+   "kind": "festival",
+   "arc": "gangsters",
+   "name": "Neon Street Fair",
+   "name_gang": "Neon Street Fair",
+   "venue": {
+    "scene": "neon",
+    "cell": [
+     20,
+     20
+    ]
+   },
+   "hours": "evening",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "Halo",
+   "host_gang": "Halo",
+   "handler": "street_fair",
+   "stall": "festival_street_fair",
+   "prize_pool": "festival_street_fair_prize",
+   "music": "festival_street_fair",
+   "music_fallback": "festival_night",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Neon Street Fair: food carts and arcade booths all down the strip.",
+   "icon": "festival"
+  },
+  {
+   "id": "rooftop_cinema",
+   "season": "summer",
+   "day": 7,
+   "kind": "holiday",
+   "arc": "gangsters",
+   "name": "Rooftop Cinema",
+   "name_gang": "Rooftop Cinema",
+   "venue": {
+    "scene": "neon",
+    "cell": [
+     20,
+     20
+    ]
+   },
+   "hours": "night",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "The Kid",
+   "host_gang": "The Kid",
+   "handler": "rooftop_cinema",
+   "stall": "festival_rooftop_cinema",
+   "prize_pool": "festival_rooftop_cinema_prize",
+   "music": "festival_rooftop_cinema",
+   "music_fallback": "festival_night",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Rooftop Cinema tonight: an old movie on a bedsheet over the strip.",
+   "icon": "holiday"
+  },
+  {
+   "id": "payday_feast",
+   "season": "fall",
+   "day": 21,
+   "kind": "holiday",
+   "arc": "gangsters",
+   "name": "Payday Feast",
+   "name_gang": "Payday Feast",
+   "venue": {
+    "scene": "hideout",
+    "cell": [
+     10,
+     10
+    ]
+   },
+   "hours": "evening",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "Mama Rosa",
+   "host_gang": "Mama Rosa",
+   "handler": "payday_feast",
+   "stall": "festival_payday_feast",
+   "prize_pool": "festival_payday_feast_prize",
+   "music": "festival_payday_feast",
+   "music_fallback": "festival_night",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Payday Feast: Mama Rosa feeds the whole crew tonight.",
+   "icon": "holiday"
+  },
+  {
+   "id": "gilt_gala",
+   "season": "winter",
+   "day": 21,
+   "kind": "festival",
+   "arc": "gangsters",
+   "name": "Gilt Gala",
+   "name_gang": "Gilt Gala",
+   "venue": {
+    "scene": "uptown",
+    "cell": [
+     20,
+     20
+    ]
+   },
+   "hours": "evening",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "Marlene",
+   "host_gang": "Marlene",
+   "handler": "gilt_gala",
+   "stall": "festival_gilt_gala",
+   "prize_pool": "festival_gilt_gala_prize",
+   "music": "festival_gilt_gala",
+   "music_fallback": "festival_night",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Gilt Gala at the casino: dress sharp, a one-night chip tournament, gold everywhere.",
+   "icon": "festival"
+  },
+  {
+   "id": "new_year_count",
+   "season": "winter",
+   "day": 28,
+   "kind": "holiday",
+   "arc": "gangsters",
+   "name": "Countdown on the Roof",
+   "name_gang": "Countdown on the Roof",
+   "venue": {
+    "scene": "hideout",
+    "cell": [
+     10,
+     10
+    ]
+   },
+   "hours": "night",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "weather": "",
+   "host": "Dice",
+   "host_gang": "Dice",
+   "handler": "new_year_count",
+   "stall": "festival_new_year_count",
+   "prize_pool": "festival_new_year_count_prize",
+   "music": "festival_new_year_count",
+   "music_fallback": "festival_night",
+   "needs": {
+    "marina_tier": 0,
+    "flag": ""
+   },
+   "line": "",
+   "line_gang": "Countdown on the Hideout roof: the crew sees the year out together.",
+   "icon": "holiday"
   }
  ]
 }

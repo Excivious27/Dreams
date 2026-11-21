@@ -21,6 +21,9 @@ PARK = {"scene": "town", "cell": [12, 41]}
 MAZE = {"scene": "town", "cell": [51, 6]}
 BEACH = {"scene": "beach", "cell": [30, 20]}
 FARM = {"scene": "farm", "cell": [20, 20]}
+HIDEOUT = {"scene": "hideout", "cell": [10, 10]}
+NEON = {"scene": "neon", "cell": [20, 20]}
+UPTOWN = {"scene": "uptown", "cell": [20, 20]}
 
 
 def row(id, season, day, kind, name, name_gang, venue, hours, host, host_gang, line, line_gang,
@@ -45,9 +48,10 @@ ROWS = [
     row("planting_day", "spring", 1, "holiday", "Planting Day", "Fresh Start", FARM, "allday", "Hazel", "Halo",
         "Planting Day: a free seed packet in the mail and Gideon's seeds are cheaper today.",
         "Fresh Start: an envelope and a seed bag left at the Hideout door. New season, clean slate."),
-    row("egg", "spring", 14, "festival", "Egg Festival", "Stash Hunt", PLAZA, "day", "Alder", "Halo",
+    # Gang names, hosts and lines of the shared four from P4 (gang-arc owner), C15 NOTES 05:45.
+    row("egg", "spring", 14, "festival", "Egg Festival", "Block Party", PLAZA, "day", "Alder", "Dice",
         "Egg Festival on the plaza: the egg hunt, the Best Egg table and spring treats.",
-        "Stash Hunt on the plaza: twelve envelopes hidden, and the kids are fast.", music_fallback="festival_egg"),
+        "Block Party on the plaza! Twelve cash envelopes are hidden around town: the Stash Hunt.", music_fallback="festival_egg"),
     row("blossom", "spring", 24, "festival", "Blossom Dance", "Rooftop Bloom", PARK, "evening", "Posy", "Halo",
         "Blossom Dance in the park: ask a partner, follow the steps under the petals.",
         "Rooftop Bloom in the park: string lights, a DJ booth and a dance circle.", weather="petals"),
@@ -58,9 +62,9 @@ ROWS = [
     row("founders", "summer", 7, "festival", "Founders' Day", "Turf Day", PLAZA, "day", "Theo", "Halo",
         "Founders' Day parade on the plaza: the town's anniversary, floats and a history talk.",
         "Turf Day: the crew's anniversary. A drumline, a float and a long table on the plaza.", year_min=2),
-    row("lantern", "summer", 14, "festival", "Lantern Festival", "River Lights", PLAZA, "evening", "Lumi", "Halo",
+    row("lantern", "summer", 14, "festival", "Lantern Festival", "Neon Night", PLAZA, "evening", "Lumi", "Halo",
         "Lantern Festival: float your lantern down the river at dusk.",
-        "River Lights: float a light down the river at dusk and keep it off the snags.", music_fallback="festival_lantern"),
+        "Neon Night: paper lanterns and neon tubes over the plaza after dark.", music_fallback="festival_lantern"),
     row("regatta", "summer", 18, "marina", "Regatta", "Harbour Lights", {"scene": "beach", "cell": [30, 12]}, "day", "Roz", "Roz",
         "Regatta at the marina: three legs round the buoys, bunting on every mast.",
         "Harbour Lights on the boardwalk: neon stalls and a ring toss.", marina_tier=3),
@@ -71,18 +75,18 @@ ROWS = [
         "Moon Jellies: at night the glowing jellies drift past the pier.",
         "Neon Tide: the glow buoys light up the bay tonight.", year_min=2, music_fallback="festival_night_2"),
     # FALL
-    row("cider_day", "fall", 1, "holiday", "Cider Pressing Day", "Payday", FARM, "allday", "Hazel", "Halo",
+    row("cider_day", "fall", 1, "holiday", "Cider Pressing Day", "Cider Run", FARM, "allday", "Hazel", "Halo",
         "Cider Pressing Day: Hazel presses apples for the whole town (fresh juice, for everyone).",
-        "Payday: the crew squares up. A little extra in your envelope today."),
+        "Cider Run: the crew presses a truckload of apples. Fresh juice on every stoop."),
     row("derby", "fall", 9, "marina", "Fishing Derby", "Fishing Derby", {"scene": "beach", "cell": [30, 12]}, "day", "Ines", "Ines",
         "Fishing Derby: biggest fish on the pier by 2pm wins. Ines is judging.",
         "Fishing Derby: biggest catch by 2pm takes the pot.", marina_tier=2),
-    row("harvest", "fall", 14, "festival", "Harvest Fair", "Street Fair", PLAZA, "day", "Alder", "Halo",
+    row("harvest", "fall", 14, "festival", "Harvest Fair", "Harvest Hustle", PLAZA, "day", "Alder", "Mama Rosa",
         "Harvest Fair: enter your best crop, the Animal Show and fall treats.",
-        "Street Fair: food carts, the produce contest and the show pen."),
-    row("hollow", "fall", 27, "festival", "Hollow Night", "Masquerade Alley", MAZE, "night", "Theo", "Halo",
+        "Harvest Hustle: food trucks, a chili cook-off and the best-crate contest."),
+    row("hollow", "fall", 27, "festival", "Hollow Night", "Mask Night", MAZE, "night", "Theo", "Deuce",
         "Hollow Night: lantern maze, treats at the cottage doors and a costume contest.",
-        "Masquerade Alley: masks on, a lantern walk and a masquerade judged by the crew.", weather="leaves"),
+        "Mask Night: costumes, candy and a friendly lantern walk through the garden maze.", weather="leaves"),
     # WINTER
     row("first_frost", "winter", 1, "holiday", "First Frost", "First Frost", FARM, "allday", "Bram", "Halo",
         "First Frost: the town lights its windows and Bram's cocoa is half price.",
@@ -90,9 +94,9 @@ ROWS = [
     row("winter_market", "winter", 10, "festival", "Winter Market", "Night Market", PLAZA, "evening", "Maple", "Halo",
         "Winter Market: guest stalls on the plaza and a snow-sculpt contest.",
         "Night Market: neon stalls down the plaza and a snow-sculpt contest.", closes_shops=False),
-    row("star", "winter", 14, "festival", "Star Festival", "Rooftop Wishes", PLAZA, "evening", "Alder", "Halo",
+    row("star", "winter", 14, "festival", "Star Festival", "Snowlight Street Party", PLAZA, "evening", "Alder", "Marlene",
         "Star Festival: the gift swap and one star-wish under the sky.",
-        "Rooftop Wishes: one gift each, one wish under the sky.", music_fallback="festival_star"),
+        "Snowlight Street Party: wish wall, gift swap and lights on every fire escape.", music_fallback="festival_star"),
     row("longest_night", "winter", 21, "holiday", "Longest Night", "Longest Night", FARM, "allday", "Theo", "Halo",
         "Longest Night: the darkest night of the year. Lamps in every window.",
         "Longest Night: the darkest night of the year. The block keeps its lights on."),
@@ -100,9 +104,22 @@ ROWS = [
         "Comet Night: once every three years, crystals fall over the farm.",
         "Blackout Night: the city's power goes out and the stars come back.", every=3, year_min=3,
         closes_shops=False, music_fallback="festival_night_2"),
-    row("gift_swap", "winter", 28, "festival", "Gift Swap Feast", "Gilt Gala", PLAZA, "evening", "Alder", "Halo",
+    row("gift_swap", "winter", 28, "festival", "Gift Swap Feast", "Year's End Swap", PLAZA, "evening", "Alder", "Halo",
         "Gift Swap Feast: bring a gift for your secret partner and the year's-end speech.",
-        "Gilt Gala: black tie, chips only, a secret gift and the year's-end toast."),
+        "Year's End Swap: a name in the hat, a gift in a box and the crew's year-end toast."),
+    # Gang-only rows from P4 (venues in the city; listed on the calendar, played by their scene owners).
+    row("spring_cleanup", "spring", 7, "holiday", "Spring Cleanup", "Spring Cleanup", HIDEOUT, "day", "Mama Rosa", "Mama Rosa",
+        "", "Spring Cleanup at the Hideout: repaint the walls, plant the lot. The crew pitches in.", arc="gangsters"),
+    row("street_fair", "spring", 18, "festival", "Neon Street Fair", "Neon Street Fair", NEON, "evening", "Halo", "Halo",
+        "", "Neon Street Fair: food carts and arcade booths all down the strip.", arc="gangsters", closes_shops=False),
+    row("rooftop_cinema", "summer", 7, "holiday", "Rooftop Cinema", "Rooftop Cinema", NEON, "night", "The Kid", "The Kid",
+        "", "Rooftop Cinema tonight: an old movie on a bedsheet over the strip.", arc="gangsters"),
+    row("payday_feast", "fall", 21, "holiday", "Payday Feast", "Payday Feast", HIDEOUT, "evening", "Mama Rosa", "Mama Rosa",
+        "", "Payday Feast: Mama Rosa feeds the whole crew tonight.", arc="gangsters"),
+    row("gilt_gala", "winter", 21, "festival", "Gilt Gala", "Gilt Gala", UPTOWN, "evening", "Marlene", "Marlene",
+        "", "Gilt Gala at the casino: dress sharp, a one-night chip tournament, gold everywhere.", arc="gangsters", closes_shops=False),
+    row("new_year_count", "winter", 28, "holiday", "Countdown on the Roof", "Countdown on the Roof", HIDEOUT, "night", "Dice", "Dice",
+        "", "Countdown on the Hideout roof: the crew sees the year out together.", arc="gangsters"),
 ]
 
 
