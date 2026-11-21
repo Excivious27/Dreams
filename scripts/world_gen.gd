@@ -477,16 +477,39 @@ const TAKE_OFF := ["duck", "heron"]
 ## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
 const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
 const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
-static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> Array:
+## C15 P4 (c15_09-06/-11/-05): each season brings its own wildlife to meadow-type
+## pools (a pool with a MEADOW kind in it), fall and winter send some away, and
+## owls/bats/fireflies in a region's own list only come out at night. `se` pins the
+## season for tests ("" = no season extras, the pre-C15 behaviour).
+const NIGHT_ONLY := ["bat", "owl", "firefly"]
+const MEADOW := ["sparrow", "rabbit", "squirrel", "butterfly_orange", "butterfly_blue", "robin", "finch", "hedgehog", "deer", "fox", "mouse"]
+const SEASON_CRITTERS := {
+	"spring": ["robin", "ladybug", "snail", "butterfly_yellow", "finch"],
+	"summer": ["dragonfly", "grasshopper", "butterfly_purple", "bee", "frog"],
+	"fall": ["squirrel", "crow", "hedgehog", "fox", "mouse"],
+	"winter": ["blue_jay", "fox", "crow", "deer"],
+}
+const SEASON_AWAY := {"fall": ["bee", "dragonfly", "butterfly_blue", "ladybug"], "spring": [], "summer": ["blue_jay"], "winter": []}
+static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1, se := "?") -> Array:
 	var is_night := GameState.is_night() if night < 0 else night == 1
 	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
 	var is_wet := (GameState.is_wet() and night < 0) if wet < 0 else wet == 1  # a pinned night/day call (tests) pins dry weather too
+	if se == "?":
+		se = GameState.look_se() if winter < 0 else ("winter" if is_winter else "")
+	var src := pool.duplicate()
+	if SEASON_CRITTERS.has(se) and src.any(func(k): return str(k) in MEADOW):
+		for k: String in SEASON_CRITTERS[se]:
+			if Art.has("wildlife/" + k, "idle"):
+				src.append(k)
+	var away: Array = SEASON_AWAY.get(se, [])
 	var out: Array = []
-	for k: String in pool:
+	for k: String in src:
 		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
 		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
-		if (is_night and day_only) or (is_winter and warm_only):
+		if (is_night and day_only) or (is_winter and warm_only) or k in away:
 			continue
+		if not is_night and k in NIGHT_ONLY:
+			continue  # c15_09-11: no bats or owls at noon
 		if is_wet and (k in FLUTTERS or k in ["hedgehog", "squirrel", "snake"]):
 			continue  # c14b_09-28: no butterflies in a storm; small critters shelter
 		out.append(k)
@@ -495,8 +518,14 @@ static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> A
 			if Art.has("wildlife/" + k, "idle"):
 				out.append(k)
 	if out.is_empty():
-		out = pool.filter(func(k): return not str(k).begins_with("butterfly") and k != "bee") if not pool.is_empty() else []
-	return out if not out.is_empty() else ["rabbit"]
+		# c15_09-05: the fallback keeps the season/time rules (no frogs in the snow).
+		out = pool.filter(func(k):
+			var ks := str(k)
+			return not ks.begins_with("butterfly") and ks != "bee" and not (is_winter and ks in WARM_ONLY) \
+				and not (is_night and ks in DAY_ONLY) and not (not is_night and ks in NIGHT_ONLY)) if not pool.is_empty() else []
+	if out.is_empty():
+		out = ["owl"] if is_night else (["crow", "rabbit"] if is_winter else ["rabbit"])
+	return out
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
 

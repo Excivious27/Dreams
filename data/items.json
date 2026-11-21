@@ -283,8 +283,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Tiny and everywhere. Ponds and rivers, any season."
  },
  "trout": {
   "name": "Dream Trout",
@@ -293,8 +292,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Speckled river fish. Cold clear water, all year."
  },
  "boot": {
   "name": "Old Boot",
@@ -421,8 +419,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "A bright little pond fish. Bites any time of year."
  },
  "carp": {
   "name": "Carp",
@@ -431,8 +428,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Patient pond carp. Lake and ponds, all year."
  },
  "bass": {
   "name": "Bass",
@@ -441,8 +437,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "A fighter from the lake and the sea shallows, any season."
  },
  "catfish": {
   "name": "Catfish",
@@ -451,8 +446,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Whiskered and slow. Muddy water, and it loves a rainy day."
  },
  "salmon": {
   "name": "Salmon",
@@ -461,8 +455,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Rivers and the docks. Strong swimmers, all year."
  },
  "eel": {
   "name": "Eel",
@@ -471,8 +464,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Slick and wriggly. Rain brings eels to the bank."
  },
  "puffer": {
   "name": "Pufferfish",
@@ -480,8 +472,7 @@
   "value": 60,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Puffs up when worried. Warm sea shallows."
  },
  "goldfish": {
   "name": "Golden Fish",
@@ -489,8 +480,7 @@
   "value": 120,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Pond gold. Only bites in daylight."
  },
  "starfin": {
   "name": "Starfin",
@@ -499,8 +489,7 @@
   "heal": 3,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Fins like starlight. Only bites after dark."
  },
  "mooncarp": {
   "name": "Moon Carp",
@@ -509,8 +498,7 @@
   "heal": 3,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Silver as the moon. The lake, at night."
  },
  "potion": {
   "name": "Red Potion",
@@ -1094,8 +1082,7 @@
   "value": 60,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Big and fast. Deep sea water and charters."
  },
  "bait": {
   "name": "Bait",
@@ -1112,8 +1099,7 @@
   "value": 30,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Picked up in the beach shallows."
  },
  "legendary_koi": {
   "name": "Legendary Koi",
@@ -1121,8 +1107,7 @@
   "value": 900,
   "rarity": "legendary",
   "tier": 5,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "The one koi of the lake. Night, bait and the lighthouse lit."
  },
  "bread": {
   "name": "Bread",
@@ -11591,8 +11576,7 @@
   "value": 150,
   "tier": 2,
   "rarity": "uncommon",
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Pale as mist. Gloamwood waters, after dark."
  },
  "echo_pudding": {
   "name": "Gloam Pudding",
@@ -11662,8 +11646,7 @@
   "value": 140,
   "tier": 3,
   "rarity": "uncommon",
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Sunscorch's oasis trout. Only bites in daylight."
  },
  "sun_loaf": {
   "name": "Sun Loaf",
@@ -11785,8 +11768,7 @@
   "value": 210,
   "tier": 4,
   "rarity": "rare",
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Glacier Pike from Frostpeak's ice-edged lakes."
  },
  "frost_sorbet": {
   "name": "Frost Sorbet",
@@ -11849,8 +11831,7 @@
   "value": 240,
   "tier": 5,
   "rarity": "rare",
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Swims in the clouds over Windward."
  },
  "cloud_souffle": {
   "name": "Cloud Souffle",
@@ -23368,5 +23349,211 @@
   "arc": "gangsters",
   "icon": "static_scale",
   "desc": "A finished splice: the Volt Gecko moves into your terrarium (or waits for room)."
+ },
+ "perch": {
+  "name": "Perch",
+  "type": "fish",
+  "value": 26,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "spring",
+   "fall"
+  ],
+  "desc": "Striped and quick. Spring ponds are full of them."
+ },
+ "smelt": {
+  "name": "Rain Smelt",
+  "type": "fish",
+  "value": 34,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "spring",
+   "winter"
+  ],
+  "weather": [
+   "rain",
+   "storm",
+   "snow"
+  ],
+  "desc": "Silver slivers that only run when it rains (or snows)."
+ },
+ "herring": {
+  "name": "Herring",
+  "type": "fish",
+  "value": 22,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "spring"
+  ],
+  "desc": "The spring herring run fills the bay in shining shoals."
+ },
+ "flounder": {
+  "name": "Flounder",
+  "type": "fish",
+  "value": 48,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "spring",
+   "summer"
+  ],
+  "desc": "Flat as a plate, both eyes on one side. Hides in the sand."
+ },
+ "bream": {
+  "name": "Sun Bream",
+  "type": "fish",
+  "value": 36,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "Warm-water bream, gold in the summer light."
+ },
+ "chub": {
+  "name": "Chub",
+  "type": "fish",
+  "value": 20,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "summer",
+   "fall"
+  ],
+  "desc": "Chubby, cheeky, and always hungry in summer."
+ },
+ "flying_fish": {
+  "name": "Flying Fish",
+  "type": "fish",
+  "value": 70,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "summer"
+  ],
+  "when": "day",
+  "desc": "Glides over the summer waves on wing-like fins."
+ },
+ "snapper": {
+  "name": "Reef Snapper",
+  "type": "fish",
+  "value": 95,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "Red and proud. Bites hardest on hot afternoons."
+ },
+ "pike": {
+  "name": "Pike",
+  "type": "fish",
+  "value": 64,
+  "tier": 2,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "fall",
+   "winter"
+  ],
+  "desc": "Long jaws and a long memory. Fall is pike season."
+ },
+ "grayling": {
+  "name": "Grayling",
+  "type": "fish",
+  "value": 44,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Sail-finned and shy. Shows up when the leaves turn."
+ },
+ "mullet": {
+  "name": "Red Mullet",
+  "type": "fish",
+  "value": 40,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Rosy fall fish with a whiskery chin."
+ },
+ "mackerel": {
+  "name": "Mackerel",
+  "type": "fish",
+  "value": 52,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "fall",
+   "winter"
+  ],
+  "desc": "Tiger-striped and fast. Cold water brings them close in."
+ },
+ "sturgeon": {
+  "name": "Sturgeon",
+  "type": "fish",
+  "value": 150,
+  "tier": 3,
+  "rarity": "uncommon",
+  "water": "fresh",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "An old armoured giant that wakes for the winter."
+ },
+ "cod": {
+  "name": "Winter Cod",
+  "type": "fish",
+  "value": 46,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "The cold-water staple. Every harbour wants winter cod."
+ },
+ "sardine": {
+  "name": "Sardine",
+  "type": "fish",
+  "value": 18,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "winter",
+   "spring"
+  ],
+  "desc": "Tiny, silver, and never alone."
+ },
+ "lantern_fish": {
+  "name": "Lanternfish",
+  "type": "fish",
+  "value": 120,
+  "tier": 3,
+  "rarity": "uncommon",
+  "water": "sea",
+  "seasons": [
+   "winter"
+  ],
+  "when": "night",
+  "desc": "Glows like a tiny lamp on long winter nights."
  }
 }

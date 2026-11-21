@@ -1323,3 +1323,10 @@ echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
 if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
   echo "creature_life_test failed"; exit 1
 fi
+
+echo "== C15 P4: seasonal fish, critters, gang city weather/stalls, racket and crew seasons =="
+c15p4out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_p4_seasons_test.gd 2>&1)"
+echo "$c15p4out" | grep -E "FAIL|SCRIPT ERROR|c15_p4_seasons_test" || true
+if echo "$c15p4out" | grep -q "SCRIPT ERROR" || ! echo "$c15p4out" | grep -q "c15_p4_seasons_test: PASS"; then
+  echo "C15 P4 seasons test failed"; exit 1
+fi

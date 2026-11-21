@@ -275,6 +275,8 @@ static func talk(m: GameMap, id: String) -> bool:
 	# Everyday crew line (C12 c12_03-07: filtered by loyalty and story state).
 	var pick: Array = everyday_lines(id)
 	pick.append_array(flag_lines(id))
+	if not GameState.run.get("flags", {}).has("final_done"):
+		pick = CrewSeason.mix(id, pick, day)  # C15 P4: seasonal / weather / festival / birthday lines
 	await m.say([{"who": str(mdef["name"]), "text": str(pick[(day + lv) % pick.size()])}])
 	return true
 

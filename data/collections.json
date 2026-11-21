@@ -290,12 +290,12 @@
     {
      "item": "catfish",
      "arc": "",
-     "where": "Farm, Fishing"
+     "where": "Farm, Lake"
     },
     {
      "item": "salmon",
      "arc": "",
-     "where": "Farm, Fishing"
+     "where": "Farm, Item Words"
     },
     {
      "item": "eel",
@@ -305,12 +305,12 @@
     {
      "item": "puffer",
      "arc": "",
-     "where": "Beach, Fishing"
+     "where": "Beach, Lake"
     },
     {
      "item": "goldfish",
      "arc": "",
-     "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
+     "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
     },
     {
      "item": "starfin",
@@ -345,7 +345,7 @@
     {
      "item": "sun_trout",
      "arc": "",
-     "where": "Somewhere in the water, at night with bait, fishing 5+"
+     "where": "Somewhere in the water, by day with bait, fishing 5+"
     },
     {
      "item": "ice_pike",
@@ -827,13 +827,13 @@
     "item": "catfish",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Fishing"
+    "where": "Farm, Lake"
    },
    {
     "item": "salmon",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Fishing"
+    "where": "Farm, Item Words"
    },
    {
     "item": "eel",
@@ -845,13 +845,13 @@
     "item": "puffer",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Fishing"
+    "where": "Beach, Lake"
    },
    {
     "item": "goldfish",
     "arc": "",
     "family": "Fish",
-    "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
+    "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
    },
    {
     "item": "starfin",
@@ -1961,7 +1961,7 @@
     "item": "sun_trout",
     "arc": "",
     "family": "Fish",
-    "where": "Somewhere in the water, at night with bait, fishing 5+"
+    "where": "Somewhere in the water, by day with bait, fishing 5+"
    },
    {
     "item": "tin",
@@ -2010,6 +2010,66 @@
     "arc": "",
     "family": "Fish",
     "where": "Somewhere in the water, at night with bait, fishing 13+"
+   },
+   {
+    "item": "perch",
+    "arc": "",
+    "family": "Fish",
+    "where": "Ponds, rivers and the lake, Spring/Fall"
+   },
+   {
+    "item": "herring",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Spring"
+   },
+   {
+    "item": "flying_fish",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Summer, by day"
+   },
+   {
+    "item": "snapper",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Summer"
+   },
+   {
+    "item": "pike",
+    "arc": "",
+    "family": "Fish",
+    "where": "Ponds, rivers and the lake, Fall/Winter"
+   },
+   {
+    "item": "mullet",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Fall"
+   },
+   {
+    "item": "mackerel",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Fall/Winter"
+   },
+   {
+    "item": "cod",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter"
+   },
+   {
+    "item": "sardine",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter/Spring"
+   },
+   {
+    "item": "lantern_fish",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter, at night"
    }
   ],
   "fish": [
@@ -2041,12 +2101,12 @@
    {
     "item": "catfish",
     "arc": "",
-    "where": "Farm, Fishing"
+    "where": "Farm, Lake"
    },
    {
     "item": "salmon",
     "arc": "",
-    "where": "Farm, Fishing"
+    "where": "Farm, Item Words"
    },
    {
     "item": "eel",
@@ -2056,12 +2116,12 @@
    {
     "item": "puffer",
     "arc": "",
-    "where": "Beach, Fishing"
+    "where": "Beach, Lake"
    },
    {
     "item": "goldfish",
     "arc": "",
-    "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
+    "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
    },
    {
     "item": "starfin",
@@ -2086,7 +2146,7 @@
    {
     "item": "sun_trout",
     "arc": "",
-    "where": "Somewhere in the water, at night with bait, fishing 5+"
+    "where": "Somewhere in the water, by day with bait, fishing 5+"
    },
    {
     "item": "ice_pike",
@@ -2102,6 +2162,86 @@
     "item": "ember_koi",
     "arc": "",
     "where": "Somewhere in the water, at night with bait, fishing 13+"
+   },
+   {
+    "item": "perch",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Spring/Fall"
+   },
+   {
+    "item": "smelt",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Spring/Winter, only in rain/storm/snow"
+   },
+   {
+    "item": "herring",
+    "arc": "",
+    "where": "The sea, the docks and charters, Spring"
+   },
+   {
+    "item": "flounder",
+    "arc": "",
+    "where": "The sea, the docks and charters, Spring/Summer"
+   },
+   {
+    "item": "bream",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Summer"
+   },
+   {
+    "item": "chub",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Summer/Fall"
+   },
+   {
+    "item": "flying_fish",
+    "arc": "",
+    "where": "The sea, the docks and charters, Summer, by day"
+   },
+   {
+    "item": "snapper",
+    "arc": "",
+    "where": "The sea, the docks and charters, Summer"
+   },
+   {
+    "item": "pike",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Fall/Winter"
+   },
+   {
+    "item": "grayling",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Fall"
+   },
+   {
+    "item": "mullet",
+    "arc": "",
+    "where": "The sea, the docks and charters, Fall"
+   },
+   {
+    "item": "mackerel",
+    "arc": "",
+    "where": "The sea, the docks and charters, Fall/Winter"
+   },
+   {
+    "item": "sturgeon",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Winter"
+   },
+   {
+    "item": "cod",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter"
+   },
+   {
+    "item": "sardine",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter/Spring"
+   },
+   {
+    "item": "lantern_fish",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter, at night"
    }
   ],
   "cooking": [

@@ -709,7 +709,43 @@
      ]
     ],
     "hint": "A: the diner",
-    "solid": false
+    "solid": false,
+    "items_spring": [
+     [
+      "fruit_tart",
+      40
+     ]
+    ],
+    "greet_spring": "Mama Rosa's spring tart. One slice each.",
+    "items_summer": [
+     [
+      "root_beer",
+      20
+     ],
+     [
+      "cream_soda",
+      30
+     ]
+    ],
+    "greet_summer": "Floats and sodas. Booth's got the fan.",
+    "items_fall": [
+     [
+      "harvest_cobbler",
+      46
+     ]
+    ],
+    "greet_fall": "Cobbler season. Grab a fork.",
+    "items_winter": [
+     [
+      "commons_stew",
+      34
+     ],
+     [
+      "chocolate",
+      40
+     ]
+    ],
+    "greet_winter": "Soup's on for the whole crew. Nobody eats cold on my watch."
    },
    {
     "type": "note",
@@ -1171,7 +1207,51 @@
      ]
     ],
     "hint": "A: fish market",
-    "solid": false
+    "solid": false,
+    "items_spring": [
+     [
+      "herring",
+      10
+     ],
+     [
+      "sardine",
+      9
+     ]
+    ],
+    "greet_spring": "Herring run's in. Fresh off the boats.",
+    "items_summer": [
+     [
+      "flying_fish",
+      28
+     ],
+     [
+      "snapper",
+      36
+     ]
+    ],
+    "greet_summer": "Summer catch: snapper and flyers.",
+    "items_fall": [
+     [
+      "mackerel",
+      22
+     ],
+     [
+      "mullet",
+      18
+     ]
+    ],
+    "greet_fall": "Mackerel weather. Buy 'em while they're cheap.",
+    "items_winter": [
+     [
+      "cod",
+      20
+     ],
+     [
+      "lantern_fish",
+      48
+     ]
+    ],
+    "greet_winter": "Winter cod and a few glowers. Keep your hands warm."
    },
    {
     "type": "note",
@@ -1279,7 +1359,12 @@
   "backdrop": "night",
   "ground": "wet_asphalt_0",
   "path": "neon_sidewalk",
-  "weather": "rain",
+  "weather": {
+   "spring": "rain",
+   "fall": "rain",
+   "winter": "snow",
+   "default": ""
+  },
   "spawn": [
    2,
    10
@@ -1943,7 +2028,47 @@
      ]
     ],
     "hint": "A: noodles",
-    "solid": false
+    "solid": false,
+    "items_spring": [
+     [
+      "herbal_tea",
+      16
+     ]
+    ],
+    "greet_spring": "Spring rain, hot tea. Sit.",
+    "items_summer": [
+     [
+      "cherry_fizz",
+      14
+     ],
+     [
+      "tropical_smoothie",
+      40
+     ]
+    ],
+    "greet_summer": "Too hot for noodles? I got fizz.",
+    "items_fall": [
+     [
+      "pumpkin_soup",
+      34
+     ],
+     [
+      "chili_pot",
+      36
+     ]
+    ],
+    "greet_fall": "Pumpkin broth's back. Don't ask what's in the chili.",
+    "items_winter": [
+     [
+      "mushroom_broth",
+      22
+     ],
+     [
+      "chocolate",
+      40
+     ]
+    ],
+    "greet_winter": "Cold out. Broth's hotter."
    },
    {
     "type": "shop",
@@ -1964,7 +2089,21 @@
      ]
     ],
     "hint": "A: ramen",
-    "solid": false
+    "solid": false,
+    "items_winter": [
+     [
+      "fish_stew",
+      30
+     ]
+    ],
+    "greet_winter": "Winter bowl tonight. Fish stew, extra steam.",
+    "items_summer": [
+     [
+      "salad",
+      14
+     ]
+    ],
+    "greet_summer": "Cold noodles, cold salad. It's summer."
    },
    {
     "type": "note",
