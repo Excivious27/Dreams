@@ -82,6 +82,35 @@ def shrink(crop, box):
     return Image.fromarray(out, "RGBA")
 
 
+# Seamless ground re-renders (c14_17-07 / c14_15-02): 1024 render -> 256 box-filtered, then the
+# Poisson periodic component (tools/make_seamless.seamless) so the edges wrap with no fade ghosts.
+SEAMLESS = ["cobble_warm", "cobble_grey", "cobble_moss"]
+
+
+def seamless_jobs(check):
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("ms", os.path.join(ROOT, "tools", "make_seamless.py"))
+    ms = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ms)
+    out = []
+    for nm in SEAMLESS:
+        src = os.path.join(INC, nm + ".png")
+        if not os.path.exists(src):
+            continue
+        im = Image.open(src).convert("RGB").resize((256, 256), Image.BOX)
+        a = np.array(im).astype(float)
+        o = ms.seamless(a).clip(0, 255).astype(np.uint8)
+        o = np.dstack([o, np.full(o.shape[:2], 255, np.uint8)])
+        if not check:
+            dst = os.path.join(GEN, "seamless", nm + ".png")
+            if os.path.exists(dst):
+                os.remove(dst)
+            Image.fromarray(o, "RGBA").save(dst)
+        out.append("seamless/%s 256x256 wrap %.1f" % (nm, ms.stats(o.astype(float))[1]))
+    return out
+
+
 def main():
     check = "--check" in sys.argv
     man = json.load(open(MAN))
@@ -103,6 +132,7 @@ def main():
                 im.save(dst)
                 man.setdefault(group, {})[name] = {"file": rel, "w": im.width, "h": im.height}
             made.append(f"{group}/{name} {im.width}x{im.height}")
+    made += seamless_jobs(check)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)
