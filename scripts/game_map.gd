@@ -136,6 +136,10 @@ func _ready() -> void:
 		sky.weather = GameState.weather_today() if fixed_dark < 0.0 else "clear"  # (gangster day 1 is real rain in weather_for)
 		add_child(sky)
 	Anim.set_weather("" if has_sky else "clear", scene_id(), not has_sky or fixed_dark >= 0.0)  # C14b: no wind indoors / in caves
+	if has_sky and fixed_dark < 0.0:
+		var wl := WaterLife.new()  # C14b: ripples, fish jumps and rain splashes on still water
+		wl.map = self
+		add_child(wl)
 	_night = CanvasModulate.new()
 	add_child(_night)
 	_night.color = sky_tint(int(GameState.run["time"]))
@@ -3261,12 +3265,15 @@ class AnimLayer extends Node2D:
 	var view := Rect2i(-9999, -9999, 99999, 99999)
 	var _tick := -1
 	var _cam := Vector2(INF, INF)
+	## Redraw rate on GAME time (C14b c14b_06-09: it ticked 8 fps on the wall clock, so
+	## smooth drifts stepped and kept moving under pause). A job with smooth motion
+	## raises it (e.g. 30); frame-strip water is fine at 8.
+	var hz := 8.0
 	func _process(_d: float) -> void:
 		if jobs.is_empty():
 			return
-		# Redraw at 8 fps (the water frames change at 4) or when the camera has
-		# moved past the margin; not every frame.
-		var t := int(Time.get_ticks_msec() / 125)
+		# Redraw at `hz` or when the camera has moved past the margin; not every frame.
+		var t := int(PlayClock.now() * hz)
 		var xf := get_viewport().get_canvas_transform() * get_global_transform()
 		var cam := xf.origin
 		if t == _tick and cam.distance_squared_to(_cam) < 256.0:
@@ -3729,12 +3736,14 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 	# Animated fill, then a procedural bank that always lines up: a dark earth
 	# lip on the land side, a lighter wet rim and foam inside the water. Corners
 	# are rounded with quarter discs so blobs read as real shorelines.
-	var frame := int(Time.get_ticks_msec() / 250) % 4
+	var frame := int(PlayClock.now() * 4.0) % 4
 	var fill := "water2" if Art.has("tiles", "water2") else "water"
 	var seam: String = {"bog": "bog_water", "river": "river", "sand": "sea", "lava": "lava"}.get(shore, "lake_shallow")
+	if seam == "river" and _anim_layer:
+		_anim_layer.hz = 15.0  # C14b: 9 px/s river drift steps at 8 Hz
 	if Art.has("seamless", seam):
 		# Two copies of the seamless water drifting past each other read as moving water.
-		var tt := Time.get_ticks_msec() / 1000.0
+		var tt := PlayClock.now()
 		var drift := Vector2(tt * 3.0, tt * 1.2) if seam != "river" else Vector2(tt * 9.0, 0.0)
 		for c: Vector2i in cells:
 			seam_cell(ci, seam, c, Color.WHITE, drift)
@@ -3772,7 +3781,7 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)
-	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(Time.get_ticks_msec() / 400.0))
+	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(PlayClock.now() * 2.5))
 	for c: Vector2i in edge_cells if not edge_cells.is_empty() else cells:
 		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
 		var n := all_cells.has(c + Vector2i(0, -1))

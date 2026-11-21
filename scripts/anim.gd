@@ -237,7 +237,7 @@ static func apply(sprite: AnimatedSprite2D, id: String) -> void:
 		if n2 > 1:
 			sprite.frame = int(ph * n2) % n2
 			sprite.frame_progress = fposmod(ph * 7.0, 1.0)
-		sprite.speed_scale = 0.92 + 0.16 * fposmod(ph * 13.0, 1.0)
+		sprite.speed_scale = (0.92 + 0.16 * fposmod(ph * 13.0, 1.0)) * (0.6 if reduced() else 1.0)  # reduced motion: calmer loops (c14b_15-05)
 
 
 static var _sf_cache: Dictionary = {}

@@ -131,12 +131,48 @@ func _run() -> void:
 		await process_frame
 	check(sky._aur_tris > 100, "aurora ribbons drawn (%d tris)" % sky._aur_tris)
 	await _shot("w_aurora_a")
-	print("dbg dark=", GameState.darkness(), " vis=", sky._aur_node.visible if sky._aur_node else null, " tris=", sky._aur_tris, " w=", sky._w)
 	for i in 120:
 		await process_frame
 	await _shot("w_aurora_b")
+	# water life: rain splashes / ripples spawn on visible water (beach has the sea in view)
+	var wls := m.find_children("*", "WaterLife", true, false)
+	check(wls.size() == 1, "map has one WaterLife")
 	Settings.set_v("shake", was)
 	m.queue_free()
+	await process_frame
+	var bm := (load("res://scenes/beach.tscn") as PackedScene).instantiate()
+	root.add_child(bm)
+	for i in 4:
+		await process_frame
+	var wl: WaterLife = bm.find_children("*", "WaterLife", true, false)[0] if not bm.find_children("*", "WaterLife", true, false).is_empty() else null
+	check(wl != null, "beach has WaterLife")
+	if wl:
+		var cam := root.get_viewport().get_camera_2d()
+		var deep := Vector2i(-1, -1)
+		for y in bm.rows:
+			for x in bm.cols:
+				var c := Vector2i(x, y)
+				if bm.is_water_cell(c) and bm.is_water_cell(c + Vector2i(1, 1)) and bm.is_water_cell(c - Vector2i(1, 1)) and bm.is_water_cell(c + Vector2i(1, -1)) and bm.is_water_cell(c + Vector2i(-1, 1)):
+					deep = c
+					break
+			if deep.x >= 0:
+				break
+		check(deep.x >= 0, "beach has open water")
+		paused = false
+		wl.process_mode = Node.PROCESS_MODE_ALWAYS
+		if cam and deep.x >= 0 and bm.player:
+			bm.player.position = bm.cell_pos(deep.x, deep.y)
+			cam.process_mode = Node.PROCESS_MODE_ALWAYS
+			for i in 10:
+				await process_frame
+		bm.sky.weather = "storm"
+		var peak := 0
+		for i in 120:
+			await process_frame
+			peak = maxi(peak, wl._live)
+		check(peak > 0 and peak <= WaterLife.MAX_LIVE, "storm splashes on visible water (peak %d)" % peak)
+		await _shot("w_water_storm")
+	bm.queue_free()
 	await process_frame
 	print("weather_fx_test: %d failures (rain %d, storm %d, snow %d, blizzard %d)" % [fails, int(counts.get("rain", 0)), int(counts.get("storm", 0)), int(counts.get("snow", 0)), int(counts.get("blizzard", 0))])
 	quit(1 if fails > 0 else 0)
