@@ -48,6 +48,9 @@ KITS = {
                     ("nope", 1, 1.0), ("talk_blip", 3, 0.5), ("tab", 2, 0.25), ("scroll_tick", 2, 0.6), ("alert", 1, 0.95)],
     "kit_bells": [("sparkle", 3, 0.1), ("crop_ready", 1, 0.3), ("new_item", 2, 0.2), ("tell", 1, 0.6), ("bite", 1, 0.0),
                   ("shop_bell", 1, 0.45), ("j_buy", 1, 0.15), ("save_done", 1, 0.5)],
+    # C13 08-10: gangster-arc UI kit (muted vibraphone / digital pluck); Music.sfx swaps <name>_gang in
+    "kit_gang_ui": [("menu_open_gang", 1, 0.1), ("menu_close_gang", 1, 0.8), ("ui_tap_gang", 3, 0.4),
+                    ("page_gang", 1, 0.25), ("tab_gang", 1, 0.3), ("scroll_tick_gang", 1, 0.6)],
 }
 
 

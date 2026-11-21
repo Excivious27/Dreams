@@ -517,3 +517,11 @@ j_birthday_gang
 j_gift_gang
 j_heart_gang
 j_morning_gang
+menu_close_gang
+menu_open_gang
+page_gang
+scroll_tick_gang
+tab_gang
+ui_tap_gang
+ui_tap_gang_2
+ui_tap_gang_3

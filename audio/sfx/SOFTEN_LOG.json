@@ -7735,6 +7735,34 @@
   "md5": "3e4f38a2dd8eb6feffbd6c0c53f22d70",
   "shelf_db": -1.5
  },
+ "menu_close_gang": {
+  "after": {
+   "dur": 0.158,
+   "hf": 0.0,
+   "lk": -18.1,
+   "low": 0.669,
+   "peak": -4.7,
+   "phone_loss": 2.6,
+   "rms": -18.2
+  },
+  "before": {
+   "dur": 0.181,
+   "hf": 0.0,
+   "lk": -12.9,
+   "low": 0.811,
+   "peak": -0.8,
+   "phone_loss": 4.0,
+   "rms": -12.7
+  },
+  "extra": [
+   "presence"
+  ],
+  "gain_db": -5.7,
+  "lowpass": 14000,
+  "md5": "8610f8b0f71ee0665c5953222e6a2504",
+  "shelf_db": -1.5,
+  "src_md5": "97f271dd624b2d64df862935405faf70"
+ },
  "menu_open": {
   "after": {
    "hf": 0.0,
@@ -7750,6 +7778,32 @@
   "lowpass": 14000,
   "md5": "7c652cff9a48c595c5e23cfca19b2a61",
   "shelf_db": -1.5
+ },
+ "menu_open_gang": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -17.3,
+   "low": 0.002,
+   "peak": -8.7,
+   "phone_loss": 0.0,
+   "rms": -17.4
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -9.4,
+   "low": 0.002,
+   "peak": -1.0,
+   "phone_loss": 0.0,
+   "rms": -9.5
+  },
+  "extra": [],
+  "gain_db": -7.95,
+  "lowpass": 14000,
+  "md5": "2391206fdfc2647490171a6a536c3e11",
+  "shelf_db": -1.5,
+  "src_md5": "5ee99e14f254a2da9e16a9b929764b24"
  },
  "meow": {
   "after": {
@@ -8193,6 +8247,32 @@
   "md5": "563e297ec3f5a172efc1a4ddadb91c9e",
   "shelf_db": -4.5,
   "src_md5": "939896d930c801cfc03b33d73d942c3d"
+ },
+ "page_gang": {
+  "after": {
+   "dur": 0.16,
+   "hf": 0.0,
+   "lk": -16.9,
+   "low": 0.01,
+   "peak": -7.9,
+   "phone_loss": 0.3,
+   "rms": -16.9
+  },
+  "before": {
+   "dur": 0.181,
+   "hf": 0.0,
+   "lk": -10.6,
+   "low": 0.01,
+   "peak": -1.4,
+   "phone_loss": 0.3,
+   "rms": -10.6
+  },
+  "extra": [],
+  "gain_db": -6.3,
+  "lowpass": 14000,
+  "md5": "4f59b8ede45a3e8bf6e7709ce94e746d",
+  "shelf_db": -1.5,
+  "src_md5": "b85630d863eeb900d571a41923a4019b"
  },
  "peep": {
   "after": {
@@ -9642,6 +9722,34 @@
   "lowpass": 14000,
   "md5": "288daaea2e1c32d04a5ace87e5409dd6",
   "shelf_db": -1.5
+ },
+ "scroll_tick_gang": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -18.8,
+   "low": 0.762,
+   "peak": -7.6,
+   "phone_loss": 2.8,
+   "rms": -19.0
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -12.8,
+   "low": 0.879,
+   "peak": -1.3,
+   "phone_loss": 4.4,
+   "rms": -12.6
+  },
+  "extra": [
+   "presence"
+  ],
+  "gain_db": -6.52,
+  "lowpass": 14000,
+  "md5": "ea67fa95d8d0023d76055f84209180d0",
+  "shelf_db": -1.5,
+  "src_md5": "be3168c1765e63a4a21e63f7e82620ca"
  },
  "scythe": {
   "after": {
@@ -12792,6 +12900,32 @@
   "md5": "f45d51b109e1d27b973d7cbe94281912",
   "shelf_db": -1.5
  },
+ "tab_gang": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -18.1,
+   "low": 0.425,
+   "peak": -7.3,
+   "phone_loss": 1.4,
+   "rms": -18.3
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -12.4,
+   "low": 0.432,
+   "peak": -1.0,
+   "phone_loss": 1.5,
+   "rms": -12.5
+  },
+  "extra": [],
+  "gain_db": -5.7,
+  "lowpass": 14000,
+  "md5": "05bc5480ae3a591df58fd819344e474a",
+  "shelf_db": -1.5,
+  "src_md5": "58c1acc2205a6b49fc745945ec2cf102"
+ },
  "talk_blip": {
   "after": {
    "hf": 0.0,
@@ -13511,6 +13645,84 @@
   "lowpass": 14000,
   "md5": "81cabc43f20a471c31b5df091e33985a",
   "shelf_db": -1.5
+ },
+ "ui_tap_gang": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -18.0,
+   "low": 0.521,
+   "peak": -7.1,
+   "phone_loss": 2.0,
+   "rms": -18.1
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -12.1,
+   "low": 0.522,
+   "peak": -0.9,
+   "phone_loss": 2.0,
+   "rms": -12.2
+  },
+  "extra": [],
+  "gain_db": -5.93,
+  "lowpass": 14000,
+  "md5": "5a9c5b4779ac3bfe62344bb0c32cab07",
+  "shelf_db": -1.5,
+  "src_md5": "e76149334f37d2c61c0470122dae38e3"
+ },
+ "ui_tap_gang_2": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -17.8,
+   "low": 0.148,
+   "peak": -7.7,
+   "phone_loss": 0.5,
+   "rms": -18.0
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -11.2,
+   "low": 0.148,
+   "peak": -1.2,
+   "phone_loss": 0.5,
+   "rms": -11.4
+  },
+  "extra": [],
+  "gain_db": -6.6,
+  "lowpass": 14000,
+  "md5": "e6041f84f146da129944127fb931050c",
+  "shelf_db": -1.5,
+  "src_md5": "7043c4cfe947cf74dec079ee38b062d6"
+ },
+ "ui_tap_gang_3": {
+  "after": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -17.9,
+   "low": 0.383,
+   "peak": -7.0,
+   "phone_loss": 1.3,
+   "rms": -18.1
+  },
+  "before": {
+   "dur": 0.157,
+   "hf": 0.0,
+   "lk": -11.4,
+   "low": 0.387,
+   "peak": -0.8,
+   "phone_loss": 1.3,
+   "rms": -11.6
+  },
+  "extra": [],
+  "gain_db": -6.45,
+  "lowpass": 14000,
+  "md5": "8044092390c1ac752547d73fa3276a3d",
+  "shelf_db": -1.5,
+  "src_md5": "4720db94dd85df2a4b59de89087a204a"
  },
  "unlock": {
   "after": {

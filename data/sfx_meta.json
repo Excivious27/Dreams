@@ -1079,7 +1079,15 @@
 "dur": 0.154,
 "len_audible": 0.15
 },
+"menu_close_gang": {
+"dur": 0.155,
+"len_audible": 0.15
+},
 "menu_open": {
+"dur": 0.154,
+"len_audible": 0.15
+},
+"menu_open_gang": {
 "dur": 0.154,
 "len_audible": 0.15
 },
@@ -1154,6 +1162,10 @@
 "page_3": {
 "dur": 0.796,
 "len_audible": 0.75
+},
+"page_gang": {
+"dur": 0.157,
+"len_audible": 0.15
 },
 "peep": {
 "dur": 0.208,
@@ -1382,6 +1394,10 @@
 "scroll_tick_2": {
 "dur": 0.314,
 "len_audible": 0.3
+},
+"scroll_tick_gang": {
+"dur": 0.154,
+"len_audible": 0.15
 },
 "scythe": {
 "dur": 0.419,
@@ -1871,6 +1887,10 @@
 "dur": 0.179,
 "len_audible": 0.15
 },
+"tab_gang": {
+"dur": 0.154,
+"len_audible": 0.15
+},
 "talk_blip": {
 "dur": 0.179,
 "len_audible": 0.15
@@ -1990,6 +2010,18 @@
 "ui_tap_3": {
 "dur": 0.144,
 "len_audible": 0.1
+},
+"ui_tap_gang": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"ui_tap_gang_2": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"ui_tap_gang_3": {
+"dur": 0.179,
+"len_audible": 0.15
 },
 "unlock": {
 "dur": 0.425,
