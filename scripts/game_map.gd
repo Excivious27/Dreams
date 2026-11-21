@@ -1143,6 +1143,9 @@ static func animal_voice(kind: String) -> String:
 		return "oink"
 	if k == "bunny":
 		return "thump"
+	var cv: String = preload("res://scripts/ranch_voices.gd").voice(k)  # C11b creatures (P6)
+	if cv != "":
+		return cv
 	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "thump", "bee": "buzz", "horse": "whinny", "foal": "whinny", "donkey": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):
