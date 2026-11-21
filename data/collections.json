@@ -2430,14 +2430,14 @@
     "recipe": "pup_treat",
     "station": "workbench",
     "item": "pup_treat",
-    "name": "Pup Treats",
+    "name": "Pup Treat",
     "arc": ""
    },
    {
     "recipe": "fence_kit",
     "station": "workbench",
     "item": "shingles",
-    "name": "Shingle Bundle",
+    "name": "Shingles",
     "arc": ""
    },
    {
@@ -2528,14 +2528,14 @@
     "recipe": "cornmeal_bread",
     "station": "mill",
     "item": "bread",
-    "name": "Corn Bread",
+    "name": "Bread (cornmeal)",
     "arc": ""
    },
    {
     "recipe": "oat_flour",
     "station": "mill",
     "item": "flour",
-    "name": "Oat Flour",
+    "name": "Flour (oats)",
     "arc": ""
    },
    {
@@ -4117,7 +4117,7 @@
     "recipe": "wine_reserve",
     "station": "press",
     "item": "fine_wine",
-    "name": "Fruit Wine Reserve",
+    "name": "Fine Wine (from fruit wine)",
     "arc": ""
    },
    {
@@ -4208,7 +4208,7 @@
     "recipe": "lens",
     "station": "kiln",
     "item": "lens",
-    "name": "Lens",
+    "name": "Glass Lens",
     "arc": ""
    },
    {

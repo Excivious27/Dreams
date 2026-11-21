@@ -105,10 +105,10 @@ func _run() -> void:
 	# C12 (c12_14-13): an owned one-of-a-kind names where it came from; the arc picks where_gang.
 	DecorCatalogue.mark_seen("dc_t_unique_0")
 	check(DecorCatalogue.hint("dc_t_unique_0").contains("Maple"), "owned/seen unique names its source (%s)" % DecorCatalogue.hint("dc_t_unique_0"))
-	Decor._data["items"]["dc_t_common_6"]["sources"] = [{"kind": "shop", "ref": "home_goods", "where": "shops around the valley", "where_gang": "shops around the city"}]
-	Decor._data["items"]["dc_t_common_6"]["shelves"] = ["Maple's Mercantile"]
-	DecorCatalogue.mark_seen("dc_t_common_6")
-	check(DecorCatalogue.hint("dc_t_common_6") == ("Maple's Mercantile" if GameState.is_penguins() else "shops around the city"), "named shelf first; arc where_gang (%s)" % DecorCatalogue.hint("dc_t_common_6"))
+	Decor._data["items"]["dc_t_common_4"]["sources"] = [{"kind": "shop", "ref": "home_goods", "where": "shops around the valley", "where_gang": "shops around the city"}]
+	Decor._data["items"]["dc_t_common_4"]["shelves"] = ["Maple's Mercantile"]
+	DecorCatalogue.mark_seen("dc_t_common_4")
+	check(DecorCatalogue.hint("dc_t_common_4") == ("Maple's Mercantile" if GameState.is_penguins() else "shops around the city"), "named shelf first; arc where_gang (%s)" % DecorCatalogue.hint("dc_t_common_4"))
 	# Orders.
 	GameState.run["crystals"] = 1000
 	check(DecorCatalogue.order_block("dc_t_rare_0") != "", "missing pieces can't be ordered")
