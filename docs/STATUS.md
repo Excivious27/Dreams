@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16a P2: tools/sim.gd is now the 3-year multi-style simulator (farmer/explorer/social/hustler, both arcs, any day length; CSV + unlock stamps) with tools/sim_report.py -> docs/reports/sim/C16A-SIM.xlsx and a check.sh smoke guarded by tools/sim_bands.py; racket/wash/story/Lucky payouts now go through GameState.add_money (econ_check fails on bypasses); dreamflower 110->170, luminous starfruit regrow 6->5; late-tier permits raised; economy.py retired.
+
 ## 2026-11-21 — C15 integ CI fix 2: NPC chats never stop someone mid-walk and a chat re-paths them home (volunteer stranded on the road); Dialogue.input_blocked frame-bounded (fast CI outlasted the playtest's 20-frame wait)
 
 ## 2026-11-21 — C15 integ: plaza-only festivals pull the town (Calendar.town_festival_today), gilt_gala -> winter 23, SeasonCal wraps Calendar, crew birthdays on the gang calendar, Crew at festivals, festival row icons/where, talk lines for new festivals, row music stand-ins; test tools/c15_integ_test.gd
