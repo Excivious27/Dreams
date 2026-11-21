@@ -35,6 +35,7 @@ import numpy as np  # noqa: E402
 SHEETS = {
     "c15p3/c15p3_winter_walkers_a.png": [("gideon", "winter"), ("wren", "winter"), ("alder", "winter"), ("hazel", "winter"), ("theo", "winter"), ("bram", "winter"), ("tobin", "winter")],
     "c15p3/c15p3_walkers_b.png": [("ivy", "winter"), ("benno", "winter"), ("tess", "winter"), ("wren_jr", "winter"), ("maple", "spring"), ("finn", "spring"), ("posy", "spring")],
+    "c15p3/c15p3_spring_walkers.png": [("gideon", "spring"), ("wren", "spring"), ("alder", "spring"), ("hazel", "spring_unused"), ("lumi", "spring"), ("juniper", "spring"), ("rook", "spring"), ("pip", "spring")],
     "c15p3/c15p3_festival_walkers.png": [("alder", "festival_star"), ("posy", "festival_star"), ("maple", "festival_star"), ("pip", "festival_star"), ("tobin", "festival_star"), ("wren_jr", "festival_star"), ("alder", "festival_lantern"), ("posy", "festival_lantern")],
 }
 
@@ -55,6 +56,8 @@ def sheet(file, pairs):
         for b in bs:
             bb = region_bbox(rgba, b)
             fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        if season.endswith("_unused"):
+            continue  # C15 P3: Hazel's spring render is held back (the community-farm volunteer test needs her base work strips)
         g = "characters/npc_%s_%s" % (v, season)
         strip([fr[0]], g, "idle"); strip([fr[2]], g, "idle_side"); strip([fr[1]], g, "idle_up")
         strip(fr[3:7], g, "walk"); strip(fr[7:11], g, "walk_down"); strip(fr[11:15], g, "walk_up")

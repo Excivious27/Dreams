@@ -215,9 +215,13 @@ func set_pose(pose: String) -> void:
 	var g := ""
 	var cands := ["characters/npc_" + id]
 	if in_outfit():
-		# C15 P3 (c15_10-14): a seasonal outfit only plays poses drawn on the outfit
-		# sheet itself; otherwise they hold the outfit's idle (never snap into base clothes).
+		# C15 P3 (c15_10-14): an outfit plays its own pose strips first. A winter coat
+		# never snaps into base (summer) clothes: it holds the outfit idle instead; the
+		# lighter outfits still borrow the base activity poses until per-outfit strips
+		# exist (docs/ART-QUEUE.md), so spring/summer villagers keep working.
 		cands = ["characters/" + _walker]
+		if not _walker.ends_with("_winter") and not _walker.ends_with("_festival_star"):
+			cands.append("characters/npc_" + id)
 	elif _walker == _base_sprite:
 		cands.append("characters/" + _base_sprite)
 	for cand: String in cands:
