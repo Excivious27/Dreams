@@ -30852,28 +30852,31 @@
    "w": 117
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 86,
+   "cell_w": 97,
    "file": "characters/bo/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 258
+   "w": 291
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 114,
+   "cell_w": 92,
    "file": "characters/bo/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 114
+   "w": 92
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 101,
+   "cell_w": 87,
    "file": "characters/bo/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 101
+   "w": 87
   },
   "view_back": {
    "cell_h": 112,
@@ -32112,6 +32115,7 @@
  },
  "characters/coral_kit_1": {
   "idle": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 87,
    "file": "characters/coral_kit_1/idle.png",
@@ -32120,6 +32124,7 @@
    "w": 348
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 87,
    "file": "characters/coral_kit_1/walk.png",
@@ -32130,6 +32135,7 @@
  },
  "characters/coral_kit_2": {
   "idle": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 82,
    "file": "characters/coral_kit_2/idle.png",
@@ -32138,6 +32144,7 @@
    "w": 328
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 82,
    "file": "characters/coral_kit_2/walk.png",
@@ -32148,6 +32155,7 @@
  },
  "characters/coral_kit_3": {
   "idle": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 85,
    "file": "characters/coral_kit_3/idle.png",
@@ -32156,6 +32164,7 @@
    "w": 340
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 85,
    "file": "characters/coral_kit_3/walk.png",
@@ -33136,6 +33145,7 @@
  },
  "characters/elder_brine": {
   "happy": {
+   "c14p6": true,
    "cell_h": 108,
    "cell_w": 100,
    "file": "characters/elder_brine/happy.png",
@@ -33144,6 +33154,7 @@
    "w": 200
   },
   "idle": {
+   "c14p6": true,
    "cell_h": 108,
    "cell_w": 100,
    "file": "characters/elder_brine/idle.png",
@@ -33152,6 +33163,7 @@
    "w": 400
   },
   "sad": {
+   "c14p6": true,
    "cell_h": 108,
    "cell_w": 100,
    "file": "characters/elder_brine/sad.png",
@@ -33160,6 +33172,7 @@
    "w": 200
   },
   "talk": {
+   "c14p6": true,
    "cell_h": 108,
    "cell_w": 100,
    "file": "characters/elder_brine/talk.png",
@@ -33168,6 +33181,7 @@
    "w": 400
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 108,
    "cell_w": 100,
    "file": "characters/elder_brine/walk.png",
@@ -33178,6 +33192,7 @@
  },
  "characters/elder_cinderpaw": {
   "happy": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 99,
    "file": "characters/elder_cinderpaw/happy.png",
@@ -33186,6 +33201,7 @@
    "w": 198
   },
   "idle": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 99,
    "file": "characters/elder_cinderpaw/idle.png",
@@ -33194,6 +33210,7 @@
    "w": 396
   },
   "sad": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 99,
    "file": "characters/elder_cinderpaw/sad.png",
@@ -33202,6 +33219,7 @@
    "w": 198
   },
   "talk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 99,
    "file": "characters/elder_cinderpaw/talk.png",
@@ -33210,6 +33228,7 @@
    "w": 396
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 99,
    "file": "characters/elder_cinderpaw/walk.png",
@@ -33220,6 +33239,7 @@
  },
  "characters/elder_icewhisker": {
   "happy": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 104,
    "file": "characters/elder_icewhisker/happy.png",
@@ -33228,6 +33248,7 @@
    "w": 208
   },
   "idle": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 104,
    "file": "characters/elder_icewhisker/idle.png",
@@ -33236,6 +33257,7 @@
    "w": 416
   },
   "sad": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 104,
    "file": "characters/elder_icewhisker/sad.png",
@@ -33244,6 +33266,7 @@
    "w": 208
   },
   "talk": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 104,
    "file": "characters/elder_icewhisker/talk.png",
@@ -33252,6 +33275,7 @@
    "w": 416
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 104,
    "file": "characters/elder_icewhisker/walk.png",
@@ -33262,6 +33286,7 @@
  },
  "characters/elder_tidewhisker": {
   "happy": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 113,
    "file": "characters/elder_tidewhisker/happy.png",
@@ -33270,6 +33295,7 @@
    "w": 226
   },
   "idle": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 113,
    "file": "characters/elder_tidewhisker/idle.png",
@@ -33278,6 +33304,7 @@
    "w": 452
   },
   "sad": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 113,
    "file": "characters/elder_tidewhisker/sad.png",
@@ -33286,6 +33313,7 @@
    "w": 226
   },
   "talk": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 113,
    "file": "characters/elder_tidewhisker/talk.png",
@@ -33294,6 +33322,7 @@
    "w": 452
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 113,
    "file": "characters/elder_tidewhisker/walk.png",
@@ -33319,6 +33348,7 @@
  },
  "characters/ember_kit_1": {
   "idle": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 91,
    "file": "characters/ember_kit_1/idle.png",
@@ -33327,6 +33357,7 @@
    "w": 364
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 91,
    "file": "characters/ember_kit_1/walk.png",
@@ -33337,6 +33368,7 @@
  },
  "characters/ember_kit_2": {
   "idle": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 87,
    "file": "characters/ember_kit_2/idle.png",
@@ -33345,6 +33377,7 @@
    "w": 348
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 87,
    "file": "characters/ember_kit_2/walk.png",
@@ -33355,6 +33388,7 @@
  },
  "characters/ember_kit_3": {
   "idle": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 101,
    "file": "characters/ember_kit_3/idle.png",
@@ -33363,6 +33397,7 @@
    "w": 404
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 101,
    "file": "characters/ember_kit_3/walk.png",
@@ -34148,6 +34183,7 @@
  },
  "characters/ice_kit_1": {
   "idle": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 88,
    "file": "characters/ice_kit_1/idle.png",
@@ -34156,6 +34192,7 @@
    "w": 352
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 100,
    "cell_w": 88,
    "file": "characters/ice_kit_1/walk.png",
@@ -34166,6 +34203,7 @@
  },
  "characters/ice_kit_2": {
   "idle": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 104,
    "file": "characters/ice_kit_2/idle.png",
@@ -34174,6 +34212,7 @@
    "w": 416
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 99,
    "cell_w": 104,
    "file": "characters/ice_kit_2/walk.png",
@@ -34184,6 +34223,7 @@
  },
  "characters/ice_kit_3": {
   "idle": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 87,
    "file": "characters/ice_kit_3/idle.png",
@@ -34192,6 +34232,7 @@
    "w": 348
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 97,
    "cell_w": 87,
    "file": "characters/ice_kit_3/walk.png",
@@ -34481,28 +34522,31 @@
    "w": 57
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 81,
+   "cell_w": 83,
    "file": "characters/june/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 243
+   "w": 249
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 85,
+   "cell_w": 80,
    "file": "characters/june/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 85
+   "w": 80
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 68,
+   "cell_w": 75,
    "file": "characters/june/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 68
+   "w": 75
   },
   "view_back": {
    "cell_h": 112,
@@ -34869,6 +34913,7 @@
  },
  "characters/kelp_kit_1": {
   "idle": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 108,
    "file": "characters/kelp_kit_1/idle.png",
@@ -34877,6 +34922,7 @@
    "w": 432
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 101,
    "cell_w": 108,
    "file": "characters/kelp_kit_1/walk.png",
@@ -34887,6 +34933,7 @@
  },
  "characters/kelp_kit_2": {
   "idle": {
+   "c14p6": true,
    "cell_h": 104,
    "cell_w": 107,
    "file": "characters/kelp_kit_2/idle.png",
@@ -34895,6 +34942,7 @@
    "w": 428
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 104,
    "cell_w": 107,
    "file": "characters/kelp_kit_2/walk.png",
@@ -34905,6 +34953,7 @@
  },
  "characters/kelp_kit_3": {
   "idle": {
+   "c14p6": true,
    "cell_h": 104,
    "cell_w": 111,
    "file": "characters/kelp_kit_3/idle.png",
@@ -34913,6 +34962,7 @@
    "w": 444
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 104,
    "cell_w": 111,
    "file": "characters/kelp_kit_3/walk.png",
@@ -37477,28 +37527,31 @@
    "w": 37
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 81,
+   "cell_w": 80,
    "file": "characters/marisol/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 243
+   "w": 240
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 81,
+   "cell_w": 74,
    "file": "characters/marisol/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 81
+   "w": 74
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 81,
+   "cell_w": 75,
    "file": "characters/marisol/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 81
+   "w": 75
   },
   "view_back": {
    "cell_h": 112,
@@ -38917,6 +38970,7 @@
    "w": 40
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 57,
    "cell_w": 38,
    "file": "characters/mg_aurum/idle_side.png",
@@ -38925,6 +38979,7 @@
    "w": 38
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 57,
    "cell_w": 38,
    "file": "characters/mg_aurum/idle_up.png",
@@ -38933,6 +38988,7 @@
    "w": 38
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 57,
    "cell_w": 38,
    "file": "characters/mg_aurum/walk.png",
@@ -38949,6 +39005,7 @@
    "w": 160
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 57,
    "cell_w": 38,
    "file": "characters/mg_aurum/walk_up.png",
@@ -38967,6 +39024,7 @@
    "w": 48
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 36,
    "file": "characters/mg_bramble/idle_side.png",
@@ -38975,6 +39033,7 @@
    "w": 36
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 36,
    "file": "characters/mg_bramble/idle_up.png",
@@ -38983,6 +39042,7 @@
    "w": 36
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 36,
    "file": "characters/mg_bramble/walk.png",
@@ -38999,6 +39059,7 @@
    "w": 192
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 36,
    "file": "characters/mg_bramble/walk_up.png",
@@ -39017,6 +39078,7 @@
    "w": 46
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 51,
    "cell_w": 41,
    "file": "characters/mg_brannoch/idle_side.png",
@@ -39025,6 +39087,7 @@
    "w": 41
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 51,
    "cell_w": 41,
    "file": "characters/mg_brannoch/idle_up.png",
@@ -39033,6 +39096,7 @@
    "w": 41
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 51,
    "cell_w": 41,
    "file": "characters/mg_brannoch/walk.png",
@@ -39049,6 +39113,7 @@
    "w": 184
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 51,
    "cell_w": 41,
    "file": "characters/mg_brannoch/walk_up.png",
@@ -39067,6 +39132,7 @@
    "w": 32
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_cass/idle_side.png",
@@ -39075,6 +39141,7 @@
    "w": 33
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_cass/idle_up.png",
@@ -39083,6 +39150,7 @@
    "w": 33
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_cass/walk.png",
@@ -39099,6 +39167,7 @@
    "w": 132
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_cass/walk_up.png",
@@ -39133,6 +39202,7 @@
    "w": 39
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 56,
    "cell_w": 35,
    "file": "characters/mg_coalbrook/idle_side.png",
@@ -39141,6 +39211,7 @@
    "w": 35
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 56,
    "cell_w": 35,
    "file": "characters/mg_coalbrook/idle_up.png",
@@ -39149,6 +39220,7 @@
    "w": 35
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 56,
    "cell_w": 35,
    "file": "characters/mg_coalbrook/walk.png",
@@ -39165,6 +39237,7 @@
    "w": 160
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 56,
    "cell_w": 35,
    "file": "characters/mg_coalbrook/walk_up.png",
@@ -39183,6 +39256,7 @@
    "w": 32
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 29,
    "file": "characters/mg_dot/idle_side.png",
@@ -39191,6 +39265,7 @@
    "w": 29
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 29,
    "file": "characters/mg_dot/idle_up.png",
@@ -39199,6 +39274,7 @@
    "w": 29
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 29,
    "file": "characters/mg_dot/walk.png",
@@ -39215,6 +39291,7 @@
    "w": 128
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 29,
    "file": "characters/mg_dot/walk_up.png",
@@ -39233,6 +39310,7 @@
    "w": 38
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 34,
    "file": "characters/mg_fenn/idle_side.png",
@@ -39241,6 +39319,7 @@
    "w": 34
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 34,
    "file": "characters/mg_fenn/idle_up.png",
@@ -39249,6 +39328,7 @@
    "w": 34
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 34,
    "file": "characters/mg_fenn/walk.png",
@@ -39265,6 +39345,7 @@
    "w": 152
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 34,
    "file": "characters/mg_fenn/walk_up.png",
@@ -39283,6 +39364,7 @@
    "w": 50
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 43,
    "file": "characters/mg_gull/idle_side.png",
@@ -39291,6 +39373,7 @@
    "w": 43
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 43,
    "file": "characters/mg_gull/idle_up.png",
@@ -39299,6 +39382,7 @@
    "w": 43
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 43,
    "file": "characters/mg_gull/walk.png",
@@ -39315,6 +39399,7 @@
    "w": 200
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 43,
    "file": "characters/mg_gull/walk_up.png",
@@ -39333,6 +39418,7 @@
    "w": 34
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 31,
    "file": "characters/mg_hollis/idle_side.png",
@@ -39341,6 +39427,7 @@
    "w": 31
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 31,
    "file": "characters/mg_hollis/idle_up.png",
@@ -39349,6 +39436,7 @@
    "w": 31
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 31,
    "file": "characters/mg_hollis/walk.png",
@@ -39365,6 +39453,7 @@
    "w": 136
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 31,
    "file": "characters/mg_hollis/walk_up.png",
@@ -39383,6 +39472,7 @@
    "w": 32
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 32,
    "file": "characters/mg_ingrid/idle_side.png",
@@ -39391,6 +39481,7 @@
    "w": 32
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 32,
    "file": "characters/mg_ingrid/idle_up.png",
@@ -39399,6 +39490,7 @@
    "w": 32
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 32,
    "file": "characters/mg_ingrid/walk.png",
@@ -39415,6 +39507,7 @@
    "w": 128
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 32,
    "file": "characters/mg_ingrid/walk_up.png",
@@ -39433,6 +39526,7 @@
    "w": 37
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 34,
    "file": "characters/mg_liesl/idle_side.png",
@@ -39441,6 +39535,7 @@
    "w": 34
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 34,
    "file": "characters/mg_liesl/idle_up.png",
@@ -39449,6 +39544,7 @@
    "w": 34
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 34,
    "file": "characters/mg_liesl/walk.png",
@@ -39465,6 +39561,7 @@
    "w": 148
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 34,
    "file": "characters/mg_liesl/walk_up.png",
@@ -39483,6 +39580,7 @@
    "w": 43
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 39,
    "file": "characters/mg_nadia/idle_side.png",
@@ -39491,6 +39589,7 @@
    "w": 39
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 39,
    "file": "characters/mg_nadia/idle_up.png",
@@ -39499,6 +39598,7 @@
    "w": 39
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 39,
    "file": "characters/mg_nadia/walk.png",
@@ -39515,6 +39615,7 @@
    "w": 172
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 39,
    "file": "characters/mg_nadia/walk_up.png",
@@ -39533,6 +39634,7 @@
    "w": 47
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 43,
    "file": "characters/mg_nimbus/idle_side.png",
@@ -39541,6 +39643,7 @@
    "w": 43
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 43,
    "file": "characters/mg_nimbus/idle_up.png",
@@ -39549,6 +39652,7 @@
    "w": 43
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 43,
    "file": "characters/mg_nimbus/walk.png",
@@ -39565,6 +39669,7 @@
    "w": 188
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 43,
    "file": "characters/mg_nimbus/walk_up.png",
@@ -39583,6 +39688,7 @@
    "w": 38
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 36,
    "file": "characters/mg_odette/idle_side.png",
@@ -39591,6 +39697,7 @@
    "w": 36
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 36,
    "file": "characters/mg_odette/idle_up.png",
@@ -39599,6 +39706,7 @@
    "w": 36
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 36,
    "file": "characters/mg_odette/walk.png",
@@ -39615,6 +39723,7 @@
    "w": 156
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 36,
    "file": "characters/mg_odette/walk_up.png",
@@ -39633,6 +39742,7 @@
    "w": 28
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_pell/idle_side.png",
@@ -39641,6 +39751,7 @@
    "w": 31
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_pell/idle_up.png",
@@ -39649,6 +39760,7 @@
    "w": 31
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_pell/walk.png",
@@ -39665,6 +39777,7 @@
    "w": 112
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_pell/walk_up.png",
@@ -39683,6 +39796,7 @@
    "w": 34
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_rahim/idle_side.png",
@@ -39691,6 +39805,7 @@
    "w": 33
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_rahim/idle_up.png",
@@ -39699,6 +39814,7 @@
    "w": 33
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_rahim/walk.png",
@@ -39715,6 +39831,7 @@
    "w": 136
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 49,
    "cell_w": 33,
    "file": "characters/mg_rahim/walk_up.png",
@@ -39733,6 +39850,7 @@
    "w": 34
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 33,
    "file": "characters/mg_sefa/idle_side.png",
@@ -39741,6 +39859,7 @@
    "w": 33
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 33,
    "file": "characters/mg_sefa/idle_up.png",
@@ -39749,6 +39868,7 @@
    "w": 33
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 33,
    "file": "characters/mg_sefa/walk.png",
@@ -39765,6 +39885,7 @@
    "w": 136
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 33,
    "file": "characters/mg_sefa/walk_up.png",
@@ -39783,6 +39904,7 @@
    "w": 33
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_skip/idle_side.png",
@@ -39791,6 +39913,7 @@
    "w": 31
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_skip/idle_up.png",
@@ -39799,6 +39922,7 @@
    "w": 31
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_skip/walk.png",
@@ -39815,6 +39939,7 @@
    "w": 132
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 31,
    "file": "characters/mg_skip/walk_up.png",
@@ -39833,6 +39958,7 @@
    "w": 41
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/idle_side.png",
@@ -39841,6 +39967,7 @@
    "w": 38
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/idle_up.png",
@@ -39849,6 +39976,7 @@
    "w": 38
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/walk.png",
@@ -39865,6 +39993,7 @@
    "w": 164
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 38,
    "file": "characters/mg_tove/walk_up.png",
@@ -39883,6 +40012,7 @@
    "w": 44
   },
   "idle_side": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 41,
    "file": "characters/mg_zephyr/idle_side.png",
@@ -39891,6 +40021,7 @@
    "w": 41
   },
   "idle_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 41,
    "file": "characters/mg_zephyr/idle_up.png",
@@ -39899,6 +40030,7 @@
    "w": 41
   },
   "walk": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 41,
    "file": "characters/mg_zephyr/walk.png",
@@ -39915,6 +40047,7 @@
    "w": 180
   },
   "walk_up": {
+   "c14p6": true,
    "cell_h": 50,
    "cell_w": 41,
    "file": "characters/mg_zephyr/walk_up.png",
@@ -41929,28 +42062,31 @@
    "w": 66
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 48,
+   "cell_w": 90,
    "file": "characters/nia/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 144
+   "w": 270
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 62,
+   "cell_w": 86,
    "file": "characters/nia/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 62
+   "w": 86
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 62,
+   "cell_w": 83,
    "file": "characters/nia/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 62
+   "w": 83
   },
   "view_back": {
    "cell_h": 112,
@@ -49366,28 +49502,31 @@
    "w": 72
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 53,
+   "cell_w": 87,
    "file": "characters/ollie/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 159
+   "w": 261
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 67,
+   "cell_w": 83,
    "file": "characters/ollie/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 67
+   "w": 83
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 80,
+   "cell_w": 83,
    "file": "characters/ollie/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 80
+   "w": 83
   },
   "view_back": {
    "cell_h": 112,
@@ -51678,28 +51817,31 @@
    "w": 76
   },
   "swim": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 75,
+   "cell_w": 85,
    "file": "characters/rafe/swim.png",
    "frames": 3,
    "h": 112,
-   "w": 225
+   "w": 255
   },
   "swim_down": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 83,
+   "cell_w": 82,
    "file": "characters/rafe/swim_down.png",
    "frames": 1,
    "h": 112,
-   "w": 83
+   "w": 82
   },
   "swim_up": {
+   "c14p6": true,
    "cell_h": 112,
-   "cell_w": 85,
+   "cell_w": 80,
    "file": "characters/rafe/swim_up.png",
    "frames": 1,
    "h": 112,
-   "w": 85
+   "w": 80
   },
   "view_back": {
    "cell_h": 112,
@@ -62920,6 +63062,7 @@
  },
  "enemies/dark_crystal": {
   "attack": {
+   "c14p6": true,
    "cell_h": 145,
    "cell_w": 178,
    "file": "enemies/dark_crystal/attack.png",
@@ -62928,6 +63071,7 @@
    "w": 712
   },
   "hurt": {
+   "c14p6": true,
    "cell_h": 145,
    "cell_w": 178,
    "file": "enemies/dark_crystal/hurt.png",
@@ -62936,6 +63080,7 @@
    "w": 356
   },
   "idle": {
+   "c14p6": true,
    "cell_h": 145,
    "cell_w": 178,
    "file": "enemies/dark_crystal/idle.png",

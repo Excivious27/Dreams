@@ -220,6 +220,8 @@ def mg_jobs(check, man):
                 print("skip", cid, len(ps))
                 continue
             grp = "characters/" + cid
+            if done(man, grp, "walk_up"):
+                continue
             ref = Image.open(os.path.join(GEN, man[grp]["walk_down"]["file"])).convert("RGBA")
             rh = int((np.array(ref)[..., 3] > 40).any(axis=1).sum())  # figure height in the old art
             s = rh / float(np.median([p.shape[0] for p in ps]))
@@ -239,7 +241,7 @@ def mg_jobs(check, man):
                     if os.path.exists(dst):
                         os.remove(dst)
                     im.save(dst)
-                    man.setdefault(grp, {})[nm] = {"file": rel, "w": im.width, "h": im.height, "frames": n, "cell_w": cw, "cell_h": ch}
+                    man.setdefault(grp, {})[nm] = {"file": rel, "w": im.width, "h": im.height, "frames": n, "cell_w": cw, "cell_h": ch, "c14p6": True}
                 made.append("%s %s x%d %dx%d" % (grp, nm, n, cw, ch))
     return made
 
@@ -259,7 +261,7 @@ def redraw_jobs(check, man):
     made = []
     for sheet, (grp, rows, join) in REDRAWS.items():
         src = os.path.join(INC, sheet)
-        if not os.path.exists(src):
+        if not os.path.exists(src) or done(man, grp, "idle"):
             continue
         a = load(src)
         old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
@@ -280,7 +282,7 @@ def redraw_jobs(check, man):
                 if os.path.exists(dst):
                     os.remove(dst)
                 im.save(dst)
-                man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": len(fr), "cell_w": cw, "cell_h": ch}
+                man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": len(fr), "cell_w": cw, "cell_h": ch, "c14p6": True}
             made.append("%s %s x%d %dx%d" % (grp, anim, len(fr), cw, ch))
     return made
 
@@ -303,6 +305,8 @@ def kit_jobs(check, man):
         a = load(src)
         for (y0, y1), cid in zip(row_bands(a, len(ids)), ids):
             grp = "characters/" + cid
+            if done(man, grp, "idle"):
+                continue
             ps = cells12(a[y0:y1], 8)
             old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
             rh = int((np.array(old)[..., 3] > 40).any(axis=1).sum())
@@ -318,9 +322,54 @@ def kit_jobs(check, man):
                     if os.path.exists(dst):
                         os.remove(dst)
                     im.save(dst)
-                    man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": 4, "cell_w": cw, "cell_h": ch}
+                    man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": 4, "cell_w": cw, "cell_h": ch, "c14p6": True}
                 made.append("%s %s x4 %dx%d" % (grp, anim, cw, ch))
     return made
+
+
+# Hero swims (c14_17-13: Bo, June, Rafe, Nia, Ollie, Marisol swam by sitting or waving):
+# 3 per sheet, 5 cells = swim side x3, swim toward x1, swim away x1; figure 0.65 x idle
+# height (the other heroes' ratio), bottom-aligned in the 112 px cell.
+SWIM_SHEETS = {"swim_a.png": ["bo", "june", "rafe"], "swim_b.png": ["nia", "ollie", "marisol"]}
+
+
+def swim_jobs(check, man):
+    made = []
+    for sheet, ids in SWIM_SHEETS.items():
+        src = os.path.join(INC, sheet)
+        if not os.path.exists(src):
+            continue
+        a = load(src)
+        for (y0, y1), cid in zip(row_bands(a, len(ids)), ids):
+            grp = "characters/" + cid
+            if done(man, grp, "swim"):
+                continue
+            ps = cells12(a[y0:y1], 5)
+            old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
+            ih = int((np.array(old)[..., 3] > 40).any(axis=1).sum())
+            s = 0.65 * ih / float(np.median([p.shape[0] for p in ps]))
+            fr = [shrink(p, (max(1, round(p.shape[1] * s)), max(1, round(p.shape[0] * s)))) for p in ps]
+            ch = int(man[grp]["swim"].get("cell_h", 112))
+            for anim, part in (("swim", fr[:3]), ("swim_down", fr[3:4]), ("swim_up", fr[4:5])):
+                cw = max(f.width for f in part) + 2
+                im = strip(part, cw, ch)
+                rel = "%s/%s.png" % (grp, anim)
+                if not check:
+                    dst = os.path.join(GEN, rel)
+                    if os.path.exists(dst):
+                        os.remove(dst)
+                    im.save(dst)
+                    man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": len(part), "cell_w": cw, "cell_h": ch, "c14p6": True}
+                made.append("%s %s x%d %dx%d" % (grp, anim, len(part), cw, ch))
+    return made
+
+
+FORCE = "--force" in sys.argv
+
+
+def done(man, grp, anim):
+    """Character jobs scale from the old art's height: never re-run on their own output."""
+    return not FORCE and bool(man.get(grp, {}).get(anim, {}).get("c14p6"))
 
 
 def main():
@@ -348,6 +397,7 @@ def main():
     made += mg_jobs(check, man)
     made += redraw_jobs(check, man)
     made += kit_jobs(check, man)
+    made += swim_jobs(check, man)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)
