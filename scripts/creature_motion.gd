@@ -4,7 +4,7 @@ class_name CreatureMotion
 ## Cheap code motion (no new nodes): per-instance phase so nobody moves in lockstep,
 ## held-frame idles (rest pose held, the blink/flick frame short), a feet-anchored
 ## breath, hover for floaters. Game time only (PlayClock), reduced motion respected.
-## When P1's Anim API (scripts/anim.gd) is present its phase/reduced are used.
+## Time and reduced motion come from P1's Anim API (Anim.t / Anim.reduced).
 
 static var _tuned := {}   # "sf_id|recipe" -> SpriteFrames copy (Art.frames' cache is never mutated)
 
@@ -23,11 +23,11 @@ static func rng_for(n: Object) -> RandomNumberGenerator:
 
 
 static func reduced() -> bool:
-	return Settings.reduced_motion()
+	return Anim.reduced()
 
 
 static func t() -> float:
-	return PlayClock.now()
+	return Anim.t()
 
 
 ## Breath multiplier for scale: (x, y). amp ~0.015-0.03, period 2-3.5 s. Feet stay put

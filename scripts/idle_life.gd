@@ -38,7 +38,7 @@ func seed_from(key: Variant) -> void:
 
 
 static func motion_scale() -> float:
-	return 0.3 if Settings.reduced_motion() else 1.0
+	return Anim.amp()
 
 
 ## The breath value at game time `t` (-1..1): a quicker inhale, a slower exhale.
@@ -49,7 +49,7 @@ static func breath(t: float, per: float, ph: float) -> float:
 
 ## The y stretch factor right now (1.0 = rest), for tests and callers.
 func factor() -> float:
-	return 1.0 + amp * motion_scale() * _w * breath(PlayClock.now(), period, phase)
+	return 1.0 + amp * motion_scale() * _w * breath(Anim.t(), period, phase)
 
 
 func weight() -> float:

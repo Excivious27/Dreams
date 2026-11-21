@@ -151,7 +151,7 @@ func _play_walker(a: String) -> void:
 		_anim.play(a)
 		if a.begins_with("idle"):
 			_anim.speed_scale = _spd
-			Npc.desync(_anim, id + a)
+		Npc.desync(_anim, id + a)  # C14b integ (P1 note): walk strips no longer start in lockstep either
 
 
 ## Frame 0 of a pose strip (a multi-frame strip would draw whole otherwise).

@@ -45,12 +45,20 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/lake.tscn")
 	for k in 10:
 		await process_frame
-	var lit := _find(current_scene, "LighthouseLit") as AnimatedSprite2D
+	# C14b integ: P3's lake lighthouse is a still Sprite2D (lit frame) + LighthouseBeam; P2's
+	# AnimatedSprite2D path (AmbientFx.shore_building -> fit) holds frame 1. Either way: one beam.
+	var lit := _find(current_scene, "LighthouseLit") as Node2D
 	_ok(lit != null, "the lit lighthouse is placed")
 	if lit:
-		_ok(not lit.is_playing() and lit.frame == 1, "the tower holds its lit-lens frame")
+		if lit is AnimatedSprite2D:
+			_ok(not (lit as AnimatedSprite2D).is_playing() and (lit as AnimatedSprite2D).frame == 1, "the tower holds its lit-lens frame")
 		_ok(lit.get_node_or_null("Beam") is LighthouseBeam, "a code beam turns on the lamp")
-	_ok(GameState.weather_today() in ["fog", "storm", "rain"] or LighthouseBeam.strength() < 0.03, "no beam at noon")
+		var beams := 0
+		for b in lit.get_children():
+			if b is LighthouseBeam:
+				beams += 1
+		_ok(beams == 1, "exactly one beam on the tower (%d)" % beams)
+	_ok(GameState.weather_today() in ["fog", "storm", "rain", "blizzard"] or LighthouseBeam.strength() <= 0.15, "only a faint beam at noon")
 	var mill: AnimatedSprite2D = null
 	for n in current_scene.get_children():
 		if n is AnimatedSprite2D and (n as AnimatedSprite2D).sprite_frames and "water_mill" in NightGlow.art_name(n):

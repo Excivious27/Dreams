@@ -32,8 +32,7 @@ static func of(m: Node) -> AmbientMotion:
 
 ## Stable 0..1 phase from a position (cells or pixels).
 static func phase(p: Vector2) -> float:
-	var h := sin(p.x * 12.9898 + p.y * 78.233) * 43758.5453
-	return h - floorf(h)
+	return Anim.phase(p)
 
 
 static func reduced() -> bool:
@@ -78,8 +77,8 @@ func spin(node: Node2D, rad_s := 0.9, windy := true) -> void:
 func _process(delta: float) -> void:
 	if _items.is_empty() or get_tree().paused:
 		return
-	var t := PlayClock.now()
-	var k := 0.3 if reduced() else 1.0
+	var t := Anim.t()
+	var k := Anim.amp()
 	var wv := wind()
 	var i := _items.size() - 1
 	while i >= 0:

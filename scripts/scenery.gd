@@ -277,13 +277,18 @@ var _aur_node: Node2D
 
 
 ## Own node: additive light, not dimmed by the night tint on the weather canvas.
+## Aurora strength: night darkness; on the moon (always space) a faint wash by day too (C14b P4 note).
+func _aurora_dark() -> float:
+	return maxf(GameState.darkness(), 0.35 if Anim._map_id == "moon" else 0.0)
+
+
 func _aurora_node() -> Node2D:
 	if _aur_node == null:
 		_aur_node = Node2D.new()
 		var cm := CanvasItemMaterial.new()
 		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 		_aur_node.material = cm
-		_aur_node.draw.connect(func() -> void: _draw_aurora(GameState.darkness()))
+		_aur_node.draw.connect(func() -> void: _draw_aurora(_aurora_dark()))
 		add_child(_aur_node)
 		move_child(_aur_node, 0)
 	_aur_node.visible = true
@@ -478,7 +483,7 @@ func _on_draw() -> void:
 		for i in 3:
 			var sx := fposmod(i * span / 3.0 + _ov_t * 6.0, span) - 256.0  # each shadow keeps its own path across the wrap (c14b_16-25)
 			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(sx, 120 + sin(_ov_t * 0.1 + i * 2.1) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 2, 0, 252, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
-	if aurora and overhead and GameState.darkness() > 0.0:
+	if aurora and overhead and _aurora_dark() > 0.0:
 		_aurora_node().queue_redraw()
 	elif _aur_node != null and _aur_node.visible:
 		_aur_node.visible = false

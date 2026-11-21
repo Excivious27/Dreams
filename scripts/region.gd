@@ -585,6 +585,7 @@ func after_ready() -> void:
 				add_child(a)
 			a.play("idle")
 			RegionAnim.phase(a, c)  # random start frame/speed per cell: never lockstep
+			WaterFeature.still(a, nm)  # C14b integ: water strips hold a frame, the shader moves the water (no double animation)
 			RegionAnim.of(self).add(a, nm, c)
 			if g == "buildings" or p.has("scale"):
 				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in

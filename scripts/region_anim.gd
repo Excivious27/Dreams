@@ -11,7 +11,7 @@ extends Node
 ##  * code motion, one ticking node per map: neon hum and stutter (c14b_04-08), boats
 ##    bob and rock (c14b_13-07), drones glide between hover spots (c14b_06-06), cloud
 ##    trees and sky props drift 1 px (c14b_06-08), beacons/crystals breathe (c14b_05-10).
-## Settings.reduced_motion(): strips at half speed, code motion at ~30%, no stutter.
+## Anim.reduced(): strips at half speed, code motion at ~30%, no stutter.
 
 ## Strips that are variants or redraw their body each frame (rotors with jumbled
 ## blade angles, the boiling helicopter, street lamps that are an on-switch): frame 0
@@ -95,7 +95,7 @@ static func phase(a: AnimatedSprite2D, c: Vector2i) -> void:
 	if n > 0:
 		a.set_frame_and_progress(h % n, float(h % 100) / 100.0)
 	a.speed_scale = 0.88 + float(h % 25) / 100.0
-	if Settings.reduced_motion():
+	if Anim.reduced():
 		a.speed_scale *= 0.5
 
 
@@ -139,7 +139,7 @@ func add(node: Node2D, nm: String, c: Vector2i) -> void:
 		rs.position = Vector2(float(hub[0]) - float(info.get("w", 61)) / 2.0, float(hub[1]) - float(info.get("h", 104)))
 		rs.rotation = float(hcell(c) % 628) / 100.0
 		node.add_child(rs)
-		_items.append([rs, "rotor", rs.position, 0.85 + float(hcell(c) % 31) / 100.0, {"last": PlayClock.now()}])
+		_items.append([rs, "rotor", rs.position, 0.85 + float(hcell(c) % 31) / 100.0, {"last": Anim.t()}])
 		return
 	if gmode != "" and (node is AnimatedSprite2D or node is Sprite2D):
 		var gw := Glow.new()
@@ -158,8 +158,8 @@ func add(node: Node2D, nm: String, c: Vector2i) -> void:
 func _process(_d: float) -> void:
 	if _items.is_empty():
 		return
-	var t := PlayClock.now()
-	var rm := Settings.reduced_motion()
+	var t := Anim.t()
+	var rm := Anim.reduced()
 	var amp := 0.3 if rm else 1.0
 	for it: Array in _items:
 		var n: Node2D = it[0]
@@ -220,7 +220,7 @@ class Glow extends Node2D:
 	var radius := 16.0
 
 	func _ready() -> void:
-		born = PlayClock.now()
+		born = Anim.t()
 		if mode == "steam":
 			return  # steam is white mist: normal blend
 		material = MagicFx._add_mat()  # shared additive material
@@ -228,7 +228,7 @@ class Glow extends Node2D:
 	var _last := -1.0
 
 	func _process(_d: float) -> void:
-		var t := PlayClock.now()
+		var t := Anim.t()
 		if mode == "burst" and t - born > 1.4:
 			queue_free()
 			return
@@ -237,8 +237,8 @@ class Glow extends Node2D:
 			queue_redraw()
 
 	func _draw() -> void:
-		var t := PlayClock.now()
-		var rm := Settings.reduced_motion()
+		var t := Anim.t()
+		var rm := Anim.reduced()
 		var amp := 0.3 if rm else 1.0
 		match mode:
 			"lit":

@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
+
 ## 2026-11-21 — CONDUCT 14 (world look, town, beach + marina, fast travel, exploration) docs: report docs/reports/CONDUCT-14.md, Guide 41, ART-PROMPTS-CONDUCT-14.md (80 images), TEXTS['14'], inventory rows (TravelNet 72%, marina, town expansion, prop dressing, secrets, lighting; whole game ~82%), PROJECT-MEMORY C14 entry. 401 findings, 6 packages + hooks. Final CI c14i pending.
 
 ## 2026-11-21 — CONDUCT 13 (audio depth) docs: report docs/reports/CONDUCT-13.md, Guide 40, TEXTS['13'], 7 audio inventory rows, PROJECT-MEMORY C13 entry. 398 findings, 6 packages + hooks; 140 songs, 20 jingles + gang UI kit, 22 CC0 sfx; ACE 64 credits left until Dec 1. Final CI c13i pending.
