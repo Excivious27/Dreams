@@ -35,13 +35,9 @@ static func year() -> int:
 	return (int(GameState.run.get("day", 1)) - 1) / (GameState.DAYS_PER_SEASON * 4) + 1
 
 
-## A festival tomorrow (Calendar, P1, when it exists; else the old festival day).
+## A festival tomorrow (SeasonCal: P1's Calendar when merged, else day 13).
 static func festival_eve() -> bool:
-	if ResourceLoader.exists("res://scripts/calendar.gd"):
-		var cal: Script = load("res://scripts/calendar.gd")
-		if cal and cal.has_method("festival_eve"):
-			return bool(cal.call("festival_eve"))
-	return GameState.day_of_season() == GameState.FESTIVAL_DAY - 1
+	return SeasonCal.eve()
 
 
 static func part_ok(part: String) -> bool:

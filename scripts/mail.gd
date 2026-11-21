@@ -282,13 +282,20 @@ static func eve_hours(fid: String) -> Vector2:
 
 
 static func eve_letter(fid: String, tomorrow: int) -> String:
+	var f := SeasonCal.festival_for_day(tomorrow)
 	var fh := eve_hours(fid)
 	var from := GameState.clock_of(int(round(fh.x * 60.0)))
 	var till := GameState.clock_of(int(round(fh.y * 60.0)))
+	var when := "from %s till %s" % [from, till]
 	var fname := GameState.festival_name(fid)
+	var where := "on the plaza"
+	if str(f.get("id", "")) == fid:
+		fname = str(f.get("name", fname))
+		if str(f.get("where", "")) != "":
+			where = "at " + str(f["where"]) if not str(f["where"]).begins_with("the plaza") else "on the plaza"
 	if GameState.is_penguins():
-		return "Reminder: the %s is TOMORROW on the plaza, from %s till %s. Shops shut for it so everyone can come. Come hungry!%s" % [fname, from, till, show_line(fid)]
-	return "Word from the hall: the %s is TOMORROW on the plaza, %s till %s. Shops close up for it. Bring your appetite and leave the trouble at home.%s" % [fname, from, till, show_line(fid)]
+		return "Reminder: the %s is TOMORROW %s, %s. Shops shut for it so everyone can come. Come hungry!%s" % [fname, where, when, show_line(fid)]
+	return "Word from the hall: the %s is TOMORROW %s, %s. Shops close up for it. Bring your appetite and leave the trouble at home.%s" % [fname, where, when.trim_prefix("from "), show_line(fid)]
 
 
 ## C15 P3 (c15_10-08, 11-06): season letters. Day 1 of a season: the hall's notice
@@ -297,7 +304,10 @@ static func eve_letter(fid: String, tomorrow: int) -> String:
 static func _season_letters(day: int) -> void:
 	var dos := ((day - 1) % GameState.DAYS_PER_SEASON) + 1
 	var se := GameState.season_of(day)
-	var fid: String = str(GameState.FESTIVALS.get(se, ["", ""])[0])
+	var fests := SeasonCal.festivals_in_season(day)
+	var ftxt := ""
+	for f: Dictionary in fests:
+		ftxt += "%s%s on day %d" % [", " if ftxt != "" else "", str(f["name"]), int(f["day"])]
 	if dos == 1 and day > 1:
 		var bdays: Array = []
 		for id: String in _known():
@@ -306,29 +316,30 @@ static func _season_letters(day: int) -> void:
 				bdays.append("%s (day %d)" % [_name(id), int(b[1])])
 		var btxt := "" if bdays.is_empty() else " Birthdays this season: %s." % ", ".join(bdays)
 		if GameState.is_penguins():
-			send("Mayor Alder", "%s is here! The %s is on day %d, on the plaza.%s Check the board for the calendar. - Mayor Alder" % [se.capitalize(), GameState.festival_name(fid), GameState.FESTIVAL_DAY, btxt], "news", {"npc": "alder"})
+			send("Mayor Alder", "%s is here! Festivals this season: %s.%s Check the board for the calendar. - Mayor Alder" % [se.capitalize(), ftxt if ftxt != "" else "none this year", btxt], "news", {"npc": "alder"})
 		else:
-			send("The hall", "New season on the block: %s. The %s lands on day %d.%s The board by the hall has the calendar." % [se.capitalize(), GameState.festival_name(fid), GameState.FESTIVAL_DAY, btxt], "news", {"npc": "alder"})
+			send("The hall", "New season on the block: %s. On the calendar: %s.%s The board by the hall has the rest." % [se.capitalize(), ftxt if ftxt != "" else "nothing big", btxt], "news", {"npc": "alder"})
 		if se == "spring" and Talk.year() >= 2:
 			if GameState.is_penguins():
 				send("Hazel", "Happy new year! Another spring on the farm. Whatever last year was, this one's a fresh field. - Hazel", "news", {"npc": "hazel"})
 			else:
 				send("Hazel", "New year, same street, clean slate. Plant early this time. - Hazel", "news", {"npc": "hazel"})
-	if dos == GameState.FESTIVAL_DAY + 1 and fid != "":
+	var past := SeasonCal.festival_for_day(day - 1)
+	if not past.is_empty() and dos > 1:
 		var host := "alder"
 		if GameState.is_penguins():
-			send(_name(host), "Thank you for coming to the %s yesterday. The town felt fuller with you in it. - %s" % [GameState.festival_name(fid), _name(host)], "news", {"npc": host})
+			send(_name(host), "Thank you for coming to the %s yesterday. The town felt fuller with you in it. - %s" % [str(past["name"]), _name(host)], "news", {"npc": host})
 		else:
-			send(_name(host), "Good turnout yesterday at the %s. Nobody made trouble. Thanks for showing your face. - %s" % [GameState.festival_name(fid), _name(host)], "news", {"npc": host})
+			send(_name(host), "Good turnout yesterday at the %s. Nobody made trouble. Thanks for showing your face. - %s" % [str(past["name"]), _name(host)], "news", {"npc": host})
 
 
 static func _news(rng: RandomNumberGenerator) -> void:
 	_season_letters(int(GameState.run["day"]))
 	var tomorrow := int(GameState.run["day"]) + 1
 	var dos := ((tomorrow - 1) % GameState.DAYS_PER_SEASON) + 1
-	if dos == GameState.FESTIVAL_DAY:
-		var fid: String = str(GameState.FESTIVALS[GameState.season_of(tomorrow)][0])
-		send("Mayor Alder", eve_letter(fid, tomorrow), "news", {"npc": "alder"})
+	var tf := SeasonCal.festival_for_day(tomorrow)  # C15 P3: any plaza festival (Calendar when merged)
+	if not tf.is_empty():
+		send("Mayor Alder", eve_letter(str(tf["id"]), tomorrow), "news", {"npc": "alder"})
 	var w := GameState.weather_for(tomorrow)
 	if w == "storm":
 		send("Marlowe", "Storm coming in tomorrow; I can see it from the lamp room. %sDon't bother watering. - Marlowe" % _storm_animals(), "news", {"npc": "marlowe"})

@@ -180,7 +180,7 @@ static func can_propose(id: String) -> bool:
 static func pick_wedding_day(from_day: int) -> int:
 	var d := from_day + int(rule("wedding_after"))
 	for i in 14:
-		if (d % 7) != 0 and dos(d) != GameState.FESTIVAL_DAY:
+		if (d % 7) != 0 and not SeasonCal.is_festival_day(d):  # C15 P3: any festival (Calendar)
 			return d
 		d += 1
 	return d
