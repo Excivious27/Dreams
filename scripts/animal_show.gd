@@ -47,11 +47,17 @@ const CATS := {
 const STANDS := {
 	"harvest": [Vector2i(36, 40), "Benno"],
 	"egg": [Vector2i(36, 36), "Posy"],
-	"lantern": [Vector2i(36, 40), "Hazel"],
+	"lantern": [Vector2i(36, 41), "Hazel"],
 }
 
 ## Givers of gift animals (flag holding the uid -> [npc id, name, line]).
 const GIVERS := {"tam_lamb_home": ["tam", "Tam", "Grown into the ears. Mostly. ...I'm proud of you both."]}
+
+
+## Within 5 cells of today's ribbon stand (music: the animal_show tune there).
+static func near_stand(fest: String, c: Vector2i) -> bool:
+	var st: Array = STANDS.get(fest, [])
+	return not st.is_empty() and Vector2(c - (st[0] as Vector2i)).length() <= 5.0
 
 
 static func gang() -> bool:

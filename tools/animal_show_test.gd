@@ -102,6 +102,8 @@ func _run() -> void:
 	check(AS.stand_title("harvest") == "Animal Show", "penguin title")
 	GameState.run["arc"] = "gangsters"
 	check(AS.stand_title("harvest") == "Stock Show" and not AS.stand_title("harvest").to_lower().contains("block fair"), "gangster arc: Stock Show")
+	check(AS.near_stand("harvest", Vector2i(37, 41)) and not AS.near_stand("harvest", Vector2i(50, 50)) and not AS.near_stand("star", Vector2i(36, 40)), "near the stand: its tune")
+	check(ResourceLoader.exists("res://audio/music/animal_show.ogg") and ResourceLoader.exists("res://audio/music/ranch.ogg"), "show and ranch tunes exist (ACE alt takes)")
 	# Collections: a Show ribbons row counts blue ribbons.
 	var col: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/collections.json"))
 	check(JSON.stringify(col).contains("show_blue"), "collections.json has a Show ribbons row")
