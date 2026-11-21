@@ -435,8 +435,8 @@
       "wave_every": 8.5,
       "enemy_cap": 8,
       "brief": {
-       "penguins": "Captain Bramblesnout holds Honey Cellars. Turn the captain back and the rest will scatter.",
-       "gangsters": "Harlan \"Hayride\" Voss runs Fruit Stand. Make them back off and the crew scatters."
+       "penguins": "Captain Bramblesnout holds Honey Cellars. Turn the captain back and the rest will scatter, back to their gate.",
+       "gangsters": "Harlan \"Hayride\" Voss runs Fruit Stand. Make them back off and the crew falls back to their last block."
       },
       "reward": {
        "crystals": 240,
@@ -459,7 +459,7 @@
       "x": 0.5,
       "y": 0.1,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "The Cider Works",
       "cfg": {
        "penguins": {
@@ -658,7 +658,19 @@
      "penguins": "Branches creak where there's no wind, and small grumpy eyes blink from every orchard row.",
      "gangsters": "A car with its lights off sits at the top of the orchard road. Then you spot a second one."
     },
-    "region_name": "Orchard Hills"
+    "region_name": "Orchard Hills",
+    "new_here": {
+     "penguins": [
+      "Cache (supplies)",
+      "Skirmish",
+      "Captain fight"
+     ],
+     "gangsters": [
+      "Cache (supplies)",
+      "Skirmish",
+      "Captain fight"
+     ]
+    }
    },
    "c_highlands": {
     "id": "c_highlands",
@@ -1150,7 +1162,7 @@
       "x": 0.26,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "Windy Saddle",
       "cfg": {
        "penguins": {
@@ -1248,8 +1260,8 @@
       "wave_every": 7.75,
       "enemy_cap": 10,
       "brief": {
-       "penguins": "Frostjaw holds Windy Saddle. Turn the captain back and the rest will scatter.",
-       "gangsters": "Ridge Boss Kestrel runs Windy Saddle. Make them back off and the crew scatters."
+       "penguins": "Frostjaw holds Windy Saddle. Turn the captain back and the rest will scatter, back to their gate.",
+       "gangsters": "Ridge Boss Kestrel runs Windy Saddle. Make them back off and the crew falls back to their last block."
       },
       "reward": {
        "crystals": 459,
@@ -1501,7 +1513,15 @@
      "penguins": "A howl rolls down off the ridge, and the heather lies flat as if something huge just lay down on it.",
      "gangsters": "Engines idle up on the ridge. Someone has a lookout on every switchback."
     },
-    "region_name": "Highlands"
+    "region_name": "Highlands",
+    "new_here": {
+     "penguins": [
+      "Siege (fortified points turn at half speed)"
+     ],
+     "gangsters": [
+      "Siege (fortified points turn at half speed)"
+     ]
+    }
    },
    "c_quarry": {
     "id": "c_quarry",
@@ -1823,8 +1843,8 @@
       "wave_every": 7.75,
       "enemy_cap": 10,
       "brief": {
-       "penguins": "Old Shardback holds Echo Shaft. Turn the captain back and the rest will scatter.",
-       "gangsters": "Crusher Kade runs Crusher House. Make them back off and the crew scatters."
+       "penguins": "Old Shardback holds Echo Shaft. Turn the captain back and the rest will scatter, back to their gate.",
+       "gangsters": "Crusher Kade runs Crusher House. Make them back off and the crew falls back to their last block."
       },
       "reward": {
        "crystals": 459,
@@ -1848,7 +1868,7 @@
       "x": 0.74,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "Foreman's Hut",
       "cfg": {
        "penguins": {
@@ -2239,7 +2259,15 @@
      "penguins": "The ground rumbles. Rocks shift on their own, and something in the dust is breathing.",
      "gangsters": "A rock crusher starts up with nobody at the controls. The quarry's taken, and they don't want visitors."
     },
-    "region_name": "Quarry"
+    "region_name": "Quarry",
+    "new_here": {
+     "penguins": [
+      "Siege (fortified points turn at half speed)"
+     ],
+     "gangsters": [
+      "Siege (fortified points turn at half speed)"
+     ]
+    }
    },
    "c_marsh": {
     "id": "c_marsh",
@@ -2623,7 +2651,7 @@
       "x": 0.35,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "Dry Hummock",
       "cfg": {
        "penguins": {
@@ -3022,7 +3050,17 @@
      "penguins": "Fog rolls over your boots and a hundred frogs stop singing at once. Something in the reeds is waiting.",
      "gangsters": "Headlights blink twice across the bog, then go dark. That's a signal, and it isn't for you."
     },
-    "region_name": "Marsh"
+    "region_name": "Marsh",
+    "new_here": {
+     "penguins": [
+      "Defend (keep one point until the clock ends)",
+      "Siege (fortified points turn at half speed)"
+     ],
+     "gangsters": [
+      "Defend (keep one point until the clock ends)",
+      "Siege (fortified points turn at half speed)"
+     ]
+    }
    },
    "c_riverlands": {
     "id": "c_riverlands",
@@ -3346,8 +3384,8 @@
       "wave_every": 7.75,
       "enemy_cap": 10,
       "brief": {
-       "penguins": "Tidegrudge holds Otter Holt. Turn the captain back and the rest will scatter.",
-       "gangsters": "Toll Man Dukes runs Bridge Two. Make them back off and the crew scatters."
+       "penguins": "Tidegrudge holds Otter Holt. Turn the captain back and the rest will scatter, back to their gate.",
+       "gangsters": "Toll Man Dukes runs Bridge Two. Make them back off and the crew falls back to their last block."
       },
       "reward": {
        "crystals": 459,
@@ -3371,7 +3409,7 @@
       "x": 0.26,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "Ford of Stones",
       "cfg": {
        "penguins": {
@@ -3770,7 +3808,15 @@
      "penguins": "For a moment the river runs the wrong way. Grump tracks line both banks.",
      "gangsters": "Every bridge has a car parked across it with the engine running."
     },
-    "region_name": "Riverlands"
+    "region_name": "Riverlands",
+    "new_here": {
+     "penguins": [
+      "Siege (fortified points turn at half speed)"
+     ],
+     "gangsters": [
+      "Siege (fortified points turn at half speed)"
+     ]
+    }
    },
    "c_ruins": {
     "id": "c_ruins",
@@ -4110,8 +4156,8 @@
       "wave_every": 7.0,
       "enemy_cap": 13,
       "brief": {
-       "penguins": "Gloomcrown holds Hall of Pillars. Turn the captain back and the rest will scatter.",
-       "gangsters": "The Curator runs Hall of Pillars. Make them back off and the crew scatters."
+       "penguins": "Gloomcrown holds Hall of Pillars. Turn the captain back and the rest will scatter, back to their gate.",
+       "gangsters": "The Curator runs Hall of Pillars. Make them back off and the crew falls back to their last block."
       },
       "reward": {
        "crystals": 743,
@@ -4158,7 +4204,7 @@
       "x": 0.6,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "name_gangsters": "Toppled Arch",
       "cfg": {
        "penguins": {
@@ -4565,7 +4611,16 @@
      "penguins": "The old stones hum with a cold purple light. Whatever guards the ruins is wide awake.",
      "gangsters": "Floodlights sweep the old ruins. Somebody has turned them into a fortress."
     },
-    "region_name": "Ruins"
+    "region_name": "Ruins",
+    "new_here": {
+     "penguins": [
+      "Camp (rest)"
+     ],
+     "gangsters": [
+      "Escort (walk the convoy to its point)",
+      "Camp (rest)"
+     ]
+    }
    },
    "c_wastes": {
     "id": "c_wastes",
@@ -4765,7 +4820,7 @@
      {
       "id": "n3",
       "name": "Lantern Well",
-      "type": "escort",
+      "type": "boss",
       "x": 0.5,
       "y": 0.4,
       "layer": 2,
@@ -4793,6 +4848,15 @@
           "owner": "neutral"
          },
          {
+          "id": "b",
+          "name": "Glass Dunes",
+          "cell": [
+           56,
+           26
+          ],
+          "owner": "enemy"
+         },
+         {
           "id": "c",
           "name": "Burnt Watchtower",
           "cell": [
@@ -4800,23 +4864,9 @@
            24
           ],
           "owner": "enemy"
-         },
-         {
-          "id": "a",
-          "name": "Cinder Gate",
-          "cell": [
-           24,
-           24
-          ],
-          "owner": "enemy"
          }
         ],
-        "convoy": [
-         "e",
-         "d",
-         "c"
-        ],
-        "vehicle": "wagon",
+        "boss": "gcap_wastes",
         "enemies": [
          "grump_ember",
          "grump",
@@ -4825,16 +4875,16 @@
         ]
        }
       },
-      "convoy_hp": 115,
-      "enemy_tickets": 240,
+      "boss": "obsidian_sentinel",
+      "enemy_tickets": 65,
       "tickets": 130,
-      "wave_every": 9.0,
+      "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "Our supply crystal sled has to reach Burnt Watchtower. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Cinderhowl holds Lantern Well. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
-       "crystals": 180,
-       "supply": 18,
-       "morale": 10,
+       "crystals": 240,
+       "supply": 8,
+       "morale": 15,
        "items": {
         "potion": 1
        }
@@ -4852,7 +4902,7 @@
       "x": 0.5,
       "y": 0.1,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_ash_wastes",
@@ -4985,7 +5035,13 @@
     "sense": {
      "penguins": "The air tastes of ash and the black stones hum. Out there, Grumps march in rows like soldiers."
     },
-    "region_name": "Wastes"
+    "region_name": "Wastes",
+    "new_here": {
+     "penguins": [
+      "Skirmish",
+      "Captain fight"
+     ]
+    }
    },
    "c_sky": {
     "id": "c_sky",
@@ -5252,7 +5308,7 @@
       "x": 0.6,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_cloud_stair",
@@ -5512,7 +5568,12 @@
     "sense": {
      "penguins": "The wind up the cloud stair sings a warning, and armour glints on every step."
     },
-    "region_name": "Sky"
+    "region_name": "Sky",
+    "new_here": {
+     "penguins": [
+      "Camp (rest)"
+     ]
+    }
    },
    "c_station": {
     "id": "c_station",
@@ -5852,7 +5913,7 @@
       "x": 0.4,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_station_deck",
@@ -5909,7 +5970,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Prismjaw holds Solar Wing. Turn the captain back and the rest will scatter.",
+      "brief": "Prismjaw holds Solar Wing. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
        "crystals": 1080,
        "supply": 8,
@@ -6093,7 +6154,10 @@
     "sense": {
      "penguins": "A cold hum comes down from the station, and its lights blink in Grump colours."
     },
-    "region_name": "Station"
+    "region_name": "Station",
+    "new_here": {
+     "penguins": []
+    }
    },
    "c_jungle": {
     "id": "c_jungle",
@@ -6417,7 +6481,7 @@
       "x": 0.49,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_jungle_grove",
@@ -6465,7 +6529,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Thornmaw holds Spore Hollow. Turn the captain back and the rest will scatter.",
+      "brief": "Thornmaw holds Spore Hollow. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
        "crystals": 1080,
        "supply": 8,
@@ -6649,7 +6713,10 @@
     "sense": {
      "penguins": "The green planet's trees lean toward you, and the shadows under them move."
     },
-    "region_name": "Jungle"
+    "region_name": "Jungle",
+    "new_here": {
+     "penguins": []
+    }
    },
    "c_colony_coral": {
     "id": "c_colony_coral",
@@ -6929,7 +6996,7 @@
       "x": 0.35,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_bog_crossing",
@@ -7176,7 +7243,13 @@
     "sense": {
      "penguins": "The reef glows the wrong colour, and every fish has gone quiet."
     },
-    "region_name": "Coral Reach"
+    "region_name": "Coral Reach",
+    "new_here": {
+     "penguins": [
+      "Escort (walk the convoy to its point)",
+      "Defend (keep one point until the clock ends)"
+     ]
+    }
    },
    "c_colony_kelp": {
     "id": "c_colony_kelp",
@@ -7529,7 +7602,7 @@
       "x": 0.6,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_kelp_beds",
@@ -7585,7 +7658,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 13,
-      "brief": "Murkfin holds Glow Shallows. Turn the captain back and the rest will scatter.",
+      "brief": "Murkfin holds Glow Shallows. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
        "crystals": 743,
        "supply": 8,
@@ -7767,7 +7840,10 @@
     "sense": {
      "penguins": "The kelp sways against the tide. Something big is hiding in it."
     },
-    "region_name": "Kelp Hollow"
+    "region_name": "Kelp Hollow",
+    "new_here": {
+     "penguins": []
+    }
    },
    "c_colony_ice": {
     "id": "c_colony_ice",
@@ -8093,7 +8169,7 @@
       "x": 0.6,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_frostfield",
@@ -8149,7 +8225,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Hailbrute holds Glacier Mouth. Turn the captain back and the rest will scatter.",
+      "brief": "Hailbrute holds Glacier Mouth. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
        "crystals": 1080,
        "supply": 8,
@@ -8322,7 +8398,10 @@
     "sense": {
      "penguins": "Frost cracks across the water toward you, and the ice groans like a giant waking up."
     },
-    "region_name": "Frostfin Isle"
+    "region_name": "Frostfin Isle",
+    "new_here": {
+     "penguins": []
+    }
    },
    "c_colony_ember": {
     "id": "c_colony_ember",
@@ -8675,7 +8754,7 @@
       "x": 0.59,
       "y": 0.29,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_ash_wastes",
@@ -8732,7 +8811,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 19,
-      "brief": "Ashmaw holds Hound Kennels. Turn the captain back and the rest will scatter.",
+      "brief": "Ashmaw holds Hound Kennels. Turn the captain back and the rest will scatter, back to their gate.",
       "reward": {
        "crystals": 1461,
        "supply": 8,
@@ -8913,7 +8992,10 @@
     "sense": {
      "penguins": "Smoke hangs over the atoll and the sea hisses where lava meets it. Grump drums, far off."
     },
-    "region_name": "Emberclaw Atoll"
+    "region_name": "Emberclaw Atoll",
+    "new_here": {
+     "penguins": []
+    }
    },
    "c_countryside": {
     "id": "c_countryside",
@@ -9174,7 +9256,7 @@
       "tickets": 130,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "Road Boss Dutch runs Truck Stop. Make them back off and the crew scatters.",
+      "brief": "Road Boss Dutch runs Truck Stop. Make them back off and the crew falls back to their last block.",
       "reward": {
        "crystals": 240,
        "supply": 8,
@@ -9197,7 +9279,7 @@
       "x": 0.5,
       "y": 0.1,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "gangsters": {
         "field": "bf_rail_yards",
@@ -9330,7 +9412,13 @@
     "sense": {
      "gangsters": "A roadblock of parked trucks. Somebody whistles, and three more doors open."
     },
-    "region_name": "The Highway"
+    "region_name": "The Highway",
+    "new_here": {
+     "gangsters": [
+      "Skirmish",
+      "Captain fight"
+     ]
+    }
    },
    "c_docks": {
     "id": "c_docks",
@@ -9588,7 +9676,7 @@
       "x": 0.74,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "gangsters": {
         "field": "bf_rail_yards",
@@ -9645,7 +9733,7 @@
       "tickets": 130,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "Ironside Mae runs Tugboat Yard. Make them back off and the crew scatters.",
+      "brief": "Ironside Mae runs Tugboat Yard. Make them back off and the crew falls back to their last block.",
       "reward": {
        "crystals": 459,
        "supply": 8,
@@ -9821,7 +9909,12 @@
     "sense": {
      "gangsters": "Crates move with nobody carrying them, and every crane on the docks has a lookout."
     },
-    "region_name": "Docks"
+    "region_name": "Docks",
+    "new_here": {
+     "gangsters": [
+      "Defend (keep one point until the clock ends)"
+     ]
+    }
    },
    "c_neon": {
     "id": "c_neon",
@@ -10163,7 +10256,7 @@
       "x": 0.6,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "brief": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
       "loot": {
        "supply": 32,
@@ -10348,7 +10441,13 @@
     "sense": {
      "gangsters": "The neon flickers in a pattern. Someone is telling the whole district you're coming."
     },
-    "region_name": "Neon"
+    "region_name": "Neon",
+    "new_here": {
+     "gangsters": [
+      "Escort (walk the convoy to its point)",
+      "Camp (rest)"
+     ]
+    }
    },
    "c_uptown": {
     "id": "c_uptown",
@@ -10711,7 +10810,7 @@
       "x": 0.49,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "gangsters": {
         "field": "bf_uptown_plaza",
@@ -10769,7 +10868,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Mr. Gilt runs Glass Atrium. Make them back off and the crew scatters.",
+      "brief": "Mr. Gilt runs Glass Atrium. Make them back off and the crew falls back to their last block.",
       "reward": {
        "crystals": 1080,
        "supply": 8,
@@ -10955,7 +11054,10 @@
     "sense": {
      "gangsters": "Private security on every corner, and every earpiece turns your way."
     },
-    "region_name": "Uptown"
+    "region_name": "Uptown",
+    "new_here": {
+     "gangsters": []
+    }
    },
    "c_underground": {
     "id": "c_underground",
@@ -11263,7 +11365,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Old Pipes Mulgrew runs Rat King's Hall. Make them back off and the crew scatters.",
+      "brief": "Old Pipes Mulgrew runs Rat King's Hall. Make them back off and the crew falls back to their last block.",
       "reward": {
        "crystals": 1080,
        "supply": 8,
@@ -11287,7 +11389,7 @@
       "x": 0.49,
       "y": 0.28,
       "layer": 3,
-      "step": 1,
+      "step": 0,
       "cfg": {
        "gangsters": {
         "field": "bf_sewer_works",
@@ -11549,7 +11651,10 @@
     "sense": {
      "gangsters": "Water drips, and under it, footsteps that stop whenever yours do."
     },
-    "region_name": "Underground"
+    "region_name": "Underground",
+    "new_here": {
+     "gangsters": []
+    }
    }
   },
   "drill": {

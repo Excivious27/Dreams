@@ -636,7 +636,8 @@ def _layout(n, cid):
 # Node type pools by layer (the last layer is always the gate: a siege with a boss).
 POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
 # Tier 1 boards teach the basics: no sieges or defends before the gate.
-POOL_T1 = {1: ["skirmish", "skirmish", "skirmish", "cache"], 2: ["skirmish", "boss", "escort"], 3: ["camp", "boss", "skirmish"]}
+# C16b P5 (c16b_02-06): no untaught escort on a tier-1 board (layer 2 was skirmish/boss/escort).
+POOL_T1 = {1: ["skirmish", "skirmish", "skirmish", "cache"], 2: ["skirmish", "boss", "skirmish"], 3: ["camp", "boss", "skirmish"]}
 # Board size by tier: short early campaigns, growing modestly (territories, camp excluded).
 SIZE = {1: 4, 2: 5, 3: 6, 4: 6, 5: 7}  # C16b: T3 now 6 (was 5), longer than T2
 # Battle length and pressure by tier: early fights are short and gentle.
@@ -658,7 +659,8 @@ DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters":
          # gang drill point names (C16b P5: c16b_18-05; BattleDrill reads point_names[arc] when set)
          "point_names": {"gangsters": {"e": "Getaway Car", "d": "Phone Booth", "b": "Corner Store"}}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
          "reward": {"crystals": 150, "items": {"potion": 3}}}
-STEP = {1: 0, 2: 0, 3: 1, 4: 1}
+# Foe tier step by layer (C16b P5 c16b_17-02: was {3: 1}; only a 5-layer board's last layer steps up now)
+STEP = {1: 0, 2: 0, 3: 0, 4: 1}
 BRIEF = {
     "skirmish": "A quick clash at %s. Take the points and their line breaks.",
     "siege": "%s is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
@@ -670,7 +672,7 @@ BRIEF = {
 
 # Penguin boss/gate briefs with the captain's name (CAPTAINS); "turn back" is the Meow Pow Wow's word.
 BRIEF_CAPTAIN = {
-    "boss": "%s holds %s. Turn the captain back and the rest will scatter.",
+    "boss": "%s holds %s. Turn the captain back and the rest will scatter, back to their gate.",
     "gate": "%s: the last wall before the region. Every point fortified, and %s takes the field.",
 }
 
@@ -680,7 +682,7 @@ BRIEF_GANG = {
     "siege": "%s is locked down: their points take twice as long to turn. Bring the crew and a plan.",
     "escort": "Our %s has to reach %s. Stay with it: it only rolls with the crew beside it and nobody in the way.",
     "defend": "Hold %s. Their cars keep dropping off more of them; keep at least one point until the clock runs out.",
-    "boss": "%s runs %s. Make them back off and the crew scatters.",
+    "boss": "%s runs %s. Make them back off and the crew falls back to their last block.",
     "gate": "%s: the last block before the turf. Every point locked down, and %s steps in.",
 }
 # What the brief calls each convoy (C16b P5: c16b_02-20).
@@ -940,6 +942,17 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                 assert str(cf.get("boss", "")).startswith("gcap_g_"), (cid, nd["id"], cf.get("boss"))
             if a == "gangsters":
                 assert all(k.startswith(("thug_", "gilt_", "coal_")) or k == "rust_knight" for k in cf["enemies"]), (cid, cf["enemies"])
+
+# What a board brings that this arc's easier boards never did (C16b P5: c16b_04-10);
+# CampaignScreen can show it as "NEW HERE" on the briefing with the tier's unlocks.
+TYPE_WORDS = {"skirmish": "Skirmish", "siege": "Siege (fortified points turn at half speed)", "escort": "Escort (walk the convoy to its point)",
+              "defend": "Defend (keep one point until the clock ends)", "boss": "Captain fight", "camp": "Camp (rest)", "cache": "Cache (supplies)"}
+for cid, c in C.items():
+    c["new_here"] = {}
+    for a in (["penguins", "gangsters"] if c["arc"] == "both" else [c["arc"]]):
+        lower = {nd["type"] for c2 in C.values() if c2["tier"] < c["tier"] and c2["arc"] in ("both", a) for nd in c2["nodes"]}
+        mine = [t for t in dict.fromkeys(nd["type"] for nd in c["nodes"]) if t not in ("start", "gate") and t not in lower]
+        c["new_here"][a] = [TYPE_WORDS[t] for t in mine]
 
 for k in [k for nd in NEED.values() for k in nd["items"]] + list(DRILL["reward"]["items"]):
     assert k in IT, k
