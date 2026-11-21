@@ -716,6 +716,80 @@
    }
   ]
  },
+ "beach_gang": {
+  "chosen": "so_f356fef9b93e4430860081e4",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/beach_gang__so_f356fef9b93e4430860081e4.mp3",
+    "id": "so_f356fef9b93e4430860081e4",
+    "page": "",
+    "score": {
+     "dur": 146.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/beach_gang__so_f356fef9b93e4430860081e4.mp3",
+     "holes": 0,
+     "intro_db": 2.4,
+     "late_soft": 0,
+     "low120": 0.44,
+     "lvl_diff": 3.0,
+     "peak": 1.268,
+     "r999": 8851,
+     "score": 94.36,
+     "seam": 0.988,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/beach_gang__so_b2cb0e7239ad42d2b39d76a1.mp3",
+    "id": "so_b2cb0e7239ad42d2b39d76a1",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/beach_gang__so_b2cb0e7239ad42d2b39d76a1.mp3",
+     "holes": 0,
+     "intro_db": 2.0,
+     "late_soft": 0,
+     "low120": 0.56,
+     "lvl_diff": 0.10000000149011612,
+     "peak": 1.371,
+     "r999": 9739,
+     "score": 79.95,
+     "seam": 0.802,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "beach_gang_2": {
+  "chosen": "so_b2cb0e7239ad42d2b39d76a1",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/beach_gang_2__so_b2cb0e7239ad42d2b39d76a1.mp3",
+    "id": "so_b2cb0e7239ad42d2b39d76a1",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/beach_gang__so_b2cb0e7239ad42d2b39d76a1.mp3",
+     "holes": 0,
+     "intro_db": 2.0,
+     "late_soft": 0,
+     "low120": 0.56,
+     "lvl_diff": 0.10000000149011612,
+     "peak": 1.371,
+     "r999": 9739,
+     "score": 79.95,
+     "seam": 0.802,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "boss": {
   "chosen": "so_7b29e0a9f56e4ef195a33dd7",
   "kind": "music",
@@ -2158,6 +2232,53 @@
    }
   ]
  },
+ "docks_night": {
+  "chosen": "so_fa793995783748f38a0dcb97",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/docks_night__so_fa793995783748f38a0dcb97.mp3",
+    "id": "so_fa793995783748f38a0dcb97",
+    "page": "",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/docks_night__so_fa793995783748f38a0dcb97.mp3",
+     "holes": 0,
+     "intro_db": 5.5,
+     "late_soft": 0,
+     "low120": 0.65,
+     "lvl_diff": 4.599999904632568,
+     "peak": 1.258,
+     "r999": 7229,
+     "score": 59.09,
+     "seam": 0.81,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/docks_night__so_a286338ce9d94c12a9234c81.mp3",
+    "id": "so_a286338ce9d94c12a9234c81",
+    "page": "",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/docks_night__so_a286338ce9d94c12a9234c81.mp3",
+     "holes": 0,
+     "intro_db": 6.0,
+     "late_soft": 0,
+     "low120": 0.63,
+     "lvl_diff": 4.900000095367432,
+     "peak": 1.314,
+     "r999": 5662,
+     "score": 45.7,
+     "seam": 0.93,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "ending_gangster": {
   "chosen": "so_60ad06d9a1904f4189b8fe1e",
   "kind": "once",
@@ -2344,6 +2465,80 @@
    }
   ]
  },
+ "farm_fall_gang": {
+  "chosen": "so_3041c6263181412bab9cbf57",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/farm_fall_gang__so_3041c6263181412bab9cbf57.mp3",
+    "id": "so_3041c6263181412bab9cbf57",
+    "page": "",
+    "score": {
+     "dur": 148.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/farm_fall_gang__so_3041c6263181412bab9cbf57.mp3",
+     "holes": 0,
+     "intro_db": 2.4,
+     "late_soft": 0,
+     "low120": 0.52,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.278,
+     "r999": 9841,
+     "score": 97.17,
+     "seam": 0.996,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/farm_fall_gang__so_f9299b764d6641e49ac31555.mp3",
+    "id": "so_f9299b764d6641e49ac31555",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/farm_fall_gang__so_f9299b764d6641e49ac31555.mp3",
+     "holes": 0,
+     "intro_db": 3.6,
+     "late_soft": 0,
+     "low120": 0.61,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.225,
+     "r999": 9395,
+     "score": 81.4,
+     "seam": 0.987,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "farm_fall_gang_2": {
+  "chosen": "so_f9299b764d6641e49ac31555",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/farm_fall_gang_2__so_f9299b764d6641e49ac31555.mp3",
+    "id": "so_f9299b764d6641e49ac31555",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/farm_fall_gang__so_f9299b764d6641e49ac31555.mp3",
+     "holes": 0,
+     "intro_db": 3.6,
+     "late_soft": 0,
+     "low120": 0.61,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.225,
+     "r999": 9395,
+     "score": 81.4,
+     "seam": 0.987,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "farm_gang": {
   "chosen": "so_2b53b177fd704d7ea7334538",
   "kind": "music",
@@ -2461,6 +2656,53 @@
      "score": 55.47,
      "seam": 0.954,
      "soft": 4
+    }
+   }
+  ]
+ },
+ "farm_winter_gang": {
+  "chosen": "so_0016b94948ee4ec181b22d75",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/farm_winter_gang__so_0016b94948ee4ec181b22d75.mp3",
+    "id": "so_0016b94948ee4ec181b22d75",
+    "page": "",
+    "score": {
+     "dur": 146.5,
+     "fade": 0.1,
+     "file": "/home/claude/work/ace_raw/farm_winter_gang__so_0016b94948ee4ec181b22d75.mp3",
+     "holes": 0,
+     "intro_db": 4.2,
+     "late_soft": 0,
+     "low120": 0.67,
+     "lvl_diff": 0.20000000298023224,
+     "peak": 1.281,
+     "r999": 7633,
+     "score": 74.92,
+     "seam": 0.903,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/farm_winter_gang__so_4583c00e54e842498903c5c0.mp3",
+    "id": "so_4583c00e54e842498903c5c0",
+    "page": "",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/farm_winter_gang__so_4583c00e54e842498903c5c0.mp3",
+     "holes": 1,
+     "intro_db": 1.9,
+     "late_soft": 2,
+     "low120": 0.59,
+     "lvl_diff": 0.5,
+     "peak": 1.26,
+     "r999": 8640,
+     "score": 68.98,
+     "seam": 0.918,
+     "soft": 2
     }
    }
   ]
@@ -2691,6 +2933,100 @@
      "r999": 3025,
      "score": 52.99,
      "seam": 0.88,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "forest_fall": {
+  "chosen": "so_c873f632f85648e6884c16e8",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/forest_fall__so_c873f632f85648e6884c16e8.mp3",
+    "id": "so_c873f632f85648e6884c16e8",
+    "page": "",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/forest_fall__so_c873f632f85648e6884c16e8.mp3",
+     "holes": 1,
+     "intro_db": 3.9,
+     "late_soft": 2,
+     "low120": 0.24,
+     "lvl_diff": 5.300000190734863,
+     "peak": 1.175,
+     "r999": 6772,
+     "score": 58.34,
+     "seam": 0.882,
+     "soft": 2
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/forest_fall__so_fc50c1f45e4b4eb59c1ecf10.mp3",
+    "id": "so_fc50c1f45e4b4eb59c1ecf10",
+    "page": "",
+    "score": {
+     "dur": 146.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/forest_fall__so_fc50c1f45e4b4eb59c1ecf10.mp3",
+     "holes": 0,
+     "intro_db": 4.7,
+     "late_soft": 0,
+     "low120": 0.29,
+     "lvl_diff": 3.9000000953674316,
+     "peak": 1.243,
+     "r999": 2002,
+     "score": 42.74,
+     "seam": 0.885,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "forest_fall_gang": {
+  "chosen": "so_c1dd4bac48c5488cb2673322",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/forest_fall_gang__so_c1dd4bac48c5488cb2673322.mp3",
+    "id": "so_c1dd4bac48c5488cb2673322",
+    "page": "",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/forest_fall_gang__so_c1dd4bac48c5488cb2673322.mp3",
+     "holes": 0,
+     "intro_db": 2.1,
+     "late_soft": 0,
+     "low120": 0.53,
+     "lvl_diff": 1.7000000476837158,
+     "peak": 1.315,
+     "r999": 8929,
+     "score": 93.47,
+     "seam": 0.96,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/forest_fall_gang__so_254acc01f98c4abb8060434f.mp3",
+    "id": "so_254acc01f98c4abb8060434f",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/forest_fall_gang__so_254acc01f98c4abb8060434f.mp3",
+     "holes": 0,
+     "intro_db": 3.6,
+     "late_soft": 0,
+     "low120": 0.62,
+     "lvl_diff": 4.0,
+     "peak": 1.353,
+     "r999": 9800,
+     "score": 77.55,
+     "seam": 0.985,
      "soft": 0
     }
    }
@@ -3317,38 +3653,104 @@
   ]
  },
  "lake": {
-  "chosen": "so_ccbaa36d42b44859807f661d",
+  "chosen": "so_7b1abfa3314746fd96aeebcd",
+  "kind": "music",
+  "note": "",
+  "previous": [
+   {
+    "chosen": "so_ccbaa36d42b44859807f661d",
+    "versions": [
+     "so_4be8404b735549f58fcecb35",
+     "so_ccbaa36d42b44859807f661d"
+    ]
+   }
+  ],
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/lake__so_7b1abfa3314746fd96aeebcd.mp3",
+    "id": "so_7b1abfa3314746fd96aeebcd",
+    "page": "",
+    "score": {
+     "dur": 145.0,
+     "fade": 4.9,
+     "file": "/home/claude/work/ace_raw/lake__so_7b1abfa3314746fd96aeebcd.mp3",
+     "holes": 0,
+     "intro_db": 6.0,
+     "late_soft": 0,
+     "low120": 0.19,
+     "lvl_diff": 3.5,
+     "peak": 1.169,
+     "r999": 6583,
+     "score": 74.03,
+     "seam": 0.891,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/lake__so_a0065353b7c94b05b20007ec.mp3",
+    "id": "so_a0065353b7c94b05b20007ec",
+    "page": "",
+    "score": {
+     "dur": 146.0,
+     "fade": 3.3,
+     "file": "/home/claude/work/ace_raw/lake__so_a0065353b7c94b05b20007ec.mp3",
+     "holes": 0,
+     "intro_db": 4.4,
+     "late_soft": 0,
+     "low120": 0.17,
+     "lvl_diff": 1.5,
+     "peak": 1.183,
+     "r999": 2665,
+     "score": 46.63,
+     "seam": 0.955,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "lake_fall": {
+  "chosen": "so_989ec9cce0164b95b0aa4866",
   "kind": "music",
   "note": "",
   "versions": [
    {
-    "file": "/home/claude/work/ace_raw/lake__so_4be8404b735549f58fcecb35.mp3",
-    "id": "so_4be8404b735549f58fcecb35",
-    "page": "https://acemusic.ai/song/r6g9nk9cktyf",
+    "file": "/home/claude/work/ace_raw/lake_fall__so_989ec9cce0164b95b0aa4866.mp3",
+    "id": "so_989ec9cce0164b95b0aa4866",
+    "page": "",
     "score": {
      "dur": 146.0,
-     "fade": 0.7,
-     "file": "/home/claude/work/ace_raw/lake__so_4be8404b735549f58fcecb35.mp3",
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/lake_fall__so_989ec9cce0164b95b0aa4866.mp3",
      "holes": 0,
-     "lvl_diff": 5.099999904632568,
-     "peak": 1.111,
-     "score": 79.21,
-     "seam": 0.882
+     "intro_db": 3.2,
+     "late_soft": 0,
+     "low120": 0.24,
+     "lvl_diff": 2.299999952316284,
+     "peak": 1.224,
+     "r999": 2337,
+     "score": 55.01,
+     "seam": 0.985,
+     "soft": 0
     }
    },
    {
-    "file": "/home/claude/work/ace_raw/lake__so_ccbaa36d42b44859807f661d.mp3",
-    "id": "so_ccbaa36d42b44859807f661d",
-    "page": "https://acemusic.ai/song/4v3iecfv5e8p",
+    "file": "/home/claude/work/ace_raw/lake_fall__so_e2c9a9d5ed6448b98f71a48d.mp3",
+    "id": "so_e2c9a9d5ed6448b98f71a48d",
+    "page": "",
     "score": {
-     "dur": 144.0,
-     "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/lake__so_ccbaa36d42b44859807f661d.mp3",
-     "holes": 0,
-     "lvl_diff": 5.0,
-     "peak": 1.109,
-     "score": 90.89,
-     "seam": 0.984
+     "dur": 146.0,
+     "fade": 2.6,
+     "file": "/home/claude/work/ace_raw/lake_fall__so_e2c9a9d5ed6448b98f71a48d.mp3",
+     "holes": 1,
+     "intro_db": 5.4,
+     "late_soft": 3,
+     "low120": 0.23,
+     "lvl_diff": 1.7999999523162842,
+     "peak": 1.259,
+     "r999": 8422,
+     "score": 54.34,
+     "seam": 0.922,
+     "soft": 3
     }
    }
   ]
@@ -3400,6 +3802,80 @@
    }
   ]
  },
+ "lake_winter": {
+  "chosen": "so_c4b1fc3019ea440c920b1fd8",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/lake_winter__so_c4b1fc3019ea440c920b1fd8.mp3",
+    "id": "so_c4b1fc3019ea440c920b1fd8",
+    "page": "",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/lake_winter__so_c4b1fc3019ea440c920b1fd8.mp3",
+     "holes": 0,
+     "intro_db": 7.5,
+     "late_soft": 0,
+     "low120": 0.38,
+     "lvl_diff": 4.599999904632568,
+     "peak": 1.212,
+     "r999": 8484,
+     "score": 86.82,
+     "seam": 0.965,
+     "soft": 1
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/lake_winter__so_a91088d980f74101b82ddc92.mp3",
+    "id": "so_a91088d980f74101b82ddc92",
+    "page": "",
+    "score": {
+     "dur": 146.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/lake_winter__so_a91088d980f74101b82ddc92.mp3",
+     "holes": 0,
+     "intro_db": 2.2,
+     "late_soft": 0,
+     "low120": 0.3,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.164,
+     "r999": 4190,
+     "score": 65.23,
+     "seam": 0.926,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "lake_winter_2": {
+  "chosen": "so_a91088d980f74101b82ddc92",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/lake_winter_2__so_a91088d980f74101b82ddc92.mp3",
+    "id": "so_a91088d980f74101b82ddc92",
+    "page": "",
+    "score": {
+     "dur": 146.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/lake_winter__so_a91088d980f74101b82ddc92.mp3",
+     "holes": 0,
+     "intro_db": 2.2,
+     "late_soft": 0,
+     "low120": 0.3,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.164,
+     "r999": 4190,
+     "score": 65.23,
+     "seam": 0.926,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "marked": {
   "chosen": "so_e07bba4d2fba4b419c8e88b6",
   "kind": "music",
@@ -3438,38 +3914,84 @@
   ]
  },
  "marsh": {
-  "chosen": "so_5b7b1d3f2f154f3ab449371d",
+  "chosen": "so_ec9f8a85a292442a9d5a8555",
+  "kind": "music",
+  "note": "",
+  "previous": [
+   {
+    "chosen": "so_5b7b1d3f2f154f3ab449371d",
+    "versions": [
+     "so_9672bfa1602c4306ad923a0d",
+     "so_5b7b1d3f2f154f3ab449371d"
+    ]
+   }
+  ],
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/marsh__so_ec9f8a85a292442a9d5a8555.mp3",
+    "id": "so_ec9f8a85a292442a9d5a8555",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/marsh__so_ec9f8a85a292442a9d5a8555.mp3",
+     "holes": 0,
+     "intro_db": 5.8,
+     "late_soft": 0,
+     "low120": 0.56,
+     "lvl_diff": 4.300000190734863,
+     "peak": 1.371,
+     "r999": 9273,
+     "score": 91.64,
+     "seam": 0.981,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/marsh__so_8ac4fb59bc284eab9da4d60b.mp3",
+    "id": "so_8ac4fb59bc284eab9da4d60b",
+    "page": "",
+    "score": {
+     "dur": 146.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/marsh__so_8ac4fb59bc284eab9da4d60b.mp3",
+     "holes": 0,
+     "intro_db": 4.8,
+     "late_soft": 0,
+     "low120": 0.54,
+     "lvl_diff": 4.5,
+     "peak": 1.291,
+     "r999": 7834,
+     "score": 90.6,
+     "seam": 0.974,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "marsh_2": {
+  "chosen": "so_8ac4fb59bc284eab9da4d60b",
   "kind": "music",
   "note": "",
   "versions": [
    {
-    "file": "/home/claude/work/ace_raw/marsh__so_9672bfa1602c4306ad923a0d.mp3",
-    "id": "so_9672bfa1602c4306ad923a0d",
-    "page": "https://acemusic.ai/song/gd9xnkqvygst",
+    "file": "/home/claude/work/ace_raw/marsh_2__so_8ac4fb59bc284eab9da4d60b.mp3",
+    "id": "so_8ac4fb59bc284eab9da4d60b",
+    "page": "",
     "score": {
-     "dur": 146.2,
-     "fade": 16.1,
-     "file": "/home/claude/work/ace_raw/marsh__so_9672bfa1602c4306ad923a0d.mp3",
-     "holes": 0,
-     "lvl_diff": 0.4000000059604645,
-     "peak": 1.227,
-     "score": 49.96,
-     "seam": 0.828
-    }
-   },
-   {
-    "file": "/home/claude/work/ace_raw/marsh__so_5b7b1d3f2f154f3ab449371d.mp3",
-    "id": "so_5b7b1d3f2f154f3ab449371d",
-    "page": "https://acemusic.ai/song/nqwz68awwj5r",
-    "score": {
-     "dur": 147.7,
+     "dur": 146.5,
      "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/marsh__so_5b7b1d3f2f154f3ab449371d.mp3",
+     "file": "/home/claude/work/ace_raw/marsh__so_8ac4fb59bc284eab9da4d60b.mp3",
      "holes": 0,
-     "lvl_diff": 8.300000190734863,
-     "peak": 1.113,
-     "score": 64.85,
-     "seam": 0.773
+     "intro_db": 4.8,
+     "late_soft": 0,
+     "low120": 0.54,
+     "lvl_diff": 4.5,
+     "peak": 1.291,
+     "r999": 7834,
+     "score": 90.6,
+     "seam": 0.974,
+     "soft": 0
     }
    }
   ]
@@ -3557,6 +4079,107 @@
    }
   ]
  },
+ "meadow_fall": {
+  "chosen": "so_89fde07a117f433d8a500f5b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/meadow_fall__so_89fde07a117f433d8a500f5b.mp3",
+    "id": "so_89fde07a117f433d8a500f5b",
+    "page": "",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_fall__so_89fde07a117f433d8a500f5b.mp3",
+     "holes": 0,
+     "intro_db": 1.3,
+     "late_soft": 0,
+     "low120": 0.5,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.364,
+     "r999": 8266,
+     "score": 93.35,
+     "seam": 0.972,
+     "soft": 1
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/meadow_fall__so_f6ec74de03c74492816ed56e.mp3",
+    "id": "so_f6ec74de03c74492816ed56e",
+    "page": "",
+    "score": {
+     "dur": 145.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_fall__so_f6ec74de03c74492816ed56e.mp3",
+     "holes": 0,
+     "intro_db": 3.4,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 4.5,
+     "peak": 1.163,
+     "r999": 8275,
+     "score": 87.61,
+     "seam": 0.943,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "meadow_fall_2": {
+  "chosen": "so_f6ec74de03c74492816ed56e",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/meadow_fall_2__so_f6ec74de03c74492816ed56e.mp3",
+    "id": "so_f6ec74de03c74492816ed56e",
+    "page": "",
+    "score": {
+     "dur": 145.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_fall__so_f6ec74de03c74492816ed56e.mp3",
+     "holes": 0,
+     "intro_db": 3.4,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 4.5,
+     "peak": 1.163,
+     "r999": 8275,
+     "score": 87.61,
+     "seam": 0.943,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "meadow_fall_gang": {
+  "chosen": "so_254acc01f98c4abb8060434f",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/meadow_fall_gang__so_254acc01f98c4abb8060434f.mp3",
+    "id": "so_254acc01f98c4abb8060434f",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/forest_fall_gang__so_254acc01f98c4abb8060434f.mp3",
+     "holes": 0,
+     "intro_db": 3.6,
+     "late_soft": 0,
+     "low120": 0.62,
+     "lvl_diff": 4.0,
+     "peak": 1.353,
+     "r999": 9800,
+     "score": 77.55,
+     "seam": 0.985,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "meadow_gang": {
   "chosen": "so_b4a35532bffe4c85ade0cc7f",
   "kind": "music",
@@ -3579,6 +4202,80 @@
      "r999": 9122,
      "score": 73.45,
      "seam": 0.979,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "meadow_winter": {
+  "chosen": "so_041ea613d76a421dabb022bc",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/meadow_winter__so_041ea613d76a421dabb022bc.mp3",
+    "id": "so_041ea613d76a421dabb022bc",
+    "page": "",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_winter__so_041ea613d76a421dabb022bc.mp3",
+     "holes": 0,
+     "intro_db": 3.8,
+     "late_soft": 0,
+     "low120": 0.26,
+     "lvl_diff": 0.20000000298023224,
+     "peak": 1.123,
+     "r999": 9283,
+     "score": 92.91,
+     "seam": 0.932,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/meadow_winter__so_359f3e03f71e445ca02fb483.mp3",
+    "id": "so_359f3e03f71e445ca02fb483",
+    "page": "",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_winter__so_359f3e03f71e445ca02fb483.mp3",
+     "holes": 0,
+     "intro_db": 2.4,
+     "late_soft": 0,
+     "low120": 0.28,
+     "lvl_diff": 2.5999999046325684,
+     "peak": 1.076,
+     "r999": 6962,
+     "score": 91.55,
+     "seam": 0.954,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "meadow_winter_2": {
+  "chosen": "so_359f3e03f71e445ca02fb483",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/meadow_winter_2__so_359f3e03f71e445ca02fb483.mp3",
+    "id": "so_359f3e03f71e445ca02fb483",
+    "page": "",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/meadow_winter__so_359f3e03f71e445ca02fb483.mp3",
+     "holes": 0,
+     "intro_db": 2.4,
+     "late_soft": 0,
+     "low120": 0.28,
+     "lvl_diff": 2.5999999046325684,
+     "peak": 1.076,
+     "r999": 6962,
+     "score": 91.55,
+     "seam": 0.954,
      "soft": 0
     }
    }
@@ -4015,33 +4712,6 @@
      "peak": 1.271,
      "score": 69.65,
      "seam": 0.805
-    }
-   }
-  ]
- },
- "mega_gloam_moonpool_2": {
-  "chosen": "so_12b73028a52b44f3a5a8e8f6",
-  "kind": "music",
-  "note": "",
-  "versions": [
-   {
-    "file": "/home/claude/work/ace_raw/mega_gloam_moonpool_2__so_12b73028a52b44f3a5a8e8f6.mp3",
-    "id": "so_12b73028a52b44f3a5a8e8f6",
-    "page": "https://acemusic.ai/song/hrge9xuatafx",
-    "score": {
-     "dur": 113.7,
-     "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/mega_gloam_moonpool_2__so_12b73028a52b44f3a5a8e8f6.mp3",
-     "holes": 0,
-     "intro_db": 5.8,
-     "late_soft": 0,
-     "low120": 0.35,
-     "lvl_diff": 5.599999904632568,
-     "peak": 1.27,
-     "r999": 1979,
-     "score": 35.6,
-     "seam": 0.84,
-     "soft": 0
     }
    }
   ]
@@ -4611,6 +5281,53 @@
    }
   ]
  },
+ "morning": {
+  "chosen": "so_c12601f0fc3349839ffcd9db",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/morning__so_c12601f0fc3349839ffcd9db.mp3",
+    "id": "so_c12601f0fc3349839ffcd9db",
+    "page": "",
+    "score": {
+     "dur": 142.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/morning__so_c12601f0fc3349839ffcd9db.mp3",
+     "holes": 0,
+     "intro_db": 0.0,
+     "late_soft": 1,
+     "low120": 0.16,
+     "lvl_diff": 4.300000190734863,
+     "peak": 1.056,
+     "r999": 9044,
+     "score": 73.21,
+     "seam": 0.877,
+     "soft": 1
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/morning__so_3ad730bd17b1404da9d029e6.mp3",
+    "id": "so_3ad730bd17b1404da9d029e6",
+    "page": "",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/morning__so_3ad730bd17b1404da9d029e6.mp3",
+     "holes": 0,
+     "intro_db": 1.2,
+     "late_soft": 1,
+     "low120": 0.12,
+     "lvl_diff": 0.6000000238418579,
+     "peak": 1.148,
+     "r999": 4994,
+     "score": 59.04,
+     "seam": 0.929,
+     "soft": 1
+    }
+   }
+  ]
+ },
  "mountain": {
   "chosen": "so_3eb149ef91e14ac29576aa8c",
   "kind": "music",
@@ -4648,6 +5365,80 @@
    }
   ]
  },
+ "mountain_fall": {
+  "chosen": "so_f4403252b7014ba49e77ce1e",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mountain_fall__so_f4403252b7014ba49e77ce1e.mp3",
+    "id": "so_f4403252b7014ba49e77ce1e",
+    "page": "",
+    "score": {
+     "dur": 144.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mountain_fall__so_f4403252b7014ba49e77ce1e.mp3",
+     "holes": 0,
+     "intro_db": 5.0,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 4.099999904632568,
+     "peak": 1.076,
+     "r999": 8767,
+     "score": 88.57,
+     "seam": 0.948,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mountain_fall__so_6c19bdadfd5343958daa60b3.mp3",
+    "id": "so_6c19bdadfd5343958daa60b3",
+    "page": "",
+    "score": {
+     "dur": 145.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mountain_fall__so_6c19bdadfd5343958daa60b3.mp3",
+     "holes": 0,
+     "intro_db": 15.1,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 13.0,
+     "peak": 1.208,
+     "r999": 9839,
+     "score": 71.02,
+     "seam": 0.95,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "mountain_fall_2": {
+  "chosen": "so_6c19bdadfd5343958daa60b3",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mountain_fall_2__so_6c19bdadfd5343958daa60b3.mp3",
+    "id": "so_6c19bdadfd5343958daa60b3",
+    "page": "",
+    "score": {
+     "dur": 145.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mountain_fall__so_6c19bdadfd5343958daa60b3.mp3",
+     "holes": 0,
+     "intro_db": 15.1,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 13.0,
+     "peak": 1.208,
+     "r999": 9839,
+     "score": 71.02,
+     "seam": 0.95,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "mountain_gang": {
   "chosen": "so_277648162bfe41748ec237d5",
   "kind": "music",
@@ -4671,6 +5462,53 @@
      "score": 71.85,
      "seam": 0.971,
      "soft": 1
+    }
+   }
+  ]
+ },
+ "mountain_winter": {
+  "chosen": "so_37516c9ef06d46b186eb666d",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mountain_winter__so_37516c9ef06d46b186eb666d.mp3",
+    "id": "so_37516c9ef06d46b186eb666d",
+    "page": "",
+    "score": {
+     "dur": 145.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mountain_winter__so_37516c9ef06d46b186eb666d.mp3",
+     "holes": 0,
+     "intro_db": 13.5,
+     "late_soft": 1,
+     "low120": 0.59,
+     "lvl_diff": 9.600000381469727,
+     "peak": 1.087,
+     "r999": 10294,
+     "score": 65.5,
+     "seam": 0.917,
+     "soft": 1
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mountain_winter__so_bad7b254d8b240f1bc28a86d.mp3",
+    "id": "so_bad7b254d8b240f1bc28a86d",
+    "page": "",
+    "score": {
+     "dur": 143.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mountain_winter__so_bad7b254d8b240f1bc28a86d.mp3",
+     "holes": 0,
+     "intro_db": 7.8,
+     "late_soft": 2,
+     "low120": 0.65,
+     "lvl_diff": 1.100000023841858,
+     "peak": 1.157,
+     "r999": 8655,
+     "score": 52.74,
+     "seam": 0.862,
+     "soft": 2
     }
    }
   ]
@@ -4734,6 +5572,53 @@
      "r999": 10086,
      "score": 79.06,
      "seam": 0.986,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "neon_night": {
+  "chosen": "so_6685f7569d944294ad4abe69",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/neon_night__so_6685f7569d944294ad4abe69.mp3",
+    "id": "so_6685f7569d944294ad4abe69",
+    "page": "",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/neon_night__so_6685f7569d944294ad4abe69.mp3",
+     "holes": 0,
+     "intro_db": 9.6,
+     "late_soft": 0,
+     "low120": 0.58,
+     "lvl_diff": 10.399999618530273,
+     "peak": 1.394,
+     "r999": 10293,
+     "score": 62.3,
+     "seam": 0.797,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/neon_night__so_bac4a7d247ee46a588e1ba5c.mp3",
+    "id": "so_bac4a7d247ee46a588e1ba5c",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/neon_night__so_bac4a7d247ee46a588e1ba5c.mp3",
+     "holes": 0,
+     "intro_db": 12.8,
+     "late_soft": 0,
+     "low120": 0.7,
+     "lvl_diff": 12.899999618530273,
+     "peak": 1.474,
+     "r999": 10098,
+     "score": 51.08,
+     "seam": 0.888,
      "soft": 0
     }
    }
@@ -4860,6 +5745,201 @@
      "r999": 3261,
      "score": 34.76,
      "seam": 0.802,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "night_summer": {
+  "chosen": "so_2355895065f0455e866a43b1",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/night_summer__so_2355895065f0455e866a43b1.mp3",
+    "id": "so_2355895065f0455e866a43b1",
+    "page": "",
+    "score": {
+     "dur": 145.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/night_summer__so_2355895065f0455e866a43b1.mp3",
+     "holes": 0,
+     "intro_db": 0.9,
+     "late_soft": 0,
+     "low120": 0.38,
+     "lvl_diff": 1.600000023841858,
+     "peak": 1.188,
+     "r999": 7311,
+     "score": 90.74,
+     "seam": 0.931,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/night_summer__so_acece767ac89458aba22943b.mp3",
+    "id": "so_acece767ac89458aba22943b",
+    "page": "",
+    "score": {
+     "dur": 146.5,
+     "fade": 8.3,
+     "file": "/home/claude/work/ace_raw/night_summer__so_acece767ac89458aba22943b.mp3",
+     "holes": 0,
+     "intro_db": 3.1,
+     "late_soft": 0,
+     "low120": 0.38,
+     "lvl_diff": 9.600000381469727,
+     "peak": 1.33,
+     "r999": 1571,
+     "score": 23.82,
+     "seam": 0.948,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "night_winter": {
+  "chosen": "so_88ea22291d084405a8b32bd3",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/night_winter__so_88ea22291d084405a8b32bd3.mp3",
+    "id": "so_88ea22291d084405a8b32bd3",
+    "page": "",
+    "score": {
+     "dur": 144.2,
+     "fade": 6.1,
+     "file": "/home/claude/work/ace_raw/night_winter__so_88ea22291d084405a8b32bd3.mp3",
+     "holes": 0,
+     "intro_db": 5.5,
+     "late_soft": 0,
+     "low120": 0.34,
+     "lvl_diff": 6.199999809265137,
+     "peak": 1.186,
+     "r999": 7892,
+     "score": 69.65,
+     "seam": 0.911,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/night_winter__so_99bca08abd184db494568d11.mp3",
+    "id": "so_99bca08abd184db494568d11",
+    "page": "",
+    "score": {
+     "dur": 143.0,
+     "fade": 4.7,
+     "file": "/home/claude/work/ace_raw/night_winter__so_99bca08abd184db494568d11.mp3",
+     "holes": 0,
+     "intro_db": 7.9,
+     "late_soft": 0,
+     "low120": 0.24,
+     "lvl_diff": 1.2999999523162842,
+     "peak": 1.257,
+     "r999": 8154,
+     "score": 64.32,
+     "seam": 0.766,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "night_winter_2": {
+  "chosen": "so_99bca08abd184db494568d11",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/night_winter_2__so_99bca08abd184db494568d11.mp3",
+    "id": "so_99bca08abd184db494568d11",
+    "page": "",
+    "score": {
+     "dur": 143.0,
+     "fade": 4.7,
+     "file": "/home/claude/work/ace_raw/night_winter__so_99bca08abd184db494568d11.mp3",
+     "holes": 0,
+     "intro_db": 7.9,
+     "late_soft": 0,
+     "low120": 0.24,
+     "lvl_diff": 1.2999999523162842,
+     "peak": 1.257,
+     "r999": 8154,
+     "score": 64.32,
+     "seam": 0.766,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "night_winter_gang": {
+  "chosen": "so_5456989509a3495284c5d7cc",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/night_winter_gang__so_5456989509a3495284c5d7cc.mp3",
+    "id": "so_5456989509a3495284c5d7cc",
+    "page": "",
+    "score": {
+     "dur": 147.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/night_winter_gang__so_5456989509a3495284c5d7cc.mp3",
+     "holes": 0,
+     "intro_db": 0.9,
+     "late_soft": 0,
+     "low120": 0.42,
+     "lvl_diff": 0.800000011920929,
+     "peak": 1.286,
+     "r999": 7635,
+     "score": 88.51,
+     "seam": 0.897,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/night_winter_gang__so_2de22007982342b2b047952b.mp3",
+    "id": "so_2de22007982342b2b047952b",
+    "page": "",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/night_winter_gang__so_2de22007982342b2b047952b.mp3",
+     "holes": 0,
+     "intro_db": 4.8,
+     "late_soft": 0,
+     "low120": 0.45,
+     "lvl_diff": 5.800000190734863,
+     "peak": 1.114,
+     "r999": 6917,
+     "score": 83.78,
+     "seam": 0.925,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "night_winter_gang_2": {
+  "chosen": "so_2de22007982342b2b047952b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/night_winter_gang_2__so_2de22007982342b2b047952b.mp3",
+    "id": "so_2de22007982342b2b047952b",
+    "page": "",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/night_winter_gang__so_2de22007982342b2b047952b.mp3",
+     "holes": 0,
+     "intro_db": 4.8,
+     "late_soft": 0,
+     "low120": 0.45,
+     "lvl_diff": 5.800000190734863,
+     "peak": 1.114,
+     "r999": 6917,
+     "score": 83.78,
+     "seam": 0.925,
      "soft": 0
     }
    }
@@ -4999,6 +6079,80 @@
      "score": 73.34,
      "seam": 0.996,
      "soft": 1
+    }
+   }
+  ]
+ },
+ "outskirts_night": {
+  "chosen": "so_3d9795b881c14168a3e2f98d",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/outskirts_night__so_3d9795b881c14168a3e2f98d.mp3",
+    "id": "so_3d9795b881c14168a3e2f98d",
+    "page": "",
+    "score": {
+     "dur": 148.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/outskirts_night__so_3d9795b881c14168a3e2f98d.mp3",
+     "holes": 0,
+     "intro_db": 5.1,
+     "late_soft": 0,
+     "low120": 0.67,
+     "lvl_diff": 3.0,
+     "peak": 1.397,
+     "r999": 10220,
+     "score": 77.98,
+     "seam": 0.994,
+     "soft": 1
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/outskirts_night__so_1145cf3dea054f6a96961823.mp3",
+    "id": "so_1145cf3dea054f6a96961823",
+    "page": "",
+    "score": {
+     "dur": 146.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/outskirts_night__so_1145cf3dea054f6a96961823.mp3",
+     "holes": 0,
+     "intro_db": 0.5,
+     "late_soft": 1,
+     "low120": 0.62,
+     "lvl_diff": 1.7000000476837158,
+     "peak": 1.396,
+     "r999": 9381,
+     "score": 67.27,
+     "seam": 0.969,
+     "soft": 3
+    }
+   }
+  ]
+ },
+ "outskirts_night_2": {
+  "chosen": "so_1145cf3dea054f6a96961823",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/outskirts_night_2__so_1145cf3dea054f6a96961823.mp3",
+    "id": "so_1145cf3dea054f6a96961823",
+    "page": "",
+    "score": {
+     "dur": 146.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/outskirts_night__so_1145cf3dea054f6a96961823.mp3",
+     "holes": 0,
+     "intro_db": 0.5,
+     "late_soft": 1,
+     "low120": 0.62,
+     "lvl_diff": 1.7000000476837158,
+     "peak": 1.396,
+     "r999": 9381,
+     "score": 67.27,
+     "seam": 0.969,
+     "soft": 3
     }
    }
   ]
@@ -5151,7 +6305,7 @@
   ]
  },
  "rain": {
-  "chosen": "so_92fcbbe5fe13420bb80577de",
+  "chosen": "so_9a3504eb701640afbb2df7cb",
   "kind": "music",
   "note": "",
   "previous": [
@@ -5161,47 +6315,81 @@
      "so_50a8f34d746d4efaa09f9913",
      "so_6c90fad98d6249999392be17"
     ]
+   },
+   {
+    "chosen": "so_92fcbbe5fe13420bb80577de",
+    "versions": [
+     "so_699b439718e1448ebf7b0eb5",
+     "so_92fcbbe5fe13420bb80577de"
+    ]
    }
   ],
   "versions": [
    {
-    "file": "/home/claude/work/ace_raw/rain__so_699b439718e1448ebf7b0eb5.mp3",
-    "id": "so_699b439718e1448ebf7b0eb5",
-    "page": "https://acemusic.ai/song/dxmb3zfsaqvu",
+    "file": "/home/claude/work/ace_raw/rain__so_9a3504eb701640afbb2df7cb.mp3",
+    "id": "so_9a3504eb701640afbb2df7cb",
+    "page": "",
     "score": {
-     "dur": 142.2,
+     "dur": 143.2,
      "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/rain__so_699b439718e1448ebf7b0eb5.mp3",
+     "file": "/home/claude/work/ace_raw/rain__so_9a3504eb701640afbb2df7cb.mp3",
      "holes": 0,
-     "intro_db": 6.8,
-     "late_soft": 1,
-     "low120": 0.42,
-     "lvl_diff": 4.5,
-     "peak": 1.215,
-     "r999": 1988,
-     "score": 12.37,
-     "seam": 0.815,
-     "soft": 8
+     "intro_db": 3.8,
+     "late_soft": 0,
+     "low120": 0.3,
+     "lvl_diff": 1.0,
+     "peak": 1.241,
+     "r999": 8363,
+     "score": 87.85,
+     "seam": 0.894,
+     "soft": 0
     }
    },
    {
-    "file": "/home/claude/work/ace_raw/rain__so_92fcbbe5fe13420bb80577de.mp3",
-    "id": "so_92fcbbe5fe13420bb80577de",
-    "page": "https://acemusic.ai/song/y7xdgde87bp8",
+    "file": "/home/claude/work/ace_raw/rain__so_fbfa8dfef4a649af9aef4af9.mp3",
+    "id": "so_fbfa8dfef4a649af9aef4af9",
+    "page": "",
     "score": {
-     "dur": 141.5,
-     "fade": 1.8,
-     "file": "/home/claude/work/ace_raw/rain__so_92fcbbe5fe13420bb80577de.mp3",
+     "dur": 147.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/rain__so_fbfa8dfef4a649af9aef4af9.mp3",
      "holes": 0,
-     "intro_db": 7.3,
+     "intro_db": 5.1,
      "late_soft": 1,
-     "low120": 0.38,
-     "lvl_diff": 0.10000000149011612,
-     "peak": 1.269,
-     "r999": 2641,
-     "score": 26.08,
-     "seam": 0.805,
-     "soft": 2
+     "low120": 0.48,
+     "lvl_diff": 5.599999904632568,
+     "peak": 1.337,
+     "r999": 9155,
+     "score": 77.98,
+     "seam": 0.943,
+     "soft": 1
+    }
+   }
+  ]
+ },
+ "rain_2": {
+  "chosen": "so_fbfa8dfef4a649af9aef4af9",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/rain_2__so_fbfa8dfef4a649af9aef4af9.mp3",
+    "id": "so_fbfa8dfef4a649af9aef4af9",
+    "page": "",
+    "score": {
+     "dur": 147.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/rain__so_fbfa8dfef4a649af9aef4af9.mp3",
+     "holes": 0,
+     "intro_db": 5.1,
+     "late_soft": 1,
+     "low120": 0.48,
+     "lvl_diff": 5.599999904632568,
+     "peak": 1.337,
+     "r999": 9155,
+     "score": 77.98,
+     "seam": 0.943,
+     "soft": 1
     }
    }
   ]
@@ -5595,6 +6783,80 @@
    }
   ]
  },
+ "storm": {
+  "chosen": "so_03cffc0d0ec04c9cbb7e88ba",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/storm__so_03cffc0d0ec04c9cbb7e88ba.mp3",
+    "id": "so_03cffc0d0ec04c9cbb7e88ba",
+    "page": "",
+    "score": {
+     "dur": 144.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/storm__so_03cffc0d0ec04c9cbb7e88ba.mp3",
+     "holes": 0,
+     "intro_db": 7.6,
+     "late_soft": 0,
+     "low120": 0.6,
+     "lvl_diff": 5.300000190734863,
+     "peak": 1.159,
+     "r999": 7651,
+     "score": 76.85,
+     "seam": 0.855,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/storm__so_8b22b8c16604472094d73098.mp3",
+    "id": "so_8b22b8c16604472094d73098",
+    "page": "",
+    "score": {
+     "dur": 142.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/storm__so_8b22b8c16604472094d73098.mp3",
+     "holes": 0,
+     "intro_db": 10.2,
+     "late_soft": 0,
+     "low120": 0.66,
+     "lvl_diff": 7.800000190734863,
+     "peak": 1.123,
+     "r999": 7469,
+     "score": 68.98,
+     "seam": 0.978,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "storm_2": {
+  "chosen": "so_8b22b8c16604472094d73098",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/storm_2__so_8b22b8c16604472094d73098.mp3",
+    "id": "so_8b22b8c16604472094d73098",
+    "page": "",
+    "score": {
+     "dur": 142.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/storm__so_8b22b8c16604472094d73098.mp3",
+     "holes": 0,
+     "intro_db": 10.2,
+     "late_soft": 0,
+     "low120": 0.66,
+     "lvl_diff": 7.800000190734863,
+     "peak": 1.123,
+     "r999": 7469,
+     "score": 68.98,
+     "seam": 0.978,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "title": {
   "chosen": "upload_title",
   "kind": "music",
@@ -5727,6 +6989,80 @@
    }
   ]
  },
+ "town_fall": {
+  "chosen": "so_d5c9d2a697334a699c6aa9e8",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/town_fall__so_d5c9d2a697334a699c6aa9e8.mp3",
+    "id": "so_d5c9d2a697334a699c6aa9e8",
+    "page": "",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_fall__so_d5c9d2a697334a699c6aa9e8.mp3",
+     "holes": 0,
+     "intro_db": 6.1,
+     "late_soft": 0,
+     "low120": 0.32,
+     "lvl_diff": 4.199999809265137,
+     "peak": 1.228,
+     "r999": 8295,
+     "score": 89.27,
+     "seam": 0.956,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/town_fall__so_8d32f3d613844ae9a3456099.mp3",
+    "id": "so_8d32f3d613844ae9a3456099",
+    "page": "",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_fall__so_8d32f3d613844ae9a3456099.mp3",
+     "holes": 0,
+     "intro_db": 4.7,
+     "late_soft": 0,
+     "low120": 0.28,
+     "lvl_diff": 3.299999952316284,
+     "peak": 1.188,
+     "r999": 8228,
+     "score": 86.92,
+     "seam": 0.918,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "town_fall_2": {
+  "chosen": "so_8d32f3d613844ae9a3456099",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/town_fall_2__so_8d32f3d613844ae9a3456099.mp3",
+    "id": "so_8d32f3d613844ae9a3456099",
+    "page": "",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_fall__so_8d32f3d613844ae9a3456099.mp3",
+     "holes": 0,
+     "intro_db": 4.7,
+     "late_soft": 0,
+     "low120": 0.28,
+     "lvl_diff": 3.299999952316284,
+     "peak": 1.188,
+     "r999": 8228,
+     "score": 86.92,
+     "seam": 0.918,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "town_gang": {
   "chosen": "so_95285d538bdc4f348d4b002b",
   "kind": "music",
@@ -5797,6 +7133,80 @@
      "score": 73.41,
      "seam": 0.976,
      "soft": 1
+    }
+   }
+  ]
+ },
+ "town_winter": {
+  "chosen": "so_1231d87a7d5e435da7d2e39a",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/town_winter__so_1231d87a7d5e435da7d2e39a.mp3",
+    "id": "so_1231d87a7d5e435da7d2e39a",
+    "page": "",
+    "score": {
+     "dur": 145.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_winter__so_1231d87a7d5e435da7d2e39a.mp3",
+     "holes": 0,
+     "intro_db": 5.7,
+     "late_soft": 0,
+     "low120": 0.49,
+     "lvl_diff": 6.900000095367432,
+     "peak": 1.184,
+     "r999": 10384,
+     "score": 81.49,
+     "seam": 0.919,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/town_winter__so_3378af41951e4bcaba57d64c.mp3",
+    "id": "so_3378af41951e4bcaba57d64c",
+    "page": "",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_winter__so_3378af41951e4bcaba57d64c.mp3",
+     "holes": 0,
+     "intro_db": 10.8,
+     "late_soft": 0,
+     "low120": 0.3,
+     "lvl_diff": 11.600000381469727,
+     "peak": 1.279,
+     "r999": 9916,
+     "score": 76.63,
+     "seam": 0.965,
+     "soft": 0
+    }
+   }
+  ]
+ },
+ "town_winter_2": {
+  "chosen": "so_3378af41951e4bcaba57d64c",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/town_winter_2__so_3378af41951e4bcaba57d64c.mp3",
+    "id": "so_3378af41951e4bcaba57d64c",
+    "page": "",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/town_winter__so_3378af41951e4bcaba57d64c.mp3",
+     "holes": 0,
+     "intro_db": 10.8,
+     "late_soft": 0,
+     "low120": 0.3,
+     "lvl_diff": 11.600000381469727,
+     "peak": 1.279,
+     "r999": 9916,
+     "score": 76.63,
+     "seam": 0.965,
+     "soft": 0
     }
    }
   ]
@@ -5894,39 +7304,105 @@
    }
   ]
  },
- "wastes": {
-  "chosen": "so_9fb3693aa95b4d4ea5b10713",
+ "uptown_night": {
+  "chosen": "so_b781ed67f44f435b9366c0ab",
   "kind": "music",
   "note": "",
   "versions": [
    {
-    "file": "/home/claude/work/ace_raw/wastes__so_9fb3693aa95b4d4ea5b10713.mp3",
-    "id": "so_9fb3693aa95b4d4ea5b10713",
-    "page": "https://acemusic.ai/song/nmxgmnpye49y",
+    "file": "/home/claude/work/ace_raw/uptown_night__so_b781ed67f44f435b9366c0ab.mp3",
+    "id": "so_b781ed67f44f435b9366c0ab",
+    "page": "",
     "score": {
-     "dur": 144.2,
+     "dur": 148.5,
      "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/wastes__so_9fb3693aa95b4d4ea5b10713.mp3",
-     "holes": 0,
-     "lvl_diff": 4.199999809265137,
-     "peak": 1.165,
-     "score": 79.26,
-     "seam": 0.855
+     "file": "/home/claude/work/ace_raw/uptown_night__so_b781ed67f44f435b9366c0ab.mp3",
+     "holes": 1,
+     "intro_db": 3.3,
+     "late_soft": 0,
+     "low120": 0.72,
+     "lvl_diff": 3.299999952316284,
+     "peak": 1.332,
+     "r999": 9319,
+     "score": 62.27,
+     "seam": 0.923,
+     "soft": 2
     }
    },
    {
-    "file": "/home/claude/work/ace_raw/wastes__so_cb61b37341204c369f29ff67.mp3",
-    "id": "so_cb61b37341204c369f29ff67",
-    "page": "https://acemusic.ai/song/y26x782pvzsk",
+    "file": "/home/claude/work/ace_raw/uptown_night__so_c0c7047c33284ca5863e0d25.mp3",
+    "id": "so_c0c7047c33284ca5863e0d25",
+    "page": "",
     "score": {
-     "dur": 147.2,
+     "dur": 149.0,
      "fade": 0.0,
-     "file": "/home/claude/work/ace_raw/wastes__so_cb61b37341204c369f29ff67.mp3",
+     "file": "/home/claude/work/ace_raw/uptown_night__so_c0c7047c33284ca5863e0d25.mp3",
+     "holes": 7,
+     "intro_db": 0.6,
+     "late_soft": 8,
+     "low120": 0.68,
+     "lvl_diff": 2.0,
+     "peak": 1.374,
+     "r999": 9334,
+     "score": -25.69,
+     "seam": 0.983,
+     "soft": 8
+    }
+   }
+  ]
+ },
+ "wastes": {
+  "chosen": "so_e8a3db03bea44a5f820371a5",
+  "kind": "music",
+  "note": "",
+  "previous": [
+   {
+    "chosen": "so_9fb3693aa95b4d4ea5b10713",
+    "versions": [
+     "so_9fb3693aa95b4d4ea5b10713",
+     "so_cb61b37341204c369f29ff67"
+    ]
+   }
+  ],
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/wastes__so_e8a3db03bea44a5f820371a5.mp3",
+    "id": "so_e8a3db03bea44a5f820371a5",
+    "page": "",
+    "score": {
+     "dur": 142.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wastes__so_e8a3db03bea44a5f820371a5.mp3",
      "holes": 0,
-     "lvl_diff": 4.599999904632568,
-     "peak": 1.171,
-     "score": 77.33,
-     "seam": 0.843
+     "intro_db": 8.4,
+     "late_soft": 0,
+     "low120": 0.55,
+     "lvl_diff": 5.099999904632568,
+     "peak": 1.251,
+     "r999": 8344,
+     "score": 87.18,
+     "seam": 0.961,
+     "soft": 0
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/wastes__so_780f10a8fee84d9c8497df9a.mp3",
+    "id": "so_780f10a8fee84d9c8497df9a",
+    "page": "",
+    "score": {
+     "dur": 142.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/wastes__so_780f10a8fee84d9c8497df9a.mp3",
+     "holes": 0,
+     "intro_db": 6.0,
+     "late_soft": 0,
+     "low120": 0.64,
+     "lvl_diff": 1.899999976158142,
+     "peak": 1.263,
+     "r999": 3641,
+     "score": 54.55,
+     "seam": 0.974,
+     "soft": 0
     }
    }
   ]
@@ -6058,6 +7534,33 @@
      "peak": 1.309,
      "score": 81.02,
      "seam": 0.831
+    }
+   }
+  ]
+ },
+ "winter_gang": {
+  "chosen": "so_4583c00e54e842498903c5c0",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/winter_gang__so_4583c00e54e842498903c5c0.mp3",
+    "id": "so_4583c00e54e842498903c5c0",
+    "page": "",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/farm_winter_gang__so_4583c00e54e842498903c5c0.mp3",
+     "holes": 1,
+     "intro_db": 1.9,
+     "late_soft": 2,
+     "low120": 0.59,
+     "lvl_diff": 0.5,
+     "peak": 1.26,
+     "r999": 8640,
+     "score": 68.98,
+     "seam": 0.918,
+     "soft": 2
     }
    }
   ]
