@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 83.1}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 44.4}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 3.7}
+{"step": 17, "name": "step 17", "rc": 0, "secs": 0.0}
+{"step": 23, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 3.2}
+{"step": 29, "name": "storage_test", "rc": 0, "secs": 3.4}
+{"step": 35, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 5.7}
+{"step": 41, "name": "rec_audio_test", "rc": 0, "secs": 3.4}
+{"step": 47, "name": "farm_look_test", "rc": 0, "secs": 5.4}
+{"step": 53, "name": "npc_anim_test", "rc": 0, "secs": 3.5}
+{"step": 59, "name": "ranch_gift_test", "rc": 0, "secs": 3.9}
+{"step": 65, "name": "town_first_test", "rc": 0, "secs": 5.3}
+{"step": 71, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 77, "name": "all ages: name filter for player-typed names (S1 P5)", "rc": 0, "secs": 3.2}
+{"step": 83, "name": "slice_c11b_chores", "rc": 0, "secs": 0.5}
+{"step": 89, "name": "ambience_test", "rc": 0, "secs": 6.4}
+{"step": 95, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 5.4}
+{"step": 101, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 9.7}
+{"step": 107, "name": "c6_cue_test", "rc": 0, "secs": 3.4}
+{"step": 113, "name": "campaign_words_test", "rc": 0, "secs": 3.8}
+{"step": 119, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 20.9}
+{"step": 125, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 10.0}
+{"step": 131, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 26.4}
+{"step": 137, "name": "rec_games_test", "rc": 0, "secs": 3.5}
+{"step": 143, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 6.0}
+{"step": 149, "name": "C11b P6: battle line-up and team jobs", "rc": 0, "secs": 3.4}
+{"step": 155, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 3.7}
+{"step": 161, "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)", "rc": 0, "secs": 12.6}
+{"step": 167, "name": "S1 P2: achievements, stats, rich presence", "rc": 0, "secs": 3.7}
+{"step": 173, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 3.5}
+{"step": 179, "name": "S1 P6: Steam store text drafts (tokens, limits, banned words, claims g", "rc": 0, "secs": 0.1}

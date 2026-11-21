@@ -1,0 +1,148 @@
+{
+ "sha": "2f84c23c464e96a6aaab385866195930a7370984",
+ "ref": "ci/c12p5-0e82ced8",
+ "run": "44879600120",
+ "finished": 1795246201.1960888,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 67,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "0e82ced8fbccecbd2e155f61f48884df622fa9c3",
+  "label": "c12p5",
+  "branch": "c12f/p5",
+  "shards": [
+   2,
+   4
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 438,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 438,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 291,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 256.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 83.1
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 44.4
+  },
+  {
+   "step": 51,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 31.7
+  },
+  {
+   "step": 87,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 27.3
+  },
+  {
+   "step": 131,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 26.4
+  },
+  {
+   "step": 119,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 20.9
+  },
+  {
+   "step": 161,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 12.6
+  },
+  {
+   "step": 21,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 12.4
+  },
+  {
+   "step": 125,
+   "name": "mega regions: map tabs, unlocks, travel",
+   "rc": 0,
+   "secs": 10.0
+  },
+  {
+   "step": 69,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 9.9
+  },
+  {
+   "step": 101,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 9.7
+  },
+  {
+   "step": 111,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 9.5
+  },
+  {
+   "step": 63,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 9.3
+  },
+  {
+   "step": 123,
+   "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)",
+   "rc": 0,
+   "secs": 6.8
+  }
+ ]
+}

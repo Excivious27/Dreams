@@ -1,0 +1,11 @@
+CONDUCT CI PASS  2f84c23c46  (ci/c12p5-0e82ced8, run 44879600120)
+
+subset run: shards [2, 4], bots off, playtest on
+check shards (2/2):
+  shard 2: PASS  438s
+  shard 4: PASS  291s
+playtest: PASS  67s  21 screenshots (results playtest/shots/)
+
+longest job: 438s
+slowest check steps: import 256.7s; import 83.1s; exits and spawns 44.4s; crop_test 31.7s; danger_music_test 27.3s; menu sweep: every menu button, both arcs (C2) 26.4s; saves: first run, slots, opening Skip, reopen at early milestones, old 20.9s; S1 P3: Steam Deck text floor (every screen at 1280x800) 12.6s
+distinct errors/fails/warns:
