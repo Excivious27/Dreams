@@ -293,6 +293,7 @@ THEME = {
     "gilt": {"trees": [], "bushes": False, "logs": False, "band": []},
 }
 BORDER_TREES = {
+    "gilt": {"mid": ["props/hedge2_tree", "props/hedge2_tree_s", "props/topiary_a"], "big": ["props/hedge2_tree", "props/city_street_tree"]},
     "gloam": {"mid": ["props/mushroom_tree_a", "props/crystal_tree_pink"], "big": ["props/mushroom_tree_b", "props/crystal_tree"]},
     "snow": {"mid": ["mid_snowpine", "mid_snowpine_b"], "big": ["big_snowpine_a", "big_snowpine_b"]},
 }
@@ -321,7 +322,7 @@ LOOKS = {
     "snow": {"ground": "grass", "ground_seam": "snow_packed", "path": "snow_trodden", "border": "trees", "season": "winter", "cliff_style": ["snow", "stair_snow"], "backdrop": "mountains", "weather": "snow",
              "gen": {"region_props": ["snowdrift_0", "snowdrift_1", "snowdrift_2", "snowdrift_3", "snowdrift_4", "snowdrift_5", "rock_snow_s", "rock_snow_m", "bush_snow", "bush_bare_snow", "stump_snow", "c14p5_frost_tuft_s", "c14p5_frost_tuft_m", "c14p5_frost_tuft_w", "c14p5_frost_reeds_a", "c14p5_frost_reeds_b", "c14p5_frost_thistle", "c14p5_snow_stone_s", "c14p5_snow_stone_m"], "region_count": 36,
                      "critters": ["eagle", "rabbit"], "critter_count": 5}},
-    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "void_color": "eef0ff", "season": "summer", "backdrop": "hills", "weather": "wind", "pet": False,
+    "sky": {"ground": "grass", "ground_seam": "cloud_top", "path": "float_stone", "border": "none", "void_color": "eef0ff", "season": "summer", "cliff_style": ["cloudstone", "stair_stone"], "backdrop": "hills", "weather": "wind", "pet": False,
             "gen": {"region_props": ["skydeco_0", "skydeco_1", "skydeco_2", "skydeco_3", "skydeco_4", "skydeco_5", "skydeco_6", "skydeco_7", "cloud_tree_a", "cloud_tree_b", "cloud_tree_c", "starflower_blue", "starflower_yellow"], "region_count": 34,
                     "critters": ["eagle", "butterfly_blue"], "critter_count": 5}},
     "gilt": {"ground": "grass", "ground_seam": "plaza_tiles", "path": "cobble_warm", "border": "cliff", "cliff_style": ["grass", "stair_iron"], "backdrop": "city", "weather": "clear",

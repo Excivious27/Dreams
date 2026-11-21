@@ -23237,6 +23237,10 @@
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
+  "cliff_style": [
+   "cloudstone",
+   "stair_stone"
+  ],
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -23675,6 +23679,10 @@
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
+  "cliff_style": [
+   "cloudstone",
+   "stair_stone"
+  ],
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -23980,6 +23988,10 @@
   "backdrop": "hills",
   "weather": "storm",
   "season": "summer",
+  "cliff_style": [
+   "cloudstone",
+   "stair_stone"
+  ],
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -24332,6 +24344,10 @@
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
+  "cliff_style": [
+   "cloudstone",
+   "stair_stone"
+  ],
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
@@ -25476,6 +25492,17 @@
     "band": []
    }
   },
+  "border_trees": {
+   "mid": [
+    "props/hedge2_tree",
+    "props/hedge2_tree_s",
+    "props/topiary_a"
+   ],
+   "big": [
+    "props/hedge2_tree",
+    "props/city_street_tree"
+   ]
+  },
   "band_style": "stone",
   "paths": [
    [
@@ -26554,6 +26581,10 @@
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
+  "cliff_style": [
+   "cloudstone",
+   "stair_stone"
+  ],
   "pet": false,
   "path_lip": "c0d0e020",
   "amb": {
