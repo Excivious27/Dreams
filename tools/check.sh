@@ -1243,3 +1243,10 @@ echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
 if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
   echo "town_props_test failed"; exit 1
 fi
+
+echo "== water_feature_test (C14b P2: smooth seamless fountain) =="
+wfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/water_feature_test.gd 2>&1)"
+echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|water_feature_test" || true
+if ! echo "$wfout" | grep -q "water_feature_test: PASS"; then
+  echo "water_feature_test failed"; exit 1
+fi
