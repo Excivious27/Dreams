@@ -164,7 +164,7 @@ static func propose_why(id: String) -> String:
 	if str(s["dating"]) != id:
 		return "not"
 	if GameState.friend_hearts(id) < int(rule("propose_hearts")):
-		return "too_soon"
+		return "too_soon_locket"  # C12 P4: the locket's own words, not the bouquet refusal
 	if int((s["dates"] as Dictionary).get(id, 0)) < int(rule("dates_needed")):
 		return "not_yet_dates"
 	if not house_ok():
@@ -312,7 +312,9 @@ static func _spouse_talk(m: GameMap, id: String) -> bool:
 		return true
 	s["talk_day"] = today
 	GameState.add_friend(id, 10)
-	await m.say(_lines([{"who": name_of(id), "text": spouse_line(id), "mood": "love" if today % 2 == 0 else "happy"}], id))
+	var bday := str((cand(id).get("spouse", {}) as Dictionary).get("birthday", ""))
+	var line := _fill(bday, id) if GameState.is_birthday(id) and bday != "" else spouse_line(id)  # C12 P4: your spouse's birthday at home
+	await m.say(_lines([{"who": name_of(id), "text": line, "mood": "love" if today % 2 == 0 else "happy"}], id))
 	if today > int(s["married_day"]) and (today - int(s["married_day"])) % 112 == 0:
 		await m.say(_lines([{"who": name_of(id), "text": "Happy anniversary, {you}. Another year. My favourite year so far.", "mood": "love"}], id))
 		GameState.add_item(str(cand(id).get("dish", "cake")), 1)

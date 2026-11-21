@@ -24,7 +24,7 @@ func _run() -> void:
 	check(GameState.with_article("Carrot", true) == "A Carrot", "A Carrot")
 	check(GameState.with_article("Wood", true) == "Some Wood", "Some Wood")
 	check(GameState.articled("A Apple! For me?", "Apple") == "An Apple! For me?", "articled fixes 'A Apple'")
-	check(GameState.articled("Oh. A Iron Ore. Thanks.", "Iron Ore") == "Oh. An Iron Ore. Thanks.", "articled mid-line")
+	check(GameState.articled("Oh. A Iron Ore. Thanks.", "Iron Ore") == "Oh. Some Iron Ore. Thanks.", "articled mid-line (ItemWords: ore is a mass noun)")
 	check(GameState.plural_name("turnip", 4) == GameState.item_name("turnip") + "s", "4 Turnips (%s)" % GameState.plural_name("turnip", 4))
 	check(GameState.plural_name("turnip", 1) == GameState.item_name("turnip"), "1 Turnip")
 	check(GameState.plural_name("wood", 9) == GameState.item_name("wood"), "Wood stays Wood")

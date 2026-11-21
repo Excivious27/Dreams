@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P4 (hearts/romance/gifts): one Mabel-father story, Sel gangster words + 'they', Tam/Sel stay for a partner (if_partner), Juniper retired as candidate, locket/house refusals, Tess heart arc, perk texts match scenes and show cash, gift tastes for ranch/arc goods/crew, gift_lines when/default/birthday_plain, no ammo gifts, ItemWords 'X of Y'; test c12_hearts_gifts_test.
+
 ## 2026-11-20 — CONDUCT S1 (Steam prep, no account): Windows/Linux builds in CI (steam-builds.yml, BootProbe), GodotSteam behind SteamSvc/SteamApi with safe no-ops, 60 achievements + title list, rich presence, Steam co-op transport (NetTransport), Deck text floor + pad typing, desktop window options, Steam Input draft, upload pipeline off, store docs/capsules/screenshots/trailer job, ratings + AI disclosure drafts, name check, docs/STEAM.md. Final CI s1i2 PASS. Steam readiness 92% done / 4% staged / 4% not started. Report docs/reports/CONDUCT-S1.md, Guide 38.
 
 ## 2026-11-20 — CONDUCT 11b (ranching part 2): 32 new creatures (8 exotics both arcs, 16 fantastic penguin, 8 lab strains gangster via the Gene Splicer), homes v2 (Enclosure, Aviary, Terrarium, Tide Pool, Ember Pit, Star Dome, Grand Barn), RanchGift earned creatures, animal shows with ribbons/medals, chores with helper spots and a nightly cap, team animal CHECK/lessons, RanchVoice, battle training fix (P7: HELPERS orders, Leave training), bot20 decor softlock fix. 183 audit findings, 7 packages, ~41 images, 0 ACE credits. Final CI c11bi4b PASS (6 shards, 20/20 bots, playtest, relay, net e2e). Report docs/reports/CONDUCT-11b.md, Guide 37. Whole game ~79%.

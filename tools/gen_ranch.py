@@ -352,7 +352,7 @@ LEGACY_MOVED = {'cow_bw_36_8': 'cow_bw_31_8'}  # spawn cells that moved before C
 # ---- processing (the stations P3 builds; listed here so recipes and quests share one table) --------------
 PROCESSING = {
     'egg': ['mayonnaise'], 'duck_egg': ['mayonnaise'], 'milk': ['cheese', 'butter'], 'goat_milk': ['goat_cheese'],
-    'sheep_wool': ['yarn'], 'rabbit_fur': ['yarn'], 'honey': ['flower_mead'], 'beeswax': ['candle'], 'truffle': ['truffle_broth'],
+    'sheep_wool': ['yarn'], 'rabbit_fur': ['yarn'], 'honey': ['flower_mead'], 'beeswax': ['beeswax_candle'], 'truffle': ['truffle_broth'],
     # C11b goods (recipes in gen_stations.py)
     'ostrich_egg': ['grand_omelette', 'giant_egg_custard'], 'emu_egg': ['grand_omelette', 'giant_egg_custard'], 'plume': ['feather_fan'],
     'peacock_feather': ['feather_fan'], 'roc_feather': ['feather_fan'], 'alpaca_fleece': ['fine_yarn'], 'yak_wool': ['fine_yarn'],

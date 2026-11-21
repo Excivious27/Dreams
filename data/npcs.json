@@ -68,7 +68,7 @@
    "4": "10% off; Maple stocks rare seeds",
    "6": "Maple sends a seed pack each season",
    "8": "20% off at the Mercantile",
-   "10": "Maple gifts a Golden Watering Can's worth of growth: 3 Growth Elixirs"
+   "10": "Maple's best row in the shop: 3 Growth Elixirs"
   },
   "home": "store",
   "work": "store",
@@ -130,7 +130,9 @@
    "ruby",
    "steel_bar",
    "chili_pot",
-   "harvest_ale"
+   "harvest_ale",
+   "crystal_battery",
+   "alloy_egg"
   ],
   "dislikes": [
    "flower",
@@ -140,9 +142,9 @@
   "perks": {
    "2": "Tool upgrades 10% cheaper",
    "4": "Tool upgrades 20% cheaper",
-   "6": "Gideon forges you a free Copper Ring",
+   "6": "Gideon's practice ring (the eleventh-year one didn't come out right): a Copper Ring",
    "8": "Upgrades 30% cheaper",
-   "10": "Gideon's last lesson: +20 max health"
+   "10": "Gideon's nail-loop thank-you, and his last lesson: +20 max health"
   },
   "home": "smith",
   "work": "smith",
@@ -207,8 +209,7 @@
    "herbal_tea"
   ],
   "dislikes": [
-   "fish",
-   "meat"
+   "fish"
   ],
   "perks": {
    "2": "Potions heal 25% more",
@@ -290,7 +291,11 @@
   "dislikes": [
    "slime_goo",
    "bone",
-   "junk"
+   "junk",
+   "bills_crude",
+   "bills_passable",
+   "bills_fine",
+   "bills_perfect"
   ],
   "perks": {
    "2": "Town records: the mayor sends a Map Scrap",
@@ -356,7 +361,9 @@
    "energy_tea",
    "fish",
    "coffee",
-   "chili_pot"
+   "chili_pot",
+   "data_chip",
+   "circuit_board"
   ],
   "dislikes": [
    "gold_bar",
@@ -495,7 +502,13 @@
    "crystal_refined",
    "#flower",
    "flower_mead",
-   "starlight_salad"
+   "starlight_salad",
+   "peacock_feather",
+   "plume",
+   "feather_fan",
+   "glow_silk",
+   "fine_fabric",
+   "star_yarn"
   ],
   "dislikes": [
    "bone",
@@ -504,9 +517,9 @@
   "perks": {
    "2": "Lumi gives you paints for your sign",
    "4": "Lumi sells you paints at cost: 3 Paint each week",
-   "6": "A portrait of you hangs in the hall (+10 max energy, you feel proud)",
+   "6": "Lumi's first sketch of you, pinned by the studio window: +10 max energy",
    "8": "Lumi teaches you to see: +10 max energy",
-   "10": "Lumi paints the Dream mural: a Dream Charm"
+   "10": "Lumi's gate painting, with your face in it: a Dream Charm"
   },
   "home": "cottage_c",
   "work": "cottage_c",
@@ -567,16 +580,17 @@
    "old_coin",
    "fossil",
    "crystal_refined",
-   "chocolate"
+   "chocolate",
+   "circuit_board",
+   "servo"
   ],
   "dislikes": [
-   "fish",
-   "meat"
+   "fish"
   ],
   "perks": {
    "2": "+5% skill XP",
    "4": "Theo lends you books: +10% skill XP",
-   "6": "Theo translates the ruin stones: 2 Memory Teas",
+   "6": "Theo reads you the miners' log: 2 Memory Teas",
    "8": "+15% skill XP",
    "10": "Theo's thesis: one free skill point in every tree"
   },
@@ -639,7 +653,10 @@
    "hay",
    "milk",
    "#veg",
-   "#grain"
+   "#grain",
+   "#milk",
+   "#egg",
+   "butter"
   ],
   "dislikes": [
    "gold_bar",
@@ -650,7 +667,7 @@
    "4": "Hazel waters your crops every other day",
    "6": "Hazel waters your crops every day",
    "8": "Hazel harvests ripe crops into your sell box",
-   "10": "Hazel's heirloom seeds: 5 Dream Seeds, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
+   "10": "Hazel's heirloom seeds: 5 Dream Seeds, the lumpy cheese, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   },
   "home": "hazel_house",
   "work": "hazel_house",
@@ -704,10 +721,17 @@
   "likes": [
    "wine",
    "cheese",
-   "meat",
    "mushroom",
    "mushroom_risotto",
-   "harvest_ale"
+   "harvest_ale",
+   "truffle",
+   "truffle_broth",
+   "goat_cheese",
+   "buffalo_mozzarella",
+   "grand_omelette",
+   "campfire_stew",
+   "kelp_wrap",
+   "chili_pot"
   ],
   "dislikes": [
    "slime_goo"
@@ -779,7 +803,12 @@
    "strawberry",
    "milk",
    "#berry",
-   "fruit_tart"
+   "fruit_tart",
+   "#egg",
+   "butter",
+   "mayonnaise",
+   "giant_egg_custard",
+   "hot_cocoa"
   ],
   "dislikes": [
    "fish",
@@ -851,11 +880,13 @@
    "tea",
    "glowcap",
    "herbal_tea",
-   "#herb"
+   "#herb",
+   "moss_tea_blend",
+   "beeswax"
   ],
   "dislikes": [
    "coffee",
-   "meat"
+   "energy_tea"
   ],
   "perks": {
    "2": "Clinic fee halved",
@@ -999,7 +1030,17 @@
    "bait",
    "toy",
    "chocolate",
-   "#berry"
+   "#berry",
+   "marshmallow",
+   "toasted_marshmallow",
+   "smore",
+   "starlight_smore",
+   "hot_cocoa",
+   "rp_penguin_plush",
+   "root_beer",
+   "cream_soda",
+   "cherry_fizz",
+   "golden_float"
   ],
   "dislikes": [
    "turnip"
@@ -1068,7 +1109,18 @@
    "candy",
    "flower",
    "bait",
-   "#berry"
+   "#berry",
+   "feather",
+   "marshmallow",
+   "toasted_marshmallow",
+   "smore",
+   "starlight_smore",
+   "hot_cocoa",
+   "rp_penguin_plush",
+   "root_beer",
+   "cream_soda",
+   "cherry_fizz",
+   "golden_float"
   ],
   "dislikes": [
    "bone"
@@ -1138,7 +1190,19 @@
    "seashell",
    "crab",
    "toy",
-   "tropical_smoothie"
+   "tropical_smoothie",
+   "duck_egg",
+   "marshmallow",
+   "toasted_marshmallow",
+   "smore",
+   "starlight_smore",
+   "hot_cocoa",
+   "rp_penguin_plush",
+   "root_beer",
+   "cream_soda",
+   "cherry_fizz",
+   "golden_float",
+   "rp_fuzzy_dice"
   ],
   "dislikes": [
    "turnip"
@@ -1208,7 +1272,18 @@
    "flower",
    "strawberry",
    "toy",
-   "berry_jam_toast"
+   "berry_jam_toast",
+   "feather",
+   "marshmallow",
+   "toasted_marshmallow",
+   "smore",
+   "starlight_smore",
+   "hot_cocoa",
+   "rp_penguin_plush",
+   "root_beer",
+   "cream_soda",
+   "cherry_fizz",
+   "golden_float"
   ],
   "dislikes": [
    "bone"
@@ -1245,7 +1320,9 @@
    "book",
    "coffee",
    "pickles",
-   "mushroom_broth"
+   "mushroom_broth",
+   "beeswax_candle",
+   "hot_cocoa"
   ],
   "dislikes": [
    "flower",
@@ -1255,7 +1332,7 @@
    "2": "Marlowe sells you lamp oil: 2 each week",
    "4": "Marlowe's charts: a Luck Potion",
    "6": "Night fishing at the lighthouse: 10 Bait each week",
-   "8": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Echo Shell",
+   "8": "Marlowe's new lens shows the east: a Moonlight Elixir, and a keepsake for your home: Echo Shell",
    "10": "Marlowe's old tackle box: 3 Luck Potions"
   },
   "home": "lighthouse",
@@ -1281,7 +1358,8 @@
    "flour",
    "bread",
    "honey",
-   "#grain"
+   "#grain",
+   "butter"
   ],
   "dislikes": [
    "slime_goo"
@@ -1345,7 +1423,8 @@
    "apple",
    "hay",
    "iron_bar",
-   "#veg"
+   "#veg",
+   "horseshoe"
   ],
   "dislikes": [
    "fish"
@@ -1406,17 +1485,24 @@
    "book",
    "tea",
    "fine_wine",
-   "chocolate"
+   "chocolate",
+   "scale_charm",
+   "ember_charm",
+   "pearl"
   ],
   "dislikes": [
    "slime_goo",
-   "bone"
+   "bone",
+   "bills_crude",
+   "bills_passable",
+   "bills_fine",
+   "bills_perfect"
   ],
   "perks": {
    "2": "Savings account: 1% interest",
    "4": "Ivy's small loan you never have to pay back: ◆400",
    "6": "2% interest",
-   "8": "Ivy's insurance: no clinic fee when you collapse",
+   "8": "The account Ivy opened in your name pays your clinic fee when you collapse",
    "10": "Ivy's vault: a Sapphire each week"
   },
   "home": "bank",
@@ -1442,14 +1528,19 @@
    "cheese",
    "sheep_wool",
    "#tree",
-   "fruit_wine"
+   "fruit_wine",
+   "yarn",
+   "fine_yarn",
+   "alpaca_fleece",
+   "yak_wool",
+   "goat_cheese"
   ],
   "dislikes": [
    "pelt"
   ],
   "perks": {
    "2": "Tam's wool: 2 each week",
-   "4": "Tam's sheepdog finds forage: 2 Tea Leaves each week",
+   "4": "The Dollys find forage on the hill: 2 Tea Leaves each week",
    "6": "Tam gives you a lamb's worth of wool: 5 Wool",
    "8": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed",
    "10": "Tam's hills: 2 Golden Apples"
@@ -1478,7 +1569,8 @@
    "glowcap",
    "tea",
    "#mushroom",
-   "mushroom_broth"
+   "mushroom_broth",
+   "shell_moss"
   ],
   "dislikes": [
    "gold_bar",
@@ -1552,10 +1644,13 @@
    "fossil",
    "moon_shard",
    "#magic",
-   "wonder_elixir"
+   "wonder_elixir",
+   "magic",
+   "star_dust",
+   "moon_fluff",
+   "aurora_tuft"
   ],
   "dislikes": [
-   "meat",
    "slime_goo"
   ],
   "perks": {
@@ -1563,7 +1658,7 @@
    "4": "+10 max mana",
    "6": "Sel opens the stone door: 2 Mana Potions",
    "8": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel",
-   "10": "Sel's staff: +20 max mana"
+   "10": "Sel's rubbing of the wall: +20 max mana"
   },
   "home": "sel_camp",
   "work": "sel_camp",
@@ -1658,11 +1753,11 @@
    "sap",
    "coffee",
    "honey",
-   "#wood"
+   "beeswax"
   ],
   "dislikes": [
    "slime_goo",
-   "trash"
+   "junk"
   ],
   "perks": {
    "2": "Tess saves you offcuts: 5 Wood each week",
