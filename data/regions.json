@@ -5956,8 +5956,6 @@
   "ground_count": 18,
   "deco_set": "rdeco_riverlands",
   "deco_count": 12,
-  "patch_set": "track",
-  "ground_threshold": 0.32,
   "deco_keep": [],
   "rivers": [
    {

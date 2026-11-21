@@ -35,7 +35,7 @@ def save(img, rel):
     img.save(p)
 
 
-DESPILL = ["r_orchard_17", "r_orchard_23", "r_orchard_48", "r_orchard_44"]
+DESPILL = ["props/r_orchard_17", "props/r_orchard_23", "props/r_orchard_48", "props/r_orchard_44", "nature/log_bench"]
 
 
 def despill():
@@ -44,15 +44,17 @@ def despill():
     same brightness (pink blossoms, where red >> blue, are left alone)."""
     import numpy as np
     for n in DESPILL:
-        p = os.path.join(GEN, "props", n + ".png")
+        p = os.path.join(GEN, n + ".png")
         a = np.array(Image.open(p).convert("RGBA")).astype(int)
         r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
         m = (al > 0) & (abs(r - b) < 45) & (np.minimum(r, b) - g > 60)
+        if n.endswith("log_bench"):
+            m = (al > 0) & (np.minimum(r, b) - g > 40)  # its whole shadow is key-magenta (c14_02-14)
         lum = (r + g + b) / 3.0
         a[..., 0] = np.where(m, lum * 0.78, r)
         a[..., 1] = np.where(m, lum * 0.56, g)
         a[..., 2] = np.where(m, lum * 0.42, b)
-        save(Image.fromarray(a.clip(0, 255).astype("uint8"), "RGBA"), "props/%s.png" % n)
+        save(Image.fromarray(a.clip(0, 255).astype("uint8"), "RGBA"), n + ".png")
         print("despill", n, int(m.sum()))
 
 
