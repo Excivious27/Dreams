@@ -884,7 +884,10 @@ func _make_crystal() -> void:
 	_crystal.draw.connect(func() -> void:
 		var c := _crystal
 		var glow := 0.5 + 0.5 * sin(_crystal_t * 2.0)
-		c.draw_circle(Vector2(0, -10), 11.0 + glow * 2.0, Color(0.6, 0.85, 1.0, 0.14 if drawn else 0.18))
+		# C14b P3 (c14b_05-13): a soft glow (stacked faint rings), not one hard flat disc.
+		var ga := 0.05 if drawn else 0.065
+		for k in 4:
+			c.draw_circle(Vector2(0, -10), (6.0 + k * 2.6) * (1.0 + glow * 0.12), Color(0.6, 0.85, 1.0, ga * (1.0 - k * 0.12)))
 		if not drawn:
 			var pts := PackedVector2Array([Vector2(0, -20), Vector2(5, -10), Vector2(0, 2), Vector2(-5, -10)])
 			c.draw_colored_polygon(pts, Color(0.75, 0.9, 1.0))
@@ -915,8 +918,8 @@ func _process(delta: float) -> void:
 	if _crystal:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
-		if int(_crystal_t * 10.0) != int((_crystal_t - delta) * 10.0):
-			_crystal.queue_redraw()  # the glow pulse at 10 Hz; the bob is a position change
+		if int(_crystal_t * 30.0) != int((_crystal_t - delta) * 30.0):
+			_crystal.queue_redraw()  # the glow pulse at 30 Hz (smooth; 10 Hz stepped, c14b_05-13); the bob is a position change
 			if _crystal_spr:
 				var dl := Dialogue.instance(get_tree())
 				var talking := dl.active and dl._who.text in ["Star Crystal", "???"] and dl._typing
