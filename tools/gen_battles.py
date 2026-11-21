@@ -600,6 +600,8 @@ POINT_NAMES = {
     ("gangsters", "*", "bf_bog_crossing"): {"a": "Bait Shack Isle", "c": "Old Boathouse", "f": "Airboat Camp"},
     ("penguins", "*", "bf_frostfield"): {"e": "Igloo Camp"},
     ("penguins", "*", "bf_ash_wastes"): {"a": "Cinder Gate"},
+    # C16b P5 (c16b_05-17): the Ember Isle finale has its own names on the ash field
+    ("penguins", "colony_ember", "bf_ash_wastes"): {"a": "Lava Bridge", "b": "Ember Market", "c": "Cinder Cone", "d": "Smoke Hollow", "e": "Cinder Cove"},
 }
 def _name_points(cfg, arc, region):
     m = dict(POINT_NAMES.get((arc, "*", cfg["field"]), {}))
@@ -761,7 +763,9 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
     _rf = campaign_field(region)
     if _rf and _rf in R:
-        fl = {a: [_rf] for a in arcs}
+        # C16b P5 (c16b_04-08): the region's own field first (it always hosts the gate),
+        # then one of the campaign's older fields, so a board is not one field throughout.
+        fl = {a: [_rf] + [f for f in fl[a] if f != _rf and f in R and B.get(f, {}).get("arc") in ("both", a)][:1] for a in arcs}
     n = SIZE[tier]
     L = _layout(n, cid)
     pools = POOL_T1 if tier <= 1 else POOL
@@ -812,7 +816,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             cfgs = {}
             for a in arcs:
                 fs = fl[a]
-                fid = fs[(i - 1) % len(fs)]
+                fid = fs[0] if last else fs[(i - 1) % len(fs)]
                 cfg = _cfg(fid, typ, pos[0], rng, name)
                 _name_points(cfg, a, region)
                 ek = _kinds(region) + [k for k in R[fid]["battle"]["enemies"] if k in EN and int(EN[k].get("hp", 0)) < 45]

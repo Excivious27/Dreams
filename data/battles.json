@@ -857,32 +857,41 @@
       "name_gangsters": "Cairn Lay-by",
       "cfg": {
        "penguins": {
-        "field": "bf_highland_pass",
+        "field": "bf_frostfield",
         "points": [
          {
-          "id": "f",
-          "name": "Pass Camp",
+          "id": "e",
+          "name": "Igloo Camp",
           "cell": [
-           54,
-           75
+           55,
+           78
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Howling Tor",
+          "id": "d",
+          "name": "Hollow Ridge",
           "cell": [
-           74,
-           51
+           56,
+           52
           ],
           "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Shepherd's Fold",
+          "id": "b",
+          "name": "Frozen Mill",
           "cell": [
-           88,
-           26
+           55,
+           30
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "c",
+          "name": "Glacier Shelf",
+          "cell": [
+           86,
+           28
           ],
           "owner": "enemy"
          }
@@ -894,32 +903,41 @@
         ]
        },
        "gangsters": {
-        "field": "bf_highland_pass",
+        "field": "bf_orchard_line",
         "points": [
          {
-          "id": "f",
-          "name": "Pass Camp",
+          "id": "e",
+          "name": "Pickup Camp",
           "cell": [
-           54,
-           75
+           52,
+           74
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Howling Tor",
+          "id": "d",
+          "name": "Pump House",
           "cell": [
-           74,
-           51
+           52,
+           50
           ],
           "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Shepherd's Fold",
+          "id": "b",
+          "name": "Windbreak Row",
           "cell": [
-           88,
-           26
+           52,
+           28
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "c",
+          "name": "Feed Store",
+          "cell": [
+           84,
+           24
           ],
           "owner": "enemy"
          }
@@ -1136,38 +1154,29 @@
       "name_gangsters": "Windy Saddle",
       "cfg": {
        "penguins": {
-        "field": "bf_highland_pass",
+        "field": "bf_frostfield",
         "points": [
          {
-          "id": "f",
-          "name": "Pass Camp",
+          "id": "e",
+          "name": "Igloo Camp",
           "cell": [
-           54,
-           75
+           55,
+           78
           ],
           "owner": "ally"
          },
          {
           "id": "b",
-          "name": "Windy Saddle",
+          "name": "Frozen Mill",
           "cell": [
-           50,
-           39
+           55,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "d",
-          "name": "Frost Ledge",
-          "cell": [
-           28,
-           58
-          ],
-          "owner": "enemy"
-         },
-         {
           "id": "a",
-          "name": "Cairn Height",
+          "name": "Aurora Rise",
           "cell": [
            24,
            26
@@ -1185,41 +1194,41 @@
         ]
        },
        "gangsters": {
-        "field": "bf_highland_pass",
+        "field": "bf_orchard_line",
         "points": [
          {
-          "id": "f",
-          "name": "Pass Camp",
+          "id": "e",
+          "name": "Pickup Camp",
           "cell": [
-           54,
-           75
+           52,
+           74
           ],
           "owner": "ally"
          },
          {
-          "id": "b",
-          "name": "Windy Saddle",
+          "id": "d",
+          "name": "Pump House",
           "cell": [
-           50,
-           39
+           52,
+           50
           ],
           "owner": "neutral"
          },
          {
-          "id": "d",
-          "name": "Frost Ledge",
+          "id": "b",
+          "name": "Windbreak Row",
           "cell": [
-           28,
-           58
+           52,
+           28
           ],
           "owner": "enemy"
          },
          {
           "id": "a",
-          "name": "Cairn Height",
+          "name": "Old Silo",
           "cell": [
-           24,
-           26
+           20,
+           24
           ],
           "owner": "enemy"
          }
@@ -1843,61 +1852,61 @@
       "name_gangsters": "Foreman's Hut",
       "cfg": {
        "penguins": {
-        "field": "bf_quarry_cut",
+        "field": "bf_shattered_vale",
         "points": [
          {
           "id": "f",
-          "name": "Rubble Gate Camp",
+          "name": "Spire Camp",
           "cell": [
-           54,
-           75
+           70,
+           84
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Crane Pit",
+          "name": "Shard Crown",
           "cell": [
-           22,
-           26
+           30,
+           29
           ],
           "owner": "enemy"
          },
          {
           "id": "b",
-          "name": "Hammer Terrace",
+          "name": "Prism Lake",
           "cell": [
-           54,
-           41
+           60,
+           42
           ],
-          "owner": "neutral"
+          "owner": "enemy",
+          "efort": true
          },
          {
           "id": "c",
-          "name": "Echo Shaft",
+          "name": "Broken Gate",
           "cell": [
-           86,
-           26
+           92,
+           32
           ],
           "owner": "enemy",
           "efort": true
          },
          {
           "id": "d",
-          "name": "Slag Hill",
+          "name": "Vale Steps",
           "cell": [
-           22,
+           60,
            60
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
-          "name": "Cutters' Steps",
+          "name": "Sunken Shrine",
           "cell": [
-           86,
-           60
+           20,
+           70
           ],
           "owner": "enemy",
           "efort": true
@@ -1913,67 +1922,57 @@
         ]
        },
        "gangsters": {
-        "field": "bf_quarry_cut",
+        "field": "bf_rail_yards",
         "points": [
          {
-          "id": "f",
-          "name": "Rubble Gate Camp",
+          "id": "e",
+          "name": "Your Boxcar",
           "cell": [
-           54,
-           75
+           56,
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Crane Pit",
+          "name": "Signal Tower",
           "cell": [
            22,
-           26
+           24
           ],
           "owner": "enemy"
          },
          {
           "id": "b",
-          "name": "Hammer Terrace",
+          "name": "Coal Depot",
           "cell": [
-           54,
-           41
+           56,
+           26
           ],
-          "owner": "neutral"
+          "owner": "enemy",
+          "efort": true
          },
          {
           "id": "c",
-          "name": "Echo Shaft",
+          "name": "Water Tower",
           "cell": [
-           86,
-           26
+           90,
+           24
           ],
           "owner": "enemy",
           "efort": true
          },
          {
           "id": "d",
-          "name": "Slag Hill",
+          "name": "Turntable",
           "cell": [
-           22,
-           60
+           56,
+           46
           ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "e",
-          "name": "Cutters' Steps",
-          "cell": [
-           86,
-           60
-          ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 190,
+        "tickets": 150,
         "enemies": [
          "thug_speedster",
          "thug_cyber",
@@ -3121,41 +3120,41 @@
       "name_gangsters": "Willow Bend",
       "cfg": {
        "penguins": {
-        "field": "bf_river_ford",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Ferry Camp",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Mill Race",
+          "id": "b",
+          "name": "Heron Causeway",
           "cell": [
-           84,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "b",
-          "name": "Weir Gate",
+          "id": "e",
+          "name": "Reed Fort",
           "cell": [
-           58,
-           28
+           86,
+           60
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "Otter Bank",
+          "name": "Drowned Mill",
           "cell": [
-           86,
-           25
+           88,
+           26
           ],
           "owner": "enemy"
          }
@@ -3167,41 +3166,41 @@
         ]
        },
        "gangsters": {
-        "field": "bf_river_ford",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Ferry Camp",
+          "name": "Airboat Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Mill Race",
+          "id": "b",
+          "name": "Heron Causeway",
           "cell": [
-           84,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "b",
-          "name": "Weir Gate",
+          "id": "e",
+          "name": "Reed Fort",
           "cell": [
-           58,
-           28
+           86,
+           60
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "Otter Bank",
+          "name": "Old Boathouse",
           "cell": [
-           86,
-           25
+           88,
+           26
           ],
           "owner": "enemy"
          }
@@ -3376,61 +3375,61 @@
       "name_gangsters": "Ford of Stones",
       "cfg": {
        "penguins": {
-        "field": "bf_river_ford",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Ferry Camp",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "North Willows",
+          "name": "Witchlight Isle",
           "cell": [
            22,
-           25
+           26
           ],
-          "owner": "enemy"
+          "owner": "enemy",
+          "efort": true
          },
          {
           "id": "b",
-          "name": "Weir Gate",
+          "name": "Heron Causeway",
           "cell": [
-           58,
-           28
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "c",
-          "name": "Otter Bank",
-          "cell": [
-           86,
-           25
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "d",
-          "name": "Ford of Stones",
-          "cell": [
-           24,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "e",
-          "name": "Mill Race",
+          "id": "c",
+          "name": "Drowned Mill",
           "cell": [
-           84,
-           57
+           88,
+           26
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "d",
+          "name": "Frog Chorus",
+          "cell": [
+           24,
+           58
+          ],
+          "owner": "enemy",
+          "efort": true
+         },
+         {
+          "id": "e",
+          "name": "Reed Fort",
+          "cell": [
+           86,
+           60
           ],
           "owner": "enemy",
           "efort": true
@@ -3445,61 +3444,61 @@
         ]
        },
        "gangsters": {
-        "field": "bf_river_ford",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Ferry Camp",
+          "name": "Airboat Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "North Willows",
+          "name": "Bait Shack Isle",
           "cell": [
            22,
-           25
+           26
           ],
-          "owner": "enemy"
+          "owner": "enemy",
+          "efort": true
          },
          {
           "id": "b",
-          "name": "Weir Gate",
+          "name": "Heron Causeway",
           "cell": [
-           58,
-           28
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "c",
-          "name": "Otter Bank",
-          "cell": [
-           86,
-           25
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "d",
-          "name": "Ford of Stones",
-          "cell": [
-           24,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "e",
-          "name": "Mill Race",
+          "id": "c",
+          "name": "Old Boathouse",
           "cell": [
-           84,
-           57
+           88,
+           26
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "d",
+          "name": "Frog Chorus",
+          "cell": [
+           24,
+           58
+          ],
+          "owner": "enemy",
+          "efort": true
+         },
+         {
+          "id": "e",
+          "name": "Reed Fort",
+          "cell": [
+           86,
+           60
           ],
           "owner": "enemy",
           "efort": true
@@ -3871,48 +3870,48 @@
       "name_gangsters": "Floodlight Court",
       "cfg": {
        "penguins": {
-        "field": "bf_ruin_court",
+        "field": "bf_shattered_vale",
         "points": [
          {
           "id": "f",
-          "name": "Broken Stair Camp",
+          "name": "Spire Camp",
           "cell": [
-           54,
-           75
+           70,
+           84
           ],
           "owner": "ally"
          },
          {
-          "id": "b",
-          "name": "Guardian Dais",
+          "id": "d",
+          "name": "Vale Steps",
           "cell": [
-           54,
-           41
+           60,
+           60
           ],
           "owner": "neutral"
          },
          {
           "id": "a",
-          "name": "West Colonnade",
+          "name": "Shard Crown",
           "cell": [
-           22,
-           26
+           30,
+           29
           ],
           "owner": "enemy"
          },
          {
-          "id": "c",
-          "name": "East Colonnade",
+          "id": "b",
+          "name": "Prism Lake",
           "cell": [
-           86,
-           26
+           60,
+           42
           ],
-          "owner": "enemy"
+          "owner": "neutral"
          }
         ],
         "convoy": [
          "f",
-         "b",
+         "d",
          "a"
         ],
         "vehicle": "wagon",
@@ -3923,48 +3922,48 @@
         ]
        },
        "gangsters": {
-        "field": "bf_ruin_court",
+        "field": "bf_ash_wastes",
         "points": [
          {
-          "id": "f",
-          "name": "Broken Stair Camp",
+          "id": "e",
+          "name": "Lantern Camp",
           "cell": [
-           54,
-           75
+           56,
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "b",
-          "name": "Guardian Dais",
+          "id": "d",
+          "name": "Dry Well",
           "cell": [
-           54,
-           41
+           56,
+           50
           ],
           "owner": "neutral"
          },
          {
           "id": "a",
-          "name": "West Colonnade",
+          "name": "Spike Gate",
           "cell": [
-           22,
-           26
+           24,
+           24
           ],
           "owner": "enemy"
          },
          {
-          "id": "c",
-          "name": "East Colonnade",
+          "id": "b",
+          "name": "Glass Dunes",
           "cell": [
-           86,
+           56,
            26
           ],
-          "owner": "enemy"
+          "owner": "neutral"
          }
         ],
         "convoy": [
-         "f",
-         "b",
+         "e",
+         "d",
          "a"
         ],
         "vehicle": "truck",
@@ -3981,8 +3980,8 @@
       "wave_every": 7.5,
       "enemy_cap": 13,
       "brief": {
-       "penguins": "Our supply crystal sled has to reach West Colonnade. Walk with it: it only rolls with friends beside it and no foes on it.",
-       "gangsters": "Our supply truck has to reach West Colonnade. Stay with it: it only rolls with the crew beside it and nobody in the way."
+       "penguins": "Our supply crystal sled has to reach Shard Crown. Walk with it: it only rolls with friends beside it and no foes on it.",
+       "gangsters": "Our supply truck has to reach Spike Gate. Stay with it: it only rolls with the crew beside it and nobody in the way."
       },
       "reward": {
        "crystals": 557,
@@ -5171,47 +5170,47 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_cloud_stair",
+        "field": "bf_frostfield",
         "points": [
          {
-          "id": "f",
-          "name": "Summit Camp",
+          "id": "e",
+          "name": "Igloo Camp",
           "cell": [
-           54,
-           75
+           55,
+           78
           ],
           "owner": "ally"
          },
          {
           "id": "d",
-          "name": "Prism Shelf",
+          "name": "Hollow Ridge",
           "cell": [
-           30,
-           51
+           56,
+           52
           ],
           "owner": "neutral"
          },
          {
           "id": "a",
-          "name": "Star Ledge",
+          "name": "Aurora Rise",
           "cell": [
-           20,
-           27
+           24,
+           26
           ],
           "owner": "enemy"
          },
          {
           "id": "b",
-          "name": "Finargle Roost",
+          "name": "Frozen Mill",
           "cell": [
-           62,
-           25
+           55,
+           30
           ],
           "owner": "neutral"
          }
         ],
         "convoy": [
-         "f",
+         "e",
          "d",
          "a"
         ],
@@ -5230,7 +5229,7 @@
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 13,
-      "brief": "Our supply crystal sled has to reach Star Ledge. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Aurora Rise. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
        "crystals": 557,
        "supply": 18,
@@ -5653,48 +5652,48 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_station_deck",
+        "field": "bf_shattered_vale",
         "points": [
          {
           "id": "f",
-          "name": "Docking Camp",
+          "name": "Spire Camp",
           "cell": [
-           54,
-           75
+           70,
+           84
           ],
           "owner": "ally"
          },
          {
-          "id": "b",
-          "name": "Reactor Ring",
+          "id": "d",
+          "name": "Vale Steps",
           "cell": [
-           54,
-           41
+           60,
+           60
           ],
           "owner": "neutral"
          },
          {
           "id": "c",
-          "name": "Solar Wing",
+          "name": "Broken Gate",
           "cell": [
-           86,
-           26
+           92,
+           32
           ],
           "owner": "enemy"
          },
          {
           "id": "a",
-          "name": "Airlock Row",
+          "name": "Shard Crown",
           "cell": [
-           22,
-           26
+           30,
+           29
           ],
           "owner": "enemy"
          }
         ],
         "convoy": [
          "f",
-         "b",
+         "d",
          "c"
         ],
         "vehicle": "wagon",
@@ -5710,7 +5709,7 @@
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 16,
-      "brief": "Our supply crystal sled has to reach Solar Wing. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Broken Gate. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
        "crystals": 810,
        "supply": 18,
@@ -5756,61 +5755,61 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_station_deck",
+        "field": "bf_shattered_vale",
         "points": [
          {
           "id": "f",
-          "name": "Docking Camp",
+          "name": "Spire Camp",
           "cell": [
-           54,
-           75
+           70,
+           84
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Airlock Row",
+          "name": "Shard Crown",
           "cell": [
-           22,
-           26
+           30,
+           29
           ],
           "owner": "enemy"
          },
          {
           "id": "b",
-          "name": "Reactor Ring",
+          "name": "Prism Lake",
           "cell": [
-           54,
-           41
+           60,
+           42
           ],
-          "owner": "neutral"
+          "owner": "enemy",
+          "efort": true
          },
          {
           "id": "c",
-          "name": "Solar Wing",
+          "name": "Broken Gate",
           "cell": [
-           86,
-           26
+           92,
+           32
           ],
           "owner": "enemy",
           "efort": true
          },
          {
           "id": "d",
-          "name": "Hydro Bay",
+          "name": "Vale Steps",
           "cell": [
-           22,
+           60,
            60
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
-          "name": "Crew Galley",
+          "name": "Sunken Shrine",
           "cell": [
-           86,
-           60
+           20,
+           70
           ],
           "owner": "enemy",
           "efort": true
@@ -6225,41 +6224,41 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_jungle_grove",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Landing Camp",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Root Temple",
+          "id": "b",
+          "name": "Heron Causeway",
           "cell": [
-           84,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "b",
-          "name": "Vine Bridge",
+          "id": "e",
+          "name": "Reed Fort",
           "cell": [
-           58,
-           28
+           86,
+           60
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "Spore Hollow",
+          "name": "Drowned Mill",
           "cell": [
-           86,
-           25
+           88,
+           26
           ],
           "owner": "enemy"
          }
@@ -6776,41 +6775,41 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_reef_shallows",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Boat Landing",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Crab Kingdom",
+          "id": "b",
+          "name": "Heron Causeway",
           "cell": [
-           84,
-           57
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "b",
-          "name": "Coral Arch",
+          "id": "e",
+          "name": "Reed Fort",
           "cell": [
-           58,
-           28
+           86,
+           60
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "Wreck Point",
+          "name": "Drowned Mill",
           "cell": [
-           86,
-           25
+           88,
+           26
           ],
           "owner": "enemy"
          }
@@ -6933,61 +6932,61 @@
       "step": 1,
       "cfg": {
        "penguins": {
-        "field": "bf_reef_shallows",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Boat Landing",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Pearl Cove",
+          "name": "Witchlight Isle",
           "cell": [
            22,
-           25
+           26
           ],
           "owner": "enemy",
           "gate": true
          },
          {
           "id": "b",
-          "name": "Coral Arch",
+          "name": "Heron Causeway",
           "cell": [
-           58,
-           28
+           54,
+           30
           ],
           "owner": "ally"
          },
          {
           "id": "c",
-          "name": "Wreck Point",
+          "name": "Drowned Mill",
           "cell": [
-           86,
-           25
+           88,
+           26
           ],
           "owner": "enemy",
           "gate": true
          },
          {
           "id": "d",
-          "name": "Tide Pools",
+          "name": "Frog Chorus",
           "cell": [
            24,
-           57
+           58
           ],
           "owner": "ally"
          },
          {
           "id": "e",
-          "name": "Crab Kingdom",
+          "name": "Reed Fort",
           "cell": [
-           84,
-           57
+           86,
+           60
           ],
           "owner": "ally"
          }
@@ -6995,7 +6994,8 @@
         "enemies": [
          "grump_coral",
          "grump_wisp",
-         "rock_crab"
+         "rock_crab",
+         "mud_slime"
         ]
        }
       },
@@ -7262,32 +7262,41 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_kelp_beds",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Driftwood Camp",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "d",
-          "name": "Bubble Field",
+          "id": "b",
+          "name": "Heron Causeway",
           "cell": [
-           30,
-           51
+           54,
+           30
           ],
           "owner": "neutral"
          },
          {
-          "id": "a",
-          "name": "Kelp Edge",
+          "id": "d",
+          "name": "Frog Chorus",
           "cell": [
-           20,
-           27
+           24,
+           58
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "a",
+          "name": "Witchlight Isle",
+          "cell": [
+           22,
+           26
           ],
           "owner": "enemy"
          }
@@ -7424,61 +7433,61 @@
       "step": 0,
       "cfg": {
        "penguins": {
-        "field": "bf_kelp_beds",
+        "field": "bf_bog_crossing",
         "points": [
          {
           "id": "f",
-          "name": "Driftwood Camp",
+          "name": "Raft Camp",
           "cell": [
            54,
-           75
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Kelp Edge",
+          "name": "Witchlight Isle",
           "cell": [
-           20,
-           27
+           22,
+           26
           ],
           "owner": "enemy",
           "gate": true
          },
          {
           "id": "b",
-          "name": "Sunken Bell",
+          "name": "Heron Causeway",
           "cell": [
-           62,
-           25
+           54,
+           30
           ],
           "owner": "ally"
          },
          {
           "id": "c",
-          "name": "Eel Narrows",
+          "name": "Drowned Mill",
           "cell": [
-           90,
-           30
+           88,
+           26
           ],
           "owner": "enemy",
           "gate": true
          },
          {
           "id": "d",
-          "name": "Bubble Field",
+          "name": "Frog Chorus",
           "cell": [
-           30,
-           51
+           24,
+           58
           ],
           "owner": "ally"
          },
          {
           "id": "e",
-          "name": "Glow Shallows",
+          "name": "Reed Fort",
           "cell": [
-           78,
-           56
+           86,
+           60
           ],
           "owner": "ally"
          }
@@ -7487,7 +7496,8 @@
          "grump_coral",
          "grump_moss",
          "grump_storm",
-         "river_serpent"
+         "river_serpent",
+         "mud_slime"
         ]
        }
       },
@@ -8381,7 +8391,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Lantern Camp",
+          "name": "Cinder Cove",
           "cell": [
            56,
            76
@@ -8390,7 +8400,7 @@
          },
          {
           "id": "d",
-          "name": "Dry Well",
+          "name": "Smoke Hollow",
           "cell": [
            56,
            50
@@ -8399,7 +8409,7 @@
          },
          {
           "id": "a",
-          "name": "Cinder Gate",
+          "name": "Lava Bridge",
           "cell": [
            24,
            24
@@ -8408,7 +8418,7 @@
          },
          {
           "id": "b",
-          "name": "Glass Dunes",
+          "name": "Ember Market",
           "cell": [
            56,
            26
@@ -8434,7 +8444,7 @@
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 19,
-      "brief": "Our supply crystal sled has to reach Cinder Gate. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Lava Bridge. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
        "crystals": 1096,
        "supply": 18,
@@ -8462,7 +8472,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Lantern Camp",
+          "name": "Cinder Cove",
           "cell": [
            56,
            76
@@ -8471,7 +8481,7 @@
          },
          {
           "id": "d",
-          "name": "Dry Well",
+          "name": "Smoke Hollow",
           "cell": [
            56,
            50
@@ -8480,7 +8490,7 @@
          },
          {
           "id": "b",
-          "name": "Glass Dunes",
+          "name": "Ember Market",
           "cell": [
            56,
            26
@@ -8489,7 +8499,7 @@
          },
          {
           "id": "c",
-          "name": "Burnt Watchtower",
+          "name": "Cinder Cone",
           "cell": [
            90,
            24
@@ -8582,7 +8592,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Lantern Camp",
+          "name": "Cinder Cove",
           "cell": [
            56,
            76
@@ -8591,7 +8601,7 @@
          },
          {
           "id": "a",
-          "name": "Cinder Gate",
+          "name": "Lava Bridge",
           "cell": [
            24,
            24
@@ -8601,7 +8611,7 @@
          },
          {
           "id": "b",
-          "name": "Glass Dunes",
+          "name": "Ember Market",
           "cell": [
            56,
            26
@@ -8611,7 +8621,7 @@
          },
          {
           "id": "c",
-          "name": "Burnt Watchtower",
+          "name": "Cinder Cone",
           "cell": [
            90,
            24
@@ -8620,7 +8630,7 @@
          },
          {
           "id": "d",
-          "name": "Dry Well",
+          "name": "Smoke Hollow",
           "cell": [
            56,
            50
@@ -8672,7 +8682,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Lantern Camp",
+          "name": "Cinder Cove",
           "cell": [
            56,
            76
@@ -8681,7 +8691,7 @@
          },
          {
           "id": "d",
-          "name": "Dry Well",
+          "name": "Smoke Hollow",
           "cell": [
            56,
            50
@@ -8690,7 +8700,7 @@
          },
          {
           "id": "b",
-          "name": "Glass Dunes",
+          "name": "Ember Market",
           "cell": [
            56,
            26
@@ -8699,7 +8709,7 @@
          },
          {
           "id": "c",
-          "name": "Burnt Watchtower",
+          "name": "Cinder Cone",
           "cell": [
            90,
            24
@@ -8751,7 +8761,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Lantern Camp",
+          "name": "Cinder Cove",
           "cell": [
            56,
            76
@@ -8760,7 +8770,7 @@
          },
          {
           "id": "a",
-          "name": "Cinder Gate",
+          "name": "Lava Bridge",
           "cell": [
            24,
            24
@@ -8770,7 +8780,7 @@
          },
          {
           "id": "b",
-          "name": "Glass Dunes",
+          "name": "Ember Market",
           "cell": [
            56,
            26
@@ -8780,7 +8790,7 @@
          },
          {
           "id": "c",
-          "name": "Burnt Watchtower",
+          "name": "Cinder Cone",
           "cell": [
            90,
            24
@@ -8790,7 +8800,7 @@
          },
          {
           "id": "d",
-          "name": "Dry Well",
+          "name": "Smoke Hollow",
           "cell": [
            56,
            50
@@ -9038,14 +9048,14 @@
       "step": 0,
       "cfg": {
        "gangsters": {
-        "field": "bf_rail_yards",
+        "field": "bf_orchard_line",
         "points": [
          {
           "id": "e",
           "name": "Motel Lot",
           "cell": [
-           56,
-           76
+           52,
+           74
           ],
           "owner": "ally"
          },
@@ -9053,25 +9063,25 @@
           "id": "d",
           "name": "Truck Stop",
           "cell": [
-           56,
-           46
+           52,
+           50
           ],
           "owner": "neutral"
          },
          {
           "id": "b",
-          "name": "Overpass",
+          "name": "Overpass Row",
           "cell": [
-           56,
-           26
+           52,
+           28
           ],
           "owner": "enemy"
          },
          {
           "id": "a",
-          "name": "Gas Station",
+          "name": "Billboard Hill",
           "cell": [
-           22,
+           20,
            24
           ],
           "owner": "enemy"
@@ -9406,41 +9416,41 @@
       "step": 0,
       "cfg": {
        "gangsters": {
-        "field": "bf_dockside",
+        "field": "bf_rail_yards",
         "points": [
          {
-          "id": "f",
-          "name": "Your Trawler",
+          "id": "e",
+          "name": "Your Boxcar",
           "cell": [
-           58,
-           82
+           56,
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "d",
-          "name": "The Breakwater",
+          "name": "Turntable",
           "cell": [
-           30,
-           62
+           56,
+           46
           ],
           "owner": "neutral"
          },
          {
           "id": "b",
-          "name": "Crane Row",
+          "name": "Coal Depot",
           "cell": [
-           58,
+           56,
            26
           ],
           "owner": "enemy"
          },
          {
           "id": "a",
-          "name": "Customs House",
+          "name": "Signal Tower",
           "cell": [
-           28,
-           26
+           22,
+           24
           ],
           "owner": "enemy"
          }
@@ -9581,41 +9591,41 @@
       "step": 1,
       "cfg": {
        "gangsters": {
-        "field": "bf_dockside",
+        "field": "bf_rail_yards",
         "points": [
          {
-          "id": "f",
-          "name": "Your Trawler",
+          "id": "e",
+          "name": "Your Boxcar",
           "cell": [
-           58,
-           82
+           56,
+           76
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Ferry Slip",
+          "id": "d",
+          "name": "Turntable",
           "cell": [
-           92,
-           66
+           56,
+           46
           ],
           "owner": "neutral"
          },
          {
           "id": "b",
-          "name": "Crane Row",
+          "name": "Coal Depot",
           "cell": [
-           58,
+           56,
            26
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "Warehouse Nine",
+          "name": "Water Tower",
           "cell": [
            90,
-           28
+           24
           ],
           "owner": "enemy"
          }
@@ -10071,29 +10081,29 @@
       "step": 0,
       "cfg": {
        "gangsters": {
-        "field": "bf_neon_block",
+        "field": "bf_rail_yards",
         "points": [
          {
-          "id": "f",
-          "name": "Getaway Van",
+          "id": "e",
+          "name": "Your Boxcar",
           "cell": [
-           52,
-           74
+           56,
+           76
           ],
           "owner": "ally"
          },
          {
           "id": "d",
-          "name": "The Overpass",
+          "name": "Turntable",
           "cell": [
-           52,
-           48
+           56,
+           46
           ],
           "owner": "neutral"
          },
          {
           "id": "a",
-          "name": "Dragon Sign",
+          "name": "Signal Tower",
           "cell": [
            22,
            24
@@ -10102,16 +10112,16 @@
          },
          {
           "id": "b",
-          "name": "Night Market",
+          "name": "Coal Depot",
           "cell": [
-           52,
+           56,
            26
           ],
           "owner": "neutral"
          }
         ],
         "convoy": [
-         "f",
+         "e",
          "d",
          "a"
         ],
@@ -10129,7 +10139,7 @@
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 13,
-      "brief": "Our supply truck has to reach Dragon Sign. Stay with it: it only rolls with the crew beside it and nobody in the way.",
+      "brief": "Our supply truck has to reach Signal Tower. Stay with it: it only rolls with the crew beside it and nobody in the way.",
       "reward": {
        "crystals": 557,
        "supply": 18,
@@ -10602,60 +10612,60 @@
       "step": 0,
       "cfg": {
        "gangsters": {
-        "field": "bf_uptown_plaza",
+        "field": "bf_neon_block",
         "points": [
          {
           "id": "f",
-          "name": "Lawn Terrace Camp",
+          "name": "Getaway Van",
           "cell": [
-           54,
-           75
+           52,
+           74
           ],
           "owner": "ally"
          },
          {
           "id": "a",
-          "name": "Gallery Steps",
+          "name": "Dragon Sign",
           "cell": [
            22,
+           24
+          ],
+          "owner": "enemy",
+          "efort": true
+         },
+         {
+          "id": "b",
+          "name": "Night Market",
+          "cell": [
+           52,
            26
+          ],
+          "owner": "enemy",
+          "efort": true
+         },
+         {
+          "id": "c",
+          "name": "Pachinko Hall",
+          "cell": [
+           84,
+           24
           ],
           "owner": "enemy"
          },
          {
-          "id": "b",
-          "name": "Fountain Terrace",
+          "id": "d",
+          "name": "The Overpass",
           "cell": [
-           54,
-           41
+           52,
+           48
           ],
           "owner": "neutral"
          },
          {
-          "id": "c",
-          "name": "Glass Atrium",
-          "cell": [
-           86,
-           26
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "d",
-          "name": "Valet Ramp",
-          "cell": [
-           22,
-           60
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
           "id": "e",
-          "name": "Tower Gardens",
+          "name": "Laundromat Lot",
           "cell": [
-           86,
+           20,
            60
           ],
           "owner": "enemy",
@@ -11199,41 +11209,41 @@
       "step": 0,
       "cfg": {
        "gangsters": {
-        "field": "bf_sewer_works",
+        "field": "bf_neon_block",
         "points": [
          {
           "id": "f",
-          "name": "Manhole Camp",
+          "name": "Getaway Van",
           "cell": [
-           54,
-           75
+           52,
+           74
           ],
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Sluice Gate",
+          "id": "d",
+          "name": "The Overpass",
           "cell": [
-           84,
-           57
+           52,
+           48
           ],
           "owner": "neutral"
          },
          {
           "id": "b",
-          "name": "Pump Room",
+          "name": "Night Market",
           "cell": [
-           58,
-           28
+           52,
+           26
           ],
           "owner": "enemy"
          },
          {
           "id": "c",
-          "name": "East Outfall",
+          "name": "Pachinko Hall",
           "cell": [
-           86,
-           25
+           84,
+           24
           ],
           "owner": "enemy"
          }
