@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C17 P1 net core: router (Net.on_msg/send_host/send_peer/broadcast, seq acks, host_away/back, roster), PROTO 2 bye/host_left (room ends at once), 60 s reconnect + resume, liveness pings, coalesced host pushes + throttled host_save, world seq resync, host rejoin full resync, act validation, relay abuse limits; tests net_router_test, net_c17_test, relay_test c17Suite
+
 ## 2026-11-21 — C16b integ: P1-P5 merged; one on_win per win via Campaign.finish with Battle perf stats; rematch API; gang node names/provisions; captain boss cards; drill gang point names; brief NEW HERE and STARS rows; test tools/c16b_integ_test.gd
 
 ## 2026-11-21 — C16b P4: battle reward ladder (BattleRewards + gen_battle_rewards: stars 1-3, rank-up/rematch pay, 4 chest tiers per arc with icons, first-clear trophies, mastery pieces + legacy uniques, star track, battle bonds) and campaign board fixes (optional-battle intro, earned stars vs foe-level dots, row states, YOU WIN brief, next campaign, long way/rematch buttons, actions fit, 7 px floor).

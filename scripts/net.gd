@@ -522,7 +522,30 @@ func send_host(a: Variant, b: Variant = null) -> void:
 		_send({"t": "all", "d": d})  # the host is in the room; others ignore "act"
 
 
+var _web_t := 0.0
+var _web_coop := false
+
+
+## Web (C17): no "new version" banner mid co-op (updating drops the room), and a tab
+## coming back to the front reconnects at once. head_include.html reads/sets the flags.
+func _web_tick(delta: float) -> void:
+	if not OS.has_feature("web"):
+		return
+	_web_t += delta
+	if _web_t < 1.0:
+		return
+	_web_t = 0.0
+	var coop := online() or _retry_t > 0.0
+	if coop != _web_coop:
+		_web_coop = coop
+		JavaScriptBridge.eval("window.dreamsCoop=%s;" % ("true" if coop else "false"), true)
+	var woke: Variant = JavaScriptBridge.eval("(function(){var n=window.dreamsWoke|0;window.dreamsWoke=0;return n;})()", true)
+	if int(woke) > 0:
+		_notification(NOTIFICATION_APPLICATION_FOCUS_IN)
+
+
 func _process(delta: float) -> void:
+	_web_tick(delta)
 	if pending_lobby > 0 and not _asking:
 		_ask_pending()
 	if tr == null:
