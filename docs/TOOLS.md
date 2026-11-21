@@ -5,6 +5,7 @@ Look things up with `grep -n -i <word> docs/TOOLS.md`; never read this file whol
 Add a line here (in its area) for every new system, tool or convention; core rules stay in CLAUDE.md.
 
 ## [core] Core conventions: input, UI polling, pauses, toasts, settings, menus, haptics, display
+- [core] Light (C14 P6): mines draw a steady cool cave shade (Mine.sky_tint, deeper floors darker); Scenery OVERCAST washes for rain/fog/snow/sandstorm/ash and sun fx (rainbow, god rays, cloud shadows) only while darkness < 0.25; NightGlow.tint_of(name) colours lamp halos (neon pink/cyan, crystal colours, gangster lamps cool) via the prop() light row; GLOW_WORDS adds hearth/fireplace/forge/candle/oven/fire_pit. WorldGen.critter_pool(pool, night, winter) drops day-only/warm-only critters and adds owls/bats/fireflies at night. MineLayouts.pick_dress(style, rng, theme_name) follows THEME_DRESS/THEME_NEVER. Test tools/c14_p6_art_test.gd.
 
 - [core] Godot 4.5.1, GDScript, portrait 270×480, `canvas_items` / `keep`, nearest filter. Character strips are 2x detail, drawn at 0.5 scale (`CharacterLibrary`).
 - [core] Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
@@ -74,6 +75,8 @@ Add a line here (in its area) for every new system, tool or convention; core rul
 - [data] Goods art (slice_c8_p2): `python3 tools/slice_c8_p2.py` (art/incoming/c8/p2_goods.png -> items/reserve_ale, royal_mead, gourmet_pickles, herbal_cordial, truffle_broth, goat_cheese, duck_egg; run after the other slicers).
 
 ## [art] Art pipeline: slicers, post-steps, prompts, art audits
+- [art] `tools/make_seamless.py`: seamless() is now the Moisan periodic component (FFT Poisson; no band, no ghosts, no mid-edge stubs, safe on processed art); --check also prints `stub` (old cross-fade leftovers). slice_c14_art.py re-renders cobble_warm/grey/moss, flagstone, ballast, brick_herring (period crop) from art/incoming/c14p6 and runs it; also the 20 mg_* villager walks (walk/walk_up/idle_up/idle_side), Dark Crystal, Elder Brine + the 3 colony elders, the 12 colony kits.
+- [art] `tools/c14_art_clean.py badges|shadows|holes|fringe [--dry] [--sheet f]` (C14 P6): one-off cleanups on sliced art (rm-then-write): item-icon sheet badges in the top-left corner + 1-3 px pinholes; magenta ground-shadow residue on helpers/rock crab/shorn sheep -> translucent black; enclosed key holes in listed sprites (HOLES); magenta edge fringe on cave/mine props. Never re-run `badges` (a second pass eats real art, e.g. ring_bronze).
 - [art] `tools/slice_c14_art.py` (C14 P6): redraws of broken existing ids from art/incoming/c14p6 (flame_core, dune_0..9 isolated desert scatter, hedge round shrub, grass_tuft_winter, luck/harvest potion, golem_core); C11b violet-safe key, alpha-blob pieces, premultiplied box shrink, rm-then-write.
 
 - [art] `tools/slice_ranch_variants.py [ribbons] [variants]` (C11b P2): Animal Show ribbons/trophy (art/incoming/c11b/p2_show_ribbons.png -> props/show_ribbon_*, props/show_trophy) and rare ranch looks: real renders when present, else luminance recolours of the common strip (animals/<species>_<variant>, marker .p2_recolour) listed in art/gen/animals/_ranch_art_rare.json, which gen_ranch.py merges (replaces the old modulate tint). NightGlow.add_light(map, node, r, lift, colour) for coloured moving lights (species.glow).
