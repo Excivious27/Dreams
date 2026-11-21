@@ -149,7 +149,9 @@ static func make_team(m: GameMap, member: Array, a: String, at: Vector2, sprite 
 		h._spr = CharacterLibrary.make_sprite(sprite)
 		h._spr.scale *= 0.85
 		h._spr.play("idle")
+		CreatureMotion.random_start(h._spr, CreatureMotion.rng_for(h._spr), 0.1)  # c14b_12-12
 		h.add_child(h._spr)
+	h._bob = CreatureMotion.phase(h) * 10.0
 	return h
 
 
@@ -160,10 +162,10 @@ const TEAM_ANIMAL_H := 22.0
 static func animal_sprite(group: String) -> AnimatedSprite2D:
 	var anims := {"idle": "idle"}
 	var fps := {"idle": 3.0}
-	for a: String in ["walk", "run", "attack", "guard", "fetch", "downed", "sit", "cheer", "hurt", "happy"]:  # P6 team poses when drawn
+	for a: String in ["walk", "run", "attack", "guard", "fetch", "downed", "sit", "cheer", "hurt", "happy", "walk_down", "walk_up", "idle_down", "idle_up"]:  # P6 team poses when drawn (+ toward/away, c14b_09-10)
 		if Art.has(group, a):
 			anims[a] = a
-			fps[a] = 8.0 if a in ["run", "attack"] else 6.0
+			fps[a] = 8.0 if a in ["run", "attack"] else (3.0 if a.begins_with("idle") else 6.0)
 	if not anims.has("attack"):  # farm strips: spit / butt / happy stand in for an attack pose
 		for alt: String in ["spit", "butt", "happy"]:
 			if Art.has(group, alt):
@@ -178,7 +180,18 @@ static func animal_sprite(group: String) -> AnimatedSprite2D:
 		sc = TEAM_ANIMAL_H / float(tex.get_height())
 	spr.scale = Vector2(sc, sc)
 	spr.offset = Vector2(0, -float(tex.get_height()) * 0.5) if tex != null else Vector2.ZERO
+	# c14b_11-05 / 11-14: held idle (rest pose long, the flick short), feet on the ground for
+	# every strip (no pop between idle / walk cells), random start so a team never syncs.
+	for ia: String in ["idle", "idle_down", "idle_up"]:
+		spr.sprite_frames = CreatureMotion.held_idle(spr.sprite_frames, ia, 3.2, 0.18)
+	var fit := func() -> void:
+		var t2 := spr.sprite_frames.get_frame_texture(spr.animation, spr.frame) if spr.sprite_frames.has_animation(spr.animation) else null
+		if t2:
+			spr.offset = Vector2(0, -t2.get_height() * 0.5)
+	spr.frame_changed.connect(fit)
+	spr.animation_changed.connect(fit)
 	spr.play("idle")
+	CreatureMotion.random_start(spr, CreatureMotion.rng_for(spr), 0.12)
 	return spr
 
 
@@ -295,6 +308,8 @@ func _process(delta: float) -> void:
 			an = "attack"
 		if _spr.animation != an:
 			_spr.play(an)
+			if an == "idle":
+				CreatureMotion.random_start(_spr, CreatureMotion.rng_for(self), 0.1)
 		if absf(position.x - _last_pos.x) > 0.05:
 			_spr.flip_h = position.x < _last_pos.x
 	_last_pos = position

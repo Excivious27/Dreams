@@ -135,6 +135,11 @@ func _ready() -> void:
 		sky = Scenery.new()
 		sky.weather = GameState.weather_today() if fixed_dark < 0.0 else "clear"  # (gangster day 1 is real rain in weather_for)
 		add_child(sky)
+	Anim.set_weather("" if has_sky else "clear", scene_id(), not has_sky or fixed_dark >= 0.0)  # C14b: no wind indoors / in caves
+	if has_sky and fixed_dark < 0.0:
+		var wl := WaterLife.new()  # C14b: ripples, fish jumps and rain splashes on still water
+		wl.map = self
+		add_child(wl)
 	_night = CanvasModulate.new()
 	add_child(_night)
 	_night.color = sky_tint(int(GameState.run["time"]))
@@ -544,6 +549,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var old: Node = props[c]
 				var sh := anim_prop("nature", "ftree_%s_shake" % kind, c, 0, 8.0)
 				if sh:
+					sh.frame = 0  # one-shot: no random start (C14b Anim.apply)
+					sh.speed_scale = 1.0
 					sh.sprite_frames.set_animation_loop("idle", false)
 					old.visible = false
 					sh.animation_finished.connect(func() -> void:
@@ -552,7 +559,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 							old.visible = true
 							var after := "ftree_%s_green" % kind if Art.has("nature", "ftree_%s_green" % kind) else "ftree_%s_late" % kind
 							if old is Sprite2D and Art.has("nature", after):
-								(old as Sprite2D).texture = Art.tex("nature", after))
+								_swap_fit(old as Sprite2D, Art.tex("nature", after)))
 			else:
 				wobble(c, 0.08)
 			var n := 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0)
@@ -1022,6 +1029,8 @@ static func quest_wants(item: String) -> bool:
 ## Pet / feed / collect one farm animal (C11a P2). Rules live in RanchFarm (one feeder rule,
 ## one quality table, care days that need both a pet and a meal, missed days cost a little).
 func pet_farm_animal(a: Node2D) -> void:
+	if a.has_method("cheer"):
+		a.call("cheer")  # C14b P6: happy beat + hop
 	var st := RanchFarm.state_of(a)
 	var uid := RanchFarm.uid_of(a)
 	var day := int(GameState.run["day"])
@@ -1473,6 +1482,9 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
+	a.set_meta("anim_ph", true)
+	Anim.apply(a, group + "/" + name)  # C14b P1: random start frame, speed variance, data fps/ping-pong (no lockstep)
+	WaterFeature.still(a, name)  # C14b P2: water strips hold one frame, the water flows (no-op for others)
 	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
 		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
 		glow.lights.append([a, 30.0 + minf(ch, 60.0) * 0.3, ch * 0.55])
@@ -1482,6 +1494,33 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 		for i in extra_w + 1:
 			blocked[Vector2i(c.x + i, c.y)] = true
 	return a
+
+
+## Swap a prop's texture keeping its drawn content the same size and foot line when
+## the two canvases pad differently (c14b_03-07: the after-shake fruit tree popped
+## bigger because *_green fills its canvas while *_fruit has 3 px padding).
+func _swap_fit(sp: Sprite2D, nt: Texture2D) -> void:
+	var ot := sp.texture
+	sp.texture = nt
+	if ot == null or nt == null or ot.get_size() != nt.get_size():
+		return
+	var oi := ot.get_image()
+	var ni := nt.get_image()
+	if oi == null or ni == null:
+		return
+	if oi.is_compressed():
+		oi.decompress()
+	if ni.is_compressed():
+		ni.decompress()
+	var orc := oi.get_used_rect()
+	var nrc := ni.get_used_rect()
+	if orc.size.x <= 0 or nrc.size.x <= 0 or orc == nrc:
+		return
+	var k := Vector2(float(orc.size.x) / nrc.size.x, float(orc.size.y) / nrc.size.y)
+	sp.scale *= k
+	# keep the content's bottom on the same line (local y of a texel row r = offset - h/2 + r, times scale)
+	var h := float(nt.get_height())
+	sp.offset.y = (sp.offset.y - h / 2.0 + orc.end.y) / k.y - nrc.end.y + h / 2.0
 
 
 func ch_tall(a: AnimatedSprite2D, scale: float) -> bool:
@@ -1798,12 +1837,16 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
+	if fr > 1: WaterFeature.attach(s, group, name)  # C14b P2: a still water strip shows its flowing frame, not frame 0
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
 	if glow and glows(name):
 		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7] + NightGlow.tint_of(name))  # C14 P6 coloured lamps
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
+	var sw := Anim.sway_strength(name) if group in ["nature", "props"] and CrispArt.on() else 0.0
+	if sw > 0.0:
+		s.material = Anim.sway_material(sw)  # C14b P1: shared wind sway (crisp sampling too), phase from world position
 	if group in ["buildings", "props", "nature"]:
 		CrispArt.apply(s)  # crisp when the phone magnifies 2x-detail art (shaders/sharp_pixel)
 	if solid:
@@ -3064,6 +3107,7 @@ static var _other_told := false
 
 
 func _process(delta: float) -> void:
+	Anim.tick()  # C14b: shared sway materials follow game time and wind
 	if hitstop > 0.0:
 		hitstop -= delta
 	if _night:
@@ -3254,12 +3298,15 @@ class AnimLayer extends Node2D:
 	var view := Rect2i(-9999, -9999, 99999, 99999)
 	var _tick := -1
 	var _cam := Vector2(INF, INF)
+	## Redraw rate on GAME time (C14b c14b_06-09: it ticked 8 fps on the wall clock, so
+	## smooth drifts stepped and kept moving under pause). A job with smooth motion
+	## raises it (e.g. 30); frame-strip water is fine at 8.
+	var hz := 8.0
 	func _process(_d: float) -> void:
 		if jobs.is_empty():
 			return
-		# Redraw at 8 fps (the water frames change at 4) or when the camera has
-		# moved past the margin; not every frame.
-		var t := int(Time.get_ticks_msec() / 125)
+		# Redraw at `hz` or when the camera has moved past the margin; not every frame.
+		var t := int(PlayClock.now() * hz)
 		var xf := get_viewport().get_canvas_transform() * get_global_transform()
 		var cam := xf.origin
 		if t == _tick and cam.distance_squared_to(_cam) < 256.0:
@@ -3722,12 +3769,14 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 	# Animated fill, then a procedural bank that always lines up: a dark earth
 	# lip on the land side, a lighter wet rim and foam inside the water. Corners
 	# are rounded with quarter discs so blobs read as real shorelines.
-	var frame := int(Time.get_ticks_msec() / 250) % 4
+	var frame := int(PlayClock.now() * 4.0) % 4
 	var fill := "water2" if Art.has("tiles", "water2") else "water"
 	var seam: String = {"bog": "bog_water", "river": "river", "sand": "sea", "lava": "lava"}.get(shore, "lake_shallow")
+	if seam == "river" and _anim_layer:
+		_anim_layer.hz = 15.0  # C14b: 9 px/s river drift steps at 8 Hz
 	if Art.has("seamless", seam):
 		# Two copies of the seamless water drifting past each other read as moving water.
-		var tt := Time.get_ticks_msec() / 1000.0
+		var tt := PlayClock.now()
 		var drift := Vector2(tt * 3.0, tt * 1.2) if seam != "river" else Vector2(tt * 9.0, 0.0)
 		for c: Vector2i in cells:
 			seam_cell(ci, seam, c, Color.WHITE, drift)
@@ -3765,7 +3814,7 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)
-	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(Time.get_ticks_msec() / 400.0))
+	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(PlayClock.now() * 2.5))
 	for c: Vector2i in edge_cells if not edge_cells.is_empty() else cells:
 		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
 		var n := all_cells.has(c + Vector2i(0, -1))
@@ -5266,6 +5315,24 @@ static func _crisp_later(w: WeakRef) -> void:
 	var n: Variant = w.get_ref()
 	if n != null and is_instance_valid(n):
 		CrispArt.apply_anim(n as AnimatedSprite2D)
+		_phase_later(n as AnimatedSprite2D)
+
+
+## C14b (c14b_17-03): any looping ambient strip placed straight on the map (or on a
+## plain script-less holder) gets a random start frame + speed variance, so props
+## made outside anim_prop never animate in lockstep either. Characters keep theirs.
+const PHASE_SKIP := ["player", "npc", "crew", "pet", "companion", "paper_doll", "remote_player"]
+static func _phase_later(a: AnimatedSprite2D) -> void:
+	var p := a.get_parent()
+	if a.get_script() != null or p == null or a.has_meta("anim_ph") or not a.is_playing():
+		return
+	var ps: Script = p.get_script()
+	if ps != null and str(ps.resource_path).get_file().get_basename() in PHASE_SKIP:
+		return  # player/villagers/crew/pets: P5's idles own their timing
+	if not (p is Node2D):
+		return
+	a.set_meta("anim_ph", true)
+	Anim.apply(a, "")
 
 
 ## Underground places keep one steady dimness instead of the outdoor sky clock,

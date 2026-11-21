@@ -2,9 +2,20 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
+
 ## 2026-11-21 — CONDUCT 14 (world look, town, beach + marina, fast travel, exploration) docs: report docs/reports/CONDUCT-14.md, Guide 41, ART-PROMPTS-CONDUCT-14.md (80 images), TEXTS['14'], inventory rows (TravelNet 72%, marina, town expansion, prop dressing, secrets, lighting; whole game ~82%), PROJECT-MEMORY C14 entry. 401 findings, 6 packages + hooks. Final CI c14i pending.
 
 ## 2026-11-21 — CONDUCT 13 (audio depth) docs: report docs/reports/CONDUCT-13.md, Guide 40, TEXTS['13'], 7 audio inventory rows, PROJECT-MEMORY C13 entry. 398 findings, 6 packages + hooks; 140 songs, 20 jingles + gang UI kit, 22 CC0 sfx; ACE 64 credits left until Dec 1. Final CI c13i pending.
+## 2026-11-21 — C14b P1: Anim core (scripts/anim.gd, shared sway shader on foliage/cloth, random start for every ambient strip), code rain/snow/blizzard, aurora ribbons, WaterLife ripples, AnimLayer on game time, animation budget test + probe gates
+## 2026-11-21 — C14b P2 (2026-11-21): Town Hall fountain smooth and seamless (still full-flow frame + water_flow shader + droplets); hot spring, glow pond, tide pools, lake waterfall, gold fountain the same; seamless water on game time; light kinds (fire flicker, steady lamps, neon dropouts, crystal breathe), room fires glow, homes go dark one by one; mine drips and lamp motes; lighthouse beam sweeps; mill holds still with smoke and spray; bonfire/bubbling pot registered.
+## 2026-11-21 — C14b P3 (animation life: wind/town/farm/beach/festivals): AmbientMotion bob/breathe/spin, LighthouseBeam sweep, FestivalSky lanterns/fireworks/shooting stars, festival weather, crop sway layer + walk-through, station fx, sprinkler spray, mill/windmill rotors (new art), clock hands, pond ripples, buoy anim; test c14b_p3_test
+## 2026-11-21 — C14b P4: Orchard Hills/Breezehaven windmills now a still body with code-rotated sails (new split art)
+
+## 2026-11-21 — C14b P4: magic areas get ground sparkles, sky veils, motes and cloud wisps (MagicFx); region strips play out of step with ping-pong; colony crystal glow and wake burst; moon dusk + aurora; neon hum, boats bob, drones glide (RegionAnim)
+## 2026-11-21 — C14b P5 (2026-11-21): character idle life: IdleLife breathing for player/doll/villagers, front idles fixed (HERO2/gang/crew), idle_up/idle_side used, idle glance, still mount, villager pose scheduler + looping pose pairs + desync, 23 blink frames (6 heroes, 6 gang outfits, 11 villagers) via slice_c14b_p5.py
+## 2026-11-21 — C14b P6: creature/foe/animal idle life (CreatureMotion helpers, no-lockstep starts, breath, held idles, perching birds, fish leaps, pet naps, farm sleep/cheer, team flip fix) + 12 new idle strips (president, 6 critters, 5 bosses); test creature_life_test
+
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
 
 ## 2026-11-21 — C14 P4: fast-travel network TravelNet (62 stations, 74 links, tiers 1-5 per arc, build/unlock/fare/free-after, ride scene), mega keeper rides + hub-to-hub as per-link lines, balloon only between built masts, Map-tab station layer, save v13 (run.travel + run.marina), classic-region pockets/ways + pages, quarry gravel ground; 36 travel art images.

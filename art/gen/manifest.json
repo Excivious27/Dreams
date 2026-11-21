@@ -29056,6 +29056,11 @@
    "h": 112,
    "w": 112
   },
+  "bakery_snow": {
+   "file": "buildings/bakery_snow.png",
+   "h": 112,
+   "w": 112
+  },
   "bandstand": {
    "file": "buildings/bandstand.png",
    "h": 128,
@@ -29072,6 +29077,11 @@
    "h": 128,
    "w": 144
   },
+  "bandstand_snow": {
+   "file": "buildings/bandstand_snow.png",
+   "h": 128,
+   "w": 144
+  },
   "bank": {
    "file": "buildings/bank.png",
    "h": 110,
@@ -29085,6 +29095,11 @@
   },
   "bank_night": {
    "file": "buildings/bank_night.png",
+   "h": 110,
+   "w": 144
+  },
+  "bank_snow": {
+   "file": "buildings/bank_snow.png",
    "h": 110,
    "w": 144
   },
@@ -29216,6 +29231,20 @@
    "h": 93,
    "w": 120
   },
+  "c14bp3_water_mill_base": {
+   "file": "buildings/c14bp3_water_mill_base.png",
+   "h": 176,
+   "hub": [
+    97,
+    115
+   ],
+   "w": 177
+  },
+  "c14bp3_water_mill_wheel": {
+   "file": "buildings/c14bp3_water_mill_wheel.png",
+   "h": 106,
+   "w": 108
+  },
   "c14p1_fishing_hut_winter": {
    "file": "buildings/c14p1_fishing_hut_winter.png",
    "h": 105,
@@ -29228,6 +29257,41 @@
    "frames": 4,
    "h": 200,
    "w": 652
+  },
+  "c14p2_chandlery": {
+   "file": "buildings/c14p2_chandlery.png",
+   "h": 135,
+   "w": 112
+  },
+  "c14p2_chandlery_gang": {
+   "file": "buildings/c14p2_chandlery_gang.png",
+   "h": 144,
+   "w": 112
+  },
+  "c14p2_fish_market": {
+   "file": "buildings/c14p2_fish_market.png",
+   "h": 131,
+   "w": 112
+  },
+  "c14p2_fish_market_gang": {
+   "file": "buildings/c14p2_fish_market_gang.png",
+   "h": 140,
+   "w": 112
+  },
+  "c14p2_greenhouse": {
+   "file": "buildings/c14p2_greenhouse.png",
+   "h": 94,
+   "w": 96
+  },
+  "c14p2_ticket_office": {
+   "file": "buildings/c14p2_ticket_office.png",
+   "h": 135,
+   "w": 112
+  },
+  "c14p2_ticket_office_gang": {
+   "file": "buildings/c14p2_ticket_office_gang.png",
+   "h": 145,
+   "w": 112
   },
   "chapel": {
    "file": "buildings/chapel.png",
@@ -29242,6 +29306,11 @@
   },
   "chapel_night": {
    "file": "buildings/chapel_night.png",
+   "h": 128,
+   "w": 96
+  },
+  "chapel_snow": {
+   "file": "buildings/chapel_snow.png",
    "h": 128,
    "w": 96
   },
@@ -29261,6 +29330,11 @@
    "h": 102,
    "w": 112
   },
+  "clinic_snow": {
+   "file": "buildings/clinic_snow.png",
+   "h": 102,
+   "w": 112
+  },
   "clock_tower": {
    "file": "buildings/clock_tower.png",
    "h": 160,
@@ -29274,6 +29348,11 @@
   },
   "clock_tower_night": {
    "file": "buildings/clock_tower_night.png",
+   "h": 160,
+   "w": 79
+  },
+  "clock_tower_snow": {
+   "file": "buildings/clock_tower_snow.png",
    "h": 160,
    "w": 79
   },
@@ -29376,6 +29455,11 @@
    "h": 96,
    "w": 128
   },
+  "cottage_a_snow": {
+   "file": "buildings/cottage_a_snow.png",
+   "h": 96,
+   "w": 128
+  },
   "cottage_b": {
    "file": "buildings/cottage_b.png",
    "h": 100,
@@ -29392,6 +29476,11 @@
    "h": 100,
    "w": 128
   },
+  "cottage_b_snow": {
+   "file": "buildings/cottage_b_snow.png",
+   "h": 100,
+   "w": 128
+  },
   "cottage_c": {
    "file": "buildings/cottage_c.png",
    "h": 125,
@@ -29405,6 +29494,11 @@
   },
   "cottage_c_night": {
    "file": "buildings/cottage_c_night.png",
+   "h": 125,
+   "w": 136
+  },
+  "cottage_c_snow": {
+   "file": "buildings/cottage_c_snow.png",
    "h": 125,
    "w": 136
   },
@@ -29625,6 +29719,11 @@
    "h": 216,
    "w": 238
   },
+  "hall_snow": {
+   "file": "buildings/hall_snow.png",
+   "h": 216,
+   "w": 238
+  },
   "house": {
    "file": "buildings/house.png",
    "h": 174,
@@ -29786,8 +29885,24 @@
    "h": 128,
    "w": 171
   },
+  "inn_snow": {
+   "file": "buildings/inn_snow.png",
+   "h": 128,
+   "w": 171
+  },
   "karaoke": {
    "file": "buildings/karaoke.png",
+   "h": 96,
+   "w": 109
+  },
+  "karaoke_lit": {
+   "file": "buildings/karaoke_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 109
+  },
+  "karaoke_night": {
+   "file": "buildings/karaoke_night.png",
    "h": 96,
    "w": 109
   },
@@ -29819,6 +29934,11 @@
   },
   "library_night": {
    "file": "buildings/library_night.png",
+   "h": 112,
+   "w": 116
+  },
+  "library_snow": {
+   "file": "buildings/library_snow.png",
    "h": 112,
    "w": 116
   },
@@ -29861,6 +29981,11 @@
    "h": 127,
    "w": 208
   },
+  "mansion_snow": {
+   "file": "buildings/mansion_snow.png",
+   "h": 127,
+   "w": 208
+  },
   "mine_winch_house": {
    "file": "buildings/mine_winch_house.png",
    "h": 128,
@@ -29897,6 +30022,17 @@
    "h": 160,
    "w": 170
   },
+  "neon_hotel_lit": {
+   "file": "buildings/neon_hotel_lit.png",
+   "glow_mask": true,
+   "h": 160,
+   "w": 170
+  },
+  "neon_hotel_night": {
+   "file": "buildings/neon_hotel_night.png",
+   "h": 160,
+   "w": 170
+  },
   "noodle_stand": {
    "cell_h": 96,
    "cell_w": 71,
@@ -29926,8 +30062,24 @@
    "h": 136,
    "w": 160
   },
+  "potions_snow": {
+   "file": "buildings/potions_snow.png",
+   "h": 136,
+   "w": 160
+  },
   "president_tower": {
    "file": "buildings/president_tower.png",
+   "h": 512,
+   "w": 160
+  },
+  "president_tower_lit": {
+   "file": "buildings/president_tower_lit.png",
+   "glow_mask": true,
+   "h": 512,
+   "w": 160
+  },
+  "president_tower_night": {
+   "file": "buildings/president_tower_night.png",
    "h": 512,
    "w": 160
   },
@@ -29938,6 +30090,17 @@
   },
   "ramen_shop": {
    "file": "buildings/ramen_shop.png",
+   "h": 96,
+   "w": 105
+  },
+  "ramen_shop_lit": {
+   "file": "buildings/ramen_shop_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 105
+  },
+  "ramen_shop_night": {
+   "file": "buildings/ramen_shop_night.png",
    "h": 96,
    "w": 105
   },
@@ -29997,6 +30160,11 @@
    "h": 101,
    "w": 160
   },
+  "school_snow": {
+   "file": "buildings/school_snow.png",
+   "h": 101,
+   "w": 160
+  },
   "sellbox": {
    "file": "buildings/sellbox.png",
    "h": 40,
@@ -30033,6 +30201,11 @@
    "h": 162,
    "w": 192
   },
+  "smith_snow": {
+   "file": "buildings/smith_snow.png",
+   "h": 162,
+   "w": 192
+  },
   "stable": {
    "file": "buildings/stable.png",
    "h": 91,
@@ -30046,6 +30219,11 @@
   },
   "stable_night": {
    "file": "buildings/stable_night.png",
+   "h": 91,
+   "w": 128
+  },
+  "stable_snow": {
+   "file": "buildings/stable_snow.png",
    "h": 91,
    "w": 128
   },
@@ -30082,6 +30260,11 @@
   },
   "store_night": {
    "file": "buildings/store_night.png",
+   "h": 163,
+   "w": 192
+  },
+  "store_snow": {
+   "file": "buildings/store_snow.png",
    "h": 163,
    "w": 192
   },
@@ -30236,6 +30419,11 @@
    "h": 111,
    "w": 144
   },
+  "warehouse_a_snow": {
+   "file": "buildings/warehouse_a_snow.png",
+   "h": 111,
+   "w": 144
+  },
   "warehouse_b": {
    "file": "buildings/warehouse_b.png",
    "h": 105,
@@ -30287,180 +30475,6 @@
    "file": "buildings/woodcutter_hut_snow.png",
    "h": 101,
    "w": 160
-  },
-  "karaoke_lit": {
-   "file": "buildings/karaoke_lit.png",
-   "glow_mask": true,
-   "h": 96,
-   "w": 109
-  },
-  "karaoke_night": {
-   "file": "buildings/karaoke_night.png",
-   "h": 96,
-   "w": 109
-  },
-  "neon_hotel_lit": {
-   "file": "buildings/neon_hotel_lit.png",
-   "glow_mask": true,
-   "h": 160,
-   "w": 170
-  },
-  "neon_hotel_night": {
-   "file": "buildings/neon_hotel_night.png",
-   "h": 160,
-   "w": 170
-  },
-  "president_tower_lit": {
-   "file": "buildings/president_tower_lit.png",
-   "glow_mask": true,
-   "h": 512,
-   "w": 160
-  },
-  "president_tower_night": {
-   "file": "buildings/president_tower_night.png",
-   "h": 512,
-   "w": 160
-  },
-  "ramen_shop_lit": {
-   "file": "buildings/ramen_shop_lit.png",
-   "glow_mask": true,
-   "h": 96,
-   "w": 105
-  },
-  "ramen_shop_night": {
-   "file": "buildings/ramen_shop_night.png",
-   "h": 96,
-   "w": 105
-  },
-  "bakery_snow": {
-   "file": "buildings/bakery_snow.png",
-   "h": 112,
-   "w": 112
-  },
-  "bandstand_snow": {
-   "file": "buildings/bandstand_snow.png",
-   "h": 128,
-   "w": 144
-  },
-  "bank_snow": {
-   "file": "buildings/bank_snow.png",
-   "h": 110,
-   "w": 144
-  },
-  "c14p2_chandlery": {
-   "file": "buildings/c14p2_chandlery.png",
-   "h": 135,
-   "w": 112
-  },
-  "c14p2_chandlery_gang": {
-   "file": "buildings/c14p2_chandlery_gang.png",
-   "h": 144,
-   "w": 112
-  },
-  "c14p2_fish_market": {
-   "file": "buildings/c14p2_fish_market.png",
-   "h": 131,
-   "w": 112
-  },
-  "c14p2_fish_market_gang": {
-   "file": "buildings/c14p2_fish_market_gang.png",
-   "h": 140,
-   "w": 112
-  },
-  "c14p2_greenhouse": {
-   "file": "buildings/c14p2_greenhouse.png",
-   "h": 94,
-   "w": 96
-  },
-  "c14p2_ticket_office": {
-   "file": "buildings/c14p2_ticket_office.png",
-   "h": 135,
-   "w": 112
-  },
-  "c14p2_ticket_office_gang": {
-   "file": "buildings/c14p2_ticket_office_gang.png",
-   "h": 145,
-   "w": 112
-  },
-  "chapel_snow": {
-   "file": "buildings/chapel_snow.png",
-   "h": 128,
-   "w": 96
-  },
-  "clinic_snow": {
-   "file": "buildings/clinic_snow.png",
-   "h": 102,
-   "w": 112
-  },
-  "clock_tower_snow": {
-   "file": "buildings/clock_tower_snow.png",
-   "h": 160,
-   "w": 79
-  },
-  "cottage_a_snow": {
-   "file": "buildings/cottage_a_snow.png",
-   "h": 96,
-   "w": 128
-  },
-  "cottage_b_snow": {
-   "file": "buildings/cottage_b_snow.png",
-   "h": 100,
-   "w": 128
-  },
-  "cottage_c_snow": {
-   "file": "buildings/cottage_c_snow.png",
-   "h": 125,
-   "w": 136
-  },
-  "hall_snow": {
-   "file": "buildings/hall_snow.png",
-   "h": 216,
-   "w": 238
-  },
-  "inn_snow": {
-   "file": "buildings/inn_snow.png",
-   "h": 128,
-   "w": 171
-  },
-  "library_snow": {
-   "file": "buildings/library_snow.png",
-   "h": 112,
-   "w": 116
-  },
-  "mansion_snow": {
-   "file": "buildings/mansion_snow.png",
-   "h": 127,
-   "w": 208
-  },
-  "potions_snow": {
-   "file": "buildings/potions_snow.png",
-   "h": 136,
-   "w": 160
-  },
-  "school_snow": {
-   "file": "buildings/school_snow.png",
-   "h": 101,
-   "w": 160
-  },
-  "smith_snow": {
-   "file": "buildings/smith_snow.png",
-   "h": 162,
-   "w": 192
-  },
-  "stable_snow": {
-   "file": "buildings/stable_snow.png",
-   "h": 91,
-   "w": 128
-  },
-  "store_snow": {
-   "file": "buildings/store_snow.png",
-   "h": 163,
-   "w": 192
-  },
-  "warehouse_a_snow": {
-   "file": "buildings/warehouse_a_snow.png",
-   "h": 111,
-   "w": 144
   }
  },
  "c14p4": {
@@ -31733,6 +31747,14 @@
    "frames": 2,
    "h": 77,
    "w": 120
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 88,
+   "cell_w": 69,
+   "file": "characters/bo_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 88,
+   "w": 138
   }
  },
  "characters/brute": {
@@ -35073,6 +35095,14 @@
    "frames": 2,
    "h": 112,
    "w": 162
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 68,
+   "file": "characters/june/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 136
   }
  },
  "characters/june_gang": {
@@ -35347,6 +35377,14 @@
    "frames": 2,
    "h": 77,
    "w": 110
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 83,
+   "cell_w": 49,
+   "file": "characters/june_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 83,
+   "w": 98
   }
  },
  "characters/kelp_kit_1": {
@@ -38078,6 +38116,14 @@
    "frames": 2,
    "h": 112,
    "w": 162
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 70,
+   "file": "characters/marisol/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 140
   }
  },
  "characters/marisol_gang": {
@@ -38392,6 +38438,14 @@
    "frames": 2,
    "h": 76,
    "w": 116
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 87,
+   "cell_w": 62,
+   "file": "characters/marisol_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 87,
+   "w": 124
   }
  },
  "characters/marlene": {
@@ -42616,6 +42670,14 @@
    "frames": 2,
    "h": 112,
    "w": 110
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 55,
+   "file": "characters/nia/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 110
   }
  },
  "characters/nia_gang": {
@@ -42898,6 +42960,14 @@
    "frames": 2,
    "h": 66,
    "w": 100
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 93,
+   "cell_w": 52,
+   "file": "characters/nia_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 93,
+   "w": 104
   }
  },
  "characters/nico": {
@@ -43093,6 +43163,14 @@
    "frames": 4,
    "h": 115,
    "w": 272
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 109,
+   "cell_w": 68,
+   "file": "characters/npc_alder_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 109,
+   "w": 68
   }
  },
  "characters/npc_alder_festival": {
@@ -44397,6 +44475,14 @@
    "frames": 4,
    "h": 103,
    "w": 196
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 99,
+   "cell_w": 51,
+   "file": "characters/npc_finn_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 99,
+   "w": 51
   }
  },
  "characters/npc_finn_winter": {
@@ -44701,6 +44787,14 @@
    "frames": 4,
    "h": 107,
    "w": 296
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 103,
+   "cell_w": 77,
+   "file": "characters/npc_gideon_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 103,
+   "w": 77
   }
  },
  "characters/npc_gideon_summer": {
@@ -45109,6 +45203,14 @@
    "frames": 4,
    "h": 100,
    "w": 292
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 100,
+   "cell_w": 76,
+   "file": "characters/npc_hazel_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 100,
+   "w": 76
   }
  },
  "characters/npc_hazel_summer": {
@@ -45969,6 +46071,14 @@
    "frames": 4,
    "h": 106,
    "w": 212
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 55,
+   "file": "characters/npc_lumi_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 55
   }
  },
  "characters/npc_lumi_winter": {
@@ -46427,6 +46537,14 @@
    "frames": 4,
    "h": 100,
    "w": 180
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 105,
+   "cell_w": 46,
+   "file": "characters/npc_maple_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 105,
+   "w": 46
   }
  },
  "characters/npc_maple_winter": {
@@ -47569,6 +47687,14 @@
    "frames": 4,
    "h": 106,
    "w": 224
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 57,
+   "file": "characters/npc_posy_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 57
   }
  },
  "characters/npc_posy_winter": {
@@ -47873,6 +47999,14 @@
    "frames": 4,
    "h": 105,
    "w": 216
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 52,
+   "file": "characters/npc_rook_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 52
   }
  },
  "characters/npc_rook_winter": {
@@ -48103,6 +48237,14 @@
    "frames": 4,
    "h": 106,
    "w": 216
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 97,
+   "cell_w": 53,
+   "file": "characters/npc_sal_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 97,
+   "w": 53
   }
  },
  "characters/npc_sal_winter": {
@@ -48837,6 +48979,14 @@
    "frames": 4,
    "h": 104,
    "w": 236
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 95,
+   "cell_w": 58,
+   "file": "characters/npc_theo_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 95,
+   "w": 58
   }
  },
  "characters/npc_theo_summer": {
@@ -49371,6 +49521,14 @@
    "frames": 4,
    "h": 112,
    "w": 320
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 104,
+   "cell_w": 77,
+   "file": "characters/npc_wren_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 104,
+   "w": 77
   }
  },
  "characters/npc_wren_fall": {
@@ -50056,6 +50214,14 @@
    "frames": 2,
    "h": 112,
    "w": 200
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 65,
+   "file": "characters/ollie/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 130
   }
  },
  "characters/ollie_gang": {
@@ -50314,6 +50480,14 @@
    "frames": 1,
    "h": 93,
    "w": 58
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 96,
+   "cell_w": 59,
+   "file": "characters/ollie_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 96,
+   "w": 118
   }
  },
  "characters/penguin": {
@@ -51156,6 +51330,14 @@
    "frames": 3,
    "h": 97,
    "w": 375
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 96,
+   "cell_w": 100,
+   "file": "characters/penguin_king/c14bp5_blink_idle_down.png",
+   "frames": 3,
+   "h": 96,
+   "w": 300
   }
  },
  "characters/penguin_wear": {
@@ -51933,11 +52115,13 @@
   },
   "idle": {
    "cell_h": 83,
-   "cell_w": 47,
+   "cell_w": 51,
    "file": "characters/president/idle.png",
-   "frames": 2,
+   "fps": 3.0,
+   "frames": 4,
    "h": 83,
-   "w": 94
+   "pingpong": false,
+   "w": 204
   },
   "seated": {
    "cell_h": 92,
@@ -52371,6 +52555,14 @@
    "frames": 2,
    "h": 112,
    "w": 168
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 112,
+   "cell_w": 82,
+   "file": "characters/rafe/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 112,
+   "w": 164
   }
  },
  "characters/rafe_gang": {
@@ -52661,6 +52853,14 @@
    "frames": 2,
    "h": 74,
    "w": 112
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 82,
+   "cell_w": 54,
+   "file": "characters/rafe_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 82,
+   "w": 108
   }
  },
  "characters/riley": {
@@ -63234,11 +63434,11 @@
   },
   "idle": {
    "cell_h": 96,
-   "cell_w": 84,
+   "cell_w": 79,
    "file": "enemies/cboss_coral/idle.png",
    "frames": 4,
    "h": 96,
-   "w": 336
+   "w": 316
   },
   "walk": {
    "cell_h": 96,
@@ -63326,11 +63526,11 @@
   },
   "idle": {
    "cell_h": 101,
-   "cell_w": 191,
+   "cell_w": 135,
    "file": "enemies/cboss_ice/idle.png",
    "frames": 4,
    "h": 101,
-   "w": 764
+   "w": 540
   },
   "split": {
    "cell_h": 108,
@@ -63376,11 +63576,11 @@
   },
   "idle": {
    "cell_h": 99,
-   "cell_w": 150,
+   "cell_w": 135,
    "file": "enemies/cboss_kelp/idle.png",
    "frames": 4,
    "h": 99,
-   "w": 600
+   "w": 540
   },
   "walk": {
    "cell_h": 70,
@@ -64979,11 +65179,11 @@
   },
   "idle": {
    "cell_h": 112,
-   "cell_w": 109,
+   "cell_w": 119,
    "file": "enemies/rime_wyrm/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 112,
-   "w": 218
+   "w": 476
   },
   "walk": {
    "cell_h": 112,
@@ -65425,11 +65625,11 @@
   },
   "idle": {
    "cell_h": 116,
-   "cell_w": 122,
+   "cell_w": 106,
    "file": "enemies/storm_roc/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 116,
-   "w": 244
+   "w": 424
   },
   "walk": {
    "cell_h": 116,
@@ -66029,12 +66229,13 @@
    "w": 48
   },
   "bubbling_pot": {
-   "cell_h": 113,
+   "cell_h": 120,
    "cell_w": 85,
    "file": "furniture/bubbling_pot.png",
    "frames": 4,
-   "h": 113,
-   "w": 340
+   "h": 120,
+   "w": 340,
+   "registered": true
   },
   "bunk_bed": {
    "file": "furniture/bunk_bed.png",
@@ -103534,6 +103735,26 @@
   }
  },
  "props": {
+  "c14bp4_windmill_body": {
+   "cell_h": 104,
+   "cell_w": 61,
+   "file": "props/c14bp4_windmill_body.png",
+   "frames": 1,
+   "h": 104,
+   "hub": [
+    31.6,
+    32.3
+   ],
+   "w": 61
+  },
+  "c14bp4_windmill_sails": {
+   "cell_h": 78,
+   "cell_w": 78,
+   "file": "props/c14bp4_windmill_sails.png",
+   "frames": 1,
+   "h": 78,
+   "w": 78
+  },
   "abandoned_cart": {
    "file": "props/abandoned_cart.png",
    "h": 48,
@@ -104249,12 +104470,13 @@
    "w": 26
   },
   "bonfire": {
-   "cell_h": 48,
+   "cell_h": 61,
    "cell_w": 60,
    "file": "props/bonfire.png",
    "frames": 4,
-   "h": 48,
-   "w": 240
+   "h": 61,
+   "w": 240,
+   "registered": true
   },
   "bot_drone_swarm": {
    "file": "props/bot_drone_swarm.png",
@@ -104560,6 +104782,92 @@
    "h": 60,
    "w": 80
   },
+  "c14bp3_bonfire": {
+   "cell_h": 140,
+   "cell_w": 108,
+   "file": "props/c14bp3_bonfire.png",
+   "frames": 6,
+   "h": 140,
+   "w": 648
+  },
+  "c14bp3_windmill_body": {
+   "file": "props/c14bp3_windmill_body.png",
+   "h": 92,
+   "hub": [
+    39,
+    26
+   ],
+   "w": 74
+  },
+  "c14bp3_windmill_sails": {
+   "file": "props/c14bp3_windmill_sails.png",
+   "h": 88,
+   "w": 87
+  },
+  "c14bp3_windpump_gang_body": {
+   "file": "props/c14bp3_windpump_gang_body.png",
+   "h": 100,
+   "hub": [
+    33,
+    8
+   ],
+   "w": 66
+  },
+  "c14bp3_windpump_gang_rotor": {
+   "file": "props/c14bp3_windpump_gang_rotor.png",
+   "h": 81,
+   "w": 81
+  },
+  "c14p2_bench_curved": {
+   "file": "props/c14p2_bench_curved.png",
+   "h": 47,
+   "w": 84
+  },
+  "c14p2_bench_iron": {
+   "file": "props/c14p2_bench_iron.png",
+   "h": 54,
+   "w": 70
+  },
+  "c14p2_cafe_table": {
+   "file": "props/c14p2_cafe_table.png",
+   "h": 64,
+   "w": 84
+  },
+  "c14p2_cafe_umbrella": {
+   "file": "props/c14p2_cafe_umbrella.png",
+   "h": 134,
+   "w": 92
+  },
+  "c14p2_drink_fountain": {
+   "file": "props/c14p2_drink_fountain.png",
+   "h": 71,
+   "w": 40
+  },
+  "c14p2_flower_kiosk": {
+   "file": "props/c14p2_flower_kiosk.png",
+   "h": 127,
+   "w": 104
+  },
+  "c14p2_mosaic": {
+   "file": "props/c14p2_mosaic.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p2_rose_arbour": {
+   "file": "props/c14p2_rose_arbour.png",
+   "h": 84,
+   "w": 76
+  },
+  "c14p2_signpost": {
+   "file": "props/c14p2_signpost.png",
+   "h": 84,
+   "w": 52
+  },
+  "c14p2_tree_planter": {
+   "file": "props/c14p2_tree_planter.png",
+   "h": 146,
+   "w": 92
+  },
   "c14p3_charter": {
    "file": "props/c14p3_charter.png",
    "h": 128,
@@ -104589,6 +104897,21 @@
    "file": "props/c14p3_speedboat.png",
    "h": 128,
    "w": 135
+  },
+  "c14p5_gc_stone_head": {
+   "file": "props/c14p5_gc_stone_head.png",
+   "h": 190,
+   "w": 240
+  },
+  "c14p5_hot_spring_snow": {
+   "file": "props/c14p5_hot_spring_snow.png",
+   "h": 83,
+   "w": 104
+  },
+  "c14p5_waterfall_frozen": {
+   "file": "props/c14p5_waterfall_frozen.png",
+   "h": 287,
+   "w": 160
   },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
@@ -115500,71 +115823,6 @@
    "file": "props/worm_bin.png",
    "h": 44,
    "w": 65
-  },
-  "c14p5_gc_stone_head": {
-   "file": "props/c14p5_gc_stone_head.png",
-   "h": 190,
-   "w": 240
-  },
-  "c14p5_hot_spring_snow": {
-   "file": "props/c14p5_hot_spring_snow.png",
-   "h": 83,
-   "w": 104
-  },
-  "c14p5_waterfall_frozen": {
-   "file": "props/c14p5_waterfall_frozen.png",
-   "h": 287,
-   "w": 160
-  },
-  "c14p2_bench_curved": {
-   "file": "props/c14p2_bench_curved.png",
-   "h": 47,
-   "w": 84
-  },
-  "c14p2_bench_iron": {
-   "file": "props/c14p2_bench_iron.png",
-   "h": 54,
-   "w": 70
-  },
-  "c14p2_cafe_table": {
-   "file": "props/c14p2_cafe_table.png",
-   "h": 64,
-   "w": 84
-  },
-  "c14p2_cafe_umbrella": {
-   "file": "props/c14p2_cafe_umbrella.png",
-   "h": 134,
-   "w": 92
-  },
-  "c14p2_drink_fountain": {
-   "file": "props/c14p2_drink_fountain.png",
-   "h": 71,
-   "w": 40
-  },
-  "c14p2_flower_kiosk": {
-   "file": "props/c14p2_flower_kiosk.png",
-   "h": 127,
-   "w": 104
-  },
-  "c14p2_mosaic": {
-   "file": "props/c14p2_mosaic.png",
-   "h": 256,
-   "w": 256
-  },
-  "c14p2_rose_arbour": {
-   "file": "props/c14p2_rose_arbour.png",
-   "h": 84,
-   "w": 76
-  },
-  "c14p2_signpost": {
-   "file": "props/c14p2_signpost.png",
-   "h": 84,
-   "w": 52
-  },
-  "c14p2_tree_planter": {
-   "file": "props/c14p2_tree_planter.png",
-   "h": 146,
-   "w": 92
   }
  },
  "riding": {
@@ -116255,6 +116513,11 @@
    "h": 256,
    "w": 256
   },
+  "c14p5_wet_asphalt": {
+   "file": "seamless/c14p5_wet_asphalt.png",
+   "h": 256,
+   "w": 256
+  },
   "cave_crystal_floor": {
    "file": "seamless/cave_crystal_floor.png",
    "h": 256,
@@ -116767,11 +117030,6 @@
   },
   "wet_sand": {
    "file": "seamless/wet_sand.png",
-   "h": 256,
-   "w": 256
-  },
-  "c14p5_wet_asphalt": {
-   "file": "seamless/c14p5_wet_asphalt.png",
    "h": 256,
    "w": 256
   }
@@ -156202,11 +156460,11 @@
  "wildlife/duck": {
   "idle": {
    "cell_h": 46,
-   "cell_w": 53,
+   "cell_w": 54,
    "file": "wildlife/duck/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 46,
-   "w": 53
+   "w": 216
   },
   "waddle": {
    "cell_h": 46,
@@ -156292,11 +156550,11 @@
  "wildlife/fox": {
   "idle": {
    "cell_h": 32,
-   "cell_w": 50,
+   "cell_w": 45,
    "file": "wildlife/fox/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 32,
-   "w": 50
+   "w": 180
   },
   "walk": {
    "cell_h": 32,
@@ -156310,11 +156568,11 @@
  "wildlife/frog": {
   "idle": {
    "cell_h": 26,
-   "cell_w": 28,
+   "cell_w": 35,
    "file": "wildlife/frog/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 26,
-   "w": 28
+   "w": 140
   },
   "walk": {
    "cell_h": 22,
@@ -156528,11 +156786,11 @@
  "wildlife/rabbit": {
   "idle": {
    "cell_h": 37,
-   "cell_w": 42,
+   "cell_w": 36,
    "file": "wildlife/rabbit/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 37,
-   "w": 42
+   "w": 144
   },
   "walk": {
    "cell_h": 38,
@@ -156664,11 +156922,11 @@
  "wildlife/sparrow": {
   "idle": {
    "cell_h": 26,
-   "cell_w": 30,
+   "cell_w": 38,
    "file": "wildlife/sparrow/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 26,
-   "w": 30
+   "w": 152
   },
   "walk": {
    "cell_h": 26,
@@ -156682,11 +156940,11 @@
  "wildlife/squirrel": {
   "idle": {
    "cell_h": 32,
-   "cell_w": 42,
+   "cell_w": 38,
    "file": "wildlife/squirrel/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 32,
-   "w": 42
+   "w": 152
   },
   "walk": {
    "cell_h": 34,

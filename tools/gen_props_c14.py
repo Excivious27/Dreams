@@ -82,6 +82,10 @@ RECIPES = {
 }
 
 
+# C14b P3: dressing strips that loop as ambient motion (art name -> fps).
+AMBIENT_FPS = {"buoy2_yellow": 5.0, "buoy2_red": 5.0}
+
+
 def footprint(p):
     """Cells a region prop covers (with a 1-cell margin) so nothing lands inside it."""
     x, y = p["cell"]
@@ -124,7 +128,10 @@ def build(regions, man):
             g, n = id_.split("/", 1)
             if n not in man.get(g, {}):
                 return False
-            lst.append({"id": id_, "cell": [c[0], c[1]], "layer": layer})
+            e = {"id": id_, "cell": [c[0], c[1]], "layer": layer}
+            if n in AMBIENT_FPS and int(man[g][n].get("frames", 1)) > 1:
+                e["anim"] = AMBIENT_FPS[n]  # C14b P3 (c14b_16-14): bob strips play (random start via Anim.apply)
+            lst.append(e)
             taken.update({(c[0] + i, c[1] + j) for i in (-1, 0, 1) for j in (-1, 0, 1)})
             return True
 

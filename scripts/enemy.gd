@@ -203,9 +203,18 @@ func setup(k: String, tier_override := -1) -> void:
 			anims["attack"] = "special"
 		if Art.has(group, "die"):
 			anims["die"] = "die"
+		elif Art.has(group, "defeated"):
+			anims["die"] = "defeated"  # c14b_12-09: lieutenants / the President / the Marked go down on their own strip
+		for dn: String in ["walk_down", "walk_up"]:
+			if Art.has(group, dn):
+				anims[dn] = dn
+		for fd: String in ["taunt", "tired"]:
+			if Art.has(group, fd) and not anims.has("fidget"):
+				anims["fidget"] = fd
 		if ed.has("gift") and Art.has(group, "power"):
 			anims["power"] = "power"
-		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0, "power": 10.0}, {"attack": false, "hurt": false, "die": false, "power": false})
+		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "walk_down": 8.0, "walk_up": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0, "power": 10.0, "fidget": 6.0}, {"attack": false, "hurt": false, "die": false, "power": false, "fidget": false})
+		_sprite.sprite_frames = idle_frames(_sprite.sprite_frames, group.get_file())
 		_sprite.animation = "idle"
 		var s := 1.1 if group == "enemies/grump" and k == "big_grump" else 0.5  # the old stand-in was the little grump scaled up
 		_art_scale = float(ed.get("scale", 1.0))  # regional bosses can stand taller (data "scale")
@@ -217,6 +226,12 @@ func setup(k: String, tier_override := -1) -> void:
 		_sprite.frame_changed.connect(_fit_sprite)
 		_sprite.animation_changed.connect(_fit_sprite)
 		_sprite.play("idle")
+		_life_rng = CreatureMotion.rng_for(self)
+		CreatureMotion.random_start(_sprite, _life_rng, 0.12)  # c14b_12-01: no lockstep
+		_life_ph = CreatureMotion.phase(self)
+		_anim_t = _life_ph * TAU
+		_fidget_t = _life_rng.randf_range(5.0, 12.0)
+		_floater = group.get_file() in FLOATERS or k in FLOATERS
 		_fit_sprite()
 		add_child(_sprite)
 		if ed.has("tint") or (_fb and ed.has("fallback_tint")):
@@ -232,6 +247,32 @@ func setup(k: String, tier_override := -1) -> void:
 		_gift = Gift.new()
 		_gift.setup(self, str(ed["gift"]))
 		add_child(_gift)
+
+
+# C14b P6 idle life: per-foe phase, breath, hover for floaters, rare fidgets.
+const FLOATERS := ["dark_crystal", "dark_crystal_shard", "shard", "wisp", "prism_wisp", "light_eater", "bat"]
+## Idles whose cells are mixed poses (an attack frame, a back view, jumbled or
+## resized redraws): rest on frame 0 and let the code breath carry the motion.
+const STILL_IDLE := ["slime", "casino_guard"]
+## 4-frame loops played as a ping-pong (no wrap pop); the C14b bosses' redrawn rest loops.
+const PINGPONG_IDLE := {"dark_crystal": 3.5, "storm_roc": 4.0, "rime_wyrm": 4.0, "cboss_coral": 4.0, "cboss_ice": 4.0, "cboss_kelp": 2.5}
+var _life_rng: RandomNumberGenerator = null
+var _life_ph := 0.0
+var _fidget_t := 8.0
+var _floater := false
+
+
+## Tuned idle strip for an art id (static: the battle sim and tests use it too).
+static func idle_frames(sf: SpriteFrames, art_id: String) -> SpriteFrames:
+	if sf == null or not sf.has_animation("idle"):
+		return sf
+	if art_id in STILL_IDLE:
+		return CreatureMotion.still_idle(sf, "idle")
+	if PINGPONG_IDLE.has(art_id):
+		return CreatureMotion.pingpong(sf, "idle", float(PINGPONG_IDLE[art_id]))
+	if sf.get_frame_count("idle") == 2:
+		return CreatureMotion.held_idle(sf, "idle", 1.1, 0.7)  # c14b_12-02: a slow weight shift, not a 5 fps twitch
+	return sf
 
 
 var _burn_t := 0.0
@@ -374,7 +415,7 @@ func _process(delta: float) -> void:
 			if d.length() < 12.0 and d.length() > 0.01:
 				sep += d.normalized() * (12.0 - d.length())
 	var move := (Vector2.ZERO if stunned or _windup > 0.0 else _dir * speed) + _knock + sep * 4.0
-	_knock = _knock.move_toward(Vector2.ZERO, 520.0 * delta)
+	_knock = _knock.move_toward(Vector2.ZERO, (260.0 + _knock.length() * 4.0) * delta)  # c14b_12-13: fast first, soft settle
 	_slide(move * delta)
 	# Attacks telegraph: wind up, then strike if you're still in reach.
 	if _windup > 0.0:
@@ -399,11 +440,26 @@ func _process(delta: float) -> void:
 		var want := "hurt" if _hit_flash > 0.0 else ("power" if _power_t > 0.0 else ("attack" if _attacking > 0.0 else ("walk" if _dir != Vector2.ZERO and not stunned else "idle")))
 		if not _sprite.sprite_frames.has_animation(want):
 			want = "idle" if want != "attack" or not _sprite.sprite_frames.has_animation("walk") else "walk"
+		if want == "walk" and absf(_dir.y) > absf(_dir.x) * 1.2:
+			var vd := "walk_down" if _dir.y > 0.0 else "walk_up"
+			if _sprite.sprite_frames.has_animation(vd):
+				want = vd
+		if want == "idle":
+			# c14b_12-10: a rare taunt / tired fidget, then back to the idle loop.
+			_fidget_t -= delta
+			if _sprite.animation == "fidget" and _sprite.is_playing():
+				want = "fidget"
+			elif _fidget_t <= 0.0 and _sprite.sprite_frames.has_animation("fidget") and not CreatureMotion.reduced():
+				want = "fidget"
+				_fidget_t = _life_rng.randf_range(7.0, 14.0) if _life_rng else 10.0
 		if _sprite.animation != want:
 			_sprite.play(want)
-		if _dir.x != 0.0:
+			if want == "idle" and _life_rng:
+				CreatureMotion.random_start(_sprite, _life_rng, 0.12)
+		# c14b_12-15: a dead zone so a foe straight above/below doesn't flicker.
+		if absf(_dir.x) > 0.25:
 			_sprite.flip_h = _dir.x < 0
-		elif to.x != 0.0 and dist < 80.0:
+		elif _dir == Vector2.ZERO and absf(to.x) > 6.0 and dist < 80.0:
 			_sprite.flip_h = to.x < 0
 		var tint := Color(1, 1, 1)
 		if _windup > 0.0 or _lunge_tele > 0.0:
@@ -414,7 +470,14 @@ func _process(delta: float) -> void:
 			tint = Color(1.0, 0.55, 0.5)
 		_sprite.modulate = tint
 		var bs := 1.1 if kind == "big_grump" and not Art.has("enemies/big_grump", "idle") else 0.5 * _art_scale
-		_sprite.scale = Vector2(bs * (1.0 + _squash * 0.25), bs * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(bs, bs)
+		# c14b_12-13: the squash eases out (smoothstep) instead of a linear return;
+		# c14b_12-02: every foe breathes (feet anchored), floaters hover.
+		var sq := _squash * _squash * (3.0 - 2.0 * _squash)
+		var br := CreatureMotion.breath(_life_ph, 0.03 if _floater else 0.018, 2.4 + _life_ph * 0.9) if _alive else Vector2.ONE
+		_sprite.scale = Vector2(bs * (1.0 + sq * 0.25) * br.x, bs * (1.0 - sq * 0.3) * br.y) if kind != "big_grump" else Vector2(bs, bs) * br
+		if _floater:
+			_sprite.position.y = CreatureMotion.hover(_life_ph, 2.5, 3.2 + _life_ph)
+			queue_redraw()  # the shadow follows the hover (one floater, cheap)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
 	# Packed into one int (no per-frame string format): hp, max_hp, 8 flags, tier, shadow, telegraph/regen.
 	var flags := int(_shield > 0.0) | int(_lunge_tele > 0.0 or _lunge > 0.0) << 1 | int(_range_tele > 0.0) << 2 | int(_stomp_tele > 0.0) << 3 \
@@ -774,6 +837,16 @@ func _die() -> void:
 		tw2.tween_property(self, "modulate:a", 0.0, 0.25)
 		tw2.tween_callback(queue_free)
 		return
+	if _sprite and _is_person():
+		# c14b_12-09: people are knocked down (tip over, small hop, fade), never pancaked.
+		var side := -1.0 if _sprite.flip_h else 1.0
+		var tk := create_tween()
+		tk.set_parallel(true)
+		tk.tween_property(self, "position", position + _knock.normalized() * 8.0, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+		tk.tween_property(_sprite, "rotation", -side * PI * 0.5, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		tk.chain().tween_property(self, "modulate:a", 0.0, 0.35).set_delay(0.25)
+		tk.chain().tween_callback(queue_free)
+		return
 	var tw := create_tween()
 	tw.set_parallel(true)
 	tw.tween_property(self, "position", position + _knock.normalized() * 10.0, 0.2)
@@ -794,7 +867,21 @@ func _walk_clear(a: Vector2, b: Vector2) -> bool:
 
 
 func _draw() -> void:
-	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
+	var hov := _sprite.position.y if _sprite and _floater else 0.0
+	# Floaters' shadow shrinks as they rise (c14b_05-14).
+	draw_circle(Vector2(0, 0), _shadow_r * (1.0 + hov / 14.0), Color(0, 0, 0, 0.2))
+	if kind == "dark_crystal" and _alive:
+		# A slow violet under-glow and dark motes spiralling in (game time, own phase).
+		var tt := PlayClock.now() + _life_ph * 4.0
+		var red := CreatureMotion.reduced()
+		var g := 0.25 + (0.08 if red else 0.25) * (0.5 + 0.5 * sin(tt * PI))
+		draw_circle(Vector2(0, -4), _shadow_r * 1.4, Color(0.55, 0.3, 0.9, g * 0.5))
+		draw_circle(Vector2(0, -4), _shadow_r * 0.9, Color(0.65, 0.4, 1.0, g * 0.6))
+		for i in 7:
+			var u := fposmod(tt * 0.25 + i / 7.0, 1.0)
+			var ang := i * TAU / 7.0 + tt * 1.2
+			var rr := (1.0 - u) * 26.0 + 4.0
+			draw_circle(Vector2(cos(ang) * rr, -18.0 + hov + sin(ang) * rr * 0.5), 1.2, Color(0.25, 0.1, 0.4, 0.8 * u))
 	if max_hp > 3 and _alive:
 		var top := _bar_top()
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))

@@ -13,6 +13,14 @@ var map: GameMap
 var anim: AnimatedSprite2D
 var busy := false
 var _idle := 0.0
+# C14b P6 idle life: held idle, breath, a random sit threshold, naps, facing-aware idles.
+var _life_on := false
+var _life_rng: RandomNumberGenerator = null
+var _life_ph := 0.0
+var _base_sc := Vector2.ONE
+var _sit_at := 4.0
+var _napping := false
+var _fid_t := 10.0
 var _target: Enemy = null
 var _bite_cd := 0.0
 var _hurt_t := 0.0
@@ -418,14 +426,45 @@ func heal(n: int) -> void:
 	_hp_bar.queue_redraw()
 
 
+func _life_setup() -> void:
+	_life_on = true
+	_life_rng = CreatureMotion.rng_for(self)
+	_life_ph = _life_rng.randf()
+	_base_sc = anim.scale
+	_sit_at = _life_rng.randf_range(3.0, 6.0)
+	_fid_t = _life_rng.randf_range(8.0, 14.0)
+	if anim.sprite_frames and anim.sprite_frames.has_animation("idle") and anim.sprite_frames.get_frame_count("idle") == 2:
+		var was := anim.animation
+		anim.sprite_frames = CreatureMotion.held_idle(anim.sprite_frames, "idle", 2.8, 0.25)  # c14b_09-08: no 2 fps toggle
+		anim.play(was)
+	CreatureMotion.random_start(anim, _life_rng, 0.0)
+
+
+## The idle strip for the last facing (idle_down / idle_up when drawn, c14b_11-07 / 09-24).
+func _idle_anim() -> String:
+	if not _axis_h:
+		var v := "idle_up" if _vel_last.y < 0.0 else "idle_down"
+		if anim.sprite_frames.has_animation(v):
+			return v
+	return "idle"
+
+
+var _vel_last := Vector2(1, 0)
+
+
 func _process(delta: float) -> void:
 	if busy or map == null or map.player == null or anim == null or not visible:
 		return
 	if map.get_tree().paused:
 		return
+	if not _life_on:
+		_life_setup()
+	# Breath (feet anchored: offset puts the feet on the origin); calmer asleep.
+	var br := CreatureMotion.breath(_life_ph, 0.015 if anim.animation == "sleep" else 0.022, 3.2 if anim.animation == "sleep" else 2.2)
+	anim.scale = _base_sc * br
 	if _down_t >= 0.0:
 		_down_t -= delta
-		modulate.a = 0.75 + 0.25 * sin(Time.get_ticks_msec() / 200.0)
+		modulate.a = 0.75 + 0.25 * sin(PlayClock.now() * 5.0)  # game time (c14b_11-07)
 		if int(_down_t) % 30 == 0 and int(_down_t + delta) % 30 != 0 and _down_t > 1.0:
 			map.hud.toast("%s needs food or a potion: %d seconds left." % [name_of(), int(_down_t)], Color(1, 0.7, 0.6))
 		if _down_t <= 0.0:
@@ -568,7 +607,10 @@ func _process(delta: float) -> void:
 		if anim.animation != a:
 			anim.play(a)
 		anim.speed_scale = 0.6 if swimming else 1.0
+		if _vel.length() > 1.0:
+			_vel_last = _vel
 		_idle = 0.0
+		_napping = false
 		if _carry_item == "fetch" and dist < 10.0 and _carry_find.begins_with("forage:"):
 			_fetch_pick()
 		elif _carry_item == "fetch" and dist < 10.0:
@@ -595,22 +637,37 @@ func _process(delta: float) -> void:
 			_carry_item = "digging"  # stopped just short of the spot: dig here
 			PupMine.dig_find(self)
 		_idle += delta
-		var want := "idle"
+		var want := _idle_anim()
 		if mode == "guard" and anim.sprite_frames.has_animation("guard"):
 			want = "guard"
+		elif _napping and anim.sprite_frames.has_animation("sleep"):
+			want = "sleep"  # c14b_09-08: a nap after a long wait; any move wakes it
 		elif mode == "wait" and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
-		elif _idle > 3.0 and anim.sprite_frames.has_animation("sit"):
+		elif _idle > _sit_at and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
+		# Sitting: now and then a short beg / play one-shot (not asleep, not in reduced motion).
+		if want == "sit" and not swimming:
+			_fid_t -= delta
+			if _fid_t <= 0.0:
+				_fid_t = _life_rng.randf_range(8.0, 14.0) if _life_rng else 10.0
+				if not CreatureMotion.reduced():
+					for f: String in ["beg", "play"]:
+						if anim.sprite_frames.has_animation(f) and not anim.sprite_frames.get_animation_loop(f):
+							anim.play(f)
+							break
 		if swimming:
 			want = "walk"  # treading water: never sits or lies on the surface
 		var one_shot := anim.animation in ["dig", "bark", "bite", "hurt", "howl", "play", "fetch", "beg"]
 		if anim.animation != want and not (one_shot and anim.is_playing()):
 			anim.play(want)
 		anim.speed_scale = 0.35 if swimming else 1.0
-		if _idle > 14.0 and mode != "wait" and not swimming:
-			_idle = randf_range(-6.0, 0.0)
-			_dig()
+		if _idle > 14.0 and mode != "wait" and not swimming and not _napping:
+			if _life_rng and _life_rng.randf() < 0.45 and anim.sprite_frames.has_animation("sleep") and mode != "guard":
+				_napping = true  # lies down for a nap instead of digging
+			else:
+				_idle = randf_range(-6.0, 0.0)
+				_dig()
 
 
 func _bite(e: Enemy) -> void:

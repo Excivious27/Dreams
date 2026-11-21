@@ -84,6 +84,11 @@ static func _face_of(d: Vector2i) -> String:
 ## The rest pose the facing should show (with the fallbacks Player._apply uses).
 func _rest_ok(p: Player, f: String) -> bool:
 	var a := p.anim_name
+	# C14b P5: a drawn multi-frame idle_up / idle_side is the rest for that facing.
+	if a == "idle_up" and f == "up" and p.idle_for("up") == "idle_up":
+		return true
+	if a == "idle_side" and f in ["left", "right"] and p.idle_for(f) == "idle_side":
+		return p._anim.flip_h == (f == "left")
 	match f:
 		"up": return a == "view_back" or (not p.has_anim("view_back") and a == "idle")
 		"right": return (a == "view_right" and not p._anim.flip_h) or (not p.has_anim("view_right") and a == "idle")

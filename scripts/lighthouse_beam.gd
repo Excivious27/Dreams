@@ -1,0 +1,121 @@
+class_name LighthouseBeam
+extends Node2D
+## C14b P3 (c14b_13-01, 14-11, 04-12): a smooth turning lighthouse beam instead of
+## the 4-frame strip that strobed left / none / right / off. The tower is drawn as
+## its lit-lamp still; this node, placed at the lamp, draws two soft additive cones
+## whose width follows cos(t) so the beam reads as sweeping round the lamp. Bright
+## at dusk, night and in fog, faint by day; never fully off. Game time (PlayClock).
+## Reduced motion: a steady soft glow, no sweep.
+
+const PERIOD := 6.5  # seconds per full turn
+var length := 70.0   # art px (the node inherits the tower sprite's scale)
+var half_w := 12.0
+
+
+## Add a beam to a lighthouse sprite. `lamp` is the lamp centre in the sprite's
+## local (art) pixels.
+static func attach(tower: Node2D, lamp: Vector2) -> LighthouseBeam:
+	if tower == null:
+		return null
+	var b := LighthouseBeam.new()
+	b.name = "Beam"
+	b.position = lamp
+	tower.add_child(b)
+	return b
+
+
+## The light is drawn on its own canvas layer above the map's night CanvasModulate
+## (like NightGlow), following this anchor, so the night tint doesn't swallow it.
+var _layer: CanvasLayer
+var _drawer: Node2D
+
+
+func _ready() -> void:
+	_layer = CanvasLayer.new()
+	_layer.layer = 1
+	_layer.follow_viewport_enabled = true
+	_drawer = Node2D.new()
+	var mat := CanvasItemMaterial.new()
+	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	_drawer.material = mat
+	_drawer.draw.connect(_draw_beam)
+	_layer.add_child(_drawer)
+	add_child(_layer)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_layer):
+		_layer.queue_free()
+
+
+## The lit-lamp, no-beam frame of the lighthouse strip (frame 1) as a texture.
+static func lit_frame(name := "lighthouse") -> Texture2D:
+	var info := Art.info("buildings", name)
+	var fr := int(info.get("frames", 1))
+	var t := Art.tex("buildings", name)
+	if fr <= 1 or t == null:
+		return t
+	var at := AtlasTexture.new()
+	at.atlas = t
+	var fw := float(info.get("cell_w", t.get_width() / fr))
+	at.region = Rect2(fw * mini(1, fr - 1), 0, fw, float(info.get("cell_h", t.get_height())))
+	return at
+
+
+static func strength() -> float:
+	var d := GameState.darkness()
+	var w := GameState.weather_today() if GameState.run.has("day") else "clear"
+	var s := 0.12 + 0.88 * d
+	if w in ["fog", "storm", "rain", "blizzard"]:
+		s = maxf(s, 0.6)
+	return clampf(s, 0.12, 1.0)
+
+
+func _process(_d: float) -> void:
+	if _drawer:
+		_drawer.transform = get_global_transform()
+		_drawer.visible = is_visible_in_tree()
+		_drawer.queue_redraw()
+
+
+func _draw_beam() -> void:
+	var d := _drawer
+	var s := strength()
+	var glow := Color(1.0, 0.93, 0.62, 0.35 * s)
+	d.draw_circle(Vector2.ZERO, 7.0, glow)
+	d.draw_circle(Vector2.ZERO, 4.0, Color(1, 0.97, 0.8, 0.45 * s))
+	if AmbientMotion.reduced():
+		return
+	var a := PlayClock.now() * TAU / PERIOD
+	var c := cos(a)
+	# Two opposite cones; the one facing "away" (sin < 0) is dimmer, like the far side.
+	for side in [1.0, -1.0]:
+		var reach: float = length * c * side
+		if absf(reach) < 2.0:
+			continue
+		var facing: float = 0.55 + 0.45 * sin(a) * side
+		var col := Color(1.0, 0.92, 0.6, 0.6 * s * facing)
+		var tip := Color(1.0, 0.92, 0.6, 0.0)
+		var hw := half_w * (0.6 + 0.4 * absf(c))
+		d.draw_polygon(PackedVector2Array([Vector2(0, -2.5), Vector2(reach, -hw), Vector2(reach, hw), Vector2(0, 2.5)]),
+			PackedColorArray([col, tip, tip, col]))
+
+
+## C14b integration: P2's API on P3's beam. `fit` turns a placed lit-lighthouse
+## AnimatedSprite2D into its still lit frame plus this beam at the lamp.
+static func fit(a: AnimatedSprite2D) -> LighthouseBeam:
+	if a == null:
+		return null
+	if a.get_node_or_null("Beam") != null:
+		return a.get_node("Beam")
+	if a.sprite_frames != null and a.sprite_frames.has_animation(a.animation):
+		var n := a.sprite_frames.get_frame_count(a.animation)
+		a.stop()
+		a.frame = 1 if n > 1 else 0
+	return attach(a, Vector2(-2, -187))
+
+
+## Reach factor (-1..1, sign = side) and brightness of the beam at game time t.
+static func sweep(t: float, reduced: bool) -> Vector2:
+	var c := 0.85 if reduced else cos(t * TAU / PERIOD)
+	return Vector2(c, 0.45 + 0.55 * absf(c))

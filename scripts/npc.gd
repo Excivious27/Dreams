@@ -30,6 +30,10 @@ var map: GameMap
 var _walker := ""  # the character sheet they walk in (CharacterLibrary id)
 var _dir := "down"  # last way they walked or turned: "down" | "up" | "side"
 var _walk_h := {}  # walker anim -> source height (per-animation scale normalise)
+var _life: IdleLife  # C14b P5: breathing while they stand or pose
+var _spd := 1.0  # per-villager pace jitter for idles and poses
+var _pose_t := 0.0  # seconds left on the current pose pick ('' = a rest)
+var _look_t := 0.0
 
 
 ## Cells cut through by the slice or drawn as someone else (c5_08 #2): a pose
@@ -145,6 +149,9 @@ func _play_walker(a: String) -> void:
 		_anim.scale = _base_scale * r
 	if _anim.animation != a:
 		_anim.play(a)
+		if a.begins_with("idle"):
+			_anim.speed_scale = _spd
+		Npc.desync(_anim, id + a)  # C14b integ (P1 note): walk strips no longer start in lockstep either
 
 
 ## Frame 0 of a pose strip (a multi-frame strip would draw whole otherwise).
@@ -220,14 +227,81 @@ func set_pose(pose: String) -> void:
 	if _base_scale == Vector2.ZERO:
 		_base_scale = _anim.scale
 	var key := "pose_%s_%s" % [g.get_file(), pose]
-	if not _anim.sprite_frames.has_animation(key):
-		_anim.sprite_frames.add_animation(key)
-		_anim.sprite_frames.set_animation_loop(key, false)
-		_anim.sprite_frames.add_frame(key, first_frame(g, pose))
+	var sf := _anim.sprite_frames
+	if not sf.has_animation(key):
+		sf.add_animation(key)
+		var cells := pose_cells(g, pose)
+		sf.set_animation_loop(key, cells.size() > 1)
+		sf.set_animation_speed(key, float(POSE_FPS.get(pose.trim_suffix("_2"), 3.0)))
+		for i in cells.size():
+			sf.add_frame(key, cells[i], 1.6 if i == 0 and cells.size() == 2 else 1.0)
 	_anim.scale = _base_scale * pose_ratio(g, pose, _idle_h())
 	_pose = pose
-	_anim.speed_scale = 1.0
+	_anim.speed_scale = _spd
 	_anim.play(key)
+	Npc.desync(_anim, id + pose)
+
+
+## C14b P5 (c14b_08-02/09/12, 10-02): every drawn cell of a pose plays. A
+## multi-frame strip loops whole; a pose drawn as a pair (work + work_2,
+## talk + talk_2, dance + dance_2) loops the pair, so shopkeepers work, kids
+## dance and chatting villagers gesture instead of holding one frozen frame.
+const POSE_FPS := {"work": 2.5, "talk": 3.0, "dance": 4.0, "wave": 4.0, "laugh": 4.0, "fish": 1.5, "sit": 2.0, "eat": 3.0}
+
+
+static func pose_cells(g: String, pose: String) -> Array[Texture2D]:
+	var out: Array[Texture2D] = []
+	var t := Art.tex(g, pose)
+	if t == null:
+		return out
+	var inf := Art.info(g, pose)
+	var n := maxi(1, int(inf.get("frames", 1)))
+	var cw := float(inf.get("cell_w", t.get_width() / n))
+	var ch := float(inf.get("cell_h", t.get_height()))
+	for i in n:
+		if n == 1:
+			out.append(t)
+			break
+		var at := AtlasTexture.new()
+		at.atlas = t
+		at.region = Rect2(i * cw, 0, cw, ch)
+		out.append(at)
+	if n == 1 and not pose.ends_with("_2") and Art.has(g, pose + "_2") and not bad_cell(g.get_file(), pose + "_2"):
+		var t2 := first_frame(g, pose + "_2")
+		if t2 and absf(float(Art.info(g, pose + "_2").get("cell_h", ch)) / maxf(1.0, ch) - 1.0) < 0.15:
+			out.append(t2)  # a matching second pose: the pair loops
+	return out
+
+
+## Start a loop on a stable per-character frame and pace (c14b_08-04, 14-06):
+## neighbours never flip frames in lockstep.
+static func desync(a: AnimatedSprite2D, key: String) -> void:
+	if a == null or a.sprite_frames == null:
+		return
+	var n := a.sprite_frames.get_frame_count(a.animation)
+	if n > 1 and a.sprite_frames.get_animation_loop(a.animation):
+		var h := absi(hash(key))
+		a.set_frame_and_progress(h % n, float(h % 97) / 97.0)
+
+
+## How long a villager keeps a picked pose (c14b_08-03, 10-07): gestures are
+## short and followed by a rest, activities long; '' is a real rest.
+static func pose_hold(pose: String) -> float:
+	match pose:
+		"wave", "laugh":
+			return randf_range(1.4, 2.2)
+		"dance", "eat":
+			return randf_range(3.0, 5.0)
+		"talk", "talk_2":
+			return randf_range(3.0, 6.0)
+		"":
+			return randf_range(2.0, 5.0)
+		"umbrella", "shiver":
+			return randf_range(6.0, 12.0)
+	return randf_range(8.0, 16.0)
+
+
+const GESTURES := ["wave", "laugh", "dance", "eat"]
 
 
 func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
@@ -261,6 +335,14 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 		_anim.play("idle")
 		add_child(_anim)
 		_fit_walker()
+		_spd = 0.88 + float(absi(hash(npc_id)) % 25) / 100.0  # 0.88 .. 1.12
+		Npc.desync(_anim, npc_id)
+		_life = IdleLife.new()
+		_life.name = "IdleLife"
+		_life.seed_from(npc_id)
+		var me := self
+		_life.targets = func() -> Array: return [me._anim] if is_instance_valid(me._anim) else []
+		add_child(_life)
 	else:
 		_figure = PlaceholderSprite.new()
 		_figure.tint = Color(str(data.get("color", "888888")))
@@ -509,7 +591,7 @@ func _process(delta: float) -> void:
 				_target = home
 	elif _wander_t <= 0.0 and position.distance_to(home) < 48.0 and _chat_partner == null:
 		_wander_t = randf_range(4.0, 11.0)
-		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look", "farm", "haul"]:
+		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look", "farm", "haul", "idle_about"]:
 			var wc := map.world_to_cell(home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0)))
 			if map.in_content(wc) and not map.blocked.has(wc) and not map.keep_off.has(wc):
 				_target = map.cell_center(wc)
@@ -564,40 +646,73 @@ func _process(delta: float) -> void:
 			# Legs keep pace with the feet: a slow drift near home steps slowly.
 			_anim.speed_scale = walk_speed_scale(speed) if moved else 1.0
 	elif _anim and _pose != "":
-		_anim.speed_scale = 1.0
+		_anim.speed_scale = _spd
 	elif _anim and _anim.animation != idle_anim():
 		_play_walker(idle_anim())
-		_anim.speed_scale = 1.0
+		_anim.speed_scale = _spd
 		_idle_t = 0.0
 	_chat(delta, to)
+	if _life:
+		_life.active = _anim != null and to.length() <= 2.0
 	if _anim and to.length() <= 2.0:
 		_idle_t += delta
-		if _idle_t > 1.2 and _pose == "":
-			var want := ""
-			if GameState.is_wet() and activity != "fish" and map and map.scene_id() != "interior":
-				want = "umbrella"
-			elif GameState.weather_today() in ["snow", "blizzard"]:
-				want = "shiver"
-			elif _chat_partner != null:
-				want = "talk"
-			else:
-				match activity:
-					"work": want = "work"
-					"fish": want = "fish"
-					"garden": want = ["work", "work", "wave", ""][randi() % 4]
-					"sit": want = "sit"
-					"talk": want = ["talk", "wave", "", ""][randi() % 4]
-					"look": want = ["", "wave"][randi() % 2]
-					"play": want = ["wave", "dance", ""][randi() % 3]
-					"farm": want = ["work", "work_2", "work", "carry", "wave"][randi() % 5]
-					"haul": want = ["carry", "carry", "work_2", ""][randi() % 4]
-					"market": want = ["talk", "talk_2", "wave", "laugh", "counter"][randi() % 5]
-					"picnic": want = ["eat", "sit", "laugh", "talk"][randi() % 4]
+		_pose_t -= delta
+		if _chat_partner != null and _pose == "":
+			set_pose("talk")
+		elif _idle_t > 1.2 and _pose_t <= 0.0 and _chat_partner == null:
+			var want := pick_pose(_pose)
 			set_pose(want)
+			_pose_t = pose_hold(want if _pose == want else "")
+		_glance_player(delta)
 	else:
 		_idle_t = 0.0
+		_pose_t = 0.0
 		if _pose != "":
 			set_pose("")
+
+
+## C14b P5: the next pose for a standing villager. Weather and activity mix
+## (a snowy town isn't all identical shivering statues, c14b_08-15); a gesture
+## is always followed by a rest; villagers with no spot but room to wander
+## idle about, and keepers indoors tend their counter (c14b_08-06, 10-03/05).
+func pick_pose(prev: String) -> String:
+	if prev in GESTURES:
+		return ""
+	var act := activity
+	if act == "":
+		if map and map.scene_id() == "interior":
+			act = "counter"
+		elif wander > 0.0:
+			act = "idle_about"
+	var outdoors := map == null or map.scene_id() != "interior"
+	if outdoors and GameState.is_wet() and act != "fish" and randf() < 0.7:
+		return "umbrella"
+	if outdoors and GameState.weather_today() in ["snow", "blizzard"] and randf() < 0.4:
+		return "shiver"
+	match act:
+		"work": return ["work", "work", "work", ""][randi() % 4]
+		"fish": return "fish"
+		"garden": return ["work", "work", "wave", ""][randi() % 4]
+		"sit": return "sit"
+		"talk": return ["talk", "wave", "", ""][randi() % 4]
+		"look", "idle_about": return ["", "", "wave", "talk"][randi() % 4]
+		"play": return ["wave", "dance", "dance", ""][randi() % 4]
+		"farm": return ["work", "work_2", "work", "carry", "wave"][randi() % 5]
+		"haul": return ["carry", "carry", "work_2", ""][randi() % 4]
+		"market": return ["talk", "talk_2", "wave", "laugh", "counter"][randi() % 5]
+		"picnic": return ["eat", "sit", "laugh", "talk"][randi() % 4]
+		"counter": return ["counter", "counter", "work", "talk", ""][randi() % 5]
+	return ""
+
+
+## Standing villagers glance at the player walking close by (c14b_08-13, 10-15).
+func _glance_player(delta: float) -> void:
+	_look_t -= delta
+	if _look_t > 0.0 or map == null or map.player == null or _chat_partner != null:
+		return
+	_look_t = randf_range(0.8, 1.6)
+	if _pose in ["", "counter", "talk", "wave"] and map.player.position.distance_to(position) < 40.0:
+		face(map.player.position)
 
 
 ## Two villagers who end up near each other stop, face one another and chat for
@@ -613,9 +728,9 @@ func _chat(delta: float, to: Vector2) -> void:
 			_target = position
 			_anim.flip_h = _chat_partner.position.x < position.x
 			if _bubble:
-				_bubble.text = ["...", "..", ".", "!", "?", "..."][int(Time.get_ticks_msec() / 500) % 6]
-			if _bubble_sprite and int(Time.get_ticks_msec() / 1400) != _bubble_i:
-				_bubble_i = int(Time.get_ticks_msec() / 1400)
+				_bubble.text = ["...", "..", ".", "!", "?", "..."][int(PlayClock.ms() / 500) % 6]
+			if _bubble_sprite and int(PlayClock.ms() / 1400) != _bubble_i:
+				_bubble_i = int(PlayClock.ms() / 1400)
 				_bubble_icon(BUBBLE_ICONS[(_bubble_i + absi(hash(id))) % BUBBLE_ICONS.size()])
 		return
 	if to.length() > 2.0 or _wander_t > 2.0:
@@ -626,7 +741,7 @@ func _chat(delta: float, to: Vector2) -> void:
 		var o := other as Npc
 		if not o.visible or o._chat_partner != null or o.position.distance_to(position) > 30.0 or o.position.distance_to(position) < 8.0:
 			continue
-		if randf() < 0.004:
+		if randf() < 0.24 * delta:  # ~once per 4 s of standing together, at any frame rate
 			_start_chat(o)
 			o._start_chat(self)
 			return

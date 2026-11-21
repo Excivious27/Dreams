@@ -198,11 +198,11 @@ static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictiona
 			if not is_instance_valid(holder) or not is_instance_valid(anim):
 				return
 			var an := anim.animation
-			var idle := an in ["idle", "view_front", "view_right", "view_left", "view_back"]
+			var idle := an in ["idle", "idle_down", "idle_up", "idle_side", "view_front", "view_right", "view_left", "view_back"]
 			var view := "front"
-			if an in ["view_right", "view_left"]:
+			if an in ["view_right", "view_left", "idle_side"]:
 				view = "side"
-			elif an == "view_back":
+			elif an in ["view_back", "idle_up"]:
 				view = "back"
 			var t: Texture2D = pick.call(view) if idle else null
 			ov.visible = t != null
@@ -212,7 +212,7 @@ static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictiona
 				ov.scale = anim.scale
 				ov.position = anim.position
 				ov.offset = Vector2(0, -t.get_height() / 2.0)
-				ov.flip_h = an == "view_left" or (an == "view_right" and anim.flip_h)
+				ov.flip_h = an == "view_left" or (an in ["view_right", "idle_side"] and anim.flip_h)
 				ov.modulate = anim.modulate
 		anim.frame_changed.connect(upd)
 		anim.animation_changed.connect(upd)
@@ -754,6 +754,7 @@ func _physics_process(delta: float) -> void:
 			_last_stand()
 			if int(GameState.run["hp"]) <= 0:
 				map.player_down("hurt")
+	_idle_life(delta)
 	if _sprite == null or is_puppet:
 		return
 	invuln = maxf(0.0, invuln - delta)
@@ -1733,7 +1734,54 @@ func _puff(back: Vector2) -> void:
 	tw.tween_callback(d.queue_free)
 
 
+## C14b P5 (c14b_07-02/03/10): Sun Haven-style idle life. Resting heroes (drawn,
+## paper doll, penguin overlays) breathe through IdleLife; after a few still
+## seconds facing you they glance to one side and back. Reduced motion: a
+## softer breath and no glances.
+const REST_ANIMS := ["idle", "idle_down", "idle_up", "idle_side", "view_front", "view_back", "view_left", "view_right", "float"]
+var _life: IdleLife
+var _still_t := 0.0
+var _glance_t := 0.0
+var _glance_at := 7.0
+
+
+func resting() -> bool:
+	return _sprite != null and not _busy and vehicle == "" and not mounted and anim_name in REST_ANIMS and (_anim == null or _anim.speed_scale > 0.0)
+
+
+func _idle_life(delta: float) -> void:
+	if _sprite == null:
+		return
+	if _life == null:
+		_life = IdleLife.new()
+		_life.name = "IdleLife"
+		_life.seed_from(str(get_instance_id()) + char_id)
+		add_child(_life)
+	var rest := resting() and velocity.length() < 1.0
+	_life.active = rest
+	if not rest or is_puppet or _anim == null:
+		_still_t = 0.0
+		_glance_t = 0.0
+		return
+	if _glance_t > 0.0:
+		_glance_t -= delta
+		if _glance_t <= 0.0:
+			_glance_t = 0.0
+			_show_idle()
+		return
+	_still_t += delta
+	if _still_t >= _glance_at and anim_name == "idle" and facing == "down" and not Settings.reduced_motion():
+		_still_t = 0.0
+		_glance_at = randf_range(6.0, 10.0)
+		var right := randf() < 0.5
+		var a := "idle_side" if _side_idle_ok() else ("view_right" if right or not has_anim("view_left") else "view_left")
+		_apply(a, false if a == "view_left" else not right)
+		_glance_t = randf_range(0.7, 1.1)
+
+
 func _show_idle() -> void:
+	if _glance_t > 0.0 and facing == "down" and not swimming and not mounted and not _busy:
+		return  # a short idle glance is playing (_idle_life ends it)
 	if _anim:
 		_anim.speed_scale = 1.0
 	if swimming and (has_anim("float") or has_anim("swim")):
@@ -1742,16 +1790,33 @@ func _show_idle() -> void:
 	if mounted and has_anim("ride"):
 		var ra: String = {"up": "ride_up", "down": "ride_down"}.get(facing, "ride")
 		_apply(ra if has_anim(ra) else "ride", facing == "left")
+		if _anim:  # standing still in the saddle: hold the mount, don't trot on the spot (c14b_07-04)
+			_anim.speed_scale = 0.0
+			_anim.frame = 0
 		return
-	match facing:
+	_apply(idle_for(facing), facing == "left" and _side_idle_ok())
+
+
+## C14b P5 (c14b_07-01): the resting strip for a facing. A drawn multi-frame
+## idle_up / idle_side wins over the one-frame back/side views, so the hero
+## breathes whichever way they face (IdleLife adds the breath to the rest).
+func idle_for(f: String) -> String:
+	match f:
 		"up":
-			_apply("view_back", false)
-		"left":
-			_apply("view_left", false)
-		"right":
-			_apply("view_right", false)
-		_:
-			_apply("idle", false)
+			return "idle_up" if _real_idle("idle_up") else "view_back"
+		"left", "right":
+			if _side_idle_ok():
+				return "idle_side"
+			return "view_left" if f == "left" else "view_right"
+	return "idle"
+
+
+func _real_idle(a: String) -> bool:
+	return has_anim(a) and _anim.sprite_frames.get_frame_count(a) > 1 and not CharacterLibrary.is_alias(_anim.sprite_frames, a)
+
+
+func _side_idle_ok() -> bool:
+	return _real_idle("idle_side")
 
 
 func _apply(a: String, flip: bool, restart := false) -> void:

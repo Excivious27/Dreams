@@ -6,6 +6,9 @@ extends GameMap
 ## script each; story hooks still live in dialogue below.
 
 @export var region_id := "wastes"
+## C14b P4 (c14b_05-03): the penguin magic areas whose nights carry the aurora.
+const COLONY_GLOW := {"coral": "ffb0c8", "kelp": "8ff0c8", "ice": "a8e4ff", "ember": "ffb050"}
+const AURORA_REGIONS := ["gloam_violet_glade", "gloam_moonpool", "gloam_crystal_thicket", "wind_starfall_garden", "sky_reaches", "sky", "colony_ice"]
 var R: Dictionary = {}
 var _patch_memo := {}  # region patch cells, worked out on the first draw
 var _anim_nodes: Array = []
@@ -149,10 +152,21 @@ func _boss_markers() -> void:
 		var at := AtlasTexture.new()
 		at.atlas = tex
 		at.region = Rect2(0, 0, float(info.get("cell_w", tex.get_width())), tex.get_height())
-		var sp := Sprite2D.new()
-		sp.texture = at
+		var sp: Node2D
+		if int(info.get("frames", 1)) > 1:  # C14b P4 (c14b_12-11): the waiting boss breathes its idle, slowly
+			var asp := AnimatedSprite2D.new()
+			asp.sprite_frames = Art.frames(grp, {"idle": "idle"}, {"idle": 3.0})
+			asp.animation = "idle"
+			asp.play("idle")
+			RegionAnim.phase(asp, c)
+			asp.offset = Vector2(0, -tex.get_height() / 2.0)
+			sp = asp
+		else:
+			var ssp := Sprite2D.new()
+			ssp.texture = at
+			ssp.offset = Vector2(0, -tex.get_height() / 2.0)
+			sp = ssp
 		sp.scale = Vector2(0.5, 0.5)
-		sp.offset = Vector2(0, -tex.get_height() / 2.0)
 		sp.position = cell_center(c)
 		sp.modulate = Color(0.55, 0.5, 0.65, 0.9)
 		if ed.has("tint"):
@@ -552,13 +566,15 @@ func after_ready() -> void:
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "props"))
 		var nm := str(p["name"])
+		if RegionAnim.SPLIT.has(nm) and Art.has(g, str(RegionAnim.SPLIT[nm])):
+			nm = str(RegionAnim.SPLIT[nm])  # C14b P4: still body + code-rotated sails
 		var w := int(p.get("w", 0))
 		# Buildings carry a "scale" (round 13) so they stand at town size next to the
 		# hero (town buildings are ~1.0); everything else is drawn at the usual 0.5.
 		var psc := float(p.get("scale", 0.5))
-		if bool(p.get("anim", false)) and Art.has(g, nm):
+		if RegionAnim.wants_anim(p, g, nm):  # C14b P4: every strip plays (unless "still"), ping-pong where it would pop
 			var a := AnimatedSprite2D.new()
-			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 4.0))})
+			a.sprite_frames = RegionAnim.frames_for(g, nm, RegionAnim.fps_for(nm, float(p.get("fps", 0.0))))
 			a.animation = "idle"
 			a.scale = Vector2(psc, psc)
 			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
@@ -568,10 +584,14 @@ func after_ready() -> void:
 			else:
 				add_child(a)
 			a.play("idle")
-			if g == "buildings":
+			RegionAnim.phase(a, c)  # random start frame/speed per cell: never lockstep
+			WaterFeature.still(a, nm)  # C14b integ: water strips hold a frame, the shader moves the water (no double animation)
+			RegionAnim.of(self).add(a, nm, c)
+			if g == "buildings" or p.has("scale"):
 				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in
 		else:
 			var sp := prop(g, nm, c, w, 0.0, false, psc)  # footprint blocked below, sized to the art
+			RegionAnim.of(self).add(sp, nm, c)  # C14b P4: neon hum, boats bob, drones glide
 			if sp and bool(p.get("under", false)):
 				to_under(sp)
 			if sp and p.has("scale") and g != "buildings":
@@ -638,6 +658,9 @@ func after_ready() -> void:
 		add_child(npc)
 		npcs.append(npc)
 	Crew.place(self)
+	MagicFx.attach(self, region_id, R.get("magic", {}))  # C14b P4: ground sparkles, sky shimmer, motes
+	if GameState.is_penguins() and region_id in AURORA_REGIONS:
+		set_aurora(true)
 	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout" and int(GameState.run["hp"]) < int(GameState.run["max_hp"]) and int(GameState.run["flags"].get("doc_heal_day", -1)) != int(GameState.run["day"]):
 		GameState.run["flags"]["doc_heal_day"] = int(GameState.run["day"])  # only used up when you're hurt
 		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 20)
@@ -1341,6 +1364,7 @@ func _place_colony() -> void:
 				if sp:
 					sp.position = cell_center(c)
 					sp.play("happy" if done and sp.sprite_frames.has_animation("happy") else ("idle" if done else ("sad" if sp.sprite_frames.has_animation("sad") else "idle")))
+					RegionAnim.phase(sp, c)
 					add_child(sp)
 				_colony_village(cid, c, done)
 			"colony_jetty":  # C14 contract: the TravelNet station sign on this jetty
@@ -1358,6 +1382,8 @@ func _place_colony() -> void:
 					prop("props", cn, c, 1, 0.0, true, 0.3)
 				elif Art.has("props", nm):
 					prop("props", nm, c)
+				# C14b P4 (c14b_05-10): the lit crystal breathes light and sheds sparkles; the dim one barely flickers.
+				RegionAnim.glow(self, cell_center(c) + Vector2(8, -14), Color(COLONY_GLOW.get(cid, "9fe8ff")), "lit" if done else "dim", 16.0)
 			"beacon":
 				var lit := (Colony.st(region_id)["beacons"] as Dictionary).has(str(t.get("key", "")))
 				var bn := "%s_beacon_%s" % [cid, "on" if lit else "off"]
@@ -1366,6 +1392,8 @@ func _place_colony() -> void:
 					prop("props", bn, c, 0, 0.0, true, 0.22)
 				elif Art.has("props", ln):
 					prop("props", ln, c)
+				if lit:  # C14b P4: each lit beacon glows on its own phase, never in lockstep
+					RegionAnim.glow(self, cell_center(c) + Vector2(0, -12), Color(COLONY_GLOW.get(cid, "ffd88a")), "lit", 7.0)
 
 
 # Houses, villagers and (until the crystal wakes) the creeping blight around the elder.
@@ -1404,7 +1432,8 @@ func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 		var kc: Vector2i = at + Vector2i(-4 + i * 4, 3 + (i % 2))
 		sp.position = cell_center(kc)
 		sp.play("idle")
-		sp.speed_scale = 0.7 + 0.2 * i
+		RegionAnim.phase(sp, kc)  # C14b P4 (c14b_05-12): kits never idle in step
+		sp.speed_scale *= 0.7 + 0.2 * i
 		sp.y_sort_enabled = true
 		add_child(sp)
 	if done:

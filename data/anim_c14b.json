@@ -1,0 +1,38 @@
+{
+ "furniture/bakery_oven": {
+  "fps": 5,
+  "pingpong": true
+ },
+ "furniture/bubbling_pot": {
+  "fps": 5,
+  "pingpong": true
+ },
+ "furniture/candle_stand": {
+  "fps": 6,
+  "pingpong": true
+ },
+ "furniture/fire_pit2": {
+  "fps": 6,
+  "pingpong": true
+ },
+ "furniture/fireplace2": {
+  "fps": 6,
+  "pingpong": true
+ },
+ "furniture/forge": {
+  "fps": 6,
+  "pingpong": true
+ },
+ "props/bonfire": {
+  "fps": 8,
+  "pingpong": true
+ },
+ "props/campfire_cook": {
+  "fps": 7,
+  "pingpong": true
+ },
+ "props/fire_barrel2": {
+  "fps": 8,
+  "pingpong": true
+ }
+}

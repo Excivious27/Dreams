@@ -104,23 +104,111 @@ func add_windows(s: Sprite2D, name: String) -> void:
 	windows.append([s, t, kind])
 
 
-## How lit a building's windows are at this hour (0..1).
-static func window_level(kind: String, hour: float) -> float:
+## How lit a building's windows are at this hour (0..1). Homes go out one by
+## one between 22:00 and 23:15 (`ph` 0..1 per building), each fading over half
+## an hour; shops dim over half an hour from 21:45 (c14b_04-19).
+static func window_level(kind: String, hour: float, ph := 0.5) -> float:
 	match kind:
 		"late":
 			return 1.0
 		"home":
-			return 0.0 if (hour >= HOME_DARK or hour < 5.0) else 1.0
+			if hour < 5.0:
+				return 0.0
+			if hour < 12.0:
+				return smoothstep(5.0, 5.5, hour)
+			var off_at := 22.0 + ph * 1.25
+			return 1.0 - smoothstep(off_at - 0.25, off_at + 0.25, hour)
 		_:
-			return 0.3 if (hour >= SHOP_DIM or hour < 6.0) else 1.0
+			if hour < 6.0:
+				return 0.3 + 0.7 * smoothstep(5.75, 6.25, hour) if hour > 5.0 else 0.3
+			return 1.0 - 0.7 * smoothstep(21.75, 22.25, hour)
 
 
 var _was_on := false
 var _acc := 0.0
 
+## C14b P2 (c14b_04-01, 16-16): each light flickers like what it is, on game
+## time, at its own phase: "fire" (hearths, candles, torches, braziers: a
+## two-sine flame flicker in size and brightness), "electric" (lamps, street
+## lights: steady), "neon" (steady with a rare short dropout every 8-20 s per
+## sign), "crystal" (a slow 4 s breathe). Reduced motion: fire at 30 %, no
+## neon dropouts. Kind comes from the node's meta "light_kind" or its art name.
+const FIRE_WORDS := ["torch", "fire", "campfire", "bonfire", "brazier", "hearth", "fireplace", "forge", "candle", "oven", "fest_ss_80", "stove", "furnace", "kiln"]
+const INDOOR_FIRE := 0.32  # fires light a room by day too (c14b_04-06)
+var _kinds := {}  # instance id -> kind
+
+
+## The art name a light's node shows (texture file basename), "" if unknown.
+static func art_name(n: Node) -> String:
+	var tex: Texture2D = null
+	if n is Sprite2D:
+		tex = (n as Sprite2D).texture
+	elif n is AnimatedSprite2D and (n as AnimatedSprite2D).sprite_frames:
+		var sf := (n as AnimatedSprite2D).sprite_frames
+		var an := (n as AnimatedSprite2D).animation
+		if sf.has_animation(an) and sf.get_frame_count(an) > 0:
+			tex = sf.get_frame_texture(an, 0)
+	if tex is AtlasTexture:
+		tex = (tex as AtlasTexture).atlas
+	if tex == null:
+		return ""
+	return tex.resource_path.get_file().get_basename()
+
+
+static func kind_for(name: String) -> String:
+	if name == "":
+		return "electric"
+	if "neon" in name:
+		return "neon"
+	if "crystal" in name or "beacon_on" in name:
+		return "crystal"
+	for w: String in FIRE_WORDS:
+		if w in name:
+			return "fire"
+	if name.begins_with("fest_ss_") or name in ["cave_lamp", "beam_lamp", "sunken_lantern"] or (name.begins_with("mine_") and "lamp" in name):
+		return "fire"  # festival lanterns and miners' lamps are flame-lit
+	return "electric"
+
+
+func kind_of(n: Node) -> String:
+	var id := n.get_instance_id()
+	if not _kinds.has(id):
+		_kinds[id] = str(n.get_meta("light_kind")) if n.has_meta("light_kind") else kind_for(art_name(n))
+	return _kinds[id]
+
+
+## Size and brightness factors [radius_mul, alpha_mul] of one light at game time tm.
+static func flicker(kind: String, tm: float, ph: float, reduced: bool) -> Vector2:
+	match kind:
+		"fire":
+			var k := 0.3 if reduced else 1.0
+			var nz := 0.6 * sin(tm * 7.3 + ph * 6.28) + 0.4 * sin(tm * 13.1 + ph * 10.7)
+			var nz2 := 0.5 * sin(tm * 5.1 + ph * 3.9) + 0.5 * sin(tm * 11.7 + ph * 8.3)
+			return Vector2(1.0 + 0.05 * k * nz, 1.0 - 0.075 * k * (1.0 + nz2))  # size +-5 %, brightness 0.85..1
+		"neon":
+			if reduced:
+				return Vector2.ONE
+			var period := 8.0 + ph * 12.0
+			var u := fmod(tm + ph * 37.0, period)
+			if u < 0.08 or (u > 0.16 and u < 0.22):
+				return Vector2(1.0, 0.4)
+			return Vector2(1.0, 0.97 + 0.03 * sin(tm * 50.0 + ph * 9.0))
+		"crystal":
+			var b := sin(tm * TAU * 0.25 + ph * TAU) * (0.3 if reduced else 1.0)
+			return Vector2(1.0 + 0.06 * b, 0.88 + 0.12 * b)
+	return Vector2(1.0 + 0.01 * sin(tm * 1.9 + ph * 6.28), 1.0)  # electric: steady
+
+
+static func phase_of(p: Vector2) -> float:
+	return fposmod(sin(p.x * 12.9898 + p.y * 78.233) * 43758.5453, 1.0)
+
+
+func _indoor() -> bool:
+	return map != null and map.scene_id() in ["house", "interior"] and not RecCenter.is_rec(map)
+
 
 func _process(_d: float) -> void:
-	var on := map != null and map.glow_dark() > 0.05
+	var on := map != null and (map.glow_dark() > 0.05 or (_indoor() and not lights.is_empty()))
 	# The flicker is +-4%: 15 redraws a second is plenty (it ran every frame from dusk to dawn).
 	_acc += _d
 	if (on and _acc >= 0.066) or on != _was_on:
@@ -142,9 +230,11 @@ func _draw_glow() -> void:
 	if map == null:
 		return
 	var a := map.glow_dark()
-	if a < 0.05:
+	var fire_floor := INDOOR_FIRE if _indoor() else 0.0
+	if a < 0.05 and fire_floor <= 0.0:
 		return
-	var tm := Time.get_ticks_msec() / 1000.0
+	var tm := PlayClock.now()
+	var reduced := Settings.reduced_motion()
 	var cam := map.get_viewport().get_camera_2d()
 	var cc := cam.get_screen_center_position() if cam else Vector2.ZERO
 	var cut := _cutoff()
@@ -154,9 +244,9 @@ func _draw_glow() -> void:
 			if not is_instance_valid(w[0]):
 				continue
 			var s := w[0] as Sprite2D
-			if not s.visible or (cam and s.global_position.distance_to(cc) > cut):
+			if a < 0.05 or not s.visible or (cam and s.global_position.distance_to(cc) > cut):
 				continue
-			var lv := window_level(str(w[2]), hour) * a * s.modulate.a
+			var lv := window_level(str(w[2]), hour, phase_of(s.global_position)) * a * s.modulate.a
 			if lv < 0.02:
 				continue
 			var tex := w[1] as Texture2D
@@ -176,11 +266,6 @@ func _draw_glow() -> void:
 	var tsz := _tex.get_size() if _tex else Vector2.ONE
 	for l: Array in lights:
 		var o: Variant = l[0]
-		var lt := _tex
-		var lc := Color(1, 1, 1, a)
-		if l.size() > 3 and l[3] is Color and _tex_white:
-			lt = _tex_white
-			lc = Color((l[3] as Color).r, (l[3] as Color).g, (l[3] as Color).b, a)
 		if not is_instance_valid(o):
 			continue
 		var n := o as Node2D
@@ -188,7 +273,19 @@ func _draw_glow() -> void:
 			continue
 		if cam and n.global_position.distance_to(cc) > cut:
 			continue
-		var r := float(l[1]) * (1.0 + 0.04 * sin(tm * 3.0 + n.position.x))
+		var kd := kind_of(n)
+		var la := a
+		if kd == "fire" and fire_floor > 0.0:
+			la = maxf(a, fire_floor + 0.45 * a)
+		if la < 0.05:
+			continue
+		var fl := flicker(kd, tm, phase_of(n.global_position), reduced)
+		var lt := _tex
+		var lc := Color(1, 1, 1, la * fl.y)
+		if l.size() > 3 and l[3] is Color and _tex_white:
+			lt = _tex_white
+			lc = Color((l[3] as Color).r, (l[3] as Color).g, (l[3] as Color).b, la * fl.y)
+		var r := float(l[1]) * fl.x
 		var p := n.global_position + Vector2(0, -float(l[2]))
 		var dst := Rect2(p - Vector2(r, r), Vector2(r, r) * 2.0)
 		if room.has_area():

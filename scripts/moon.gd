@@ -51,16 +51,20 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "moon")
+	set_aurora(true)  # C14b P4 (c14b_05-03): it is space; the aurora wash belongs here
+	MagicFx.attach(self, "moon")  # moon dust that falls slower, star shimmer, lilac sparkles
 	prop("props", "landing_pad", Vector2i(11, 21), 2, 0.0, false)  # you walk up onto the pad (it was a wall across its steps)
 	if Art.has("props", "warp_pad"):
 		var wp := AnimatedSprite2D.new()
-		wp.sprite_frames = Art.frames("props", {"idle": "warp_pad"}, {"idle": 6.0})
+		wp.sprite_frames = RegionAnim.frames_for("props", "warp_pad", 5.0)  # C14b P4: ping-pong, no dim snap
 		wp.animation = "idle"
 		wp.scale = Vector2(0.5, 0.5)
 		wp.position = cell_center(Vector2i(24, 20)) + Vector2(0, 2)
 		wp.offset = Vector2(0, -float(Art.info("props", "warp_pad").get("cell_h", 64)) / 2.0 + 14)
 		to_under(wp)
 		wp.play("idle")
+		RegionAnim.phase(wp, Vector2i(24, 20))
+		RegionAnim.of(self).add(wp, "warp_pad", Vector2i(24, 20))  # soft breathing light over the pad
 	prop("props", "rocket_house", Vector2i(3, 6), 3)  # footprint = the art (4 cells), no invisible cell beside it
 	if Art.has("buildings", "greenhouse_dome"):
 		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)
@@ -99,6 +103,9 @@ func after_ready() -> void:
 		props.erase(Vector2i(23, 20))
 		blocked.erase(Vector2i(23, 20))  # the 2-cell teleporter is drawn over 24-25
 		hard.erase(Vector2i(23, 20))
+	# C14b P4 (c14b_05-18): the animated warp pad is the teleporter's look; the old
+	# static teleporter sprite on the same cell hid its glow ring.
+	if t:  # C14b integ: keep the teleporter body (its 2-cell footprint is solid; without it cell 25,20 is an invisible wall)
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("props", {"idle": "teleporter"}, {"idle": 2.0})
 		a.animation = "idle"

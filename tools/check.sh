@@ -1243,3 +1243,83 @@ echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
 if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
   echo "town_props_test failed"; exit 1
 fi
+
+echo "== anim core (C14b P1) =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_core_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|anim_core_test" || true
+if ! echo "$acout" | grep -q "anim_core_test: 0 failures"; then
+  echo "anim_core_test failed"; exit 1
+fi
+
+echo "== weather fx (C14b P1) =="
+wfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/weather_fx_test.gd 2>&1)"
+echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|weather_fx_test" || true
+if ! echo "$wfout" | grep -q "weather_fx_test: 0 failures"; then
+  echo "weather_fx_test failed"; exit 1
+fi
+
+echo "== anim budget (C14b P1) =="
+about="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_budget_test.gd 2>&1)"
+echo "$about" | grep -E "FAIL|SCRIPT ERROR|anim_budget_test" || true
+if ! echo "$about" | grep -q "anim_budget_test: 0 failures"; then
+  echo "anim_budget_test failed"; exit 1
+fi
+
+echo "== water_feature_test (C14b P2: smooth seamless fountain) =="
+wfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/water_feature_test.gd 2>&1)"
+echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|water_feature_test" || true
+if ! echo "$wfout" | grep -q "water_feature_test: PASS"; then
+  echo "water_feature_test failed"; exit 1
+fi
+
+echo "== glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fades, room fires) =="
+gkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/glow_kinds_test.gd 2>&1)"
+echo "$gkout" | grep -E "FAIL|SCRIPT ERROR|glow_kinds_test" || true
+if ! echo "$gkout" | grep -q "glow_kinds_test: PASS"; then
+  echo "glow_kinds_test failed"; exit 1
+fi
+
+echo "== mine_life_test (C14b P2: mine drips, lamp motes, fire lamps) =="
+mlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mine_life_test.gd 2>&1)"
+echo "$mlout" | grep -E "FAIL|SCRIPT ERROR|mine_life_test" || true
+if ! echo "$mlout" | grep -q "mine_life_test: PASS"; then
+  echo "mine_life_test failed"; exit 1
+fi
+
+echo "== strip registration (C14b P2: fire strips keep their base still) =="
+python3 tools/register_strip.py --check props/bonfire furniture/bubbling_pot || { echo "strip registration check failed"; exit 1; }
+
+echo "== shore_motion_test (C14b P2: lighthouse beam sweep, still water mill) =="
+smout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/shore_motion_test.gd 2>&1)"
+echo "$smout" | grep -E "FAIL|SCRIPT ERROR|shore_motion_test" || true
+if ! echo "$smout" | grep -q "shore_motion_test: PASS"; then
+  echo "shore_motion_test failed"; exit 1
+fi
+
+echo "== C14b P3 wind/town/farm/beach/festival motion =="
+p3out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p3_test.gd 2>&1)"
+echo "$p3out" | grep -E "FAIL|SCRIPT ERROR|c14b_p3_test" || true
+if ! echo "$p3out" | grep -q "c14b_p3_test: 0 failures"; then
+  echo "c14b_p3_test failed"; exit 1
+fi
+
+echo "== C14b P4: magic and tech areas (ground sparkles, sky veils, motes, strips play out of step, colony glow, moon dusk) =="
+c14bp4out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p4_magic_test.gd 2>&1)"
+echo "$c14bp4out" | grep -E "FAIL|SCRIPT ERROR|c14b_p4_magic_test" || true
+if ! echo "$c14bp4out" | grep -q "c14b_p4_magic_test: 0 failures"; then
+  echo "C14b P4 magic test failed"; exit 1
+fi
+
+echo "== C14b P5: character idle life (front idles, breath, glances, villager pose scheduler) =="
+p5bout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p5_test.gd 2>&1)"
+echo "$p5bout" | grep -E "FAIL|SCRIPT ERROR|c14b_p5_test" || true
+if ! echo "$p5bout" | grep -q "c14b_p5_test: 0 failures"; then
+  echo "C14b P5 idle life test failed"; exit 1
+fi
+
+echo "== creature idle life (C14b P6) =="
+clout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/creature_life_test.gd 2>&1)"
+echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
+if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
+  echo "creature_life_test failed"; exit 1
+fi
