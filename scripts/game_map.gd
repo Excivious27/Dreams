@@ -203,14 +203,14 @@ func _ready() -> void:
 	if Net.online():
 		Net.peers_changed.connect(_sync_puppets)
 		_sync_puppets()
-		Net._send({"t": "scene", "scene": scene_id()})
+		Net.send_scene(scene_id())
 	elif Net.i() != null:
 		# Still connecting when the scene loaded: hook up once we're online.
 		Net.connected.connect(func(_h: bool) -> void:
 			if not Net.peers_changed.is_connected(_sync_puppets):
 				Net.peers_changed.connect(_sync_puppets)
 			_sync_puppets()
-			Net._send({"t": "scene", "scene": scene_id()}))
+			Net.send_scene(scene_id()))
 
 	var cam := Camera2D.new()
 	fit_camera(cam)
