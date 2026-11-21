@@ -453,7 +453,7 @@ static func need_lines() -> Array:
 
 static func quest_text() -> String:
 	if complete():
-		return "%s is thriving. Market every 7th day." % place_name()
+		return "%s is thriving. Market on the 7th, 21st and 28th of every season (the 14th is festival day in town)." % place_name()
 	if pending() >= 0:
 		if build_done() > 0:
 			return "%s: the crew is building the %s (night %d of %d done). Visit tomorrow." % [place_name(), build_word(pending()), build_done(), build_days(pending())]

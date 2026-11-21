@@ -86,7 +86,7 @@ func _arc(arc: String) -> void:
 	check(not Mail.has_animals(), arc + ": no animals yet")
 	check(Mail._storm_animals() == "", arc + ": storm letter says nothing about animals without any")
 	GameState.run["builds"]["coop"] = 1
-	check("animals" in Mail._storm_animals(), arc + ": storm letter mentions the animals with a coop")
+	check("coop" in Mail._storm_animals() and not ("barn" in Mail._storm_animals()), arc + ": storm letter names only the coop with a coop (c12_09-10)")
 	GameState.run["builds"].erase("coop")
 	# --- lead-in ---
 	Mail.list().clear()
@@ -137,9 +137,14 @@ func _arc(arc: String) -> void:
 	Mail._tam_highlands(30)
 	Mail._tam_highlands(34)
 	check(Mail.list().size() == 2 and "Clover" in _texts(), arc + ": weekly letters, the second asks after the lamb by her name")
-	for d in [41, 48, 55, 62]:
+	Mail._tam_highlands(41)
+	check(Mail.list().size() == 3 and Mail.tam_away(), arc + ": three letters, Tam still away")
+	for d in range(48, 63):
 		Mail._tam_highlands(d)
-	check(Mail.list().size() == Mail.TAM_LETTERS.size(), arc + ": four highland letters in all")
+	check(Mail.list().size() == 3, arc + ": the last letter waits for the week before a fall/winter festival (c12_09-06)")
+	for d in range(63, 120):
+		Mail._tam_highlands(d)
+	check(Mail.list().size() == Mail.TAM_LETTERS.size() and "Harvest Fair" in _texts() and not Mail.tam_away(), arc + ": four highland letters in all, the last before the Harvest Fair")
 	_empty_ranch()
 
 func _romance() -> void:

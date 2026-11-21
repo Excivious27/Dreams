@@ -161,6 +161,11 @@ static func room_hint(species: String, opts: Dictionary = {}) -> String:
 	return "a %s on the Plans board" % (nm if nm != "" else _home_word(h))
 
 
+## The home as this arc names it ("pig pen" for the gangster sty; c12_09-15).
+static func home_word(h: String) -> String:
+	return _home_word(h)
+
+
 static func _tname(bid: String, t: int) -> String:
 	var d := Builds.tier_def(bid, t)
 	var k := "name_gang" if GameState.run.get("arc", "") == "gangsters" and d.has("name_gang") else "name"

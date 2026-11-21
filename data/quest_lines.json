@@ -199,7 +199,7 @@
  },
  "maple_supply_run": {
   "offer": [
-   "The back shelves came down. All of them. Forty years of shelf and they chose a Tuesday.",
+   "The back shelves came down. All of them. Forty years of shelf and they chose market morning.",
    "Twenty wood, ten stone, and I can rebuild them properly this time."
   ],
   "yes": "You dear. I'll clear the floor.",
@@ -1233,7 +1233,12 @@
    "Our class has a chart of Neon Range scores and mine is the lowest. By a LOT.",
    "If you get three hundred I can say a friend did it. That counts. I asked."
   ],
-  "wait": "Three hundred on Neon Range! For the chart!"
+  "yes": "Hit the gold targets, they're worth more! Mum says aim small.",
+  "wait": "Three hundred on Neon Range! For the chart!",
+  "done": [
+   "Three hundred! I'm putting a star next to it. A big one.",
+   "These are my saved tickets. You earned them."
+  ]
  },
  "rec_theo_stack@gangsters": {
   "offer": [
@@ -1291,6 +1296,19 @@
   "offer": [
    "Theo's got tanks in that Curio Room and nothing swimming in them.",
    "Five kinds of fish in there and I'll stock you up on bait."
+  ]
+ },
+ "rec_maple_league@gangsters": {
+  "offer": [
+   "Beat Tobin's bet, I hear. Tobin is eleven.",
+   "League night's the third day of every week, upstairs at the Rec Hall. Bowl a hundred and fifty and I'll treat you like a real rival."
+  ],
+  "yes": "Lane one is mine. You can have lane two.",
+  "no": "Scared of an old woman with a heavy ball. Smart.",
+  "wait": "A hundred and fifty. League night's the third day of the week.",
+  "done": [
+   "A hundred and fifty. Gideon owes me a pie; he bet against you.",
+   "From the league kitty. The league doesn't need to know."
   ]
  },
  "mega_gloamwood_job": {

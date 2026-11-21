@@ -2988,7 +2988,7 @@ func read_mail() -> void:
 			elif str(m["kind"]) == "gift":
 				hud.toast("+" + ItemWords.count_id(str(m["item"]), int(m.get("n", 1))), Color(0.85, 1, 0.85))
 			else:
-				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
+				hud.toast("Sent. +%s" % Money.amount(int(m["pay"])), Color(1, 0.9, 0.5))
 
 
 func has_npc_at(_c: Vector2i) -> bool:
