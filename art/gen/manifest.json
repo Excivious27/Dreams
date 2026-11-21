@@ -38482,12 +38482,13 @@
    "w": 80
   },
   "sing": {
+   "c14p6": true,
    "cell_h": 64,
-   "cell_w": 48,
+   "cell_w": 53,
    "file": "characters/merkitty_a/sing.png",
    "frames": 4,
    "h": 64,
-   "w": 192
+   "w": 212
   },
   "surface": {
    "cell_h": 64,
@@ -38548,12 +38549,13 @@
    "w": 80
   },
   "sing": {
+   "c14p6": true,
    "cell_h": 64,
-   "cell_w": 44,
+   "cell_w": 65,
    "file": "characters/merkitty_b/sing.png",
    "frames": 4,
    "h": 64,
-   "w": 176
+   "w": 260
   },
   "surface": {
    "cell_h": 64,
@@ -38614,12 +38616,13 @@
    "w": 84
   },
   "sing": {
+   "c14p6": true,
    "cell_h": 64,
-   "cell_w": 45,
+   "cell_w": 72,
    "file": "characters/merkitty_c/sing.png",
    "frames": 4,
    "h": 64,
-   "w": 180
+   "w": 288
   },
   "surface": {
    "cell_h": 64,

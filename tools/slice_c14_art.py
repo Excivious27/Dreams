@@ -364,6 +364,39 @@ def swim_jobs(check, man):
     return made
 
 
+# Merkitty sing strips (c14_17-14: upscaled mush): 3 rows x 4 frames, scaled to the old sing height.
+SING_SHEET = ("merkitty_sing.png", ["merkitty_a", "merkitty_b", "merkitty_c"])
+
+
+def sing_jobs(check, man):
+    made = []
+    src = os.path.join(INC, SING_SHEET[0])
+    if not os.path.exists(src):
+        return made
+    a = load(src)
+    for (y0, y1), cid in zip(row_bands(a, 3), SING_SHEET[1]):
+        grp = "characters/" + cid
+        if done(man, grp, "sing"):
+            continue
+        ps = cells12(a[y0:y1], 4)
+        old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
+        ih = int((np.array(old)[..., 3] > 40).any(axis=1).sum())
+        s = ih / float(np.median([p.shape[0] for p in ps]))
+        fr = [shrink(p, (max(1, round(p.shape[1] * s)), max(1, round(p.shape[0] * s)))) for p in ps]
+        ch = max(int(man[grp]["sing"].get("cell_h", 64)), max(f.height for f in fr))
+        cw = max(f.width for f in fr) + 2
+        im = strip(fr, cw, ch)
+        rel = grp + "/sing.png"
+        if not check:
+            dst = os.path.join(GEN, rel)
+            if os.path.exists(dst):
+                os.remove(dst)
+            im.save(dst)
+            man[grp]["sing"] = {"file": rel, "w": im.width, "h": im.height, "frames": 4, "cell_w": cw, "cell_h": ch, "c14p6": True}
+        made.append("%s sing x4 %dx%d" % (grp, cw, ch))
+    return made
+
+
 FORCE = "--force" in sys.argv
 
 
@@ -398,6 +431,7 @@ def main():
     made += redraw_jobs(check, man)
     made += kit_jobs(check, man)
     made += swim_jobs(check, man)
+    made += sing_jobs(check, man)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)
