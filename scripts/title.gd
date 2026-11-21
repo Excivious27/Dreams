@@ -405,6 +405,7 @@ func _restore_prev() -> void:
 var _net_url: LineEdit
 var _net_code: LineEdit
 var _net_status: Label
+var _net_steam_invite := false
 
 
 func _show_net() -> void:
@@ -412,6 +413,17 @@ func _show_net() -> void:
 	_page.add_child(_label("Play together", 16))
 	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
 	_page.add_child(_label("About co-op: your character's name and look and the world changes go to the players in your room. The server keeps them in memory only and forgets them 30 minutes after the room empties. No accounts, no chat, nothing stored.", 7, false))  # s1_13-08, docs/steam-store/privacy.md
+	_net_status = _label("", 8, false)
+	# S1 P4: desktop builds with Steam running host friends-only Steam lobbies; friends
+	# join from the Steam friends list or an invite. The room code stays for phones and web.
+	if Net.steam_ready():
+		_page.add_child(_label("Steam friends", 10, false))
+		_page.add_child(_button("Host with Steam friends", func() -> void:
+			_net_status.text = "Starting a Steam lobby..."
+			_net_steam_invite = true
+			Net.host_steam(), true))
+		_page.add_child(_label("Friends join from your Steam friends list, or from the invite that opens once your lobby is up.", 7, false))
+		_page.add_child(_label("Phones and web (room code)", 10, false))
 	# The Dreams server works out of the box; a custom wss:// address can still be typed,
 	# and "Reset to default" puts the Dreams server back.
 	_net_url = _edit("Server (the Dreams server is filled in; change only for your own)", NetNode.server_url())
@@ -432,13 +444,13 @@ func _show_net() -> void:
 	srow.add_child(reset)
 	_net_code = _edit("Room code (to join)", "")
 	_net_code.max_length = 4
-	_net_status = _label("", 8, false)
 	_page.add_child(_button("Host a room", func() -> void:
 		_net_status.text = "Connecting..."
 		Net.host(_net_url.text), true))
 	_page.add_child(_button("Join with code", func() -> void:
 		_net_status.text = "Connecting..."
 		Net.join(_net_url.text, _net_code.text), true))
+	_page.add_child(_net_status)  # the connect status line (it was never on the page, so a connect never started the game)
 	_page.add_child(_button("Back", func() -> void:
 		Net.leave()  # a connect that lands after Back must not start a game
 		_show_title()))
@@ -454,6 +466,11 @@ func _on_net_connected(is_host: bool) -> void:
 		return  # left the page
 	if is_instance_valid(_net_status):
 		_net_status.text = "Connected. Room %s. %s" % [Net.room, "You're hosting; share the code." if is_host else "Joined."]
+	if is_host and _net_steam_invite:
+		_net_steam_invite = false
+		var n := Net.i()
+		if n != null and n.tr != null and "lobby_id" in n.tr:
+			SteamApi.call_steam("activateGameOverlayInviteDialog", [int(n.tr.get("lobby_id"))])
 	await get_tree().create_timer(0.8).timeout
 	if Net.room != "":
 		_start_game()

@@ -177,15 +177,18 @@ def check():
     rp = os.path.join(ROOT, "data", "rich_presence.json")
     if os.path.isfile(rp):
         d = json.load(open(rp))
-        toks = set((d.get("tokens", d) if isinstance(d, dict) else {}).keys())
+        raw = d.get("tokens", d) if isinstance(d, dict) else {}
+        # data keys are bare ("Farm"); Steam and the scripts use "#Farm"
+        toks = set(k if k.startswith("#") else "#" + k for k in raw.keys())
         used = set()
         for fn in os.listdir(os.path.join(ROOT, "scripts")):
             if fn.endswith(".gd"):
                 used |= set(re.findall(r'"(#Status_\w+)"', open(os.path.join(ROOT, "scripts", fn)).read()))
         for t in sorted(used - toks):
             errs.append("rich presence token %s used in scripts but missing from data/rich_presence.json" % t)
-        for t in sorted(t for t in toks if t.startswith("#")):
-            if len(str((d.get("tokens", d))[t])) > 60:
+        for k in sorted(raw):
+            t = k if k.startswith("#") else "#" + k
+            if len(str(raw[k])) > 60:
                 errs.append("rich presence %s longer than 60 chars" % t)
     for f in ["steam/templates/app_build.vdf.in", ".github/workflows/steam-upload.yml", ".github/workflows/steam-login.yml", "tools/steam/upload.sh"]:
         if not os.path.exists(os.path.join(ROOT, f)):
@@ -208,8 +211,8 @@ def kit(out):
         toks = d.get("tokens", d) if isinstance(d, dict) else {}
         lines = ['"lang"', "{", '\t"Language" "english"', '\t"Tokens"', "\t{"]
         for k, v in toks.items():
-            if k.startswith("#"):
-                lines.append('\t\t"%s" "%s"' % (k, str(v).replace('"', "'")))
+            if not str(k).startswith("_"):
+                lines.append('\t\t"%s" "%s"' % (k if k.startswith("#") else "#" + k, str(v).replace('"', "'")))
         lines += ["\t}", "}"]
         open(os.path.join(out, "rich_presence_english.vdf"), "w").write("\n".join(lines) + "\n")
         made.append("rich_presence_english.vdf")
