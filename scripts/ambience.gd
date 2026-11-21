@@ -587,8 +587,9 @@ func _spots(delta: float) -> void:
 	var day := int(GameState.run.get("day", 1))
 	var roosters: Array = (_herd.get("rooster", []) as Array).filter(func(n: Variant) -> bool: return is_instance_valid(n))
 	if id in RANCH_MAPS and not roosters.is_empty() and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
-		_rooster_day = day
-		_spot("rooster", -10.0, (roosters[0] as Node2D).position)
+		# c13_10-20: the day's crow is spent only once it is really heard (in range).
+		if _spot("rooster", -10.0, (roosters[0] as Node2D).position):
+			_rooster_day = day
 
 
 ## Species -> the animal nodes of that species on this map (FarmAnimal or any node with a "kind").
@@ -654,7 +655,7 @@ static func pen_rules_for(id: String, outdoors: bool, calm: bool, ph: String, ro
 	return out
 
 
-func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
+func _spot(name: String, db: float, at := Vector2.INF, species := "") -> bool:
 	var m := _map()
 	# Every take of the spot (spot_<n>, spot_<n>_2, spot_<n>_3; .ogg CC0 recordings win over .wav).
 	var takes := []
@@ -674,9 +675,9 @@ func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
 		db -= 4.0
 	var s: AudioStream = takes.pick_random() if not takes.is_empty() else null
 	if s == null or m == null or m.player == null:
-		return
+		return false
 	if at != Vector2.INF and at.distance_to(m.player.position) > 300.0:
-		return
+		return false
 	var p := AudioStreamPlayer2D.new()
 	p.stream = s
 	p.bus = "Ambience" if AudioServer.get_bus_index("Ambience") != -1 else "SFX"
@@ -697,3 +698,4 @@ func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
 	m.add_child(p)
 	p.play()
 	p.finished.connect(p.queue_free)
+	return true

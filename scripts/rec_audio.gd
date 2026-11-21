@@ -186,6 +186,10 @@ func _stream(name: String) -> AudioStream:
 ## A one-shot on our own voices (the shared Music voices stay free for UI).
 func shot(name: String, db: float, pitch := 1.0) -> void:
 	heard.append(name)
+	# c13_17-13: the player's own bowling is felt (RecAudio bypasses Music.sfx, so Haptics never saw it).
+	var hk: String = {"pin_tap": "hit", "pin_crash": "hit", "pin_strike": "hit_big", "bowl_gutter": "deny"}.get(name, "")
+	if hk != "":
+		Haptics.buzz(hk)
 	if _muted():
 		return
 	var st := _stream(name)

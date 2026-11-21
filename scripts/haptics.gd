@@ -111,7 +111,7 @@ static func supported() -> bool:
 		if _web_ok < 0:
 			_web_ok = 0
 			if ClassDB.class_exists("JavaScriptBridge"):
-				var r: Variant = JavaScriptBridge.eval("(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function')?1:0", true)
+				var r: Variant = JavaScriptBridge.eval("(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function'&&(navigator.maxTouchPoints>0||window.matchMedia('(pointer: coarse)').matches))?1:0", true)
 				_web_ok = 1 if int(r if r != null else 0) == 1 else 0
 		return _web_ok == 1
 	return OS.has_feature("android") or OS.has_feature("ios")
@@ -241,17 +241,23 @@ static func rows(parent: Control, font := 8) -> void:
 	if not supported():
 		var l := Label.new()
 		l.text = "Vibration: not supported on this device" + (" (iPhone browsers can't vibrate)" if OS.has_feature("web_ios") else "")
-		l.add_theme_font_size_override("font_size", font)
+		l.add_theme_font_size_override("font_size", Settings.font(font))  # c13_17-05: follows Text size
+		l.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		parent.add_child(l)
 		return
 	var mk := func(cb: Callable) -> Button:
 		var b := Button.new()
-		b.add_theme_font_size_override("font_size", font + 1)
+		b.add_theme_font_size_override("font_size", Settings.font(font + 1))  # c13_17-05: like every Options row
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # a finger scrolling the page never fires it
 		b.custom_minimum_size = Vector2(0, 24)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.text = cb.call(false)
-		b.pressed.connect(func() -> void: b.text = cb.call(true))
+		b.pressed.connect(func() -> void:
+			if b.is_inside_tree():
+				Music.instance(b.get_tree()).sfx("ui_tap", "pickup")
+			b.text = cb.call(true))
 		parent.add_child(b)
 		return b
 	var refs := {}  # lambdas capture by value: look the rows up at press time
