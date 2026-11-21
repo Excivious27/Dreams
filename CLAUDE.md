@@ -28,7 +28,7 @@ This file is the core: rules and the conventions every change follows. The full 
 - A new Python import or system tool goes into tools/ci-requirements.txt / the apt line in the same commit (tools/ci_deps_check.py).
 - **Tom's deliverables** (HANDOFF.md section of that name) are mandatory for both accounts: a play link every reply; check-ins at least hourly on long jobs; after every completed piece of work the full package as files in the chat (100%-complete guide, progress xlsx with % done/% remaining, report, art prompts or "none", updated artifact page). Builders in `tools/package/`.
 - Tom works only from his phone: never ask him to use a computer, run a command, paste a key or token, or write a handoff. Replies are short and end with the play link, what changed and what to test; at most one question, placed last. He likes results details as a spreadsheet in the chat.
-- All art and audio a piece of work needs is generated (dreams-image, ACE Music, CC0) and integrated by Claude, with nothing left outstanding; keep `docs/MISSING-ART.md` at zero. Music: Claude sends song prompts after Tom approves, fetches the songs and places them.
+- All art and audio a piece of work needs is generated (dreams-image, ACE Music, CC0) and integrated by Claude, with nothing left outstanding; keep `docs/MISSING-ART.md` at zero. Music: Claude writes the song prompts itself (no approval needed, Tom 2026-11-20), makes them with ACE Music, fetches and places them.
 
 ## Rules: content
 
