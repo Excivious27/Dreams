@@ -1233,6 +1233,7 @@ func draw_map() -> void:
 	draw_exits()
 	if bool(R.get("fence", false)) and pad == 0:
 		draw_fence_border(Color(str(R.get("fence_color", "6b4a2b"))))
+	PropDress.dress(self, scene_id())  # C14 P6 dressing (data/props_c14.json)
 
 
 func _process(delta: float) -> void:

@@ -1186,3 +1186,11 @@ echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
 if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
   echo "UI cue test failed"; exit 1
 fi
+
+echo "== C14 P6: prop dressing (props_c14.json in sync, art exists, dressed once, nothing on spawn) =="
+python3 tools/gen_props_c14.py --check || { echo "props_c14.json stale"; exit 1; }
+pdout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/prop_dress_test.gd 2>&1)"
+echo "$pdout" | grep -E "FAIL|SCRIPT ERROR|prop_dress_test" || true
+if ! echo "$pdout" | grep -q "prop_dress_test: 0 failures"; then
+  echo "Prop dressing test failed"; exit 1
+fi

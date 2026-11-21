@@ -11,5 +11,6 @@ ORDER="gen_skill_trees gen_ranch gen_decor gen_wardrobe write_hearts gen_heart_p
 for g in $ORDER; do
   out="$(python3 -B tools/$g.py 2>&1)" || { echo "$out"; echo "regen_data: $g failed"; exit 1; }
 done
+python3 -B tools/gen_props_c14.py >/dev/null || { echo "regen_data: gen_props_c14 failed"; exit 1; }  # C14 P6 dressing (reads regions.json: last)
 python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"
