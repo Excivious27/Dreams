@@ -249,6 +249,9 @@ def mg_jobs(check, man):
 REDRAWS = {
     "dark_crystal.png": ("enemies/dark_crystal", [("idle", 4), ("attack", 4), ("hurt", 2)], 22),  # shards join their core
     "elder_brine.png": ("characters/elder_brine", [("idle", 4), ("walk", 4), ("talk", 4), ("happy", 2), ("sad", 2)], 0),
+    "elder_cinderpaw.png": ("characters/elder_cinderpaw", [("idle", 4), ("walk", 4), ("talk", 4), ("happy", 2), ("sad", 2)], 0),
+    "elder_icewhisker.png": ("characters/elder_icewhisker", [("idle", 4), ("walk", 4), ("talk", 4), ("happy", 2), ("sad", 2)], 0),
+    "elder_tidewhisker.png": ("characters/elder_tidewhisker", [("idle", 4), ("walk", 4), ("talk", 4), ("happy", 2), ("sad", 2)], 0),
 }
 
 

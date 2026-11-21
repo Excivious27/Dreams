@@ -32112,20 +32112,20 @@
  },
  "characters/coral_kit_1": {
   "idle": {
-   "cell_h": 98,
-   "cell_w": 86,
+   "cell_h": 99,
+   "cell_w": 87,
    "file": "characters/coral_kit_1/idle.png",
    "frames": 4,
-   "h": 98,
-   "w": 344
+   "h": 99,
+   "w": 348
   },
   "walk": {
-   "cell_h": 98,
-   "cell_w": 86,
+   "cell_h": 99,
+   "cell_w": 87,
    "file": "characters/coral_kit_1/walk.png",
    "frames": 4,
-   "h": 98,
-   "w": 344
+   "h": 99,
+   "w": 348
   }
  },
  "characters/coral_kit_2": {
@@ -33136,170 +33136,170 @@
  },
  "characters/elder_brine": {
   "happy": {
-   "cell_h": 107,
-   "cell_w": 99,
+   "cell_h": 108,
+   "cell_w": 100,
    "file": "characters/elder_brine/happy.png",
    "frames": 2,
-   "h": 107,
-   "w": 198
+   "h": 108,
+   "w": 200
   },
   "idle": {
-   "cell_h": 107,
-   "cell_w": 99,
+   "cell_h": 108,
+   "cell_w": 100,
    "file": "characters/elder_brine/idle.png",
    "frames": 4,
-   "h": 107,
-   "w": 396
+   "h": 108,
+   "w": 400
   },
   "sad": {
-   "cell_h": 107,
-   "cell_w": 99,
+   "cell_h": 108,
+   "cell_w": 100,
    "file": "characters/elder_brine/sad.png",
    "frames": 2,
-   "h": 107,
-   "w": 198
+   "h": 108,
+   "w": 200
   },
   "talk": {
-   "cell_h": 107,
-   "cell_w": 99,
+   "cell_h": 108,
+   "cell_w": 100,
    "file": "characters/elder_brine/talk.png",
    "frames": 4,
-   "h": 107,
-   "w": 396
+   "h": 108,
+   "w": 400
   },
   "walk": {
-   "cell_h": 107,
-   "cell_w": 99,
+   "cell_h": 108,
+   "cell_w": 100,
    "file": "characters/elder_brine/walk.png",
    "frames": 4,
-   "h": 107,
-   "w": 396
+   "h": 108,
+   "w": 400
   }
  },
  "characters/elder_cinderpaw": {
   "happy": {
-   "cell_h": 96,
-   "cell_w": 86,
+   "cell_h": 97,
+   "cell_w": 99,
    "file": "characters/elder_cinderpaw/happy.png",
    "frames": 2,
-   "h": 96,
-   "w": 172
+   "h": 97,
+   "w": 198
   },
   "idle": {
-   "cell_h": 96,
-   "cell_w": 89,
+   "cell_h": 97,
+   "cell_w": 99,
    "file": "characters/elder_cinderpaw/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 356
+   "h": 97,
+   "w": 396
   },
   "sad": {
-   "cell_h": 96,
-   "cell_w": 85,
+   "cell_h": 97,
+   "cell_w": 99,
    "file": "characters/elder_cinderpaw/sad.png",
    "frames": 2,
-   "h": 96,
-   "w": 170
+   "h": 97,
+   "w": 198
   },
   "talk": {
-   "cell_h": 96,
-   "cell_w": 89,
+   "cell_h": 97,
+   "cell_w": 99,
    "file": "characters/elder_cinderpaw/talk.png",
    "frames": 4,
-   "h": 96,
-   "w": 356
+   "h": 97,
+   "w": 396
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 89,
+   "cell_h": 97,
+   "cell_w": 99,
    "file": "characters/elder_cinderpaw/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 356
+   "h": 97,
+   "w": 396
   }
  },
  "characters/elder_icewhisker": {
   "happy": {
-   "cell_h": 96,
-   "cell_w": 103,
+   "cell_h": 101,
+   "cell_w": 104,
    "file": "characters/elder_icewhisker/happy.png",
    "frames": 2,
-   "h": 96,
-   "w": 206
+   "h": 101,
+   "w": 208
   },
   "idle": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 101,
+   "cell_w": 104,
    "file": "characters/elder_icewhisker/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 101,
+   "w": 416
   },
   "sad": {
-   "cell_h": 96,
-   "cell_w": 116,
+   "cell_h": 101,
+   "cell_w": 104,
    "file": "characters/elder_icewhisker/sad.png",
    "frames": 2,
-   "h": 96,
-   "w": 232
+   "h": 101,
+   "w": 208
   },
   "talk": {
-   "cell_h": 96,
-   "cell_w": 106,
+   "cell_h": 101,
+   "cell_w": 104,
    "file": "characters/elder_icewhisker/talk.png",
    "frames": 4,
-   "h": 96,
-   "w": 424
+   "h": 101,
+   "w": 416
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 100,
+   "cell_h": 101,
+   "cell_w": 104,
    "file": "characters/elder_icewhisker/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 400
+   "h": 101,
+   "w": 416
   }
  },
  "characters/elder_tidewhisker": {
   "happy": {
-   "cell_h": 96,
-   "cell_w": 104,
+   "cell_h": 99,
+   "cell_w": 113,
    "file": "characters/elder_tidewhisker/happy.png",
    "frames": 2,
-   "h": 96,
-   "w": 208
+   "h": 99,
+   "w": 226
   },
   "idle": {
-   "cell_h": 96,
-   "cell_w": 112,
+   "cell_h": 99,
+   "cell_w": 113,
    "file": "characters/elder_tidewhisker/idle.png",
-   "frames": 3,
-   "h": 96,
-   "w": 336
+   "frames": 4,
+   "h": 99,
+   "w": 452
   },
   "sad": {
-   "cell_h": 96,
-   "cell_w": 112,
+   "cell_h": 99,
+   "cell_w": 113,
    "file": "characters/elder_tidewhisker/sad.png",
    "frames": 2,
-   "h": 96,
-   "w": 224
+   "h": 99,
+   "w": 226
   },
   "talk": {
-   "cell_h": 96,
-   "cell_w": 104,
+   "cell_h": 99,
+   "cell_w": 113,
    "file": "characters/elder_tidewhisker/talk.png",
    "frames": 4,
-   "h": 96,
-   "w": 416
+   "h": 99,
+   "w": 452
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 112,
+   "cell_h": 99,
+   "cell_w": 113,
    "file": "characters/elder_tidewhisker/walk.png",
-   "frames": 3,
-   "h": 96,
-   "w": 336
+   "frames": 4,
+   "h": 99,
+   "w": 452
   }
  },
  "characters/eli": {
@@ -34887,38 +34887,38 @@
  },
  "characters/kelp_kit_2": {
   "idle": {
-   "cell_h": 103,
-   "cell_w": 106,
+   "cell_h": 104,
+   "cell_w": 107,
    "file": "characters/kelp_kit_2/idle.png",
    "frames": 4,
-   "h": 103,
-   "w": 424
+   "h": 104,
+   "w": 428
   },
   "walk": {
-   "cell_h": 103,
-   "cell_w": 106,
+   "cell_h": 104,
+   "cell_w": 107,
    "file": "characters/kelp_kit_2/walk.png",
    "frames": 4,
-   "h": 103,
-   "w": 424
+   "h": 104,
+   "w": 428
   }
  },
  "characters/kelp_kit_3": {
   "idle": {
-   "cell_h": 103,
-   "cell_w": 110,
+   "cell_h": 104,
+   "cell_w": 111,
    "file": "characters/kelp_kit_3/idle.png",
    "frames": 4,
-   "h": 103,
-   "w": 440
+   "h": 104,
+   "w": 444
   },
   "walk": {
-   "cell_h": 103,
-   "cell_w": 110,
+   "cell_h": 104,
+   "cell_w": 111,
    "file": "characters/kelp_kit_3/walk.png",
    "frames": 4,
-   "h": 103,
-   "w": 440
+   "h": 104,
+   "w": 444
   }
  },
  "characters/ladder": {
@@ -62920,28 +62920,28 @@
  },
  "enemies/dark_crystal": {
   "attack": {
-   "cell_h": 142,
-   "cell_w": 174,
+   "cell_h": 145,
+   "cell_w": 178,
    "file": "enemies/dark_crystal/attack.png",
    "frames": 4,
-   "h": 142,
-   "w": 696
+   "h": 145,
+   "w": 712
   },
   "hurt": {
-   "cell_h": 142,
-   "cell_w": 174,
+   "cell_h": 145,
+   "cell_w": 178,
    "file": "enemies/dark_crystal/hurt.png",
    "frames": 2,
-   "h": 142,
-   "w": 348
+   "h": 145,
+   "w": 356
   },
   "idle": {
-   "cell_h": 142,
-   "cell_w": 174,
+   "cell_h": 145,
+   "cell_w": 178,
    "file": "enemies/dark_crystal/idle.png",
    "frames": 4,
-   "h": 142,
-   "w": 696
+   "h": 145,
+   "w": 712
   }
  },
  "enemies/dark_crystal2": {
