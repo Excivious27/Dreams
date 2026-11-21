@@ -2415,6 +2415,8 @@ var _decor_sig := 0
 
 func _show_placed(c: Vector2i, id: String) -> void:
 	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": ("A: open chest" if id == "chest" else "A twice: pick up %s" % GameState.item_name(id))})
+	if id == "chest":
+		Storage.box("p:%d,%d" % [c.x, c.y])  # C11b P3: a placed chest is listed (chores) before it's first opened
 	blocked[c] = true
 	var nm: String = {"sprinkler": "sprinkler_basic", "sprinkler_quality": "sprinkler_quality", "sprinkler_iridium": "sprinkler_iridium", "scarecrow": "scarecrow_classic"}.get(id, id)
 	if not Art.has("props", nm):

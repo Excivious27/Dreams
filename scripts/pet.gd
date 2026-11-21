@@ -317,6 +317,55 @@ func revive_with(n: int) -> void:
 	_hp_bar.queue_redraw()
 
 
+## Fetch skill: cells of forage within FETCH_REACH of you (game time between looks, never mid-fight).
+const FETCH_REACH := 6
+const FETCH_EVERY := 4.0
+
+
+func _fetch_look(delta: float) -> void:
+	var player := map.player
+	var t := float(get_meta("fetch_t", 0.0)) + delta
+	set_meta("fetch_t", t)
+	if t < FETCH_EVERY or map.nearest_enemy_to(player.position, 5.0 * GameMap.TILE) != null:
+		return
+	set_meta("fetch_t", 0.0)
+	var pc := map.world_to_cell(player.position)
+	var best := Vector2i(-1, -1)
+	var bd := 999.0
+	for c in map.things:
+		if str((map.things[c] as Dictionary).get("type", "")) != "forage":
+			continue
+		var d := (c as Vector2i).distance_to(pc)
+		if d <= FETCH_REACH and d >= 1.5 and d < bd:
+			bd = d
+			best = c
+	if best == Vector2i(-1, -1):
+		return
+	_carry_from = map.cell_center(best) + Vector2(0, 4)
+	_carry_item = "fetch"
+	_carry_find = "forage:%d,%d" % [best.x, best.y]
+	map.emote(self, "surprise", 0.6)
+
+
+## Reached the forage: pick it (the map's own pick: flag, XP, items fly to the bag) and trot back.
+func _fetch_pick() -> void:
+	var xy := _carry_find.trim_prefix("forage:").split(",")
+	_carry_find = ""
+	_carry_item = "bring"
+	if xy.size() != 2:
+		return
+	var c := Vector2i(int(xy[0]), int(xy[1]))
+	var th: Variant = map.things.get(c, null)
+	if not (th is Dictionary) or str((th as Dictionary).get("type", "")) != "forage":
+		return  # you picked it first
+	var item := str((th as Dictionary).get("item", "mushroom"))
+	if map.interact_common(c, th as Dictionary):
+		GameState.add_xp("pup", 2)
+		map.hud.toast("%s fetched %s." % [Pet.name_of(), ItemWords.with_article(GameState.item_name(item))], Color(0.8, 1, 0.8))
+		if anim.sprite_frames.has_animation("fetch"):
+			anim.play("fetch")
+
+
 func _go_home() -> void:
 	_down_t = -1.0
 	var st := state()
@@ -329,8 +378,9 @@ func _go_home() -> void:
 	st["mode"] = "follow"
 	st["wait"] = []
 	Pet.say(get_tree(), "hurt")
-	map.hud.toast("%s has gone back to the dog house on your farm to rest%s." % [name_of(), " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
-	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), "in a few hours" if best else "tomorrow morning"])
+	var bed := "cat bed" if is_cat() else "dog house"  # c11b_08-12
+	map.hud.toast("%s has gone back to the %s on your farm to rest%s." % [name_of(), bed, " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
+	GameState.notify("%s is resting in the %s on the farm. Back %s." % [name_of(), bed, "in a few hours" if best else "tomorrow morning"])
 	map.emote(self, "sleep", 1.5)
 	visible = false
 	busy = true
@@ -386,13 +436,9 @@ func _process(delta: float) -> void:
 					if anim.sprite_frames.has_animation("bark"):
 						anim.play("bark")
 					break
-	# Fetch: pick up drops and carry them to the player.
-	if _carry_item == "" and GameState.bonus("pup", "fetch") > 0.0 and mode != "wait":
-		for d in map.get_tree().get_nodes_in_group("drops"):
-			if d is Node2D and (d as Node2D).position.distance_to(position) < 60.0 and (d as Node2D).position.distance_to(player.position) > 24.0:
-				_carry_from = (d as Node2D).position
-				_carry_item = "fetch"
-				break
+	# Fetch (c11b_07-02): every few seconds out of a fight, the pup runs to forage near you, picks it and brings it.
+	if _carry_item == "" and _target == null and GameState.bonus("pup", "fetch") > 0.0 and mode in ["follow", "attack"]:
+		_fetch_look(delta)
 	# Mines: dig runs between fights (PupMine).
 	if mode == "follow" and PupMine.active(map):
 		PupMine.tick(self, delta)
@@ -404,6 +450,8 @@ func _process(delta: float) -> void:
 			var reach := 110.0 if mode == "attack" else (64.0 if mode == "guard" else 40.0)
 			var anchor := position if mode != "follow" else player.position
 			_target = map.nearest_enemy_to(anchor, reach)
+			if _target == null and map.nearest_enemy_to(position, 140.0) == null:
+				_howled = false  # the fight's over: the next one gets a fresh howl (c11b_07-10)
 			if mode == "follow" and _target != null and GameState.bonus("pup", "hunter") > 0.0 and player._last_hit_enemy != null and is_instance_valid(player._last_hit_enemy):
 				_target = player._last_hit_enemy
 			if _target != null and mode == "attack" and GameState.bonus("pup", "howl") > 0.0 and not _howled:
@@ -451,9 +499,9 @@ func _process(delta: float) -> void:
 		# Keep up with a running player instead of falling behind and clipping.
 		var cap := maxf(95.0 * speed_mult(), player.velocity.length() * 1.15)
 		var sp := minf(dist * 3.0, cap)
-		if _target == null and mode == "follow" and player.mounted:
+		if _target == null and mode in ["follow", "attack"] and player.mounted:
 			sp = maxf(150.0 * speed_mult(), player.velocity.length() * 1.15)  # P5 hook (c8_10): keep up with a fast ride
-		if _target == null and mode == "follow" and dist > 140.0:
+		if _target == null and mode in ["follow", "attack"] and dist > 140.0:  # c11b_07-13: attack mode catches up too
 			# Far behind (doors, cliffs): pop back to heel rather than walk through walls.
 			position = player.position + Vector2(-14, 4)
 			map.fx("sparkle", position + Vector2(0, -8), 10.0, 0.4)
@@ -492,7 +540,9 @@ func _process(delta: float) -> void:
 			anim.play(a)
 		anim.speed_scale = 0.6 if swimming else 1.0
 		_idle = 0.0
-		if _carry_item == "fetch" and dist < 10.0:
+		if _carry_item == "fetch" and dist < 10.0 and _carry_find.begins_with("forage:"):
+			_fetch_pick()
+		elif _carry_item == "fetch" and dist < 10.0:
 			_carry_item = "bring"
 			if _carry_find == "mine":
 				_carry_item = "digging"
@@ -510,6 +560,8 @@ func _process(delta: float) -> void:
 			_carry_item = ""
 			map.emote(self, "heart", 0.8)
 			PupMine.deliver(self)
+		elif _carry_item == "fetch" and _carry_find.begins_with("forage:"):
+			_fetch_pick()
 		elif _carry_item == "fetch" and _carry_find == "mine" and dist <= stop + 10.0:
 			_carry_item = "digging"  # stopped just short of the spot: dig here
 			PupMine.dig_find(self)

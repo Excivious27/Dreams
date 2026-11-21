@@ -252,3 +252,68 @@ static func take_from_chests(id: String, n: int) -> int:
 					bq["g"] = maxi(0, int(bq.get("g", 0)) - (over - cs))
 			took += k2
 	return took
+
+
+## C11b P3 (c11b_06-06): a placed chest's friendly name: the player's own name (box.name), else
+## "Chest N (by the barn)" from the nearest Plans building, or "(in the house)" for indoor chests.
+static func label(key: String) -> String:
+	if key == "chest":
+		return "farm chest"
+	if key == "shed":
+		return "shed"
+	var own := str(box(key).get("name", "")) if GameState.run.get("chests", {}).has(key) else ""
+	if own != "":
+		return own
+	if not key.begins_with("p:"):
+		return key
+	var placed: Array = []
+	for k in GameState.run.get("chests", {}):
+		if str(k).begins_with("p:"):
+			placed.append(str(k))
+	if not key in placed:
+		placed.append(key)
+	placed.sort_custom(_placed_order)
+	var n := placed.find(key) + 1
+	return "Chest %d (%s)" % [n, _where(key)]
+
+
+static func _placed_order(a: String, b: String) -> bool:
+	var ia := a.count(":") > 1
+	var ib := b.count(":") > 1
+	if ia != ib:
+		return not ia  # farm chests first
+	return a < b
+
+
+static func rename(key: String, nm: String) -> void:
+	box(key)["name"] = nm.strip_edges().left(16)
+
+
+static func _where(key: String) -> String:
+	var rest := key.substr(2)
+	var parts := rest.split(":")
+	if parts.size() > 1:
+		var sc := parts[0]
+		return "in the house" if sc in ["house", "interior", "cellar"] or sc.begins_with("house") else "in the " + sc.replace("_", " ")
+	var xy := rest.split(",")
+	if xy.size() != 2:
+		return "on the farm"
+	var c := Vector2(float(xy[0]), float(xy[1]))
+	var best := ""
+	var bd := 1e9
+	for bid in Builds.all():
+		var b: Variant = Builds.all()[bid]
+		if not (b is Dictionary) or not (b as Dictionary).has("cell") or str(bid) == "_":
+			continue
+		if bid != "house" and not Builds.is_built(str(bid)):
+			continue
+		var bc: Array = (b as Dictionary)["cell"]
+		var mid := Vector2(float(bc[0]) + float((b as Dictionary).get("w", 1)) / 2.0, float(bc[1]) + float((b as Dictionary).get("h", 1)) / 2.0)
+		var d := mid.distance_to(c)
+		if d < bd:
+			bd = d
+			var t := Builds.current_def(str(bid))
+			best = str(t.get("name", (b as Dictionary).get("label", bid))) if bid != "house" else "house"
+	if best == "" or bd > 14.0:
+		return "on the farm"
+	return "by the " + best.to_lower()
