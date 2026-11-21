@@ -1022,6 +1022,8 @@ static func quest_wants(item: String) -> bool:
 ## Pet / feed / collect one farm animal (C11a P2). Rules live in RanchFarm (one feeder rule,
 ## one quality table, care days that need both a pet and a meal, missed days cost a little).
 func pet_farm_animal(a: Node2D) -> void:
+	if a.has_method("cheer"):
+		a.call("cheer")  # C14b P6: happy beat + hop
 	var st := RanchFarm.state_of(a)
 	var uid := RanchFarm.uid_of(a)
 	var day := int(GameState.run["day"])

@@ -51933,11 +51933,13 @@
   },
   "idle": {
    "cell_h": 83,
-   "cell_w": 47,
+   "cell_w": 51,
    "file": "characters/president/idle.png",
-   "frames": 2,
+   "fps": 3.0,
+   "frames": 4,
    "h": 83,
-   "w": 94
+   "pingpong": false,
+   "w": 204
   },
   "seated": {
    "cell_h": 92,
