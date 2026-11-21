@@ -24,7 +24,7 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 23:10 PT, personal account. CONDUCT S1 (Steam prep) SHIPPED: final CI s1i2 PASS (6 shards, 20/20 bots, playtest, relay, net e2e, deck perf), steam-builds green (Linux 373 MB ~2.3 s to title, Windows boots, web 135.6 MB unchanged). Readiness ~90% of what is possible without the account. Optimization round 4 in progress (r4/tools); C12 fix agents P1-P7 running.
+- **Last update:** 2026-11-21 00:20 PT, personal account. Optimization round 4 DONE and on main (see "CONDUCT operating rules" Round 4). C12 (writing): 7 packages done, 5 merged on local main + c12/integ integration agent merging P5/P6 + hooks + fixing roll-CI fails (hearts gating test, story_test locket beat, prompt words); then full CI, ship, package. Next: C13 audio depth (auditors with shots sweep). Steam readiness artifact: https://claude.ai/artifact/2D2zYkwGXcWte5JSskKmfy (slug 09c74aa8-ac79-44a9-b25d-260afde98584).
 - **Done:** CONDUCT 1-11b, S1, relay live, optimization rounds 1-3.
 - **In progress:** CONDUCT S1 (Steam prep): 18 audits done (/home/claude/wt/s1_reports), packages docs/reports/S1-PACKAGES.md, fix agents P1-P6 DONE on s1f/p1..p6 (reports /home/claude/wt/s1f_reports). C11b docs/package.
 - **Next step:** merge s1f/p1..p6 into main, S1 integration agent (cross hooks in each p*.md, `python3 tools/steam_handoff.py --write`, CLAUDE.md one line for Steam tools), full CI s1, package S1 (incl. docs/STEAM.md artifact page, Steam readiness %), push. Then queue C12-C23. ci_run --branch: refresh origin/<branch> tracking ref first or it tests a stale head.
@@ -163,6 +163,18 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 When Tom sends **CONDUCT** (alone or with a focus), or a queued CONDUCT is next, run the whole cycle in "CONDUCT operating rules" below to the end without stopping to ask, then deliver. Same on both accounts.
 
 ## CONDUCT operating rules (current, 2026-11-20)
+
+**Round 4 (Tom 22:48; spec docs/conduct/R4_SPEC.md) - these override older lines below where they differ:**
+- Contract first: before launching fix agents, write /home/claude/wt/C<N>_CONTRACT.md (APIs, ids, hooks each package provides/consumes, from the findings). Fix agents implement both sides of hooks touching their own files; no 90-min integration agent (only a <=30-60 min hook pass if the merge leaves gaps).
+- Shots: `bash tools/conduct/shots_sweep.sh <N>` once at audit start (both arcs, ~5 min, /home/claude/wt/shots_<N>/index.md). Auditors view shots (>= 8 in scope, both arcs) instead of queueing godot; at most one targeted run each via glock.
+- Godot: `bash tools/conduct/glock.sh <cmd>` (2 slots, fresh XDG, nice, timeout, Xvfb cleanup). Old /tmp/godot.lock = slot 0.
+- CI: only the orchestrator runs ci_run (fix agents wip_push + put their exact ci_run line in the report). `ci_run.sh --bots` (bots with --shards), `--bots-only`; it fetches refs itself, refuses stale heads, builds commits in the object store (no temp checkout), polls via gh api. NEVER `git fetch origin ci-results` (each fetch = 0.5-3 GB; filled the disk on 11-20).
+- Pre-merge: any package touching scripts/*.gd UI/menu/screen/map runs shards + bots. Rolling full CI as soon as 3 packages are merged. Fix-agent cap 60 min; WIP pushed every ~20 min (tools/conduct/wip_push.sh) so restarts lose little.
+- Disk: mkwt refuses under 4 GB free; `bash tools/conduct/wt_clean.sh` at every stage boundary; keep > 10 GB free; ACE raw takes live in /dev/shm/work/ace_raw (symlink /home/claude/work/ace_raw; RAM, lost on restart).
+- Briefs: /home/claude/wt/AUDIT_BRIEF.md, FIX_BRIEF.md (<1.6 KB) + one-line TPL_AUDIT.txt / TPL_FIX.txt (copies in docs/conduct/).
+- Docs/report/guide agent starts when the final CI starts; build_package right after green.
+- Tom gets messages at stage boundaries and hourly check-ins, not per agent.
+- Measured (round 4): shots_sweep 303 s for 391 shots; ci_run push ~5 s (was ~4 min temp checkout); full CI 13-15 min when GitHub isn't queued; glock 2 slots verified.
 
 Everything needed to run a CONDUCT from this section alone. Target: **1 h 35 m to 1 h 50 m between finished CONDUCTs**, same quality, lower usage. Fixed guardrails: 20 auditors (14 focus at medium), 60-75 min fix cap, ONE full CI run after the final merge (6 check shards + 20 bots + scripted playtest), the full package, hourly check-ins, every subagent on Opus 5.5, never ask Tom to do anything on a computer or website. The sandbox has 2 CPUs and one Godot lock: heavy runs go to GitHub Actions, never local.
 
