@@ -174,6 +174,8 @@ func _arc(arc: String) -> void:
 	check(RanchVoice.layer_of("cow") == "" and RanchVoice.layer_of("moon_cow") == "", "only lab strains get a layer")
 	check(RanchVoice.species_of(cow) == "cow", "uid resolves to its species")
 	check(RanchVoice.file_of("storm_roc_baby") != "", "babies resolve through the art table")
+	for c in ["water", "harvest", "feed", "pet", "forage", "guard"]:
+		check(Chores.icon(c) != null, "chore icon " + c)
 
 
 func _run() -> void:

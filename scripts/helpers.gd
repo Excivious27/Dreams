@@ -631,6 +631,11 @@ static func _beds() -> Array:
 static var _open := ""
 
 
+## A chore's icon (ui/chore_<id>, tools/slice_c11b_chores.py), or null.
+static func icon(cid: String) -> Texture2D:
+	return Art.tex("ui", "chore_" + cid) if Art.has("ui", "chore_" + cid) else null
+
+
 ## One plain row for a worker (c11b_06-14): "Pup: forages 2 a night → farm chest".
 static func row_text(wk: String, nm: String) -> String:
 	var asg := assignment(wk)
@@ -685,6 +690,7 @@ static func build_page(menu: Variant) -> void:
 					menu._toast(r)
 				menu._refresh())
 			cb.set_meta("pc_key", "chores:%s:%s" % [wk, c2])
+			cb.icon = icon(c2)
 			if ranch_c and no_animals:
 				cb.modulate = Color(1, 1, 1, 0.55)  # still assignable: it starts once animals arrive
 		if cid != "" and two_chores(wk):
