@@ -335,6 +335,12 @@ func _guard_tests() -> void:
 	nn._solo_backup = {"probe": true}
 	check(Net.visiting(), "test is visiting")
 	check(Campaign.finish(true, 3).is_empty() and not (st.get("fight", {}) as Dictionary).is_empty(), "a guest's campaign fight is never finished/paid on a friend's world (it stays parked)")
+	# Team animals while visiting: the guest's own, never the host's (run.ranch is the host's).
+	Ranch.animals()["h1"] = {"team": true, "name": "HostBeast", "kind": "x"}
+	nn._solo_backup = {"probe": true, "ranch": {"animals": {"g1": {"team": true, "name": "Mine"}, "g2": {"team": false, "name": "Lazy"}}}}
+	var ids: Array = CampaignGate.team().map(func(r: Array) -> String: return str(r[0]))
+	check(ids.has("animal:g1") and not ids.has("animal:h1") and not ids.has("animal:g2"), "visiting: the campaign team lists our own team animals only (%s)" % str(ids.filter(func(x: String) -> bool: return x.begins_with("animal:"))))
+	Ranch.animals().erase("h1")
 	nn._solo_backup = old_backup
 	nn._host = old_host
 	st["fight"] = {}

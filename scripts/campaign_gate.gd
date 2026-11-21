@@ -75,7 +75,7 @@ static func team() -> Array:
 				seen[str(id)] = true
 				out.append([str(id), str(Crew.members()[id].get("name", str(id).capitalize())), "crew"])
 	# C11b P6 (c11b_09-04): trained team animals muster before village friends, so they are fielded too.
-	out.append_array(TeamAnimals.gate_rows())  # C11a P4: trained team animals muster too
+	out.append_array(_own_team_rows() if Net.visiting() else TeamAnimals.gate_rows())  # C11a P4: trained team animals muster too
 	for r: Variant in out:
 		seen[str((r as Array)[0])] = true
 	var fr: Dictionary = GameState.run.get("friendship", {})
@@ -85,6 +85,24 @@ static func team() -> Array:
 		if GameState.friend_hearts(id) >= FRIEND_HEARTS:
 			seen[id] = true
 			out.append([id, str(GameState.npcs[id].get("name", id.capitalize())), "friend"])
+	return out
+
+
+## C17 P3 (c17_05-10): while visiting, run.ranch is the HOST's (a world key): list
+## the guest's own trained team animals from the kept-aside solo world instead.
+static func _own_team_rows() -> Array:
+	var out: Array = []
+	var n := Net.i()
+	var rv: Variant = n._solo_backup.get("ranch", {}) if n != null else {}
+	var an: Variant = (rv as Dictionary).get("animals", {}) if rv is Dictionary else {}
+	if not (an is Dictionary):
+		return out
+	var ids: Array = (an as Dictionary).keys()
+	ids.sort()
+	for uid: Variant in ids:
+		var a: Variant = an[uid]
+		if a is Dictionary and bool((a as Dictionary).get("team", false)):
+			out.append(["animal:" + str(uid), NameFilter.clean(str((a as Dictionary).get("name", "")), "Team animal"), "animal"])
 	return out
 
 
