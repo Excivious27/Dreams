@@ -592,7 +592,7 @@ static func ask_need() -> String:
 	if a.is_empty():
 		return ""
 	var k := str(a["key"])
-	return "%d %s" % [int(a["n"]), need_name(k) if k.begins_with("#") or k.begins_with("@") else GameState.item_name(k)]
+	return ItemWords.count(need_name(k) if k.begins_with("#") or k.begins_with("@") else GameState.item_name(k), int(a["n"]))
 
 
 ## Hand in this season's ask (all at once). Returns the reward text, or "" if you can't yet.
@@ -821,7 +821,7 @@ static func _donate(m: GameMap) -> void:
 	var n := GameState.count(id)
 	donate(id, n)
 	Music.instance(m.get_tree()).sfx("pickup")
-	m.hud.toast("Donated %d %s. Goodwill %d." % [n, GameState.item_name(id), int(st().get("goodwill", 0))], Color(0.85, 1, 0.85))
+	m.hud.toast("Donated %s. Goodwill %d." % [ItemWords.count_id(id, n), int(st().get("goodwill", 0))], Color(0.85, 1, 0.85))
 	await _goodwill_rewards(m)
 
 
@@ -927,10 +927,10 @@ static func compost(m: GameMap) -> void:
 	var opts: Array = []
 	var acts: Array = []
 	if GameState.count("fiber") >= 5:
-		opts.append("Add 5 fibre (→ 1 fertilizer)")
+		opts.append("Add 5 fibre (→ 1 fertiliser)")
 		acts.append("fiber")
 	if GameState.count_any("#veg") >= 3:
-		opts.append("Add 3 vegetable scraps (→ 1 fertilizer)")
+		opts.append("Add 3 vegetable scraps (→ 1 fertiliser)")
 		acts.append("veg")
 	var cday: Array = st().get("compost_day", [0, 0])
 	if int(cday[0]) != int(GameState.run["day"]):
@@ -940,7 +940,7 @@ static func compost(m: GameMap) -> void:
 		acts.clear()  # a side source, not a fertilizer factory (C8 P6, c8_04_10)
 	opts.append("Leave it")
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Compost", "text": "Warm and busy with worms. It turns scraps into fertilizer (up to %d a day), and drops a little in your share crate every few days by itself." % COMPOST_DAY_CAP, "choice": opts, "key": ""}])
+	d.say([{"who": "Compost", "text": "Warm and busy with worms. It turns scraps into fertiliser (up to %d a day), and drops a little in your share crate every few days by itself." % COMPOST_DAY_CAP, "choice": opts, "key": ""}])
 	await d.finished
 	if d.last_choice < 0 or d.last_choice >= acts.size():
 		return
@@ -1085,7 +1085,7 @@ static func overnight(report: Dictionary) -> void:
 		sh0["fertilizer"] = mini(20, int(sh0.get("fertilizer", 0)) + 1)
 	if stage() < 4:
 		if _share_n() > share_before:
-			lines.append("The compost made a little fertilizer: it's in your share crate.")
+			lines.append("The compost made a little fertiliser: it's in your share crate.")
 		if not lines.is_empty():
 			report["cfarm"] = lines
 		return

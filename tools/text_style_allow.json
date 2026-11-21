@@ -1,0 +1,89 @@
+{
+ "data/battles.json": {
+  "grumps_case": 2
+ },
+ "data/buildings.json": {
+  "real_brand": 1,
+  "us_spelling": 1
+ },
+ "data/collections.json": {
+  "real_brand": 1,
+  "us_spelling": 1
+ },
+ "data/community_farm.json": {
+  "us_spelling": 2
+ },
+ "data/companions.json": {
+  "grumps_case": 2
+ },
+ "data/decor.json": {
+  "part_of_set": 72,
+  "us_spelling": 1
+ },
+ "data/epilogue.json": {
+  "wren_jr": 2
+ },
+ "data/events.json": {
+  "grumps_case": 1
+ },
+ "data/heart_perks.json": {
+  "wren_jr": 4
+ },
+ "data/hearts.json": {
+  "wren_jr": 21
+ },
+ "data/interiors.json": {
+  "real_brand": 1
+ },
+ "data/items.json": {
+  "part_of_set": 68,
+  "real_brand": 1,
+  "us_spelling": 2
+ },
+ "data/npcs.json": {
+  "wren_jr": 5
+ },
+ "data/quest_lines.json": {
+  "autumn": 2,
+  "grumps_case": 2,
+  "wren_jr": 1
+ },
+ "data/quests.json": {
+  "wren_jr": 3
+ },
+ "data/rec.json": {
+  "real_brand": 6,
+  "us_spelling": 1
+ },
+ "data/recipes.json": {
+  "real_brand": 1,
+  "us_spelling": 1
+ },
+ "data/regions.json": {
+  "grumps_case": 2
+ },
+ "data/skills.json": {
+  "us_spelling": 1
+ },
+ "data/skills_base.json": {
+  "us_spelling": 1
+ },
+ "data/skills_old.json": {
+  "us_spelling": 1
+ },
+ "data/wardrobe.json": {
+  "us_spelling": 1
+ },
+ "scripts/arcade_hub.gd": {
+  "real_brand": 2
+ },
+ "scripts/char_sheet.gd": {
+  "real_brand": 1
+ },
+ "scripts/intros.gd": {
+  "wren_jr": 1
+ },
+ "scripts/town.gd": {
+  "wren_jr": 1
+ }
+}

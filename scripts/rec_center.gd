@@ -919,7 +919,7 @@ static func milestone_line() -> String:
 		if ArcadeHub.milestone(str(id)):
 			got += 1
 		elif next == "":
-			next = str(ArcadeHub.MILESTONES[id])
+			next = ArcadeHub.milestone_text(str(id))
 	var t := "Arcade milestones: %d/%d" % [got, ArcadeHub.MILESTONES.size()]
 	return t + ("  Next: " + next if next != "" else "  All done!")
 

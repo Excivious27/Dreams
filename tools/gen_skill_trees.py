@@ -27,14 +27,14 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "big_goods": 0.02, "animal_quality": 0.12, "ranch_value": 0.03, "breed_chance": 0.03, "grow_speed": 0.12, "animal_friend": 0.03, "hand_work": 0.04}
 DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
-        "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
+        "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock; 3 make one more",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
-        "double_hit": "chance a swing hits twice", "forage_bonus": "(each = +6% chance of a double pick)", "wood_bonus": "toward an extra log per tree (4 = one more)", "chop_bonus": "(each = +10% chance a swing bites twice)",
+        "double_hit": "chance a swing hits twice", "forage_bonus": "chance of a double pick", "wood_bonus": "toward an extra log per tree; 4 make one more", "chop_bonus": "chance a swing bites twice",
         "sap_chance": "chance of sap", "rare_forage": "rare forage chance", "bite_speed": "faster bites", "rare_fish": "rare fish chance",
         "escape_less": "fewer fish escape", "chest_chance": "treasure chest chance", "fish_value": "fish sell value", "double_fish": "chance of a double catch",
         "damage": "sword damage", "hp": "max health", "energy": "max energy", "block": "chance to block", "crit": "critical hit chance",
         "kill_energy": "energy back per foe beaten", "damage_reduction": "damage taken reduced", "sell_bonus": "sell prices", "gift_bonus": "friendship per gift",
-        "interest": "daily interest on savings (a day's interest is capped by your progress)", "wood_discount": "less wood for building", "stone_discount": "less stone for building",
+        "interest": "daily interest on savings, capped by your progress", "wood_discount": "less wood for building", "stone_discount": "less stone for building",
         "craft_speed": "faster crafting", "build_discount": "cheaper buildings", "spark_damage": "Spark damage", "mana": "max mana",
         "mana_regen": "mana regen", "spell_discount": "cheaper spells", "spell_power": "spell power", "pet_hp": "pup health", "pet_dmg": "pup bite damage",
         "pet_speed": "pup speed", "pet_def": "pup defence", "pass_risk": "less risk passing bills", "heat_cool": "chance heat cools an extra step overnight",
@@ -149,7 +149,13 @@ if _r and not any(n["id"] == "rancher" for n in base["skills"]["ranching"]["node
 MAGIC_ROW = {"light": 0, "dream": 1, "crystal": 2, "core": 3}
 
 
+# Whole-number keys that read as a percent chance per point (game_map: +6% / +10% per rank).
+PCT_PER_POINT = {"forage_bonus": 6, "chop_bonus": 10}
+
+
 def fmt(k, v):
+    if k in PCT_PER_POINT and not isinstance(v, float):
+        return "+%d%% %s" % (int(v) * PCT_PER_POINT[k], DESC[k])
     if isinstance(v, float) and v < 0.01:
         return "+%.1f%% %s" % (v * 100, DESC[k])
     if isinstance(v, float) and v < 1:
@@ -242,7 +248,7 @@ UNLOCKS = {
                (1, 7, "Crystal Ward", "Learn the Crystal Shield spell: block the next blows.", {"spell": "crystal_shield"}),
                (2, 2, "Tanner's Blueprint", "Learn to build the Tannery: leather and armour.", {"blueprint": "tannery"}),
                (2, 8, "Iron Gut", "Poison and burns can't touch you.", {"status_guard": 1}),
-               (2, 9, "Not Today", "Once a day, a hit that would knock you out leaves you on 1 HP.", {"last_stand": 1})],
+               (2, 9, "Not Today", "Once a day, a hit that would knock you out leaves you with 1 health instead.", {"last_stand": 1})],
     "bartering": [(0, 2, "Jeweler's Blueprint", "Learn to build the Jeweler: rings and charms.", {"blueprint": "jeweler"}),
                   (2, 6, "Homeward", "Learn the Warp Home spell: blink back to your bed.", {"spell": "warp_home"}),
                   (1, 9, "Lucky Day", "5% chance each night the sell box pays double (big boxes: a capped bonus).", {"jackpot": 0.05})],
