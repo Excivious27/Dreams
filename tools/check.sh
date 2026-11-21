@@ -1366,3 +1366,10 @@ echo "$c15sgout" | grep -E "FAIL|SCRIPT ERROR|season_goods_test" || true
 if ! echo "$c15sgout" | grep -q "season_goods_test: OK (0 fails)"; then
   echo "season_goods_test failed"; exit 1
 fi
+
+echo "== C15 P3: villager seasonal life (lines per season/festival, routines, mail, events) =="
+vsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/villager_seasons_test.gd 2>&1)"
+echo "$vsout" | grep -E "FAIL|SCRIPT ERROR|villager_seasons_test" || true
+if ! echo "$vsout" | grep -q "villager_seasons_test: 0 failures"; then
+  echo "villager_seasons_test failed"; exit 1
+fi

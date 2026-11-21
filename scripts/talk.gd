@@ -22,7 +22,24 @@ static func data() -> Dictionary:
 ##   morning (5-11) / afternoon (11-17) / evening (17-21) / night (21-5) |
 ##   q:<quest> / !q:<quest> (quest done / not done) |
 ##   f:<flag> / !f:<flag> (also if:<flag> / not:<flag>) (run.flags has / lacks).
-## Unknown parts never hold. On festival days festival lines win 70% of picks.
+## C15 P3 seasonal parts: sun / leaves / fireflies / snow (seasonal weathers; "heat"
+## stays gang heat) | early (season days 1-7) / mid (8-21) / late (22-28) | first
+## (season day 1) | eve (a festival tomorrow) | birthday (the speaker's birthday) |
+## y1 / y2 (year 1 / year 2 and later) | weekend (Sat, Sun) / weekday.
+## Unknown parts never hold. On festival days festival lines win 70% of picks;
+## on the speaker's birthday birthday lines win 80%.
+static var _who := ""
+
+
+static func year() -> int:
+	return (int(GameState.run.get("day", 1)) - 1) / (GameState.DAYS_PER_SEASON * 4) + 1
+
+
+## A festival tomorrow (SeasonCal: P1's Calendar when merged, else day 13).
+static func festival_eve() -> bool:
+	return SeasonCal.eve()
+
+
 static func part_ok(part: String) -> bool:
 	var arc := str(GameState.run.get("arc", "penguins"))
 	var flags: Dictionary = GameState.run.get("flags", {})
@@ -34,8 +51,27 @@ static func part_ok(part: String) -> bool:
 		return arc == part
 	if part == "rain":
 		return GameState.is_wet() or GameState.weather_today() == "rain"
-	if part in ["clear", "storm", "fog", "wind", "petals", "blizzard", "snow"]:
+	if part in ["clear", "storm", "fog", "wind", "petals", "blizzard", "snow", "sun", "leaves", "fireflies"]:
 		return GameState.weather_today() == part
+	if part in ["early", "mid", "late", "first"]:
+		var ds := GameState.day_of_season()
+		match part:
+			"early": return ds <= 7
+			"mid": return ds > 7 and ds < 22
+			"late": return ds >= 22
+		return ds == 1
+	if part == "eve":
+		return festival_eve()
+	if part == "birthday":
+		return _who != "" and GameState.is_birthday(_who)
+	if part == "y1":
+		return year() == 1
+	if part == "y2":
+		return year() >= 2
+	if part == "weekend":
+		return GameState.weekday() >= 5
+	if part == "weekday":
+		return GameState.weekday() < 5
 	if part == "heat":
 		return arc == "gangsters" and Racket.heat() >= 3
 	if part == "festival":
@@ -81,6 +117,7 @@ static func phase() -> String:
 ## Every line an NPC could say right now (own pool only, no Commons/Rec extras).
 ## Used by tools/talk_conditions_test.gd.
 static func own_pool(id: String) -> Array:
+	_who = id
 	var pool: Array = []
 	var d: Dictionary = data().get(id, data().get("_any", {}))
 	for key: String in d:
@@ -91,6 +128,7 @@ static func own_pool(id: String) -> Array:
 
 
 static func festival_pool(id: String) -> Array:
+	_who = id
 	var pool: Array = []
 	if GameState.festival_today() == "":
 		return pool
@@ -99,6 +137,24 @@ static func festival_pool(id: String) -> Array:
 		if "festival" in key and key_ok(key):
 			for l in d[key]:
 				pool.append(str(l))
+	return pool
+
+
+## C15 P3 (c15_10-13, 11-14): lines keyed "birthday" (own block, else _any) on the
+## speaker's birthday.
+static func birthday_pool(id: String) -> Array:
+	_who = id
+	var pool: Array = []
+	if not GameState.is_birthday(id):
+		return pool
+	for src: String in [id, "_any"]:
+		var d: Dictionary = data().get(src, {})
+		for key: String in d:
+			if "birthday" in key and key_ok(key):
+				for l in d[key]:
+					pool.append(str(l))
+		if not pool.is_empty():
+			break
 	return pool
 
 
@@ -115,6 +171,9 @@ static func line(id: String) -> Array:
 	var fest := festival_pool(id)
 	if not fest.is_empty() and randf() < 0.7:
 		pool = fest
+	var bday := birthday_pool(id)
+	if not bday.is_empty() and randf() < 0.8:
+		pool = bday
 	if pool.is_empty():
 		return [{"who": who, "text": "Good to see you."}]
 	var last: Dictionary = GameState.run.get("talk_last", {})

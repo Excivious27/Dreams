@@ -157274,5 +157274,1455 @@
    "h": 26,
    "w": 156
   }
+ },
+ "characters/npc_alder_festival_lantern": {
+  "idle": {
+   "cell_h": 108,
+   "cell_w": 66,
+   "file": "characters/npc_alder_festival_lantern/idle.png",
+   "frames": 1,
+   "h": 108,
+   "w": 66
+  },
+  "idle_side": {
+   "cell_h": 106,
+   "cell_w": 57,
+   "file": "characters/npc_alder_festival_lantern/idle_side.png",
+   "frames": 1,
+   "h": 106,
+   "w": 57
+  },
+  "idle_up": {
+   "cell_h": 109,
+   "cell_w": 63,
+   "file": "characters/npc_alder_festival_lantern/idle_up.png",
+   "frames": 1,
+   "h": 109,
+   "w": 63
+  },
+  "walk": {
+   "cell_h": 104,
+   "cell_w": 60,
+   "file": "characters/npc_alder_festival_lantern/walk.png",
+   "frames": 4,
+   "h": 104,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 109,
+   "cell_w": 65,
+   "file": "characters/npc_alder_festival_lantern/walk_down.png",
+   "frames": 4,
+   "h": 109,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 108,
+   "cell_w": 63,
+   "file": "characters/npc_alder_festival_lantern/walk_up.png",
+   "frames": 4,
+   "h": 108,
+   "w": 252
+  }
+ },
+ "characters/npc_alder_festival_star": {
+  "idle": {
+   "cell_h": 110,
+   "cell_w": 62,
+   "file": "characters/npc_alder_festival_star/idle.png",
+   "frames": 1,
+   "h": 110,
+   "w": 62
+  },
+  "idle_side": {
+   "cell_h": 106,
+   "cell_w": 58,
+   "file": "characters/npc_alder_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 106,
+   "w": 58
+  },
+  "idle_up": {
+   "cell_h": 109,
+   "cell_w": 57,
+   "file": "characters/npc_alder_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 109,
+   "w": 57
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 64,
+   "file": "characters/npc_alder_festival_star/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 256
+  },
+  "walk_down": {
+   "cell_h": 107,
+   "cell_w": 62,
+   "file": "characters/npc_alder_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 107,
+   "w": 248
+  },
+  "walk_up": {
+   "cell_h": 108,
+   "cell_w": 59,
+   "file": "characters/npc_alder_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 108,
+   "w": 236
+  }
+ },
+ "characters/npc_alder_spring": {
+  "idle": {
+   "cell_h": 111,
+   "cell_w": 63,
+   "file": "characters/npc_alder_spring/idle.png",
+   "frames": 1,
+   "h": 111,
+   "w": 63
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 53,
+   "file": "characters/npc_alder_spring/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 53
+  },
+  "idle_up": {
+   "cell_h": 111,
+   "cell_w": 62,
+   "file": "characters/npc_alder_spring/idle_up.png",
+   "frames": 1,
+   "h": 111,
+   "w": 62
+  },
+  "walk": {
+   "cell_h": 104,
+   "cell_w": 57,
+   "file": "characters/npc_alder_spring/walk.png",
+   "frames": 4,
+   "h": 104,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 110,
+   "cell_w": 63,
+   "file": "characters/npc_alder_spring/walk_down.png",
+   "frames": 4,
+   "h": 110,
+   "w": 252
+  },
+  "walk_up": {
+   "cell_h": 108,
+   "cell_w": 61,
+   "file": "characters/npc_alder_spring/walk_up.png",
+   "frames": 4,
+   "h": 108,
+   "w": 244
+  }
+ },
+ "characters/npc_alder_winter": {
+  "idle": {
+   "cell_h": 111,
+   "cell_w": 62,
+   "file": "characters/npc_alder_winter/idle.png",
+   "frames": 1,
+   "h": 111,
+   "w": 62
+  },
+  "idle_side": {
+   "cell_h": 110,
+   "cell_w": 57,
+   "file": "characters/npc_alder_winter/idle_side.png",
+   "frames": 1,
+   "h": 110,
+   "w": 57
+  },
+  "idle_up": {
+   "cell_h": 110,
+   "cell_w": 61,
+   "file": "characters/npc_alder_winter/idle_up.png",
+   "frames": 1,
+   "h": 110,
+   "w": 61
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 59,
+   "file": "characters/npc_alder_winter/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 236
+  },
+  "walk_down": {
+   "cell_h": 111,
+   "cell_w": 62,
+   "file": "characters/npc_alder_winter/walk_down.png",
+   "frames": 4,
+   "h": 111,
+   "w": 248
+  },
+  "walk_up": {
+   "cell_h": 109,
+   "cell_w": 61,
+   "file": "characters/npc_alder_winter/walk_up.png",
+   "frames": 4,
+   "h": 109,
+   "w": 244
+  }
+ },
+ "characters/npc_benno_winter": {
+  "idle": {
+   "cell_h": 116,
+   "cell_w": 65,
+   "file": "characters/npc_benno_winter/idle.png",
+   "frames": 1,
+   "h": 116,
+   "w": 65
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 53,
+   "file": "characters/npc_benno_winter/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 53
+  },
+  "idle_up": {
+   "cell_h": 113,
+   "cell_w": 62,
+   "file": "characters/npc_benno_winter/idle_up.png",
+   "frames": 1,
+   "h": 113,
+   "w": 62
+  },
+  "walk": {
+   "cell_h": 107,
+   "cell_w": 57,
+   "file": "characters/npc_benno_winter/walk.png",
+   "frames": 4,
+   "h": 107,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 116,
+   "cell_w": 65,
+   "file": "characters/npc_benno_winter/walk_down.png",
+   "frames": 4,
+   "h": 116,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 114,
+   "cell_w": 62,
+   "file": "characters/npc_benno_winter/walk_up.png",
+   "frames": 4,
+   "h": 114,
+   "w": 248
+  }
+ },
+ "characters/npc_bram_winter": {
+  "idle": {
+   "cell_h": 128,
+   "cell_w": 84,
+   "file": "characters/npc_bram_winter/idle.png",
+   "frames": 1,
+   "h": 128,
+   "w": 84
+  },
+  "idle_side": {
+   "cell_h": 124,
+   "cell_w": 57,
+   "file": "characters/npc_bram_winter/idle_side.png",
+   "frames": 1,
+   "h": 124,
+   "w": 57
+  },
+  "idle_up": {
+   "cell_h": 128,
+   "cell_w": 77,
+   "file": "characters/npc_bram_winter/idle_up.png",
+   "frames": 1,
+   "h": 128,
+   "w": 77
+  },
+  "walk": {
+   "cell_h": 117,
+   "cell_w": 64,
+   "file": "characters/npc_bram_winter/walk.png",
+   "frames": 4,
+   "h": 117,
+   "w": 256
+  },
+  "walk_down": {
+   "cell_h": 126,
+   "cell_w": 80,
+   "file": "characters/npc_bram_winter/walk_down.png",
+   "frames": 4,
+   "h": 126,
+   "w": 320
+  },
+  "walk_up": {
+   "cell_h": 127,
+   "cell_w": 76,
+   "file": "characters/npc_bram_winter/walk_up.png",
+   "frames": 4,
+   "h": 127,
+   "w": 304
+  }
+ },
+ "characters/npc_finn_spring": {
+  "idle": {
+   "cell_h": 113,
+   "cell_w": 64,
+   "file": "characters/npc_finn_spring/idle.png",
+   "frames": 1,
+   "h": 113,
+   "w": 64
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 55,
+   "file": "characters/npc_finn_spring/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 61,
+   "file": "characters/npc_finn_spring/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 61
+  },
+  "walk": {
+   "cell_h": 111,
+   "cell_w": 57,
+   "file": "characters/npc_finn_spring/walk.png",
+   "frames": 4,
+   "h": 111,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 113,
+   "cell_w": 65,
+   "file": "characters/npc_finn_spring/walk_down.png",
+   "frames": 4,
+   "h": 113,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 113,
+   "cell_w": 60,
+   "file": "characters/npc_finn_spring/walk_up.png",
+   "frames": 4,
+   "h": 113,
+   "w": 240
+  }
+ },
+ "characters/npc_gideon_spring": {
+  "idle": {
+   "cell_h": 112,
+   "cell_w": 65,
+   "file": "characters/npc_gideon_spring/idle.png",
+   "frames": 1,
+   "h": 112,
+   "w": 65
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 54,
+   "file": "characters/npc_gideon_spring/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 54
+  },
+  "idle_up": {
+   "cell_h": 110,
+   "cell_w": 64,
+   "file": "characters/npc_gideon_spring/idle_up.png",
+   "frames": 1,
+   "h": 110,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 104,
+   "cell_w": 57,
+   "file": "characters/npc_gideon_spring/walk.png",
+   "frames": 4,
+   "h": 104,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 112,
+   "cell_w": 64,
+   "file": "characters/npc_gideon_spring/walk_down.png",
+   "frames": 4,
+   "h": 112,
+   "w": 256
+  },
+  "walk_up": {
+   "cell_h": 109,
+   "cell_w": 61,
+   "file": "characters/npc_gideon_spring/walk_up.png",
+   "frames": 4,
+   "h": 109,
+   "w": 244
+  }
+ },
+ "characters/npc_gideon_winter": {
+  "idle": {
+   "cell_h": 107,
+   "cell_w": 66,
+   "file": "characters/npc_gideon_winter/idle.png",
+   "frames": 1,
+   "h": 107,
+   "w": 66
+  },
+  "idle_side": {
+   "cell_h": 105,
+   "cell_w": 55,
+   "file": "characters/npc_gideon_winter/idle_side.png",
+   "frames": 1,
+   "h": 105,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 107,
+   "cell_w": 65,
+   "file": "characters/npc_gideon_winter/idle_up.png",
+   "frames": 1,
+   "h": 107,
+   "w": 65
+  },
+  "walk": {
+   "cell_h": 99,
+   "cell_w": 57,
+   "file": "characters/npc_gideon_winter/walk.png",
+   "frames": 4,
+   "h": 99,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 106,
+   "cell_w": 66,
+   "file": "characters/npc_gideon_winter/walk_down.png",
+   "frames": 4,
+   "h": 106,
+   "w": 264
+  },
+  "walk_up": {
+   "cell_h": 107,
+   "cell_w": 64,
+   "file": "characters/npc_gideon_winter/walk_up.png",
+   "frames": 4,
+   "h": 107,
+   "w": 256
+  }
+ },
+ "characters/npc_hazel_winter": {
+  "idle": {
+   "cell_h": 117,
+   "cell_w": 68,
+   "file": "characters/npc_hazel_winter/idle.png",
+   "frames": 1,
+   "h": 117,
+   "w": 68
+  },
+  "idle_side": {
+   "cell_h": 115,
+   "cell_w": 62,
+   "file": "characters/npc_hazel_winter/idle_side.png",
+   "frames": 1,
+   "h": 115,
+   "w": 62
+  },
+  "idle_up": {
+   "cell_h": 116,
+   "cell_w": 64,
+   "file": "characters/npc_hazel_winter/idle_up.png",
+   "frames": 1,
+   "h": 116,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 111,
+   "cell_w": 62,
+   "file": "characters/npc_hazel_winter/walk.png",
+   "frames": 4,
+   "h": 111,
+   "w": 248
+  },
+  "walk_down": {
+   "cell_h": 116,
+   "cell_w": 69,
+   "file": "characters/npc_hazel_winter/walk_down.png",
+   "frames": 4,
+   "h": 116,
+   "w": 276
+  },
+  "walk_up": {
+   "cell_h": 113,
+   "cell_w": 65,
+   "file": "characters/npc_hazel_winter/walk_up.png",
+   "frames": 4,
+   "h": 113,
+   "w": 260
+  }
+ },
+ "characters/npc_ivy_winter": {
+  "idle": {
+   "cell_h": 105,
+   "cell_w": 74,
+   "file": "characters/npc_ivy_winter/idle.png",
+   "frames": 1,
+   "h": 105,
+   "w": 74
+  },
+  "idle_side": {
+   "cell_h": 104,
+   "cell_w": 63,
+   "file": "characters/npc_ivy_winter/idle_side.png",
+   "frames": 1,
+   "h": 104,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 103,
+   "cell_w": 67,
+   "file": "characters/npc_ivy_winter/idle_up.png",
+   "frames": 1,
+   "h": 103,
+   "w": 67
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 63,
+   "file": "characters/npc_ivy_winter/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 252
+  },
+  "walk_down": {
+   "cell_h": 104,
+   "cell_w": 71,
+   "file": "characters/npc_ivy_winter/walk_down.png",
+   "frames": 4,
+   "h": 104,
+   "w": 284
+  },
+  "walk_up": {
+   "cell_h": 103,
+   "cell_w": 68,
+   "file": "characters/npc_ivy_winter/walk_up.png",
+   "frames": 4,
+   "h": 103,
+   "w": 272
+  }
+ },
+ "characters/npc_juniper_spring": {
+  "idle": {
+   "cell_h": 110,
+   "cell_w": 71,
+   "file": "characters/npc_juniper_spring/idle.png",
+   "frames": 1,
+   "h": 110,
+   "w": 71
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 65,
+   "file": "characters/npc_juniper_spring/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 65
+  },
+  "idle_up": {
+   "cell_h": 107,
+   "cell_w": 64,
+   "file": "characters/npc_juniper_spring/idle_up.png",
+   "frames": 1,
+   "h": 107,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 66,
+   "file": "characters/npc_juniper_spring/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 264
+  },
+  "walk_down": {
+   "cell_h": 111,
+   "cell_w": 73,
+   "file": "characters/npc_juniper_spring/walk_down.png",
+   "frames": 4,
+   "h": 111,
+   "w": 292
+  },
+  "walk_up": {
+   "cell_h": 107,
+   "cell_w": 65,
+   "file": "characters/npc_juniper_spring/walk_up.png",
+   "frames": 4,
+   "h": 107,
+   "w": 260
+  }
+ },
+ "characters/npc_lumi_spring": {
+  "idle": {
+   "cell_h": 110,
+   "cell_w": 67,
+   "file": "characters/npc_lumi_spring/idle.png",
+   "frames": 1,
+   "h": 110,
+   "w": 67
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 60,
+   "file": "characters/npc_lumi_spring/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 60
+  },
+  "idle_up": {
+   "cell_h": 109,
+   "cell_w": 64,
+   "file": "characters/npc_lumi_spring/idle_up.png",
+   "frames": 1,
+   "h": 109,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 106,
+   "cell_w": 62,
+   "file": "characters/npc_lumi_spring/walk.png",
+   "frames": 4,
+   "h": 106,
+   "w": 248
+  },
+  "walk_down": {
+   "cell_h": 111,
+   "cell_w": 68,
+   "file": "characters/npc_lumi_spring/walk_down.png",
+   "frames": 4,
+   "h": 111,
+   "w": 272
+  },
+  "walk_up": {
+   "cell_h": 107,
+   "cell_w": 63,
+   "file": "characters/npc_lumi_spring/walk_up.png",
+   "frames": 4,
+   "h": 107,
+   "w": 252
+  }
+ },
+ "characters/npc_maple_festival_star": {
+  "idle": {
+   "cell_h": 108,
+   "cell_w": 67,
+   "file": "characters/npc_maple_festival_star/idle.png",
+   "frames": 1,
+   "h": 108,
+   "w": 67
+  },
+  "idle_side": {
+   "cell_h": 106,
+   "cell_w": 62,
+   "file": "characters/npc_maple_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 106,
+   "w": 62
+  },
+  "idle_up": {
+   "cell_h": 108,
+   "cell_w": 60,
+   "file": "characters/npc_maple_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 108,
+   "w": 60
+  },
+  "walk": {
+   "cell_h": 106,
+   "cell_w": 62,
+   "file": "characters/npc_maple_festival_star/walk.png",
+   "frames": 4,
+   "h": 106,
+   "w": 248
+  },
+  "walk_down": {
+   "cell_h": 108,
+   "cell_w": 67,
+   "file": "characters/npc_maple_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 108,
+   "w": 268
+  },
+  "walk_up": {
+   "cell_h": 109,
+   "cell_w": 59,
+   "file": "characters/npc_maple_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 109,
+   "w": 236
+  }
+ },
+ "characters/npc_maple_spring": {
+  "idle": {
+   "cell_h": 107,
+   "cell_w": 69,
+   "file": "characters/npc_maple_spring/idle.png",
+   "frames": 1,
+   "h": 107,
+   "w": 69
+  },
+  "idle_side": {
+   "cell_h": 105,
+   "cell_w": 61,
+   "file": "characters/npc_maple_spring/idle_side.png",
+   "frames": 1,
+   "h": 105,
+   "w": 61
+  },
+  "idle_up": {
+   "cell_h": 105,
+   "cell_w": 58,
+   "file": "characters/npc_maple_spring/idle_up.png",
+   "frames": 1,
+   "h": 105,
+   "w": 58
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 62,
+   "file": "characters/npc_maple_spring/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 248
+  },
+  "walk_down": {
+   "cell_h": 107,
+   "cell_w": 69,
+   "file": "characters/npc_maple_spring/walk_down.png",
+   "frames": 4,
+   "h": 107,
+   "w": 276
+  },
+  "walk_up": {
+   "cell_h": 108,
+   "cell_w": 62,
+   "file": "characters/npc_maple_spring/walk_up.png",
+   "frames": 4,
+   "h": 108,
+   "w": 248
+  }
+ },
+ "characters/npc_pip_festival_star": {
+  "idle": {
+   "cell_h": 117,
+   "cell_w": 63,
+   "file": "characters/npc_pip_festival_star/idle.png",
+   "frames": 1,
+   "h": 117,
+   "w": 63
+  },
+  "idle_side": {
+   "cell_h": 117,
+   "cell_w": 58,
+   "file": "characters/npc_pip_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 117,
+   "w": 58
+  },
+  "idle_up": {
+   "cell_h": 117,
+   "cell_w": 59,
+   "file": "characters/npc_pip_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 117,
+   "w": 59
+  },
+  "walk": {
+   "cell_h": 114,
+   "cell_w": 60,
+   "file": "characters/npc_pip_festival_star/walk.png",
+   "frames": 4,
+   "h": 114,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 120,
+   "cell_w": 62,
+   "file": "characters/npc_pip_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 120,
+   "w": 248
+  },
+  "walk_up": {
+   "cell_h": 118,
+   "cell_w": 60,
+   "file": "characters/npc_pip_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 118,
+   "w": 240
+  }
+ },
+ "characters/npc_pip_spring": {
+  "idle": {
+   "cell_h": 102,
+   "cell_w": 58,
+   "file": "characters/npc_pip_spring/idle.png",
+   "frames": 1,
+   "h": 102,
+   "w": 58
+  },
+  "idle_side": {
+   "cell_h": 99,
+   "cell_w": 55,
+   "file": "characters/npc_pip_spring/idle_side.png",
+   "frames": 1,
+   "h": 99,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 101,
+   "cell_w": 52,
+   "file": "characters/npc_pip_spring/idle_up.png",
+   "frames": 1,
+   "h": 101,
+   "w": 52
+  },
+  "walk": {
+   "cell_h": 97,
+   "cell_w": 58,
+   "file": "characters/npc_pip_spring/walk.png",
+   "frames": 4,
+   "h": 97,
+   "w": 232
+  },
+  "walk_down": {
+   "cell_h": 103,
+   "cell_w": 59,
+   "file": "characters/npc_pip_spring/walk_down.png",
+   "frames": 4,
+   "h": 103,
+   "w": 236
+  },
+  "walk_up": {
+   "cell_h": 100,
+   "cell_w": 51,
+   "file": "characters/npc_pip_spring/walk_up.png",
+   "frames": 4,
+   "h": 100,
+   "w": 204
+  }
+ },
+ "characters/npc_posy_festival_lantern": {
+  "idle": {
+   "cell_h": 115,
+   "cell_w": 66,
+   "file": "characters/npc_posy_festival_lantern/idle.png",
+   "frames": 1,
+   "h": 115,
+   "w": 66
+  },
+  "idle_side": {
+   "cell_h": 114,
+   "cell_w": 59,
+   "file": "characters/npc_posy_festival_lantern/idle_side.png",
+   "frames": 1,
+   "h": 114,
+   "w": 59
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 61,
+   "file": "characters/npc_posy_festival_lantern/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 61
+  },
+  "walk": {
+   "cell_h": 111,
+   "cell_w": 59,
+   "file": "characters/npc_posy_festival_lantern/walk.png",
+   "frames": 4,
+   "h": 111,
+   "w": 236
+  },
+  "walk_down": {
+   "cell_h": 115,
+   "cell_w": 66,
+   "file": "characters/npc_posy_festival_lantern/walk_down.png",
+   "frames": 4,
+   "h": 115,
+   "w": 264
+  },
+  "walk_up": {
+   "cell_h": 114,
+   "cell_w": 61,
+   "file": "characters/npc_posy_festival_lantern/walk_up.png",
+   "frames": 4,
+   "h": 114,
+   "w": 244
+  }
+ },
+ "characters/npc_posy_festival_star": {
+  "idle": {
+   "cell_h": 110,
+   "cell_w": 65,
+   "file": "characters/npc_posy_festival_star/idle.png",
+   "frames": 1,
+   "h": 110,
+   "w": 65
+  },
+  "idle_side": {
+   "cell_h": 109,
+   "cell_w": 59,
+   "file": "characters/npc_posy_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 109,
+   "w": 59
+  },
+  "idle_up": {
+   "cell_h": 110,
+   "cell_w": 60,
+   "file": "characters/npc_posy_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 110,
+   "w": 60
+  },
+  "walk": {
+   "cell_h": 107,
+   "cell_w": 60,
+   "file": "characters/npc_posy_festival_star/walk.png",
+   "frames": 4,
+   "h": 107,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 110,
+   "cell_w": 65,
+   "file": "characters/npc_posy_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 110,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 110,
+   "cell_w": 61,
+   "file": "characters/npc_posy_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 110,
+   "w": 244
+  }
+ },
+ "characters/npc_posy_spring": {
+  "idle": {
+   "cell_h": 115,
+   "cell_w": 70,
+   "file": "characters/npc_posy_spring/idle.png",
+   "frames": 1,
+   "h": 115,
+   "w": 70
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 67,
+   "file": "characters/npc_posy_spring/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 67
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 69,
+   "file": "characters/npc_posy_spring/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 69
+  },
+  "walk": {
+   "cell_h": 110,
+   "cell_w": 66,
+   "file": "characters/npc_posy_spring/walk.png",
+   "frames": 4,
+   "h": 110,
+   "w": 264
+  },
+  "walk_down": {
+   "cell_h": 115,
+   "cell_w": 72,
+   "file": "characters/npc_posy_spring/walk_down.png",
+   "frames": 4,
+   "h": 115,
+   "w": 288
+  },
+  "walk_up": {
+   "cell_h": 114,
+   "cell_w": 69,
+   "file": "characters/npc_posy_spring/walk_up.png",
+   "frames": 4,
+   "h": 114,
+   "w": 276
+  }
+ },
+ "characters/npc_rook_spring": {
+  "idle": {
+   "cell_h": 111,
+   "cell_w": 64,
+   "file": "characters/npc_rook_spring/idle.png",
+   "frames": 1,
+   "h": 111,
+   "w": 64
+  },
+  "idle_side": {
+   "cell_h": 108,
+   "cell_w": 56,
+   "file": "characters/npc_rook_spring/idle_side.png",
+   "frames": 1,
+   "h": 108,
+   "w": 56
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 63,
+   "file": "characters/npc_rook_spring/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 63
+  },
+  "walk": {
+   "cell_h": 104,
+   "cell_w": 58,
+   "file": "characters/npc_rook_spring/walk.png",
+   "frames": 4,
+   "h": 104,
+   "w": 232
+  },
+  "walk_down": {
+   "cell_h": 110,
+   "cell_w": 63,
+   "file": "characters/npc_rook_spring/walk_down.png",
+   "frames": 4,
+   "h": 110,
+   "w": 252
+  },
+  "walk_up": {
+   "cell_h": 111,
+   "cell_w": 61,
+   "file": "characters/npc_rook_spring/walk_up.png",
+   "frames": 4,
+   "h": 111,
+   "w": 244
+  }
+ },
+ "characters/npc_tess_winter": {
+  "idle": {
+   "cell_h": 123,
+   "cell_w": 81,
+   "file": "characters/npc_tess_winter/idle.png",
+   "frames": 1,
+   "h": 123,
+   "w": 81
+  },
+  "idle_side": {
+   "cell_h": 117,
+   "cell_w": 63,
+   "file": "characters/npc_tess_winter/idle_side.png",
+   "frames": 1,
+   "h": 117,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 119,
+   "cell_w": 77,
+   "file": "characters/npc_tess_winter/idle_up.png",
+   "frames": 1,
+   "h": 119,
+   "w": 77
+  },
+  "walk": {
+   "cell_h": 115,
+   "cell_w": 63,
+   "file": "characters/npc_tess_winter/walk.png",
+   "frames": 4,
+   "h": 115,
+   "w": 252
+  },
+  "walk_down": {
+   "cell_h": 123,
+   "cell_w": 79,
+   "file": "characters/npc_tess_winter/walk_down.png",
+   "frames": 4,
+   "h": 123,
+   "w": 316
+  },
+  "walk_up": {
+   "cell_h": 120,
+   "cell_w": 74,
+   "file": "characters/npc_tess_winter/walk_up.png",
+   "frames": 4,
+   "h": 120,
+   "w": 296
+  }
+ },
+ "characters/npc_theo_winter": {
+  "idle": {
+   "cell_h": 111,
+   "cell_w": 63,
+   "file": "characters/npc_theo_winter/idle.png",
+   "frames": 1,
+   "h": 111,
+   "w": 63
+  },
+  "idle_side": {
+   "cell_h": 110,
+   "cell_w": 57,
+   "file": "characters/npc_theo_winter/idle_side.png",
+   "frames": 1,
+   "h": 110,
+   "w": 57
+  },
+  "idle_up": {
+   "cell_h": 110,
+   "cell_w": 61,
+   "file": "characters/npc_theo_winter/idle_up.png",
+   "frames": 1,
+   "h": 110,
+   "w": 61
+  },
+  "walk": {
+   "cell_h": 106,
+   "cell_w": 60,
+   "file": "characters/npc_theo_winter/walk.png",
+   "frames": 4,
+   "h": 106,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 111,
+   "cell_w": 63,
+   "file": "characters/npc_theo_winter/walk_down.png",
+   "frames": 4,
+   "h": 111,
+   "w": 252
+  },
+  "walk_up": {
+   "cell_h": 111,
+   "cell_w": 62,
+   "file": "characters/npc_theo_winter/walk_up.png",
+   "frames": 4,
+   "h": 111,
+   "w": 248
+  }
+ },
+ "characters/npc_tobin_festival_star": {
+  "idle": {
+   "cell_h": 107,
+   "cell_w": 66,
+   "file": "characters/npc_tobin_festival_star/idle.png",
+   "frames": 1,
+   "h": 107,
+   "w": 66
+  },
+  "idle_side": {
+   "cell_h": 107,
+   "cell_w": 60,
+   "file": "characters/npc_tobin_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 107,
+   "w": 60
+  },
+  "idle_up": {
+   "cell_h": 107,
+   "cell_w": 65,
+   "file": "characters/npc_tobin_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 107,
+   "w": 65
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 60,
+   "file": "characters/npc_tobin_festival_star/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 108,
+   "cell_w": 66,
+   "file": "characters/npc_tobin_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 108,
+   "w": 264
+  },
+  "walk_up": {
+   "cell_h": 107,
+   "cell_w": 65,
+   "file": "characters/npc_tobin_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 107,
+   "w": 260
+  }
+ },
+ "characters/npc_tobin_winter": {
+  "idle": {
+   "cell_h": 122,
+   "cell_w": 62,
+   "file": "characters/npc_tobin_winter/idle.png",
+   "frames": 1,
+   "h": 122,
+   "w": 62
+  },
+  "idle_side": {
+   "cell_h": 121,
+   "cell_w": 59,
+   "file": "characters/npc_tobin_winter/idle_side.png",
+   "frames": 1,
+   "h": 121,
+   "w": 59
+  },
+  "idle_up": {
+   "cell_h": 121,
+   "cell_w": 59,
+   "file": "characters/npc_tobin_winter/idle_up.png",
+   "frames": 1,
+   "h": 121,
+   "w": 59
+  },
+  "walk": {
+   "cell_h": 114,
+   "cell_w": 59,
+   "file": "characters/npc_tobin_winter/walk.png",
+   "frames": 4,
+   "h": 114,
+   "w": 236
+  },
+  "walk_down": {
+   "cell_h": 122,
+   "cell_w": 63,
+   "file": "characters/npc_tobin_winter/walk_down.png",
+   "frames": 4,
+   "h": 122,
+   "w": 252
+  },
+  "walk_up": {
+   "cell_h": 120,
+   "cell_w": 60,
+   "file": "characters/npc_tobin_winter/walk_up.png",
+   "frames": 4,
+   "h": 120,
+   "w": 240
+  }
+ },
+ "characters/npc_wren_jr_festival_star": {
+  "idle": {
+   "cell_h": 112,
+   "cell_w": 71,
+   "file": "characters/npc_wren_jr_festival_star/idle.png",
+   "frames": 1,
+   "h": 112,
+   "w": 71
+  },
+  "idle_side": {
+   "cell_h": 110,
+   "cell_w": 66,
+   "file": "characters/npc_wren_jr_festival_star/idle_side.png",
+   "frames": 1,
+   "h": 110,
+   "w": 66
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_festival_star/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 108,
+   "cell_w": 68,
+   "file": "characters/npc_wren_jr_festival_star/walk.png",
+   "frames": 4,
+   "h": 108,
+   "w": 272
+  },
+  "walk_down": {
+   "cell_h": 110,
+   "cell_w": 67,
+   "file": "characters/npc_wren_jr_festival_star/walk_down.png",
+   "frames": 4,
+   "h": 110,
+   "w": 268
+  },
+  "walk_up": {
+   "cell_h": 113,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_festival_star/walk_up.png",
+   "frames": 4,
+   "h": 113,
+   "w": 256
+  }
+ },
+ "characters/npc_wren_jr_winter": {
+  "idle": {
+   "cell_h": 113,
+   "cell_w": 71,
+   "file": "characters/npc_wren_jr_winter/idle.png",
+   "frames": 1,
+   "h": 113,
+   "w": 71
+  },
+  "idle_side": {
+   "cell_h": 113,
+   "cell_w": 63,
+   "file": "characters/npc_wren_jr_winter/idle_side.png",
+   "frames": 1,
+   "h": 113,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_winter/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 109,
+   "cell_w": 67,
+   "file": "characters/npc_wren_jr_winter/walk.png",
+   "frames": 4,
+   "h": 109,
+   "w": 268
+  },
+  "walk_down": {
+   "cell_h": 113,
+   "cell_w": 71,
+   "file": "characters/npc_wren_jr_winter/walk_down.png",
+   "frames": 4,
+   "h": 113,
+   "w": 284
+  },
+  "walk_up": {
+   "cell_h": 109,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_winter/walk_up.png",
+   "frames": 4,
+   "h": 109,
+   "w": 256
+  }
+ },
+ "characters/npc_wren_spring": {
+  "idle": {
+   "cell_h": 114,
+   "cell_w": 68,
+   "file": "characters/npc_wren_spring/idle.png",
+   "frames": 1,
+   "h": 114,
+   "w": 68
+  },
+  "idle_side": {
+   "cell_h": 109,
+   "cell_w": 63,
+   "file": "characters/npc_wren_spring/idle_side.png",
+   "frames": 1,
+   "h": 109,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 114,
+   "cell_w": 62,
+   "file": "characters/npc_wren_spring/idle_up.png",
+   "frames": 1,
+   "h": 114,
+   "w": 62
+  },
+  "walk": {
+   "cell_h": 106,
+   "cell_w": 64,
+   "file": "characters/npc_wren_spring/walk.png",
+   "frames": 4,
+   "h": 106,
+   "w": 256
+  },
+  "walk_down": {
+   "cell_h": 114,
+   "cell_w": 67,
+   "file": "characters/npc_wren_spring/walk_down.png",
+   "frames": 4,
+   "h": 114,
+   "w": 268
+  },
+  "walk_up": {
+   "cell_h": 112,
+   "cell_w": 61,
+   "file": "characters/npc_wren_spring/walk_up.png",
+   "frames": 4,
+   "h": 112,
+   "w": 244
+  }
+ },
+ "characters/npc_wren_winter": {
+  "idle": {
+   "cell_h": 111,
+   "cell_w": 67,
+   "file": "characters/npc_wren_winter/idle.png",
+   "frames": 1,
+   "h": 111,
+   "w": 67
+  },
+  "idle_side": {
+   "cell_h": 109,
+   "cell_w": 61,
+   "file": "characters/npc_wren_winter/idle_side.png",
+   "frames": 1,
+   "h": 109,
+   "w": 61
+  },
+  "idle_up": {
+   "cell_h": 110,
+   "cell_w": 62,
+   "file": "characters/npc_wren_winter/idle_up.png",
+   "frames": 1,
+   "h": 110,
+   "w": 62
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 60,
+   "file": "characters/npc_wren_winter/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 240
+  },
+  "walk_down": {
+   "cell_h": 110,
+   "cell_w": 66,
+   "file": "characters/npc_wren_winter/walk_down.png",
+   "frames": 4,
+   "h": 110,
+   "w": 264
+  },
+  "walk_up": {
+   "cell_h": 110,
+   "cell_w": 61,
+   "file": "characters/npc_wren_winter/walk_up.png",
+   "frames": 4,
+   "h": 110,
+   "w": 244
+  }
  }
 }

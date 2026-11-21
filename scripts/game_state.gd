@@ -3548,7 +3548,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])
 	var tp := Ops.morning()
 	if tp > 0:
-		notify("Your blocks paid ◆%d overnight." % tp)
+		notify("Your blocks paid %s overnight." % Money.amount(tp))  # C15 P3 (c15_10-11)
 	var bd := birthday_today()
 	if bd != "":
 		notify("It's %s's birthday today! Gifts count triple." % str(npcs[bd].get("name", bd)))

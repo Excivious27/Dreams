@@ -13,7 +13,8 @@
    "hours": [
     9,
     18
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "maple",
@@ -68,7 +69,8 @@
    "hours": [
     10,
     16
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "finn",
@@ -118,7 +120,8 @@
    "hours": [
     7,
     10
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "posy",
@@ -168,7 +171,8 @@
    "hours": [
     9,
     15
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "lumi",
@@ -222,7 +226,8 @@
    "hours": [
     11,
     14
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "alder",
@@ -276,7 +281,8 @@
    "hours": [
     6,
     12
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "rook",
@@ -290,7 +296,7 @@
    {
     "who": "Rook",
     "text": "Grumps. Orchard side. Pulling the apples down.",
-    "text_gangsters": "thugs. Orchard side. Pulling the apples down."
+    "text_gangsters": "Thugs. Orchard side. Pulling the apples down."
    },
    {
     "who": "Finn",
@@ -381,7 +387,8 @@
    "hours": [
     14,
     17
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "pip",
@@ -429,7 +436,7 @@
    12
   ],
   "when": {
-   "day": 14,
+   "day": 15,
    "hours": [
     8,
     12
@@ -437,7 +444,8 @@
    "friend": [
     "maple",
     2
-   ]
+   ],
+   "season": "spring"
   },
   "actors": [
    "maple",
@@ -606,6 +614,435 @@
     "granite": 8
    },
    "hint": "Granite sells ore and dynamite in the quarry office. The Golem King sleeps in the pit."
+  }
+ },
+ {
+  "id": "ev_spring_wall",
+  "scene": "town",
+  "area": [
+   68,
+   10,
+   18,
+   14
+  ],
+  "when": {
+   "season": "spring",
+   "dos": [
+    3,
+    24
+   ],
+   "hours": [
+    8,
+    14
+   ]
+  },
+  "actors": [
+   "wren",
+   "lumi"
+  ],
+  "lines": [
+   {
+    "who": "Wren",
+    "text": "Hold the trowel like a pen, Lumi, not like a paintbrush."
+   },
+   {
+    "who": "Lumi",
+    "text": "Everything is a paintbrush if you believe in it."
+   },
+   {
+    "who": "Wren",
+    "text": "Then paint me a row of herbs along this wall. In the ground. With seeds."
+   },
+   {
+    "who": "Lumi",
+    "text": "Oh, hello! We are planting the orchard wall. Wren is planting. I am supervising the colours."
+   }
+  ],
+  "after": {
+   "friend": {
+    "wren": 4,
+    "lumi": 4
+   },
+   "hint": "Wren and Lumi planted herbs along the orchard wall. Spring is the time for new beds."
+  }
+ },
+ {
+  "id": "ev_spring_kite",
+  "scene": "town",
+  "area": [
+   30,
+   44,
+   22,
+   14
+  ],
+  "when": {
+   "season": "spring",
+   "year": 2,
+   "dos": [
+    3,
+    26
+   ],
+   "hours": [
+    10,
+    17
+   ],
+   "weather": [
+    "petals",
+    "wind",
+    "clear"
+   ]
+  },
+  "actors": [
+   "pip",
+   "tobin"
+  ],
+  "lines": [
+   {
+    "who": "Pip",
+    "text": "It went UP. Tobin, it went all the way up!"
+   },
+   {
+    "who": "Tobin",
+    "text": "Last spring it went straight into the fountain."
+   },
+   {
+    "who": "Pip",
+    "text": "Last spring I was small. Look, the petals are flying with it!"
+   },
+   {
+    "who": "Tobin",
+    "text": "You can hold the string for one minute. One. I am counting."
+   }
+  ],
+  "after": {
+   "friend": {
+    "pip": 4,
+    "tobin": 4
+   },
+   "hint": "Pip finally got the kite up this spring. The kids remember last year better than you think."
+  }
+ },
+ {
+  "id": "ev_summer_bet",
+  "scene": "town",
+  "area": [
+   60,
+   40,
+   14,
+   16
+  ],
+  "when": {
+   "season": "summer",
+   "dos": [
+    2,
+    26
+   ],
+   "hours": [
+    19,
+    23
+   ],
+   "friend": [
+    "finn",
+    2
+   ]
+  },
+  "actors": [
+   "finn",
+   "bram"
+  ],
+  "lines": [
+   {
+    "who": "Bram",
+    "text": "Night fishing. In the dark. You can't even see the float."
+   },
+   {
+    "who": "Finn",
+    "text": "You don't look for the float at night, Bram. You feel the line."
+   },
+   {
+    "who": "Bram",
+    "text": "One fish before midnight and I'll pour you iced tea for a week."
+   },
+   {
+    "who": "Finn",
+    "text": "Make it two weeks. ...Evening. Pull up a rock. This could take a while."
+   }
+  ],
+  "after": {
+   "friend": {
+    "finn": 4,
+    "bram": 4
+   },
+   "hint": "Finn swears summer nights are the best fishing. Try the water after dark."
+  }
+ },
+ {
+  "id": "ev_summer_stand",
+  "scene": "town",
+  "area": [
+   54,
+   56,
+   16,
+   14
+  ],
+  "when": {
+   "season": "summer",
+   "year": 2,
+   "dos": [
+    2,
+    27
+   ],
+   "hours": [
+    11,
+    17
+   ]
+  },
+  "actors": [
+   "bram",
+   "mabel"
+  ],
+  "lines": [
+   {
+    "who": "Mabel",
+    "text": "Iced tea! Cold iced tea! One coin, or two if you want a straw!",
+    "text_gangsters": "Iced tea! Cold iced tea! Cheap, or less cheap if you want a straw!"
+   },
+   {
+    "who": "Bram",
+    "text": "She sold out by noon last summer. I'm only the supplier now."
+   },
+   {
+    "who": "Mabel",
+    "text": "He's my supplier. I'm the business."
+   },
+   {
+    "who": "Bram",
+    "text": "Have one on the house. Don't tell my business partner."
+   }
+  ],
+  "after": {
+   "friend": {
+    "bram": 4,
+    "mabel": 4
+   },
+   "hint": "Mabel runs an iced tea stand outside the inn on hot summer days."
+  }
+ },
+ {
+  "id": "ev_fall_press",
+  "scene": "town",
+  "area": [
+   68,
+   10,
+   18,
+   14
+  ],
+  "when": {
+   "season": "fall",
+   "dos": [
+    2,
+    26
+   ],
+   "hours": [
+    9,
+    16
+   ]
+  },
+  "actors": [
+   "hazel",
+   "mabel"
+  ],
+  "lines": [
+   {
+    "who": "Hazel",
+    "text": "Apples in the top, handle round and round. Slowly, Mabel."
+   },
+   {
+    "who": "Mabel",
+    "text": "Slowly is boring. Look, juice! It's coming out the bottom!"
+   },
+   {
+    "who": "Hazel",
+    "text": "That's the idea. Here, have the first cup. Fresh apple juice, the best thing about fall."
+   },
+   {
+    "who": "Mabel",
+    "text": "You can have the second cup. I already drank it."
+   }
+  ],
+  "after": {
+   "friend": {
+    "hazel": 4,
+    "mabel": 4
+   },
+   "item": [
+    "apple",
+    3
+   ],
+   "hint": "Hazel presses apple juice in the orchard every fall. Apples keep well into winter."
+  }
+ },
+ {
+  "id": "ev_fall_ledger",
+  "scene": "town",
+  "area": [
+   30,
+   44,
+   22,
+   14
+  ],
+  "when": {
+   "season": "fall",
+   "year": 2,
+   "dos": [
+    2,
+    26
+   ],
+   "hours": [
+    9,
+    15
+   ],
+   "weather": [
+    "leaves",
+    "wind",
+    "clear"
+   ]
+  },
+  "actors": [
+   "theo",
+   "pip"
+  ],
+  "lines": [
+   {
+    "who": "Theo",
+    "text": "Four hundred and twelve leaves on the plaza by my count. I am keeping a ledger."
+   },
+   {
+    "who": "Pip",
+    "text": "Four hundred and THIRTEEN. I just jumped in the pile."
+   },
+   {
+    "who": "Theo",
+    "text": "Last fall you scattered my whole survey."
+   },
+   {
+    "who": "Pip",
+    "text": "And this fall I am helping. Look, I am counting them back in."
+   }
+  ],
+  "after": {
+   "friend": {
+    "theo": 4,
+    "pip": 4
+   },
+   "hint": "Theo keeps a ledger of the fall leaves. Pip keeps \"helping\"."
+  }
+ },
+ {
+  "id": "ev_winter_snowball",
+  "scene": "town",
+  "area": [
+   30,
+   44,
+   22,
+   14
+  ],
+  "when": {
+   "season": "winter",
+   "dos": [
+    2,
+    26
+   ],
+   "hours": [
+    13,
+    17
+   ],
+   "weather": [
+    "snow",
+    "clear"
+   ]
+  },
+  "actors": [
+   "pip",
+   "tobin",
+   "wren_jr"
+  ],
+  "lines": [
+   {
+    "who": "Tobin",
+    "text": "Hold your fire. Hold it. ...NOW!"
+   },
+   {
+    "who": "Wren Jr.",
+    "text": "You hit the mayor's noticeboard!"
+   },
+   {
+    "who": "Pip",
+    "text": "The noticeboard started it. Quick, the new one is here, get them!"
+   },
+   {
+    "who": "Tobin",
+    "text": "Truce! Truce. You can be on our team. We have a fort."
+   }
+  ],
+  "after": {
+   "friend": {
+    "pip": 4,
+    "tobin": 4,
+    "wren_jr": 4
+   },
+   "hint": "The kids hold snowball battles on the plaza after school in winter."
+  }
+ },
+ {
+  "id": "ev_winter_lamp",
+  "scene": "town",
+  "area": [
+   54,
+   56,
+   16,
+   14
+  ],
+  "when": {
+   "season": "winter",
+   "year": 2,
+   "dos": [
+    2,
+    27
+   ],
+   "hours": [
+    17,
+    23
+   ]
+  },
+  "actors": [
+   "marlowe",
+   "bram"
+  ],
+  "lines": [
+   {
+    "who": "Marlowe",
+    "text": "Sky went white over the sea an hour ago. I came down before the path vanished."
+   },
+   {
+    "who": "Bram",
+    "text": "Same as last winter. You sat by my fire till the lamp needed you."
+   },
+   {
+    "who": "Marlowe",
+    "text": "The lamp turns itself in a blizzard. I check it at dawn."
+   },
+   {
+    "who": "Bram",
+    "text": "Then sit. Soup's hot. You too, there's room by the hearth."
+   }
+  ],
+  "after": {
+   "friend": {
+    "marlowe": 4,
+    "bram": 4
+   },
+   "hint": "Marlowe weathers winter storms at the inn. A bowl of soup is never far in winter."
   }
  }
 ]

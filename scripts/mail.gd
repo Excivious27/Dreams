@@ -236,7 +236,10 @@ static func _morning() -> int:
 	# Chatter.
 	if not known.is_empty() and rng.randf() < 0.3:
 		var who3 := str(known[rng.randi() % known.size()])
-		send(_name(who3), _pick_line(who3, CHAT_NOTES, rng) + " - " + _name(who3), "chat", {"npc": who3})
+		var chat := _season_note(who3, rng) if rng.randf() < 0.5 else ""
+		if chat == "":
+			chat = _pick_line(who3, CHAT_NOTES, rng)
+		send(_name(who3), chat + " - " + _name(who3), "chat", {"npc": who3})
 	return list().size() - before
 
 
@@ -267,12 +270,76 @@ static func show_line(fid: String) -> String:
 	return ""
 
 
+## C15 P3 (c15_10-07, 11-05): the festival-eve letter gives that festival's real
+## hours (Npc.festival_hours: the evening festivals run on tomorrow's sunset clock),
+## in each arc's voice.
+static func eve_hours(fid: String) -> Vector2:
+	var keep := int(GameState.run["day"])
+	GameState.run["day"] = keep + 1  # tomorrow's sunset (same season: the festival is mid-season)
+	var fh := Npc.festival_hours(fid)
+	GameState.run["day"] = keep
+	return fh
+
+
+static func eve_letter(fid: String, tomorrow: int) -> String:
+	var f := SeasonCal.festival_for_day(tomorrow)
+	var fh := eve_hours(fid)
+	var from := GameState.clock_of(int(round(fh.x * 60.0)))
+	var till := GameState.clock_of(int(round(fh.y * 60.0)))
+	var when := "from %s till %s" % [from, till]
+	var fname := GameState.festival_name(fid)
+	var where := "on the plaza"
+	if str(f.get("id", "")) == fid:
+		fname = str(f.get("name", fname))
+		if str(f.get("where", "")) != "":
+			where = "at " + str(f["where"]) if not str(f["where"]).begins_with("the plaza") else "on the plaza"
+	if GameState.is_penguins():
+		return "Reminder: the %s is TOMORROW %s, %s. Shops shut for it so everyone can come. Come hungry!%s" % [fname, where, when, show_line(fid)]
+	return "Word from the hall: the %s is TOMORROW %s, %s. Shops close up for it. Bring your appetite and leave the trouble at home.%s" % [fname, where, when.trim_prefix("from "), show_line(fid)]
+
+
+## C15 P3 (c15_10-08, 11-06): season letters. Day 1 of a season: the hall's notice
+## (this season's festival day and the birthdays of people you know); on Spring 1 of
+## year 2 and later a new-year letter; the day after the festival a thank-you from the host.
+static func _season_letters(day: int) -> void:
+	var dos := ((day - 1) % GameState.DAYS_PER_SEASON) + 1
+	var se := GameState.season_of(day)
+	var fests := SeasonCal.festivals_in_season(day)
+	var ftxt := ""
+	for f: Dictionary in fests:
+		ftxt += "%s%s on day %d" % [", " if ftxt != "" else "", str(f["name"]), int(f["day"])]
+	if dos == 1 and day > 1:
+		var bdays: Array = []
+		for id: String in _known():
+			var b := GameState.birthday_of(id)
+			if b.size() == 2 and str(b[0]) == se:
+				bdays.append("%s (day %d)" % [_name(id), int(b[1])])
+		var btxt := "" if bdays.is_empty() else " Birthdays this season: %s." % ", ".join(bdays)
+		if GameState.is_penguins():
+			send("Mayor Alder", "%s is here! Festivals this season: %s.%s Check the board for the calendar. - Mayor Alder" % [se.capitalize(), ftxt if ftxt != "" else "none this year", btxt], "news", {"npc": "alder"})
+		else:
+			send("The hall", "New season on the block: %s. On the calendar: %s.%s The board by the hall has the rest." % [se.capitalize(), ftxt if ftxt != "" else "nothing big", btxt], "news", {"npc": "alder"})
+		if se == "spring" and Talk.year() >= 2:
+			if GameState.is_penguins():
+				send("Hazel", "Happy new year! Another spring on the farm. Whatever last year was, this one's a fresh field. - Hazel", "news", {"npc": "hazel"})
+			else:
+				send("Hazel", "New year, same street, clean slate. Plant early this time. - Hazel", "news", {"npc": "hazel"})
+	var past := SeasonCal.festival_for_day(day - 1)
+	if not past.is_empty() and dos > 1:
+		var host := "alder"
+		if GameState.is_penguins():
+			send(_name(host), "Thank you for coming to the %s yesterday. The town felt fuller with you in it. - %s" % [str(past["name"]), _name(host)], "news", {"npc": host})
+		else:
+			send(_name(host), "Good turnout yesterday at the %s. Nobody made trouble. Thanks for showing your face. - %s" % [str(past["name"]), _name(host)], "news", {"npc": host})
+
+
 static func _news(rng: RandomNumberGenerator) -> void:
+	_season_letters(int(GameState.run["day"]))
 	var tomorrow := int(GameState.run["day"]) + 1
 	var dos := ((tomorrow - 1) % GameState.DAYS_PER_SEASON) + 1
-	if dos == GameState.FESTIVAL_DAY:
-		var fid: String = str(GameState.FESTIVALS[GameState.season_of(tomorrow)][0])
-		send("Mayor Alder", "Reminder: the %s is TOMORROW on the plaza. Shops shut from nine till six so everyone can come. Come hungry!%s" % [GameState.festival_name(fid), show_line(fid)], "news", {"npc": "alder"})
+	var tf := SeasonCal.festival_for_day(tomorrow)  # C15 P3: any plaza festival (Calendar when merged)
+	if not tf.is_empty():
+		send("Mayor Alder", eve_letter(str(tf["id"]), tomorrow), "news", {"npc": "alder"})
 	var w := GameState.weather_for(tomorrow)
 	if w == "storm":
 		send("Marlowe", "Storm coming in tomorrow; I can see it from the lamp room. %sDon't bother watering. - Marlowe" % _storm_animals(), "news", {"npc": "marlowe"})
@@ -630,6 +697,25 @@ const CHAT_NOTES := {
 }
 
 
+## C15 P3 (c15_10-08, 11-06): seasonal chatter, half of all chat letters ("#all" for
+## grown-ups, "#kid" for the kids, "#gang" for the gangster arc's grown-ups).
+const CHAT_NOTES_SEASON := {
+	"spring": {"#all": ["The blossom's out on the orchard wall. Walk past it before the wind takes it.", "Everyone's planting this week. The seed shelf at Maple's is half empty already.", "Rain again. Good for the fields, bad for my hair. How are your seedlings?"], "#kid": ["There are TADPOLES in the pond. Hundreds. Come and count them.", "I made a kite. It flew for three seconds. That counts."], "#gang": ["Spring cleaning on the block. Somebody's selling their whole kitchen off the stoop.", "Rain's washing the street clean. Doesn't last, but it's nice while it does."], "maple": ["New seed stock in for spring. I put the good packets at eye level this time."], "posy": ["Spring flowers on every cake this week. People keep asking. I keep saying yes."]},
+	"summer": {"#all": ["Too hot to think. If you need me, I'm in the shade.", "The evenings go on forever this time of year. Come sit outside sometime.", "Water your crops early, before the sun gets cross."], "#kid": ["NO SCHOOL. All summer. Come to the pond.", "I found a shell on the beach road. It's mine but you can look at it."], "#gang": ["Hot one. Every window on the avenue is open and every radio's on.", "Hydrant on the corner's been running all afternoon. Kids love it. The hall doesn't."], "finn": ["The fish go deep when it's hot. Try the jetty at dawn."], "bram": ["Cold drinks on the counter all summer. Ask for the iced tea."]},
+	"fall": {"#all": ["Leaves everywhere. The bridge sounds like walking on crisps.", "Harvest weather. Everyone's busy and nobody's complaining.", "The nights are drawing in. Bring a lamp when you come to town."], "#kid": ["I made the biggest leaf pile in town. Jump in it before Theo sweeps it.", "Can we carve a pumpkin? A friendly one. With a big smile."], "#gang": ["Wind's picking up off the river. Coats are out on the avenue.", "Fall on the block means fewer people on the street and more in the diner."], "hazel": ["Pumpkins are coming in heavy this year. Need any? I mean it. Please."], "bram": ["Pumpkin soup's on. All fall, all day."]},
+	"winter": {"#all": ["Snow on the roofs and smoke from every chimney. Stay warm out there.", "Quiet season. Good for mending things and reading by the fire.", "The pond's frozen over. Rook says it's safe at the edges only."], "#kid": ["SNOW. Real snow. I made a snowman and he looks like Mayor Alder.", "Snowball fight on the plaza after school. You're on my team."], "#gang": ["Cold snap. Somebody's handing out soup by the hall. Go get some.", "Snow on the avenue. Quietest the city ever gets."], "posy": ["Frostberry tarts this week. They taste like cold, in a good way."], "gideon": ["Forge is the warmest room in town. Just saying."]},
+}
+
+
+static func _season_note(who: String, rng: RandomNumberGenerator) -> String:
+	var pool: Dictionary = CHAT_NOTES_SEASON.get(GameState.season(), {})
+	var opts: Array = []
+	if GameState.is_penguins():
+		opts.append_array(pool.get(who, []))
+	opts.append_array(pool.get("#kid" if who in KIDS else ("#all" if GameState.is_penguins() else "#gang"), []))
+	return "" if opts.is_empty() else str(opts[rng.randi() % opts.size()])
+
+
 ## The gangster arc's grown-up pools (c12_09-12): the cosy penguin lines stay in the penguin arc.
 const GIFT_NOTES_GANG := ["Fell off a truck. Kidding. Mostly.", "Had one spare. Now you do. Don't mention it.", "For the farm. Somebody on this street should be doing honest work."]
 const CHAT_NOTES_GANG := ["Avenue's quiet tonight. That's either good or bad. How's the farm?", "Saw your lights on late. Get some sleep. The city keeps going without you.", "If you're passing, the door's open. Knock twice.", "Somebody painted over the tags on the fountain. Was that you?", "The market was busy today. Real money, honest goods. Bring something."]
@@ -685,14 +771,36 @@ static func _housewarming() -> void:
 const DECOR_GIFT := {"hearts": 6, "p": 0.125, "pool": "mail"}
 
 
+## C15 P3 (c15_10-08, 11-06): a friend's gift is something they could have in hand
+## this season: never an out-of-season crop; a third of the time (or when no like
+## fits) the season's own basket (spring flowers, summer herbs, fall mushrooms and
+## pumpkin soup, winter leeks, frostberries and cocoa).
+const SEASON_BASKET := {"spring": ["flower", "wild_herb", "salad"], "summer": ["wild_herb", "flower", "energy_tea"], "fall": ["mushroom", "pumpkin_soup", "berry_pie"], "winter": ["wild_leek", "frostberry", "hot_cocoa"]}
+
+
+static func _season_gift(rng: RandomNumberGenerator) -> String:
+	var opts: Array = []
+	for id in SEASON_BASKET.get(GameState.season(), []):
+		if GameState.items.has(str(id)) and GameState.crop_in_season(str(id)):
+			opts.append(str(id))
+	return "" if opts.is_empty() else str(opts[rng.randi() % opts.size()])
+
+
 static func _gift_item(who: String, rng: RandomNumberGenerator) -> String:
 	var likes: Array = GameState.npcs.get(who, {}).get("likes", [])
+	if rng.randf() < 0.33:
+		var sg := _season_gift(rng)
+		if sg != "":
+			return sg
 	for i in 6:
 		if likes.is_empty():
 			break
 		var id := str(likes[rng.randi() % likes.size()])
-		if GameState.items.has(id) and GameState.item_value(id) <= 150:
+		if GameState.items.has(id) and GameState.item_value(id) <= 150 and GameState.crop_in_season(id):
 			return id
+	var basket := _season_gift(rng)
+	if basket != "":
+		return basket
 	return ["energy_tea", "berry_pie", "potion", "tea"][rng.randi() % 4] if GameState.items.has("berry_pie") else "potion"
 
 

@@ -129,7 +129,8 @@ static func market_day() -> bool:
 	if GameState.run.is_empty() or not complete():
 		return false
 	# The 14th is the season festival: everyone is in town, so no market that day.
-	return (GameState.day_of_season() % 7 == 0 and GameState.day_of_season() != GameState.FESTIVAL_DAY) or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
+	# C15 P3: any festival day (SeasonCal: the Calendar when merged).
+	return (GameState.day_of_season() % 7 == 0 and not SeasonCal.is_festival_day(int(GameState.run["day"]))) or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
 
 
 static func rain_spots() -> Array:

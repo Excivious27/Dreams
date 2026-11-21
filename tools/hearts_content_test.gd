@@ -131,7 +131,7 @@ func _run() -> void:
 
 func _side_stories() -> void:
 	var cs := SideStory.chains()
-	check(cs.size() == 7, "7 side stories (%d)" % cs.size())
+	check(cs.size() == 11, "7 story side stories + 4 seasonal (C15 P3) (%d)" % cs.size())
 	var story: Dictionary = GameState.load_json("res://data/story.json")
 	var beat_flags := {"boss_wastes": true}
 	for arc in ["penguins", "gangsters"]:
@@ -139,8 +139,11 @@ func _side_stories() -> void:
 			for b: Dictionary in ch.get("beats", []):
 				beat_flags["st_" + str(b.get("id", ""))] = true
 	for c: Dictionary in cs:
-		check(beat_flags.has(str(c["when"].get("flag", ""))), "%s starts on a real flag" % c["id"])
-		check((c["steps"] as Array).size() >= 3, "%s has 3+ scenes" % c["id"])
+		if c["when"].has("season"):  # C15 P3 seasonal chains: both arcs, 2 scenes in their season
+			check(str(c.get("arc", "")) == "" and (c["steps"] as Array).size() >= 2, "%s seasonal chain: both arcs, 2+ scenes" % c["id"])
+		else:
+			check(beat_flags.has(str(c["when"].get("flag", ""))), "%s starts on a real flag" % c["id"])
+			check((c["steps"] as Array).size() >= 3, "%s has 3+ scenes" % c["id"])
 		for st: Dictionary in c["steps"]:
 			var g := str(st["giver"])
 			check(GameState.npcs.has(g) or Crew.members().has(g), "%s giver %s exists" % [c["id"], g])
@@ -163,4 +166,4 @@ func _side_stories() -> void:
 	GameState.run["day"] = int(GameState.run["day"]) + 1
 	check(not SideStory.due("sel").is_empty(), "Sel's step is due the next day")
 	check(SideStory.due("mama_rosa").is_empty(), "gangster chains stay out of the penguin arc")
-	check(SideStory.progress()[1] == 4, "4 penguin side stories")
+	check(SideStory.progress()[1] == 8, "4 penguin side stories + 4 seasonal (%d)" % SideStory.progress()[1])

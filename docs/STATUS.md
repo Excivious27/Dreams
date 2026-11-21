@@ -7,6 +7,9 @@
 
 ## 2026-11-21 — C15 P1: Calendar engine (scripts/calendar.gd; festivals.json/calendar.json/marina/birthdays, year gates), calendar screen (board, menu, HUD date tap + pip), seasonal weather (per-save seed, city odds, specials, snow depth, heat wave, weather_here), tests calendar/calendar_screen/weather_c15
 ## 2026-11-21 — C15 P6: festivals.json (19 rows, full year both arcs, year gates), egg hunt persists + kids race + golden egg, festival hours gate, gang names/hosts/dressing, 5 new town festivals (FestivalExtra), 12 c15p6 props
+## 2026-11-21 — C15 P3 art: winter walkers for every town villager, spring outfits for 10, Star/Lantern festival outfits (5 dreams-image renders, slice_c15_p3.py); SeasonCal reads P1's Calendar when merged
+
+## 2026-11-21 — C15 P3: villager seasonal life: seasonal Talk parts + ~330 seasonal/festival/eve/birthday lines, seasonal routines and activities, festival crowd spread, in-season mail gifts and season letters, real festival-eve hours, 8 seasonal scenes (year 2 set), spring scenes stay in spring; villager_seasons_test
 
 ## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
 

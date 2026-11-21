@@ -99,7 +99,9 @@ func _run() -> void:
 	check(sit < stand * 0.85, "sitting is drawn shorter than standing (%.1f vs %.1f)" % [sit, stand])
 	check(absf(stand - idle_h) < idle_h * 0.12, "a standing pose is about the walker's height")
 	# 6. Outfit skips base-outfit gestures but keeps activity poses.
-	check(not maple.in_outfit() and maple.pose_ok("wave"), "maple in her base walker plays every pose")
+	GameState.run["day"] = 3 + 28  # summer: no summer sheet for maple (spring has one since C15 P3)
+	var ms := _make("maple")
+	check(not ms.in_outfit() and ms.pose_ok("wave"), "maple in her base walker plays every pose")
 	GameState.run["day"] = 3 + 28 * 3  # winter: her winter coat
 	var mw := _make("maple")
 	check(mw._walker == "npc_maple_winter" and mw.in_outfit(), "winter maple wears her coat (%s)" % mw._walker)
