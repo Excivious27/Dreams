@@ -1,0 +1,8 @@
+CONDUCT CI PASS  64a86c6ef7  (ci/c11bp4base-4a92115a, run 44850000188)
+
+subset run: shards none, bots off, playtest on
+check shards (0/0):
+playtest: PASS  61s  21 screenshots (results playtest/shots/)
+
+longest job: 0s
+distinct errors/fails/warns:
