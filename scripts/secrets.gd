@@ -66,7 +66,7 @@ const POCKET_PAGES := {
 	"highlands": "Page: Shepherds stack one stone on the cairn each time they get home safe. The cairn is taller than the shepherds now.",
 	"quarry": "Page: The old miners cut this adit to follow a single silver thread. It ran out after nine steps. They kept the door anyway.",
 	"marsh": "Page: The herons stand on one leg to keep a secret: the other foot is holding the marsh together.",
-	"riverlands": "Page: The river forgot its old bed one wet autumn. The fish still swim the old way, through the grass, in their dreams.",
+	"riverlands": "Page: The river forgot its old bed one wet fall. The fish still swim the old way, through the grass, in their dreams.",
 	"ruins": "Page: Behind the collapsed door the crypt holds no bones, only shelves of seed jars, labelled in a hand nobody can read.",
 	"countryside": "Page: Every barn out here has one plank painted on the inside. Line them up on a map and they point to the same hill.",
 	"wastes": "Page: The ash fields bloom for one night a year. The flowers are grey, and they smell like warm bread.",
