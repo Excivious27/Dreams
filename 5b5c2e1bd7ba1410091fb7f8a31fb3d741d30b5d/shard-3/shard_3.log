@@ -1,0 +1,217 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  83% ] [90m[1mreimport[22m | ach_g_full_crew.png[39m[0m
+[  84% ] [90m[1mreimport[22m | ach_g_first_turf_locked.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ach_g_first_turf.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ach_g_first_lt_locked.png[39m[0m
+[  86% ] [90m[1mreimport[22m | ach_g_first_lt.png[39m[0m
+[  87% ] [90m[1mreimport[22m | ach_g_first_crew_locked.png[39m[0m
+[  88% ] [90m[1mreimport[22m | ach_g_first_crew.png[39m[0m
+[  89% ] [90m[1mreimport[22m | ach_g_clean_break_locked.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_clean_break.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_all_turf_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_all_turf.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_all_lt_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_all_lt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_all_loyal_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_all_loyal.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_all_heists_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_g_all_heists.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_growing_family_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_growing_family.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (120 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 79.8s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 14.9s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 4.1s
+
+#### step 16: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s (shard 3/6)
+== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) ==
+web_export_guard static: ok (0 problems)
+#### step 16 S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s: PASS in 0.4s
+
+#### step 22: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 22 touch_ui_test: PASS in 39.8s
+
+#### step 28: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 28 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 4.8s
+
+#### step 34: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 3/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 34 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 5.7s
+
+#### step 40: rec_reno_test (shard 3/6)
+rec_reno_test: 0 failures
+#### step 40 rec_reno_test: PASS in 2.7s
+
+#### step 46: farm_week_test (shard 3/6)
+farm_week_test: OK (0 fails)
+#### step 46 farm_week_test: PASS in 5.5s
+
+#### step 52: anim_test (shard 3/6)
+anim_test: 0 failures
+#### step 52 anim_test: PASS in 3.0s
+
+#### step 58: ranch_p2_test (shard 3/6)
+ranch_p2_test: 0 failures
+#### step 58 ranch_p2_test: PASS in 2.7s
+
+#### step 64: early_gating_test (shard 3/6)
+early_gating_test: PASS (0 fails)
+#### step 64 early_gating_test: PASS in 4.6s
+
+#### step 70: music: loop points are applied (data/music_loops.json) (shard 3/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 51 entries, 0 failures
+#### step 70 music: loop points are applied (data/music_loops.json): PASS in 2.7s
+
+#### step 76: Steam: ratings / AI disclosure answers still true (S1 P5) (shard 3/6)
+== Steam: ratings / AI disclosure answers still true (S1 P5) ==
+ratings_facts_check: 0 failures
+#### step 76 Steam: ratings / AI disclosure answers still true (S1 P5): PASS in 0.4s
+
+#### step 82: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 3/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 82 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.5s
+
+#### step 88: mix_test (shard 3/6)
+mix_test: 0 failures
+#### step 88 mix_test: PASS in 4.8s
+
+#### step 94: gifts: the Marked and boss powers (shard 3/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 94 gifts: the Marked and boss powers: PASS in 6.9s
+
+#### step 100: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 100 campaign: battles, projects, colonies, big mines: PASS in 6.4s
+
+#### step 106: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 106 street_bat_test: PASS in 3.0s
+
+#### step 112: battle_drill_flow_test (shard 3/6)
+battle_drill_flow_test (gangsters): 0 fails
+#### step 112 battle_drill_flow_test: PASS in 8.5s
+
+#### step 118: settings, slots, quality, discovery, perks, birthdays (shard 3/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 118 settings, slots, quality, discovery, perks, birthdays: PASS in 3.3s
+
+#### step 124: C7 text: gift articles, plurals, quest wording (shard 3/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 124 C7 text: gift articles, plurals, quest wording: PASS in 2.8s
+
+#### step 130: fish critters only in deep water (C2 P4) (shard 3/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 130 fish critters only in deep water (C2 P4): PASS in 9.3s
+
+#### step 136: stack_whack_test (shard 3/6)
+stack_whack_test: 0 failures
+#### step 136 stack_whack_test: PASS in 3.3s
+
+#### step 142: UI/arcade/rec/story audio cues (CONDUCT 6 P6) (shard 3/6)
+== UI/arcade/rec/story audio cues (CONDUCT 6 P6) ==
+ui_audio_test: 0 failures
+#### step 142 UI/arcade/rec/story audio cues (CONDUCT 6 P6): PASS in 2.9s
+
+#### step 148: C11b P6: battle line-up and team jobs (shard 3/6)
+== C11b P6: battle line-up and team jobs ==
+battle_team_test: OK
+#### step 148 C11b P6: battle line-up and team jobs: PASS in 2.7s
+
+#### step 154: C11a integration: one care path, ranching keys, incubator, farm hands, (shard 3/6)
+== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art ==
+c11a_integ_test: 41 checks, 0 failures
+#### step 154 C11a integration: one care path, ranching keys, incubator, farm hands,: PASS in 3.0s
+
+#### step 160: S1 P3: Steam Deck text floor (every screen at 1280x800) (shard 3/6)
+== S1 P3: Steam Deck text floor (every screen at 1280x800) ==
+ISSUE tap|p_menu_items|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_hero|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_skills|@Button@165'Pup'|18x30
+ISSUE tap|p_menu_pup|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_party|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_social|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_map|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_quests|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_book|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_options|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_keys|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_fieldlog|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_workshop|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_foes|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_messages|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_mail|@Button@165'Pup'|17x30
+ISSUE tap|g_menu_items|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_hero|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_skills|@Button@3355'Pup'|18x30
+ISSUE tap|g_menu_pup|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_party|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_social|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_map|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_quests|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_book|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_options|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_keys|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_fieldlog|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_workshop|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_foes|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_messages|@Button@3355'Pup'|17x30
+ISSUE tap|g_menu_mail|@Button@3355'Pup'|17x30
+deck_text_test: smallest Control text cap 9.5 px at 1280x800
+deck_text_test: 0 issue(s)
+#### step 160 S1 P3: Steam Deck text floor (every screen at 1280x800): PASS in 11.4s
+
+#### step 166: S1 P2: achievements, stats, rich presence (shard 3/6)
+== S1 P2: achievements, stats, rich presence ==
+achievements_test: 0 failures
+#### step 166 S1 P2: achievements, stats, rich presence: PASS in 3.1s
+
+#### step 172: relay: Play together uses the live relay by default, custom server + R (shard 3/6)
+== relay: Play together uses the live relay by default, custom server + Reset to default ==
+net_url_test: 13 checks, 0 failures
+#### step 172 relay: Play together uses the live relay by default, custom server + R: PASS in 4.7s
+
+#### step 178: S1 P6: Steam store text drafts (tokens, limits, banned words, claims g (shard 3/6)
+== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) ==
+store_text_check: warn short-description.md [short]: 252 chars (> 250 leaves little room for translations)
+store_text_check: warn claims.md c4: 'Raise and rehome animals' is rough; review before the page goes live
+store_text_check: warn claims.md c11: 'Online co-op (GATED: use short ALT B until done)' is rough; review before the page goes live
+store_text_check: 5 fields, 0 failures
+#### step 178 S1 P6: Steam store text drafts (tokens, limits, banned words, claims g: PASS in 0.0s
+
+#### shard 3/6 done in 247s: PASS

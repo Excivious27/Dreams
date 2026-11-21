@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 87.4}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 26.0}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 6.2}
+{"step": 18, "name": "S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b", "rc": 0, "secs": 2.6}
+{"step": 24, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 3.3}
+{"step": 30, "name": "team animals + chores: lessons, team, muster, overnight chores, Animal", "rc": 0, "secs": 4.2}
+{"step": 36, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 23.5}
+{"step": 42, "name": "bowling_test", "rc": 0, "secs": 13.6}
+{"step": 48, "name": "pen_test", "rc": 0, "secs": 3.8}
+{"step": 54, "name": "move_target_test", "rc": 0, "secs": 15.8}
+{"step": 60, "name": "decor_sources_test", "rc": 0, "secs": 3.2}
+{"step": 66, "name": "workshop: no dead ends", "rc": 0, "secs": 9.4}
+{"step": 72, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 78, "name": "credits and licences page: Godot MIT, font notice, no family names (S1", "rc": 0, "secs": 2.6}
+{"step": 84, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.1}
+{"step": 90, "name": "footstep_test", "rc": 0, "secs": 6.1}
+{"step": 96, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 3.7}
+{"step": 102, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 8.3}
+{"step": 108, "name": "farm_debris_test", "rc": 0, "secs": 4.5}
+{"step": 114, "name": "campaign_c3_test", "rc": 0, "secs": 2.9}
+{"step": 120, "name": "story: every chapter plays to the end", "rc": 0, "secs": 11.3}
+{"step": 126, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.9}
+{"step": 132, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 4.9}
+{"step": 138, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 7.1}
+{"step": 144, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 2.9}
+{"step": 150, "name": "C11b P6: C11b creature voices and ranch sound", "rc": 0, "secs": 2.6}
+{"step": 156, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 3.6}
+{"step": 162, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 3.4}
+{"step": 168, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 27.5}
+{"step": 174, "name": "steam co-op: lobbies + networking messages over FakeSteam (no Steam cl", "rc": 0, "secs": 3.8}
+{"step": 180, "name": "S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f", "rc": 0, "secs": 0.0}

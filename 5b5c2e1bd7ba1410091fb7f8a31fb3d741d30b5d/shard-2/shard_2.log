@@ -1,0 +1,253 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  83% ] [90m[1mreimport[22m | ach_g_full_crew.png[39m[0m
+[  84% ] [90m[1mreimport[22m | ach_g_first_turf_locked.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ach_g_first_turf.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ach_g_first_lt_locked.png[39m[0m
+[  86% ] [90m[1mreimport[22m | ach_g_first_lt.png[39m[0m
+[  87% ] [90m[1mreimport[22m | ach_g_first_crew_locked.png[39m[0m
+[  88% ] [90m[1mreimport[22m | ach_g_first_crew.png[39m[0m
+[  89% ] [90m[1mreimport[22m | ach_g_clean_break_locked.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_clean_break.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_all_turf_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_all_turf.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_all_lt_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_all_lt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_all_loyal_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_all_loyal.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_all_heists_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_g_all_heists.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_growing_family_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_growing_family.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (120 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 57.2s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.6s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.5s
+
+#### step 15: crops wired in (shard 2/6)
+== crops wired in ==
+interior_back: 0 bad []
+#### step 15 crops wired in: PASS in 0.0s
+
+#### step 21: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 21 phone_ui_test: PASS in 10.2s
+
+#### step 27: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 27 gangster interior skins (c5_04): PASS in 2.3s
+
+#### step 33: C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli (shard 2/6)
+== C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Splicer via RanchGift ==
+c11b_integ_test: 821 checks, 0 failures
+#### step 33 C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli: PASS in 2.5s
+
+#### step 39: rec_links_test (shard 2/6)
+rec_links_test: 0 failures
+#### step 39 rec_links_test: PASS in 2.2s
+
+#### step 45: coop_test (shard 2/6)
+coop_test: 0 failures
+#### step 45 coop_test: PASS in 2.2s
+
+#### step 51: crop_test (shard 2/6)
+crop_test: 0 failures
+#### step 51 crop_test: PASS in 24.0s
+
+#### step 57: ranch_test (shard 2/6)
+ranch_test: 1645 checks, 0 failures
+#### step 57 ranch_test: PASS in 3.0s
+
+#### step 63: cf_layout_test (shard 2/6)
+cf_layout_test: 0 failures
+#### step 63 cf_layout_test: PASS in 6.9s
+
+#### step 69: music loop seams (join click + level jump) (shard 2/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 103
+#### step 69 music loop seams (join click + level jump): PASS in 6.6s
+
+#### step 75: Steam: docs/STEAM.md current, Steamworks brief and ledger consistent ( (shard 2/6)
+== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) ==
+steam_handoff: OK (6 fragments, brief current)
+#### step 75 Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (: PASS in 0.0s
+
+#### step 81: C11a ranch art: species strips, building looks, icons, stations (shard 2/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 81 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.3s
+
+#### step 87: danger_music_test (shard 2/6)
+danger_music_test: 0 failures
+#### step 87 danger_music_test: PASS in 20.0s
+
+#### step 93: allies: enemies fight back, pup commands (shard 2/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 93 allies: enemies fight back, pup commands: PASS in 3.2s
+
+#### step 99: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 99 every script compiles: PASS in 2.9s
+
+#### step 105: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 105 quest_tracker_test: PASS in 3.3s
+
+#### step 111: battle_drill_flow_test (shard 2/6)
+battle_drill_flow_test (penguins): 0 fails
+#### step 111 battle_drill_flow_test: PASS in 6.5s
+
+#### step 117: move_speed_test (shard 2/6)
+move_speed_test: 0 fails
+#### step 117 move_speed_test: PASS in 3.2s
+
+#### step 123: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 2/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+HEARTS DONE, failures: 0
+#### step 123 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): PASS in 4.6s
+
+#### step 129: crisp art shader on buildings/props (C2 P7) (shard 2/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 129 crisp art shader on buildings/props (C2 P7): PASS in 2.8s
+
+#### step 135: arcade_test (shard 2/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 135 arcade_test: PASS in 2.6s
+
+#### step 141: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 2/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 141 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 3.3s
+
+#### step 147: C11b P6: fair ribbon tables (shard 2/6)
+== C11b P6: fair ribbon tables ==
+animal_show_test: OK
+#### step 147 C11b P6: fair ribbon tables: PASS in 2.3s
+
+#### step 153: C11a fix2: every ranch species buyable from its seller, both arcs, sta (shard 2/6)
+== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster ==
+ranch_shop_test: 292 checks, 0 failures
+#### step 153 C11a fix2: every ranch species buyable from its seller, both arcs, sta: PASS in 2.8s
+
+#### step 159: S1 P3: Steam Deck text floor (drawn text scan) (shard 2/6)
+== S1 P3: Steam Deck text floor (drawn text scan) ==
+deck_font_scan: 0 unwrapped
+#### step 159 S1 P3: Steam Deck text floor (drawn text scan): PASS in 0.1s
+
+#### step 165: C9 P5: save codes and files (shard 2/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 165 C9 P5: save codes and files: PASS in 2.3s
+
+#### step 171: relay: server/server.js protocol (tools/relay_test.js; a push of serve (shard 2/6)
+== relay: server/server.js protocol (tools/relay_test.js; a push of server/ to main deploys the live relay) ==
+RELAY TEST OK
+#### step 171 relay: server/server.js protocol (tools/relay_test.js; a push of serve: PASS in 5.9s
+
+#### step 177: deck window: 1280x800 with no window manager fills the screen (xvfb) (shard 2/6)
+== deck window: 1280x800 with no window manager fills the screen (xvfb) ==
+deck_window_test: 0 failures
+#### step 177 deck window: 1280x800 with no window manager fills the screen (xvfb): PASS in 5.9s
+
+#### shard 2/6 done in 196s: PASS

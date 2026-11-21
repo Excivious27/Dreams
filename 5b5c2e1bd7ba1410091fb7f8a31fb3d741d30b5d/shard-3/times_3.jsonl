@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 79.8}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 14.9}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 4.1}
+{"step": 16, "name": "S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s", "rc": 0, "secs": 0.4}
+{"step": 22, "name": "touch_ui_test", "rc": 0, "secs": 39.8}
+{"step": 28, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 4.8}
+{"step": 34, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.7}
+{"step": 40, "name": "rec_reno_test", "rc": 0, "secs": 2.7}
+{"step": 46, "name": "farm_week_test", "rc": 0, "secs": 5.5}
+{"step": 52, "name": "anim_test", "rc": 0, "secs": 3.0}
+{"step": 58, "name": "ranch_p2_test", "rc": 0, "secs": 2.7}
+{"step": 64, "name": "early_gating_test", "rc": 0, "secs": 4.6}
+{"step": 70, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.7}
+{"step": 76, "name": "Steam: ratings / AI disclosure answers still true (S1 P5)", "rc": 0, "secs": 0.4}
+{"step": 82, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.5}
+{"step": 88, "name": "mix_test", "rc": 0, "secs": 4.8}
+{"step": 94, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.9}
+{"step": 100, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 6.4}
+{"step": 106, "name": "street_bat_test", "rc": 0, "secs": 3.0}
+{"step": 112, "name": "battle_drill_flow_test", "rc": 0, "secs": 8.5}
+{"step": 118, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 3.3}
+{"step": 124, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.8}
+{"step": 130, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 9.3}
+{"step": 136, "name": "stack_whack_test", "rc": 0, "secs": 3.3}
+{"step": 142, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.9}
+{"step": 148, "name": "C11b P6: battle line-up and team jobs", "rc": 0, "secs": 2.7}
+{"step": 154, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 3.0}
+{"step": 160, "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)", "rc": 0, "secs": 11.4}
+{"step": 166, "name": "S1 P2: achievements, stats, rich presence", "rc": 0, "secs": 3.1}
+{"step": 172, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 4.7}
+{"step": 178, "name": "S1 P6: Steam store text drafts (tokens, limits, banned words, claims g", "rc": 0, "secs": 0.0}
