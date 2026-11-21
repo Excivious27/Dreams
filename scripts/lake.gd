@@ -77,6 +77,12 @@ func build() -> void:
 		_dock(Vector2i(dx, 21))
 		_dock(Vector2i(dx, 22))
 	extend(10, 8)
+	# C14 P1 (c14_02-16): a reedy backwater just below the road from the farm, so
+	# the arrival view already shows water (the lake proper starts further west).
+	for c: Vector2i in WorldGen.blob(self, Vector2(51.0, 27.5), 3.6, 2.4, 4711, 2, 0.3):
+		if not things.has(c) and not _ext_paths.has(c) and c.y >= 25:
+			_water[c] = true
+			set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 	# The outlet stream runs on through the added rows to the border water.
 	# It tapers out of the mill pond and wanders a little, not a ruler-straight ditch.
 	for y in range(40, rows):
