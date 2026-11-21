@@ -293,7 +293,7 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> String:
 				var g: Dictionary = gates[pick]
 				var need := "that"
 				if g.has("crystals"):
-					need = "◆%d" % int(g["crystals"])
+					need = Money.amount(int(g["crystals"]))  # C12 c12_04-01: $ in the cash arc
 				elif g.has("crops"):
 					need = "%d crops" % int(g["crops"])
 				elif g.has("item"):
@@ -330,6 +330,14 @@ static func _fennimore_check() -> void:
 		fl.erase("fennimore_turnable")
 
 
+## [crew id, n]: recruited and Crew.loyalty(id) >= n (n = loyalty scenes seen).
+static func loyalty_ok(v) -> bool:
+	if not (v is Array) or (v as Array).size() < 2:
+		return true
+	var id := str(v[0])
+	return Crew.recruited(id) and Crew.loyalty(id) >= int(v[1])
+
+
 static func _fill(lines: Array) -> Array:
 	_fennimore_check()
 	var names := GameState.names()
@@ -353,6 +361,9 @@ static func _fill(lines: Array) -> Array:
 		if l.has("if_flag") and not GameState.run["flags"].has(str(l["if_flag"])):
 			continue
 		if l.has("unless_flag") and GameState.run["flags"].has(str(l["unless_flag"])):
+			continue
+		# "if_loyalty": [crew id, n] only said once that crew member is in and their loyalty >= n (C12 c12_04-04).
+		if l.has("if_loyalty") and not loyalty_ok(l["if_loyalty"]):
 			continue
 		# "only_hero"/"not_hero": a playable id or list (penguin_f, penguin_m, big_jim...).
 		var hero := str(GameState.run.get("playable", ""))

@@ -1,5 +1,5 @@
 {
- "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in story.json recruit them, flag crew_<id>). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218). 'waiting' = lines (or {text} narration) before a member is recruited; 'waiting_hint' = toast once (flag crew_hint_<id>); marlene 'sold' plays once after letter_sold, then marlene_refused.",
+ "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in data/story_gang.json recruit them, flag crew_<id>; never edit gangster beats in story.json). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218). 'waiting' = lines (or {text} narration) before a member is recruited; 'waiting_hint' = toast once (flag crew_hint_<id>); marlene 'sold' plays once after letter_sold, then marlene_refused.",
  "members": {
   "deuce": {
    "name": "Deuce",
@@ -131,7 +131,7 @@
     [
      {
       "who": "Specs",
-      "text": "When we're in the tower I'll go for the wire. Don't wait for me. I'll be faster than you think; I'm always faster than people think."
+      "text": "When it starts, I'll go for the tower's wire. Don't wait for me. I'll be faster than you think; I'm always faster than people think."
      }
     ]
    ],
@@ -229,7 +229,7 @@
     [
      {
       "who": "Vic",
-      "text": "When we're in the lobby, you go left. We go right. Nobody goes middle. The middle is where he puts the ones who think they're brave."
+      "text": "When it starts, you go left. We go right. Nobody goes middle. The middle is where he puts the ones who think they're brave."
      }
     ]
    ],
@@ -323,7 +323,7 @@
     [
      {
       "who": "Halo",
-      "text": "Car's gassed. Engine's warm. When it's done up there, I'll be at the steps, and we'll go wherever you say, and I won't ask who's in the back."
+      "text": "Car's gassed. Engine's warm. When it's done out there on the carpet, I'll be at the curb, and we'll go wherever you say, and I won't ask who's in the back."
      }
     ]
    ],
@@ -370,7 +370,7 @@
     [
      {
       "who": "Dice",
-      "text": "I'm going to be in the lobby. I'm going to be terrified. I'm going to be there anyway. That's— I think that's what you do? Is that what you do?"
+      "text": "I'm going to be there, on the avenue. I'm going to be terrified. I'm going to be there anyway. That's— I think that's what you do? Is that what you do?"
      }
     ]
    ],
@@ -472,7 +472,7 @@
     [
      {
       "who": "Doc",
-      "text": "I'm telling you because when you get up there, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."
+      "text": "I'm telling you because when you get to him, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."
      }
     ]
    ],

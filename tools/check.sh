@@ -857,6 +857,13 @@ if ! echo "$epout" | grep -q "epilogue_test: 0 fails"; then
   echo "Epilogue test failed"; exit 1
 fi
 
+echo "== C12 P2: gangster story text matches state =="
+c12p2out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_gang_story_test.gd 2>&1)"
+echo "$c12p2out" | grep -E "FAIL|SCRIPT ERROR|c12_gang_story_test" || true
+if ! echo "$c12p2out" | grep -q "c12_gang_story_test: 0 fails"; then
+  echo "C12 gangster story test failed"; exit 1
+fi
+
 echo "== C7 P4: heart scene content =="
 hcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/hearts_content_test.gd 2>&1)"
 echo "$hcout" | grep -E "FAIL|hearts_content_test" || true
