@@ -959,3 +959,9 @@ echo "$nsout" | grep -E "FAIL|SCRIPT ERROR|net_steam_test" || true
 if ! echo "$nsout" | grep -q "net_steam_test: [0-9]* checks, 0 failures"; then
   echo "net_steam_test failed"; exit 1
 fi
+
+echo "== steam co-op: web build never parses Steam code (backend object, load by path) =="
+python3 tools/net_web_safety_check.py || { echo "net_web_safety_check failed"; exit 1; }
+
+echo "== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) =="
+python3 tools/steam_input_check.py || { echo "steam_input_check failed"; exit 1; }
