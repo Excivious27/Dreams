@@ -365,24 +365,75 @@ static func _shop(m: GameMap, sid: String) -> void:
 	Shops.stall(m, who, greet_t, s["goods"], 0.0, "marina_" + sid)
 
 
+## Marina jobs open now (tier, arc; not done; dailies and log-only quests skipped).
+static func jobs() -> Array:
+	var out: Array = []
+	var arc := "penguins" if GameState.is_penguins() else "gangsters"
+	for q: Dictionary in data().get("quests", []):
+		if bool(q.get("daily", false)) or (q.get("need", {}) as Dictionary).is_empty():
+			continue
+		if str(q.get("arc", "both")) not in ["both", arc] or tier() < int(q.get("tier", 0)):
+			continue
+		if (st()["quests"] as Dictionary).has(str(q["id"])):
+			continue
+		out.append(q)
+	return out
+
+
+## Hands in job `q` if the bag holds what it needs: takes it, pays the reward.
+static func hand_in(q: Dictionary) -> bool:
+	var need: Dictionary = q.get("need", {})
+	for id: String in need:
+		if GameState.count(id) < int(need[id]):
+			return false
+	for id: String in need:
+		GameState.add_item(id, -int(need[id]))
+	var rw: Dictionary = q.get("reward", {})
+	if int(rw.get("money", 0)) > 0:
+		GameState.add_money(int(rw["money"]), "marina")
+	var ri: Dictionary = rw.get("items", {})
+	for id: String in ri:
+		GameState.add_item(id, int(ri[id]), true)
+	st()["quests"][str(q["id"])] = true
+	return true
+
+
 static func board(m: GameMap) -> void:
 	var t := next_tier()
+	var js := jobs()
+	var opts: Array = []
+	if not t.is_empty():
+		opts.append("Build: %s (%s)" % [str(t["name"]), bundle_text(t)])
+	for q: Dictionary in js:
+		opts.append("Job: %s" % str(q["title"]))
+	opts.append("Leave")
+	var head := ""
 	if t.is_empty():
-		m.tell([{"who": "Hollis Wade", "text": "Every berth full, every light lit. Finest marina on the coast."}])
-		return
-	var why := why_not_upgrade()
-	var opens := str(t.get("opens" if GameState.is_penguins() else "opens_gang", ""))
-	var opts: Array = ["Build it (%s)" % bundle_text(t), "Not yet"]
+		head = "Every berth full, every light lit. Finest marina on the coast."
+	else:
+		head = "%s Next: %s. %s" % [greet("hollis") if tier() == 0 else "", str(t["name"]), str(t.get("opens" if GameState.is_penguins() else "opens_gang", ""))]
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Hollis Wade", "text": "%s %s: %s" % [greet("hollis") if tier() == 0 else "Next job:", str(t["name"]), opens], "choice": opts, "key": ""}])
+	d.say([{"who": "Hollis Wade", "text": head.strip_edges(), "choice": opts, "key": ""}])
 	await d.finished
-	if d.last_choice != 0:
+	var i := d.last_choice
+	var off := 0 if t.is_empty() else 1
+	if i < 0 or i >= opts.size() - 1:
 		return
-	if why != "":
-		m.hud.toast(why, Color(1, 0.85, 0.6))
+	if i < off:
+		var why := why_not_upgrade()
+		if why != "":
+			m.hud.toast(why, Color(1, 0.85, 0.6))
+			return
+		if upgrade():
+			Music.instance(m.get_tree()).sfx("horn", "quest_done")
+			m.tell([{"who": "Hollis Wade", "text": line("upgrade_done") % str(t["name"])}])
+			if m.has_method("rebuild_marina"):
+				m.call_deferred("rebuild_marina")
 		return
-	if upgrade():
-		Music.instance(m.get_tree()).sfx("horn", "quest_done")
-		m.tell([{"who": "Hollis Wade", "text": line("upgrade_done") % str(t["name"])}])
-		if m.has_method("rebuild_marina"):
-			m.call_deferred("rebuild_marina")
+	var q: Dictionary = js[i - off]
+	var who := str(npc(str(q.get("who", "hollis"))).get("name", "Hollis Wade"))
+	if hand_in(q):
+		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+		m.tell([{"who": who, "text": "%s: done. Thank you!" % str(q["title"])}])
+	else:
+		m.tell([{"who": who, "text": str(q["ask"])}])

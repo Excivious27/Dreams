@@ -112,6 +112,16 @@ func _arc(arc: String) -> void:
 	check(int(GameState.run["time"]) == t0 + 180, "%s: three hours at sea" % arc)
 	check(Marina.run_charter(shoals).is_empty(), "%s: one charter a day" % arc)
 	check(not "salmon" in Marina.shore_pool() and not "goldfish" in Marina.shore_pool(), "%s: no freshwater fish in the sea" % arc)
+	# Dock jobs: per arc, hand-in takes the goods and pays once.
+	var js := Marina.jobs()
+	var ids := js.map(func(q: Dictionary) -> String: return str(q["id"]))
+	check(("marina_shipshape" in ids) == pen and ("marina_quiet_cargo" in ids) == (not pen), "%s: Shipshape / Quiet Cargo per arc" % arc)
+	var lights: Dictionary = js.filter(func(q: Dictionary) -> bool: return str(q["id"]) == "marina_lights")[0]
+	check(not Marina.hand_in(lights), "%s: no hand-in without the lamp oil" % arc)
+	GameState.add_item("lamp_oil", 4, true)
+	var c0 := int(GameState.run["crystals"])
+	check(Marina.hand_in(lights) and GameState.count("lamp_oil") == 0 and int(GameState.run["crystals"]) > c0, "%s: lights job handed in and paid" % arc)
+	check(not "marina_lights" in Marina.jobs().map(func(q: Dictionary) -> String: return str(q["id"])), "%s: a done job leaves the board" % arc)
 	# The beach: grown, ferry/launch at the west tip, the marina things.
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/beach.tscn")

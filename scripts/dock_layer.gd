@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 func _is_dock(c: Vector2i) -> bool:
-	return map.things.has(c) and str(map.things[c].get("type", "")) in ["dock", "ferry"]
+	return map.things.has(c) and (str(map.things[c].get("type", "")) in ["dock", "ferry"] or bool(map.things[c].get("pier", false)))
 
 
 func _draw() -> void:
@@ -23,7 +23,7 @@ func _draw() -> void:
 		return
 	var cells: Array[Vector2i] = []
 	for k in map.things:
-		if str(map.things[k].get("type", "")) in ["dock", "ferry"]:
+		if _is_dock(k):  # dock/ferry cells and any thing standing on the planks ("pier": true)
 			cells.append(k)
 	var post := Art.tex("props", "dock2_post")
 	# Shadows and pilings first (under the planks' south rim).

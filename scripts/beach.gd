@@ -76,7 +76,7 @@ func build() -> void:
 	if GameState.is_penguins():
 		things[tip] = {"type": "ferry", "hint": "A: Skipper Barnacle's ferry", "station": "beach_colony_ferry"}
 	else:
-		things[tip] = {"type": "marina", "kind": "passage", "station": "beach_tidewater", "hint": "A: Tidewater Launch"}
+		things[tip] = {"type": "marina", "kind": "passage", "station": "beach_tidewater", "hint": "A: Tidewater Launch", "pier": true}
 	_marina_things(mt)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 81 + int(GameState.run["day"]) / 7
@@ -525,8 +525,8 @@ func _west_tip() -> void:
 		prop("props", "gangplank", t + Vector2i(1, 0), 0, 0.0, false, 0.12)
 		anim_prop("fx", "merkitty_b", t + Vector2i(0, -1), 0, 3.0, false, 0.4)  # Skipper Barnacle
 	else:
-		prop("props", "tugboat", t + Vector2i(2, 1), 2, 0.0, false, 0.45)
-		prop("props", "crates_pallet", t + Vector2i(-1, -1), 0, 0.0, false, 0.3)
+		prop("props", "c14p3_speedboat" if Art.has("props", "c14p3_speedboat") else "tugboat", t + Vector2i(2, 2), 2, 0.0, false, 0.35)
+		prop("props", "crates_pallet", t + Vector2i(1, -3), 0, 0.0, false, 0.25)
 
 
 ## Gangster beach: a boardwalk along row 11 with the vendor's stall, a shuttered
@@ -578,12 +578,14 @@ func _dress_marina() -> void:
 		prop("props", "fish_rack", Vector2i(ox + 26, QUAY_Y - 3), 1, 0.0, true, 0.3)
 		prop("props", "stall2_blue" if pen else "stall2_purple", Vector2i(ox + 22, QUAY_Y - 4), 2, 0.0, true, 0.3)
 		prop("props", "tugboat", Vector2i(PIER_X + 5, QUAY_Y + 7), 2, 0.0, false, 0.45)
+		prop("props", "c14p3_charter", Vector2i(PIER_X + 4, QUAY_Y + 3), 2, 0.0, false, 0.35)  # Roz's charter boat
 		for x in range(ox + 2, ox + 26, 2):  # the breakwater arm
 			prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", Vector2i(x, QUAY_Y + 20), 1, 0.0, false)
 		prop("props", "crab_pot_water", Vector2i(ox + 4, QUAY_Y + 6), 0, 0.0, false, 0.3)
 		prop("props", "crab_pot_water", Vector2i(ox + 7, QUAY_Y + 8), 0, 0.0, false, 0.3)
 	if mt >= 3:
 		prop("props", "trawler", Vector2i(PIER_X + 5, QUAY_Y + 12), 2, 0.0, false, 0.5)
+		prop("props", "c14p3_sailboat" if pen else "c14p3_speedboat", Vector2i(PIER_X - 4, QUAY_Y + 11), 2, 0.0, false, 0.35)
 		prop("buildings", "lighthouse", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
 		if Marina.npc_here("saffi", 12):
 			prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4)
