@@ -42,7 +42,7 @@ static func text() -> String:
 		"Components inside the Godot Engine\n\n" + engine_parts(), "Symbol font\n\n" + reflow(FONT_NOTICE)]
 	if ClassDB.class_exists("Steam"):
 		var gs := GODOTSTEAM_NOTICE
-		for lp in ["res://addons/godotsteam/license.txt", "res://addons/godotsteam/LICENSE.txt", "res://addons/godotsteam/LICENSE"]:
+		for lp in ["res://addons/godotsteam/license.md", "res://addons/godotsteam/license.txt", "res://addons/godotsteam/LICENSE.txt", "res://addons/godotsteam/LICENSE"]:
 			if FileAccess.file_exists(lp):  # full notice when the desktop preset includes it (P1 include_filter)
 				gs += "\n\n" + FileAccess.get_file_as_string(lp)
 				break

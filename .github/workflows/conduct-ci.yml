@@ -23,6 +23,8 @@ concurrency:
 
 env:
   GODOT_VERSION: "4.5.1"
+  # S1: bots, playtest and check.sh never start Steam (SteamSvc also refuses CI/headless).
+  DREAMS_NO_STEAM: "1"
 
 jobs:
   plan:
@@ -72,7 +74,7 @@ jobs:
             ch="$(git diff --name-only "$before" HEAD 2>/dev/null || git diff --name-only HEAD~1 HEAD 2>/dev/null || echo server/)"
             srv=false; netc=false; rel=false
             echo "$ch" | grep -q '^server/' && srv=true
-            echo "$ch" | grep -q '^scripts/net\.gd$' && netc=true
+            echo "$ch" | grep -qE '^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.gd$' && netc=true
             if [ $srv = true ] || [ $netc = true ] || echo "$ch" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)'; then rel=true; fi
             mkdir -p ci
             echo "{\"label\": \"main-push\", \"shards\": [], \"bots\": false, \"playtest\": false, \"relay\": $rel, \"server_changed\": $srv, \"e2e\": $rel, \"e2e_strict\": $netc}" > ci/params.json
@@ -360,6 +362,15 @@ jobs:
           rm -rf out/data
           tail -n 8 out/playtest.log
           exit $rc
+      # S1 P4: Steam Deck performance guard (1280x800, both arcs). Reported, not blocking yet:
+      # llvmpipe frame times on a runner are noisy (see tools/deck_perf_check.py).
+      - name: Deck perf check (DECK PERF line in the summary)
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME="$(mktemp -d)" timeout 1200 python3 tools/deck_perf_check.py --json out/deck_perf.json 2>&1 | tee out/deck_perf.txt | tail -n 25
+          echo "### $(grep -m1 'DECK PERF' out/deck_perf.txt || echo 'DECK PERF: no result')" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
