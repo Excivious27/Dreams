@@ -1,13 +1,11 @@
-# CONDUCT fix agent brief (round 3, Tom 2026-11-20 13:00)
-
-You fix ONE package for Tom's Godot game Dreams. Don't re-learn the project: start from the code map named in your prompt, look things up with `grep -n -i <word> docs/TOOLS.md` (never read it whole), grep code and read line ranges only. Never read a whole big file. Common rules: CLAUDE.md (already loaded) and docs/CONDUCT-BRIEF.md.
-- Fix exactly the findings in your package (they name files and functions), plus anything your change directly breaks. Don't re-audit. Stay inside your owned files; a hook in another package's file is one or two lines and must be reported.
-- Window: 60-75 minutes of real clock time (`TZ=America/Los_Angeles date`). Don't stop early or call it "time cap" before then.
-- Tests: run only the targeted tests your package needs, each with `flock /tmp/godot.lock timeout 600` and a fresh XDG_DATA_HOME, at normal priority, plus `--check-only` on every changed script. Add a focused test per fix and wire it into tools/check.sh as its own self-contained block. NEVER run tools/check.sh or tools/bots.sh locally.
-- If you change behaviour on purpose, update the tests that expected the old behaviour, in the same package.
-- A new Python import or system tool goes into tools/ci-requirements.txt / the apt line in the same commit (tools/ci_deps_check.py).
-- PRE-MERGE CI (required before you report done): commit everything, then `bash tools/conduct/ci_run.sh <pkg>-pre 3 --branch <your branch> --shards $(python3 tools/conduct/check_shard.py --for-files <your changed files> | tr ' ' ',') --no-bots`. That is at most 3 shards plus the playtest. Fix whatever it shows you broke and rerun until green, or until a failure is clearly not yours: name it in your report.
-- Commit small as you go. Never push to main or merge.
-- Art: dreams-image generate/edit within the budget in your package (at most 3 images per call). Slice, wire, and look at each result once. From Nov 25 the image limit is 60/day: if images run short, put missing renders in docs/ART-QUEUE.md (id, prompt, where it wires) and carry on; never block on art. Audio: ACE / CC0 within budget. Before making any new song, use the unused second take of an existing ACE song (audio/ACE_LOG.json).
-- Docs: one STATUS entry via `python3 tools/status_add.py "<line>"` (never open STATUS.md whole), and one line in docs/TOOLS.md for each new tool or system.
-- Report to the report path in your prompt as you go: item -> fixed (how + test) / not fixed (why + suggested fix); art/audio made; pre-merge CI result; NEEDS TOM. Touch <pK>.done at the end. Final message: one line, "done, report in <path>".
+# CONDUCT fix agent brief (R4, 2026-11-20)
+Fix ONE package of Dreams. Code map in prompt; `grep -n -i <word> docs/TOOLS.md` (never whole); read line ranges. Rules: CLAUDE.md + docs/CONDUCT-BRIEF.md.
+- Fix exactly your findings + what your change breaks. Owned files only; other files max 1-2 hook lines, reported.
+- CONTRACT file (in prompt) is binding: provide its APIs/ids/hooks exactly and implement the other side of hooks it names in your files.
+- 60 min cap (`TZ=America/Los_Angeles date`); don't stop early.
+- Godot only via `bash tools/conduct/glock.sh [-x] -- godot ...`; targeted tests + --check-only on changed scripts. Never check.sh/bots.sh locally. A focused test per fix, own block in tools/check.sh; update tests your intended change breaks. New Python import/tool -> tools/ci-requirements.txt.
+- `bash tools/conduct/wip_push.sh "<what>"` every ~20 min. Never push main or merge.
+- PRE-MERGE CI before done: wip_push, then `bash tools/conduct/ci_run.sh <pkg>-pre 3 --branch <branch> --shards <check_shard.py --for-files ... | tr ' ' ,>` plus `--bots` if any scripts/*.gd UI/menu/screen/map file changed. Green, or name what isn't yours.
+- Art: dreams-image in budget (<=3/call), slice, wire, look once; short -> docs/ART-QUEUE.md. Audio: ACE/CC0, unused 2nd takes first.
+- Docs: `python3 tools/status_add.py "<line>"`; TOOLS.md line per new tool.
+- Report at your report path: item -> fixed (how+test)/not (why); art/audio; CI result; NEEDS TOM. Touch <pK>.done. Final message: "done, report in <path>".

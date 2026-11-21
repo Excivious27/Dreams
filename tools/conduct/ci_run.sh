@@ -72,18 +72,18 @@ if [ -n "$BRANCH" ]; then
   fi
   MAIN=$(git rev-parse origin/main)
   echo "testing $BRANCH@${RHEAD:0:10} merged onto main@${MAIN:0:10}"
-  git worktree add -q --detach "$TMP" "$MAIN" 2>/dev/null || { echo "worktree failed"; exit 3; }
-  if ! git -C "$TMP" -c user.name=conduct -c user.email=conduct@local merge -q --no-edit "origin/$BRANCH" >/dev/null 2>&1; then
-    echo "origin/$BRANCH does not merge cleanly onto origin/main:"; git -C "$TMP" diff --name-only --diff-filter=U | sed 's/^/  /'
-    git worktree remove --force "$TMP"; exit 2
+  # R4: merge in the object store (git merge-tree), no checkout: a temp worktree cost ~2 GB of disk.
+  MT=$(git merge-tree --write-tree --name-only "$MAIN" "refs/remotes/origin/$BRANCH" 2>/dev/null); MRC=$?
+  if [ $MRC -ne 0 ]; then
+    echo "origin/$BRANCH does not merge cleanly onto origin/main:"; echo "$MT" | sed -n '2,/^$/p' | grep -v '^$' | sed 's/^/  /'
+    rm -rf "$TMP"; exit 2
   fi
-  BASE=$(git -C "$TMP" rev-parse HEAD)
+  MTREE=$(echo "$MT" | head -1)
+  BASE=$(git -c user.name=conduct -c user.email=conduct@local commit-tree "$MTREE" -p "$MAIN" -p "$RHEAD" -m "Merge origin/$BRANCH onto main (ci_run)")
 else
   BASE=$(git rev-parse HEAD)
   echo "testing HEAD ${BASE:0:10} ($(git rev-parse --abbrev-ref HEAD))"
-  git worktree add -q --detach "$TMP" "$BASE" 2>/dev/null || { echo "worktree failed"; exit 3; }
 fi
-mkdir -p "$TMP/ci"
 # Live relay check: what changed against origin/main decides it (relay_live_check.py).
 CHANGED=$(git diff --name-only "$(git rev-parse origin/main 2>/dev/null || echo "$BASE")" "$BASE" 2>/dev/null)
 SRV=0; NETC=0; RTOOLS=0
@@ -92,17 +92,21 @@ echo "$CHANGED" | grep -qE '^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.g
 echo "$CHANGED" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)' && RTOOLS=1
 if [ "$RELAY" = auto ]; then RELAY=0; { [ "$BOTS" = 1 ] || [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && RELAY=1; fi
 E2E=0; { [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY
-python3 - "$TMP/ci/params.json" <<PY
+python3 - "$TMP/params.json" <<PY
 import json, sys
 json.dump({"days": int("$DAYS"), "focus": "$FOCUS", "base": "$BASE", "label": "$LABEL", "branch": "$BRANCH",
            "shards": json.loads("$SJSON"), "bots": bool($BOTS), "playtest": bool($PT),
            "relay": bool($RELAY), "server_changed": bool($SRV), "e2e": bool($E2E), "e2e_strict": bool($NETC)}, open(sys.argv[1], "w"))
 PY
-(cd "$TMP" && git add ci/params.json && git -c user.name=conduct -c user.email=conduct@local commit -qm "CI params: $LABEL ($DAYS days, shards $SJSON, bots $BOTS, playtest $PT)")
-SHA=$(git -C "$TMP" rev-parse HEAD)
+# params commit on top of BASE, built with a private index (no checkout, no disk).
+export GIT_INDEX_FILE="$TMP/index"
+git read-tree "$BASE^{tree}"
+git update-index --add --cacheinfo "100644,$(git hash-object -w "$TMP/params.json"),ci/params.json"
+PTREE=$(git write-tree); unset GIT_INDEX_FILE
+SHA=$(git -c user.name=conduct -c user.email=conduct@local commit-tree "$PTREE" -p "$BASE" -m "CI params: $LABEL ($DAYS days, shards $SJSON, bots $BOTS, playtest $PT)")
 BR="ci/${LABEL}-${BASE:0:8}"
-git -C "$TMP" push -q -f origin "HEAD:refs/heads/$BR" 2>&1 | grep -v -i "moved\|new location" || true
-git worktree remove --force "$TMP" 2>/dev/null
+git push -q -f origin "$SHA:refs/heads/$BR" 2>&1 | grep -v -i "moved\|new location\|^remote:" || true
+rm -rf "$TMP"
 echo "pushed $BR ($SHA; tested sha ${BASE}; shards $SJSON, bots $BOTS, playtest $PT, relay $RELAY e2e $E2E) at $(date +%H:%M:%S); waiting for ci-results/$SHA ..."
 OUT="/tmp/ci_$SHA"; rm -rf "$OUT"; mkdir -p "$OUT"
 T0=$(date +%s); got=""

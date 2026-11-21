@@ -26,10 +26,11 @@ done
 export PATH="$PATH:/home/claude/tools"
 XDG=$(mktemp -d /tmp/glock_xdg.XXXXXX); export XDG_DATA_HOME="$XDG"
 WAIT="${GLOCK_WAIT:-3600}"; T0=$(date +%s); SLOT=""
-exec 8>>/tmp/godot.lock
+LB="${GLOCK_BASE:-/tmp/godot.lock}"  # test override: GLOCK_BASE=/tmp/x uses /tmp/x, /tmp/x.0, /tmp/x.1
+exec 8>>"$LB"
 while :; do
   for s in $SLOTS; do
-    exec 9>>"/tmp/godot.lock.$s"
+    exec 9>>"$LB.$s"
     if flock -n 9; then
       if [ "$s" != 0 ] || flock -n 8; then SLOT=$s; break 2; fi
       flock -u 9
