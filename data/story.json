@@ -995,15 +995,18 @@
       },
       {
        "who": "Coldy",
-       "text": "You saved us babies! ...What bring you to Mountain?"
+       "text": "You saved us babies! ...What bring you to Mountain?",
+       "not_hero": "coldy"
       },
       {
        "who": "",
-       "text": "The penguins chirp for some time. She nods."
+       "text": "The penguins chirp for some time. She nods.",
+       "not_hero": "coldy"
       },
       {
        "who": "Coldy",
-       "text": "Yes. I understand. You come to improve Meow Pow Wow so you get big, strong, and save universe. We babies know you are good. We allow you to pass."
+       "text": "Yes. I understand. You come to improve Meow Pow Wow so you get big, strong, and save universe. We babies know you are good. We allow you to pass.",
+       "not_hero": "coldy"
       },
       {
        "who": "Coldy",
@@ -1026,7 +1029,13 @@
           "text": "Coldy. That is my real name. Babies call me Leader. You call me Coldy. ...There are spies in these hills. Finargles. Very sneaky. We go quiet."
          }
         ]
-       }
+       },
+       "not_hero": "coldy"
+      },
+      {
+       "who": "",
+       "text": "The penguins chirp for some time. The babies stamp, once, all together: thank you. The sacred key to the heart of Mount Prismatica is warm in your hand, and the way up is yours to show them. There are finargles in these hills. You go quiet.",
+       "only_hero": "coldy"
       }
      ],
      "effects": {
