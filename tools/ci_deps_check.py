@@ -24,6 +24,8 @@ BINARIES = {
     "curl": "curl",          # Godot download, deploy checks
     "unzip": "unzip",        # Godot + export templates
     "timeout": "coreutils",  # bots, playtest
+    "sha256sum": "coreutils",  # tools/fetch_godotsteam.sh --check (check.sh, S1)
+    "tar": "tar",            # steam-builds.yml Linux tarball (S1)
     "node": "nodejs",        # tools/relay_test.js (check.sh), CI relay job (preinstalled on ubuntu-latest)
 }
 

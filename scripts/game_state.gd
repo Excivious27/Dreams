@@ -80,6 +80,7 @@ static func load_data() -> void:
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String, opts := {}) -> void:
 	load_data()
+	Companion.reset_cooldowns()  # C11b P3: no cooldown from an earlier save this session
 	quests_data = load_json("res://data/quests.json")
 	if arc == "penguins":
 		# A gangster run earlier in the session registered the crew as villagers.
@@ -136,7 +137,7 @@ static func has_run() -> bool:
 			# must not leave its crew in a penguin save's town.
 			npcs = load_json("res://data/npcs.json")
 			quests_data = load_json("res://data/quests.json")  # board defs belong to one run
-			Companion._ready_at = {}
+			Companion.reset_cooldowns()
 			_migrate()
 			# A story scene that was cut off (app closed) plays again from the start.
 			if run.has("story_pending"):
@@ -2244,6 +2245,29 @@ static func random_season_seed(max_tier := -1) -> String:
 
 
 ## The field log: first harvests of every crop, for the journal and the fair.
+## The bed half of a harvest, shared by the player (farm.gd) and the Harvest chore (Chores, c11b_06-03):
+## logs the crop (when log_it), sends wheat chaff to the silo (when chaff; no silo/full: "hay" 1 back),
+## uses up fertiliser, then regrows or clears the bed. Returns {first, hay, regrow, xp_share}.
+static func reap_tile(tile: Dictionary, log_it := true, chaff := true) -> Dictionary:
+	var crop := str(tile.get("crop", ""))
+	var cd: Dictionary = crops.get(crop, {})
+	var out := {"first": false, "hay": 0, "regrow": cd.has("regrow"), "xp_share": 0}
+	if cd.is_empty():
+		return out
+	if log_it:
+		out["first"] = log_grown(crop)
+	if chaff and str(cd.get("yield", "")) == "wheat" and not Builds.silo_add(1):
+		out["hay"] = 1
+	tile.erase("fert")  # fertiliser feeds one growth cycle, regrowing crops included
+	if cd.has("regrow"):
+		tile["days"] = int(cd["days"]) - int(cd["regrow"])
+	else:
+		tile["crop"] = ""
+		tile["days"] = 0
+	out["xp_share"] = maxi(1, (2 + int(cd.get("tier", 1))) / 2)  # a helper's pick: a small farming xp share
+	return out
+
+
 static func log_grown(crop: String) -> bool:
 	var g: Dictionary = run.get("grown", {})
 	var first := not g.has(crop)
@@ -2772,6 +2796,8 @@ static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("friend"):
 		var fr: Dictionary = run["friendship"]
 		add_friend(str(rw["friend"][0]), int(rw["friend"][1]))
+	if rw.has("animal"):
+		RanchGift.from_reward(rw)  # C11b P3: a creature as a reward (waits for room, letter says what's needed)
 
 
 ## Main-story quests appear as the game progresses; side quests come from the
@@ -3517,6 +3543,25 @@ static func take_crops(n: int) -> void:
 ## Placed sprinklers water the tiles around them before the night's growth.
 const SPRINKLER_REACH := {"sprinkler": 1, "sprinkler_quality": 2, "sprinkler_iridium": 3}
 ## Crows: a big field with no scarecrow near loses a crop or two overnight.
+## Guard-chore watch circles from Chores.guard_cells() (P5's helpers.gd: [{c: Vector2i, r: float}]),
+## read only when that function exists. Returns [[Vector2i, radius], ...].
+static func _guard_watch() -> Array:
+	var out: Array = []
+	var cs: Script = Chores
+	var has := false
+	for m in cs.get_script_method_list():
+		if str(m.get("name", "")) == "guard_cells":
+			has = true
+	if not has:
+		return out
+	var got: Variant = cs.call("guard_cells")
+	if got is Array:
+		for g in (got as Array):
+			if g is Dictionary and (g as Dictionary).get("c", null) is Vector2i:
+				out.append([g["c"], float((g as Dictionary).get("r", 6.0))])
+	return out
+
+
 static func _crows(report: Dictionary) -> void:
 	if weather_today() in ["rain", "storm", "snow", "blizzard"]:
 		return
@@ -3535,6 +3580,7 @@ static func _crows(report: Dictionary) -> void:
 	if Builds.is_built("scarecrow"):
 		var sc: Array = Builds.data().get("scarecrow", {}).get("cell", [24, 14])
 		guards.append(Vector2i(int(sc[0]), int(sc[1])))
+	var watch := _guard_watch()  # helpers on the guard chore keep crows off nearby beds (c11b_06-04)
 	var open_: Array = []
 	for k: String in planted:
 		var xy := k.split(",")
@@ -3544,6 +3590,9 @@ static func _crows(report: Dictionary) -> void:
 			if c.distance_to(g) <= 8.0:
 				safe = true
 				break
+		for w: Array in watch:
+			if not safe and c.distance_to(w[0]) <= float(w[1]):
+				safe = true
 		if not safe:
 			open_.append(k)
 	if open_.is_empty():

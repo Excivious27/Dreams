@@ -258,6 +258,9 @@ static func jobs_menu(m: GameMap) -> void:
 	var opts: Array = []
 	for cid in crew:
 		var jn := str(jobs.get(str(cj.get(cid, "")), {}).get("name", "free"))
+		var ch := Chores.assignment("crew:" + str(cid))
+		if not cj.has(cid) and not ch.is_empty():
+			jn = "on farm chores (%s)" % str(((Chores.data()["chores"] as Dictionary).get(str(ch.get("chore", "")), {}) as Dictionary).get("name", ch.get("chore", "")))  # one helper board (c11b_06-11)
 		opts.append("%s: %s" % [str(Crew.members()[cid]["name"]), jn])
 	opts.append("Done")
 	var d := Dialogue.instance(m.get_tree())
@@ -282,6 +285,13 @@ static func jobs_menu(m: GameMap) -> void:
 		if not cj.has(cid) and cj.size() >= job_slots():
 			m.hud.toast("All job slots are taken. Build HQ further for more.", Color(1, 0.85, 0.6))
 			return
+		if not Chores.assignment("crew:" + cid).is_empty():
+			var d3 := Dialogue.instance(m.get_tree())
+			d3.say([{"who": "Crew jobs", "text": "%s is on farm chores tonight. Move them to this HQ job instead?" % str(Crew.members()[cid]["name"]), "choice": ["Move to the HQ job", "Keep the farm chore"], "key": ""}])
+			await d3.finished
+			if d3.last_choice != 0:
+				return
+			Chores.unassign("crew:" + cid)
 		cj[cid] = jk[j]
 	elif j == jk.size():
 		cj.erase(cid)

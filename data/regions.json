@@ -19812,6 +19812,23 @@
     "text": "A ragged flag on a pole. Under it, a tin with notes from everyone who made it. The newest says: 'SHHH. IT'S SLEEPING.'",
     "solid": false,
     "who": ""
+   },
+   {
+    "type": "creature",
+    "cell": [
+     24,
+     32
+    ],
+    "species": "frost_wyrmling",
+    "species_gang": "tortoise",
+    "flag": "boss_frost_summit",
+    "key": "mega:frost_wyrmling",
+    "giver": "Ingrid",
+    "hint": "A: a nest in the snow",
+    "wait": "A hollow in the snow, warm somehow. Whatever owns it is up on the summit, and not in the mood.",
+    "line": "Something small and sleepy blinks up at you from the snow hollow, and follows you all the way down. Ingrid will bring it to your farm.",
+    "line_gang": "An old tortoise sits in the warm hollow, frost on its shell, very patient. It follows you, slowly. Ingrid will truck it to your place.",
+    "solid": false
    }
   ],
   "npcs": [],
@@ -21148,10 +21165,26 @@
     "solid": false
    },
    {
-    "type": "heal",
+    "type": "creature",
     "cell": [
      15,
      33
+    ],
+    "species": "storm_roc",
+    "species_gang": "",
+    "flag": "boss_wind_starfall_garden",
+    "key": "mega:roc_young",
+    "giver": "Nimbus",
+    "hint": "A: a ring of soft down",
+    "wait": "A ring of soft down, crackling with static. Something huge sleeps nearby. Not yet.",
+    "line": "A young roc, no bigger than a goose, tumbles out of the down and peeps at you. It's decided you're family. Nimbus will walk it down to your farm.",
+    "solid": false
+   },
+   {
+    "type": "heal",
+    "cell": [
+     25,
+     34
     ],
     "hp": 5,
     "energy": 60,
@@ -21162,8 +21195,8 @@
    {
     "type": "note",
     "cell": [
-     25,
-     34
+     29,
+     23
     ],
     "hint": "A: read the star chart",
     "text": "A star chart, with one star circled again and again: the one that fell on the valley. Next to it: 'IT'S COMING HOME.'",
@@ -22970,10 +23003,25 @@
     "solid": false
    },
    {
-    "type": "heal",
+    "type": "creature",
     "cell": [
      35,
      24
+    ],
+    "species": "deep_glowworm",
+    "species_gang": "volt_gecko",
+    "key": "mega:hollow_glow",
+    "giver": "",
+    "hint": "A: a soft light in the moss",
+    "line": "A glowworm curls round your finger and won't let go. It wants to see the sky. It'll be at your farm by morning.",
+    "line_gang": "A little gecko with a battery-blue glow skitters up your sleeve. Somebody's lab lost it. It's yours now.",
+    "solid": false
+   },
+   {
+    "type": "heal",
+    "cell": [
+     22,
+     27
     ],
     "hp": 5,
     "energy": 60,
@@ -22984,8 +23032,8 @@
    {
     "type": "note",
     "cell": [
-     22,
-     27
+     32,
+     34
     ],
     "hint": "A: read the miners' slate",
     "text": "A miners' slate, chalk still sharp: 'Camp 9. Water here glows. Drank it. Feel fine. Feel BETTER than fine. Do not tell the foreman.'",
@@ -22995,8 +23043,8 @@
    {
     "type": "note",
     "cell": [
-     32,
-     34
+     35,
+     12
     ],
     "hint": "A: read the old map",
     "text": "An old map pinned to a crate: the Heart in the middle, and around it a ring of caverns marked 'DEEPS', 'DEEPER', and one just marked 'NO'.",

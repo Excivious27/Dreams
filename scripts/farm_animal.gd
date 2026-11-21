@@ -67,7 +67,10 @@ func setup_uid(m: GameMap, id: String, c: Vector2i, p: Rect2i) -> void:
 	setup(m, k, c, p, bool(art.get("baby", false)))
 	name = id
 	if art.get("tint", null) is Color:
-		modulate = art["tint"]
+		self_modulate = art["tint"]  # the body only: the need bubble and shadow keep their colours (c11b_11-02)
+	var sp := Ranch.species(str(art.get("species", "")))
+	if str(sp.get("glow", "")) != "":  # glow sheep, lab strains: a coloured light that walks with it
+		NightGlow.add_light(m, self, float(sp.get("glow_r", 22.0)), float(art.get("height_px", 16.0)) * 0.5, Color(str(sp["glow"])))
 	_refresh_thing()
 
 
@@ -80,6 +83,23 @@ var _strip := "idle"
 var _bubble: Sprite2D
 var _need := "-"
 var _need_t := 0.0
+
+
+## The voice for a tap (c11b_03-06): the Ranch species' voice for roster animals (lab strains included),
+## else the art-kind prefix table (GameMap.animal_voice). Ranch voice words map to sfx names.
+const VOICE_SFX := {"baa": "sheep", "hum": "llama", "squeak": "thump", "chirp_bot": "beep", "hum_baa": "sheep",
+	"servo_bleat": "bleat", "bunny_beep": "beep"}
+
+
+static func voice_for(k: String, id := "") -> String:
+	if id != "":
+		var a := Ranch.animal(id)
+		var sid := str(a.get("species", ""))
+		if sid != "" and Ranch.is_adult(id) or (sid != "" and not ["chicken", "duck", "cow", "sheep", "goat", "pig"].has(sid)):
+			var v := str(Ranch.species(sid).get("voice", ""))
+			if v != "":
+				return str(VOICE_SFX.get(v, v))
+	return GameMap.animal_voice(k)
 
 
 ## Drawn scale for an art kind at its true-to-life height (followers, menus): 0.5 when unknown.

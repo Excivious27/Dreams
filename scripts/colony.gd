@@ -464,6 +464,10 @@ static func _restore(m: GameMap, id: String) -> void:
 	lines.append_array(_lines(str(c["elder"]), c.get("reveal", [])))
 	lines.append({"who": str(c["elder"]), "text": str(c["thanks"])})
 	lines.append({"text": "New ability: %s. %s" % [str(c["ability_name"]), str(c["ability_desc"])]})
+	var cr: Dictionary = c.get("creature", {}) if c.get("creature", null) is Dictionary else {}
+	if str(cr.get("species", "")) != "":  # C11b P3: a creature comes home (waits for room; a letter says what's needed)
+		lines.append({"who": str(c["elder"]), "text": str(cr.get("line", ""))})
+		RanchGift.give(str(cr["species"]), "colony:" + id, {"giver": str(c["elder"])})
 	var star: Array = ["One colony glowing again. I felt it from your field, like a window lighting up across the sea.",
 		"Two lights out on the water now. They're humming the same tune. I think I used to know it.",
 		"Three. One more, and the old song will be whole again.",

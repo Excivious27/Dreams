@@ -13,10 +13,13 @@ static func lines() -> Array:
 		return []
 	fl["pup_taught"] = true
 	var nm := Pet.name_of()
+	var orders := "%s fights at your side and nips whatever goes for you. The paw buttons on the side of the screen give orders: ATK sends %s in, HEEL calls it back, STAY parks it, CALL fetches it from anywhere." % [nm, nm]
+	if not TouchControls.visible_controls:  # no paw strip on keyboard / pad (c11b_07-11)
+		orders = "%s fights at your side and nips whatever goes for you. %s cycles HEEL, ATTACK and STAY (MENU > Pup has every command, and Recall)." % [nm, InputSetup.prompt("pup")]
 	return [
-		{"text": "When a foe flashes red with a claw mark over its head, it's winding up a hit. Step back or ROLL, then swing while it recovers."},
-		{"text": "%s fights at your side and nips whatever goes for you. The paw buttons on the side of the screen give orders: ATK sends %s in, HEEL calls it back, STAY parks it, CALL fetches it from anywhere." % [nm, nm]},
-		{"text": "If %s gets hurt, tap it (or face it and press CHECK) to pet it or share a snack. Knocked down, it needs food within two minutes, or it limps home to the dog house until morning." % nm},
+		{"text": PadInput.words("When a foe flashes red with a claw mark over its head, it's winding up a hit. Step back or ROLL, then swing while it recovers.")},
+		{"text": PadInput.words(orders)},
+		{"text": PadInput.words("If %s gets hurt, tap it (or face it and press CHECK) to pet it or share a snack. Knocked down, it needs food within two minutes, or it limps home to the dog house until morning." % nm)},
 	]
 
 
