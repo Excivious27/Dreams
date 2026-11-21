@@ -1,0 +1,261 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  90% ] [90m[1mreimport[22m | ach_lights_of_the_isles_locked.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_l_every_ending.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_l_every_ending_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_l_fortune.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_l_fortune_locked.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_l_second_spring.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_l_second_spring_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_l_two_paths.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_l_two_paths_locked.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_l_wide_world.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_l_wide_world_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_making_it_home.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_making_it_home_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_market_day.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_market_day_locked.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_master_angler.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_master_angler_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_matching_set.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ach_matching_set_locked.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (204 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 75.0s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 55.6s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 4.1s
+
+#### step 14: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 1/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 14 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 43.8s
+
+#### step 20: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 1/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 20 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 5.1s
+
+#### step 26: C11b P5: chores rework (hay, spots, value cap, regions, levels), team  (shard 1/6)
+== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice ==
+  FAIL moon cow has its own pitched moo
+  FAIL moon cow has its own pitched moo
+c11b_p5_test: 100 checks, 2 failures
+c11b_p5_test failed
+#### step 26 C11b P5: chores rework (hay, spots, value cap, regions, levels), team : FAIL rc=1 in 3.3s
+
+#### step 32: rec_links_test (shard 1/6)
+rec_links_test: 0 failures
+#### step 32 rec_links_test: PASS in 3.3s
+
+#### step 38: coop_test (shard 1/6)
+coop_test: 0 failures
+#### step 38 coop_test: PASS in 3.3s
+
+#### step 44: crop_test (shard 1/6)
+crop_test: 0 failures
+#### step 44 crop_test: PASS in 34.4s
+
+#### step 50: ranch_test (shard 1/6)
+ranch_test: 1978 checks, 0 failures
+#### step 50 ranch_test: PASS in 4.3s
+
+#### step 56: cf_layout_test (shard 1/6)
+cf_layout_test: 0 failures
+#### step 56 cf_layout_test: PASS in 10.7s
+
+#### step 62: music loop seams (join click + level jump) (shard 1/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 103
+#### step 62 music loop seams (join click + level jump): PASS in 10.5s
+
+#### step 68: C11a ranch art: species strips, building looks, icons, stations (shard 1/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 68 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.6s
+
+#### step 74: danger_music_test (shard 1/6)
+danger_music_test: 0 failures
+#### step 74 danger_music_test: PASS in 30.5s
+
+#### step 80: allies: enemies fight back, pup commands (shard 1/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 80 allies: enemies fight back, pup commands: PASS in 4.6s
+
+#### step 86: every script compiles (shard 1/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 86 every script compiles: PASS in 4.5s
+
+#### step 92: quest_tracker_test (shard 1/6)
+quest_tracker_test: 0 fails
+#### step 92 quest_tracker_test: PASS in 4.8s
+
+#### step 98: campaign_words_test (shard 1/6)
+campaign_words_test: 0 fails
+#### step 98 campaign_words_test: PASS in 3.6s
+
+#### step 104: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 1/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 160 checks, 0 failures
+#### step 104 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 20.7s
+
+#### step 110: mega regions: map tabs, unlocks, travel (shard 1/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 110 mega regions: map tabs, unlocks, travel: PASS in 9.8s
+
+#### step 116: menu sweep: every menu button, both arcs (C2) (shard 1/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 168 buttons pressed, 0 failures
+#### step 116 menu sweep: every menu button, both arcs (C2): PASS in 25.1s
+
+#### step 122: rec_games_test (shard 1/6)
+rec_games_test: 0 failures
+#### step 122 rec_games_test: PASS in 3.4s
+
+#### step 128: C7 P5: colony stories and crew (shard 1/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 128 C7 P5: colony stories and crew: PASS in 5.9s
+
+#### step 134: C11b P6: ranch building arc words and footprints (shard 1/6)
+== C11b P6: ranch building arc words and footprints ==
+builds_words_test: OK
+#### step 134 C11b P6: ranch building arc words and footprints: PASS in 3.4s
+
+#### step 140: C8 P4: fishing rules, mining curve, reward tables (shard 1/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+c8_p4_test: PASS (0 fails)
+#### step 140 C8 P4: fishing rules, mining curve, reward tables: PASS in 11.9s
+
+#### step 146: C9 P5: save codes and files (shard 1/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 146 C9 P5: save codes and files: PASS in 3.2s
+
+#### step 152: relay: server/server.js protocol (tools/relay_test.js; a push of serve (shard 1/6)
+== relay: server/server.js protocol (tools/relay_test.js; a push of server/ to main deploys the live relay) ==
+RELAY TEST OK
+#### step 152 relay: server/server.js protocol (tools/relay_test.js; a push of serve: PASS in 8.8s
+
+#### shard 1/6 done in 394s: FAIL (C11b P5: chores rework (hay, spots, value cap, regions, levels), team )

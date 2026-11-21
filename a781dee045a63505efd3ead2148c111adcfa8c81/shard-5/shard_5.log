@@ -1,0 +1,553 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  90% ] [90m[1mreimport[22m | ach_lights_of_the_isles_locked.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_l_every_ending.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_l_every_ending_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_l_fortune.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_l_fortune_locked.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_l_second_spring.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_l_second_spring_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_l_two_paths.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_l_two_paths_locked.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_l_wide_world.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_l_wide_world_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_making_it_home.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_making_it_home_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_market_day.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_market_day_locked.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_master_angler.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_master_angler_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_matching_set.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ach_matching_set_locked.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (204 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 82.9s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 26.5s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+  weeks 3-4 average bar left at bedtime: 42%
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+              [4] _week (res://tools/month_curve_test.gd:219)
+              [5] _initialize (res://tools/month_curve_test.gd:31)
+SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+              [3] _week (res://tools/month_curve_test.gd:219)
+              [4] _initialize (res://tools/month_curve_test.gd:31)
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 5.6s
+
+#### step 18: performance guards (batched cliffs, texture cache) (shard 5/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 18 performance guards (batched cliffs, texture cache): PASS in 2.7s
+
+#### step 24: storage_test (shard 5/6)
+storage_test: 0 failures
+#### step 24 storage_test: PASS in 2.8s
+
+#### step 30: rec_test (shard 5/6)
+rec_test: 0 failures
+#### step 30 rec_test: PASS in 5.4s
+
+#### step 36: cash_test (shard 5/6)
+cash_test: scanned 85992 strings, 0 failures
+#### step 36 cash_test: PASS in 3.9s
+
+#### step 42: make_house_parts (shard 5/6)
+#### step 42 make_house_parts: PASS in 0.5s
+
+#### step 48: commons_test (shard 5/6)
+commons_test: 0 failures
+#### step 48 commons_test: PASS in 39.3s
+
+#### step 54: cf_volunteer_test (shard 5/6)
+cf_volunteer_test: 0 failures
+#### step 54 cf_volunteer_test: PASS in 8.0s
+
+#### step 60: art prompts: at most 3 images each (shard 5/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 60 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 66: C10a decor art: every catalogue piece and rotation exists (shard 5/6)
+== C10a decor art: every catalogue piece and rotation exists ==
+check ok: 462 catalogue pieces
+#### step 66 C10a decor art: every catalogue piece and rotation exists: PASS in 0.1s
+
+#### step 72: music: every map has a song; web streaming works offline (shard 5/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 603 songs checked, 0 failures
+#### step 72 music: every map has a song; web streaming works offline: PASS in 30.6s
+
+#### step 78: workshop: stations at run time (shard 5/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 78 workshop: stations at run time: PASS in 4.2s
+
+#### step 84: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 5/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 84 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 7.8s
+
+#### step 90: campaign_story_test (shard 5/6)
+campaign_story_test: 0 fails
+#### step 90 campaign_story_test: PASS in 3.0s
+
+#### step 96: campaign_gate_test (shard 5/6)
+campaign_gate_test: 0 fails
+#### step 96 campaign_gate_test: PASS in 6.6s
+
+#### step 102: move_speed_test (shard 5/6)
+move_speed_test: 0 fails
+#### step 102 move_speed_test: PASS in 4.3s
+
+#### step 108: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 5/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+HEARTS DONE, failures: 0
+#### step 108 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): PASS in 6.2s
+
+#### step 114: crisp art shader on buildings/props (C2 P7) (shard 5/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 114 crisp art shader on buildings/props (C2 P7): PASS in 3.6s
+
+#### step 120: arcade_test (shard 5/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 120 arcade_test: PASS in 3.3s
+
+#### step 126: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 5/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 126 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 4.4s
+
+#### step 132: C11b P6: fair ribbon tables (shard 5/6)
+== C11b P6: fair ribbon tables ==
+animal_show_test: OK
+#### step 132 C11b P6: fair ribbon tables: PASS in 2.8s
+
+#### step 138: C11a fix2: every ranch species buyable from its seller, both arcs, sta (shard 5/6)
+== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster ==
+ranch_shop_test: 292 checks, 0 failures
+#### step 138 C11a fix2: every ranch species buyable from its seller, both arcs, sta: PASS in 3.4s
+
+#### step 144: C9 P3: full-screen screens with actions only (shard 5/6)
+== C9 P3: full-screen screens with actions only ==
+screens_pad_test: 0 failures
+#### step 144 C9 P3: full-screen screens with actions only: PASS in 3.9s
+
+#### step 150: C10a P5: wardrobe (shard 5/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 150 C10a P5: wardrobe: PASS in 4.9s
+
+#### shard 5/6 done in 267s: PASS

@@ -1,0 +1,26 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 82.9}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 26.5}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 5.6}
+{"step": 18, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.7}
+{"step": 24, "name": "storage_test", "rc": 0, "secs": 2.8}
+{"step": 30, "name": "rec_test", "rc": 0, "secs": 5.4}
+{"step": 36, "name": "cash_test", "rc": 0, "secs": 3.9}
+{"step": 42, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 48, "name": "commons_test", "rc": 0, "secs": 39.3}
+{"step": 54, "name": "cf_volunteer_test", "rc": 0, "secs": 8.0}
+{"step": 60, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 66, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 72, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 30.6}
+{"step": 78, "name": "workshop: stations at run time", "rc": 0, "secs": 4.2}
+{"step": 84, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 7.8}
+{"step": 90, "name": "campaign_story_test", "rc": 0, "secs": 3.0}
+{"step": 96, "name": "campaign_gate_test", "rc": 0, "secs": 6.6}
+{"step": 102, "name": "move_speed_test", "rc": 0, "secs": 4.3}
+{"step": 108, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 6.2}
+{"step": 114, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.6}
+{"step": 120, "name": "arcade_test", "rc": 0, "secs": 3.3}
+{"step": 126, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.4}
+{"step": 132, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 2.8}
+{"step": 138, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.4}
+{"step": 144, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.9}
+{"step": 150, "name": "C10a P5: wardrobe", "rc": 0, "secs": 4.9}

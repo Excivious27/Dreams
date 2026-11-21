@@ -1,0 +1,18 @@
+CONDUCT CI FAIL  a781dee045  (ci/s1p2-93f13f6b, run 44864476946)
+
+subset run: shards [1, 2, 5], bots off, playtest on
+check shards (3/3):
+  shard 1: FAIL  394s  failed: C11b P5: chores rework (hay, spots, value cap, regions, levels), team 
+  shard 2: FAIL  184s  failed: C11b P6: C11b creature voices and ranch sound
+  shard 5: PASS  267s
+playtest: PASS  52s  21 screenshots (results playtest/shots/)
+RELAY: ok, 78ms (live code e4b9aef5b57d, this server/)
+NET E2E: ok, 15s
+
+longest job: 394s
+slowest check steps: import 82.9s; import 75.0s; import 74.9s; smoke test 55.6s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.8s; commons_test 39.3s; crop_test 34.4s; music: every map has a song; web streaming works offline 30.6s
+distinct errors/fails/warns:
+   68  SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+   68  SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')
+    2  FAIL moon cow has its own pitched moo
+    1  FAIL animal_voice asks the C11b table

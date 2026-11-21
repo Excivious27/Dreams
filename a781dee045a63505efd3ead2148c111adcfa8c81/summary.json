@@ -1,0 +1,203 @@
+{
+ "sha": "a781dee045a63505efd3ead2148c111adcfa8c81",
+ "ref": "ci/s1p2-93f13f6b",
+ "run": "44864476946",
+ "finished": 1795234617.3451123,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "e4b9aef5b57d",
+  "live_before": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 4,
+   "players": 0
+  },
+  "live": {
+   "commit": "b307a53a8ed753df96b2cc1dffd89ea81ddad8f8",
+   "code": "e4b9aef5b57d",
+   "started": "2026-11-21T02:24:17.488Z",
+   "rooms": 4,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 78,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 15s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 78ms (live code e4b9aef5b57d, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 52,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "93f13f6be37928d032b42a4127ba483b1a5f67da",
+  "label": "s1p2",
+  "branch": "s1f/p2",
+  "shards": [
+   1,
+   2,
+   5
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 394,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 394,
+   "failed_steps": [
+    "C11b P5: chores rework (hay, spots, value cap, regions, levels), team "
+   ]
+  },
+  {
+   "shard": 2,
+   "rc": 1,
+   "secs": 184,
+   "failed_steps": [
+    "C11b P6: C11b creature voices and ranch sound"
+   ]
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 267,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.",
+   68
+  ],
+  [
+   "SCRIPT ERROR: Out of bounds get index '0' (on base: 'Array')",
+   68
+  ],
+  [
+   "FAIL moon cow has its own pitched moo",
+   2
+  ],
+  [
+   "FAIL animal_voice asks the C11b table",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 82.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 75.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 74.9
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 55.6
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.8
+  },
+  {
+   "step": 48,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 39.3
+  },
+  {
+   "step": 44,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 34.4
+  },
+  {
+   "step": 72,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 30.6
+  },
+  {
+   "step": 74,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 30.5
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 26.5
+  },
+  {
+   "step": 116,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 25.1
+  },
+  {
+   "step": 104,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 20.7
+  },
+  {
+   "step": 140,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 11.9
+  },
+  {
+   "step": 105,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 11.3
+  },
+  {
+   "step": 56,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 10.7
+  }
+ ]
+}

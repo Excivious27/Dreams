@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 75.0}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 55.6}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.1}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.8}
+{"step": 20, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.1}
+{"step": 26, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 1, "secs": 3.3}
+{"step": 32, "name": "rec_links_test", "rc": 0, "secs": 3.3}
+{"step": 38, "name": "coop_test", "rc": 0, "secs": 3.3}
+{"step": 44, "name": "crop_test", "rc": 0, "secs": 34.4}
+{"step": 50, "name": "ranch_test", "rc": 0, "secs": 4.3}
+{"step": 56, "name": "cf_layout_test", "rc": 0, "secs": 10.7}
+{"step": 62, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.5}
+{"step": 68, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.6}
+{"step": 74, "name": "danger_music_test", "rc": 0, "secs": 30.5}
+{"step": 80, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.6}
+{"step": 86, "name": "every script compiles", "rc": 0, "secs": 4.5}
+{"step": 92, "name": "quest_tracker_test", "rc": 0, "secs": 4.8}
+{"step": 98, "name": "campaign_words_test", "rc": 0, "secs": 3.6}
+{"step": 104, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 20.7}
+{"step": 110, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 9.8}
+{"step": 116, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 25.1}
+{"step": 122, "name": "rec_games_test", "rc": 0, "secs": 3.4}
+{"step": 128, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 5.9}
+{"step": 134, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 3.4}
+{"step": 140, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.9}
+{"step": 146, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.2}
+{"step": 152, "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve", "rc": 0, "secs": 8.8}
