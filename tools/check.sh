@@ -772,6 +772,34 @@ if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep 
   echo "Ranch villagers test failed"; exit 1
 fi
 
+echo "== C11b P6: fair ribbon tables =="
+asout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/animal_show_test.gd 2>&1)"
+echo "$asout" | grep -E "FAIL|SCRIPT ERROR|animal_show_test" || true
+if ! echo "$asout" | grep -q "animal_show_test: OK" || echo "$asout" | grep -q "SCRIPT ERROR"; then
+  echo "animal_show_test failed"; exit 1
+fi
+
+echo "== C11b P6: battle line-up and team jobs =="
+btout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_team_test.gd 2>&1)"
+echo "$btout" | grep -E "FAIL|SCRIPT ERROR|battle_team_test" || true
+if ! echo "$btout" | grep -q "battle_team_test: OK" || echo "$btout" | grep -q "SCRIPT ERROR"; then
+  echo "battle_team_test failed"; exit 1
+fi
+
+echo "== C11b P6: ranch building arc words and footprints =="
+bwout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/builds_words_test.gd 2>&1)"
+echo "$bwout" | grep -E "FAIL|SCRIPT ERROR|builds_words_test" || true
+if ! echo "$bwout" | grep -q "builds_words_test: OK" || echo "$bwout" | grep -q "SCRIPT ERROR"; then
+  echo "builds_words_test failed"; exit 1
+fi
+
+echo "== C11b P6: C11b creature voices and ranch sound =="
+raout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_audio_c11b_test.gd 2>&1)"
+echo "$raout" | grep -E "FAIL|SCRIPT ERROR|ranch_audio_c11b_test" || true
+if ! echo "$raout" | grep -q "ranch_audio_c11b_test: OK" || echo "$raout" | grep -q "SCRIPT ERROR"; then
+  echo "ranch_audio_c11b_test failed"; exit 1
+fi
+
 echo "== C8 P3: collections (museum, logs, Book tab) =="
 clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true

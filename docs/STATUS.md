@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b P6: fair ribbon tables (Animal Show/Stock Show + Ranch Goods, Best Egg, Fleece & Feather; fair judging, yearly rivals, honourable mention, ribbons milestones), battle line-up picker + jobs by member, ranch buildings in gang words + per-tier footprints, C11b creature voices/beds/cues, ranch + animal_show tunes, w261 party cards re-sliced
+
 ## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
 ## 2026-11-20 — C11a fix: BattleBrief keeps an early B and takes MENU as back (bot 20 softlock in bf_orchard_line); campaign_gate_test checks both.
 
