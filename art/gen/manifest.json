@@ -149194,32 +149194,32 @@
   "party_card_big_jim": {
    "file": "ui/party_card_big_jim.png",
    "h": 60,
-   "w": 147
+   "w": 165
   },
   "party_card_big_jim_sel": {
    "file": "ui/party_card_big_jim_sel.png",
    "h": 60,
-   "w": 155
+   "w": 177
   },
   "party_card_coco": {
    "file": "ui/party_card_coco.png",
    "h": 60,
-   "w": 173
+   "w": 152
   },
   "party_card_coco_sel": {
    "file": "ui/party_card_coco_sel.png",
    "h": 60,
-   "w": 180
+   "w": 160
   },
   "party_card_coldy": {
    "file": "ui/party_card_coldy.png",
    "h": 60,
-   "w": 146
+   "w": 156
   },
   "party_card_coldy_sel": {
    "file": "ui/party_card_coldy_sel.png",
    "h": 60,
-   "w": 170
+   "w": 166
   },
   "party_card_girl": {
    "file": "ui/party_card_girl.png",
@@ -149244,22 +149244,22 @@
   "party_card_mer": {
    "file": "ui/party_card_mer.png",
    "h": 60,
-   "w": 161
+   "w": 152
   },
   "party_card_mer_sel": {
    "file": "ui/party_card_mer_sel.png",
    "h": 60,
-   "w": 168
+   "w": 159
   },
   "party_card_merry": {
    "file": "ui/party_card_merry.png",
    "h": 60,
-   "w": 173
+   "w": 145
   },
   "party_card_merry_sel": {
    "file": "ui/party_card_merry_sel.png",
    "h": 60,
-   "w": 177
+   "w": 151
   },
   "party_card_mk_atlas": {
    "file": "ui/party_card_mk_atlas.png",
@@ -149374,22 +149374,22 @@
   "party_card_penguin_king": {
    "file": "ui/party_card_penguin_king.png",
    "h": 60,
-   "w": 233
+   "w": 152
   },
   "party_card_penguin_king_sel": {
    "file": "ui/party_card_penguin_king_sel.png",
    "h": 60,
-   "w": 243
+   "w": 159
   },
   "party_card_penguin_wizard": {
    "file": "ui/party_card_penguin_wizard.png",
    "h": 60,
-   "w": 211
+   "w": 139
   },
   "party_card_penguin_wizard_sel": {
    "file": "ui/party_card_penguin_wizard_sel.png",
    "h": 60,
-   "w": 203
+   "w": 142
   },
   "party_card_son": {
    "file": "ui/party_card_son.png",

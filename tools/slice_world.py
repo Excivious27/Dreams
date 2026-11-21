@@ -5269,10 +5269,27 @@ def w261():
     for i, nm in enumerate(["party_active_ring", "party_hold_b", "party_bitter", "party_paw"]):
         if i < len(small):
             save(scale_to(crop(rgba, small[i]), height=72 if i == 0 else 32), G, nm)
+    # C11b P6 (c11b_08-06/07): the card rows are uneven: find each card's rows from the left column's
+    # ink, not an even H/7 grid (slot 5, the purple cat in red, IS Big Jim: portraits/big_jim).
     ids = ["merry", "coco", "mer", "coldy", "big_jim", "penguin_king", "penguin_wizard"]
-    ch = H / 7.0
-    for r, cid in enumerate(ids):
-        y0, y1 = int(r * ch) + 2, int((r + 1) * ch) - 2
+    ink = (rgba[:, 750:1120, 3] > 0).sum(axis=1) > 40
+    bands, y = [], 0
+    while y < H:
+        if ink[y]:
+            y2 = y
+            while y2 < H and ink[y2]:
+                y2 += 1
+            if y2 - y > 60:
+                bands.append((y, y2))
+            y = y2
+        else:
+            y += 1
+    if len(bands) != len(ids):  # fall back to the even grid
+        bands = [(int(r * H / 7.0) + 2, int((r + 1) * H / 7.0) - 2) for r in range(7)]
+    for (y0, y1), cid in zip(bands, ids):
+        if cid is None:
+            continue
+        y0, y1 = max(0, y0 - 6), min(H, y1 + 6)
         for x0, x1, suf in ((750, 1120, ""), (1130, W, "_sel")):
             c = _components(rgba, (x0, y0, x1, y1), dilate=2, min_px=20000)
             if c:

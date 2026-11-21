@@ -5183,6 +5183,42 @@
    "text_gangsters": "Three kinds of goods off your own ranch. Nobody looks twice at a real farm. Hay's on me. - Benno"
   },
   {
+   "id": "ribbon_1",
+   "cat": "ranch",
+   "need": "flag:show_blue:1",
+   "from": "benno",
+   "give": {
+    "money": 300,
+    "decor": "dc_tt_medal_bronze"
+   },
+   "text": "Your first blue ribbon! The fair sent a little medal for your wall. - Benno",
+   "text_gangsters": "First blue ribbon. The fair sent a medal. Hang it somewhere people see. - Benno"
+  },
+  {
+   "id": "ribbon_3",
+   "cat": "ranch",
+   "need": "flag:show_blue:3",
+   "from": "benno",
+   "give": {
+    "money": 800,
+    "decor": "dc_tt_medal_silver"
+   },
+   "text": "Three blue ribbons. Folks are starting to ask your secret. - Benno",
+   "text_gangsters": "Three blues. The other ranchers are asking questions. Say nothing. - Benno"
+  },
+  {
+   "id": "ribbon_8",
+   "cat": "ranch",
+   "need": "flag:show_blue:8",
+   "from": "benno",
+   "give": {
+    "money": 2000,
+    "decor": "dc_tt_trophy_crystal"
+   },
+   "text": "Eight blue ribbons! The fair had a crystal trophy made with your name on it. - Benno",
+   "text_gangsters": "Eight blues. They had a trophy made with your name on it. Champion of the pens. - Benno"
+  },
+  {
    "id": "ranch_all",
    "cat": "ranch",
    "need": "all",
