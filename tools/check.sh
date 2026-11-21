@@ -1302,3 +1302,10 @@ echo "$p3out" | grep -E "FAIL|SCRIPT ERROR|c14b_p3_test" || true
 if ! echo "$p3out" | grep -q "c14b_p3_test: 0 failures"; then
   echo "c14b_p3_test failed"; exit 1
 fi
+
+echo "== C14b P4: magic and tech areas (ground sparkles, sky veils, motes, strips play out of step, colony glow, moon dusk) =="
+c14bp4out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p4_magic_test.gd 2>&1)"
+echo "$c14bp4out" | grep -E "FAIL|SCRIPT ERROR|c14b_p4_magic_test" || true
+if ! echo "$c14bp4out" | grep -q "c14b_p4_magic_test: 0 failures"; then
+  echo "C14b P4 magic test failed"; exit 1
+fi

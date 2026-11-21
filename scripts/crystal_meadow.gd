@@ -70,6 +70,7 @@ var _gate := EAST_GATE
 
 func after_ready() -> void:
 	set_aurora(GameState.is_penguins())
+	MagicFx.attach(self, "crystal_meadow")  # C14b P4: teal/pink ground sparkles, crystal glints, sky veils, motes
 	WorldGen.add_backdrop(self, "hills" if GameState.is_penguins() else "gritty")
 	if GameState.is_penguins():
 		_catkins = Npc.new()
@@ -101,16 +102,18 @@ func after_ready() -> void:
 				prop("props", "crystal_tree", c, 2)
 			prop("props", "crystal_arch_c", Vector2i(21, 11), 2)
 			var a := AnimatedSprite2D.new()
-			a.sprite_frames = Art.frames("props", {"idle": "star_crater"}, {"idle": 3.0})
+			a.sprite_frames = RegionAnim.frames_for("props", "star_crater", 4.0)  # C14b P4: ping-pong, no snap
 			a.animation = "idle"
 			a.scale = Vector2(0.5, 0.5)
 			a.position = cell_center(Vector2i(28, 22)) + Vector2(8, 0)
 			a.offset = Vector2(0, -float(Art.info("props", "star_crater").get("cell_h", 200)) / 2.0)
 			add_child(a)
 			a.play("idle")
+			RegionAnim.phase(a, Vector2i(28, 22))
+			RegionAnim.of(self).add(a, "star_crater", Vector2i(28, 22))
 			set_thing(28, 23, {"type": "crater", "hint": "A: the fallen star"}, false)
 			var gp := AnimatedSprite2D.new()
-			gp.sprite_frames = Art.frames("props", {"idle": "glow_pond"}, {"idle": 3.0})
+			gp.sprite_frames = RegionAnim.frames_for("props", "glow_pond", 3.5)  # C14b P4: ping-pong, no hard cut back
 			gp.animation = "idle"
 			gp.scale = Vector2(0.5, 0.5)
 			gp.position = cell_center(Vector2i(5, 15)) + Vector2(8, 0)  # bottom at row 16's top: covers rows 14-15, its water cells
