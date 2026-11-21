@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 9 start arc=penguins hero=custom style=farmer progress=2 difficulty=1 day_len=20
+BOT 9 done: 0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "gloam_crystal_thicket", "farm"], day 4, ◆2265
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

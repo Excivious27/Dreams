@@ -1,0 +1,11 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 2 start arc=penguins hero=penguin_f style=story progress=1 difficulty=2 day_len=20
+ERROR: The object does not have any 'meta' values with the key 'sway_tw'.
+   at: get_meta (core/object/object.cpp:1091)
+   GDScript backtrace (most recent call first):
+       [0] _swish (res://scripts/farm.gd:972)
+       [1] sway_grass (res://scripts/farm.gd:960)
+       [2] _grass_step (res://scripts/farm.gd:946)
+       [3] _process (res://scripts/farm.gd:907)
+BOT 2 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "farm", "bf_shattered_vale", "frost_glacier", "frost_caverns", "colony_ember", "town"], day 4, ◆155

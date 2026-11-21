@@ -1,0 +1,527 @@
+{
+ "sha": "cf1f372fa160401e0a1338fdc0dd6afe2900f7b6",
+ "ref": "ci/c15i3-d56be2df",
+ "run": "44924496225",
+ "finished": 1795279277.2192953,
+ "pass": true,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 78,
+  "live_ok": true,
+  "line": "RELAY: ok, 78ms (live code a29f453d8be9, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 54,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "d56be2dfa653031d603f770ea4e5654bcd771ea8",
+  "label": "c15i3",
+  "branch": "c15/integ",
+  "shards": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "bots": true,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 524,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 472,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 524,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 457,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 323,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 391,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 434,
+   "failed_steps": []
+  }
+ ],
+ "bots": [
+  {
+   "bot": 1,
+   "spec": "1 penguins kairi wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 96,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"marsh\", \"lake\", \"wind_s"
+  },
+  {
+   "bot": 2,
+   "spec": "2 penguins penguin_f story 1 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 88,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"mountain\", \"mine\", \"far"
+  },
+  {
+   "bot": 3,
+   "spec": "3 penguins penguin_m fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 176,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes [\"ruins\", \"sky_reaches\", "
+  },
+  {
+   "bot": 4,
+   "spec": "4 penguins merry farmer 0 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 62,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"desert_dune_sea"
+  },
+  {
+   "bot": 5,
+   "spec": "5 penguins coco menus 1 1 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 93,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 334 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"moon\", \"house"
+  },
+  {
+   "bot": 6,
+   "spec": "6 penguins mer story 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 101,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"mine\", \"crystal"
+  },
+  {
+   "bot": 7,
+   "spec": "7 penguins coldy fighter 4 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 175,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes [\"ruins\", \"quarry\", \"wast"
+  },
+  {
+   "bot": 8,
+   "spec": "8 penguins big_jim wander 5 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 101,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"countrysid"
+  },
+  {
+   "bot": 9,
+   "spec": "9 penguins custom farmer 2 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 63,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"house\", \"gloam_crystal_"
+  },
+  {
+   "bot": 10,
+   "spec": "10 penguins pax story 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 99,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"crystal_meadow\", \"moon\""
+  },
+  {
+   "bot": 11,
+   "spec": "11 gangsters dad wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 91,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes [\"moon\", \"iron_freight_ya"
+  },
+  {
+   "bot": 12,
+   "spec": "12 gangsters mom story 1 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 93,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"moon\", \"country"
+  },
+  {
+   "bot": 13,
+   "spec": "13 gangsters june fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 161,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 3 kills, 0 ownerless pauses, scenes [\"desert_sunken_temple\", "
+  },
+  {
+   "bot": 14,
+   "spec": "14 gangsters rafe farmer 0 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 59,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\"], day 4, "
+  },
+  {
+   "bot": 15,
+   "spec": "15 gangsters nia menus 3 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 94,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 302 steps, 0 kills, 0 ownerless pauses, scenes [\"uptown\", \"moon\", \"mount"
+  },
+  {
+   "bot": 16,
+   "spec": "16 gangsters ollie story 4 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 95,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\", \"mountai"
+  },
+  {
+   "bot": 17,
+   "spec": "17 gangsters marisol fighter 5 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 190,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes [\"jungle\", \"wastes\", \"glo"
+  },
+  {
+   "bot": 18,
+   "spec": "18 gangsters bo wander 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 90,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"sky\", \"lak"
+  },
+  {
+   "bot": 19,
+   "spec": "19 gangsters custom story 2 1 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 98,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes [\"sky\", \"mountain\", \"hide"
+  },
+  {
+   "bot": 20,
+   "spec": "20 gangsters pax menus 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 115,
+   "attempts": 1,
+   "first_rc": null,
+   "first_line": "",
+   "done": true,
+   "script_errors": 0,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 344 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"beach\", \"neon"
+  }
+ ],
+ "errors": [
+  [
+   "SCRIPT ERROR: Invalid access to property or key 'process_frame' on a base object of type 'null instance'.",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 238.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 140.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 106.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 105.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 90.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 88.7
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 57.7
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 49.3
+  },
+  {
+   "step": 175,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 46.7
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 45.1
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 44.5
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 43.3
+  },
+  {
+   "step": 198,
+   "name": "C13 P6: ambience map (no silent place, both arcs, seasons, times, rain",
+   "rc": 0,
+   "secs": 42.3
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 40.7
+  },
+  {
+   "step": 51,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 39.9
+  }
+ ]
+}
