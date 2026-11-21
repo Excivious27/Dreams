@@ -91,6 +91,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 ## Log (newest first, 30 lines max)
 
+- 2026-11-20 21:55 C11b docs: report docs/reports/CONDUCT-11b.md (183 findings, 7 packages + art lane + integration, final CI c11bi4b PASS), Guide 37, TEXTS['11b'] in build_package.py, 9 new inventory rows (whole game ~79%), PROJECT-MEMORY C11b entry, STATUS entry; branch c11b/docs.
 - 2026-11-20 21:13 C11b integ: bot20 softlock root cause = Book button of an already-closed menu (under the campaign board) opened the Decor catalogue, whose close restored the board's full-screen modal after the board had gone; fixed in decor_catalogue.gd/collection_screen.gd + decor_catalogue_test.
 - 2026-11-20 C11a ranching core: 9 classic animals both arcs (gen_ranch, Ranch, RanchFarm), coop/barn/hutch/sty/apiary/silo tiers, grazing + silo feeder, goods with stars, breeding (no gender checks) + incubator, rehome (never meat), Ranching skill tree (14th), Mayo Machine + Honey Extractor, team animals (TeamAnimals/TeamBeast) + overnight Chores, Bramble, Animal Show/Best Egg, market stalls, 25 renders (slice_c11a); integration CI 2x PASS, final CI pending; report docs/reports/CONDUCT-11a.md, Guide 36.
 - 2026-11-20 12:45 CONDUCT 10b pushed (61 farmhouse styles, yard decorating with 169 outdoor pieces, Tess the carpenter, The Gilded Ace casino in Gilt City, wardrobe on every hero, shop rotation fix); CI c10b2 PASS.
