@@ -1,0 +1,18 @@
+arc        scene                   load  ldframe    cover  cpu_med  cpu_p95  draws  texMB  memMB  verdict
+penguins   title                    422      325       96     6.90     6.92     25     17    190  ok
+penguins   farm                    1310       95     1565     6.90     9.26    262     59    290  ok
+penguins   town                     744       61      910     6.90     6.93    134     82    298  ok
+penguins   meadow                   224       51      489     6.90     8.65    173     91    293  ok
+penguins   mine                     320       33      320     6.90     8.65    139     52    294  ok
+penguins   gilt_grand_plaza        1228       59     1378     6.90     8.76    181     79    298  ok
+penguins   bf_neon_block            296       32      429     6.90     8.68    211     94    303  ok
+penguins   community_farm           358       63      539     6.90     8.66    157     88    304  ok
+penguins   gloam_lanternfall        400       73      596     6.90     8.67    331     91    303  ok
+penguins   crystal_meadow           351      105      599     6.90     8.65    522    104    304  ok
+penguins   beach                    440       63      590     6.90     8.66    192    108    309  ok
+gangsters  farm                    1300      903     1680     6.90     9.18    256     51    286  FAIL
+gangsters  town                     752       60      922     6.90     6.91    136     74    292  ok
+gangsters  mine                     287       29      287     6.90     8.70    159     43    291  ok
+gangsters  iron_junction            407       66      551     6.90     8.65    142     70    294  ok
+gangsters  docks                    242       51      438     6.90     8.71    174     82    297  ok
+DECK PERF: FAIL gangsters/farm: load frame 903 > 900 ms

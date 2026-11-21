@@ -1,0 +1,11 @@
+CONDUCT CI PASS  b93aba2360  (ci/c16ai2-6ab3f7a7, run 44935146345)
+
+subset run: shards [1, 2], bots off, playtest on
+check shards (2/2):
+  shard 1: PASS  450s
+  shard 2: PASS  339s
+playtest: PASS  62s  21 screenshots (results playtest/shots/)
+
+longest job: 450s
+slowest check steps: import 144.8s; import 134.6s; smoke test 53.8s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.4s; music: every map has a song; web streaming works offline 35.1s; music_stream_test 29.7s; crop_test 28.0s; gang_play_test 20.4s
+distinct errors/fails/warns:
