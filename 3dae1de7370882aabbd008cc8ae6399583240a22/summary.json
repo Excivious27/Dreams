@@ -1,0 +1,149 @@
+{
+ "sha": "3dae1de7370882aabbd008cc8ae6399583240a22",
+ "ref": "ci/c11bp2-c95b449c",
+ "run": "44849888053",
+ "finished": 1795224723.449347,
+ "pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 64,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "c95b449cc0296597bf1c69ea7df6425fdef0d10c",
+  "label": "c11bp2",
+  "branch": "c11bf/p2",
+  "shards": [
+   1,
+   3
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 280,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 280,
+   "failed_steps": [
+    "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 238,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL unique has a live grant key: dc_show_trophy",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 91.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 90.0
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 50.8
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.4
+  },
+  {
+   "step": 28,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 23.0
+  },
+  {
+   "step": 46,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 14.2
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 13.3
+  },
+  {
+   "step": 34,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 11.6
+  },
+  {
+   "step": 104,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 16,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 10.7
+  },
+  {
+   "step": 110,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 9.4
+  },
+  {
+   "step": 70,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.1
+  },
+  {
+   "step": 112,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 8.3
+  },
+  {
+   "step": 82,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 8.0
+  },
+  {
+   "step": 122,
+   "name": "toasts: never over a boss card, a region card, the pup strip or the en",
+   "rc": 0,
+   "secs": 7.5
+  }
+ ]
+}
