@@ -1,0 +1,254 @@
+{
+ "sha": "fefa75d3c8cc7e69b812d77ca822bd91a971c96a",
+ "ref": "ci/c17p6-6cf631cc",
+ "run": "44939811855",
+ "finished": 1795289125.3000798,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 3,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 3,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 54,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 15s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 54ms (live code a29f453d8be9, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 45,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "6cf631ccc190e38e7c7380ec70d14bf7dfa81672",
+  "label": "c17p6",
+  "branch": "c17f/p6",
+  "shards": [
+   1,
+   2,
+   4
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 398,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 398,
+   "failed_steps": [
+    "story: every chapter plays to the end",
+    "steam co-op: web build never parses Steam code (backend object, load b"
+   ]
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 271,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 313,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL penguins: beat c16b_won_countryside ready ({ \"flag\": \"campaign_countryside\", \"not_flag\": \"long_way_countryside\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_countryside ready ({ \"flag\": \"long_way_countryside\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_docks ready ({ \"flag\": \"campaign_docks\", \"not_flag\": \"long_way_docks\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_docks ready ({ \"flag\": \"long_way_docks\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_neon ready ({ \"flag\": \"campaign_neon\", \"not_flag\": \"long_way_neon\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_neon ready ({ \"flag\": \"long_way_neon\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_underground ready ({ \"flag\": \"campaign_underground\", \"not_flag\": \"long_way_underground\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_underground ready ({ \"flag\": \"long_way_underground\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_won_uptown ready ({ \"flag\": \"campaign_uptown\", \"not_flag\": \"long_way_uptown\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: beat c16b_long_uptown ready ({ \"flag\": \"long_way_uptown\", \"arc\": \"gangsters\" })",
+   1
+  ],
+  [
+   "FAIL penguins: all 61 beats played",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_won_wastes ready ({ \"flag\": \"campaign_wastes\", \"not_flag\": \"long_way_wastes\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_long_wastes ready ({ \"flag\": \"long_way_wastes\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_won_sky ready ({ \"flag\": \"campaign_sky\", \"not_flag\": \"long_way_sky\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: beat c16b_long_sky ready ({ \"flag\": \"long_way_sky\", \"arc\": \"penguins\" })",
+   1
+  ],
+  [
+   "FAIL gangsters: all 63 beats played",
+   1
+  ],
+  [
+   "FAIL net_transport_steam.gd names the Steam singleton (go through the backend object)",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 104.0
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 86.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 57.2
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 53.5
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.3
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 38.9
+  },
+  {
+   "step": 86,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 34.9
+  },
+  {
+   "step": 87,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 29.8
+  },
+  {
+   "step": 51,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 27.4
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 20.6
+  },
+  {
+   "step": 129,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 16.6
+  },
+  {
+   "step": 225,
+   "name": "C15 P6: festival activities driven (egg hunt persists + kids, lantern,",
+   "rc": 0,
+   "secs": 14.5
+  },
+  {
+   "step": 122,
+   "name": "story: every chapter plays to the end",
+   "rc": 1,
+   "secs": 12.9
+  },
+  {
+   "step": 21,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 10.8
+  },
+  {
+   "step": 113,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 10.8
+  }
+ ]
+}

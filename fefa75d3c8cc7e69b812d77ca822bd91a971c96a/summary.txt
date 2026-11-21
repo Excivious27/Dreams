@@ -1,0 +1,31 @@
+CONDUCT CI FAIL  fefa75d3c8  (ci/c17p6-6cf631cc, run 44939811855)
+
+subset run: shards [1, 2, 4], bots off, playtest on
+check shards (3/3):
+  shard 1: FAIL  398s  failed: story: every chapter plays to the end, steam co-op: web build never parses Steam code (backend object, load b
+  shard 2: PASS  271s
+  shard 4: PASS  313s
+playtest: PASS  45s  21 screenshots (results playtest/shots/)
+RELAY: ok, 54ms (live code a29f453d8be9, this server/)
+NET E2E: ok, 15s
+
+longest job: 398s
+slowest check steps: import 104.0s; import 86.5s; import 57.2s; smoke test 53.5s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.3s; exits and spawns 38.9s; music: every map has a song; web streaming works offline 34.9s; music_stream_test 29.8s
+distinct errors/fails/warns:
+    1  FAIL penguins: beat c16b_won_countryside ready ({ "flag": "campaign_countryside", "not_flag": "long_way_countryside", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_countryside ready ({ "flag": "long_way_countryside", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_docks ready ({ "flag": "campaign_docks", "not_flag": "long_way_docks", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_docks ready ({ "flag": "long_way_docks", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_neon ready ({ "flag": "campaign_neon", "not_flag": "long_way_neon", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_neon ready ({ "flag": "long_way_neon", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_underground ready ({ "flag": "campaign_underground", "not_flag": "long_way_underground", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_underground ready ({ "flag": "long_way_underground", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_uptown ready ({ "flag": "campaign_uptown", "not_flag": "long_way_uptown", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_uptown ready ({ "flag": "long_way_uptown", "arc": "gangsters" })
+    1  FAIL penguins: all 61 beats played
+    1  FAIL gangsters: beat c16b_won_wastes ready ({ "flag": "campaign_wastes", "not_flag": "long_way_wastes", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_long_wastes ready ({ "flag": "long_way_wastes", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_won_sky ready ({ "flag": "campaign_sky", "not_flag": "long_way_sky", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_long_sky ready ({ "flag": "long_way_sky", "arc": "penguins" })
+    1  FAIL gangsters: all 63 beats played
+    1  FAIL net_transport_steam.gd names the Steam singleton (go through the backend object)
