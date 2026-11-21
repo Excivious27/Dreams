@@ -162,6 +162,13 @@ static func region_open(scene: String) -> bool:
 	return st()["open"].has(scene)
 
 
+## C17 P3 (c17_05-09): may we walk into this region? Our own story, or (visit-only)
+## a region the host opened. Only border walking/travel uses it; region_open stays
+## "my story opened it" for colonies, marinas, goal lines and the board.
+static func can_visit(scene: String) -> bool:
+	return region_open(scene) or CampaignFollow.host_opened(scene)
+
+
 ## "" when this campaign can be fought now, else why not.
 static func why_locked(cid: String) -> String:
 	var c := get_c(cid)
@@ -1107,6 +1114,11 @@ const VISIT_GATE := "This border is held in your own story. You can open it from
 static func blocks(m: GameMap, scene: String) -> bool:
 	if bypass or m == null or scene == m.scene_id() or GameState.run.is_empty() or region_open(scene):
 		return false
+	if can_visit(scene):   # C17 P3 (c17_05-01): follow the host past a border THEY opened, visit-only
+		CampaignFollow.tell_once(m, scene)
+		return false
+	if Net.visiting():
+		CampaignFollow.hook()   # no word from the host yet: ask (the next bump may pass)
 	var now := PlayClock.ms()  # c16b_15-09: game time, like every gameplay timer
 	if absi(now - _last_offer) > 1500 and not Dialogue.instance(m.get_tree()).active:
 		_last_offer = now

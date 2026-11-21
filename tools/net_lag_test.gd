@@ -283,6 +283,29 @@ func _map_tests() -> void:
 		nn._solo_backup = ob
 		nn._host = oh
 		scr.queue_free()
+	# Follow the host past a border THEY opened (visit-only, nothing saved).
+	var reg := "wastes" if Campaign.gate_of("wastes") != "" else str((Campaign.all()[Campaign.for_arc()[0]] as Dictionary).get("region", ""))
+	Campaign.bypass = false
+	var nn2: NetNode = Net.i()
+	var ob2: Dictionary = nn2._solo_backup
+	var oh2: bool = nn2._host
+	(Campaign.st()["open"] as Dictionary).erase(reg)
+	var open_before := JSON.stringify(Campaign.st())
+	CampaignFollow.hook()
+	nn2._host = false
+	nn2._solo_backup = {"probe": true}
+	check(not Campaign.region_open(reg) and not Campaign.can_visit(reg) and Campaign.blocks(mi, reg), "visiting, %s held in both stories: the border holds" % reg)
+	CampaignFollow._inst._on_open("1", {"regions": [reg]})
+	check(Campaign.can_visit(reg) and not Campaign.region_open(reg), "host opened %s: the guest may follow (can_visit), own story still holds it" % reg)
+	check(not Campaign.blocks(mi, reg), "the border lets the visiting guest through")
+	check(JSON.stringify(Campaign.st()) == open_before, "the guest's own campaign is untouched (nothing opened, settled or saved)")
+	nn2._solo_backup = ob2
+	nn2._host = oh2
+	CampaignFollow.hook()
+	check(not Campaign.can_visit(reg), "home again: the host's list is gone")
+	Campaign.st()["open"][reg] = true
+	check(CampaignFollow.my_open().has(reg), "the host's answer lists its own open regions")
+	Campaign.bypass = true
 
 
 func _guard_tests() -> void:

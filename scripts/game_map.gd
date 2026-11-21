@@ -206,6 +206,7 @@ func _ready() -> void:
 	TeamBeast.spawn_all(self)  # C11a P4: trained team animals walk with you outdoors
 
 	if Net.online():
+		CampaignFollow.hook()  # C17 P3 hook: host-opened borders for visiting guests
 		Net.peers_changed.connect(_sync_puppets)
 		_sync_puppets()
 		Net.send_scene(scene_id())
