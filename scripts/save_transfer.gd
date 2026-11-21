@@ -421,6 +421,15 @@ static func save_file(host: Node, code: String, done: Callable) -> void:
 		JavaScriptBridge.download_buffer(code.to_utf8_buffer(), fname, "text/plain")
 		done.call(true, fname)
 		return
+	if pad_files():
+		# S1 s1_08-07: no OS file dialog with only a pad (Deck Gaming Mode).
+		DirAccess.make_dir_recursive_absolute(BackupPicker.DIR)
+		var bf := FileAccess.open(BackupPicker.DIR + "/" + fname, FileAccess.WRITE)
+		if bf != null:
+			bf.store_string(code)
+			bf.close()
+		done.call(bf != null, "backups/" + fname)
+		return
 	var fd := _dialog(host, FileDialog.FILE_MODE_SAVE_FILE)
 	fd.current_file = fname
 	fd.file_selected.connect(func(path: String) -> void:
@@ -445,6 +454,9 @@ static func open_file(host: Node, done: Callable) -> void:
 i.onchange=function(){var f=i.files&&i.files[0];if(!f){return;}var r=new FileReader();r.onload=function(){window.dreamsTextIn(String(r.result||''));};r.readAsText(f);};
 i.click();})();""", true)
 		return
+	if pad_files():
+		BackupPicker.open(host, done)  # S1 s1_08-07: in-game list of user://backups
+		return
 	var fd := _dialog(host, FileDialog.FILE_MODE_OPEN_FILE)
 	fd.file_selected.connect(func(path: String) -> void:
 		var txt := FileAccess.get_file_as_string(path)
@@ -454,6 +466,18 @@ i.click();})();""", true)
 		fd.queue_free()
 		done.call(""))
 	fd.popup_centered_ratio(0.9)
+
+
+## Tests: force the pad-friendly file path (1) or the OS dialog (0).
+static var pad_files_force := -1
+
+
+## Native builds driven by a controller (or on the Deck) keep backups in
+## user://backups/ and pick them from BackupPicker instead of the OS dialog.
+static func pad_files() -> bool:
+	if pad_files_force >= 0:
+		return pad_files_force == 1
+	return not OS.has_feature("web") and (PadInput.using_pad() or DisplayMode.is_deck())
 
 
 static func _dialog(host: Node, mode: int) -> FileDialog:

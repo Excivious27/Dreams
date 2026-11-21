@@ -919,6 +919,26 @@ if ! echo "$padout" | grep -q "pad_test: 0 failures"; then
   echo "pad_test failed"; exit 1
 fi
 
+echo "== S1 P3: Deck typing, glyphs, text floor, desktop display =="
+dkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/deck_input_test.gd 2>&1)"
+echo "$dkout" | grep -E "FAIL|SCRIPT ERROR|deck_input_test" || true
+if echo "$dkout" | grep -q "SCRIPT ERROR" || ! echo "$dkout" | grep -q "deck_input_test: 0 failures"; then
+  echo "deck_input_test failed"; exit 1
+fi
+
+echo "== S1 P3: no new touch words outside PadInput.words =="
+python3 tools/prompt_words_check.py || { echo "prompt_words_check failed"; exit 1; }
+
+echo "== S1 P3: Steam Deck text floor (drawn text scan) =="
+python3 tools/deck_font_scan.py || { echo "deck_font_scan failed"; exit 1; }
+
+echo "== S1 P3: Steam Deck text floor (every screen at 1280x800) =="
+dtout="$("$GODOT" --headless --path . -s res://tools/deck_text_test.gd 2>&1)"
+echo "$dtout" | grep -E "ISSUE|SCRIPT ERROR|deck_text_test" | head -40 || true
+if echo "$dtout" | grep -q "SCRIPT ERROR" || ! echo "$dtout" | grep -q "deck_text_test: 0 issue(s)"; then
+  echo "deck_text_test failed"; exit 1
+fi
+
 echo "== C9 P2: game menu with keys/pad =="
 mpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_pad_test.gd 2>&1)"
 echo "$mpout" | grep -E "FAIL|SCRIPT ERROR|menu_pad_test" || true

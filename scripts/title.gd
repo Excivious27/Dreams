@@ -105,7 +105,7 @@ func _process(_dt: float) -> void:
 
 func _label(text: String, size: int = 10, center := true) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = PadInput.words(text)  # S1 s1_08-06
 	l.add_theme_font_size_override("font_size", size)
 	l.add_theme_constant_override("outline_size", 4 if size > 14 else 2)
 	l.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.15, 0.9))

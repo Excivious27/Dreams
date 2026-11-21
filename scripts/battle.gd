@@ -1175,7 +1175,7 @@ func _draw_hud() -> void:
 		if str(p["owner"]) == "enemy":
 			_hud.draw_line(pc + Vector2(-4.5, 4.5), pc + Vector2(4.5, -4.5), Color(0.15, 0.02, 0.02, 0.9), 1.5)
 	for i in points.size():
-		_hud.draw_string(f, Vector2(x0 + i * 14 + 2, y + 5.5), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_CENTER, 10, 7, Color(0.08, 0.08, 0.08))
+		_hud.draw_string(f, Vector2(x0 + i * 14 + 2, y + 5.5), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_CENTER, 10, DisplayMode.df(7), Color(0.08, 0.08, 0.08))
 	# Who is bleeding tickets (the side holding fewer points), and supply income.
 	var oa := _owned("ally")
 	var oe := _owned("enemy")

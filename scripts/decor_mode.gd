@@ -1719,7 +1719,7 @@ func _step(d: Vector2i, pan := true) -> void:
 
 func _say(t: String) -> void:
 	if _status:
-		_status.text = t
+		_status.text = PadInput.words(t)  # S1 s1_08-06
 
 
 func _refresh(pan := true) -> void:

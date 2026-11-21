@@ -269,7 +269,7 @@ func toggle() -> void:
 
 func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = PadInput.words(text)  # S1 s1_08-06: no touch words on a pad
 	l.add_theme_font_size_override("font_size", Settings.font(size))  # Options > Text size (C9)
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1706,7 +1706,7 @@ func _draw_map(m: Control) -> void:
 		var nm := str(names.get(k, k.capitalize()))
 		if not visited:
 			nm = "?"
-		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), nm, HORIZONTAL_ALIGNMENT_CENTER, b.size.x, 7, Color(0.1, 0.1, 0.1))
+		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), nm, HORIZONTAL_ALIGNMENT_CENTER, b.size.x, DisplayMode.df(7), Color(0.1, 0.1, 0.1))
 	if boxes.has(here):
 		var scene := get_tree().current_scene
 		var b: Rect2 = boxes[here]
@@ -1746,8 +1746,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 			_draw_lock(m, p + Vector2(0, -5))
 			if not visited:
 				var cn := str(Campaign.get_c(Campaign.gate_of(k)).get("region_name", k.capitalize()))
-				m.draw_string_outline(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, 3, Color(1, 0.95, 0.8, 0.8))
-				m.draw_string(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, Color(0.35, 0.1, 0.05))
+				m.draw_string_outline(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, DisplayMode.df(6), 3, Color(1, 0.95, 0.8, 0.8))
+				m.draw_string(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, DisplayMode.df(6), Color(0.35, 0.1, 0.05))
 				continue
 		var icon := str(PIN_ICON.get(k, ""))
 		if icon != "" and Art.has("ui", icon):
@@ -1757,8 +1757,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		else:
 			m.draw_circle(p, 3.0, Color(0.9, 0.3, 0.2))
 		var nm := str(names.get(k, k.capitalize()))
-		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, 3, Color(1, 0.95, 0.8, 0.9))
-		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
+		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), 3, Color(1, 0.95, 0.8, 0.9))
+		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(6), Color(0.1, 0.08, 0.05))
 	MegaMap.valley_gates(m, font, PINS, org, sz)
 	if PINS.has(here) and MegaRegion.region_of(here) == "":
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz

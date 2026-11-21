@@ -3954,12 +3954,12 @@ func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, lab
 	var dx := (x + w / 2.0) * TILE - TILE / 2.0
 	draw_rect(Rect2(dx, (y + h - 1) * TILE, TILE, TILE), Color("3a2412"))
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, 7, Color(1, 1, 0.85))
+	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 func label(text: String, at: Vector2, w := 64.0) -> void:
 	var font := ThemeDB.fallback_font
-	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, 7, Color(1, 1, 0.85))
+	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 ## Raised ground with a real cliff face under its southern edge (W28/W29 sets).

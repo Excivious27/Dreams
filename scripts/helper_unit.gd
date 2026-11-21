@@ -481,8 +481,8 @@ func _draw_team(c: Color) -> void:
 		_spr.modulate = Color(1.6, 1.6, 1.6) if _hurt > 0.0 else Color.WHITE
 	var f := ThemeDB.fallback_font
 	var top := -30.0 - 7.0 * tag_row
-	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, 3, Color(0, 0, 0, 0.8))
-	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, Color(0.75, 0.95, 1.0))
+	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(6), 3, Color(0, 0, 0, 0.8))
+	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(6), Color(0.75, 0.95, 1.0))
 	if hp < max_hp:
 		_ally_bar(Rect2(-7, top, 14, 1.5))
 	if _zap_t > 0.0 and _zap_to != Vector2.INF:

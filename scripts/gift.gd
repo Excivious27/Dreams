@@ -507,8 +507,8 @@ func _draw() -> void:
 			var nm := str(Marked.all().get(str(e.get_meta("marked")), {}).get("epithet", ""))
 			var f := ThemeDB.fallback_font
 			var w := f.get_string_size(nm, HORIZONTAL_ALIGNMENT_LEFT, -1, 6).x
-			draw_string_outline(f, e.position + Vector2(-w / 2.0, -40), nm, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0.05, 0.05, 0.1))
-			draw_string(f, e.position + Vector2(-w / 2.0, -40), nm, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, col)
+			draw_string_outline(f, e.position + Vector2(-w / 2.0, -40), nm, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(6), 2, Color(0.05, 0.05, 0.1))
+			draw_string(f, e.position + Vector2(-w / 2.0, -40), nm, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(6), col)
 		if _pull > 0.0:
 			for k in 3:
 				draw_arc(e.position, 70.0 - fmod(Time.get_ticks_msec() / 14.0 + k * 22.0, 66.0), 0, TAU, 32, Color(col.r, col.g, col.b, 0.35), 1.0, true)
