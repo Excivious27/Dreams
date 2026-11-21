@@ -8,7 +8,7 @@
   shadows  (c14_17-02, c14_17-12) helpers / enemies / animals: magenta key residue in the
            lower 45% of each frame (hue near #FF00FF, r ~ b, g low) becomes the shared
            translucent black ground shadow.
-Usage: python3 tools/c14_art_clean.py badges|shadows [--dry] [--sheet out.png]
+Usage: python3 tools/c14_art_clean.py badges|shadows|holes|fringe [--dry] [--sheet out.png]
 Prints every file it changed; --dry changes nothing; --sheet writes a before/after sheet.
 """
 import json
@@ -134,6 +134,40 @@ def fill_holes(a, most):
     return out if n else None
 
 
+# fringe (c14_12-23): magenta key fringe on cave/mine/quarry props, edge pixels only.
+FRINGE_WORDS = ("stalag", "cave_cart", "cave_rail", "cave_mush", "icicle", "rubble", "mine_")
+FRINGE_SKIP = ("crystal", "heart", "amethyst", "void")
+
+
+def defringe(a):
+    al = a[..., 3] > 0
+    r, g, b = (a[..., i].astype(int) for i in range(3))
+    mag = al & (np.minimum(r, b) > 110) & (np.abs(r - b) < 70) & (g < 0.6 * np.minimum(r, b))
+    edge = al & ndimage.binary_dilation(~al, iterations=2)
+    hit = mag & edge
+    if hit.sum() < 3:
+        return None
+    out = a.copy()
+    good = al & ~mag
+    for y, x in zip(*np.where(hit)):
+        y0, y1, x0, x1 = max(0, y - 2), y + 3, max(0, x - 2), x + 3
+        m = good[y0:y1, x0:x1]
+        if m.any():
+            out[y, x, :3] = a[y0:y1, x0:x1][m][:, :3].mean(axis=0).astype(np.uint8)
+        else:
+            out[y, x, 3] = 0
+    return out
+
+
+def fringe_files():
+    for group, items in MAN.items():
+        if group not in ("props", "nature") or not isinstance(items, dict):
+            continue
+        for name, info in items.items():
+            if any(w in name for w in FRINGE_WORDS) and not any(w in name for w in FRINGE_SKIP):
+                yield info["file"]
+
+
 def hole_files():
     for k, most in HOLES.items():
         p = os.path.join(GEN, k)
@@ -175,7 +209,19 @@ def main():
             pairs.append((a, out))
             if not dry:
                 write(rel, out)
-    for rel, info in ([] if kind == "holes" else files(kind)):
+    if kind == "fringe":
+        for rel in sorted(set(fringe_files())):
+            if not os.path.exists(os.path.join(GEN, rel)):
+                continue
+            a = np.array(Image.open(os.path.join(GEN, rel)).convert("RGBA"))
+            out = defringe(a)
+            if out is None:
+                continue
+            print(rel)
+            pairs.append((a, out))
+            if not dry:
+                write(rel, out)
+    for rel, info in ([] if kind in ("holes", "fringe") else files(kind)):
         if rel in seen or not os.path.exists(os.path.join(GEN, rel)):
             continue
         seen.add(rel)
