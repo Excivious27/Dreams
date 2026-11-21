@@ -45,12 +45,19 @@ func step(delta: float, target: Vector2, seq := -1, teleport := false) -> Vector
 	if not _has or teleport:
 		reset(target)
 		return _shown
+	var fresh := false
 	if seq >= 0:
 		if seq <= _last_seq:
 			target = _last_target   # an old packet came late: ignore it
 		else:
 			_last_seq = seq
-	if target != _last_target:
+			fresh = true
+	if target == _last_target and fresh and t - float(_buf[-1][0]) > 0.05:
+		# A new packet at the same spot: they stand there now (ends any extrapolation).
+		_buf.append([t, target])
+		while _buf.size() > KEEP:
+			_buf.pop_front()
+	elif target != _last_target:
 		var prev: Vector2 = _buf[-1][1]
 		var dt := maxf(0.05, t - float(_buf[-1][0]))
 		var jump := target.distance_to(prev)
@@ -86,9 +93,13 @@ func _sample(rt: float) -> Vector2:
 	if span2 <= 0.0 or span2 > 1.0:
 		return b2[1]
 	var v := ((b2[1] as Vector2) - (a2[1] as Vector2)) / span2
-	var over := minf(rt - float(b2[0]), EXTRAP)
-	# Ease out over the extrapolation window so it stops softly.
+	var past := rt - float(b2[0])
+	var over := minf(past, EXTRAP)
+	# Ease out over the extrapolation window so it stops softly; with still no
+	# word after that, glide back to the last known spot (no drift through walls).
 	var k := over * (1.0 - 0.5 * over / EXTRAP)
+	if past > EXTRAP:
+		k *= 1.0 - clampf((past - EXTRAP) / 0.25, 0.0, 1.0)
 	return (b2[1] as Vector2) + v * k
 
 

@@ -209,8 +209,11 @@ func _shared_floor() -> Dictionary:
 	if not Net.online() or force_solo_layout:
 		return {}
 	var best := {}
-	for id in Net.peers:
-		var info: Dictionary = Net.peers[id]
+	var all: Dictionary = Net.roster()
+	for id in all:
+		var info: Dictionary = all[id]
+		if bool(info.get("me", false)):
+			continue
 		var f := parse_net_scene(str(info.get("scene", "")))
 		if f.is_empty() or int(f["floor"]) != floor_no or MineLayouts.style(str(f["style"])).is_empty():
 			continue
@@ -1575,25 +1578,25 @@ var world_redraws := 0   # tests: host world syncs that repainted the floor
 
 
 func _net_hook() -> void:
-	if Net.has_method("on_msg") and not _break_cb.is_valid():
+	if not _break_cb.is_valid():
 		_break_cb = _on_net_break
-		Net.call("on_msg", "mine_break", _break_cb)
+		Net.on_msg("mine_break", _break_cb)
 
 
 func _net_unhook() -> void:
-	if _break_cb.is_valid() and Net.has_method("off_msg"):
-		Net.call("off_msg", "mine_break", _break_cb)
+	if _break_cb.is_valid():
+		Net.off_msg("mine_break", _break_cb)
 	_break_cb = Callable()
 
 
 func _net_break(c: Vector2i) -> void:
-	if not Net.online() or not Net.has_method("on_msg"):
+	if not Net.online():
 		return
 	var d := {"scene": net_scene(), "c": [c.x, c.y]}
 	if Net.is_host():
-		Net.call("broadcast", "mine_break", d)
+		Net.broadcast("mine_break", d)
 	else:
-		Net.call("send_host", "mine_break", d)
+		Net.send_host("mine_break", d)
 
 
 func _on_net_break(_from: Variant, d: Dictionary) -> void:
@@ -1605,7 +1608,7 @@ func _on_net_break(_from: Variant, d: Dictionary) -> void:
 	var c := Vector2i(int(cv[0]), int(cv[1]))
 	if apply_remote_break(c) and Net.is_host():
 		_try_more(1)   # the guest's digging wakes the keeper here too
-		Net.call("broadcast", "mine_break", d)
+		Net.broadcast("mine_break", d)
 
 
 ## Take a partner's broken rock or crate off this floor (no loot, no xp). True if one went.

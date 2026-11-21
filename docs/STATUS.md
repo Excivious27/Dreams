@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C17 P3: co-op mines/rooms/phone conditions - per-room net_scene (interior:<id>, mine:<floor>:...), shared mine floor + mine_break sync, time-only syncs no longer repaint the mine, floor progress keyed by visit day, guests never run their parked campaign fight on a friend's world (Battle/Campaign.finish/_long_settle), puppets skip the freeze safety, NEW NetLag shim + PuppetSmooth + tools/net_lag_test.gd
+
 ## 2026-11-21 — C16b integ: P1-P5 merged; one on_win per win via Campaign.finish with Battle perf stats; rematch API; gang node names/provisions; captain boss cards; drill gang point names; brief NEW HERE and STARS rows; test tools/c16b_integ_test.gd
 
 ## 2026-11-21 — C16b P4: battle reward ladder (BattleRewards + gen_battle_rewards: stars 1-3, rank-up/rematch pay, 4 chest tiers per arc with icons, first-clear trophies, mastery pieces + legacy uniques, star track, battle bonds) and campaign board fixes (optional-battle intro, earned stars vs foe-level dots, row states, YOU WIN brief, next campaign, long way/rematch buttons, actions fit, 7 px floor).

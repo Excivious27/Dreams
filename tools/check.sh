@@ -1520,3 +1520,10 @@ echo "$nrout" | grep -E "FAIL|SCRIPT ERROR|net_router_test" || true
 if ! echo "$nrout" | grep -q "net_router_test: [0-9]* checks, 0 failures"; then
   echo "net_router_test failed"; exit 1
 fi
+
+echo "== C17 P3 phone conditions + co-op rooms: NetLag shim, PuppetSmooth, shared mine floor, interior keys, guest campaign guard (tools/net_lag_test.gd) =="
+nlag="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_lag_test.gd 2>&1)"
+echo "$nlag" | grep -E "FAIL|SCRIPT ERROR|net_lag_test" || true
+if ! echo "$nlag" | grep -q "net_lag_test: PASS (0 fails)"; then
+  echo "net_lag_test failed"; exit 1
+fi
