@@ -77,6 +77,19 @@ except Exception:
 art_meta = {}
 if os.path.exists(f"{R}/art/gen/animals/_ranch_art.json"):
     art_meta = json.load(open(f"{R}/art/gen/animals/_ranch_art.json"))
+if os.path.exists(f"{R}/art/gen/animals/_ranch_art_c11b.json"):  # C11b exotic/fantastic/lab table (tools/slice_c11b.py)
+    for _k, _v in json.load(open(f"{R}/art/gen/animals/_ranch_art_c11b.json")).items():
+        if isinstance(_v, list):
+            art_meta[_k] = list(art_meta.get(_k, [])) + [x for x in _v if x not in art_meta.get(_k, [])]
+        elif isinstance(_v, dict) and _k.startswith("_"):
+            for _a, _b in _v.items():
+                if isinstance(_b, list):
+                    art_meta.setdefault(_k, {}).setdefault(_a, [])
+                    art_meta[_k][_a] = list(art_meta[_k][_a]) + [x for x in _b if x not in art_meta[_k][_a]]
+                else:
+                    art_meta.setdefault(_k, {})[_a] = _b
+        else:
+            art_meta.setdefault(_k, _v)
 species = {k: v for k, v in art_meta.items() if not k.startswith("_")}  # P6 kinds: the full pose set
 # ranch.json species (gen_ranch schema: art.adult, art.variants[].art, art.baby [kind, strip], art.shorn): idle strips.
 for sp, d in sorted((ranch.get("species") or {}).items() if isinstance(ranch.get("species"), dict) else []):

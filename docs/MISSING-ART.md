@@ -22,13 +22,17 @@ Everything below shows a code-drawn stand-in today.
 
 - none
 
-## Skill node icons (0)
+## Skill node icons (1)
 
-- none
+- farming: 1 node icons (item-icon fallback) - farming_2_4
 
-## Ranch (0)
+## Ranch (5)
 
-- none
+- bees: animals/bees (no strips)
+- chicken: animals/chicken (no strips)
+- cow: animals/cow (no strips)
+- duck: animals/duck (no strips)
+- rabbit: animals/rabbit (no strips)
 
 ## Broken art to redraw (0)
 
