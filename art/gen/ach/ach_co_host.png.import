@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ach_co_host.png-4acb3022ee0fb70564db3e2afc339
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
