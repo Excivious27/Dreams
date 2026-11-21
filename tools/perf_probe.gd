@@ -170,9 +170,21 @@ func _run() -> void:
 				"headless": DisplayServer.get_name() == "headless",
 				"draws": draws, "nodes": int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)),
 				"mem_mb": snappedf(Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0, 0.1),
-				"tex_mb": snappedf(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, 0.1), "left_to": left_to}))
+				"tex_mb": snappedf(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, 0.1), "left_to": left_to}.merged(_anim_counts(m))))
 	print("perf_probe: done")
 	quit()
+
+
+## C14b animation budget counters (Anim.budget) for the map in view.
+func _anim_counts(m: Node) -> Dictionary:
+	if m == null or not is_instance_valid(m):
+		return {}
+	var view := Rect2()
+	var cam := root.get_viewport().get_camera_2d()
+	if cam:
+		var sz := Vector2(270, 480) / cam.zoom
+		view = Rect2(cam.get_screen_center_position() - sz / 2.0, sz)
+	return Anim.budget(m, view)
 
 
 ## arcade:<id> (jumper, stack, whack, claw, gallery): the cabinet over the Rec Center

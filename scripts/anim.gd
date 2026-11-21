@@ -22,8 +22,8 @@ const WEATHER_WIND := {"clear": 0.25, "sun": 0.25, "fireflies": 0.2, "petals": 0
 	"fog": 0.1, "rain": 0.6, "drizzle": 0.45, "hail": 0.7, "snow": 0.4, "wind": 0.9, "storm": 1.0,
 	"blizzard": 1.0, "sandstorm": 0.9, "dust": 0.6, "ash": 0.3, "meteors": 0.2}
 const REDUCED_AMP := 0.3
-## Sway strength steps get one shared material each (trees 1.0, bushes 0.6, grass/crops 1.3, cloth 1.8).
-const STRENGTHS := [0.4, 0.6, 1.0, 1.3, 1.8]
+## Sway strength steps get one shared material each (bushes/hedges/snowy 0.5, trees/flowers 1.0, grass/crops/cloth 1.6): 3 materials max.
+const STRENGTHS := [0.5, 1.0, 1.6]
 
 static var _data: Dictionary = {}
 static var _loaded := false
@@ -290,3 +290,41 @@ static func _reset() -> void:
 	_frame = -1
 	_loaded = false
 	_data = {}
+
+
+## C14b animation budget counters for a map (perf_probe PERF_JSON, anim_budget_test):
+## anim = AnimatedSprite2D total, anim_onscreen = inside `view` (world rect),
+## proc = nodes processing, mats = distinct ShaderMaterial instances (hit-flash excluded), lock = groups
+## of 3+ anim_props on one strip all on the same frame and speed (lockstep).
+static func budget(root: Node, view := Rect2()) -> Dictionary:
+	var out := {"anim": 0, "anim_onscreen": 0, "proc": 0, "mats": 0, "lock": 0}
+	var mats := {}
+	var groups := {}
+	for n in root.find_children("*", "", true, false):
+		if n.is_processing():
+			out["proc"] += 1
+		if n is CanvasItem:
+			var mt: Material = (n as CanvasItem).material
+			if mt is ShaderMaterial and not (mt as ShaderMaterial).shader.resource_path.ends_with("flash.gdshader"):
+				mats[mt.get_instance_id()] = true  # (per-character hit-flash materials are state, counted apart)
+		if n is AnimatedSprite2D:
+			var a := n as AnimatedSprite2D
+			if not a.is_visible_in_tree():
+				continue
+			out["anim"] += 1
+			if view.has_area() and view.has_point(a.global_position):
+				out["anim_onscreen"] += 1
+			if a.is_playing() and a.animation == "idle" and a.get_script() == null and a.sprite_frames and a.sprite_frames.get_frame_count(a.animation) > 1:
+				var key := str(a.sprite_frames.get_instance_id())
+				if not groups.has(key):
+					groups[key] = {}
+				groups[key][str(a.frame) + ":" + str(snappedf(a.speed_scale, 0.01))] = int(groups[key].get(str(a.frame) + ":" + str(snappedf(a.speed_scale, 0.01)), 0)) + 1
+	out["mats"] = mats.size()
+	for key: String in groups:
+		var g: Dictionary = groups[key]
+		var total := 0
+		for v: int in g.values():
+			total += v
+		if total >= 3 and g.size() == 1:
+			out["lock"] += 1
+	return out

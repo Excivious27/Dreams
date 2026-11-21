@@ -1474,6 +1474,7 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
+	a.set_meta("anim_ph", true)
 	Anim.apply(a, group + "/" + name)  # C14b P1: random start frame, speed variance, data fps/ping-pong (no lockstep)
 	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
 		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
@@ -5272,6 +5273,24 @@ static func _crisp_later(w: WeakRef) -> void:
 	var n: Variant = w.get_ref()
 	if n != null and is_instance_valid(n):
 		CrispArt.apply_anim(n as AnimatedSprite2D)
+		_phase_later(n as AnimatedSprite2D)
+
+
+## C14b (c14b_17-03): any looping ambient strip placed straight on the map (or on a
+## plain script-less holder) gets a random start frame + speed variance, so props
+## made outside anim_prop never animate in lockstep either. Characters keep theirs.
+const PHASE_SKIP := ["player", "npc", "crew", "pet", "companion", "paper_doll", "remote_player"]
+static func _phase_later(a: AnimatedSprite2D) -> void:
+	var p := a.get_parent()
+	if a.get_script() != null or p == null or a.has_meta("anim_ph") or not a.is_playing():
+		return
+	var ps: Script = p.get_script()
+	if ps != null and str(ps.resource_path).get_file().get_basename() in PHASE_SKIP:
+		return  # player/villagers/crew/pets: P5's idles own their timing
+	if not (p is Node2D):
+		return
+	a.set_meta("anim_ph", true)
+	Anim.apply(a, "")
 
 
 ## Underground places keep one steady dimness instead of the outdoor sky clock,

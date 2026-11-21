@@ -1257,3 +1257,10 @@ echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|weather_fx_test" || true
 if ! echo "$wfout" | grep -q "weather_fx_test: 0 failures"; then
   echo "weather_fx_test failed"; exit 1
 fi
+
+echo "== anim budget (C14b P1) =="
+about="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_budget_test.gd 2>&1)"
+echo "$about" | grep -E "FAIL|SCRIPT ERROR|anim_budget_test" || true
+if ! echo "$about" | grep -q "anim_budget_test: 0 failures"; then
+  echo "anim_budget_test failed"; exit 1
+fi
