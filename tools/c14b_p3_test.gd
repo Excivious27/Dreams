@@ -119,6 +119,20 @@ func _run() -> void:
 	await _frames(400)
 	check(fsk._stars.is_empty() and fsk._bursts.is_empty(), "bursts and stars expire")
 
+	# station fx
+	check(StationFx.kind_of("furnace") == "st_smoke" and StationFx.kind_of("kitchen") == "st_steam" and StationFx.kind_of("jeweler") == "st_sparks", "station fx kinds")
+	var stn := Sprite2D.new()
+	stn.scale = Vector2(0.5, 0.5)
+	host.add_child(stn)
+	GameState.run["jobs"] = {"furnace": [{"id": "x", "done_at": Crafting.now_abs() + 600}]}
+	var sfx := StationFx.attach(stn, "furnace", 64.0)
+	await _frames(70)
+	check(sfx != null and sfx._busy and not sfx._ready_job, "a running job shows the station working")
+	check(sfx._fx == null or sfx._fx.modulate.a > 0.3, "smoke fades in while busy")
+	GameState.run["jobs"]["furnace"][0]["done_at"] = Crafting.now_abs() - 1
+	await _frames(70)
+	check(sfx._ready_job and not sfx._busy, "a finished job shows the ready marker")
+
 	# farm crop layer shader
 	check(ResourceLoader.exists("res://shaders/crop_sway.gdshader") and load("res://shaders/crop_sway.gdshader") is Shader, "crop sway shader loads")
 	print("c14b_p3_test: %d failures" % fails)

@@ -2315,6 +2315,7 @@ func _place_props() -> void:
 			add_child(st)
 			st.play("idle")
 			_desync(st, c)  # C14b P3 (c14b_14-21)
+			StationFx.attach(st, id, float(Art.info("stations", station_anim).get("cell_h", 64)))  # C14b P3 (c14b_04-09)
 			blocked[c] = true
 			continue
 		if str(b.get("anim", "")) == "windmill3" and Art.has("props", "c14bp3_windmill_body") and Art.has("props", "c14bp3_windmill_sails"):
