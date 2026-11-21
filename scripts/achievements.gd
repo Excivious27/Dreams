@@ -384,7 +384,7 @@ static func _service() -> Node:
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree == null:
 		return null
-	return tree.root.get_node_or_null("SteamService")
+	return tree.root.get_node_or_null("SteamSvc")
 
 
 static func _steam_live() -> bool:

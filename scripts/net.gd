@@ -219,9 +219,9 @@ func steam_ready() -> bool:
 func _steam_obj() -> Object:
 	if steam_backend != null:
 		return steam_backend
-	var svc := get_node_or_null("/root/SteamService") if is_inside_tree() else null
-	if svc and svc.has_method("ready") and bool(svc.call("ready")):
-		var b: Variant = svc.get("backend")
+	var svc := get_node_or_null("/root/SteamSvc") if is_inside_tree() else null
+	if svc and svc.has_method("is_live") and bool(svc.call("is_live")):
+		var b: Variant = svc.call("steam_object") if svc.has_method("steam_object") else null
 		if b is Object:
 			return b
 		if Engine.has_singleton("Steam"):
