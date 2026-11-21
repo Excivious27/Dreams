@@ -367,9 +367,11 @@ for bid, tier, cost in [('house', 2, {'plank': 80, 'brick': 60, 'nails': 30, 'co
 # The Ranching tree gates the hutch and sty (blueprints) and every tier 3 (skill level).
 RJ = json.load(open(D + 'ranch.json')) if os.path.exists(D + 'ranch.json') else {}
 RB = RJ.get('buildings', {}) if isinstance(RJ.get('buildings'), dict) else {}
-RANCH_HOME = {'coop': 'coop', 'barn': 'barn', 'hutch': 'hutch', 'sty': 'sty', 'beehive': 'apiary', 'stable': 'stable'}
+RANCH_HOME = {'coop': 'coop', 'barn': 'barn', 'hutch': 'hutch', 'sty': 'sty', 'beehive': 'apiary', 'stable': 'stable',
+              'enclosure': 'enclosure', 'aviary': 'aviary', 'terrarium': 'terrarium', 'tide_pool': 'tide_pool', 'ember_pit': 'ember_pit', 'star_dome': 'star_dome'}
+RANCH_ARC = {h: a for h, a in RJ.get('home_arc', {}).items()}  # penguin-arc habitats (gen_ranch HOME_ARC)
 ADDS_WORD = {'feeder': 'a silo feeder', 'incubator': 'an incubator', 'auto_water': 'automatic water', 'heater': 'a heater for winter',
-             'breeding': 'a breeding pen'}
+             'breeding': 'a breeding pen', 'perch': 'perches', 'big_stall': 'big stalls', 'moon_lamp': 'a moon lamp'}
 def bart(*names):
     for n in names:
         for g in ('props', 'buildings', 'stations'):  # legacy props first; P6's new tiers live in buildings/
@@ -378,27 +380,43 @@ def bart(*names):
 #  id: (label, seller, seller_gangsters, thing, default cell/w/h, [(name, gang name, sprites, cost, permit, days, unlock, desc)])
 RANCH = {
  'coop': ('Coop', 'Hazel', 'The crew', '', ([26, 8], 3, 3), [
-   ('Coop', 'Coop', ['coop_1', 'coop_small'], {'wood': 120, 'stone': 40}, 100, 1, {}, 'Chickens: eggs every morning you care for them.'),
-   ('Big Coop', 'Big Coop', ['coop_2', 'coop_big'], {'plank': 60, 'nails': 30, 'copper_bar': 3}, 400, 2, {'skill': ['building', 3]}, 'Room for ducks too; birds eat silo hay.'),
-   ('Deluxe Coop', 'Deluxe Coop', ['coop_3', 'coop_deluxe', 'coop_big'], {'hardwood_plank': 20, 'glass': 12, 'iron_bar': 6}, 900, 3, {'skill': ['ranching', 5], 'progress': 1}, 'The biggest flock, warm all winter.')]),
+   ('Coop', 'Coop', ['coop_1', 'coop_small'], {'wood': 120, 'stone': 40}, 500, 1, {}, 'Chickens: eggs every morning you care for them.'),
+   ('Big Coop', 'Big Coop', ['coop_2', 'coop_big'], {'plank': 60, 'nails': 30, 'copper_bar': 3}, 1800, 2, {'skill': ['building', 3]}, 'Room for ducks too; birds eat silo hay.'),
+   ('Deluxe Coop', 'Deluxe Coop', ['coop_3', 'coop_deluxe', 'coop_big'], {'hardwood_plank': 20, 'glass': 12, 'iron_bar': 6}, 4500, 3, {'skill': ['ranching', 5], 'progress': 1}, 'The biggest flock, warm all winter.')]),
  'barn': ('Barn', 'Benno', 'The crew', '', ([32, 5], 4, 3), [
-   ('Barn', 'Barn', ['barn_1', 'barn_small'], {'wood': 200, 'stone': 80}, 200, 2, {}, 'Cows and sheep: milk and wool.'),
-   ('Big Barn', 'Big Barn', ['barn_2', 'barn_big'], {'beam': 30, 'brick': 60, 'iron_bar': 4}, 800, 3, {'skill': ['building', 5]}, 'Goats and llamas too; barn animals eat silo hay.'),
-   ('Deluxe Barn', 'Deluxe Barn', ['barn_3', 'barn_deluxe', 'barn_big'], {'beam': 40, 'tile': 30, 'steel_bar': 6}, 1600, 3, {'skill': ['ranching', 7], 'progress': 2}, 'The biggest herd, warm all winter.')]),
+   ('Barn', 'Barn', ['barn_1', 'barn_small'], {'wood': 200, 'stone': 80}, 1000, 2, {}, 'Cows and sheep: milk and wool.'),
+   ('Big Barn', 'Big Barn', ['barn_2', 'barn_big'], {'beam': 30, 'brick': 60, 'iron_bar': 4}, 3500, 3, {'skill': ['building', 5]}, 'Goats and llamas too; barn animals eat silo hay.'),
+   ('Deluxe Barn', 'Deluxe Barn', ['barn_3', 'barn_deluxe', 'barn_big'], {'beam': 40, 'tile': 30, 'steel_bar': 6}, 8000, 3, {'skill': ['ranching', 7], 'progress': 2}, 'A big herd, warm all winter.'),
+   ('Grand Barn', 'Freight Barn', ['barn_4'], {'beam': 60, 'steel_bar': 10, 'glass': 20}, 15000, 4, {'skill': ['ranching', 9], 'progress': 3}, 'The biggest herd, with big stalls and a paddock in the pasture.')]),
  'hutch': ('Rabbit Hutch', 'Hazel', 'The crew', 'hutch', ([38, 9], 2, 2), [
-   ('Rabbit Hutch', 'Rabbit Hutch', ['hutch_1', 'coop_small'], {'wood': 60, 'fiber': 20, 'plank': 10}, 80, 1, {}, 'Rabbits: soft fur for the loom.'),
-   ('Big Hutch', 'Big Hutch', ['hutch_2', 'hutch_1', 'coop_small'], {'plank': 30, 'nails': 16, 'copper_bar': 2}, 300, 2, {'skill': ['ranching', 4]}, 'More rabbits.')]),
+   ('Rabbit Hutch', 'Rabbit Hutch', ['hutch_1', 'coop_small'], {'wood': 60, 'fiber': 20, 'plank': 10}, 400, 1, {}, 'Rabbits: soft fur for the loom.'),
+   ('Big Hutch', 'Big Hutch', ['hutch_2', 'hutch_1', 'coop_small'], {'plank': 30, 'nails': 16, 'copper_bar': 2}, 1500, 2, {'skill': ['ranching', 4]}, 'More rabbits.')]),
  'sty': ('Pig Sty', 'Benno', 'The crew', 'sty', ([41, 9], 3, 2), [
-   ('Pig Sty', 'Pig Pen', ['sty_1', 'pig_pen'], {'wood': 100, 'stone': 40}, 150, 1, {}, 'Pigs: they dig up truffles outdoors.'),
-   ('Big Sty', 'Big Pig Pen', ['sty_2', 'sty_1', 'pig_pen'], {'plank': 40, 'brick': 30, 'iron_bar': 3}, 500, 2, {'skill': ['ranching', 6]}, 'More pigs.')]),
+   ('Pig Sty', 'Pig Pen', ['sty_1', 'pig_pen'], {'wood': 100, 'stone': 40}, 1200, 1, {}, 'Pigs: they dig up truffles outdoors.'),
+   ('Big Sty', 'Big Pig Pen', ['sty_2', 'sty_1', 'pig_pen'], {'plank': 40, 'brick': 30, 'iron_bar': 3}, 4000, 2, {'skill': ['ranching', 6]}, 'More pigs.')]),
  'beehive': ('Apiary', 'Hazel', 'The crew', 'beehive', ([29, 19], 0, 1), [
-   ('Beehive', 'Beehive', ['apiary_1', 'beehive3_a'], {'wood': 15, 'fiber': 10}, 0, 0, {}, 'Honey every few days; flowers nearby make it finer.'),
-   ('Bee House', 'Bee House', ['apiary_2', 'beehive2', 'beehive3_b'], {'plank': 20, 'nails': 10, 'glass': 4}, 0, 1, {'skill': ['ranching', 3]}, 'More hives, more honey.'),
-   ('Apiary', 'Apiary', ['apiary_3', 'apiary_2', 'ri_beehive4', 'beehive3_b'], {'hardwood_plank': 10, 'glass': 10, 'gear': 2}, 200, 2, {'skill': ['ranching', 6]}, 'A whole row of hives.')]),
+   ('Beehive', 'Beehive', ['apiary_1', 'beehive3_a'], {'wood': 15, 'fiber': 10}, 150, 0, {}, 'Honey every few days; flowers nearby make it finer.'),
+   ('Bee House', 'Bee House', ['apiary_2', 'beehive2', 'beehive3_b'], {'plank': 20, 'nails': 10, 'glass': 4}, 600, 1, {'skill': ['ranching', 3]}, 'More hives, more honey.'),
+   ('Apiary', 'Apiary', ['apiary_3', 'apiary_2', 'ri_beehive4', 'beehive3_b'], {'hardwood_plank': 10, 'glass': 10, 'gear': 2}, 1500, 2, {'skill': ['ranching', 6]}, 'A whole row of hives.')]),
  'silo': ('Silo', 'Benno', 'The crew', 'silo', ([30, 4], 1, 3), [
-   ('Silo', 'Silo', ['silo_1', 'silo2'], {'stone': 60, 'wood': 30}, 50, 1, {}, 'Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.'),
-   ('Tall Silo', 'Tall Silo', ['silo_2', 'farm_silo_b', 'silo2'], {'brick': 60, 'plank': 30, 'iron_bar': 2}, 200, 1, {'skill': ['ranching', 2]}, 'Stores 480 hay: enough for a winter with a full coop.'),
-   ('Twin Silo', 'Twin Silo', ['silo_3', 'farm_silo_b', 'silo2'], {'brick': 100, 'beam': 12, 'steel_bar': 3}, 500, 2, {'skill': ['ranching', 5]}, 'Stores 720 hay: a whole ranch through winter.')]),
+   ('Silo', 'Silo', ['silo_1', 'silo2'], {'stone': 60, 'wood': 30}, 200, 1, {}, 'Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.'),
+   ('Tall Silo', 'Tall Silo', ['silo_2', 'farm_silo_b', 'silo2'], {'brick': 60, 'plank': 30, 'iron_bar': 2}, 800, 1, {'skill': ['ranching', 2]}, 'Stores 480 hay: enough for a winter with a full coop.'),
+   ('Twin Silo', 'Twin Silo', ['silo_3', 'farm_silo_b', 'silo2'], {'brick': 100, 'beam': 12, 'steel_bar': 3}, 2000, 2, {'skill': ['ranching', 5]}, 'Stores 720 hay: a whole ranch through winter.')]),
+ 'enclosure': ('Exotic Enclosure', 'Hazel', 'The crew', '', ([50, 13], 4, 3), [
+   ('Exotic Enclosure', 'Exotics Yard', ['enclosure_1'], {'beam': 20, 'plank': 60, 'iron_bar': 4}, 3000, 2, {'skill': ['ranching', 5], 'progress': 1}, 'A big sandy run with a shade roof: ostriches and emus.'),
+   ('Grand Enclosure', 'Big Exotics Yard', ['enclosure_2'], {'beam': 40, 'brick': 80, 'gold_bar': 3}, 7500, 3, {'skill': ['ranching', 8], 'progress': 2}, 'Warm rocks and a big-egg incubator: room for a drake.')]),
+ 'aviary': ('Aviary', 'Hazel', 'The crew', '', ([57, 13], 3, 3), [
+   ('Aviary', 'Drone Loft', ['aviary_1'], {'plank': 50, 'nails': 30, 'iron_bar': 3}, 2000, 2, {'skill': ['ranching', 4], 'progress': 1}, 'A tall mesh house with perches: peacocks and big flying birds.'),
+   ('Grand Aviary', 'Big Drone Loft', ['aviary_2'], {'hardwood_plank': 20, 'glass': 16, 'gold_bar': 2}, 5000, 3, {'skill': ['ranching', 7], 'progress': 2}, 'More perches, an incubator and a heater.')]),
+ 'terrarium': ('Terrarium', 'Posy', 'The crew', '', ([40, 19], 3, 2), [
+   ('Terrarium', 'Grow Tank', ['terrarium_1'], {'glass': 20, 'plank': 20, 'copper_bar': 3}, 1500, 2, {'skill': ['ranching', 4], 'progress': 1}, 'A warm glass house: tortoises, geckos and glowing bugs.'),
+   ('Grand Terrarium', 'Big Grow Tank', ['terrarium_2'], {'crystal_glass': 4, 'glass': 20, 'iron_bar': 4}, 4000, 3, {'skill': ['ranching', 7], 'progress': 2}, 'Misters and room for little ones.')]),
+ 'tide_pool': ('Tide Pool', 'Hazel', 'The crew', '', ([45, 19], 3, 2), [
+   ('Tide Pool', 'Tide Pool', ['tide_pool_1'], {'stone': 80, 'glass': 12, 'clay_pot': 6}, 3000, 2, {'skill': ['ranching', 6], 'progress': 3}, 'A cool salt-water pool for creatures from the sea.')]),
+ 'ember_pit': ('Ember Pit', 'Hazel', 'The crew', '', ([50, 19], 2, 2), [
+   ('Ember Pit', 'Ember Pit', ['ember_pit_1'], {'brick': 60, 'stone': 40, 'coal': 20}, 2500, 2, {'skill': ['ranching', 6], 'progress': 3}, 'Warm rocks that glow all year: newts love it.')]),
+ 'star_dome': ('Star Dome', 'Hazel', 'The crew', '', ([55, 19], 3, 3), [
+   ('Star Dome', 'Star Dome', ['star_dome_1'], {'crystal_glass': 6, 'moon_bar': 2, 'beam': 20}, 4000, 3, {'skill': ['ranching', 7], 'progress': 3}, 'A night-sky dome for creatures from the Moon and the far north.')]),
  'stable': ('Stable', 'Benno', 'The crew', '', ([32, 11], 3, 3), [
    ('Stable', 'Stable', ['stable_1', 'stable2'], {'wood': 150, 'iron_bar': 2}, 300, 2, {'friend': ['benno', 2]}, 'Your horse sleeps here; it rides 10% faster.')]),
 }
@@ -423,6 +441,7 @@ for bid, (label, seller, gseller, thing, (cell, w, h), tiers) in RANCH.items():
     e = {'label': label, 'cell': list(rb0.get('cell', old.get('cell', cell))), 'w': int(rb0.get('w', old.get('w', w))),
          'h': int(rb0.get('h', old.get('h', h))), 'group': 'props', 'cat': 'farm', 'seller': seller, 'ranch': home}
     if thing: e['thing'] = thing
+    if RANCH_ARC.get(home): e['arc'] = RANCH_ARC[home]
     for k in ('anim',):
         if k in old: e[k] = old[k]
     e['tiers'] = []
@@ -480,14 +499,6 @@ books['kiln'] = [rc('brick', 'Brick', {'clay': 1}, n=2), rc('stone_brick', 'Bric
 books['mayo'] = [rc('mayonnaise', 'Mayonnaise', {'egg': 1}), rc('duck_mayonnaise', 'Duck Mayonnaise', {'duck_egg': 1}, tier=2)]
 books['extractor'] = [rc('honey_comb', 'Honey (from honeycomb)', {'honeycomb': 1}, 'honey', 1, 2), rc('beeswax', 'Beeswax', {'honeycomb': 1}, n=2),
  rc('honey_jar', 'Jar of Honey', {'honey': 3, 'glass': 1}, tier=2), rc('beeswax_candle', 'Beeswax Candle', {'beeswax': 2, 'fiber': 1}, tier=2)]
-# Raw goods that only exist once tools/gen_ranch.py has written them (C11a P1): recipes join when their inputs do.
-for bk, r in [('mayo', rc('big_mayo', 'Mayonnaise (big egg)', {'large_egg': 1}, 'mayonnaise', 2, 2)),
-              ('mayo', rc('golden_mayo', 'Mayonnaise (golden egg)', {'golden_egg': 1}, 'duck_mayonnaise', 2, 6)),
-              ('loom', rc('down_pillow', 'Down Pillow', {'feather': 2, 'cloth': 1})),
-              ('loom', rc('angora_yarn', 'Yarn (rabbit fur)', {'rabbit_fur': 1}, 'yarn', 1, 3)),
-              ('press', rc('big_cheese', 'Cheese (big milk)', {'large_milk': 1}, 'cheese', 1, 2))]:
-    if all(k in I for k in r['need']):
-        books[bk].append(r)
 books['jeweler'] = keep('copper_ring', 'paw_charm', 'silver_ring', 'ruby_ring', 'crystal_lens', 'pup_collar_crystal', 'crystal_crown', 'light_charm', 'moon_ring', 'dream_charm')
 books['cauldron'] = keep('herb_remedy', 'energy_tea', 'potion', 'dream_tonic', 'cloud_walkers') + [
  rc('hearth_brew', 'Hearth Brew', {'#herb': 1, 'honey': 1, 'clay_pot': 1}), rc('mana_potion', 'Mana Potion', {'flower': 2, 'glass': 1, 'light_mote': 1}, tier=2),
@@ -538,6 +549,44 @@ books['robot'] = [rc('servo', 'Servo', {'gear': 2, 'spring': 1}, n=2), rc('scrap
 # +1 tempering for every set, the Neon Jacket.
 SLOTS = {'helm': 2, 'chest': 4, 'legs': 3, 'boots': 2, 'gloves': 1, 'shield': 3, 'cape': 2, 'belt': 1}   # same bar counts as the copper..gold sets
 # 1) Crystal set: anvil recipe tier 4 (needs Smithy t3 + Mining Lv7), the step after gold
+# Raw goods that only exist once tools/gen_ranch.py has written them (C11a P1): recipes join when their inputs do.
+for bk, r in [('mayo', rc('big_mayo', 'Mayonnaise (big egg)', {'large_egg': 1}, 'mayonnaise', 2, 2)),
+              ('mayo', rc('golden_mayo', 'Mayonnaise (golden egg)', {'golden_egg': 1}, 'duck_mayonnaise', 2, 6)),
+              ('loom', rc('down_pillow', 'Down Pillow', {'feather': 2, 'cloth': 1})),
+              ('loom', rc('angora_yarn', 'Yarn (rabbit fur)', {'rabbit_fur': 1}, 'yarn', 1, 3)),
+              ('press', rc('big_cheese', 'Cheese (big milk)', {'large_milk': 1}, 'cheese', 1, 2)),
+              # C11b creature goods (c11b_01-07, c11b_03-03): every new good goes somewhere, ~1.2-2.4x like the classics
+              ('kitchen', rc('grand_omelette', 'Grand Omelette', {'ostrich_egg': 1, '#herb': 1}, tier=2)),
+              ('kitchen', rc('grand_omelette_emu', 'Grand Omelette (emu egg)', {'emu_egg': 1, '#herb': 1, 'butter': 1}, 'grand_omelette', 2)),
+              ('kitchen', rc('giant_egg_custard', 'Giant Egg Custard', {'crystal_egg': 1, 'milk': 1, 'honey': 1}, tier=3)),
+              ('kitchen', rc('giant_egg_custard_emu', 'Giant Egg Custard (emu egg)', {'emu_egg': 1, 'milk': 1}, 'giant_egg_custard', 2)),
+              ('loom', rc('fine_yarn', 'Fine Yarn', {'alpaca_fleece': 1}, tier=2)),
+              ('loom', rc('fine_yarn_yak', 'Fine Yarn (yak wool)', {'yak_wool': 1}, 'fine_yarn', 2)),
+              ('loom', rc('star_yarn', 'Star Yarn', {'star_wool': 1}, tier=3)),
+              ('loom', rc('star_yarn_moon', 'Star Yarn (moon fluff)', {'moon_fluff': 2}, 'star_yarn', 3)),
+              ('loom', rc('star_yarn_aurora', 'Star Yarn (aurora tuft)', {'aurora_tuft': 2}, 'star_yarn', 3)),
+              ('loom', rc('cloud_yarn', 'Cloud Yarn', {'storm_fluff': 1}, tier=3)),
+              ('loom', rc('glow_yarn', 'Glow Yarn', {'glow_wool': 1}, tier=2)),
+              ('loom', rc('glow_yarn_static', 'Glow Yarn (static fluff)', {'static_fluff': 1}, 'glow_yarn', 2)),
+              ('loom', rc('wisp_silk', 'Glow Silk (wisp thread)', {'wisp_thread': 1}, 'glow_silk', 3)),
+              ('loom', rc('glow_silk_fabric', 'Fine Fabric (glow silk)', {'glow_silk': 1, 'cotton_cloth': 1}, 'fine_fabric', 3)),
+              ('loom', rc('feather_fan', 'Feather Fan', {'peacock_feather': 2}, tier=2)),
+              ('loom', rc('feather_fan_plume', 'Feather Fan (plumes)', {'plume': 2}, 'feather_fan', 2)),
+              ('loom', rc('feather_fan_roc', 'Feather Fan (roc feather)', {'roc_feather': 1, 'cloth': 1}, 'feather_fan', 3)),
+              ('press', rc('buffalo_mozzarella', 'Buffalo Mozzarella', {'buffalo_milk': 1}, tier=2)),
+              ('press', rc('moon_cheese', 'Moon Cheese', {'moon_milk': 1}, tier=3)),
+              ('press', rc('sea_cheese', 'Cheese (sea milk)', {'sea_milk': 1}, 'cheese', 2, 2)),
+              ('press', rc('moss_tea_blend', 'Moss Tea Blend', {'shell_moss': 1, '#herb': 1}, tier=2)),
+              ('jeweler', rc('scale_charm', 'Scale Charm', {'shed_scale': 1, 'silver_bar': 1}, tier=3)),
+              ('jeweler', rc('ember_charm', 'Ember Charm', {'ember_scale': 1, 'copper_bar': 1}, tier=2)),
+              ('hack', rc('crack_circuit_egg', 'Crack a Circuit Egg', {'circuit_egg': 1}, 'circuit_board', 1, 2)),
+              ('hack', rc('crack_alloy_egg', 'Crack an Alloy Egg', {'alloy_egg': 1}, 'circuit_board', 3, 6)),
+              ('robot', rc('battery_coolant', 'Crystal Battery (coolant)', {'coolant': 6, 'copper_bar': 1}, 'crystal_battery', 3)),
+              ('robot', rc('battery_synth', 'Crystal Battery (synth milk)', {'synth_milk': 6, 'copper_bar': 1}, 'crystal_battery', 3)),
+              ('robot', rc('battery_static', 'Crystal Battery (static scales)', {'static_scale': 4, 'copper_bar': 1}, 'crystal_battery', 3))]:
+    if all(k in I or k.startswith('#') for k in r['need']) and r['give'] in I:
+        books[bk] = [x for x in books[bk] if x['id'] != r['id']]   # kitchen/mill books are read back from recipes.json
+        books[bk].append(r)
 books['anvil'] += [rc('crystal_' + s, I['crystal_' + s]['name'], {'crystal_refined': n, 'gold_bar': 1, 'leather': 1}, tier=4) for s, n in SLOTS.items()]
 # 2) Moon set: anvil recipe tier 5 (Starforge t4 + Mining Lv9): one or two moon bars, not four
 books['anvil'] += [rc('moon_' + s, I['moon_' + s]['name'], {'moon_bar': 1 if n <= 2 else 2, 'crystal_refined': n, 'fine_leather': 1}, tier=5) for s, n in SLOTS.items()]

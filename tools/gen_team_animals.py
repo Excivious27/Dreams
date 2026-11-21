@@ -76,6 +76,7 @@ ALIASES = {
     "goat_kid": "goat", "goat2": "goat", "kid_goat": "goat", "llama_cria": "llama", "llama_b": "llama",
     "foal": "donkey", "donkey_b": "donkey", "foal_b": "donkey", "lamb": "sheep", "sheep_woolly": "sheep",
     "chicken": "hen", "chick": "hen", "duckling": "duck",
+    "chrome_hen": "hen", "glow_sheep": "sheep", "circuit_goat": "goat", "alpaca": "llama",  # C11b P1 hook (c11b_03-08)
 }
 
 NAMES = ["Biscuit", "Clover", "Pepper", "Maple", "Juniper", "Waffles", "Pebble", "Thistle", "Nutmeg", "Bramble",

@@ -1,11 +1,15 @@
 {
  "aliases": {
+  "alpaca": "llama",
   "chick": "hen",
   "chicken": "hen",
+  "chrome_hen": "hen",
+  "circuit_goat": "goat",
   "donkey_b": "donkey",
   "duckling": "duck",
   "foal": "donkey",
   "foal_b": "donkey",
+  "glow_sheep": "sheep",
   "goat2": "goat",
   "goat_kid": "goat",
   "kid_goat": "goat",

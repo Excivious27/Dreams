@@ -68,14 +68,21 @@ func _run() -> void:
 		for sid: String in sp_all:
 			var sel := Shops.seller_of(sid)
 			ok(sel != "", "%s %s: has a seller" % [arc, sid])
+			# C11b: earned creatures (buy.price 0: quests, regions, the Gene Splicer) and the other arc's creatures
+			# are never on a counter.
+			var spd: Dictionary = sp_all[sid]
+			if int((spd.get("buy", {}) as Dictionary).get("price", 0)) <= 0 or str(spd.get("arc", "")) not in ["", arc]:
+				ok(not Shops.animals_for(sel).has(sid), "%s %s: earned or other-arc, not sold" % [arc, sid])
+				continue
 			ok(Shops.animals_for(sel).has(sid), "%s %s: on %s's animal counter" % [arc, sid, sel])
 			var reach := sel == "tam" or not Shops.ranch_counters(str(Shops.seller_row(sel).get("interior", ""))).filter(func(t: Dictionary) -> bool: return t["shop"] == sel).is_empty()
 			ok(reach, "%s %s: %s has a counter Shops.run reaches" % [arc, sid, sel])
 			ok(Shops.animal_name(sid) != "", "%s %s: has a name" % [arc, sid])
 		ok(Shops.seller_greet("hazel") != "" and Shops.seller_greet("posy") != "", "%s: Hazel and Posy have counter words" % arc)
 		ok(not Shops.seller_greet("hazel").to_lower().contains("crystal") or arc == "penguins", "%s: no crystal words in the gangster arc" % arc)
-		ok(Shops.animals_for("hazel") == ["chicken", "duck", "cow", "pig"], "%s: Hazel's list, cheapest first: %s" % [arc, str(Shops.animals_for("hazel"))])
-		ok(Shops.animals_for("posy") == ["rabbit", "bees"], "%s: Posy's list: %s" % [arc, str(Shops.animals_for("posy"))])
+		ok(Shops.animals_for("hazel") == ["chicken", "duck", "cow", "peacock", "pig", "emu", "ostrich"],  # C11b exotics
+			"%s: Hazel's list, cheapest first: %s" % [arc, str(Shops.animals_for("hazel"))])
+		ok(Shops.animals_for("posy") == ["rabbit", "bees", "tortoise"], "%s: Posy's list: %s" % [arc, str(Shops.animals_for("posy"))])
 		# Posy away: Hazel sells rabbits and hives, and the bakery counter is gone.
 		GameState.run["flags"]["posy_gone"] = true
 		ok(Shops.seller_of("rabbit") == "hazel" and Shops.animals_for("hazel").has("bees"), "%s: Posy away -> Hazel sells rabbits and hives" % arc)
@@ -144,7 +151,7 @@ func _ui(arc: String) -> void:
 		run_done[0] = true
 	go.call()
 	var opts := await _choice_texts()
-	ok(opts.size() == 5, "%s: Hazel's counter lists 4 animals + a way out (%s)" % [arc, str(opts)])
+	ok(opts.filter(func(o: Variant) -> bool: return not Dialogue.is_way_out(str(o))).size() == 7 and Dialogue.is_way_out(str(opts[-1])), "%s: Hazel's counter lists 7 animals + a way out (%s)" % [arc, str(opts)])
 	ok(not opts.is_empty() and Dialogue.is_way_out(str(opts[-1])), "%s: last option is a way out" % arc)
 	ok(not opts.is_empty() and str(opts[0]).contains(Money.fmt(400)), "%s: price through Money.fmt (%s)" % [arc, str(opts[0]) if not opts.is_empty() else ""])
 	ok(opts.size() > 1 and str(opts[1]).contains("needs"), "%s: duck row says why not (%s)" % [arc, str(opts[1]) if opts.size() > 1 else ""])
@@ -172,7 +179,7 @@ func _ui(arc: String) -> void:
 		run_done[0] = true
 	go2.call()
 	opts = await _choice_texts()
-	ok(opts.size() == 3 and Dialogue.is_way_out(str(opts[-1])), "%s: Posy lists rabbits, hives and a way out (%s)" % [arc, str(opts)])
+	ok(opts.size() == 4 and Dialogue.is_way_out(str(opts[-1])), "%s: Posy lists rabbits, hives, tortoises and a way out (%s)" % [arc, str(opts)])
 	var r0 := Ranch.roster("hutch").size()
 	await _pick(0)
 	ok(Ranch.roster("hutch").size() == r0 + 1 and str(Ranch.animal(str(Ranch.roster("hutch")[-1])).get("species", "")) == "rabbit", "%s: bought a rabbit from Posy" % arc)

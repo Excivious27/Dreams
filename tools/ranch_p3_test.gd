@@ -62,7 +62,7 @@ func _run() -> void:
 		# Building tiers
 		for bid in ["coop", "barn", "beehive", "silo"]:
 			var tiers: Array = Builds.all()[bid]["tiers"]
-			ok(tiers.size() == 3, "%s has 3 tiers" % bid)
+			ok(tiers.size() == (4 if bid == "barn" else 3), "%s has %d tiers" % [bid, 4 if bid == "barn" else 3])  # C11b: Grand Barn
 			for t: Dictionary in tiers:
 				ok(int(t.get("price", 0)) > 0 and Art.has(str(t.get("group", "props")), str(t["sprite"])), "%s tier %d priced and drawn" % [bid, int(t["tier"])])
 		ok(str(Builds.all()["coop"]["tiers"][2]["unlock"]["skill"][0]) == "ranching", "Deluxe Coop is a Ranching gate")
