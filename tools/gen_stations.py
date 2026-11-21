@@ -816,6 +816,26 @@ for sid, st in B.items():
     # c16a_10-02 / c16a_09-17: the top tier of a 4-tier station waits for year 2
     if len(st['tiers']) >= 4:
         st['tiers'][3].setdefault('unlock', {})['year'] = 2
+# c16a_09-02 / c16a_10-06: every tier-2+ kitchen dish gets a role (a buff by theme, bigger and longer by tier);
+# authored buffs (harvest_cobbler, campfire goods) stay. Kinds the game reads: luck, defense, speed, warm.
+BUFF_TIER = {2: (1, 180), 3: (2, 300), 4: (2, 420), 5: (3, 600)}
+def _dish_kind(k, name):
+    t = (k + ' ' + name).lower()
+    if any(w in t for w in ('stew', 'soup', 'chili', 'roast', 'beef', 'omelette', 'risotto', 'pasta', 'rice')): return 'defense'
+    if any(w in t for w in ('sorbet', 'salad', 'smoothie', 'greens', 'stir', 'fizz', 'tea')): return 'speed'
+    if any(w in t for w in ('frost', 'snow', 'cocoa', 'chestnut', 'citrus')): return 'warm'
+    return 'luck'
+for r in books.get('kitchen', []):
+    it = I.get(r['give'])
+    if not it or it.get('type') != 'food': continue
+    t = int(r.get('tier', 1))
+    if it.get('buff') and not it.get('buff_auto'): continue
+    if t < 2:
+        if it.get('buff_auto'): it.pop('buff', None); it.pop('buff_auto', None)
+        continue
+    amt, mins = BUFF_TIER[min(5, t)]
+    it['buff'] = {'kind': _dish_kind(r['give'], it.get('name', '')), 'minutes': mins, 'amount': amt}
+    it['buff_auto'] = True
 # c16a_06-09: the top farm and ranch tiers wait for year 2 (Builds.gate reads unlock.year).
 YEAR2_TIERS = {'Grand Barn', 'Grand Enclosure', 'Grand Aviary', 'Grand Terrarium', 'Star Dome'}
 for bid, bd in B.items():

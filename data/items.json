@@ -1143,7 +1143,13 @@
   "heal": 3,
   "energy": 60,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "berry_pie": {
   "name": "Berry Pie",
@@ -1165,7 +1171,13 @@
   "heal": 3,
   "energy": 70,
   "desc": "A home-cooked dish. Restores energy.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "truffle_pasta": {
   "name": "Truffle Pasta",
@@ -1176,7 +1188,13 @@
   "heal": 5,
   "energy": 100,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "moon_cake": {
   "name": "Moon Cake",
@@ -1187,7 +1205,13 @@
   "heal": 6,
   "energy": 120,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "herb_remedy": {
   "name": "Herb Remedy",
@@ -9629,7 +9653,13 @@
   "heal": 2,
   "energy": 50,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "berry_jam_toast": {
   "name": "Jam on Toast",
@@ -9651,7 +9681,13 @@
   "heal": 3,
   "energy": 55,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "herb_roast": {
   "name": "Herb-Roast Vegetables",
@@ -9672,7 +9708,13 @@
   "tier": 2,
   "heal": 3,
   "energy": 60,
-  "desc": "Rook says it needs more pepper. Rook is wrong."
+  "desc": "Rook says it needs more pepper. Rook is wrong.",
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "tropical_smoothie": {
   "name": "Tropical Smoothie",
@@ -9682,7 +9724,13 @@
   "tier": 3,
   "energy": 80,
   "desc": "A home-cooked dish. Restores energy.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "chocolate": {
   "name": "Chocolate",
@@ -9692,7 +9740,13 @@
   "tier": 3,
   "energy": 40,
   "heal": 1,
-  "desc": "From your own cacao. Little Pip will be your friend for life."
+  "desc": "From your own cacao. Little Pip will be your friend for life.",
+  "buff": {
+   "kind": "luck",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "orchard_pie": {
   "name": "Orchard Pie",
@@ -9703,7 +9757,13 @@
   "heal": 3,
   "energy": 55,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "saffron_rice": {
   "name": "Saffron Rice",
@@ -9714,7 +9774,13 @@
   "heal": 3,
   "energy": 60,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "starlight_salad": {
   "name": "Starlight Salad",
@@ -9724,7 +9790,13 @@
   "tier": 4,
   "heal": 5,
   "energy": 80,
-  "desc": "Crunchy. Faintly humming."
+  "desc": "Crunchy. Faintly humming.",
+  "buff": {
+   "kind": "speed",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "wishfruit_cake": {
   "name": "Wishfruit Cake",
@@ -9735,7 +9807,13 @@
   "heal": 8,
   "energy": 120,
   "friend": 10,
-  "desc": "Make a wish before the first bite."
+  "desc": "Make a wish before the first bite.",
+  "buff": {
+   "kind": "luck",
+   "minutes": 600,
+   "amount": 3
+  },
+  "buff_auto": true
  },
  "seed_packet": {
   "name": "Wild Seed Packet",
@@ -11598,6 +11676,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 95,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11668,6 +11752,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 100,
+  "buff": {
+   "kind": "luck",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care.",
   "desc_auto": true
  },
@@ -11728,6 +11818,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 100,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11790,6 +11886,12 @@
   "rarity": "epic",
   "heal": 6,
   "energy": 115,
+  "buff": {
+   "kind": "speed",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care.",
   "desc_auto": true
  },
@@ -11853,6 +11955,12 @@
   "rarity": "epic",
   "heal": 7,
   "energy": 130,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11944,6 +12052,12 @@
   "rarity": "epic",
   "heal": 7,
   "energy": 130,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy.",
   "desc_auto": true
  },
@@ -23143,7 +23257,13 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "One giant egg, folded with herbs. Feeds everyone.",
-  "energy": 62
+  "energy": 62,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "fine_yarn": {
   "name": "Fine Yarn",
@@ -23239,7 +23359,13 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "A whole big egg baked into a wobbly custard.",
-  "energy": 47
+  "energy": 47,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "dc_show_ribbon_blue": {
   "name": "Blue Show Ribbon",
@@ -23843,6 +23969,12 @@
   "c15": true,
   "icon": "cake",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy."
  },
  "asparagus_tart": {
@@ -23859,6 +23991,12 @@
   "c15": true,
   "icon": "fruit_tart",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy."
  },
  "salmonberry_jam": {
@@ -23939,6 +24077,12 @@
   "c15": true,
   "icon": "dream_pudding",
   "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "chanterelle_stew": {
@@ -23955,6 +24099,12 @@
   "c15": true,
   "icon": "mushroom_stew",
   "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "hazelnut_cake": {
@@ -23971,6 +24121,12 @@
   "c15": true,
   "icon": "sponge_cake",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "rosehip_jam": {
@@ -24002,6 +24158,12 @@
   ],
   "c15": true,
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "roast_chestnuts": {
@@ -24066,6 +24228,12 @@
   "c15": true,
   "icon": "stir_fry",
   "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day."
  },
  "citrus_tart": {
@@ -24082,6 +24250,12 @@
   "c15": true,
   "icon": "fruit_tart",
   "desc_auto": true,
+  "buff": {
+   "kind": "warm",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "honeycomb_toast": {

@@ -48,6 +48,11 @@ func _run() -> void:
 		if r["id"] == "rounds":
 			rounds = int(r.get("n", 1))
 	check(rounds == 40, "rounds craft 40 at a time")
+	# Cooking: every tier-2+ kitchen dish has a buff (c16a_09-02)
+	for r in GameState.recipes.get("kitchen", []):
+		var di: Dictionary = it.get(str(r["give"]), {})
+		if int(r.get("tier", 1)) >= 2 and str(di.get("type", "")) == "food":
+			check(di.has("buff"), "tier-%d dish %s has a buff" % [int(r.get("tier", 1)), r["give"]])
 	# Armour ladder
 	var metals := ["leather", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]
 	for sl in ["helm", "chest", "legs", "boots"]:
