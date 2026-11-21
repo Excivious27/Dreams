@@ -286,10 +286,27 @@ func _menu_pages() -> void:
 	m.toggle()
 
 
+## c11b_03-08: the gangster lab strains train as their classic cousins; penguin runs never see them.
+func _lab_aliases() -> void:
+	print("-- lab strains")
+	var sp: Dictionary = Ranch.data()["species"]
+	for pair: Array in [["chrome_hen", "hen"], ["glow_sheep", "sheep"], ["circuit_goat", "goat"]]:
+		check(sp.has(pair[0]) and str((sp[pair[0]] as Dictionary).get("arc", "")) == "gangsters", "%s is a gangster ranch species" % pair[0])
+		check(str(TeamAnimals.data()["aliases"].get(pair[0], "")) == pair[1], "%s trains as %s" % pair)
+	GameState.new_run("gangsters", "kairi", "T", "Town", "Pup")
+	Ranch.st()["houses"]["barn"] = {"tier": 2}
+	var day := int(GameState.run["day"])
+	var gs := Ranch.add("circuit_goat", "barn", "", day - 20)
+	check(gs != "" and TeamAnimals.species_key(gs) == "goat", "a circuit goat gets a training spec (%s)" % TeamAnimals.species_key(gs))
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	check(not Ranch.species_for_arc().has("chrome_hen") and Ranch.species_for_arc().has("crystal_hen"), "penguin runs never list lab strains")
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
 	_arc("penguins")
 	_arc("gangsters")
+	_lab_aliases()
 	await _menu_pages()
 	if fails == 0:
 		print("team_animals_test: OK")
