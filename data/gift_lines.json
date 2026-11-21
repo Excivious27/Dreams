@@ -1,5 +1,5 @@
 {
- "_": "Gift reactions per villager: [loved, liked, neutral, disliked], {item} is replaced. birthday: special line.",
+ "_": "Gift reactions per villager: [loved, liked, neutral, disliked], {item} is replaced. birthday: special line. when: progression-aware variants checked first by GameState.gift_line ({id, tier 0-3 or 'birthday', optional arc/flag/not_flag/hearts_seen/not_hearts_seen, text}). _default: the one generic set for anyone without lines. birthday_plain: a neutral gift on their birthday. tastes: likes/dislikes for gift receivers with no npcs.json entry (crew).",
  "lines": {
   "maple": [
    "A {item}! You remembered! Oh, you're going to fit right in.",
@@ -26,7 +26,7 @@
    "A {item}. I'll have it... filed."
   ],
   "sal": [
-   "A {item}. Nobody gives me things. ...Thanks, boss.",
+   "A {item}. Nobody gives me things. ...Thanks. I mean it.",
    "A {item}. Huh. Useful.",
    "A {item}. What do you want?",
    "A {item}. No."
@@ -41,7 +41,7 @@
    "A {item}! I'm going to paint it. I'm going to paint it right now.",
    "A {item}. The colour on it is lovely.",
    "A {item}. Thank you.",
-   "A {item}. Hm. It's very... beige."
+   "A {item}. Hm. I can't find a single colour in it I'd paint."
   ],
   "theo": [
    "A {item}! There's a whole chapter on these. Two chapters.",
@@ -56,7 +56,7 @@
    "A {item}. I'll put it on the compost, love."
   ],
   "bram": [
-   "A {item}! That's going in tonight's stew. You're eating free.",
+   "A {item}! That's going on the good shelf behind the counter. You're eating free tonight.",
    "A {item}. Good, good. Thank you.",
    "A {item}. Ta.",
    "A {item}. I'll give it to the dog. I don't have a dog."
@@ -65,7 +65,7 @@
    "A {item}! Oh, I know exactly what I'm baking with this.",
    "A {item}. That's sweet of you.",
    "A {item}. Thank you!",
-   "A {item}. ...It's not edible, is it."
+   "A {item}. In my bakery? ...I'll keep it well away from the bread."
   ],
   "juniper": [
    "A {item}. That's exactly what I needed. Thank you, truly.",
@@ -76,7 +76,7 @@
   "rook": [
    "A {item}. Huh. You pay attention. Good.",
    "A {item}. Useful out there. Thanks.",
-   "A {item}.",
+   "A {item}. Hm. I'll find a use for it.",
    "A {item}. Keep it."
   ],
   "pip": [
@@ -92,14 +92,14 @@
    "A {item}. The frogs don't like it."
   ],
   "tobin": [
-   "A {item}! I'm going to tie it to my kite!",
+   "A {item}! That's going in my beach box with the best shells. Don't tell the crabs.",
    "A {item}. Neat!",
    "A {item}. Thanks.",
    "A {item}. Hm."
   ],
   "mabel": [
    "A {item}! I'm pressing it in my diary. Page thirteen.",
-   "A {item}. That's pretty.",
+   "A {item}! That's going in my diary. Well, the bit about today is.",
    "A {item}. Thank you.",
    "A {item}. Not diary material."
   ],
@@ -142,7 +142,7 @@
   "granite": [
    "A {item}. Solid. Like stone. Thank you.",
    "A {item}. Good.",
-   "A {item}.",
+   "A {item}. Hm. It'll sit on the shelf. Shelf's good.",
    "A {item}. Can't build with that."
   ],
   "sel": [
@@ -150,6 +150,90 @@
    "A {item}. Thank you, friend.",
    "A {item}. Thanks.",
    "A {item}. The ruins wouldn't approve."
+  ],
+  "tess": [
+   "A {item}! Oh, the grain on this. I'm building something worthy of it.",
+   "A {item}. That'll find a job in the workshop. Thanks.",
+   "A {item}. Thanks. I'll find it a shelf.",
+   "A {item}. Can't plane it, can't sand it. ...Thanks anyway."
+  ],
+  "catkins": [
+   "A {item}! Purr-fect. Cat-topia will sing of this. Quietly. We're cats.",
+   "A {item}. Acceptable. More than acceptable. Purr.",
+   "A {item}. I shall sniff it later.",
+   "A {item}. *flicks tail* Take it away, please."
+  ],
+  "deuce": [
+   "A {item}. Now that's a card I didn't see coming. Thank you.",
+   "A {item}. Nice. I'll find it a pocket.",
+   "A {item}. Sure.",
+   "A {item}. I'd fold that hand."
+  ],
+  "mama_rosa": [
+   "A {item}! Sit, sit. Tonight you eat first.",
+   "A {item}. Good. My kitchen thanks you.",
+   "A {item}. Thank you, cara.",
+   "A {item}. This doesn't go in my kitchen."
+  ],
+  "doc": [
+   "A {item}. You listened. Most people don't. Thank you.",
+   "A {item}. That goes in the bag. Thanks.",
+   "A {item}. Thanks.",
+   "A {item}. Not medicine. Not food. Not mine."
+  ],
+  "specs": [
+   "A {item}! Do you know what I can wire into this? Everything, boss.",
+   "A {item}. Useful. Logging it.",
+   "A {item}. Okay.",
+   "A {item}. That doesn't plug into anything."
+  ],
+  "ladder": [
+   "A {item}. Up on the top shelf, where it belongs. Thanks, boss.",
+   "A {item}. Handy. I'll carry it.",
+   "A {item}. Okay.",
+   "A {item}. Where am I supposed to put that?"
+  ],
+  "vic": [
+   "A {item}! Val's going to be so jealous. Thanks, boss.",
+   "A {item}. Nice. Don't tell Val.",
+   "A {item}. Sure.",
+   "A {item}. Give it to Val. Val likes junk."
+  ],
+  "val": [
+   "A {item}! Vic's going to be so jealous. Thanks, boss.",
+   "A {item}. Nice. Don't tell Vic.",
+   "A {item}. Sure.",
+   "A {item}. Give it to Vic. Vic likes junk."
+  ],
+  "halo": [
+   "A {item}. Runs clean. You know your stuff.",
+   "A {item}. That'll keep the wheels happy.",
+   "A {item}. Thanks.",
+   "A {item}. Won't fit in any engine I own."
+  ],
+  "dice": [
+   "A {item}! Lucky. I can feel it. Thanks, boss.",
+   "A {item}. I'll roll with it.",
+   "A {item}. Okay.",
+   "A {item}. Bad luck. Take it back."
+  ],
+  "the_kid": [
+   "A {item}!! For me? Nobody gives me stuff. Thanks, boss!",
+   "A {item}! Cool.",
+   "A {item}. Thanks.",
+   "A {item}? Aw. No thanks."
+  ],
+  "marlene": [
+   "A {item}. Now that's worth something. I know worth.",
+   "A {item}. Fair trade. Thank you.",
+   "A {item}. Noted.",
+   "A {item}. I wouldn't put that on my counter."
+  ],
+  "sasha": [
+   "A {item}! That's a proper meal. You've got taste, boss.",
+   "A {item}. Good fuel. Thanks.",
+   "A {item}. Sure.",
+   "A {item}. I'll pass."
   ]
  },
  "birthday": {
@@ -157,7 +241,7 @@
   "gideon": "...You know it's my birthday. A {item}. I— thank you.",
   "wren": "A {item}, on my birthday. I'll pretend I'm not pleased. I'm very pleased.",
   "alder": "A birthday {item}. I'll enter it in the town records, under kindness. It's a short page.",
-  "sal": "Who told you it's my birthday? ...A {item}. Thanks, boss.",
+  "sal": "Who told you it's my birthday? ...A {item}. Thanks. Don't make a thing of it.",
   "finn": "A birthday {item}. Nobody's remembered since Tomas left for the river cities. ...Thanks. Really.",
   "lumi": "A {item} for my birthday! I'm painting it. I'm painting you holding it.",
   "theo": "A {item}? You knew it was my birthday? I'll write a small notice. A very small one.",
@@ -177,6 +261,184 @@
   "tam": "A {item}, for my birthday? The Dollys will be jealous. Good.",
   "old_moss": "A {item}. Nobody's minded my birthday since I came out here. The frogs say thank you too.",
   "granite": "A birthday {item}. Hm. It goes on the shelf in the hut, out of the dust.",
-  "sel": "A {item} for my birthday! The university forgot. You didn't."
+  "sel": "A {item} for my birthday! The university forgot. You didn't.",
+  "tess": "A {item}, on my birthday? I'm making you a stool. No, a chair. Don't argue with a carpenter."
+ },
+ "_default": [
+  "A {item}! Oh, I love these. Thank you!",
+  "A {item}! That's kind of you.",
+  "A {item}. Thank you.",
+  "A {item}? Oh. ...Thanks, I suppose."
+ ],
+ "birthday_plain": {
+  "maple": "A {item}, on my birthday. Well, it's the thought. And you did think of me.",
+  "gideon": "A {item}. On my birthday. ...You remembered the day, at least.",
+  "pip": "A {item}? For my birthday? ...Okay! Thanks!"
+ },
+ "when": [
+  {
+   "id": "sal",
+   "tier": 0,
+   "arc": "gangsters",
+   "flag": "sal_recruited",
+   "text": "A {item}. Nobody gives me things. ...Thanks, boss."
+  },
+  {
+   "id": "sal",
+   "tier": "birthday",
+   "arc": "gangsters",
+   "flag": "sal_recruited",
+   "text": "Who told you it's my birthday? ...A {item}. Thanks, boss."
+  },
+  {
+   "id": "pip",
+   "tier": 0,
+   "flag": "museum_open",
+   "text": "A {item}!!! I'm asking Theo for a glass case. With a little card. With MY name."
+  },
+  {
+   "id": "finn",
+   "tier": "birthday",
+   "flag": "ss_commander_home",
+   "text": "A birthday {item}. Tomas remembered too, this year. ...Thanks. Both of you."
+  },
+  {
+   "id": "wren_jr",
+   "tier": "birthday",
+   "hearts_seen": 6,
+   "not_hearts_seen": 8,
+   "text": "A BIRTHDAY {item}! I'd show Gerald but he's on a trip. Probably. I'm keeping it for when he's back."
+  },
+  {
+   "id": "maple",
+   "tier": 0,
+   "hearts_seen": 6,
+   "text": "A {item}! You remembered! Honestly, I can't picture this town without you now."
+  }
+ ],
+ "tastes": {
+  "deuce": {
+   "likes": [
+    "old_coin",
+    "coffee",
+    "gem"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "mama_rosa": {
+   "likes": [
+    "#veg",
+    "#herb",
+    "cheese",
+    "goat_cheese",
+    "truffle",
+    "saffron_rice"
+   ],
+   "dislikes": [
+    "slime_goo"
+   ]
+  },
+  "specs": {
+   "likes": [
+    "circuit_board",
+    "data_chip",
+    "crystal_battery",
+    "energy_tea"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "ladder": {
+   "likes": [
+    "coffee",
+    "root_beer",
+    "map_scrap"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "vic": {
+   "likes": [
+    "root_beer",
+    "chili_pot"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "val": {
+   "likes": [
+    "root_beer",
+    "chili_pot"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "halo": {
+   "likes": [
+    "oil",
+    "coffee"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "dice": {
+   "likes": [
+    "candy",
+    "root_beer",
+    "map_scrap"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "the_kid": {
+   "likes": [
+    "candy",
+    "root_beer",
+    "toy"
+   ],
+   "dislikes": [
+    "coffee"
+   ]
+  },
+  "doc": {
+   "likes": [
+    "wild_herb",
+    "tea",
+    "herbal_tea",
+    "honey"
+   ],
+   "dislikes": [
+    "coffee"
+   ]
+  },
+  "marlene": {
+   "likes": [
+    "gold_bar",
+    "old_coin",
+    "fine_wine",
+    "ruby"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  },
+  "sasha": {
+   "likes": [
+    "chili_pot",
+    "meat",
+    "root_beer"
+   ],
+   "dislikes": [
+    "turnip"
+   ]
+  }
  }
 }

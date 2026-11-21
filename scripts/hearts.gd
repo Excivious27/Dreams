@@ -45,7 +45,9 @@ static func due(id: String) -> int:
 
 ## ♥8 scenes that tell what came of the ♥6 quest (or of another villager's scene) wait for it.
 const AFTER_Q6 := ["gideon", "wren", "lumi", "theo", "bram", "posy", "tobin", "marlowe", "ivy", "tam", "sel"]
-const NEEDS_FLAG := {"hazel": "hv_granite_8", "mabel": "hv_granite_8", "posy": "hv_bram_8", "orla": "lighthouse_lit", "juniper": "hv_gideon_8"}
+const NEEDS_FLAG := {"hazel": "hv_granite_8", "mabel": "hv_granite_8", "posy": "hv_bram_8", "orla": "lighthouse_lit", "juniper": "hv_gideon_8", "ivy": "hv_theo_8"}
+## ♥10 scenes that retell another villager's beat wait for it (C12 P4): Granite's ♥10 is Mabel singing to the stone.
+const NEEDS10 := {"granite": "hv_mabel_8"}
 
 
 ## The villager's ♥6 quest in this arc ("" if none).
@@ -56,6 +58,8 @@ static func quest6(id: String) -> String:
 
 static func _ready_for(id: String, n: int) -> bool:
 	if n == 10:
+		if NEEDS10.has(id) and not GameState.run["flags"].has(NEEDS10[id]):
+			return false
 		# Hazel's and Mabel's ♥10 talk about the full cellar: that needs Hazel's milk.
 		return not (id in ["hazel", "mabel"]) or GameState._quest_def("hazel_milk").is_empty() or GameState.quest_done("hazel_milk")
 	if n != 8:
@@ -67,7 +71,7 @@ static func _ready_for(id: String, n: int) -> bool:
 
 
 ## Why a reached milestone is held back, for the journal.
-const WAIT_WHY := {"hv_granite_8": "Granite has something to tell them first", "hv_bram_8": "once Bram has had his say", "lighthouse_lit": "once Marlowe's lamp is lit", "hv_gideon_8": "Gideon has something to give her first"}
+const WAIT_WHY := {"hv_granite_8": "once Granite has walked up the road", "hv_bram_8": "once Bram has had his say", "lighthouse_lit": "once Marlowe's lamp is lit", "hv_gideon_8": "Gideon has something to give her first", "hv_theo_8": "once Theo has read the miners' log", "hv_mabel_8": "once Mabel has sung at the quarry"}
 
 
 ## A milestone you've reached that waits (_ready_for): say why in the journal (once).
@@ -77,11 +81,14 @@ static func _held_hint(id: String) -> void:
 	var n := seen_level(id) + 2
 	if n > 10 or GameState.friend_hearts(id) < n or _ready_for(id, n):
 		return
-	var q := "hazel_milk" if n == 10 else quest6(id)
+	var cellar := n == 10 and id in ["hazel", "mabel"]
+	var q := "hazel_milk" if cellar else (quest6(id) if n == 8 else "")
 	var why := ""
-	if q != "" and not GameState._quest_def(q).is_empty() and not GameState.quest_done(q) and (n == 10 or id in AFTER_Q6):
+	if q != "" and not GameState._quest_def(q).is_empty() and not GameState.quest_done(q) and (cellar or id in AFTER_Q6):
 		why = "first: " + str(GameState._quest_def(q).get("text", q))
-	elif NEEDS_FLAG.has(id):
+	elif n == 10 and NEEDS10.has(id):
+		why = str(WAIT_WHY.get(NEEDS10[id], ""))
+	elif n == 8 and NEEDS_FLAG.has(id):
 		why = str(WAIT_WHY.get(NEEDS_FLAG[id], ""))
 	if why != "":
 		var nm := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
@@ -95,25 +102,9 @@ static func talk(m: GameMap, id: String) -> bool:
 		_held_hint(id)
 		return false
 	var v: Dictionary = data()[id]
-	var lines: Array = ((v.get("milestones", {}) as Dictionary).get(str(n), []) as Array).duplicate(true)
+	var lines := scene_lines(id, n)
 	if lines.is_empty():
 		return false
-	# Some lines are about the crystal and the penguins; the gangster arc has its own words.
-	if not GameState.is_penguins():
-		for l in lines:
-			if l.has("text_gangsters"):
-				l["text"] = l["text_gangsters"]
-	# "if_gone": {who: text} when the story sent that villager away.
-	for l in lines:
-		for who in (l.get("if_gone", {}) as Dictionary):
-			if GameState.run["flags"].has(str(who) + "_gone"):
-				l["text"] = str(l["if_gone"][who])
-	# A ♥6 ask for a quest you already finished plays its "if_done" words instead.
-	var q6 := quest6(id)
-	if n == 6 and q6 != "" and GameState.quest_done(q6):
-		for l in lines:
-			if l.has("if_done"):
-				l["text"] = str(l["if_done"])
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
 	# Every heart scene opens on a soft cue; ♥10 keeps its full j_heart after the scene.
@@ -149,8 +140,37 @@ static func talk(m: GameMap, id: String) -> bool:
 		Music.instance(m.get_tree()).sfx("j_heart", "levelup")
 		var fall := str(v.get("fall", ""))
 		if fall != "":
-			GameState.add_hint("%s: %s" % [name, fall])
+			GameState.add_hint("If the town ever fell: %s" % fall)
 	return true
+
+
+## The ♥n scene's lines with every variant applied (arc words, if_gone, if_partner,
+## if_done). Tests read this to check the words match the game state. C12 P4.
+static func scene_lines(id: String, n: int) -> Array:
+	var v: Dictionary = data().get(id, {})
+	var lines: Array = ((v.get("milestones", {}) as Dictionary).get(str(n), []) as Array).duplicate(true)
+	# Some lines are about the crystal and the penguins; the gangster arc has its own words.
+	if not GameState.is_penguins():
+		for l in lines:
+			if l.has("text_gangsters"):
+				l["text"] = l["text_gangsters"]
+	# "if_gone": {who: text} when the story sent that villager away.
+	for l in lines:
+		for who in (l.get("if_gone", {}) as Dictionary):
+			if GameState.run["flags"].has(str(who) + "_gone"):
+				l["text"] = str(l["if_gone"][who])
+	# "if_partner": the words when you're already their sweetheart (dating, engaged or married).
+	if Romance.status(id) in ["dating", "engaged", "spouse"]:
+		for l in lines:
+			if l.has("if_partner"):
+				l["text"] = str(l["if_partner"])
+	# A ♥6 ask for a quest you already finished plays its "if_done" words instead.
+	var q6 := quest6(id)
+	if n == 6 and q6 != "" and GameState.quest_done(q6):
+		for l in lines:
+			if l.has("if_done"):
+				l["text"] = str(l["if_done"])
+	return lines
 
 
 ## A daily line that reflects where you are with them, or "" if none yet.
