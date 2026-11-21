@@ -1,6 +1,6 @@
 # CONDUCT 15 report: seasons (2026-11-21)
 
-A seasons pass over both arcs. Each season now has its own festivals, holidays and small events on a real calendar, its own forage, crops, recipes, shop stock, fish and critters, villager talk, routines, outfits and letters, its own look and weather, and some things only arrive in year 2 or 3. Before this round there were four day-14 festivals and very little else that changed with the season. 18 focus auditors (350 findings) fed 6 fix packages (scopes in /home/claude/wt/C15_SCOPES.txt, Calendar API, festival row format and ownership fixed up front in C15_CONTRACT.md), then one hook integration pass and a first-week weather fix. **Final full CI c15i: PENDING.**
+A seasons pass over both arcs. Each season now has its own festivals, holidays and small events on a real calendar, its own forage, crops, recipes, shop stock, fish and critters, villager talk, routines, outfits and letters, its own look and weather, and some things only arrive in year 2 or 3. Before this round there were four day-14 festivals and very little else that changed with the season. 18 focus auditors (350 findings) fed 6 fix packages (scopes in /home/claude/wt/C15_SCOPES.txt, Calendar API, festival row format and ownership fixed up front in C15_CONTRACT.md), then one hook integration pass and a first-week weather fix. **Final full CI c15i: PASS (first run failed on 5 shards: egg-hunt talk tripping the animal rule, rec league night on a new festival day, seasonal forage in the chores test, a per-save weather seed changing week 1, a villager chat parking Hazel off her volunteer path and a wall-clock input block in the playtest; all fixed in the game or with the test following the new design; full rerun c15i3 green: 6 shards, 20 bots, playtest, relay).**
 
 **Whole game after C15: about 82% done, 18% remaining** (average of the 120 systems in docs/inventory.csv). New rows: calendar 86%, festival year 78%, seasonal goods 85%, seasonal fish and critters 84%, villager seasons 80%, seasonal look 80%, weather by save 85%. Moved: seasonal content 45% -> 85%, festivals 80% -> 84%.
 
@@ -56,7 +56,7 @@ Lesson: the auditor files came out shifted by one (c15_NN.jsonl held scope NN-1)
 | Merges, 07:05-07:10 | integrator | medium | ~5 |
 | Hook agent, 07:10-07:28 | integrator | medium | ~18 |
 | First-week weather fix, 07:30 | integrator | medium | ~5 |
-| Final full CI c15i, started ~07:28 | CI | | PENDING |
+| Final full CI c15i, started ~07:28 | CI | | PASS (c15i3 rerun after fixes) |
 | **Total** | | | **~2.25 h wall clock (05:15-07:30) + final CI** |
 | Agents per effort | | | 18 medium auditors; 6 medium fixers; 1 hook integrator; 1 first-week fixer |
 | Images used | | | 50 |

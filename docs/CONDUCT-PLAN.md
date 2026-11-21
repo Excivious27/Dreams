@@ -227,7 +227,7 @@ Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, 
 - C11b ranching: exotics and fantastic creatures (ostrich, Komodo, space and Merkitty Islands creatures; gangster genetically modified ones), quest-earned animals, ranch buildings tiers, helper automation full (assign to farm/combat/forage/chests, levels, energy), balance + art.
 - C18a cutscenes: cutscene engine (art panels, staged NPC scenes, skip), the Crystopia intro (Star Crystal visits the hero), main-story beats both arcs.
 - C18b cutscenes: random night events, side-event and quirky side-quest scenes, big openings (rec, casino, General Store), polish + art.
-Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C14b (animation life, Tom 2026-11-21), C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, C23b (full visual design polish, Tom 2026-11-21), then the final package.
+Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C14b (animation life, Tom 2026-11-21), C15, C16a (progression, balance, energy, skill ecosystems, museum), C16b (battle campaigns: playability, optional battles, reward ladder), C17, C18a, C18b, C19, C20, C21, C22, C23, C23b (full visual design polish, Tom 2026-11-21), then the final package.
 
 ## CONDUCT timing (Tom 20:18)
 Every report carries a timing table (audit, sort, fix, merge+CI, package, total, gap since the last CONDUCT ended); the progress sheet has a Timing tab. Target about 1.5-2 h between finished CONDUCTs (Tom 20:22: ideally ~1.5 h all in).
