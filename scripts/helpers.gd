@@ -135,7 +135,7 @@ static func chest_name(key: String) -> String:
 			return "farm chest"
 		"shed":
 			return "shed"
-	return "chest at %s" % key.substr(2)
+	return Storage.label(key)  # C11b P3: "Chest 2 (by the barn)" / "Chest 3 (in the house)"
 
 
 ## Assign (chore "" = rest). Returns "" or why not.

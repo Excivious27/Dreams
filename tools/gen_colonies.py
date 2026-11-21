@@ -281,6 +281,16 @@ _OLD = json.load(open(D + "/data/regions.json"))
 _OLD = _OLD.get("regions", _OLD)
 
 
+# C11b P3 (c11b_02-05): each restored colony sends one creature to the farm (penguin arc only: colonies are
+# penguin-arc maps). Colony._restore calls RanchGift.give(species, "colony:<id>"): it waits for room and data.
+CREATURE = {
+    "colony_coral": {"species": "coral_seahorse", "line": "The shoals came home, and one little seahorse won't leave your side. Take her to your farm; she's chosen you."},
+    "colony_kelp": {"species": "kelp_calf", "line": "A kelp calf followed the tide in behind you. They only follow someone they trust. Give it a home on your farm."},
+    "colony_ice": {"species": "frost_otter", "line": "That frost otter has been sliding after you all day. The kits voted: it goes home with you."},
+    "colony_ember": {"species": "ember_newt", "line": "An ember newt curled up in your pack to stay warm. Keep it. It glows like the Never-Out Fire."},
+}
+
+
 def _seed(rid):
     """Stable island seed: keep the seed the colony already has (so maps never
     reshape on a rerun), else derive one that's the same every run."""
@@ -361,6 +371,7 @@ for rid, c in COL.items():
         "abilities": [], "gift": c["gift"], "art": c["boss_art"], "name": c["boss_name"], "reward": 100 * c["tier"]}
     E["drops"]["cboss_" + rid.split("_")[1]] = [["crystal_refined", 1.0, 2]]
     OUT[rid] = {k: v for k, v in c.items() if k not in ("boss_art", "gift", "enemies", "secrets", "arrive")}
+    OUT[rid]["creature"] = CREATURE[rid]  # C11b P3: a sea creature comes home with the restored light (RanchGift)
 json.dump(R, open(D + "/data/regions.json", "w"), indent=1, ensure_ascii=False)
 json.dump(E, open(D + "/data/enemies.json", "w"), indent=1, ensure_ascii=False)
 json.dump(I, open(D + "/data/items.json", "w"), indent=1, ensure_ascii=False)

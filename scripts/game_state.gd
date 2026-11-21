@@ -80,6 +80,7 @@ static func load_data() -> void:
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String, opts := {}) -> void:
 	load_data()
+	Companion.reset_cooldowns()  # C11b P3: no cooldown from an earlier save this session
 	quests_data = load_json("res://data/quests.json")
 	if arc == "penguins":
 		# A gangster run earlier in the session registered the crew as villagers.
@@ -136,7 +137,7 @@ static func has_run() -> bool:
 			# must not leave its crew in a penguin save's town.
 			npcs = load_json("res://data/npcs.json")
 			quests_data = load_json("res://data/quests.json")  # board defs belong to one run
-			Companion._ready_at = {}
+			Companion.reset_cooldowns()
 			_migrate()
 			# A story scene that was cut off (app closed) plays again from the start.
 			if run.has("story_pending"):
@@ -2772,6 +2773,8 @@ static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("friend"):
 		var fr: Dictionary = run["friendship"]
 		add_friend(str(rw["friend"][0]), int(rw["friend"][1]))
+	if rw.has("animal"):
+		RanchGift.from_reward(rw)  # C11b P3: a creature as a reward (waits for room, letter says what's needed)
 
 
 ## Main-story quests appear as the game progresses; side quests come from the
