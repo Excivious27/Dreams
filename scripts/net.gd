@@ -98,8 +98,8 @@ func _ask_pending() -> void:
 	if pending_lobby <= 0 or _asking or not is_inside_tree() or not steam_ready():
 		return
 	var gm := get_tree().current_scene as GameMap
-	if gm == null or gm.hud == null or get_tree().paused:
-		return
+	if gm == null or gm.hud == null or get_tree().paused or gm.scene_id().begins_with("bf_") or not (Campaign.st().get("fight", {}) as Dictionary).is_empty():
+		return  # c16b_16-04: the invite waits until the battle is over
 	var d := Dialogue.instance(get_tree())
 	if d.active or Dialogue.input_blocked():
 		return

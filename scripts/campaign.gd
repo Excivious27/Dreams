@@ -23,7 +23,7 @@ const TYPE_GOAL := {"skirmish": "Take the points or run out their tickets.", "si
 ## Tests and debugging: no region is locked.
 static var bypass := false
 static var _all: Dictionary = {}
-static var _last_offer := 0
+static var _last_offer := -100000
 
 
 static func all() -> Dictionary:
@@ -224,6 +224,11 @@ static func long_way(cid: String) -> Dictionary:
 	for it: String in (cost["items"] as Dictionary).keys():  # never ask for an item the game lacks
 		if not GameState.items.has(it):
 			(cost["items"] as Dictionary).erase(it)
+	if started(cid) and not is_won(cid):  # c16b_08-12: provisions already spent at muster count towards it
+		var paid := int(CampaignGate.need(cid).get("crystals", 0))
+		if paid > 0 and int(cost["money"]) > 0:
+			cost["money"] = maxi(0, int(cost["money"]) - paid)
+			lw["discount"] = paid
 	if not lw.has("days"):
 		lw["days"] = 0 if str(lw["kind"]) == "story" else 1
 	if str(lw.get("unlock_after", "")) == "":
@@ -239,6 +244,8 @@ static func long_way(cid: String) -> Dictionary:
 		var due := "You're through by morning." if int(lw["days"]) > 0 else "You're through today."
 		tx = ("%s knows a slower path round to %s, away from the fighting: %s for the guides. %s" if arc() == "penguins"
 			else "%s knows a back way into %s, nowhere near the crews: %s for the right people. %s") % [who(cid), region_phrase(c), long_cost_words(cost), due]
+	if int(lw.get("discount", 0)) > 0:
+		tx += " Your provisions go towards it."
 	lw["words"] = tx
 	return lw
 
@@ -568,8 +575,13 @@ static func who(cid: String) -> String:
 	return pal() if arc() == "penguins" else "Sal"
 
 
+## One guest guard for every campaign action (c16b_16-08): "" at home, else the toast.
+static func guest_lock(what := "Campaigns") -> String:
+	return "You're visiting a friend's farm. %s wait until you're home." % what if Net.visiting() else ""
+
+
 static func march(cid: String, nid: String) -> bool:
-	if not can_march(cid, nid):
+	if guest_lock() != "" or not can_march(cid, nid):
 		return false
 	cs(cid)["at"] = nid
 	return true
@@ -601,6 +613,8 @@ static func board_choices(cid: String, nid: String) -> Array:
 
 ## Settle a camp/cache move. Returns the line to show.
 static func settle(cid: String, nid: String, choice: String) -> String:
+	if guest_lock() != "":  # c16b_16-07: the board is read-only for guests
+		return guest_lock()
 	var n := node(cid, nid)
 	var s := cs(cid)
 	var lt: Dictionary = n.get("loot", {})
@@ -674,6 +688,8 @@ static func kin_choices(cid: String) -> Array:
 
 ## Returns dialogue-style lines; the last one is the result.
 static func kin_settle(cid: String, choice: String) -> Array:
+	if guest_lock() != "":
+		return [{"who": "", "text": guest_lock()}]
 	var w := who(cid)
 	var fl: Dictionary = GameState.run["flags"]
 	match choice:
@@ -960,6 +976,8 @@ static func story_pointer(qid: String) -> String:
 	var cid := gate_of(reg)
 	if cid == "":
 		return ""
+	if Net.visiting():  # c16b_16-06: nothing a guest can do here
+		return ("%s is held in your own story: open it from your own farm." % region_phrase(get_c(cid), true)).left(112)
 	cid = first_in_chain(cid)
 	var c := get_c(cid)
 	if long_way_pending(cid):
@@ -1039,8 +1057,8 @@ const VISIT_GATE := "This border is held in your own story. You can open it from
 static func blocks(m: GameMap, scene: String) -> bool:
 	if bypass or m == null or scene == m.scene_id() or GameState.run.is_empty() or region_open(scene):
 		return false
-	var now := Time.get_ticks_msec()
-	if now - _last_offer > 1500 and not Dialogue.instance(m.get_tree()).active:
+	var now := PlayClock.ms()  # c16b_15-09: game time, like every gameplay timer
+	if absi(now - _last_offer) > 1500 and not Dialogue.instance(m.get_tree()).active:
 		_last_offer = now
 		Music.instance(m.get_tree()).sfx("locked", "nope")  # a held border: bump, then the gate words
 		m.later(offer.bind(m, gate_of(scene)))
@@ -1065,7 +1083,7 @@ static func offer(m: GameMap, cid: String) -> void:
 	if (not bool(gw["board"]) and not lway) or Net.visiting():
 		dl.say(lines)
 		await dl.finished
-		_last_offer = Time.get_ticks_msec()
+		_last_offer = PlayClock.ms()
 		return
 	if lway:
 		lines[lines.size() - 1]["text"] = str(lines[lines.size() - 1]["text"]) + (" Or skip the fighting: %s." % long_way_label(lcid).to_lower())
@@ -1079,7 +1097,7 @@ static func offer(m: GameMap, cid: String) -> void:
 	lines[lines.size() - 1]["key"] = ""
 	dl.say(lines)
 	await dl.finished
-	_last_offer = Time.get_ticks_msec()
+	_last_offer = PlayClock.ms()
 	if not is_instance_valid(m) or dl.last_choice < 0 or dl.last_choice >= choices.size():
 		return
 	var picked := str(choices[dl.last_choice])
@@ -1091,7 +1109,7 @@ static func offer(m: GameMap, cid: String) -> void:
 			res = [{"who": "", "text": "The long way: " + long_way_lock(lcid)}]
 		dl.say(res)
 		await dl.finished
-		_last_offer = Time.get_ticks_msec()
+		_last_offer = PlayClock.ms()
 		GameState.save()
 
 

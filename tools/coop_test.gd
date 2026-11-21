@@ -280,6 +280,8 @@ func _run() -> void:
 	check(Campaign.long_way_lock(Campaign.for_arc()[0]).contains("visiting") or Campaign.region_open(str(Campaign.get_c(Campaign.for_arc()[0])["region"])), "C16b: no long way while visiting")
 	check(Campaign.take_long_way(Campaign.for_arc()[0]).is_empty(), "C16b: take_long_way refused while visiting")
 	check(not Campaign.loss_choices(Campaign.for_arc()[0]).any(func(x: Array) -> bool: return str(x[0]) in ["retry", "easier"]), "C16b: no retry launch while visiting")
+	check(Campaign.settle(Campaign.for_arc()[0], "n0", "rest").contains("visiting"), "C16b: board camps read-only while visiting")
+	check(not Campaign.march(Campaign.for_arc()[0], "n0"), "C16b: no march while visiting")
 	Campaign.bypass = bp0
 	check(Collections.can_donate("coal") != "", "guests can't donate to the host's museum (C8 P3)")
 	check(int(GameState.run["day"]) == 40, "on the host's day")
