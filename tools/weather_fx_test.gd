@@ -121,7 +121,7 @@ func _run() -> void:
 	sky._parts.clear()
 	for i in 5:
 		await process_frame
-	check(sky._parts.is_empty(), "summer clear day: no leaves (%d)" % sky._parts.size())
+	check(sky._parts.size() <= 4 and sky._parts.all(func(q: Dictionary) -> bool: return str(q["k"]) == "leaf_green"), "summer clear day: at most a few green leaves (C15 P5) (%d)" % sky._parts.size())
 	GameState.look_season = ""
 	# aurora at night
 	GameState.run["time"] = 23 * 60

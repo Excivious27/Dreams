@@ -85,19 +85,40 @@ func _pkind() -> String:
 
 
 ## C14b (c14b_18-05): a light seasonal sprinkle on clear/sun/wind days outdoors:
-## spring petals, fall leaves. Not in cities, caves or under a fixed dark.
+## spring petals, a few summer leaves, fall leaves, winter flurries (C15 P5,
+## c15_14-22). Not in cities, caves or under a fixed dark, and not over maps with no
+## trees to shed them (c15_17-04: iron yards, Gilt plaza, desert, frost, sky, colonies).
+const NO_SPRINKLE_PREFIX := ["iron_", "gilt_", "desert_", "frost_", "wind_", "sky", "station", "colony_", "moon", "mega_iron", "mega_gilt", "mega_desert"]
+
+
+static func sprinkle_ok(id: String) -> bool:
+	if id in Ambience.CITY_MAPS:
+		return false
+	for pre: String in NO_SPRINKLE_PREFIX:
+		if id.begins_with(pre):
+			return false
+	return true
+
+
+## The sprinkle kind for a look season ("" = none).
+static func sprinkle_kind(se: String) -> String:
+	match se:
+		"spring": return "petal_pink" if Art.has("fx", "petal_pink") else ""
+		"summer": return "leaf_green" if Art.has("fx", "leaf_green") else ""
+		"fall": return "leaf_orange" if Art.has("fx", "leaf_orange") else ""
+		"winter": return "snowflake" if Art.has("fx", "snowflake") else ""
+	return ""
+
+
 func _sprinkle() -> String:
 	if not overhead or not (weather in ["clear", "sun", "wind"]) or GameState.run.is_empty():
 		return ""
 	var host := get_parent()
 	if host is GameMap:
 		var gm := host as GameMap
-		if gm.fixed_dark >= 0.0 or gm.scene_id() in Ambience.CITY_MAPS:
+		if gm.fixed_dark >= 0.0 or not sprinkle_ok(gm.scene_id()):
 			return ""
-	match GameState.look_se():
-		"spring": return "petal_pink" if Art.has("fx", "petal_pink") else ""
-		"fall": return "leaf_orange" if Art.has("fx", "leaf_orange") else ""
-	return ""
+	return sprinkle_kind(GameState.look_se())
 
 
 func _ready() -> void:
@@ -181,7 +202,7 @@ func _process(delta: float) -> void:
 		var leafy := true
 		var want := 18
 		if sprinkle:
-			want = (10 if weather == "wind" else (5 if pkind == "petal_pink" else 7))
+			want = (10 if weather == "wind" else (5 if pkind == "petal_pink" else (3 if pkind == "leaf_green" else (4 if pkind == "snowflake" else 7))))
 		if Settings.reduced_motion():
 			want = maxi(10, want / 2) if not sprinkle else maxi(2, want / 2)
 		while _parts.size() < want:
@@ -189,7 +210,7 @@ func _process(delta: float) -> void:
 			# they drift loose instead of marching down in a grid.
 			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind,
 				"fall": randf_range(14.0, 30.0) if leafy else 18.0, "sway": randf_range(6.0, 16.0) if leafy else 8.0, "wob": randf_range(0.6, 1.4) if leafy else 1.0,
-				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind == "petal_pink" else randf_range(0.35, 0.55)) if leafy else 0.5,
+				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind in ["petal_pink", "snowflake"] else randf_range(0.35, 0.55)) if leafy else 0.5,
 				"tint": [Color.WHITE, Color(1.0, 0.75, 0.6), Color(1.0, 0.95, 0.55), Color(0.85, 0.55, 0.4)][randi() % 4] if pkind == "leaf_orange" else Color.WHITE})  # fall leaves in mixed colours (c14b_18-08)
 		for p: Dictionary in _parts:
 			if weather == "fireflies":
@@ -540,7 +561,7 @@ func _on_draw() -> void:
 		var f: int = int(p["f"]) % n
 		if p.has("rot") and (weather in ["leaves", "petals"] or _sprinkle() != ""):
 			var sz := Vector2(cw, ch) * float(p.get("sz", 0.5))
-			var tint: Color = Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else p.get("tint", Color.WHITE)  # no petal art: pink leaves
+			var tint: Color = Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" and weather == "petals" else p.get("tint", Color.WHITE)  # no petal art: pink leaves (summer sprinkle stays green)
 			tint.a *= _fade
 			_canvas.draw_set_transform(p["pos"], float(p["rot"]), Vector2.ONE)
 			_canvas.draw_texture_rect_region(t, Rect2(-sz / 2.0, sz), Rect2(f * cw, 0, cw, ch), tint)

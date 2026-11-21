@@ -21,18 +21,18 @@ static func skip(m: GameMap) -> bool:
 	return bool(_I(m).get("rec", false)) or bool(_I(m).get("museum", false)) or bool(_I(m).get("no_season", false))
 
 
-## Back-wall columns free for a hanging piece (no window or window neighbour, no prop).
+## Back-wall columns free for a hanging piece (not on a window or between two, no prop).
 static func wall_cols(m: GameMap) -> Array:
 	var wins: Array = (m.call("window_cols") as Array)
 	var taken := {}
 	for p in _I(m).get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		if c.y <= 2:
-			for i in range(-1, int(p.get("w", 0)) + 2):
+			for i in range(0, int(p.get("w", 0)) + 1):
 				taken[c.x + i] = true
 	var out := []
 	for x in range(2, m.cols - 2):
-		if taken.has(x) or x in wins or (x - 1) in wins or (x + 1) in wins:
+		if taken.has(x) or x in wins or ((x - 1) in wins and (x + 1) in wins):
 			continue
 		if m.things.has(Vector2i(x, 1)) or m.things.has(Vector2i(x, 2)):
 			continue
@@ -84,7 +84,10 @@ static func dress(m: GameMap) -> int:
 		if not Art.has("decor", nm):
 			continue
 		var info := Art.info("decor", nm)
-		var sc := minf(0.5, minf(GameMap.TILE * 1.6 / float(info.get("w", 32)), GameMap.TILE * 1.4 / float(info.get("h", 32))))
+		var wins: Array = m.call("window_cols")
+		var c: Vector2i = pk[1]
+		var maxw := GameMap.TILE * (1.0 if ((c.x - 1) in wins or (c.x + 1) in wins) else 1.6)
+		var sc := minf(0.5, minf(maxw / float(info.get("w", 32)), GameMap.TILE * 1.4 / float(info.get("h", 32))))
 		if m.prop("decor", nm, pk[1], 0, 2.0, false, sc):
 			placed += 1
 	if FLOOR.has(se) and not skip(m) and Art.has("decor", FLOOR[se]):

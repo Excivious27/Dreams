@@ -38,7 +38,13 @@ static func pick(group: String, name: String, se := "") -> String:
 	if se in ["spring", "summer", "fall"]:
 		return name + "_" + se if Art.has(group, name + "_" + se) else name
 	if se == "winter":
-		return WorldGen.winter_look(group, name)
+		# WorldGen.winter_look's rule, for any asked season (it reads the live one).
+		if WorldGen.WINTER_LOOKS.has(name):
+			var w: String = WorldGen.WINTER_LOOKS[name]
+			return w if Art.has(group, w) else name
+		for suf: String in ["_winter", "_snow"]:
+			if Art.has(group, name + suf):
+				return name + suf
 	return name
 
 

@@ -1684,14 +1684,13 @@ func area_track() -> String:
 	if id == "town" and GameState.festival_today() != "":
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
 			var fid := GameState.festival_today()
-			var g := "" if peng else "_gang"
 			if GameState.is_night():
-				var fn := first_track(["festival_%s_night%s" % [fid, g], "festival_%s_night" % fid if peng else "", "festival_night" + g, "festival_night"])
+				var fn := MusicResolve.festival_track(fid, true)  # C15 P5: per-arc festival songs + stand-ins
 				if fn != "":
 					return fn
 			if player != null and preload("res://scripts/animal_show.gd").near_stand(fid, world_to_cell(player.position)) and Music.has_track("animal_show"):
 				return "animal_show"  # C11b P6: the ribbon tables have their own tune
-			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
+			return MusicResolve.festival_track(fid, false)  # C13 a song per festival day; C15 P5 gang/harvest stand-ins
 	if t != t0 or RecCenter.is_rec(self):
 		return t  # a jukebox/music-box record plays exactly as chosen
 	var ctx := music_ctx(id)
@@ -1711,6 +1710,8 @@ func music_ctx(id: String) -> Dictionary:
 		c["shared_weather"] = true
 	if sky != null and str(sky.weather) in ["rain", "storm"] and id in NIGHT_OK:
 		c["weather"] = str(sky.weather)
+	elif sky != null and GameState.look_season != "":
+		c["weather"] = MusicResolve.sky_weather(str(sky.weather))  # C15 P5: a region's own sky, not the home calendar
 	if id == "farm":
 		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
 	if MusicResolve.NIGHT_GROUP.has(id):

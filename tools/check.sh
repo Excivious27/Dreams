@@ -1323,3 +1323,10 @@ echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
 if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
   echo "creature_life_test failed"; exit 1
 fi
+
+echo "== C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, festival/region music =="
+c15p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_p5_test.gd 2>&1)"
+echo "$c15p5out" | grep -E "FAIL|SCRIPT ERROR|c15_p5_test" || true
+if ! echo "$c15p5out" | grep -q "c15_p5_test: 0 failures"; then
+  echo "C15 P5 seasonal look test failed"; exit 1
+fi

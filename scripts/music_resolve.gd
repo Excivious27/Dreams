@@ -43,7 +43,7 @@ static func context(ctx := {}) -> Dictionary:
 	if not c.has("arc"):
 		c["arc"] = str(GameState.run.get("arc", "penguins")) if run_ok else "penguins"
 	if not c.has("season"):
-		c["season"] = GameState.season() if run_ok else "spring"
+		c["season"] = GameState.look_se() if run_ok else "spring"  # C15 P5 (c15_17-07): a map's own look season (Frostpeak is winter in summer)
 	if not c.has("phase"):
 		c["phase"] = phase_now() if run_ok else "day"
 	if not c.has("weather"):
@@ -77,8 +77,24 @@ static func weather_now() -> String:
 		return "storm"
 	if w == "rain":
 		return "rain"
-	if w in ["snow", "blizzard"] and GameState.season() == "winter":
+	if w in ["snow", "blizzard"] and GameState.look_se() == "winter":
 		return "snow"
+	return "clear"
+
+
+## C15 P5 (c15_17-07, c15_14-21): the weather a map's music should hear. A map with
+## its own sky (region weather override) plays that sky, not the home calendar:
+## snow only where the map looks like winter, blizzard plays the storm takes.
+static func sky_weather(w: String, look := "") -> String:
+	if look == "":
+		look = GameState.look_se()
+	match w:
+		"storm", "blizzard":
+			return "storm" if w == "storm" or look == "winter" else "clear"
+		"rain", "drizzle", "spring_shower":
+			return "rain"
+		"snow":
+			return "snow" if look == "winter" else "clear"
 	return "clear"
 
 
@@ -192,3 +208,44 @@ static func _h(s: String) -> int:
 	for i in s.length():
 		h = (h * 31 + s.unicode_at(i)) % 9973
 	return h
+
+
+## C15 P5 (c15_18-16): the festival song for a calendar festival id, both arcs, with
+## mapped stand-ins until each festival has its own song (ACE queue in
+## docs/ART-QUEUE.md). Penguins: festival_<id>[_night] -> FESTIVAL_ALT -> festival
+## [_night]. Gangsters never hear a penguin fair tune: festival_<id>[_night]_gang ->
+## festival[_night]_gang -> GANG_FESTIVAL_DAY/NIGHT (their own city songs).
+## Any venue can call it (P6: park, beach, Casino Row), not only the town plaza.
+const FESTIVAL_ALT := {"harvest": ["farm_fall", "town_fall"], "harvest_night": ["festival_night"]}
+const GANG_FESTIVAL_DAY := ["mood_triumph_gang", "town_gang"]
+const GANG_FESTIVAL_NIGHT := ["neon_night", "night_gang"]
+
+
+static func festival_candidates(fid: String, night: bool, gang: bool) -> Array:
+	var out: Array = []
+	var n := "_night" if night else ""
+	if gang:
+		out += ["festival_%s%s_gang" % [fid, n], "festival%s_gang" % n]
+		if night:
+			out += ["festival_%s_gang" % fid, "festival_gang"]
+		out += GANG_FESTIVAL_NIGHT if night else GANG_FESTIVAL_DAY
+		return out
+	out.append("festival_%s%s" % [fid, n])
+	out += FESTIVAL_ALT.get(fid + n, []) as Array
+	out.append("festival" + n)
+	if night:
+		out.append("festival_" + fid)
+		out += FESTIVAL_ALT.get(fid, []) as Array
+		out.append("festival")
+	return out
+
+
+static func festival_track(fid: String, night := false, arc := "") -> String:
+	if fid == "":
+		return ""
+	if arc == "":
+		arc = str(GameState.run.get("arc", "penguins")) if not GameState.run.is_empty() else "penguins"
+	for t: String in festival_candidates(fid, night, arc == "gangsters"):
+		if has(t):
+			return t
+	return ""
