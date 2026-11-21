@@ -19,6 +19,11 @@ signal disconnected(reason: String)
 signal peers_changed
 ## A guest's own world was put back (left, host gone, gave up reconnecting).
 signal went_home
+## C17 router (contract section 2): the host dropped (grace) / came back; a friend arrived / left.
+signal host_away
+signal host_back
+signal peer_joined(peer: String)
+signal peer_left(peer: String)
 
 const TICK := 0.1
 ## The live Dreams relay (DigitalOcean droplet, see server/README.md): used out of the box.
@@ -122,6 +127,130 @@ func _ask_pending() -> void:
 
 func online() -> bool:
 	return tr != null and tr.is_open() and my_id > 0
+
+
+# ---- C17 message router (contract section 2) ----------------------------------
+## Typed messages ride inside the relay's "all"/"to" frames as {k:"r", t, d}.
+## Handlers: cb(from_peer: String, d: Dictionary). Types are namespaced
+## (farm_op, harvest_ok, mine_*, battle_*, game_*, emote, ping, party_*, kick).
+var _routes := {}         # t -> Array[Callable]
+var _host_id := -1        # the room's host peer id (learned from joined/host frames)
+var _host_away := false   # guests: the host's socket is gone (grace) or silent
+var _seq := 0             # guests: last seq stamped on a send_host message
+var _acks := {}           # host: peer id (String) -> highest seq applied
+var _acked := 0           # guests: the host's last ack of our seq
+var _ping_t := 0.0
+const PING_EVERY := 3.0
+
+
+func on_msg(t: String, cb: Callable) -> void:
+	var a: Array = _routes.get(t, [])
+	if not a.has(cb):
+		a.append(cb)
+	_routes[t] = a
+
+
+func off_msg(t: String, cb: Callable) -> void:
+	var a: Array = _routes.get(t, [])
+	a.erase(cb)
+	if a.is_empty():
+		_routes.erase(t)
+	else:
+		_routes[t] = a
+
+
+## Hand a typed message to its handlers (also used for local delivery).
+func route(from_peer: String, t: String, d: Dictionary) -> void:
+	for cb: Callable in (_routes.get(t, []) as Array).duplicate():
+		if cb.is_valid():
+			cb.call(from_peer, d)
+		else:
+			off_msg(t, cb)
+
+
+func my_peer() -> String:
+	return str(my_id) if my_id > 0 else "local"
+
+
+## Guest -> host (the host itself delivers locally). Stamps "seq" for echo rollback.
+func send_host_msg(t: String, d: Dictionary) -> void:
+	if not d.has("seq"):
+		_seq += 1
+		d["seq"] = _seq
+	if is_host():
+		_note_seq(my_peer(), d)
+		route(my_peer(), t, d)
+		return
+	var f := {"k": "r", "t": t, "d": d}
+	if _host_id > 0:
+		_send({"t": "to", "id": _host_id, "d": f})
+	else:
+		f["h"] = 1  # host unknown yet: everyone gets it, only the host handles it
+		_send({"t": "all", "d": f})
+
+
+func send_peer(peer: String, t: String, d: Dictionary) -> void:
+	if peer == my_peer() or (not online() and peer == "local"):
+		route(my_peer(), t, d)
+		return
+	if online() and peer.is_valid_int():
+		_send({"t": "to", "id": int(peer), "d": {"k": "r", "t": t, "d": d}})
+
+
+func broadcast(t: String, d: Dictionary, include_self := false) -> void:
+	if online():
+		_send({"t": "all", "d": {"k": "r", "t": t, "d": d}})
+	if include_self:
+		route(my_peer(), t, d)
+
+
+## False while we're a guest and the host is away (grace) or not yet known: spend nothing.
+func host_present() -> bool:
+	if not online():
+		return not visiting()  # solo play: our own world; a reconnecting guest: no host
+	return _host or not _host_away
+
+
+## peer (String) -> {name, arc, scene, ping_ms, host, me}; includes ourselves.
+func roster() -> Dictionary:
+	var out := {}
+	if online():
+		out[my_peer()] = {"name": GameState.names().get("character", "") if not GameState.run.is_empty() else "", "arc": str(GameState.run.get("arc", "")), "scene": _my_scene(), "ping_ms": 0, "host": _host, "me": true}
+	for pid in peers:
+		var p: Dictionary = peers[pid]
+		out[str(pid)] = {"name": NameFilter.clean(str(p.get("name", ""))), "arc": str(p.get("arc", "")), "scene": str(p.get("scene", "")), "ping_ms": int(p.get("ping_ms", -1)), "host": int(pid) == _host_id, "me": false}
+	return out
+
+
+func _my_scene() -> String:
+	var m := get_tree().current_scene if is_inside_tree() else null
+	if m is GameMap:
+		return (m as GameMap).net_scene() if (m as GameMap).has_method("net_scene") else (m as GameMap).scene_id()
+	return ""
+
+
+## Guests: the highest seq of ours the host has applied (older local echoes can be dropped).
+func acked_seq() -> int:
+	return _acked
+
+
+func last_seq() -> int:
+	return _seq
+
+
+func _note_seq(peer: String, d: Dictionary) -> void:
+	if d.has("seq"):
+		_acks[peer] = maxi(int(_acks.get(peer, 0)), int(d["seq"]))
+
+
+func _set_host_away(away: bool) -> void:
+	if _host or away == _host_away:
+		return
+	_host_away = away
+	if away:
+		host_away.emit()
+	else:
+		host_back.emit()
 
 
 func is_host() -> bool:
@@ -265,6 +394,9 @@ func leave(why := "left") -> void:
 	tr = null
 	my_id = -1
 	room = ""
+	_host_id = -1
+	_host_away = false
+	_acks.clear()
 	peers.clear()
 	peers_changed.emit()
 	disconnected.emit(why)
@@ -297,9 +429,19 @@ func send_all(d: Dictionary) -> void:
 	_send({"t": "all", "d": d})
 
 
-func send_host(d: Dictionary) -> void:
+## send_host(d) = a legacy world act; send_host(t, d) = a router message (contract section 2).
+func send_host(a: Variant, b: Variant = null) -> void:
+	if a is String:
+		send_host_msg(a, b if b is Dictionary else {})
+		return
+	var d: Dictionary = a
+	if not d.has("seq"):
+		_seq += 1
+		d["seq"] = _seq
 	if _host:
 		_handle_action(my_id, d)
+	elif _host_id > 0:
+		_send({"t": "to", "id": _host_id, "d": d})
 	else:
 		_send({"t": "all", "d": d})  # the host is in the room; others ignore "act"
 
@@ -335,6 +477,10 @@ func _process(delta: float) -> void:
 			if _t >= TICK:
 				_t = 0.0
 				_broadcast_state()
+			_ping_t += delta
+			if _ping_t >= PING_EVERY and not peers.is_empty():
+				_ping_t = 0.0
+				send_all({"k": "png", "s": Time.get_ticks_msec()})
 			if _host:
 				_save_t += delta
 				_world_t += delta
@@ -345,6 +491,7 @@ func _process(delta: float) -> void:
 		var why := tr.close_reason()
 		_last_tr = tr
 		tr = null
+		_set_host_away(true)  # guests: nothing is spent until a host is back
 		my_id = -1
 		peers.clear()
 		peers_changed.emit()
@@ -367,6 +514,11 @@ func _on_msg(m: Dictionary) -> void:
 			_last_room = room
 			_retries = 0
 			_host = bool(m.get("host", false))
+			_host_id = my_id if _host else int(m.get("host_id", -1))
+			if _host_away:
+				_host_away = false
+				host_back.emit()
+			_acks.clear()
 			var fresh := _solo_backup.is_empty()  # first join, not a reconnect
 			_arc_mismatch = false
 			if _host and not _solo_backup.is_empty():
@@ -379,6 +531,8 @@ func _on_msg(m: Dictionary) -> void:
 					_solo_backup[k] = ((GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]) if GameState.run.has(k) else null)
 			for p in m.get("peers", []):
 				peers[int(p["id"])] = p
+				if bool((p as Dictionary).get("host", false)):
+					_host_id = int(p["id"])
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
 					_arc_mismatch = true
 			connected.emit(_host)
@@ -401,14 +555,23 @@ func _on_msg(m: Dictionary) -> void:
 			peers[int(p["id"])] = p
 			if str(p.get("arc", "")) != str(GameState.run["arc"]):
 				_arc_mismatch = true
+			if bool(p.get("host", false)):
+				_host_id = int(p["id"])
+			if int(p["id"]) == _host_id:
+				_set_host_away(false)
 			peers_changed.emit()
+			peer_joined.emit(str(int(p["id"])))
 			if _host:
 				_push_world(int(p["id"]))
 		"peer_left":
 			if peers.has(int(m["id"])):
 				_peer_cue(str((peers[int(m["id"])] as Dictionary).get("name", "")), false)
 			peers.erase(int(m["id"]))
+			_acks.erase(str(int(m["id"])))
+			if int(m["id"]) == _host_id and not _host:
+				_set_host_away(true)
 			peers_changed.emit()
+			peer_left.emit(str(int(m["id"])))
 		"peer_scene":
 			if peers.has(int(m["id"])):
 				peers[int(m["id"])]["scene"] = str(m["scene"])
@@ -418,6 +581,8 @@ func _on_msg(m: Dictionary) -> void:
 				leave("Your host left. You're back on your own farm.")  # the host's farm goes with the host
 				return
 			_host = true
+			_host_id = my_id
+			_host_away = false
 			_became_host()
 			connected.emit(true)
 		"world":
@@ -428,7 +593,23 @@ func _on_msg(m: Dictionary) -> void:
 			if not (dv is Dictionary):
 				return
 			var d: Dictionary = dv
+			if bool(m.get("host", false)) and from > 0:
+				_host_id = from
+				_set_host_away(false)
 			match str(d.get("k", "")):
+				"r":
+					if d.has("h") and not _host:
+						return  # meant for the host
+					var rd: Variant = d.get("d", {})
+					if rd is Dictionary:
+						if _host:
+							_note_seq(str(from), rd)
+						route(str(from), str(d.get("t", "")), rd)
+				"png":
+					_send({"t": "to", "id": from, "d": {"k": "pong", "s": d.get("s", 0)}})
+				"pong":
+					if peers.has(from):
+						peers[from]["ping_ms"] = maxi(0, Time.get_ticks_msec() - int(d.get("s", 0)))
 				"state":
 					var pv: Variant = d.get("pos", [0, 0])
 					if peers.has(from) and pv is Array and (pv as Array).size() >= 2:
@@ -441,10 +622,15 @@ func _on_msg(m: Dictionary) -> void:
 						peers[from]["pup"] = bool(d.get("pup", false))
 				"act":
 					if _host:
+						_note_seq(str(from), d)
 						_handle_action(from, d)
 				"world":
 					var wd: Variant = d.get("d", {})
 					if not _host and wd is Dictionary and bool(m.get("host", false)):  # only the host's world counts
+						var ak: Variant = (wd as Dictionary).get("_ack", null)
+						if ak is Dictionary:
+							_acked = maxi(_acked, int((ak as Dictionary).get(str(my_id), _acked)))
+							(wd as Dictionary).erase("_ack")
 						_apply_world(wd)
 				"toast":
 					if not bool(m.get("host", false)):
@@ -501,6 +687,8 @@ func _push_world(to_id := -1) -> void:
 	# menu), so a guest holds its clock instead of free-running and snapping back.
 	delta["time"] = int(GameState.run.get("time", 0))
 	delta["_paused"] = is_inside_tree() and get_tree().paused
+	if not _acks.is_empty():
+		delta["_ack"] = _acks.duplicate()  # C17: each guest's highest applied seq (echo rollback)
 	send_all({"k": "world", "d": delta})
 	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time", "_paused"]))
 	if busy or _save_t >= SAVE_EVERY:
