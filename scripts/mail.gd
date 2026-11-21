@@ -254,12 +254,19 @@ static func favour_text(who: String, item: String, n: int, pay: int, days: int) 
 static func show_line(fid: String) -> String:
 	var pen := GameState.is_penguins()
 	if fid == "harvest" and has_animals():
-		return (" Benno's judging the Animal Show by the fountain: bring your friendliest grown animal." if pen
-			else " Benno's judging the livestock ribbon by the fountain: bring your best-kept animal.")
+		return (" Benno's judging the Animal Show by the fountain: bring your friendliest grown animal. Bring a crop for the contest too." if pen
+			else " Benno's judging the Stock Show by the fountain: bring your best-kept animal. Bring a crop for the contest too.")
 	if fid == "egg" and (Builds.is_built("coop") or ranch_source_ok("egg")):
 		var host := "Posy" if GameState.npc_present("posy") else "Bram"
 		return (" %s's Best Egg table wants your shiniest egg, so save one from the coop." % host if pen
 			else " %s's running the Best Egg table: save your best egg from the coop." % host)
+	if fid == "lantern" and has_animals():
+		var fh := FestivalWords.fest_host("Hazel")  # C12 c12_11-05
+		return (" %s's Fleece & Feather table wants your softest wool, fur or feathers." % fh if pen
+			else " %s's judging Fleece & Feather by the fountain: soft and clean wins." % fh)
+	if fid == "star":
+		return (" Everyone gives one gift, and there's a star-wish at the fountain after dark." if pen
+			else " Gift swap at the fountain. One each, no regifting.")
 	return ""
 
 

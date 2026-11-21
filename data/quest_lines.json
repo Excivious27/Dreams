@@ -548,14 +548,14 @@
  "bram_meat": {
   "offer": [
    "Five trail rations. Rook sells them, if he's in a selling mood. He usually isn't.",
-   "Or you hunt. I don't judge how the meat arrives."
+   "Or forage the hills and pack your own. I don't judge how the rations arrive."
   ],
-  "yes": "Good. Fresh. I'll know.",
+  "yes": "Good. Fresh-packed. I'll know.",
   "no": "Vegetable stew. People will notice.",
-  "wait": "Five meat. Rook or the hills.",
+  "wait": "Five trail rations. Rook or the hills.",
   "done": [
    "Now THAT'S a stew.",
-   "Here. Meat money. Worth every crystal."
+   "Here. For the rations. Worth it."
   ]
  },
  "bram_wine": {
@@ -599,14 +599,14 @@
  "rook_pelts": {
   "offer": [
    "Three bundles of shed fur.",
-   "Traps, or hunt. Don't bring me anything you didn't kill clean."
+   "Set a bramble brush on a trail, or pick the burrs yourself. Bring it clean."
   ],
   "yes": "Good.",
   "no": "...Fine.",
   "wait": "Shed fur. Three.",
   "done": [
    "...Clean. Good.",
-   "Traps. Two. You know how to use them now."
+   "Brushes. Two. You know how to set them now."
   ]
  },
  "rook_bones": {
@@ -632,7 +632,7 @@
   "wait": "The orchard. Grumps. Still there.",
   "done": [
    "...Quiet over there now.",
-   "Here. You're a hunter. Don't let it go to your head."
+   "Here. You track like one of us now. Don't let it go to your head."
   ]
  },
  "theo_book": {
@@ -862,7 +862,7 @@
   "no": "...Soft dog, soft owner.",
   "wait": "Level three. Fight with it.",
   "done": [
-   "...Now that's a hunting dog.",
+   "...Now that's a tracking dog.",
    "Collar. Leather. I cut it myself."
   ]
  },
@@ -940,7 +940,7 @@
  },
  "orla_oil": {
   "offer": [
-   "Marlowe won't come ashore for bread, and he won't ask. Five wheat and I'll mill it and send a loaf out with the flour boat."
+   "Marlowe won't walk round to the mill for bread, and he won't ask. Five wheat and I'll mill it and leave a loaf on his step."
   ],
   "yes": "He'll pretend he didn't need it. Let him.",
   "no": "Then he'll eat ship's biscuit again. Stubborn man.",

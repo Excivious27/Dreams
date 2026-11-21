@@ -788,7 +788,10 @@ func _refresh() -> void:
 				_line("Side stories", 9, Color(0.8, 0.9, 1.0))
 				for sl: Dictionary in ssl:
 					var ss_at := QuestTracker.npc_scene(str(sl["giver"]))
-					_line("   • %s: %s%s" % [str(sl["title"]), str(sl["text"]), (" (%s)" % PlaceNames.for_id(ss_at)) if ss_at != "" else ""], 8, Color(0.85, 0.9, 1.0))
+					var ss_id := "ss:" + str(sl["id"])  # C12 P5/P6: tick it and the compass follows the side story
+					_body.add_child(QuestTracker.checkbox_row("%s: %s" % [str(sl["title"]), str(sl["text"])], trk == ss_id, false, PlaceNames.for_id(ss_at) if ss_at != "" else "", func() -> void:
+						QuestTracker.track(ss_id)
+						_refresh()))
 			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
 			if not fin.is_empty():
 				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))

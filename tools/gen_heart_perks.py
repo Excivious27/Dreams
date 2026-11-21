@@ -45,7 +45,7 @@ P = {
  "theo": {"6": ("Theo reads you the miners' log: 2 Memory Teas", {"give": {"memory_tea": 2}}),
           "10": ("Theo's thesis: one free skill point in every tree", {"flag": "skill_point"})},
  "tess": {"2": ("Tess saves you offcuts: 5 Wood each week", {"weekly": {"wood": 5}}),
-          "4": ("Tess's spare planks: 10 Plank", {"give": {"plank": 10}}),
+          "4": ("Tess's spare planks: 10 Planks", {"give": {"plank": 10}}),
           "6": ("Tess sends hardwood: 3 Hardwood each week", {"weekly": {"hardwood": 3}}),
           "10": ("Tess's master joinery: 10 Hardwood", {"give": {"hardwood": 10}})},
  "hazel": {"2": ("Hazel shares seeds: a seed pack each week", {"weekly": {"#seedpack": 1}}),

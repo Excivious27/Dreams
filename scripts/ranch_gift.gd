@@ -176,14 +176,26 @@ static func _waiting_letter(row: Dictionary) -> void:
 	var sp := str(row["species"])
 	var nm := str(row.get("name", ""))
 	var what := nm if nm != "" else ItemWords.with_article(_kind(sp))
-	Mail.send(_who(row), "%s is waiting for you here until there's room: it needs %s. It'll walk over the morning after. - %s"
-		% [what.capitalize() if nm == "" else what, room_hint(sp, row), _who(row)], "chat", {}, true)
+	Mail.send(_who(row), "%s is waiting for you here until there's room: it needs %s. It'll %s the morning after. - %s"
+		% [what.capitalize() if nm == "" else what, room_hint(sp, row), arrive_verb(sp, false), _who(row)], "chat", {}, true)
+
+
+## C12 c12_14-15: how a creature gets to your farm (not every one "walks over").
+static func arrive_verb(sp: String, past: bool) -> String:
+	var home := str(Ranch.species(sp).get("home", ""))
+	if home == "tide_pool":
+		return "came over in a bucket of sea water" if past else "come over in a bucket of sea water"
+	if str(Ranch.species(sp).get("group", "")) == "insect":
+		return "drifted over in a lantern jar" if past else "drift over in a lantern jar"
+	if home == "aviary":
+		return "flew over" if past else "fly over"
+	return "walked over" if past else "walk over"
 
 
 static func _arrived(sp: String, uid: String, opts: Dictionary, was_waiting: bool) -> void:
 	var nm := str(Ranch.animal(uid).get("name", _kind(sp)))
 	var h := str(Ranch.animal(uid).get("home", ""))
 	if was_waiting:
-		Mail.send(_who(opts), "%s walked over at first light and is settling into your %s. - %s" % [nm, _home_word(h), _who(opts)], "chat", {}, true)
+		Mail.send(_who(opts), "%s %s at first light and is settling into your %s. - %s" % [nm, arrive_verb(sp, true), _home_word(h), _who(opts)], "chat", {}, true)
 	else:
 		GameState.notify("%s the %s joined your %s." % [nm, _kind(sp), _home_word(h)])
