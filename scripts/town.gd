@@ -696,7 +696,7 @@ func _animal_show(fest: String) -> void:
 	var rv: Array = AnimalShowLib.rivals(fest, cid)
 	var place: int = AnimalShowLib.place_for(score, rv)
 	var amt: int = AnimalShowLib.prize(c, place)
-	var lines: Array = [{"text": AnimalShowLib.ring_line(c, rv, entry)}, {"who": host, "text": AnimalShowLib.result_line(place, entry, amt)}]
+	var lines: Array = AnimalShowLib.show_lines(c, rv, entry, place, amt, host, pick)
 	var giver: Array = AnimalShowLib.giver_line(pick) if str(c["kind"]) == "animal" else []
 	if not giver.is_empty():
 		lines.append({"who": str(giver[1]), "text": str(giver[2])})

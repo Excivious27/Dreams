@@ -261,6 +261,19 @@ static func build() -> Array:
 	return out
 
 
+## The dark endings get a dark song, not the arc's warm ending theme (C13 06-02):
+## the first that exists, else the arc's ending.
+const ENDING_TRACK := {"take": ["ending_dark_gang", "mood_tense_gang", "mood_sad_gang"],
+	"shatter": ["ending_quiet_penguin", "mood_sad"]}
+
+
+static func ending_track(penguins: bool, ending: String) -> String:
+	for t: String in ENDING_TRACK.get(ending, []):
+		if t.ends_with("_gang") == (not penguins) and Music.has_track(t):
+			return t
+	return "ending_penguin" if penguins else "ending_gangster"
+
+
 static func play(m: GameMap) -> void:
 	var e := Epilogue.new()
 	e._slides = build()
@@ -278,7 +291,7 @@ func _ready() -> void:
 	# The ending gets its own song, not whatever the last fight left playing.
 	var mu := Music.instance(get_tree())
 	mu.set_duck(0.0)
-	var end_track := "ending_penguin" if GameState.is_penguins() else "ending_gangster"
+	var end_track := ending_track(GameState.is_penguins(), str(GameState.run.get("ending", "")))
 	if Music.has_track(end_track):
 		# Streamed on the web: the ending and credits jump the download queue; while
 		# the ending downloads a packed stand-in plays (never the last fight's song).
@@ -376,6 +389,7 @@ func _next() -> void:
 	if _i >= _slides.size():
 		_close()
 	else:
+		Music.instance(get_tree()).sfx("page", "ui_tap")  # C13 06-19: each slide turns like a page
 		_show()
 
 

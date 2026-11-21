@@ -1138,3 +1138,10 @@ echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
 fi
+
+echo "== C13 P4: story, scene and minigame audio cues (live beats, endings, moods, drill, shots) =="
+c13p4out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/story_audio_test.gd 2>&1)"
+echo "$c13p4out" | grep -E "FAIL|SCRIPT ERROR|story_audio_test" || true
+if ! echo "$c13p4out" | grep -q "story_audio_test: 0 fails"; then
+  echo "story_audio_test failed"; exit 1
+fi

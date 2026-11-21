@@ -187,6 +187,7 @@ static func _mission(m: GameMap, id: String) -> bool:
 		GameState.run["flags"]["mission_" + id] = true
 		await m.say([{"who": nm, "text": str(ms[3])}])
 		m.hud.toast("%s's favour done. Their last loyalty step is open." % nm, Color(1, 0.85, 0.7))
+		Music.instance(m.get_tree()).sfx("j_recruit", "j_skill")  # C13 05_27: a favour done is heard
 		return true
 	if not GameState.run["flags"].has("mission_asked_" + id):
 		GameState.run["flags"]["mission_asked_" + id] = true
