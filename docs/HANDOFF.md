@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-21 01:10 PT, personal account. CONDUCT 12 (writing) SHIPPED on main (final CI c12i: shards 5/6 + 20 bots + playtest + relay green; shard 3 failed on stale Steam facts -> fixed, shard 3 rerun green; playtest door-entry flake once, rerun PASS).
-- **Done:** CONDUCT 1-12, S1, relay live, optimization rounds 1-4.
-- **In progress:** CONDUCT 13 (audio depth): 18 audits done (/home/claude/wt/c13_reports), packages /home/claude/wt/C13_PACKAGES.md + contract C13_CONTRACT.md (copies in docs/reports/), 6 fix agents running since 00:42 PT on branches c13f/p1..p6 (based on c12/integ; reports /home/claude/wt/c13f_reports). P2/P3 render ACE songs (budget 55 + 40 create_song, account 444 credits).
-- **Next step:** when c13f/p*.done: merge c13f/p1..p6 into main (mrg.sh), import any ACE renders still landing (ids in p2.md/p3.md), one hook agent if gaps, full CI, docs agent, ship C13, package 13. Then C14 → C14b (animation life) → C15 → C16 (incl. optional battles) → ... → C23 → C23b → final package.
-- **Jobs running elsewhere:** C13 fix agents (subagents) and their ACE renders. Images used today: ~280 (limit 1000/day). ACE credits: 444 (2026-11-21).
-- **WIP branches:** wip/c13* may appear from the fix agents (wip_push.sh).
+- **Last update:** 2026-11-21 03:15 PT, personal account. CONDUCT 13 (audio depth) SHIPPED on main (final CI c13i + rerun c13i2 green).
+- **Done:** CONDUCT 1-13, S1, relay live, optimization rounds 1-4.
+- **In progress:** CONDUCT 14 (world aesthetics, town expansion, beach + tiered marina, earned fast travel TravelNet, exploration): 18 audits done (/home/claude/wt/c14_reports), packages /home/claude/wt/C14_PACKAGES.md + C14_CONTRACT.md (copies in docs/reports/), 6 fix branches c14f/p1..p6 merged into c14/integ + hook agent done (head 1f07f6706). Next: full CI on c14/integ.
+- **Next step:** ci_run c14i 3 --branch c14/integ (full + bots); docs agent writes CONDUCT-14.md/GUIDE-41 on c14/docs; ship C14; package 14 (art prompts from c14f_reports/p*.md). Then C14b animation life → C15 seasons → C16 (incl. optional battles) → C17 → C18a/b → C19 → C20 → C21 → C22 → C23 → C23b → final package.
+- **Jobs running elsewhere:** subagents only. Images used today: ~360 of 1000. ACE credits: 64 until Dec 1.
+- **WIP branches:** c14/integ (integration, not on main yet).
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
@@ -95,6 +95,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 - 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
 
 ## Log (newest first, 30 lines max)
+- 2026-11-22 02:00 C13 docs: report docs/reports/CONDUCT-13.md (398 findings, 6 packages + hook integration, 140 songs, 20 jingles + gang UI kit, 22 CC0 sfx, 380 ACE credits, 64 left until Dec 1; final CI c13i PENDING), Guide 40 (music by season/night/rain/weekday/story, gang songs and jingles, festival and venue songs, story moods, sound options, co-op sounds), TEXTS['13'] in build_package.py (C13 done, C14 next), 7 audio inventory rows (whole game ~81%), PROJECT-MEMORY C13 entry (resolver naming, APIs, sfx_meta/buses, captions, moods).
 - 2026-11-21 00:40 C12 docs: report docs/reports/CONDUCT-12.md (379 findings, 7 packages + integration, final CI c12i PENDING), Guide 39 (hero-aware scenes, choices that come back, festival days, side-story list, town letters, gift refusals, compass on side stories), TEXTS['12'] in build_package.py, 3 new inventory rows (talk conditions, writing checks, mail) + 8 rows raised, PROJECT-MEMORY C12 entry; Tom's calls: Juniper back?, rename kid Pip. Branch c12/docs.
 - 2026-11-21, C12 integ: P5+P6 merged into c12/integ, cross-package hooks (partner guard on gangster shop deals, gift block toast, penguin post-ending letters, one bell cause, colony elder moon lines, heart keepsakes, rare herbs typed herb, told_town/kept_quiet and Sal after-ending talk, Rook/Bram tracker words, Benno ring, Bram festival eve, festival-eve letters, side-story compass, arrival verbs); continuity_check reads compound talk keys.
 
@@ -202,7 +203,7 @@ Everything needed to run a CONDUCT from this section alone. Target: **1 h 35 m t
 
 **Lean reads**: briefs point to the code map and docs/TOOLS.md; agents grep and read line ranges, never whole big files; auditors reply only "done, N findings"; the conductor reads cluster.py output and CI summary.txt only. STATUS.md holds 2 days (older in docs/STATUS-ARCHIVE.md, `python3 tools/status_add.py "<line>"`, `--rotate 2` weekly). CLAUDE.md is a slim core (~15 KB); the full catalog is docs/TOOLS.md.
 
-**Art lane and music budget**: image limit 1000/day (Tom 2026-11-20 15:29; was 300 then 60): still front-load art for queued art-heavy CONDUCTs (C11b creatures, C14 aesthetics/marina/town, C18 cutscenes, C23 art direction) where designs are known; from Nov 25 fix agents never block on images: missing renders go to docs/ART-QUEUE.md and a daily low-effort art agent works through it within the limit; wiring happens when art lands. Track images used per day in the Baton. ACE music: 664 credits until Dec 1; first reuse the unused second take of every existing song (audio/ACE_LOG.json) as alternates (C13 especially); new songs only where no take fits; check get_account before C13.
+**Art lane and music budget**: image limit 1000/day (Tom 2026-11-20 15:29; was 300 then 60): still front-load art for queued art-heavy CONDUCTs (C11b creatures, C14 aesthetics/marina/town, C18 cutscenes, C23 art direction) where designs are known; from Nov 25 fix agents never block on images: missing renders go to docs/ART-QUEUE.md and a daily low-effort art agent works through it within the limit; wiring happens when art lands. Track images used per day in the Baton. ACE music: 64 credits left until Dec 1 (C13 used 380); first reuse the unused second take of every existing song (audio/ACE_LOG.json) as alternates (C13 especially); new songs only where no take fits; check get_account before C13.
 
 **Godot locks:** fix agents share /tmp/godot.lock; auditors use their own /tmp/godot_audit.lock (C11b: 20 agents on one lock starved auditors of play runs).
 

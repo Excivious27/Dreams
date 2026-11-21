@@ -1,0 +1,22 @@
+CONDUCT 14: aesthetic quality of the world + town/beach/marina + earned fast travel + exploration (spec docs/CONDUCT-PLAN.md "CONDUCT 14", "Fast travel", C14 line under Tom's additions). Judge every map against Stardew Valley / Sun Haven. Look at the shots (shots_14/index.md) AND read the map code; take extra area_shot.gd shots where needed (ARC=gangsters env for the gang arc). Rank problems; name exact cells/coords and the fix (art redraw prompt for dreams-image, reshaped layout, edge/transition, landmark, secret).
+01 HOME VALLEY A (penguin arc): farm, house surroundings, meadow, crystal meadow, forest: art quality, edges/transitions (grass/dirt/water/cliff), boxy walls, density of detail, lighting/colour harmony, all 4 seasons, day/night.
+02 HOME VALLEY B (penguin arc): lake, mountain, orchard hills, countryside, riverlands, highlands, community farm: same.
+03 TOWN (both arcs): Tom's ask "town expanded and embellished": current layout, plaza, streets, shops, homes, parks, decor density, landmarks, festival layouts, night lighting; concrete expansion plan (new districts/lots, what goes where) that fits the town code (scripts/town.gd).
+04 BEACH + MARINA: Tom's ask "beach region much larger with an expansive tier-based marina (dock upgrades, boats, marina NPCs who work, sell and trade, quests, boat passage to other regions as earned travel, fishing charters), tied into shops, quests, travel tiers, fishing, festivals". Audit today's beach; design the marina tiers, NPCs (no family/staff names), shops, quests, data and code hooks.
+05 FAST TRAVEL DESIGN: the earned tiered network (mine carts, rail, ferries, plane/airship, clouds penguin arc, taxis/subway/getaway cars gang arc, merkitty currents); what exists today (mega_travel.gd, maps, stations, Campaign.blocks); exact station list per tier, unlock (quest/project/campaign/skill), costs, travel scenes, co-op, save data.
+06 GANG ARC CITY MAPS: outskirts, neon, uptown, docks, hideout, wastes, underground, quarry, ruins, marsh (gang look): serious cyber/underworld art quality, edges, lighting, density, landmarks.
+07 MEGA REGIONS A: Gloamwood, Sunscorch, Frostpeak (all sub-maps): art, edges, layouts, natural boundaries, landmarks, vistas.
+08 MEGA REGIONS B: Windward, Ironline, Gilt City, Sky Reaches, Hollow Deeps, Station: same.
+09 MOON, SKY, SANCTUARY, CATTOPIA, JUNGLE, COLONIES (coral, ember, ice, kelp): same; underwater caverns on the merkitty islands (Tom's earlier ask).
+10 INTERIORS: every interior both arcs (house tiers, shops, inn, chapel, library, school, museum, clinic, hall, casino, rec center, crew venues, cottages, mansion): art quality, furniture density, lighting, wall/floor tiles, scale, clutter that tells a story.
+11 MINES AND CAVES: mine floors (all tiers), quarry, caves, hollow heart: tiles, walls, variety per depth, lighting, secrets.
+12 EXPLORATION AND SECRETS: hidden paths, secret passages, vistas, ways up/down, reasons to wander in every region; what exists (hidden_area.gd, HiddenArea) vs gaps; concrete secret list per map.
+13 GEOGRAPHY AND LANDMARKS: rivers, hills, cliffs, ruins, caves, bridges, waterfalls, signature landmarks per region; maps that read as flat rectangles; region map layouts and connections (world map / regions.json).
+14 GROUND, WATER, CLIFF TRANSITIONS (technical): autotile/edge code, seams, make_seamless, water edges, cliff faces, path edges; list every bad seam with coords and the code/art fix.
+15 LIGHTING AND COLOUR: day/night/darkness, seasonal palettes (GameState.look_se), weather tints, lamps/glows, colour harmony across arcs; washed-out or clashing maps.
+16 ART ASSET QUALITY: fuzzy, mismatched-scale, low-res, inconsistent-outline sprites and tiles (art/gen manifest, Art.clipped); the worst 60 with redraw prompts (max 3 images per prompt file).
+17 PROPS, DECOR DENSITY AND STORYTELLING: clutter, flowers, fences, signs, lamps, carts, crates per area vs Sun Haven; empty patches with coords and what to place (respect baked map rules: prop()/under_layer()).
+18 PERFORMANCE OF RICHER MAPS: bake cost, draw calls, TriBatch use, web/phone frame time for the densest maps; budget for C14 additions (tools/perf_test.gd).
+19 REGRESSION after C13 merge (low): music_map_test, ambience_map_test, ui_cue_test, story_audio_test, sfx_audit, music_resolve_test; log only what is broken.
+20 BUGS SWEEP after C13 (low): 4 single bots (both arcs, Hard + Very easy) across town, beach, regions and mega travel; script errors, freezes, softlocks, stuck spots.
+Note: 01-18 medium; 19-20 low after the C13 push.
