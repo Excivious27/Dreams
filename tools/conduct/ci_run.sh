@@ -81,7 +81,11 @@ if [ -n "$BRANCH" ]; then
     rm -rf "$TMP"; exit 2
   fi
   MTREE=$(echo "$MT" | head -1)
-  BASE=$(git -c user.name=conduct -c user.email=conduct@local commit-tree "$MTREE" -p "$MAIN" -p "$RHEAD" -m "Merge origin/$BRANCH onto main (ci_run)")
+  if git merge-base --is-ancestor "$MAIN" "$RHEAD"; then
+    BASE=$RHEAD   # branch already contains main: test its head itself (same sha as the branch)
+  else
+    BASE=$(git -c user.name=conduct -c user.email=conduct@local commit-tree "$MTREE" -p "$MAIN" -p "$RHEAD" -m "Merge origin/$BRANCH onto main (ci_run)")
+  fi
 else
   BASE=$(git rev-parse HEAD)
   echo "testing HEAD ${BASE:0:10} ($(git rev-parse --abbrev-ref HEAD))"
