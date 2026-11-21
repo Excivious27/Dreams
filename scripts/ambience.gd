@@ -16,6 +16,7 @@ var _eval_t := 0.0
 var _fade := 2.5
 var _spot_t := {}      # spot -> seconds until next
 var _rooster_day := -1
+var _bell_key := -1
 var _thunder_in := -1.0
 var _cache := {}
 const OFF_DB := -45.0
@@ -361,6 +362,7 @@ func _evaluate() -> Dictionary:
 		var wn := _water_near(m)
 		if id in ["riverlands", "farm"] and wn > 0.2:
 			out["river"] = -16.0 + 8.0 * (wn - 1.0)
+			out.erase("water_lap")  # c13_10-22: one water bed for one river (no still-water lap on top)
 		if id == "jungle" and not wet:
 			out["jungle_insects"] = -14.0
 		if id in ["marsh", "bf_bog_crossing"]:
@@ -583,6 +585,12 @@ func _spots(delta: float) -> void:
 			var src: Array = (_herd.get(str(r[4]), []) as Array).filter(func(n: Variant) -> bool: return is_instance_valid(n))
 			if not src.is_empty():
 				_spot(str(r[0]), float(r[3]), (src.pick_random() as Node2D).position, str(r[4]))
+	# c13_10-22: the town bell rings at noon and at six, once each, far off.
+	if id == "town" and outdoors and (t >= 720 and t < 730 or t >= 1080 and t < 1090):
+		var bk := int(GameState.run.get("day", 1)) * 100 + (12 if t < 900 else 18)
+		if _bell_key != bk:
+			_bell_key = bk
+			_spot("town_bell", -14.0)
 	# The rooster crows once each morning, from the rooster, when the farm has one (c11a_13-09).
 	var day := int(GameState.run.get("day", 1))
 	var roosters: Array = (_herd.get("rooster", []) as Array).filter(func(n: Variant) -> bool: return is_instance_valid(n))
