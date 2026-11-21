@@ -124,6 +124,21 @@ def main():
                 strip.paste(f.resize((w, VEH_H), Image.NEAREST), (i * w, 0))
             put(man, strip, name)
             man[GROUP][name].update({"frames": 3, "cell_w": w, "cell_h": VEH_H})
+    # The quarry's own gravel ground (c14_12-01): 256 px, made to wrap like make_seamless does.
+    g = np.asarray(Image.open(os.path.join(INC, "c14p4_quarry_gravel.png")).convert("RGBA").resize((256, 256), Image.LANCZOS)).astype(float)
+    n = 256
+    r = np.roll(g, (n // 2, n // 2), (0, 1))
+    d = np.minimum(np.arange(n), n - 1 - np.arange(n)).astype(float)
+    w1 = np.clip(d / 48, 0, 1)
+    w1 = w1 * w1 * (3 - 2 * w1)
+    w = np.minimum.outer(w1, w1)[..., None]
+    o = (g * w + r * (1 - w)).clip(0, 255).astype(np.uint8)
+    o[..., 3] = 255
+    sp = os.path.join(GEN, "seamless", "c14p4_quarry_gravel.png")
+    if os.path.exists(sp):
+        os.remove(sp)
+    Image.fromarray(o).save(sp)
+    man.setdefault("seamless", {})["c14p4_quarry_gravel"] = {"file": "seamless/c14p4_quarry_gravel.png", "w": 256, "h": 256}
     tmp = man_p + ".tmp"
     with open(tmp, "w") as f:
         json.dump(man, f, indent=1, sort_keys=True)

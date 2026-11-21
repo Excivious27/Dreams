@@ -52,7 +52,6 @@ static func on_enter(m: GameMap) -> void:
 	if data().is_empty() or not GameState.run.has("flags"):
 		return
 	var sid := m.scene_id()
-	TravelNet.on_enter(m)  # C14: station props + desks, arrival beside the station
 	if region_of(sid) != "":
 		GameState.run["flags"]["mseen_" + region_of(sid)] = true  # S1 P2: Wide World / Gilt Edge
 	for id: String in data():
@@ -106,6 +105,7 @@ static func on_enter(m: GameMap) -> void:
 				sp.position = m.cell_center(c + Vector2i(int(off[0]), int(off[1])))
 				sp.play("idle")
 				m.add_child(sp)
+	TravelNet.on_enter(m)  # C14: station props + desks (after the keepers' gates), arrival beside the station
 
 
 ## The travel point is out in the world once the keeper's letter has come (or the way is open).

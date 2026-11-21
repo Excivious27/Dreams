@@ -51,7 +51,11 @@ static func reload() -> void:
 
 static func station(id: String) -> Dictionary:
 	data()
-	return _stations.get(id, {})
+	var s: Dictionary = _stations.get(id, {})
+	if not s.is_empty() and str(s.get("kind", "")) == "cart" and not GameState.run.is_empty() and not GameState.is_penguins() and str(s.get("name", "")) == "Cart Stop":
+		s = s.duplicate()
+		s["name"] = str(data().get("kinds", {}).get("cart", {}).get("gang_name", "Freight Trolley Stop"))
+	return s
 
 
 static func link(id: String) -> Dictionary:
@@ -391,10 +395,20 @@ static func _spot(m: GameMap, c: Vector2i) -> Vector2i:
 				if n.x < 1 or n.y < 1 or n.x >= m.cols - 1 or n.y >= m.rows - 1:
 					continue
 				var dn := n + Vector2i(0, 1)
-				if m.blocked.has(n) or m.things.has(n) or m._exit_at(n) or m.blocked.has(dn) or m.things.has(dn):
+				if m.blocked.has(n) or m.things.has(n) or m._exit_at(n) or m.blocked.has(dn) or m.things.has(dn) or _near_gate(m, n):
 					continue
 				return n
 	return Vector2i(-1, -1)
+
+
+## A keeper's vehicle or another station next door (their keeper stands beside them).
+static func _near_gate(m: GameMap, n: Vector2i) -> bool:
+	for dy in range(-1, 2):
+		for dx in range(-2, 3):
+			var k := n + Vector2i(dx, dy)
+			if m.things.has(k) and str(m.things[k].get("type", "")) == "mega_gate":
+				return true
+	return false
 
 
 static var placed: Dictionary = {}  # "scene:sid" -> Vector2i (this visit)
@@ -415,6 +429,8 @@ static func station_prop(m: GameMap, sid: String) -> void:
 		return
 	placed[key] = c
 	var pn := str(s.get("prop", ""))
+	if not GameState.is_penguins() and str(s.get("kind", "")) == "cart":
+		pn = "c14p4_trolley_stop"  # the gangster arc's freight trolley line (c14_12-16)
 	if pn != "" and Art.has(GROUP, pn):
 		var sp := m.prop(GROUP, pn, c, 0, 0.0, false, 0.5)
 		if sp and not is_built(sid):
