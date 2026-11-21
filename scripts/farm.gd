@@ -992,9 +992,12 @@ func _desync(a: AnimatedSprite2D, c: Vector2i) -> void:
 ## C14b P3 (c14b_13-14): the Mill build as a still tower and a sail cross turning on
 ## game time with the wind (AmbientMotion.spin), from a random start angle.
 func _rotor_mill(c: Vector2i, w: int) -> void:
-	var bi := Art.info("props", "c14bp3_windmill_body")
+	# Gang arc (c14b_13-21): a steel windpump with a fan rotor instead of the cosy mill.
+	var gang := Builds._gang() and Art.has("props", "c14bp3_windpump_gang_body") and Art.has("props", "c14bp3_windpump_gang_rotor")
+	var bn := "c14bp3_windpump_gang_body" if gang else "c14bp3_windmill_body"
+	var bi := Art.info("props", bn)
 	var body := Sprite2D.new()
-	body.texture = Art.tex("props", "c14bp3_windmill_body")
+	body.texture = Art.tex("props", bn)
 	var fs := clampf(float(w + 1) * TILE / maxf(1.0, float(bi.get("w", 74))), 0.5, 1.0)
 	body.scale = Vector2(fs, fs)
 	body.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
@@ -1004,7 +1007,7 @@ func _rotor_mill(c: Vector2i, w: int) -> void:
 	CrispArt.apply(body)
 	var hub: Array = bi.get("hub", [37, 26])
 	var sails := Sprite2D.new()
-	sails.texture = Art.tex("props", "c14bp3_windmill_sails")
+	sails.texture = Art.tex("props", "c14bp3_windpump_gang_rotor" if gang else "c14bp3_windmill_sails")
 	sails.position = Vector2(float(hub[0]) - float(bi.get("w", 74)) / 2.0, float(hub[1]) - float(bi.get("h", 92)))
 	sails.name = "MillSails"
 	body.add_child(sails)
@@ -2333,6 +2336,10 @@ func _place_props() -> void:
 			add_child(sc)
 			sc.play("idle")
 			_desync(sc, c)  # C14b P3 (c14b_14-21)
+			if str(b["anim"]) == "fish_pond":  # C14b P3 (c14b_01-13): still rim, code ripples (the 4 renders jittered)
+				sc.stop()
+				sc.frame = 0
+				PondRipple.attach(sc, Rect2(-22, -36, 44, 28))
 		elif id == "resonator" and Art.has("props", "resonator"):
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})

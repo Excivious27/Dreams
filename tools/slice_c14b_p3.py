@@ -4,6 +4,7 @@
                       buildings/c14bp3_water_mill_wheel (spun in code by lake.gd)
   windmill_parts   -> props/c14bp3_windmill_body (+ "hub") and props/c14bp3_windmill_sails
                       (spun in code by farm.gd's Mill build)
+  windpump_gang_parts -> props/c14bp3_windpump_gang_body (+ "hub") and _rotor (gang-arc Mill)
   bonfire_strip    -> props/c14bp3_bonfire (6-frame loop, frames aligned on the stone ring)
 rm-then-write (art files are hardlinked).   python3 tools/slice_c14b_p3.py [check]
 """
@@ -18,7 +19,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAN = os.path.join(ROOT, "art", "gen", "manifest.json")
 # (sheet, [(group, id)], base height in art px for the first piece; the second piece keeps the same factor)
 PAIRS = [("c14b/c14bp3_water_mill_parts.png", [("buildings", "c14bp3_water_mill_base"), ("buildings", "c14bp3_water_mill_wheel")], 176),
-         ("c14b/c14bp3_windmill_parts.png", [("props", "c14bp3_windmill_body"), ("props", "c14bp3_windmill_sails")], 92)]
+         ("c14b/c14bp3_windmill_parts.png", [("props", "c14bp3_windmill_body"), ("props", "c14bp3_windmill_sails")], 92),
+         ("c14b/c14bp3_windpump_gang_parts.png", [("props", "c14bp3_windpump_gang_body"), ("props", "c14bp3_windpump_gang_rotor")], 100)]
 BONFIRE = ("c14b/c14bp3_bonfire_strip.png", "props", "c14bp3_bonfire", 140)
 IDS = [(g, i) for _, pr, _ in PAIRS for g, i in pr] + [(BONFIRE[1], BONFIRE[2])]
 
@@ -65,7 +67,7 @@ def main():
     hubs = {}
     # Hub positions measured on the renders (fraction of the base piece's box): the wheel
     # axle on the mill wall, the sail boss on the windmill cap.
-    HUB_FRAC = {"c14bp3_water_mill_base": (0.5505, 0.655), "c14bp3_windmill_body": (0.526, 0.282)}
+    HUB_FRAC = {"c14bp3_water_mill_base": (0.5505, 0.655), "c14bp3_windmill_body": (0.526, 0.282), "c14bp3_windpump_gang_body": (0.499, 0.0813)}
     for src, ids, bh in PAIRS:
         rgba, base, f = pair(src, ids, bh, man)
         nid = ids[0][1]

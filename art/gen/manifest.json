@@ -104596,6 +104596,20 @@
    "h": 88,
    "w": 87
   },
+  "c14bp3_windpump_gang_body": {
+   "file": "props/c14bp3_windpump_gang_body.png",
+   "h": 100,
+   "hub": [
+    33,
+    8
+   ],
+   "w": 66
+  },
+  "c14bp3_windpump_gang_rotor": {
+   "file": "props/c14bp3_windpump_gang_rotor.png",
+   "h": 81,
+   "w": 81
+  },
   "c14p2_bench_curved": {
    "file": "props/c14p2_bench_curved.png",
    "h": 47,

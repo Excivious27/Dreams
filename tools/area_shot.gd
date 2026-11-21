@@ -22,7 +22,9 @@ func _run() -> void:
 	if OS.get_environment("MARINA") != "":  # C14: the beach marina's tier (MARINA=0..4)
 		GameState.run["marina"] = {"tier": int(OS.get_environment("MARINA"))}
 	for cs in (OS.get_environment("CROPS").split(";") if OS.get_environment("CROPS") != "" else []):  # C14b: CROPS="crop:x:y:days;..." plants for shots
-		GameState.run["farm"]["%s,%s" % [cs.split(":")[1], cs.split(":")[2]]] = {"crop": cs.split(":")[0], "days": int(cs.split(":")[3]), "watered": false}
+		GameState.run["farm"] = GameState.run.get("farm", {}); GameState.run["farm"]["%s,%s" % [cs.split(":")[1], cs.split(":")[2]]] = {"crop": cs.split(":")[0], "days": int(cs.split(":")[3]), "watered": false}
+	for bs in (OS.get_environment("BUILDS").split(";") if OS.get_environment("BUILDS") != "" else []):  # C14b: BUILDS="mill:1;furnace:1"
+		GameState.run["builds"] = GameState.run.get("builds", {}); GameState.run["builds"][bs.split(":")[0]] = int(bs.split(":")[1])
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 	for i in range(1, args.size()):
