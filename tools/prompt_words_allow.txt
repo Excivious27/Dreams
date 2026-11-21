@@ -1,6 +1,7 @@
 arcade_skee.gd:◀ ▶ (or tap the lane) pick your line
 arcade_whack.gd:Tap a grump, or aim with the arrows + BOP.
 arcade_whack.gd:Tap a snitch, or aim with the arrows + BOP.
+battle_drill.gd:Tap HELPERS (top left)
 battle_drill.gd:Tap RALLY (top left) and pick \"Follow me\". Once your first
 battle_drill.gd:Tap RALLY and send everyone to %s. They go on ahead.
 block_jumper.gd:JUMP (A) or tap the picture · hold = higher · ▼ ducks
@@ -22,6 +23,7 @@ meadow.gd:Grumps. The Star Crystal wasn't exaggerating. Tap USE to swi
 meadow.gd:Tap USE to swing, ROLL to dodge. Nobody's watching, so there
 mine.gd:Step in or tap USE: climb down to floor %d
 mine.gd:Swing your pickaxe at rocks (tap USE): stone, copper, iron, 
+pad_input.gd: (or arrow keys)
 pad_input.gd:(or arrow keys)
 pad_input.gd:Tap 
 pad_input.gd:Tap a 

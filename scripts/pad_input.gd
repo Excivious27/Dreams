@@ -97,7 +97,7 @@ static func steam_kind() -> String:
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree == null or OS.has_feature("web"):
 		return ""
-	var ss := tree.root.get_node_or_null("SteamService")
+	var ss := tree.root.get_node_or_null("SteamSvc")
 	if ss != null and ss.has_method("input_type"):
 		return str(ss.call("input_type", device))
 	return ""

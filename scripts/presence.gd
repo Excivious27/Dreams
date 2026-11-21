@@ -35,9 +35,10 @@ static func compute(scene: String) -> Dictionary:
 	if scene == "" or GameState.run.is_empty():
 		token = "Menu"
 	elif Net.online() and Net.i() and Net.i().peers.size() > 0:
-		token = "Coop"
-		keys["size"] = str(Net.i().peers.size() + 1)
-		keys[str(data().get("group_size_key", "steam_player_group_size"))] = keys["size"]
+		# Same token and key the Steam lobby transport sets (net_transport_steam.gd _presence).
+		token = "Status_Coop"
+		keys["players"] = str(Net.i().peers.size() + 1)
+		keys[str(data().get("group_size_key", "steam_player_group_size"))] = keys["players"]
 	else:
 		token = str(data().get("scene_map", {}).get(scene, ""))
 		if token == "":

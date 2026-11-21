@@ -6,7 +6,7 @@ extends SceneTree
 var _fails := 0
 
 
-class FakeSteam extends Object:
+class FakeGodotSteam extends Object:
 	signal overlay_toggled(active: bool, user_initiated: bool, app_id: int)
 	signal gamepad_text_input_dismissed(submitted: bool, entered_text: String, app_id: int)
 	var calls: Array = []
@@ -32,6 +32,17 @@ class FakeSteam extends Object:
 		return "Tester"
 	func isSteamRunningOnSteamDeck() -> bool:
 		return true
+	signal join_requested(lobby_id: int, steam_id: int)
+	func isOverlayEnabled() -> bool:
+		return true
+	func getControllerForGamepadIndex(i: int) -> int:
+		return 77 if i == 0 else 0
+	func getInputTypeForHandle(_h: int) -> int:
+		return 14
+	func getFriendPersonaName(_id: int) -> String:
+		return "Pal"
+	func showFloatingGamepadTextInput(m: int, _x: int, _y: int, _w: int, _h: int) -> bool:
+		calls.append(["showFloatingGamepadTextInput", m]); return true
 	func showGamepadTextInput(_m: int, _l: int, d: String, mx: int, p: String) -> bool:
 		calls.append(["showGamepadTextInput", d, mx, p]); return true
 
@@ -83,7 +94,7 @@ func _run() -> void:
 	_check(not SteamApi.connect_steam("lobby_created", func(_a, _b) -> void: pass), "connect no-op")
 
 	# Routed: a fake GodotSteam object gets the calls.
-	var fake := FakeSteam.new()
+	var fake := FakeGodotSteam.new()
 	svc._start(fake, 480)
 	_check(svc.backend() == "steam" and SteamApi.active(), "fake init turns the backend on")
 	_check(fake.calls[0] == ["steamInitEx", 480], "init with app 480")
@@ -101,7 +112,16 @@ func _run() -> void:
 	await process_frame
 	var stores := fake.calls.filter(func(c: Array) -> bool: return c[0] == "storeStats").size()
 	_check(stores == 1, "dirty stats stored once per frame, got %d" % stores)
+	# Integration hooks other packages call duck-typed (S1 integ).
+	_check(svc.is_live() and svc.steam_object() == fake and svc.overlay_enabled(), "is_live/steam_object/overlay_enabled")
+	_check(svc.set_achievement("first_harvest"), "set_achievement alias")
+	_check(svc.input_type(0) == "deck" and svc.input_type(3) == "", "input_type via Steam Input handle")
+	_check(SteamService.input_kind(13) == "ps" and SteamService.input_kind(10) == "switch" and SteamService.input_kind(3) == "xbox" and SteamService.input_kind(0) == "", "input_kind table")
+	_check(svc.show_floating_keyboard(true, Rect2i(1, 2, 3, 4)), "floating keyboard routed")
+	_check(fake.calls.back() == ["showFloatingGamepadTextInput", 1], "multiline mode passed")
+	_check(not svc.is_live() or root.get_node_or_null("SteamSvc") != null, "achievements/net find the service at /root/SteamSvc")
 	svc.inject(null)
+	_check(not svc.show_floating_keyboard(false, Rect2i()) and svc.input_type(0) == "" and not svc.overlay_enabled(), "hooks no-op when local")
 	_check(not SteamApi.active() and SteamApi.backend() == "local", "back to local")
 	fake.free()
 
