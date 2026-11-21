@@ -131,3 +131,15 @@ mood_mystery
 mood_comic
 arcade_gallery
 festival_star
+mood_mystery_gang
+mood_comic_gang
+deuce_arcade
+trading_post
+net_cafe
+date_evening_gang
+festival_egg
+festival_lantern
+arcade_stack
+arcade_whack
+farm_after
+town_after
