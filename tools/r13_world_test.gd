@@ -24,7 +24,7 @@ func _initialize() -> void:
 	r["energy"] = 0
 	_ok(Faint.to_evening("hurt"), "3pm faint goes to the evening")
 	_ok(int(r["time"]) == 22 * 60 and int(r["day"]) == 5, "wakes 10pm same day (got day %d %s)" % [int(r["day"]), GameState.clock_text()])
-	_ok(int(r["hp"]) > 0 and int(r["energy"]) >= int(r["max_energy"]) / 4, "patched up with energy to get home")
+	_ok(int(r["hp"]) > 0 and int(r["energy"]) >= mini(20, int(r["max_energy"]) / 8), "patched up with energy to get home")  # C16a P3: min(20, max/8)
 	GameState.sleep(false)
 	_ok(int(r["day"]) == 6 and int(r["energy"]) == int(r["max_energy"]) * 3 / 4, "the night after a faint still costs a quarter bar (%d)" % int(r["energy"]))
 	# After 10pm, and the 2am collapse: no evening wake.

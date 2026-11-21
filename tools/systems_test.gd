@@ -111,10 +111,10 @@ func _run() -> void:
 		check(GameState.nodes_of(sk).size() == 40, "%s has a 4x10 grid" % sk)
 	check(GameState.skill_in_arc("hustle") and not GameState.skill_in_arc("harmony"), "gangster run shows Hustle, not Harmony")
 	GameState.run["skills"]["leadership"]["level"] = 12
-	check(GameState.node_locked("leadership", "leadership_3_2") != "", "tier III waits for 4 points")
-	for i in 4:
-		GameState.buy_node("leadership", "leadership_0_0" if i < 3 else "leadership_1_0")
-	check(GameState.node_locked("leadership", "leadership_3_2") == "", "tier III opens after 4 points")
+	check(GameState.node_locked("leadership", "leadership_3_2") != "", "tier III waits for %d points" % GameState.col_need(2))
+	for i in GameState.col_need(2):  # C16a P6: TIER_NEED ladder (column III at 5 points)
+		GameState.buy_node("leadership", ["leadership_0_0", "leadership_0_0", "leadership_0_0", "leadership_1_0", "leadership_1_0"][i])
+	check(GameState.node_locked("leadership", "leadership_3_2") == "", "tier III opens after %d points" % GameState.col_need(2))
 	check(GameState.bonus("combat", "block") <= 0.45, "stacking caps hold")
 	# Mail: letters arrive, gifts and favours work
 	GameState.new_run("penguins", "kairi", "Mo", "Town", "Pup")

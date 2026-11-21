@@ -42,7 +42,8 @@ func _run() -> void:
 		for cat in ["museum", "shipping", "fish", "cooking", "crafting", "forage"]:
 			ok(Collections.total(cat) > 0, "%s: %s has entries" % [arc, cat])
 			ok(Collections.count(cat) == 0 or cat == "forage", "%s: %s starts empty" % [arc, cat])
-		ok(Collections.total("museum") == 59, arc + ": museum 59 pieces (got %d)" % Collections.total("museum"))
+		var live := Collections.total("critters")  # C16a P4: the Live Exhibit wing shows the Critter log
+		ok(Collections.total("museum") == 59 + live, arc + ": museum 59 pieces + %d live exhibit (got %d)" % [live, Collections.total("museum")])
 		for e: Dictionary in Collections.entries("museum"):
 			ok(Art.has("items", Hud.icon_for(str(e["item"]))), "museum icon " + str(e["item"]))
 			ok(str(e.get("where", "")) != "", "museum where-hint " + str(e["item"]))

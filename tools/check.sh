@@ -1394,3 +1394,70 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P3: energy (energy_check bands, Tom's day-1 mine route on real layouts, energy fixes) =="
+python3 tools/energy_check.py | grep -E "ROUTE|BAR|FAIL|energy_check:" || true
+if ! python3 tools/energy_check.py > /dev/null; then
+  echo "energy_check failed"; exit 1
+fi
+c16ep="$("$GODOT" --headless --path . -s res://tools/energy_route_probe.gd -- 40 2>&1)"
+echo "$c16ep" | grep -E "FLOOR|ROUTE|FAIL|SCRIPT ERROR|energy_route_probe" || true
+if echo "$c16ep" | grep -q "SCRIPT ERROR" || ! echo "$c16ep" | grep -q "energy_route_probe: OK"; then
+  echo "C16a energy route probe failed"; exit 1
+fi
+c16et="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_energy_test.gd 2>&1)"
+echo "$c16et" | grep -E "FAIL|SCRIPT ERROR|c16a_energy_test" || true
+if echo "$c16et" | grep -q "SCRIPT ERROR" || ! echo "$c16et" | grep -q "c16a_energy_test: 0 failures"; then
+  echo "C16a energy test failed"; exit 1
+fi
+
+echo "== C16a P6 skill trees + recruits/allies/team/pup progression =="
+c16p6out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p6_test.gd 2>&1)"
+echo "$c16p6out" | grep -E "FAIL|SCRIPT ERROR|c16a_p6_test" || true
+if echo "$c16p6out" | grep -q "SCRIPT ERROR" || ! echo "$c16p6out" | grep -q "c16a_p6_test: 0 failures"; then
+  echo "C16a P6 test failed"; exit 1
+fi
+
+echo "== C16a P6 chore icons (fish, mine) =="
+python3 tools/slice_c16ap6_chores.py check || { echo "C16a P6 chore icons missing"; exit 1; }
+
+echo "== C16a P5: gear ladders, pick swings, station gates and year tiers, deep mine years, winter any-crops, helper watering, decor set arcs =="
+c16ap5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p5_test.gd 2>&1)"
+echo "$c16ap5out" | grep -E "FAIL|SCRIPT ERROR|c16a_p5_test" || true
+if ! echo "$c16ap5out" | grep -q "c16a_p5_test: 0 failures"; then
+  echo "C16a P5 ecosystems test failed"; exit 1
+fi
+
+echo "== C16a P1: progression timeline (mega region calendar/skill floors, non-combat roads, year-2 travel) =="
+c16p1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/progression_test.gd 2>&1)"
+echo "$c16p1out" | grep -E "FAIL|SCRIPT ERROR|progression_test" || true
+if echo "$c16p1out" | grep -q "SCRIPT ERROR" || ! echo "$c16p1out" | grep -q "progression_test: PASS"; then
+  echo "C16a P1 progression test failed"; exit 1
+fi
+
+echo "== C16a P2: 3-year simulator smoke (one season, farmer + explorer, both arcs) and its bands =="
+simdir="$(mktemp -d)"
+for simrun in "farmer penguins" "explorer gangsters"; do
+  set -- $simrun
+  simout="$("$GODOT" --headless --path . -s res://tools/sim.gd -- --days 28 --style "$1" --arc "$2" --day-len 15 --out "$simdir/$1_$2.csv" 2>&1)"
+  echo "$simout" | grep -E "SCRIPT ERROR|^SIM" || true
+  if echo "$simout" | grep -q "SCRIPT ERROR" || ! echo "$simout" | grep -q "^SIM"; then
+    echo "sim.gd smoke failed ($1 $2)"; rm -rf "$simdir"; exit 1
+  fi
+done
+python3 tools/sim_bands.py "$simdir/farmer_penguins.csv" "$simdir/explorer_gangsters.csv" || { echo "sim bands failed"; rm -rf "$simdir"; exit 1; }
+rm -rf "$simdir"
+
+echo "== C16a P4: bug net + Critter log (catch, log, let go; net tiers, Foraging gates, legends, Live Exhibit) =="
+c16p4cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/critter_net_test.gd 2>&1)"
+echo "$c16p4cout" | grep -E "FAIL|SCRIPT ERROR|critter_net_test" || true
+if echo "$c16p4cout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4cout" | grep -q "critter_net_test: 0 failures"; then
+  echo "C16a P4 critter net test failed"; exit 1
+fi
+
+echo "== C16a P4: fishing (one koi rule set, legend year gates, reel quality, sizes, effect cap) =="
+c16p4fout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p4_fish_test.gd 2>&1)"
+echo "$c16p4fout" | grep -E "FAIL|SCRIPT ERROR|c16a_p4_fish_test" || true
+if echo "$c16p4fout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4fout" | grep -q "c16a_p4_fish_test: 0 failures"; then
+  echo "C16a P4 fish test failed"; exit 1
+fi

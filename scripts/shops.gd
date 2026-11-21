@@ -63,7 +63,7 @@ static func offers(shop: String) -> Array:
 static func _offers_base(shop: String) -> Array:
 	match shop:
 		"bait":
-			return ["bait", "energy_tea", "bread"]
+			return ["bait", "energy_tea", "bread"] + Fishing.shop_baits()  # C16a P4: special baits by Fishing level
 		"store":
 			# Maple stocks this season's seeds (and next season's in the last week).
 			var by_season := {
@@ -89,9 +89,11 @@ static func _offers_base(shop: String) -> Array:
 				base.append("backpack_%d" % (int(GameState.run.get("bag_up", 0)) + 1))
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
-			return base + Romance.shop_extra("store")
+			return base + BugNet.shop_offer() + Romance.shop_extra("store")  # C16a P4: the next bug net
 		"smith":
-			return ["iron_sword", "coal", "copper_ring"] + grown("smith")
+			# C16a P5 (c16a_07-04): the gang smith sells the street line (swords are penguin-arc).
+			var blade := "crowbar" if str(GameState.run.get("arc", "")) == "gangsters" else "iron_sword"
+			return [blade, "coal", "copper_ring"] + grown("smith")
 		"potions":
 			return ["potion", "energy_tea", "herb_remedy"]
 		"orla":
@@ -121,7 +123,7 @@ static func _offers_base(shop: String) -> Array:
 ## Stock that arrives as you progress (C8 P6, c8_14_07): shop -> [[progress tier, ids]].
 ## Arc-only items (items.json "arc") are left out of the other arc's shop.
 const GROWN := {
-	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "ring_warmth", "moon_ring"]]],  # c10_07: tier tops out at 4; ring_platinum stays Madame Aurum's
+	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "chrome_blade", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "neon_cleaver", "ring_warmth", "moon_ring"]]],  # c10_07: tier tops out at 4; ring_platinum stays Madame Aurum's
 	"potions": [[3, ["dream_tonic"]]],
 	"granite": [[3, ["silver", "tin"]]],
 }
@@ -286,6 +288,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			m.hud.toast("%s! Bag now holds %d kinds of item." % [GameState.item_name(id), GameState.bag_size()], Color(1, 0.9, 0.4))
 		elif GameState.items[id].get("type", "") == "tool":
 			GameState.add_tool(id)
+			BugNet.after_buy(id)  # C16a P4: a better net takes the old one's slot
 			m.hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:
 			m.give(id, qty)

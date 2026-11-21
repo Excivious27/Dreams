@@ -488,7 +488,8 @@ static func _derby(m: GameMap, key: String) -> void:
 	var fish: Array = []
 	for id in GameState.run["inventory"].keys():
 		var sid := str(id)
-		if GameState.count(sid) > 0 and str(GameState.items.get(sid, {}).get("type", "")) == "fish":
+		if GameState.count(sid) > 0 and str(GameState.items.get(sid, {}).get("type", "")) == "fish" \
+				and not Collections.data().get("legends", {}).has(sid):  # C16a P4: legends are too precious to weigh
 			fish.append(sid)
 	fish.sort_custom(func(a: String, b: String) -> bool: return fish_score(a) > fish_score(b))
 	fish = fish.slice(0, 4)
@@ -504,12 +505,12 @@ static func _derby(m: GameMap, key: String) -> void:
 		return
 	GameState.run["flags"][key] = true
 	var pick: String = fish[c]
-	var sc := fish_score(pick)
-	GameState.add_item(pick, -1)
+	var sc := fish_score(pick)  # C16a P4 (c16a_05-09): the weigh-in never takes your fish
 	var rv := derby_rivals(FestivalWords.year_of(int(GameState.run["day"])))
 	var place := 1 + int(int(rv[0]) > sc) + int(int(rv[1]) > sc)
 	GameState.run["flags"][key + "_place"] = place
-	var pay: int = [300, 150, 50][place - 1]
+	var yr := FestivalWords.year_of(int(GameState.run["day"]))
+	var pay: int = int([300, 150, 50][place - 1] * minf(2.0, 1.0 + 0.25 * (yr - 1)))  # C16a P4: prizes grow (x2 cap)
 	GameState.add_money(pay, "festival")
 	await m.say([{"who": host, "text": "%s on the scale... %s place! %s." % [ItemWords.with_article(GameState.item_name(pick)).capitalize(), ["First", "Second", "Third"][place - 1], Money.amount(pay)]}])
 

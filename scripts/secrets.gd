@@ -262,6 +262,16 @@ static func _walls(m: GameMap, c: Vector2i) -> int:
 	return n
 
 
+## C16a P4 (c16a_08-04): a bare HiddenArea that only watches the buried caches (twilight sparkle, pup sniff)
+## in regions with no hidden pocket or way.
+static func cache_watch(m: GameMap) -> HiddenArea:
+	var node := HiddenArea.new()
+	node.map = m
+	node.name = "HiddenArea"
+	m.add_child(node)
+	return node
+
+
 ## Buried caches not dug yet (HiddenArea sparkles over them at dawn and dusk).
 static func undug(m: GameMap) -> Array:
 	var out: Array = []
@@ -311,7 +321,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			for id: String in g:
 				if id == "#gold":
 					GameState.add_money(int(g[id]), "secret")
-					m.hud.toast("+◆%d" % int(g[id]), Color(1, 0.9, 0.5))
+					m.hud.toast("+" + Money.amount(int(g[id])), Color(1, 0.9, 0.5))  # C16a P4: the arc's own money
 				else:
 					m.give(id, int(g[id]))
 			# C10a P4: once-per-game chests also hold a home piece (a fixed grant
@@ -350,7 +360,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 				m.give("relic_crown", 1)
 				DecorSources.grant_key(m, "secret:journal")  # the Wayfarer's keepsake (unique, decor.json grants)
 				GameState.add_money(5000, "secret")
-				GameState.notify("The journal is whole. Tucked in its spine: a map to a crown, and ◆5000.")
+				GameState.notify("The journal is whole. Tucked in its spine: a map to a crown, and %s." % Money.amount(5000))
 			return true
 	return false
 

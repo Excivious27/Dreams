@@ -59,8 +59,15 @@ static func gate(id: String) -> String:
 		var tbl := GameState.blueprint_lock(str(ul["blueprint"]))
 		if tbl != "":
 			return tbl
+	if ul.has("year") and Calendar.year() < int(ul["year"]):
+		return "opens in year %d" % int(ul["year"])  # C16a P1 hook: year-2/3 builds
+	if ul.has("day") and int(GameState.run["day"]) < int(ul["day"]):
+		var d := int(ul["day"])  # C16a P1 hook: a calendar floor ("from Fall 1")
+		return "from %s %d" % [Calendar.season_of(d).capitalize(), Calendar.dos_of(d)]
 	if ul.has("progress") and GameState.progress_tier() < int(ul["progress"]):
 		return "story chapter %d first" % (int(ul["progress"]) + 1)
+	if ul.has("year") and GameState.year() < int(ul["year"]):  # C16a P5 (c16a_10-02): top tiers wait for year 2
+		return "opens in year %d" % int(ul["year"])
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
 		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
 	if ul.has("flag") and not GameState.run["flags"].has(str(ul["flag"])):

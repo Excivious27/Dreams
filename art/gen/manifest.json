@@ -91645,6 +91645,126 @@
    "file": "items/zucchini_seed.png",
    "h": 32,
    "w": 32
+  },
+  "c16ap4_ladybug": {
+   "file": "items/c16ap4_ladybug.png",
+   "h": 30,
+   "w": 32
+  },
+  "c16ap4_lemon_wing": {
+   "file": "items/c16ap4_lemon_wing.png",
+   "h": 26,
+   "w": 32
+  },
+  "c16ap4_orange_flutter": {
+   "file": "items/c16ap4_orange_flutter.png",
+   "h": 23,
+   "w": 32
+  },
+  "c16ap4_sky_wing": {
+   "file": "items/c16ap4_sky_wing.png",
+   "h": 25,
+   "w": 32
+  },
+  "c16ap4_bumble_bee": {
+   "file": "items/c16ap4_bumble_bee.png",
+   "h": 31,
+   "w": 32
+  },
+  "c16ap4_meadow_hopper": {
+   "file": "items/c16ap4_meadow_hopper.png",
+   "h": 28,
+   "w": 32
+  },
+  "c16ap4_garden_snail": {
+   "file": "items/c16ap4_garden_snail.png",
+   "h": 25,
+   "w": 32
+  },
+  "c16ap4_violet_duchess": {
+   "file": "items/c16ap4_violet_duchess.png",
+   "h": 25,
+   "w": 32
+  },
+  "c16ap4_pond_dragonfly": {
+   "file": "items/c16ap4_pond_dragonfly.png",
+   "h": 26,
+   "w": 32
+  },
+  "c16ap4_green_frog": {
+   "file": "items/c16ap4_green_frog.png",
+   "h": 31,
+   "w": 32
+  },
+  "c16ap4_shore_crab": {
+   "file": "items/c16ap4_shore_crab.png",
+   "h": 26,
+   "w": 32
+  },
+  "c16ap4_firefly": {
+   "file": "items/c16ap4_firefly.png",
+   "h": 32,
+   "w": 30
+  },
+  "c16ap4_sky_jelly": {
+   "file": "items/c16ap4_sky_jelly.png",
+   "h": 32,
+   "w": 23
+  },
+  "c16ap4_petal_emperor": {
+   "file": "items/c16ap4_petal_emperor.png",
+   "h": 28,
+   "w": 32
+  },
+  "c16ap4_sunwing": {
+   "file": "items/c16ap4_sunwing.png",
+   "h": 29,
+   "w": 32
+  },
+  "c16ap4_ember_moth": {
+   "file": "items/c16ap4_ember_moth.png",
+   "h": 29,
+   "w": 32
+  },
+  "c16ap4_snow_sylph": {
+   "file": "items/c16ap4_snow_sylph.png",
+   "h": 22,
+   "w": 32
+  },
+  "c16ap4_bug_net": {
+   "file": "items/c16ap4_bug_net.png",
+   "h": 32,
+   "w": 32
+  },
+  "c16ap4_silk_net": {
+   "file": "items/c16ap4_silk_net.png",
+   "h": 31,
+   "w": 32
+  },
+  "c16ap4_star_net": {
+   "file": "items/c16ap4_star_net.png",
+   "h": 32,
+   "w": 32
+  },
+  "c16ap4_glow_bait": {
+   "file": "items/c16ap4_glow_bait.png",
+   "h": 32,
+   "w": 25
+  },
+  "c16ap4_deep_bait": {
+   "file": "items/c16ap4_deep_bait.png",
+   "h": 32,
+   "w": 30
+  },
+  "c16ap4_magnet_bait": {
+   "file": "items/c16ap4_magnet_bait.png",
+   "h": 32,
+   "w": 32
+  },
+  "c16ap4_wild_bait": {
+   "file": "items/c16ap4_wild_bait.png",
+   "h": 32,
+   "w": 29
   }
  },
  "kits/backdrops": {
@@ -153460,6 +153580,21 @@
    "file": "ui/xp_up.png",
    "h": 21,
    "w": 24
+  },
+  "buff2_stamina": {
+   "file": "ui/buff2_stamina.png",
+   "w": 26,
+   "h": 32
+  },
+  "chore_fish": {
+   "file": "ui/chore_fish.png",
+   "h": 16,
+   "w": 16
+  },
+  "chore_mine": {
+   "file": "ui/chore_mine.png",
+   "h": 16,
+   "w": 14
   }
  },
  "ui_creator": {

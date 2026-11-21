@@ -19,6 +19,11 @@ var _chasm := {}
 ## layout is re-carved each day; every 5th floor is a lift stop you keep; every
 ## 10th floor has a prize chest; floor 150's shaft opens the Hollow Heart.
 const MAX_FLOOR := 150
+## C16a P5 (c16a_07-15): the deep end waits. Floors past DEEP_FLOOR open in DEEP_YEAR (Granite's
+## year-long shaft repair), the Hollow Heart in HEART_YEAR. Floors 1-100 stay year-1 content.
+const DEEP_FLOOR := 100
+const DEEP_YEAR := 2
+const HEART_YEAR := 3
 const THEMES := [
 	{"cave": "earth", "name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
 	{"cave": "earth", "name": "Mossy Hollows", "ores": ["copper"], "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
@@ -152,11 +157,11 @@ func _threshold() -> int:
 	var old: Dictionary = GameState.run.get("mine_thresh", {})
 	if floor_no <= 3:
 		# A share of this floor's rock (rocks 1, crates 1, kills 3): this layout's.
-		var share: float = [0.0, 0.17, 0.15, 0.13][floor_no]
+		var share: float = [0.0, 0.12, 0.11, 0.10][floor_no]  # C16a P3: was 0.17/0.15/0.13
 		var lo: int = EARLY_LO[floor_no]
 		lo = mini(lo, int(_rock_total * 0.4) + 6)   # a small, rock-poor layout still opens
 		var m3 := float(_pace()["thr"])
-		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 14) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
+		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 6) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
 	if not old.has(key):
 		var base := 14.0 + minf(60.0, floor_no * 0.4)
 		var v := int(round(base * float(_pace()["thr"]) * randf_range(0.9, 1.1)))
@@ -247,6 +252,12 @@ func build() -> void:
 	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
 		var lc := _nearest_open(_entry + Vector2i(3, 0))
 		set_thing(lc.x, lc.y, {"type": "lift", "hint": "A: the mine lift"})
+	# C16a P3: a miner's bench near the ladder on floor 1 and every 5th floor: rest
+	# once a day per floor (the shared rest pool, like the farm well).
+	if floor_no == 1 or floor_no % 5 == 0:
+		var bc := _roomy_open(_entry + Vector2i(-2, 3))
+		if _open.has(bc) and not things.has(bc):
+			set_thing(bc.x, bc.y, {"type": "rest_bench", "hint": "A: sit and rest a while"})
 	# Floor 5: the flooded grotto. Much of the cave is black water; crystals sit
 	# under it. Mer the mercat lives here; with her you can swim and dive.
 	_grotto = floor_no == 5
@@ -368,7 +379,7 @@ var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
 static var force_style := ""   # tools/tests: carve this style every time
-const EARLY_LO := [0, 14, 13, 12]   # floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
+const EARLY_LO := [0, 10, 10, 9]   # C16a P3 (was 14/13/12): floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
 const KEEPER_MIN_HP := 8  # a keeper encounter's total hp is never below this
 static var force_encounter := ""  # tools/tests: this keeper encounter id instead of a roll ("" = roll)
 static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
@@ -918,6 +929,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if _grotto and not GameState.run["flags"].has("grotto_done"):
 				hud.toast("The ladder is under the water. You'd need to swim like she does.", Color(0.8, 0.9, 1.0))
 				return true
+			var dl := deep_lock(floor_no)
+			if dl != "":
+				hud.toast(dl, Color(0.8, 0.9, 1.0))
+				return true
 			if floor_no >= MAX_FLOOR:
 				GameState.run["flags"]["hollow_heart_open"] = true
 				go_to("hollow_heart", Vector2.ZERO, "down")
@@ -929,6 +944,17 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			GameState.run["flags"]["mine_deepest"] = maxi(_deepest(), newd)
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
+			return true
+		"rest_bench":
+			var rk := "mine_rest_%d" % floor_no
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty()):
+				hud.toast("You've rested plenty today." if GameState.rested_plenty() else "You're fully rested. Come back when you're tired.")
+			elif int(GameState.run["flags"].get(rk, -1)) == int(GameState.run["day"]):
+				hud.toast("Once a day.")
+			else:
+				GameState.run["flags"][rk] = int(GameState.run["day"])
+				var got := GameState.rest_energy(25)
+				hud.toast("You sit a while on the old bench. +%d energy." % got)
 			return true
 		"crate":
 			if ToolHint.is_soft(GameState.held_tool()):
@@ -1337,6 +1363,13 @@ func _draw_things() -> void:
 				if props.has(k):
 					continue
 				_ci.draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
+			"rest_bench":
+				if Art.has("decor", "dc_rustic_bench"):
+					var bt := Art.tex("decor", "dc_rustic_bench")
+					var bs := Vector2(bt.get_size()) * 0.4
+					_ci.draw_texture_rect(bt, Rect2(p.x - bs.x / 2.0, p.y + 4 - bs.y, bs.x, bs.y), false)
+				else:
+					_ci.draw_rect(Rect2(p.x - 8, p.y - 6, 16, 5), Color("6a4a30"))
 			"lift":
 				if not Art.draw_prop(_ci, "props", "mine_lift", p + Vector2(0, 2)) and not Art.draw_prop(_ci, "props", "cart_full", p):
 					_ci.draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
@@ -2429,3 +2462,12 @@ func _ore_glimmer() -> void:
 		var t: Dictionary = things[c]
 		if str(t.get("type", "")) == "rock" and str(t.get("ore", "stone")) != "stone" and (c - pc).length() <= 6.0:
 			fx("sparkle", cell_center(c) + Vector2(0, -8), 8.0, 0.5)
+
+
+## C16a P5 (c16a_07-15): why the shaft below `fl` is shut this year ("" = open).
+static func deep_lock(fl: int) -> String:
+	if fl >= MAX_FLOOR and GameState.year() < HEART_YEAR and not GameState.run["flags"].has("hollow_heart_open"):
+		return "The rock below is warm and sealed. Granite: \"The heart opens in year %d. It's waiting for you.\"" % HEART_YEAR
+	if fl >= DEEP_FLOOR and fl < MAX_FLOOR and GameState.year() < DEEP_YEAR:
+		return "Granite's rope ends here. The deep shaft needs a year-long repair: it opens in year %d." % DEEP_YEAR
+	return ""

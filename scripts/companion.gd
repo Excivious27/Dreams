@@ -239,12 +239,9 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Ready in %ds." % int(ceil(left)), Color(0.8, 0.85, 1.0))
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
-		GameState.add_arc_xp(3)
-		GameState.add_xp("leadership", 4)
-		_start_cd(ab, float(COOLDOWN.get(ab, DEFAULT_COOLDOWN)) * maxf(0.3, 1.0 - GameState.bonus("harmony", "ability_cooldown") - GameState.bonus("leadership", "ability_cooldown")))
-		var th := int(GameState.bonus("leadership", "team_heal"))
-		if th > 0:
-			GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
+		# C16a P6 (c16a_12-13/14): XP and the team heal come only when the power did something
+		# (power_done below); harmony + leadership cooldown cuts together stop at half.
+		_start_cd(ab, float(COOLDOWN.get(ab, DEFAULT_COOLDOWN)) * maxf(0.5, 1.0 - minf(0.5, GameState.bonus("harmony", "ability_cooldown") + GameState.bonus("leadership", "ability_cooldown"))))
 	# Each ability its own cue (c6_08_18): lent Gifts by family, partners by ability.
 	var cue := "spell"
 	if ab.begins_with("gift:"):
@@ -261,6 +258,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.companion.play_power()
 		Gift.cast(m, p, ab.trim_prefix("gift:"))
 		return
+	var did := false
+	var prk := partner_rank(active_id())
 	match ab:
 		"meow_pow_wow":
 			var rank := meow_rank()
@@ -308,16 +307,19 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Meow Pow Wow! %d turned back." % n if n > 0 else "Meow Pow Wow... nothing here to turn back (rank %d)." % rank, Color(1, 0.85, 0.95))
 			m.shake(2.0)
 			m.xp("magic", 3 * n)
+			did = n > 0
 		"powerup":
+			# Partner rank (c16a_13-04): stun 1.5 + 0.5/rank s, mana 5 + 3/rank.
 			for e in m.enemies.duplicate():
 				if is_instance_valid(e) and e._alive and e.position.distance_to(p.position) < 70.0:
-					e._stun = maxf(e._stun, 2.0)
-			GameState.restore_mana(5)
+					e._stun = maxf(e._stun, 1.5 + 0.5 * prk)
+					did = true
+			GameState.restore_mana(5 + 3 * (prk - 1))
 			m.fx("pawring", p.position + Vector2(0, -6), 12.0, 0.8)
 			if p.has_anim("powerup"):
 				p._busy = true
 				p._apply("powerup", false, true)
-			m.hud.toast("Power Pose! +5 mana, Grumps stunned.", Color(0.85, 0.9, 1.0))
+			m.hud.toast("Power Pose! +%d mana, Grumps stunned." % (5 + 3 * (prk - 1)), Color(0.85, 0.9, 1.0))
 		"haul":
 			m.hud.toast("Dad: 'Just point at the tree.' (Trees fall twice as fast and give 2 more wood while he's with you.)", Color(0.9, 0.9, 0.9))
 		"scout":
@@ -325,10 +327,11 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var pc := p.cell()
 			for c in m.things:
 				var t := str(m.things[c].get("type", ""))
-				if t in ["forage", "mrock", "fruit"] and (c as Vector2i).distance_to(pc) <= 10.0:
+				if t in ["forage", "mrock", "fruit"] and (c as Vector2i).distance_to(pc) <= 8.0 + 2.0 * prk:
 					m.fx("sparkle", m.cell_center(c) + Vector2(0, -6), 10.0, 0.5)
 					n += 1
 			m.hud.toast("Pax: '%d things worth grabbing round here.'" % n, Color(0.9, 1.0, 0.9))
+			did = n > 0
 		"tinker":
 			m.hud.toast("Kairi: 'Bag's open. Don't ask how.'", Color(0.9, 1.0, 0.9))
 			for ch in m.get_children():
@@ -346,6 +349,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					e.hit(2 + meow_rank(), p.position, false, true)
 					e._stun = maxf(e._stun, 0.8)
 					hits += 1
+			did = hits > 0
 			m.hud.toast("Coldy: 'BEE BOP BOO BABY.'" if hits > 0 else "Coldy: 'Bee bop boo... nobody.'", Color(0.8, 0.9, 1.0))
 		"muscle":
 			var fc: Vector2i = p.facing_cell()
@@ -377,6 +381,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				m.shake(3.0)
 				Music.instance(m.get_tree()).sfx("rock_break" if tt in ["rock", "mrock"] else "timber", "thud")
 				m.hud.toast("Big Jim: 'Next.'", Color(1, 0.9, 0.8))
+				did = true
 			else:
 				m.hud.toast("Big Jim: 'Point me at something.'", Color(1, 0.9, 0.8))
 				Music.instance(m.get_tree()).sfx("nope", "thud")
@@ -409,6 +414,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				GameState.run["sold_today"] = sold
 				GameState.add_money(pay, "sales")
 				m.hud.toast("Sal moved %s for %s. No questions." % [ItemWords.count_id(best, n), Money.amount(pay)], Color(1, 0.9, 0.6))
+				did = true
 				Music.instance(m.get_tree()).sfx("coin", "pickup")
 				m.fx("sparkle", p.position + Vector2(0, -12), 10.0, 0.5)
 			else:
@@ -417,9 +423,44 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		"tail":
 			m.hud.toast("Mer: 'The water's right there.'", Color(0.8, 0.95, 1.0))
 		"mend":
-			GameState.heal_points(10)
+			var mh := 6 + 4 * prk  # partner rank (c16a_13-04): 10 at rank 1, 26 at rank 5
+			did = int(GameState.run.get("hp", 0)) < int(GameState.run.get("max_hp", 0))
+			GameState.heal_points(mh)
 			m.fx("heal", p.position + Vector2(0, -10), 10.0, 0.6)
-			m.hud.toast("Mom: 'Hold still.' +10 health.", Color(1, 0.8, 0.8))
+			m.hud.toast("Mom: 'Hold still.' +%d health." % mh, Color(1, 0.8, 0.8))
+	if did:
+		power_done()
+
+
+## C16a P6 (c16a_12-13/14): a partner power that did something earns Leadership 4 and arc XP 3
+## (25 grants a day at most) and the Leadership team heal (capped 15 in BONUS_CAPS).
+const POWER_XP_DAY := 25
+
+
+static func power_done() -> void:
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var day := int(GameState.run.get("day", 1))
+	var rec: Array = fl.get("power_xp_day", [day, 0]) if fl.get("power_xp_day") is Array else [day, 0]
+	if int(rec[0]) != day:
+		rec = [day, 0]
+	if int(rec[1]) < POWER_XP_DAY:
+		rec[1] = int(rec[1]) + 1
+		GameState.add_arc_xp(3)
+		GameState.add_xp("leadership", 4)
+	fl["power_xp_day"] = rec
+	var th := int(GameState.bonus("leadership", "team_heal"))
+	if th > 0:
+		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
+
+
+## C16a P6 (c16a_13-04): a partner's rank 1-5 grows with friendship (2 hearts a rank) or, for
+## partners with no friendship track (Pip/Nova, the Marked), with your Leadership level (1 a 15 levels).
+static func partner_rank(cid: String) -> int:
+	if GameState.run.is_empty() or cid == "":
+		return 1
+	var h := GameState.friend_hearts(cid) / 2 if (GameState.run.get("friendship", {}) as Dictionary).has(cid) else 0
+	var lead := 1 + GameState.skill_level("leadership") / 15
+	return clampi(maxi(h, lead), 1, 5)
 
 
 static func recruit(cid: String, make_active := true) -> void:

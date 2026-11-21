@@ -190,6 +190,7 @@ func _run() -> void:
 	check(int(GameState.run["crystals"]) - c0 >= 168 and int(rep.get("washed", 0)) == 168, "the wash pays 80%% overnight (%d)" % int(rep.get("washed", 0)))
 	check(Racket.heat() == 2, "heat cools two a night with a laundromat (%d)" % Racket.heat())
 	GameState.run["flags"]["crew_vic"] = true
+	Crew._set_loyalty("vic", 1)  # C16a P6: the drill only lifts members who already trust you
 	var p0 := Crew.perk_level("sword")
 	GameState.run["builds"]["training"] = 2
 	check(Crew.perk_level("sword") == mini(3, p0 + 1), "the training hall lifts crew perks (%d → %d)" % [p0, Crew.perk_level("sword")])

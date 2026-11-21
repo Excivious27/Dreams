@@ -276,6 +276,23 @@ for y in sorted(set(c['yield'] for c in C.values()) | {'flower', 'wild_herb', 'b
     if ratio < 1.0 and n < tb['max_out']:
         fails.append('keg: %s -> %s loses value (%.2fx)' % (y, br, ratio))
 
+# 5) money routing (C16a P2, c16a_16-01): every payout goes through GameState.add_money(n, source) so
+#    run.earned_by (the per-source income ledger the 3-year sim reads) sees it. Only game_state.gd itself
+#    and the bank withdrawal (interior.gd, not earnings) may add to the purse directly.
+MONEY_DIRECT_OK = {'game_state.gd', 'interior.gd'}
+SD = os.path.join(ROOT, 'scripts')
+for fn in sorted(os.listdir(SD)):
+    if not fn.endswith('.gd') or fn in MONEY_DIRECT_OK:
+        continue
+    for ln, line in enumerate(open(os.path.join(SD, fn)), 1):
+        if re.search(r'run\["crystals"\]\s*=\s*int\(GameState\.run\["crystals"\]\)\s*\+', line):
+            fails.append('money route: scripts/%s:%d adds to the purse without GameState.add_money' % (fn, ln))
+for fn in sorted(os.listdir(SD)):
+    if fn.endswith('.gd'):
+        for ln, line in enumerate(open(os.path.join(SD, fn)), 1):
+            if re.search(r'add_money\([^)]*"quests"\)', line):
+                fails.append('money route: scripts/%s:%d uses source "quests" (the key is "quest")' % (fn, ln))
+
 for w in warns if V else []:
     print('warn:', w)
 print('econ check: %d crops, %d recipes, %d warnings, %d failures' % (len(C), sum(len(x) for x in R.values() if isinstance(x, list)), len(warns), len(fails)))

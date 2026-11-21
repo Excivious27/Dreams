@@ -38,6 +38,8 @@ func _place_secrets() -> void:
 	var lt := Secrets.loot_tier(int(R.get("tier", AREA_TIER.get(region_id, 1))), not (R.get("enemies", []) as Array).is_empty())
 	Secrets.place(self, region_id, lt)
 	var ha := HiddenArea.place(self, region_id, lt)
+	if ha == null and not Secrets.undug(self).is_empty():
+		ha = Secrets.cache_watch(self)  # C16a P4 (c16a_08-04): caches sparkle/sniff in every region, not only hidden ones
 	if ha:
 		for dc: Vector2i in Secrets.undug(self):
 			ha.spots.append([dc, "cache"])
@@ -384,11 +386,9 @@ func build() -> void:
 			if things.has(c) or blocked.has(c):
 				continue
 			var key := "forage_%s_%d_%d" % [region_id, c.x, c.y]
-			var item := GameState.roll_forage(region_id)
-			# Respawn: common forage every 1-2 days, rare finds take most of a week.
-			var tier := int(GameState.items.get(item, {}).get("tier", 1))
-			var every := (1 if GameState.has_perk("foraging", "Tracker") else 2) + maxi(0, tier - 1) * 2
-			if not GameState.respawned(key, every):
+			# Respawn: common forage every 1-2 days, rare finds most of a week; the find is fixed per cycle (C16a P4).
+			var item := ForageRoll.spot(region_id, key, GameState.has_perk("foraging", "Tracker"))
+			if item == "":
 				continue
 			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 			_forage_n += 1
@@ -648,7 +648,7 @@ func after_ready() -> void:
 				continue
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
-			if SeasonGoods.is_seasonal_forage(it) and Art.has("items", Hud.icon_for(it)):  # C15 P2 hook: seasonal finds look like themselves
+			if (SeasonGoods.is_seasonal_forage(it) or ForageRoll.shows_icon(it)) and Art.has("items", Hud.icon_for(it)):  # C15 P2 / C16a P4: seasonal and rare finds look like themselves
 				prop("items", Hud.icon_for(it), k, 0, 0.0, false, 0.5)
 				continue
 			prop("nature", nm, k, 0, 0.0, false)
@@ -831,7 +831,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
 				if Crew.perk_level("sell_bonus") >= 3:
 					GameState.add_money(25, "loot")
-					hud.toast("Deuce taught you where people hide coins. +◆25", Color(1, 0.9, 0.5))
+					hud.toast("Deuce taught you where people hide coins. +" + Money.amount(25), Color(1, 0.9, 0.5))
 			else:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
@@ -839,13 +839,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_creature.bind(thing))  # C11b P3: a creature that comes home with you (RanchGift)
 			return true
 		"heal":
-			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty()) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
 			elif int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_%s" % region_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
 				var got := GameState.rest_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "")))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if GameState.rested_plenty() else "")))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day.")

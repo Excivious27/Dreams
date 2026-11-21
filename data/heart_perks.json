@@ -228,7 +228,7 @@
   },
   "4": {
    "flag": "soup",
-   "text": "Free soup at the inn: +30 energy once a day"
+   "text": "Free soup at the inn: +35 energy once a day"
   },
   "6": {
    "give": {
@@ -544,9 +544,9 @@
   },
   "6": {
    "bonus": {
-    "energy": 20
+    "energy": 10
    },
-   "text": "Benno's oats: +20 max energy"
+   "text": "Benno's oats: +10 max energy"
   },
   "8": {
    "give": {

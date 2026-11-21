@@ -394,7 +394,7 @@ func _fetch_pick() -> void:
 		return  # you picked it first
 	var item := str((th as Dictionary).get("item", "mushroom"))
 	if map.interact_common(c, th as Dictionary):
-		GameState.add_xp("pup", 2)
+		GameState.add_xp("pup", 4)  # C16a P6 (c16a_13-14): fetch 2 -> 4
 		map.hud.toast("%s fetched %s." % [Pet.name_of(), ItemWords.with_article(GameState.item_name(item))], Color(0.8, 1, 0.8))
 		if anim.sprite_frames.has_animation("fetch"):
 			anim.play("fetch")
@@ -688,7 +688,8 @@ func _bite(e: Enemy) -> void:
 	if landed and map.player and position.distance_to(map.player.position) < 170.0:
 		Music.instance(get_tree()).sfx_pitched("hit", "", 1.2, -4.0)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
-	GameState.add_xp("pup", 2)
+	if landed and not e.has_meta("marked") and not e.has_meta("drill"):
+		bite_xp(2)  # C16a P6 (c16a_12-17/13-09): landed bites only, 40 a day
 	if landed:
 		pass  # the enemy answers with its own swing now (Enemy.provoke)
 
@@ -718,7 +719,7 @@ func _dig() -> void:
 		if not GameState.items.has(found):
 			found = "fiber"
 		GameState.add_item(found)
-		GameState.add_xp("pup", 3)
+		GameState.add_xp("pup", 5)  # C16a P6 (c16a_13-14): dig 3 -> 5
 		map.hud.toast("%s dug up %s!" % [name_of(), ItemWords.with_article(GameState.item_name(found))], Color(0.8, 1, 0.8))
 		Music.instance(get_tree()).sfx("pickup")
 		map.fx("dust_puff", position, 12.0, 0.4)
@@ -741,3 +742,21 @@ func _keep_clear(delta: float) -> void:
 	var np := position + push.normalized() * 70.0 * delta
 	if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self):
 		position = np
+
+
+## C16a P6 (c16a_12-17/13-09): pup combat XP only for bites that land, BITE_XP_DAY a day, so the Pup
+## tree paces alike for fighters and farmers (fetch, dig and petting carry the cozy path).
+const BITE_XP_DAY := 40
+
+
+static func bite_xp(n: int) -> void:
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var day := int(GameState.run.get("day", 1))
+	var rec: Array = fl.get("pup_bite_xp", [day, 0]) if fl.get("pup_bite_xp") is Array else [day, 0]
+	if int(rec[0]) != day:
+		rec = [day, 0]
+	var give := mini(n, BITE_XP_DAY - int(rec[1]))
+	if give > 0:
+		rec[1] = int(rec[1]) + give
+		GameState.add_xp("pup", give)
+	fl["pup_bite_xp"] = rec

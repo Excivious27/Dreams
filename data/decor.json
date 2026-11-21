@@ -35152,7 +35152,7 @@
    "art": "decor/dc_y_cat_tower",
    "cat": "outdoor",
    "comfort": 2,
-   "desc": "The bees will thank you.",
+   "desc": "The bees will thank you. One piece of the Homestead Yard Set.",
    "glow": false,
    "icon": "decor/dc_y_cat_tower",
    "layer": "outdoor",
@@ -35162,8 +35162,10 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 95,
-   "set": "",
-   "sets": [],
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
    "size": [
     1,
     1
@@ -35188,7 +35190,7 @@
    "art": "decor/dc_y_cat_tower_b",
    "cat": "outdoor",
    "comfort": 3,
-   "desc": "Gives the yard some character.",
+   "desc": "Gives the yard some character. One piece of the Homestead Yard Set.",
    "glow": false,
    "icon": "decor/dc_y_cat_tower_b",
    "layer": "outdoor",
@@ -35198,8 +35200,10 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 458,
-   "set": "",
-   "sets": [],
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
    "size": [
     1,
     1
@@ -35268,7 +35272,7 @@
    "art": "decor/dc_y_crystal_cluster",
    "cat": "outdoor",
    "comfort": 2,
-   "desc": "Something nice to see from the porch.",
+   "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
    "glow": true,
    "glow_r": 24,
    "icon": "decor/dc_y_crystal_cluster",
@@ -35279,8 +35283,10 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 82,
-   "set": "",
-   "sets": [],
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
    "size": [
     1,
     1
@@ -35305,7 +35311,7 @@
    "art": "decor/dc_y_crystal_cluster_b",
    "cat": "outdoor",
    "comfort": 3,
-   "desc": "Something nice to see from the porch.",
+   "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
    "glow": true,
    "glow_r": 28,
    "icon": "decor/dc_y_crystal_cluster_b",
@@ -35316,8 +35322,10 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 210,
-   "set": "",
-   "sets": [],
+   "set": "yard_kit",
+   "sets": [
+    "yard_kit"
+   ],
    "size": [
     1,
     1
@@ -35378,7 +35386,7 @@
    "art": "decor/dc_y_fence_gold",
    "cat": "outdoor",
    "comfort": 5,
-   "desc": "A neat line around your place. One piece of the Picket and Rail Set.",
+   "desc": "A neat line around your place. One piece of the Chain and Rail Set.",
    "glow": false,
    "icon": "decor/dc_y_fence_gold",
    "layer": "outdoor",
@@ -35388,9 +35396,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 885,
-   "set": "yard_fence",
+   "set": "yard_fence_g",
    "sets": [
-    "yard_fence"
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35509,7 +35517,8 @@
    "sell": 63,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35551,7 +35560,8 @@
    "sell": 86,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35581,7 +35591,7 @@
    "art": "decor/dc_y_fence_neon",
    "cat": "outdoor",
    "comfort": 3,
-   "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+   "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
    "glow": true,
    "glow_r": 24,
    "icon": "decor/dc_y_fence_neon",
@@ -35592,9 +35602,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 428,
-   "set": "yard_fence",
+   "set": "yard_fence_g",
    "sets": [
-    "yard_fence"
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35626,7 +35636,7 @@
    "art": "decor/dc_y_fence_neon_v",
    "cat": "outdoor",
    "comfort": 3,
-   "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+   "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
    "glow": true,
    "glow_r": 24,
    "icon": "decor/dc_y_fence_neon_v",
@@ -35637,9 +35647,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 210,
-   "set": "yard_fence",
+   "set": "yard_fence_g",
    "sets": [
-    "yard_fence"
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35683,7 +35693,8 @@
    "sell": 30,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35725,7 +35736,8 @@
    "sell": 22,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35767,7 +35779,8 @@
    "sell": 76,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35809,7 +35822,8 @@
    "sell": 76,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35851,7 +35865,8 @@
    "sell": 20,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -35893,7 +35908,8 @@
    "sell": 23,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -36146,7 +36162,8 @@
    "sell": 28,
    "set": "yard_fence",
    "sets": [
-    "yard_fence"
+    "yard_fence",
+    "yard_fence_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -36527,7 +36544,8 @@
    "sell": 2925,
    "set": "yard_show",
    "sets": [
-    "yard_show"
+    "yard_show",
+    "yard_show_g"
    ],
    "size": [
     2,
@@ -36726,7 +36744,7 @@
    "art": "decor/dc_y_lowrider_bounce",
    "cat": "outdoor",
    "comfort": 8,
-   "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Show Ribbon Yard Set.",
+   "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Block Party Yard Set.",
    "fps": 6,
    "glow": false,
    "icon": "decor/dc_y_lowrider_bounce_icon",
@@ -36737,9 +36755,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 5100,
-   "set": "yard_show",
+   "set": "yard_show_g",
    "sets": [
-    "yard_show"
+    "yard_show_g"
    ],
    "size": [
     3,
@@ -36944,7 +36962,7 @@
    "art": "decor/dc_y_neon_chase_arch",
    "cat": "outdoor",
    "comfort": 5,
-   "desc": "A warm glow for the evening. One piece of the Show Ribbon Yard Set.",
+   "desc": "A warm glow for the evening. One piece of the Block Party Yard Set.",
    "fps": 6,
    "glow": true,
    "glow_r": 44,
@@ -36956,9 +36974,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 1305,
-   "set": "yard_show",
+   "set": "yard_show_g",
    "sets": [
-    "yard_show"
+    "yard_show_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -37123,7 +37141,7 @@
    "art": "decor/dc_y_path_checker",
    "cat": "outdoor",
    "comfort": 1,
-   "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+   "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
    "glow": false,
    "icon": "decor/dc_y_path_checker_icon",
    "layer": "outdoor",
@@ -37133,9 +37151,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 20,
-   "set": "yard_path",
+   "set": "yard_path_g",
    "sets": [
-    "yard_path"
+    "yard_path_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -37166,7 +37184,7 @@
    "art": "decor/dc_y_path_ice_brick",
    "cat": "outdoor",
    "comfort": 1,
-   "desc": "A neat way across the yard. One piece of the Cobble Path Set.",
+   "desc": "A neat way across the yard.",
    "glow": false,
    "icon": "decor/dc_y_path_ice_brick_icon",
    "layer": "outdoor",
@@ -37176,10 +37194,8 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 14,
-   "set": "yard_path",
-   "sets": [
-    "yard_path"
-   ],
+   "set": "",
+   "sets": [],
    "size": [
     1,
     1
@@ -37247,7 +37263,7 @@
    "art": "decor/dc_y_path_neon_asphalt",
    "cat": "outdoor",
    "comfort": 2,
-   "desc": "Flick it on and the room changes mood. One piece of the Cobble Path Set.",
+   "desc": "Flick it on and the room changes mood. One piece of the Street Paving Set.",
    "glow": false,
    "icon": "decor/dc_y_path_neon_asphalt_icon",
    "layer": "outdoor",
@@ -37257,9 +37273,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 70,
-   "set": "yard_path",
+   "set": "yard_path_g",
    "sets": [
-    "yard_path"
+    "yard_path_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -37291,7 +37307,7 @@
    "art": "decor/dc_y_path_pebble",
    "cat": "outdoor",
    "comfort": 2,
-   "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+   "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
    "glow": false,
    "icon": "decor/dc_y_path_pebble_icon",
    "layer": "outdoor",
@@ -37301,9 +37317,9 @@
    "rot": 1,
    "scale": 0.5,
    "sell": 116,
-   "set": "yard_path",
+   "set": "yard_path_g",
    "sets": [
-    "yard_path"
+    "yard_path_g"
    ],
    "shelves": [],
    "shelves_gang": [
@@ -37795,7 +37811,8 @@
    "sell": 14325,
    "set": "yard_show",
    "sets": [
-    "yard_show"
+    "yard_show",
+    "yard_show_g"
    ],
    "size": [
     2,
@@ -59459,13 +59476,33 @@
    }
   },
   "yard_fence": {
-   "arc": "gangsters",
-   "comfort": 33,
+   "arc": "penguins",
+   "comfort": 27,
    "name": "Picket and Rail Set",
    "pieces": [
-    "dc_y_fence_gold",
     "dc_y_fence_ice",
     "dc_y_fence_ice_v",
+    "dc_y_fence_iron",
+    "dc_y_fence_iron_v",
+    "dc_y_fence_picket",
+    "dc_y_fence_picket_v",
+    "dc_y_fence_stone",
+    "dc_y_fence_stone_v",
+    "dc_y_fence_wood",
+    "dc_y_fence_wood_v",
+    "dc_y_hedge_run"
+   ],
+   "reward": {
+    "comfort": 27,
+    "money": 530
+   }
+  },
+  "yard_fence_g": {
+   "arc": "gangsters",
+   "comfort": 29,
+   "name": "Chain and Rail Set",
+   "pieces": [
+    "dc_y_fence_gold",
     "dc_y_fence_iron",
     "dc_y_fence_iron_v",
     "dc_y_fence_neon",
@@ -59479,8 +59516,8 @@
     "dc_y_hedge_run"
    ],
    "reward": {
-    "comfort": 33,
-    "money": 1750
+    "comfort": 29,
+    "money": 1560
    }
   },
   "yard_gang": {
@@ -59530,22 +59567,26 @@
    }
   },
   "yard_kit": {
-   "arc": "",
-   "comfort": 21,
+   "arc": "penguins",
+   "comfort": 29,
    "name": "Homestead Yard Set",
    "pieces": [
     "dc_y_boulder",
     "dc_y_boulder_b",
     "dc_y_cairn",
     "dc_y_camp_tent",
+    "dc_y_cat_tower",
+    "dc_y_cat_tower_b",
+    "dc_y_crystal_cluster",
+    "dc_y_crystal_cluster_b",
     "dc_y_fire_pit",
     "dc_y_lantern_post_kit",
     "dc_y_sleeping_bag",
     "dc_y_sleeping_bag_b"
    ],
    "reward": {
-    "comfort": 21,
-    "money": 430
+    "comfort": 29,
+    "money": 1100
    }
   },
   "yard_lights": {
@@ -59567,18 +59608,17 @@
     "money": 590
    }
   },
-  "yard_path": {
+  "yard_path_g": {
    "arc": "gangsters",
-   "comfort": 13,
-   "name": "Cobble Path Set",
+   "comfort": 11,
+   "name": "Street Paving Set",
    "pieces": [
     "dc_y_path_checker",
-    "dc_y_path_ice_brick",
     "dc_y_path_neon_asphalt",
     "dc_y_path_pebble"
    ],
    "reward": {
-    "comfort": 13,
+    "comfort": 11,
     "money": 200
    }
   },
@@ -59622,18 +59662,31 @@
   },
   "yard_show": {
    "arc": "penguins",
-   "comfort": 17,
+   "comfort": 13,
    "name": "Show Ribbon Yard Set",
    "pieces": [
     "dc_y_aurora_lamp",
     "dc_y_crystal_fountain",
+    "dc_y_koi_pond",
+    "dc_y_star_well"
+   ],
+   "reward": {
+    "comfort": 13,
+    "money": 6000
+   }
+  },
+  "yard_show_g": {
+   "arc": "gangsters",
+   "comfort": 13,
+   "name": "Block Party Yard Set",
+   "pieces": [
     "dc_y_koi_pond",
     "dc_y_lowrider_bounce",
     "dc_y_neon_chase_arch",
     "dc_y_star_well"
    ],
    "reward": {
-    "comfort": 17,
+    "comfort": 13,
     "money": 6000
    }
   }

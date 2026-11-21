@@ -603,7 +603,7 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 				for x: Enemy in payers:
 					x.set_meta("luck_paid", true)  # one payout per real foe
 				var n := 20 + 15 * GameState.progress_tier()
-				GameState.run["crystals"] = int(GameState.run["crystals"]) + n
+				GameState.add_money(n, "luck")  # C16a P2: counted in run.earned_by
 				m.hud.toast("Lucky: +◆%d" % n, Color(1, 0.9, 0.4))
 			elif roll == 1 or near.is_empty() or roll == 0:
 				GameState.heal_points(12)

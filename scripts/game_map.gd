@@ -640,7 +640,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(tb, Color(1, 0.85, 0.6))
 				Music.instance(get_tree()).sfx("dry_click", "thud")  # clink, no
 				return true
-			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_for("axe"):
+			if not GameState.spend_for("axe"):  # C16a P3: Keeper of the Woods halves it (wood_energy) instead of free
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("axe")
@@ -2715,12 +2715,13 @@ func on_enemy_died(e: Enemy) -> void:
 	GameState.run["kills_today"] = kt
 	var paid: bool = exempt or int(kt.get(kkey, 0)) <= 12
 	if paid:
-		GameState.add_money(e.reward, "combat")
+		GameState.add_money(int(round(e.reward * (1.0 + GameState.bonus("combat", "bounty")))), "combat")  # C16a P6: Combat "bounty" nodes
 		hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	elif int(kt.get(kkey, 0)) == 13:
 		hud.toast("No more crystals from these foes today.", Color(0.8, 0.8, 0.9))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
-	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
+	if paid:  # C16a P6 (c16a_12-18): past the daily kill cap foes give no XP either
+		xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
 	var ke := int(GameState.bonus("combat", "kill_energy"))
 	if ke > 0 and paid:  # past the cap foes give nothing, energy included
 		GameState.extra_energy(ke)
@@ -3010,7 +3011,7 @@ func _pup_menu() -> void:
 				pt.anim.play("play")
 			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):
 				st["petted_day"] = int(GameState.run["day"])
-				GameState.add_xp("pup", 3)
+				GameState.add_xp("pup", 8)  # C16a P6 (c16a_13-14): daily pet 3 -> 8
 				GameState.add_xp("leadership", 2)
 		"menu":
 			for ch in get_children():
@@ -4750,13 +4751,16 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		wait = 0.3
 		hud.toast("Tidecall!", Color(0.6, 0.9, 1))
 	var baited := false
-	var lvl := GameState.skill_level("fishing")
+	var lvl := GameState.skill_level_eff("fishing")  # C16a P4: effects follow LEVEL_EFFECT_CAP
 	# Bait: quicker bites and a shot at better fish, only spent where it opens one.
 	if GameState.count("bait") > 0 and Fishing.bait_helps(pool, lvl, night, area_tier):
 		GameState.add_item("bait", -1)
 		wait *= 0.6
 		baited = true
 		hud.toast("Bait on the hook (%d left)" % GameState.count("bait"), Color(0.8, 0.95, 1))
+	if Fishing.take_special_bait() != "":  # C16a P4: the best special bait in the bag goes on too
+		baited = true
+		hud.toast("%s on the hook (%d left)" % [GameState.item_name(Fishing.cur_bait), GameState.count(Fishing.cur_bait)], Color(0.8, 0.95, 1))
 	# The fish is chosen at the bite, so rarer fish give a shorter window (rod/skill widen it).
 	var fish: String = Fishing.pick(pool, lvl, night, baited, area_tier, GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0), scene_id())
 	var window := Fishing.window_for(fish)
@@ -4803,8 +4807,11 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		player.play_tool("reel")
 		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.
 		fish = Collections.legend_roll(scene_id(), fish, night)  # legends past the ceiling (C8 P3)
-		pop_items(bob_at, fish, 2 if randf() < GameState.bonus("fishing", "double_fish") else 1)
-		Collections.record_catch(fish, 1, night, GameState.weather_today() in ["rain", "storm"])  # fish log
+		pop_items(bob_at, fish, 2 if randf() < Fishing.double_chance() else 1)
+		var fq := Fishing.quality_for((t - wait) / maxf(0.01, window), fish)  # C16a P4: a quick reel earns a star
+		if fq != "":
+			GameState.add_quality(fish, fq, 1)
+		Collections.record_catch(fish, 1, night, GameState.weather_today() in ["rain", "storm"], Fishing.size_for(fish, fq))  # fish log
 		if fish == "boot":
 			Music.instance(get_tree()).sfx("thud", "nope")
 		elif Fishing.band(fish) >= 2 or fish == pool[pool.size() - 1]:
@@ -4826,6 +4833,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")
 	player.remove_meta("reel_early")
+	Fishing.cur_bait = ""  # C16a P4: the special bait lasts one cast
 
 
 ## Tier of this map's water for Fishing (0 = the Valley; Region returns its area tier).
