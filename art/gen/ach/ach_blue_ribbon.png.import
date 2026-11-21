@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ach_blue_ribbon.png-6b7af2bd927a1cdaf706b3f7b
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

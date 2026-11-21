@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/ach_beloved.png-ce9acde0789bd0ea77f8bf5d5af4e
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

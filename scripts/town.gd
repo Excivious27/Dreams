@@ -1101,8 +1101,8 @@ func _dress_plaza() -> void:
 	for k in 8:
 		var a := deg_to_rad([30.0, 60.0, 120.0, 150.0, 210.0, 240.0, 300.0, 330.0][k])
 		var c := Vector2i(floori(PLAZA_C.x + cos(a) * 8.2), floori(PLAZA_C.y + sin(a) * 8.2))
-		if not _cross(c):
-			_pp("props", _lamp_name(k), c)
+		if not _cross(c):  # not solid: WorldGen.clear_paths drops small solid props standing on the paving
+			_pp("props", _lamp_name(k), c, 0, 0.0, false)
 	for c: Vector2i in [Vector2i(35, 42), Vector2i(46, 42), Vector2i(35, 53), Vector2i(46, 53)]:
 		if not _cross(c):
 			_pp("props", "c14p2_tree_planter", c)
@@ -1111,7 +1111,7 @@ func _dress_plaza() -> void:
 	_pp("props", "c14p2_flower_kiosk", Vector2i(33, 51), 1)
 	_pp("props", "c14p2_cafe_umbrella", Vector2i(47, 51), 1)
 	_pp("props", "c14p2_cafe_table", Vector2i(46, 56), 1)
-	_pp("props", "c14p2_drink_fountain", Vector2i(34, 40))
+	_pp("props", "c14p2_drink_fountain", Vector2i(34, 40), 0, 0.0, false)
 	if GameState.is_penguins():
 		for c: Vector2i in [Vector2i(37, 34), Vector2i(46, 61), Vector2i(27, 44), Vector2i(53, 53)]:
 			if _pp("props", "c14p2_signpost", c):
