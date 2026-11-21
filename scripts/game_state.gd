@@ -1535,25 +1535,30 @@ static func gear_stat(stat: String) -> int:
 ## Mana: 20 base, +12 per magic level, gear "mana"; regenerates slowly, fully
 ##   on sleep. Spells live in data/spells.json.
 ##
-## Energy (round 11 revamp, Stardew / Sun Haven feel):
-##   Max: 120 to start, +3 per level in every skill (up to +120), skill-tree
-##   "energy" nodes, gear "energy", friend perks, and +4 for every 5 mine floors
-##   reached (up to +40). A seasoned farmer ends near 300.
-##   Cost per action = base (ENERGY_COST) x skill factor x tool factor, kept as
-##   a fraction (run["en_frac"]) so 0.6 really is 0.6 on average, never random.
-##     skill factor: -3.5% per level in the task's skill (ENERGY_SKILL), floor 0.6
-##     tool factor:  -12%/tier for hoe/can/scythe/plant, -8%/tier otherwise
-##     together never below 25% of base; tree perks (farm_energy, mine_energy) on top.
+## Energy (round 11 revamp, Stardew / Sun Haven feel; C16a P3 retune):
+##   Max: 120 to start, +1.5 per summed skill level (up to +45), skill-tree
+##   "energy" nodes (all trees <= TREE_EN_CAP 60), gear (<= GEAR_EN_CAP 30), +3 for
+##   every 5 mine floors (<= 30), eaten growth (TONIC_CAP 30), house tiers, friend
+##   perks, festivals. Intended curve (tools/energy_check.py, data/energy_bands.json):
+##   d1 120, d7 <= 140, d28 <= 190, end of year 1 <= 290, year 3 <= 400.
+##   Cost per action = base (ENERGY_COST) x skill factor x tool factor x (1 - tree
+##   perk), never below ENERGY_FLOOR (35%) of base, then the stamina buff (-10%/step).
+##   Kept as a fraction (run["en_frac"]) so 0.45 really is 0.45 on average.
+##     skill factor: -3.5% per level in the task's skill (ENERGY_SKILL), floor 0.7;
+##       field work (hoe/can/plant/scythe) costs x1.15 at level 1, back to x1.0 by level 5
+##     tool factor: -12%/tier hoe/can/scythe/plant, -3%/tier axe/pickaxe (their swings
+##       already drop 25%/tier), -8%/tier otherwise
+##   Recovery a day: food_cap() (120 + 4/farming level, <= 200), rest_cap() (half the
+##   bar, 60-100), both x len_recovery_mult (longer days recover more; the bar stays).
 ##   Walking and running are free; swimming costs a little; sword swings and
 ##   dodges cost a little. Below 15% you're Exhausted: a warning, a red bar and
 ##   slower feet (costs don't climb, so there's no death spiral). At 0 you pass
 ##   out (GameMap.player_down("tired")).
-##   Day-1 check (C8 P1, 120 bar, level 1, wood tools, x1.15 early factor):
-##   a pickaxe swing is ~0.69 and a stone takes 3 swings (~2.1 a rock), so mine
-##   floors 1-3 at ~10 rocks each plus ~40 sword swings and 4 dodges are ~30 a
-##   floor (~90 for three); hoeing, planting and watering 15 tiles is ~27. The
-##   keeper thresholds on floors 1-3 (mine.gd, P4) decide how many rocks a floor
-##   really asks. tools/first_week_test.gd models a week with these numbers.
+##   Day-1 check (C16a P3, gang arc, 120 bar, level 1, wood tools): a pickaxe swing
+##   is 0.45 and a rock ~3.5 swings (1.58); Tom's route (meadow fight, mine floor 1,
+##   half of floor 2 with their fights) is ~42 = 35% of the bar (was ~82 = 68%),
+##   measured on real layouts by tools/energy_route_probe.gd. tools/first_week_test.gd
+##   models a week with the measured keeper thresholds.
 const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 8.0}
 const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building", "spar": "combat", "teach": "ranching"}
 const ENERGY_BASE := 120
