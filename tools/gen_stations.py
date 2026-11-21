@@ -439,7 +439,7 @@ for bid, (label, seller, gseller, thing, (cell, w, h), tiers) in RANCH.items():
     home = RANCH_HOME.get(bid, bid)
     rb0 = next((r for r in RB.get(home, []) if isinstance(r, dict) and r.get('cell')), {})
     e = {'label': label, 'cell': list(rb0.get('cell', old.get('cell', cell))), 'w': int(rb0.get('w', old.get('w', w))),
-         'h': int(rb0.get('h', old.get('h', h))), 'group': 'props', 'cat': 'farm', 'seller': seller, 'ranch': home}
+         'h': int(rb0.get('h', old.get('h', h))), 'group': 'props', 'cat': 'farm', 'seller': seller, 'seller_gang': gseller, 'ranch': home}
     if thing: e['thing'] = thing
     if RANCH_ARC.get(home): e['arc'] = RANCH_ARC[home]
     for k in ('anim',):
@@ -450,6 +450,8 @@ for bid, (label, seller, gseller, thing, (cell, w, h), tiers) in RANCH.items():
         t = {'tier': i + 1, 'name': name, 'sprite': sp, 'group': g, 'cost': cost, 'permit': permit, 'days': days,
              'desc': ranch_desc(bid, i, desc), 'price': int(round((val(cost) * 2.2 + 150 * (i + 1) ** 2) / 10.0) * 10)}
         if unlock: t['unlock'] = dict(unlock)
+        if gname != name: t['name_gang'] = gname  # C11b P6: Builds._arc_words; tier rows may grow (cell/w/h)
+        t.update({k: rr[k] for rr in RB.get(home, []) if isinstance(rr, dict) and int(rr.get('tier', 0)) == i + 1 for k in ('cell', 'w', 'h') if k in rr and i > 0})
         if bid in BLUEPRINT_GATED and i == 0:
             t.setdefault('unlock', {})['hint'] = 'learn the %s Blueprint (Ranching tree)' % ('Hutch' if bid == 'hutch' else 'Sty')
         if i > 0 and 'skill' in t.get('unlock', {}) and t['unlock']['skill'][0] == 'ranching':

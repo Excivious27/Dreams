@@ -79,6 +79,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "coop",
   "tiers": [
    {
@@ -152,6 +153,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "barn",
   "tiers": [
    {
@@ -248,6 +250,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "silo",
   "thing": "silo",
   "tiers": [
@@ -370,6 +373,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "stable",
   "tiers": [
    {
@@ -895,6 +899,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "apiary",
   "thing": "beehive",
   "tiers": [
@@ -3613,6 +3618,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "hutch",
   "thing": "hutch",
   "tiers": [
@@ -3669,6 +3675,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "sty",
   "thing": "sty",
   "tiers": [
@@ -3685,6 +3692,7 @@
     "days": 1,
     "desc": "Pigs: they dig up truffles outdoors. Room for 2.",
     "price": 770,
+    "name_gang": "Pig Pen",
     "unlock": {
      "hint": "learn the Sty Blueprint (Ranching tree)"
     }
@@ -3709,7 +3717,8 @@
       6
      ],
      "hint": "Ranching level 6"
-    }
+    },
+    "name_gang": "Big Pig Pen"
    }
   ]
  },

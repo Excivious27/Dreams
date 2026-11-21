@@ -1152,6 +1152,9 @@ static func animal_voice(kind: String) -> String:
 	var rv := RanchVoice.file_of(k)  # c11b_14-10: species by id / art alias first, never by prefix
 	if rv != "":
 		return rv
+	var cv: String = preload("res://scripts/ranch_voices.gd").voice(k)  # C11b creatures (P6)
+	if cv != "":
+		return cv
 	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "thump", "bee": "buzz", "horse": "whinny", "foal": "whinny", "donkey": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):
@@ -1520,7 +1523,8 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown",
 ## The town hall keeps the plaza song going (no restart on the way in); the mansion is a quiet home.
 const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
 	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
-	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
+	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
+	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
 const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
@@ -1627,6 +1631,8 @@ func area_track() -> String:
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
 			if GameState.is_night() and Music.has_track("festival_night"):
 				return "festival_night"
+			if player != null and preload("res://scripts/animal_show.gd").near_stand(GameState.festival_today(), world_to_cell(player.position)) and Music.has_track("animal_show"):
+				return "animal_show"  # C11b P6: the ribbon tables have their own tune
 			return "festival"
 	if id in NIGHT_OK and GameState.is_night():
 		if not peng and Music.has_track("night_gang"):

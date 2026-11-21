@@ -5,6 +5,12 @@
   "secs": 47.0,
   "target": -26.0
  },
+ "aviary_room": {
+  "lufs": -26.0,
+  "md5": "21ecfa40fa2a1970b6b85c4e107a36cb",
+  "secs": 30.3,
+  "target": -26.0
+ },
  "basement_drips": {
   "lufs": -27.1,
   "md5": "3cedbdf9cbdc33d72ed3220736305662",
@@ -165,6 +171,12 @@
   "lufs": -26.0,
   "md5": "5031a37d34435d6becc3c0c12d8c952c",
   "secs": 42.0,
+  "target": -26.0
+ },
+ "terrarium_room": {
+  "lufs": -26.0,
+  "md5": "d0615723daee9b5a8d57f60e0fb38d0c",
+  "secs": 31.2,
   "target": -26.0
  },
  "town_day": {

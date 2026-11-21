@@ -1112,7 +1112,8 @@ func _build_rec(id: String) -> Dictionary:
 	var td := Builds.current_def(id)
 	if td.is_empty():
 		return {}
-	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
+	var fp := Builds.footprint(id)  # C11b P6: a tier may grow the building (c11b_05-04)
+	var rec := {"cell": fp.position, "w": fp.size.x, "h": fp.size.y, "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
 	if not Builds.data().has(id):
@@ -1221,7 +1222,7 @@ func _plans() -> void:
 				var bt := Builds.built_tier(id)
 				var nd := Builds.next_def(id)
 				var uc := Builds.under_construction(id)
-				var label := str(Builds.data()[id]["label"])
+				var label := Builds.label(id)  # C11b P6: arc words (c11b_05-09)
 				if not uc.is_empty():
 					var dl := int(uc["done_day"]) - int(GameState.run["day"])
 					opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
