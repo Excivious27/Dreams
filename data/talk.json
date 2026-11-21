@@ -267,6 +267,12 @@
   ],
   "birthday": [
    "Birthday? Me? ...Well. Drinks on the house. Juice. Tea. You know what I mean."
+  ],
+  "snow": [
+   "Snowed in? Good. The inn's warm and the soup's hot."
+  ],
+  "sun": [
+   "Heat wave. Iced tea's on the house till it breaks."
   ]
  },
  "juniper": {
@@ -678,6 +684,12 @@
   ],
   "birthday": [
    "My birthday! The council gave me a card. All three of them signed it."
+  ],
+  "snow": [
+   "Snow on the plaza. I've asked Gideon for more shovels. And more Gideon."
+  ],
+  "fireflies": [
+   "Fireflies over the pond tonight. Best free show in {town}."
   ]
  },
  "sal": {
@@ -983,6 +995,12 @@
   ],
   "birthday": [
    "My birthday. Someone left a book on my desk. It was overdue, but the thought counts."
+  ],
+  "leaves": [
+   "Falling leaves: I log the first of the season every year. Today was the day."
+  ],
+  "snow": [
+   "First snow. I've noted the date. Eleven winters of records now."
   ]
  },
  "hazel": {
@@ -1065,6 +1083,12 @@
   ],
   "birthday": [
    "You remembered my birthday? That's lovely. Come by the farm, I'll show you the lambs."
+  ],
+  "sun": [
+   "Heat wave. I water at dawn and again at dusk, and the plants still sulk."
+  ],
+  "leaves": [
+   "Leaves everywhere. I rake them into the compost. Next spring's soil."
   ]
  },
  "posy": {
@@ -1280,6 +1304,9 @@
   ],
   "fireflies": [
    "Fireflies! I caught one and let it go. It said thank you. I think."
+  ],
+  "snow": [
+   "SNOW DAY! No school! Come to the park, we're building a fort."
   ]
  },
  "wren_jr": {
@@ -1329,6 +1356,12 @@
   ],
   "birthday": [
    "It's my birthday! I'm going to the pond to tell the frogs."
+  ],
+  "snow": [
+   "Snow day! I made a snow frog by the school gate."
+  ],
+  "fireflies": [
+   "The fireflies are like frogs that glow. Flying frogs. I want one."
   ]
  },
  "tobin": {
@@ -1376,6 +1409,12 @@
   ],
   "birthday": [
    "It's my birthday! Bram made me a pie. With my name on it. In pastry."
+  ],
+  "snow": [
+   "Snow day! School's shut. I'm helping Bram shovel. Mostly I throw it."
+  ],
+  "sun": [
+   "Too hot to carry plates. I'm carrying ice instead."
   ]
  },
  "mabel": {
@@ -1425,6 +1464,12 @@
   ],
   "birthday": [
    "My birthday! I'm writing it in my diary in gold pen."
+  ],
+  "snow": [
+   "Snow day entry: no school, three snowmen, one lost mitten."
+  ],
+  "leaves": [
+   "Leaf entry: I pressed twelve leaves in my diary. It's thicker now."
   ]
  },
  "marlowe": {
