@@ -264,9 +264,6 @@ static func show_line(fid: String) -> String:
 		var fh := FestivalWords.fest_host("Hazel")  # C12 c12_11-05
 		return (" %s's Fleece & Feather table wants your softest wool, fur or feathers." % fh if pen
 			else " %s's judging Fleece & Feather by the fountain: soft and clean wins." % fh)
-	if fid == "star":
-		return (" Everyone gives one gift, and there's a star-wish at the fountain after dark." if pen
-			else " Gift swap at the fountain. One each, no regifting.")
 	return ""
 
 

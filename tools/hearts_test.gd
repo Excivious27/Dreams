@@ -47,7 +47,7 @@ func _pass(arc: String) -> void:
 	var vill := Hearts.data().keys().filter(func(x: String) -> bool: return Hearts.in_arc(x))  # Catkins: penguins only
 	check(vill.size() >= 25, "%s: %d villagers with arcs" % [arc, vill.size()])
 	# ♥8 can wait on another villager's ♥8 (Hearts.NEEDS_FLAG): those go first.
-	var first := ["granite", "bram", "gideon", "hazel", "theo", "mabel"]  # C12 P4: Ivy ♥8 waits on Theo ♥8, Granite ♥10 on Mabel ♥8
+	var first := ["granite", "bram", "gideon", "hazel", "theo"]  # C12 P4: Ivy ♥8 waits on Theo ♥8 (Granite ♥10 waits on Mabel ♥8: set below)
 	var rank := func(x: String) -> int: return first.find(x) if x in first else 99
 	vill.sort_custom(func(a: String, b: String) -> bool: return rank.call(a) < rank.call(b))
 	for id in vill:
@@ -67,13 +67,17 @@ func _pass(arc: String) -> void:
 							qq["done"] = true
 				if Hearts.NEEDS_FLAG.has(id) and not str(Hearts.NEEDS_FLAG[id]).begins_with("hv_"):
 					GameState.run["flags"][Hearts.NEEDS_FLAG[id]] = true
-			if n == 10 and Hearts.NEEDS10.has(id):
-				GameState.run["flags"][Hearts.NEEDS10[id]] = true  # C12 P4: the scene it retells (checked in hearts_content_test)
+			var lent := ""
+			if n == 10 and Hearts.NEEDS10.has(id) and not GameState.run["flags"].has(Hearts.NEEDS10[id]):
+				lent = str(Hearts.NEEDS10[id])  # C12 P4: the scene it retells (gating checked in hearts_content_test)
+				GameState.run["flags"][lent] = true
 			check(Hearts.due(id) == n, "%s %s: ♥%d due" % [arc, id, n])
 			m.later(func() -> void: await Hearts.talk(m, id))
 			await frames(2)
 			await _advance_all()
 			check(Hearts.seen_level(id) == n, "%s %s: ♥%d played" % [arc, id, n])
+			if lent != "":
+				GameState.run["flags"].erase(lent)  # lent only for this scene: the other villager's arc still plays in order
 			check(Hearts.daily(id) != "", "%s %s: daily line after ♥%d" % [arc, id, n])
 			# Heart perks (data/heart_perks.json) are handed out once, never twice.
 			Perks.check(id)
