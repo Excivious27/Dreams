@@ -117219,6 +117219,14 @@
    "h": 32,
    "w": 84
   },
+  "c14p2_cobble": {
+   "cell_h": 32,
+   "cell_w": 32,
+   "cols": 6,
+   "file": "tiles/c14p2_cobble.png",
+   "h": 64,
+   "w": 192
+  },
   "c14p2_flag": {
    "cell_h": 32,
    "cell_w": 32,

@@ -22,22 +22,30 @@ def _rm_save(img, group, name):
     return S.save(img, group, name)
 
 
-def flagstones():
-    """4 variants -> tiles/c14p2_flag: 8 cols x 2 rows of 32px cells; each variant
-    is a 2x2-cell block (64x64), cell index = v*2 + qx + qy*8."""
-    rgba = S.load(INC + "/flagstones.png")
+def _blocks(file, n, name):
+    """n square variants -> tiles/<name>: 2n cols x 2 rows of 32px cells; each variant
+    is a 2x2-cell block (64x64), cell index = v*2 + qx + qy*2n."""
+    rgba = S.load(INC + "/" + file)
     boxes = sorted(C.blobs(rgba, merge=3, min_area=5000), key=lambda b: b[0])
-    boxes = [b for b in boxes if b[2] - b[0] > 100][:4]
-    assert len(boxes) == 4, boxes
-    out = Image.new("RGBA", (256, 64), (0, 0, 0, 0))
+    boxes = [b for b in boxes if b[2] - b[0] > 100][:n]
+    assert len(boxes) == n, boxes
+    out = Image.new("RGBA", (64 * n, 64), (0, 0, 0, 0))
     for v, b in enumerate(boxes):
         b = C.tight(rgba, b)
         im = S.crop(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2)).resize((64, 64), Image.LANCZOS)
         a = np.asarray(im).copy()
         a[..., 3] = 255
         out.paste(Image.fromarray(a), (v * 64, 0))
-    _rm_save(out, "tiles", "c14p2_flag")
-    S.manifest["tiles"]["c14p2_flag"].update({"cell_w": 32, "cell_h": 32, "cols": 8})
+    _rm_save(out, "tiles", name)
+    S.manifest["tiles"][name].update({"cell_w": 32, "cell_h": 32, "cols": 2 * n})
+
+
+def flagstones():
+    _blocks("flagstones.png", 4, "c14p2_flag")
+
+
+def cobbles():
+    _blocks("cobbles.png", 3, "c14p2_cobble")
 
 
 def mosaic():
@@ -102,7 +110,7 @@ def garden():
     _rm_save(C.piece(rgba, C.tight(rgba, pieces[1]), w=76), "props", "c14p2_rose_arbour")
 
 
-STEPS = [flagstones, mosaic, props, snow, garden]
+STEPS = [flagstones, cobbles, mosaic, props, snow, garden]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

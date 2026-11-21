@@ -973,7 +973,7 @@ func _place_props() -> void:
 		_pp("props", ["topiary_a", "topiary_b"][c.x % 2], c)
 	# Lamps along both avenues.
 	for y in range(6, 92, 8):
-		if y > 40 and y < 56:
+		if y > 34 and y < 62:  # the plaza lamp ring covers these (c14_03-05)
 			continue
 		_lamp(Vector2i(36, y), Vector2i(0, 1))
 		_lamp(Vector2i(45, y), Vector2i(0, 1))
@@ -1117,11 +1117,14 @@ func _lamp(c: Vector2i, along: Vector2i) -> bool:
 ## avenue mouths. Festival props claim their cells first; the cross of the avenues to the
 ## fountain stays open (town_props_test walks it).
 func _dress_plaza() -> void:
+	var lane_mouths := cells_of(LANES)  # the lanes run a cell into the plaza: keep their mouths clear
 	for k in 8:
 		var a := deg_to_rad([30.0, 60.0, 120.0, 150.0, 210.0, 240.0, 300.0, 330.0][k])
-		var c := Vector2i(floori(PLAZA_C.x + cos(a) * 8.2), floori(PLAZA_C.y + sin(a) * 8.2))
-		if not _cross(c):  # not solid: WorldGen.clear_paths drops small solid props standing on the paving
-			_pp("props", _lamp_name(k), c, 0, 0.0, false)
+		for rr in [8.2, 7.2, 9.2, 6.4]:  # festival props may hold the rim: step in or out
+			var c := Vector2i(floori(PLAZA_C.x + cos(a) * rr), floori(PLAZA_C.y + sin(a) * rr))
+			# not solid: WorldGen.clear_paths drops small solid props standing on the paving
+			if not _cross(c) and not lane_mouths.has(c) and _pp("props", _lamp_name(k), c, 0, 0.0, false):
+				break
 	for c: Vector2i in [Vector2i(35, 42), Vector2i(46, 42), Vector2i(35, 53), Vector2i(46, 53)]:
 		if not _cross(c):
 			_pp("props", "c14p2_tree_planter", c)
@@ -1549,6 +1552,7 @@ func draw_map() -> void:
 	var roads: Dictionary = rm["roads"]
 	var lanes: Dictionary = rm["lanes"]
 	draw_ground("cobble", roads)
+	_draw_cobbles(roads)
 	var steps := cells_of([HALL_STEPS])
 	var dirt := lanes.duplicate()
 	for c in steps:
@@ -1646,6 +1650,36 @@ func _draw_plaza(steps: Dictionary) -> void:
 		tb.seg(ctr + dv * r_in, ctr + dv * r_out, Color(0.36, 0.17, 0.12, 0.7), 0.8)
 	tb.arc(ctr, r_out, 0.0, TAU, 72, Color(0.22, 0.14, 0.09, 0.85), 1.2)
 	tb.arc(ctr, r_in, 0.0, TAU, 72, Color(0.3, 0.18, 0.12, 0.6), 1.0)
+	tb.flush(self)
+
+
+## C14 P2 (c14_03-07): the avenues are warm rounded cobbles (3 variants per 2x2 block)
+## over the old flat slabs, with a soft stone kerb where they meet the grass.
+func _draw_cobbles(roads: Dictionary) -> void:
+	if not Art.has("tiles", "c14p2_cobble"):
+		return
+	for c: Vector2i in roads:
+		var h := absi(hash(Vector2i(c.x >> 1, c.y >> 1) + Vector2i(7, 3))) % 100
+		var v := 0 if h < 60 else (1 if h < 82 else 2)
+		Art.draw_tile(self, "tiles", "c14p2_cobble", Vector2(c * TILE), v * 2 + (c.x & 1) + (c.y & 1) * 6)
+	var tb := TriBatch.new()
+	var kerb := Color(0.33, 0.26, 0.2, 0.75)
+	var lit := Color(0.85, 0.78, 0.66, 0.5)
+	for c: Vector2i in roads:
+		var p := Vector2(c * TILE)
+		for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+			var n := c + d
+			if roads.has(n) or _plaza.has(n):
+				continue
+			match d:
+				Vector2i.LEFT:
+					tb.rect(Rect2(p, Vector2(2, TILE)), kerb); tb.rect(Rect2(p + Vector2(2, 0), Vector2(1, TILE)), lit)
+				Vector2i.RIGHT:
+					tb.rect(Rect2(p + Vector2(TILE - 2, 0), Vector2(2, TILE)), kerb); tb.rect(Rect2(p + Vector2(TILE - 3, 0), Vector2(1, TILE)), lit)
+				Vector2i.UP:
+					tb.rect(Rect2(p, Vector2(TILE, 2)), kerb); tb.rect(Rect2(p + Vector2(0, 2), Vector2(TILE, 1)), lit)
+				Vector2i.DOWN:
+					tb.rect(Rect2(p + Vector2(0, TILE - 2), Vector2(TILE, 2)), kerb); tb.rect(Rect2(p + Vector2(0, TILE - 3), Vector2(TILE, 1)), lit)
 	tb.flush(self)
 
 
