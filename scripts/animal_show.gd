@@ -22,7 +22,7 @@ const CATS := {
 			"ask": "Which of your goods goes on the table? Freshness and a gold star count.",
 			"ask_gang": "What are you putting on the table? Quality sells it.",
 			"goods": ["egg", "duck_egg", "milk", "goat_milk", "sheep_wool", "rabbit_fur", "cheese", "goat_cheese", "honey", "truffle", "feather"],
-			"rivals": [["Hazel", "brown eggs", 70], ["Benno", "fresh milk", 80], ["Tam", "wool bundle", 90], ["Mabel", "plum jam", 60]],
+			"rivals": [["Hazel", "brown eggs", 70], ["Benno", "fresh milk", 80], ["Tam", "wool bundle", 90], ["Mabel", "goat cheese", 60]],
 			"cap": 220, "prizes": [150, 70, 25], "mention": 10, "beside": "sit on the table beside"},
 	],
 	"egg": [

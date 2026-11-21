@@ -4,6 +4,7 @@
 
 ## 2026-11-21 — C14b docs: CONDUCT-14b report, Guide 42, ART-PROMPTS-CONDUCT-14b, TEXTS['14b'], 6 inventory rows (animation core, water features, weather FX, character idles, creature motion, magic FX), PROJECT-MEMORY entry; final CI c14bi pending.
 ## 2026-11-21 — C15 P1: Calendar engine (scripts/calendar.gd; festivals.json/calendar.json/marina/birthdays, year gates), calendar screen (board, menu, HUD date tap + pip), seasonal weather (per-save seed, city odds, specials, snow depth, heat wave, weather_here), tests calendar/calendar_screen/weather_c15
+## 2026-11-21 — C15 P6: festivals.json (19 rows, full year both arcs, year gates), egg hunt persists + kids race + golden egg, festival hours gate, gang names/hosts/dressing, 5 new town festivals (FestivalExtra), 12 c15p6 props
 
 ## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
 

@@ -1344,3 +1344,17 @@ echo "$c15wxout" | grep -E "FAIL|SCRIPT ERROR|weather_c15_test" || true
 if ! echo "$c15wxout" | grep -q "weather_c15_test: 0 failures"; then
   echo "weather_c15_test failed"; exit 1
 fi
+
+echo "== C15 P6: festival year (festivals.json, arc names, year gates, rules) =="
+fcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/festival_calendar_test.gd 2>&1)"
+echo "$fcout" | grep -E "FAIL|SCRIPT ERROR|festival_calendar_test" || true
+if ! echo "$fcout" | grep -q "festival_calendar_test: OK" || echo "$fcout" | grep -q "SCRIPT ERROR"; then
+  echo "festival_calendar_test failed"; exit 1
+fi
+
+echo "== C15 P6: festival activities driven (egg hunt persists + kids, lantern, contest, star, new festivals) =="
+feout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/festival_events_test.gd 2>&1)"
+echo "$feout" | grep -E "FAIL|SCRIPT ERROR|festival_events_test" || true
+if ! echo "$feout" | grep -q "festival_events_test: OK" || echo "$feout" | grep -q "SCRIPT ERROR"; then
+  echo "festival_events_test failed"; exit 1
+fi

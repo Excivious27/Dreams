@@ -15,5 +15,6 @@ done
 python3 -B tools/gen_marina.py >/dev/null || { echo "regen_data: gen_marina failed"; exit 1; }
 python3 -B tools/gen_props_c14.py >/dev/null || { echo "regen_data: gen_props_c14 failed"; exit 1; }  # C14 P6 dressing (reads regions.json: last)
 python3 -B tools/gen_calendar.py >/dev/null || { echo "regen_data: gen_calendar failed"; exit 1; }  # C15 P1 calendar rows (markets, small events)
+python3 -B tools/gen_festivals.py >/dev/null || { echo "regen_data: gen_festivals failed"; exit 1; }  # C15 P6 festival year (data/festivals.json)
 python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"

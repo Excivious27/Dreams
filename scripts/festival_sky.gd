@@ -7,6 +7,9 @@ extends Node2D
 ##   fireworks show (soft bursts, no screen flash).
 ## - Star Festival (c14b_18-06): shooting stars streak across the night sky every
 ##   6-10 s; star_for(target) sends one to end over the player when a wish lands.
+## - C15 P6 (c15_07-17): "jellies" (Moon Jellies / Neon Tide: glowing jellies drift over the water
+##   rect, a gold one from year 3), "comet" (Comet Night: crystal streaks fall every 2-4 s) and
+##   "fireworks" (Gift Swap / Gilt Gala: a burst over the plaza every 5-8 s after dark).
 ## Brightness follows GameState.darkness(); reduced motion = fewer, slower, no flicker.
 
 var mode := ""
@@ -18,6 +21,8 @@ var _bursts: Array = []    # [centre, age, colour, n, style]
 var _stars: Array = []     # [from, to, age, dur]
 var _next_sky := 0.0
 var _next_star := 0.0
+var _jel: Array = []       # [pos, phase, speed, gold]
+var _next_burst := 0.0
 var _rng := RandomNumberGenerator.new()
 
 
@@ -31,6 +36,8 @@ static func make(host: Node, m: String, river_px := Rect2(), plaza_px := Vector2
 	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	f.material = mat
 	f._rng.seed = int(GameState.run.get("day", 1)) * 977 + (1 if m == "star" else 2)
+	if not m in ["lantern", "star", "jellies", "comet", "fireworks"]:
+		f.mode = ""
 	# Above the map's night CanvasModulate (like NightGlow), so the lights aren't darkened.
 	var cl := CanvasLayer.new()
 	cl.name = "FestivalSkyLayer"
@@ -47,6 +54,11 @@ static func of(host: Node) -> FestivalSky:
 
 
 func _ready() -> void:
+	if mode == "jellies" and river.size.x > 0.0:
+		var n := 5 if AmbientMotion.reduced() else 10
+		var gold := FestivalWords.year_of(int(GameState.run.get("day", 1))) >= 3
+		for i in n:
+			_jel.append([river.position + Vector2(_rng.randf() * river.size.x, _rng.randf() * river.size.y), _rng.randf() * TAU, _rng.randf_range(3.0, 6.0), gold and i == 0])
 	if mode == "lantern" and river.size.y > 0.0:
 		var n := 6 if AmbientMotion.reduced() else 12
 		for i in n:
@@ -98,6 +110,21 @@ func _process(delta: float) -> void:
 			var c := cam.get_screen_center_position() if cam else view / 2.0
 			star_for(c + Vector2(_rng.randf_range(-80, 80), _rng.randf_range(-40, 10)))
 			_next_star = t + (_rng.randf_range(10.0, 14.0) if AmbientMotion.reduced() else _rng.randf_range(6.0, 10.0))
+	elif mode == "jellies":
+		for j: Array in _jel:
+			j[0] = (j[0] as Vector2) + Vector2(sin(t * 0.4 + float(j[1])) * 2.0, -float(j[2])) * delta * slow
+			if (j[0] as Vector2).y < river.position.y:
+				j[0] = Vector2((j[0] as Vector2).x, river.end.y)
+	elif mode == "comet":
+		if dk > 0.5 and t >= _next_star:
+			var cam2 := get_viewport().get_camera_2d()
+			var c2 := cam2.get_screen_center_position() if cam2 else get_viewport_rect().size / 2.0
+			star_for(c2 + Vector2(_rng.randf_range(-100, 100), _rng.randf_range(-20, 60)))
+			_next_star = t + (_rng.randf_range(4.0, 6.0) if AmbientMotion.reduced() else _rng.randf_range(2.0, 4.0))
+	elif mode == "fireworks":
+		if dk > 0.4 and t >= _next_burst:
+			fireworks(plaza)
+			_next_burst = t + (_rng.randf_range(9.0, 12.0) if AmbientMotion.reduced() else _rng.randf_range(5.0, 8.0))
 	for b: Array in _bursts:
 		b[1] = float(b[1]) + delta
 	_bursts = _bursts.filter(func(b: Array) -> bool: return float(b[1]) < 1.8)
@@ -119,6 +146,15 @@ func _draw() -> void:
 		for s: Array in _sky_l:
 			var a := clampf(1.0 - float(s[3]) / 40.0, 0.0, 1.0) * clampf(float(s[3]) / 1.5, 0.0, 1.0)
 			_lantern(s[0], dk * a, flick, t, float(s[2]), false)
+	if mode == "jellies" and dk > 0.05:
+		for j: Array in _jel:
+			var jp: Vector2 = j[0]
+			var pulse := 1.0 + (0.15 * sin(t * 2.0 + float(j[1])) if flick else 0.0)
+			var jc := Color(1.0, 0.85, 0.4) if bool(j[3]) else Color(0.6, 0.85, 1.0)
+			draw_circle(jp, 8.0 * pulse, Color(jc, 0.15 * dk))
+			draw_circle(jp, 3.5, Color(jc, 0.6 * dk))
+			for k in 3:
+				draw_rect(Rect2(jp + Vector2(-2 + k * 2, 3 + sin(t * 3.0 + k) * 1.0), Vector2(1, 4)), Color(jc, 0.4 * dk))
 	for b: Array in _bursts:
 		var age := float(b[1])
 		if age < 0.0:

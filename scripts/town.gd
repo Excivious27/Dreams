@@ -136,7 +136,7 @@ func after_ready() -> void:
 		# flag lets it play. (It used to play a second intro here too.)
 		GameState.run["flags"]["town_seen"] = true
 	elif GameState.festival_today() != "":
-		hud.toast("%s today, on the plaza!" % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
+		hud.toast("%s today, on the plaza!" % FestivalWords.name_of(GameState.festival_today()), Color(1, 0.9, 0.5))
 	if not GameState.run["flags"].has("town_tour"):
 		later(_town_tour)
 
@@ -173,6 +173,7 @@ var _front_t := 0.0
 
 func _process(delta: float) -> void:
 	super(delta)
+	_egg_kids(delta)
 	_front_t -= delta
 	if _front_t > 0.0:
 		return
@@ -427,6 +428,8 @@ func _place_festival(fest: String) -> void:
 			for c: Vector2i in [Vector2i(34, 48), Vector2i(46, 48), Vector2i(36, 56), Vector2i(44, 56)]:
 				pf.call("fest_ss_18", c, 1, false)
 			_fest_hunt = true
+			if GameState.run["flags"].has("fest_egg_cells_%d" % int(GameState.run["day"])):
+				_place_eggs.call_deferred()
 		"lantern":
 			for i in 4:
 				pf.call("fest_ss_%02d" % (31 + i % 3), Vector2i(32 + i * 5, 38), 2, false)
@@ -434,13 +437,14 @@ func _place_festival(fest: String) -> void:
 				pf.call("fest_ss_%02d" % (23 + (c.x + c.y) % 8), c)
 			# C14b P3 (c14b_13-11/18-02): a real 6-frame flame loop (fest_ss_80 was one still frame).
 			if Art.has(P, "c14bp3_bonfire"):
-				var bf := anim_prop(P, "c14bp3_bonfire", Vector2i(40, 54), 0, 8.0, false, 0.5)
+				var bf := anim_prop(P, "c14bp3_bonfire", Vector2i(40, 56), 0, 8.0, true, 0.5)  # C15 P6: solid, below the stage
 				if bf:
 					bf.frame = int(AmbientMotion.phase(Vector2(40, 54)) * 6.0)
 					bf.speed_scale = 0.95
-					_claim(_foot(P, "c14bp3_bonfire", Vector2i(40, 54), 0), "c14bp3_bonfire", true)
+					_claim(_foot(P, "c14bp3_bonfire", Vector2i(40, 56), 0), "c14bp3_bonfire", true)
+					blocked[Vector2i(40, 56)] = true
 			else:
-				af.call("fest_ss_80", Vector2i(40, 54), 6.0)
+				af.call("fest_ss_80", Vector2i(40, 56), 6.0)
 			for c: Vector2i in [Vector2i(36, 60), Vector2i(44, 60)]:
 				pf.call("fest_ss_72", c, 1)
 		"harvest":
@@ -454,9 +458,36 @@ func _place_festival(fest: String) -> void:
 			pf.call("fest_fw_62", Vector2i(40, 36), 1); pf.call("fest_fw_40", Vector2i(33, 44)); pf.call("fest_fw_39", Vector2i(47, 44))
 			pf.call("fest_fw_41", Vector2i(32, 54)); pf.call("fest_fw_42", Vector2i(48, 54)); pf.call("fest_fw_43", Vector2i(35, 60)); pf.call("fest_fw_44", Vector2i(45, 60))
 			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1); pf.call("fest_fw_68", Vector2i(40, 60), 1, false)
-	if fest in ["lantern", "star"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
-		FestivalSky.make(AmbientMotion.of(self).get_parent(), fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
-	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + GameState.festival_name(fest)}, false)
+		"founders":  # C15 P6: parade bunting and the harvest stalls' flags
+			pf.call("fest_fw_00", Vector2i(33, 42)); pf.call("fest_fw_01", Vector2i(47, 42))
+			pf.call("c15p6_parade_float" if Art.has(P, "c15p6_parade_float") else "fest_fw_02", Vector2i(40, 38), 1)
+			for c: Vector2i in [Vector2i(34, 36), Vector2i(46, 36)]:
+				pf.call("fest_fw_22", c, 1, false)
+		"hollow":  # C15 P6: pumpkin lanterns round the plaza (the maze is the walk)
+			for c: Vector2i in [Vector2i(33, 44), Vector2i(47, 44), Vector2i(32, 54), Vector2i(48, 54), Vector2i(36, 60), Vector2i(44, 60)]:
+				var pk := "c15p6_pumpkin_lantern_%d" % ((c.x + c.y) % 3)
+				pf.call(pk if Art.has(P, pk) else "fest_fw_09", c, 0, false)
+			pf.call("fest_fw_13", Vector2i(39, 57), 2)
+		"winter_market", "gift_swap":  # C15 P6: the star-festival stalls, a tree for the feast
+			pf.call("fest_fw_40", Vector2i(33, 44)); pf.call("fest_fw_39", Vector2i(47, 44))
+			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1)
+			if fest == "gift_swap":
+				pf.call("fest_fw_62", Vector2i(40, 36), 1)
+				pf.call("c15p6_feast_table" if Art.has(P, "c15p6_feast_table") else "fest_fw_13", Vector2i(39, 56), 2)
+		"blossom":
+			pf.call("fest_ss_02", Vector2i(40, 38), 1)
+			for c: Vector2i in [Vector2i(34, 48), Vector2i(46, 48)]:
+				pf.call("fest_ss_18", c, 1, false)
+	# C15 P6 (c15_06-04 / 07-08): the crew's version of the day: a food truck, neon strings and
+	# sprayed crates round the same plaza (guarded: only where the festival left room).
+	if not GameState.is_penguins():
+		for g: Array in [["c15p6_food_truck", Vector2i(30, 41), 3], ["c15p6_neon_string", Vector2i(36, 34), 2], ["c15p6_neon_string", Vector2i(44, 34), 2],
+				["c15p6_crate_stack", Vector2i(30, 52), 1], ["c15p6_crate_stack", Vector2i(51, 52), 1], ["c15p6_neon_string", Vector2i(39, 63), 2]]:
+			if Art.has(P, str(g[0])) and _free(_foot(P, str(g[0]), g[1], int(g[2]))):
+				pf.call(str(g[0]), g[1], int(g[2]), str(g[0]) != "c15p6_neon_string")
+	if fest in ["lantern", "star", "gift_swap"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
+		FestivalSky.make(AmbientMotion.of(self).get_parent(), "fireworks" if fest == "gift_swap" else fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
+	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + FestivalWords.name_of(fest)}, false)
 	# C11a P5: the Animal Show (Harvest Fair) and the Best Egg table (Egg Festival).
 	var sh: Array = SHOW.get(fest, [])
 	if not sh.is_empty():
@@ -485,6 +516,11 @@ const FEST_STALL := {
 	"lantern": [Vector2i(44, 41), "fest_ss_07", "Lumi", "summer", [["candy", 15], ["gift_pie", 45]]],
 	"harvest": [Vector2i(44, 40), "fest_fw_58", "Hazel", "fall", [["spiced_loaf", 95], ["gift_pie", 45]]],
 	"star": [Vector2i(44, 58), "", "Bram", "winter", [["hot_cocoa", 180], ["candy", 15]]],
+	# C15 P6 (c15_06-11): the new festivals' stalls, each with its own treats.
+	"founders": [Vector2i(44, 40), "fest_fw_58", "Maple", "summer", [["gift_pie", 45], ["cake", 140]]],
+	"hollow": [Vector2i(44, 40), "fest_fw_58", "Hazel", "fall", [["candy", 15], ["spiced_loaf", 95]]],
+	"winter_market": [Vector2i(44, 58), "", "Maple", "winter", [["hot_cocoa", 180], ["spiced_loaf", 95]]],
+	"gift_swap": [Vector2i(44, 58), "", "Bram", "winter", [["cake", 140], ["hot_cocoa", 180]]],
 }
 
 
@@ -494,18 +530,121 @@ func _fest_stall(fest: String) -> void:
 		return
 	player.frozen = true
 	var treats: Array = (st[4] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
-	await Shops.stall(self, FestivalWords.fest_host(str(st[2])), "%s treats, and a few things for the house while they last." % GameState.festival_name(fest), treats, 0.0, "festival_" + str(st[3]))
+	var sid := "festival_" + fest if (Decor.data().get("shops", {}) as Dictionary).has("stall:festival_" + fest) else "festival_" + str(st[3])  # C15 P6 (c15_07-13)
+	await Shops.stall(self, FestivalWords.fest_host(str(st[2])), "%s treats, and a few things for the house while they last." % FestivalWords.name_of(fest), treats, 0.0, sid)
 	player.frozen = false
 
 
 ## Joining a festival's event once earns a keepsake roll from the season's prize pool (place 1 at the crop
 ## contest rolls with extra luck). decor.json "festival_<season>_prize"; once per festival day.
 func _fest_keepsake(fest: String, key: String, luck := 0.0) -> void:
-	var st: Array = FEST_STALL.get(fest, [])
-	if st.is_empty() or not GameState.run["flags"].has(key) or GameState.run["flags"].has(key + "_dc"):
+	var pool := _fest_pool(fest)
+	if pool == "" or not GameState.run["flags"].has(key) or GameState.run["flags"].has(key + "_dc"):
 		return
 	GameState.run["flags"][key + "_dc"] = true
-	DecorSources.roll_grant(self, "festival_%s_prize" % str(st[3]), luck, "festival")
+	DecorSources.roll_grant(self, pool, luck, "festival")
+
+
+## C15 P6 (c15_07-13): the festival's own prize pool (festivals.json prize_pool) when decor.json has it,
+## else the season's pool, so a second festival in a season can award its own keepsakes.
+func _fest_pool(fest: String) -> String:
+	var d := FestivalWords.def(fest)
+	if d.is_empty():
+		return ""
+	var own := str(d.get("prize_pool", ""))
+	if own != "" and (Decor.data().get("pools", {}) as Dictionary).has(own):
+		return own
+	return "festival_%s_prize" % str(d["season"])
+
+
+## C15 P6 (c15_06-12): festival things only work during the festival's hours.
+func _fest_open(fest: String) -> bool:
+	var fh := FestivalWords.hours_of(fest)
+	var h := TownHours._hour()
+	if fh.y <= 0.0 or (h >= fh.x and h < fh.y):
+		return true
+	hud.toast(FestivalWords.not_open_text(fest, fh, h < fh.x), Color(1, 0.9, 0.6))
+	return false
+
+
+## C15 P6 (c15_06-01): the egg hunt's cells, seeded by the day; year 2+ hides 16 (one golden).
+func _egg_cells() -> Array:
+	var out: Array = []
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(GameState.run["day"])
+	var tries := 0
+	var n := FestivalWords.egg_count()
+	while out.size() < n and tries < 600:
+		tries += 1
+		var c := Vector2i(rng.randi_range(30, 50), rng.randi_range(37, 59))
+		if blocked.has(c) or things.has(c) or not _plaza.has(c) or [c.x, c.y] in out:
+			continue
+		out.append([c.x, c.y])
+	return out
+
+
+## Puts back the eggs not yet found (also after leaving the map or a reload).
+func _place_eggs() -> void:
+	var day := int(GameState.run["day"])
+	var cells: Array = GameState.run["flags"].get("fest_egg_cells_%d" % day, [])
+	var found: Array = GameState.run["flags"].get("fest_egg_found_%d" % day, [])
+	var gold := FestivalWords.egg_count() > FestivalWords.EGG_COUNT
+	var gang := not GameState.is_penguins()
+	for i in cells.size():
+		var c := Vector2i(int(cells[i][0]), int(cells[i][1]))
+		if [c.x, c.y] in found or things.has(c):
+			continue
+		var golden := gold and i == cells.size() - 1
+		things[c] = {"type": "egg", "golden": golden, "hint": FestivalWords.egg_hint(golden)}
+		var nm := "fest_ss_%02d" % (12 + i % 6)
+		if golden and Art.has("props", "c15p6_golden_egg"):
+			nm = "c15p6_golden_egg"
+		elif gang and Art.has("props", "c15p6_envelope_%d" % (i % 3)):
+			nm = "c15p6_envelope_%d" % (i % 3)
+		if Art.has("props", nm):
+			prop("props", nm, c, 0, 0.0, false)
+
+
+## C15 P6 (c15_06-02): the kids hunt too. While your hunt is on, a kid grabs one of the eggs still
+## hidden every few seconds of game time (faster from year 3); find more than they do for the full prize.
+var _kid_t := 0.0
+func _egg_kids(delta: float) -> void:
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var day := int(GameState.run.get("day", 0))
+	if not _fest_hunt or int(fl.get("eggs_left", 0)) <= 0 or not fl.has("fest_egg_cells_%d" % day) or fl.has("fest_egg_%d_done" % day) or get_tree().paused:
+		return
+	_kid_t += delta
+	if _kid_t < kid_every():
+		return
+	_kid_t = 0.0
+	var eggs: Array = []
+	for c: Vector2i in things:
+		if str(things[c].get("type", "")) == "egg" and not bool(things[c].get("golden", false)):
+			eggs.append(c)
+	if eggs.size() <= 1:
+		return  # the last egg is always yours to find
+	eggs.sort()
+	var c: Vector2i = eggs[(day + int(fl.get("fest_egg_kids_%d" % day, 0))) % eggs.size()]
+	things.erase(c)
+	if props.has(c):
+		(props[c] as Node).queue_free()
+		props.erase(c)
+	_egg_found(c)
+	fl["fest_egg_kids_%d" % day] = int(fl.get("fest_egg_kids_%d" % day, 0)) + 1
+	fl["eggs_left"] = int(fl["eggs_left"]) - 1
+	hud.toast(FestivalWords.kid_took_text(["Pip", "Wren Jr.", "Tobin", "Mabel"][int(fl["fest_egg_kids_%d" % day]) % 4]), Color(1, 0.85, 0.7))
+	Music.instance(get_tree()).sfx("pickup")
+
+
+static func kid_every() -> float:
+	return 14.0 if FestivalWords.year_of(int(GameState.run.get("day", 1))) < 3 else 9.0
+
+
+func _egg_found(c: Vector2i) -> void:
+	var k := "fest_egg_found_%d" % int(GameState.run["day"])
+	var found: Array = GameState.run["flags"].get(k, [])
+	found.append([c.x, c.y])
+	GameState.run["flags"][k] = found
 
 
 var _fest_hunt := false
@@ -516,33 +655,27 @@ func _festival_event(fest: String) -> void:
 	var key := "fest_%s_%d" % [fest, int(GameState.run["day"])]
 	player.frozen = true
 	if GameState.run["flags"].has(key):
-		var again := {"egg": "You've had your hunt. Go and eat your candy before the kids find it.", "lantern": "Your lantern's on the water. Watch the river for a while.",
-			"harvest": "The judges have your entry. Have a look round the Harvest Fair!", "star": "One wish a year. Enjoy the Star Festival!"}
-		await say([{"who": "Mayor Alder", "text": str(again.get(fest, "You've had your turn. Enjoy the %s!" % GameState.festival_name(fest)))}])
+		await say([{"who": FestivalWords.host_of(fest), "text": FestivalWords.again_text(fest, int(GameState.run["flags"].get("eggs_left", 0)) if fest == "egg" and not GameState.run["flags"].has(key + "_done") else 0)}])
+		player.frozen = false
+		return
+	if FestivalExtra.handles(fest):  # C15 P6: the new festivals (scripts/festival_extra.gd)
+		await FestivalExtra.play(self, fest, key)
+		RecCenter.festival_bonus(self, key)
+		await _fest_keepsake(fest, key, 4.0 if int(GameState.run["flags"].get(key + "_place", 0)) == 1 else 0.0)
 		player.frozen = false
 		return
 	match fest:
 		"egg":
 			var d := Dialogue.instance(get_tree())
-			d.say([{"who": "Mayor Alder", "text": FestivalWords.egg_call(), "choice": ["Go!", "Not now"], "key": ""}])
+			d.say([{"who": FestivalWords.host_of("egg"), "text": FestivalWords.egg_call(), "choice": ["Go!", "Not now"], "key": ""}])
 			await d.finished
 			if d.last_choice == 0:
-				var found := 0
-				var rng := RandomNumberGenerator.new()
-				rng.seed = int(GameState.run["day"])
-				var tries := 0
-				while found < FestivalWords.EGG_COUNT and tries < 400:  # C12 P3: always the twelve Alder promises
-					tries += 1
-					var c := Vector2i(rng.randi_range(30, 50), rng.randi_range(37, 59))
-					if blocked.has(c) or things.has(c) or not _plaza.has(c):
-						continue
-					var i := found
-					found += 1
-					things[c] = {"type": "egg", "hint": "A: an egg!"}
-					if Art.has("props", "fest_ss_%02d" % (12 + i % 6)):
-						prop("props", "fest_ss_%02d" % (12 + i % 6), c, 0, 0.0, false)
-				GameState.run["flags"]["eggs_left"] = found
-				hud.toast("%d eggs hidden. Go!" % found, Color(1, 0.9, 0.4))
+				var cells := _egg_cells()
+				GameState.run["flags"]["fest_egg_cells_%d" % int(GameState.run["day"])] = cells
+				GameState.run["flags"]["fest_egg_found_%d" % int(GameState.run["day"])] = []
+				_place_eggs()
+				GameState.run["flags"]["eggs_left"] = cells.size()
+				hud.toast(FestivalWords.egg_go_text(cells.size()), Color(1, 0.9, 0.4))
 				GameState.run["flags"][key] = true
 		"lantern":
 			await _lantern_float(key)
@@ -550,8 +683,9 @@ func _festival_event(fest: String) -> void:
 			await _crop_contest(key)
 		"star":
 			await _star_wish(key)
-	RecCenter.festival_bonus(self, key)  # joined in: the rec chips in tickets
-	await _fest_keepsake(fest, key, 4.0 if int(GameState.run["flags"].get(key + "_place", 0)) == 1 else 0.0)
+	if fest != "egg":  # C15 P6 (c15_06-13): the egg hunt pays when the last egg is found
+		RecCenter.festival_bonus(self, key)  # joined in: the rec chips in tickets
+		await _fest_keepsake(fest, key, 4.0 if int(GameState.run["flags"].get(key + "_place", 0)) == 1 else 0.0)
 	player.frozen = false
 
 
@@ -572,17 +706,24 @@ func _lantern_float(key: String) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(GameState.run["day"]) * 31 + 7
 	var clear := 0
-	for snag in ["a floating branch", "the old bridge post"]:
+	# C15 P6 (c15_06-02/03): read the water: the ripples tell you the clear side (no more coin flip);
+	# from year 2 a third snag, the lantern boats.
+	var snags: Array = ["a floating branch", "the old bridge post"]
+	if FestivalWords.year_of(int(GameState.run["day"])) >= 2:
+		snags.append("the lantern boats moored mid-river")
+	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
+	if snags.size() == 3:
+		lines = [lines[0], lines[1], "Your lantern weaves past two of them and sails on.", "Your lantern threads all three and leads the whole river of lights out under the bridge. People clap."]
+	for snag: String in snags:
 		var safe := rng.randi() % 2
 		var c := Dialogue.instance(get_tree())
-		c.say([{"text": "Your lantern bobs toward %s. The current tugs it..." % snag, "choice": ["Nudge it left", "Nudge it right", "Let it drift"], "key": ""}])
+		c.say([{"text": "Your lantern bobs toward %s. %s" % [snag, ["Smooth water runs down its left side; the right side churns.", "The left side churns white; there's a smooth run on the right."][safe]], "choice": ["Nudge it left", "Nudge it right", "Let it drift"], "key": ""}])
 		await c.finished
 		if c.last_choice == safe or (c.last_choice == 2 and rng.randf() < 0.5):
 			clear += 1
 			hud.toast("Clear!", Color(1, 0.95, 0.6))
 		else:
 			hud.toast("Bump! It wobbles on.", Color(1, 0.8, 0.6))
-	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
 	await say([{"text": lines[clear] + FestivalWords.lantern_tail()}])
 	if GameState.is_night():
 		Music.instance(get_tree()).sfx("fireworks", "levelup")
@@ -590,7 +731,7 @@ func _lantern_float(key: String) -> void:
 			FestivalSky.of(self).fireworks(player.position)  # C14b P3 (c14b_18-02c)
 	else:
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
-	var gain := 3 + clear
+	var gain := mini(5, 3 + clear)
 	GameState.grow_vital(wish, gain)
 	hud.toast("Max %s +%d" % [{"hp": "health", "energy": "energy", "mana": "mana"}[wish], gain], Color(0.8, 0.9, 1.0))
 	fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
@@ -606,14 +747,16 @@ func _crop_contest(key: String) -> void:
 	if opts.is_empty():
 		await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
 		return
-	opts.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) > GameState.item_value(b))
-	opts = opts.slice(0, 4)
+	# C15 P6 (c15_06-07): ranked by what the judges score (value + best quality), quality star shown.
+	opts.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) + _peek_quality(a) > GameState.item_value(b) + _peek_quality(b))
+	opts = opts.slice(0, 5)
 	var names: Array = []
 	for id: String in opts:
-		names.append(GameState.item_name(id))
+		var q := _peek_quality(id)
+		names.append(GameState.item_name(id) + (" *" if q >= 20 else (" +" if q >= 10 else "")))
 	names.append("Not now")
 	var dc := Dialogue.instance(get_tree())
-	dc.say([{"who": "Mayor Alder", "text": "Which crop are you entering? The judges look at size, colour and rarity.", "choice": names, "key": ""}])
+	dc.say([{"who": FestivalWords.host_of("harvest"), "text": "Which crop are you entering? The judges look at size, colour and rarity.", "choice": names, "key": ""}])
 	await dc.finished
 	if dc.last_choice < 0 or dc.last_choice >= opts.size():
 		return
@@ -628,7 +771,7 @@ func _crop_contest(key: String) -> void:
 	rng.seed = int(GameState.run["day"]) * 13
 	var a: Array = rivals[rng.randi() % rivals.size()]
 	var b: Array = rivals[(rivals.find(a) + 1 + rng.randi() % (rivals.size() - 1)) % rivals.size()]
-	var better := int(int(a[2]) > score) + int(int(b[2]) > score)
+	var better := int(rival_score(int(a[2]), rng) > score) + int(rival_score(int(b[2]), rng) > score)  # C15 P6: rivals grow each year
 	var place := 1 + better
 	var art := ItemWords.with_article(GameState.item_name(best))
 	var mine := GameState.item_name(best).to_lower()
@@ -641,6 +784,20 @@ func _crop_contest(key: String) -> void:
 	Music.instance(get_tree()).sfx("quest_done", "coin")
 	hud.toast("+%s" % Money.amount([300, 150, 50][place - 1]), Color(0.7, 0.9, 1))
 	xp("farming", 40)
+
+
+## C15 P6 (c15_06-03): a rival's entry grows 20 a year (+ up to 10 seeded), capped below a gold rare crop.
+static func rival_score(base: int, rng: RandomNumberGenerator) -> int:
+	var y := FestivalWords.year_of(int(GameState.run.get("day", 1)))
+	return mini(base + 20 * (y - 1) + rng.randi() % 11, 260)
+
+
+## Quality points the best piece would score, without taking it.
+static func _peek_quality(id: String) -> int:
+	var q: Dictionary = GameState.quality_of(id)
+	if int(q.get("i", 0)) > 0:
+		return 30
+	return 20 if int(q.get("g", 0)) > 0 else (10 if int(q.get("s", 0)) > 0 else 0)
 
 
 ## C11a P5: crops and fruit only (animal goods go to the Animal Show / Best Egg table).
@@ -778,7 +935,7 @@ func _market_stall(who: String) -> void:
 	var nm := str(GameState.npcs.get(who, {}).get("name", who))
 	player.frozen = true
 	if GameState.festival_today() != "":
-		var fn := GameState.festival_name(GameState.festival_today())
+		var fn := FestivalWords.name_of(GameState.festival_today())
 		await say([{"text": ("%s's stall is packed away for the %s. Find %s on the plaza." % [nm, fn, "her" if who == "hazel" else "him"]) if GameState.is_penguins() else ("Stall's shut for the %s. %s's on the plaza." % [fn, nm])}])
 	elif not market_open(who, int(GameState.run["time"])):
 		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
@@ -800,12 +957,12 @@ func _market_stall(who: String) -> void:
 ## Star-wish: a small gift box, a wish for a lasting little boon, and a star sent
 ## to one villager (a big friendship boost); everyone you know still gets +10.
 func _star_wish(key: String) -> void:
-	await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours." if GameState.is_penguins() else "Gift swap. One each, no regifting. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
+	await say([{"who": FestivalWords.fest_host("Posy"), "text": "Star Festival! Everyone gives one gift. Here's yours." if GameState.is_penguins() else "Gift swap. One each, no regifting. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
 	var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
 	give(gift)
 	GameState.run["flags"][key] = true
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Mayor Alder", "text": FestivalWords.star_call(), "choice": ["For good health", "For tireless days", "For a little more magic", "No wish this year"] if GameState.is_penguins() else ["To stay standing", "Longer days", "An edge", "No wish this year"], "key": ""}])
+	d.say([{"who": FestivalWords.host_of("star"), "text": FestivalWords.star_call(), "choice": ["For good health", "For tireless days", "For a little more magic", "No wish this year"] if GameState.is_penguins() else ["To stay standing", "Longer days", "An edge", "No wish this year"], "key": ""}])
 	await d.finished
 	if d.last_choice >= 0 and d.last_choice <= 2:
 		var v: String = ["hp", "energy", "mana"][d.last_choice]
@@ -818,24 +975,36 @@ func _star_wish(key: String) -> void:
 		if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone") and Hearts.data().has(str(id)) and str(Hearts.data()[str(id)].get("arc", "")) in ["", str(GameState.run.get("arc", ""))]:
 			known.append(str(id))
 	known.sort_custom(func(a: String, b: String) -> bool: return int(GameState.run["friendship"].get(a, 0)) > int(GameState.run["friendship"].get(b, 0)))
-	known = known.slice(0, 4)
-	if not known.is_empty():
+	var page := 0  # C15 P6 (c15_06-08): every villager you know, four at a time (closest first)
+	while not known.is_empty():
+		var shown: Array = known.slice(page * 4, page * 4 + 4)
 		var nm: Array = []
-		for id: String in known:
+		for id: String in shown:
 			nm.append(str(GameState.npcs[id]["name"]))
+		var more := known.size() > (page + 1) * 4
+		if more:
+			nm.append("More...")
 		nm.append("Keep it for myself")
 		var s2 := Dialogue.instance(get_tree())
 		s2.say([{"text": "Your paper star is in your hand. Who should it go to?", "choice": nm, "key": ""}])
 		await s2.finished
-		if s2.last_choice >= 0 and s2.last_choice < known.size():
-			var who: String = known[s2.last_choice]
+		if more and s2.last_choice == shown.size():
+			page += 1
+			continue
+		if s2.last_choice >= 0 and s2.last_choice < shown.size():
+			var who: String = shown[s2.last_choice]
 			GameState.add_friend(who, 30)
 			hud.toast("%s +30: they'll keep that star." % str(GameState.npcs[who]["name"]), Color(1, 0.8, 0.9))
+		break
 	# Everyone you know, who's still here.
 	for id in GameState.npcs:
 		if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
 			GameState.add_friend(str(id), 10)
 	hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
+	var pt := Romance.partner()  # C15 P6 (c15_06-16): your partner watches the sky with you
+	if pt != "" and GameState.npcs.has(pt):
+		GameState.add_friend(pt, 20)
+		hud.toast("%s squeezes your hand under the stars. +20" % str(GameState.npcs[pt]["name"]), Color(1, 0.75, 0.85))
 
 
 ## Tall iron lamps on the avenues (Prompts 09 plaza sheet), the old lamp otherwise.
@@ -1384,15 +1553,21 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to("interior", Vector2.ZERO, "up")
 			return true
 		"festival":
+			if not _fest_open(str(thing.get("fest", ""))):  # C15 P6 (c15_06-12): only while it is on
+				return true
 			later(_festival_event.bind(str(thing.get("fest", ""))))
 			return true
 		"fest_stall":
+			if not _fest_open(str(thing.get("fest", ""))):
+				return true
 			later(_fest_stall.bind(str(thing.get("fest", ""))))
 			return true
 		"market_stall":
 			later(_market_stall.bind(str(thing.get("who", ""))))
 			return true
 		"animal_show":
+			if not _fest_open(str(thing.get("fest", ""))):
+				return true
 			later(_animal_show.bind(str(thing.get("fest", ""))))
 			return true
 		"board":
@@ -1405,13 +1580,28 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				props.erase(c)
 			var left := int(GameState.run["flags"].get("eggs_left", 1)) - 1
 			GameState.run["flags"]["eggs_left"] = left
+			_egg_found(c)  # C15 P6 (c15_06-01): the hunt survives leaving the map / reloading
 			give("candy", 1)
+			if bool(thing.get("golden", false)):
+				hud.toast(FestivalWords.golden_egg_text(), Color(1, 0.85, 0.3))
+				DecorSources.roll_grant(self, _fest_pool("egg"), 6.0, "festival")
 			if left <= 0:
-				hud.toast(FestivalWords.egg_prize_text(), Color(1, 0.9, 0.4))
-				GameState.add_money(200, "festival")
+				var ek := "fest_egg_%d" % int(GameState.run["day"])
+				var kids := int(GameState.run["flags"].get("fest_egg_kids_%d" % int(GameState.run["day"]), 0))
+				var mine := (GameState.run["flags"].get("fest_egg_found_%d" % int(GameState.run["day"]), []) as Array).size() - kids
+				if mine > kids:
+					hud.toast(FestivalWords.egg_prize_text(), Color(1, 0.9, 0.4))
+					GameState.add_money(200, "festival")
+					GameState.run["flags"][ek + "_place"] = 1
+				else:
+					hud.toast(FestivalWords.egg_second_text(mine, kids), Color(1, 0.9, 0.4))
+					GameState.add_money(80, "festival")
 				xp("foraging", 30)
+				GameState.run["flags"][ek + "_done"] = true
+				RecCenter.festival_bonus(self, ek)  # C15 P6 (c15_06-13): paid when the hunt is won, not on Go!
+				later(_fest_keepsake.bind("egg", ek, 4.0 if mine > kids else 0.0))
 			else:
-				hud.toast("%d eggs left." % left)
+				hud.toast(FestivalWords.egg_left_text(left))
 			return true
 		"fountain":
 			if int(GameState.run["crystals"]) >= 1:

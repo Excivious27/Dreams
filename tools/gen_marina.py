@@ -123,14 +123,16 @@ ROUTES = [
 LANDINGS = {"marsh": ["marsh", [47, 22], "left"], "riverlands": ["riverlands", [10, 20], "down"],
             "quarry": ["quarry", [3, 22], "right"], "docks": ["docks", [10, 10], "down"]}
 
+# C15 P6: days mirror data/festivals.json (tools/gen_festivals.py owns the festival year; derby moved
+# off Granite's birthday fall 7, regatta/harbour lights off Posy's summer 21).
 FESTIVAL = {
     "lantern": {"name": "Lantern Boats", "tier": 1, "hours": [19, 22], "arc": "penguins",
                 "line": "Paper lantern boats drift out from the main pier, one for every wish."},
-    "regatta": {"name": "Regatta", "tier": 3, "season": "summer", "day": 21, "arc": "penguins",
+    "regatta": {"name": "Regatta", "tier": 3, "season": "summer", "day": 18, "arc": "penguins",
                 "line": "Bunting on every mast: the marina regatta is on today."},
-    "derby": {"name": "Fishing Derby", "tier": 2, "season": "fall", "day": 7, "arc": "both",
+    "derby": {"name": "Fishing Derby", "tier": 2, "season": "fall", "day": 9, "arc": "both",
               "line": "Fishing Derby! Biggest fish on the pier by 2pm wins. Ines is judging."},
-    "harbour_lights": {"name": "Harbour Lights", "tier": 3, "season": "summer", "day": 21, "arc": "gangsters",
+    "harbour_lights": {"name": "Harbour Lights", "tier": 3, "season": "summer", "day": 18, "arc": "gangsters",
                        "line": "Harbour Lights night market: neon stalls and ring toss all down the boardwalk."},
 }
 
