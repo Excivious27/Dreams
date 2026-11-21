@@ -82,6 +82,8 @@ func _run() -> void:
 			births[snappedf(float(s[1]), 0.05)] = true
 		if spots.size() < 3 or births.size() < 3:
 			fail("%s: sparkles in lockstep (%d spots, %d birth times)" % [scene, spots.size(), births.size()])
+		if scene == "crystal_meadow" and ground._glint_cells.is_empty():
+			fail("crystal_meadow: no crystal props found to glint on")
 		if air.count("motes") > 0 and air._motes.is_empty():
 			fail("%s: no motes" % scene)
 		var full := ground.count("spark")

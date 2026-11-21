@@ -121,12 +121,6 @@ func _ready() -> void:
 	if ResourceLoader.exists("res://scripts/anim.gd"):
 		_anim = load("res://scripts/anim.gd")
 	position = Vector2.ZERO if air else position
-	if not air and str(prof.get("glint", "")) != "" and map:
-		var key := str(prof["glint"])
-		for c: Vector2i in map.props:
-			var sp: Node = map.props[c]
-			if is_instance_valid(sp) and (str(sp.name).to_lower().contains(key) or str(sp.get_meta("art", "")).contains(key)):
-				_glint_cells.append(c)
 	if air:
 		var ns := int(prof.get("stars", 0))
 		for i in ns:
@@ -194,7 +188,30 @@ func _process(_delta: float) -> void:
 	queue_redraw()
 
 
+var _scanned := false
+
+
+## Crystal props to glint on: found once the map has placed its props (by art file).
+func _scan_glints() -> void:
+	_scanned = true
+	var key := str(prof.get("glint", ""))
+	if key == "" or map == null:
+		return
+	for c: Vector2i in map.props:
+		var sp: Node = map.props[c]
+		if not (is_instance_valid(sp) and sp is Sprite2D):
+			continue
+		var tx: Texture2D = (sp as Sprite2D).texture
+		var path := tx.resource_path
+		if tx is AtlasTexture and (tx as AtlasTexture).atlas:
+			path = (tx as AtlasTexture).atlas.resource_path
+		if path.get_file().to_lower().contains(key) or str(sp.name).to_lower().contains(key):
+			_glint_cells.append(c)
+
+
 func _tick_sparks(t: float, vr: Rect2) -> void:
+	if not _scanned:
+		_scan_glints()
 	var want := count("spark")
 	var i := _sparks.size() - 1
 	while i >= 0:
