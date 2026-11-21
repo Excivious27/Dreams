@@ -52115,11 +52115,13 @@
   },
   "idle": {
    "cell_h": 83,
-   "cell_w": 47,
+   "cell_w": 51,
    "file": "characters/president/idle.png",
-   "frames": 2,
+   "fps": 3.0,
+   "frames": 4,
    "h": 83,
-   "w": 94
+   "pingpong": false,
+   "w": 204
   },
   "seated": {
    "cell_h": 92,
@@ -63432,11 +63434,11 @@
   },
   "idle": {
    "cell_h": 96,
-   "cell_w": 84,
+   "cell_w": 79,
    "file": "enemies/cboss_coral/idle.png",
    "frames": 4,
    "h": 96,
-   "w": 336
+   "w": 316
   },
   "walk": {
    "cell_h": 96,
@@ -63524,11 +63526,11 @@
   },
   "idle": {
    "cell_h": 101,
-   "cell_w": 191,
+   "cell_w": 135,
    "file": "enemies/cboss_ice/idle.png",
    "frames": 4,
    "h": 101,
-   "w": 764
+   "w": 540
   },
   "split": {
    "cell_h": 108,
@@ -63574,11 +63576,11 @@
   },
   "idle": {
    "cell_h": 99,
-   "cell_w": 150,
+   "cell_w": 135,
    "file": "enemies/cboss_kelp/idle.png",
    "frames": 4,
    "h": 99,
-   "w": 600
+   "w": 540
   },
   "walk": {
    "cell_h": 70,
@@ -65177,11 +65179,11 @@
   },
   "idle": {
    "cell_h": 112,
-   "cell_w": 109,
+   "cell_w": 119,
    "file": "enemies/rime_wyrm/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 112,
-   "w": 218
+   "w": 476
   },
   "walk": {
    "cell_h": 112,
@@ -65623,11 +65625,11 @@
   },
   "idle": {
    "cell_h": 116,
-   "cell_w": 122,
+   "cell_w": 106,
    "file": "enemies/storm_roc/idle.png",
-   "frames": 2,
+   "frames": 4,
    "h": 116,
-   "w": 244
+   "w": 424
   },
   "walk": {
    "cell_h": 116,
@@ -156458,11 +156460,11 @@
  "wildlife/duck": {
   "idle": {
    "cell_h": 46,
-   "cell_w": 53,
+   "cell_w": 54,
    "file": "wildlife/duck/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 46,
-   "w": 53
+   "w": 216
   },
   "waddle": {
    "cell_h": 46,
@@ -156548,11 +156550,11 @@
  "wildlife/fox": {
   "idle": {
    "cell_h": 32,
-   "cell_w": 50,
+   "cell_w": 45,
    "file": "wildlife/fox/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 32,
-   "w": 50
+   "w": 180
   },
   "walk": {
    "cell_h": 32,
@@ -156566,11 +156568,11 @@
  "wildlife/frog": {
   "idle": {
    "cell_h": 26,
-   "cell_w": 28,
+   "cell_w": 35,
    "file": "wildlife/frog/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 26,
-   "w": 28
+   "w": 140
   },
   "walk": {
    "cell_h": 22,
@@ -156784,11 +156786,11 @@
  "wildlife/rabbit": {
   "idle": {
    "cell_h": 37,
-   "cell_w": 42,
+   "cell_w": 36,
    "file": "wildlife/rabbit/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 37,
-   "w": 42
+   "w": 144
   },
   "walk": {
    "cell_h": 38,
@@ -156920,11 +156922,11 @@
  "wildlife/sparrow": {
   "idle": {
    "cell_h": 26,
-   "cell_w": 30,
+   "cell_w": 38,
    "file": "wildlife/sparrow/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 26,
-   "w": 30
+   "w": 152
   },
   "walk": {
    "cell_h": 26,
@@ -156938,11 +156940,11 @@
  "wildlife/squirrel": {
   "idle": {
    "cell_h": 32,
-   "cell_w": 42,
+   "cell_w": 38,
    "file": "wildlife/squirrel/idle.png",
-   "frames": 1,
+   "frames": 4,
    "h": 32,
-   "w": 42
+   "w": 152
   },
   "walk": {
    "cell_h": 34,

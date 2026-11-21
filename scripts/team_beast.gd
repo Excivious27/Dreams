@@ -22,6 +22,9 @@ var max_hp := 10
 var dmg := 1
 var spd := 1.0
 var _spr: AnimatedSprite2D
+var _vert := false
+var _up := false
+var _base_sc := Vector2.ZERO
 var _cd := 0.0
 var _target: Node2D = null
 var _fetch_c := Vector2i(-1, -1)   # forage cell it is fetching (Fetch lesson)
@@ -109,7 +112,12 @@ func _process(delta: float) -> void:
 		if to.length() > FOLLOW_GAP:
 			sp = maxf(sp, map.player.velocity.length() * 1.15)  # c11b_09-09: keep up like the pup
 		position += to.normalized() * minf(to.length(), sp * delta)
-		_spr.flip_h = to.x > 0.0
+		# c14b_11-04: the ranch strips face right: flip when going LEFT, with a dead zone
+		# so near-vertical follows don't flicker; remember the axis for the idle facing.
+		if absf(to.x) > 0.3 * to.length():
+			_spr.flip_h = to.x < 0.0
+		_vert = absf(to.y) > absf(to.x) * 1.2
+		_up = to.y < 0.0
 	# Keep apart from the other followers (pup, partner, other animals).
 	for a: Node2D in map.allies():
 		if a == self or not is_instance_valid(a):
@@ -128,8 +136,18 @@ func _process(delta: float) -> void:
 		want = "attack"  # a butt just landed
 	elif not moving and fight != null and _spr.sprite_frames.has_animation("guard"):
 		want = "guard"
+	# c14b_09-10: toward / away strips when drawn.
+	if want in ["walk", "idle"] and _vert:
+		var vd := want + ("_up" if _up else "_down")
+		if _spr.sprite_frames.has_animation(vd):
+			want = vd
 	if _spr.animation != want:
 		_spr.play(want)
+		if want.begins_with("idle"):
+			CreatureMotion.random_start(_spr, CreatureMotion.rng_for(self), 0.1)
+	if _base_sc == Vector2.ZERO:
+		_base_sc = _spr.scale
+	_spr.scale = _base_sc * CreatureMotion.breath(CreatureMotion.phase(self), 0.02, 2.6)
 
 
 ## Fetch lesson: now and then trot to a forage spot near you and bring it back (the pick is the

@@ -1316,3 +1316,10 @@ echo "$p5bout" | grep -E "FAIL|SCRIPT ERROR|c14b_p5_test" || true
 if ! echo "$p5bout" | grep -q "c14b_p5_test: 0 failures"; then
   echo "C14b P5 idle life test failed"; exit 1
 fi
+
+echo "== creature idle life (C14b P6) =="
+clout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/creature_life_test.gd 2>&1)"
+echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
+if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
+  echo "creature_life_test failed"; exit 1
+fi

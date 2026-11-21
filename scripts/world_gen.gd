@@ -431,6 +431,8 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 				continue
 		elif m.blocked.has(c) or m.is_water_cell(c):
 			continue
+		elif kind in TAKE_OFF and not _near_water(m, c, 2):
+			continue  # c14b_09-23 / 11-15: waders stay by the water
 		var cr := Critter.new()
 		cr.map = m
 		cr.kind = kind
@@ -475,15 +477,18 @@ const TAKE_OFF := ["duck", "heron"]
 ## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
 const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
 const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
-static func critter_pool(pool: Array, night := -1, winter := -1) -> Array:
+static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> Array:
 	var is_night := GameState.is_night() if night < 0 else night == 1
 	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
+	var is_wet := (GameState.is_wet() and night < 0) if wet < 0 else wet == 1  # a pinned night/day call (tests) pins dry weather too
 	var out: Array = []
 	for k: String in pool:
 		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
 		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
 		if (is_night and day_only) or (is_winter and warm_only):
 			continue
+		if is_wet and (k in FLUTTERS or k in ["hedgehog", "squirrel", "snake"]):
+			continue  # c14b_09-28: no butterflies in a storm; small critters shelter
 		out.append(k)
 	if is_night:
 		for k in (["owl", "bat"] if is_winter else ["owl", "bat", "firefly"]):
@@ -493,6 +498,14 @@ static func critter_pool(pool: Array, night := -1, winter := -1) -> Array:
 		out = pool.filter(func(k): return not str(k).begins_with("butterfly") and k != "bee") if not pool.is_empty() else []
 	return out if not out.is_empty() else ["rabbit"]
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
+
+
+static func _near_water(m: GameMap, c: Vector2i, r: int) -> bool:
+	for dy in range(-r, r + 1):
+		for dx in range(-r, r + 1):
+			if m.is_water_cell(c + Vector2i(dx, dy)):
+				return true
+	return false
 
 
 ## A water cell with water on all four sides (a fish never sits on the shore line).
@@ -517,7 +530,18 @@ static func add_backdrop(m: GameMap, kind := "hills") -> void:
 	m.move_child(bd, 0)
 
 
-## A simple critter: a 2-frame drawn animal (no art yet for most) that wanders.
+## A simple critter: a drawn animal that wanders (C14b P6: idle life per kind).
+## Perching birds sit on the ground, peck and hop, take off with an eased lift when
+## startled and land again later; butterflies/bees flutter on wobbling paths;
+## rabbits/frogs hop; the eagle soars; fish show ripple rings and leap now and then;
+## fireflies pulse. Every critter has its own phase/speed (no lockstep), 1-frame
+## idles breathe and peck/glance, and everything respects reduced motion.
+const PERCHERS := ["sparrow", "robin", "finch", "pigeon", "crow", "seagull", "blue_jay", "owl", "hawk"]
+const FLUTTERS := ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly_purple", "butterfly", "bee", "dragonfly", "firefly"]
+const HOPPERS := ["rabbit", "moon_rabbit", "frog", "grasshopper"]
+const STILL_KINDS := ["six_deer"]  # idle-only art: they stand and graze, never skate
+## Town cats walk on the pet cats' strips (wildlife/cat_* is a sitting-only strip).
+const CAT_ART := {"cat_grey": "animals/cat2_calico", "cat_orange": "animals/cat2_orange", "cat_black": "animals/cat2_black"}
 class Critter:
 	extends Node2D
 	var map: GameMap
@@ -532,33 +556,80 @@ class Critter:
 	## Waders/swimmers (duck, heron): stand and potter on the ground, and only
 	## take off (their walk strip is a flying pose) when startled (c5_09 #3).
 	var _lifts := false
+	var _percher := false
+	var _flutter := false
+	var _hopper := false
+	var _rng := RandomNumberGenerator.new()
+	var _ph := 0.0
+	var _spd := 0.0          # eased speed (no snap from stroll to sprint)
+	var _lift := 0.0         # px above the ground (birds in flight)
+	var _away := 0.0         # >0: flown off, hidden, lands again when it runs out
+	var _fidget := 2.0       # next peck / glance / hop
+	var _dip := 0.0          # peck dip timer
+	var _hop_t := 0.0        # running hop (0 = on the ground)
+	var _heading := 0.0      # flutter heading (radians)
+	var _leap := -1.0        # fish leap progress (<0: under water)
+	var _shadow := 3.0
+	var _one_frame := false
+	var _sz := 0.3
+	var _spd_j := 1.0
 
 	func _ready() -> void:
 		var g := "wildlife/" + kind
-		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "jelly"]
+		_rng = CreatureMotion.rng_for(self)
+		_ph = _rng.randf()
+		_t = _ph * 10.0
+		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly_purple", "butterfly", "crystal_fish", "jelly", "eagle", "robin", "finch", "pigeon", "blue_jay", "hawk"]
 		_lifts = kind in TAKE_OFF
+		_percher = kind in PERCHERS
+		_flutter = kind in FLUTTERS
+		_hopper = kind in HOPPERS
+		_heading = _rng.randf() * TAU
+		_fidget = _rng.randf_range(0.5, 3.5)
+		_timer = _rng.randf_range(0.2, 2.0)
+		if kind in WATER_CRITTERS:
+			_leap = -1.0
+			_timer = _rng.randf_range(2.0, 8.0)
+		var cat_g: String = CAT_ART.get(kind, "")
+		if cat_g != "" and Art.has(cat_g, "walk"):
+			g = cat_g
 		if Art.has(g, "idle"):
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
-			if Art.has(g, "waddle"):
-				anims["waddle"] = "waddle"  # ducks: a ground walk; their walk strip is the flight
-			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0, "waddle": 7.0})
-			# Ground animals' idle strips are separate poses, not a loop: hold
-			# the first pose and only now and then glance about (no twitching).
+			for extra: String in ["waddle", "takeoff", "land", "sleep"]:
+				if Art.has(g, extra):
+					anims[extra] = extra  # ducks: a ground walk; crows: take-off / landing; cats: naps
+			var flap := 11.0 if kind.begins_with("butterfly") else (16.0 if kind in ["bee", "dragonfly"] else 8.0)
+			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": flap, "waddle": 7.0, "takeoff": 10.0, "land": 10.0, "sleep": 1.0}, {"takeoff": false, "land": false})
 			var sf := _anim.sprite_frames
-			if not _flyer and sf.has_animation("idle") and sf.get_frame_count("idle") > 1:
-				sf.set_frame("idle", 0, sf.get_frame_texture("idle", 0), 9.0)
+			_one_frame = sf.get_frame_count("idle") <= 1
+			# Ground animals' idle strips are separate poses, not a loop: hold the
+			# first pose and only now and then glance (a copy: Art's cache is shared).
+			if not _flyer and kind in WATER_CRITTERS:
+				pass
+			elif (not _flyer or _percher) and sf.get_frame_count("idle") > 1:
+				_anim.sprite_frames = CreatureMotion.held_idle(sf, "idle", 4.0 if kind != "deer" else 6.0, 0.3 if kind != "deer" else 0.45)
 			_anim.animation = "idle"
 			# True-to-world sizes: the hero is ~16px wide, so a duck is a third of that.
 			var sz: float = {"sparrow": 0.2, "robin": 0.2, "finch": 0.2, "blue_jay": 0.22, "crow": 0.26, "pigeon": 0.22, "seagull": 0.26, "owl": 0.3, "hawk": 0.32, "bat": 0.24, "duck": 0.26, "heron": 0.38, "rabbit": 0.26, "squirrel": 0.22, "hedgehog": 0.24, "frog": 0.18, "turtle": 0.26, "mouse": 0.16, "rat": 0.2, "snake": 0.26, "butterfly_orange": 0.16, "butterfly_blue": 0.16, "butterfly_yellow": 0.16, "butterfly_purple": 0.16, "butterfly": 0.16, "bee": 0.12, "firefly": 0.12, "dragonfly": 0.16, "ladybug": 0.12, "grasshopper": 0.14, "snail": 0.16, "crab": 0.22, "deer": 0.5, "fox": 0.4, "boar": 0.46, "goat": 0.44, "raccoon": 0.34, "badger": 0.36, "otter": 0.34, "beaver": 0.34, "cat_grey": 0.36, "cat_orange": 0.36, "cat_black": 0.36, "stray_dog": 0.42, "jelly": 0.4, "six_deer": 0.5, "eagle": 0.36, "crystal_fish": 0.26, "fish_jump": 0.26}.get(kind, 0.3)
+			if g != "wildlife/" + kind:
+				sz *= 1.18  # the pet cat strips are drawn in smaller cells
+			sz *= _rng.randf_range(0.92, 1.08)  # c14b_11-17: no two the same size
 			_anim.scale = Vector2(sz, sz)
+			_sz = sz
+			var t0 := sf.get_frame_texture("idle", 0)
+			_shadow = clampf((t0.get_width() if t0 else 12) * sz * 0.32, 2.0, 9.0)  # c14b_09-22
 			# Feet on the ground for every frame, including the first frame after
 			# an idle/walk swap (strips have different cell heights: no pop).
 			_anim.frame_changed.connect(_fit)
 			_anim.animation_changed.connect(_fit)
 			add_child(_anim)
 			_anim.play("idle")
+			CreatureMotion.random_start(_anim, _rng, 0.15)  # c14b_09-03 / 11-01: no lockstep
+			_spd_j = _anim.speed_scale
+			if kind in WATER_CRITTERS:
+				_anim.visible = false  # under water: ripples only until it leaps
 			_fit()
 
 	func _fit() -> void:
@@ -566,61 +637,234 @@ class Critter:
 		if tex:
 			_anim.offset = Vector2(0, -tex.get_height() / 2.0)
 
+	func _ease_speed(want: float, delta: float) -> void:
+		_spd = lerpf(_spd, want, 1.0 - exp(-8.0 * delta))  # c14b_09-13
+
 	func _process(delta: float) -> void:
 		_t += delta
 		_timer -= delta
+		# c14b_15-13: off-screen critters skip their wander / animation work.
+		if _away <= 0.0 and is_inside_tree():
+			var vr := get_viewport().get_visible_rect().grow(48.0)
+			if not vr.has_point(get_global_transform_with_canvas().origin):
+				return
+		var red := CreatureMotion.reduced()
+		if _away > 0.0:
+			# Flown off: hidden, then lands again near home (c14b_09-13 / 11-08: maps never empty).
+			_away -= delta
+			if _away <= 0.0:
+				position = home + Vector2(_rng.randf_range(-40, 40), _rng.randf_range(-30, 30))
+				if map and (map.rect_blocked(Rect2(position + Vector2(-2, -2), Vector2(4, 2))) or map.is_water_cell(map.world_to_cell(position - Vector2(0, 2)))):
+					position = home
+				_lift = 40.0
+				_flee = false
+				_dir = Vector2.ZERO
+				visible = true
+				if _anim and _anim.sprite_frames.has_animation("land"):
+					_anim.play("land")
+			return
+		if kind in WATER_CRITTERS:
+			_fish(delta, red)
+			return
 		var to_player := map.player.position - position if map and map.player else Vector2(999, 999)
 		if to_player.length() < 40.0 and not _flee:
 			_flee = true
 			_dir = -to_player.normalized()
-			_timer = 1.2 if kind != "bird" else 2.5
+			_timer = 1.2 if not (_percher or _lifts) else 2.5
+			if _anim and (_percher or _lifts) and _anim.sprite_frames.has_animation("takeoff"):
+				_anim.play("takeoff")
 		if _timer <= 0.0:
+			if _flee and (_percher or _lifts):
+				_away = _rng.randf_range(20.0, 40.0)  # off-screen: lands again later
+				visible = false
+				return
 			_flee = false
-			_timer = randf_range(1.0, 3.0)
-			_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() if randf() < 0.6 else Vector2.ZERO
+			_timer = _rng.randf_range(1.0, 3.0)
+			_dir = Vector2(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1)).normalized() if _rng.randf() < 0.6 else Vector2.ZERO
+			if _percher and _rng.randf() < 0.6:
+				_dir = Vector2.ZERO  # ground birds mostly stand and peck
 			if position.distance_to(home) > 80.0:
 				_dir = (home - position).normalized()
-		var spd := 60.0 if _flee else 14.0
+		var want := 60.0 if _flee else 14.0
 		if _lifts and not _flee:
 			# A heron stands still in the shallows; a duck potters slowly.
-			spd = 0.0 if kind == "heron" else 10.0
+			want = 0.0 if kind == "heron" else 10.0
+		if _percher and not _flee:
+			want = 6.0  # short pottering steps, not a glide
 		if (_flyer or _lifts) and _flee:
-			spd = 110.0
-		if kind.begins_with("butterfly") or kind == "bee":
-			spd = 18.0
-		var np := position + _dir * spd * delta
+			want = 110.0
+		if _flutter:
+			want = 18.0 if not kind == "firefly" else 8.0
+		if kind in STILL_KINDS or (kind.begins_with("cat_") and not CAT_ART.has(kind)):
+			want = 0.0
+		if kind.begins_with("cat_") and not _flee:
+			want = minf(want, 9.0)
+		_ease_speed(want, delta)
+		if _flutter:
+			_flutter_step(delta)
+		elif _hopper and not _flee:
+			_hop_step(delta)
+		else:
+			var np := position + _dir * _spd * delta
+			if (_flyer or _lifts) and _flee:
+				position = np
+			elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
+				position = np
+			elif _dir != Vector2.ZERO:
+				_dir = Vector2.ZERO  # c14b_11-16: blocked: stop (no running in place)
+		# Lift: birds in flight rise with an eased curve; on the ground they sit at 0.
+		var lift_want := 0.0
 		if (_flyer or _lifts) and _flee:
+			lift_want = 40.0
+		elif _flyer and not _percher:
+			lift_want = 70.0 if kind == "eagle" else 7.0
+		_lift = lerpf(_lift, lift_want, 1.0 - exp(-(2.2 if _flee else 3.0) * delta))
+		if _anim:
+			_animate(delta, red)
+		else:
+			queue_redraw()  # the sprite animates itself; its shadow follows position
+
+	func _animate(delta: float, red: bool) -> void:
+		var moving := _dir != Vector2.ZERO and _spd > 1.0
+		var want := "walk" if moving else "idle"
+		if _percher:
+			want = "walk" if (_flee or _lift > 4.0) else "idle"  # the walk strip is a flight pose
+		if _lifts:
+			want = "walk" if _flee else ("waddle" if moving and _anim.sprite_frames.has_animation("waddle") else "idle")  # walk = flight
+		if _flutter:
+			want = "walk"
+		if kind == "eagle":
+			want = "idle"
+		var cur := _anim.animation
+		if (cur == "takeoff" or cur == "land") and _anim.is_playing():
+			want = cur
+		if cur != want and _anim.sprite_frames.has_animation(want):
+			_anim.play(want)
+			if want == "idle":
+				CreatureMotion.random_start(_anim, _rng, 0.0)
+		# Legs keep pace with the ground (walk strips are tuned for ~28 px/s).
+		if want == "walk" and not _flyer and not _flutter:
+			_anim.speed_scale = clampf(_spd / 28.0, 0.5, 2.0)
+		elif want == "walk" and _flyer and not _flutter:
+			_anim.speed_scale = 1.4  # c14b_11-08: a real flap in flight
+		elif want == "idle" or _flutter:
+			_anim.speed_scale = _spd_j
+		# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
+		if absf(_dir.x) > 0.25:
+			_anim.flip_h = _dir.x < 0
+		# Idle life for still critters: breath, peck dip, glance (c14b_09-05 / 11-03).
+		_fidget -= delta
+		if not moving and _lift < 2.0 and _hop_t <= 0.0:
+			if _fidget <= 0.0:
+				_fidget = _rng.randf_range(1.5, 4.0)
+				if _percher and _rng.randf() < 0.3:
+					_anim.flip_h = not _anim.flip_h  # look about
+				elif not red:
+					_dip = 0.16
+		_dip = maxf(0.0, _dip - delta)
+		var base := _sz
+		var br := CreatureMotion.breath(_ph, 0.03 if _one_frame else 0.015, 1.8 + _ph * 0.8)
+		var sgn := -1.0 if _anim.flip_h else 1.0
+		_anim.rotation = sgn * deg_to_rad(6.0) * (_dip / 0.16) if _dip > 0.0 else 0.0
+		var sq := 1.0
+		if _hop_t > 0.0:
+			var u := 1.0 - _hop_t / 0.28
+			sq = 1.0 + 0.08 * sin(u * PI)  # stretch in the air
+		_anim.scale = Vector2(base * br.x / sq, base * br.y * sq)
+		var y := -_lift
+		if _flyer and not _percher and not _flee:
+			y -= sin(_t * (3.2 + _ph * 1.6)) * (0.6 if red else 2.0)
+		if kind == "eagle":
+			y = -_lift - sin(_t * 0.5 + _ph * TAU) * 6.0
+		if _hop_t > 0.0:
+			y -= 4.0 * sin(PI * (1.0 - _hop_t / 0.28))
+		if _dip > 0.0 and not _percher:
+			y += 1.0
+		_anim.position.y = y
+		if kind == "firefly":
+			# c14b_09-12 / 11-11: a soft glow pulse on its own period (no full blink in reduced motion).
+			var per := 1.2 + _ph * 1.3
+			var p := 0.5 + 0.5 * sin(_t * TAU / per)
+			_anim.modulate = Color(1.6, 1.7, 0.9, lerpf(0.55 if red else 0.25, 1.0, p))
+		queue_redraw()
+
+	## Butterflies / bees / dragonflies / fireflies: a smoothly turning heading plus a
+	## sideways wobble; dragonflies dart and hover (c14b_09-11 / 11-10).
+	func _flutter_step(delta: float) -> void:
+		_heading += _rng.randf_range(-2.0, 2.0) * delta
+		if position.distance_to(home) > 70.0:
+			var back := (home - position).angle()
+			_heading = lerp_angle(_heading, back, 1.0 - exp(-1.5 * delta))
+		var sp := _spd
+		if kind == "dragonfly":
+			sp *= 3.0 if fmod(_t + _ph * 3.0, 2.2) < 0.25 else 0.15
+		var fwd := Vector2.from_angle(_heading)
+		var side := Vector2(-fwd.y, fwd.x) * sin(_t * (3.0 + _ph * 2.0) * TAU * 0.25) * 6.0
+		var np := position + (fwd * sp + side) * delta
+		if map == null or not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))) or _flyer:
 			position = np
-			if position.distance_to(home) > 400.0:
-				queue_free()
-		elif kind in WorldGen.WATER_CRITTERS:
-			# Fish stay in deep water: a step that would reach the shore is refused.
+		_dir = fwd if absf(fwd.x) > 0.3 else Vector2(signf(fwd.x) if fwd.x != 0.0 else 1.0, 0) * 0.3
+
+	## Rabbits / frogs: discrete hops (0.28 s, 10-14 px) with a pause between (c14b_09-06).
+	func _hop_step(delta: float) -> void:
+		if _hop_t > 0.0:
+			var np := position + _dir * (12.0 / 0.28) * delta
+			if map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
+				position = np
+			else:
+				_dir = Vector2.ZERO
+			_hop_t = maxf(0.0, _hop_t - delta)
+			if _hop_t <= 0.0:
+				_fidget = _rng.randf_range(0.1, 0.35)
+		elif _dir != Vector2.ZERO and _fidget <= 0.0:
+			_hop_t = 0.28
+
+	## Fish: ripple rings under water, a one-shot leap along a small arc every 4-10 s.
+	func _fish(delta: float, red: bool) -> void:
+		if _leap >= 0.0:
+			_leap += delta / 0.5
+			if _anim:
+				_anim.position.y = -10.0 * sin(PI * clampf(_leap, 0.0, 1.0))
+				_anim.position.x = (_leap - 0.5) * 6.0 * (-1.0 if _anim.flip_h else 1.0)
+			if _leap >= 1.0:
+				_leap = -1.0
+				_timer = _rng.randf_range(4.0, 10.0)
+				if _anim:
+					_anim.visible = false
+				if map and map.has_method("fx") and Art.has("fx", "splash"):
+					map.fx("splash", position, 10.0, 0.4)
+		elif _timer <= 0.0 and not red:
+			_leap = 0.0
+			if _anim:
+				_anim.visible = true
+				_anim.flip_h = _rng.randf() < 0.5
+				_anim.play("walk" if _anim.sprite_frames.has_animation("walk") else "idle")
+				_anim.speed_scale = float(_anim.sprite_frames.get_frame_count(_anim.animation)) / 0.5 / maxf(1.0, _anim.sprite_frames.get_animation_speed(_anim.animation))
+		elif _timer <= 0.0:
+			_timer = 6.0
+		# Drift slowly while under water (never faster than 6 px/s), staying in deep water.
+		if _leap < 0.0:
+			if _rng.randf() < delta * 0.3:
+				_dir = Vector2.from_angle(_rng.randf() * TAU)
+			var np := position + _dir * 5.0 * delta
 			if map and WorldGen._deep_water(map, map.world_to_cell(np - Vector2(0, 2))):
 				position = np
 			else:
 				_dir = Vector2.ZERO
-		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
-			position = np
-		if _anim:
-			var moving := _dir != Vector2.ZERO and spd > 0.0
-			var want := "walk" if moving else "idle"
-			if _lifts:
-				want = "walk" if _flee else ("waddle" if moving and _anim.sprite_frames.has_animation("waddle") else "idle")  # walk = flight
-			if _anim.animation != want:
-				_anim.play(want)
-			# Legs keep pace with the ground (no sliding at a stroll, no
-			# scrabbling in place): the walk strip is tuned for ~28 px/s.
-			_anim.speed_scale = clampf(spd / 28.0, 0.5, 2.0) if moving and not _flyer else 1.0
-			# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
-			if absf(_dir.x) > 0.25:
-				_anim.flip_h = _dir.x < 0
-			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if (_flyer or _lifts) and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
-		else:
-			queue_redraw()  # the sprite animates itself; its shadow follows position
+		queue_redraw()
 
 	func _draw() -> void:
+		if kind in WATER_CRITTERS:
+			# Two expanding rings, fading, on the critter's own period.
+			for k in 2:
+				var u := fposmod(_t / 1.5 + _ph + k * 0.5, 1.0)
+				draw_arc(Vector2(0, -1), 2.0 + u * 7.0, 0.0, TAU, 18, Color(1, 1, 1, 0.35 * (1.0 - u)), 1.0)
+			return
 		if _anim:
-			draw_circle(Vector2(0, 0), 3.0, Color(0, 0, 0, 0.15))
+			var shrink := clampf(1.0 - _lift / 90.0, 0.35, 1.0)
+			draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.5))
+			draw_circle(Vector2(0, 0), _shadow * shrink, Color(0, 0, 0, 0.16 * shrink))
+			draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 			return
 		var f := int(_t * 6.0) % 2
 		var bob := sin(_t * 8.0) * 1.0
