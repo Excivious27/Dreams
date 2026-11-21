@@ -211,7 +211,7 @@ its perf section) and the Linux build from P1.
 
 Desktop window extras (Steam PC players): hi-DPI aware on PC (`window/dpi/allow_hidpi.pc=true`, window sized by screen DPI; web keeps allow_hidpi off), minimum window 540x480, the windowed size/position/monitor remembered (`win_rect`), Options rows on native desktop only: Scaling smooth / pixel-perfect (whole-number scale, not on the Deck), Pause when window inactive, VSync, Frame rate cap (none/30/60/120). Alt+Enter no longer also presses A (confirmed a menu choice), Alt+Tab no longer cycles the tool.
 
-Not done (P3): icon button glyphs (procedural PadGlyphs, s1_08-05); startup window flash 540x960 -> 1280x720 (a `.pc` window override would change every shot tool that runs without --resolution); a wider Deck panel column for list screens (s1_07-06, design job, not needed for Verified).
+Not done (P3): icon button glyphs (procedural PadGlyphs, s1_08-05); startup window flash: fixed in the S1 integration with a `steam_desktop` feature override (desktop presets only) opening the first window at 1280x800, the Deck panel size, so the Deck boot check still fills the screen; desktop windows are then sized by DisplayMode; a wider Deck panel column for list screens (s1_07-06, design job, not needed for Verified).
 
 ### When Tom's Steamworks account is ready (P3 items)
 1. SteamService (P1) exposes `show_floating_keyboard(multiline: bool, rect: Rect2i) -> bool` (Steam.showFloatingGamepadTextInput, falling back to showGamepadTextInput) and calls `TextEntry.steam_dismissed()` on `floating_gamepad_text_input_dismissed` / `gamepad_text_input_dismissed`.
