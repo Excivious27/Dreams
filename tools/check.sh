@@ -1039,6 +1039,7 @@ if ! echo "$stout" | grep -q "SAVE TRANSFER DONE 0"; then
 fi
 
 echo "== S1 P2: achievements, stats, rich presence =="
+echo "== C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/step buses) =="
 acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/achievements_test.gd 2>&1)"
 echo "$acout" | grep -E "FAIL|SCRIPT ERROR|achievements_test" || true
 if ! echo "$acout" | grep -q "achievements_test: 0 failures"; then
@@ -1172,12 +1173,14 @@ if ! echo "$acout" | grep -q "access_audio_test: 0 failures"; then
   echo "Hearing accessibility test failed"; exit 1
 fi
 
+echo "== C13 P6: ambience map (no silent place, both arcs, seasons, times, rain) =="
 amapout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ambience_map_test.gd 2>&1)"
 echo "$amapout" | grep -E "FAIL|SCRIPT ERROR|ambience_map_test" | head -40 || true
 if ! echo "$amapout" | grep -q "ambience_map_test: [0-9]* checks, 0 failures"; then
   echo "Ambience map (no silent place) test failed"; exit 1
 fi
 
+echo "== C13 P6: UI cues (every screen, touch and pad, no double cues) =="
 uqout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ui_cue_test.gd 2>&1)"
 echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
 if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
