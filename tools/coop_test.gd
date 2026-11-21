@@ -12,6 +12,7 @@ func check(ok: bool, what: String) -> void:
 
 
 func _initialize() -> void:
+	seed(17)  # c17_15-08: deterministic
 	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
@@ -21,12 +22,14 @@ func _join(n: Variant, d: Dictionary) -> void:
 	n.my_id = 2
 	for k in n.WORLD_KEYS:
 		n._solo_backup[k] = ((GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]) if GameState.run.has(k) else null)
+	GameState.keep_solo_extras()  # as NetNode 'joined' does
 	n._apply_world(d)
 
 
 func _snap(n: Variant) -> void:
 	for k in n.WORLD_KEYS:
 		n._solo_backup[k] = ((GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]) if GameState.run.has(k) else null)
+	GameState.keep_solo_extras()
 
 
 func _reset(n: Variant) -> void:
@@ -41,7 +44,7 @@ func _reset(n: Variant) -> void:
 
 
 func _host_world(day: int, builds: Dictionary) -> Dictionary:
-	return {"day": day, "time": 600, "farm": {"10,10": {"crop": "turnip", "days": 1}}, "builds": builds, "weather": "sunny", "construction": {}, "permits": {}, "cleared": {}, "placed": {}}
+	return {"day": day, "time": 600, "farm": {"10,10": {"crop": "turnip", "days": 1}}, "builds": builds, "weather": {str(day): "clear"}, "construction": {}, "permits": {}, "cleared": {}, "placed": {}}
 
 
 ## Reconnect, long visit, both arcs, day stamps and an app kill mid-visit.
@@ -152,7 +155,9 @@ func _more(n: Variant) -> void:
 	_snap(n)
 	n._apply_world(_host_world(40, {"barn": 2}))
 	GameState.run["flags"]["forage_forest_9_9"] = int(GameState.run["day"])
-	GameState.run["scene"] = "farm"
+	GameState.run["scene"] = "barn"  # c17_13-03: the kill lands inside the host's barn
+	GameState.run["spawn"] = [40, 12]
+	GameState.run["interior"] = "barn"
 	GameState.save()
 	_reset(n)
 	GameState.run = {}
@@ -160,6 +165,7 @@ func _more(n: Variant) -> void:
 	check(GameState.has_run(), "reload after kill")
 	check(int(GameState.run["day"]) == 5 and (GameState.run["builds"] as Dictionary).has("chest") and not (GameState.run["builds"] as Dictionary).has("barn"), "reloaded our own world")
 	check(int(GameState.run["flags"].get("forage_forest_9_9", 0)) == 5, "forage picked before the kill is on our own day")
+	check(str(GameState.run.get("scene", "")) == "farm" and not GameState.run.has("interior"), "reopens on our own farm, not in the host's barn (%s)" % str(GameState.run.get("scene", "")))
 
 
 ## C9 P6: a guest never takes the host's progress home, and world sync sends deltas.
@@ -189,7 +195,7 @@ func _c9(n: Variant) -> void:
 	check(not Commons.guest_blocked(null), "commons open again at home")
 	check(Romance.st() == rom0, "run.romance unchanged after the visit")
 	var mega1: Dictionary = GameState.run.get("mega", {})
-	check((mega1.get("unlocked", {}) as Dictionary).size() <= (mega0.get("unlocked", {}) as Dictionary).size() + 1, "run.mega gained no build-earned region")
+	check(mega1 == mega0, "run.mega unchanged after the visit (c17_13-04)")
 	# World deltas: only what changed travels; a guest merges them.
 	var old := {"day": 3, "time": 600, "farm": {"1,1": {"crop": "a"}, "2,2": {"crop": "b"}}, "placed": {"3,3": "x"}}
 	var now := {"day": 3, "time": 610, "farm": {"1,1": {"crop": "a"}, "4,4": {"crop": "c"}}}
@@ -250,11 +256,66 @@ func _c13(n: Variant) -> void:
 	var nm := str(((GameState.run.get("ranch", {}) as Dictionary).get("animals", {}) as Dictionary).get("a1", {}).get("name", ""))
 	check(nm != "fuck", "a host-typed animal name in a delta is filtered (%s)" % nm)
 	var mu := Music.instance(self)
-	OS.delay_msec(80)
+	await process_frame  # c17_15-08: frames, never the wall clock
+	await process_frame
 	mu._last_sfx.clear()
 	n._apply_world({"_delta": true, "_gone": [], "day": 41, "time": 360})
 	check(mu._last_sfx.has("j_morning") or mu._last_sfx.has("snore"), "a guest rollover plays the wake cue")
 	n._restore_solo()
+	_reset(n)
+
+
+## C17 P6: a visit writes nothing personal into the guest's own save (visit-only borders),
+## a host night is not a free extra day, and day stamps made at the host follow us home.
+func _c17(n: Variant) -> void:
+	print("C17: visit-only keys, own place, host nights, day stamps")
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run["day"] = 8
+	GameState.run["time"] = 600
+	GameState.run["scene"] = "town"
+	GameState.run["spawn"] = [7, 9]
+	GameState.run.erase("interior")
+	var vis0: Dictionary = (GameState.run.get("visited", {}) as Dictionary).duplicate(true)
+	var mega0: Dictionary = (GameState.run.get("mega", {}) as Dictionary).duplicate(true)
+	var trav0: Variant = (GameState.run.get("travel", {}) as Dictionary).duplicate(true) if GameState.run.get("travel") is Dictionary else GameState.run.get("travel")
+	var camp0: Variant = (GameState.run.get("campaign", {}) as Dictionary).duplicate(true) if GameState.run.get("campaign") is Dictionary else GameState.run.get("campaign")
+	GameState.run["energy"] = 10
+	GameState.run["talked_today"] = {"maple": true}
+	_join(n, _host_world(40, {}))
+	# What a walk round the host's world would write.
+	if not (GameState.run.get("visited") is Dictionary):
+		GameState.run["visited"] = {}
+	GameState.run["visited"]["mega_orchard"] = true
+	if GameState.run.get("mega") is Dictionary and (GameState.run["mega"] as Dictionary).get("unlocked") is Dictionary:
+		GameState.run["mega"]["unlocked"]["zz_test"] = true
+	else:
+		GameState.run["mega"] = {"unlocked": {"zz_test": true}}
+	GameState.run["campaign"] = {"open": {"zz_region": true}}
+	GameState.run["scene"] = "mine"
+	GameState.run["spawn"] = [3, 3]
+	GameState.run["interior"] = "shed"
+	# Mail, a bowl with a villager and a decor grant at host day 40.
+	Mail.send("Test", "hello", "chat", {}, false)
+	GameState.run["flags"]["rec_bowled_maple"] = 40
+	GameState.run["flags"]["heat_mail"] = 40
+	GameState.save()
+	var sv: Dictionary = SaveGame.get_value(GameState.save_key())
+	check(str(sv.get("scene", "")) == "town" and sv.get("spawn") == [7, 9] and not sv.has("interior"), "a save while visiting keeps our own place (%s %s)" % [str(sv.get("scene", "")), str(sv.get("spawn"))])
+	check(sv.get("visited", {}) == vis0 and sv.get("mega", {}) == mega0, "a save while visiting keeps our own visited/mega")
+	check(sv.get("campaign") == camp0 and sv.get("travel") == trav0, "a save while visiting keeps our own campaign/travel")
+	var ml: Array = sv.get("mail", [])
+	check(ml.size() > 0 and int((ml[ml.size() - 1] as Dictionary).get("day", 0)) == 8, "mail got at the host is stamped on our own day (%d)" % (int((ml[ml.size() - 1] as Dictionary).get("day", 0)) if ml.size() > 0 else -1))
+	check(int((sv["flags"] as Dictionary).get("rec_bowled_maple", 0)) == 8 and int((sv["flags"] as Dictionary).get("heat_mail", 0)) == 8, "bowl/heat-mail stamps shifted to our own day")
+	# The host sleeps: the morning refills us, but home gets no free day.
+	n._apply_world(_host_world(41, {}))
+	check(int(GameState.run["day"]) == 41, "host morning reached the guest")
+	GameState.run["energy"] = 999
+	GameState.run["talked_today"] = {}
+	n._restore_solo()
+	check(int(GameState.run["day"]) == 8, "home on our own day 8")
+	check(int(GameState.run["energy"]) <= 10, "a host night is not a free refill at home (energy %d)" % int(GameState.run["energy"]))
+	check((GameState.run.get("talked_today", {}) as Dictionary).has("maple"), "today's talk marks from home are kept")
+	check(GameState.run.get("visited", {}) == vis0 and GameState.run.get("mega", {}) == mega0 and GameState.run.get("campaign") == camp0, "home: visited/mega/campaign as before the visit")
 	_reset(n)
 
 
@@ -315,6 +376,9 @@ func _run() -> void:
 	_c9(n)
 	_reset(n)
 	await _c13(n)
+	_reset(n)
+	_c17(n)
+	_reset(n)
 	n.my_id = -1
 	n._host = false
 	n._last_world = {}

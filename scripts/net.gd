@@ -377,6 +377,7 @@ func _on_msg(m: Dictionary) -> void:
 				for k in WORLD_KEYS:
 					# null = the guest had no such key: drop it again later, never keep the host's.
 					_solo_backup[k] = ((GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]) if GameState.run.has(k) else null)
+				GameState.keep_solo_extras()  # P6 hook (c17_13-03/04): own place + visit-only keys
 			for p in m.get("peers", []):
 				peers[int(p["id"])] = p
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
@@ -804,6 +805,7 @@ func _restore_solo(why := "Lost your host. You're back on your own farm.") -> vo
 			GameState.run[k] = _solo_backup[k]
 	GameState.shift_clock(GameState.now_abs() - abs0, int(GameState.run.get("day", 1)) - day0)  # and back onto ours
 	_solo_backup = {}
+	GameState.restore_solo_extras()  # P6 hook (c17_13-04, c17_08-14)
 	GameState.save()
 	went_home.emit()
 	# The map on screen is still the host's: walk home so what's drawn is our own farm.

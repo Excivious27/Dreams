@@ -80,6 +80,7 @@ static func load_data() -> void:
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String, opts := {}) -> void:
 	load_data()
+	_solo_extras = {}  # C17: a visit snapshot never outlives its run
 	Companion.reset_cooldowns()  # C11b P3: no cooldown from an earlier save this session
 	quests_data = load_json("res://data/quests.json")
 	if arc == "penguins":
@@ -148,6 +149,7 @@ static func has_run() -> bool:
 		var saved: Variant = SaveGame.get_value(save_key())
 		if saved is Dictionary and not saved.is_empty():
 			run = (saved as Dictionary).duplicate(true)
+			_solo_extras = {}
 			# Villagers fresh from data: a gangster slot loaded earlier this session
 			# must not leave its crew in a penguin save's town.
 			npcs = load_json("res://data/npcs.json")
@@ -341,7 +343,119 @@ static func _migrate() -> void:
 static func save() -> void:
 	Achievements.scan()  # S1 P2: state-derived achievements, written into the same flush
 	# A copy: the save cache must never share the live day in progress.
-	SaveGame.set_value(save_key(), (Net.save_view(run) as Dictionary).duplicate(true))
+	# c17_13-13: while visiting, save_view already returns a deep copy (no second copy of the host farm).
+	var v: Dictionary = Net.save_view(run)
+	if Net.visiting():
+		v = visit_save_fix(v)
+	else:
+		v = v.duplicate(true)
+	SaveGame.set_value(save_key(), v)
+
+
+## C17 (c17_13-03/04): personal keys a visit must not change in the guest's own save. Kept at the
+## first join (NetNode 'joined' calls keep_solo_extras), written back into every save made while
+## visiting and into the live run when the guest goes home (restore_solo_extras).
+const VISIT_ONLY_KEYS := ["visited", "mega", "travel", "campaign"]
+const SOLO_POS_KEYS := ["scene", "spawn", "interior"]
+static var _solo_extras: Dictionary = {}
+
+
+static func keep_solo_extras() -> void:
+	_solo_extras = {}
+	for k in VISIT_ONLY_KEYS + SOLO_POS_KEYS:
+		_solo_extras[k] = (run[k].duplicate(true) if run[k] is Dictionary or run[k] is Array else run[k]) if run.has(k) else null
+	_solo_extras["_daily"] = _daily_snapshot()
+
+
+## A save made while visiting: our own place on our own map, our own visited/mega/travel/campaign.
+## With no snapshot (an old session) the guest at least reopens on their own farm.
+static func visit_save_fix(v: Dictionary) -> Dictionary:
+	for k in VISIT_ONLY_KEYS + SOLO_POS_KEYS:
+		if not _solo_extras.has(k):
+			if k == "scene":
+				v["scene"] = "farm"
+			elif k in SOLO_POS_KEYS:
+				v.erase(k)
+			continue
+		var o: Variant = _solo_extras[k]
+		if o == null:
+			v.erase(k)
+		else:
+			v[k] = o.duplicate(true) if o is Dictionary or o is Array else o
+	if str(v.get("scene", "")) == "":
+		v["scene"] = "farm"
+	_daily_merge(v)
+	return v
+
+
+## Back home: the live run drops what the visit wrote into personal keys (visit-only borders).
+static func restore_solo_extras() -> void:
+	if _solo_extras.is_empty() or run.is_empty():
+		_solo_extras = {}
+		return
+	for k in VISIT_ONLY_KEYS + SOLO_POS_KEYS:
+		if not _solo_extras.has(k):
+			continue
+		var o: Variant = _solo_extras[k]
+		if o == null:
+			run.erase(k)
+		else:
+			run[k] = o
+	_daily_merge(run)
+	_solo_extras = {}
+
+
+## c17_08-14: daily counters at join. If the host's day turned while we visited (a host night),
+## going home must not hand us a free extra day: energy/HP/mana are capped at what we had at join
+## and today's once-a-day marks keep everything used at home. Sell-box pay stays (earned).
+const DAILY_KEYS := ["talked_today", "gifted_today", "sold_today", "kills_today", "fed_en", "rest_en"]
+
+
+static func _daily_snapshot() -> Dictionary:
+	var d := {"energy": int(run.get("energy", 0)), "hp": int(run.get("hp", 0)), "mana": int(run.get("mana", 0)), "slept": false}
+	for k in DAILY_KEYS:
+		if run.has(k):
+			d[k] = run[k].duplicate(true) if run[k] is Dictionary or run[k] is Array else run[k]
+	return d
+
+
+## A host night while we visit (guest_morning calls it): going home caps the refill.
+static func visit_slept() -> void:
+	if _solo_extras.get("_daily") is Dictionary:
+		(_solo_extras["_daily"] as Dictionary)["slept"] = true
+
+
+static func _daily_merge(r: Dictionary) -> void:
+	var d: Dictionary = _solo_extras.get("_daily", {})
+	if d.is_empty() or not bool(d.get("slept", false)):
+		return
+	for k in ["energy", "hp", "mana"]:
+		if r.has(k) and d.has(k):
+			r[k] = mini(int(r[k]), int(d[k]))
+	for k in DAILY_KEYS:
+		if not d.has(k):
+			continue
+		var a: Variant = d[k]
+		var b: Variant = r.get(k, null)
+		if a is Dictionary:
+			var m: Dictionary = (b as Dictionary).duplicate(true) if b is Dictionary else {}
+			for kk in a:
+				var av: Variant = a[kk]
+				if not m.has(kk):
+					m[kk] = av
+				elif (av is int or av is float) and (m[kk] is int or m[kk] is float):
+					m[kk] = maxi(int(m[kk]), int(av))
+			r[k] = m
+		elif a is Array:
+			var arr: Array = (b as Array).duplicate() if b is Array else []
+			for x in a:
+				if not arr.has(x):
+					arr.append(x)
+			r[k] = arr
+		elif a is int or a is float:
+			r[k] = maxi(int(a), int(b) if (b is int or b is float) else 0)
+		else:
+			r[k] = a
 
 
 ## Three save slots. Slot 1 keeps the old "run" key so existing saves are slot 1.
@@ -426,6 +540,7 @@ static func _drop_gone_quests(lapse := false) -> void:
 
 
 static func guest_morning() -> Dictionary:
+	visit_slept()  # c17_08-14
 	status_clear()
 	_drop_gone_quests()
 	_apply_max_stats()
@@ -1412,7 +1527,7 @@ static func reset_tree(skill: String) -> void:
 	# learn-build-reset-respend loop (c16a_11-13).
 	for nd in nodes_of(skill):
 		var bp := str((nd.get("effect", {}) as Dictionary).get("blueprint", ""))
-		if bp != "" and node_rank(skill, str(nd["id"])) > 0 and Builds.built_tier(bp) > 0:
+		if bp != "" and node_rank(skill, str(nd["id"])) > 0 and NetNode.own_tier(bp) > 0:  # our own station, never the host's (c17_08-07)
 			keep[str(nd["id"])] = node_rank(skill, str(nd["id"]))
 	run["skills"][skill]["nodes"] = keep
 	(run["skills"][skill] as Dictionary).erase("nm")
@@ -2252,7 +2367,7 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 		cl[id] = int(cl[id]) + dd
 	# Day stamps in flags (forage/bush/fruit/loot/heal spots, once-a-day uses) move with the day.
 	if dd != 0:
-		var rx := RegEx.create_from_string("^(forage_|fg_|bush_|fruit_|shroom_|loot_|heal_|heist_try_|marked_try_|bfpay_)|_day$|^(forest_thicket|crater_flower)$")
+		var rx := RegEx.create_from_string("^(forage_|fg_|bush_|fruit_|shroom_|loot_|heal_|heist_try_|marked_try_|bfpay_|rec_bowled_)|_day$|^(forest_thicket|crater_flower|heat_mail)$")
 		for k in fl.keys():
 			var fv: Variant = fl[k]
 			if (fv is int or fv is float) and int(fv) > 0 and rx.search(str(k)) != null:
@@ -2284,6 +2399,17 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 			if cf.get("helped") is Dictionary:
 				for id in (cf["helped"] as Dictionary).keys():
 					cf["helped"][id] = int(cf["helped"][id]) + dd
+		# c17_13-07: mail and decor day stamps made while visiting carry the host's day.
+		for m: Variant in r.get("mail", []):
+			if m is Dictionary and (m.get("day") is int or m.get("day") is float):
+				m["day"] = maxi(1, int(m["day"]) + dd)
+		var dc: Variant = r.get("decor", null)
+		if dc is Dictionary:
+			for bk in ["got", "uniques", "seen"]:
+				if (dc as Dictionary).get(bk) is Dictionary:
+					for id in (dc[bk] as Dictionary).keys():
+						if dc[bk][id] is int or dc[bk][id] is float:
+							dc[bk][id] = maxi(1, int(dc[bk][id]) + dd)
 		# Board jobs carry their pin day in the id (the host's day if pinned while visiting): keep it on the quest.
 		for q: Variant in r.get("quests", []):
 			if q is Dictionary and not bool(q.get("done", false)) and str(q.get("id", "")).begins_with("board_") and str(q["id"]).get_slice("_", 1).is_valid_int():
