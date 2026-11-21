@@ -17,6 +17,7 @@ func _initialize() -> void:
 func _run() -> void:
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	check(str(Builds.tier_def("coop", 1)["name"]) == "Coop" and Builds.label("barn") == "Barn", "penguin arc: storybook names")
+	check(not str(Builds.tier_def("coop", 1)["sprite"]).ends_with("_gang"), "penguin arc: storybook look")
 	check(Builds.seller("coop") == "Hazel", "penguin arc: Hazel builds the coop")
 	GameState.new_run("gangsters", "kairi", "T", "Town", "Pup")
 	check(str(Builds.tier_def("coop", 1)["name"]) == "Roost" and str(Builds.tier_def("barn", 2)["name"]) == "Big Stock Shed", "gangster arc: its own tier names")
@@ -24,6 +25,10 @@ func _run() -> void:
 	check(str(Builds.tier_def("sty", 1)["name"]) == "Pig Pen", "gen_stations name_gang wins")
 	check(Builds.seller("coop") == "The crew", "gangster arc: the crew builds (seller_gang)")
 	check(str(Builds.all()["coop"]["tiers"][0]["name"]) == "Coop", "the data itself is never rewritten")
+	for bid in ["coop", "barn", "hutch", "sty", "beehive"]:
+		var td: Dictionary = Builds.tier_def(bid, 1)
+		if str(Builds.all()[bid]["tiers"][0].get("group", "")) == "buildings":
+			check(str(td["sprite"]).ends_with("_gang") and Art.has("buildings", str(td["sprite"])), "%s: gangster look %s" % [bid, td["sprite"]])
 	# Footprints: building default, a tier override wins.
 	var bd: Dictionary = Builds.all()["barn"]
 	var fp := Builds.footprint("barn", 1)

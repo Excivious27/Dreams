@@ -28785,6 +28785,11 @@
    "h": 73,
    "w": 111
   },
+  "apiary_1_gang": {
+   "file": "buildings/apiary_1_gang.png",
+   "h": 73,
+   "w": 111
+  },
   "apiary_1_lit": {
    "file": "buildings/apiary_1_lit.png",
    "glow_mask": true,
@@ -28803,6 +28808,11 @@
   },
   "apiary_2": {
    "file": "buildings/apiary_2.png",
+   "h": 93,
+   "w": 168
+  },
+  "apiary_2_gang": {
+   "file": "buildings/apiary_2_gang.png",
    "h": 93,
    "w": 168
   },
@@ -28913,6 +28923,11 @@
    "h": 82,
    "w": 95
   },
+  "barn_1_gang": {
+   "file": "buildings/barn_1_gang.png",
+   "h": 82,
+   "w": 95
+  },
   "barn_1_lit": {
    "file": "buildings/barn_1_lit.png",
    "glow_mask": true,
@@ -28934,6 +28949,11 @@
    "h": 103,
    "w": 173
   },
+  "barn_2_gang": {
+   "file": "buildings/barn_2_gang.png",
+   "h": 103,
+   "w": 173
+  },
   "barn_2_lit": {
    "file": "buildings/barn_2_lit.png",
    "glow_mask": true,
@@ -28952,6 +28972,11 @@
   },
   "barn_3": {
    "file": "buildings/barn_3.png",
+   "h": 111,
+   "w": 170
+  },
+  "barn_3_gang": {
+   "file": "buildings/barn_3_gang.png",
    "h": 111,
    "w": 170
   },
@@ -29079,6 +29104,11 @@
    "h": 72,
    "w": 78
   },
+  "coop_1_gang": {
+   "file": "buildings/coop_1_gang.png",
+   "h": 72,
+   "w": 78
+  },
   "coop_1_lit": {
    "file": "buildings/coop_1_lit.png",
    "glow_mask": true,
@@ -29100,6 +29130,11 @@
    "h": 88,
    "w": 137
   },
+  "coop_2_gang": {
+   "file": "buildings/coop_2_gang.png",
+   "h": 88,
+   "w": 137
+  },
   "coop_2_lit": {
    "file": "buildings/coop_2_lit.png",
    "glow_mask": true,
@@ -29118,6 +29153,11 @@
   },
   "coop_3": {
    "file": "buildings/coop_3.png",
+   "h": 112,
+   "w": 148
+  },
+  "coop_3_gang": {
+   "file": "buildings/coop_3_gang.png",
    "h": 112,
    "w": 148
   },
@@ -29500,6 +29540,11 @@
    "h": 62,
    "w": 80
   },
+  "hutch_1_gang": {
+   "file": "buildings/hutch_1_gang.png",
+   "h": 62,
+   "w": 80
+  },
   "hutch_1_lit": {
    "file": "buildings/hutch_1_lit.png",
    "glow_mask": true,
@@ -29518,6 +29563,11 @@
   },
   "hutch_2": {
    "file": "buildings/hutch_2.png",
+   "h": 82,
+   "w": 141
+  },
+  "hutch_2_gang": {
+   "file": "buildings/hutch_2_gang.png",
    "h": 82,
    "w": 141
   },
@@ -29857,6 +29907,11 @@
    "h": 64,
    "w": 107
   },
+  "sty_1_gang": {
+   "file": "buildings/sty_1_gang.png",
+   "h": 64,
+   "w": 107
+  },
   "sty_1_lit": {
    "file": "buildings/sty_1_lit.png",
    "glow_mask": true,
@@ -29875,6 +29930,11 @@
   },
   "sty_2": {
    "file": "buildings/sty_2.png",
+   "h": 88,
+   "w": 157
+  },
+  "sty_2_gang": {
+   "file": "buildings/sty_2_gang.png",
    "h": 88,
    "w": 157
   },

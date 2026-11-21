@@ -116,10 +116,15 @@ static func _arc_words(t: Dictionary) -> Dictionary:
 	var nm := str(t.get("name", ""))
 	var g := str(t.get("name_gang", ""))
 	var want := g if g != "" and g != nm else str(GANG_NAMES.get(nm, nm))
-	if want == nm:
+	# The gangster look of the building (buildings/<sprite>_gang: corrugated metal, chain-link, neon).
+	var gs := str(t.get("sprite", "")) + "_gang"
+	var look := str(t.get("group", "")) == "buildings" and Art.has("buildings", gs)
+	if want == nm and not look:
 		return t
 	var out := t.duplicate()
 	out["name"] = want
+	if look:
+		out["sprite"] = gs
 	return out
 
 
