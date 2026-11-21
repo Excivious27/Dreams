@@ -1,0 +1,217 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  93% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  93% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  94% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  94% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  96% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  96% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  98% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_side.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (272 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 140.5s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 28.3s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+  weeks 3-4 average bar left at bedtime: 44%
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 6.6s
+
+#### step 18: S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b (shard 5/6)
+== S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-backend routing ==
+STEAM SERVICE TEST DONE, failures: 0
+#### step 18 S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b: PASS in 3.0s
+
+#### step 24: mine arrival: no black cover (c5_16) (shard 5/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 24 mine arrival: no black cover (c5_16): PASS in 3.6s
+
+#### step 30: team animals + chores: lessons, team, muster, overnight chores, Animal (shard 5/6)
+== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) ==
+team_animals_test: OK
+#### step 30 team animals + chores: lessons, team, muster, overnight chores, Animal: PASS in 4.8s
+
+#### step 36: held-tool rules: right tool acts, wrong tool hints (shard 5/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+tool_rules_test: 0 failures
+#### step 36 held-tool rules: right tool acts, wrong tool hints: PASS in 24.0s
+
+#### step 42: bowling_test (shard 5/6)
+bowling_test: OK
+#### step 42 bowling_test: PASS in 14.3s
+
+#### step 48: pen_test (shard 5/6)
+pen_test: PASS
+#### step 48 pen_test: PASS in 4.4s
+
+#### step 54: move_target_test (shard 5/6)
+move_target_test: 0 failures
+#### step 54 move_target_test: PASS in 17.9s
+
+#### step 60: decor_sources_test (shard 5/6)
+decor_sources_test: 0 failures
+#### step 60 decor_sources_test: PASS in 3.5s
+
+#### step 66: talk conditions (C12 P3) (shard 5/6)
+== talk conditions (C12 P3) ==
+talk_conditions_test: 0 failures
+#### step 66 talk conditions (C12 P3): PASS in 4.3s
+
+#### step 72: text size floors (7 px) (shard 5/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 72 text size floors (7 px): PASS in 0.1s
+
+#### step 78: all ages: name filter for player-typed names (S1 P5) (shard 5/6)
+== all ages: name filter for player-typed names (S1 P5) ==
+#### step 78 all ages: name filter for player-typed names (S1 P5): PASS in 3.1s
+
+#### step 84: slice_c11b_chores (shard 5/6)
+#### step 84 slice_c11b_chores: PASS in 0.5s
+
+#### step 90: ambience_test (shard 5/6)
+ambience_test: 0 failures (40 checks)
+#### step 90 ambience_test: PASS in 5.9s
+
+#### step 96: mine: keeper, shaft, tiers (shard 5/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 96 mine: keeper, shaft, tiers: PASS in 4.8s
+
+#### step 102: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 5/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 102 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 8.6s
+
+#### step 108: c6_cue_test (shard 5/6)
+c6_cue_test: 0 fails
+#### step 108 c6_cue_test: PASS in 3.1s
+
+#### step 114: campaign_words_test (shard 5/6)
+campaign_words_test: 0 fails
+#### step 114 campaign_words_test: PASS in 3.5s
+
+#### step 120: settings, slots, quality, discovery, perks, birthdays (shard 5/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 120 settings, slots, quality, discovery, perks, birthdays: PASS in 3.6s
+
+#### step 126: C7 text: gift articles, plurals, quest wording (shard 5/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 126 C7 text: gift articles, plurals, quest wording: PASS in 3.2s
+
+#### step 132: fish critters only in deep water (C2 P4) (shard 5/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 132 fish critters only in deep water (C2 P4): PASS in 10.7s
+
+#### step 138: stack_whack_test (shard 5/6)
+stack_whack_test: 0 failures
+#### step 138 stack_whack_test: PASS in 3.8s
+
+#### step 144: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 5/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 144 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 5.2s
+
+#### step 150: C12 P4: hearts, romance and gift words match game state (shard 5/6)
+== C12 P4: hearts, romance and gift words match game state ==
+c12_hearts_gifts_test: OK
+#### step 150 C12 P4: hearts, romance and gift words match game state: PASS in 3.3s
+
+#### step 156: C11b P6: C11b creature voices and ranch sound (shard 5/6)
+== C11b P6: C11b creature voices and ranch sound ==
+ranch_audio_c11b_test: OK
+#### step 156 C11b P6: C11b creature voices and ranch sound: PASS in 3.0s
+
+#### step 162: C9 P1: controller bindings and field play (shard 5/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 162 C9 P1: controller bindings and field play: PASS in 4.3s
+
+#### step 168: C10a P3: decor catalogue (shard 5/6)
+== C10a P3: decor catalogue ==
+decor_catalogue_test: 0 failures
+#### step 168 C10a P3: decor catalogue: PASS in 4.2s
+
+#### step 174: C9 P6: forest border buckets (shard 5/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 174 C9 P6: forest border buckets: PASS in 4.8s
+
+#### step 180: net transport: NetNode over the in-memory relay twin (NetRelayRoom = s (shard 5/6)
+== net transport: NetNode over the in-memory relay twin (NetRelayRoom = server.js rules) ==
+net_transport_test: 19 checks, 0 failures
+#### step 180 net transport: NetNode over the in-memory relay twin (NetRelayRoom = s: PASS in 3.2s
+
+#### step 186: S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf (shard 5/6)
+== S1 P6: Steam capsule/library art (sizes, formats, no text on hero, safe area) ==
+steam_capsules_check: ok (12 assets)
+#### step 186 S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf: PASS in 0.1s
+
+#### step 192: C13 P4: story, scene and minigame audio cues (live beats, endings, moo (shard 5/6)
+== C13 P4: story, scene and minigame audio cues (live beats, endings, moods, drill, shots) ==
+story_audio_test: 0 fails
+#### step 192 C13 P4: story, scene and minigame audio cues (live beats, endings, moo: PASS in 3.2s
+
+#### step 198: C13 P6: ambience map (no silent place, both arcs, seasons, times, rain (shard 5/6)
+== C13 P6: ambience map (no silent place, both arcs, seasons, times, rain) ==
+ambience_map_test: 14961 checks, 0 failures
+#### step 198 C13 P6: ambience map (no silent place, both arcs, seasons, times, rain: PASS in 35.0s
+
+#### step 204: C14 P5: gang cities, mega regions, sky, colony jetties (shard 5/6)
+== C14 P5: gang cities, mega regions, sky, colony jetties ==
+c14_p5_test: ok (0 fails)
+#### step 204 C14 P5: gang cities, mega regions, sky, colony jetties: PASS in 3.4s
+
+#### step 210: weather fx (C14b P1) (shard 5/6)
+== weather fx (C14b P1) ==
+weather_fx_test: 0 failures (rain 140, storm 220, snow 110, blizzard 159)
+#### step 210 weather fx (C14b P1): PASS in 5.9s
+
+#### step 216: shore_motion_test (C14b P2: lighthouse beam sweep, still water mill) (shard 5/6)
+== shore_motion_test (C14b P2: lighthouse beam sweep, still water mill) ==
+shore_motion_test: PASS (0 fails)
+#### step 216 shore_motion_test (C14b P2: lighthouse beam sweep, still water mill): PASS in 3.7s
+
+#### step 222: C15 P1: calendar screen (grid, marks, paging, way out) (shard 5/6)
+== C15 P1: calendar screen (grid, marks, paging, way out) ==
+calendar_screen_test: 0 failures
+#### step 222 C15 P1: calendar screen (grid, marks, paging, way out): PASS in 3.4s
+
+#### step 228: C15 P3: villager seasonal life (lines per season/festival, routines, m (shard 5/6)
+== C15 P3: villager seasonal life (lines per season/festival, routines, mail, events) ==
+villager_seasons_test: 0 failures
+#### step 228 C15 P3: villager seasonal life (lines per season/festival, routines, m: PASS in 5.3s
+
+#### shard 5/6 done in 394s: PASS
