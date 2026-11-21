@@ -67,7 +67,7 @@ git fetch -q origin main 2>/dev/null || true
 CHANGED=$(git diff --name-only "$(git rev-parse origin/main 2>/dev/null || echo "$BASE")" "$BASE" 2>/dev/null)
 SRV=0; NETC=0; RTOOLS=0
 echo "$CHANGED" | grep -q '^server/' && SRV=1
-echo "$CHANGED" | grep -q '^scripts/net\.gd$' && NETC=1
+echo "$CHANGED" | grep -qE '^scripts/net(_api|_transport[a-z_]*|_relay_room)?\.gd$' && NETC=1
 echo "$CHANGED" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)' && RTOOLS=1
 if [ "$RELAY" = auto ]; then RELAY=0; { [ "$BOTS" = 1 ] || [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && RELAY=1; fi
 E2E=0; { [ $SRV = 1 ] || [ $NETC = 1 ] || [ $RTOOLS = 1 ]; } && E2E=$RELAY

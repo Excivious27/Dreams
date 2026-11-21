@@ -347,16 +347,18 @@ func _on_packet(sid: int, pkt: PackedByteArray) -> void:
 		if int(st["next"]) != i:
 			_parts.erase(sid)  # out of order can't happen on the reliable channel: drop it
 			return
-		(st["got"] as PackedByteArray).append_array(pkt.slice(9))
+		var acc: PackedByteArray = st["got"]   # packed arrays are values: write it back
+		acc.append_array(pkt.slice(9))
+		st["got"] = acc
 		st["next"] = i + 1
 		_parts[sid] = st
-		if (st["got"] as PackedByteArray).size() > NetTransport.MAX_FRAME:
+		if acc.size() > NetTransport.MAX_FRAME:
 			_parts.erase(sid)
 			return
 		if i + 1 < n:
 			return
 		_parts.erase(sid)
-		pkt = st["got"]
+		pkt = acc
 	var dec := decode(pkt)
 	var m: Variant = dec[0]
 	if not (m is Dictionary):

@@ -945,3 +945,17 @@ echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
 if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
   echo "net_url_test failed"; exit 1
 fi
+
+echo "== net transport: NetNode over the in-memory relay twin (NetRelayRoom = server.js rules) =="
+ntout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_transport_test.gd 2>&1)"
+echo "$ntout" | grep -E "FAIL|SCRIPT ERROR|net_transport_test" || true
+if ! echo "$ntout" | grep -q "net_transport_test: [0-9]* checks, 0 failures"; then
+  echo "net_transport_test failed"; exit 1
+fi
+
+echo "== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) =="
+nsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_steam_test.gd 2>&1)"
+echo "$nsout" | grep -E "FAIL|SCRIPT ERROR|net_steam_test" || true
+if ! echo "$nsout" | grep -q "net_steam_test: [0-9]* checks, 0 failures"; then
+  echo "net_steam_test failed"; exit 1
+fi
