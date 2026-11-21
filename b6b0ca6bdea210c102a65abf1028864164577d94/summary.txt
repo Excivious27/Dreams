@@ -1,0 +1,13 @@
+CONDUCT CI FAIL  b6b0ca6bde  (ci/c12i3-98f294e9, run 44885732137)
+
+subset run: shards [3], bots off, playtest on
+check shards (1/1):
+  shard 3: PASS  337s
+playtest: FAIL (twice in a row)  71s  21 screenshots (results playtest/shots/)
+  FAIL entered the house
+  FAIL slept to the next day
+  FAIL crop grew overnight
+
+longest job: 337s
+slowest check steps: import 88.4s; touch_ui_test 40.1s; danger_music_test 31.4s; building doors 19.1s; gangster first hours: intro, day 2, meadow, Hideout, first crew 14.1s; hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) 12.9s; S1 P3: Steam Deck text floor (every screen at 1280x800) 12.8s; battle_drill_flow_test 11.1s
+distinct errors/fails/warns:

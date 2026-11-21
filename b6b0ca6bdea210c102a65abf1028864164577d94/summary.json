@@ -1,0 +1,145 @@
+{
+ "sha": "b6b0ca6bdea210c102a65abf1028864164577d94",
+ "ref": "ci/c12i3-98f294e9",
+ "run": "44885732137",
+ "finished": 1795250892.4177332,
+ "pass": false,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 1,
+  "secs": 71,
+  "shots": 21,
+  "fails": [
+   "FAIL entered the house",
+   "FAIL slept to the next day",
+   "FAIL crop grew overnight"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL entered the house"
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "98f294e94069fe51b7eb1e112b6689675c7563ea",
+  "label": "c12i3",
+  "branch": "c12/integ",
+  "shards": [
+   3
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 337,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 337,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 88.4
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 40.1
+  },
+  {
+   "step": 88,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 31.4
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 19.1
+  },
+  {
+   "step": 124,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 14.1
+  },
+  {
+   "step": 130,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 12.9
+  },
+  {
+   "step": 166,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 12.8
+  },
+  {
+   "step": 112,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 11.1
+  },
+  {
+   "step": 70,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 10.9
+  },
+  {
+   "step": 34,
+   "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10",
+   "rc": 0,
+   "secs": 7.4
+  },
+  {
+   "step": 46,
+   "name": "farm_week_test",
+   "rc": 0,
+   "secs": 6.6
+  },
+  {
+   "step": 28,
+   "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a",
+   "rc": 0,
+   "secs": 6.1
+  },
+  {
+   "step": 64,
+   "name": "early_gating_test",
+   "rc": 0,
+   "secs": 6.0
+  },
+  {
+   "step": 178,
+   "name": "relay: Play together uses the live relay by default, custom server + R",
+   "rc": 0,
+   "secs": 5.4
+  },
+  {
+   "step": 106,
+   "name": "quest_tracker_test",
+   "rc": 0,
+   "secs": 5.2
+  }
+ ]
+}
