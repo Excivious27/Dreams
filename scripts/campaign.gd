@@ -748,6 +748,7 @@ static func launch(m: GameMap, cid: String, nid: String) -> void:
 	st()["fight"] = {"cid": cid, "nid": nid, "field": fid, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
 	var R: Dictionary = RegionData.region(fid)
 	var sp: Array = R.get("spawn", [10, 10])
+	CampaignFollow.note_march(fid)  # C17 P3 (c17_05-06): guests get word
 	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 
 
@@ -768,6 +769,7 @@ static func rematch(m: GameMap, cid: String, nid: String) -> bool:
 	st()["fight"] = {"cid": cid, "nid": nid, "field": fid, "rematch": true, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
 	var R: Dictionary = RegionData.region(fid)
 	var sp: Array = R.get("spawn", [10, 10])
+	CampaignFollow.note_march(fid)  # C17 P3 (c17_05-06): guests get word
 	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 	return true
 
@@ -857,6 +859,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 	if Net.visiting():
 		return []   # C17 P3 (c17_05-02): no campaign progress or pay from a friend's world
 	var f: Dictionary = st().get("fight", {})
+	CampaignFollow.note_back(won)
 	var cid := str(f.get("cid", ""))
 	var nid := str(f.get("nid", ""))
 	st()["fight"] = {}

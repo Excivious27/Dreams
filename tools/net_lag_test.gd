@@ -322,6 +322,13 @@ func _map_tests() -> void:
 	check(not Campaign.can_visit(reg), "home again: the host's list is gone")
 	Campaign.st()["open"][reg] = true
 	check(CampaignFollow.my_open().has(reg), "the host's answer lists its own open regions")
+	# The host marches out: guests get word (router msg campaign_note).
+	nn2._host = false
+	nn2._solo_backup = {"probe": true}
+	CampaignFollow._inst._on_note("1", {"text": "H marched to Frostfield Front. Back soon."})
+	check(CampaignFollow.last_note_text.begins_with("H marched to"), "a visiting guest hears the host marched out")
+	nn2._solo_backup = ob2
+	nn2._host = oh2
 	Campaign.bypass = true
 
 

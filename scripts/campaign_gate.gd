@@ -274,6 +274,7 @@ static func launch_drill(m: GameMap) -> void:
 	var at := m.player.position - m.offset() if m.player else Vector2.ZERO
 	Campaign.st()["fight"] = {"drill": true, "field": fid, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
 	var p0: Array = (dd.get("points", [])[0] as Dictionary).get("cell", [52, 74])
+	CampaignFollow.note_march(fid)  # C17 P3 (c17_05-06): guests get word
 	m.go_to(fid, Vector2(float(p0[0]) * GameMap.TILE + 8, float(p0[1] + 3) * GameMap.TILE + 8), "up")
 
 
