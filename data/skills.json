@@ -1,5 +1,17 @@
 {
  "_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after tier_need[c] points spent in the skill. 1 point per level.",
+ "tier_need": [
+  0,
+  2,
+  5,
+  9,
+  14,
+  20,
+  28,
+  38,
+  50,
+  64
+ ],
  "skills": {
   "farming": {
    "name": "Farming",
@@ -14,11 +26,11 @@
     {
      "id": "green_thumb",
      "name": "Green Thumb",
-     "desc": "+10% chance of an extra crop per harvest (per rank)",
+     "desc": "+5% chance of an extra crop per harvest (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "extra_crop": 0.1
+      "extra_crop": 0.05
      },
      "row": 0
     },
@@ -37,45 +49,45 @@
     {
      "id": "farming_0_2",
      "name": "Sprout Song",
-     "desc": "+3% faster crop growth (per rank)",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "growth": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_3",
      "name": "Tender Care",
-     "desc": "+3% chance of a double harvest (per rank)",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "double_harvest": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_4",
      "name": "Full Rows",
-     "desc": "+3% chance of a double harvest (per rank)",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "double_harvest": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_5",
      "name": "Heavy Stalks",
-     "desc": "+3% chance of a double harvest (per rank)",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "double_harvest": 0.03
+      "flower_value": 0.03
      }
     },
     {
@@ -92,23 +104,23 @@
     {
      "id": "farming_0_7",
      "name": "Plenty",
-     "desc": "+3% chance of a double harvest (per rank)",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "double_harvest": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "fields_of_gold",
      "name": "Fields of Gold",
-     "desc": "Every crop sells for 25% more and grows 30% faster",
+     "desc": "Every crop sells for 12% more and grows 15% faster",
      "ranks": 1,
      "tier": 8,
      "effect": {
-      "crop_value": 0.25,
-      "growth": 0.3
+      "crop_value": 0.12,
+      "growth": 0.15
      },
      "row": 0
     },
@@ -149,416 +161,6 @@
     {
      "id": "sprinkler_plans",
      "name": "Sprinkler Plans",
-     "desc": "Crops grow 10% faster overnight",
-     "ranks": 1,
-     "tier": 2,
-     "effect": {
-      "growth": 0.1
-     },
-     "row": 1
-    },
-    {
-     "id": "farming_1_3",
-     "name": "Practice",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 3,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "rich_soil",
-     "name": "Rich Soil",
-     "desc": "Watered crops have an 8% chance to grow an extra day (per rank)",
-     "ranks": 2,
-     "tier": 4,
-     "effect": {
-      "extra_day": 0.08
-     },
-     "row": 1
-    },
-    {
-     "id": "greenhouse_plans",
-     "name": "Greenhouse Plans",
-     "desc": "+5% chance of a double harvest",
-     "ranks": 1,
-     "tier": 5,
-     "effect": {
-      "double_harvest": 0.05
-     },
-     "row": 1
-    },
-    {
-     "id": "farming_u_rain_dance",
-     "name": "Rain Dance",
-     "desc": "Learn the Rain Call spell: water every crop at once.",
-     "ranks": 1,
-     "tier": 6,
-     "row": 1,
-     "effect": {
-      "spell": "rain_call"
-     },
-     "unlock": true
-    },
-    {
-     "id": "farming_1_7",
-     "name": "Light Hoe",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 2,
-     "tier": 7,
-     "row": 1,
-     "effect": {
-      "seed_back": 0.05
-     }
-    },
-    {
-     "id": "farming_1_8",
-     "name": "Study",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
-     "tier": 8,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "farming_1_9",
-     "name": "Loam Lore",
-     "desc": "+4% chance a crop grows an extra day overnight",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "extra_day": 0.04
-     }
-    },
-    {
-     "id": "farming_2_0",
-     "name": "Lessons",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Practice"
-     ]
-    },
-    {
-     "id": "farming_u_press_blueprint",
-     "name": "Press Blueprint",
-     "desc": "Learn to build the Press: jams, oils and juices.",
-     "ranks": 1,
-     "tier": 1,
-     "row": 2,
-     "effect": {
-      "blueprint": "press"
-     },
-     "unlock": true
-    },
-    {
-     "id": "harvest_moon",
-     "name": "Harvest Moon",
-     "desc": "Crops sell for 3% more (per rank)",
-     "ranks": 3,
-     "tier": 2,
-     "effect": {
-      "crop_value": 0.03
-     },
-     "row": 2
-    },
-    {
-     "id": "farming_2_3",
-     "name": "Know-How",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 3,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Study"
-     ]
-    },
-    {
-     "id": "farming_2_4",
-     "name": "Experience",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 4,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "farming_2_5",
-     "name": "Insight",
-     "desc": "+3% faster levelling in this skill",
-     "ranks": 1,
-     "tier": 5,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "farming_2_6",
-     "name": "Drills",
-     "desc": "+3% faster levelling in this skill",
-     "ranks": 1,
-     "tier": 6,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "farming_2_7",
-     "name": "Homework",
-     "desc": "+2% faster levelling in this skill",
-     "ranks": 1,
-     "tier": 7,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.02
-     }
-    },
-    {
-     "id": "farming_2_8",
-     "name": "Field Ledger",
-     "desc": "+1% faster crop growth",
-     "ranks": 1,
-     "tier": 8,
-     "row": 2,
-     "effect": {
-      "growth": 0.01
-     }
-    },
-    {
-     "id": "farming_2_9",
-     "name": "Ripe Eye",
-     "desc": "+1% crop sell value",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "crop_value": 0.01
-     }
-    },
-    {
-     "id": "farming_3_0",
-     "name": "Market Eye",
-     "desc": "+2% chance of a star harvest (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "row": 3,
-     "effect": {
-      "star_chance": 0.02
-     }
-    },
-    {
-     "id": "farming_3_1",
-     "name": "Seed Pouch",
-     "desc": "+2% chance of a star harvest (per rank)",
-     "ranks": 3,
-     "tier": 1,
-     "row": 3,
-     "effect": {
-      "star_chance": 0.02
-     }
-    },
-    {
-     "id": "fertilizer",
-     "name": "Compost Lore",
-     "desc": "+5% chance a crop grows an extra day overnight",
-     "ranks": 1,
-     "tier": 2,
-     "effect": {
-      "extra_day": 0.05
-     },
-     "row": 3,
-     "aka": [
-      "Fertilizer"
-     ]
-    },
-    {
-     "id": "farming_u_field_runner",
-     "name": "Field Runner",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
-     "ranks": 1,
-     "tier": 3,
-     "row": 3,
-     "effect": {
-      "move_speed": 0.05
-     },
-     "unlock": true
-    },
-    {
-     "id": "farming_3_4",
-     "name": "Polished Produce",
-     "desc": "+2% chance of a star harvest (per rank)",
-     "ranks": 3,
-     "tier": 4,
-     "row": 3,
-     "effect": {
-      "star_chance": 0.02
-     }
-    },
-    {
-     "id": "farming_3_5",
-     "name": "Shiny Skins",
-     "desc": "+2% chance of a star harvest (per rank)",
-     "ranks": 3,
-     "tier": 5,
-     "row": 3,
-     "effect": {
-      "star_chance": 0.02
-     }
-    },
-    {
-     "id": "golden_seeds",
-     "name": "Golden Seeds",
-     "desc": "+5% chance per rank of a star harvest: two extra crops, and gold quality more often",
-     "ranks": 2,
-     "tier": 6,
-     "effect": {
-      "star_chance": 0.05
-     },
-     "row": 3
-    },
-    {
-     "id": "seed_saver",
-     "name": "Seed Saver",
-     "desc": "Harvests return a seed 20% of the time (per rank)",
-     "ranks": 2,
-     "tier": 7,
-     "effect": {
-      "seed_back": 0.2
-     },
-     "row": 3
-    },
-    {
-     "id": "farming_u_bountiful_touch",
-     "name": "Bountiful Touch",
-     "desc": "Learn the Growth spell: the crop in front of you grows a day.",
-     "ranks": 1,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "spell": "growth"
-     },
-     "unlock": true
-    },
-    {
-     "id": "farming_3_9",
-     "name": "Star Sense",
-     "desc": "+4% chance of a star harvest",
-     "ranks": 1,
-     "tier": 9,
-     "row": 3,
-     "effect": {
-      "star_chance": 0.04
-     }
-    },
-    {
-     "id": "green_thumb",
-     "name": "Green Thumb",
-     "desc": "+5% chance of an extra crop per harvest (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "effect": {
-      "extra_crop": 0.05
-     },
-     "row": 0
-    },
-    {
-     "id": "farming_0_2",
-     "name": "Sprout Song",
-     "desc": "+3% flower sell value (per rank)",
-     "ranks": 3,
-     "tier": 2,
-     "row": 0,
-     "effect": {
-      "flower_value": 0.03
-     }
-    },
-    {
-     "id": "farming_0_3",
-     "name": "Tender Care",
-     "desc": "+3% flower sell value (per rank)",
-     "ranks": 3,
-     "tier": 3,
-     "row": 0,
-     "effect": {
-      "flower_value": 0.03
-     }
-    },
-    {
-     "id": "farming_0_4",
-     "name": "Full Rows",
-     "desc": "+3% flower sell value (per rank)",
-     "ranks": 3,
-     "tier": 4,
-     "row": 0,
-     "effect": {
-      "flower_value": 0.03
-     }
-    },
-    {
-     "id": "farming_0_5",
-     "name": "Heavy Stalks",
-     "desc": "+3% flower sell value (per rank)",
-     "ranks": 3,
-     "tier": 5,
-     "row": 0,
-     "effect": {
-      "flower_value": 0.03
-     }
-    },
-    {
-     "id": "farming_0_7",
-     "name": "Plenty",
-     "desc": "+3% flower sell value (per rank)",
-     "ranks": 2,
-     "tier": 7,
-     "row": 0,
-     "effect": {
-      "flower_value": 0.03
-     }
-    },
-    {
-     "id": "fields_of_gold",
-     "name": "Fields of Gold",
-     "desc": "Every crop sells for 12% more and grows 15% faster",
-     "ranks": 1,
-     "tier": 8,
-     "effect": {
-      "crop_value": 0.12,
-      "growth": 0.15
-     },
-     "row": 0
-    },
-    {
-     "id": "quick_hands",
-     "name": "Quick Hands",
-     "desc": "Hoeing and watering cost 15% less energy (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "effect": {
-      "farm_energy": 0.15
-     },
-     "row": 1
-    },
-    {
-     "id": "sprinkler_plans",
-     "name": "Sprinkler Plans",
      "desc": "Crops grow 5% faster overnight",
      "ranks": 1,
      "tier": 2,
@@ -591,6 +193,29 @@
       "extra_day": 0.03
      },
      "row": 1
+    },
+    {
+     "id": "greenhouse_plans",
+     "name": "Greenhouse Plans",
+     "desc": "+5% chance of a double harvest",
+     "ranks": 1,
+     "tier": 5,
+     "effect": {
+      "double_harvest": 0.05
+     },
+     "row": 1
+    },
+    {
+     "id": "farming_u_rain_dance",
+     "name": "Rain Dance",
+     "desc": "Learn the Rain Call spell: water every crop at once.",
+     "ranks": 1,
+     "tier": 6,
+     "row": 1,
+     "effect": {
+      "spell": "rain_call"
+     },
+     "unlock": true
     },
     {
      "id": "farming_1_7",
@@ -645,6 +270,29 @@
      ]
     },
     {
+     "id": "farming_u_press_blueprint",
+     "name": "Press Blueprint",
+     "desc": "Learn to build the Press: jams, oils and juices.",
+     "ranks": 1,
+     "tier": 1,
+     "row": 2,
+     "effect": {
+      "blueprint": "press"
+     },
+     "unlock": true
+    },
+    {
+     "id": "harvest_moon",
+     "name": "Harvest Moon",
+     "desc": "Crops sell for 3% more (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "effect": {
+      "crop_value": 0.03
+     },
+     "row": 2
+    },
+    {
      "id": "farming_2_3",
      "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
@@ -673,6 +321,28 @@
      ]
     },
     {
+     "id": "farming_2_5",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill",
+     "ranks": 1,
+     "tier": 5,
+     "row": 2,
+     "effect": {
+      "xp_gain": 0.03
+     }
+    },
+    {
+     "id": "farming_2_6",
+     "name": "Drills",
+     "desc": "+3% faster levelling in this skill",
+     "ranks": 1,
+     "tier": 6,
+     "row": 2,
+     "effect": {
+      "xp_gain": 0.03
+     }
+    },
+    {
      "id": "farming_2_7",
      "name": "Crate Stacker",
      "desc": "+3% crop sell value",
@@ -695,6 +365,39 @@
      }
     },
     {
+     "id": "farming_2_9",
+     "name": "Ripe Eye",
+     "desc": "+1% crop sell value",
+     "ranks": 1,
+     "tier": 9,
+     "row": 2,
+     "effect": {
+      "crop_value": 0.01
+     }
+    },
+    {
+     "id": "farming_3_0",
+     "name": "Market Eye",
+     "desc": "+2% chance of a star harvest (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 3,
+     "effect": {
+      "star_chance": 0.02
+     }
+    },
+    {
+     "id": "farming_3_1",
+     "name": "Seed Pouch",
+     "desc": "+2% chance of a star harvest (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 3,
+     "effect": {
+      "star_chance": 0.02
+     }
+    },
+    {
      "id": "fertilizer",
      "name": "Compost Lore",
      "desc": "+4% chance a crop grows an extra day overnight",
@@ -702,6 +405,51 @@
      "tier": 2,
      "effect": {
       "extra_day": 0.04
+     },
+     "row": 3
+    },
+    {
+     "id": "farming_u_field_runner",
+     "name": "Field Runner",
+     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "ranks": 1,
+     "tier": 3,
+     "row": 3,
+     "effect": {
+      "move_speed": 0.05
+     },
+     "unlock": true
+    },
+    {
+     "id": "farming_3_4",
+     "name": "Polished Produce",
+     "desc": "+2% chance of a star harvest (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 3,
+     "effect": {
+      "star_chance": 0.02
+     }
+    },
+    {
+     "id": "farming_3_5",
+     "name": "Shiny Skins",
+     "desc": "+2% chance of a star harvest (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 3,
+     "effect": {
+      "star_chance": 0.02
+     }
+    },
+    {
+     "id": "golden_seeds",
+     "name": "Golden Seeds",
+     "desc": "+5% chance per rank of a star harvest: two extra crops, and gold quality more often",
+     "ranks": 2,
+     "tier": 6,
+     "effect": {
+      "star_chance": 0.05
      },
      "row": 3
     },
@@ -715,6 +463,29 @@
       "seed_back": 0.1
      },
      "row": 3
+    },
+    {
+     "id": "farming_u_bountiful_touch",
+     "name": "Bountiful Touch",
+     "desc": "Learn the Growth spell: the crop in front of you grows a day.",
+     "ranks": 1,
+     "tier": 8,
+     "row": 3,
+     "effect": {
+      "spell": "growth"
+     },
+     "unlock": true
+    },
+    {
+     "id": "farming_3_9",
+     "name": "Star Sense",
+     "desc": "+4% chance of a star harvest",
+     "ranks": 1,
+     "tier": 9,
+     "row": 3,
+     "effect": {
+      "star_chance": 0.04
+     }
     }
    ]
   },
@@ -841,12 +612,12 @@
     {
      "id": "mining_0_9",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 2
+      "shard_bonus": 0.12
      }
     },
     {
@@ -960,12 +731,12 @@
     {
      "id": "mining_1_9",
      "name": "Endurance",
-     "desc": "+2 max energy",
+     "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 2
+      "shard_bonus": 0.12
      }
     },
     {
@@ -1118,8 +889,8 @@
     {
      "id": "mining_3_3",
      "name": "Hardy",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
@@ -1129,8 +900,8 @@
     {
      "id": "mining_3_4",
      "name": "Sturdy Frame",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
@@ -1162,23 +933,23 @@
     {
      "id": "mining_3_7",
      "name": "Tough Hide",
-     "desc": "+2 max health",
+     "desc": "+1 toward an extra stone per rock; 3 make one more",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "hp": 2
+      "stone_bonus": 1
      }
     },
     {
      "id": "mining_3_8",
      "name": "Stamina II",
-     "desc": "+2 max energy",
+     "desc": "+5% extra ore",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 2
+      "ore_bonus": 0.05
      }
     },
     {
@@ -1192,72 +963,6 @@
       "tremor": 1
      },
      "unlock": true
-    },
-    {
-     "id": "mining_0_9",
-     "name": "Stamina",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 0,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "mining_1_9",
-     "name": "Endurance",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "iron_will",
-     "name": "Iron Will",
-     "desc": "Mining costs 15% less energy (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "effect": {
-      "mine_energy": 0.15
-     },
-     "row": 3
-    },
-    {
-     "id": "mining_3_3",
-     "name": "Hardy",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 3,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "mining_3_4",
-     "name": "Sturdy Frame",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 4,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "mining_3_7",
-     "name": "Tough Hide",
-     "desc": "+1 toward an extra stone per rock; 3 make one more",
-     "ranks": 1,
-     "tier": 7,
-     "row": 3,
-     "effect": {
-      "stone_bonus": 1
-     }
     }
    ]
   },
@@ -1495,12 +1200,12 @@
     {
      "id": "foraging_1_9",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+5% rare forage chance",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 2
+      "rare_forage": 0.05
      }
     },
     {
@@ -1599,23 +1304,23 @@
     {
      "id": "foraging_2_8",
      "name": "Endurance",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 2,
+     "desc": "+10% chance a swing bites twice",
+     "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 2
+      "chop_bonus": 1
      }
     },
     {
      "id": "foraging_2_9",
      "name": "Early Riser",
-     "desc": "+2 max energy",
+     "desc": "+4% chance of sap",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 2
+      "sap_chance": 0.04
      }
     },
     {
@@ -1632,8 +1337,8 @@
     {
      "id": "foraging_3_1",
      "name": "Sturdy Frame",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
@@ -1682,95 +1387,6 @@
      }
     },
     {
-     "id": "keeper_of_the_woods",
-     "name": "Keeper of the Woods",
-     "desc": "Chopping costs half the energy",
-     "ranks": 1,
-     "tier": 6,
-     "effect": {
-      "wood_energy": 0.5
-     },
-     "row": 3
-    },
-    {
-     "id": "wild_friend",
-     "name": "Wild Friend",
-     "desc": "+10% chance a swing bites twice",
-     "ranks": 1,
-     "tier": 7,
-     "effect": {
-      "chop_bonus": 1
-     },
-     "row": 3
-    },
-    {
-     "id": "foraging_3_8",
-     "name": "Good Health",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "foraging_u_domino_fall",
-     "name": "Domino Fall",
-     "desc": "A tree you fell knocks down the tree behind it too.",
-     "ranks": 1,
-     "tier": 9,
-     "row": 3,
-     "effect": {
-      "timber": 1
-     },
-     "unlock": true
-    },
-    {
-     "id": "foraging_1_9",
-     "name": "Stamina",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "foraging_2_8",
-     "name": "Endurance",
-     "desc": "+2 max energy",
-     "ranks": 1,
-     "tier": 8,
-     "row": 2,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "foraging_2_9",
-     "name": "Early Riser",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "foraging_3_1",
-     "name": "Sturdy Frame",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 1,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
      "id": "wild_friend",
      "name": "Wild Friend",
      "desc": "+10% chance a swing bites twice",
@@ -1798,7 +1414,22 @@
      "desc": "Chopping costs half the energy",
      "ranks": 1,
      "tier": 8,
+     "effect": {
+      "wood_energy": 0.5
+     },
      "row": 3
+    },
+    {
+     "id": "foraging_u_domino_fall",
+     "name": "Domino Fall",
+     "desc": "A tree you fell knocks down the tree behind it too.",
+     "ranks": 1,
+     "tier": 9,
+     "row": 3,
+     "effect": {
+      "timber": 1
+     },
+     "unlock": true
     }
    ]
   },
@@ -2015,12 +1646,12 @@
     {
      "id": "fishing_1_7",
      "name": "Endurance",
-     "desc": "+2 max energy",
+     "desc": "+2% faster levelling in this skill",
      "ranks": 1,
      "tier": 7,
      "row": 1,
      "effect": {
-      "energy": 2
+      "xp_gain": 0.02
      }
     },
     {
@@ -2283,459 +1914,6 @@
      "id": "fighter",
      "name": "Fighter",
      "desc": "+1 sword damage (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "effect": {
-      "damage": 1
-     },
-     "row": 0
-    },
-    {
-     "id": "combat_u_honed_blade",
-     "name": "Honed Blade",
-     "desc": "+2 damage on every hit.",
-     "ranks": 1,
-     "tier": 1,
-     "row": 0,
-     "effect": {
-      "damage": 2
-     },
-     "unlock": true
-    },
-    {
-     "id": "critical_eye",
-     "name": "Critical Eye",
-     "desc": "+10% crit chance (per rank)",
-     "ranks": 2,
-     "tier": 2,
-     "effect": {
-      "crit": 0.1
-     },
-     "row": 0
-    },
-    {
-     "id": "combat_0_3",
-     "name": "Sharp Edge",
-     "desc": "+1 sword damage (per rank)",
-     "ranks": 3,
-     "tier": 3,
-     "row": 0,
-     "effect": {
-      "damage": 1
-     }
-    },
-    {
-     "id": "combat_0_4",
-     "name": "Quick Draw",
-     "desc": "+1 sword damage (per rank)",
-     "ranks": 3,
-     "tier": 4,
-     "row": 0,
-     "effect": {
-      "damage": 1
-     }
-    },
-    {
-     "id": "combat_u_keen_edge",
-     "name": "Keen Edge",
-     "desc": "+3 damage on every hit.",
-     "ranks": 1,
-     "tier": 5,
-     "row": 0,
-     "effect": {
-      "damage": 3
-     },
-     "unlock": true
-    },
-    {
-     "id": "champion",
-     "name": "Champion",
-     "desc": "Enemies drop double loot",
-     "ranks": 1,
-     "tier": 6,
-     "row": 0
-    },
-    {
-     "id": "combat_0_7",
-     "name": "Weak Spot",
-     "desc": "+3% critical hit chance (per rank)",
-     "ranks": 2,
-     "tier": 7,
-     "row": 0,
-     "effect": {
-      "crit": 0.03
-     }
-    },
-    {
-     "id": "legend",
-     "name": "Legend",
-     "desc": "+20 max health",
-     "ranks": 1,
-     "tier": 8,
-     "effect": {
-      "hp": 20
-     },
-     "row": 0
-    },
-    {
-     "id": "combat_0_9",
-     "name": "Clean Strike",
-     "desc": "+2 sword damage",
-     "ranks": 1,
-     "tier": 9,
-     "row": 0,
-     "effect": {
-      "damage": 2
-     }
-    },
-    {
-     "id": "combat_1_0",
-     "name": "Practice",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Brace"
-     ]
-    },
-    {
-     "id": "combat_1_1",
-     "name": "Study",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 1,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Parry"
-     ]
-    },
-    {
-     "id": "defender",
-     "name": "Defender",
-     "desc": "12% chance to shrug off a hit (per rank)",
-     "ranks": 2,
-     "tier": 2,
-     "effect": {
-      "block": 0.12
-     },
-     "row": 1
-    },
-    {
-     "id": "acrobat",
-     "name": "Acrobat",
-     "desc": "Longer knockback on enemies; dodge-roll on double tap",
-     "ranks": 1,
-     "tier": 3,
-     "row": 1
-    },
-    {
-     "id": "combat_u_fleet_foot",
-     "name": "Fleet Foot",
-     "desc": "Move 5% faster (all trees together: 25% at most).",
-     "ranks": 1,
-     "tier": 4,
-     "row": 1,
-     "effect": {
-      "move_speed": 0.05
-     },
-     "unlock": true
-    },
-    {
-     "id": "combat_1_5",
-     "name": "Lessons",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 5,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Thick Hide"
-     ]
-    },
-    {
-     "id": "iron_skin",
-     "name": "Iron Skin",
-     "desc": "Take 17% less damage (per rank)",
-     "ranks": 2,
-     "tier": 6,
-     "effect": {
-      "damage_reduction": 0.17
-     },
-     "row": 1
-    },
-    {
-     "id": "combat_u_crystal_ward",
-     "name": "Crystal Ward",
-     "desc": "Learn the Crystal Shield spell: block the next blows.",
-     "ranks": 1,
-     "tier": 7,
-     "row": 1,
-     "effect": {
-      "spell": "crystal_shield"
-     },
-     "unlock": true
-    },
-    {
-     "id": "combat_1_8",
-     "name": "Know-How",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
-     "tier": 8,
-     "row": 1,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "combat_1_9",
-     "name": "Hardy",
-     "desc": "+3 max health",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "hp": 3
-     }
-    },
-    {
-     "id": "stamina",
-     "name": "Stamina",
-     "desc": "+15 max energy (per rank)",
-     "ranks": 2,
-     "tier": 0,
-     "effect": {
-      "energy": 15
-     },
-     "row": 2
-    },
-    {
-     "id": "tough",
-     "name": "Tough",
-     "desc": "+20 max health (per rank)",
-     "ranks": 3,
-     "tier": 1,
-     "effect": {
-      "hp": 20
-     },
-     "row": 2
-    },
-    {
-     "id": "combat_u_tanner_s_blueprint",
-     "name": "Tanner's Blueprint",
-     "desc": "Learn to build the Tannery: leather and armour.",
-     "ranks": 1,
-     "tier": 2,
-     "row": 2,
-     "effect": {
-      "blueprint": "tannery"
-     },
-     "unlock": true
-    },
-    {
-     "id": "combat_2_3",
-     "name": "Deep Breaths",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 3,
-     "tier": 3,
-     "row": 2,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "warrior",
-     "name": "Warrior",
-     "desc": "+40 max health",
-     "ranks": 1,
-     "tier": 4,
-     "effect": {
-      "hp": 40
-     },
-     "row": 2
-    },
-    {
-     "id": "combat_2_5",
-     "name": "Experience",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 5,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     },
-     "aka": [
-      "Hearty",
-      "Insight",
-      "Know-How"
-     ]
-    },
-    {
-     "id": "combat_2_6",
-     "name": "Runner",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 2,
-     "tier": 6,
-     "row": 2,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "combat_2_7",
-     "name": "Insight",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
-     "tier": 7,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "combat_u_iron_gut",
-     "name": "Iron Gut",
-     "desc": "Poison and burns can't touch you.",
-     "ranks": 1,
-     "tier": 8,
-     "row": 2,
-     "effect": {
-      "status_guard": 1
-     },
-     "unlock": true
-    },
-    {
-     "id": "combat_u_not_today",
-     "name": "Not Today",
-     "desc": "Once a day, a hit that would knock you out leaves you with 1 health instead.",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "last_stand": 1
-     },
-     "unlock": true
-    },
-    {
-     "id": "combat_3_0",
-     "name": "Rush",
-     "desc": "+1 energy back per foe beaten (per rank)",
-     "ranks": 3,
-     "tier": 0,
-     "row": 3,
-     "effect": {
-      "kill_energy": 1
-     }
-    },
-    {
-     "id": "combat_3_1",
-     "name": "Sturdy Frame",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 1,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "combat_3_2",
-     "name": "Hunter's Eye",
-     "desc": "+1 energy back per foe beaten",
-     "ranks": 1,
-     "tier": 2,
-     "row": 3,
-     "effect": {
-      "kill_energy": 1
-     }
-    },
-    {
-     "id": "combat_3_3",
-     "name": "Drills",
-     "desc": "+2% faster levelling in this skill",
-     "ranks": 1,
-     "tier": 3,
-     "row": 3,
-     "effect": {
-      "xp_gain": 0.02
-     }
-    },
-    {
-     "id": "berserker",
-     "name": "Berserker",
-     "desc": "+2 sword damage when under half health",
-     "ranks": 1,
-     "tier": 4,
-     "effect": {},
-     "row": 3
-    },
-    {
-     "id": "second_wind",
-     "name": "Second Wind",
-     "desc": "Beating an enemy restores 2 energy (per rank)",
-     "ranks": 2,
-     "tier": 5,
-     "effect": {
-      "kill_energy": 2
-     },
-     "row": 3
-    },
-    {
-     "id": "whirlwind",
-     "name": "Whirlwind",
-     "desc": "+4% critical hit chance",
-     "ranks": 1,
-     "tier": 6,
-     "effect": {
-      "crit": 0.04
-     },
-     "row": 3
-    },
-    {
-     "id": "combat_3_7",
-     "name": "Adrenaline",
-     "desc": "+1 energy back per foe beaten",
-     "ranks": 1,
-     "tier": 7,
-     "row": 3,
-     "effect": {
-      "kill_energy": 1
-     }
-    },
-    {
-     "id": "combat_3_8",
-     "name": "Fury",
-     "desc": "+3% critical hit chance",
-     "ranks": 1,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "crit": 0.03
-     }
-    },
-    {
-     "id": "combat_3_9",
-     "name": "Unstoppable",
-     "desc": "+2 energy back per foe beaten",
-     "ranks": 1,
-     "tier": 9,
-     "row": 3,
-     "effect": {
-      "kill_energy": 2
-     }
-    },
-    {
-     "id": "fighter",
-     "name": "Fighter",
-     "desc": "+1 sword damage (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -2753,6 +1931,17 @@
      "effect": {
       "damage": 1
      }
+    },
+    {
+     "id": "critical_eye",
+     "name": "Critical Eye",
+     "desc": "+10% crit chance (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "effect": {
+      "crit": 0.1
+     },
+     "row": 0
     },
     {
      "id": "combat_u_honed_blade",
@@ -2788,6 +1977,36 @@
       "damage": 2
      },
      "unlock": true
+    },
+    {
+     "id": "champion",
+     "name": "Champion",
+     "desc": "Enemies drop double loot",
+     "ranks": 1,
+     "tier": 6,
+     "row": 0
+    },
+    {
+     "id": "combat_0_7",
+     "name": "Weak Spot",
+     "desc": "+3% critical hit chance (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 0,
+     "effect": {
+      "crit": 0.03
+     }
+    },
+    {
+     "id": "legend",
+     "name": "Legend",
+     "desc": "+20 max health",
+     "ranks": 1,
+     "tier": 8,
+     "effect": {
+      "hp": 20
+     },
+     "row": 0
     },
     {
      "id": "combat_0_9",
@@ -2831,6 +2050,37 @@
      ]
     },
     {
+     "id": "defender",
+     "name": "Defender",
+     "desc": "12% chance to shrug off a hit (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "effect": {
+      "block": 0.12
+     },
+     "row": 1
+    },
+    {
+     "id": "acrobat",
+     "name": "Acrobat",
+     "desc": "Longer knockback on enemies; dodge-roll on double tap",
+     "ranks": 1,
+     "tier": 3,
+     "row": 1
+    },
+    {
+     "id": "combat_u_fleet_foot",
+     "name": "Fleet Foot",
+     "desc": "Move 5% faster (all trees together: 25% at most).",
+     "ranks": 1,
+     "tier": 4,
+     "row": 1,
+     "effect": {
+      "move_speed": 0.05
+     },
+     "unlock": true
+    },
+    {
      "id": "combat_1_5",
      "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
@@ -2844,6 +2094,29 @@
       "Lessons",
       "Thick Hide"
      ]
+    },
+    {
+     "id": "iron_skin",
+     "name": "Iron Skin",
+     "desc": "Take 17% less damage (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "effect": {
+      "damage_reduction": 0.17
+     },
+     "row": 1
+    },
+    {
+     "id": "combat_u_crystal_ward",
+     "name": "Crystal Ward",
+     "desc": "Learn the Crystal Shield spell: block the next blows.",
+     "ranks": 1,
+     "tier": 7,
+     "row": 1,
+     "effect": {
+      "spell": "crystal_shield"
+     },
+     "unlock": true
     },
     {
      "id": "combat_1_8",
@@ -2862,13 +2135,69 @@
     {
      "id": "combat_1_9",
      "name": "Endurance",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
+    },
+    {
+     "id": "stamina",
+     "name": "Stamina",
+     "desc": "+15 max energy (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "energy": 15
+     },
+     "row": 2
+    },
+    {
+     "id": "tough",
+     "name": "Tough",
+     "desc": "+20 max health (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "effect": {
+      "hp": 20
+     },
+     "row": 2
+    },
+    {
+     "id": "combat_u_tanner_s_blueprint",
+     "name": "Tanner's Blueprint",
+     "desc": "Learn to build the Tannery: leather and armour.",
+     "ranks": 1,
+     "tier": 2,
+     "row": 2,
+     "effect": {
+      "blueprint": "tannery"
+     },
+     "unlock": true
+    },
+    {
+     "id": "combat_2_3",
+     "name": "Deep Breaths",
+     "desc": "+2 max energy",
+     "ranks": 1,
+     "tier": 3,
+     "row": 2,
+     "effect": {
+      "energy": 2
+     }
+    },
+    {
+     "id": "warrior",
+     "name": "Warrior",
+     "desc": "+40 max health",
+     "ranks": 1,
+     "tier": 4,
+     "effect": {
+      "hp": 40
+     },
+     "row": 2
     },
     {
      "id": "combat_2_5",
@@ -2904,6 +2233,41 @@
      }
     },
     {
+     "id": "combat_u_iron_gut",
+     "name": "Iron Gut",
+     "desc": "Poison and burns can't touch you.",
+     "ranks": 1,
+     "tier": 8,
+     "row": 2,
+     "effect": {
+      "status_guard": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "combat_u_not_today",
+     "name": "Not Today",
+     "desc": "Once a day, a hit that would knock you out leaves you with 1 health instead.",
+     "ranks": 1,
+     "tier": 9,
+     "row": 2,
+     "effect": {
+      "last_stand": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "combat_3_0",
+     "name": "Rush",
+     "desc": "+1 energy back per foe beaten (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 3,
+     "effect": {
+      "kill_energy": 1
+     }
+    },
+    {
      "id": "combat_3_1",
      "name": "Battle Cry",
      "desc": "+3% money from beaten foes (per rank)",
@@ -2935,6 +2299,37 @@
      "effect": {
       "hp": 2
      }
+    },
+    {
+     "id": "berserker",
+     "name": "Berserker",
+     "desc": "+2 sword damage when under half health",
+     "ranks": 1,
+     "tier": 4,
+     "effect": {},
+     "row": 3
+    },
+    {
+     "id": "second_wind",
+     "name": "Second Wind",
+     "desc": "Beating an enemy restores 2 energy (per rank)",
+     "ranks": 2,
+     "tier": 5,
+     "effect": {
+      "kill_energy": 2
+     },
+     "row": 3
+    },
+    {
+     "id": "whirlwind",
+     "name": "Whirlwind",
+     "desc": "+4% critical hit chance",
+     "ranks": 1,
+     "tier": 6,
+     "effect": {
+      "crit": 0.04
+     },
+     "row": 3
     },
     {
      "id": "combat_3_7",
@@ -3304,16 +2699,13 @@
     {
      "id": "bartering_2_8",
      "name": "Endurance",
-     "desc": "+2 max energy",
+     "desc": "+2% faster levelling in this skill",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 2
-     },
-     "aka": [
-      "Early Riser"
-     ]
+      "xp_gain": 0.02
+     }
     },
     {
      "id": "bartering_2_9",
@@ -3504,12 +2896,12 @@
     {
      "id": "building_0_5",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+3% less stone for building",
      "ranks": 1,
      "tier": 5,
      "row": 0,
      "effect": {
-      "energy": 2
+      "stone_discount": 0.03
      }
     },
     {
@@ -3526,12 +2918,12 @@
     {
      "id": "building_0_7",
      "name": "Endurance",
-     "desc": "+2 max energy",
+     "desc": "+4% less wood for building",
      "ranks": 1,
      "tier": 7,
      "row": 0,
      "effect": {
-      "energy": 2
+      "wood_discount": 0.04
      }
     },
     {
@@ -4113,12 +3505,12 @@
     {
      "id": "magic_1_9",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+6% damage taken reduced",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 2
+      "damage_reduction": 0.06
      }
     },
     {
@@ -4230,12 +3622,12 @@
     {
      "id": "magic_2_9",
      "name": "Endurance",
-     "desc": "+2 max energy",
+     "desc": "+6% damage taken reduced",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 2
+      "damage_reduction": 0.06
      }
     },
     {
@@ -4321,19 +3713,19 @@
     {
      "id": "magic_3_6",
      "name": "Early Riser",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 2,
+     "desc": "+3% damage taken reduced",
+     "ranks": 1,
      "tier": 6,
      "row": 3,
      "effect": {
-      "energy": 2
+      "damage_reduction": 0.03
      }
     },
     {
      "id": "magic_3_7",
      "name": "Hardy",
-     "desc": "+2 max health (per rank)",
-     "ranks": 2,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
@@ -4363,50 +3755,6 @@
      },
      "branch": "core",
      "row": 3
-    },
-    {
-     "id": "magic_1_9",
-     "name": "Stamina",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "magic_2_9",
-     "name": "Endurance",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "magic_3_6",
-     "name": "Early Riser",
-     "desc": "+2 max energy",
-     "ranks": 1,
-     "tier": 6,
-     "row": 3,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "magic_3_7",
-     "name": "Hardy",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 7,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
     }
    ],
    "branch_keys": {
@@ -4672,12 +4020,12 @@
     {
      "id": "pup_1_9",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+5% pup speed",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 2
+      "pet_speed": 0.05
      }
     },
     {
@@ -4773,12 +4121,12 @@
     {
      "id": "pup_2_7",
      "name": "Endurance",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 2,
+     "desc": "+1 pup defence",
+     "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "energy": 2
+      "pet_def": 1
      }
     },
     {
@@ -4840,8 +4188,8 @@
     {
      "id": "pup_3_3",
      "name": "Hardy",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
@@ -4896,8 +4244,8 @@
     {
      "id": "pup_3_8",
      "name": "Sturdy Frame",
-     "desc": "+2 max health (per rank)",
-     "ranks": 2,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
@@ -4913,61 +4261,6 @@
      "row": 3,
      "effect": {
       "hp": 3
-     }
-    },
-    {
-     "id": "pup_1_9",
-     "name": "Stamina",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "pup_2_7",
-     "name": "Endurance",
-     "desc": "+2 max energy",
-     "ranks": 1,
-     "tier": 7,
-     "row": 2,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "pup_2_9",
-     "name": "Early Riser",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "pup_3_3",
-     "name": "Hardy",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 3,
-     "row": 3,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "pup_3_8",
-     "name": "Sturdy Frame",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "hp": 2
      }
     }
    ]
@@ -5546,12 +4839,12 @@
     {
      "id": "strategist_0_9",
      "name": "Stamina",
-     "desc": "+2 max energy",
+     "desc": "+2 helper zap damage",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 2
+      "helper_damage": 2
      }
     },
     {
@@ -6336,12 +5629,12 @@
     {
      "id": "leadership_3_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+6% faster partner power",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "energy": 3
+      "ability_cooldown": 0.06
      }
     }
    ]
@@ -6415,12 +5708,12 @@
     {
      "id": "hustle_u_fresh_rounds",
      "name": "Fresh Rounds",
-     "desc": "+2 gun damage.",
+     "desc": "+1 gun damage.",
      "ranks": 1,
      "tier": 5,
      "row": 0,
      "effect": {
-      "gun_damage": 2
+      "gun_damage": 1
      },
      "unlock": true
     },
@@ -6482,8 +5775,8 @@
     {
      "id": "hustle_1_1",
      "name": "Spin Cycle",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 1,
      "effect": {
@@ -6527,8 +5820,8 @@
     {
      "id": "hustle_1_5",
      "name": "Fat Envelope",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
@@ -6571,12 +5864,12 @@
     {
      "id": "hustle_1_9",
      "name": "Empire Ledger",
-     "desc": "+2 max energy",
+     "desc": "+8% chance heat cools an extra step overnight",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 2
+      "heat_cool": 0.08
      }
     },
     {
@@ -6593,12 +5886,12 @@
     {
      "id": "hustle_2_1",
      "name": "Hollow Points",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "xp_gain": 0.03
      }
     },
     {
@@ -6663,35 +5956,35 @@
     {
      "id": "hustle_u_heavy_hitter",
      "name": "Heavy Hitter",
-     "desc": "+3 gun damage.",
+     "desc": "+2 gun damage.",
      "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "gun_damage": 3
+      "gun_damage": 2
      },
      "unlock": true
     },
     {
      "id": "hustle_2_8",
      "name": "Iron Nerves",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
+     "desc": "+4% chance heat cools an extra step overnight",
+     "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "xp_gain": 0.03
+      "heat_cool": 0.04
      }
     },
     {
      "id": "hustle_2_9",
      "name": "Second Wind",
-     "desc": "+2 max energy",
+     "desc": "+8% chance heat cools an extra step overnight",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 2
+      "heat_cool": 0.08
      }
     },
     {
@@ -6786,12 +6079,12 @@
     {
      "id": "hustle_3_8",
      "name": "War Room",
-     "desc": "+2 max energy (per rank)",
+     "desc": "+5% battle supply (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 2
+      "supply_rate": 0.05
      }
     },
     {
@@ -6803,107 +6096,6 @@
      "row": 3,
      "effect": {
       "supply_rate": 0.1
-     }
-    },
-    {
-     "id": "hustle_u_fresh_rounds",
-     "name": "Fresh Rounds",
-     "desc": "+1 gun damage.",
-     "ranks": 1,
-     "tier": 5,
-     "row": 0,
-     "effect": {
-      "gun_damage": 1
-     },
-     "unlock": true
-    },
-    {
-     "id": "hustle_1_1",
-     "name": "Spin Cycle",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 1,
-     "row": 1,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "hustle_1_5",
-     "name": "Fat Envelope",
-     "desc": "+2 max health",
-     "ranks": 1,
-     "tier": 5,
-     "row": 1,
-     "effect": {
-      "hp": 2
-     }
-    },
-    {
-     "id": "hustle_1_9",
-     "name": "Empire Ledger",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "hustle_2_1",
-     "name": "Hollow Points",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
-     "tier": 1,
-     "row": 2,
-     "effect": {
-      "xp_gain": 0.03
-     }
-    },
-    {
-     "id": "hustle_u_heavy_hitter",
-     "name": "Heavy Hitter",
-     "desc": "+2 gun damage.",
-     "ranks": 1,
-     "tier": 7,
-     "row": 2,
-     "effect": {
-      "gun_damage": 2
-     },
-     "unlock": true
-    },
-    {
-     "id": "hustle_2_8",
-     "name": "Iron Nerves",
-     "desc": "+2 max energy",
-     "ranks": 1,
-     "tier": 8,
-     "row": 2,
-     "effect": {
-      "energy": 2
-     }
-    },
-    {
-     "id": "hustle_2_9",
-     "name": "Second Wind",
-     "desc": "+3 max energy",
-     "ranks": 1,
-     "tier": 9,
-     "row": 2,
-     "effect": {
-      "energy": 3
-     }
-    },
-    {
-     "id": "hustle_3_8",
-     "name": "War Room",
-     "desc": "+5% battle supply (per rank)",
-     "ranks": 2,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "supply_rate": 0.05
      }
     }
    ],
@@ -7033,8 +6225,8 @@
     {
      "id": "harmony_1_0",
      "name": "Hum",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 3,
+     "desc": "+2 max energy",
+     "ranks": 1,
      "tier": 0,
      "row": 1,
      "effect": {
@@ -7055,8 +6247,8 @@
     {
      "id": "harmony_1_2",
      "name": "Meow Chorus",
-     "desc": "+2 max energy (per rank)",
-     "ranks": 3,
+     "desc": "+2 max energy",
+     "ranks": 1,
      "tier": 2,
      "row": 1,
      "effect": {
@@ -7377,17 +6569,5 @@
    ],
    "arc": "penguins"
   }
- },
- "tier_need": [
-  0,
-  2,
-  5,
-  9,
-  14,
-  20,
-  28,
-  38,
-  50,
-  64
- ]
+ }
 }

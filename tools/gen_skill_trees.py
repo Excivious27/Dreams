@@ -6,7 +6,7 @@ still work) and fills the rest of the grid with nodes that raise the stats the
 game already reads (GameState.bonus). Reads data/skills_base.json, writes
 data/skills.json.   Run: python3 tools/gen_skill_trees.py
 """
-import json, re, os
+import json, math, re, os
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 base = json.load(open(f"{R}/data/skills_base.json"))
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
@@ -472,6 +472,52 @@ for key, cap in TREE_TOTAL_CAPS.items():
         if not done and rk > 1:
             n["ranks"] = 1
             n["desc"] = fmt(key, n["effect"][key])
+# C16a integ: P3 lowered the energy total 120 -> 60 (GameState.TREE_EN_CAP). When the
+# themed fallbacks above are full, re-spread the remaining excess filler ranks into any
+# other perk key the same tree already carries that still has room under its cap.
+for key, cap in TREE_TOTAL_CAPS.items():
+    order = REROLL_ORDER + [sk for sk in out["skills"] if sk not in REROLL_ORDER and sk not in NO_TAIL]
+    cands = []
+    for sk in order:
+        for n in out["skills"][sk]["nodes"]:
+            if re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])) and key in (n.get("effect") or {}):
+                cands.append((sk, n))
+    cands.sort(key=lambda t: (-int(t[1]["tier"]), order.index(t[0])))
+    for sk, n in cands:
+        if max(_arc_total(a, key) for a in ("penguins", "gangsters")) <= cap:
+            break
+        caps = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
+        for gk, gv in GEN_CAPS.get(sk, {}).items():
+            caps[gk] = min(caps.get(gk, gv), gv)
+        used = _tree_used(sk)
+        rk = int(n.get("ranks", 1))
+        c = int(n["tier"])
+        for fk in sorted(used, key=lambda k: (k not in FALLBACK.get(sk, []), k)):
+            if fk in TREE_TOTAL_CAPS or fk not in AMT or fk == "team_xp" or (fk == "xp_gain" and c >= NO_XP_FROM):
+                continue
+            fa = AMT[fk] * (2 if c == 9 else 1)
+            if fk in caps and used.get(fk, 0) + fa * rk > caps[fk] + 1e-9:
+                continue
+            fa = round(fa, 3) if isinstance(fa, float) else fa
+            n["effect"] = {fk: fa}
+            n["desc"] = fmt(fk, fa) + (" (per rank)" if rk > 1 else "")
+            break
+        else:
+            # Every themed key is full at a whole step: take the roomiest float key's last room
+            # (at least half a step, so the rank never reads as junk).
+            best = None
+            for fk in used:
+                if fk in TREE_TOTAL_CAPS or fk not in AMT or fk not in caps or not isinstance(AMT[fk], float) or fk == "team_xp":
+                    continue
+                if fk == "xp_gain" and c >= NO_XP_FROM:
+                    continue
+                room = (caps[fk] - used.get(fk, 0)) / rk
+                if room >= AMT[fk] * 0.5 - 1e-9 and (best is None or room / AMT[fk] > best[1] / AMT[best[0]]):
+                    best = (fk, room)
+            if best:
+                fa = math.floor(min(best[1], AMT[best[0]] * (2 if c == 9 else 1)) * 1000 + 1e-6) / 1000
+                n["effect"] = {best[0]: fa}
+                n["desc"] = fmt(best[0], fa) + (" (per rank)" if rk > 1 else "")
 for arc in ("penguins", "gangsters"):
     for key, cap in list(TREE_TOTAL_CAPS.items()) + [("team_xp", TEAM_XP_CAP)]:
         t = sum(float((n.get("effect") or {}).get(key, 0)) * int(n.get("ranks", 1)) for sk in _arc_trees(arc) for n in out["skills"][sk]["nodes"])

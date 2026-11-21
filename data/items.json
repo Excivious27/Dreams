@@ -1150,8 +1150,8 @@
   "desc": "Good food for a long day.",
   "desc_auto": true,
   "buff": {
-   "kind": "stamina",
-   "minutes": 240,
+   "kind": "defense",
+   "minutes": 180,
    "amount": 1
   },
   "buff_auto": true
