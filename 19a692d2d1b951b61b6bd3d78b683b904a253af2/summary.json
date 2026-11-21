@@ -1,0 +1,41 @@
+{
+ "sha": "19a692d2d1b951b61b6bd3d78b683b904a253af2",
+ "ref": "ci/c12pt-13b510dc",
+ "run": "44887368774",
+ "finished": 1795252047.589003,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 54,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "13b510dc605250c92086bd28a24261b4843b264a",
+  "label": "c12pt",
+  "branch": "c12/integ",
+  "shards": [],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 0,
+ "shards": [],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": []
+}
