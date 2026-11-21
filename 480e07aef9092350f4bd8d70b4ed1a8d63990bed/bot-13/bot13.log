@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 13 start arc=gangsters hero=june style=fighter progress=2 difficulty=3 day_len=40
+BOT 13 done: 0 fails, 0 warns, 630 steps, 2 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", "countryside", "sky", "mine", "iron_junction"], day 5, ◆2195
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

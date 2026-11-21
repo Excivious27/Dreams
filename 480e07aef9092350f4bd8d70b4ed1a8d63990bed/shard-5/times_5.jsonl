@@ -1,0 +1,32 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 86.9}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 33.2}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 7.8}
+{"step": 18, "name": "S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-b", "rc": 0, "secs": 3.2}
+{"step": 24, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 4.0}
+{"step": 30, "name": "team animals + chores: lessons, team, muster, overnight chores, Animal", "rc": 0, "secs": 5.1}
+{"step": 36, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 24.6}
+{"step": 42, "name": "bowling_test", "rc": 0, "secs": 18.0}
+{"step": 48, "name": "pen_test", "rc": 0, "secs": 4.8}
+{"step": 54, "name": "move_target_test", "rc": 0, "secs": 20.5}
+{"step": 60, "name": "decor_sources_test", "rc": 0, "secs": 3.8}
+{"step": 66, "name": "workshop: no dead ends", "rc": 0, "secs": 10.9}
+{"step": 72, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 78, "name": "credits and licences page: Godot MIT, font notice, no family names (S1", "rc": 0, "secs": 3.2}
+{"step": 84, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.1}
+{"step": 90, "name": "footstep_test", "rc": 0, "secs": 7.4}
+{"step": 96, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 4.7}
+{"step": 102, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 10.5}
+{"step": 108, "name": "farm_debris_test", "rc": 0, "secs": 5.6}
+{"step": 114, "name": "campaign_c3_test", "rc": 0, "secs": 3.5}
+{"step": 120, "name": "story: every chapter plays to the end", "rc": 1, "secs": 14.6}
+{"step": 126, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 5.7}
+{"step": 132, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 6.0}
+{"step": 138, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 7.9}
+{"step": 144, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 6.0}
+{"step": 150, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 3.4}
+{"step": 156, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 4.0}
+{"step": 162, "name": "S1 P3: Steam Deck text floor (drawn text scan)", "rc": 0, "secs": 0.1}
+{"step": 168, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.3}
+{"step": 174, "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve", "rc": 0, "secs": 5.6}
+{"step": 180, "name": "deck window: 1280x800 with no window manager fills the screen (xvfb)", "rc": 0, "secs": 9.5}
+{"step": 186, "name": "C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand", "rc": 0, "secs": 0.9}

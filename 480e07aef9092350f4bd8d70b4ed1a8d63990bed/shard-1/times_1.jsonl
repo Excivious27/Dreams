@@ -1,0 +1,32 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 83.8}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 55.9}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.3}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 44.1}
+{"step": 20, "name": "desktop_layout_test", "rc": 0, "secs": 6.9}
+{"step": 26, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 4.8}
+{"step": 32, "name": "C11b P1: the heart (ability) tap is dropped while busy, frozen or in d", "rc": 0, "secs": 4.3}
+{"step": 38, "name": "ticket_econ_test", "rc": 0, "secs": 3.5}
+{"step": 44, "name": "gang_play_test", "rc": 0, "secs": 24.0}
+{"step": 50, "name": "house_exterior_test", "rc": 0, "secs": 7.6}
+{"step": 56, "name": "shop_econ_test", "rc": 0, "secs": 3.8}
+{"step": 62, "name": "gang_flavour_test", "rc": 0, "secs": 3.5}
+{"step": 68, "name": "every sound the game asks for exists", "rc": 0, "secs": 4.0}
+{"step": 74, "name": "Steam: SteamPipe templates, depot exclusions, upload config (S1 P5)", "rc": 0, "secs": 0.0}
+{"step": 80, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.3}
+{"step": 86, "name": "music_stream_test", "rc": 0, "secs": 10.0}
+{"step": 92, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 4.9}
+{"step": 98, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 9.2}
+{"step": 104, "name": "goal_line_test", "rc": 0, "secs": 3.6}
+{"step": 110, "name": "campaign_gate_test", "rc": 0, "secs": 9.3}
+{"step": 116, "name": "skill_glow_test", "rc": 0, "secs": 4.9}
+{"step": 122, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 13.8}
+{"step": 128, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 12.6}
+{"step": 134, "name": "jumper_test", "rc": 0, "secs": 3.5}
+{"step": 140, "name": "C12 story conditions: hero-as-character lines, choice payoffs, watcher", "rc": 0, "secs": 4.2}
+{"step": 146, "name": "C12 P2: gangster story text matches state", "rc": 0, "secs": 3.5}
+{"step": 152, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 3.5}
+{"step": 158, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 12.0}
+{"step": 164, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 4.9}
+{"step": 170, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 5.3}
+{"step": 176, "name": "net transport: NetNode over the in-memory relay twin (NetRelayRoom = s", "rc": 0, "secs": 3.3}
+{"step": 182, "name": "S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf", "rc": 0, "secs": 0.1}

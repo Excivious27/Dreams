@@ -1,0 +1,274 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_drum.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_gang.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whinny.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | symbols.ttf[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_144.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_180.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_512.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_192.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_512.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 102.3s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 6.3s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 4.2s
+
+#### step 15: crops wired in (shard 2/6)
+== crops wired in ==
+interior_back: 0 bad []
+#### step 15 crops wired in: PASS in 0.0s
+
+#### step 21: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 21 phone_ui_test: PASS in 13.1s
+
+#### step 27: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 27 gangster interior skins (c5_04): PASS in 3.8s
+
+#### step 33: C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli (shard 2/6)
+== C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Splicer via RanchGift ==
+c11b_integ_test: 821 checks, 0 failures
+#### step 33 C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli: PASS in 4.2s
+
+#### step 39: rec_links_test (shard 2/6)
+rec_links_test: 0 failures
+#### step 39 rec_links_test: PASS in 3.5s
+
+#### step 45: coop_test (shard 2/6)
+coop_test: 0 failures
+#### step 45 coop_test: PASS in 3.6s
+
+#### step 51: crop_test (shard 2/6)
+crop_test: 0 failures
+#### step 51 crop_test: PASS in 39.2s
+
+#### step 57: ranch_test (shard 2/6)
+ranch_test: 1645 checks, 0 failures
+#### step 57 ranch_test: PASS in 4.8s
+
+#### step 63: cf_layout_test (shard 2/6)
+cf_layout_test: 0 failures
+#### step 63 cf_layout_test: PASS in 10.7s
+
+#### step 69: music loop seams (join click + level jump) (shard 2/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 103
+#### step 69 music loop seams (join click + level jump): PASS in 10.2s
+
+#### step 75: Steam: docs/STEAM.md current, Steamworks brief and ledger consistent ( (shard 2/6)
+== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) ==
+steam_handoff: OK (6 fragments, brief current)
+#### step 75 Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (: PASS in 0.0s
+
+#### step 81: C11a ranch art: species strips, building looks, icons, stations (shard 2/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 81 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.5s
+
+#### step 87: danger_music_test (shard 2/6)
+danger_music_test: 0 failures
+#### step 87 danger_music_test: PASS in 33.9s
+
+#### step 93: allies: enemies fight back, pup commands (shard 2/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 93 allies: enemies fight back, pup commands: PASS in 4.9s
+
+#### step 99: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 99 every script compiles: PASS in 4.8s
+
+#### step 105: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 105 quest_tracker_test: PASS in 5.2s
+
+#### step 111: battle_drill_flow_test (shard 2/6)
+battle_drill_flow_test (penguins): 0 fails
+#### step 111 battle_drill_flow_test: PASS in 11.0s
+
+#### step 117: move_speed_test (shard 2/6)
+move_speed_test: 0 fails
+#### step 117 move_speed_test: PASS in 5.4s
+
+#### step 123: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 2/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+  FAIL penguins granite: ♥10 due
+  FAIL penguins granite: ♥10 played
+  FAIL penguins tess: ♥6 quest  offered
+  FAIL penguins ivy: ♥8 due
+  FAIL penguins ivy: ♥8 played
+  FAIL penguins ivy: ♥10 due
+  FAIL penguins ivy: ♥10 played
+  FAIL gangsters granite: ♥10 due
+  FAIL gangsters granite: ♥10 played
+  FAIL gangsters tess: ♥6 quest  offered
+  FAIL gangsters ivy: ♥8 due
+  FAIL gangsters ivy: ♥8 played
+  FAIL gangsters ivy: ♥10 due
+  FAIL gangsters ivy: ♥10 played
+HEARTS DONE, failures: 14
+Hearts test failed
+#### step 123 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): FAIL rc=1 in 7.9s
+
+#### step 129: crisp art shader on buildings/props (C2 P7) (shard 2/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 129 crisp art shader on buildings/props (C2 P7): PASS in 4.5s
+
+#### step 135: arcade_test (shard 2/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 135 arcade_test: PASS in 4.1s
+
+#### step 141: toasts: never over a boss card, a region card, the pup strip or the en (shard 2/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 141 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 8.6s
+
+#### step 147: C7 P4: heart scene content (shard 2/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 147 C7 P4: heart scene content: PASS in 4.6s
+
+#### step 153: C11b P6: C11b creature voices and ranch sound (shard 2/6)
+== C11b P6: C11b creature voices and ranch sound ==
+ranch_audio_c11b_test: OK
+#### step 153 C11b P6: C11b creature voices and ranch sound: PASS in 3.4s
+
+#### step 159: C9 P1: controller bindings and field play (shard 2/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 159 C9 P1: controller bindings and field play: PASS in 4.6s
+
+#### step 165: C10a P3: decor catalogue (shard 2/6)
+== C10a P3: decor catalogue ==
+decor_catalogue_test: 0 failures
+#### step 165 C10a P3: decor catalogue: PASS in 4.7s
+
+#### step 171: C9 P6: generated data in sync (shard 2/6)
+== C9 P6: generated data in sync ==
+regen_data: ok (23 generators)
+data_sync_check: 0 failures
+#### step 171 C9 P6: generated data in sync: PASS in 40.9s
+
+#### step 177: steam co-op: lobbies + networking messages over FakeSteam (no Steam cl (shard 2/6)
+== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) ==
+net_steam_test: 38 checks, 0 failures
+#### step 177 steam co-op: lobbies + networking messages over FakeSteam (no Steam cl: PASS in 4.9s
+
+#### step 183: S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f (shard 2/6)
+== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) ==
+steam_shots_test: 11 shots, 0 failures
+#### step 183 S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f: PASS in 0.0s
+
+#### shard 2/6 done in 360s: FAIL (villager heart arcs (2-10 hearts, 6-heart quests, daily lines))

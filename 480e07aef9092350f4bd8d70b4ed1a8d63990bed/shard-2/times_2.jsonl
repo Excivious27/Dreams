@@ -1,0 +1,32 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 102.3}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 6.3}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 4.2}
+{"step": 15, "name": "crops wired in", "rc": 0, "secs": 0.0}
+{"step": 21, "name": "phone_ui_test", "rc": 0, "secs": 13.1}
+{"step": 27, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 3.8}
+{"step": 33, "name": "C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli", "rc": 0, "secs": 4.2}
+{"step": 39, "name": "rec_links_test", "rc": 0, "secs": 3.5}
+{"step": 45, "name": "coop_test", "rc": 0, "secs": 3.6}
+{"step": 51, "name": "crop_test", "rc": 0, "secs": 39.2}
+{"step": 57, "name": "ranch_test", "rc": 0, "secs": 4.8}
+{"step": 63, "name": "cf_layout_test", "rc": 0, "secs": 10.7}
+{"step": 69, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.2}
+{"step": 75, "name": "Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (", "rc": 0, "secs": 0.0}
+{"step": 81, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.5}
+{"step": 87, "name": "danger_music_test", "rc": 0, "secs": 33.9}
+{"step": 93, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.9}
+{"step": 99, "name": "every script compiles", "rc": 0, "secs": 4.8}
+{"step": 105, "name": "quest_tracker_test", "rc": 0, "secs": 5.2}
+{"step": 111, "name": "battle_drill_flow_test", "rc": 0, "secs": 11.0}
+{"step": 117, "name": "move_speed_test", "rc": 0, "secs": 5.4}
+{"step": 123, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 1, "secs": 7.9}
+{"step": 129, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 4.5}
+{"step": 135, "name": "arcade_test", "rc": 0, "secs": 4.1}
+{"step": 141, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.6}
+{"step": 147, "name": "C7 P4: heart scene content", "rc": 0, "secs": 4.6}
+{"step": 153, "name": "C11b P6: C11b creature voices and ranch sound", "rc": 0, "secs": 3.4}
+{"step": 159, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 4.6}
+{"step": 165, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 4.7}
+{"step": 171, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 40.9}
+{"step": 177, "name": "steam co-op: lobbies + networking messages over FakeSteam (no Steam cl", "rc": 0, "secs": 4.9}
+{"step": 183, "name": "S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages f", "rc": 0, "secs": 0.0}

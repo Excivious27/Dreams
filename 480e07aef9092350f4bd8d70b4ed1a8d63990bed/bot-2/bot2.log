@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 2 start arc=penguins hero=penguin_f style=story progress=1 difficulty=2 day_len=20
+BOT 2 done: 0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "farm", "sky", "town", "moon", "lake"], day 4, ◆155
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

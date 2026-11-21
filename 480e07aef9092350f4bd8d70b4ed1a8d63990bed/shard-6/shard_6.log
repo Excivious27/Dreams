@@ -1,0 +1,224 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_drum.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_gang.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whinny.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | symbols.ttf[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_144.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_180.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_512.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_192.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_512.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 97.3s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 7.3s
+
+#### step 13: C11b P2 long ranch curve: three years of ranching, both arcs (shard 6/6)
+== C11b P2 long ranch curve: three years of ranching, both arcs ==
+  year 1 ranch income 20118, year 3 83452
+  year 1 ranch income 20118, year 3 83452
+month_curve_test long: 0 failures
+#### step 13 C11b P2 long ranch curve: three years of ranching, both arcs: PASS in 4.9s
+
+#### step 19: S1 P1: the game boots to the title and plays 600 frames on the farm wi (shard 6/6)
+== S1 P1: the game boots to the title and plays 600 frames on the farm with Steam absent (BootProbe) ==
+DREAMS BOOT steam backend=local reason=headless
+DREAMS BOOT version=0.9.0
+DREAMS BOOT title ms=2632
+DREAMS BOOT farm ms=3329
+DREAMS BOOT OK
+#### step 19 S1 P1: the game boots to the title and plays 600 frames on the farm wi: PASS in 3.5s
+
+#### step 25: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 25 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 4.3s
+
+#### step 31: C11b P5: chores rework (hay, spots, value cap, regions, levels), team  (shard 6/6)
+== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice ==
+c11b_p5_test: 100 checks, 0 failures
+#### step 31 C11b P5: chores rework (hay, spots, value cap, regions, levels), team : PASS in 2.8s
+
+#### step 37: rec_test (shard 6/6)
+rec_test: 0 failures
+#### step 37 rec_test: PASS in 5.5s
+
+#### step 43: cash_test (shard 6/6)
+cash_test: scanned 87836 strings, 0 failures
+#### step 43 cash_test: PASS in 3.8s
+
+#### step 49: make_house_parts (shard 6/6)
+#### step 49 make_house_parts: PASS in 0.5s
+
+#### step 55: commons_test (shard 6/6)
+commons_test: 0 failures
+#### step 55 commons_test: PASS in 38.6s
+
+#### step 61: cf_volunteer_test (shard 6/6)
+cf_volunteer_test: 0 failures
+#### step 61 cf_volunteer_test: PASS in 7.3s
+
+#### step 67: art prompts: at most 3 images each (shard 6/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 67 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 73: all ages: no animal dies, is harvested or sold for meat (beasts drop n (shard 6/6)
+== all ages: no animal dies, is harvested or sold for meat (beasts drop no parts) ==
+animal_rule_test: 0 failures
+#### step 73 all ages: no animal dies, is harvested or sold for meat (beasts drop n: PASS in 0.0s
+
+#### step 79: C10a decor art: every catalogue piece and rotation exists (shard 6/6)
+== C10a decor art: every catalogue piece and rotation exists ==
+check ok: 462 catalogue pieces
+#### step 79 C10a decor art: every catalogue piece and rotation exists: PASS in 0.1s
+
+#### step 85: music: every map has a song; web streaming works offline (shard 6/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 603 songs checked, 0 failures
+#### step 85 music: every map has a song; web streaming works offline: PASS in 29.8s
+
+#### step 91: workshop: stations at run time (shard 6/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 91 workshop: stations at run time: PASS in 4.0s
+
+#### step 97: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 6/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 97 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 7.7s
+
+#### step 103: campaign_story_test (shard 6/6)
+campaign_story_test: 0 fails
+#### step 103 campaign_story_test: PASS in 2.9s
+
+#### step 109: campaign_gate_test (shard 6/6)
+campaign_gate_test: 0 fails
+#### step 109 campaign_gate_test: PASS in 7.2s
+
+#### step 115: meow_gate_test (shard 6/6)
+meow_gate_test: 0 fails
+#### step 115 meow_gate_test: PASS in 3.5s
+
+#### step 121: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 6/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 121 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 5.8s
+
+#### step 127: mega regions: the new worlds walk end to end (shard 6/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 127 mega regions: the new worlds walk end to end: PASS in 17.7s
+
+#### step 133: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 6/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 133 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 3.0s
+
+#### step 139: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 6/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 139 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 4.1s
+
+#### step 145: C7 P3: endings and epilogue (shard 6/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 145 C7 P3: endings and epilogue: PASS in 2.9s
+
+#### step 151: C11b P6: battle line-up and team jobs (shard 6/6)
+== C11b P6: battle line-up and team jobs ==
+battle_team_test: OK
+#### step 151 C11b P6: battle line-up and team jobs: PASS in 2.7s
+
+#### step 157: C11a integration: one care path, ranching keys, incubator, farm hands, (shard 6/6)
+== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art ==
+c11a_integ_test: 41 checks, 0 failures
+#### step 157 C11a integration: one care path, ranching keys, incubator, farm hands,: PASS in 3.0s
+
+#### step 163: S1 P3: Steam Deck text floor (every screen at 1280x800) (shard 6/6)
+== S1 P3: Steam Deck text floor (every screen at 1280x800) ==
+ISSUE tap|p_menu_items|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_hero|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_skills|@Button@165'Pup'|18x30
+ISSUE tap|p_menu_pup|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_party|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_social|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_map|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_quests|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_book|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_options|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_keys|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_fieldlog|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_workshop|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_foes|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_messages|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_mail|@Button@165'Pup'|17x30
+ISSUE tap|g_menu_items|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_hero|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_skills|@Button@3354'Pup'|18x30
+ISSUE tap|g_menu_pup|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_party|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_social|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_map|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_quests|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_book|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_options|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_keys|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_fieldlog|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_workshop|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_foes|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_messages|@Button@3354'Pup'|17x30
+ISSUE tap|g_menu_mail|@Button@3354'Pup'|17x30
+deck_text_test: smallest Control text cap 9.5 px at 1280x800
+deck_text_test: 0 issue(s)
+#### step 163 S1 P3: Steam Deck text floor (every screen at 1280x800): PASS in 11.4s
+
+#### step 169: S1 P2: achievements, stats, rich presence (shard 6/6)
+== S1 P2: achievements, stats, rich presence ==
+achievements_test: 0 failures
+#### step 169 S1 P2: achievements, stats, rich presence: PASS in 3.1s
+
+#### step 175: relay: Play together uses the live relay by default, custom server + R (shard 6/6)
+== relay: Play together uses the live relay by default, custom server + Reset to default ==
+net_url_test: 13 checks, 0 failures
+#### step 175 relay: Play together uses the live relay by default, custom server + R: PASS in 4.5s
+
+#### step 181: S1 P6: Steam store text drafts (tokens, limits, banned words, claims g (shard 6/6)
+== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) ==
+store_text_check: warn short-description.md [short]: 252 chars (> 250 leaves little room for translations)
+store_text_check: warn claims.md c4: 'Raise and rehome animals' is rough; review before the page goes live
+store_text_check: warn claims.md c11: 'Online co-op (GATED: use short ALT B until done)' is rough; review before the page goes live
+store_text_check: 5 fields, 0 failures
+#### step 181 S1 P6: Steam store text drafts (tokens, limits, banned words, claims g: PASS in 0.0s
+
+#### step 187: C12 P7: dialogue conditions match game state (talk pools per snapshot, (shard 6/6)
+== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) ==
+dialogue_state_test: OK (0 failures)
+#### step 187 C12 P7: dialogue conditions match game state (talk pools per snapshot,: PASS in 3.0s
+
+#### shard 6/6 done in 292s: PASS

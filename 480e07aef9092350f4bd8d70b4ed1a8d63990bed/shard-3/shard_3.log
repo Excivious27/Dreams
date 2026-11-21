@@ -1,0 +1,186 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_drum.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_gang.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whinny.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | symbols.ttf[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_144.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_180.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_512.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_192.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_512.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 90.4s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 18.0s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 5.3s
+
+#### step 16: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s (shard 3/6)
+== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) ==
+web_export_guard static: ok (0 problems)
+#### step 16 S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s: PASS in 0.4s
+
+#### step 22: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 22 touch_ui_test: PASS in 41.3s
+
+#### step 28: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 28 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 6.3s
+
+#### step 34: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 3/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 34 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 7.5s
+
+#### step 40: rec_reno_test (shard 3/6)
+rec_reno_test: 0 failures
+#### step 40 rec_reno_test: PASS in 3.4s
+
+#### step 46: farm_week_test (shard 3/6)
+farm_week_test: OK (0 fails)
+#### step 46 farm_week_test: PASS in 6.6s
+
+#### step 52: anim_test (shard 3/6)
+anim_test: 0 failures
+#### step 52 anim_test: PASS in 3.8s
+
+#### step 58: ranch_p2_test (shard 3/6)
+ranch_p2_test: 0 failures
+#### step 58 ranch_p2_test: PASS in 3.5s
+
+#### step 64: early_gating_test (shard 3/6)
+early_gating_test: PASS (0 fails)
+#### step 64 early_gating_test: PASS in 6.1s
+
+#### step 70: music: loop points are applied (data/music_loops.json) (shard 3/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 51 entries, 0 failures
+#### step 70 music: loop points are applied (data/music_loops.json): PASS in 3.5s
+
+#### step 76: Steam: ratings / AI disclosure answers still true (S1 P5) (shard 3/6)
+== Steam: ratings / AI disclosure answers still true (S1 P5) ==
+ratings_facts_check: 0 failures
+#### step 76 Steam: ratings / AI disclosure answers still true (S1 P5): PASS in 0.6s
+
+#### step 82: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 3/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 82 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.7s
+
+#### step 88: mix_test (shard 3/6)
+mix_test: 0 failures
+#### step 88 mix_test: PASS in 5.4s
+
+#### step 94: gifts: the Marked and boss powers (shard 3/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 94 gifts: the Marked and boss powers: PASS in 7.8s
+
+#### step 100: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 100 campaign: battles, projects, colonies, big mines: PASS in 8.4s
+
+#### step 106: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 106 street_bat_test: PASS in 3.6s
+
+#### step 112: battle_drill_flow_test (shard 3/6)
+battle_drill_flow_test (gangsters): 0 fails
+#### step 112 battle_drill_flow_test: PASS in 10.9s
+
+#### step 118: settings, slots, quality, discovery, perks, birthdays (shard 3/6)
+== settings, slots, quality, discovery, perks, birthdays ==
+systems_test: 0 failures
+#### step 118 settings, slots, quality, discovery, perks, birthdays: PASS in 4.3s
+
+#### step 124: C7 text: gift articles, plurals, quest wording (shard 3/6)
+== C7 text: gift articles, plurals, quest wording ==
+c7_text_test: 0 fails
+#### step 124 C7 text: gift articles, plurals, quest wording: PASS in 3.5s
+
+#### step 130: fish critters only in deep water (C2 P4) (shard 3/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 130 fish critters only in deep water (C2 P4): PASS in 11.6s
+
+#### step 136: stack_whack_test (shard 3/6)
+stack_whack_test: 0 failures
+#### step 136 stack_whack_test: PASS in 4.1s
+
+#### step 142: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 3/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+season_look_test: PASS (0 fails)
+#### step 142 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 5.3s
+
+#### step 148: C12 P4: hearts, romance and gift words match game state (shard 3/6)
+== C12 P4: hearts, romance and gift words match game state ==
+c12_hearts_gifts_test: OK
+#### step 148 C12 P4: hearts, romance and gift words match game state: PASS in 3.6s
+
+#### step 154: C8 P3: collections (museum, logs, Book tab) (shard 3/6)
+== C8 P3: collections (museum, logs, Book tab) ==
+collections_test: 0 failures
+#### step 154 C8 P3: collections (museum, logs, Book tab): PASS in 4.7s
+
+#### step 160: S1 P3: Deck typing, glyphs, text floor, desktop display (shard 3/6)
+== S1 P3: Deck typing, glyphs, text floor, desktop display ==
+deck_input_test: 0 failures
+#### step 160 S1 P3: Deck typing, glyphs, text floor, desktop display: PASS in 3.3s
+
+#### step 166: C9 P3: full-screen screens with actions only (shard 3/6)
+== C9 P3: full-screen screens with actions only ==
+screens_pad_test: 0 failures
+#### step 166 C9 P3: full-screen screens with actions only: PASS in 4.8s
+
+#### step 172: C10a P5: wardrobe (shard 3/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 172 C10a P5: wardrobe: PASS in 6.0s
+
+#### step 178: steam co-op: web build never parses Steam code (backend object, load b (shard 3/6)
+== steam co-op: web build never parses Steam code (backend object, load by path) ==
+net_web_safety_check: ok
+#### step 178 steam co-op: web build never parses Steam code (backend object, load b: PASS in 0.2s
+
+#### step 184: C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) (shard 3/6)
+== C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) ==
+cond_schema_test OK: 272 when-conditions, 36 keys allowed
+#### step 184 C12 P7: 'when' condition schema (unknown keys, bad values, typo flags): PASS in 0.2s
+
+#### shard 3/6 done in 285s: PASS
