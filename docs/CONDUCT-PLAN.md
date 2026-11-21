@@ -109,6 +109,14 @@ After CONDUCT 13, then the final package and artifact. Builds on C5 (home-world 
 - Auditors screenshot every map in every season/time and rank problems; fix agents redraw art (image tool), reshape maps and edges, and add landmarks and secrets.
 
 
+## CONDUCT 14b — Animation life (Tom, 2026-11-21 00:32)
+Tom: "improve visual animation life ... a very thorough, 100% comprehensive job". Runs right after C14 (world aesthetics), before C15.
+- Ambient motion everywhere it belongs: flags, banners, cloth, awnings, laundry, sails swaying smoothly in the wind (seamless loops, eased, wind strength per weather/season); trees, bushes, tall grass, crops, flowers and reeds sway; smoke, steam, chimney puffs, torches, candles, lanterns flicker; birds, butterflies, fireflies, fish ripples, leaves and petals drifting.
+- Water features: the Town Hall fountain is the named bad example (choppy, jumbled frames) -> smooth, natural, seamless (shader or properly timed frames); every fountain, waterfall, stream, well and pond checked against the good existing water.
+- Magic areas (crystal meadow, sanctuary, moon, Gloamwood, mega regions, Marked/cyber spots in the gang arc): fluctuating ground sparkles, sky shimmers, motes, auroras, glows that pulse softly; well done, never noisy.
+- Characters: idle animations for the player (both arcs, Pip-Pip and Nova, every outfit), NPCs, crew, pets, ranch and team animals, enemies at rest: subtle breathing, blinking, weight shifts, looking around, occasional fidgets, Sun Haven-style; no jitter, respects reduced motion.
+- Method: 20 auditors sweep EVERY region, interior, mega region, colony, battle field, minigame, menu backdrop and both arcs (shots sweep + short GIF/frame-strip captures of each spot) and list every place/category needing motion and every existing animation that is choppy (frame timing, loop seam, pop); fix packages by category (wind/cloth, foliage/crops, water/fountains, magic FX, light/fire/smoke, wildlife, character idles); art via dreams-image where frames are needed; performance budget on web/phone (TriBatch/shaders, baked map rules); a test that every anim loops seamlessly and runs on game time.
+
 ## CONDUCT 15 — Seasons (Tom, 2026-11-19 14:32)
 
 After CONDUCT 14. Each season uniquely built out, both arcs: its own festivals, holidays and events (calendar on the board), seasonal-only items, crops, forage, fish, creatures, shop stock, decor and recipes; unique seasonal quests and story/villager events; seasonal map dressing, weather, music hooks; year-to-year variety (some events only in year 2+). Tests that each season's calendar, availability and events fire correctly.
@@ -120,6 +128,7 @@ After CONDUCT 15, then the final package and artifact. A sophisticated evaluatio
 - Simulate several player styles over 3 in-game years (scripted bots + spreadsheets): income, XP, unlock days, item/region access; tune gates, prices, drop rates and requirements; document the intended unlock timeline (docs/PROGRESSION.md) and add tests that guard it.
 
 
+- BATTLES OPTIONAL BUT WORTH IT (Tom 2026-11-21 00:50, a dedicated C16 package): battle campaigns must not block cozy players. Design and implement: (1) a fair way forward after a lost (or skipped) mission: e.g. after a loss offer Retry (same or easier setup, Difficulty-aware), "Take the long way" (a non-combat route to the next region: a quest, a toll/favour, a travel unlock or a story bypass scene, both arcs, all ages), and later retries from the campaign board; region access never hard-locked behind winning; (2) a progressively tiered, sophisticated reward ladder that makes battles almost critical to engage with: per-mission stars/ranks, tiered chests, unique gear/cosmetics/decor/titles, ally upgrades, recruit unlocks, region perks and shortcuts, museum/collection entries, achievements, mastery tracks; nothing story-essential or required for 100% of the main path; (3) clear UI: what you get for winning, what the bypass costs, how to come back; (4) tests: every region reachable with zero battle wins (both arcs), reward ladder grants, retry flow; bots run a no-battle path.
 ## CONDUCT 17 — Multiplayer (Tom, 2026-11-19 15:13)
 
 After CONDUCT 16, then the final package and artifact. A full review of the whole game engine so co-op is enjoyable, smooth and seamless: every system checked for host/guest sync, saves, joining mid-session, shared vs personal progress, latency on phones.
@@ -202,6 +211,14 @@ A major side arc built on Tom's real store, The General Store (Spokane, est. 194
 - ECONOMY: a store-credit/loyalty card, wholesale buying for your farm goods (the store buys your crops/crafts for its shelves), gift cards as gifts; numbers in a generator with an economy check; both arcs (gangster arc: a family store under pressure from the gangs, protection-racket plot you resolve the right way; penguin arc: the cozy heart of town).
 - Tests: store_test (departments reachable, quests, upgrades, economy), phone UI audit of every store screen, bots walk the store. Art via image tool; music: an upbeat in-store song (ACE).
 
+## CONDUCT 23b — Full visual design polish (Tom, 2026-11-21 00:42)
+Tom: review ALL imagery and graphic design, 100% comprehensive, so the game looks state-of-the-art designed. Runs right after C23 (art direction), before the final package.
+- Towns, cities and regions superbly fleshed out and put together like Sun Haven's towns: intentional layouts, paths that lead somewhere, landmarks, clustered props and decor, gardens, fences, lamps, signs, ground detail and transitions; no empty or random-looking patches; both arcs (penguin whimsical, gang serious cyber/underworld).
+- Every map, interior, mega region, colony, battle field, minigame, menu, HUD, icon set, portrait, title and credits: nothing choppy, mismatched or low-res; consistent scale, palette, outlines and lighting; smooth edges and tile seams.
+- Backgrounds and skies match where you are (theme, season, time, weather); parallax/sky layers where they help.
+- UI and graphic design intuitive and polished: readable hierarchy, consistent frames, buttons and typography on phone.
+- Method: 20 auditors (shots sweep of every spot both arcs + design-review checklist per place) → fix packages by area (penguin towns, gang cities, regions, mega regions/colonies, interiors, UI/icons/menus); art via dreams-image (1000/day), sliced and audited; before/after shots in the package.
+
 ## Split build-from-scratch runs (Tom 20:18, OPTIMIZE CONDUCT)
 Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, full package):
 - C10a decor/cosmetics: the item catalogue, rarity tiers, shops/rewards/drops, placing furniture/wallpaper/flooring indoors, apparel and footwear (wardrobe), data generator + tests.
@@ -210,7 +227,7 @@ Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, 
 - C11b ranching: exotics and fantastic creatures (ostrich, Komodo, space and Merkitty Islands creatures; gangster genetically modified ones), quest-earned animals, ranch buildings tiers, helper automation full (assign to farm/combat/forage/chests, levels, energy), balance + art.
 - C18a cutscenes: cutscene engine (art panels, staged NPC scenes, skip), the Crystopia intro (Star Crystal visits the hero), main-story beats both arcs.
 - C18b cutscenes: random night events, side-event and quirky side-quest scenes, big openings (rec, casino, General Store), polish + art.
-Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, then the final package.
+Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C14b (animation life, Tom 2026-11-21), C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, C23b (full visual design polish, Tom 2026-11-21), then the final package.
 
 ## CONDUCT timing (Tom 20:18)
 Every report carries a timing table (audit, sort, fix, merge+CI, package, total, gap since the last CONDUCT ended); the progress sheet has a Timing tab. Target about 1.5-2 h between finished CONDUCTs (Tom 20:22: ideally ~1.5 h all in).
