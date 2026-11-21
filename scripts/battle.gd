@@ -836,8 +836,11 @@ func _tick() -> void:
 			var bt := map.boss_track(bb.kind)
 			var hm := Music.instance(get_tree())
 			hm.sfx(pick_sfx(hm, ["war_horn", "j_battle_start"] if GameState.is_penguins() else ["war_horn_gang", "war_horn", "j_battle_start"]), "alert")  # never the bicycle 'horn'
-			hm.play(bt, 0.4)
-			DangerMusic.boss_started(map, bt)
+			if Art.has("ui", "card_" + bb.kind):  # P5: every captain has a card (ui/card_gcap_*); boss_card plays the theme too
+				map.boss_card(bb.kind, bb.display_name())
+			else:
+				hm.play(bt, 0.4)
+				DangerMusic.boss_started(map, bt)
 	if camp != "":
 		_keep()
 	if int(tickets["ally"]) <= 0:
@@ -1786,26 +1789,6 @@ func win_stats() -> Dictionary:
 		"allies_lost": lost, "elapsed": _elapsed}
 
 
-## BattleRewards.on_win (P4) called guarded, so this file works with or without the ladder merged.
-## Campaign.finish (P3) does not call it: Battle is the one caller for campaign wins.
-func rewards_on_win(cid: String, nid: String, stats: Dictionary) -> Array:
-	var path := "res://scripts/battle_rewards.gd"
-	if cid == "" or nid == "" or not ResourceLoader.exists(path):
-		return []
-	var br: Script = load(path)
-	if br == null:
-		return []
-	var has := false
-	for mt: Dictionary in br.get_script_method_list():
-		if str(mt.get("name", "")) == "on_win":
-			has = true
-			break
-	if not has:
-		return []
-	var out: Variant = br.call("on_win", cid, nid, 0, stats, map)
-	return out if out is Array else []
-
-
 ## c16b_13-03: fighting side by side brings people closer: each fielded partner or friend
 ## who saw the win gets friendship (a small step, once per fight). Crew loyalty keeps its talks.
 func bond_step() -> Array:
@@ -1841,11 +1824,15 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	var cid := camp
 	var nid := str(d.get("node", ""))
+	# Battle's stats go to Campaign.finish, which makes the one BattleRewards.on_win call (stars; assist caps at 2).
 	var stats := win_stats()
+	stats["assist"] = int(d.get("assist", 0))
+	var fight: Variant = Campaign.st().get("fight", {})
+	if fight is Dictionary and not (fight as Dictionary).is_empty():
+		(fight as Dictionary)["perf"] = stats
 	var lines := Campaign.finish(won, supply)
 	if won:
 		map.xp("combat", 30)
-		lines.append_array(rewards_on_win(cid, nid, stats))
 		lines.append_array(bond_step())
 	lines.append_array(after_lines(won))
 	GameState.save()

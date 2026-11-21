@@ -18,4 +18,5 @@ python3 -B tools/gen_festivals.py >/dev/null || { echo "regen_data: gen_festival
 python3 -B tools/gen_calendar.py >/dev/null || { echo "regen_data: gen_calendar failed"; exit 1; }  # C15 P1 calendar rows (markets, small events)
 python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 python3 -B tools/gen_progression.py >/dev/null || { echo "regen_data: gen_progression failed"; exit 1; }  # C16a P1 unlock timeline (docs/PROGRESSION.md -> data/progression.json)
+python3 -B tools/gen_battle_rewards.py >/dev/null || { echo "regen_data: gen_battle_rewards failed"; exit 1; }  # C16b P4 reward ladder (reads battles.json + decor.json)
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"

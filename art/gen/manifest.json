@@ -105856,8 +105856,8 @@
   },
   "billboard_winter": {
    "file": "props/billboard_winter.png",
-   "h": 81,
-   "w": 80
+   "w": 80,
+   "h": 81
   },
   "birdbath": {
    "file": "props/birdbath.png",
@@ -106469,8 +106469,8 @@
   },
   "bus_stop_winter": {
    "file": "props/bus_stop_winter.png",
-   "h": 60,
-   "w": 80
+   "w": 80,
+   "h": 60
   },
   "c14bp3_bonfire": {
    "cell_h": 140,
@@ -106710,63 +106710,63 @@
   },
   "c15p6_crate_stack": {
    "file": "props/c15p6_crate_stack.png",
-   "h": 150,
-   "w": 120
+   "w": 120,
+   "h": 150
   },
   "c15p6_envelope_0": {
    "file": "props/c15p6_envelope_0.png",
-   "h": 48,
-   "w": 61
+   "w": 61,
+   "h": 48
   },
   "c15p6_envelope_1": {
    "file": "props/c15p6_envelope_1.png",
-   "h": 48,
-   "w": 60
+   "w": 60,
+   "h": 48
   },
   "c15p6_envelope_2": {
    "file": "props/c15p6_envelope_2.png",
-   "h": 48,
-   "w": 63
+   "w": 63,
+   "h": 48
   },
   "c15p6_feast_table": {
    "file": "props/c15p6_feast_table.png",
-   "h": 230,
-   "w": 162
+   "w": 162,
+   "h": 230
   },
   "c15p6_food_truck": {
    "file": "props/c15p6_food_truck.png",
-   "h": 230,
-   "w": 262
+   "w": 262,
+   "h": 230
   },
   "c15p6_golden_egg": {
    "file": "props/c15p6_golden_egg.png",
-   "h": 56,
-   "w": 57
+   "w": 57,
+   "h": 56
   },
   "c15p6_neon_string": {
    "file": "props/c15p6_neon_string.png",
-   "h": 170,
-   "w": 239
+   "w": 239,
+   "h": 170
   },
   "c15p6_parade_float": {
    "file": "props/c15p6_parade_float.png",
-   "h": 190,
-   "w": 206
+   "w": 206,
+   "h": 190
   },
   "c15p6_pumpkin_lantern_0": {
    "file": "props/c15p6_pumpkin_lantern_0.png",
-   "h": 78,
-   "w": 75
+   "w": 75,
+   "h": 78
   },
   "c15p6_pumpkin_lantern_1": {
    "file": "props/c15p6_pumpkin_lantern_1.png",
-   "h": 78,
-   "w": 75
+   "w": 75,
+   "h": 78
   },
   "c15p6_pumpkin_lantern_2": {
    "file": "props/c15p6_pumpkin_lantern_2.png",
-   "h": 82,
-   "w": 81
+   "w": 81,
+   "h": 82
   },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
@@ -107358,8 +107358,8 @@
   },
   "city_brickwall_winter": {
    "file": "props/city_brickwall_winter.png",
-   "h": 73,
-   "w": 128
+   "w": 128,
+   "h": 73
   },
   "city_chainlink": {
    "file": "props/city_chainlink.png",
@@ -107491,8 +107491,8 @@
   },
   "container_blue_winter": {
    "file": "props/container_blue_winter.png",
-   "h": 30,
-   "w": 64
+   "w": 64,
+   "h": 30
   },
   "container_green": {
    "file": "props/container_green.png",
@@ -107526,8 +107526,8 @@
   },
   "container_red_winter": {
    "file": "props/container_red_winter.png",
-   "h": 30,
-   "w": 64
+   "w": 64,
+   "h": 30
   },
   "coop": {
    "file": "props/coop.png",
@@ -107856,8 +107856,8 @@
   },
   "diner_pink_winter": {
    "file": "props/diner_pink_winter.png",
-   "h": 91,
-   "w": 112
+   "w": 112,
+   "h": 91
   },
   "dirt_ramp": {
    "file": "props/dirt_ramp.png",
@@ -109202,8 +109202,8 @@
   },
   "fish_market_winter": {
    "file": "props/fish_market_winter.png",
-   "h": 69,
-   "w": 112
+   "w": 112,
+   "h": 69
   },
   "fish_pond": {
    "cell_h": 44,
@@ -109345,8 +109345,8 @@
   },
   "forklift_winter": {
    "file": "props/forklift_winter.png",
-   "h": 50,
-   "w": 80
+   "w": 80,
+   "h": 50
   },
   "fountain": {
    "cell_h": 64,
@@ -109446,8 +109446,8 @@
   },
   "gas_station_winter": {
    "file": "props/gas_station_winter.png",
-   "h": 113,
-   "w": 208
+   "w": 208,
+   "h": 113
   },
   "gate2": {
    "file": "props/gate2.png",
@@ -109697,8 +109697,8 @@
   },
   "guard_booth_winter": {
    "file": "props/guard_booth_winter.png",
-   "h": 71,
-   "w": 104
+   "w": 104,
+   "h": 71
   },
   "gull_dock": {
    "cell_h": 24,
@@ -109788,13 +109788,13 @@
   },
   "hedge2_tree_s_winter": {
    "file": "props/hedge2_tree_s_winter.png",
-   "h": 104,
-   "w": 72
+   "w": 72,
+   "h": 104
   },
   "hedge2_tree_winter": {
    "file": "props/hedge2_tree_winter.png",
-   "h": 124,
-   "w": 83
+   "w": 83,
+   "h": 124
   },
   "hedge_b": {
    "file": "props/hedge_b.png",
@@ -110429,8 +110429,8 @@
   },
   "limo_winter": {
    "file": "props/limo_winter.png",
-   "h": 34,
-   "w": 144
+   "w": 144,
+   "h": 34
   },
   "lookout_platform": {
    "file": "props/lookout_platform.png",
@@ -110464,8 +110464,8 @@
   },
   "lux_car_black_winter": {
    "file": "props/lux_car_black_winter.png",
-   "h": 40,
-   "w": 72
+   "w": 72,
+   "h": 40
   },
   "lux_car_red": {
    "file": "props/lux_car_red.png",
@@ -110474,8 +110474,8 @@
   },
   "lux_car_red_winter": {
    "file": "props/lux_car_red_winter.png",
-   "h": 40,
-   "w": 60
+   "w": 60,
+   "h": 40
   },
   "mailbox2_blue": {
    "file": "props/mailbox2_blue.png",
@@ -111941,8 +111941,8 @@
   },
   "motel_cyan_winter": {
    "file": "props/motel_cyan_winter.png",
-   "h": 90,
-   "w": 192
+   "w": 192,
+   "h": 90
   },
   "motel_pink": {
    "file": "props/motel_pink.png",
@@ -112359,8 +112359,8 @@
   },
   "pickup_winter": {
    "file": "props/pickup_winter.png",
-   "h": 43,
-   "w": 96
+   "w": 96,
+   "h": 43
   },
   "pig": {
    "file": "props/pig.png",
@@ -115522,8 +115522,8 @@
   },
   "rusted_car_winter": {
    "file": "props/rusted_car_winter.png",
-   "h": 44,
-   "w": 96
+   "w": 96,
+   "h": 44
   },
   "saddle_crystal": {
    "file": "props/saddle_crystal.png",
@@ -115605,8 +115605,8 @@
   },
   "scooter_winter": {
    "file": "props/scooter_winter.png",
-   "h": 39,
-   "w": 56
+   "w": 56,
+   "h": 39
   },
   "seagull": {
    "cell_h": 36,
@@ -117189,8 +117189,8 @@
   },
   "taxi_winter": {
    "file": "props/taxi_winter.png",
-   "h": 39,
-   "w": 72
+   "w": 72,
+   "h": 39
   },
   "teleporter": {
    "cell_h": 41,
@@ -117288,8 +117288,8 @@
   },
   "trailer_winter": {
    "file": "props/trailer_winter.png",
-   "h": 80,
-   "w": 146
+   "w": 146,
+   "h": 80
   },
   "train": {
    "file": "props/train.png",
@@ -117516,8 +117516,8 @@
   },
   "vend_red_winter": {
    "file": "props/vend_red_winter.png",
-   "h": 56,
-   "w": 36
+   "w": 36,
+   "h": 56
   },
   "vend_space": {
    "file": "props/vend_space.png",
@@ -117567,8 +117567,8 @@
   },
   "water_tower_winter": {
    "file": "props/water_tower_winter.png",
-   "h": 104,
-   "w": 48
+   "w": 48,
+   "h": 104
   },
   "waterfall_pool": {
    "cell_h": 74,
@@ -146699,8 +146699,8 @@
   },
   "buff2_stamina": {
    "file": "ui/buff2_stamina.png",
-   "h": 32,
-   "w": 26
+   "w": 26,
+   "h": 32
   },
   "buff2_stun": {
    "file": "ui/buff2_stun.png",
@@ -155215,6 +155215,46 @@
    "file": "ui/c16bp1_barrage.png",
    "w": 27,
    "h": 28
+  },
+  "c16bp4_chest_commander_gang": {
+   "file": "ui/c16bp4_chest_commander_gang.png",
+   "h": 32,
+   "w": 31
+  },
+  "c16bp4_chest_commander_pen": {
+   "file": "ui/c16bp4_chest_commander_pen.png",
+   "h": 32,
+   "w": 33
+  },
+  "c16bp4_chest_field_gang": {
+   "file": "ui/c16bp4_chest_field_gang.png",
+   "h": 32,
+   "w": 37
+  },
+  "c16bp4_chest_field_pen": {
+   "file": "ui/c16bp4_chest_field_pen.png",
+   "h": 32,
+   "w": 38
+  },
+  "c16bp4_chest_supply_gang": {
+   "file": "ui/c16bp4_chest_supply_gang.png",
+   "h": 32,
+   "w": 36
+  },
+  "c16bp4_chest_supply_pen": {
+   "file": "ui/c16bp4_chest_supply_pen.png",
+   "h": 32,
+   "w": 39
+  },
+  "c16bp4_chest_war_gang": {
+   "file": "ui/c16bp4_chest_war_gang.png",
+   "h": 32,
+   "w": 35
+  },
+  "c16bp4_chest_war_pen": {
+   "file": "ui/c16bp4_chest_war_pen.png",
+   "h": 32,
+   "w": 38
   }
  },
  "ui_creator": {

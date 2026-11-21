@@ -1,0 +1,789 @@
+{
+ "_doc": "C16b P4 battle reward ladder (tools/gen_battle_rewards.py; BattleRewards). Never edit by hand.",
+ "bond_cap": 2,
+ "campaigns": {
+  "c_colony_coral": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "dc_top_globe"
+   },
+   "ladder_money": 1728,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_tt_statue_head",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n2": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 344,
+     "par": 210
+    },
+    "n4": {
+     "crystals": 382,
+     "par": 210
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_colony_ember": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "commander",
+    "trophy": "dc_statue2_crystal"
+   },
+   "ladder_money": 5238,
+   "mastery": {
+    "chest": "commander",
+    "decor": "dc_founders_orrery",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 1096,
+     "par": 255
+    },
+    "n2": {
+     "crystals": 730,
+     "par": 225
+    },
+    "n5": {
+     "crystals": 1339,
+     "par": 285
+    },
+    "n6": {
+     "crystals": 1461,
+     "par": 275
+    },
+    "n7": {
+     "crystals": 0,
+     "par": 315
+    }
+   },
+   "tier": 5
+  },
+  "c_colony_ice": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_tt_trophy_crystal"
+   },
+   "ladder_money": 3707,
+   "mastery": {
+    "chest": "war",
+    "decor": "rp_golden_pin",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n2": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n3": {
+     "crystals": 900,
+     "par": 240
+    },
+    "n4": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n5": {
+     "crystals": 1080,
+     "par": 260
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 300
+    }
+   },
+   "tier": 4
+  },
+  "c_colony_kelp": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_globe3"
+   },
+   "ladder_money": 2940,
+   "mastery": {
+    "chest": "war",
+    "decor": "rp_trophy_gold",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n2": {
+     "crystals": 371,
+     "par": 195
+    },
+    "n3": {
+     "crystals": 681,
+     "par": 255
+    },
+    "n4": {
+     "crystals": 619,
+     "par": 225
+    },
+    "n5": {
+     "crystals": 743,
+     "par": 245
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 285
+    }
+   },
+   "tier": 3
+  },
+  "c_countryside": {
+   "arc": "gangsters",
+   "first_clear": {
+    "chest": "supply",
+    "trophy": "dc_top_dice_cup"
+   },
+   "ladder_money": 1116,
+   "mastery": {
+    "chest": "field",
+    "decor": "rp_trophy_bronze",
+    "tool": {
+     "gangsters": "tommy_gun"
+    }
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n1": {
+     "crystals": 120,
+     "par": 165
+    },
+    "n2": {
+     "crystals": 120,
+     "par": 165
+    },
+    "n3": {
+     "crystals": 240,
+     "par": 215
+    },
+    "n4": {
+     "crystals": 0,
+     "par": 255
+    }
+   },
+   "tier": 1
+  },
+  "c_docks": {
+   "arc": "gangsters",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "dc_tt_snow_globe"
+   },
+   "ladder_money": 1528,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_museum_trophy",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n2": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 382,
+     "par": 210
+    },
+    "n4": {
+     "crystals": 459,
+     "par": 230
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_highlands": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "dc_top_snow_globe"
+   },
+   "ladder_money": 1836,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_tt_trophy_craft_a",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n2": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 421,
+     "par": 240
+    },
+    "n4": {
+     "crystals": 459,
+     "par": 230
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_jungle": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "rp_arcade_medal"
+   },
+   "ladder_money": 3455,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_carnivore_plant",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n2": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n3": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n5": {
+     "crystals": 1080,
+     "par": 260
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 300
+    }
+   },
+   "tier": 4
+  },
+  "c_marsh": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "dc_tt_medal_bronze"
+   },
+   "ladder_money": 1502,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_globe2",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n2": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 382,
+     "par": 210
+    },
+    "n4": {
+     "crystals": 421,
+     "par": 240
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_neon": {
+   "arc": "gangsters",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_tt_trophy_farm_a"
+   },
+   "ladder_money": 2213,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_golden_crate",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n1": {
+     "crystals": 371,
+     "par": 195
+    },
+    "n3": {
+     "crystals": 619,
+     "par": 225
+    },
+    "n4": {
+     "crystals": 557,
+     "par": 225
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 285
+    }
+   },
+   "tier": 3
+  },
+  "c_orchard_hills": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "supply",
+    "trophy": "dc_globe"
+   },
+   "ladder_money": 912,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_top_teapot",
+    "tool": {}
+   },
+   "max_stars": 9,
+   "nodes": {
+    "n2": {
+     "crystals": 120,
+     "par": 165
+    },
+    "n3": {
+     "crystals": 240,
+     "par": 215
+    },
+    "n4": {
+     "crystals": 0,
+     "par": 255
+    }
+   },
+   "tier": 1
+  },
+  "c_quarry": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "rp_trophy_silver"
+   },
+   "ladder_money": 1556,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_telescope2",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n1": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 459,
+     "par": 230
+    },
+    "n4": {
+     "crystals": 421,
+     "par": 240
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_riverlands": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "field",
+    "trophy": "dc_tt_medal_silver"
+   },
+   "ladder_money": 1556,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_tt_trophy_fish_a",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n2": {
+     "crystals": 229,
+     "par": 180
+    },
+    "n3": {
+     "crystals": 459,
+     "par": 230
+    },
+    "n4": {
+     "crystals": 421,
+     "par": 240
+    },
+    "n5": {
+     "crystals": 0,
+     "par": 270
+    }
+   },
+   "tier": 2
+  },
+  "c_ruins": {
+   "arc": "both",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_top_ice_crystal"
+   },
+   "ladder_money": 2473,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_curio_jar",
+    "tool": {}
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n2": {
+     "crystals": 557,
+     "par": 225
+    },
+    "n3": {
+     "crystals": 743,
+     "par": 245
+    },
+    "n5": {
+     "crystals": 619,
+     "par": 225
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 285
+    }
+   },
+   "tier": 3
+  },
+  "c_sky": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_cat_statue"
+   },
+   "ladder_money": 2257,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_ink_brushes",
+    "tool": {
+     "penguins": "prism_lance"
+    }
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n1": {
+     "crystals": 371,
+     "par": 195
+    },
+    "n4": {
+     "crystals": 557,
+     "par": 225
+    },
+    "n5": {
+     "crystals": 681,
+     "par": 255
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 285
+    }
+   },
+   "tier": 3
+  },
+  "c_station": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_books_scrolls"
+   },
+   "ladder_money": 3644,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_top_holo_cube",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n2": {
+     "crystals": 810,
+     "par": 240
+    },
+    "n4": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n5": {
+     "crystals": 1080,
+     "par": 260
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 300
+    }
+   },
+   "tier": 4
+  },
+  "c_underground": {
+   "arc": "gangsters",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_top_gold_bar"
+   },
+   "ladder_money": 3707,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_top_music_box",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n3": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n4": {
+     "crystals": 1080,
+     "par": 260
+    },
+    "n5": {
+     "crystals": 900,
+     "par": 240
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 300
+    }
+   },
+   "tier": 4
+  },
+  "c_uptown": {
+   "arc": "gangsters",
+   "first_clear": {
+    "chest": "war",
+    "trophy": "dc_lucky_cat_gold"
+   },
+   "ladder_money": 3770,
+   "mastery": {
+    "chest": "war",
+    "decor": "dc_crystal_cage",
+    "tool": {}
+   },
+   "max_stars": 15,
+   "nodes": {
+    "n1": {
+     "crystals": 540,
+     "par": 210
+    },
+    "n3": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n4": {
+     "crystals": 990,
+     "par": 270
+    },
+    "n5": {
+     "crystals": 1080,
+     "par": 260
+    },
+    "n6": {
+     "crystals": 0,
+     "par": 300
+    }
+   },
+   "tier": 4
+  },
+  "c_wastes": {
+   "arc": "penguins",
+   "first_clear": {
+    "chest": "supply",
+    "trophy": "dc_top_desk_phone"
+   },
+   "ladder_money": 1116,
+   "mastery": {
+    "chest": "field",
+    "decor": "dc_tt_snowman",
+    "tool": {
+     "penguins": "aurora_blade"
+    }
+   },
+   "max_stars": 12,
+   "nodes": {
+    "n1": {
+     "crystals": 120,
+     "par": 165
+    },
+    "n2": {
+     "crystals": 120,
+     "par": 165
+    },
+    "n3": {
+     "crystals": 240,
+     "par": 215
+    },
+    "n4": {
+     "crystals": 0,
+     "par": 255
+    }
+   },
+   "tier": 1
+  }
+ },
+ "chests": {
+  "commander": {
+   "arc_items": {
+    "gangsters": {
+     "data_chip": 3,
+     "servo": 6
+    },
+    "penguins": {
+     "crystal_refined": 4
+    }
+   },
+   "decor_chance": 0.5,
+   "decor_pool": "chest_t4",
+   "items": {
+    "crystal_battery": 2,
+    "emerald": 1,
+    "ruby": 1
+   },
+   "money": 1400,
+   "name": "Commander's Chest",
+   "name_gang": "Kingpin's Safe",
+   "tier": 5
+  },
+  "field": {
+   "arc_items": {
+    "gangsters": {
+     "data_chip": 1,
+     "servo": 3
+    },
+    "penguins": {
+     "crystal_refined": 2
+    }
+   },
+   "decor_chance": 0.3,
+   "decor_pool": "chest_t2",
+   "items": {
+    "greater_potion": 2,
+    "iron_bar": 4
+   },
+   "money": 300,
+   "name": "Field Chest",
+   "name_gang": "Field Crate",
+   "tier": 2
+  },
+  "supply": {
+   "arc_items": {
+    "gangsters": {
+     "servo": 2
+    },
+    "penguins": {
+     "crystal_refined": 1
+    }
+   },
+   "decor_chance": 0.25,
+   "decor_pool": "chest_t1",
+   "items": {
+    "copper_bar": 3,
+    "potion": 2
+   },
+   "money": 120,
+   "name": "Supply Chest",
+   "name_gang": "Supply Crate",
+   "tier": 1
+  },
+  "war": {
+   "arc_items": {
+    "gangsters": {
+     "data_chip": 2,
+     "servo": 5
+    },
+    "penguins": {
+     "crystal_refined": 3
+    }
+   },
+   "decor_chance": 0.35,
+   "decor_pool": "chest_t3",
+   "items": {
+    "gold_bar": 3,
+    "pearl": 1
+   },
+   "money": 650,
+   "name": "War Chest",
+   "name_gang": "Strongbox",
+   "tier": 3
+  }
+ },
+ "gold_node_chest": "supply",
+ "rematch": {
+  "share": 0.2,
+  "xp_rank": 100,
+  "xp_win": 60
+ },
+ "star_pay": {
+  "2": 0.3,
+  "3": 0.4
+ },
+ "track": [
+  {
+   "at": 10,
+   "money": 500,
+   "xp": 200
+  },
+  {
+   "at": 30,
+   "money": 1200,
+   "xp": 400
+  },
+  {
+   "at": 60,
+   "money": 2500,
+   "xp": 700
+  },
+  {
+   "at": 100,
+   "money": 4000,
+   "xp": 1000
+  }
+ ]
+}

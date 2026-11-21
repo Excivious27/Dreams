@@ -1489,3 +1489,20 @@ echo "$c16bp2out" | grep -E "FAIL|SCRIPT ERROR|battle_feel_test" || true
 if echo "$c16bp2out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp2out" | grep -q "battle_feel_test: 0 fails"; then
   echo "C16b P2 battle feel test failed"; exit 1
 fi
+
+echo "== C16b P4: battle reward ladder (stars, rematch pay, chests, first clear, mastery, track) =="
+c16bp4rout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_rewards_test.gd 2>&1)"
+echo "$c16bp4rout" | grep -E "FAIL|SCRIPT ERROR|battle_rewards_test" || true
+if echo "$c16bp4rout" | grep -q "SCRIPT ERROR" || ! echo "$c16bp4rout" | grep -q "battle_rewards_test: 0 fails"; then
+  echo "C16b P4 battle rewards test failed"; exit 1
+fi
+
+echo "== C16b P4: campaign board (intro, row states, stars, ladder preview, next campaign, actions fit) =="
+c16bp4bout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c16b_p4_board_test.gd 2>&1)"
+echo "$c16bp4bout" | grep -E "FAIL|SCRIPT ERROR|c16b_p4_board_test" || true
+if echo "$c16bp4bout" | grep -q "SCRIPT ERROR" || ! echo "$c16bp4bout" | grep -q "c16b_p4_board_test: 0 fails"; then
+  echo "C16b P4 board test failed"; exit 1
+fi
+if ! python3 tools/slice_c16bp4.py check; then
+  echo "C16b P4 chest icons missing"; exit 1
+fi

@@ -442,6 +442,14 @@ static func loss_choices(cid: String) -> Array:
 
 # ---- the board -----------------------------------------------------------------
 
+## A node's name in this run's arc (P5: shared campaigns carry "name_gangsters"; c16b_18-03).
+static func node_name(cid: String, nid: String) -> String:
+	var n := node(cid, nid)
+	if arc() == "gangsters" and str(n.get("name_gangsters", "")) != "":
+		return str(n["name_gangsters"])
+	return str(n.get("name", nid))
+
+
 static func node(cid: String, nid: String) -> Dictionary:
 	for n in get_c(cid).get("nodes", []):
 		if str(n["id"]) == nid:
@@ -736,6 +744,27 @@ static func launch(m: GameMap, cid: String, nid: String) -> void:
 	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 
 
+## C16b (P4 board): a held battle node can be fought again for stars and the rematch share.
+static func can_rematch(cid: String, nid: String) -> bool:
+	var n := node(cid, nid)
+	if n.is_empty() or str(n.get("type", "")) in NONBATTLE or not taken(cid, nid):
+		return false
+	return guest_lock() == "" and not Net.visiting() and str(cfg(cid, nid).get("field", "")) != ""
+
+
+## Fight a held node again (no base pay, no morale cost; Campaign.finish sees "rematch").
+static func rematch(m: GameMap, cid: String, nid: String) -> bool:
+	if m == null or not can_rematch(cid, nid):
+		return false
+	var fid := str(cfg(cid, nid).get("field", ""))
+	var at := m.player.position - m.offset() if m.player else Vector2.ZERO
+	st()["fight"] = {"cid": cid, "nid": nid, "field": fid, "rematch": true, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
+	var R: Dictionary = RegionData.region(fid)
+	var sp: Array = R.get("spawn", [10, 10])
+	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
+	return true
+
+
 ## Kill pay for a campaign node or the drill on this field: [flag key, kills that
 ## pay] (each node has its own pool; [] for a free field battle).
 static func kill_pool(field: String) -> Array:
@@ -775,7 +804,7 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["campaign"] = cid
 	d["node"] = nid
 	d["mode"] = typ
-	d["title"] = "%s: %s" % [str(get_c(cid)["title"]), str(n["name"])]
+	d["title"] = "%s: %s" % [str(get_c(cid)["title"]), node_name(cid, nid)]
 	d["brief"] = text(n, "brief", str(d.get("brief", "")))
 	d["who"] = who(cid)
 	d["points"] = cf.get("points", d.get("points", []))
@@ -829,6 +858,20 @@ static func finish(won: bool, supply_left: int) -> Array:
 	var s := cs(cid)
 	var lines: Array = []
 	var w := who(cid)
+	# Battle's stats (tickets, KO, losses, time) for the stars; the easier-retry step caps them (P4).
+	var perf: Dictionary = (f.get("perf", {}) as Dictionary).duplicate() if f.get("perf") is Dictionary else {}
+	if not perf.has("assist"):
+		perf["assist"] = assist(cid, nid)
+	if bool(f.get("rematch", false)):  # a rematch on held ground: the ladder pays (stars, rematch share), never the base reward
+		if won:
+			s["wins"] = int(s.get("wins", 0)) + 1
+			if Engine.get_main_loop() is SceneTree:
+				Music.instance(Engine.get_main_loop() as SceneTree).sfx("j_battle_won", "levelup")
+			lines.append({"who": w, "text": "%s holds, and they know it now." % node_name(cid, nid)})
+			lines.append_array(BattleRewards.on_win(cid, nid, int(f.get("stars", 0)), perf))
+		else:
+			lines.append({"who": w, "text": "They pushed us back this time, but %s is still ours. Nothing lost." % node_name(cid, nid)})
+		return lines
 	if won:
 		s["taken"][nid] = true
 		s["at"] = nid
@@ -852,7 +895,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 		for it: String in rw.get("items", {}):
 			GameState.add_item(it, int(rw["items"][it]))
 			got.append("%s ×%d" % [GameState.item_name(it), int(rw["items"][it])])
-		lines.append({"who": w, "text": ("%s is ours. The " + force_word() + " moves up. Morale %d (%s), supply ◇%d.") % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"])), int(s["supply"])]})
+		lines.append({"who": w, "text": ("%s is ours. The " + force_word() + " moves up. Morale %d (%s), supply ◇%d.") % [node_name(cid, nid), int(s["morale"]), morale_word(int(s["morale"])), int(s["supply"])]})
 		if not got.is_empty():
 			lines.append({"text": "+" + ", ".join(got)})
 		var fl := flavour(cid, nid, true)
@@ -860,6 +903,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 			lines.insert(1, {"who": w, "text": fl})
 		if str(n.get("type", "")) == "gate":
 			lines.append_array(_unlock(cid))
+		lines.append_array(BattleRewards.on_win(cid, nid, int(f.get("stars", 0)), perf))  # C16b P4 hook: the one on_win call per win (Battle does not call it)
 	else:
 		s["losses"] = int(s.get("losses", 0)) + 1
 		if not (s.get("lost") is Dictionary):
@@ -867,6 +911,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 		s["lost"][nid] = int(s["lost"].get(nid, 0)) + 1
 		s["last_lost"] = nid
 		st()["after_loss"] = cid  # reopen_later shows the loss card (retry / easier / long way)
+		BattleRewards.on_loss(cid, nid)  # C16b P4 hook
 		s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)  # never too poor to place one helper
 		# The first loss on a node costs half: a retry never starts much worse than the first try.
 		var ml := Difficulty.add("morale_loss")
@@ -875,12 +920,12 @@ static func finish(won: bool, supply_left: int) -> Array:
 			s["morale"] = 40
 			s["supply"] = 0
 			s["at"] = "n0"
-			lines.append({"who": w, "text": "We're routed. Everyone back to %s to regroup. The ground we took is still ours." % str(node(cid, "n0").get("name", "camp"))})
+			lines.append({"who": w, "text": "We're routed. Everyone back to %s to regroup. The ground we took is still ours." % node_name(cid, "n0")})
 		else:
 			var lf := flavour(cid, nid, false)
 			if lf != "":
 				lines.append({"who": w, "text": lf})
-			lines.append({"who": w, "text": "We fall back from %s. Morale %d (%s). Try again, easier if you like, or take the long way round." % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"]))]})
+			lines.append({"who": w, "text": "We fall back from %s. Morale %d (%s). Try again, easier if you like, or take the long way round." % [node_name(cid, nid), int(s["morale"]), morale_word(int(s["morale"]))]})
 	return lines
 
 
@@ -924,7 +969,7 @@ static func retreat(supply_left: int) -> void:
 	var f: Dictionary = st().get("fight", {})
 	var cid := str(f.get("cid", ""))
 	st()["fight"] = {}
-	if cid == "" or not all().has(cid):
+	if cid == "" or not all().has(cid) or bool(f.get("rematch", false)):  # walking off a rematch costs nothing
 		return
 	var s := cs(cid)
 	s["retreats"] = int(s.get("retreats", 0)) + 1

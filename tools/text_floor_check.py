@@ -27,6 +27,14 @@ for p in glob.glob(os.path.join(D, "scripts", "*.gd")):
         m = re.search(r'add_theme_font_size_override\("font_size",\s*(\d+)\)', ln)
         if m and int(m.group(1)) < FLOOR:
             bad.append("%s:%d label font size %s" % (os.path.relpath(p, D), i, m.group(1)))
+# C16b P4 (c16b_10-07): the campaign board's own helpers, _label(text, SIZE, ...) and
+# _text(cv, f, pos, text, SIZE, ...), with a literal size.
+cs = os.path.join(D, "scripts", "campaign_screen.gd")
+for i, ln in enumerate(open(cs), 1):
+    if "_label(" in ln or "_text(cv" in ln:
+        for m in re.finditer(r",\s*(\d+)\s*,\s*(?:Color|gold|dcol|mcol)", ln):
+            if int(m.group(1)) < FLOOR:
+                bad.append("scripts/campaign_screen.gd:%d board text size %s" % (i, m.group(1)))
 print("text floors: %d under %d px" % (len(bad), FLOOR))
 for b in bad:
     print("  " + b)

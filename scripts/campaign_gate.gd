@@ -130,7 +130,10 @@ static func line_up() -> Array:
 
 
 static func need(cid: String) -> Dictionary:
-	return Campaign.get_c(cid).get("need", {})
+	var c := Campaign.get_c(cid)
+	if Campaign.arc() == "gangsters" and c.get("need_gang") is Dictionary:  # P5: gang provisions (rounds, not wood)
+		return c["need_gang"]
+	return c.get("need", {})
 
 
 static func team_short(cid: String) -> int:
@@ -273,6 +276,11 @@ static func drill_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["brief"] = "Three points, a few sleepy foes, and me talking you through it. %s steps, then you're ready to lead." % _steps_word() if GameState.is_penguins() else "Three points, a couple of lookouts, and me in your ear. %s steps and you can run a crew in a fight." % _steps_word()  # c16b_01-03 / 11-19
 	d["who"] = trainer()
 	d["points"] = (dd.get("points", []) as Array).duplicate(true)
+	var pn: Variant = dd.get("point_names", {}).get(Campaign.arc(), {})  # P5: the gang drill's own point names (c16b_18-05)
+	if pn is Dictionary:
+		for pt: Variant in d["points"]:
+			if pt is Dictionary and (pn as Dictionary).has(str((pt as Dictionary).get("id", ""))):
+				(pt as Dictionary)["name"] = str(pn[str((pt as Dictionary)["id"])])
 	d["enemies"] = dd.get("enemies", {}).get(Campaign.arc(), ["grump"])
 	d["enemy_tier"] = 0
 	d["tickets"] = 200

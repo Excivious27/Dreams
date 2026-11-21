@@ -45,6 +45,30 @@ static func push_clause(data: Dictionary) -> String:
 	return "(till then everyone follows you)"
 
 
+## C16b P5 (c16b_04-10): what a campaign brings in that's new, on its first fight only.
+static func new_here_line(data: Dictionary) -> String:
+	var cid := str(data.get("campaign", ""))
+	if cid == "" or str(data.get("mode", "")) == "drill" or int(Campaign.cs(cid).get("wins", 0)) > 0:
+		return ""
+	var nh: Variant = Campaign.get_c(cid).get("new_here", {})
+	var rows: Variant = (nh as Dictionary).get(Campaign.arc(), []) if nh is Dictionary else []
+	return ", ".join(rows) + "." if rows is Array and not (rows as Array).is_empty() else ""
+
+
+## C16b P4: the star goals and this node's best (BattleRewards.node_words); an easier retry caps at 2.
+static func stars_line(data: Dictionary) -> String:
+	var cid := str(data.get("campaign", ""))
+	var nid := str(data.get("node", ""))
+	if cid == "" or nid == "" or str(data.get("mode", "")) == "drill":
+		return ""
+	var nw := BattleRewards.node_words(cid, nid)
+	if nw == "":
+		return ""
+	var g: Array = BattleRewards.goal_words(cid, nid)
+	var cap := " Easier retry: at most 2%s." % BattleRewards.STAR if int(data.get("assist", 0)) > 0 else ""
+	return "%s %s%s" % [" ".join(g.slice(1)), nw, cap]
+
+
 ## c16b_06-08: the pup, ROLL and the partner skill, named in the player's own words.
 static func extra_controls() -> String:
 	var bits: Array = []
@@ -179,6 +203,14 @@ func _ready() -> void:
 	v.add_child(_label(str(WIN.get(mode, WIN[""])), 7, Color(0.75, 1, 0.8)))
 	v.add_child(_head("YOU LOSE IF"))
 	v.add_child(_label(str(LOSE.get(mode, LOSE[""])), 7, Color(1, 0.8, 0.75)))
+	var nh := new_here_line(d)
+	if nh != "":
+		v.add_child(_head("NEW HERE"))
+		v.add_child(_label(nh, 7, Color(0.8, 0.92, 1)))
+	var sw := stars_line(d)
+	if sw != "":
+		v.add_child(_head("STARS"))
+		v.add_child(_label(sw, 7, Color(1, 0.88, 0.5)))
 	var army := _army_line()
 	if army != "":
 		v.add_child(_head("YOUR " + Campaign.force_word().to_upper()))
