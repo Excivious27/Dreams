@@ -224,8 +224,6 @@ func _steam_obj() -> Object:
 		var b: Variant = svc.call("steam_object") if svc.has_method("steam_object") else null
 		if b is Object:
 			return b
-		if Engine.has_singleton("Steam"):
-			return Engine.get_singleton("Steam")
 	return null
 
 

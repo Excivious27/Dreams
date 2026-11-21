@@ -19,6 +19,11 @@ on:
       - "ci/**"
       - "*.md"
   workflow_dispatch:
+    inputs:
+      trailer:
+        description: "Also record the Steam trailer (tools/steam_trailer.sh, S1 P6)"
+        type: boolean
+        default: false
 
 concurrency:
   group: steam-builds-${{ github.ref }}
@@ -146,10 +151,24 @@ jobs:
         shell: bash
         run: |
           export XDG_DATA_HOME="$(mktemp -d)"
+          TIMEV=""; [ -x /usr/bin/time ] && TIMEV="/usr/bin/time -v -o rss-linux.txt"
           start=$(date +%s%3N)
-          timeout 180 build/linux/Dreams.x86_64 --headless --fixed-fps 60 -- --boot-probe > boot-linux.txt 2>&1; code=$?
-          echo "wall ms: $(( $(date +%s%3N) - start )) exit $code" | tee -a boot-linux.txt
+          timeout 180 $TIMEV build/linux/Dreams.x86_64 --headless --fixed-fps 60 -- --boot-probe > boot-linux.txt 2>&1; code=$?
+          wall=$(( $(date +%s%3N) - start ))
+          echo "wall ms: $wall exit $code" | tee -a boot-linux.txt
           tail -n 30 boot-linux.txt
+          # S1 P6: measured numbers for tools/store_sysreq.py (build/metrics.json).
+          rss=$(sed -n 's/.*Maximum resident set size (kbytes): *\([0-9]*\).*/\1/p' rss-linux.txt 2>/dev/null | head -n1)
+          exe=$(stat -c %s build/linux/Dreams.x86_64)
+          other=$(( $(du -sb build/linux | cut -f1) - exe ))
+          echo "{\"pck_bytes\": $exe, \"exe_bytes\": $other, \"boot_s\": $(awk "BEGIN{print $wall/1000}"), \"peak_rss_kb\": ${rss:-0}}" > build/metrics.json
+          cat build/metrics.json
+          python3 tools/store_sysreq.py build/metrics.json | tail -n 12 >> "$GITHUB_STEP_SUMMARY" || true
+      - name: "Linux boot check (S1 P4, headless + Deck-size xvfb)"
+        shell: bash
+        run: |
+          command -v xvfb-run >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq xvfb > /dev/null; }
+          bash tools/linux_boot_check.sh build/linux/Dreams.x86_64
       - name: Report and checks
         shell: bash
         run: |
@@ -178,6 +197,7 @@ jobs:
             build/windows-report.json
             boot-linux.txt
             build-steam-load.txt
+            build/metrics.json
           retention-days: 14
 
   windows-boot:
@@ -267,3 +287,36 @@ jobs:
           size=$(stat -c %s build/web/index.pck)
           echo "### Web export (pre-merge): $((size / 1048576)) MB, $(grep 'files, top' guard.txt | cut -c1-200)" >> "$GITHUB_STEP_SUMMARY"
           test "$size" -lt 146800640 || { echo "pck over the deploy's 140 MB gate"; exit 1; }
+
+  # S1 P6: the Steam trailer, manual only (Actions > Steam desktop builds > Run workflow > trailer).
+  trailer:
+    if: github.event_name == 'workflow_dispatch' && inputs.trailer
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Godot + deps
+        shell: bash
+        run: |
+          V="${GODOT_VERSION}-stable"
+          mkdir -p "$HOME/godot" && cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip && mv "Godot_v${V}_linux.x86_64" godot && chmod +x godot && rm godot.zip
+          echo "$HOME/godot" >> "$GITHUB_PATH"
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb ffmpeg > /dev/null
+          pip install -q -r tools/ci-requirements.txt
+      - name: Import and record the trailer
+        shell: bash
+        run: |
+          godot --headless --path . --import 2>&1 | tail -n 5
+          export XDG_DATA_HOME="$(mktemp -d)" DREAMS_NO_STEAM=1
+          bash tools/steam_trailer.sh build/trailer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: steam-trailer
+          path: |
+            build/trailer/*.mp4
+            build/trailer/thumbnail.png
+          retention-days: 14
