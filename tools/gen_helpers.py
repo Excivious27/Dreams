@@ -37,6 +37,11 @@ CHORES = {
             "sfx": ["voice", "pickup"]},  # "voice" = the animal's own voice (RanchVoice)
     "forage": {"name": "Forage", "short": "forages", "verb": "foraged", "energy": 6, "base": 2, "per_level": 1, "xp": 2, "needs": "chest",
                "sfx": ["pick", "pickup"]},
+    # C16a P6 (c16a_13-11/11-04): recruits fish and mine too (common fish only; ore from the floors you've opened).
+    "fish": {"name": "Fish the farm pond", "short": "fishes", "verb": "fished", "energy": 5, "base": 1, "per_level": 1, "xp": 2, "needs": "chest",
+             "sfx": ["splash", "pickup"]},
+    "mine": {"name": "Dig in the mine", "short": "mines", "verb": "mined", "energy": 6, "base": 2, "per_level": 1, "xp": 2, "needs": "chest",
+             "sfx": ["rock_break", "pickup"]},
     "guard": {"name": "Watch over the pens", "short": "guards", "verb": "watched over", "energy": 1, "base": 3, "per_level": 2, "xp": 1, "needs": "",
               "sfx": ["bark", "pickup"]},  # c11b_09-11: the Guard lesson's own chore (pens kept calm: a smaller friendship share, no lost mood)
 }
@@ -44,8 +49,8 @@ CHORES = {
 WORKERS = {
     "pup": {"energy": 18, "chores": ["forage", "pet"]},
     "animal": {"energy": 16, "chores": ["forage", "pet", "harvest", "guard"]},
-    "crew": {"energy": 24, "chores": ["water", "harvest", "feed", "pet", "forage"]},
-    "partner": {"energy": 20, "chores": ["water", "harvest", "feed", "pet"]},
+    "crew": {"energy": 24, "chores": ["water", "harvest", "feed", "pet", "forage", "fish", "mine"]},
+    "partner": {"energy": 20, "chores": ["water", "harvest", "feed", "pet", "fish", "mine"]},
     "hand": {"energy": 16, "chores": ["feed", "pet"]},   # Ranching Farm Hand nodes (hand_slot); ranch chores only
 }
 
@@ -100,6 +105,11 @@ RULES = {
     "guard_pet_share": 0.25,    # c11b_09-11: guarding keeps the pens calm: a quarter
     "cue_gap": 1.5,             # c11b_14-06: seconds between two chore sounds
     "cue_dist": 170.0,          # px: farther chores are silent
+    # C16a P6 (c16a_13-11): the mine chore digs floors up to half your deepest; ore by that floor.
+    "mine_ore": [[1, "stone"], [3, "coal"], [8, "copper"], [18, "iron"]],
+    "fish_rare_level": 4,       # chore level 4+: the cheaper half of the pond's whole pool, not commons only
+    # Milestone titles on a chore row (Chores tab) at levels 3 and 5.
+    "titles": {"3": "Steady Hand", "5": "Old Pro"},
 }
 
 

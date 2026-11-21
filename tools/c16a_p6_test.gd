@@ -82,6 +82,13 @@ func _run() -> void:
 	# Helper chore levels: level 5 is a 1.5-3 season goal (600 XP), not two weeks.
 	var hd: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/helpers.json"))
 	check(int((hd["levels"] as Array).back()) >= 600, "helper level 5 needs 600 chore XP")
+	# Fish / mine chores (c16a_13-11): crew and partners can take them; the mine needs a visit first.
+	check(((hd["workers"]["crew"]["chores"]) as Array).has("fish") and ((hd["workers"]["partner"]["chores"]) as Array).has("mine"), "crew/partners fish and mine")
+	check(not Chores.chore_pool("fish").is_empty(), "the fish chore has commons to bring back")
+	GameState.run["flags"]["mine_deepest"] = 1
+	check(Chores.chore_pool("mine").is_empty(), "no mine chore before you've been down")
+	GameState.run["flags"]["mine_deepest"] = 40
+	check(Chores.chore_pool("mine").has("iron") and Chores.chore_pool("mine").has("copper"), "deep floors open copper and iron")
 	# Team animals: rank 5 at 35 lessons; every team:true ranch species trains.
 	var ta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/team_animals.json"))
 	check(int(ta["rules"]["max_rank"]) == 5, "team animal max rank 5")
