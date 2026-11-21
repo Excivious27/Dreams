@@ -30,7 +30,7 @@ func _run() -> void:
 		for nm in (bt["mid"] as Array) + (bt["big"] as Array):
 			var g := str(nm).get_slice("/", 0)
 			ok(Art.has(g, str(nm).get_slice("/", 1)), "%s border art %s exists" % [id, nm])
-	ok(not R["neon"].has("ground_seam"), "Neon: no flagstone seam over the wet asphalt")
+	ok(str(R["neon"].get("ground_seam", "")) == "c14p5_wet_asphalt" and Art.has("seamless", "c14p5_wet_asphalt"), "Neon: wet asphalt seamless, no flagstone seam")
 	ok((R["neon"].get("ground_cycle", []) as Array).size() == 4, "Neon: 4 wet asphalt sets mixed")
 	ok(str(R["uptown"].get("ground_seam", "")) == "pavement", "Uptown is paved")
 	var east := 0
@@ -79,6 +79,13 @@ func _run() -> void:
 		for p in R[id].get("props", []):
 			if str(p["name"]).begins_with("icicles_") and str(id).begins_with("frost_") and id != "frost_caverns":
 				ok(false, "%s: icicle fringe on open snow" % id)
+	var falls: Array = (R["frost_falls"]["props"] as Array).map(func(p): return str(p["name"]))
+	ok(falls.has("c14p5_waterfall_frozen") and not falls.has("waterfall_pool"), "Frozen Falls has its frozen waterfall")
+	var rails := (R["iron_freight_yards"]["props"] as Array).filter(func(p): return str(p["name"]) == "rail_h" and not bool(p.get("solid", true)))
+	ok(rails.size() >= 60, "Freight Yards have track (%d rails)" % rails.size())
+	ok((R["iron_junction"]["props"] as Array).any(func(p): return str(p["name"]) == "rail_h"), "Junction City has track")
+	for nm in ["karaoke", "neon_hotel", "ramen_shop", "president_tower"]:
+		ok(Art.has("buildings", nm + "_lit") and Art.tex("buildings", nm + "_lit").get_size() == Art.tex("buildings", nm).get_size(), "%s has a night glow mask" % nm)
 	# colony jetties
 	for cid in ["coral", "kelp", "ice", "ember"]:
 		var rid: String = "colony_" + str(cid)

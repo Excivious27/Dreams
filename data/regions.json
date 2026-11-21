@@ -2063,7 +2063,8 @@
    "wet_asphalt_1",
    "wet_asphalt_2",
    "wet_asphalt_3"
-  ]
+  ],
+  "ground_seam": "c14p5_wet_asphalt"
  },
  "uptown": {
   "cols": 50,
@@ -14710,6 +14711,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "flagstone",
+    "rect": [
+     13,
+     15,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "flagstone",
+    "rect": [
+     25,
+     15,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "flagstone",
+    "rect": [
+     18,
+     12,
+     8,
+     3
+    ]
    }
   ],
   "props": [
@@ -14727,7 +14755,7 @@
     "name": "plaza_04",
     "cell": [
      24,
-     12
+     10
     ],
     "w": 4,
     "h": 2
@@ -14787,7 +14815,7 @@
     "name": "gl_lantern_posts",
     "cell": [
      24,
-     8
+     6
     ],
     "w": 2,
     "h": 1
@@ -14804,7 +14832,7 @@
    {
     "name": "lanterns_pink",
     "cell": [
-     31,
+     30,
      14
     ],
     "w": 3,
@@ -14832,7 +14860,7 @@
    {
     "name": "giant_flower",
     "cell": [
-     29,
+     30,
      20
     ],
     "w": 5,
@@ -14907,7 +14935,7 @@
     ],
     "cell": [
      26,
-     12
+     10
     ],
     "solid": true
    },
@@ -14926,7 +14954,7 @@
    {
     "type": "note",
     "cell": [
-     36,
+     35,
      14
     ],
     "hint": "A: read the lantern board",
@@ -14973,7 +15001,7 @@
     "role": "Gloamwood",
     "cell": [
      20,
-     23
+     13
     ],
     "lines": [
      "Glowmoss grows on the north side of everything. Even me, if I stand still.",
@@ -14988,8 +15016,8 @@
     "sprite": "mg_bramble",
     "role": "Gloamwood",
     "cell": [
-     15,
-     18
+     20,
+     23
     ],
     "lines": [
      "Did you see the giant flower? It sneezed on me.",
@@ -16269,6 +16297,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "cobble_warm",
+    "rect": [
+     14,
+     17,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "cobble_warm",
+    "rect": [
+     28,
+     17,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "cobble_warm",
+    "rect": [
+     18,
+     13,
+     8,
+     3
+    ]
    }
   ],
   "water_blobs": [
@@ -16318,7 +16373,7 @@
    {
     "name": "ds_house_a",
     "cell": [
-     10,
+     9,
      25
     ],
     "w": 3,
@@ -16400,8 +16455,8 @@
    {
     "name": "palm",
     "cell": [
-     17,
-     12
+     25,
+     6
     ],
     "w": 1,
     "h": 1,
@@ -16410,8 +16465,8 @@
    {
     "name": "well_stone",
     "cell": [
-     25,
-     7
+     29,
+     15
     ],
     "w": 2,
     "h": 1
@@ -16524,8 +16579,8 @@
     "sprite": "mg_rahim",
     "role": "Sunscorch Expanse",
     "cell": [
-     21,
-     24
+     26,
+     19
     ],
     "lines": [
      "Fifty years at this well. Never once seen it run dry.",
@@ -17833,6 +17888,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "city_pavement",
+    "rect": [
+     16,
+     16,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "city_pavement",
+    "rect": [
+     27,
+     17,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "city_pavement",
+    "rect": [
+     17,
+     13,
+     8,
+     3
+    ]
    }
   ],
   "props": [
@@ -17877,7 +17959,7 @@
     "name": "station",
     "cell": [
      7,
-     12
+     11
     ],
     "w": 13,
     "h": 4,
@@ -17923,8 +18005,8 @@
    {
     "name": "floodlight_on",
     "cell": [
-     29,
-     23
+     35,
+     24
     ],
     "w": 0,
     "h": 1
@@ -17970,6 +18052,366 @@
     ],
     "w": 2,
     "h": 2
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     4,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     5,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     6,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     7,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     8,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     9,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     10,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     11,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     12,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     13,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     14,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     15,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     16,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     17,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     18,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     19,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     20,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     21,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     22,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     23,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     24,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     25,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     26,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     27,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     28,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     29,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     30,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     31,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     32,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     33,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     34,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     35,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     36,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     37,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     38,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     39,
+     13
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
    }
   ],
   "things": [
@@ -18032,7 +18474,7 @@
    {
     "type": "note",
     "cell": [
-     8,
+     5,
      21
     ],
     "hint": "A: read the timetable",
@@ -18069,7 +18511,7 @@
     "sprite": "mg_dot",
     "role": "Ironline Frontier",
     "cell": [
-     26,
+     16,
      19
     ],
     "lines": [
@@ -18380,6 +18822,1386 @@
      13
     ],
     "solid": false
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     4,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     5,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     6,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     7,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     8,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     9,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     10,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     11,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     12,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     13,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     14,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     15,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     16,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     17,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     18,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     19,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     20,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     21,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     22,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     23,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     24,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     25,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     26,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     27,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     28,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     29,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     30,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     31,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     32,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     33,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     34,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     35,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     36,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     37,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     38,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     39,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     40,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     41,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     42,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     43,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     44,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     45,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     46,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     47,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     48,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     49,
+     25
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     4,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     5,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     6,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     7,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     8,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     9,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     10,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     11,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     12,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     13,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     14,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     15,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     16,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     17,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     18,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     19,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     20,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     21,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     22,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     23,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     24,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     25,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     26,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     27,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     28,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     29,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     30,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     31,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     32,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     33,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     34,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     35,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     36,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     37,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     38,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     39,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     40,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     41,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     42,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     43,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     44,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     45,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     46,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     47,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     48,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     49,
+     28
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     4,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     5,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     6,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     7,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     8,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     9,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     10,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     11,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     12,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     13,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     14,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     15,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     16,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     17,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     18,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     19,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     20,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     21,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     22,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     23,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     24,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     25,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     26,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     27,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     28,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     29,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     30,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     31,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     32,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     33,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     34,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     35,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     36,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     37,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     38,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     39,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     40,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     41,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     42,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     43,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     44,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     45,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     46,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     47,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     48,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     49,
+     31
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
    }
   ],
   "things": [
@@ -19032,6 +20854,386 @@
      18
     ],
     "solid": false
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     4,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     5,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     6,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     7,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     8,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     9,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     10,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     11,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     12,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     13,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     14,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     15,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     16,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     17,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     18,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     19,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     20,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     21,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     22,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     23,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     24,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     25,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     26,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     27,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     28,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     29,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     30,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     31,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     32,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     33,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     34,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     35,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     36,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     37,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     38,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     39,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_h",
+    "cell": [
+     40,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
+   },
+   {
+    "name": "rail_end",
+    "cell": [
+     41,
+     7
+    ],
+    "h": 1,
+    "solid": false,
+    "under": true
    }
   ],
   "things": [
@@ -19338,6 +21540,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "snow_paving",
+    "rect": [
+     15,
+     17,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "snow_paving",
+    "rect": [
+     26,
+     16,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "snow_paving",
+    "rect": [
+     17,
+     13,
+     8,
+     3
+    ]
    }
   ],
   "props": [
@@ -19360,10 +21589,10 @@
     "h": 2
    },
    {
-    "name": "hot_spring",
+    "name": "c14p5_hot_spring_snow",
     "cell": [
-     12,
-     24
+     11,
+     32
     ],
     "w": 2,
     "h": 2
@@ -19446,8 +21675,8 @@
    {
     "name": "lamp_snow",
     "cell": [
-     24,
-     26
+     14,
+     24
     ],
     "w": 0,
     "h": 1,
@@ -19545,16 +21774,16 @@
     "energy": 80,
     "msg": "You sink into the hot spring up to your chin. Somewhere a snowflake lands on your nose and gives up.",
     "cell": [
-     13,
-     24
+     12,
+     32
     ],
     "solid": true
    },
    {
     "type": "note",
     "cell": [
-     32,
-     16
+     5,
+     21
     ],
     "hint": "A: read the guide's board",
     "text": "Guide's board: 'GLACIER FIELDS north, then the SUMMIT. RIME CAVERNS west. FROZEN FALLS east, good fishing. Something big sleeps on the Summit. Don't sing near it.'",
@@ -20528,13 +22757,19 @@
   ],
   "props": [
    {
-    "name": "waterfall_pool",
+    "name": "c14p5_waterfall_frozen",
     "cell": [
      29,
-     15
+     16
     ],
     "w": 5,
-    "h": 2
+    "h": 3,
+    "open": [
+     [
+      0,
+      0
+     ]
+    ]
    },
    {
     "name": "fishing_hut_stilts_winter",
@@ -21139,6 +23374,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "float_stone",
+    "rect": [
+     16,
+     16,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "float_stone",
+    "rect": [
+     27,
+     15,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "float_stone",
+    "rect": [
+     18,
+     13,
+     8,
+     3
+    ]
    }
   ],
   "props": [
@@ -21316,7 +23578,7 @@
    {
     "type": "note",
     "cell": [
-     9,
+     13,
      16
     ],
     "hint": "A: read the wind vane",
@@ -21353,7 +23615,7 @@
     "sprite": "mg_gull",
     "role": "Windward Isles",
     "cell": [
-     16,
+     26,
      19
     ],
     "lines": [
@@ -21369,7 +23631,7 @@
     "sprite": "mg_nimbus",
     "role": "Windward Isles",
     "cell": [
-     26,
+     16,
      19
     ],
     "lines": [
@@ -22511,6 +24773,33 @@
      12,
      10
     ]
+   },
+   {
+    "tile": "plaza_tiles",
+    "rect": [
+     15,
+     18,
+     4,
+     6
+    ]
+   },
+   {
+    "tile": "plaza_tiles",
+    "rect": [
+     28,
+     15,
+     4,
+     7
+    ]
+   },
+   {
+    "tile": "plaza_tiles",
+    "rect": [
+     17,
+     13,
+     8,
+     3
+    ]
    }
   ],
   "props": [
@@ -22554,8 +24843,8 @@
    {
     "name": "mansion",
     "cell": [
-     15,
-     12
+     26,
+     33
     ],
     "w": 12,
     "h": 4,
@@ -22564,7 +24853,7 @@
    {
     "name": "gold_fountain",
     "cell": [
-     9,
+     10,
      15
     ],
     "w": 3,
@@ -22574,7 +24863,7 @@
     "name": "gc_aurum_statue",
     "cell": [
      30,
-     15
+     13
     ],
     "w": 1,
     "h": 2
@@ -22582,7 +24871,7 @@
    {
     "name": "plaza_16",
     "cell": [
-     14,
+     13,
      24
     ],
     "w": 0,
@@ -22638,8 +24927,8 @@
    {
     "name": "lux_car_red",
     "cell": [
-     28,
-     33
+     34,
+     21
     ],
     "w": 3,
     "h": 1

@@ -614,7 +614,7 @@ A("frost_hearthhold", cols=44, rows=40, music="mega_frost", look="snow", path="s
            ("nature/lamp_snow", 0, 1, (17, 24)), ("nature/lamp_snow", 0, 1, (27, 24)), ("nature/big_snowpine_a", 1, 2, (6, 9)), ("nature/big_snowpine_b", 1, 2, (38, 9)), ("props/fr_cabin", 2, 2, (8, 18))],
   shop=("props/ice_stall_open", 7, 2, (21, 28), {"who": "Ingrid's Stall", "greet": "Warm things for cold people. Everything's knitted, even the sorbet. Not really.",
         "items": [["frost_sorbet", 580], ["ring_warmth", 1600], ["hot_cocoa", 200], ["greater_potion", 260], ["potion", 40]]}),
-  heal=("props/hot_spring", 2, 2, (12, 27), {"hp": 5, "energy": 80, "msg": "You sink into the hot spring up to your chin. Somewhere a snowflake lands on your nose and gives up."}),
+  heal=("props/c14p5_hot_spring_snow", 2, 2, (12, 27), {"hp": 5, "energy": 80, "msg": "You sink into the hot spring up to your chin. Somewhere a snowflake lands on your nose and gives up."}),
   gate=("props/fr_sled_station", 2, 2, "spawn"),
   notes=[("A: read the guide's board", "Guide's board: 'GLACIER FIELDS north, then the SUMMIT. RIME CAVERNS west. FROZEN FALLS east, good fishing. Something big sleeps on the Summit. Don't sing near it.'")],
   npcs=[("mg_brannoch", "Brannoch", "mg_brannoch", ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "The Wyrm on the Summit wakes every hundred years. Lucky you."]),
@@ -647,7 +647,7 @@ A("frost_caverns", cols=46, rows=42, music="mega_frost_caverns", music_fallback=
   intro=["Blue ice overhead, blue ice underfoot, and your breath hangs in the air like it's afraid to leave. The walls hum one long, low note."])
 A("frost_falls", cols=48, rows=42, music="mega_frost", look="snow", ground_seam="snow_smooth", links={"frost_hearthhold": ("w", 17)},
   water=[(30, 24), (12, 30)],
-  structs=[("props/waterfall_pool", 5, 2, (32, 13)), ("props/fishing_hut_stilts_winter", 5, 3, (14, 13)), ("nature/big_snowpine_b", 1, 2, (8, 22))],
+  structs=[("props/c14p5_waterfall_frozen", 5, 3, (32, 13)), ("props/fishing_hut_stilts_winter", 5, 3, (14, 13)), ("nature/big_snowpine_b", 1, 2, (8, 22))],
   things=[("loot", {"item": "ice_pike", "n": 1, "every": 4, "hint": "A: a pike frozen in the edge ice", "sprite": "props/ice_crystal_dim"}),
           ("heal", {"hp": 4, "energy": 50, "msg": "The falls roar under the ice. Somehow it's peaceful.", "hint": "A: watch the frozen falls"}),
           ("mrock", {"ore": "frost", "hp": 4, "n": 1, "sprite": "props/mrock_ice_1"}),
@@ -953,8 +953,14 @@ def build_area(aid, mega, spec, links_geom):
     R["paths"] = paths
     R["exits"] = exits
     if spec.get("plaza"):
-        R["layers"] = [{"tile": spec["plaza"], "rect": [cx - 5, cy - 4, 12, 10]}]
-        G.mark(cells_of([[cx - 5, cy - 4, 12, 10]]), "P", 1)
+        # c14_07-05 / c14_08-11 / c14_09-24: a plaza of overlapping lobes (soft-edged seamless), not one box
+        pr_ = random.Random(shash(aid + "plaza"))
+        lobes = [[cx - 5, cy - 4, 12, 10],
+                 [cx - 7 + pr_.randint(0, 2), cy - 2 + pr_.randint(-1, 1), 4, 6],
+                 [cx + 5 + pr_.randint(0, 2), cy - 3 + pr_.randint(-1, 1), 4, 7],
+                 [cx - 3 + pr_.randint(-1, 1), cy - 6, 8, 3]]
+        R["layers"] = [{"tile": spec["plaza"], "rect": r_} for r_ in lobes]
+        G.mark(cells_of(lobes), "P", 1)
     props, things, npcs = [], [], []
     rng = random.Random(shash(aid) % 100000)
 
@@ -1143,6 +1149,23 @@ def build_area(aid, mega, spec, links_geom):
             nd = {"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0}
             nd.update(NPC_EXTRA.get(nid, {}))  # C12 P3: arc / after-boss / job-done lines (Talk.region_lines)
             npcs.append(nd)
+    if spec["look"] == "rail" or aid == "iron_tunnels":
+        # c14_08-07 / c14_09-06: the rail frontier has track. A line runs under every train
+        # (ground-level, non-solid, drawn under: roads cross it like level crossings), with
+        # buffer stops at both ends; the Freight Yards get two more parallel sidings.
+        rows_ = sorted({p["cell"][1] for p in props if p["name"] in ("train_engine", "train_car", "ir_baron_car")})
+        if aid == "iron_freight_yards" and rows_:
+            rows_ = sorted(set(rows_ + [rows_[0] - 3, rows_[0] + 3]))
+        exit_cells = cells_of([e["rect"] for e in exits])
+        for ry in rows_:
+            if not (3 <= ry < rows - 3):
+                continue
+            x0, x1 = 4, cols - 5
+            for x in range(x0, x1 + 1):
+                if any((x + dx, ry + dy) in exit_cells for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+                    continue
+                nm = "rail_end" if x in (x0, x1) else "rail_h"
+                props.append({"name": nm, "cell": [x, ry], "h": 1, "solid": False, "under": True})
     for p in props:
         oc = open_cells(p)
         if oc:

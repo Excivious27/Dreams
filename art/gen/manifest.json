@@ -103887,6 +103887,16 @@
    "h": 190,
    "w": 240
   },
+  "c14p5_hot_spring_snow": {
+   "file": "props/c14p5_hot_spring_snow.png",
+   "h": 83,
+   "w": 104
+  },
+  "c14p5_waterfall_frozen": {
+   "file": "props/c14p5_waterfall_frozen.png",
+   "h": 287,
+   "w": 160
+  },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
    "h": 125,
@@ -115464,6 +115474,11 @@
   },
   "brick_herring": {
    "file": "seamless/brick_herring.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p5_wet_asphalt": {
+   "file": "seamless/c14p5_wet_asphalt.png",
    "h": 256,
    "w": 256
   },

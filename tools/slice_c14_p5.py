@@ -26,6 +26,8 @@ SHEETS = {
         ("c14p5_frost_tuft_s", 30), ("c14p5_frost_tuft_m", 38), ("c14p5_frost_tuft_w", 50), ("c14p5_frost_reeds_a", 40),
         ("c14p5_frost_reeds_b", 40), ("c14p5_frost_thistle", 38), ("c14p5_snow_stone_s", 34), ("c14p5_snow_stone_m", 46)]),
     "c14p5_stone_head.png": ("props", [("c14p5_gc_stone_head", 240)]),
+    "c14p5_frozen_falls.png": ("props", [("c14p5_waterfall_frozen", 160)]),
+    "c14p5_hot_spring_snow.png": ("props", [("c14p5_hot_spring_snow", 104)]),
 }
 
 
@@ -50,6 +52,9 @@ def load(name):
     rim[: int(a.shape[0] * 0.6)] = False
     if "stone_head" not in name:
         rim[:] = False
+    if "hot_spring" in name:  # the steam wisps came out magenta-tinted: make them pale steam
+        st = (a[..., 3] > 0) & (r - g > 40) & (b - g > 30) & (r > 150)
+        a[st, 0], a[st, 1], a[st, 2] = 236, 240, 246
     pur = rim & (b - g > 20) & (r - g > 20)
     a[pur, 0], a[pur, 1], a[pur, 2] = 96, 52, 34
     return a
@@ -129,9 +134,29 @@ def nights(man):
         print("night", name, day.size, int(ok.sum()), "lit px")
 
 
+def seams(man):
+    """c14_06-15: Neon's wet asphalt as a true seamless ground (seamless/c14p5_wet_asphalt, 256 px)."""
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from make_seamless import seamless
+    src = os.path.join(INC, "c14p5_wet_asphalt.png")
+    if not os.path.exists(src):
+        return
+    im = Image.open(src).convert("RGB").resize((256, 256), Image.LANCZOS)
+    a = seamless(np.array(im).astype(float))
+    rel = "seamless/c14p5_wet_asphalt.png"
+    out = os.path.join(GEN, rel)
+    if os.path.exists(out):
+        os.remove(out)
+    Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).save(out)
+    man.setdefault("seamless", {})["c14p5_wet_asphalt"] = {"file": rel, "w": 256, "h": 256}
+    print(rel)
+
+
 def main():
     man = json.load(open(os.path.join(GEN, "manifest.json")))
     nights(man)
+    seams(man)
     for sheet, (group, ids) in SHEETS.items():
         a = load(sheet)
         for (nid, tw), (x0, y0, x1, y1, _) in zip(ids, pieces(a, len(ids))):
