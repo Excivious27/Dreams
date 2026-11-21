@@ -139,6 +139,10 @@
   "bigsoundbank/1000.ogg",
   "bigsoundbank/1001.ogg"
  ],
+ "cabinet_coin": [
+  "bigsoundbank/0339.ogg",
+  "bigsoundbank/0340.ogg"
+ ],
  "campfire": [
   "fire-crackling/fire-1.wav"
  ],
@@ -157,6 +161,16 @@
  ],
  "car_start": [
   "car-engine-start-01/generic_car_startengine.wav"
+ ],
+ "card_deal": [
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-slide-1.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-slide-3.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-slide-5.ogg"
+ ],
+ "card_flip": [
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-place-1.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-place-2.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/card-place-3.ogg"
  ],
  "cards": [
   "58-random-sound-effects/Sound Effects_x/Card_Swipe_01.wav",
@@ -194,6 +208,16 @@
   "100-cc0-sfx/100-CC0-SFX_0_x/wooded_box_open.ogg",
   "open-chest-sfx/open chest_0.wav"
  ],
+ "chip_clack": [
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chip-lay-1.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chip-lay-2.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chip-lay-3.ogg"
+ ],
+ "chips_stack": [
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chips-stack-1.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chips-stack-3.ogg",
+  "54-casino-sound-effects-cards-dice-chips/kenney_casino-audio_x/Audio/chips-handle-2.ogg"
+ ],
  "chop": [
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/chop.ogg",
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/wood_hit_01.ogg",
@@ -209,6 +233,12 @@
  "clap": [
   "58-random-sound-effects/Sound Effects_x/Hand_Clap_01.wav",
   "58-random-sound-effects/Sound Effects_x/Hand_Clap_02.wav"
+ ],
+ "claw_drop": [
+  "bigsoundbank/0543.ogg"
+ ],
+ "claw_move": [
+  "bigsoundbank/1606.ogg"
  ],
  "cloth": [
   "202-more-sound-effects/MoreSounds_x/Cloth/Cloth_01.wav",
@@ -258,6 +288,11 @@
  ],
  "crowd": [
   "bigsoundbank/0825.ogg"
+ ],
+ "cv_crystal_baby": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_03.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_05.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_08.ogg"
  ],
  "cv_emu": [
   "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_11.ogg",
@@ -345,6 +380,11 @@
   "7-eating-crunches/crunch_-_tito_x/crunch.1.ogg",
   "7-eating-crunches/crunch_-_tito_x/crunch.3.ogg",
   "apple-bite/apple_bite_0.ogg"
+ ],
+ "egg_collect": [
+  "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood02.mp3.flac",
+  "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood04.mp3.flac",
+  "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood06.mp3.flac"
  ],
  "egg_crack": [
   "7-eating-crunches/crunch_-_tito_x/crunch.2.ogg",
@@ -465,6 +505,10 @@
  "horse_whinny": [
   "bigsoundbank/0460.ogg"
  ],
+ "howl_far": [
+  "bigsoundbank/2450.ogg",
+  "bigsoundbank/2451.ogg"
+ ],
  "hurt": [
   "12-wet-towel-hittingfallingpunching-floor-sounds/wet_towel_on_floor_x/wet_towel_on_floor/wet_towel_on_floor-01.flac"
  ],
@@ -490,7 +534,8 @@
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/keys_03.ogg"
  ],
  "knockout": [
-  "bigsoundbank/0551.ogg"
+  "bigsoundbank/0551.ogg",
+  "12-wet-towel-hittingfallingpunching-floor-sounds/wet_towel_on_floor_x/wet_towel_on_floor/wet_towel_on_floor-01.flac"
  ],
  "laser": [
   "150-combat-sound-effects/150gameeffectsounds_x/02_combat_ranged/Laser Pistol 1_s09.wav",
@@ -527,6 +572,11 @@
   "cat-purr-meow/cat_mewfood.wav",
   "kitten-mew/kitten_mew-1.wav"
  ],
+ "milk": [
+  "bigsoundbank/0324.ogg",
+  "bigsoundbank/0325.ogg",
+  "bigsoundbank/0326.ogg"
+ ],
  "monster": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_monster_01.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_monster_02.ogg",
@@ -534,6 +584,9 @@
  ],
  "moo": [
   "bigsoundbank/0845.ogg"
+ ],
+ "motor_loop": [
+  "bigsoundbank/0281.ogg"
  ],
  "neon_street": [
   "scifi-city-ambient-loop/busy_cyberworld.ogg"
@@ -561,6 +614,10 @@
  ],
  "penguin_chatter": [
   "penguin-sounds/penguin_x/flac/penguin_02.flac"
+ ],
+ "pet_howl": [
+  "bigsoundbank/2450.ogg",
+  "bigsoundbank/2451.ogg"
  ],
  "pick": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/stones_01.ogg",
@@ -675,9 +732,19 @@
   "bigsoundbank/0283.ogg",
   "bigsoundbank/0104.ogg"
  ],
+ "roulette_ball": [
+  "bigsoundbank/2242.ogg",
+  "bigsoundbank/2243.ogg"
+ ],
+ "roulette_spin": [
+  "bigsoundbank/0858.ogg"
+ ],
  "saw": [
   "bigsoundbank/0559.ogg",
   "bigsoundbank/0016.ogg"
+ ],
+ "scooter_ride": [
+  "bigsoundbank/0533.ogg"
  ],
  "scythe": [
   "bigsoundbank/0127.ogg"
@@ -690,6 +757,9 @@
  "servo": [
   "60-cc0-sci-fi-sfx/60-sci-fi-sfx_0_x/sfx_05a.ogg",
   "60-cc0-sci-fi-sfx/60-sci-fi-sfx_0_x/sfx_05b.ogg"
+ ],
+ "shear": [
+  "bigsoundbank/0008.ogg"
  ],
  "sheep": [
   "sheep-baa/sheep_baa.flac"
@@ -714,13 +784,25 @@
  "siren": [
   "sirens-and-alarm-noise/siren_0.mp3"
  ],
+ "skee_roll": [
+  "bowling-ball-rolling/qubodup-bowling-roll_x/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
+ ],
  "sled_bells": [
   "bell-dingschimes/sled_jingle.wav"
+ ],
+ "sled_snow": [
+  "bigsoundbank/0208.ogg"
  ],
  "slime": [
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_slime_01.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_slime_02.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/creature_slime_03.ogg"
+ ],
+ "slot_spin": [
+  "bigsoundbank/0317.ogg"
+ ],
+ "slot_stop": [
+  "bigsoundbank/0794.ogg"
  ],
  "snore": [
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/snore.ogg",
@@ -781,6 +863,9 @@
  "status_tick": [
   "bigsoundbank/0007.ogg"
  ],
+ "step_carpet": [
+  "bigsoundbank/0373.ogg"
+ ],
  "step_dirt": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",
   "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep03.ogg",
@@ -799,10 +884,19 @@
  "step_hoof": [
   "bigsoundbank/1854.ogg"
  ],
+ "step_ice": [
+  "4-dry-snow-steps/qubodup-snow_steps_dry_0_x/qubodup-snow_steps_dry/snow_step_dry-03.flac",
+  "4-dry-snow-steps/qubodup-snow_steps_dry_0_x/qubodup-snow_steps_dry/snow_step_dry-04.flac",
+  "4-dry-snow-steps/qubodup-snow_steps_dry_0_x/qubodup-snow_steps_dry/snow_step_dry-01.flac"
+ ],
  "step_leaves": [
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle04.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle07.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle09.flac"
+ ],
+ "step_metal": [
+  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_01.ogg",
+  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_02.ogg"
  ],
  "step_mud": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/mud-steps-01.wav",
@@ -874,6 +968,11 @@
   "20-sword-sound-effects-attacks-and-clashes/sword_clash_-_starninjas_0_x/sword_clash.2.ogg",
   "20-sword-sound-effects-attacks-and-clashes/sword_clash_-_starninjas_0_x/sword_clash.3.ogg"
  ],
+ "target_tin": [
+  "bigsoundbank/0246.ogg",
+  "bigsoundbank/0247.ogg",
+  "bigsoundbank/0248.ogg"
+ ],
  "teleport": [
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/teleport_01.ogg",
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/teleport_02.ogg"
@@ -897,6 +996,11 @@
  ],
  "thunder": [
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_thunder_01.ogg"
+ ],
+ "ticket_out": [
+  "bigsoundbank/3264.ogg",
+  "bigsoundbank/3286.ogg",
+  "bigsoundbank/3287.ogg"
  ],
  "timber": [
   "tree-chop-fall-thud/chop-tree-fall.ogg",

@@ -146,7 +146,7 @@ MAP = {
     "beat_tick": ("sfx", ["bigsoundbank/0007"], {"cap": 0.2, "slice": True, "takes": 2, "min": 0.01, "af": "highpass=f=300"}),
     "dice_roll": ("sfx", ["bigsoundbank/0581", "bigsoundbank/0582"], {"cap": 1.1, "slice": True, "gap": 0.25, "min": 0.3}),
     "shot_smg": ("sfx", ["bigsoundbank/0437", "bigsoundbank/0482"], {"cap": 0.28, "slice": True, "min": 0.03, "af": "highpass=f=90"}),
-    "knockout": ("sfx", ["bigsoundbank/0551"], {"cap": 0.5, "slice": True, "min": 0.03}),
+    "knockout": ("sfx", ["bigsoundbank/0551"], {"cap": 0.5, "slice": True, "min": 0.03, "layer": ["12-wet-towel-hittingfallingpunching-floor-sounds/*", 0.11, -3.0]}),  # C13 (c13_07-11): the hit plus a body fall under it
     "boss_down": ("sfx", ["muffled-distant-explosion/*", "cave-in/*"], {"cap": 0.9}),
     "whistle": ("sfx", ["bigsoundbank/1170"], {"cap": 1.0, "slice": True, "takes": 2, "min": 0.2}),
     "town_bell": ("sfx", ["bigsoundbank/0830"], {"cap": 5.5, "slice": True, "takes": 1, "gap": 1.5, "min": 1.0, "floor": -40}),
@@ -264,6 +264,33 @@ MAP = {
     # --- gangster arc money (Round 13): bills, not crystal chimes ------------
     "cash_pickup": ("sfx", ["202-more-sound-effects/Money_20*", "202-more-sound-effects/Money_22*", "202-more-sound-effects/Money_24*"], {"cap": 0.6}),
     "cash_register": ("sfx", ["purchasing-sound-effect/*", "202-more-sound-effects/Money_36*", "202-more-sound-effects/Money_18*"], {"cap": 1.3}),
+    # --- C13 P5: casino, arcade, decks, vehicles, ranch, story (contract section 3) ------------
+    "card_deal": ("sfx", ["54-casino-sound-effects-cards-dice-chips/card-slide-1*", "54-casino-sound-effects-cards-dice-chips/card-slide-3*", "54-casino-sound-effects-cards-dice-chips/card-slide-5*"], {"cap": 0.5, "slice": True, "min": 0.05, "floor": -40}),
+    "card_flip": ("sfx", ["54-casino-sound-effects-cards-dice-chips/card-place-1*", "54-casino-sound-effects-cards-dice-chips/card-place-2*", "54-casino-sound-effects-cards-dice-chips/card-place-3*"], {"cap": 0.4, "slice": True, "min": 0.05, "floor": -40}),
+    "chip_clack": ("sfx", ["54-casino-sound-effects-cards-dice-chips/chip-lay-1*", "54-casino-sound-effects-cards-dice-chips/chip-lay-2*", "54-casino-sound-effects-cards-dice-chips/chip-lay-3*"], {"cap": 0.5, "slice": True, "min": 0.05, "floor": -40}),
+    "chips_stack": ("sfx", ["54-casino-sound-effects-cards-dice-chips/chips-stack-1*", "54-casino-sound-effects-cards-dice-chips/chips-stack-3*", "54-casino-sound-effects-cards-dice-chips/chips-handle-2*"], {"cap": 0.8, "slice": True, "min": 0.1, "gap": 0.2, "floor": -40}),
+    "roulette_spin": ("sfx", ["bigsoundbank/0858"], {"cap": 1.4, "slice": True, "chunk": True, "takes": 2, "af": "lowpass=f=3500"}),
+    "roulette_ball": ("sfx", ["bigsoundbank/2242", "bigsoundbank/2243"], {"cap": 0.25, "slice": True, "min": 0.02, "af": "highpass=f=500"}),
+    "slot_spin": ("sfx", ["bigsoundbank/0317"], {"cap": 1.2, "slice": True, "chunk": True, "takes": 2, "af": "highpass=f=400,lowpass=f=4000"}),
+    "slot_stop": ("sfx", ["bigsoundbank/0794"], {"cap": 0.15, "slice": True, "min": 0.02}),
+    "target_tin": ("sfx", ["bigsoundbank/0246", "bigsoundbank/0247", "bigsoundbank/0248"], {"cap": 0.4, "slice": True, "min": 0.03, "af": "highpass=f=300"}),
+    "claw_move": ("sfx", ["bigsoundbank/1606"], {"cap": 0.6, "slice": True, "chunk": True, "takes": 2, "af": "lowpass=f=4500"}),
+    "claw_drop": ("sfx", ["bigsoundbank/0543"], {"cap": 0.45, "slice": True, "min": 0.03, "af": "asetrate=44100*1.4,aresample=44100,highpass=f=300,volume=-3dB"}),
+    "skee_roll": ("sfx", ["bowling-ball-rolling/*"], {"cap": 1.2, "af": "asetrate=61740,aresample=44100,highpass=f=150"}),
+    "ticket_out": ("sfx", ["bigsoundbank/3264", "bigsoundbank/3286", "bigsoundbank/3287"], {"cap": 0.35, "slice": True, "chunk": True, "af": "highpass=f=250"}),
+    "cabinet_coin": ("sfx", ["bigsoundbank/0339", "bigsoundbank/0340"], {"cap": 0.45, "slice": True, "min": 0.03, "af": "highpass=f=400"}),
+    "step_carpet": ("sfx", ["bigsoundbank/0373"], {"cap": 0.35, "slice": True, "min": 0.05, "af": "lowpass=f=2500"}),
+    "step_metal": ("sfx", ["100-cc0-sfx-2/*footstep_01*", "100-cc0-sfx-2/*footstep_02*"], {"cap": 0.45, "slice": True, "min": 0.06, "post": "highpass=f=250,aecho=0.8:0.5:7|13:0.45|0.3,equalizer=f=3200:t=o:w=1:g=5"}),
+    "step_ice": ("sfx", ["4-dry-snow-steps/*03*", "4-dry-snow-steps/*04*", "4-dry-snow-steps/*01*"], {"cap": 0.4, "slice": True, "min": 0.08, "floor": -40, "af": "asetrate=44100*1.15,aresample=44100,highpass=f=900"}),
+    "scooter_ride": ("sfx", ["bigsoundbank/0533"], {"cap": 1.2, "slice": True, "chunk": True, "takes": 2, "af": "highpass=f=150"}),
+    "motor_loop": ("sfx", ["bigsoundbank/0281"], {"cap": 1.5, "slice": True, "chunk": True, "takes": 2, "af": "highpass=f=120"}),
+    "sled_snow": ("sfx", ["bigsoundbank/0208"], {"cap": 0.8, "slice": True, "chunk": True, "takes": 3, "af": "lowpass=f=5000"}),
+    "milk": ("sfx", ["bigsoundbank/0324", "bigsoundbank/0325", "bigsoundbank/0326"], {"cap": 0.35, "slice": True, "min": 0.04, "af": "lowpass=f=4000"}),
+    "shear": ("sfx", ["bigsoundbank/0008"], {"cap": 0.35, "slice": True, "min": 0.04}),
+    "egg_collect": ("sfx", ["35-wooden-crackshitsdestructions/impactwood02*", "35-wooden-crackshitsdestructions/impactwood04*", "35-wooden-crackshitsdestructions/impactwood06*"], {"cap": 0.2, "af": "asetrate=44100*1.6,aresample=44100,lowpass=f=5000,volume=-4dB"}),
+    "howl_far": ("sfx", ["bigsoundbank/2450", "bigsoundbank/2451"], {"cap": 3.0, "slice": True, "takes": 1, "min": 0.6, "gap": 0.3, "af": "asetrate=33075,aresample=44100", "post": "lowpass=f=1400,aecho=0.8:0.6:240|520:0.4|0.25,volume=-4dB"}),
+    "cv_crystal_baby": ("sfx", ["80-cc0-creature-sfx/cute_03*", "80-cc0-creature-sfx/cute_05*", "80-cc0-creature-sfx/cute_08*"], {"cap": 0.7, "af": "asetrate=44100*1.35,aresample=44100,highpass=f=500,aecho=0.6:0.4:60:0.3"}),
+    "pet_howl": ("sfx", ["bigsoundbank/2450", "bigsoundbank/2451"], {"cap": 1.6, "slice": True, "takes": 2, "min": 0.4, "gap": 0.3}),
 }
 
 SOURCES = os.path.join(ROOT, "tools", "cc0_sources.json")
@@ -452,6 +479,26 @@ def sliced_takes(full, opt, n=3):
     return takes
 
 
+def layered(x, root, layer, i=0):
+    """C13: mix a second CC0 sound under a take (opt layer = [pattern, delay s, dB]), e.g. a body fall
+    under a knockout hit. Take i uses the i-th loudest event of the layer file."""
+    import numpy as np
+    fs = files_for(root, [layer[0]])
+    if not fs:
+        return x
+    y = load(os.path.join(root, fs[0]))
+    ev = sorted(events(y, floor_db=-30.0, gap=0.15, min_len=0.05), key=lambda e: -e[2])
+    if ev:
+        s0, s1, _ = ev[i % len(ev)]
+        y = y[s0:min(s1, s0 + int(0.6 * SR))]
+    y = fade(y, fout=min(0.12, len(y) / SR / 3)) * (10 ** (float(layer[2]) / 20)) * (float(np.max(np.abs(x))) / (float(np.max(np.abs(y))) + 1e-9))
+    d = int(float(layer[1]) * SR)
+    out = np.zeros(max(len(x), d + len(y)), dtype=np.float32)
+    out[:len(x)] += x
+    out[d:d + len(y)] += y
+    return peak_norm(out)
+
+
 def seamless(x, xf):
     """Equal-power tail-into-head loop: the result's end flows straight into its start."""
     import numpy as np
@@ -588,6 +635,7 @@ def fetch(dst, packs):
             except Exception as e:  # noqa: BLE001
                 print("  bigsoundbank failed", sid, e)
         print(f"  bigsoundbank: {len(bsb)} sounds")
+        bsb_titles([p.split("/", 1)[1][:4] for p in bsb])
     for pack in sorted(p for p in packs if "/" not in p):
         info = src.get(pack)
         if not info or not info.get("cc0"):
@@ -628,6 +676,31 @@ def fetch(dst, packs):
             except Exception as e:  # noqa: BLE001
                 print("  unpack failed", fn, e)
         print(f"  fetched {pack}: {len(links)} files")
+
+
+def bsb_titles(ids):
+    """C13 (c13_14-11): give every BigSoundBank id a title + page in tools/bsb_titles.json, read from
+    the sound's own page, so credits never fall back to a bare '#NNNN'."""
+    import re, urllib.request
+    path = os.path.join(ROOT, "tools", "bsb_titles.json")
+    t = json.load(open(path)) if os.path.exists(path) else {}
+    added = 0
+    for sid in sorted(set(ids)):
+        if sid in t:
+            continue
+        try:
+            html = urllib.request.urlopen(f"https://bigsoundbank.com/detail-{sid}.html", timeout=30).read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001
+            print("  bigsoundbank title failed", sid, e)
+            continue
+        m = re.search(r"https://bigsoundbank\.com/([a-z0-9-]+)-s%s\.html" % sid, html)
+        if not m:
+            continue
+        words = m.group(1).replace("-", " ")
+        t[sid] = [words[:1].upper() + words[1:], m.group(0)]
+        added += 1
+    if added:
+        _replace(path, json.dumps(t, indent=1, sort_keys=True) + "\n")
 
 
 def write_credits():
@@ -692,8 +765,8 @@ def main():
         return
     src = json.load(open(SOURCES))
     if a.fetch:
-        packs = {(p if p.startswith("bigsoundbank/") else p.split("/")[0]) for n, (_, pats, _) in MAP.items()
-                 if not a.only or n in a.only.split(",") for p in pats}
+        packs = {(p if p.startswith("bigsoundbank/") else p.split("/")[0]) for n, (_, pats, o) in MAP.items()
+                 if not a.only or n in a.only.split(",") for p in pats + ([o["layer"][0]] if o.get("layer") else [])}
         fetch(a.src, packs)
     ace = set()
     acef = os.path.join(ROOT, "audio", "sfx", "ACE.txt")
@@ -723,6 +796,9 @@ def main():
             out_dir = sfx_dir if kind == "sfx" else amb_dir
             if opt.get("slice"):
                 takes = sliced_takes(full, opt, int(opt.get("takes", 3)))
+                if opt.get("layer"):
+                    takes = [layered(x, a.src, opt["layer"], i) for i, x in enumerate(takes)]
+                    fs = fs + files_for(a.src, [opt["layer"][0]])
                 for i, x in enumerate(takes):
                     nm = base if i == 0 else f"{base}_{i + 1}"
                     save(x, os.path.join(out_dir, nm + ".ogg"), af=opt.get("post", ""))
