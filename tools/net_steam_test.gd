@@ -188,15 +188,25 @@ func _run() -> void:
 	n3.on_join_requested(hy.lobby_id, "Rook")
 	await _pump(5, [hy])
 	check(n3.pending_lobby == hy.lobby_id and not n3.online(), "invite waits while no farm map is up (title)")
+	GameState.run["intro_done"] = true
+	GameState.run["flags"]["partner_scene"] = true
+	GameState.run["flags"]["farm_seen"] = true
+	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/farm.tscn")
 	var asked := false
 	var d := Dialogue.instance(self)
-	for i in 240:
+	for i in 900:
 		await _pump(1, [hy])
-		if d.active and d._in_choice:
+		if d.active and d._in_choice and str(d._text.text).contains("Visit"):
 			asked = true
 			d._choose("", 0)
 			break
+		elif d.active and d._in_choice and i % 10 == 0:
+			d._choose("", d._choices.get_child_count() - 1)  # someone else's question: way out
+		elif d.active and not d._in_choice and i % 10 == 0:
+			d._advance()
+	if not asked:
+		print("  (debug) pending=%d scene=%s paused=%s dlg=%s" % [n3.pending_lobby, current_scene.name if current_scene else "-", paused, d.active])
 	check(asked, "on the farm the invite asks first (Visit / Not now)")
 	await _pump(6, [hy])
 	check(n3.online() and not n3.is_host() and n3.pending_lobby == 0, "Visit joined the friend's lobby")
