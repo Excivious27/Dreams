@@ -1,0 +1,30 @@
+local server/ code a29f453d8be9, origin/main a29f453d8be9, live {"commit": "6fce22377e912cb87c978ee22b7bd62cb2726032", "code": "a29f453d8be9", "started": "2026-11-21T07:03:51.291Z", "rooms": 2, "players": 0}
+$ node tools/relay_test.js --url wss://dreams-64-23-239-63.sslip.io  (rc=0, 3s)
+relay test (live subset) against wss://dreams-64-23-239-63.sslip.io
+  ok  live: host created room CBFC
+  ok  live: guest joined by code
+  ok  live: guest got the host's world on join
+  ok  live: host saw peer_joined
+  ok  live: round trip 1 (host flag right)
+  ok  live: round trip 2 (host flag right)
+  ok  live: round trip 3 (host flag right)
+  ok  live: round trip 4 (host flag right)
+  ok  live: round trip 5 (host flag right)
+  ok  live: 5 round trips
+  live /version: {"commit":"6fce22377e912cb87c978ee22b7bd62cb2726032","code":"a29f453d8be9","started":"2026-11-21T07:03:51.291Z","rooms":3,"players":0}
+RELAY LIVE: ok, 40ms
+
+$ bash tools/net_e2e.sh wss://dreams-64-23-239-63.sslip.io  (rc=0, 15s)
+host.log:  ok   host: hosted room G7P3 on wss://dreams-64-23-239-63.sslip.io
+host.log:  ok   host: guest joined the room
+host.log:  ok   host: host sees the guest's puppet
+host.log:  ok   host: host sees the guest move to (212.0, 300.0) (last [212.0, 300.0])
+host.log:NET E2E host OK
+guest.log:  ok   guest: got the room code (G7P3)
+guest.log:  ok   guest: late joiner gets the host's world snapshot from the relay (day 7.0, 165 ms)
+guest.log:  ok   guest: joined room G7P3 by code
+guest.log:  ok   guest: guest runs on the host's day and clock (day 7, time 780)
+guest.log:  ok   guest: guest sees the host's puppet
+guest.log:NET E2E guest OK
+NET E2E: ok, 15s
+
