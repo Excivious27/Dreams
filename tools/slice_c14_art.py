@@ -152,21 +152,21 @@ def row_bands(a, n):
     return sorted(bands)
 
 
-def cells12(a):
+def cells12(a, n=12):
     """12 evenly spaced figures in a row: cut at the emptiest column near each expected
     boundary (wide hats and staffs can touch, so blobs alone don't separate them)."""
     col = (a[..., 3] > 40).sum(axis=0).astype(float)
     xs = np.where(col > 0)[0]
     x0, x1 = xs.min(), xs.max() + 1
-    cw = (x1 - x0) / 12.0
+    cw = (x1 - x0) / float(n)
     cuts = [x0]
-    for i in range(1, 12):
+    for i in range(1, n):
         e = x0 + cw * i
         lo, hi = int(e - cw * 0.3), int(e + cw * 0.3)
         cuts.append(lo + int(np.argmin(col[lo:hi])))
     cuts.append(x1)
     out = []
-    for i in range(12):
+    for i in range(n):
         c = a[:, cuts[i]:cuts[i + 1]].copy()
         solid = c[..., 3] > 40
         lab, k = ndimage.label(ndimage.binary_dilation(solid, iterations=2))
@@ -244,6 +244,44 @@ def mg_jobs(check, man):
     return made
 
 
+# Whole-character re-renders (c14_17-19 Dark Crystal gutted by the key, c14_17-10 Elder Brine
+# speckled): sheet -> (group, [(anim, frames) per row]); scaled to the old figure height.
+REDRAWS = {
+    "dark_crystal.png": ("enemies/dark_crystal", [("idle", 4), ("attack", 4), ("hurt", 2)], 22),  # shards join their core
+    "elder_brine.png": ("characters/elder_brine", [("idle", 4), ("walk", 4), ("talk", 4), ("happy", 2), ("sad", 2)], 0),
+}
+
+
+def redraw_jobs(check, man):
+    made = []
+    for sheet, (grp, rows, join) in REDRAWS.items():
+        src = os.path.join(INC, sheet)
+        if not os.path.exists(src):
+            continue
+        a = load(src)
+        old = Image.open(os.path.join(GEN, man[grp]["idle"]["file"])).convert("RGBA")
+        rh = int((np.array(old)[..., 3] > 40).any(axis=1).sum())
+        bands = row_bands(a, len(rows))
+        frames = {}
+        for (y0, y1), (anim, n) in zip(bands, rows):
+            frames[anim] = pieces(a[y0:y1], n, join) if join else cells12(a[y0:y1], n)
+        s = rh / float(np.median([p.shape[0] for p in frames["idle"]]))
+        sized = {k: [shrink(p, (max(1, round(p.shape[1] * s)), max(1, round(p.shape[0] * s)))) for p in v] for k, v in frames.items()}
+        cw = max(f.width for v in sized.values() for f in v) + 2
+        ch = max(f.height for v in sized.values() for f in v) + 1
+        for anim, fr in sized.items():
+            im = strip(fr, cw, ch)
+            rel = "%s/%s.png" % (grp, anim)
+            if not check:
+                dst = os.path.join(GEN, rel)
+                if os.path.exists(dst):
+                    os.remove(dst)
+                im.save(dst)
+                man[grp][anim] = {"file": rel, "w": im.width, "h": im.height, "frames": len(fr), "cell_w": cw, "cell_h": ch}
+            made.append("%s %s x%d %dx%d" % (grp, anim, len(fr), cw, ch))
+    return made
+
+
 def main():
     check = "--check" in sys.argv
     man = json.load(open(MAN))
@@ -267,6 +305,7 @@ def main():
             made.append(f"{group}/{name} {im.width}x{im.height}")
     made += seamless_jobs(check)
     made += mg_jobs(check, man)
+    made += redraw_jobs(check, man)
     if not check:
         with open(MAN, "w") as f:
             json.dump(man, f, indent=1, sort_keys=True)

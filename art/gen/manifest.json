@@ -33136,44 +33136,44 @@
  },
  "characters/elder_brine": {
   "happy": {
-   "cell_h": 96,
-   "cell_w": 82,
+   "cell_h": 106,
+   "cell_w": 98,
    "file": "characters/elder_brine/happy.png",
    "frames": 2,
-   "h": 96,
-   "w": 164
+   "h": 106,
+   "w": 196
   },
   "idle": {
-   "cell_h": 96,
-   "cell_w": 88,
+   "cell_h": 106,
+   "cell_w": 98,
    "file": "characters/elder_brine/idle.png",
    "frames": 4,
-   "h": 96,
-   "w": 352
+   "h": 106,
+   "w": 392
   },
   "sad": {
-   "cell_h": 96,
-   "cell_w": 84,
+   "cell_h": 106,
+   "cell_w": 98,
    "file": "characters/elder_brine/sad.png",
    "frames": 2,
-   "h": 96,
-   "w": 168
+   "h": 106,
+   "w": 196
   },
   "talk": {
-   "cell_h": 96,
-   "cell_w": 95,
+   "cell_h": 106,
+   "cell_w": 98,
    "file": "characters/elder_brine/talk.png",
    "frames": 4,
-   "h": 96,
-   "w": 380
+   "h": 106,
+   "w": 392
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 88,
+   "cell_h": 106,
+   "cell_w": 98,
    "file": "characters/elder_brine/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 352
+   "h": 106,
+   "w": 392
   }
  },
  "characters/elder_cinderpaw": {
@@ -62920,28 +62920,28 @@
  },
  "enemies/dark_crystal": {
   "attack": {
-   "cell_h": 137,
-   "cell_w": 152,
+   "cell_h": 139,
+   "cell_w": 170,
    "file": "enemies/dark_crystal/attack.png",
    "frames": 4,
-   "h": 137,
-   "w": 608
+   "h": 139,
+   "w": 680
   },
   "hurt": {
-   "cell_h": 136,
-   "cell_w": 145,
+   "cell_h": 139,
+   "cell_w": 170,
    "file": "enemies/dark_crystal/hurt.png",
    "frames": 2,
-   "h": 136,
-   "w": 290
+   "h": 139,
+   "w": 340
   },
   "idle": {
-   "cell_h": 125,
-   "cell_w": 142,
+   "cell_h": 139,
+   "cell_w": 170,
    "file": "enemies/dark_crystal/idle.png",
    "frames": 4,
-   "h": 125,
-   "w": 568
+   "h": 139,
+   "w": 680
   }
  },
  "enemies/dark_crystal2": {
