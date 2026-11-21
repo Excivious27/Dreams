@@ -1148,7 +1148,11 @@
        "solid": false
       }
      ],
-     "name": "Mama Rosa's Kitchen"
+     "name": "Mama Rosa's Kitchen",
+     "arc_music": [
+      "rosa_kitchen",
+      "inn_gang"
+     ]
     }
    }
   }
@@ -1393,6 +1397,10 @@
        "hint": "A: browse",
        "solid": false
       }
+     ],
+     "arc_music": [
+      "deuce_arcade",
+      "arcade_hall"
      ]
     }
    }
@@ -1583,7 +1591,10 @@
        "solid": false
       }
      ],
-     "name": "Doc's Back Room"
+     "name": "Doc's Back Room",
+     "arc_music": [
+      "clinic_gang"
+     ]
     }
    }
   }
@@ -2061,6 +2072,10 @@
        "hint": "A: browse",
        "solid": false
       }
+     ],
+     "arc_music": [
+      "trading_post",
+      "shop_gang"
      ]
     }
    }
@@ -3601,6 +3616,10 @@
        "hint": "A: browse",
        "solid": false
       }
+     ],
+     "arc_music": [
+      "net_cafe",
+      "neon"
      ]
     }
    }
@@ -4002,6 +4021,10 @@
        "hint": "A: browse",
        "solid": false
       }
+     ],
+     "arc_music": [
+      "garage_gang",
+      "shop_gang"
      ]
     }
    }

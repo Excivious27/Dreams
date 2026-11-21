@@ -1599,6 +1599,10 @@ func area_track() -> String:
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
+		var im: Variant = get("I")
+		if im is Dictionary and (im as Dictionary).has("arc_music"):
+			t = first_track((im as Dictionary)["arc_music"] + [t])  # crew venue's own song (c13_03-11)
+	var t0 := t
 	t = RecCenter.music_for(self, t)  # today's jukebox record (rec), the home jukebox/music box (house)
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
@@ -1631,24 +1635,31 @@ func area_track() -> String:
 	var now := int(GameState.run.get("time", 0)) % 1440 if not GameState.run.is_empty() else 720
 	if id == "town" and GameState.festival_today() != "":
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
-			if GameState.is_night() and Music.has_track("festival_night"):
-				return "festival_night"
-			if player != null and preload("res://scripts/animal_show.gd").near_stand(GameState.festival_today(), world_to_cell(player.position)) and Music.has_track("animal_show"):
+			var fid := GameState.festival_today()
+			var g := "" if peng else "_gang"
+			if GameState.is_night():
+				var fn := first_track(["festival_%s_night%s" % [fid, g], "festival_%s_night" % fid if peng else "", "festival_night" + g, "festival_night"])
+				if fn != "":
+					return fn
+			if player != null and preload("res://scripts/animal_show.gd").near_stand(fid, world_to_cell(player.position)) and Music.has_track("animal_show"):
 				return "animal_show"  # C11b P6: the ribbon tables have their own tune
-			return "festival"
-	if id in NIGHT_OK and GameState.is_night():
-		if not peng and Music.has_track("night_gang"):
-			return "night_gang"  # the gang arc's valley at night is noir (C6 default)
-		return "night"
-	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and Music.has_track("rain"):
-		return "rain"
-	if id in NIGHT_OK and GameState.season() == "winter" and GameState.weather_today() in ["snow", "blizzard"] and Music.has_track("winter"):
-		return "winter"  # snow days: the outdoor maps share the winter piece
-	if id == "farm" and GameState.season() == "winter":
-		return "winter"
-	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
-		return "farm_fall"
-	return t  # combat/danger music: DangerMusic
+			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
+	if t != t0 or RecCenter.is_rec(self):
+		return t  # a jukebox/music-box record plays exactly as chosen
+	return Music.resolve(t, music_ctx(id))  # C13 resolver: arc, weather, phase, season, story, rotation
+
+
+## Resolver context for this map (C13): which shared songs it used before.
+func music_ctx(id: String) -> Dictionary:
+	var c := {}
+	if id in NIGHT_OK:
+		c["shared_night"] = true
+		c["shared_weather"] = true
+	if sky != null and str(sky.weather) in ["rain", "storm"] and id in NIGHT_OK:
+		c["weather"] = str(sky.weather)
+	if id == "farm":
+		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
+	return c
 
 
 ## The President's collectors are on this map and close: chase music.

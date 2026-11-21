@@ -1138,3 +1138,10 @@ echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
 fi
+
+echo "== C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle arbitration =="
+mrout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/music_resolve_test.gd 2>&1)"
+echo "$mrout" | grep -E "FAIL|SCRIPT ERROR|music_resolve_test" || true
+if ! echo "$mrout" | grep -q "music_resolve_test: 0 failures"; then
+  echo "music_resolve_test failed"; exit 1
+fi

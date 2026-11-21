@@ -3131,6 +3131,28 @@ static func festival_today() -> String:
 	return str(FESTIVALS[season()][0])
 
 
+## Day of the week, 0 = Mon (day 1 of a save is a Monday) .. 6 = Sun (C13 contract).
+static func weekday() -> int:
+	return (int(run.get("day", 1)) - 1) % 7
+
+
+const DAY_NAMES := ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+
+static func day_name() -> String:
+	return DAY_NAMES[weekday()]
+
+
+## Story progress for music and events: the chapter now open (0 before the first),
+## 99 once the epilogue is done (C13 contract).
+static func story_stage() -> int:
+	if run.is_empty():
+		return 0
+	if (run.get("flags", {}) as Dictionary).has("epilogue_done"):
+		return 99
+	return Story.chapter_no()
+
+
 static func festival_name(id: String) -> String:
 	for se in FESTIVALS:
 		if str(FESTIVALS[se][0]) == id:
