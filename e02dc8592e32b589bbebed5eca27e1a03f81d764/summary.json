@@ -1,0 +1,35 @@
+{
+ "sha": "e02dc8592e32b589bbebed5eca27e1a03f81d764",
+ "ref": "ci/c11bp4b-be4e5307",
+ "run": "44850827956",
+ "finished": 1795225289.0756092,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 63,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "be4e5307c0de2c105b9a7f57402cfd6037ff68b9",
+  "label": "c11bp4b",
+  "branch": "c11bf/p4",
+  "shards": [],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 0,
+ "shards": [],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": []
+}
