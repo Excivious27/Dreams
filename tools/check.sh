@@ -1271,3 +1271,6 @@ echo "$acout" | grep -E "FAIL|SCRIPT ERROR|anim_core_test" || true
 if ! echo "$acout" | grep -q "anim_core_test: 0 failures"; then
   echo "anim_core_test failed"; exit 1
 fi
+
+echo "== strip registration (C14b P2: fire strips keep their base still) =="
+python3 tools/register_strip.py --check props/bonfire furniture/bubbling_pot || { echo "strip registration check failed"; exit 1; }

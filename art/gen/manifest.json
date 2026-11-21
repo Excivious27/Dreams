@@ -66029,12 +66029,13 @@
    "w": 48
   },
   "bubbling_pot": {
-   "cell_h": 113,
+   "cell_h": 120,
    "cell_w": 85,
    "file": "furniture/bubbling_pot.png",
    "frames": 4,
-   "h": 113,
-   "w": 340
+   "h": 120,
+   "w": 340,
+   "registered": true
   },
   "bunk_bed": {
    "file": "furniture/bunk_bed.png",
@@ -104249,12 +104250,13 @@
    "w": 26
   },
   "bonfire": {
-   "cell_h": 48,
+   "cell_h": 61,
    "cell_w": 60,
    "file": "props/bonfire.png",
    "frames": 4,
-   "h": 48,
-   "w": 240
+   "h": 61,
+   "w": 240,
+   "registered": true
   },
   "bot_drone_swarm": {
    "file": "props/bot_drone_swarm.png",
