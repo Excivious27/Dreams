@@ -108,6 +108,8 @@ static func place(m: GameMap) -> void:
 		var mdef: Dictionary = members()[id]
 		var at := Vector2i(-1, -1)
 		if recruited(id):
+			if m.scene_id() == "hideout" and at_festival(id):
+				continue  # C15 P4: out at the festival (Crew.place_festival puts them in town)
 			if m.scene_id() == "hideout":
 				at = Vector2i(int(mdef["home"][0]), int(mdef["home"][1]))
 			elif id == "halo" and perk_level("rides") >= 3 and m.scene_id() in ["docks", "neon", "uptown"]:
@@ -125,6 +127,39 @@ static func place(m: GameMap) -> void:
 		_put(m, id, _free_near(m, at))
 	if m.scene_id() == "hideout":
 		_place_joined(m)
+
+
+## C15 P4 (c15_15-11 / c15_16-19): on a festival day (during its hours, not in a
+## storm or blizzard) up to four recruited crew go to the festival, a different
+## few each day; the rest keep the Hideout.
+static func festival_crew() -> Array:
+	if GameState.is_penguins() or not Npc.in_festival(float(int(GameState.run.get("time", 0)) % 1440) / 60.0):
+		return []
+	if GameState.weather_today() in ["storm", "blizzard"]:
+		return []
+	var ids: Array = []
+	for id: String in members():
+		if recruited(id):
+			ids.append(id)
+	var day := int(GameState.run.get("day", 1))
+	ids.sort_custom(func(a: String, b: String) -> bool: return absi(hash(a + str(day))) < absi(hash(b + str(day))))
+	return ids.slice(0, mini(4, ids.size()))
+
+
+static func at_festival(id: String) -> bool:
+	return festival_crew().has(id)
+
+
+## Town hook (P6 owns town.gd: one line `Crew.place_festival(self, cells)` in the
+## festival placement): puts today's festival crew near the given cells.
+static func place_festival(m: GameMap, cells: Array) -> int:
+	var crew := festival_crew()
+	if cells.is_empty():
+		return 0
+	for i in crew.size():
+		var at: Vector2i = cells[i % cells.size()]
+		_put(m, str(crew[i]), _free_near(m, at + Vector2i(i % 2, i / 2)))
+	return crew.size()
 
 
 static func _free_near(m: GameMap, at: Vector2i) -> Vector2i:

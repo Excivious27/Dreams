@@ -168,4 +168,16 @@ func _crew() -> void:
 	GameState.run["day"] = 10  # Deuce's birthday (spring 10)
 	check(CrewSeason.is_birthday("deuce") and CrewSeason.mix("deuce", ["a", "b"], 10)[0].contains("birthday"), "Deuce's birthday line plays on his birthday")
 	GameState.run["day"] = 14
+	GameState.run["time"] = 12 * 60
+	var w: Dictionary = GameState.run.get("weather", {})
+	w["14"] = "petals"
+	GameState.run["weather"] = w
+	for id: String in Crew.members():
+		GameState.run["flags"]["crew_" + id] = true
+	var fc := Crew.festival_crew()
+	check(fc.size() == 4, "festival day: four crew go to the festival (%s)" % [fc])
+	check(Crew.at_festival(str(fc[0])) if not fc.is_empty() else false, "at_festival agrees")
+	GameState.run["day"] = 15
+	check(Crew.festival_crew().is_empty(), "no festival, nobody leaves the Hideout")
+	GameState.run["day"] = 14
 	check(CrewSeason.mix("doc", ["a"], 14).size() == 1 and CrewSeason.mix("doc", ["a"], 14)[0] != "a", "festival day: the crew talk festival")

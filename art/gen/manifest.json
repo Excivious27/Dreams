@@ -115823,6 +115823,61 @@
    "file": "props/worm_bin.png",
    "h": 44,
    "w": 65
+  },
+  "city_brickwall_winter": {
+   "file": "props/city_brickwall_winter.png",
+   "w": 128,
+   "h": 69
+  },
+  "diner_pink_winter": {
+   "file": "props/diner_pink_winter.png",
+   "w": 112,
+   "h": 90
+  },
+  "gas_station_winter": {
+   "file": "props/gas_station_winter.png",
+   "w": 208,
+   "h": 94
+  },
+  "lux_car_black_winter": {
+   "file": "props/lux_car_black_winter.png",
+   "w": 72,
+   "h": 39
+  },
+  "motel_cyan_winter": {
+   "file": "props/motel_cyan_winter.png",
+   "w": 192,
+   "h": 90
+  },
+  "pickup_winter": {
+   "file": "props/pickup_winter.png",
+   "w": 96,
+   "h": 43
+  },
+  "scooter_winter": {
+   "file": "props/scooter_winter.png",
+   "w": 56,
+   "h": 39
+  },
+  "taxi_winter": {
+   "file": "props/taxi_winter.png",
+   "w": 72,
+   "h": 37
+  },
+  "trailer_winter": {
+   "file": "props/trailer_winter.png",
+   "w": 146,
+   "h": 80
+  },
+  "vend_red_winter": {
+   "file": "props/vend_red_winter.png",
+   "w": 36,
+   "h": 56
+  },
+  "water_tower_winter": {
+   "file": "props/water_tower_winter.png",
+   "w": 48,
+   "h": 88
   }
  },
  "riding": {
