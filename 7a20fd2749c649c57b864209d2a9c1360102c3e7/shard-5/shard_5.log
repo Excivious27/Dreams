@@ -1,0 +1,166 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  76% ] [90m[1mreimport[22m | party_card_mer_sel.png[39m[0m
+[  77% ] [90m[1mreimport[22m | party_card_penguin_king.png[39m[0m
+[  78% ] [90m[1mreimport[22m | party_card_penguin_king_sel.png[39m[0m
+[  80% ] [90m[1mreimport[22m | party_card_penguin_wizard.png[39m[0m
+[  81% ] [90m[1mreimport[22m | party_card_penguin_wizard_sel.png[39m[0m
+[  82% ] [90m[1mreimport[22m | apiary_1_gang.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  85% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  87% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  89% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  90% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  91% ] [90m[1mreimport[22m | baby.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  94% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  95% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  97% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  98% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (84 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 95.9s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 32.0s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+  weeks 3-4 average bar left at bedtime: 42%
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 6.1s
+
+#### step 18: performance guards (batched cliffs, texture cache) (shard 5/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 18 performance guards (batched cliffs, texture cache): PASS in 3.3s
+
+#### step 24: storage_test (shard 5/6)
+storage_test: 0 failures
+#### step 24 storage_test: PASS in 3.4s
+
+#### step 30: decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) (shard 5/6)
+== decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) ==
+decor_mode_test: OK (0 fails)
+#### step 30 decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2): PASS in 5.7s
+
+#### step 36: rec_audio_test (shard 5/6)
+rec_audio_test: 0 failures
+#### step 36 rec_audio_test: PASS in 3.5s
+
+#### step 42: farm_look_test (shard 5/6)
+farm_look_test: PASS (0 fails)
+#### step 42 farm_look_test: PASS in 5.3s
+
+#### step 48: npc_anim_test (shard 5/6)
+npc_anim_test: OK (0 fails)
+#### step 48 npc_anim_test: PASS in 3.4s
+
+#### step 54: ranch_gift_test (shard 5/6)
+ranch_gift_test: 43 checks, 0 failures
+#### step 54 ranch_gift_test: PASS in 3.4s
+
+#### step 60: town_first_test (shard 5/6)
+town_first_test: 0 failures
+#### step 60 town_first_test: PASS in 5.3s
+
+#### step 66: text size floors (7 px) (shard 5/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 66 text size floors (7 px): PASS in 0.1s
+
+#### step 72: slice_c11b_chores (shard 5/6)
+#### step 72 slice_c11b_chores: PASS in 0.6s
+
+#### step 78: ambience_test (shard 5/6)
+ambience_test: 0 failures (40 checks)
+#### step 78 ambience_test: PASS in 6.4s
+
+#### step 84: mine: keeper, shaft, tiers (shard 5/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 84 mine: keeper, shaft, tiers: PASS in 5.2s
+
+#### step 90: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 5/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 90 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 9.4s
+
+#### step 96: c6_cue_test (shard 5/6)
+c6_cue_test: 0 fails
+#### step 96 c6_cue_test: PASS in 3.3s
+
+#### step 102: campaign_words_test (shard 5/6)
+campaign_words_test: 0 fails
+#### step 102 campaign_words_test: PASS in 3.6s
+
+#### step 108: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 5/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 160 checks, 0 failures
+#### step 108 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 20.9s
+
+#### step 114: mega regions: map tabs, unlocks, travel (shard 5/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 114 mega regions: map tabs, unlocks, travel: PASS in 10.0s
+
+#### step 120: menu sweep: every menu button, both arcs (C2) (shard 5/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 168 buttons pressed, 0 failures
+#### step 120 menu sweep: every menu button, both arcs (C2): PASS in 26.1s
+
+#### step 126: rec_games_test (shard 5/6)
+rec_games_test: 0 failures
+#### step 126 rec_games_test: PASS in 3.5s
+
+#### step 132: C7 P5: colony stories and crew (shard 5/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 132 C7 P5: colony stories and crew: PASS in 6.0s
+
+#### step 138: C11b P6: ranch building arc words and footprints (shard 5/6)
+== C11b P6: ranch building arc words and footprints ==
+builds_words_test: OK
+#### step 138 C11b P6: ranch building arc words and footprints: PASS in 3.4s
+
+#### step 144: C8 P4: fishing rules, mining curve, reward tables (shard 5/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+c8_p4_test: PASS (0 fails)
+#### step 144 C8 P4: fishing rules, mining curve, reward tables: PASS in 11.7s
+
+#### step 150: C9 P5: save codes and files (shard 5/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 150 C9 P5: save codes and files: PASS in 3.4s
+
+#### step 156: relay: Play together uses the live relay by default, custom server + R (shard 5/6)
+== relay: Play together uses the live relay by default, custom server + Reset to default ==
+net_url_test: 13 checks, 0 failures
+#### step 156 relay: Play together uses the live relay by default, custom server + R: PASS in 3.7s
+
+#### shard 5/6 done in 284s: PASS

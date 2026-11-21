@@ -1,0 +1,27 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 72.0}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 14.2}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 3.4}
+{"step": 16, "name": "phone_ui_test", "rc": 0, "secs": 11.1}
+{"step": 22, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.6}
+{"step": 28, "name": "C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli", "rc": 0, "secs": 2.5}
+{"step": 34, "name": "rec_links_test", "rc": 0, "secs": 2.5}
+{"step": 40, "name": "coop_test", "rc": 0, "secs": 2.5}
+{"step": 46, "name": "crop_test", "rc": 0, "secs": 28.1}
+{"step": 52, "name": "ranch_test", "rc": 0, "secs": 3.0}
+{"step": 58, "name": "cf_layout_test", "rc": 0, "secs": 8.1}
+{"step": 64, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 6.9}
+{"step": 70, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.6}
+{"step": 76, "name": "danger_music_test", "rc": 0, "secs": 24.6}
+{"step": 82, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.7}
+{"step": 88, "name": "every script compiles", "rc": 0, "secs": 3.4}
+{"step": 94, "name": "quest_tracker_test", "rc": 0, "secs": 3.7}
+{"step": 100, "name": "battle_drill_flow_test", "rc": 0, "secs": 7.8}
+{"step": 106, "name": "move_speed_test", "rc": 0, "secs": 3.9}
+{"step": 112, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 5.8}
+{"step": 118, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.3}
+{"step": 124, "name": "arcade_test", "rc": 0, "secs": 2.9}
+{"step": 130, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 3.9}
+{"step": 136, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 2.5}
+{"step": 142, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 3.1}
+{"step": 148, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.4}
+{"step": 154, "name": "C10b P4: casino", "rc": 0, "secs": 2.7}
