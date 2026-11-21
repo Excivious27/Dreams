@@ -54,6 +54,33 @@ def main():
         roc = kind.endswith("_roc") and 'ends_with("_roc")' in eg
         if BEAST.search(kind) and not roc and not any(w in kind for w in words):
             bad.append("beast %s is not covered by Enemy.is_beast (it would be killed, not driven off)" % kind)
+    # C12 P3 (c12_06-01): villager words too (talk, first meetings, roles, indoor and region lines).
+    VOICE = re.compile(r"\bhunt(ed|ing|er|s)?\b|\bmeat\b|\bi trap\b|what i trap|\bpelts?\b|for the pot", re.I)
+    texts = []
+    def walk(o, label):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                walk(v, label + "/" + str(k))
+        elif isinstance(o, list):
+            for i, v in enumerate(o):
+                walk(v, label)
+        elif isinstance(o, str):
+            texts.append((label, o))
+    walk(json.load(open(os.path.join(ROOT, "data", "talk.json"))), "talk.json")
+    for nid, nd in json.load(open(os.path.join(ROOT, "data", "npcs.json"))).items():
+        if isinstance(nd, dict):
+            for k in ("role", "inside", "inside_gangsters"):
+                walk(nd.get(k, []), "npcs.json %s/%s" % (nid, k))
+    for rid, rg in json.load(open(os.path.join(ROOT, "data", "regions.json"))).items():
+        for nd in (rg.get("npcs", []) if isinstance(rg, dict) else []):
+            for k in ("lines", "lines_gangsters", "after", "after_gangsters", "done_lines"):
+                walk(nd.get(k, []), "regions.json %s/%s/%s" % (rid, nd.get("id", ""), k))
+    intros = open(os.path.join(ROOT, "scripts", "intros.gd")).read()
+    for m in re.finditer(r'"((?:[^"\\]|\\.)*)"', intros.split("const LINES", 1)[-1].split("static func", 1)[0]):
+        texts.append(("intros.gd", m.group(1)))
+    for label, t in texts:
+        if VOICE.search(t):
+            bad.append("%s reads as hunting/meat: %r" % (label, t[:80]))
     if not drops:
         bad.append("enemies.json has no drops table (test out of date)")
     for b in bad:
