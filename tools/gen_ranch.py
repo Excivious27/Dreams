@@ -660,6 +660,15 @@ def main():
     for pid in data['products']:
         if pid in items and pid not in TAG_SKIP:
             items[pid]['ranch'] = True   # bag sort groups animal goods; econ_check reads the list from ranch.json
+    # C11b integ: goods only one arc's creatures make carry that arc (gen_stations then tags the recipes
+    # that use them, so a shared loom/press never lists a recipe the arc can't make; station_check).
+    c11b_goods = set(C11B_ITEMS) | set(NEW_ITEMS)
+    for pid, prow in data['products'].items():
+        if pid not in items or pid not in c11b_goods or items[pid].get('arc'):
+            continue
+        arcs = {str(data['species'].get(sp, {}).get('arc', '') or 'both') for sp in prow.get('species', [])}
+        if len(arcs) == 1 and next(iter(arcs)) in ('penguins', 'gangsters'):
+            items[pid]['arc'] = next(iter(arcs))
     fails = check(data, man, items)
     if fails:
         for f in fails:

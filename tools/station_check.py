@@ -15,8 +15,26 @@ raw |= {c['yield'] for c in C.values()} | {k for k, v in I.items() if v.get('typ
 raw |= {'coal', 'copper_bar', 'iron_bar', 'glass', 'leather', 'cloth', 'rope'} & {k for k in I if re.search(r'"%s"' % k, open(os.path.join(D, '..', 'scripts', 'shops.gd')).read())}
 FAM = {v.get('family') for v in I.values()} | {'fruit'}
 fails = 0
+# C11b: animal goods come from the ranch (data/ranch.json): what each arc's creatures make is in hand.
+RJ = json.load(open(D + 'ranch.json')) if os.path.exists(D + 'ranch.json') else {}
+def ranch_goods(arc):
+    out = set()
+    for sid, sp in RJ.get('species', {}).items():
+        if str(sp.get('arc', '') or '') not in ('', 'both', arc): continue
+        p = sp.get('product', {})
+        out.add(p.get('id'))
+        if p.get('extra'): out.add(p['extra'][0])
+        for v in (sp.get('art', {}) or {}).get('variants', []) or []:
+            if isinstance(v, dict):
+                if v.get('product'): out.add(v['product'])
+                if v.get('product_extra'): out.add(v['product_extra'][0])
+        egg = (sp.get('breed', {}) or {}).get('egg')
+        if egg: out.add(egg)
+    for raw_id, made_ids in RJ.get('processing', {}).items():
+        if raw_id in out: out |= set(made_ids)
+    return {k for k in out if k in I}
 for arc in ('penguins', 'gangsters'):
-    have = set(raw); tiers = {}
+    have = set(raw) | ranch_goods(arc); tiers = {}
     def ok(k): return (k[1:] in FAM) if k.startswith('#') else k in have
     changed = True
     while changed:

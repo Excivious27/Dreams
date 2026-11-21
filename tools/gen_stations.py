@@ -712,6 +712,28 @@ def fval(k):  # value of a need key ('#fam' = its cheapest member)
 def need_val(need): return sum(fval(k) * n for k, n in need.items())
 def all_shop(need): return all((not k.startswith('#')) and k in SHOP for k in need)
 ARMOUR = ('copper_', 'iron_', 'steel_', 'silver_', 'gold_', 'leather_')
+# C11b integ: a recipe that needs one arc's goods belongs to that arc (and so does a C11b good made only that
+# way): shared stations never list what the arc can't make. Repeat so chains (milk -> cheese -> ...) settle.
+_station_arc = {b['station'].get('book', bid): b.get('arc') for bid, b in B.items() if isinstance(b, dict) and isinstance(b.get('station'), dict)}
+for _ in range(3):
+    for bk, b in books.items():
+        for r in b:
+            if r.get('arc') or _station_arc.get(bk):
+                continue
+            ra = {I[k].get('arc') for k in r['need'] if not k.startswith('#') and k in I and I[k].get('arc')}
+            if len(ra) == 1:
+                r['arc'] = next(iter(ra)); r['_need_arc'] = True
+    _by_give = {}
+    for bk, b in books.items():
+        for r in b:
+            _by_give.setdefault(r['give'], []).append(r)
+    for g, rs in _by_give.items():
+        arcs = {r.get('arc') for r in rs}
+        if g in I and not I[g].get('arc') and all(r.get('_need_arc') for r in rs) and len(arcs) == 1:
+            I[g]['arc'] = next(iter(arcs))  # made only from that arc's goods
+for b in books.values():
+    for r in b:
+        r.pop('_need_arc', None)
 econ_log = []
 for _ in range(3):  # upstream values move downstream ones: settle in a few passes
     floor, cap = {}, {}

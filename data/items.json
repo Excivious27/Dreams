@@ -21090,7 +21090,8 @@
   "desc": "A faceted egg that rings softly when tapped.",
   "family": "egg",
   "energy": 30,
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "star_wool": {
   "name": "Star Wool",
@@ -21099,7 +21100,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "Lavender wool with tiny twinkles in it.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "moon_fluff": {
   "name": "Moon Fluff",
@@ -21108,7 +21110,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "Fluff so light it floats for a moment before landing.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "sea_milk": {
   "name": "Sea Milk",
@@ -21119,7 +21122,8 @@
   "desc": "Cool, faintly salty and very creamy.",
   "family": "milk",
   "energy": 23,
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "ember_scale": {
   "name": "Ember Scale",
@@ -21128,7 +21132,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "Still warm. A little fuel that never smokes.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "roc_feather": {
   "name": "Roc Feather",
@@ -21137,7 +21142,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "A storm-grey flight feather that crackles in the wind.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "roc_egg": {
   "name": "Roc Egg",
@@ -21154,7 +21160,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "A tuft of fox fur that shimmers green and gold.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "glow_silk": {
   "name": "Glow Silk",
@@ -21163,7 +21170,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "Fine thread spun by glowworms, faintly lit.",
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "moon_milk": {
   "name": "Moon Milk",
@@ -21174,7 +21182,8 @@
   "desc": "Pale silver milk from a moon cow.",
   "family": "milk",
   "energy": 28,
-  "ranch": true
+  "ranch": true,
+  "arc": "penguins"
  },
  "circuit_egg": {
   "name": "Circuit Egg",
@@ -21183,7 +21192,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "Warm, smooth and faintly humming. Crack it for parts.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "glow_wool": {
   "name": "Glow Wool",
@@ -21192,7 +21202,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "Soft wool that glows after dark.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "coolant": {
   "name": "Coolant",
@@ -21201,7 +21212,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "Cold blue and never spills. Bots love it.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "static_fluff": {
   "name": "Static Fluff",
@@ -21210,7 +21222,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "It sticks to everything and crackles when you pet it.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "synth_milk": {
   "name": "Synth Milk",
@@ -21219,7 +21232,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "Smooth and blue-white. Machines run cooler on it.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "static_scale": {
   "name": "Static Scale",
@@ -21228,7 +21242,8 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "A tiny scale with a spark trapped inside.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "alloy_egg": {
   "name": "Alloy Egg",
@@ -21237,7 +21252,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "A heavy metal-shelled egg. Crack it for rare parts.",
-  "ranch": true
+  "ranch": true,
+  "arc": "gangsters"
  },
  "grand_omelette": {
   "name": "Grand Omelette",
@@ -21271,7 +21287,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "A pale round cheese with little craters.",
-  "energy": 40
+  "energy": 40,
+  "arc": "penguins"
  },
  "glow_yarn": {
   "name": "Glow Yarn",
@@ -21279,7 +21296,8 @@
   "value": 80,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Yarn that glows softly. Neon tailors want it."
+  "desc": "Yarn that glows softly. Neon tailors want it.",
+  "arc": "gangsters"
  },
  "moss_tea_blend": {
   "name": "Moss Tea Blend",
@@ -21305,7 +21323,8 @@
   "value": 280,
   "rarity": "epic",
   "tier": 4,
-  "desc": "Yarn spun from star wool. It twinkles."
+  "desc": "Yarn spun from star wool. It twinkles.",
+  "arc": "penguins"
  },
  "cloud_yarn": {
   "name": "Cloud Yarn",
@@ -21321,7 +21340,8 @@
   "value": 273,
   "rarity": "epic",
   "tier": 4,
-  "desc": "A warm scale charm. Good company on a cold night."
+  "desc": "A warm scale charm. Good company on a cold night.",
+  "arc": "penguins"
  },
  "feather_fan": {
   "name": "Feather Fan",

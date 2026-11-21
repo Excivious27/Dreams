@@ -550,7 +550,8 @@
     "#milk": 1
    },
    "give": "giant_egg_custard",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "giant_egg_custard_emu",
@@ -2492,7 +2493,8 @@
     "star_wool": 1
    },
    "give": "star_yarn",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "star_yarn_moon",
@@ -2501,7 +2503,8 @@
     "moon_fluff": 2
    },
    "give": "star_yarn",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "star_yarn_aurora",
@@ -2510,7 +2513,8 @@
     "aurora_tuft": 2
    },
    "give": "star_yarn",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "cloud_yarn",
@@ -2528,7 +2532,8 @@
     "glow_wool": 1
    },
    "give": "glow_yarn",
-   "tier": 2
+   "tier": 2,
+   "arc": "gangsters"
   },
   {
    "id": "glow_yarn_static",
@@ -2537,7 +2542,8 @@
     "static_fluff": 1
    },
    "give": "glow_yarn",
-   "tier": 2
+   "tier": 2,
+   "arc": "gangsters"
   },
   {
    "id": "wisp_silk",
@@ -2556,7 +2562,8 @@
     "cotton_cloth": 1
    },
    "give": "fine_fabric",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "feather_fan",
@@ -2584,7 +2591,8 @@
     "cloth": 1
    },
    "give": "feather_fan",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "dc_rug_rect_blue",
@@ -3074,7 +3082,8 @@
     "moon_milk": 1
    },
    "give": "moon_cheese",
-   "tier": 3
+   "tier": 3,
+   "arc": "penguins"
   },
   {
    "id": "sea_cheese",
@@ -3084,7 +3093,8 @@
    },
    "give": "cheese",
    "tier": 2,
-   "n": 2
+   "n": 2,
+   "arc": "penguins"
   },
   {
    "id": "moss_tea_blend",
@@ -3369,7 +3379,8 @@
     "copper_bar": 1
    },
    "give": "ember_charm",
-   "tier": 2
+   "tier": 2,
+   "arc": "penguins"
   },
   {
    "id": "dc_tt_snow_globe",
