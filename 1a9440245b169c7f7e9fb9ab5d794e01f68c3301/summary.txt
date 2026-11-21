@@ -1,0 +1,18 @@
+CONDUCT CI FAIL  1a9440245b  (ci/c11bp7-49e87e02, run 44853787679)
+
+subset run: shards [1, 2, 3, 6], bots off, playtest on
+check shards (4/4):
+  shard 1: PASS  434s
+  shard 2: PASS  218s
+  shard 3: PASS  278s
+  shard 6: PASS  287s
+playtest: FAIL (twice in a row)  82s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (14 away)
+  FAIL boss appeared after 5 kills
+RELAY: ok, 120ms (live code pre-/version)
+NET E2E: ok, 15s
+  relay note: server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)
+
+longest job: 434s
+slowest check steps: import 238.7s; import 104.6s; import 89.4s; import 63.5s; smoke test 55.6s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 42.3s; touch_ui_test 39.6s; commons_test 37.0s
+distinct errors/fails/warns:

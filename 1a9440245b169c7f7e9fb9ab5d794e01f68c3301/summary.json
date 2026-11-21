@@ -1,0 +1,190 @@
+{
+ "sha": "1a9440245b169c7f7e9fb9ab5d794e01f68c3301",
+ "ref": "ci/c11bp7-49e87e02",
+ "run": "44853787679",
+ "finished": 1795227466.6718187,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [
+   "server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)"
+  ],
+  "fail": false,
+  "local_code": "e4b9aef5b57d",
+  "main_code": "493711636569",
+  "live_before": {
+   "code": "",
+   "commit": "none (server predates /version)",
+   "health": "dreams relay ok"
+  },
+  "live": {
+   "code": "",
+   "commit": "none (server predates /version)",
+   "health": "dreams relay ok"
+  },
+  "deployed": false,
+  "ms": 120,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 15s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 120ms (live code pre-/version)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 1,
+  "secs": 82,
+  "shots": 21,
+  "fails": [
+   "FAIL tap-to-move walks to the tapped cell (14 away)",
+   "FAIL boss appeared after 5 kills"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL tap-to-move walks to the tapped cell (7 away)"
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "49e87e026318bd2e6925d340f733b52f9b2274e0",
+  "label": "c11bp7",
+  "branch": "c11bf/p7",
+  "shards": [
+   1,
+   2,
+   3,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 434,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 434,
+   "failed_steps": []
+  },
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 218,
+   "failed_steps": []
+  },
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 278,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 287,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 238.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 104.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 89.4
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 63.5
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 55.6
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.3
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.6
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 37.0
+  },
+  {
+   "step": 67,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 29.4
+  },
+  {
+   "step": 141,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 24.3
+  },
+  {
+   "step": 27,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 22.4
+  },
+  {
+   "step": 69,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 20.0
+  },
+  {
+   "step": 109,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 17.5
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 15.1
+  },
+  {
+   "step": 104,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 14.6
+  }
+ ]
+}

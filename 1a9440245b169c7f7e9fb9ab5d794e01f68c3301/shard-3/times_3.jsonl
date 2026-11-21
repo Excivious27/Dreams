@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 89.4}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 15.1}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 3.6}
+{"step": 16, "name": "touch_ui_test", "rc": 0, "secs": 39.6}
+{"step": 22, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 5.0}
+{"step": 28, "name": "rec_test", "rc": 0, "secs": 5.3}
+{"step": 34, "name": "cash_test", "rc": 0, "secs": 3.6}
+{"step": 40, "name": "make_house_parts", "rc": 0, "secs": 0.4}
+{"step": 46, "name": "commons_test", "rc": 0, "secs": 37.0}
+{"step": 52, "name": "cf_layout_test", "rc": 0, "secs": 8.7}
+{"step": 58, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 7.9}
+{"step": 64, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.4}
+{"step": 70, "name": "mix_test", "rc": 0, "secs": 4.7}
+{"step": 76, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.9}
+{"step": 82, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 6.7}
+{"step": 88, "name": "street_bat_test", "rc": 0, "secs": 2.7}
+{"step": 94, "name": "battle_drill_flow_test", "rc": 0, "secs": 8.5}
+{"step": 100, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 3.4}
+{"step": 106, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 2.6}
+{"step": 112, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 9.4}
+{"step": 118, "name": "stack_whack_test", "rc": 0, "secs": 3.2}
+{"step": 124, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 2.9}
+{"step": 130, "name": "C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou", "rc": 0, "secs": 2.8}
+{"step": 136, "name": "C10a P3: decor catalogue", "rc": 0, "secs": 3.3}
+{"step": 142, "name": "C10a P5: wardrobe", "rc": 0, "secs": 4.8}

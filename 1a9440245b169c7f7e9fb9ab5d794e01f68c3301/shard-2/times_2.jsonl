@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 63.5}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.3}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.3}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 10.2}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.2}
+{"step": 27, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 22.4}
+{"step": 33, "name": "bowling_test", "rc": 0, "secs": 10.1}
+{"step": 39, "name": "pen_test", "rc": 0, "secs": 3.0}
+{"step": 45, "name": "move_target_test", "rc": 0, "secs": 11.5}
+{"step": 51, "name": "gang_flavour_test", "rc": 0, "secs": 2.1}
+{"step": 57, "name": "every sound the game asks for exists", "rc": 0, "secs": 2.3}
+{"step": 63, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.2}
+{"step": 69, "name": "danger_music_test", "rc": 0, "secs": 20.0}
+{"step": 75, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 3.3}
+{"step": 81, "name": "every script compiles", "rc": 0, "secs": 3.0}
+{"step": 87, "name": "quest_tracker_test", "rc": 0, "secs": 3.3}
+{"step": 93, "name": "battle_drill_flow_test", "rc": 0, "secs": 6.8}
+{"step": 99, "name": "move_speed_test", "rc": 0, "secs": 3.4}
+{"step": 105, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 5.0}
+{"step": 111, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.0}
+{"step": 117, "name": "arcade_test", "rc": 0, "secs": 2.5}
+{"step": 123, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 3.4}
+{"step": 129, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.1}
+{"step": 135, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 3.0}
+{"step": 141, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 24.3}
