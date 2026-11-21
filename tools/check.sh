@@ -1150,3 +1150,9 @@ echo "$amapout" | grep -E "FAIL|SCRIPT ERROR|ambience_map_test" | head -40 || tr
 if ! echo "$amapout" | grep -q "ambience_map_test: [0-9]* checks, 0 failures"; then
   echo "Ambience map (no silent place) test failed"; exit 1
 fi
+
+uqout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ui_cue_test.gd 2>&1)"
+echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
+if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
+  echo "UI cue test failed"; exit 1
+fi

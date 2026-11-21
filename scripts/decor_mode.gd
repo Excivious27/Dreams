@@ -1136,6 +1136,7 @@ static func open(m: GameMap) -> DecorMode:
 func _ready() -> void:
 	layer = 12
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Music.instance(get_tree()).sfx("menu_open", "ui_tap")  # c13_08-11
 	if _undo_map != map.get_instance_id():
 		undo_stack.clear()
 		_undo_map = map.get_instance_id()
@@ -1191,6 +1192,8 @@ func _exit_tree() -> void:
 
 
 func close() -> void:
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx("menu_close", "ui_tap")  # c13_08-11
 	Hud.modal_rect = Rect2()
 	Hud.extra_rects.erase(_bar_rect)
 	if not Hud.keep_paused(get_tree(), self):
@@ -1607,7 +1610,7 @@ func _set_moving(i: int) -> void:
 
 func _deny(why: String) -> void:
 	Haptics.buzz("deny")
-	Music.instance(get_tree()).sfx("status_tick", "ui_tap")
+	Music.instance(get_tree()).sfx("nope", "status_tick")  # c13_08-11: the game-wide refusal
 	_say(why)
 
 

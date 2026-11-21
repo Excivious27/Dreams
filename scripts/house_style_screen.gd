@@ -31,6 +31,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "house_style")
+	Music.instance(get_tree()).sfx("page", "menu_open")  # c13_08-05
 	preview = HouseExterior.look().duplicate()
 	for p: String in HouseExterior.PARTS:
 		var opts := _opts(p)

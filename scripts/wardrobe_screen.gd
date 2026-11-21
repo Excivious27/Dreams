@@ -47,6 +47,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "wardrobe")
+	Music.instance(get_tree()).sfx("menu_open", "ui_tap")  # c13_08-05
 	Wardrobe.register()
 	if Wardrobe.hero_kind() == "penguin" and not _picked:
 		slot = "acc"  # what shows on Pip-Pip / Nova
