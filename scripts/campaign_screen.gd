@@ -863,6 +863,7 @@ func _text(cv: Control, f: Font, p: Vector2, t: String, size: int, col: Color, w
 func _close_now(restore_music := true) -> void:
 	if not is_inside_tree():
 		return
+	_closed_ok = true
 	get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
 	Music.instance(get_tree()).sfx("menu_close", "ui_tap")
 	if restore_music and m != null and is_instance_valid(m):
@@ -871,6 +872,19 @@ func _close_now(restore_music := true) -> void:
 	Dialogue.block_input(0.4)
 	closed.emit()
 	queue_free()
+
+
+## Freed with its map (a map change while the board was up): don't leave the
+## tree paused behind a full-screen modal rect with no screen (bot 5, C11a fix).
+var _closed_ok := false
+func _exit_tree() -> void:
+	if _closed_ok:
+		return
+	_closed_ok = true
+	Hud.modal_rect = Rect2()
+	if get_tree() and Hud.pause_owner == "campaign_screen":
+		get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
+	closed.emit()
 
 
 func close() -> void:
