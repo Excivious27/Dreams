@@ -745,7 +745,7 @@ A("wind_breezehaven", cols=44, rows=40, music="mega_wind", look="sky", links={"w
            ("props/wi_wind_shrine", 2, 2, (27, 9)), ("nature/cloud_tree_a", 2, 2, (36, 26)),
            ("nature/cloud_tree_b", 2, 2, (30, 31)), ("props/sky_stairs", 5, 3, (36, 33))],
   shop=("props/wi_cloud_stall", 2, 1, (14, 27), {"who": "Gull's Goods", "greet": "Feathers, fluff, and food that floats! Mind it doesn't float off.",
-        "items": [["cloud_souffle", 560], ["charm_sky", 1700], ["finargle_fuzz", 480], ["greater_potion", 260], ["wonder_elixir", 900]]}),
+        "items": [["cloud_souffle", 560], ["charm_sky", 1700], ["finargle_fuzz", 90], ["greater_potion", 260], ["wonder_elixir", 900]]}),
   heal=("props/glow_pool_moon", 2, 1, (24, 26), {"hp": 5, "energy": 80, "msg": "You lie back on a cloud. It's exactly as comfortable as you always hoped."}),
   gate=("props/wi_mooring_tower", 2, 2, "spawn"),
   notes=[("A: read the wind vane", "Wind vane board: 'SUNRISE SHELF west, gentle. STORM SHELF north, not gentle. STARFALL GARDEN past the storm, where the Roc nests. Hold on to your hat. Hold on to your penguin.'")],

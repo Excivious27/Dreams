@@ -2724,7 +2724,7 @@ static func respawned(key: String, respawn_days: int) -> bool:
 ## meadow is cleared, more once you're deep in the story.
 static func enemy_count(base: int) -> int:
 	var scale := 0.5 + 0.25 * progress_tier()
-	return maxi(1 if base > 0 else 0, int(round(base * minf(1.5, scale))))
+	return maxi(1 if base > 0 else 0, int(round(base * minf(1.5, scale) * Difficulty.mul("foe_count"))))  # C16a P1: fewer roamers on the easy modes
 
 
 static func progress_tier() -> int:
