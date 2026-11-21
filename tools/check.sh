@@ -1344,3 +1344,11 @@ echo "$c15wxout" | grep -E "FAIL|SCRIPT ERROR|weather_c15_test" || true
 if ! echo "$c15wxout" | grep -q "weather_c15_test: 0 failures"; then
   echo "weather_c15_test failed"; exit 1
 fi
+
+echo "== C15 P2: seasonal goods (forage, winter crops, shop rotation, stall seeds, festival treats, decor, dishes) =="
+python3 tools/slice_c15_p2.py check || { echo "slice_c15_p2 check failed"; exit 1; }
+c15sgout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/season_goods_test.gd 2>&1)"
+echo "$c15sgout" | grep -E "FAIL|SCRIPT ERROR|season_goods_test" || true
+if ! echo "$c15sgout" | grep -q "season_goods_test: OK (0 fails)"; then
+  echo "season_goods_test failed"; exit 1
+fi

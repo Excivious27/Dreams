@@ -1826,6 +1826,7 @@ static func roll_forage(region: String) -> String:
 
 static func _roll_forage_once(region: String) -> String:
 	var pool: Array = forage_data.get(region, forage_data.get("wild", forage_data.get("farm", [])))
+	pool = SeasonGoods.forage_pool(region, pool)  # C15 P2 hook: the season's own forage, off-season rows thinned
 	var total := 0.0
 	var ok: Array = []
 	for row in pool:

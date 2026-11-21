@@ -1500,7 +1500,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 				return true
 			# It grows on the nights from today to day 27; it dies at the season's turn.
 			var left := GameState.DAYS_PER_SEASON - GameState.day_of_season()
-			if bool(pcd.get("tree", false)) and not GameState.crop_fits_season(pcd, se):
+			if bool(pcd.get("tree", false)) and not GameState.crop_fits_season(pcd, se) and not GameState.in_greenhouse(key):
 				hud.toast("Fruit trees only grow in their season: this one sleeps until then.", Color(1, 0.9, 0.6))
 			elif not bool(pcd.get("tree", false)) and str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
 				hud.toast("Careful: it needs %d days and only %s left this season." % [int(pcd["days"]), ("1 is" if left == 1 else "%d are" % left)], Color(1, 0.9, 0.6))

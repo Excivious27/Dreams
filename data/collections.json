@@ -1154,6 +1154,12 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "elderberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "golden_apple",
     "arc": "",
     "family": "Fruit",
@@ -1215,6 +1221,24 @@
    },
    {
     "item": "dreamfruit",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "frost_dragonfruit",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "winter_rose_apple",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "penguin_snowberry",
     "arc": "",
     "family": "Fruit",
     "where": "Grow it on the farm."
@@ -1364,13 +1388,37 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "frostkale",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "cave_mushroom",
     "arc": "",
     "family": "Crops",
     "where": "Grow it on the farm."
    },
    {
+    "item": "frost_squash",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "winter_cabbage",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "daisy",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "dandelion",
     "arc": "",
     "family": "Flowers",
     "where": "Grow it on the farm."
@@ -1400,7 +1448,25 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "bluebell",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "clover",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "violet",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "daffodil",
     "arc": "",
     "family": "Flowers",
     "where": "Grow it on the farm."
@@ -1419,6 +1485,12 @@
    },
    {
     "item": "basil",
+    "arc": "",
+    "family": "Herbs",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "chamomile",
     "arc": "",
     "family": "Herbs",
     "where": "Out in the world somewhere."
@@ -1455,6 +1527,18 @@
    },
    {
     "item": "comfrey",
+    "arc": "",
+    "family": "Herbs",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "elderflower",
+    "arc": "",
+    "family": "Herbs",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "wild_garlic",
     "arc": "",
     "family": "Herbs",
     "where": "Out in the world somewhere."
@@ -1502,10 +1586,22 @@
     "where": "Forage: Gloam Violet Glade, Gloam Moonpool"
    },
    {
+    "item": "frost_edelweiss",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "dark_rose",
     "arc": "",
     "family": "Flowers",
     "where": "Forage: Gilt Gardens"
+   },
+   {
+    "item": "winter_snowdrop",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
    },
    {
     "item": "steel_bar",
@@ -2010,6 +2106,132 @@
     "arc": "",
     "family": "Fish",
     "where": "Somewhere in the water, at night with bait, fishing 13+"
+   },
+   {
+    "item": "fiddlehead",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "salmonberry",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "crocus",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sand_dollar",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "sea_glass",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "summer_kelp",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "cattail",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "water_lily",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "honeysuckle",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "chanterelle",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "hazelnut",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "rosehip",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "wild_plum",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "chestnut",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "leaf_bundle",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "holly_sprig",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "snow_yam",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "crystal_icicle",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "winter_honeycomb",
+    "arc": "",
+    "family": "Forage",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "snow_radish",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "winter_leek",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
    }
   ],
   "fish": [
@@ -2292,6 +2514,139 @@
     "station": "kitchen",
     "item": "sun_flan",
     "name": "Gilded Flan",
+    "arc": ""
+   },
+   {
+    "recipe": "spring_greens",
+    "station": "kitchen",
+    "item": "spring_greens",
+    "name": "Spring Greens Salad",
+    "arc": ""
+   },
+   {
+    "recipe": "fiddlehead_saute",
+    "station": "kitchen",
+    "item": "fiddlehead_saute",
+    "name": "Fiddlehead Saute",
+    "arc": ""
+   },
+   {
+    "recipe": "strawberry_shortcake",
+    "station": "kitchen",
+    "item": "strawberry_shortcake",
+    "name": "Strawberry Shortcake",
+    "arc": ""
+   },
+   {
+    "recipe": "asparagus_tart",
+    "station": "kitchen",
+    "item": "asparagus_tart",
+    "name": "Asparagus Tart",
+    "arc": ""
+   },
+   {
+    "recipe": "salmonberry_jam",
+    "station": "kitchen",
+    "item": "salmonberry_jam",
+    "name": "Salmonberry Jam",
+    "arc": ""
+   },
+   {
+    "recipe": "honeysuckle_tea",
+    "station": "kitchen",
+    "item": "honeysuckle_tea",
+    "name": "Honeysuckle Tea",
+    "arc": ""
+   },
+   {
+    "recipe": "kelp_salad",
+    "station": "kitchen",
+    "item": "kelp_salad",
+    "name": "Sea Kelp Salad",
+    "arc": ""
+   },
+   {
+    "recipe": "corn_tomato_salad",
+    "station": "kitchen",
+    "item": "corn_tomato_salad",
+    "name": "Corn and Tomato Salad",
+    "arc": ""
+   },
+   {
+    "recipe": "melon_sorbet",
+    "station": "kitchen",
+    "item": "melon_sorbet",
+    "name": "Melon Sorbet",
+    "arc": ""
+   },
+   {
+    "recipe": "chanterelle_stew",
+    "station": "kitchen",
+    "item": "chanterelle_stew",
+    "name": "Chanterelle Stew",
+    "arc": ""
+   },
+   {
+    "recipe": "hazelnut_cake",
+    "station": "kitchen",
+    "item": "hazelnut_cake",
+    "name": "Hazelnut Cake",
+    "arc": ""
+   },
+   {
+    "recipe": "rosehip_jam",
+    "station": "kitchen",
+    "item": "rosehip_jam",
+    "name": "Rosehip Jam",
+    "arc": ""
+   },
+   {
+    "recipe": "pumpkin_pie",
+    "station": "kitchen",
+    "item": "pumpkin_pie",
+    "name": "Pumpkin Pie",
+    "arc": ""
+   },
+   {
+    "recipe": "roast_chestnuts",
+    "station": "kitchen",
+    "item": "roast_chestnuts",
+    "name": "Roast Chestnuts",
+    "arc": ""
+   },
+   {
+    "recipe": "frostkale_soup",
+    "station": "kitchen",
+    "item": "frostkale_soup",
+    "name": "Frostkale Soup",
+    "arc": ""
+   },
+   {
+    "recipe": "snow_yam_roast",
+    "station": "kitchen",
+    "item": "snow_yam_roast",
+    "name": "Snow Yam Roast",
+    "arc": ""
+   },
+   {
+    "recipe": "snow_pea_stir_fry",
+    "station": "kitchen",
+    "item": "snow_pea_stir_fry",
+    "name": "Snow Pea Stir-Fry",
+    "arc": ""
+   },
+   {
+    "recipe": "citrus_tart",
+    "station": "kitchen",
+    "item": "citrus_tart",
+    "name": "Winter Citrus Tart",
+    "arc": ""
+   },
+   {
+    "recipe": "honeycomb_toast",
+    "station": "kitchen",
+    "item": "honeycomb_toast",
+    "name": "Honeycomb Toast",
     "arc": ""
    },
    {
@@ -5287,6 +5642,11 @@
     "where": "Out in the world somewhere."
    },
    {
+    "item": "chamomile",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
     "item": "dill",
     "arc": "",
     "where": "Out in the world somewhere."
@@ -5313,6 +5673,16 @@
    },
    {
     "item": "comfrey",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "elderflower",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "wild_garlic",
     "arc": "",
     "where": "Out in the world somewhere."
    },
@@ -5363,6 +5733,86 @@
    },
    {
     "item": "shell_moss",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "fiddlehead",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "salmonberry",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "sand_dollar",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "sea_glass",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "summer_kelp",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "cattail",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "chanterelle",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "hazelnut",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "rosehip",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "wild_plum",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "chestnut",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "leaf_bundle",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "holly_sprig",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "snow_yam",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "crystal_icicle",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "winter_honeycomb",
     "arc": "",
     "where": "Out in the world somewhere."
    }

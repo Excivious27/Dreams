@@ -8,7 +8,7 @@ D = os.path.join(os.path.dirname(__file__), '..', 'data') + '/'
 I = json.load(open(D + 'items.json')); R = json.load(open(D + 'recipes.json')); B = json.load(open(D + 'buildings.json')); C = json.load(open(D + 'crops.json'))
 B.pop('_', None)
 made = {r['give'] for l in R.values() if isinstance(l, list) for r in l}
-txt = ''.join(open(D + f).read() for f in ('forage.json', 'enemies.json', 'regions.json', 'interiors.json'))
+txt = ''.join(open(D + f).read() for f in ('forage.json', 'season_goods.json', 'enemies.json', 'regions.json', 'interiors.json'))
 for f in glob.glob(os.path.join(D, '..', 'scripts', '*.gd')): txt += open(f).read()
 raw = {k for k in I if k not in made and re.search(r'"%s"' % re.escape(k), txt)}
 raw |= {c['yield'] for c in C.values()} | {k for k, v in I.items() if v.get('type') in ('fish', 'seed')}

@@ -1,0 +1,582 @@
+{
+ "forage": {
+  "spring": {
+   "farm": [
+    [
+     "dandelion",
+     0.15
+    ],
+    [
+     "crocus",
+     0.1
+    ]
+   ],
+   "forest": [
+    [
+     "fiddlehead",
+     0.22
+    ],
+    [
+     "morel",
+     0.06
+    ],
+    [
+     "wild_garlic",
+     0.1
+    ]
+   ],
+   "meadow": [
+    [
+     "violet",
+     0.14
+    ],
+    [
+     "daffodil",
+     0.12
+    ],
+    [
+     "crocus",
+     0.1
+    ],
+    [
+     "salmonberry",
+     0.14
+    ]
+   ],
+   "lake": [
+    [
+     "fiddlehead",
+     0.15
+    ],
+    [
+     "bluebell",
+     0.1
+    ]
+   ],
+   "beach": [
+    [
+     "sea_glass",
+     0.03
+    ]
+   ],
+   "mountain": [
+    [
+     "crocus",
+     0.1
+    ],
+    [
+     "fiddlehead",
+     0.08
+    ]
+   ],
+   "orchard_hills": [
+    [
+     "salmonberry",
+     0.15
+    ],
+    [
+     "daffodil",
+     0.1
+    ]
+   ],
+   "wild": [
+    [
+     "fiddlehead",
+     0.12
+    ],
+    [
+     "salmonberry",
+     0.12
+    ]
+   ]
+  },
+  "summer": {
+   "farm": [
+    [
+     "chamomile",
+     0.08
+    ],
+    [
+     "honeysuckle",
+     0.12
+    ]
+   ],
+   "forest": [
+    [
+     "elderflower",
+     0.12
+    ],
+    [
+     "honeysuckle",
+     0.08
+    ]
+   ],
+   "meadow": [
+    [
+     "honeysuckle",
+     0.15
+    ],
+    [
+     "chamomile",
+     0.1
+    ]
+   ],
+   "lake": [
+    [
+     "cattail",
+     0.2
+    ],
+    [
+     "water_lily",
+     0.12
+    ]
+   ],
+   "beach": [
+    [
+     "sand_dollar",
+     0.15
+    ],
+    [
+     "sea_glass",
+     0.1
+    ],
+    [
+     "summer_kelp",
+     0.2
+    ]
+   ],
+   "mountain": [
+    [
+     "edelweiss",
+     0.05
+    ]
+   ],
+   "orchard_hills": [
+    [
+     "honeysuckle",
+     0.12
+    ]
+   ],
+   "wild": [
+    [
+     "cattail",
+     0.1
+    ],
+    [
+     "honeysuckle",
+     0.1
+    ]
+   ]
+  },
+  "fall": {
+   "farm": [
+    [
+     "leaf_bundle",
+     0.15
+    ],
+    [
+     "rosehip",
+     0.1
+    ]
+   ],
+   "forest": [
+    [
+     "chanterelle",
+     0.18
+    ],
+    [
+     "hazelnut",
+     0.16
+    ],
+    [
+     "chestnut",
+     0.12
+    ]
+   ],
+   "meadow": [
+    [
+     "rosehip",
+     0.15
+    ],
+    [
+     "wild_plum",
+     0.12
+    ],
+    [
+     "elderberry",
+     0.1
+    ]
+   ],
+   "lake": [
+    [
+     "cattail",
+     0.12
+    ],
+    [
+     "leaf_bundle",
+     0.1
+    ]
+   ],
+   "beach": [
+    [
+     "summer_kelp",
+     0.06
+    ]
+   ],
+   "mountain": [
+    [
+     "hazelnut",
+     0.1
+    ],
+    [
+     "wild_plum",
+     0.08
+    ]
+   ],
+   "orchard_hills": [
+    [
+     "wild_plum",
+     0.15
+    ],
+    [
+     "chestnut",
+     0.12
+    ],
+    [
+     "leaf_bundle",
+     0.1
+    ]
+   ],
+   "wild": [
+    [
+     "chanterelle",
+     0.1
+    ],
+    [
+     "hazelnut",
+     0.12
+    ]
+   ]
+  },
+  "winter": {
+   "farm": [
+    [
+     "holly_sprig",
+     0.2
+    ],
+    [
+     "snow_yam",
+     0.15
+    ]
+   ],
+   "forest": [
+    [
+     "holly_sprig",
+     0.2
+    ],
+    [
+     "snow_yam",
+     0.15
+    ],
+    [
+     "crystal_icicle",
+     0.05
+    ],
+    [
+     "winter_honeycomb",
+     0.03
+    ]
+   ],
+   "meadow": [
+    [
+     "snow_yam",
+     0.2
+    ],
+    [
+     "winter_honeycomb",
+     0.06
+    ],
+    [
+     "holly_sprig",
+     0.1
+    ]
+   ],
+   "lake": [
+    [
+     "crystal_icicle",
+     0.15
+    ],
+    [
+     "frost_lily",
+     0.04
+    ]
+   ],
+   "beach": [
+    [
+     "crystal_icicle",
+     0.05
+    ]
+   ],
+   "mountain": [
+    [
+     "crystal_icicle",
+     0.15
+    ],
+    [
+     "holly_sprig",
+     0.1
+    ]
+   ],
+   "orchard_hills": [
+    [
+     "holly_sprig",
+     0.15
+    ],
+    [
+     "snow_yam",
+     0.12
+    ]
+   ],
+   "wild": [
+    [
+     "snow_yam",
+     0.15
+    ],
+    [
+     "holly_sprig",
+     0.12
+    ]
+   ]
+  }
+ },
+ "forage_off": {
+  "spring": {
+   "acorn": 0.3,
+   "pinecone": 0.5
+  },
+  "summer": {
+   "wild_leek": 0.3,
+   "pinecone": 0.4,
+   "acorn": 0.3
+  },
+  "fall": {
+   "flower": 0.4,
+   "wild_leek": 0.3
+  },
+  "winter": {
+   "berry": 0.0,
+   "flower": 0.0,
+   "wild_leek": 0.0,
+   "honey": 0.25,
+   "mushroom": 0.3,
+   "acorn": 0.3,
+   "wild_herb": 0.5
+  }
+ },
+ "valley": [
+  "farm",
+  "forest",
+  "meadow",
+  "lake",
+  "beach",
+  "mountain",
+  "orchard_hills",
+  "wild"
+ ],
+ "shops": {
+  "store": {
+   "spring": [
+    "spring_greens",
+    "salmonberry_jam"
+   ],
+   "summer": [
+    "honeysuckle_tea",
+    "corn_tomato_salad"
+   ],
+   "fall": [
+    "hazelnut_cake",
+    "roast_chestnuts"
+   ],
+   "winter": [
+    "frostkale_soup",
+    "honeycomb_toast"
+   ]
+  },
+  "orla": {
+   "spring": [
+    "strawberry_shortcake"
+   ],
+   "summer": [
+    "melon_sorbet"
+   ],
+   "fall": [
+    "pumpkin_pie"
+   ],
+   "winter": [
+    "citrus_tart"
+   ]
+  },
+  "bait": {
+   "spring": [
+    "fiddlehead_saute"
+   ],
+   "summer": [
+    "kelp_salad"
+   ],
+   "fall": [
+    "chanterelle_stew"
+   ],
+   "winter": [
+    "snow_yam_roast"
+   ]
+  },
+  "potions": {
+   "spring": [
+    "chamomile"
+   ],
+   "summer": [
+    "honeysuckle_tea"
+   ],
+   "fall": [
+    "rosehip_jam"
+   ],
+   "winter": [
+    "hot_cocoa"
+   ]
+  },
+  "marlowe": {
+   "spring": [
+    "crocus"
+   ],
+   "summer": [
+    "sand_dollar"
+   ],
+   "fall": [
+    "leaf_bundle"
+   ],
+   "winter": [
+    "holly_sprig"
+   ]
+  },
+  "lodge": {
+   "spring": [
+    "fiddlehead"
+   ],
+   "summer": [
+    "cattail"
+   ],
+   "fall": [
+    "chestnut"
+   ],
+   "winter": [
+    "snow_yam"
+   ]
+  }
+ },
+ "shops_y2": {
+  "store": {
+   "spring": [
+    "asparagus_tart"
+   ],
+   "summer": [
+    "kelp_salad"
+   ],
+   "fall": [
+    "chanterelle_stew"
+   ],
+   "winter": [
+    "snow_pea_stir_fry"
+   ]
+  },
+  "old_moss": {
+   "spring": [
+    "morel"
+   ],
+   "summer": [
+    "water_lily"
+   ],
+   "fall": [
+    "chanterelle"
+   ],
+   "winter": [
+    "crystal_icicle"
+   ]
+  }
+ },
+ "greenhouse_seeds": {
+  "spring": [
+   "corn_seed",
+   "tomato_seed",
+   "pumpkin_seed"
+  ],
+  "summer": [
+   "pumpkin_seed",
+   "cranberry_seed",
+   "frostkale_seed"
+  ],
+  "fall": [
+   "frostkale_seed",
+   "snow_radish_seed",
+   "turnip_seed"
+  ],
+  "winter": [
+   "turnip_seed",
+   "strawberry_seed",
+   "corn_seed"
+  ]
+ },
+ "winter_seeds": [
+  "snow_pea_seed",
+  "frostkale_seed",
+  "snow_radish_seed",
+  "winter_leek_seed"
+ ],
+ "winter_rare": [
+  "frost_squash_seed",
+  "frost_edelweiss_seed",
+  "winter_cabbage_seed",
+  "winter_snowdrop_seed"
+ ],
+ "festival_treats": {
+  "spring": [
+   [
+    "salmonberry_jam",
+    60
+   ],
+   [
+    "strawberry_shortcake",
+    160
+   ]
+  ],
+  "summer": [
+   [
+    "honeysuckle_tea",
+    60
+   ],
+   [
+    "melon_sorbet",
+    200
+   ]
+  ],
+  "fall": [
+   [
+    "pumpkin_pie",
+    180
+   ],
+   [
+    "roast_chestnuts",
+    90
+   ]
+  ],
+  "winter": [
+   [
+    "hot_cocoa",
+    160
+   ],
+   [
+    "honeycomb_toast",
+    120
+   ]
+  ]
+ }
+}

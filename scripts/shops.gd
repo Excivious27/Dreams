@@ -47,7 +47,21 @@ static func growable_now() -> Dictionary:
 	return out
 
 
+## Today's list for a shop: its base stock plus the season's own goods (C15 P2, SeasonGoods,
+## data/season_goods.json) and, at Maple's, off-season packets for the greenhouse plot.
 static func offers(shop: String) -> Array:
+	var out := _offers_base(shop)
+	for id in SeasonGoods.shop_extra(shop):
+		if not id in out:
+			out.append(id)
+	if shop == "store":
+		for id in SeasonGoods.greenhouse_seeds():
+			if not id in out:
+				out.append(id)
+	return out
+
+
+static func _offers_base(shop: String) -> Array:
 	match shop:
 		"bait":
 			return ["bait", "energy_tea", "bread"]
@@ -57,13 +71,13 @@ static func offers(shop: String) -> Array:
 				"spring": ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed", "flax_seed"],
 				"summer": ["corn_seed", "tomato_seed", "rice_seed", "sunflower_seed"],
 				"fall": ["pumpkin_seed", "cranberry_seed", "sugar_beet_seed"],
-				"winter": ["snow_pea_seed"],
+				"winter": SeasonGoods.data().get("winter_seeds", ["snow_pea_seed"]),
 			}
 			var rare := {
 				"spring": ["tea_leaf_seed"],
 				"summer": ["melon_seed", "hops_seed", "cotton_seed", "lotus_seed", "ghost_pepper_seed"],
 				"fall": ["grape_seed", "moon_melon_seed"],
-				"winter": [],
+				"winter": SeasonGoods.data().get("winter_rare", []),
 			}
 			var se := GameState.season()
 			var base: Array = by_season[se].duplicate()
@@ -144,7 +158,7 @@ static func line(id: String) -> String:
 	if int(cd.get("regrow", 0)) > 0:
 		bits += " · again %dd" % int(cd["regrow"])
 	var cs := str(cd.get("season", "any"))
-	var left := GameState.DAYS_PER_SEASON - GameState.day_of_season() + 1
+	var left := GameState.DAYS_PER_SEASON - GameState.day_of_season()  # same rule as the farm's warning (c15_08-05)
 	if cs != "any" and (cs != GameState.season() or days > left):
 		bits += " !"
 	return bits
@@ -264,7 +278,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			qty = int(qs[dq.last_choice])
 		price *= qty
 		if int(GameState.run["crystals"]) < price:
-			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			m.hud.toast("Not enough %s." % Money.word(), Color(1, 0.7, 0.7))
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			continue
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
@@ -489,10 +503,33 @@ static func stall_price(id: String, listed: int, discount := 0.0) -> int:
 	return GameState.shop_price(id, int(listed * (1.0 - discount)))
 
 
+## C15 P2: a stall's list for today: seeds that can't be planted this season drop off (Benno's carrots
+## and Hazel's corn all year, c15_08-08; greenhouse owners keep them), and a festival stall adds the
+## season's own treats (data/season_goods.json festival_treats, c15_08-15).
+static func stall_items(items: Array, stall_id := "") -> Array:
+	var se := GameState.season()
+	var out: Array = []
+	for it: Array in items:
+		var cd: Dictionary = GameState.crops.get(str(GameState.items.get(str(it[0]), {}).get("crop", "")), {})
+		if not cd.is_empty() and not GameState.crop_fits_season(cd, se) and not SeasonGoods.has_greenhouse() and not bool(cd.get("tree", false)):
+			continue
+		out.append(it)
+	if stall_id.begins_with("festival_"):
+		var fse := stall_id.trim_prefix("festival_")
+		if not fse in ["spring", "summer", "fall", "winter"]:
+			fse = se
+		var have := out.map(func(r: Variant) -> String: return str((r as Array)[0]))
+		for r: Array in SeasonGoods.festival_treats(fse):
+			if not str(r[0]) in have:
+				out.append(r)
+	return out
+
+
 static func stall(m: GameMap, who: String, greet: String, items: Array, discount := 0.0, stall_id := "") -> void:
 	var hello := greet
 	# Decor shelf key for this stall: "stall:<scene>" (or the caller's id) in decor.json "shops".
 	var dkey := ("stall:" + stall_id) if stall_id != "" else ("stall:" + m.scene_id())
+	items = stall_items(items, stall_id)
 	while true:
 		var opts: Array = []
 		for it: Array in items:
@@ -524,7 +561,7 @@ static func stall(m: GameMap, who: String, greet: String, items: Array, discount
 				m.hud.toast("You already have the %s." % DecorSources.name_of(id))
 				continue
 			if int(GameState.run["crystals"]) < unit:
-				m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				m.hud.toast("Not enough %s." % Money.word(), Color(1, 0.7, 0.7))
 				Music.instance(m.get_tree()).sfx("nope", "thud")
 				continue
 			GameState.run["crystals"] = int(GameState.run["crystals"]) - unit
@@ -543,7 +580,7 @@ static func stall(m: GameMap, who: String, greet: String, items: Array, discount
 			qty = [1, 5, 10][dq.last_choice]
 		var cost := unit * qty
 		if int(GameState.run["crystals"]) < cost:
-			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			m.hud.toast("Not enough %s." % Money.word(), Color(1, 0.7, 0.7))
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			continue
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
