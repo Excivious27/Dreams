@@ -89,6 +89,16 @@ func _run() -> void:
 				var names := placed.map(func(p: Array) -> String: return str(p[0]))
 				_ok(names.has("c14p2_tree_planter") and names.has("c14p2_bench_curved"), "%s: plaza dressing placed %s" % [tag, names.filter(func(n: String) -> bool: return n.begins_with("c14p2"))])
 				_ok(not t.props.has(Vector2i(36, 22)) or str(t.props[Vector2i(36, 22)].texture.resource_path).find("crates") < 0, "crates moved off the avenue lamp")
+			# c14_03-21: winter roofs: every town building with a snow twin shows it in winter
+			if GameState.look_se() == "winter":
+				var green := []
+				for b: Array in t.get("_bprops"):
+					var nm := str(b[0])
+					if not nm.ends_with("_snow") and Art.has("buildings", nm + "_snow"):
+						green.append(nm)
+				_ok(green.is_empty(), "%s: green roofs in winter %s" % [tag, green])
+				for base: String in ["store", "smith", "bakery", "hall", "inn", "library", "school", "cottage_a", "chapel", "bank"]:
+					_ok(Art.has("buildings", base + "_snow"), "winter twin for " + base)
 			# the four avenues still reach the fountain
 			var fc := Vector2i(40, 49)
 			for from: Vector2i in [Vector2i(40, 34), Vector2i(40, 62), Vector2i(27, 47), Vector2i(55, 47)]:

@@ -29056,6 +29056,11 @@
    "h": 112,
    "w": 112
   },
+  "bakery_snow": {
+   "file": "buildings/bakery_snow.png",
+   "h": 112,
+   "w": 112
+  },
   "bandstand": {
    "file": "buildings/bandstand.png",
    "h": 128,
@@ -29848,6 +29853,11 @@
    "h": 127,
    "w": 208
   },
+  "mansion_snow": {
+   "file": "buildings/mansion_snow.png",
+   "h": 127,
+   "w": 208
+  },
   "mine_winch_house": {
    "file": "buildings/mine_winch_house.png",
    "h": 128,
@@ -30020,6 +30030,11 @@
    "h": 162,
    "w": 192
   },
+  "smith_snow": {
+   "file": "buildings/smith_snow.png",
+   "h": 162,
+   "w": 192
+  },
   "stable": {
    "file": "buildings/stable.png",
    "h": 91,
@@ -30069,6 +30084,11 @@
   },
   "store_night": {
    "file": "buildings/store_night.png",
+   "h": 163,
+   "w": 192
+  },
+  "store_snow": {
+   "file": "buildings/store_snow.png",
    "h": 163,
    "w": 192
   },

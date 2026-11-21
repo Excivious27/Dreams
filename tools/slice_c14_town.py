@@ -67,7 +67,31 @@ def props():
         _rm_save(C.piece(rgba, C.tight(rgba, b), w=w), "props", name)
 
 
-STEPS = [flagstones, mosaic, props]
+SNOW = ["store", "smith", "bakery", "mansion", "hall", "clock_tower", "potions", "inn", "library", "school",
+        "cottage_a", "cottage_b", "cottage_c", "stable", "bandstand", "clinic", "chapel", "warehouse_a", "bank"]
+
+
+def snow():
+    """buildings/<id>_snow: the edit render keyed, its content box scaled onto the original
+    content box of the same canvas (so the _lit window mask still lines up)."""
+    for b in SNOW:
+        f = os.path.join(S.INC, INC, "snow_%s.png" % b)
+        if not os.path.exists(f):
+            print("   snow: no render for", b); continue
+        orig = Image.open(os.path.join(S.OUT, "buildings", b + ".png")).convert("RGBA")
+        oa = np.asarray(orig)
+        ob = C.content_box(oa)
+        rgba = S.load(INC + "/snow_%s.png" % b)
+        box = C.content_box(rgba)
+        im = S.crop(rgba, box).resize((ob[2] - ob[0], ob[3] - ob[1]), Image.LANCZOS)
+        a = np.asarray(im).copy()
+        a[..., 3] = np.where(a[..., 3] > 110, 255, 0)
+        out = Image.new("RGBA", orig.size, (0, 0, 0, 0))
+        out.alpha_composite(Image.fromarray(a), (ob[0], ob[1]))
+        _rm_save(out, "buildings", b + "_snow")
+
+
+STEPS = [flagstones, mosaic, props, snow]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

@@ -1112,10 +1112,12 @@ func _dress_plaza() -> void:
 	_pp("props", "c14p2_cafe_umbrella", Vector2i(47, 51), 1)
 	_pp("props", "c14p2_cafe_table", Vector2i(46, 56), 1)
 	_pp("props", "c14p2_drink_fountain", Vector2i(34, 40), 0, 0.0, false)
-	if GameState.is_penguins():
-		for c: Vector2i in [Vector2i(37, 34), Vector2i(46, 61), Vector2i(27, 44), Vector2i(53, 53)]:
-			if _pp("props", "c14p2_signpost", c):
-				set_thing(c.x, c.y, {"type": "sign", "text": _sign_words(c), "hint": "A: read the sign"}, false)
+	for c: Vector2i in [Vector2i(37, 34), Vector2i(46, 61), Vector2i(27, 44), Vector2i(53, 53)]:
+		if _pp("props", "c14p2_signpost", c):
+			set_thing(c.x, c.y, {"type": "sign", "text": _sign_words(c), "hint": "A: read the sign"}, false)
+	if not GameState.is_penguins():  # c14_03-09: a light gang-arc layer on the square
+		for pr: Array in [["neon_open", Vector2i(52, 58)], ["payphone", Vector2i(30, 50)], ["news_box", Vector2i(51, 46)], ["manhole_closed", Vector2i(22, 18)], ["neon_sign_2", Vector2i(57, 58)]]:
+			_pp("props", str(pr[0]), pr[1] as Vector2i)
 
 
 func _sign_words(c: Vector2i) -> String:
@@ -1470,7 +1472,7 @@ func _lines(id: String, friend: int) -> Array:
 
 func draw_map() -> void:
 	draw_grass(3)
-	WorldGen.draw_ground_detail(self, 31, 0.08)
+	WorldGen.draw_ground_detail(self, 31, 0.08, _tended())  # c14_03-11: a tended village, no forest litter in the streets
 	# Avenues: cobbles with grass edges. Side lanes to the districts are dirt.
 	# Roads/lanes/door paths are fixed once the map is built: worked out on the first
 	# full pass and reused by every clipped chunk bake (c5_16 #6).
@@ -1509,6 +1511,20 @@ func draw_map() -> void:
 		draw_building(46, 30, 12, 11, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
 	if pad == 0:
 		draw_fence_border()
+
+
+## The street grid's lawns get no ground litter (pinecones, acorns, branches): the
+## tree bands and the far edges keep it.
+func _tended() -> Dictionary:
+	var k := "town_tended"
+	if not _geom_memo.has(k):
+		var d := {}
+		for y in range(5, 94):
+			for x in range(6, 66):
+				if (x * 7 + y * 13) % 3 != 0:  # a third of the lawn cells keep their tufts and flowers
+					d[Vector2i(x, y)] = true
+		_geom_memo[k] = d
+	return _geom_memo[k]
 
 
 ## C14 P2 (c14_03-02/-03): the plaza floor is four flagstone variants picked per 2x2 block

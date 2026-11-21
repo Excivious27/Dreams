@@ -1846,7 +1846,7 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	var w_cells := maxi(1, int(round(float(info.get("w", 64)) * scale / TILE)))
 	var h_cells := maxi(1, int(round(float(info.get("h", 64)) * scale / TILE)))
 	var base := Vector2i(c.x, c.y + h_cells - 1)
-	var s := prop("buildings", name, base, w_cells - 1, 0.0, false, scale)
+	var s := prop("buildings", WorldGen.winter_look("buildings", name), base, w_cells - 1, 0.0, false, scale)  # C14 P2: snowy roofs (same canvas)
 	if s == null:
 		return Vector2i(-1, -1)
 	if glow:

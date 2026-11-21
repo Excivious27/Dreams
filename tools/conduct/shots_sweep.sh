@@ -7,7 +7,7 @@
 # tabs (Party/Animals/Chores, Book, Options, Keys...), chest, craft, decor catalogue, prizes,
 # campaign map, arcade, shops + animal counters, a dialogue sample per NPC, the four festival
 # days on the plaza, night looks, the training-drill brief and first step.
-# sections: comma list of title,maps,interiors,screens,shops,npcs,festival,night,battle (default all)
+# sections: comma list of title,maps,interiors,screens,shops,npcs,festival,town,night,battle (default all)
 # Env: SWEEP_MAPS=a,b (only these maps), SWEEP_ARCS="penguins gangsters", SWEEP_T=900 (s per arc).
 set -uo pipefail
 { # whole body parsed before it runs: editing this file never breaks a run in progress
@@ -20,6 +20,15 @@ T0=$(date +%s)
 # c13_01-01: register new class_names first (a stale global class cache made town.gd fail
 # to parse, so every town shot was a blank frame).
 ( cd "$ROOT" && bash tools/conduct/glock.sh -- godot --headless --path . --import ) > "$OUT/import.log" 2>&1 || true
+# c14_03-01: pre-flight. Every class_name must be in the global class cache, or the maps
+# that use it fail to parse and the sweep saves blank frames. Retry with --editor --quit, then fail loudly.
+_missing() { ( cd "$ROOT" && for c in $(grep -h "^class_name" scripts/*.gd | awk '{print $2}'); do grep -q "&\"$c\"" .godot/global_script_class_cache.cfg 2>/dev/null || echo "$c"; done ); }
+MISS=$(_missing)
+if [ -n "$MISS" ]; then
+  ( cd "$ROOT" && bash tools/conduct/glock.sh -- godot --headless --path . --editor --quit ) >> "$OUT/import.log" 2>&1 || true
+  MISS=$(_missing)
+fi
+if [ -n "$MISS" ]; then echo "shots_sweep: class cache is missing: $MISS (blank shots would follow)"; exit 1; fi
 pids=()
 for a in $ARCS; do
   rm -rf "$OUT/$a"; mkdir -p "$OUT/$a"
