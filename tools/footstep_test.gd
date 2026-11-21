@@ -49,7 +49,7 @@ func _run() -> void:
 		["farm", "penguins", "snow", 0.4, 1.0, 92], ["gilt_casino_row", "gangsters", "snow", 0.0, 0.2, 92],
 		["iron_tunnels", "gangsters", "snow", 0.0, 0.05, 92],
 		# C13 P5 (c13_07-27): the quarry's meadow and Hollow Heart's moss step as their own ground, not stone.
-		["quarry", "penguins", "stone", 0.2, 1.0]  # C14 P4: quarry is stone-first gravel (c14_12-01), ["hollow_heart", "penguins", "grass", 0.3, 1.0]]
+		["quarry", "penguins", "stone", 0.2, 1.0], ["hollow_heart", "penguins", "grass", 0.3, 1.0]]
 	var shares := {}
 	for cs: Array in cases:
 		var day := int(cs[5]) if cs.size() > 5 else 1
