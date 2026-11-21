@@ -1,0 +1,168 @@
+{
+ "sha": "48ffbfb0937d23d332e1b6420756f93cd0c6fbba",
+ "ref": "ci/c13i2-280af7c1",
+ "run": "44896800707",
+ "finished": 1795259383.72951,
+ "pass": true,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": false,
+  "notes": [],
+  "fail": false,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 0,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 36,
+  "live_ok": true,
+  "e2e": "NET E2E: ok, 17s",
+  "e2e_ok": true,
+  "line": "RELAY: ok, 36ms (live code a29f453d8be9, this server/)"
+ },
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 48,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "280af7c16e7113075eef1170497e4032573ee8b5",
+  "label": "c13i2",
+  "branch": "c13/integ",
+  "shards": [
+   3
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": true,
+  "server_changed": false,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 430,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 430,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 196.3
+  },
+  {
+   "step": 22,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.9
+  },
+  {
+   "step": 88,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 26.1
+  },
+  {
+   "step": 70,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 21.3
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 16.6
+  },
+  {
+   "step": 166,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 11.8
+  },
+  {
+   "step": 124,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 11.5
+  },
+  {
+   "step": 130,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 10.6
+  },
+  {
+   "step": 112,
+   "name": "battle_drill_flow_test",
+   "rc": 0,
+   "secs": 9.0
+  },
+  {
+   "step": 34,
+   "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10",
+   "rc": 0,
+   "secs": 6.1
+  },
+  {
+   "step": 46,
+   "name": "farm_week_test",
+   "rc": 0,
+   "secs": 6.0
+  },
+  {
+   "step": 184,
+   "name": "deck window: 1280x800 with no window manager fills the screen (xvfb)",
+   "rc": 0,
+   "secs": 5.7
+  },
+  {
+   "step": 178,
+   "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve",
+   "rc": 0,
+   "secs": 5.6
+  },
+  {
+   "step": 28,
+   "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a",
+   "rc": 0,
+   "secs": 5.4
+  },
+  {
+   "step": 64,
+   "name": "early_gating_test",
+   "rc": 0,
+   "secs": 4.8
+  }
+ ]
+}

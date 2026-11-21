@@ -1,0 +1,12 @@
+CONDUCT CI PASS  48ffbfb093  (ci/c13i2-280af7c1, run 44896800707)
+
+subset run: shards [3], bots off, playtest on
+check shards (1/1):
+  shard 3: PASS  430s
+playtest: PASS  48s  21 screenshots (results playtest/shots/)
+RELAY: ok, 36ms (live code a29f453d8be9, this server/)
+NET E2E: ok, 17s
+
+longest job: 430s
+slowest check steps: import 196.3s; touch_ui_test 39.9s; danger_music_test 26.1s; music loop seams (join click + level jump) 21.3s; building doors 16.6s; S1 P3: Steam Deck text floor (every screen at 1280x800) 11.8s; gangster first hours: intro, day 2, meadow, Hideout, first crew 11.5s; hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) 10.6s
+distinct errors/fails/warns:
