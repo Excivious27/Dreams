@@ -2715,12 +2715,13 @@ func on_enemy_died(e: Enemy) -> void:
 	GameState.run["kills_today"] = kt
 	var paid: bool = exempt or int(kt.get(kkey, 0)) <= 12
 	if paid:
-		GameState.add_money(e.reward, "combat")
+		GameState.add_money(int(round(e.reward * (1.0 + GameState.bonus("combat", "bounty")))), "combat")  # C16a P6: Combat "bounty" nodes
 		hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	elif int(kt.get(kkey, 0)) == 13:
 		hud.toast("No more crystals from these foes today.", Color(0.8, 0.8, 0.9))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
-	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
+	if paid:  # C16a P6 (c16a_12-18): past the daily kill cap foes give no XP either
+		xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
 	var ke := int(GameState.bonus("combat", "kill_energy"))
 	if ke > 0 and paid:  # past the cap foes give nothing, energy included
 		GameState.extra_energy(ke)
@@ -3010,7 +3011,7 @@ func _pup_menu() -> void:
 				pt.anim.play("play")
 			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):
 				st["petted_day"] = int(GameState.run["day"])
-				GameState.add_xp("pup", 3)
+				GameState.add_xp("pup", 8)  # C16a P6 (c16a_13-14): daily pet 3 -> 8
 				GameState.add_xp("leadership", 2)
 		"menu":
 			for ch in get_children():

@@ -125,7 +125,21 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 	}
 	add_item("turnip_seed", 6)
 	add_item("berry", 2)
+	starter_spark()
 	save()
+
+
+## C16a P6 (c16a_12-02): every new save knows Spark (a free gift rank in Sorcery / Tech), so the
+## magic tree can earn XP from day 1 in both arcs. A respec keeps it (gift_nodes).
+static func starter_spark() -> void:
+	if run.is_empty() or not skills_data.has("magic") or node("magic", "spark").is_empty():
+		return
+	var gn: Dictionary = run.get("gift_nodes", {}) if run.get("gift_nodes") is Dictionary else {}
+	if gn.has("magic|spark") or node_rank("magic", "spark") > 0:
+		return
+	gn["magic|spark"] = 1
+	run["gift_nodes"] = gn
+	(run["skills"]["magic"]["nodes"] as Dictionary)["spark"] = 1
 
 
 static func has_run() -> bool:
@@ -679,6 +693,11 @@ static func unit_sell_value(id: String) -> float:
 		unit *= 1.0 + bonus("farming", "crop_value")
 	if str(items.get(id, {}).get("type", "")) == "fish":
 		unit *= 1.0 + bonus("fishing", "fish_value")
+	# C16a P6 (c16a_12-03): tree-specific sell perks that fill rows the old caps left dead.
+	if str(items.get(id, {}).get("type", "")) == "flower":
+		unit *= 1.0 + bonus("farming", "flower_value")
+	if str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"]:
+		unit *= 1.0 + bonus("bartering", "loot_value")
 	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"] and str(run.get("arc", "")) == "gangsters":
 		unit *= 1.2
 	return unit
@@ -1130,6 +1149,7 @@ static func add_xp(skill: String, xp: int) -> bool:
 	if skill != "leadership" and has_team():
 		mult *= 1.0 + minf(TEAM_XP_CAP, bonus("leadership", "team_xp"))
 	mult *= 1.0 + bonus(skill, "xp_gain")  # "Studied" nodes: this skill levels faster
+	mult *= float(SKILL_XP_MUL.get(skill, 1.0))  # C16a P6: per-tree pace
 	# Carry the fraction so a +5% perk is +5%, not +50% on a 2-xp grant.
 	var exact := xp * mult + float(s.get("xp_frac", 0.0))
 	s["xp"] = int(s["xp"]) + int(exact)
@@ -1206,10 +1226,22 @@ static func skill_level(skill: String) -> int:
 
 # ---- skill trees (Sun Haven style) ------------------------------------------
 # Every level gives one skill point in that skill. Points buy ranks in nodes.
-# A node of tier t opens once t*TIER_POINTS points are spent in that tree and
+# A node of tier t opens once TIER_NEED[t] points are spent in that tree and
 # any one of its `requires` parents has a rank.
 
-const TIER_POINTS := 2
+const TIER_POINTS := 2  # legacy (old flat rule); use col_need(c)
+## C16a P6 (c16a_11-02/12-01): points spent to open column I..X. Column X at about
+## level 65 (51k XP): with SKILL_XP_MUL every capstone lands at 200-400 days of steady play.
+const TIER_NEED := [0, 2, 5, 9, 14, 20, 28, 38, 50, 64]
+## C16a P6 (c16a_11-01): per-tree XP pace, so gathering trees don't fill in a year while
+## service trees take a decade. tools/c8_curve_test.gd prints the days per tree.
+const SKILL_XP_MUL := {"mining": 0.6, "farming": 0.75, "fishing": 0.9, "foraging": 1.0, "combat": 1.0, "strategist": 1.0,
+	"hustle": 1.2, "harmony": 1.2, "bartering": 1.8, "magic": 1.8, "building": 2.0, "ranching": 2.5, "pup": 2.5, "leadership": 3.0}
+
+
+## Points to spend in a tree before column c (0-based) opens.
+static func col_need(c: int) -> int:
+	return int(TIER_NEED[clampi(c, 0, TIER_NEED.size() - 1)])
 
 
 static func nodes_of(skill: String) -> Array:
@@ -1254,7 +1286,25 @@ static func spell_from_tree(spell: String) -> bool:
 
 
 static func skill_name(sk: String) -> String:
-	return str(skills_data.get(sk, {}).get("name", sk.capitalize()))
+	var sd: Dictionary = skills_data.get(sk, {})
+	if sd.has("name_gang") and not run.is_empty() and str(run.get("arc", "")) == "gangsters":
+		return str(sd["name_gang"])  # c16a_11-07: Sorcery reads as Tech in the gangster arc
+	return str(sd.get("name", sk.capitalize()))
+
+
+## A tree's description and row names for this save's arc (c16a_11-07).
+static func skill_desc(sk: String) -> String:
+	var sd: Dictionary = skills_data.get(sk, {})
+	if sd.has("desc_gang") and not run.is_empty() and str(run.get("arc", "")) == "gangsters":
+		return str(sd["desc_gang"])
+	return str(sd.get("desc", ""))
+
+
+static func skill_branches(sk: String) -> Dictionary:
+	var sd: Dictionary = skills_data.get(sk, {})
+	if sd.has("branches_gang") and not run.is_empty() and str(run.get("arc", "")) == "gangsters":
+		return sd["branches_gang"]
+	return sd.get("branches", {})
 
 
 ## Walking speed from every tree's movement nodes (capped).
@@ -1299,11 +1349,17 @@ static func node_locked(skill: String, id: String) -> String:
 		return "unknown"
 	if node_rank(skill, id) >= int(n.get("ranks", 1)):
 		return "maxed"
+	# c16a_12-20: a spell taught by two nodes (a Sorcery node and another tree's unlock) is learned once.
+	var sp := str((n.get("effect", {}) as Dictionary).get("spell", ""))
+	if sp != "" and node_rank("magic", sp) > 0:
+		return "already known (%s)" % skill_name("magic")
+	if skill == "magic" and node_rank(skill, id) == 0 and spell_from_tree(id):
+		return "already known"
 	if points_free(skill) <= 0:
 		return "no points"
 	var tier := int(n.get("tier", 0))
-	if points_spent(skill) < tier * TIER_POINTS:
-		return "needs %d points in %s" % [tier * TIER_POINTS, str(skills_data[skill]["name"])]
+	if points_spent(skill) < col_need(tier):
+		return "needs %d points in %s" % [col_need(tier), skill_name(skill)]
 	var req: Array = n.get("requires", [])
 	if not req.is_empty():
 		var ok := false
@@ -1329,11 +1385,33 @@ static func buy_node(skill: String, id: String) -> bool:
 	return true
 
 
+## C16a P6 (c16a_11-13/12-08): the first reset of a tree is free, then 40 per point spent (x the
+## number of earlier resets, at most x4), so a respec is a choice, not a free toggle.
+static func reset_cost(skill: String) -> int:
+	var n := int((run.get("flags", {}) as Dictionary).get("reset_n_" + skill, 0))
+	return 0 if n <= 0 else 40 * points_spent(skill) * mini(4, n)
+
+
+static func can_reset(skill: String) -> bool:
+	return int(run.get("crystals", 0)) >= reset_cost(skill)
+
+
 static func reset_tree(skill: String) -> void:
+	var fee := reset_cost(skill)
+	if fee > 0:
+		add_money(-fee, "respec")
+	var fl: Dictionary = run.get("flags", {})
+	fl["reset_n_" + skill] = int(fl.get("reset_n_" + skill, 0)) + 1
 	var keep := {}  # colony-gift spells were free: a respec keeps them
 	for gk in (run.get("gift_nodes", {}) as Dictionary):
 		if str(gk).get_slice("|", 0) == skill:
 			keep[str(gk).get_slice("|", 1)] = int(run["gift_nodes"][gk])
+	# A blueprint whose station is already built stays learned (its point stays spent): no
+	# learn-build-reset-respend loop (c16a_11-13).
+	for nd in nodes_of(skill):
+		var bp := str((nd.get("effect", {}) as Dictionary).get("blueprint", ""))
+		if bp != "" and node_rank(skill, str(nd["id"])) > 0 and Builds.built_tier(bp) > 0:
+			keep[str(nd["id"])] = node_rank(skill, str(nd["id"]))
 	run["skills"][skill]["nodes"] = keep
 	(run["skills"][skill] as Dictionary).erase("nm")
 	_bonus_frame = -1
@@ -1357,15 +1435,15 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## chances certain).
 const BONUS_CAPS := {"farm_energy": 0.3, "mine_energy": 0.3, "wood_energy": 0.5, "kill_energy": 8.0, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
-	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
-	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
-	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
+	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.25, "double_fish": 0.6,
+	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.25,
+	"sell_bonus": 0.30, "crop_value": 0.25, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.15, "forage_bonus": 12.0,
+	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.2, "extra_day": 0.10, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
 	"animal_yield": 1.0, "ranch_value": 0.35, "animal_friend": 0.3, "breed_chance": 0.3, "grow_speed": 3.0, "rare_breed": 0.1, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
-	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
+	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.25, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 12.0,
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 6.0, "damage": 8.0, "flower_value": 0.5, "bounty": 0.4, "loot_value": 0.3, "kill_energy": 8.0, "team_heal": 15.0, "team_damage": 8.0, "pet_bond": 40.0,
 	"big_goods": 0.3, "animal_quality": 3.0, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
@@ -3456,7 +3534,7 @@ static func ship_log(id: String, n: int) -> bool:
 
 
 ## Bartering XP from one night's box (was 20 + 5 x level: it fed itself).
-const BARTER_XP_NIGHT := 60
+const BARTER_XP_NIGHT := 100  # C16a P6: 60 -> 100 (with SKILL_XP_MUL 1.8)
 ## Up late: bedtime past midnight wakes you on LATE_WAKE_MIN of the bar at 2am.
 const LATE_WAKE_MIN := 0.85
 

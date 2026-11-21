@@ -27,8 +27,8 @@ RULES = {
     "bond_to_train": 200,      # Ranch friend points (0..1000; 100 = one heart)
     "bond_per_lesson": 20,     # friendship a lesson adds
     "energy": 8,               # player energy per lesson
-    "rank_at": [1, 4, 7],      # lessons needed for rank 1, 2, 3 (cumulative per lesson; rank 1 on the first, c11b_09-05)
-    "max_rank": 3,
+    "rank_at": [1, 5, 12, 22, 35],  # lessons needed for rank 1..5 (rank 1 on the first, c11b_09-05; C16a P6 c16a_11-04: was [1, 4, 7], max 3)
+    "max_rank": 5,
     "team_max": 2,             # animals on the team at once (base)
     "grown_days": 7,           # days after born_day before it can learn (matches farm young_days)
     "hp_per_tier": 6,          # + per GameState.progress_tier()
@@ -71,6 +71,25 @@ SPECIES = {
             "voice": "cluck", "job_word": "pecks"},
 }
 
+# C16a P6 (c16a_13-01): every ranch species flagged team:true trains (the exotic year-2 team tier).
+def _ex(name, gname, lessons, hp, dmg, speed, word, voice="bleat"):
+    return {"name": name, "name_gang": gname, "lessons": lessons, "hp": hp, "dmg": dmg, "speed": speed,
+            "carry": "carry" in lessons, "treat": ["hay", "carrot", "apple"], "voice": voice, "job_word": word}
+
+
+SPECIES.update({
+    "ostrich": _ex("Ostrich", "Ostrich", ["attack", "carry", "fetch"], 20, 2, 1.3, "kicks"),
+    "emu": _ex("Emu", "Emu", ["attack", "carry", "fetch"], 20, 2, 1.3, "kicks"),
+    "komodo": _ex("Sun Drake", "Sun Drake", ["attack", "guard"], 26, 3, 0.8, "snaps"),
+    "coral_seahorse": _ex("Coral Seahorse", "Coral Seahorse", ["fetch", "attack"], 14, 2, 1.2, "splashes"),
+    "frost_otter": _ex("Frost Otter", "Frost Otter", ["fetch", "attack"], 14, 2, 1.2, "nips"),
+    "storm_roc": _ex("Storm Roc", "Storm Roc", ["attack", "guard"], 28, 3, 1.1, "swoops at"),
+    "frost_wyrmling": _ex("Frost Wyrmling", "Frost Wyrmling", ["attack", "guard"], 28, 3, 1.0, "puffs frost at"),
+    "drone_hog": _ex("Drone Hog", "Drone Hog", ["guard", "carry", "fetch"], 24, 2, 0.9, "rams"),
+    "volt_gecko": _ex("Volt Gecko", "Volt Gecko", ["fetch", "attack"], 14, 2, 1.2, "zaps"),
+    "chrome_runner": _ex("Chrome Runner", "Chrome Runner", ["attack", "carry", "fetch"], 20, 2, 1.3, "kicks"),
+})
+
 # Ranch species ids / art strips that train as one of the species above.
 ALIASES = {
     "goat_kid": "goat", "goat2": "goat", "kid_goat": "goat", "llama_cria": "llama", "llama_b": "llama",
@@ -79,8 +98,8 @@ ALIASES = {
     "chrome_hen": "hen", "glow_sheep": "sheep", "circuit_goat": "goat", "alpaca": "llama",  # C11b P1 hook (c11b_03-08)
 }
 
-NAMES = ["Biscuit", "Clover", "Pepper", "Toffee", "Muffin", "Waffles", "Pebble", "Thistle", "Nutmeg", "Barley",
-         "Dumpling", "Fern", "Tansy", "Hazelnut", "Sprout", "Button"]
+NAMES = ["Clover", "Pepper", "Toffee", "Muffin", "Waffles", "Pebble", "Thistle", "Nutmeg", "Barley",
+         "Dumpling", "Fern", "Tansy", "Hazelnut", "Sprout", "Button", "Biscuit"]  # c16a_13-10: Biscuit (the pup's default) last
 
 
 def check(items):
@@ -115,6 +134,12 @@ def main():
     if os.path.exists(p):
         items = json.load(open(p))
     errs = check(items)
+    # c16a_13-01: every ranch species with team:true must resolve to a trainable spec.
+    rp0 = os.path.join(ROOT, "data", "ranch.json")
+    if os.path.exists(rp0):
+        for sid, sp in json.load(open(rp0)).get("species", {}).items():
+            if sp.get("team") and sid not in SPECIES and sid not in ALIASES:
+                errs.append(f"ranch team species {sid} has no trainable spec")
     if errs:
         print("gen_team_animals: " + "; ".join(errs))
         sys.exit(1)

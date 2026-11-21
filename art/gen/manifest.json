@@ -153465,6 +153465,16 @@
    "file": "ui/buff2_stamina.png",
    "w": 26,
    "h": 32
+  },
+  "chore_fish": {
+   "file": "ui/chore_fish.png",
+   "h": 16,
+   "w": 16
+  },
+  "chore_mine": {
+   "file": "ui/chore_mine.png",
+   "h": 16,
+   "w": 14
   }
  },
  "ui_creator": {

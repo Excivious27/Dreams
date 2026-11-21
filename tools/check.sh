@@ -1410,3 +1410,13 @@ echo "$c16et" | grep -E "FAIL|SCRIPT ERROR|c16a_energy_test" || true
 if echo "$c16et" | grep -q "SCRIPT ERROR" || ! echo "$c16et" | grep -q "c16a_energy_test: 0 failures"; then
   echo "C16a energy test failed"; exit 1
 fi
+
+echo "== C16a P6 skill trees + recruits/allies/team/pup progression =="
+c16p6out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c16a_p6_test.gd 2>&1)"
+echo "$c16p6out" | grep -E "FAIL|SCRIPT ERROR|c16a_p6_test" || true
+if echo "$c16p6out" | grep -q "SCRIPT ERROR" || ! echo "$c16p6out" | grep -q "c16a_p6_test: 0 failures"; then
+  echo "C16a P6 test failed"; exit 1
+fi
+
+echo "== C16a P6 chore icons (fish, mine) =="
+python3 tools/slice_c16ap6_chores.py check || { echo "C16a P6 chore icons missing"; exit 1; }

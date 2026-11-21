@@ -192,7 +192,7 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 
 ## Walking into a street with heat on you.
 static func on_enter(m: GameMap) -> void:
-	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]):
+	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]) and int(GameState.run.get("time", 0)) % 1440 < 720:
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
 		var got := GameState.extra_energy(40)  # C16a P3: one bowl like Bram's soup (was a full bar)
 		GameState.heal_points(20)

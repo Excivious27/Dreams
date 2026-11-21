@@ -81,7 +81,7 @@ func _arc(arc: String) -> void:
 	# ---- levels always help (c11b_06-13) and energy grows with bond (c11b_06-07) ----
 	var prev := -1
 	var grows := true
-	for lv in [0, 12, 30, 60, 100]:
+	for lv in [0] + (Chores.data()["levels"] as Array):  # C16a P6: levels follow data (40/130/300/600)
 		(Chores.st()["xp"] as Dictionary)["pup"] = {"forage": lv}
 		var u := Chores.units("pup", "forage", 1.0, "edges")
 		if u <= prev:
@@ -151,8 +151,10 @@ func _arc(arc: String) -> void:
 	# ---- team animals ----
 	check(TeamAnimals.rank(goat, "attack") == 0, "no lessons, rank 0")
 	Ranch.animal(goat)["lessons"] = {"attack": 1}
-	check(TeamAnimals.rank(goat, "attack") == 1 and TeamAnimals.lessons_left(goat, "attack") == 3, "rank 1 on the first lesson, 3 more to rank 2")
-	Ranch.animal(goat)["lessons"] = {"attack": 7, "guard": 7}
+	var at2 := int((TeamAnimals.rule("rank_at", [1, 4]) as Array)[1])
+	check(TeamAnimals.rank(goat, "attack") == 1 and TeamAnimals.lessons_left(goat, "attack") == at2 - 1, "rank 1 on the first lesson, %d more to rank 2" % (at2 - 1))
+	var atn := int((TeamAnimals.rule("rank_at", [7]) as Array).back())
+	Ranch.animal(goat)["lessons"] = {"attack": atn, "guard": atn}  # C16a P6: rank 5 at rank_at.back()
 	check(TeamAnimals.lessons_left(goat, "attack") == 0 and TeamAnimals.lesson_note(goat, "attack").contains("mastered"), "mastered note")
 	var stt := TeamAnimals.stats(goat)
 	check(int(stt["hp"]) < Pet.max_hp() or int(stt["hp"]) == 8, "team animal hp stays under the pup's real hp (%d vs %d)" % [int(stt["hp"]), Pet.max_hp()])

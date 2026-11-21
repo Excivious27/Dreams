@@ -444,7 +444,7 @@ static func overnight(report: Dictionary) -> Array:
 		else:
 			lines.append("%s: no helper spot free tonight." % name_of(wkey))
 	# Water first, then harvest, so a harvest never takes a bed a waterer just did.
-	var order := ["water", "feed", "pet", "guard", "harvest", "forage"]
+	var order := ["water", "feed", "pet", "guard", "harvest", "forage", "fish", "mine"]
 	var jobs: Array = []  # [wkey, chore, share]
 	for wkey: String in on:
 		var as_: Dictionary = a[wkey]
@@ -487,7 +487,7 @@ static func overnight(report: Dictionary) -> Array:
 			continue
 		var where := str(as_.get("where", "edges"))
 		var n := units(wkey, cid, float(j[2]), where)
-		var res := _do(cid, n, str(as_.get("chest", "chest")), where)
+		var res := _do(cid, n, str(as_.get("chest", "chest")), where, wkey)
 		if bool(res.get("capped", false)):
 			capped = true
 		var done := int(res.get("done", 0))
@@ -555,7 +555,7 @@ static func pet_helper(uid: String, share: float) -> bool:
 	return true
 
 
-static func _do(cid: String, n: int, chest: String, where := "edges") -> Dictionary:
+static func _do(cid: String, n: int, chest: String, where := "edges", wkey := "") -> Dictionary:
 	if n <= 0:
 		return {"done": 0, "why": "too tired for that chore."}
 	if not chest in chests():
@@ -657,7 +657,68 @@ static func _do(cid: String, n: int, chest: String, where := "edges") -> Diction
 				parts.append(ItemWords.count_id(id, int(got[id])))
 			var place := region_name(where)
 			return {"done": k, "capped": capped, "what": "%s at %s into the %s" % [", ".join(parts), place, chest_name(chest)], "why": "" if k > 0 or capped else "the %s is full." % chest_name(chest)}
+		"fish", "mine":
+			var pool := chore_pool(cid, wkey)
+			if pool.is_empty():
+				return {"done": 0, "why": "nobody has been down the mine yet." if cid == "mine" else "nothing biting."}
+			var got := {}
+			var k := 0
+			var capped := false
+			for i in n:
+				var id := str(pool[randi() % pool.size()])
+				if not GameState.items.has(id) or Storage.room_for(chest, id) <= 0:
+					break
+				if not _spend(id):
+					capped = true
+					break
+				put(chest, id, 1)
+				got[id] = int(got.get(id, 0)) + 1
+				k += 1
+			var parts: Array = []
+			for id: String in got:
+				parts.append(ItemWords.count_id(id, int(got[id])))
+			return {"done": k, "capped": capped, "what": "%s into the %s" % [", ".join(parts), chest_name(chest)], "why": "" if k > 0 or capped else "the %s is full." % chest_name(chest)}
 	return {"done": 0}
+
+
+## C16a P6 (c16a_13-11): what a fish / mine chore can bring back for this worker.
+## Fish: the farm pond's commons (value <= Fishing cheap_value), and from chore level fish_rare_level
+## the cheaper half of the whole pool. Mine: ore from floors up to half your deepest floor.
+static func chore_pool(cid: String, wkey := "") -> Array:
+	var r: Dictionary = data()["rules"]
+	var out: Array = []
+	if cid == "fish":
+		var pool := Fishing.pool_for(Fishing.T["fresh_pool"] as Array, 0, "farm")
+		var lv := level(wkey, "fish") if wkey != "" else 1
+		var cheap := int(Fishing.T["cheap_value"])
+		for f: String in pool:
+			if GameState.item_value(f) <= cheap:
+				out.append(f)
+		if lv >= int(r.get("fish_rare_level", 4)):
+			for f: String in pool.slice(0, maxi(1, pool.size() / 2)):
+				if not out.has(f):
+					out.append(f)
+		if out.is_empty() and not pool.is_empty():
+			out.append(pool[0])
+	elif cid == "mine":
+		var deepest := int(GameState.run.get("flags", {}).get("mine_deepest", 1))
+		if deepest < 2:
+			return []
+		for row: Array in (r.get("mine_ore", [[1, "stone"]]) as Array):
+			if deepest / 2 >= int(row[0]) and GameState.items.has(str(row[1])):
+				out.append(str(row[1]))
+		out.append("stone")  # stone stays the common pull
+	return out
+
+
+## Milestone title on a chore row at level 3 / 5 ("" below), C16a P6 (c16a_13-11).
+static func title(wkey: String, cid: String) -> String:
+	var t: Dictionary = (data()["rules"] as Dictionary).get("titles", {})
+	var lv := level(wkey, cid)
+	for need in ["5", "3"]:
+		if lv >= int(need) and t.has(need):
+			return str(t[need])
+	return ""
 
 
 static func _beds() -> Array:
@@ -727,7 +788,7 @@ static func build_page(menu: Variant) -> void:
 		for c in can:
 			var c2 := str(c)
 			var ranch_c := c2 in ["feed", "pet", "guard"]
-			var cb: Button = menu._button("    %s%s · lv %d, up to %d a night%s" % ["• " if c2 == cid else "", chore_name(c2, str(asg.get("where", "edges"))) if c2 != "forage" else "Forage", level(wk, c2), units(wk, c2, 1.0), " · no animals yet" if ranch_c and no_animals else ""], func() -> void:
+			var cb: Button = menu._button("    %s%s · lv %d%s, up to %d a night%s" % ["• " if c2 == cid else "", chore_name(c2, str(asg.get("where", "edges"))) if c2 != "forage" else "Forage", level(wk, c2), ("" if title(wk, c2) == "" else " " + title(wk, c2)), units(wk, c2, 1.0), " · no animals yet" if ranch_c and no_animals else ""], func() -> void:
 				var r := assign(wk, c2, str(asg.get("chest", "chest")))
 				if r != "":
 					menu._toast(r)

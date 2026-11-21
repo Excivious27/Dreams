@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Sun Haven-style skill trees: every skill is a grid of 4 branches (rows) x 10
-tiers (columns I-X). Column c opens once 2*c points are spent in that skill.
+tiers (columns I-X). Column c opens once TIER_NEED[c] points are spent (GameState).
 Keeps every original node (same id, so saves and code that checks node ranks
 still work) and fills the rest of the grid with nodes that raise the stats the
 game already reads (GameState.bonus). Reads data/skills_base.json, writes
@@ -11,7 +11,7 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 base = json.load(open(f"{R}/data/skills_base.json"))
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 # Per-rank amount for filler nodes, by effect key.
-AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
+AMT = {"flower_value": 0.03, "bounty": 0.03, "loot_value": 0.03, "growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
        "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.01,
        "shard_bonus": 0.06, "double_hit": 0.04, "forage_bonus": 1, "wood_bonus": 1, "chop_bonus": 1, "sap_chance": 0.06,
        "rare_forage": 0.03, "bite_speed": 0.05, "rare_fish": 0.03, "escape_less": 0.06, "chest_chance": 0.02, "fish_value": 0.06,
@@ -25,7 +25,7 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03, "buy_discount": 0.02, "regrowth": 1,
        # Ranching (C11a P3): read by Ranch / GameMap / Helpers through GameState.bonus("ranching", key)
        "big_goods": 0.02, "animal_quality": 0.12, "ranch_value": 0.03, "breed_chance": 0.03, "grow_speed": 0.12, "animal_friend": 0.03, "hand_work": 0.04}
-DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
+DESC = {"flower_value": "flower sell value", "bounty": "money from beaten foes", "loot_value": "sell value of loot and treasure", "xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock; 3 make one more",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
@@ -180,8 +180,8 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-FALLBACK = {"farming": ["growth", "seed_back"], "ranching": ["animal_yield", "ranch_value", "animal_friend", "hand_work"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
-            "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount"],
+FALLBACK = {"farming": ["growth", "seed_back", "flower_value"], "ranching": ["animal_yield", "ranch_value", "animal_friend", "hand_work"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
+            "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy", "bounty"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount", "loot_value"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
@@ -242,8 +242,8 @@ UNLOCKS = {
                 (2, 6, "Still Waters", "Learn the Lull spell: nearby enemies fall asleep.", {"spell": "lull"}),
                 (3, 4, "Strong Strokes", "Swim 30% faster.", {"swim_speed": 0.3}),
                 (0, 9, "Tidecall", "Your first cast each day bites at once.", {"tidecall": 1})],
-    "combat": [(0, 2, "Honed Blade", "+2 damage on every hit.", {"damage": 2}),
-               (0, 6, "Keen Edge", "+3 damage on every hit.", {"damage": 3}),
+    "combat": [(0, 3, "Honed Blade", "+1 damage on every hit.", {"damage": 1}, "combat_u_honed_blade"),  # C16a P6: 2 -> 1, col 2 -> 3 (tree damage <= 8)
+               (0, 6, "Keen Edge", "+2 damage on every hit.", {"damage": 2}, "combat_u_keen_edge"),  # C16a P6: 3 -> 2
                (1, 3, "Fleet Foot", "Move 5% faster.", {"move_speed": 0.05}),
                (1, 7, "Crystal Ward", "Learn the Crystal Shield spell: block the next blows.", {"spell": "crystal_shield"}),
                (2, 2, "Tanner's Blueprint", "Learn to build the Tannery: leather and armour.", {"blueprint": "tannery"}),
@@ -261,7 +261,7 @@ UNLOCKS = {
     # hand_slot (Helpers: ranch chores), animal_quality (quality days); hutch/sty blueprints through Builds.gate.
     "ranching": [(1, 2, "Hutch Blueprint", "Learn to build the Rabbit Hutch.", {"blueprint": "hutch"}),
                  (2, 3, "Sty Blueprint", "Learn to build the Pig Sty: pigs dig truffles.", {"blueprint": "sty"}),
-                 (3, 2, "Farm Hand", "A trained farm hand can take one ranch chore each night (feed, pet or collect).", {"hand_slot": 1}),
+                 (3, 2, "Farm Hand", "A trained farm hand can take one ranch chore each night (feed the animals or keep them company).", {"hand_slot": 1}),
                  (0, 5, "Feeder Hookup", "Every coop and barn eats silo hay by itself each morning, from the first tier.", {"feeder": 1}),
                  (1, 6, "Steady Routine", "One missed day of care no longer breaks an animal's friendship streak.", {"care_grace": 1}),
                  (2, 7, "Warm Incubator", "Eggs hatch a day sooner.", {"hatch_fast": 1}),
@@ -275,13 +275,13 @@ UNLOCKS = {
                (1, 3, "Clinic Blueprint", "Learn to build the Chrome Clinic.", {"blueprint": "clinic"}),
                (2, 4, "Robotics Blueprint", "Learn to build the Robotics Bench: bots and drones.", {"blueprint": "robotics"}),
                (3, 2, "Street Sprint", "Move 5% faster.", {"move_speed": 0.05}),
-               (0, 5, "Fresh Rounds", "+2 gun damage.", {"gun_damage": 2}),
-               (2, 7, "Heavy Hitter", "+3 gun damage.", {"gun_damage": 3})],
+               (0, 5, "Fresh Rounds", "+1 gun damage.", {"gun_damage": 1}, "hustle_u_fresh_rounds"),  # C16a P6: 2 -> 1
+               (2, 7, "Heavy Hitter", "+2 gun damage.", {"gun_damage": 2}, "hustle_u_heavy_hitter")],  # C16a P6: 3 -> 2
     "harmony": [(0, 2, "Lantern Step", "Move 5% faster.", {"move_speed": 0.05}),
                 (1, 4, "Radiant Heart", "Learn the Radiance spell: a ring of light hits everything near you.", {"spell": "radiance"}),
                 (2, 7, "Harvest Song", "Learn the Bloom spell: every ripe crop goes to the sell box.", {"spell": "bloom"})],
     "leadership": [(0, 2, "Steady Ranks", "4% less damage taken while a partner is with you.", {"team_defense": 0.04}, "leadership_u_marching_pace"),
-                   (1, 3, "Rally Cry", "Your party hits 2 harder.", {"team_damage": 2}),
+                   (1, 3, "Rallying Shout", "Your party hits 2 harder.", {"team_damage": 2}, "leadership_u_rally_cry"),  # c16a_11-12: two nodes were named Rally Cry
                    (2, 6, "Field Medic", "Your partner heals 4 more.", {"team_heal": 4})],
     "strategist": [(0, 2, "Forced March", "Capture battle points 10% faster.", {"capture_speed": 0.1}),
                    (1, 3, "Quartermaster", "Start every battle with 10 more supply.", {"start_supply": 10}),
@@ -289,8 +289,16 @@ UNLOCKS = {
 }
 
 
-out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after 2*c points spent in the skill. 1 point per level.",
-       "tier_points": 2, "skills": {}}
+def _tier_need():
+    """GameState.TIER_NEED (C16a P6), read from the script so the two never drift."""
+    src = open(f"{R}/scripts/game_state.gd").read()
+    m = re.search(r"const TIER_NEED := \[([^\]]*)\]", src)
+    return [int(x) for x in m.group(1).split(",")]
+
+
+TIER_NEED = _tier_need()
+out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after tier_need[c] points spent in the skill. 1 point per level.",
+       "tier_need": TIER_NEED, "skills": {}}
 total = 0
 for sk, sd in base["skills"].items():
     rows, rowmap = T[sk]
@@ -387,6 +395,10 @@ for sk, sd in base["skills"].items():
         out["skills"][sk]["arc"] = "gangsters" if sk == "hustle" else "penguins"
     if sk == "magic":
         out["skills"][sk]["branch_keys"] = sd.get("branches", {})
+        # c16a_11-07/12-02: the gangster arc reads Sorcery as street tech, not the Star Crystal.
+        out["skills"][sk]["name_gang"] = "Tech"
+        out["skills"][sk]["desc_gang"] = "Street tech wired into you: signal, static and chrome. Use it to learn; every path meets at the Overclock."
+        out["skills"][sk]["branches_gang"] = {"0": "Signal", "1": "Static", "2": "Chrome", "3": "Wetware"}
 def _arc_trees(arc):
     return [sk for sk, sd in out["skills"].items() if sd.get("arc", arc) == arc]
 
@@ -413,10 +425,58 @@ for key, cap in TREE_TOTAL_CAPS.items():
                     nv = max(TOTAL_FLOOR.get(key, 1), int(v * worst + 0.5))
                     n["effect"] = {key: nv}
                     n["desc"] = fmt(key, nv) + (" (per rank)" if int(n.get("ranks", 1)) > 1 else "")
+# c16a_11-05/12-03: hp/energy ranks past the arc's run-time total did nothing. Re-roll the
+# highest-column filler hp/energy nodes of the shared trees into a key with room left.
+def _arc_total(arc, key):
+    return sum(float((n.get("effect") or {}).get(key, 0)) * int(n.get("ranks", 1)) for sk in _arc_trees(arc) for n in out["skills"][sk]["nodes"])
+
+
+def _tree_used(sk):
+    u = {}
+    for n in out["skills"][sk]["nodes"]:
+        for ek, ev in (n.get("effect") or {}).items():
+            if isinstance(ev, (int, float)):
+                u[ek] = u.get(ek, 0) + ev * int(n.get("ranks", 1))
+    return u
+
+
+REROLL_ORDER = ["bartering", "building", "fishing", "foraging", "mining", "pup", "magic", "hustle", "harmony", "combat"]
+for key, cap in TREE_TOTAL_CAPS.items():
+    cands = []
+    for sk in REROLL_ORDER:
+        for n in out["skills"][sk]["nodes"]:
+            if re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])) and key in (n.get("effect") or {}):
+                cands.append((sk, n))
+    cands.sort(key=lambda t: (-int(t[1]["tier"]), REROLL_ORDER.index(t[0])))
+    for sk, n in cands:
+        if max(_arc_total(a, key) for a in ("penguins", "gangsters")) <= cap:
+            break
+        caps = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
+        for gk, gv in GEN_CAPS.get(sk, {}).items():
+            caps[gk] = min(caps.get(gk, gv), gv)
+        used = _tree_used(sk)
+        rk = int(n.get("ranks", 1))
+        c = int(n["tier"])
+        done = False
+        for fk in FALLBACK.get(sk, []) + ["xp_gain"]:
+            if fk in ("hp", "energy") or fk not in AMT or (fk == "xp_gain" and c >= NO_XP_FROM):
+                continue
+            fa = AMT[fk] * (2 if c == 9 else 1)
+            if fk in caps and used.get(fk, 0) + fa * rk > caps[fk] + 1e-9:
+                continue
+            fa = round(fa, 3) if isinstance(fa, float) else fa
+            n["effect"] = {fk: fa}
+            n["desc"] = fmt(fk, fa) + (" (per rank)" if rk > 1 else "")
+            done = True
+            break
+        if not done and rk > 1:
+            n["ranks"] = 1
+            n["desc"] = fmt(key, n["effect"][key])
 for arc in ("penguins", "gangsters"):
     for key, cap in list(TREE_TOTAL_CAPS.items()) + [("team_xp", TEAM_XP_CAP)]:
         t = sum(float((n.get("effect") or {}).get(key, 0)) * int(n.get("ranks", 1)) for sk in _arc_trees(arc) for n in out["skills"][sk]["nodes"])
         print("  %s %s total %g (run-time cap %g)" % (arc, key, round(t, 3), cap))
+        assert t <= cap + 1e-9, "%s %s total %g passes the run-time cap %g (c16a_11-05)" % (arc, key, t, cap)
 
 # "aka": earlier names of a node whose effect and ranks did not change, so a
 # rename alone never refunds an old save's ranks (GameState._migrate reads it).

@@ -246,8 +246,8 @@ static func why_not_team(uid: String) -> String:
 		return "Those animals belong to your host."
 	if learned(uid).is_empty():
 		return "Teach it a lesson first."
-	if not on_team(uid) and team().size() >= int(rule("team_max", 2)):
-		return "The team has room for %d animals." % int(rule("team_max", 2))
+	if not on_team(uid) and team().size() >= team_max():
+		return "The team has room for %d animals." % team_max()
 	return ""
 
 
@@ -275,7 +275,10 @@ static func stats(uid: String) -> Dictionary:
 		hp += int(l.get("hp", 0)) * rank(uid, lid)
 		dmg += int(l.get("dmg", 0)) * rank(uid, lid)
 	hp += int(GameState.bonus("leadership", "pet_bond"))
-	hp = mini(hp, Pet.max_hp() - int(rule("pup_margin", 4)))  # c11b_09-03: under the pup's real max hp
+	# c11b_09-03: lesson growth stays under the pup's real max hp; C16a P6 (c16a_13-16): the species'
+	# own base at this tier always counts, so a weak pup no longer shrinks a trained llama.
+	var base_hp := int(s.get("hp", 14)) + int(rule("hp_per_tier", 6)) * GameState.progress_tier()
+	hp = mini(hp, maxi(base_hp, Pet.max_hp() - int(rule("pup_margin", 4))))
 	return {"hp": maxi(8, hp), "dmg": maxi(1, dmg), "speed": float(s.get("speed", 1.0))}
 
 
@@ -333,7 +336,7 @@ static func tint(uid: String) -> Color:
 ## (Companion.active_id), the animal slots (team()) and the battle muster (CampaignGate.team()).
 static func slots() -> Dictionary:
 	return {"pup": Pet.name_of(), "partner": Companion.active_id(), "animals": team(),
-		"animal_max": int(rule("team_max", 2)), "muster": CampaignGate.team()}
+		"animal_max": team_max(), "muster": CampaignGate.team()}
 
 
 ## CampaignGate.team rows: [id, name, "animal"] for every team animal.
@@ -469,7 +472,7 @@ static func build_page(menu: Variant) -> void:
 		menu._line("  No animals yet. Build a coop or barn on the farm and buy or raise one.", 8, Color(0.7, 0.7, 0.7))
 		menu._button("Back to Party", func() -> void: menu._tab = "Party"; menu._refresh())
 		return
-	menu._line("Team: %d of %d  ·  tap an animal for lessons, name and team" % [team().size(), int(rule("team_max", 2))], 8, Color(0.85, 0.85, 0.8))
+	menu._line("Team: %d of %d  ·  tap an animal for lessons, name and team" % [team().size(), team_max()], 8, Color(0.85, 0.85, 0.8))
 	var last_home := "?"
 	for uid: String in all:
 		var u := uid
@@ -603,3 +606,14 @@ static func _detail(menu: Variant, uid: String) -> void:
 			_sel = ""
 		menu._refresh())
 	hb.set_meta("pc_key", "animals:%s:rehome" % uid)
+
+
+## C16a P6 (c16a_13-07): team room grows: 2 at first, +1 at Leadership 25, +1 from story chapter 4
+## (progress tier 3), so a bigger team is a season-2 / year-2 goal.
+static func team_max() -> int:
+	var n := int(rule("team_max", 2))
+	if GameState.skill_level("leadership") >= 25:
+		n += 1
+	if GameState.progress_tier() >= 3:
+		n += 1
+	return n
