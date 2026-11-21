@@ -6,6 +6,10 @@ extends RefCounted
 
 static var _d: Dictionary = {}
 
+## Out-of-season crops sell a little dearer (was 1.35 with no spoilage: harvest, chest it and sell
+## next season for +35%, c15_08-04). GameState.demand reads this.
+const OFF_SEASON_DEMAND := 1.1
+
 
 static func data() -> Dictionary:
 	if _d.is_empty():
@@ -90,7 +94,8 @@ static func decor_ok(id: String, shop := "") -> bool:
 static func decor_shelf(shop: String) -> Array:
 	if not shop in ["carpenter", "carpenter_gang"]:
 		return []
-	return Decor.stock_all("stall:festival_" + GameState.season())
+	var all := Decor.stock_all("stall:festival_" + GameState.season())
+	return DecorSources.rotate(all, 6, 7, 15)  # six of the season's pieces, turning over weekly
 
 
 ## Festival stall treats for the season ([[id, price], ...]); empty if none.

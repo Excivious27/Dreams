@@ -633,7 +633,7 @@ static func demand(id: String) -> float:
 		if str(crops[cid].get("yield", "")) == id:
 			var cs := str(crops[cid].get("season", "any"))
 			if cs != "any" and cs != se:
-				m *= DEMAND_OUT_OF_SEASON
+				m *= SeasonGoods.OFF_SEASON_DEMAND  # C15 P2 hook (c15_08-04): a small premium, not a free +35% for chesting crops
 			break
 	if t in ["fish", "forage"] and se == "winter":
 		m *= 1.2
