@@ -1,0 +1,31 @@
+CONDUCT CI FAIL  870682049c  (ci/c17p3-ad6dcd08, run 44940271205)
+
+subset run: shards [1, 4, 5], bots off, playtest on
+check shards (3/3):
+  shard 1: FAIL  393s  failed: story: every chapter plays to the end
+  shard 4: PASS  343s
+  shard 5: PASS  642s
+playtest: PASS  56s  21 screenshots (results playtest/shots/)
+RELAY: ok, 47ms (live code a29f453d8be9)
+NET E2E: ok, 18s
+  relay note: server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)
+
+longest job: 642s
+slowest check steps: import 270.1s; import 89.1s; import 81.1s; smoke test 53.5s; C13 P6: ambience map (no silent place, both arcs, seasons, times, rain 49.1s; exits and spawns 44.7s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.4s; exits line up (top edge leads to the next map's bottom edge...) 38.0s
+distinct errors/fails/warns:
+    1  FAIL penguins: beat c16b_won_countryside ready ({ "flag": "campaign_countryside", "not_flag": "long_way_countryside", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_countryside ready ({ "flag": "long_way_countryside", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_docks ready ({ "flag": "campaign_docks", "not_flag": "long_way_docks", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_docks ready ({ "flag": "long_way_docks", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_neon ready ({ "flag": "campaign_neon", "not_flag": "long_way_neon", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_neon ready ({ "flag": "long_way_neon", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_underground ready ({ "flag": "campaign_underground", "not_flag": "long_way_underground", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_underground ready ({ "flag": "long_way_underground", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_won_uptown ready ({ "flag": "campaign_uptown", "not_flag": "long_way_uptown", "arc": "gangsters" })
+    1  FAIL penguins: beat c16b_long_uptown ready ({ "flag": "long_way_uptown", "arc": "gangsters" })
+    1  FAIL penguins: all 61 beats played
+    1  FAIL gangsters: beat c16b_won_wastes ready ({ "flag": "campaign_wastes", "not_flag": "long_way_wastes", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_long_wastes ready ({ "flag": "long_way_wastes", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_won_sky ready ({ "flag": "campaign_sky", "not_flag": "long_way_sky", "arc": "penguins" })
+    1  FAIL gangsters: beat c16b_long_sky ready ({ "flag": "long_way_sky", "arc": "penguins" })
+    1  FAIL gangsters: all 63 beats played
