@@ -39,6 +39,10 @@ var _sniffed := {}  # C14 c14_13-08: each spot gets its own sniff (was once per 
 
 
 ## Mega area or explicit data: how many pockets / ways to place here.
+## Classic (non-mega) outdoor regions that hide a pocket + a secret way (C14).
+const CLASSIC := ["orchard_hills", "highlands", "quarry", "marsh", "riverlands", "ruins", "countryside", "wastes", "jungle"]
+
+
 static func wanted(m: GameMap, rid: String) -> Vector2i:
 	if rid.begins_with("bf_"):
 		return Vector2i.ZERO
@@ -46,7 +50,8 @@ static func wanted(m: GameMap, rid: String) -> Vector2i:
 	var hd: Dictionary = R.get("hidden", {})
 	var mega := MegaRegion.region_of(rid) != ""
 	if not mega and hd.is_empty():
-		return Vector2i.ZERO
+		# C14 c14_13-02 / 12-25: the classic outdoor regions get a pocket and a way too.
+		return Vector2i(1, 1) if rid in CLASSIC else Vector2i.ZERO
 	return Vector2i(int(hd.get("pockets", 1)), int(hd.get("ways", 1)))
 
 

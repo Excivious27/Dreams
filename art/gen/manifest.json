@@ -30429,6 +30429,14 @@
    "h": 48,
    "w": 375
   },
+  "c14p4_veh_night_train": {
+   "cell_h": 48,
+   "cell_w": 85,
+   "file": "c14p4/c14p4_veh_night_train.png",
+   "frames": 3,
+   "h": 48,
+   "w": 255
+  },
   "c14p4_veh_plane": {
    "cell_h": 48,
    "cell_w": 118,
@@ -30437,6 +30445,14 @@
    "h": 48,
    "w": 354
   },
+  "c14p4_veh_ring": {
+   "cell_h": 48,
+   "cell_w": 98,
+   "file": "c14p4/c14p4_veh_ring.png",
+   "frames": 3,
+   "h": 48,
+   "w": 294
+  },
   "c14p4_veh_sedan": {
    "cell_h": 48,
    "cell_w": 159,
@@ -30444,6 +30460,14 @@
    "frames": 3,
    "h": 48,
    "w": 477
+  },
+  "c14p4_veh_sled": {
+   "cell_h": 48,
+   "cell_w": 105,
+   "file": "c14p4/c14p4_veh_sled.png",
+   "frames": 3,
+   "h": 48,
+   "w": 315
   },
   "c14p4_veh_subway": {
    "cell_h": 48,

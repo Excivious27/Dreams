@@ -48,6 +48,10 @@ func _ready() -> void:
 	Hud.pause(get_tree(), "TravelScene")
 	var kinds: Dictionary = TravelNet.data().get("kinds", {})
 	var vn := str(kinds.get(str(link.get("kind", "")), {}).get("veh", ""))
+	if str(link.get("kind", "")) == "mega":  # each keeper's own vehicle (C14: sled/caravan/airship/train/limo/ring)
+		var rid := str(link.get("id", "")).trim_prefix("mega_").trim_prefix("t4_").get_slice("_", 0)
+		vn = {"windward": "c14p4_veh_airship", "ironline": "c14p4_veh_night_train", "giltcity": "c14p4_veh_sedan", "gloamwood": "c14p4_veh_ring",
+			"frostpeak": "c14p4_veh_sled", "sunscorch": "c14p4_veh_caravan"}.get(rid, vn)
 	if not GameState.is_penguins():
 		vn = {"c14p4_veh_cart": "c14p4_veh_trolley", "c14p4_veh_caravan": "c14p4_veh_sedan", "c14p4_veh_ferry": "c14p4_veh_launch"}.get(vn, vn)
 	if vn != "" and Art.has(TravelNet.GROUP, vn):

@@ -39,6 +39,7 @@ VEH = {
     "c14p4_veh_gang1.png": ["c14p4_veh_taxi", "c14p4_veh_subway", "c14p4_veh_sedan"],
     "c14p4_veh_gang2.png": ["c14p4_veh_plane", "c14p4_veh_bus", "c14p4_veh_launch"],
     "c14p4_veh_mix.png": ["c14p4_veh_caravan", "c14p4_veh_trolley", "c14p4_veh_airship"],
+    "c14p4_veh_mix2.png": ["c14p4_veh_sled", "c14p4_veh_ring", "c14p4_veh_night_train"],
 }
 VEH_H = 48  # frame height in the strip
 

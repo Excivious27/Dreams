@@ -418,9 +418,9 @@ static func station_prop(m: GameMap, sid: String) -> void:
 	if pn != "" and Art.has(GROUP, pn):
 		var sp := m.prop(GROUP, pn, c, 0, 0.0, false, 0.5)
 		if sp and not is_built(sid):
-			sp.modulate = Color(0.75, 0.75, 0.75, 0.75)  # a build site: greyed until built
+			sp.modulate = Color(0.72, 0.7, 0.66, 1.0)  # a build site: weathered/dim until built (solid, never see-through)
 	var hint := "A: " + (str(s.get("name", "travel")) if is_built(sid) else "build " + str(s.get("name", "station")))
-	m.set_thing(c.x, c.y, {"type": "mega_gate", "station": sid, "hint": hint}, true)
+	m.set_thing(c.x, c.y, {"type": "mega_gate", "station": sid, "hint": hint}, false)  # walk-on: a station never blocks a path
 
 
 ## Which stations show on this visit: built ones, and build sites/finds whose links

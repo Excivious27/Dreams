@@ -42,6 +42,8 @@ static func chests_total() -> int:
 		n += 1
 		if mr != "" and int(r.get("hidden", {}).get("pockets", 1)) > 0:
 			n += 1
+		elif mr == "" and rid in HiddenArea.CLASSIC and int(r.get("hidden", {}).get("pockets", 1)) > 0:
+			n += 1  # C14: the classic regions' hidden nooks
 		if HiddenArea.SANCTUMS.has(rid):
 			n += 1
 	return n
@@ -51,7 +53,7 @@ static func chests_total() -> int:
 static func _area_here(rid: String) -> bool:
 	var mr := MegaRegion.region_of(rid)
 	if mr == "":
-		return true
+		return not ((rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()))  # C14: classic pockets per arc
 	if not MegaRegion.in_arc(mr):
 		return false
 	var a := MegaRegion.area(mr, rid)
@@ -60,6 +62,15 @@ static func _area_here(rid: String) -> bool:
 
 ## Lore pages tucked in the hidden nooks of the newer areas (HiddenArea places them).
 const POCKET_PAGES := {
+	"orchard_hills": "Page: The oldest tree on the hill was planted upside down, roots to the sky. It fruits anyway, every other spring.",
+	"highlands": "Page: Shepherds stack one stone on the cairn each time they get home safe. The cairn is taller than the shepherds now.",
+	"quarry": "Page: The old miners cut this adit to follow a single silver thread. It ran out after nine steps. They kept the door anyway.",
+	"marsh": "Page: The herons stand on one leg to keep a secret: the other foot is holding the marsh together.",
+	"riverlands": "Page: The river forgot its old bed one wet autumn. The fish still swim the old way, through the grass, in their dreams.",
+	"ruins": "Page: Behind the collapsed door the crypt holds no bones, only shelves of seed jars, labelled in a hand nobody can read.",
+	"countryside": "Page: Every barn out here has one plank painted on the inside. Line them up on a map and they point to the same hill.",
+	"wastes": "Page: The ash fields bloom for one night a year. The flowers are grey, and they smell like warm bread.",
+	"jungle": "Page: The vines here grow toward voices. Sing to one long enough and it will lead you somewhere quiet.",
 	"iron_junction": "Page: The first train through the Junction carried no cargo at all. Just one lantern, lit, on an empty flatcar.",
 	"iron_freight_yards": "Page: Every crate in the yards is numbered except one. Nobody will say who ships it, but it goes out every spring.",
 	"iron_mill_district": "Page: The mill wheel turned for forty years after the river moved. The workers say it learned to.",

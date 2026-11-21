@@ -1193,3 +1193,10 @@ echo "$tnout" | grep -E "FAIL|SCRIPT ERROR|travel_net_test" || true
 if ! echo "$tnout" | grep -q "travel_net_test: [0-9]* checks, 0 failures"; then
   echo "Travel network test failed"; exit 1
 fi
+
+echo "== C14 P4: classic regions' hidden pockets/ways, pages and opaque ways =="
+csout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_secrets_test.gd 2>&1)"
+echo "$csout" | grep -E "FAIL|SCRIPT ERROR|c14_secrets_test" || true
+if ! echo "$csout" | grep -q "c14_secrets_test: [0-9]* checks, 0 failures"; then
+  echo "C14 secrets test failed"; exit 1
+fi
