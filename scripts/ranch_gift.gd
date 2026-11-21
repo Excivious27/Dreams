@@ -128,7 +128,7 @@ static func deliver() -> Array:
 static func _who(opts: Dictionary) -> String:
 	var g := str(opts.get("giver", ""))
 	if g != "":
-		return g
+		return str(GameState.npcs[g].get("name", g)) if GameState.npcs.has(g) else g  # an npc id signs with its name (C12 P4)
 	return "Benno" if GameState.run.get("arc", "") == "gangsters" else "Hazel"
 
 
@@ -136,7 +136,13 @@ static func _kind(species: String) -> String:
 	var sp := Ranch.species(species)
 	if sp.is_empty():
 		return species.replace("_", " ")
-	return str(sp.get("name", species)).to_lower()
+	return Ranch.display_name(species).to_lower()  # the arc's own name ("hen", not "chicken")
+
+
+## A home in words: its Plans tier name ("coop", "tide pool"), never the raw id. C12 P4.
+static func _home_word(h: String) -> String:
+	var nm := _tname(Ranch.build_of(h), maxi(1, Ranch.tier(h)))
+	return nm.to_lower() if nm != "" else h.replace("_", " ")
 
 
 ## The building that makes room (the next Plans tier of its home, by name).
@@ -149,10 +155,15 @@ static func room_hint(species: String, opts: Dictionary = {}) -> String:
 	if t > 0 and Ranch.capacity(h) > 0:
 		var nxt := _tname(bid, t + 1)
 		if nxt != "":
-			return "a %s on the Plans board, or a free place in your %s" % [nxt, h]
-		return "a free place in your %s" % h
+			return "a %s on the Plans board, or a free place in your %s" % [nxt, _home_word(h)]
+		return "a free place in your %s" % _home_word(h)
 	var nm := _tname(bid, 1)
-	return "a %s on the Plans board" % (nm if nm != "" else h)
+	return "a %s on the Plans board" % (nm if nm != "" else _home_word(h))
+
+
+## The home as this arc names it ("pig pen" for the gangster sty; c12_09-15).
+static func home_word(h: String) -> String:
+	return _home_word(h)
 
 
 static func _tname(bid: String, t: int) -> String:
@@ -165,14 +176,26 @@ static func _waiting_letter(row: Dictionary) -> void:
 	var sp := str(row["species"])
 	var nm := str(row.get("name", ""))
 	var what := nm if nm != "" else ItemWords.with_article(_kind(sp))
-	Mail.send(_who(row), "%s is waiting for you here until there's room: it needs %s. It'll walk over the morning after. - %s"
-		% [what.capitalize() if nm == "" else what, room_hint(sp, row), _who(row)], "chat", {}, true)
+	Mail.send(_who(row), "%s is waiting for you here until there's room: it needs %s. It'll %s the morning after. - %s"
+		% [what.capitalize() if nm == "" else what, room_hint(sp, row), arrive_verb(sp, false), _who(row)], "chat", {}, true)
+
+
+## C12 c12_14-15: how a creature gets to your farm (not every one "walks over").
+static func arrive_verb(sp: String, past: bool) -> String:
+	var home := str(Ranch.species(sp).get("home", ""))
+	if home == "tide_pool":
+		return "came over in a bucket of sea water" if past else "come over in a bucket of sea water"
+	if str(Ranch.species(sp).get("group", "")) == "insect":
+		return "drifted over in a lantern jar" if past else "drift over in a lantern jar"
+	if home == "aviary":
+		return "flew over" if past else "fly over"
+	return "walked over" if past else "walk over"
 
 
 static func _arrived(sp: String, uid: String, opts: Dictionary, was_waiting: bool) -> void:
 	var nm := str(Ranch.animal(uid).get("name", _kind(sp)))
 	var h := str(Ranch.animal(uid).get("home", ""))
 	if was_waiting:
-		Mail.send(_who(opts), "%s walked over at first light and is settling into your %s. - %s" % [nm, h, _who(opts)], "chat", {}, true)
+		Mail.send(_who(opts), "%s %s at first light and is settling into your %s. - %s" % [nm, arrive_verb(sp, true), _home_word(h), _who(opts)], "chat", {}, true)
 	else:
-		GameState.notify("%s the %s joined your %s." % [nm, _kind(sp), h])
+		GameState.notify("%s the %s joined your %s." % [nm, _kind(sp), _home_word(h)])

@@ -119,13 +119,55 @@ static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 		f["ss_%s_done" % cid] = true
 		m.hud.toast("Side story done: %s" % str(c.get("title", cid)), Color(1, 0.9, 0.4))
 		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
-	_hint(c, st)
+	# c12_10-01: after a hand-in the ask is stale; the step's done_hint names who's next.
+	_hint(c, {"hint": str(st.get("done_hint", st.get("hint", "")))})
 
 
+## The chain's journal line: older lines of the same chain go (c12_10-01/17), so the
+## newest "Things people said" entry is always the next thing to do; a finished chain
+## (empty hint) leaves no stale ask behind.
 static func _hint(c: Dictionary, st: Dictionary) -> void:
+	var title := str(c.get("title", ""))
 	var h := str(st.get("hint", ""))
+	if GameState.run.is_empty():
+		return
+	var hs: Array = GameState.run.get("hints", [])
+	for k in range(hs.size() - 1, -1, -1):
+		if str(hs[k]).begins_with(title + ": ") and str(hs[k]) != "%s: %s" % [title, h]:
+			hs.remove_at(k)
+	GameState.run["hints"] = hs
 	if h != "":
-		GameState.add_hint("%s: %s" % [str(c.get("title", "")), h])
+		GameState.add_hint("%s: %s" % [title, h])
+
+
+## Started, unfinished chains for the Quests tab (c12_10-17): [{id, title, text, giver}].
+## text is the current step's ask ("Bring <giver> <items>") or the last hint given.
+static func open_lines() -> Array:
+	var out: Array = []
+	if GameState.run.is_empty():
+		return out
+	var f: Dictionary = GameState.run["flags"]
+	for c: Dictionary in chains():
+		if not _arc_ok(c):
+			continue
+		var cid := str(c["id"])
+		var i := next_step(c)
+		if i <= 0 or f.has("ss_%s_done" % cid):
+			continue  # not started yet, or finished
+		var st: Dictionary = c["steps"][i]
+		var giver := str(st.get("giver", ""))
+		var who := str(GameState.npcs.get(giver, {}).get("name", Crew.members().get(giver, {}).get("name", giver.capitalize())))
+		var text := ""
+		if st.has("need") and f.has("ss_%s_%d_asked" % [cid, i]):
+			var need: Array = st["need"]
+			text = "Bring %s %s." % [who, ItemWords.count_id(str(need[0]), int(need[1]))]
+		else:
+			var prev: Dictionary = c["steps"][i - 1]
+			text = str(prev.get("done_hint", prev.get("hint", "")))
+			if text == "":
+				text = "See %s." % who
+		out.append({"id": cid, "title": str(c.get("title", cid)), "text": text, "giver": giver})
+	return out
 
 
 ## For a progress screen: [done, total] across this arc's side stories.

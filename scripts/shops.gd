@@ -174,7 +174,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
 		"potions": "Red for hurts. Tea for tired. Don't mix them, I'm not liable.",
 		"bait": "Bait's fresh. Fish aren't picky. People are.",
-		"lodge": "Meat's from the hills. Don't ask which hill.",
+		"lodge": "Rations for the trail. Fur the brambles combed off for me. Nothing here got hurt.",
 		"orla": "Flour's fresh. Wheat seed if you want to grow your own.",
 		"marlowe": "Oil for lamps. Bait for fish. Coffee for me, but I'll share.",
 		"tam": "Wool, hay, and saplings for the orchard. The sheep did most of the work.",
@@ -632,7 +632,7 @@ static func fund_add(n: int) -> Array:
 			done.append(i)
 			for npc in GameState.npcs:
 				GameState.add_friend(str(npc), FUND_FRIEND)
-			Mail.send("Mayor Alder", "The %s paid for %s. People keep asking who chipped in the most. I tell them. Thank you." % [fund_name(), _fund_what(i)], "chat")
+			Mail.send("Mayor Alder", "The %s paid for %s. People keep asking who chipped in the most. I tell them. Thank you. - Mayor Alder" % [fund_name(), _fund_what(i)], "chat")
 	return done
 
 

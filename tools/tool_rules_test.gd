@@ -140,9 +140,9 @@ func _run() -> void:
 
 func _lines() -> void:
 	_new("penguins")
-	check(ToolHint.line("axe").contains("tap it on your toolbar"), "axe on toolbar: tap hint (%s)" % ToolHint.line("axe"))
+	check(ToolHint.line("axe").contains("on your toolbar"), "axe on toolbar: toolbar hint (%s)" % ToolHint.line("axe"))
 	GameState.run["toolbar"][2] = ""
-	check(ToolHint.line("axe").contains("MENU > Items"), "axe in the bag: toolbar hint (%s)" % ToolHint.line("axe"))
+	check(ToolHint.line("axe").contains("%s > Items" % InputSetup.prompt("menu")), "axe in the bag: toolbar hint (%s)" % ToolHint.line("axe"))
 	GameState.run["flags"]["tool_away_axe"] = true
 	check(ToolHint.line("axe").contains("smithy"), "axe at the smith: says so (%s)" % ToolHint.line("axe"))
 	GameState.run["tools"].erase("rod")

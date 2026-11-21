@@ -2,6 +2,8 @@ arcade_skee.gd:◀ ▶ (or tap the lane) pick your line
 arcade_whack.gd:Tap a grump, or aim with the arrows + BOP.
 arcade_whack.gd:Tap a snitch, or aim with the arrows + BOP.
 battle_drill.gd:Tap HELPERS (top left)
+arcade_whack.gd:Tap a Grump, or aim with the arrows and BOP.
+arcade_whack.gd:Tap a snitch, or aim with the arrows and BOP.
 battle_drill.gd:Tap RALLY (top left) and pick \"Follow me\". Once your first
 battle_drill.gd:Tap RALLY and send everyone to %s. They go on ahead.
 block_jumper.gd:JUMP (A) or tap the picture · hold = higher · ▼ ducks
@@ -48,5 +50,8 @@ tool_hint.gd:Hoe: face grass on your farm and tap USE to till. Hold USE a
 tool_hint.gd:Hold the %s %s: tap it on your toolbar.
 tool_hint.gd:Seeds: face tilled soil and tap USE to plant.
 tool_hint.gd:Sword: tap USE to swing at foes.
-tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, USE it 
+tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, face an
 town.gd:Cast with USE, wait for the splash, tap USE again. Patience 
+pad_input.gd:tap the ♥ button
+pad_input.gd:tap ♥
+pad_input.gd:Tap ♥

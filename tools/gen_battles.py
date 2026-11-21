@@ -518,6 +518,12 @@ BRIEF = {
     "gate": "%s: the last wall before the region. Every point fortified, and their commander takes the field.",
 }
 
+# Penguin boss/gate briefs with the captain's name (CAPTAINS); "turn back" is the Meow Pow Wow's word.
+BRIEF_CAPTAIN = {
+    "boss": "%s holds %s. Turn the captain back and the rest will scatter.",
+    "gate": "%s: the last wall before the region. Every point fortified, and %s takes the field.",
+}
+
 def _field_points(fid):
     return [dict(p) for p in R[fid]["battle"]["points"]]
 
@@ -674,6 +680,14 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                     cv = node["cfg"][a]["convoy"]
                     pn = {p["id"]: p["name"] for p in node["cfg"][a]["points"]}
                     node["brief"][a] = BRIEF["escort"] % (node["cfg"][a]["vehicle"], pn[cv[-1]])
+                if len(arcs) == 1:
+                    node["brief"] = node["brief"][arcs[0]]
+            elif typ in ("boss", "gate") and region in CAPTAINS and "penguins" in arcs:
+                # C12: the penguin brief names the region's Grump captain (and never says
+                # "commander": the Wastes' Grump Commander is a different, story fight).
+                cap = CAPTAINS[region][0]
+                pb = (BRIEF_CAPTAIN[typ] % (cap, name)) if typ == "boss" else (BRIEF_CAPTAIN[typ] % (name, cap))
+                node["brief"] = {a: (pb if a == "penguins" else BRIEF[typ] % name) for a in arcs}
                 if len(arcs) == 1:
                     node["brief"] = node["brief"][arcs[0]]
             else:

@@ -134,6 +134,7 @@ func set_hint(text: String) -> void:
 	# Name the buttons of the device in use: USE/CHECK on the phone, the keys
 	# on a keyboard, the pad's own buttons (A / Cross / B...) on a controller.
 	text = text.replace("A: ", InputSetup.prompt("a") + ": ").replace("B: ", InputSetup.prompt("action") + ": ")
+	text = PadInput.words(text)   # c12_13-29: "tap USE" names the real key/pad button
 	if text != _hint:
 		_hint = text
 		if _canvas:

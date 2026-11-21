@@ -29,7 +29,7 @@ const SAY := [
 	"Now give your first order: tell them to hold here.",
 	"And call them back to you: Follow me.",
 	"Your banner does more than build. Have a look.",
-	"Last order: send them on ahead to %s.",
+	"One more order: send them on ahead to %s.",
 	"Last one: take %s. These are practice foes, so go at them.",
 ]
 const CARD := Rect2(20, 292, 230, 52)   # above the touch deck, clear of the rings up top

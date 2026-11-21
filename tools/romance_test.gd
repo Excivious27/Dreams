@@ -61,6 +61,7 @@ func _run() -> void:
 	for pass_ in [["penguins", "kairi"], ["gangsters", "big_jim"], ["penguins", "mom"]]:
 		await _flow(str(pass_[0]), str(pass_[1]))
 	_migration()
+	_partner_guard()
 	print("ROMANCE DONE, failures: %d" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -216,3 +217,17 @@ func _migration() -> void:
 	check(GameState.run.get("romance") is Dictionary and str(GameState.run["romance"]["spouse"]) == "", "old save gets the default")
 	check(int(GameState.run["friendship"]["lumi"]) == 123, "friendship untouched")
 	check("romance" in GameState.NO_GIFT_TYPES, "romance items never take the gift path")
+
+
+## C12 c12_17-15: a gangster shop deal never sends away the player's own partner.
+func _partner_guard() -> void:
+	var l := {"effects_by_choice": {"0": {"flags": ["shop_3", "juniper_gone"]}, "1": {"flags": ["shop_3_refused"]}}}
+	var rs: Dictionary = Romance.st()
+	var keep := {"spouse": rs["spouse"], "engaged": rs["engaged"], "dating": rs["dating"]}
+	rs["spouse"] = ""; rs["engaged"] = ""; rs["dating"] = "juniper"
+	check(Story.partner_guard(l, "0") == "1", "deal on the partner's clinic turns into the refusal")
+	check(Story.partner_guard(l, "1") == "", "refusal choice untouched")
+	rs["dating"] = "lumi"
+	check(Story.partner_guard(l, "0") == "", "deal goes ahead when the clinic isn't the partner's")
+	for k in keep:
+		rs[k] = keep[k]

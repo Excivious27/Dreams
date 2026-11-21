@@ -336,7 +336,7 @@ static func next_milestone(cat: String) -> Array:
 			continue
 		var need: Variant = m["need"]
 		var left := (total(cat) - count(cat)) if str(need) == "all" else (int(need) - count(cat) if not (need is String) else -1)
-		var who := _npc_name(str(m.get("from", "theo")))
+		var who := _npc_name(str(m.get("from_alt")) if m.has("from_alt") and not GameState.npc_present(str(m.get("from", "theo"))) else str(m.get("from", "theo")))
 		if left > 0:
 			return ["%d more: a gift from %s" % [left, who], left]
 		if need is String and str(need).begins_with("flag:"):
@@ -406,10 +406,13 @@ static func morning() -> void:
 		if g.has("decor"):
 			give_decor(str(g["decor"]), "milestone:" + str(mid))
 		var text := str(m.get("text_gangsters", m["text"])) if gang() else str(m["text"])
+		var from := str(m.get("from", "theo"))
+		if m.has("from_alt") and not GameState.npc_present(from):  # c12_09-04: the sender left town
+			from = str(m["from_alt"])
+			text = str(m.get("text_alt_gangsters", m.get("text_alt", text))) if gang() else str(m.get("text_alt", text))
 		var enc := _give_text(g)
 		if enc != "":
 			text += "  (Enclosed: %s.)" % enc
-		var from := str(m.get("from", "theo"))
 		if g.has("item"):
 			Mail.send(_npc_name(from), text, "gift", {"npc": from, "item": str(g["item"]), "n": int(g.get("n", 1)), "coll": str(mid)})
 		else:
@@ -422,7 +425,7 @@ static func morning() -> void:
 		for id in got.slice(0, 3):
 			nm.append(DecorCatalogue.name_of(str(id)))
 		var s := ", ".join(nm) + (" and %d more" % (got.size() - 3) if got.size() > 3 else "")
-		Mail.send("Catalogue desk", "Your order came in: %s. It's waiting in your decor box." % s, "chat", {"coll": "decor_order"})
+		Mail.send("Catalogue desk", "Your order came in: %s. It's waiting in your decor box. - Catalogue desk" % s, "chat", {"coll": "decor_order"})
 
 
 # ---- decor (C10a P3) ------------------------------------------------------------------------

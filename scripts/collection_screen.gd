@@ -133,7 +133,7 @@ static func _hub(gm: Node) -> void:
 	var r: Dictionary = GameState.run
 	gm._button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: gm._tab = "FieldLog"; gm._refresh())
 	gm._line("Wayfarer's Journal: %d/%d pages · hidden chests %d/%d" % [Secrets.found("page_"), Secrets.pages_total(), Secrets.found("secret_chest_") + Secrets.found("hidden_chest_"), Secrets.chests_total()], 8, Color(0.85, 0.85, 0.8))
-	gm._button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: gm._tab = "Foes"; gm._refresh())
+	gm._button("Foes & Gifts: %s met ›" % ItemWords.count("kind", (r.get("kill_counts", {}) as Dictionary).size()), func() -> void: gm._tab = "Foes"; gm._refresh())
 	gm._line("Shipping counts from the day the log arrived. Museum: the library's east wing.", 7, Color(0.65, 0.65, 0.65))
 
 

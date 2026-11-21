@@ -1,0 +1,6 @@
+# continuity_check.py known hits (each one a finding to fix; remove the line when fixed)
+LEAK hearts.json:villagers/sal:penguins:uptown | The knee was a door. Uptown. I held it so the ot
+LEAK hearts.json:villagers/theo:gangsters:something fell in the east | The log says the bell cracked the same night som
+SPOILER hearts.json:villagers/catkins:penguins:merkitties | I made a decision. I'm going to teach again. The
+SPOILER quest_lines.json:gideon_moon/offer:penguins:the moon | People say there's metal up there. On the moon.
+SPOILER side_stories.json:chains/steps:penguins:the moon | Two Light Motes. The deep floors of the mine she

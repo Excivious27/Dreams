@@ -147,7 +147,10 @@ func _run() -> void:
 	# The bowling quest's text suits both arcs.
 	for q: Dictionary in GameState.load_json("res://data/quests.json")["side"]:
 		if str(q["id"]).begins_with("rec_"):
-			ok(not str(q["text"]).contains("Rec Center") and not str(q["text"]).contains("Rec Hall"), "quest %s text is arc-neutral" % q["id"])
+			if q.has("text_gangsters"):  # C12 P5: one text per arc (the Rec Center / the Rec Hall)
+				ok(not str(q["text_gangsters"]).contains("Rec Center") and not str(q["text"]).contains("Rec Hall"), "quest %s texts fit their arcs" % q["id"])
+			else:
+				ok(not str(q["text"]).contains("Rec Center") and not str(q["text"]).contains("Rec Hall"), "quest %s text is arc-neutral" % q["id"])
 
 	# --- the penguin arc keeps its own ------------------------------------------
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")

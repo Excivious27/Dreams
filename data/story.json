@@ -17,7 +17,7 @@
      "lines": [
       {
        "who": "",
-       "text": "%town. Cobbles, a fountain that works on Tuesdays, a bell tower whose cracked bell hasn't rung in twenty-one years, and penguins at the edge of everything: on the walls, in the doorways, one asleep on the fountain. The island's old families. Nobody minds."
+       "text": "%town. Cobbles, a fountain that works on Tuesdays, a bell tower whose bell hasn't rung in twenty-one years, not since its clapper split in two, and penguins at the edge of everything: on the walls, in the doorways, one asleep on the fountain. The island's old families. Nobody minds."
       },
       {
        "who": "",
@@ -56,11 +56,21 @@
       },
       {
        "who": "Star Crystal",
-       "text": "Listen, farmer. I ran from an army. The Grumps. They belong to the Dark Crystal, and he has felt me land. I've put a bubble over this farm; nothing of his can cross the fence after dark. But the meadow is outside the bubble, and so is the town."
+       "text": "You wanted to farm in peace. I wanted that for you too. I'm sorry: they didn't wait.",
+       "if_flag": "crystal_peace"
       },
       {
        "who": "Star Crystal",
-       "text": "I passed over this island once before, farmer, twenty-one years ago, running, with his army on my heels. The sky went red then too. Your town's bell cried out when they went over, and cracked. I'm sorry for that. This time I'm not running."
+       "text": "Still think I'm a rock? Rocks don't get frightened, farmer. Listen to me anyway.",
+       "if_flag": "crystal_doubt"
+      },
+      {
+       "who": "Star Crystal",
+       "text": "Listen, farmer. That's the Grumps, the army I told you about. They followed me here. He has felt me land. I've put a bubble over this farm; nothing of his can cross the fence after dark. But the meadow is outside the bubble, and so is the town."
+      },
+      {
+       "who": "Star Crystal",
+       "text": "I passed over this island once before, farmer, twenty-one years ago, running, with his army on my heels. The sky went red then too. Your town's bell cried out when they went over, so hard its clapper split. I'm sorry for that. This time I'm not running."
       },
       {
        "who": "Star Crystal",
@@ -82,7 +92,12 @@
      "lines": [
       {
        "who": "",
-       "text": "Where the Big Grump fell, the grass is green in a circle. The grey shakes off it like water, and out of it rises a small crystal, no bigger than a plum, glowing a shy pale blue. It turns once in the air, as if to look at you, and floats away east toward the stars. In the grass where it was: a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. For one cold second you think of %pet. No: the tag is old."
+       "text": "Where the Big Grump stood, the grass comes back green in a circle. The last of the grey shakes off like water, and out of it rises a small crystal, no bigger than a plum, glowing a shy pale blue. It turns once in the air, as if to look at you, and floats away east toward the stars. In the grass where it was: a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. For one cold second you think of %pet. No: the tag is old."
+      },
+      {
+       "who": "",
+       "text": "You look at the glowing thing in your field, far behind you, for a long moment. It isn't a rock. You've known that for a while.",
+       "if_flag": "crystal_doubt"
       },
       {
        "who": "Star Crystal",
@@ -94,7 +109,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "Long ago the star crystals learned that everyone needs love and happiness, and we made worlds where everyone had everything they needed. One of us decided power mattered more. He began to control the others. That's the army. That's him."
+       "text": "The rest isn't mine to tell. It's a sad story, and there's someone who tells it better than I do, with a hundred cats listening."
       },
       {
        "who": "Star Crystal",
@@ -140,7 +155,7 @@
          "friend": {
           "maple": 10
          },
-         "hint": "Only you and Maple know. The collar is in your pack."
+         "hint": "You keep it to yourself. Maple can tell something's wrong. The collar is in your pack."
         }
        }
       }
@@ -159,6 +174,55 @@
        ]
       ],
       "sfx": "j_page"
+     }
+    },
+    {
+     "id": "p1_alder_told",
+     "trigger": {
+      "talk": "alder"
+     },
+     "when": {
+      "flag": "told_town"
+     },
+     "lines": [
+      {
+       "who": "Alder",
+       "text": "So the wolves were never wolves. ...I've been shooing them off my step with a broom for a month. Someone's dog, Theo says. Someone's something."
+      },
+      {
+       "who": "Alder",
+       "text": "I'll tell the others gently. You go and find whoever can turn them back."
+      }
+     ],
+     "effects": {
+      "friend": {
+       "alder": 5
+      },
+      "hint": "Alder is telling the town, gently. Catkins, in the crystal meadow, can teach you to turn Grumps back."
+     }
+    },
+    {
+     "id": "p1_maple_quiet",
+     "trigger": {
+      "talk": "maple"
+     },
+     "when": {
+      "flag": "kept_quiet"
+     },
+     "lines": [
+      {
+       "who": "Maple",
+       "text": "You came back from the meadow with a dog collar and a face like a closed shop. I won't ask."
+      },
+      {
+       "who": "Maple",
+       "text": "...If you ever need a counter to lean on, mine's here."
+      }
+     ],
+     "effects": {
+      "friend": {
+       "maple": 5
+      }
      }
     }
    ]
@@ -181,16 +245,27 @@
      "lines": [
       {
        "who": "",
-       "text": "On the road east the two penguins stop walking. Then they stop touching the ground. No penguin has ever flown before; these two fly the whole last stretch, laughing, trailing rainbows, toward a ringed world hanging low over the meadow.",
+       "text": "On the road east %partner stops walking. Then stops touching the ground. No penguin has ever flown before; %partner flies the whole last stretch, laughing, trailing rainbows, and pulls you up by the sleeve toward a ringed world hanging low over the meadow. Far behind, over the island, a second rainbow answers.",
        "pic": "cut_penguins_fly",
        "not_hero": [
         "penguin_f",
         "penguin_m"
-       ]
+       ],
+       "if_partner": "any"
       },
       {
        "who": "",
-       "text": "On the road east you stop walking. Then you stop touching the ground. No penguin has ever flown before; you fly the whole last stretch, laughing, trailing rainbows, toward a ringed world hanging low over the meadow.",
+       "text": "On the road east, two small shapes pass high overhead, trailing rainbows: the penguins, flying, though no penguin has ever flown before. They loop once over you, laughing, and one peels off back toward the island. You walk the last stretch toward a ringed world hanging low over the meadow.",
+       "pic": "cut_penguins_fly",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ],
+       "if_partner": "none"
+      },
+      {
+       "who": "",
+       "text": "On the road east you stop walking. Then you stop touching the ground. No penguin has ever flown before; you fly the whole last stretch, laughing, trailing rainbows, toward a ringed world hanging low over the meadow. Far behind, over the island, a second rainbow answers.",
        "pic": "cut_penguins_fly",
        "only_hero": [
         "penguin_f",
@@ -204,11 +279,15 @@
       },
       {
        "who": "",
+       "text": "A thread of the Star Crystal's light has come along, riding on your shoulder like a spark that forgot to go out. Back home, the rest of her keeps the bubble over the farm."
+      },
+      {
+       "who": "",
        "text": "And purring. Definitely purring. A dark figure walks out of the fog, takes down its hood, and is a cat."
       },
       {
        "who": "Catkins",
-       "text": "Welcome to Cat-topia, farmer, and to the brave two: one here, and one I can feel from here, keeping watch over your island. We're happy you survived the army of the Grumps. Come inside; it's warm, and it's time to learn your powers."
+       "text": "Welcome to Cat-topia, farmer, and to the brave two, wherever they are standing tonight. I can feel them both from here. We're happy you survived the army of the Grumps. Come inside; it's warm, and it's time to learn your powers."
       }
      ],
      "effects": {
@@ -236,7 +315,7 @@
       },
       {
        "who": "",
-       "text": "Around the hall, cats sit in rows on round cushions, eyes half shut, breathing together. The flying ones hang still in the air, like they're listening. Catkins turns to the Star Crystal, and bows, very low."
+       "text": "Around the hall, cats sit in rows on round cushions, eyes half shut, breathing together. The flying ones hang still in the air, like they're listening. Catkins turns to the spark of starlight on your shoulder, and bows, very low."
       },
       {
        "who": "Catkins",
@@ -244,7 +323,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "You were a kitten. You fell asleep in my light, and I didn't have the heart to move you."
+       "text": "You were a kitten the last time I came this way. You fell asleep in my light, and I didn't have the heart to move you."
       },
       {
        "who": "Catkins",
@@ -252,7 +331,11 @@
       },
       {
        "who": "Catkins",
-       "text": "The Dark Crystal wants to take away all the love and happiness in the universe. He talks to the crystals of Crystopia until they forget themselves, and then to anyone they touch. That's a Grump: not a monster. Somebody, squeezed."
+       "text": "Long, long ago the star crystals understood that everyone needs love and happiness. They made worlds where everyone had everything they needed. But one of them thought the most important thing was power. He began to control the others, and made them join the Grump army."
+      },
+      {
+       "who": "Catkins",
+       "text": "The Grumps want to take away all the love and happiness in the universe. He talks the crystals of Crystopia grey until they forget themselves, and then anyone they touch. That's a Grump: not a monster. Somebody, squeezed."
       },
       {
        "who": "Catkins",
@@ -264,7 +347,23 @@
       },
       {
        "who": "Catkins",
-       "text": "Use it near a Grump and it turns back into what it was before he talked it grey: a crystal of Crystopia, most of the time, flying home. Sometimes a rabbit or a frog he picked up on the way. Little ones first. It grows as you grow, and as your friends do. And if a penguin walks with you: that warm hum they've been feeling? Now they know how to let it out too."
+       "text": "Use it near a Grump and it turns back into what it was before he talked it grey: a crystal of Crystopia, most of the time, flying home. Sometimes a rabbit or a frog he picked up on the way. Little ones first. It grows as you grow, and as your friends do."
+      },
+      {
+       "who": "Catkins",
+       "text": "And the penguin who walks with you, and the one keeping watch: that warm hum they've been feeling since they touched her? Now they know how to let it out too.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "Catkins",
+       "text": "And you, little one: that warm hum you've felt since you touched her? Now you know how to let it out.",
+       "only_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
       },
       {
        "who": "",
@@ -288,7 +387,7 @@
        "mana",
        5
       ],
-      "toast": "Meow Pow Wow learned: tap ♥ near a Grump to turn it back. It's yours now, whoever walks with you.",
+      "toast": "Meow Pow Wow learned: tap ♥ near a Grump to turn it back. Your partner can use it too now.",
       "sfx": "j_heart"
      }
     },
@@ -333,11 +432,15 @@
       },
       {
        "who": "",
+       "text": "The Refined Crystal is still warm in your hand when the purring from the east stops. All at once. You run. By the time you reach the crystal meadow, Catkins is in the cave mouth, waving you in."
+      },
+      {
+       "who": "",
        "text": "Then the cave shakes. Crystals fall from the ceiling. Catkins meows loudly."
       },
       {
        "who": "Catkins",
-       "text": "The Grumps have found our sacred island. They know we're the only ones with the magic to stop them. RUN. The catship is this way.",
+       "text": "The Grumps have found our sacred cave. They know we're the only ones left with the magic to stop them. RUN. The catship is this way.",
        "pic": "cut_chase"
       },
       {
@@ -352,7 +455,20 @@
       },
       {
        "who": "",
-       "text": "The cats load the catapults with LITTER BOXES. Big Jim, if he's with you, says a word you don't repeat. The stink hits the Grump ships; they can't see; they crash, one after another, into the dark wastes past the meadow.",
+       "text": "The cats load the catapults with LITTER BOXES. Everyone holds their nose. %pet sneezes three times. The stink hits the Grump ships; they can't see; they crash, one after another, into the dark Wastes past the meadow.",
+       "pic": "props/grumpship_crash",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "",
+       "text": "The cats load the catapults with LITTER BOXES. You hold a flipper over your beak. %pet sneezes three times. The stink hits the Grump ships; they can't see; they crash, one after another, into the dark Wastes past the meadow.",
+       "only_hero": [
+        "penguin_f",
+        "penguin_m"
+       ],
        "pic": "props/grumpship_crash"
       },
       {
@@ -361,8 +477,12 @@
        "pic": "props/catship_win"
       },
       {
+       "who": "",
+       "text": "The catship circles once over the Wastes, purring like an engine, and sets you down by the meadow's east gate. The cats wave from every window. Some of them wave from outside the windows, flying."
+      },
+      {
        "who": "Catkins",
-       "text": "And after him, it is up to the two of you. Go to the heart of Crystopia: Mount Prismatica. Past the Wastes your valley touches my world, and my world touches theirs; you can walk it. Only at its heart can you master the Meow Pow Wow. I wish you luck."
+       "text": "And after him, it is up to the two of you. Go to the heart of Crystopia: Mount Prismatica. Here at the meadow your valley touches my world; past the Wastes it touches theirs, and you can walk the rest. Only at its heart can you master the Meow Pow Wow. I wish you two luck."
       }
      ],
      "effects": {
@@ -401,23 +521,91 @@
      "lines": [
       {
        "who": "",
-       "text": "You wake at midnight and find the two penguins on the fence, looking up at Celestica's rings."
+       "text": "Last night you woke at midnight and found the two penguins on the fence, looking up at Celestica's rings.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
       },
       {
        "who": "Nova",
-       "text": "Catkins said it melts a grumpy heart. One heart. But if it melts one, it can melt every one. Not just beating him: whole kingdoms where everyone's happy. Everywhere. The whole universe."
+       "text": "Catkins said it melts a grumpy heart. One heart. But if it melts one, it can melt every one. Not just beating him: whole kingdoms where everyone's happy. Everywhere. The whole universe.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
       },
       {
        "who": "Pip-Pip",
-       "text": "That's a lot of kingdoms."
+       "text": "That's a lot of kingdoms.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
       },
       {
        "who": "Nova",
-       "text": "Then we'd better start soon."
+       "text": "Then we'd better start soon.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
       },
       {
        "who": "Pip-Pip",
-       "text": "Then I'll carry the snacks. And help. Mostly help. Some snacks."
+       "text": "Then I'll carry the snacks. And help. Mostly help. Some snacks.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "",
+       "text": "Pip-Pip chirps, once, softly. It sounds like yes.",
+       "not_hero": [
+        "penguin_f",
+        "penguin_m"
+       ]
+      },
+      {
+       "who": "",
+       "text": "Last night you woke at midnight and couldn't get back to sleep. Pip-Pip was already on the fence, looking up at Celestica's rings. You climbed up beside him.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "You've got your thinking face. The big one.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "You told him: Catkins said it melts one grumpy heart. But if it melts one, it can melt every one. Whole kingdoms where everyone's happy. The whole universe.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "That's a lot of kingdoms. ...Then I'll carry the snacks. And help. Mostly help. Some snacks.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "Last night you woke at midnight. Nova was on the fence, looking up at Celestica's rings. You climbed up beside her.",
+       "only_hero": "penguin_m"
+      },
+      {
+       "who": "Nova",
+       "text": "Catkins said it melts a grumpy heart. One heart. But if it melts one, it can melt every one. Not just beating him: whole kingdoms where everyone's happy. Everywhere. The whole universe.",
+       "only_hero": "penguin_m"
+      },
+      {
+       "who": "",
+       "text": "That's a lot of kingdoms, you told her. You chirped it, mostly.",
+       "only_hero": "penguin_m"
+      },
+      {
+       "who": "Nova",
+       "text": "Then we'd better start soon. You carry the snacks.",
+       "only_hero": "penguin_m"
       }
      ],
      "effects": {
@@ -519,7 +707,7 @@
       },
       {
        "who": "Finn",
-       "text": "Tomas. That's... that's the pike. He never caught anything bigger. Told everyone he did. Where did you—"
+       "text": "Tomas. My brother. That's... that's the pike. He never caught anything bigger. Told everyone he did. Where did you—"
       },
       {
        "who": "Finn",
@@ -548,6 +736,48 @@
        "finn_told"
       ],
       "hint": "Finn knows now. He took the locket, and he's glad it was you who brought it.",
+      "sfx": "j_heart"
+     }
+    },
+    {
+     "id": "p2_finn_locket_late",
+     "trigger": {
+      "talk": "finn"
+     },
+     "when": {
+      "flags": [
+       "locket_keep",
+       "ss_commander_home"
+      ],
+      "item": "brass_locket"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "In your pack, the brass locket starts to hum, loud enough to hear. Down on the jetty, Tomas turns his head toward the sound like someone hearing his name across a field."
+      },
+      {
+       "who": "Finn",
+       "text": "You kept it. ...Good. Give it to him, not me. It's his."
+      },
+      {
+       "who": "",
+       "text": "Tomas holds it a long time. Then he opens it, and laughs, once, at the size of the pike."
+      }
+     ],
+     "effects": {
+      "items": [
+       [
+        "brass_locket",
+        -1
+       ]
+      ],
+      "friend": {
+       "finn": 40
+      },
+      "flags": [
+       "finn_told"
+      ],
       "sfx": "j_heart"
      }
     }
@@ -603,23 +833,39 @@
       {
        "who": "",
        "text": "That night, by the farm gate, something comes down the lane after you, all the way from the mountain path. Bushes. Footsteps. The penguins press close together. Out of the shadows jumps a large figure.",
-       "pic": "cut_campfire"
+       "pic": "cut_campfire",
+       "not_hero": "big_jim"
       },
       {
        "who": "Big Jim",
-       "text": "It's just me. It's Big Jim. I couldn't let you do this alone. I brought camp gear."
+       "text": "It's just me. It's Big Jim. I couldn't let you do this alone. I brought camp gear.",
+       "not_hero": "big_jim"
       },
       {
        "who": "",
-       "text": "A fire in your own yard. Marshmallows. Shooting stars. An aurora the colour of the inside of a crystal, and Big Jim in a heavy winter coat, saying the next days will be the hardest: mysteries to solve, and things in the hills that don't want you to pass."
+       "text": "A fire in your own yard. Marshmallows. Shooting stars. An aurora the colour of the inside of a crystal, and Big Jim in a heavy winter coat, saying the next days will be the hardest: mysteries to solve, and things in the hills that don't want you to pass.",
+       "not_hero": "big_jim"
+      },
+      {
+       "who": "",
+       "text": "That night, by the farm gate, you build a fire in your own yard and wait. Bushes. Footsteps. It's only the wind; the penguins laugh at you for jumping. Marshmallows, shooting stars, and you in your heavy winter coat, telling them the next days will be the hardest.",
+       "only_hero": "big_jim",
+       "pic": "cut_campfire"
       },
       {
        "who": "Nova",
-       "text": "I kept watch over the island while you were in Cat-topia. The red sky goes to that mountain every night, and comes back a little bigger."
+       "text": "I kept watch over the island while you were in Cat-topia. The red sky goes to that mountain every night, and comes back a little bigger.",
+       "if_flag": "watch_nova"
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "I kept watch over the island while you were in Cat-topia. The red sky goes to that mountain every night, and comes back a little bigger. Also I ate the snacks.",
+       "if_flag": "watch_pip"
       },
       {
        "who": "Big Jim",
-       "text": "Also I'm not carrying the litter boxes. I want that said now."
+       "text": "Also I'm not carrying the litter boxes. I want that said now.",
+       "not_hero": "big_jim"
       }
      ],
      "effects": {
@@ -630,8 +876,12 @@
       "friend": {
        "big_jim": 30
       },
-      "hint": "Big Jim tags along on the climb (he doesn't fight), and Nova is with you again: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥.",
-      "know": "penguin_f"
+      "hint": "Big Jim tags along on the climb (he doesn't fight), and both penguins can come now: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥.",
+      "know": "penguin_f",
+      "hint_hero": {
+       "big_jim": "Both penguins can come on the climb now: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥.",
+       "penguin_f": "Big Jim tags along on the climb (he doesn't fight), and Pip-Pip can come too: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥."
+      }
      }
     },
     {
@@ -735,19 +985,28 @@
      "lines": [
       {
        "who": "",
-       "text": "The spell can be seen from space. The crystals of the mountain make it brighter. A flash of white, and when the colours settle, the baby leader steps forward with a smile."
-      },
-      {
-       "who": "Coldy",
-       "text": "You saved us babies! ...What bring you to Mountain?"
+       "text": "The spell can be seen from space. The crystals of the mountain make it brighter. A flash of white, and when the colours settle, the baby leader steps forward with a smile.",
+       "not_hero": "coldy"
       },
       {
        "who": "",
-       "text": "The penguins chirp for some time. She nods."
+       "text": "The spell can be seen from space. The crystals of the mountain make it brighter. A flash of white, and when the colours settle, the other babies step back and look at you: their leader, yourself again.",
+       "only_hero": "coldy"
       },
       {
        "who": "Coldy",
-       "text": "Yes. I understand. You come to improve Meow Pow Wow so you get big, strong, and save universe. We babies know you are good. We allow you to pass."
+       "text": "You saved us babies! ...What bring you to Mountain?",
+       "not_hero": "coldy"
+      },
+      {
+       "who": "",
+       "text": "The penguins chirp for some time. She nods.",
+       "not_hero": "coldy"
+      },
+      {
+       "who": "Coldy",
+       "text": "Yes. I understand. You come to improve Meow Pow Wow so you get big, strong, and save universe. We babies know you are good. We allow you to pass.",
+       "not_hero": "coldy"
       },
       {
        "who": "Coldy",
@@ -767,10 +1026,16 @@
         "1": [
          {
           "who": "Coldy",
-          "text": "Coldy. C-O-L-D-Y. That is my real name. ...There are spies in these hills. Finargles. Very sneaky. We go quiet."
+          "text": "Coldy. That is my real name. Babies call me Leader. You call me Coldy. ...There are spies in these hills. Finargles. Very sneaky. We go quiet."
          }
         ]
-       }
+       },
+       "not_hero": "coldy"
+      },
+      {
+       "who": "",
+       "text": "The penguins chirp for some time. The babies stamp, once, all together: thank you. The sacred key to the heart of Mount Prismatica is warm in your hand, and the way up is yours to show them. There are finargles in these hills. You go quiet.",
+       "only_hero": "coldy"
       }
      ],
      "effects": {
@@ -820,7 +1085,10 @@
       }
      ],
      "effects": {
-      "hint": "Finargles: purple eye-light dazes you. The Crystal Knight on the far island; Nova would know him."
+      "hint": "Finargles: purple eye-light dazes you. The Crystal Knight on the far island; Nova would know him.",
+      "hint_hero": {
+       "penguin_f": "Finargles: purple eye-light dazes you. The Crystal Knight on the far island. You know that shape."
+      }
      }
     },
     {
@@ -873,11 +1141,22 @@
      "lines": [
       {
        "who": "Nova",
-       "text": "...Grandfather Auk. He flew after the red sky the night the bell broke, before I hatched. They said the mountain took him."
+       "text": "...Grandfather Auk. He swam out after the red sky the night the bell broke, before we hatched, and climbed the mountain alone. They said the mountain took him.",
+       "not_hero": "penguin_f"
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "...Grandad? Nova. Nova, that's Grandad.",
+       "not_hero": [
+        "penguin_m",
+        "penguin_f"
+       ],
+       "if_known": "penguin_m"
       },
       {
        "who": "Nova",
-       "text": "The mountain didn't. It was this. I can feel him in there, under the glass. The Meow Pow Wow reaches bigger things every time I use it. I don't know if it reaches that big."
+       "text": "The mountain didn't. It was this. I can feel him in there, under the glass. The Meow Pow Wow reaches bigger things every time I use it. I don't know if it reaches that big.",
+       "not_hero": "penguin_f"
       },
       {
        "who": "",
@@ -917,7 +1196,55 @@
           "knight_fight"
          ]
         }
-       }
+       },
+       "not_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "Grandfather Auk. He swam out after the red sky the night the bell broke, before you hatched, and climbed the mountain alone. They said the mountain took him.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "The mountain didn't. You can feel him in there, under the glass.",
+       "only_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "The Knight turns its head. Slowly. Toward you.",
+       "choice": [
+        "Try the Meow Pow Wow on him.",
+        "Crack the armour open first."
+       ],
+       "key": "knight_mercy",
+       "branches": {
+        "0": [
+         {
+          "who": "",
+          "text": "Keep him off you for ten seconds. That's all you need. You make the heart at your chest, and the clouds go still to listen."
+         }
+        ],
+        "1": [
+         {
+          "who": "",
+          "text": "Crack that armour open, then, and get him out of there."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "flags": [
+          "knight_mercy_try"
+         ],
+         "hint": "Tap ♥ near the Knight when he's below a third of his strength: your Meow Pow Wow."
+        },
+        "1": {
+         "flags": [
+          "knight_fight"
+         ]
+        }
+       },
+       "only_hero": "penguin_f"
       }
      ],
      "effects": {}
@@ -930,7 +1257,7 @@
      "lines": [
       {
        "who": "",
-       "text": "In the glass, as it goes, a face. Old, tired, not unkind. It says one thing, so quietly the clouds nearly take it:"
+       "text": "In the last of the glass, before it melts, a face. Old, tired, not unkind. It says one thing, so quietly the clouds nearly take it:"
       },
       {
        "who": "Crystal Knight",
@@ -968,6 +1295,11 @@
       {
        "who": "Nova",
        "text": "When we go up there, to the heart: he'll be there. I don't know how I know. I know."
+      },
+      {
+       "who": "",
+       "text": "He heard you. At the end. You think that's better. And when you go up there, to the heart, he'll be there. You don't know how you know.",
+       "only_hero": "penguin_f"
       }
      ],
      "effects": {
@@ -995,7 +1327,14 @@
       },
       {
        "who": "",
-       "text": "If Nova is with you, she kneels by a line of small webbed footprints leading up into the cloud. 'He ran. He's still in there somewhere. I'll find him.'"
+       "text": "Nova kneels by a line of small webbed footprints leading up into the cloud. 'He ran. He's still in there somewhere. I'll find him.'",
+       "not_hero": "penguin_f",
+       "if_known": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "You kneel by a line of small webbed footprints leading up into the cloud. He ran. He's still in there. You'll find him.",
+       "only_hero": "penguin_f"
       }
      ],
      "effects": {
@@ -1092,7 +1431,14 @@
       {
        "who": "",
        "text": "The spell goes down instead of out, and the crystal under you goes soft, and then it isn't there. You fall into fast dark water that carries you UP, through the mountain, for what feels like hours, everyone holding hands. Big Jim: \"I see a light!\" And then you are in open air, and falling, down a waterfall, into a jungle, into a pool, into black.",
-       "pic": "cut_uphill_stream"
+       "pic": "cut_uphill_stream",
+       "not_hero": "big_jim"
+      },
+      {
+       "who": "",
+       "text": "The spell goes down instead of out, and the crystal under you goes soft, and then it isn't there. You fall into fast dark water that carries you UP, through the mountain, for what feels like hours, everyone holding hands. Someone shouts \"I see a light!\" It's you. And then you are in open air, and falling, down a waterfall, into a jungle, into a pool, into black.",
+       "pic": "cut_uphill_stream",
+       "only_hero": "big_jim"
       }
      ],
      "effects": {
@@ -1120,7 +1466,14 @@
      "lines": [
       {
        "who": "",
-       "text": "You wake on the shore with the sun going down, and no idea how you got out of the water. A blue-green glow comes toward you through it: a cat with a tail, wearing a glowing necklace.",
+       "text": "You wake on the shore with the sun going down, and no idea how you got out of the water. A blue-green glow comes toward you across the shallows: a cat with a long fish's tail, wearing a glowing necklace.",
+       "pic": "none",
+       "not_hero": "mer"
+      },
+      {
+       "who": "",
+       "text": "You wake on the shore with the sun going down. A blue-green glow in the shallows: your own people, the merkitties, come to find you.",
+       "only_hero": "mer",
        "pic": "none"
       },
       {
@@ -1129,11 +1482,11 @@
       },
       {
        "who": "",
-       "text": "More glows in the water. Mercats. One of them: \"Mer, the finargles have told the Dark Crystal. The Grumps are coming to the mountain, and the whole surface is swarming with spies looking for our new friends.\""
+       "text": "More glows in the water. Merkitties. One of them: \"Mer, the finargles have told the Dark Crystal. The Grumps are coming to the mountain, and the whole surface is swarming with spies looking for our new friends.\""
       },
       {
        "who": "Mer",
-       "text": "Then we share our merkitty magic, and take them through the under-mountain ocean tunnels. They come up under the old landing pad; from there the moon teleporter goes the rest of the way, to the very top. Everyone into the pool."
+       "text": "Then we share our merkitty magic. With it, every water is a road: the under-mountain tunnels come up under the old landing pad, whenever you're ready. From there the moon teleporter goes the rest of the way, to the very top. Everyone into the pool."
       },
       {
        "who": "Big Jim",
@@ -1143,7 +1496,25 @@
        "who": "",
        "text": "Everyone into the pool. The merkitties swim a circle around you, singing, and their necklaces glow, and all at once you have a tail. Mer: \"You can become a mermaid now, any time you enter water.\" Big Jim screams. He screams for some time. Everyone wears earplugs until he stops.",
        "music": "merkitty_song",
-       "pic": "cut_merkitty_ring"
+       "pic": "cut_merkitty_ring",
+       "not_hero": [
+        "big_jim",
+        "mer"
+       ]
+      },
+      {
+       "who": "",
+       "text": "Everyone into the pool. The merkitties swim a circle around you, singing, and their necklaces glow, and all at once you have a tail. Mer: \"You can become a mermaid now, any time you enter water.\" You scream. You scream for some time. Everyone wears earplugs until you stop.",
+       "music": "merkitty_song",
+       "pic": "cut_merkitty_ring",
+       "only_hero": "big_jim"
+      },
+      {
+       "who": "",
+       "text": "Everyone into the pool. Your people swim a circle around your friends, singing, and the necklaces glow, and all at once they have tails. You tell them: any water, any time. Big Jim screams. He screams for some time.",
+       "music": "merkitty_song",
+       "pic": "cut_merkitty_ring",
+       "only_hero": "mer"
       }
      ],
      "effects": {
@@ -1267,7 +1638,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "Before we go: the bell. Alder's been asking. A town that rings its bell is a town that's awake, and the Dark Crystal has never once beaten a town that was awake.",
+       "text": "Before we go: your town's bell. It hasn't rung since the night I fell past it. Alder would know what it needs. A town that rings its bell is a town that's awake, and the Dark Crystal has never once beaten a town that was awake.",
        "unless_flag": "bell_rung"
       },
       {
@@ -1279,10 +1650,10 @@
       "quest": [
        [
         "alder_gold",
-        "The town bell needs a gold bar for the clapper. Bring one to Alder."
+        "The town bell's clapper split the night the red sky went over. Bring Alder a gold bar for a new one."
        ]
       ],
-      "hint": "The bell needs a gold clapper: a gold bar for Alder (optional). When you're ready: the moon (mountain pad), then touch the crystal spire."
+      "hint": "The bell needs a new clapper: a gold bar for Alder (optional). When you're ready: the moon (mountain pad), then touch the crystal spire."
      }
     },
     {
@@ -1293,7 +1664,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The bell rings. Twenty-one years of rust, since the night the red sky went over, come off it in one note, and the note goes out over the fields and the lake and the mine and comes back smaller and nicer.",
+       "text": "The bell rings. Twenty-one years of silence, since the night the red sky went over, come off it in one note, and the note goes out over the fields and the lake and the mine and comes back smaller and nicer.",
        "sfx": "town_bell",
        "sfx_fallback": "j_page"
       },
@@ -1304,6 +1675,16 @@
       {
        "who": "Theo",
        "text": "You didn't have to. That's what a bell is for."
+      },
+      {
+       "who": "Alder",
+       "text": "They know what's out there now. They came anyway. That's the part I'll put in the records.",
+       "if_flag": "told_town"
+      },
+      {
+       "who": "",
+       "text": "Maple catches your eye across the plaza and nods once. Two people in this crowd knew why the bell matters. Now it's the whole town.",
+       "if_flag": "kept_quiet"
       },
       {
        "who": "Star Crystal",
@@ -1340,8 +1721,34 @@
        "text": "Morning. Frost on the gate again, though it isn't the season for it. %partner is waiting there, and so, a little apart, is whoever else still counts you a friend."
       },
       {
-       "who": "%partner",
-       "text": "So. The top of the mountain. In space. I always said I'd go somewhere nobody had been. I meant the next valley over."
+       "who": "Coldy",
+       "text": "Top of Mountain. In space. Coldy never go to space. Coldy bring hat.",
+       "if_partner": "coldy"
+      },
+      {
+       "who": "Nova",
+       "text": "The top. Grandfather went up there alone. We won't.",
+       "if_partner": "penguin_f"
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "Space. Is there food in space? I packed food for space.",
+       "if_partner": "penguin_m"
+      },
+      {
+       "who": "Mer",
+       "text": "No water on the moon. I asked. I'm coming anyway.",
+       "if_partner": "mer"
+      },
+      {
+       "who": "Big Jim",
+       "text": "Space! I wore the big coat. I'm wearing it in space.",
+       "if_partner": "big_jim"
+      },
+      {
+       "who": "",
+       "text": "Nobody says anything for a while. Nobody needs to.",
+       "if_partner": "none"
       },
       {
        "who": "Star Crystal",
@@ -1383,6 +1790,13 @@
        "who": "",
        "text": "Coldy holds up the sacred key. The crystal doesn't have a door, until it does: a dark seam opens like an eye.",
        "if_flag": "babies_done",
+       "pic": "none",
+       "not_hero": "coldy"
+      },
+      {
+       "who": "",
+       "text": "You hold up the sacred key. The crystal doesn't have a door, until it does: a dark seam opens like an eye.",
+       "only_hero": "coldy",
        "pic": "none"
       },
       {
@@ -1425,7 +1839,8 @@
         16,
         5,
         "boss_fennimore",
-        1.0
+        1.0,
+        "Fennimore, Who Would Be Queen"
        ],
        [
         "shard",
@@ -1528,11 +1943,26 @@
      "lines": [
       {
        "who": "",
-       "text": "On the ridge, blue-white and transparent, a penguin the size of a door. He doesn't fight. He stands between the shards and Nova, and the shards won't go near him."
+       "text": "On the ridge, frost glowing blue-white on his feathers, an old penguin who stands taller than he should. Grandfather Auk. He doesn't fight. He stands between the shards and Nova, and the shards won't go near him.",
+       "not_hero": "penguin_f"
+      },
+      {
+       "who": "",
+       "text": "On the ridge, frost glowing blue-white on his feathers, an old penguin who stands taller than he should. Grandfather Auk. He stands between the shards and you, and the shards won't go near him. \"Grandfather,\" you say.",
+       "only_hero": "penguin_f"
       },
       {
        "who": "Nova",
        "text": "Grandfather."
+      },
+      {
+       "who": "Pip-Pip",
+       "text": "Told you he'd come. I didn't tell you. I'm telling you now.",
+       "if_known": "penguin_m"
+      },
+      {
+       "who": "Grandfather Auk",
+       "text": "I owe you a sky, little one. Go on."
       }
      ],
      "effects": {
@@ -1561,14 +1991,15 @@
       },
       {
        "who": "Grandmother Brine",
-       "text": "Told you I'd come, darling. Eight hundred and twelve, and still the first one here. Mind your feet."
+       "text": "Said I'd come, dear. Eight hundred and twelve, and still the first one here. Mind your feet."
       }
      ],
      "effects": {
       "heal": true,
       "toast": "Grandmother Brine's coral light: you're healed.",
       "flags": [
-       "elder_came_coral"
+       "elder_came_coral",
+       "elder_came_any"
       ]
      }
     },
@@ -1602,7 +2033,8 @@
       ],
       "toast": "Tidewhisker's tide wears at the Dark Crystal.",
       "flags": [
-       "elder_came_kelp"
+       "elder_came_kelp",
+       "elder_came_any"
       ]
      }
     },
@@ -1633,7 +2065,8 @@
       "clear_kind": "shard",
       "toast": "Icewhisker freezes the shards.",
       "flags": [
-       "elder_came_ice"
+       "elder_came_ice",
+       "elder_came_any"
       ]
      }
     },
@@ -1667,7 +2100,8 @@
       ],
       "toast": "Cinderpaw's starfire scorches the dark.",
       "flags": [
-       "elder_came_ember"
+       "elder_came_ember",
+       "elder_came_any"
       ]
      }
     },
@@ -1687,7 +2121,7 @@
      "lines": [
       {
        "who": "",
-       "text": "And beside the crystal, in the dark, someone you know. They don't look at you. You did that, a long time ago now, at a gate."
+       "text": "And beside the crystal, in the dark, %bitter. They don't look at you. You did that, a long time ago now, at a gate."
       },
       {
        "who": "Dark Crystal",
@@ -1700,10 +2134,13 @@
         "knight",
         20,
         12,
-        4
+        4,
+        "bitter_turned",
+        1.0,
+        "%bitter, Gone Grey"
        ]
       ],
-      "toast": "A bitter companion stands with the Dark Crystal."
+      "toast": "%bitter stands with the Dark Crystal."
      }
     },
     {
@@ -1769,6 +2206,12 @@
          },
          {
           "who": "",
+          "text": "In your pack, the locket goes warm, then hot, and hums a whole tune at last. Far below, down toward the river cities, something hums back.",
+          "if_flag": "locket_keep",
+          "if_item": "brass_locket"
+         },
+         {
+          "who": "",
           "text": "*...Oh,* says a small voice in your head, and the purple light around Fennimore goes out, and she is just a fuzzy black thing the size of a pumpkin, blinking, with no mouth to say sorry.",
           "if_flag": "fennimore_turnable",
           "unless_flag": "fennimore_free"
@@ -1776,7 +2219,32 @@
          {
           "who": "",
           "text": "Up on the ridge, the elders' four lights brighten together, and for a moment the whole mountain sings.",
-          "if_flag": "elder_came_coral"
+          "if_flag": "elder_came_all"
+         },
+         {
+          "who": "",
+          "text": "Up on the ridge, the elders' lights brighten together, and for a moment the whole mountain sings.",
+          "if_flag": "elder_came_any",
+          "unless_flag": "elder_came_all"
+         },
+         {
+          "who": "",
+          "text": "Where %bitter stood, someone sits down hard on the glass, blinking, grey draining out of them like rain off a coat. \"...I don't remember walking here,\" they say. \"I remember the gate.\"",
+          "if_flag": "bitter_left"
+         },
+         {
+          "who": "Star Crystal",
+          "text": "The ones he squeezed are still out there, farmer. They'll be easier to reach now. And the man in the grey suit will feel this. Let him. That's someone else's story now."
+         },
+         {
+          "who": "Star Crystal",
+          "text": "You called me a talking rock, the day I fell. Look at you now.",
+          "if_flag": "crystal_doubt"
+         },
+         {
+          "who": "Star Crystal",
+          "text": "You only wanted to farm in peace. Go and do it. You earned it.",
+          "if_flag": "crystal_peace"
          }
         ],
         "1": [
@@ -1793,7 +2261,17 @@
          },
          {
           "who": "Star Crystal",
-          "text": "The Grumps will stop. The man in the grey suit won't. But that's a different story, and someone else's."
+          "text": "No new Grumps will come. The ones still out there have to be turned back one by one, and I think you know how. The man in the grey suit won't stop. But that's a different story, and someone else's."
+         },
+         {
+          "who": "",
+          "text": "Where %bitter stood, someone sits down hard on the glass, blinking, grey draining out of them like rain off a coat. \"...I don't remember walking here,\" they say. \"I remember the gate.\"",
+          "if_flag": "bitter_left"
+         },
+         {
+          "who": "Star Crystal",
+          "text": "You called me a talking rock, the day I fell. Look at you now.",
+          "if_flag": "crystal_doubt"
          }
         ]
        },
@@ -1832,19 +2310,27 @@
       "music": "title_musicbox",
       "flags": [
        "final_done",
-       "boss_fennimore"
+       "boss_fennimore",
+       "bitter_turned"
       ],
       "hint": "Go home. Sleep. See what the morning says.",
       "heal": true,
       "clear_kind": [
        "finargle_elder",
-       "shard"
-      ]
+       "shard",
+       "knight"
+      ],
+      "flags_if": {
+       "bitter_left": [
+        "bitter_home"
+       ]
+      }
      },
      "pre": {
       "clear_kind": [
        "finargle_elder",
-       "shard"
+       "shard",
+       "knight"
       ]
      }
     },
@@ -1859,8 +2345,13 @@
      "lines": [
       {
        "who": "",
-       "text": "Morning. The field. The Star Crystal is in the middle of it, half-buried, like it's been planted. She has.",
+       "text": "Morning. The field. The Star Crystal is in the middle of it, half-buried, like she's been planted. She has.",
        "music": "title_musicbox"
+      },
+      {
+       "who": "",
+       "text": "Beside her, smaller, a second crystal, pale and quiet, still getting used to the light.",
+       "if_flag": "dc_reverted"
       },
       {
        "who": "Star Crystal",
@@ -1869,13 +2360,24 @@
       },
       {
        "who": "Star Crystal",
-       "text": "He wouldn't come home. He's gone somewhere far off to think about what he did. So I planted something anyway, where he used to stand, so that something would grow there.",
+       "text": "The pieces of him went out like sparks, every which way. Maybe one day they'll find each other again. Until then, I planted myself somewhere things grow. Somebody should.",
        "if_flag": "dc_shattered"
       },
       {
        "who": "",
-       "text": "At the gate, a dog. Old, grey at the muzzle, a brass tag worn smooth. It looks at the house like it's been away a long time and isn't sure of its welcome. %pet runs to it. That settles that.",
+       "text": "At the gate, a dog. Old, grey at the muzzle, a brass tag worn smooth. It looks at the house like it's been away a long time and isn't sure of its welcome. %pet runs to it, and the two of them sniff each other all over, tails going.",
        "pic": "cut_old_dog"
+      },
+      {
+       "who": "",
+       "text": "The collar in your pack fits him exactly. You know whose crusts he's been following.",
+       "if_item": "old_collar"
+      },
+      {
+       "who": "",
+       "text": "A letter on the step, in a hand Finn will know: \"Coming home. Don't let him tell it about the pike. —T.\"",
+       "if_flag": "dc_reverted",
+       "unless_flag": "ss_commander_home"
       },
       {
        "who": "",
@@ -1911,7 +2413,54 @@
       ],
       "toast": "Thank you for playing. The farm goes on.",
       "hint": "The story is done. The merkitty islands, the mine's deep floors and the green planet past the station are still out there.",
-      "sfx": "j_heart"
+      "sfx": "j_heart",
+      "flags_if": {
+       "dc_reverted": [
+        "tomas_home"
+       ],
+       "ss_commander_home": [
+        "tomas_home"
+       ]
+      }
+     }
+    },
+    {
+     "id": "p5_biscuit_posy",
+     "trigger": {
+      "talk": "posy"
+     },
+     "when": {
+      "flag": "epilogue_done"
+     },
+     "lines": [
+      {
+       "who": "",
+       "text": "Posy sees the dog before she sees you. The paper bag of crusts falls out of her hands."
+      },
+      {
+       "who": "Posy",
+       "text": "Biscuit? ...BISCUIT."
+      },
+      {
+       "who": "Posy",
+       "text": "He's grey. He's so grey. Where has he— no. I don't care. He came back."
+      }
+     ],
+     "effects": {
+      "friend": {
+       "posy": 40
+      },
+      "flags": [
+       "biscuit_home"
+      ],
+      "items": [
+       [
+        "old_collar",
+        -1
+       ]
+      ],
+      "sfx": "j_heart",
+      "hint": "Biscuit is home with Posy. He still visits %pet."
      }
     }
    ]

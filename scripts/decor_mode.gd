@@ -1528,9 +1528,9 @@ func _ask(what: String) -> void:
 		_list_panel.visible = false
 		_list_cur.enabled = false
 		if what == "store":
-			_say("%d pieces back in your decor box. Undo puts them back." % store_all(map))
+			_say("%s back in your decor box. Undo puts them back." % ItemWords.count("piece", store_all(map)))
 		else:
-			_say("Starting layout: %d pieces back in place. Undo goes back." % reset_layout(map))
+			_say("Starting layout: %s back in place. Undo goes back." % ItemWords.count("piece", reset_layout(map)))
 		Music.instance(get_tree()).sfx("drop", "pop")
 		_refresh(), 60)
 	_confirm_row.visible = true

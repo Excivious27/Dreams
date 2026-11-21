@@ -3,7 +3,7 @@
   "always": [
    "The horses can tell when weather's coming. Today they say: keep your hat on.",
    "Muck out, feed, brush, repeat. It's honest work, {name}. Horses don't lie.",
-   "You ever need a ride, the stable's open. Old Clover still has a few good miles in her."
+   "Old Clover's too grey for riding now. She supervises. She's very good at it."
   ],
   "spring": [
    "Foals this spring. Two of them. Don't tell them they're cute; it goes to their heads."
@@ -15,23 +15,65 @@
    "Hay's in. Best feeling in the world, a full loft."
   ],
   "winter": [
-   "Blankets on every horse tonight. Mine stays on the hook."
+   "Frost on the water trough. I break it every morning with my boot heel."
   ],
   "rain": [
    "Rain makes the barn smell like a barn. I don't mind it."
   ],
   "gangsters": [
    "Men in long coats asked to rent a horse last week. Paid cash. I didn't ask why.",
-   "Your crew's welcome to the stable, long as they shut the gate."
+   "You walk like somebody who's been followed. Nobody follows anyone out here. Too many cows."
   ],
   "penguins": [
    "Saw a penguin by the creek this morning. Waddled right past the horses like it owned the place."
   ],
-  "festival": [
-   "The horses get ribbons today too. They know. Look how they stand."
-  ],
   "heat": [
    "There's a car parked by the stable every night now. Engine running. Just so you know."
+  ],
+  "!f:horse&!f:crew_halo": [
+   "Four in the stalls, all steady, saddles included. Come see me when you're ready for a horse of your own."
+  ],
+  "f:horse": [
+   "How's {horse} doing? Brush her after a long ride and she'll follow you anywhere.",
+   "Bring {horse} past the stable sometime. The others ask after her. Well. They look at the door."
+  ],
+  "gangsters&f:sal_recruited": [
+   "Your crew's welcome to the stable, long as they shut the gate."
+  ],
+  "f:posy_gone": [
+   "No bread smell on the avenue in the mornings. Horses noticed before I did."
+  ],
+  "f:crew_halo": [
+   "Halo's got engines in the end stalls. The horses have opinions about that.",
+   "Half garage, half stable. The bikes don't need brushing, I'll give them that."
+  ],
+  "winter&evening": [
+   "Blankets on every horse tonight. Mine stays on the hook."
+  ],
+  "storm": [
+   "Horses are jumpy. So am I. Thunder's the one thing I can't brush out of them."
+  ],
+  "blizzard": [
+   "Snow to the stall doors. I've been up since three with a shovel."
+  ],
+  "morning": [
+   "Feed run done. Horses first, me second, breakfast third."
+  ],
+  "evening": [
+   "Last brush of the day. They stand still for it now. Took them a year."
+  ],
+  "festival_harvest": [
+   "The horses get ribbons today too. They know. Look how they stand.",
+   "Judging the ring later. I'm fair. The horses think I'm biased."
+  ],
+  "festival_egg": [
+   "Hens have been laying like they heard about the prize."
+  ],
+  "festival_lantern": [
+   "Horses don't like lanterns on the water. I'll watch from the stable door."
+  ],
+  "festival_star": [
+   "One gift each, Bram says. I wrapped a hoof pick. It's a very good hoof pick."
   ]
  },
  "ivy": {
@@ -57,7 +99,6 @@
    "I count cash in my sleep. Sometimes I dream I'm short a dollar."
   ],
   "penguins": [
-   "A merkitty tried to open an account with a shell. I gave her one. Policy is policy.",
    "I count crystals in my sleep. Sometimes I dream I'm short one."
   ],
   "festival": [
@@ -65,6 +106,15 @@
   ],
   "heat": [
    "Men in grey suits were reading the ledgers this morning. I didn't let them. Mostly."
+  ],
+  "penguins&if:merkitty_done": [
+   "A merkitty tried to open an account with a shell. I gave her one. Policy is policy."
+  ],
+  "evening": [
+   "Vault's locked. My head's still counting."
+  ],
+  "gangsters&festival": [
+   "Bank's shut for the fair. The vault isn't on holiday, though."
   ]
  },
  "orla": {
@@ -108,10 +158,34 @@
    "The back booth's yours, boss, any night. I keep it clear."
   ],
   "penguins": [
-   "Big Jim came in for stew and ate the whole pot. Paid in fish. I'm not complaining."
+   "A penguin in a crown ordered stew and paid with a very shiny pebble. I didn't ask. Good stew, mind."
   ],
   "festival": [
    "Festival nights, the inn never sleeps. Neither do I."
+  ],
+  "penguins&if:campfire_done": [
+   "Big Jim came in for stew and ate the whole pot. Paid in fish. I'm not complaining."
+  ],
+  "night": [
+   "Last orders were an hour ago. Sit anyway."
+  ],
+  "heat": [
+   "Two men asked about you last night. I said you eat here and tip badly. Both true."
+  ],
+  "f:crew_mama_rosa": [
+   "Rosa took over my kitchen and my soup got better. I'm not saying that twice."
+  ],
+  "spring": [
+   "Spring greens soup all week. Barley, peas, a lot of pepper. Nobody's complained yet."
+  ],
+  "summer": [
+   "Cold soup in summer. People look at me funny until they try it."
+  ],
+  "fall": [
+   "Pumpkin soup season. The whole inn smells like a pie."
+  ],
+  "festival_lantern": [
+   "Lantern Festival. I've a pot of cocoa for anyone who gets their feet wet launching one."
   ]
  },
  "juniper": {
@@ -133,7 +207,25 @@
    "I don't ask how anyone gets their bruises. I just fix them."
   ],
   "penguins": [
+   "Something up the mountain keeps sending me frostbite cases. Small ones. With beaks."
+  ],
+  "penguins&if:babies_done": [
    "Coldy brought me a frostbitten pup. Carried it all the way down the mountain. She's softer than she looks."
+  ],
+  "f:shop_3_returned": [
+   "Back at my own desk. Someone kept the lights on for me. Eat lunch, would you? I've missed saying it."
+  ],
+  "night": [
+   "If you're here this late, something hurts. What hurts?"
+  ],
+  "heat": [
+   "Someone asked for my patient list. I lost it. Very carefully."
+  ],
+  "festival": [
+   "Someone has to stay open on festival day. Bring me a sweet from the plaza?"
+  ],
+  "fall": [
+   "Fall colds are starting. Hands, soap, sleep. In that order."
   ]
  },
  "_any": {
@@ -150,11 +242,20 @@
   ],
   "festival": [
    "Are you going to the plaza? Everyone's going."
+  ],
+  "storm": [
+   "Stay in if you can. This one means it."
+  ],
+  "fog": [
+   "Can't see the fountain from the hall today."
+  ],
+  "blizzard": [
+   "Snow to the knees. Mind the steps."
   ]
  },
  "maple": {
   "always": [
-   "Seeds by the door, prices on the shelf, gossip at the counter. The gossip's free.",
+   "Seeds on the left, prices on the tags, gossip at the counter. The gossip's free.",
    "If you're short on something, ask. I'll order it in, or tell you who's got it.",
    "{name}! You look like someone who skipped breakfast. Again.",
    "I keep a ledger of who owes me. I keep a smaller one of who I owe. Yours is in the small one."
@@ -163,7 +264,7 @@
    "Spring seeds fly off the shelf. Turnips first, always turnips first."
   ],
   "summer": [
-   "Corn and tomatoes, that's summer in a basket. Plant them before the 10th."
+   "Corn and tomatoes, that's summer in a basket. Plant early and they keep giving till the season turns."
   ],
   "fall": [
    "Pumpkins! The whole valley wants pumpkins this month."
@@ -173,6 +274,37 @@
   ],
   "rain": [
    "Rain's good for the fields and bad for business. I'll take the trade."
+  ],
+  "f:posy_gone": [
+   "Posy left with two suitcases and her gran's recipe book. Somebody made her a polite offer. I sell bread off the city cart now. It's not the same."
+  ],
+  "f:shop_1_returned": [
+   "Posy's ovens are lit again. I bought three loaves just to hear her complain about the crust."
+  ],
+  "f:juniper_gone": [
+   "The clinic's got a new sign and a back door that's always open. I miss Juniper telling me to eat lunch."
+  ],
+  "storm": [
+   "Shutters are up. If the lights go, I've candles at cost."
+  ],
+  "blizzard": [
+   "Snowed in? Not me. I live upstairs. Come in, the kettle's on."
+  ],
+  "evening": [
+   "Till's counted, feet are up. Ask me about seeds tomorrow.",
+   "Gideon owes me a cocoa at Bram's. He always owes me."
+  ],
+  "festival_egg": [
+   "Egg Festival! I hid six eggs myself. Don't tell the kids where."
+  ],
+  "festival_lantern": [
+   "I made my lantern out of a seed bag. It floats. Mostly."
+  ],
+  "festival_harvest": [
+   "The Harvest Fair. My turnip's on the table. Don't look at it, it's shy."
+  ],
+  "festival_star": [
+   "Star Festival. One gift each, Bram says. I've wrapped mine four times."
   ]
  },
  "gideon": {
@@ -192,7 +324,37 @@
    "Rain on the roof, hammer on the anvil. Good rhythm, that."
   ],
   "gangsters": [
+   "Men with soft hands keep asking me for hard things. I sell them nails."
+  ],
+  "gangsters&q:clear_meadow": [
    "The President's men buy blades by the crate. I make them dull on purpose. Don't tell."
+  ],
+  "storm": [
+   "Thunder and anvil. Hard to tell which is which today."
+  ],
+  "fog": [
+   "Fog off the river. Damp's the enemy. Oil your blades tonight."
+  ],
+  "evening": [
+   "Off the clock. Don't show me a tool. ...Fine, show me the tool."
+  ],
+  "spring": [
+   "Thaw rusts everything. I'll have hoes in all week."
+  ],
+  "gangsters&winter": [
+   "Cold hands slip. Keep your gloves on, kid."
+  ],
+  "gangsters&festival": [
+   "Whole block's on the plaza. Good day to keep your hands where people can see them."
+  ],
+  "penguins&festival": [
+   "Forge is banked for the festival. First day off all season. I don't know what to do with my hands."
+  ],
+  "f:juniper_gone": [
+   "Burned my hand last week. Went to the clinic. A man called Doc wrapped it and didn't ask a thing. Didn't like that."
+  ],
+  "fall": [
+   "Frost's coming. Bring me your hoe before the ground goes hard, not after."
   ]
  },
  "wren": {
@@ -210,6 +372,18 @@
   ],
   "rain": [
    "Rain days are brewing days. Everything steeps better when it's grey."
+  ],
+  "gangsters": [
+   "I sell red bottles to people who don't say where the bruise came from. I don't ask."
+  ],
+  "summer": [
+   "Summer herbs dry in a day on my sill. The whole shop smells like a meadow."
+  ],
+  "winter": [
+   "Winter brews are slow brews. Everything steeps longer in the cold."
+  ],
+  "festival": [
+   "Festival day. I sell a lot of the stomach tonic after the pies."
   ]
  },
  "alder": {
@@ -227,6 +401,38 @@
   ],
   "penguins": [
    "The Star Crystal chose well. I'll deny I said that if the council asks."
+  ],
+  "evening": [
+   "Off duty. Mostly. Don't tell anyone I'm off duty."
+  ],
+  "spring": [
+   "Spring council meeting tonight. Three hours about the fountain. Again."
+  ],
+  "summer": [
+   "Summer's when the town looks its best. I take full credit."
+  ],
+  "fall": [
+   "Harvest Fair's coming. I've practised my ribbon speech in the mirror."
+  ],
+  "festival_egg": [
+   "Egg Festival! The kids have been training for weeks. I'm not exaggerating."
+  ],
+  "festival_lantern": [
+   "Lanterns at dusk. I'll say a few words first. A few. Probably."
+  ],
+  "festival_harvest": [
+   "Harvest Fair! Ribbons, pies and a judge who's definitely not biased."
+  ],
+  "festival_star": [
+   "Star Festival. One gift each. I've given the council a calendar of myself."
+  ],
+  "penguins&f:told_town": [
+   "The town knows what's out there now. Nobody's bolted their door. I'm prouder of that than of anything on the council's books.",
+   "Someone's pup, you said. I've stopped shooing them off my step with a broom. Mostly."
+  ],
+  "penguins&f:kept_quiet": [
+   "Quiet out east lately. I'd like to think that's my doing. I suspect it's yours.",
+   "If there's something the town ought to hear, {name}, my door's open. So's the bell tower, when it has a clapper."
   ]
  },
  "sal": {
@@ -237,11 +443,41 @@
    "Coffee? No? Smart. It's terrible."
   ],
   "gangsters": [
-   "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things.",
-   "You're getting a name. That's good and bad. Mostly good."
+   "You're getting a name. That's good and bad. Mostly good.",
+   "Somebody in this valley pays people to watch the roads. Most of them are bored. Bored eyes miss things."
   ],
   "rain": [
    "Rain washes out tracks. Good day to go somewhere you shouldn't."
+  ],
+  "night": [
+   "Town's different after dark. Quieter. Honest, almost."
+  ],
+  "heat": [
+   "Grey suits on the bridge this morning. Walk the long way home."
+  ],
+  "spring": [
+   "Mud season. Every road out of here's a bog. Suits me."
+  ],
+  "summer": [
+   "Long days. Too much light for a man who likes corners."
+  ],
+  "fall": [
+   "Leaves on the bridge. Loud underfoot. I like hearing who's coming."
+  ],
+  "winter": [
+   "Snow shows every footprint. Even mine. Especially mine."
+  ],
+  "festival": [
+   "Whole town's on the plaza. I'll be on the edge of it. Where I can see."
+  ],
+  "gangsters&q:clear_meadow": [
+   "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things."
+  ],
+  "gangsters&f:president_freed": [
+   "Got a letter from W. He wants to know what grows best in spring. I told him patience."
+  ],
+  "gangsters&f:city_taken": [
+   "Car came by again. I told them you were watering the turnips. They wrote that down."
   ]
  },
  "finn": {
@@ -259,6 +495,24 @@
   ],
   "rain": [
    "Rain stirs the fish up. Grab your rod."
+  ],
+  "gangsters": [
+   "Boats on the river at night, no lights. Fish don't like it. Neither do I."
+  ],
+  "morning": [
+   "You're up early. The fish noticed."
+  ],
+  "evening": [
+   "Evening rise. Hear that? That's dinner thinking about it."
+  ],
+  "fall": [
+   "The trout go deep when the leaves come down. Patience season."
+  ],
+  "festival_lantern": [
+   "Lanterns float better downstream of the bridge post. Don't tell Lumi I said."
+  ],
+  "spring": [
+   "Spring melt. The river's fast and the trout are hungry."
   ]
  },
  "lumi": {
@@ -276,6 +530,21 @@
   ],
   "rain": [
    "Rain makes everything shine. Best light all week."
+  ],
+  "gangsters": [
+   "I sketched a man in a grey suit on the bridge. He asked for the page. I drew him a worse one."
+  ],
+  "evening": [
+   "This light. Ten minutes of it a day. Stand still."
+  ],
+  "spring": [
+   "Blossom on every branch. I can't paint fast enough."
+  ],
+  "summer": [
+   "Summer light is too honest. Everything looks exactly like itself."
+  ],
+  "festival_lantern": [
+   "I painted forty lanterns. Find the one with the frog on it. That one's mine."
   ]
  },
  "theo": {
@@ -283,7 +552,8 @@
    "Did you know the valley used to be a lake? The stones remember.",
    "I've read nearly every book in the library twice. The third time is where it gets interesting.",
    "Knowledge is a lamp, {name}. You don't hoard a lamp; you hold it up.",
-   "Ask me anything. If I don't know, I'll know someone dead who did."
+   "Ask me anything. If I don't know, I'll know someone dead who did.",
+   "Sel keeps sending me rubbings from the ruins. Half of them are upside down. I haven't told her."
   ],
   "winter": [
    "Long nights, long books. Winter's my season."
@@ -293,6 +563,32 @@
   ],
   "penguins": [
    "The old texts mention a falling star over this valley. Twice. Long ago, and now."
+  ],
+  "gangsters": [
+   "The town records go back a hundred years. Somebody's been tearing pages out of the last ten."
+  ],
+  "night": [
+   "Lamp oil and a good index. That's my evening."
+  ],
+  "spring": [
+   "Spring cleaning at the library. I found a book that's been overdue for sixty years."
+  ],
+  "summer": [
+   "Summer reading list's up by the door. Mostly maps. I like maps."
+  ],
+  "fall": [
+   "Leaves press nicely between pages. Don't tell anyone I do that."
+  ],
+  "festival": [
+   "The library's shut for the festival. I brought a book anyway. Don't look."
+  ],
+  "penguins&f:told_town": [
+   "Since you told the town, half of them have been in asking for books on the Grumps. I've never been so popular.",
+   "Knowing helps. People were scared of the dark until somebody wrote down what's in it."
+  ],
+  "penguins&f:kept_quiet": [
+   "People say the howling's stopped. They don't say why. I've noticed you don't either.",
+   "Some things belong in the records later, not the gossip now. I can wait."
   ]
  },
  "hazel": {
@@ -303,7 +599,7 @@
    "Need a hand? I've got two, and both have dirt on them."
   ],
   "spring": [
-   "Spring rains do half the watering. Don't tell the sprinklers."
+   "Spring rains do half the watering. Don't let that make you lazy."
   ],
   "summer": [
    "Summer crops need water every single day. No excuses."
@@ -313,13 +609,42 @@
   ],
   "winter": [
    "Winter's for planning next year. And for winter crops, if you're brave."
+  ],
+  "rain": [
+   "Rain day. Let the sky do the watering and you fix that fence you keep looking at."
+  ],
+  "penguins": [
+   "Crops along your east row came up glittering last week. I'm not asking. I'm just saying I noticed."
+  ],
+  "gangsters": [
+   "Folk here mind their own fields. Do the same and you'll get along fine."
+  ],
+  "festival": [
+   "I entered my best turnip. Don't look at it, it gets nervous."
+  ],
+  "festival_lantern": [
+   "Bring wool to the Fleece & Feather table. Tam wins every year and it's getting embarrassing."
+  ],
+  "f:posy_gone": [
+   "Mabel keeps asking where Posy went. I keep saying \"away\". It's not a good answer."
+  ],
+  "wind": [
+   "Wind like this dries the soil by noon. Water twice if you can."
+  ],
+  "petals": [
+   "Blossom on the wind. Means the bees are up. Good for every crop you've got."
+  ],
+  "morning": [
+   "You're up! Good. The dew's the best water you'll never pay for."
+  ],
+  "evening": [
+   "Done for the day. My back says so and my back is never wrong."
   ]
  },
  "posy": {
   "always": [
    "Flour on my nose? Probably. It's always there.",
    "A warm loaf fixes most things. The rest needs two.",
-   "I bake at dawn. The whole street smells like bread by six.",
    "If you bring me berries, I'll make you something you'll remember."
   ],
   "fall": [
@@ -330,20 +655,70 @@
   ],
   "festival": [
    "I've baked for the whole festival. My arms will never recover."
+  ],
+  "morning": [
+   "I bake at dawn. The whole street smells like bread by six.",
+   "Still warm. Smell that? That's seven o'clock."
+  ],
+  "evening": [
+   "Up at four, asleep by eight. Talk fast."
+  ],
+  "spring": [
+   "Strawberry tarts the minute the first ones ripen. Bring me a basket and I'll bring you a tart."
+  ],
+  "summer": [
+   "Too hot to proof dough after noon. I bake early and nap after lunch."
+  ],
+  "rain": [
+   "Rainy days sell more bread. Nobody wants to cook when it's pouring."
+  ],
+  "fog": [
+   "Fog makes the bread rise slow. I talk to it. It doesn't help, but I talk to it."
+  ],
+  "penguins": [
+   "A penguin tried to buy a bun with a pebble this morning. I gave it the bun."
+  ],
+  "gangsters": [
+   "People who sit by the window with their backs to the wall tip very well. I don't ask."
+  ],
+  "f:shop_1_returned": [
+   "I'm back. The ovens are back. Somebody paid for that, and I know who. Thank you.",
+   "The arcade kids still come by for day-old rolls. Some things I'll keep."
+  ],
+  "festival_egg": [
+   "Egg-shaped buns, all day. I'm going to dream about eggs."
+  ],
+  "festival_star": [
+   "Spiced loaf for every gift basket. My kitchen looks like a snowstorm."
   ]
  },
  "rook": {
   "always": [
    "Quiet steps, {name}. The woods hear everything.",
    "Wolves keep to the hills unless something drives them down. Lately, something has.",
-   "I hunt what I need and no more. The forest notices greed.",
+   "I take what the woods drop and no more. The forest notices greed.",
    "Tracks don't lie. People do. That's why I like tracks."
   ],
   "winter": [
    "Easy tracking in snow. Hard everything else."
   ],
   "fall": [
-   "The deer are fat and nervous. So am I, come to think of it."
+   "The deer are fattening up for winter. I just watch. They know I just watch."
+  ],
+  "morning": [
+   "Dew shows every track. Best hour of the day."
+  ],
+  "gangsters": [
+   "Tracks by the south gate. City shoes. Two pairs, walking like they're paid to."
+  ],
+  "heat": [
+   "You've got a tail. City boots, no patience. Lose him in the orchard."
+  ],
+  "spring": [
+   "Spring tracks everywhere. Everything's out looking for breakfast."
+  ],
+  "summer": [
+   "Hot days, the woods go quiet at noon. I do too."
   ]
  },
  "pip": {
@@ -355,6 +730,27 @@
   ],
   "festival": [
    "I'm in charge of the festival! Well. I'm in charge of the balloons. Some balloons."
+  ],
+  "evening": [
+   "Mum says bed at eight. I say bed at eight-ish."
+  ],
+  "spring": [
+   "Spring means puddles. Puddles mean jumping. That's science."
+  ],
+  "summer": [
+   "Summer holidays! No school! Mum still makes me sweep the shop."
+  ],
+  "fall": [
+   "I'm collecting the best leaves. Only the red ones. The yellow ones are boring."
+  ],
+  "winter": [
+   "I built a snow-mayor. It looks more like the mayor than the mayor does."
+  ],
+  "festival_egg": [
+   "I know where three eggs are. I'm not telling. Okay, one. No."
+  ],
+  "festival_star": [
+   "I wrapped Mum's present myself. You can tell."
   ]
  },
  "wren_jr": {
@@ -369,6 +765,18 @@
   ],
   "rain": [
    "Rain means FROG DAY."
+  ],
+  "summer": [
+   "Summer frogs are LOUD. I love it."
+  ],
+  "fall": [
+   "The frogs are getting sleepy. I tucked one in. It didn't want to be tucked."
+  ],
+  "winter": [
+   "Frogs sleep under the pond all winter. I check on them anyway."
+  ],
+  "festival": [
+   "I hid a frog in the egg basket. Don't tell. It wanted to see the festival."
   ]
  },
  "tobin": {
@@ -380,6 +788,18 @@
   ],
   "summer": [
    "Summer wind is the best kite wind. Everyone knows that."
+  ],
+  "winter": [
+   "Snow day! There's no school but I'm calling it a snow day."
+  ],
+  "spring": [
+   "Spring tides bring the best shells. I've got a whole bucket."
+  ],
+  "fall": [
+   "Fall wind takes my kite all the way to the lighthouse. Marlowe waves."
+  ],
+  "festival": [
+   "Festival day! Bram let me carry the big pot. Well. One handle."
   ]
  },
  "mabel": {
@@ -391,17 +811,55 @@
   ],
   "spring": [
    "Spring is when the diary gets heavy. All the flowers."
+  ],
+  "summer": [
+   "Summer flowers go floppy by noon. I press them early."
+  ],
+  "fall": [
+   "Fall flowers are the brave ones. Page thirty-one is all asters."
+  ],
+  "winter": [
+   "No flowers in winter, so I press snowflakes. They don't keep."
+  ],
+  "festival": [
+   "I'm writing the whole festival in my diary. You're on page forty."
   ]
  },
  "marlowe": {
   "always": [
    "Thirty years I kept that lamp. Mostly by myself.",
-   "Ships haven't come in a while. I'd light it anyway, if it had oil. Habit, or hope.",
    "Storm or calm, the sea's always talking. You just have to sit long enough.",
-   "Gulls are terrible company and I'd miss them dreadfully."
+   "Gulls are terrible company and I'd miss them dreadfully.",
+   "The boy from the inn keeps flying his kite into my gallery. I keep giving it back. It's a system."
   ],
   "rain": [
    "Weather like this, the lamp's the only thing that matters."
+  ],
+  "not:lighthouse_lit": [
+   "Ships haven't come in a while. I'd light it anyway, if it had oil. Habit, or hope."
+  ],
+  "if:lighthouse_lit": [
+   "Lamp's lit. Fish come up to look at it after dark, fools that they are.",
+   "A boat came round the point last night. First in years. It waved. I waved. Neither of us knew what to do after that.",
+   "I polish that lens every morning now. It's the best part of the day."
+  ],
+  "winter": [
+   "Fog season. The bell and I have long talks."
+  ],
+  "fall": [
+   "Gulls are fattening up for winter. So am I."
+  ],
+  "gangsters": [
+   "Lamp sees the whole coast. Including the boats that don't want to be seen."
+  ],
+  "if:lighthouse_lit&night": [
+   "Look at the water. That's the lamp, out there, coming back."
+  ],
+  "spring": [
+   "Spring storms come in sideways. The lamp room hums all night."
+  ],
+  "summer": [
+   "Long days. The lamp barely earns its keep."
   ]
  },
  "granite": {
@@ -409,10 +867,22 @@
    "Stone's honest. You hit it right, it breaks right.",
    "The quarry's deeper than it looks. Mind the edges.",
    "Coal, copper, iron, stone, brick. If it's heavy, I sell it.",
-   "My golems are long gone. The old ones were here before the quarry."
+   "My golems are long gone. The crew carved them to lift stone, and one spring they just walked off into the mountain."
   ],
   "winter": [
    "Cold stone splits easier. Silver lining."
+  ],
+  "gangsters": [
+   "Somebody's been buying dynamite with cash and no questions. I ask questions. They stopped buying."
+  ],
+  "spring": [
+   "Thaw loosens the cut. Mind your step on the north face."
+  ],
+  "summer": [
+   "Summer sun bakes the quarry floor. Bring water. Bring more than that."
+  ],
+  "fall": [
+   "Good dry stone in the fall. Best building season there is."
   ]
  },
  "sel": {
@@ -424,6 +894,15 @@
   ],
   "penguins": [
    "The star that fell here didn't fall by accident. The ruins say it was sent."
+  ],
+  "gangsters": [
+   "A man from the city offered to buy my tablets. Every one. I said they weren't for sale. He said everything is."
+  ],
+  "spring": [
+   "Spring rain washes new runes out of the mud. Every year, a few more."
+  ],
+  "winter": [
+   "Frost shows the carvings sharper. Cold, but worth it."
   ]
  },
  "old_moss": {
@@ -434,7 +913,19 @@
    "The frogs told me you were coming. They tell me everything."
   ],
   "rain": [
-   "Rain? Out here we just call it Tuesday."
+   "Rain? Out here we just call it the usual."
+  ],
+  "spring": [
+   "Marsh wakes up loud. Frogs have opinions."
+  ],
+  "summer": [
+   "Summer marsh. The air's thick enough to chew."
+  ],
+  "fall": [
+   "Mushroom season. The good ones and the other ones. Ask before you pick."
+  ],
+  "winter": [
+   "Winter marsh sleeps. I sleep too, mostly sitting up."
   ]
  },
  "tam": {
@@ -445,7 +936,75 @@
    "My dog does the real work. I just carry the snacks."
   ],
   "fall": [
-   "Apple season! Pressing day soon. Bring a basket."
+   "Apple season! Pick a basket for the market before the wasps do."
+  ],
+  "spring": [
+   "Lambing time. I sleep in the barn with a lantern and a lot of patience."
+  ],
+  "summer": [
+   "Shearing done. The flock looks like startled clouds."
+  ],
+  "winter": [
+   "Snow on the hills. The sheep don't mind. I mind for all of us."
+  ],
+  "rain": [
+   "Wet wool smells like wet wool. There's no poetry in it."
+  ],
+  "gangsters": [
+   "Folk in good shoes come up here sometimes. They don't stay. Hills are hard on good shoes."
+  ]
+ },
+ "tess": {
+  "always": [
+   "Measure twice, cut once. Then sand it till it purrs.",
+   "Every chair in {town} has a wobble I know by name.",
+   "New pieces come off the bench every few days. Come look before somebody else does.",
+   "Good timber tells you where it wants to split. Listen and it won't fight you."
+  ],
+  "spring": [
+   "Spring's for garden benches. Everyone wants to sit outside the second it stops raining."
+  ],
+  "summer": [
+   "Wood moves in the heat. I leave every joint a hair loose in summer."
+  ],
+  "fall": [
+   "Wood's dry this time of year. Best season to build."
+  ],
+  "winter": [
+   "Winter's for beds and chairs. People notice their furniture when they're stuck indoors."
+  ],
+  "rain": [
+   "Damp air, swollen drawers. Half the town will be at my door by tomorrow."
+  ],
+  "wind": [
+   "Wind took a sheet of ply clean off the bench. If you find it, it's mine."
+  ],
+  "evening": [
+   "Sawdust in my hair, soup in my bowl. Good day."
+  ],
+  "penguins": [
+   "Something small and round sat on my sawhorse this morning. It looked very pleased with itself."
+  ],
+  "gangsters": [
+   "The crews let me be. Everybody needs a table, even people who sit with their backs to the door."
+  ],
+  "festival": [
+   "I built the stall frames for today. If one wobbles, tell me before you tell anyone else."
+  ],
+  "festival_harvest": [
+   "My pie's on the table. I made the table too. Judge them separately."
+  ]
+ },
+ "catkins": {
+  "always": [
+   "Cat-topia welcomes careful visitors. Careless ones get a stern look.",
+   "A bell is just copper that has learned to sing. Remember that."
+  ],
+  "winter": [
+   "Cat-topia does not do cold. Cat-topia does blankets."
+  ],
+  "rain": [
+   "Rain. Every cat in the meadow is indoors and offended."
   ]
  }
 }

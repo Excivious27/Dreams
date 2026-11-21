@@ -37,11 +37,11 @@ RULES = {"bouquet_hearts": 8, "propose_hearts": 10, "dates_needed": 2, "house_ti
          "ex_days": 14, "invite_every": 3, "wedding_after": 3, "chore_chance": 0.4}
 
 SHARED = {
-    "too_soon": ["Oh! Flowers... for me? That's sweet, {you}. But let's get to know each other a little better first, all right?",
-                 "{name} smiles and gently hands the bouquet back. 'Not yet. Ask me again when we're closer.'"],
+    "too_soon": ["Oh! Flowers... for me? That's sweet, {you}. But let's get to know each other a little better first, all right? Ask me again when we're closer."],
+    "too_soon_locket": ["A locket... {you}, I... not yet. Ask me again when we're even closer. Keep it safe for me?"],
     "taken": ["You're already seeing someone, {you}. I'd never want to get in the middle of that. Keep them for your sweetheart."],
     "ex": ["We said we'd stay friends, and I meant it. Give it a little time, {you}. Maybe later."],
-    "not_yet_house": ["{you}... yes. Yes! But where would we live? That little one-room house barely fits you and the pup. Talk to Gideon about a Farmhouse first, and ask me again."],
+    "not_yet_house": ["{you}... yes. Yes! But where would we live? That one-room cottage barely fits you and {pet}. Put up a Farmhouse first (the Plans board by your door, and a permit from Alder at the hall), then ask me again."],
     "not_yet_dates": ["I love that you asked. But we've hardly been out together yet. A couple more evenings first? Then ask me again."],
     "invite": "Hey, {you}... want to meet up this evening?",
     "invite_yes": "It's a date! {place}, after {hour}. Don't be late!",
@@ -49,7 +49,7 @@ SHARED = {
     "missed": ["You never came last night... It's all right. Things come up on a farm. Let's try again soon."],
     "no_guest": "Only the farm's owner can do that here.",
     "stay_friends": ["I understand. Thank you for being honest with me. We'll always be friends, {you}. Always."],
-    "wedding_intro": ["The whole town turned out. Someone tied ribbons to every bench, and the flower arch smells of spring."],
+    "wedding_intro": ["The whole town turned out. Someone tied ribbons to every bench, and the arch is woven with whatever the season had to give."],
     "wedding_end": ["Petals in your hair, cake on everyone's plate, and a whole new life waiting at home."],
 }
 
@@ -83,7 +83,7 @@ C["lumi"] = {
               ["Green, like a new field.", 15, "A farmer's answer. I love it."],
               ["Whatever colour makes you smile.", 20, "That's cheating. Sweet, but cheating."]]),
         date("farm", "your farm, under the stars", [20, 24], [L("Lumi", "I've never seen this many stars. The town lamps hide them.", "surprised"),
-              L("Lumi", "Lie back on the grass with me. There. That one's yours, and that one's mine.", "love")],
+              L("Lumi", "Lie back on the grass with me. There. That one's yours, and that one's mine. I'm painting this next: not the stars, you looking at them.", "love")],
              "Do you think we'll still do this when we're old?",
              [["Every clear night.", 20, "Then I'll keep a blanket by the door."],
               ["If my back lets me.", 10, "Ha! I'll bring cushions."],
@@ -95,7 +95,7 @@ C["lumi"] = {
     "spouse": {"morning": ["Morning, love. The light's perfect today; I'm stealing the window.", "I painted the sunrise while you slept. Don't look yet, it's not done.", "Coffee's on the table. I drew a little heart in the foam."],
                "evening": ["Welcome home. Sit with me a while before supper?", "I finished a painting today. It's of you, coming up the path."],
                "rain": ["Rainy days are for painting indoors. Stay a minute before you go out?"],
-               "chore": {"water": "Lumi watered the crops at dawn: 'The droplets looked like little lamps!'", "animals": "Lumi fed the animals and sketched the sleepiest one.", "fence": "Lumi tidied up around the house and painted a flower on the gate.", "breakfast": "Lumi left a slice of berry pie by the bed.", "pup": "Lumi played fetch with {pet} until they were both out of breath."}},
+               "chore": {"water": "Lumi watered the crops at dawn: 'The droplets looked like little lamps!'", "animals": "Lumi fed the animals and sketched the sleepiest one.", "fence": "Lumi tidied the yard, painted a flower on the gate and stacked the offcuts by the door (3 Wood).", "breakfast": "Lumi left a slice of berry pie by the bed.", "pup": "Lumi played fetch with {pet} until they were both out of breath."}},
 }
 
 C["theo"] = {
@@ -128,15 +128,15 @@ C["theo"] = {
     "spouse": {"morning": ["Morning. I found a lovely passage last night; I'll read it to you at supper.", "Tea's on the table. I timed it to the second.", "Did you know otters hold hands while they sleep? I thought of us."],
                "evening": ["You're home. I saved your place in the book. And on the sofa.", "Long day? Sit. Tell me everything."],
                "rain": ["Rain on the roof. Best reading weather there is. Come back early tonight?"],
-               "chore": {"water": "Theo watered the crops, consulting an almanac for every row.", "animals": "Theo fed the animals and named the hens after poets.", "fence": "Theo tidied the yard and alphabetised the tool shed.", "breakfast": "Theo left a pot of perfectly brewed tea by the bed.", "pup": "Theo read {pet} a story. {pet} fell asleep on his feet."}},
+               "chore": {"water": "Theo watered the crops, consulting an almanac for every row.", "animals": "Theo fed the animals and named every one of them after a poet.", "fence": "Theo tidied the yard, alphabetised the tool shed and found 3 Wood filed under W.", "breakfast": "Theo left a pot of perfectly brewed tea by the bed.", "pup": "Theo read {pet} a story. {pet} fell asleep on his feet."}},
 }
 
 C["finn"] = {
     "pronoun": "he", "arcs": ["penguins", "gangsters"], "dish": "fish_stew", "corner": "spouse_finn", "job_days": [1, 3, 5],
     "bouquet": [L("Finn", "Well, I'll be. Flowers! Nobody's given me flowers since... well. Since never.", "surprised"),
-                L("Finn", "Yes, I'll walk out with you. You've got a good heart, kid. I've seen how you look after the place.", "happy")],
+                L("Finn", "Yes, I'll walk out with you. You cast like you're asking now. I noticed.", "happy")],
     "dates": [
-        date("beach", "the pier on the beach", [17, 21], [L("Finn", "Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.", "happy"),
+        date("beach", "the pier on the beach", [17, 21], [L("Finn", "Second Cast is tied up at the jetty; I'll row us out after. Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.", "happy"),
               L("Finn", "There. You hear that? Just the water. Best sound in the world.")],
              "What do you think about, out on the water?",
              [["Nothing at all. It's peaceful.", 15, "That's the trick. Most folks never learn it."],
@@ -161,7 +161,7 @@ C["finn"] = {
     "spouse": {"morning": ["Morning! Wind's from the west; good fishing later.", "Made stew. Don't argue, eat.", "Saw a heron by the creek. Reminded me of you; graceful and stubborn."],
                "evening": ["You're back. Sit down, sit down, I'll put the kettle on.", "Good day? Tell me about it while I mend these nets."],
                "rain": ["Rain's good for the fish. Mind you don't slip out there."],
-               "chore": {"water": "Finn watered the crops: 'Same as boats, just greener.'", "animals": "Finn fed the animals and told them a fishing story.", "fence": "Finn mended a bit of fence with net twine.", "breakfast": "Finn left a bowl of fish stew on the stove.", "pup": "Finn shared a sardine with {pet}. Don't tell."}},
+               "chore": {"water": "Finn watered the crops: 'Same as boats, just greener.'", "animals": "Finn fed the animals and told them a fishing story.", "fence": "Finn mended a bit of fence with net twine and stacked the spare boards (3 Wood).", "breakfast": "Finn left a bowl of fish stew on the stove.", "pup": "Finn shared a sardine with {pet}. Don't tell."}},
 }
 
 C["rook"] = {
@@ -191,14 +191,14 @@ C["rook"] = {
     "propose": [L("Rook", "A locket. You're asking me...", "surprised"),
                 L("Rook", "Yes. I've never been more sure of anything. Not even a trail.", "happy")],
     "vows": "I promise to always find my way home to you, whatever the weather.",
-    "spouse": {"morning": ["Morning. I checked the fences. All good.", "Brought you wild berries. Don't eat the red ones. Those are mine.", "Fox tracks by the barn. I scared it off. Gently."],
+    "spouse": {"morning": ["Morning. I checked the fences. All good.", "Brought you wild berries. Don't eat the red ones. Those are mine.", "Fox tracks by the fence. I scared it off. Gently."],
                "evening": ["You're home. Good.", "Sit by the fire with me."],
                "rain": ["Rain. Take a coat. I mean it."],
-               "chore": {"water": "Rook watered the crops before sunrise without a word.", "animals": "Rook fed the animals. They follow him around now.", "fence": "Rook mended a broken fence post.", "breakfast": "Rook left a bowl of wild greens on the table.", "pup": "Rook took {pet} on a long walk in the woods."}},
+               "chore": {"water": "Rook watered the crops before sunrise without a word.", "animals": "Rook fed the animals. They follow him around now.", "fence": "Rook mended a broken fence post and split the old one for you (3 Wood).", "breakfast": "Rook left a bowl of wild greens on the table.", "pup": "Rook took {pet} on a long walk in the woods."}},
 }
 
 C["juniper"] = {
-    "pronoun": "she", "arcs": ["penguins", "gangsters"], "dish": "salad", "corner": "spouse_juniper", "job_days": [1, 2, 4, 5],
+    "pronoun": "she", "arcs": [], "retired": "engaged to Gideon in her own heart arc (hearts ♥8)", "dish": "salad", "corner": "spouse_juniper", "job_days": [1, 2, 4, 5],
     "bouquet": [L("Juniper", "Oh! For me? That's... Doctor's orders: I accept.", "surprised"),
                 L("Juniper", "I mean it, {you}. I'd love to be your sweetheart. Just promise you'll get more sleep.", "happy")],
     "dates": [
@@ -216,18 +216,18 @@ C["juniper"] = {
               ["I'll slow down for you.", 20, "That's the best medicine I've heard all week."]]),
         date("farm", "your farm, under the stars", [20, 24], [L("Juniper", "I've never stayed up for stars. I'm always too tired. But tonight... worth it.", "happy"),
               L("Juniper", "Can I lean on your shoulder? Just for a minute.", "love")],
-             "Do you want a family someday? Pets, plants, all of it?",
-             [["A full house, someday.", 20, "Me too. Noisy and warm."],
-              ["Lots of animals.", 15, "As long as I'm the vet!"],
+             "What does home look like, years from now?",
+             [["Animals everywhere.", 20, "And me checking every one of them. Nurse's habits."],
+              ["A porch and a quiet evening.", 15, "Prescribed. Daily."],
               ["Whatever we choose together.", 20, "Together. I like that word."]]),
     ],
     "propose": [L("Juniper", "Is that a... are you... oh, I need to sit down. Pulse is very high.", "surprised"),
-                L("Juniper", "Yes! Yes, yes! Prescription: forever.", "love")],
+                L("Juniper", "Yes. Don't make a fuss. ...Fine, make a small fuss. Prescription: forever.", "love")],
     "vows": "I promise to look after you on the hard days, and to dance with you on the good ones.",
-    "spouse": {"morning": ["Morning, love! Did you drink water? Drink water.", "I packed you a snack. You'll thank me at noon.", "You were snoring. It was adorable."],
+    "spouse": {"morning": ["Morning. Water. Then breakfast. Then you can look at me like that.", "I packed you a snack. You'll thank me at noon.", "You were snoring. It was adorable."],
                "evening": ["Welcome home! Let me see those hands. Splinters again!", "Sit. Feet up. Nurse's orders."],
                "rain": ["Rainy days mean colds. Scarf. Now."],
-               "chore": {"water": "Juniper watered the crops and checked every leaf for blight.", "animals": "Juniper fed the animals and gave them all a little check-up.", "fence": "Juniper tidied the porch and patched a fence board.", "breakfast": "Juniper left a fresh salad and a note: 'Eat greens!'", "pup": "Juniper brushed {pet}'s coat until it shone."}},
+               "chore": {"water": "Juniper watered the crops and checked every leaf for blight.", "animals": "Juniper fed the animals and gave them all a little check-up.", "fence": "Juniper tidied the porch, patched a fence board and set aside 3 Wood.", "breakfast": "Juniper left a fresh salad and a note: 'Eat greens!'", "pup": "Juniper brushed {pet}'s coat until it shone."}},
 }
 
 C["posy"] = {
@@ -260,7 +260,7 @@ C["posy"] = {
     "spouse": {"morning": ["Morning, sweetheart! Fresh loaf on the table.", "I tried a new recipe. You're my taste tester. Forever.", "You've got flour on your nose. ...That's mine. I got flour on your nose."],
                "evening": ["You're home! Supper's warm. Dessert is warmer.", "Sit, sit. Tell me about your day while I knead."],
                "rain": ["Rain! Perfect baking weather. Hurry home?"],
-               "chore": {"water": "Posy watered the crops, humming a baking song.", "animals": "Posy fed the animals and saved crumbs for the birds.", "fence": "Posy swept the porch and fixed a squeaky gate.", "breakfast": "Posy left a warm loaf of bread on the table.", "pup": "Posy gave {pet} a little dog biscuit she baked."}},
+               "chore": {"water": "Posy watered the crops, humming a baking song.", "animals": "Posy fed the animals and saved crumbs for the birds.", "fence": "Posy swept the porch, fixed a squeaky gate and stacked the spare slats (3 Wood).", "breakfast": "Posy left a jar of her mum's jam and a warm roll on the table: second batch.", "pup": "Posy gave {pet} a little dog biscuit she baked."}},
 }
 
 C["ivy"] = {
@@ -293,7 +293,7 @@ C["ivy"] = {
     "spouse": {"morning": ["Morning! I made a budget for the week. We're doing wonderfully.", "Coffee's ready. Exactly two sugars.", "You looked so peaceful sleeping. I nearly didn't wake you. Nearly."],
                "evening": ["You're home. I saved the last biscuit. That's love.", "Sit with me. I'll do the sums later."],
                "rain": ["Rain. Take the umbrella. I labelled it 'yours'."],
-               "chore": {"water": "Ivy watered the crops in perfectly even rows.", "animals": "Ivy fed the animals right on schedule.", "fence": "Ivy tidied the shed and counted every nail.", "breakfast": "Ivy left a hot cup of coffee by the bed.", "pup": "Ivy taught {pet} a new trick: 'sit pretty'."}},
+               "chore": {"water": "Ivy watered the crops in perfectly even rows.", "animals": "Ivy fed the animals right on schedule.", "fence": "Ivy tidied the shed, counted every nail and set aside 3 Wood.", "breakfast": "Ivy left a hot cup of coffee by the bed.", "pup": "Ivy taught {pet} a new trick: 'sit pretty'."}},
 }
 
 C["benno"] = {
@@ -323,10 +323,10 @@ C["benno"] = {
     "propose": [L("Benno", "Is that a... are you asking me to marry you?", "surprised"),
                 L("Benno", "YES! Oh, wow, yes! Can the horses come to the wedding?", "happy")],
     "vows": "I promise to always be steady for you, like a good horse on a long road.",
-    "spouse": {"morning": ["Morning! The animals are fed. I couldn't help it.", "Brought you an apple. Polished it on my shirt.", "Big day? I believe in you."],
+    "spouse": {"morning": ["Morning! I said good morning to every animal on the way in. They said it back.", "Brought you an apple. Polished it on my shirt.", "Big day? I believe in you."],
                "evening": ["You're home! Let me take your boots.", "Sit, I'll rub your shoulders. Strong hands from the stable, see?"],
                "rain": ["Muddy out there. Watch your step."],
-               "chore": {"water": "Benno hauled water for every row of crops.", "animals": "Benno fed and brushed every animal on the farm.", "fence": "Benno fixed a loose fence board.", "breakfast": "Benno left a slice of bread with honey.", "pup": "Benno raced {pet} round the yard. {pet} won."}},
+               "chore": {"water": "Benno hauled water for every row of crops.", "animals": "Benno fed and brushed every animal on the farm.", "fence": "Benno fixed a loose fence board and stacked the offcuts (3 Wood).", "breakfast": "Benno left a slice of bread with honey.", "pup": "Benno raced {pet} round the yard. {pet} won."}},
 }
 
 C["tam"] = {
@@ -334,7 +334,7 @@ C["tam"] = {
     "bouquet": [L("Tam", "Flowers? The sheep'll be jealous.", "surprised"),
                 L("Tam", "Yes. I'd like that. You're a good soul, {you}. Even the old ram likes you.", "happy")],
     "dates": [
-        date("meadow", "the meadow", [17, 21], [L("Tam", "The flock's settled. Sit on the hill with me. You can see the whole valley from here.", "happy"),
+        date("meadow", "the meadow", [17, 21], [L("Tam", "The Dollys have voted you in. Unanimous. They never agree on anything. Sit on the hill with me; you can see the whole valley from here.", "happy"),
               L("Tam", "I come up here to think. Thought I'd bring the thing I think about most.", "love")],
              "Do you count sheep to sleep?",
              [["Every night.", 15, "Ha. I count farmers now."],
@@ -353,13 +353,13 @@ C["tam"] = {
               ["Old friends.", 15, "You've got new ones. Me, for one."],
               ["Nothing. I found you here.", 20, "Ah. You'll make an old shepherd soft."]]),
     ],
-    "propose": [L("Tam", "A locket... You want to marry me?", "surprised"),
+    "propose": [L("Tam", "A locket... You want to marry me? Good thing I didn't go up the hill.", "surprised"),
                 L("Tam", "Yes. I'll knit you a wedding scarf. It'll be the softest thing you ever wore.", "love")],
     "vows": "I promise to keep you warm, keep you fed, and keep you laughing.",
     "spouse": {"morning": ["Morning. Wind's turning. Good day for wool.", "Made porridge. Eat it while it's hot.", "Knitted you socks. Don't look at the heel."],
                "evening": ["You're back. Fire's lit.", "Sit with me. The wool can wait."],
                "rain": ["Rain. The sheep hate it. I don't mind. Means you might stay in a bit longer."],
-               "chore": {"water": "Tam watered the crops at first light.", "animals": "Tam fed the animals. They followed him like a flock.", "fence": "Tam fixed a gap in the fence: 'Can't have strays.'", "breakfast": "Tam left a bowl of fresh greens on the table.", "pup": "Tam taught {pet} to herd. Mostly it herded Tam."}},
+               "chore": {"water": "Tam watered the crops at first light.", "animals": "Tam fed the animals. They followed him like a flock.", "fence": "Tam fixed a gap in the fence: 'Can't have strays.' The old rails went on the woodpile (3 Wood).", "breakfast": "Tam left a bowl of fresh greens on the table.", "pup": "Tam taught {pet} to herd. Mostly it herded Tam."}},
 }
 
 C["sel"] = {
@@ -392,7 +392,7 @@ C["sel"] = {
     "spouse": {"morning": ["Morning. I translated a love poem last night. It's about a farmer. Coincidence.", "Tea's brewing. It's an old recipe.", "I dreamed of the ruins. You were there, holding a lantern."],
                "evening": ["You're home. Sit with me; I'll tell you what I found today.", "Every evening with you is worth recording."],
                "rain": ["Rain. Good for reading old texts. And for staying close."],
-               "chore": {"water": "Sel watered the crops, reciting an ancient planting song.", "animals": "Sel fed the animals and sketched their tracks.", "fence": "Sel mended a fence and found an old coin by the post.", "breakfast": "Sel left a pot of fragrant tea by the bed.", "pup": "Sel took {pet} digging for treasure. They found a bone."}},
+               "chore": {"water": "Sel watered the crops, reciting an ancient planting song.", "animals": "Sel fed the animals and sketched their tracks.", "fence": "Sel mended a fence and stacked the old boards by the post (3 Wood).", "breakfast": "Sel left a pot of fragrant tea by the bed.", "pup": "Sel took {pet} digging for treasure. They found a bone."}},
 }
 
 VENUES = {"penguins": {"place": "the chapel", "pic": "cut_wedding_penguins", "officiant": "Mayor Alder"},
@@ -405,7 +405,23 @@ ITEMS = {
                    "desc": "Give to your sweetheart at 10 hearts to propose."},
 }
 
-BAD = re.compile(r"\b(wine|ale|beer|drunk|kiss(ed|es|ing)?|whiskey|bed together)\b", re.I)
+# Your spouse's birthday at home (Romance._spouse_talk, first talk of the day). C12 P4 (07-24).
+SPOUSE_BIRTHDAY = {
+    "lumi": "You remembered. Of course you did; you live with the calendar I painted.",
+    "theo": "I've written myself a very small notice: 'Today, be spoiled.' You may read it.",
+    "finn": "Birthday. Row me out on Second Cast and we'll call it even.",
+    "rook": "Birthday. I don't usually count them. I'm counting this one.",
+    "juniper": "My birthday. Doctor's orders: you're not allowed to work too hard today. Neither am I.",
+    "posy": "I baked my own birthday cake at four this morning. Second batch is yours. Obviously.",
+    "ivy": "My birthday. I've entered it in the ledger under 'assets'. You're in the same column.",
+    "benno": "Birthday. The mare got an apple and so do you. Don't tell her you got the bigger one.",
+    "tam": "Birthday. The Dollys sang. It sounded like baaing. It was singing.",
+    "sel": "My birthday. Three thousand years of walls and nobody wrote that one down. You did.",
+}
+for _cid, _t in SPOUSE_BIRTHDAY.items():
+    C[_cid]["spouse"]["birthday"] = _t
+
+BAD = re.compile(r"\b(wine|ale|beer|drunk|kiss(ed|es|ing)?|whiskey|bed together|family someday|full house)\b", re.I)
 
 
 def lines_of(c):
@@ -440,6 +456,10 @@ def check(npcs, items):
         for k in ("water", "animals", "fence", "breakfast", "pup"):
             if k not in c["spouse"]["chore"]:
                 err.append(cid + ": chore line " + k)
+        if "Wood" not in c["spouse"]["chore"].get("fence", ""):
+            err.append(cid + ": the fence chore gives 3 Wood; its line must say so")
+        if not c["spouse"].get("birthday"):
+            err.append(cid + ": spouse birthday line")
     if BAD.search(json.dumps(SHARED)):
         err.append("shared: all-ages word")
     return err

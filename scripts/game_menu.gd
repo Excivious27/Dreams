@@ -526,7 +526,7 @@ func _refresh() -> void:
 				if itd.has("desc"):
 					_line(str(itd["desc"]), 8, Color(0.8, 0.8, 0.8))
 				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):
-					var what := "Drink" if str(itd.get("type", "")) == "tonic" else "Eat"
+					var what := ItemWords.consume_verb(sel)
 					_button("%s %s" % [what, GameState.item_name(sel)], func() -> void: _eat(sel))
 				if str(itd.get("type", "")) == "equip":
 					var st: Dictionary = itd.get("stats", {})
@@ -674,18 +674,23 @@ func _refresh() -> void:
 				var bd := GameState.birthday_of(str(id))
 				var seen: Dictionary = (r.get("gift_seen", {}) as Dictionary).get(id, {})
 				var loves: Array = []
+				var likes: Array = []
 				var hates: Array = []
 				for gi: String in seen:
-					if int(seen[gi]) >= 12:
+					if int(seen[gi]) >= 20:
 						loves.append(GameState.item_name(gi))
+					elif int(seen[gi]) >= 12:
+						likes.append(GameState.item_name(gi))
 					elif int(seen[gi]) < 0:
 						hates.append(GameState.item_name(gi))
 				var nxt := ""
 				for hh in [2, 4, 6, 8, 10]:
 					if GameState.friend_hearts(str(id)) < hh and GameState.friend_perk_at(str(id), hh) != "":
-						nxt = "♥%d: %s" % [hh, GameState.friend_perk_at(str(id), hh)]
+						nxt = "♥%d: %s" % [hh, Money.t(GameState.friend_perk_at(str(id), hh))]
 						break
-				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
+				# C12 P4: no "Birthday ? 0" for crew; loves (20+) and likes (12-19) apart.
+				var bd_txt := ("Birthday %s %d%s · " % [str(bd[0]).capitalize(), int(bd[1]), " (TODAY!)" if GameState.is_birthday(str(id)) else ""]) if bd.size() == 2 else ""
+				var info := "   %sloves: %s%s%s%s" % [bd_txt, ", ".join(loves) if not loves.is_empty() else ("? (give gifts to find out)" if likes.is_empty() else "?"), ("  · likes: " + ", ".join(likes)) if not likes.is_empty() else "", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
 				# A heart scene waiting, and (after ♥10) what they'd do for you (C7 P4).
 				info += ("\n   ♥%d scene waiting: go and talk to them" % Hearts.due(str(id))) if Hearts.due(str(id)) > 0 else ("\n   If the town fell: " + str(Hearts.data()[str(id)].get("fall", ""))) if Hearts.seen_level(str(id)) >= 10 and str(Hearts.data().get(str(id), {}).get("fall", "")) != "" else ""
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) or Hearts.due(str(id)) > 0 else Color(0.8, 0.8, 0.75))
@@ -778,6 +783,15 @@ func _refresh() -> void:
 						_refresh()))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
+			var ssl: Array = SideStory.open_lines()  # c12_10-17: side stories in the Quests tab
+			if not ssl.is_empty():
+				_line("Side stories", 9, Color(0.8, 0.9, 1.0))
+				for sl: Dictionary in ssl:
+					var ss_at := QuestTracker.npc_scene(str(sl["giver"]))
+					var ss_id := "ss:" + str(sl["id"])  # C12 P5/P6: tick it and the compass follows the side story
+					_body.add_child(QuestTracker.checkbox_row("%s: %s" % [str(sl["title"]), str(sl["text"])], trk == ss_id, false, PlaceNames.for_id(ss_at) if ss_at != "" else "", func() -> void:
+						QuestTracker.track(ss_id)
+						_refresh()))
 			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
 			if not fin.is_empty():
 				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))
@@ -789,12 +803,12 @@ func _refresh() -> void:
 				busy += (w["jobs"] as Array).size()
 			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
-			_button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: _tab = "Foes"; _refresh())
+			_button("Foes & Gifts: %s met ›" % ItemWords.count("kind", (r.get("kill_counts", {}) as Dictionary).size()), func() -> void: _tab = "Foes"; _refresh())
 			_button("Mail: %d unread ›" % Mail.unread(), func() -> void: _tab = "Mail"; _refresh())
 			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
-				_line("Things people said (newest first)", 9, Color(0.95, 0.85, 1.0))
+				_line("Notes and tips (newest first)", 9, Color(0.95, 0.85, 1.0))
 				var hs := hints.duplicate()
 				hs.reverse()
 				for hnt in hs.slice(0, 12):
@@ -825,7 +839,7 @@ func _refresh() -> void:
 					_save_now()
 					get_tree().paused = false
 					get_tree().quit())
-			_button("Save & back to title", func() -> void:
+			_button("Save and back to title", func() -> void:
 				_save_now()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
@@ -889,14 +903,14 @@ func _refresh() -> void:
 			for m: Dictionary in ml:
 				m["read"] = true
 				_line("Day %d · %s" % [int(m.get("day", 0)), str(m["from"])], 8, Color(1, 0.95, 0.8))
-				_line("  " + str(m["text"]), 8, Color(0.9, 0.9, 0.85))
+				_line("  " + Money.t(str(m["text"])), 8, Color(0.9, 0.9, 0.85))
 				var mm := m
 				if str(m.get("kind", "")) == "gift" and not bool(m.get("got", false)):
 					_button("  Take the %s" % GameState.item_name(str(m["item"])), func() -> void:
 						Mail.act(mm)
 						_refresh())
 				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
-					_button("  Send %d %s for ◆%d (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+					_button("  Send %s for %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), Money.amount(int(m["pay"])), GameState.count(str(m["item"]))], func() -> void:
 						var err := Mail.act(mm)
 						var mp := get_tree().current_scene as GameMap
 						if mp and err != "":
@@ -1329,7 +1343,7 @@ func _trash_tap(id: String) -> void:
 		_trash_arm = id
 		var gm := get_tree().current_scene as GameMap
 		if gm and gm.hud:
-			gm.hud.toast("Throw away %d %s? Tap the trash again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+			gm.hud.toast("Throw away %s? Tap the trash again to confirm." % ItemWords.count_id(id, GameState.count(id)), Color(1, 0.8, 0.6))
 	_refresh()
 
 
@@ -1644,7 +1658,7 @@ func _eat(id: String) -> void:
 			if is_instance_valid(e) and e.position.distance_to(mp.player.position) < 120.0:
 				var now := Time.get_ticks_msec()
 				if now < _food_ready:
-					mp.hud.toast("Still chewing. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
+					mp.hud.toast("Still finishing the last one. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
 					return
 				in_fight = true
 				break

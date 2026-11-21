@@ -72,7 +72,10 @@ static func news() -> void:
 	var day := int(GameState.run["day"])
 	if not f.has("rec_league_mail") and f.has("rec_visited") and day - int(f.get("rec_open", day)) >= 3:
 		f["rec_league_mail"] = true
-		Mail.send("Maple", "League night is the third day of every week, upstairs at the %s. Gideon brings his own ball. I bring mine. Bring yourself, dear, and bowl a hundred and fifty if you want me to take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
+		if GameState.is_penguins():
+			Mail.send("Maple", "League night is the third day of every week, upstairs at the %s. Gideon brings his own ball. I bring mine. Bring yourself, dear, and bowl a hundred and fifty if you want me to take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
+		else:  # c12_09-16: Maple's terse gangster-arc voice
+			Mail.send("Maple", "League night's the third day of every week, upstairs at the %s. Gideon brings his own ball. So do I. Bowl a hundred and fifty and I'll take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
 	var told: Dictionary = f.get("rec_pz_told", {}) if f.get("rec_pz_told") is Dictionary else {}
 	var fresh: Array = []
 	for pid in Tickets.prizes().get("order", []):
@@ -198,6 +201,21 @@ static func soon_lines() -> Array:
 	for l in data().get("chat_soon" if GameState.is_penguins() else "chat_soon_gang", []):
 		out.append(_fill(str(l)))
 	return out
+
+
+## C12 P3 (c12_05-18): the lead-in for one villager: their own line if they have one,
+## otherwise one shared line a day (not the whole pool), and the mayor never talks
+## about himself in the third person.
+static func soon_for(npc_id: String) -> Array:
+	var all := soon_lines()
+	if all.is_empty():
+		return []
+	var own: Array = (data().get("chat_soon_own", {}) as Dictionary).get(npc_id, [])
+	if not own.is_empty():
+		return own.map(func(l: Variant) -> String: return _fill(str(l)))
+	if npc_id == "alder":
+		return []
+	return [all[absi(hash(npc_id + str(GameState.run.get("day", 1)))) % all.size()]]
 
 
 ## Town door: shut (with a word about the opening) until the grand opening.
@@ -460,7 +478,7 @@ static func _fill(s: String) -> String:
 ## Extra everyday lines for Talk.line once the place is open.
 static func talk_pool(npc_id: String) -> Array:
 	if not is_open():
-		return soon_lines()
+		return soon_for(npc_id)
 	var out: Array = []
 	var own: Array = (data().get("chat_gang", {}) as Dictionary).get(npc_id, []) if not GameState.is_penguins() else []
 	if own.is_empty():
@@ -919,7 +937,7 @@ static func milestone_line() -> String:
 		if ArcadeHub.milestone(str(id)):
 			got += 1
 		elif next == "":
-			next = str(ArcadeHub.MILESTONES[id])
+			next = ArcadeHub.milestone_text(str(id))
 	var t := "Arcade milestones: %d/%d" % [got, ArcadeHub.MILESTONES.size()]
 	return t + ("  Next: " + next if next != "" else "  All done!")
 

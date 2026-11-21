@@ -305,7 +305,7 @@ static func shelf_dialogue(m: GameMap, shop: String, who: String) -> void:
 			qty = [1, 5, 10][dq.last_choice]
 		match buy(m, id, qty):
 			"poor":
-				m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				m.hud.toast("Not enough %s." % ("crystals" if GameState.is_penguins() else "cash"), Color(1, 0.7, 0.7))
 				Music.instance(m.get_tree()).sfx("nope", "thud")
 			"ok":
 				Music.instance(m.get_tree()).sfx("cash", "coin")
@@ -355,7 +355,7 @@ static func deliver_orders() -> int:
 		if int(o.get("day", today)) >= today:
 			keep.append(o)
 			continue
-		Mail.send("Catalogue order", "Your order came in: %s. Take it from this parcel and it goes to your decor box." % name_of(str(o["id"])), "gift", {"item": str(o["id"]), "n": 1})
+		Mail.send("Catalogue desk", "Your order came in: %s. Take it from this parcel and it goes to your decor box. - Catalogue desk" % name_of(str(o["id"])), "gift", {"item": str(o["id"]), "n": 1})
 		n += 1
 	GameState.run["decor_orders"] = keep
 	return n

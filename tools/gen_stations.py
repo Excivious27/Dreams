@@ -30,8 +30,8 @@ G = [  # id, name, type, value, tier, extra
  ('butter', 'Butter', 'food', 55, 1, {'energy': 20}), ('cooking_oil', 'Cooking Oil', 'craft', 50, 1, {}), ('dried_fruit', 'Dried Fruit', 'food', 70, 2, {'energy': 35}),
  ('crystal_battery', 'Crystal Battery', 'craft', 560, 3, {}),
  # premium keg goods (C8 P2): what a keg makes from produce worth KEG_BREW['premium_at'] or more
- ('reserve_ale', 'Reserve Ale', 'gift', 450, 4, {'desc': 'Brewed from the finest grain. A trade good: shops and collectors pay well.'}),
- ('royal_mead', 'Royal Mead', 'gift', 450, 4, {'desc': 'Brewed from rare blossoms. A trade good: shops and collectors pay well.'}),
+ ('reserve_ale', 'Reserve Ale', 'gift', 450, 4, {'desc': 'Brewed from the finest grain. A trade good: sold and gifted, never drunk. Collectors pay well.'}),
+ ('royal_mead', 'Royal Mead', 'gift', 450, 4, {'desc': 'Brewed from rare blossoms. A trade good: sold and gifted, never drunk. Collectors pay well.'}),
  ('gourmet_pickles', 'Gourmet Pickles', 'food', 420, 4, {'energy': 70, 'desc': 'Crisp, bright, impossible to stop eating.'}),
  ('herbal_cordial', 'Herbal Cordial', 'food', 420, 4, {'energy': 60, 'heal': 3, 'desc': 'A sweet, green, restoring syrup.'}),
  ('truffle_broth', 'Truffle Broth', 'food', 420, 4, {'energy': 90, 'desc': 'Deep, earthy and warming.'}),
@@ -79,7 +79,7 @@ G = [  # id, name, type, value, tier, extra
  ('ghost_ledger', 'Ghost Ledger', 'consumable', 900, 4, {'arc': 'gangsters', 'effect': 'scrub', 'amount': 5, 'desc': 'USE it: you were never here. Heat to zero.'}),
  ('emp_charge', 'EMP Charge', 'consumable', 140, 2, {'arc': 'gangsters', 'effect': 'emp', 'radius': 84, 'stun': 4.0, 'desc': 'USE it: everything near you locks up for 4 seconds, and any Gift stutters OPEN for 3.'}),
  ('emp_heavy', 'Blackout Charge', 'consumable', 420, 3, {'arc': 'gangsters', 'effect': 'emp', 'radius': 130, 'stun': 6.0, 'open': 5.0, 'desc': 'A whole block goes dark. Gifts stutter open for 5 seconds.'}),
- ('spy_drone', 'Spy Drone', 'consumable', 1200, 2, {'arc': 'gangsters', 'effect': 'drone', 'desc': 'USE it (kept; recharges for 2 days): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day.'}),
+ ('spy_drone', 'Spy Drone', 'consumable', 1200, 2, {'arc': 'gangsters', 'effect': 'drone', 'desc': 'USE it (recharges in 2 days): names who is here and how to beat each Gift.'}),
  ('scrap_bot', 'Scrap Bot', 'consumable', 220, 2, {'arc': 'gangsters', 'effect': 'bot', 'life': 30, 'dmg': 2, 'desc': 'USE it: a little bot plants itself and zaps anything hostile for 30 seconds.'}),
  ('guard_bot', 'Guard Bot', 'consumable', 600, 3, {'arc': 'gangsters', 'effect': 'bot', 'life': 60, 'dmg': 4, 'reach': 90, 'desc': 'A bigger bot. A minute of cover.'}),
  ('drone_swarm', 'Drone Swarm', 'consumable', 1500, 4, {'arc': 'gangsters', 'effect': 'bot', 'life': 45, 'dmg': 6, 'reach': 120, 'rate': 0.5, 'desc': 'Six drones, 45 seconds, no mercy for furniture.'}),
@@ -487,7 +487,7 @@ metal_gear = [r for r in old.values() if r['id'] not in CRYSTAL_SET and r['id'].
 leather_gear = [r for r in old.values() if r['id'].startswith('leather_') and r['id'] not in ('leather', 'leather_scrap')]
 books = {}
 books['workbench'] = keep('torch', 'chest', 'scarecrow', 'fertilizer', 'sprinkler', 'sprinkler_quality', 'bait', 'straw_hat', 'pup_treat') + [
- rc('fence_kit', 'Shingle Bundle', {'plank': 4, 'nails': 2}, 'shingles', 1, 6), rc('wheel', 'Cart Wheel', {'plank': 6, 'nails': 4, 'iron_bar': 1}, tier=2), rc('sprinkler_iridium', 'Iridium Sprinkler', {'gold_bar': 2, 'iron_bar': 2, 'crystal_refined': 3}, tier=4)]
+ rc('fence_kit', 'Shingles', {'plank': 4, 'nails': 2}, 'shingles', 1, 6), rc('wheel', 'Cart Wheel', {'plank': 6, 'nails': 4, 'iron_bar': 1}, tier=2), rc('sprinkler_iridium', 'Iridium Sprinkler', {'gold_bar': 2, 'iron_bar': 2, 'crystal_refined': 3}, tier=4)]
 books['sawmill'] = [rc('plank', 'Plank', {'wood': 2}, n=1), rc('charcoal', 'Charcoal (burns as coal)', {'wood': 6}, 'coal', 1, 2), rc('beam', 'Timber Beam', {'wood': 12}, tier=2),
  rc('hardwood_plank', 'Hardwood Plank', {'hardwood': 1}, tier=2), rc('veneer', 'Fine Veneer', {'hardwood_plank': 3, 'sap': 2}, tier=3), rc('ironwood_beam', 'Ironwood Beam', {'hardwood_plank': 6, 'beam': 2, 'dark': 1}, tier=4)]
 books['furnace'] = keep('copper_bar', 'iron_bar', 'steel_bar', 'silver_bar', 'gold_bar') + [rc('dark_bar', 'Shadowsteel Bar', {'dark': 5, 'coal': 4}, tier=4), rc('moon_bar', 'Moonsilver Bar', {'moon_shard': 2, 'silver_bar': 2}, tier=5)]
@@ -501,9 +501,9 @@ books['tannery'] = [rc('leather', 'Leather', {'pelt': 1}, tier=1), rc('leather_s
 books['kitchen'] = R['kitchen'] if 'kitchen' in R else []
 books['mill'] = R['mill']
 books['press'] = [rc('cheese', 'Cheese', {'milk': 1}), rc('butter', 'Butter', {'milk': 1}), rc('jam', 'Jam', {'#berry': 3}), rc('cooking_oil', 'Cooking Oil', {'sunflower': 2}), rc('sesame_oil', 'Cooking Oil (sesame)', {'sesame': 2}, 'cooking_oil', 2, 2),
- rc('pickles', 'Pickles', {'#veg': 2, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fruit Wine Reserve', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
+ rc('pickles', 'Pickles', {'#veg': 2, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fine Wine (from fruit wine)', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
 books['kiln'] = [rc('brick', 'Brick', {'clay': 1}, n=2), rc('stone_brick', 'Brick (from stone)', {'stone': 4, 'coal': 1}, 'brick', 1, 2), rc('clay_pot', 'Clay Pot', {'clay': 2}), rc('glass', 'Glass', {'sand': 3, 'coal': 1}),
- rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Lens', {'glass': 2, 'sand': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
+ rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Glass Lens', {'glass': 2, 'sand': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
 books['mayo'] = [rc('mayonnaise', 'Mayonnaise', {'egg': 1}), rc('duck_mayonnaise', 'Duck Mayonnaise', {'duck_egg': 1}, tier=2)]
 books['extractor'] = [rc('honey_comb', 'Honey (from honeycomb)', {'honeycomb': 1}, 'honey', 1, 2), rc('beeswax', 'Beeswax', {'honeycomb': 1}, n=2),
  rc('honey_jar', 'Jar of Honey', {'honey': 3, 'glass': 1}, tier=2), rc('beeswax_candle', 'Beeswax Candle', {'beeswax': 2, 'fiber': 1}, tier=2)]
@@ -558,7 +558,7 @@ for _sid, _sp in sorted((RJ.get('species', {}) if isinstance(RJ.get('species'), 
     _lab = _sp.get('lab') or {}
     if _lab.get('station') != 'gene_splicer':
         continue
-    item('splice_' + _sid, '%s (splice)' % _sp.get('name_gang', _sid), 'splice', 0, min(5, int(_lab.get('tier', 1)) + 1),
+    item('splice_' + _sid, '%s Splice Kit' % _sp.get('name_gang', _sid), 'splice', 0, min(5, int(_lab.get('tier', 1)) + 1),
          arc='gangsters', icon=_sp.get('product', {}).get('id', 'circuit_board'),
          desc='A finished splice: the %s moves into your %s (or waits for room).' % (_sp.get('name_gang', _sid), _sp.get('home', 'farm')))
     books['splice'].append(rc('splice_' + _sid, 'Splice: %s' % _sp.get('name_gang', _sid), dict(_lab.get('need', {})), tier=int(_lab.get('tier', 1)), days=1))
@@ -699,7 +699,7 @@ for k, dd in (('goat_milk', 'From the barn goats.'), ('sheep_wool', 'Shorn from 
               ('honey', 'From your beehives, or found in the Meadow.'), ('butter', 'Churned from fresh milk.'),
               ('yarn', 'Soft and warm. Spun from wool or rabbit fur at the Loom.'), ('truffle', 'Dug up by happy pigs, or found in old forests.'),
               ('honeycomb', 'Straight from the hive. Spin it at the Honey Extractor for honey and beeswax.'),
-              ('hay', 'Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam.')):
+              ('hay', 'Animal feed. Scythe grass, grow wheat, bale fiber at the Mill, or buy from Maple or Tam.')):
     if k in I: I[k]['desc'] = dd
 I['duck_egg']['energy'] = 26
 I['honey']['energy'] = 20
@@ -794,6 +794,151 @@ for k, d in (('sprinkler', 'Place it on the farm (hold it, USE on open ground). 
              ('scarecrow', 'Place it on the farm. Keeps crows off crops within 8 tiles.')):
     if k in I:
         I[k]['type'] = 'placeable'; I[k]['desc'] = d
+# ---- C12 P6 (c12_12-05): every item has a line under its name -----------------------------------------
+# Items with no authored desc get one from ITEM_DESC (hand-written) or a per-type template; filled lines
+# carry desc_auto so later runs rewrite them from the templates (an authored desc is never touched).
+import zlib as _z
+_CROPS = json.load(open(D + 'crops.json'))
+_SEASON_OF = {}
+for _ck, _cv in _CROPS.items():
+    _SEASON_OF[str(_cv.get('yield', _ck))] = str(_cv.get('season', 'any'))
+ITEM_DESC = {
+    'hoe': 'Tills soil for planting. Upgrade it at the smith to till more at once.',
+    'can': 'Waters crops. Refill it at any pond, river or well.',
+    'axe': 'Chops trees, logs and stumps for wood.',
+    'pickaxe': 'Breaks rocks for stone, ore and the odd gem.',
+    'scythe': 'Cuts weeds and tall grass. Cut grass makes hay.',
+    'hammer': 'Knocks things apart and puts them right again.',
+    'rod': 'Face water and cast. Reel in when it bites.',
+    'sword': 'A practice blade of carved wood. Better than bare hands.',
+    'iron_sword': 'A solid iron blade, forged by the smith.',
+    'steel_sword': 'Tempered steel: lighter and sharper than iron.',
+    'crystal_sword': 'A blade of living crystal that hums when you swing it.',
+    'crowbar': 'Pries open crates and knocks back trouble.',
+    'lucky_bat': 'A well-worn bat. Lucky for you, not for them.',
+    'chrome_blade': 'A chrome blade that flashes under the street lights.',
+    'neon_cleaver': 'A heavy cleaver with a neon edge. Hits hard and glows.',
+    'icicle_blade': 'Cold to the touch and sharp as winter.',
+    'fishbone_sabre': 'Carved from a giant fish bone. Light and quick.',
+    'aurora_blade': 'Shimmers green and violet with every swing.',
+    'prism_lance': 'A long crystal lance that splits light into colours.',
+    'starheart_blade': 'Forged around a fallen star. The finest blade there is.',
+    'six_shooter': 'A reliable sidearm. Loads rounds; one per shot.',
+    'scattergun': 'A wide, short-range blast. Slow to reload.',
+    'tommy_gun': 'Sprays rounds fast and far. Hungry for ammo.',
+    'gold_revolver': 'Gold-plated and dead accurate. The boss of sidearms.',
+    'bait': 'Fish bite faster with a little bait on the hook.',
+    'boot': 'Somebody lost a boot in the water. Recycle it for scrap.',
+    'fiber': 'Tough plant fibre. Twist it into rope or cloth.',
+    'wood': 'The basic building block of farm life.',
+    'stone': 'Good for paths, walls and almost every building.',
+    'hardwood': 'Dense, slow-grown timber for the sturdiest builds.',
+    'coal': 'Fuel for the furnace. Every bar of metal needs some.',
+    'shard': 'A raw crystal shard. Refine three at the Resonator.',
+    'gift_pie': 'A pie baked to give away. Wrapped with a ribbon.',
+    'gift_red': 'Something nice in red paper. Anyone would smile.',
+    'gift_gold': 'Gold paper, a big bow. A gift for someone special.',
+}
+_BAR_ORE = {'copper_bar': 'copper ore', 'iron_bar': 'iron ore', 'silver_bar': 'silver ore', 'gold_bar': 'gold ore',
+            'steel_bar': 'iron and coal', 'dark_bar': 'shadow ore', 'moon_bar': 'moonsilver ore', 'platinum_bar': 'platinum ore'}
+_SLOT = {'head': 'Headgear', 'body': 'Body armour', 'feet': 'Footwear', 'back': 'Worn on the back', 'belt': 'A sturdy belt',
+         'legs': 'Legwear', 'hands': 'Gloves', 'offhand': 'Held in your off hand', 'ring': 'A ring', 'charm': 'A lucky charm'}
+_STAT = {'defense': 'defence', 'luck': 'luck', 'speed': 'speed', 'energy': 'energy', 'damage': 'damage'}
+_TYPE = {
+    'crop': ['Fresh from the farm. Good in the kitchen or the sell box.', 'Grown with care. Cook it, gift it or ship it.'],
+    'fruit': ['Fresh off the branch. Sweet in a pie, or sell it by the crate.', 'Picked ripe. Lovely in jam, a pie or the press.'],
+    'flower': ['Cut fresh from the field. Villagers love a bunch.', 'A pretty bloom. Lovely in a vase or as a gift.', 'Bees adore it, and so do most neighbours.'],
+    'herb': ['A fragrant herb. Cooks and potion-makers use it.', 'Smells wonderful. Good for teas, stews and remedies.'],
+    'fish': ['Caught fresh. Cook it, gift it or sell it.', 'A good catch. The fish log has a page for it.', 'Still flapping. Grill it or ship it.'],
+    'forage': ['Found growing wild. Free for the picking.', 'A wild find. Cooks pay for these.'],
+    'material': ['A building material. The workbench and Plans board use it.', 'Raw stuff for crafting and building.'],
+    'ore': ['Raw ore from the rocks. Smelt it in a furnace.', 'Dug from the rocks. The furnace turns it into bars.'],
+    'gem': ['A cut-ready gem. Jewelers and collectors pay well.', 'It sparkles in any light. Rare and valuable.'],
+    'magic': ['It hums with a strange glow. Used in rare recipes.', 'Faintly warm to the touch. Alchemists prize it.'],
+    'craft': ['A crafted part. Other recipes build on it.', 'Handy in the workshop: many recipes need it.'],
+    'food': ['A home-cooked dish. Restores energy.', 'Warm, filling and made with care.', 'Good food for a long day.'],
+    'potion': ['A potion in a little bottle. Use it when you need it.', 'Brewed to help when things get tough.'],
+    'treasure': ['An old find. The museum would love it, or a collector will pay.', 'A relic from long ago. Worth a lot to the right buyer.'],
+    'petgear': ['Gear for your pup. Put it on from the pup page.', 'Made to fit your pup just right.'],
+    'gift': ['A gift, ready to give.'],
+    'junk': ['Not much use. Recycle it.'],
+    'misc': ['Useful odds and ends.'],
+}
+
+
+def _pick_d(k, lines):
+    return lines[_z.crc32(k.encode()) % len(lines)]
+
+
+def _season_words(se):
+    return {'spring': 'in spring', 'summer': 'in summer', 'fall': 'in fall', 'winter': 'in winter'}.get(se, 'in any season')
+
+
+def auto_desc(k, it):
+    t = str(it.get('type', ''))
+    if k in ITEM_DESC:
+        return ITEM_DESC[k]
+    if t == 'seed':
+        c = str(it.get('crop', ''))
+        cr = _CROPS.get(c, {})
+        nm = I.get(str(cr.get('yield', c)), {}).get('name', cr.get('name', ''))
+        if cr and nm:
+            return 'Plant %s. Grows into %s in %d days.' % (_season_words(str(cr.get('season', 'any'))), nm, int(cr.get('days', 4)))
+        return 'Plant in tilled soil and water it each morning.'
+    if t == 'tool' and it.get('weapon'):
+        return 'A weapon. Hits for %d.' % int(it.get('damage', 1)) + (' Loads rounds; one per shot.' if it.get('range') else '')
+    if t == 'tool':
+        return 'A tool for the farm and the road.'
+    if t == 'bar':
+        ore = _BAR_ORE.get(k, 'ore')
+        return 'Smelted from %s. The smith and the workbench need it.' % ore
+    if t == 'equip':
+        st = it.get('stats', {}) or {}
+        bits = ['+%s %s' % (v, _STAT.get(s, s)) for s, v in st.items() if v]
+        base = _SLOT.get(str(it.get('slot', '')), 'Gear to wear')
+        lvl = re.search(r'\+(\d)$', str(it.get('name', '')))
+        tail = ' Tempered at the forge: a little tougher than the plain one.' if lvl else ''
+        return ('%s: %s while worn.' % (base, ', '.join(bits)) if bits else base + '.') + tail
+    if t in ('crop', 'fruit'):
+        fam = str(it.get('family', ''))
+        se = _SEASON_OF.get(k, '')
+        if fam == 'magic':
+            return 'It glows faintly. Cooks and alchemists prize it.'
+        if fam == 'grain':
+            return 'A grain crop. Mill it into flour or feed it to the keg.'
+        if se in ('spring', 'summer', 'fall', 'winter'):
+            return 'A %s harvest. Good in the kitchen or the sell box.' % se
+        return _pick_d(k, _TYPE[t])
+    if t in _TYPE:
+        return _pick_d(k, _TYPE[t])
+    return ''
+
+
+# C12 c12_08-07 / 08-14: rare herbs are herbs (not flowers), Memory Tea is a herb food, and the
+# kids' candy is "loved_by: candy" like the prize candy.
+RARE_HERBS = ['dreamleaf', 'lantern_sage', 'singing_thyme', 'mirror_mint', 'thunder_nettle', 'silver_sage',
+              'gold_chamomile', 'prism_basil', 'moon_mugwort', 'comet_dill', 'wisp_rosemary', 'echo_yarrow', 'star_lavender']
+for _k in RARE_HERBS:
+    if _k in I and I[_k].get('type') in ('flower', 'herb'):
+        I[_k]['type'] = 'herb'
+        I[_k]['family'] = 'herb'
+if 'memory_tea' in I:
+    I['memory_tea'].update({'type': 'food', 'family': 'herb'})
+    I['memory_tea'].setdefault('energy', 30)
+if 'candy' in I:
+    I['candy']['loved_by'] = 'candy'
+
+
+for _k, _it in I.items():
+    if _k.startswith(('dc_', 'wr_')) or not isinstance(_it, dict):
+        continue
+    if _it.get('desc') and not _it.get('desc_auto'):
+        continue
+    _d = auto_desc(_k, _it)
+    if _d:
+        _it['desc'] = _d
+        _it['desc_auto'] = True
+
 json.dump(I, open(D + 'items.json', 'w'), indent=1, ensure_ascii=False)
 print('stations', sum(1 for v in B.values() if isinstance(v, dict) and v.get('thing') == 'station'), 'recipes', {k: len(v) for k, v in R.items() if isinstance(v, list)}, 'moved to workbench:', lost)
 print('economy pass:', len(econ_log), 'values changed'); open('/tmp/econ_pass.log', 'w').write('\n'.join(econ_log))

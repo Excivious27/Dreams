@@ -205,9 +205,9 @@ func _boss_down() -> void:
 		GameState.run["flags"]["spark"] = true
 		GameState.add_item("shard", 2)
 		await say([
-			{"text": "The big Grump comes apart into grey smoke. Where it stood, the grass turns green again. Then greener than it was."},
+			{"text": "The big Grump stops. It shudders, and the grey begins to lift off it like steam off a kettle."},
 			{"who": "Star Crystal", "text": "(from very far away) ...there it is. The first spark. It was in you the whole time, I only lit it."},
-			{"text": "Your heart grows two sizes. Literally: +2 max hearts. Two crystal shards glitter in the grass where it fell."},
+			{"text": "Your heart grows two sizes. Literally: +2 max hearts. Two crystal shards glitter in the grass beside it."},
 		])
 	else:
 		await say([

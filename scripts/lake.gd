@@ -331,6 +331,10 @@ func _talk_marlowe() -> void:
 		GameState.run["talked_today"]["marlowe"] = true
 		GameState.add_friend("marlowe", 5)
 	if await Story.talk(self, "marlowe"):
+		Intros.mark("marlowe")  # a story beat was the meeting
+		player.frozen = false
+		return
+	if await Intros.talk(self, "marlowe"):  # C12 P3: first meeting
 		player.frozen = false
 		return
 	if await Hearts.talk(self, "marlowe"):
@@ -354,7 +358,9 @@ func _talk_marlowe() -> void:
 		await say([{"who": "Marlowe", "text": hl}])
 		player.frozen = false
 		return
-	if GameState.run["flags"].has("lighthouse_lit"):
+	if int(GameState.run["day"]) % 2 == 1:
+		await say(Talk.line("marlowe"))  # C12 P3: his season/weather/progress lines from talk.json
+	elif GameState.run["flags"].has("lighthouse_lit"):
 		await say([{"who": "Marlowe", "text": "Lamp's lit. Fish come up to look at it after dark, fools that they are. Best night fishing in the valley now, and you did that."}])
 	else:
 		await say([{"who": "Marlowe", "text": "Thirty years I kept that lamp. Oil ran out, and the lens cracked the night the bell stopped. Bring me coal and a proper lens and I'll light it again."}])

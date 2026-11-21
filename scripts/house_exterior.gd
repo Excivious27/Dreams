@@ -225,7 +225,7 @@ static func _first_note() -> void:
 		return
 	fl["ext_noticed"] = true
 	if GameState.is_penguins():
-		Mail.send("Hazel", "Saw your farmhouse from the road this morning. A fresh look suits it! Folks in town have been asking who did the work. Come by if you ever want more ideas. - Hazel")
+		Mail.send("Hazel", "Saw your farmhouse from the road. A fresh look suits it! Folks in town have been asking who did the work. Come by if you ever want more ideas. - Hazel")
 	else:
 		Mail.send("Sal", "Drove past your place. New look, huh? Classy. Nobody's gonna mistake it for the old shack now. Keep it sharp. - Sal")
 

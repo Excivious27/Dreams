@@ -118,6 +118,10 @@ static func portrait_for(who: String) -> String:
 
 
 static func instance(tree: SceneTree) -> Dialogue:
+	if tree == null:
+		# A caller whose node already left the tree (its scene changed mid-await) still gets
+		# the one Dialogue instead of a null crash (C12 integ: mega_region_test SCRIPT ERROR).
+		tree = Engine.get_main_loop() as SceneTree
 	var d := tree.root.get_node_or_null("Dialogue") as Dialogue
 	if d == null:
 		d = Dialogue.new()
@@ -458,7 +462,7 @@ func _show_choice(line: Dictionary) -> void:
 	_choice_opened = Engine.get_process_frames()
 	_who.text = str(line.get("who", ""))
 	_who.visible = _who.text != ""
-	_text.text = str(line.get("text", ""))
+	_text.text = PadInput.words(Money.t(str(line.get("text", ""))))  # C12 c12_04-01
 	_typing = false
 	_hint.visible = false
 	var opts: Array = line["choice"]
@@ -473,7 +477,7 @@ func _show_choice(line: Dictionary) -> void:
 	_choice_focus = 0
 	for i in opts.size():
 		var b := Button.new()
-		b.text = PadInput.words(str(opts[i]))
+		b.text = PadInput.words(Money.t(str(opts[i])))  # C12 c12_04-01: $ in the cash arc
 		b.add_theme_font_size_override("font_size", 9 + Settings.text_bonus())
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

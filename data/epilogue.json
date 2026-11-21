@@ -158,7 +158,7 @@
  },
  "companions": {
   "penguin_m": "Pip-Pip waddles the farm every morning like he owns it. He sort of does.",
-  "penguin_f": "Nova keeps the knight's old helmet on a shelf, polished, and tells the story to anyone who'll sit still.",
+  "penguin_f": "Nova keeps one piece of blue glass from the knight's armour on a shelf, and tells the story to anyone who'll sit still. She always ends it the same way: \"He's still up there. I'll find him.\"",
   "big_jim": "Big Jim still breaks the odd stump for you, and complains about it every single time.",
   "dad": "Dad fixes the fence before you notice it's broken, and pretends he was just passing.",
   "mom": "Mom's jam is on every shelf in the house, and her letters always end: come home for supper.",
@@ -172,6 +172,10 @@
   "penguin_f": [
    "knight_reverted",
    "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."
+  ],
+  "penguin_m": [
+   "knight_reverted",
+   "Pip-Pip and Grandfather Auk argue about fishing every morning. Grandfather Auk wins."
   ]
  },
  "villagers_gang": {
@@ -197,19 +201,57 @@
    "take"
   ],
   "vic": [
-   1,
-   "Vic and Val's big brother came home the week the stone broke. He's quiet, and he laughs at the wrong moments, and the twins don't let him out of their sight.",
+   2,
+   "Vic and Val's big brother came home the week the stone went quiet. He's quiet too, and he laughs at the wrong moments, and the twins don't let him out of their sight.",
    "take"
   ],
   "specs": [
-   2,
+   3,
    "Specs went for the wire, like she said she would. The tower's cameras show nothing but rain now.",
    ""
   ],
   "marlene": [
-   2,
+   3,
    "Marlene opened her safe one last time: a deed with your right name on it. It hangs over your fireplace, next to the one with his.",
    ""
+  ]
+ },
+ "crew_take": {
+  "halo": "Halo drives the long black car now. She never asks who's in the back. She used to promise herself she'd never drive for that tower again.",
+  "doc": "Doc patches people in the tower basement again. He doesn't say anything about it. He doesn't have to.",
+  "deuce": "Deuce deals at the tower's private tables now, straight as ever, and looks at you a beat too long when he shuffles.",
+  "mama_rosa": "Mama Rosa still sends a plate up to the tower every night. It comes back half eaten.",
+  "ladder": "Ladder counts the trucks going into your tower now. He's stopped saying the number out loud.",
+  "dice": "Dice runs the token arcade on the avenue. Everyone wins something, and nobody asks who owns the machines."
+ },
+ "crew_if": {
+  "ladder": [
+   "shop_1",
+   "Ladder still watches the street from the rooftops, but now it's to warn Mama Rosa about rain."
+  ]
+ },
+ "flag_alt": {
+  "hale_outrun": [
+   [
+    "hale_has_stone",
+    "You outran Inspector Hale once. The second time, you walked right up to her with the stone. She still can't decide which story to tell at parties."
+   ]
+  ],
+  "hale_fooled": [
+   [
+    "hale_has_stone",
+    ""
+   ],
+   [
+    "hale_seen_neon",
+    "Inspector Hale never did write you down as a farmer. She just stopped saying so out loud."
+   ]
+  ],
+  "hale_friend": [
+   [
+    "ending_take",
+    "Inspector Hale stopped sending postcards. The last one was blank, which from her is a whole letter."
+   ]
   ]
  },
  "hero_flag_lines": {
@@ -288,8 +330,8 @@
    "1": "The bakery never closed. You were the reason why."
   },
   "shop_2": {
-   "0": "The shop you took is a token arcade now. Kids love it.",
-   "1": "You left her shop alone, and she never forgot it."
+   "0": "Lumi's studio is the arcade's second floor now. Kids love it. There's a square of cleaner paint on one wall where her easel stood.",
+   "1": "You left Lumi's studio alone. Her next painting was the avenue at night, and one window in it was lit for you."
   },
   "shop_3": {
    "0": "The crew still runs the clinic you took. You told yourself it would be free one day; Juniper never came back to see if it was.",
@@ -317,6 +359,9 @@
   "doors_by_sasha": "Sasha let you into the tower with a service key she never handed back. Nobody in the city has ever asked her how she kept it.",
   "doors_by_letter": "The letter you kept since the rain went into the tower's slot, and the doors opened. Nobody fought you.",
   "finn_told": "Finn wears the locket now. He smiles more.",
+  "tomas_home": "Tomas came home, thin and quiet, and the brothers fish off the pier together. Tomas still says his pike was bigger.",
+  "biscuit_home": "Biscuit sleeps on the bakery step now, and gets the first crust of every loaf. Some afternoons he walks out to your farm to visit %pet.",
+  "bitter_home": "The friend you turned away found their way back in the end. You still don't talk about the gate, but you sit on the same fence.",
   "knight_reverted": "The knight above the clouds was given a chance, and took it.",
   "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",
   "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",

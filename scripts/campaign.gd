@@ -40,6 +40,20 @@ static func get_c(cid: String) -> Dictionary:
 	return all().get(cid, {})
 
 
+## Region names for sentences (c12_13-14): "into the Wastes", "the way to the
+## sky islands opens". region_name stays the bare map label for pins and buttons.
+const REGION_PHRASE := {"orchard_hills": "the Orchard Hills", "highlands": "the Highlands", "quarry": "the quarry",
+	"marsh": "the marsh", "riverlands": "the Riverlands", "ruins": "the ruins", "wastes": "the Wastes",
+	"sky": "the sky islands", "station": "the space station", "jungle": "the green planet",
+	"countryside": "the countryside", "docks": "the docks", "neon": "the neon district", "uptown": "Uptown",
+	"underground": "the underground"}
+
+
+static func region_phrase(c: Dictionary, cap := false) -> String:
+	var t := str(REGION_PHRASE.get(str(c.get("region", "")), c.get("region_name", "that way")))
+	return t.left(1).to_upper() + t.substr(1) if cap else t
+
+
 ## A campaign/node text that may be written per arc ({"penguins": .., "gangsters": ..}).
 static func text(d: Dictionary, key: String, dflt := "") -> String:
 	var v: Variant = d.get(key, dflt)
@@ -152,7 +166,7 @@ static func why_locked(cid: String) -> String:
 		return "No such campaign."
 	for a in c.get("after", []):
 		if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
-			return "Open %s first." % str(all()[a]["region_name"])
+			return "Open %s first." % region_phrase(all()[a], true)
 	var gl: String = CampaignGate.lock(cid)
 	if gl != "":
 		return gl
@@ -654,7 +668,7 @@ static func _unlock(cid: String) -> Array:
 	GameState.add_arc_xp(60 + 20 * int(c.get("tier", 1)))
 	GameState.run["flags"]["campaign_" + reg] = true
 	return [{"who": who(cid), "text": text(c, "won", "The way is open.")},
-		{"text": "%s is open! +%s" % [str(c["region_name"]), ", ".join(got)]}]
+		{"text": "%s is open! +%s" % [region_phrase(c, true), ", ".join(got)]}]
 
 
 # ---- region locks (hooked from GameMap.go_to / check_exits) --------------------------
@@ -679,21 +693,21 @@ static func story_pointer(qid: String) -> String:
 	if started(cid) and taken_count(cid) > 1:
 		held = " (%d/%d held)" % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
-		return "%s is guarded. Get further in the story, then win \"%s\"." % [str(get_c(gate_of(reg))["region_name"]), str(c["title"])]
+		return "%s is guarded. Get further in the story, then win \"%s\"." % [region_phrase(get_c(gate_of(reg)), true), str(c["title"])]
 	var first: String = CampaignGate.next_step(cid)
 	if first != "" and CampaignGate.story_ok() and not CampaignGate.trained() and not started(cid):
-		first = "Training with %s on the campaign map (Menu > Map)." % CampaignGate.trainer()
+		first = "Training with %s on the campaign map (MENU > Map)." % CampaignGate.trainer()
 	if first != "":
 		# The step comes first: the HUD shows two short lines, and the tail is what gets cut.
 		# Goal line budget (~112 chars): the step, then the campaign; no "X is guarded."
 		var st := first.left(1).to_lower() + first.substr(1)
 		var has_map := first.contains("campaign map")
-		for where in (["."] if has_map else [" (campaign map, Menu > Map).", " on the campaign map.", " (campaign map)."]):
+		for where in (["."] if has_map else [" (campaign map, MENU > Map).", " on the campaign map.", " (campaign map)."]):
 			var line := "First: %s Then win \"%s\"%s" % [st, str(c["title"]), where]
 			if line.length() <= 112:
 				return line
 		return ("First: %s (campaign map)" % st).left(112)
-	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
+	return "Open %s: win \"%s\" on the campaign map (MENU > Map)%s." % [region_phrase(c), str(c["title"]), held]
 
 
 ## The first campaign in cid's chain of prerequisites that still holds its
@@ -779,18 +793,26 @@ static func gate_words(cid: String) -> Dictionary:
 	var c := get_c(cid)
 	var a := arc()
 	var pen := a == "penguins"
-	var reg := str(c.get("region_name", "That way"))
+	var reg := region_phrase(c) if not c.is_empty() else "that way"
 	var sense := str((c.get("sense", {}) as Dictionary).get(a, ""))
 	if sense == "":
 		sense = "You hear a low rumbling ahead, and every hair on your neck stands up." if pen else "The street goes quiet ahead. Too quiet."
-	sense += " It doesn't feel safe to go on yet." if pen else " You'd be walking in alone. Not yet."
 	var lead := who(cid)
 	var out := {"stage": "", "lines": [sense], "board": false, "cid": cid}
 	if started(cid):
 		out["stage"] = "under_way"
 		out["board"] = true
-		out["lines"].append("Your banners are already moving: you hold %d of %d territories. Win \"%s\" on the campaign map to break through to %s." % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1, str(c["title"]), reg])
+		out["lines"][0] = sense   # c12_13-15: no "not yet" tail once it's under way
+		out["lines"].append(("Your banners are already moving: you hold %d of %d territories. Win \"%s\" on the campaign map to break through to %s." if pen
+			else "Your crew is already moving: you hold %d of %d blocks. Win \"%s\" on the campaign map to break through to %s.") % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1, str(c["title"]), reg])
 		return out
+	# c12_13-15: the tail fits the stage: "not yet" while the way is shut,
+	# "not without the team" once only the muster is left.
+	var gathering := CampaignGate.story_ok() and CampaignGate.trained() and first_in_chain(cid) == cid and GameState.progress_tier() >= int(c.get("min_pt", 0))
+	if gathering:
+		out["lines"][0] = sense + (" Not on your own. Not yet." if pen else " Not on foot. Not without the crew.")
+	else:
+		out["lines"][0] = sense + (" It doesn't feel safe to go on yet." if pen else " You'd be walking in alone. Not yet.")
 	if not CampaignGate.story_ok():
 		out["stage"] = "story"
 		var met_meadow := GameState.quest_done("clear_meadow")
@@ -815,7 +837,7 @@ static func gate_words(cid: String) -> Dictionary:
 		out["stage"] = "after"
 		out["board"] = true
 		out["cid"] = pre
-		var t := "%s won't lead you into %s until %s is taken: win \"%s\" on the campaign map first." % [lead, reg, str(pc["region_name"]), str(pc["title"])]
+		var t := "%s won't lead you into %s until %s is taken: win \"%s\" on the campaign map first." % [lead, reg, region_phrase(pc), str(pc["title"])]
 		if more > 0:
 			t += " After that, %d more campaign%s." % [more, "" if more == 1 else "s"]
 		if GameState.progress_tier() < int(pc.get("min_pt", 0)):
@@ -824,7 +846,7 @@ static func gate_words(cid: String) -> Dictionary:
 		return out
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
 		out["stage"] = "later"
-		out["lines"].append("Even %s says it's too soon for %s. Follow the story further (your goal line shows the next step), then come back." % [lead, reg])
+		out["lines"].append("%s shakes their head: it's too soon for %s. Follow the story further (your goal line shows the next step), then come back." % [lead, reg])
 		return out
 	var short := CampaignGate.short_text(cid)
 	out["board"] = true
