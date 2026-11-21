@@ -85,6 +85,10 @@ static func attach(bt: Battle, layer: CanvasLayer) -> BattleDrill:
 	layer.add_child(lb)
 	dr.leave_btn = lb
 	dr._place_leave()
+	# The field's exit ends training here (intercept_exit): say so on its sign (c16b_01-12).
+	for e: Dictionary in bt.map.exits:
+		if str(e.get("label", "")).contains("fall back"):
+			e["label"] = "▼ end training"
 	return dr
 
 
@@ -140,6 +144,17 @@ static func menu_row(gm: Node) -> void:
 	gm.call("_button", "End training: back to where you were (try again any time)", func() -> void:
 		gm.call("toggle")
 		dr.leave())
+
+
+## Walking off by the field's exit while the drill runs: the same as "Leave training"
+## (a confirm, then back where you started with the drill XP paid), never a silent
+## drop in town (c16b_01-12). Returns true when it took the exit over.
+static func intercept_exit(gm: Node) -> bool:
+	var dr := running(gm.get_tree())
+	if dr == null:
+		return false
+	gm.call("later", dr.ask_leave)
+	return true
 
 
 ## Leave with a confirm (B / "Not now" keeps training).

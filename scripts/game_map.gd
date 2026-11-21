@@ -1423,6 +1423,9 @@ func check_exits() -> void:
 			if Campaign.blocks(self, str(e["scene"])):
 				_exit_grace[i] = true  # stay put; step out of the strip and back in to be asked again
 				continue
+			if BattleDrill.intercept_exit(self):
+				_exit_grace[i] = true  # the drill's exit asks "End training?" (c16b_01-12)
+				return
 			if _retreat_needs_ok():
 				_exit_grace[i] = true
 				_ask_retreat(e)

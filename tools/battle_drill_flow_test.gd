@@ -324,6 +324,26 @@ func _run() -> void:
 		Dialogue.instance(self)._choose("", mi)
 		await _talk(10)
 		check(bt._rally >= 0 and bt.points[bt._rally] == bt.point("b") and m.has_meta("rally_pos"), "Go to Old Mill takes")
+		# c16b_01-12: the field's exit asks first while the drill runs, and is labelled so.
+		var lab_ok := false
+		for e in m.exits:
+			if str(e.get("label", "")) == "▼ end training":
+				lab_ok = true
+		check(lab_ok, "c16b_01-12: the field exit reads 'end training' during the drill")
+		for i in 200:
+			if not Dialogue.instance(self).active:
+				break
+			await _talk(2)
+		check(BattleDrill.intercept_exit(m), "c16b_01-12: walking off the field is taken over by the drill")
+		for i in 30:
+			await process_frame
+			if Dialogue.instance(self).active and Dialogue.instance(self)._in_choice:
+				break
+		opts = _choices()
+		check(opts.size() == 2 and str(opts[0]).begins_with("End training"), "c16b_01-12: ... and asks End training? (%s)" % str(opts))
+		Dialogue.instance(self)._choose("", 1)
+		await _talk(10)
+		check(current_scene == m and not bt._over, "c16b_01-12: Not now keeps training")
 		# A KO-free way out at the last step too.
 		bt.drill.leave()
 		m = await _arrive("town")
