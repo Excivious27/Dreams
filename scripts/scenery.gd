@@ -35,6 +35,8 @@ var _parts: Array = []
 var _ov_t := 0.0
 ## Painted aurora band across the top of the sky (crystal meadow / moon nights).
 var aurora := false
+## Overcast washes per weather (c14_16-02): rainy and grey days are dimmer and cooler than sunny ones.
+const OVERCAST := {"rain": Color(0.1, 0.12, 0.18, 0.15), "fog": Color(0.55, 0.58, 0.64, 0.08), "snow": Color(0.5, 0.55, 0.65, 0.07), "sandstorm": Color(0.45, 0.32, 0.15, 0.1), "ash": Color(0.15, 0.1, 0.1, 0.12)}
 const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow", "blizzard": "ov_blizzard", "petals": "ov_petals", "leaves": "ov_leaves", "fireflies": "ov_fireflies", "fog": "ov_fog", "dust": "ov_dust", "sandstorm": "ov_sandstorm", "ash": "ov_ash", "meteors": "ov_meteors"}
 
 
@@ -182,10 +184,11 @@ var _next_flash := 4.0
 func _draw_weather_extras() -> void:
 	var t := int(GameState.run.get("time", 0))
 	# Rainbow: the first clear hours after a wet day, morning only.
-	if weather in ["clear", "sun", "petals"] and GameState.weather_for(int(GameState.run["day"]) - 1) in ["rain", "storm"] and t < 11 * 60 and Art.has("fx", "rainbow"):
+	var daylit := GameState.darkness(t) < 0.25  # sun effects only while the sun is up (c14_16-03)
+	if daylit and weather in ["clear", "sun", "petals"] and GameState.weather_for(int(GameState.run["day"]) - 1) in ["rain", "storm"] and t < 11 * 60 and Art.has("fx", "rainbow"):
 		_canvas.draw_texture_rect(Art.tex("fx", "rainbow"), Rect2(Vector2(20, 40), Vector2(268, 84)), false, Color(1, 1, 1, 0.55))
 	# God rays on sunny mornings, drifting slowly.
-	if weather == "sun" and t >= 6 * 60 and t < 10 * 60 and Art.has("fx", "godrays_a"):
+	if daylit and weather == "sun" and t >= 6 * 60 and t < 10 * 60 and Art.has("fx", "godrays_a"):
 		var gx := sin(_ov_t * 0.15) * 10.0
 		_canvas.draw_texture_rect(Art.tex("fx", "godrays_a"), Rect2(Vector2(140 + gx, -10), Vector2(140, 100)), false, Color(1, 1, 1, 0.35))
 	# Wind streaks race across on windy days.
@@ -199,8 +202,11 @@ func _draw_weather_extras() -> void:
 				wsz *= 90.0 / wsz.x
 			_canvas.draw_texture_rect(wt, Rect2(Vector2(x, 60 + i * 95 + sin(_ov_t + i) * 6.0), wsz), false, Color(1, 1, 1, 0.65))
 	# Storms are dark and blizzards white out a little (c5_11 #3): a soft wash.
+	# Rain, snow and fog days get their own grey overcast light too (c14_16-02).
 	if weather == "storm":
 		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.08, 0.1, 0.16, 0.18))
+	elif weather in OVERCAST:
+		_canvas.draw_rect(Rect2(0, 0, _w, _h), OVERCAST[weather])
 	elif weather == "blizzard":
 		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.92, 0.95, 1.0, 0.12))
 	# Lightning in storms: a quick 4-frame flash every few seconds.
@@ -265,7 +271,7 @@ func _spawn_flock() -> void:
 
 
 func _on_draw() -> void:
-	if overhead and weather == "clear" and Art.has("fx", "cloud_shadow") and _canvas.visible:
+	if overhead and weather == "clear" and Art.has("fx", "cloud_shadow") and _canvas.visible and GameState.darkness() < 0.25:  # no sun, no cloud shadows (c14_16-03)
 		# Soft cloud shadows drifting over the ground on clear days.
 		var cs := Art.tex("fx", "cloud_shadow")
 		var fr := 2  # the one frame whose blobs aren't cut by the frame edge (frames swapping made the shadows jump)

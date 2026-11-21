@@ -1102,9 +1102,17 @@ func draw_map() -> void:
 
 
 ## Mines: lamps and torches glow at a steady strength, day or night (c5_10 #4).
-## No tint (has_sky is false): the floors keep their own lighting.
 func underground_light() -> float:
 	return 0.45
+
+
+## Mines are dim, cool caves day and night (c14_16-13): a steady blue-grey shade
+## under the NightGlow layer, so the lamps and torches finally read as light.
+## Deeper floors get a touch darker (to 0.62 shade at floor 60+).
+const MINE_SHADE := Color(0.5, 0.52, 0.7)
+func sky_tint(_t: int) -> Color:
+	var deep := clampf(float(floor_no) / 60.0, 0.0, 1.0)
+	return Color(1, 1, 1).lerp(MINE_SHADE, (0.5 + 0.12 * deep) * Settings.night_strength())
 
 
 ## Chunked mines never use GameMap's ground bake (their MineChunks draw the

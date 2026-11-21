@@ -31,7 +31,7 @@ var fixed_dark := -1.0   # >= 0: underground light (no sky clock, lamps always g
 var _canopies: Array = []      # tall sprites that fade when you walk behind them
 var _faded: Array = []
 var _fade_t := 0.0
-const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire"]
+const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire", "hearth", "fireplace", "forge", "candle", "oven", "fire_pit"]  # C14 P6: hearths/forges/candles too (c14_11-07)
 ## Festival pieces that are lights without a light word in their name (Lantern
 ## Festival posts/strings fest_ss_23..33, its bonfire fest_ss_80) (c5_10 #1).
 const FEST_GLOW := ["fest_ss_23", "fest_ss_24", "fest_ss_25", "fest_ss_26", "fest_ss_27", "fest_ss_28", "fest_ss_29", "fest_ss_30", "fest_ss_31", "fest_ss_32", "fest_ss_33", "fest_ss_80"]
@@ -1801,7 +1801,7 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
 	if glow and glows(name):
-		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
+		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7] + NightGlow.tint_of(name))  # C14 P6 coloured lamps
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
 	if group in ["buildings", "props", "nature"]:
