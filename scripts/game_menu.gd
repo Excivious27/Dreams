@@ -413,7 +413,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) or (t == "Party" and _tab in ["Animals", "Chores"]) else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab in ["Keys", "Coop"]) or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) or (t == "Party" and _tab in ["Animals", "Chores"]) else Color(0.85, 0.85, 0.85)
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	if _tab_buttons.has("Book"):
@@ -562,6 +562,8 @@ func _refresh() -> void:
 			anb.set_meta("pc_key", "party:animals")
 			var chb := _button("Chores: %d helper%s working ›" % [Chores.st()["assign"].size(), "" if Chores.st()["assign"].size() == 1 else "s"] if Chores.unlocked() else "Chores (after your first week) ›", func() -> void: _tab = "Chores"; _refresh())
 			chb.set_meta("pc_key", "party:chores")
+			if Settings.online_ok() or Net.online():
+				_button(CoopPanel.row_text(), func() -> void: _tab = "Coop"; _refresh())  # C17 P5: Play together from Party too
 			if not GameState.is_penguins():
 				_crew_tab()
 			_line("Party", 10, Color(1, 0.95, 0.8))
@@ -820,6 +822,11 @@ func _refresh() -> void:
 			_centre_rows = true
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
+			# C17 P5: Play together first (room code, players, host/join/leave), then the online switch.
+			Settings.header(_body, "Play together")
+			if Settings.online_ok() or Net.online():
+				Settings.row_button(_body, get_tree(), CoopPanel.row_text(), func() -> void: _tab = "Coop"; _refresh())
+			Settings.online_rows(_body, get_tree(), _refresh)
 			# Grouped (C9 c9_07): Sound, Display and controls, This farm, then the way out.
 			Settings.header(_body, "Sound")
 			Settings.audio_rows(_body, get_tree(), _refresh)
@@ -838,15 +845,22 @@ func _refresh() -> void:
 					if mp:
 						Epilogue.play(mp))
 			if quit_offered():
-				_button("Save and quit", func() -> void:
+				_button(_leave_words("Save and quit", "quit"), func() -> void:
+					if not _leave_ok("quit"):
+						return
 					_save_now()
 					get_tree().paused = false
 					get_tree().quit())
-			_button("Save and back to title", func() -> void:
+			_button(_leave_words("Save and back to title", "title"), func() -> void:
+				if not _leave_ok("title"):
+					return
 				_save_now()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
 			_line(help_text(), 8, Color(0.8, 0.8, 0.8))
+		"Coop":
+			CoopPanel.build(self)  # C17 P5: in-game Play together page
+			_button("← Back to Options", func() -> void: _tab = "Options"; _refresh())
 		"Workshop":
 			var ws2 := Crafting.summary()
 			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
@@ -1867,9 +1881,37 @@ func _crew_tab() -> void:
 
 # --- C9 P2: sub-page back, options helpers, pad/keyboard cursor ---------------
 
-var _steal_warn := {}  # Keys page: {key, from} while a stolen key waits for its confirm press
+var _steal_warn := {}
 
-const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests", "Animals": "Party", "Chores": "Party"}
+var _leave_arm := ""  # C17 P5: the host's "end co-op" confirm on Save and quit / back to title
+
+
+## While online the leave rows say what they do to co-op (c17_12-24 / c17_14-04).
+func _leave_words(base: String, which: String) -> String:
+	if not Net.online():
+		return base
+	if Net.is_host():
+		var k := Net.peers.size()
+		if _leave_arm == which:
+			return "Sure? Tap again: %d friend%s go back to their own farms" % [k, "" if k == 1 else "s"]
+		return base.replace("Save and", "Save, end co-op and")
+	return base.replace("Save and", "Save, leave the room and")
+
+
+## Leaves co-op first (a host's world stops for guests; a guest restores their own farm before
+## the save). A host with friends confirms with a second tap. False = wait for the confirm.
+func _leave_ok(which: String) -> bool:
+	if not Net.online():
+		return true
+	if Net.is_host() and Net.peers.size() > 0 and _leave_arm != which:
+		_leave_arm = which
+		_refresh()
+		return false
+	_leave_arm = ""
+	Net.leave()
+	return true  # Keys page: {key, from} while a stolen key waits for its confirm press
+
+const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "Coop": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests", "Animals": "Party", "Chores": "Party"}
 ## Cursor key repeat: first delay, then every step (seconds, real time).
 const REPEAT_FIRST := 0.35
 const REPEAT_STEP := 0.09

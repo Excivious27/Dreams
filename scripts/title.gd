@@ -170,8 +170,8 @@ func _show_title() -> void:
 		var n: String = GameState.run["names"]["character"]
 		_page.add_child(_button("Continue as %s" % n, _start_game, true))
 	_page.add_child(_button("New game", _confirm_new if GameState.has_run() else _show_arcs, true))
-	if GameState.has_run():
-		_page.add_child(_button("Play together", _show_net))
+	if Settings.online_ok():
+		_page.add_child(_button("Play together", _show_net))  # C17 P5 (c17_18-02): on every title, also before a first save
 	var prev: Variant = SaveGame.get_value(GameState.prev_key(), null)
 	if prev is Dictionary and not (prev as Dictionary).is_empty():
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
@@ -412,73 +412,171 @@ var _net_steam_invite := false
 
 func _show_net() -> void:
 	_clear()
+	_net_busy = false
+	_net_btns.clear()
 	_page.add_child(_label("Play together", 16))
-	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
-	_page.add_child(_label("About co-op: your character's name and look and the world changes go to the players in your room. The server keeps them in memory only and forgets them 30 minutes after the room empties. No accounts, no chat, nothing stored.", 7, false))  # s1_13-08, docs/steam-store/privacy.md
-	_net_status = _label("", 8, false)
+	_net_status = _label("", 9, false)  # up top so a tap always shows its answer (c17_12-07)
+	_net_status.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
+	_page.add_child(_net_status)
+	if not GameState.has_run():
+		# A friend opening the link for the first time: make a character first, then join.
+		_page.add_child(_label("Make your character first: you bring them to your friend's farm. Tap New game, then come back to Play together.", 9, false))
+		_page.add_child(_button("New game", _show_arcs, true))
+		_page.add_child(_button("Back", _show_title))
+		return
+	var who: String = str(GameState.run.get("names", {}).get("character", "your hero"))
+	_page.add_child(_label("Up to 8 players. The host's farm is the world. You bring %s with your own skills, pack and money; what you earn on a visit is yours, your farm waits at home." % who, 8, false))
+	_page.add_child(_label("Shared: your name, look and the world changes. No typed chat: only emotes and preset phrases. The server forgets the room 30 minutes after it empties.", 7, false))  # s1_13-08, docs/steam-store/privacy.md
 	# S1 P4: desktop builds with Steam running host friends-only Steam lobbies; friends
 	# join from the Steam friends list or an invite. The room code stays for phones and web.
 	if Net.steam_ready():
 		_page.add_child(_label("Steam friends", 10, false))
-		_page.add_child(_button("Host with Steam friends", func() -> void:
-			_net_status.text = "Starting a Steam lobby..."
+		_net_btns.append(_button("Host with Steam friends", func() -> void:
+			if not _net_begin("Starting a Steam lobby..."):
+				return
 			_net_steam_invite = true
-			Net.host_steam(), true))
+			if not Net.i().host_steam():
+				_net_end(), true))
+		_page.add_child(_net_btns[-1])
 		_page.add_child(_label("Friends join from your Steam friends list, or from the invite that opens once your lobby is up.", 7, false))
 		_page.add_child(_label("Phones and web (room code)", 10, false))
-	# The Dreams server works out of the box; a custom wss:// address can still be typed,
-	# and "Reset to default" puts the Dreams server back.
-	_net_url = _edit("Server (the Dreams server is filled in; change only for your own)", NetNode.server_url())
-	_net_url.max_length = 120
-	_net_url.text = NetNode.server_url()  # _edit's 16-char cap cut the address before max_length grew
-	_net_url.placeholder_text = NetNode.DEFAULT_URL
-	_net_url.get_parent().remove_child(_net_url)
-	var srow := HBoxContainer.new()
-	srow.add_theme_constant_override("separation", 6)
-	_page.add_child(srow)
-	srow.add_child(_net_url)
-	var reset := _button("Reset to default", func() -> void:
-		NetNode.reset_server()
-		_net_url.text = NetNode.DEFAULT_URL
-		if is_instance_valid(_net_status):
-			_net_status.text = "Using the Dreams server.")
-	reset.size_flags_horizontal = SIZE_SHRINK_END
-	srow.add_child(reset)
 	_net_code = _edit("Room code (to join)", "")
-	_net_code.max_length = 4
-	_page.add_child(_button("Host a room", func() -> void:
-		_net_status.text = "Connecting..."
-		Net.host(_net_url.text), true))
-	_page.add_child(_button("Join with code", func() -> void:
-		_net_status.text = "Connecting..."
-		Net.join(_net_url.text, _net_code.text), true))
-	_page.add_child(_net_status)  # the connect status line (it was never on the page, so a connect never started the game)
+	_net_code.max_length = 6
+	_net_code.placeholder_text = "ABCD"
+	_net_code.text_changed.connect(func(t: String) -> void:
+		var up := CoopPanel.clean_code(t)
+		if up != t:
+			_net_code.text = up
+			_net_code.caret_column = up.length())
+	var hb := _button("Host a room", func() -> void:
+		if _net_begin("Connecting..."):
+			Net.host(_server_text()), true)
+	_page.add_child(hb)
+	var jb := _button("Join with code", func() -> void:
+		var why := CoopPanel.code_problem(_net_code.text)
+		if why != "":
+			_net_status.text = why
+			Music.instance(get_tree()).sfx("nope", "ui_tap")
+			return
+		if _net_begin("Connecting..."):
+			Net.join(_server_text(), CoopPanel.clean_code(_net_code.text)), true)
+	_page.add_child(jb)
+	_net_btns.append(hb)
+	_net_btns.append(jb)
+	# The server box hides behind "Server settings" (testers on phones never need it, c17_01-08).
+	var custom := not NetNode.uses_default()
+	_page.add_child(_button("Server settings%s" % (" (custom server in use)" if custom else ""), func() -> void:
+		_net_show_server = not _net_show_server
+		_show_net()))
+	if _net_show_server:
+		_net_url = _edit("Server address (only for your own server; must start wss://)", NetNode.server_url())
+		_net_url.max_length = 120
+		_net_url.text = NetNode.server_url()  # _edit's 16-char cap cut the address before max_length grew
+		_net_url.placeholder_text = NetNode.DEFAULT_URL
+		_page.add_child(_button("Reset to the Dreams server", func() -> void:
+			NetNode.reset_server()
+			_net_url.text = NetNode.DEFAULT_URL
+			if is_instance_valid(_net_status):
+				_net_status.text = "Using the Dreams server."))
+	else:
+		_net_url = null
 	_page.add_child(_button("Back", func() -> void:
 		Net.leave()  # a connect that lands after Back must not start a game
 		_show_title()))
 	if not Net.connected.is_connected(_on_net_connected):
 		Net.connected.connect(_on_net_connected)
 		Net.disconnected.connect(func(why: String) -> void:
+			_net_end()
 			if is_instance_valid(_net_status):
-				_net_status.text = why
+				_net_status.text = CoopPanel.friendly_error(why)
 				if _net_status.is_inside_tree():
 					Music.instance(get_tree()).sfx("nope", "ui_tap"))  # c13_18-14: a failed connect is heard
+
+
+var _net_busy := false
+var _net_btns: Array = []
+var _net_show_server := false
+
+
+## Address to use. A custom one must be wss:// (plain ws:// only for this machine), c17_17-11.
+func _server_text() -> String:
+	var u := _net_url.text.strip_edges() if is_instance_valid(_net_url) else NetNode.server_url()
+	if not url_ok(u):
+		return NetNode.DEFAULT_URL
+	return u
+
+
+static func url_ok(u: String) -> bool:
+	if u == "" or u.begins_with("wss://"):
+		return true
+	return u.begins_with("ws://localhost") or u.begins_with("ws://127.0.0.1")
+
+
+## One connect at a time: Host/Join grey out until it lands or fails (c17_14-07).
+func _net_begin(words: String) -> bool:
+	if _net_busy:
+		return false
+	_net_busy = true
+	for b in _net_btns:
+		if is_instance_valid(b):
+			(b as Button).disabled = true
+	if is_instance_valid(_net_status):
+		_net_status.text = words
+	return true
+
+
+func _net_end() -> void:
+	_net_busy = false
+	for b in _net_btns:
+		if is_instance_valid(b):
+			(b as Button).disabled = false
+
+
+var _guest_start := false
 
 
 func _on_net_connected(is_host: bool) -> void:
 	if not is_instance_valid(_net_status) or not _net_status.is_inside_tree():
 		return  # left the page
-	if is_instance_valid(_net_status):
-		_net_status.text = "Connected. Room %s. %s" % [Net.room, "You're hosting; share the code." if is_host else "Joined."]
 	Music.instance(get_tree()).sfx("j_confirm", "ui_tap")  # c13_18-14
 	if is_host and _net_steam_invite:
 		_net_steam_invite = false
 		var n := Net.i()
 		if n != null and n.tr != null and "lobby_id" in n.tr:
 			SteamApi.call_steam("activateGameOverlayInviteDialog", [int(n.tr.get("lobby_id"))])
+	if is_host:
+		_show_room_card()  # c17_01-02 / c17_14-01: the host stays on the code until Start
+		return
+	_net_status.text = "Joined room %s. Off to your friend's farm..." % Net.room
+	_guest_start = true
 	await get_tree().create_timer(0.8).timeout
-	if Net.room != "":
+	if Net.online():
 		_start_game()
+
+
+## The host's room card: big code, Copy, Start playing (the code is also in Menu > Options > Play together).
+func _show_room_card() -> void:
+	_clear()
+	var code := Net.room
+	_page.add_child(_label("Your room", 12))
+	if code != "":
+		var big := _label(code, 36)
+		big.add_theme_color_override("font_color", Color(1, 0.92, 0.55))
+		_page.add_child(big)
+		_page.add_child(_label("Friends open Dreams, tap Play together, type this code and tap Join with code.", 8, false))
+		_page.add_child(_button("Copy the code", func() -> void:
+			DisplayServer.clipboard_set(code)
+			if is_instance_valid(_net_status):
+				_net_status.text = "Copied %s." % code))
+	else:
+		_page.add_child(_label("Steam lobby up: friends join from your Steam friends list.", 9, false))
+	_net_status = _label("", 8, false)
+	_page.add_child(_net_status)
+	_page.add_child(_button("Start playing", _start_game, true))
+	_page.add_child(_label("You can see the code again any time in Menu > Options > Play together.", 7, false))
+	_page.add_child(_button("End the room", func() -> void:
+		Net.leave()
+		_show_title()))
 
 
 func _show_arcs() -> void:
@@ -946,6 +1044,12 @@ func _start_game() -> void:
 	_starting = true
 	GameMap.next_interior = ""
 	var scene := str(GameState.run.get("scene", "farm"))
+	if _guest_start or Net.visiting():
+		# c17_01-06 / c17_18-14: a guest lands on the host's farm, never where their own save was
+		# (a battle field, a mine floor, an interior). Their own scene/spawn stay in the save.
+		GameMap.next_spawn = Vector2.ZERO
+		get_tree().change_scene_to_file("res://scenes/farm.tscn")
+		return
 	if not ResourceLoader.exists("res://scenes/%s.tscn" % scene):
 		scene = "farm"
 	GameMap.next_spawn = Vector2.ZERO

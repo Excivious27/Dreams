@@ -14,6 +14,19 @@ func _initialize() -> void:
 			"Clover", "Hassan", "Cassie", "Glassford", "Analise", "Titus", "Mossy Hollow", "Bassett", "Sal", "Maple Town"]:
 		if not NF.is_ok(good):
 			print("FAIL: should allow %s" % good); fails += 1
+	# C17 P5 (c17_17-06 / c17_17-13): compounds, accents, look-alikes, short forms, drug words; and innocent hosts.
+	for bad in ["BigDick", "SexyGirl", "KillYou", "CumLord", "RapeU", "A S S", "fuk", "phuck", "fück", "fυck", "Weed420", "Cocaine", "bigdick", "xXcumXx", "Meth Head"]:
+		if NF.is_ok(bad):
+			print("FAIL: should block %s" % bad); fails += 1
+	for good in ["Shitake", "Shitake Farm", "Scunthorpe", "Ignazio", "Cockatoo", "Grape Vine", "Skillet", "Cucumber Kid", "Dickens", "Sussex", "Tweed", "BigDipper", "MossyRock", "Jo", "Ana Lise"]:
+		if not NF.is_ok(good):
+			print("FAIL: should allow %s" % good); fails += 1
+	# Name tags: zero-width / RTL / emoji dropped, long names clamped, host marked.
+	var tg: String = Puppet.tag_text("Pi\u200bp\u202e🙂", false)
+	if tg != "Pip":
+		print("FAIL: tag text cleaned %s" % tg); fails += 1
+	if Puppet.tag_text("Bartholomew Longname", true).length() > 18 or not Puppet.tag_text("Pip", true).begins_with("Host "):
+		print("FAIL: tag clamp/host mark"); fails += 1
 	if NF.clean("sh1t", "Daisy") != "Daisy" or NF.clean("Daisy", "x") != "Daisy":
 		print("FAIL: clean fallback"); fails += 1
 	# Co-op guests clean animal names from the host's ranch delta (net.gd, S1 integ).

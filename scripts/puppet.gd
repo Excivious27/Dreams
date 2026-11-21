@@ -12,11 +12,38 @@ var _pal: Node2D
 var _pal_id := ""
 var _pup: AnimatedSprite2D
 var _pup_kind := "-"
+# C17 P5: swings, vehicles, busy cue (fields the state packet carries: act {seq,tool,kind,dur,spd}, veh, busy).
+var _act_seq := -1
+var _veh := ""
+var _busy: Node2D
+const TAG_MAX := 12  # name tag characters before an ellipsis
+
+
+## The peer's info (router peers may be keyed by String or int).
+func _info() -> Dictionary:
+	var pl: Dictionary = CoopPanel.peer_list()
+	var v: Variant = pl.get(peer_id, pl.get(str(peer_id), {}))
+	return v if v is Dictionary else {}
+
+
+## Name tag text: filtered, printable letters only (no zero-width / RTL / emoji), clamped,
+## the host marked (c17_09-06, c17_09-22, c17_14-10).
+static func tag_text(raw: String, host := false) -> String:
+	var t := ""
+	for ch in raw:
+		var c := ch.unicode_at(0)
+		if c >= 32 and c < 0x2000:  # Latin, Greek, Cyrillic...; drops control, zero-width, RTL marks, emoji
+			t += ch
+	t = NameFilter.clean(t.strip_edges(), "Player")
+	if t.length() > TAG_MAX:
+		t = t.substr(0, TAG_MAX - 1) + "…"
+	return ("Host " if host else "") + t
 
 
 func setup(id: int, m: GameMap) -> void:
 	peer_id = id
-	var info: Dictionary = Net.peers.get(id, {})
+	add_to_group("net_puppet")
+	var info: Dictionary = _info()
 	_p = Player.new()
 	_p.map = m
 	_p.frozen = true
@@ -24,19 +51,25 @@ func setup(id: int, m: GameMap) -> void:
 	add_child(_p)
 	_apply_look(info)
 	_label = Label.new()
-	_label.text = preload("res://scripts/name_filter.gd").clean(str(info.get("name", "Player")))  # s1_13-03: a peer's typed name
-	_label.add_theme_font_size_override("font_size", 7)
+	_label.text = tag_text(str(info.get("name", "Player")), bool(info.get("host", false)))  # s1_13-03: a peer's typed name
+	_label.add_theme_font_size_override("font_size", Settings.font(7))
 	_label.add_theme_color_override("font_color", Color(1, 1, 0.9))
 	_label.add_theme_constant_override("outline_size", 2)
 	_label.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
-	_label.position = Vector2(-30, -40)
-	_label.size = Vector2(60, 10)
+	_label.position = Vector2(-40, -44)
+	_label.size = Vector2(80, 10)
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label.z_index = 50  # above props and roofs (it was hidden behind them by y-sort)
+	_label.z_as_relative = false
 	add_child(_label)
 	y_sort_enabled = true
 	if info.has("pos"):
 		position = Vector2(float(info["pos"][0]), float(info["pos"][1]))
 		_target = position
+	else:
+		visible = false  # no position yet: wait for the first state instead of popping in at (0,0)
+	modulate.a = 0.0
+	create_tween().tween_property(self, "modulate:a", 1.0, 0.3)  # fade in on arrival
 
 
 func _apply_look(info: Dictionary) -> void:
@@ -54,13 +87,16 @@ func _apply_look(info: Dictionary) -> void:
 
 
 func _process(delta: float) -> void:
-	var info: Dictionary = Net.peers.get(peer_id, {})
+	var info: Dictionary = _info()
 	if info.is_empty():
 		queue_free()
 		return
 	_apply_look(info)
 	if info.has("pos"):
 		_target = Vector2(float(info["pos"][0]), float(info["pos"][1]))
+		if not visible:
+			visible = true
+			position = _target
 	var to := _target - position
 	if to.length() > 120.0:
 		position = _target
@@ -69,11 +105,72 @@ func _process(delta: float) -> void:
 	var an := str(info.get("anim", "idle"))
 	if _p._anim and _p._anim.sprite_frames and _p._anim.sprite_frames.has_animation(an):
 		if _p._anim.animation != an:
+			_p._anim.speed_scale = 1.0  # a swing's speed ends with the swing
 			_p._anim.play(an)
 		_p._anim.flip_h = bool(info.get("flip", false))
+		if info.has("facing") and str(info["facing"]) != _p.facing:
+			_p.facing = str(info["facing"])
+			if _veh != "":
+				_p._veh_face()
 		_p.anim_name = an
 	_p._update_doll()
 	_followers(info, an)
+	_actions(info, an)
+
+
+## C17 P5 (c17_09-02/03, c17_09-17): a new swing restarts the anim at the swing's speed with the
+## held tool drawn; the vehicle follows `veh`; a "..." bubble while the partner is in a menu.
+func _actions(info: Dictionary, an: String) -> void:
+	var av: Variant = info.get("act", null)
+	if av is Dictionary:
+		var a: Dictionary = av
+		var sq := int(a.get("seq", -1))
+		if sq != _act_seq:
+			_act_seq = sq
+			swing(str(a.get("tool", "")), str(a.get("kind", "chop")), float(a.get("dur", 0.4)), float(a.get("spd", 1.0)), an)
+	var veh := str(info.get("veh", ""))
+	if veh != _veh:
+		_veh = veh
+		# Player.ride/unride write run.flags.vehicle: keep OUR flag (the puppet must never change it).
+		var fl: Variant = GameState.run.get("flags", null)
+		var had: Variant = (fl as Dictionary).get("vehicle", null) if fl is Dictionary else null
+		if veh != "":
+			_p.ride(veh, true)
+		else:
+			_p.unride(true)
+		if fl is Dictionary:
+			if had == null:
+				(fl as Dictionary).erase("vehicle")
+			else:
+				(fl as Dictionary)["vehicle"] = had
+	var busy := bool(info.get("busy", false))
+	if busy and _busy == null and Art.has("emotes", "bubble_dots"):
+		var b := AnimatedSprite2D.new()
+		b.sprite_frames = Art.frames("emotes", {"e": "bubble_dots"}, {"e": 4.0})
+		b.animation = "e"
+		b.scale = Vector2(0.5, 0.5)
+		b.position = Vector2(0, -50)
+		b.z_index = 45
+		add_child(b)
+		b.play("e")
+		_busy = b
+	elif not busy and _busy:
+		_busy.queue_free()
+		_busy = null
+
+
+## One swing (also called by tests): restart even when the anim name is the same.
+func swing(tool: String, kind: String, dur: float, spd: float, an := "") -> void:
+	if _p._anim == null or _p._anim.sprite_frames == null:
+		return
+	var nm: String = an if an != "" else _p._anim.animation
+	if _p._anim.sprite_frames.has_animation(nm):
+		_p._anim.speed_scale = clampf(spd, 0.5, 3.0)
+		_p._anim.stop()
+		_p._anim.play(nm)
+		_p._anim.frame = 0
+	if tool != "" and kind in ["chop", "pour", "sweep", "aim"]:
+		HeldSwing.spawn(_p, tool, kind, clampf(dur, 0.1, 1.0), str(_p.facing) if "facing" in _p else "down")
 
 
 func _followers(info: Dictionary, an: String) -> void:

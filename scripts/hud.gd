@@ -77,6 +77,9 @@ func _ready() -> void:
 	_fade.visible = false  # an invisible full-screen rect still costs a blended full-screen pass every frame
 	add_child(_fade)
 	_show_clinic_note.call_deferred()
+	CoopPanel.attach_strip(self)  # C17 P5: room code / players / reconnect chip while online
+	Emotes.attach_button(self)  # C17 P5: emotes, preset phrases and ping (online only)
+	Emotes.hook()
 
 
 ## Waking in the clinic after passing out (GameMap.player_down): say what happened and the bill.

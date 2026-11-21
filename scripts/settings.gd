@@ -6,7 +6,8 @@ extends RefCounted
 
 const DEFAULTS := {"music_vol": 9, "sfx_vol": 8, "amb_vol": 7, "bg_sound": false, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false, "text_size": 0,
 	"text_speed": 1, "toast_hold": 1, "timing_help": false, "pause_unfocused": true, "vsync": true, "fps_cap": 0, "pixel_perfect": false, "win_rect": [],
-	"mono": false, "reduce_loud": false, "captions": false, "voice_vol": 8, "ui_vol": 8, "steps_vol": 8}
+	"mono": false, "reduce_loud": false, "captions": false, "voice_vol": 8, "ui_vol": 8, "steps_vol": 8,
+	"online_play": true, "online_emotes": true}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]
@@ -29,6 +30,28 @@ const CALM_HIT_FLASH := 0.5  # enemy white hit flash strength
 
 static func get_v(key: String) -> Variant:
 	return SaveGame.get_value("set_" + key, DEFAULTS.get(key))
+
+
+## C17 P5 (c17_17-19): the parental switch for online co-op. Off: no Play together on the
+## title or in game (Host/Join hidden), so a child can't reach a public room.
+static func online_ok() -> bool:
+	return bool(get_v("online_play"))
+
+
+static func set_online_ok(on: bool) -> void:
+	set_v("online_play", on)
+
+
+## Partners' emotes, phrases and pings are shown (preset only; never free text).
+static func emotes_on() -> bool:
+	return bool(get_v("online_emotes"))
+
+
+## Options rows for co-op: the online switch and partners' emotes.
+static func online_rows(parent: Control, tree: SceneTree, refresh: Callable, fsize := 8) -> void:
+	row_button(parent, tree, "Online play: %s" % ("on" if online_ok() else "off"), func() -> void: set_online_ok(not online_ok()); refresh.call_deferred(), fsize)
+	note(parent, "Off: Play together is hidden (for younger players). Co-op has no typed chat: only emotes, preset phrases and pings.")
+	row_button(parent, tree, "Friends' emotes and phrases: %s" % ("shown" if emotes_on() else "hidden"), func() -> void: set_v("online_emotes", not emotes_on()); refresh.call_deferred(), fsize)
 
 
 static func set_v(key: String, v: Variant) -> void:
