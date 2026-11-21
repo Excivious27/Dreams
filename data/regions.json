@@ -812,7 +812,87 @@
     "props/city_garage"
    ]
   },
-  "ground_seam_winter": "snow_trampled"
+  "ground_seam_winter": "snow_trampled",
+  "props_spring": [
+   {
+    "name": "dc_y_tulip_barrow",
+    "cell": [
+     18,
+     18
+    ],
+    "group": "decor",
+    "solid": false
+   },
+   {
+    "name": "dc_bloom_wreath",
+    "cell": [
+     25,
+     17
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ],
+  "props_summer": [
+   {
+    "name": "bk_umbrella_red",
+    "cell": [
+     18,
+     18
+    ],
+    "group": "props",
+    "solid": false
+   },
+   {
+    "name": "bunting_red",
+    "cell": [
+     25,
+     17
+    ],
+    "group": "props",
+    "solid": false
+   }
+  ],
+  "props_fall": [
+   {
+    "name": "dc_fest_pumpkins",
+    "cell": [
+     18,
+     18
+    ],
+    "group": "decor",
+    "solid": false
+   },
+   {
+    "name": "dc_y_leaf_pile",
+    "cell": [
+     25,
+     17
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ],
+  "props_winter": [
+   {
+    "name": "dc_ice_snowman",
+    "cell": [
+     18,
+     18
+    ],
+    "group": "decor",
+    "solid": false
+   },
+   {
+    "name": "dc_fest_snow_lantern",
+    "cell": [
+     25,
+     17
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ]
  },
  "docks": {
   "cols": 54,
@@ -2223,7 +2303,60 @@
    "wet_asphalt_3"
   ],
   "ground_seam": "c14p5_wet_asphalt",
-  "ground_seam_winter": "slush"
+  "ground_seam_winter": "slush",
+  "props_fall": [
+   {
+    "name": "dc_fest_pumpkins",
+    "cell": [
+     25,
+     11
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ],
+  "props_winter": [
+   {
+    "name": "dc_fest_snow_lantern",
+    "cell": [
+     25,
+     11
+    ],
+    "group": "decor",
+    "solid": false
+   },
+   {
+    "name": "dc_ice_snowman",
+    "cell": [
+     28,
+     11
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ],
+  "props_summer": [
+   {
+    "name": "bunting_purple",
+    "cell": [
+     25,
+     11
+    ],
+    "group": "props",
+    "solid": false
+   }
+  ],
+  "props_spring": [
+   {
+    "name": "dc_y_tulip_barrow",
+    "cell": [
+     25,
+     11
+    ],
+    "group": "decor",
+    "solid": false
+   }
+  ]
  },
  "uptown": {
   "cols": 50,

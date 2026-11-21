@@ -68,6 +68,22 @@ static func season_mod(se := "") -> Dictionary:
 	return d
 
 
+## C15 P4 (c15_15-14): the first Hideout visit of a season, Dice passes on "the Word":
+## what's on in the city this season, and how the season moves the racket.
+static func season_word(m: GameMap) -> bool:
+	if not Crew.recruited("dice") or GameState.day_of_season() > 7:
+		return false
+	var se := GameState.season()
+	var key := "word_%s_%d" % [se, (int(GameState.run.get("day", 1)) - 1) / 112]
+	if GameState.run["flags"].has(key):
+		return false
+	GameState.run["flags"][key] = true
+	var ls: Array = (CrewSeason.LINES.get("dice", {}) as Dictionary).get(se, [])
+	var word := str(ls[0]) if not ls.is_empty() else ""
+	m.hud.toast("Dice: %s %s" % [word, str((SEASON_MOD.get(se, {}) as Dictionary).get("line", ""))], Color(0.85, 0.9, 1))
+	return true
+
+
 ## True on a festival/holiday day (GameState.festival_today delegates to Calendar, C15 contract).
 static func festival_day() -> bool:
 	return GameState.festival_today() != ""
@@ -180,6 +196,8 @@ static func on_enter(m: GameMap) -> void:
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
 		var got := GameState.extra_energy(int(GameState.run["max_energy"]))
 		m.hud.toast("Mama Rosa left a hot plate out for you. +%d energy." % got if got > 0 else "Mama Rosa left a hot plate out for you. You're too full to eat.", Color(1, 0.9, 0.6))
+	if on() and m.scene_id() == "hideout":
+		season_word(m)
 	if on() and Crew.perk_level("raid_warning") >= 3 and m.scene_id() in PEOPLED and m.scene_id() != "hideout":
 		m.later(func() -> void:
 			var n := 0

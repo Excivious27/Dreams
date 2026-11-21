@@ -56,6 +56,11 @@ static func greet(thing: Dictionary, se := "") -> String:
 static func skin(r: Dictionary, se := "") -> void:
 	if se == "":
 		se = GameState.look_se()
+	# c15_15-11: a region's "props_<season>" rows (seasonal dressing) join its props.
+	for row in r.get("props_" + se, []):
+		var pr: Array = r.get("props", [])
+		pr.append(row)
+		r["props"] = pr
 	if se != "winter":
 		return
 	if r.has("ground_seam_winter"):

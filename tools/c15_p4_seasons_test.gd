@@ -136,6 +136,13 @@ func _city() -> void:
 	GameState.look_season = "summer"
 	check(WorldGen.winter_look("props", "taxi") == "taxi", "no twin outside winter")
 	GameState.look_season = ""
+	for se: String in DAYS:
+		var hd: Dictionary = (rj["hideout"] as Dictionary).duplicate(true)
+		var n0: int = (hd.get("props", []) as Array).size()
+		RegionSeason.skin(hd, se)
+		check((hd["props"] as Array).size() == n0 + 2, "the Hideout dresses for %s" % se)
+		for row: Dictionary in rj["hideout"]["props_" + se]:
+			check(Art.has(str(row.get("group", "props")), str(row["name"])), "%s dressing %s has art" % [se, row["name"]])
 	var market := {}
 	for t: Dictionary in rj["docks"]["things"]:
 		if str(t.get("who", "")) == "Fish market":
