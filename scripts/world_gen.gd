@@ -1063,6 +1063,8 @@ static func pick_ramps(m: GameMap, cells: Dictionary) -> Array:
 ## side moves in or out by one cell at most every 3 rows, corners chamfered).
 ## Cliff faces, rims and stairs draw cleanly on shapes like this; round noise
 ## blobs step every row and the rim reads as a ring of boxes.
+const JOG_MAPS := ["highlands", "orchard_hills", "riverlands"]
+
 static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int, margin := 2) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
@@ -1073,6 +1075,9 @@ static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int,
 	var orr := 0
 	var hold_l := 0
 	var hold_r := 0
+	# C14 P1 (c14_14-10): big plateaus on the hand-made home regions jog their side
+	# walls every 2-3 rows (wider in/out) so long sides never read as a box.
+	var jog := rx >= 6.0 and m.scene_id() in JOG_MAPS
 	for y in range(y0, y1 + 1):
 		var cham := 0
 		if y == y0:
@@ -1082,11 +1087,11 @@ static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int,
 		elif y == y1:
 			cham = 1
 		if hold_l <= 0:
-			ol = clampi(ol + rng.randi_range(-1, 1), -1, 2)
-			hold_l = rng.randi_range(3, 5)
+			ol = clampi(ol + rng.randi_range(-1, 1), -1, 3 if jog else 2)
+			hold_l = rng.randi_range(2, 3) if jog else rng.randi_range(3, 5)
 		if hold_r <= 0:
-			orr = clampi(orr + rng.randi_range(-1, 1), -1, 2)
-			hold_r = rng.randi_range(3, 5)
+			orr = clampi(orr + rng.randi_range(-1, 1), -1, 3 if jog else 2)
+			hold_r = rng.randi_range(2, 3) if jog else rng.randi_range(3, 5)
 		hold_l -= 1
 		hold_r -= 1
 		var xa := roundi(center.x - rx) + maxi(ol, 0) + cham
