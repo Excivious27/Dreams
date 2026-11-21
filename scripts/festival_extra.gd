@@ -225,6 +225,31 @@ static func dance_gain(score: int) -> int:
 	return [10, 30, 30, 60, 90][clampi(score, 0, 4)]
 
 
+## C17 P4 (c17_06-23): a festival pays each player once per THEIR year, whether they play it
+## at home or at a friend's (the "played today" key stays per host day, so joining in is
+## always allowed; a second go the same year is for glory). 0 = already paid this year.
+static func once_a_year(key: String, pay: int) -> int:
+	var id := key.trim_prefix("visit_").trim_prefix("fest_")
+	var cut := id.rfind("_")
+	if cut > 0 and id.substr(cut + 1).is_valid_int():
+		id = id.left(cut)
+	var paid := "fest_paid_%s_y%d" % [id, FestivalWords.year_of(CoopGames.own_day())]
+	if pay <= 0 or GameState.run["flags"].has(paid):
+		return 0
+	GameState.run["flags"][paid] = true
+	return pay
+
+
+static func prize_word(pay: int) -> String:
+	return Money.amount(pay) if pay > 0 else "glory (this year's prize is already yours)"
+
+
+## Rival strength and prize growth follow the lower of the host's year and ours (a year-1
+## guest at a year-4 host gets year-1 prizes).
+static func own_year() -> int:
+	return mini(FestivalWords.year_of(int(GameState.run.get("day", 1))), FestivalWords.year_of(CoopGames.own_day()))
+
+
 static func _blossom(m: GameMap, key: String) -> void:
 	var host := FestivalWords.host_of("blossom")
 	var partners := dance_partners()
@@ -314,12 +339,12 @@ static func _founders(m: GameMap, key: String) -> void:
 		var p: int = await _ask(m, host, str(q[0]), opts)
 		if p >= 0 and p < opts.size() and str(opts[p]) == correct:
 			right += 1
-	var pay := right * 60
+	var pay := once_a_year(key, right * 60)
 	if pay > 0:
 		GameState.add_money(pay, "festival")
 	if right == 3:
 		GameState.run["flags"][key + "_place"] = 1
-	await m.say([{"who": host, "text": "%d of 3! %s" % [right, ("Here's %s for knowing your town." % Money.amount(pay)) if pay > 0 else "Next year, then."]}])
+	await m.say([{"who": host, "text": "%d of 3! %s" % [right, ("Here's %s for knowing your town." % Money.amount(pay)) if pay > 0 else ("You took this year's prize already. This round's for glory!" if right > 0 else "Next year, then.")]}])
 
 
 ## Hollow Night / Mask Night: a lantern walk with three forks (seeded), the Golden Gourd at the
@@ -398,9 +423,9 @@ static func _winter_market(m: GameMap, key: String) -> void:
 	var sc := sculpt_score(picks)
 	var place := 1 if sc >= 90 else (2 if sc >= 60 else 3)
 	GameState.run["flags"][key + "_place"] = place
-	var pay: int = [200, 100, 40][place - 1]
+	var pay: int = once_a_year(key, [200, 100, 40][place - 1])
 	GameState.add_money(pay, "festival")
-	await m.say([{"who": host, "text": "The judges say %d points: %s place and %s!" % [sc, ["first", "second", "third"][place - 1], Money.amount(pay)]}])
+	await m.say([{"who": host, "text": "The judges say %d points: %s place and %s!" % [sc, ["first", "second", "third"][place - 1], prize_word(pay)]}])
 
 
 ## Gift Swap Feast / Year's End Swap: your secret partner for the year (seeded by year, a villager you know,
@@ -506,13 +531,13 @@ static func _derby(m: GameMap, key: String) -> void:
 	GameState.run["flags"][key] = true
 	var pick: String = fish[c]
 	var sc := fish_score(pick)  # C16a P4 (c16a_05-09): the weigh-in never takes your fish
-	var rv := derby_rivals(FestivalWords.year_of(int(GameState.run["day"])))
+	var rv := derby_rivals(own_year())
 	var place := 1 + int(int(rv[0]) > sc) + int(int(rv[1]) > sc)
 	GameState.run["flags"][key + "_place"] = place
-	var yr := FestivalWords.year_of(int(GameState.run["day"]))
-	var pay: int = int([300, 150, 50][place - 1] * minf(2.0, 1.0 + 0.25 * (yr - 1)))  # C16a P4: prizes grow (x2 cap)
+	var yr := own_year()
+	var pay: int = once_a_year(key, int([300, 150, 50][place - 1] * minf(2.0, 1.0 + 0.25 * (yr - 1))))  # C16a P4: prizes grow (x2 cap)
 	GameState.add_money(pay, "festival")
-	await m.say([{"who": host, "text": "%s on the scale... %s place! %s." % [ItemWords.with_article(GameState.item_name(pick)).capitalize(), ["First", "Second", "Third"][place - 1], Money.amount(pay)]}])
+	await m.say([{"who": host, "text": "%s on the scale... %s place! %s." % [ItemWords.with_article(GameState.item_name(pick)).capitalize(), ["First", "Second", "Third"][place - 1], prize_word(pay)]}])
 
 
 ## Regatta (penguins) / Harbour Lights ring toss (gangsters): three legs, read the water (or the
@@ -541,9 +566,9 @@ static func _regatta(m: GameMap, key: String) -> void:
 			ok += 1
 	var place := 3 - ok if ok > 0 else 3
 	GameState.run["flags"][key + "_place"] = place
-	var pay: int = [250, 120, 40][place - 1]
+	var pay: int = once_a_year(key, [250, 120, 40][place - 1])
 	GameState.add_money(pay, "festival")
-	await m.say([{"who": host, "text": "%d of 3! %s" % [ok, "%s place and %s." % [["First", "Second", "Third"][place - 1], Money.amount(pay)]]}])
+	await m.say([{"who": host, "text": "%d of 3! %s" % [ok, "%s place and %s." % [["First", "Second", "Third"][place - 1], prize_word(pay)]]}])
 
 
 ## Moon Jellies / Neon Tide (year 2+, night): watch from the pier; a keepsake roll.

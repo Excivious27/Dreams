@@ -255,6 +255,13 @@ func _visit_guards() -> void:
 	ok(AnimalShowLib.animal_entries().is_empty(), "no host animals at the show for a guest")
 	ok(AnimalShowLib.done_key("spring", "c1").begins_with("visit_"), "festival keys namespaced while visiting")
 	ok(RecReno.cup().is_empty(), "no Rec Cup on the host's season")
+	GameState.run["day"] = 400  # host in a later year
+	ok(FestivalExtra.own_year() == 1, "festival scaling uses the lower (our) year")
+	ok(FestivalExtra.once_a_year("visit_fest_derby_400", 300) == 300, "a friend's festival pays")
+	net._solo_backup = {"day": 14}
+	ok(FestivalExtra.once_a_year("fest_derby_14", 300) == 0, "the same festival at home that year pays once")
+	net._solo_backup = {"day": 10}
+	GameState.run["day"] = 61
 	GameState.run.erase("casino")
 	ok(Casino.own_day() == 10, "first casino use while visiting takes our own day")
 	Casino.take_break()
