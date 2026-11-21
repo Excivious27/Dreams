@@ -72,11 +72,11 @@ static func talk(m: GameMap, id: String) -> bool:
 			_hint(c, st)
 			return true
 		if not f.has(asked):
-			await m.say(st["lines"])
+			await _say_step(m, st["lines"], i == (c["steps"] as Array).size() - 1)
 		GameState.add_item(str(need[0]), -int(need[1]))
 		m.hud.toast("Gave %s." % ItemWords.count_id(str(need[0]), int(need[1])), Color(1, 0.9, 0.6))
 	else:
-		await m.say(st["lines"])
+		await _say_step(m, st["lines"], i == (c["steps"] as Array).size() - 1)
 	if st.has("choice"):
 		var ch: Dictionary = st["choice"]
 		var opts: Array = ch.get("options", [])
@@ -90,6 +90,14 @@ static func talk(m: GameMap, id: String) -> bool:
 	return true
 
 
+## A step's lines; a side story's last step has its own mood song (C13 06-10/12-28).
+static func _say_step(m: GameMap, lines: Array, finale: bool) -> void:
+	var mooded := finale and Dialogue.scene_mood(m.get_tree(), "tender")
+	await m.say(lines)
+	if mooded and is_instance_valid(m):
+		Dialogue.scene_end(m.get_tree())
+
+
 static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 	var f: Dictionary = GameState.run["flags"]
 	var cid := str(c["id"])
@@ -101,10 +109,12 @@ static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 		var g: Array = st["give"]
 		if not DecorSources.grant(m, str(g[0]), int(g[1]), "side"):  # C10a P4 hook: decor to the decor box
 			GameState.add_item(str(g[0]), int(g[1]))
+			Music.instance(m.get_tree()).sfx("new_item", "pickup")  # C13 06-20
 		m.hud.toast("Got %s." % ItemWords.count_id(str(g[0]), int(g[1])), Color(1, 0.9, 0.4))
 	if st.has("money"):
 		GameState.add_money(int(st["money"]), "side_story")
 		m.hud.toast("+%s" % Money.amount(int(st["money"])), Color(1, 0.9, 0.4))
+		Music.instance(m.get_tree()).sfx(Money.sfx_name("coin"), "coin")
 	if st.has("friend"):
 		GameState.add_friend(str(st["friend"][0]), int(st["friend"][1]))
 	if st.get("animal", null) is Dictionary:  # a side story that ends with an animal (c11b_04-06)
@@ -115,6 +125,8 @@ static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 	if i == 0:
 		m.hud.toast("Side story: %s" % str(c.get("title", cid)), Color(0.8, 0.9, 1))
 		Music.instance(m.get_tree()).sfx("j_page", "pickup")
+	elif next_step(c) >= 0:
+		Music.instance(m.get_tree()).sfx("j_page", "pickup")  # C13 06-20: middle steps turn a page too
 	if next_step(c) < 0:
 		f["ss_%s_done" % cid] = true
 		m.hud.toast("Side story done: %s" % str(c.get("title", cid)), Color(1, 0.9, 0.4))

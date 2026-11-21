@@ -44,7 +44,8 @@
      "lines": [
       {
        "who": "",
-       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. For a second, as he runs, something in his fist glows a dark, bruised purple. In the coat's pocket: a photograph of your old front door, and a phone with one number in it."
+       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. For a second, as he runs, something in his fist glows a dark, bruised purple. In the coat's pocket: a photograph of your old front door, and a phone with one number in it.",
+       "sfx": "step_leaves"
       },
       {
        "who": "",
@@ -78,7 +79,8 @@
           "text": "The same loops on the W. The same press on the K. Whoever wrote your first letter wrote this too. They've been one step behind you since the river cities."
          }
         ]
-       }
+       },
+       "sfx": "alert"
       },
       {
        "who": "",
@@ -135,7 +137,9 @@
       },
       {
        "who": "Sal",
-       "text": "And boss? The President doesn't send one man. He sends one man, and then he sends the weather."
+       "text": "And boss? The President doesn't send one man. He sends one man, and then he sends the weather.",
+       "sfx": "thunder_far",
+       "sfx_fallback": "spell_lightning"
       }
      ],
      "effects": {
@@ -422,7 +426,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Every crate on the manifest goes to the same place: UPTOWN, TOWER, SUB-BASEMENT 3."
+       "text": "Every crate on the manifest goes to the same place: UPTOWN, TOWER, SUB-BASEMENT 3.",
+       "sfx": "page"
       },
       {
        "who": "",
@@ -430,7 +435,8 @@
       },
       {
        "who": "",
-       "text": "You put your hand on a crate. Through the slats, very faintly, something hums a tune you almost know, and it sounds pleased to meet you."
+       "text": "You put your hand on a crate. Through the slats, very faintly, something hums a tune you almost know, and it sounds pleased to meet you.",
+       "sfx": "spell_dark"
       },
       {
        "who": "",
@@ -472,7 +478,8 @@
        "crew_specs"
       ],
       "toast": "Specs joined the crew.",
-      "sfx": "levelup"
+      "sfx": "j_recruit",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -499,8 +506,9 @@
        "crew_ladder"
       ],
       "toast": "Ladder joined the crew.",
-      "sfx": "levelup",
-      "hint": "Ladder counts trucks. He'll warn you before a raid."
+      "sfx": "j_recruit",
+      "hint": "Ladder counts trucks. He'll warn you before a raid.",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -531,8 +539,9 @@
        "crew_halo"
       ],
       "toast": "Halo joined the crew.",
-      "sfx": "levelup",
-      "hint": "Halo can drive you between the gangster districts (talk to her at the hideout)."
+      "sfx": "j_recruit",
+      "hint": "Halo can drive you between the gangster districts (talk to her at the hideout).",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -741,7 +750,8 @@
        "letter_burned"
       ],
       "toast": "Marlene joined the crew.",
-      "sfx": "levelup"
+      "sfx": "j_recruit",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -775,7 +785,8 @@
        "letter_decided"
       ],
       "toast": "Marlene joined the crew.",
-      "sfx": "levelup"
+      "sfx": "j_recruit",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -859,7 +870,11 @@
      "effects": {
       "flags": [
        "hale_met"
-      ]
+      ],
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -943,7 +958,11 @@
      "effects": {
       "flags": [
        "hale_met"
-      ]
+      ],
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     }
    ]
@@ -1021,7 +1040,11 @@
       "flags": [
        "hale_seen_neon"
       ],
-      "hint": "Inspector Hale wants the stone brought to her when it's over. Keep your heat low, and send the Marked home."
+      "hint": "Inspector Hale wants the stone brought to her when it's over. Keep your heat low, and send the Marked home.",
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_mystery"
      }
     },
     {
@@ -1032,7 +1055,9 @@
      "lines": [
       {
        "who": "",
-       "text": "At the edge of the crowd, a pair of identical faces in red and blue stop clapping first and look at each other."
+       "text": "At the edge of the crowd, a pair of identical faces in red and blue stop clapping first and look at each other.",
+       "sfx": "crowd_cheer",
+       "sfx_fallback": "clap"
       },
       {
        "who": "Vic",
@@ -1094,7 +1119,8 @@
        "crew_val"
       ],
       "toast": "Vic and Val joined the crew.",
-      "sfx": "levelup"
+      "sfx": "j_recruit",
+      "sfx_fallback": "j_skill"
      }
     },
     {
@@ -1558,7 +1584,12 @@
        }
       }
      ],
-     "effects": {}
+     "effects": {
+      "music": "area"
+     },
+     "pre": {
+      "music": "mood_sad"
+     }
     },
     {
      "id": "g4_return_1",
@@ -1863,7 +1894,9 @@
       {
        "who": "",
        "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you.",
-       "pic": "none"
+       "pic": "none",
+       "sfx": "door",
+       "sfx_fallback": "thud"
       }
      ],
      "effects": {
@@ -1904,7 +1937,9 @@
       {
        "who": "",
        "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you.",
-       "pic": "none"
+       "pic": "none",
+       "sfx": "door",
+       "sfx_fallback": "thud"
       }
      ],
      "effects": {
@@ -1941,7 +1976,9 @@
       },
       {
        "text": "A click, a sigh of brass, and the tower doors swing in without a sound.",
-       "pic": "none"
+       "pic": "none",
+       "sfx": "door",
+       "sfx_fallback": "thud"
       }
      ],
      "effects": {
@@ -1981,7 +2018,9 @@
       },
       {
        "who": "",
-       "text": "Your crew put their shoulders to the brass together, and the mechanism inside gives with a sound like a bell that's been dropped."
+       "text": "Your crew put their shoulders to the brass together, and the mechanism inside gives with a sound like a bell that's been dropped.",
+       "sfx": "stone_grind",
+       "sfx_fallback": "thud"
       },
       {
        "who": "",
@@ -2028,7 +2067,9 @@
      "lines": [
       {
        "who": "",
-       "text": "Out of the tower doors, onto the red carpet in the rain, they've carried a chair that is too big for him. A man in a grey suit sits in it, and in his chest, where a pocket square should be, a stone the size of a fist: black, with a purple pulse under it."
+       "text": "Out of the tower doors, onto the red carpet in the rain, they've carried a chair that is too big for him. A man in a grey suit sits in it, and in his chest, where a pocket square should be, a stone the size of a fist: black, with a purple pulse under it.",
+       "sfx": "door",
+       "sfx_fallback": "thud"
       },
       {
        "who": "",
@@ -2079,6 +2120,9 @@
        "final_started"
       ],
       "shake": 4
+     },
+     "pre": {
+      "music": "mood_tense"
      }
     },
     {
@@ -2168,7 +2212,9 @@
      "lines": [
       {
        "who": "Ladder",
-       "text": "(on the radio, from a rooftop) He drops his left shoulder before he swings. Every time. Four hundred and thirteen."
+       "text": "(on the radio, from a rooftop) He drops his left shoulder before he swings. Every time. Four hundred and thirteen.",
+       "sfx": "radio_static",
+       "sfx_fallback": "buzz"
       }
      ],
      "effects": {
@@ -2224,7 +2270,8 @@
           "who": "",
           "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a wet carpet, looking at his hands like they're new.",
           "sfx": "pop",
-          "pic": "cut_gang_stone"
+          "pic": "cut_gang_stone",
+          "music": "mood_tender"
          },
          {
           "who": "The President",
@@ -2291,7 +2338,8 @@
          {
           "who": "",
           "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans.",
-          "sfx": "alert"
+          "sfx": "alert",
+          "music": "mood_tense"
          },
          {
           "who": "",
@@ -2308,7 +2356,8 @@
          {
           "who": "",
           "pic": "cut_clean_break",
-          "text": "It comes loose with a sound like a cork. He gasps once, and then he's just an old man on a wet carpet. The stone is cold in your hand and it is talking, very fast, about everything you could have."
+          "text": "It comes loose with a sound like a cork. He gasps once, and then he's just an old man on a wet carpet. The stone is cold in your hand and it is talking, very fast, about everything you could have.",
+          "music": "mood_mystery"
          },
          {
           "who": "",
@@ -2396,12 +2445,15 @@
       }
      ],
      "effects": {
-      "music": "title_musicbox",
       "flags": [
        "final_done"
       ],
       "hint": "Go home and sleep. The crew will be at the gate in the morning.",
       "heal": true
+     },
+     "pre": {
+      "music": "mood_sad",
+      "music_fallback": "night_gang"
      }
     },
     {
@@ -2448,7 +2500,8 @@
           "who": "",
           "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a wet carpet, looking at his hands like they're new.",
           "sfx": "pop",
-          "pic": "cut_gang_stone"
+          "pic": "cut_gang_stone",
+          "music": "mood_tender"
          },
          {
           "who": "The President",
@@ -2515,7 +2568,8 @@
          {
           "who": "",
           "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans.",
-          "sfx": "alert"
+          "sfx": "alert",
+          "music": "mood_tense"
          },
          {
           "who": "",
@@ -2548,12 +2602,15 @@
       }
      ],
      "effects": {
-      "music": "title_musicbox",
       "flags": [
        "final_done"
       ],
       "hint": "Go home and sleep. The crew will be at the gate in the morning.",
       "heal": true
+     },
+     "pre": {
+      "music": "mood_sad",
+      "music_fallback": "night_gang"
      }
     },
     {
@@ -2568,7 +2625,8 @@
       {
        "who": "",
        "text": "Morning. Rain again, the collar kind. The deed on the table still says Winter Kade, and you find you don't mind; names are things you can grow into.",
-       "music": "title_musicbox"
+       "music": "mood_tender",
+       "music_fallback": "rain"
       },
       {
        "who": "",
@@ -2600,17 +2658,21 @@
       {
        "who": "Sal",
        "text": "Doesn't have to be decided today. We'll mind the farm. Somebody's got to water the turnips.",
-       "unless_flag": "city_taken"
+       "unless_flag": "city_taken",
+       "sfx": "j_heart"
       },
       {
        "who": "",
        "text": "At the end of the lane a long black car is waiting, engine running, to take you back uptown to the chair.",
-       "if_flag": "city_taken"
+       "if_flag": "city_taken",
+       "music": "mood_tense",
+       "music_fallback": "night_gang"
       },
       {
        "who": "Sal",
        "text": "Boss. Or do I call you President now? ...The car can wait. The turnips can't. Go on, water them, and then we'll see who you are today.",
-       "if_flag": "city_taken"
+       "if_flag": "city_taken",
+       "sfx": "alert"
       }
      ],
      "effects": {
@@ -2618,7 +2680,7 @@
        "epilogue_done"
       ],
       "hint": "The story is done. The farm, the crew and every block you haven't walked yet are still yours.",
-      "sfx": "j_heart"
+      "toast": "Thank you for playing. The farm goes on."
      }
     }
    ]

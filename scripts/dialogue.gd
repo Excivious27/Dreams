@@ -316,7 +316,7 @@ static func line_cues(tree: SceneTree, line: Dictionary) -> void:
 	if mu == null:
 		return
 	if line.has("music"):
-		line_music(tree, str(line["music"]))
+		line_music(tree, str(line["music"]), str(line.get("music_fallback", "")))
 	if line.has("sfx"):
 		mu.sfx(str(line["sfx"]), str(line.get("sfx_fallback", "pickup")))
 	var who := str(line.get("who", ""))
@@ -326,7 +326,24 @@ static func line_cues(tree: SceneTree, line: Dictionary) -> void:
 		if not line.has("sfx"):
 			mu.sfx("page", "mail")
 		return
+	# Narration that carries its own sound (a howl, a bell, glass) gets no blip on top (C13 06-08).
+	if who == "" and line.has("sfx"):
+		return
+	# Crystals speak in a soft chime, not a villager's blip (C13 09-06).
+	var cv := creature_voice(who)
+	if not cv.is_empty():
+		mu.sfx_pitched(str(cv[0]), "", float(cv[1]), float(cv[2]))
+		return
 	mu.blip(who)
+
+
+## Speakers that are not people: [sfx, pitch, dB] instead of a talk blip.
+const CREATURE_VOICE := {"Star Crystal": ["sparkle", 1.25, -14.0], "Dark Crystal": ["spell_dark", 0.7, -16.0],
+	"Crystal Knight": ["sparkle", 0.85, -14.0]}
+
+
+static func creature_voice(who: String) -> Array:
+	return CREATURE_VOICE.get(who, [])
 
 
 ## Speakers that are paper, not people (no talk blip).
@@ -341,7 +358,7 @@ const PAPER := ["Letter", "Note", "Journal", "Board", "Community Board", "Sell b
 
 
 ## A song a scene line asks for. "area" = the map's own song again. "stop" = silence.
-static func line_music(tree: SceneTree, track: String) -> void:
+static func line_music(tree: SceneTree, track: String, fallback := "") -> void:
 	var mu := Music.instance(tree)
 	if mu == null:
 		return
@@ -355,6 +372,15 @@ static func line_music(tree: SceneTree, track: String) -> void:
 	if track == "stop":
 		mu.stop_all()
 		return
+	# C13: story songs (mood_*, festival, boss) may not have landed yet: pick the
+	# arc's take or the line's fallback; nothing playable = the current song carries on
+	# (never a stand-in farm loop under a sad scene).
+	track = scene_song(track, fallback)
+	if track == "":
+		return
+	if track.begins_with("mood_") and mu.has_method("mood"):
+		mu.call("mood", track.trim_prefix("mood_").trim_suffix("_gang"))
+		return
 	# A scene's song is held (Music.play_held, C6 P1): DangerMusic's calm re-ask
 	# leaves it alone until the map changes or another song is asked for.
 	if mu.has_method("play_held"):
@@ -364,6 +390,42 @@ static func line_music(tree: SceneTree, track: String) -> void:
 	# A play-once song (merkitty_song, an ending) hands back to the map's song.
 	if track in Music.ONCE and m:
 		mu.queue_after(m.area_track())
+
+
+## A scene's mood song (C13 contract mood_*: sad tense mystery triumph comic tender),
+## held for the scene: true if one exists and started (the caller hands back with
+## scene_end). A fight tier (DangerMusic 1..3) drops first so the scene isn't scored as combat.
+static func scene_mood(tree: SceneTree, mood: String, fallback := "") -> bool:
+	var t := scene_song("mood_" + mood.trim_prefix("mood_"), fallback)
+	if t == "":
+		return false
+	if DangerMusic.tier >= 1 and DangerMusic.tier <= 3:
+		DangerMusic.reset()
+	line_music(tree, t)
+	return true
+
+
+## A scene's mood ends: the map's own song again.
+static func scene_end(tree: SceneTree) -> void:
+	line_music(tree, "area")
+
+
+## The song a scene asks for, as it exists (C13 contract: everything falls back via
+## Music.has_track). Gang arc tries `<name>_gang` first; the penguin arc never plays a
+## `_gang` take. Then the line's fallback (also arc-checked). "" = nothing playable.
+static func scene_song(track: String, fallback := "") -> String:
+	var gang := not GameState.is_penguins()
+	for t: String in [track, fallback]:
+		if t == "" or t == "area" or t == "stop":
+			if t != "":
+				return t
+			continue
+		var base := t.trim_suffix("_gang")
+		var cands: Array = [base + "_gang", base] if gang else [base]
+		for c: String in cands:
+			if Music.has_track(c):
+				return c
+	return ""
 
 
 ## A portrait set that was sliced into a usable picture (a mis-cut sheet gives 1 px slivers).

@@ -2031,7 +2031,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	var pet_name: String = n["pet"]
 	var town: String = n["town"]
 	await say([
-		{"text": "Far past the edge of the sky, something fell.", "pic": "cut_star"},
+		{"text": "Far past the edge of the sky, something fell.", "pic": "cut_star", "music": "mood_mystery", "music_fallback": "arc_penguins", "sfx": "star_fall", "sfx_fallback": "airship_whoosh"},
 		{"text": "It crossed a thousand dark skies, dimmer with every one, looking for a place that still had joy in it."},
 		{"text": "It found %s. It found a little plot of land with a crooked house. It found you, %s." % [town, who]},
 	])
@@ -2075,7 +2075,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	await say([
 		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
 		{"who": "Star Crystal", "text": "Hold the hoe (the first toolbar slot), face the grass and tap USE to till. Then pick the seeds, tap USE on the soil, and water it with the can.", "keep": true},
-		{"who": "Star Crystal", "text": "Lost? The line under the toolbar always says what to do next. Water every morning; when your first crop comes in, we'll talk again.", "keep": true},
+		{"who": "Star Crystal", "text": "Lost? The line under the toolbar always says what to do next. Water every morning; when your first crop comes in, we'll talk again.", "keep": true, "music": "area"},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop.")
 	GameState.add_quest("meet_town", "Walk south and meet the people of %s." % town)

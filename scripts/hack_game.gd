@@ -46,6 +46,7 @@ func _ready() -> void:
 	_canvas.draw.connect(_draw_it)
 	_canvas.gui_input.connect(_tap)
 	add_child(_canvas)
+	Music.instance(get_tree()).set_duck_layer("hack", -8.0)
 	_next_round()
 
 
@@ -70,7 +71,7 @@ func _play_back() -> void:
 			return
 		_lit = str(d)
 		_lit_t = gap * 0.8
-		Music.instance(get_tree()).sfx("ui_tap", "pickup")
+		_tone(str(d))
 		await get_tree().create_timer(gap).timeout
 	if not is_inside_tree():
 		return
@@ -139,17 +140,26 @@ func _tap(ev: InputEvent) -> void:
 			_press(d)
 
 
+## C13 05_14: each wire has its own pitched tone (Simon-style), heard on playback and press.
+const TONE := {"up": 1.0, "right": 1.19, "down": 1.33, "left": 1.5}
+
+
+func _tone(d: String) -> void:
+	Music.instance(get_tree()).sfx_pitched("hack_tone" if Music.instance(get_tree()).has_sfx("hack_tone") else "beat_tick", "beep", float(TONE.get(d, 1.0)), -4.0)
+
+
 func _press(d: String) -> void:
-	Music.instance(get_tree()).sfx("keypress", "ui_tap")
 	if _showing or _at >= _seq.size():
+		Music.instance(get_tree()).sfx("keypress", "ui_tap")
 		return
+	_tone(d)
 	_lit = d
 	_lit_t = 0.15
 	if d == str(_seq[_at]):
 		_at += 1
-		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		if _at >= _seq.size():
 			result += 1
+			Music.instance(get_tree()).sfx("j_secret" if _round >= 3 else "j_confirm", "j_confirm")
 			if _round >= 3:
 				_msg = "You're in. Clean run."
 				_showing = true
@@ -163,7 +173,7 @@ func _press(d: String) -> void:
 				if is_inside_tree():
 					_next_round()
 	else:
-		Music.instance(get_tree()).sfx("hurt")
+		Music.instance(get_tree()).sfx("alarm", "alert")
 		_msg = "Alarm tripped. You pull the plug."
 		_showing = true
 		await get_tree().create_timer(1.0).timeout
@@ -175,6 +185,7 @@ func _finish() -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = false
+	Music.instance(get_tree()).clear_duck_layer("hack")
 	Dialogue.block_input(0.3)
 	Hud.modal_rect = Rect2()
 	closed.emit()

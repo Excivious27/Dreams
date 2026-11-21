@@ -877,11 +877,24 @@ func _is_person() -> bool:
 
 ## Ranged shots by shooter: thugs fire guns, archers loose arrows, the rest spit bolts.
 func _shot_sound(flavour: String) -> String:
-	var k := kind.to_lower()
+	return shot_for(kind, flavour, Racket.on(), _is_person())
+
+
+## C13 15-05/07-32: the gun belongs to the shooter, not the arc: only gang-arc people
+## fire guns (gamblers a tommy gun); drones and cyber foes fire lasers, eels spit
+## bubbles, wisps/spirits/crystals cast; everything else keeps its bolt by flavour.
+static func shot_for(kind_name: String, flavour: String, gang: bool, person: bool) -> String:
+	var k := kind_name.to_lower()
 	if "archer" in k or "bow" in k:
 		return "bow"
-	if flavour == "dark" and Racket.on():
-		return "shot"
+	if "drone" in k or "cyber" in k or "robot" in k:
+		return "laser"
+	if "eel" in k:
+		return "bubble"
+	if gang and person:
+		return "shot_smg" if ("gambler" in k or "tommy" in k) else "shot"
+	if flavour == "dark":
+		return "spell_dark" if ("wisp" in k or "spirit" in k or "ghost" in k) else "zap"
 	return {"fire": "spell_fire", "ice": "spell_ice", "poison": "slime"}.get(flavour, "zap")
 
 

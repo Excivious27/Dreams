@@ -323,13 +323,13 @@ func _count_tickets(dt: float) -> void:
 	var steps := mini(12, won_tickets)
 	_shown_tickets = mini(won_tickets, _shown_tickets + maxi(1, int(ceil(float(won_tickets) / steps))))
 	_tick_t = 0.07
-	sfx("ticket_feed", "scroll_tick")
+	sfx("ticket_out", "scroll_tick")
 
 
 ## Insert coin and start a round. False (with a message) when you can't pay.
 func start() -> bool:
 	if free_play:
-		sfx("arcade_coin", "pop")
+		sfx("cabinet_coin", "pop")
 		return _begin()
 	if not ArcadeHub.charge(fee):
 		say("Not enough %s (%s)." % [Money.word(), Money.num(fee)])
@@ -389,7 +389,7 @@ static func result_cue(won: int, good: int, best: bool) -> String:
 ## In-game points and pickups (not money): an arcade blip in both arcs, never
 ## the gangster arc's banknote rustle (Money swaps every "coin").
 func point_sfx() -> void:
-	sfx("arcade_coin", "sparkle")
+	sfx("cabinet_coin", "sparkle")
 
 
 ## What A does on the results card (default: back to the title card).

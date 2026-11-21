@@ -14,7 +14,7 @@
     "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training."}},
    {"id": "bt_invite_g", "trigger": {"quest_done": "gang"}, "when": {"flag": "hideout_seen", "not_flags": ["bt_invited", "bt_trained"]},
     "lines": [
-     {"who": "", "text": "The burner phone from the coat buzzes. Not the number that was in it: a new one. It's Sal. Of course Sal has the number."},
+     {"who": "", "sfx": "buzz", "text": "The burner phone from the coat buzzes. Not the number that was in it: a new one. It's Sal. Of course Sal has the number."},
      {"who": "Sal", "text": "Lying low's fine. But the President's people hold every road out of here, and you don't take a road with one pair of fists."},
      {"who": "Sal", "pic": "cut_drill_sal", "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then I'll show you the real job: the highway out of here."},
      {"who": "", "pic": "none", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
