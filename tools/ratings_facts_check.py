@@ -3,7 +3,7 @@
 
 Re-derives the facts the Steam Content Survey / IARC / AI-disclosure answers depend on and fails with
 "ratings.md answer X is now false" when the game drifts:
-  - no blood/gore in player text (allowlist: Blood Orange, Rare Bloodlines, lifeblood)
+  - no blood/gore in player text (allowlist: Blood Orange, a real fruit)
   - every alcoholic item is a trade good (drink rule) and beasts drop no animal parts (animal rule)
   - weapons named in ratings.md exist; casino tables in tools/gen_casino.py are all named in ratings.md
   - no in-app purchases / store calls in scripts; no network host other than the relay and the game's own pages
@@ -16,7 +16,7 @@ import json, os, re, subprocess, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 R = lambda *p: os.path.join(ROOT, *p)
 TEXT_FILES = ["items.json", "npcs.json", "quest_lines.json", "quests.json", "skills.json", "epilogue.json", "hearts.json"]
-BLOOD_OK = re.compile(r"blood orange|blood_orange|bloodlines|lifeblood", re.I)
+BLOOD_OK = re.compile(r"blood orange|blood_orange", re.I)
 HOSTS_OK = ("sslip.io", "github.io", "x.io", "localhost", "127.0.0.1")
 KEY_PHRASES = ["OpenAI image models", "ACE Music", "Claude", "CC0"]
 FAMILY = re.compile(r"\b(Tom|Tomorrow|Thomas|Barany|Kelsie|Miles|Bruce)\b")

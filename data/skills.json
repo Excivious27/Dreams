@@ -4572,8 +4572,8 @@
      }
     },
     {
-     "id": "ranching_u_rare_bloodlines",
-     "name": "Rare Bloodlines",
+     "id": "ranching_u_rare_lineages",
+     "name": "Rare Lineages",
      "desc": "Rare looks turn up twice as often in births and hatchlings.",
      "ranks": 1,
      "tier": 9,

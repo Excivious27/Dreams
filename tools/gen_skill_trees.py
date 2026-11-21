@@ -262,7 +262,7 @@ UNLOCKS = {
                  (3, 8, "Second Farm Hand", "One more farm hand slot for ranch chores.", {"hand_slot": 1}),
                  (1, 9, "Golden Touch", "Animal goods reach gold quality a whole day sooner.", {"animal_quality": 1}),
                  # rare_breed was read by Ranch._child_variant with no node to learn it (c11b_11-11).
-                 (2, 9, "Rare Bloodlines", "Rare looks turn up twice as often in births and hatchlings.", {"rare_breed": 0.1})],
+                 (2, 9, "Rare Lineages", "Rare looks turn up twice as often in births and hatchlings.", {"rare_breed": 0.1})],
     "magic": [(2, 3, "Blink Step", "Haste lasts half as long again.", {"haste_time": 0.5}),
               (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),

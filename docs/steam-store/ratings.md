@@ -76,5 +76,5 @@ Do NOT enter any PEGI/USK rating in the Steamworks Ratings section unless a real
   server/server.js join, host kick (net.gd message + server handler + Players list), 6-character room codes, a
   "show other players' names" setting.
 - Steam builds should show Steam persona names and use invite-only Steam lobbies (co-op transport package).
-- Item names "Blood Orange" (fruit), skill "Rare Bloodlines" and "Sal's lifeblood" are harmless but could be renamed
-  for a clean "no blood" scan.
+- "Blood Orange" (a real fruit) is the only "blood" word left in player text (skill renamed Rare Lineages, coffee no
+  longer "lifeblood").
