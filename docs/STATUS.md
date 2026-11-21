@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P4 (hearts/romance/gifts): one Mabel-father story, Sel gangster words + 'they', Tam/Sel stay for a partner (if_partner), Juniper retired as candidate, locket/house refusals, Tess heart arc, perk texts match scenes and show cash, gift tastes for ranch/arc goods/crew, gift_lines when/default/birthday_plain, no ammo gifts, ItemWords 'X of Y'; test c12_hearts_gifts_test.
+
 ## 2026-11-20 — CONDUCT S1 (Steam prep, no account): Windows/Linux builds in CI (steam-builds.yml, BootProbe), GodotSteam behind SteamSvc/SteamApi with safe no-ops, 60 achievements + title list, rich presence, Steam co-op transport (NetTransport), Deck text floor + pad typing, desktop window options, Steam Input draft, upload pipeline off, store docs/capsules/screenshots/trailer job, ratings + AI disclosure drafts, name check, docs/STEAM.md. Final CI s1i2 PASS. Steam readiness 92% done / 4% staged / 4% not started. Report docs/reports/CONDUCT-S1.md, Guide 38.
 ## 2026-11-20 — C12 P1 (penguin main story): 51 c12_01/02 findings; story line filters if_item/if_known/if_partner/list flags, %bitter, hint_hero, boss-bar names, backstop chapter order; hero-as-character variants (Nova/Pip-Pip/Big Jim/Coldy/Mer); every early choice paid off; bell cause unified; Biscuit/Tomas/bitter friend closed; tools/c12_story_cond_test.gd
 ## 2026-11-20 — C12 P2 gangster main story: 27 writing findings (c12_03, c12_04) - finale crew payoffs gated on loyalty (if_loyalty), endings agree with Hale/The Chair/Clean Break, crew + Marked lines after the tower, cash $ in choices/toasts, bill-caught wording by place; test c12_gang_story_test.

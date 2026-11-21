@@ -878,6 +878,13 @@ if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
 
+echo "== C12 P4: hearts, romance and gift words match game state =="
+c12hgout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_hearts_gifts_test.gd 2>&1)"
+echo "$c12hgout" | grep -E "FAIL|SCRIPT ERROR|c12_hearts_gifts_test" || true
+if ! echo "$c12hgout" | grep -q "c12_hearts_gifts_test: OK"; then
+  echo "C12 hearts/gifts test failed"; exit 1
+fi
+
 echo "== C11a P5: ranch villagers, mail, festivals, pen sounds =="
 rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villagers_test.gd 2>&1)"
 echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true

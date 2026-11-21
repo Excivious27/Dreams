@@ -8,15 +8,22 @@ const MASS := ["wood", "stone", "hay", "flour", "honey", "milk", "coal", "clay",
 	"jam", "ore", "sand", "silk", "oil", "cream", "bread", "fertiliser", "fertilizer", "feed", "mayo",
 	"syrup", "tea", "coffee", "cocoa", "juice", "water", "soup", "stew", "corn", "wheat", "kale",
 	"lettuce", "spinach", "asparagus", "garlic", "celery", "dill", "parsley", "basil", "chives",
-	"lemongrass", "moss", "glass", "slime", "dust", "ink", "paper", "chocolate", "candy", "fudge", "pie"]
+	"lemongrass", "moss", "glass", "slime", "dust", "ink", "paper", "chocolate", "candy", "fudge", "pie",
+	"wine", "yarn", "mead", "cider", "ale", "fleece", "fur", "fabric", "mayonnaise", "mozzarella", "custard",
+	"broth", "coolant", "wax", "beeswax", "cash"]
 ## Names that end in s but are one thing ("a Crystal Lens").
 const SINGLE_S := ["lens", "iris", "lotus", "edelweiss", "bass", "moss", "glass", "cactus", "hibiscus", "crocus", "octopus", "walrus"]
 ## Fish keep their name in the plural ("3 Bass", "2 Trout").
 const SAME := ["bass", "trout", "salmon", "carp", "pike", "cod", "perch", "sardine", "tuna", "halibut", "squid", "shrimp", "deer", "sheep"]
 
 
+## The head noun: the last word, or for "Jar of Honey" / "Eye of the Storm" the word before " of ". C12 P4.
 static func _last(name: String) -> String:
-	var parts := name.strip_edges().split(" ")
+	var low := name.strip_edges()
+	var of := low.to_lower().find(" of ")
+	if of > 0:
+		low = low.substr(0, of)
+	var parts := low.split(" ")
 	return parts[parts.size() - 1].to_lower() if parts.size() > 0 else ""
 
 
@@ -31,6 +38,9 @@ static func is_mass(name: String) -> bool:
 
 ## "Turnip" x3 -> "Turnips"; "Wood" -> "Wood"; "Strawberry" -> "Strawberries".
 static func plural(name: String) -> String:
+	var of := name.to_lower().find(" of ")
+	if of > 0:
+		return plural(name.substr(0, of)) + name.substr(of)  # "Pots of Chili", "Jars of Honey"
 	var w := _last(name)
 	if name == "" or is_plural(name) or is_mass(name) or w in SAME:
 		return name

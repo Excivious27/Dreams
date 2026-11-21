@@ -4763,7 +4763,7 @@ func _weighted_index(lo: int, hi: int, ratio := 0.67) -> int:
 ## Ask before handing a villager the item you're holding.
 func confirm_gift(who_name: String, sel: String) -> bool:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": who_name, "text": "Give them your %s?" % GameState.item_name(sel), "choice": ["Give it", "Just chat"], "key": ""}])
+	d.say([{"who": "", "text": "Give %s your %s?" % [who_name, GameState.item_name(sel)], "choice": ["Give it", "Just chat"], "key": ""}])  # C12 P4: narration, not the villager asking about themselves
 	await d.finished
 	return d.last_choice == 0
 

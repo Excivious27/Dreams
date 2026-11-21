@@ -674,18 +674,23 @@ func _refresh() -> void:
 				var bd := GameState.birthday_of(str(id))
 				var seen: Dictionary = (r.get("gift_seen", {}) as Dictionary).get(id, {})
 				var loves: Array = []
+				var likes: Array = []
 				var hates: Array = []
 				for gi: String in seen:
-					if int(seen[gi]) >= 12:
+					if int(seen[gi]) >= 20:
 						loves.append(GameState.item_name(gi))
+					elif int(seen[gi]) >= 12:
+						likes.append(GameState.item_name(gi))
 					elif int(seen[gi]) < 0:
 						hates.append(GameState.item_name(gi))
 				var nxt := ""
 				for hh in [2, 4, 6, 8, 10]:
 					if GameState.friend_hearts(str(id)) < hh and GameState.friend_perk_at(str(id), hh) != "":
-						nxt = "♥%d: %s" % [hh, GameState.friend_perk_at(str(id), hh)]
+						nxt = "♥%d: %s" % [hh, Money.t(GameState.friend_perk_at(str(id), hh))]
 						break
-				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
+				# C12 P4: no "Birthday ? 0" for crew; loves (20+) and likes (12-19) apart.
+				var bd_txt := ("Birthday %s %d%s · " % [str(bd[0]).capitalize(), int(bd[1]), " (TODAY!)" if GameState.is_birthday(str(id)) else ""]) if bd.size() == 2 else ""
+				var info := "   %sloves: %s%s%s%s" % [bd_txt, ", ".join(loves) if not loves.is_empty() else ("? (give gifts to find out)" if likes.is_empty() else "?"), ("  · likes: " + ", ".join(likes)) if not likes.is_empty() else "", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
 				# A heart scene waiting, and (after ♥10) what they'd do for you (C7 P4).
 				info += ("\n   ♥%d scene waiting: go and talk to them" % Hearts.due(str(id))) if Hearts.due(str(id)) > 0 else ("\n   If the town fell: " + str(Hearts.data()[str(id)].get("fall", ""))) if Hearts.seen_level(str(id)) >= 10 and str(Hearts.data().get(str(id), {}).get("fall", "")) != "" else ""
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) or Hearts.due(str(id)) > 0 else Color(0.8, 0.8, 0.75))
