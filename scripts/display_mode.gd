@@ -221,6 +221,8 @@ func _desktop_window(startup := false) -> void:
 	if bool(Settings.get_v("fullscreen")) or (startup and is_deck()):
 		w.mode = Window.MODE_FULLSCREEN
 		return
+	if _restore_window(w):
+		return
 	var scr := DisplayServer.screen_get_usable_rect(w.current_screen)
 	if scr.size.x <= 0:
 		return
@@ -233,6 +235,53 @@ func _desktop_window(startup := false) -> void:
 		sz = Vector2i(int(sz.x * 0.85), int(sz.y * 0.85))
 	w.size = sz
 	w.position = scr.position + (scr.size - sz) / 2
+
+
+## S1 s1_10-05: the windowed size, position and monitor come back next launch
+## (Settings win_rect [x, y, w, h]), if that spot is still on a connected screen.
+func _restore_window(w: Window) -> bool:
+	var r: Variant = Settings.get_v("win_rect")
+	if not (r is Array) or (r as Array).size() != 4:
+		return false
+	var rect := Rect2i(int(r[0]), int(r[1]), maxi(int(r[2]), MIN_WIN.x), maxi(int(r[3]), MIN_WIN.y))
+	if not window_rect_ok(rect):
+		return false
+	w.size = rect.size
+	w.position = rect.position
+	return true
+
+
+## A saved window rect is usable when its centre sits on a connected screen.
+static func window_rect_ok(rect: Rect2i) -> bool:
+	if rect.size.x < MIN_WIN.x or rect.size.y < MIN_WIN.y:
+		return false
+	if DisplayServer.get_name() == "headless":
+		return true
+	for i in DisplayServer.get_screen_count():
+		if DisplayServer.screen_get_usable_rect(i).has_point(rect.get_center()):
+			return true
+	return false
+
+
+var _win_save_t := 0.0
+var _win_saved := Rect2i()
+
+
+## Remember the windowed rect (checked about once a second, written on change).
+func _track_window(d: float) -> void:
+	if not native_desktop() or _tool_run() or force >= 0:
+		return
+	_win_save_t += d
+	if _win_save_t < 1.0:
+		return
+	_win_save_t = 0.0
+	var w := get_window()
+	if w.mode != Window.MODE_WINDOWED:
+		return
+	var rect := Rect2i(w.position, w.size)
+	if rect != _win_saved and rect.size.x >= MIN_WIN.x and rect.size.y >= MIN_WIN.y:
+		_win_saved = rect
+		Settings.set_v("win_rect", [rect.position.x, rect.position.y, rect.size.x, rect.size.y])
 
 
 ## Window size in pixels (tests may resize the root viewport instead).
@@ -250,8 +299,12 @@ func _refit() -> void:
 	var s := _win_size()
 	var root := get_tree().root
 	var nv := BASE
+	var k_int := pixel_scale(s)
 	if not is_phone() and s.x > 0 and s.y > 0 and float(s.x) / float(s.y) > BASE.x / BASE.y + 0.01:
 		nv = Vector2(clampf(roundf(BASE.y * float(s.x) / float(s.y)), BASE.x, MAX_W), BASE.y)
+		if k_int > 0:
+			# Pixel-perfect: whole-number scale, so the view takes the width that scale allows.
+			nv.x = clampf(floorf(float(s.x) / float(k_int)), BASE.x, MAX_W)
 	# Headless runs (tests, bots) have no real window: the phone view unless a test forces desktop.
 	if force == 0 or (force < 0 and DisplayServer.get_name() == "headless"):
 		nv = BASE
@@ -260,6 +313,7 @@ func _refit() -> void:
 	view = nv
 	cx = floorf((view.x - BASE.x) / 2.0)
 	root.content_scale_size = Vector2i(int(view.x), int(view.y))
+	root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_INTEGER if k_int > 0 else Window.CONTENT_SCALE_STRETCH_FRACTIONAL
 	for i in 2:
 		var r: ColorRect = _sides[i]
 		r.position = Vector2(0.0 if i == 0 else cx + BASE.x, 0)
@@ -328,6 +382,7 @@ func _on_node_added(n: Node) -> void:
 
 func _process(_d: float) -> void:
 	PlayClock.tick(_d, get_tree().paused)
+	_track_window(_d)
 	for a: String in _tap_release:
 		Input.action_release(a)
 	_tap_release.clear()
@@ -477,6 +532,23 @@ func overlay_toggled(active: bool) -> void:
 	if active and not OS.has_feature("web"):
 		app_backgrounded.emit()
 		pause_for_focus()
+
+
+## S1 s1_10-03: Options > Scaling "pixel-perfect" (native desktop, not the Deck):
+## the 480-tall view scales by a whole number (thin bars instead of uneven
+## pixel columns). Returns that whole scale, or 0 when smooth scaling is on.
+static func pixel_scale(s: Vector2i) -> int:
+	if not bool(Settings.get_v("pixel_perfect")) or is_phone() or OS.has_feature("web") or is_deck():
+		return 0
+	if force < 0 and DisplayServer.get_name() == "headless" and test_size == Vector2i.ZERO:
+		return 0
+	return maxi(int(floor(float(s.y) / BASE.y)), 1)
+
+
+static func toggle_pixel_perfect() -> void:
+	Settings.set_v("pixel_perfect", not bool(Settings.get_v("pixel_perfect")))
+	if _svc:
+		_svc._refit()
 
 
 ## S1 s1_10-11: VSync and the frame-rate cap (native desktop only).

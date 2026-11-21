@@ -5,7 +5,7 @@ extends RefCounted
 ## day length are per save slot (Difficulty, GameState.day_len).
 
 const DEFAULTS := {"music_vol": 9, "sfx_vol": 8, "amb_vol": 7, "bg_sound": false, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false, "text_size": 0,
-	"text_speed": 1, "toast_hold": 1, "timing_help": false, "pause_unfocused": true, "vsync": true, "fps_cap": 0}
+	"text_speed": 1, "toast_hold": 1, "timing_help": false, "pause_unfocused": true, "vsync": true, "fps_cap": 0, "pixel_perfect": false, "win_rect": []}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]
@@ -291,6 +291,8 @@ static func general_rows(parent: Control, tree: SceneTree, refresh: Callable, fs
 		rb.call("Fullscreen: %s%s" % ["on" if DisplayMode.is_fullscreen() else "off", fk], func() -> void: DisplayMode.toggle_fullscreen())
 	if DisplayMode.native_desktop():
 		# S1 s1_10-08 / s1_10-11: desktop window options.
+		if not DisplayMode.is_deck():
+			rb.call("Scaling: %s" % ("pixel-perfect" if bool(get_v("pixel_perfect")) else "smooth"), func() -> void: DisplayMode.toggle_pixel_perfect())
 		rb.call("Pause when window inactive: %s" % ("on" if DisplayMode.focus_pauses() else "off"), func() -> void: set_v("pause_unfocused", not DisplayMode.focus_pauses()))
 		rb.call("VSync: %s" % ("on" if bool(get_v("vsync")) else "off"), func() -> void: DisplayMode.toggle_vsync())
 		var cap := int(get_v("fps_cap"))

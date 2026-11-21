@@ -209,6 +209,21 @@ func _run() -> void:
 	ok(not Settings.fullscreen_key_hint() or PadInput.device_kind() == "keys", "F11 hint only for keyboard players")
 	await _tap_btn(JOY_BUTTON_A)
 	ok(not Settings.fullscreen_key_hint(), "no F11 hint while a pad is used")
+	# --- pixel-perfect scaling and remembered window (s1_10-03 / s1_10-05)
+	Settings.set_v("pixel_perfect", true)
+	DisplayMode.force = 1
+	DisplayMode.test_size = Vector2i(1600, 1000)
+	DisplayMode.refit()
+	ok(DisplayMode.pixel_scale(DisplayMode.test_size) == 2, "pixel-perfect picks a whole scale (2 at 1000 px tall)")
+	ok(is_equal_approx(DisplayMode.view.x, 800.0), "pixel-perfect view width = window / scale (got %s)" % DisplayMode.view.x)
+	ok(root.content_scale_stretch == Window.CONTENT_SCALE_STRETCH_INTEGER, "integer stretch on")
+	Settings.set_v("pixel_perfect", false)
+	DisplayMode.refit()
+	ok(root.content_scale_stretch == Window.CONTENT_SCALE_STRETCH_FRACTIONAL and DisplayMode.pixel_scale(DisplayMode.test_size) == 0, "smooth scaling back")
+	DisplayMode.force = -1
+	DisplayMode.test_size = Vector2i.ZERO
+	DisplayMode.refit()
+	ok(DisplayMode.window_rect_ok(Rect2i(10, 10, 800, 600)) and not DisplayMode.window_rect_ok(Rect2i(0, 0, 200, 100)), "saved window rect check (min size)")
 	# --- pad words (s1_08-06)
 	ok(PadInput.device_kind() == "pad", "pad is the device for the word checks")
 	var w := PadInput.words("Tap a slot to see what fits it.")
