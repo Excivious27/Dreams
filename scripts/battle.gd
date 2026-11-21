@@ -755,6 +755,7 @@ func _tick() -> void:
 	_sup_f -= int(_sup_f)
 	_mend_cd = maxf(0.0, _mend_cd - 1.0)
 	_barrage_cd = maxf(0.0, _barrage_cd - 1.0)
+	_callback_cd = maxf(0.0, _callback_cd - 1.0)
 	# Bleed: whoever holds fewer points loses tickets every second, faster the worse it is.
 	if a > e:
 		_bleed_e += (a - e) * (1.0 + GameState.bonus("strategist", "ticket_bleed"))
@@ -1059,6 +1060,7 @@ func _field_team() -> void:
 		var h := HelperUnit.make_team(map, m, job, at, team_sprite(m))
 		h.tag_row = n % 2
 		apply_rank(h, m)
+		_fielded.append([m, job, h])
 		if bool(d.get("inspired", false)):
 			h.max_hp = int(h.max_hp * 1.25)
 			h.hp = h.max_hp
@@ -1067,6 +1069,31 @@ func _field_team() -> void:
 	if n > 0:
 		var nm: Array = team.map(func(h: HelperUnit) -> String: return h.team_name)
 		map.hud.toast("%s fight%s beside you." % [_and_list(nm), "s" if n == 1 else ""], Color(0.7, 0.95, 1.0))
+
+
+## c16b_13-08: who took the field ([member, job, unit]) so fallen people can be called back.
+var _fielded: Array = []
+var _callback_cd := 0.0
+
+
+func fallen() -> Array:
+	return _fielded.filter(func(e: Array) -> bool: return (not is_instance_valid(e[2]) or (e[2] as HelperUnit).is_queued_for_deletion() or (e[2] as HelperUnit).hp <= 0) and str((e[0] as Array)[2] if (e[0] as Array).size() > 2 else "") != "animal")
+
+
+## Call the fallen back in at banner p (people only: team animals rest once they trot home).
+func call_back(p: Dictionary) -> int:
+	var n := 0
+	for e: Array in fallen():
+		var m: Array = e[0]
+		var h := HelperUnit.make_team(map, m, str(e[1]), p["pos"] + Vector2(randf_range(-14, 14), 12), team_sprite(m))
+		apply_rank(h, m)
+		team.erase(e[2])
+		team.append(h)
+		e[2] = h
+		n += 1
+	if n > 0:
+		_callback_cd = 60.0
+	return n
 
 
 ## C16b P1 (c16b_07-02/13-01): an ally's rank 1-5 (partner rank, crew level + 1, friend hearts / 2).
@@ -1088,7 +1115,7 @@ static func apply_rank(h: HelperUnit, m: Array) -> void:
 	if m.size() > 2 and str(m[2]) == "animal":
 		return
 	var r := ally_rank(m)
-	h.max_hp += 6 * (r - 1)
+	h.max_hp += 6 * (r - 1) + int(GameState.bonus(GameState.arc_skill(), "helper_hp"))  # c16b_13-15: arc perks count for your team too
 	h.hp = h.max_hp
 	h.rank_dmg = (r - 1) / 2
 	h.set_meta("rank", r)
@@ -1139,7 +1166,10 @@ static func team_members() -> Array:
 ## C11b P6 (c11b_08-15): a job from who the ally is, the slot's job only as the fallback.
 ## Partners by ability (mend heals, muscle/haul guard, a shade/mirror Gift hides you), crew by role
 ## (medic heals, muscle guards, lookout hides you); friends and the rest strike.
-const ABILITY_JOB := {"mend": "healer", "muscle": "warden", "haul": "warden", "gift:shade": "shade", "gift:mirror": "shade", "gift:iron": "warden", "bee_bop": "healer"}
+const ABILITY_JOB := {"mend": "healer", "muscle": "warden", "haul": "warden", "gift:shade": "shade", "gift:mirror": "shade", "gift:iron": "warden", "bee_bop": "healer",
+	# C16b P1 (c16b_13-13): every partner has a job of their own, never the slot's.
+	"scout": "shade", "tinker": "healer", "fence": "warden", "tail": "striker", "powerup": "striker", "meow_pow_wow": "striker",
+	"gift:bramble": "warden", "gift:gravity": "warden", "gift:fortune": "healer", "gift:beat": "healer"}
 const ROLE_JOB := {"medic": "healer", "cook": "healer", "muscle": "warden", "lookout": "shade"}
 
 
@@ -1230,7 +1260,11 @@ func interact(id: String) -> void:
 	else:
 		opts.append_array(bo)
 		keys.append_array(bk)
-	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40}
+	var fl := fallen()
+	if not fl.is_empty():
+		opts.append("Call back fallen allies (◇%d): %d rejoin here%s" % [_disc(30), fl.size(), (" (ready in %ds)" % ceili(_callback_cd)) if _callback_cd > 0.0 else ""])
+		keys.append("callback")
+	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40, "callback": 30}
 	for oi in opts.size():
 		var kk: String = keys[oi]
 		var cc := _cost(kk) if (SPAWNER_COST.has(kk) or HelperUnit.kinds().has(kk)) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
@@ -1253,8 +1287,12 @@ func interact(id: String) -> void:
 
 ## Apply a banner choice (split out so tests can drive it). Returns true when it went through.
 func pick_build(p: Dictionary, k: String) -> bool:
-	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40}
+	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "callback": 30}
 	var mu := Music.instance(get_tree())
+	if k == "callback" and (_callback_cd > 0.0 or fallen().is_empty()):
+		map.hud.toast("Calling back is recharging: %ds." % ceili(_callback_cd) if _callback_cd > 0.0 else "Nobody to call back.", Color(1, 0.8, 0.6))
+		mu.sfx("nope", "thud")
+		return false
 	if extra.has(k):
 		var c := _disc(int(extra[k]))
 		if supply < c:
@@ -1272,6 +1310,10 @@ func pick_build(p: Dictionary, k: String) -> bool:
 				p["fort"] = true
 				map.hud.toast("%s fortified." % str(p["name"]), Color(0.7, 1, 0.8))
 				mu.sfx("hammer", "craft_done")
+			"callback":
+				var n := call_back(p)
+				map.hud.toast("%d all%s back at %s." % [n, "y" if n == 1 else "ies", str(p["name"])], Color(0.7, 1, 0.8))
+				mu.sfx("whistle", "j_confirm")
 		return true
 	if k == str(p["spawner"]):
 		map.hud.toast("%s already builds that." % str(p["name"]), Color(1, 0.85, 0.6))

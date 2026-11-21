@@ -157,6 +157,13 @@ func _run() -> void:
 		await process_frame
 	check(h.position.distance_to(m.player.position) < d0, "Follow me: they come back to you")
 
+	# ---- call back the fallen (c16b_13-08)
+	b._fielded.append([["mom", "Mom", "partner"], "healer", h])
+	h.hp = 0
+	b.supply = 100
+	check(b.fallen().size() == 1, "a fallen ally is listed")
+	check(b.pick_build(p, "callback") and b.fallen().is_empty() and b._callback_cd > 0.0, "Call back fallen allies brings them in at the banner")
+
 	# ---- ranks (c16b_07-02/13-01)
 	var lo := HelperUnit.make_team(m, ["pax", "Pax", "partner"], "striker", at, "")
 	var hi := HelperUnit.make_team(m, ["mom", "Mom", "partner"], "striker", at, "")
