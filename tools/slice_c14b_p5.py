@@ -87,6 +87,10 @@ def blink(gid, anim, render, face=(0.12, 0.55), thr=60):
         # the eyes are the strongest change (a smile or hair fringe is smaller)
         run = max(runs, key=lambda r: sum(rows[y] for y in r))
         ylo, yhi = run[0], run[-1]
+        win = max(4, int(ch * 0.1))  # an eye is at most ~10% of the body tall
+        if yhi - ylo + 1 > win:
+            best = max(range(ylo, yhi - win + 2), key=lambda t: sum(rows.get(y, 0) for y in range(t, t + win)))
+            ylo, yhi = best, best + win - 1
         pts = [(x, y) for x, y in pts if ylo <= y <= yhi]
         for x, y in pts:
             c = rp[x, y]

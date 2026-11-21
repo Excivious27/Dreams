@@ -46057,6 +46057,14 @@
    "frames": 4,
    "h": 106,
    "w": 212
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 55,
+   "file": "characters/npc_lumi_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 55
   }
  },
  "characters/npc_lumi_winter": {
@@ -46515,6 +46523,14 @@
    "frames": 4,
    "h": 100,
    "w": 180
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 105,
+   "cell_w": 46,
+   "file": "characters/npc_maple_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 105,
+   "w": 46
   }
  },
  "characters/npc_maple_winter": {
@@ -47657,6 +47673,14 @@
    "frames": 4,
    "h": 106,
    "w": 224
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 57,
+   "file": "characters/npc_posy_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 57
   }
  },
  "characters/npc_posy_winter": {
@@ -47961,6 +47985,14 @@
    "frames": 4,
    "h": 105,
    "w": 216
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 101,
+   "cell_w": 52,
+   "file": "characters/npc_rook_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 101,
+   "w": 52
   }
  },
  "characters/npc_rook_winter": {
@@ -48191,6 +48223,14 @@
    "frames": 4,
    "h": 106,
    "w": 216
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 97,
+   "cell_w": 53,
+   "file": "characters/npc_sal_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 97,
+   "w": 53
   }
  },
  "characters/npc_sal_winter": {
@@ -48925,6 +48965,14 @@
    "frames": 4,
    "h": 104,
    "w": 236
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 95,
+   "cell_w": 58,
+   "file": "characters/npc_theo_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 95,
+   "w": 58
   }
  },
  "characters/npc_theo_summer": {
