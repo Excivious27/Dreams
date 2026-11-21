@@ -235,7 +235,8 @@
      ],
      "progress": 3,
      "hint": "Ranching level 9"
-    }
+    },
+    "name_gang": "Freight Barn"
    }
   ]
  },
@@ -3660,7 +3661,13 @@
       4
      ],
      "hint": "Ranching level 4"
-    }
+    },
+    "cell": [
+     40,
+     13
+    ],
+    "w": 2,
+    "h": 2
    }
   ]
  },
@@ -3718,7 +3725,13 @@
      ],
      "hint": "Ranching level 6"
     },
-    "name_gang": "Big Pig Pen"
+    "name_gang": "Big Pig Pen",
+    "cell": [
+     45,
+     13
+    ],
+    "w": 3,
+    "h": 2
    }
   ]
  },
@@ -3851,6 +3864,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "enclosure",
   "tiers": [
    {
@@ -3873,7 +3887,8 @@
       5
      ],
      "progress": 1
-    }
+    },
+    "name_gang": "Exotics Yard"
    },
    {
     "tier": 2,
@@ -3896,7 +3911,14 @@
      ],
      "progress": 2,
      "hint": "Ranching level 8"
-    }
+    },
+    "name_gang": "Big Exotics Yard",
+    "cell": [
+     50,
+     13
+    ],
+    "w": 4,
+    "h": 3
    }
   ]
  },
@@ -3911,6 +3933,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "aviary",
   "tiers": [
    {
@@ -3933,7 +3956,8 @@
       4
      ],
      "progress": 1
-    }
+    },
+    "name_gang": "Drone Loft"
    },
    {
     "tier": 2,
@@ -3956,7 +3980,14 @@
      ],
      "progress": 2,
      "hint": "Ranching level 7"
-    }
+    },
+    "name_gang": "Big Drone Loft",
+    "cell": [
+     57,
+     13
+    ],
+    "w": 3,
+    "h": 3
    }
   ]
  },
@@ -3971,6 +4002,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Posy",
+  "seller_gang": "The crew",
   "ranch": "terrarium",
   "tiers": [
    {
@@ -3993,7 +4025,8 @@
       4
      ],
      "progress": 1
-    }
+    },
+    "name_gang": "Grow Tank"
    },
    {
     "tier": 2,
@@ -4016,7 +4049,14 @@
      ],
      "progress": 2,
      "hint": "Ranching level 7"
-    }
+    },
+    "name_gang": "Big Grow Tank",
+    "cell": [
+     40,
+     19
+    ],
+    "w": 3,
+    "h": 2
    }
   ]
  },
@@ -4031,6 +4071,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "tide_pool",
   "arc": "penguins",
   "tiers": [
@@ -4069,6 +4110,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "ember_pit",
   "arc": "penguins",
   "tiers": [
@@ -4107,6 +4149,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "star_dome",
   "arc": "penguins",
   "tiers": [
