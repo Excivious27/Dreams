@@ -64,6 +64,7 @@ func after_ready() -> void:
 		to_under(wp)
 		wp.play("idle")
 		RegionAnim.phase(wp, Vector2i(24, 20))
+		RegionAnim.of(self).add(wp, "warp_pad", Vector2i(24, 20))  # soft breathing light over the pad
 	prop("props", "rocket_house", Vector2i(3, 6), 3)  # footprint = the art (4 cells), no invisible cell beside it
 	if Art.has("buildings", "greenhouse_dome"):
 		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)

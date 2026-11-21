@@ -110,6 +110,7 @@ func after_ready() -> void:
 			add_child(a)
 			a.play("idle")
 			RegionAnim.phase(a, Vector2i(28, 22))
+			RegionAnim.of(self).add(a, "star_crater", Vector2i(28, 22))
 			set_thing(28, 23, {"type": "crater", "hint": "A: the fallen star"}, false)
 			var gp := AnimatedSprite2D.new()
 			gp.sprite_frames = RegionAnim.frames_for("props", "glow_pond", 3.5)  # C14b P4: ping-pong, no hard cut back
@@ -120,6 +121,7 @@ func after_ready() -> void:
 			to_under(gp)
 			gp.play("idle")
 			RegionAnim.phase(gp, Vector2i(5, 15))
+			RegionAnim.of(self).add(gp, "glow_pond", Vector2i(5, 15))
 			# The pond is real water: you can't stand in it, and you can fish it.
 			for c: Vector2i in cells_of([Rect2i(5, 14, 2, 2)]):
 				set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})

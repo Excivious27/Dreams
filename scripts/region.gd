@@ -152,10 +152,21 @@ func _boss_markers() -> void:
 		var at := AtlasTexture.new()
 		at.atlas = tex
 		at.region = Rect2(0, 0, float(info.get("cell_w", tex.get_width())), tex.get_height())
-		var sp := Sprite2D.new()
-		sp.texture = at
+		var sp: Node2D
+		if int(info.get("frames", 1)) > 1:  # C14b P4 (c14b_12-11): the waiting boss breathes its idle, slowly
+			var asp := AnimatedSprite2D.new()
+			asp.sprite_frames = Art.frames(grp, {"idle": "idle"}, {"idle": 3.0})
+			asp.animation = "idle"
+			asp.play("idle")
+			RegionAnim.phase(asp, c)
+			asp.offset = Vector2(0, -tex.get_height() / 2.0)
+			sp = asp
+		else:
+			var ssp := Sprite2D.new()
+			ssp.texture = at
+			ssp.offset = Vector2(0, -tex.get_height() / 2.0)
+			sp = ssp
 		sp.scale = Vector2(0.5, 0.5)
-		sp.offset = Vector2(0, -tex.get_height() / 2.0)
 		sp.position = cell_center(c)
 		sp.modulate = Color(0.55, 0.5, 0.65, 0.9)
 		if ed.has("tint"):

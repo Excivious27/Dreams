@@ -107,6 +107,15 @@ func add(node: Node2D, nm: String, c: Vector2i) -> void:
 		kind = "drift"
 	elif nm.contains("beacon") or nm.contains("star_crystal") or nm.contains("glow_crystal") or nm.contains("lantern"):
 		kind = "breathe"
+	# Glowing pools, craters and pads: a soft light that breathes over the strip (c14b_01-07, c14b_05-05).
+	if node is AnimatedSprite2D and (nm.contains("glow_pool") or nm.contains("glow_pond") or nm.contains("star_crater") or nm.contains("warp_pad")):
+		var gw := Glow.new()
+		gw.col = Color("b8a8ff") if nm.contains("moon") or nm.contains("warp") else Color("8ff0e0")
+		gw.radius = 34.0
+		gw.ph = float(hcell(c) % 1000) / 1000.0 * TAU
+		gw.position = (node as AnimatedSprite2D).offset
+		gw.show_behind_parent = false
+		node.add_child(gw)
 	if kind == "":
 		return
 	var h := hcell(c)
