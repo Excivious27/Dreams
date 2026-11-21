@@ -139,7 +139,9 @@ func _setup() -> void:
 	_rally_btn.pressed.connect(func() -> void: map.later(_pick_rally))
 	layer.add_child(_rally_btn)
 	Hud.extra_rects.append(RALLY_RECT)
-	_set_rally(-2, true)
+	# The drill's helpers follow you from the moment they step out (Tom, C11b P7):
+	# the drill then teaches Hold here / Follow me / Go to a point one at a time.
+	_set_rally(-1 if is_drill else -2, true)
 	if is_drill:
 		drill = BattleDrill.attach(self, layer)
 	if camp != "" or is_drill:
@@ -165,9 +167,16 @@ var _rally_given := false
 var _push_said := false
 
 
-## "RALLY", plus the key/button when the touch pad is hidden ("RALLY (L3)").
+## "HELPERS", plus the key/button when the touch pad is hidden ("HELPERS (L3)").
+## (The rally button gives your helpers their orders; plain words, no jargon: C11b P7.)
 func _rally_word() -> String:
-	return "RALLY" if TouchControls.visible_controls else "RALLY (%s)" % InputSetup.prompt("rally")
+	return "HELPERS" if TouchControls.visible_controls else "HELPERS (%s)" % InputSetup.prompt("rally")
+
+
+## Order words for the helpers' list and the drill card.
+const ORDER_FOLLOW := "Follow me"
+const ORDER_HOLD := "Hold here"
+var orders := 0   # orders you have given this fight (the drill checks a new one per step)
 
 
 ## Rally from keys/pad (C9): a tap of the rally action cycles guard -> follow ->
@@ -200,23 +209,31 @@ func _cycle_rally() -> void:
 	_rally_sfx(i)
 
 
-## One tap: pick where the helpers go from a list (instead of cycling through every point).
+## One tap: pick the helpers' order from a list (instead of cycling through every point).
+## Each option says plainly what it does; the one in force is marked ▸.
 func _pick_rally() -> void:
-	var o: Array = ["%sGuard posts: each holds the point that built it" % ("▸ " if _rally == -2 else ""), "%sFollow me: they walk with you" % ("▸ " if _rally == -1 else "")]
+	var o: Array = ["%s%s: they walk beside you and fight what's near" % ["▸ " if _rally == -1 else "", ORDER_FOLLOW], "%s%s: each one stays at the banner that built it" % ["▸ " if _rally == -2 else "", ORDER_HOLD]]
+	var vals: Array = [-1, -2]
 	for i in points.size():
 		var p: Dictionary = points[i]
-		o.append("%sSend to %s %s (%s)" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
-	o.append("Leave as is")
+		o.append("%sGo to %s %s (%s): they march there and fight" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
+		vals.append(i)
+	o.append("Close")
 	var dl := Dialogue.instance(get_tree())
-	if _helpers() == 0 and not is_drill:
-		dl.say([{"who": "", "text": "No helpers yet. Build at a banner you hold (USE on it) and they'll come.", "choice": ["Leave"], "key": ""}])
+	if _helpers() == 0:
+		dl.say([{"who": "", "text": no_helpers_text(), "choice": ["Close"], "key": ""}])
 		await dl.finished
 		return
-	dl.say([{"who": "", "text": "Rally %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
+	dl.say([{"who": "", "text": "Orders for your %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
 	await dl.finished
-	if dl.last_choice >= 0 and dl.last_choice < o.size() - 1 and not _over:
-		_set_rally(dl.last_choice - 2)
-		_rally_sfx(dl.last_choice - 2)
+	if dl.last_choice >= 0 and dl.last_choice < vals.size() and not _over:
+		_set_rally(int(vals[dl.last_choice]))
+		_rally_sfx(int(vals[dl.last_choice]))
+
+
+## How to get helpers, cost and place included (shown when you give orders with none).
+func no_helpers_text() -> String:
+	return "No helpers yet. Build one at a banner you hold: stand at it, press %s and pick \"Build helper\" (from ◇%d supply). Helpers then step out of that banner." % [InputSetup.prompt("a"), _cost("striker")]
 
 
 ## Each rally order has its own call (c6_11): follow me = a whistle, guard = a
@@ -257,6 +274,7 @@ func _helpers() -> int:
 func _set_rally(i: int, quiet := false) -> void:
 	_rally = i
 	if not quiet:
+		orders += 1
 		_rally_given = true  # your order: the early-fight team push stops
 		if map.has_meta("team_push"):
 			map.remove_meta("team_push")
@@ -272,15 +290,15 @@ func _set_rally(i: int, quiet := false) -> void:
 	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
-		_rally_btn.text = _rally_word() + ": guard posts"
+		_rally_btn.text = _rally_word() + ": hold here"
 		_rally_btn.icon = Art.tex("ui", "rally_guard")
 		if not quiet:
-			_rally_toast("Helpers: hold your posts.")
+			_rally_toast("Helpers: hold here, at your banners.")
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
 		_rally_btn.text = "%s ▸ %s" % [_rally_word(), str(points[i]["name"])]
 		_rally_btn.icon = Art.tex("ui", "rally_send")
-		_rally_toast("Helpers: everyone to %s!" % str(points[i]["name"]))
+		_rally_toast("Helpers: go to %s!" % str(points[i]["name"]))
 	_rally_flash = 1.0
 
 
@@ -870,14 +888,23 @@ func interact(id: String) -> void:
 	keys.append("mend")
 	opts.append("Barrage (◇%d): stun every foe near this point%s" % [_disc(35), (" (ready in %ds)" % int(ceil(_barrage_cd))) if _barrage_cd > 0.0 else ""])
 	keys.append("barrage")
-	# Spawners after the point actions (the list scrolls; B leaves).
+	# Builds: after the point actions once something is built, first while nothing is
+	# (the list scrolls; B leaves). Each says plainly that it builds a helper (C11b P7).
 	var does := {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}
+	var bo: Array = []
+	var bk: Array = []
 	for k: String in spawner_kinds():
 		var kd: Dictionary = HelperUnit.kinds()[k]
-		opts.append("%s (◇%d): %s" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())), _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps")))])
-		keys.append(k)
-	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
-	keys.append("turret")
+		bo.append("Build helper: %s (◇%d), %s" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())), _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps")))])
+		bk.append(k)
+	bo.append("Build %s (◇%d): stays and holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
+	bk.append("turret")
+	if str(p["spawner"]) == "":
+		opts = bo + opts
+		keys = bk + keys
+	else:
+		opts.append_array(bo)
+		keys.append_array(bk)
 	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40, "mend": 25, "barrage": 35}
 	for oi in opts.size():
 		var kk: String = keys[oi]
@@ -892,7 +919,7 @@ func interact(id: String) -> void:
 		now_nm = str(HelperUnit.kinds().get(sp, {}).get("crystal" if crystal else "drone", sp.capitalize()))
 	opts.append("Leave")  # B picks it: the list is long and the fight goes on
 	var dl := Dialogue.instance(get_tree())
-	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change the %s" if sp != "" else "Build a %s here") % ("crystal spire" if crystal else "drone bay")], "choice": opts, "key": ""}])
+	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change what this banner builds, or spend supply" if sp != "" else "This banner can build helpers that fight beside you. Pick one")], "choice": opts, "key": ""}])
 	await dl.finished
 	var i := dl.last_choice
 	if i < 0 or i >= keys.size():
@@ -965,7 +992,7 @@ func interact(id: String) -> void:
 	p["t"] = 10.0
 	map.fx("sparkle", p["pos"] + Vector2(0, -12), 12.0, 0.6)
 	mu.sfx("craft_done", "levelup")
-	map.hud.toast("Built at %s." % str(p["name"]), Color(0.7, 1, 0.8))
+	map.hud.toast("Built at %s: helpers will step out of this banner." % str(p["name"]), Color(0.7, 1, 0.8))
 
 
 func _end(won: bool, travel := true) -> void:
@@ -1131,7 +1158,7 @@ func _draw_hud() -> void:
 		txt.append([Vector2(18, y + 33), goal, HORIZONTAL_ALIGNMENT_CENTER, 240, 7, Color(1, 0.92, 0.6)])
 	# Helpers in the field, beside the RALLY button.
 	var hn := _helpers()
-	txt.append([Vector2(RALLY_RECT.end.x + 5, RALLY_RECT.position.y + 12), "%d helper%s%s" % [hn, "" if hn == 1 else "s", " · build at a banner" if hn == 0 else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.75, 0.95, 1.0) if _rally_flash <= 0.0 else Color(1, 1, 0.7)])
+	txt.append([Vector2(RALLY_RECT.end.x + 5, RALLY_RECT.position.y + 12), "%d helper%s%s" % [hn, "" if hn == 1 else "s", (" · build at a banner ◇%d" % _cost("striker")) if hn == 0 else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.75, 0.95, 1.0) if _rally_flash <= 0.0 else Color(1, 1, 0.7)])
 	# Point pips, left to right in data order, with an arrow toward the nearest one you don't hold.
 	var x0 := 135.0 - points.size() * 7.0
 	for i in points.size():

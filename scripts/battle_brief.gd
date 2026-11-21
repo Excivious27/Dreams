@@ -25,7 +25,7 @@ const LOSE := {
 	"defend": "You lose every point, or your tickets run out.",
 	"": "Your tickets run out (they bleed while they hold more points), or you're knocked out.",
 }
-const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). RALLY (top left) moves your helpers and team (early on, your team pushes by itself until you do). Leave by the ▼ exit to fall back."
+const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). HELPERS (top left) gives orders: Follow me, Hold here, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back."
 
 var d: Dictionary = {}
 var mode := ""

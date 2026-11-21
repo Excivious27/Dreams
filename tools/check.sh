@@ -598,6 +598,19 @@ echo "$gout3" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout3" | grep -q "campaign_gate_test: 0 fails"; then
   echo "Campaign gate test (gangsters) failed"; exit 1
 fi
+
+dfout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_drill_flow_test.gd 2>&1)"
+echo "$dfout" | grep -E "FAIL|SCRIPT ERROR|battle_drill_flow_test" || true
+if ! echo "$dfout" | grep -q "battle_drill_flow_test (penguins): 0 fails"; then
+  echo "Battle drill flow test failed"; exit 1
+fi
+
+dfgout="$(ARC=gangsters "$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_drill_flow_test.gd 2>&1)"
+echo "$dfgout" | grep -E "FAIL|SCRIPT ERROR|battle_drill_flow_test" || true
+if ! echo "$dfgout" | grep -q "battle_drill_flow_test (gangsters): 0 fails"; then
+  echo "Battle drill flow test (gangsters) failed"; exit 1
+fi
+
 p5out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_words_test.gd 2>&1)"
 echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|campaign_words_test" || true
 if ! echo "$p5out" | grep -q "campaign_words_test: 0 fails"; then

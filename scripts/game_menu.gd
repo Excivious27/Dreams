@@ -421,6 +421,7 @@ func _refresh() -> void:
 		"Book":
 			CollectionScreen.build(self)
 		"Items":
+			BattleDrill.menu_row(self)  # C11b P7: the training drill's way out on a pad/keys
 			var slot := int(r["slot"])
 			var tb: Array = r["toolbar"]
 			var sel := str(tb[slot])
