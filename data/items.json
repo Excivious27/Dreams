@@ -23555,5 +23555,37 @@
   ],
   "when": "night",
   "desc": "Glows like a tiny lamp on long winter nights."
+ },
+ "prism_trout": {
+  "name": "Prism Trout",
+  "type": "fish",
+  "value": 700,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Spring legend of the forest stream. Its scales split light into rainbows."
+ },
+ "sailfish": {
+  "name": "Sun Sailfish",
+  "type": "fish",
+  "value": 760,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Summer legend of the open bay. Leaps highest at noon."
+ },
+ "soul_salmon": {
+  "name": "Lantern Salmon",
+  "type": "fish",
+  "value": 740,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Fall legend of the lake. Glows like a paper lantern on autumn nights."
+ },
+ "frost_pike": {
+  "name": "Frost King Pike",
+  "type": "fish",
+  "value": 820,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Winter legend of the forest stream, seen only in a second winter or later."
  }
 }

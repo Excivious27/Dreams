@@ -80,6 +80,20 @@ func _fish() -> void:
 	var storm_reach := Fishing.reach_n(2, false, false)
 	_at("summer", "clear")
 	check(storm_reach == Fishing.reach_n(2, false, false) + 1, "a storm stirs one more fish within reach")
+	GameState.run["skills"]["fishing"] = {"level": 10, "xp": 0, "nodes": {}}
+	var leg := func(scene: String) -> Dictionary:
+		var got := {}
+		for i in 1500:
+			got[Collections.legend_roll(scene, "carp", false)] = true
+		return got
+	_at("spring")
+	check((leg.call("forest") as Dictionary).has("prism_trout"), "spring: the Prism Trout legend can bite in the forest")
+	_at("fall")
+	check(not (leg.call("forest") as Dictionary).has("prism_trout") and (leg.call("lake") as Dictionary).has("soul_salmon"), "fall: no Prism Trout, the Lantern Salmon at the lake")
+	_at("winter")
+	check(not (leg.call("forest") as Dictionary).has("frost_pike"), "winter year 1: the Frost King Pike waits")
+	GameState.run["day"] = 87 + 112
+	check((leg.call("forest") as Dictionary).has("frost_pike"), "winter year 2: the Frost King Pike can bite")
 	for f in ["trout", "bass", "salmon", "legendary_koi", "perch", "cod"]:
 		check(not str(GameState.items[f].get("desc", "")).begins_with("A good catch"), "%s has its own fish-log line" % f)
 

@@ -2242,6 +2242,26 @@
     "item": "lantern_fish",
     "arc": "",
     "where": "The sea, the docks and charters, Winter, at night"
+   },
+   {
+    "item": "prism_trout",
+    "arc": "",
+    "where": "Legend: Forest, in spring, fishing 6+. Only one exists."
+   },
+   {
+    "item": "sailfish",
+    "arc": "",
+    "where": "Legend: Beach, in summer, fishing 7+. Only one exists."
+   },
+   {
+    "item": "soul_salmon",
+    "arc": "",
+    "where": "Legend: Lake, in fall, fishing 8+. Only one exists."
+   },
+   {
+    "item": "frost_pike",
+    "arc": "",
+    "where": "Legend: Forest, in winter, fishing 9+, from year 2. Only one exists."
    }
   ],
   "cooking": [
@@ -6184,6 +6204,31 @@
    "when": "rain_or_winter_dawn",
    "chance": 0.04,
    "first_decor": "dc_koi_scroll"
+  },
+  "prism_trout": {
+   "scene": "forest",
+   "lvl": 6,
+   "when": "season:spring",
+   "chance": 0.03
+  },
+  "sailfish": {
+   "scene": "beach",
+   "lvl": 7,
+   "when": "season:summer",
+   "chance": 0.03
+  },
+  "soul_salmon": {
+   "scene": "lake",
+   "lvl": 8,
+   "when": "season:fall",
+   "chance": 0.03
+  },
+  "frost_pike": {
+   "scene": "forest",
+   "lvl": 9,
+   "when": "season:winter",
+   "chance": 0.03,
+   "year": 2
   }
  }
 }

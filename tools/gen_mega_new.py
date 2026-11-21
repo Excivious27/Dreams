@@ -173,6 +173,16 @@ SEASON_FISH = {
     "sardine": ("Sardine", 18, 1, "sea", ["winter", "spring"], {"desc": "Tiny, silver, and never alone."}),
     "lantern_fish": ("Lanternfish", 120, 3, "sea", ["winter"], {"when": "night", "rarity": "uncommon", "desc": "Glows like a tiny lamp on long winter nights."}),
 }
+# C15 P4 (c15_09-14): one legend per season (Collections.legend_roll "season:<se>"),
+# once per save; the winter one waits for year 2. No "water" key: never in normal pools.
+SEASON_LEGENDS = {
+    "prism_trout": ("Prism Trout", 700, "Spring legend of the forest stream. Its scales split light into rainbows."),
+    "sailfish": ("Sun Sailfish", 760, "Summer legend of the open bay. Leaps highest at noon."),
+    "soul_salmon": ("Lantern Salmon", 740, "Fall legend of the lake. Glows like a paper lantern on autumn nights."),
+    "frost_pike": ("Frost King Pike", 820, "Winter legend of the forest stream, seen only in a second winter or later."),
+}
+for _fid, (_nm, _v, _d) in SEASON_LEGENDS.items():
+    ITEMS[_fid] = (_nm, "fish", _v, 5, {"rarity": "legendary", "desc": _d})
 for _fid, (_nm, _v, _t, _w, _se, _ex) in SEASON_FISH.items():
     ITEMS[_fid] = (_nm, "fish", _v, _t, dict({"rarity": "common", "water": _w, "seasons": _se}, **_ex))
 

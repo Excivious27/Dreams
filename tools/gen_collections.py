@@ -59,7 +59,8 @@ WHERE = {
 
 # C15 P4 seasonal fish (gen_mega_new SEASON_FISH): in the fish log (the museum tanks keep their 20 slots).
 SEASON_FISH_LOG = ["perch", "smelt", "herring", "flounder", "bream", "chub", "flying_fish", "snapper",
-                   "pike", "grayling", "mullet", "mackerel", "sturgeon", "cod", "sardine", "lantern_fish"]
+                   "pike", "grayling", "mullet", "mackerel", "sturgeon", "cod", "sardine", "lantern_fish",
+                   "prism_trout", "sailfish", "soul_salmon", "frost_pike"]
 
 # Fish the rod can catch (the fish log); tuna and crab come other ways (museum only).
 NOT_ROD = ["tuna", "crab"]
@@ -67,6 +68,11 @@ NOT_ROD = ["tuna", "crab"]
 # Legends: replace a normal catch once per run when the place and moment fit (bypass the value ceiling).
 LEGENDS = {
     "legendary_koi": {"scene": "lake", "lvl": 8, "when": "rain_or_winter_dawn", "chance": 0.04, "first_decor": "dc_koi_scroll"},
+    # C15 P4 (c15_09-14): a legend per season (gen_mega_new SEASON_LEGENDS); "year" = first year it can bite
+    "prism_trout": {"scene": "forest", "lvl": 6, "when": "season:spring", "chance": 0.03},
+    "sailfish": {"scene": "beach", "lvl": 7, "when": "season:summer", "chance": 0.03},
+    "soul_salmon": {"scene": "lake", "lvl": 8, "when": "season:fall", "chance": 0.03},
+    "frost_pike": {"scene": "forest", "lvl": 9, "when": "season:winter", "chance": 0.03, "year": 2},
 }
 
 SHIP_TYPES = ["crop", "fruit", "flower", "herb", "forage", "fish", "ore", "gem", "bar", "treasure"]
@@ -309,6 +315,10 @@ def source_text():
 def where_hint(item_id, it, forage, pools):
     if item_id in WHERE:
         return WHERE[item_id]
+    if str(LEGENDS.get(item_id, {}).get("when", "")).startswith("season:"):
+        L = LEGENDS[item_id]
+        return "Legend: %s, in %s, fishing %d+%s. Only one exists." % (
+            L["scene"].title(), L["when"][7:], L["lvl"], ", from year %d" % L["year"] if L.get("year") else "")
     if item_id in ANIMAL_WHERE:
         return ANIMAL_WHERE[item_id]
     if item_id in ARTISAN:
