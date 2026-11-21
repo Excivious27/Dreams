@@ -133,7 +133,7 @@ static func score_good(id: String, quality: int) -> int:
 ## Each [who, entry, score]; score = base + YEAR_STEP*year + jitter, never above cap.
 static func rivals(fest: String, cid: String, day := -1) -> Array:
 	var c := cat(fest, cid)
-	var pool: Array = (c.get("rivals", []) as Array).duplicate(true)
+	var pool: Array = (c.get("rivals", []) as Array).duplicate(true).filter(func(r: Variant) -> bool: return not GameState.run.get("flags", {}).has(str((r as Array)[0]).to_lower() + "_gone"))  # C12 P3: nobody who left town enters
 	if pool.is_empty():
 		return []
 	if day < 0:

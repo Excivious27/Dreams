@@ -335,7 +335,7 @@ CHAT_ANY = [
 # Before the grand opening (from day 3, until it opens): the lead-in.
 CHAT_SOON = [
     "Hammering at the old hotel by the library all week. The banner says {hall}. Mayor Alder won't stop grinning.",
-    "Somebody carried a whole crate of bowling pins past my window. Bowling! Here!",
+    "Somebody carried a whole crate of bowling pins down the avenue. Bowling! Here!",
     "The old hotel south-east of the library is getting a new roof. They say it opens in a few days.",
 ]
 CHAT_SOON_GANG = [
@@ -343,6 +343,15 @@ CHAT_SOON_GANG = [
     "Sal says the old hotel's turning into a place where nobody brings heat. I'll believe it when I see it.",
     "Somebody wheeled six arcade cabinets past the library at dawn. Something's opening south-east of there.",
 ]
+# C12 P3 (c12_05-18): a villager's own lead-in line replaces the shared pool for them (both arcs).
+CHAT_SOON_OWN = {
+    "alder": ["The old hotel's getting a second life. Bowling lanes! Don't tell anyone I picked the carpet."],
+    "gideon": ["Somebody ordered forty brass hinges for that old hotel. Forty. I'm not complaining."],
+    "tess": ["I built the shoe racks for that hotel place. Size 2 to size 14. Somebody here has size 14 feet."],
+    "benno": ["Carted a load of pins up from the beach road for the hotel lot. The horses didn't care for the noise."],
+    "hazel": ["Mabel's been counting days till the hotel opens. She's at four. She's been at four for a week."],
+    "sal": ["Whatever's going into that old hotel, it's loud. I'm told that's the point."],
+}
 CHAT_SCORE = [
     "Somebody said you bowled a {best}. Was that you? Respect.",
     "Your name's on the high score board. {best}. Don't let it go to your head.",
@@ -350,7 +359,7 @@ CHAT_SCORE = [
 CHAT = {
     "pip": ["I'm saving tickets for the kite. Don't tell Mabel, she wants it too.", "Block Jumper is easy. I mean, I haven't beaten it. But it's easy."],
     "tobin": ["I bowled a strike once. Okay, it was a gutter that bounced. Still counts.", "Bet you can't beat my high score! ...What is my high score? I forgot."],
-    "mabel": ["The teddy bear at the prize counter has a little bow. A LITTLE BOW.", "Grandma Hazel says tickets aren't money. Grandma Hazel has never seen the prize counter."],
+    "mabel": ["The teddy bear at the prize counter has a little bow. A LITTLE BOW.", "Mum says tickets aren't money. Mum has never seen the prize counter."],
     "wren_jr": ["Mum says if I get a strike she'll make pancakes. I've had a lot of not-pancakes.", "The machines upstairs talk when you win. Mostly they say TRY AGAIN."],
     "gideon": ["Bowling's just smithing with a ball. Weight, line, follow through.", "Maple thinks she's the league champion. Maple is the league champion. Don't tell her I said it."],
     "maple": ["League night is the only night Gideon's quiet. He's concentrating.", "I bowl with my grandmother's ball. It's heavier than it looks, dear. So am I."],
@@ -690,7 +699,7 @@ def main():
         "visitors": VISITORS, "stands": STANDS,
         "bowl_avg": BOWL_AVG, "chat_spot": CHAT_SPOT, "chat_league": CHAT_LEAGUE, "chat_league_own": CHAT_LEAGUE_OWN,
         "chat_rain": CHAT_RAIN, "chat_result": CHAT_RESULT, "day_words": DAY_WORDS,
-        "chat_any": CHAT_ANY, "chat_soon": CHAT_SOON, "chat_soon_gang": CHAT_SOON_GANG, "chat_score": CHAT_SCORE, "chat": CHAT, "chat_gang": CHAT_GANG,
+        "chat_any": CHAT_ANY, "chat_soon": CHAT_SOON, "chat_soon_gang": CHAT_SOON_GANG, "chat_soon_own": CHAT_SOON_OWN, "chat_score": CHAT_SCORE, "chat": CHAT, "chat_gang": CHAT_GANG,
         "house_decor": HOUSE_DECOR,
     }
     save("rec.json", rec)

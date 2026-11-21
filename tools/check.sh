@@ -429,6 +429,13 @@ if ! echo "$cout" | grep -q "town_first_test: 0 failures"; then
   echo "Town first-visit test failed"; exit 1
 fi
 
+echo "== talk conditions (C12 P3) =="
+tcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/talk_conditions_test.gd 2>&1)"
+echo "$tcout" | grep -E "FAIL|SCRIPT ERROR|talk_conditions_test" || true
+if ! echo "$tcout" | grep -q "talk_conditions_test: 0 failures"; then
+  echo "Talk conditions test failed"; exit 1
+fi
+
 echo "== workshop: no dead ends =="
 python3 tools/station_check.py || { echo "Station check failed"; exit 1; }
 echo "== art prompts: at most 3 images each =="

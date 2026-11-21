@@ -220,6 +220,35 @@ BOSS_LOCKED = {
     "wind_starfall_garden": "The garden gate is held shut by a wind you can lean on. Help %s in %s first.",
     "gilt_vaults": "The vault doors are shut and the guards won't look at you. Help %s in %s first.",
 }
+
+# C12 P3: hub folk lines that follow the arc and progress (read by Talk.region_lines):
+# lines_gangsters (gangster arc), after + after_flag (the hub's boss beaten; after_gangsters),
+# done_lines + done_quest (their job handed in).
+NPC_EXTRA = {
+    "mg_liesl": {"lines_gangsters": ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."],
+                 "after_flag": "boss_gloam_moonpool", "after": ["The garden's breathing again. Gerald's taken to sleeping in the roses.", "Every lantern here has a moth, and every moth has a name. That one's Gerald."],
+                 "after_gangsters": ["Nobody collects rent in Lanternfall now. Gerald's moved into the roses.", "Every lantern here has a moth, and every moth has a name. That one's Gerald."]},
+    "mg_bramble": {"after_flag": "boss_gloam_moonpool", "after": ["The giant flower stopped sneezing. I sort of miss it.", "I'm not scared of the dark. The dark is scared of my lantern."]},
+    "mg_rahim": {"done_quest": "mega_sunscorch_rahim", "done_lines": ["The lamps burn till dawn now. Caravans come in singing.", "Fifty years at this well. Never once seen it run dry."]},
+    "mg_nadia": {"lines_gangsters": ["The Glass Canyon was a lake once. Lightning turned the sand to glass.", "Vasco sits on a crate of temple gold and calls himself a king. The scarabs were kings first.", "I'd give a lot for a scarab from the temple. For science."],
+                 "done_quest": "mega_sunscorch_job", "done_lines": ["The scarab's a calendar. I've read three months of it. Next month has a festival.", "The Glass Canyon was a lake once. Lightning turned the sand to glass."],
+                 "after_flag": "boss_desert_sunken_temple", "after": ["The Colossus is sleeping. Someone finally told it the war was over. You did."],
+                 "after_gangsters": ["Vasco's crate sits empty. I'm reading the temple walls at last."]},
+    "mg_hollis": {"after_flag": "boss_iron_tunnels", "after": ["Baron's gone and the trains run on time. Well. Mostly on time. On a time.", "My engine's the last one he never bought. She stays mine."]},
+    "mg_dot": {"after_flag": "boss_iron_tunnels", "after": ["The Baron's table is free now. Nobody wants it. Too many bad tips in the wood."]},
+    "mg_skip": {"after_flag": "boss_iron_tunnels", "after": ["Paper! Trains run again! Read all about it! ...I wrote that one myself."]},
+    "mg_brannoch": {"lines_gangsters": ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "Big Ike hauls ice off the Summit and sells it back to us. Our own ice."],
+                    "after_flag": "boss_frost_summit", "after": ["The Wyrm's snoring again. Hearthhold sleeps easier for it.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."],
+                    "after_gangsters": ["Big Ike's sled tracks go down the mountain and don't come back. Good.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."]},
+    "mg_tove": {"after_flag": "boss_frost_summit", "after": ["Brannoch says I can go to the Summit now. When I'm nine hundred and one."]},
+    "mg_zephyr": {"after_flag": "boss_wind_starfall_garden", "after": ["The sky's ours again. Well, the Roc's, but it shares now.", "Storm Glass comes from where lightning lands. Don't be where lightning lands."]},
+    "mg_nimbus": {"done_quest": "mega_windward_job", "done_lines": ["I bottled a breeze. It got out. It's somewhere in the gondola now, being smug.", "The Storm Shelf is calm again. The clouds have stopped flinching."]},
+    "mg_pell": {"after_flag": "boss_gilt_vaults", "after": ["Madame's left the Vaults. The fountain water's free. I'm still not used to it."]},
+    "mg_cass": {"after_flag": "boss_gilt_vaults", "after": ["Nobody's chasing me any more. It's honestly a bit dull."]},
+    "mg_odette": {"after_flag": "boss_gilt_vaults", "after": ["I'm painting the statues to look like whoever I like now. Mostly pigeons."]},
+}
+
+
 GANG_BOSS = {
     "gloam_moonpool": {"kind_gangsters": "garden_boss", "who_gangsters": "Rosa Thorne", "title_gangsters": "Rosa Thorne",
         "text_gangsters": "A woman in a thorn-green coat steps out from behind the roses, pruning shears in one hand. 'This garden pays me rent,' says Rosa Thorne. 'Everyone in Gloamwood pays me rent.'",
@@ -1108,7 +1137,9 @@ def build_area(aid, mega, spec, links_geom):
                 if best is None or sc < best[0]:
                     best = (sc, c)
         if best:
-            npcs.append({"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0})
+            nd = {"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0}
+            nd.update(NPC_EXTRA.get(nid, {}))  # C12 P3: arc / after-boss / job-done lines (Talk.region_lines)
+            npcs.append(nd)
     for p in props:
         oc = open_cells(p)
         if oc:
