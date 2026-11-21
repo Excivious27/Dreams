@@ -1,0 +1,142 @@
+{
+ "sha": "1e5ef867a18f67653532680424a8bd2885abcfed",
+ "ref": "ci/c11bp6-26705212",
+ "run": "44847092448",
+ "finished": 1795223275.4919667,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 62,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "26705212674b3357e6dc7401a36ed4abd9335f46",
+  "label": "c11bp6",
+  "branch": "c11bf/p6",
+  "shards": [
+   2,
+   5
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 401,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 277,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 401,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 212.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 90.2
+  },
+  {
+   "step": 42,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 34.7
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 34.4
+  },
+  {
+   "step": 69,
+   "name": "danger_music_test",
+   "rc": 0,
+   "secs": 23.3
+  },
+  {
+   "step": 27,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 23.2
+  },
+  {
+   "step": 111,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 19.9
+  },
+  {
+   "step": 99,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 18.8
+  },
+  {
+   "step": 102,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 14.0
+  },
+  {
+   "step": 45,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 13.7
+  },
+  {
+   "step": 33,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 13.4
+  },
+  {
+   "step": 108,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 12.7
+  },
+  {
+   "step": 15,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 84,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 0,
+   "secs": 9.8
+  },
+  {
+   "step": 135,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 8.9
+  }
+ ]
+}

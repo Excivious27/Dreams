@@ -1,0 +1,163 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | downed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  99% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2101 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 90.2s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.9s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.9s
+
+#### step 15: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 15 phone_ui_test: PASS in 11.0s
+
+#### step 21: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 21 gangster interior skins (c5_04): PASS in 2.7s
+
+#### step 27: held-tool rules: right tool acts, wrong tool hints (shard 2/6)
+== held-tool rules: right tool acts, wrong tool hints ==
+tool_rules_test: 0 failures
+#### step 27 held-tool rules: right tool acts, wrong tool hints: PASS in 23.2s
+
+#### step 33: bowling_test (shard 2/6)
+bowling_test: OK
+#### step 33 bowling_test: PASS in 13.4s
+
+#### step 39: pen_test (shard 2/6)
+pen_test: PASS
+#### step 39 pen_test: PASS in 3.5s
+
+#### step 45: move_target_test (shard 2/6)
+move_target_test: 0 failures
+#### step 45 move_target_test: PASS in 13.7s
+
+#### step 51: gang_flavour_test (shard 2/6)
+gang_flavour_test: 0 failures
+#### step 51 gang_flavour_test: PASS in 2.6s
+
+#### step 57: every sound the game asks for exists (shard 2/6)
+== every sound the game asks for exists ==
+unused sfx (13, warning): alarm cannon cave_in drain egg_crack feeder_fill horse_whinny j_birthday j_skill monster save_done shop_bell unsheathe
+sfx asked for: 153 names, real recordings/ACE files: 499
+music: 80 tracks wired, 107/107 real (ACE)
+ambience: 32 beds, 15 spots
+sfx_audit: 0 missing
+#### step 57 every sound the game asks for exists: PASS in 3.3s
+
+#### step 63: C10b decor art: outdoor pieces, seams, names (shard 2/6)
+== C10b decor art: outdoor pieces, seams, names ==
+c10b check ok: 87 outdoor pieces
+check ok: 462 catalogue pieces
+#### step 63 C10b decor art: outdoor pieces, seams, names: PASS in 0.2s
+
+#### step 69: danger_music_test (shard 2/6)
+danger_music_test: 0 failures
+#### step 69 danger_music_test: PASS in 23.3s
+
+#### step 75: allies: enemies fight back, pup commands (shard 2/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 75 allies: enemies fight back, pup commands: PASS in 3.7s
+
+#### step 81: every script compiles (shard 2/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 81 every script compiles: PASS in 3.4s
+
+#### step 87: quest_tracker_test (shard 2/6)
+quest_tracker_test: 0 fails
+#### step 87 quest_tracker_test: PASS in 3.7s
+
+#### step 93: campaign_words_test (shard 2/6)
+campaign_words_test: 0 fails
+#### step 93 campaign_words_test: PASS in 2.8s
+
+#### step 99: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 2/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 160 checks, 0 failures
+#### step 99 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 18.8s
+
+#### step 105: mega regions: map tabs, unlocks, travel (shard 2/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 105 mega regions: map tabs, unlocks, travel: PASS in 8.4s
+
+#### step 111: menu sweep: every menu button, both arcs (C2) (shard 2/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 168 buttons pressed, 0 failures
+#### step 111 menu sweep: every menu button, both arcs (C2): PASS in 19.9s
+
+#### step 117: rec_games_test (shard 2/6)
+rec_games_test: 0 failures
+#### step 117 rec_games_test: PASS in 2.6s
+
+#### step 123: C7 P5: colony stories and crew (shard 2/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 123 C7 P5: colony stories and crew: PASS in 4.6s
+
+#### step 129: C11b P6: ranch building arc words and footprints (shard 2/6)
+== C11b P6: ranch building arc words and footprints ==
+builds_words_test: OK
+#### step 129 C11b P6: ranch building arc words and footprints: PASS in 2.5s
+
+#### step 135: C8 P4: fishing rules, mining curve, reward tables (shard 2/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+c8_p4_test: PASS (0 fails)
+#### step 135 C8 P4: fishing rules, mining curve, reward tables: PASS in 8.9s
+
+#### step 141: C9 P5: save codes and files (shard 2/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 141 C9 P5: save codes and files: PASS in 2.6s
+
+#### shard 2/6 done in 277s: PASS
