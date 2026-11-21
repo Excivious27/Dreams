@@ -80,6 +80,7 @@ func _ready() -> void:
 	CoopPanel.attach_strip(self)  # C17 P5: room code / players / reconnect chip while online
 	Emotes.attach_button(self)  # C17 P5: emotes, preset phrases and ping (online only)
 	Emotes.hook()
+	CoopPanel.hook()
 
 
 ## Waking in the clinic after passing out (GameMap.player_down): say what happened and the bill.

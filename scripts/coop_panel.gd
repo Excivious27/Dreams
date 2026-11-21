@@ -30,10 +30,14 @@ static func peer_list() -> Dictionary:
 	var n := _n()
 	if n == null:
 		return {}
-	if n.has_method("peers"):
-		var v: Variant = n.call("peers")
+	if n.has_method("roster"):  # P1's router: String peer -> {name, arc, scene, ping_ms, host, me}
+		var out := {}
+		var v: Variant = n.call("roster")
 		if v is Dictionary:
-			return v
+			for k in v:
+				if v[k] is Dictionary and not bool((v[k] as Dictionary).get("me", false)):
+					out[str(k)] = v[k]
+		return out
 	var pv: Variant = n.get("peers")
 	return pv if pv is Dictionary else {}
 
@@ -80,11 +84,54 @@ static func kick(peer: Variant) -> void:
 	perms.erase(str(peer))
 	if n.has_method("kick"):
 		n.call("kick", peer)
-	elif n.has_method("send_peer"):
+	if n.has_method("send_peer"):
 		n.call("send_peer", str(peer), "kick", {})
 
 
 ## Players in the room (us first), each {id, name, arc, scene, ping, host, me}.
+## Router hooks (once): a guest obeys the host's "kick" and keeps the host's permission words.
+static var _hooked := false
+static var my_perms := {}
+
+
+static func hook() -> void:
+	var n := _n()
+	if _hooked or n == null or not n.has_method("on_msg"):
+		return
+	_hooked = true
+	n.call("on_msg", "kick", Callable(CoopPanel, "_on_kick"))
+	n.call("on_msg", "party_perm", Callable(CoopPanel, "_on_perm"))
+
+
+static func _from_host(from: String) -> bool:
+	var pl := peer_list()
+	return pl.has(from) and bool((pl[from] as Dictionary).get("host", false))
+
+
+static func _on_kick(from: String, _d: Dictionary) -> void:
+	if Net.is_host() or not _from_host(from):
+		return
+	last_room = ""  # no Rejoin offer into a room we were sent home from
+	var n := _n()
+	if n:
+		n._last_room = ""
+		n.leave("The host sent you home. You're back on your own farm.")
+
+
+static func _on_perm(from: String, d: Dictionary) -> void:
+	if Net.is_host() or not _from_host(from):
+		return
+	var pv: Variant = d.get("perms", {})
+	my_perms = pv if pv is Dictionary else {}
+	var ml := Engine.get_main_loop()
+	if ml is SceneTree and (ml as SceneTree).current_scene is GameMap and ((ml as SceneTree).current_scene as GameMap).hud:
+		var bits: Array = []
+		for k in PERMS:
+			if not bool(my_perms.get(k, PERM_DEFAULT[k])):
+				bits.append(str(PERMS[k]).to_lower().replace("can ", "").replace(" my ", " the host's "))
+		((ml as SceneTree).current_scene as GameMap).hud.toast("Host rules: you can't %s." % ", ".join(bits) if not bits.is_empty() else "Host rules: you can farm, open chests and build.", Color(0.85, 0.95, 1.0))
+
+
 static func players() -> Array:
 	var out: Array = []
 	var me_host := Net.is_host()

@@ -16,12 +16,15 @@ var _pup_kind := "-"
 var _act_seq := -1
 var _veh := ""
 var _busy: Node2D
-const TAG_MAX := 12  # name tag characters before an ellipsis
+const TAG_MAX := 12
+# P3's PuppetSmooth (scripts/puppet_smooth.gd: jitter buffer / seq order / teleport), loaded by
+# path so this file compiles before P3's branch is merged; null = the old lerp.
+var _sm: Object = null  # name tag characters before an ellipsis
 
 
 ## The peer's info (router peers may be keyed by String or int).
 func _info() -> Dictionary:
-	var pl: Dictionary = CoopPanel.peer_list()
+	var pl: Dictionary = Net.peers  # the live state (pos/anim/look); the router's roster is a summary
 	var v: Variant = pl.get(peer_id, pl.get(str(peer_id), {}))
 	return v if v is Dictionary else {}
 
@@ -51,7 +54,8 @@ func setup(id: int, m: GameMap) -> void:
 	add_child(_p)
 	_apply_look(info)
 	_label = Label.new()
-	_label.text = tag_text(str(info.get("name", "Player")), bool(info.get("host", false)))  # s1_13-03: a peer's typed name
+	var rs: Variant = CoopPanel.peer_list().get(str(id), {})
+	_label.text = tag_text(str(info.get("name", "Player")), rs is Dictionary and bool((rs as Dictionary).get("host", false)))  # s1_13-03: a peer's typed name
 	_label.add_theme_font_size_override("font_size", Settings.font(7))
 	_label.add_theme_color_override("font_color", Color(1, 1, 0.9))
 	_label.add_theme_constant_override("outline_size", 2)
@@ -68,6 +72,12 @@ func setup(id: int, m: GameMap) -> void:
 		_target = position
 	else:
 		visible = false  # no position yet: wait for the first state instead of popping in at (0,0)
+	if ResourceLoader.exists("res://scripts/puppet_smooth.gd"):
+		var sc: Variant = load("res://scripts/puppet_smooth.gd")
+		if sc is Script:
+			_sm = (sc as Script).new()
+			if _sm.has_method("reset"):
+				_sm.call("reset", position)
 	modulate.a = 0.0
 	create_tween().tween_property(self, "modulate:a", 1.0, 0.3)  # fade in on arrival
 
@@ -97,12 +107,18 @@ func _process(delta: float) -> void:
 		if not visible:
 			visible = true
 			position = _target
-	var to := _target - position
-	if to.length() > 120.0:
-		position = _target
-	else:
-		position = position.lerp(_target, minf(1.0, delta * 12.0))
 	var an := str(info.get("anim", "idle"))
+	if _sm != null:
+		position = _sm.call("step", delta, _target, int(info.get("seq", -1)), bool(info.get("tp", false)))
+		if not bool(_sm.call("moving")) and (an.begins_with("walk") or an.begins_with("run")):
+			an = "idle" + an.substr(an.find("_")) if an.find("_") >= 0 else "idle"
+		modulate.a = 0.55 if float(_sm.call("silent_for")) > 3.0 else 1.0
+	else:
+		var to := _target - position
+		if to.length() > 120.0:
+			position = _target
+		else:
+			position = position.lerp(_target, minf(1.0, delta * 12.0))
 	if _p._anim and _p._anim.sprite_frames and _p._anim.sprite_frames.has_animation(an):
 		if _p._anim.animation != an:
 			_p._anim.speed_scale = 1.0  # a swing's speed ends with the swing

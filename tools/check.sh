@@ -1520,3 +1520,10 @@ echo "$nrout" | grep -E "FAIL|SCRIPT ERROR|net_router_test" || true
 if ! echo "$nrout" | grep -q "net_router_test: [0-9]* checks, 0 failures"; then
   echo "net_router_test failed"; exit 1
 fi
+
+echo "== C17 P5 co-op panel, emotes and session rules (tools/coop_panel_test.gd) =="
+cp5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/coop_panel_test.gd 2>&1)"
+echo "$cp5out" | grep -E "FAIL|SCRIPT ERROR|COOP PANEL" || true
+if echo "$cp5out" | grep -q "SCRIPT ERROR" || ! echo "$cp5out" | grep -q "COOP PANEL DONE, failures: 0"; then
+  echo "coop_panel_test failed"; exit 1
+fi
