@@ -155,7 +155,7 @@ static func clear_paths(m: GameMap) -> int:
 ## A path that just stops reads as a bug: give each dead end a reason to walk there
 ## (a bench, a milestone or a lantern) (c5_12 #4). Ends by an exit, a door, a sign
 ## or anything you can use are left alone. Returns the cells marked.
-const DEAD_END_LOOKS := ["bench_wood", "milestone", "lantern_lit", "ri_cairn"]
+const DEAD_END_LOOKS := ["bench_wood", "lantern_lit", "ri_cairn"]  # no "milestone": its art read as a gravestone (c14_02-05)
 
 
 static func mark_dead_ends(m: GameMap, most := 3) -> Array:
@@ -209,7 +209,7 @@ static func mark_dead_ends(m: GameMap, most := 3) -> Array:
 			continue
 		var look: String = DEAD_END_LOOKS[absi(hash(Vector2i(c.x, c.y + m.cols))) % DEAD_END_LOOKS.size()]
 		if not Art.has("props", look):
-			look = "milestone"
+			look = "ri_cairn" if Art.has("props", "ri_cairn") else "bench_wood"
 		if m.prop("props", look, c, 0, 0.0, false) != null:  # never solid: it can't wall off anything
 			marked.append(c)
 	return marked
@@ -413,7 +413,7 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var pool: Array = kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]
+	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"])
 	var wet: Array[Vector2i] = []  # water cells in the rect, for fish (never on land)
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
@@ -470,6 +470,28 @@ const TAKE_OFF := ["duck", "heron"]
 
 
 ## Kinds that live in water only: spawned on water cells and kept there.
+## Day-only and warm-weather critters (c14_16-06): no butterflies, bees or wading herons
+## at 9pm or in the snow. At night the day crowd gives way to owls, bats and (not in
+## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
+const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
+const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
+static func critter_pool(pool: Array, night := -1, winter := -1) -> Array:
+	var is_night := GameState.is_night() if night < 0 else night == 1
+	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
+	var out: Array = []
+	for k: String in pool:
+		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
+		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
+		if (is_night and day_only) or (is_winter and warm_only):
+			continue
+		out.append(k)
+	if is_night:
+		for k in (["owl", "bat"] if is_winter else ["owl", "bat", "firefly"]):
+			if Art.has("wildlife/" + k, "idle"):
+				out.append(k)
+	if out.is_empty():
+		out = pool.filter(func(k): return not str(k).begins_with("butterfly") and k != "bee") if not pool.is_empty() else []
+	return out if not out.is_empty() else ["rabbit"]
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
 
@@ -834,7 +856,7 @@ static func fruit_trees(m: GameMap, rect: Rect2i, seed_v: int, count: int, avoid
 static func dress_band(m: GameMap, seed_v: int) -> void:
 	var rng := RandomNumberGenerator.new()
 	var se := GameState.look_se()
-	var shrubs: Array = {"spring": ["bush", "bush2_green", "bush2_flower", "ferns", "hedge", "bush_white"], "summer": ["bush", "bush2_green", "ferns", "hedge", "bush2_yellow", "sunflower_bush"], "fall": ["bush_fall_orange", "bush_fall_red", "ferns", "bush2_red", "hedge"], "winter": ["bush_snow", "bush_bare_snow", "bush_snow", "hedge"]}.get(se, ["bush"])
+	var shrubs: Array = {"spring": ["bush", "bush2_green", "bush2_flower", "ferns", "hedge", "bush_white"], "summer": ["bush", "bush2_green", "ferns", "hedge", "bush2_yellow", "sunflower_bush"], "fall": ["bush_fall_orange", "bush_fall_red", "ferns", "bush2_red", "hedge"], "winter": ["bush_snow", "bush_bare_snow", "bush_snow", "bush_bare_snow"]}.get(se, ["bush"])  # winter: no green hedge in snow (c14_02-17)
 	var young: Array = {"spring": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_cherry_b"], "summer": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_willow_b"], "fall": ["mid_maple_b", "mid_oak_b", "mid_pine_b"], "winter": ["mid_snowpine_b", "mid_dead_b", "mid_snowpine"]}.get(se, ["mid_oak_b"])
 	var th := theme(m)
 	var band: Array = th.get("band", [])
@@ -1063,6 +1085,8 @@ static func pick_ramps(m: GameMap, cells: Dictionary) -> Array:
 ## side moves in or out by one cell at most every 3 rows, corners chamfered).
 ## Cliff faces, rims and stairs draw cleanly on shapes like this; round noise
 ## blobs step every row and the rim reads as a ring of boxes.
+const JOG_MAPS := ["highlands", "orchard_hills", "riverlands"]
+
 static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int, margin := 2) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
@@ -1073,6 +1097,9 @@ static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int,
 	var orr := 0
 	var hold_l := 0
 	var hold_r := 0
+	# C14 P1 (c14_14-10): big plateaus on the hand-made home regions jog their side
+	# walls every 2-3 rows (wider in/out) so long sides never read as a box.
+	var jog := rx >= 6.0 and m.scene_id() in JOG_MAPS
 	for y in range(y0, y1 + 1):
 		var cham := 0
 		if y == y0:
@@ -1082,11 +1109,11 @@ static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int,
 		elif y == y1:
 			cham = 1
 		if hold_l <= 0:
-			ol = clampi(ol + rng.randi_range(-1, 1), -1, 2)
-			hold_l = rng.randi_range(3, 5)
+			ol = clampi(ol + rng.randi_range(-1, 1), -1, 3 if jog else 2)
+			hold_l = rng.randi_range(2, 3) if jog else rng.randi_range(3, 5)
 		if hold_r <= 0:
-			orr = clampi(orr + rng.randi_range(-1, 1), -1, 2)
-			hold_r = rng.randi_range(3, 5)
+			orr = clampi(orr + rng.randi_range(-1, 1), -1, 3 if jog else 2)
+			hold_r = rng.randi_range(2, 3) if jog else rng.randi_range(3, 5)
 		hold_l -= 1
 		hold_r -= 1
 		var xa := roundi(center.x - rx) + maxi(ol, 0) + cham
@@ -1095,3 +1122,251 @@ static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int,
 			if x >= margin and y >= margin and x < m.cols - margin and y < m.rows - margin:
 				cells[Vector2i(x, y)] = true
 	return smooth_cells(cells)
+
+
+## C14 P1 (c14_02-13 / c14_14-01 / c14_02-08): home-region shapes from regions.json,
+## called from Region.build (one hook) before anything else is placed.
+## "rivers": [{"pts": [[x, y], ...], "w": 2.6, "seed": n, "fish": [...]}] winds a
+## river along the polyline (noise meander, breathing width); the cells under a
+## path become a walkable deck (drawn as water, a bridge over it from home_dress);
+## cells on the map edge carry on out through the border band.
+## "orchard": [{"rect": [x, y, w, h], "kinds": ["apple", ...], "step": [3, 3]}]
+## plants staggered rows of fruit trees (skipping paths, water and things).
+static func home_build(m: GameMap, R: Dictionary) -> void:
+	# "season_ground": {"winter": {"ground_seam": "snow"}} swaps ground keys per look season (c14_02-03).
+	var sg: Dictionary = R.get("season_ground", {}).get(GameState.look_se(), {})
+	for k: String in sg:
+		R[k] = sg[k]
+	var pcs := {}
+	for pr in R.get("paths", []):
+		for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+			for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+				pcs[Vector2i(x, y)] = true
+	var rivers: Array = R.get("rivers", [])
+	if not rivers.is_empty():
+		var wc: Dictionary = m.get("_water_cells")
+		var decks := {}
+		var all := {}
+		for rv: Dictionary in rivers:
+			var cells := river_cells(rv)
+			for c: Vector2i in cells:
+				if c.x < -1 or c.y < -1 or c.x > m.cols or c.y > m.rows:
+					continue
+				all[c] = true
+				if not m.in_content(c):
+					continue
+				if pcs.has(c):
+					decks[c] = true
+					m.things[c] = {"type": "dock", "shore": "river", "deck": true}
+					m.blocked.erase(c)
+				elif not m.things.has(c) or str(m.things[c].get("type", "")) == "water":
+					m.set_thing(c.x, c.y, {"type": "water", "river": true, "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": rv.get("fish", []), "shore": "river"})
+				else:
+					continue
+				wc[c] = true
+		# Ponds the river runs through become one body with it (one shore look).
+		for c: Vector2i in wc:
+			if str(m.things.get(c, {}).get("shore", "")) != "river":
+				m.things[c]["shore"] = "river"
+		# Out through the border band like the farm river.
+		for c: Vector2i in all:
+			if c.x <= 0 or c.y <= 0 or c.x >= m.cols - 1 or c.y >= m.rows - 1:
+				m.border_water_extra[c] = true
+		if m.border_water_shore == "":
+			m.border_water_shore = "river"
+		m.set_meta("river_decks", decks)
+		m.set_meta("river_cells", all)
+	for ob: Dictionary in R.get("orchard", []):
+		var r: Array = ob["rect"]
+		var kinds: Array = ob.get("kinds", ["apple"])
+		var st: Array = ob.get("step", [3, 3])
+		var row := 0
+		for y in range(int(r[1]), int(r[1]) + int(r[3]), int(st[1])):
+			var col := 0
+			for x in range(int(r[0]) + (row % 2) * int(int(st[0]) / 2), int(r[0]) + int(r[2]), int(st[0])):
+				var c := Vector2i(x, y)
+				var clear := true
+				for d: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, -1)]:
+					if pcs.has(c + d) or m.is_water_cell(c + d) or m.things.has(c + d):
+						clear = false
+				if clear:
+					fruit_tree(m, c, str(kinds[(row + col) % kinds.size()]))
+				col += 1
+			row += 1
+
+
+## Cells of one regions.json river: the polyline, nudged sideways by noise
+## (never at its joints, so entry/exit points hold), width breathing +-0.4.
+static func river_cells(rv: Dictionary) -> Dictionary:
+	var pts: Array = rv.get("pts", [])
+	var hw0 := float(rv.get("w", 2.6)) * 0.5
+	var sd := int(rv.get("seed", 5))
+	var cells := {}
+	for i in range(pts.size() - 1):
+		var a := Vector2(float(pts[i][0]), float(pts[i][1]))
+		var b := Vector2(float(pts[i + 1][0]), float(pts[i + 1][1]))
+		var n := maxi(1, ceili(a.distance_to(b) * 4.0))
+		var dir := (b - a).normalized()
+		var perp := Vector2(-dir.y, dir.x)
+		for k in n + 1:
+			var t := float(k) / float(n)
+			var p := a.lerp(b, t)
+			p += perp * (fbm(p.x, p.y, sd, 6.0) - 0.5) * 3.0 * sin(t * PI)
+			var hw := hw0 + 0.4 * sin(p.x * 0.31 + p.y * 0.23 + float(sd))
+			for cy in range(floori(p.y - hw - 1.0), ceili(p.y + hw + 1.0)):
+				for cx in range(floori(p.x - hw - 1.0), ceili(p.x + hw + 1.0)):
+					if Vector2(cx + 0.5, cy + 0.5).distance_to(p) <= hw:
+						cells[Vector2i(cx, cy)] = true
+	return smooth_cells(cells)
+
+
+## C14 P1: after-ready dressing for home_build shapes (one hook in Region.after_ready):
+## a bridge over every deck (sized bank to bank, the farm's bridge art), reeds and
+## cattails on the banks (not in winter).
+static func home_dress(m: GameMap) -> void:
+	crop_rows(m)
+	clear_arrivals.call_deferred(m)
+	var decks: Dictionary = m.get_meta("river_decks", {})
+	var river: Dictionary = m.get_meta("river_cells", {})
+	if river.is_empty():
+		return
+	var groups: Array = []
+	var seen := {}
+	for c0: Vector2i in decks:
+		if seen.has(c0):
+			continue
+		var grp: Array[Vector2i] = []
+		var stack: Array[Vector2i] = [c0]
+		seen[c0] = true
+		while not stack.is_empty():
+			var c: Vector2i = stack.pop_back()
+			grp.append(c)
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				if decks.has(c + d) and not seen.has(c + d):
+					seen[c + d] = true
+					stack.append(c + d)
+		groups.append(grp)
+	for grp: Array in groups:
+		var lo := Vector2i(99999, 99999)
+		var hi := Vector2i(-99999, -99999)
+		for c: Vector2i in grp:
+			lo = Vector2i(mini(lo.x, c.x), mini(lo.y, c.y))
+			hi = Vector2i(maxi(hi.x, c.x), maxi(hi.y, c.y))
+		var ns := (hi.y - lo.y) >= (hi.x - lo.x)
+		var nm := "foot3_ns_a" if ns else "bridge_wood2"
+		if ns and Art.has("props", nm + "_dry"):
+			nm += "_dry"  # keyed-out patch: the river shows under it
+		var tex := Art.tex("props", nm)
+		if tex == null:
+			continue
+		if ns:
+			var sc := maxf(float(hi.y - lo.y + 3) * GameMap.TILE / float(tex.get_height()), 3.7 * GameMap.TILE / float(tex.get_width()))
+			var sp := m.prop("props", nm, Vector2i(lo.x, hi.y + 1), 1, 0.0, false, sc)
+			if sp:
+				m.walk_over(sp, ceili(tex.get_height() * sc / GameMap.TILE))
+		else:
+			var sc2 := maxf(float(hi.x - lo.x + 3) * GameMap.TILE / float(tex.get_width()), 2.6 * GameMap.TILE / float(tex.get_height()))
+			var sp2 := m.prop("props", nm, Vector2i(lo.x - 1, hi.y + 1), int(hi.x - lo.x + 2), 0.0, false, sc2)
+			if sp2:
+				m.walk_over(sp2, ceili(tex.get_height() * sc2 / GameMap.TILE))
+	if GameState.look_se() == "winter":
+		return  # reeds die back in the snow
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(m.scene_id()) % 9973 + 41
+	var reeds := ["mk_reeds_2", "mk_reeds_3", "mk_cattail_1", "mk_cattail_2"]
+	for c: Vector2i in river:
+		if decks.has(c) or not m.in_content(c) or m.props.has(c):
+			continue
+		var edge := false
+		for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+			if not river.has(c + d) and not decks.has(c + d):
+				edge = true
+		if edge and rng.randf() < 0.14:
+			var rn: String = reeds[rng.randi_range(0, reeds.size() - 1)]
+			if Art.has("props", rn):
+				var sp3 := m.prop("props", rn, c, 0, 0.0, false)
+				if sp3:
+					m.to_under(sp3)
+
+
+
+## C14 P1 (c14_02-01): regions.json "crop_rows": [{"rect": [x, y, w, h], "crop": "corn"}]
+## plants a field of crop sprites by look season (young in spring, tall in summer,
+## ripe in fall, nothing in winter: snow), the outer row a stage younger so the
+## field thins at its edge. Replaces the night-only cornfield tile at noon.
+const CROP_STAGE := {"spring": "growing", "summer": "mature", "fall": "ready"}
+const CROP_EDGE := {"growing": "young", "mature": "growing", "ready": "mature"}
+
+static func crop_rows(m: GameMap) -> void:
+	var rd: Dictionary = m.get("R") if m.get("R") is Dictionary else {}
+	var stage: String = CROP_STAGE.get(GameState.look_se(), "")
+	if stage == "":
+		return
+	for cr: Dictionary in rd.get("crop_rows", []):
+		var r: Array = cr["rect"]
+		var crop := str(cr.get("crop", "corn"))
+		var rect := Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))
+		for y in range(rect.position.y, rect.end.y):
+			for x in range(rect.position.x, rect.end.x):
+				var c := Vector2i(x, y)
+				if m.things.has(c) or m.blocked.has(c) or m.props.has(c) or not m.in_content(c):
+					continue
+				var edge := x == rect.position.x or y == rect.position.y or x == rect.end.x - 1 or y == rect.end.y - 1
+				var nm := "%s_%s" % [crop, CROP_EDGE[stage] if edge else stage]
+				if not Art.has("crops", nm):
+					nm = "%s_%s" % [crop, stage]
+				if not Art.has("crops", nm):
+					return
+				var sp := m.prop("crops", nm, c, 0, 0.0, false)
+				if sp:
+					sp.position.x += float((x * 7 + y * 13) % 5) - 2.0
+
+
+
+## C14 P1 (c14_01-33): no flower bush, fern or forage on (or next to) the cell you
+## arrive on: the default spawn and the first cells inside every exit. Only loose
+## decor goes (bush/flower/fern/wildflower sprites with no thing, and forage things).
+const ARRIVAL_DECOR := ["bush", "flower", "fern", "wildflower", "sunflower"]
+
+static func arrival_cells(m: GameMap) -> Dictionary:
+	var out := {}
+	var core: Array[Vector2i] = []
+	if m.has_method("default_spawn"):
+		var sp: Vector2 = m.call("default_spawn")
+		core.append(Vector2i(floori(sp.x / GameMap.TILE), floori(sp.y / GameMap.TILE)))
+	for e in m.exits:
+		var er: Rect2i = e["rect"]
+		var inw := Vector2i(1 if er.position.x <= 0 else (-1 if er.end.x >= m.cols else 0), 1 if er.position.y <= 0 else (-1 if er.end.y >= m.rows else 0))
+		for c: Vector2i in m.cells_of([er]):
+			for k in range(0, 4):
+				core.append(c + inw * k)
+	for c: Vector2i in core:
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				out[c + Vector2i(dx, dy)] = true
+	return out
+
+
+static func clear_arrivals(m: GameMap) -> void:
+	if not is_instance_valid(m):
+		return
+	for c: Vector2i in arrival_cells(m):
+		var t: Dictionary = m.things.get(c, {})
+		var ty := str(t.get("type", ""))
+		if ty != "" and ty != "forage":
+			continue
+		var n: Variant = m.props.get(c)
+		if not (n is Sprite2D) or not is_instance_valid(n):
+			continue
+		var tex := (n as Sprite2D).texture
+		var file := tex.resource_path.get_file() if tex != null else ""
+		var decor := false
+		for w: String in ARRIVAL_DECOR:
+			if file.begins_with(w) or file.contains("_" + w):
+				decor = true
+		if ty == "forage" or (decor and not file.contains("tree")):
+			(n as Node).queue_free()
+			m.props.erase(c)
+			if ty == "forage":
+				m.things.erase(c)
+				m.blocked.erase(c)

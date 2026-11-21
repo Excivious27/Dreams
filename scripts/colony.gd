@@ -60,7 +60,7 @@ static func ferry(m: GameMap) -> void:
 		ids.append([str(id), ok, held])
 	opts.append("Stay ashore")
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Ferry", "text": "Skipper Barnacle, the ferry-cat, flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
+	d.say([{"who": "Skipper Barnacle", "text": "Skipper Barnacle, the ferry-cat, flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
 	await d.finished
 	var i := d.last_choice
 	if i < 0 or i >= ids.size():
@@ -77,12 +77,27 @@ static func ferry(m: GameMap) -> void:
 	m.go_to(str(ids[i][0]), Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 
 
+## C14 contract: TravelNet (scripts/travel_net.gd, built by P4) when it exists, else null.
+## Loaded by path so this file still compiles on a branch without it.
+static func travel_net() -> Variant:
+	const TN := "res://scripts/travel_net.gd"
+	return load(TN) if ResourceLoader.exists(TN) else null
+
+
+## The colony jetty: TravelNet's ride list, or the plain ferry home before TravelNet exists.
+static func jetty(m: GameMap, region_id: String, thing: Dictionary) -> void:
+	TravelNet.desk(m, str(thing.get("station", region_id + "_jetty")))
+
+
 static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 	var c: Dictionary = data().get(region_id, {})
 	if c.is_empty():
 		return false
 	var s := st(region_id)
 	match str(thing.get("type", "")):
+		"colony_jetty":
+			m.later(func() -> void: await jetty(m, region_id, thing))
+			return true
 		"elder":
 			m.later(func() -> void: await _elder(m, region_id))
 			return true

@@ -261,7 +261,7 @@ static func why_closed() -> String:
 	var oh := hours()
 	if h < float(oh[0]) or h >= float(oh[1]):
 		return "%s: closed for the night. Open %s." % [name(), TownHours.hours_text(int(oh[0]), int(oh[1]))]
-	if GameState.festival_today() != "" and h >= 9.0 and h < 18.0:
+	if GameState.festival_today() != "" and Npc.in_festival(h):
 		return "%s: closed today. Everyone's at the %s on the plaza." % [name(), GameState.festival_name(GameState.festival_today())]
 	return ""
 

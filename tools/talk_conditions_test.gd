@@ -163,6 +163,12 @@ func _run() -> void:
 	check(Npc.festival_place("alder", 10.0) == "fountain", "the mayor runs the fountain stage")
 	check(Npc.festival_place("juniper", 10.0) == "", "Juniper stays on call")
 	check(Npc.festival_place("maple", 20.0) == "", "after six the routine is back")
+	_setup("penguins", 42, 10)  # C14 P2: the Lantern Festival is an evening festival
+	check(GameState.festival_today() == "lantern", "day 42 is the Lantern Festival")
+	var lh := Npc.festival_hours()
+	check(lh.x >= 14.0 and lh.x <= 17.5 and lh.y > GameState.sunset() / 60.0 + 1.0, "lantern hours run past sunset (%s)" % lh)
+	check(Npc.festival_place("maple", 10.0) == "" and Npc.festival_place("maple", GameState.sunset() / 60.0 + 0.5) in Npc.FEST_SPOTS, "lantern crowd comes in the evening")
+	_setup("penguins", 14, 10)
 	check(Npc.place_now(GameState.npcs["gideon"]["routine"], "gideon") in Npc.FEST_SPOTS, "place_now uses the plaza on festival day")
 	check(not Talk.festival_pool("benno").is_empty() and not ("ribbons" in str(Talk.festival_pool("benno"))), "Benno's egg-day lines are not the horse ribbons")
 	check(FestivalWords.fest_host("Posy") == "Posy", "Posy hosts while she's here")

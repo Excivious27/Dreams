@@ -31,7 +31,7 @@ var fixed_dark := -1.0   # >= 0: underground light (no sky clock, lamps always g
 var _canopies: Array = []      # tall sprites that fade when you walk behind them
 var _faded: Array = []
 var _fade_t := 0.0
-const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire"]
+const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon", "bonfire", "hearth", "fireplace", "forge", "candle", "oven", "fire_pit"]  # C14 P6: hearths/forges/candles too (c14_11-07)
 ## Festival pieces that are lights without a light word in their name (Lantern
 ## Festival posts/strings fest_ss_23..33, its bonfire fest_ss_80) (c5_10 #1).
 const FEST_GLOW := ["fest_ss_23", "fest_ss_24", "fest_ss_25", "fest_ss_26", "fest_ss_27", "fest_ss_28", "fest_ss_29", "fest_ss_30", "fest_ss_31", "fest_ss_32", "fest_ss_33", "fest_ss_80"]
@@ -514,7 +514,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	if t == "rec_home":  # prize decor at home (RecCenter.home_use)
 		return RecCenter.home_use(self, thing)
-	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit"]:
+	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit", "colony_jetty"]:
 		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
@@ -1801,7 +1801,7 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
 	if glow and glows(name):
-		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
+		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7] + NightGlow.tint_of(name))  # C14 P6 coloured lamps
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
 	if group in ["buildings", "props", "nature"]:
@@ -1846,7 +1846,7 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	var w_cells := maxi(1, int(round(float(info.get("w", 64)) * scale / TILE)))
 	var h_cells := maxi(1, int(round(float(info.get("h", 64)) * scale / TILE)))
 	var base := Vector2i(c.x, c.y + h_cells - 1)
-	var s := prop("buildings", name, base, w_cells - 1, 0.0, false, scale)
+	var s := prop("buildings", WorldGen.winter_look("buildings", name), base, w_cells - 1, 0.0, false, scale)  # C14 P2: snowy roofs (same canvas)
 	if s == null:
 		return Vector2i(-1, -1)
 	if glow:
@@ -2321,7 +2321,7 @@ func _use_vehicle(id: String, it: Dictionary) -> bool:
 		hud.toast("Not indoors.")
 		return true
 	if bool(it.get("fly", false)):
-		later(_balloon)
+		later(TravelNet.balloon.bind(self))  # C14 (P4 hook): flies only between built masts/pads
 		return true
 	if player.vehicle == id:
 		player.unride()
@@ -4165,7 +4165,15 @@ func _draw_band_cliff(cells: Dictionary) -> bool:
 	# Top dressing: boulders, shrubs and ferns, deterministic per cell.
 	var se := GameState.look_se()
 	var pool: Array = ["rock_m", "bush", "ferns", "rock_s", "rock_l"]
-	if se == "winter":
+	# C14 P1 (c14_14-04): shrubs and ferns only on green ground; caves, deserts,
+	# cities and vaults get bare stone on top of their cliffs.
+	var rd: Variant = get("R")
+	var gr := str((rd as Dictionary).get("ground", "grass")) if rd is Dictionary else "grass"
+	var cave := bool((rd as Dictionary).get("cave", false)) if rd is Dictionary else false
+	var snowy := gr.begins_with("snow")
+	if cave or not (snowy or gr.contains("grass") or gr.contains("moss") or gr.contains("lawn") or gr.contains("weedy") or gr == "meadow"):
+		pool = ["rock_m", "rock_s", "rock_l", "rock_s"]
+	elif se == "winter" or snowy:
 		pool = ["rock_snow_l", "bush_snow", "rock_s", "rock_m"]
 	for c: Vector2i in cells:
 		if not cells.has(c + Vector2i(0, 1)) or _band_depth(c) < 2:
@@ -4222,7 +4230,7 @@ func draw_rock_mass(cells: Dictionary) -> void:
 				if cap:
 					draw_texture_rect(cap, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
 		return
-	var stone_band := scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"]
+	var stone_band := scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"] or str((get("R") if get("R") is Dictionary else {}).get("band_style", "")) == "stone"  # C14 P5 hook: urban/cave areas
 	if not stone_band and _draw_band_cliff(cells):
 		return
 	if Art.has("tiles", "cliff_top_0"):

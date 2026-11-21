@@ -72,7 +72,7 @@ static func why_shut(shop: String) -> String:
 	var h := _hour()
 	if not _within(h, float(s[0]), float(s[1])):
 		return "%s: closed. Open %s." % [str(s[2]), hours_text(int(s[0]), int(s[1]))]
-	if shop != "hall" and GameState.festival_today() != "" and h >= 9.0 and h < 18.0:
+	if shop != "hall" and Npc.in_festival(h):  # C14 P2: per-festival hours
 		return "%s: closed today. Everyone's at the %s on the plaza." % [str(s[2]), GameState.festival_name(GameState.festival_today())]
 	return ""
 
@@ -87,7 +87,7 @@ static func counter_shut(shop: String) -> String:
 	var h := _hour()
 	if not _within(h, 7.0, 21.0):
 		return "Closed for the night. Open %s." % hours_text(7, 21)
-	if GameState.festival_today() != "" and h >= 9.0 and h < 18.0:
+	if Npc.in_festival(h):  # C14 P2: per-festival hours
 		return "Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today())
 	return ""
 

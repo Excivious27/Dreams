@@ -1186,3 +1186,60 @@ echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
 if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
   echo "UI cue test failed"; exit 1
 fi
+
+echo "== C14 P4: fast-travel network (TravelNet tiers, build/ride, fares, holds, save blocks, ride scene skip) =="
+tnout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/travel_net_test.gd 2>&1)"
+echo "$tnout" | grep -E "FAIL|SCRIPT ERROR|travel_net_test" || true
+if ! echo "$tnout" | grep -q "travel_net_test: [0-9]* checks, 0 failures"; then
+  echo "Travel network test failed"; exit 1
+fi
+
+echo "== C14 P4: classic regions' hidden pockets/ways, pages and opaque ways =="
+csout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_secrets_test.gd 2>&1)"
+echo "$csout" | grep -E "FAIL|SCRIPT ERROR|c14_secrets_test" || true
+if ! echo "$csout" | grep -q "c14_secrets_test: [0-9]* checks, 0 failures"; then
+  echo "C14 secrets test failed"; exit 1
+fi
+
+echo "== C14 P3: beach marina (tiers, routes, passages, charters, both arcs) =="
+mrout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/marina_test.gd 2>&1)"
+echo "$mrout" | grep -E "FAIL|SCRIPT ERROR|marina_test" || true
+if ! echo "$mrout" | grep -q "marina_test: 0 failures"; then
+  echo "Marina test failed"; exit 1
+fi
+
+echo "== C14 P1: home regions (riverlands river + bridge, orchard rows, day corn by season, highlands spring, winter bands) =="
+c14p1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14p1_home_test.gd 2>&1)"
+echo "$c14p1out" | grep -E "FAIL|SCRIPT ERROR|c14p1_home_test" || true
+if ! echo "$c14p1out" | grep -q "c14p1_home_test: 0 failures"; then
+  echo "C14 P1 home region test failed"; exit 1
+fi
+
+echo "== C14 P5: gang cities, mega regions, sky, colony jetties =="
+c14p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_p5_test.gd 2>&1)"
+echo "$c14p5out" | grep -E "FAIL|SCRIPT ERROR|c14_p5_test" || true
+if ! echo "$c14p5out" | grep -q "c14_p5_test: ok (0 fails)"; then
+  echo "C14 P5 test failed"; exit 1
+fi
+
+echo "== C14 P6: prop dressing (props_c14.json in sync, art exists, dressed once, nothing on spawn) =="
+python3 tools/gen_props_c14.py --check || { echo "props_c14.json stale"; exit 1; }
+pdout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/prop_dress_test.gd 2>&1)"
+echo "$pdout" | grep -E "FAIL|SCRIPT ERROR|prop_dress_test" || true
+if ! echo "$pdout" | grep -q "prop_dress_test: 0 failures"; then
+  echo "Prop dressing test failed"; exit 1
+fi
+
+echo "== C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons, hearth glow, coloured lamps) =="
+p6aout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_p6_art_test.gd 2>&1)"
+echo "$p6aout" | grep -E "FAIL|SCRIPT ERROR|c14_p6_art_test" || true
+if ! echo "$p6aout" | grep -q "c14_p6_art_test: 0 failures"; then
+  echo "C14 P6 art/light test failed"; exit 1
+fi
+
+echo "== town props (C14 P2) =="
+tpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/town_props_test.gd 2>&1)"
+echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
+if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
+  echo "town_props_test failed"; exit 1
+fi

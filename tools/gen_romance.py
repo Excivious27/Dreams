@@ -136,7 +136,7 @@ C["finn"] = {
     "bouquet": [L("Finn", "Well, I'll be. Flowers! Nobody's given me flowers since... well. Since never.", "surprised"),
                 L("Finn", "Yes, I'll walk out with you. You cast like you're asking now. I noticed.", "happy")],
     "dates": [
-        date("beach", "the pier on the beach", [17, 21], [L("Finn", "Second Cast is tied up at the jetty; I'll row us out after. Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.", "happy"),
+        date("beach", "the pier on the beach", [17, 21], [L("Finn", "Second Cast is back at the lake jetty, so it's the pier for us tonight. Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.", "happy"),
               L("Finn", "There. You hear that? Just the water. Best sound in the world.")],
              "What do you think about, out on the water?",
              [["Nothing at all. It's peaceful.", 15, "That's the trick. Most folks never learn it."],

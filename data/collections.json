@@ -295,7 +295,7 @@
     {
      "item": "salmon",
      "arc": "",
-     "where": "Beach, Farm"
+     "where": "Farm, Fishing"
     },
     {
      "item": "eel",
@@ -310,7 +310,7 @@
     {
      "item": "goldfish",
      "arc": "",
-     "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
+     "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
     },
     {
      "item": "starfin",
@@ -833,7 +833,7 @@
     "item": "salmon",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Farm"
+    "where": "Farm, Fishing"
    },
    {
     "item": "eel",
@@ -851,7 +851,7 @@
     "item": "goldfish",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
+    "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
    },
    {
     "item": "starfin",
@@ -2028,7 +2028,7 @@
    {
     "item": "salmon",
     "arc": "",
-    "where": "Beach, Farm"
+    "where": "Farm, Fishing"
    },
    {
     "item": "eel",
@@ -2043,7 +2043,7 @@
    {
     "item": "goldfish",
     "arc": "",
-    "where": "Beach, Crystal Meadow, at night with bait, fishing 3+"
+    "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
    },
    {
     "item": "starfin",

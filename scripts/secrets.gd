@@ -42,6 +42,8 @@ static func chests_total() -> int:
 		n += 1
 		if mr != "" and int(r.get("hidden", {}).get("pockets", 1)) > 0:
 			n += 1
+		elif mr == "" and rid in HiddenArea.CLASSIC and int(r.get("hidden", {}).get("pockets", 1)) > 0:
+			n += 1  # C14: the classic regions' hidden nooks
 		if HiddenArea.SANCTUMS.has(rid):
 			n += 1
 	return n
@@ -51,7 +53,7 @@ static func chests_total() -> int:
 static func _area_here(rid: String) -> bool:
 	var mr := MegaRegion.region_of(rid)
 	if mr == "":
-		return true
+		return not ((rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()))  # C14: classic pockets per arc
 	if not MegaRegion.in_arc(mr):
 		return false
 	var a := MegaRegion.area(mr, rid)
@@ -60,6 +62,15 @@ static func _area_here(rid: String) -> bool:
 
 ## Lore pages tucked in the hidden nooks of the newer areas (HiddenArea places them).
 const POCKET_PAGES := {
+	"orchard_hills": "Page: The oldest tree on the hill was planted upside down, roots to the sky. It fruits anyway, every other spring.",
+	"highlands": "Page: Shepherds stack one stone on the cairn each time they get home safe. The cairn is taller than the shepherds now.",
+	"quarry": "Page: The old miners cut this adit to follow a single silver thread. It ran out after nine steps. They kept the door anyway.",
+	"marsh": "Page: The herons stand on one leg to keep a secret: the other foot is holding the marsh together.",
+	"riverlands": "Page: The river forgot its old bed one wet autumn. The fish still swim the old way, through the grass, in their dreams.",
+	"ruins": "Page: Behind the collapsed door the crypt holds no bones, only shelves of seed jars, labelled in a hand nobody can read.",
+	"countryside": "Page: Every barn out here has one plank painted on the inside. Line them up on a map and they point to the same hill.",
+	"wastes": "Page: The ash fields bloom for one night a year. The flowers are grey, and they smell like warm bread.",
+	"jungle": "Page: The vines here grow toward voices. Sing to one long enough and it will lead you somewhere quiet.",
 	"iron_junction": "Page: The first train through the Junction carried no cargo at all. Just one lantern, lit, on an empty flatcar.",
 	"iron_freight_yards": "Page: Every crate in the yards is numbered except one. Nobody will say who ships it, but it goes out every spring.",
 	"iron_mill_district": "Page: The mill wheel turned for forty years after the river moved. The workers say it learned to.",
@@ -189,6 +200,8 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 	# The chest likes a tucked-away spot: walled in on most sides (behind a rock,
 	# in a hedge corner, at a dead end), not in plain view by the road.
 	var tucked: Array = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 4)
+	if tucked.is_empty():  # C14 c14_13-12: else at least half walled in, never out in plain view when a nook exists
+		tucked = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 3)
 	if not tucked.is_empty():
 		picks.append(tucked[rng.randi() % tucked.size()])
 	for spacing: float in PAGE_SPACING:  # C8 P4: loosen the spacing so the page always lands
@@ -231,7 +244,13 @@ static func _put(m: GameMap, rid: String, tier: int, picks: Array) -> void:
 		var pk := "page_" + rid
 		if not GameState.run["flags"].has(pk):
 			m.set_thing(pc.x, pc.y, {"type": "page", "key": pk, "text": PAGES[rid], "hint": "A: a torn page"}, false)
-			m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
+			# C14 c14_13-12: a page you can read as a page (pinned under a stone, tied to a
+			# stake, or in a bottle), not a quarter-size signpost.
+			var pv: String = ["c14p4_page_stone", "c14p4_page_stake", "c14p4_page_bottle"][absi(hash(rid)) % 3]
+			if Art.has("c14p4", pv):
+				m.prop("c14p4", pv, pc, 0, 0.0, false, 0.5)
+			else:
+				m.prop("props", "signpost" if Art.has("props", "signpost") else "chest_closed", pc, 0, 0.0, false, 0.25)
 
 
 static func _walls(m: GameMap, c: Vector2i) -> int:

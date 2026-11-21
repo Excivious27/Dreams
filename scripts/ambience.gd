@@ -23,7 +23,7 @@ const OFF_DB := -45.0
 const FADE_SPAN_DB := 30.0  # dB covered in one _fade
 const MAX_BEDS := 4
 
-const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp"]
+const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp", "the_shoals", "blue_deep"]
 const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice", "quarry"]
 const CITY_MAPS := ["neon", "uptown", "docks", "bf_neon_block"]  # c13_10-01: the Hideout is a forest clearing, not a city
 const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone

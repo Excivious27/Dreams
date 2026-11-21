@@ -10140,7 +10140,7 @@
   "tier": 4,
   "fly": true,
   "sprite": "veh_balloon",
-  "desc": "Hold it and press USE outdoors: drift to any place you have already visited."
+  "desc": "Hold it and press USE beside a Balloon Mast (or Charter Pad) you built: fly to another one you built."
  },
  "crystal_sled": {
   "name": "Crystal Sled",

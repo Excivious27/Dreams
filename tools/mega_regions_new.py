@@ -145,7 +145,7 @@ TABS = {  # region: short, style, colours, blurb, travel, leave, how
                  "The balloon bumps down in the east meadow. Grass, at last."),
     "giltcity": ("Gilt City", "city", [0.14, 0.11, 0.06], [0.5, 0.42, 0.22], [1.0, 0.85, 0.3], [1.0, 0.95, 0.8], "black limousine",
                  "Madame Aurum's city of casinos, gardens and vaults.",
-                 "The limousine purrs through the night. At dawn: gold stone, statues, and a hundred lit windows.",
+                 "The limousine purrs through the dark and out into gold stone, statues, and a hundred lit windows.",
                  "The limo drops you at the farm gate and glides away without a sound."),
 }
 
@@ -180,7 +180,7 @@ _I = BY_ID["ironline"]
 # The rail frontier sits in the Cities tab but you ride the night train, not the
 # city bus: its areas carry their own arrival/leaving lines (MegaRegion.on_enter
 # prefers an area's "travel"/"leave" over the region's).
-_RAIL = {"travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+_RAIL = {"travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City.",
          "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."}
 IRONLINE = {"areas": [dict(_area(a), **_RAIL) for a in _I["areas"]], "links": _links(_I),
             "entries": [{"from": _I["entry"]["scene"], "to": _I["hub"], "how": "night train", "label": "Town"}],
