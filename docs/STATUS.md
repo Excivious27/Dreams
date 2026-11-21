@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C13 P2 songs: 102 music files added/replaced (56 new renders incl. gang farm/town/valley/beach, penguin fall/winter/summer sets, morning, storm(+gang), hub nights, night/rain/forest/lake/sky/marsh/wastes/hideout/mega_gloam/hollow_deeps/sanctuary re-renders; ~35 unused-take imports as _2; town swapped to its brighter take). 55 create_song calls. Muffle cause found: piano/harp/celesta-led drumless prompts; guitar + shaker fixes it (docs/AUDIO-PLAN.md C13 P2).
+
 ## 2026-11-21 — C12 integration: P5/P6 merged; hooks across packages (shop deals never send away your partner, gift-block toasts, post-ending penguin letters, bell cause unified, elder moon lines, keepsakes, herbs, talk variants, tracker words, festival letters, side-story compass, arrival verbs); Tess ♥6 quest; CI test fixes.
 ## 2026-11-20 — C12 P6 (items/ranch/decor/UI text): every item has a description; decor lines varied (518 distinct, was 81) with real catalogue sources; wardrobe flavour shows; creature where-from lines; region names with articles in gate words; device-correct button/menu words (PadInput '(MENU'/'Menu >', tool hints, battle brief, casino how-to, hud hint); achievements text; c12_items_ui_text_test.
 ## 2026-11-20 — C12 P4 (hearts/romance/gifts): one Mabel-father story, Sel gangster words + 'they', Tam/Sel stay for a partner (if_partner), Juniper retired as candidate, locket/house refusals, Tess heart arc, perk texts match scenes and show cash, gift tastes for ranch/arc goods/crew, gift_lines when/default/birthday_plain, no ammo gifts, ItemWords 'X of Y'; test c12_hearts_gifts_test.

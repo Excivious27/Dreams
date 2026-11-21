@@ -10,6 +10,7 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 |---|---|---|
 | amb_crystal | raw | https://acemusic.ai/song/jfsqjujs5r77 |
 | amb_space | raw | https://acemusic.ai/song/k7kcn833xbyh |
+| animal_show | music |  |
 | arc_gangsters | music |  |
 | arc_penguins | music |  |
 | arcade_hall | music | https://acemusic.ai/song/rdqqmx6iybpx |
@@ -17,12 +18,23 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | battle | music | https://acemusic.ai/song/awb4pde7wdpz |
 | battle_escort | music | https://acemusic.ai/song/v2wmrg9ddny4 |
 | battle_escort_gang | music | https://acemusic.ai/song/v7nz572744pb |
+| battle_escort_gang_2 | music | https://acemusic.ai/song/h3hhf2rftmgy |
 | battle_gang | music | https://acemusic.ai/song/s7ph8apbr4jz |
+| battle_gang_2 | music | https://acemusic.ai/song/ezgq3pii6swq |
 | battle_penguin | music | https://acemusic.ai/song/8y5759uz5u82 |
+| battle_penguin_2 | music | https://acemusic.ai/song/mu9zrsxenrdw |
 | battle_siege | music | https://acemusic.ai/song/7nvdxwep3f6r |
 | battle_siege_gang | music | https://acemusic.ai/song/mxxd96m4hpht |
+| battle_siege_gang_2 | music | https://acemusic.ai/song/jzvezrdhqqa9 |
 | battle_siege_penguin | music | https://acemusic.ai/song/ref5t78b49zm |
 | beach | music | https://acemusic.ai/song/y8qhavxjy8zw |
+| beach_2 | music |  |
+| beach_fall | music |  |
+| beach_fall_2 | music |  |
+| beach_gang | music |  |
+| beach_gang_2 | music |  |
+| beach_spring | music |  |
+| beach_spring_2 | music |  |
 | boss | music | https://acemusic.ai/song/7ebx3u8sswt8 |
 | boss_aurum | music | https://acemusic.ai/song/hwpanzrvrn4y |
 | boss_coalbrook | music | https://acemusic.ai/song/mer98nus8mhc |
@@ -36,34 +48,55 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | bowling_alley | music | https://acemusic.ai/song/wru8ipndzama |
 | campaign_map | music | https://acemusic.ai/song/evhyjcywh88j |
 | campaign_map_gang | music | https://acemusic.ai/song/vag7quwqs6xw |
+| campaign_map_gang_2 | music | https://acemusic.ai/song/r4x5gqgvkr6s |
 | cattopia | music | https://acemusic.ai/song/vvzy8uy55v8x |
+| cattopia_2 | music |  |
 | chapel | music | https://acemusic.ai/song/vrmzwkxjyvej |
 | clinic | music | https://acemusic.ai/song/h7vuvhpe78qm |
 | colony_coral | music | https://acemusic.ai/song/r4q5uh75asth |
 | colony_ember | music | https://acemusic.ai/song/eea76v4kttu6 |
+| colony_ember_2 | music |  |
 | colony_ice | music | https://acemusic.ai/song/ugtqdxvh39zj |
 | colony_kelp | music | https://acemusic.ai/song/t3bcker8k9mx |
 | combat_elite | music | https://acemusic.ai/song/dpv5t3s2jnw6 |
+| combat_elite_2 | music | https://acemusic.ai/song/6kpbcq59sk7s |
 | combat_elite_gang | music | https://acemusic.ai/song/gj7xzuxzri9r |
+| combat_elite_gang_2 | music | https://acemusic.ai/song/r4wz3vaffrnu |
 | combat_light | music | https://acemusic.ai/song/jgmidfb5px58 |
+| combat_light_2 | music | https://acemusic.ai/song/x8rk9q7v2r26 |
 | combat_light_gang | music | https://acemusic.ai/song/ku25xzsdp2me |
+| combat_light_gang_2 | music | https://acemusic.ai/song/zpsucximm7cx |
 | countryside | music | https://acemusic.ai/song/ny7pm4tqju5a |
 | credits | once | https://acemusic.ai/song/px9ergikphz6 |
 | danger | music | https://acemusic.ai/song/d8mam4n6c4ts |
 | date_evening | music | https://acemusic.ai/song/56ixpcrrwjsr |
 | docks | music | https://acemusic.ai/song/j6494uferehi |
+| docks_2 | music | https://acemusic.ai/song/kkafi2su2uaa |
 | ending_gangster | once | https://acemusic.ai/song/dwdcy9se7a66 |
 | ending_penguin | once | https://acemusic.ai/song/yb4awtjgr59m |
 | farm | music | https://acemusic.ai/song/qdqecpre6gv2 |
 | farm_fall | music | https://acemusic.ai/song/dkvfz8sxv6d2 |
+| farm_fall_gang | music |  |
+| farm_fall_gang_2 | music |  |
+| farm_gang | music |  |
+| farm_gang_2 | music |  |
+| farm_summer | music |  |
+| farm_winter_gang | music |  |
 | festival | music | https://acemusic.ai/song/gj7ju8yps8yj |
 | festival_night | music | https://acemusic.ai/song/r8gc2ma49rz8 |
+| festival_night_2 | music | https://acemusic.ai/song/zhrfbrpv479h |
 | finargle | music | https://acemusic.ai/song/nfesspv2vjd3 |
-| forest | music | https://acemusic.ai/song/fhekqh4xw4hu |
-| hideout | music | https://acemusic.ai/song/9jck7gkrztkp |
+| finargle_2 | music |  |
+| forest | music |  |
+| forest_fall_gang | music |  |
+| forest_gang | music |  |
+| forest_winter_gang | music |  |
+| hideout | music |  |
 | hollow_heart | music | https://acemusic.ai/song/x95ajiu3sfmd |
 | house | music | https://acemusic.ai/song/pyq9qeiakksx |
+| house_2 | music | https://acemusic.ai/song/iqr96dyxjbtn |
 | inn | music | https://acemusic.ai/song/6yx6mmbkm23z |
+| inn_2 | music |  |
 | jin_battle | raw | https://acemusic.ai/song/p4e9fqksdmhz |
 | jin_bright | raw | https://acemusic.ai/song/uzqe2yr4ryzi |
 | jin_disc | raw | https://acemusic.ai/song/57sqjphieair |
@@ -73,54 +106,112 @@ Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists 
 | keeper | music | https://acemusic.ai/song/76txe3nudk8z |
 | kit_bells | raw | https://acemusic.ai/song/zz572cuqw6rh |
 | kit_marimba | raw | https://acemusic.ai/song/4x2wh259yxt8 |
-| lake | music | https://acemusic.ai/song/4v3iecfv5e8p |
+| lake | music |  |
+| lake_fall | music |  |
+| lake_fall_2 | music |  |
+| lake_gang | music |  |
+| lake_winter | music |  |
 | marked | music | https://acemusic.ai/song/bxw4sitt3c9m |
-| marsh | music | https://acemusic.ai/song/nqwz68awwj5r |
+| marsh | music |  |
+| marsh_2 | music |  |
 | meadow | music | https://acemusic.ai/song/zgwvwat5drqz |
+| meadow_2 | music | https://acemusic.ai/song/48gk22mxqp5u |
+| meadow_fall | music |  |
+| meadow_fall_2 | music |  |
+| meadow_fall_gang | music |  |
+| meadow_gang | music |  |
+| meadow_winter | music |  |
+| meadow_winter_2 | music |  |
+| meadow_winter_gang | music |  |
 | mega_desert | music | https://acemusic.ai/song/zriw46m5m6zm |
+| mega_desert_2 | music |  |
 | mega_desert_canyon | music | https://acemusic.ai/song/hh67ipghuzqb |
+| mega_desert_canyon_2 | music | https://acemusic.ai/song/n7kwmcyqczw5 |
 | mega_desert_temple | music | https://acemusic.ai/song/js74zs9pi5bf |
 | mega_frost | music | https://acemusic.ai/song/st7hexwd27d9 |
 | mega_frost_caverns | music | https://acemusic.ai/song/hqrswp9k5tsx |
 | mega_frost_summit | music | https://acemusic.ai/song/4zs8ivxsq6tx |
 | mega_gilt | music | https://acemusic.ai/song/3sfqg89x8x2w |
-| mega_gloam | music | https://acemusic.ai/song/5ziprij2r8pk |
+| mega_gilt_2 | music |  |
+| mega_gloam | music |  |
 | mega_gloam_moonpool | music | https://acemusic.ai/song/vvqdq25575ym |
 | mega_gloam_thicket | music | https://acemusic.ai/song/veidvprskdpy |
-| mega_hollow_deeps | music | https://acemusic.ai/song/2q8m42h9ws5s |
+| mega_hollow_deeps | music |  |
+| mega_hollow_deeps_2 | music |  |
 | mega_iron | music | https://acemusic.ai/song/bpewpjrbyhay |
+| mega_iron_2 | music | https://acemusic.ai/song/cfmv9marh5ed |
 | mega_sky_reaches | music | https://acemusic.ai/song/ibni4j6ppqxt |
 | mega_station | music | https://acemusic.ai/song/num8cwzk26s4 |
+| mega_station_2 | music | https://acemusic.ai/song/k5z6cyp95px4 |
 | mega_wind | music | https://acemusic.ai/song/igxnw2m3cic4 |
+| mega_wind_2 | music |  |
 | mega_wind_storm | music | https://acemusic.ai/song/hn9izjmqbsjr |
 | merkitty_song | once | https://acemusic.ai/song/hdm2pbsr7u52 |
 | mine | music | https://acemusic.ai/song/gue87adqakpd |
 | mine_deep | music | https://acemusic.ai/song/ykcnig7rmjn5 |
 | moon | music | https://acemusic.ai/song/zmird3g8txum |
+| morning | music |  |
 | mountain | music | https://acemusic.ai/song/9jbp9gwcgmqn |
+| mountain_fall | music |  |
+| mountain_fall_2 | music |  |
+| mountain_gang | music |  |
+| mountain_winter | music |  |
 | neon | music | https://acemusic.ai/song/7d6vre5q3fe7 |
-| night | music | https://acemusic.ai/song/272e88uafutk |
-| night_gang | music | https://acemusic.ai/song/74vfx4brbcjb |
+| neon_2 | music |  |
+| neon_night | music |  |
+| night | music |  |
+| night_gang | music |  |
+| night_summer | music |  |
+| night_winter | music |  |
+| night_winter_2 | music |  |
+| night_winter_gang | music |  |
+| night_winter_gang_2 | music |  |
 | orchard | music | https://acemusic.ai/song/da3ry2kcurnk |
+| orchard_2 | music |  |
 | outskirts | music | https://acemusic.ai/song/yka8gus35ze8 |
+| outskirts_2 | music | https://acemusic.ai/song/dk4hjjh3udsc |
+| outskirts_night | music |  |
+| outskirts_night_2 | music |  |
 | quarry | music | https://acemusic.ai/song/jsxfsr9qs4ss |
+| quarry_2 | music | https://acemusic.ai/song/asmu8pgdz7vi |
 | raid | music | https://acemusic.ai/song/tx7xfih6f5iy |
-| rain | music | https://acemusic.ai/song/y7xdgde87bp8 |
+| raid_2 | music |  |
+| rain | music |  |
+| rain_2 | music |  |
+| rain_gang | music |  |
+| ranch | music | https://acemusic.ai/song/g2nb7pvhtcyt |
 | rec_center | music | https://acemusic.ai/song/kv8pmgk64bhe |
 | ruins | music | https://acemusic.ai/song/edbnbft4geyb |
-| sanctuary | music | https://acemusic.ai/song/vrivhqwmcsm3 |
+| sanctuary | music |  |
 | shop | music | https://acemusic.ai/song/nk63ma5hzegf |
+| shop_2 | music |  |
 | shop_gang | music | https://acemusic.ai/song/g7urw5w2yjwn |
-| sky | music | https://acemusic.ai/song/2vmd84ethujd |
+| shop_gang_2 | music | https://acemusic.ai/song/m4gq62kczt36 |
+| sky | music |  |
+| sky_2 | music |  |
+| storm | music |  |
+| storm_2 | music |  |
+| storm_gang | music |  |
+| storm_gang_2 | music |  |
 | title | music |  |
 | title_musicbox | music | https://acemusic.ai/song/xx6ywzchyfdf |
-| town | music | https://acemusic.ai/song/vj4i3a66zp4u |
+| town | music | https://acemusic.ai/song/3ai5yh9iia8n |
+| town_2 | music | https://acemusic.ai/song/ |
+| town_fall | music |  |
+| town_fall_2 | music |  |
+| town_gang | music |  |
+| town_gang_2 | music |  |
+| town_winter | music |  |
+| town_winter_2 | music |  |
+| town_winter_gang | music |  |
 | underground | music | https://acemusic.ai/song/xedgark9qydx |
 | uptown | music | https://acemusic.ai/song/tarq7dev5wbn |
-| wastes | music | https://acemusic.ai/song/nmxgmnpye49y |
+| uptown_night | music |  |
+| wastes | music |  |
 | wedding | music | https://acemusic.ai/song/ykdvstr3ty64 |
 | wedding_gang | music | https://acemusic.ai/song/fezjtrxm87dg |
 | winter | music | https://acemusic.ai/song/7d6g6jhyxw5p |
+| winter_gang | music |  |
 
 ## Recorded sound effects and ambience: CC0
 

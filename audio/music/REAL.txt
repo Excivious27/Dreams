@@ -187,3 +187,16 @@ outskirts_night
 meadow_fall_gang
 outskirts_night_2
 docks_night
+forest_winter_gang
+town_winter_gang
+storm_gang
+meadow_winter_gang
+storm_gang_2
+mega_hollow_deeps_2
+beach_fall
+beach_spring
+orchard_winter
+beach_fall_2
+beach_spring_2
+lake_fall_2
+sky_2
