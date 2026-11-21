@@ -971,6 +971,7 @@ static func _desk(m: GameMap) -> void:
 
 
 static func _scores(m: GameMap) -> void:
+	CoopGames.i().ask_board()  # guests: the host's board for next time (answers arrive in a moment)
 	var lines: Array = ["Bowling best: %d  (%d games)" % [Tickets.best_score("bowling"), Tickets.plays("bowling")]]
 	var names: Dictionary = Tickets.prizes().get("game_names", {})
 	for g in names:  # every cabinet, the claw and skee-ball you've played
@@ -984,11 +985,12 @@ static func _scores(m: GameMap) -> void:
 			lines.append("%s: %d of 8 levels cleared" % [Tickets.game_name(str(g)), lv])
 		else:
 			lines.append("%s: %d" % [Tickets.game_name(str(g)), Tickets.best_score(str(g))])
-	var house := 0
-	for id in data().get("visitors", {}):
-		house = maxi(house, 90 + absi(hash(str(id))) % 120)
-	var mine := Tickets.best_score("bowling")
-	var rest: Array = ["House record (bowling): %d%s" % [maxi(house, mine), "  (yours!)" if mine >= house and mine > 0 else ""],
+	# C17 P4 (c17_06-04): the real house board (the host's while visiting), never a made-up number.
+	var top := CoopGames.i().top("bowling")
+	var rec_line := "House record (bowling): none yet. Bowl one!"
+	if not top.is_empty():
+		rec_line = "House record (bowling): %s %d%s" % [str(top["name"]), int(top["score"]), "  (yours!)" if str(top["name"]) == CoopGames.my_name() else ""]
+	var rest: Array = [rec_line,
 		"Tickets: %d on hand, %d won in all." % [Tickets.count(), Tickets.earned()], milestone_line()]
 	await m.say([{"who": "High scores", "text": "\n".join(lines)}, {"who": "High scores", "text": "\n".join(rest)}])
 

@@ -25,6 +25,7 @@ func _run() -> void:
 	_leave_and_away()
 	await _bowling_screen()
 	await _over_loop()
+	_solo_board()
 	_visit_guards()
 	_laundromat()
 	print("coop_games_test: %d fails" % fails)
@@ -78,6 +79,10 @@ func _duel() -> void:
 		h.submit_board("stack", "R%d" % i, 10 + i)
 	ok(h.board("stack").size() == CoopGames.BOARD_LEN, "board keeps the best %d" % CoopGames.BOARD_LEN)
 	ok(not h.open("claw"), "claw stays solo")
+	b.post_best("whack", 77)
+	ok(int(h.top("whack").get("score", 0)) == 77 and int(a.top("whack").get("score", 0)) == 77, "a guest's new best reaches the house board and every partner")
+	b.post_best("claw", 5)
+	ok(h.board("claw").is_empty(), "claw has no board")
 	var f := CoopGames.new()
 	f._sync_role()  # through the static Net facade (the game's path)
 	ok(f.host and f.me != "" and f.host_ok, "facade: solo is host, has an id, host present")
@@ -221,6 +226,15 @@ func _over_loop() -> void:
 	hn.queue_free()
 	gn.queue_free()
 	await _pump(2)
+
+
+func _solo_board() -> void:
+	var cg := CoopGames.i()
+	ok(is_same(cg.board_store, GameState.run["coop_board"]), "solo: the house board lives in this save")
+	Tickets.set_best("stack", 1234)
+	ok(int(cg.top("stack").get("score", 0)) == 1234, "a solo best goes on the house board")
+	GameState.new_run("penguins", "kairi", "Other", "Dreamhollow", "Biscuit")
+	ok(CoopGames.i().top("stack").is_empty(), "another save has its own board")
 
 
 func _visit_guards() -> void:

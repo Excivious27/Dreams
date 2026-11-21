@@ -85,6 +85,7 @@ static func set_best(game_id: String, score: int) -> bool:
 	RecReno.cup_score(game_id, score)  # the seasonal Rec Cup (once the trophy hall stands)
 	if score > int(a["best"].get(game_id, 0)):
 		a["best"][game_id] = score
+		CoopGames.i().post_best(game_id, score)  # C17 P4: the house board (host's while visiting)
 		return true
 	return false
 

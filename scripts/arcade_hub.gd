@@ -305,7 +305,8 @@ func _draw_play(c: Control) -> void:
 		text_outline(c, r.position + Vector2(54, 17), Tickets.game_name(str(g["id"])), 190, 10, Color.WHITE)
 		text(c, r.position + Vector2(54, 30), blurb(g), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
-		text(c, r.position + Vector2(54, 44), "%s · best %d" % [("free play" if free_play else Money.amount(int(cabinet["fee"]))), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
+		var room := CoopGames.i().top(str(g["id"])) if Net.online() else {}  # C17 P4 (c17_14-25): the room's best
+		text(c, r.position + Vector2(54, 44), "%s · best %d%s" % [("free play" if free_play else Money.amount(int(cabinet["fee"]))), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0)), ("  · room: %s %d" % [str(room["name"]).left(8), int(room["score"])]) if not room.is_empty() else ""], 190, 7, Color(1, 0.85, 0.5))
 
 
 ## Fee per game (kept here so the picker needn't build every screen).

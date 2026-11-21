@@ -16,7 +16,7 @@ extends RefCounted
 ## used only when present; tests drive two or more instances through `wire`.
 
 const TYPES := ["game_open", "game_join", "game_leave", "game_start", "game_turn",
-		"game_score", "game_state", "game_result", "game_board", "game_board_ask"]
+		"game_score", "game_state", "game_result", "game_board", "game_board_ask", "game_post"]
 const MAX_PLAYERS := 4
 const BOARD_LEN := 8
 const BOWL_FRAMES := 10
@@ -86,6 +86,9 @@ func bind_node(n: NetNode) -> void:
 
 
 func _attach_board() -> void:
+	if GameState.run.is_empty():
+		board_store = {}
+		return
 	var r: Variant = GameState.run.get("coop_board")
 	if not (r is Dictionary):
 		r = {}
@@ -244,6 +247,23 @@ func board(game: String) -> Array:
 	return b if b is Array else []
 
 
+## A new personal best goes on the house board: the host's (while visiting) or our own.
+func post_best(game: String, score: int) -> void:
+	if GameState.run.is_empty() or score <= 0 or not MAX_SCORE.has(game):
+		return
+	if host:
+		if submit_board(game, my_name(), score):
+			_out("*", "game_board", {"board": board_store.duplicate(true)})
+	elif host_ok:
+		_out("", "game_post", {"game": game, "score": score, "name": my_name()})
+
+
+## The board's #1 for a game: {name, score} or {}.
+func top(game: String) -> Dictionary:
+	var b := board(game)
+	return b[0] if not b.is_empty() and b[0] is Dictionary else {}
+
+
 func ask_board() -> void:
 	if not host:
 		_out("", "game_board_ask", {})
@@ -261,6 +281,9 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 			"game_turn": _ref_turn(from, d)
 			"game_score": _ref_score(from, d)
 			"game_board_ask": _out(from, "game_board", {"board": board_store.duplicate(true)})
+			"game_post":
+				if submit_board(str(d.get("game", "")), str(d.get("name", "")), int(d.get("score", 0))):
+					_out("*", "game_board", {"board": board_store.duplicate(true)})
 		return
 	match t:
 		"game_state": _apply_state(d)
