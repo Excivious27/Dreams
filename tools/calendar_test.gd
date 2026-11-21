@@ -96,6 +96,20 @@ func _run() -> void:
 			else:
 				check(Npc.festival_hours() == Vector2.ZERO, "%s day %d no festival hours" % [ar, day])
 			check(Calendar.year() == (day - 1) / 112 + 1 and GameState.year() == Calendar.year(), "%s day %d year" % [ar, day])
+			# Events fire: the morning report names every non-market event of the day, the HUD pip lights,
+			# and a shop-closing festival shuts Maple's during its hours (open again after).
+			var ml := " ".join(Calendar.morning_lines())
+			for e: Dictionary in Calendar.today():
+				if e["kind"] in ["festival", "holiday", "event", "marina"]:
+					check(ml.contains(str(e["name"])), "%s day %d morning names %s" % [ar, day, e["name"]])
+					check(Calendar.pip_color().a > 0.0, "%s day %d HUD pip for %s" % [ar, day, e["name"]])
+			if not fest.is_empty() and bool(fest.get("closes_shops", false)) and str((fest["row"] as Dictionary).get("hours", "")) in ["day", "evening"]:
+				var fh2 := Npc.festival_hours()
+				GameState.run["time"] = int((fh2.x + 0.5) * 60.0)
+				check(not TownHours.shop_open("store"), "%s day %d store shut for %s" % [ar, day, fest["name"]])
+				GameState.run["time"] = int(minf(fh2.y + 0.25, 20.9) * 60.0)
+				check(fh2.y > 20.9 or TownHours.shop_open("store"), "%s day %d store open after %s" % [ar, day, fest["name"]])
+				GameState.run["time"] = 8 * 60
 			# Eve: anything tomorrow -> eve(id) and the board names it.
 			var tm := Calendar.tomorrow()
 			for e: Dictionary in tm:
