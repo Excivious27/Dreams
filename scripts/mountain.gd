@@ -361,7 +361,7 @@ func draw_map() -> void:
 	if Art.has("tiles", "waterfall2") and _anim_layer:
 		# One fall over the ledge: cap once, a run of middle pieces, foam foot at the pool.
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
-			var fr := int(Time.get_ticks_msec() / 120) % 4
+			var fr := int(PlayClock.ms() / 125) % 4  # C14b P2: a whole number of anim-layer ticks (no skipped frames), game time
 			var wt := Art.tex("tiles", "waterfall2")
 			var fx0 := FALLS_X * TILE
 			ci.draw_texture_rect_region(wt, Rect2(fx0, 13 * TILE, TILE, 10), Rect2(fr * 32, 0, 32, 20))

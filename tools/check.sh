@@ -1257,3 +1257,10 @@ echo "$gkout" | grep -E "FAIL|SCRIPT ERROR|glow_kinds_test" || true
 if ! echo "$gkout" | grep -q "glow_kinds_test: PASS"; then
   echo "glow_kinds_test failed"; exit 1
 fi
+
+echo "== mine_life_test (C14b P2: mine drips, lamp motes, fire lamps) =="
+mlout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mine_life_test.gd 2>&1)"
+echo "$mlout" | grep -E "FAIL|SCRIPT ERROR|mine_life_test" || true
+if ! echo "$mlout" | grep -q "mine_life_test: PASS"; then
+  echo "mine_life_test failed"; exit 1
+fi

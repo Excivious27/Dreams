@@ -165,8 +165,8 @@ static func kind_for(name: String) -> String:
 	for w: String in FIRE_WORDS:
 		if w in name:
 			return "fire"
-	if name.begins_with("fest_ss_"):
-		return "fire"  # festival lanterns are candle-lit
+	if name.begins_with("fest_ss_") or name in ["cave_lamp", "beam_lamp", "sunken_lantern"] or (name.begins_with("mine_") and "lamp" in name):
+		return "fire"  # festival lanterns and miners' lamps are flame-lit
 	return "electric"
 
 
