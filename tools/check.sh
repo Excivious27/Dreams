@@ -869,6 +869,13 @@ if ! echo "$padout" | grep -q "pad_test: 0 failures"; then
   echo "pad_test failed"; exit 1
 fi
 
+echo "== S1 P3: Deck typing, glyphs, text floor, desktop display =="
+dkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/deck_input_test.gd 2>&1)"
+echo "$dkout" | grep -E "FAIL|SCRIPT ERROR|deck_input_test" || true
+if echo "$dkout" | grep -q "SCRIPT ERROR" || ! echo "$dkout" | grep -q "deck_input_test: 0 failures"; then
+  echo "deck_input_test failed"; exit 1
+fi
+
 echo "== C9 P2: game menu with keys/pad =="
 mpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_pad_test.gd 2>&1)"
 echo "$mpout" | grep -E "FAIL|SCRIPT ERROR|menu_pad_test" || true

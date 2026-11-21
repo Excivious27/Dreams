@@ -217,7 +217,7 @@ func _draw_it() -> void:
 		c.draw_rect(Rect2(i * 20.0 + 10, 0, 10, 14), Color("f2e6c8") if not gang else Color("2a1840"))
 	c.draw_string(_font, Vector2(0, 36), "PRIZE COUNTER", HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.35))
 	Tickets.draw_amount(c, _font, 0, 52, 270, "%d tickets" % Tickets.count(), 11, Color(1, 0.7, 0.9))
-	c.draw_string(_font, Vector2(0, 62), "%d won in all · every game pays tickets" % Tickets.earned(), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
+	c.draw_string(_font, Vector2(0, 62), "%d won in all · every game pays tickets" % Tickets.earned(), HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(1, 1, 1, 0.45))
 	for i in TIERS.size():
 		var r := _tab_rect(i)
 		c.draw_rect(r, Color(1, 0.85, 0.35, 0.95) if i == tier else Color(1, 1, 1, 0.1))
@@ -251,7 +251,7 @@ func _draw_it() -> void:
 		var short := lock == "" and not can
 		var sub := _fit(("Locked: " if lock != "" and not owned and not lock.begins_with("Sold out") else "") + row_note(id), 148.0, 7)
 		var sub_col := Color(0.6, 1, 0.65) if owned else (Color(1, 0.75, 0.6) if lock != "" else (Color(1, 0.85, 0.5) if short else Color(0.8, 0.8, 0.9)))
-		c.draw_string(_font, Vector2(44, y + 25), sub, HORIZONTAL_ALIGNMENT_LEFT, 150, 7, sub_col)
+		c.draw_string(_font, Vector2(44, y + 25), sub, HORIZONTAL_ALIGNMENT_LEFT, 150, DisplayMode.df(7), sub_col)
 		if owned:
 			c.draw_string(_font, Vector2(196, y + 18), "OWNED", HORIZONTAL_ALIGNMENT_RIGHT, 60, 8, Color(0.6, 1, 0.65, 0.8))
 		else:
@@ -275,7 +275,7 @@ func _draw_it() -> void:
 		c.draw_rect(br, Color(1, 1, 1, 0.12))
 		c.draw_rect(br, Color(1, 0.85, 0.35, 0.8), false, 1.0)
 		c.draw_string(_font, Vector2(br.position.x, br.position.y + 22), str(b[1]), HORIZONTAL_ALIGNMENT_CENTER, br.size.x, 11, Color(1, 0.9, 0.6))
-	c.draw_string(_font, Vector2(0, 470), "◀ ▶ shelf · ▲▼ pick · USE buy · B leave", HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.5))
+	c.draw_string(_font, Vector2(0, 470), "◀ ▶ shelf · ▲▼ pick · USE buy · B leave", HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(1, 1, 1, 0.5))
 
 
 ## One line that fits w px: cut at a word with an ellipsis instead of mid-word.

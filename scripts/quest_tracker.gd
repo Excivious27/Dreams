@@ -370,8 +370,8 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 	if cap != "":
 		# Left of the badge (toasts start right under it, so nothing hangs below).
 		var tp := ctr + Vector2(-R - 2 - CAPTION_W, 2.5)
-		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, 7, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, 7, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
+		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, DisplayMode.df(7), 3, Color(0, 0, 0, 0.85))
+		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, DisplayMode.df(7), needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
 	# On screen: a small bobbing chevron over the spot itself (Stardew's quest mark).
 	if tgt != Vector2.ZERO and not m.has_method("pointer_aim"):
 		var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
@@ -467,8 +467,8 @@ static func checkbox_row(text: String, checked: bool, done: bool, sub: String, c
 		if sub != "":
 			var f := b.get_theme_default_font()
 			if sub_below:
-				b.draw_string(f, Vector2(22, b.size.y - 4), sub, HORIZONTAL_ALIGNMENT_RIGHT, b.size.x - 28, 7, Color(1, 0.86, 0.5))
+				b.draw_string(f, Vector2(22, b.size.y - 4), sub, HORIZONTAL_ALIGNMENT_RIGHT, b.size.x - 28, DisplayMode.df(7), Color(1, 0.86, 0.5))
 			else:
-				b.draw_string(f, Vector2(b.size.x - 4 - sub_w, y + 3), sub, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.86, 0.5)))
+				b.draw_string(f, Vector2(b.size.x - 4 - sub_w, y + 3), sub, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), Color(1, 0.86, 0.5)))
 	b.pressed.connect(cb)
 	return b

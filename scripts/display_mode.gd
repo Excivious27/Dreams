@@ -20,6 +20,10 @@ signal changed
 
 const BASE := Vector2(270, 480)
 const MAX_W := 960.0
+## S1 s1_10-06: the native window never shrinks below this (the 270 column stays >= 1x).
+const MIN_WIN := Vector2i(540, 480)
+## Options > Frame rate cap choices (0 = no cap). Physics runs at 60, so 30/60/120 only.
+const FPS_CAPS := [0, 30, 60, 120]
 ## Layers that lay themselves out against the whole view (or follow the camera).
 const SKIP_CLASSES := ["Hud", "TouchControls", "Scenery", "NightGlow", "RecGlow"]
 
@@ -51,16 +55,79 @@ static func is_phone() -> bool:
 	return OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios") or OS.has_feature("android") or OS.has_feature("ios")
 
 
-## Steam Deck (or any gamescope / 1280x800-or-smaller handheld screen).
+## Steam Deck (or a gamescope / SteamOS session). S1 s1_10-02: never guessed
+## from the screen size any more (a 1080p laptop at 150% reported 1280x720 and
+## was forced fullscreen with touch buttons). Tests set deck_force (0/1).
+static var deck_force := -1
+
+
 static func is_deck() -> bool:
+	if deck_force >= 0:
+		return deck_force == 1
 	if force >= 0 or OS.has_feature("web"):
 		return false
-	if OS.get_environment("SteamDeck") == "1" or OS.get_environment("XDG_CURRENT_DESKTOP").to_lower() == "gamescope":
-		return true
-	if DisplayServer.get_name() == "headless":
-		return false
-	var sz := DisplayServer.screen_get_size()
-	return sz.x > 0 and sz.x <= 1280 and sz.y <= 800 and sz.x > sz.y
+	if _deck_env < 0:
+		_deck_env = 1 if (OS.get_environment("SteamDeck") == "1" or OS.get_environment("SteamOS") == "1" \
+				or OS.get_environment("XDG_CURRENT_DESKTOP").to_lower() == "gamescope") else 0
+	return _deck_env == 1
+
+
+static var _deck_env := -1
+
+
+## Native desktop build (Windows/Linux/macOS window), not web, not a phone.
+## Desktop-only options (window, VSync, frame cap) show only here.
+static var desktop_force := -1
+
+
+static func native_desktop() -> bool:
+	if desktop_force >= 0:
+		return desktop_force == 1
+	return not OS.has_feature("web") and not is_phone() and DisplayServer.get_name() != "headless"
+
+
+## S1 s1_07-01/03: Valve's Deck rule, no character under 9 px tall at 1280x800.
+## The 480-tall view scales by window_h/480 (1.667 on the Deck), and a glyph's
+## cap height is 0.714 of the font size, so size 7 is 8.3 px there: too small.
+const DECK_CAP_PX := 9.0
+const CAP_RATIO := 0.714
+
+
+## The smallest font size that meets the Deck floor at the current scale (0 off
+## the Deck: phones and desktops keep their sizes exactly).
+static func deck_min_font() -> int:
+	if not is_deck():
+		return 0
+	var h := 800.0
+	if _svc != null and DisplayServer.get_name() != "headless" and test_size == Vector2i.ZERO:
+		h = float(_svc._win_size().y)
+	elif test_size != Vector2i.ZERO:
+		h = float(test_size.y)
+	var k := maxf(h / BASE.y, 0.1)
+	return int(ceilf(DECK_CAP_PX / (k * CAP_RATIO) - 0.001))
+
+
+## Drawn text size through the Deck floor (draw_string sizes 5-7 use this).
+static func df(fs: int) -> int:
+	return maxi(fs, deck_min_font())
+
+
+## Controls (Label, Button, LineEdit, RichTextLabel...) added on the Deck get
+## their font size raised to the floor (a runtime clamp, no per-screen edits).
+func _deck_clamp(n: Node) -> void:
+	if not is_instance_valid(n) or not (n is Control):
+		return
+	var mf := deck_min_font()
+	if mf <= 0:
+		return
+	var c := n as Control
+	if c is RichTextLabel:
+		for key: String in ["normal_font_size", "bold_font_size", "italics_font_size", "mono_font_size"]:
+			if c.get_theme_font_size(key) < mf:
+				c.add_theme_font_size_override(key, mf)
+	elif c is Label or c is Button or c is LineEdit or c is TextEdit or c is OptionButton:
+		if c.get_theme_font_size("font_size") < mf:
+			c.add_theme_font_size_override("font_size", mf)
 
 
 ## Touch buttons on "auto": phones, the Deck and any touchscreen computer show them.
@@ -133,6 +200,8 @@ func _ready() -> void:
 		TouchControls.visible_controls = tm == 1 or (tm == 0 and touch_auto())
 		if not OS.has_feature("web") and force < 0:
 			_desktop_window(true)
+			get_window().min_size = MIN_WIN
+			apply_frame_settings()
 	elif int(Settings.get_v("touch_ui")) == 2:
 		TouchControls.visible_controls = false
 	_refit()
@@ -156,6 +225,10 @@ func _desktop_window(startup := false) -> void:
 	if scr.size.x <= 0:
 		return
 	var sz := Vector2i(1280, 720)
+	# S1 s1_10-01: hi-DPI aware now (allow_hidpi.pc), so a 150% Windows screen gets a 150% window.
+	var dpi_k := clampf(float(DisplayServer.screen_get_dpi(w.current_screen)) / 96.0, 1.0, 2.0)
+	if dpi_k > 1.05:
+		sz = Vector2i(int(sz.x * dpi_k), int(sz.y * dpi_k))
 	while sz.x > scr.size.x * 0.92 or sz.y > scr.size.y * 0.92:
 		sz = Vector2i(int(sz.x * 0.85), int(sz.y * 0.85))
 	w.size = sz
@@ -249,6 +322,8 @@ func _pin(ch: Node) -> void:
 func _on_node_added(n: Node) -> void:
 	if n is CanvasLayer:
 		_place.call_deferred(n)
+	elif n is Control and is_deck():
+		_deck_clamp.call_deferred(n)
 
 
 func _process(_d: float) -> void:
@@ -295,7 +370,11 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
 		var k := event as InputEventKey
 		if k.keycode == KEY_F11 or (k.keycode == KEY_ENTER and k.alt_pressed) or (k.keycode == KEY_KP_ENTER and k.alt_pressed):
+			release_actions_for(event)
 			toggle_fullscreen()
+			get_viewport().set_input_as_handled()
+		elif k.keycode == KEY_TAB and k.alt_pressed:
+			release_actions_for(event)  # alt-tabbing away must not switch the tool
 			get_viewport().set_input_as_handled()
 	elif _first_press(event) and OS.has_feature("web") and (not is_phone() or OS.has_feature("web_android")):
 		# Browsers only allow fullscreen from a click or tap: ask once, on the first one.
@@ -303,6 +382,15 @@ func _input(event: InputEvent) -> void:
 			_web_fs_armed = true
 			set_fullscreen(true)
 	_cursor_follow(event)
+
+
+## S1 s1_10-12: Input has already turned Alt+Enter into a press of "a" (Enter)
+## before _input runs, and every screen polls is_action_just_pressed: release
+## every action the shortcut matched so it confirms nothing.
+static func release_actions_for(event: InputEvent) -> void:
+	for a: StringName in InputMap.get_actions():
+		if not str(a).begins_with("ui_") and InputMap.event_is_action(event, a) and Input.is_action_pressed(a):
+			Input.action_release(a)
 
 
 static func _first_press(event: InputEvent) -> bool:
@@ -373,8 +461,41 @@ func _notification(what: int) -> void:
 	if OS.has_feature("web") or DisplayServer.get_name() == "headless" or _tool_run() or not is_inside_tree():
 		return
 	app_backgrounded.emit()
-	if not bool(Settings.get_v("bg_sound")) or what == NOTIFICATION_APPLICATION_PAUSED:
+	if focus_pauses() or what == NOTIFICATION_APPLICATION_PAUSED:
 		pause_for_focus()
+
+
+## S1 s1_10-08: its own option now ("Pause when window inactive"), no longer
+## tied to "Sound in background".
+static func focus_pauses() -> bool:
+	return bool(Settings.get_v("pause_unfocused"))
+
+
+## S1 s1_10-09: the Steam overlay (Shift+Tab) keeps the window focused, so
+## SteamService calls this from its overlay_toggled signal.
+func overlay_toggled(active: bool) -> void:
+	if active and not OS.has_feature("web"):
+		app_backgrounded.emit()
+		pause_for_focus()
+
+
+## S1 s1_10-11: VSync and the frame-rate cap (native desktop only).
+static func apply_frame_settings() -> void:
+	if not native_desktop():
+		return
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if bool(Settings.get_v("vsync")) else DisplayServer.VSYNC_DISABLED)
+	Engine.max_fps = int(Settings.get_v("fps_cap"))
+
+
+static func cycle_fps_cap() -> void:
+	var i := FPS_CAPS.find(int(Settings.get_v("fps_cap")))
+	Settings.set_v("fps_cap", FPS_CAPS[(i + 1) % FPS_CAPS.size()])
+	apply_frame_settings()
+
+
+static func toggle_vsync() -> void:
+	Settings.set_v("vsync", not bool(Settings.get_v("vsync")))
+	apply_frame_settings()
 
 
 ## Opens the game menu over a running map (nothing when a menu/screen is already up).

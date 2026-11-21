@@ -71,6 +71,13 @@ static func device_kind() -> String:
 ## The controller family from its name (button labels follow it).
 static func kind_of(joy_name: String) -> String:
 	var n := joy_name.to_lower()
+	# S1 s1_08-02 / s1_08-09: the Deck's own pad, and under Steam Input every pad
+	# is a "Steam Virtual Gamepad": ask SteamService for the real type first.
+	var st := steam_kind()
+	if st != "":
+		return st
+	if n.contains("steam deck") or ((n.contains("steam virtual") or n.contains("steam controller")) and DisplayMode.is_deck()):
+		return "deck"
 	if n.contains("ps4") or n.contains("ps5") or n.contains("dualsense") or n.contains("dualshock") or n.contains("playstation") or n.contains("wireless controller"):
 		return "ps"
 	if n.contains("nintendo") or n.contains("pro controller") or n.contains("joy-con") or n.contains("switch"):
@@ -78,15 +85,45 @@ static func kind_of(joy_name: String) -> String:
 	return "xbox"
 
 
+## Tests: the Steam Input type to pretend SteamService reported ("" = none).
+static var steam_kind_force := ""
+
+
+## The controller type Steam Input reports (deck/ps/switch/xbox), "" without Steam.
+## Duck-typed: SteamService (S1 P1) is optional and never named as a class.
+static func steam_kind() -> String:
+	if steam_kind_force != "":
+		return steam_kind_force
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or OS.has_feature("web"):
+		return ""
+	var ss := tree.root.get_node_or_null("SteamService")
+	if ss != null and ss.has_method("input_type"):
+		return str(ss.call("input_type", device))
+	return ""
+
+
+## S1 s1_08-04: a native desktop/Deck boot with a pad already connected starts
+## in pad mode (no touch overlay, pad words), not touch mode. Web and phones
+## keep the old behaviour (pad mode only after a button press).
+static func boot_pad_mode() -> bool:
+	return not OS.has_feature("web") and not DisplayMode.is_phone() and DisplayServer.get_name() != "headless" \
+			and int(Settings.get_v("touch_ui")) != 1 and not Input.get_connected_joypads().is_empty()
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(PadCursor.new())
+	add_child(TextEntry.new())  # S1: pad typing (Steam keyboard / PadKeyboard)
 	process_priority = -100  # repeat timers tick before screens read them
 	Input.joy_connection_changed.connect(_on_joy)
 	var pads := Input.get_connected_joypads()
 	if not pads.is_empty():
 		device = int(pads[0])
 		kind = kind_of(Input.get_joy_name(device))
+		if boot_pad_mode():
+			_set_active(true)
+			TouchControls.visible_controls = false
 
 
 func _exit_tree() -> void:
@@ -124,9 +161,13 @@ static func note_event(ev: InputEvent, vp: Viewport = null) -> void:
 		last = "touch"
 		_set_active(false)
 	elif ev is InputEventKey and (ev as InputEventKey).pressed and not (ev as InputEventKey).echo:
+		if active and keys_keep_pad():
+			return
 		last = "keys"
 		_set_active(false)
 	elif ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed and ev.device != InputEvent.DEVICE_ID_EMULATION and not PadCursor.sending:
+		if active and DisplayMode.is_deck():
+			return  # S1 s1_08-03: the Deck's trackpad clicks as a mouse: keep pad prompts
 		last = "keys"
 		_set_active(false)
 
@@ -231,6 +272,12 @@ static func words(text: String) -> String:
 			t = InputSetup.prompt(str(pair[1])) + t.substr(str(pair[0]).length())
 	t = t.replace("Tap ", "Press ").replace("tap ", "press ").replace("Hold USE", "Hold " + InputSetup.prompt("a"))
 	return t
+
+
+## S1 s1_08-03: keys typed by Steam's on-screen keyboard (or our own pad
+## keyboard) while a text field is open never flip prompts to keyboard keys.
+static func keys_keep_pad() -> bool:
+	return TextEntry.is_open()
 
 
 ## Controller rumble (P4's Haptics calls this; no-op without a pad).
