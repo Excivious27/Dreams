@@ -377,7 +377,37 @@ static func _shop(m: GameMap, sid: String) -> void:
 	var greet_t := greet(str(s["who"]))
 	if sid == "market":
 		greet_t += " Today: %s." % GameState.item_name(catch_of_day())
+		if GameState.count(catch_of_day()) > 0:
+			m.later(_market.bind(m, who, greet_t, s))
+			return
 	Shops.stall(m, who, greet_t, s["goods"], 0.0, "marina_" + sid)
+
+
+## Ines' catch of the day: sell every one you carry at +25% before her stall.
+static func catch_price() -> int:
+	var it: Dictionary = GameState.items.get(catch_of_day(), {})
+	return int(round(int(it.get("value", 10)) * float((data().get("shops", {}) as Dictionary).get("market", {}).get("buys_fish", 1.25))))
+
+
+static func sell_catch() -> int:
+	var n := GameState.count(catch_of_day())
+	if n <= 0:
+		return 0
+	GameState.add_item(catch_of_day(), -n)
+	GameState.add_money(n * catch_price(), "marina")
+	return n
+
+
+static func _market(m: GameMap, who: String, greet_t: String, s: Dictionary) -> void:
+	var n := GameState.count(catch_of_day())
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": who, "text": greet_t, "choice": ["Sell %s (%s)" % [ItemWords.count_id(catch_of_day(), n), Money.amount(n * catch_price())], "Browse the stall", "Leave"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0:
+		sell_catch()
+		Music.instance(m.get_tree()).sfx("cash", "quest_done")
+	elif d.last_choice == 1:
+		Shops.stall(m, who, greet_t, s["goods"], 0.0, "marina_market")
 
 
 ## Marina jobs open now (tier, arc; not done; dailies and log-only quests skipped).

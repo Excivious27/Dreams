@@ -114,6 +114,13 @@ func _arc(arc: String) -> void:
 	for c: Dictionary in Marina.data()["charters"]:
 		check(ResourceLoader.exists("res://scenes/%s.tscn" % str(c["scene"])), "%s: charter area %s has its scene" % [arc, c["scene"]])
 	check(not "salmon" in Marina.shore_pool() and not "goldfish" in Marina.shore_pool(), "%s: no freshwater fish in the sea" % arc)
+	# Ines buys the catch of the day at +25%.
+	var cod := Marina.catch_of_day()
+	GameState.add_item(cod, 2, true)
+	var have := GameState.count(cod)  # (the charter may have brought some home too)
+	var cm := int(GameState.run["crystals"])
+	check(Marina.sell_catch() == have and GameState.count(cod) == 0, "%s: catch of the day sold" % arc)
+	check(int(GameState.run["crystals"]) - cm == have * Marina.catch_price() and Marina.catch_price() > int(GameState.items[cod]["value"]), "%s: catch of the day pays a premium" % arc)
 	# Dock jobs: per arc, hand-in takes the goods and pays once.
 	var js := Marina.jobs()
 	var ids := js.map(func(q: Dictionary) -> String: return str(q["id"]))
