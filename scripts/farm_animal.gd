@@ -325,6 +325,20 @@ func _after_cheer() -> void:
 		_play("idle", true)
 
 
+const FLOAT_WORDS := ["jelly", "seahorse", "wisp", "sprite", "ghost", "spirit"]
+var _float_k := -1
+
+
+## Floating / glowing creatures (star jelly, coral seahorse, wisps): they hover, never stand.
+func _floats() -> bool:
+	if _float_k < 0:
+		_float_k = 0
+		for w: String in FLOAT_WORDS:
+			if w in kind:
+				_float_k = 1
+	return _float_k == 1
+
+
 ## Asleep when it is night and the animal is resting in its huddle spot.
 func _sleepy() -> bool:
 	return GameState.is_night() and _state != "walk" and sprite_frames != null and sprite_frames.has_animation("sleep")
@@ -341,6 +355,8 @@ func _process(delta: float) -> void:
 	if _hop > 0.0:
 		_hop = maxf(0.0, _hop - delta)
 		offset.y = _fit_y - 6.0 * sin(PI * (1.0 - _hop / 0.25))
+	elif _floats():
+		offset.y = _fit_y + CreatureMotion.hover(_ph, 3.0, 3.0 + _ph) / maxf(0.05, scale.y)  # c14b_09-18: floaters hover
 	elif animation == "idle" and _sleepy():
 		_play("sleep")
 	elif animation == "sleep" and not _sleepy():
