@@ -21,6 +21,8 @@ func _run() -> void:
 		GameState.run["crystals"] = int(OS.get_environment("MONEY"))
 	if OS.get_environment("MARINA") != "":  # C14: the beach marina's tier (MARINA=0..4)
 		GameState.run["marina"] = {"tier": int(OS.get_environment("MARINA"))}
+	for cs in (OS.get_environment("CROPS").split(";") if OS.get_environment("CROPS") != "" else []):  # C14b: CROPS="crop:x:y:days;..." plants for shots
+		GameState.run["farm"]["%s,%s" % [cs.split(":")[1], cs.split(":")[2]]] = {"crop": cs.split(":")[0], "days": int(cs.split(":")[3]), "watered": false}
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 	for i in range(1, args.size()):

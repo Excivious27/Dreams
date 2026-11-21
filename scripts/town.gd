@@ -295,6 +295,16 @@ var _door_paths := {}
 
 
 ## building() + remember the door so a lane gets carved to it.
+## The building just placed (GameMap._bprops lives on the real map, also while baking).
+func _clock_on_last() -> void:
+	var real: GameMap = AmbientMotion.of(self).get_parent()
+	if real._bprops.is_empty():
+		return
+	var e: Array = real._bprops.back()
+	if e[3] is Sprite2D:
+		ClockHands.attach(e[3], str(e[0]))
+
+
 func _door(name: String, c: Vector2i, interior: String, hint: String, scale := 1.0) -> void:
 	var d := building(name, c, interior, hint, scale)
 	if d != Vector2i(-1, -1):
@@ -334,7 +344,9 @@ func _place_buildings() -> void:
 		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
 	_door("hall", Vector2i(46, 28), "hall", "A: Town Hall")
+	_clock_on_last()  # C14b P3 (c14b_13-10): the clock shows the game's time
 	building("clock_tower", Vector2i(28, 32))
+	_clock_on_last()
 	# South-east: potions, inn, library, school.
 	_door("potions", Vector2i(45, 53), "potions", "A: Potion Shop", 1.15)
 	if GameState.run["flags"].has("crew_mama_rosa") and Art.has("buildings", "gang_shop_mama_rosa"):
