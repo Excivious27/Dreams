@@ -1,76 +1,121 @@
 class_name LighthouseBeam
 extends Node2D
-## C14b P2 (c14b_13-02): the lit lighthouse no longer pops between 4 drawn beam
-## poses (left / none / right / dim) at 4 fps, and no longer burns at noon. The
-## tower holds its lit-lens frame (1) and this node draws a soft additive cone
-## that turns smoothly around the lamp: its reach is cos(angle), so it sweeps
-## out to one side, shortens as it faces you, and swings to the other side.
-## Strength follows darkness (0 by day, a touch more in fog/storm). Game time;
-## reduced motion holds the beam still on one side.
+## C14b P3 (c14b_13-01, 14-11, 04-12): a smooth turning lighthouse beam instead of
+## the 4-frame strip that strobed left / none / right / off. The tower is drawn as
+## its lit-lamp still; this node, placed at the lamp, draws two soft additive cones
+## whose width follows cos(t) so the beam reads as sweeping round the lamp. Bright
+## at dusk, night and in fog, faint by day; never fully off. Game time (PlayClock).
+## Reduced motion: a steady soft glow, no sweep.
 
-const LAMP := Vector2(0.5, 0.17)   # lamp centre in the lighthouse frame (local 0..1)
-const SPEED := 0.9                 # rad/s
-const REACH := 120.0               # beam length in texture px
-var lamp := Vector2.ZERO
-var _acc := 1.0
+const PERIOD := 6.5  # seconds per full turn
+var length := 70.0   # art px (the node inherits the tower sprite's scale)
+var half_w := 12.0
 
 
-## Turn a placed lit-lighthouse AnimatedSprite2D into a still tower + beam.
-static func fit(a: AnimatedSprite2D) -> LighthouseBeam:
-	if a == null or a.sprite_frames == null or not a.sprite_frames.has_animation(a.animation):
+## Add a beam to a lighthouse sprite. `lamp` is the lamp centre in the sprite's
+## local (art) pixels.
+static func attach(tower: Node2D, lamp: Vector2) -> LighthouseBeam:
+	if tower == null:
 		return null
-	if a.get_node_or_null("Beam") != null:
-		return a.get_node("Beam")
-	var n := a.sprite_frames.get_frame_count(a.animation)
-	a.stop()
-	a.frame = 1 if n > 1 else 0  # lit lens, no beam drawn in
-	var ft := a.sprite_frames.get_frame_texture(a.animation, a.frame)
-	var sz := ft.get_size() if ft else Vector2(148, 224)
 	var b := LighthouseBeam.new()
 	b.name = "Beam"
-	b.lamp = a.offset - sz / 2.0 + LAMP * sz
-	var m := CanvasItemMaterial.new()
-	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	b.material = m
-	b.z_index = 1
-	a.add_child(b)
+	b.position = lamp
+	tower.add_child(b)
 	return b
 
 
+## The light is drawn on its own canvas layer above the map's night CanvasModulate
+## (like NightGlow), following this anchor, so the night tint doesn't swallow it.
+var _layer: CanvasLayer
+var _drawer: Node2D
+
+
+func _ready() -> void:
+	_layer = CanvasLayer.new()
+	_layer.layer = 1
+	_layer.follow_viewport_enabled = true
+	_drawer = Node2D.new()
+	var mat := CanvasItemMaterial.new()
+	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	_drawer.material = mat
+	_drawer.draw.connect(_draw_beam)
+	_layer.add_child(_drawer)
+	add_child(_layer)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_layer):
+		_layer.queue_free()
+
+
+## The lit-lamp, no-beam frame of the lighthouse strip (frame 1) as a texture.
+static func lit_frame(name := "lighthouse") -> Texture2D:
+	var info := Art.info("buildings", name)
+	var fr := int(info.get("frames", 1))
+	var t := Art.tex("buildings", name)
+	if fr <= 1 or t == null:
+		return t
+	var at := AtlasTexture.new()
+	at.atlas = t
+	var fw := float(info.get("cell_w", t.get_width() / fr))
+	at.region = Rect2(fw * mini(1, fr - 1), 0, fw, float(info.get("cell_h", t.get_height())))
+	return at
+
+
 static func strength() -> float:
-	var d := GameState.darkness() if not GameState.run.is_empty() else 0.0
-	var w := GameState.weather_today() if not GameState.run.is_empty() else ""
-	if w in ["fog", "storm", "rain"]:
-		d = maxf(d, 0.35)
-	return clampf(d, 0.0, 1.0)
+	var d := GameState.darkness()
+	var w := GameState.weather_today() if GameState.run.has("day") else "clear"
+	var s := 0.12 + 0.88 * d
+	if w in ["fog", "storm", "rain", "blizzard"]:
+		s = maxf(s, 0.6)
+	return clampf(s, 0.12, 1.0)
 
 
-func _process(d: float) -> void:
-	_acc += d
-	if _acc >= 1.0 / 30.0:
-		_acc = 0.0
-		queue_redraw()
+func _process(_d: float) -> void:
+	if _drawer:
+		_drawer.transform = get_global_transform()
+		_drawer.visible = is_visible_in_tree()
+		_drawer.queue_redraw()
+
+
+func _draw_beam() -> void:
+	var d := _drawer
+	var s := strength()
+	var glow := Color(1.0, 0.93, 0.62, 0.35 * s)
+	d.draw_circle(Vector2.ZERO, 7.0, glow)
+	d.draw_circle(Vector2.ZERO, 4.0, Color(1, 0.97, 0.8, 0.45 * s))
+	if AmbientMotion.reduced():
+		return
+	var a := PlayClock.now() * TAU / PERIOD
+	var c := cos(a)
+	# Two opposite cones; the one facing "away" (sin < 0) is dimmer, like the far side.
+	for side in [1.0, -1.0]:
+		var reach: float = length * c * side
+		if absf(reach) < 2.0:
+			continue
+		var facing: float = 0.55 + 0.45 * sin(a) * side
+		var col := Color(1.0, 0.92, 0.6, 0.6 * s * facing)
+		var tip := Color(1.0, 0.92, 0.6, 0.0)
+		var hw := half_w * (0.6 + 0.4 * absf(c))
+		d.draw_polygon(PackedVector2Array([Vector2(0, -2.5), Vector2(reach, -hw), Vector2(reach, hw), Vector2(0, 2.5)]),
+			PackedColorArray([col, tip, tip, col]))
+
+
+## C14b integration: P2's API on P3's beam. `fit` turns a placed lit-lighthouse
+## AnimatedSprite2D into its still lit frame plus this beam at the lamp.
+static func fit(a: AnimatedSprite2D) -> LighthouseBeam:
+	if a == null:
+		return null
+	if a.get_node_or_null("Beam") != null:
+		return a.get_node("Beam")
+	if a.sprite_frames != null and a.sprite_frames.has_animation(a.animation):
+		var n := a.sprite_frames.get_frame_count(a.animation)
+		a.stop()
+		a.frame = 1 if n > 1 else 0
+	return attach(a, Vector2(-2, -187))
 
 
 ## Reach factor (-1..1, sign = side) and brightness of the beam at game time t.
 static func sweep(t: float, reduced: bool) -> Vector2:
-	var c := 0.85 if reduced else cos(t * SPEED)
+	var c := 0.85 if reduced else cos(t * TAU / PERIOD)
 	return Vector2(c, 0.45 + 0.55 * absf(c))
-
-
-func _draw() -> void:
-	var s := strength()
-	if s < 0.03:
-		return
-	var sw := sweep(PlayClock.now(), Settings.reduced_motion())
-	var reach := REACH * sw.x
-	var a := s * sw.y
-	var core := Color(1.0, 0.92, 0.65, 0.5 * a)
-	var tip := Color(1.0, 0.9, 0.6, 0.0)
-	var half := 5.0 + 22.0 * absf(sw.x)
-	var end := lamp + Vector2(reach, 0)
-	if absf(reach) > 2.0:  # facing you the cone is a point: only the core shows
-		draw_polygon(PackedVector2Array([lamp + Vector2(0, -3), end + Vector2(0, -half), end + Vector2(0, half), lamp + Vector2(0, 3)]),
-			PackedColorArray([core, tip, tip, core]))
-	# a soft bright core on the lens, strongest when the beam faces you
-	draw_circle(lamp, 6.0, Color(1.0, 0.95, 0.75, 0.35 * s * (1.2 - absf(sw.x))))

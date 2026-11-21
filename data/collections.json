@@ -1370,13 +1370,31 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "daisy",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "poppy",
     "arc": "",
     "family": "Flowers",
     "where": "Grow it on the farm."
    },
    {
+    "item": "tulip",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "sunflower",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lavender",
     "arc": "",
     "family": "Flowers",
     "where": "Grow it on the farm."

@@ -3104,6 +3104,8 @@ static func weather_for(day: int) -> String:
 		pick = "clear"  # gentle first days
 	if day == 1 and not is_penguins() and pick in ["clear", "fog", "wind", "petals"]:
 		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
+	if (day - 1) % DAYS_PER_SEASON + 1 == FESTIVAL_DAY:  # C14b P3 (c14b_18-01): festival days get their own sky motion
+		pick = {"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick)
 	w[key] = pick
 	# C9: only yesterday/today/tomorrow are ever read; older days would grow the save forever.
 	var keep_from := mini(day, int(run.get("day", day))) - 2

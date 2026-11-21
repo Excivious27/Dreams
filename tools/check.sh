@@ -1295,3 +1295,10 @@ echo "$smout" | grep -E "FAIL|SCRIPT ERROR|shore_motion_test" || true
 if ! echo "$smout" | grep -q "shore_motion_test: PASS"; then
   echo "shore_motion_test failed"; exit 1
 fi
+
+echo "== C14b P3 wind/town/farm/beach/festival motion =="
+p3out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p3_test.gd 2>&1)"
+echo "$p3out" | grep -E "FAIL|SCRIPT ERROR|c14b_p3_test" || true
+if ! echo "$p3out" | grep -q "c14b_p3_test: 0 failures"; then
+  echo "c14b_p3_test failed"; exit 1
+fi
