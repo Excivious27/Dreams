@@ -682,7 +682,6 @@ func _animal_show(fest: String) -> void:
 	if str(pk[0]) == "animal":
 		score = show_score_animal(str(pk[1]))
 		entry = str(Ranch.animal(str(pk[1])).get("name", "your animal"))
-		Ranch.pet(str(pk[1]))
 	else:
 		var gid2 := str(pk[1])
 		var qb := entry_quality(gid2)
@@ -703,6 +702,7 @@ func _animal_show(fest: String) -> void:
 	await say([{"text": "Beside %s's %s and %s's %s stands %s." % [r0[0], r0[1], r1[0], r1[1], entry]},
 		{"who": host, "text": "The %s ribbon goes to %s! And %s with it." % [ribbon, entry, Money.amount(int(prizes[place - 1]))]}])
 	GameState.add_money(int(prizes[place - 1]), "festival")
+	DecorSources.show_prize(self, place, str(pk[1]) if str(pk[0]) == "animal" else "")  # C11b P2 hook: ribbons, trophy, Ranch.shown
 	GameState.run["flags"][key] = place
 	if place == 1:
 		GameState.run["flags"]["show_won_" + fest] = int(GameState.run["flags"].get("show_won_" + fest, 0)) + 1

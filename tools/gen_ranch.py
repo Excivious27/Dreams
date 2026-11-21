@@ -202,9 +202,15 @@ def manifest():
 def art_extra():
     p = os.path.join(ART, 'animals', '_ranch_art.json')
     try:
-        return json.load(open(p))
+        out = json.load(open(p))
     except Exception:
-        return {}
+        out = {}
+    try:  # C11b P2 hook: rare looks' own strips (tools/slice_ranch_variants.py) replace their tints
+        for sid, row in json.load(open(os.path.join(ART, 'animals', '_ranch_art_rare.json'))).items():
+            out.setdefault(sid, {}).setdefault('variants', []).extend(row.get('variants', []))
+    except Exception:
+        pass
+    return out
 
 
 def build():
@@ -223,7 +229,7 @@ def build():
             elif isinstance(v, dict):
                 for o in row['art']['variants']:
                     if o['id'] == v.get('id'):
-                        o.update({k: v[k] for k in ('art',) if k in v}); o.pop('tint', None)
+                        o.update({k: v[k] for k in ('art', 'baby') if k in v}); o.pop('tint', None)
         if ex.get('baby'):
             row['art']['baby'] = ex['baby'] if isinstance(ex['baby'], list) else [ex['baby'], 'idle']
         if ex.get('anims'):

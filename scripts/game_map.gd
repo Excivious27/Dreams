@@ -1036,7 +1036,7 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	Music.instance(get_tree()).sfx(animal_voice(kind), "pickup")
+	Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice first (C11b P2)
 	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
 	if newly:
