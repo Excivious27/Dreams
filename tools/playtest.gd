@@ -158,6 +158,12 @@ func _run() -> void:
 		# limit is wall-clock time); the walking itself is what this checks.
 		farm.handle_tap(screen)
 	await frames(80)
+	for w in 160:  # C11b integ: wait on game state (bounded), not a fixed frame count
+		if p.position.distance_to(dest) < 6.0:
+			break
+		if w == 60 and p.auto_target == Vector2.INF:
+			farm.handle_tap(screen)  # the walk was cut short (a toast/dialogue frame): ask once more
+		await frames(1)
 	check(p.position.distance_to(dest) < 6.0, "tap-to-move walks to the tapped cell (%.0f away)" % p.position.distance_to(dest))
 	# Toolbar: tapping slot 7 (turnip seeds) puts seeds in hand.
 	touch(0, Vector2(Hud.TOOLBAR_X + 6 * Hud.SLOT + 10, Hud.TOOLBAR_Y + 10), true)
@@ -436,9 +442,15 @@ func _run() -> void:
 		await frames(6)
 	await frames(10)
 	var boss: Enemy = null
-	for e in m2.enemies:
-		if e.kind == "big_grump" or e.kind == "thug_brute":
-			boss = e
+	for w in 240:  # C11b integ: wait (bounded) for the boss on game state, closing any dialogue on the way
+		for e in m2.enemies:
+			if is_instance_valid(e) and (e.kind == "big_grump" or e.kind == "thug_brute"):
+				boss = e
+		if boss != null:
+			break
+		if d.active:
+			await press("a", 2)
+		await frames(2)
 	check(boss != null, "boss appeared after 5 kills")
 	await shot("15_boss")
 	if boss:
