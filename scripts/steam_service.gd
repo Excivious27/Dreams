@@ -113,7 +113,12 @@ func _start(obj: Object, id: int) -> void:
 	reason = ""
 	_hook("overlay_toggled", _on_overlay)
 	_hook("gamepad_text_input_dismissed", _on_text_dismissed)
+	_hook("floating_gamepad_text_input_dismissed", _on_floating_dismissed)
+	_hook("join_requested", _on_join_requested)
+	_call("inputInit")
 	set_process(true)
+	# S1 P2: push every local unlock/stat once Steam is up (saves made off Steam).
+	Achievements.replay_to_steam.call_deferred()
 
 
 ## Tests only: route every call to a fake object with the same method names
@@ -155,6 +160,21 @@ func is_on() -> bool:
 	return _s != null
 
 
+## Duck-typed names other packages ask for (Achievements, Net, TextEntry, PadInput).
+func is_live() -> bool:
+	return _s != null
+
+
+## The GodotSteam object itself (Net's Steam transport), null when Steam is off.
+func steam_object() -> Object:
+	return _s
+
+
+## True when Steam's overlay can show (it draws its own achievement toasts).
+func overlay_enabled() -> bool:
+	return bool(_call("isOverlayEnabled")) if _s else false
+
+
 ## Passthrough for other Steam features (lobbies, networking: scripts/net_transport_steam.gd).
 ## Returns null when Steam is off or the method does not exist.
 func call_steam(method: String, args: Array = []) -> Variant:
@@ -178,6 +198,10 @@ func unlock_achievement(id: String) -> bool:
 	_call("setAchievement", [id])
 	_stats_dirty = true
 	return true
+
+
+func set_achievement(id: String) -> bool:
+	return unlock_achievement(id)
 
 
 func clear_achievement(id: String) -> bool:
@@ -261,8 +285,65 @@ func show_gamepad_text_input(description: String, preset: String, max_chars: int
 	return bool(_call("showGamepadTextInput", [GAMEPAD_INPUT_NORMAL, GAMEPAD_LINE_SINGLE, description, max_chars, preset]))
 
 
+## TextEntry's Steam path (S1 P3): the floating keyboard over a field, falling
+## back to the full-screen gamepad keyboard. False when Steam is off.
+var _gamepad_typing := false
+
+
+func show_floating_keyboard(multiline: bool, rect: Rect2i) -> bool:
+	if _s == null:
+		return false
+	_gamepad_typing = false
+	if show_floating_text_input(FLOATING_MULTI_LINE if multiline else FLOATING_SINGLE_LINE, rect):
+		return true
+	_gamepad_typing = show_gamepad_text_input("", "", 256 if multiline else 64)
+	return _gamepad_typing
+
+
+## Steam Input's controller family for a Godot pad index: "deck", "ps",
+## "switch", "xbox", or "" when Steam is off or the type is unknown.
+func input_type(device: int) -> String:
+	if _s == null:
+		return ""
+	var h: Variant = _call("getControllerForGamepadIndex", [maxi(device, 0)])
+	if h == null or int(h) == 0:
+		return ""
+	return input_kind(int(_call("getInputTypeForHandle", [int(h)])))
+
+
+## ESteamInputType -> family word (pure, tested).
+static func input_kind(t: int) -> String:
+	match t:
+		14:
+			return "deck"
+		5, 12, 13:
+			return "ps"
+		8, 9, 10:
+			return "switch"
+		2, 3, 4:
+			return "xbox"
+	return ""
+
+
 func _on_overlay(active: bool, _user_initiated := false, _app := 0) -> void:
 	overlay_toggled.emit(active)
+	var dm := get_node_or_null("/root/DisplayModeSvc")
+	if dm and dm.has_method("overlay_toggled"):
+		dm.call("overlay_toggled", active)
+
+
+func _on_floating_dismissed(_a: Variant = null) -> void:
+	TextEntry.steam_dismissed()
+
+
+func _on_join_requested(lobby_id: int, friend_id: int = 0) -> void:
+	var who := ""
+	if friend_id != 0:
+		var r: Variant = _call("getFriendPersonaName", [friend_id])
+		who = str(r) if r != null else ""
+	var n := Net.i()
+	if n != null:
+		n.on_join_requested(lobby_id, who)
 
 
 func _on_text_dismissed(submitted: bool, text: String = "", _app := 0) -> void:
@@ -273,3 +354,13 @@ func _on_text_dismissed(submitted: bool, text: String = "", _app := 0) -> void:
 		elif r is String:
 			text = r
 	text_input_done.emit(submitted, text)
+	if _gamepad_typing:
+		_gamepad_typing = false
+		var f := TextEntry.typing_field()
+		if submitted and f != null:
+			if f is LineEdit:
+				(f as LineEdit).text = text
+				(f as LineEdit).caret_column = text.length()
+			elif f is TextEdit:
+				(f as TextEdit).text = text
+		TextEntry.steam_dismissed()

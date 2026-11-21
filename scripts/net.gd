@@ -219,13 +219,11 @@ func steam_ready() -> bool:
 func _steam_obj() -> Object:
 	if steam_backend != null:
 		return steam_backend
-	var svc := get_node_or_null("/root/SteamService") if is_inside_tree() else null
-	if svc and svc.has_method("ready") and bool(svc.call("ready")):
-		var b: Variant = svc.get("backend")
+	var svc := get_node_or_null("/root/SteamSvc") if is_inside_tree() else null
+	if svc and svc.has_method("is_live") and bool(svc.call("is_live")):
+		var b: Variant = svc.call("steam_object") if svc.has_method("steam_object") else null
 		if b is Object:
 			return b
-		if Engine.has_singleton("Steam"):
-			return Engine.get_singleton("Steam")
 	return null
 
 
@@ -651,6 +649,8 @@ func _apply_world(d: Dictionary) -> void:
 			scene_changed = scene_changed or int(GameState.run.get(k, -1)) != int(d[k])
 		if k == "farm" and not (d[k] is Dictionary):
 			continue
+		if k == "ranch" and not _host and d[k] is Dictionary:
+			d[k] = clean_ranch_names(d[k])
 		GameState.run[k] = d[k]
 	if not _host:
 		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
@@ -669,6 +669,27 @@ func _apply_world(d: Dictionary) -> void:
 	var m := get_tree().current_scene
 	if m is GameMap and m.has_method("on_world_sync"):
 		m.call("on_world_sync", d)
+
+
+## S1 s1_13-03: animal names typed on another player's game are filtered before a
+## guest shows them (NameFilter; a bad name falls back to the species name).
+static func clean_ranch_names(r: Dictionary) -> Dictionary:
+	var an: Variant = r.get("animals", null)
+	if not (an is Dictionary):
+		return r
+	var out := r.duplicate()
+	var animals := (an as Dictionary).duplicate()
+	for uid in animals:
+		var a: Variant = animals[uid]
+		if a is Dictionary and (a as Dictionary).has("name"):
+			var nm := str((a as Dictionary)["name"])
+			var fixed := preload("res://scripts/name_filter.gd").clean(nm, Ranch.display_name(str((a as Dictionary).get("species", ""))))
+			if fixed != nm:
+				var c := (a as Dictionary).duplicate()
+				c["name"] = fixed
+				animals[uid] = c
+	out["animals"] = animals
+	return out
 
 
 ## Actions guests ask the host to do. Kept small and whitelisted; the host

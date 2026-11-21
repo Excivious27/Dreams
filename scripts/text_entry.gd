@@ -85,7 +85,7 @@ static func _steam_try(field: Control) -> bool:
 		return steam_force == 1
 	if OS.has_feature("web"):
 		return false
-	var ss := field.get_tree().root.get_node_or_null("SteamService")
+	var ss := field.get_tree().root.get_node_or_null("SteamSvc")
 	if ss == null or not ss.has_method("show_floating_keyboard"):
 		return false
 	field.grab_focus()

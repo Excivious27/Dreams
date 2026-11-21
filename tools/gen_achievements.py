@@ -200,7 +200,7 @@ PRESENCE = {
         "Bowling": "Bowling at the Rec Center",
         "Casino": "Playing cards at the casino",
         "Hideout": "At the hideout",
-        "Coop": "Playing together (%size% players)",
+        "Status_Coop": "Playing together (%players% players)",
     },
     "scene_map": {
         "farm": "Farm", "house": "Home", "interior": "Home", "town": "Town", "uptown": "Town",
