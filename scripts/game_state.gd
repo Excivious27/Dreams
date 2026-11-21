@@ -1663,8 +1663,9 @@ static func in_the_heat() -> bool:
 ## Tree (hp 4) wood..moon at level 1: 7,5,4,3,2,2,1,1; level 6 wood: 6.
 ## Stone (hp 2): 3,2,2,1...; copper ore (hp 4): 6,5,4,3,2,2,1,1.
 ## Table: tools/c8_curve_test.gd and tools/tom_playtest_c6_test.gd.
-const TOUGH_START := {"axe": 1.8, "pickaxe": 1.6}
+const TOUGH_START := {"axe": 1.8, "pickaxe": 1.25}  # C16a P5 (c16a_07-02): pickaxe 1.6 -> 1.25 (stone keeps 3 swings, Tom C6), early ore rocks cost less
 const TOUGH_TIER_MULT := 0.75
+const TOUGH_TIER_MULT_PICK := 0.80  # C16a P5 (c16a_07-01): the pick's swing grows per tier too, so its effort falls slower
 const TOUGH_LEVEL := 0.03
 const TOUGH_LEVEL_FLOOR := 0.7
 const POWER_STEP := 0.3
@@ -1675,12 +1676,17 @@ static func toughness(tool: String) -> float:
 	var lvl := skill_level(sk) if run.has("skills") else 1
 	var power := bonus("mining", "mine_power") if tool == "pickaxe" else bonus("foraging", "chop_power")
 	var lv_f := maxf(TOUGH_LEVEL_FLOOR, 1.0 - TOUGH_LEVEL * float(mini(lvl, LEVEL_EFFECT_CAP) - 1))
-	return float(TOUGH_START.get(tool, 1.6)) * pow(TOUGH_TIER_MULT, float(tool_tier(tool))) * lv_f / (1.0 + POWER_STEP * power)
+	var tm := TOUGH_TIER_MULT_PICK if tool == "pickaxe" else TOUGH_TIER_MULT
+	return float(TOUGH_START.get(tool, 1.6)) * pow(tm, float(tool_tier(tool))) * lv_f / (1.0 + POWER_STEP * power)
 
 
 ## What one swing takes off (the formula game_map / mine / moon subtract).
 static func swing_damage(tool: String) -> int:
-	var power := bonus("mining", "mine_power") if tool == "pickaxe" else bonus("foraging", "chop_power")
+	# C16a P5 (c16a_07-01): the pickaxe swing is what mine/game_map subtract (Mining.pick_swing + power),
+	# so toughen's hp lands on exactly hits_for swings.
+	if tool == "pickaxe":
+		return Mining.pick_swing() + int(bonus("mining", "mine_power"))
+	var power := bonus("foraging", "chop_power")
 	return 1 + (tool_tier(tool) + 1) / 2 + int(power)
 
 

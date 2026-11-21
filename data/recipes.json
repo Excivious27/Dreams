@@ -4046,7 +4046,7 @@
    },
    "give": "rounds",
    "tier": 1,
-   "n": 30
+   "n": 40
   },
   {
    "id": "six_shooter",
@@ -4122,7 +4122,8 @@
    "need": {
     "hardwood_plank": 3,
     "nails": 10,
-    "horseshoe": 1
+    "horseshoe": 1,
+    "iron_bar": 1
    },
    "give": "lucky_bat",
    "tier": 2,
@@ -4168,7 +4169,11 @@
    },
    "give": "chrome_blade",
    "tier": 3,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    5
+   ]
   },
   {
    "id": "padded_vest",
@@ -4230,7 +4235,11 @@
    },
    "give": "neon_cleaver",
    "tier": 4,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    8
+   ]
   },
   {
    "id": "armored_suit",
@@ -4409,7 +4418,11 @@
    },
    "give": "prism_lance",
    "tier": 3,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    5
+   ]
   },
   {
    "id": "crystal_parka",
@@ -4471,7 +4484,11 @@
    },
    "give": "starheart_blade",
    "tier": 4,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    8
+   ]
   },
   {
    "id": "starlight_mantle",

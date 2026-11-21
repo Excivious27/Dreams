@@ -91,7 +91,9 @@ static func _offers_base(shop: String) -> Array:
 				base += rare[se] + ["dream_seed"]
 			return base + Romance.shop_extra("store")
 		"smith":
-			return ["iron_sword", "coal", "copper_ring"] + grown("smith")
+			# C16a P5 (c16a_07-04): the gang smith sells the street line (swords are penguin-arc).
+			var blade := "crowbar" if str(GameState.run.get("arc", "")) == "gangsters" else "iron_sword"
+			return [blade, "coal", "copper_ring"] + grown("smith")
 		"potions":
 			return ["potion", "energy_tea", "herb_remedy"]
 		"orla":
@@ -121,7 +123,7 @@ static func _offers_base(shop: String) -> Array:
 ## Stock that arrives as you progress (C8 P6, c8_14_07): shop -> [[progress tier, ids]].
 ## Arc-only items (items.json "arc") are left out of the other arc's shop.
 const GROWN := {
-	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "ring_warmth", "moon_ring"]]],  # c10_07: tier tops out at 4; ring_platinum stays Madame Aurum's
+	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "chrome_blade", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "neon_cleaver", "ring_warmth", "moon_ring"]]],  # c10_07: tier tops out at 4; ring_platinum stays Madame Aurum's
 	"potions": [[3, ["dream_tonic"]]],
 	"granite": [[3, ["silver", "tin"]]],
 }

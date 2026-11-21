@@ -48,12 +48,13 @@
  "iron_sword": {
   "name": "Iron Sword",
   "type": "tool",
-  "value": 200,
-  "damage": 4,
-  "rarity": "common",
-  "tier": 1,
+  "value": 320,
+  "damage": 5,
+  "rarity": "uncommon",
+  "tier": 2,
   "desc": "A solid iron blade, forged by the smith.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "rod": {
   "name": "Fishing Rod",
@@ -555,9 +556,10 @@
   "value": 800,
   "rarity": "rare",
   "tier": 3,
-  "damage": 6,
+  "damage": 7,
   "desc": "Tempered steel: lighter and sharper than iron.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "crystal_sword": {
   "name": "Crystal Sword",
@@ -565,9 +567,10 @@
   "value": 2400,
   "rarity": "epic",
   "tier": 4,
-  "damage": 9,
+  "damage": 10,
   "desc": "A blade of living crystal that hums when you swing it.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "potato_seed": {
   "name": "Potato Seeds",
@@ -1341,10 +1344,10 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "sprite": "knight",
-  "desc": "Headgear: +2 defence while worn.",
+  "desc": "Headgear: +3 defence while worn.",
   "desc_auto": true
  },
  "crystal_crown": {
@@ -1412,10 +1415,10 @@
   "tier": 4,
   "slot": "body",
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +5 defence while worn.",
+  "desc": "Body armour: +7 defence while worn.",
   "desc_auto": true
  },
  "neon_jacket": {
@@ -6614,10 +6617,10 @@
   "tier": 1,
   "value": 143,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
   "sprite": "flatcap",
-  "desc": "Headgear: +1 defence while worn.",
+  "desc": "Headgear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_helm_plus": {
@@ -6628,10 +6631,10 @@
   "tier": 1,
   "value": 192,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "sprite": "flatcap",
-  "desc": "Headgear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_chest": {
@@ -6642,10 +6645,10 @@
   "tier": 1,
   "value": 262,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
   "costume": "armor_copper",
-  "desc": "Body armour: +1 defence while worn.",
+  "desc": "Body armour: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_chest_plus": {
@@ -6656,10 +6659,10 @@
   "tier": 1,
   "value": 287,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "costume": "armor_copper",
-  "desc": "Body armour: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_legs": {
@@ -6670,9 +6673,9 @@
   "tier": 1,
   "value": 203,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Legwear: +1 defence while worn.",
+  "desc": "Legwear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_legs_plus": {
@@ -6683,9 +6686,9 @@
   "tier": 1,
   "value": 240,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Legwear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_boots": {
@@ -6696,9 +6699,9 @@
   "tier": 1,
   "value": 143,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Footwear: +1 defence while worn.",
+  "desc": "Footwear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_boots_plus": {
@@ -6709,9 +6712,9 @@
   "tier": 1,
   "value": 192,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Footwear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_gloves": {
@@ -6748,9 +6751,9 @@
   "tier": 1,
   "value": 203,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Held in your off hand: +1 defence while worn.",
+  "desc": "Held in your off hand: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_shield_plus": {
@@ -6761,9 +6764,9 @@
   "tier": 1,
   "value": 240,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Held in your off hand: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_cape": {
@@ -6827,10 +6830,10 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_chest": {
@@ -6841,10 +6844,10 @@
   "tier": 2,
   "value": 438,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "costume": "armor_iron",
-  "desc": "Body armour: +2 defence while worn.",
+  "desc": "Body armour: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_chest_plus": {
@@ -6855,10 +6858,10 @@
   "tier": 2,
   "value": 484,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "costume": "armor_iron",
-  "desc": "Body armour: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_legs": {
@@ -6869,9 +6872,9 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Legwear: +2 defence while worn.",
+  "desc": "Legwear: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_legs_plus": {
@@ -6882,9 +6885,9 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Legwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_boots": {
@@ -6895,9 +6898,9 @@
   "tier": 2,
   "value": 231,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Footwear: +2 defence while worn.",
+  "desc": "Footwear: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_boots_plus": {
@@ -6908,9 +6911,9 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Footwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_gloves": {
@@ -6947,9 +6950,9 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Held in your off hand: +2 defence while worn.",
+  "desc": "Held in your off hand: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_shield_plus": {
@@ -6960,9 +6963,9 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Held in your off hand: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_cape": {
@@ -7023,13 +7026,13 @@
   "type": "equip",
   "slot": "head",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn.",
+  "desc": "Headgear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_helm_plus": {
@@ -7037,13 +7040,13 @@
   "type": "equip",
   "slot": "head",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
   "sprite": "knight",
-  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_chest": {
@@ -7051,13 +7054,13 @@
   "type": "equip",
   "slot": "body",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 1043,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "costume": "armor_steel",
-  "desc": "Body armour: +3 defence while worn.",
+  "desc": "Body armour: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_chest_plus": {
@@ -7065,13 +7068,13 @@
   "type": "equip",
   "slot": "body",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 1141,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
   "costume": "armor_steel",
-  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_legs": {
@@ -7079,12 +7082,12 @@
   "type": "equip",
   "slot": "legs",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 788,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Legwear: +3 defence while worn.",
+  "desc": "Legwear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_legs_plus": {
@@ -7092,12 +7095,12 @@
   "type": "equip",
   "slot": "legs",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 937,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_boots": {
@@ -7105,12 +7108,12 @@
   "type": "equip",
   "slot": "feet",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Footwear: +3 defence while worn.",
+  "desc": "Footwear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_boots_plus": {
@@ -7118,12 +7121,12 @@
   "type": "equip",
   "slot": "feet",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_gloves": {
@@ -7131,7 +7134,7 @@
   "type": "equip",
   "slot": "hands",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 279,
   "stats": {
    "energy": 10
@@ -7144,7 +7147,7 @@
   "type": "equip",
   "slot": "hands",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 530,
   "stats": {
    "energy": 15
@@ -7157,12 +7160,12 @@
   "type": "equip",
   "slot": "offhand",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 788,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Held in your off hand: +3 defence while worn.",
+  "desc": "Held in your off hand: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_shield_plus": {
@@ -7170,12 +7173,12 @@
   "type": "equip",
   "slot": "offhand",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 937,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_cape": {
@@ -7183,7 +7186,7 @@
   "type": "equip",
   "slot": "back",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
    "speed": 1
@@ -7196,7 +7199,7 @@
   "type": "equip",
   "slot": "back",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
    "speed": 1,
@@ -7210,7 +7213,7 @@
   "type": "equip",
   "slot": "belt",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 279,
   "stats": {
    "luck": 2
@@ -7223,7 +7226,7 @@
   "type": "equip",
   "slot": "belt",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 530,
   "stats": {
    "luck": 3
@@ -7237,12 +7240,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn.",
+  "desc": "Headgear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_helm_plus": {
@@ -7253,10 +7256,10 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "sprite": "knight",
-  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_chest": {
@@ -7265,12 +7268,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 732,
+  "value": 1200,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
   "costume": "armor_silver",
-  "desc": "Body armour: +3 defence while worn.",
+  "desc": "Body armour: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_chest_plus": {
@@ -7279,12 +7282,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 804,
+  "value": 1297,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "costume": "armor_silver",
-  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_legs": {
@@ -7293,11 +7296,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 555,
+  "value": 907,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Legwear: +3 defence while worn.",
+  "desc": "Legwear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_legs_plus": {
@@ -7306,11 +7309,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 980,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_boots": {
@@ -7319,11 +7322,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Footwear: +3 defence while worn.",
+  "desc": "Footwear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_boots_plus": {
@@ -7334,9 +7337,9 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_gloves": {
@@ -7371,11 +7374,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 555,
+  "value": 907,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Held in your off hand: +3 defence while worn.",
+  "desc": "Held in your off hand: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_shield_plus": {
@@ -7384,11 +7387,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 980,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_cape": {
@@ -7397,7 +7400,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
    "speed": 1
   },
@@ -7450,12 +7453,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +4 defence while worn.",
+  "desc": "Headgear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_helm_plus": {
@@ -7464,12 +7467,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_chest": {
@@ -7478,12 +7481,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 1054,
+  "value": 1381,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "costume": "armor_gold",
-  "desc": "Body armour: +4 defence while worn.",
+  "desc": "Body armour: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_chest_plus": {
@@ -7492,12 +7495,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 1153,
+  "value": 1492,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_gold",
-  "desc": "Body armour: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_legs": {
@@ -7506,11 +7509,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 797,
+  "value": 1044,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Legwear: +4 defence while worn.",
+  "desc": "Legwear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_legs_plus": {
@@ -7519,11 +7522,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 948,
+  "value": 1145,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Legwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_boots": {
@@ -7532,11 +7535,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Footwear: +4 defence while worn.",
+  "desc": "Footwear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_boots_plus": {
@@ -7545,11 +7548,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Footwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_gloves": {
@@ -7558,7 +7561,7 @@
   "slot": "hands",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 414,
   "stats": {
    "energy": 15
   },
@@ -7584,11 +7587,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 797,
+  "value": 1044,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Held in your off hand: +4 defence while worn.",
+  "desc": "Held in your off hand: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_shield_plus": {
@@ -7597,11 +7600,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 948,
+  "value": 1145,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Held in your off hand: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_cape": {
@@ -7610,7 +7613,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
    "speed": 1
   },
@@ -7623,7 +7626,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -7637,7 +7640,7 @@
   "slot": "belt",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 414,
   "stats": {
    "luck": 3
   },
@@ -7663,12 +7666,12 @@
   "slot": "head",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +5 defence while worn.",
+  "desc": "Headgear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_helm_plus": {
@@ -7679,10 +7682,10 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_chest": {
@@ -7691,12 +7694,12 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 962,
+  "value": 1589,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +5 defence while worn.",
+  "desc": "Body armour: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_chest_plus": {
@@ -7705,12 +7708,12 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1717,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_legs": {
@@ -7719,11 +7722,11 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 802,
+  "value": 1201,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Legwear: +5 defence while worn.",
+  "desc": "Legwear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_legs_plus": {
@@ -7732,11 +7735,11 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1344,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Legwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_boots": {
@@ -7745,11 +7748,11 @@
   "slot": "feet",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Footwear: +5 defence while worn.",
+  "desc": "Footwear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_boots_plus": {
@@ -7760,9 +7763,9 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Footwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_gloves": {
@@ -7797,11 +7800,11 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 802,
+  "value": 1201,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Held in your off hand: +5 defence while worn.",
+  "desc": "Held in your off hand: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_shield_plus": {
@@ -7810,11 +7813,11 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1344,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Held in your off hand: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_cape": {
@@ -7823,7 +7826,7 @@
   "slot": "back",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
    "speed": 1
   },
@@ -7878,10 +7881,10 @@
   "tier": 5,
   "value": 2352,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "sprite": "knight",
-  "desc": "Headgear: +6 defence while worn.",
+  "desc": "Headgear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_helm_plus": {
@@ -7890,12 +7893,12 @@
   "slot": "head",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
   "sprite": "knight",
-  "desc": "Headgear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_chest": {
@@ -7906,10 +7909,10 @@
   "tier": 5,
   "value": 4592,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "costume": "armor_moon",
-  "desc": "Body armour: +6 defence while worn.",
+  "desc": "Body armour: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_chest_plus": {
@@ -7918,12 +7921,12 @@
   "slot": "body",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4959,
+  "value": 4960,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
   "costume": "armor_moon",
-  "desc": "Body armour: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_legs": {
@@ -7934,9 +7937,9 @@
   "tier": 5,
   "value": 4432,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Legwear: +6 defence while worn.",
+  "desc": "Legwear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_legs_plus": {
@@ -7945,11 +7948,11 @@
   "slot": "legs",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4786,
+  "value": 4787,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Legwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_boots": {
@@ -7960,9 +7963,9 @@
   "tier": 5,
   "value": 2352,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Footwear: +6 defence while worn.",
+  "desc": "Footwear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_boots_plus": {
@@ -7971,11 +7974,11 @@
   "slot": "feet",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Footwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_gloves": {
@@ -7997,7 +8000,7 @@
   "slot": "hands",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2367,
+  "value": 2368,
   "stats": {
    "energy": 30
   },
@@ -8012,9 +8015,9 @@
   "tier": 5,
   "value": 4432,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Held in your off hand: +6 defence while worn.",
+  "desc": "Held in your off hand: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_shield_plus": {
@@ -8023,11 +8026,11 @@
   "slot": "offhand",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4786,
+  "value": 4787,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Held in your off hand: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_cape": {
@@ -8049,7 +8052,7 @@
   "slot": "back",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -8076,7 +8079,7 @@
   "slot": "belt",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2367,
+  "value": 2368,
   "stats": {
    "luck": 6
   },
@@ -10346,7 +10349,7 @@
   "value": 320,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 4,
+  "damage": 5,
   "weapon": true,
   "arc": "gangsters",
   "desc": "Pries open crates and knocks back trouble.",
@@ -10358,7 +10361,7 @@
   "value": 900,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 6,
+  "damage": 5,
   "weapon": true,
   "arc": "gangsters",
   "desc": "A well-worn bat. Lucky for you, not for them.",
@@ -10370,7 +10373,7 @@
   "value": 2200,
   "rarity": "rare",
   "tier": 3,
-  "damage": 8,
+  "damage": 7,
   "weapon": true,
   "arc": "gangsters",
   "desc": "A chrome blade that flashes under the street lights.",
@@ -10687,7 +10690,7 @@
   "value": 320,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 4,
+  "damage": 5,
   "weapon": true,
   "arc": "penguins",
   "desc": "Carved from a giant fish bone. Light and quick.",
@@ -10699,7 +10702,7 @@
   "value": 900,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 6,
+  "damage": 5,
   "weapon": true,
   "arc": "penguins",
   "desc": "Shimmers green and violet with every swing.",
@@ -10711,7 +10714,7 @@
   "value": 2200,
   "rarity": "rare",
   "tier": 3,
-  "damage": 8,
+  "damage": 7,
   "weapon": true,
   "arc": "penguins",
   "desc": "A long crystal lance that splits light into colours.",
@@ -10914,7 +10917,7 @@
   "value": 2600,
   "rarity": "rare",
   "tier": 3,
-  "damage": 3,
+  "damage": 2,
   "weapon": true,
   "arc": "gangsters",
   "range": 120,
@@ -10928,11 +10931,11 @@
   "value": 5600,
   "rarity": "epic",
   "tier": 4,
-  "damage": 10,
+  "damage": 12,
   "weapon": true,
   "arc": "gangsters",
   "range": 140,
-  "cd": 2.5,
+  "cd": 1.6,
   "desc": "Gold-plated and dead accurate. The boss of sidearms.",
   "desc_auto": true
  },

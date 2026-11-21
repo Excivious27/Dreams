@@ -1575,7 +1575,11 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	var dir := hit_dir()
 	var muzzle := position + dir * 10.0 + Vector2(0, -8)
 	var reach := float(wd.get("range", 100.0))
-	var dmg := maxi(1, GameState.sword_damage() + GameState.status_damage_mod() + int(GameState.bonus("hustle", "gun_damage")))
+	# C16a P5 (c16a_07-03): flat melee bonuses scale with fire rate (a fast gun gets 35%, a slow revolver all of it).
+	var gun_dmg := int(wd.get("damage", 0))
+	var flat := GameState.sword_damage() - gun_dmg
+	var rate_f := clampf(float(wd.get("cd", 2.0)) / 2.0, 0.35, 1.0)
+	var dmg := maxi(1, gun_dmg + int(round(flat * rate_f)) + GameState.status_damage_mod() + int(GameState.bonus("hustle", "gun_damage")))
 	var targets: Array = []
 	for e in map.enemies:
 		if not is_instance_valid(e):
@@ -1676,7 +1680,7 @@ func take_damage(n: int, from: Vector2) -> void:
 		return
 	# Armour scales: every point helps, none makes you untouchable.
 	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense")) + (2 if Colony.has_ability("coral_ward") else 0)
-	n = maxi(1, roundi(n * 60.0 / (60.0 + 2.5 * maxf(0.0, defn))))
+	n = maxi(1, roundi(n * 60.0 / (60.0 + 2.0 * maxf(0.0, defn))))  # C16a P5 (c16a_07-06): 2.5 -> 2.0 a point, the armour ladder now runs 1..8
 	n = maxi(1, int(n * (1.0 - minf(0.45, GameState.bonus("combat", "damage_reduction") + GameState.bonus("magic", "damage_reduction")))))
 	if GameState.has_team():
 		n = maxi(1, roundi(n * (1.0 - minf(0.4, GameState.bonus("leadership", "team_defense")))))
