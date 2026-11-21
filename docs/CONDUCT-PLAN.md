@@ -219,3 +219,42 @@ Every report carries a timing table (audit, sort, fix, merge+CI, package, total,
 - C6 extra package P7 (Tom's phone playtest): early mining/harvesting much slower (work for it, faster with tool tiers/skills); watering can holds water and must be refilled at water (capacity grows with tiers); "planted seeds" toast no longer sticks at the top; the pup's Pack option only shows once you own a pack; inventory drag and drop; sorting options matching Stardew exactly (sort by type/name/value, auto-stack to chests, organise, trash slot, shift-move between bag and chest). Deeper pacing check in C8.
 - C11b: complete review of team, allies, crew, companions and pup: every command, menu, follow/guard/fight, pack, digging, sniffing, swimming, battle team, helpers; seamless, intuitive, works as intended.
 - C14: the town expanded and embellished; the beach region much larger with an expansive tier-based marina (dock upgrades, boats, marina NPCs who work, sell and trade, quests, boat passage to other regions as earned travel, fishing charters), tied into the unified engine (shops, quests, travel tiers, fishing, festivals).
+
+
+## CONDUCT S1: Steam prep, no account needed (Tom, 2026-11-20 15:58) - runs NEXT after CONDUCT 11 (C11b) finishes
+
+Tom's spec, verbatim:
+
+NEW CONDUCT: S1, STEAM PREP (NO ACCOUNT NEEDED) (Tom, 2026-11-20 15:58). Add it to docs/CONDUCT-PLAN.md and run it NEXT, right after the CONDUCT in progress finishes (don't interrupt current work). Same CONDUCT process and package as always. Do it all yourself; never ask me to do anything on a computer or website. My Steamworks account comes later; everything needing it gets staged and listed, not skipped.
+
+GOAL: Dreams is Steam-ready as far as possible without the account. Steam builds, Steam Deck Verified readiness, GodotSteam working in code with Valve's test app (480, Spacewar), achievements/cloud/rich presence wired behind a backend switch, an upload pipeline staged, and store materials drafted. The web build must keep working exactly as now.
+
+1. STEAM BUILDS: add Windows x64 and Linux x64 export presets. A CI job builds both on every post-merge run and records sizes, the first-launch time and a headless boot test, then uploads them as CI artifacts (not committed). Web stays the default deploy. Never ship steam_appid.txt (dev/test only).
+
+2. GODOTSTEAM: add the GodotSteam GDExtension for Godot 4.4+ (MIT) for desktop only. It's hosted on Codeberg; if the sandbox can't download it, fetch it in a CI job and commit the addon from there. Wrap it in a SteamService autoload: if Steam isn't present (web, CI, no client), every call is a safe no-op and the game runs unchanged. Test app 480 is for dev only. Add tests proving the game boots and plays with Steam absent, and that the web export excludes the addon.
+
+3. BACKENDS BEHIND ONE SWITCH (local now, Steam later):
+- Achievements: design about 40-60 across both arcs and every system (first harvest, hearts, campaigns, arcade, community farm, collections, secrets). Write data/achievements.json (id, name, description, hidden flag, icon prompt, stat if progress-based). Unlock locally now (title-screen list); the same calls go to Steam when the backend is on. Make the icons through the art lane within the image budget.
+- Cloud saves: saves stay small and in user://. Document each OS's exact save path and the Steam Auto-Cloud settings to enter later (docs/STEAM.md).
+- Rich presence: short strings per activity (farming, in the mines, at the arcade, in co-op).
+- Co-op: plan the Steam transport (GodotSteam lobbies + Steam networking) behind the existing NetTransport. Build it to work with 480 where possible; the relay stays the web/phone transport.
+
+4. STEAM DECK VERIFIED READINESS (builds on C9): at 1280x800 every screen is readable (minimum text size check by script on screenshots), full controller play with no mouse or keyboard needed, Deck/Xbox button glyphs when a pad is used (keyboard prompts hidden), Steam's on-screen keyboard for text fields (ShowFloatingGamepadTextInput / ShowGamepadTextInput via GodotSteam, with the existing input as fallback), a draft default controller configuration file, Linux build runs, performance target at 1280x800. Write a checklist against Valve's Deck criteria in docs/STEAM.md with pass/fail per item.
+
+5. UPLOAD PIPELINE (staged, disabled): steam/ folder with app_build/depot .vdf templates (Windows and Linux depots, content roots, exclusions) and a disabled CI job for steamcmd uploads to a beta branch. It turns on when the App ID and a dedicated limited "builder" Steam account exist. Document exactly what's needed from Tom's Steamworks session (App ID, depot IDs, builder account added to the app with build permissions only, how its login is stored as GitHub secrets without Tom pasting into chat).
+
+6. STORE MATERIALS (drafts in docs/steam-store/, working title "Dreams (working title)"):
+- Short description (Steam's limit), long description, feature bullets, tags and genre research versus comparable cozy farming games, a price-point comparison, and system requirements from measured numbers.
+- Content descriptor and IARC questionnaire draft answers based on the real game (gun sounds, gangster arc, combat), and the AI disclosure draft: pre-generated art (dreams-image/OpenAI), music (ACE Music), Claude-written code and text, no live AI in the game.
+- Capsule art plan and drafts at the required sizes: header 920x430, small 462x174, main 1232x706, vertical 748x896, library capsule 600x900, library header 920x430, library hero 3840x1240 (no text), library logo (transparent PNG, title only), app icon 184x184. Follow Valve's graphical asset rules (title only, no review quotes or other text). Use the art lane and image budget; consistent style, logo readable at small size.
+- 5+ screenshots at 1920x1080 picked from scripted shots, and a 30-60 s trailer shot list and script.
+
+7. NAME CHECK: "Dreams" is also a well-known PlayStation game (Media Molecule/Sony). Research name conflicts (Steam store search, trademark-style web search) and propose 5-8 alternative titles that fit the book and both arcs, each with a quick conflict check. I decide; keep the working title until then.
+
+8. STEAMWORKS HANDOFF: docs/STEAM.md ends with "When Tom's Steamworks account is ready": an ordered list of every setting to enter (app name, Auto-Cloud paths, achievements upload from data/achievements.json, rich presence tokens, controller config, depots, builder account, store page fields from the drafts, pricing, release-date gating: the fee-to-release wait and two weeks visible as "coming soon"). It becomes a Chrome brief I can run in one session.
+
+PACKAGE: the usual package, plus docs/STEAM.md as an artifact page and a Steam readiness % (done / staged-waiting-on-account / not started) in the progress sheet. Update HANDOFF (Baton + a Steam row), PROJECT-MEMORY and CLAUDE.md (one line per new tool), push, then continue the queue.
+
+## Multiplayer relay is live (Tom, 2026-11-20 15:54)
+
+Live relay: wss://dreams-64-23-239-63.sslip.io (health https://dreams-64-23-239-63.sslip.io answers "dreams relay ok"). Auto-deploys server/ from main every 10 min, so server/ changes must pass tools/relay_test.js first. CONDUCT 17 tests against this live relay (phone-like latency, a host whose screen locks, reconnect) using real numbers from the live CI check. Steam alignment: keep the NetTransport abstraction; the relay stays the web/phone transport; a Steam transport (GodotSteam lobbies + Steam networking) is added in the Steam CONDUCT after Tom's Steamworks setup (S1 plans it and builds it against test app 480 where possible).

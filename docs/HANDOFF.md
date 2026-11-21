@@ -37,6 +37,8 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-20 15:58 Tom: NEW CONDUCT S1 Steam prep (no account needed), full spec in docs/CONDUCT-PLAN.md; runs NEXT after CONDUCT 11 (C11b) finishes, same process and package plus docs/STEAM.md artifact page and a Steam readiness %. Steamworks-needing items are staged and listed, never skipped. Name check: "Dreams" clashes with Media Molecule/Sony; propose 5-8 alternatives, Tom decides.
+- 2026-11-20 15:54 Tom: relay is LIVE (see "Multiplayer relay" row). To do (relay package, now): default server wss://dreams-64-23-239-63.sslip.io with custom field + "Reset to default"; tools/relay_test.js in check.sh and CI; GET /version + server/deploy/dreams-update.sh; live relay check in post-merge CI ("RELAY: ok, Xms"); headless two-instance net.gd e2e test vs live relay; C17 tests on the live relay.
 - 2026-11-20 15:29 Tom: daily art limit raised to 1000 images/day (permanent; replaces the 300-until-Nov-25-then-60 budget). dreams-image-mcp server: DAILY_IMAGE_LIMIT/BOOST 1000 in render.yaml and a code floor MIN_DAILY_LIMIT=1000 (commit 77510fe; Render redeploys on push).
 - 2026-11-20 14:34 Tom: add to a CONDUCT (planned in C16 progression, with C14 for new areas): every skill the player AND recruits/allies/team mates can advance gets a progressive tiered ecosystem of quests, exploring, creativity, rewards, gear and challenges. Flagship example: fishing (unique areas, common->ultra-rare tiers, rewards, advanced rods/tackle/bait, challenges, legendaries). Also a Stardew-style museum: donate items, unlock rewards at milestones (build on the C8 Collections museum room; audit what exists, then finish it). C16 auditors get one scope per skill tree + one for allies + one for the museum.
 - 2026-11-20 11:08 Tom: the furniture/decor seller is a NEW NPC (a carpenter), not Hazel. Built in C10b P1.
@@ -122,7 +124,7 @@ Tom puts this text in a claude.ai Project called "Dreams" on each account, so ev
 | Image server code | GitHub `Excivious27/dreams-image-mcp` (private) |
 | Image server (live) | `https://dreams-image-mcp.onrender.com` (Render, Starter plan) |
 | Music | ACE Music (acemusic.ai), Creator plan, connector `ace-music` |
-| Multiplayer relay | `server/` in this repo (not deployed yet) |
+| Multiplayer relay | LIVE (Tom 2026-11-20): DigitalOcean droplet "dreams-relay", SFO3, $4/mo (1 vCPU, 512 MB + 1 GB swap), Ubuntu 24.04, IPv4 64.23.239.63. Game address wss://dreams-64-23-239-63.sslip.io; health https://dreams-64-23-239-63.sslip.io ("dreams relay ok"). Caddy auto-HTTPS (Let's Encrypt via sslip.io) proxies to the Node relay on 127.0.0.1:8787 (systemd dreams-relay); ufw 22/80/443 only; unattended upgrades on. Auto-deploy: systemd timer every 10 min sparse-shallow-pulls server/ from main; on change npm ci + restart. Deploying = pushing server/ to main (must pass tools/relay_test.js). No SSH keys; Tom holds the root password and is never asked for it. |
 
 Godot 4.5.1, GDScript, portrait 270×480, nearest filter, touch D-pad + A/B/MENU, saves in `user://`, web export with threads off, deployed to Pages by GitHub Actions on every push to `main`.
 
