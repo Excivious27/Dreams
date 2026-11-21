@@ -702,12 +702,14 @@ func _capture(delta: float) -> void:
 						(mm as Node).queue_free()
 				p["made"] = []
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
+				Captions.say("Spawner knocked out", "sfx")  # c16b_12-08: not the generic "Glass breaks"
 				Music.instance(get_tree()).sfx("power_off" if not GameState.is_penguins() else "glass", "thud")
 		if str(p["owner"]) != was:
 			if str(p["owner"]) == "ally":
 				map.hud.toast("%s is ours." % str(p["name"]), Color(0.6, 1, 0.7))
 				_caps += 1
 				map.fx("levelup", p["pos"] + Vector2(0, -10), 10.0, 0.6)
+				Captions.say("Point taken", "sfx")  # c16b_12-08
 				var mu := Music.instance(get_tree())  # C13 05_25: a banner cue, never the money coin
 				mu.sfx(pick_sfx(mu, capture_cues()), "j_confirm")
 			elif str(p["owner"]) == "enemy":

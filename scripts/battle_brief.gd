@@ -27,8 +27,37 @@ const LOSE := {
 }
 ## Built per device (c12_13-18): the banner button and the orders control read
 ## the player's own keys/pad words, never touch-only words on keys.
-static func controls_text() -> String:
-	return "Walk into a ring to take a point. %s on your banner: helpers and upgrades (◇ supply). %s for orders: Follow me, Hold here, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how()]
+## C16b P1 (c16b_06-13/13-11): the "till then" clause matches the fight: the drill's helpers follow
+## you; tier-1 campaign teams push on their own; otherwise everyone follows you till you say.
+static func controls_text(data: Dictionary = {}) -> String:
+	var md := str(data.get("mode", ""))
+	var push := push_clause(data)
+	return "Walk into a ring to take a point. %s on your banner: build helpers and upgrades (◇ supply). %s for orders: Follow me, Hold here, Go to a point %s. MEND and BARRAGE (top left) spend supply anywhere. Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how(), push] + ("" if md == "drill" else extra_controls())
+
+
+static func push_clause(data: Dictionary) -> String:
+	if str(data.get("mode", "")) == "drill":
+		return "(new helpers follow you)"
+	var cid := str(data.get("campaign", ""))
+	var tier := int(Campaign.get_c(cid).get("tier", 1)) if cid != "" else 3
+	if cid != "" and tier <= 1 and not CampaignGate.team().is_empty():
+		return "(till then your team pushes on its own)"
+	return "(till then everyone follows you)"
+
+
+## c16b_06-08: the pup, ROLL and the partner skill, named in the player's own words.
+static func extra_controls() -> String:
+	var bits: Array = []
+	if not GameState.run.is_empty():
+		if Pet.resting():
+			bits.append("%s is resting today." % Pet.name_of())
+		else:
+			bits.append("%s: the icons on the left (follow, attack, stay)." % Pet.name_of())
+	bits.append("%s dodges a hit." % PadInput.words("ROLL").strip_edges())
+	if Companion.active_id() != "":
+		bits.append("%s: your partner's skill." % PadInput.words("♥").strip_edges())
+	bits.append("Mode: %s. Easier fights: MENU > Options." % Difficulty.name_of())
+	return " " + " ".join(bits)
 
 var d: Dictionary = {}
 var mode := ""
@@ -41,17 +70,24 @@ var _go: Button
 var _hide: Button
 var _later: Button
 var _rects: Array = []
+var short := false   # the hidden kind's short card: team picker and Start only
 
 
 ## Show the card for battle data d (await done). Returns at once when hidden.
 static func show_for(m: GameMap, data: Dictionary) -> void:
 	var md := str(data.get("mode", ""))
+	var short := false
 	if GameState.run["flags"].has("bb_hide_" + md) and md != "drill":
 		m.hud.toast("%s · %s" % [str(data.get("title", "Battle")), str(WIN.get(md, WIN[""]))], Color(1, 0.9, 0.6))
-		return
+		# c16b_13-14: hiding the card never hides the team picker: with more allies than spots,
+		# a short card (team box + Start + "Full card") still comes up.
+		if str(data.get("campaign", "")) == "" or CampaignGate.team().size() <= CampaignGate.LINE_MAX:
+			return
+		short = true
 	var bb := BattleBrief.new()
 	bb.d = data
 	bb.mode = md
+	bb.short = short
 	m.add_child(bb)
 	await bb.done
 
@@ -129,7 +165,12 @@ func _ready() -> void:
 	var tl := _label(str(d.get("title", "Battle")), 11, Color(1, 0.9, 0.6))
 	tl.custom_minimum_size = Vector2(200, 0)
 	hv.add_child(tl)
-	var brief := str(d.get("brief", ""))
+	var brief := str(d.get("brief", "")) if not short else ""
+	if short:
+		_min_t = 0.3
+		_team_box(v)
+		_buttons(v)
+		return
 	if brief != "":
 		var cid0 := str(d.get("campaign", ""))
 		var who := Campaign.who(cid0) if cid0 != "" else str(d.get("who", ""))
@@ -144,7 +185,11 @@ func _ready() -> void:
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
 	_team_box(v)
 	v.add_child(_head("CONTROLS"))
-	v.add_child(_label(controls_text(), 7, Color(0.88, 0.88, 0.92)))
+	v.add_child(_label(controls_text(d), 7, Color(0.88, 0.88, 0.92)))
+	_buttons(v)
+
+
+func _buttons(v: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 6)
@@ -156,7 +201,20 @@ func _ready() -> void:
 	_go.focus_mode = Control.FOCUS_NONE
 	_go.pressed.connect(_fight)
 	row.add_child(_go)
-	if seen(mode) and mode != "drill":
+	if short:
+		_hide = Button.new()
+		_hide.text = "Full card"
+		_hide.custom_minimum_size = Vector2(60, 24)
+		_hide.add_theme_font_size_override("font_size", 7)
+		_hide.focus_mode = Control.FOCUS_NONE
+		_hide.pressed.connect(func() -> void:
+			GameState.run["flags"].erase("bb_hide_" + mode)  # the full card comes back from the next fight
+			var m := get_parent() as GameMap
+			if m:
+				m.hud.toast("Full battle cards are back from your next fight.", Color(1, 0.9, 0.6))
+			_close())
+		row.add_child(_hide)
+	elif seen(mode) and mode != "drill":
 		_hide = Button.new()
 		# Keys/pad: the "action" button (X key / pad Y) presses it (C9 c9_02).
 		_hide.text = "Don't show again" if TouchControls.visible_controls else "Don't show (%s)" % InputSetup.prompt("action")
@@ -189,23 +247,52 @@ func _team_box(v: VBoxContainer) -> void:
 	if tm.is_empty():
 		return
 	v.add_child(_head(("YOUR TEAM: TAP TO PICK %d" if TouchControls.visible_controls else "YOUR TEAM: PICK %d") % CampaignGate.LINE_MAX))
+	# c16b_13-05: your partner walking with you is named, not silently benched.
+	var act := Companion.active_id()
+	if act != "":
+		var an := str(Companion.defs().get(act, {}).get("name", act))
+		v.add_child(_label("%s walks with you (their skill: %s), so %s doesn't take a team spot." % [an, PadInput.words("♥").strip_edges(), an], 7, Color(0.8, 0.9, 1.0)))
+	# c16b_13-04: the whole roster, scrolling (not the first 8 only); each button says job and rank.
+	var sc := ScrollContainer.new()
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.custom_minimum_size = Vector2(234, mini(74, 25 * ceili(tm.size() / 3.0)))
+	v.add_child(sc)
 	var fl := HFlowContainer.new()
 	fl.add_theme_constant_override("h_separation", 3)
 	fl.add_theme_constant_override("v_separation", 3)
-	fl.custom_minimum_size = Vector2(234, 0)
-	v.add_child(fl)
-	for r: Array in tm.slice(0, 8):
+	fl.custom_minimum_size = Vector2(226, 0)
+	fl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sc.add_child(fl)
+	_team_scroll = sc
+	for r: Array in tm:
 		var b := Button.new()
 		b.toggle_mode = true
 		b.focus_mode = Control.FOCUS_NONE
-		b.custom_minimum_size = Vector2(54, 20)
+		b.custom_minimum_size = Vector2(72, 22)
 		b.add_theme_font_size_override("font_size", 7)
+		b.clip_text = true
 		b.set_meta("id", str(r[0]))
 		b.set_meta("nm", str(r[1]))
+		b.set_meta("sub", card_sub(r))
 		b.pressed.connect(_pick.bind(b))
 		fl.add_child(b)
 		_team_btns.append(b)
 	_paint_team()
+
+
+var _team_scroll: ScrollContainer = null
+
+
+## Line two of a team button: job word and rank (c16b_07-08/13-09), e.g. "Healer · R3".
+static func card_sub(r: Array) -> String:
+	var job := ""
+	if r.size() > 2 and str(r[2]) == "animal":
+		job = TeamAnimals.battle_job(str(r[0]).trim_prefix("animal:"))
+	else:
+		job = Battle.job_for(r, "striker")
+	var words := {"striker": "Fighter", "healer": "Healer", "warden": "Guard", "shade": "Hider"}
+	var rk := Battle.ally_rank(r)
+	return "%s · R%d" % [str(words.get(job, job.capitalize())), rk] if not (r.size() > 2 and str(r[2]) == "animal") else str(words.get(job, job.capitalize()))
 
 
 func _pick(b: Button) -> void:
@@ -230,7 +317,7 @@ func _paint_team() -> void:
 	for b: Button in _team_btns:
 		var id := str(b.get_meta("id"))
 		b.set_pressed_no_signal(on.has(id))
-		b.text = ("★ " if id in picked else ("✓ " if on.has(id) else "")) + str(b.get_meta("nm"))
+		b.text = ("★ " if id in picked else ("✓ " if on.has(id) else "")) + str(b.get_meta("nm")) + "\n" + str(b.get_meta("sub", ""))
 
 
 func _track_rects() -> void:
@@ -253,7 +340,23 @@ func _army_line() -> String:
 	var bits: Array = ["Tickets %d" % int(d.get("tickets", 0)), "supply ◇%d" % int(d.get("supply", 0))]
 	if bool(d.get("inspired", false)):
 		bits.append("inspired: helpers +25% health")
-	return ", ".join(bits) + ". Morale sets your tickets; supply buys helpers."
+	return ", ".join(bits) + ". Morale sets your tickets; supply buys helpers.\n" + build_line(d)
+
+
+## c16b_07-01/07-03/07-09: yes, you can build helpers; what they cost to build and keep, and the
+## lasting ways to make the army stronger (Strategist skills, ally ranks).
+static func build_line(data: Dictionary) -> String:
+	var crystal := GameState.is_penguins()
+	var costs: Array = []
+	for k: String in ["striker", "healer", "warden", "shade"]:
+		var kd: Dictionary = HelperUnit.kinds().get(k, {})
+		var c := maxi(1, int(round(int(Battle.SPAWNER_COST.get(k, 20)) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+		costs.append("%s ◇%d" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())).split(" ")[0], c])
+	var per := int(data.get("supply_per_point", 2)) * 0.35 * float(data.get("supply_mul", 1.0))
+	var sl := GameState.skill_level("strategist") if not GameState.run.is_empty() else 0
+	var hp := int(GameState.bonus("strategist", "helper_hp"))
+	var dm := int(GameState.bonus("strategist", "helper_damage"))
+	return "Build %s at any banner you hold: %s. Each point earns ◇%.1f/s; each unit costs ◇0.2/s. Strategist Lv %d: helpers +%d health, +%d hit (Menu > Skills)." % [Battle.unit_word(), ", ".join(costs), per, sl, hp, dm]
 
 
 func _head(t: String) -> Label:
@@ -267,7 +370,7 @@ func _label(t: String, size: int, col: Color) -> Label:
 	l.text = t
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.custom_minimum_size = Vector2(234, 0)
-	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_font_size_override("font_size", Settings.font(size))  # c16b_12-04: Options > Text size
 	l.add_theme_color_override("font_color", col)
 	l.add_theme_constant_override("outline_size", 2)
 	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.7))
@@ -289,7 +392,7 @@ func _process(delta: float) -> void:
 		_not_now()
 	elif _arm >= _min_t and Input.is_action_just_pressed("a"):
 		_fight()
-	elif _hide != null and _arm >= _min_t and Input.is_action_just_pressed("action"):
+	elif _hide != null and not short and _arm >= _min_t and Input.is_action_just_pressed("action"):
 		_hide_forever()
 
 

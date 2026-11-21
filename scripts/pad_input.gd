@@ -268,7 +268,7 @@ static func words(text: String) -> String:
 	var t := text.replace("Menu > ", "MENU > ").replace("MENU → ", "MENU > ")
 	if dev == "touch":
 		return t
-	for pair: Array in [["USE", "a"], ["CHECK", "action"], ["MENU", "menu"], ["ROLL", "dodge"], ["CALL", "pup"], ["BOP", "a"], ["RALLY", "rally"]]:
+	for pair: Array in [["USE", "a"], ["CHECK", "action"], ["MENU", "menu"], ["ROLL", "dodge"], ["CALL", "pup"], ["BOP", "a"], ["HELPERS", "rally"], ["RALLY", "rally"]]:
 		t = t.replace(" " + str(pair[0]), " " + InputSetup.prompt(str(pair[1])))
 		# c12_13-06: "(MENU > Items)" converts too.
 		t = t.replace("(" + str(pair[0]), "(" + InputSetup.prompt(str(pair[1])))
