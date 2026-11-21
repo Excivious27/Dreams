@@ -1,0 +1,10 @@
+CONDUCT CI FAIL  6fce22377e  (main, run 44878243304)
+
+relay-only run (main push): no check shards, bots or playtest asked for; not a failure
+check shards (0/0):
+playtest: SKIPPED  0s  0 screenshots (results playtest/shots/)
+RELAY: FAIL, 4ms (NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e))
+NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)
+
+longest job: 0s
+distinct errors/fails/warns:

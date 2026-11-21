@@ -1,0 +1,61 @@
+{
+ "sha": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+ "ref": "main",
+ "run": "44878243304",
+ "finished": 1795244985.6452613,
+ "pass": false,
+ "relay": {
+  "url": "wss://dreams-64-23-239-63.sslip.io",
+  "strict": true,
+  "notes": [],
+  "fail": true,
+  "local_code": "a29f453d8be9",
+  "main_code": "a29f453d8be9",
+  "live_before": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 2,
+   "players": 0
+  },
+  "live": {
+   "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+   "code": "a29f453d8be9",
+   "started": "2026-11-21T07:03:51.291Z",
+   "rooms": 2,
+   "players": 0
+  },
+  "deployed": true,
+  "ms": 4,
+  "live_ok": true,
+  "e2e": "NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)",
+  "e2e_ok": false,
+  "line": "RELAY: FAIL, 4ms (NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e))"
+ },
+ "relay_pass": false,
+ "playtest": {
+  "rc": -1,
+  "secs": 0,
+  "shots": 0,
+  "fails": []
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "label": "main-push",
+  "shards": [],
+  "bots": false,
+  "playtest": false,
+  "relay": true,
+  "server_changed": true,
+  "e2e": true,
+  "e2e_strict": true
+ },
+ "max_job_secs": 0,
+ "shards": [],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": []
+}
