@@ -118,6 +118,8 @@ func _setup() -> void:
 		_resume(cf)
 		map.later(_field_team)
 	_guest = Net.visiting()
+	if not _guest:
+		map.later(weapon_out)
 	var layer := CanvasLayer.new()
 	layer.layer = 5
 	map.add_child(layer)
@@ -128,9 +130,10 @@ func _setup() -> void:
 	layer.add_child(_hud)
 	# RALLY: send every helper to one point (tap to cycle), or let them guard their own.
 	_rally_btn = Button.new()
-	_rally_btn.position = RALLY_RECT.position
-	_rally_btn.size = RALLY_RECT.size
-	_rally_btn.add_theme_font_size_override("font_size", 8)
+	var rr := rally_rect()
+	_rally_btn.position = rr.position
+	_rally_btn.size = rr.size
+	_rally_btn.add_theme_font_size_override("font_size", int(round(8 * rally_scale())))
 	_rally_btn.focus_mode = Control.FOCUS_NONE
 	_rally_btn.expand_icon = true
 	_rally_btn.add_theme_constant_override("icon_max_width", 14)
@@ -138,10 +141,16 @@ func _setup() -> void:
 	_rally_btn.clip_text = true
 	_rally_btn.pressed.connect(func() -> void: map.later(_pick_rally))
 	layer.add_child(_rally_btn)
-	Hud.extra_rects.append(RALLY_RECT)
-	# The drill's helpers follow you from the moment they step out (Tom, C11b P7):
-	# the drill then teaches Hold here / Follow me / Go to a point one at a time.
-	_set_rally(-1 if is_drill else -2, true)
+	_rects.append(rr)
+	# Mend pulse and Barrage: their own buttons under HELPERS (c16b_06-03), not hidden in a banner list.
+	_mend_btn = _small_btn(mend_rect(), "mend", "c16bp1_mend", layer)
+	_barrage_btn = _small_btn(barrage_rect(), "barrage", "c16bp1_barrage", layer)
+	for r: Rect2 in _rects:
+		Hud.extra_rects.append(r)
+	# Everyone follows you at the start (the drill since C11b P7; campaigns since C16b P1, so
+	# the button never says "hold" while they walk with you). Tier-1 teams push on their own
+	# until your first order, and the button says "pushing on" then (c16b_06-02).
+	_set_rally(-1, true)
 	if is_drill:
 		drill = BattleDrill.attach(self, layer)
 	if camp != "" or is_drill:
@@ -159,7 +168,32 @@ func _setup() -> void:
 			await map.say([{"who": _who(), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
 
 
-const RALLY_RECT := Rect2(8, 146, 124, 21)   # >= 20 px tall: a comfortable tap
+const RALLY_RECT := Rect2(8, 146, 124, 21)   # >= 20 px tall: a comfortable tap (size 1.0; see rally_rect())
+## C16b P1 (c16b_06-11): the HELPERS button follows Options > Button size (1.0-1.4).
+static func rally_scale() -> float:
+	return clampf(Settings.btn_scale(), 1.0, 1.4)
+
+
+static func rally_rect() -> Rect2:
+	var s := rally_scale()
+	return Rect2(RALLY_RECT.position, RALLY_RECT.size * s)
+
+
+## C16b P1 (c16b_06-03): Mend pulse and Barrage are battle commands of their own, under HELPERS.
+static func mend_rect() -> Rect2:
+	var r := rally_rect()
+	return Rect2(r.position.x, r.end.y + 3, r.size.x * 0.5 - 2, 20)
+
+
+static func barrage_rect() -> Rect2:
+	var r := mend_rect()
+	return Rect2(r.end.x + 4, r.position.y, r.size.x, 20)
+
+
+var _rects: Array = []      # the Hud.extra_rects this fight registered (removed on exit)
+var _mend_btn: Button
+var _barrage_btn: Button
+var _team_hold := false     # Hold here: the team waits where it stood at the order
 var _rally_btn: Button
 var _rally := -1
 var _rally_flash := 0.0
@@ -167,10 +201,110 @@ var _rally_given := false
 var _push_said := false
 
 
+func _small_btn(r: Rect2, cmd: String, icon: String, layer: CanvasLayer) -> Button:
+	var b := Button.new()
+	b.position = r.position
+	b.size = r.size
+	b.add_theme_font_size_override("font_size", 7)
+	b.focus_mode = Control.FOCUS_NONE
+	b.expand_icon = true
+	b.add_theme_constant_override("icon_max_width", 12)
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.clip_text = true
+	var tx := Art.tex("ui", icon)
+	if tx == null:
+		tx = Art.tex("ui", "rally_guard" if cmd == "mend" else "rally_send")
+	b.icon = tx
+	b.pressed.connect(func() -> void: command(cmd))
+	layer.add_child(b)
+	_rects.append(r)
+	return b
+
+
+## Button words for MEND / BARRAGE: cost, or the seconds left while recharging.
+func cmd_label(cmd: String) -> String:
+	var cd := _mend_cd if cmd == "mend" else _barrage_cd
+	var nm := "MEND" if cmd == "mend" else "BARRAGE"
+	if cd > 0.0:
+		return "%s %ds" % [nm, ceili(cd)]
+	return "%s ◇%d" % [nm, _disc(25 if cmd == "mend" else 35)]
+
+
+## Mend pulse / Barrage from anywhere on the field (button, order list or banner).
+## Returns true when it fired.
+func command(cmd: String) -> bool:
+	if _over or map == null or map.player == null:
+		return false
+	var mu := Music.instance(get_tree())
+	var cd := _mend_cd if cmd == "mend" else _barrage_cd
+	var nm := "Mend pulse" if cmd == "mend" else "Barrage"
+	if cd > 0.0:
+		map.hud.toast("%s is recharging: %ds." % [nm, ceili(cd)], Color(1, 0.8, 0.6))
+		mu.sfx("nope", "thud")
+		return false
+	var c := _disc(25 if cmd == "mend" else 35)
+	if supply < c:
+		map.hud.toast("%s needs ◇%d supply. Hold more points." % [nm, c], Color(1, 0.7, 0.6))
+		mu.sfx("nope", "thud")
+		return false
+	supply -= c
+	GameState.add_xp("strategist", 5)
+	if cmd == "mend":
+		GameState.heal_points(40)
+		for h in map.get_tree().get_nodes_in_group("allies"):
+			if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
+				(h as HelperUnit).hp = (h as HelperUnit).max_hp
+			elif h is TeamBeast and (h as Node2D).position.distance_to(map.player.position) < 120.0:
+				(h as TeamBeast).heal(9999)  # C11a P4
+		if map.pet != null and is_instance_valid(map.pet) and map.pet.position.distance_to(map.player.position) < 120.0 and not Pet.state().has("down_until"):
+			Pet.state()["hp"] = Pet.max_hp()
+		map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)
+		mu.sfx("heal", "levelup")
+		map.hud.toast("Mend pulse!", Color(0.7, 1, 0.8))
+		_mend_cd = 20.0
+	else:
+		var n := 0
+		for e in map.enemies:
+			if is_instance_valid(e) and e.position.distance_to(map.player.position) < 110.0:
+				e._stun = maxf(e._stun, 1.0 if e.has_meta("boss_name") else 3.0)
+				n += 1
+		map.shake(3.0 * Anim.amp())
+		mu.sfx("boom", "thud")
+		map.hud.toast("Barrage! %d foe%s stunned." % [n, "" if n == 1 else "s"], Color(1, 0.9, 0.5))
+		_barrage_cd = 25.0
+	_refresh_cmd_btns()
+	return true
+
+
+func _refresh_cmd_btns() -> void:
+	for pair: Array in [[_mend_btn, "mend"], [_barrage_btn, "barrage"]]:
+		var b: Button = pair[0]
+		if b == null:
+			continue
+		var t := cmd_label(str(pair[1]))
+		if b.text != t:
+			b.text = t
+		var cd := _mend_cd if str(pair[1]) == "mend" else _barrage_cd
+		b.modulate = Color(1, 1, 1, 0.55) if (cd > 0.0 or supply < _disc(25 if str(pair[1]) == "mend" else 35)) else Color.WHITE
+
+
 ## "HELPERS", plus the key/button when the touch pad is hidden ("HELPERS (L3)").
 ## (The rally button gives your helpers their orders; plain words, no jargon: C11b P7.)
 func _rally_word() -> String:
-	return "HELPERS" if TouchControls.visible_controls else "HELPERS (%s)" % InputSetup.prompt("rally")
+	return "HELPERS"
+
+
+## The key/button for orders when the touch pad is hidden (shown once in the count line, c16b_06-04).
+func _rally_key() -> String:
+	return "" if TouchControls.visible_controls else InputSetup.prompt("rally")
+
+
+## The arc's word for what a banner builds (c16b_07-01): crystals (penguins) / drones (gang).
+## "Your team" is the mustered allies; "helpers" is everyone under the HELPERS button.
+static func unit_word(plural := true) -> String:
+	if GameState.is_penguins():
+		return "crystals" if plural else "crystal"
+	return "drones" if plural else "drone"
 
 
 ## Order words for the helpers' list and the drill card.
@@ -185,10 +319,46 @@ const RALLY_HOLD := 0.35
 var _rally_hold := -1.0
 
 
+## c16b_06-12: step onto the field with your best weapon in hand (not the hoe you last farmed with);
+## the old toolbar slot comes back when you leave.
+var _old_slot := -1
+
+
+func weapon_out() -> String:
+	if GameState.run.is_empty() or not GameState.run.has("toolbar"):
+		return ""
+	var tb: Array = GameState.run["toolbar"]
+	var cur := int(GameState.run.get("slot", 0))
+	if cur >= 0 and cur < tb.size() and GameState.is_sword(str(tb[cur])) and GameState.has_tool(str(tb[cur])):
+		return str(tb[cur])
+	var best := -1
+	var bd := -1
+	for i in tb.size():
+		var id := str(tb[i])
+		if id == "" or not GameState.is_sword(id) or not GameState.has_tool(id) or GameState.tool_away("sword"):
+			continue
+		var dm := int(GameState.items.get(id, {}).get("dmg", GameState.items.get(id, {}).get("damage", 0)))
+		if dm > bd:
+			bd = dm
+			best = i
+	if best < 0:
+		return ""
+	_old_slot = cur
+	GameState.select_slot(best)
+	if map != null and map.hud != null:
+		map.hud.toast("Weapon out: %s." % GameState.item_name(str(tb[best])), Color(0.85, 0.95, 1.0))
+		if map.hud.has_method("refresh"):
+			map.hud.call("refresh")
+	return str(tb[best])
+
+
 func _rally_input(delta: float) -> void:
 	if not InputMap.has_action("rally"):
 		return
 	if Input.is_action_just_pressed("rally") and not Dialogue.input_blocked():
+		# L3 is also the move stick: a click while running hard is not an order (c16b_06-06).
+		if Input.get_vector("left", "right", "up", "down").length() > 0.6:
+			return
 		_rally_hold = 0.0
 	elif _rally_hold >= 0.0 and Input.is_action_pressed("rally"):
 		_rally_hold += delta
@@ -197,7 +367,7 @@ func _rally_input(delta: float) -> void:
 			map.later(_pick_rally)
 	elif _rally_hold >= 0.0:
 		_rally_hold = -1.0
-		_cycle_rally()
+		map.later(_pick_rally)  # a tap opens the same list as touch (one behaviour, c16b_06-06)
 
 
 ## Cycle: guard posts → follow me → each point in turn → guard posts.
@@ -212,28 +382,38 @@ func _cycle_rally() -> void:
 ## One tap: pick the helpers' order from a list (instead of cycling through every point).
 ## Each option says plainly what it does; the one in force is marked ▸.
 func _pick_rally() -> void:
-	var o: Array = ["%s%s: they walk beside you and fight what's near" % ["▸ " if _rally == -1 else "", ORDER_FOLLOW], "%s%s: each one stays at the banner that built it" % ["▸ " if _rally == -2 else "", ORDER_HOLD]]
+	var o: Array = ["%s%s: everyone walks beside you and fights what's near" % ["▸ " if _rally == -1 else "", ORDER_FOLLOW], "%s%s: %s stay at their banners, your team stays where it is now" % ["▸ " if _rally == -2 else "", ORDER_HOLD, unit_word()]]
 	var vals: Array = [-1, -2]
 	for i in points.size():
 		var p: Dictionary = points[i]
 		o.append("%sGo to %s %s (%s): they march there and fight" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
 		vals.append(i)
+	# The two field commands, usable anywhere (c16b_06-03).
+	o.append("%s (◇%d): heal you, your pup and helpers near you%s" % ["Mend pulse", _disc(25), (" (ready in %ds)" % ceili(_mend_cd)) if _mend_cd > 0.0 else ""])
+	vals.append(-10)
+	o.append("%s (◇%d): stun foes near you%s" % ["Barrage", _disc(35), (" (ready in %ds)" % ceili(_barrage_cd)) if _barrage_cd > 0.0 else ""])
+	vals.append(-11)
 	o.append("Close")
 	var dl := Dialogue.instance(get_tree())
+	var head := "Orders. Team %d, %s %d." % [_team_count(), unit_word(), _built()]
 	if _helpers() == 0:
-		dl.say([{"who": "", "text": no_helpers_text(), "choice": ["Close"], "key": ""}])
-		await dl.finished
-		return
-	dl.say([{"who": "", "text": "Orders for your %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
+		head = no_helpers_text()
+	dl.say([{"who": "", "text": head, "choice": o, "key": ""}])
 	await dl.finished
 	if dl.last_choice >= 0 and dl.last_choice < vals.size() and not _over:
-		_set_rally(int(vals[dl.last_choice]))
-		_rally_sfx(int(vals[dl.last_choice]))
+		var v := int(vals[dl.last_choice])
+		if v == -10:
+			command("mend")
+		elif v == -11:
+			command("barrage")
+		else:
+			_set_rally(v)
+			_rally_sfx(v)
 
 
 ## How to get helpers, cost and place included (shown when you give orders with none).
 func no_helpers_text() -> String:
-	return "No helpers yet. Build one at a banner you hold: stand at it, press %s and pick \"Build helper\" (from ◇%d supply). Helpers then step out of that banner." % [InputSetup.prompt("a"), _cost("striker")]
+	return "No helpers yet. Yes, you can build them: stand at a banner you hold, press %s and pick \"Build helper\" (from ◇%d supply). %s then step out of that banner." % [InputSetup.prompt("a"), _cost("striker"), unit_word().capitalize()]
 
 
 ## Each rally order has its own call (c6_11): follow me = a whistle, guard = a
@@ -276,6 +456,20 @@ func _helpers() -> int:
 	return n
 
 
+## Banner-built units on the field (c16b_07-01: counted apart from your team).
+func _built() -> int:
+	var n := 0
+	for h in map.get_tree().get_nodes_in_group("allies"):
+		if h is HelperUnit and is_instance_valid(h) and (h as HelperUnit).team_id == "":
+			n += 1
+	return n
+
+
+## Mustered allies still on the field.
+func _team_count() -> int:
+	return team.filter(func(h: Variant) -> bool: return is_instance_valid(h) and not (h as HelperUnit).is_queued_for_deletion()).size()
+
+
 func _set_rally(i: int, quiet := false) -> void:
 	_rally = i
 	if not quiet:
@@ -285,26 +479,55 @@ func _set_rally(i: int, quiet := false) -> void:
 			map.remove_meta("team_push")
 	if map.has_meta("follow_me"):
 		map.remove_meta("follow_me")
+	if map.has_meta("team_hold"):
+		map.remove_meta("team_hold")
+	_team_hold = false
 	if i == -1:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
-		map.set_meta("follow_me", true)
-		_rally_btn.text = _rally_word() + ": follow me"
-		_rally_btn.icon = Art.tex("ui", "rally_follow")
-		_rally_toast("Helpers: on me!")
+		if not map.has_meta("team_push"):
+			map.set_meta("follow_me", true)
+		if not quiet:
+			_rally_toast("Helpers: on me!")
 	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
-		_rally_btn.text = _rally_word() + ": hold here"
-		_rally_btn.icon = Art.tex("ui", "rally_guard")
+		# c16b_06-01: Hold here holds your team too, each where it stands now.
+		_team_hold = true
+		map.set_meta("team_hold", true)
+		for h in team:
+			if is_instance_valid(h):
+				(h as HelperUnit).home = (h as HelperUnit).position
 		if not quiet:
-			_rally_toast("Helpers: hold here, at your banners.")
+			_rally_toast("Helpers: hold here. %s at their banners, your team where it stands." % unit_word().capitalize())
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
-		_rally_btn.text = "%s ▸ %s" % [_rally_word(), str(points[i]["name"])]
-		_rally_btn.icon = Art.tex("ui", "rally_send")
 		_rally_toast("Helpers: go to %s!" % str(points[i]["name"]))
+	_refresh_rally_btn()
 	_rally_flash = 1.0
+
+
+## The HELPERS button says what your helpers are really doing (c16b_06-02/06-04):
+## "pushing on" while the early-fight team push runs, then the order in force.
+func rally_label() -> String:
+	if not _rally_given and map != null and map.has_meta("team_push"):
+		return "%s: pushing on" % _rally_word()
+	if _rally == -1:
+		return "%s: follow me" % _rally_word()
+	if _rally < 0:
+		return "%s: hold here" % _rally_word()
+	var p: Dictionary = points[_rally]
+	return "▸ %s %s" % [str(p["id"]).to_upper(), str(p["name"])]
+
+
+func _refresh_rally_btn() -> void:
+	if _rally_btn == null:
+		return
+	var t := rally_label()
+	if _rally_btn.text != t:
+		_rally_btn.text = t
+	var ic := "rally_send" if (_rally >= 0 or t.ends_with("pushing on")) else ("rally_follow" if _rally == -1 else "rally_guard")
+	_rally_btn.icon = Art.tex("ui", ic)
 
 
 ## A new rally order replaces the last one's toast instead of stacking under it.
@@ -330,7 +553,11 @@ func _exit_tree() -> void:
 					Music.instance(tree).sfx("j_battle_lost", "nope"))
 	elif is_drill and not _over:
 		CampaignGate.drill_quit()
-	Hud.extra_rects.erase(RALLY_RECT)
+	for r: Rect2 in _rects:
+		Hud.extra_rects.erase(r)
+	if _old_slot >= 0 and not GameState.run.is_empty():
+		GameState.select_slot(_old_slot)  # back to what you held before the fight
+		_old_slot = -1
 	if map and is_instance_valid(map) and map.has_meta("rally_pos"):
 		map.remove_meta("rally_pos")
 	if map and is_instance_valid(map) and map.has_meta("team_push"):
@@ -341,6 +568,24 @@ var _mass_ms := -100000
 var _bleed_e := 0.0
 var _rate := 0.0   # supply per second after upkeep (HUD)
 var _bleed_a := 0.0
+
+
+var warned_low := false   # "supply is running out" said once this fight (c16b_07-03)
+var broke_now := false    # no supply for upkeep: spawners paused (HUD pulses the supply text)
+var _broke_said := false
+
+
+func _supply_warn(units: int, broke: bool) -> void:
+	broke_now = broke
+	if _rate < 0.0 and units > 0 and not warned_low and supply < 40:
+		warned_low = true
+		map.hud.toast("Supply is running out: each unit costs upkeep. Hold more points or build fewer.", Color(1, 0.75, 0.55))
+	if broke and not _broke_said:
+		_broke_said = true
+		map.hud.toast("No supply: spawners paused.", Color(1, 0.6, 0.5))
+		Music.instance(get_tree()).sfx("nope", "thud")
+	elif not broke:
+		_broke_said = false
 
 
 func _cost(k: String) -> int:
@@ -401,6 +646,8 @@ func _process(delta: float) -> void:
 	_redraw_acc += delta
 	if _redraw_acc >= 0.066:  # ~15 Hz is plenty for flags, arcs and the ticket HUD
 		_redraw_acc = 0.0
+		_refresh_cmd_btns()
+		_refresh_rally_btn()
 		queue_redraw()
 		_hud.queue_redraw()
 
@@ -495,9 +742,13 @@ func _tick() -> void:
 	var units := 0
 	for pp in points:
 		units += (pp["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x)).size()
+		pp["old"] = (pp.get("old", []) as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
+		units += (pp["old"] as Array).size()
 	_upkeep += units * 0.2
-	_rate = a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate) - units * 0.2
+	# c16b_07-04: the shown rate counts the mode's supply_mul, like the real trickle above.
+	_rate = a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate) * float(d.get("supply_mul", 1.0)) - units * 0.2
 	var broke := supply < int(_upkeep) and units > 0
+	_supply_warn(units, broke)
 	supply = maxi(0, supply - int(_upkeep))
 	_upkeep -= int(_upkeep)
 	# Spawners turn out helpers.
@@ -693,7 +944,7 @@ func _enemy_wave() -> void:
 			_target_pt = bestp
 			if str(bestp["owner"]) == "ally":
 				map.hud.toast("They're massing on %s!" % str(bestp["name"]), Color(1, 0.6, 0.45))
-				var nw := Time.get_ticks_msec()
+				var nw := PlayClock.ms()  # c16b_12-09: game time
 				if nw - _mass_ms > 8000:
 					_mass_ms = nw
 					Music.instance(get_tree()).sfx("war_drum", "alert")
@@ -781,6 +1032,7 @@ func _field_team() -> void:
 		var job: String = TeamAnimals.battle_job(str(m[0]).trim_prefix("animal:")) if str(m[2]) == "animal" else job_for(m, jobs[n % jobs.size()])
 		var h := HelperUnit.make_team(map, m, job, at, team_sprite(m))
 		h.tag_row = n % 2
+		apply_rank(h, m)
 		if bool(d.get("inspired", false)):
 			h.max_hp = int(h.max_hp * 1.25)
 			h.hp = h.max_hp
@@ -789,6 +1041,31 @@ func _field_team() -> void:
 	if n > 0:
 		var nm: Array = team.map(func(h: HelperUnit) -> String: return h.team_name)
 		map.hud.toast("%s fight%s beside you." % [_and_list(nm), "s" if n == 1 else ""], Color(0.7, 0.95, 1.0))
+
+
+## C16b P1 (c16b_07-02/13-01): an ally's rank 1-5 (partner rank, crew level + 1, friend hearts / 2).
+static func ally_rank(m: Array) -> int:
+	var id := str(m[0])
+	match str(m[2]) if m.size() > 2 else "":
+		"partner":
+			return Companion.partner_rank(id)
+		"crew":
+			return clampi(Crew.member_level(id) + 1, 1, 5)
+		"friend":
+			return clampi(GameState.friend_hearts(id) / 2, 1, 5)
+	return 1
+
+
+## Rank makes a person tougher and hit harder on the field: +6 health and +1 hit every two ranks.
+## (Team animals grow by their own lessons: TeamAnimals.stats.)
+static func apply_rank(h: HelperUnit, m: Array) -> void:
+	if m.size() > 2 and str(m[2]) == "animal":
+		return
+	var r := ally_rank(m)
+	h.max_hp += 6 * (r - 1)
+	h.hp = h.max_hp
+	h.rank_dmg = (r - 1) / 2
+	h.set_meta("rank", r)
 
 
 ## Early fights (campaign tier 1, not the drill): until you give a RALLY order
@@ -813,8 +1090,16 @@ func _team_push() -> void:
 	if tgt == Vector2.INF:
 		if map.has_meta("team_push"):
 			map.remove_meta("team_push")
+			if _rally == -1:
+				map.set_meta("follow_me", true)  # back to the real order, and the button says so
+			_refresh_rally_btn()
 		return
+	if map.has_meta("follow_me"):
+		map.remove_meta("follow_me")  # the push leads until your first order (button: "pushing on")
+	var was_push := map.has_meta("team_push")
 	map.set_meta("team_push", tgt)
+	if not was_push:
+		_refresh_rally_btn()
 	if not _push_said:
 		_push_said = true
 		map.hud.toast("Your team pushes on. %s to give orders." % BattleDrill.order_how(), Color(0.7, 0.95, 1.0))
@@ -884,65 +1169,70 @@ func interact(id: String) -> void:
 	var opts: Array = []
 	var keys: Array = []
 	var lvl := int(p.get("lvl", 1))
-	if str(p["spawner"]) != "" and lvl < 3:
-		opts.append("Upgrade to level %d (◇%d): more units, faster" % [lvl + 1, _disc(30 * lvl)])
-		keys.append("upgrade")
-	if not bool(p.get("fort", false)):
-		opts.append("Fortify (◇%d): they take it 50%% slower" % _disc(40))
-		keys.append("fortify")
-	opts.append("Mend pulse (◇%d): heal you and helpers near you%s" % [_disc(25), (" (ready in %ds)" % int(ceil(_mend_cd))) if _mend_cd > 0.0 else ""])
-	keys.append("mend")
-	opts.append("Barrage (◇%d): stun every foe near this point%s" % [_disc(35), (" (ready in %ds)" % int(ceil(_barrage_cd))) if _barrage_cd > 0.0 else ""])
-	keys.append("barrage")
-	# Builds: after the point actions once something is built, first while nothing is
-	# (the list scrolls; B leaves). Each says plainly that it builds a helper (C11b P7).
-	var does := {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}
-	var bo: Array = []
-	var bk: Array = []
-	for k: String in spawner_kinds():
-		var kd: Dictionary = HelperUnit.kinds()[k]
-		bo.append("Build helper: %s (◇%d), %s" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())), _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps")))])
-		bk.append(k)
-	bo.append("Build %s (◇%d): stays and holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
-	bk.append("turret")
-	if str(p["spawner"]) == "":
-		opts = bo + opts
-		keys = bk + keys
-	else:
-		opts.append_array(bo)
-		keys.append_array(bk)
-	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40, "mend": 25, "barrage": 35}
-	for oi in opts.size():
-		var kk: String = keys[oi]
-		var cc := _cost(kk) if (SPAWNER_COST.has(kk) or HelperUnit.kinds().has(kk)) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
-		if cc > supply:
-			opts[oi] = "✕ " + str(opts[oi])
 	var sp := str(p["spawner"])
+	var made_n := (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x)).size()
 	var now_nm := ""
 	if sp == "turret":
 		now_nm = "Crystal Pylon" if crystal else "Gun Turret"
 	elif sp != "":
 		now_nm = str(HelperUnit.kinds().get(sp, {}).get("crystal" if crystal else "drone", sp.capitalize()))
-	opts.append("Leave")  # B picks it: the list is long and the fight goes on
+	# c16b_07-03/07-10: what an upgrade gives and what it costs to keep.
+	if sp != "" and sp != "turret" and lvl < 3:
+		opts.append("Upgrade to level %d (◇%d): +1 %s, faster; upkeep +0.2/s" % [lvl + 1, _disc(30 * lvl), unit_word(false)])
+		keys.append("upgrade")
+	if not bool(p.get("fort", false)):
+		opts.append("Fortify (◇%d): they take it 50%% slower" % _disc(40))
+		keys.append("fortify")
+	# Builds (c16b_07-05: switching never destroys what you paid for: the old ones fight on till they fall).
+	var does := {"striker": "zaps foes", "healer": "mends you, your pup and helpers", "warden": "shields you", "shade": "hides you"}
+	var bo: Array = []
+	var bk: Array = []
+	for k: String in spawner_kinds():
+		var kd: Dictionary = HelperUnit.kinds()[k]
+		var knm := str(kd.get("crystal" if crystal else "drone", k.capitalize()))
+		var mark := "▸ building now: " if k == sp else ("Switch to " if sp != "" else "Build helper: ")
+		var tail := (" (your %d %s here fight on till they fall)" % [made_n, now_nm]) if sp != "" and k != sp and made_n > 0 else ""
+		bo.append("%s%s (◇%d): %s%s" % [mark, knm, _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps"))), tail])
+		bk.append(k)
+	bo.append("%s%s (◇%d): guards this point, a new one every 45 s" % ["▸ building now: " if sp == "turret" else ("Switch to " if sp != "" else "Build guard: "), "Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
+	bk.append("turret")
+	if sp == "":
+		opts = bo + opts
+		keys = bk + keys
+	else:
+		opts.append_array(bo)
+		keys.append_array(bk)
+	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40}
+	for oi in opts.size():
+		var kk: String = keys[oi]
+		var cc := _cost(kk) if (SPAWNER_COST.has(kk) or HelperUnit.kinds().has(kk)) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
+		if cc > supply and kk != sp:
+			opts[oi] = "✕ " + str(opts[oi])
+	opts.append("Leave")  # B picks it: the fight goes on
+	var head := ""
+	if sp != "":
+		head = "Supply ◇%d. Here: %s ×%d (level %d). Lost if this point falls:" % [supply, now_nm, made_n, lvl]
+	else:
+		head = "Supply ◇%d. This banner can build %s that fight beside you (each costs ◇0.2/s upkeep). Pick one:" % [supply, unit_word()]
 	var dl := Dialogue.instance(get_tree())
-	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change what this banner builds, or spend supply" if sp != "" else "This banner can build helpers that fight beside you. Pick one")], "choice": opts, "key": ""}])
+	dl.say([{"who": str(p["name"]), "text": head, "choice": opts, "key": ""}])
 	await dl.finished
 	var i := dl.last_choice
 	if i < 0 or i >= keys.size():
 		return
-	var k: String = keys[i]
-	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "mend": 25, "barrage": 35}
+	pick_build(p, str(keys[i]))
+
+
+## Apply a banner choice (split out so tests can drive it). Returns true when it went through.
+func pick_build(p: Dictionary, k: String) -> bool:
+	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40}
 	var mu := Music.instance(get_tree())
-	if (k == "mend" and _mend_cd > 0.0) or (k == "barrage" and _barrage_cd > 0.0):
-		map.hud.toast("%s is recharging: %ds." % [k.capitalize(), ceili(_mend_cd if k == "mend" else _barrage_cd)], Color(1, 0.8, 0.6))
-		mu.sfx("nope", "thud")
-		return
 	if extra.has(k):
 		var c := _disc(int(extra[k]))
 		if supply < c:
 			map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 			mu.sfx("nope", "thud")
-			return
+			return false
 		supply -= c
 		GameState.add_xp("strategist", 5)
 		match k:
@@ -954,51 +1244,37 @@ func interact(id: String) -> void:
 				p["fort"] = true
 				map.hud.toast("%s fortified." % str(p["name"]), Color(0.7, 1, 0.8))
 				mu.sfx("hammer", "craft_done")
-			"mend":
-				GameState.heal_points(40)
-				for h in map.get_tree().get_nodes_in_group("allies"):
-					if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
-						(h as HelperUnit).hp = (h as HelperUnit).max_hp
-					elif h is TeamBeast and (h as Node2D).position.distance_to(map.player.position) < 120.0:
-						(h as TeamBeast).heal(9999)  # C11a P4
-				if map.pet != null and is_instance_valid(map.pet) and map.pet.position.distance_to(map.player.position) < 120.0 and not Pet.state().has("down_until"):
-					Pet.state()["hp"] = Pet.max_hp()
-				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)
-				mu.sfx("heal", "levelup")
-				map.hud.toast("Mend pulse!", Color(0.7, 1, 0.8))
-				_mend_cd = 20.0
-			"barrage":
-				var n := 0
-				for e in map.enemies:
-					if is_instance_valid(e) and e.position.distance_to(p["pos"]) < 110.0:
-						e._stun = maxf(e._stun, 1.0 if e.has_meta("boss_name") else 3.0)
-						n += 1
-				map.shake(3.0)
-				mu.sfx("boom", "thud")
-				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
-				_barrage_cd = 25.0
-		return
+		return true
 	if k == str(p["spawner"]):
 		map.hud.toast("%s already builds that." % str(p["name"]), Color(1, 0.85, 0.6))
 		mu.sfx("nope", "thud")
-		return
+		return false
 	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 		mu.sfx("nope", "thud")
-		return
+		return false
 	supply -= _cost(k)
 	GameState.add_xp("strategist", 5)
 	GameState.add_xp("leadership", 8)
-	# Switching type: the old units stand down, so the new spawner can start at once.
+	# Switching type (c16b_07-05): the old units stay and fight on until they fall (they
+	# still cost upkeep but no longer count toward this banner's cap).
+	var kept := 0
+	var old: Array = p.get("old", [])
 	for mm in p["made"]:
 		if is_instance_valid(mm):
-			(mm as Node).queue_free()
+			if mm is HelperUnit:
+				old.append(mm)
+				kept += 1
+			else:
+				(mm as Node).queue_free()  # a turret/pylon is part of the banner: it comes down
+	p["old"] = old
 	p["made"] = []
 	p["spawner"] = k
 	p["t"] = 10.0
 	map.fx("sparkle", p["pos"] + Vector2(0, -12), 12.0, 0.6)
 	mu.sfx("craft_done", "levelup")
-	map.hud.toast("Built at %s: helpers will step out of this banner." % str(p["name"]), Color(0.7, 1, 0.8))
+	map.hud.toast("Built at %s: %s step out of this banner.%s" % [str(p["name"]), unit_word() if k != "turret" else "a guard", (" Your %d earlier ones fight on." % kept) if kept > 0 else ""], Color(0.7, 1, 0.8))
+	return true
 
 
 func _end(won: bool, travel := true) -> void:
@@ -1053,8 +1329,14 @@ func _end(won: bool, travel := true) -> void:
 
 # ---- drawing -----------------------------------------------------------------
 
+## C16b P1 (c16b_12-01/12-09): pulse factor (0 under reduced motion) and the game clock.
+static func pulse_k() -> float:
+	return 0.0 if Anim.reduced() else 1.0
+
+
 func _draw() -> void:
-	var t := Time.get_ticks_msec() / 1000.0
+	var t := PlayClock.now()
+	var pk := pulse_k()
 	# Only points near the screen (this one canvas item spans the whole field, so
 	# nothing culls its commands), rings first and pictures after: an antialiased
 	# arc is three draw calls, so the old order cost ~32 per frame on bf maps.
@@ -1066,7 +1348,7 @@ func _draw() -> void:
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.85, 0.85, 0.85))
 		# A dark under-stroke so a white (open) ring reads on pavement, snow and ash.
 		draw_arc(pos, CAP_R, 0, TAU, 48, Color(0.05, 0.05, 0.08, 0.55), 4.0, true)
-		var ring_c := Color(col.r, col.g, col.b, (0.75 if str(p["owner"]) == "neutral" else 0.45) + 0.1 * sin(t * 2.0))
+		var ring_c := Color(col.r, col.g, col.b, (0.75 if str(p["owner"]) == "neutral" else 0.45) + 0.1 * sin(t * 2.0) * pk)
 		if str(p["owner"]) == "enemy":
 			# Theirs: a dashed ring, so it never relies on red vs blue alone (C9 c9_07).
 			for k in 8:
@@ -1113,7 +1395,7 @@ func _draw() -> void:
 			draw_texture_rect(ft, Rect2(pos + Vector2(-fh * ft.get_width() / ft.get_height() * 0.3, 4 - fh), Vector2(fh * ft.get_width() / ft.get_height(), fh)), false)
 		else:
 			draw_line(pos + Vector2(0, 2), pos + Vector2(0, -26), Color(0.25, 0.2, 0.15), 2.0)
-			var wave := sin(t * 4.0 + pos.x) * 2.0
+			var wave := sin(t * 4.0 + pos.x) * 2.0 * pk
 			draw_colored_polygon(PackedVector2Array([pos + Vector2(1, -26), pos + Vector2(14, -22 + wave), pos + Vector2(1, -17)]), col)
 	_draw_rally(t)
 
@@ -1122,20 +1404,38 @@ func _draw() -> void:
 ## or a small ring round you when they follow.
 func _draw_rally(t: float) -> void:
 	var cyan := Color(0.55, 0.95, 1.0)
-	var k := 0.5 + 0.5 * sin(t * 4.0)
+	var pk := pulse_k()
+	var k := (0.5 + 0.5 * sin(t * 4.0)) * pk + (1.0 - pk) * 0.6
+	var fl := _rally_flash if pk > 0.0 else 0.0  # reduced motion: a colour change, no width growth
 	if _rally >= 0 and _rally < points.size():
 		var pos: Vector2 = points[_rally]["pos"]
-		draw_arc(pos, CAP_R + 7 + 2.0 * k, 0, TAU, 48, Color(cyan.r, cyan.g, cyan.b, 0.55 + 0.35 * k + _rally_flash * 0.3), 2.0 + _rally_flash * 2.0, true)
+		draw_arc(pos, CAP_R + 7 + 2.0 * k * pk, 0, TAU, 48, Color(cyan.r, cyan.g, cyan.b, 0.55 + 0.35 * k + _rally_flash * 0.3), 2.0 + fl * 2.0, true)
 		for q in 4:
-			var a := TAU * q / 4.0 + t * 0.8
+			var a := TAU * q / 4.0 + t * 0.8 * pk
 			var dir := Vector2.from_angle(a)
 			var tip := pos + dir * (CAP_R + 12)
 			draw_colored_polygon(PackedVector2Array([tip, tip + dir * 7 + dir.orthogonal() * 4, tip + dir * 7 - dir.orthogonal() * 4]), Color(cyan.r, cyan.g, cyan.b, 0.8))
-		var f := ThemeDB.fallback_font
-		draw_string_outline(f, pos + Vector2(-30, -CAP_R - 14), "RALLY", HORIZONTAL_ALIGNMENT_CENTER, 60, 8, 3, Color(0, 0, 0, 0.8))
-		draw_string(f, pos + Vector2(-30, -CAP_R - 14), "RALLY", HORIZONTAL_ALIGNMENT_CENTER, 60, 8, cyan)
+		# c16b_06-10: plain words in the game's font, not "RALLY" in the fallback font.
+		var f := _hud.get_theme_default_font() if _hud != null else ThemeDB.fallback_font
+		var lbl := "HELPERS GO HERE"
+		draw_string_outline(f, pos + Vector2(-45, -CAP_R - 14), lbl, HORIZONTAL_ALIGNMENT_CENTER, 90, 8, 3, Color(0, 0, 0, 0.8))
+		draw_string(f, pos + Vector2(-45, -CAP_R - 14), lbl, HORIZONTAL_ALIGNMENT_CENTER, 90, 8, cyan)
 	elif _rally == -1 and map.player:
-		draw_arc(map.player.position + Vector2(0, -4), 22 + 2.0 * k, 0, TAU, 32, Color(cyan.r, cyan.g, cyan.b, 0.35 + 0.3 * k + _rally_flash * 0.3), 1.5, true)
+		draw_arc(map.player.position + Vector2(0, -4), 22 + 2.0 * k * pk, 0, TAU, 32, Color(cyan.r, cyan.g, cyan.b, 0.35 + 0.3 * k + _rally_flash * 0.3), 1.5, true)
+	elif _rally == -2:
+		# Hold here: a small shield pip over each banner that builds (and over each waiting team member).
+		for p in points:
+			if str(p["spawner"]) != "" and str(p["owner"]) == "ally":
+				_shield_pip(p["pos"] + Vector2(0, -34), cyan)
+		for h in team:
+			if is_instance_valid(h):
+				_shield_pip((h as HelperUnit).home + Vector2(0, 6), Color(cyan.r, cyan.g, cyan.b, 0.6))
+
+
+func _shield_pip(c: Vector2, col: Color) -> void:
+	var sh := PackedVector2Array([c + Vector2(-4, -4), c + Vector2(4, -4), c + Vector2(4, 1), c + Vector2(0, 5), c + Vector2(-4, 1)])
+	draw_colored_polygon(sh, Color(0.05, 0.1, 0.15, 0.8))
+	draw_polyline(sh + PackedVector2Array([sh[0]]), col, 1.0)
 
 
 func _draw_hud() -> void:
@@ -1163,8 +1463,14 @@ func _draw_hud() -> void:
 			_hud.draw_texture_rect(oi, Rect2(gr.position + Vector2(3, 1.5), Vector2(12, 12)), false)
 		txt.append([Vector2(18, y + 33), goal, HORIZONTAL_ALIGNMENT_CENTER, 240, 7, Color(1, 0.92, 0.6)])
 	# Helpers in the field, beside the RALLY button.
-	var hn := _helpers()
-	txt.append([Vector2(RALLY_RECT.end.x + 5, RALLY_RECT.position.y + 12), "%d helper%s%s" % [hn, "" if hn == 1 else "s", (" · build at a banner ◇%d" % _cost("striker")) if hn == 0 else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.75, 0.95, 1.0) if _rally_flash <= 0.0 else Color(1, 1, 0.7)])
+	# c16b_07-01: your team and the banner-built units are counted apart; c16b_06-04: the key once here.
+	var rr := rally_rect()
+	var fs := mini(Settings.font(7), 9)  # c16b_12-04: text size, capped so the top bar still fits 270 px
+	txt.append([Vector2(rr.end.x + 5, rr.position.y + 9), count_line(), HORIZONTAL_ALIGNMENT_LEFT, 262.0 - rr.end.x - 5.0, fs, Color(0.75, 0.95, 1.0) if _rally_flash <= 0.0 else Color(1, 1, 0.7)])
+	var hint := count_hint()
+	if hint != "":
+		txt.append([Vector2(rr.end.x + 5, rr.position.y + 18), hint, HORIZONTAL_ALIGNMENT_LEFT, 262.0 - rr.end.x - 5.0, 7, Color(0.75, 0.9, 1.0, 0.85)])
+	_hud_rally_arrow()
 	# Point pips, left to right in data order, with an arrow toward the nearest one you don't hold.
 	var x0 := 135.0 - points.size() * 7.0
 	for i in points.size():
@@ -1190,7 +1496,11 @@ func _draw_hud() -> void:
 	elif oa > oe:
 		txt.append([Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.6, 1, 0.7)])
 	var stxt := "Supply ◇%d (%+.1f/s)" % [supply, _rate]
-	txt.append([Vector2(76, y + 13), stxt, HORIZONTAL_ALIGNMENT_CENTER, 124, 7, Color(1, 0.95, 0.7)])
+	# c16b_07-03: red while upkeep outruns income; pulses while broke (steady under reduced motion).
+	var scol := Color(1, 0.95, 0.7) if _rate >= 0.0 else Color(1, 0.5, 0.42)
+	if broke_now:
+		scol = Color(1, 0.35, 0.3, 0.6 + 0.4 * absf(sin(PlayClock.now() * 5.0)) * pulse_k())
+	txt.append([Vector2(76, y + 13), stxt, HORIZONTAL_ALIGNMENT_CENTER, 124, 7, scol])
 	var si := Art.tex("ui", "icon_supply")
 	if si:
 		_hud.draw_texture_rect(si, Rect2(Vector2(80, y + 6), Vector2(9, 9)), false)
@@ -1204,6 +1514,31 @@ func _draw_hud() -> void:
 				_hud.draw_string_outline(f, e[0], e[1], e[2], e[3], e[4], 3, Color(0, 0, 0, 0.8))
 			else:
 				_hud.draw_string(f, e[0], e[1], e[2], e[3], e[4], e[5])
+
+
+## "Team 4 · Crystals 0" (c16b_07-01).
+func count_line() -> String:
+	return "Team %d · %s %d" % [_team_count(), unit_word().capitalize(), _built()]
+
+
+## The second line under the count: how to build when nothing is built, else the order key.
+func count_hint() -> String:
+	if _built() == 0 and not is_drill:
+		return "build at a banner ◇%d" % _cost("striker")
+	var k := _rally_key()
+	return ("%s: orders" % k) if k != "" else ""
+
+
+## c16b_06-10: a cyan edge arrow toward an off-screen order point.
+func _hud_rally_arrow() -> void:
+	if _rally < 0 or _rally >= points.size() or map.player == null:
+		return
+	var pos: Vector2 = points[_rally]["pos"]
+	if map.player.position.distance_to(pos) <= 140.0:
+		return
+	var dir: Vector2 = (pos - map.player.position).normalized()
+	var c := Vector2(135, 310) + dir * Vector2(96.0, 66.0)
+	_hud.draw_colored_polygon(PackedVector2Array([c + dir * 7, c + dir.orthogonal() * 4, c - dir.orthogonal() * 4]), Color(0.55, 0.95, 1.0, 0.9))
 
 
 ## Off-screen pointer to the nearest point you don't hold (its name goes in txt).
@@ -1372,6 +1707,44 @@ func _end_drill(won: bool, travel: bool) -> void:
 	map.go_to(str(back[0]), Vector2(float(back[1]) * GameMap.TILE, float(back[2]) * GameMap.TILE) if float(back[1]) > 0 else Vector2.ZERO, "down")
 
 
+## Stats for the reward ladder's stars (contract section 3; P4's BattleRewards.stars_for).
+func win_stats() -> Dictionary:
+	var lost := 0
+	for h in team:
+		if not is_instance_valid(h) or (h as HelperUnit).is_queued_for_deletion() or (h as HelperUnit).hp <= 0:
+			lost += 1
+	return {"tickets_left": int(tickets["ally"]), "tickets_max": int(_t_max["ally"]), "player_ko": int(GameState.run.get("hp", 1)) <= 0,
+		"allies_lost": lost, "elapsed": _elapsed}
+
+
+## BattleRewards.on_win (P4) called guarded, so this file works with or without the ladder merged.
+## Campaign.finish (P3) does not call it: Battle is the one caller for campaign wins.
+func rewards_on_win(cid: String, nid: String, stats: Dictionary) -> Array:
+	var path := "res://scripts/battle_rewards.gd"
+	if cid == "" or nid == "" or not ResourceLoader.exists(path):
+		return []
+	var br: Script = load(path)
+	if br == null:
+		return []
+	var has := false
+	for mt: Dictionary in br.get_script_method_list():
+		if str(mt.get("name", "")) == "on_win":
+			has = true
+			break
+	if not has:
+		return []
+	var out: Variant = br.call("on_win", cid, nid, 0, stats, map)
+	return out if out is Array else []
+
+
+## c16b_07-09: after a fight, point at the lasting ways to grow the army.
+func after_lines(_won: bool) -> Array:
+	var pts := GameState.points_free("strategist") if not GameState.run.is_empty() else 0
+	if pts > 0:
+		return [{"text": "Spend your Strategist point: MENU > Skills. Strategist skills make your helpers tougher."}]
+	return []
+
+
 func _end_campaign(won: bool, travel: bool) -> void:
 	_over = true
 	GameState.add_xp("strategist", 150 if won else mini(80, 15 * _caps + _kills))
@@ -1390,9 +1763,13 @@ func _end_campaign(won: bool, travel: bool) -> void:
 		if h is HelperUnit or h is CampaignConvoy:
 			h.queue_free()
 	var cid := camp
+	var nid := str(d.get("node", ""))
+	var stats := win_stats()
 	var lines := Campaign.finish(won, supply)
 	if won:
 		map.xp("combat", 30)
+		lines.append_array(rewards_on_win(cid, nid, stats))
+	lines.append_array(after_lines(won))
 	GameState.save()
 	if not travel:
 		return
