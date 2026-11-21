@@ -210,9 +210,13 @@ func _shove(e: Enemy) -> void:
 	var r := TeamAnimals.rank(uid, "guard")
 	_guard_cd = HIT_CD * 1.5 / (1.0 + 0.2 * (r - 1))
 	e.provoke(self)
-	e.hit(maxi(1, r - 1), position, false, true)
+	var landed := e.hit(maxi(1, r - 1), position, false, true)
 	map.fx("hit_spark", e.position + Vector2(0, -8), 12.0, 0.3)
-	RanchVoice.say(get_tree(), uid, "attack")
+	var near := position.distance_to(map.player.position) < 170.0
+	if landed and near:
+		Music.instance(get_tree()).sfx_pitched("block", "thud", 1.0, -6.0)  # a shove is a soft block (c13_09-09)
+	if near and randf() < 0.5 and _voice_ok():
+		RanchVoice.say(get_tree(), uid, "attack")
 
 
 func _drop_fetch() -> void:
@@ -255,10 +259,24 @@ func _pick_target() -> Node2D:
 func _hit(e: Enemy) -> void:
 	_cd = HIT_CD
 	e.provoke(self)
-	e.hit(dmg, position, false, true)
+	var landed := e.hit(dmg, position, false, true)
 	map.fx("hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
-	if randf() < 0.5 and position.distance_to(map.player.position) < 170.0:
+	var near := position.distance_to(map.player.position) < 170.0
+	if landed and near:
+		Music.instance(get_tree()).sfx_pitched("hit", "", 1.1, -6.0)  # every landed hit lands (c13_09-09)
+	if randf() < 0.5 and near and _voice_ok():
 		RanchVoice.say(get_tree(), uid, "attack", "bleat")  # c11b_14-07/-08: the species voice from ranch.json
+
+
+## Attack voices at most every 2.5 s per animal (c13_09-09).
+var _voice_at := -10.0
+
+
+func _voice_ok() -> bool:
+	if PlayClock.now() - _voice_at < 2.5:
+		return false
+	_voice_at = PlayClock.now()
+	return true
 
 
 var _hurt_until := -1.0  # PlayClock time the hurt pose ends

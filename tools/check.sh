@@ -1145,3 +1145,10 @@ echo "$c13p4out" | grep -E "FAIL|SCRIPT ERROR|story_audio_test" || true
 if ! echo "$c13p4out" | grep -q "story_audio_test: 0 fails"; then
   echo "story_audio_test failed"; exit 1
 fi
+
+echo "== C13 P5: actions map to their own sounds (pets, ranch voices and babies, goods, vehicles, contract sfx) =="
+aaout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/action_audio_test.gd 2>&1)"
+echo "$aaout" | grep -E "FAIL|SCRIPT ERROR|action_audio_test" || true
+if ! echo "$aaout" | grep -q "action_audio_test: 0 failures"; then
+  echo "action_audio_test failed"; exit 1
+fi

@@ -22,6 +22,9 @@ var _carry_item := ""
 var _carry_from := Vector2.ZERO
 var _carry_find := ""     # mines: "mine" while running to dig, then the item it carries back (PupMine)
 var _howled := false
+var _yelp_at := -10.0
+## Tracker memory (c13_09-26): "<scene>:<x>,<y>" of finds already barked at, so it barks once per find.
+static var tracked := {}
 var _hp_bar: Node2D
 var _down_t := -1.0       # seconds left to revive a downed pup (-1: not down)
 var _moving := false
@@ -93,18 +96,38 @@ static func kind_word() -> String:
 
 ## The pet's voice for a moment: "call" (alert, answer, fight), "happy" (petted,
 ## back up) or "hurt" (knocked down, going home). Cats meow/purr, dogs bark/whimper.
+## C13 P5: also "howl" (the Howl perk), "hit" (took a hit, not down) and "attack" (lunging at a foe).
 static func voice(moment := "call") -> String:
+	return str(voice_row(moment)[0])
+
+
+## [file, fallback, pitch, dB] for a moment (c13_09-12/-13, c13_07-33): the dog howls (CC0 take, else a
+## low bark), yelps when hit and growls on the attack; the cat yowls, mews sharply when hit, and a
+## knocked-down cat meows low (not its greeting).
+static func voice_row(moment := "call") -> Array:
 	if is_cat():
-		return {"happy": "purr", "hurt": "meow"}.get(moment, "meow")
-	return {"hurt": "whimper"}.get(moment, "bark")
+		return {"happy": ["purr", "meow", 1.0, 0.0], "hurt": ["meow", "", 0.8, -2.0], "hit": ["meow", "", 1.25, -3.0],
+			"howl": ["meow", "", 0.8, 0.0], "attack": ["meow", "", 0.9, -2.0]}.get(moment, ["meow", "bark", 1.0, 0.0])
+	return {"hurt": ["whimper", "bark", 1.0, 0.0], "hit": ["whimper", "bark", 1.2, -4.0], "howl": ["pet_howl", "bark", 1.0, 0.0],
+		"attack": ["growl", "bark", 1.25, -5.0]}.get(moment, ["bark", "", 1.0, 0.0])
 
 
-## Play the pet's voice (falls back to the dog's sound if a cat take is missing).
-static func say(tree: SceneTree, moment := "call") -> void:
+## Play the pet's voice. `from` (the pet's position) gates it to the player's earshot (170 px) in fights.
+static func say(tree: SceneTree, moment := "call", from := Vector2.INF) -> void:
 	if tree == null:
 		return
-	var dog: String = {"hurt": "whimper"}.get(moment, "bark")
-	Music.instance(tree).sfx(voice(moment), dog)
+	if from != Vector2.INF:
+		var m := tree.current_scene as GameMap
+		if m and m.player and m.player.position.distance_to(from) > 170.0:
+			return
+	var r := voice_row(moment)
+	var mu := Music.instance(tree)
+	if moment == "howl" and not mu.has_sfx(str(r[0])):
+		mu.sfx_pitched("bark", "", 0.8, 0.0)  # no howl take: a long low bark
+	elif float(r[2]) == 1.0 and float(r[3]) == 0.0:
+		mu.sfx(str(r[0]), str(r[1]))
+	else:
+		mu.sfx_pitched(str(r[0]), str(r[1]), float(r[2]), float(r[3]))
 	if moment == "happy":
 		Haptics.buzz("purr")  # a pat on the pup/cat: a soft flutter (C9 P4)
 
@@ -273,6 +296,9 @@ func take_damage(n: int, from: Vector2) -> void:
 	_hp_bar.queue_redraw()
 	if int(st["hp"]) <= 0:
 		_knock_down()
+	elif PlayClock.now() - _yelp_at >= 0.8:
+		_yelp_at = PlayClock.now()  # a soft yelp, rate-capped (c13_09-13)
+		Pet.say(get_tree(), "hit", position)
 
 
 ## Out of health: the pup lies down where it is. You have two minutes to feed it
@@ -430,9 +456,11 @@ func _process(delta: float) -> void:
 			var pc := map.world_to_cell(position)
 			for c in map.things:
 				var t := str(map.things[c].get("type", ""))
-				if t in ["mrock", "forage", "rock"] and (c as Vector2i).distance_to(pc) <= 8.0 and (t == "forage" or str(map.things[c].get("ore", "")) in ["silver", "gold", "ruby", "crystal", "mithril"]):
+				var tk := "%s:%d,%d" % [map.scene_id(), (c as Vector2i).x, (c as Vector2i).y]
+				if t in ["mrock", "forage", "rock"] and not tracked.has(tk) and (c as Vector2i).distance_to(pc) <= 8.0 and (t == "forage" or str(map.things[c].get("ore", "")) in ["silver", "gold", "ruby", "crystal", "mithril"]):
+					tracked[tk] = GameState.run.get("day", 0)
 					map.emote(self, "surprise", 0.8)
-					Pet.say(get_tree(), "call")
+					Pet.say(get_tree(), "call", position)
 					if anim.sprite_frames.has_animation("bark"):
 						anim.play("bark")
 					break
@@ -460,6 +488,7 @@ func _process(delta: float) -> void:
 					if is_instance_valid(e) and e.position.distance_to(position) < 90.0:
 						e._stun = maxf(e._stun, 1.2)
 				map.emote(self, "angry", 1.0)
+				Pet.say(get_tree(), "howl")  # the Howl perk finally sounds (c13_09-12)
 				anim.play("howl" if anim.sprite_frames.has_animation("howl") else "bark")
 				map.shake(2.0)
 	# Heel spot: behind you and a little to the side (never on the cell you face),
@@ -595,11 +624,12 @@ func _bite(e: Enemy) -> void:
 	anim.flip_h = e.position.x < position.x
 	e.provoke(self)  # it turns to fight back
 	if randf() < 0.35:
-		Pet.say(get_tree(), "call")
+		Pet.say(get_tree(), "attack", position)
 	var landed := e.hit(dmg, position, false, true)
-	# The bite itself (c6_08_26): only when the player is near enough to hear it.
+	# The bite itself (c6_08_26): only when the player is near enough to hear it. Its own snap, never the
+	# fishing 'bite' alert (c13_07-33).
 	if landed and map.player and position.distance_to(map.player.position) < 170.0:
-		Music.instance(get_tree()).sfx("bite", "hit")
+		Music.instance(get_tree()).sfx_pitched("hit", "", 1.2, -4.0)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
 	if landed:

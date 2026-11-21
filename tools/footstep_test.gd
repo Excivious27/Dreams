@@ -47,7 +47,9 @@ func _run() -> void:
 		["desert_dune_sea", "penguins", "sand", 0.5, 1.0], ["gilt_casino_row", "gangsters", "stone", 0.5, 1.0],
 		["iron_freight_yards", "gangsters", "grass", 0.0, 0.3], ["marsh", "penguins", "mud", 0.0, 0.9],
 		["farm", "penguins", "snow", 0.4, 1.0, 92], ["gilt_casino_row", "gangsters", "snow", 0.0, 0.2, 92],
-		["iron_tunnels", "gangsters", "snow", 0.0, 0.05, 92]]
+		["iron_tunnels", "gangsters", "snow", 0.0, 0.05, 92],
+		# C13 P5 (c13_07-27): the quarry's meadow and Hollow Heart's moss step as their own ground, not stone.
+		["quarry", "penguins", "grass", 0.3, 1.0], ["hollow_heart", "penguins", "grass", 0.3, 1.0]]
 	var shares := {}
 	for cs: Array in cases:
 		var day := int(cs[5]) if cs.size() > 5 else 1
@@ -69,11 +71,21 @@ func _run() -> void:
 		check(s >= float(cs[3]) and s <= float(cs[4]), "%s %s share %.2f not in [%.2f, %.2f]" % [key, cs[2], s, cs[3], cs[4]])
 	# Exact texture names (c6_06).
 	check(Footsteps.seam_word("cobble_moss") == "stone", "cobble_moss is stone")
-	check(Footsteps.seam_word("floor_carpet") == "grass", "carpet is soft")
+	check(Footsteps.seam_word("floor_carpet") == "carpet", "carpet steps on carpet")
+	# C13 P5: carpets, grates and ice have their own takes.
+	check(Footsteps.seam_word("floor_metal_grate") == "metal", "metal grate is metal")
+	check(Footsteps.seam_word("ice_rink") == "ice", "ice is ice")
+	check(Footsteps.path_word("metal_b") == "metal", "metal path is metal")
+	check(Footsteps.INTERIOR_FLOOR.get("fl_grate", "") == "metal", "grate interior floor is metal")
+	check(Footsteps.INTERIOR_FLOOR.get("fl_carpet_red", "") == "carpet", "carpet interior floor is carpet")
+	# Vehicle ticks follow the ground (c13_07-04): the sled crunches only on snow or ice.
+	check(Player.veh_tick_word("crystal_sled", "grass") != "snow", "sled on grass is no snow crunch")
+	check(Player.veh_tick_word("crystal_sled", "ice") == "ice", "sled on ice")
+	check(Player.veh_tick_word("rowboat", "water") == "water", "rowboat tick")
 	check(Footsteps.seam_word("cave_crystal_floor") == "stone", "crystal cave floor is stone")
 	check(Footsteps.seam_word("cave_earth_floor") == "dirt", "earth cave floor is dirt")
 	# Words map to real sounds.
-	for w: String in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves"]:
+	for w: String in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves", "carpet", "metal", "ice"]:
 		check(ResourceLoader.exists("res://audio/sfx/step_%s.ogg" % w), "step_%s exists" % w)
 	print("footstep_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

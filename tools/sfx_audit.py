@@ -9,6 +9,9 @@ Checks
   * music: play("x") literals, AREA_MUSIC / INTERIOR_MUSIC / BOSS_TRACKS / ONCE
     entries and data/regions.json "music" all exist in audio/music;
   * ambience beds/spots named in scripts/ambience.gd exist in audio/amb.
+  * stand-ins (C13): an asked-for name with no file whose fallback plays is listed; a stand-in
+    not in tools/sfx_standins.txt fails; `--release` fails while any is left;
+  * the C13 contract's delivered sounds exist.
 Prints a coverage table; exits 1 on any miss.
 """
 import glob, json, os, re, sys
@@ -24,11 +27,33 @@ src = {f: open(f).read() for f in glob.glob(os.path.join(ROOT, "scripts", "*.gd"
 allsrc = "\n".join(src.values())
 bad = []
 used_sfx = set()
-for m in re.finditer(r'sfx\("([a-z_0-9]+)"(?:\s*,\s*"([a-z_0-9]+)")?\)', allsrc):
+# C13 P5 (c13_12-02/-03, c13_14-10): sfx(...) AND sfx_pitched(...) literals; a name whose own file is
+# missing but whose fallback plays is a STAND-IN: listed every run, compared with tools/sfx_standins.txt
+# (a new stand-in fails; --release fails while the list is non-empty).
+RELEASE = "--release" in sys.argv
+standins = {}
+for m in re.finditer(r'sfx(?:_pitched)?\("([a-z_0-9]+)"\s*(?:,\s*"([a-z_0-9]*)"\s*)?[,)]', allsrc):
     n, fb = m.group(1), m.group(2)
     used_sfx.add(n)
+    if fb:
+        used_sfx.add(fb)
     if not have("sfx", n) and not (fb and have("sfx", fb)):
         bad.append(f"sfx {n}" + (f" (fallback {fb})" if fb else ""))
+    elif not have("sfx", n):
+        standins.setdefault(n, fb)
+for m in re.finditer(r'sfx_chain\(\[([^\]]*)\]', allsrc):
+    names = re.findall(r'"([a-z_0-9]+)"', m.group(1))
+    used_sfx.update(names)
+    if names and not any(have("sfx", x) for x in names):
+        bad.append("sfx_chain " + "/".join(names) + ": none exists")
+# The C13 contract (section 3): sounds P5 delivers must exist.
+C13_DELIVERED = ["card_deal", "card_flip", "chip_clack", "roulette_spin", "roulette_ball", "slot_spin", "slot_stop",
+                 "target_tin", "claw_move", "claw_drop", "skee_roll", "ticket_out", "cabinet_coin", "step_carpet",
+                 "step_metal", "step_ice", "step_wood", "scooter_ride", "motor_loop", "sled_snow", "milk", "shear",
+                 "egg_collect", "howl_far", "knockout", "swim", "cv_merkitty", "cv_crystal_baby"]
+for n in C13_DELIVERED:
+    if not have("sfx", n):
+        bad.append(f"C13 contract sound {n}")
 for fn in ["spell_sound", "_death_sound", "station_sound", "_gun_sound", "gun_sound"]:
     m = None
     for body in src.values():
@@ -79,7 +104,7 @@ if os.path.exists(hp_):
         cues = [x for x in c.get("sfx", []) if x != "voice"]
         if cues and not any(have("sfx", x) for x in cues):
             bad.append(f"chore {cid}: none of {cues} exists")
-for w in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves"]:
+for w in ["grass", "dirt", "sand", "stone", "wood", "snow", "water", "mud", "gravel", "leaves", "carpet", "metal", "ice"]:
     if not have("sfx", "step_" + w):
         bad.append(f"step_{w}")
 # music
@@ -194,6 +219,18 @@ print(f"ambience: {len(beds)} beds, {len(spots)} spots")
 placeholders = sorted(all_music - real_music)
 if placeholders:
     print("music still placeholder:", " ".join(placeholders))
+sp_ = os.path.join(ROOT, "tools", "sfx_standins.txt")
+allowed = {l.split()[0] for l in open(sp_) if l.strip() and not l.startswith("#")} if os.path.exists(sp_) else set()
+print(f"stand-ins ({len(standins)}: asked-for name has no file, its fallback plays): " +
+      " ".join(f"{n}->{fb}" for n, fb in sorted(standins.items())))
+new_si = sorted(set(standins) - allowed)
+if new_si:
+    bad.append("new stand-in (make the sound, or add it to tools/sfx_standins.txt): " + " ".join(new_si))
+gone = sorted(allowed - set(standins))
+if gone:
+    print("stand-ins now real (drop from tools/sfx_standins.txt): " + " ".join(gone))
+if RELEASE and standins:
+    bad.append(f"--release: {len(standins)} stand-ins left")
 if bad:
     print("MISSING:", "; ".join(sorted(set(bad))))
     sys.exit(1)
