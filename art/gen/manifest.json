@@ -29778,6 +29778,17 @@
    "h": 96,
    "w": 109
   },
+  "karaoke_lit": {
+   "file": "buildings/karaoke_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 109
+  },
+  "karaoke_night": {
+   "file": "buildings/karaoke_night.png",
+   "h": 96,
+   "w": 109
+  },
   "lab_barn_4": {
    "file": "buildings/lab_barn_4.png",
    "h": 103,
@@ -29884,6 +29895,17 @@
    "h": 160,
    "w": 170
   },
+  "neon_hotel_lit": {
+   "file": "buildings/neon_hotel_lit.png",
+   "glow_mask": true,
+   "h": 160,
+   "w": 170
+  },
+  "neon_hotel_night": {
+   "file": "buildings/neon_hotel_night.png",
+   "h": 160,
+   "w": 170
+  },
   "noodle_stand": {
    "cell_h": 96,
    "cell_w": 71,
@@ -29918,6 +29940,17 @@
    "h": 512,
    "w": 160
   },
+  "president_tower_lit": {
+   "file": "buildings/president_tower_lit.png",
+   "glow_mask": true,
+   "h": 512,
+   "w": 160
+  },
+  "president_tower_night": {
+   "file": "buildings/president_tower_night.png",
+   "h": 512,
+   "w": 160
+  },
   "president_tower_open": {
    "file": "buildings/president_tower_open.png",
    "h": 512,
@@ -29925,6 +29958,17 @@
   },
   "ramen_shop": {
    "file": "buildings/ramen_shop.png",
+   "h": 96,
+   "w": 105
+  },
+  "ramen_shop_lit": {
+   "file": "buildings/ramen_shop_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 105
+  },
+  "ramen_shop_night": {
+   "file": "buildings/ramen_shop_night.png",
    "h": 96,
    "w": 105
   },
@@ -95961,12 +96005,12 @@
   },
   "c14p5_frost_reeds_a": {
    "file": "nature/c14p5_frost_reeds_a.png",
-   "h": 48,
+   "h": 49,
    "w": 40
   },
   "c14p5_frost_reeds_b": {
    "file": "nature/c14p5_frost_reeds_b.png",
-   "h": 58,
+   "h": 56,
    "w": 40
   },
   "c14p5_frost_thistle": {
@@ -95981,7 +96025,7 @@
   },
   "c14p5_frost_tuft_s": {
    "file": "nature/c14p5_frost_tuft_s.png",
-   "h": 32,
+   "h": 33,
    "w": 30
   },
   "c14p5_frost_tuft_w": {
@@ -95996,7 +96040,7 @@
   },
   "c14p5_snow_stone_s": {
    "file": "nature/c14p5_snow_stone_s.png",
-   "h": 27,
+   "h": 26,
    "w": 34
   },
   "campfire2": {
