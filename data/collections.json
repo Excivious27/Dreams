@@ -1262,6 +1262,12 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "barley",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "oat",
     "arc": "",
     "family": "Crops",
@@ -1425,6 +1431,12 @@
    },
    {
     "item": "ginger",
+    "arc": "",
+    "family": "Herbs",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "comfrey",
     "arc": "",
     "family": "Herbs",
     "where": "Out in the world somewhere."
@@ -2430,14 +2442,14 @@
     "recipe": "pup_treat",
     "station": "workbench",
     "item": "pup_treat",
-    "name": "Pup Treats",
+    "name": "Pup Treat",
     "arc": ""
    },
    {
     "recipe": "fence_kit",
     "station": "workbench",
     "item": "shingles",
-    "name": "Shingle Bundle",
+    "name": "Shingles",
     "arc": ""
    },
    {
@@ -2528,14 +2540,14 @@
     "recipe": "cornmeal_bread",
     "station": "mill",
     "item": "bread",
-    "name": "Corn Bread",
+    "name": "Bread (cornmeal)",
     "arc": ""
    },
    {
     "recipe": "oat_flour",
     "station": "mill",
     "item": "flour",
-    "name": "Oat Flour",
+    "name": "Flour (oats)",
     "arc": ""
    },
    {
@@ -4117,7 +4129,7 @@
     "recipe": "wine_reserve",
     "station": "press",
     "item": "fine_wine",
-    "name": "Fruit Wine Reserve",
+    "name": "Fine Wine (from fruit wine)",
     "arc": ""
    },
    {
@@ -4208,7 +4220,7 @@
     "recipe": "lens",
     "station": "kiln",
     "item": "lens",
-    "name": "Lens",
+    "name": "Glass Lens",
     "arc": ""
    },
    {
@@ -5284,6 +5296,11 @@
    },
    {
     "item": "ginger",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "comfrey",
     "arc": "",
     "where": "Out in the world somewhere."
    },

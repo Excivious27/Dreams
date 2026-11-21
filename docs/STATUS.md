@@ -2,6 +2,7 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P6 (items/ranch/decor/UI text): every item has a description; decor lines varied (518 distinct, was 81) with real catalogue sources; wardrobe flavour shows; creature where-from lines; region names with articles in gate words; device-correct button/menu words (PadInput '(MENU'/'Menu >', tool hints, battle brief, casino how-to, hud hint); achievements text; c12_items_ui_text_test.
 ## 2026-11-20 — C12 P4 (hearts/romance/gifts): one Mabel-father story, Sel gangster words + 'they', Tam/Sel stay for a partner (if_partner), Juniper retired as candidate, locket/house refusals, Tess heart arc, perk texts match scenes and show cash, gift tastes for ranch/arc goods/crew, gift_lines when/default/birthday_plain, no ammo gifts, ItemWords 'X of Y'; test c12_hearts_gifts_test.
 ## 2026-11-20 — C12 P3 (villagers + festivals): Talk pool keys are conditions (q:/f:/time/festival_<id>, a&b); story-gated chatter (President, Coldy, Big Jim, merkitty); Tess/Catkins blocks, weather/time/season/festival lines; Rook a tracker; Benno horse/Halo; Posy/Juniper away and back; indoor lines only at work (arc/progress aware); region folk arc/after-boss/job-done lines; Marlowe/Orla/Old Moss/Granite/Sel first meetings; festival hosts who left are replaced, town on the plaza 9-6, egg hunt 12 eggs + cash prize; Catkins hands in her bell quest; tools/talk_conditions_test.gd.
 

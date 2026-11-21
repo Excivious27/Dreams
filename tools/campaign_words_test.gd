@@ -32,6 +32,19 @@ func _words(arc: String, cid: String, want: String, must: Array) -> Dictionary:
 	check((gw["lines"] as Array).size() == 2 and not all_text.contains("held against"), "%s/%s: a sense line and a step" % [arc, cid])
 	for w: String in must:
 		check(all_text.contains(w), "%s/%s [%s]: mentions '%s'" % [arc, cid, want, w])
+	# C12 (c12_13-14/15): region names in sentences carry their article, and the
+	# sense line's tail matches the stage (no "not yet" once it's under way).
+	var bare := str(Campaign.get_c(cid).get("region_name", ""))
+	for pre: String in [" into ", " to ", " for "]:
+		if Campaign.region_phrase(Campaign.get_c(cid)) != bare:
+			check(not all_text.contains(pre + bare + " ") and not all_text.contains(pre + bare + "."), "%s/%s [%s]: no bare region name after '%s' (%s)" % [arc, cid, want, pre.strip_edges(), all_text])
+	var tail := str(gw["lines"][0])
+	if want == "under_way":
+		check(not tail.contains("Not yet") and not tail.contains("walking in alone"), "%s/%s: no 'not yet' tail once under way (%s)" % [arc, cid, tail])
+	elif want in ["gather", "ready"]:
+		check(not tail.contains("walking in alone") and not tail.contains("doesn't feel safe"), "%s/%s: muster-stage tail (%s)" % [arc, cid, tail])
+	else:
+		check(tail.contains("Not yet") or tail.contains("doesn't feel safe"), "%s/%s: shut-way tail (%s)" % [arc, cid, tail])
 	# Truth: the board would agree.
 	var wl := Campaign.why_locked(cid)
 	match want:
@@ -86,7 +99,7 @@ func _initialize() -> void:
 			if pre != cid:
 				# the step names the first held campaign of the whole chain, which has none before it
 				check(Campaign.first_in_chain(pre) == pre and not Campaign.region_open(str(Campaign.get_c(pre)["region"])), "%s/%s: chain start %s is real" % [arc, cid, pre])
-				var gwa := _words(arc, cid, "after", [str(Campaign.get_c(pre)["region_name"]), str(Campaign.get_c(pre)["title"]), Campaign.who(cid)])
+				var gwa := _words(arc, cid, "after", [Campaign.region_phrase(Campaign.get_c(pre)), str(Campaign.get_c(pre)["title"]), Campaign.who(cid)])
 				check(str(gwa.get("cid", "")) == pre, "%s/%s: the board opens on %s" % [arc, cid, pre])
 			elif GameState.progress_tier() < int(c.get("min_pt", 0)):
 				_words(arc, cid, "later", ["story"])
@@ -119,7 +132,7 @@ func _initialize() -> void:
 			if CampaignGate.team_short(cid) == 0 and GameState.progress_tier() >= mt:
 				_words(arc, cid, "ready", [Campaign.who(cid), str(c["title"]), "Muster"])
 				check(CampaignGate.muster(cid) != "", "%s/%s: musters" % [arc, cid])
-				_words(arc, cid, "under_way", ["territories", str(c["title"])])
+				_words(arc, cid, "under_way", ["territories" if arc == "penguins" else "blocks", str(c["title"])])
 			Campaign.st()["open"][reg] = true
 	print("campaign_words_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)

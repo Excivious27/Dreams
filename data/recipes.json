@@ -97,7 +97,7 @@
   },
   {
    "id": "pup_treat",
-   "name": "Pup Treats",
+   "name": "Pup Treat",
    "need": {
     "meat": 1,
     "wheat": 1
@@ -108,7 +108,7 @@
   },
   {
    "id": "fence_kit",
-   "name": "Shingle Bundle",
+   "name": "Shingles",
    "need": {
     "plank": 4,
     "nails": 2
@@ -586,7 +586,7 @@
   },
   {
    "id": "cornmeal_bread",
-   "name": "Corn Bread",
+   "name": "Bread (cornmeal)",
    "need": {
     "corn": 2,
     "flour": 1
@@ -597,7 +597,7 @@
   },
   {
    "id": "oat_flour",
-   "name": "Oat Flour",
+   "name": "Flour (oats)",
    "need": {
     "oat": 1
    },
@@ -3058,7 +3058,7 @@
   },
   {
    "id": "wine_reserve",
-   "name": "Fruit Wine Reserve",
+   "name": "Fine Wine (from fruit wine)",
    "need": {
     "fruit_wine": 2,
     "#herb": 1
@@ -3188,7 +3188,7 @@
   },
   {
    "id": "lens",
-   "name": "Lens",
+   "name": "Glass Lens",
    "need": {
     "glass": 2,
     "sand": 2

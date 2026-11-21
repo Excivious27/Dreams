@@ -50,5 +50,5 @@ tool_hint.gd:Hoe: face grass on your farm and tap USE to till. Hold USE a
 tool_hint.gd:Hold the %s %s: tap it on your toolbar.
 tool_hint.gd:Seeds: face tilled soil and tap USE to plant.
 tool_hint.gd:Sword: tap USE to swing at foes.
-tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, USE it 
+tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, face an
 town.gd:Cast with USE, wait for the splash, tap USE again. Patience 

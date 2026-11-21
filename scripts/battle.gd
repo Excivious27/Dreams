@@ -811,7 +811,7 @@ func _team_push() -> void:
 	map.set_meta("team_push", tgt)
 	if not _push_said:
 		_push_said = true
-		map.hud.toast("Your team pushes on. Tap %s to give orders." % _rally_word(), Color(0.7, 0.95, 1.0))
+		map.hud.toast("Your team pushes on. %s to give orders." % BattleDrill.order_how(), Color(0.7, 0.95, 1.0))
 
 
 ## Fielding order: the line-up picked on the battle card first (CampaignGate.line_up, C11b P6).
@@ -928,7 +928,7 @@ func interact(id: String) -> void:
 	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "mend": 25, "barrage": 35}
 	var mu := Music.instance(get_tree())
 	if (k == "mend" and _mend_cd > 0.0) or (k == "barrage" and _barrage_cd > 0.0):
-		map.hud.toast("Not ready yet.", Color(1, 0.8, 0.6))
+		map.hud.toast("%s is recharging: %ds." % [k.capitalize(), ceili(_mend_cd if k == "mend" else _barrage_cd)], Color(1, 0.8, 0.6))
 		mu.sfx("nope", "thud")
 		return
 	if extra.has(k):

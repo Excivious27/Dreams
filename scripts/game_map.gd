@@ -2474,7 +2474,7 @@ func use_consumable(sel: String) -> bool:
 			hud.toast(GameState.full_text(), Color(1, 0.8, 0.6))
 			return true
 		player.play_tool("eat")
-		hud.toast("Ate %s.%s" % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
+		hud.toast(("Drank %s.%s" if ItemWords.is_drink(sel) else "Ate %s.%s") % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
 		Music.instance(get_tree()).sfx("eat", "pickup")
 		return true
 	return false
