@@ -247,6 +247,8 @@ def check_pck(path):
                 errs.append("pck lists %s" % p)
         print("web_export_guard pck: %d files, top folders: %s" % (len(paths), json.dumps(dict(sorted(tops.items())))))
     print("web_export_guard pck: %s, %.1f MB" % (path, size / 1048576.0))
+    if size > 136 * 1048576:  # deploy.yml stops at 140 MB: Steam-only art belongs in steam/ (gdignored)
+        print("web_export_guard: WARNING pck within 4 MB of the deploy's 140 MB gate")
     for e in errs[:20]:
         print("web_export_guard: FAIL", e)
     print("web_export_guard pck: %s" % ("ok" if not errs else "FAIL"))
