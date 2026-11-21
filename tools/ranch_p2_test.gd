@@ -94,6 +94,8 @@ func _initialize() -> void:
 	var cow2 := Ranch.add("cow", "barn")
 	Ranch.animal(cow)["expecting"] = {"due": int(GameState.run["day"]) + 2, "with": cow2}
 	_ok(Ranch.expecting_text(cow).begins_with("Expecting with"), "expecting text (%s)" % Ranch.expecting_text(cow))
+	Ranch.animal(cow).erase("ready")
+	Ranch.animal(cow)["last_fed"] = int(GameState.run["day"])
 	_ok(Ranch.hint(cow).contains("expecting"), "hint shows expecting (%s)" % Ranch.hint(cow))
 	var lines := Ranch.overnight({})
 	var said := false

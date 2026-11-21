@@ -665,7 +665,7 @@ static func hint(uid: String, held := "") -> String:
 	if not ready(uid).is_empty():
 		return "A: %s (goods ready)" % nm
 	if is_adult(uid) and eats(uid) and not fed_today(uid):
-		return "A: feed %s" % nm if feeds_on(uid, held) else "A: %s (hungry: hold %s)" % [nm, feed_word(uid)]
+		return "A: feed %s" % nm if feeds_on(uid, held) else ("A: %s (hungry)" % nm if needs_hay(uid) else "A: %s (hungry: hold %s)" % [nm, feed_word(uid)])
 	var ex := expecting_text(uid)
 	if int(a.get("last_pet", -1)) != _day():
 		return "A: %s %s%s" % [str(species(str(a["species"])).get("pet_word", "pet")), nm, (" (expecting: %s)" % ex.get_slice(" · ", 1)) if ex != "" else ""]
