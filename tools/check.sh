@@ -1394,3 +1394,10 @@ echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
 if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
   echo "C15 integ test failed"; exit 1
 fi
+
+echo "== C16a P1: progression timeline (mega region calendar/skill floors, non-combat roads, year-2 travel) =="
+c16p1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/progression_test.gd 2>&1)"
+echo "$c16p1out" | grep -E "FAIL|SCRIPT ERROR|progression_test" || true
+if echo "$c16p1out" | grep -q "SCRIPT ERROR" || ! echo "$c16p1out" | grep -q "progression_test: PASS"; then
+  echo "C16a P1 progression test failed"; exit 1
+fi

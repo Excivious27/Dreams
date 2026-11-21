@@ -12,7 +12,9 @@ Fields
   arc      "both" | "penguins" | "gangsters"
   theme    one word for the look (snow, desert, gloam, sky, rail, gilt)
   entry    {"scene", "cell", "prop", "label"}: the travel point in the home world
-  unlock   {"tier": story chapters done (GameState.progress_tier()), "quest": hook quest id,
+  unlock   {"tier": story chapters done (GameState.progress_tier()), "when": GameState._cond_ok calendar/skill
+            floor (C16a P1: day/year/skill), "alt": a non-combat road instead of the tier (+ "alt_words"),
+            "words": what the floor says when locked, "quest": hook quest id,
             "flag": set once the way is open}
   hub      the area you arrive in
   areas    [{"id", "scene", "name", "links": [area ids], "tier", "hub": bool}]
@@ -22,7 +24,7 @@ Fields
 REGIONS = [
     {"id": "gloamwood", "name": "Gloamwood", "arc": "both", "theme": "gloam", "color": "7a5ab8",
      "entry": {"scene": "forest", "cell": [24, 38], "prop": "fairy_ring", "group": "nature", "label": "step into the fairy ring"},
-     "unlock": {"tier": 1, "quest": "mega_gloamwood_hook", "flag": "mega_gloamwood_open"},
+     "unlock": {"tier": 1, "when": {"day": 22, "skill": ["foraging", 4]}, "words": "Liesl wants a forager who knows the woods: Foraging 4, from Spring 22.", "quest": "mega_gloamwood_hook", "flag": "mega_gloamwood_open"},
      "hub": "gloam_lanternfall",
      "areas": [
          {"id": "gloam_lanternfall", "scene": "gloam_lanternfall", "name": "Lanternfall", "links": ["gloam_violet_glade", "gloam_crystal_thicket"], "tier": 2, "hub": True},
@@ -32,7 +34,7 @@ REGIONS = [
      ]},
     {"id": "sunscorch", "name": "Sunscorch Expanse", "arc": "both", "theme": "desert", "color": "d8a048",
      "entry": {"scene": "beach", "cell": [24, 14], "prop": "ds_sand_caravan", "label": "the sand-sailors' caravan"},
-     "unlock": {"tier": 2, "quest": "mega_sunscorch_hook", "flag": "mega_sunscorch_open"},
+     "unlock": {"tier": 2, "when": {"day": 43}, "alt": {"skill": ["fishing", 6]}, "alt_words": "or reach Fishing 6", "words": "The dune winds turn in Summer: from Summer 15.", "quest": "mega_sunscorch_hook", "flag": "mega_sunscorch_open"},
      "hub": "desert_mirage_post",
      "areas": [
          {"id": "desert_mirage_post", "scene": "desert_mirage_post", "name": "Mirage Post", "links": ["desert_dune_sea", "desert_glass_canyon"], "tier": 3, "hub": True},
@@ -42,7 +44,7 @@ REGIONS = [
      ]},
     {"id": "ironline", "name": "Ironline Frontier", "arc": "gangsters", "theme": "rail", "color": "8a6a4a",
      "entry": {"scene": "town", "cell": [50, 4], "prop": "ticket_booth", "label": "the night train booth"},
-     "unlock": {"tier": 2, "quest": "mega_ironline_hook", "flag": "mega_ironline_open"},
+     "unlock": {"tier": 2, "when": {"day": 43}, "alt": {"skill": ["mining", 7]}, "alt_words": "or reach Mining 7", "words": "The night train runs again in Summer: from Summer 15.", "quest": "mega_ironline_hook", "flag": "mega_ironline_open"},
      "hub": "iron_junction",
      "areas": [
          {"id": "iron_junction", "scene": "iron_junction", "name": "Junction City", "links": ["iron_freight_yards", "iron_mill_district"], "tier": 3, "hub": True},
@@ -52,7 +54,7 @@ REGIONS = [
      ]},
     {"id": "frostpeak", "name": "Frostpeak Reach", "arc": "both", "theme": "snow", "color": "9ac8e8",
      "entry": {"scene": "mountain", "cell": [7, 35], "prop": "fr_sled_station", "label": "the sled run up to Frostpeak"},
-     "unlock": {"tier": 3, "quest": "mega_frostpeak_hook", "flag": "mega_frostpeak_open"},
+     "unlock": {"tier": 3, "when": {"day": 85}, "alt": {"skill": ["ranching", 6]}, "alt_words": "or reach Ranching 6", "words": "The sled first runs in the Winter snow: from Winter 1.", "quest": "mega_frostpeak_hook", "flag": "mega_frostpeak_open"},
      "hub": "frost_hearthhold",
      "areas": [
          {"id": "frost_hearthhold", "scene": "frost_hearthhold", "name": "Hearthhold", "links": ["frost_glacier", "frost_caverns", "frost_falls"], "tier": 4, "hub": True},
@@ -63,7 +65,7 @@ REGIONS = [
      ]},
     {"id": "windward", "name": "Windward Isles", "arc": "penguins", "theme": "sky", "color": "b8d8f8",
      "entry": {"scene": "meadow", "cell": [42, 24], "prop": "wi_mooring_tower", "label": "Captain Zephyr's balloon"},
-     "unlock": {"tier": 3, "quest": "mega_windward_hook", "flag": "mega_windward_open"},
+     "unlock": {"tier": 4, "when": {"year": 2}, "alt": {"skill": ["foraging", 9]}, "alt_words": "or reach Foraging 9", "words": "The high winds calm in year 2.", "quest": "mega_windward_hook", "flag": "mega_windward_open"},
      "hub": "wind_breezehaven",
      "areas": [
          {"id": "wind_breezehaven", "scene": "wind_breezehaven", "name": "Breezehaven", "links": ["wind_sunrise_shelf", "wind_storm_shelf"], "tier": 4, "hub": True},
@@ -73,7 +75,7 @@ REGIONS = [
      ]},
     {"id": "giltcity", "name": "Gilt City", "arc": "gangsters", "theme": "gilt", "color": "e8c048",
      "entry": {"scene": "farm", "cell": [40, 31], "spawn": [40, 29], "prop": "limo", "label": "the black limousine"},
-     "unlock": {"tier": 3, "quest": "mega_giltcity_hook", "flag": "mega_giltcity_open"},
+     "unlock": {"tier": 4, "when": {"year": 2}, "alt": {"hearts_total": 40}, "alt_words": "or earn 40 hearts around town", "words": "Madame Aurum sends the car in year 2.", "quest": "mega_giltcity_hook", "flag": "mega_giltcity_open"},
      "hub": "gilt_grand_plaza",
      "areas": [
          {"id": "gilt_grand_plaza", "scene": "gilt_grand_plaza", "name": "Grand Plaza", "links": ["gilt_casino_row", "gilt_gardens"], "tier": 4, "hub": True},

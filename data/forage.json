@@ -425,18 +425,42 @@
  ],
  "iron_freight_yards": [
   [
-   "fiber",
-   0.4
+   "map_scrap",
+   0.3
   ],
   [
-   "wild_herb",
+   "lamp_oil",
+   0.3
+  ],
+  [
+   "old_coin",
+   0.15
+  ],
+  [
+   "chain_link",
+   0.05
+  ],
+  [
+   "fiber",
    0.2
   ]
  ],
  "iron_mill_district": [
   [
+   "lamp_oil",
+   0.3
+  ],
+  [
+   "oil",
+   0.1
+  ],
+  [
+   "old_coin",
+   0.2
+  ],
+  [
    "fiber",
-   0.4
+   0.2
   ]
  ],
  "iron_tunnels": [
@@ -445,8 +469,16 @@
    0.3
   ],
   [
+   "glowcap",
+   0.1
+  ],
+  [
+   "old_coin",
+   0.15
+  ],
+  [
    "fiber",
-   0.3
+   0.2
   ]
  ],
  "frost_glacier": [
@@ -525,6 +557,14 @@
  ],
  "gilt_casino_row": [
   [
+   "old_coin",
+   0.3
+  ],
+  [
+   "gambler_chip",
+   0.1
+  ],
+  [
    "flower",
    0.3
   ]
@@ -532,7 +572,9 @@
  "gilt_gardens": [
   [
    "dark_rose",
-   0.2
+   0.03,
+   "foraging",
+   8
   ],
   [
    "flower",
@@ -541,6 +583,18 @@
   [
    "wild_herb",
    0.2
+  ]
+ ],
+ "gilt_vaults": [
+  [
+   "old_coin",
+   0.3
+  ],
+  [
+   "lucky_coin",
+   0.02,
+   "foraging",
+   8
   ]
  ],
  "hollow_deeps": [

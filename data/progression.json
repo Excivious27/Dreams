@@ -1,0 +1,138 @@
+{
+ "_": "Written by tools/gen_progression.py from docs/PROGRESSION.md (edit the doc's table, not this).",
+ "unlocks": {
+  "barn_t4": {
+   "arc": "both",
+   "day": 113,
+   "gate": "gen_stations.py (P5)",
+   "status": "planned",
+   "what": "deluxe barn"
+  },
+  "comet_festival": {
+   "arc": "both",
+   "day": 225,
+   "gate": "C15 Calendar (exists)",
+   "status": "planned",
+   "what": "the comet festival"
+  },
+  "commons": {
+   "arc": "both",
+   "day": 4,
+   "gate": "early_gating (C1)",
+   "status": "planned",
+   "what": "Commons / community farm letter"
+  },
+  "coop": {
+   "arc": "both",
+   "day": 10,
+   "gate": "Plans board",
+   "status": "planned",
+   "what": "first coop"
+  },
+  "grand_marina": {
+   "arc": "both",
+   "day": 113,
+   "gate": "gen_marina.py (+ year 2)",
+   "status": "planned",
+   "what": "marina T4 (grand marina)"
+  },
+  "greenhouse": {
+   "arc": "both",
+   "day": 57,
+   "gate": "gen_stations.py (P5)",
+   "status": "planned",
+   "what": "greenhouse"
+  },
+  "marina_t2": {
+   "arc": "both",
+   "day": 29,
+   "gate": "gen_marina.py",
+   "status": "planned",
+   "what": "marina breakwater (T2)"
+  },
+  "mega_frostpeak": {
+   "arc": "both",
+   "day": 85,
+   "gate": "tier 3 or Ranching 6, + Winter 1",
+   "status": "enforced",
+   "what": "Frostpeak Reach"
+  },
+  "mega_giltcity": {
+   "arc": "gangsters",
+   "day": 113,
+   "gate": "tier 4 or 40 hearts in all, + year 2",
+   "status": "enforced",
+   "what": "Gilt City"
+  },
+  "mega_gloamwood": {
+   "arc": "both",
+   "day": 22,
+   "gate": "story tier 1 + Spring 22 + Foraging 4 (mega_regions_new.py)",
+   "status": "enforced",
+   "what": "Gloamwood (fairy ring)"
+  },
+  "mega_ironline": {
+   "arc": "gangsters",
+   "day": 43,
+   "gate": "tier 2 or Mining 7, + Summer 15",
+   "status": "enforced",
+   "what": "Ironline Frontier"
+  },
+  "mega_sunscorch": {
+   "arc": "both",
+   "day": 43,
+   "gate": "tier 2 or Fishing 6, + Summer 15",
+   "status": "enforced",
+   "what": "Sunscorch Expanse"
+  },
+  "mega_windward": {
+   "arc": "penguins",
+   "day": 113,
+   "gate": "tier 4 or Foraging 9, + year 2",
+   "status": "enforced",
+   "what": "Windward Isles"
+  },
+  "museum_last": {
+   "arc": "both",
+   "day": 225,
+   "gate": "gen_collections.py (P4)",
+   "status": "planned",
+   "what": "last museum milestone"
+  },
+  "rec_center": {
+   "arc": "both",
+   "day": 7,
+   "gate": "early_gating (C1)",
+   "status": "planned",
+   "what": "Rec Center / Rec Hall opens"
+  },
+  "skill_masters": {
+   "arc": "both",
+   "day": 225,
+   "gate": "gen_skill_trees.py (P6)",
+   "status": "planned",
+   "what": "master nodes per skill tree"
+  },
+  "t4_airship": {
+   "arc": "both",
+   "day": 113,
+   "gate": "build + tier 3 + year 2",
+   "status": "enforced",
+   "what": "airship dock / charter airstrip rides"
+  },
+  "t4_hub_links": {
+   "arc": "both",
+   "day": 113,
+   "gate": "both regions' hub jobs + tier 3 + year 2 (gen_travel.py)",
+   "status": "enforced",
+   "what": "hub-to-hub keeper lines"
+  },
+  "t5_hops": {
+   "arc": "both",
+   "day": 113,
+   "gate": "teleporter or uptown + year 2",
+   "status": "enforced",
+   "what": "waystones / dispatch board instant hops"
+  }
+ }
+}

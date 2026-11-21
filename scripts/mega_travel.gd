@@ -31,8 +31,18 @@ static func is_open(id: String) -> bool:
 
 
 ## The story is far enough along for the keeper to ask for help.
+## C16a P1: the story tier OR a non-combat road (unlock.alt), and always the calendar/skill
+## floor (unlock.when: day / year / skill), the same in every difficulty and day length.
 static func can_start(r: Dictionary) -> bool:
-	return GameState.progress_tier() >= int(r.get("unlock", {}).get("tier", 0)) and GameState._cond_ok(r.get("unlock", {}).get("when", {}))
+	return tier_ok(r) and GameState._cond_ok(r.get("unlock", {}).get("when", {}))
+
+
+## The story tier is reached, or the region's non-combat road (unlock.alt) is done.
+static func tier_ok(r: Dictionary) -> bool:
+	var u: Dictionary = r.get("unlock", {})
+	if GameState.progress_tier() >= int(u.get("tier", 0)):
+		return true
+	return u.has("alt") and not (u["alt"] as Dictionary).is_empty() and GameState._cond_ok(u["alt"])
 
 
 static func hub_of(id: String) -> String:
@@ -134,20 +144,26 @@ const TIER_ALT := {"spark": ["wastes_gate", "docks"], "sky_stair": ["neon"], "te
 
 ## "Opens after you beat the Docks boss." — the next story step this way waits for.
 static func gate_words(r: Dictionary) -> String:
-	var need := int(r.get("unlock", {}).get("tier", 0))
+	var u: Dictionary = r.get("unlock", {})
 	var arc := str(GameState.run.get("arc", "penguins"))
 	var steps: Array = TIER_STEPS.get(arc, TIER_STEPS["penguins"])
-	var have := GameState.progress_tier()
-	if have < need:
+	if not tier_ok(r):
 		# The tier counts steps done in any order: name the first one not done yet.
 		for st: Array in steps:
 			var done := GameState.quest_done(str(st[0]))
 			for alt in TIER_ALT.get(str(st[0]), []):
 				done = done or GameState.quest_done(str(alt))
 			if not done:
-				return "Opens after %s." % str(st[1])
-	var hint := str(r.get("unlock", {}).get("hint", ""))
-	return hint if hint != "" else "Opens a little later in the story."
+				var road := str(u.get("alt_words", ""))
+				return "Opens after %s%s." % [str(st[1]), (", " + road) if road != "" else ""]
+	if not GameState._cond_ok(u.get("when", {})):
+		var w := str(u.get("words", ""))  # C16a P1: the calendar/skill floor ("from Summer 15")
+		if w != "":
+			return w
+	var hint = u.get("hint", "")
+	if hint is Dictionary:
+		hint = hint.get(arc, "")
+	return str(hint) if str(hint) != "" else "Opens a little later in the story."
 
 
 ## One letter from the keeper when their way first opens up for you.
@@ -184,9 +200,9 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		return
 	if not can_start(r):
 		Music.instance(m.get_tree()).sfx("locked", "nope")
-		await m.say([{"who": who, "text": str(L.get("locked", "Not yet."))}])
-		var hint := str(r.get("unlock", {}).get("hint", {}).get(str(GameState.run.get("arc", "")), ""))
-		m.hud.toast(hint if hint != "" else gate_words(r), Color(1, 0.85, 0.6))
+		var lk := str(L.get("locked", "Not yet.")) if not tier_ok(r) else "Not yet. " + gate_words(r)  # story done, the date/skill isn't
+		await m.say([{"who": who, "text": lk}])
+		m.hud.toast(gate_words(r), Color(1, 0.85, 0.6))  # C16a P1: names the story step, the other road or the date
 		return
 	var qid := str(r.get("quest", ""))
 	var d := GameState._quest_def(qid)

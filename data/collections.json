@@ -189,7 +189,7 @@
     {
      "item": "old_coin",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Iron Freight Yards, Iron Mill District"
     },
     {
      "item": "fossil",
@@ -204,7 +204,7 @@
     {
      "item": "map_scrap",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Iron Freight Yards"
     },
     {
      "item": "rune_tablet",
@@ -249,7 +249,7 @@
     {
      "item": "lucky_coin",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Gilt Vaults"
     },
     {
      "item": "pearl_necklace",
@@ -1625,7 +1625,7 @@
     "item": "old_coin",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Iron Freight Yards, Iron Mill District"
    },
    {
     "item": "fossil",
@@ -1643,7 +1643,7 @@
     "item": "map_scrap",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Iron Freight Yards"
    },
    {
     "item": "rune_tablet",
@@ -2087,7 +2087,7 @@
     "item": "lucky_coin",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Gilt Vaults"
    },
    {
     "item": "platinum",
