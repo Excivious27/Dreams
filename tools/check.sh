@@ -1461,3 +1461,10 @@ echo "$c16p4fout" | grep -E "FAIL|SCRIPT ERROR|c16a_p4_fish_test" || true
 if echo "$c16p4fout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4fout" | grep -q "c16a_p4_fish_test: 0 failures"; then
   echo "C16a P4 fish test failed"; exit 1
 fi
+
+echo "== C16b P1: battle commands, army building, allies (hold holds the team, MEND/BARRAGE, upkeep, ranks) =="
+c16bp1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/battle_army_test.gd 2>&1)"
+echo "$c16bp1out" | grep -E "FAIL|SCRIPT ERROR|battle_army_test" || true
+if echo "$c16bp1out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp1out" | grep -q "battle_army_test: OK"; then
+  echo "C16b P1 battle army test failed"; exit 1
+fi
