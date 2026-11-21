@@ -19,7 +19,11 @@ var _busy: Node2D
 const TAG_MAX := 12
 # P3's PuppetSmooth (scripts/puppet_smooth.gd: jitter buffer / seq order / teleport), loaded by
 # path so this file compiles before P3's branch is merged; null = the old lerp.
-var _sm: Object = null  # name tag characters before an ellipsis
+var _sm: Object = null
+var _step_t := 0.0
+var _look_ref: Variant = null  # the look Dictionary last applied (skips the per-frame JSON compare)
+const STEP_GAP := 0.34
+const STEP_NEAR := 110.0  # partner footsteps heard only near you (c17_09-08)  # name tag characters before an ellipsis
 
 
 ## The peer's info (router peers may be keyed by String or int).
@@ -84,6 +88,9 @@ func setup(id: int, m: GameMap) -> void:
 
 func _apply_look(info: Dictionary) -> void:
 	var lkv: Variant = info.get("look", {})
+	if lkv != null and is_same(lkv, _look_ref):
+		return  # same Dictionary as last frame: nothing new arrived (c17_09-15)
+	_look_ref = lkv
 	var lk: Dictionary = lkv if lkv is Dictionary else {}
 	var key := JSON.stringify(lk)
 	if key == _last_look:
@@ -130,8 +137,24 @@ func _process(delta: float) -> void:
 				_p._veh_face()
 		_p.anim_name = an
 	_p._update_doll()
+	_p.set("_frozen_idle", 0.0)  # a puppet is frozen on purpose: never trip the 12 s freeze-safety (c17_09-19)
 	_followers(info, an)
 	_actions(info, an)
+	_steps(delta, an)
+
+
+func _steps(delta: float, an: String) -> void:
+	if not (an.begins_with("walk") or an.begins_with("run")) or _p.map == null or _p.map.player == null:
+		_step_t = 0.0
+		return
+	_step_t += delta
+	if _step_t < STEP_GAP:
+		return
+	_step_t = 0.0
+	if position.distance_to(_p.map.player.position) > STEP_NEAR or _veh != "":
+		return
+	var m := _p.map
+	Music.instance(get_tree()).step(Footsteps.word(m, m.world_to_cell(position), false))
 
 
 ## C17 P5 (c17_09-02/03, c17_09-17): a new swing restarts the anim at the swing's speed with the

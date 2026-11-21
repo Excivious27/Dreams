@@ -180,7 +180,7 @@ func _arc_pass() -> void:
 	var menu := _menu(m)
 	if menu:
 		menu.toggle()
-		for t: String in GameMenu.TABS + ["Keys", "FieldLog", "Workshop", "Foes", "Messages", "Mail"]:
+		for t: String in GameMenu.TABS + ["Keys", "Coop", "FieldLog", "Workshop", "Foes", "Messages", "Mail"]:
 			menu._tab = t
 			menu._refresh()
 			await _check("menu_" + t.to_lower(), menu)

@@ -170,6 +170,10 @@ func _show_title() -> void:
 		var n: String = GameState.run["names"]["character"]
 		_page.add_child(_button("Continue as %s" % n, _start_game, true))
 	_page.add_child(_button("New game", _confirm_new if GameState.has_run() else _show_arcs, true))
+	var nn := Net.i()
+	if nn and int(nn.pending_lobby) > 0:
+		# c17_12-10 / c17_14-23: a Steam invite that started the game waits for a farm map: say so.
+		_page.add_child(_label("A friend's Steam invite is waiting. %s" % ("Tap Continue to join them." if GameState.has_run() else "Make your character with New game, then you join them."), 8, false))
 	if Settings.online_ok():
 		_page.add_child(_button("Play together", _show_net))  # C17 P5 (c17_18-02): on every title, also before a first save
 	var prev: Variant = SaveGame.get_value(GameState.prev_key(), null)
@@ -549,6 +553,7 @@ func _on_net_connected(is_host: bool) -> void:
 		return
 	_net_status.text = "Joined room %s. Off to your friend's farm..." % Net.room
 	_guest_start = true
+	CoopPanel.arrival_note = "Welcome to your friend's farm! Room %s. Menu > Options > Play together shows who's here; the wave button sends emotes." % Net.room
 	await get_tree().create_timer(0.8).timeout
 	if Net.online():
 		_start_game()
@@ -572,7 +577,10 @@ func _show_room_card() -> void:
 		_page.add_child(_label("Steam lobby up: friends join from your Steam friends list.", 9, false))
 	_net_status = _label("", 8, false)
 	_page.add_child(_net_status)
-	_page.add_child(_button("Start playing", _start_game, true))
+	_page.add_child(_button("Start playing", func() -> void:
+		if Net.room != "":
+			CoopPanel.arrival_note = "Room %s is open: tap the room chip at the top to see or copy the code." % Net.room
+		_start_game(), true))
 	_page.add_child(_label("You can see the code again any time in Menu > Options > Play together.", 7, false))
 	_page.add_child(_button("End the room", func() -> void:
 		Net.leave()

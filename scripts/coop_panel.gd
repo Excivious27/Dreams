@@ -42,6 +42,25 @@ static func peer_list() -> Dictionary:
 	return pv if pv is Dictionary else {}
 
 
+## The HUD place words while visiting: "Your Farm" -> "Kairi's farm" (the host's filtered name).
+static func visit_place(words: String) -> String:
+	var host := "Your host"
+	var pl := peer_list()
+	for k in pl:
+		if pl[k] is Dictionary and bool((pl[k] as Dictionary).get("host", false)):
+			host = NameFilter.clean(str((pl[k] as Dictionary).get("name", "")), "Your host")
+	var lw := words.to_lower()
+	if lw.contains("your farm") or lw == "farm":
+		return "%s's farm" % host
+	if lw.contains("farmhouse") or lw.contains("your house") or lw == "home":
+		return "%s's house" % host
+	return words
+
+
+## One line said when the next map is up (the guest's welcome, c17_14-08).
+static var arrival_note := ""
+
+
 static func online() -> bool:
 	return Net.online()
 
@@ -357,6 +376,9 @@ class CoopStripNode extends CanvasLayer:
 	func _ready() -> void:
 		layer = 6
 		process_mode = Node.PROCESS_MODE_ALWAYS
+		if CoopPanel.arrival_note != "" and get_parent() is Hud:
+			(get_parent() as Hud).toast.call_deferred(CoopPanel.arrival_note, Color(0.8, 0.95, 1.0))
+			CoopPanel.arrival_note = ""
 		_btn = Button.new()
 		_btn.focus_mode = Control.FOCUS_NONE
 		_btn.add_theme_font_size_override("font_size", Settings.font(7))

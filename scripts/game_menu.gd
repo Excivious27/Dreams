@@ -558,7 +558,7 @@ func _refresh() -> void:
 		"Party":
 			var pt := Companion.party()
 			var act := Companion.active_id()
-			var anb := _button("Animals: %d on the ranch, %d on the team ›" % [Ranch.animals().size(), TeamAnimals.team().size()], func() -> void: _tab = "Animals"; _refresh())
+			var anb := _button(("Animals: %d on your host's ranch, %d on your team ›" if Net.visiting() else "Animals: %d on the ranch, %d on the team ›") % [Ranch.animals().size(), TeamAnimals.team().size()], func() -> void: _tab = "Animals"; _refresh())  # c17_14-27
 			anb.set_meta("pc_key", "party:animals")
 			var chb := _button("Chores: %d helper%s working ›" % [Chores.st()["assign"].size(), "" if Chores.st()["assign"].size() == 1 else "s"] if Chores.unlocked() else "Chores (after your first week) ›", func() -> void: _tab = "Chores"; _refresh())
 			chb.set_meta("pc_key", "party:chores")
@@ -903,8 +903,9 @@ func _refresh() -> void:
 					var st := Marked.state(str(mid))
 					var who := "%s \"%s\", %d" % [str(md["name"]), str(md["epithet"]), int(md["age"])] if st != "" else "??? (%s)" % str(md["scene"]).replace("_", " ")
 					_line("  %s  %s" % [who, {"crew": "· in your crew", "free": "· went home"}.get(st, "")], 8, Color(0.95, 0.9, 1.0))
-			_line("Beaten", 8, Color(0.9, 0.85, 1.0))
 			var ks := kc.keys()
+			if not ks.is_empty():
+				_line("Beaten", 8, Color(0.9, 0.85, 1.0))  # c17_04-09: no empty header
 			ks.sort_custom(func(a: Variant, b: Variant) -> bool: return int(kc[a]) > int(kc[b]))
 			for k in ks:
 				var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(str(k), {})

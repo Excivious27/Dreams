@@ -122,11 +122,13 @@ func _draw_place(c: Control) -> void:
 	if not _place_done:
 		_place_done = true
 		place_name = PlaceNames.of(get_parent() as GameMap)
+		if Net.visiting():
+			place_name = CoopPanel.visit_place(place_name)  # C17 P5 (c17_02-12): never "Your Farm" on the host's farm
 	if place_name == "":
 		return
 	var fs := 8
 	var maxw := 72.0
-	while fs > 6 and _font.get_string_size(place_name, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > maxw:
+	while fs > 7 and _font.get_string_size(place_name, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > maxw:
 		fs -= 1
 	var w := minf(maxw, _font.get_string_size(place_name, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
 	var p := Vector2(162.0 - w, 23.0)
