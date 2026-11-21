@@ -261,7 +261,7 @@ UNLOCKS = {
     # hand_slot (Helpers: ranch chores), animal_quality (quality days); hutch/sty blueprints through Builds.gate.
     "ranching": [(1, 2, "Hutch Blueprint", "Learn to build the Rabbit Hutch.", {"blueprint": "hutch"}),
                  (2, 3, "Sty Blueprint", "Learn to build the Pig Sty: pigs dig truffles.", {"blueprint": "sty"}),
-                 (3, 2, "Farm Hand", "A trained farm hand can take one ranch chore each night (feed, pet or collect).", {"hand_slot": 1}),
+                 (3, 2, "Farm Hand", "A trained farm hand can take one ranch chore each night (feed the animals or keep them company).", {"hand_slot": 1}),
                  (0, 5, "Feeder Hookup", "Every coop and barn eats silo hay by itself each morning, from the first tier.", {"feeder": 1}),
                  (1, 6, "Steady Routine", "One missed day of care no longer breaks an animal's friendship streak.", {"care_grace": 1}),
                  (2, 7, "Warm Incubator", "Eggs hatch a day sooner.", {"hatch_fast": 1}),

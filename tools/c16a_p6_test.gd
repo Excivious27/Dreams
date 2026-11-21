@@ -29,6 +29,15 @@ func _total(sk: String, key: String) -> float:
 
 func _run() -> void:
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	# Starter Spark (c16a_12-02): known from day 1, a gift (not a spent point).
+	check(GameState.node_rank("magic", "spark") == 1 and GameState.points_spent("magic") == 0 and "spark" in Spells.known(), "new save knows Spark as a gift")
+	# Respec fee (c16a_11-13): first reset free, then 40 a point.
+	GameState.run["skills"]["foraging"]["level"] = 10
+	GameState.buy_node("foraging", str(GameState.nodes_of("foraging")[0]["id"]))
+	check(GameState.reset_cost("foraging") == 0, "first reset is free")
+	GameState.reset_tree("foraging")
+	GameState.buy_node("foraging", str(GameState.nodes_of("foraging")[0]["id"]))
+	check(GameState.reset_cost("foraging") == 40, "second reset costs 40 a point (%d)" % GameState.reset_cost("foraging"))
 	# Column ladder: column X waits for 64 points (about level 65), not 18.
 	check(GameState.col_need(9) == 64 and GameState.col_need(1) == 2 and GameState.col_need(5) == 20, "column ladder 0,2,5,9,14,20,28,38,50,64")
 	check(GameState.skills_data.has("farming") and (GameState.skills_data["farming"]["nodes"] as Array).size() == 40, "farming grid still 4x10")
@@ -98,6 +107,8 @@ func _run() -> void:
 		if bool((rs[sid] as Dictionary).get("team", false)) and not (ta["species"] as Dictionary).has(sid) and not (ta["aliases"] as Dictionary).has(sid):
 			missing.append(sid)
 	check(missing.is_empty(), "every team ranch species trains (%s)" % str(missing))
+	GameState.run["skills"]["leadership"]["level"] = 30
+	check(TeamAnimals.team_max() >= 3, "Leadership 25 makes team room for a third animal")
 	check(str(ta["names"][0]) != "Biscuit", "team names don't start with the pup's default")
 	# Gang arc: Sorcery shows as Tech; crew loyalty pacing and the drill cap.
 	GameState.new_run("gangsters", "", "T", "Town", "Pup")

@@ -49,7 +49,7 @@ CHORES = {
 WORKERS = {
     "pup": {"energy": 18, "chores": ["forage", "pet"]},
     "animal": {"energy": 16, "chores": ["forage", "pet", "harvest", "guard"]},
-    "crew": {"energy": 24, "chores": ["water", "harvest", "feed", "pet", "forage", "fish", "mine"]},
+    "crew": {"energy": 21, "chores": ["water", "harvest", "feed", "pet", "forage", "fish", "mine"]},  # c16a_13-12: 24 -> 21, a fresh recruit (loyalty 0) takes one chore; two from loyalty 1
     "partner": {"energy": 20, "chores": ["water", "harvest", "feed", "pet", "fish", "mine"]},
     "hand": {"energy": 16, "chores": ["feed", "pet"]},   # Ranching Farm Hand nodes (hand_slot); ranch chores only
 }

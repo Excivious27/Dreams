@@ -1348,6 +1348,12 @@ static func node_locked(skill: String, id: String) -> String:
 		return "unknown"
 	if node_rank(skill, id) >= int(n.get("ranks", 1)):
 		return "maxed"
+	# c16a_12-20: a spell taught by two nodes (a Sorcery node and another tree's unlock) is learned once.
+	var sp := str((n.get("effect", {}) as Dictionary).get("spell", ""))
+	if sp != "" and node_rank("magic", sp) > 0:
+		return "already known (%s)" % skill_name("magic")
+	if skill == "magic" and node_rank(skill, id) == 0 and spell_from_tree(id):
+		return "already known"
 	if points_free(skill) <= 0:
 		return "no points"
 	var tier := int(n.get("tier", 0))

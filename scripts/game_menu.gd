@@ -610,7 +610,7 @@ func _refresh() -> void:
 					col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 					h.add_child(col)
 					var nm := Label.new()
-					nm.text = ("▶ Bringing along" if cid == act else "Staying home") + " · " + Companion.ability_name(cid)
+					nm.text = ("▶ Bringing along" if cid == act else "Staying home") + " · " + Companion.ability_name(cid) + " · rank %d" % Companion.partner_rank(cid)  # C16a P6
 					nm.add_theme_font_size_override("font_size", 8)
 					col.add_child(nm)
 					var ab := Label.new()
@@ -620,7 +620,7 @@ func _refresh() -> void:
 					ab.modulate = Color(0.85, 0.85, 0.8)
 					col.add_child(ab)
 					continue
-				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
+				var b := _button("%s %s (rank %d) — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.partner_rank(cid), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
 				_line("  %s: use the active partner's ability." % InputSetup.prompt("ability"), 8, Color(0.8, 0.8, 0.8))

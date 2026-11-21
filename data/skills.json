@@ -4637,7 +4637,7 @@
     {
      "id": "ranching_u_farm_hand",
      "name": "Farm Hand",
-     "desc": "A trained farm hand can take one ranch chore each night (feed, pet or collect).",
+     "desc": "A trained farm hand can take one ranch chore each night (feed the animals or keep them company).",
      "ranks": 1,
      "tier": 2,
      "row": 3,
