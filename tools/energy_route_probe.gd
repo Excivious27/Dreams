@@ -59,4 +59,15 @@ func _run() -> void:
 	var pct: float = 100.0 * route / bar
 	print("SWING pickaxe %.3f sword %.3f dodge %.3f swings/rock %.2f energy/try %.2f" % [GameState.energy_cost_f("pickaxe"), GameState.energy_cost_f("sword"), GameState.energy_cost_f("dodge"), swings, per_try])
 	print("ROUTE meadow fight %.1f + floor1 %.1f + half floor2 %.1f + mine fights %.1f = %.1f of %d (%.0f%%)" % [fight, means[1] * per_try, 0.5 * means[2] * per_try, 1.5 * fight, route, int(bar), pct])
-	quit(0 if pct <= max_pct else 1)
+	# The pure-Python checker (tools/energy_check.py) uses these measured means from
+	# data/energy_bands.json: fail when the real layouts drift more than 2 tries.
+	var bands: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/energy_bands.json"))
+	var ft: Array = bands["route"]["floor_tries"]
+	var drift := false
+	for fl in [1, 2, 3]:
+		if absf(float(ft[fl]) - means[fl]) > 2.0:
+			print("energy_route_probe: FAIL floor %d tries %.1f, energy_bands.json says %.1f (update it)" % [fl, means[fl], float(ft[fl])])
+			drift = true
+	var ok: bool = pct <= max_pct and not drift
+	print("energy_route_probe: %s (route %.0f%% of the bar, max %.0f%%)" % ["OK" if ok else "FAIL", pct, max_pct])
+	quit(0 if ok else 1)

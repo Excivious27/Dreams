@@ -593,12 +593,12 @@
     {
      "id": "mining_0_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -712,12 +712,12 @@
     {
      "id": "mining_1_9",
      "name": "Endurance",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -1181,12 +1181,12 @@
     {
      "id": "foraging_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -1296,12 +1296,12 @@
     {
      "id": "foraging_2_9",
      "name": "Early Riser",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -3487,12 +3487,12 @@
     {
      "id": "magic_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -3604,12 +3604,12 @@
     {
      "id": "magic_2_9",
      "name": "Endurance",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -3994,12 +3994,12 @@
     {
      "id": "pup_1_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -4118,12 +4118,12 @@
     {
      "id": "pup_2_9",
      "name": "Early Riser",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -4813,12 +4813,12 @@
     {
      "id": "strategist_0_9",
      "name": "Stamina",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -5835,12 +5835,12 @@
     {
      "id": "hustle_1_9",
      "name": "Empire Ledger",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {
@@ -5950,12 +5950,12 @@
     {
      "id": "hustle_2_9",
      "name": "Second Wind",
-     "desc": "+3 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "energy": 2
      }
     },
     {

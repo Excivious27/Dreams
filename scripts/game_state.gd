@@ -429,6 +429,7 @@ static func guest_morning() -> Dictionary:
 	run["energy"] = int(run["max_energy"])
 	run["fed_en"] = 0
 	run["rest_en"] = 0
+	run["en_log"] = {}
 	run["kills_today"] = {}  # a guest never sleeps here: the host's morning resets the kill pay too
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
@@ -1564,9 +1565,9 @@ const ENERGY_FLOOR := 0.35
 ## tiers, tree nodes (all trees together <= TREE_EN_CAP), gear, mine milestones.
 const ENERGY_PER_LEVEL := 1.5
 const ENERGY_LEVELS_MAX := 30
-const TREE_EN_CAP := 80  # C16a P3: was 120
+const TREE_EN_CAP := 60  # C16a P3: was 120
 ## C16a P3: gear energy counts up to this much in total (was uncapped).
-const GEAR_EN_CAP := 40
+const GEAR_EN_CAP := 30
 const TREE_HP_CAP := 200
 
 static func level_energy(levels: int) -> int:
@@ -1607,10 +1608,13 @@ static func _apply_max_stats() -> void:
 	run["energy"] = mini(int(run.get("energy", base_en)), int(run["max_energy"]))
 
 
-## Progress-based stamina: +4 max energy for every 5 mine floors you've reached (up to +40).
+## Progress-based stamina: +3 max energy for every 5 mine floors you've reached
+## (up to +30; C16a P3: was +4 up to +40).
+const MINE_EN_STEP := 3
+const MINE_EN_CAP := 30
 static func energy_milestones() -> int:
 	var deepest := int(run.get("flags", {}).get("mine_deepest", 1))
-	return mini(40, 4 * (deepest / 5))
+	return mini(MINE_EN_CAP, MINE_EN_STEP * (deepest / 5))
 
 
 ## Exact (fractional) energy a task costs right now: skill level, tool tier and perks applied.
@@ -1724,7 +1728,12 @@ static func spend_for(task: String) -> bool:
 		if Engine.get_main_loop() is SceneTree:
 			Music.instance(Engine.get_main_loop() as SceneTree).sfx("nope")  # "Too tired." is heard, not just read
 		return false
-	var fr := float(run.get("en_frac", 0.0)) + energy_cost_f(task)
+	var cost := energy_cost_f(task)
+	var fr := float(run.get("en_frac", 0.0)) + cost
+	# C16a P3: today's spend by task (bots/tests read it; reset on sleep).
+	var el: Dictionary = run.get("en_log", {})
+	el[task] = snappedf(float(el.get(task, 0.0)) + cost, 0.01)
+	run["en_log"] = el
 	var whole := int(floor(fr))
 	run["en_frac"] = fr - whole
 	if whole > 0:
@@ -1797,7 +1806,7 @@ static func grow_vital(which: String, n: int) -> void:
 ## C16a P3: eaten growth items (stamina_root, heart_fruit, mana_berry, juniper_tonic)
 ## stop growing a vital past these totals (run.tonic_grow); quest/house/story growth
 ## is separate. Was uncapped: Stamina Root regrows, so the bar reached ~750 in year 1.
-const TONIC_CAP := {"energy": 50, "hp": 50, "mana": 30}
+const TONIC_CAP := {"energy": 30, "hp": 50, "mana": 30}
 
 ## How much more eaten growth `which` can still take.
 static func tonic_room(which: String) -> int:
@@ -3643,6 +3652,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["en_warn"] = 0
 	run["fed_en"] = 0
 	run["rest_en"] = 0
+	run["en_log"] = {}
 	run["kills_today"] = {}  # per-map paid kills (game_map: re-entry respawns don't pay forever)
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))

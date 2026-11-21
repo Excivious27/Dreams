@@ -1,0 +1,288 @@
+{
+ "_": "C16a P3 energy bands, checked by tools/energy_check.py (pure Python, constants read from scripts/game_state.gd and scripts/mine.gd). route.floor_tries are measured on real layouts by tools/energy_route_probe.gd (gang arc, level 1, wood tools, 15 force_seeds a floor); the probe fails when they drift more than 2 from these.",
+ "route": {
+  "what": "Tom's case: through the meadow (one fight) and below mine floor 1 (floor 1 + half of floor 2 + their fights), day 1-3, level 1, wood tools",
+  "floor_tries": [
+   0,
+   10.4,
+   7.6,
+   7.3
+  ],
+  "stone_share": 0.83,
+  "fight": {
+   "sword": 40,
+   "dodge": 4
+  },
+  "mine_fights": 1.5,
+  "max_pct": 40.0
+ },
+ "bar": {
+  "d7": 140,
+  "d28": 190,
+  "y1": 290,
+  "y2": 370,
+  "y3": 400,
+  "ceiling": 560
+ },
+ "checkpoints": {
+  "_": "Intended progress at each checkpoint (persona-neutral): main-skill level, sum of (level - 1) over all skills, tool tier, tree energy, gear energy, deepest mine floor, eaten tonic energy, friend perks, house/quest/festival growth, tree energy perk (farm/mine).",
+  "d1": {
+   "day": 1,
+   "lv": 1,
+   "lv_sum": 0,
+   "tier": 0,
+   "tree": 0,
+   "gear": 0,
+   "deepest": 1,
+   "tonic": 0,
+   "friends": 0,
+   "misc": 0,
+   "perk": 0.0
+  },
+  "d3": {
+   "day": 3,
+   "lv": 2,
+   "lv_sum": 3,
+   "tier": 0,
+   "tree": 0,
+   "gear": 0,
+   "deepest": 3,
+   "tonic": 0,
+   "friends": 0,
+   "misc": 0,
+   "perk": 0.0
+  },
+  "d7": {
+   "day": 7,
+   "lv": 4,
+   "lv_sum": 10,
+   "tier": 0,
+   "tree": 0,
+   "gear": 0,
+   "deepest": 6,
+   "tonic": 0,
+   "friends": 0,
+   "misc": 0,
+   "perk": 0.05
+  },
+  "d28": {
+   "day": 28,
+   "lv": 8,
+   "lv_sum": 20,
+   "tier": 1,
+   "tree": 8,
+   "gear": 4,
+   "deepest": 15,
+   "tonic": 0,
+   "friends": 0,
+   "misc": 10,
+   "perk": 0.1
+  },
+  "y1": {
+   "day": 112,
+   "lv": 12,
+   "lv_sum": 30,
+   "tier": 3,
+   "tree": 30,
+   "gear": 15,
+   "deepest": 30,
+   "tonic": 20,
+   "friends": 10,
+   "misc": 20,
+   "perk": 0.2
+  },
+  "y2": {
+   "day": 224,
+   "lv": 15,
+   "lv_sum": 30,
+   "tier": 5,
+   "tree": 55,
+   "gear": 30,
+   "deepest": 60,
+   "tonic": 40,
+   "friends": 25,
+   "misc": 30,
+   "perk": 0.27
+  },
+  "y3": {
+   "day": 336,
+   "lv": 18,
+   "lv_sum": 30,
+   "tier": 7,
+   "tree": 80,
+   "gear": 40,
+   "deepest": 100,
+   "tonic": 50,
+   "friends": 40,
+   "misc": 40,
+   "perk": 0.3
+  }
+ },
+ "ceiling_sources": {
+  "_": "every max-energy source at once (both arcs' friend perks counted): bram 25, posy 20, heart perks 70, Old Mags 20, forest shrine 20, house tiers 30, festival wishes/lanterns over 3 years 30, quests 10",
+  "friends": 135,
+  "misc": 110
+ },
+ "personas": {
+  "_": "A full working day per persona: actions by checkpoint. Bands: share of the day's usable energy (bar + food cap + rest cap) the day uses, and the share of the bar alone.",
+  "farmer": {
+   "d1": {
+    "hoe": 15,
+    "plant": 15,
+    "can": 15,
+    "axe": 14,
+    "scythe": 20
+   },
+   "d7": {
+    "hoe": 30,
+    "plant": 30,
+    "can": 30,
+    "axe": 20,
+    "scythe": 30
+   },
+   "d28": {
+    "hoe": 60,
+    "plant": 60,
+    "can": 40,
+    "axe": 30,
+    "scythe": 40
+   },
+   "y1": {
+    "hoe": 90,
+    "plant": 90,
+    "can": 40,
+    "axe": 40,
+    "scythe": 60
+   },
+   "y2": {
+    "hoe": 120,
+    "plant": 120,
+    "can": 30,
+    "axe": 50,
+    "scythe": 80
+   },
+   "y3": {
+    "hoe": 140,
+    "plant": 140,
+    "can": 30,
+    "axe": 60,
+    "scythe": 90
+   }
+  },
+  "miner": {
+   "d1": {
+    "rocks": 25,
+    "sword": 60,
+    "dodge": 6
+   },
+   "d7": {
+    "rocks": 60,
+    "sword": 120,
+    "dodge": 12
+   },
+   "d28": {
+    "rocks": 140,
+    "sword": 200,
+    "dodge": 20
+   },
+   "y1": {
+    "rocks": 300,
+    "sword": 300,
+    "dodge": 30
+   },
+   "y2": {
+    "rocks": 550,
+    "sword": 400,
+    "dodge": 40
+   },
+   "y3": {
+    "rocks": 750,
+    "sword": 500,
+    "dodge": 50
+   }
+  },
+  "fisher": {
+   "d1": {
+    "rod": 30
+   },
+   "d7": {
+    "rod": 50
+   },
+   "d28": {
+    "rod": 70
+   },
+   "y1": {
+    "rod": 100
+   },
+   "y2": {
+    "rod": 120
+   },
+   "y3": {
+    "rod": 140
+   }
+  },
+  "forager": {
+   "d1": {
+    "axe": 25,
+    "weed": 30
+   },
+   "d7": {
+    "axe": 40,
+    "weed": 40
+   },
+   "d28": {
+    "axe": 60,
+    "weed": 50
+   },
+   "y1": {
+    "axe": 100,
+    "weed": 60
+   },
+   "y2": {
+    "axe": 140,
+    "weed": 60
+   },
+   "y3": {
+    "axe": 170,
+    "weed": 60
+   }
+  },
+  "fighter": {
+   "d1": {
+    "sword": 120,
+    "dodge": 14
+   },
+   "d7": {
+    "sword": 220,
+    "dodge": 25
+   },
+   "d28": {
+    "sword": 350,
+    "dodge": 40
+   },
+   "y1": {
+    "sword": 500,
+    "dodge": 60
+   },
+   "y2": {
+    "sword": 650,
+    "dodge": 80
+   },
+   "y3": {
+    "sword": 800,
+    "dodge": 100
+   }
+  }
+ },
+ "day_bands": {
+  "_": "pct of the bar a full persona day uses. Early days must leave room (no forced pass-out on day 1, never more than bar + food + rest on any day); later days must still make the bar matter for the work-heavy personas. usable_max_bar_mult allows the longer days' extra recovery (40-min day: x1.4 food, x1.5 rest). late_min_bar_pct guards against regressions; the C16a target (late heavy mining 60-85% of the bar) is NOT met yet: see the P3 report.",
+  "d1": {
+   "max_bar_pct": 100
+  },
+  "late_min_bar_pct": {
+   "farmer": 15,
+   "miner": 35
+  },
+  "usable_max_bar_mult": 3.3
+ }
+}
