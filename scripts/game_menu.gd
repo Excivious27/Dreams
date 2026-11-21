@@ -411,7 +411,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) or (t == "Party" and _tab in ["Animals", "Chores"]) else Color(0.85, 0.85, 0.85)
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	if _tab_buttons.has("Book"):
@@ -548,9 +548,17 @@ func _refresh() -> void:
 			_skills_tab()
 		"Pup":
 			_pup_tab()
+		"Animals":
+			TeamAnimals.build_page(self)  # C11a P4: roster, hearts, lessons, rename, rehome, team toggle
+		"Chores":
+			Chores.build_page(self)  # C11a P4: overnight farm chores for the pup, team animals, crew, partners
 		"Party":
 			var pt := Companion.party()
 			var act := Companion.active_id()
+			var anb := _button("Animals: %d on the ranch, %d on the team ›" % [Ranch.animals().size(), TeamAnimals.team().size()], func() -> void: _tab = "Animals"; _refresh())
+			anb.set_meta("pc_key", "party:animals")
+			var chb := _button("Chores: %d helper%s working ›" % [Chores.st()["assign"].size(), "" if Chores.st()["assign"].size() == 1 else "s"] if Chores.unlocked() else "Chores (after your first week) ›", func() -> void: _tab = "Chores"; _refresh())
+			chb.set_meta("pc_key", "party:chores")
 			if not GameState.is_penguins():
 				_crew_tab()
 			_line("Party", 10, Color(1, 0.95, 0.8))
@@ -946,7 +954,7 @@ func _pass_drags(n: Node) -> void:
 ## Sun Haven-style skills page: a tab per skill, the level / points / EXP panel,
 ## and the tree as a grid of 4 branches x 10 tiers (I-X). Column N opens after
 ## 2N points spent in that skill. Tap a node to read it, then Learn.
-const SKILL_ORDER := ["farming", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "strategist", "harmony", "hustle"]
+const SKILL_ORDER := ["farming", "ranching", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "strategist", "harmony", "hustle"]
 const BRANCH_COL := [Color(0.32, 0.55, 0.25), Color(0.25, 0.42, 0.62), Color(0.6, 0.38, 0.22), Color(0.48, 0.3, 0.58)]
 var _node_sel := ""
 var _reset_arm := ""
@@ -963,7 +971,8 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"job_pay": "gold", "capture_speed": "map", "start_supply": "chest", "spawner_discount": "brick", "helper_damage": "crystal", "ticket_bleed": "ruby", "ticket_guard": "copper_ring", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
 	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
 	"pet_bond": "bone", "team_xp": "luck_potion", "xp_gain": "book", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
-	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer"}
+	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer",
+	"big_goods": "egg", "animal_quality": "milk", "ranch_value": "gold", "breed_chance": "feather", "grow_speed": "hay", "animal_friend": "brush", "hand_work": "milk_pail", "hand_slot": "milk_pail", "feeder": "feed_bag", "care_grace": "brush", "hatch_fast": "egg"}  # C11a P3 hook (Ranching)
 
 
 func _skills_tab() -> void:
@@ -1006,7 +1015,7 @@ func _skills_tab() -> void:
 		if Art.has("ui", cand + sk):
 			big = cand + sk
 			break
-	var ic := Art.tex("ui", big) if big != "" else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
+	var ic := Art.tex("ui", big) if big != "" else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter", "ranching": "egg"}.get(sk, "map")))
 	if ic:
 		var tr := TextureRect.new()
 		tr.texture = ic
@@ -1183,7 +1192,7 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 			ik = str(KEY_ICON.get(ek, ""))
 			break
 		if ik == "":
-			ik = {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")
+			ik = {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter", "ranching": "egg"}.get(sk, "map")
 		tr.texture = Art.tex("items", ik)
 	if not col_open:
 		tr.modulate = Color(0.4, 0.4, 0.4, 0.6)
@@ -1751,7 +1760,7 @@ func _crew_tab() -> void:
 
 var _steal_warn := {}  # Keys page: {key, from} while a stolen key waits for its confirm press
 
-const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests"}
+const SUB_PARENT := {"Keys": "Options", "Pad": "Options", "FieldLog": "Quests", "Workshop": "Quests", "Foes": "Quests", "Messages": "Quests", "Mail": "Quests", "Animals": "Party", "Chores": "Party"}
 ## Cursor key repeat: first delay, then every step (seconds, real time).
 const REPEAT_FIRST := 0.35
 const REPEAT_STEP := 0.09

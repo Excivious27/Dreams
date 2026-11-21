@@ -112,6 +112,9 @@ func build() -> void:
 		I = RecCenter.build_room(self, I)  # arc skin, lane cells
 	else:
 		I = arc_skin(I)
+	var rc := Shops.ranch_counters(interior_id)  # fix2: Hazel's / Posy's animal counters (ranch.json sellers)
+	if not rc.is_empty():
+		I = I.duplicate(); I["things"] = (I.get("things", []) as Array) + rc
 	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))
@@ -902,6 +905,11 @@ static func rush_fee(new_tier: int) -> int:
 	return int(RUSH_FEE[clampi(new_tier, 0, RUSH_FEE.size() - 1)])
 
 
+## Name choices per coat (bay, grey, black, palomino) and Benno's pick for each.
+const HORSE_NAMES := [["Hazelnut", "Maple", "Rusty"], ["Pebble", "Misty", "Silver"], ["Midnight", "Inkwell", "Shadow"], ["Honey", "Sunny", "Butterscotch"]]
+const BENNO_PICK := ["Chestnut", "Dove", "Raven", "Goldie"]
+
+
 ## Benno's stable: buy a horse, then ride out from here whenever you like.
 func _stable() -> void:
 	var d := Dialogue.instance(get_tree())
@@ -915,13 +923,19 @@ func _stable() -> void:
 				return
 			GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 			GameState.run["flags"]["horse"] = true
-			GameState.run["names"]["horse"] = "Clover"
-			GameState.run["names"]["horse_coat"] = ["bay", "grey", "black", "palomino"][d.last_choice]
-			hud.toast("Clover is yours!", Color(1, 0.9, 0.4))
+			var coat_i := d.last_choice
+			GameState.run["names"]["horse_coat"] = ["bay", "grey", "black", "palomino"][coat_i]
+			# A name of your own (Clover was Benno's old horse: c11a_11_16); the last pick is Benno's.
+			var picks: Array = HORSE_NAMES[coat_i]
+			d.say([{"who": "Benno", "text": "She's yours. What'll you call her?", "choice": picks + ["You pick, Benno"], "key": ""}])
+			await d.finished
+			var nm: String = str(picks[d.last_choice]) if d.last_choice >= 0 and d.last_choice < picks.size() else str(BENNO_PICK[coat_i])
+			GameState.run["names"]["horse"] = nm
+			hud.toast("%s is yours!" % nm, Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("quest_done", "levelup")
 			GameState.add_friend("benno", 10)
 		return
-	d.say([{"who": "Benno", "text": "Clover's saddled. Ride out?  (A/C with nothing in front of you dismounts; she waits where you leave her.)", "choice": ["Ride", "Not now"], "key": ""}])
+	d.say([{"who": "Benno", "text": "%s's saddled. Ride out?  (A/C with nothing in front of you dismounts; she waits where you leave her.)" % str(GameState.run.get("names", {}).get("horse", "Your horse")), "choice": ["Ride", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		player.mount()

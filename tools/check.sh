@@ -185,6 +185,13 @@ if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
   echo "storage_test failed"; exit 1
 fi
 
+echo "== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) =="
+taout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/team_animals_test.gd 2>&1)"
+echo "$taout" | grep -E "FAIL|SCRIPT ERROR|team_animals_test" || true
+if ! echo "$taout" | grep -q "team_animals_test: OK" || echo "$taout" | grep -q "SCRIPT ERROR"; then
+  echo "team_animals_test failed"; exit 1
+fi
+
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
 dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
 echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true
@@ -269,6 +276,12 @@ if ! echo "$cout" | grep -q "farm_look_test: PASS"; then
   echo "farm_look_test failed"; exit 1
 fi
 
+cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/pen_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|pen_test" || true
+if ! echo "$cout" | grep -q "pen_test: PASS"; then
+  echo "pen_test failed"; exit 1
+fi
+
 python3 tools/make_house_parts.py --check || { echo "house parts check failed"; exit 1; }
 
 cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/house_exterior_test.gd 2>&1)"
@@ -310,6 +323,18 @@ cout="$("$GODOT" --headless --path . -s res://tools/shop_econ_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|shop_econ_test" || true
 if ! echo "$cout" | grep -q "shop_econ_test: 0 failures"; then
   echo "Shop economy test failed"; exit 1
+fi
+
+cout="$("$GODOT" --headless --path . -s res://tools/ranch_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_test" || true
+if ! echo "$cout" | grep -q "ranch_test: [0-9]* checks, 0 failures"; then
+  echo "Ranch test failed"; exit 1
+fi
+
+cout="$("$GODOT" --headless --path . -s res://tools/ranch_gift_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_gift_test" || true
+if ! echo "$cout" | grep -q "ranch_gift_test: [0-9]* checks, 0 failures"; then
+  echo "Ranch gift test failed"; exit 1
 fi
 
 cout="$("$GODOT" --headless --path . -s res://tools/decor_sources_test.gd 2>&1)"
@@ -371,6 +396,12 @@ python3 tools/slice_c10a.py check || { echo "Decor art check failed"; exit 1; }
 
 echo "== C10b decor art: outdoor pieces, seams, names =="
 python3 tools/slice_c10b.py check || { echo "C10b outdoor decor art check failed"; exit 1; }
+
+echo "== C11a ranch art: species strips, building looks, icons, stations =="
+python3 tools/slice_c11a.py check || { echo "C11a ranch art check failed"; exit 1; }
+
+echo "== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard =="
+python3 tools/slice_c11b.py check || { echo "C11b ranch art check failed"; exit 1; }
 
 echo "== economy: no money loops, crops and brews inside their bands =="
 python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }
@@ -740,11 +771,39 @@ if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
 
+echo "== C11a P5: ranch villagers, mail, festivals, pen sounds =="
+rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villagers_test.gd 2>&1)"
+echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true
+if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep -q "SCRIPT ERROR"; then
+  echo "Ranch villagers test failed"; exit 1
+fi
+
 echo "== C8 P3: collections (museum, logs, Book tab) =="
 clout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/collections_test.gd 2>&1)"
 echo "$clout" | grep -E "FAIL|SCRIPT ERROR|collections_test" || true
 if ! echo "$clout" | grep -q "collections_test: 0 failures"; then
   echo "Collections test failed"; exit 1
+fi
+
+echo "== C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal counter =="
+rp3out="$("$GODOT" --headless --path . -s res://tools/ranch_p3_test.gd 2>&1)"
+echo "$rp3out" | grep -E "FAIL|SCRIPT ERROR|ranch_p3_test" || true
+if ! echo "$rp3out" | grep -q "ranch_p3_test: OK"; then
+  echo "Ranch P3 test failed"; exit 1
+fi
+
+echo "== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster =="
+rsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_shop_test.gd 2>&1)"
+echo "$rsout" | grep -E "FAIL|SCRIPT ERROR|ranch_shop_test" || true
+if ! echo "$rsout" | grep -q "ranch_shop_test: [0-9]* checks, 0 failures" || echo "$rsout" | grep -q "SCRIPT ERROR"; then
+  echo "ranch_shop_test failed"; exit 1
+fi
+
+echo "== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art =="
+ciout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c11a_integ_test.gd 2>&1)"
+echo "$ciout" | grep -E "FAIL|SCRIPT ERROR|c11a_integ_test" || true
+if ! echo "$ciout" | grep -q "c11a_integ_test: [0-9]* checks, 0 failures"; then
+  echo "C11a integration test failed"; exit 1
 fi
 
 echo "== C8 P4: fishing rules, mining curve, reward tables =="

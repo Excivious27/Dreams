@@ -769,6 +769,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			else:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
+		"creature":
+			later(_creature.bind(thing))  # C11b P3: a creature that comes home with you (RanchGift)
+			return true
 		"heal":
 			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
@@ -852,6 +855,27 @@ func _shop(thing: Dictionary) -> void:
 	await Shops.stall(self, str(thing.get("who", "Shop")), str(thing.get("greet", "What'll it be?")), thing.get("items", []))
 
 
+## C11b P3 (c11b_02-06/02-07): a "creature" thing (gen_mega_new): after its flag, one creature per run
+## goes home through RanchGift (waits for room; a letter says what makes room). species_gang "" = none there.
+func _creature(thing: Dictionary) -> void:
+	var gang := not GameState.is_penguins()
+	var sp := str(thing.get("species_gang", thing.get("species", ""))) if gang else str(thing.get("species", ""))
+	var key := str(thing.get("key", "creature_%s" % region_id))
+	if sp == "":
+		await say([{"text": str(thing.get("wait", "Nothing stirs here."))}])
+		return
+	if RanchGift.given(key):
+		await say([{"text": "The spot is quiet now. You know who lived here; they live with you."}])
+		return
+	var fl := str(thing.get("flag", ""))
+	if fl != "" and not GameState.run["flags"].has(fl):
+		await say([{"text": str(thing.get("wait", "Something lives here, but it isn't ready to trust you yet."))}])
+		return
+	await say([{"text": str(thing.get("line_gang", thing.get("line", ""))) if gang else str(thing.get("line", ""))}])
+	RanchGift.give(sp, key, {"giver": str(thing.get("giver", ""))})
+	Music.instance(get_tree()).sfx("quest_done", "levelup")
+
+
 func _boss(thing: Dictionary) -> void:
 	var key := "boss_%s" % region_id
 	if GameState.run["flags"].has(key):
@@ -920,6 +944,10 @@ func _talk_npc(n: Npc) -> void:
 		GameState.run["talked_today"][id] = true
 		GameState.add_friend(id, 5)
 	if await Story.talk(self, id):
+		Intros.mark(id)  # a story beat was the meeting
+		player.frozen = false
+		return
+	if await Intros.talk(self, id):  # first meeting (Tam at his hut, C11a P5)
 		player.frozen = false
 		return
 	if await Hearts.talk(self, id):

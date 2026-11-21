@@ -265,6 +265,8 @@ func _on_msg(m: Dictionary) -> void:
 						peers[from]["anim"] = str(d.get("anim", "idle"))
 						peers[from]["flip"] = bool(d.get("flip", false))
 						peers[from]["look"] = d.get("look", peers[from].get("look", {}))
+						peers[from]["pal"] = str(d.get("pal", ""))  # C11b P3: their partner and pup trail their puppet
+						peers[from]["pup"] = bool(d.get("pup", false))
 				"act":
 					if _host:
 						_handle_action(from, d)
@@ -285,7 +287,8 @@ func _broadcast_state() -> void:
 	if not (m is GameMap) or (m as GameMap).player == null:
 		return
 	var p := (m as GameMap).player
-	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false}
+	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false,
+		"pal": Companion.active_id(), "pup": (m as GameMap).pet != null and is_instance_valid((m as GameMap).pet) and ((m as GameMap).pet as Node2D).visible}
 	# The look (and wardrobe) rides along only when it changed, or every LOOK_EVERY s for
 	# late joiners: receivers keep the last one (c10_10: it was sent whole 10x a second).
 	var lk := _my_look()
@@ -305,7 +308,7 @@ func _broadcast_state() -> void:
 ## (overwriting those from the host let guests copy crystals and replay story).
 ## "decor_home" is the host's house look (DecorMode.home_view: placed pieces, wallpaper,
 ## flooring; never the decor box or wardrobe), so guests in the house see the host's decor.
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home"]
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home", "ranch", "coop_hatch"]
 
 
 func _push_world(to_id := -1) -> void:
@@ -486,7 +489,7 @@ func _apply_world(d: Dictionary) -> void:
 		GameState.run[k] = d[k]
 	if not _host:
 		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
-		for k in ["builds", "construction", "permits", "cleared", "weather", "placed", "decor_home"]:
+		for k in ["builds", "construction", "permits", "cleared", "weather", "placed", "decor_home", "ranch", "coop_hatch"]:
 			if not d.has(k):
 				GameState.run.erase(k)
 	if not _host and host_day == 0:

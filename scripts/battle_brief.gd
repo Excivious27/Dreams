@@ -31,6 +31,8 @@ var d: Dictionary = {}
 var mode := ""
 var _was_paused := false
 var _arm := 0.0
+var _want_back := false
+const BACK_ARM := 0.3
 var _min_t := 0.0
 var _go: Button
 var _hide: Button
@@ -213,10 +215,16 @@ func _process(delta: float) -> void:
 	_arm += delta
 	if _go:
 		_go.disabled = _arm < _min_t
-	if _arm >= _min_t and Input.is_action_just_pressed("a"):
-		_fight()
-	elif _arm >= 0.3 and Input.is_action_just_pressed("b"):
+	# B or MENU backs out (every screen closes on B). A press in the first
+	# BACK_ARM s is kept, not dropped, so a quick B still closes the card
+	# (bot 20, C11a fix); the very first frame is ignored (the press that
+	# opened the card).
+	if _arm > delta and (Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu")):
+		_want_back = true
+	if _want_back and _arm >= BACK_ARM:
 		_not_now()
+	elif _arm >= _min_t and Input.is_action_just_pressed("a"):
+		_fight()
 	elif _hide != null and _arm >= _min_t and Input.is_action_just_pressed("action"):
 		_hide_forever()
 

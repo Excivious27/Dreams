@@ -185,6 +185,8 @@ static func _morning() -> int:
 	Collections.morning()  # museum opening, donation thanks, milestone letters (C8 P3)
 	DecorSources.deliver_orders()  # catalogue orders arrive as parcels (C10a P4)
 	_housewarming()
+	_ranch_mail(day)
+	RanchGift.deliver()  # C11b P3: creature gifts that were waiting for room walk over
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:
@@ -215,17 +217,29 @@ static func _morning() -> int:
 	return list().size() - before
 
 
+## C11b P3 (c11b_10-09): the festival-eve letter announces the Animal Show / Best Egg table.
+static func show_line(fid: String) -> String:
+	var pen := GameState.is_penguins()
+	if fid == "harvest":
+		return (" Benno's judging the Animal Show by the fountain: bring your friendliest grown animal." if pen
+			else " Benno's judging the Block Fair livestock ribbon by the fountain: bring your best-kept animal.")
+	if fid == "egg":
+		return (" Posy's Best Egg table wants your shiniest egg, so save one from the coop." if pen
+			else " Posy's running the Best Egg table: save your best egg from the coop.")
+	return ""
+
+
 static func _news(rng: RandomNumberGenerator) -> void:
 	var tomorrow := int(GameState.run["day"]) + 1
 	var dos := ((tomorrow - 1) % GameState.DAYS_PER_SEASON) + 1
 	if dos == GameState.FESTIVAL_DAY:
 		var fid: String = str(GameState.FESTIVALS[GameState.season_of(tomorrow)][0])
-		send("Mayor Alder", "Reminder: the %s is TOMORROW on the plaza. Shops shut from nine till six so everyone can come. Come hungry!" % GameState.festival_name(fid), "news", {"npc": "alder"})
+		send("Mayor Alder", "Reminder: the %s is TOMORROW on the plaza. Shops shut from nine till six so everyone can come. Come hungry!%s" % [GameState.festival_name(fid), show_line(fid)], "news", {"npc": "alder"})
 	var w := GameState.weather_for(tomorrow)
 	if w == "storm":
-		send("Marlowe", "Storm coming in tomorrow; I can see it from the lamp room. Bring the animals in and don't bother watering. - Marlowe", "news", {"npc": "marlowe"})
+		send("Marlowe", "Storm coming in tomorrow; I can see it from the lamp room. %sDon't bother watering. - Marlowe" % _storm_animals(), "news", {"npc": "marlowe"})
 	elif w == "blizzard":
-		send("Marlowe", "Blizzard coming tomorrow; the sky's gone that flat white. Bring the animals in and stay near a fire. - Marlowe", "news", {"npc": "marlowe"})
+		send("Marlowe", "Blizzard coming tomorrow; the sky's gone that flat white. %sStay near a fire. - Marlowe" % _storm_animals(), "news", {"npc": "marlowe"})
 	for id: String in _known():
 		var b := GameState.birthday_of(id)
 		if b.size() == 2 and str(b[0]) == GameState.season_of(tomorrow) and int(b[1]) == dos:
@@ -247,18 +261,15 @@ static func _favour_item(who: String, rng: RandomNumberGenerator) -> String:
 	var opts: Array = []
 	for l in likes:
 		var id := str(l)
-		if (id == "egg" and not Builds.is_built("coop")) or (id in ["milk", "cheese"] and not Builds.is_built("barn")):
-			continue  # nothing to get it from yet
 		if not _can_get(id):
 			continue
 		if GameState.items.has(id) and int(GameState.items[id].get("tier", 1)) <= GameState.progress_tier() + 1 and not (id == "starflower" and not GameState.is_penguins()):
 			opts.append(id)
 	# Eggs and milk only once there's a coop / barn to get them from.
 	var basics: Array = ["wood", "stone", "turnip", "copper", "fiber", "potato", "berry"]
-	if Builds.is_built("coop"):
-		basics.append("egg")
-	if Builds.is_built("barn"):
-		basics.append("milk")
+	for id in ["egg", "milk"]:
+		if ranch_source_ok(id):
+			basics.append(id)
 	for id in basics:
 		if GameState.items.has(id) and GameState.crop_in_season(id):
 			opts.append(id)
@@ -268,18 +279,176 @@ static func _favour_item(who: String, rng: RandomNumberGenerator) -> String:
 ## Can the farmer get this now? Crops only in their season (a 4-day favour can't
 ## wait for spring); animal goods and hive honey only once they have the source
 ## (or already hold some).
-const NEEDS_SOURCE := {"sheep_wool": "", "goat_milk": "", "duck_egg": "", "truffle": "", "honey": "beehive", "cheese": "barn", "butter": "barn", "mayo": "coop"}
-
-
 static func _can_get(id: String) -> bool:
 	if GameState.count(id) > 0:
 		return true
 	if not GameState.crop_in_season(id):
 		return false
-	if NEEDS_SOURCE.has(id):
-		var b := str(NEEDS_SOURCE[id])
-		return b != "" and Builds.is_built(b)
+	if needs_source(id):
+		return ranch_source_ok(id)
 	return true
+
+
+## C11a P5: animal goods come from Ranch (data/ranch.json species products + processing).
+## Until that data exists (empty ranch.json), today's coop/barn/hive tiers stand in:
+## [building, tier]. An empty building = no source on this farm yet (truffle: pigs).
+const LEGACY_SOURCE := {"egg": ["coop", 1], "duck_egg": ["coop", 2], "milk": ["barn", 1], "sheep_wool": ["barn", 1],
+	"goat_milk": ["barn", 2], "cheese": ["barn", 1], "butter": ["barn", 1], "goat_cheese": ["barn", 2],
+	"honey": ["beehive", 1], "truffle": ["", 0]}
+
+
+## Is this an animal/hive good (only gettable once the farm keeps its source)?
+static func needs_source(id: String) -> bool:
+	if LEGACY_SOURCE.has(id):
+		return true
+	return _ranch_goods().has(id)
+
+
+static func _ranch_goods() -> Dictionary:
+	var out := {}
+	var d := Ranch.data()
+	for sp: String in (d["species"] as Dictionary):
+		var pid := str(((d["species"][sp] as Dictionary).get("product", {}) as Dictionary).get("id", ""))
+		if pid != "":
+			out[pid] = sp
+	for pid: String in (d["products"] as Dictionary):
+		out[pid] = true
+	for pid: String in (d["processing"] as Dictionary):
+		out[pid] = true
+	return out
+
+
+## One rule for favours, letters and the board (P1's GameState.board_today can call this).
+static func ranch_source_ok(id: String) -> bool:
+	if not (Ranch.data()["species"] as Dictionary).is_empty():
+		return Ranch.source_ok(id)
+	var src: Array = LEGACY_SOURCE.get(id, ["", 0])
+	return str(src[0]) != "" and Builds.built_tier(str(src[0])) >= int(src[1])
+
+
+## Does this farm keep animals at all (roster or a legacy coop/barn)?
+static func has_animals() -> bool:
+	return not Ranch.animals().is_empty() or Builds.is_built("coop") or Builds.is_built("barn")
+
+
+static func _storm_animals() -> String:
+	if not has_animals():
+		return ""
+	return "Your animals will keep in by the coop and barn; give them a pet once it's passed. "
+
+
+## Ranch letters (C11a P5): the lead-in (a home for Hazel's hens), welcome letters when the
+## coop/barn and their bigger tiers go up, a note on the first egg/milk/wool, Tam's lamb
+## (♥8) arriving once the barn has room, and Tam's letters from the highlands after ♥10.
+## Flags rmail_* / tam_lamb_* / tam_hl_*.
+static func _ranch_mail(day: int) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	var pen := GameState.is_penguins()
+	if day >= 6 and day <= 14 and not has_animals() and not flags.has("rmail_lead") and intro_ok():
+		flags["rmail_lead"] = day
+		intro_sent()
+		if pen:
+			send("Hazel", "My hens have gone and hatched more chicks than I've room for. Put up a coop and they're yours: the Plans board by your house, wood and stone, or I'll build it for you. Pet them of a morning and they'll lay every day. - Hazel", "news", {"npc": "hazel"})
+		else:
+			send("Benno", "Heard the old plot's got a new owner and no hens. Put up a coop (Plans board, by your door) and I'll find you some. Fresh eggs sell clean, no questions. - Benno", "news", {"npc": "benno"})
+	for row: Array in RANCH_LETTERS:
+		var fk := "rmail_%s_%d" % [row[0], row[1]]
+		if flags.has(fk) or Builds.built_tier(str(row[0])) < int(row[1]):
+			continue
+		flags[fk] = day
+		var who := str(row[2]) if pen or row.size() < 8 else str(row[7])  # [7]: the gangster-arc sender
+		send(_name(who), "%s - %s" % [str(row[3] if pen else row[4]), _name(who)], "gift", {"npc": who, "item": str(row[5]), "n": int(row[6])})
+		break  # one welcome a morning
+	for row: Array in FIRST_GOODS:
+		var item := str(row[0])
+		var fk2 := "rmail_first_" + item
+		if flags.has(fk2) or not _made(item):
+			continue
+		flags[fk2] = day
+		send(_name(str(row[1])), "%s - %s" % [str(row[2] if pen else row[3]), _name(str(row[1]))], "chat", {"npc": str(row[1])})
+		break
+	_tam_lamb(day)
+	_tam_highlands(day)
+
+
+## [building, tier, villager, penguin text, gangster text, gift item, n, (gangster villager)]
+const RANCH_LETTERS := [
+	["coop", 1, "hazel", "Your hens are settled; I walked them up myself. They like a pet first thing and a full feeder. Hay's on me this once.", "Your hens are in. Told you I'd find some. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once.", "hay", 3, "benno"],
+	["barn", 1, "benno", "The barn smells right already. Brush them, talk to them, keep the trough full; the rest is patience. Some hay to start you off.", "Barn's up. Animals don't care who you work for: feed them, pet them, and the milk comes. Hay to start.", "hay", 5],
+	["coop", 2, "posy", "A bigger coop! If any duck eggs come your way, I'll trade you a cake for every one. Here's an egg for luck.", "Bigger coop, I hear. Duck eggs make the best cakes in town and I don't say that lightly. An egg for luck.", "egg", 1],
+	["barn", 2, "tam", "Goats now. They'll eat the fence, the gate and your hat. Worth it for the milk. Wool for the bedding.", "Goats. They'll eat everything you own. Worth it for the milk. Wool for the bedding.", "sheep_wool", 2],
+]
+## [item, villager, penguin text, gangster text]: the first time the farm makes one.
+const FIRST_GOODS := [
+	["egg", "posy", "Hazel says your hens are laying! Bring me eggs whenever you've spare and I'll show you what a proper sponge looks like.", "First eggs off your farm, I hear. Bring me the spares; the bakery goes through dozens."],
+	["milk", "hazel", "First milk! Leave it in the press overnight and you'll have cheese by morning. That's the whole secret, and don't let anyone tell you otherwise.", "First milk. The press turns it to cheese overnight; cheese keeps and sells better. You're welcome."],
+	["sheep_wool", "tam", "First fleece. Don't wash it in the river; the river doesn't need it and neither do you. The loom's where it wants to go.", "First fleece. Loom's where it wants to go. Sheep don't care who buys the sweater."],
+]
+
+
+## Has the farm made this good yet? (Ranch roster: an animal of a species whose product it is
+## has made something; before ranch.json data: holding one with its source built.)
+static func _made(item: String) -> bool:
+	var goods := _ranch_goods()
+	if goods.has(item) and goods[item] is String:
+		for uid: String in Ranch.animals():
+			var a: Dictionary = Ranch.animals()[uid]
+			if str(a.get("species", "")) == str(goods[item]) and int(a.get("made_day", -1)) >= 0:
+				return true
+	return ranch_source_ok(item) and GameState.count(item) > 0
+
+
+## Tam's ♥8 lamb: she moves into the barn as soon as there is room (Ranch.add), marked as a
+## keepsake so she can't be rehomed; until then one letter says she's waiting at his hut.
+static func _tam_lamb(day: int) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	if not flags.has("hv_tam_8") or flags.has("tam_lamb_home"):
+		return
+	var opts := {"home": "barn", "name": "Bramble", "keepsake": true, "giver": "Tam"}
+	var uid := RanchGift._try("sheep", opts)  # a promise: may go one over a full barn (c11b_04-12)
+	if uid != "":
+		flags["tam_lamb_home"] = uid
+		send("Tam", ("Brought Bramble up at first light. She's in your barn, eating something she shouldn't. Name her what you like; she won't answer to it either way. - Tam" if GameState.is_penguins()
+			else "Brought Bramble up at first light. She's in your barn. Call her what you like; she answers to nobody. - Tam"), "chat", {"npc": "tam"})
+	elif not flags.has("tam_lamb_wait"):
+		flags["tam_lamb_wait"] = day
+		send("Tam", "Bramble's waiting at my hut till there's room for her: she needs %s. She's eaten another hat. No hurry. Some hurry. - Tam" % RanchGift.room_hint("sheep", opts), "chat", {"npc": "tam"})
+
+
+## After ♥10 Tam writes from the highlands, about once a week, four letters.
+const TAM_LETTERS := [
+	"Made the top pass. Snow to the knee and the Dollys complaining about it in harmony. Wool's thicker up here. So's the quiet.",
+	"How's %s? Is she eating the fence yet? She will. Give her a pet from me; she won't know it's from me, which is the point.",
+	"Met a herd of shaggy cattle up here with horns like coat racks. They looked at me like I was the odd one. Fair.",
+	"Coming down for the Harvest Fair. Bring %s; I want to see if she's grown into her ears. Keep a light on.",
+]
+
+
+static func _tam_highlands(day: int) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	if not flags.has("hv_tam_10"):
+		return
+	var n := int(flags.get("tam_hl_n", 0))
+	if n >= TAM_LETTERS.size():
+		return
+	if not flags.has("tam_hl_day"):
+		flags["tam_hl_day"] = day  # he's only just left: the first letter comes a week on
+		return
+	if day - int(flags["tam_hl_day"]) < 7:
+		return
+	flags["tam_hl_n"] = n + 1
+	flags["tam_hl_day"] = day
+	var text := str(TAM_LETTERS[n])
+	if "%s" in text:
+		text = text % lamb_name()
+	send("Tam", text + " - Tam", "chat", {"npc": "tam"})
+
+
+## The lamb's name as the player has it now (renamed on the Animals page) or Bramble.
+static func lamb_name() -> String:
+	var uid := str(GameState.run["flags"].get("tam_lamb_home", ""))
+	var nm := str(Ranch.animal(uid).get("name", "")) if uid != "" else ""
+	return nm if nm != "" else "Bramble"
 
 
 ## Who tips you off about a birthday: Pip or Wren jr if you know them and they're
@@ -310,6 +479,8 @@ const GIFT_NOTES := {
 	"juniper": ["Take this. Doctor's orders. Mostly a friend's orders."],
 	"granite": ["Out of the quarry. Thought you'd know what to do with it."],
 	"marlowe": ["Washed up under the lamp. The sea sends you its regards."],
+	"tam": ["The Dollys found this. They voted, and it's for you.", "From the hills. Sheep don't send presents, so I have to."],
+	"benno": ["From the stable. The grey mare picked it out; don't argue with her.", "Found this in the tack room. Better with you than the mice."],
 	"#kid": ["I found this and it's for YOU. Don't tell anyone I'm nice.", "This is a present. You have to say thank you next time you see me."],
 	"#all": ["Found this and thought of you. Don't make a fuss.", "A little something. It made me think of your farm.", "Had one spare. Now you do."],
 }
@@ -320,6 +491,8 @@ const CHAT_NOTES := {
 	"alder": ["The fee ledger balanced on the first try this week. I thought you should know."],
 	"bram": ["Stew on all day tomorrow. The corner seat's yours."],
 	"marlowe": ["Clear night last night. You could see every star from the lamp room. Thought of you down there, working."],
+	"tam": ["Dolly got out again. All of them did. They're back. They want you to know they're not sorry."],
+	"benno": ["The grey mare threw a shoe and looked pleased about it. Horses. Come by the stable some morning."],
 	"#kid": ["I saw a frog THIS big. Come and look before it leaves.", "Can you come and play? Not now. Later. When you're done farming.", "I drew your farm. The cow is purple. It's art."],
 	"#all": ["The weather's turned and the whole town's talking about it. How's the farm?", "I saw your lights on late. Get some sleep, will you?", "If you're passing, drop in. The kettle's always on.", "Someone left flowers on the fountain this morning. Was it you?", "I've been meaning to say: it's good having you here.", "The market was busy today. You should bring something to sell."],
 }

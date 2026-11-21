@@ -274,5 +274,22 @@ func _run() -> void:
 		var d2 := bt.d.duplicate()
 		await BattleBrief.show_for(m, d2)
 		check(_brief() == null, "a hidden kind of fight only gets a toast")
+	# ---- a quick B (or MENU) right after the card opens still closes it (bot 20, C11a fix)
+	for act in ["b", "menu"]:
+		m = current_scene as GameMap
+		var d3 := {"mode": "drill", "title": "Drill", "back": ["town", 30, 30]}
+		var shown := false
+		BattleBrief.show_for(m, d3)  # not awaited: closes through B below
+		for i in 3:
+			await process_frame
+		var card := _brief()
+		shown = card != null and paused
+		Input.action_press(act)
+		await process_frame
+		Input.action_release(act)
+		for i in 40:
+			await process_frame
+		check(shown and _brief() == null and not paused, "the briefing card closes on an early %s (shown %s, open %s, paused %s)" % [act.to_upper(), shown, _brief() != null, paused])
+		m = await _arrive("town", 600)
 	print("campaign_gate_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)
