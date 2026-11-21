@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 96.9}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 6.1}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 3.8}
+{"step": 15, "name": "crops wired in", "rc": 0, "secs": 0.0}
+{"step": 21, "name": "phone_ui_test", "rc": 0, "secs": 12.6}
+{"step": 27, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 3.8}
+{"step": 33, "name": "C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli", "rc": 1, "secs": 4.0}
+{"step": 39, "name": "rec_links_test", "rc": 0, "secs": 3.5}
+{"step": 45, "name": "coop_test", "rc": 0, "secs": 3.5}
+{"step": 51, "name": "crop_test", "rc": 0, "secs": 35.4}
+{"step": 57, "name": "ranch_test", "rc": 0, "secs": 4.5}
+{"step": 63, "name": "cf_layout_test", "rc": 0, "secs": 11.1}
+{"step": 69, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.9}
+{"step": 75, "name": "Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (", "rc": 0, "secs": 0.0}
+{"step": 81, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.5}
+{"step": 87, "name": "danger_music_test", "rc": 0, "secs": 31.0}
+{"step": 93, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.8}
+{"step": 99, "name": "every script compiles", "rc": 0, "secs": 4.6}
+{"step": 105, "name": "quest_tracker_test", "rc": 0, "secs": 5.2}
+{"step": 111, "name": "battle_drill_flow_test", "rc": 0, "secs": 10.9}
+{"step": 117, "name": "move_speed_test", "rc": 0, "secs": 5.2}
+{"step": 123, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 7.5}
+{"step": 129, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 4.4}
+{"step": 135, "name": "arcade_test", "rc": 0, "secs": 4.0}
+{"step": 141, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 5.3}
+{"step": 147, "name": "C11b P6: fair ribbon tables", "rc": 0, "secs": 3.4}
+{"step": 153, "name": "C11a fix2: every ranch species buyable from its seller, both arcs, sta", "rc": 0, "secs": 4.1}
+{"step": 159, "name": "S1 P3: Steam Deck text floor (drawn text scan)", "rc": 0, "secs": 0.1}
+{"step": 165, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.4}
+{"step": 171, "name": "relay: server/server.js protocol (tools/relay_test.js; a push of serve", "rc": 0, "secs": 5.6}
+{"step": 177, "name": "deck window: 1280x800 with no window manager fills the screen (xvfb)", "rc": 0, "secs": 7.1}

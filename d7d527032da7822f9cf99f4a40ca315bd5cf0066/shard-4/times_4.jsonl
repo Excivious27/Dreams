@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 179.0}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 36.4}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 3.2}
+{"step": 17, "name": "step 17", "rc": 0, "secs": 0.0}
+{"step": 23, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.7}
+{"step": 29, "name": "storage_test", "rc": 0, "secs": 2.9}
+{"step": 35, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.8}
+{"step": 41, "name": "rec_audio_test", "rc": 0, "secs": 2.8}
+{"step": 47, "name": "farm_look_test", "rc": 0, "secs": 4.4}
+{"step": 53, "name": "npc_anim_test", "rc": 0, "secs": 2.9}
+{"step": 59, "name": "ranch_gift_test", "rc": 0, "secs": 3.3}
+{"step": 65, "name": "town_first_test", "rc": 0, "secs": 4.4}
+{"step": 71, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 77, "name": "all ages: name filter for player-typed names (S1 P5)", "rc": 0, "secs": 2.7}
+{"step": 83, "name": "slice_c11b_chores", "rc": 0, "secs": 0.5}
+{"step": 89, "name": "ambience_test", "rc": 0, "secs": 5.3}
+{"step": 95, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 4.3}
+{"step": 101, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 7.7}
+{"step": 107, "name": "c6_cue_test", "rc": 0, "secs": 2.8}
+{"step": 113, "name": "campaign_words_test", "rc": 0, "secs": 3.2}
+{"step": 119, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 19.5}
+{"step": 125, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 8.7}
+{"step": 131, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 22.1}
+{"step": 137, "name": "rec_games_test", "rc": 0, "secs": 3.1}
+{"step": 143, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 4.9}
+{"step": 149, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 2.9}
+{"step": 155, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 9.5}
+{"step": 161, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 4.1}
+{"step": 167, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 4.4}
+{"step": 173, "name": "net transport: NetNode over the in-memory relay twin (NetRelayRoom = s", "rc": 0, "secs": 2.9}
+{"step": 179, "name": "S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf", "rc": 0, "secs": 0.1}

@@ -1,0 +1,30 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 78.5}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 9.6}
+{"step": 13, "name": "C11b P2 long ranch curve: three years of ranching, both arcs", "rc": 0, "secs": 6.8}
+{"step": 19, "name": "S1 P1: the game boots to the title and plays 600 frames on the farm wi", "rc": 0, "secs": 4.4}
+{"step": 25, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.2}
+{"step": 31, "name": "C11b P5: chores rework (hay, spots, value cap, regions, levels), team ", "rc": 0, "secs": 3.4}
+{"step": 37, "name": "rec_test", "rc": 0, "secs": 6.6}
+{"step": 43, "name": "cash_test", "rc": 0, "secs": 4.7}
+{"step": 49, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 55, "name": "commons_test", "rc": 0, "secs": 43.6}
+{"step": 61, "name": "cf_volunteer_test", "rc": 0, "secs": 9.4}
+{"step": 67, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 73, "name": "all ages: no animal dies, is harvested or sold for meat (beasts drop n", "rc": 0, "secs": 0.0}
+{"step": 79, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.2}
+{"step": 85, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 38.8}
+{"step": 91, "name": "workshop: stations at run time", "rc": 0, "secs": 5.0}
+{"step": 97, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 9.8}
+{"step": 103, "name": "campaign_story_test", "rc": 0, "secs": 3.6}
+{"step": 109, "name": "campaign_gate_test", "rc": 0, "secs": 9.2}
+{"step": 115, "name": "meow_gate_test", "rc": 0, "secs": 4.4}
+{"step": 121, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 7.5}
+{"step": 127, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 21.7}
+{"step": 133, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 3.7}
+{"step": 139, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 5.2}
+{"step": 145, "name": "C7 P4: heart scene content", "rc": 0, "secs": 4.1}
+{"step": 151, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 4.6}
+{"step": 157, "name": "S1 P3: Deck typing, glyphs, text floor, desktop display", "rc": 0, "secs": 3.4}
+{"step": 163, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 4.8}
+{"step": 169, "name": "C10a P5: wardrobe", "rc": 0, "secs": 6.1}
+{"step": 175, "name": "steam co-op: web build never parses Steam code (backend object, load b", "rc": 0, "secs": 0.2}

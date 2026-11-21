@@ -1,0 +1,31 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 78.0}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 49.8}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.2}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 42.1}
+{"step": 20, "name": "desktop_layout_test", "rc": 0, "secs": 5.5}
+{"step": 26, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 3.5}
+{"step": 32, "name": "C11b P1: the heart (ability) tap is dropped while busy, frozen or in d", "rc": 0, "secs": 3.2}
+{"step": 38, "name": "ticket_econ_test", "rc": 0, "secs": 2.6}
+{"step": 44, "name": "gang_play_test", "rc": 0, "secs": 18.3}
+{"step": 50, "name": "house_exterior_test", "rc": 0, "secs": 5.5}
+{"step": 56, "name": "shop_econ_test", "rc": 0, "secs": 2.9}
+{"step": 62, "name": "gang_flavour_test", "rc": 0, "secs": 2.6}
+{"step": 68, "name": "every sound the game asks for exists", "rc": 0, "secs": 2.7}
+{"step": 74, "name": "Steam: SteamPipe templates, depot exclusions, upload config (S1 P5)", "rc": 0, "secs": 0.0}
+{"step": 80, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.2}
+{"step": 86, "name": "music_stream_test", "rc": 0, "secs": 9.1}
+{"step": 92, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.8}
+{"step": 98, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.2}
+{"step": 104, "name": "goal_line_test", "rc": 0, "secs": 2.7}
+{"step": 110, "name": "campaign_gate_test", "rc": 0, "secs": 6.9}
+{"step": 116, "name": "skill_glow_test", "rc": 0, "secs": 3.8}
+{"step": 122, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 10.6}
+{"step": 128, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 8.7}
+{"step": 134, "name": "jumper_test", "rc": 0, "secs": 2.7}
+{"step": 140, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 7.4}
+{"step": 146, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 3.1}
+{"step": 152, "name": "C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou", "rc": 0, "secs": 2.6}
+{"step": 158, "name": "S1 P3: no new touch words outside PadInput.words", "rc": 0, "secs": 0.2}
+{"step": 164, "name": "C9 P4: haptics", "rc": 0, "secs": 2.4}
+{"step": 170, "name": "C10b P4: casino", "rc": 0, "secs": 2.7}
+{"step": 176, "name": "steam input: game_actions VDF matches InputSetup (generator + KeyValue", "rc": 0, "secs": 0.0}
