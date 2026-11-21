@@ -1455,6 +1455,35 @@ func _assign_toolbar(id: String, i: int) -> void:
 	_refresh()
 
 
+## Animals detail (TeamAnimals._detail calls this): born day and generation, parents and kids (tap a
+## living one to open it), expecting status and the species' habitat needs (c11b_11-07, 11-08, 02-02).
+func ranch_family_lines(uid: String) -> void:
+	var fam := Ranch.family(uid)
+	var born := int(fam["born_day"])
+	_line("  Born %s %d · gen %d" % [GameState.season_of(maxi(1, born)).capitalize(), (maxi(1, born) - 1) % GameState.DAYS_PER_SEASON + 1, int(fam["gen"])], 8, Color(0.8, 0.85, 0.9))
+	for grp: String in ["parents", "kids"]:
+		var kin: Array = fam[grp]
+		if kin.is_empty():
+			continue
+		_line("  %s:" % grp.capitalize(), 8, Color(0.85, 0.9, 0.8))
+		for k: Dictionary in kin:
+			var kid := str(k["uid"])
+			var rare := Ranch.is_rare(kid) if not bool(k["rehomed"]) else false
+			var label := "    %s%s%s" % [str(k["name"]), " ✦" if rare else "", (" (lives at %s)" % str(k["where"])) if bool(k["rehomed"]) else ""]
+			if bool(k["rehomed"]):
+				_line(label, 8, Color(0.7, 0.7, 0.7))
+			else:
+				_button(label + " ›", func() -> void:
+					TeamAnimals._sel = kid
+					_refresh())
+	var ex := Ranch.expecting_text(uid)
+	if ex != "":
+		_line("  " + ex, 8, Color(1, 0.85, 0.75))
+	var hab := Ranch.habitat_text(uid)
+	if hab != "":
+		_line("  " + hab, 8, Color(0.8, 0.9, 1))
+
+
 ## When a resting pup is back, as a clock time ("about 8am" / "tomorrow about 6am").
 static func pup_back_text() -> String:
 	var st := Pet.state()

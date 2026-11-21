@@ -101,6 +101,13 @@ if ! echo "$mcout" | grep -q "month_curve_test: 0 failures"; then
   echo "Month curve test failed"; exit 1
 fi
 
+echo "== C11b P2 long ranch curve: three years of ranching, both arcs =="
+lcout="$("$GODOT" --headless --path . -s res://tools/month_curve_test.gd -- long 2>&1)"
+echo "$lcout" | grep -E "FAIL|month_curve_test|year 1|SCRIPT ERROR" || true
+if ! echo "$lcout" | grep -q "month_curve_test long: 0 failures"; then
+  echo "Long ranch curve test failed"; exit 1
+fi
+
 echo "== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) =="
 fhout="$("$GODOT" --headless --path . -s res://tools/first_hours_test.gd 2>&1)"
 echo "$fhout" | grep -E "FAIL|first_hours_test|SCRIPT ERROR" || true
@@ -329,6 +336,12 @@ cout="$("$GODOT" --headless --path . -s res://tools/ranch_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_test" || true
 if ! echo "$cout" | grep -q "ranch_test: [0-9]* checks, 0 failures"; then
   echo "Ranch test failed"; exit 1
+fi
+
+cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ranch_p2_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_p2_test" || true
+if ! echo "$cout" | grep -q "ranch_p2_test: 0 failures"; then
+  echo "Ranch P2 test failed"; exit 1
 fi
 
 cout="$("$GODOT" --headless --path . -s res://tools/decor_sources_test.gd 2>&1)"

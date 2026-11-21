@@ -361,7 +361,7 @@ static func build_page(menu: Variant) -> void:
 	for uid: String in all:
 		var u := uid
 		var tag := " ★" if on_team(u) else ""
-		var b: Button = menu._button("%s%s  %s  %s" % ["▶ " if _sel == u else "", name_of(u) + tag, species_name(u), _hearts_text(hearts(u))], func() -> void:
+		var b: Button = menu._button("%s%s  %s  %s" % ["▶ " if _sel == u else "", name_of(u) + tag, Ranch.variant_name(u) + (" ✦" if Ranch.is_rare(u) else ""), _hearts_text(hearts(u))], func() -> void:
 			_sel = "" if _sel == u else u
 			_rename_uid = ""
 			_rehome_arm = ""
@@ -377,6 +377,7 @@ static func _detail(menu: Variant, uid: String) -> void:
 	var home := str(a.get("home", ""))
 	var age := "grown" if grown(uid) else "little"
 	menu._line("  Lives in the %s · %s · friendship %d" % [home if home != "" else "pen", age, bond(uid)], 8, Color(0.8, 0.85, 0.9))
+	menu.ranch_family_lines(uid)  # C11b P2 hook: born day, gen, parents, kids, expecting, habitat
 	if trainable(uid):
 		var ls: Array = []
 		for lid in (spec(uid).get("lessons", []) as Array):

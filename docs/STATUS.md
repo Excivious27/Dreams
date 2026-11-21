@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b P2: ranch themed feeds/habitat/add-ons/lineage/variant names/pregnancy/show bump; rare variant strips; show ribbons + trophy; pup tab fixes; party plates; team animal battle stats/poses; coloured night glow; long ranch curve test
+
 ## 2026-11-20 — C11a fix2: every ranch species buyable from its seller in both arcs (Hazel farmhouse counter + market stall, Posy bakery counter with Hazel fallback, Tam), Hazel's starter gift lives in the roster so the classic herd never shows on your own farm; tools/ranch_shop_test.gd
 ## 2026-11-20 — C11a fix: BattleBrief keeps an early B and takes MENU as back (bot 20 softlock in bf_orchard_line); campaign_gate_test checks both.
 
