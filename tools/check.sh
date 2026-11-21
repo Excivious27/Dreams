@@ -1194,3 +1194,10 @@ echo "$pdout" | grep -E "FAIL|SCRIPT ERROR|prop_dress_test" || true
 if ! echo "$pdout" | grep -q "prop_dress_test: 0 failures"; then
   echo "Prop dressing test failed"; exit 1
 fi
+
+echo "== C14 P6: art + light (mega villagers walk 4 ways, isolated dunes/icons, hearth glow, coloured lamps) =="
+p6aout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_p6_art_test.gd 2>&1)"
+echo "$p6aout" | grep -E "FAIL|SCRIPT ERROR|c14_p6_art_test" || true
+if ! echo "$p6aout" | grep -q "c14_p6_art_test: 0 failures"; then
+  echo "C14 P6 art/light test failed"; exit 1
+fi
