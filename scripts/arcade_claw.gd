@@ -205,7 +205,7 @@ func _motor(dt: float, moving: bool) -> void:
 		return
 	_motor_t -= dt
 	if _motor_t <= 0.0:
-		sfx("claw_motor", "servo")
+		sfx("claw_move", "servo")
 		_motor_t = MOTOR_EVERY
 
 

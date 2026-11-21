@@ -253,6 +253,7 @@ static func _play_beat(m: GameMap, b: Dictionary) -> void:
 	_prefetch_for(m, b)
 	# "pre": effects that run before the lines (p5_win clears the boss and adds
 	# so the quiet ending scene isn't played over a live boss bar).
+	_calm_for_scene(m, b)
 	if b.has("pre"):
 		_apply(m, b["pre"])
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):
@@ -286,7 +287,7 @@ static func _play_beat(m: GameMap, b: Dictionary) -> void:
 				(mm as GameMap).player.frozen = false
 		Dialogue.block_input()
 		return
-	_apply(m, b.get("effects", {}))
+	_apply(m, end_effects(b))
 	if is_instance_valid(m):
 		_quests_now.call_deferred(m)  # beat flags (final_done, catship_done) close/open quests now
 	GameState.run.erase("story_pending")
@@ -532,8 +533,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		if GameState.has_quest(str(q[0])):
 			continue
 		GameState.add_quest(str(q[0]), str(q[1]))
-		m.hud.toast("New quest: %s" % str(q[1]), Color(1, 0.9, 0.4))
-		Music.instance(m.get_tree()).sfx("new_item", "pickup")
+		Quests.announce(m, str(q[1]))
 	for q in fx.get("complete", []):
 		if GameState.complete_quest(str(q)):
 			m.hud.toast(GameMap.quest_done_text(str(q)), Color(1, 0.9, 0.4))
@@ -618,10 +618,13 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	# boss_card already starts the arc's boss theme (and DangerMusic holds it): a
 	# generic "music" next to it would override the theme built from Tom's melody.
 	if fx.has("music") and not fx.has("boss_card"):
-		Dialogue.line_music(m.get_tree(), str(fx["music"]))
+		Dialogue.line_music(m.get_tree(), str(fx["music"]), str(fx.get("music_fallback", "")))
 	if fx.has("shake"):
 		m.shake(float(fx["shake"]))
 		Haptics.buzz_amount(float(fx["shake"]))
+		# A big quake is heard, not only seen (C13 06-03).
+		if float(fx["shake"]) >= 3.0:
+			Music.instance(m.get_tree()).sfx("quake", "stone_grind")
 	if fx.has("fx"):
 		var f: Array = fx["fx"]
 		m.fx(str(f[0]), m.player.position + Vector2(float(f[1]), float(f[2])), 12.0, 0.8)
@@ -639,6 +642,42 @@ static func _cancel_sting() -> void:
 			return
 
 
+## A beat's closing effects. A beat fired by a finished quest already heard the quest
+## fanfare: its own effect sound is dropped when that would be the fanfare again (C13 06-16).
+static func end_effects(b: Dictionary) -> Dictionary:
+	var fx: Dictionary = b.get("effects", {})
+	var trig: Dictionary = b.get("trigger", {}) if b.get("trigger") is Dictionary else {}
+	if trig.has("quest_done") and fx.has("sfx") and beat_sfx(str(fx["sfx"])) == "quest_done":
+		fx = fx.duplicate()
+		fx.erase("sfx")
+	return fx
+
+
+## A walk-in scene never plays over a fight tier (C13 06-22): when the beat brings no
+## song of its own and DangerMusic is on combat/danger (1..3, not a boss), drop to the
+## map's calm song before the lines (the dialogue pauses DangerMusic.tick).
+static func _calm_for_scene(m: GameMap, b: Dictionary) -> void:
+	if scene_song_of(b) != "":
+		return
+	if DangerMusic.tier < 1 or DangerMusic.tier > 3 or _story_boss_alive(m):
+		return
+	DangerMusic.reset()
+	var mu := Music.instance(m.get_tree())
+	if mu:
+		mu.play(m.area_track(), 1.5)
+
+
+## The song a beat asks for before (pre) or on its first line, "" if none.
+static func scene_song_of(b: Dictionary) -> String:
+	var pre: Dictionary = b.get("pre", {}) if b.get("pre") is Dictionary else {}
+	if pre.has("music"):
+		return str(pre["music"])
+	var ls: Array = b.get("lines", [])
+	if not ls.is_empty() and ls[0] is Dictionary and (ls[0] as Dictionary).has("music"):
+		return str(ls[0]["music"])
+	return ""
+
+
 ## Story effect "sfx": "levelup" is the old word for the quest fanfare; any other
 ## name plays as written (soft beats use j_heart / j_page, ominous ones alert).
 static func beat_sfx(name: String) -> String:
@@ -650,9 +689,19 @@ static func beat_sfx(name: String) -> String:
 const PREFETCH_AFTER := {
 	"p4_bell_rung": ["boss_penguin", "finargle", "ending_penguin", "credits", "title_musicbox"],
 	"p5_spire": ["ending_penguin", "credits", "title_musicbox"],
-	"g4_sasha": ["boss_gang", "ending_gangster", "credits", "title_musicbox"],
+	"g4_sasha": ["boss_gang", "ending_gangster", "credits", "title_musicbox", "mood_tense", "mood_sad", "mood_tender"],
 	"g5_president": ["ending_gangster", "credits", "title_musicbox"],
 	"p4_merkitties": ["merkitty_song"],
+	# C13 06-13: songs a later beat opens on, queued a beat ahead.
+	"p3_sky": ["finargle"],
+	"p3_knight_nova": ["finargle", "merkitty_song"],
+	"p4_prison": ["merkitty_song"],
+	"p1_grump_truth": ["mood_mystery"],
+	"p2_catkins": ["mood_mystery", "night"],
+	"p4_gate": ["mood_tense", "mood_tender", "mood_sad"],
+	"g1_sal": ["mood_mystery"],
+	"g3_manifest": ["mood_mystery"],
+	"g4_flame": ["mood_sad", "mood_tense"],
 }
 
 
@@ -669,8 +718,14 @@ static func _prefetch_for(m: GameMap, b: Dictionary) -> void:
 	var fxm := str((b.get("effects", {}) as Dictionary).get("music", ""))
 	if fxm != "" and fxm != "area":
 		want.append(fxm)
-	if not want.is_empty():
-		mu.call("prefetch", want)
+	# The arc's own take of each (mood_tense -> mood_tense_gang); missing songs drop out.
+	var real: Array = []
+	for w: Variant in want:
+		var t := Dialogue.scene_song(str(w))
+		if t != "" and t != "area" and t != "stop" and not (t in real):
+			real.append(t)
+	if not real.is_empty():
+		mu.call("prefetch", real)
 
 
 static func _spawn_list(m: GameMap, spawns: Array) -> void:

@@ -110,7 +110,7 @@ func _arc(arc: String) -> void:
 	print("== ", arc)
 	var gang := arc == "gangsters"
 	var light := "combat_light_gang" if gang else "combat_light"
-	var danger := "danger" if gang else "danger"  # C6: raid is the collectors' theme only
+	var danger := "danger_gang" if gang and Music.has_track("danger_gang") else "danger"  # C13: P3's gang take
 	var elite := "combat_elite_gang" if gang else "combat_elite"
 	var small := "thug_lookout" if gang else "grump"
 	var m: GameMap = await go(arc, "meadow")

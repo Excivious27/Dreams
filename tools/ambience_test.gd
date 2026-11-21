@@ -128,7 +128,7 @@ func _run() -> void:
 		GameState.run["time"] = 3 * 60
 		check(m.area_track() != "festival", "no festival song at 3am (got %s)" % m.area_track())
 		GameState.run["time"] = NOON
-		check(m.area_track() == "festival", "festival song at noon (got %s)" % m.area_track())
+		check(m.area_track().begins_with("festival"), "festival song at noon (got %s)" % m.area_track())  # C13: festival_<id> when it exists
 	check("finargle" in GameMap.BOSS_TRACKS, "finargle counts as boss music")
 	# Notes may carry a cue.
 	GameMap.notify("Test note", "j_birthday")

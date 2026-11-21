@@ -102,7 +102,7 @@ static func _hub(gm: Node) -> void:
 		_badge(gm, row, str(c.get("badge", "")), _top_claimed(cid))
 		var got := Collections.count(cid)
 		var tot := Collections.total(cid)
-		var b: Button = gm._button("%s%s  %d/%d ›" % [str(c["title"]), "  • New!" if Collections.is_new(cid) else "", got, tot], func() -> void: open(cid); _page_sfx(gm); gm._refresh())
+		var b: Button = gm._button("%s%s  %d/%d ›" % [str(c["title"]), "  • New!" if Collections.is_new(cid) else "", got, tot], func() -> void: open(cid); _page_sfx(gm); gm._refresh(), "")
 		b.set_meta("pc_key", "book:" + cid)
 		gm._body.remove_child(b)
 		row.add_child(b)
@@ -181,7 +181,7 @@ static func _page(gm: Node) -> void:
 				t += 1
 				if Collections.have(cat, _key(cat, e)):
 					n += 1
-			var hb: Button = gm._button("%s %s  %d/%d" % ["▾" if open_g else "▸", str(g[1]), n, t], func() -> void: sub = gid; _just_opened = gid; part = 0; sel = ""; _page_sfx(gm); gm._refresh())
+			var hb: Button = gm._button("%s %s  %d/%d" % ["▾" if open_g else "▸", str(g[1]), n, t], func() -> void: sub = gid; _just_opened = gid; part = 0; sel = ""; _page_sfx(gm); gm._refresh(), "")
 			hb.set_meta("pc_key", "grp:" + gid)
 			if open_g and _just_opened == gid:
 				_just_opened = ""
@@ -197,7 +197,7 @@ static func _page(gm: Node) -> void:
 		gm._line("Next: " + str(nx[0]), 8, Color(0.8, 1, 0.8))
 	if cat == "shipping":
 		gm._line("Counts start the day the log arrived.", 7, Color(0.65, 0.65, 0.65))
-	var bb: Button = gm._button("← Back to Book", func() -> void: page = ""; sub = ""; sel = ""; _page_sfx(gm); gm._refresh())
+	var bb: Button = gm._button("← Back to Book", func() -> void: page = ""; sub = ""; sel = ""; _page_sfx(gm); gm._refresh(), "")
 	bb.set_meta("pc_key", "book:back")
 
 
@@ -276,10 +276,10 @@ static func _grid(gm: Node, cat: String, ents: Array) -> void:
 		var prow := HBoxContainer.new()
 		prow.add_theme_constant_override("separation", 2)
 		gm._body.add_child(prow)
-		var bk: Button = gm._button("‹ Page", func() -> void: part = posmod(part - 1, pages); sel = ""; _page_sfx(gm); gm._refresh())
+		var bk: Button = gm._button("‹ Page", func() -> void: part = posmod(part - 1, pages); sel = ""; _page_sfx(gm); gm._refresh(), "")
 		bk.set_meta("pc_key", "book:page_prev")
 		bk.reparent(prow)
-		var pb: Button = gm._button("Page %d/%d ›" % [part + 1, pages], func() -> void: part = (part + 1) % pages; sel = ""; _page_sfx(gm); gm._refresh())
+		var pb: Button = gm._button("Page %d/%d ›" % [part + 1, pages], func() -> void: part = (part + 1) % pages; sel = ""; _page_sfx(gm); gm._refresh(), "")
 		pb.set_meta("pc_key", "book:page")
 		pb.reparent(prow)
 

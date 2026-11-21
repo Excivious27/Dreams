@@ -108,8 +108,14 @@ static func talk(m: GameMap, id: String) -> bool:
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
 	# Every heart scene opens on a soft cue; ♥10 keeps its full j_heart after the scene.
-	Music.instance(m.get_tree()).sfx("j_page" if n < 10 else "sparkle", "sparkle")
+	var gang := not GameState.is_penguins()
+	var open_cue := "j_page" if n < 10 else ("j_heart_gang" if gang else "sparkle")
+	Music.instance(m.get_tree()).sfx(open_cue, "j_page" if gang else "sparkle")
+	# C13 06-10: a heart scene has its own mood song (not the fight/shop song under it).
+	var mooded := Dialogue.scene_mood(m.get_tree(), heart_mood(n))
 	await m.say(lines)
+	if mooded and is_instance_valid(m):
+		Dialogue.scene_end(m.get_tree())
 	GameState.run["flags"][_flag(id, n)] = true
 	if n == 6:
 		var q := quest6(id)
@@ -122,8 +128,7 @@ static func talk(m: GameMap, id: String) -> bool:
 			var late := (d.get("when", {}) as Dictionary).has("season") and GameState.day_of_season() > 18 and GameState._quest_grows(d)
 			if not d.is_empty() and not late and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
-				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
-				Music.instance(m.get_tree()).sfx("new_item", "pickup")
+				Quests.announce(m, str(d.get("text", q)))
 				var yes := Quests._as_lines(name, Quests.lines(q).get("yes", ""))
 				if not yes.is_empty():
 					await m.say(yes)
@@ -137,11 +142,16 @@ static func talk(m: GameMap, id: String) -> bool:
 					need = " (next %s)" % str(w["season"]).capitalize()
 				GameState.add_hint("%s will ask you again: %s%s" % [name, str(d.get("text", q)), need])
 	if n == 10:
-		Music.instance(m.get_tree()).sfx("j_heart", "levelup")
+		Music.instance(m.get_tree()).sfx("j_heart_gang" if gang else "j_heart", "j_heart")
 		var fall := str(v.get("fall", ""))
 		if fall != "":
 			GameState.add_hint("If the town ever fell: %s" % fall)
 	return true
+
+
+## The mood song of a ♥n scene: early hearts are light, later ones tender.
+static func heart_mood(n: int) -> String:
+	return "comic" if n <= 4 else "tender"
 
 
 ## The ♥n scene's lines with every variant applied (arc words, if_gone, if_partner,

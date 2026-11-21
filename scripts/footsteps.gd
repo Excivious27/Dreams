@@ -1,6 +1,6 @@
 class_name Footsteps
 ## Which footstep a cell gets: grass, dirt, sand, stone, wood, snow, water, mud,
-## gravel or leaves (Music.step plays audio/sfx/step_<word>).
+## gravel, leaves, carpet, metal or ice (C13 P5: decks, grates and rinks got their own takes) (Music.step plays audio/sfx/step_<word>).
 ## Paths record their word in GameMap.step_word as they are drawn (soft_ground,
 ## draw_ground, tile-set region paths, the town plaza); everything else falls back
 ## to the map's own ground, so lawns and meadows never clomp like cobbles.
@@ -8,14 +8,14 @@ class_name Footsteps
 ## Region ground sets -> step word (data/regions.json "ground").
 const GROUND := {"grass": "grass", "lawn": "grass", "teal_moss": "grass", "dead_grass": "grass", "cloud": "grass",
 	"weedy_lot": "dirt", "shoulder": "gravel", "concrete_pier": "stone", "wet_asphalt_0": "stone",
-	"sewer_brick": "stone", "metal_a": "stone"}
+	"sewer_brick": "stone", "metal_a": "metal"}
 ## Region path sets -> step word ("path").
 const PATH := {"dirt": "dirt", "sand": "sand", "stone": "stone", "cobble": "stone", "snow": "snow",
 	"asphalt2": "stone", "neon_sidewalk": "stone", "wood_dock": "wood", "float_stone": "stone",
-	"metal_b": "stone", "sewer_mossy": "stone", "cracked_earth": "gravel"}
+	"metal_b": "metal", "sewer_mossy": "stone", "cracked_earth": "gravel"}
 ## Whole maps with one floor.
 const FLOOR := {"house": "wood", "interior": "wood",
-	"mine": "stone", "underground": "stone", "quarry": "stone", "hollow_heart": "stone", "moon": "stone", "station": "stone",
+	"mine": "stone", "underground": "stone", "moon": "stone", "station": "metal",
 	"beach": "sand"}
 
 
@@ -29,12 +29,12 @@ static func mark(m: GameMap, cells: Dictionary, word: String) -> void:
 
 
 ## Exact seamless texture names first (substring order misreads these: c6_06).
-const SEAM_EXACT := {"cobble_moss": "stone", "floor_carpet": "grass", "cave_earth_floor": "dirt", "teal_moss_wet": "mud"}
+const SEAM_EXACT := {"cobble_moss": "stone", "floor_carpet": "carpet", "cave_earth_floor": "dirt", "teal_moss_wet": "mud"}
 ## Interior floors (data/interiors.json "floor") -> step word; anything else is wood.
 const INTERIOR_FLOOR := {"fl_concrete": "stone", "fl_tile": "stone", "fl_stone": "stone", "fl_round_stone": "stone",
-	"fl_quarry": "stone", "fl_marble": "stone", "fl_cobble": "stone", "fl_clinic": "stone", "fl_grate": "stone",
+	"fl_quarry": "stone", "fl_marble": "stone", "fl_cobble": "stone", "fl_clinic": "stone", "fl_grate": "metal",
 	"fl_dirt": "dirt", "fl_flour": "dirt", "fl_camp": "dirt",
-	"fl_carpet_purple": "grass", "fl_carpet_red": "grass", "fl_carpet_blue": "grass"}  # carpet: the soft step
+	"fl_carpet_purple": "carpet", "fl_carpet_red": "carpet", "fl_carpet_blue": "carpet"}
 ## Words that winter snow can cover (natural soft ground); stone, wood, sand, gravel keep their own.
 const SNOW_OVER := ["grass", "dirt", "leaves", "mud", ""]
 
@@ -48,8 +48,10 @@ static func seam_word(seam: String) -> String:
 	if seam.begins_with("cave_") or seam.begins_with("crystal_floor"):
 		return "stone"
 	if "carpet" in seam:
-		return "grass"
-	for pair: Array in [["sand", "sand"], ["snow", "snow"], ["slush", "snow"], ["frost", "snow"], ["ice", "snow"],
+		return "carpet"
+	if "grate" in seam or "metal" in seam:
+		return "metal"
+	for pair: Array in [["sand", "sand"], ["snow", "snow"], ["slush", "snow"], ["frost", "snow"], ["ice", "ice"],
 			["bog", "mud"], ["mud", "mud"], ["boardwalk", "wood"], ["floor_oak", "wood"], ["floor_parquet", "wood"], ["floor_barn", "wood"],
 			["grass", "grass"], ["moss", "grass"], ["cloud", "grass"], ["forest_floor", "leaves"], ["ballast", "gravel"], ["ash", "gravel"],
 			["ruin", "stone"], ["stone", "stone"], ["cobble", "stone"], ["pave", "stone"], ["plaza", "stone"], ["brick", "stone"],
@@ -60,7 +62,7 @@ static func seam_word(seam: String) -> String:
 
 
 static func path_word(kind: String) -> String:
-	return str(PATH.get(kind, "stone" if ("stone" in kind or "asphalt" in kind or "metal" in kind or "brick" in kind) else "dirt"))
+	return str(PATH.get(kind, "metal" if "metal" in kind else ("stone" if ("stone" in kind or "asphalt" in kind or "brick" in kind) else "dirt")))
 
 
 ## The map's own ground, where no path was drawn.
@@ -71,7 +73,7 @@ static func base_word(m: GameMap) -> String:
 		return seam_word(str((rd as Dictionary)["ground_seam"]))  # seamless region ground (c6_06): sand, snow, stone, ballast...
 	if rd is Dictionary and (rd as Dictionary).has("ground"):
 		var g := str((rd as Dictionary)["ground"])
-		return str(GROUND.get(g, "stone" if ("asphalt" in g or "metal" in g or "concrete" in g or "brick" in g) else "grass"))
+		return str(GROUND.get(g, "metal" if "metal" in g else ("stone" if ("asphalt" in g or "concrete" in g or "brick" in g) else "grass")))
 	if id == "neon":
 		return "stone"
 	if id == "wastes":
@@ -93,11 +95,11 @@ static func interior_word(m: GameMap) -> String:
 	var idata: Variant = m.get("I")
 	if idata is Dictionary:
 		var fl := str((idata as Dictionary).get("floor", "fl_wood"))
-		return str(INTERIOR_FLOOR.get(fl, "dirt" if "dirt" in fl else ("stone" if ("stone" in fl or "tile" in fl) else "wood")))
+		return str(INTERIOR_FLOOR.get(fl, "dirt" if "dirt" in fl else ("carpet" if ("carpet" in fl or "rug" in fl) else ("metal" if ("metal" in fl or "grate" in fl) else ("stone" if ("stone" in fl or "tile" in fl) else "wood")))))
 	return "wood"
 
 
-## Mine floors by theme (earth -> dirt, ice -> snow, stone/lava -> stone) and plank crossings.
+## Mine floors by theme (earth -> dirt, ice -> ice, stone/lava -> stone) and plank crossings.
 static func mine_word(m: GameMap, c: Vector2i) -> String:
 	var br: Variant = m.get("_bridge")
 	if br is Dictionary and (br as Dictionary).has(c):
@@ -108,7 +110,7 @@ static func mine_word(m: GameMap, c: Vector2i) -> String:
 			"earth":
 				return "dirt"
 			"ice":
-				return "snow"
+				return "ice"
 	return "stone"
 
 

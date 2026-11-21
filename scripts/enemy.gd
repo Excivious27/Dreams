@@ -675,7 +675,7 @@ func _summon() -> void:
 		map.fx("poof", at + Vector2(0, -8), 14.0, 0.5)
 	_tele_flash = 0.6
 	_tele_name = "summon"
-	_near_sfx("spell_dark", "spell", 260.0)
+	_near_sfx(summon_sound(kind, Racket.on()), "spell", 260.0)
 	map.hud.toast("It calls for help!", Color(1, 0.8, 0.7))
 
 
@@ -877,11 +877,41 @@ func _is_person() -> bool:
 
 ## Ranged shots by shooter: thugs fire guns, archers loose arrows, the rest spit bolts.
 func _shot_sound(flavour: String) -> String:
-	var k := kind.to_lower()
+	return shot_for(kind, flavour, Racket.on(), _is_person())
+
+
+## C13 09-22: a summon sounds like who calls: gang bosses whistle up their crew,
+## the Commander blows a horn, crystals cast; only dark things use the dark spell.
+static func summon_sound(kind_name: String, gang: bool) -> String:
+	var k := kind_name.to_lower()
+	if k == "commander":
+		return "war_horn"
+	if gang and (k == "president" or "thug" in k or "boss" in k or "lieutenant" in k):
+		return "whistle"
+	if "crystal" in k or "prism" in k:
+		return "sparkle" if k == "prism_wisp" else "spell_dark"
+	if "golem" in k:
+		return "stomp"
+	if "slime" in k or "witch" in k:
+		return "bubble"
+	return "spell_dark"
+
+
+## C13 15-05/07-32: the gun belongs to the shooter, not the arc: only gang-arc people
+## fire guns (gamblers a tommy gun); drones and cyber foes fire lasers, eels spit
+## bubbles, wisps/spirits/crystals cast; everything else keeps its bolt by flavour.
+static func shot_for(kind_name: String, flavour: String, gang: bool, person: bool) -> String:
+	var k := kind_name.to_lower()
 	if "archer" in k or "bow" in k:
 		return "bow"
-	if flavour == "dark" and Racket.on():
-		return "shot"
+	if "drone" in k or "cyber" in k or "robot" in k:
+		return "laser"
+	if "eel" in k:
+		return "bubble"
+	if gang and person:
+		return "shot_smg" if ("gambler" in k or "tommy" in k) else "shot"
+	if flavour == "dark":
+		return "spell_dark" if ("wisp" in k or "spirit" in k or "ghost" in k) else "zap"
 	return {"fire": "spell_fire", "ice": "spell_ice", "poison": "slime"}.get(flavour, "zap")
 
 

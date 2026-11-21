@@ -103,11 +103,15 @@ func hit(r: int, c: int) -> void:
 	match k:
 		"SHIFT":
 			lower = not lower
+			_sfx("keypress")
 		"SPACE":
 			_type(" ")
 		"DEL":
 			buf = buf.substr(0, maxi(buf.length() - 1, 0))
+			if is_inside_tree():
+				Music.instance(get_tree()).sfx_pitched("keypress", "ui_tap", 0.85)  # c13_08-18
 		"DONE":
+			_sfx("j_confirm")
 			finish(true)
 			return
 		_:
@@ -118,6 +122,15 @@ func hit(r: int, c: int) -> void:
 func _type(ch: String) -> void:
 	if buf.length() < max_len():
 		buf += ch
+		_sfx("keypress")
+	else:
+		_sfx("nope")  # the field is full
+
+
+## c13_08-18: the controller keyboard sounds like every other pad screen.
+func _sfx(n: String) -> void:
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx(n, "ui_tap")
 
 
 func finish(ok: bool) -> void:
@@ -144,6 +157,7 @@ func move(d: Vector2i) -> void:
 		col = clampi(int(frac * _row_keys(row).size()), 0, _row_keys(row).size() - 1)
 	else:
 		col = wrapi(col + d.x, 0, _row_keys(row).size())
+	_sfx("scroll_tick")
 	_panel.queue_redraw()
 
 

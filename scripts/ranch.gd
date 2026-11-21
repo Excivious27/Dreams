@@ -613,7 +613,23 @@ static func collect(uid: String) -> Dictionary:
 		st()["laid"][str(r["item"])] = lst.slice(maxi(0, lst.size() - 8))
 	if str(species(str(a.get("species", ""))).get("art", {}).get("shorn", "")) != "":
 		a["shorn_day"] = _day()
+	var cue := good_sfx(str(r.get("item", "")))
+	var tree := Engine.get_main_loop() as SceneTree
+	if cue != "" and tree != null and tree.root != null:
+		Music.instance(tree).sfx(cue, "pickup")  # milking, shearing, taking an egg (c13_09-20)
 	return r
+
+
+## The sound of collecting a good (C13 P5): milk -> a squirt, wool/fleece/fluff -> shears, eggs -> a
+## soft egg clack; "" for goods that just pop (feathers, scales, honey...).
+static func good_sfx(item: String) -> String:
+	if item.ends_with("milk"):
+		return "milk"
+	if item.ends_with("_wool") or item.ends_with("fleece") or item.ends_with("fluff") or item.ends_with("_fur") or item.ends_with("_tuft"):
+		return "shear"
+	if item == "egg" or item.ends_with("_egg"):
+		return "egg_collect"
+	return ""
 
 
 ## collect() straight into the bag with its quality (headless; returns the same dict).

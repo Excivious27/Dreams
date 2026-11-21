@@ -35,6 +35,75 @@ func _check_track(where: String, t: String) -> void:
 	check(_playable(t), "%s -> '%s' has no song" % [where, t])
 
 
+## C13 place x state grid: maps walked through every season, day/dusk/night, clear/rain/storm/snow,
+## a festival day and the epilogue, both arcs. Asserts the RIGHT song family, not just a song.
+const C13_OPTIONAL := ["boss_dark_crystal", "boss_president"]
+const GRID_MAPS := ["farm", "town", "beach", "forest", "meadow", "lake", "mountain", "countryside", "community_farm",
+	"orchard_hills", "riverlands", "highlands", "crystal_meadow", "uptown", "docks", "neon", "hideout", "moon", "sky",
+	"iron_freight_yards", "gilt_vaults", "colony_coral"]
+## Penguin pastoral songs the gang arc must never get by day when the map has a _gang song.
+const PASTORAL := ["farm", "town", "farm_fall", "winter", "beach", "forest", "meadow", "orchard", "lake", "mountain"]
+## Shared penguin-toned songs the gang arc never gets at all.
+const PENGUIN_SHARED := ["winter", "farm_fall", "morning", "evening_valley", "night_summer", "night_winter", "night_spring", "night_fall", "sanctuary"]
+
+
+func _grid(m: GameMap, arc: String, label: String) -> void:
+	var saved_day := int(GameState.run.get("day", 1))
+	var saved_w: Variant = GameState.run.get("weather", {})
+	for si in 4:
+		for w: String in ["clear", "rain", "storm", "snow"]:
+			for tm: int in [400, 600, 1080, 1380]:
+				var day := 1 + si * GameState.DAYS_PER_SEASON + 3
+				GameState.run["day"] = day
+				GameState.run["weather"] = {str(day): w}
+				GameState.run["time"] = tm
+				var a := m.area_track()
+				var lab := "%s %s/%s/%d" % [label, GameState.season(), w, tm]
+				_check_track(lab, a)
+				check(a == m.area_track(), lab + " re-ask gives the same song")
+				if arc == "penguins":
+					check(not a.ends_with("_gang") or a in ["shop_gang"], lab + " penguin arc plays a gang song '%s'" % a)
+				else:
+					check(not (a in PENGUIN_SHARED), lab + " gang arc plays penguin '%s'" % a)
+					if a in PASTORAL and Music.has_track(a + "_gang"):
+						check(false, lab + " gang arc plays pastoral '%s' while '%s_gang' exists" % [a, a])
+	# Epilogue: still a playable song (the _after takes drop in when made).
+	GameState.run["flags"]["epilogue_done"] = true
+	_check_track(label + " epilogue", m.area_track())
+	GameState.run["flags"].erase("epilogue_done")
+	GameState.run["day"] = saved_day
+	GameState.run["weather"] = saved_w
+	GameState.run["time"] = 600
+
+
+## Gang crew venues play their own song (interiors.json gangsters if_flag arc_music, c13_03-11).
+func _crew_venues() -> void:
+	GameState.new_run("gangsters", "man", "Tester", "Dreamhollow", "Pip")
+	GameState.run["intro_done"] = true
+	var rooms := {"inn": "crew_mama_rosa", "bakery": "shop_1", "clinic": "shop_3", "chapel": "crew_marlene", "cottage_c": "shop_2", "stable": "crew_halo"}
+	var all: Dictionary = GameState.load_json("res://data/interiors.json")
+	for iid: String in rooms:
+		var f: String = rooms[iid]
+		GameState.run["flags"][f] = true
+		GameState.run["time"] = 600
+		GameMap.next_spawn = Vector2.ZERO
+		GameMap.next_interior = iid
+		change_scene_to_file("res://scenes/interior.tscn")
+		for i in 4:
+			await process_frame
+		var m := current_scene as GameMap
+		if m == null:
+			check(false, "crew venue %s did not load" % iid)
+			continue
+		var want_list: Array = all[iid]["gangsters"]["if_flag"][f].get("arc_music", [])
+		check(not want_list.is_empty(), "crew venue %s has arc_music" % iid)
+		var first := GameMap.first_track(want_list)
+		var a := m.area_track()
+		_check_track("crew venue " + iid, a)
+		if first != "":
+			check(a.begins_with(first), "crew venue %s plays its own song '%s' (got '%s')" % [iid, first, a])
+
+
 func _scene_ids() -> Array:
 	var ids: Array = []
 	for f in DirAccess.get_files_at("res://scenes"):
@@ -82,6 +151,8 @@ func _run() -> void:
 			"battle_siege", "battle_escort", "campaign_map", "title", "title_musicbox", "arc_gangsters", "arc_penguins",
 			"ending_gangster", "ending_penguin", "credits", "merkitty_song", "shop", "shop_gang",
 			"combat_light", "combat_light_gang", "combat_elite", "combat_elite_gang"] + GameMap.BOSS_TRACKS + DangerMusic.PER_BOSS.values():
+		if t in C13_OPTIONAL and not Music.has_track(t):
+			continue  # C13 songs (P3) that boss_track only asks for once they exist
 		_check_track("situation", t)
 	for k: String in GameMap.AREA_MUSIC:
 		_check_track("AREA_MUSIC[%s]" % k, str(GameMap.AREA_MUSIC[k]))
@@ -122,5 +193,8 @@ func _run() -> void:
 			GameState.run["time"] = 23 * 60
 			_check_track(label + " night", m.area_track())
 			GameState.run["time"] = 600
+			if j[0] in GRID_MAPS or j[0] == "interior":
+				_grid(m, arc, label)
+	await _crew_venues()
 	print("music_map_test: %d songs checked, %d failures" % [checked, fails])
 	quit(1 if fails > 0 else 0)

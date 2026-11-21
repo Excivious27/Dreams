@@ -181,6 +181,18 @@ static func result_line(place: int, entry: String, amount: int) -> String:
 	return "The %s ribbon goes to %s! And %s with it." % [ribbon, entry, Money.amount(amount)]
 
 
+## The ring and result lines with their sounds (C13 09-27): an animal entry calls in
+## the ring, a ribbon gets applause, a mention a polite clap.
+static func show_lines(c: Dictionary, rv: Array, entry: String, place: int, amount: int, host: String, pick: String) -> Array:
+	var ring := {"text": ring_line(c, rv, entry)}
+	if str(c.get("kind", "")) == "animal":
+		var f := RanchVoice.file_of(str(Ranch.animal(pick).get("species", "")))
+		if f != "":
+			ring["sfx"] = f
+	var res := {"who": host, "text": result_line(place, entry, amount), "sfx": "clap", "sfx_fallback": "j_confirm" if place >= 4 else "j_victory"}
+	return [ring, res]
+
+
 ## One line from whoever gave you the animal, if they did. [npc id, name, line] or [].
 static func giver_line(uid: String) -> Array:
 	for fl: String in GIVERS:

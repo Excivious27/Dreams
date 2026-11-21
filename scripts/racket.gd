@@ -294,8 +294,14 @@ static func training(m: GameMap) -> void:
 		return
 	if not GameState.spend_energy(10):
 		m.hud.toast("Too tired.", Color(1, 0.7, 0.7))
+		Music.instance(m.get_tree()).sfx("nope")
 		return
 	GameState.run["flags"]["spar_day"] = int(GameState.run["day"])
 	m.player.play_tool("axe")
+	# C13 07-30: a spar is heard: a swing, a block, a landed hit.
+	var mu := Music.instance(m.get_tree())
+	mu.sfx("swing")
+	mu.sfx_pitched("block", "thud", 1.0, 0.0, 0.2)
+	mu.sfx_pitched("hit", "thud", 1.0, -2.0, 0.45)
 	m.xp("combat", (15 + 3 * crew) * (2 if tt >= 2 else 1))
 	m.hud.toast("A good session. The new ones are learning to keep their guard up.", Color(1, 0.9, 0.5))

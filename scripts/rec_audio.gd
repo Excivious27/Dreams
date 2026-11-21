@@ -20,7 +20,7 @@ const BEDS := {
 ## Spot sounds per room: [spot, min seconds, max seconds, dB].
 const SPOTS := {
 	"rec": [["pins_far", 12.0, 30.0, -14.0], ["cabinet_win", 20.0, 45.0, -16.0]],
-	"rec_up": [["pins_near", 9.0, 24.0, -15.0], ["cabinet_win", 40.0, 90.0, -26.0]],
+	"rec_up": [["cabinet_win", 40.0, 90.0, -26.0]],  # c13_10-16: the lanes upstairs already sound (no ghost pins)
 }
 ## The jukebox's records (track -> label). Order = the order A steps through.
 const RECORDS := {
@@ -86,6 +86,7 @@ static func lane_sound(at: Node2D, pos: Vector2, what: String, hits := 0) -> Str
 	p.stream = load(str(takes[randi() % takes.size()]))
 	p.bus = "SFX"
 	p.volume_db = -12.0 if what == "roll" else -7.0
+	p.panning_strength = Settings.pan()  # c13_17-01 mono audio
 	p.max_distance = 360.0
 	p.attenuation = 1.5
 	p.position = pos
@@ -185,6 +186,10 @@ func _stream(name: String) -> AudioStream:
 ## A one-shot on our own voices (the shared Music voices stay free for UI).
 func shot(name: String, db: float, pitch := 1.0) -> void:
 	heard.append(name)
+	# c13_17-13: the player's own bowling is felt (RecAudio bypasses Music.sfx, so Haptics never saw it).
+	var hk: String = {"pin_tap": "hit", "pin_crash": "hit", "pin_strike": "hit_big", "bowl_gutter": "deny"}.get(name, "")
+	if hk != "":
+		Haptics.buzz(hk)
 	if _muted():
 		return
 	var st := _stream(name)

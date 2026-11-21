@@ -141,6 +141,43 @@ func _run() -> void:
 		if fn.ends_with(".ogg"):
 			total += FileAccess.open("user://mcache/" + fn, FileAccess.READ).get_length()
 	check(total <= Music.cache_cap + 3 * 1024 * 1024, "the song cache is trimmed near its cap (%d KB)" % (total / 1024))
+	# c13_16-10: a prefetch set bigger than the cache never loops (each song fetched ahead
+	# at most once a session; the background lists stop at PREFETCH_SHARE of the cap).
+	var da2 := DirAccess.open("user://mcache")
+	for fn: String in da2.get_files():
+		da2.remove(fn)
+	m._cindex = {}
+	m._prefetched = {}
+	m._prefetch_bytes = 0
+	m.prefetch_fetches = 0
+	m.prefetch_count = {}
+	m._streamed.clear()
+	m._streamed_order.clear()
+	m._tries.clear()
+	Music.cache_cap = 6 * 1024 * 1024
+	GameState.run = {"arc": "gangsters", "day": 1, "time": 600, "flags": {}}
+	var lst: Array = []
+	for t: String in Music.PREFETCH_GANG + Music.PREFETCH:
+		if t in Music._stream_list() and not lst.has(t):
+			lst.append(t)
+	m._prefetch_next()
+	var pw := 0.0
+	while pw < 20.0:
+		await create_timer(0.25).timeout
+		pw += 0.25
+	var twice := 0
+	for t: String in m.prefetch_count:
+		if int(m.prefetch_count[t]) > 1:
+			twice += 1
+	check(m.prefetch_fetches > 0, "the prefetcher fetched something (%d)" % m.prefetch_fetches)
+	check(m.prefetch_fetches <= lst.size(), "prefetch fetches %d <= list %d (no endless loop)" % [m.prefetch_fetches, lst.size()])
+	check(twice == 0, "no song prefetched twice (%s)" % m.prefetch_count)
+	var budget := 0
+	for t: String in m.prefetch_count:
+		budget += int(Music._stream_size.get(t, 0))
+	check(budget <= int(Music.cache_cap * Music.PREFETCH_SHARE) + 1, "background prefetch stays inside its cache share (%d KB)" % (budget / 1024))
+	check(m._prefetching == "", "the prefetcher settles (%s)" % m._prefetching)
+	GameState.run = {}
 	# The web URL builder (absolute address next to the page).
 	check(Music.base_from_page("https://x.github.io/dreams/") == "https://x.github.io/dreams/music/", "url: folder page")
 	check(Music.base_from_page("https://x.github.io/dreams/index.html?v=2#a") == "https://x.github.io/dreams/music/", "url: index.html with query")

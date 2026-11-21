@@ -1039,6 +1039,7 @@ if ! echo "$stout" | grep -q "SAVE TRANSFER DONE 0"; then
 fi
 
 echo "== S1 P2: achievements, stats, rich presence =="
+echo "== C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/step buses) =="
 acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/achievements_test.gd 2>&1)"
 echo "$acout" | grep -E "FAIL|SCRIPT ERROR|achievements_test" || true
 if ! echo "$acout" | grep -q "achievements_test: 0 failures"; then
@@ -1137,4 +1138,51 @@ dsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/dialogue_sta
 echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
+fi
+
+echo "== C13 P4: story, scene and minigame audio cues (live beats, endings, moods, drill, shots) =="
+c13p4out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/story_audio_test.gd 2>&1)"
+echo "$c13p4out" | grep -E "FAIL|SCRIPT ERROR|story_audio_test" || true
+if ! echo "$c13p4out" | grep -q "story_audio_test: 0 fails"; then
+  echo "story_audio_test failed"; exit 1
+fi
+
+echo "== C13 P5: actions map to their own sounds (pets, ranch voices and babies, goods, vehicles, contract sfx) =="
+aaout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/action_audio_test.gd 2>&1)"
+echo "$aaout" | grep -E "FAIL|SCRIPT ERROR|action_audio_test" || true
+if ! echo "$aaout" | grep -q "action_audio_test: 0 failures"; then
+  echo "action_audio_test failed"; exit 1
+fi
+
+echo "== C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle arbitration =="
+mrout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/music_resolve_test.gd 2>&1)"
+echo "$mrout" | grep -E "FAIL|SCRIPT ERROR|music_resolve_test" || true
+if ! echo "$mrout" | grep -q "music_resolve_test: 0 failures"; then
+  echo "music_resolve_test failed"; exit 1
+fi
+
+echo "== C13 P3: audio tools (short-sting levelling, len_audible, gang jingles, ace_batch --alt/--pair) =="
+python3 tools/audio_tools_test.py || { echo "audio_tools_test failed"; exit 1; }
+
+echo "== C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, impacts start < 60 ms, sfx_meta complete) =="
+python3 tools/sfx_level_check.py || { echo "sfx_level_check failed"; exit 1; }
+
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/access_audio_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|access_audio_test" || true
+if ! echo "$acout" | grep -q "access_audio_test: 0 failures"; then
+  echo "Hearing accessibility test failed"; exit 1
+fi
+
+echo "== C13 P6: ambience map (no silent place, both arcs, seasons, times, rain) =="
+amapout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ambience_map_test.gd 2>&1)"
+echo "$amapout" | grep -E "FAIL|SCRIPT ERROR|ambience_map_test" | head -40 || true
+if ! echo "$amapout" | grep -q "ambience_map_test: [0-9]* checks, 0 failures"; then
+  echo "Ambience map (no silent place) test failed"; exit 1
+fi
+
+echo "== C13 P6: UI cues (every screen, touch and pad, no double cues) =="
+uqout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ui_cue_test.gd 2>&1)"
+echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
+if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
+  echo "UI cue test failed"; exit 1
 fi

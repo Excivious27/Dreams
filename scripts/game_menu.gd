@@ -291,7 +291,8 @@ static func _has_static(sc: Script, fn: String) -> bool:
 var _centre_rows := false  # Options rows are centred like the shared sound rows
 
 
-func _button(text: String, cb: Callable) -> Button:
+## `cue` "" when the callback plays its own sound (c13_08-19: the Book's page turn).
+func _button(text: String, cb: Callable, cue := "ui_tap") -> Button:
 	var b := Button.new()
 	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
 	b.text = text
@@ -300,7 +301,8 @@ func _button(text: String, cb: Callable) -> Button:
 	# Release mode: a finger that lands on a button to scroll the list must not
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
-	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
+	if cue != "":
+		b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx(cue))
 	# A greyed-out row answers a tap with a soft refusal instead of silence.
 	b.gui_input.connect(func(ev: InputEvent) -> void:
 		if b.disabled and TapInput.is_release(ev):
@@ -2154,13 +2156,16 @@ func step_tab(dir: int) -> void:
 
 
 func move_cursor(d: String) -> void:
+	var was := [_cur, _cur_tabs]
 	if _cur_tabs:
 		if d == "left" or d == "right":
 			step_tab(-1 if d == "left" else 1)
+			_after_move(false)  # c13_08-01: the tab change plays its own "tab" cue, once
+			return
 		elif d == "down" and not _cursor_list().is_empty():
 			_cur_tabs = false
 			_cur = 0
-		_after_move()
+		_after_move(was != [_cur, _cur_tabs])
 		return
 	var l := _cursor_list()
 	if _cur < 0:
@@ -2168,7 +2173,7 @@ func move_cursor(d: String) -> void:
 			_cur_tabs = true
 		else:
 			_cur = 0
-		_after_move()
+		_after_move(was != [_cur, _cur_tabs])
 		return
 	_cur = clampi(_cur, 0, l.size() - 1)
 	var nxt := _nearest(l, _cur, d)
@@ -2176,16 +2181,18 @@ func move_cursor(d: String) -> void:
 		_cur = nxt
 	elif d == "up":
 		_cur_tabs = true  # past the top row: onto the tabs
-	_after_move()
+	_after_move(was != [_cur, _cur_tabs])
 
 
-func _after_move() -> void:
+## c13_08-02: a cursor move ticks softly (scroll_tick) only when it actually moved; presses keep ui_tap.
+func _after_move(tick := true) -> void:
 	var c := cursor_control()
 	if c and not _cur_tabs:
 		var sc := _body.get_parent() as ScrollContainer
 		if sc:
 			sc.ensure_control_visible(c)
-	Music.instance(get_tree()).sfx("ui_tap", "pickup")
+	if tick:
+		Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 	if _hi:
 		_hi.queue_redraw()
 

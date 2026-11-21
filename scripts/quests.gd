@@ -108,7 +108,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 	await dlg.finished
 	if dlg.last_choice == 0:
 		GameState.add_quest(qid2, str(offer["text"]))
-		m.hud.toast("New quest: %s" % str(offer["text"]), Color(1, 0.9, 0.4))
+		announce(m, str(offer["text"]))
 		_job_taken(m, qid2)
 		await m.say(_as_lines(name, ql2.get("yes", "Thank you.")))
 	else:
@@ -118,6 +118,15 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 
 
 ## What a job still needs, in words ("2 Gold Leaf and 1 Pearl Necklace"; "" = not an item job).
+## One "new quest" moment everywhere: the toast and the j_quest cue (C13, P3's jingle).
+static func announce(m: GameMap, text: String) -> void:
+	if m == null:
+		return
+	if m.hud != null:
+		m.hud.toast("New quest: %s" % text, Color(1, 0.9, 0.4))
+	Music.instance(m.get_tree()).sfx("j_quest", "new_item")
+
+
 static func _still_need(d: Dictionary) -> String:
 	var dw: Variant = d.get("done_when", {})
 	if not (dw is Dictionary):

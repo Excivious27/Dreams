@@ -886,7 +886,7 @@ func _check_quests() -> void:
 		hud.toast(quest_done_text(id), Color(1, 0.9, 0.4))
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
 	for t in GameState.opened:
-		hud.toast("New quest: %s" % str(t), Color(1, 0.9, 0.4))
+		Quests.announce(self, str(t))
 	GameState.opened.clear()
 
 
@@ -1043,7 +1043,7 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	if kind == "rooster" or baby or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "call", ""):  # c11b_14-10: species voice + lab layer
+	if kind == "rooster" or (baby and kind in ["chick", "chicken2"]) or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "baby" if baby else "call", ""):  # c11b_14-10 + c13_09-02: babies sound like their parents
 		Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice from data (C11b P2)
 	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
@@ -1524,11 +1524,14 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown",
 ## Interiors by kind (data/interiors.json ids). Gangster-arc shops get the crew's lounge tune.
 ## The town hall keeps the plaza song going (no restart on the way in); the mansion is a quiet home.
 const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
-	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
+	"inn": "inn", "bakery": "bakery", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "library", "chapel": "chapel",
+	"museum": "museum", "workshop": "workshop", "gilt_casino": "casino",
 	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
 	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
+## C13: an interior's own song falls back to the one it shared before when the file is missing.
+const INTERIOR_FALLBACK := {"bakery": "inn", "library": "chapel", "museum": "chapel", "workshop": "town", "casino": "mega_gilt"}
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
-const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle", "boss_dark_crystal", "boss_president",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
 ## Mega bosses' own themes (C4): by kind (a gangster variant may share the stem), then by the
 ## region the fight is in, so a reskinned boss still gets its region's theme.
@@ -1553,6 +1556,10 @@ func boss_track(kind: String) -> String:
 	var peng := GameState.is_penguins()
 	var sid := scene_id()
 	var marked := k.begins_with("marked") or k.begins_with("mk_")
+	if k == "dark_crystal" and peng and Music.has_track("boss_dark_crystal"):
+		return "boss_dark_crystal"  # C13: the final bosses' own themes
+	if k == "president" and not peng and Music.has_track("boss_president"):
+		return "boss_president"
 	if not peng and k in GANG_RIVALS:
 		return "boss_gang" if Music.has_track("boss_gang") else "boss"
 	if k == "finargle" or k.begins_with("finargle_"):
@@ -1597,8 +1604,14 @@ func area_track() -> String:
 	if id == "interior":
 		var iid := str(get("interior_id"))
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
+		if INTERIOR_FALLBACK.has(t):
+			t = first_track([t, str(INTERIOR_FALLBACK[t]), music_track])
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
+		var im: Variant = get("I")
+		if im is Dictionary and (im as Dictionary).has("arc_music"):
+			t = first_track((im as Dictionary)["arc_music"] + [t])  # crew venue's own song (c13_03-11)
+	var t0 := t
 	t = RecCenter.music_for(self, t)  # today's jukebox record (rec), the home jukebox/music box (house)
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
@@ -1631,24 +1644,39 @@ func area_track() -> String:
 	var now := int(GameState.run.get("time", 0)) % 1440 if not GameState.run.is_empty() else 720
 	if id == "town" and GameState.festival_today() != "":
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
-			if GameState.is_night() and Music.has_track("festival_night"):
-				return "festival_night"
-			if player != null and preload("res://scripts/animal_show.gd").near_stand(GameState.festival_today(), world_to_cell(player.position)) and Music.has_track("animal_show"):
+			var fid := GameState.festival_today()
+			var g := "" if peng else "_gang"
+			if GameState.is_night():
+				var fn := first_track(["festival_%s_night%s" % [fid, g], "festival_%s_night" % fid if peng else "", "festival_night" + g, "festival_night"])
+				if fn != "":
+					return fn
+			if player != null and preload("res://scripts/animal_show.gd").near_stand(fid, world_to_cell(player.position)) and Music.has_track("animal_show"):
 				return "animal_show"  # C11b P6: the ribbon tables have their own tune
-			return "festival"
-	if id in NIGHT_OK and GameState.is_night():
-		if not peng and Music.has_track("night_gang"):
-			return "night_gang"  # the gang arc's valley at night is noir (C6 default)
-		return "night"
-	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and Music.has_track("rain"):
-		return "rain"
-	if id in NIGHT_OK and GameState.season() == "winter" and GameState.weather_today() in ["snow", "blizzard"] and Music.has_track("winter"):
-		return "winter"  # snow days: the outdoor maps share the winter piece
-	if id == "farm" and GameState.season() == "winter":
-		return "winter"
-	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
-		return "farm_fall"
-	return t  # combat/danger music: DangerMusic
+			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
+	if t != t0 or RecCenter.is_rec(self):
+		return t  # a jukebox/music-box record plays exactly as chosen
+	var ctx := music_ctx(id)
+	var own := str(MusicResolve.MAP_BASE.get(id, ""))
+	if own != "" and not (own.ends_with("_penguin") and not peng):
+		var r := Music.resolve(own, ctx)
+		if r != "":
+			return r  # this map's own song set (a shared region song is the fallback)
+	return Music.resolve(t, ctx)  # C13 resolver: arc, weather, phase, season, story, rotation
+
+
+## Resolver context for this map (C13): which shared songs it used before.
+func music_ctx(id: String) -> Dictionary:
+	var c := {}
+	if id in NIGHT_OK:
+		c["shared_night"] = true
+		c["shared_weather"] = true
+	if sky != null and str(sky.weather) in ["rain", "storm"] and id in NIGHT_OK:
+		c["weather"] = str(sky.weather)
+	if id == "farm":
+		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
+	if MusicResolve.NIGHT_GROUP.has(id):
+		c["night_group"] = MusicResolve.NIGHT_GROUP[id]
+	return c
 
 
 ## The President's collectors are on this map and close: chase music.
@@ -3094,7 +3122,7 @@ func _process(delta: float) -> void:
 			hud.toast("A new version of Dreams is ready. Tap the yellow bar at the top to update. Your farm is saved.", Color(1, 0.85, 0.4))
 	# Clamp: a phone coming back from the background reports one huge frame;
 	# that must not fast-forward the clock by hours.
-	_time_acc += minf(delta, 0.25) * GameState.minutes_per_second()  # C4: per-slot day length
+	_time_acc += 0.0 if NetNode.guest_hold() else minf(delta, 0.25) * GameState.minutes_per_second()  # C4: per-slot day length; C13 P6: a guest waits while the host is paused
 	if _time_acc >= 1.0:
 		var m := int(_time_acc)
 		_time_acc -= m

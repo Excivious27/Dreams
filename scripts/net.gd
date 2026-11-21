@@ -35,6 +35,11 @@ var url := ""
 var room := ""
 var my_id := -1
 var _host := false
+var host_paused := false  # guests: the host's last push said its game was paused (c13_18-01)
+var _ahead := false       # guests: at the last push our clock was ahead of the host's: wait
+const HOLD_MINUTES := 30  # a guest ahead by up to this many minutes waits instead of rewinding
+var _cue_ms := -100000
+const PEER_CUE_GAP_MS := 3000
 var peers := {}          # id -> {name, look, arc, scene, pos, anim, flip}
 var _t := 0.0
 var _pending_join := {}
@@ -391,6 +396,8 @@ func _on_msg(m: Dictionary) -> void:
 		"peer_joined":
 			_look_hash = 0  # the newcomer gets our look with the next state packet
 			var p: Dictionary = m["peer"]
+			if not peers.has(int(p["id"])):
+				_peer_cue(str(p.get("name", "")), true)
 			peers[int(p["id"])] = p
 			if str(p.get("arc", "")) != str(GameState.run["arc"]):
 				_arc_mismatch = true
@@ -398,6 +405,8 @@ func _on_msg(m: Dictionary) -> void:
 			if _host:
 				_push_world(int(p["id"]))
 		"peer_left":
+			if peers.has(int(m["id"])):
+				_peer_cue(str((peers[int(m["id"])] as Dictionary).get("name", "")), false)
 			peers.erase(int(m["id"]))
 			peers_changed.emit()
 		"peer_scene":
@@ -488,9 +497,12 @@ func _push_world(to_id := -1) -> void:
 	# world passes the 64 KB frame size; the clock alone is a few bytes).
 	var delta := world_delta(_pushed, d)
 	_pushed = d.duplicate(true)
-	if delta.size() > 2 or not (delta["_gone"] as Array).is_empty():
-		send_all({"k": "world", "d": delta})
-	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time"]))
+	# c13_18-01: every push stamps the host's clock and whether it is paused (a dialogue or
+	# menu), so a guest holds its clock instead of free-running and snapping back.
+	delta["time"] = int(GameState.run.get("time", 0))
+	delta["_paused"] = is_inside_tree() and get_tree().paused
+	send_all({"k": "world", "d": delta})
+	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time", "_paused"]))
 	if busy or _save_t >= SAVE_EVERY:
 		_save_t = 0.0
 		_send({"t": "host_save", "d": d})  # the relay keeps a full copy for late joiners
@@ -626,12 +638,18 @@ func _apply_world(d: Dictionary) -> void:
 		if _last_world.is_empty():
 			return  # a delta before our first full world: wait for the full one
 		var day_was := int(GameState.run.get("day", 0))
+		if not _host and d.get("ranch") is Dictionary:
+			d["ranch"] = clean_ranch_names(d["ranch"])  # c13_18-24: deltas are filtered like full worlds
+		if not _host:
+			host_paused = bool(d.get("_paused", false))
+			var ht := int(d.get("time", GameState.run.get("time", 0)))
+			var lt := int(GameState.run.get("time", 0))
+			_ahead = d.has("time") and not d.has("day") and lt > ht and lt - ht <= HOLD_MINUTES
+			if _ahead:
+				d["time"] = lt  # c13_18-20: a small backward step is held (our clock waits), not rewound
 		merge_delta(GameState.run, d)
 		if int(GameState.run.get("day", 0)) > day_was and not _host:
-			var rep := GameState.guest_morning()
-			var m1 := get_tree().current_scene
-			if m1 is GameMap and int(rep.get("earned", 0)) > 0:
-				(m1 as GameMap).hud.toast("Morning! Your sell box paid ◆%d." % int(rep["earned"]), Color(1, 0.95, 0.6))
+			_guest_morning()
 		_last_world = {"day": int(GameState.run.get("day", 0))}
 		var md := get_tree().current_scene
 		if md is GameMap and md.has_method("on_world_sync"):
@@ -661,14 +679,24 @@ func _apply_world(d: Dictionary) -> void:
 		GameState.shift_clock(GameState.now_abs() - abs0, int(GameState.run.get("day", 1)) - day0)  # first world: our timers move onto the host's clock
 	# The host slept: a new morning for us too (our sell box, energy, health).
 	if not _host and host_day > 0 and int(GameState.run.get("day", 0)) > host_day:
-		var rep := GameState.guest_morning()
-		var m0 := get_tree().current_scene
-		if m0 is GameMap and int(rep.get("earned", 0)) > 0:
-			(m0 as GameMap).hud.toast("Morning! Your sell box paid ◆%d." % int(rep["earned"]), Color(1, 0.95, 0.6))
+		_guest_morning()
 	_last_world = d
 	var m := get_tree().current_scene
 	if m is GameMap and m.has_method("on_world_sync"):
 		m.call("on_world_sync", d)
+
+
+## c13_18-06: one guest morning for both world paths: the report, the toast and the
+## morning's sounds (wake jingle, till, builds), like the host's own wake-up.
+func _guest_morning() -> void:
+	host_paused = false
+	_ahead = false
+	var rep := GameState.guest_morning()
+	var m0 := get_tree().current_scene
+	if m0 is GameMap and int(rep.get("earned", 0)) > 0:
+		(m0 as GameMap).hud.toast("Morning! Your sell box paid ◆%d." % int(rep["earned"]), Color(1, 0.95, 0.6))
+	var day := int(GameState.run.get("day", 0))
+	load("res://scripts/house.gd").morning_cues(get_tree(), rep, int(GameState.run["flags"].get("guest_out_day", -1)) == day - 1)
 
 
 ## S1 s1_13-03: animal names typed on another player's game are filtered before a
@@ -783,6 +811,26 @@ func _restore_solo(why := "Lost your host. You're back on your own farm.") -> vo
 	if gm and not gm._changing:
 		_toast(why, Color(1, 0.85, 0.6))
 		gm.go_to("farm", Vector2.ZERO, "down", true)
+
+
+## c13_18-09: a friend joining or leaving gets a toast and a soft cue (rate-limited
+## so a reconnect storm is one sound).
+func _peer_cue(nm: String, joined: bool) -> void:
+	var now := Time.get_ticks_msec()
+	if now - _cue_ms < PEER_CUE_GAP_MS or not is_inside_tree():
+		return
+	_cue_ms = now
+	var who := NameFilter.clean(nm) if nm != "" else "A friend"
+	_toast("%s %s." % [who, "joined" if joined else "left"], Color(0.8, 0.95, 1.0) if joined else Color(0.85, 0.85, 0.9))
+	Music.instance(get_tree()).sfx("j_confirm" if joined else "door_close", "pop")
+
+
+## Guests: should the local clock wait (the host is paused, or we're ahead of it)?
+static func guest_hold() -> bool:
+	var n := Net.i()
+	if n == null or n._host or not n.visiting():
+		return false
+	return n.host_paused or n._ahead
 
 
 func _toast(text: String, col := Color.WHITE) -> void:

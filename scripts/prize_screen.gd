@@ -47,6 +47,7 @@ func _ready() -> void:
 	_font = ThemeDB.fallback_font
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "prize_screen")
+	Music.instance(get_tree()).sfx("shop_bell", "menu_open")  # c13_08-05
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_canvas.draw.connect(_draw_it)

@@ -5,7 +5,8 @@ extends RefCounted
 ## day length are per save slot (Difficulty, GameState.day_len).
 
 const DEFAULTS := {"music_vol": 9, "sfx_vol": 8, "amb_vol": 7, "bg_sound": false, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false, "text_size": 0,
-	"text_speed": 1, "toast_hold": 1, "timing_help": false, "pause_unfocused": true, "vsync": true, "fps_cap": 0, "pixel_perfect": false, "win_rect": []}
+	"text_speed": 1, "toast_hold": 1, "timing_help": false, "pause_unfocused": true, "vsync": true, "fps_cap": 0, "pixel_perfect": false, "win_rect": [],
+	"mono": false, "reduce_loud": false, "captions": false, "voice_vol": 8, "ui_vol": 8, "steps_vol": 8}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]
@@ -32,7 +33,7 @@ static func get_v(key: String) -> Variant:
 
 static func set_v(key: String, v: Variant) -> void:
 	SaveGame.set_value("set_" + key, v)
-	if key in ["music_vol", "sfx_vol", "amb_vol"]:
+	if key in AUDIO_KEYS or key == "mono":
 		apply_audio()
 
 
@@ -94,18 +95,97 @@ static func _db(v: int) -> float:
 
 ## Per-bus offsets so the default mix lands where it did before the even-dB
 ## curve (SFX 8 and Nature 7 kept their old level; music is ~5 dB up via Music.MUSIC_DB).
-const BUS_TRIM := {"Music": 0.0, "SFX": 4.0, "Ambience": 6.0}
-const AUDIO_KEYS := ["music_vol", "sfx_vol", "amb_vol"]
+## C13 P6: Voices (talk blips, creature voices), UI (clicks, menus) and Steps
+## (footsteps) are their own buses that send into SFX, so the Effects slider
+## still scales them. Web: bus volumes apply to Web Audio samples too.
+const BUS_TRIM := {"Music": 0.0, "SFX": 4.0, "Ambience": 6.0, "Voices": 0.0, "UI": 0.0, "Steps": 0.0}
+const AUDIO_KEYS := ["music_vol", "sfx_vol", "amb_vol", "voice_vol", "ui_vol", "steps_vol"]
+const BUS_KEYS := {"Music": "music_vol", "SFX": "sfx_vol", "Ambience": "amb_vol", "Voices": "voice_vol", "UI": "ui_vol", "Steps": "steps_vol"}
+## Sub-buses and their parent.
+const SUB_BUSES := {"Voices": "SFX", "UI": "SFX", "Steps": "SFX"}
+## Settings rows other than the volumes that Reset sound puts back.
+const AUDIO_FLAGS := ["bg_sound", "mono", "reduce_loud", "captions"]
+## "Loud sounds: softer" (c13_17-02): these play this much quieter. Done in
+## code (not a bus effect) so web samples obey it too.
+const LOUD_DB := -6.0
+const LOUD := ["boom", "roar", "siren", "fireworks", "emp", "war_horn", "war_drum", "alert", "crit", "thunder",
+	"j_victory", "j_battle_won", "j_campaign_won", "j_battle_lost", "boss_fall", "boss_down", "knockout", "explode", "blast", "shot", "alarm", "car_horn", "growl"]
+const LOUD_PREFIX := ["shot_", "boom_", "roar_", "thunder", "siren"]
 
 
 static func ensure_buses() -> void:
-	for bn in ["Music", "SFX", "Ambience"]:
+	for bn in ["Music", "SFX", "Ambience", "Voices", "UI", "Steps"]:
 		if AudioServer.get_bus_index(bn) == -1:
 			AudioServer.add_bus()
 			var i := AudioServer.bus_count - 1
 			AudioServer.set_bus_name(i, bn)
-			AudioServer.set_bus_send(i, "Master")
+			AudioServer.set_bus_send(i, str(SUB_BUSES.get(bn, "Master")))
 	ensure_limiter()
+	_ensure_mono()
+
+
+## Mono audio (c13_17-01): a StereoEnhance with pan_pullout 0 on Master folds
+## songs and beds to mono (native and web streams); positional players also get
+## panning_strength `pan()` when they are made (web samples skip bus effects).
+static func _ensure_mono() -> void:
+	var mi := AudioServer.get_bus_index("Master")
+	var idx := -1
+	for i in AudioServer.get_bus_effect_count(mi):
+		if AudioServer.get_bus_effect(mi, i) is AudioEffectStereoEnhance:
+			idx = i
+	if idx < 0:
+		var se := AudioEffectStereoEnhance.new()
+		se.pan_pullout = 0.0
+		AudioServer.add_bus_effect(mi, se, 0)
+		idx = 0
+	AudioServer.set_bus_effect_enabled(mi, idx, mono())
+
+
+static func mono() -> bool:
+	return bool(get_v("mono"))
+
+
+## Panning strength for a new AudioStreamPlayer2D (0 with Mono audio on).
+static func pan() -> float:
+	return 0.0 if mono() else 1.0
+
+
+static func captions_on() -> bool:
+	return bool(get_v("captions"))
+
+
+## dB offset for an effect under "Loud sounds: softer" (0 when off or not loud).
+static func loud_db(name: String) -> float:
+	if not bool(get_v("reduce_loud")):
+		return 0.0
+	if name in LOUD:
+		return LOUD_DB
+	for k: String in LOUD_PREFIX:
+		if name.begins_with(k):
+			return LOUD_DB
+	return 0.0
+
+
+static var _bus_map := {}
+
+
+## Which bus an effect plays on (data/sfx_buses.json: exact names, then prefixes; default SFX).
+static func sfx_bus(name: String) -> String:
+	if _bus_map.is_empty():
+		_bus_map = {"exact": {}, "prefix": {}}
+		var f := FileAccess.open("res://data/sfx_buses.json", FileAccess.READ)
+		if f != null:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			if d is Dictionary:
+				_bus_map = d
+	var ex: Dictionary = _bus_map.get("exact", {})
+	if ex.has(name):
+		return str(ex[name])
+	var pre: Dictionary = _bus_map.get("prefix", {})
+	for k: String in pre:
+		if name.begins_with(k):
+			return str(pre[k])
+	return "SFX"
 
 
 ## A safety limiter on Master (ceiling -1 dB): music, six effect voices, steps,
@@ -122,16 +202,20 @@ static func ensure_limiter() -> void:
 
 static func apply_audio() -> void:
 	ensure_buses()
-	for pair: Array in [["Music", "music_vol"], ["SFX", "sfx_vol"], ["Ambience", "amb_vol"]]:
-		var bi := AudioServer.get_bus_index(str(pair[0]))
-		var v := int(get_v(str(pair[1])))
-		AudioServer.set_bus_volume_db(bi, _db(v) + float(BUS_TRIM[pair[0]]) if v > 0 else -80.0)
+	for bn: String in BUS_KEYS:
+		var bi := AudioServer.get_bus_index(bn)
+		var v := int(get_v(str(BUS_KEYS[bn])))
+		# Sub-buses sit at 0 dB at their default (8) so the old mix is unchanged.
+		var db := _db(v) + float(BUS_TRIM[bn])
+		if SUB_BUSES.has(bn):
+			db = _db(v) - _db(8)
+		AudioServer.set_bus_volume_db(bi, db if v > 0 else -80.0)
 		AudioServer.set_bus_mute(bi, v <= 0)
 
 
 ## Sound back to the defaults (volumes, all sound on, silent in the background).
 static func reset_audio(tree: SceneTree) -> void:
-	for k: String in AUDIO_KEYS + ["bg_sound"]:
+	for k: String in AUDIO_KEYS + AUDIO_FLAGS:
 		SaveGame.set_value("set_" + k, DEFAULTS[k])
 	apply_audio()
 	var mu := Music.instance(tree)
@@ -162,7 +246,8 @@ static func audio_rows(parent: Control, tree: SceneTree, refresh: Callable, fsiz
 		var row := HBoxContainer.new()
 		parent.add_child(row)
 		var vl := Label.new()
-		vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Sound", "amb_vol": "Nature" if GameState.run.is_empty() or GameState.is_penguins() else "Ambience"}[vk], int(get_v(vk))]
+		vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Effects", "amb_vol": "Nature" if GameState.run.is_empty() or GameState.is_penguins() else "Ambience",
+			"voice_vol": "Voices", "ui_vol": "Menu clicks", "steps_vol": "Footsteps"}[vk], int(get_v(vk))]
 		vl.add_theme_font_size_override("font_size", font(fsize))
 		vl.custom_minimum_size = Vector2(110, 0)
 		vl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -171,9 +256,13 @@ static func audio_rows(parent: Control, tree: SceneTree, refresh: Callable, fsiz
 			var bt := Button.new()
 			bt.text = " − " if step < 0 else " + "
 			bt.custom_minimum_size = Vector2(34, 22)
+			bt.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
+			bt.add_theme_font_size_override("font_size", font(fsize + 1))
 			bt.pressed.connect(func() -> void:
-				set_v(vk, clampi(int(get_v(vk)) + step, 0, 10))
-				Music.instance(tree).sfx("ui_tap", "pickup")
+				var was := int(get_v(vk))
+				set_v(vk, clampi(was + step, 0, 10))
+				# c13_08-23: a press past 0 or 10 is a refusal, not a tap.
+				Music.instance(tree).sfx("nope" if was + step < 0 or was + step > 10 else "ui_tap", "ui_tap")
 				if vk == "music_vol":
 					Music.instance(tree).audio_changed()
 				refresh.call())
@@ -181,6 +270,7 @@ static func audio_rows(parent: Control, tree: SceneTree, refresh: Callable, fsiz
 	mk.call("Sound in background: %s" % ("on" if bool(get_v("bg_sound")) else "off"), func() -> void:
 		set_v("bg_sound", not bool(get_v("bg_sound")))
 		refresh.call())
+	access_rows(parent, tree, refresh, fsize)
 	mk.call("Reset sound to defaults", func() -> void:
 		reset_audio(tree)
 		refresh.call())
@@ -191,6 +281,23 @@ static func audio_rows(parent: Control, tree: SceneTree, refresh: Callable, fsiz
 			if str(md.get("name", "")) == "rows":
 				hs.call("rows", parent)
 				break
+
+
+## Hearing accessibility rows (C13 P6): mono, softer loud sounds, sound captions.
+static func access_rows(parent: Control, tree: SceneTree, refresh: Callable, fsize := 8) -> void:
+	header(parent, "Accessibility", fsize + 1)
+	row_button(parent, tree, "Mono audio: %s" % ("on" if mono() else "off"), func() -> void:
+		set_v("mono", not mono())
+		refresh.call_deferred(), fsize)
+	note(parent, "Both ears hear everything; for one earbud.")
+	row_button(parent, tree, "Loud sounds: %s" % ("softer" if bool(get_v("reduce_loud")) else "normal"), func() -> void:
+		set_v("reduce_loud", not bool(get_v("reduce_loud")))
+		refresh.call_deferred(), fsize)
+	note(parent, "Softer: explosions, sirens, thunder, roars and big fanfares play quieter.")
+	row_button(parent, tree, "Sound captions: %s" % ("on" if captions_on() else "off"), func() -> void:
+		set_v("captions", not captions_on())
+		refresh.call_deferred(), fsize)
+	note(parent, "On: short words show important sounds, like [Thunder] or [Door knock].")
 
 
 ## A touch button's centre and radius after the size and handedness settings.
