@@ -187,7 +187,7 @@ static func _check(c: Dictionary) -> Array:
 				if int(GameState.run["friendship"][npc]) >= h and (GameState.npcs.is_empty() or GameState.npcs.has(npc)):
 					v += 1
 		"flag":
-			v = 1 if flags.has(str(c["f"])) and bool(flags[str(c["f"])]) else 0
+			v = 1 if flags.has(str(c["f"])) and _truthy(flags[str(c["f"])]) else 0
 			n = 1
 		"flag_any":
 			for f in c["f"]:
@@ -197,7 +197,7 @@ static func _check(c: Dictionary) -> Array:
 		"flag_prefix":
 			var only: Array = c.get("only", [])
 			for k: String in flags:
-				if not bool(flags[k]):
+				if not _truthy(flags[k]):
 					continue
 				if only.is_empty():
 					if k.begins_with(str(c["p"])) or (c.has("or") and k.begins_with(str(c["or"]))):
@@ -378,6 +378,22 @@ static func merge(d: Variant) -> void:
 		s["s"][k] = maxi(int(s["s"].get(k, 0)), int(d["s"][k]))
 	for k in ["end", "arcs"]:
 		s[k] = int(s.get(k, 0)) | int((d as Dictionary).get(k, 0))
+
+
+## Flags hold bools, numbers, strings, arrays or dictionaries: "set" = non-empty / non-zero.
+static func _truthy(x: Variant) -> bool:
+	match typeof(x):
+		TYPE_NIL:
+			return false
+		TYPE_BOOL, TYPE_INT, TYPE_FLOAT:
+			return bool(x)
+		TYPE_STRING, TYPE_STRING_NAME:
+			return str(x) != ""
+		TYPE_ARRAY:
+			return not (x as Array).is_empty()
+		TYPE_DICTIONARY:
+			return not (x as Dictionary).is_empty()
+	return true
 
 
 # --- Steam bridge (P1 owns SteamService) ---
