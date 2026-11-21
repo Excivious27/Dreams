@@ -137,7 +137,7 @@ func after_ready() -> void:
 		wp.position = cell_center(Vector2i(9, 3)) + Vector2(0, 4)
 		wp.offset = Vector2(0, -48)
 		add_child(wp)
-		wp.play("idle")
+		WaterFeature.still(wp, "waterfall_pool")  # C14b P2: rock pillars hold still, the falls stream
 	var dock := DockLayer.new()
 	dock.map = self
 	dock.position = offset()

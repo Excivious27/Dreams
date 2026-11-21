@@ -126,6 +126,7 @@ func after_ready() -> void:
 		a.offset = Vector2(0, -float(Art.info("props", "hot_spring").get("cell_h", 96)) / 2.0)
 		to_under(a)
 		a.play("idle")
+		WaterFeature.still(a, "hot_spring")  # C14b P2: still pool, flowing water and steam
 	prop("props", "lookout_tower", Vector2i(48, 42), 1)
 	block_rect(48, 39, 2, 4)
 	if not Art.has("tiles", "t_cliffg"):

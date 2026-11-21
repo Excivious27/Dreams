@@ -1473,6 +1473,7 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
+	WaterFeature.still(a, name)  # C14b P2: water strips hold one frame, the water flows (no-op for others)
 	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
 		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
 		glow.lights.append([a, 30.0 + minf(ch, 60.0) * 0.3, ch * 0.55])
@@ -1798,6 +1799,7 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
+	if fr > 1: WaterFeature.attach(s, group, name)  # C14b P2: a still water strip shows its flowing frame, not frame 0
 	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
 		_canopies.append(s)
 	if glow and glows(name):

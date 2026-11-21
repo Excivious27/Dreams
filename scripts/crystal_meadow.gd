@@ -116,6 +116,7 @@ func after_ready() -> void:
 			gp.position = cell_center(Vector2i(5, 15)) + Vector2(8, 0)  # bottom at row 16's top: covers rows 14-15, its water cells
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
 			to_under(gp)
+			WaterFeature.still(gp, "glow_pond")  # C14b P2: rocks and lily pads hold still, the water shimmers
 			# The pond is real water: you can't stand in it, and you can fish it.
 			for c: Vector2i in cells_of([Rect2i(5, 14, 2, 2)]):
 				set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})

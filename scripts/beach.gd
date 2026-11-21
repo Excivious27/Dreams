@@ -480,9 +480,8 @@ func _place_props() -> void:
 			blocked[Vector2i(36, 15)] = true  # you walk round a fire, not through it
 	for c: Vector2i in [Vector2i(8, 29), Vector2i(44, 30), Vector2i(58, 26), Vector2i(70, 40), Vector2i(94, 38)]:
 		anim_prop("props", "buoy", c, 0, 2.0)
-	anim_prop("props", "tide_pool", Vector2i(48, 17), 1, 3.0)
-	anim_prop("props", "tide_pool", Vector2i(56, 16), 1, 3.0)
-	anim_prop("props", "tide_pool", Vector2i(SANDBAR.position.x + 1, SANDBAR.position.y + 2), 1, 3.0)
+	for tc: Vector2i in [Vector2i(48, 17), Vector2i(56, 16), Vector2i(SANDBAR.position.x + 1, SANDBAR.position.y + 2)]:
+		WaterFeature.still(anim_prop("props", "tide_pool", tc, 1, 3.0), "tide_pool")  # C14b P2
 	for c: Vector2i in [Vector2i(53, 18), Vector2i(60, 19), Vector2i(2, 15), Vector2i(SANDBAR.end.x - 1, SANDBAR.position.y)]:
 		prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", c, 1)
 	var rng := RandomNumberGenerator.new()
