@@ -186,6 +186,7 @@ static func _morning() -> int:
 	DecorSources.deliver_orders()  # catalogue orders arrive as parcels (C10a P4)
 	_housewarming()
 	_ranch_mail(day)
+	RanchGift.deliver()  # C11b P3: creature gifts that were waiting for room walk over
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:
@@ -216,12 +217,24 @@ static func _morning() -> int:
 	return list().size() - before
 
 
+## C11b P3 (c11b_10-09): the festival-eve letter announces the Animal Show / Best Egg table.
+static func show_line(fid: String) -> String:
+	var pen := GameState.is_penguins()
+	if fid == "harvest":
+		return (" Benno's judging the Animal Show by the fountain: bring your friendliest grown animal." if pen
+			else " Benno's judging the Block Fair livestock ribbon by the fountain: bring your best-kept animal.")
+	if fid == "egg":
+		return (" Posy's Best Egg table wants your shiniest egg, so save one from the coop." if pen
+			else " Posy's running the Best Egg table: save your best egg from the coop.")
+	return ""
+
+
 static func _news(rng: RandomNumberGenerator) -> void:
 	var tomorrow := int(GameState.run["day"]) + 1
 	var dos := ((tomorrow - 1) % GameState.DAYS_PER_SEASON) + 1
 	if dos == GameState.FESTIVAL_DAY:
 		var fid: String = str(GameState.FESTIVALS[GameState.season_of(tomorrow)][0])
-		send("Mayor Alder", "Reminder: the %s is TOMORROW on the plaza. Shops shut from nine till six so everyone can come. Come hungry!" % GameState.festival_name(fid), "news", {"npc": "alder"})
+		send("Mayor Alder", "Reminder: the %s is TOMORROW on the plaza. Shops shut from nine till six so everyone can come. Come hungry!%s" % [GameState.festival_name(fid), show_line(fid)], "news", {"npc": "alder"})
 	var w := GameState.weather_for(tomorrow)
 	if w == "storm":
 		send("Marlowe", "Storm coming in tomorrow; I can see it from the lamp room. %sDon't bother watering. - Marlowe" % _storm_animals(), "news", {"npc": "marlowe"})
@@ -343,7 +356,7 @@ static func _ranch_mail(day: int) -> void:
 		if flags.has(fk) or Builds.built_tier(str(row[0])) < int(row[1]):
 			continue
 		flags[fk] = day
-		var who := str(row[2])
+		var who := str(row[2]) if pen or row.size() < 8 else str(row[7])  # [7]: the gangster-arc sender
 		send(_name(who), "%s - %s" % [str(row[3] if pen else row[4]), _name(who)], "gift", {"npc": who, "item": str(row[5]), "n": int(row[6])})
 		break  # one welcome a morning
 	for row: Array in FIRST_GOODS:
@@ -358,9 +371,9 @@ static func _ranch_mail(day: int) -> void:
 	_tam_highlands(day)
 
 
-## [building, tier, villager, penguin text, gangster text, gift item, n]
+## [building, tier, villager, penguin text, gangster text, gift item, n, (gangster villager)]
 const RANCH_LETTERS := [
-	["coop", 1, "hazel", "Your hens are settled; I walked them up myself. They like a pet first thing and a full feeder. Hay's on me this once.", "Your hens are in. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once.", "hay", 3],
+	["coop", 1, "hazel", "Your hens are settled; I walked them up myself. They like a pet first thing and a full feeder. Hay's on me this once.", "Your hens are in. Told you I'd find some. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once.", "hay", 3, "benno"],
 	["barn", 1, "benno", "The barn smells right already. Brush them, talk to them, keep the trough full; the rest is patience. Some hay to start you off.", "Barn's up. Animals don't care who you work for: feed them, pet them, and the milk comes. Hay to start.", "hay", 5],
 	["coop", 2, "posy", "A bigger coop! If any duck eggs come your way, I'll trade you a cake for every one. Here's an egg for luck.", "Bigger coop, I hear. Duck eggs make the best cakes in town and I don't say that lightly. An egg for luck.", "egg", 1],
 	["barn", 2, "tam", "Goats now. They'll eat the fence, the gate and your hat. Worth it for the milk. Wool for the bedding.", "Goats. They'll eat everything you own. Worth it for the milk. Wool for the bedding.", "sheep_wool", 2],
@@ -391,17 +404,15 @@ static func _tam_lamb(day: int) -> void:
 	var flags: Dictionary = GameState.run["flags"]
 	if not flags.has("hv_tam_8") or flags.has("tam_lamb_home"):
 		return
-	var uid := ""
-	if not Ranch.species("sheep").is_empty():
-		uid = Ranch.add("sheep", "barn", "Bramble", day)
+	var opts := {"home": "barn", "name": "Bramble", "keepsake": true, "giver": "Tam"}
+	var uid := RanchGift._try("sheep", opts)  # a promise: may go one over a full barn (c11b_04-12)
 	if uid != "":
 		flags["tam_lamb_home"] = uid
-		Ranch.animal(uid)["keepsake"] = true
 		send("Tam", ("Brought Bramble up at first light. She's in your barn, eating something she shouldn't. Name her what you like; she won't answer to it either way. - Tam" if GameState.is_penguins()
 			else "Brought Bramble up at first light. She's in your barn. Call her what you like; she answers to nobody. - Tam"), "chat", {"npc": "tam"})
 	elif not flags.has("tam_lamb_wait"):
 		flags["tam_lamb_wait"] = day
-		send("Tam", "Bramble's waiting at my hut till you've a barn with room for her. She's eaten another hat. No hurry. Some hurry. - Tam", "chat", {"npc": "tam"})
+		send("Tam", "Bramble's waiting at my hut till there's room for her: she needs %s. She's eaten another hat. No hurry. Some hurry. - Tam" % RanchGift.room_hint("sheep", opts), "chat", {"npc": "tam"})
 
 
 ## After ♥10 Tam writes from the highlands, about once a week, four letters.

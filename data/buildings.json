@@ -79,6 +79,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "coop",
   "tiers": [
    {
@@ -90,7 +91,7 @@
      "wood": 120,
      "stone": 40
     },
-    "permit": 100,
+    "permit": 500,
     "days": 1,
     "desc": "Chickens: eggs every morning you care for them. Room for 4.",
     "price": 850
@@ -105,7 +106,7 @@
      "nails": 30,
      "copper_bar": 3
     },
-    "permit": 400,
+    "permit": 1800,
     "days": 2,
     "desc": "Room for ducks too; birds eat silo hay. Room for 8. Adds a silo feeder, an incubator.",
     "price": 2360,
@@ -126,7 +127,7 @@
      "glass": 12,
      "iron_bar": 6
     },
-    "permit": 900,
+    "permit": 4500,
     "days": 3,
     "desc": "The biggest flock, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
     "price": 6080,
@@ -152,6 +153,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "barn",
   "tiers": [
    {
@@ -163,7 +165,7 @@
      "wood": 200,
      "stone": 80
     },
-    "permit": 200,
+    "permit": 1000,
     "days": 2,
     "desc": "Cows and sheep: milk and wool. Room for 4.",
     "price": 1380
@@ -178,7 +180,7 @@
      "brick": 60,
      "iron_bar": 4
     },
-    "permit": 800,
+    "permit": 3500,
     "days": 3,
     "desc": "Goats and llamas too; barn animals eat silo hay. Room for 8. Adds a silo feeder, a breeding pen.",
     "price": 6130,
@@ -199,9 +201,9 @@
      "tile": 30,
      "steel_bar": 6
     },
-    "permit": 1600,
+    "permit": 8000,
     "days": 3,
-    "desc": "The biggest herd, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
+    "desc": "A big herd, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
     "price": 13630,
     "unlock": {
      "skill": [
@@ -211,6 +213,30 @@
      "progress": 2,
      "hint": "Ranching level 7"
     }
+   },
+   {
+    "tier": 4,
+    "name": "Grand Barn",
+    "sprite": "barn_4",
+    "group": "buildings",
+    "cost": {
+     "beam": 60,
+     "steel_bar": 10,
+     "glass": 20
+    },
+    "permit": 15000,
+    "days": 4,
+    "desc": "The biggest herd, with big stalls and a paddock in the pasture. Room for 16. Adds big stalls.",
+    "price": 17010,
+    "unlock": {
+     "skill": [
+      "ranching",
+      9
+     ],
+     "progress": 3,
+     "hint": "Ranching level 9"
+    },
+    "name_gang": "Freight Barn"
    }
   ]
  },
@@ -225,6 +251,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "silo",
   "thing": "silo",
   "tiers": [
@@ -237,7 +264,7 @@
      "stone": 60,
      "wood": 30
     },
-    "permit": 50,
+    "permit": 200,
     "days": 1,
     "desc": "Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.",
     "price": 550
@@ -252,7 +279,7 @@
      "plank": 30,
      "iron_bar": 2
     },
-    "permit": 200,
+    "permit": 800,
     "days": 1,
     "desc": "Stores 480 hay: enough for a winter with a full coop.",
     "price": 3230,
@@ -274,7 +301,7 @@
      "beam": 12,
      "steel_bar": 3
     },
-    "permit": 500,
+    "permit": 2000,
     "days": 2,
     "desc": "Stores 720 hay: a whole ranch through winter.",
     "price": 7450,
@@ -347,6 +374,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "stable",
   "tiers": [
    {
@@ -872,6 +900,7 @@
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "apiary",
   "thing": "beehive",
   "tiers": [
@@ -884,7 +913,7 @@
      "wood": 15,
      "fiber": 10
     },
-    "permit": 0,
+    "permit": 150,
     "days": 0,
     "desc": "Honey every few days; flowers nearby make it finer. Holds 2 hives.",
     "price": 240
@@ -899,7 +928,7 @@
      "nails": 10,
      "glass": 4
     },
-    "permit": 0,
+    "permit": 600,
     "days": 1,
     "desc": "More hives, more honey. Holds 4 hives. Adds a breeding pen.",
     "price": 1280,
@@ -921,7 +950,7 @@
      "glass": 10,
      "gear": 2
     },
-    "permit": 200,
+    "permit": 1500,
     "days": 2,
     "desc": "A whole row of hives. Holds 6 hives.",
     "price": 3480,
@@ -3582,14 +3611,15 @@
  "hutch": {
   "label": "Rabbit Hutch",
   "cell": [
-   38,
-   9
+   40,
+   13
   ],
   "w": 2,
   "h": 2,
   "group": "props",
   "cat": "farm",
   "seller": "Hazel",
+  "seller_gang": "The crew",
   "ranch": "hutch",
   "thing": "hutch",
   "tiers": [
@@ -3603,7 +3633,7 @@
      "fiber": 20,
      "plank": 10
     },
-    "permit": 80,
+    "permit": 400,
     "days": 1,
     "desc": "Rabbits: soft fur for the loom. Room for 4. Adds a breeding pen.",
     "price": 590,
@@ -3621,7 +3651,7 @@
      "nails": 16,
      "copper_bar": 2
     },
-    "permit": 300,
+    "permit": 1500,
     "days": 2,
     "desc": "More rabbits. Room for 8. Adds a silo feeder, a heater for winter.",
     "price": 1580,
@@ -3631,21 +3661,28 @@
       4
      ],
      "hint": "Ranching level 4"
-    }
+    },
+    "cell": [
+     40,
+     13
+    ],
+    "w": 2,
+    "h": 2
    }
   ]
  },
  "sty": {
   "label": "Pig Sty",
   "cell": [
-   41,
-   9
+   45,
+   13
   ],
   "w": 3,
   "h": 2,
   "group": "props",
   "cat": "farm",
   "seller": "Benno",
+  "seller_gang": "The crew",
   "ranch": "sty",
   "thing": "sty",
   "tiers": [
@@ -3658,10 +3695,11 @@
      "wood": 100,
      "stone": 40
     },
-    "permit": 150,
+    "permit": 1200,
     "days": 1,
     "desc": "Pigs: they dig up truffles outdoors. Room for 2.",
     "price": 770,
+    "name_gang": "Pig Pen",
     "unlock": {
      "hint": "learn the Sty Blueprint (Ranching tree)"
     }
@@ -3676,7 +3714,7 @@
      "brick": 30,
      "iron_bar": 3
     },
-    "permit": 500,
+    "permit": 4000,
     "days": 2,
     "desc": "More pigs. Room for 4. Adds a breeding pen, a silo feeder.",
     "price": 2900,
@@ -3686,7 +3724,14 @@
       6
      ],
      "hint": "Ranching level 6"
-    }
+    },
+    "name_gang": "Big Pig Pen",
+    "cell": [
+     45,
+     13
+    ],
+    "w": 3,
+    "h": 2
    }
   ]
  },
@@ -3802,6 +3847,416 @@
      "skill": [
       "ranching",
       3
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "enclosure": {
+  "label": "Exotic Enclosure",
+  "cell": [
+   50,
+   13
+  ],
+  "w": 4,
+  "h": 3,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "seller_gang": "The crew",
+  "ranch": "enclosure",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Exotic Enclosure",
+    "sprite": "enclosure_1",
+    "group": "buildings",
+    "cost": {
+     "beam": 20,
+     "plank": 60,
+     "iron_bar": 4
+    },
+    "permit": 3000,
+    "days": 2,
+    "desc": "A big sandy run with a shade roof: ostriches and emus. Room for 2. Adds a silo feeder.",
+    "price": 4000,
+    "unlock": {
+     "skill": [
+      "ranching",
+      5
+     ],
+     "progress": 1
+    },
+    "name_gang": "Exotics Yard"
+   },
+   {
+    "tier": 2,
+    "name": "Grand Enclosure",
+    "sprite": "enclosure_2",
+    "group": "buildings",
+    "cost": {
+     "beam": 40,
+     "brick": 80,
+     "gold_bar": 3
+    },
+    "permit": 7500,
+    "days": 3,
+    "desc": "Warm rocks and a big-egg incubator: room for a drake. Room for 4. Adds an incubator, a breeding pen, a heater for winter.",
+    "price": 8660,
+    "unlock": {
+     "skill": [
+      "ranching",
+      8
+     ],
+     "progress": 2,
+     "hint": "Ranching level 8"
+    },
+    "name_gang": "Big Exotics Yard",
+    "cell": [
+     50,
+     13
+    ],
+    "w": 4,
+    "h": 3
+   }
+  ]
+ },
+ "aviary": {
+  "label": "Aviary",
+  "cell": [
+   57,
+   13
+  ],
+  "w": 3,
+  "h": 3,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "seller_gang": "The crew",
+  "ranch": "aviary",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Aviary",
+    "sprite": "aviary_1",
+    "group": "buildings",
+    "cost": {
+     "plank": 50,
+     "nails": 30,
+     "iron_bar": 3
+    },
+    "permit": 2000,
+    "days": 2,
+    "desc": "A tall mesh house with perches: peacocks and big flying birds. Room for 4. Adds perches.",
+    "price": 2250,
+    "unlock": {
+     "skill": [
+      "ranching",
+      4
+     ],
+     "progress": 1
+    },
+    "name_gang": "Drone Loft"
+   },
+   {
+    "tier": 2,
+    "name": "Grand Aviary",
+    "sprite": "aviary_2",
+    "group": "buildings",
+    "cost": {
+     "hardwood_plank": 20,
+     "glass": 16,
+     "gold_bar": 2
+    },
+    "permit": 5000,
+    "days": 3,
+    "desc": "More perches, an incubator and a heater. Room for 8. Adds a silo feeder, an incubator, a heater for winter.",
+    "price": 5260,
+    "unlock": {
+     "skill": [
+      "ranching",
+      7
+     ],
+     "progress": 2,
+     "hint": "Ranching level 7"
+    },
+    "name_gang": "Big Drone Loft",
+    "cell": [
+     57,
+     13
+    ],
+    "w": 3,
+    "h": 3
+   }
+  ]
+ },
+ "terrarium": {
+  "label": "Terrarium",
+  "cell": [
+   40,
+   19
+  ],
+  "w": 3,
+  "h": 2,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Posy",
+  "seller_gang": "The crew",
+  "ranch": "terrarium",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Terrarium",
+    "sprite": "terrarium_1",
+    "group": "buildings",
+    "cost": {
+     "glass": 20,
+     "plank": 20,
+     "copper_bar": 3
+    },
+    "permit": 1500,
+    "days": 2,
+    "desc": "A warm glass house: tortoises, geckos and glowing bugs. Room for 2. Adds a heater for winter.",
+    "price": 2240,
+    "unlock": {
+     "skill": [
+      "ranching",
+      4
+     ],
+     "progress": 1
+    },
+    "name_gang": "Grow Tank"
+   },
+   {
+    "tier": 2,
+    "name": "Grand Terrarium",
+    "sprite": "terrarium_2",
+    "group": "buildings",
+    "cost": {
+     "crystal_glass": 4,
+     "glass": 20,
+     "iron_bar": 4
+    },
+    "permit": 4000,
+    "days": 3,
+    "desc": "Misters and room for little ones. Room for 4. Adds a breeding pen, automatic water.",
+    "price": 6130,
+    "unlock": {
+     "skill": [
+      "ranching",
+      7
+     ],
+     "progress": 2,
+     "hint": "Ranching level 7"
+    },
+    "name_gang": "Big Grow Tank",
+    "cell": [
+     40,
+     19
+    ],
+    "w": 3,
+    "h": 2
+   }
+  ]
+ },
+ "tide_pool": {
+  "label": "Tide Pool",
+  "cell": [
+   45,
+   19
+  ],
+  "w": 3,
+  "h": 2,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "seller_gang": "The crew",
+  "ranch": "tide_pool",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Tide Pool",
+    "sprite": "tide_pool_1",
+    "group": "buildings",
+    "cost": {
+     "stone": 80,
+     "glass": 12,
+     "clay_pot": 6
+    },
+    "permit": 3000,
+    "days": 2,
+    "desc": "A cool salt-water pool for creatures from the sea. Room for 4. Adds a breeding pen, automatic water.",
+    "price": 1640,
+    "unlock": {
+     "skill": [
+      "ranching",
+      6
+     ],
+     "progress": 3
+    }
+   }
+  ]
+ },
+ "ember_pit": {
+  "label": "Ember Pit",
+  "cell": [
+   50,
+   19
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "seller_gang": "The crew",
+  "ranch": "ember_pit",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Ember Pit",
+    "sprite": "ember_pit_1",
+    "group": "buildings",
+    "cost": {
+     "brick": 60,
+     "stone": 40,
+     "coal": 20
+    },
+    "permit": 2500,
+    "days": 2,
+    "desc": "Warm rocks that glow all year: newts love it. Room for 4. Adds a breeding pen, a heater for winter.",
+    "price": 2350,
+    "unlock": {
+     "skill": [
+      "ranching",
+      6
+     ],
+     "progress": 3
+    }
+   }
+  ]
+ },
+ "star_dome": {
+  "label": "Star Dome",
+  "cell": [
+   55,
+   19
+  ],
+  "w": 3,
+  "h": 3,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "seller_gang": "The crew",
+  "ranch": "star_dome",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Star Dome",
+    "sprite": "star_dome_1",
+    "group": "buildings",
+    "cost": {
+     "crystal_glass": 6,
+     "moon_bar": 2,
+     "beam": 20
+    },
+    "permit": 4000,
+    "days": 3,
+    "desc": "A night-sky dome for creatures from the Moon and the far north. Room for 4. Adds a breeding pen, a moon lamp.",
+    "price": 16830,
+    "unlock": {
+     "skill": [
+      "ranching",
+      7
+     ],
+     "progress": 3
+    }
+   }
+  ]
+ },
+ "gene_splicer": {
+  "label": "Gene Splicer",
+  "cell": [
+   18,
+   23
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Specs",
+  "station": {
+   "skill": "ranching",
+   "verb": "Splice",
+   "book": "splice"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Splice Rig",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "plank": 12,
+     "copper_bar": 6,
+     "glass": 6,
+     "circuit_board": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Chrome hens and turbo bunnies.",
+    "price": 1980,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Gene Splicer",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 8,
+     "glass": 10,
+     "circuit_board": 4,
+     "gear": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Glow sheep, circuit goats and cows.",
+    "price": 5360,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "ranching",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Gene Lab",
+    "sprite": "gene_splicer",
+    "group": "stations",
+    "cost": {
+     "steel_bar": 8,
+     "crystal_glass": 2,
+     "data_chip": 3,
+     "plating": 2
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, every recipe already open. Drone hogs, volt geckos, chrome runners.",
+    "price": 11940,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "ranching",
+      5
      ]
     },
     "art_missing": false

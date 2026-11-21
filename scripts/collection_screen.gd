@@ -36,6 +36,8 @@ static func back() -> bool:
 
 ## Opens the Decor catalogue screen over the menu (it owns B/MENU while open).
 static func open_catalogue(gm: Node, v := "grid") -> void:
+	if gm is GameMenu and not (gm as GameMenu)._open:
+		return  # a button of a menu that already closed (e.g. under the campaign board): never a screen over it
 	var host: Node = gm.get_parent() if gm.get_parent() else gm
 	DecorCatalogue.open(host, v)
 

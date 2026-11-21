@@ -26,6 +26,9 @@ var _cd := 0.0
 var _target: Node2D = null
 var _fetch_c := Vector2i(-1, -1)   # forage cell it is fetching (Fetch lesson)
 var _fetch_t := 0.0
+var _carry := ""                   # c11b_09-15: the forage it is bringing back to you
+var _carry_n := 0
+var _guard_cd := 0.0
 const FETCH_EVERY := [0.0, 14.0, 10.0, 7.0]  # seconds between fetches by rank (game time)
 static var _fetch_claims := {}  # cell -> beast instance id, so two fetchers split the forage
 
@@ -66,6 +69,7 @@ func setup(m: GameMap, u: String, s: int) -> void:
 	dmg = int(st["dmg"])
 	spd = float(st["speed"])
 	_spr = HelperUnit.animal_sprite(TeamAnimals.sprite_group(u))
+	_spr.modulate = TeamAnimals.tint(u)  # c11b_09-06: rare tints show on the walk too
 	add_child(_spr)
 	z_index = 1
 	add_to_group("allies")
@@ -79,12 +83,19 @@ func _process(delta: float) -> void:
 	if map == null or map.player == null or get_tree().paused:
 		return
 	_cd = maxf(0.0, _cd - delta)
+	_guard_cd = maxf(0.0, _guard_cd - delta)
 	var goal: Vector2 = map.player.position + _slot_offset()
 	var fight := _pick_target()
-	if fight == null and _fetch(delta):
+	if _carry != "":
+		goal = map.player.position
+		if position.distance_to(map.player.position) < 16.0:
+			_deliver()
+	elif fight == null and _fetch(delta):
 		goal = map.cell_center(_fetch_c)
 	elif fight != null:
 		var guard_only := TeamAnimals.rank(uid, "attack") == 0
+		if TeamAnimals.rank(uid, "guard") > 0 and position.distance_to(fight.position) < REACH + 4.0 and _guard_cd <= 0.0:
+			_shove(fight as Enemy)
 		if guard_only:
 			goal = map.player.position + (fight.position - map.player.position).normalized() * 16.0
 		else:
@@ -95,6 +106,8 @@ func _process(delta: float) -> void:
 	var moving := to.length() > 3.0
 	if moving:
 		var sp := 52.0 * spd * (1.6 if to.length() > 60.0 else 1.0)
+		if to.length() > FOLLOW_GAP:
+			sp = maxf(sp, map.player.velocity.length() * 1.15)  # c11b_09-09: keep up like the pup
 		position += to.normalized() * minf(to.length(), sp * delta)
 		_spr.flip_h = to.x > 0.0
 	# Keep apart from the other followers (pup, partner, other animals).
@@ -105,9 +118,11 @@ func _process(delta: float) -> void:
 		if d.length() < SEP and d.length() > 0.01:
 			position += d.normalized() * (SEP - d.length()) * 0.5
 	if position.distance_to(map.player.position) > 260.0:
-		position = map.player.position + _slot_offset()  # left behind (door, cliff): catch up
+		position = map.player.position + _slot_offset()  # left behind (door, cliff): catch up (off-screen by then)
 	var want := "walk" if moving and _spr.sprite_frames.has_animation("walk") else "idle"
-	if moving and to.length() > 60.0 and _spr.sprite_frames.has_animation("run"):
+	if PlayClock.now() < _hurt_until and _spr.sprite_frames.has_animation("hurt"):
+		want = "hurt"  # C11b integ: the hurt pose when the strip has one
+	elif moving and to.length() > 60.0 and _spr.sprite_frames.has_animation("run"):
 		want = "run"
 	elif _cd > HIT_CD - 0.3 and _spr.sprite_frames.has_animation("attack"):
 		want = "attack"  # a butt just landed
@@ -131,9 +146,7 @@ func _fetch(delta: float) -> bool:
 		if position.distance_to(map.cell_center(_fetch_c)) < 10.0:
 			var c := _fetch_c
 			_drop_fetch()
-			map.interact_common(c, th)
-			if map.hud and randf() < 0.5:
-				map.hud.toast("%s fetched something for you." % TeamAnimals.name_of(uid), Color(0.8, 1, 0.8))
+			_pick_up(c, th)
 			return false
 		return true
 	_fetch_t += delta
@@ -162,6 +175,46 @@ func _fetch(delta: float) -> bool:
 	return true
 
 
+## Take the forage off the ground (the map's forage rules: flag, double-pick chance, foraging xp)
+## and carry it back; it is handed over at your feet (c11b_09-15).
+func _pick_up(c: Vector2i, th: Dictionary) -> void:
+	var item := str(th.get("item", "mushroom"))
+	GameState.run["flags"][str(th.get("key", ""))] = int(GameState.run["day"])
+	map.things.erase(c)
+	map.blocked.erase(c)
+	map.hard.erase(c)
+	var fsp: Node2D = map.props.get(c, null)
+	map.props.erase(c)
+	if fsp:
+		fsp.queue_free()
+	_carry = item
+	_carry_n = 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0)
+	map.xp("foraging", 2 + int(GameState.items.get(item, {}).get("tier", 1)))
+
+
+func _deliver() -> void:
+	if _carry == "":
+		return
+	map.pop_items(map.player.position + Vector2(0, 4), _carry, _carry_n)
+	RanchVoice.say(get_tree(), uid, "happy")
+	if map.hud and randf() < 0.5:
+		map.hud.toast("%s brought you %s." % [TeamAnimals.name_of(uid), ItemWords.count_id(_carry, _carry_n)], Color(0.8, 1, 0.8))
+	_carry = ""
+	_carry_n = 0
+
+
+## Guard lesson (c11b_09-11): shove a close foe back and draw its attention; stronger by rank.
+func _shove(e: Enemy) -> void:
+	if e == null or not is_instance_valid(e):
+		return
+	var r := TeamAnimals.rank(uid, "guard")
+	_guard_cd = HIT_CD * 1.5 / (1.0 + 0.2 * (r - 1))
+	e.provoke(self)
+	e.hit(maxi(1, r - 1), position, false, true)
+	map.fx("hit_spark", e.position + Vector2(0, -8), 12.0, 0.3)
+	RanchVoice.say(get_tree(), uid, "attack")
+
+
 func _drop_fetch() -> void:
 	_fetch_claims.erase(_fetch_c)
 	_fetch_c = Vector2i(-1, -1)
@@ -170,6 +223,9 @@ func _drop_fetch() -> void:
 func _exit_tree() -> void:
 	if _fetch_c.x >= 0:
 		_drop_fetch()
+	if _carry != "":
+		GameState.add_item(_carry, _carry_n)  # never lose a fetched find (map change, rest)
+		_carry = ""
 
 
 func _pick_target() -> Node2D:
@@ -201,9 +257,11 @@ func _hit(e: Enemy) -> void:
 	e.provoke(self)
 	e.hit(dmg, position, false, true)
 	map.fx("hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
-	var voice := str(TeamAnimals.spec(uid).get("voice", "bleat"))
-	if randf() < 0.3 and position.distance_to(map.player.position) < 170.0:
-		Music.instance(get_tree()).sfx(voice, "bleat")
+	if randf() < 0.5 and position.distance_to(map.player.position) < 170.0:
+		RanchVoice.say(get_tree(), uid, "attack", "bleat")  # c11b_14-07/-08: the species voice from ranch.json
+
+
+var _hurt_until := -1.0  # PlayClock time the hurt pose ends
 
 
 func take_damage(n: int, _from: Vector2) -> void:
@@ -212,9 +270,13 @@ func take_damage(n: int, _from: Vector2) -> void:
 	hp = maxi(0, hp - n)
 	Ranch.animal(uid)["hp"] = hp
 	Ranch.animal(uid)["hp_day"] = int(GameState.run.get("day", 1))
+	_hurt_until = PlayClock.now() + 0.3
 	modulate = Color(1, 0.6, 0.6)
 	create_tween().tween_property(self, "modulate", Color.WHITE, 0.25)
+	if hp > 0 and position.distance_to(map.player.position) < 170.0:
+		RanchVoice.say(get_tree(), uid, "hurt", "bleat")  # soft and rate-capped (c11b_14-08)
 	if hp <= 0:
+		RanchVoice.say(get_tree(), uid, "down")
 		var a := Ranch.animal(uid)
 		a["rest_day"] = int(GameState.run.get("day", 1))
 		a.erase("hp")  # back to full after a night's rest
@@ -225,6 +287,8 @@ func take_damage(n: int, _from: Vector2) -> void:
 
 
 func heal(n: int) -> void:
+	if hp < max_hp:
+		RanchVoice.say(get_tree(), uid, "happy")
 	hp = mini(max_hp, hp + n)
 	Ranch.animal(uid)["hp"] = hp
 	Ranch.animal(uid)["hp_day"] = int(GameState.run.get("day", 1))

@@ -1,6 +1,6 @@
 extends SceneTree
 ## The campaign lead-in: day-one locks, the training drill played step by step
-## (move, build, rally follow, point menu, rally to a point, capture), the
+## (move, build, follow, hold here, follow me, point menu, go to a point, capture), the
 ## battle briefing card (pauses, can be hidden after the first view), the
 ## campaign briefing on the board and mustering.
 ##   godot --headless --path . -s res://tools/campaign_gate_test.gd
@@ -168,24 +168,45 @@ func _run() -> void:
 			break
 	check(dr.step == 2, "building a helper passes step 2")
 	await _talk(20)
-	# 3 rally follow
-	bt._set_rally(-1)
-	for i in 120:
+	# 3 follow (the drill's default order): walk and the helper comes along.
+	check(bt._rally == -1 and m.has_meta("follow_me"), "drill helpers follow you by default")
+	for i in 600:
+		var np: Vector2 = m.player.position + Vector2(0.9 if (i / 150) % 2 == 0 else -0.9, 0)
+		if not m.blocked.has(m.world_to_cell(np)):
+			m.player.position = np
 		await process_frame
 		if dr.step > 2:
 			break
-	check(dr.step == 3 and m.has_meta("follow_me"), "RALLY follow me passes step 3")
+		if Dialogue.instance(self).active:
+			await _talk(5)
+	check(dr.step == 3, "walking with the helper beside you passes step 3 (walked %.0f)" % dr._walked)
 	await _talk(20)
-	await _shot("gate_drill_follow")
-	# 4 point menu: fortify
-	post["fort"] = true
+	# 4 order: Hold here
+	bt._set_rally(-2)
 	for i in 120:
 		await process_frame
 		if dr.step > 3:
 			break
-	check(dr.step == 4, "the point menu passes step 4")
+	check(dr.step == 4, "Hold here passes step 4")
 	await _talk(20)
-	# 5 rally to the mill
+	# 5 order: Follow me
+	bt._set_rally(-1)
+	for i in 120:
+		await process_frame
+		if dr.step > 4:
+			break
+	check(dr.step == 5 and m.has_meta("follow_me"), "Follow me passes step 5")
+	await _talk(20)
+	await _shot("gate_drill_follow")
+	# 6 point menu: fortify
+	post["fort"] = true
+	for i in 120:
+		await process_frame
+		if dr.step > 5:
+			break
+	check(dr.step == 6, "the point menu passes step 6")
+	await _talk(20)
+	# 7 go to the mill
 	var mill_i := 0
 	for i in bt.points.size():
 		if str(bt.points[i]["id"]) == "b":
@@ -193,9 +214,9 @@ func _run() -> void:
 	bt._set_rally(mill_i)
 	for i in 120:
 		await process_frame
-		if dr.step > 4:
+		if dr.step > 6:
 			break
-	check(dr.step == 5 and dr.waves_on(), "rallying to the mill passes step 5 and the foes come")
+	check(dr.step == 7 and dr.waves_on(), "sending them to the mill passes step 7 and the foes come")
 	await _talk(20)
 	await _shot("gate_drill_rally")
 	check(bt._goal_text().contains("TRAINING"), "the objective banner says what to do")

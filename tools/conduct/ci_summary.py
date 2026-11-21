@@ -89,7 +89,8 @@ if flaky:
         L.insert(1, "FLAKY: passed on retry: %s%s (first try rc=%s%s)" % (f["job"], (" " + f["spec"]) if f.get("spec") else "",
                  f.get("first_rc"), (": " + f["first"][:80]) if f.get("first") else ""))
 if len(want_shards) < 6 or not want_bots:
-    L.append("subset run: shards %s, bots %s, playtest %s" % (want_shards or "none", "20" if want_bots else "off", "on" if want_pt else "off"))
+    L.append(("relay-only run (main push): no check shards, bots or playtest asked for; not a failure" if not want_shards and not want_bots and not want_pt else
+              "subset run: shards %s, bots %s, playtest %s" % (want_shards or "none", "20" if want_bots else "off", "on" if want_pt else "off")))
 L.append("check shards (%d/%d):" % (len(shards), len(want_shards)))
 for s in shards:
     L.append("  shard %s: %s  %ss%s" % (s["shard"], "PASS" if s["rc"] == 0 else "FAIL", s["secs"],

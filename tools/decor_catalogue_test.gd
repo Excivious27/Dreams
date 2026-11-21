@@ -247,6 +247,61 @@ func _run() -> void:
 	check(not is_instance_valid(scr) or scr.is_queued_for_deletion(), "B closes the catalogue")
 	check(Hud.modal_rect.size == Vector2.ZERO, "modal released")
 	check(not get_root().get_tree().paused, "game unpaused after close")
+	await _stale_modal_checks()
 	Decor._data = saved
 	print("decor_catalogue_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
+
+
+## C11b integ (bot20 softlock): the catalogue gives back the pause/modal of the screen under it only while
+## that screen is still up, and a Book button of a menu that already closed opens nothing.
+func _stale_modal_checks() -> void:
+	var tree := get_root().get_tree()
+	var gm: GameMenu = null
+	for ch in current_scene.get_children():
+		if ch is GameMenu:
+			gm = ch
+	check(gm != null and not gm._open, "menu found, closed")
+	if gm == null:
+		return
+	var n0 := _catalogues()
+	CollectionScreen.open_catalogue(gm)
+	await frames(3)
+	check(_catalogues() == n0, "a closed menu's Decor catalogue button opens no screen")
+	# Under-screen closed meanwhile: a full-screen modal + pause with nothing left to own them.
+	Hud.modal_rect = Rect2(0, 0, 270, 480)
+	Hud.pause(tree, "gone_screen")
+	var scr := DecorCatalogue.open(current_scene, "grid")
+	await frames(10)
+	Hud.modal_rect = Rect2()  # the screen under it closed (its own close released the modal)
+	await press("b")
+	await frames(4)
+	check(not is_instance_valid(scr) or scr.is_queued_for_deletion(), "B closes the catalogue over a gone screen")
+	check(Hud.modal_rect.size == Vector2.ZERO, "no stale full-screen modal given back (%s)" % Hud.modal_rect)
+	check(not tree.paused, "no pause given back with nothing on screen")
+	# Over the open menu: closing the catalogue keeps the menu's pause.
+	gm._tab = "Book"
+	gm.toggle()
+	await frames(10)
+	CollectionScreen.open_catalogue(gm)
+	await frames(10)
+	check(_catalogues() == n0 + 1, "the open menu's Decor catalogue button opens it")
+	await press("b")
+	await frames(4)
+	check(gm._open and tree.paused, "closing the catalogue keeps the menu open and paused")
+	check(Hud.modal_rect.size == Vector2.ZERO, "menu has no modal after the catalogue")
+	await frames(10)
+	await press("b")
+	await frames(6)
+	if gm._open:
+		gm.toggle()
+	await frames(4)
+	check(not gm._open and not tree.paused and Hud.modal_rect.size == Vector2.ZERO, "menu closes clean afterwards")
+
+
+func _catalogues() -> int:
+	var n := 0
+	for ch in current_scene.get_children():
+		if ch is DecorCatalogue and not ch.is_queued_for_deletion():
+			n += 1
+	return n

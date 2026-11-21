@@ -579,6 +579,11 @@ func back() -> void:
 func close() -> void:
 	if not is_inside_tree():
 		return
+	# Give back the modal/pause of what was under it only while that screen is still up: one that
+	# closed meanwhile (B reached both on one frame) left nothing to restore, and a stale full-screen
+	# modal with no screen would freeze the game with nothing to press (bot20 softlock, C11b integ).
+	if not Hud.keep_paused(get_tree(), self):
+		_prev_modal = Rect2()
 	Hud.modal_rect = _prev_modal
 	get_tree().paused = _was_paused and (Hud.keep_paused(get_tree(), self) or _prev_modal.size != Vector2.ZERO)
 	Music.instance(get_tree()).sfx("menu_close", "page")

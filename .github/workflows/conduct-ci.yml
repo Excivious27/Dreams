@@ -345,7 +345,7 @@ jobs:
           while [ $attempts -lt 2 ]; do
             attempts=$((attempts + 1))
             rm -rf out/data out/shots; mkdir -p out/shots
-            XDG_DATA_HOME="$PWD/out/data" timeout 1500 xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/playtest.gd -- "$PWD/out/shots" > out/playtest.log 2>&1
+            XDG_DATA_HOME="$PWD/out/data" timeout 1500 xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 --fixed-fps 60 -s res://tools/playtest.gd -- "$PWD/out/shots" > out/playtest.log 2>&1
             rc=$?
             [ $rc = 0 ] && break
             if [ $attempts = 1 ]; then
@@ -512,7 +512,8 @@ jobs:
           path: results
       - name: Summarise
         run: |
-          [ -f results/params/params.json ] && cp results/params/params.json ci/params.json
+          mkdir -p ci  # main has no ci/ (relay-only runs): the plan's params artifact goes here
+          if [ -f results/params/params.json ]; then cp results/params/params.json ci/params.json; fi
           python3 tools/conduct/ci_summary.py results "${{ github.sha }}" "${{ github.ref_name }}" "${{ github.run_id }}" ci/params.json
           cat results/summary.txt
           cat results/summary.txt >> "$GITHUB_STEP_SUMMARY"

@@ -10,6 +10,9 @@ var fails := 0
 ## other arc's names: no crystals, commons, penguins or Rec Center).
 const BANNED := ["blood", "bleed", "drug", "beer", "whisk", "booze", "drunk", " wine", "cigar", "smok", "kill", "dead", "corpse",
 	"gambl", "casino", "stakes", "rec center", "commons", "dreamhollow", "penguin", "crystal"]
+## C11b P6 (c11b_03-04): lab-strain hazards (all ages: cute cyber, no wounds, no experiments).
+const LAB_BANNED := ["inject", "needle", "syringe", "surgery", "operate on", "operated on", "dissect", "mutant", "mutat",
+	"experiment", "test subject", "lab rat", "cage", "implanted", "scalpel", "stitches", "wound"]
 ## Adults who visit the hall get their own gangster-arc lines (the kids' lines suit both arcs).
 const KIDS := ["pip", "tobin", "mabel", "wren_jr"]
 
@@ -178,6 +181,32 @@ func _run() -> void:
 	for w: Dictionary in coll.get("wings", []):
 		ctexts.append(str(w["title"]))
 	_clean("collections", ctexts)
+
+	# C11b P6 (c11b_03-04): ranch texts of the gangster arc (lab strains, names, show, buildings): all ages,
+	# cute cyber, never a lab-hazard word.
+	var rtexts: Array = []
+	var rj: Dictionary = GameState.load_json("res://data/ranch.json")
+	for sid: String in rj.get("species", {}):
+		var sd: Dictionary = rj["species"][sid]
+		if str(sd.get("arc", "")) == "penguins":
+			continue  # penguin-only creatures never show in a gangster run (C11b integ)
+		rtexts.append(str(sd.get("name_gang", "")))
+		if str(sd.get("arc", "")) == "gangsters":
+			_texts(sd, rtexts)
+	for pid: String in rj.get("products", {}):
+		if str((rj["products"][pid] as Dictionary).get("arc", "")) == "gangsters":
+			_texts(rj["products"][pid], rtexts)
+	var AS: GDScript = load("res://scripts/animal_show.gd")
+	for fest: String in AS.CATS:
+		for c: Dictionary in AS.CATS[fest]:
+			rtexts.append_array([str(c.get("title_gang", "")), str(c.get("ask_gang", ""))])
+	for bn: String in Builds.GANG_NAMES:
+		rtexts.append(str(Builds.GANG_NAMES[bn]))
+	_clean("ranch", rtexts)
+	for t in rtexts:
+		var low := str(t).to_lower()
+		for w: String in LAB_BANNED:
+			ok(not low.contains(w), "ranch lab word '%s' in \"%s\"" % [w, str(t)])
 
 	print("gang_flavour_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
