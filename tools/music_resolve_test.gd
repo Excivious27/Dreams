@@ -113,5 +113,20 @@ func _run() -> void:
 	check(not bool(m.sfx_log[-1]["arc_swap"]) or m.has_sfx("pickup_gang"), "arc swap only when a _gang take exists")
 	GameState.run["arc"] = "penguins"
 	check(m.mood("no_such_mood_xyz") == "", "missing mood -> '' (area song carries on)")
+	check(m.mood("") == "" and m.held() == "", "empty mood -> '' and nothing held")
+	# C13 integration hooks.
+	check(Music._is_jingle("j_victory_gang") and Music._is_jingle("levelup_gang") and Music._is_jingle("quest_done_gang"), "gang jingle twins count as jingles (duck + arbitrate)")
+	check(not Music._is_jingle("j_buy_gang") and not Music._is_jingle("j_confirm_gang"), "j_buy/j_confirm gang twins stay plain sfx")
+	for g: String in ["carpet", "metal", "ice"]:
+		check(Music.STEP_GROUND_DB.has(g) and float(Music.STEP_GROUND_DB[g]) < 0.0, "step ground %s has its quieter level" % g)
+	R.fake_tracks = ["keeper", "keeper_2", "boss_president", "boss_president_2", "boss_dark_crystal", "boss_dark_crystal_2"]
+	for d in range(1, 9):
+		check(R.pick("keeper", _ctx("penguins", {"day": d})) == "keeper", "keeper_2 never in daily rotation (day %d)" % d)
+		check(R.pick("boss_president", _ctx("gangsters", {"day": d})) == "boss_president", "boss_*_2 never in daily rotation (day %d)" % d)
+		check(R.pick("boss_dark_crystal", _ctx("penguins", {"day": d})) == "boss_dark_crystal", "boss_dark_crystal_2 kept for phase 2 (day %d)" % d)
+	R.fake_tracks = []
+	for pr: Array in [["bakery", "bakery"], ["library", "library"], ["museum", "museum"], ["workshop", "workshop"], ["gilt_casino", "casino"]]:
+		check(str(GameMap.INTERIOR_MUSIC.get(pr[0], "")) == pr[1], "interior %s asks its own song %s" % pr)
+		check(GameMap.INTERIOR_FALLBACK.has(pr[1]), "interior song %s has a fallback" % pr[1])
 	print("music_resolve_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

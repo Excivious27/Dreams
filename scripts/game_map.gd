@@ -886,7 +886,7 @@ func _check_quests() -> void:
 		hud.toast(quest_done_text(id), Color(1, 0.9, 0.4))
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
 	for t in GameState.opened:
-		hud.toast("New quest: %s" % str(t), Color(1, 0.9, 0.4))
+		Quests.announce(self, str(t))
 	GameState.opened.clear()
 
 
@@ -1524,9 +1524,12 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown",
 ## Interiors by kind (data/interiors.json ids). Gangster-arc shops get the crew's lounge tune.
 ## The town hall keeps the plaza song going (no restart on the way in); the mansion is a quiet home.
 const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
-	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
+	"inn": "inn", "bakery": "bakery", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "library", "chapel": "chapel",
+	"museum": "museum", "workshop": "workshop", "gilt_casino": "casino",
 	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
 	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
+## C13: an interior's own song falls back to the one it shared before when the file is missing.
+const INTERIOR_FALLBACK := {"bakery": "inn", "library": "chapel", "museum": "chapel", "workshop": "town", "casino": "mega_gilt"}
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
 const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle", "boss_dark_crystal", "boss_president",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
@@ -1601,6 +1604,8 @@ func area_track() -> String:
 	if id == "interior":
 		var iid := str(get("interior_id"))
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
+		if INTERIOR_FALLBACK.has(t):
+			t = first_track([t, str(INTERIOR_FALLBACK[t]), music_track])
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
 		var im: Variant = get("I")

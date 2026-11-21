@@ -1750,7 +1750,7 @@ func _mailbox() -> void:
 		if sl.has("quest") and not GameState.has_quest(str(sl["quest"][0])):
 			# Day-gated quests may already be open (opened quietly at wake-up): only announce new ones.
 			GameState.add_quest(str(sl["quest"][0]), str(sl["quest"][1]))
-			hud.toast("New quest: " + str(sl["quest"][1]), Color(1, 0.9, 0.4))
+			Quests.announce(self, str(sl["quest"][1]))
 	if Mail.pending() > 0 or story.is_empty():
 		await read_mail()
 

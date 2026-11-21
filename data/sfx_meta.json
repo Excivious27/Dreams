@@ -115,6 +115,14 @@
 "dur": 0.26,
 "len_audible": 0.2
 },
+"block_fall": {
+"dur": 0.509,
+"len_audible": 0.5
+},
+"block_fall_2": {
+"dur": 0.491,
+"len_audible": 0.45
+},
 "book": {
 "dur": 0.067,
 "len_audible": 0.05
@@ -211,6 +219,14 @@
 "dur": 1.4,
 "len_audible": 1.35
 },
+"cabinet_coin": {
+"dur": 0.454,
+"len_audible": 0.45
+},
+"cabinet_coin_2": {
+"dur": 0.354,
+"len_audible": 0.35
+},
 "cannon": {
 "dur": 0.787,
 "len_audible": 0.75
@@ -246,6 +262,30 @@
 "car_start": {
 "dur": 1.638,
 "len_audible": 1.6
+},
+"card_deal": {
+"dur": 0.146,
+"len_audible": 0.1
+},
+"card_deal_2": {
+"dur": 0.203,
+"len_audible": 0.2
+},
+"card_deal_3": {
+"dur": 0.444,
+"len_audible": 0.25
+},
+"card_flip": {
+"dur": 0.191,
+"len_audible": 0.15
+},
+"card_flip_2": {
+"dur": 0.239,
+"len_audible": 0.2
+},
+"card_flip_3": {
+"dur": 0.398,
+"len_audible": 0.35
 },
 "cards": {
 "dur": 0.093,
@@ -319,6 +359,30 @@
 "dur": 1.199,
 "len_audible": 1.15
 },
+"chip_clack": {
+"dur": 0.113,
+"len_audible": 0.1
+},
+"chip_clack_2": {
+"dur": 0.178,
+"len_audible": 0.15
+},
+"chip_clack_3": {
+"dur": 0.221,
+"len_audible": 0.2
+},
+"chips_stack": {
+"dur": 0.109,
+"len_audible": 0.1
+},
+"chips_stack_2": {
+"dur": 0.364,
+"len_audible": 0.35
+},
+"chips_stack_3": {
+"dur": 0.473,
+"len_audible": 0.45
+},
 "chop": {
 "dur": 0.245,
 "len_audible": 0.2
@@ -338,6 +402,26 @@
 "clap_2": {
 "dur": 0.081,
 "len_audible": 0.05
+},
+"claw_drop": {
+"dur": 0.231,
+"len_audible": 0.2
+},
+"claw_drop_2": {
+"dur": 0.444,
+"len_audible": 0.4
+},
+"claw_drop_3": {
+"dur": 0.441,
+"len_audible": 0.4
+},
+"claw_move": {
+"dur": 0.598,
+"len_audible": 0.55
+},
+"claw_move_2": {
+"dur": 0.598,
+"len_audible": 0.55
 },
 "cloth": {
 "dur": 0.686,
@@ -419,6 +503,10 @@
 "dur": 0.215,
 "len_audible": 0.2
 },
+"croak": {
+"dur": 0.522,
+"len_audible": 0.5
+},
 "crop_ready": {
 "dur": 0.338,
 "len_audible": 0.3
@@ -430,6 +518,18 @@
 "crow_2": {
 "dur": 0.55,
 "len_audible": 0.5
+},
+"cv_crystal_baby": {
+"dur": 0.404,
+"len_audible": 0.4
+},
+"cv_crystal_baby_2": {
+"dur": 0.332,
+"len_audible": 0.3
+},
+"cv_crystal_baby_3": {
+"dur": 0.226,
+"len_audible": 0.2
 },
 "cv_emu": {
 "dur": 0.783,
@@ -619,6 +719,18 @@
 "dur": 0.682,
 "len_audible": 0.65
 },
+"egg_collect": {
+"dur": 0.195,
+"len_audible": 0.15
+},
+"egg_collect_2": {
+"dur": 0.21,
+"len_audible": 0.2
+},
+"egg_collect_3": {
+"dur": 0.19,
+"len_audible": 0.15
+},
 "egg_crack": {
 "dur": 0.263,
 "len_audible": 0.25
@@ -687,6 +799,18 @@
 "dur": 0.406,
 "len_audible": 0.35
 },
+"forage": {
+"dur": 0.417,
+"len_audible": 0.4
+},
+"forage_2": {
+"dur": 0.419,
+"len_audible": 0.4
+},
+"forage_3": {
+"dur": 0.398,
+"len_audible": 0.35
+},
 "freeze": {
 "dur": 1.385,
 "len_audible": 1.35
@@ -706,6 +830,10 @@
 "frog_3": {
 "dur": 0.198,
 "len_audible": 0.15
+},
+"gallery_ding": {
+"dur": 0.509,
+"len_audible": 0.5
 },
 "gate": {
 "dur": 0.419,
@@ -846,6 +974,10 @@
 "horse_whinny": {
 "dur": 1.289,
 "len_audible": 1.25
+},
+"howl_far": {
+"dur": 2.766,
+"len_audible": 2.7
 },
 "hurt": {
 "dur": 0.335,
@@ -1024,16 +1156,16 @@
 "len_audible": 0.35
 },
 "knockout": {
-"dur": 0.132,
-"len_audible": 0.1
+"dur": 0.449,
+"len_audible": 0.4
 },
 "knockout_2": {
-"dur": 0.072,
-"len_audible": 0.05
+"dur": 0.475,
+"len_audible": 0.45
 },
 "knockout_3": {
-"dur": 0.074,
-"len_audible": 0.05
+"dur": 0.452,
+"len_audible": 0.45
 },
 "laser": {
 "dur": 0.379,
@@ -1075,6 +1207,14 @@
 "dur": 0.951,
 "len_audible": 0.9
 },
+"march": {
+"dur": 1.4,
+"len_audible": 1.35
+},
+"march_2": {
+"dur": 1.4,
+"len_audible": 1.35
+},
 "menu_close": {
 "dur": 0.154,
 "len_audible": 0.15
@@ -1103,6 +1243,18 @@
 "dur": 0.814,
 "len_audible": 0.8
 },
+"milk": {
+"dur": 0.348,
+"len_audible": 0.3
+},
+"milk_2": {
+"dur": 0.344,
+"len_audible": 0.3
+},
+"milk_3": {
+"dur": 0.344,
+"len_audible": 0.3
+},
 "monster": {
 "dur": 0.109,
 "len_audible": 0.1
@@ -1125,6 +1277,14 @@
 },
 "moo_3": {
 "dur": 1.535,
+"len_audible": 1.5
+},
+"motor_loop": {
+"dur": 1.5,
+"len_audible": 1.5
+},
+"motor_loop_2": {
+"dur": 1.5,
 "len_audible": 1.5
 },
 "new_item": {
@@ -1186,6 +1346,14 @@
 "penguin_2": {
 "dur": 0.444,
 "len_audible": 0.4
+},
+"pet_howl": {
+"dur": 1.585,
+"len_audible": 1.55
+},
+"pet_howl_2": {
+"dur": 1.6,
+"len_audible": 1.6
 },
 "pick": {
 "dur": 0.418,
@@ -1371,6 +1539,22 @@
 "dur": 2.595,
 "len_audible": 2.55
 },
+"roulette_ball": {
+"dur": 0.241,
+"len_audible": 0.2
+},
+"roulette_ball_2": {
+"dur": 0.208,
+"len_audible": 0.2
+},
+"roulette_spin": {
+"dur": 1.391,
+"len_audible": 1.35
+},
+"roulette_spin_2": {
+"dur": 1.365,
+"len_audible": 1.35
+},
 "save_done": {
 "dur": 0.338,
 "len_audible": 0.3
@@ -1386,6 +1570,14 @@
 "saw_3": {
 "dur": 0.422,
 "len_audible": 0.4
+},
+"scooter_ride": {
+"dur": 1.2,
+"len_audible": 1.2
+},
+"scooter_ride_2": {
+"dur": 1.2,
+"len_audible": 1.2
 },
 "scroll_tick": {
 "dur": 0.318,
@@ -1422,6 +1614,18 @@
 "servo_2": {
 "dur": 0.3,
 "len_audible": 0.3
+},
+"shear": {
+"dur": 0.358,
+"len_audible": 0.35
+},
+"shear_2": {
+"dur": 0.344,
+"len_audible": 0.3
+},
+"shear_3": {
+"dur": 0.358,
+"len_audible": 0.35
 },
 "sheep": {
 "dur": 0.771,
@@ -1491,9 +1695,25 @@
 "dur": 2.997,
 "len_audible": 2.95
 },
+"skee_roll": {
+"dur": 1.198,
+"len_audible": 1.15
+},
 "sled_bells": {
 "dur": 0.949,
 "len_audible": 0.9
+},
+"sled_snow": {
+"dur": 0.794,
+"len_audible": 0.75
+},
+"sled_snow_2": {
+"dur": 0.794,
+"len_audible": 0.75
+},
+"sled_snow_3": {
+"dur": 0.82,
+"len_audible": 0.8
 },
 "sleep": {
 "dur": 2.42,
@@ -1510,6 +1730,26 @@
 "slime_3": {
 "dur": 0.306,
 "len_audible": 0.3
+},
+"slot_spin": {
+"dur": 1.2,
+"len_audible": 1.2
+},
+"slot_spin_2": {
+"dur": 1.2,
+"len_audible": 1.2
+},
+"slot_stop": {
+"dur": 0.151,
+"len_audible": 0.15
+},
+"slot_stop_2": {
+"dur": 0.15,
+"len_audible": 0.15
+},
+"slot_stop_3": {
+"dur": 0.13,
+"len_audible": 0.1
 },
 "snore": {
 "dur": 0.301,
@@ -1647,6 +1887,18 @@
 "dur": 0.134,
 "len_audible": 0.1
 },
+"step_carpet": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"step_carpet_2": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_carpet_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
 "step_dirt": {
 "dur": 0.277,
 "len_audible": 0.2
@@ -1695,6 +1947,18 @@
 "dur": 0.134,
 "len_audible": 0.1
 },
+"step_ice": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"step_ice_2": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_ice_3": {
+"dur": 0.3,
+"len_audible": 0.25
+},
 "step_leaves": {
 "dur": 0.292,
 "len_audible": 0.25
@@ -1706,6 +1970,14 @@
 "step_leaves_3": {
 "dur": 0.277,
 "len_audible": 0.25
+},
+"step_metal": {
+"dur": 0.247,
+"len_audible": 0.2
+},
+"step_metal_2": {
+"dur": 0.205,
+"len_audible": 0.15
 },
 "step_mud": {
 "dur": 0.277,
@@ -1903,6 +2175,18 @@
 "dur": 0.318,
 "len_audible": 0.25
 },
+"target_tin": {
+"dur": 0.195,
+"len_audible": 0.15
+},
+"target_tin_2": {
+"dur": 0.392,
+"len_audible": 0.35
+},
+"target_tin_3": {
+"dur": 0.236,
+"len_audible": 0.2
+},
 "teleport": {
 "dur": 0.187,
 "len_audible": 0.15
@@ -1950,6 +2234,18 @@
 "thump_3": {
 "dur": 0.344,
 "len_audible": 0.3
+},
+"ticket_out": {
+"dur": 0.348,
+"len_audible": 0.3
+},
+"ticket_out_2": {
+"dur": 0.232,
+"len_audible": 0.2
+},
+"ticket_out_3": {
+"dur": 0.283,
+"len_audible": 0.25
 },
 "timber": {
 "dur": 1.877,

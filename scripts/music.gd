@@ -954,10 +954,12 @@ func play_area(base: String) -> void:
 ## leaves it alone; the area song returns when the scene ends (release_mood / next map).
 ## Returns the song played ("" when no mood song exists: the area song carries on).
 func mood(name: String) -> String:
+	if name.strip_edges() == "":
+		return ""
 	var b := name if name.begins_with("mood_") else "mood_" + name
 	var t := MusicResolve.pick(b, {"weather": "clear", "phase": "day", "season": "", "stage": 0})
-	if t == "":
-		return ""
+	if t == "" or not has_track(t):
+		return ""  # missing file: the area song carries on, nothing held
 	play_held(t)
 	return t
 
@@ -982,12 +984,16 @@ func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay :=
 		get_tree().create_timer(delay, false).timeout.connect(func() -> void: sfx_pitched(name, fallback, pitch, db, 0.0))
 		return
 	if _muted or _sfx.is_empty():
+		_log_sfx(name, "", false, false, true)
 		return
 	var st := _load_sfx(name)
+	var fb := false
 	if st == null and fallback != "":
 		st = _load_sfx(fallback)
+		fb = st != null
 	if st == null:
 		return
+	_log_sfx(name, fallback if fb else name, fb, false, false)  # pitched voices show in sfx_log too (P5 test)
 	var now := Time.get_ticks_msec()
 	var key := "%s@%.2f" % [name, pitch]
 	if now - int(_last_sfx.get(key, -1000)) < 70:
@@ -1023,9 +1029,10 @@ func _voice_for() -> AudioStreamPlayer:
 
 
 static func _is_jingle(name: String) -> bool:
-	if name in ["j_buy", "j_confirm"]:
+	var b := name.trim_suffix("_gang")  # gang twins duck and arbitrate like the base jingle
+	if b in ["j_buy", "j_confirm"]:
 		return false
-	return name.begins_with("j_") or name in JINGLE_NAMES
+	return b.begins_with("j_") or b in JINGLE_NAMES
 
 
 static func _no_drift(name: String) -> bool:
@@ -1037,7 +1044,7 @@ static func _no_drift(name: String) -> bool:
 
 ## Footstep level, and per ground on top: grass and leaves are a soft swish.
 const STEP_DB := -10.0  # footsteps were ~-41 LUFS, under every bed (c6_06)
-const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0}
+const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0, "carpet": -4.0, "metal": -1.5, "ice": -2.0}
 ## A step may cut the previous one's tail after this long (long gravel/leaf takes
 ## used to swallow every other step).
 const STEP_MIN := 0.18

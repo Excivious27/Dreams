@@ -166,6 +166,8 @@ static func pick(base: String, ctx := {}) -> String:
 ## `<pick>_2`, `_3` ... rotate by in-game day: stable all day, a new take the next day
 ## (any count >= 2), different areas on different takes.
 static func rotate(t: String, c: Dictionary) -> String:
+	if no_rotate(t):
+		return t
 	var takes: Array = [t]
 	for i in range(2, MAX_TAKE + 1):
 		var n := "%s_%d" % [t, i]
@@ -176,6 +178,13 @@ static func rotate(t: String, c: Dictionary) -> String:
 		return t
 	var d := int(c.get("day", 1))
 	return str(takes[(d + _h(t)) % takes.size()])
+
+
+## Second takes kept for a purpose, never the daily rotation: boss phase-2 songs
+## (boss_*_2) and keeper_2 (deep keeper tiers) are asked for by name.
+static func no_rotate(t: String) -> bool:
+	var b := t.trim_suffix("_gang")
+	return b.begins_with("boss_") or b == "keeper"
 
 
 static func _h(s: String) -> int:

@@ -128,8 +128,7 @@ static func talk(m: GameMap, id: String) -> bool:
 			var late := (d.get("when", {}) as Dictionary).has("season") and GameState.day_of_season() > 18 and GameState._quest_grows(d)
 			if not d.is_empty() and not late and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
-				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
-				Music.instance(m.get_tree()).sfx("new_item", "pickup")
+				Quests.announce(m, str(d.get("text", q)))
 				var yes := Quests._as_lines(name, Quests.lines(q).get("yes", ""))
 				if not yes.is_empty():
 					await m.say(yes)

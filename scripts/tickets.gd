@@ -59,7 +59,7 @@ static func add(n: int, source := "") -> void:
 static func cue() -> void:
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree:
-		Music.instance(tree).sfx("ticket_feed", "j_confirm")
+		Music.instance(tree).sfx("ticket_out", "j_confirm")
 
 
 static func spend(n: int) -> bool:

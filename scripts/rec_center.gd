@@ -1042,7 +1042,7 @@ static func home_use(m: GameMap, thing: Dictionary) -> bool:
 			m.hud.toast("♪ Your jukebox drops a record: \"%s\". (A again: the next one)" % RecAudio.record_name(t), Color(0.9, 0.85, 1))
 			return true
 		"rp_arcade_cab":
-			Music.instance(m.get_tree()).sfx("arcade_coin", "pop")
+			Music.instance(m.get_tree()).sfx("cabinet_coin", "pop")
 			ArcadeHub.open_home(m)
 			return true
 	return false

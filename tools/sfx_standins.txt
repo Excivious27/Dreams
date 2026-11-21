@@ -2,9 +2,5 @@
 # A stand-in NOT listed here fails the audit; `sfx_audit.py --release` fails while any is left.
 # Drop a line once its sound exists (the audit prints "stand-ins now real").
 # name        owner / plan
-ach_unlock    P3 jingle (C13 contract section 3)
-j_casino_big  P3 jingle
-j_casino_small P3 jingle
-arcade_coin   P4 renames the call site to cabinet_coin (P5 delivered)
-claw_motor    P4 renames the call site to claw_move (P5 delivered)
-ticket_feed   P4 renames the call site to ticket_out (P5 delivered)
+j_recruit     P3/P4 jingle to make (j_skill plays)
+quake         P5 sound to make (stone_grind plays)
