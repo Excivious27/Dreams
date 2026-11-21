@@ -1006,6 +1006,15 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"big_goods": "egg", "animal_quality": "milk", "ranch_value": "gold", "breed_chance": "feather", "grow_speed": "hay", "animal_friend": "brush", "hand_work": "milk_pail", "hand_slot": "milk_pail", "feeder": "feed_bag", "care_grace": "brush", "hatch_fast": "egg"}  # C11a P3 hook (Ranching)
 
 
+## The next locked column and the points still needed (c16a_11-02).
+func _col_hint(spent: int) -> String:
+	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+	for c in 10:
+		if spent < GameState.col_need(c):
+			return "Column %s opens at %d points spent: %d to go." % [romans[c], GameState.col_need(c), GameState.col_need(c) - spent]
+	return "Every column is open."
+
+
 func _skills_tab() -> void:
 	var shown: Array = []
 	for sk in SKILL_ORDER:
@@ -1023,7 +1032,7 @@ func _skills_tab() -> void:
 	for k in shown:
 		var tb := Button.new()
 		var pf := SkillGlow.usable(str(k))  # P5 hook: maxed trees stop glowing
-		tb.text = str(GameState.skills_data[k]["name"]) + ("  +%d" % pf if pf > 0 else "")
+		tb.text = GameState.skill_name(str(k)) + ("  +%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
 		tb.custom_minimum_size = Vector2(0, 20)
 		tb.focus_mode = Control.FOCUS_NONE
@@ -1059,7 +1068,7 @@ func _skills_tab() -> void:
 	hv.add_theme_constant_override("separation", 0)
 	head.add_child(hv)
 	var l1 := Label.new()
-	l1.text = "Level %d  %s" % [lvl, str(sd["name"])]
+	l1.text = "Level %d  %s" % [lvl, GameState.skill_name(sk)]
 	l1.add_theme_font_size_override("font_size", 10)
 	hv.add_child(l1)
 	var l2 := Label.new()
@@ -1074,11 +1083,11 @@ func _skills_tab() -> void:
 	bar.show_percentage = false
 	hv.add_child(bar)
 	var l3 := Label.new()
-	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
+	l3.text = "%s EXP %d / %d" % [GameState.skill_name(sk), xp, need]
 	l3.add_theme_font_size_override("font_size", 7)
 	hv.add_child(l3)
 	if free > 0:
-		SkillGlow.points_banner(_body, free, str(sd["name"]))
+		SkillGlow.points_banner(_body, free, GameState.skill_name(sk))
 	var sel_at := _body.get_child_count()
 	# The grid
 	var by_cell := {}
@@ -1099,7 +1108,7 @@ func _skills_tab() -> void:
 			get_tree().process_frame.connect(show_grid, CONNECT_ONE_SHOT)
 	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 	for c in 10:
-		var open := spent >= c * GameState.TIER_POINTS
+		var open := spent >= GameState.col_need(c)
 		var hp := PanelContainer.new()
 		var hs := StyleBoxFlat.new()
 		hs.bg_color = Color(0.36, 0.62, 0.28) if open else Color(0.25, 0.22, 0.2)
@@ -1115,9 +1124,9 @@ func _skills_tab() -> void:
 	for r in 4:
 		for c in 10:
 			var n: Dictionary = by_cell.get(Vector2i(c, r), {})
-			grid.add_child(_node_cell(sk, n, r, spent >= c * GameState.TIER_POINTS))
+			grid.add_child(_node_cell(sk, n, r, spent >= GameState.col_need(c)))
 	# Branch names
-	var br: Dictionary = sd.get("branches", {})
+	var br: Dictionary = GameState.skill_branches(sk)
 	var names: Array = []
 	for r in 4:
 		names.append(str(br.get(str(r), "")))
@@ -1126,8 +1135,8 @@ func _skills_tab() -> void:
 	var sel_from := _body.get_child_count()
 	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
 	if sel.is_empty():
-		_line(str(sd.get("desc", "")), 8, Color(0.85, 0.8, 0.7))
-		_line("Level up to earn points (1 per level). Tap a node to read it. Violet frame = unlocks something new. A column opens after 2 more points here.", 8, Color(0.75, 0.75, 0.75))
+		_line(GameState.skill_desc(sk), 8, Color(0.85, 0.8, 0.7))
+		_line("Level up to earn points (1 per level). Tap a node to read it. Violet frame = unlocks something new. " + _col_hint(spent), 8, Color(0.75, 0.75, 0.75))
 	else:
 		var rank := GameState.node_rank(sk, _node_sel)
 		var ranks := int(sel.get("ranks", 1))

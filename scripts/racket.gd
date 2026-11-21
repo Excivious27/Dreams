@@ -192,9 +192,9 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 
 ## Walking into a street with heat on you.
 static func on_enter(m: GameMap) -> void:
-	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]):
+	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]) and int(GameState.run.get("time", 0)) % 1440 < 720:
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
-		var got := GameState.extra_energy(int(GameState.run["max_energy"]))
+		var got := GameState.extra_energy(int(GameState.run["max_energy"] * 0.4))  # C16a P6 (c16a_13-13): a morning plate, 40% (was a full bar)
 		m.hud.toast("Mama Rosa left a hot plate out for you. +%d energy." % got if got > 0 else "Mama Rosa left a hot plate out for you. You're too full to eat.", Color(1, 0.9, 0.6))
 	if on() and m.scene_id() == "hideout":
 		season_word(m)

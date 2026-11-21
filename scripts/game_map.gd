@@ -640,7 +640,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(tb, Color(1, 0.85, 0.6))
 				Music.instance(get_tree()).sfx("dry_click", "thud")  # clink, no
 				return true
-			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_for("axe"):
+			if not (GameState.has_perk("foraging", "Keeper of the Woods") and randf() < 0.5) and not GameState.spend_for("axe"):  # C16a P6: half the energy, not free
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("axe")
@@ -2720,7 +2720,8 @@ func on_enemy_died(e: Enemy) -> void:
 	elif int(kt.get(kkey, 0)) == 13:
 		hud.toast("No more crystals from these foes today.", Color(0.8, 0.8, 0.9))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
-	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
+	if paid:  # C16a P6 (c16a_12-18): past the daily kill cap foes give no XP either
+		xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
 	var ke := int(GameState.bonus("combat", "kill_energy"))
 	if ke > 0 and paid:  # past the cap foes give nothing, energy included
 		GameState.extra_energy(ke)
@@ -3010,7 +3011,7 @@ func _pup_menu() -> void:
 				pt.anim.play("play")
 			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):
 				st["petted_day"] = int(GameState.run["day"])
-				GameState.add_xp("pup", 3)
+				GameState.add_xp("pup", 8)  # C16a P6 (c16a_13-14): daily pet 3 -> 8
 				GameState.add_xp("leadership", 2)
 		"menu":
 			for ch in get_children():

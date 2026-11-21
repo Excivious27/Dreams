@@ -234,10 +234,10 @@
  "level_discount": 0.1,
  "level_energy": 2,
  "levels": [
-  12,
-  30,
-  60,
-  100
+  40,
+  130,
+  300,
+  600
  ],
  "max_level": 5,
  "max_units": 20,

@@ -49,7 +49,7 @@ WORKERS = {
     "hand": {"energy": 16, "chores": ["feed", "pet"]},   # Ranching Farm Hand nodes (hand_slot); ranch chores only
 }
 
-LEVELS = [12, 30, 60, 100]  # xp for level 2, 3, 4, 5
+LEVELS = [40, 130, 300, 600]  # xp for level 2, 3, 4, 5 (C16a P6 c16a_13-06: was 12, 30, 60, 100; lv5 at 45-90 nights)
 MAX_LEVEL = len(LEVELS) + 1
 MAX_UNITS = 20
 LEVEL_ENERGY = 2          # c11b_06-13: +worker energy per chore level above 1

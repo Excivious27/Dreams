@@ -9,11 +9,11 @@
     {
      "id": "green_thumb",
      "name": "Green Thumb",
-     "desc": "+10% chance of an extra crop per harvest (per rank)",
+     "desc": "+5% chance of an extra crop per harvest (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "extra_crop": 0.1
+      "extra_crop": 0.05
      }
     },
     {
@@ -29,14 +29,14 @@
     {
      "id": "sprinkler_plans",
      "name": "Sprinkler Plans",
-     "desc": "Crops grow 10% faster overnight",
+     "desc": "Crops grow 5% faster overnight",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "quick_hands"
      ],
      "effect": {
-      "growth": 0.1
+      "growth": 0.05
      }
     },
     {
@@ -55,27 +55,27 @@
     {
      "id": "fertilizer",
      "name": "Compost Lore",
-     "desc": "+5% chance a crop grows an extra day overnight",
+     "desc": "+4% chance a crop grows an extra day overnight",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "green_thumb"
      ],
      "effect": {
-      "extra_day": 0.05
+      "extra_day": 0.04
      }
     },
     {
      "id": "rich_soil",
      "name": "Rich Soil",
-     "desc": "Watered crops have an 8% chance to grow an extra day (per rank)",
+     "desc": "Watered crops have a 3% chance to grow an extra day (per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [
       "fertilizer"
      ],
      "effect": {
-      "extra_day": 0.08
+      "extra_day": 0.03
      }
     },
     {
@@ -133,20 +133,20 @@
     {
      "id": "seed_saver",
      "name": "Seed Saver",
-     "desc": "Harvests return a seed 20% of the time (per rank)",
+     "desc": "Harvests return a seed 10% of the time (per rank)",
      "ranks": 2,
      "tier": 3,
      "requires": [
       "greenhouse_plans"
      ],
      "effect": {
-      "seed_back": 0.2
+      "seed_back": 0.1
      }
     },
     {
      "id": "fields_of_gold",
      "name": "Fields of Gold",
-     "desc": "Every crop sells for 25% more and grows 30% faster",
+     "desc": "Every crop sells for 12% more and grows 15% faster",
      "ranks": 1,
      "tier": 4,
      "requires": [
@@ -154,8 +154,8 @@
       "seed_saver"
      ],
      "effect": {
-      "crop_value": 0.25,
-      "growth": 0.3
+      "crop_value": 0.12,
+      "growth": 0.15
      }
     }
    ]
@@ -432,9 +432,9 @@
     {
      "id": "keeper_of_the_woods",
      "name": "Keeper of the Woods",
-     "desc": "Chopping costs no energy",
+     "desc": "Chopping costs half the energy",
      "ranks": 1,
-     "tier": 3,
+     "tier": 4,
      "requires": [
       "sap_tapper"
      ]
@@ -640,7 +640,7 @@
      "id": "fighter",
      "name": "Fighter",
      "desc": "+1 sword damage (per rank)",
-     "ranks": 3,
+     "ranks": 2,
      "tier": 0,
      "effect": {
       "damage": 1
@@ -729,14 +729,14 @@
     {
      "id": "second_wind",
      "name": "Second Wind",
-     "desc": "Beating an enemy restores 5 energy (per rank)",
+     "desc": "Beating an enemy restores 2 energy (per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [
       "acrobat"
      ],
      "effect": {
-      "kill_energy": 5
+      "kill_energy": 2
      }
     },
     {
@@ -867,14 +867,14 @@
     {
      "id": "tycoon",
      "name": "Tycoon",
-     "desc": "Shops 15% cheaper",
+     "desc": "Shops 8% cheaper",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "networker"
      ],
      "effect": {
-      "buy_discount": 0.15
+      "buy_discount": 0.08
      }
     },
     {

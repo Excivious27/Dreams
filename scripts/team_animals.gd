@@ -275,7 +275,10 @@ static func stats(uid: String) -> Dictionary:
 		hp += int(l.get("hp", 0)) * rank(uid, lid)
 		dmg += int(l.get("dmg", 0)) * rank(uid, lid)
 	hp += int(GameState.bonus("leadership", "pet_bond"))
-	hp = mini(hp, Pet.max_hp() - int(rule("pup_margin", 4)))  # c11b_09-03: under the pup's real max hp
+	# c11b_09-03: lesson growth stays under the pup's real max hp; C16a P6 (c16a_13-16): the species'
+	# own base at this tier always counts, so a weak pup no longer shrinks a trained llama.
+	var base_hp := int(s.get("hp", 14)) + int(rule("hp_per_tier", 6)) * GameState.progress_tier()
+	hp = mini(hp, maxi(base_hp, Pet.max_hp() - int(rule("pup_margin", 4))))
 	return {"hp": maxi(8, hp), "dmg": maxi(1, dmg), "speed": float(s.get("speed", 1.0))}
 
 
