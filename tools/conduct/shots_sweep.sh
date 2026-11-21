@@ -17,6 +17,9 @@ OUT=/home/claude/wt/shots_$N
 ARCS="${SWEEP_ARCS:-penguins gangsters}"
 mkdir -p "$OUT"
 T0=$(date +%s)
+# c13_01-01: register new class_names first (a stale global class cache made town.gd fail
+# to parse, so every town shot was a blank frame).
+( cd "$ROOT" && bash tools/conduct/glock.sh -- godot --headless --path . --import ) > "$OUT/import.log" 2>&1 || true
 pids=()
 for a in $ARCS; do
   rm -rf "$OUT/$a"; mkdir -p "$OUT/$a"
@@ -51,6 +54,11 @@ open(os.path.join(out, "index.md"), "w").write("\n".join(L) + "\n")
 print("index:", os.path.join(out, "index.md"))
 PY
 for a in $ARCS; do grep -h "^shots_sweep" "$OUT/$a.log" || echo "$a: no finish line (see $OUT/$a.log)"; done
+for a in $ARCS; do
+  if grep -q "Parse Error\|Failed to load script" "$OUT/$a.log"; then
+    echo "$a: SCRIPT PARSE ERRORS:"; grep -m 5 "Parse Error\|Failed to load script" "$OUT/$a.log"; rc=1
+  fi
+done
 echo "shots_sweep: wall ${WALL}s"
 exit $rc
 }

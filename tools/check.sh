@@ -1152,3 +1152,10 @@ echo "$aaout" | grep -E "FAIL|SCRIPT ERROR|action_audio_test" || true
 if ! echo "$aaout" | grep -q "action_audio_test: 0 failures"; then
   echo "action_audio_test failed"; exit 1
 fi
+
+echo "== C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle arbitration =="
+mrout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/music_resolve_test.gd 2>&1)"
+echo "$mrout" | grep -E "FAIL|SCRIPT ERROR|music_resolve_test" || true
+if ! echo "$mrout" | grep -q "music_resolve_test: 0 failures"; then
+  echo "music_resolve_test failed"; exit 1
+fi

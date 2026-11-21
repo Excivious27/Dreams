@@ -1528,7 +1528,7 @@ const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "b
 	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
 	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
-const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle", "boss_dark_crystal", "boss_president",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
 ## Mega bosses' own themes (C4): by kind (a gangster variant may share the stem), then by the
 ## region the fight is in, so a reskinned boss still gets its region's theme.
@@ -1553,6 +1553,10 @@ func boss_track(kind: String) -> String:
 	var peng := GameState.is_penguins()
 	var sid := scene_id()
 	var marked := k.begins_with("marked") or k.begins_with("mk_")
+	if k == "dark_crystal" and peng and Music.has_track("boss_dark_crystal"):
+		return "boss_dark_crystal"  # C13: the final bosses' own themes
+	if k == "president" and not peng and Music.has_track("boss_president"):
+		return "boss_president"
 	if not peng and k in GANG_RIVALS:
 		return "boss_gang" if Music.has_track("boss_gang") else "boss"
 	if k == "finargle" or k.begins_with("finargle_"):
@@ -1599,6 +1603,10 @@ func area_track() -> String:
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
+		var im: Variant = get("I")
+		if im is Dictionary and (im as Dictionary).has("arc_music"):
+			t = first_track((im as Dictionary)["arc_music"] + [t])  # crew venue's own song (c13_03-11)
+	var t0 := t
 	t = RecCenter.music_for(self, t)  # today's jukebox record (rec), the home jukebox/music box (house)
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
@@ -1631,24 +1639,39 @@ func area_track() -> String:
 	var now := int(GameState.run.get("time", 0)) % 1440 if not GameState.run.is_empty() else 720
 	if id == "town" and GameState.festival_today() != "":
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
-			if GameState.is_night() and Music.has_track("festival_night"):
-				return "festival_night"
-			if player != null and preload("res://scripts/animal_show.gd").near_stand(GameState.festival_today(), world_to_cell(player.position)) and Music.has_track("animal_show"):
+			var fid := GameState.festival_today()
+			var g := "" if peng else "_gang"
+			if GameState.is_night():
+				var fn := first_track(["festival_%s_night%s" % [fid, g], "festival_%s_night" % fid if peng else "", "festival_night" + g, "festival_night"])
+				if fn != "":
+					return fn
+			if player != null and preload("res://scripts/animal_show.gd").near_stand(fid, world_to_cell(player.position)) and Music.has_track("animal_show"):
 				return "animal_show"  # C11b P6: the ribbon tables have their own tune
-			return "festival"
-	if id in NIGHT_OK and GameState.is_night():
-		if not peng and Music.has_track("night_gang"):
-			return "night_gang"  # the gang arc's valley at night is noir (C6 default)
-		return "night"
-	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and Music.has_track("rain"):
-		return "rain"
-	if id in NIGHT_OK and GameState.season() == "winter" and GameState.weather_today() in ["snow", "blizzard"] and Music.has_track("winter"):
-		return "winter"  # snow days: the outdoor maps share the winter piece
-	if id == "farm" and GameState.season() == "winter":
-		return "winter"
-	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
-		return "farm_fall"
-	return t  # combat/danger music: DangerMusic
+			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
+	if t != t0 or RecCenter.is_rec(self):
+		return t  # a jukebox/music-box record plays exactly as chosen
+	var ctx := music_ctx(id)
+	var own := str(MusicResolve.MAP_BASE.get(id, ""))
+	if own != "" and not (own.ends_with("_penguin") and not peng):
+		var r := Music.resolve(own, ctx)
+		if r != "":
+			return r  # this map's own song set (a shared region song is the fallback)
+	return Music.resolve(t, ctx)  # C13 resolver: arc, weather, phase, season, story, rotation
+
+
+## Resolver context for this map (C13): which shared songs it used before.
+func music_ctx(id: String) -> Dictionary:
+	var c := {}
+	if id in NIGHT_OK:
+		c["shared_night"] = true
+		c["shared_weather"] = true
+	if sky != null and str(sky.weather) in ["rain", "storm"] and id in NIGHT_OK:
+		c["weather"] = str(sky.weather)
+	if id == "farm":
+		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
+	if MusicResolve.NIGHT_GROUP.has(id):
+		c["night_group"] = MusicResolve.NIGHT_GROUP[id]
+	return c
 
 
 ## The President's collectors are on this map and close: chase music.

@@ -13,6 +13,11 @@ var _index: FileAccess
 var n_shots := 0
 
 
+## A frame under this size is blank (c13_01-01: town.gd failed to parse, every town shot 4 KB).
+const BLANK_BYTES := 10240
+var n_blank := 0
+
+
 func _initialize() -> void:
 	Campaign.bypass = true
 	seed(4)
@@ -29,7 +34,12 @@ func _shot(name: String, section: String, what: String) -> void:
 	_no_toasts()
 	await _frames(4)
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("%s/%s.png" % [out, name])
+	var png := "%s/%s.png" % [out, name]
+	root.get_texture().get_image().save_png(png)
+	var fa := FileAccess.open(png, FileAccess.READ)
+	if fa == null or fa.get_length() < BLANK_BYTES:
+		n_blank += 1
+		print("shots_sweep BLANK %s (%d bytes): a blank frame, likely a script parse error (stale class cache?)" % [name, fa.get_length() if fa else 0])
 	_index.store_line("%s\t%s\t%s" % [name, section, what])
 	_index.flush()
 	n_shots += 1
@@ -176,7 +186,9 @@ func _run() -> void:
 		await _maps_pass()
 	print("shots_sweep %s: %d shots in %.1f s" % [arc, n_shots, (Time.get_ticks_msec() - t0) / 1000.0])
 	_index.close()
-	quit(0)
+	if n_blank > 0:
+		print("shots_sweep %s: %d BLANK shots (< %d bytes) -- FAILED" % [arc, n_blank, BLANK_BYTES])
+	quit(1 if n_blank > 0 else 0)
 
 
 func _title_pass() -> void:
