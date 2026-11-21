@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 169.9}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 44.3}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 3.2}
+{"step": 17, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 3.0}
+{"step": 23, "name": "storage_test", "rc": 0, "secs": 3.2}
+{"step": 29, "name": "ticket_econ_test", "rc": 0, "secs": 3.1}
+{"step": 35, "name": "gang_play_test", "rc": 0, "secs": 23.0}
+{"step": 41, "name": "house_exterior_test", "rc": 0, "secs": 7.2}
+{"step": 47, "name": "shop_econ_test", "rc": 0, "secs": 3.4}
+{"step": 53, "name": "early_gating_test", "rc": 0, "secs": 4.2}
+{"step": 59, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 3.2}
+{"step": 65, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.6}
+{"step": 71, "name": "ambience_test", "rc": 0, "secs": 6.1}
+{"step": 77, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 5.0}
+{"step": 83, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 9.4}
+{"step": 89, "name": "c6_cue_test", "rc": 0, "secs": 3.1}
+{"step": 95, "name": "meow_gate_test", "rc": 0, "secs": 4.0}
+{"step": 101, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 7.0}
+{"step": 107, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 21.0}
+{"step": 113, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 3.5}
+{"step": 119, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 4.9}
+{"step": 125, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.5}
+{"step": 131, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.5}
+{"step": 137, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.1}
+{"step": 143, "name": "relay: Play together uses the live relay by default, custom server + R", "rc": 0, "secs": 3.3}

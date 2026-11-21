@@ -1,0 +1,144 @@
+
+#### step 1: import (shard 5/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  99% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | downed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | cheer.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2047 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 122.8s
+
+#### step 6: exits line up (top edge leads to the next map's bottom edge...) (shard 5/6)
+== exits line up (top edge leads to the next map's bottom edge...) ==
+exit_edge_check: 0 failures
+#### step 6 exits line up (top edge leads to the next map's bottom edge...): PASS in 33.6s
+
+#### step 12: C8 month curve: 30 days, both arcs (energy still binds, purse grows) (shard 5/6)
+== C8 month curve: 30 days, both arcs (energy still binds, purse grows) ==
+  weeks 3-4 average bar left at bedtime: 42%
+  weeks 3-4 average bar left at bedtime: 42%
+month_curve_test: 0 failures
+#### step 12 C8 month curve: 30 days, both arcs (energy still binds, purse grows): PASS in 5.9s
+
+#### step 18: mine arrival: no black cover (c5_16) (shard 5/6)
+== mine arrival: no black cover (c5_16) ==
+mine_arrival_test: 0 failures
+#### step 18 mine arrival: no black cover (c5_16): PASS in 3.8s
+
+#### step 24: team animals + chores: lessons, team, muster, overnight chores, Animal (shard 5/6)
+== team animals + chores: lessons, team, muster, overnight chores, Animals/Chores pages (C11a P4) ==
+team_animals_test: OK
+#### step 24 team animals + chores: lessons, team, muster, overnight chores, Animal: PASS in 4.9s
+
+#### step 30: rec_links_test (shard 5/6)
+rec_links_test: 0 failures
+#### step 30 rec_links_test: PASS in 3.2s
+
+#### step 36: coop_test (shard 5/6)
+coop_test: 0 failures
+#### step 36 coop_test: PASS in 3.2s
+
+#### step 42: crop_test (shard 5/6)
+crop_test: 0 failures
+#### step 42 crop_test: PASS in 33.8s
+
+#### step 48: ranch_test (shard 5/6)
+ranch_test: 74 checks, 0 failures
+#### step 48 ranch_test: PASS in 3.1s
+
+#### step 54: town_first_test (shard 5/6)
+town_first_test: 0 failures
+#### step 54 town_first_test: PASS in 5.1s
+
+#### step 60: text size floors (7 px) (shard 5/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 60 text size floors (7 px): PASS in 0.1s
+
+#### step 66: economy: no money loops, crops and brews inside their bands (shard 5/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 405 recipes, 2 warnings, 0 failures
+#### step 66 economy: no money loops, crops and brews inside their bands: PASS in 0.1s
+
+#### step 72: footstep_test (shard 5/6)
+footstep_test: 0 failures
+#### step 72 footstep_test: PASS in 7.2s
+
+#### step 78: keeper encounters keep real hp (floor-1 swarms topped up) (shard 5/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 78 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 4.6s
+
+#### step 84: region campaigns: boards, locks, convoy (shard 5/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 84 region campaigns: boards, locks, convoy: PASS in 9.7s
+
+#### step 90: farm_debris_test (shard 5/6)
+farm_debris_test: 0 fails
+#### step 90 farm_debris_test: PASS in 5.4s
+
+#### step 96: skill_glow_test (shard 5/6)
+skill_glow_test: 0 fails
+#### step 96 skill_glow_test: PASS in 4.7s
+
+#### step 102: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 5/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 102 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 13.9s
+
+#### step 108: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 5/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 108 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 12.5s
+
+#### step 114: jumper_test (shard 5/6)
+jumper_test: 0 failures
+#### step 114 jumper_test: PASS in 3.4s
+
+#### step 120: toasts: never over a boss card, a region card, the pup strip or the en (shard 5/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 120 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 8.2s
+
+#### step 126: C11a P5: ranch villagers, mail, festivals, pen sounds (shard 5/6)
+== C11a P5: ranch villagers, mail, festivals, pen sounds ==
+ranch_villagers_test: OK
+#### step 126 C11a P5: ranch villagers, mail, festivals, pen sounds: PASS in 3.6s
+
+#### step 132: C9 P1: controller bindings and field play (shard 5/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 132 C9 P1: controller bindings and field play: PASS in 4.2s
+
+#### step 138: C9 P6: forest border buckets (shard 5/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 138 C9 P6: forest border buckets: PASS in 5.0s
+
+#### shard 5/6 done in 302s: PASS
