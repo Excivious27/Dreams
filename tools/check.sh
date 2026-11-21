@@ -1214,3 +1214,10 @@ echo "$c14p1out" | grep -E "FAIL|SCRIPT ERROR|c14p1_home_test" || true
 if ! echo "$c14p1out" | grep -q "c14p1_home_test: 0 failures"; then
   echo "C14 P1 home region test failed"; exit 1
 fi
+
+echo "== C14 P5: gang cities, mega regions, sky, colony jetties =="
+c14p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14_p5_test.gd 2>&1)"
+echo "$c14p5out" | grep -E "FAIL|SCRIPT ERROR|c14_p5_test" || true
+if ! echo "$c14p5out" | grep -q "c14_p5_test: ok (0 fails)"; then
+  echo "C14 P5 test failed"; exit 1
+fi

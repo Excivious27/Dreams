@@ -16,7 +16,7 @@ var _tex_white: Texture2D  # the same soft disc in white, tinted per light (glow
 var _canvas: Node2D
 
 ## Buildings that keep their lights on all night; homes go dark at HOME_DARK.
-const LATE := ["inn", "clinic", "clock_tower", "bandstand", "warehouse_a"]
+const LATE := ["inn", "clinic", "clock_tower", "bandstand", "warehouse_a", "karaoke", "neon_hotel", "ramen_shop", "president_tower"]  # C14 P5: the city never sleeps
 const HOMES := ["cottage_a", "cottage_b", "cottage_c", "house", "house_2", "house_3", "mansion", "fishing_hut", "woodcutter_hut", "hazel_house"]
 const HOME_DARK := 23.0   # homes' windows go out (back on at 5 for early risers)
 const SHOP_DIM := 22.0    # shop fronts dim to a night light

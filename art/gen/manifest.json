@@ -30287,6 +30287,50 @@
    "file": "buildings/woodcutter_hut_snow.png",
    "h": 101,
    "w": 160
+  },
+  "karaoke_lit": {
+   "file": "buildings/karaoke_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 109
+  },
+  "karaoke_night": {
+   "file": "buildings/karaoke_night.png",
+   "h": 96,
+   "w": 109
+  },
+  "neon_hotel_lit": {
+   "file": "buildings/neon_hotel_lit.png",
+   "glow_mask": true,
+   "h": 160,
+   "w": 170
+  },
+  "neon_hotel_night": {
+   "file": "buildings/neon_hotel_night.png",
+   "h": 160,
+   "w": 170
+  },
+  "president_tower_lit": {
+   "file": "buildings/president_tower_lit.png",
+   "glow_mask": true,
+   "h": 512,
+   "w": 160
+  },
+  "president_tower_night": {
+   "file": "buildings/president_tower_night.png",
+   "h": 512,
+   "w": 160
+  },
+  "ramen_shop_lit": {
+   "file": "buildings/ramen_shop_lit.png",
+   "glow_mask": true,
+   "h": 96,
+   "w": 105
+  },
+  "ramen_shop_night": {
+   "file": "buildings/ramen_shop_night.png",
+   "h": 96,
+   "w": 105
   }
  },
  "c14p4": {
@@ -96183,6 +96227,86 @@
    "h": 40,
    "w": 39
   },
+  "c14p5_desert_cairn": {
+   "file": "nature/c14p5_desert_cairn.png",
+   "h": 39,
+   "w": 30
+  },
+  "c14p5_desert_coral": {
+   "file": "nature/c14p5_desert_coral.png",
+   "h": 40,
+   "w": 44
+  },
+  "c14p5_desert_log": {
+   "file": "nature/c14p5_desert_log.png",
+   "h": 32,
+   "w": 56
+  },
+  "c14p5_desert_rock_flowers_a": {
+   "file": "nature/c14p5_desert_rock_flowers_a.png",
+   "h": 35,
+   "w": 44
+  },
+  "c14p5_desert_rock_flowers_b": {
+   "file": "nature/c14p5_desert_rock_flowers_b.png",
+   "h": 40,
+   "w": 52
+  },
+  "c14p5_desert_tuft_a": {
+   "file": "nature/c14p5_desert_tuft_a.png",
+   "h": 38,
+   "w": 40
+  },
+  "c14p5_desert_tuft_b": {
+   "file": "nature/c14p5_desert_tuft_b.png",
+   "h": 31,
+   "w": 30
+  },
+  "c14p5_desert_tuft_c": {
+   "file": "nature/c14p5_desert_tuft_c.png",
+   "h": 48,
+   "w": 40
+  },
+  "c14p5_frost_reeds_a": {
+   "file": "nature/c14p5_frost_reeds_a.png",
+   "h": 49,
+   "w": 40
+  },
+  "c14p5_frost_reeds_b": {
+   "file": "nature/c14p5_frost_reeds_b.png",
+   "h": 56,
+   "w": 40
+  },
+  "c14p5_frost_thistle": {
+   "file": "nature/c14p5_frost_thistle.png",
+   "h": 48,
+   "w": 38
+  },
+  "c14p5_frost_tuft_m": {
+   "file": "nature/c14p5_frost_tuft_m.png",
+   "h": 42,
+   "w": 38
+  },
+  "c14p5_frost_tuft_s": {
+   "file": "nature/c14p5_frost_tuft_s.png",
+   "h": 33,
+   "w": 30
+  },
+  "c14p5_frost_tuft_w": {
+   "file": "nature/c14p5_frost_tuft_w.png",
+   "h": 31,
+   "w": 50
+  },
+  "c14p5_snow_stone_m": {
+   "file": "nature/c14p5_snow_stone_m.png",
+   "h": 34,
+   "w": 46
+  },
+  "c14p5_snow_stone_s": {
+   "file": "nature/c14p5_snow_stone_s.png",
+   "h": 26,
+   "w": 34
+  },
   "campfire2": {
    "file": "nature/campfire2.png",
    "h": 40,
@@ -114962,6 +115086,21 @@
    "file": "props/worm_bin.png",
    "h": 44,
    "w": 65
+  },
+  "c14p5_gc_stone_head": {
+   "file": "props/c14p5_gc_stone_head.png",
+   "h": 190,
+   "w": 240
+  },
+  "c14p5_hot_spring_snow": {
+   "file": "props/c14p5_hot_spring_snow.png",
+   "h": 83,
+   "w": 104
+  },
+  "c14p5_waterfall_frozen": {
+   "file": "props/c14p5_waterfall_frozen.png",
+   "h": 287,
+   "w": 160
   }
  },
  "riding": {
@@ -116164,6 +116303,11 @@
   },
   "wet_sand": {
    "file": "seamless/wet_sand.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p5_wet_asphalt": {
+   "file": "seamless/c14p5_wet_asphalt.png",
    "h": 256,
    "w": 256
   }

@@ -514,7 +514,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	if t == "rec_home":  # prize decor at home (RecCenter.home_use)
 		return RecCenter.home_use(self, thing)
-	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit"]:
+	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit", "colony_jetty"]:
 		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
@@ -4230,7 +4230,7 @@ func draw_rock_mass(cells: Dictionary) -> void:
 				if cap:
 					draw_texture_rect(cap, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
 		return
-	var stone_band := scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"]
+	var stone_band := scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"] or str((get("R") if get("R") is Dictionary else {}).get("band_style", "")) == "stone"  # C14 P5 hook: urban/cave areas
 	if not stone_band and _draw_band_cliff(cells):
 		return
 	if Art.has("tiles", "cliff_top_0"):
