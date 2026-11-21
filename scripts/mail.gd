@@ -97,7 +97,7 @@ static func _name(id: String) -> String:
 static func _known() -> Array:
 	var out: Array = []
 	for id: String in GameState.npcs:
-		if int(GameState.run["friendship"].get(id, 0)) > 0 and not Crew.members().has(id) and GameState.npc_present(id):
+		if int(GameState.run["friendship"].get(id, 0)) > 0 and not Crew.members().has(id) and GameState.npc_present(id) and not (id == "tam" and tam_away()):
 			out.append(id)
 	return out
 
@@ -195,7 +195,10 @@ static func _morning() -> int:
 		if want != "":
 			var n := rng.randi_range(2, 6) if GameState.item_value(want) < 60 else rng.randi_range(1, 2)
 			var pay := int(GameState.item_value(want) * n * 1.3) + 10
-			send(_name(who), "Could you spare %s? I'd pay ◆%d, and I'd owe you one. Send %s back with this letter within %d days." % [ItemWords.count_id(want, n), pay, "it" if n == 1 or ItemWords.is_mass(GameState.item_name(want)) else "them", 4], "favour", {"npc": who, "item": want, "n": n, "pay": pay, "until": day + 4})
+			if who in KIDS:  # c12_09-19: kids ask small and pay from their savings
+				n = mini(n, 2)
+				pay = GameState.item_value(want) * n + 5
+			send(_name(who), favour_text(who, want, n, pay, 4), "favour", {"npc": who, "item": want, "n": n, "pay": pay, "until": day + 4})
 	# Gifts from friends (2+ hearts).
 	var friends: Array = []
 	for id in known:
@@ -209,7 +212,8 @@ static func _morning() -> int:
 			var dg := Decor.roll(str(DECOR_GIFT["pool"]))
 			if dg != "" and not DecorSources.taken(dg) and Decor.rarity_rank(Decor.rarity(dg)) <= Decor.rarity_rank("uncommon"):
 				gift = dg
-		send(_name(who2), "%s - %s" % [_pick_line(who2, GIFT_NOTES, rng), _name(who2)], "gift", {"npc": who2, "item": gift, "n": 1})
+		var note := _pick_line(who2, GIFT_NOTES, rng) if not Decor.is_decor(gift) else _decor_note(rng)
+		send(_name(who2), "%s - %s" % [note, _name(who2)], "gift", {"npc": who2, "item": gift, "n": 1})
 	# Chatter.
 	if not known.is_empty() and rng.randf() < 0.3:
 		var who3 := str(known[rng.randi() % known.size()])
@@ -217,15 +221,26 @@ static func _morning() -> int:
 	return list().size() - before
 
 
-## C11b P3 (c11b_10-09): the festival-eve letter announces the Animal Show / Best Egg table.
+## The favour letter (c12_09-01/19): amounts through Money.amount, kids in their own words.
+static func favour_text(who: String, item: String, n: int, pay: int, days: int) -> String:
+	var it := "it" if n == 1 or ItemWords.is_mass(GameState.item_name(item)) else "them"
+	if who in KIDS:
+		return "Can you get me %s? I saved up %s. Send %s with this letter in %d days, PLEASE." % [ItemWords.count_id(item, n), Money.amount(pay), it, days]
+	return "Could you spare %s? I'd pay %s, and I'd owe you one. Send %s back with this letter within %d days." % [ItemWords.count_id(item, n), Money.amount(pay), it, days]
+
+
+## C11b P3 (c11b_10-09): the festival-eve letter announces the Animal Show / Best Egg table,
+## only to a farm that keeps animals (the egg table only with a coop; c12_09-03), and
+## Bram runs the egg table once the story has sent Posy away (c12_09-04).
 static func show_line(fid: String) -> String:
 	var pen := GameState.is_penguins()
-	if fid == "harvest":
+	if fid == "harvest" and has_animals():
 		return (" Benno's judging the Animal Show by the fountain: bring your friendliest grown animal." if pen
-			else " Benno's judging the Block Fair livestock ribbon by the fountain: bring your best-kept animal.")
-	if fid == "egg":
-		return (" Posy's Best Egg table wants your shiniest egg, so save one from the coop." if pen
-			else " Posy's running the Best Egg table: save your best egg from the coop.")
+			else " Benno's judging the livestock ribbon by the fountain: bring your best-kept animal.")
+	if fid == "egg" and (Builds.is_built("coop") or ranch_source_ok("egg")):
+		var host := "Posy" if GameState.npc_present("posy") else "Bram"
+		return (" %s's Best Egg table wants your shiniest egg, so save one from the coop." % host if pen
+			else " %s's running the Best Egg table: save your best egg from the coop." % host)
 	return ""
 
 
@@ -249,11 +264,46 @@ static func _news(rng: RandomNumberGenerator) -> void:
 			else:
 				send(_name(tip), "Psst! Tomorrow is %s's birthday. A gift would mean a lot (gifts count triple). - %s" % [_name(id), _name(tip)], "news", {"npc": tip})
 	if GameState.DAYS_PER_SEASON - GameState.day_of_season() == 3:
-		send("Hazel", "Three days left of %s. Anything still in the ground that can't take the new season won't make it; harvest what you can." % GameState.season().capitalize(), "news")
-	if Racket.on() and Racket.heat() >= 3 and rng.randf() < 0.6:
-		send("Ladder", "Collectors on the avenue. Lie low a day or two, boss. Or wash some money.", "news")
+		if GameState.is_penguins():
+			send("Hazel", "Three days left of %s. Anything still in the ground that can't take the new season won't make it; harvest what you can. - Hazel" % GameState.season().capitalize(), "news", {"npc": "hazel"})
+		else:
+			send("Hazel", "Three days left of %s. Whatever can't take the turn of the season won't make it. Pull what you can. - Hazel" % GameState.season().capitalize(), "news", {"npc": "hazel"})
+	_heat_letter(rng)
 	if GameState.is_penguins() and Colony.saved() < 4 and int(GameState.run["day"]) % 9 == 0 and bool(Colony.st("colony_coral").get("met", false)):
-		send("Grandmother Brine", "The islands are dimming. When you have a moment, the ferry waits at the end of the pier.", "news")
+		var bl: String = BRINE_LINES[(int(GameState.run["day"]) / 9) % BRINE_LINES.size()]
+		send("Grandmother Brine", bl + " - Grandmother Brine", "news")
+
+
+const BRINE_LINES := [
+	"The islands are dimming. When you have a moment, the ferry waits at the end of the pier.",
+	"Another light went out on the far islands last night. The ferry still waits.",
+	"The colonies ask after you. The ferry is at the end of the pier when you're ready.",
+]
+
+
+## c12_09-07: one collectors warning per heat spike (flag heat_mail until heat drops
+## under 3), from Ladder once he's crew, else Sal; the laundromat only once it's built.
+static func _heat_letter(rng: RandomNumberGenerator) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	if not Racket.on():
+		return
+	if Racket.heat() < 3:
+		flags.erase("heat_mail")
+		return
+	if flags.has("heat_mail") or rng.randf() >= 0.6:
+		return
+	flags["heat_mail"] = int(GameState.run["day"])
+	send_heat_letter()
+
+
+static func send_heat_letter() -> void:
+	if Crew.recruited("ladder"):
+		if Builds.built_tier("laundromat") > 0:
+			send("Ladder", "Collectors on the avenue, boss. Lie low a day or two, or run some bills through the laundromat. - Ladder", "news", {"npc": "ladder"})
+		else:
+			send("Ladder", "Collectors on the avenue, boss. Lie low a day or two and let it cool. - Ladder", "news", {"npc": "ladder"})
+	else:
+		send("Sal", "The President's collectors are walking the avenue. Stay off their radar a day or two. - Sal", "news", {"npc": "sal"})
 
 
 static func _favour_item(who: String, rng: RandomNumberGenerator) -> String:
@@ -331,10 +381,20 @@ static func has_animals() -> bool:
 	return not Ranch.animals().is_empty() or Builds.is_built("coop") or Builds.is_built("barn")
 
 
+## c12_09-10: names only the homes this farm has.
 static func _storm_animals() -> String:
 	if not has_animals():
 		return ""
-	return "Your animals will keep in by the coop and barn; give them a pet once it's passed. "
+	var houses: Dictionary = Ranch.st().get("houses", {})
+	var coop := Builds.is_built("coop") or houses.has("coop")
+	var barn := Builds.is_built("barn") or houses.has("barn")
+	if coop and barn:
+		return "Your animals will stay in the coop and barn; give them a pet once it's passed. "
+	if coop:
+		return "Your hens will stay in the coop; give them a pet once it's passed. "
+	if barn:
+		return "Your animals will stay in the barn; give them a pet once it's passed. "
+	return "Your animals will stay indoors; give them a pet once it's passed. "
 
 
 ## Ranch letters (C11a P5): the lead-in (a home for Hazel's hens), welcome letters when the
@@ -357,7 +417,15 @@ static func _ranch_mail(day: int) -> void:
 			continue
 		flags[fk] = day
 		var who := str(row[2]) if pen or row.size() < 8 else str(row[7])  # [7]: the gangster-arc sender
-		send(_name(who), "%s - %s" % [str(row[3] if pen else row[4]), _name(who)], "gift", {"npc": who, "item": str(row[5]), "n": int(row[6])})
+		var text := str(row[3] if pen else row[4])
+		if not pen and str(row[0]) == "coop" and int(row[1]) == 1 and not flags.has("rmail_lead"):
+			text = COOP_NO_LEAD_GANG  # c12_09-17: no "Told you" without Benno's lead letter
+		var alt_key := "%s_%d" % [row[0], row[1]]
+		if not GameState.npc_present(who) and RANCH_ALT.has(alt_key):  # c12_09-04: Posy sent away
+			var alt: Array = RANCH_ALT[alt_key]
+			who = str(alt[0] if pen else alt[1])
+			text = str(alt[2] if pen else alt[3])
+		send(_name(who), "%s - %s" % [text, _name(who)], "gift", {"npc": who, "item": str(row[5]), "n": int(row[6])})
 		break  # one welcome a morning
 	for row: Array in FIRST_GOODS:
 		var item := str(row[0])
@@ -365,7 +433,13 @@ static func _ranch_mail(day: int) -> void:
 		if flags.has(fk2) or not _made(item):
 			continue
 		flags[fk2] = day
-		send(_name(str(row[1])), "%s - %s" % [str(row[2] if pen else row[3]), _name(str(row[1]))], "chat", {"npc": str(row[1])})
+		var who2 := str(row[1])
+		var text2 := str(row[2] if pen else row[3])
+		if not GameState.npc_present(who2) and FIRST_ALT.has(item):
+			var alt2: Array = FIRST_ALT[item]
+			who2 = str(alt2[0])
+			text2 = str(alt2[1] if pen else alt2[2])
+		send(_name(who2), "%s - %s" % [text2, _name(who2)], "chat", {"npc": who2})
 		break
 	_tam_lamb(day)
 	_tam_highlands(day)
@@ -378,6 +452,15 @@ const RANCH_LETTERS := [
 	["coop", 2, "posy", "A bigger coop! If any duck eggs come your way, I'll trade you a cake for every one. Here's an egg for luck.", "Bigger coop, I hear. Duck eggs make the best cakes in town and I don't say that lightly. An egg for luck.", "egg", 1],
 	["barn", 2, "tam", "Goats now. They'll eat the fence, the gate and your hat. Worth it for the milk. Wool for the bedding.", "Goats. They'll eat everything you own. Worth it for the milk. Wool for the bedding.", "sheep_wool", 2],
 ]
+const COOP_NO_LEAD_GANG := "Your hens are in. Found you some through a friend. Pet them mornings, keep the feeder full, and they'll pay their way. Hay's on me this once."
+## When a letter's sender has left town (story *_gone): "<building>_<tier>": [penguin sender, gangster sender, penguin text, gangster text].
+const RANCH_ALT := {
+	"coop_2": ["hazel", "benno", "A bigger coop! Ducks next, then. Posy always said a duck egg makes the best cake in the valley. Here's an egg for luck.", "Bigger coop. Ducks lay richer than hens; the kitchens on the avenue pay for that. An egg for luck."],
+}
+## item: [sender, penguin text, gangster text]
+const FIRST_ALT := {
+	"egg": ["hazel", "First eggs! Keep the best for the fair and sell the rest; they never sit long.", "First eggs. They sell before they're cold. Keep one back for the fair."],
+}
 ## [item, villager, penguin text, gangster text]: the first time the farm makes one.
 const FIRST_GOODS := [
 	["egg", "posy", "Hazel says your hens are laying! Bring me eggs whenever you've spare and I'll show you what a proper sponge looks like.", "First eggs off your farm, I hear. Bring me the spares; the bakery goes through dozens."],
@@ -408,8 +491,12 @@ static func _tam_lamb(day: int) -> void:
 	var uid := RanchGift._try("sheep", opts)  # a promise: may go one over a full barn (c11b_04-12)
 	if uid != "":
 		flags["tam_lamb_home"] = uid
-		send("Tam", ("Brought Bramble up at first light. She's in your barn, eating something she shouldn't. Name her what you like; she won't answer to it either way. - Tam" if GameState.is_penguins()
-			else "Brought Bramble up at first light. She's in your barn. Call her what you like; she answers to nobody. - Tam"), "chat", {"npc": "tam"})
+		if tam_away():  # c12_09-05: he's on the hills, so Benno walks her up
+			send("Tam", ("Benno brought Bramble up for me; I'm still on the hills. She's in your barn now. Name her what you like. - Tam" if GameState.is_penguins()
+				else "Had Benno walk Bramble up while I'm on the hills. She's in your barn. She answers to nobody. - Tam"), "chat", {"npc": "tam"})
+		else:
+			send("Tam", ("Brought Bramble up at first light. She's in your barn, eating something she shouldn't. Name her what you like; she won't answer to it either way. - Tam" if GameState.is_penguins()
+				else "Brought Bramble up at first light. She's in your barn. Call her what you like; she answers to nobody. - Tam"), "chat", {"npc": "tam"})
 	elif not flags.has("tam_lamb_wait"):
 		flags["tam_lamb_wait"] = day
 		send("Tam", "Bramble's waiting at my hut till there's room for her: she needs %s. She's eaten another hat. No hurry. Some hurry. - Tam" % RanchGift.room_hint("sheep", opts), "chat", {"npc": "tam"})
@@ -422,6 +509,18 @@ const TAM_LETTERS := [
 	"Met a herd of shaggy cattle up here with horns like coat racks. They looked at me like I was the odd one. Fair.",
 	"Coming down for the Harvest Fair. Bring %s; I want to see if she's grown into her ears. Keep a light on.",
 ]
+## Letter 2 while Bramble still waits at his hut; letter 4 when it's winter, not fall.
+const TAM_LAMB_WAITING := "Is Bramble behaving at the hut? Benno's watching her till your barn has room. She won't be behaving."
+const TAM_WINTER := "Snowed in up here; I'll be down for the Star Festival instead. Bring %s. Keep a light on."
+
+
+## Tam is up in the highlands: from his ♥10 scene until his fourth letter (he comes down
+## for the festival). He sends no favours/chatter and isn't in town meanwhile (c12_09-05).
+static func tam_away() -> bool:
+	if GameState.run.is_empty():
+		return false
+	var flags: Dictionary = GameState.run.get("flags", {})
+	return flags.has("hv_tam_10") and int(flags.get("tam_hl_n", 0)) < TAM_LETTERS.size()
 
 
 static func _tam_highlands(day: int) -> void:
@@ -436,9 +535,19 @@ static func _tam_highlands(day: int) -> void:
 		return
 	if day - int(flags["tam_hl_day"]) < 7:
 		return
+	var text := str(TAM_LETTERS[n])
+	if n == TAM_LETTERS.size() - 1:
+		# c12_09-06: the last letter waits for the week before a festival he can come down for.
+		var se := GameState.season_of(day)
+		var dos := (day - 1) % GameState.DAYS_PER_SEASON + 1
+		if dos < 7 or dos >= GameState.FESTIVAL_DAY or not (se in ["fall", "winter"]):
+			return
+		if se == "winter":
+			text = TAM_WINTER
+	elif n == 1 and not flags.has("tam_lamb_home") and flags.has("hv_tam_8"):
+		text = TAM_LAMB_WAITING
 	flags["tam_hl_n"] = n + 1
 	flags["tam_hl_day"] = day
-	var text := str(TAM_LETTERS[n])
 	if "%s" in text:
 		text = text % lamb_name()
 	send("Tam", text + " - Tam", "chat", {"npc": "tam"})
@@ -493,15 +602,38 @@ const CHAT_NOTES := {
 	"marlowe": ["Clear night last night. You could see every star from the lamp room. Thought of you down there, working."],
 	"tam": ["Dolly got out again. All of them did. They're back. They want you to know they're not sorry."],
 	"benno": ["The grey mare threw a shoe and looked pleased about it. Horses. Come by the stable some morning."],
-	"#kid": ["I saw a frog THIS big. Come and look before it leaves.", "Can you come and play? Not now. Later. When you're done farming.", "I drew your farm. The cow is purple. It's art."],
+	"#kid": ["I saw a frog THIS big. Come and look before it leaves.", "Can you come and play? Not now. Later. When you're done farming.", "I drew your farm. The sky is purple. It's art."],
 	"#all": ["The weather's turned and the whole town's talking about it. How's the farm?", "I saw your lights on late. Get some sleep, will you?", "If you're passing, drop in. The kettle's always on.", "Someone left flowers on the fountain this morning. Was it you?", "I've been meaning to say: it's good having you here.", "The market was busy today. You should bring something to sell."],
 }
+
+
+## The gangster arc's grown-up pools (c12_09-12): the cosy penguin lines stay in the penguin arc.
+const GIFT_NOTES_GANG := ["Fell off a truck. Kidding. Mostly.", "Had one spare. Now you do. Don't mention it.", "For the farm. Somebody on this street should be doing honest work."]
+const CHAT_NOTES_GANG := ["Avenue's quiet tonight. That's either good or bad. How's the farm?", "Saw your lights on late. Get some sleep. The city keeps going without you.", "If you're passing, the door's open. Knock twice.", "Somebody painted over the tags on the fountain. Was that you?", "The market was busy today. Real money, honest goods. Bring something."]
+## Villager lines that only fit the penguin arc's cosy town.
+const PEN_ONLY_NOTES := ["The bent turnip packet is still on the counter. People ask. I say it's a long story."]
+## Decor gift notes (c12_09-13): a villager's own food/ore notes don't fit a lamp.
+const DECOR_NOTES := ["This was cluttering my place and it'll look better in yours.", "Saw this and pictured it in your farmhouse.", "For the house. Put it somewhere you'll see it."]
+const DECOR_NOTES_GANG := ["For your place. Makes it look lived in.", "Saw this and pictured it in your place. Don't ask where it came from."]
+
+
+static func _decor_note(rng: RandomNumberGenerator) -> String:
+	var pool: Array = DECOR_NOTES if GameState.is_penguins() else DECOR_NOTES_GANG
+	return str(pool[rng.randi() % pool.size()])
 
 
 ## A line for this villager, never the same one they sent last time (flags.mail_last).
 static func _pick_line(who: String, pool: Dictionary, rng: RandomNumberGenerator) -> String:
 	var opts: Array = (pool.get(who, []) as Array).duplicate()
-	opts.append_array(pool["#kid"] if who in KIDS else pool["#all"])
+	if not GameState.is_penguins():
+		for l in PEN_ONLY_NOTES:
+			opts.erase(l)
+		if who in KIDS:
+			opts.append_array(pool["#kid"])
+		else:
+			opts.append_array(GIFT_NOTES_GANG if pool.has("posy") else CHAT_NOTES_GANG  # GIFT_NOTES has posy, CHAT_NOTES not)
+	else:
+		opts.append_array(pool["#kid"] if who in KIDS else pool["#all"])
 	if not GameState.run["flags"].has("mail_last"):
 		GameState.run["flags"]["mail_last"] = {}
 	var last: Dictionary = GameState.run["flags"]["mail_last"]

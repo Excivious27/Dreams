@@ -123,5 +123,8 @@ func _chests() -> void:
 func _letters() -> void:
 	for arc in ["penguins", "gangsters"]:
 		_fresh(arc)
+		check(Mail.show_line("harvest") == "" and Mail.show_line("egg") == "", "%s: no show line for a farm without animals (c12_09-03)" % arc)
+		GameState.run["builds"]["coop"] = 1
 		check(Mail.show_line("harvest") != "" and Mail.show_line("egg") != "" and Mail.show_line("star") == "", "%s: festival eve names the show" % arc)
+		GameState.run["builds"].erase("coop")
 	check(Shops.animal_why("bees") != "", "bees: needs its Plans build (build_of, not a hard-coded beehive)")

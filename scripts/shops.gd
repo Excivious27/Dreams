@@ -632,7 +632,7 @@ static func fund_add(n: int) -> Array:
 			done.append(i)
 			for npc in GameState.npcs:
 				GameState.add_friend(str(npc), FUND_FRIEND)
-			Mail.send("Mayor Alder", "The %s paid for %s. People keep asking who chipped in the most. I tell them. Thank you." % [fund_name(), _fund_what(i)], "chat")
+			Mail.send("Mayor Alder", "The %s paid for %s. People keep asking who chipped in the most. I tell them. Thank you. - Mayor Alder" % [fund_name(), _fund_what(i)], "chat")
 	return done
 
 

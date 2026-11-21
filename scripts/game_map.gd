@@ -2972,7 +2972,7 @@ func read_mail() -> void:
 					opts = ["Take the %s" % GameState.item_name(str(m["item"])), "Later"]
 			"favour":
 				if not bool(m.get("done", false)):
-					opts = ["Send %d %s (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), GameState.count(str(m["item"]))], "Not now"]
+					opts = ["Send %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), GameState.count(str(m["item"]))], "Not now"]
 		var line := {"who": "Letter from " + str(m["from"]), "text": str(m["text"])}
 		if not opts.is_empty():
 			line["choice"] = opts
@@ -2985,9 +2985,9 @@ func read_mail() -> void:
 			if err != "":
 				hud.toast(err, Color(1, 0.8, 0.6))
 			elif str(m["kind"]) == "gift":
-				hud.toast("+%d %s" % [int(m.get("n", 1)), GameState.item_name(str(m["item"]))], Color(0.85, 1, 0.85))
+				hud.toast("+" + ItemWords.count_id(str(m["item"]), int(m.get("n", 1))), Color(0.85, 1, 0.85))
 			else:
-				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
+				hud.toast("Sent. +%s" % Money.amount(int(m["pay"])), Color(1, 0.9, 0.5))
 
 
 func has_npc_at(_c: Vector2i) -> bool:

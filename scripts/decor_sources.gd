@@ -355,7 +355,7 @@ static func deliver_orders() -> int:
 		if int(o.get("day", today)) >= today:
 			keep.append(o)
 			continue
-		Mail.send("Catalogue order", "Your order came in: %s. Take it from this parcel and it goes to your decor box." % name_of(str(o["id"])), "gift", {"item": str(o["id"]), "n": 1})
+		Mail.send("Catalogue desk", "Your order came in: %s. Take it from this parcel and it goes to your decor box. - Catalogue desk" % name_of(str(o["id"])), "gift", {"item": str(o["id"]), "n": 1})
 		n += 1
 	GameState.run["decor_orders"] = keep
 	return n

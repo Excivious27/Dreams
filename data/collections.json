@@ -300,7 +300,7 @@
     {
      "item": "eel",
      "arc": "",
-     "where": "Beach, Farm"
+     "where": "Beach, Enemy"
     },
     {
      "item": "puffer",
@@ -839,7 +839,7 @@
     "item": "eel",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Farm"
+    "where": "Beach, Enemy"
    },
    {
     "item": "puffer",
@@ -2027,7 +2027,7 @@
    {
     "item": "eel",
     "arc": "",
-    "where": "Beach, Farm"
+    "where": "Beach, Enemy"
    },
    {
     "item": "puffer",
@@ -5827,7 +5827,10 @@
     "money": 600
    },
    "text": "Ten dishes cooked! You've got the touch. - Posy",
-   "text_gangsters": "Ten dishes. You cook like you mean it. - Posy"
+   "text_gangsters": "Ten dishes. You cook like you mean it. - Posy",
+   "from_alt": "bram",
+   "text_alt": "Ten dishes cooked! Posy would be proud. I am, anyway. - Bram",
+   "text_alt_gangsters": "Ten dishes. Posy would've hired you. I'm thinking about it. - Bram"
   },
   {
    "id": "cook_all",
@@ -5839,7 +5842,10 @@
     "money": 3000
    },
    "text": "You've cooked every recipe there is. Teach me something now! - Posy",
-   "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy"
+   "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy",
+   "from_alt": "bram",
+   "text_alt": "Every recipe there is, cooked. My kitchen's yours whenever you want it. - Bram",
+   "text_alt_gangsters": "Every recipe in the book. The inn kitchen's yours any night you want it. - Bram"
   },
   {
    "id": "ranch_3",
@@ -5929,12 +5935,12 @@
    "id": "forage_20",
    "cat": "forage",
    "need": 20,
-   "from": "willow",
+   "from": "hazel",
    "give": {
     "money": 400
    },
-   "text": "Twenty wild things found. The valley shares with those who look. - Willow",
-   "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Willow"
+   "text": "Twenty wild things found. The valley shares with those who look. - Hazel",
+   "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Hazel"
   }
  ],
  "decor_milestones": [

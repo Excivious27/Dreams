@@ -152,8 +152,8 @@
     "gangsters": "the trophy hall"
    },
    "start": {
-    "penguins": "Last big job of the year: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
-    "gangsters": "Last big job this year: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"
+    "penguins": "Last big job on the list: the upstairs landing becomes a trophy hall, ready for the first Rec Cup. Five days of work. - The {hall} front desk",
+    "gangsters": "Last big job on the list: the upstairs landing's becoming a trophy hall for the first Rec Cup. Five days. - Front desk"
    },
    "done": {
     "penguins": "The trophy hall is open, and with it the Rec Cup: every season, beat the posted score and win the cup's tickets. Watch your mail. - The {hall} front desk",

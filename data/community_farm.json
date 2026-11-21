@@ -1040,7 +1040,7 @@
     ],
     "gangsters": [
      "I water the lot every evening. Best hour of my day.",
-     "That well's cold even in August. Don't tell the President."
+     "That well's cold even at the height of summer. Don't tell the President."
     ]
    }
   ],
@@ -1405,7 +1405,7 @@
     "Did you know the old commons had forty-one kinds of apple? I'm writing it down."
    ],
    "gangsters": [
-    "This lot was an orchard in 1903. I checked the records."
+    "This lot was an orchard before the city had streetlights. I checked the records."
    ]
   },
   "alder": {
@@ -1568,7 +1568,7 @@
    },
    "done": {
     "penguins": "Listen to them drink! Thank you. Here, take some of this.",
-    "gangsters": "They'll be fat by Friday. Here, take some of this."
+    "gangsters": "They'll be fat by market day. Here, take some of this."
    }
   }
  },

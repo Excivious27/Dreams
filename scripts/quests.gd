@@ -88,7 +88,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		var need := _still_need(d)
 		var dflt := ("Still need %s. You know where to find me." % need) if need != "" else "Still waiting on that one. It's in your quest log."
 		if bool(d.get("board", false)) and d.get("done_when", {}).has("item"):
-			dflt = "Still need those %d %s from the board. No rush. Some rush." % [int(d["done_when"]["item"][1]), GameState.item_name(str(d["done_when"]["item"][0]))]
+			dflt = "Still need those %s from the board. No rush. Some rush." % ItemWords.count_id(str(d["done_when"]["item"][0]), int(d["done_when"]["item"][1]))
 		await m.say(_as_lines(name, ql.get("wait", dflt)))
 		return true
 	# 2) Offer.
@@ -131,7 +131,7 @@ static func _still_need(d: Dictionary) -> String:
 	for pr: Array in pairs:
 		var short := int(pr[1]) - GameState.count(str(pr[0]))
 		if short > 0:
-			bits.append("%d %s" % [short, GameState.item_name(str(pr[0]))])
+			bits.append(ItemWords.count_id(str(pr[0]), short))  # c12_10-07
 	return " and ".join(bits)
 
 

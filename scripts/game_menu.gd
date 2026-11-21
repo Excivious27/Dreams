@@ -778,6 +778,12 @@ func _refresh() -> void:
 						_refresh()))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
+			var ssl: Array = SideStory.open_lines()  # c12_10-17: side stories in the Quests tab
+			if not ssl.is_empty():
+				_line("Side stories", 9, Color(0.8, 0.9, 1.0))
+				for sl: Dictionary in ssl:
+					var ss_at := QuestTracker.npc_scene(str(sl["giver"]))
+					_line("   • %s: %s%s" % [str(sl["title"]), str(sl["text"]), (" (%s)" % PlaceNames.for_id(ss_at)) if ss_at != "" else ""], 8, Color(0.85, 0.9, 1.0))
 			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
 			if not fin.is_empty():
 				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))
@@ -889,14 +895,14 @@ func _refresh() -> void:
 			for m: Dictionary in ml:
 				m["read"] = true
 				_line("Day %d · %s" % [int(m.get("day", 0)), str(m["from"])], 8, Color(1, 0.95, 0.8))
-				_line("  " + str(m["text"]), 8, Color(0.9, 0.9, 0.85))
+				_line("  " + Money.t(str(m["text"])), 8, Color(0.9, 0.9, 0.85))
 				var mm := m
 				if str(m.get("kind", "")) == "gift" and not bool(m.get("got", false)):
 					_button("  Take the %s" % GameState.item_name(str(m["item"])), func() -> void:
 						Mail.act(mm)
 						_refresh())
 				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
-					_button("  Send %d %s for ◆%d (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+					_button("  Send %s for %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), Money.amount(int(m["pay"])), GameState.count(str(m["item"]))], func() -> void:
 						var err := Mail.act(mm)
 						var mp := get_tree().current_scene as GameMap
 						if mp and err != "":
