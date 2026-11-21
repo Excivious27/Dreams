@@ -320,9 +320,31 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 		var cf := Commons.slot(npc_id, hour)
 		if cf != "":
 			place = cf
+	var fp := festival_place(npc_id, hour)  # C12 P3: festival day, everyone's on the plaza
+	if fp != "":
+		return fp
 	if raining and not rain_walker(npc_id) and not place in ["home", "work", "inn", "chapel", "school", "clinic"] and not place in Commons.rain_spots():
 		place = "home"
 	return RecCenter.visit(npc_id, place)  # an evening at the Rec Center
+
+
+## C12 P3 (c12_11-14): on a festival day, 9 to 6, the town is on the plaza: shops
+## and school are shut and every sign says so. Juniper stays on call at the clinic;
+## the mayor runs the fountain stage. Storms and blizzards keep the old routine.
+const FEST_ON_CALL := ["juniper"]
+const FEST_SPOTS := ["plaza", "plaza_e", "bench_nw", "bench_ne", "bench_sw", "bench_se"]
+
+
+static func festival_place(npc_id: String, hour: float) -> String:
+	if GameState.festival_today() == "" or hour < 9.0 or hour >= 18.0 or npc_id in FEST_ON_CALL:
+		return ""
+	if GameState.weather_today() in ["storm", "blizzard"] or not GameState.npcs.has(npc_id):
+		return ""
+	if str(GameState.npcs[npc_id].get("home_scene", "")) not in ["", "town"]:
+		return ""
+	if npc_id == "alder":
+		return "fountain"
+	return FEST_SPOTS[absi(hash(npc_id)) % FEST_SPOTS.size()]
 
 
 ## Who keeps their outdoor plans in the wet: Finn, Rook and Sal always; in a

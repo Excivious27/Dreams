@@ -975,9 +975,11 @@ func _talk_npc(n: Npc) -> void:
 	var hl := Hearts.daily(id)
 	if hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(id)) % 2 == 0:
 		lines.append({"who": name, "text": hl})
+	if lines.is_empty() and Talk.data().has(id) and (int(GameState.run["day"]) + GameState.friend_hearts(id)) % 2 == 1:
+		lines.append_array(Talk.line(id))  # C12 P3: season/weather/arc/time lines from talk.json (Tam)
 	for nd in R.get("npcs", []):
 		if str(nd["id"]) == id and lines.is_empty():
-			var ls: Array = nd.get("lines", [])
+			var ls: Array = Talk.region_lines(nd)
 			if not ls.is_empty():
 				lines.append({"who": name, "text": str(ls[(int(GameState.run["day"]) + GameState.friend_hearts(id)) % ls.size()])})
 	if lines.is_empty():

@@ -3902,7 +3902,7 @@
     ],
     "lines": [
      "Sheep don't care what season it is. Neither do I, much.",
-     "Cider's in the hut. Help yourself, pay what you like.",
+     "Apples are in the basket by the hut. Help yourself, pay what you like.",
      "The dog found something in the far orchard. Wouldn't let me see."
     ]
    }
@@ -4724,6 +4724,11 @@
     ],
     "lines": [
      "The spiral is the same as the one the crystal dreams. I've checked.",
+     "Don't touch the fallen stone. I did. My ears haven't stopped.",
+     "Theo thinks I'm making it up. Theo has never been here after dark."
+    ],
+    "lines_gangsters": [
+     "The spiral is carved on the President's tower doors too. I've checked. Twice.",
      "Don't touch the fallen stone. I did. My ears haven't stopped.",
      "Theo thinks I'm making it up. Theo has never been here after dark."
     ]
@@ -13968,7 +13973,21 @@
      "The Thornmother wasn't always thorns. Once she was the garden.",
      "Wisp Sparks keep a pudding light. Bring one back and cook something nice."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "lines_gangsters": [
+     "Every lantern here has a moth, and every moth has a name. That one's Gerald.",
+     "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.",
+     "Wisp Sparks keep a pudding light. Bring one back and cook something nice."
+    ],
+    "after_flag": "boss_gloam_moonpool",
+    "after": [
+     "The garden's breathing again. Gerald's taken to sleeping in the roses.",
+     "Every lantern here has a moth, and every moth has a name. That one's Gerald."
+    ],
+    "after_gangsters": [
+     "Nobody collects rent in Lanternfall now. Gerald's moved into the roses.",
+     "Every lantern here has a moth, and every moth has a name. That one's Gerald."
+    ]
    },
    {
     "id": "mg_fenn",
@@ -14000,7 +14019,12 @@
      "I'm not scared of the dark. The dark is scared of my lantern.",
      "The ghostfish in the Moonpool can see you even with their eyes closed."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_gloam_moonpool",
+    "after": [
+     "The giant flower stopped sneezing. I sort of miss it.",
+     "I'm not scared of the dark. The dark is scared of my lantern."
+    ]
    }
   ],
   "enemies": [],
@@ -15512,7 +15536,12 @@
      "The temple builders drew suns on everything. Even the spoons.",
      "Bring me sunstones and I'll pay you in shade. And something better than shade."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "done_quest": "mega_sunscorch_rahim",
+    "done_lines": [
+     "The lamps burn till dawn now. Caravans come in singing.",
+     "Fifty years at this well. Never once seen it run dry."
+    ]
    },
    {
     "id": "mg_nadia",
@@ -15528,7 +15557,24 @@
      "The Glass Canyon was a lake once. Lightning turned the sand to glass.",
      "I'd give a lot for a scarab from the temple. For science."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "lines_gangsters": [
+     "The Glass Canyon was a lake once. Lightning turned the sand to glass.",
+     "Vasco sits on a crate of temple gold and calls himself a king. The scarabs were kings first.",
+     "I'd give a lot for a scarab from the temple. For science."
+    ],
+    "done_quest": "mega_sunscorch_job",
+    "done_lines": [
+     "The scarab's a calendar. I've read three months of it. Next month has a festival.",
+     "The Glass Canyon was a lake once. Lightning turned the sand to glass."
+    ],
+    "after_flag": "boss_desert_sunken_temple",
+    "after": [
+     "The Colossus is sleeping. Someone finally told it the war was over. You did."
+    ],
+    "after_gangsters": [
+     "Vasco's crate sits empty. I'm reading the temple walls at last."
+    ]
    }
   ],
   "enemies": [],
@@ -17006,7 +17052,12 @@
      "Rail Chain, Engine Oil, Tin. Junction runs on all three.",
      "My engine's the last one he hasn't bought. She stays mine."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_iron_tunnels",
+    "after": [
+     "Baron's gone and the trains run on time. Well. Mostly on time. On a time.",
+     "My engine's the last one he never bought. She stays mine."
+    ]
    },
    {
     "id": "mg_dot",
@@ -17022,7 +17073,11 @@
      "Charcoal from the firebox, that's the secret. Smoky.",
      "The Baron eats here. Tips terribly."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_iron_tunnels",
+    "after": [
+     "The Baron's table is free now. Nobody wants it. Too many bad tips in the wood."
+    ]
    },
    {
     "id": "mg_skip",
@@ -17038,7 +17093,11 @@
      "I sold a paper to a rail bot once. It tried to eat it.",
      "The tunnels go under the whole city. I've seen like, half."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_iron_tunnels",
+    "after": [
+     "Paper! Trains run again! Read all about it! ...I wrote that one myself."
+    ]
    }
   ],
   "enemies": [],
@@ -18497,7 +18556,21 @@
      "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.",
      "The Wyrm on the Summit wakes every hundred years. Lucky you."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "lines_gangsters": [
+     "Hearthhold's been here as long as the snow. Longer, some say.",
+     "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.",
+     "Big Ike hauls ice off the Summit and sells it back to us. Our own ice."
+    ],
+    "after_flag": "boss_frost_summit",
+    "after": [
+     "The Wyrm's snoring again. Hearthhold sleeps easier for it.",
+     "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."
+    ],
+    "after_gangsters": [
+     "Big Ike's sled tracks go down the mountain and don't come back. Good.",
+     "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."
+    ]
    },
    {
     "id": "mg_ingrid",
@@ -18529,7 +18602,11 @@
      "The caverns sing when the wind goes through. I sing back.",
      "Brannoch says I can go to the Summit when I'm nine hundred."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_frost_summit",
+    "after": [
+     "Brannoch says I can go to the Summit now. When I'm nine hundred and one."
+    ]
    }
   ],
   "enemies": [],
@@ -20210,7 +20287,12 @@
      "Storm Glass comes from where lightning lands. Don't be where lightning lands.",
      "The Roc thinks the whole sky is its nest. It isn't wrong."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_wind_starfall_garden",
+    "after": [
+     "The sky's ours again. Well, the Roc's, but it shares now.",
+     "Storm Glass comes from where lightning lands. Don't be where lightning lands."
+    ]
    },
    {
     "id": "mg_gull",
@@ -20242,7 +20324,12 @@
      "The Storm Shelf was calm, once. The Roc changed that.",
      "Bring me Storm Glass and I'll teach you to bottle a breeze. Well. Pay you, anyway."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "done_quest": "mega_windward_job",
+    "done_lines": [
+     "I bottled a breeze. It got out. It's somewhere in the gondola now, being smug.",
+     "The Storm Shelf is calm again. The clouds have stopped flinching."
+    ]
    }
   ],
   "enemies": [],
@@ -21586,7 +21673,11 @@
      "Collectors pay well for Gilt Chips. The Gilded Ace on the Row takes cash only.",
      "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_gilt_vaults",
+    "after": [
+     "Madame's left the Vaults. The fountain water's free. I'm still not used to it."
+    ]
    },
    {
     "id": "mg_odette",
@@ -21602,7 +21693,11 @@
      "Gold leaf on a flan. Disgusting. Delicious.",
      "The gardens are the only place in Gilt City that's free. Don't tell her."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_gilt_vaults",
+    "after": [
+     "I'm painting the statues to look like whoever I like now. Mostly pigeons."
+    ]
    },
    {
     "id": "mg_cass",
@@ -21618,7 +21713,11 @@
      "There's a lucky coin under every third bench. I've checked.",
      "I'd steal her crown, but it's glued on."
     ],
-    "wander": 10.0
+    "wander": 10.0,
+    "after_flag": "boss_gilt_vaults",
+    "after": [
+     "Nobody's chasing me any more. It's honestly a bit dull."
+    ]
    }
   ],
   "enemies": [],

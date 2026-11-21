@@ -200,6 +200,21 @@ static func soon_lines() -> Array:
 	return out
 
 
+## C12 P3 (c12_05-18): the lead-in for one villager: their own line if they have one,
+## otherwise one shared line a day (not the whole pool), and the mayor never talks
+## about himself in the third person.
+static func soon_for(npc_id: String) -> Array:
+	var all := soon_lines()
+	if all.is_empty():
+		return []
+	var own: Array = (data().get("chat_soon_own", {}) as Dictionary).get(npc_id, [])
+	if not own.is_empty():
+		return own.map(func(l: Variant) -> String: return _fill(str(l)))
+	if npc_id == "alder":
+		return []
+	return [all[absi(hash(npc_id + str(GameState.run.get("day", 1)))) % all.size()]]
+
+
 ## Town door: shut (with a word about the opening) until the grand opening.
 static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 	if str(thing.get("interior", "")) != "rec":
@@ -460,7 +475,7 @@ static func _fill(s: String) -> String:
 ## Extra everyday lines for Talk.line once the place is open.
 static func talk_pool(npc_id: String) -> Array:
 	if not is_open():
-		return soon_lines()
+		return soon_for(npc_id)
 	var out: Array = []
 	var own: Array = (data().get("chat_gang", {}) as Dictionary).get(npc_id, []) if not GameState.is_penguins() else []
 	if own.is_empty():
