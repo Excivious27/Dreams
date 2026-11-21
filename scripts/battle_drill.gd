@@ -1,45 +1,46 @@
 class_name BattleDrill
 extends Control
-## The guided training fight (CampaignGate.launch_drill): six short steps on
-## the orchard field, each checked live against the Battle, with the veteran
+## The guided training fight (CampaignGate.launch_drill): STEPS.size() (8) short
+## steps on the orchard field, each checked live against the Battle, with the veteran
 ## (Catkins / Sal) talking you through them and a step card on the HUD. One
 ## helper order per step (C11b P7: helpers follow you by default in the drill):
 ##   move   walk into a ring        build  "Build helper" at a point you hold
-##   follow walk; it comes along    hold   HELPERS > Hold here
+##   follow walk; it comes along    hold   HELPERS > Guard banner
 ##   call   HELPERS > Follow me     menu   the point menu (upgrade/fortify/mend/barrage)
 ##   send   HELPERS > Go to a point take   capture their last point: win
 ## Foes only come once you're told to go and take their point. "Leave training"
-## (button above the card; pause menu on a pad) ends it any time.
+## (button in the card's corner; pause menu on a pad) ends it any time.
 
 const STEPS := [
 	["move", "Take a point", "Walk into the ring at %s and stay in it. When the ring fills, the point is yours. Follow the arrow."],
-	["build", "Build a helper", "Stand at the banner of a point you hold, press %s and pick \"Build helper: %s\" (◇%d supply). Helpers then step out of that banner."],
+	["build", "Build a helper", "Stand at the banner of a point you hold, press %s and pick \"Build helper: %s\" (◇%d supply: battle-only, not your %s). It steps out of that banner."],
 	["follow", "Order: Follow me", "Helpers follow you unless you order otherwise. Walk a few steps and watch yours come along.%s"],
-	["hold", "Order: Hold here", "%s and pick \"Hold here\". Your helpers go back and guard the banner that built them."],
+	["hold", "Order: Guard banner", "%s and pick \"Guard banner\". Your helpers go back and guard the banner that built them."],
 	["call", "Order: Follow me", "%s and pick \"Follow me\" to call them back. They walk beside you again."],
 	["menu", "Spend supply", "Press %s at your banner again. Supply buys Upgrade (more helpers), Fortify, Mend and Barrage. Try one."],
 	["send", "Order: Go to a point", "%s and pick \"Go to %s\". Your helpers march there ahead of you."],
-	["take", "Capture and win", "Take %s: break their guards and stand in the ring. Hold every point to win."],
+	["take", "Capture and win", "Take %s: break their guards and stand in the ring. Hold every point to win.%s"],
 ]
 ## What the trainer says out loud for each step (the card carries the details).
 const SAY := [
 	"First, take %s. Stand in its ring till it fills.",
 	"Good. Now build a helper at your banner.",
-	"There it is. Helpers follow you unless told otherwise. Take a walk and see.",
-	"Now give your first order: tell them to hold here.",
+	"There it is, out of your banner. Helpers follow you unless told otherwise. Take a walk and see.",
+	"Now give your first order: send them back to guard your banner.",
 	"And call them back to you: Follow me.",
 	"Your banner does more than build. Have a look.",
 	"One more order: send them on ahead to %s.",
-	"Last one: take %s. These are practice foes, so go at them.",
+	"Last one: take %s. %s out: these are practice foes, so go at them.",
 ]
 const CARD := Rect2(20, 292, 230, 52)   # above the touch deck, clear of the rings up top
 ## "Leave training": always on screen, in the step card's bottom-right corner (clear of
 ## the toasts and the touch deck); leave_rect is where it is now (the card grows) (C11b P7).
 const LEAVE_SIZE := Vector2(80, 20)
-const LEAVE_ROW := 23.0    # the card's extra bottom row that holds the button
+const LEAVE_ROW := 23.0    # the card's extra bottom row that holds the button (LEAVE_SIZE.y + 3)
 var leave_rect := Rect2()
 const WALK_NEED := 80.0    # px you walk with a helper beside you (5 cells) for "follow"
-const NEAR := 56.0         # a helper this close counts as "with you"
+const NEAR := 80.0         # a helper this close counts as "with you" (c16b_01-02)
+const NEAR_GRACE := 1.0    # ... or was, within the last second (it lags a step behind on turns)
 
 var b: Battle
 var step := 0
@@ -51,6 +52,8 @@ var _orders0 := 0    # Battle.orders when this step began (order steps need a ne
 var _walked := 0.0   # px walked during the follow step
 var _last_p := Vector2.INF
 var _helper_said := false
+var _near_t := 99.0  # seconds since a helper was last within NEAR
+var _tickets_said := false
 var leave_btn: Button
 
 
@@ -62,7 +65,9 @@ static func attach(bt: Battle, layer: CanvasLayer) -> BattleDrill:
 	layer.add_child(dr)
 	var lb := Button.new()
 	lb.text = "Leave training"
+	lb.custom_minimum_size = LEAVE_SIZE
 	lb.size = LEAVE_SIZE
+	lb.clip_text = true
 	lb.focus_mode = Control.FOCUS_NONE
 	lb.add_theme_font_size_override("font_size", 8)
 	for st: String in ["normal", "hover", "pressed"]:
@@ -71,6 +76,10 @@ static func attach(bt: Battle, layer: CanvasLayer) -> BattleDrill:
 		sb.border_color = Color(1, 0.85, 0.45, 0.9)
 		sb.set_border_width_all(1)
 		sb.set_corner_radius_all(3)
+		sb.content_margin_left = 3
+		sb.content_margin_right = 3
+		sb.content_margin_top = 1
+		sb.content_margin_bottom = 1  # the theme's default margins would grow it past its tap rect (c16b_01-07)
 		lb.add_theme_stylebox_override(st, sb)
 	lb.pressed.connect(func() -> void: bt.map.later(dr.ask_leave))
 	layer.add_child(lb)
@@ -96,7 +105,8 @@ func _place_leave() -> void:
 	if leave_btn == null or b == null:
 		return
 	var r := card_rect()
-	var nr := Rect2(r.end - LEAVE_SIZE - Vector2(3, 2), LEAVE_SIZE)
+	leave_btn.size = LEAVE_SIZE  # never grown by its text: drawn rect == tap rect
+	var nr := Rect2(r.end - leave_btn.size - Vector2(3, 2), leave_btn.size)
 	if nr != leave_rect:
 		Hud.extra_rects.erase(leave_rect)
 		leave_rect = nr
@@ -190,18 +200,48 @@ func text(i: int) -> String:
 		"move":
 			return t % str(_post()["name"])
 		"build":
-			return t % [InputSetup.prompt("a"), str(HelperUnit.KINDS["striker"]["crystal" if GameState.is_penguins() else "drone"]), b._cost("striker") if b else 20]
+			t = t % [InputSetup.prompt("a"), str(HelperUnit.KINDS["striker"]["crystal" if GameState.is_penguins() else "drone"]), b._cost("striker") if b else 20, "crystals" if GameState.is_penguins() else "cash"]
+			return t + turret_note()
 		"follow":
-			return t % ((" (Staying put? %s and pick \"Follow me\".)" % order_how()) if b and b._rally != -1 else "")
+			t = t % ((" (Staying put? %s and pick \"Follow me\".)" % order_how()) if b and b._rally != -1 else "")
+			return t + turret_note()
 		"hold", "call":
-			return t % order_how()
+			return t % order_how() + turret_note()
 		"menu":
 			return t % InputSetup.prompt("a")
 		"send":
 			return t % [order_how(), str(_mill()["name"])]
 		"take":
-			return t % str(_mill()["name"])
+			return t % [str(_mill()["name"]), weapon_note()]
 	return t
+
+
+## The last step: hold your weapon first (a tool only scratches foes, c16b_01-11).
+func weapon_note() -> String:
+	var held := GameState.held_tool()
+	if held != "" and (GameState.is_sword(held) or (GameState.items.get(held, {}) as Dictionary).has("range")):
+		return ""
+	return " Hold your %s first (hotbar)." % GameState.weapon_word()
+
+
+## A turret built at a banner can't follow or take orders: say so while the
+## helper steps need a helper (c16b_01-01).
+func turret_note() -> String:
+	if b == null or b._helpers() > 0:
+		return ""
+	if b.points.any(func(p: Dictionary) -> bool: return str(p["spawner"]) == "turret"):
+		return " Turrets stay put: build a helper at a banner instead."
+	return ""
+
+
+## While the drill still teaches helper orders, banners don't offer the turret.
+func turret_locked() -> bool:
+	return step <= idx("send")
+
+
+## The briefing card's CONTROLS for the drill (not the campaign text, c16b_01-04).
+static func controls_text() -> String:
+	return "Walk into a ring to take a point. %s on your banner builds helpers. %s gives orders: Follow me, Guard banner, Go to a point. Helpers follow you until you order otherwise. \"Leave training\" (under the step card, or the pause menu) ends it any time." % [PadInput.words("USE").strip_edges(), order_how()]
 
 
 func say_line(i: int) -> String:
@@ -209,8 +249,10 @@ func say_line(i: int) -> String:
 	match str(STEPS[i][0]):
 		"move":
 			return t % str(_post()["name"])
-		"send", "take":
+		"send":
 			return t % str(_mill()["name"])
+		"take":
+			return t % [str(_mill()["name"]), ("Sword" if GameState.is_penguins() else "Piece")]
 	return t
 
 
@@ -227,9 +269,11 @@ func _check() -> bool:
 		"move":
 			return b.points.filter(func(p: Dictionary) -> bool: return str(p["owner"]) == "ally").size() >= 2
 		"build":
-			return b.points.any(func(p: Dictionary) -> bool: return str(p["spawner"]) != "")
+			# A helper spawner (not a turret), and its first helper already out, so the
+			# trainer's "There it is" never comes before the helper (c16b_01-01 / 01-08).
+			return b._helpers() > 0 and b.points.any(func(p: Dictionary) -> bool: return not (str(p["spawner"]) in ["", "turret"]))
 		"follow":
-			return b._rally == -1 and _walked >= WALK_NEED and helper_near()  # you walked and it came along
+			return b._rally == -1 and _walked >= WALK_NEED and _near_t <= NEAR_GRACE  # you walked and it came along
 		"hold":
 			return b._rally == -2 and b.orders > _orders0
 		"call":
@@ -266,7 +310,8 @@ func _process(delta: float) -> void:
 		b.map.hud.toast("A helper stepped out of your banner. It follows you; %s gives it orders." % ("HELPERS (top left)" if TouchControls.visible_controls else InputSetup.prompt("rally")), Color(0.7, 0.95, 1.0))
 	if b.map.player:
 		var pp := b.map.player.position
-		if _last_p != Vector2.INF and str(STEPS[step][0]) == "follow" and helper_near():
+		_near_t = 0.0 if helper_near() else _near_t + delta
+		if _last_p != Vector2.INF and str(STEPS[step][0]) == "follow" and _near_t <= NEAR_GRACE:
 			_walked += minf(4.0, pp.distance_to(_last_p))  # (a warp or a teleport doesn't count)
 		_last_p = pp
 	if step < STEPS.size() and _check():
@@ -285,8 +330,17 @@ func _process(delta: float) -> void:
 			_guard_mill()
 
 
+## After the first point: one line on the bars up top (tickets and supply), since
+## every campaign brief is written in tickets (c16b_01-09).
+func tickets_line() -> String:
+	return "See the bars up top? Hold more points than them and their tickets (Them) drain: run them out in a real fight and you win. Every point you hold also pays supply (the +/s), and supply is for this battle only."
+
+
 func _intro_step() -> void:
 	var lines: Array = [{"who": b._who(), "text": say_line(step)}]
+	if step == idx("build") and not _tickets_said:
+		_tickets_said = true
+		lines.push_front({"who": b._who(), "text": tickets_line()})
 	if step == 0:
 		lines.push_front({"who": b._who(), "text": "Right. A short drill before anyone trusts you with %s. %d steps, no rush. The card below has each one, and \"Leave training\" ends it any time." % ["an army" if GameState.is_penguins() else "a crew", STEPS.size()]})
 		if TouchControls.visible_controls:
@@ -330,3 +384,9 @@ func _draw() -> void:
 		var green := k < step or (k == step and done_now)
 		Art.draw_disc(self, c, 3.0, Color(0.5, 1, 0.6) if green else (Color(1, 0.88, 0.5, 0.6 + 0.4 * sin(_t * 5.0)) if k == step else Color(1, 1, 1, 0.25)))
 	draw_multiline_string(f, r.position + Vector2(6, 23), body, HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 12, DisplayMode.df(7), 3, Color(0.95, 0.93, 0.88))
+	if str(STEPS[i][0]) == "follow":
+		# How far you've walked with it (c16b_01-02): fills while a helper is with you.
+		var br := Rect2(r.position.x + 6, r.end.y - LEAVE_ROW + 7, r.size.x - LEAVE_SIZE.x - 18, 4)
+		draw_rect(br.grow(1.0), Color(1, 0.88, 0.5, 0.8), false, 1.0)
+		draw_rect(br, Color(0, 0, 0, 0.6))
+		draw_rect(Rect2(br.position, Vector2(br.size.x * clampf(_walked / WALK_NEED, 0, 1), br.size.y)), Color(0.5, 1, 0.6) if _near_t <= NEAR_GRACE else Color(1, 0.75, 0.5))

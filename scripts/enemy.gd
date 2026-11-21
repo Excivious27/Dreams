@@ -367,7 +367,7 @@ func _process(delta: float) -> void:
 		_los_t -= delta
 		if _los_t <= 0.0:
 			_los_t = 0.25
-			_los_ok = map.line_clear(position, tgt.position) if abilities.has("ranged") and tgt == player else (dist > 150.0 or _walk_clear(position, tgt.position))
+			_los_ok = map.line_clear(position, tgt.position) if abilities.has("ranged") else (dist > 150.0 or _walk_clear(position, tgt.position))
 		if _noticed and (not _los_ok or _chase_t > 0.0):
 			sight = 140.0
 		_chase_t = 3.0 if (_noticed and not _los_ok) else maxf(0.0, _chase_t - delta)
@@ -375,12 +375,14 @@ func _process(delta: float) -> void:
 			sight = 58.0
 		if tgt == player and kind.contains("wisp") and Perks.flag("wisp_safe") and hp >= max_hp:
 			sight = 0.0
-		if dist < sight and abilities.has("ranged") and tgt == player:
-			# Shooters keep their distance: back off when you close in, hold at range.
+		if dist < sight and abilities.has("ranged"):
+			# Shooters keep their distance from whoever they fight (you, a helper, a
+			# turret, the convoy): back off when it closes in, hold at range (c16b_11-02).
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
-				Music.instance(get_tree()).sfx("alert")
+				if tgt == player or position.distance_to(player.position) < 170.0:
+					_alert_sting()
 			_dir = -to.normalized() * 0.8 if dist < 48.0 and _los_ok else (to.normalized() if dist > 90.0 else Vector2.ZERO)
 			# No clear shot (a wall or tree line between): walk round it to find one.
 			if not _los_ok:
@@ -390,7 +392,7 @@ func _process(delta: float) -> void:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
 				if tgt == player or position.distance_to(player.position) < 170.0:
-					Music.instance(get_tree()).sfx("alert")
+					_alert_sting()
 			_dir = to.normalized()
 			# A wall between us: walk round it on the flow field instead of pressing into it.
 			if not _los_ok:
@@ -495,9 +497,23 @@ var _aggro_t := 0.0
 
 ## Called by whoever just hit me: I turn on them for a few seconds.
 func provoke(by: Node2D) -> void:
+	if by is HelperUnit and by == _aggro and _aggro_t > 0.0:
+		_noticed = true
+		return  # the same helper re-provokes at most once per 4 s (c16b_11-01)
 	_aggro = by
 	_aggro_t = 4.0
 	_noticed = true
+
+
+## The "noticed you" sting: on a battlefield, once per 1.5 s map-wide, so a wave
+## arriving doesn't stack a dozen stings (c16b_11-13). The emote still shows.
+func _alert_sting() -> void:
+	if map.get("battle") != null:
+		var now := PlayClock.ms()
+		if map.has_meta("alert_ms") and now - int(map.get_meta("alert_ms")) < 1500:
+			return
+		map.set_meta("alert_ms", now)
+	Music.instance(get_tree()).sfx("alert")
 
 
 ## Move with wall sliding (x then y) so knockback never cancels outright.
@@ -554,16 +570,18 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 	# its swing (the red wind-up tint tells you to step back).
 	if tick:
 		pass  # a burn tick: no flinch, no knockback, no stun
-	elif tier == 0 and _kb_hits < 1:
-		_windup = 0.0
+	elif tier == 0 and _kb_hits < 1 and not ally:
+		_windup = 0.0  # (a helper's zap never cancels a swing: c16b_11-01)
 	# Knockback: lighter for heavy kinds, cut by the tier's resistance, and it
 	# decays with every quick repeat so you can't juggle something forever.
-	if not magic:
-		_kb_hits += 1
+	if not magic or ally:
+		_kb_hits += 1  # helpers' zaps count too, so a foe can't be juggled by a team
 		_kb_t = 1.6
 	var combo := maxf(0.25, 1.0 - 0.3 * maxi(0, _kb_hits - 1))
+	if ally:
+		combo *= 0.4  # helper hits: a nudge, not a shove (c16b_11-01)
 	if not tick:
-		_stun = maxf(_stun, (0.32 if base_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6))
+		_stun = maxf(_stun, 0.1 if ally else (0.32 if base_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6))
 	var heavy := 1.0 if base_hp < 16 else (0.55 if base_hp < 40 else 0.3)
 	_knock = (position - from).normalized() * (230.0 if tier == 0 else 150.0) * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
 	# Juggled three times: answer with a lunge the moment the stun ends.
@@ -675,7 +693,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 		_range_tele -= delta
 		if _range_tele <= 0.0 and _stun <= 0.0:
 			_shoot(_range_aim)
-	elif abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0 and tgt == player and map.line_clear(position, position + to):
+	elif abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0 and map.line_clear(position, position + to):
 		_range_cd = 2.2 - 0.2 * tier
 		_range_tele = 0.35  # a beat to see it coming
 		_range_aim = to.normalized()
@@ -754,6 +772,7 @@ class Shot extends Node2D:
 	var colour := Color.WHITE
 	var flavour := "dark"
 	var _spr: AnimatedSprite2D = null
+	var _ally_t := 0.0   # allies are checked every 0.05 s (a field can hold a dozen)
 
 	func _ready() -> void:
 		if Art.has("fx", "shot_" + flavour):
@@ -773,6 +792,15 @@ class Shot extends Node2D:
 			if inflicts != "":
 				GameState.status_apply(inflicts, tier)
 			life = 0.0
+		# A round can hit a helper, a turret, the pup or the convoy on its way (c16b_11-02).
+		_ally_t -= delta
+		if life > 0.0 and _ally_t <= 0.0:
+			_ally_t = 0.05
+			for a: Node2D in map.allies():
+				if is_instance_valid(a) and a.has_method("take_damage") and not (a is Player) and a.position.distance_to(position + Vector2(0, 6)) < 10.0:
+					a.call("take_damage", Enemy.ally_damage(damage), position)
+					life = 0.0
+					break
 		if life <= 0.0 or map.rect_blocked(Rect2(position + Vector2(-2, -1), Vector2(4, 2))):
 			var hn := "shot_%s_hit" % flavour
 			if not Art.has("fx", hn):

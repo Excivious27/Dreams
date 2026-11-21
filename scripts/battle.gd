@@ -175,7 +175,7 @@ func _rally_word() -> String:
 
 ## Order words for the helpers' list and the drill card.
 const ORDER_FOLLOW := "Follow me"
-const ORDER_HOLD := "Hold here"
+const ORDER_HOLD := "Guard banner"  # (it sends them back to their banners, not "here": c16b_01-05)
 var orders := 0   # orders you have given this fight (the drill checks a new one per step)
 
 
@@ -298,7 +298,7 @@ func _set_rally(i: int, quiet := false) -> void:
 		_rally_btn.text = _rally_word() + ": hold here"
 		_rally_btn.icon = Art.tex("ui", "rally_guard")
 		if not quiet:
-			_rally_toast("Helpers: hold here, at your banners.")
+			_rally_toast("Helpers: back to guard your banners.")
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
 		_rally_btn.text = "%s ▸ %s" % [_rally_word(), str(points[i]["name"])]
@@ -903,8 +903,9 @@ func interact(id: String) -> void:
 		var kd: Dictionary = HelperUnit.kinds()[k]
 		bo.append("Build helper: %s (◇%d), %s" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())), _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps")))])
 		bk.append(k)
-	bo.append("Build %s (◇%d): stays and holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
-	bk.append("turret")
+	if drill == null or not drill.turret_locked():  # (the drill's helper steps need a helper, not a turret: c16b_01-01)
+		bo.append("Build %s (◇%d): stays and holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
+		bk.append("turret")
 	if str(p["spawner"]) == "":
 		opts = bo + opts
 		keys = bk + keys
@@ -1151,7 +1152,7 @@ func _draw_hud() -> void:
 	_hud.draw_rect(Rect2(260 - bw, y, bw, 5), Color(0, 0, 0, 0.6))
 	_hud.draw_rect(Rect2(260 - bw + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
 	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
-	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by in ["hold", "drill"] else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
+	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by == "hold" else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
 	# The objective, always on screen, in its own banner.
 	var goal := _goal_text() if drill == null else ""  # the drill's step card says what to do
 	if goal != "":

@@ -28,7 +28,7 @@ const LOSE := {
 ## Built per device (c12_13-18): the banner button and the orders control read
 ## the player's own keys/pad words, never touch-only words on keys.
 static func controls_text() -> String:
-	return "Walk into a ring to take a point. %s on your banner: helpers and upgrades (◇ supply). %s for orders: Follow me, Hold here, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how()]
+	return "Walk into a ring to take a point. %s on your banner: helpers and upgrades (◇ supply). %s for orders: Follow me, Guard banner, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how()]
 
 var d: Dictionary = {}
 var mode := ""
@@ -144,7 +144,7 @@ func _ready() -> void:
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
 	_team_box(v)
 	v.add_child(_head("CONTROLS"))
-	v.add_child(_label(controls_text(), 7, Color(0.88, 0.88, 0.92)))
+	v.add_child(_label(BattleDrill.controls_text() if mode == "drill" else controls_text(), 7, Color(0.88, 0.88, 0.92)))  # c16b_01-04
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 6)
