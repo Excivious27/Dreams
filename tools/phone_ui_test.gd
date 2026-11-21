@@ -104,6 +104,8 @@ func _title_pass() -> void:
 	await _check("slots", t)
 	t.call("_show_sound")  # C6 P1: title sound page (volumes before a save loads)
 	await _check("title_sound", t)
+	t.call("_show_net")  # relay: Play together (server field + Reset to default)
+	await _check("play_together", t)
 	GameState.run = {}
 
 

@@ -18,6 +18,9 @@ signal peers_changed
 signal went_home
 
 const TICK := 0.1
+## The live Dreams relay (DigitalOcean droplet, see server/README.md): used out of the box.
+## SaveGame "net_url" holds only a custom server ("" = this default), so a later default move reaches everyone.
+const DEFAULT_URL := "wss://dreams-64-23-239-63.sslip.io"
 var ws: WebSocketPeer = null
 var url := ""
 var room := ""
@@ -58,6 +61,27 @@ func is_host() -> bool:
 	return not online() or _host
 
 
+## The server to use: the saved custom one, else DEFAULT_URL.
+static func server_url() -> String:
+	var u := str(SaveGame.get_value("net_url", "")).strip_edges()
+	return u if u != "" else DEFAULT_URL
+
+
+## True when no custom server is saved.
+static func uses_default() -> bool:
+	return server_url() == DEFAULT_URL
+
+
+## What Host/Join connect to: the typed address, or DEFAULT_URL when the field is empty.
+static func pick_url(u: String) -> String:
+	return u.strip_edges() if u.strip_edges() != "" else DEFAULT_URL
+
+
+## Forget the custom server: back to DEFAULT_URL.
+static func reset_server() -> void:
+	SaveGame.set_value("net_url", "")
+
+
 func _connect(u: String) -> bool:
 	url = u.strip_edges()
 	if url == "":
@@ -70,7 +94,7 @@ func _connect(u: String) -> bool:
 		ws = null
 		disconnected.emit("Couldn't reach %s" % url)
 		return false
-	SaveGame.set_value("net_url", url)
+	SaveGame.set_value("net_url", "" if url == DEFAULT_URL else url)
 	return true
 
 
@@ -87,13 +111,13 @@ func host(u: String) -> void:
 	_host = true
 	_pushed = {}
 	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
-	_connect(u)
+	_connect(pick_url(u))
 
 
 func join(u: String, code: String) -> void:
 	_host = false
 	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
-	_connect(u)
+	_connect(pick_url(u))
 
 
 func leave(why := "left") -> void:

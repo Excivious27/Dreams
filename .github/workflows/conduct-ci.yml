@@ -1,4 +1,4 @@
-name: CONDUCT CI (check shards + 20 bots)
+name: CONDUCT CI (check shards + 20 bots + live relay)
 
 # Heavy CONDUCT runs off the 2-CPU sandbox: push a commit to ci/<label>-<sha>
 # (tools/conduct/ci_run.sh does it). Never deploys; deploy.yml stays the only deploy.
@@ -7,14 +7,18 @@ name: CONDUCT CI (check shards + 20 bots)
 # (bots off) = at most 3 jobs. A failing bot or playtest is retried once (FLAKY if it passes).
 on:
   push:
-    branches: ['ci/**']
+    branches: ['ci/**', 'main']
+    # main: only a relay/co-op change runs this, and then only the live relay check
+    # (the box deploys server/ from main within 10 min; the relay job waits for it).
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: conduct-ci-${{ github.ref }}
+  # main pushes each get their own group: a later push must not cancel a relay check
+  # that is waiting for its server/ deploy.
+  group: conduct-ci-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -29,10 +33,11 @@ jobs:
       bots: ${{ steps.p.outputs.bots }}
       playtest: ${{ steps.p.outputs.playtest }}
       import_key: ${{ steps.p.outputs.import_key }}
+      relay: ${{ steps.p.outputs.relay }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -59,6 +64,19 @@ jobs:
       - name: Read ci/params.json
         id: p
         run: |
+          # A push to main (not a ci/** run): only the live relay check, and only when it
+          # changed server/, scripts/net.gd or the relay tests; it writes ci/params.json for the others.
+          if [ "${{ github.event_name }}" = push ] && [ "${{ github.ref }}" = refs/heads/main ]; then
+            before="${{ github.event.before }}"
+            git fetch -q --depth 1 origin "$before" 2>/dev/null || true
+            ch="$(git diff --name-only "$before" HEAD 2>/dev/null || git diff --name-only HEAD~1 HEAD 2>/dev/null || echo server/)"
+            srv=false; netc=false; rel=false
+            echo "$ch" | grep -q '^server/' && srv=true
+            echo "$ch" | grep -q '^scripts/net\.gd$' && netc=true
+            if [ $srv = true ] || [ $netc = true ] || echo "$ch" | grep -qE '^tools/(relay_test\.js|net_e2e|conduct/relay_live_check\.py)'; then rel=true; fi
+            mkdir -p ci
+            echo "{\"label\": \"main-push\", \"shards\": [], \"bots\": false, \"playtest\": false, \"relay\": $rel, \"server_changed\": $srv, \"e2e\": $rel, \"e2e_strict\": $netc}" > ci/params.json
+          fi
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           try:
@@ -69,9 +87,16 @@ jobs:
           print("shards=" + json.dumps(sh))
           print("bots=" + json.dumps(list(range(1, 21)) if p.get("bots", True) else []))
           print("playtest=" + ("true" if p.get("playtest", True) else "false"))
+          print("relay=" + ("true" if p.get("relay", False) else "false"))
           PY
           echo "import_key=godot-import-${GODOT_VERSION}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          name: params
+          path: ci/params.json
+          retention-days: 7
 
   check:
     needs: plan
@@ -342,6 +367,68 @@ jobs:
           path: out/
           retention-days: 7
 
+  # Live relay check (tools/conduct/relay_live_check.py): two clients on the live wss relay
+  # (create, join, world, round trips -> "RELAY: ok, Xms" in summary.txt) and, when net.gd or
+  # server/ changed, two headless Godot instances playing together on it (tools/net_e2e.sh).
+  # A relay outage only fails the run when this run changed server/ and that server is live.
+  relay:
+    needs: plan
+    if: needs.plan.outputs.relay == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          name: params
+          path: ci
+      - name: Need Godot? (NET E2E)
+        id: e2e
+        run: python3 -c "import json;print('on=' + ('true' if json.load(open('ci/params.json')).get('e2e') else 'false'))" >> "$GITHUB_OUTPUT"
+      - name: Restore Godot (same key as deploy.yml)
+        if: steps.e2e.outputs.on == 'true'
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web
+      - name: Download Godot if the cache missed
+        if: steps.e2e.outputs.on == 'true' && steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          mkdir -p "$HOME/godot"; cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip; mv "Godot_v${V}_linux.x86_64" godot; chmod +x godot; rm godot.zip
+      - if: steps.e2e.outputs.on == 'true'
+        run: echo "$HOME/godot" >> "$GITHUB_PATH"
+      - name: Restore imported assets (same key as deploy.yml)
+        if: steps.e2e.outputs.on == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .godot
+          key: ${{ needs.plan.outputs.import_key }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+      - name: Import (NET E2E)
+        if: steps.e2e.outputs.on == 'true'
+        run: godot --headless --path . --import > /dev/null 2>&1 || true
+      - name: Live relay check (node --version; waits for a server/ deploy up to 15 min)
+        run: |
+          node --version
+          NET_E2E_DIR="$PWD/out/relay/e2e" python3 tools/conduct/relay_live_check.py out/relay ci/params.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relay
+          path: out/relay/
+          retention-days: 7
+
   # Only a run on main itself (workflow_dispatch on main) can save a cache other
   # branches see; ci/** runs restore what deploy.yml saved from main.
   save-import:
@@ -387,8 +474,8 @@ jobs:
           key: ${{ needs.plan.outputs.import_key }}
 
   report:
-    needs: [plan, check, bots, playtest]
-    if: always()
+    needs: [plan, check, bots, playtest, relay]
+    if: always() && (needs.plan.outputs.relay == 'true' || github.ref != 'refs/heads/main' || github.event_name != 'push')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -425,6 +512,7 @@ jobs:
           path: results
       - name: Summarise
         run: |
+          [ -f results/params/params.json ] && cp results/params/params.json ci/params.json
           python3 tools/conduct/ci_summary.py results "${{ github.sha }}" "${{ github.ref_name }}" "${{ github.run_id }}" ci/params.json
           cat results/summary.txt
           cat results/summary.txt >> "$GITHUB_STEP_SUMMARY"

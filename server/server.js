@@ -10,8 +10,15 @@
 //   server -> {t:"msg", from:id, host:bool, d:{...}}   // host = sent by the room's host
 //   client -> {t:"host_save", d:{...}}   // host snapshot kept so late joiners get it (full keys; deltas merge in)
 //   HTTP GET -> 200 "dreams relay ok" (health checks)
+//   HTTP GET /version -> 200 JSON {commit, code, started, rooms, players} (CI's live relay check;
+//     "code" = sha1 of server.js + package-lock.json, so CI can tell which server/ is live with no
+//     git on either side; "commit" = see deployedCommit() below, "unknown" if nothing says)
 //   server -> {t:"world", d:{...}}       // on join: the host's last snapshot
 const http = require("http");
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+const { execFileSync } = require("child_process");
 const { WebSocketServer } = require("ws");
 const PORT = process.env.PORT || 8787;
 const MAX = parseInt(process.env.MAX_PLAYERS || "8", 10);
@@ -25,8 +32,32 @@ const send = (ws, o) => { if (ws.readyState === 1) ws.send(JSON.stringify(o)); }
 
 const GUEST_CAP = 65536;      // a guest only sends small state/act frames
 const HOST_CAP = 1048576;     // the host's world snapshot/deltas can be bigger on a late farm
+// Which code is running, read once at start (the update script restarts us after a deploy).
+// "code" needs nothing on the box; "commit" tries, in order: $DREAMS_COMMIT, the file the
+// update script writes (server/.deployed_commit or the checkout's .deployed_commit, or
+// $DREAMS_VERSION_FILE), then `git rev-parse HEAD` in the checkout we run from (the box runs
+// server.js inside its sparse checkout of the repo), else "unknown".
+const codeHash = () => { const h = crypto.createHash("sha1"); for (const f of ["server.js", "package-lock.json"]) { try { h.update(fs.readFileSync(path.join(__dirname, f))); } catch { h.update(""); } } return h.digest("hex").slice(0, 12); };
+function deployedCommit() {
+  const ok = (s) => /^[0-9a-f]{7,40}$/i.test(String(s || "").trim()) ? String(s).trim() : "";
+  if (ok(process.env.DREAMS_COMMIT)) return ok(process.env.DREAMS_COMMIT);
+  for (const f of [process.env.DREAMS_VERSION_FILE, path.join(__dirname, ".deployed_commit"), path.join(__dirname, "..", ".deployed_commit")]) {
+    if (!f) continue;
+    try { const c = ok(fs.readFileSync(f, "utf8")); if (c) return c; } catch {}
+  }
+  try { return ok(execFileSync("git", ["-c", "safe.directory=*", "-C", __dirname, "rev-parse", "HEAD"], { timeout: 3000, stdio: ["ignore", "pipe", "ignore"] }).toString()) || "unknown"; } catch {}
+  return "unknown";
+}
+const VERSION = { commit: deployedCommit(), code: codeHash(), started: new Date().toISOString() };
 // Plain HTTP answers 200 so Render/Fly health checks pass (instead of a 426 upgrade error).
-const server = http.createServer((req, res) => { res.writeHead(200, { "Content-Type": "text/plain" }); res.end("dreams relay ok\n"); });
+const server = http.createServer((req, res) => {
+  if ((req.url || "").split("?")[0] === "/version") {
+    let players = 0; for (const r of rooms.values()) players += r.peers.size;
+    res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+    return res.end(JSON.stringify({ ...VERSION, rooms: rooms.size, players }) + "\n");
+  }
+  res.writeHead(200, { "Content-Type": "text/plain" }); res.end("dreams relay ok\n");
+});
 const wss = new WebSocketServer({ server, maxPayload: HOST_CAP });
 server.listen(PORT);
 console.log("dreams relay on", PORT);

@@ -401,8 +401,24 @@ func _show_net() -> void:
 	_clear()
 	_page.add_child(_label("Play together", 16))
 	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
-	_net_url = _edit("Server (wss://...)", str(SaveGame.get_value("net_url", "")))
+	# The Dreams server works out of the box; a custom wss:// address can still be typed,
+	# and "Reset to default" puts the Dreams server back.
+	_net_url = _edit("Server (the Dreams server is filled in; change only for your own)", NetNode.server_url())
 	_net_url.max_length = 120
+	_net_url.text = NetNode.server_url()  # _edit's 16-char cap cut the address before max_length grew
+	_net_url.placeholder_text = NetNode.DEFAULT_URL
+	_net_url.get_parent().remove_child(_net_url)
+	var srow := HBoxContainer.new()
+	srow.add_theme_constant_override("separation", 6)
+	_page.add_child(srow)
+	srow.add_child(_net_url)
+	var reset := _button("Reset to default", func() -> void:
+		NetNode.reset_server()
+		_net_url.text = NetNode.DEFAULT_URL
+		if is_instance_valid(_net_status):
+			_net_status.text = "Using the Dreams server.")
+	reset.size_flags_horizontal = SIZE_SHRINK_END
+	srow.add_child(reset)
 	_net_code = _edit("Room code (to join)", "")
 	_net_code.max_length = 4
 	_net_status = _label("", 8, false)

@@ -1,0 +1,10 @@
+# Reference unit: auto-deploy every 10 minutes.
+[Unit]
+Description=Dreams relay auto-deploy every 10 min
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+
+[Install]
+WantedBy=timers.target

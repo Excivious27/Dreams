@@ -1,0 +1,4 @@
+# Reference Caddyfile (auto-HTTPS via Let's Encrypt; sslip.io resolves the name to the IP).
+dreams-64-23-239-63.sslip.io {
+	reverse_proxy 127.0.0.1:8787
+}
