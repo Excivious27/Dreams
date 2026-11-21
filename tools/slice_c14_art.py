@@ -84,7 +84,25 @@ def shrink(crop, box):
 
 # Seamless ground re-renders (c14_17-07 / c14_15-02): 1024 render -> 256 box-filtered, then the
 # Poisson periodic component (tools/make_seamless.seamless) so the edges wrap with no fade ghosts.
-SEAMLESS = ["cobble_warm", "cobble_grey", "cobble_moss"]
+SEAMLESS = ["cobble_warm", "cobble_grey", "cobble_moss", "brick_herring", "flagstone", "ballast"]
+# Patterned ones: crop a whole number of pattern periods (autocorrelation peaks) before the
+# shrink, so the bond lines up across the wrap instead of breaking every 8 cells.
+PATTERNED = ["brick_herring"]
+
+
+def period_crop(im):
+    a = np.asarray(im.convert("L")).astype(float)
+    a -= a.mean()
+    f = np.fft.fft2(a)
+    ac = np.real(np.fft.ifft2(f * np.conj(f)))
+    out = []
+    for prof in (ac[0, :], ac[:, 0]):
+        n = len(prof)
+        p = int(np.argmax(prof[60:n // 2])) + 60
+        k = max(1, (n - 8) // p)
+        lo, hi = k * p - 6, min(n - 1, k * p + 6)
+        out.append(int(np.argmax(prof[lo:hi + 1])) + lo if hi < n else k * p)
+    return im.crop((0, 0, out[0], out[1]))
 
 
 def seamless_jobs(check):
@@ -98,7 +116,10 @@ def seamless_jobs(check):
         src = os.path.join(INC, nm + ".png")
         if not os.path.exists(src):
             continue
-        im = Image.open(src).convert("RGB").resize((256, 256), Image.BOX)
+        im = Image.open(src).convert("RGB")
+        if nm in PATTERNED:
+            im = period_crop(im)
+        im = im.resize((256, 256), Image.BOX)
         a = np.array(im).astype(float)
         o = ms.seamless(a).clip(0, 255).astype(np.uint8)
         o = np.dstack([o, np.full(o.shape[:2], 255, np.uint8)])
