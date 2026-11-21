@@ -127,10 +127,11 @@ func _run() -> void:
 	GameState.run["time"] = 23 * 60
 	sky.aurora = true
 	sky.weather = "clear"
-	for i in 30:
+	for i in 90:
 		await process_frame
-	check(sky._aur_mesh.get_surface_count() == 1, "aurora mesh drawn")
+	check(sky._aur_tris > 100, "aurora ribbons drawn (%d tris)" % sky._aur_tris)
 	await _shot("w_aurora_a")
+	print("dbg dark=", GameState.darkness(), " vis=", sky._aur_node.visible if sky._aur_node else null, " tris=", sky._aur_tris, " w=", sky._w)
 	for i in 120:
 		await process_frame
 	await _shot("w_aurora_b")

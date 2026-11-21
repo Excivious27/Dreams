@@ -259,7 +259,22 @@ func _tick_precip(delta: float) -> void:
 ## the top, bottom and both ends (no hard edge), hues drift, and it breathes. One
 ## mesh, one draw call. Reduced motion: held still and dimmer.
 const AURORA_COLS := [Color(0.35, 1.0, 0.75), Color(0.45, 0.8, 1.0), Color(0.75, 0.5, 1.0)]
-var _aur_mesh := ArrayMesh.new()
+var _aur_tris := 0
+var _aur_node: Node2D
+
+
+## Own node: additive light, not dimmed by the night tint on the weather canvas.
+func _aurora_node() -> Node2D:
+	if _aur_node == null:
+		_aur_node = Node2D.new()
+		var cm := CanvasItemMaterial.new()
+		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		_aur_node.material = cm
+		_aur_node.draw.connect(func() -> void: _draw_aurora(GameState.darkness()))
+		add_child(_aur_node)
+		move_child(_aur_node, 0)
+	_aur_node.visible = true
+	return _aur_node
 
 
 func _draw_aurora(dark: float) -> void:
@@ -270,10 +285,10 @@ func _draw_aurora(dark: float) -> void:
 	var n := 28
 	var breath := (0.8 + 0.2 * sin(t * 0.4)) * (0.6 if calm else 1.0)
 	for r in 3:
-		var base := 70.0 + r * 26.0
-		var hgt := 46.0 - r * 8.0
+		var base := 118.0 + r * 22.0  # crests below the HUD rows, curtains rising behind them
+		var hgt := 56.0 - r * 8.0
 		var c: Color = AURORA_COLS[r].lerp(AURORA_COLS[(r + 1) % 3], 0.5 + 0.5 * sin(t * 0.05 + r * 2.0))
-		var amax := (0.20 - r * 0.04) * dark * breath
+		var amax := (0.42 - r * 0.08) * dark * breath
 		var x0 := -20.0 + sin(t * 0.07 + r) * 12.0
 		var w := _w + 40.0
 		for i in n:
@@ -303,13 +318,10 @@ func _draw_aurora(dark: float) -> void:
 				# short soft fall-off below the crest
 				verts.append_array([mid0, mid1, bot1, mid0, bot1, bot0])
 				cols.append_array([cm0, cm1, c0, cm0, c0, c0])
-	_aur_mesh.clear_surfaces()
-	var arr := []
-	arr.resize(Mesh.ARRAY_MAX)
-	arr[Mesh.ARRAY_VERTEX] = verts
-	arr[Mesh.ARRAY_COLOR] = cols
-	_aur_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
-	_canvas.draw_mesh(_aur_mesh, null)
+	_aur_tris = verts.size() / 3
+	for i in range(0, verts.size(), 6):  # each 6 verts = one quad (2 tris): draw as a 4-point polygon
+		_aur_node.draw_polygon(PackedVector2Array([verts[i], verts[i + 1], verts[i + 2], verts[i + 5]]),
+			PackedColorArray([cols[i], cols[i + 1], cols[i + 2], cols[i + 5]]))
 
 
 func _draw_precip() -> void:
@@ -453,7 +465,9 @@ func _on_draw() -> void:
 			var sx := fposmod(i * span / 3.0 + _ov_t * 6.0, span) - 256.0  # each shadow keeps its own path across the wrap (c14b_16-25)
 			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(sx, 120 + sin(_ov_t * 0.1 + i * 2.1) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 2, 0, 252, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
 	if aurora and overhead and GameState.darkness() > 0.0:
-		_draw_aurora(GameState.darkness())
+		_aurora_node().queue_redraw()
+	elif _aur_node != null and _aur_node.visible:
+		_aur_node.visible = false
 	if overhead:
 		_draw_weather_extras()
 	var ov := _overlay()
