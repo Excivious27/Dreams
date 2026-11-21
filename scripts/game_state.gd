@@ -96,6 +96,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"names": {"character": character_name, "town": town_name, "pet": pet_name},
 		"crystals": 50 if arc == "penguins" else 60,
 		"day": 1,
+		"wx_seed": str(randi()),  # C15 P1 (c15_14-03): each save its own weather (old saves: town name only)
 		"time": DAY_START,
 		"energy": ENERGY_BASE, "max_energy": ENERGY_BASE, "en_ver": 11,
 		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100,
@@ -632,14 +633,14 @@ static func demand(id: String) -> float:
 		if str(crops[cid].get("yield", "")) == id:
 			var cs := str(crops[cid].get("season", "any"))
 			if cs != "any" and cs != se:
-				m *= DEMAND_OUT_OF_SEASON
+				m *= SeasonGoods.OFF_SEASON_DEMAND  # C15 P2 hook (c15_08-04): a small premium, not a free +35% for chesting crops
 			break
 	if t in ["fish", "forage"] and se == "winter":
 		m *= 1.2
 	if t == "forage" and se == "spring":
 		m *= 0.9
 	# Festival week: the town buys everything a little dearer.
-	if absi(day_of_season() - FESTIVAL_DAY) <= 1:
+	if festival_week():  # C15 P1: any festival on the calendar
 		m *= 1.1
 	return m
 
@@ -1634,7 +1635,7 @@ static func energy_cost_f(task: String) -> float:
 		mult *= 1.0 - bonus("farming", "farm_energy")
 	elif task == "pickaxe":
 		mult *= 1.0 - bonus("mining", "mine_energy")
-	if weather_today() == "sun" and task in ["hoe", "axe", "pickaxe"] and in_the_heat():
+	if weather_here() == "sun" and task in ["hoe", "axe", "pickaxe"] and in_the_heat():  # C15 P1: the map's own sky
 		mult *= 1.1  # heat wave: heavy work is a little harder (outdoors only, C8 P1)
 	return base * mult
 
@@ -1825,6 +1826,7 @@ static func roll_forage(region: String) -> String:
 
 static func _roll_forage_once(region: String) -> String:
 	var pool: Array = forage_data.get(region, forage_data.get("wild", forage_data.get("farm", [])))
+	pool = SeasonGoods.forage_pool(region, pool)  # C15 P2 hook: the season's own forage, off-season rows thinned
 	var total := 0.0
 	var ok: Array = []
 	for row in pool:
@@ -2427,7 +2429,8 @@ static func gift_value(npc: String, item: String) -> int:
 
 ## [season, day] from data/npcs.json (tools/gen_heart_perks.py).
 static func birthday_of(npc: String) -> Array:
-	return npcs.get(npc, {}).get("birthday", [])
+	var b: Array = npcs.get(npc, {}).get("birthday", [])
+	return b if not b.is_empty() else CrewSeason.birthday_of(npc)  # C15 integ: crew birthdays (P4)
 
 
 static func is_birthday(npc: String) -> bool:
@@ -3071,7 +3074,7 @@ static func bush_sprite(berries: bool) -> String:
 ## Effects: rain/storm water every crop and keep villagers in (fish bite more);
 ## storm also grounds the balloon and blocks the mountain pass; fog halves
 ## forage respawn visibility (critters hide); snow slows walking a touch;
-## heat (summer "sun") dries unwatered crops twice as fast and drains energy;
+## heat (summer "sun") sets an unwatered outdoor crop back a day (sleep) and makes heavy work harder;
 ## fireflies/petals/leaves are cosmetic.
 const WEATHER_ODDS := {
 	"spring": [["rain", 24], ["storm", 4], ["fog", 8], ["petals", 12], ["wind", 6], ["clear", 46]],
@@ -3080,19 +3083,40 @@ const WEATHER_ODDS := {
 	"winter": [["snow", 36], ["blizzard", 6], ["fog", 10], ["wind", 8], ["clear", 40]],
 }
 
+## C15 P1 (c15_14-17): the city's own odds: wetter, foggier, fewer petals and fireflies.
+const WEATHER_ODDS_GANG := {
+	"spring": [["rain", 30], ["storm", 5], ["fog", 12], ["petals", 5], ["wind", 8], ["clear", 40]],
+	"summer": [["rain", 16], ["storm", 10], ["sun", 18], ["fireflies", 8], ["fog", 6], ["wind", 4], ["clear", 38]],
+	"fall": [["rain", 26], ["storm", 8], ["fog", 18], ["leaves", 14], ["wind", 10], ["clear", 24]],
+	"winter": [["snow", 30], ["blizzard", 6], ["fog", 14], ["wind", 10], ["clear", 40]],
+}
+
 static func weather_for(day: int) -> String:
 	var w: Dictionary = run.get("weather", {})
 	var key := str(day)
 	if w.has(key):
 		return str(w[key])
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(str(run.get("names", {}).get("town", "")) + ":" + key)
+	# C15 fix: week 1 keeps the town-name weather (the paced first week, C8 P1); each save's
+	# own wx_seed takes over from day 8 (energy pacing is reviewed in C16).
+	var wxs := str(run.get("wx_seed", "")) if day > 7 else ""
+	rng.seed = hash(str(run.get("names", {}).get("town", "")) + wxs + ":" + key)
 	var se := season_of(day)
-	var table: Array = WEATHER_ODDS.get(se, WEATHER_ODDS["spring"])
+	var table: Array = (WEATHER_ODDS if is_penguins() else WEATHER_ODDS_GANG).get(se, WEATHER_ODDS["spring"])
 	var roll := rng.randi_range(0, 99)
 	var yesterday := str(w.get(str(day - 1), "clear"))
-	if yesterday in ["rain", "storm"] and rng.randf() < 0.35:
-		roll = rng.randi_range(0, 30)  # weather fronts linger
+	var linger := yesterday in ["rain", "storm", "snow", "blizzard"] and rng.randf() < 0.35
+	if linger:  # C15 P1 (c15_14-04): a lingering front stays wet (never turns into a heat wave)
+		var wet: Array = table.filter(func(p: Array) -> bool: return str(p[0]) in ["rain", "storm", "snow", "blizzard"])
+		var wsum := 0
+		for p: Array in wet:
+			wsum += int(p[1])
+		var wr := rng.randi_range(0, maxi(0, wsum - 1))
+		for p: Array in wet:
+			wr -= int(p[1])
+			if wr < 0:
+				table = [[p[0], 100]]
+				break
 	var acc := 0
 	var pick := "clear"
 	for pair in table:
@@ -3104,8 +3128,10 @@ static func weather_for(day: int) -> String:
 		pick = "clear"  # gentle first days
 	if day == 1 and not is_penguins() and pick in ["clear", "fog", "wind", "petals"]:
 		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
-	if (day - 1) % DAYS_PER_SEASON + 1 == FESTIVAL_DAY:  # C14b P3 (c14b_18-01): festival days get their own sky motion
-		pick = {"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick)
+	var fest_row := Calendar.festival_for_day(day)  # C14b P3 / C15 P1: festival days get their own sky motion
+	if not fest_row.is_empty():
+		var fw := str((fest_row["row"] as Dictionary).get("weather", ""))
+		pick = fw if fw != "" else str({"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick))
 	w[key] = pick
 	# C9: only yesterday/today/tomorrow are ever read; older days would grow the save forever.
 	var keep_from := mini(day, int(run.get("day", day))) - 2
@@ -3120,19 +3146,113 @@ static func weather_today() -> String:
 	return weather_for(int(run.get("day", 1)))
 
 
+## C15 P1 (c15_17-01/14-07/14-23): the weather where the player is: a map with its own
+## sky (mega regions, Frozen Falls, the desert) answers with that sky; indoors and maps
+## without a sky fall back to the calendar weather. Gameplay (snow slow, HUD icon,
+## heat wave) reads this, not weather_today().
+static func weather_here(m: Node = null) -> String:
+	if m == null:
+		var ml := Engine.get_main_loop() as SceneTree
+		if ml != null:
+			m = ml.current_scene
+	if m is GameMap and bool(m.get("has_sky")) and m.get("sky") != null:
+		return str(m.sky.weather)
+	return weather_today()
+
+
+## C15 P1 (c15_14-02): rare special days, at most one a season (rolled from the save's
+## weather seed), some only from year 2. The base weather still rules gameplay; this adds a
+## name for the calendar/board/sleep report and a hook for the sky (Scenery, P5) and mail.
+const SPECIAL_WEATHER := {
+	"spring": [{"id": "spring_shower", "base": ["clear", "petals"], "name": "Rainbow shower", "name_gang": "Neon drizzle", "year": 1}],
+	"summer": [{"id": "meteor_shower", "base": ["clear", "fireflies", "sun"], "name": "Meteor shower tonight", "name_gang": "Rooftop meteor watch", "year": 2}],
+	"fall": [{"id": "harvest_moon", "base": ["clear", "leaves"], "name": "Harvest moon", "name_gang": "Blood-orange moon", "year": 2}],
+	"winter": [{"id": "first_snow", "base": ["snow"], "name": "First snow", "name_gang": "First snow on the skyline", "year": 1},
+		{"id": "aurora_night", "base": ["clear"], "name": "Aurora tonight", "name_gang": "Sky lights over the city", "year": 2}],
+}
+
+
+## The special weather of a save day ("" if none).
+static func special_weather(day := -1) -> String:
+	if day < 1:
+		day = int(run.get("day", 1))
+	var se := season_of(day)
+	var dos := (day - 1) % DAYS_PER_SEASON + 1
+	var yr := (day - 1) / 112 + 1
+	var season_start := day - dos + 1
+	var base := weather_for(day)
+	for sp: Dictionary in SPECIAL_WEATHER.get(se, []):
+		if yr < int(sp["year"]):
+			continue
+		if str(sp["id"]) == "first_snow":
+			# the first snow day of the winter (logged by _snow_depth_step as flag first_snow_<year>)
+			var seen := int(run.get("flags", {}).get("first_snow_%d" % yr, 0))
+			if base in ["snow", "blizzard"] and (seen == day or (seen == 0 and day - int(run.get("day", 1)) in [0, 1])):
+				return "first_snow"
+			continue
+		var rng := RandomNumberGenerator.new()
+		rng.seed = hash(str(run.get("names", {}).get("town", "")) + str(run.get("wx_seed", "")) + ":sp:" + str(sp["id"]) + ":" + str(yr))
+		var pick_day := season_start + rng.randi_range(2, DAYS_PER_SEASON - 2)
+		if pick_day == day and base in sp["base"] and Calendar.festival_for_day(day).is_empty():
+			return str(sp["id"])
+	return ""
+
+
+static func special_weather_name(id: String) -> String:
+	for se in SPECIAL_WEATHER:
+		for sp: Dictionary in SPECIAL_WEATHER[se]:
+			if str(sp["id"]) == id:
+				return str(sp["name"] if is_penguins() else sp["name_gang"])
+	return ""
+
+
 static func forecast() -> String:
 	return weather_for(int(run.get("day", 1)) + 1)
 
 
-## Festivals: one per season, on the 14th, held on the town plaza.
+## C15 P1 (c15_14-05): snow builds up over a winter: run.snow_depth 0..3 (+1 per snow day,
+## +2 per blizzard, -1 per dry day, 0 outside winter). Scenery/world dressing read snow_depth().
+static func _snow_depth_step() -> void:
+	var w := weather_today()
+	var dep := int(run.get("snow_depth", 0))
+	if season() == "winter" and w in ["snow", "blizzard"] and not run["flags"].has("first_snow_%d" % year()):
+		run["flags"]["first_snow_%d" % year()] = int(run["day"])
+	if season() != "winter":
+		dep = 0
+	elif w == "blizzard":
+		dep += 2
+	elif w == "snow":
+		dep += 1
+	elif w in ["clear", "wind", "fog"]:
+		dep -= 1
+	run["snow_depth"] = clampi(dep, 0, 3)
+
+
+static func snow_depth() -> int:
+	return int(run.get("snow_depth", 0)) if season() == "winter" else 0
+
+
+## Festivals: the calendar (scripts/calendar.gd, C15) holds them; this table is the classic four.
 const FESTIVALS := {"spring": ["egg", "Egg Festival"], "summer": ["lantern", "Lantern Festival"], "fall": ["harvest", "Harvest Fair"], "winter": ["star", "Star Festival"]}
 const FESTIVAL_DAY := 14
 
 
 static func festival_today() -> String:
-	if day_of_season() != FESTIVAL_DAY:
-		return ""
-	return str(FESTIVALS[season()][0])
+	return Calendar.festival_id_today()  # C15 P1: Calendar-backed (data/festivals.json or the classic four)
+
+
+## C15 P1: 1-based year of the save (days 1..112 = year 1).
+static func year() -> int:
+	return Calendar.year()
+
+
+## C15 P1: is this a festival week (a plaza festival within a day either side)?
+static func festival_week() -> bool:
+	var d := int(run.get("day", 1))
+	for k in [-1, 0, 1]:
+		if not Calendar.festival_for_day(d + k).is_empty():
+			return true
+	return false
 
 
 ## Day of the week, 0 = Mon (day 1 of a save is a Monday) .. 6 = Sun (C13 contract).
@@ -3158,6 +3278,9 @@ static func story_stage() -> int:
 
 
 static func festival_name(id: String) -> String:
+	var ce := Calendar.find(id)
+	if not ce.is_empty():
+		return str(ce["name"])
 	for se in FESTIVALS:
 		if str(FESTIVALS[se][0]) == id:
 			return str(FESTIVALS[se][1])
@@ -3174,6 +3297,10 @@ static func sky_waters() -> bool:
 
 
 static func weather_name(w: String) -> String:
+	if not run.is_empty() and not is_penguins():  # C15 P1: city words for the same skies
+		var gw: String = {"rain": "Rain", "storm": "Thunderstorm", "fog": "Smog and fog", "petals": "Blossom wind", "wind": "Windy", "sun": "Heat wave", "fireflies": "Warm night", "leaves": "Leaf storm", "snow": "Snow", "blizzard": "Blizzard", "clear": "Clear"}.get(w, "")
+		if gw != "":
+			return gw
 	return {"rain": "Rain", "storm": "Storm", "fog": "Fog", "petals": "Petal breeze", "wind": "Windy", "sun": "Heat wave", "fireflies": "Warm night", "leaves": "Falling leaves", "snow": "Snow", "blizzard": "Blizzard", "clear": "Clear"}.get(w, w.capitalize())
 
 
@@ -3315,7 +3442,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = 0.0
 				tile["watered"] = false
 				continue
-			if tile.get("watered", false) or sky_waters() or hazel_waters:
+			if tile.get("watered", false) or (sky_waters() and not glass) or hazel_waters:  # c15_14-19: no rain under glass
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
@@ -3338,6 +3465,9 @@ static func sleep(passed_out := false) -> Dictionary:
 				if rate > 0.0: report["grown"] += 1
 			else:
 				report["dry"] = int(report.get("dry", 0)) + 1  # planted but never watered: no growth tonight
+				if weather_today() == "sun" and not glass and int(tile.get("days", 0)) > 0:
+					tile["days"] = int(tile["days"]) - 1  # C15 P1 (c15_14-01): the heat wave dries an unwatered plant back a day
+					report["heat_dried"] = int(report.get("heat_dried", 0)) + 1
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
@@ -3373,6 +3503,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		_count_earned(bi, "bank")
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
+	_snow_depth_step()  # C15 P1 (c15_14-05)
 	# Decisions that matter: a bitter companion leaves for the east after day 20.
 	var party_d: Dictionary = run.get("party", {})
 	for cid in party_d.get("bitter", []):
@@ -3421,7 +3552,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])
 	var tp := Ops.morning()
 	if tp > 0:
-		notify("Your blocks paid ◆%d overnight." % tp)
+		notify("Your blocks paid %s overnight." % Money.amount(tp))  # C15 P3 (c15_10-11)
 	var bd := birthday_today()
 	if bd != "":
 		notify("It's %s's birthday today! Gifts count triple." % str(npcs[bd].get("name", bd)))
@@ -3759,7 +3890,7 @@ static func _first_crop_step() -> String:
 	var left := 99
 	for t: Dictionary in planted:
 		left = mini(left, int(crops.get(str(t["crop"]), {}).get("days", 1)) - int(t.get("days", 0)))
-	var w := "The rain waters it today." if sky_waters() else "Watered."
+	var w := ("The %s waters it today." % ("snow" if weather_today() in ["snow", "blizzard"] else "rain")) if sky_waters() else "Watered."  # c15_14-20
 	if left <= 1:
 		return w + " Sleep, and it's ripe tomorrow."
 	return w + " Ripe in %d nights: water it each dry morning." % left

@@ -180,7 +180,7 @@ static func can_propose(id: String) -> bool:
 static func pick_wedding_day(from_day: int) -> int:
 	var d := from_day + int(rule("wedding_after"))
 	for i in 14:
-		if (d % 7) != 0 and dos(d) != GameState.FESTIVAL_DAY:
+		if (d % 7) != 0 and not SeasonCal.is_festival_day(d):  # C15 P3: any festival (Calendar)
 			return d
 		d += 1
 	return d
@@ -330,9 +330,34 @@ static func spouse_line(id: String) -> String:
 		pool = sp["rain"]
 	elif t >= 17:
 		pool = sp.get("evening", pool)
+	# C15 P3 (c15_10-12, 11-09): festival day, the first of a season and every few
+	# days a season line (shared SPOUSE_SEASON pools, gang twins).
+	var fest := GameState.festival_today()
+	var sea: Dictionary = SPOUSE_SEASON if GameState.is_penguins() else SPOUSE_SEASON_GANG
+	var day := int(GameState.run["day"])
+	if fest != "" and sea.has("festival"):
+		pool = sea["festival"]
+	elif GameState.day_of_season() == 1 or (day + hash(id)) % 3 == 0:
+		pool = sea.get(GameState.season(), pool)
 	if pool.is_empty():
 		return "Hi, love."
-	return _fill(str(pool[int(GameState.run["day"]) % pool.size()]), id)
+	return _fill(str(pool[day % pool.size()]), id)
+
+
+const SPOUSE_SEASON := {
+	"spring": ["The first blossom's out by the gate. I wanted you to see it before the wind does.", "Spring smells like rain and fresh soil. I love this season with you."],
+	"summer": ["Long day ahead. I put a jug of cold water by the door for you.", "Let's sit outside tonight. The evenings are too nice to waste."],
+	"fall": ["I picked the last apples while you were out. There's a pie in it for both of us.", "The leaves are turning. Walk with me to town later?"],
+	"winter": ["Fire's lit. Come back early tonight, it's freezing out there.", "Snow on the fields. Quiet day. Stay in for breakfast, at least."],
+	"festival": ["Festival today! Save me a spot on the plaza, I'll find you there.", "It's festival day. I've been looking forward to this all season."],
+}
+const SPOUSE_SEASON_GANG := {
+	"spring": ["Rain's washing the street clean. Take a coat, it won't last.", "Spring on the block. Windows open again. I like hearing the city wake up."],
+	"summer": ["Hot one. I left something cold in the icebox for you.", "Let's get up on the roof tonight. Best breeze in the city."],
+	"fall": ["Wind off the river's cold now. Wear the scarf. Yes, that one.", "Fall nights come early. Don't stay out past dark."],
+	"winter": ["Cold snap. Heater's on, coffee's on. Come home early.", "Snow on the avenue. Quietest the city gets. Stay a while this morning."],
+	"festival": ["Whole block's out tonight. Find me by the hall.", "Festival day. Leave the work at home for once."],
+}
 
 
 # ---------------------------------------------------------------- routine + farm help
@@ -343,7 +368,7 @@ static func spouse_place(npc_id: String) -> String:
 	if npc_id == "" or spouse() != npc_id:
 		return ""
 	var hour := int(GameState.run["time"]) / 60.0
-	if GameState.festival_today() != "" and Npc.in_festival(hour):
+	if Npc.in_festival(hour):
 		return ""  # the festival: with everyone on the plaza
 	if is_job_time():
 		return "work"

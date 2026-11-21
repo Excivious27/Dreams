@@ -57,12 +57,22 @@ WHERE = {
     "book": "Old chests and the library's lost-and-found.",
 }
 
+# C15 P4 seasonal fish (gen_mega_new SEASON_FISH): in the fish log (the museum tanks keep their 20 slots).
+SEASON_FISH_LOG = ["perch", "smelt", "herring", "flounder", "bream", "chub", "flying_fish", "snapper",
+                   "pike", "grayling", "mullet", "mackerel", "sturgeon", "cod", "sardine", "lantern_fish",
+                   "prism_trout", "sailfish", "soul_salmon", "frost_pike"]
+
 # Fish the rod can catch (the fish log); tuna and crab come other ways (museum only).
 NOT_ROD = ["tuna", "crab"]
 
 # Legends: replace a normal catch once per run when the place and moment fit (bypass the value ceiling).
 LEGENDS = {
     "legendary_koi": {"scene": "lake", "lvl": 8, "when": "rain_or_winter_dawn", "chance": 0.04, "first_decor": "dc_koi_scroll"},
+    # C15 P4 (c15_09-14): a legend per season (gen_mega_new SEASON_LEGENDS); "year" = first year it can bite
+    "prism_trout": {"scene": "forest", "lvl": 6, "when": "season:spring", "chance": 0.03},
+    "sailfish": {"scene": "beach", "lvl": 7, "when": "season:summer", "chance": 0.03},
+    "soul_salmon": {"scene": "lake", "lvl": 8, "when": "season:fall", "chance": 0.03},
+    "frost_pike": {"scene": "forest", "lvl": 9, "when": "season:winter", "chance": 0.03, "year": 2},
 }
 
 SHIP_TYPES = ["crop", "fruit", "flower", "herb", "forage", "fish", "ore", "gem", "bar", "treasure"]
@@ -302,21 +312,69 @@ def source_text():
     return "\n".join(out)
 
 
+_SG = None
+_CROP_SE = None
+
+
 def where_hint(item_id, it, forage, pools):
+    """C15 P2 (c15_04-23): the book says when, too: seasonal forage places and a season tag."""
+    global _SG, _CROP_SE
+    if _SG is None:
+        p = os.path.join(ROOT, "data", "season_goods.json")
+        _SG = json.load(open(p)) if os.path.exists(p) else {}
+        _CROP_SE = {}
+        for c in load("crops.json").values():
+            if isinstance(c, dict) and c.get("season", "any") != "any" and isinstance(c.get("season"), str):
+                _CROP_SE.setdefault(c.get("yield"), c["season"])
+    h = _where_hint(item_id, it, forage, pools)
+    ses = list(it.get("forage_seasons") or [])
+    if ses:
+        places = []
+        for se in ses:
+            for reg, rows in _SG.get("forage", {}).get(se, {}).items():
+                if any(r[0] == item_id for r in rows) and reg not in places:
+                    places.append(reg)
+        if h.startswith("Out in the world") or not h.startswith("Forage"):
+            h = "Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
+    elif item_id in (_CROP_SE or {}) and it.get("type") in ("crop", "fruit", "flower"):
+        ses = [_CROP_SE[item_id]]
+    if ses and len(ses) < 4 and not item_id in WHERE:
+        h += " (" + ", ".join(x.title() for x in ses) + ")"
+    return h
+
+
+def _where_hint(item_id, it, forage, pools):
     if item_id in WHERE:
         return WHERE[item_id]
+    if str(LEGENDS.get(item_id, {}).get("when", "")).startswith("season:"):
+        L = LEGENDS[item_id]
+        return "Legend: %s, in %s, fishing %d+%s. Only one exists." % (
+            L["scene"].title(), L["when"][7:], L["lvl"], ", from year %d" % L["year"] if L.get("year") else "")
     if item_id in ANIMAL_WHERE:
         return ANIMAL_WHERE[item_id]
     if item_id in ARTISAN:
         return "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
     t = it.get("type", "")
     places = [k for k, tab in forage.items() if any(e[0] == item_id for e in tab)]
+    if t == "fish" and it.get("seasons"):
+        # C15 P4: seasonal fish carry their own seasons/water/weather/time (c15_09-03).
+        se = "/".join(x.title() for x in it["seasons"])
+        where = "Ponds, rivers and the lake" if it.get("water") == "fresh" else "The sea, the docks and charters"
+        bits = [where, se]
+        if it.get("weather"):
+            bits.append("only in " + "/".join(it["weather"]))
+        if it.get("when"):
+            bits.append("by day" if it["when"] == "day" else "at night")
+        return ", ".join(bits)
     if t == "fish":
         p = pools.get(item_id, [])
         v = int(it.get("value", 0))
         lvl = max(0, (v - 25 - 40 - 10 + 14) // 15)
+        p = [x for x in p if x not in ("fishing", "region", "marina", "beach_fx")]
         s = ", ".join(x.replace("_", " ").title() for x in p[:2]) or "Somewhere in the water"
-        return s + (", at night with bait, fishing %d+" % lvl if v > 75 else "")
+        # mirrors Fishing.T["when"] (fishing.gd): day-only fish are never hinted "at night"
+        when = {"goldfish": "day", "sun_trout": "day"}.get(item_id, "night")
+        return s + (", %s with bait, fishing %d+" % ("by day" if when == "day" else "at night", lvl) if v > 75 else "")
     if places:
         return "Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
     if t in ("ore", "gem", "material", "bar"):
@@ -386,7 +444,7 @@ def main():
     ship = [e for e in ship if e["family"] in ("Animal goods", "Artisan goods")] + [e for e in ship if e["family"] not in ("Animal goods", "Artisan goods")]
 
     fish_log = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)}
-                for i in WINGS[3]["items"] if i not in NOT_ROD]
+                for i in WINGS[3]["items"] + SEASON_FISH_LOG if i not in NOT_ROD]
 
     book_arc = {}  # a book's arc from the station that owns it (book 'robot' -> Robotics Bench, gangsters)
     for _bid, _b in buildings.items():
@@ -452,7 +510,8 @@ def check(out, items, src):
                 bad.append("unknown museum item " + i)
             elif i not in have_icon and items[i].get("icon", i) not in have_icon:
                 bad.append("no icon " + i)
-            elif i not in out["legends"] and not re.search(r"[\"']%s[\"']" % re.escape(i), src):
+            elif i not in out["legends"] and not (items[i].get("water") and items[i].get("seasons")) \
+                    and not re.search(r"[\"']%s[\"']" % re.escape(i), src):  # seasonal fish: Fishing.season_fish
                 bad.append("museum item with no source " + i)
     for m in out["milestones"] + out["decor_milestones"]:
         g = m["give"]

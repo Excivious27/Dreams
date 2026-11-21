@@ -146,6 +146,70 @@ ITEMS = {
     "golden_dice": ("Golden Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
 }
 
+# C15 P4 seasonal fish (art already in art/gen/items under the same id). Each one
+# bites only in its seasons ("seasons"), in its kind of water ("water": fresh =
+# valley ponds/rivers/lake, sea = beach, docks, charters, island seas), and some
+# only in some weather ("weather") or at one time of day ("when"). Fishing.pool_for
+# adds the season's own fish to every home water and the sea (fishing.gd).
+SEASON_FISH = {
+    # spring
+    "perch": ("Perch", 26, 1, "fresh", ["spring", "fall"], {"desc": "Striped and quick. Spring ponds are full of them."}),
+    "smelt": ("Rain Smelt", 34, 1, "fresh", ["spring", "winter"], {"weather": ["rain", "storm", "snow"], "desc": "Silver slivers that only run when it rains (or snows)."}),
+    "herring": ("Herring", 22, 1, "sea", ["spring"], {"desc": "The spring herring run fills the bay in shining shoals."}),
+    "flounder": ("Flounder", 48, 2, "sea", ["spring", "summer"], {"desc": "Flat as a plate, both eyes on one side. Hides in the sand."}),
+    # summer
+    "bream": ("Sun Bream", 36, 1, "fresh", ["summer"], {"desc": "Warm-water bream, gold in the summer light."}),
+    "chub": ("Chub", 20, 1, "fresh", ["summer", "fall"], {"desc": "Chubby, cheeky, and always hungry in summer."}),
+    "flying_fish": ("Flying Fish", 70, 2, "sea", ["summer"], {"when": "day", "desc": "Glides over the summer waves on wing-like fins."}),
+    "snapper": ("Reef Snapper", 95, 2, "sea", ["summer"], {"desc": "Red and proud. Bites hardest on hot afternoons."}),
+    # fall
+    "pike": ("Pike", 64, 2, "fresh", ["fall", "winter"], {"desc": "Long jaws and a long memory. Fall is pike season."}),
+    "grayling": ("Grayling", 44, 1, "fresh", ["fall"], {"desc": "Sail-finned and shy. Shows up when the leaves turn."}),
+    "mullet": ("Red Mullet", 40, 1, "sea", ["fall"], {"desc": "Rosy fall fish with a whiskery chin."}),
+    "mackerel": ("Mackerel", 52, 2, "sea", ["fall", "winter"], {"desc": "Tiger-striped and fast. Cold water brings them close in."}),
+    # winter
+    "sturgeon": ("Sturgeon", 150, 3, "fresh", ["winter"], {"rarity": "uncommon", "desc": "An old armoured giant that wakes for the winter."}),
+    "cod": ("Winter Cod", 46, 1, "sea", ["winter"], {"desc": "The cold-water staple. Every harbour wants winter cod."}),
+    "sardine": ("Sardine", 18, 1, "sea", ["winter", "spring"], {"desc": "Tiny, silver, and never alone."}),
+    "lantern_fish": ("Lanternfish", 120, 3, "sea", ["winter"], {"when": "night", "rarity": "uncommon", "desc": "Glows like a tiny lamp on long winter nights."}),
+}
+# C15 P4 (c15_09-14): one legend per season (Collections.legend_roll "season:<se>"),
+# once per save; the winter one waits for year 2. No "water" key: never in normal pools.
+SEASON_LEGENDS = {
+    "prism_trout": ("Prism Trout", 700, "Spring legend of the forest stream. Its scales split light into rainbows."),
+    "sailfish": ("Sun Sailfish", 760, "Summer legend of the open bay. Leaps highest at noon."),
+    "soul_salmon": ("Lantern Salmon", 740, "Fall legend of the lake. Glows like a paper lantern on fall nights."),
+    "frost_pike": ("Frost King Pike", 820, "Winter legend of the forest stream, seen only in a second winter or later."),
+}
+for _fid, (_nm, _v, _d) in SEASON_LEGENDS.items():
+    ITEMS[_fid] = (_nm, "fish", _v, 5, {"rarity": "legendary", "desc": _d})
+for _fid, (_nm, _v, _t, _w, _se, _ex) in SEASON_FISH.items():
+    ITEMS[_fid] = (_nm, "fish", _v, _t, dict({"rarity": "common", "water": _w, "seasons": _se}, **_ex))
+
+# C15 P4: authored fish-log lines (habitat, season, time) for the older fish; an
+# authored desc is never overwritten by gen_stations' templates (c15_09-17).
+FISH_DESC = {
+    "minnow": "Tiny and everywhere. Ponds and rivers, any season.",
+    "trout": "Speckled river fish. Cold clear water, all year.",
+    "sunfish": "A bright little pond fish. Bites any time of year.",
+    "carp": "Patient pond carp. Lake and ponds, all year.",
+    "bass": "A fighter from the lake and the sea shallows, any season.",
+    "catfish": "Whiskered and slow. Muddy water, and it loves a rainy day.",
+    "salmon": "Rivers and the docks. Strong swimmers, all year.",
+    "eel": "Slick and wriggly. Rain brings eels to the bank.",
+    "puffer": "Puffs up when worried. Warm sea shallows.",
+    "goldfish": "Pond gold. Only bites in daylight.",
+    "starfin": "Fins like starlight. Only bites after dark.",
+    "mooncarp": "Silver as the moon. The lake, at night.",
+    "tuna": "Big and fast. Deep sea water and charters.",
+    "crab": "Picked up in the beach shallows.",
+    "legendary_koi": "The one koi of the lake. Night, bait and the lighthouse lit.",
+    "ghost_fish": "Pale as mist. Gloamwood waters, after dark.",
+    "sun_trout": "Sunscorch's oasis trout. Only bites in daylight.",
+    "ice_pike": "Glacier Pike from Frostpeak's ice-edged lakes.",
+    "sky_fish": "Swims in the clouds over Windward.",
+}
+
 RECIPES = [  # kitchen: known once you've held every ingredient (Crafting.mark_known)
     {"id": "echo_pudding", "name": "Gloam Pudding", "need": {"wisp_spark": 1, "milk": 1, "honey": 1}, "give": "echo_pudding", "tier": 2},
     {"id": "sun_loaf", "name": "Sun Loaf", "need": {"dune_date": 2, "spice": 1, "wheat": 2}, "give": "sun_loaf", "tier": 3},
@@ -1331,6 +1395,10 @@ def main():
         d = {"name": nm, "type": typ, "value": val, "tier": tier}
         d.update(extra)
         I[iid] = d
+    for fid, line in FISH_DESC.items():
+        if fid in I:
+            I[fid]["desc"] = line
+            I[fid].pop("desc_auto", None)
     W("items.json", I)
     # enemies
     E = J("enemies.json")

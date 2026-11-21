@@ -264,6 +264,8 @@ static func charter_why(c: Dictionary) -> String:
 		return "opens with marina tier %d" % int(c.get("tier", 2))
 	if int(st()["charter_day"]) == int(GameState.run["day"]):
 		return "one charter a day"
+	if GameState.weather_today() in ["storm", "blizzard"]:
+		return "Roz won't sail in a storm"  # C15 P4 hook (c15_09-18)
 	if bool(c.get("night", false)) and not GameState.is_night():
 		return "night only"
 	return ""

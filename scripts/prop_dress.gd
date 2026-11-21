@@ -10,7 +10,7 @@ extends RefCounted
 ## (prop/deco layers) or is the spawn, so maps can change without breaking the plan.
 ## id: "group/name" (group defaults to props); layer: "prop" (solid, y-sorted),
 ## "deco" (walk-through) or "under" (ground level, under the player); anim: fps.
-## Winter looks use a "<name>_winter" twin when the art has one.
+## Seasonal looks: SeasonLook.pick (C15 P5) takes a <name>_<season> / table twin when the art has one.
 
 const PATH := "res://data/props_c14.json"
 static var _data := {}
@@ -61,14 +61,12 @@ static func free_cell(host: GameMap, c: Vector2i, layer: String) -> bool:
 ## Ground-level pieces (rails, litter) are painted straight into the map's
 ## drawing (baked with the ground: no nodes, perf), honouring Art.clipped.
 static func draw_under(m: GameMap, host: GameMap, scene_id: String) -> void:
-	var winter := GameState.look_se() == "winter"
 	for e: Dictionary in entries(scene_id):
 		if str(e.get("layer", "")) != "under":
 			continue
 		var gn := split_id(str(e.get("id", "")))
 		var name: String = gn[1]
-		if winter and Art.has(gn[0], name + "_winter"):
-			name += "_winter"
+		name = SeasonLook.pick(gn[0], name)  # C15 P5: any look season (was winter only)
 		var tex := Art.tex(gn[0], name)
 		if tex == null:
 			continue
@@ -93,14 +91,12 @@ static func dress(m: GameMap, scene_id: String, drawing := true) -> int:
 	if host.has_meta("c14_dressed"):
 		return 0
 	host.set_meta("c14_dressed", 0)
-	var winter := GameState.look_se() == "winter"
 	var n := 0
 	for e: Dictionary in entries(scene_id):
 		var gn := split_id(str(e.get("id", "")))
 		var group: String = gn[0]
 		var name: String = gn[1]
-		if winter and Art.has(group, name + "_winter"):
-			name += "_winter"
+		name = SeasonLook.pick(group, name)  # C15 P5: any look season (was winter only)
 		if not Art.has(group, name):
 			continue
 		var cl: Array = e.get("cell", [-1, -1])

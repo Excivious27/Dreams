@@ -1323,3 +1323,74 @@ echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
 if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
   echo "creature_life_test failed"; exit 1
 fi
+
+echo "== C15 P1: calendar (festivals/holidays/events/markets/birthdays, both arcs, years 1-3) =="
+c15calout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/calendar_test.gd 2>&1)"
+echo "$c15calout" | grep -E "FAIL|SCRIPT ERROR|calendar_test" || true
+if ! echo "$c15calout" | grep -q "calendar_test: 0 failures"; then
+  echo "calendar_test failed"; exit 1
+fi
+
+echo "== C15 P1: calendar screen (grid, marks, paging, way out) =="
+c15csout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/calendar_screen_test.gd 2>&1)"
+echo "$c15csout" | grep -E "FAIL|SCRIPT ERROR|calendar_screen_test" || true
+if ! echo "$c15csout" | grep -q "calendar_screen_test: 0 failures"; then
+  echo "calendar_screen_test failed"; exit 1
+fi
+
+echo "== C15 P1: seasonal weather (per-save seed, season tables, city odds, specials, snow depth, heat) =="
+c15wxout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/weather_c15_test.gd 2>&1)"
+echo "$c15wxout" | grep -E "FAIL|SCRIPT ERROR|weather_c15_test" || true
+if ! echo "$c15wxout" | grep -q "weather_c15_test: 0 failures"; then
+  echo "weather_c15_test failed"; exit 1
+fi
+
+echo "== C15 P6: festival year (festivals.json, arc names, year gates, rules) =="
+fcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/festival_calendar_test.gd 2>&1)"
+echo "$fcout" | grep -E "FAIL|SCRIPT ERROR|festival_calendar_test" || true
+if ! echo "$fcout" | grep -q "festival_calendar_test: OK" || echo "$fcout" | grep -q "SCRIPT ERROR"; then
+  echo "festival_calendar_test failed"; exit 1
+fi
+
+echo "== C15 P6: festival activities driven (egg hunt persists + kids, lantern, contest, star, new festivals) =="
+feout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/festival_events_test.gd 2>&1)"
+echo "$feout" | grep -E "FAIL|SCRIPT ERROR|festival_events_test" || true
+if ! echo "$feout" | grep -q "festival_events_test: OK" || echo "$feout" | grep -q "SCRIPT ERROR"; then
+  echo "festival_events_test failed"; exit 1
+fi
+
+echo "== C15 P2: seasonal goods (forage, winter crops, shop rotation, stall seeds, festival treats, decor, dishes) =="
+python3 tools/slice_c15_p2.py check || { echo "slice_c15_p2 check failed"; exit 1; }
+c15sgout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/season_goods_test.gd 2>&1)"
+echo "$c15sgout" | grep -E "FAIL|SCRIPT ERROR|season_goods_test" || true
+if ! echo "$c15sgout" | grep -q "season_goods_test: OK (0 fails)"; then
+  echo "season_goods_test failed"; exit 1
+fi
+
+echo "== C15 P3: villager seasonal life (lines per season/festival, routines, mail, events) =="
+vsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/villager_seasons_test.gd 2>&1)"
+echo "$vsout" | grep -E "FAIL|SCRIPT ERROR|villager_seasons_test" || true
+if ! echo "$vsout" | grep -q "villager_seasons_test: 0 failures"; then
+  echo "villager_seasons_test failed"; exit 1
+fi
+
+echo "== C15 P4: seasonal fish, critters, gang city weather/stalls, racket and crew seasons =="
+c15p4out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_p4_seasons_test.gd 2>&1)"
+echo "$c15p4out" | grep -E "FAIL|SCRIPT ERROR|c15_p4_seasons_test" || true
+if echo "$c15p4out" | grep -q "SCRIPT ERROR" || ! echo "$c15p4out" | grep -q "c15_p4_seasons_test: PASS"; then
+  echo "C15 P4 seasons test failed"; exit 1
+fi
+
+echo "== C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, festival/region music =="
+c15p5out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_p5_test.gd 2>&1)"
+echo "$c15p5out" | grep -E "FAIL|SCRIPT ERROR|c15_p5_test" || true
+if ! echo "$c15p5out" | grep -q "c15_p5_test: 0 failures"; then
+  echo "C15 P5 seasonal look test failed"; exit 1
+fi
+
+echo "== C15 integ: calendar hooks (plaza-only festivals in town, crew birthdays, festival songs/talk, one festival a day) =="
+c15iout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c15_integ_test.gd 2>&1)"
+echo "$c15iout" | grep -E "FAIL|SCRIPT ERROR|c15_integ_test" || true
+if echo "$c15iout" | grep -q "SCRIPT ERROR" || ! echo "$c15iout" | grep -q "c15_integ_test: OK"; then
+  echo "C15 integ test failed"; exit 1
+fi

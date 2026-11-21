@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 COND_SCRIPTS = ["scripts/game_state.gd", "scripts/collections.gd", "scripts/tickets.gd", "scripts/epilogue.gd"]
-EXTRA = {"events.json": {"hours"}}
+EXTRA = {"events.json": {"hours", "year", "dos", "weather", "festival"}}  # events.gd season_ok (C15 P3)
 SEASONS = {"spring", "summer", "fall", "winter"}
 ARCS = {"penguins", "gangsters"}
 

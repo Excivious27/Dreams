@@ -239,6 +239,7 @@ func build() -> void:
 	R = RegionData.region(region_id).duplicate(true)  # parsed once per session (RegionData)
 	_gang_skin()
 	GameState.look_season = str(R.get("season", ""))
+	RegionSeason.skin(R)  # C15 P4: winter ground / seasonal keys (regions.json *_winter)
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
 	music_track = str(R.get("music", "meadow"))
@@ -590,6 +591,7 @@ func after_ready() -> void:
 			if g == "buildings" or p.has("scale"):
 				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in
 		else:
+			nm = WorldGen.winter_look(g, nm)  # C15 P4 (c15_15-16): region props use their snow twins
 			var sp := prop(g, nm, c, w, 0.0, false, psc)  # footprint blocked below, sized to the art
 			RegionAnim.of(self).add(sp, nm, c)  # C14b P4: neon hum, boats bob, drones glide
 			if sp and bool(p.get("under", false)):
@@ -646,6 +648,9 @@ func after_ready() -> void:
 				continue
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
+			if SeasonGoods.is_seasonal_forage(it) and Art.has("items", Hud.icon_for(it)):  # C15 P2 hook: seasonal finds look like themselves
+				prop("items", Hud.icon_for(it), k, 0, 0.0, false, 0.5)
+				continue
 			prop("nature", nm, k, 0, 0.0, false)
 	# Villagers who live out here (regions.json "npcs": [{"id", "cell", "lines": [...]}]).
 	for n in R.get("npcs", []):
@@ -717,6 +722,7 @@ func after_ready() -> void:
 			var c := Vector2i(rng.randi_range(inner.position.x, inner.end.x - 1), rng.randi_range(inner.position.y, inner.end.y - 1))
 			if things.has(c) or blocked.has(c) or avoid.has(c):
 				continue
+			nm = WorldGen.winter_look(g, nm)  # C15 P4: scatter props take their winter twins too
 			var tx := Art.tex(g, nm)
 			var soft := "tuft" in nm or "reeds" in nm or "thistle" in nm or "coral" in nm  # grass you walk through (C14)
 			prop(g, nm, c, 0, 0.0, not soft and tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
@@ -759,8 +765,9 @@ func after_ready() -> void:
 			var se := spawn_enemy(ek, at, _spawn_tier(ek))
 			if se and bool(e.get("colony", false)):
 				se.set_meta("colony_foe", true)
-	if R.has("weather"):
-		set_weather(str(R["weather"]))
+	var rw := RegionSeason.weather(R)
+	if rw != "":
+		set_weather(rw)
 	var flag := region_id + "_seen"
 	if not GameState.run["flags"].has(flag) and R.has("intro"):
 		GameState.run["flags"][flag] = true
@@ -911,7 +918,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 func _shop(thing: Dictionary) -> void:
 	# C8 P6/P4: the shared stall loop (stays open, 1/5/10, price floor, bartering XP).
-	await Shops.stall(self, str(thing.get("who", "Shop")), str(thing.get("greet", "What'll it be?")), thing.get("items", []))
+	# C15 P4 (c15_15-13): a stall's "items_<season>" / "greet_<season>" join its menu by season.
+	await Shops.stall(self, str(thing.get("who", "Shop")), RegionSeason.greet(thing), RegionSeason.items(thing))
 
 
 ## C11b P3 (c11b_02-06/02-07): a "creature" thing (gen_mega_new): after its flag, one creature per run

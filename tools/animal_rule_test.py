@@ -78,8 +78,11 @@ def main():
     intros = open(os.path.join(ROOT, "scripts", "intros.gd")).read()
     for m in re.finditer(r'"((?:[^"\\]|\\.)*)"', intros.split("const LINES", 1)[-1].split("static func", 1)[0]):
         texts.append(("intros.gd", m.group(1)))
+    # C15 P6: the Egg Festival's "egg hunt" (painted eggs, a stash hunt in the gang arc) is a
+    # festival game, not hunting animals; strip those phrases, everything else still fails.
+    NOT_ANIMAL = re.compile(r"\b(egg|eggs|stash|scavenger|treasure)\s+hunts?\b|\bhunt(s|ing)?\s+(for\s+)?(the\s+)?(eggs?|stash|envelopes?)\b", re.I)
     for label, t in texts:
-        if VOICE.search(t):
+        if VOICE.search(NOT_ANIMAL.sub("", t)):
             bad.append("%s reads as hunting/meat: %r" % (label, t[:80]))
     if not drops:
         bad.append("enemies.json has no drops table (test out of date)")

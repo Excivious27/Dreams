@@ -261,8 +261,8 @@ static func why_closed() -> String:
 	var oh := hours()
 	if h < float(oh[0]) or h >= float(oh[1]):
 		return "%s: closed for the night. Open %s." % [name(), TownHours.hours_text(int(oh[0]), int(oh[1]))]
-	if GameState.festival_today() != "" and Npc.in_festival(h):
-		return "%s: closed today. Everyone's at the %s on the plaza." % [name(), GameState.festival_name(GameState.festival_today())]
+	if Calendar.town_festival_today() != "" and Npc.in_festival(h):
+		return "%s: closed today. Everyone's at the %s on the plaza." % [name(), GameState.festival_name(Calendar.town_festival_today())]
 	return ""
 
 
@@ -296,7 +296,7 @@ static func slot_now(npc_id: String) -> Array:
 	if not is_open() or why_closed() != "":
 		return []
 	var v: Dictionary = data().get("visitors", {}).get(npc_id, {})
-	if v.is_empty() or GameState.festival_today() != "" or not GameState.npc_present(npc_id):
+	if v.is_empty() or Calendar.town_festival_today() != "" or not GameState.npc_present(npc_id):
 		return []
 	var t := int(GameState.run["time"]) % 1440
 	var hour := t / 60.0
@@ -353,8 +353,8 @@ static func today_lines() -> Array:
 	var head := "Today is %s." % (str(dw.get("league", "league night")) if day % 7 == 3 else (str(dw.get("rest", "a rest day")) if is_rest_day(day) else "a working day: folks drop in after work and school"))
 	var oh := hours()
 	head += "  Open %s." % TownHours.hours_text(int(oh[0]), int(oh[1]))
-	if GameState.festival_today() != "":
-		head += "  Closed until 6pm for the %s." % GameState.festival_name(GameState.festival_today())
+	if Calendar.town_festival_today() != "":
+		head += "  Closed until 6pm for the %s." % GameState.festival_name(Calendar.town_festival_today())
 	var tv := today_visits()
 	var lines: Array = [{"who": "Front desk", "text": head}]
 	for fl in ["rec", "rec_up"]:

@@ -83,10 +83,11 @@ FORAGE_REGIONS = [
 RULES = {
     "unlock_day": 8,             # nothing in the first week (early-gating band)
     "lead_xp_cap": 4,            # Leadership xp the player gets a night for all chores together
-    "forage": {"spring": ["berry", "wild_herb", "fiber"], "summer": ["berry", "wild_herb", "fiber"],
-               "fall": ["mushroom", "blackberry", "fiber"], "winter": ["fiber", "wild_herb"]},
-    "forage_gang": {"spring": ["fiber", "wild_herb", "berry"], "summer": ["fiber", "wild_herb", "berry"],
-                    "fall": ["fiber", "mushroom", "wild_herb"], "winter": ["fiber", "wild_herb"]},
+    # C15 P2 (c15_02-18): each season forages its own finds (tools/gen_seasons.py items), both arcs.
+    "forage": {"spring": ["fiddlehead", "salmonberry", "wild_herb", "fiber"], "summer": ["berry", "honeysuckle", "cattail", "fiber"],
+               "fall": ["mushroom", "hazelnut", "rosehip", "fiber"], "winter": ["snow_yam", "holly_sprig", "fiber"]},
+    "forage_gang": {"spring": ["fiber", "fiddlehead", "wild_herb"], "summer": ["fiber", "cattail", "berry"],
+                    "fall": ["fiber", "chestnut", "mushroom"], "winter": ["fiber", "snow_yam", "holly_sprig"]},
     "chests": ["chest", "shed"],  # fixed chest keys; placed chests "p:x,y" are added at runtime
     # c11b_06-08: helper spots by progress tier (0..4) plus the Ranch Hand Hut tier, at most slots_max.
     # Farm Hands (Ranching skill nodes, kind "hand") are hired help and don't take a spot.

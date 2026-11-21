@@ -129,7 +129,8 @@ static func market_day() -> bool:
 	if GameState.run.is_empty() or not complete():
 		return false
 	# The 14th is the season festival: everyone is in town, so no market that day.
-	return (GameState.day_of_season() % 7 == 0 and GameState.day_of_season() != GameState.FESTIVAL_DAY) or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
+	# C15 P3: any festival day (SeasonCal: the Calendar when merged).
+	return (GameState.day_of_season() % 7 == 0 and not SeasonCal.is_festival_day(int(GameState.run["day"]))) or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
 
 
 static func rain_spots() -> Array:
@@ -141,7 +142,7 @@ static func rain_spots() -> Array:
 ## In the wet, grown-ups shelter at an open rain spot (shed eaves, greenhouse) and
 ## the kids stay home; Npc.rain_walker villagers keep to their spot.
 static func slot(npc: String, hour: float) -> String:
-	if GameState.run.is_empty() or not known() or GameState.festival_today() != "" or not GameState.npc_present(npc):
+	if GameState.run.is_empty() or not known() or Calendar.town_festival_today() != "" or not GameState.npc_present(npc):
 		return ""
 	var spot := _slot_dry(npc, hour)
 	if spot == "" or spot in rain_spots() or not (GameState.is_wet() or GameState.weather_today() == "blizzard"):

@@ -321,8 +321,9 @@ func _c2_06_checks() -> void:
 		for s in rd["visitors"][id]["slots"]:
 			ok(happened.has("%s:%s" % [id, str(s)]), "%s's visit %s happens (not at work then)" % [id, str(s)])
 	# League night upstairs: every bowler on a lane (two to a lane), lane 4 free.
-	GameState.run["day"] = 24
-	GameState.run["weather"] = {"24": "clear"}
+	# C15: spring 24 is the Blossom Dance (festival days close the rec), so use league night the 10th.
+	GameState.run["day"] = 10
+	GameState.run["weather"] = {"10": "clear"}
 	GameState.run["time"] = 20 * 60 + 15
 	var tv := RecCenter.today_visits()
 	var up_ids: Array = tv["rec_up"].map(func(e: Array) -> String: return str(e[0]))

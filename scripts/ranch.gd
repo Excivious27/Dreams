@@ -542,7 +542,8 @@ static func comfort(uid: String, winter := false) -> int:
 		c = low if has_add(home, "heater") else c
 	elif winter and not has_add(home, "heater"):
 		c = low
-	if (hab.get("likes_season", []) as Array).has(GameState.season()):
+	var likes: Array = hab.get("likes", hab.get("likes_season", []))  # C15 P4 (c15_09-04): gen_ranch writes "likes" (seasons and weather words)
+	if likes.has(GameState.season()) or likes.has(GameState.weather_today()):
 		c += 10
 	if GameState.season() == "summer":
 		c += int(cl.get("hot_bonus", 0))
@@ -569,8 +570,8 @@ static func habitat_text(uid: String) -> String:
 	var sp := species(str(animal(uid).get("species", "")))
 	var hab: Dictionary = sp.get("habitat", {}) if sp.get("habitat", null) is Dictionary else {}
 	var bits: Array = []
-	if not (hab.get("likes_season", []) as Array).is_empty():
-		bits.append("Likes: %s." % ", ".join(hab["likes_season"]))
+	if not (hab.get("likes", hab.get("likes_season", [])) as Array).is_empty():
+		bits.append("Likes: %s." % ", ".join(hab.get("likes", hab.get("likes_season", []))))
 	if bool(hab.get("hates_heater", false)):
 		bits.append("No heater, please.")
 	if str(hab.get("needs_add", "")) != "":

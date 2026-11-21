@@ -273,6 +273,7 @@ func after_ready() -> void:
 			ps.offset = Vector2(0, -crop.size.y / 2.0)
 		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm.begins_with("pelt_") or nm == "round_rug_stone"):
 			to_under(ps)  # rugs lie flat: you walk over them, not behind them
+	InteriorSeason.dress(self)  # C15 P5: wreaths/garlands by look season
 	# Keep the way in and the spot in front of every counter/thing walkable.
 	var dd: Array = I.get("door", [cols / 2, rows - 2])
 	blocked.erase(Vector2i(int(dd[0]), int(dd[1]) - 1))
@@ -475,7 +476,7 @@ func _talk(n: Npc) -> void:
 		await RecCenter.visitor_talk(self, n)  # out for the evening: they talk about the games (and let you at their cabinet)
 	elif hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
-	elif lines.is_empty() or int(GameState.run["day"]) % 2 == 1:
+	elif lines.is_empty() or int(GameState.run["day"]) % 2 == 1 or not Talk.festival_pool(n.id).is_empty() or GameState.is_birthday(n.id) or GameState.day_of_season() == 1:  # C15 P3 (c15_11-20)
 		await say(Talk.line(n.id))  # odd days: the season/weather/arc pool indoors too
 	else:
 		await say([{"who": name, "text": str(lines[int(GameState.run["day"]) % lines.size()])}])

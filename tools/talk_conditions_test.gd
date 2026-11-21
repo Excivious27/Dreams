@@ -66,7 +66,7 @@ func _run() -> void:
 	GameState.run["time"] = 23 * 60
 	check(Talk.phase() == "night", "11pm is night")
 	# Every key in talk.json is one the grammar knows (a typo would silently mute lines).
-	var known := ["always", "spring", "summer", "fall", "winter", "penguins", "gangsters", "rain", "clear", "storm", "fog", "wind", "petals", "blizzard", "heat", "festival", "morning", "afternoon", "evening", "night"]
+	var known := ["always", "spring", "summer", "fall", "winter", "penguins", "gangsters", "rain", "clear", "storm", "fog", "wind", "petals", "blizzard", "heat", "festival", "morning", "afternoon", "evening", "night", "snow", "sun", "leaves", "fireflies", "early", "mid", "late", "first", "eve", "birthday", "y1", "y2", "weekend", "weekday"]  # + C15 P3 seasonal parts
 	for id: String in Talk.data():
 		for key: String in Talk.data()[id]:
 			for part in key.split("&"):

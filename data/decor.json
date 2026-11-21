@@ -97,7 +97,7 @@
   "quest:finale": "dc_u_horse_statue",
   "quest:neon": "dc_arc_neon_joystick",
   "quest:tower": "wr_president_crown",
-  "quest:uptown": "dc_art_cuckoo",
+  "quest:uptown": "dc_casino_table",
   "rec:cup": "dc_stat_trophy",
   "secret:journal": "dc_tt_lantern_moon",
   "secret:lighthouse_lit": "dc_u_lighthouse_lamp",
@@ -105,10 +105,14 @@
   "side:babies": "dc_cat_statue",
   "side:coldy_key": "dc_fest_snow_lantern",
   "side:commander": "dc_flag_a",
+  "side:fall_soup": "dc_globe",
   "side:jim_brother": "dc_antler_hooks",
   "side:kid_school": "dc_bookcase3_a",
   "side:rosa": "dc_kit_stove",
-  "side:specs_wire": "dc_chrome_screen"
+  "side:specs_wire": "dc_chrome_screen",
+  "side:spring_beds": "dc_art_cuckoo",
+  "side:summer_shells": "dc_bulb_plant",
+  "side:winter_tarts": "dc_globe2"
  },
  "house_reserved": {
   "1": [
@@ -1638,9 +1642,9 @@
      "where": "treasure chests (tier 3)"
     },
     {
-     "kind": "quest",
-     "ref": "uptown",
-     "where": "a story reward: winning Uptown"
+     "kind": "side",
+     "ref": "spring_beds",
+     "where": "a side story reward"
     }
    ],
    "sub": "wall_art",
@@ -4409,6 +4413,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "summer_shells",
+     "where": "a side story reward"
     }
    ],
    "sub": "plant",
@@ -5104,6 +5113,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "quest",
+     "ref": "uptown",
+     "where": "a story reward: winning Uptown"
     }
    ],
    "sub": "velvet_lounge",
@@ -8685,6 +8699,7 @@
    "icon": "decor/dc_fest_cornucopia",
    "layer": "floor",
    "name": "Cornucopia",
+   "name_gang": "Produce Crate Spill",
    "price": 520,
    "rarity": "uncommon",
    "rot": 1,
@@ -8729,6 +8744,7 @@
    "icon": "decor/dc_fest_gift_pile",
    "layer": "floor",
    "name": "Gift Pile",
+   "name_gang": "Gift Drop Pile",
    "price": 80,
    "rarity": "common",
    "rot": 1,
@@ -8772,6 +8788,7 @@
    "icon": "decor/dc_fest_hay_scarecrow",
    "layer": "floor",
    "name": "Mini Scarecrow",
+   "name_gang": "Bale Lookout",
    "price": 765,
    "rarity": "uncommon",
    "rot": 1,
@@ -8809,6 +8826,7 @@
    "icon": "decor/dc_fest_leaf_wreath",
    "layer": "wall",
    "name": "Autumn Leaf Wreath",
+   "name_gang": "Door Leaf Wreath",
    "price": 145,
    "rarity": "common",
    "rot": 1,
@@ -8846,6 +8864,7 @@
    "icon": "decor/dc_fest_pumpkins",
    "layer": "floor",
    "name": "Pumpkin Pile",
+   "name_gang": "Stoop Pumpkins",
    "price": 175,
    "rarity": "common",
    "rot": 1,
@@ -8890,6 +8909,7 @@
    "icon": "decor/dc_fest_snow_lantern",
    "layer": "floor",
    "name": "Snow Lantern",
+   "name_gang": "Snow Block Lamp",
    "price": 835,
    "rarity": "uncommon",
    "rot": 1,
@@ -8940,6 +8960,7 @@
    "icon": "decor/dc_fest_stocking",
    "layer": "wall",
    "name": "Hanging Stockings",
+   "name_gang": "Fire-Escape Stocking",
    "price": 130,
    "rarity": "common",
    "rot": 1,
@@ -8978,6 +8999,7 @@
    "icon": "decor/dc_fest_winter_tree",
    "layer": "floor",
    "name": "Festive Pine II",
+   "name_gang": "Neon Winter Tree",
    "price": 1800,
    "rarity": "rare",
    "rot": 1,
@@ -12886,6 +12908,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "fall_soup",
+     "where": "a side story reward"
     }
    ],
    "sub": "study",
@@ -12932,6 +12959,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "winter_tarts",
+     "where": "a side story reward"
     }
    ],
    "sub": "study",
@@ -19065,6 +19097,7 @@
    "icon": "props/cf_picnic_table",
    "layer": "outdoor",
    "name": "Picnic Table",
+   "name_gang": "Block Party Table",
    "price": 435,
    "rarity": "uncommon",
    "rot": 1,
@@ -19477,6 +19510,7 @@
    "icon": "props/fest_fw_00",
    "layer": "outdoor",
    "name": "Harvest Pumpkin Pile",
+   "name_gang": "Stoop Pumpkin Stack",
    "price": 755,
    "rarity": "uncommon",
    "rot": 1,
@@ -19518,6 +19552,7 @@
    "icon": "props/fest_fw_01",
    "layer": "outdoor",
    "name": "Pumpkin Patch Display",
+   "name_gang": "Corner Pumpkin Crates",
    "price": 550,
    "rarity": "uncommon",
    "rot": 1,
@@ -19559,6 +19594,7 @@
    "icon": "props/fest_fw_38",
    "layer": "outdoor",
    "name": "Yard Snowman",
+   "name_gang": "Rooftop Snowman",
    "price": 425,
    "rarity": "uncommon",
    "rot": 1,
@@ -19600,6 +19636,7 @@
    "icon": "props/fest_fw_41",
    "layer": "outdoor",
    "name": "Ice Sculpture",
+   "name_gang": "Ice Block Bust",
    "price": 2600,
    "rarity": "rare",
    "rot": 1,
@@ -19641,6 +19678,7 @@
    "icon": "props/fest_fw_62",
    "layer": "outdoor",
    "name": "Festive Pine",
+   "name_gang": "Neon-Strung Pine",
    "price": 2000,
    "rarity": "rare",
    "rot": 1,
@@ -19682,6 +19720,7 @@
    "icon": "props/fest_ss_02",
    "layer": "outdoor",
    "name": "Maypole",
+   "name_gang": "Ribbon Pole",
    "price": 1500,
    "rarity": "rare",
    "rot": 1,
@@ -19723,6 +19762,7 @@
    "icon": "props/fest_ss_09",
    "layer": "outdoor",
    "name": "Egg Basket Display",
+   "name_gang": "Stash Egg Crate",
    "price": 450,
    "rarity": "uncommon",
    "rot": 1,
@@ -19764,6 +19804,7 @@
    "icon": "props/fest_ss_22",
    "layer": "outdoor",
    "name": "Lantern Garland",
+   "name_gang": "Neon Lantern Garland",
    "price": 400,
    "rarity": "uncommon",
    "rot": 1,
@@ -19805,6 +19846,7 @@
    "icon": "props/fest_ss_31",
    "layer": "outdoor",
    "name": "String Lights",
+   "name_gang": "Fire-Escape Lights",
    "price": 395,
    "rarity": "uncommon",
    "rot": 1,
@@ -20210,6 +20252,7 @@
    "icon": "props/haystack",
    "layer": "outdoor",
    "name": "Hay Bale Stack",
+   "name_gang": "Feed Bale Stack",
    "price": 185,
    "rarity": "common",
    "rot": 1,
@@ -20743,6 +20786,7 @@
    "icon": "props/lanterns_cyan",
    "layer": "outdoor",
    "name": "Teal Paper Lanterns",
+   "name_gang": "Teal Alley Lanterns",
    "price": 460,
    "rarity": "uncommon",
    "rot": 1,
@@ -20784,6 +20828,7 @@
    "icon": "props/lanterns_pink",
    "layer": "outdoor",
    "name": "Pink Paper Lanterns",
+   "name_gang": "Pink Alley Lanterns",
    "price": 470,
    "rarity": "uncommon",
    "rot": 1,
@@ -20825,6 +20870,7 @@
    "icon": "props/lanterns_red",
    "layer": "outdoor",
    "name": "Red Paper Lanterns",
+   "name_gang": "Red Alley Lanterns",
    "price": 560,
    "rarity": "uncommon",
    "rot": 1,
@@ -21363,6 +21409,7 @@
    "icon": "props/scarecrow_pumpkin",
    "layer": "outdoor",
    "name": "Pumpkin Scarecrow",
+   "name_gang": "Pumpkin-Head Lookout",
    "price": 460,
    "rarity": "uncommon",
    "rot": 1,

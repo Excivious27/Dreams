@@ -368,9 +368,20 @@ func pick_slot(i: int) -> void:
 	Music.instance(get_tree()).sfx("unsheathe" if blade else "equip", "ui_tap")
 
 
+var _date_box := Rect2()
+
+
 func _input(event: InputEvent) -> void:
 	# Menus, dialogue and shops sit on top: their taps are theirs.
 	if GameState.run.is_empty() or get_tree().paused or Dialogue.instance(get_tree()).active:
+		return
+	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed and _date_box.has_point((event as InputEventScreenTouch).position):
+		CalendarScreen.open(get_tree())  # C15 P1 (c15_01-01): tap the date box
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and (event as InputEventMouseButton).device != InputEvent.DEVICE_ID_EMULATION and _date_box.has_point((event as InputEventMouseButton).position):
+		CalendarScreen.open(get_tree())
+		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
 		var p: Vector2 = (event as InputEventScreenTouch).position
@@ -479,12 +490,21 @@ func _draw_hud() -> void:
 	if sicon:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
 	var dtxt := "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()]
+	if Calendar.year() > 1:
+		dtxt += " Y%d" % Calendar.year()  # C15 P1: the year from year 2 on
 	var dx := box.position.x + (15 if sicon else 6)
 	c.draw_string(_font, Vector2(dx, box.position.y + 11), dtxt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
+	_date_box = Rect2(box.position + Vector2(ex, y_offset), box.size)  # C15 P1: tap opens the calendar
+	var pip := Calendar.pip_color()  # C15 P1 (c15_01-13): a pip when something's on today
+	if pip.a > 0.0:
+		c.draw_circle(Vector2(box.end.x - 5, box.position.y + 5), 3.0, pip)
+		c.draw_arc(Vector2(box.end.x - 5, box.position.y + 5), 3.0, 0, TAU, 12, dark, 1.0)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 23), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	# Weather sits beside the date (C5 c5_13 #1: under the money it was hidden by 5-digit sums).
-	var wx := GameState.weather_today()
-	if str(GameState.run.get("scene", "")) in ["moon", "station", "jungle"]:
+	var wx := GameState.weather_here()  # C15 P1: the map's own sky (regions), else the calendar weather
+	if wx == "fireflies" and not GameState.is_night():
+		wx = "clear"  # c15_14-16: a warm night is clear by day; the fireflies come out after dark
+	if str(GameState.run.get("scene", "")) in ["moon", "station"]:
 		wx = "sun"  # no rain in space
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
 	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")

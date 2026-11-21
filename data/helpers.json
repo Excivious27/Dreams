@@ -251,43 +251,48 @@
   "forage": {
    "fall": [
     "mushroom",
-    "blackberry",
+    "hazelnut",
+    "rosehip",
     "fiber"
    ],
    "spring": [
-    "berry",
+    "fiddlehead",
+    "salmonberry",
     "wild_herb",
     "fiber"
    ],
    "summer": [
     "berry",
-    "wild_herb",
+    "honeysuckle",
+    "cattail",
     "fiber"
    ],
    "winter": [
-    "fiber",
-    "wild_herb"
+    "snow_yam",
+    "holly_sprig",
+    "fiber"
    ]
   },
   "forage_gang": {
    "fall": [
     "fiber",
-    "mushroom",
-    "wild_herb"
+    "chestnut",
+    "mushroom"
    ],
    "spring": [
     "fiber",
-    "wild_herb",
-    "berry"
+    "fiddlehead",
+    "wild_herb"
    ],
    "summer": [
     "fiber",
-    "wild_herb",
+    "cattail",
     "berry"
    ],
    "winter": [
     "fiber",
-    "wild_herb"
+    "snow_yam",
+    "holly_sprig"
    ]
   },
   "guard_pet_share": 0.25,

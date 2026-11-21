@@ -522,6 +522,8 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 		match str(L.get("when", "")):
 			"rain_or_winter_dawn": ok = w in ["rain", "storm"] or (GameState.season() == "winter" and t < 9 * 60)
 			"night": ok = night
+		if str(L.get("when", "")).begins_with("season:"):  # C15 P4: season legends (+ "year" gate)
+			ok = GameState.season() == str(L["when"]).substr(7) and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 >= int(L.get("year", 1))
 		if ok and randf() < float(L.get("chance", 0.05)):
 			return str(id)
 	return fish

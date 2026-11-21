@@ -137,7 +137,7 @@ static func calc(map, running: bool, mode := "foot", veh_speed := 1.0, veh_water
 				if ss > 0.0:
 					parts.append(["Strong Strokes (skill)", "+%d%%" % roundi(ss * 100)])
 	# Slows come last, after every cap.
-	if GameState.weather_today() in ["snow", "blizzard"] and map != null and is_instance_valid(map) and bool(map.get("has_sky")):
+	if GameState.weather_here(map) in ["snow", "blizzard"] and map != null and is_instance_valid(map) and bool(map.get("has_sky")):
 		m *= SNOW
 		parts.append(["Snow (outdoors)", "×%.1f" % SNOW])
 	if GameState.exhausted():

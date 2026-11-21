@@ -268,6 +268,12 @@ func _arrive_leave() -> void:
 	await _frames(3)
 	check(hz.visible and hz.cell().x >= 48, "[shift] Hazel walks in from the road (at %s)" % hz.cell())
 	check(fi.visible and crew.task_of(fi) == "leaving", "[shift] Finn heads off (%s)" % crew.task_of(fi))
+	# C15 integ: a chat on the way in (here with Finn heading out) must not strand her.
+	await _wait(0.5)
+	hz._start_chat(fi)
+	fi._start_chat(hz)
+	hz._chat_t = 0.3
+	check(hz._path.is_empty(), "[shift] the chat stopped Hazel on the road")
 	for i in 600:
 		await _wait(0.1)
 		if not fi.visible:

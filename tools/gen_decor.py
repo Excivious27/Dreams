@@ -556,9 +556,9 @@ OUTDOOR = [  # art, name, sub, rarity, tier, arc, glow, scale, season, name_gang
     ('props/lantern_lit', 'Yard Lantern', 'lamp', 'common', 1, 'both', True, 0.5, '', ''),
     ('props/ri_lantern_post', 'Rustic Lantern Post', 'lamp', 'common', 1, 'both', True, 0.5, '', ''),
     ('props/dock_lantern', 'Harbour Lantern', 'lamp', 'rare', 3, 'both', True, 0.3, '', ''),
-    ('props/lanterns_red', 'Red Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', ''),
-    ('props/lanterns_pink', 'Pink Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', ''),
-    ('props/lanterns_cyan', 'Teal Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'summer', ''),
+    ('props/lanterns_red', 'Red Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', 'Red Alley Lanterns'),
+    ('props/lanterns_pink', 'Pink Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', 'Pink Alley Lanterns'),
+    ('props/lanterns_cyan', 'Teal Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'summer', 'Teal Alley Lanterns'),
     ('props/planter2_0', 'Terracotta Planter', 'planter', 'common', 1, 'both', False, 0.32, '', ''),
     ('props/planter2_1', 'Stone Planter', 'planter', 'common', 1, 'both', False, 0.32, '', ''),
     ('props/planter2_2', 'Flower Urn', 'planter', 'uncommon', 2, 'both', False, 0.32, '', ''),
@@ -595,7 +595,7 @@ OUTDOOR = [  # art, name, sub, rarity, tier, arc, glow, scale, season, name_gang
     ('props/bench2_iron_a', 'Iron Park Bench', 'bench', 'uncommon', 2, 'both', False, 0.35, '', ''),
     ('props/bench2_green_a', 'Green Park Bench', 'bench', 'common', 1, 'both', False, 0.35, '', ''),
     ('nature/log_bench', 'Log Seat', 'bench', 'common', 1, 'both', False, 0.5, '', ''),
-    ('props/cf_picnic_table', 'Picnic Table', 'bench', 'uncommon', 2, 'both', False, 0.35, 'summer', ''),
+    ('props/cf_picnic_table', 'Picnic Table', 'bench', 'uncommon', 2, 'both', False, 0.35, 'summer', 'Block Party Table'),
     ('props/umbrella_red', 'Red Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
     ('props/umbrella_blue', 'Blue Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
     ('props/umbrella_yellow', 'Yellow Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
@@ -609,21 +609,21 @@ OUTDOOR = [  # art, name, sub, rarity, tier, arc, glow, scale, season, name_gang
     ('props/gold_fence_a', 'Gilded Fence', 'fence', 'epic', 4, 'both', False, 0.5, '', ''),
     ('props/chain_fence_h', 'Chain-Link Fence', 'fence', 'common', 1, 'gangsters', False, 0.5, '', ''),
     ('props/scarecrow_knight', 'Knight Scarecrow', 'garden', 'uncommon', 2, 'both', False, 0.5, '', ''),
-    ('props/scarecrow_pumpkin', 'Pumpkin Scarecrow', 'garden', 'uncommon', 2, 'both', False, 0.5, 'fall', ''),
+    ('props/scarecrow_pumpkin', 'Pumpkin Scarecrow', 'garden', 'uncommon', 2, 'both', False, 0.5, 'fall', 'Pumpkin-Head Lookout'),
     ('props/ri_windmill_small', 'Garden Windmill', 'garden', 'uncommon', 2, 'both', False, 0.5, '', ''),
-    ('props/haystack', 'Hay Bale Stack', 'garden', 'common', 1, 'both', False, 0.5, 'fall', ''),
+    ('props/haystack', 'Hay Bale Stack', 'garden', 'common', 1, 'both', False, 0.5, 'fall', 'Feed Bale Stack'),
     ('props/bee_house', 'Bee Hotel', 'garden', 'uncommon', 2, 'both', False, 0.35, '', ''),
     ('props/signpost_1', 'Garden Signpost', 'garden', 'common', 1, 'both', False, 0.5, '', ''),
     ('props/signpost_2', 'Tall Signpost', 'garden', 'common', 1, 'both', False, 0.5, '', ''),
-    ('props/fest_fw_00', 'Harvest Pumpkin Pile', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', ''),
-    ('props/fest_fw_01', 'Pumpkin Patch Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', ''),
-    ('props/fest_fw_38', 'Yard Snowman', 'seasonal', 'uncommon', 2, 'both', False, 0.3, 'winter', ''),
-    ('props/fest_fw_41', 'Ice Sculpture', 'seasonal', 'rare', 3, 'both', False, 0.25, 'winter', ''),
-    ('props/fest_fw_62', 'Festive Pine', 'seasonal', 'rare', 3, 'both', True, 0.2, 'winter', ''),
-    ('props/fest_ss_02', 'Maypole', 'seasonal', 'rare', 3, 'both', False, 0.25, 'spring', ''),
-    ('props/fest_ss_09', 'Egg Basket Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'spring', ''),
-    ('props/fest_ss_22', 'Lantern Garland', 'seasonal', 'uncommon', 2, 'both', True, 0.3, 'summer', ''),
-    ('props/fest_ss_31', 'String Lights', 'seasonal', 'uncommon', 2, 'both', True, 0.25, 'summer', ''),
+    ('props/fest_fw_00', 'Harvest Pumpkin Pile', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', 'Stoop Pumpkin Stack'),
+    ('props/fest_fw_01', 'Pumpkin Patch Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', 'Corner Pumpkin Crates'),
+    ('props/fest_fw_38', 'Yard Snowman', 'seasonal', 'uncommon', 2, 'both', False, 0.3, 'winter', 'Rooftop Snowman'),
+    ('props/fest_fw_41', 'Ice Sculpture', 'seasonal', 'rare', 3, 'both', False, 0.25, 'winter', 'Ice Block Bust'),
+    ('props/fest_fw_62', 'Festive Pine', 'seasonal', 'rare', 3, 'both', True, 0.2, 'winter', 'Neon-Strung Pine'),
+    ('props/fest_ss_02', 'Maypole', 'seasonal', 'rare', 3, 'both', False, 0.25, 'spring', 'Ribbon Pole'),
+    ('props/fest_ss_09', 'Egg Basket Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'spring', 'Stash Egg Crate'),
+    ('props/fest_ss_22', 'Lantern Garland', 'seasonal', 'uncommon', 2, 'both', True, 0.3, 'summer', 'Neon Lantern Garland'),
+    ('props/fest_ss_31', 'String Lights', 'seasonal', 'uncommon', 2, 'both', True, 0.25, 'summer', 'Fire-Escape Lights'),
     ('props/lux_car_red', 'Red Coupe', 'yard_gang', 'epic', 4, 'gangsters', False, 0.75, '', ''),
     ('props/taxi', 'Retired Cab', 'yard_gang', 'rare', 3, 'gangsters', False, 0.75, '', ''),
     ('props/rusted_car', 'Project Car', 'yard_gang', 'uncommon', 2, 'gangsters', False, 0.6, '', ''),
@@ -765,6 +765,13 @@ for k, e in ENTRIES.items():
     for w, se in FEST_SEASON.items():
         if k == 'dc_fest_' + w and not e.get('season'):
             e['season'] = se
+# C15 P2 (c15_08-06): the gang arc's names for the seasonal sets (same pieces, street words).
+FEST_GANG = {'dc_fest_cornucopia': 'Produce Crate Spill', 'dc_fest_hay_scarecrow': 'Bale Lookout', 'dc_fest_leaf_wreath': 'Door Leaf Wreath',
+             'dc_fest_pumpkins': 'Stoop Pumpkins', 'dc_fest_gift_pile': 'Gift Drop Pile', 'dc_fest_snow_lantern': 'Snow Block Lamp',
+             'dc_fest_stocking': 'Fire-Escape Stocking', 'dc_fest_winter_tree': 'Neon Winter Tree'}
+for k, ng in FEST_GANG.items():
+    if k in ENTRIES and not ENTRIES[k].get('name_gang'):
+        ENTRIES[k]['name_gang'] = ng
 
 # ---- 9) sets (+ comfort bonus when complete) -----------------------------------------------------------
 def ids_where(f):

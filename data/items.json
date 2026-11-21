@@ -283,8 +283,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Tiny and everywhere. Ponds and rivers, any season."
  },
  "trout": {
   "name": "Dream Trout",
@@ -293,8 +292,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Speckled river fish. Cold clear water, all year."
  },
  "boot": {
   "name": "Old Boot",
@@ -421,8 +419,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "A bright little pond fish. Bites any time of year."
  },
  "carp": {
   "name": "Carp",
@@ -431,8 +428,7 @@
   "heal": 1,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Patient pond carp. Lake and ponds, all year."
  },
  "bass": {
   "name": "Bass",
@@ -441,8 +437,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "A fighter from the lake and the sea shallows, any season."
  },
  "catfish": {
   "name": "Catfish",
@@ -451,8 +446,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Whiskered and slow. Muddy water, and it loves a rainy day."
  },
  "salmon": {
   "name": "Salmon",
@@ -461,8 +455,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Rivers and the docks. Strong swimmers, all year."
  },
  "eel": {
   "name": "Eel",
@@ -471,8 +464,7 @@
   "heal": 2,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Slick and wriggly. Rain brings eels to the bank."
  },
  "puffer": {
   "name": "Pufferfish",
@@ -480,8 +472,7 @@
   "value": 60,
   "rarity": "common",
   "tier": 1,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Puffs up when worried. Warm sea shallows."
  },
  "goldfish": {
   "name": "Golden Fish",
@@ -489,8 +480,7 @@
   "value": 120,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Pond gold. Only bites in daylight."
  },
  "starfin": {
   "name": "Starfin",
@@ -499,8 +489,7 @@
   "heal": 3,
   "rarity": "common",
   "tier": 1,
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Fins like starlight. Only bites after dark."
  },
  "mooncarp": {
   "name": "Moon Carp",
@@ -509,8 +498,7 @@
   "heal": 3,
   "rarity": "common",
   "tier": 1,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Silver as the moon. The lake, at night."
  },
  "potion": {
   "name": "Red Potion",
@@ -1094,8 +1082,7 @@
   "value": 60,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Big and fast. Deep sea water and charters."
  },
  "bait": {
   "name": "Bait",
@@ -1112,8 +1099,7 @@
   "value": 30,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Picked up in the beach shallows."
  },
  "legendary_koi": {
   "name": "Legendary Koi",
@@ -1121,8 +1107,7 @@
   "value": 900,
   "rarity": "legendary",
   "tier": 5,
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "The one koi of the lake. Night, bait and the lighthouse lit."
  },
  "bread": {
   "name": "Bread",
@@ -2636,8 +2621,9 @@
   "rarity": "epic",
   "tier": 4,
   "heal": 2,
-  "desc": "Fresh off the branch. Sweet in a pie, or sell it by the crate.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "fruit"
  },
  "storm_berry": {
   "name": "Storm Berry",
@@ -2756,8 +2742,9 @@
   "rarity": "legendary",
   "tier": 5,
   "heal": 2,
-  "desc": "Fresh off the branch. Sweet in a pie, or sell it by the crate.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "tree"
  },
  "summer_fire_mango": {
   "name": "Summer Fire Mango",
@@ -2796,8 +2783,9 @@
   "rarity": "legendary",
   "tier": 5,
   "heal": 2,
-  "desc": "Picked ripe. Lovely in jam, a pie or the press.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "berry"
  },
  "president_grape": {
   "name": "President Grape",
@@ -3279,8 +3267,9 @@
   "rarity": "uncommon",
   "tier": 2,
   "heal": 2,
-  "desc": "Fresh from the farm. Good in the kitchen or the sell box.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "veg"
  },
  "glowleek": {
   "name": "Glowleek",
@@ -3789,8 +3778,9 @@
   "rarity": "epic",
   "tier": 4,
   "heal": 2,
-  "desc": "Fresh from the farm. Good in the kitchen or the sell box.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "veg"
  },
  "cloud_rice": {
   "name": "Cloud Rice",
@@ -3989,8 +3979,9 @@
   "rarity": "legendary",
   "tier": 5,
   "heal": 2,
-  "desc": "Fresh from the farm. Good in the kitchen or the sell box.",
-  "desc_auto": true
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true,
+  "family": "veg"
  },
  "summer_tomato": {
   "name": "Summer Tomato",
@@ -4983,7 +4974,8 @@
   "rarity": "epic",
   "tier": 4,
   "desc": "A pretty bloom. Lovely in a vase or as a gift.",
-  "desc_auto": true
+  "desc_auto": true,
+  "family": "flower"
  },
  "cloud_lotus": {
   "name": "Cloud Lotus",
@@ -5163,7 +5155,8 @@
   "rarity": "legendary",
   "tier": 5,
   "desc": "Cut fresh from the field. Villagers love a bunch.",
-  "desc_auto": true
+  "desc_auto": true,
+  "family": "flower"
  },
  "summer_sunburst": {
   "name": "Summer Sunburst",
@@ -8891,7 +8884,8 @@
   "rarity": "common",
   "tier": 5,
   "desc": "Plant in fall. Grows into Moon Melon in 12 days.",
-  "desc_auto": true
+  "desc_auto": true,
+  "icon": "c15p2_moon_melon_seed"
  },
  "pup_collar_leather": {
   "name": "Leather Collar",
@@ -11591,8 +11585,7 @@
   "value": 150,
   "tier": 2,
   "rarity": "uncommon",
-  "desc": "Still flapping. Grill it or ship it.",
-  "desc_auto": true
+  "desc": "Pale as mist. Gloamwood waters, after dark."
  },
  "echo_pudding": {
   "name": "Gloam Pudding",
@@ -11662,8 +11655,7 @@
   "value": 140,
   "tier": 3,
   "rarity": "uncommon",
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Sunscorch's oasis trout. Only bites in daylight."
  },
  "sun_loaf": {
   "name": "Sun Loaf",
@@ -11785,8 +11777,7 @@
   "value": 210,
   "tier": 4,
   "rarity": "rare",
-  "desc": "A good catch. The fish log has a page for it.",
-  "desc_auto": true
+  "desc": "Glacier Pike from Frostpeak's ice-edged lakes."
  },
  "frost_sorbet": {
   "name": "Frost Sorbet",
@@ -11849,8 +11840,7 @@
   "value": 240,
   "tier": 5,
   "rarity": "rare",
-  "desc": "Caught fresh. Cook it, gift it or sell it.",
-  "desc_auto": true
+  "desc": "Swims in the clouds over Windward."
  },
  "cloud_souffle": {
   "name": "Cloud Souffle",
@@ -23368,5 +23358,981 @@
   "arc": "gangsters",
   "icon": "static_scale",
   "desc": "A finished splice: the Volt Gecko moves into your terrarium (or waits for room)."
+ },
+ "fiddlehead": {
+  "name": "Fiddlehead Fern",
+  "type": "forage",
+  "value": 18,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_fiddlehead",
+  "seasons": [
+   "spring"
+  ],
+  "desc": "A curled fern shoot from the spring woods. Snap it before it unrolls.",
+  "heal": 1,
+  "forage_seasons": [
+   "spring"
+  ]
+ },
+ "salmonberry": {
+  "name": "Salmonberry",
+  "type": "forage",
+  "value": 14,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_salmonberry",
+  "seasons": [
+   "spring"
+  ],
+  "desc": "Tart orange berries that only ripen in spring.",
+  "heal": 1,
+  "forage_seasons": [
+   "spring"
+  ]
+ },
+ "crocus": {
+  "name": "Crocus",
+  "type": "flower",
+  "value": 16,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_crocus",
+  "seasons": [
+   "spring"
+  ],
+  "desc": "The first flower through the thaw.",
+  "forage_seasons": [
+   "spring"
+  ]
+ },
+ "sand_dollar": {
+  "name": "Sand Dollar",
+  "type": "forage",
+  "value": 30,
+  "tier": 1,
+  "rarity": "uncommon",
+  "icon": "c15p2_sand_dollar",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "A flat little shell washed up by the summer tide.",
+  "forage_seasons": [
+   "summer"
+  ]
+ },
+ "sea_glass": {
+  "name": "Sea Glass",
+  "type": "forage",
+  "value": 40,
+  "tier": 2,
+  "rarity": "uncommon",
+  "icon": "c15p2_sea_glass",
+  "seasons": [
+   "spring",
+   "summer"
+  ],
+  "desc": "Sea-smoothed glass, frosted aqua. Summer beaches only.",
+  "forage_seasons": [
+   "spring",
+   "summer"
+  ]
+ },
+ "summer_kelp": {
+  "name": "Summer Kelp",
+  "type": "forage",
+  "value": 12,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_summer_kelp",
+  "seasons": [
+   "summer",
+   "fall"
+  ],
+  "desc": "Warm-water kelp. Salty, chewy, good in a wrap.",
+  "heal": 1,
+  "forage_seasons": [
+   "summer",
+   "fall"
+  ]
+ },
+ "cattail": {
+  "name": "Cattail",
+  "type": "forage",
+  "value": 10,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_cattail",
+  "seasons": [
+   "summer",
+   "fall"
+  ],
+  "desc": "A fuzzy reed head from the summer shallows.",
+  "forage_seasons": [
+   "summer",
+   "fall"
+  ]
+ },
+ "water_lily": {
+  "name": "Water Lily",
+  "type": "flower",
+  "value": 28,
+  "tier": 1,
+  "rarity": "uncommon",
+  "icon": "c15p2_water_lily",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "A white lily that opens on summer ponds.",
+  "forage_seasons": [
+   "summer"
+  ]
+ },
+ "honeysuckle": {
+  "name": "Honeysuckle",
+  "type": "flower",
+  "value": 18,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_honeysuckle",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "Sweet summer blossom. Makes a fragrant tea.",
+  "forage_seasons": [
+   "summer"
+  ]
+ },
+ "chanterelle": {
+  "name": "Chanterelle",
+  "type": "forage",
+  "value": 45,
+  "tier": 2,
+  "rarity": "uncommon",
+  "icon": "c15p2_chanterelle",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "A golden fall mushroom with an apricot smell.",
+  "heal": 2,
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "hazelnut": {
+  "name": "Hazelnut",
+  "type": "forage",
+  "value": 16,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_hazelnut",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Fall nuts in a frilly husk.",
+  "heal": 1,
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "rosehip": {
+  "name": "Rosehip",
+  "type": "forage",
+  "value": 14,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_rosehip",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Red fall hips from the wild rose. Jam-worthy.",
+  "heal": 1,
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "wild_plum": {
+  "name": "Wild Plum",
+  "type": "forage",
+  "value": 20,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_wild_plum",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Small purple plums from a hedgerow in fall.",
+  "heal": 1,
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "chestnut": {
+  "name": "Chestnut",
+  "type": "forage",
+  "value": 18,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_chestnut",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "A glossy fall chestnut. Roast it.",
+  "heal": 1,
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "leaf_bundle": {
+  "name": "Maple Leaf Bundle",
+  "type": "forage",
+  "value": 8,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_leaf_bundle",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Crimson and gold fall leaves, tied with twine.",
+  "forage_seasons": [
+   "fall"
+  ]
+ },
+ "holly_sprig": {
+  "name": "Holly Sprig",
+  "type": "forage",
+  "value": 20,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_holly_sprig",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "Glossy winter holly with red berries. Lovely on a door.",
+  "forage_seasons": [
+   "winter"
+  ]
+ },
+ "snow_yam": {
+  "name": "Snow Yam",
+  "type": "forage",
+  "value": 30,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "c15p2_snow_yam",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "A sweet root dug from under the winter snow.",
+  "heal": 2,
+  "forage_seasons": [
+   "winter"
+  ]
+ },
+ "crystal_icicle": {
+  "name": "Crystal Icicle",
+  "type": "forage",
+  "value": 60,
+  "tier": 2,
+  "rarity": "uncommon",
+  "icon": "c15p2_crystal_icicle",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "An icicle so clear it rings. Only in deep winter.",
+  "forage_seasons": [
+   "winter"
+  ]
+ },
+ "winter_honeycomb": {
+  "name": "Winter Honeycomb",
+  "type": "forage",
+  "value": 55,
+  "tier": 2,
+  "rarity": "uncommon",
+  "icon": "c15p2_winter_honeycomb",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "Wild comb from a sleeping hive. A winter treat.",
+  "heal": 2,
+  "forage_seasons": [
+   "winter"
+  ]
+ },
+ "frostkale_seed": {
+  "name": "Frostkale Seeds",
+  "type": "seed",
+  "crop": "frostkale",
+  "value": 80,
+  "tier": 2,
+  "rarity": "common",
+  "icon": "kale_seed",
+  "desc": "Plant in winter. Grows into Frostkale in 4 days.",
+  "desc_auto": true
+ },
+ "snow_radish": {
+  "name": "Snow Radish",
+  "type": "crop",
+  "value": 26,
+  "tier": 1,
+  "rarity": "common",
+  "heal": 2,
+  "family": "veg",
+  "icon": "c15p2_snow_radish",
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true
+ },
+ "snow_radish_seed": {
+  "name": "Snow Radish Seeds",
+  "type": "seed",
+  "crop": "snow_radish",
+  "value": 11,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "radish_seed",
+  "desc": "Plant in winter. Grows into Snow Radish in 3 days.",
+  "desc_auto": true
+ },
+ "winter_leek": {
+  "name": "Winter Leek",
+  "type": "crop",
+  "value": 38,
+  "tier": 1,
+  "rarity": "common",
+  "heal": 2,
+  "family": "veg",
+  "icon": "c15p2_winter_leek",
+  "desc": "A winter harvest. Good in the kitchen or the sell box.",
+  "desc_auto": true
+ },
+ "winter_leek_seed": {
+  "name": "Winter Leek Seeds",
+  "type": "seed",
+  "crop": "winter_leek",
+  "value": 14,
+  "tier": 1,
+  "rarity": "common",
+  "icon": "leek_seed",
+  "desc": "Plant in winter. Grows into Winter Leek in 5 days.",
+  "desc_auto": true
+ },
+ "frost_squash_seed": {
+  "name": "Frost Squash Seeds",
+  "type": "seed",
+  "crop": "frost_squash",
+  "value": 792,
+  "tier": 4,
+  "rarity": "rare",
+  "icon": "yellow_squash_seed",
+  "desc": "Plant in winter. Grows into Frost Squash in 9 days.",
+  "desc_auto": true
+ },
+ "frost_edelweiss_seed": {
+  "name": "Frost Edelweiss Seeds",
+  "type": "seed",
+  "crop": "frost_edelweiss",
+  "value": 175,
+  "tier": 4,
+  "rarity": "rare",
+  "icon": "poppy_seed",
+  "desc": "Plant in winter. Grows into Frost Edelweiss in 7 days.",
+  "desc_auto": true
+ },
+ "frost_dragonfruit_seed": {
+  "name": "Frost Dragonfruit Seeds",
+  "type": "seed",
+  "crop": "frost_dragonfruit",
+  "value": 792,
+  "tier": 4,
+  "rarity": "rare",
+  "icon": "dragonfruit_seed",
+  "desc": "Plant in winter. Grows into Frost Dragonfruit in 11 days.",
+  "desc_auto": true
+ },
+ "winter_cabbage_seed": {
+  "name": "Winter Cabbage Seeds",
+  "type": "seed",
+  "crop": "winter_cabbage",
+  "value": 656,
+  "tier": 5,
+  "rarity": "epic",
+  "icon": "cabbage_seed",
+  "desc": "Plant in winter. Grows into Winter Cabbage in 12 days.",
+  "desc_auto": true
+ },
+ "winter_snowdrop_seed": {
+  "name": "Winter Snowdrop Seeds",
+  "type": "seed",
+  "crop": "winter_snowdrop",
+  "value": 656,
+  "tier": 5,
+  "rarity": "epic",
+  "icon": "moonflower_seed",
+  "desc": "Plant in winter. Grows into Winter Snowdrop in 12 days.",
+  "desc_auto": true
+ },
+ "penguin_snowberry_seed": {
+  "name": "Penguin Snowberry Seeds",
+  "type": "seed",
+  "crop": "penguin_snowberry",
+  "value": 2312,
+  "tier": 5,
+  "rarity": "epic",
+  "icon": "frostberry_seed",
+  "desc": "Plant in winter. Grows into Penguin Snowberry in 13 days.",
+  "desc_auto": true
+ },
+ "winter_rose_apple_seed": {
+  "name": "Winter Rose Apple Sapling",
+  "type": "seed",
+  "crop": "winter_rose_apple",
+  "value": 700,
+  "tier": 5,
+  "rarity": "epic",
+  "icon": "apple_seed",
+  "desc": "Plant in winter. Grows into Winter Rose Apple in 14 days.",
+  "desc_auto": true
+ },
+ "spring_greens": {
+  "name": "Spring Greens Salad",
+  "type": "food",
+  "value": 62,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 40,
+  "heal": 2,
+  "seasons": [
+   "spring"
+  ],
+  "c15": true,
+  "icon": "salad",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "fiddlehead_saute": {
+  "name": "Fiddlehead Saute",
+  "type": "food",
+  "value": 99,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 45,
+  "heal": 2,
+  "seasons": [
+   "spring"
+  ],
+  "c15": true,
+  "icon": "stir_fry",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "strawberry_shortcake": {
+  "name": "Strawberry Shortcake",
+  "type": "food",
+  "value": 154,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 60,
+  "heal": 3,
+  "seasons": [
+   "spring"
+  ],
+  "c15": true,
+  "icon": "cake",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "asparagus_tart": {
+  "name": "Asparagus Tart",
+  "type": "food",
+  "value": 154,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 55,
+  "heal": 3,
+  "seasons": [
+   "spring"
+  ],
+  "c15": true,
+  "icon": "fruit_tart",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "salmonberry_jam": {
+  "name": "Salmonberry Jam",
+  "type": "food",
+  "value": 78,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 30,
+  "heal": 1,
+  "seasons": [
+   "spring"
+  ],
+  "c15": true,
+  "icon": "jam",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "honeysuckle_tea": {
+  "name": "Honeysuckle Tea",
+  "type": "food",
+  "value": 50,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 35,
+  "heal": 1,
+  "seasons": [
+   "summer"
+  ],
+  "c15": true,
+  "icon": "herbal_tea",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "kelp_salad": {
+  "name": "Sea Kelp Salad",
+  "type": "food",
+  "value": 50,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 45,
+  "heal": 2,
+  "seasons": [
+   "summer"
+  ],
+  "c15": true,
+  "icon": "salad",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "corn_tomato_salad": {
+  "name": "Corn and Tomato Salad",
+  "type": "food",
+  "value": 104,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 50,
+  "heal": 2,
+  "seasons": [
+   "summer"
+  ],
+  "c15": true,
+  "icon": "salad",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "melon_sorbet": {
+  "name": "Melon Sorbet",
+  "type": "food",
+  "value": 259,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 55,
+  "heal": 2,
+  "seasons": [
+   "summer"
+  ],
+  "c15": true,
+  "icon": "dream_pudding",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "chanterelle_stew": {
+  "name": "Chanterelle Stew",
+  "type": "food",
+  "value": 160,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 60,
+  "heal": 3,
+  "seasons": [
+   "fall"
+  ],
+  "c15": true,
+  "icon": "mushroom_stew",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "hazelnut_cake": {
+  "name": "Hazelnut Cake",
+  "type": "food",
+  "value": 106,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 55,
+  "heal": 3,
+  "seasons": [
+   "fall"
+  ],
+  "c15": true,
+  "icon": "sponge_cake",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "rosehip_jam": {
+  "name": "Rosehip Jam",
+  "type": "food",
+  "value": 78,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 30,
+  "heal": 1,
+  "seasons": [
+   "fall"
+  ],
+  "c15": true,
+  "icon": "jam_plum",
+  "desc_auto": true,
+  "desc": "Good food for a long day."
+ },
+ "pumpkin_pie": {
+  "name": "Pumpkin Pie",
+  "type": "food",
+  "value": 168,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 65,
+  "heal": 3,
+  "seasons": [
+   "fall"
+  ],
+  "c15": true,
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "roast_chestnuts": {
+  "name": "Roast Chestnuts",
+  "type": "food",
+  "value": 101,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 35,
+  "heal": 2,
+  "seasons": [
+   "fall"
+  ],
+  "c15": true,
+  "icon": "roast_veg",
+  "desc_auto": true,
+  "desc": "Good food for a long day."
+ },
+ "frostkale_soup": {
+  "name": "Frostkale Soup",
+  "type": "food",
+  "value": 140,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 55,
+  "heal": 3,
+  "seasons": [
+   "winter"
+  ],
+  "c15": true,
+  "icon": "soup_vegetable",
+  "desc_auto": true,
+  "desc": "A home-cooked dish. Restores energy."
+ },
+ "snow_yam_roast": {
+  "name": "Snow Yam Roast",
+  "type": "food",
+  "value": 98,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 50,
+  "heal": 3,
+  "seasons": [
+   "winter"
+  ],
+  "c15": true,
+  "icon": "roast_veg",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "snow_pea_stir_fry": {
+  "name": "Snow Pea Stir-Fry",
+  "type": "food",
+  "value": 154,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 55,
+  "heal": 3,
+  "seasons": [
+   "winter"
+  ],
+  "c15": true,
+  "icon": "stir_fry",
+  "desc_auto": true,
+  "desc": "Good food for a long day."
+ },
+ "citrus_tart": {
+  "name": "Winter Citrus Tart",
+  "type": "food",
+  "value": 87,
+  "tier": 2,
+  "rarity": "uncommon",
+  "energy": 60,
+  "heal": 3,
+  "seasons": [
+   "winter"
+  ],
+  "c15": true,
+  "icon": "fruit_tart",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "honeycomb_toast": {
+  "name": "Honeycomb Toast",
+  "type": "food",
+  "value": 125,
+  "tier": 1,
+  "rarity": "common",
+  "energy": 50,
+  "heal": 2,
+  "seasons": [
+   "winter"
+  ],
+  "c15": true,
+  "icon": "berry_jam_toast",
+  "desc_auto": true,
+  "desc": "Warm, filling and made with care."
+ },
+ "perch": {
+  "name": "Perch",
+  "type": "fish",
+  "value": 26,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "spring",
+   "fall"
+  ],
+  "desc": "Striped and quick. Spring ponds are full of them."
+ },
+ "smelt": {
+  "name": "Rain Smelt",
+  "type": "fish",
+  "value": 34,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "spring",
+   "winter"
+  ],
+  "weather": [
+   "rain",
+   "storm",
+   "snow"
+  ],
+  "desc": "Silver slivers that only run when it rains (or snows)."
+ },
+ "herring": {
+  "name": "Herring",
+  "type": "fish",
+  "value": 22,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "spring"
+  ],
+  "desc": "The spring herring run fills the bay in shining shoals."
+ },
+ "flounder": {
+  "name": "Flounder",
+  "type": "fish",
+  "value": 48,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "spring",
+   "summer"
+  ],
+  "desc": "Flat as a plate, both eyes on one side. Hides in the sand."
+ },
+ "bream": {
+  "name": "Sun Bream",
+  "type": "fish",
+  "value": 36,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "Warm-water bream, gold in the summer light."
+ },
+ "chub": {
+  "name": "Chub",
+  "type": "fish",
+  "value": 20,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "summer",
+   "fall"
+  ],
+  "desc": "Chubby, cheeky, and always hungry in summer."
+ },
+ "flying_fish": {
+  "name": "Flying Fish",
+  "type": "fish",
+  "value": 70,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "summer"
+  ],
+  "when": "day",
+  "desc": "Glides over the summer waves on wing-like fins."
+ },
+ "snapper": {
+  "name": "Reef Snapper",
+  "type": "fish",
+  "value": 95,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "summer"
+  ],
+  "desc": "Red and proud. Bites hardest on hot afternoons."
+ },
+ "pike": {
+  "name": "Pike",
+  "type": "fish",
+  "value": 64,
+  "tier": 2,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "fall",
+   "winter"
+  ],
+  "desc": "Long jaws and a long memory. Fall is pike season."
+ },
+ "grayling": {
+  "name": "Grayling",
+  "type": "fish",
+  "value": 44,
+  "tier": 1,
+  "rarity": "common",
+  "water": "fresh",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Sail-finned and shy. Shows up when the leaves turn."
+ },
+ "mullet": {
+  "name": "Red Mullet",
+  "type": "fish",
+  "value": 40,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "fall"
+  ],
+  "desc": "Rosy fall fish with a whiskery chin."
+ },
+ "mackerel": {
+  "name": "Mackerel",
+  "type": "fish",
+  "value": 52,
+  "tier": 2,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "fall",
+   "winter"
+  ],
+  "desc": "Tiger-striped and fast. Cold water brings them close in."
+ },
+ "sturgeon": {
+  "name": "Sturgeon",
+  "type": "fish",
+  "value": 150,
+  "tier": 3,
+  "rarity": "uncommon",
+  "water": "fresh",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "An old armoured giant that wakes for the winter."
+ },
+ "cod": {
+  "name": "Winter Cod",
+  "type": "fish",
+  "value": 46,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "winter"
+  ],
+  "desc": "The cold-water staple. Every harbour wants winter cod."
+ },
+ "sardine": {
+  "name": "Sardine",
+  "type": "fish",
+  "value": 18,
+  "tier": 1,
+  "rarity": "common",
+  "water": "sea",
+  "seasons": [
+   "winter",
+   "spring"
+  ],
+  "desc": "Tiny, silver, and never alone."
+ },
+ "lantern_fish": {
+  "name": "Lanternfish",
+  "type": "fish",
+  "value": 120,
+  "tier": 3,
+  "rarity": "uncommon",
+  "water": "sea",
+  "seasons": [
+   "winter"
+  ],
+  "when": "night",
+  "desc": "Glows like a tiny lamp on long winter nights."
+ },
+ "prism_trout": {
+  "name": "Prism Trout",
+  "type": "fish",
+  "value": 700,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Spring legend of the forest stream. Its scales split light into rainbows."
+ },
+ "sailfish": {
+  "name": "Sun Sailfish",
+  "type": "fish",
+  "value": 760,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Summer legend of the open bay. Leaps highest at noon."
+ },
+ "soul_salmon": {
+  "name": "Lantern Salmon",
+  "type": "fish",
+  "value": 740,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Fall legend of the lake. Glows like a paper lantern on fall nights."
+ },
+ "frost_pike": {
+  "name": "Frost King Pike",
+  "type": "fish",
+  "value": 820,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Winter legend of the forest stream, seen only in a second winter or later."
  }
 }

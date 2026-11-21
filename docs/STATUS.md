@@ -2,7 +2,20 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C15 integ CI fix 2: NPC chats never stop someone mid-walk and a chat re-paths them home (volunteer stranded on the road); Dialogue.input_blocked frame-bounded (fast CI outlasted the playtest's 20-frame wait)
+
+## 2026-11-21 — C15 integ: plaza-only festivals pull the town (Calendar.town_festival_today), gilt_gala -> winter 23, SeasonCal wraps Calendar, crew birthdays on the gang calendar, Crew at festivals, festival row icons/where, talk lines for new festivals, row music stand-ins; test tools/c15_integ_test.gd
+
 ## 2026-11-21 — C14b docs: CONDUCT-14b report, Guide 42, ART-PROMPTS-CONDUCT-14b, TEXTS['14b'], 6 inventory rows (animation core, water features, weather FX, character idles, creature motion, magic FX), PROJECT-MEMORY entry; final CI c14bi pending.
+## 2026-11-21 — C15 P2: seasonal goods: 19 seasonal forage items with art and per-season valley forage pools (winter drops berries/flowers), 10 winter crops (Maple 4 winter seeds + 4 rare), 19 seasonal dishes, seasonal shop goods + year-2 goods in 7 shops, greenhouse off-season seeds, stall seeds filtered by season, festival stall season treats, seasonal decor sells in season (carpenter shelf all season, gang names), off-season sell premium 1.35 -> 1.1, book season hints, helper chores forage the season (tools/gen_seasons.py, scripts/season_goods.gd, tools/season_goods_test.gd)
+
+## 2026-11-21 — C15 P1: Calendar engine (scripts/calendar.gd; festivals.json/calendar.json/marina/birthdays, year gates), calendar screen (board, menu, HUD date tap + pip), seasonal weather (per-save seed, city odds, specials, snow depth, heat wave, weather_here), tests calendar/calendar_screen/weather_c15
+## 2026-11-21 — C15 P6: festivals.json (19 rows, full year both arcs, year gates), egg hunt persists + kids race + golden egg, festival hours gate, gang names/hosts/dressing, 5 new town festivals (FestivalExtra), 12 c15p6 props
+## 2026-11-21 — C15 P3 art: winter walkers for every town villager, spring outfits for 10, Star/Lantern festival outfits (5 dreams-image renders, slice_c15_p3.py); SeasonCal reads P1's Calendar when merged
+
+## 2026-11-21 — C15 P3: villager seasonal life: seasonal Talk parts + ~330 seasonal/festival/eve/birthday lines, seasonal routines and activities, festival crowd spread, in-season mail gifts and season letters, real festival-eve hours, 8 seasonal scenes (year 2 set), spring scenes stay in spring; villager_seasons_test
+## 2026-11-21 — C15 P4: seasonal fish (16 new, season/weather/time filtered, sea vs fresh), seasonal critters, gang city seasons (Neon weather, winter ground and 23 snow prop twins, seasonal stalls and Hideout/Neon dressing), racket season mod + festival truce, crew seasonal lines, birthdays and festival attendance; test c15_p4_seasons_test
+## 2026-11-21 — C15 P5: SeasonLook (every props/nature sprite takes its look-season twin via GameMap.prop/PropDress/border stands; 21 new c15p5_* twins: plaza planters spring/fall/winter, kiosk fall/winter, arbour/umbrella/benches winter, city street tree fall/winter, hedge trees/pots/topiary winter, mid_oak fall, planter mums/asters fall), InteriorSeason (seasonal wall wreaths/garlands, fall harvest table, frosted/amber window tints), meadow beds by season, sprinkle per season (summer leaves, winter flurries) and none over treeless/industrial maps, rain readable on phones, MusicResolve.festival_track (gang never hears a penguin fair tune; harvest stand-in) + region look season/sky weather for music; test tools/c15_p5_test.gd.
 
 ## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
 

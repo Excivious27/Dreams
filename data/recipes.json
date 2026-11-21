@@ -521,6 +521,234 @@
    "tier": 4
   },
   {
+   "id": "spring_greens",
+   "name": "Spring Greens Salad",
+   "need": {
+    "fiddlehead": 1,
+    "wild_leek": 1,
+    "dandelion": 1
+   },
+   "give": "spring_greens",
+   "tier": 1,
+   "season": "spring",
+   "c15": true
+  },
+  {
+   "id": "fiddlehead_saute",
+   "name": "Fiddlehead Saute",
+   "need": {
+    "fiddlehead": 2,
+    "wild_garlic": 1
+   },
+   "give": "fiddlehead_saute",
+   "tier": 1,
+   "season": "spring",
+   "c15": true
+  },
+  {
+   "id": "strawberry_shortcake",
+   "name": "Strawberry Shortcake",
+   "need": {
+    "strawberry": 3,
+    "wheat": 1,
+    "#milk": 1
+   },
+   "give": "strawberry_shortcake",
+   "tier": 2,
+   "season": "spring",
+   "c15": true
+  },
+  {
+   "id": "asparagus_tart",
+   "name": "Asparagus Tart",
+   "need": {
+    "asparagus": 2,
+    "wheat": 1
+   },
+   "give": "asparagus_tart",
+   "tier": 2,
+   "season": "spring",
+   "c15": true
+  },
+  {
+   "id": "salmonberry_jam",
+   "name": "Salmonberry Jam",
+   "need": {
+    "salmonberry": 4
+   },
+   "give": "salmonberry_jam",
+   "tier": 1,
+   "season": "spring",
+   "c15": true
+  },
+  {
+   "id": "honeysuckle_tea",
+   "name": "Honeysuckle Tea",
+   "need": {
+    "honeysuckle": 2
+   },
+   "give": "honeysuckle_tea",
+   "tier": 1,
+   "season": "summer",
+   "c15": true
+  },
+  {
+   "id": "kelp_salad",
+   "name": "Sea Kelp Salad",
+   "need": {
+    "summer_kelp": 2,
+    "cucumber": 1
+   },
+   "give": "kelp_salad",
+   "tier": 1,
+   "season": "summer",
+   "c15": true
+  },
+  {
+   "id": "corn_tomato_salad",
+   "name": "Corn and Tomato Salad",
+   "need": {
+    "corn": 1,
+    "tomato": 2
+   },
+   "give": "corn_tomato_salad",
+   "tier": 1,
+   "season": "summer",
+   "c15": true
+  },
+  {
+   "id": "melon_sorbet",
+   "name": "Melon Sorbet",
+   "need": {
+    "melon": 1,
+    "honey": 1
+   },
+   "give": "melon_sorbet",
+   "tier": 2,
+   "season": "summer",
+   "c15": true
+  },
+  {
+   "id": "chanterelle_stew",
+   "name": "Chanterelle Stew",
+   "need": {
+    "chanterelle": 2,
+    "potato": 1
+   },
+   "give": "chanterelle_stew",
+   "tier": 2,
+   "season": "fall",
+   "c15": true
+  },
+  {
+   "id": "hazelnut_cake",
+   "name": "Hazelnut Cake",
+   "need": {
+    "hazelnut": 3,
+    "wheat": 2
+   },
+   "give": "hazelnut_cake",
+   "tier": 2,
+   "season": "fall",
+   "c15": true
+  },
+  {
+   "id": "rosehip_jam",
+   "name": "Rosehip Jam",
+   "need": {
+    "rosehip": 4
+   },
+   "give": "rosehip_jam",
+   "tier": 1,
+   "season": "fall",
+   "c15": true
+  },
+  {
+   "id": "pumpkin_pie",
+   "name": "Pumpkin Pie",
+   "need": {
+    "pumpkin": 1,
+    "wheat": 1,
+    "#milk": 1
+   },
+   "give": "pumpkin_pie",
+   "tier": 2,
+   "season": "fall",
+   "c15": true
+  },
+  {
+   "id": "roast_chestnuts",
+   "name": "Roast Chestnuts",
+   "need": {
+    "chestnut": 4
+   },
+   "give": "roast_chestnuts",
+   "tier": 1,
+   "season": "fall",
+   "c15": true
+  },
+  {
+   "id": "frostkale_soup",
+   "name": "Frostkale Soup",
+   "need": {
+    "frostkale": 2,
+    "snow_yam": 1
+   },
+   "give": "frostkale_soup",
+   "tier": 1,
+   "season": "winter",
+   "c15": true
+  },
+  {
+   "id": "snow_yam_roast",
+   "name": "Snow Yam Roast",
+   "need": {
+    "snow_yam": 2,
+    "wild_herb": 1
+   },
+   "give": "snow_yam_roast",
+   "tier": 1,
+   "season": "winter",
+   "c15": true
+  },
+  {
+   "id": "snow_pea_stir_fry",
+   "name": "Snow Pea Stir-Fry",
+   "need": {
+    "snow_pea": 3,
+    "winter_leek": 1
+   },
+   "give": "snow_pea_stir_fry",
+   "tier": 2,
+   "season": "winter",
+   "c15": true
+  },
+  {
+   "id": "citrus_tart",
+   "name": "Winter Citrus Tart",
+   "need": {
+    "orange": 1,
+    "lemon": 1,
+    "wheat": 1
+   },
+   "give": "citrus_tart",
+   "tier": 2,
+   "season": "winter",
+   "c15": true
+  },
+  {
+   "id": "honeycomb_toast",
+   "name": "Honeycomb Toast",
+   "need": {
+    "winter_honeycomb": 1,
+    "bread": 1
+   },
+   "give": "honeycomb_toast",
+   "tier": 1,
+   "season": "winter",
+   "c15": true
+  },
+  {
    "id": "grand_omelette",
    "name": "Grand Omelette",
    "need": {
