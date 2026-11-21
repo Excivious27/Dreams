@@ -954,6 +954,13 @@ if ! echo "$stout" | grep -q "SAVE TRANSFER DONE 0"; then
   echo "save_transfer_test failed"; exit 1
 fi
 
+echo "== S1 P2: achievements, stats, rich presence =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/achievements_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|achievements_test" || true
+if ! echo "$acout" | grep -q "achievements_test: 0 failures"; then
+  echo "achievements_test failed"; exit 1
+fi
+
 echo "== C9 P6: forest border buckets =="
 bbout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/border_bucket_test.gd 2>&1)"
 echo "$bbout" | grep -E "FAIL|SCRIPT ERROR|border_bucket_test" || true

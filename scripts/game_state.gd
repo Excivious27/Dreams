@@ -320,6 +320,7 @@ static func _migrate() -> void:
 
 
 static func save() -> void:
+	Achievements.scan()  # S1 P2: state-derived achievements, written into the same flush
 	# A copy: the save cache must never share the live day in progress.
 	SaveGame.set_value(save_key(), (Net.save_view(run) as Dictionary).duplicate(true))
 
@@ -2364,6 +2365,8 @@ static func notify(text: String) -> void:
 	if not run.has("notes"):
 		run["notes"] = []
 	(run["notes"] as Array).append(text)
+	while (run["notes"] as Array).size() > 40:
+		(run["notes"] as Array).pop_front()  # S1 P2 (s1_05-06): keeps cloud saves small when no map reads them
 
 
 static func gift_value(npc: String, item: String) -> int:

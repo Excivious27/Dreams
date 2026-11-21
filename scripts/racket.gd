@@ -263,6 +263,7 @@ static func laundromat(m: GameMap) -> void:
 			continue
 		GameState.add_item(pick, -n)
 		wash[pick] = int(wash.get(pick, 0)) + n
+		GameState.run["racket_washed"] = int(GameState.run.get("racket_washed", 0)) + n * pf  # S1 P2: Squeaky Clean
 		m.hud.toast("%d in the wash." % n, Color(0.8, 0.95, 1.0))
 
 
