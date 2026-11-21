@@ -173,15 +173,19 @@ func _steer() -> void:
 
 
 func _pop() -> void:
-	var free: Array = []
-	for i in 9:
-		if holes[i]["kind"] == "" and float(holes[i]["up"]) <= 0.0:
-			free.append(i)
-	if free.is_empty():
-		return
-	var i: int = free[rng.randi() % free.size()]
-	var pace := _pace()
+	# Both draws happen on every pop, and the hole is the first free one from a drawn
+	# start: the stream never depends on which critters this player hit (c17_06-31).
+	var start := rng.randi() % 9
 	var roll := rng.randf()
+	var i := -1
+	for k in 9:
+		var h := (start + k) % 9
+		if holes[h]["kind"] == "" and float(holes[h]["up"]) <= 0.0:
+			i = h
+			break
+	if i < 0:
+		return
+	var pace := _pace()
 	var kind := "grump"
 	if roll < 0.08 + pace * 0.06:
 		kind = "gold"

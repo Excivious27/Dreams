@@ -39,6 +39,9 @@ var bot: Dictionary = {}    # tests: action -> held
 var t := 0.0                # seconds since open (draw animation clock)
 var play_t := 0.0           # seconds in the current round
 var rng := RandomNumberGenerator.new()
+## Particles and shake draw from their own stream, so effects never shift the round's
+## random stream (duels on a shared seed stay identical whatever each player hits, c17_06-31).
+var fx_rng := RandomNumberGenerator.new()
 
 var _canvas: Control
 var _font: Font
@@ -582,9 +585,9 @@ func say(text: String, secs := 1.6) -> void:
 
 func burst(p: Vector2, col: Color, n := 10, speed := 70.0, size := 2.0, grav := 160.0) -> void:
 	for i in n:
-		var a := rng.randf() * TAU
-		var s := speed * (0.4 + rng.randf() * 0.8)
-		_parts.append({"p": p, "v": Vector2(cos(a), sin(a)) * s, "life": 0.4 + rng.randf() * 0.4, "max": 0.8, "c": col, "s": size, "g": grav})
+		var a := fx_rng.randf() * TAU
+		var s := speed * (0.4 + fx_rng.randf() * 0.8)
+		_parts.append({"p": p, "v": Vector2(cos(a), sin(a)) * s, "life": 0.4 + fx_rng.randf() * 0.4, "max": 0.8, "c": col, "s": size, "g": grav})
 
 
 func float_text(p: Vector2, text: String, col := Color(1, 0.95, 0.5)) -> void:
@@ -696,7 +699,7 @@ func _draw_all() -> void:
 	var c := _canvas
 	var sh := Vector2.ZERO
 	if _shake > 0.0:
-		sh = Vector2(rng.randf_range(-_shake, _shake), rng.randf_range(-_shake, _shake)).round()
+		sh = Vector2(fx_rng.randf_range(-_shake, _shake), fx_rng.randf_range(-_shake, _shake)).round()
 	# Play area (clipped by drawing the frame over it afterwards).
 	c.draw_rect(Rect2(0, 0, W, H), Color(0.06, 0.04, 0.1))
 	draw_off = sh

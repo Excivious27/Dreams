@@ -1416,7 +1416,8 @@ func _draw_sheet() -> void:
 			py += 11.0
 	else:
 		var head := "LANE %d · VS %s" % [lane, opp_name().to_upper()]
-		c.draw_string(_font, Vector2(9, 15), head, HORIZONTAL_ALIGNMENT_LEFT, 170, fit_size(head, 170.0, 8), Color(0.75, 0.9, 1))
+		var hs := fit_size(head, 170.0, 8)
+		c.draw_string(_font, Vector2(9, 15), clip_to(head, 170.0, hs), HORIZONTAL_ALIGNMENT_LEFT, 170, hs, Color(0.75, 0.9, 1))
 		c.draw_string(_font, Vector2(180, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_RIGHT, 80, 8, Color(1, 0.85, 0.4))
 		var shown_opp := opp_rolls
 		if phase == "opp":
@@ -1425,10 +1426,20 @@ func _draw_sheet() -> void:
 		_sheet_row(shown_opp, 54, 34, -1, false, opp_name().to_upper())
 
 
-## The largest font size (down to 4) at which text fits in width px.
+## Text cut (with "...") to fit width px at size (names never shrink below the 7 px floor).
+func clip_to(text: String, width: float, size: int) -> String:
+	if _font == null or _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x <= width:
+		return text
+	var t := text
+	while t.length() > 1 and _font.get_string_size(t + "...", HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > width:
+		t = t.left(t.length() - 1)
+	return t + "..."
+
+
+## The largest font size (down to 7, the text floor) at which text fits in width px.
 func fit_size(text: String, width: float, size: int) -> int:
 	var sz := size
-	while sz > 4 and _font != null and _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x > width:
+	while sz > 7 and _font != null and _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x > width:
 		sz -= 1
 	return sz
 
@@ -1444,7 +1455,7 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 		c.draw_rect(box, bg if f != cur else Color("34345a"))
 		c.draw_rect(box, Color("6a6a88"), false, 1.0)
 		if frame_nums:
-			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(6), Color(0.6, 0.6, 0.75))
+			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(7), Color(0.6, 0.6, 0.75))
 		var marks := frame_marks(rs, f)
 		var nbox := 2 if f < 9 else 3
 		for k in nbox:
@@ -1460,7 +1471,8 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 	if tag != "" and not frame_nums:
 		# The opponent's whole name along the row's free top strip, never cut (c3_17 #4).
 		var tw := 9 * 24.0 - 4.0
-		var fs := fit_size(tag, tw, 6)
+		var fs := 7
+		tag = clip_to(tag, tw, fs)
 		var wide := _font.get_string_size(tag, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x if _font != null else 30.0
 		c.draw_rect(Rect2(8.5, top + 0.5, wide + 3.0, 8.0), bg)  # a plate so the frame lines don't cut the name
 		c.draw_string(_font, Vector2(9.5, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, tw, fs, Color(0.6, 0.85, 1))
@@ -1544,7 +1556,7 @@ func _draw_controls() -> void:
 		c.draw_rect(Rect2(pr.position.x + 2, pr.end.y - h, pr.size.x - 4, h), pc)
 		c.draw_rect(band, Color(1, 0.85, 0.3, 0.9), false, 1.0)
 		c.draw_rect(pr, Color(1, 1, 1, 0.5), false, 1.0)
-		c.draw_string(_font, Vector2(pr.position.x - 10, pr.end.y + 10), "POWER", HORIZONTAL_ALIGNMENT_CENTER, 32, DisplayMode.df(6), Color(1, 1, 1, 0.7))
+		c.draw_string(_font, Vector2(pr.position.x - 10, pr.end.y + 10), "POWER", HORIZONTAL_ALIGNMENT_CENTER, 32, DisplayMode.df(7), Color(1, 1, 1, 0.7))
 
 
 ## The villager's frame, ball by ball.

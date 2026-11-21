@@ -7,12 +7,13 @@
   "whack": "Whack-a-Grump",
   "gallery": "Duck Pond",
   "claw": "Claw Machine",
-  "skee_ball": "Skee-Ball"
+  "skee_ball": "Snowball Roll"
  },
  "game_names_gang": {
   "stack": "Neon Stack",
   "whack": "Whack-a-Snitch",
-  "gallery": "Neon Range"
+  "gallery": "Neon Range",
+  "skee_ball": "Alley Roll"
  },
  "order": [
   "rp_candy",

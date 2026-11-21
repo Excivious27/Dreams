@@ -451,7 +451,7 @@ static func stats() -> Array:
 		_p(p, "Set bonus", set_bonus("luck"))
 	_p(p, "Buff", int(GameState.buff("luck")))
 	out.append({"id": "luck", "name": "Luck", "icon": ["items", "clover" if Art.has("items", "clover") else "luck_potion"], "value": str(lk), "parts": p,
-		"note": "Luck means better drops (now ×%.2f on drop rolls), rarer fish and Rare Catch, and a steadier claw and Skee-Ball hand." % (1.0 + 0.05 * lk)})
+		"note": "Luck means better drops (now ×%.2f on drop rolls), rarer fish and Rare Catch, and a steadier claw and roll-ball hand." % (1.0 + 0.05 * lk)})
 	# Magic
 	if GameState.skill_in_arc("magic"):
 		p = [["Base", "20"]]

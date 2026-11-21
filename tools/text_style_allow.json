@@ -31,9 +31,6 @@
  "data/hearts.json": {
   "wren_jr": 21
  },
- "data/interiors.json": {
-  "real_brand": 1
- },
  "data/items.json": {
   "real_brand": 1,
   "us_spelling": 2
@@ -50,7 +47,6 @@
   "wren_jr": 3
  },
  "data/rec.json": {
-  "real_brand": 6,
   "us_spelling": 1
  },
  "data/recipes.json": {
@@ -71,12 +67,6 @@
  },
  "data/wardrobe.json": {
   "us_spelling": 1
- },
- "scripts/arcade_hub.gd": {
-  "real_brand": 2
- },
- "scripts/char_sheet.gd": {
-  "real_brand": 1
  },
  "scripts/intros.gd": {
   "wren_jr": 1

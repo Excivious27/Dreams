@@ -37,8 +37,8 @@ const MILESTONES := {
 	"claw_5": "Claw Machine: win 5 prizes",
 	"gallery_300": "Duck Pond: 300 points",
 	"gallery_800": "Duck Pond: 800 points",
-	"skee_300": "Skee-Ball: 300 in one game",
-	"skee_cup": "Skee-Ball: sink a corner cup",
+	"skee_300": "Snowball Roll: 300 in one game",
+	"skee_cup": "Snowball Roll: sink a corner cup",
 	"all_games": "Play every cabinet once",
 }
 

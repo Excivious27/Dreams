@@ -273,7 +273,7 @@ static func overnight(report: Dictionary) -> void:
 ## Face value the wash can still take tonight (c10b_04_20): one budget shared by
 ## the laundromat menu and overnight(); bills over it come back unwashed.
 static func wash_face_cap() -> int:
-	return int(float(WASH_FACE_CAP[clampi(Builds.built_tier("laundromat"), 0, 3)]) * float(season_mod().get("wash", 1.0)))
+	return int(float(WASH_FACE_CAP[clampi(NetNode.own_tier("laundromat") if GameState.visiting() else Builds.built_tier("laundromat"), 0, 3)]) * float(season_mod().get("wash", 1.0)))
 
 
 static func wash_room_left() -> int:
@@ -341,10 +341,10 @@ static func laundromat(m: GameMap) -> void:
 
 
 static func training(m: GameMap) -> void:
-	var tt := Builds.built_tier("training")
+	var tt := NetNode.own_tier("training") if GameState.visiting() else Builds.built_tier("training")  # C17 P4 (c17_07-21): our own tier, never the host's
 	var crew := Crew.all_recruited().size()
 	var d := Dialogue.instance(m.get_tree())
-	var done: bool = int(GameState.run["flags"].get("spar_day", -1)) == int(GameState.run["day"])
+	var done: bool = int(GameState.run["flags"].get("spar_day", -1)) == CoopGames.own_day()
 	d.say([{"who": str(Builds.current_def("training").get("name", "Training")), "text": "%d crew on the roster.%s" % [crew, " Their perks count %d step%s higher." % [tt - 1, "" if tt == 2 else "s"] if tt >= 2 else " Build it up and their perks grow."], "choice": ["Spar (done for today)" if done else "Spar with the crew", "Leave"], "key": ""}])
 	await d.finished
 	if d.last_choice != 0 or done:
@@ -353,7 +353,7 @@ static func training(m: GameMap) -> void:
 		m.hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		Music.instance(m.get_tree()).sfx("nope")
 		return
-	GameState.run["flags"]["spar_day"] = int(GameState.run["day"])
+	GameState.run["flags"]["spar_day"] = CoopGames.own_day()
 	m.player.play_tool("axe")
 	# C13 07-30: a spar is heard: a swing, a block, a landed hit.
 	var mu := Music.instance(m.get_tree())

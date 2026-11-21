@@ -57,7 +57,7 @@ var history: Array = []             # points per ball this game
 func _init() -> void:
 	super()
 	game_id = "skee_ball"
-	title = "Skee-Ball"
+	title = Tickets.game_name("skee_ball")  # Snowball Roll / Alley Roll (no real brand names)
 	fee = FEE
 	accent = Color(1.0, 0.45, 0.35)
 	howto = ["◀ ▶ (or tap the lane) pick your line", "Hold ROLL, let go at the right power", "Rings 10 to 50 · corner cups 100", "Nine balls a game."]
@@ -152,7 +152,7 @@ func _set_phase(p: String) -> void:
 func throw(lu: float, p: float) -> void:
 	if state != "play" or phase != "aim" or balls <= 0:
 		return
-	var steady := clampf(1.0 - 0.15 * luck(), 0.5, 1.0)
+	var steady := clampf(1.0 - 0.15 * luck(), 0.5, 1.0) if duel_sid == "" else 1.0  # duels: gear never decides (c17_06-14)
 	# Harder rolls wander more: a soft line is easy, a corner-cup rocket is not.
 	shot_u = clampf(lu + rng.randfn(0.0, (0.03 + 0.05 * p) * steady), -1.0, 1.0)
 	shot_p = clampf(p + rng.randfn(0.0, 0.02 * steady), 0.0, 1.0)

@@ -88,16 +88,16 @@
     "skee": true
    },
    "name": {
-    "penguins": "Skee-Ball Alley",
-    "gangsters": "Skee-Ball Alley"
+    "penguins": "Snowball Roll Alley",
+    "gangsters": "Alley Roll Lanes"
    },
    "start": {
-    "penguins": "The empty corner by the snack bar is becoming a Skee-Ball alley! Four days of sawing and sanding, so mind the dust. - The {hall} front desk",
-    "gangsters": "The dead corner by the snack bar's becoming a Skee-Ball alley. Four days of sawing. Mind the dust. - Front desk"
+    "penguins": "The empty corner by the snack bar is becoming a Snowball Roll alley! Four days of sawing and sanding, so mind the dust. - The {hall} front desk",
+    "gangsters": "The dead corner by the snack bar's becoming Alley Roll lanes. Four days of sawing. Mind the dust. - Front desk"
    },
    "done": {
-    "penguins": "Skee-Ball Alley is open! Roll for the hundred hole. Tickets pour out of these things. - The {hall} front desk",
-    "gangsters": "Skee-Ball Alley's open. Aim for the hundred hole. These machines spit tickets. - Front desk"
+    "penguins": "Snowball Roll Alley is open! Roll for the hundred hole. Tickets pour out of these things. - The {hall} front desk",
+    "gangsters": "Alley Roll Lanes are open. Aim for the hundred hole. These machines spit tickets. - Front desk"
    }
   },
   {
