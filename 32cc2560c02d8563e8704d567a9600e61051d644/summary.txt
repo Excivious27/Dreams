@@ -1,0 +1,20 @@
+CONDUCT CI FAIL  32cc2560c0  (ci/s1p4-601289ce, run 44865626332)
+
+subset run: shards [2, 3, 6], bots off, playtest on
+check shards (3/3):
+  shard 2: FAIL  137s  failed: C11b P6: C11b creature voices and ranch sound
+  shard 3: FAIL  209s  failed: farm_look_test, C9 P6: generated data in sync, steam co-op: lobbies + networking messages over FakeSteam (no Steam cl
+  shard 6: FAIL  192s  failed: gang_flavour_test, every sound the game asks for exists
+playtest: PASS  65s  21 screenshots (results playtest/shots/)
+RELAY: ok, 121ms (live code e4b9aef5b57d)
+NET E2E: ok, 17s
+  relay note: server/ change not on main yet: live result is the current server's (relay_test.js tests the new one)
+
+longest job: 209s
+slowest check steps: import 73.0s; import 72.7s; import 44.5s; C9 P6: generated data in sync 21.8s; gang_play_test 18.1s; mega regions: the new worlds walk end to end 16.7s; building doors 13.7s; phone_ui_test 11.0s
+distinct errors/fails/warns:
+    1  FAIL animal_voice asks the C11b table
+    1  FAIL pens fenced (41 pieces, 3 gates)
+    1  FAIL on the farm the invite asks first (Visit / Not now)
+    1  FAIL Visit joined the friend's lobby
+    1  FAIL ranch: 'crystal' in "Crystal Hen"
