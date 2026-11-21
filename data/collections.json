@@ -300,7 +300,7 @@
     {
      "item": "eel",
      "arc": "",
-     "where": "Beach, Farm"
+     "where": "Beach, Enemy"
     },
     {
      "item": "puffer",
@@ -839,7 +839,7 @@
     "item": "eel",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Farm"
+    "where": "Beach, Enemy"
    },
    {
     "item": "puffer",
@@ -2027,7 +2027,7 @@
    {
     "item": "eel",
     "arc": "",
-    "where": "Beach, Farm"
+    "where": "Beach, Enemy"
    },
    {
     "item": "puffer",

@@ -158,7 +158,7 @@
  },
  "companions": {
   "penguin_m": "Pip-Pip waddles the farm every morning like he owns it. He sort of does.",
-  "penguin_f": "Nova keeps the knight's old helmet on a shelf, polished, and tells the story to anyone who'll sit still.",
+  "penguin_f": "Nova keeps one piece of blue glass from the knight's armour on a shelf, and tells the story to anyone who'll sit still. She always ends it the same way: \"He's still up there. I'll find him.\"",
   "big_jim": "Big Jim still breaks the odd stump for you, and complains about it every single time.",
   "dad": "Dad fixes the fence before you notice it's broken, and pretends he was just passing.",
   "mom": "Mom's jam is on every shelf in the house, and her letters always end: come home for supper.",
@@ -172,6 +172,10 @@
   "penguin_f": [
    "knight_reverted",
    "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."
+  ],
+  "penguin_m": [
+   "knight_reverted",
+   "Pip-Pip and Grandfather Auk argue about fishing every morning. Grandfather Auk wins."
   ]
  },
  "villagers_gang": {
@@ -317,6 +321,9 @@
   "doors_by_sasha": "Sasha let you into the tower with a service key she never handed back. Nobody in the city has ever asked her how she kept it.",
   "doors_by_letter": "The letter you kept since the rain went into the tower's slot, and the doors opened. Nobody fought you.",
   "finn_told": "Finn wears the locket now. He smiles more.",
+  "tomas_home": "Tomas came home, thin and quiet, and the brothers fish off the pier together. Tomas still says his pike was bigger.",
+  "biscuit_home": "Biscuit sleeps on the bakery step now, and gets the first crust of every loaf. Some afternoons he walks out to your farm to visit %pet.",
+  "bitter_home": "The friend you turned away found their way back in the end. You still don't talk about the gate, but you sit on the same fence.",
   "knight_reverted": "The knight above the clouds was given a chance, and took it.",
   "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",
   "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",

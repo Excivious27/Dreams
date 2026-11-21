@@ -429,7 +429,10 @@
       "tickets": 130,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "Their captain holds Honey Cellars. Bring the captain down and the rest will scatter.",
+      "brief": {
+       "penguins": "Captain Bramblesnout holds Honey Cellars. Turn the captain back and the rest will scatter.",
+       "gangsters": "Their captain holds Honey Cellars. Bring the captain down and the rest will scatter."
+      },
       "reward": {
        "crystals": 240,
        "supply": 8,
@@ -582,7 +585,10 @@
       "tickets": 170,
       "wave_every": 7.5,
       "enemy_cap": 12,
-      "brief": "The Cider Press: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "The Cider Press: the last wall before the region. Every point fortified, and Captain Bramblesnout takes the field.",
+       "gangsters": "The Cider Press: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -1199,7 +1205,10 @@
       "tickets": 130,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "Their captain holds Windy Saddle. Bring the captain down and the rest will scatter.",
+      "brief": {
+       "penguins": "Frostjaw holds Windy Saddle. Turn the captain back and the rest will scatter.",
+       "gangsters": "Their captain holds Windy Saddle. Bring the captain down and the rest will scatter."
+      },
       "reward": {
        "crystals": 336,
        "supply": 8,
@@ -1371,7 +1380,10 @@
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "The High Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "The High Gate: the last wall before the region. Every point fortified, and Frostjaw takes the field.",
+       "gangsters": "The High Gate: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -1741,7 +1753,10 @@
       "tickets": 130,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "Their captain holds Echo Shaft. Bring the captain down and the rest will scatter.",
+      "brief": {
+       "penguins": "Old Shardback holds Echo Shaft. Turn the captain back and the rest will scatter.",
+       "gangsters": "Their captain holds Echo Shaft. Bring the captain down and the rest will scatter."
+      },
       "reward": {
        "crystals": 336,
        "supply": 8,
@@ -2085,7 +2100,10 @@
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "The Deep Cut: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "The Deep Cut: the last wall before the region. Every point fortified, and Old Shardback takes the field.",
+       "gangsters": "The Deep Cut: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -2843,7 +2861,10 @@
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "Witchlight Isle: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "Witchlight Isle: the last wall before the region. Every point fortified, and Mirewhisker takes the field.",
+       "gangsters": "Witchlight Isle: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -3215,7 +3236,10 @@
       "tickets": 130,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "Their captain holds Otter Holt. Bring the captain down and the rest will scatter.",
+      "brief": {
+       "penguins": "Tidegrudge holds Otter Holt. Turn the captain back and the rest will scatter.",
+       "gangsters": "Their captain holds Otter Holt. Bring the captain down and the rest will scatter."
+      },
       "reward": {
        "crystals": 336,
        "supply": 8,
@@ -3557,7 +3581,10 @@
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "The Weir: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "The Weir: the last wall before the region. Every point fortified, and Tidegrudge takes the field.",
+       "gangsters": "The Weir: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -3948,7 +3975,10 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 13,
-      "brief": "Their captain holds Hall of Pillars. Bring the captain down and the rest will scatter.",
+      "brief": {
+       "penguins": "Gloomcrown holds Hall of Pillars. Turn the captain back and the rest will scatter.",
+       "gangsters": "Their captain holds Hall of Pillars. Bring the captain down and the rest will scatter."
+      },
       "reward": {
        "crystals": 432,
        "supply": 8,
@@ -4285,7 +4315,10 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 17,
-      "brief": "The Star Arch: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": {
+       "penguins": "The Star Arch: the last wall before the region. Every point fortified, and Gloomcrown takes the field.",
+       "gangsters": "The Star Arch: the last wall before the region. Every point fortified, and their commander takes the field."
+      },
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -4702,7 +4735,7 @@
       "tickets": 170,
       "wave_every": 7.5,
       "enemy_cap": 12,
-      "brief": "The Wastes Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Wastes Gate: the last wall before the region. Every point fortified, and Cinderhowl takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -4966,7 +4999,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 13,
-      "brief": "Their captain holds Prism Shelf. Bring the captain down and the rest will scatter.",
+      "brief": "Stormcrest holds Prism Shelf. Turn the captain back and the rest will scatter.",
       "reward": {
        "crystals": 432,
        "supply": 8,
@@ -5170,7 +5203,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 17,
-      "brief": "The Sky Stair: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Sky Stair: the last wall before the region. Every point fortified, and Stormcrest takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -5753,7 +5786,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 20,
-      "brief": "The Command Deck: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Command Deck: the last wall before the region. Every point fortified, and Prismjaw takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -6328,7 +6361,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 20,
-      "brief": "The Heart Grove: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Heart Grove: the last wall before the region. Every point fortified, and Thornmaw takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -6845,7 +6878,7 @@
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "The Reef Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Reef Gate: the last wall before the region. Every point fortified, and Reefgrudge takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -7325,7 +7358,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 17,
-      "brief": "The Kelp Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Kelp Gate: the last wall before the region. Every point fortified, and Murkfin takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -7765,7 +7798,7 @@
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Their captain holds Glacier Mouth. Bring the captain down and the rest will scatter.",
+      "brief": "Hailbrute holds Glacier Mouth. Turn the captain back and the rest will scatter.",
       "reward": {
        "crystals": 528,
        "supply": 8,
@@ -7857,7 +7890,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 20,
-      "brief": "The Ice Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Ice Gate: the last wall before the region. Every point fortified, and Hailbrute takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -8439,7 +8472,7 @@
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 23,
-      "brief": "The Ember Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Ember Gate: the last wall before the region. Every point fortified, and Ashmaw takes the field.",
       "reward": {
        "crystals": 0,
        "supply": 0,
