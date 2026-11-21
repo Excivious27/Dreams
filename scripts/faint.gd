@@ -16,7 +16,7 @@ static func to_evening(reason: String) -> bool:
 	r["time"] = WAKE
 	GameState.status_clear()
 	r["hp"] = maxi(int(r["hp"]), int(ceil(int(r["max_hp"]) * 0.6)))
-	r["energy"] = maxi(int(r["energy"]), int(r["max_energy"]) / 4)
+	r["energy"] = maxi(int(r["energy"]), mini(20, int(r["max_energy"]) / 8))  # C16a P3: enough to walk home (was a quarter bar)
 	r["en_frac"] = 0.0
 	r["en_warn"] = 0
 	r["flags"]["fainted_day"] = int(r["day"])

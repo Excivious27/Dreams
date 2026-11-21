@@ -48,12 +48,13 @@
  "iron_sword": {
   "name": "Iron Sword",
   "type": "tool",
-  "value": 200,
-  "damage": 4,
-  "rarity": "common",
-  "tier": 1,
+  "value": 320,
+  "damage": 5,
+  "rarity": "uncommon",
+  "tier": 2,
   "desc": "A solid iron blade, forged by the smith.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "rod": {
   "name": "Fishing Rod",
@@ -137,7 +138,7 @@
  "dreamflower": {
   "name": "Dream Flower",
   "type": "crop",
-  "value": 110,
+  "value": 170,
   "rarity": "common",
   "tier": 4,
   "family": "flower",
@@ -395,7 +396,7 @@
  "dream_tonic": {
   "name": "Dream Tonic",
   "type": "potion",
-  "value": 408,
+  "value": 480,
   "heal": 6,
   "energy": 60,
   "rarity": "rare",
@@ -555,9 +556,10 @@
   "value": 800,
   "rarity": "rare",
   "tier": 3,
-  "damage": 6,
+  "damage": 7,
   "desc": "Tempered steel: lighter and sharper than iron.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "crystal_sword": {
   "name": "Crystal Sword",
@@ -565,9 +567,10 @@
   "value": 2400,
   "rarity": "epic",
   "tier": 4,
-  "damage": 9,
+  "damage": 10,
   "desc": "A blade of living crystal that hums when you swing it.",
-  "desc_auto": true
+  "desc_auto": true,
+  "arc": "penguins"
  },
  "potato_seed": {
   "name": "Potato Seeds",
@@ -1129,7 +1132,12 @@
   "heal": 2,
   "energy": 40,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "stamina",
+   "minutes": 240,
+   "amount": 1
+  }
  },
  "fish_stew": {
   "name": "Fish Stew",
@@ -1140,7 +1148,13 @@
   "heal": 3,
   "energy": 60,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "berry_pie": {
   "name": "Berry Pie",
@@ -1162,7 +1176,13 @@
   "heal": 3,
   "energy": 70,
   "desc": "A home-cooked dish. Restores energy.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "truffle_pasta": {
   "name": "Truffle Pasta",
@@ -1173,7 +1193,13 @@
   "heal": 5,
   "energy": 100,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "moon_cake": {
   "name": "Moon Cake",
@@ -1184,7 +1210,13 @@
   "heal": 6,
   "energy": 120,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "herb_remedy": {
   "name": "Herb Remedy",
@@ -1341,10 +1373,10 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "sprite": "knight",
-  "desc": "Headgear: +2 defence while worn.",
+  "desc": "Headgear: +3 defence while worn.",
   "desc_auto": true
  },
  "crystal_crown": {
@@ -1412,10 +1444,10 @@
   "tier": 4,
   "slot": "body",
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +5 defence while worn.",
+  "desc": "Body armour: +7 defence while worn.",
   "desc_auto": true
  },
  "neon_jacket": {
@@ -6614,10 +6646,10 @@
   "tier": 1,
   "value": 143,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
   "sprite": "flatcap",
-  "desc": "Headgear: +1 defence while worn.",
+  "desc": "Headgear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_helm_plus": {
@@ -6628,10 +6660,10 @@
   "tier": 1,
   "value": 192,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "sprite": "flatcap",
-  "desc": "Headgear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_chest": {
@@ -6642,10 +6674,10 @@
   "tier": 1,
   "value": 262,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
   "costume": "armor_copper",
-  "desc": "Body armour: +1 defence while worn.",
+  "desc": "Body armour: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_chest_plus": {
@@ -6656,10 +6688,10 @@
   "tier": 1,
   "value": 287,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "costume": "armor_copper",
-  "desc": "Body armour: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_legs": {
@@ -6670,9 +6702,9 @@
   "tier": 1,
   "value": 203,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Legwear: +1 defence while worn.",
+  "desc": "Legwear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_legs_plus": {
@@ -6683,9 +6715,9 @@
   "tier": 1,
   "value": 240,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Legwear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_boots": {
@@ -6696,9 +6728,9 @@
   "tier": 1,
   "value": 143,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Footwear: +1 defence while worn.",
+  "desc": "Footwear: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_boots_plus": {
@@ -6709,9 +6741,9 @@
   "tier": 1,
   "value": 192,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Footwear: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_gloves": {
@@ -6748,9 +6780,9 @@
   "tier": 1,
   "value": 203,
   "stats": {
-   "defense": 1
+   "defense": 2
   },
-  "desc": "Held in your off hand: +1 defence while worn.",
+  "desc": "Held in your off hand: +2 defence while worn.",
   "desc_auto": true
  },
  "copper_shield_plus": {
@@ -6761,9 +6793,9 @@
   "tier": 1,
   "value": 240,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Held in your off hand: +2 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "copper_cape": {
@@ -6827,10 +6859,10 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_chest": {
@@ -6841,10 +6873,10 @@
   "tier": 2,
   "value": 438,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
   "costume": "armor_iron",
-  "desc": "Body armour: +2 defence while worn.",
+  "desc": "Body armour: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_chest_plus": {
@@ -6855,10 +6887,10 @@
   "tier": 2,
   "value": 484,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "costume": "armor_iron",
-  "desc": "Body armour: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_legs": {
@@ -6869,9 +6901,9 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Legwear: +2 defence while worn.",
+  "desc": "Legwear: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_legs_plus": {
@@ -6882,9 +6914,9 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Legwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_boots": {
@@ -6895,9 +6927,9 @@
   "tier": 2,
   "value": 231,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Footwear: +2 defence while worn.",
+  "desc": "Footwear: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_boots_plus": {
@@ -6908,9 +6940,9 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Footwear: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_gloves": {
@@ -6947,9 +6979,9 @@
   "tier": 2,
   "value": 335,
   "stats": {
-   "defense": 2
+   "defense": 3
   },
-  "desc": "Held in your off hand: +2 defence while worn.",
+  "desc": "Held in your off hand: +3 defence while worn.",
   "desc_auto": true
  },
  "iron_shield_plus": {
@@ -6960,9 +6992,9 @@
   "tier": 2,
   "value": 402,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Held in your off hand: +3 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "iron_cape": {
@@ -7023,13 +7055,13 @@
   "type": "equip",
   "slot": "head",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn.",
+  "desc": "Headgear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_helm_plus": {
@@ -7037,13 +7069,13 @@
   "type": "equip",
   "slot": "head",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
   "sprite": "knight",
-  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_chest": {
@@ -7051,13 +7083,13 @@
   "type": "equip",
   "slot": "body",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 1043,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
   "costume": "armor_steel",
-  "desc": "Body armour: +3 defence while worn.",
+  "desc": "Body armour: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_chest_plus": {
@@ -7065,13 +7097,13 @@
   "type": "equip",
   "slot": "body",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 1141,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
   "costume": "armor_steel",
-  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_legs": {
@@ -7079,12 +7111,12 @@
   "type": "equip",
   "slot": "legs",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 788,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Legwear: +3 defence while worn.",
+  "desc": "Legwear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_legs_plus": {
@@ -7092,12 +7124,12 @@
   "type": "equip",
   "slot": "legs",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 937,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_boots": {
@@ -7105,12 +7137,12 @@
   "type": "equip",
   "slot": "feet",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Footwear: +3 defence while worn.",
+  "desc": "Footwear: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_boots_plus": {
@@ -7118,12 +7150,12 @@
   "type": "equip",
   "slot": "feet",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_gloves": {
@@ -7131,7 +7163,7 @@
   "type": "equip",
   "slot": "hands",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 279,
   "stats": {
    "energy": 10
@@ -7144,7 +7176,7 @@
   "type": "equip",
   "slot": "hands",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 530,
   "stats": {
    "energy": 15
@@ -7157,12 +7189,12 @@
   "type": "equip",
   "slot": "offhand",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 788,
   "stats": {
-   "defense": 3
+   "defense": 4
   },
-  "desc": "Held in your off hand: +3 defence while worn.",
+  "desc": "Held in your off hand: +4 defence while worn.",
   "desc_auto": true
  },
  "steel_shield_plus": {
@@ -7170,12 +7202,12 @@
   "type": "equip",
   "slot": "offhand",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 937,
   "stats": {
-   "defense": 4
+   "defense": 5
   },
-  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "steel_cape": {
@@ -7183,7 +7215,7 @@
   "type": "equip",
   "slot": "back",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 534,
   "stats": {
    "speed": 1
@@ -7196,7 +7228,7 @@
   "type": "equip",
   "slot": "back",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 734,
   "stats": {
    "speed": 1,
@@ -7210,7 +7242,7 @@
   "type": "equip",
   "slot": "belt",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 279,
   "stats": {
    "luck": 2
@@ -7223,7 +7255,7 @@
   "type": "equip",
   "slot": "belt",
   "rarity": "uncommon",
-  "tier": 2,
+  "tier": 3,
   "value": 530,
   "stats": {
    "luck": 3
@@ -7237,12 +7269,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
   "sprite": "knight",
-  "desc": "Headgear: +3 defence while worn.",
+  "desc": "Headgear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_helm_plus": {
@@ -7253,10 +7285,10 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "sprite": "knight",
-  "desc": "Headgear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_chest": {
@@ -7265,12 +7297,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 732,
+  "value": 1200,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
   "costume": "armor_silver",
-  "desc": "Body armour: +3 defence while worn.",
+  "desc": "Body armour: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_chest_plus": {
@@ -7279,12 +7311,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 804,
+  "value": 1297,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "costume": "armor_silver",
-  "desc": "Body armour: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_legs": {
@@ -7293,11 +7325,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 555,
+  "value": 907,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Legwear: +3 defence while worn.",
+  "desc": "Legwear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_legs_plus": {
@@ -7306,11 +7338,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 980,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Legwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_boots": {
@@ -7319,11 +7351,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Footwear: +3 defence while worn.",
+  "desc": "Footwear: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_boots_plus": {
@@ -7334,9 +7366,9 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Footwear: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_gloves": {
@@ -7371,11 +7403,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 555,
+  "value": 907,
   "stats": {
-   "defense": 3
+   "defense": 5
   },
-  "desc": "Held in your off hand: +3 defence while worn.",
+  "desc": "Held in your off hand: +5 defence while worn.",
   "desc_auto": true
  },
  "silver_shield_plus": {
@@ -7384,11 +7416,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 720,
+  "value": 980,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Held in your off hand: +4 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "silver_cape": {
@@ -7397,7 +7429,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 378,
+  "value": 615,
   "stats": {
    "speed": 1
   },
@@ -7450,12 +7482,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +4 defence while worn.",
+  "desc": "Headgear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_helm_plus": {
@@ -7464,12 +7496,12 @@
   "slot": "head",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_chest": {
@@ -7478,12 +7510,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 1054,
+  "value": 1381,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
   "costume": "armor_gold",
-  "desc": "Body armour: +4 defence while worn.",
+  "desc": "Body armour: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_chest_plus": {
@@ -7492,12 +7524,12 @@
   "slot": "body",
   "rarity": "rare",
   "tier": 3,
-  "value": 1153,
+  "value": 1492,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_gold",
-  "desc": "Body armour: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_legs": {
@@ -7506,11 +7538,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 797,
+  "value": 1044,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Legwear: +4 defence while worn.",
+  "desc": "Legwear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_legs_plus": {
@@ -7519,11 +7551,11 @@
   "slot": "legs",
   "rarity": "rare",
   "tier": 3,
-  "value": 948,
+  "value": 1145,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Legwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_boots": {
@@ -7532,11 +7564,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Footwear: +4 defence while worn.",
+  "desc": "Footwear: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_boots_plus": {
@@ -7545,11 +7577,11 @@
   "slot": "feet",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Footwear: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_gloves": {
@@ -7558,7 +7590,7 @@
   "slot": "hands",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 414,
   "stats": {
    "energy": 15
   },
@@ -7584,11 +7616,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 797,
+  "value": 1044,
   "stats": {
-   "defense": 4
+   "defense": 6
   },
-  "desc": "Held in your off hand: +4 defence while worn.",
+  "desc": "Held in your off hand: +6 defence while worn.",
   "desc_auto": true
  },
  "gold_shield_plus": {
@@ -7597,11 +7629,11 @@
   "slot": "offhand",
   "rarity": "rare",
   "tier": 3,
-  "value": 948,
+  "value": 1145,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Held in your off hand: +5 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "gold_cape": {
@@ -7610,7 +7642,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 539,
+  "value": 708,
   "stats": {
    "speed": 1
   },
@@ -7623,7 +7655,7 @@
   "slot": "back",
   "rarity": "rare",
   "tier": 3,
-  "value": 741,
+  "value": 876,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -7637,7 +7669,7 @@
   "slot": "belt",
   "rarity": "rare",
   "tier": 3,
-  "value": 360,
+  "value": 414,
   "stats": {
    "luck": 3
   },
@@ -7663,12 +7695,12 @@
   "slot": "head",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +5 defence while worn.",
+  "desc": "Headgear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_helm_plus": {
@@ -7679,10 +7711,10 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "sprite": "crystal_crown",
-  "desc": "Headgear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_chest": {
@@ -7691,12 +7723,12 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 962,
+  "value": 1589,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +5 defence while worn.",
+  "desc": "Body armour: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_chest_plus": {
@@ -7705,12 +7737,12 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1717,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "costume": "armor_crystal",
-  "desc": "Body armour: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_legs": {
@@ -7719,11 +7751,11 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 802,
+  "value": 1201,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Legwear: +5 defence while worn.",
+  "desc": "Legwear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_legs_plus": {
@@ -7732,11 +7764,11 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1344,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Legwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_boots": {
@@ -7745,11 +7777,11 @@
   "slot": "feet",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Footwear: +5 defence while worn.",
+  "desc": "Footwear: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_boots_plus": {
@@ -7760,9 +7792,9 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Footwear: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_gloves": {
@@ -7797,11 +7829,11 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 802,
+  "value": 1201,
   "stats": {
-   "defense": 5
+   "defense": 7
   },
-  "desc": "Held in your off hand: +5 defence while worn.",
+  "desc": "Held in your off hand: +7 defence while worn.",
   "desc_auto": true
  },
  "crystal_shield_plus": {
@@ -7810,11 +7842,11 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 1280,
+  "value": 1344,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Held in your off hand: +6 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +8 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "crystal_cape": {
@@ -7823,7 +7855,7 @@
   "slot": "back",
   "rarity": "epic",
   "tier": 4,
-  "value": 642,
+  "value": 815,
   "stats": {
    "speed": 1
   },
@@ -7878,10 +7910,10 @@
   "tier": 5,
   "value": 2352,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "sprite": "knight",
-  "desc": "Headgear: +6 defence while worn.",
+  "desc": "Headgear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_helm_plus": {
@@ -7890,12 +7922,12 @@
   "slot": "head",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
   "sprite": "knight",
-  "desc": "Headgear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Headgear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_chest": {
@@ -7906,10 +7938,10 @@
   "tier": 5,
   "value": 4592,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
   "costume": "armor_moon",
-  "desc": "Body armour: +6 defence while worn.",
+  "desc": "Body armour: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_chest_plus": {
@@ -7918,12 +7950,12 @@
   "slot": "body",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4959,
+  "value": 4960,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
   "costume": "armor_moon",
-  "desc": "Body armour: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Body armour: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_legs": {
@@ -7934,9 +7966,9 @@
   "tier": 5,
   "value": 4432,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Legwear: +6 defence while worn.",
+  "desc": "Legwear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_legs_plus": {
@@ -7945,11 +7977,11 @@
   "slot": "legs",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4786,
+  "value": 4787,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Legwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Legwear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_boots": {
@@ -7960,9 +7992,9 @@
   "tier": 5,
   "value": 2352,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Footwear: +6 defence while worn.",
+  "desc": "Footwear: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_boots_plus": {
@@ -7971,11 +8003,11 @@
   "slot": "feet",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Footwear: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Footwear: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_gloves": {
@@ -7997,7 +8029,7 @@
   "slot": "hands",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2367,
+  "value": 2368,
   "stats": {
    "energy": 30
   },
@@ -8012,9 +8044,9 @@
   "tier": 5,
   "value": 4432,
   "stats": {
-   "defense": 6
+   "defense": 8
   },
-  "desc": "Held in your off hand: +6 defence while worn.",
+  "desc": "Held in your off hand: +8 defence while worn.",
   "desc_auto": true
  },
  "moon_shield_plus": {
@@ -8023,11 +8055,11 @@
   "slot": "offhand",
   "rarity": "legendary",
   "tier": 5,
-  "value": 4786,
+  "value": 4787,
   "stats": {
-   "defense": 7
+   "defense": 9
   },
-  "desc": "Held in your off hand: +7 defence while worn. Tempered at the forge: a little tougher than the plain one.",
+  "desc": "Held in your off hand: +9 defence while worn. Tempered at the forge: a little tougher than the plain one.",
   "desc_auto": true
  },
  "moon_cape": {
@@ -8049,7 +8081,7 @@
   "slot": "back",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2540,
+  "value": 2541,
   "stats": {
    "speed": 1,
    "defense": 1
@@ -8076,7 +8108,7 @@
   "slot": "belt",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2367,
+  "value": 2368,
   "stats": {
    "luck": 6
   },
@@ -8274,7 +8306,12 @@
   "tier": 3,
   "energy": 30,
   "desc": "Sal runs on it.",
-  "family": "herb"
+  "family": "herb",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 180,
+   "amount": 1
+  }
  },
  "tea": {
   "name": "Tea",
@@ -8284,7 +8321,12 @@
   "tier": 3,
   "energy": 20,
   "desc": "Juniper's cure for most things.",
-  "family": "herb"
+  "family": "herb",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  }
  },
  "cake": {
   "name": "Cake",
@@ -9568,7 +9610,12 @@
   "rarity": "common",
   "tier": 1,
   "energy": 45,
-  "desc": "Steeped in the keg. Wren approves."
+  "desc": "Steeped in the keg. Wren approves.",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  }
  },
  "harvest_ale": {
   "name": "Harvest Ale",
@@ -9626,7 +9673,13 @@
   "heal": 2,
   "energy": 50,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "berry_jam_toast": {
   "name": "Jam on Toast",
@@ -9648,7 +9701,13 @@
   "heal": 3,
   "energy": 55,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "herb_roast": {
   "name": "Herb-Roast Vegetables",
@@ -9669,7 +9728,13 @@
   "tier": 2,
   "heal": 3,
   "energy": 60,
-  "desc": "Rook says it needs more pepper. Rook is wrong."
+  "desc": "Rook says it needs more pepper. Rook is wrong.",
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "tropical_smoothie": {
   "name": "Tropical Smoothie",
@@ -9679,7 +9744,13 @@
   "tier": 3,
   "energy": 80,
   "desc": "A home-cooked dish. Restores energy.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "chocolate": {
   "name": "Chocolate",
@@ -9689,7 +9760,13 @@
   "tier": 3,
   "energy": 40,
   "heal": 1,
-  "desc": "From your own cacao. Little Pip will be your friend for life."
+  "desc": "From your own cacao. Little Pip will be your friend for life.",
+  "buff": {
+   "kind": "luck",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "orchard_pie": {
   "name": "Orchard Pie",
@@ -9700,7 +9777,13 @@
   "heal": 3,
   "energy": 55,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "saffron_rice": {
   "name": "Saffron Rice",
@@ -9711,7 +9794,13 @@
   "heal": 3,
   "energy": 60,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "starlight_salad": {
   "name": "Starlight Salad",
@@ -9721,7 +9810,13 @@
   "tier": 4,
   "heal": 5,
   "energy": 80,
-  "desc": "Crunchy. Faintly humming."
+  "desc": "Crunchy. Faintly humming.",
+  "buff": {
+   "kind": "speed",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true
  },
  "wishfruit_cake": {
   "name": "Wishfruit Cake",
@@ -9732,7 +9827,13 @@
   "heal": 8,
   "energy": 120,
   "friend": 10,
-  "desc": "Make a wish before the first bite."
+  "desc": "Make a wish before the first bite.",
+  "buff": {
+   "kind": "luck",
+   "minutes": 600,
+   "amount": 3
+  },
+  "buff_auto": true
  },
  "seed_packet": {
   "name": "Wild Seed Packet",
@@ -10346,7 +10447,7 @@
   "value": 320,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 4,
+  "damage": 5,
   "weapon": true,
   "arc": "gangsters",
   "desc": "Pries open crates and knocks back trouble.",
@@ -10358,7 +10459,7 @@
   "value": 900,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 6,
+  "damage": 5,
   "weapon": true,
   "arc": "gangsters",
   "desc": "A well-worn bat. Lucky for you, not for them.",
@@ -10370,7 +10471,7 @@
   "value": 2200,
   "rarity": "rare",
   "tier": 3,
-  "damage": 8,
+  "damage": 7,
   "weapon": true,
   "arc": "gangsters",
   "desc": "A chrome blade that flashes under the street lights.",
@@ -10687,7 +10788,7 @@
   "value": 320,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 4,
+  "damage": 5,
   "weapon": true,
   "arc": "penguins",
   "desc": "Carved from a giant fish bone. Light and quick.",
@@ -10699,7 +10800,7 @@
   "value": 900,
   "rarity": "uncommon",
   "tier": 2,
-  "damage": 6,
+  "damage": 5,
   "weapon": true,
   "arc": "penguins",
   "desc": "Shimmers green and violet with every swing.",
@@ -10711,7 +10812,7 @@
   "value": 2200,
   "rarity": "rare",
   "tier": 3,
-  "damage": 8,
+  "damage": 7,
   "weapon": true,
   "arc": "penguins",
   "desc": "A long crystal lance that splits light into colours.",
@@ -10914,7 +11015,7 @@
   "value": 2600,
   "rarity": "rare",
   "tier": 3,
-  "damage": 3,
+  "damage": 2,
   "weapon": true,
   "arc": "gangsters",
   "range": 120,
@@ -10928,11 +11029,11 @@
   "value": 5600,
   "rarity": "epic",
   "tier": 4,
-  "damage": 10,
+  "damage": 12,
   "weapon": true,
   "arc": "gangsters",
   "range": 140,
-  "cd": 2.5,
+  "cd": 1.6,
   "desc": "Gold-plated and dead accurate. The boss of sidearms.",
   "desc_auto": true
  },
@@ -11595,6 +11696,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 95,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11665,6 +11772,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 100,
+  "buff": {
+   "kind": "luck",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care.",
   "desc_auto": true
  },
@@ -11725,6 +11838,12 @@
   "rarity": "rare",
   "heal": 5,
   "energy": 100,
+  "buff": {
+   "kind": "defense",
+   "minutes": 300,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11787,6 +11906,12 @@
   "rarity": "epic",
   "heal": 6,
   "energy": 115,
+  "buff": {
+   "kind": "speed",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care.",
   "desc_auto": true
  },
@@ -11850,6 +11975,12 @@
   "rarity": "epic",
   "heal": 7,
   "energy": 130,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day.",
   "desc_auto": true
  },
@@ -11941,6 +12072,12 @@
   "rarity": "epic",
   "heal": 7,
   "energy": 130,
+  "buff": {
+   "kind": "luck",
+   "minutes": 420,
+   "amount": 2
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy.",
   "desc_auto": true
  },
@@ -12090,7 +12227,7 @@
   "rarity": "legendary",
   "slot": "charm",
   "stats": {
-   "luck": 2
+   "luck": 4
   },
   "desc": "Theo's old loupe. It always finds the lucky things."
  },
@@ -21951,7 +22088,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_cat_tower",
-  "desc": "The bees will thank you.",
+  "desc": "The bees will thank you. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21962,7 +22099,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_cat_tower_b",
-  "desc": "Gives the yard some character.",
+  "desc": "Gives the yard some character. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21984,7 +22121,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_crystal_cluster",
-  "desc": "Something nice to see from the porch.",
+  "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21995,7 +22132,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_crystal_cluster_b",
-  "desc": "Something nice to see from the porch.",
+  "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -22017,7 +22154,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_fence_gold",
-  "desc": "A neat line around your place. One piece of the Picket and Rail Set.",
+  "desc": "A neat line around your place. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22070,7 +22207,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_fence_neon",
-  "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+  "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22081,7 +22218,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_fence_neon_v",
-  "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+  "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22348,7 +22485,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_y_lowrider_bounce_icon",
-  "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Show Ribbon Yard Set.",
+  "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Block Party Yard Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22403,7 +22540,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_neon_chase_arch_icon",
-  "desc": "A warm glow for the evening. One piece of the Show Ribbon Yard Set.",
+  "desc": "A warm glow for the evening. One piece of the Block Party Yard Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22446,7 +22583,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_y_path_checker_icon",
-  "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+  "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22457,7 +22594,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_y_path_ice_brick_icon",
-  "desc": "A neat way across the yard. One piece of the Cobble Path Set.",
+  "desc": "A neat way across the yard.",
   "decor": true,
   "arc": "penguins"
  },
@@ -22478,7 +22615,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_path_neon_asphalt_icon",
-  "desc": "Flick it on and the room changes mood. One piece of the Cobble Path Set.",
+  "desc": "Flick it on and the room changes mood. One piece of the Street Paving Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22489,7 +22626,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_path_pebble_icon",
-  "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+  "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
   "decor": true
  },
  "dc_y_penguin_statue": {
@@ -23140,7 +23277,13 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "One giant egg, folded with herbs. Feeds everyone.",
-  "energy": 62
+  "energy": 62,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "fine_yarn": {
   "name": "Fine Yarn",
@@ -23236,7 +23379,13 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "A whole big egg baked into a wobbly custard.",
-  "energy": 47
+  "energy": 47,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true
  },
  "dc_show_ribbon_blue": {
   "name": "Blue Show Ribbon",
@@ -23840,6 +23989,12 @@
   "c15": true,
   "icon": "cake",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy."
  },
  "asparagus_tart": {
@@ -23856,6 +24011,12 @@
   "c15": true,
   "icon": "fruit_tart",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "A home-cooked dish. Restores energy."
  },
  "salmonberry_jam": {
@@ -23888,6 +24049,11 @@
   "c15": true,
   "icon": "herbal_tea",
   "desc_auto": true,
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  },
   "desc": "Warm, filling and made with care."
  },
  "kelp_salad": {
@@ -23936,6 +24102,12 @@
   "c15": true,
   "icon": "dream_pudding",
   "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "chanterelle_stew": {
@@ -23952,6 +24124,12 @@
   "c15": true,
   "icon": "mushroom_stew",
   "desc_auto": true,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "hazelnut_cake": {
@@ -23968,6 +24146,12 @@
   "c15": true,
   "icon": "sponge_cake",
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "rosehip_jam": {
@@ -23999,6 +24183,12 @@
   ],
   "c15": true,
   "desc_auto": true,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "roast_chestnuts": {
@@ -24063,6 +24253,12 @@
   "c15": true,
   "icon": "stir_fry",
   "desc_auto": true,
+  "buff": {
+   "kind": "speed",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Good food for a long day."
  },
  "citrus_tart": {
@@ -24079,6 +24275,12 @@
   "c15": true,
   "icon": "fruit_tart",
   "desc_auto": true,
+  "buff": {
+   "kind": "warm",
+   "minutes": 180,
+   "amount": 1
+  },
+  "buff_auto": true,
   "desc": "Warm, filling and made with care."
  },
  "honeycomb_toast": {
@@ -24334,5 +24536,246 @@
   "tier": 5,
   "rarity": "legendary",
   "desc": "Winter legend of the forest stream, seen only in a second winter or later."
+ },
+ "bug_net": {
+  "name": "Twig Net",
+  "name_gang": "Wire Net",
+  "type": "tool",
+  "value": 230,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Swing at a bug or a little critter close by to log it in the Book. It's let go right after.",
+  "icon": "c16ap4_bug_net"
+ },
+ "silk_net": {
+  "name": "Silk Net",
+  "name_gang": "Mesh Net",
+  "type": "tool",
+  "value": 1000,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Reaches two steps. Catches the shy ones the Twig Net misses. Foraging 15.",
+  "icon": "c16ap4_silk_net"
+ },
+ "star_net": {
+  "name": "Star Net",
+  "name_gang": "Neon Net",
+  "type": "tool",
+  "value": 3300,
+  "rarity": "uncommon",
+  "tier": 3,
+  "desc": "Three steps, never spooks. Catches night bugs and the once-a-season legends. Foraging 35.",
+  "icon": "c16ap4_star_net"
+ },
+ "cr_ladybug": {
+  "name": "Ladybug",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net.",
+  "icon": "c16ap4_ladybug",
+  "no_sell": true
+ },
+ "cr_lemon_wing": {
+  "name": "Lemon Wing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring; out by day. Twig Net.",
+  "icon": "c16ap4_lemon_wing",
+  "no_sell": true
+ },
+ "cr_orange_flutter": {
+  "name": "Orange Flutter",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out by day. Twig Net.",
+  "icon": "c16ap4_orange_flutter",
+  "no_sell": true
+ },
+ "cr_sky_wing": {
+  "name": "Sky Wing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net, Foraging 2.",
+  "icon": "c16ap4_sky_wing",
+  "no_sell": true
+ },
+ "cr_bumble_bee": {
+  "name": "Bumble Bee",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out by day. Twig Net, Foraging 3.",
+  "icon": "c16ap4_bumble_bee",
+  "no_sell": true
+ },
+ "cr_meadow_hopper": {
+  "name": "Meadow Hopper",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer, Fall; out by day. Twig Net.",
+  "icon": "c16ap4_meadow_hopper",
+  "no_sell": true
+ },
+ "cr_garden_snail": {
+  "name": "Garden Snail",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out any time. Twig Net.",
+  "icon": "c16ap4_garden_snail",
+  "no_sell": true
+ },
+ "cr_violet_duchess": {
+  "name": "Violet Duchess",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer; out by day. Silk Net, Foraging 8.",
+  "icon": "c16ap4_violet_duchess",
+  "no_sell": true
+ },
+ "cr_pond_dragonfly": {
+  "name": "Pond Dragonfly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Summer; out by day. Silk Net, Foraging 10.",
+  "icon": "c16ap4_pond_dragonfly",
+  "no_sell": true
+ },
+ "cr_green_frog": {
+  "name": "Green Frog",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer; out any time. Silk Net, Foraging 6.",
+  "icon": "c16ap4_green_frog",
+  "no_sell": true
+ },
+ "cr_shore_crab": {
+  "name": "Shore Crab",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. All year; out any time. Silk Net, Foraging 12.",
+  "icon": "c16ap4_shore_crab",
+  "no_sell": true
+ },
+ "cr_firefly": {
+  "name": "Firefly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Spring, Summer, Fall; out at night. Star Net, Foraging 20.",
+  "icon": "c16ap4_firefly",
+  "no_sell": true
+ },
+ "cr_sky_jelly": {
+  "name": "Sky Jelly",
+  "type": "critter",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. All year; out any time. Star Net, Foraging 30.",
+  "icon": "c16ap4_sky_jelly",
+  "no_sell": true,
+  "arc": "penguins"
+ },
+ "cr_petal_emperor": {
+  "name": "Petal Emperor",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Spring, 6-10 o'clock, rain weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_petal_emperor",
+  "no_sell": true
+ },
+ "cr_sunwing": {
+  "name": "Sunwing",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Summer, 11-14 o'clock, clear/sun weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_sunwing",
+  "no_sell": true
+ },
+ "cr_ember_moth": {
+  "name": "Ember Moth",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Fall, 17-21 o'clock, fog/leaves/rain weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_ember_moth",
+  "no_sell": true
+ },
+ "cr_snow_sylph": {
+  "name": "Snow Sylph",
+  "type": "critter",
+  "value": 0,
+  "rarity": "legendary",
+  "tier": 1,
+  "desc": "Logged in the Book and let go. Legend: Winter, 6-18 o'clock, snow/blizzard weather. Star Net, Foraging 40.",
+  "icon": "c16ap4_snow_sylph",
+  "no_sell": true
+ },
+ "glow_bait": {
+  "name": "Glow Bait",
+  "type": "misc",
+  "value": 10,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Glows on the hook: one more kind of fish in reach, and day casts pull like dusk.",
+  "icon": "c16ap4_glow_bait",
+  "bait_lvl": 6
+ },
+ "deep_bait": {
+  "name": "Deep Bait",
+  "type": "misc",
+  "value": 17,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Sinks deep: bigger, pricier fish come up to the hook.",
+  "icon": "c16ap4_deep_bait",
+  "bait_lvl": 10
+ },
+ "magnet_bait": {
+  "name": "Magnet Bait",
+  "type": "misc",
+  "value": 20,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Treasure sticks to the line twice as often.",
+  "icon": "c16ap4_magnet_bait",
+  "bait_lvl": 12
+ },
+ "wild_bait": {
+  "name": "Wild Bait",
+  "type": "misc",
+  "value": 27,
+  "rarity": "uncommon",
+  "tier": 1,
+  "desc": "Fish can't resist it: a better shot at two fish on one line.",
+  "icon": "c16ap4_wild_bait",
+  "bait_lvl": 15
  }
 }

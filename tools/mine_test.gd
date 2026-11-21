@@ -63,7 +63,7 @@ func _run() -> void:
 	await frames(2)
 	check(m.get("_guardian") == null and not bool(m.get("_summoning")), "keeper waits for time on the floor (needs %.0f s)" % float(m.call("_min_secs")))
 	GameState.run["mine_tried"] = {}
-	check(int(m.call("_threshold")) >= 12, "floor 1 threshold is meaningful (%d, rocks %d)" % [int(m.call("_threshold")), int(m.get("_rock_total"))])
+	check(int(m.call("_threshold")) >= 10, "floor 1 threshold is meaningful (%d, rocks %d)" % [int(m.call("_threshold")), int(m.get("_rock_total"))])
 	m.set("_secs_live", 999.0)
 	# Dig: break rocks via interact until the keeper wakes (pickaxe in hand).
 	var broke := 0

@@ -676,8 +676,8 @@
   ],
   "perks": {
    "2": "Hazel shares seeds: a seed pack each week",
-   "4": "Hazel waters your crops every other day",
-   "6": "Hazel waters your crops every day",
+   "4": "Hazel waters up to 12 of your crops each night",
+   "6": "Hazel waters up to 30 of your crops each night",
    "8": "Hazel harvests ripe crops into your sell box",
    "10": "Hazel's heirloom seeds: 5 Dream Seeds, the lumpy cheese, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   },
@@ -750,10 +750,10 @@
   ],
   "perks": {
    "2": "Bram's breakfast: a Tea each week",
-   "4": "Free soup at the inn: +30 energy once a day",
+   "4": "Free soup at the inn: +35 energy once a day",
    "6": "Bram's pies: 2 Orchard Pies",
    "8": "Bram's stories: a Map Scrap",
-   "10": "Bram names a dish after you (+50 max energy)"
+   "10": "Bram names a dish after you (+25 max energy)"
   },
   "home": "inn",
   "work": "inn",
@@ -1456,7 +1456,7 @@
   "perks": {
    "2": "Horses half price",
    "4": "Benno's saddle care: your horse runs 10% faster",
-   "6": "Benno's oats: +20 max energy",
+   "6": "Benno's oats: +10 max energy",
    "8": "Benno's spare tack sells for ◆250, and Tinker, a goat kid he hand-reared, comes to your barn (when it has room)",
    "10": "Benno's feed run: 6 Hay each week for your animals"
   },

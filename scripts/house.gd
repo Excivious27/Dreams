@@ -40,7 +40,7 @@ func build() -> void:
 	set_thing(CHEST.x, CHEST.y, {"type": "chest", "hint": "A: dresser (journal)"})
 	block_rect(1, 1, cols - 2, 1)  # back wall
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go outside"})
-	set_thing(13, 9, {"type": "kitchen", "hint": "A: cook (campfire)"})
+	set_thing(13, 9, {"type": "kitchen", "hint": "A: cook at the stove (your %s's recipes)" % Builds.label("kitchen")})
 	if tier() >= 3:
 		for hc: Vector2i in [CELLAR, CELLAR + Vector2i(1, 0)]:
 			set_thing(hc.x, hc.y, {"type": "sign", "text": "The cellar. Kegs and jars down here age twice as fast.", "hint": "A: the cellar"})

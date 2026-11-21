@@ -15,6 +15,20 @@ const WORDS := [
 	"Fights play as the game was made: a fair challenge.",
 	"Fights bite: foes are tougher, hit harder and strike faster.",
 ]
+## C16a P1 (c16a_18-04/-10): one line per day length for the new-game page and Settings.
+## Calendar gates are game days, so a longer day means more real hours to year 2 / 3.
+const DAY_WORDS := {
+	15: "Classic pace: a day passes in 15 real minutes (about 28 hours a year).",
+	20: "A little more time each day (about 37 hours a year).",
+	30: "Relaxed: twice the real time per day (about 56 hours a year).",
+	40: "Slowest: lots of time each day (about 75 hours a year); energy, crops and prices stay per day.",
+}
+
+
+static func day_words(len_min: int) -> String:
+	return str(DAY_WORDS.get(len_min, "Real minutes per game day."))
+
+
 ## Campaign card danger words (Campaign.danger -1..2), the same in every mode.
 const DANGER_WORDS := ["light", "fair", "tough", "fierce"]
 
@@ -35,7 +49,8 @@ const TABLE := {
 	"capture": [0.6, 0.8, 1.0, 1.15],         # enemy capture speed
 	"supply": [1.3, 1.15, 1.0, 1.0],          # supply trickle
 	"morale_loss": [10, 15, 20, 25],          # morale lost on a lost battle
-	"keeper_n": [-2, -1, 0, 1],               # mine keeper pack size (min 1)
+	"keeper_n": [-1, -1, 0, 1],               # mine keeper pack size (min 1); C16a P1: VE -2 -> -1 (half health already halves the floor)
+	"foe_count": [0.6, 0.8, 1.0, 1.15],       # C16a P1: roaming foes per map (GameState.enemy_count)
 	"clinic_fee": [0.0, 0.5, 1.0, 1.0],       # clinic fee after a combat faint
 }
 
@@ -95,6 +110,7 @@ static func settings_rows(menu: Object) -> void:
 	menu.call("_button", "Day length: %d real min" % GameState.day_len(), func() -> void:
 		GameState.run["day_len"] = next_day_len(GameState.day_len())
 		menu.call("_refresh"))
+	menu.call("_line", "  " + day_words(GameState.day_len()) + " Shorter days reach the next year sooner.", 8, Color(0.85, 0.85, 0.9))
 
 
 static func next_day_len(cur: int) -> int:

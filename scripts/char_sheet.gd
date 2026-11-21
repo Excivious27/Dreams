@@ -317,23 +317,23 @@ static func stats() -> Array:
 	var levels := 0
 	for sk: String in in_arc:
 		levels += GameState.skill_level(sk) - 1
-	v = 3 * mini(levels, 40); _p(p, "%d skill levels (3 each, up to 40)" % levels, v); sum += v
+	v = GameState.level_energy(levels); _p(p, "%d skill levels (1.5 each, up to %d)" % [levels, GameState.ENERGY_LEVELS_MAX], v); sum += v  # C16a P3: was a stale 3 x 40
 	for sk: String in in_arc:
 		v = int(GameState.bonus(sk, "energy"))
 		_p(p, "%s tree" % GameState.skill_name(sk), v); sum += v
-	v = GameState.gear_stat("energy"); _gear_parts(p, "energy"); sum += v
+	v = mini(GameState.GEAR_EN_CAP, GameState.gear_stat("energy")); _gear_parts(p, "energy"); sum += v  # C16a P3: gear energy counts up to GEAR_EN_CAP
 	if v != raw_gear("energy"):
 		_p(p, "Set bonus", v - raw_gear("energy"))
 	v = int(gs_call("energy_milestones", [], 0)); _p(p, "Mine depth (stamina)", v); sum += v
 	v = int(r.get("bonus_energy", 0)); _p(p, "Tonics & rewards", v); sum += v
 	if GameState.has_friend_perk("bram", 10):
-		_p(p, "%s ♥10" % npc_name("bram"), 50); sum += 50
+		_p(p, "%s ♥10" % npc_name("bram"), 25); sum += 25  # C16a P3: was 50
 	if GameState.has_friend_perk("posy", 8):
 		_p(p, "%s ♥8" % npc_name("posy"), 20); sum += 20
 	_rest(p, int(r.get("max_energy", 100)), sum)
 	var fed := int(r.get("fed_en", 0))
 	out.append({"id": "energy", "name": "Max energy", "icon": ["ui", "bolt_full"], "value": "%d / %d" % [int(r.get("energy", 0)), int(r.get("max_energy", 100))], "parts": p,
-		"note": "Food can refill %d more energy today (one bar a day). Sleep refills it." % maxi(0, int(r.get("max_energy", 100)) - fed)})
+		"note": "Food can refill %d more energy today (up to %d a day). Sleep refills it." % [maxi(0, GameState.food_cap() - fed), GameState.food_cap()]})
 	# Work cost
 	p = []
 	for t: String in ["hoe", "can", "axe", "pickaxe", "rod", "scythe", "sword"]:
@@ -486,16 +486,18 @@ static func stats() -> Array:
 	out.append({"id": "mine", "name": "Mine power", "icon": ["items", Hud.icon_for("pickaxe")], "value": str(1 + (pk + 1) / 2 + int(GameState.bonus("mining", "mine_power"))), "parts": p,
 		"note": mn + "Harder ores also need a pickaxe tier and Mining level."})
 	# Fishing
-	var fl := GameState.skill_level("fishing")
+	var fl := GameState.skill_level_eff("fishing")  # C16a P4 (c16a_05-14): the real Fishing rules
 	var lit: bool = GameState.run.get("flags", {}).has("lighthouse_lit")
-	p = [["Fishing level %d" % fl, "%d kinds" % (1 + fl)], ["Night", "+2 kinds, +40 value" if lit else "light the lighthouse first"], ["Bait", "+1 kind"]]
+	p = [["Fishing level %d" % fl, "%d kinds" % Fishing.reach_n(fl, false, false)], ["Night", "+2 kinds, +%s value" % Money.num(int(Fishing.T["cap_night"])) if lit else "light the lighthouse first"], ["Bait", "+1 kind"]]
+	if GameState.tool_tier("rod") > 0:
+		p.append(["Rod", "+%d value, +%d kinds" % [int(Fishing.T["cap_per_rod"]) * GameState.tool_tier("rod"), GameState.tool_tier("rod") / 2]])
 	var rare := GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0)
 	if rare > 0.0:
 		p.append(["Rare catch chance", _pct(rare)])
 	if GameState.bonus("fishing", "bite_speed") > 0.0:
 		p.append(["Faster bites", _pct(GameState.bonus("fishing", "bite_speed"))])
-	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % (1 + fl), "parts": p,
-		"note": "Fish worth up to %d◆ can bite (more with bait%s)." % [25 + 15 * fl, ", or at night" if lit else ""]})
+	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % Fishing.reach_n(fl, false, false), "parts": p,
+		"note": "Fish worth up to %s can bite (more with bait%s)." % [Money.amount(Fishing.ceiling(fl, false, false, 0)), ", or at night" if lit else ""]})
 	# Recovery
 	var every := roundi(GameState.mana_regen_secs())
 	p = [["Mana", "+1 every %d s" % every], ["Food energy left today", str(maxi(0, int(r.get("max_energy", 100)) - fed))], ["Sleep", "full health, energy, mana"]]
@@ -570,7 +572,7 @@ static func duration(minutes: int) -> String:
 	return "%dm" % maxi(0, minutes)
 
 
-const BUFF_NAMES := {"speed": "Swift", "luck": "Lucky", "defense": "Stoneskin", "warm": "Warm"}
+const BUFF_NAMES := {"speed": "Swift", "luck": "Lucky", "defense": "Stoneskin", "warm": "Warm", "stamina": "Steady"}
 
 
 static func buff_icon(kind: String) -> Array:
@@ -596,7 +598,7 @@ static func effects() -> Array:
 		if left <= 0:
 			continue
 		var amt := float(b.get("amount", 1))
-		var what: String = {"speed": "+%d%% move speed" % roundi(15 * amt), "luck": "+%d luck" % int(amt), "defense": "+%d defense" % int(amt), "warm": "no chill or freeze"}.get(k, "+%s %s" % [str(amt), k])
+		var what: String = {"speed": "+%d%% move speed" % roundi(15 * amt), "luck": "+%d luck" % int(amt), "defense": "+%d defense" % int(amt), "warm": "no chill or freeze", "stamina": "-%d%% energy per action" % roundi(10 * amt)}.get(k, "+%s %s" % [str(amt), k])
 		out.append({"name": str(BUFF_NAMES.get(k, k.capitalize())), "icon": buff_icon(k), "left": duration(left), "what": what, "bad": false})
 	var haste := int(r.get("flags", {}).get("haste_abs", -1)) - now
 	if haste > 0:

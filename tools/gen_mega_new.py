@@ -402,12 +402,12 @@ CONTENT = {}
 # ---- Gloamwood (both arcs, opens at chapter 2) -------------------------------------
 CONTENT["gloamwood"] = {
     "keeper": "Liesl", "keeper_sprite": "mg_liesl", "keeper_at": [-2, 0], "home_name": "the forest", "hub_name": "Lanternfall", "sfx": "sparkle",
-    "hook": {"text": "Liesl the moth-keeper needs 6 flowers and 3 wild herbs to wake the fairy ring.", "items": [["flower", 6], ["wild_herb", 3]], "crystals": 60},
+    "hook": {"text": "Liesl the moth-keeper needs 12 flowers, 8 wild herbs and 6 mushrooms to wake the fairy ring.", "items": [["flower", 12], ["wild_herb", 8], ["mushroom", 6]], "crystals": 150},
     "lines": {
         "locked": "The ring's asleep, love. It wakes when the valley's had a proper fright and come through it. Come back when the east meadow's quiet again.",
-        "offer": ["Oh! You can see the ring? Most folk walk straight through it.", "It goes to Gloamwood: lanterns, moss, the kindest dark you'll ever meet. But the ring's gone sleepy.", "Bring me six flowers and three wild herbs, and I'll sing it awake. Deal?"],
+        "offer": ["Oh! You can see the ring? Most folk walk straight through it.", "It goes to Gloamwood: lanterns, moss, the kindest dark you'll ever meet. But the ring's gone sleepy.", "Bring me twelve flowers, eight wild herbs and six mushrooms, and I'll sing it awake. Deal?"],
         "yes": "Lovely. Any flowers will do. The ring isn't fussy, only hungry.",
-        "wait": "Six flowers and three wild herbs, love. The ring's yawning but it isn't up yet.",
+        "wait": "Twelve flowers, eight wild herbs, six mushrooms, love. The ring's yawning but it isn't up yet.",
         "done": ["There we are. Hear that? Like a kettle just before it sings.", "Step into the middle and think of lanterns. You'll land in Lanternfall."],
         "travel": "The ring's humming. Off to Lanternfall?",
         "home": "Back to the forest, or somewhere further?",
@@ -418,12 +418,12 @@ CONTENT["gloamwood"] = {
 # ---- Sunscorch (both, chapter 3) ---------------------------------------------------
 CONTENT["sunscorch"] = {
     "keeper": "Sefa", "keeper_sprite": "mg_sefa", "keeper_at": [-2, 0], "home_name": "the beach", "hub_name": "Mirage Post", "sfx": "door",
-    "hook": {"text": "Sefa the sand-sailor needs 4 bread and 3 rope before the caravan can cross.", "items": [["bread", 4], ["rope", 3]], "crystals": 90},
+    "hook": {"text": "Sefa the sand-sailor needs 8 bread, 6 rope and a Sailcloth before the caravan can cross.", "items": [["bread", 8], ["rope", 6], ["sail", 1]], "crystals": 300},
     "lines": {
         "locked": "The dune winds are wrong this season. We sail when the valley's had two good stories told about it. Not before.",
-        "offer": ["You've got the look of someone who walks too far for fun.", "This wagon sails the sand to Mirage Post, the last well before the Sunscorch. Three days of dunes.", "I'm short on bread and rope. Four loaves, three coils, and you ride free. Yes?"],
+        "offer": ["You've got the look of someone who walks too far for fun.", "This wagon sails the sand to Mirage Post, the last well before the Sunscorch. Three days of dunes.", "I'm short on bread, rope and sail. Eight loaves, six coils and one Sailcloth, and you ride free. Yes?"],
         "yes": "Good. The desert eats rope and the crew eats bread. Bring both.",
-        "wait": "Four bread, three rope. The wind's turning, friend.",
+        "wait": "Eight bread, six rope, one Sailcloth. The wind's turning, friend.",
         "done": ["That'll see us across. Climb aboard, mind the water barrels.", "The sails go up at a word. Mirage Post, and then the whole Expanse."],
         "travel": "Sails are up. Mirage Post?",
         "home": "Back to the coast, or on somewhere else?",
@@ -434,12 +434,12 @@ CONTENT["sunscorch"] = {
 # ---- Ironline (gangsters, chapter 3) -----------------------------------------------
 CONTENT["ironline"] = {
     "keeper": "Conductor Hollis", "keeper_sprite": "mg_hollis", "keeper_at": [-2, 0], "home_name": "the plaza", "hub_name": "Junction City", "sfx": "door",
-    "hook": {"text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.", "items": [["coal", 10], ["iron_bar", 3]], "crystals": 120},
+    "hook": {"text": "Conductor Hollis needs 30 coal, 10 iron bars and 4 gears to run the night train to Ironline.", "items": [["coal", 30], ["iron_bar", 10], ["gear", 4]], "crystals": 400},
     "lines": {
         "locked": "Night train's not running. Line's tied up in somebody's paperwork. When your name means something in this valley, come back and we'll talk tickets.",
-        "offer": ["You're the one moving up in this town. I hear things in a ticket booth.", "There's a night train to Ironline. Rail town, coal smoke, a Baron who thinks he owns every track. He's squeezing the whole line dry.", "My engine's cold. Ten coal and three iron bars and she runs again. You in?"],
+        "offer": ["You're the one moving up in this town. I hear things in a ticket booth.", "There's a night train to Ironline. Rail town, coal smoke, a Baron who thinks he owns every track. He's squeezing the whole line dry.", "My engine's cold. Thirty coal, ten iron bars and four gears and she runs again. You in?"],
         "yes": "Coal for the firebox, iron for the couplings. I'll keep the booth lit.",
-        "wait": "Ten coal, three iron bars. She won't run on promises.",
+        "wait": "Thirty coal, ten iron bars, four gears. She won't run on promises.",
         "done": ["Hear that? That's a firebox catching. Best sound in the world.", "Ticket's on the house. Junction City, end of the line. Watch your pockets."],
         "travel": "All aboard for Junction City?",
         "home": "Back to town, or another stop?",
@@ -450,12 +450,12 @@ CONTENT["ironline"] = {
 # ---- Frostpeak (both, chapter 4) ----------------------------------------------------
 CONTENT["frostpeak"] = {
     "keeper": "Brannoch", "keeper_sprite": "mg_brannoch", "keeper_at": [-2, 0], "home_name": "the mountain", "hub_name": "Hearthhold", "sfx": "door",
-    "hook": {"text": "Brannoch the guide needs 4 wool and 6 coal before he'll take you up to Frostpeak.", "items": [["sheep_wool", 4], ["coal", 6]], "crystals": 150},
+    "hook": {"text": "Brannoch the guide needs 12 wool, 20 coal and 6 timber beams before he'll take you up to Frostpeak.", "items": [["sheep_wool", 12], ["coal", 20], ["beam", 6]], "crystals": 500},
     "lines": {
         "locked": "Up there? Not yet. The Reach is no place for someone who hasn't seen a few hard winters of trouble. Come back later on in your story.",
-        "offer": ["So you want to go higher than the mountain. Everybody does, once.", "Past the clouds there's Frostpeak Reach: Hearthhold, the glaciers, and the Summit, where something big sleeps in the ice.", "Four wool for your coat and six coal for the sled's warmer. Then I'll take you. Agreed?"],
+        "offer": ["So you want to go higher than the mountain. Everybody does, once.", "Past the clouds there's Frostpeak Reach: Hearthhold, the glaciers, and the Summit, where something big sleeps in the ice.", "Twelve wool for your coat, twenty coal for the sled's warmer and six beams for the runners. Then I'll take you. Agreed?"],
         "yes": "Good. And eat something before you come back. Cold eats the hungry first.",
-        "wait": "Four wool, six coal. I'm not hauling a frozen hero down the hill.",
+        "wait": "Twelve wool, twenty coal, six beams. I'm not hauling a frozen hero down the hill.",
         "done": ["There. Wrap up. Hold on to the rail, not to me.", "Hearthhold's at the top. Ask for the hot spring. Everyone does."],
         "travel": "Sled's waxed. Hearthhold?",
         "home": "Down the mountain, or somewhere else?",
@@ -466,12 +466,12 @@ CONTENT["frostpeak"] = {
 # ---- Windward (penguins, chapter 5) ------------------------------------------------
 CONTENT["windward"] = {
     "keeper": "Captain Zephyr", "keeper_sprite": "mg_zephyr", "keeper_at": [-2, 0], "home_name": "the meadow", "hub_name": "Breezehaven", "sfx": "sparkle",
-    "hook": {"text": "Captain Zephyr needs 4 cloth and a Refined Crystal to patch the balloon and lift it.", "items": [["cloth", 4], ["crystal_refined", 1]], "crystals": 200},
+    "hook": {"text": "Captain Zephyr needs 12 cloth, 2 Sailcloth and 3 Refined Crystals to patch the balloon and lift it.", "items": [["cloth", 12], ["sail", 2], ["crystal_refined", 3]], "crystals": 700},
     "lines": {
         "locked": "Too much weather up there for a passenger, I'm afraid. When the Star Crystal's nearly whole again the winds will calm. Then we fly.",
-        "offer": ["Ahoy! Well, ahoy-ish. There's no water. Ahoy anyway!", "Above the sky islands, higher than the station even, are the Windward Isles. Breezehaven. Storm Shelf. And the Roc.", "My envelope's torn and the lift crystal's gone dim. Four cloth and one Refined Crystal and we sail. Aye?"],
+        "offer": ["Ahoy! Well, ahoy-ish. There's no water. Ahoy anyway!", "Above the sky islands, higher than the station even, are the Windward Isles. Breezehaven. Storm Shelf. And the Roc.", "My envelope's torn and the lift crystals have gone dim. Twelve cloth, two Sailcloth and three Refined Crystals and we sail. Aye?"],
         "yes": "Splendid! I'll be right here, being a penguin in a basket.",
-        "wait": "Four cloth, one Refined Crystal. Penguins can't fly, you see. Balloons can.",
+        "wait": "Twelve cloth, two Sailcloth, three Refined Crystals. Penguins can't fly, you see. Balloons can.",
         "done": ["Patched! Glowing! Hold your hat.", "Breezehaven, here we come. Don't look down. Actually, do. It's lovely."],
         "travel": "Balloon's warm. Breezehaven?",
         "home": "Down to the meadow, or onward?",
@@ -482,12 +482,12 @@ CONTENT["windward"] = {
 # ---- Gilt City (gangsters, chapter 5) ----------------------------------------------
 CONTENT["giltcity"] = {
     "keeper": "Mister Pell", "keeper_sprite": "mg_pell", "keeper_at": [-2, 0], "home_name": "the farm", "hub_name": "Grand Plaza", "sfx": "door",
-    "hook": {"text": "Mister Pell wants 12 Rolled Bills and a Gold Bar for the invitation to Gilt City.", "items": [["thug_cash", 12], ["gold_bar", 1]], "crystals": 250},
+    "hook": {"text": "Mister Pell wants 40 Rolled Bills, 4 Gold Bars and a Pearl Necklace for the invitation to Gilt City.", "items": [["thug_cash", 40], ["gold_bar", 4], ["pearl_necklace", 1]], "crystals": 900},
     "lines": {
         "locked": "Madame Aurum doesn't send the car for just anyone. Make a bigger name for yourself, then I'll come back with the engine running.",
-        "offer": ["Nice place. Small. Honest. Gilt City is neither.", "Madame Aurum runs the casinos, the gardens and the Vaults under them. She's heard of you. She wants to meet.", "The invitation costs twelve Rolled Bills and one gold bar. Call it a cover charge. In?"],
+        "offer": ["Nice place. Small. Honest. Gilt City is neither.", "Madame Aurum runs the casinos, the gardens and the Vaults under them. She's heard of you. She wants to meet.", "The invitation costs forty Rolled Bills, four gold bars and a pearl necklace. Call it a cover charge. In?"],
         "yes": "Wonderful. I'll keep the leather seats warm.",
-        "wait": "Twelve Rolled Bills and a gold bar. Madame is patient. I am less so.",
+        "wait": "Forty Rolled Bills, four gold bars, a pearl necklace. Madame is patient. I am less so.",
         "done": ["Pleasure doing business. Mind the step, it's real gold.", "Grand Plaza in an hour. Smile for the statues."],
         "travel": "Car's running. The Grand Plaza?",
         "home": "Back to the farm, or another address?",
@@ -509,7 +509,7 @@ A("gloam_lanternfall", cols=42, rows=38, music="mega_gloam", look="gloam", links
            ("props/gl_lantern_posts", 2, 1, (25, 9)), ("props/mushroom_tree_b", 2, 2, (31, 27)), ("props/lanterns_pink", 3, 1, (24, 14)), ("props/lanterns_cyan", 3, 1, (13, 26)), ("props/giant_flower", 5, 2, (32, 19)),
            ("props/crystal_tree_pink", 1, 1, (6, 30)), ("props/gl_lantern_posts", 2, 1, (16, 23)), ("props/gl_lantern_posts", 2, 1, (26, 23))],
   shop=("props/plaza_04", 4, 2, (26, 18), {"who": "Fenn the lamp-seller", "greet": "Moth-light, glow-jam, things that hum. What'll it be?",
-        "items": [["echo_pudding", 330], ["wisp_thread", 160], ["ring_glow", 1150], ["mana_potion", 80], ["potion", 40]]}),
+        "items": [["echo_pudding", 330], ["light_mote", 160], ["ring_glow", 1150], ["mana_potion", 80], ["potion", 40]]}),
   heal=("props/glow_pond", 4, 2, (14, 17), {"hp": 4, "energy": 60, "msg": "You dip your hands in the glowing pond. Everything aches a little less."}),
   gate=("nature/fairy_ring", 1, 1, "spawn"),
   notes=[("A: read the lantern board", "Lantern board: 'Violet Glade, north. Crystal Thicket, east. The Moonpool is past the glade, and the Thornmother sleeps under it. Please don't wake her. (Someone has written underneath: SOMEONE HAS TO.)'")],
@@ -551,7 +551,7 @@ A("gloam_moonpool", cols=48, rows=44, music="mega_gloam_moonpool", music_fallbac
         "text": "Thorns uncoil from the dark water and stand up into a shape like a woman made of brambles. 'Another one who walks on my garden,' she whispers.",
         "win": "The thorns loosen and fall away, and for a moment there is only an old gardener, very tired, smiling. Then there is only a rose by the water, and a bud closed tight.",
         "after": "A single rose grows by the water. It turns to follow you, gently."},
-  enemies=[("gloom_spider", 2), ("thorn_slime", 3), ("gloom_moth", 2)], fish=["ghost_fish", "ghost_fish", "eel", "mooncarp"],
+  enemies=[("gloom_spider", 2), ("thorn_slime", 3), ("gloom_moth", 2)], fish=["ghost_fish", "eel", "eel"],
   forage=[["glowcap", 0.3], ["mushroom", 0.4], ["cave_bloom", 0.12], ["wild_herb", 0.3]],
   intro=["Mist on black water, and a moon in it that isn't the moon in the sky. Somewhere under the thorns something is sleeping very lightly."])
 
@@ -643,7 +643,7 @@ A("iron_freight_yards", cols=54, rows=44, music="mega_iron", look="rail", ground
           ("mrock", {"ore": "tin", "hp": 3, "n": 2, "sprite": "props/boulder2_m_a"}), ("mrock", {"ore": "iron", "hp": 3, "n": 2, "sprite": "props/ore_iron"}),
           ("note", {"hint": "A: read the manifest", "text": "A shipping manifest: '400 crates TIN to BARON. 300 crates COAL to BARON. 1 crate TEDDY BEARS to BARON (personal).'"})],
   enemies=[("rail_bot", 3), ("thug_brute", 2), ("coal_crawler", 2)],
-  forage=[["fiber", 0.4], ["wild_herb", 0.2]],
+  forage=[["map_scrap", 0.3], ["lamp_oil", 0.3], ["old_coin", 0.15], ["chain_link", 0.05], ["fiber", 0.2]],
   intro=["Rows of rusting freight cars, cranes like skeletons, and rail bots patrolling with lanterns. All of it stamped COALBROOK."])
 A("iron_mill_district", cols=50, rows=44, music="mega_iron", look="rail", ground_seam="brick_herring", path="cobble_warm", links={"iron_junction": ("s", 23), "iron_tunnels": ("n", 24)},
   structs=[("buildings/warehouse_c", 6, 4, (12, 12)), ("buildings/silo", 4, 5, (36, 13)), ("buildings/grain_elevator", 11, 5, (34, 33)), ("props/fire_barrel2", 1, 1, (14, 30)),
@@ -654,7 +654,7 @@ A("iron_mill_district", cols=50, rows=44, music="mega_iron", look="rail", ground
           ("heal", {"hp": 3, "energy": 40, "msg": "A fire barrel and a crate to sit on. Warm hands, warm heart.", "hint": "A: warm up at the barrel"}),
           ("note", {"hint": "A: read the poster", "text": "A poster: 'WORK HARDER. THE BARON IS WATCHING.' Someone has drawn him a very small hat."})],
   enemies=[("mill_runner", 2), ("thug_flame", 2), ("rail_bot", 2)],
-  forage=[["fiber", 0.4]],
+  forage=[["lamp_oil", 0.3], ["oil", 0.1], ["old_coin", 0.2], ["fiber", 0.2]],
   intro=["Brick mills with every window lit, chimneys coughing, and a great silo with the Baron's crest painted on it twice as tall as a house."])
 A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_seam="cave_stone_floor", path="ballast", border="cliff", backdrop="night", weather="clear",
   links={"iron_mill_district": ("s", 21)}, boss_at=(21, 9),
@@ -669,7 +669,7 @@ A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_sea
         "win": "The Baron sits down hard on his own rail car. 'Fine. FINE. The trains can run.' He hands over the watch. 'It's eight minutes fast. It always was.'",
         "after": "The Baron's rail car, empty. A timetable on the seat reads: ALL TRAINS RUNNING."},
   enemies=[("coal_crawler", 3), ("rail_bot", 2), ("tunnel_bat", 2)],
-  forage=[["mushroom", 0.3], ["fiber", 0.3]],
+  forage=[["mushroom", 0.3], ["glowcap", 0.1], ["old_coin", 0.15], ["fiber", 0.2]],
   intro=["Under the mills the old rail tunnels run in the dark, lamps flickering along the walls. Far ahead, a private rail car is parked with all its lights on."])
 
 # Frostpeak ---------------------------------------------------------------------
@@ -745,7 +745,7 @@ A("wind_breezehaven", cols=44, rows=40, music="mega_wind", look="sky", links={"w
            ("props/wi_wind_shrine", 2, 2, (27, 9)), ("nature/cloud_tree_a", 2, 2, (36, 26)),
            ("nature/cloud_tree_b", 2, 2, (30, 31)), ("props/sky_stairs", 5, 3, (36, 33))],
   shop=("props/wi_cloud_stall", 2, 1, (14, 27), {"who": "Gull's Goods", "greet": "Feathers, fluff, and food that floats! Mind it doesn't float off.",
-        "items": [["cloud_souffle", 560], ["charm_sky", 1700], ["storm_fluff", 480], ["greater_potion", 260], ["wonder_elixir", 900]]}),
+        "items": [["cloud_souffle", 560], ["charm_sky", 1700], ["finargle_fuzz", 90], ["greater_potion", 260], ["wonder_elixir", 900]]}),
   heal=("props/glow_pool_moon", 2, 1, (24, 26), {"hp": 5, "energy": 80, "msg": "You lie back on a cloud. It's exactly as comfortable as you always hoped."}),
   gate=("props/wi_mooring_tower", 2, 2, "spawn"),
   notes=[("A: read the wind vane", "Wind vane board: 'SUNRISE SHELF west, gentle. STORM SHELF north, not gentle. STARFALL GARDEN past the storm, where the Roc nests. Hold on to your hat. Hold on to your penguin.'")],
@@ -818,18 +818,18 @@ A("gilt_casino_row", cols=50, rows=42, music="mega_gilt", look="gilt", ground_se
           ("mrock", {"ore": "gold", "hp": 4, "n": 2, "sprite": "props/ore_gold"}),
           ("note", {"hint": "A: read the house rules", "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)"})],
   enemies=[("thug_gambler", 2), ("gilt_runner", 2), ("gilt_guard", 2)],
-  forage=[["flower", 0.3]],
+  forage=[["old_coin", 0.3], ["gambler_chip", 0.1], ["flower", 0.3]],
   intro=["Neon on gold. Every door is a casino, every window shows somebody winning, and none of them look happy about it."])
 A("gilt_gardens", cols=50, rows=44, music="mega_gilt", look="gilt", ground_seam="meadow_grass", path="cobble_moss", border="trees", links={"gilt_grand_plaza": ("e", 18)},
   water=[(14, 30), (36, 12)],
   structs=[("props/hedge2_arch", 5, 2, (24, 12)), ("props/plaza_50", 4, 3, (14, 13)), ("props/gold_fountain", 3, 2, (36, 30)), ("props/plaza_29", 3, 1, (22, 30)), ("props/plaza_31", 3, 1, (30, 26)),
            ("props/plaza_45", 2, 1, (8, 22)), ("props/topiary_a", 1, 1, (40, 22)), ("props/hedge2_tree", 1, 1, (28, 35))],
   things=[("loot", {"item": "pearl_necklace", "n": 1, "every": 10, "hint": "A: something shining in the hedge", "sprite": "props/hedge2_ball"}),
-          ("loot", {"item": "dark_rose", "n": 2, "every": 2, "hint": "A: velvet roses", "sprite": "props/flowerbed_red"}),
+          ("loot", {"item": "dark_rose", "n": 1, "every": 7, "hint": "A: velvet roses", "sprite": "props/flowerbed_red"}),
           ("heal", {"hp": 4, "energy": 60, "msg": "A bench under a rose arch. The only free thing in Gilt City.", "hint": "A: rest on the bench"}),
           ("note", {"hint": "A: read the gardener's note", "text": "Gardener's note: 'Madame wants the roses gold. Roses do not come in gold. I have explained this nine times.'"})],
   enemies=[("gilt_guard", 2), ("thug_enforcer", 2), ("gilded_mirror", 1)], fish=["carp", "ember_koi", "goldfish"],
-  forage=[["dark_rose", 0.2], ["flower", 0.4], ["wild_herb", 0.2]],
+  forage=[["dark_rose", 0.03, "foraging", 8], ["flower", 0.4], ["wild_herb", 0.2]],
   intro=["Hedges clipped into crowns, roses in perfect rows, gold-fish in gold ponds. Even the bees look expensive."])
 A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam="floor_checker", path="plaza_tiles", border="cliff", backdrop="night", links={"gilt_casino_row": ("s", 21)}, boss_at=(21, 9),
   structs=[("props/gc_vault_door", 5, 3, (28, 8)), ("props/gold_fence_a", 2, 1, (12, 14)), ("props/gold_fence_b", 2, 1, (32, 14)), ("props/gold_gate", 1, 1, (16, 7)), ("props/gold_gate", 1, 1, (27, 7)),
@@ -843,7 +843,7 @@ A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam
         "win": "Madame Aurum laughs, actually laughs, and sits on a pile of coins. 'Oh, I like you. Keep the ring. The Vaults can spare it. And the gardens are yours to wander, free.'",
         "after": "Madame Aurum's stack of coins. She left a note: 'Dinner? Bring the flan.'"},
   enemies=[("gilt_guard", 3), ("gilded_mirror", 2), ("thug_enforcer", 1)],
-  forage=[],
+  forage=[["old_coin", 0.3], ["lucky_coin", 0.02, "foraging", 8]],
   intro=["Under the casinos, the Vaults: gold in stacks to the ceiling, fences of gold, and the soft tick of somebody counting."])
 
 # Second areas for converted regions --------------------------------------------
@@ -1342,6 +1342,17 @@ def area_name(aid):
     return aid
 
 # ---------------------------------------------------------------- write
+def _travel_unlock(r):
+    """mega_travel.json unlock: story tier + hint, plus the C16a P1 calendar/skill floor (when),
+    the non-combat road (alt) and their words (MegaTravel.can_start / gate_words read them)."""
+    u = r["unlock"]
+    out = {"tier": u["tier"], "hint": {arc: "Opens " + t + "." for arc, t in TIER_STEP.get(u["tier"], {}).items()}}
+    for k in ("when", "alt", "alt_words", "words"):
+        if k in u:
+            out[k] = u[k]
+    return out
+
+
 def main():
     for aid, spec in AREAS.items():
         spec.setdefault("name", area_name(aid))
@@ -1469,7 +1480,8 @@ def main():
     for r in REGIONS:
         C = CONTENT[r["id"]]
         hk = C["hook"]
-        Q["side"].append({"id": r["unlock"]["quest"], "giver": "gate_" + r["id"], "arc": r["arc"], "text": hk["text"], "when": {},
+        Q["side"].append({"id": r["unlock"]["quest"], "giver": "gate_" + r["id"], "arc": r["arc"], "text": hk["text"],
+                          "when": dict(r["unlock"].get("when", {})),  # C16a integ: the hook waits for the same calendar/skill floor as the gate
                           "done_when": {"items": hk["items"]}, "take": True, "reward": {"crystals": hk["crystals"], "flag": r["unlock"]["flag"]}})
         hub = AREAS[r["hub"]]
         job = hub["job"]
@@ -1487,7 +1499,7 @@ def main():
         e.update({"w": C.get("entry_w", 0), "keeper_at": C.get("keeper_at", [-2, 0]), "home_name": C["home_name"]})
         e.setdefault("spawn", [e["cell"][0], e["cell"][1] + 2])
         travel[r["id"]] = {"name": r["name"], "arc": r["arc"], "hub": r["hub"], "hub_name": C["hub_name"], "hub_spawn": [gate["cell"][0], gate["cell"][1] + 2],
-                           "areas": [a["id"] for a in r["areas"]], "entry": e, "unlock": {"tier": r["unlock"]["tier"], "hint": {arc: "Opens " + t + "." for arc, t in TIER_STEP.get(r["unlock"]["tier"], {}).items()}}, "quest": r["unlock"]["quest"],
+                           "areas": [a["id"] for a in r["areas"]], "entry": e, "unlock": _travel_unlock(r), "quest": r["unlock"]["quest"],
                            "keeper": C["keeper"], "keeper_sprite": C["keeper_sprite"], "lines": C["lines"], "mail": C["mail"], "sfx": C.get("sfx", "door")}
     check_ids(regs, I, E, Q, travel)
     W("quests.json", Q)

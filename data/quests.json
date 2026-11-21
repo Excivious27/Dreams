@@ -2893,23 +2893,33 @@
    "id": "mega_gloamwood_hook",
    "giver": "gate_gloamwood",
    "arc": "both",
-   "text": "Liesl the moth-keeper needs 6 flowers and 3 wild herbs to wake the fairy ring.",
-   "when": {},
+   "text": "Liesl the moth-keeper needs 12 flowers, 8 wild herbs and 6 mushrooms to wake the fairy ring.",
+   "when": {
+    "day": 22,
+    "skill": [
+     "foraging",
+     4
+    ]
+   },
    "done_when": {
     "items": [
      [
       "flower",
-      6
+      12
      ],
      [
       "wild_herb",
-      3
+      8
+     ],
+     [
+      "mushroom",
+      6
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 60,
+    "crystals": 150,
     "flag": "mega_gloamwood_open"
    }
   },
@@ -2951,23 +2961,29 @@
    "id": "mega_sunscorch_hook",
    "giver": "gate_sunscorch",
    "arc": "both",
-   "text": "Sefa the sand-sailor needs 4 bread and 3 rope before the caravan can cross.",
-   "when": {},
+   "text": "Sefa the sand-sailor needs 8 bread, 6 rope and a Sailcloth before the caravan can cross.",
+   "when": {
+    "day": 43
+   },
    "done_when": {
     "items": [
      [
       "bread",
-      4
+      8
      ],
      [
       "rope",
-      3
+      6
+     ],
+     [
+      "sail",
+      1
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 90,
+    "crystals": 300,
     "flag": "mega_sunscorch_open"
    }
   },
@@ -3030,23 +3046,29 @@
    "id": "mega_ironline_hook",
    "giver": "gate_ironline",
    "arc": "gangsters",
-   "text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.",
-   "when": {},
+   "text": "Conductor Hollis needs 30 coal, 10 iron bars and 4 gears to run the night train to Ironline.",
+   "when": {
+    "day": 43
+   },
    "done_when": {
     "items": [
      [
       "coal",
-      10
+      30
      ],
      [
       "iron_bar",
-      3
+      10
+     ],
+     [
+      "gear",
+      4
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 120,
+    "crystals": 400,
     "flag": "mega_ironline_open"
    }
   },
@@ -3083,23 +3105,29 @@
    "id": "mega_frostpeak_hook",
    "giver": "gate_frostpeak",
    "arc": "both",
-   "text": "Brannoch the guide needs 4 wool and 6 coal before he'll take you up to Frostpeak.",
-   "when": {},
+   "text": "Brannoch the guide needs 12 wool, 20 coal and 6 timber beams before he'll take you up to Frostpeak.",
+   "when": {
+    "day": 85
+   },
    "done_when": {
     "items": [
      [
       "sheep_wool",
-      4
+      12
      ],
      [
       "coal",
+      20
+     ],
+     [
+      "beam",
       6
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 150,
+    "crystals": 500,
     "flag": "mega_frostpeak_open"
    }
   },
@@ -3138,23 +3166,29 @@
    "id": "mega_windward_hook",
    "giver": "gate_windward",
    "arc": "penguins",
-   "text": "Captain Zephyr needs 4 cloth and a Refined Crystal to patch the balloon and lift it.",
-   "when": {},
+   "text": "Captain Zephyr needs 12 cloth, 2 Sailcloth and 3 Refined Crystals to patch the balloon and lift it.",
+   "when": {
+    "year": 2
+   },
    "done_when": {
     "items": [
      [
       "cloth",
-      4
+      12
+     ],
+     [
+      "sail",
+      2
      ],
      [
       "crystal_refined",
-      1
+      3
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 200,
+    "crystals": 700,
     "flag": "mega_windward_open"
    }
   },
@@ -3197,23 +3231,29 @@
    "id": "mega_giltcity_hook",
    "giver": "gate_giltcity",
    "arc": "gangsters",
-   "text": "Mister Pell wants 12 Rolled Bills and a Gold Bar for the invitation to Gilt City.",
-   "when": {},
+   "text": "Mister Pell wants 40 Rolled Bills, 4 Gold Bars and a Pearl Necklace for the invitation to Gilt City.",
+   "when": {
+    "year": 2
+   },
    "done_when": {
     "items": [
      [
       "thug_cash",
-      12
+      40
      ],
      [
       "gold_bar",
+      4
+     ],
+     [
+      "pearl_necklace",
       1
      ]
     ]
    },
    "take": true,
    "reward": {
-    "crystals": 250,
+    "crystals": 900,
     "flag": "mega_giltcity_open"
    }
   },

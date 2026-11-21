@@ -34,6 +34,8 @@ for b in "${BOTS[@]}"; do
   done_line=$(grep -m1 "BOT $1 done" "$f" || echo "DID NOT FINISH")
   printf "bot%-2s %-9s %-10s %-8s p%s d%s %2sm errors=%-4s fails=%-3s warns=%-3s pauses=%-3s %s\n" "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$errs" "$fails" "$warns" "$pauses" "$(echo "$done_line" | cut -c1-60)"
 done
+echo "== end-of-day energy (C16a P3: mean % left by style/arc, from BOT ENERGY lines) =="
+for b in "${BOTS[@]}"; do set -- $b; grep -h "BOT ENERGY" "$OUT/bot$1.log" | sed "s/^/$2 /"; done | awk '{st=""; l=0; m=1; for(i=1;i<=NF;i++){split($i,kv,"="); if(kv[1]=="style")st=kv[2]; if(kv[1]=="left")l=kv[2]; if(kv[1]=="max")m=kv[2]}; k=$1" "st; s[k]+=100*l/(m>0?m:1); n[k]++; if(l==0)z[k]++} END{for(k in s) printf "  %-22s days=%-3d mean_left=%3.0f%% empty_days=%d\n", k, n[k], s[k]/n[k], z[k]+0}' | sort
 echo "== distinct script errors =="
 grep -h -A1 "SCRIPT ERROR" "$OUT"/bot*.log | grep -v '^--$' | paste - - | sed 's/  */ /g' | sort | uniq -c | sort -rn | head -40
 echo "== distinct fails/warns =="

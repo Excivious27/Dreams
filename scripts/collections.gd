@@ -23,7 +23,7 @@ static func st() -> Dictionary:
 		r["coll"] = {}
 	var c: Dictionary = r["coll"]
 	var fresh := not c.has("made")
-	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor", "ranch"]:
+	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor", "ranch", "critters"]:
 		if not (c.get(k, null) is Dictionary):
 			c[k] = {}
 	for k in ["pending", "today"]:
@@ -78,7 +78,18 @@ static func entries(cat: String, wing := "") -> Array:
 				if arc_ok(e):
 					var x := e.duplicate()
 					x["wing"] = str(w["id"])
+					if x.has("where_gangsters") and not GameState.is_penguins():
+						x["where"] = x["where_gangsters"]  # C16a P4: per-arc hint
 					out.append(x)
+		# C16a P4: the Live Exhibit wing shows every logged critter (nothing is kept: released and logged).
+		var lw: Dictionary = data().get("live_wing", {})
+		if not lw.is_empty() and (wing == "" or wing == str(lw["id"])):
+			for e: Dictionary in data().get("logs", {}).get("critters", []):
+				if arc_ok(e):
+					var y := e.duplicate()
+					y["wing"] = str(lw["id"])
+					y["live"] = true
+					out.append(y)
 		return out
 	for e: Dictionary in data().get("logs", {}).get(cat, []):
 		if arc_ok(e) and (wing == "" or str(e.get("station", e.get("family", ""))) == wing):
@@ -109,12 +120,13 @@ static func in_log(cat: String, key: String) -> bool:
 static func have(cat: String, key: String) -> bool:
 	var c := st()
 	match cat:
-		"museum": return c["donated"].has(key)
+		"museum": return c["donated"].has(key) or (key.begins_with("cr_") and c["critters"].has(key))
 		"shipping": return c["shipped"].has(key)
 		"fish": return c["caught"].has(key)
 		"cooking", "crafting": return c["made"].has(key)
 		"forage": return GameState.has_seen(key)
 		"ranch": return c["ranch"].has(key)
+		"critters": return c["critters"].has(key)
 	return false
 
 
@@ -137,6 +149,7 @@ static func amount_of(cat: String, key: String) -> int:
 		"fish": return int((c["caught"].get(key, {}) as Dictionary).get("n", 0))
 		"cooking", "crafting": return int(c["made"].get(key, 0))
 		"ranch": return int(c["ranch"].get(key, 0))
+		"critters": return int(c["critters"].get(key, 0))
 	return 1 if have(cat, key) else 0
 
 
@@ -181,14 +194,17 @@ static func record_ranch(id: String, n := 1, quiet := false) -> bool:
 
 
 ## A fish on the line (GameMap.fish_at). True on a first.
-static func record_catch(id: String, n := 1, night := false, rain := false) -> bool:
+static func record_catch(id: String, n := 1, night := false, rain := false, size := 0) -> bool:
 	if not in_log("fish", id):
 		return false
 	var c := st()
 	var first: bool = not c["caught"].has(id)
 	var e: Dictionary = c["caught"].get(id, {"n": 0, "first": int(GameState.run.get("day", 1)), "night": night, "rain": rain})
 	e["n"] = int(e.get("n", 0)) + n
+	if size > int(e.get("best", 0)):
+		e["best"] = size  # C16a P4: biggest catch (fish log card, Derby)
 	c["caught"][id] = e
+
 	if first:
 		_first("fish", id, false, "Fish log")
 		# C10a P3: a legend's first catch leaves a keepsake in the decor box (once per run).
@@ -196,6 +212,19 @@ static func record_catch(id: String, n := 1, night := false, rain := false) -> b
 		if L is Dictionary and str((L as Dictionary).get("first_decor", "")) != "":
 			if give_decor(str(L["first_decor"]), "legend:" + id):
 				GameState.notify("A keepsake of the %s is waiting in your decor box." % GameState.item_name(id))
+	return first
+
+
+## C16a P4: a critter caught with the bug net (BugNet.swing), logged and let go. True on a first.
+static func record_critter(id: String) -> bool:
+	if not in_log("critters", id):
+		return false
+	var c := st()
+	var first: bool = not c["critters"].has(id)
+	c["critters"][id] = int(c["critters"].get(id, 0)) + 1
+	if first:
+		_first("critters", id, false, "Critter log")
+		st()["new"]["museum"] = true  # the Live Exhibit grows too
 	return first
 
 
@@ -512,7 +541,15 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 		return fish
 	for id in data().get("legends", {}):
 		var L: Dictionary = data()["legends"][id]
-		if str(L.get("scene", "")) != scene or st()["caught"].has(str(id)) or GameState.has_seen(str(id)):
+		var lost := false
+		if st()["caught"].has(str(id)) or GameState.has_seen(str(id)):
+			# C16a P4 (c16a_14-03): a one-of-a-kind legend given or sold away before it was donated can come
+			# back (at a quarter of the chance), so the museum can always be finished.
+			lost = in_log("museum", str(id)) and not st()["donated"].has(str(id)) and GameState.count(str(id)) == 0 \
+				and Storage.amount("chest", str(id)) == 0
+			if not lost:
+				continue
+		if str(L.get("scene", "")) != scene:
 			continue
 		if GameState.skill_level("fishing") < int(L.get("lvl", 0)):
 			continue
@@ -524,7 +561,9 @@ static func legend_roll(scene: String, fish: String, night: bool) -> String:
 			"night": ok = night
 		if str(L.get("when", "")).begins_with("season:"):  # C15 P4: season legends (+ "year" gate)
 			ok = GameState.season() == str(L["when"]).substr(7) and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 >= int(L.get("year", 1))
-		if ok and randf() < float(L.get("chance", 0.05)):
+		if ok and (int(GameState.run.get("day", 1)) - 1) / 112 + 1 < int(L.get("year", 1)):
+			ok = false  # C16a P4: every legend may carry a first year (the koi is a year-3 goal)
+		if ok and randf() < float(L.get("chance", 0.05)) * (0.25 if lost else 1.0):
 			return str(id)
 	return fish
 

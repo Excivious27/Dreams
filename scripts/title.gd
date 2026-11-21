@@ -841,10 +841,13 @@ func _show_names() -> void:
 	_page.add_child(diff_btn)
 	_page.add_child(diff_note)
 	var len_btn := _button("Day length: %d real min" % _new_len, func() -> void: pass)
+	var len_note := _label(Difficulty.day_words(_new_len), 7, false)  # C16a P1: what the length means
 	len_btn.pressed.connect(func() -> void:
 		_new_len = Difficulty.next_day_len(_new_len)
-		len_btn.text = "Day length: %d real min" % _new_len)
+		len_btn.text = "Day length: %d real min" % _new_len
+		len_note.text = Difficulty.day_words(_new_len))
 	_page.add_child(len_btn)
+	_page.add_child(len_note)
 	if OS.get_environment("SteamDeck") == "1":
 		_page.add_child(_label("Typing a name: Steam + X opens the keyboard (or tap Random).", 7, false))
 	_page.add_child(_button("Start", _begin, true))

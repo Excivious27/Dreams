@@ -42,6 +42,12 @@
    "title": "Ranch log",
    "kind": "count",
    "badge": "medal_green_thumb"
+  },
+  {
+   "id": "critters",
+   "title": "Critter log",
+   "kind": "seen",
+   "badge": "medal_explorer"
   }
  ],
  "wings": [
@@ -52,7 +58,7 @@
     {
      "item": "coal",
      "arc": "",
-     "where": "Forage: Wastes"
+     "where": "The mines; also Forage: Wastes"
     },
     {
      "item": "copper",
@@ -92,7 +98,7 @@
     {
      "item": "dark",
      "arc": "",
-     "where": "Forage: Wastes"
+     "where": "The mines; also Forage: Wastes"
     },
     {
      "item": "moon_shard",
@@ -168,7 +174,7 @@
     {
      "item": "otter_whisker",
      "arc": "",
-     "where": "Dropped by otters by the water."
+     "where": "The river serpent drops it, now and then."
     },
     {
      "item": "goat_horn",
@@ -189,7 +195,7 @@
     {
      "item": "old_coin",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Iron Freight Yards, Iron Mill District"
     },
     {
      "item": "fossil",
@@ -204,7 +210,7 @@
     {
      "item": "map_scrap",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Iron Freight Yards"
     },
     {
      "item": "rune_tablet",
@@ -249,7 +255,7 @@
     {
      "item": "lucky_coin",
      "arc": "",
-     "where": "Old chests, buried caches and lucky catches."
+     "where": "Forage: Gilt Vaults"
     },
     {
      "item": "pearl_necklace",
@@ -295,12 +301,12 @@
     {
      "item": "salmon",
      "arc": "",
-     "where": "Farm, Item Words"
+     "where": "Farm, Lake"
     },
     {
      "item": "eel",
      "arc": "",
-     "where": "Beach, Enemy"
+     "where": "Beach, Farm"
     },
     {
      "item": "puffer",
@@ -325,7 +331,8 @@
     {
      "item": "tuna",
      "arc": "",
-     "where": "A gift from the Sanctuary pool, or a lucky weekly perk."
+     "where": "A gift from the Sanctuary pool, or a lucky weekly perk.",
+     "where_gangsters": "The docks charters and the cold colonies."
     },
     {
      "item": "crab",
@@ -335,7 +342,7 @@
     {
      "item": "legendary_koi",
      "arc": "",
-     "where": "The lake, at dawn in rain or winter. Fishing 8+. Only one exists."
+     "where": "The lake, at dawn in rain or winter, from year 3. Fishing 30+. Only one exists."
     },
     {
      "item": "ghost_fish",
@@ -833,13 +840,13 @@
     "item": "salmon",
     "arc": "",
     "family": "Fish",
-    "where": "Farm, Item Words"
+    "where": "Farm, Lake"
    },
    {
     "item": "eel",
     "arc": "",
     "family": "Fish",
-    "where": "Beach, Enemy"
+    "where": "Beach, Farm"
    },
    {
     "item": "puffer",
@@ -1031,7 +1038,7 @@
     "item": "coal",
     "arc": "",
     "family": "Minerals",
-    "where": "Forage: Wastes"
+    "where": "The mines; also Forage: Wastes"
    },
    {
     "item": "tuna",
@@ -1049,7 +1056,7 @@
     "item": "legendary_koi",
     "arc": "",
     "family": "Fish",
-    "where": "The lake, at dawn in rain or winter. Fishing 8+. Only one exists."
+    "where": "The lake, at dawn in rain or winter, from year 3. Fishing 30+. Only one exists."
    },
    {
     "item": "pear",
@@ -1625,7 +1632,7 @@
     "item": "old_coin",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Iron Freight Yards, Iron Mill District"
    },
    {
     "item": "fossil",
@@ -1643,7 +1650,7 @@
     "item": "map_scrap",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Iron Freight Yards"
    },
    {
     "item": "rune_tablet",
@@ -2087,7 +2094,7 @@
     "item": "lucky_coin",
     "arc": "",
     "family": "Treasure",
-    "where": "Old chests, buried caches and lucky catches."
+    "where": "Forage: Gilt Vaults"
    },
    {
     "item": "platinum",
@@ -2328,12 +2335,12 @@
    {
     "item": "salmon",
     "arc": "",
-    "where": "Farm, Item Words"
+    "where": "Farm, Lake"
    },
    {
     "item": "eel",
     "arc": "",
-    "where": "Beach, Enemy"
+    "where": "Beach, Farm"
    },
    {
     "item": "puffer",
@@ -2358,7 +2365,7 @@
    {
     "item": "legendary_koi",
     "arc": "",
-    "where": "The lake, at dawn in rain or winter. Fishing 8+. Only one exists."
+    "where": "The lake, at dawn in rain or winter, from year 3. Fishing 30+. Only one exists."
    },
    {
     "item": "ghost_fish",
@@ -2468,22 +2475,22 @@
    {
     "item": "prism_trout",
     "arc": "",
-    "where": "Legend: Forest, in spring, fishing 6+. Only one exists."
+    "where": "Legend: Forest, in spring, fishing 14+. Only one exists."
    },
    {
     "item": "sailfish",
     "arc": "",
-    "where": "Legend: Beach, in summer, fishing 7+. Only one exists."
+    "where": "Legend: Beach, in summer, fishing 18+. Only one exists."
    },
    {
     "item": "soul_salmon",
     "arc": "",
-    "where": "Legend: Lake, in fall, fishing 8+. Only one exists."
+    "where": "Legend: Lake, in fall, fishing 22+, from year 2. Only one exists."
    },
    {
     "item": "frost_pike",
     "arc": "",
-    "where": "Legend: Forest, in winter, fishing 9+, from year 2. Only one exists."
+    "where": "Legend: Forest, in winter, fishing 26+, from year 2. Only one exists."
    }
   ],
   "cooking": [
@@ -5802,11 +5809,6 @@
     "where": "Out in the world somewhere."
    },
    {
-    "item": "chamomile",
-    "arc": "",
-    "where": "Out in the world somewhere."
-   },
-   {
     "item": "dill",
     "arc": "",
     "where": "Out in the world somewhere."
@@ -5877,11 +5879,6 @@
     "where": "Forage: Crystal Meadow, Moon"
    },
    {
-    "item": "morel",
-    "arc": "",
-    "where": "Out in the world somewhere."
-   },
-   {
     "item": "moonwort",
     "arc": "",
     "where": "Forage: Orchard Hills"
@@ -5897,19 +5894,9 @@
     "where": "Out in the world somewhere."
    },
    {
-    "item": "fiddlehead",
-    "arc": "",
-    "where": "Forage: Forest, Lake (Spring)"
-   },
-   {
     "item": "salmonberry",
     "arc": "",
     "where": "Forage: Meadow, Orchard Hills (Spring)"
-   },
-   {
-    "item": "sand_dollar",
-    "arc": "",
-    "where": "Forage: Beach (Summer)"
    },
    {
     "item": "sea_glass",
@@ -5920,16 +5907,6 @@
     "item": "summer_kelp",
     "arc": "",
     "where": "Forage: Beach (Summer, Fall)"
-   },
-   {
-    "item": "cattail",
-    "arc": "",
-    "where": "Forage: Lake, Wild (Summer, Fall)"
-   },
-   {
-    "item": "chanterelle",
-    "arc": "",
-    "where": "Forage: Forest, Wild (Fall)"
    },
    {
     "item": "hazelnut",
@@ -5945,31 +5922,6 @@
     "item": "wild_plum",
     "arc": "",
     "where": "Forage: Meadow, Mountain (Fall)"
-   },
-   {
-    "item": "chestnut",
-    "arc": "",
-    "where": "Forage: Forest, Orchard Hills (Fall)"
-   },
-   {
-    "item": "leaf_bundle",
-    "arc": "",
-    "where": "Forage: Farm, Lake (Fall)"
-   },
-   {
-    "item": "holly_sprig",
-    "arc": "",
-    "where": "Forage: Farm, Forest (Winter)"
-   },
-   {
-    "item": "snow_yam",
-    "arc": "",
-    "where": "Forage: Farm, Forest (Winter)"
-   },
-   {
-    "item": "crystal_icicle",
-    "arc": "",
-    "where": "Forage: Forest, Lake (Winter)"
    },
    {
     "item": "winter_honeycomb",
@@ -6260,6 +6212,93 @@
     "family": "Animal goods",
     "where": "The mines, or rocks out in the wilds."
    }
+  ],
+  "critters": [
+   {
+    "item": "cr_ladybug",
+    "arc": "",
+    "where": "Spring, Summer; out by day. Twig Net."
+   },
+   {
+    "item": "cr_lemon_wing",
+    "arc": "",
+    "where": "Spring; out by day. Twig Net."
+   },
+   {
+    "item": "cr_orange_flutter",
+    "arc": "",
+    "where": "Spring, Summer, Fall; out by day. Twig Net."
+   },
+   {
+    "item": "cr_sky_wing",
+    "arc": "",
+    "where": "Spring, Summer; out by day. Twig Net, Foraging 2."
+   },
+   {
+    "item": "cr_bumble_bee",
+    "arc": "",
+    "where": "Spring, Summer; out by day. Twig Net, Foraging 3."
+   },
+   {
+    "item": "cr_meadow_hopper",
+    "arc": "",
+    "where": "Summer, Fall; out by day. Twig Net."
+   },
+   {
+    "item": "cr_garden_snail",
+    "arc": "",
+    "where": "Spring, Summer, Fall; out any time. Twig Net."
+   },
+   {
+    "item": "cr_violet_duchess",
+    "arc": "",
+    "where": "Summer; out by day. Silk Net, Foraging 8."
+   },
+   {
+    "item": "cr_pond_dragonfly",
+    "arc": "",
+    "where": "Summer; out by day. Silk Net, Foraging 10."
+   },
+   {
+    "item": "cr_green_frog",
+    "arc": "",
+    "where": "Spring, Summer; out any time. Silk Net, Foraging 6."
+   },
+   {
+    "item": "cr_shore_crab",
+    "arc": "",
+    "where": "All year; out any time. Silk Net, Foraging 12."
+   },
+   {
+    "item": "cr_firefly",
+    "arc": "",
+    "where": "Spring, Summer, Fall; out at night. Star Net, Foraging 20."
+   },
+   {
+    "item": "cr_sky_jelly",
+    "arc": "penguins",
+    "where": "All year; out any time. Star Net, Foraging 30."
+   },
+   {
+    "item": "cr_petal_emperor",
+    "arc": "",
+    "where": "Legend: Spring, 6-10 o'clock, rain weather. Star Net, Foraging 40."
+   },
+   {
+    "item": "cr_sunwing",
+    "arc": "",
+    "where": "Legend: Summer, 11-14 o'clock, clear/sun weather. Star Net, Foraging 40."
+   },
+   {
+    "item": "cr_ember_moth",
+    "arc": "",
+    "where": "Legend: Fall, 17-21 o'clock, fog/leaves/rain weather. Star Net, Foraging 40."
+   },
+   {
+    "item": "cr_snow_sylph",
+    "arc": "",
+    "where": "Legend: Winter, 6-18 o'clock, snow/blizzard weather. Star Net, Foraging 40."
+   }
   ]
  },
  "stations": [
@@ -6308,11 +6347,23 @@
    "need": 10,
    "from": "theo",
    "give": {
-    "item": "luminous_starfruit_seed",
-    "n": 1
+    "money": 500,
+    "item": "bait",
+    "n": 10
    },
-   "text": "Ten exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
-   "text_gangsters": "Ten pieces in the Curio Room. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"
+   "text": "Ten exhibits! The donation box had a good week. Your share, and bait for more tank fish. - Theo",
+   "text_gangsters": "Ten pieces in the Curio Room. The jar by the door filled up. Your cut, and bait. - Theo"
+  },
+  {
+   "id": "mus_15",
+   "cat": "museum",
+   "need": 15,
+   "from": "theo",
+   "give": {
+    "money": 500
+   },
+   "text": "Fifteen! I've started writing little cards for every case. - Theo",
+   "text_gangsters": "Fifteen pieces. I'm writing proper labels now. - Theo"
   },
   {
    "id": "mus_20",
@@ -6385,6 +6436,40 @@
    "text_gangsters": "Every fish in the tanks. I had a wooden one carved for your wall. - Finn"
   },
   {
+   "id": "mus_40",
+   "cat": "museum",
+   "need": 40,
+   "from": "theo",
+   "give": {
+    "item": "luminous_starfruit_seed",
+    "n": 1
+   },
+   "text": "Forty exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
+   "text_gangsters": "Forty pieces. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"
+  },
+  {
+   "id": "mus_50",
+   "cat": "museum",
+   "need": 50,
+   "from": "theo",
+   "give": {
+    "money": 2500
+   },
+   "text": "Fifty! The town council wants to call it a real museum now. This is from them. - Theo",
+   "text_gangsters": "Fifty pieces. People come from across the city now. Your cut. - Theo"
+  },
+  {
+   "id": "mus_65",
+   "cat": "museum",
+   "need": 65,
+   "from": "theo",
+   "give": {
+    "money": 4000
+   },
+   "text": "Sixty-five exhibits. I keep a chair by the tanks now, just to sit and look. - Theo",
+   "text_gangsters": "Sixty-five pieces. I sit in here after closing sometimes. Here's your share. - Theo"
+  },
+  {
    "id": "mus_all",
    "cat": "museum",
    "need": "all",
@@ -6444,6 +6529,58 @@
    },
    "text": "Ten kinds of fish caught! Bait's on me. - Finn",
    "text_gangsters": "Ten kinds of fish. Bait's on me. - Finn"
+  },
+  {
+   "id": "fish_5",
+   "cat": "fish",
+   "need": 5,
+   "from": "finn",
+   "give": {
+    "item": "bait",
+    "n": 10
+   },
+   "text": "Five kinds already. Here's bait, the good stuff. - Finn",
+   "text_gangsters": "Five kinds in your log. Bait's on me. - Finn"
+  },
+  {
+   "id": "fish_15",
+   "cat": "fish",
+   "need": 15,
+   "from": "finn",
+   "give": {
+    "money": 1000,
+    "item": "glow_bait",
+    "n": 10
+   },
+   "text": "Fifteen kinds! Try these glow baits after dark. Or before. They don't care. - Finn",
+   "text_gangsters": "Fifteen kinds. Glow bait, ten of them. Works any hour. - Finn"
+  },
+  {
+   "id": "fish_25",
+   "cat": "fish",
+   "need": 25,
+   "from": "finn",
+   "give": {
+    "money": 1500,
+    "item": "deep_bait",
+    "n": 10,
+    "decor": "fish_trophy"
+   },
+   "text": "Twenty-five kinds. Deep bait for the big ones, and a trophy for the wall. - Finn",
+   "text_gangsters": "Twenty-five kinds. Deep bait, and a trophy for your wall. - Finn"
+  },
+  {
+   "id": "fish_30",
+   "cat": "fish",
+   "need": 30,
+   "from": "finn",
+   "give": {
+    "money": 3000,
+    "item": "wild_bait",
+    "n": 10
+   },
+   "text": "Thirty kinds. You're an angler now, a real one. - Finn",
+   "text_gangsters": "Thirty kinds. You're a real angler. Don't let it go to your head. - Finn"
   },
   {
    "id": "fish_all",
@@ -6580,6 +6717,40 @@
    },
    "text": "Twenty wild things found. The valley shares with those who look. - Hazel",
    "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Hazel"
+  },
+  {
+   "id": "crit_5",
+   "cat": "critters",
+   "need": 5,
+   "from": "hazel",
+   "give": {
+    "money": 300,
+    "decor": "dc_y_firefly_jar"
+   },
+   "text": "Five little critters logged and let go! Here's an empty jar for the porch - lights only, no bugs inside. - Hazel",
+   "text_gangsters": "Five critters logged and let go. Here's a jar lamp for your step - just a light, nothing in it. - Hazel"
+  },
+  {
+   "id": "crit_10",
+   "cat": "critters",
+   "need": 10,
+   "from": "hazel",
+   "give": {
+    "money": 1200
+   },
+   "text": "Ten critters in your log. You walk soft now; the meadow noticed. - Hazel",
+   "text_gangsters": "Ten critters logged. You move quiet these days. Here's a little something. - Hazel"
+  },
+  {
+   "id": "crit_all",
+   "cat": "critters",
+   "need": "all",
+   "from": "hazel",
+   "give": {
+    "money": 3000
+   },
+   "text": "Every critter, even the four legends. I've never seen a log like it. - Hazel",
+   "text_gangsters": "Every critter in the city, legends too. Nobody's done that. Nobody. - Hazel"
   }
  ],
  "decor_milestones": [
@@ -6650,35 +6821,326 @@
  "legends": {
   "legendary_koi": {
    "scene": "lake",
-   "lvl": 8,
+   "lvl": 30,
    "when": "rain_or_winter_dawn",
-   "chance": 0.04,
+   "chance": 0.008,
+   "year": 3,
    "first_decor": "dc_koi_scroll"
   },
   "prism_trout": {
    "scene": "forest",
-   "lvl": 6,
+   "lvl": 14,
    "when": "season:spring",
-   "chance": 0.03
+   "chance": 0.012
   },
   "sailfish": {
    "scene": "beach",
-   "lvl": 7,
+   "lvl": 18,
    "when": "season:summer",
-   "chance": 0.03
+   "chance": 0.012
   },
   "soul_salmon": {
    "scene": "lake",
-   "lvl": 8,
+   "lvl": 22,
    "when": "season:fall",
-   "chance": 0.03
+   "chance": 0.01,
+   "year": 2
   },
   "frost_pike": {
    "scene": "forest",
-   "lvl": 9,
+   "lvl": 26,
    "when": "season:winter",
-   "chance": 0.03,
+   "chance": 0.01,
    "year": 2
   }
+ },
+ "critters": [
+  {
+   "id": "cr_ladybug",
+   "kind": "ladybug",
+   "name": "Ladybug",
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 0,
+   "spook": 0.1
+  },
+  {
+   "id": "cr_lemon_wing",
+   "kind": "butterfly_yellow",
+   "name": "Lemon Wing",
+   "name_gang": "Taxi Wing",
+   "seasons": [
+    "spring"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 0,
+   "spook": 0.3
+  },
+  {
+   "id": "cr_orange_flutter",
+   "kind": "butterfly_orange",
+   "name": "Orange Flutter",
+   "seasons": [
+    "spring",
+    "summer",
+    "fall"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 0,
+   "spook": 0.3
+  },
+  {
+   "id": "cr_sky_wing",
+   "kind": "butterfly_blue",
+   "name": "Sky Wing",
+   "name_gang": "Neon Wing",
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 2,
+   "spook": 0.35
+  },
+  {
+   "id": "cr_bumble_bee",
+   "kind": "bee",
+   "name": "Bumble Bee",
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 3,
+   "spook": 0.3
+  },
+  {
+   "id": "cr_meadow_hopper",
+   "kind": "grasshopper",
+   "name": "Meadow Hopper",
+   "name_gang": "Alley Cricket",
+   "seasons": [
+    "summer",
+    "fall"
+   ],
+   "time": "day",
+   "net": 0,
+   "lvl": 0,
+   "spook": 0.25
+  },
+  {
+   "id": "cr_garden_snail",
+   "kind": "snail",
+   "name": "Garden Snail",
+   "seasons": [
+    "spring",
+    "summer",
+    "fall"
+   ],
+   "time": "",
+   "net": 0,
+   "lvl": 0,
+   "spook": 0.0
+  },
+  {
+   "id": "cr_violet_duchess",
+   "kind": "butterfly_purple",
+   "name": "Violet Duchess",
+   "seasons": [
+    "summer"
+   ],
+   "time": "day",
+   "net": 1,
+   "lvl": 8,
+   "spook": 0.45
+  },
+  {
+   "id": "cr_pond_dragonfly",
+   "kind": "dragonfly",
+   "name": "Pond Dragonfly",
+   "seasons": [
+    "summer"
+   ],
+   "time": "day",
+   "net": 1,
+   "lvl": 10,
+   "spook": 0.5
+  },
+  {
+   "id": "cr_green_frog",
+   "kind": "frog",
+   "name": "Green Frog",
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "time": "",
+   "net": 1,
+   "lvl": 6,
+   "spook": 0.35
+  },
+  {
+   "id": "cr_shore_crab",
+   "kind": "crab",
+   "name": "Shore Crab",
+   "name_gang": "Dock Crab",
+   "seasons": [],
+   "time": "",
+   "net": 1,
+   "lvl": 12,
+   "spook": 0.3
+  },
+  {
+   "id": "cr_firefly",
+   "kind": "firefly",
+   "name": "Firefly",
+   "seasons": [
+    "spring",
+    "summer",
+    "fall"
+   ],
+   "time": "night",
+   "net": 2,
+   "lvl": 20,
+   "spook": 0.2
+  },
+  {
+   "id": "cr_sky_jelly",
+   "kind": "jelly",
+   "name": "Sky Jelly",
+   "seasons": [],
+   "time": "",
+   "net": 2,
+   "lvl": 30,
+   "spook": 0.4,
+   "arc": "penguins"
+  },
+  {
+   "id": "cr_petal_emperor",
+   "kind": "",
+   "name": "Petal Emperor",
+   "seasons": [
+    "spring"
+   ],
+   "time": "",
+   "net": 2,
+   "lvl": 40,
+   "legend": {
+    "weather": [
+     "rain"
+    ],
+    "hours": [
+     6,
+     10
+    ],
+    "chance": 0.04
+   }
+  },
+  {
+   "id": "cr_sunwing",
+   "kind": "",
+   "name": "Sunwing",
+   "seasons": [
+    "summer"
+   ],
+   "time": "",
+   "net": 2,
+   "lvl": 40,
+   "legend": {
+    "weather": [
+     "clear",
+     "sun",
+     ""
+    ],
+    "hours": [
+     11,
+     14
+    ],
+    "chance": 0.04
+   }
+  },
+  {
+   "id": "cr_ember_moth",
+   "kind": "",
+   "name": "Ember Moth",
+   "seasons": [
+    "fall"
+   ],
+   "time": "",
+   "net": 2,
+   "lvl": 40,
+   "legend": {
+    "weather": [
+     "fog",
+     "leaves",
+     "rain"
+    ],
+    "hours": [
+     17,
+     21
+    ],
+    "chance": 0.04
+   }
+  },
+  {
+   "id": "cr_snow_sylph",
+   "kind": "",
+   "name": "Snow Sylph",
+   "seasons": [
+    "winter"
+   ],
+   "time": "",
+   "net": 2,
+   "lvl": 40,
+   "legend": {
+    "weather": [
+     "snow",
+     "blizzard"
+    ],
+    "hours": [
+     6,
+     18
+    ],
+    "chance": 0.04
+   }
+  }
+ ],
+ "nets": {
+  "bug_net": {
+   "name": "Twig Net",
+   "name_gang": "Wire Net",
+   "tier": 0,
+   "lvl": 0,
+   "value": 230,
+   "desc": "Swing at a bug or a little critter close by to log it in the Book. It's let go right after."
+  },
+  "silk_net": {
+   "name": "Silk Net",
+   "name_gang": "Mesh Net",
+   "tier": 1,
+   "lvl": 15,
+   "value": 1000,
+   "desc": "Reaches two steps. Catches the shy ones the Twig Net misses. Foraging 15."
+  },
+  "star_net": {
+   "name": "Star Net",
+   "name_gang": "Neon Net",
+   "tier": 2,
+   "lvl": 35,
+   "value": 3300,
+   "desc": "Three steps, never spooks. Catches night bugs and the once-a-season legends. Foraging 35."
+  }
+ },
+ "live_wing": {
+  "id": "critters",
+  "title": "Live Exhibit"
  }
 }

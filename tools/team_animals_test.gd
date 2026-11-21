@@ -64,11 +64,17 @@ func _arc(arc: String) -> void:
 	check(GameState.count("carrot") == 19 and int(GameState.run["energy"]) == 100 - int(TeamAnimals.rule("energy", 8)), "lesson costs a treat and energy")
 	check(TeamAnimals.bond(goat) == 250 + int(TeamAnimals.rule("bond_per_lesson", 20)), "lesson adds friendship")
 	check(TeamAnimals.why_not(goat, "attack").contains("One lesson a day"), "one lesson a day")
-	for i in 6:
+	var at: Array = TeamAnimals.rule("rank_at", [1])
+	var mr := int(TeamAnimals.rule("max_rank", 3))
+	for i in int(at.back()) - 1:
 		GameState.run["day"] = int(GameState.run["day"]) + 1
 		GameState.run["energy"] = 100
+		GameState.add_item("carrot", 1)
 		TeamAnimals.teach(goat, "attack")
-	check(TeamAnimals.rank(goat, "attack") == 3, "seven lessons reach rank 3 (%d)" % TeamAnimals.rank(goat, "attack"))
+		if i == 10:  # C16a P6: 12 lessons = rank 3 (was 7)
+			check(TeamAnimals.rank(goat, "attack") == 3, "twelve lessons reach rank 3 (%d)" % TeamAnimals.rank(goat, "attack"))
+	check(TeamAnimals.rank(goat, "attack") == mr, "%d lessons reach rank %d (%d)" % [int(at.back()), mr, TeamAnimals.rank(goat, "attack")])
+	check(mr == 5 and int(at.back()) >= 30, "team animal rank is a long goal: rank 5 at 30+ lessons (c16a_11-04)")
 	GameState.run["day"] = int(GameState.run["day"]) + 1
 	check(TeamAnimals.why_not(goat, "attack").contains("by heart"), "max rank refuses more")
 	check(TeamAnimals.why_not(goat, "guard") == "", "another lesson still open")

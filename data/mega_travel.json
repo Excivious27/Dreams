@@ -41,7 +41,15 @@
     "hint": {
      "penguins": "Opens after you find what's howling in the east meadow.",
      "gangsters": "Opens after you check out the east meadow."
-    }
+    },
+    "when": {
+     "day": 22,
+     "skill": [
+      "foraging",
+      4
+     ]
+    },
+    "words": "Liesl wants a forager who knows the woods: Foraging 4, from Spring 22."
    },
    "quest": "mega_gloamwood_hook",
    "keeper": "Liesl",
@@ -51,10 +59,10 @@
     "offer": [
      "Oh! You can see the ring? Most folk walk straight through it.",
      "It goes to Gloamwood: lanterns, moss, the kindest dark you'll ever meet. But the ring's gone sleepy.",
-     "Bring me six flowers and three wild herbs, and I'll sing it awake. Deal?"
+     "Bring me twelve flowers, eight wild herbs and six mushrooms, and I'll sing it awake. Deal?"
     ],
     "yes": "Lovely. Any flowers will do. The ring isn't fussy, only hungry.",
-    "wait": "Six flowers and three wild herbs, love. The ring's yawning but it isn't up yet.",
+    "wait": "Twelve flowers, eight wild herbs, six mushrooms, love. The ring's yawning but it isn't up yet.",
     "done": [
      "There we are. Hear that? Like a kettle just before it sings.",
      "Step into the middle and think of lanterns. You'll land in Lanternfall."
@@ -108,7 +116,18 @@
     "hint": {
      "penguins": "Opens after you build the Crystal Resonator or beat the Grump Commander.",
      "gangsters": "Opens after you beat the Docks boss."
-    }
+    },
+    "when": {
+     "day": 43
+    },
+    "alt": {
+     "skill": [
+      "fishing",
+      6
+     ]
+    },
+    "alt_words": "or reach Fishing 6",
+    "words": "The dune winds turn in Summer: from Summer 15."
    },
    "quest": "mega_sunscorch_hook",
    "keeper": "Sefa",
@@ -118,10 +137,10 @@
     "offer": [
      "You've got the look of someone who walks too far for fun.",
      "This wagon sails the sand to Mirage Post, the last well before the Sunscorch. Three days of dunes.",
-     "I'm short on bread and rope. Four loaves, three coils, and you ride free. Yes?"
+     "I'm short on bread, rope and sail. Eight loaves, six coils and one Sailcloth, and you ride free. Yes?"
     ],
     "yes": "Good. The desert eats rope and the crew eats bread. Bring both.",
-    "wait": "Four bread, three rope. The wind's turning, friend.",
+    "wait": "Eight bread, six rope, one Sailcloth. The wind's turning, friend.",
     "done": [
      "That'll see us across. Climb aboard, mind the water barrels.",
      "The sails go up at a word. Mirage Post, and then the whole Expanse."
@@ -175,7 +194,18 @@
     "hint": {
      "penguins": "Opens after you build the Crystal Resonator or beat the Grump Commander.",
      "gangsters": "Opens after you beat the Docks boss."
-    }
+    },
+    "when": {
+     "day": 43
+    },
+    "alt": {
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "alt_words": "or reach Mining 7",
+    "words": "The night train runs again in Summer: from Summer 15."
    },
    "quest": "mega_ironline_hook",
    "keeper": "Conductor Hollis",
@@ -185,10 +215,10 @@
     "offer": [
      "You're the one moving up in this town. I hear things in a ticket booth.",
      "There's a night train to Ironline. Rail town, coal smoke, a Baron who thinks he owns every track. He's squeezing the whole line dry.",
-     "My engine's cold. Ten coal and three iron bars and she runs again. You in?"
+     "My engine's cold. Thirty coal, ten iron bars and four gears and she runs again. You in?"
     ],
     "yes": "Coal for the firebox, iron for the couplings. I'll keep the booth lit.",
-    "wait": "Ten coal, three iron bars. She won't run on promises.",
+    "wait": "Thirty coal, ten iron bars, four gears. She won't run on promises.",
     "done": [
      "Hear that? That's a firebox catching. Best sound in the world.",
      "Ticket's on the house. Junction City, end of the line. Watch your pockets."
@@ -243,7 +273,18 @@
     "hint": {
      "penguins": "Opens after you climb the great tree in the forest.",
      "gangsters": "Opens after you put out Flame in the neon district."
-    }
+    },
+    "when": {
+     "day": 85
+    },
+    "alt": {
+     "skill": [
+      "ranching",
+      6
+     ]
+    },
+    "alt_words": "or reach Ranching 6",
+    "words": "The sled first runs in the Winter snow: from Winter 1."
    },
    "quest": "mega_frostpeak_hook",
    "keeper": "Brannoch",
@@ -253,10 +294,10 @@
     "offer": [
      "So you want to go higher than the mountain. Everybody does, once.",
      "Past the clouds there's Frostpeak Reach: Hearthhold, the glaciers, and the Summit, where something big sleeps in the ice.",
-     "Four wool for your coat and six coal for the sled's warmer. Then I'll take you. Agreed?"
+     "Twelve wool for your coat, twenty coal for the sled's warmer and six beams for the runners. Then I'll take you. Agreed?"
     ],
     "yes": "Good. And eat something before you come back. Cold eats the hungry first.",
-    "wait": "Four wool, six coal. I'm not hauling a frozen hero down the hill.",
+    "wait": "Twelve wool, twenty coal, six beams. I'm not hauling a frozen hero down the hill.",
     "done": [
      "There. Wrap up. Hold on to the rail, not to me.",
      "Hearthhold's at the top. Ask for the hot spring. Everyone does."
@@ -306,11 +347,22 @@
     ]
    },
    "unlock": {
-    "tier": 3,
+    "tier": 4,
     "hint": {
-     "penguins": "Opens after you climb the great tree in the forest.",
-     "gangsters": "Opens after you put out Flame in the neon district."
-    }
+     "penguins": "Opens after you power the moon teleporter.",
+     "gangsters": "Opens after you beat the President's Enforcer."
+    },
+    "when": {
+     "year": 2
+    },
+    "alt": {
+     "skill": [
+      "foraging",
+      9
+     ]
+    },
+    "alt_words": "or reach Foraging 9",
+    "words": "The high winds calm in year 2."
    },
    "quest": "mega_windward_hook",
    "keeper": "Captain Zephyr",
@@ -320,10 +372,10 @@
     "offer": [
      "Ahoy! Well, ahoy-ish. There's no water. Ahoy anyway!",
      "Above the sky islands, higher than the station even, are the Windward Isles. Breezehaven. Storm Shelf. And the Roc.",
-     "My envelope's torn and the lift crystal's gone dim. Four cloth and one Refined Crystal and we sail. Aye?"
+     "My envelope's torn and the lift crystals have gone dim. Twelve cloth, two Sailcloth and three Refined Crystals and we sail. Aye?"
     ],
     "yes": "Splendid! I'll be right here, being a penguin in a basket.",
-    "wait": "Four cloth, one Refined Crystal. Penguins can't fly, you see. Balloons can.",
+    "wait": "Twelve cloth, two Sailcloth, three Refined Crystals. Penguins can't fly, you see. Balloons can.",
     "done": [
      "Patched! Glowing! Hold your hat.",
      "Breezehaven, here we come. Don't look down. Actually, do. It's lovely."
@@ -373,11 +425,19 @@
     "home_name": "the farm"
    },
    "unlock": {
-    "tier": 3,
+    "tier": 4,
     "hint": {
-     "penguins": "Opens after you climb the great tree in the forest.",
-     "gangsters": "Opens after you put out Flame in the neon district."
-    }
+     "penguins": "Opens after you power the moon teleporter.",
+     "gangsters": "Opens after you beat the President's Enforcer."
+    },
+    "when": {
+     "year": 2
+    },
+    "alt": {
+     "hearts_total": 40
+    },
+    "alt_words": "or earn 40 hearts around town",
+    "words": "Madame Aurum sends the car in year 2."
    },
    "quest": "mega_giltcity_hook",
    "keeper": "Mister Pell",
@@ -387,10 +447,10 @@
     "offer": [
      "Nice place. Small. Honest. Gilt City is neither.",
      "Madame Aurum runs the casinos, the gardens and the Vaults under them. She's heard of you. She wants to meet.",
-     "The invitation costs twelve Rolled Bills and one gold bar. Call it a cover charge. In?"
+     "The invitation costs forty Rolled Bills, four gold bars and a pearl necklace. Call it a cover charge. In?"
     ],
     "yes": "Wonderful. I'll keep the leather seats warm.",
-    "wait": "Twelve Rolled Bills and a gold bar. Madame is patient. I am less so.",
+    "wait": "Forty Rolled Bills, four gold bars, a pearl necklace. Madame is patient. I am less so.",
     "done": [
      "Pleasure doing business. Mind the step, it's real gold.",
      "Grand Plaza in an hour. Smile for the statues."

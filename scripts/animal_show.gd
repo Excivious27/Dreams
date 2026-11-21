@@ -6,7 +6,7 @@ extends RefCounted
 ## a 4th place gets an honourable mention and no ribbon. All ages: animals go home after the show.
 
 const YEAR_DAYS := 112
-const YEAR_STEP := 15
+const YEAR_STEP := 10  # C16a P5 (c16a_06-13): 15 -> 10, a gold top-tier good keeps a real chance in years 1-5
 
 ## Categories per festival. Fields: kind (animal|good), title / title_gang, ask / ask_gang,
 ## host, goods (good tables), rivals [[who, entry (bare noun phrase), base score]], cap (best rival
@@ -23,7 +23,7 @@ const CATS := {
 			"ask_gang": "What are you putting on the table? Quality sells it.",
 			"goods": ["egg", "duck_egg", "milk", "goat_milk", "sheep_wool", "rabbit_fur", "cheese", "goat_cheese", "honey", "truffle", "feather"],
 			"rivals": [["Hazel", "brown eggs", 70], ["Benno", "fresh milk", 80], ["Tam", "wool bundle", 90], ["Mabel", "goat cheese", 60]],
-			"cap": 220, "prizes": [150, 70, 25], "mention": 10, "beside": "sit on the table beside"},
+			"family": "any", "cap": 260, "prizes": [150, 70, 25], "mention": 10, "beside": "sit on the table beside"},
 	],
 	"egg": [
 		{"id": "eggs", "kind": "good", "title": "Best Egg table", "title_gang": "Best Egg table",
@@ -31,7 +31,7 @@ const CATS := {
 			"ask_gang": "Which egg goes up? Shape, shine and a gold star count.",
 			"goods": ["egg", "duck_egg"],
 			"rivals": [["Hazel", "brown egg", 40], ["Posy", "blue duck egg", 55], ["Mabel", "\"dinosaur\" egg", 30], ["Tam", "speckled egg", 45]],
-			"cap": 110, "prizes": [150, 70, 25], "mention": 10, "beside": "sit on the table beside"},
+			"family": "egg", "cap": 200, "prizes": [150, 70, 25], "mention": 10, "beside": "sit on the table beside"},
 	],
 	"lantern": [
 		{"id": "fleece", "kind": "good", "title": "Fleece & Feather table", "title_gang": "Fleece & Feather table",
@@ -39,7 +39,7 @@ const CATS := {
 			"ask_gang": "Wool, fur or feathers? Soft and clean wins.",
 			"goods": ["sheep_wool", "rabbit_fur", "feather", "beeswax"],
 			"rivals": [["Tam", "winter fleece", 85], ["Posy", "rabbit fur", 60], ["Hazel", "rooster feathers", 50]],
-			"cap": 200, "prizes": [150, 70, 25], "mention": 10, "beside": "lie on the table beside"},
+			"family": "fleece", "cap": 230, "prizes": [150, 70, 25], "mention": 10, "beside": "lie on the table beside"},
 	],
 }
 
@@ -125,8 +125,21 @@ static func score_animal(uid: String) -> int:
 
 
 ## Judging a good: its value plus the quality of the piece (30 iridium / 20 gold / 10 silver).
+## C16a P5 (c16a_06-13): 40 + value^0.6 x 4, so exotic goods win but classics stay in the running early.
 static func score_good(id: String, quality: int) -> int:
-	return GameState.item_value(id) + quality * 2
+	return 40 + int(round(pow(float(maxi(0, GameState.item_value(id))), 0.6) * 4.0)) + quality * 2
+
+
+## C16a P5 (c16a_06-13): a table's family takes every ranch good of that kind (exotic eggs, fleece, feathers).
+static func fits_family(c: Dictionary, gid: String) -> bool:
+	var fam := str(c.get("family", ""))
+	if fam == "" or not Ranch.is_good(gid):
+		return false
+	if fam == "egg":
+		return gid.ends_with("egg")
+	if fam == "fleece":
+		return gid.contains("wool") or gid.contains("fur") or gid.contains("feather") or gid.contains("fleece")
+	return true
 
 
 ## This year's rivals for a category, seeded by the day (stable on reload), best first.
@@ -217,11 +230,14 @@ static func animal_entries() -> Array:
 ## Goods entries for a good table: what you carry, up to 4. [[label, id]].
 static func good_entries(c: Dictionary) -> Array:
 	var out: Array = []
-	for gid: String in c.get("goods", []):
-		if out.size() >= 4:
-			break
-		if GameState.items.has(gid) and GameState.count(gid) > 0 and not GameState.is_locked(gid):
-			out.append([GameState.item_name(gid), gid])
+	var ids: Array = (c.get("goods", []) as Array).duplicate()
+	for gid: String in (Ranch.data().get("products", {}) as Dictionary).keys():
+		if not ids.has(gid) and fits_family(c, gid):
+			ids.append(gid)
+	ids = ids.filter(func(g: Variant) -> bool: return GameState.items.has(str(g)) and GameState.count(str(g)) > 0 and not GameState.is_locked(str(g)))
+	ids.sort_custom(func(x: Variant, y: Variant) -> bool: return score_good(str(x), 0) > score_good(str(y), 0))  # best first
+	for gid: String in ids.slice(0, 4):
+		out.append([GameState.item_name(gid), gid])
 	return out
 
 

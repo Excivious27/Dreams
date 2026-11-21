@@ -137,7 +137,8 @@
     "crystal_refined": 3
    },
    "give": "sprinkler_iridium",
-   "tier": 4
+   "tier": 4,
+   "year": 2
   },
   {
    "id": "dc_stool_wood",
@@ -3268,7 +3269,7 @@
    "id": "pickles",
    "name": "Pickles",
    "need": {
-    "#veg": 2,
+    "#veg": 4,
     "clay_pot": 1
    },
    "give": "pickles",
@@ -4046,7 +4047,7 @@
    },
    "give": "rounds",
    "tier": 1,
-   "n": 30
+   "n": 40
   },
   {
    "id": "six_shooter",
@@ -4122,7 +4123,8 @@
    "need": {
     "hardwood_plank": 3,
     "nails": 10,
-    "horseshoe": 1
+    "horseshoe": 1,
+    "iron_bar": 1
    },
    "give": "lucky_bat",
    "tier": 2,
@@ -4168,7 +4170,11 @@
    },
    "give": "chrome_blade",
    "tier": 3,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    5
+   ]
   },
   {
    "id": "padded_vest",
@@ -4230,7 +4236,11 @@
    },
    "give": "neon_cleaver",
    "tier": 4,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    8
+   ]
   },
   {
    "id": "armored_suit",
@@ -4409,7 +4419,11 @@
    },
    "give": "prism_lance",
    "tier": 3,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    5
+   ]
   },
   {
    "id": "crystal_parka",
@@ -4471,7 +4485,11 @@
    },
    "give": "starheart_blade",
    "tier": 4,
-   "tool": true
+   "tool": true,
+   "skill": [
+    "combat",
+    8
+   ]
   },
   {
    "id": "starlight_mantle",

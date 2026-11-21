@@ -95,11 +95,13 @@ func _pace() -> void:
 	var h1 := int(th["hp"])
 	GameState.toughen(th, "pickaxe")
 	check(h1 == 3 and int(th["hp"]) == 3, "a rock toughens once (2 -> 3 hp), not every swing")
-	var e1 := GameState.energy_cost_f("axe")
-	GameState.run["skills"]["foraging"] = {"level": 5, "xp": 0}
-	var e5 := GameState.energy_cost_f("axe")
-	GameState.run["skills"]["foraging"] = {"level": 1, "xp": 0}
-	check(e1 >= 1.1 and e5 < e1, "energy a bit dearer at level 1 (axe %.2f at L1, %.2f at L5)" % [e1, e5])
+	# C16a P3: the early x1.15 stays on field work only (Tom's day-1 mine trip cost half
+	# his bar); chopping/mining stay slow early through swings (above), not energy.
+	var e1 := GameState.energy_cost_f("hoe")
+	GameState.run["skills"]["farming"] = {"level": 5, "xp": 0}
+	var e5 := GameState.energy_cost_f("hoe")
+	GameState.run["skills"]["farming"] = {"level": 1, "xp": 0}
+	check(e1 >= 0.9 and e5 < e1, "energy a bit dearer at level 1 (hoe %.2f at L1, %.2f at L5)" % [e1, e5])
 
 
 ## 2. Watering can.

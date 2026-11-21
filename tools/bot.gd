@@ -475,6 +475,9 @@ func _tap_world(m: GameMap) -> void:
 
 func _sleep_and_roundtrip() -> void:
 	var day_before := int(GameState.run["day"])
+	# C16a P3: end-of-day energy for the bots.sh energy table (spent = en_log by task).
+	var r := GameState.run
+	print("BOT ENERGY day=%d style=%s len=%d left=%d max=%d fed=%d rest=%d spent=%s" % [day_before, style, GameState.day_len(), int(r.get("energy", 0)), int(r.get("max_energy", 0)), int(r.get("fed_en", 0)), int(r.get("rest_en", 0)), JSON.stringify(r.get("en_log", {}))])
 	var rep := GameState.sleep()
 	if int(GameState.run["day"]) != day_before + 1:
 		_fail("sleep didn't advance the day (%d -> %d)" % [day_before, int(GameState.run["day"])])

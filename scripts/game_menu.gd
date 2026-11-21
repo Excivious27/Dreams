@@ -610,7 +610,7 @@ func _refresh() -> void:
 					col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 					h.add_child(col)
 					var nm := Label.new()
-					nm.text = ("▶ Bringing along" if cid == act else "Staying home") + " · " + Companion.ability_name(cid)
+					nm.text = ("▶ Bringing along" if cid == act else "Staying home") + " · " + Companion.ability_name(cid) + " · rank %d" % Companion.partner_rank(cid)  # C16a P6
 					nm.add_theme_font_size_override("font_size", 8)
 					col.add_child(nm)
 					var ab := Label.new()
@@ -620,7 +620,7 @@ func _refresh() -> void:
 					ab.modulate = Color(0.85, 0.85, 0.8)
 					col.add_child(ab)
 					continue
-				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
+				var b := _button("%s %s (rank %d) — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.partner_rank(cid), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
 				_line("  %s: use the active partner's ability." % InputSetup.prompt("ability"), 8, Color(0.8, 0.8, 0.8))
@@ -991,7 +991,7 @@ var _node_sel := ""
 var _reset_arm := ""
 ## Item icons that stand in for node art until the node icon sheets arrive.
 const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_energy": "can", "extra_day": "hoe", "animal_yield": "egg", "crop_value": "gold",
-	"star_chance": "sunflower", "seed_back": "seeds", "growth": "sunflower", "stone_bonus": "stone", "mine_energy": "pickaxe", "ore_bonus": "copper",
+	"flower_value": "sunflower", "bounty": "gold", "loot_value": "gold", "star_chance": "sunflower", "seed_back": "seeds", "growth": "sunflower", "stone_bonus": "stone", "mine_energy": "pickaxe", "ore_bonus": "copper",
 	"double_hit": "iron", "gem_chance": "diamond", "shard_bonus": "shard", "deeper": "torch", "smelt_discount": "iron", "forage_bonus": "berry",
 	"rare_forage": "mushroom", "wood_bonus": "wood", "chop_bonus": "axe", "sap_chance": "sap", "bite_speed": "rod", "escape_less": "bait",
 	"double_fish": "fish", "rare_fish": "fish", "fish_value": "pearl", "chest_chance": "chest", "damage": "sword", "crit": "ruby", "block": "iron",
@@ -1004,6 +1004,15 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"pet_bond": "bone", "team_xp": "luck_potion", "xp_gain": "book", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
 	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer",
 	"big_goods": "egg", "animal_quality": "milk", "ranch_value": "gold", "breed_chance": "feather", "grow_speed": "hay", "animal_friend": "brush", "hand_work": "milk_pail", "hand_slot": "milk_pail", "feeder": "feed_bag", "care_grace": "brush", "hatch_fast": "egg"}  # C11a P3 hook (Ranching)
+
+
+## The next locked column and the points still needed (c16a_11-02).
+func _col_hint(spent: int) -> String:
+	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+	for c in 10:
+		if spent < GameState.col_need(c):
+			return "Column %s opens at %d points spent: %d to go." % [romans[c], GameState.col_need(c), GameState.col_need(c) - spent]
+	return "Every column is open."
 
 
 func _skills_tab() -> void:
@@ -1023,7 +1032,7 @@ func _skills_tab() -> void:
 	for k in shown:
 		var tb := Button.new()
 		var pf := SkillGlow.usable(str(k))  # P5 hook: maxed trees stop glowing
-		tb.text = str(GameState.skills_data[k]["name"]) + ("  +%d" % pf if pf > 0 else "")
+		tb.text = GameState.skill_name(str(k)) + ("  +%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
 		tb.custom_minimum_size = Vector2(0, 20)
 		tb.focus_mode = Control.FOCUS_NONE
@@ -1059,7 +1068,7 @@ func _skills_tab() -> void:
 	hv.add_theme_constant_override("separation", 0)
 	head.add_child(hv)
 	var l1 := Label.new()
-	l1.text = "Level %d  %s" % [lvl, str(sd["name"])]
+	l1.text = "Level %d  %s" % [lvl, GameState.skill_name(sk)]
 	l1.add_theme_font_size_override("font_size", 10)
 	hv.add_child(l1)
 	var l2 := Label.new()
@@ -1074,11 +1083,11 @@ func _skills_tab() -> void:
 	bar.show_percentage = false
 	hv.add_child(bar)
 	var l3 := Label.new()
-	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
+	l3.text = "%s EXP %d / %d" % [GameState.skill_name(sk), xp, need]
 	l3.add_theme_font_size_override("font_size", 7)
 	hv.add_child(l3)
 	if free > 0:
-		SkillGlow.points_banner(_body, free, str(sd["name"]))
+		SkillGlow.points_banner(_body, free, GameState.skill_name(sk))
 	var sel_at := _body.get_child_count()
 	# The grid
 	var by_cell := {}
@@ -1099,7 +1108,7 @@ func _skills_tab() -> void:
 			get_tree().process_frame.connect(show_grid, CONNECT_ONE_SHOT)
 	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 	for c in 10:
-		var open := spent >= c * GameState.TIER_POINTS
+		var open := spent >= GameState.col_need(c)
 		var hp := PanelContainer.new()
 		var hs := StyleBoxFlat.new()
 		hs.bg_color = Color(0.36, 0.62, 0.28) if open else Color(0.25, 0.22, 0.2)
@@ -1115,9 +1124,9 @@ func _skills_tab() -> void:
 	for r in 4:
 		for c in 10:
 			var n: Dictionary = by_cell.get(Vector2i(c, r), {})
-			grid.add_child(_node_cell(sk, n, r, spent >= c * GameState.TIER_POINTS))
+			grid.add_child(_node_cell(sk, n, r, spent >= GameState.col_need(c)))
 	# Branch names
-	var br: Dictionary = sd.get("branches", {})
+	var br: Dictionary = GameState.skill_branches(sk)
 	var names: Array = []
 	for r in 4:
 		names.append(str(br.get(str(r), "")))
@@ -1126,8 +1135,8 @@ func _skills_tab() -> void:
 	var sel_from := _body.get_child_count()
 	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
 	if sel.is_empty():
-		_line(str(sd.get("desc", "")), 8, Color(0.85, 0.8, 0.7))
-		_line("Level up to earn points (1 per level). Tap a node to read it. Violet frame = unlocks something new. A column opens after 2 more points here.", 8, Color(0.75, 0.75, 0.75))
+		_line(GameState.skill_desc(sk), 8, Color(0.85, 0.8, 0.7))
+		_line("Level up to earn points (1 per level). Tap a node to read it. Violet frame = unlocks something new. " + _col_hint(spent), 8, Color(0.75, 0.75, 0.75))
 	else:
 		var rank := GameState.node_rank(sk, _node_sel)
 		var ranks := int(sel.get("ranks", 1))
@@ -1149,8 +1158,15 @@ func _skills_tab() -> void:
 	if sk == "magic":
 		_magic_casts()
 	if spent > 0:
-		var rb := _button("Sure? Tap again to reset %s" % str(sd["name"]) if _reset_arm == sk else ("Reset this tree (refund all points; colony spells stay)" if sk == "magic" and not (GameState.run.get("gift_nodes", {}) as Dictionary).is_empty() else "Reset this tree (refund all points)"), func() -> void:
+		var fee := GameState.reset_cost(sk)
+		var fee_txt := "free the first time" if fee == 0 else "costs " + Money.amount(fee)
+		var rb := _button(PadInput.words("Sure? Tap again to reset %s (%s)" % [GameState.skill_name(sk), fee_txt]) if _reset_arm == sk else ("Reset this tree (%s; colony spells stay)" % fee_txt if sk == "magic" and not (GameState.run.get("gift_nodes", {}) as Dictionary).is_empty() else "Reset this tree (%s)" % fee_txt), func() -> void:
 			if _reset_arm == sk:
+				if not GameState.can_reset(sk):
+					_reset_arm = ""
+					Music.instance(get_tree()).sfx("nope", "thud")
+					_refresh()
+					return
 				GameState.reset_tree(sk); _node_sel = ""; _reset_arm = ""
 			else:
 				_reset_arm = sk
@@ -1637,16 +1653,14 @@ func _pup_tab() -> void:
 				GameState.add_item(sel, -GameState.count(sel))
 				_refresh())
 	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:
-		_button("  Rest by %s's bedroll (+20 energy, once a day)" % pname, func() -> void:
+		_button("  Rest by %s's bedroll (+20 energy (rest), once a day)" % pname, func() -> void:
 			var gm := get_tree().current_scene as GameMap
-			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty():
 				if gm and gm.hud:
-					gm.hud.toast("You're fully rested. Come back when you're tired.", Color(1, 0.9, 0.7))
+					gm.hud.toast("You're fully rested. Come back when you're tired." if not GameState.rested_plenty() else "You've rested plenty today.", Color(1, 0.9, 0.7))
 				return  # keep today's rest for later
 			st["bedroll_day"] = int(GameState.run["day"])
-			var got := GameState.extra_energy(20)
-			if gm and gm.hud and got <= 0:
-				gm.hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
+			GameState.rest_energy(20)  # C16a P3: a rest spot (rest pool), not food
 			_refresh())
 	_line("Skill tree: see Skills → Pup.", 8, Color(0.7, 0.7, 0.7))
 

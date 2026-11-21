@@ -67,8 +67,28 @@ const PERK_OF := {"sell_bonus": "deuce", "meal_heal": "mama_rosa", "shop_discoun
 ## A member's working perk level: loyalty plus the Recruit Training Center drill
 ## (drilled crew count a step or two higher).
 static func member_level(id: String) -> int:
-	var drill := maxi(0, Builds.built_tier("training") - 1)
+	# C16a P6 (c16a_13-03): the drill adds one step at most, and only to members who already trust you.
+	var drill := mini(1, maxi(0, Builds.built_tier("training") - 1)) if loyalty(id) >= 1 else 0
 	return mini(3, loyalty(id) + drill)
+
+
+## C16a P6 (c16a_13-03): days between loyalty talks by the step you are on (0->1, 1->2, 2->3) and the
+## friendship each step needs, so loyalty 3 is a season-long bond (about day 25-35), not a week.
+const LOYALTY_GAP := [3, 7, 14]
+const LOYALTY_HEARTS := [0, 4, 6]
+
+
+## "" when the next loyalty talk may play, else why not (for the hint line).
+static func loyalty_wait(id: String) -> String:
+	var lv := loyalty(id)
+	if lv >= 3:
+		return "max"
+	var last := int(GameState.run.get("crew_last", {}).get(id, -10))
+	if int(GameState.run["day"]) - last < int(LOYALTY_GAP[lv]):
+		return "days"
+	if GameState.friend_hearts(id) < int(LOYALTY_HEARTS[lv]):
+		return "hearts"
+	return ""
 
 
 ## Crew tab text for one member: name, role and the perk that is really active.
@@ -269,7 +289,10 @@ static func talk(m: GameMap, id: String) -> bool:
 	var lv := loyalty(id)
 	var last := int(GameState.run.get("crew_last", {}).get(id, -10))
 	var day := int(GameState.run["day"])
-	if m.scene_id() == "hideout" and lv < 3 and day - last >= 3 and not (lv == 2 and Ops.mission_open(id)):
+	if m.scene_id() == "hideout" and lv < 3 and loyalty_wait(id) == "hearts" and day - last >= int(LOYALTY_GAP[lv]) and not GameState.run["flags"].has("crew_hearts_hint_" + id):
+		GameState.run["flags"]["crew_hearts_hint_" + id] = true
+		m.hud.toast("%s needs to know you better first (%d ♥)." % [str(mdef["name"]), int(LOYALTY_HEARTS[lv])], Color(1, 0.85, 0.7))
+	if m.scene_id() == "hideout" and lv < 3 and loyalty_wait(id) == "" and not (lv == 2 and Ops.mission_open(id)):
 		var scenes: Array = mdef.get("loyalty", [])
 		if lv < scenes.size():
 			await m.say(scenes[lv])
