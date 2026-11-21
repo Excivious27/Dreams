@@ -108,13 +108,28 @@ func add(node: Node2D, nm: String, c: Vector2i) -> void:
 	elif nm.contains("beacon") or nm.contains("star_crystal") or nm.contains("glow_crystal") or nm.contains("lantern"):
 		kind = "breathe"
 	# Glowing pools, craters and pads: a soft light that breathes over the strip (c14b_01-07, c14b_05-05).
-	if node is AnimatedSprite2D and (nm.contains("glow_pool") or nm.contains("glow_pond") or nm.contains("star_crater") or nm.contains("warp_pad")):
+	var gmode := ""
+	var gcol := Color("8ff0e0")
+	var grad := 34.0
+	if nm.contains("glow_pool") or nm.contains("glow_pond") or nm.contains("star_crater") or nm.contains("warp_pad") or nm.contains("grotto_pool"):
+		gmode = "lit"
+		if nm.contains("moon") or nm.contains("warp") or nm.contains("grotto"):
+			gcol = Color("b8a8ff")
+	elif nm.contains("hot_spring"):  # c14b_01-07, c14b_04-20: steam off a hot spring in the snow
+		gmode = "steam"
+		gcol = Color(1, 1, 1)
+		grad = 30.0
+	elif nm.contains("holo_table") or nm.contains("reactor"):  # c14b_06-06: tech hum
+		gmode = "lit"
+		gcol = Color("6fe0ff")
+		grad = 24.0
+	if gmode != "" and (node is AnimatedSprite2D or node is Sprite2D):
 		var gw := Glow.new()
-		gw.col = Color("b8a8ff") if nm.contains("moon") or nm.contains("warp") else Color("8ff0e0")
-		gw.radius = 34.0
+		gw.col = gcol
+		gw.mode = gmode
+		gw.radius = grad
 		gw.ph = float(hcell(c) % 1000) / 1000.0 * TAU
-		gw.position = (node as AnimatedSprite2D).offset
-		gw.show_behind_parent = false
+		gw.position = node.get("offset")
 		node.add_child(gw)
 	if kind == "":
 		return
@@ -177,6 +192,9 @@ class Glow extends Node2D:
 	var radius := 16.0
 
 	func _ready() -> void:
+		born = PlayClock.now()
+		if mode == "steam":
+			return  # steam is white mist: normal blend
 		var cm := CanvasItemMaterial.new()
 		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 		material = cm
@@ -209,6 +227,19 @@ class Glow extends Node2D:
 					var e := pow(sin(PI * u), 1.5)
 					draw_circle(Vector2(x, y), 1.6, Color(col, 0.25 * e))
 					draw_circle(Vector2(x, y), 0.6, Color(1, 1, 1, 0.9 * e))
+			"steam":
+				# Six soft puffs rise, swell and fade on staggered lives; slower and fewer under reduced motion.
+				var n := 3 if rm else 6
+				for i in n:
+					var life := 3.2
+					var age := fposmod(t + ph + i * life / n, life)
+					var u := age / life
+					var e := pow(sin(PI * u), 1.3)
+					var x := sin(i * 1.9 + ph) * radius * 0.5 + sin(age * 0.9 + i) * 4.0 * amp
+					var y := -age * 14.0 * (0.4 if rm else 1.0) - radius * 0.2
+					var r := 5.0 + u * 9.0
+					draw_circle(Vector2(x, y), r, Color(0.96, 0.98, 1.0, 0.16 * e))
+					draw_circle(Vector2(x, y), r * 0.6, Color(1, 1, 1, 0.2 * e))
 			"dim":
 				var f := 0.5 + 0.5 * sin(t * TAU / 4.0 + ph) * (0.6 + 0.4 * sin(t * 1.7 + ph * 2.0))
 				var a2 := lerpf(0.2, 0.15 + 0.15 * f, amp)

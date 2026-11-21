@@ -13,15 +13,15 @@ extends Node2D
 ## id; a regions.json "magic": {...} block overrides or adds one.
 
 const PROFILES := {
-	"crystal_meadow": {"pal": ["7ff0e6", "ff9fd6", "ffffff", "b9a6ff"], "spark": 22, "motes": 12, "veil": 0.10, "veil_pal": ["6fe8d8", "c7a0ff"], "day": 0.7, "glint": "crystal"},
-	"moon": {"tint": "1c1440", "tint_day": 0.18, "tint_night": 0.42, "pal": ["d9c8ff", "ffffff", "a9c4ff"], "spark": 20, "motes": 8, "veil": 0.13, "veil_pal": ["b48cff", "7fd8ff"], "day": 0.9, "stars": 14, "kind": "dust"},
+	"crystal_meadow": {"shoot": true, "pal": ["7ff0e6", "ff9fd6", "ffffff", "b9a6ff"], "spark": 22, "motes": 12, "veil": 0.10, "veil_pal": ["6fe8d8", "c7a0ff"], "day": 0.7, "glint": "crystal"},
+	"moon": {"shoot": true, "tint": "1c1440", "tint_day": 0.18, "tint_night": 0.42, "pal": ["d9c8ff", "ffffff", "a9c4ff"], "spark": 20, "motes": 8, "veil": 0.13, "veil_pal": ["b48cff", "7fd8ff"], "day": 0.9, "stars": 14, "kind": "dust"},
 	"gloam_violet_glade": {"pal": ["8ff3ff", "c58cff", "ff9be0"], "spark": 16, "motes": 12, "veil": 0.10, "veil_pal": ["9a7bff", "6fe0ff"], "day": 0.55},
-	"gloam_moonpool": {"pal": ["bfe8ff", "ffffff", "c9a8ff"], "spark": 14, "motes": 10, "veil": 0.12, "veil_pal": ["a8c8ff", "d0a0ff"], "day": 0.6, "stars": 8},
+	"gloam_moonpool": {"shoot": true, "pal": ["bfe8ff", "ffffff", "c9a8ff"], "spark": 14, "motes": 10, "veil": 0.12, "veil_pal": ["a8c8ff", "d0a0ff"], "day": 0.6, "stars": 8},
 	"gloam_crystal_thicket": {"pal": ["8ff3ff", "e0b0ff", "ffffff"], "spark": 18, "motes": 8, "veil": 0.07, "veil_pal": ["7fe8ff", "c49aff"], "day": 0.6, "glint": "crystal"},
 	"gloam_lanternfall": {"pal": ["ffd98a", "ffb0d8", "9ff0ff"], "spark": 12, "motes": 14, "veil": 0.08, "veil_pal": ["ffc88a", "b48cff"], "day": 0.55},
-	"sky": {"clouds": 5, "pal": ["fff2b0", "ffffff", "ffe08a"], "spark": 12, "motes": 6, "veil": 0.09, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8, "stars": 10},
-	"sky_reaches": {"clouds": 5, "pal": ["fff2b0", "ffffff", "cfe8ff"], "spark": 12, "motes": 6, "veil": 0.10, "veil_pal": ["ffeec0", "b8dcff"], "day": 0.8, "stars": 12},
-	"wind_starfall_garden": {"clouds": 5, "pal": ["fff6c8", "ffd0f0", "c8e8ff"], "spark": 16, "motes": 10, "veil": 0.11, "veil_pal": ["ffe6a0", "c8a8ff"], "day": 0.7, "stars": 14},
+	"sky": {"shoot": true, "clouds": 5, "pal": ["fff2b0", "ffffff", "ffe08a"], "spark": 12, "motes": 6, "veil": 0.09, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8, "stars": 10},
+	"sky_reaches": {"shoot": true, "clouds": 5, "pal": ["fff2b0", "ffffff", "cfe8ff"], "spark": 12, "motes": 6, "veil": 0.10, "veil_pal": ["ffeec0", "b8dcff"], "day": 0.8, "stars": 12},
+	"wind_starfall_garden": {"shoot": true, "clouds": 5, "pal": ["fff6c8", "ffd0f0", "c8e8ff"], "spark": 16, "motes": 10, "veil": 0.11, "veil_pal": ["ffe6a0", "c8a8ff"], "day": 0.7, "stars": 14},
 	"bf_cloud_stair": {"clouds": 5, "pal": ["fff2b0", "ffffff"], "spark": 8, "motes": 4, "veil": 0.07, "veil_pal": ["fff0c0", "c8e4ff"], "day": 0.8},
 	"colony_coral": {"pal": ["ffb0c0", "ffe0a8", "ffffff"], "spark": 10, "motes": 8, "veil": 0.05, "veil_pal": ["ffb0c8", "ffd8a8"], "day": 0.6},
 	"colony_ember": {"pal": ["ffb04a", "ff7a3a", "ffe08a"], "spark": 8, "motes": 14, "veil": 0.0, "day": 0.8, "kind": "ember"},
@@ -33,7 +33,7 @@ const PROFILES := {
 	"gilt_vaults": {"pal": ["ffe08a", "fff4c8", "ffc850"], "spark": 14, "motes": 4, "veil": 0.0, "day": 1.0, "kind": "dust"},
 	"gilt_casino_row": {"pal": ["ffe08a", "ff8ad8", "8ff0ff"], "spark": 10, "motes": 0, "veil": 0.0, "day": 0.8},
 	"gilt_grand_plaza": {"pal": ["ffe08a", "fff4c8"], "spark": 8, "motes": 0, "veil": 0.0, "day": 0.8},
-	"station": {"pal": ["7fe8ff", "a8ffe0", "ffffff"], "spark": 6, "motes": 6, "veil": 0.06, "veil_pal": ["5fd0ff", "8a7bff"], "day": 0.8, "stars": 16, "kind": "data"},
+	"station": {"shoot": true, "pal": ["7fe8ff", "a8ffe0", "ffffff"], "spark": 6, "motes": 6, "veil": 0.06, "veil_pal": ["5fd0ff", "8a7bff"], "day": 0.8, "stars": 16, "kind": "data"},
 	"neon": {"pal": ["ff5fd0", "5ff0ff", "ffe07a"], "spark": 8, "motes": 0, "veil": 0.05, "veil_pal": ["ff4fc0", "4fe0ff"], "day": 0.4},
 	"bf_neon_block": {"pal": ["ff5fd0", "5ff0ff"], "spark": 6, "motes": 0, "veil": 0.04, "veil_pal": ["ff4fc0", "4fe0ff"], "day": 0.4},
 	"bf_station_deck": {"pal": ["7fe8ff", "ffffff"], "spark": 4, "motes": 4, "veil": 0.04, "veil_pal": ["5fd0ff", "8a7bff"], "day": 0.8, "stars": 10, "kind": "data"},
@@ -326,6 +326,24 @@ func _draw_air(t: float, st: float, amp: float) -> void:
 			var ca := 0.05 * (1.0 - 0.5 * GameState.darkness())
 			for j in 4:
 				draw_circle(Vector2(x + j * 9.0 - 13.0, y + (2.0 if j % 2 else 0.0)), 9.0 - absf(j - 1.5) * 2.0, Color(1, 1, 1, ca))
+	# A shooting star now and then (every 14-32 s, at night or in space): a bright head
+	# with a fading tail, 0.9 s across the upper sky. None under reduced motion.
+	if bool(prof.get("shoot", false)) and not reduced() and (GameState.darkness() > 0.3 or prof.has("tint")):
+		var per := 14.0 + float(hash(name) % 18)
+		var k := floorf(t / per)
+		var lt := t - k * per
+		if lt < 0.9:
+			var h := absi(hash(int(k) * 7 + 3))
+			var sx := vr.position.x + vr.size.x * (0.15 + 0.6 * float(h % 100) / 100.0)
+			var sy := vr.position.y + vr.size.y * (0.05 + 0.25 * float((h / 100) % 100) / 100.0)
+			var dir := Vector2(-0.85 if h % 2 else 0.85, 0.5).normalized()
+			var u := lt / 0.9
+			var head := Vector2(sx, sy) + dir * 110.0 * u
+			var fade := sin(PI * u)
+			for j in 8:
+				var q := head - dir * j * 3.0
+				draw_circle(q, 1.2 - j * 0.12, Color(1, 1, 1, fade * (1.0 - j / 8.0) * 0.8))
+			draw_circle(head, 2.6, Color(1, 1, 1, 0.2 * fade))
 	# High shimmer glints: tiny stars that breathe on their own phases (2-4 s).
 	for s: Array in _stars:
 		var p := Vector2(vr.position.x + vr.size.x * float(s[0]), vr.position.y + vr.size.y * float(s[1]))

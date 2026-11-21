@@ -118,6 +118,14 @@ func _run() -> void:
 			glows += 1
 	if glows < 1:
 		fail("colony_coral: no crystal glow")
+	# Frostpeak: the snow hot spring steams.
+	var mf := await _load("frost_hearthhold")
+	var steam := 0
+	for n in mf.find_children("*", "Node2D", true, false):
+		if n is RegionAnim.Glow and n.mode == "steam":
+			steam += 1
+	if steam < 1:
+		fail("frost_hearthhold: hot spring has no steam")
 	# Moon: dusk tint and aurora.
 	var mm := await _load("moon")
 	if mm.get_node_or_null("MagicTint") == null:
