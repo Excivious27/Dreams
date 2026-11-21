@@ -876,6 +876,9 @@ if echo "$dkout" | grep -q "SCRIPT ERROR" || ! echo "$dkout" | grep -q "deck_inp
   echo "deck_input_test failed"; exit 1
 fi
 
+echo "== S1 P3: no new touch words outside PadInput.words =="
+python3 tools/prompt_words_check.py || { echo "prompt_words_check failed"; exit 1; }
+
 echo "== S1 P3: Steam Deck text floor (drawn text scan) =="
 python3 tools/deck_font_scan.py || { echo "deck_font_scan failed"; exit 1; }
 
