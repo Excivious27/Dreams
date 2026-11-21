@@ -40,6 +40,8 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report.get("grown", 0)), "" if int(report.get("grown", 0)) == 1 else "s"]})
 	if int(report.get("dry", 0)) > 0:
 		lines.append({"text": "%d crop%s went without water and didn't grow. Water each one with the can every day (rain does it for you)." % [int(report["dry"]), "" if int(report["dry"]) == 1 else "s"]})
+	if int(report.get("heat_dried", 0)) > 0:  # C15 P1 (c15_14-01)
+		lines.append({"text": "The heat dried %d plant%s back a day. Water early on a heat wave." % [int(report["heat_dried"]), "" if int(report["heat_dried"]) == 1 else "s"]})
 	if int(report.get("ripe", 0)) > 0 and GameState.quest_done("first_harvest"):  # before that the Next: line says it
 		lines.append({"text": "%d crop%s ripe: face %s and tap USE to harvest." % [int(report["ripe"]), " is" if int(report["ripe"]) == 1 else "s are", "it" if int(report["ripe"]) == 1 else "them"]})
 	if GameState.sky_waters() and not (GameState.run["farm"] as Dictionary).values().filter(func(t: Variant) -> bool: return t is Dictionary and str(t.get("crop", "")) != "").is_empty():

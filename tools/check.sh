@@ -1323,3 +1323,24 @@ echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
 if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
   echo "creature_life_test failed"; exit 1
 fi
+
+echo "== C15 P1: calendar (festivals/holidays/events/markets/birthdays, both arcs, years 1-3) =="
+c15calout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/calendar_test.gd 2>&1)"
+echo "$c15calout" | grep -E "FAIL|SCRIPT ERROR|calendar_test" || true
+if ! echo "$c15calout" | grep -q "calendar_test: 0 failures"; then
+  echo "calendar_test failed"; exit 1
+fi
+
+echo "== C15 P1: calendar screen (grid, marks, paging, way out) =="
+c15csout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/calendar_screen_test.gd 2>&1)"
+echo "$c15csout" | grep -E "FAIL|SCRIPT ERROR|calendar_screen_test" || true
+if ! echo "$c15csout" | grep -q "calendar_screen_test: 0 failures"; then
+  echo "calendar_screen_test failed"; exit 1
+fi
+
+echo "== C15 P1: seasonal weather (per-save seed, season tables, city odds, specials, snow depth, heat) =="
+c15wxout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/weather_c15_test.gd 2>&1)"
+echo "$c15wxout" | grep -E "FAIL|SCRIPT ERROR|weather_c15_test" || true
+if ! echo "$c15wxout" | grep -q "weather_c15_test: 0 failures"; then
+  echo "weather_c15_test failed"; exit 1
+fi

@@ -59,7 +59,7 @@ static func _clock(h: int) -> String:
 	return "%d%s" % [h if h <= 12 else h - 12, "am" if h < 12 else "pm"]
 
 
-## Is this shop serving right now? (Festival days close it 9am to 6pm, except the hall.)
+## Is this shop serving right now? (Festival hours and shop-closing holidays shut it, except the hall.)
 static func shop_open(shop: String) -> bool:
 	return why_shut(shop) == ""
 
@@ -73,7 +73,26 @@ static func why_shut(shop: String) -> String:
 	if not _within(h, float(s[0]), float(s[1])):
 		return "%s: closed. Open %s." % [str(s[2]), hours_text(int(s[0]), int(s[1]))]
 	if shop != "hall" and Npc.in_festival(h):  # C14 P2: per-festival hours
-		return "%s: closed today. Everyone's at the %s on the plaza." % [str(s[2]), GameState.festival_name(GameState.festival_today())]
+		return "%s: closed today. Everyone's at the %s %s." % [str(s[2]), GameState.festival_name(GameState.festival_today()), _at()]
+	var hol := holiday_closing(h)  # C15 P1: holidays that shut the shops
+	if shop != "hall" and hol != "":
+		return "%s: closed for %s." % [str(s[2]), hol]
+	return ""
+
+
+## "on the plaza" / "at the pier": where today's festival is.
+static func _at() -> String:
+	var w := str(Calendar.festival_today().get("where", "plaza"))
+	return "on the plaza" if w in ["plaza", "town", ""] else "at the " + w
+
+
+## The name of a shop-closing holiday running at hour h today ("" if none).
+static func holiday_closing(h: float) -> String:
+	for e: Dictionary in Calendar.today():
+		if e["kind"] == "holiday" and bool(e.get("closes_shops", false)):
+			var hv: Vector2 = e["hours"]
+			if hv == Vector2.ZERO or (h >= hv.x and h < hv.y):
+				return str(e["name"])
 	return ""
 
 
@@ -88,7 +107,9 @@ static func counter_shut(shop: String) -> String:
 	if not _within(h, 7.0, 21.0):
 		return "Closed for the night. Open %s." % hours_text(7, 21)
 	if Npc.in_festival(h):  # C14 P2: per-festival hours
-		return "Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today())
+		return "Closed today: everyone's at the %s %s." % [GameState.festival_name(GameState.festival_today()), _at()]
+	if holiday_closing(h) != "":
+		return "Closed today for %s." % holiday_closing(h)
 	return ""
 
 

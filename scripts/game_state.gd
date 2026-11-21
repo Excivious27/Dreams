@@ -3072,13 +3072,21 @@ static func bush_sprite(berries: bool) -> String:
 ## Effects: rain/storm water every crop and keep villagers in (fish bite more);
 ## storm also grounds the balloon and blocks the mountain pass; fog halves
 ## forage respawn visibility (critters hide); snow slows walking a touch;
-## heat (summer "sun") dries unwatered crops twice as fast and drains energy;
+## heat (summer "sun") sets an unwatered outdoor crop back a day (sleep) and makes heavy work harder;
 ## fireflies/petals/leaves are cosmetic.
 const WEATHER_ODDS := {
 	"spring": [["rain", 24], ["storm", 4], ["fog", 8], ["petals", 12], ["wind", 6], ["clear", 46]],
 	"summer": [["rain", 10], ["storm", 8], ["sun", 16], ["fireflies", 20], ["wind", 4], ["clear", 42]],
 	"fall": [["rain", 20], ["storm", 6], ["fog", 12], ["leaves", 26], ["wind", 10], ["clear", 26]],
 	"winter": [["snow", 36], ["blizzard", 6], ["fog", 10], ["wind", 8], ["clear", 40]],
+}
+
+## C15 P1 (c15_14-17): the city's own odds: wetter, foggier, fewer petals and fireflies.
+const WEATHER_ODDS_GANG := {
+	"spring": [["rain", 30], ["storm", 5], ["fog", 12], ["petals", 5], ["wind", 8], ["clear", 40]],
+	"summer": [["rain", 16], ["storm", 10], ["sun", 18], ["fireflies", 8], ["fog", 6], ["wind", 4], ["clear", 38]],
+	"fall": [["rain", 26], ["storm", 8], ["fog", 18], ["leaves", 14], ["wind", 10], ["clear", 24]],
+	"winter": [["snow", 30], ["blizzard", 6], ["fog", 14], ["wind", 10], ["clear", 40]],
 }
 
 static func weather_for(day: int) -> String:
@@ -3089,7 +3097,7 @@ static func weather_for(day: int) -> String:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(str(run.get("names", {}).get("town", "")) + str(run.get("wx_seed", "")) + ":" + key)
 	var se := season_of(day)
-	var table: Array = WEATHER_ODDS.get(se, WEATHER_ODDS["spring"])
+	var table: Array = (WEATHER_ODDS if is_penguins() else WEATHER_ODDS_GANG).get(se, WEATHER_ODDS["spring"])
 	var roll := rng.randi_range(0, 99)
 	var yesterday := str(w.get(str(day - 1), "clear"))
 	var linger := yesterday in ["rain", "storm", "snow", "blizzard"] and rng.randf() < 0.35
@@ -3283,6 +3291,10 @@ static func sky_waters() -> bool:
 
 
 static func weather_name(w: String) -> String:
+	if not run.is_empty() and not is_penguins():  # C15 P1: city words for the same skies
+		var gw: String = {"rain": "Rain", "storm": "Thunderstorm", "fog": "Smog and fog", "petals": "Blossom wind", "wind": "Windy", "sun": "Heat wave", "fireflies": "Warm night", "leaves": "Leaf storm", "snow": "Snow", "blizzard": "Blizzard", "clear": "Clear"}.get(w, "")
+		if gw != "":
+			return gw
 	return {"rain": "Rain", "storm": "Storm", "fog": "Fog", "petals": "Petal breeze", "wind": "Windy", "sun": "Heat wave", "fireflies": "Warm night", "leaves": "Falling leaves", "snow": "Snow", "blizzard": "Blizzard", "clear": "Clear"}.get(w, w.capitalize())
 
 
@@ -3424,7 +3436,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = 0.0
 				tile["watered"] = false
 				continue
-			if tile.get("watered", false) or sky_waters() or hazel_waters:
+			if tile.get("watered", false) or (sky_waters() and not glass) or hazel_waters:  # c15_14-19: no rain under glass
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
@@ -3447,6 +3459,9 @@ static func sleep(passed_out := false) -> Dictionary:
 				if rate > 0.0: report["grown"] += 1
 			else:
 				report["dry"] = int(report.get("dry", 0)) + 1  # planted but never watered: no growth tonight
+				if weather_today() == "sun" and not glass and int(tile.get("days", 0)) > 0:
+					tile["days"] = int(tile["days"]) - 1  # C15 P1 (c15_14-01): the heat wave dries an unwatered plant back a day
+					report["heat_dried"] = int(report.get("heat_dried", 0)) + 1
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
