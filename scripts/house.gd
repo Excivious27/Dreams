@@ -171,6 +171,8 @@ static func morning_cues(tree: SceneTree, report: Dictionary, passed_out: bool) 
 		cues.append("cash_register" if Money.cash() else "coin")
 	if not (report.get("built", []) as Array).is_empty():
 		cues.append("craft_done")
+	if int(report.get("crows", 0)) > 0:
+		cues.append("crow")  # c13_09-28: crows got into the field overnight
 	if int(report.get("ripe", 0)) > 0:
 		cues.append("crop_ready")
 	if int(report.get("ranch_hatched", 0)) > 0:

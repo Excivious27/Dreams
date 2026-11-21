@@ -39,6 +39,7 @@ const PATTERNS := {
 	"level_up": [[30, 60, 60, 60, 30], 0.8, 400, "menu_ok"],
 	"purr": [[15, 35, 15, 35, 15], 0.3, 400, "menu_ok"],
 	"region": [[20, 80, 20], 0.5, 400, "menu_ok"],
+	"beat": [[14], 0.35, 250, ""],
 }
 
 ## Music.sfx name -> kind. Exact names only: j_confirm, j_buy, j_page, j_gift,
@@ -57,7 +58,11 @@ const SFX := {
 	"hit": "hit", "crit": "hit_big", "block": "block", "dry_click": "deny",
 	"hurt": "hurt", "knockout": "ko", "heartbeat": "warn",
 	"harvest": "harvest", "boss_fall": "boss_down",
+	# c13_17-04: audio-only alarms and blasts are felt too
+	"alert": "warn", "boom": "hit_big", "siren": "warn", "fish_escape": "deny", "war_drum": "beat", "alarm": "warn",
 }
+## c13_08-09: menu taps buzz only with "Vibrate on button taps" on (the "ui" flag).
+const UI_SFX := {"ui_tap": "ui_light", "tab": "ui_light", "j_confirm": "press"}
 ## Gun shots are not on the list (turrets and foes share those names): Player._fire
 ## calls buzz("recoil"/"recoil_big") itself.
 
@@ -175,7 +180,7 @@ static func buzz(kind: String, force := false, scripted := false) -> bool:
 
 ## Music.sfx hook (exact-name whitelist).
 static func from_sfx(name: String) -> void:
-	var k: String = SFX.get(name, "")
+	var k: String = SFX.get(name, UI_SFX.get(name, ""))
 	if k != "":
 		buzz(k)
 

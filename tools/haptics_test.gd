@@ -39,6 +39,28 @@ func _run() -> void:
 	for n: String in ["j_confirm", "j_buy", "j_page", "j_gift", "j_battle_start", "craft_done", "ui_tap", "scroll_tick", "thud", "pickup"]:
 		_ok(not Haptics.SFX.has(n), "%s must not buzz" % n)
 
+	# C13 P6: every buzzing name is a real sound (c13_17-10); menu taps buzz only with taps on (c13_08-09).
+	for n: String in Haptics.SFX.keys() + Haptics.UI_SFX.keys():
+		var real := false
+		for suf: String in ["", "_2", "_3"]:
+			for ext: String in [".ogg", ".wav"]:
+				real = real or FileAccess.file_exists("res://audio/sfx/%s%s%s" % [n, suf, ext])
+		_ok(real, "haptic name %s is a real sound" % n)
+		_ok(not Haptics.UI_SFX.has(n) or Haptics.PATTERNS[Haptics.UI_SFX[n]][3] == "ui", "%s buzzes only as a ui tap" % n)
+	Haptics.reset_for_tests()
+	Haptics.from_sfx("ui_tap")
+	_ok(Haptics.history.is_empty(), "ui_tap silent with taps off")
+	SaveGame.set_value("set_haptics_ui", true)
+	Haptics.from_sfx("ui_tap")
+	_ok(_kinds() == ["ui_light"], "ui_tap buzzes ui_light with taps on")
+	SaveGame.set_value("set_haptics_ui", false)
+	Haptics.reset_for_tests()
+	Haptics.clock_override += 1000
+	Haptics.from_sfx("boom")
+	_ok(_kinds() == ["hit_big"], "a boom is felt (c13_17-04)")
+	Haptics.reset_for_tests()
+	Haptics.clock_override += 1000
+
 	# 1. setting off -> nothing
 	SaveGame.set_value("set_haptics", false)
 	Haptics.buzz("hurt")

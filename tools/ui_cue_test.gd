@@ -61,6 +61,15 @@ func _run() -> void:
 	mu = Music.instance(self)
 	await process_frame
 	var m: GameMap = await _load("farm")
+	# --- toolbar slot: one cue for every device, none when the slot doesn't change ---
+	if m != null and m.hud != null:
+		m.hud.pick_slot(0)
+		_clear()
+		m.hud.pick_slot(2)
+		check("equip" in _heard() or "unsheathe" in _heard(), "a slot change plays a cue")
+		_clear()
+		m.hud.pick_slot(2)
+		check(_heard().is_empty(), "the same slot again is silent")
 	# --- crafting ---
 	GameState.add_item("wood", 99)
 	GameState.add_item("stone", 99)
