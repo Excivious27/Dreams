@@ -31733,6 +31733,14 @@
    "frames": 2,
    "h": 77,
    "w": 120
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 88,
+   "cell_w": 69,
+   "file": "characters/bo_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 88,
+   "w": 138
   }
  },
  "characters/brute": {
@@ -35355,6 +35363,14 @@
    "frames": 2,
    "h": 77,
    "w": 110
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 83,
+   "cell_w": 49,
+   "file": "characters/june_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 83,
+   "w": 98
   }
  },
  "characters/kelp_kit_1": {
@@ -38408,6 +38424,14 @@
    "frames": 2,
    "h": 76,
    "w": 116
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 87,
+   "cell_w": 62,
+   "file": "characters/marisol_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 87,
+   "w": 124
   }
  },
  "characters/marlene": {
@@ -42922,6 +42946,14 @@
    "frames": 2,
    "h": 66,
    "w": 100
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 93,
+   "cell_w": 52,
+   "file": "characters/nia_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 93,
+   "w": 104
   }
  },
  "characters/nico": {
@@ -43117,6 +43149,14 @@
    "frames": 4,
    "h": 115,
    "w": 272
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 109,
+   "cell_w": 68,
+   "file": "characters/npc_alder_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 109,
+   "w": 68
   }
  },
  "characters/npc_alder_festival": {
@@ -44421,6 +44461,14 @@
    "frames": 4,
    "h": 103,
    "w": 196
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 99,
+   "cell_w": 51,
+   "file": "characters/npc_finn_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 99,
+   "w": 51
   }
  },
  "characters/npc_finn_winter": {
@@ -44725,6 +44773,14 @@
    "frames": 4,
    "h": 107,
    "w": 296
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 103,
+   "cell_w": 77,
+   "file": "characters/npc_gideon_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 103,
+   "w": 77
   }
  },
  "characters/npc_gideon_summer": {
@@ -45133,6 +45189,14 @@
    "frames": 4,
    "h": 100,
    "w": 292
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 100,
+   "cell_w": 76,
+   "file": "characters/npc_hazel_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 100,
+   "w": 76
   }
  },
  "characters/npc_hazel_summer": {
@@ -49395,6 +49459,14 @@
    "frames": 4,
    "h": 112,
    "w": 320
+  },
+  "c14bp5_blink_idle": {
+   "cell_h": 104,
+   "cell_w": 77,
+   "file": "characters/npc_wren_base/c14bp5_blink_idle.png",
+   "frames": 1,
+   "h": 104,
+   "w": 77
   }
  },
  "characters/npc_wren_fall": {
@@ -50346,6 +50418,14 @@
    "frames": 1,
    "h": 93,
    "w": 58
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 96,
+   "cell_w": 59,
+   "file": "characters/ollie_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 96,
+   "w": 118
   }
  },
  "characters/penguin": {
@@ -52709,6 +52789,14 @@
    "frames": 2,
    "h": 74,
    "w": 112
+  },
+  "c14bp5_blink_idle_down": {
+   "cell_h": 82,
+   "cell_w": 54,
+   "file": "characters/rafe_gang/c14bp5_blink_idle_down.png",
+   "frames": 2,
+   "h": 82,
+   "w": 108
   }
  },
  "characters/riley": {
