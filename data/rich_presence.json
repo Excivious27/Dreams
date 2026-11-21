@@ -1,0 +1,34 @@
+{
+ "_": "Steam rich presence (English). Upload as the app's rich presence localization file: tokens are '#'+key. Built by tools/gen_achievements.py; Presence (scripts/presence.gd) picks one.",
+ "tokens": {
+  "Menu": "In the menus",
+  "Farm": "Tending the farm (%season%, year %year%)",
+  "Home": "At home",
+  "Town": "In town",
+  "Mines": "Exploring the mines",
+  "Region": "Exploring %place%",
+  "Battle": "Leading a campaign battle",
+  "Fishing": "Fishing",
+  "Arcade": "At the arcade",
+  "Bowling": "Bowling at the Rec Center",
+  "Casino": "Playing cards at the casino",
+  "Hideout": "At the hideout",
+  "Coop": "Playing together (%size% players)"
+ },
+ "scene_map": {
+  "farm": "Farm",
+  "house": "Home",
+  "interior": "Home",
+  "town": "Town",
+  "uptown": "Town",
+  "neon": "Town",
+  "docks": "Town",
+  "mine": "Mines",
+  "underground": "Mines",
+  "hideout": "Hideout",
+  "rec_center": "Bowling",
+  "arcade": "Arcade",
+  "casino": "Casino"
+ },
+ "group_size_key": "steam_player_group_size"
+}

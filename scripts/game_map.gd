@@ -1002,6 +1002,8 @@ static func notify(text: String, sfx := "") -> void:
 	if not GameState.run.has("notes"):
 		GameState.run["notes"] = []
 	(GameState.run["notes"] as Array).append({"text": text, "sfx": sfx} if sfx != "" else text)
+	while (GameState.run["notes"] as Array).size() > 40:
+		(GameState.run["notes"] as Array).pop_front()  # S1 P2: newest 40 only
 
 
 ## An open quest asks for more of this item than the bag holds (hay goes to the bag, not the silo).

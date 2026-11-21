@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — S1 P2: achievements (60, both arcs, state-derived scan, title list, icons + 256 px Steam masters), stats, rich presence tokens, Steam bridge via SteamService, cloud-save notes in docs/steam/p2.md
+
 ## 2026-11-20 — c11a/fix3: community farm reveal consumes cf_reveal_done before its 0.4 s pause (was a wall-clock race: fast CI checked the flags before the timer ended, flaky commons_test stage 4/5)
 
 ## 2026-11-20 — 2026-11-20 relay/live: Play together uses the live relay wss://dreams-64-23-239-63.sslip.io by default (custom field + Reset to default); GET /version (code hash + commit) on server.js; server/deploy/ reference box setup (dreams-update.sh writes .deployed_commit); tools/relay_test.js in check.sh; tools/net_e2e.sh two-instance Godot test vs live relay; CI relay job (RELAY: ok, Xms; waits for server/ deploys; main pushes touching server/net.gd run it).
