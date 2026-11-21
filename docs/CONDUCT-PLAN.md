@@ -263,3 +263,8 @@ Live relay: wss://dreams-64-23-239-63.sslip.io (health https://dreams-64-23-239-
 ## Battle campaigns playability (Tom, 2026-11-20 17:00) -> CONDUCT 16
 
 Tom tried a battle: in the training the helper appeared out of nowhere after an unrelated-looking option, would not follow him, commands and whether helpers can be built were unclear, and the training had no way out (restart needed). Immediate fix: C11b P7. CONDUCT 16 adds a full review of the intuitive playability of every battle campaign, progressive and tier-based across the whole game: fun, intuitive, progressive building (helpers, units, commands, upgrades), clear words for every command, always a way out, both arcs. Auditors: drill/training, each campaign tier, helper/army building, commands and rally modes, pacing vs C16 progression.
+
+
+## Energy use review (Tom, 2026-11-20 17:09) -> CONDUCT 16
+
+Tom: getting through the mine to pass the meadow and then below mine level 1 (gangster arc) used about half the character's energy. CONDUCT 16 reviews energy across the whole progressive tiered ecosystem: every action's cost (GameState.ENERGY_COST/ENERGY_SKILL, energy_cost_f, spend_for, tool tiers), mine floors and travel, combat, chores, per skill level and tier, both arcs, all day-length options, food/rest/recovery, max-energy growth; target curves for day 1-3, week 1, season 1, year 2+; a measured energy-per-day checker (like econ_check) and bot personas reporting energy at end of day.
