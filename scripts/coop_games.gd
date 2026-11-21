@@ -16,7 +16,7 @@ extends RefCounted
 ## used only when present; tests drive two or more instances through `wire`.
 
 const TYPES := ["game_open", "game_join", "game_leave", "game_start", "game_turn",
-		"game_score", "game_state", "game_result", "game_board", "game_board_ask", "game_post"]
+		"game_score", "game_state", "game_result", "game_board", "game_board_ask", "game_post", "game_fest"]
 const MAX_PLAYERS := 4
 const BOARD_LEN := 8
 const BOWL_FRAMES := 10
@@ -42,6 +42,8 @@ var board_cache := {}
 ## The host's Rec Center as a guest last heard it ({} = not heard: use our own flags).
 ## {open: bool, reno: [open phase ids], arc: "penguins"|"gangsters"}; visit-only, never saved.
 var rec_view := {}
+## Festival contest standings for today on the host's world: "<fest>_<day>" -> [{name, score}].
+var fest := {}
 ## Where a host keeps its board (GameState.run["coop_board"] in the game; tests pass their own).
 var board_store: Dictionary = {}
 var _next := 1
@@ -263,6 +265,50 @@ func post_best(game: String, score: int) -> void:
 		_out("", "game_post", {"game": game, "score": score, "name": my_name()})
 
 
+## Festival contests together (c17_06-08): post our score for today's contest; everyone's
+## line then ranks all the players. Prizes stay per player against the NPC rivals only.
+func post_fest(fest_id: String, score: int, name := "") -> void:
+	var id := "%s_%d" % [fest_id, int(GameState.run.get("day", 1))]
+	var nm := name if name != "" else my_name()
+	if host:
+		_ref_fest(id, nm, score)
+	elif host_ok:
+		_ref_fest_local(id, nm, score)
+		_out("", "game_fest", {"id": id, "name": nm, "score": score})
+
+
+func _ref_fest_local(id: String, name: String, score: int) -> void:
+	var rows: Array = fest.get(id, [])
+	for r in rows:
+		if r["name"] == name:
+			r["score"] = maxi(int(r["score"]), score)
+			return
+	rows.append({"name": name, "score": score})
+	rows.sort_custom(func(x, y): return int(x["score"]) > int(y["score"]))
+	fest[id] = rows.slice(0, 8)
+
+
+func _ref_fest(id: String, name: String, score: int) -> void:
+	if id == "" or score < 0 or score > 5000:
+		return
+	_ref_fest_local(id, NameFilter.clean(name), score)
+	for k in fest.keys():  # only today's contests are kept
+		if not str(k).ends_with("_%d" % int(GameState.run.get("day", 1))):
+			fest.erase(k)
+	_out("*", "game_fest", {"fest": fest.duplicate(true)})
+
+
+## "Players today: 1st Pip 412, 2nd Nova 300" (empty with fewer than 2 players).
+func fest_line(fest_id: String) -> String:
+	var rows: Array = fest.get("%s_%d" % [fest_id, int(GameState.run.get("day", 1))], [])
+	if rows.size() < 2:
+		return ""
+	var parts := []
+	for k in rows.size():
+		parts.append("%s %s %d" % [place_word(k + 1), rows[k]["name"], int(rows[k]["score"])])
+	return "Players today: " + ", ".join(parts) + "."
+
+
 ## Host: what a guest needs to see the host's Rec Center as it is (c17_06-05).
 static func rec_summary() -> Dictionary:
 	var f: Dictionary = GameState.run.get("flags", {})
@@ -303,6 +349,8 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 			"game_turn": _ref_turn(from, d)
 			"game_score": _ref_score(from, d)
 			"game_board_ask": _out(from, "game_board", {"board": board_store.duplicate(true), "rec": rec_summary()})
+			"game_fest":
+				_ref_fest(str(d.get("id", "")), str(d.get("name", "")), int(d.get("score", 0)))
 			"game_post":
 				if submit_board(str(d.get("game", "")), str(d.get("name", "")), int(d.get("score", 0))):
 					_out("*", "game_board", {"board": board_store.duplicate(true)})
@@ -312,6 +360,9 @@ func handle(from: String, t: String, d: Dictionary) -> void:
 		"game_result":
 			_apply_state(d)
 			finished.emit(str(d.get("id", "")), d.get("ranking", []))
+		"game_fest":
+			if d.get("fest") is Dictionary:
+				fest = (d["fest"] as Dictionary).duplicate(true)
 		"game_board":
 			if d.get("board") is Dictionary:
 				board_cache = (d["board"] as Dictionary).duplicate(true)
