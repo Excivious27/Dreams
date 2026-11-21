@@ -94,6 +94,8 @@ static func enabled() -> bool:
 		return false
 	if GameState.run.is_empty() or bool(GameState.run.get("test", false)):
 		return false
+	if not (GameState.run.get("inventory") is Dictionary):
+		return false  # a half-built run (tests, slot switches): nothing to judge yet
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree and tree.current_scene and str(tree.current_scene.scene_file_path).contains("test_map"):
 		return false
