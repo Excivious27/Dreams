@@ -14,7 +14,7 @@ extends Node2D
 
 const PROFILES := {
 	"crystal_meadow": {"pal": ["7ff0e6", "ff9fd6", "ffffff", "b9a6ff"], "spark": 22, "motes": 12, "veil": 0.10, "veil_pal": ["6fe8d8", "c7a0ff"], "day": 0.7, "glint": "crystal"},
-	"moon": {"pal": ["d9c8ff", "ffffff", "a9c4ff"], "spark": 14, "motes": 8, "veil": 0.13, "veil_pal": ["b48cff", "7fd8ff"], "day": 0.9, "stars": 14, "kind": "dust"},
+	"moon": {"tint": "1c1440", "tint_day": 0.18, "tint_night": 0.42, "pal": ["d9c8ff", "ffffff", "a9c4ff"], "spark": 20, "motes": 8, "veil": 0.13, "veil_pal": ["b48cff", "7fd8ff"], "day": 0.9, "stars": 14, "kind": "dust"},
 	"gloam_violet_glade": {"pal": ["8ff3ff", "c58cff", "ff9be0"], "spark": 16, "motes": 12, "veil": 0.10, "veil_pal": ["9a7bff", "6fe0ff"], "day": 0.55},
 	"gloam_moonpool": {"pal": ["bfe8ff", "ffffff", "c9a8ff"], "spark": 14, "motes": 10, "veil": 0.12, "veil_pal": ["a8c8ff", "d0a0ff"], "day": 0.6, "stars": 8},
 	"gloam_crystal_thicket": {"pal": ["8ff3ff", "e0b0ff", "ffffff"], "spark": 18, "motes": 8, "veil": 0.07, "veil_pal": ["7fe8ff", "c49aff"], "day": 0.6, "glint": "crystal"},
@@ -46,6 +46,7 @@ const GANG_VEIL := ["3fd0ff", "b04fff"]
 var map: GameMap
 var prof: Dictionary
 var air := false  # false: the ground sparkles node; true: the veils/motes/glints node
+var tint_only := false  # the moon's dusk wash (normal blend, under the air layer)
 var _sparks: Array = []  # [pos, born, life, col, size, rot]
 var _motes: Array = []   # [pos, born, life, col, size, phase, speed]
 var _stars: Array = []   # [frac_x, frac_y, phase, period, col]
@@ -74,6 +75,15 @@ static func attach(m: GameMap, key: String, extra: Dictionary = {}) -> MagicFx:
 	g.material = _add_mat()
 	m.add_child(g)
 	m.to_under(g)
+	if p.has("tint"):  # c14b_05-09: the moon's permanent space dusk (deeper at night) so its light reads
+		var tn := MagicFx.new()
+		tn.name = "MagicTint"
+		tn.map = m
+		tn.prof = p
+		tn.air = true
+		tn.tint_only = true
+		tn.z_index = 39
+		m.add_child(tn)
 	var a := MagicFx.new()
 	a.name = "MagicAir"
 	a.map = m
@@ -164,7 +174,9 @@ func _process(_delta: float) -> void:
 	var vr := view()
 	if vr.size.x <= 0.0:
 		return
-	if air:
+	if tint_only:
+		pass
+	elif air:
 		_tick_motes(t, vr)
 	else:
 		_tick_sparks(t, vr)
@@ -232,6 +244,10 @@ func _draw() -> void:
 	var t := now()
 	var st := strength()
 	var amp := 0.3 if reduced() else 1.0
+	if tint_only:
+		var a0 := lerpf(float(prof.get("tint_day", 0.2)), float(prof.get("tint_night", 0.4)), clampf(GameState.darkness(), 0.0, 1.0))
+		draw_rect(view().grow(4), Color(Color(str(prof["tint"])), a0))
+		return
 	if air:
 		_draw_air(t, st, amp)
 		return
@@ -296,7 +312,7 @@ func _draw_air(t: float, st: float, amp: float) -> void:
 				var qc := PackedColorArray([cols_top[j], cols_top[j + 1], cols_bot[j + 1], cols_bot[j]])
 				draw_polygon(q, qc)
 				# A thin bright crest along the top of the ribbon: the shimmer you notice first.
-				draw_line(top[j], top[j + 1], Color(col.lightened(0.4), cols_top[j].a * 0.9), 1.0)
+				draw_line(top[j], top[j + 1], Color(col.lightened(0.4), cols_top[j].a * 0.45), 1.0)
 	# Cloud-sea wisps (c14b_05-15, c14b_06-08): soft puffs drifting over the cloud
 	# ground at two speeds, wrapping through the view, so the sea under the isles moves.
 	var nc := int(prof.get("clouds", 0))

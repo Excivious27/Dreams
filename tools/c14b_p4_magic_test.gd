@@ -110,5 +110,31 @@ func _run() -> void:
 			speeds[snappedf(asp.speed_scale, 0.01)] = true
 	if playing >= 3 and speeds.size() < 2:
 		fail("region strips run in lockstep (%d playing, %d speeds)" % [playing, speeds.size()])
+	# Colony: the star crystal carries a glow (dim before the restore).
+	var mc := await _load("colony_coral")
+	var glows := 0
+	for n in mc.get_children():
+		if n is RegionAnim.Glow:
+			glows += 1
+	if glows < 1:
+		fail("colony_coral: no crystal glow")
+	# Moon: dusk tint and aurora.
+	var mm := await _load("moon")
+	if mm.get_node_or_null("MagicTint") == null:
+		fail("moon: no dusk tint")
+	if mm.sky and not mm.sky.aurora:
+		fail("moon: aurora off")
+	# Code motion: a boat bobs on game time (helper level, deterministic).
+	var ra := RegionAnim.new()
+	root.add_child(ra)
+	var boat := Node2D.new()
+	root.add_child(boat)
+	ra.add(boat, "rowboat", Vector2i(3, 4))
+	var ys := {}
+	for i in 40:
+		await process_frame
+		ys[snappedf(boat.position.y, 0.5)] = true
+	if ys.size() < 2 and not Settings.reduced_motion():
+		fail("boat does not bob")
 	print("c14b_p4_magic_test: %d failures" % fails)
 	quit(1 if fails else 0)

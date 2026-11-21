@@ -573,7 +573,7 @@ func after_ready() -> void:
 			a.play("idle")
 			RegionAnim.phase(a, c)  # random start frame/speed per cell: never lockstep
 			RegionAnim.of(self).add(a, nm, c)
-			if g == "buildings":
+			if g == "buildings" or p.has("scale"):
 				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in
 		else:
 			var sp := prop(g, nm, c, w, 0.0, false, psc)  # footprint blocked below, sized to the art

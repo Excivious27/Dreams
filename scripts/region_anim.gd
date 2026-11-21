@@ -16,7 +16,7 @@ extends Node
 ## Strips that are variants or redraw their body each frame (rotors with jumbled
 ## blade angles, the boiling helicopter, street lamps that are an on-switch): frame 0
 ## rather than a choppy loop until split art exists (c14b_16-11, c14b_13-22, c14b_04-10).
-const STILL_STRIPS := ["windmill", "wind_turbine", "helicopter", "lamp2_"]
+const STILL_STRIPS := ["windmill", "wind_turbine", "helicopter", "lamp2_", "airlock", "cryo_pod", "door", "gate"]  # also state strips (open/closed)
 const PINGPONG := ["glow_pond", "glow_pool", "star_crater", "warp_pad", "tide_pool", "giant_flower", "aurora", "moon_spire", "crystal_tree"]
 const FPS := {"fire": 8.0, "barrel": 8.0, "bonfire": 8.0, "cauldron": 5.0, "fountain": 7.0, "glow_pond": 4.0, "glow_pool": 4.0,
 	"crystal_tree": 3.0, "giant_flower": 2.5, "carnivore": 2.5, "star_crater": 4.0, "warp_pad": 5.0, "console": 1.5, "arcade": 3.0}
