@@ -97,7 +97,7 @@
   "quest:finale": "dc_u_horse_statue",
   "quest:neon": "dc_arc_neon_joystick",
   "quest:tower": "wr_president_crown",
-  "quest:uptown": "dc_art_cuckoo",
+  "quest:uptown": "dc_casino_table",
   "rec:cup": "dc_stat_trophy",
   "secret:journal": "dc_tt_lantern_moon",
   "secret:lighthouse_lit": "dc_u_lighthouse_lamp",
@@ -105,10 +105,14 @@
   "side:babies": "dc_cat_statue",
   "side:coldy_key": "dc_fest_snow_lantern",
   "side:commander": "dc_flag_a",
+  "side:fall_soup": "dc_globe",
   "side:jim_brother": "dc_antler_hooks",
   "side:kid_school": "dc_bookcase3_a",
   "side:rosa": "dc_kit_stove",
-  "side:specs_wire": "dc_chrome_screen"
+  "side:specs_wire": "dc_chrome_screen",
+  "side:spring_beds": "dc_art_cuckoo",
+  "side:summer_shells": "dc_bulb_plant",
+  "side:winter_tarts": "dc_globe2"
  },
  "house_reserved": {
   "1": [
@@ -1638,9 +1642,9 @@
      "where": "treasure chests (tier 3)"
     },
     {
-     "kind": "quest",
-     "ref": "uptown",
-     "where": "a story reward: winning Uptown"
+     "kind": "side",
+     "ref": "spring_beds",
+     "where": "a side story reward"
     }
    ],
    "sub": "wall_art",
@@ -4409,6 +4413,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "summer_shells",
+     "where": "a side story reward"
     }
    ],
    "sub": "plant",
@@ -5104,6 +5113,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "quest",
+     "ref": "uptown",
+     "where": "a story reward: winning Uptown"
     }
    ],
    "sub": "velvet_lounge",
@@ -12894,6 +12908,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "fall_soup",
+     "where": "a side story reward"
     }
    ],
    "sub": "study",
@@ -12940,6 +12959,11 @@
      "kind": "loot",
      "ref": "chest_t3",
      "where": "treasure chests (tier 3)"
+    },
+    {
+     "kind": "side",
+     "ref": "winter_tarts",
+     "where": "a side story reward"
     }
    ],
    "sub": "study",
