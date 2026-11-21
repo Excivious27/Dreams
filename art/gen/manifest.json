@@ -29216,6 +29216,19 @@
    "h": 93,
    "w": 120
   },
+  "c14p1_fishing_hut_winter": {
+   "file": "buildings/c14p1_fishing_hut_winter.png",
+   "h": 105,
+   "w": 112
+  },
+  "c14p1_water_mill_winter": {
+   "cell_h": 200,
+   "cell_w": 163,
+   "file": "buildings/c14p1_water_mill_winter.png",
+   "frames": 4,
+   "h": 200,
+   "w": 652
+  },
   "chapel": {
    "file": "buildings/chapel.png",
    "h": 128,
@@ -112280,28 +112293,33 @@
   },
   "ri_bone_pile": {
    "file": "props/ri_bone_pile.png",
-   "h": 36,
-   "w": 47
+   "h": 28,
+   "uncaptioned": true,
+   "w": 37
   },
   "ri_boulder4_0": {
    "file": "props/ri_boulder4_0.png",
-   "h": 50,
-   "w": 53
+   "h": 35,
+   "uncaptioned": true,
+   "w": 45
   },
   "ri_boulder4_1": {
    "file": "props/ri_boulder4_1.png",
-   "h": 53,
-   "w": 53
+   "h": 36,
+   "uncaptioned": true,
+   "w": 46
   },
   "ri_boulder4_2": {
    "file": "props/ri_boulder4_2.png",
-   "h": 51,
-   "w": 54
+   "h": 33,
+   "uncaptioned": true,
+   "w": 44
   },
   "ri_cairn": {
    "file": "props/ri_cairn.png",
-   "h": 52,
-   "w": 54
+   "h": 35,
+   "uncaptioned": true,
+   "w": 38
   },
   "ri_cart3": {
    "file": "props/ri_cart3.png",
@@ -112345,13 +112363,15 @@
   },
   "ri_dead_bush_0": {
    "file": "props/ri_dead_bush_0.png",
-   "h": 40,
-   "w": 48
+   "h": 33,
+   "uncaptioned": true,
+   "w": 34
   },
   "ri_dead_bush_1": {
    "file": "props/ri_dead_bush_1.png",
-   "h": 40,
-   "w": 48
+   "h": 33,
+   "uncaptioned": true,
+   "w": 29
   },
   "ri_driftwood_0": {
    "file": "props/ri_driftwood_0.png",
@@ -112365,8 +112385,9 @@
   },
   "ri_eagle_nest": {
    "file": "props/ri_eagle_nest.png",
-   "h": 53,
-   "w": 53
+   "h": 38,
+   "uncaptioned": true,
+   "w": 47
   },
   "ri_fishing_net": {
    "file": "props/ri_fishing_net.png",
@@ -112390,7 +112411,8 @@
   },
   "ri_hot_spring2": {
    "file": "props/ri_hot_spring2.png",
-   "h": 54,
+   "h": 36,
+   "uncaptioned": true,
    "w": 54
   },
   "ri_jetty_end": {
@@ -112505,8 +112527,9 @@
   },
   "ri_mountain_flower": {
    "file": "props/ri_mountain_flower.png",
-   "h": 47,
-   "w": 53
+   "h": 32,
+   "uncaptioned": true,
+   "w": 42
   },
   "ri_nest": {
    "file": "props/ri_nest.png",
@@ -112515,8 +112538,9 @@
   },
   "ri_pine_stump": {
    "file": "props/ri_pine_stump.png",
-   "h": 48,
-   "w": 54
+   "h": 31,
+   "uncaptioned": true,
+   "w": 41
   },
   "ri_shells_0": {
    "file": "props/ri_shells_0.png",
@@ -112535,23 +112559,27 @@
   },
   "ri_vent_0": {
    "file": "props/ri_vent_0.png",
-   "h": 34,
-   "w": 46
+   "h": 28,
+   "uncaptioned": true,
+   "w": 29
   },
   "ri_vent_1": {
    "file": "props/ri_vent_1.png",
-   "h": 40,
-   "w": 48
+   "h": 34,
+   "uncaptioned": true,
+   "w": 34
   },
   "ri_vent_2": {
    "file": "props/ri_vent_2.png",
-   "h": 40,
-   "w": 48
+   "h": 33,
+   "uncaptioned": true,
+   "w": 34
   },
   "ri_vent_3": {
    "file": "props/ri_vent_3.png",
-   "h": 40,
-   "w": 48
+   "h": 33,
+   "uncaptioned": true,
+   "w": 36
   },
   "ri_well3": {
    "file": "props/ri_well3.png",
