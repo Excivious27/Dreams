@@ -181,13 +181,13 @@ for rs in R.values():
 
 # 3b) animal goods are never a dead end: each one goes into at least one recipe (directly or by family)
 RANCH = json.load(open(os.path.join(D, 'ranch.json'))) if os.path.exists(os.path.join(D, 'ranch.json')) else {}
-ANIMAL_GOODS = sorted(RANCH.get('products', {})) or ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
-OLD_GOODS = {'egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool', 'truffle', 'honey'}
+ANIMAL_GOODS = sorted(g for g in RANCH.get('products', {}) if I.get(g, {}).get('ranch')) or ['egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool']
+# c11b_12-07: the C11a goods have their loom/extractor recipes now, so a dead end fails like the classics
+OLD_GOODS = {'egg', 'duck_egg', 'milk', 'goat_milk', 'sheep_wool', 'truffle', 'honey', 'feather', 'rabbit_fur', 'beeswax'}
 for g in ANIMAL_GOODS:
     keys = {g} | ({'#' + I[g]['family']} if I.get(g, {}).get('family') else set())
     if not any(k in r['need'] for rs in R.values() if isinstance(rs, list) for r in rs for k in keys):
-        # C11a goods (feather, rabbit_fur, beeswax) wait on the ranch stations in gen_stations.py (ranch.json
-        # "processing" lists what each should make); until those recipes exist they warn.
+        # newer creature goods warn until their recipes exist (gen_stations.py; ranch.json "processing")
         (fails if g in OLD_GOODS else warns).append('dead end: %s goes into no recipe' % g)
 
 # 3d) ranch (C11a, tables in tools/gen_ranch.py): feeding always pays, no hay buy-sell loop, rehome can't loop,
@@ -196,18 +196,54 @@ HAY_BUY = 1.5 * val('hay')
 HAY_MIN_BUY = max(HAY_BUY * BUY_MIN, val('hay') * BUY_OF_SELL * SELL_MAX)
 if HAY_MIN_BUY <= val('hay') * SELL_MAX:
     fails.append('hay: cheapest buy %.1f <= sell %d (loop)' % (HAY_MIN_BUY, val('hay')))
-RANCH_BAND = {'coop': (10, 40), 'barn': (8, 60), 'hutch': (8, 30), 'sty': (40, 160), 'apiary': (8, 40)}
-for sid, sp in RANCH.get('species', {}).items():
+# c11b_12-02/-03/-04: one value ladder (tools/gen_ranch.py TIER_LADDER, written to ranch.json "ladder"):
+#   bought animals pay back in payback[0]..payback[1] days net of a day's bought hay (fail outside);
+#   goods per pen cell per day sit in their class band (warn outside; unique one-per-save creatures may go higher);
+#   hay eaters keep >= 25% of their goods after hay (fail); lab strains stay within +-20% of the classic beside them.
+LAD = RANCH.get('ladder', {}) or {'classic': (10, 40), 'exotic': (20, 75), 'fantastic': (25, 90), 'lab': (10, 80), 'payback': (20, 60), 'lab_vs_classic': 0.2}
+HAY_DAY = float(RANCH.get('rules', {}).get('hay_buy', 8))
+FAMILY_CLASS = {'': 'classic', 'exotics': 'exotic', 'fantastic': 'fantastic', 'lab': 'lab'}
+SP = RANCH.get('species', {})
+def goods_day(sp):
     pr = sp['product']
-    per_day = val(pr['id']) / max(1, pr['every_days'])
-    if sp.get('feed') == 'hay' and val(pr['id']) < 2 * HAY_BUY * pr['every_days'] * 0.5:
-        fails.append('ranch: %s goods %d do not pay for %d days of hay' % (sid, val(pr['id']), pr['every_days']))
-    lo, hi = RANCH_BAND.get(sp['home'], (0, 999))
-    if not lo <= per_day <= hi:
-        warns.append('ranch: %s %.1f/day outside %s band %d-%d' % (sid, per_day, sp['home'], lo, hi))
-    if int(sp.get('rehome_pay', 0)) > 0.25 * int(sp['buy']['price']):
+    d = val(pr['id']) / max(1, pr['every_days'])
+    if pr.get('extra'):
+        d += val(pr['extra'][0]) * float(pr['extra'][1]) / max(1, pr['every_days'])
+    return d
+LAB_PAIR = {'chrome_hen': 'chicken', 'glow_sheep': 'sheep', 'circuit_goat': 'goat', 'turbo_bunny': 'rabbit', 'circuit_cow': 'cow',
+            'drone_hog': 'pig', 'volt_gecko': 'tortoise', 'chrome_runner': 'ostrich'}
+for sid, sp in SP.items():
+    pr = sp['product']
+    per_day = goods_day(sp)
+    hay = HAY_DAY if sp.get('feed') == 'hay' else 0.0
+    if hay and per_day - hay < 0.25 * per_day:
+        fails.append('ranch: %s goods %.1f/day barely pay for its hay (%.0f/day)' % (sid, per_day, hay))
+    price = int(sp['buy']['price'])
+    if price > 0:
+        pb = price / max(0.1, per_day - hay)
+        if not LAD['payback'][0] <= pb <= LAD['payback'][1]:
+            fails.append('ranch: %s pays back in %.0f days (ladder %d-%d)' % (sid, pb, LAD['payback'][0], LAD['payback'][1]))
+    cls = FAMILY_CLASS.get(sp.get('family', ''), 'classic')
+    lo, hi = LAD[cls]
+    cell = per_day / max(0.5, float(sp.get('space', 1)))
+    if not lo <= cell <= hi and not (sp.get('unique') and cell <= LAD.get('unique_cap', 200)):
+        warns.append('ranch: %s %.1f/cell/day outside the %s band %d-%d' % (sid, cell, cls, lo, hi))
+    if sid in LAB_PAIR and LAB_PAIR[sid] in SP:
+        base = goods_day(SP[LAB_PAIR[sid]])
+        if abs(per_day - base) > LAD['lab_vs_classic'] * base + 0.01:
+            fails.append('ranch: lab %s %.1f/day strays over %d%% from %s %.1f' % (sid, per_day, LAD['lab_vs_classic'] * 100, LAB_PAIR[sid], base))
+    if int(sp.get('rehome_pay', 0)) > 0.25 * price:
         fails.append('ranch: %s rehome pays %d > 25%% of its price' % (sid, sp['rehome_pay']))
-    if V: print('ranch %-8s %5.1f/day, rehome %d' % (sid, per_day, int(sp.get('rehome_pay', 0))))
+    if V: print('ranch %-14s %6.1f/day %5.1f/cell payback %s rehome %d' % (sid, per_day, cell, ('%.0f d' % (price / max(0.1, per_day - hay))) if price else 'earned', int(sp.get('rehome_pay', 0))))
+# End-game multiplier, printed so the caps are reviewed with the ladder: (1 + animal_yield cap) x (1 + ranch_value cap) x gold 1.5
+if V:
+    try:
+        ST = json.load(open(os.path.join(D, 'skill_trees.json')))
+        caps = ST.get('caps', {}) if isinstance(ST, dict) else {}
+        ay, rv = float(caps.get('animal_yield', 1.0)), float(caps.get('ranch_value', 0.35))
+    except Exception:
+        ay, rv = 1.0, 0.35
+    print('ranch end-game multiplier: x%.2f (animal_yield %.2f, ranch_value %.2f, gold 1.5)' % ((1 + ay) * (1 + rv) * 1.5, ay, rv))
 
 # 4) keg (mirror of Crafting.keg_plan)
 tb = B['keg']['brew']

@@ -69,6 +69,7 @@
   "commons:seeds": "dc_out_hedge2_pot",
   "commons:shed": "dc_out_dock_lantern",
   "commons:well": "dc_out_well_roofed",
+  "festival:show_champion": "dc_show_trophy",
   "heart:catkins:8": "dc_lucky_cat_gold",
   "heart:finn:8": "dc_sea_shipbottle",
   "heart:gideon:8": "dc_bookcase3_a",
@@ -23131,6 +23132,111 @@
    "sub": "furniture",
    "tier": 5
   },
+  "dc_show_ribbon_blue": {
+   "arc": "",
+   "art": "props/show_ribbon_blue",
+   "cat": "wall_art",
+   "comfort": 3,
+   "desc": "Won at the Harvest Fair Animal Show.",
+   "glow": false,
+   "icon": "props/show_ribbon_blue",
+   "layer": "wall",
+   "name": "Blue Show Ribbon",
+   "order": false,
+   "price": 0,
+   "rarity": "rare",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "festival",
+     "once": true,
+     "ref": "show_1"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
+  "dc_show_ribbon_red": {
+   "arc": "",
+   "art": "props/show_ribbon_red",
+   "cat": "wall_art",
+   "comfort": 2,
+   "desc": "Won at the Harvest Fair Animal Show.",
+   "glow": false,
+   "icon": "props/show_ribbon_red",
+   "layer": "wall",
+   "name": "Red Show Ribbon",
+   "order": false,
+   "price": 0,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "festival",
+     "once": true,
+     "ref": "show_2"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
+  "dc_show_ribbon_yellow": {
+   "arc": "",
+   "art": "props/show_ribbon_yellow",
+   "cat": "wall_art",
+   "comfort": 2,
+   "desc": "Won at the Harvest Fair Animal Show.",
+   "glow": false,
+   "icon": "props/show_ribbon_yellow",
+   "layer": "wall",
+   "name": "Yellow Show Ribbon",
+   "order": false,
+   "price": 0,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "festival",
+     "once": true,
+     "ref": "show_3"
+    },
+    {
+     "kind": "loot",
+     "ref": "chest_t3"
+    }
+   ],
+   "sub": "keepsake",
+   "tier": 3
+  },
   "dc_show_skyline_window": {
    "anim": 4,
    "arc": "gangsters",
@@ -23193,6 +23299,37 @@
     }
    ],
    "sub": "furniture",
+   "tier": 5
+  },
+  "dc_show_trophy": {
+   "arc": "",
+   "art": "props/show_trophy",
+   "cat": "decor",
+   "comfort": 15,
+   "desc": "One of a kind: three blue ribbons at the Animal Show.",
+   "glow": false,
+   "icon": "props/show_trophy",
+   "layer": "floor",
+   "name": "Best in Show Trophy",
+   "order": false,
+   "price": 0,
+   "rarity": "unique",
+   "rot": 1,
+   "sell": 0,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "festival",
+     "once": true,
+     "ref": "show_champion"
+    }
+   ],
+   "sub": "showpiece",
    "tier": 5
   },
   "dc_sink": {
@@ -42752,6 +42889,18 @@
     260
    ],
    [
+    "dc_show_ribbon_blue",
+    100
+   ],
+   [
+    "dc_show_ribbon_red",
+    260
+   ],
+   [
+    "dc_show_ribbon_yellow",
+    260
+   ],
+   [
     "dc_sink",
     600
    ],
@@ -45262,6 +45411,18 @@
     260
    ],
    [
+    "dc_show_ribbon_blue",
+    100
+   ],
+   [
+    "dc_show_ribbon_red",
+    260
+   ],
+   [
+    "dc_show_ribbon_yellow",
+    260
+   ],
+   [
     "dc_sofa_blue",
     260
    ],
@@ -46722,6 +46883,18 @@
    [
     "dc_show_grand_piano",
     8
+   ],
+   [
+    "dc_show_ribbon_blue",
+    100
+   ],
+   [
+    "dc_show_ribbon_red",
+    260
+   ],
+   [
+    "dc_show_ribbon_yellow",
+    260
    ],
    [
     "dc_show_skyline_window",

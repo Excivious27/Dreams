@@ -177,6 +177,7 @@ func _show_title() -> void:
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
 	_page.add_child(_button("Save slots (slot %d)" % GameState.slot(), _show_slots))
+	_page.add_child(_button("Achievements  %d/%d" % [Achievements.count_unlocked(), Achievements.total()], func() -> void: _clear(); AchievementScreen.fill(_page, _label, _button("Back", _show_title))))  # S1 P2
 	if SaveTransfer.ios_tab() and int(SaveGame.get_value("ios_note", 0)) < IOS_NOTE_TIMES:
 		# C9: Safari may clear a tab's storage after a week away; the Home Screen app keeps it.
 		SaveGame.set_value("ios_note", int(SaveGame.get_value("ios_note", 0)) + 1)

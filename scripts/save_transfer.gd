@@ -113,7 +113,7 @@ static func encode_all() -> String:
 			rest[str(n)] = r
 	if slots.is_empty() and rest.is_empty():
 		return ""
-	return _pack(PREFIX_ALL, {"slots": slots, "restore": rest}, "%dfarms" % (slots.size() + rest.size()))
+	return _pack(PREFIX_ALL, {"slots": slots, "restore": rest, "ach": Achievements.export_dict()}, "%dfarms" % (slots.size() + rest.size()))
 
 
 static func file_name(code: String) -> String:
@@ -347,6 +347,7 @@ static func apply_all(d: Dictionary) -> Dictionary:
 		var pv: Variant = c.get(prev_key_of(n))
 		if not r.is_empty() and not (pv is Dictionary and (pv as Dictionary).has("names")):
 			c[prev_key_of(n)] = r.duplicate(true)
+	Achievements.merge(d.get("ach", {}))  # S1 P2: the device's achievement list travels with "move everything"
 	if not SaveGame.flush():
 		var why := SaveGame.last_why
 		_roll_back(cache_before, live)

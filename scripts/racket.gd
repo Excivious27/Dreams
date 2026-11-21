@@ -41,7 +41,7 @@ static func add_heat(m: GameMap, n: int) -> void:
 static func risk(id: String) -> float:
 	var r := float(GameState.items.get(id, {}).get("risk", 0.3)) + 0.05 * heat()
 	r += 0.04 * passed_today()                     # every till you hit today talks to the next
-	r -= 0.03 * Crew.perk_level("shop_discount")  # Specs knows which tills to avoid
+	r -= 0.09 if Crew.perk_level("shop_discount") >= 3 else 0.0  # Specs knows which tills to avoid: his loyalty-3 perk (c11b_08-14)
 	r -= GameState.bonus("hustle", "pass_risk")
 	r -= 0.02 if Crew.perk_level("board_bonus") >= 2 else 0.0  # Dice hears which shops are watching
 	return clampf(r, 0.03, 0.9)
@@ -263,6 +263,7 @@ static func laundromat(m: GameMap) -> void:
 			continue
 		GameState.add_item(pick, -n)
 		wash[pick] = int(wash.get(pick, 0)) + n
+		GameState.run["racket_washed"] = int(GameState.run.get("racket_washed", 0)) + n * pf  # S1 P2: Squeaky Clean
 		m.hud.toast("%d in the wash." % n, Color(0.8, 0.95, 1.0))
 
 

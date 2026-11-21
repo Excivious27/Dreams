@@ -722,6 +722,11 @@ var _status_shield := 0.0   # secs; Not Today washes statuses off for this long
 
 
 func _physics_process(delta: float) -> void:
+	# c11b_08-03: the ♥ tap is taken off TouchControls every frame (puppets never read it), so a tap made while
+	# busy, frozen or mid-dialogue is dropped, never kept to fire later unasked.
+	var ab_tap_frame: bool = TouchControls.ability_pressed and not is_puppet
+	if not is_puppet:
+		TouchControls.ability_pressed = false
 	if frozen and not get_tree().paused and not Dialogue.instance(get_tree()).active and not Story.is_playing() and not Dialogue.instance(get_tree()).skippable:  # C7: was the Callable GameMenu.story_busy (always truthy)
 		_frozen_idle += delta
 		if _frozen_idle > FREEZE_SAFETY:
@@ -862,9 +867,9 @@ func _physics_process(delta: float) -> void:
 	# Companion ability: hold B still for a second.
 	var has_ab: bool = Companion.active_id() != "" or (GameState.is_penguins() and GameState.run["flags"].has("meow_taught"))
 	var ab_key := InputMap.has_action("ability") and Input.is_action_just_pressed("ability")
-	if (TouchControls.ability_pressed or ab_key) and has_ab and not _busy and not Dialogue.input_blocked() and map:
+	var ab_tap: bool = ab_tap_frame or ab_key
+	if ab_tap and has_ab and not _busy and not Dialogue.input_blocked() and map:
 		# The phone's ♥ button (or R / pad RT): one tap, no hold.
-		TouchControls.ability_pressed = false
 		Companion.use_ability(map, self)
 	elif Input.is_action_pressed("b") and dir == Vector2.ZERO and not _busy and has_ab and not Dialogue.input_blocked():
 		_ability_hold += delta

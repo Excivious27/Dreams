@@ -44,6 +44,14 @@ const KIND_SPECIES := [["rooster", "rooster"], ["chick", "chicken"], ["chicken",
 	["piglet", "pig"], ["pig", "pig"], ["rabbit", "rabbit"], ["bee", "bees"]]
 ## Animal buildings indoors: interior id -> species heard inside (spots from the animals themselves).
 const ROOM_ANIMALS := {"stable": ["horse"], "coop": ["chicken", "duck"], "barn": ["cow", "goat", "sheep"]}
+## C11b P6 (c11b_14-11): creature voices and night kinds (scripts/ranch_voices.gd). A C11b species with
+## no PEN_SPOTS row calls with its voice takes (C11B_PEN timing); after dark only night kinds speak.
+const RV := preload("res://scripts/ranch_voices.gd")
+const C11B_PEN := [50.0, 110.0, -22.0]
+## C11b P6 (c11b_14-04): room tones for the new homes, by interior id fragment: [bed, dB].
+const HOME_BEDS := [["aviary", "aviary_room", -16.0], ["drone_loft", "aviary_room", -18.0], ["terrarium", "terrarium_room", -18.0],
+	["grow_tank", "terrarium_room", -18.0], ["enclosure", "terrarium_room", -22.0], ["bio_dome", "terrarium_room", -20.0],
+	["lab_barn", "machines", -26.0], ["star_dome", "space", -20.0]]
 var _herd := {}        # species -> Array of Node2D (refreshed with the beds)
 var _herd_t := 0.0
 ## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
@@ -350,7 +358,11 @@ func _evaluate() -> Dictionary:
 		elif kind in ["chapel", "library", "school"]:
 			out["room_chapel"] = -22.0
 		if kind in ["rec", "rec_up"]:
-			out.merge(RecAudio.beds(kind), true)  # arcade cabinets downstairs, rolling balls and pins upstairs
+			out.merge(RecAudio.beds(kind), true)
+		for hb: Array in HOME_BEDS:
+			if str(hb[0]) in kind:
+				out[str(hb[1])] = float(hb[2])
+				break  # arcade cabinets downstairs, rolling balls and pins upstairs
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
 	# "amb_day" / "amb_night" (C4) take over from "amb" by time of day (a casino street is busy by
 	# day and quiet at night); caves and quiet lands never take birds, crickets or frogs.
@@ -553,6 +565,9 @@ static func species_of(kind: String) -> String:
 	var sp := Ranch.species(k)
 	if not sp.is_empty():
 		return k
+	for sp2: String in RV.VOICES:  # C11b creatures (P6): "moon_cow_baby" -> moon_cow
+		if k == sp2 or k.begins_with(sp2 + "_"):
+			return sp2
 	for row: Array in KIND_SPECIES:
 		if k.begins_with(str(row[0])):
 			return str(row[1])
@@ -567,17 +582,20 @@ static func pen_rules_for(id: String, outdoors: bool, calm: bool, ph: String, ro
 	var allowed: Array = []
 	var night_db := 0.0
 	if outdoors and calm and ph == "day" and id in RANCH_MAPS:
-		allowed = PEN_SPOTS.keys()
+		allowed = PEN_SPOTS.keys() + herd.keys().filter(func(x: Variant) -> bool: return RV.VOICES.has(str(x)) and not RV.night_kind(str(x)))
+	elif outdoors and calm and ph == "night" and id in RANCH_MAPS:
+		allowed = herd.keys().filter(func(x: Variant) -> bool: return RV.night_kind(str(x)))  # glow and moon critters
+		night_db = -4.0
 	elif not outdoors and id == "interior" and ROOM_ANIMALS.has(room):
 		allowed = ROOM_ANIMALS[room]
 		night_db = -8.0 if ph == "night" else 0.0
 	var kinds: Array = []
 	for sp: String in allowed:
-		if herd.has(sp) and not (herd[sp] as Array).is_empty() and PEN_SPOTS.has(sp):
+		if herd.has(sp) and not (herd[sp] as Array).is_empty() and (PEN_SPOTS.has(sp) or RV.VOICES.has(sp)):
 			kinds.append(sp)
 	kinds.sort_custom(func(a: String, b: String) -> bool: return (herd[a] as Array).size() > (herd[b] as Array).size())
 	for sp: String in kinds.slice(0, 3):
-		var r: Array = PEN_SPOTS[sp]
+		var r: Array = PEN_SPOTS[sp] if PEN_SPOTS.has(sp) else ["cv_" + sp] + C11B_PEN
 		# A bigger flock calls a little more often (up to twice as often at 8+).
 		var rate := 1.0 / clampf(1.0 + float((herd[sp] as Array).size() - 1) / 7.0, 1.0, 2.0)
 		out.append([str(r[0]), float(r[1]) * rate, float(r[2]) * rate, float(r[3]) + night_db, sp])
@@ -595,9 +613,10 @@ func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
 		if st != null:
 			takes.append(st)
 	# C11a P5: a pen spot with no ambience recording borrows the species' voice takes (quieter).
-	if takes.is_empty() and species != "" and VOICE_FALLBACK.has(species):
+	var vfb := str(VOICE_FALLBACK.get(species, RV.VOICES.get(species, "")))
+	if takes.is_empty() and species != "" and vfb != "":
 		for suf2: String in ["", "_2", "_3"]:
-			var vs := _stream("res://audio/sfx/%s%s.ogg" % [str(VOICE_FALLBACK[species]), suf2])
+			var vs := _stream("res://audio/sfx/%s%s.ogg" % [vfb, suf2])
 			if vs != null:
 				takes.append(vs)
 		db -= 4.0
