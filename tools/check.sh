@@ -124,6 +124,29 @@ bad = [k for k, v in I.items() if isinstance(v, dict) and "back" in v and not (i
 print("interior_back:", len(bad), "bad", bad[:5])
 sys.exit(1 if bad else 0)
 PY
+echo "== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) =="
+python3 tools/web_export_guard.py --static || { echo "web_export_guard failed"; exit 1; }
+bash tools/fetch_godotsteam.sh --check || { echo "godotsteam files changed"; exit 1; }
+
+echo "== S1 P1: SteamService safe no-ops with Steam absent, app-id gate, fake-backend routing =="
+ssout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/steam_service_test.gd 2>&1)"
+echo "$ssout" | grep -E "FAIL|SCRIPT ERROR|STEAM SERVICE TEST" || true
+if ! echo "$ssout" | grep -q "STEAM SERVICE TEST DONE, failures: 0"; then
+  echo "steam_service_test failed"; exit 1
+fi
+
+echo "== S1 P1: the game boots to the title and plays 600 frames on the farm with Steam absent (BootProbe) =="
+bpdir="$(mktemp -d)"
+bpout="$(XDG_DATA_HOME="$bpdir" timeout 300 "$GODOT" --headless --path . --fixed-fps 60 -- --boot-probe 2>&1)"
+rm -rf "$bpdir"
+echo "$bpout" | grep -E "DREAMS BOOT|SCRIPT ERROR" || true
+if ! echo "$bpout" | grep -q "DREAMS BOOT OK" || ! echo "$bpout" | grep -q "DREAMS BOOT steam backend=local"; then
+  echo "boot probe failed"; exit 1
+fi
+if echo "$bpout" | grep -qE "SCRIPT ERROR|Parse Error"; then
+  echo "boot probe: script errors"; exit 1
+fi
+
 # Phone UI at 270x480: every menu tab, dialogue, toasts, chest, craft, prizes, campaign board, arcade, bowling;
 # also every printed symbol has a glyph without system fonts (the web build has none).
 dout="$("$GODOT" --headless --path . -s res://tools/desktop_layout_test.gd 2>&1)"
