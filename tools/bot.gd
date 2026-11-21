@@ -172,6 +172,11 @@ func _play_scene(sc: String) -> void:
 			await frames(5)
 			continue
 		await _dialogue_tick()
+		# Closing a screen can change the map (B on a battle card goes home): re-read it.
+		m = current_scene as GameMap
+		if m == null or not is_instance_valid(m):
+			await frames(5)
+			continue
 		var roll := rng.randf()
 		match style:
 			"farmer":
