@@ -420,7 +420,15 @@ func _place_festival(fest: String) -> void:
 				pf.call("fest_ss_%02d" % (31 + i % 3), Vector2i(32 + i * 5, 38), 2, false)
 			for c: Vector2i in [Vector2i(32, 44), Vector2i(48, 44), Vector2i(32, 54), Vector2i(48, 54)]:
 				pf.call("fest_ss_%02d" % (23 + (c.x + c.y) % 8), c)
-			af.call("fest_ss_80", Vector2i(40, 54), 6.0)
+			# C14b P3 (c14b_13-11/18-02): a real 6-frame flame loop (fest_ss_80 was one still frame).
+			if Art.has(P, "c14bp3_bonfire"):
+				var bf := anim_prop(P, "c14bp3_bonfire", Vector2i(40, 54), 0, 8.0, false, 0.5)
+				if bf:
+					bf.frame = int(AmbientMotion.phase(Vector2(40, 54)) * 6.0)
+					bf.speed_scale = 0.95
+					_claim(_foot(P, "c14bp3_bonfire", Vector2i(40, 54), 0), "c14bp3_bonfire", true)
+			else:
+				af.call("fest_ss_80", Vector2i(40, 54), 6.0)
 			for c: Vector2i in [Vector2i(36, 60), Vector2i(44, 60)]:
 				pf.call("fest_ss_72", c, 1)
 		"harvest":
@@ -434,6 +442,8 @@ func _place_festival(fest: String) -> void:
 			pf.call("fest_fw_62", Vector2i(40, 36), 1); pf.call("fest_fw_40", Vector2i(33, 44)); pf.call("fest_fw_39", Vector2i(47, 44))
 			pf.call("fest_fw_41", Vector2i(32, 54)); pf.call("fest_fw_42", Vector2i(48, 54)); pf.call("fest_fw_43", Vector2i(35, 60)); pf.call("fest_fw_44", Vector2i(45, 60))
 			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1); pf.call("fest_fw_68", Vector2i(40, 60), 1, false)
+	if fest in ["lantern", "star"]:  # C14b P3: floating/sky lanterns and fireworks, or shooting stars (code-drawn)
+		FestivalSky.make(AmbientMotion.of(self).get_parent(), fest, Rect2(Vector2(RIVER_X.position * TILE), Vector2(RIVER_X.size * TILE)), PLAZA_C * TILE)
 	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + GameState.festival_name(fest)}, false)
 	# C11a P5: the Animal Show (Harvest Fair) and the Best Egg table (Egg Festival).
 	var sh: Array = SHOW.get(fest, [])
@@ -564,6 +574,8 @@ func _lantern_float(key: String) -> void:
 	await say([{"text": lines[clear] + FestivalWords.lantern_tail()}])
 	if GameState.is_night():
 		Music.instance(get_tree()).sfx("fireworks", "levelup")
+		if FestivalSky.of(self):
+			FestivalSky.of(self).fireworks(player.position)  # C14b P3 (c14b_18-02c)
 	else:
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
 	var gain := 3 + clear
@@ -786,6 +798,8 @@ func _star_wish(key: String) -> void:
 	if d.last_choice >= 0 and d.last_choice <= 2:
 		var v: String = ["hp", "energy", "mana"][d.last_choice]
 		GameState.grow_vital(v, 5)
+		if FestivalSky.of(self) and player:
+			FestivalSky.of(self).star_for(player.position)  # C14b P3 (c14b_18-06): the wish has its star
 		hud.toast("A star falls for you. Max %s +5" % {"hp": "health", "energy": "energy", "mana": "mana"}[v], Color(0.9, 0.9, 1))
 	var known: Array = []
 	for id in GameState.npcs:
@@ -1202,7 +1216,7 @@ func _harbour() -> void:
 		if Art.has("props", "dock2_mid"):
 			prop("props", "dock2_mid" if y < 112 else "dock2_end", Vector2i(66, y), 0, 0.0, false)
 	if Art.has("props", "buoy2_red"):
-		prop("props", "buoy2_red", Vector2i(70, 108), 0, 0.0, false)
+		AmbientMotion.of(self).bob(prop("props", "buoy2_red", Vector2i(70, 108), 0, 0.0, false), 1.0, 2.7, 2.5)  # C14b P3 (c14b_13-08)
 
 
 ## The hedge maze's keepsake: a topiary for your yard, once per save.

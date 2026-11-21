@@ -478,8 +478,12 @@ func _place_props() -> void:
 	if se != "winter" or GameState.festival_today() != "":
 		if anim_prop("props", "bonfire", Vector2i(36, 15), 0, 8.0, true):
 			blocked[Vector2i(36, 15)] = true  # you walk round a fire, not through it
+	# C14b P3 (c14b_13-08): buoys float with a smooth sine bob and tilt (the 2-frame
+	# hop strip at 2 fps read as hopping), each on its own phase.
+	var am := AmbientMotion.of(self)
 	for c: Vector2i in [Vector2i(8, 29), Vector2i(44, 30), Vector2i(58, 26), Vector2i(70, 40), Vector2i(94, 38)]:
-		anim_prop("props", "buoy", c, 0, 2.0)
+		var bnm := "buoy2_red" if (c.x / 2) % 2 == 0 else "buoy2_yellow"
+		am.bob(prop("props", bnm if Art.has("props", bnm) else "buoy", c, 0, 0.0, false, 0.35), 1.0, 2.6 + AmbientMotion.phase(Vector2(c)), 2.5)
 	anim_prop("props", "tide_pool", Vector2i(48, 17), 1, 3.0)
 	anim_prop("props", "tide_pool", Vector2i(56, 16), 1, 3.0)
 	anim_prop("props", "tide_pool", Vector2i(SANDBAR.position.x + 1, SANDBAR.position.y + 2), 1, 3.0)
@@ -518,11 +522,11 @@ func _west_tip() -> void:
 	prop("props", "moor_a", t + Vector2i(-1, -2), 0, 0.0, false, 0.15)
 	prop("props", "dock_lantern", t + Vector2i(1, -1), 0, 0.0, false, 0.15)
 	if GameState.is_penguins():
-		anim_prop("props", "ferry_moored", t + Vector2i(2, 1), 2, 2.0, false, 0.5)
+		AmbientMotion.of(self).bob(prop("props", "ferry_moored", t + Vector2i(2, 1), 2, 0.0, false, 0.5), 0.5, 4.2, 0.4)  # C14b P3 (c14b_02-06): a smooth bob, not a 3-frame stutter
 		prop("props", "gangplank", t + Vector2i(1, 0), 0, 0.0, false, 0.12)
 		anim_prop("fx", "merkitty_b", t + Vector2i(0, -1), 0, 3.0, false, 0.4)  # Skipper Barnacle
 	else:
-		prop("props", "c14p3_speedboat" if Art.has("props", "c14p3_speedboat") else "tugboat", t + Vector2i(2, 2), 2, 0.0, false, 0.35)
+		AmbientMotion.of(self).bob(prop("props", "c14p3_speedboat" if Art.has("props", "c14p3_speedboat") else "tugboat", t + Vector2i(2, 2), 2, 0.0, false, 0.35), 0.5, 3.4, 0.6)
 		prop("props", "crates_pallet", t + Vector2i(1, -3), 0, 0.0, false, 0.25)
 
 
@@ -557,42 +561,47 @@ func _dress_marina() -> void:
 	# The marina's people at their posts (baked at load: who is on shift now).
 	var hr := Marina.hour_now()
 	if Marina.npc_here("hollis", hr):
-		prop("props", "c14p3_hollis", Vector2i(ox + 5, QUAY_Y - 3), 0, 0.0, true, 0.3)
+		AmbientMotion.of(self).breathe(prop("props", "c14p3_hollis", Vector2i(ox + 5, QUAY_Y - 3), 0, 0.0, true, 0.3))  # C14b P3 (c14b_08-07): idle breath
 	if mt < 2 or Marina.npc_here("roz", hr):
-		prop("props", "c14p3_roz", Vector2i(CAMP.x + 3, CAMP.y + 1), 0, 0.0, true, 0.3)
+		AmbientMotion.of(self).breathe(prop("props", "c14p3_roz", Vector2i(CAMP.x + 3, CAMP.y + 1), 0, 0.0, true, 0.3))  # C14b P3 (c14b_08-07): idle breath
 	if Marina.npc_here("ines", hr):
-		prop("props", "c14p3_ines", Vector2i(ox + 18, QUAY_Y - 3), 0, 0.0, true, 0.3)
+		AmbientMotion.of(self).breathe(prop("props", "c14p3_ines", Vector2i(ox + 18, QUAY_Y - 3), 0, 0.0, true, 0.3))  # C14b P3 (c14b_08-07): idle breath
 	if mt < 1:
 		prop("props", "rowboat2_c" if Art.has("props", "rowboat2_c") else "beached_boat", Vector2i(PIER_X + 3, QUAY_Y - 1), 1, 0.0, false, 0.3)
 		return
 	for y in [QUAY_Y + 3, QUAY_Y + 7, QUAY_Y + 11]:
 		prop("props", "dock_lantern", Vector2i(PIER_X - 1, y), 0, 0.0, false, 0.15)
 		prop("props", "moor_a", Vector2i(PIER_X + 3, y), 0, 0.0, false, 0.15)
-	prop("props", "rowboat2_idle", Vector2i(PIER_X - 3, QUAY_Y + 4), 1, 0.0, false, 0.3)
+	var am := AmbientMotion.of(self)  # C14b P3 (c14b_02-06): moored boats bob on their own phases
+	am.bob(prop("props", "rowboat2_idle", Vector2i(PIER_X - 3, QUAY_Y + 4), 1, 0.0, false, 0.3), 0.5, 2.8, 1.2)
 	if mt >= 2:
 		prop("props", "fish_market", Vector2i(ox + 15, QUAY_Y - 4), 3, 0.0, true, 0.6)
 		prop("props", "canoe2", Vector2i(ox + 23, QUAY_Y - 2), 1, 0.0, false, 0.3)
 		prop("props", "fish_rack", Vector2i(ox + 26, QUAY_Y - 3), 1, 0.0, true, 0.3)
 		prop("props", "stall2_blue" if pen else "stall2_purple", Vector2i(ox + 22, QUAY_Y - 4), 2, 0.0, true, 0.3)
-		prop("props", "tugboat", Vector2i(PIER_X + 5, QUAY_Y + 7), 2, 0.0, false, 0.45)
-		prop("props", "c14p3_charter", Vector2i(PIER_X + 4, QUAY_Y + 3), 2, 0.0, false, 0.35)  # Roz's charter boat
+		am.bob(prop("props", "tugboat", Vector2i(PIER_X + 5, QUAY_Y + 7), 2, 0.0, false, 0.45), 0.5, 3.9, 0.5)
+		am.bob(prop("props", "c14p3_charter", Vector2i(PIER_X + 4, QUAY_Y + 3), 2, 0.0, false, 0.35), 0.5, 3.3, 0.7)  # Roz's charter boat  # Roz's charter boat
 		for x in range(ox + 2, ox + 26, 2):  # the breakwater arm
 			prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", Vector2i(x, QUAY_Y + 20), 1, 0.0, false)
 		prop("props", "crab_pot_water", Vector2i(ox + 4, QUAY_Y + 6), 0, 0.0, false, 0.3)
 		prop("props", "crab_pot_water", Vector2i(ox + 7, QUAY_Y + 8), 0, 0.0, false, 0.3)
 	if mt >= 3:
-		prop("props", "trawler", Vector2i(PIER_X + 5, QUAY_Y + 12), 2, 0.0, false, 0.5)
-		prop("props", "c14p3_sailboat" if pen else "c14p3_speedboat", Vector2i(PIER_X - 4, QUAY_Y + 11), 2, 0.0, false, 0.35)
-		prop("buildings", "lighthouse", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
+		am.bob(prop("props", "trawler", Vector2i(PIER_X + 5, QUAY_Y + 12), 2, 0.0, false, 0.5), 0.5, 4.4, 0.5)
+		am.bob(prop("props", "c14p3_sailboat" if pen else "c14p3_speedboat", Vector2i(PIER_X - 4, QUAY_Y + 11), 2, 0.0, false, 0.35), 0.5, 3.1, 1.0)
+		# C14b P3 (c14b_13-01): the tower shows its lit lamp; LighthouseBeam sweeps the beam smoothly.
+		var lh := prop("buildings", "lighthouse", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
+		if lh:
+			lh.texture = LighthouseBeam.lit_frame()
+			LighthouseBeam.attach(lh, Vector2(-2, -187))
 		if Marina.npc_here("saffi", 12):
-			prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4)
+			am.bob(prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4), 0.5, 5.5, 0.3)
 	else:
 		prop("buildings", "lighthouse_broken", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
 	# Lantern Boats (c14_04-13): on the Lantern Festival evening, paper lanterns
 	# float out round the main pier (glow: "lantern" in the name).
 	if GameState.festival_today() == "lantern" and pen:
 		for i in 8:
-			prop("props", "lantern_lit", Vector2i(PIER_X - 4 + (i % 4) * 4, QUAY_Y + 4 + (i / 4) * 6 + i % 2), 0, 0.0, false, 0.4)
+			AmbientMotion.of(self).bob(prop("props", "lantern_lit", Vector2i(PIER_X - 4 + (i % 4) * 4, QUAY_Y + 4 + (i / 4) * 6 + i % 2), 0, 0.0, false, 0.4), 1.0, 2.4, 3.0)
 	if mt >= 4:
 		prop("props", "stall2_white", Vector2i(ox + 9, 12), 2, 0.0, true, 0.35)
 		prop("props", "umbrella_yellow", Vector2i(ox + 13, 13), 1, 0.0, true, 0.5)

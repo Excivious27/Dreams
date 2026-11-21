@@ -164,6 +164,11 @@ func build() -> void:
 				mk.play("sing" if GameState.is_night() else "swim")
 				mk.flip_h = i == 1
 				add_child(mk)
+				# C14b P3 (c14b_05-11): own start frame, speed and float phase (no lockstep).
+				var mfc := mk.sprite_frames.get_frame_count(mk.animation) if mk.sprite_frames else 1
+				mk.frame = (i * 2 + 1) % maxi(1, mfc)
+				mk.speed_scale = 0.85 + 0.1 * i
+				AmbientMotion.of(self).bob(mk, 1.0, 2.4 + 0.5 * i, 0.0)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	_decor_cells = _read_decor_cells()  # yard decor is known before debris/fences/migrate (c10b_02_09)
@@ -947,10 +952,61 @@ func sway_grass(c: Vector2i) -> void:
 		return
 	var n := sp as Node2D
 	var dir := -1.0 if player and player.position.x > n.position.x else 1.0
+	_swish(n, dir, 1.0)
+	# C14b P3 (c14b_03-05): the tufts beside you lean half as far, and the one you
+	# just left rebounds, so the grass parts round you instead of one tuft twitching.
+	var side := Vector2i(0, 1) if player and str(player.facing) in ["left", "right"] else Vector2i(1, 0)
+	for nc: Vector2i in [c + side, c - side]:
+		var ns: Variant = props.get(nc, null)
+		if ns is Node2D and is_instance_valid(ns) and bool(things.get(nc, {}).get("walk", false)):
+			_swish(ns as Node2D, -1.0 if player and player.position.x > (ns as Node2D).position.x else 1.0, 0.5)
+
+
+## One damped swing on a tuft (a new swish replaces the old one: tweens never fight).
+func _swish(n: Node2D, dir: float, k: float) -> void:
+	var old: Variant = n.get_meta("sway_tw", null)
+	if old is Tween and (old as Tween).is_valid():
+		(old as Tween).kill()
+	if AmbientMotion.reduced():
+		k *= 0.4
 	var tw := create_tween()  # the map's tween: props may not process on their own
-	tw.tween_property(n, "skew", 0.35 * dir, 0.08)
-	tw.tween_property(n, "skew", -0.18 * dir, 0.16)
-	tw.tween_property(n, "skew", 0.0, 0.22)
+	tw.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(n, "skew", 0.30 * dir * k, 0.09)
+	tw.tween_property(n, "skew", -0.16 * dir * k, 0.17)
+	tw.tween_property(n, "skew", 0.07 * dir * k, 0.17)
+	tw.tween_property(n, "skew", 0.0, 0.2)
+	n.set_meta("sway_tw", tw)
+
+
+## C14b P3 (c14b_14-21): a placed station/building loop starts on its own frame at
+## its own speed (seeded by the cell), so a row of kegs or looms never pumps in unison.
+func _desync(a: AnimatedSprite2D, c: Vector2i) -> void:
+	var fc := a.sprite_frames.get_frame_count(a.animation) if a.sprite_frames else 1
+	var ph := AmbientMotion.phase(Vector2(c))
+	a.frame = int(ph * fc) % maxi(1, fc)
+	a.speed_scale = 0.9 + 0.2 * ph
+
+
+## C14b P3 (c14b_13-14): the Mill build as a still tower and a sail cross turning on
+## game time with the wind (AmbientMotion.spin), from a random start angle.
+func _rotor_mill(c: Vector2i, w: int) -> void:
+	var bi := Art.info("props", "c14bp3_windmill_body")
+	var body := Sprite2D.new()
+	body.texture = Art.tex("props", "c14bp3_windmill_body")
+	var fs := clampf(float(w + 1) * TILE / maxf(1.0, float(bi.get("w", 74))), 0.5, 1.0)
+	body.scale = Vector2(fs, fs)
+	body.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
+	body.offset = Vector2(0, -float(bi.get("h", 92)) / 2.0)
+	body.name = "MillBody"
+	add_child(body)
+	CrispArt.apply(body)
+	var hub: Array = bi.get("hub", [37, 26])
+	var sails := Sprite2D.new()
+	sails.texture = Art.tex("props", "c14bp3_windmill_sails")
+	sails.position = Vector2(float(hub[0]) - float(bi.get("w", 74)) / 2.0, float(hub[1]) - float(bi.get("h", 92)))
+	sails.name = "MillSails"
+	body.add_child(sails)
+	AmbientMotion.of(self).spin(sails, 0.9)
 
 
 ## The scythe cuts a 3-cell swath: the cell you aimed at plus the two beside it
@@ -2256,9 +2312,12 @@ func _place_props() -> void:
 			st.offset = Vector2(0, -float(Art.info("stations", station_anim).get("cell_h", 64)) / 2.0)
 			add_child(st)
 			st.play("idle")
+			_desync(st, c)  # C14b P3 (c14b_14-21)
 			blocked[c] = true
 			continue
-		if b.has("anim") and Art.has("props", str(b["anim"])):
+		if str(b.get("anim", "")) == "windmill3" and Art.has("props", "c14bp3_windmill_body") and Art.has("props", "c14bp3_windmill_sails"):
+			_rotor_mill(c, int(b["w"]))  # C14b P3 (c14b_13-14): static tower + smoothly turning sails
+		elif b.has("anim") and Art.has("props", str(b["anim"])):
 			var sc := AnimatedSprite2D.new()
 			sc.sprite_frames = Art.frames("props", {"idle": str(b["anim"])}, {"idle": 5.0})
 			sc.animation = "idle"
@@ -2270,6 +2329,7 @@ func _place_props() -> void:
 			sc.offset = Vector2(0, -float(ai.get("cell_h", 96)) / 2.0)
 			add_child(sc)
 			sc.play("idle")
+			_desync(sc, c)  # C14b P3 (c14b_14-21)
 		elif id == "resonator" and Art.has("props", "resonator"):
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
@@ -2538,7 +2598,44 @@ func _show_placed(c: Vector2i, id: String) -> void:
 	if not Art.has("props", nm):
 		nm = "sprinkler" if id.begins_with("sprinkler") else "scarecrow"
 	if Art.has("props", nm):
-		prop("props", nm, c)
+		var sp := prop("props", nm, c)
+		if sp and id.begins_with("sprinkler"):
+			_spray(sp, nm, c)
+
+
+## C14b P3 (c14b_01-05, 16-13): watering mornings show the spray. Before 9:00 a short
+## burst plays over each sprinkler (frames 1-3 ping-pong of <kind>_spray, frame 0 is a
+## different body), staggered and speed-jittered per cell, then fades out.
+func _spray(sp: Sprite2D, nm: String, c: Vector2i) -> void:
+	var t := int(GameState.run.get("time", 0)) % (24 * 60)
+	var sn := nm + "_spray"
+	if t >= 9 * 60 or nm == "sprinkler" or not Art.has("props", sn):
+		return
+	var sf := Art.frames("props", {"idle": sn}, {"idle": 10.0})
+	if sf.get_frame_count("idle") < 4:
+		return
+	var tex := [sf.get_frame_texture("idle", 1), sf.get_frame_texture("idle", 2), sf.get_frame_texture("idle", 3), sf.get_frame_texture("idle", 2)]
+	sf.clear("idle")
+	for tx: Texture2D in tex:
+		sf.add_frame("idle", tx)
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = sf
+	a.animation = "idle"
+	var ph := AmbientMotion.phase(Vector2(c))
+	a.frame = int(ph * 4.0) % 4
+	a.speed_scale = 0.9 + 0.2 * ph
+	var reach: float = {"sprinkler_basic": 1.6, "sprinkler_quality": 2.2, "sprinkler_iridium": 2.8}.get(nm, 1.6)
+	a.scale = Vector2(reach, reach)
+	a.position = Vector2(0, -6.0 / maxf(0.01, sp.scale.y))
+	a.modulate.a = 0.0
+	sp.add_child(a)
+	a.play("idle")
+	var tw := create_tween()
+	tw.tween_interval(ph * 0.4)
+	tw.tween_property(a, "modulate:a", 0.9, 0.3)
+	tw.tween_interval(2.5 if AmbientMotion.reduced() else 6.0)
+	tw.tween_property(a, "modulate:a", 0.0, 0.6)
+	tw.tween_callback(a.queue_free)
 
 
 ## Tilled soil and crops live on their own layer, so hoeing, planting and

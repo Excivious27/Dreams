@@ -219,6 +219,10 @@ static func winter_look(name: String) -> String:
 	return wn if GameState.look_se() == "winter" and Art.has("buildings", wn) else name
 
 
+## Lamp centre on the lighthouse strip's lit frame, in sprite-local art px (feet at 0,0).
+const LIGHTHOUSE_LAMP := Vector2(-2, -187)
+
+
 func _shore_building(name: String, c: Vector2i, interior: String, hint: String, door: Vector2i, animated := false) -> void:
 	if not Art.has("buildings", name):
 		return
@@ -252,19 +256,27 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		tm.autostart = true
 		tm.timeout.connect(func() -> void:
 			if GameState.run["flags"].has("lighthouse_lit") and is_instance_valid(dk):
-				var a := AnimatedSprite2D.new()
-				a.sprite_frames = Art.frames("buildings", {"idle": name}, {"idle": 4.0})
-				a.animation = "idle"
+				var a := Sprite2D.new()  # C14b P3 (c14b_14-11): lit lamp + a smoothly sweeping beam, no strobe strip
+				a.texture = LighthouseBeam.lit_frame(name)
 				a.position = dk.position
 				a.offset = dk.offset
 				a.name = "LighthouseLit"
 				add_child(a)
-				a.play("idle")
+				LighthouseBeam.attach(a, LIGHTHOUSE_LAMP)
 				dk.queue_free()
 				tm.queue_free()
 				Music.instance(get_tree()).sfx("power_up", "sparkle")
 				hud.toast("Out on the rock, the lighthouse lamp flickers... and turns.", Color(1, 0.92, 0.6)))
 		add_child(tm)
+	elif name == "lighthouse" and int(info.get("frames", 1)) > 1:
+		var ls := Sprite2D.new()  # C14b P3 (c14b_14-11): lit lamp + LighthouseBeam
+		ls.texture = LighthouseBeam.lit_frame(name)
+		ls.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
+		ls.offset = Vector2(0, -fh / 2.0)
+		ls.name = "LighthouseLit"
+		add_child(ls)
+		_canopies.append(ls)
+		LighthouseBeam.attach(ls, LIGHTHOUSE_LAMP)
 	elif animated and int(info.get("frames", 1)) > 1:
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("buildings", {"idle": winter_look(name)}, {"idle": 4.0})
