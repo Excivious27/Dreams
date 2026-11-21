@@ -268,7 +268,7 @@
   {
    "id": "tower",
    "arc": "gangsters",
-   "text": "The tower doors are past the Enforcer. Get inside and face the President.",
+   "text": "The tower doors are past the Enforcer. Open them, and the President will come out to meet you.",
    "when": {
     "quest": "uptown"
    },

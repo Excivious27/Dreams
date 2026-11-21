@@ -935,7 +935,7 @@
    "id": "g_top_floor",
    "api": "ACH_G_TOP_FLOOR",
    "name": "Top Floor",
-   "desc": "Face the President and win.",
+   "desc": "Beat the President on his own red carpet.",
    "hidden": true,
    "hint": "A secret. Keep exploring.",
    "arc": "gangsters",
@@ -944,7 +944,7 @@
    "goal": 0,
    "check": {
     "k": "flag",
-    "f": "president_freed"
+    "f": "boss_president"
    },
    "src": "own",
    "icon": "ach_g_top_floor",
@@ -1048,7 +1048,7 @@
    "id": "g_clean_break",
    "api": "ACH_G_CLEAN_BREAK",
    "name": "A Clean Break",
-   "desc": "End the story with no heat, every Marked home and every shop given back.",
+   "desc": "End the story with no heat, every Marked sent home and no shop left taken.",
    "hidden": true,
    "hint": "A secret. Keep exploring.",
    "arc": "gangsters",

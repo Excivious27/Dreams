@@ -259,7 +259,7 @@ static func _play_beat(m: GameMap, b: Dictionary) -> void:
 		m.hud.toast(str(b["chapter_title"]), Color(1, 0.9, 0.6))
 		Music.instance(m.get_tree()).sfx("j_region", "j_page")
 	var lines: Array = _fill(b.get("lines", []))
-	if str(b["id"]) == "g5_win" and not GameState.is_penguins():
+	if str(b["id"]) in ["g5_win", "g5_win_clean"] and not GameState.is_penguins():  # C12 c12_04-09: the Clean Break gets the crew roll too
 		# The crew were with you the whole way up: each one gets a line.
 		var roll: Array = []
 		for cid in Crew.all_recruited():
@@ -328,7 +328,7 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> String:
 				var g: Dictionary = gates[pick]
 				var need := "that"
 				if g.has("crystals"):
-					need = "◆%d" % int(g["crystals"])
+					need = Money.amount(int(g["crystals"]))  # C12 c12_04-01: $ in the cash arc
 				elif g.has("crops"):
 					need = "%d crops" % int(g["crops"])
 				elif g.has("item"):
@@ -363,6 +363,14 @@ static func _fennimore_check() -> void:
 	var fl: Dictionary = GameState.run["flags"]
 	if fl.has("boss_fennimore") and not fl.has("fennimore_free"):
 		fl.erase("fennimore_turnable")
+
+
+## [crew id, n]: recruited and Crew.loyalty(id) >= n (n = loyalty scenes seen).
+static func loyalty_ok(v) -> bool:
+	if not (v is Array) or (v as Array).size() < 2:
+		return true
+	var id := str(v[0])
+	return Crew.recruited(id) and Crew.loyalty(id) >= int(v[1])
 
 
 static func _fill(lines: Array) -> Array:
@@ -401,6 +409,9 @@ static func _fill(lines: Array) -> Array:
 				continue
 		# "if_item": only said while the pack holds that item (the collar, the locket).
 		if l.has("if_item") and GameState.count(str(l["if_item"])) <= 0:
+			continue
+		# "if_loyalty": [crew id, n] only said once that crew member is in and their loyalty >= n (C12 c12_04-04).
+		if l.has("if_loyalty") and not loyalty_ok(l["if_loyalty"]):
 			continue
 		# "only_hero"/"not_hero": a playable id or list (penguin_f, penguin_m, big_jim...).
 		var hero := str(GameState.run.get("playable", ""))

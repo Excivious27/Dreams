@@ -142,6 +142,10 @@ static func build() -> Array:
 	for fk: String in d.get("flag_lines", {}):
 		if fl.has(fk):
 			var fline := str(hfl.get(fk, d["flag_lines"][fk]))
+			for alt in d.get("flag_alt", {}).get(fk, []):  # C12 c12_04-05: Hale lines that fit the ending
+				if fl.has(str(alt[0])):
+					fline = str(alt[1])
+					break
 			if fline != "":
 				ch.append(_fill(fline))
 	if not ch.is_empty():
@@ -183,7 +187,14 @@ static func build() -> Array:
 				var pair: Array = d["crew"][id]
 				if solo.has(id) and not Crew.recruited("val"):
 					pair = solo[id]  # Vic without Val
-				cr.append(str(pair[0 if Crew.loyalty(id) >= 3 else 1]))
+				var line := str(pair[0 if Crew.loyalty(id) >= 3 else 1])
+				if Crew.loyalty(id) >= 3:
+					var cif: Array = d.get("crew_if", {}).get(id, [])
+					if cif.size() == 2 and fl.has(str(cif[0])) and not fl.has(str(cif[0]) + "_returned"):
+						line = str(cif[1])
+					if took and d.get("crew_take", {}).has(id):
+						line = str(d["crew_take"][id])  # C12 c12_04-10: you sit in the chair now
+				cr.append(line)
 		# Threads the loyalty scenes planted (the Kid's sister, the twins' brother...).
 		var th: Dictionary = d.get("crew_threads", {})
 		for id: String in th:

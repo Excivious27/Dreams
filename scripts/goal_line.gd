@@ -171,7 +171,7 @@ static func late_text(qid: String) -> String:
 		"tower":
 			if not GameState.run["flags"].has("boss_uptown"):
 				return "East from neon to Uptown. Beat the Enforcer outside the tower."
-			return "Get inside the tower: talk your way past the doorman." if not GameState.run["flags"].has("tower_open") else "Into the President's tower uptown. Face the President."
+			return "Open the tower's brass doors: the letter, a key, or your crew's shoulders." if not GameState.run["flags"].has("tower_open") else "The President is coming out onto the red carpet outside his tower. Meet him there."  # C12 c12_04-06
 	return ""
 
 
