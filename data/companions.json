@@ -8,7 +8,7 @@
    "ability": "powerup",
    "ability_name": "Power Pose",
    "ability_desc": "Tap ♥: a crystal aura that stuns grumps nearby and lifts your mana by 5.",
-   "join": "I touched it first. Nova says she did. Together is warmer. And I'll carry the snacks."
+   "join": "I touched it first. Nova says she did. (chirp!) Together is warmer. And I'll carry the snacks."
   },
   "penguin_f": {
    "name": "Nova",
@@ -17,7 +17,7 @@
    "ability": "meow_pow_wow",
    "ability_name": "Meow Pow Wow",
    "ability_desc": "A penguin-cat purr-wave: Grumps caught in it remember they were crystals and float home; other creatures he squeezed turn back into what they were (rank 1: little ones; each rank reaches bigger ones).",
-   "join": "Fine. But I'm the one who talks to the cats.",
+   "join": "Then I'm staying. Somebody has to learn to talk to the cats, and I think it's going to be me.",
    "ability_name_wait": "Meow Pow Wow (not yet)",
    "ability_desc_wait": "Nova feels the star crystal's warmth, but nobody has shown her how to let it out. Catkins, in the crystal meadow, can teach it.",
    "wait_line": "Nova: 'It's in here, warm, like a purr. But it won't come out. That purring past the east meadow: whoever it is knows how.'",
@@ -222,26 +222,70 @@
     {
      "who": "Pip-Pip",
      "text": "We touched it. Last night. In YOUR field, while everybody else hid. Now everything hums.",
-     "not_hero": "penguin_m"
+     "not_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
     },
     {
      "who": "Nova",
      "text": "He means: can we stay. One of us, anyway. The other keeps watch over the island, in case the red sky comes back.",
-     "not_hero": "penguin_f"
+     "not_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
     },
     {
      "who": "Nova",
-     "text": "Pip-Pip's keeping watch over the island, in case the red sky comes back. Someone here needs a hand. Can I stay?",
+     "text": "We touched it together, you and me. Last night, in this field, while everybody else hid. Now everything hums.",
+     "only_hero": "penguin_m"
+    },
+    {
+     "who": "Nova",
+     "text": "Someone should keep watch over the island, in case it gets loud again. Or I could stay here, with you. Your call, brother.",
      "only_hero": "penguin_m"
     },
     {
      "who": "Pip-Pip",
-     "text": "Nova's keeping watch over the island. I'm the other one. I'm also the better one. Can I stay?",
+     "text": "We touched it together. Last night. In this field, while everybody else hid. Now everything hums.",
+     "only_hero": "penguin_f"
+    },
+    {
+     "who": "Pip-Pip",
+     "text": "Somebody should keep watch over the island. Or I could stay here and be helpful. I'm very helpful. Your call, sister.",
      "only_hero": "penguin_f"
     },
     {
      "who": "",
-     "text": "Penguins. The Two Too Powerful Penguins, by the look of the frost on the gate."
+     "text": "Penguins. Brother and sister, and the frost on the gate is theirs. Most of the island hid when the crystal came down. These two walked right up and touched it.",
+     "not_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
+    },
+    {
+     "who": "",
+     "text": "By the end of the week the whole valley will be calling them the Two Too Powerful Penguins: too powerful, because the crystal gave them its power. For now they're two penguins who were brave once, last night, when it counted.",
+     "not_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
+    },
+    {
+     "who": "",
+     "text": "Your sibling, with frost on their flippers. The gate is white with it.",
+     "only_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
+    },
+    {
+     "who": "",
+     "text": "They chirp at each other, fast, the way siblings argue. Then they both look at you.",
+     "not_hero": [
+      "penguin_m",
+      "penguin_f"
+     ]
     },
     {
      "who": "",

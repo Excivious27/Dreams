@@ -1038,7 +1038,11 @@
     "The wind's quieter in here. I like it.",
     "Race you to the roof. No? Slow.",
     "Mum sent a jumper. Don't laugh."
-   ]
+   ],
+   "hideout_after": {
+    "free": "The wind's just wind now. I still win every race.",
+    "take": "The wind keeps blowing toward the tower. I don't like it."
+   }
   },
   "ember": {
    "name": "Ember Reyes",
@@ -1057,7 +1061,11 @@
     "I lit the stove for Rosa. Just the stove. I'm proud of that.",
     "Warm in here. The right kind of warm.",
     "Nobody's scared of me at this table."
-   ]
+   ],
+   "hideout_after": {
+    "free": "My splinter's cold. The fire's still mine. That's the best part.",
+    "take": "The stove's hot all the time now. I didn't light it."
+   }
   },
   "dahlia": {
    "name": "Dahlia Okafor",
@@ -1076,7 +1084,11 @@
     "I potted a fern for the hideout. It's behaving.",
     "You went round, that day. I still think about that.",
     "Things grow slower here. Better."
-   ]
+   ],
+   "hideout_after": {
+    "free": "The fern flowered. First time. I think it knows.",
+    "take": "The roads all bend toward uptown now. I keep them straight for you."
+   }
   },
   "juno": {
    "name": "Juno Park",
@@ -1095,7 +1107,11 @@
     "Specs and I rewired the kettle. It's faster now. Too fast.",
     "Every bulb in here is on because I like you.",
     "Three. You counted to three. I'm still annoyed."
-   ]
+   ],
+   "hideout_after": {
+    "free": "The tower's lights went off at midnight. Normal. I loved it.",
+    "take": "Every light uptown is on all night. I can feel them humming."
+   }
   },
   "rio": {
    "name": "Rio Santos",
@@ -1114,7 +1130,11 @@
     "Listen. Everyone in this room is calm. That's new.",
     "I wrote you a song. It's mostly drums.",
     "Your heartbeat's steady. Good. Keep it."
-   ]
+   ],
+   "hideout_after": {
+    "free": "Everyone in this room is calm. Still. That's new.",
+    "take": "Everyone in this room is calm. Too calm. It's your heartbeat, boss. It's slower than it used to be."
+   }
   },
   "mei": {
    "name": "Mei Tanaka",
@@ -1133,7 +1153,11 @@
     "I flipped for who does dishes. I won. I always win.",
     "Three rolls. I'm still annoyed you knew.",
     "Lucky's a funny word for what I had."
-   ]
+   ],
+   "hideout_after": {
+    "free": "I flipped for nothing today. Just to watch it spin.",
+    "take": "I flipped for you this morning. I didn't look at how it landed."
+   }
   },
   "bruno": {
    "name": "Bruno Castellan",
@@ -1152,7 +1176,11 @@
     "Hit me if you need practice. I don't mind.",
     "Rosa's stew is the best thing that's happened to me this year.",
     "I'm learning to say no. It's hard."
-   ]
+   ],
+   "hideout_after": {
+    "free": "I said no to a fight today. Nobody even asked twice.",
+    "take": "I'll stand where you say. I'd just like to know why, sometimes."
+   }
   },
   "tomas": {
    "name": "Teo Vela",
@@ -1171,7 +1199,11 @@
     "I can see myself in the hideout windows. Just one of me. Good.",
     "You found me. I keep thinking about that.",
     "People see me here. It's strange. It's nice."
-   ]
+   ],
+   "hideout_after": {
+    "free": "One of me. Every window. I've stopped checking.",
+    "take": "There are more of me in the tower windows again. I don't look up."
+   }
   },
   "sable": {
    "name": "Sable Marchetti",
@@ -1187,10 +1219,14 @@
    "join_line": "I'll drive. Quietly. You'll never hear me coming, and neither will they.",
    "home_line": "I think I'll cast a shadow for a while. See how it feels.",
    "hideout": [
-    "I have a shadow again. I keep checking.",
+    "Under the hideout lamp I get about half a shadow. I keep checking.",
     "You turned round, that day. Nobody turns round.",
     "Quiet in here. The good kind."
-   ]
+   ],
+   "hideout_after": {
+    "free": "I have a shadow again. I keep checking.",
+    "take": "My shadow's thin again. Like it's leaning toward the tower."
+   }
   },
   "atlas": {
    "name": "Atlas Novak",
@@ -1209,7 +1245,11 @@
     "Things don't fall toward me in here. I don't know why. Maybe they don't need to.",
     "Carried Rosa's pots. All of them. At once.",
     "Turns out heavy is easier with help."
-   ]
+   ],
+   "hideout_after": {
+    "free": "Nothing's heavy today. Not even me.",
+    "take": "Everything leans toward the tower now. Even the rocks."
+   }
   }
  },
  "bosses": {
@@ -1252,7 +1292,11 @@
     "Forty-one fights. One loss. Best thing that ever happened to me.",
     "Sparring at dawn. Bring your bat.",
     "Sasha carried me out of that pit. I owe her a lot of breakfasts."
-   ]
+   ],
+   "hideout_after": {
+    "free": "No stone, no pit. Turns out I still like a fair fight.",
+    "take": "They want me back in the pit, for you. I said I'd think about it."
+   }
   },
   "silas": {
    "name": "Silas Crane",
@@ -1272,7 +1316,11 @@
     "Back roads are clear, sugar.",
     "Hedges are quiet. I told them to be.",
     "I've been mean a long time. Trying something else."
-   ]
+   ],
+   "hideout_after": {
+    "free": "Back roads are just roads now, sugar. Pretty, mind.",
+    "take": "The hedges listen to you now, sugar. I'm not sure I like that."
+   }
   },
   "surveyor": {
    "name": "The Surveyor",

@@ -41,7 +41,8 @@ V_GANG = {
 # Skipped in the villager slide when Sal is crew/companion (he gets his own line there).
 V_SKIP_IF_KNOWN = ["sal"]
 # A companion line that replaces the usual one when a flag is set.
-COMP_IF = {"penguin_f": ["knight_reverted", "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."]}
+COMP_IF = {"penguin_f": ["knight_reverted", "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."],
+           "penguin_m": ["knight_reverted", "Pip-Pip and Grandfather Auk argue about fishing every morning. Grandfather Auk wins."]}
 CREW = {
  "deuce": ("Deuce runs a card-trick show uptown, tokens only, with your name on the chair beside his.", "Deuce takes his card-trick show three valleys over. He sends a postcard."),
  "mama_rosa": ("Mama Rosa's restaurant has a line round the block, and the first plate every night is yours.", "Mama Rosa feeds whoever comes in hungry."),
@@ -62,13 +63,31 @@ CREW_SOLO = {"vic": ("Vic runs the gym under the pit, and the kids there call yo
 # (loyalty >= n). "not_ending": skipped in that ending.
 CREW_THREADS = {
  "the_kid": [2, "The Kid's sister came down from the tower the morning after, still in her cleaner's uniform. Now there are two hoods on your fence after school.", "take"],
- "vic": [1, "Vic and Val's big brother came home the week the stone broke. He's quiet, and he laughs at the wrong moments, and the twins don't let him out of their sight.", "take"],
- "specs": [2, "Specs went for the wire, like she said she would. The tower's cameras show nothing but rain now.", ""],
- "marlene": [2, "Marlene opened her safe one last time: a deed with your right name on it. It hangs over your fireplace, next to the one with his.", ""],
+ "vic": [2, "Vic and Val's big brother came home the week the stone went quiet. He's quiet too, and he laughs at the wrong moments, and the twins don't let him out of their sight.", "take"],
+ "specs": [3, "Specs went for the wire, like she said she would. The tower's cameras show nothing but rain now.", ""],
+ "marlene": [3, "Marlene opened her safe one last time: a deed with your right name on it. It hangs over your fireplace, next to the one with his.", ""],
+}
+# C12 (c12_04-10): the loyal line when you took the chair (ending "take").
+CREW_TAKE = {
+ "halo": "Halo drives the long black car now. She never asks who's in the back. She used to promise herself she'd never drive for that tower again.",
+ "doc": "Doc patches people in the tower basement again. He doesn't say anything about it. He doesn't have to.",
+ "deuce": "Deuce deals at the tower's private tables now, straight as ever, and looks at you a beat too long when he shuffles.",
+ "mama_rosa": "Mama Rosa still sends a plate up to the tower every night. It comes back half eaten.",
+ "ladder": "Ladder counts the trucks going into your tower now. He's stopped saying the number out loud.",
+ "dice": "Dice runs the token arcade on the avenue. Everyone wins something, and nobody asks who owns the machines.",
+}
+# The loyal line when a flag is set and that shop wasn't given back: [flag, text].
+CREW_IF = {"ladder": ["shop_1", "Ladder still watches the street from the rooftops, but now it's to warn Mama Rosa about rain."]}
+# C12 (c12_04-05): a flag line that changes (or goes, when "") with another flag
+# (ending_<id> flags included): first match wins.
+FLAG_ALT = {
+ "hale_outrun": [["hale_has_stone", "You outran Inspector Hale once. The second time, you walked right up to her with the stone. She still can't decide which story to tell at parties."]],
+ "hale_fooled": [["hale_has_stone", ""], ["hale_seen_neon", "Inspector Hale never did write you down as a farmer. She just stopped saying so out loud."]],
+ "hale_friend": [["ending_take", "Inspector Hale stopped sending postcards. The last one was blank, which from her is a whole letter."]],
 }
 COMP = {
  "penguin_m": "Pip-Pip waddles the farm every morning like he owns it. He sort of does.",
- "penguin_f": "Nova keeps the knight's old helmet on a shelf, polished, and tells the story to anyone who'll sit still.",
+ "penguin_f": "Nova keeps one piece of blue glass from the knight's armour on a shelf, and tells the story to anyone who'll sit still. She always ends it the same way: \"He's still up there. I'll find him.\"",
  "big_jim": "Big Jim still breaks the odd stump for you, and complains about it every single time.",
  "dad": "Dad fixes the fence before you notice it's broken, and pretends he was just passing.",
  "mom": "Mom's jam is on every shelf in the house, and her letters always end: come home for supper.",
@@ -105,7 +124,7 @@ CHOICES = {
  "letter": {"0": "You burned the letter. Nothing to sell, nothing to fear."},
  "photo": {"0": "You burned the photo. The past stays burned.", "1": "The photo stays with the deed, a little piece of a case nobody else will ever close.", "2": "You learned that hand by heart. In the end, it was a hand you knew."},
  "shop_1": {"0": "The bakery stayed an arcade. Some mornings the avenue still smells of bread that isn't there.", "1": "The bakery never closed. You were the reason why."},
- "shop_2": {"0": "The shop you took is a token arcade now. Kids love it.", "1": "You left her shop alone, and she never forgot it."},
+ "shop_2": {"0": "Lumi's studio is the arcade's second floor now. Kids love it. There's a square of cleaner paint on one wall where her easel stood.", "1": "You left Lumi's studio alone. Her next painting was the avenue at night, and one window in it was lit for you."},
  "shop_3": {"0": "The crew still runs the clinic you took. You told yourself it would be free one day; Juniper never came back to see if it was.", "1": "You drew the line at the clinic, and held it."},
  "sell_letter": {"0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.", "1": "You never sold the letter. Marlene still says it was the best deal you ever turned down."},
 }
@@ -127,7 +146,7 @@ CREDITS = ("Made by a small family team: the story, the friends and the farm.\n\
            "Built with the Godot Engine (MIT licence).")
 json.dump({"_": "End slideshow. Generated by tools/gen_epilogue.py.", "villagers": V, "crew": CREW, "companions": COMP,
            "companions_if": COMP_IF, "villagers_gang": V_GANG, "villagers_skip_if_known": V_SKIP_IF_KNOWN,
-           "crew_solo": CREW_SOLO, "crew_threads": CREW_THREADS, "hero_flag_lines": HERO_FLAG_LINES, "tail": TAIL,
+           "crew_solo": CREW_SOLO, "crew_threads": CREW_THREADS, "crew_take": CREW_TAKE, "crew_if": CREW_IF, "flag_alt": FLAG_ALT, "hero_flag_lines": HERO_FLAG_LINES, "tail": TAIL,
            "returned": RETURNED, "ending_pics": ENDING_PICS, "thanks_pics": THANKS_PICS, "credits": CREDITS, "colonies": COLONY, "lieutenants": LT, "lt_lines": LT_LINES, "choices": CHOICES, "endings": ENDINGS,
            "flag_lines": {"museum_done_peng": "Theo's museum outgrew the library's east wing. School trips come every spring, and Pip gives the tour.",
                           "museum_done_gang": "The Curio Room became the city's favourite free afternoon. Theo still keeps the ledger.",
@@ -138,6 +157,9 @@ json.dump({"_": "End slideshow. Generated by tools/gen_epilogue.py.", "villagers
                           "doors_by_sasha": "Sasha let you into the tower with a service key she never handed back. Nobody in the city has ever asked her how she kept it.",
                           "doors_by_letter": "The letter you kept since the rain went into the tower's slot, and the doors opened. Nobody fought you.",
                           "finn_told": "Finn wears the locket now. He smiles more.",
+                          "tomas_home": "Tomas came home, thin and quiet, and the brothers fish off the pier together. Tomas still says his pike was bigger.",
+                          "biscuit_home": "Biscuit sleeps on the bakery step now, and gets the first crust of every loaf. Some afternoons he walks out to your farm to visit %pet.",
+                          "bitter_home": "The friend you turned away found their way back in the end. You still don't talk about the gate, but you sit on the same fence.",
                           "knight_reverted": "The knight above the clouds was given a chance, and took it.",
                           "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",
                           "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",

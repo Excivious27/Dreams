@@ -223,12 +223,22 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	return false
 
 
+## C12: the moon IS the top of Mount Prismatica, where the Dark Crystal waits.
+func _launch_line() -> String:
+	if not GameState.is_penguins():
+		return "The pad hums under your feet. I can take us up. Ready?"
+	if GameState.run["flags"].has("final_done"):
+		return "The pad hums. The moon's quiet now. Want to go up and look at the stars?"
+	return "The pad hums under your feet. The top of the mountain is up there, where it touches the moon. So is he. Ready?"
+
+
 func _pad() -> void:
 	if not GameState.quest_done("clear_meadow") or (GameState.is_penguins() and not GameState.run["flags"].has("merkitty_done")):
-		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. The first spark has to be lit, and the merkitties freed, before we leave the ground."}])
+		var early: bool = not GameState.run["flags"].has("prison_done")
+		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. There's a mountain to climb first, the long way." if early else "(faintly) Not yet. The merkitties have to find you before we leave the ground."}])
 		return
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Star Crystal", "text": "The pad hums under your feet. I can take us up. The moon is where the next piece of the Meow Pow Wow is hidden. Ready?", "choice": ["Launch", "Not yet"], "key": ""}])
+	d.say([{"who": "Star Crystal", "text": _launch_line(), "choice": ["Launch", "Not yet"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		GameState.run["flags"]["moon_unlocked"] = true

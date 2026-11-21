@@ -2920,9 +2920,9 @@
      12
     ],
     "kind": "knight",
-    "who": "Crystal Knight",
-    "text": "...",
-    "win": "The knight's armour shatters into blue-white glass that melts into the clouds. For a moment a small grey shape stands in the frost, blinking; then it waddles off into the cloud and is gone. Where the knight stood, a crystal the size of your fist. Warm.",
+    "who": "",
+    "text": "The knight lifts a sword of blue glass. Frost runs down it toward you. It hasn't spoken in twenty-one years, and it doesn't start now.",
+    "win": "The knight's armour shatters into blue-white glass that melts into the clouds. For a moment a small grey shape stands in the frost, blinking; then it waddles off into the cloud and is gone.",
     "win_reverted": "The glass falls away like frost off a window. An old penguin stands where the knight was, blinking at the sky. At his feet, a crystal the size of your fist. Warm.",
     "reward": "crystal_refined",
     "reward_n": 2,
@@ -2930,7 +2930,8 @@
     "after": "The clouds are quiet.",
     "hint": "A: the knight",
     "solid": false,
-    "tier": 4
+    "tier": 4,
+    "title": "The Crystal Knight"
    }
   ],
   "enemies": [
@@ -4276,7 +4277,7 @@
     ],
     "item": "stamina_root",
     "n": 1,
-    "hint": "A: something grows between the stones",
+    "hint": "A: something growing between the stones",
     "every": 4,
     "solid": false
    }
@@ -13964,7 +13965,7 @@
      18
     ],
     "lines": [
-     "Every lantern here has a moth, and every moth has a name. That one's Gerald.",
+     "Every lantern here has a moth, and every moth has a name. That one's Bartholomew.",
      "The Thornmother wasn't always thorns. Once she was the garden.",
      "Wisp Sparks keep a pudding light. Bring one back and cook something nice."
     ],
@@ -15025,7 +15026,7 @@
     "when": {
      "quest": "mega_gloamwood_job"
     },
-    "locked": "It hasn't noticed you yet. Help Liesl in Lanternfall first, and the way to it will open.",
+    "locked": "The moonpool is still and black, and something among the roses is waiting. Help Liesl in Lanternfall first.",
     "kind_gangsters": "garden_boss",
     "who_gangsters": "Rosa Thorne",
     "title_gangsters": "Rosa Thorne",
@@ -16542,7 +16543,7 @@
     "when": {
      "quest": "mega_sunscorch_job"
     },
-    "locked": "It hasn't noticed you yet. Help Nadia in Mirage Post first, and the way to it will open.",
+    "locked": "Sand has buried the temple door to the lintel. Help Nadia in Mirage Post, and the dunes will shift.",
     "kind_gangsters": "smuggler_king",
     "who_gangsters": "Dune King Vasco",
     "title_gangsters": "Dune King Vasco",
@@ -17980,7 +17981,7 @@
     "when": {
      "quest": "mega_ironline_job"
     },
-    "locked": "It hasn't noticed you yet. Help Hollis in Junction City first, and the way to it will open.",
+    "locked": "The private platform is roped off: NO PASSENGERS. Help Hollis in Junction City first, and you'll get a ticket.",
     "type": "boss",
     "cell": [
      21,
@@ -19762,7 +19763,7 @@
     "when": {
      "quest": "mega_frostpeak_job"
     },
-    "locked": "It hasn't noticed you yet. Help Ingrid in Hearthhold first, and the way to it will open.",
+    "locked": "The snowfield above is quiet. Too quiet. Help Ingrid in Hearthhold before you climb.",
     "kind_gangsters": "ice_hauler",
     "who_gangsters": "Big Ike Frost",
     "title_gangsters": "Big Ike Frost",
@@ -21130,7 +21131,7 @@
     "when": {
      "quest": "mega_windward_job"
     },
-    "locked": "It hasn't noticed you yet. Help Nimbus in Breezehaven first, and the way to it will open.",
+    "locked": "The garden gate is held shut by a wind you can lean on. Help Nimbus in Breezehaven first.",
     "type": "boss",
     "cell": [
      21,
@@ -22546,7 +22547,7 @@
     "when": {
      "quest": "mega_giltcity_job"
     },
-    "locked": "It hasn't noticed you yet. Help Odette in Grand Plaza first, and the way to it will open.",
+    "locked": "The vault doors are shut and the guards won't look at you. Help Odette in the Grand Plaza first.",
     "type": "boss",
     "cell": [
      21,

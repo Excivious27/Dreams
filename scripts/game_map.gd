@@ -2004,6 +2004,7 @@ func boss_card(kind: String, title := "") -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 11
 	layer.add_to_group("toast_hold")  # Hud: toasts wait until the card is gone
+	layer.add_to_group("boss_card")  # C12: a story beat starting clears it (Story._play_beat)
 	var tr := TextureRect.new()
 	tr.texture = Art.tex("ui", nm)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -2972,7 +2973,7 @@ func read_mail() -> void:
 					opts = ["Take the %s" % GameState.item_name(str(m["item"])), "Later"]
 			"favour":
 				if not bool(m.get("done", false)):
-					opts = ["Send %d %s (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), GameState.count(str(m["item"]))], "Not now"]
+					opts = ["Send %s (have %d)" % [ItemWords.count_id(str(m["item"]), int(m["n"])), GameState.count(str(m["item"]))], "Not now"]
 		var line := {"who": "Letter from " + str(m["from"]), "text": str(m["text"])}
 		if not opts.is_empty():
 			line["choice"] = opts
@@ -2985,7 +2986,7 @@ func read_mail() -> void:
 			if err != "":
 				hud.toast(err, Color(1, 0.8, 0.6))
 			elif str(m["kind"]) == "gift":
-				hud.toast("+%d %s" % [int(m.get("n", 1)), GameState.item_name(str(m["item"]))], Color(0.85, 1, 0.85))
+				hud.toast("+" + ItemWords.count_id(str(m["item"]), int(m.get("n", 1))), Color(0.85, 1, 0.85))
 			else:
 				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
 
@@ -3195,7 +3196,7 @@ func later(cb: Callable) -> void:
 func give(id: String, n := 1, quiet := false) -> void:
 	_check_quests.call_deferred()
 	GameState.add_item(id, n)
-	hud.toast("+%d %s" % [n, GameState.item_name(id)], Color(0.85, 1, 0.85))
+	hud.toast("+" + ItemWords.count_id(id, n), Color(0.85, 1, 0.85))
 	if not quiet:
 		Music.instance(get_tree()).sfx("pickup")
 		if player:
@@ -4762,7 +4763,7 @@ func _weighted_index(lo: int, hi: int, ratio := 0.67) -> int:
 ## Ask before handing a villager the item you're holding.
 func confirm_gift(who_name: String, sel: String) -> bool:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": who_name, "text": "Give them your %s?" % GameState.item_name(sel), "choice": ["Give it", "Just chat"], "key": ""}])
+	d.say([{"who": "", "text": "Give %s your %s?" % [who_name, GameState.item_name(sel)], "choice": ["Give it", "Just chat"], "key": ""}])  # C12 P4: narration, not the villager asking about themselves
 	await d.finished
 	return d.last_choice == 0
 

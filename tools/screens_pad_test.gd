@@ -372,7 +372,7 @@ func _arcade() -> void:
 		var bl := ArcadeHub.blurb(gm).to_lower()
 		check(not bl.contains("grump") and not bl.contains("toy duck"), "gang blurb for %s: %s" % [gm["id"], bl])
 	GameState.run["arc"] = "penguins"
-	check(ArcadeHub.blurb(ArcadeHub.GAMES[2]).contains("grump"), "penguin blurb kept")
+	check(ArcadeHub.blurb(ArcadeHub.GAMES[2]).to_lower().contains("grump"), "penguin blurb kept")
 
 
 func _bowling() -> void:

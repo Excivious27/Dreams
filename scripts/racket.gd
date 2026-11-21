@@ -87,25 +87,41 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 		GameState.run["passed"] = int(GameState.run.get("passed", 0)) + 1
 		GameState.add_xp("bartering", 2 + int(it.get("tier", 1)))
 		GameState.add_arc_xp(5)
-		m.hud.toast("Passed. +◆%d  (risk was %d%%, %d/%d today)" % [face, int(round(r_now * 100.0)), passed_today(), pass_cap()], Color(0.7, 1, 0.7))
+		m.hud.toast("Passed. +%s  (risk was %d%%, %d/%d today)" % [Money.amount(face), int(round(r_now * 100.0)), passed_today(), pass_cap()], Color(0.7, 1, 0.7))
 		Music.instance(m.get_tree()).sfx("coin", "pickup")
 		return true
 	# Noticed: the bill is gone, you pay to make it go away, and people remember.
 	var fine := mini(int(GameState.run["crystals"]), int(face / 2))
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - fine
 	GameState.run["flags"]["burned_day"] = int(GameState.run["day"])
-	var shopkeepers: Array = []
-	for k in ["maple", "gideon", "posy", "wren", "ivy"]:
-		if GameState.npcs.has(k) and not GameState.run["flags"].has(k + "_gone"):
-			shopkeepers.append(k)
-	var who := str(shopkeepers[randi() % shopkeepers.size()]) if not shopkeepers.is_empty() else ""
-	if who != "":
-		GameState.add_friend(who, -8)
-	m.hud.toast("%s holds it to the light. You pay ◆%d to make it a misunderstanding." % [str(GameState.npcs.get(who, {}).get("name", "The clerk")), fine], Color(1, 0.6, 0.5))
+	m.hud.toast(caught_line(m.scene_id(), fine), Color(1, 0.6, 0.5))
 	m.shake(2.0)
 	Music.instance(m.get_tree()).sfx("nope", "thud")
 	add_heat(m, 1)
 	return true
+
+
+## Who catches a bad bill (C12 c12_03-03): a town shopkeeper only in town or a shop;
+## elsewhere somebody who'd be there. A broke player can't smooth it over.
+const CATCHERS := {"docks": "A dockhand", "neon": "The arcade cashier", "uptown": "A doorman", "hideout": "The diner cook", "beach": "The boardwalk vendor", "countryside": "A farm-stand seller", "riverlands": "A ferry clerk", "quarry": "The quarry foreman"}
+
+
+static func caught_line(scene: String, fine: int) -> String:
+	var nm := ""
+	if scene in ["town", "interior"]:
+		var shopkeepers: Array = []
+		for k in ["maple", "gideon", "posy", "wren", "ivy"]:
+			if GameState.npcs.has(k) and not GameState.run["flags"].has(k + "_gone"):
+				shopkeepers.append(k)
+		if not shopkeepers.is_empty():
+			var who := str(shopkeepers[randi() % shopkeepers.size()])
+			GameState.add_friend(who, -8)
+			nm = str(GameState.npcs.get(who, {}).get("name", ""))
+	if nm == "":
+		nm = str(CATCHERS.get(scene, "The clerk"))
+	if fine <= 0:
+		return "%s holds it to the light. You've nothing to smooth it over with; they keep the bill and remember your face." % nm
+	return "%s holds it to the light. You pay %s to make it a misunderstanding." % [nm, Money.amount(fine)]
 
 
 static func forged_permit(m: GameMap, id: String) -> bool:
@@ -148,7 +164,7 @@ static func on_enter(m: GameMap) -> void:
 				m.hud.toast("Ladder, on the radio: %d hostile%s on this block." % [n, "" if n == 1 else "s"], Color(0.8, 0.9, 1)))
 	if Project.has("hq_comms") or Ops.holds(m.scene_id()):
 		return  # drones on the roofs / your own block: collectors never get close
-	if not on() or heat() < 3 or GameState.run["flags"].has("president_freed") or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
+	if not on() or heat() < 3 or GameState.run["flags"].has("president_freed") or GameState.run["flags"].has("city_taken") or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
 		return
 	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > (0.25 if Crew.perk_level("raid_warning") >= 2 else 0.5):
 		return

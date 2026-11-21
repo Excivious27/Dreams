@@ -26,7 +26,7 @@ func _run() -> void:
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	# --- heart scenes ---
 	var H := Hearts.data()
-	check(H.size() == 26, "26 heart arcs (%d)" % H.size())
+	check(H.size() == 27, "27 heart arcs (%d)" % H.size())
 	for id: String in H:
 		var ms: Dictionary = H[id]["milestones"]
 		for n in ["2", "4", "6", "8", "10"]:

@@ -270,6 +270,9 @@ static func words(text: String) -> String:
 		t = t.replace(" " + str(pair[0]), " " + InputSetup.prompt(str(pair[1])))
 		if t.begins_with(str(pair[0])):
 			t = InputSetup.prompt(str(pair[1])) + t.substr(str(pair[0]).length())
+	# C12 02-28: the Meow Pow Wow's touch button is drawn as a heart; name the real key.
+	var ab := InputSetup.prompt("ability")
+	t = t.replace("tap the ♥ button", "press " + ab).replace("tap ♥", "press " + ab).replace("Tap ♥", "Press " + ab).replace("with ♥", "with " + ab)
 	# S1 s1_08-06: no touch or keyboard words with a controller in hand.
 	if dev == "pad":
 		t = t.replace("tap for more", "press %s for more" % InputSetup.prompt("a")).replace("Tap for more", "Press %s for more" % InputSetup.prompt("a"))

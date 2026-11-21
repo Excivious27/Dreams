@@ -17,6 +17,7 @@ static func data() -> Dictionary:
 			if not GameState.npcs.has(id):
 				var mdef: Dictionary = mem[id]
 				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "root_beer", "coffee"], "dislikes": ["turnip"]}
+				GameState.apply_gift_tastes(id)  # C12 P4: per-member tastes (gift_lines.json "tastes")
 	return _data
 
 
@@ -200,8 +201,21 @@ static func _joined_talk(m: GameMap, id: String) -> bool:
 	if GameState.can_gift(id, str(GameState.run.get("selected", ""))):
 		return false
 	var nm := str(GameState.npcs.get(id, {}).get("name", id))
-	await m.say([{"who": nm, "text": str(ls[int(GameState.run["day"]) % ls.size()])}])
+	await m.say([{"who": nm, "text": joined_line(id, ls, int(GameState.run["day"]))}])
 	return true
+
+
+## The hideout line of a joined Marked/lieutenant: after the tower, every other day
+## is their ending line (hideout_after {free, take}) (C12 c12_04-14).
+static func joined_line(id: String, ls: Array, day: int) -> String:
+	var f: Dictionary = GameState.run.get("flags", {})
+	if f.has("final_done"):
+		var def: Dictionary = Marked.all().get(id.trim_prefix("mk_"), {}) if id.begins_with("mk_") else Gift.data().get("lieutenants", {}).get(id.trim_prefix("lt_"), {})
+		var aft: Dictionary = def.get("hideout_after", {})
+		var key := "take" if (f.has("city_taken") or str(GameState.run.get("ending", "")) == "take") else "free"
+		if aft.has(key) and day % 2 == 0:
+			return str(aft[key])
+	return str(ls[day % ls.size()])
 
 
 ## Loyalty talk at the hideout: one scene per three days. Returns true if played.
@@ -258,25 +272,78 @@ static func talk(m: GameMap, id: String) -> bool:
 				return true
 			await m.say([{"who": "Halo", "text": "Haven't been. You go first; I don't drive blind."}])
 		return true
-	# Everyday crew line.
-	var lines: Dictionary = {
-		"deuce": ["Deck's shuffled, boss.", "Counting. Always counting.", "The boys ask after you. I tell them you're busy being a farmer."],
-		"mama_rosa": ["Eat something.", "You look thin. Everyone looks thin. Eat.", "Stew's on. Sit."],
-		"specs": ["Don't talk, I'm in the wire.", "Sub-basement three. Its own wire. Who DOES that.", "...Yes? Oh. Hi."],
-		"ladder": ["Four hundred and twelve.", "Clear sky today. You can see the tower from the roof.", "Nothing on the road. Nothing's always something."],
-		"vic": ["Val's warming up.", "We're ready.", "Left side's yours. Remember."],
-		"val": ["Vic's warming up.", "Right side's ours.", "Don't listen to the stone."],
-		"halo": ["Engine's warm.", "Hideout's where I park. Find me there.", "Never quit at the containers."],
-		"dice": ["Nothing new. Well. Something new. Nothing I can tell you yet.", "I'm fine. I'm FINE.", "Messages are quiet. Quiet's bad."],
-		"the_kid": ["...", "...", "..."],
-		"doc": ["Let me see that arm.", "Sleep more.", "Try not to need me."],
-		"marlene": ["Prices are up. Yours especially.", "I don't do favours. This isn't one.", "Paper, boss. Keep it dry."],
-		"sasha": ["Doors?", "...", "Say the word."],
-	}
-	var pick: Array = (lines.get(id, ["..."]) as Array).duplicate()
+	# Everyday crew line (C12 c12_03-07: filtered by loyalty and story state).
+	var pick: Array = everyday_lines(id)
 	pick.append_array(flag_lines(id))
 	await m.say([{"who": str(mdef["name"]), "text": str(pick[(day + lv) % pick.size()])}])
 	return true
+
+
+## Everyday lines. An entry is a string or {text, min_loyalty}; a line that leans on a
+## loyalty scene (the lobby plan, the stone, Specs' wire) waits for that scene.
+const EVERYDAY := {
+	"deuce": ["Deck's shuffled, boss.", "Counting. Always counting.", "The boys ask after you. I tell them you're busy being a farmer."],
+	"mama_rosa": ["Eat something.", "You look thin. Everyone looks thin. Eat.", "Stew's on. Sit."],
+	"specs": ["Don't talk, I'm in the wire.", {"text": "Sub-basement three. Its own wire. Who DOES that.", "min_loyalty": 1}, "...Yes? Oh. Hi."],
+	"ladder": ["Four hundred and twelve.", "Clear sky today. You can see the tower from the roof.", "Nothing on the road. Nothing's always something."],
+	"vic": ["Val's warming up.", "We're ready.", {"text": "Left side's yours. Remember.", "min_loyalty": 3}],
+	"val": ["Vic's warming up.", {"text": "Right side's ours.", "min_loyalty": 3}, {"text": "Don't listen to the stone.", "min_loyalty": 1}],
+	"halo": ["Engine's warm.", "Hideout's where I park. Find me there.", "Never quit at the containers."],
+	"dice": ["Nothing new. Well. Something new. Nothing I can tell you yet.", "I'm fine. I'm FINE.", "Messages are quiet. Quiet's bad."],
+	"the_kid": ["...", "...", "..."],
+	"doc": ["Let me see that arm.", "Sleep more.", "Try not to need me."],
+	"marlene": ["Prices are up. Yours especially.", "I don't do favours. This isn't one.", "Paper, boss. Keep it dry."],
+	"sasha": ["Doors?", "...", "Say the word."],
+}
+
+## After the tower (final_done): the President freed (free / clean endings).
+const EVERYDAY_AFTER := {
+	"deuce": ["Deck's shuffled. Nobody's counting for him any more.", "The boys keep asking what's next. I tell them: lunch."],
+	"mama_rosa": ["Sit. Nobody's in a hurry now. Eat slow.", "Stew's on. It'll be on tomorrow too. That's the point."],
+	"specs": ["The tower wire's quiet. I keep checking.", "Sub-basement three is just a basement now. Weird."],
+	"ladder": ["Trucks on the road: nine. All groceries.", "Clear sky. The tower's just a building from up here now."],
+	"vic": ["Nothing left to hold. Weird.", "Val's warming up. Out of habit."],
+	"val": ["Vic keeps looking left. Habit.", "Our brother called. He talks slow now. It's nice."],
+	"halo": ["Car's gassed. Nowhere we have to be.", "Took the long way to the docks. Just because."],
+	"dice": ["No messages today. None. I checked twice.", "I'm fine. Actually fine. Is that allowed?"],
+	"the_kid": ["...", "...good day."],
+	"doc": ["Nobody's needed patching in a week. I'm bored. It's wonderful.", "Sleep more. You've earned it now."],
+	"marlene": ["Prices are down. Yours especially. That's a compliment.", "Paper's dry. For once nothing's burning."],
+	"sasha": ["No doors left, boss.", "Say the word. Or don't. Either's fine now."],
+}
+
+## After the tower when you took the chair (ending "take").
+const EVERYDAY_TAKE := {
+	"deuce": ["Deck's shuffled, boss. The tables uptown are yours now.", "The boys don't joke as much. They watch the door."],
+	"mama_rosa": ["Eat something. You've stopped eating since the tower.", "I sent a plate up. It came back half full."],
+	"specs": ["The tower wire's yours now. I don't go in it any more.", "...Yes? Oh. Hi. Boss. Sir. Whatever you are."],
+	"ladder": ["Trucks into the tower: fourteen. I've stopped saying the number out loud.", "Clear sky. The tower's lit all night now."],
+	"vic": ["We're ready. For what, I don't know.", "Nobody goes middle. Not even you."],
+	"val": ["Vic says the stone talks in your voice now. I told him to stop.", "Right side's ours. Still."],
+	"halo": ["Long black car's out front. I don't ask who's in the back.", "Engine's warm. Uptown again?"],
+	"dice": ["Messages are quiet. Too quiet. Everyone's scared of you now.", "I'm fine. I'm FINE."],
+	"the_kid": ["...", "..."],
+	"doc": ["I patch people in the tower basement again. Don't make me say more.", "Try not to need me. Try not to make anyone need me."],
+	"marlene": ["Prices are up. Everyone's paying you now.", "Paper, boss. There's a lot more of it now."],
+	"sasha": ["Every door's yours now.", "...", "Say the word. I always do."],
+}
+
+
+## The everyday pool for a member: loyalty-gated lines before the tower, ending sets after.
+static func everyday_lines(id: String) -> Array:
+	var f: Dictionary = GameState.run.get("flags", {})
+	if f.has("final_done"):
+		var after: Dictionary = EVERYDAY_TAKE if (f.has("city_taken") or str(GameState.run.get("ending", "")) == "take") else EVERYDAY_AFTER
+		return (after.get(id, ["..."]) as Array).duplicate()
+	var lv := loyalty(id)
+	var out: Array = []
+	for e in EVERYDAY.get(id, ["..."]):
+		if e is Dictionary:
+			if lv >= int((e as Dictionary).get("min_loyalty", 0)):
+				out.append(str(e["text"]))
+		else:
+			out.append(str(e))
+	return out
 
 
 ## Everyday lines that remember a recruit choice or who else joined (C7 c7_14).
@@ -343,7 +410,7 @@ static func _partner_ask(m: GameMap, cid: String) -> bool:
 	var nm := str(Companion.defs().get(cid, {}).get("name", cid.capitalize()))
 	var d := Dialogue.instance(m.get_tree())
 	var first: String = {"big_jim": "You paid me in silence last time. Silence doesn't buy fuel. ...Truck's still running, though."}.get(cid, "Still looking for someone to ride with?")
-	d.say([{"who": nm, "text": first, "choice": ["Ride with me?", "Not now."], "key": ""}])
+	d.say([{"who": nm, "text": first, "choice": ["Ride with me?", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		Companion.recruit(cid)

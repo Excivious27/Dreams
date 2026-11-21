@@ -209,6 +209,17 @@ DROP_PER_HP = 3.4
 # Region bosses wait for the hub job (Moonpool after Liesl's, etc.): set per boss in main().
 # Gangster-arc bosses for the both-arc regions (c4_09 #6): region.gd reads kind/who/text/title/
 # win/after "_gangsters". All-ages: a scuffle, then they back down.
+# Each mega boss door's own locked line (c12_18-12): the place, not "it", and fit for both
+# arcs where the boss changes per arc. %s = the hub's job giver, %s = the hub.
+HUB_THE = {"Grand Plaza"}
+BOSS_LOCKED = {
+    "gloam_moonpool": "The moonpool is still and black, and something among the roses is waiting. Help %s in %s first.",
+    "desert_sunken_temple": "Sand has buried the temple door to the lintel. Help %s in %s, and the dunes will shift.",
+    "iron_tunnels": "The private platform is roped off: NO PASSENGERS. Help %s in %s first, and you'll get a ticket.",
+    "frost_summit": "The snowfield above is quiet. Too quiet. Help %s in %s before you climb.",
+    "wind_starfall_garden": "The garden gate is held shut by a wind you can lean on. Help %s in %s first.",
+    "gilt_vaults": "The vault doors are shut and the guards won't look at you. Help %s in %s first.",
+}
 GANG_BOSS = {
     "gloam_moonpool": {"kind_gangsters": "garden_boss", "who_gangsters": "Rosa Thorne", "title_gangsters": "Rosa Thorne",
         "text_gangsters": "A woman in a thorn-green coat steps out from behind the roses, pruning shears in one hand. 'This garden pays me rent,' says Rosa Thorne. 'Everyone in Gloamwood pays me rent.'",
@@ -407,11 +418,11 @@ A("gloam_lanternfall", cols=42, rows=38, music="mega_gloam", look="gloam", links
   heal=("props/glow_pond", 4, 2, (14, 17), {"hp": 4, "energy": 60, "msg": "You dip your hands in the glowing pond. Everything aches a little less."}),
   gate=("nature/fairy_ring", 1, 1, "spawn"),
   notes=[("A: read the lantern board", "Lantern board: 'Violet Glade, north. Crystal Thicket, east. The Moonpool is past the glade, and the Thornmother sleeps under it. Please don't wake her. (Someone has written underneath: SOMEONE HAS TO.)'")],
-  npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
+  npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Bartholomew.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
         ("mg_fenn", "Fenn", "mg_fenn", ["Glowmoss grows on the north side of everything. Even me, if I stand still.", "The Crystal Thicket chimes when the wind's right.", "Honey and wisp-light. That's the trick to a Gloam Pudding."]),
         ("mg_bramble", "Bramble", "mg_bramble", ["Did you see the giant flower? It sneezed on me.", "I'm not scared of the dark. The dark is scared of my lantern.", "The ghostfish in the Moonpool can see you even with their eyes closed."])],
   job={"giver": "mg_liesl", "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.", "items": [["wisp_thread", 5]], "reward": {"animal": ["lantern_moth", "Liesl"], "animal_gang": ["peacock", "Liesl"], "gift_key": "mega:gloam_job", "crystals": 300, "item": ["luna_moth", 1], "friend": ["mg_liesl", 15]},
-       "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Gerald says thank you. Gerald is the moth."]}},
+       "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Bartholomew says thank you. Bartholomew is the moth."]}},
   intro=["The ring lets go of you in a hush of moth-wings. Lanterns everywhere, hung from mushrooms taller than houses, and the moss underfoot is violet and soft.", "This is Lanternfall. Somebody waves. Somebody is always waving here."])
 A("gloam_violet_glade", cols=50, rows=44, music="mega_gloam", look="gloam", ground_seam="teal_moss_dense", links={"gloam_lanternfall": ("s", 23), "gloam_moonpool": ("n", 30)},
   water=[(4, 11)], hills=[(5, 33)], gen_extra={"clumps": 2},
@@ -1228,7 +1239,9 @@ def main():
             bs = AREAS[a["id"]].get("boss")
             if bs:
                 bs["when"] = {"quest": jid}
-                bs["locked"] = "It hasn't noticed you yet. Help %s in %s first, and the way to it will open." % (giver, CONTENT[r["id"]]["hub_name"])
+                hub = CONTENT[r["id"]]["hub_name"]
+                hub = ("the " + hub) if hub in HUB_THE else hub
+                bs["locked"] = BOSS_LOCKED.get(a["id"], "The way on is shut for now. Help %s in %s first.") % (giver, hub)
                 if r["arc"] == "both":
                     bs.update(GANG_BOSS.get(a["id"], {}))
     regs = J("regions.json")

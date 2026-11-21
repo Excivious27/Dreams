@@ -97,7 +97,7 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	if e._sprite:
 		e._sprite.modulate.a = 1.0
 	GameState.add_money(e.reward, "kills")
-	m.hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
+	m.hud.toast("+%s" % Money.amount(e.reward), Color(0.7, 0.9, 1))  # C12 c12_04-11: $ in the cash arc
 	m.xp("combat", int(GameState.enemy_data["enemies"]["marked_" + id].get("xp", 40)))
 	# One victory sting now, and the theme winds down under the talk (c6_08_02/03).
 	Music.instance(m.get_tree()).sfx("j_victory", "quest_done")
