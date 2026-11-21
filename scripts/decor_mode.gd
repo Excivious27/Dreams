@@ -809,7 +809,27 @@ static func dress(m: GameMap) -> void:
 		fl.queue_redraw()
 	m.set_meta("decor_nodes", nodes)
 	m.set_meta("decor_cells", cells)
+	_home_use_things(m, list, yard)
 	m._flows.clear()
+
+
+## c13_18-22: a placed Music Box / Jukebox / arcade cabinet can be used again: its cell
+## carries RecCenter's "rec_home" interaction (cleared when moved or stored). Guests
+## never get them in the host's house (house.gd's guest rule).
+static func _home_use_things(m: GameMap, list: Array, yard: bool) -> void:
+	for c: Vector2i in m.get_meta("decor_home_use", []):
+		var t: Variant = m.things.get(c)
+		if t is Dictionary and str((t as Dictionary).get("type", "")) == "rec_home":
+			m.things.erase(c)
+	var used: Array = []
+	if not yard and not Net.visiting():
+		for p in list:
+			if p is Dictionary and str(p.get("id", "")) in RecCenter.HOME_USE:
+				var id := str(p["id"])
+				var c := _cell_of(p)
+				m.things[c] = {"type": "rec_home", "what": id, "hint": str(RecCenter.HOME_USE[id])}
+				used.append(c)
+	m.set_meta("decor_home_use", used)
 
 
 ## Drawn height of a decor node (Sprite2D or AnimatedSprite2D), in world px.
@@ -1136,6 +1156,7 @@ static func open(m: GameMap) -> DecorMode:
 func _ready() -> void:
 	layer = 12
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Music.instance(get_tree()).sfx("menu_open", "ui_tap")  # c13_08-11
 	if _undo_map != map.get_instance_id():
 		undo_stack.clear()
 		_undo_map = map.get_instance_id()
@@ -1191,6 +1212,8 @@ func _exit_tree() -> void:
 
 
 func close() -> void:
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx("menu_close", "ui_tap")  # c13_08-11
 	Hud.modal_rect = Rect2()
 	Hud.extra_rects.erase(_bar_rect)
 	if not Hud.keep_paused(get_tree(), self):
@@ -1607,7 +1630,7 @@ func _set_moving(i: int) -> void:
 
 func _deny(why: String) -> void:
 	Haptics.buzz("deny")
-	Music.instance(get_tree()).sfx("status_tick", "ui_tap")
+	Music.instance(get_tree()).sfx("nope", "status_tick")  # c13_08-11: the game-wide refusal
 	_say(why)
 
 

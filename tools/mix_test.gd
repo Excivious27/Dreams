@@ -42,7 +42,11 @@ func _run() -> void:
 		lim = lim or AudioServer.get_bus_effect(mi, i) is AudioEffectHardLimiter
 	check(lim, "a limiter guards the Master bus")
 	Settings.ensure_limiter()
-	check(AudioServer.get_bus_effect_count(mi) == 1, "only one limiter after a second ensure")
+	Settings.ensure_buses()
+	var nlim := 0
+	for i in AudioServer.get_bus_effect_count(mi):
+		nlim += 1 if AudioServer.get_bus_effect(mi, i) is AudioEffectHardLimiter else 0
+	check(nlim == 1 and AudioServer.get_bus_effect_count(mi) == 2, "only one limiter (+ the C13 mono fold) after a second ensure")
 	# Group levels and pitch locks (gangster cash is trimmed like the coin and stays in key).
 	check(m._group_db("cash_pickup") == m._group_db("coin"), "cash_pickup gets the coin trim (%.1f)" % m._group_db("cash_pickup"))
 	check(m._group_db("scroll_tick") < m._group_db("hit") - 4.0 and m._group_db("tab") < -4.0 and m._group_db("nope") < 0.0, "scroll_tick/tab/nope sit low")

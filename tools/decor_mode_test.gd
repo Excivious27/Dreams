@@ -87,6 +87,21 @@ func _run() -> void:
 	check(DecorMode.place(m, "t_chair", Vector2i(0, 5)) != "", "not outside the room")
 	check(DecorMode.place(m, "t_chair", Vector2i(8, 10)) != "", "not in the doorway")
 	check(DecorMode.place(m, "t_chair", Vector2i(5, 9)) != "", "not on another piece")
+	# C13 P6 (c13_18-22): a placed jukebox can be played (rec_home on its cell), cleared when stored.
+	items["rp_jukebox"] = _ent("Jukebox", "floor", [1, 1], "furniture/armchair_b")
+	Decor.give("rp_jukebox", 1)
+	var jc := Vector2i(-1, -1)
+	for cc: Vector2i in [Vector2i(7, 9), Vector2i(6, 9), Vector2i(7, 7), Vector2i(9, 9), Vector2i(4, 7)]:
+		if DecorMode.place(m, "rp_jukebox", cc) == "":
+			jc = cc
+			break
+	check(jc.x >= 0, "a jukebox fits somewhere")
+	if jc.x >= 0:
+		var jt: Variant = m.things.get(jc)
+		check(jt is Dictionary and str((jt as Dictionary).get("type", "")) == "rec_home" and str(jt.get("what", "")) == "rp_jukebox", "the placed jukebox has its rec_home use")
+		var ji := DecorMode.piece_at(m, jc)
+		DecorMode.pick(m, ji)
+		check(not (m.things.get(jc) is Dictionary and str((m.things.get(jc) as Dictionary).get("type", "")) == "rec_home"), "stored again: the use is gone")
 	# 4. The walk-through check: a wall of furniture across the room fails.
 	var line := {}
 	for x in range(1, 15):

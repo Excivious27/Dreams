@@ -83,11 +83,11 @@ func _ready() -> void:
 		_voice_t.append(0)
 		_voice_long.append(false)
 	_steps = AudioStreamPlayer.new()
-	_steps.bus = "SFX"
+	_steps.bus = "Steps"
 	_steps.volume_db = STEP_DB
 	add_child(_steps)
 	_blip = AudioStreamPlayer.new()
-	_blip.bus = "SFX"
+	_blip.bus = "Voices"
 	add_child(_blip)
 	_muted = bool(SaveGame.get_value("muted", false))
 	_apply_master_mute()
@@ -842,8 +842,9 @@ func sfx(name: String, fallback := "") -> void:
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name)
+	pick.volume_db = -4.0 + _group_db(name) + Settings.loud_db(name)
 	pick.bus = _bus_for(name)
+	Captions.for_sfx(name)
 	# A little pitch drift so repeated swings and steps don't sound stamped out;
 	# UI clicks, money and musical cues stay in key.
 	pick.pitch_scale = 1.0 if (ln > 0.55 or _no_drift(name)) else randf_range(0.93, 1.07)
@@ -927,17 +928,9 @@ static func audible_len(n: String, ln: float) -> float:
 ## The bus a sound plays on: data/sfx_buses.json (P6) {"groups": {prefix: bus}} or
 ## {prefix: bus}; longest matching prefix wins; buses that don't exist fall back to SFX.
 static func _bus_for(n: String) -> String:
-	_read_tables()
-	var g: Dictionary = _buses.get("groups", _buses) if _buses.get("groups", null) is Dictionary else _buses
-	var best := ""
-	var bus := "SFX"
-	for k: String in g:
-		if n.begins_with(k) and k.length() > best.length() and g[k] is String:
-			best = k
-			bus = str(g[k])
-	if bus != "SFX" and AudioServer.get_bus_index(bus) < 0:
-		bus = "SFX"
-	return bus
+	# C13 integration: one bus table owner (Settings.sfx_bus reads data/sfx_buses.json exact/prefix).
+	var b := Settings.sfx_bus(n)
+	return b if AudioServer.get_bus_index(b) >= 0 else "SFX"
 
 
 static func _sfx_bus_muted() -> bool:
@@ -1003,7 +996,8 @@ func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay :=
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name) + db
+	pick.bus = Settings.sfx_bus(name)
+	pick.volume_db = -4.0 + _group_db(name) + db + Settings.loud_db(name)
 	pick.pitch_scale = clampf(pitch, 0.5, 2.0)
 	pick.play()
 	_voice_t[vi] = now

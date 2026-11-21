@@ -47,6 +47,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "wardrobe")
+	Music.instance(get_tree()).sfx("menu_open", "ui_tap")  # c13_08-05
 	Wardrobe.register()
 	if Wardrobe.hero_kind() == "penguin" and not _picked:
 		slot = "acc"  # what shows on Pip-Pip / Nova
@@ -75,7 +76,8 @@ func _lab(parent: Control, text: String, size := 8, col := INK) -> Label:
 	return l
 
 
-func _btn(parent: Control, text: String, cb: Callable, w := 0.0, on := false) -> Button:
+## `cue` "" when the row plays its own sound (c13_08-22: clothes rustle, a set claim rings).
+func _btn(parent: Control, text: String, cb: Callable, w := 0.0, on := false, cue := "ui_tap") -> Button:
 	var b := Button.new()
 	b.text = text
 	b.focus_mode = Control.FOCUS_NONE
@@ -94,7 +96,8 @@ func _btn(parent: Control, text: String, cb: Callable, w := 0.0, on := false) ->
 	for c: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
 		b.add_theme_color_override(c, INK)
 	b.pressed.connect(func() -> void:
-		Music.instance(get_tree()).sfx("ui_tap")
+		if cue != "":
+			Music.instance(get_tree()).sfx(cue)
 		cb.call())
 	parent.add_child(b)
 	return b
@@ -169,9 +172,13 @@ func _build() -> void:
 			worn.append(Wardrobe.worn_id(ss))
 	var cur: String = worn[0] if not worn.is_empty() else ""
 	var off := _btn(list, "Take off (%s)" % (", ".join(worn.map(func(i: String) -> String: return _name(i))) if cur != "" else "nothing worn"), func() -> void:
+		if cur == "":
+			Music.instance(get_tree()).sfx("nope", "ui_tap")
+		else:
+			Music.instance(get_tree()).sfx_pitched("cloth", "ui_tap", 0.9)
 		for ss: String in _slots(slot):
 			Wardrobe.take_off(ss)
-		_changed(), 0.0, cur == "")
+		_changed(), 0.0, cur == "", "")
 	off.set_meta("pc_key", "off")
 	off.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	off.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -193,8 +200,9 @@ func _build() -> void:
 	for sid: String in _claimable():
 		var cb := _btn(v, "Claim %s: %s" % [_set_name(sid), DecorCatalogue.reward_text(sid)], func() -> void:
 			var why := DecorCatalogue.claim_set(sid)
+			Music.instance(get_tree()).sfx("nope" if why != "" else "j_treasure", "levelup")
 			_note(why if why != "" else "%s complete!" % _set_name(sid))
-			_changed())
+			_changed(), 0.0, false, "")
 		cb.set_meta("pc_key", "claim_" + sid)
 	# Look toggle (only the build-your-own hero wears armour sheets)
 	if kind != "doll":
@@ -240,8 +248,9 @@ func _row(list: Control, id: String, worn: bool) -> void:
 		txt += "  ·  hidden" if Wardrobe.hidden_by_helmet(id) else "  ·  doesn't show"
 	var b := _btn(h, txt, func() -> void:
 		sel = id
+		Music.instance(get_tree()).sfx("cloth", "equip")
 		Wardrobe.put_on(id)
-		_changed(), 0.0, worn)
+		_changed(), 0.0, worn, "")
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_color_override("font_color", _ink(r))

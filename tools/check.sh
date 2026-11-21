@@ -1165,3 +1165,21 @@ python3 tools/audio_tools_test.py || { echo "audio_tools_test failed"; exit 1; }
 
 echo "== C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, impacts start < 60 ms, sfx_meta complete) =="
 python3 tools/sfx_level_check.py || { echo "sfx_level_check failed"; exit 1; }
+
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/access_audio_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|access_audio_test" || true
+if ! echo "$acout" | grep -q "access_audio_test: 0 failures"; then
+  echo "Hearing accessibility test failed"; exit 1
+fi
+
+amapout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ambience_map_test.gd 2>&1)"
+echo "$amapout" | grep -E "FAIL|SCRIPT ERROR|ambience_map_test" | head -40 || true
+if ! echo "$amapout" | grep -q "ambience_map_test: [0-9]* checks, 0 failures"; then
+  echo "Ambience map (no silent place) test failed"; exit 1
+fi
+
+uqout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/ui_cue_test.gd 2>&1)"
+echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
+if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
+  echo "UI cue test failed"; exit 1
+fi

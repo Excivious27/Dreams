@@ -3117,7 +3117,7 @@ func _process(delta: float) -> void:
 			hud.toast("A new version of Dreams is ready. Tap the yellow bar at the top to update. Your farm is saved.", Color(1, 0.85, 0.4))
 	# Clamp: a phone coming back from the background reports one huge frame;
 	# that must not fast-forward the clock by hours.
-	_time_acc += minf(delta, 0.25) * GameState.minutes_per_second()  # C4: per-slot day length
+	_time_acc += 0.0 if NetNode.guest_hold() else minf(delta, 0.25) * GameState.minutes_per_second()  # C4: per-slot day length; C13 P6: a guest waits while the host is paused
 	if _time_acc >= 1.0:
 		var m := int(_time_acc)
 		_time_acc -= m

@@ -39,6 +39,7 @@ const PATTERNS := {
 	"level_up": [[30, 60, 60, 60, 30], 0.8, 400, "menu_ok"],
 	"purr": [[15, 35, 15, 35, 15], 0.3, 400, "menu_ok"],
 	"region": [[20, 80, 20], 0.5, 400, "menu_ok"],
+	"beat": [[14], 0.35, 250, ""],
 }
 
 ## Music.sfx name -> kind. Exact names only: j_confirm, j_buy, j_page, j_gift,
@@ -57,7 +58,11 @@ const SFX := {
 	"hit": "hit", "crit": "hit_big", "block": "block", "dry_click": "deny",
 	"hurt": "hurt", "knockout": "ko", "heartbeat": "warn",
 	"harvest": "harvest", "boss_fall": "boss_down",
+	# c13_17-04: audio-only alarms and blasts are felt too
+	"alert": "warn", "boom": "hit_big", "siren": "warn", "fish_escape": "deny", "war_drum": "beat", "alarm": "warn",
 }
+## c13_08-09: menu taps buzz only with "Vibrate on button taps" on (the "ui" flag).
+const UI_SFX := {"ui_tap": "ui_light", "tab": "ui_light", "j_confirm": "press"}
 ## Gun shots are not on the list (turrets and foes share those names): Player._fire
 ## calls buzz("recoil"/"recoil_big") itself.
 
@@ -106,7 +111,7 @@ static func supported() -> bool:
 		if _web_ok < 0:
 			_web_ok = 0
 			if ClassDB.class_exists("JavaScriptBridge"):
-				var r: Variant = JavaScriptBridge.eval("(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function')?1:0", true)
+				var r: Variant = JavaScriptBridge.eval("(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function'&&(navigator.maxTouchPoints>0||window.matchMedia('(pointer: coarse)').matches))?1:0", true)
 				_web_ok = 1 if int(r if r != null else 0) == 1 else 0
 		return _web_ok == 1
 	return OS.has_feature("android") or OS.has_feature("ios")
@@ -175,7 +180,7 @@ static func buzz(kind: String, force := false, scripted := false) -> bool:
 
 ## Music.sfx hook (exact-name whitelist).
 static func from_sfx(name: String) -> void:
-	var k: String = SFX.get(name, "")
+	var k: String = SFX.get(name, UI_SFX.get(name, ""))
 	if k != "":
 		buzz(k)
 
@@ -236,17 +241,23 @@ static func rows(parent: Control, font := 8) -> void:
 	if not supported():
 		var l := Label.new()
 		l.text = "Vibration: not supported on this device" + (" (iPhone browsers can't vibrate)" if OS.has_feature("web_ios") else "")
-		l.add_theme_font_size_override("font_size", font)
+		l.add_theme_font_size_override("font_size", Settings.font(font))  # c13_17-05: follows Text size
+		l.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		parent.add_child(l)
 		return
 	var mk := func(cb: Callable) -> Button:
 		var b := Button.new()
-		b.add_theme_font_size_override("font_size", font + 1)
+		b.add_theme_font_size_override("font_size", Settings.font(font + 1))  # c13_17-05: like every Options row
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # a finger scrolling the page never fires it
 		b.custom_minimum_size = Vector2(0, 24)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.text = cb.call(false)
-		b.pressed.connect(func() -> void: b.text = cb.call(true))
+		b.pressed.connect(func() -> void:
+			if b.is_inside_tree():
+				Music.instance(b.get_tree()).sfx("ui_tap", "pickup")
+			b.text = cb.call(true))
 		parent.add_child(b)
 		return b
 	var refs := {}  # lambdas capture by value: look the rows up at press time

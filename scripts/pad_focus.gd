@@ -103,11 +103,20 @@ static func _arm(b: BaseButton) -> void:
 		b.focus_exited.connect(_lit.bind(b, false))
 
 
+static var _prev_lit: WeakRef = null
+
+
 static func _lit(b: BaseButton, on: bool) -> void:
 	if not is_instance_valid(b):
 		return
 	b.self_modulate = LIT if on else Color.WHITE
 	if on:
+		# c13_08-03: a pad move between buttons ticks like GameMenu/ScreenCursor; the first
+		# focus on a fresh page (the old buttons are gone) stays silent.
+		var pv: Variant = _prev_lit.get_ref() if _prev_lit != null else null
+		if pv != null and pv != b and (pv as Node).is_inside_tree() and b.is_inside_tree():
+			Music.instance(b.get_tree()).sfx("scroll_tick", "ui_tap")
+		_prev_lit = weakref(b)
 		var p := b.get_parent()
 		while p != null:
 			if p is ScrollContainer:
