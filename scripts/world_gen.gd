@@ -477,15 +477,18 @@ const TAKE_OFF := ["duck", "heron"]
 ## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
 const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
 const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
-static func critter_pool(pool: Array, night := -1, winter := -1) -> Array:
+static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> Array:
 	var is_night := GameState.is_night() if night < 0 else night == 1
 	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
+	var is_wet := (GameState.is_wet() and night < 0) if wet < 0 else wet == 1  # a pinned night/day call (tests) pins dry weather too
 	var out: Array = []
 	for k: String in pool:
 		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
 		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
 		if (is_night and day_only) or (is_winter and warm_only):
 			continue
+		if is_wet and (k in FLUTTERS or k in ["hedgehog", "squirrel", "snake"]):
+			continue  # c14b_09-28: no butterflies in a storm; small critters shelter
 		out.append(k)
 	if is_night:
 		for k in (["owl", "bat"] if is_winter else ["owl", "bat", "firefly"]):
@@ -569,6 +572,7 @@ class Critter:
 	var _shadow := 3.0
 	var _one_frame := false
 	var _sz := 0.3
+	var _spd_j := 1.0
 
 	func _ready() -> void:
 		var g := "wildlife/" + kind
@@ -623,6 +627,7 @@ class Critter:
 			add_child(_anim)
 			_anim.play("idle")
 			CreatureMotion.random_start(_anim, _rng, 0.15)  # c14b_09-03 / 11-01: no lockstep
+			_spd_j = _anim.speed_scale
 			if kind in WATER_CRITTERS:
 				_anim.visible = false  # under water: ripples only until it leaps
 			_fit()
@@ -638,6 +643,11 @@ class Critter:
 	func _process(delta: float) -> void:
 		_t += delta
 		_timer -= delta
+		# c14b_15-13: off-screen critters skip their wander / animation work.
+		if _away <= 0.0 and is_inside_tree():
+			var vr := get_viewport().get_visible_rect().grow(48.0)
+			if not vr.has_point(get_global_transform_with_canvas().origin):
+				return
 		var red := CreatureMotion.reduced()
 		if _away > 0.0:
 			# Flown off: hidden, then lands again near home (c14b_09-13 / 11-08: maps never empty).
@@ -731,12 +741,14 @@ class Critter:
 		if cur != want and _anim.sprite_frames.has_animation(want):
 			_anim.play(want)
 			if want == "idle":
-				CreatureMotion.random_start(_anim, _rng, 0.15)
+				CreatureMotion.random_start(_anim, _rng, 0.0)
 		# Legs keep pace with the ground (walk strips are tuned for ~28 px/s).
 		if want == "walk" and not _flyer and not _flutter:
 			_anim.speed_scale = clampf(_spd / 28.0, 0.5, 2.0)
 		elif want == "walk" and _flyer and not _flutter:
 			_anim.speed_scale = 1.4  # c14b_11-08: a real flap in flight
+		elif want == "idle" or _flutter:
+			_anim.speed_scale = _spd_j
 		# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
 		if absf(_dir.x) > 0.25:
 			_anim.flip_h = _dir.x < 0

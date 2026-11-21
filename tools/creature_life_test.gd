@@ -64,6 +64,8 @@ func _run() -> void:
 	var calm := absf(CreatureMotion.breath(0.25, 0.03, 2.0).y - 1.0) + absf(CreatureMotion.breath(0.75, 0.03, 2.0).y - 1.0)
 	Settings.set_v("shake", true)
 	check(calm < full * 0.5 or full == 0.0, "reduced motion lowers breath (%.4f vs %.4f)" % [calm, full])
+	var wet_pool := WorldGen.critter_pool(["butterfly_orange", "bee", "rabbit"], 0, 0, 1)
+	check(not wet_pool.has("butterfly_orange") and not wet_pool.has("bee") and wet_pool.has("rabbit"), "no butterflies or bees out in the rain")
 	# 5. Wild critters on live maps.
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	GameState.run["intro_done"] = true
