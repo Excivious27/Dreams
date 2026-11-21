@@ -205,7 +205,7 @@ func build() -> void:
 		_style = MineLayouts.style("caverns")
 	if force_style != "":
 		_style = MineLayouts.style(force_style)   # tools/tests
-	_dress = MineLayouts.pick_dress(_style, rng)
+	_dress = MineLayouts.pick_dress(_style, rng, str(theme.get("name", "")))
 	recent.append(str(_style["id"]))
 	while recent.size() > 5:
 		recent.pop_front()

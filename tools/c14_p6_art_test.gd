@@ -3,6 +3,7 @@ extends SceneTree
 ## the dune scatter set and the redrawn icons are isolated pieces (clear corners), hearths
 ## and forges glow, neon/crystal lamps are coloured; critters follow night and winter (c14_16-06).
 ##   godot --headless --fixed-fps 60 --path . -s res://tools/c14_p6_art_test.gd
+const MineLayouts := preload("res://scripts/mine_layouts.gd")
 var fails := 0
 
 
@@ -34,6 +35,19 @@ func _initialize() -> void:
 	var sd := WorldGen.critter_pool(["sparrow", "butterfly_orange", "bee", "rabbit"], 0, 0)
 	check(sd.size() == 4, "summer day keeps the whole crowd")
 	check(not WorldGen.critter_pool(["bee"], 1, 1).is_empty(), "the pool is never empty")
+	# c14_12-14: mine dressing follows the depth theme
+	var rng := RandomNumberGenerator.new()
+	for tn in ["Mossy Hollows", "Crystal Veins", "The Heart's Edge", "Fungal Caverns", "Gold Seams"]:
+		var want := str(MineLayouts.THEME_DRESS[tn])
+		var hits := 0
+		var bad := 0
+		for i in 60:
+			rng.seed = 1000 + i
+			var d := MineLayouts.pick_dress(MineLayouts.style("rooms_corridors"), rng, tn)
+			hits += 1 if d == want else 0
+			bad += 1 if d in MineLayouts.THEME_NEVER.get(want, []) else 0
+		check(hits >= 30, "%s dresses as %s most floors (%d/60)" % [tn, want, hits])
+		check(bad == 0, "%s never gets a dressing that clashes (%d)" % [tn, bad])
 	print("c14_p6_art_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
