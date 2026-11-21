@@ -23,7 +23,7 @@ static func st() -> Dictionary:
 		r["coll"] = {}
 	var c: Dictionary = r["coll"]
 	var fresh := not c.has("made")
-	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor"]:
+	for k in ["donated", "shipped", "caught", "made", "claimed", "new", "decor", "ranch"]:
 		if not (c.get(k, null) is Dictionary):
 			c[k] = {}
 	for k in ["pending", "today"]:
@@ -114,6 +114,7 @@ static func have(cat: String, key: String) -> bool:
 		"fish": return c["caught"].has(key)
 		"cooking", "crafting": return c["made"].has(key)
 		"forage": return GameState.has_seen(key)
+		"ranch": return c["ranch"].has(key)
 	return false
 
 
@@ -135,6 +136,7 @@ static func amount_of(cat: String, key: String) -> int:
 		"shipping": return int(c["shipped"].get(key, 0))
 		"fish": return int((c["caught"].get(key, {}) as Dictionary).get("n", 0))
 		"cooking", "crafting": return int(c["made"].get(key, 0))
+		"ranch": return int(c["ranch"].get(key, 0))
 	return 1 if have(cat, key) else 0
 
 
@@ -163,6 +165,18 @@ static func record_ship(id: String, n := 1, quiet := false) -> bool:
 	c["shipped"][id] = int(c["shipped"].get(id, 0)) + n
 	if first:
 		_first("shipping", id, quiet, "Shipping log")
+	return first
+
+
+## An animal good collected from your own animals (C11a: Ranch / farm pickups call it). True on a first.
+static func record_ranch(id: String, n := 1, quiet := false) -> bool:
+	if not in_log("ranch", id) or n <= 0:
+		return false
+	var c := st()
+	var first: bool = not c["ranch"].has(id)
+	c["ranch"][id] = int(c["ranch"].get(id, 0)) + n
+	if first:
+		_first("ranch", id, quiet, "Ranch log")
 	return first
 
 

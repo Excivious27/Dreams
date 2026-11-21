@@ -314,13 +314,13 @@ static func overnight(report: Dictionary) -> void:
 			continue
 		taken[str(cj[cid])] = true
 		var j: Dictionary = jobs.get(str(cj[cid]), {})
-		GameState.add_xp("leadership", 3)
+		GameState.add_xp("leadership", 3 if taken.size() <= 2 else 1)  # passive xp tapers past two jobs a night (c11a_10)
 		# Goods: alternate nights bring the alternate haul; pay bonuses grow money, not goods.
 		var give: Dictionary = j.get("give_alt", {}) if j.has("give_alt") and int(GameState.run["day"]) % 2 == 1 else j.get("give", {})
 		for it in give:
 			GameState.add_item(str(it), int(give[it]))
 		if j.has("crystals"):
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(int(j["crystals"]) * mult)
+			GameState.add_money(int(int(j["crystals"]) * mult), "crew_jobs")  # counts in lifetime earnings (c11a_10)
 		if j.has("heat"):
 			Racket.set_heat(Racket.heat() + int(j["heat"]))
 		if j.has("xp"):
@@ -328,6 +328,13 @@ static func overnight(report: Dictionary) -> void:
 		if bool(j.get("water", false)):
 			for k in GameState.run["farm"]:
 				GameState.run["farm"][k]["watered"] = true
+			GameState.run["flags"]["crew_water_day"] = int(GameState.run["day"])  # read by waters_morning()
 		lines.append("%s: %s" % [str(Crew.members().get(cid, {}).get("name", cid)), str(j.get("name", ""))])
 	if not lines.is_empty():
 		report["crew_jobs"] = lines
+
+
+## The crew's "Mind the farm" job also waters for the morning, like Hazel and the spouse
+## (c11a_10): GameState.sleep should treat this like hazel_waters (one-line hook, P1's file).
+static func waters_morning() -> bool:
+	return GameState.run.get("flags", {}).has("crew_water_day") and int(GameState.run["flags"]["crew_water_day"]) >= int(GameState.run.get("day", 0)) - 1

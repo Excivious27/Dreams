@@ -87,7 +87,7 @@ static func offers(shop: String) -> Array:
 			return ["lamp_oil", "bait", "rope"] + Romance.shop_extra("marlowe")
 		"tam":
 			# Orchard stock: saplings and berry canes for the season.
-			return ["sheep_wool", "hay"] + ({"summer": ["blueberry_seed"], "fall": ["pear_seed"]}.get(GameState.season(), []) as Array) + _seeds(func(cid: String, cd: Dictionary) -> bool: return not (cid in ["blueberry", "pear"]) and int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
+			return ["sheep_wool", "hay"] + ranch_supplies() + ({"summer": ["blueberry_seed"], "fall": ["pear_seed"]}.get(GameState.season(), []) as Array) + _seeds(func(cid: String, cd: Dictionary) -> bool: return not (cid in ["blueberry", "pear"]) and int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
 		"old_moss":
 			return ["glowcap", "slime_goo", "herb_remedy"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
@@ -216,11 +216,18 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		if not DecorSources.today(shop).is_empty():
 			decor_i = opts.size()
 			opts.append("Home goods (decor shelf)")  # C10a P4: rotating decor from data/decor.json
+		var animal_i := -1
+		if not absent and not animals_for(shop).is_empty():
+			animal_i = opts.size()
+			opts.append("Animals for your ranch")  # C11a P3: Ranch species this keeper sells
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": keeper, "text": "%s  (you have %s)" % [greet, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
 		await d.finished
 		var pick := d.last_choice
+		if animal_i >= 0 and pick == animal_i:
+			await animal_counter(m, shop, keeper if keeper != "" else "Counter")
+			continue
 		if decor_i >= 0 and pick == decor_i:
 			await DecorSources.shelf(m, shop, keeper if keeper != "" else "Shelf")
 			continue
@@ -230,7 +237,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		var id: String = buyable[pick]
 		var price := price(id)
 		var qty := 1
-		if str(GameState.items[id].get("type", "")) == "seed":
+		if str(GameState.items[id].get("type", "")) == "seed" or id in BULK:
 			var dq := Dialogue.instance(m.get_tree())
 			var most := mini(MAX_SEEDS, int(GameState.run["crystals"]) / maxi(1, price))
 			var qs: Array = [1, 5, 10]
@@ -241,6 +248,8 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			qo.append("Back")
 			var cdq: Dictionary = GameState.crops.get(str(GameState.items[id].get("crop", "")), {})
 			var how := (" Comes back every %d days after the first picking." % int(cdq["regrow"])) if int(cdq.get("regrow", 0)) > 0 else " One harvest per seed."
+			if id in BULK:
+				how = str(BULK[id])
 			dq.say([{"who": keeper, "text": "%s, %s each.%s How many?  (you have %s)" % [GameState.item_name(id), Money.fmt(price), how, Money.fmt(int(GameState.run["crystals"]))], "choice": qo, "key": ""}])
 			await dq.finished
 			if dq.last_choice < 0 or dq.last_choice >= qs.size():
@@ -266,6 +275,91 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 
 
 const MAX_SEEDS := 99
+## Goods sold by the handful like seeds (C11a P3): what the "How many?" line says.
+const BULK := {"hay": " One feeds one animal for a day."}
+## Ranch supplies a farm keeper stocks once tools/gen_ranch.py has made them (ids that don't exist are left out).
+const RANCH_SUPPLIES := ["feed_mix", "animal_treat", "animal_brush", "shears", "milk_pail"]
+
+
+static func ranch_supplies() -> Array:
+	return RANCH_SUPPLIES.filter(func(i: String) -> bool: return GameState.items.has(i))
+
+
+## Ranch species a keeper sells (data/ranch.json species.buy.seller = shop/keeper id), this arc only.
+static func animals_for(seller: String) -> Array:
+	var out: Array = []
+	var arc := str(GameState.run.get("arc", ""))
+	var sp_all: Dictionary = Ranch.data().get("species", {})
+	for sid in sp_all:
+		var sp: Dictionary = sp_all[sid]
+		var buy: Dictionary = sp.get("buy", {}) if sp.get("buy", {}) is Dictionary else {}
+		if buy.is_empty() or str(buy.get("seller", "")).to_lower() != seller.to_lower() or int(buy.get("price", 0)) <= 0:
+			continue
+		if str(sp.get("arc", "")) not in ["", arc]:
+			continue
+		out.append(str(sid))
+	out.sort_custom(func(a: String, b: String) -> bool: return int(sp_all[a]["buy"]["price"]) < int(sp_all[b]["buy"]["price"]))
+	return out
+
+
+static func animal_name(sid: String) -> String:
+	var sp := Ranch.species(sid)
+	if GameState.run.get("arc", "") == "gangsters" and str(sp.get("name_gang", "")) != "":
+		return str(sp["name_gang"])
+	return str(sp.get("name", sid.capitalize()))
+
+
+## Why an animal can't be bought now ("" = it can): its home not built, too low a tier, or full.
+static func animal_why(sid: String) -> String:
+	var sp := Ranch.species(sid)
+	var home := str(sp.get("home", ""))
+	var need := maxi(1, int((sp.get("buy", {}) as Dictionary).get("tier", 1)))
+	var bid := "beehive" if home == "apiary" else home
+	if Ranch.tier(home) < need:
+		var td := Builds.tier_def(bid, need)
+		return "needs a %s" % str(td.get("name", bid.capitalize())) if not td.is_empty() else "needs a %s" % bid
+	if Ranch.roster(home).size() >= Ranch.capacity(home):
+		return "the %s is full" % str(Builds.current_def(bid).get("name", bid))
+	return ""
+
+
+## The animal counter: pick a species, pay, it moves into its home tonight (Ranch.add).
+static func animal_counter(m: GameMap, seller: String, keeper: String) -> void:
+	while true:
+		var ids := animals_for(seller)
+		var opts: Array = []
+		for sid: String in ids:
+			var why := animal_why(sid)
+			var pr := int(Ranch.species(sid)["buy"]["price"])
+			opts.append("%s  %s%s" % [animal_name(sid), Money.fmt(pr), ("  (%s)" % why) if why != "" else ""])
+		opts.append("Back")
+		var d := Dialogue.instance(m.get_tree())
+		var gang: bool = str(GameState.run.get("arc", "")) == "gangsters"
+		var greet := "Healthy stock, raised right. Nobody asks questions about a farm." if gang else "Healthy animals, raised with care. Who's coming home with you?"
+		d.say([{"who": keeper, "text": "%s  (you have %s)" % [greet, Money.fmt(int(GameState.run["crystals"]))], "choice": opts, "key": ""}])
+		await d.finished
+		var pick := d.last_choice
+		if pick < 0 or pick >= ids.size():
+			return
+		var sid: String = ids[pick]
+		var why2 := animal_why(sid)
+		if why2 != "":
+			m.hud.toast("%s: %s." % [animal_name(sid), why2], Color(1, 0.8, 0.6))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
+			continue
+		var price := int(Ranch.species(sid)["buy"]["price"])
+		if int(GameState.run["crystals"]) < price:
+			m.hud.toast("Not enough %s." % ("cash" if gang else "crystals"), Color(1, 0.7, 0.7))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
+			continue
+		var uid := Ranch.add(sid)
+		if uid == "":
+			m.hud.toast("No room for it right now.", Color(1, 0.8, 0.6))
+			continue
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+		Music.instance(m.get_tree()).sfx("cash", "coin")
+		m.hud.toast("%s joins your ranch! Look in on it at home." % animal_name(sid), Color(1, 0.9, 0.5))
+		m.xp("ranching", 5)
 
 
 static func price(id: String) -> int:
