@@ -139,6 +139,19 @@ func _run() -> void:
 	check(GameState._helper_tiles(GameState.hazel_water_cap()).size() == 12, "Hazel 4 hearts waters 12")
 	GameState.run["friendship"]["hazel"] = GameState.HEART_POINTS * 6
 	check(GameState._helper_tiles(GameState.hazel_water_cap()).size() == 30, "Hazel 6 hearts waters 30")
+	# Animal show tables stay winnable in years 1-5 (c16a_06-13)
+	var AnimalShow: Script = load("res://scripts/animal_show.gd")
+	for fc in [["egg", "eggs"], ["lantern", "fleece"]]:
+		var c: Dictionary = AnimalShow.call("cat", fc[0], fc[1])
+		var best := 0
+		for gid: String in (Ranch.data().get("products", {}) as Dictionary).keys():
+			if AnimalShow.call("fits_family", c, gid):
+				best = maxi(best, int(AnimalShow.call("score_good", gid, 20)))
+		var top := 0
+		for r: Array in c.get("rivals", []):
+			top = maxi(top, int(r[2]))
+		for yr in 5:
+			check(best > mini(top + int(AnimalShow.get("YEAR_STEP") if AnimalShow.get("YEAR_STEP") != null else 10) * yr, int(c.get("cap", 999))), "%s table: the best gold good beats the top rival in year %d" % [fc[1], yr + 1])
 	# Decor sets
 	var ents: Dictionary = {}
 	var f2 := FileAccess.open("res://data/decor.json", FileAccess.READ)
