@@ -1,5 +1,6 @@
 {
  "stream": [
+  "animal_show",
   "arc_gangsters",
   "arc_penguins",
   "arcade_hall",
@@ -86,6 +87,7 @@
   "quarry",
   "raid",
   "rain",
+  "ranch",
   "rec_center",
   "ruins",
   "sanctuary",
@@ -109,6 +111,7 @@
   "title_musicbox"
  ],
  "ver": {
+  "animal_show": "811a6c76",
   "arc_gangsters": "1ffa32c2",
   "arc_penguins": "e349b8cc",
   "arcade_hall": "4ae4d423",
@@ -195,6 +198,7 @@
   "quarry": "adef6947",
   "raid": "f02c805e",
   "rain": "1d32fc40",
+  "ranch": "4a0e2103",
   "rec_center": "252ab260",
   "ruins": "d0c91be4",
   "sanctuary": "2c1aede8",
@@ -210,6 +214,7 @@
   "winter": "1b6f145a"
  },
  "size": {
+  "animal_show": 1950389,
   "arc_gangsters": 1780300,
   "arc_penguins": 1556214,
   "arcade_hall": 1251498,
@@ -296,6 +301,7 @@
   "quarry": 1936723,
   "raid": 1388910,
   "rain": 1603671,
+  "ranch": 1841141,
   "rec_center": 2025446,
   "ruins": 1833780,
   "sanctuary": 1463735,

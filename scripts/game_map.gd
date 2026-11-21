@@ -462,6 +462,8 @@ func pup_menu_allowed() -> bool:
 		return false
 	if player._busy or player._attack_cd > 0.0 or player.anim_name.begins_with("attack"):
 		return false
+	if pet != null and is_instance_valid(pet) and pet is Pet and (pet as Pet).is_down():
+		return true  # c11b_07-09: a downed pup's menu (food/potions/Leave) opens even mid-fight
 	for e in enemies:
 		if is_instance_valid(e) and e._alive and e.position.distance_to(player.position) < 5.0 * TILE:
 			return false
@@ -477,6 +479,8 @@ func try_interact(c: Vector2i, check := false) -> bool:
 	if not check and WaterCan.try_refill(self, c):
 		return true  # C6 P7: USE with the can on water (or a well/trough) fills it
 	var thing: Dictionary = things.get(c, {})
+	if check and TeamAnimals.check_menu(self, thing):
+		return true  # c11b_09-13: CHECK a trainable animal for lessons and the team
 	if interact(c, thing):
 		return true
 	if thing.is_empty() and scene_id() != "farm" and use_consumable(str(GameState.run["selected"])):
@@ -583,6 +587,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if a != null and is_instance_valid(a):
 				pet_farm_animal(a)
 				animal_hint(a)
+				TeamAnimals.hint_once(self, RanchFarm.uid_of(a))
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool that swings): fiber, Stardew-style.
@@ -1036,7 +1041,8 @@ func pet_farm_animal(a: Node2D) -> void:
 		st["fed"] = day
 		fed_now = true
 		Music.instance(get_tree()).sfx("eat", "pickup")
-	Music.instance(get_tree()).sfx(animal_voice(kind), "pickup")
+	if kind == "rooster" or baby or not RanchVoice.say(get_tree(), uid if uid != "" else kind, "call", ""):  # c11b_14-10: species voice + lab layer
+		Music.instance(get_tree()).sfx(FarmAnimal.voice_for(kind, uid), "pickup")  # species voice from data (C11b P2)
 	_ranch_goods(a, uid)  # goods Ranch.overnight made (feeder/pasture days): one pick-up path
 	var newly := int(st["last_pet"]) != day
 	if newly:
@@ -1143,6 +1149,12 @@ static func animal_voice(kind: String) -> String:
 		return "oink"
 	if k == "bunny":
 		return "thump"
+	var rv := RanchVoice.file_of(k)  # c11b_14-10: species by id / art alias first, never by prefix
+	if rv != "":
+		return rv
+	var cv: String = preload("res://scripts/ranch_voices.gd").voice(k)  # C11b creatures (P6)
+	if cv != "":
+		return cv
 	var voices := {"cow": "moo", "duck": "quack", "goat": "bleat", "sheep": "sheep", "llama": "llama", "pig": "oink", "rabbit": "thump", "bee": "buzz", "horse": "whinny", "foal": "whinny", "donkey": "whinny"}
 	for pre: String in voices:
 		if k.begins_with(pre):
@@ -1511,7 +1523,8 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown",
 ## The town hall keeps the plaza song going (no restart on the way in); the mansion is a quiet home.
 const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
 	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "town", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
-	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
+	"school": "chapel", "mansion": "house", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house",
+	"coop": "ranch", "barn": "ranch", "hutch": "ranch", "aviary": "ranch", "terrarium": "ranch", "enclosure": "ranch"}  # C11b P6: ACE alt take
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
 const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid", "finargle",
 	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
@@ -1618,6 +1631,8 @@ func area_track() -> String:
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
 			if GameState.is_night() and Music.has_track("festival_night"):
 				return "festival_night"
+			if player != null and preload("res://scripts/animal_show.gd").near_stand(GameState.festival_today(), world_to_cell(player.position)) and Music.has_track("animal_show"):
+				return "animal_show"  # C11b P6: the ribbon tables have their own tune
 			return "festival"
 	if id in NIGHT_OK and GameState.is_night():
 		if not peng and Music.has_track("night_gang"):
@@ -3937,12 +3952,12 @@ func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, lab
 	var dx := (x + w / 2.0) * TILE - TILE / 2.0
 	draw_rect(Rect2(dx, (y + h - 1) * TILE, TILE, TILE), Color("3a2412"))
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, 7, Color(1, 1, 0.85))
+	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 func label(text: String, at: Vector2, w := 64.0) -> void:
 	var font := ThemeDB.fallback_font
-	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, 7, Color(1, 1, 0.85))
+	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(7), Color(1, 1, 0.85))
 
 
 ## Raised ground with a real cliff face under its southern edge (W28/W29 sets).

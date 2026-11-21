@@ -27,7 +27,7 @@ RULES = {
     "bond_to_train": 200,      # Ranch friend points (0..1000; 100 = one heart)
     "bond_per_lesson": 20,     # friendship a lesson adds
     "energy": 8,               # player energy per lesson
-    "rank_at": [3, 5, 7],      # lessons needed for rank 1, 2, 3 (cumulative per lesson)
+    "rank_at": [1, 4, 7],      # lessons needed for rank 1, 2, 3 (cumulative per lesson; rank 1 on the first, c11b_09-05)
     "max_rank": 3,
     "team_max": 2,             # animals on the team at once (base)
     "grown_days": 7,           # days after born_day before it can learn (matches farm young_days)
@@ -41,7 +41,7 @@ LESSONS = {
               "job": "healer", "chore": "forage", "hp": 2, "dmg": 0},
     "guard": {"name": "Guard", "desc": "Holds its ground beside you and shoves foes back.",
               "desc_gang": "Plants its hooves by you and shoves anybody pushy back.",
-              "job": "warden", "chore": "pet", "hp": 6, "dmg": 1},
+              "job": "warden", "chore": "guard", "hp": 6, "dmg": 1},  # c11b_09-11: its own chore (Chores "guard")
     "carry": {"name": "Carry", "desc": "Hauls a load: on the farm it carries the harvest to a chest.",
               "desc_gang": "Hauls the load: on the farm it carts the harvest to a chest.",
               "job": "warden", "chore": "harvest", "hp": 4, "dmg": 0},
@@ -76,6 +76,7 @@ ALIASES = {
     "goat_kid": "goat", "goat2": "goat", "kid_goat": "goat", "llama_cria": "llama", "llama_b": "llama",
     "foal": "donkey", "donkey_b": "donkey", "foal_b": "donkey", "lamb": "sheep", "sheep_woolly": "sheep",
     "chicken": "hen", "chick": "hen", "duckling": "duck",
+    "chrome_hen": "hen", "glow_sheep": "sheep", "circuit_goat": "goat", "alpaca": "llama",  # C11b P1 hook (c11b_03-08)
 }
 
 NAMES = ["Biscuit", "Clover", "Pepper", "Maple", "Juniper", "Waffles", "Pebble", "Thistle", "Nutmeg", "Bramble",
@@ -117,6 +118,14 @@ def main():
     if errs:
         print("gen_team_animals: " + "; ".join(errs))
         sys.exit(1)
+    # c11b_14-07: one voice table: a species gen_ranch knows takes gen_ranch's voice (RanchVoice plays it).
+    rp = os.path.join(ROOT, "data", "ranch.json")
+    if os.path.exists(rp):
+        rs = json.load(open(rp)).get("species", {})
+        for sid, sp in SPECIES.items():
+            key = {"hen": "chicken"}.get(sid, sid)
+            if rs.get(key, {}).get("voice"):
+                sp["voice"] = rs[key]["voice"]
     out = {"rules": RULES, "lessons": LESSONS, "species": SPECIES, "aliases": ALIASES, "names": NAMES}
     with open(os.path.join(ROOT, "data", "team_animals.json"), "w") as f:
         json.dump(out, f, indent=1, sort_keys=True)

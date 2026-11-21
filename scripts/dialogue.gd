@@ -293,7 +293,7 @@ func _next() -> void:
 		return
 	_who.text = str(line.get("who", ""))
 	_who.visible = _who.text != ""
-	_full = Money.t(str(line.get("text", "")))
+	_full = PadInput.words(Money.t(str(line.get("text", ""))))  # S1 s1_08-06: "tap USE" -> "press A" on a pad
 	if is_inside_tree():
 		line_cues(get_tree(), line)
 	_shown = 0.0
@@ -473,7 +473,7 @@ func _show_choice(line: Dictionary) -> void:
 	_choice_focus = 0
 	for i in opts.size():
 		var b := Button.new()
-		b.text = str(opts[i])
+		b.text = PadInput.words(str(opts[i]))
 		b.add_theme_font_size_override("font_size", 9 + Settings.text_bonus())
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -612,7 +612,12 @@ func _process(delta: float) -> void:
 	_panel.position.y = maxf(4.0, minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - 6.0 - _panel.size.y))
 	if _skip_btn:
 		_skip_btn.visible = skippable and not skipping and not _in_choice
-		_skip_btn.position = Vector2(_panel.position.x + _panel.size.x - SKIP_SIZE.x, _panel.position.y - SKIP_SIZE.y - 3)
+		# S1 s1_08-10: name the pad/key button that skips (MENU) unless playing by touch.
+		var sk := "Skip ▸▸" if PadInput.device_kind() == "touch" else "Skip (%s)" % InputSetup.prompt("menu")
+		if _skip_btn.text != sk:
+			_skip_btn.text = sk
+			_skip_btn.size = Vector2(maxf(SKIP_SIZE.x, 14.0 + sk.length() * 5.5), SKIP_SIZE.y)
+		_skip_btn.position = Vector2(_panel.position.x + _panel.size.x - _skip_btn.size.x, _panel.position.y - SKIP_SIZE.y - 3)
 	_process_input()
 	if _typing:
 		var cps := Settings.text_cps()  # Options > Text speed (C9); 0 = instant
@@ -726,7 +731,7 @@ func _input(event: InputEvent) -> void:
 		pos = (event as InputEventScreenTouch).position
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.device != InputEvent.DEVICE_ID_EMULATION:
 		pos = (event as InputEventMouseButton).position
-	if pos != Vector2.INF and _skip_btn and _skip_btn.visible and Rect2(_skip_btn.position, SKIP_SIZE).grow(4).has_point(DisplayMode.ui(pos)):
+	if pos != Vector2.INF and _skip_btn and _skip_btn.visible and Rect2(_skip_btn.position, _skip_btn.size).grow(4).has_point(DisplayMode.ui(pos)):
 		return  # the Skip button takes it
 	if pos != Vector2.INF and pos.y < TouchControls.TOP_OF_CONTROLS:
 		_advance()

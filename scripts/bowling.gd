@@ -1404,7 +1404,7 @@ func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag
 		c.draw_rect(box, bg if f != cur else Color("34345a"))
 		c.draw_rect(box, Color("6a6a88"), false, 1.0)
 		if frame_nums:
-			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, 6, Color(0.6, 0.6, 0.75))
+			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, DisplayMode.df(6), Color(0.6, 0.6, 0.75))
 		var marks := frame_marks(rs, f)
 		var nbox := 2 if f < 9 else 3
 		for k in nbox:
@@ -1489,7 +1489,7 @@ func _draw_controls() -> void:
 		var dx := sc.x - s * 6.0
 		c.draw_rect(Rect2(dx - 2, sc.y - 3, 4, 3), Color(1, 0.8, 0.3) if s == spin_step else Color(1, 1, 1, 0.2))
 	var spin_txt := "straight" if spin_step == 0 else ("hook %s %d" % ["◀" if spin_step > 0 else "▶", absi(spin_step)])
-	c.draw_string(_font, Vector2(98, 476), spin_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 1, 1, 0.6))
+	c.draw_string(_font, Vector2(98, 476), spin_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, DisplayMode.df(7), Color(1, 1, 1, 0.6))
 	# Power meter on the right of the lane, with the sweet band.
 	if phase in ["aim", "power", "roll", "result"]:
 		var pr := Rect2(250, 150, 12, 120)
@@ -1503,7 +1503,7 @@ func _draw_controls() -> void:
 		c.draw_rect(Rect2(pr.position.x + 2, pr.end.y - h, pr.size.x - 4, h), pc)
 		c.draw_rect(band, Color(1, 0.85, 0.3, 0.9), false, 1.0)
 		c.draw_rect(pr, Color(1, 1, 1, 0.5), false, 1.0)
-		c.draw_string(_font, Vector2(pr.position.x - 10, pr.end.y + 10), "POWER", HORIZONTAL_ALIGNMENT_CENTER, 32, 6, Color(1, 1, 1, 0.7))
+		c.draw_string(_font, Vector2(pr.position.x - 10, pr.end.y + 10), "POWER", HORIZONTAL_ALIGNMENT_CENTER, 32, DisplayMode.df(6), Color(1, 1, 1, 0.7))
 
 
 ## The villager's frame, ball by ball.

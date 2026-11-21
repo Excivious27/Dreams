@@ -299,13 +299,7 @@ func _pup_cmd(cmd: String) -> void:
 			m.hud.toast("Guard needs the Guard Dog skill (Pup tree).", Color(1, 0.85, 0.6))
 		return
 	else:
-		pt.set_mode(cmd)
-		var mh := get_tree().current_scene as GameMap
-		if mh and mh.hud:
-			mh.hud.toast("%s: %s" % [Pet.name_of(), str({"follow": "heel", "attack": "attack", "wait": "stay", "guard": "guard"}.get(cmd, cmd)).capitalize()], Color(1, 0.95, 0.75))
-	# A cat answers with a meow, a dog with a bark (Pet.voice, P5, says the same).
-	var cat := str(GameState.look_d().get("pet", "")).begins_with("cat")
-	Music.instance(get_tree()).sfx("meow" if cat else "bark", "pickup")
+		pt.set_mode(cmd)  # Pet.set_mode / recall give the toast, whistle and the pup's own voice (c11b_07-01)
 
 
 func _hit(pos: Vector2) -> String:
@@ -465,7 +459,7 @@ func _on_draw() -> void:
 					if Art.has("ui", ic):
 						_canvas.draw_texture_rect(Art.tex("ui", ic), Rect2(cp - Vector2(8, 8), Vector2(16, 16)), false, Color(1, 1, 1, 0.4 if dim else (1.0 if active else 0.85)))
 					else:
-						_canvas.draw_string(font, cp + Vector2(-pr, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0, 7, Color(1, 1, 1, 0.9))
+						_canvas.draw_string(font, cp + Vector2(-pr, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0, DisplayMode.df(7), Color(1, 1, 1, 0.9))
 				elif _held.has("pup:" + cmd):
 					Art.draw_disc(_canvas, cp, pr, Color(1, 1, 1, 0.25))
 		if int(GameState.run.get("day", 1)) <= 3:
@@ -479,9 +473,9 @@ func _on_draw() -> void:
 						continue
 					var lp := Vector2(_pup_x(), PUP_Y0 + ps * i) + Vector2(-pr - 4, pr + 5)
 					if pass_i == 0:
-						_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, 7, 2, Color(0, 0, 0, 0.8))
+						_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, DisplayMode.df(7), 2, Color(0, 0, 0, 0.8))
 					else:
-						_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, 7, Color(1, 1, 1, 0.95))
+						_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, DisplayMode.df(7), Color(1, 1, 1, 0.95))
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
@@ -526,16 +520,15 @@ func _on_draw() -> void:
 				var ab := Companion.ability_for(m0, m0.player)
 				var cl := Companion.cooldown_left(ab)
 				if cl > 0.0:
-					var full := float(Companion.COOLDOWN.get(ab, Companion.DEFAULT_COOLDOWN))
 					_canvas.draw_circle(p, r, Color(0, 0, 0, 0.45))
-					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - cl / full), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
+					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - Companion.cooldown_frac(ab)), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
 		var label := str(b["label"])
 		var size := 9 if r > 20.0 else 7
 		if action == "a" and context_word != "" and context_word.to_lower() != label.to_lower() and not get_tree().paused:  # "Use" over USE says nothing (C5)
 			var tw := font.get_string_size(context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x + 8.0
 			var tp := p + Vector2(-tw / 2.0, -r - 13.0)
 			_canvas.draw_rect(Rect2(tp, Vector2(tw, 11)), Color(0.1, 0.07, 0.04, 0.75))
-			_canvas.draw_string(font, tp + Vector2(4, 8.5), context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.93, 0.7))
+			_canvas.draw_string(font, tp + Vector2(4, 8.5), context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), Color(1, 0.93, 0.7))
 		if action == "a":
 			# Show what USE will do: the held tool's icon, or a sword.
 			var held := GameState.held_tool() if not GameState.run.is_empty() else ""
@@ -592,6 +585,6 @@ func _on_draw() -> void:
 func _caption(font: Font, p: Vector2, r: float, label: String, outline: bool) -> void:
 	var at := Vector2(p.x - r, minf(p.y + r + 7.0, 479.0))
 	if outline:
-		_canvas.draw_string_outline(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 7, 2, Color(0, 0, 0, 0.8))
+		_canvas.draw_string_outline(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, DisplayMode.df(7), 2, Color(0, 0, 0, 0.8))
 	else:
-		_canvas.draw_string(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 7, Color(1, 1, 1, 0.85))
+		_canvas.draw_string(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, DisplayMode.df(7), Color(1, 1, 1, 0.85))

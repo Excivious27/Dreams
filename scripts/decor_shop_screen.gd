@@ -181,7 +181,7 @@ func _draw_it() -> void:
 	var wear_only := not _rows.is_empty() and _rows.all(func(i: Variant) -> bool: return DecorSources.is_wear(str(i)))
 	c.draw_string(_font, Vector2(0, 30), "WARDROBE" if wear_only else ("YARD AND HOME" if who == "Tess" else "HOME GOODS"), HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.45))
 	c.draw_string(_font, Vector2(0, 46), Money.t("%s · you have %s" % [who if who != "" else "Shelf", Money.fmt(int(GameState.run["crystals"]))]), HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.75))
-	c.draw_string(_font, Vector2(0, 60), "New pieces every few days. Buys go to your %s." % ("wardrobe" if wear_only else "decor box"), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
+	c.draw_string(_font, Vector2(0, 60), "New pieces every few days. Buys go to your %s." % ("wardrobe" if wear_only else "decor box"), HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(1, 1, 1, 0.45))
 	if _rows.is_empty():
 		c.draw_string(_font, Vector2(0, LIST_Y + 30), "Shelf's bare today.", HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.6))
 	for i in range(top, mini(_rows.size(), top + VISIBLE)):
@@ -201,7 +201,7 @@ func _draw_it() -> void:
 		c.draw_string(_font, Vector2(44, y + 13), _fit(DecorSources.name_of(id), 140.0, 9), HORIZONTAL_ALIGNMENT_LEFT, 150, 9, Color.WHITE)
 		_dots(c, 46, y + 22, id)
 		var have := DecorSources.held(id)
-		c.draw_string(_font, Vector2(84, y + 25), DecorSources.rarity_word(id) + (("  (have %d)" % have) if have > 0 else ""), HORIZONTAL_ALIGNMENT_LEFT, 110, 7, Color(0.85, 0.85, 0.9))
+		c.draw_string(_font, Vector2(84, y + 25), DecorSources.rarity_word(id) + (("  (have %d)" % have) if have > 0 else ""), HORIZONTAL_ALIGNMENT_LEFT, 110, DisplayMode.df(7), Color(0.85, 0.85, 0.9))
 		c.draw_string(_font, Vector2(196, y + 18), Money.t(Money.fmt(price)), HORIZONTAL_ALIGNMENT_RIGHT, 60, 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4))
 	if sel >= 0 and sel < _rows.size():
 		var id := str(_rows[sel])
@@ -220,7 +220,7 @@ func _draw_it() -> void:
 		c.draw_rect(br, Color(1, 1, 1, 0.12))
 		c.draw_rect(br, Color(1, 0.85, 0.35, 0.8), false, 1.0)
 		c.draw_string(_font, Vector2(br.position.x, br.position.y + 22), str(b[1]), HORIZONTAL_ALIGNMENT_CENTER, br.size.x, 11, Color(1, 0.9, 0.6))
-	c.draw_string(_font, Vector2(0, 470), PadInput.words("▲▼ pick · USE buy · B leave"), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.5))
+	c.draw_string(_font, Vector2(0, 470), PadInput.words("▲▼ pick · USE buy · B leave"), HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(1, 1, 1, 0.5))
 
 
 func _fit(t: String, w: float, fs: int) -> String:

@@ -19,6 +19,11 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 
+## deck_text_test.gd extends this walk and reports under its own name.
+func _test_name() -> String:
+	return "phone_ui_test"
+
+
 func _frames(n: int) -> void:
 	for i in n:
 		await process_frame
@@ -77,7 +82,7 @@ func _run() -> void:
 	for a: String in ["penguins", "gangsters"]:
 		arc = a
 		await _arc_pass()
-	print("phone_ui_test: %d issue(s)" % issues.size())
+	print("%s: %d issue(s)" % [_test_name(), issues.size()])
 	quit(1 if issues.size() > 0 else 0)
 
 

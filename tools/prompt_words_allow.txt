@@ -1,0 +1,50 @@
+arcade_skee.gd:◀ ▶ (or tap the lane) pick your line
+arcade_whack.gd:Tap a grump, or aim with the arrows + BOP.
+arcade_whack.gd:Tap a snitch, or aim with the arrows + BOP.
+battle_drill.gd:Tap RALLY (top left) and pick \"Follow me\". Once your first
+battle_drill.gd:Tap RALLY and send everyone to %s. They go on ahead.
+block_jumper.gd:JUMP (A) or tap the picture · hold = higher · ▼ ducks
+campaign_screen.gd:Glowing nodes touch ground you hold: tap one, then Attack or
+campaign_screen.gd:Tap a glowing node next to ground you hold.
+craft_screen.gd:Tap a recipe to pick it.
+decor_catalogue.gd:Tap a chip to change it (hold: back), a piece for its card. 
+decor_mode.gd:Tap a spot, tap again to place or pick up. Drag to move.
+farm.gd:Hold the hoe (the first toolbar slot), face the grass and ta
+farm.gd:Partners: tap %s's round button (bottom, left of CHECK) to u
+farm.gd:Tap %s's round button (bottom of the screen, left of CHECK) 
+farm.gd:Tap the hoe on your toolbar, face grass and tap USE to till.
+game_menu.gd:Sure? Tap again to reset %s
+game_menu.gd:Touch: joystick (drag anywhere) or tap where to go · USE = u
+game_state.gd:Hold the hoe, face grass, tap USE to till.
+game_state.gd:Your crop is ripe: face it and tap USE to harvest.
+goal_line.gd:Your crop is ripe: face it and tap USE to harvest.
+meadow.gd:Grumps. The Star Crystal wasn't exaggerating. Tap USE to swi
+meadow.gd:Tap USE to swing, ROLL to dodge. Nobody's watching, so there
+mine.gd:Step in or tap USE: climb down to floor %d
+mine.gd:Swing your pickaxe at rocks (tap USE): stone, copper, iron, 
+pad_input.gd:(or arrow keys)
+pad_input.gd:Tap 
+pad_input.gd:Tap a 
+pad_input.gd:Tap for more
+pad_input.gd:Tap one
+pad_input.gd:arrow keys
+pad_input.gd:tap 
+pad_input.gd:tap a 
+pad_input.gd:tap for more
+pad_input.gd:tap it
+pad_input.gd:tap one
+ranch.gd:%d animal%s went hungry: hold hay and tap them, or fill a fe
+rec_center.gd:2) The dotted path sweeps across the lane: tap when it ends 
+secrets.gd:Page: Tap the tunnel walls and they ring like bells. The dig
+skill_glow.gd:%d %s point%s to spend! Tap a node, then Learn.
+sleep_report.gd:%d crop%s ripe: face %s and tap USE to harvest.
+test_map.gd:A attack · B run / tap B to play · MENU next
+tool_hint.gd:%s: tap USE to fire at foes. It uses rounds.
+tool_hint.gd:%s: tap USE to swing at foes.
+tool_hint.gd:Fishing Rod: face water and tap USE to cast; tap again when 
+tool_hint.gd:Hoe: face grass on your farm and tap USE to till. Hold USE a
+tool_hint.gd:Hold the %s %s: tap it on your toolbar.
+tool_hint.gd:Seeds: face tilled soil and tap USE to plant.
+tool_hint.gd:Sword: tap USE to swing at foes.
+tool_hint.gd:Watering Can: tap USE on dry soil. When it runs dry, USE it 
+town.gd:Cast with USE, wait for the splash, tap USE again. Patience 

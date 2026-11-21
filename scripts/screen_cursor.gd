@@ -147,6 +147,8 @@ func _collect(n: Node, out: Array) -> void:
 			var b := c as BaseButton
 			if b.is_visible_in_tree() and not b.disabled and not b.has_meta("pc_skip") and (not filter.is_valid() or bool(filter.call(b))):
 				out.append(b)
+		elif (c is LineEdit or c is TextEdit) and TextEntry.editable(c as Control) and not c.has_meta("pc_skip"):
+			out.append(c)  # S1 s1_08-08: text fields are cursor targets; A opens typing
 		if c is Control and not (c as Control).visible:
 			continue
 		_collect(c, out)
@@ -244,13 +246,18 @@ func press() -> void:
 	resync()
 	if cur and cur is BaseButton and not (cur as BaseButton).disabled:
 		(cur as BaseButton).pressed.emit()
+	elif cur and (cur is LineEdit or cur is TextEdit):
+		if PadInput.using_pad():
+			TextEntry.open(cur)
+		else:
+			cur.grab_focus()  # keyboard players type straight into it
 
 
 func _process(delta: float) -> void:
 	_arm += 1
 	if _frame and is_instance_valid(_frame):
 		_frame.queue_redraw()
-	if not enabled or _arm < ARM_FRAMES:
+	if not enabled or _arm < ARM_FRAMES or TextEntry.is_open():
 		return
 	var host := get_parent()
 	if host is CanvasLayer and not (host as CanvasLayer).visible:

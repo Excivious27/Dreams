@@ -64,6 +64,8 @@ static func check(npc: String) -> Array:
 		var p: Dictionary = data()[npc][h]
 		var nm := str(GameState.npcs.get(npc, {}).get("name", npc))
 		_give(p.get("give", {}))
+		if p.get("animal", null) is Dictionary:
+			gift_animal(p["animal"], "heart:%s" % k, nm)  # a heart-perk animal (c11b_04-05)
 		var b: Dictionary = p.get("bonus", {})
 		for stat: String in b:
 			GameState.run["bonus_" + stat] = int(GameState.run.get("bonus_" + stat, 0)) + int(b[stat])
@@ -71,6 +73,38 @@ static func check(npc: String) -> Array:
 			GameState._apply_max_stats()
 		out.append("♥%s %s: %s" % [h, nm, str(p.get("text", ""))])
 	return out
+
+
+## Give a ranch animal from data {species, variant, name, keepsake} once per source key (heart:<npc>_<h>,
+## ss:<chain>): through P3's RanchGift (room rules, waiting letter, morning delivery) when it is in the
+## build, else straight into its home. Returns the uid ("" = waiting or not given).
+static func gift_animal(a: Dictionary, source: String, giver := "") -> String:
+	var sp := str(a.get("species", ""))
+	if sp == "" or GameState.run.is_empty():
+		return ""
+	var opts := {"giver": giver}
+	for k in ["name", "keepsake", "variant", "home"]:
+		if a.has(k):
+			opts[k] = a[k]
+	var path := "res://scripts/ranch_gift.gd"
+	if ResourceLoader.exists(path):
+		var rg: Script = load(path)
+		return str(rg.call("give", sp, source, opts))
+	var f: Dictionary = GameState.run["flags"]
+	if f.has("gift_" + source) or Ranch.species(sp).is_empty():
+		return ""
+	var uid := Ranch.add(sp, str(a.get("home", Ranch.species(sp).get("home", ""))), str(a.get("name", "")))
+	if uid == "":
+		return ""
+	f["gift_" + source] = uid
+	var row := Ranch.animal(uid)
+	row["gift"] = true
+	if str(a.get("variant", "")) != "":
+		row["variant"] = str(a["variant"])
+	if bool(a.get("keepsake", false)):
+		row["keepsake"] = true
+		row["giver"] = giver
+	return uid
 
 
 static func _give(g: Dictionary) -> void:

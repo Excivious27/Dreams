@@ -491,8 +491,8 @@ func _process(delta: float) -> void:
 		var c: Vector2i = s[0]
 		var dist := pc.distance_to(c)
 		if dist <= 3.0 and not _sniffed:
-			_sniffed = true
-			if map.pet != null and is_instance_valid(map.pet) and map.pet.visible:
+			if map.pet != null and is_instance_valid(map.pet) and map.pet.visible and str(Pet.state().get("mode", "follow")) in ["follow", "attack"] and map.pet.position.distance_to(map.player.position) < 5.0 * GameMap.TILE:  # c11b_07-12: only a pup at your side sniffs
+				_sniffed = true
 				map.hud.toast("%s sniffs at something nearby..." % Pet.name_of(), Color(0.9, 0.95, 1.0))
 				Pet.say(map.get_tree(), "call")
 		if (twilight or dist <= 4.0) and randf() < 0.35:
@@ -571,8 +571,8 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			m.fx("poof", m.player.position + Vector2(0, -6), 12.0, 0.4)
 			var dest := m.free_spot_near(m.cell_center(to))
 			m.player.position = dest
-			if m.pet != null and is_instance_valid(m.pet):
-				m.pet.position = dest + Vector2(10, 0)
+			if m.pet != null and is_instance_valid(m.pet) and str(Pet.state().get("mode", "follow")) in ["follow", "attack"]:  # c11b_07-12: a staying/guarding pup stays put
+				m.pet.position = m.free_spot_near(dest + Vector2(10, 0))
 			m.fx("poof", dest + Vector2(0, -6), 12.0, 0.4)
 			return true
 	return false
