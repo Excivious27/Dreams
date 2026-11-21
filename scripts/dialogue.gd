@@ -473,7 +473,7 @@ func _show_choice(line: Dictionary) -> void:
 	_choice_focus = 0
 	for i in opts.size():
 		var b := Button.new()
-		b.text = str(opts[i])
+		b.text = PadInput.words(str(opts[i]))
 		b.add_theme_font_size_override("font_size", 9 + Settings.text_bonus())
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

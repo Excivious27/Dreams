@@ -199,7 +199,7 @@ func _draw_it() -> void:
 	for i in _seq.size():
 		var c := Color(0.4, 1, 0.85) if i < _at else Color(0.2, 0.4, 0.4)
 		_canvas.draw_circle(Vector2(135 - _seq.size() * 6 + i * 12 + 6, 350), 4.0, c)
-	_canvas.draw_string(f, Vector2(0, 420), "Tap the arrows (or arrow keys) · B to unplug", HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(0.5, 0.8, 0.75))
+	_canvas.draw_string(f, Vector2(0, 420), PadInput.words("Tap the arrows (or arrow keys) · B to unplug"), HORIZONTAL_ALIGNMENT_CENTER, 270, DisplayMode.df(7), Color(0.5, 0.8, 0.75))
 	_canvas.draw_rect(BTN_UNPLUG, Color(0.05, 0.2, 0.2, 0.9))
 	_canvas.draw_rect(BTN_UNPLUG, Color(0.4, 1, 0.85), false, 1.0)
 	_canvas.draw_string(f, Vector2(BTN_UNPLUG.position.x, BTN_UNPLUG.position.y + 18), "UNPLUG", HORIZONTAL_ALIGNMENT_CENTER, BTN_UNPLUG.size.x, 10, Color(0.5, 1, 0.9))

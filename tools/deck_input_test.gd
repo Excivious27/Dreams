@@ -209,5 +209,38 @@ func _run() -> void:
 	ok(not Settings.fullscreen_key_hint() or PadInput.device_kind() == "keys", "F11 hint only for keyboard players")
 	await _tap_btn(JOY_BUTTON_A)
 	ok(not Settings.fullscreen_key_hint(), "no F11 hint while a pad is used")
+	# --- pad words (s1_08-06)
+	ok(PadInput.device_kind() == "pad", "pad is the device for the word checks")
+	var w := PadInput.words("Tap a slot to see what fits it.")
+	ok(not w.contains("Tap") and w.begins_with("Pick a slot"), "menu 'Tap a' reads 'Pick a' on a pad (%s)" % w)
+	w = PadInput.words("Tap the arrows (or arrow keys) · B to unplug")
+	ok(not w.to_lower().contains("arrow") and w.contains("D-pad"), "no arrow keys on a pad (%s)" % w)
+	w = PadInput.words("Hold BOP, then RALLY")
+	ok(not w.contains("BOP") and not w.contains("RALLY"), "BOP/RALLY become pad buttons (%s)" % w)
+	# --- pad-friendly backups (s1_08-07)
+	SaveTransfer.pad_files_force = 1
+	var res := [false, ""]
+	SaveTransfer.save_file(layer, "DREAMS-TEST-CODE", func(okk: bool, where: String) -> void:
+		res[0] = okk
+		res[1] = where)
+	ok(bool(res[0]) and str(res[1]).begins_with("backups/"), "pad save writes into user://backups (%s)" % str(res[1]))
+	ok(BackupPicker.list_files().size() >= 1, "the backup is listed")
+	var got := ["unset"]
+	SaveTransfer.open_file(layer, func(t: String) -> void: got[0] = t)
+	await _frames(4)
+	var picker: BackupPicker = null
+	for c in root.get_children():
+		if c is BackupPicker:
+			picker = c
+	ok(picker != null, "pad open shows the in-game backup list, no OS dialog")
+	await _tap_btn(JOY_BUTTON_A)
+	await _frames(2)
+	ok(got[0] == "DREAMS-TEST-CODE", "A loads the newest backup (got %s)" % got[0])
+	SaveTransfer.open_file(layer, func(t: String) -> void: got[0] = t)
+	await _frames(4)
+	await _tap_btn(JOY_BUTTON_B)
+	await _frames(2)
+	ok(got[0] == "", "B cancels with an empty text")
+	SaveTransfer.pad_files_force = -1
 	print("deck_input_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

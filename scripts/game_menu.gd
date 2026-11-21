@@ -269,7 +269,7 @@ func toggle() -> void:
 
 func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = PadInput.words(text)  # S1 s1_08-06: no touch words on a pad
 	l.add_theme_font_size_override("font_size", Settings.font(size))  # Options > Text size (C9)
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

@@ -266,10 +266,17 @@ static func words(text: String) -> String:
 	if dev == "touch":
 		return text
 	var t := text
-	for pair: Array in [["USE", "a"], ["CHECK", "action"], ["MENU", "menu"], ["ROLL", "dodge"], ["CALL", "pup"]]:
+	for pair: Array in [["USE", "a"], ["CHECK", "action"], ["MENU", "menu"], ["ROLL", "dodge"], ["CALL", "pup"], ["BOP", "a"], ["RALLY", "rally"]]:
 		t = t.replace(" " + str(pair[0]), " " + InputSetup.prompt(str(pair[1])))
 		if t.begins_with(str(pair[0])):
 			t = InputSetup.prompt(str(pair[1])) + t.substr(str(pair[0]).length())
+	# S1 s1_08-06: no touch or keyboard words with a controller in hand.
+	if dev == "pad":
+		t = t.replace("tap for more", "press %s for more" % InputSetup.prompt("a")).replace("Tap for more", "Press %s for more" % InputSetup.prompt("a"))
+		t = t.replace("Tap a ", "Pick a ").replace("tap a ", "pick a ").replace("tap one", "pick one").replace("Tap one", "Pick one")
+		t = t.replace("tap it", "press %s on it" % InputSetup.prompt("a"))
+		t = t.replace("(or arrow keys)", "").replace("arrow keys", "the D-pad").replace("the arrows", "the D-pad").replace("arrows", "D-pad")
+		t = t.replace("  ", " ")
 	t = t.replace("Tap ", "Press ").replace("tap ", "press ").replace("Hold USE", "Hold " + InputSetup.prompt("a"))
 	return t
 

@@ -770,7 +770,7 @@ func _draw_title(c: Control) -> void:
 	text_outline(c, Vector2(0, 178), title.to_upper(), W, 16, accent, HORIZONTAL_ALIGNMENT_CENTER)
 	var y := 198.0
 	for line in howto:
-		text(c, Vector2(16, y), str(line), W - 32, 8, Color(0.92, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)
+		text(c, Vector2(16, y), PadInput.words(str(line)), W - 32, 8, Color(0.92, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)  # S1 s1_08-06
 		y += 12.0
 	text(c, Vector2(0, 272), "Best: %d" % Tickets.best_score(game_id), W, 9, Color(1, 0.9, 0.6), HORIZONTAL_ALIGNMENT_CENTER)
 	var blink := fmod(t, 1.0) < 0.65

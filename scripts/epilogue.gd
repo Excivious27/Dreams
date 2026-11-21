@@ -342,7 +342,7 @@ func _show() -> void:
 		if mu._current != "credits":
 			mu.play("credits", 2.0)
 		mu.queue_after("title")
-	_foot.text = "%d / %d · tap for more · B to skip" % [_i + 1, _slides.size()]
+	_foot.text = PadInput.words("%d / %d · tap for more · B to skip" % [_i + 1, _slides.size()])
 	_body.modulate.a = 0.0
 	create_tween().tween_property(_body, "modulate:a", 1.0, 0.5)
 
