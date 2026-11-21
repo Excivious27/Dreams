@@ -6,6 +6,8 @@ extends Node2D
 ## and stands on pilings (c5_03 #6: piers were flat plank rectangles).
 
 var map: GameMap
+## The 3x3 plank set: "dock" (wood) or "concrete_pier" (the gangster harbour, c14_04-26).
+var tiles_name := "dock"
 
 
 func _ready() -> void:
@@ -43,5 +45,5 @@ func _draw() -> void:
 		var d := _is_dock(k + Vector2i(0, 1))
 		var ix := 1 if (l == r) else (0 if not l else 2)
 		var iy := 1 if (u == d) else (0 if not u else 2)
-		if not Art.draw_tile(self, "tiles", "dock", at, iy * 3 + ix):
+		if not Art.draw_tile(self, "tiles", tiles_name, at, iy * 3 + ix):
 			draw_rect(Rect2(at, Vector2(16, 16)), Color("a07a4c"))
