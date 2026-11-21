@@ -107,6 +107,20 @@ static func _closed(kb: PadKeyboard) -> void:
 		_kb = null
 
 
+## Pad A on a focused text field opens typing. Caught in _input, before the
+## GUI, so the LineEdit never takes the press as ui_accept (text_submitted).
+func _input(ev: InputEvent) -> void:
+	if is_open() or not (ev is InputEventJoypadButton) or not ev.is_action_pressed("a"):
+		return
+	var vp := get_viewport()
+	var f := vp.gui_get_focus_owner() if vp else null
+	if editable(f):
+		PadInput.note_event(ev, vp)  # handled here, so PadInput._input won't see it
+		vp.set_input_as_handled()
+		open(f)
+		Input.action_release("a")  # the press that opened the keyboard types nothing
+
+
 func _process(_d: float) -> void:
 	if is_open() or not PadInput.using_pad():
 		return
@@ -116,4 +130,4 @@ func _process(_d: float) -> void:
 	var f := vp.gui_get_focus_owner() if vp else null
 	if editable(f):
 		open(f)
-		Input.action_release("a")  # the press that opened the keyboard types nothing
+		Input.action_release("a")

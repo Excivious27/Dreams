@@ -132,7 +132,7 @@ func finish(ok: bool) -> void:
 			te.text = buf
 			te.text_changed.emit()
 	if is_instance_valid(field) and field.is_inside_tree():
-		field.grab_focus.call_deferred()
+		field.grab_focus.call_deferred()  # pad A on it reopens typing (TextEntry._input), never submits
 	TextEntry._closed(self)
 	queue_free()
 

@@ -96,9 +96,12 @@ func _run() -> void:
 	le.grab_focus()
 	await _frames(1)
 	TextEntry.steam_force = 0
+	var submits := [0]
+	le.text_submitted.connect(func(_t: String) -> void: submits[0] += 1)
 	await _tap_btn(JOY_BUTTON_A)
 	await _frames(2)
 	ok(TextEntry.is_open(), "pad A on a focused LineEdit opens the keyboard")
+	ok(submits[0] == 0, "pad A never submits the field (ui_accept caught)")
 	var kb: PadKeyboard = null
 	for c in root.get_children():
 		if c is PadKeyboard:
@@ -123,6 +126,14 @@ func _run() -> void:
 		await _frames(2)
 		ok(le.text == "ABa", "Done writes the text back (got %s)" % le.text)
 		ok(not TextEntry.is_open(), "Done closes the keyboard")
+		ok(le.has_focus(), "the field keeps focus after Done")
+		await _tap_btn(JOY_BUTTON_A)
+		await _frames(2)
+		ok(TextEntry.is_open() and submits[0] == 0, "A on the field again reopens typing, no submit")
+		for c2 in root.get_children():
+			if c2 is PadKeyboard:
+				(c2 as PadKeyboard).finish(false)
+		await _frames(2)
 	# B on empty text cancels
 	le.text = ""
 	ok(TextEntry.open(le) == "pad", "open() picks the built-in keyboard without Steam")
@@ -149,6 +160,7 @@ func _run() -> void:
 		if c is PadKeyboard:
 			(c as PadKeyboard).finish(false)
 	await _frames(2)
+	le.release_focus()
 	# --- ScreenCursor reaches text fields
 	var sc := ScreenCursor.make(layer, box)
 	await _frames(2)
@@ -161,6 +173,8 @@ func _run() -> void:
 		if c is PadKeyboard:
 			(c as PadKeyboard).finish(false)
 	await _frames(2)
+	le.release_focus()
+	sc.enabled = false
 	# --- Deck text floor
 	DisplayMode.deck_force = 0
 	ok(DisplayMode.deck_min_font() == 0 and DisplayMode.df(7) == 7, "off the Deck sizes are unchanged")

@@ -275,8 +275,7 @@ static func words(text: String) -> String:
 		t = t.replace("tap for more", "press %s for more" % InputSetup.prompt("a")).replace("Tap for more", "Press %s for more" % InputSetup.prompt("a"))
 		t = t.replace("Tap a ", "Pick a ").replace("tap a ", "pick a ").replace("tap one", "pick one").replace("Tap one", "Pick one")
 		t = t.replace("tap it", "press %s on it" % InputSetup.prompt("a"))
-		t = t.replace("(or arrow keys)", "").replace("arrow keys", "the D-pad").replace("the arrows", "the D-pad").replace("arrows", "D-pad")
-		t = t.replace("  ", " ")
+		t = t.replace(" (or arrow keys)", "").replace("(or arrow keys)", "").replace("arrow keys", "the D-pad").replace("the arrows", "the D-pad").replace("arrows", "D-pad")
 	t = t.replace("Tap ", "Press ").replace("tap ", "press ").replace("Hold USE", "Hold " + InputSetup.prompt("a"))
 	return t
 
