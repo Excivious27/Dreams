@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-21 00:50 PT, personal account. C12 integration done on c12/integ (P1-P7 merged, hooks, roll-CI fails fixed); full CI c12i running, then ship + package C12. C13 audio depth auditors nearly done. Steam readiness artifact: https://claude.ai/artifact/2D2zYkwGXcWte5JSskKmfy (slug 09c74aa8-ac79-44a9-b25d-260afde98584).
-- **Done:** CONDUCT 1-11b, S1, relay live, optimization rounds 1-3.
-- **In progress:** CONDUCT S1 (Steam prep): 18 audits done (/home/claude/wt/s1_reports), packages docs/reports/S1-PACKAGES.md, fix agents P1-P6 DONE on s1f/p1..p6 (reports /home/claude/wt/s1f_reports). C11b docs/package.
-- **Next step:** merge s1f/p1..p6 into main, S1 integration agent (cross hooks in each p*.md, `python3 tools/steam_handoff.py --write`, CLAUDE.md one line for Steam tools), full CI s1, package S1 (incl. docs/STEAM.md artifact page, Steam readiness %), push. Then queue C12-C23. ci_run --branch: refresh origin/<branch> tracking ref first or it tests a stale head.
-- **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
-- **WIP branches:** none.
+- **Last update:** 2026-11-21 01:10 PT, personal account. CONDUCT 12 (writing) SHIPPED on main (final CI c12i: shards 5/6 + 20 bots + playtest + relay green; shard 3 failed on stale Steam facts -> fixed, shard 3 rerun green; playtest door-entry flake once, rerun PASS).
+- **Done:** CONDUCT 1-12, S1, relay live, optimization rounds 1-4.
+- **In progress:** CONDUCT 13 (audio depth): 18 audits done (/home/claude/wt/c13_reports), packages /home/claude/wt/C13_PACKAGES.md + contract C13_CONTRACT.md (copies in docs/reports/), 6 fix agents running since 00:42 PT on branches c13f/p1..p6 (based on c12/integ; reports /home/claude/wt/c13f_reports). P2/P3 render ACE songs (budget 55 + 40 create_song, account 444 credits).
+- **Next step:** when c13f/p*.done: merge c13f/p1..p6 into main (mrg.sh), import any ACE renders still landing (ids in p2.md/p3.md), one hook agent if gaps, full CI, docs agent, ship C13, package 13. Then C14 → C14b (animation life) → C15 → C16 (incl. optional battles) → ... → C23 → C23b → final package.
+- **Jobs running elsewhere:** C13 fix agents (subagents) and their ACE renders. Images used today: ~280 (limit 1000/day). ACE credits: 444 (2026-11-21).
+- **WIP branches:** wip/c13* may appear from the fix agents (wip_push.sh).
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
@@ -95,6 +95,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 - 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
 
 ## Log (newest first, 30 lines max)
+- 2026-11-21 00:40 C12 docs: report docs/reports/CONDUCT-12.md (379 findings, 7 packages + integration, final CI c12i PENDING), Guide 39 (hero-aware scenes, choices that come back, festival days, side-story list, town letters, gift refusals, compass on side stories), TEXTS['12'] in build_package.py, 3 new inventory rows (talk conditions, writing checks, mail) + 8 rows raised, PROJECT-MEMORY C12 entry; Tom's calls: Juniper back?, rename kid Pip. Branch c12/docs.
 - 2026-11-21, C12 integ: P5+P6 merged into c12/integ, cross-package hooks (partner guard on gangster shop deals, gift block toast, penguin post-ending letters, one bell cause, colony elder moon lines, heart keepsakes, rare herbs typed herb, told_town/kept_quiet and Sal after-ending talk, Rook/Bram tracker words, Benno ring, Bram festival eve, festival-eve letters, side-story compass, arrival verbs); continuity_check reads compound talk keys.
 
 - 2026-11-20 23:15 S1 docs: report docs/reports/CONDUCT-S1.md (264 findings, 6 packages + integration, final CI s1i2 PASS, steam-builds green, Steam readiness 92/4/4), Guide 38, TEXTS['S1'] + Steam readiness tab in build_package.py, 10 new inventory rows (whole game ~81%), PROJECT-MEMORY S1 entry, STATUS entry; branch s1/docs.
