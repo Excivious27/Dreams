@@ -1,0 +1,1 @@
+{"days": 3, "focus": "", "base": "6d635c20f9382f1989cbba5890cac5ba8e2a2a56", "label": "c12roll", "branch": "c12/roll", "shards": [1, 2, 3, 4, 5, 6], "bots": true, "playtest": true, "relay": true, "server_changed": false, "e2e": false, "e2e_strict": false}
