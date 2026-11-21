@@ -1150,8 +1150,7 @@ func _garden() -> void:
 			var c := MAZE_AT + Vector2i(x, y)
 			match row[x]:
 				"#":
-					if Art.has("props", "hedge_short"):
-						prop("props", WorldGen.winter_look("props", "hedge_short"), c)
+					blocked[c] = true  # drawn as clipped hedge walls by _draw_maze
 				"P":
 					_pp("props", "c14p2_bench_iron", c + Vector2i(0, -1), 0, 0.0, false)
 					set_thing(c.x, c.y, {"type": "maze_prize", "hint": "A: look under the bench"}, false)
@@ -1556,6 +1555,7 @@ func draw_map() -> void:
 		dirt.erase(c)
 	draw_ground("dirt", dirt)
 	_draw_plaza(steps)
+	_draw_maze()
 	# The river and the pond.
 	if border_water_extra.is_empty():
 		draw_water(_river, "river" if Art.has("tiles", "river_top_0") else "grass")
@@ -1646,6 +1646,35 @@ func _draw_plaza(steps: Dictionary) -> void:
 		tb.seg(ctr + dv * r_in, ctr + dv * r_out, Color(0.36, 0.17, 0.12, 0.7), 0.8)
 	tb.arc(ctr, r_out, 0.0, TAU, 72, Color(0.22, 0.14, 0.09, 0.85), 1.2)
 	tb.arc(ctr, r_in, 0.0, TAU, 72, Color(0.3, 0.18, 0.12, 0.6), 1.0)
+	tb.flush(self)
+
+
+## The garden maze's walls: clipped box hedge drawn as one TriBatch (continuous walls, a
+## sunlit top, leaf speckles, a shadow where a wall meets the path; snow-capped in winter).
+func _draw_maze() -> void:
+	var wall := func(x: int, y: int) -> bool:
+		return y >= 0 and y < MAZE.size() and x >= 0 and x < (MAZE[y] as String).length() and (MAZE[y] as String)[x] == "#"
+	var winter := GameState.look_se() == "winter"
+	var tb := TriBatch.new()
+	for y in MAZE.size():
+		for x in (MAZE[y] as String).length():
+			if not wall.call(x, y):
+				continue
+			var p := Vector2((MAZE_AT + Vector2i(x, y)) * TILE)
+			tb.rect(Rect2(p, Vector2(TILE, TILE)), Color("335a27"))
+			tb.rect(Rect2(p, Vector2(TILE, TILE - 5)), Color("4f8236") if not winter else Color("e8eef4"))
+			if not wall.call(x, y - 1):
+				tb.rect(Rect2(p, Vector2(TILE, 2)), Color("7fb054") if not winter else Color("ffffff"))
+			if not wall.call(x, y + 1):
+				tb.rect(Rect2(p + Vector2(0, TILE), Vector2(TILE, 3)), Color(0.1, 0.18, 0.08, 0.35))
+			if not wall.call(x - 1, y):
+				tb.rect(Rect2(p, Vector2(1.5, TILE)), Color("2c4d22"))
+			if not wall.call(x + 1, y):
+				tb.rect(Rect2(p + Vector2(TILE - 1.5, 0), Vector2(1.5, TILE)), Color("2c4d22"))
+			for k in 5:
+				var h := absi(hash(Vector3i(x, y, k)))
+				var q := p + Vector2(1 + h % 13, 1 + (h / 13) % 9)
+				tb.rect(Rect2(q, Vector2(2, 2)), Color("6fa047") if not winter else Color("cfd9e2"))
 	tb.flush(self)
 
 
