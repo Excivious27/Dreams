@@ -1,0 +1,141 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2053 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 176.7s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 5.8s
+
+#### step 13: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 6/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 13 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 41.7s
+
+#### step 19: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 19 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 3.4s
+
+#### step 25: C11b P5: chores rework (hay, spots, value cap, regions, levels), team  (shard 6/6)
+== C11b P5: chores rework (hay, spots, value cap, regions, levels), team ranks/words, RanchVoice ==
+c11b_p5_test: 100 checks, 0 failures
+#### step 25 C11b P5: chores rework (hay, spots, value cap, regions, levels), team : PASS in 2.2s
+
+#### step 31: rec_links_test (shard 6/6)
+rec_links_test: 0 failures
+#### step 31 rec_links_test: PASS in 2.1s
+
+#### step 37: coop_test (shard 6/6)
+coop_test: 0 failures
+#### step 37 coop_test: PASS in 2.1s
+
+#### step 43: crop_test (shard 6/6)
+crop_test: 0 failures
+#### step 43 crop_test: PASS in 24.4s
+
+#### step 49: ranch_test (shard 6/6)
+ranch_test: 74 checks, 0 failures
+#### step 49 ranch_test: PASS in 2.2s
+
+#### step 55: town_first_test (shard 6/6)
+town_first_test: 0 failures
+#### step 55 town_first_test: PASS in 3.5s
+
+#### step 61: text size floors (7 px) (shard 6/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 61 text size floors (7 px): PASS in 0.1s
+
+#### step 67: slice_c11b_chores (shard 6/6)
+#### step 67 slice_c11b_chores: PASS in 0.4s
+
+#### step 73: ambience_test (shard 6/6)
+ambience_test: 0 failures (40 checks)
+#### step 73 ambience_test: PASS in 4.3s
+
+#### step 79: mine: keeper, shaft, tiers (shard 6/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 79 mine: keeper, shaft, tiers: PASS in 3.5s
+
+#### step 85: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 6/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 85 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 6.2s
+
+#### step 91: c6_cue_test (shard 6/6)
+c6_cue_test: 0 fails
+#### step 91 c6_cue_test: PASS in 2.2s
+
+#### step 97: meow_gate_test (shard 6/6)
+meow_gate_test: 0 fails
+#### step 97 meow_gate_test: PASS in 3.1s
+
+#### step 103: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 6/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 103 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 4.8s
+
+#### step 109: mega regions: the new worlds walk end to end (shard 6/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 109 mega regions: the new worlds walk end to end: PASS in 15.8s
+
+#### step 115: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 6/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 115 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.5s
+
+#### step 121: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 6/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 121 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.4s
+
+#### step 127: C7 P4: heart scene content (shard 6/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 127 C7 P4: heart scene content: PASS in 2.6s
+
+#### step 133: C8 P4: fishing rules, mining curve, reward tables (shard 6/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+c8_p4_test: PASS (0 fails)
+#### step 133 C8 P4: fishing rules, mining curve, reward tables: PASS in 10.2s
+
+#### step 139: C9 P5: save codes and files (shard 6/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 139 C9 P5: save codes and files: PASS in 2.3s
+
+#### shard 6/6 done in 326s: PASS

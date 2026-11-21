@@ -1,0 +1,142 @@
+{
+ "sha": "95673cfca0f799efc1d3193058cdff6d45134c26",
+ "ref": "ci/c11bp5-95710d69",
+ "run": "44849937918",
+ "finished": 1795224762.0939934,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 57,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "95710d69f2e0251e7a9c1dae5e3e2515986d8ef0",
+  "label": "c11bp5",
+  "branch": "c11bf/p5",
+  "shards": [
+   2,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 325,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 262,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 325,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 176.7
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 77.7
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 41.7
+  },
+  {
+   "step": 141,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 40.4
+  },
+  {
+   "step": 69,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 37.2
+  },
+  {
+   "step": 43,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 24.4
+  },
+  {
+   "step": 109,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 15.8
+  },
+  {
+   "step": 15,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 12.1
+  },
+  {
+   "step": 133,
+   "name": "C8 P4: fishing rules, mining curve, reward tables",
+   "rc": 0,
+   "secs": 10.2
+  },
+  {
+   "step": 81,
+   "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow",
+   "rc": 0,
+   "secs": 9.2
+  },
+  {
+   "step": 51,
+   "name": "cf_volunteer_test",
+   "rc": 0,
+   "secs": 8.8
+  },
+  {
+   "step": 93,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 7.2
+  },
+  {
+   "step": 105,
+   "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)",
+   "rc": 0,
+   "secs": 7.1
+  },
+  {
+   "step": 85,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 6.2
+  },
+  {
+   "step": 7,
+   "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+   "rc": 0,
+   "secs": 5.8
+  }
+ ]
+}
