@@ -90,6 +90,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_w = DisplayMode.view.x  # wide desktop view: weather and clouds span it
+	if overhead:
+		var hm := get_parent()
+		Anim.set_weather(weather, (hm as GameMap).scene_id() if hm is GameMap else "", false)
+	Anim.tick()
 	_t += delta
 	_ov_t += delta
 	for c: Dictionary in _clouds:
