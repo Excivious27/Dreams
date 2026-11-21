@@ -725,7 +725,7 @@ static func _redo() -> void:
 static func _card(body: Control, title := "") -> VBoxContainer:
 	if title != "":
 		var tl := Label.new()
-		tl.text = title
+		tl.text = PadInput.words(title)
 		tl.add_theme_font_size_override("font_size", Settings.font(9))  # Options > Text size (C9)
 		tl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		tl.add_theme_color_override("font_color", Color(1, 0.88, 0.55))
@@ -747,7 +747,7 @@ static func _card(body: Control, title := "") -> VBoxContainer:
 
 static func _lab(parent: Control, text: String, size := 8, color := INK) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = PadInput.words(text)  # S1 s1_08-06
 	# Text size grows lines in a column only; side-by-side cells (stat rows, slot
 	# captions) keep their size so the 270-px sheet never widens.
 	l.add_theme_font_size_override("font_size", Settings.font(size) if parent is VBoxContainer and not parent.get_parent() is HBoxContainer else size)

@@ -576,6 +576,6 @@ static func valley_gates(m: Control, font: Font, pins: Dictionary, org: Vector2,
 			var tp := p + Vector2(5, 2)
 			if tp.x + tw > org.x + sz.x - 2:
 				tp = p + Vector2(-5 - tw, 2)
-			m.draw_string_outline(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0.1, 0.06, 0.03, 0.9))
-			m.draw_string(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, acc.lightened(0.3))
+			m.draw_string_outline(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(6), 3, Color(0.1, 0.06, 0.03, 0.9))
+			m.draw_string(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(6), acc.lightened(0.3))
 			break

@@ -146,6 +146,10 @@
     "rainbow_anemone"
    ],
    "hook": "the reef shrine's underside; Shelly's 'Coral Garden' replant quest"
+  },
+  "creature": {
+   "species": "coral_seahorse",
+   "line": "The shoals came home, and one little seahorse won't leave your side. Take her to your farm; she's chosen you."
   }
  },
  "colony_kelp": {
@@ -293,6 +297,10 @@
     "spiral_shell"
    ],
    "hook": "kelp spirals as a star-map puzzle opening a star chest; the Sunken Bell's resting place"
+  },
+  "creature": {
+   "species": "kelp_calf",
+   "line": "A kelp calf followed the tide in behind you. They only follow someone they trust. Give it a home on your farm."
   }
  },
  "colony_ice": {
@@ -441,6 +449,10 @@
     "aurora_shard"
    ],
    "hook": "the frozen Frostfin cats under the ice (now freed by the beacons) left lanterns behind"
+  },
+  "creature": {
+   "species": "frost_otter",
+   "line": "That frost otter has been sliding after you all day. The kits voted: it goes home with you."
   }
  },
  "colony_ember": {
@@ -591,6 +603,10 @@
     "obsidian_pearl"
    ],
    "hook": "carry an ember from the Never-Out Fire through the tubes (timed, safe failure)"
+  },
+  "creature": {
+   "species": "ember_newt",
+   "line": "An ember newt curled up in your pack to stay warm. Keep it. It glows like the Never-Out Fire."
   }
  }
 }

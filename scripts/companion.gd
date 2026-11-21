@@ -171,8 +171,35 @@ static var _ready_at := {}
 
 
 ## Seconds left before `ab` can be used again (0 when ready).
+## Game time (PlayClock): cooldowns stop while the game is paused (c11b_08-01).
 static func cooldown_left(ab: String) -> float:
-	return maxf(0.0, float(_ready_at.get(ab, 0.0)) - Time.get_ticks_msec() / 1000.0)
+	return maxf(0.0, _ready_of(ab) - PlayClock.now())
+
+
+static func _ready_of(ab: String) -> float:
+	var v: Variant = _ready_at.get(ab, 0.0)
+	return float((v as Array)[0]) if v is Array else float(v)
+
+
+## 0..1 of the wait still left, from the full (skill-shortened) duration the cooldown started with (c11b_08-04).
+static func cooldown_frac(ab: String) -> float:
+	var v: Variant = _ready_at.get(ab, null)
+	var left := cooldown_left(ab)
+	if left <= 0.0:
+		return 0.0
+	var total := float((v as Array)[1]) if v is Array else float(COOLDOWN.get(ab, DEFAULT_COOLDOWN))
+	return clampf(left / maxf(0.01, total), 0.0, 1.0)
+
+
+static func _start_cd(ab: String, secs: float) -> void:
+	_ready_at[ab] = [PlayClock.now() + secs, secs]
+
+
+## New game / load: cooldowns from another save in this session don't carry over.
+static func reset_cooldowns() -> void:
+	_ready_at = {}
+	_fence_t = 0
+	_fence_pick = ""
 
 
 static func use_ability(m: GameMap, p: Player) -> void:
@@ -194,7 +221,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Not enough mana.", Color(0.7, 0.8, 1.0))
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
-		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
+		_start_cd(ab, 8.0)
 	if ab == "meow_wait":
 		# Not earned yet: Nova explains, and points at Catkins (no cooldown, no XP).
 		m.hud.toast(meow_wait_line(), Color(0.95, 0.85, 1.0))
@@ -214,7 +241,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			return
 		GameState.add_arc_xp(3)
 		GameState.add_xp("leadership", 4)
-		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get(ab, DEFAULT_COOLDOWN)) * maxf(0.3, 1.0 - GameState.bonus("harmony", "ability_cooldown") - GameState.bonus("leadership", "ability_cooldown"))
+		_start_cd(ab, float(COOLDOWN.get(ab, DEFAULT_COOLDOWN)) * maxf(0.3, 1.0 - GameState.bonus("harmony", "ability_cooldown") - GameState.bonus("leadership", "ability_cooldown")))
 		var th := int(GameState.bonus("leadership", "team_heal"))
 		if th > 0:
 			GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
@@ -363,16 +390,16 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					bv = v
 					best = str(id)
 			# One tap names the deal, a second tap within 5 seconds makes it.
-			var now := Time.get_ticks_msec()
+			var now := PlayClock.ms()
 			if best != "" and (_fence_pick != best or now - int(_fence_t) > 5000):
 				_fence_pick = best
 				_fence_t = now
-				m.hud.toast("Sal: 'All %d %s for ◆%d? Ask again and it's done.'" % [GameState.count(best), GameState.item_name(best), GameState.sell_price(best, GameState.count(best))], Color(1, 0.9, 0.6))
+				m.hud.toast("Sal: 'All %s for %s? Ask again and it's done.'" % [ItemWords.count_id(best, GameState.count(best)), Money.amount(GameState.sell_price(best, GameState.count(best)))], Color(1, 0.9, 0.6))
 			elif best != "" and cooldown_left("fence") > 0.0:
 				m.hud.toast("Sal: 'Give me %ds to find a buyer.'" % int(ceil(cooldown_left("fence"))), Color(1, 0.9, 0.6))
 			elif best != "":
 				_fence_pick = ""
-				_ready_at["fence"] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get("fence", DEFAULT_COOLDOWN))
+				_start_cd("fence", float(COOLDOWN.get("fence", DEFAULT_COOLDOWN)))
 				var n := GameState.count(best)
 				GameState.add_item(best, -n)
 				Collections.record_ship(best, n)  # shipping log (C8 P3)
@@ -381,7 +408,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				sold[best] = int(sold.get(best, 0)) + n
 				GameState.run["sold_today"] = sold
 				GameState.add_money(pay, "sales")
-				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
+				m.hud.toast("Sal moved %s for %s. No questions." % [ItemWords.count_id(best, n), Money.amount(pay)], Color(1, 0.9, 0.6))
 				Music.instance(m.get_tree()).sfx("coin", "pickup")
 				m.fx("sparkle", p.position + Vector2(0, -12), 10.0, 0.5)
 			else:

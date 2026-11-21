@@ -247,9 +247,9 @@ func _draw_board() -> void:
 	draw_rect(r, Color("8a6a3a"))
 	draw_rect(r.grow(-1.5), Color("0d1a14"))
 	var g := Color(0.5, 1, 0.7, 0.85 + 0.15 * sin(_t * 2.0))
-	draw_string(f, Vector2(r.position.x, r.position.y + 7), "HI-SCORE", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 5, g)
+	draw_string(f, Vector2(r.position.x, r.position.y + 7), "HI-SCORE", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, DisplayMode.df(5), g)
 	var best := Tickets.best_score("bowling") if not GameState.run.is_empty() else 0
-	draw_string(f, Vector2(r.position.x, r.position.y + 14), "BOWL %d" % best, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 5, Color(1, 0.9, 0.4))
+	draw_string(f, Vector2(r.position.x, r.position.y + 14), "BOWL %d" % best, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, DisplayMode.df(5), Color(1, 0.9, 0.4))
 	Tickets.draw_amount(self, f, r.position.x, r.position.y + 19, r.size.x, "%d" % (Tickets.count() if not GameState.run.is_empty() else 0), 4, Color(1, 0.7, 0.9))
 
 
@@ -269,7 +269,7 @@ func _draw_sign() -> void:
 	draw_rect(r.grow(-1.5), Color("1a1024") if gang else Color("b07a44"))
 	var txt := RecCenter.name().to_upper()
 	var tc := Color(1, 0.4, 0.8) if gang else Color("fff2cc")
-	draw_string(f, Vector2(r.position.x, r.position.y + 8), txt, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 6, tc)
+	draw_string(f, Vector2(r.position.x, r.position.y + 8), txt, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, DisplayMode.df(6), tc)
 	# A pin and a ball under the name (3 px text never read on a phone).
 	draw_rect(Rect2(-5, -16, 3, 7), Color.WHITE)
 	draw_rect(Rect2(-5, -14, 3, 1), Color("d23a3a"))
@@ -278,7 +278,7 @@ func _draw_sign() -> void:
 	if not open:
 		draw_set_transform(Vector2.ZERO, -0.25)
 		draw_rect(Rect2(-20, -16, 40, 6), Color("d23a3a"))
-		draw_string(f, Vector2(-20, -11.5), "OPENING SOON", HORIZONTAL_ALIGNMENT_CENTER, 40, 5, Color.WHITE)
+		draw_string(f, Vector2(-20, -11.5), "OPENING SOON", HORIZONTAL_ALIGNMENT_CENTER, 40, DisplayMode.df(5), Color.WHITE)
 		draw_set_transform(Vector2.ZERO)
 
 

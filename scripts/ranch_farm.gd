@@ -261,8 +261,9 @@ static func art_for(species_id: String, adult: bool, variant := "") -> String:
 
 
 ## A home's pen: ranch.json buildings[home] row for the built tier ("pen": [x, y, w, h]) or the fallback.
+## The tier is the home's building (Ranch.build_of: the apiary lives in the "beehive" build).
 static func pen_of(home: String, fallback: Rect2i) -> Rect2i:
-	var t := Builds.built_tier(home)
+	var t := Builds.built_tier(Ranch.build_of(home))
 	var best := fallback
 	for row in ((Ranch.data()["buildings"] as Dictionary).get(home, []) as Array):
 		if row is Dictionary and int((row as Dictionary).get("tier", 0)) <= t and (row as Dictionary).get("pen", null) is Array:
@@ -286,28 +287,78 @@ static func pen_cells(pen: Rect2i, n: int) -> Array:
 	return out
 
 
-## Which species an egg hatches ("" = not an incubator egg).
+## The incubator is a thin view over Ranch (the C11a contract, c11b_01-03 / 05-07): every egg in
+## ranch.json species[*].breed.egg hatches, in its species' home, in Ranch's format {species, due, q}.
+
+## Which species an egg hatches ("" = not an incubator egg). breed.egg first, then the legacy names.
 static func hatch_species(item: String) -> String:
-	for sid in (Ranch.data()["species"] as Dictionary):
-		if str((Ranch.data()["species"][sid] as Dictionary).get("egg_item", "")) == item:
+	if item == "":
+		return ""
+	var sp: Dictionary = Ranch.data()["species"]
+	for sid in sp:
+		var row: Dictionary = sp[sid]
+		var br: Variant = row.get("breed", null)
+		if br is Dictionary and str((br as Dictionary).get("egg", "")) == item:
 			return str(sid)
-	return str(EGGS.get(item, ""))
+		if str(row.get("egg_item", "")) == item:
+			return str(sid)
+	return str(EGGS.get(item, "")) if sp.has(str(EGGS.get(item, ""))) else ""
 
 
+## Days an egg warms: breed.days less the hatch_fast perk (min 1), as Ranch.incubate counts it.
 static func hatch_days(sid: String) -> int:
 	var sp := Ranch.species(sid)
-	return maxi(1, int(sp.get("hatch_days", HATCH_DAYS.get(sid, 3))) - int(GameState.ranch_bonus("hatch_fast")))
+	var br: Variant = sp.get("breed", null)
+	var days := int((br as Dictionary).get("days", 0)) if br is Dictionary else 0
+	if days <= 0:
+		days = int(sp.get("hatch_days", HATCH_DAYS.get(sid, 3)))
+	return maxi(1, days - int(GameState.ranch_bonus("hatch_fast")))
 
 
-## Incubator slots (roster mode): run.ranch.houses.coop.incubator = [{species, day}].
-static func incubator() -> Array:
-	var houses: Dictionary = Ranch.st()["houses"]
-	if not (houses.get("coop", null) is Dictionary):
-		houses["coop"] = {}
-	var c: Dictionary = houses["coop"]
-	if not (c.get("incubator", null) is Array):
-		c["incubator"] = []
-	return c["incubator"]
+## The home an egg's species lives in ("" = none).
+static func egg_home(item: String) -> String:
+	var sid := hatch_species(item)
+	return str(Ranch.species(sid).get("home", "")) if sid != "" else ""
+
+
+## Does a home's built tier warm eggs (an "incubator" or "big_nest" add)?
+static func has_incubator(home: String) -> bool:
+	return Ranch.has_add(home, "incubator") or Ranch.has_add(home, "big_nest")
+
+
+## Homes whose built tier has an incubator.
+static func incubator_homes() -> Array:
+	var out: Array = []
+	for h in (Ranch.data()["buildings"] as Dictionary):
+		if has_incubator(str(h)):
+			out.append(str(h))
+	return out
+
+
+## The first tier name of a home that brings the incubator ("Big Coop", "Grand Enclosure"...).
+static func incubator_tier_name(home: String) -> String:
+	for row in ((Ranch.data()["buildings"] as Dictionary).get(home, []) as Array):
+		if row is Dictionary:
+			var adds: Array = (row as Dictionary).get("adds", [])
+			if adds.has("incubator") or adds.has("big_nest"):
+				var td := Builds.tier_def(Ranch.build_of(home), int((row as Dictionary).get("tier", 1)))
+				if str(td.get("name", "")) != "":
+					return str(td["name"])
+				break
+	return "a bigger %s" % str(Builds.current_def(Ranch.build_of(home)).get("name", home)).to_lower()
+
+
+## Incubator slots of a home (Ranch.house(home).incubator, entries {species, due, q}).
+static func incubator(home := "coop") -> Array:
+	return Ranch.house(home)["incubator"]
+
+
+## Every warming egg across homes.
+static func all_eggs() -> Array:
+	var out: Array = []
+	for h in (Ranch.st()["houses"] as Dictionary):
+		out.append_array(incubator(str(h)))
+	return out
 
 
 ## An incubator entry's hatch day (Ranch.incubate writes "due"; older entries used "day").
@@ -317,28 +368,44 @@ static func egg_day(e: Variant) -> int:
 	return int(e)
 
 
-## Free incubator places: the coop's capacity minus the birds living there and eggs warming.
-static func coop_room() -> int:
-	var cap := Ranch.capacity("coop")
-	if cap <= 0:
+## Free incubator places in a home: its capacity minus the animals living there and eggs warming.
+static func room_for_egg(home: String) -> int:
+	if Ranch.capacity(home) <= 0:
 		return 0
-	return cap - Ranch.roster("coop").size() - incubator().size()
+	return Ranch.room(home) - incubator(home).size()
 
 
-## Hatch every egg that is due today or earlier into a roster baby. Returns the new names.
+## Coop shorthand (older callers and tests).
+static func coop_room() -> int:
+	return room_for_egg("coop")
+
+
+## Hatch every egg that is due today or earlier into a roster baby, in every home. Returns the new names.
 static func hatch_due(day: int) -> Array:
 	var out: Array = []
-	var inc := incubator()
-	for e in inc.duplicate():
-		var due := int((e as Dictionary).get("due", (e as Dictionary).get("day", 0))) if e is Dictionary else 0
-		if not (e is Dictionary) or due > day:
-			continue
-		var sid := str((e as Dictionary).get("species", "chicken"))
-		var uid := Ranch.add(sid, "coop", "", due)
-		if uid != "":
-			inc.erase(e)
-			out.append(str(Ranch.animal(uid).get("name", sid)))
+	for h in (Ranch.st()["houses"] as Dictionary).keys():
+		var inc := incubator(str(h))
+		for e in inc.duplicate():
+			if not (e is Dictionary) or egg_day(e) > day or Ranch.room(str(h)) <= 0:
+				continue
+			var sid := str((e as Dictionary).get("species", "chicken"))
+			var uid := Ranch.add(sid, str(h), "", egg_day(e))
+			if uid != "":
+				inc.erase(e)
+				out.append(str(Ranch.animal(uid).get("name", sid)))
 	return out
+
+
+## A young one's word for a species: chick, duckling, else "baby <species>".
+static func baby_word(sid: String) -> String:
+	if sid == "chicken":
+		return "chick"
+	if sid == "duck":
+		return "duckling"
+	var sp := Ranch.species(sid)
+	if str(sp.get("baby_word", "")) != "":
+		return str(sp["baby_word"])
+	return "baby %s" % str(sp.get("name", sid)).to_lower()
 
 
 ## Take one egg of a kind, plain before starred (a gold egg is never spent by surprise: c11a_05-04).

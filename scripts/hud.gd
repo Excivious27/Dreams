@@ -516,7 +516,7 @@ func _draw_hud() -> void:
 			var k := minf(ir.size.x / isz.x, ir.size.y / isz.y)
 			c.draw_texture_rect(icon, Rect2(ir.position + (ir.size - isz * k) / 2.0, isz * k), false)
 		else:
-			c.draw_string(_font, Vector2(rect.position.x + 1, rect.position.y + 13), GameState.item_name(id).left(3), HORIZONTAL_ALIGNMENT_LEFT, SLOT, 7, Color.WHITE)
+			c.draw_string(_font, Vector2(rect.position.x + 1, rect.position.y + 13), GameState.item_name(id).left(3), HORIZONTAL_ALIGNMENT_LEFT, SLOT, DisplayMode.df(7), Color.WHITE)
 	for i in 12:
 		var rect := Rect2(TOOLBAR_X + i * SLOT, TOOLBAR_Y, SLOT, SLOT)
 		var id := str(tb[i])
@@ -525,8 +525,8 @@ func _draw_hud() -> void:
 			var nw := _font.get_string_size(n, HORIZONTAL_ALIGNMENT_RIGHT, -1, 7).x
 			# Outlined and kept inside the slot: bare white on the light slot art was hard to read.
 			var np := Vector2(rect.end.x - nw - 2, rect.end.y - 2)
-			c.draw_string_outline(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0.1, 0.06, 0.03, 0.95))
-			c.draw_string(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
+			c.draw_string_outline(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), 2, Color(0.1, 0.06, 0.03, 0.95))
+			c.draw_string(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), Color.WHITE)
 		elif id == "can":  # C6 P7: the can's water level, a small bar along the slot's foot
 			var wb := Rect2(rect.position.x + 3, rect.end.y - 4, SLOT - 6, 2.5)
 			c.draw_rect(wb.grow(0.5), Color(0.08, 0.05, 0.03, 0.9))
@@ -563,8 +563,8 @@ func _draw_hud() -> void:
 		for gi in gl.size():
 			var gy := TOOLBAR_Y + SLOT + 21 + gi * 9
 			var gs := ("▸ " if gi == 0 else "   ") + str(gl[gi])
-			c.draw_string_outline(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, 7, 3, Color(0, 0, 0, 0.7))
-			c.draw_string(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, 7, Color(1, 0.92, 0.6))
+			c.draw_string_outline(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, DisplayMode.df(7), 3, Color(0, 0, 0, 0.7))
+			c.draw_string(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, gw, DisplayMode.df(7), Color(1, 0.92, 0.6))
 	# Heat (gangster arc): five pips under the clock.
 	# Hidden until there is some heat (first time: a toast says what it means).
 	if Racket.on() and (Racket.heat() > 0 or r["flags"].has("heat_told")):
@@ -573,8 +573,8 @@ func _draw_hud() -> void:
 			toast.call_deferred("Heat: how closely the President's people are watching you.", Color(1, 0.75, 0.6))
 		var hx := 196.0 + ex
 		var hy := TOOLBAR_Y + SLOT + 5.0
-		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0, 0, 0, 0.8))
-		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.75, 0.6))
+		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), 2, Color(0, 0, 0, 0.8))
+		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), Color(1, 0.75, 0.6))
 		for i in 5:
 			var pc := Vector2(hx + 24 + i * 9, hy + 3)
 			c.draw_circle(pc, 3.2, Color(0, 0, 0, 0.6))
@@ -600,8 +600,8 @@ func _draw_hud() -> void:
 		c.draw_set_transform(Vector2(ex, y_offset))
 		_draw_energy_h(c, e)
 		if tired:
-			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.35 + 0.4 * pulse, 0.3))
+			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), 3, Color(0, 0, 0, 0.8))
+			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, DisplayMode.df(7), Color(1, 0.35 + 0.4 * pulse, 0.3))
 		return
 	if Dialogue.instance(get_tree()).active:
 		return  # it would poke out past the dialogue box
@@ -633,8 +633,8 @@ func _draw_hud() -> void:
 		c.draw_rect(glow.grow(1), Color(1, 0.2, 0.15, 0.25 + 0.45 * pulse), false, 2.0)
 		var tlw := 44.0
 		var tx := bar.position.x - tlw + 9 if not lh else bar.position.x - 2
-		c.draw_string_outline(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, Color(1, 0.4 + 0.4 * pulse, 0.3))
+		c.draw_string_outline(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, DisplayMode.df(7), 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, DisplayMode.df(7), Color(1, 0.4 + 0.4 * pulse, 0.3))
 	if lh:
 		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 8, Color(1, 1, 0.9))
 	else:
@@ -650,8 +650,8 @@ func _draw_energy_h(c: CanvasItem, e: float) -> void:
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
 	var et := "%d/%d" % [int(GameState.run["energy"]), int(GameState.run["max_energy"])]
-	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, Color(1, 1, 0.9))
+	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, DisplayMode.df(7), 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, DisplayMode.df(7), Color(1, 1, 0.9))
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -933,10 +933,10 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 	var opn: bool = boss._gift != null and (boss._gift.open_t > 0.0 or boss._gift.vuln(m.player.position, false) > float(boss._gift.d.get("rule", {}).get("closed", 0.0)) + 0.01)
 	if opn:
 		c.draw_rect(r.grow(1.5), Color(1, 1, 1, 0.9), false, 1.0)
-	c.draw_string_outline(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, 3, Color(0, 0, 0, 0.85))
-	c.draw_string(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, Color(1, 0.9, 0.85))
+	c.draw_string_outline(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, DisplayMode.df(7), 3, Color(0, 0, 0, 0.85))
+	c.draw_string(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, DisplayMode.df(7), Color(1, 0.9, 0.85))
 	if boss._gift:
 		var gn := str(boss._gift.d.get("name", ""))
 		var st := "OPEN" if opn else "guarded"
-		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))
+		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, DisplayMode.df(7), 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, DisplayMode.df(7), Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))
