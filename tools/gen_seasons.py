@@ -255,6 +255,7 @@ SHOPS = {
     "bait": {"spring": ["fiddlehead_saute"], "summer": ["kelp_salad"], "fall": ["chanterelle_stew"], "winter": ["snow_yam_roast"]},
     "potions": {"spring": ["chamomile"], "summer": ["honeysuckle_tea"], "fall": ["rosehip_jam"], "winter": ["hot_cocoa"]},
     "marlowe": {"spring": ["crocus"], "summer": ["sand_dollar"], "fall": ["leaf_bundle"], "winter": ["holly_sprig"]},
+    "smith": {"summer": ["straw_hat"], "winter": ["ice_cleats", "snow_goggles"]},
     "lodge": {"spring": ["fiddlehead"], "summer": ["cattail"], "fall": ["chestnut"], "winter": ["snow_yam"]},
 }
 SHOPS_Y2 = {  # year 2+: one more seasonal good per shop

@@ -458,6 +458,15 @@
     "holly_sprig"
    ]
   },
+  "smith": {
+   "summer": [
+    "straw_hat"
+   ],
+   "winter": [
+    "ice_cleats",
+    "snow_goggles"
+   ]
+  },
   "lodge": {
    "spring": [
     "fiddlehead"
