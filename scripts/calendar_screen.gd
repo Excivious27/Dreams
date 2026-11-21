@@ -95,7 +95,16 @@ func _box(bg: Color, border: Color, bw := 1) -> StyleBoxFlat:
 	return sb
 
 
-func _btn(parent: Control, text: String, pos: Vector2, sz: Vector2, cb: Callable, sb: StyleBoxFlat = null) -> Button:
+func _ring(col: Color, w: int) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.draw_center = false
+	sb.border_color = col
+	sb.set_border_width_all(w)
+	sb.set_corner_radius_all(3)
+	return sb
+
+
+func _btn(parent: Control, text: String, pos: Vector2, sz: Vector2, cb: Callable, sb: StyleBox = null) -> Button:
 	var b := Button.new()
 	b.text = text
 	b.position = pos
@@ -125,38 +134,54 @@ func marks(dos: int) -> Array:
 func _build() -> void:
 	for c in _root.get_children():
 		c.queue_free()
-	var bg := Panel.new()
+	var bg := Panel.new()  # (the c15p1 frame art draws over it when present)
 	bg.add_theme_stylebox_override("panel", _box(paper, edge, 2))
 	bg.position = Vector2(4, 30)
 	bg.size = Vector2(262, 440)
 	bg.mouse_filter = Control.MOUSE_FILTER_STOP
 	_root.add_child(bg)
-	var frame := "c15p1_cal_gang" if gang else "c15p1_cal_pen"
+	var frame := "c15p1_cal_frame_" + ("gang" if gang else "pen")
 	if Art.has("ui", frame):
-		var tr := TextureRect.new()
-		tr.texture = Art.tex("ui", frame)
-		tr.position = Vector2(4, 30)
-		tr.size = Vector2(262, 252)
-		tr.stretch_mode = TextureRect.STRETCH_SCALE
-		tr.modulate = Color(1, 1, 1, 0.35)
-		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_root.add_child(tr)
+		var np := NinePatchRect.new()
+		np.texture = Art.tex("ui", frame)
+		var pm: Array = Art.info("ui", frame).get("patch", [12, 16, 12, 16])
+		np.patch_margin_left = int(pm[0])
+		np.patch_margin_top = int(pm[1])
+		np.patch_margin_right = int(pm[2])
+		np.patch_margin_bottom = int(pm[3])
+		np.position = Vector2(2, 26)
+		np.size = Vector2(266, 448)
+		np.mouse_filter = Control.MOUSE_FILTER_STOP
+		_root.add_child(np)
 	var title := "%s  ·  Year %d" % [view_season().capitalize(), view_year()]
-	_lab(_root, title, Vector2(12, 36), 12, ink)
+	_lab(_root, title, Vector2(18, 41), 11, ink)
 	var arcline := "City calendar" if gang else "Town calendar"
-	_lab(_root, arcline, Vector2(180, 40), 8, ink_soft)
+	_lab(_root, arcline, Vector2(186, 44), 8, ink_soft)
 	for i in 7:
-		_lab(_root, DAYS[i], Vector2(12 + i * 36 + 6, 56), 8, ink_soft if i < 5 else edge)
+		_lab(_root, DAYS[i], Vector2(17 + i * 34 + 6, 60), 8, ink_soft if i < 5 else edge)
 	var t := _today_abs()
 	var se_start := view * Calendar.SEASON_DAYS
 	for dos in range(1, 29):
 		var col := (dos - 1) % 7
 		var rowi := (dos - 1) / 7
-		var pos := Vector2(10 + col * 36, 68 + rowi * 50)
+		var pos := Vector2(17 + col * 34, 75 + rowi * 50)
 		var absd := se_start + dos
 		var is_today := absd == t
-		var sb := _box(cell_bg.lerp(edge, 0.25) if dos == sel else cell_bg, Color("e2a72e") if is_today else edge.lerp(paper, 0.4), 2 if is_today else 1)
-		var b := _btn(_root, "", pos, Vector2(34, 48), func() -> void: _pick(dos), sb)
+		var sb: StyleBox = _box(cell_bg.lerp(edge, 0.25) if dos == sel else cell_bg, Color("e2a72e") if is_today else edge.lerp(paper, 0.4), 2 if is_today else 1)
+		var cell := "c15p1_cell_" + ("gang" if gang else "pen")
+		if Art.has("ui", cell):
+			var st := StyleBoxTexture.new()
+			st.texture = Art.tex("ui", cell)
+			if dos == sel:
+				st.modulate_color = Color(0.85, 0.95, 1.0) if gang else Color(1.0, 0.86, 0.62)
+			sb = st
+		var b := _btn(_root, "", pos, Vector2(32, 48), func() -> void: _pick(dos), sb)
+		if is_today or dos == sel:
+			var ring := Panel.new()
+			ring.add_theme_stylebox_override("panel", _ring(Color("e2a72e") if is_today else edge, 2 if is_today else 1))
+			ring.size = Vector2(32, 48)
+			ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(ring)
 		b.name = "day_%d" % dos
 		if absd < t:
 			b.modulate = Color(1, 1, 1, 0.55)
@@ -166,13 +191,13 @@ func _build() -> void:
 		for e: Dictionary in ev:
 			if k >= 3:
 				break
-			_mark(b, e, Vector2(2 + (k % 2) * 16, 16 + (k / 2) * 16))
+			_mark(b, e, Vector2(1 + (k % 2) * 16, 16 + (k / 2) * 16))
 			k += 1
 	_detail()
 	# Paging and the way out (last).
-	_btn(_root, "< Prev", Vector2(10, 440), Vector2(70, 24), func() -> void: _page(-1))
-	_btn(_root, "Next >", Vector2(96, 440), Vector2(70, 24), func() -> void: _page(1))
-	_btn(_root, "Close", Vector2(186, 440), Vector2(74, 24), _close)
+	_btn(_root, "< Prev", Vector2(18, 436), Vector2(68, 24), func() -> void: _page(-1))
+	_btn(_root, "Next >", Vector2(100, 436), Vector2(68, 24), func() -> void: _page(1))
+	_btn(_root, "Close", Vector2(182, 436), Vector2(70, 24), _close)
 
 
 func _mark(parent: Control, e: Dictionary, p: Vector2) -> void:
@@ -202,17 +227,17 @@ func _mark(parent: Control, e: Dictionary, p: Vector2) -> void:
 
 ## The selected day's list under the grid.
 func _detail() -> void:
-	var y := 276.0
+	var y := 280.0
 	var absd := view * Calendar.SEASON_DAYS + sel
 	var dn: String = DAYS[(absd - 1) % 7]
 	var head := "%s %s %d" % [dn, view_season().capitalize(), sel]
 	if absd == _today_abs():
 		head += "  (today)"
-	_lab(_root, head, Vector2(12, y), 10, ink)
+	_lab(_root, head, Vector2(18, y), 10, ink)
 	y += 18
 	var ev := marks(sel)
 	if ev.is_empty():
-		_lab(_root, "Nothing on. A good day for the farm.", Vector2(12, y), 8, ink_soft, 244)
+		_lab(_root, "Nothing on. A good day for the farm.", Vector2(18, y), 8, ink_soft, 244)
 	for e: Dictionary in ev:
 		if y > 420:
 			break
@@ -225,15 +250,15 @@ func _detail() -> void:
 			when = "  %s%s" % [str(e.get("time", "")), (", " + str(e["where"])) if str(e.get("where", "")) != "" else ""]
 		var sw := ColorRect.new()
 		sw.color = KIND_COL.get(kind, Color("777777"))
-		sw.position = Vector2(12, y + 3)
+		sw.position = Vector2(18, y + 3)
 		sw.size = Vector2(6, 6)
 		sw.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_root.add_child(sw)
-		var l := _lab(_root, nm + when, Vector2(22, y), 8, ink, 236)
+		var l := _lab(_root, nm + when, Vector2(28, y), 8, ink, 226)
 		y += 12.0 * maxf(1.0, ceil(l.get_minimum_size().y / 12.0)) + 2
 		var ln := str(e.get("line", ""))
 		if ln != "" and kind != "market" and y < 410:
-			var l2 := _lab(_root, ln, Vector2(22, y), 7, ink_soft, 236)
+			var l2 := _lab(_root, ln, Vector2(28, y), 7, ink_soft, 226)
 			y += maxf(11.0, l2.get_minimum_size().y) + 3
 
 
