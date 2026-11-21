@@ -10,6 +10,7 @@ on:
       - "art/incoming/**"
       - "audio/incoming/**"
       - "ci/**"
+      - "steam/**"
       - "*.md"
   workflow_dispatch:
 
@@ -120,6 +121,7 @@ jobs:
           fi
           python3 tools/web_head.py --check
           python3 tools/music_stream.py --check
+          python3 tools/web_export_guard.py --static
 
       - name: Save imported assets (green main run)
         if: steps.import-cache.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
@@ -149,6 +151,11 @@ jobs:
           echo "index.pck: $((size / 1048576)) MB"
           echo "### index.pck: $((size / 1048576)) MB" >> "$GITHUB_STEP_SUMMARY"
           test "$size" -lt 146800640 || { echo "pck over 140 MB: is new art imported lossless? run tools/set_import_lossy.py"; exit 1; }
+
+      # S1: nothing Steam may reach the web pack (GodotSteam addon, steam/, steam_appid,
+      # server/): tools/web_export_guard.py lists the pck directory and fails on any.
+      - name: Web export has no Steam files
+        run: python3 tools/web_export_guard.py --pck build/web/index.pck
 
       # Service worker (cache bypass, offline launch from /Dreams/), maskable
       # icons, build.json (web/post_export.py).
@@ -197,80 +204,5 @@ jobs:
           done
           echo "music/town.ogg not reachable on the deployed site"; exit 1
 
-  # Steam Deck / Linux native build: export with the "Linux" preset and start it
-  # headless for a few seconds, so the preset stays valid (docs/STEAM-DECK.md).
-  # Runs beside the web build; it never blocks the web deploy.
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: tools/ci-requirements.txt
-      - name: Restore apt downloads
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ci-apt
-          key: ci-apt-${{ runner.os }}-${{ hashFiles('tools/ci_deps_check.py') }}
-      # ONE apt line: the package list lives in tools/ci_deps_check.py (BINARIES); apt runs only for missing tools.
-      - name: CI deps (pip + apt, cached) + ci_deps_check
-        run: |
-          mkdir -p ~/.cache/ci-apt/partial
-          pip install --quiet -r tools/ci-requirements.txt
-          miss="$(python3 tools/ci_deps_check.py --apt-missing)"
-          if [ -n "$miss" ]; then
-            echo "apt: $miss"
-            sudo apt-get update -qq
-            sudo apt-get install -y -qq -o Dir::Cache::Archives="$HOME/.cache/ci-apt" $miss > /dev/null
-            sudo chown -R "$(id -u):$(id -g)" ~/.cache/ci-apt
-          fi
-          python3 tools/ci_deps_check.py
-      - name: Cache Godot and Linux export templates
-        id: cache-godot
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/godot
-            ~/.local/share/godot/export_templates
-          key: godot-${{ env.GODOT_VERSION }}-linux
-      - name: Download Godot and Linux export templates
-        if: steps.cache-godot.outputs.cache-hit != 'true'
-        run: |
-          set -e
-          V="${GODOT_VERSION}-stable"
-          T="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
-          mkdir -p "$HOME/godot" "$T"
-          cd "$HOME/godot"
-          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
-          unzip -q godot.zip
-          mv "Godot_v${V}_linux.x86_64" godot
-          chmod +x godot
-          rm godot.zip
-          curl -fsSL -o templates.tpz "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_export_templates.tpz"
-          unzip -q templates.tpz
-          mv templates/linux_release.x86_64 templates/linux_debug.x86_64 "$T/"
-          rm -rf templates templates.tpz
-      - name: Add Godot to PATH
-        run: echo "$HOME/godot" >> "$GITHUB_PATH"
-      - name: Cache imported assets
-        uses: actions/cache@v4
-        with:
-          path: .godot
-          key: godot-import-linux-${{ env.GODOT_VERSION }}-${{ hashFiles('art/**/*.import', 'audio/**/*.import', 'project.godot') }}
-          restore-keys: |
-            godot-import-linux-${{ env.GODOT_VERSION }}-
-      - name: Export and start the Linux build
-        shell: bash
-        run: |
-          set -o pipefail
-          godot --headless --path . --import 2>&1 | tail -n 5
-          mkdir -p build/linux
-          godot --headless --path . --export-release "Linux" build/linux/Dreams.x86_64 2>&1 | tail -n 20
-          test -x build/linux/Dreams.x86_64
-          echo "### Linux build: $(( $(stat -c %s build/linux/Dreams.x86_64) / 1048576 )) MB" >> "$GITHUB_STEP_SUMMARY"
-          out="$(timeout 120 build/linux/Dreams.x86_64 --headless --quit-after 300 2>&1)"; echo "$out" | tail -n 30
-          if echo "$out" | grep -E "SCRIPT ERROR|Parse Error|Failed to load" ; then exit 1; fi
+  # The Linux/Windows (Steam) builds moved to .github/workflows/steam-builds.yml (S1 P1):
+  # their own concurrency group, so a web deploy never waits for them.

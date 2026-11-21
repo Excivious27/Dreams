@@ -296,6 +296,36 @@ def buildings(man):
         print(name, day.size)
 
 
+# C11b P6 (c11b_05-09): gangster looks of the C11a homes, same 2x2 quadrants as BUILDINGS, fitted to the day
+# size: buildings/<name>_gang (Builds._arc_words picks them). Key only near-pure magenta: neon pinks stay.
+GANG_FILES = {"w517": "../c11b/p6_gang_w517.png", "r1": "../c11b/p6_gang_r1.png", "r2": "../c11b/p6_gang_r2.png"}
+
+
+def _load_gang(name):
+    a = np.array(Image.open(os.path.join(INC, name)).convert("RGBA"))
+    r, g, b = a[..., 0].astype(int), a[..., 1].astype(int), a[..., 2].astype(int)
+    a[(r > 190) & (g < 90) & (b > 190) & (np.abs(r - b) < 60), 3] = 0
+    from scipy import ndimage  # magenta fringe on the outline: pinkish pixels touching the backdrop go too
+    for _ in range(2):
+        edge = ndimage.binary_dilation(a[..., 3] == 0) & (a[..., 3] > 0)
+        a[edge & (r > 150) & (b > 130) & (g < 120) & (r - g > 70) & (b - g > 50), 3] = 0
+    return a
+
+
+def gang(man):
+    sheets = {k: _load_gang(f) for k, f in GANG_FILES.items() if os.path.exists(os.path.join(INC, f))}
+    quads = {k: _quads(a) for k, a in sheets.items()}
+    for name, (key, qi) in sorted(BUILDINGS.items()):
+        if key not in sheets or name not in man.get("buildings", {}):
+            continue
+        day = man["buildings"][name]
+        b = quads[key][qi]
+        im = Image.fromarray(sheets[key][b[1]:b[3], b[0]:b[2]])
+        im = hard(im.resize((int(day["w"]), int(day["h"])), Image.LANCZOS))
+        man["buildings"][name + "_gang"] = single(im, f"buildings/{name}_gang.png")
+        print(name + "_gang", im.size)
+
+
 def _grid(a, nrows, ncols, merge=4, min_area=300):
     rows = rows_of(blobs(a, merge=merge, min_area=min_area))
     rows = [r for r in rows if len(r) >= ncols // 2]
@@ -595,7 +625,7 @@ def doc():
     print("wrote", p)
 
 
-STEPS = ["animals", "bee_idle", "team", "buildings", "items", "stations", "interior", "nodes", "node_alias", "fixes", "meta"]
+STEPS = ["animals", "bee_idle", "team", "buildings", "gang", "items", "stations", "interior", "nodes", "node_alias", "fixes", "meta"]
 
 if __name__ == "__main__":
     man = json.load(open(MAN))

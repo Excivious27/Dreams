@@ -1,0 +1,78 @@
+{
+ "chicken": {
+  "variants": [
+   {
+    "art": "chicken_golden",
+    "id": "golden"
+   }
+  ]
+ },
+ "cow": {
+  "variants": [
+   {
+    "art": "cow_highland",
+    "id": "highland"
+   }
+  ]
+ },
+ "duck": {
+  "variants": [
+   {
+    "art": "duck_snow",
+    "baby": [
+     "duck_snow",
+     "baby"
+    ],
+    "id": "snow"
+   }
+  ]
+ },
+ "goat": {
+  "variants": [
+   {
+    "art": "goat_chocolate",
+    "baby": [
+     "goat_chocolate",
+     "baby"
+    ],
+    "id": "chocolate"
+   }
+  ]
+ },
+ "llama": {
+  "variants": [
+   {
+    "art": "llama_white",
+    "id": "white"
+   }
+  ]
+ },
+ "pig": {
+  "variants": [
+   {
+    "art": "pig_ginger",
+    "baby": [
+     "pig_ginger",
+     "baby"
+    ],
+    "id": "ginger"
+   }
+  ]
+ },
+ "rabbit": {
+  "variants": [
+   {
+    "art": "rabbit_silver",
+    "id": "silver"
+   }
+  ]
+ },
+ "sheep": {
+  "variants": [
+   {
+    "art": "sheep_black",
+    "id": "black"
+   }
+  ]
+ }
+}

@@ -410,7 +410,7 @@ A("gloam_lanternfall", cols=42, rows=38, music="mega_gloam", look="gloam", links
   npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
         ("mg_fenn", "Fenn", "mg_fenn", ["Glowmoss grows on the north side of everything. Even me, if I stand still.", "The Crystal Thicket chimes when the wind's right.", "Honey and wisp-light. That's the trick to a Gloam Pudding."]),
         ("mg_bramble", "Bramble", "mg_bramble", ["Did you see the giant flower? It sneezed on me.", "I'm not scared of the dark. The dark is scared of my lantern.", "The ghostfish in the Moonpool can see you even with their eyes closed."])],
-  job={"giver": "mg_liesl", "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.", "items": [["wisp_thread", 5]], "reward": {"crystals": 300, "item": ["luna_moth", 1], "friend": ["mg_liesl", 15]},
+  job={"giver": "mg_liesl", "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.", "items": [["wisp_thread", 5]], "reward": {"animal": ["lantern_moth", "Liesl"], "animal_gang": ["peacock", "Liesl"], "gift_key": "mega:gloam_job", "crystals": 300, "item": ["luna_moth", 1], "friend": ["mg_liesl", 15]},
        "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Gerald says thank you. Gerald is the moth."]}},
   intro=["The ring lets go of you in a hush of moth-wings. Lanterns everywhere, hung from mushrooms taller than houses, and the moss underfoot is violet and soft.", "This is Lanternfall. Somebody waves. Somebody is always waving here."])
 A("gloam_violet_glade", cols=50, rows=44, music="mega_gloam", look="gloam", ground_seam="teal_moss_dense", links={"gloam_lanternfall": ("s", 23), "gloam_moonpool": ("n", 30)},
@@ -468,7 +468,7 @@ A("desert_mirage_post", cols=44, rows=40, music="mega_desert", look="desert", li
                "reward": {"crystals": 900, "item": ["sun_loaf", 2]},
                "lines": {"offer": ["Sunstones hold the day's heat all night. Four of them under the lamp-posts and the well stays lit till dawn.", "The Dune Sea and the Glass Canyon have them, if you can crack the rocks."],
                          "yes": "Good. Mind the hounds. They like shiny things too.", "done": ["Feel that? Warm as noon. The caravans will see the Post from three dunes off now."]}}],
-  job={"giver": "mg_nadia", "text": "Nadia the scholar wants 2 Sun Scarabs from the Sunken Temple.", "items": [["sun_scarab", 2]], "reward": {"crystals": 700, "item": ["greater_potion", 2], "friend": ["mg_nadia", 15]},
+  job={"giver": "mg_nadia", "text": "Nadia the scholar wants 2 Sun Scarabs from the Sunken Temple.", "items": [["sun_scarab", 2]], "reward": {"animal": ["ostrich", "Nadia"], "gift_key": "mega:desert_job", "crystals": 700, "item": ["greater_potion", 2], "friend": ["mg_nadia", 15]},
        "lines": {"offer": ["The Sunken Temple's full of carved scarabs. Gold ones. They're the key to the whole script.", "Two would do. I'd go myself but I'm a scholar, not a hero."], "yes": "Wonderful! Mind the glass golems. They don't mind you.", "done": ["Look at the wings! It's a calendar. The whole beetle is a calendar."]}},
   intro=["The caravan rolls in under a white sky. Tents, a stone well, palms leaning over a little green oasis, and beyond it nothing but gold in every direction.", "Mirage Post. The last well before the Sunscorch Expanse."])
 A("desert_dune_sea", cols=54, rows=46, music="mega_desert", look="desert", weather="dust", links={"desert_mirage_post": ("e", 20)},
@@ -579,7 +579,7 @@ A("frost_hearthhold", cols=44, rows=40, music="mega_frost", look="snow", path="s
   npcs=[("mg_brannoch", "Brannoch", "mg_brannoch", ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "The Wyrm on the Summit wakes every hundred years. Lucky you."]),
         ("mg_ingrid", "Ingrid", "mg_ingrid", ["Edelweiss, milk and a Rime Crystal. That's a sorbet that never melts.", "My grandmother knitted the first igloo. Don't ask how.", "Glacier Glass makes the best windows. You can see next week through it."]),
         ("mg_tove", "Tove", "mg_tove", ["I named the pike in the falls. They're all called Pike.", "The caverns sing when the wind goes through. I sing back.", "Brannoch says I can go to the Summit when I'm nine hundred."])],
-  job={"giver": "mg_ingrid", "text": "Ingrid wants 3 Rime Crystals and 2 Glacier Glass for her new window.", "items": [["frost", 3], ["glass_frosted", 2]], "reward": {"crystals": 1100, "max_energy": 10, "friend": ["mg_ingrid", 15]},
+  job={"giver": "mg_ingrid", "text": "Ingrid wants 3 Rime Crystals and 2 Glacier Glass for her new window.", "items": [["frost", 3], ["glass_frosted", 2]], "reward": {"animal": ["snow_yak", "Ingrid"], "gift_key": "mega:frost_job", "crystals": 1100, "max_energy": 10, "friend": ["mg_ingrid", 15]},
        "lines": {"offer": ["I want a window that never frosts over. Rime Crystal for the frame, Glacier Glass for the pane.", "Three crystals and two glass. The Caverns and the Glacier have both."], "yes": "Wrap up warm. The golems don't feel the cold, but you do.", "done": ["Look at that view. I can see the Summit from my stove! Here, something for your trouble."]}},
   intro=["The sled tips you out in front of a village of snow-domed houses with smoke curling from every chimney. Lanterns on poles, a steaming spring, and the peaks all round like a crown.", "Hearthhold. Even the snow seems friendly here."])
 A("frost_glacier", cols=52, rows=44, music="mega_frost", look="snow", ground_seam="frost_grass", links={"frost_hearthhold": ("s", 24), "frost_summit": ("n", 30)},
@@ -619,7 +619,11 @@ A("frost_summit", cols=44, rows=40, music="mega_frost_summit", music_fallback="m
   structs=[("props/ice_crystal_lit", 3, 3, (11, 9)), ("props/ice_crystal_lit", 3, 3, (30, 9)), ("props/crystal_tree_frost", 2, 2, (14, 32)), ("props/snowdrift_3", 2, 1, (30, 32))],
   things=[("mrock", {"ore": "frost", "hp": 4, "n": 2, "sprite": "props/mrock_ice_0"}),
           ("loot", {"item": "glass_frosted", "n": 2, "every": 4, "hint": "A: wind-polished ice", "sprite": "props/icicles_2"}),
-          ("note", {"hint": "A: read the summit flag", "text": "A ragged flag on a pole. Under it, a tin with notes from everyone who made it. The newest says: 'SHHH. IT'S SLEEPING.'"})],
+          ("note", {"hint": "A: read the summit flag", "text": "A ragged flag on a pole. Under it, a tin with notes from everyone who made it. The newest says: 'SHHH. IT'S SLEEPING.'"}),
+          ("creature", {"species": "frost_wyrmling", "species_gang": "tortoise", "flag": "boss_frost_summit", "key": "mega:frost_wyrmling", "giver": "Ingrid", "hint": "A: a nest in the snow",
+                        "wait": "A hollow in the snow, warm somehow. Whatever owns it is up on the summit, and not in the mood.",
+                        "line": "Something small and sleepy blinks up at you from the snow hollow, and follows you all the way down. Ingrid will bring it to your farm.",
+                        "line_gang": "An old tortoise sits in the warm hollow, frost on its shell, very patient. It follows you, slowly. Ingrid will truck it to your place."})],
   boss={"kind": "rime_wyrm", "who": "The Rime Wyrm", "title": "The Rime Wyrm", "reward": "charm_frost",
         "text": "The snowfield shrugs. A head as long as a sled lifts out of the ice, frost pouring from its jaws, and two pale eyes open. It is not pleased to be awake.",
         "win": "The Wyrm sighs a long, cold sigh and curls back down into the snow. Before it sleeps it drops one scale at your feet, as if to say: fine. You win. Now let me sleep.",
@@ -642,7 +646,7 @@ A("wind_breezehaven", cols=44, rows=40, music="mega_wind", look="sky", links={"w
   npcs=[("mg_zephyr", "Zephyr", "mg_zephyr", ["Breezehaven! Where penguins fly, technically, in baskets.", "Storm Glass comes from where lightning lands. Don't be where lightning lands.", "The Roc thinks the whole sky is its nest. It isn't wrong."]),
         ("mg_gull", "Gull", "mg_gull", ["There's a cloud pool on Sunrise Shelf. Skyfin bite there at dawn.", "Storm Fluff makes a souffle rise like a cloud. Because it is one.", "I came up in a balloon forty years ago. Never found the way down. Never looked."]),
         ("mg_nimbus", "Nimbus", "mg_nimbus", ["The Star Crystal's light reaches all the way up here. The clouds love it.", "The Storm Shelf was calm, once. The Roc changed that.", "Bring me Storm Glass and I'll teach you to bottle a breeze. Well. Pay you, anyway."])],
-  job={"giver": "mg_nimbus", "text": "Nimbus wants 3 Storm Glass and 2 Storm Fluff to calm the winds.", "items": [["storm_glass", 3], ["storm_fluff", 2]], "reward": {"crystals": 1500, "max_hp": 20, "friend": ["mg_nimbus", 15]},
+  job={"giver": "mg_nimbus", "text": "Nimbus wants 3 Storm Glass and 2 Storm Fluff to calm the winds.", "items": [["storm_glass", 3], ["storm_fluff", 2]], "reward": {"animal": ["cloud_sheep", "Nimbus"], "animal_gang": ["emu", "Nimbus"], "gift_key": "mega:wind_job", "crystals": 1500, "max_hp": 20, "friend": ["mg_nimbus", 15]},
        "lines": {"offer": ["The winds are getting wilder every day. I can calm them, with the right weather in a jar.", "Three Storm Glass and two Storm Fluff. The Storm Shelf has plenty."], "yes": "Splendid. Don't hold anything metal up there.", "done": ["Feel that? A breeze. Just a breeze. Take this, you'll need it on the Shelf."]}},
   intro=["The balloon drifts up through the last cloud and into blue. Islands float in it like stepping stones, one with a windmill, one with a temple, one with a penguin waving both flippers.", "Breezehaven. The wind here smells of rain that hasn't happened yet."])
 A("wind_sunrise_shelf", cols=50, rows=44, music="mega_wind", look="sky", ground_seam="cloud", links={"wind_breezehaven": ("e", 18)},
@@ -670,6 +674,9 @@ A("wind_starfall_garden", cols=46, rows=42, music="mega_wind", look="sky", groun
   structs=[("props/observatory", 6, 4, (12, 30)), ("props/star_crater", 3, 2, (32, 14)), ("props/moon_crystal_pink_t", 1, 1, (14, 12)), ("props/moon_crystal_blue", 2, 2, (28, 32))],
   things=[("loot", {"item": "star_dust", "n": 2, "every": 3, "hint": "A: a crater full of glitter", "sprite": "props/skydeco_2"}),
           ("loot", {"item": "storm_eye", "n": 1, "every": 14, "hint": "A: something perfectly calm in a nest", "sprite": "props/ri_nest"}),
+          ("creature", {"species": "storm_roc", "species_gang": "", "flag": "boss_wind_starfall_garden", "key": "mega:roc_young", "giver": "Nimbus", "hint": "A: a ring of soft down",
+                        "wait": "A ring of soft down, crackling with static. Something huge sleeps nearby. Not yet.",
+                        "line": "A young roc, no bigger than a goose, tumbles out of the down and peeps at you. It's decided you're family. Nimbus will walk it down to your farm."}),
           ("heal", {"hp": 5, "energy": 60, "msg": "Starlight in the garden settles on you. You feel very small, and very fine.", "hint": "A: lie under the stars"}),
           ("note", {"hint": "A: read the star chart", "text": "A star chart, with one star circled again and again: the one that fell on the valley. Next to it: 'IT'S COMING HOME.'"})],
   boss={"kind": "storm_roc", "who": "The Storm Roc", "title": "The Storm Roc", "reward": "charm_storm",
@@ -742,6 +749,9 @@ A("hollow_deeps", cols=50, rows=44, music="mega_hollow_deeps", music_fallback="h
           ("mrock", {"ore": "shard", "hp": 3, "n": 2, "sprite": "props/mine_crystal_ore_a_1"}), ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold_2"}),
           ("loot", {"item": "crystal_refined", "n": 1, "every": 4, "hint": "A: a crystal glowing in the moss", "sprite": "props/ccrystal_3"}),
           ("loot", {"item": "cave_bloom", "n": 2, "every": 2, "hint": "A: blooms by the glowing water", "sprite": "props/cave_mush_blue"}),
+          ("creature", {"species": "deep_glowworm", "species_gang": "volt_gecko", "key": "mega:hollow_glow", "giver": "", "hint": "A: a soft light in the moss",
+                        "line": "A glowworm curls round your finger and won't let go. It wants to see the sky. It'll be at your farm by morning.",
+                        "line_gang": "A little gecko with a battery-blue glow skitters up your sleeve. Somebody's lab lost it. It's yours now."}),
           ("heal", {"hp": 5, "energy": 60, "msg": "You sit by the glowing water. The light goes right through you, warm.", "hint": "A: rest by the glow"}),
           ("note", {"hint": "A: read the miners' slate", "text": "A miners' slate, chalk still sharp: 'Camp 9. Water here glows. Drank it. Feel fine. Feel BETTER than fine. Do not tell the foreman.'"}),
           ("note", {"hint": "A: read the old map", "text": "An old map pinned to a crate: the Heart in the middle, and around it a ring of caverns marked 'DEEPS', 'DEEPER', and one just marked 'NO'."})],
@@ -1055,7 +1065,7 @@ def build_area(aid, mega, spec, links_geom):
             print("  (no spot for %s in %s)" % (kind, aid)); continue
         t = {"type": kind, "cell": list(c)}
         t.update({k: v for k, v in td.items() if k != "sprite"})
-        if kind in ("loot", "heal", "note"):
+        if kind in ("loot", "heal", "note", "creature"):
             t["solid"] = False
         if kind == "mrock":
             t["hint"] = "A: mine it"

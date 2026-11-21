@@ -299,13 +299,7 @@ func _pup_cmd(cmd: String) -> void:
 			m.hud.toast("Guard needs the Guard Dog skill (Pup tree).", Color(1, 0.85, 0.6))
 		return
 	else:
-		pt.set_mode(cmd)
-		var mh := get_tree().current_scene as GameMap
-		if mh and mh.hud:
-			mh.hud.toast("%s: %s" % [Pet.name_of(), str({"follow": "heel", "attack": "attack", "wait": "stay", "guard": "guard"}.get(cmd, cmd)).capitalize()], Color(1, 0.95, 0.75))
-	# A cat answers with a meow, a dog with a bark (Pet.voice, P5, says the same).
-	var cat := str(GameState.look_d().get("pet", "")).begins_with("cat")
-	Music.instance(get_tree()).sfx("meow" if cat else "bark", "pickup")
+		pt.set_mode(cmd)  # Pet.set_mode / recall give the toast, whistle and the pup's own voice (c11b_07-01)
 
 
 func _hit(pos: Vector2) -> String:
@@ -526,9 +520,8 @@ func _on_draw() -> void:
 				var ab := Companion.ability_for(m0, m0.player)
 				var cl := Companion.cooldown_left(ab)
 				if cl > 0.0:
-					var full := float(Companion.COOLDOWN.get(ab, Companion.DEFAULT_COOLDOWN))
 					_canvas.draw_circle(p, r, Color(0, 0, 0, 0.45))
-					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - cl / full), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
+					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - Companion.cooldown_frac(ab)), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
 		var label := str(b["label"])
 		var size := 9 if r > 20.0 else 7
 		if action == "a" and context_word != "" and context_word.to_lower() != label.to_lower() and not get_tree().paused:  # "Use" over USE says nothing (C5)

@@ -519,6 +519,48 @@
    },
    "give": "sun_flan",
    "tier": 4
+  },
+  {
+   "id": "grand_omelette",
+   "name": "Grand Omelette",
+   "need": {
+    "ostrich_egg": 1,
+    "#herb": 1
+   },
+   "give": "grand_omelette",
+   "tier": 2
+  },
+  {
+   "id": "grand_omelette_emu",
+   "name": "Grand Omelette (emu egg)",
+   "need": {
+    "emu_egg": 1,
+    "#herb": 1,
+    "butter": 1
+   },
+   "give": "grand_omelette",
+   "tier": 2
+  },
+  {
+   "id": "giant_egg_custard",
+   "name": "Giant Egg Custard",
+   "need": {
+    "crystal_egg": 1,
+    "honey": 1,
+    "#milk": 1
+   },
+   "give": "giant_egg_custard",
+   "tier": 3
+  },
+  {
+   "id": "giant_egg_custard_emu",
+   "name": "Giant Egg Custard (emu egg)",
+   "need": {
+    "emu_egg": 1,
+    "#milk": 1
+   },
+   "give": "giant_egg_custard",
+   "tier": 2
   }
  ],
  "mill": [
@@ -2426,6 +2468,125 @@
    "n": 3
   },
   {
+   "id": "fine_yarn",
+   "name": "Fine Yarn",
+   "need": {
+    "alpaca_fleece": 1
+   },
+   "give": "fine_yarn",
+   "tier": 2
+  },
+  {
+   "id": "fine_yarn_yak",
+   "name": "Fine Yarn (yak wool)",
+   "need": {
+    "yak_wool": 1
+   },
+   "give": "fine_yarn",
+   "tier": 2
+  },
+  {
+   "id": "star_yarn",
+   "name": "Star Yarn",
+   "need": {
+    "star_wool": 1
+   },
+   "give": "star_yarn",
+   "tier": 3
+  },
+  {
+   "id": "star_yarn_moon",
+   "name": "Star Yarn (moon fluff)",
+   "need": {
+    "moon_fluff": 2
+   },
+   "give": "star_yarn",
+   "tier": 3
+  },
+  {
+   "id": "star_yarn_aurora",
+   "name": "Star Yarn (aurora tuft)",
+   "need": {
+    "aurora_tuft": 2
+   },
+   "give": "star_yarn",
+   "tier": 3
+  },
+  {
+   "id": "cloud_yarn",
+   "name": "Cloud Yarn",
+   "need": {
+    "storm_fluff": 1
+   },
+   "give": "cloud_yarn",
+   "tier": 3
+  },
+  {
+   "id": "glow_yarn",
+   "name": "Glow Yarn",
+   "need": {
+    "glow_wool": 1
+   },
+   "give": "glow_yarn",
+   "tier": 2
+  },
+  {
+   "id": "glow_yarn_static",
+   "name": "Glow Yarn (static fluff)",
+   "need": {
+    "static_fluff": 1
+   },
+   "give": "glow_yarn",
+   "tier": 2
+  },
+  {
+   "id": "wisp_silk",
+   "name": "Glow Silk (wisp thread)",
+   "need": {
+    "wisp_thread": 1
+   },
+   "give": "glow_silk",
+   "tier": 3
+  },
+  {
+   "id": "glow_silk_fabric",
+   "name": "Fine Fabric (glow silk)",
+   "need": {
+    "glow_silk": 1,
+    "cotton_cloth": 1
+   },
+   "give": "fine_fabric",
+   "tier": 3
+  },
+  {
+   "id": "feather_fan",
+   "name": "Feather Fan",
+   "need": {
+    "peacock_feather": 2
+   },
+   "give": "feather_fan",
+   "tier": 2
+  },
+  {
+   "id": "feather_fan_plume",
+   "name": "Feather Fan (plumes)",
+   "need": {
+    "plume": 2
+   },
+   "give": "feather_fan",
+   "tier": 2
+  },
+  {
+   "id": "feather_fan_roc",
+   "name": "Feather Fan (roc feather)",
+   "need": {
+    "roc_feather": 1,
+    "cloth": 1
+   },
+   "give": "feather_fan",
+   "tier": 3
+  },
+  {
    "id": "dc_rug_rect_blue",
    "name": "Cottage Rect Blue Rug",
    "need": {
@@ -2898,6 +3059,44 @@
    "tier": 3
   },
   {
+   "id": "buffalo_mozzarella",
+   "name": "Buffalo Mozzarella",
+   "need": {
+    "buffalo_milk": 1
+   },
+   "give": "buffalo_mozzarella",
+   "tier": 2
+  },
+  {
+   "id": "moon_cheese",
+   "name": "Moon Cheese",
+   "need": {
+    "moon_milk": 1
+   },
+   "give": "moon_cheese",
+   "tier": 3
+  },
+  {
+   "id": "sea_cheese",
+   "name": "Cheese (sea milk)",
+   "need": {
+    "sea_milk": 1
+   },
+   "give": "cheese",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "moss_tea_blend",
+   "name": "Moss Tea Blend",
+   "need": {
+    "shell_moss": 1,
+    "#herb": 1
+   },
+   "give": "moss_tea_blend",
+   "tier": 2
+  },
+  {
    "id": "cream",
    "name": "Cream",
    "need": {
@@ -3151,6 +3350,26 @@
    },
    "give": "dream_charm",
    "tier": 5
+  },
+  {
+   "id": "scale_charm",
+   "name": "Scale Charm",
+   "need": {
+    "shed_scale": 1,
+    "silver_bar": 1
+   },
+   "give": "scale_charm",
+   "tier": 3
+  },
+  {
+   "id": "ember_charm",
+   "name": "Ember Charm",
+   "need": {
+    "ember_scale": 1,
+    "copper_bar": 1
+   },
+   "give": "ember_charm",
+   "tier": 2
   },
   {
    "id": "dc_tt_snow_globe",
@@ -4246,6 +4465,26 @@
    "tier": 4
   },
   {
+   "id": "crack_circuit_egg",
+   "name": "Crack a Circuit Egg",
+   "need": {
+    "circuit_egg": 1
+   },
+   "give": "circuit_board",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "crack_alloy_egg",
+   "name": "Crack an Alloy Egg",
+   "need": {
+    "alloy_egg": 1
+   },
+   "give": "circuit_board",
+   "tier": 3,
+   "n": 6
+  },
+  {
    "id": "dc_neon_sign_0",
    "name": "Neon Sign: Moon",
    "need": {
@@ -4403,6 +4642,36 @@
    },
    "give": "drone_swarm",
    "tier": 4
+  },
+  {
+   "id": "battery_coolant",
+   "name": "Crystal Battery (coolant)",
+   "need": {
+    "coolant": 6,
+    "copper_bar": 1
+   },
+   "give": "crystal_battery",
+   "tier": 3
+  },
+  {
+   "id": "battery_synth",
+   "name": "Crystal Battery (synth milk)",
+   "need": {
+    "synth_milk": 6,
+    "copper_bar": 1
+   },
+   "give": "crystal_battery",
+   "tier": 3
+  },
+  {
+   "id": "battery_static",
+   "name": "Crystal Battery (static scales)",
+   "need": {
+    "static_scale": 4,
+    "copper_bar": 1
+   },
+   "give": "crystal_battery",
+   "tier": 3
   }
  ],
  "mayo": [

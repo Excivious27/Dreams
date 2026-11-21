@@ -295,6 +295,8 @@ static func _met(m: Dictionary) -> bool:
 		if s.begins_with("wing:"):
 			var w := s.trim_prefix("wing:")
 			return count(cat, w) >= total(cat, w) and total(cat, w) > 0
+		if s.begins_with("flag:"):
+			return flag_left(s) <= 0
 		return false
 	return count(cat) >= int(need)
 
@@ -337,10 +339,22 @@ static func next_milestone(cat: String) -> Array:
 		var who := _npc_name(str(m.get("from", "theo")))
 		if left > 0:
 			return ["%d more: a gift from %s" % [left, who], left]
+		if need is String and str(need).begins_with("flag:"):
+			if flag_left(str(need)) > 0:
+				return ["%d more blue ribbon%s: a gift from %s" % [flag_left(str(need)), "" if flag_left(str(need)) == 1 else "s", who], flag_left(str(need))]
+			continue
 		if need is String and str(need).begins_with("wing:"):
 			var w := str(need).trim_prefix("wing:")
 			return ["Finish %s (%d left): a gift from %s" % [wing_title(w), total(cat, w) - count(cat, w), who], total(cat, w) - count(cat, w)]
 	return []
+
+
+## "flag:<counter>:<n>" milestones (fair ribbons, C11b P6): how many are still needed.
+static func flag_left(need: String) -> int:
+	var p := need.split(":")
+	if p.size() < 3:
+		return 1
+	return int(p[2]) - int(GameState.run.get("flags", {}).get(p[1], 0))
 
 
 static func _npc_name(id: String) -> String:
