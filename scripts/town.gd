@@ -11,19 +11,23 @@ extends GameMap
 const TriBatch := preload("res://scripts/tri_batch.gd")  # the plaza kerb ring: one draw call
 const FOUNTAIN_LUCK_MIN := 120  # the plaza fountain's daily luck (C8 P6)
 const FARM_EXIT := Rect2i(38, 0, 6, 2)
-const BEACH_EXIT := Rect2i(38, 94, 6, 2)
+const BEACH_EXIT := Rect2i(38, 122, 6, 2)  # C14 P2: the town grew south (Harbour Row)
 const MOUNTAIN_EXIT := Rect2i(82, 46, 2, 4)
 const COMMONS_EXIT := Rect2i(0, 46, 1, 4)  # the west road to the community farm (Commons)
-const AVENUE_X := Rect2i(38, 0, 6, 96)
+const AVENUE_X := Rect2i(38, 0, 6, 124)
 const AVENUE_Y := Rect2i(0, 45, 84, 6)
 const PLAZA_C := Vector2(40.5, 47.5)
 const PLAZA_R := 9.5
-const RIVER_X := Rect2i(68, 0, 5, 96)
+const RIVER_X := Rect2i(68, 0, 5, 124)
 const BRIDGES := [Rect2i(68, 45, 5, 6), Rect2i(68, 76, 5, 3)]
 const FOUNTAIN_C := Vector2i(38, 46)
 ## C14 P2 (c14_03-13 #3): the Mayor's public garden north of the mansion: a hedge maze with
 ## a bench and a keepsake at its heart, the glass conservatory, a rose arbour, lamps on the lane.
 const GARDEN := Rect2i(45, 1, 22, 13)
+## C14 P2 (c14_03-13 #1): Harbour Row, the beach road's town end: the fish market, the
+## chandlery and the ferry & coach office on a quay lane that runs east to a river dock.
+const HARBOUR := Rect2i(8, 97, 60, 25)
+const QUAY := Rect2i(10, 110, 57, 2)  # cobbled, like the avenues
 const MAZE_AT := Vector2i(47, 2)
 const MAZE := ["#########", "#...#...#", "#.#.#.#.#", "#.#...#.#", "#.##P##.#", "#....#..#", "###.##.##", "#.....#.#", "####.####"]
 ## Dirt side lanes to the districts (draw_map paints them; props and lamps keep off them, c14_03-20).
@@ -69,7 +73,7 @@ func default_spawn() -> Vector2:
 
 func build() -> void:
 	cols = 84
-	rows = 96
+	rows = 124  # C14 P2 (c14_03-13): Harbour Row, y 96-121, nothing north of it moved
 	pad = 7
 	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "town"
@@ -913,7 +917,7 @@ func _dress_buildings() -> void:
 func _place_props() -> void:
 	_occ.clear()
 	placed.clear()
-	_lane_cells = cells_of(LANES + [HALL_STEPS, RecCenter.lane_rect(), AVENUE_X, AVENUE_Y])
+	_lane_cells = cells_of(LANES + [QUAY, HALL_STEPS, RecCenter.lane_rect(), AVENUE_X, AVENUE_Y])
 	for c in _plaza:
 		_lane_cells.erase(c)
 	var fest := GameState.festival_today()
@@ -991,6 +995,7 @@ func _place_props() -> void:
 				_lamp(Vector2i(x, y), Vector2i(1, 0))
 	_dress_plaza()
 	_garden()
+	_harbour()
 	# Wells, carts, crates: the working edges of town.
 	if prop("buildings", "well", Vector2i(30, 56), 2):
 		_claim(_foot("buildings", "well", Vector2i(30, 56), 2), "well", false)
@@ -1048,7 +1053,7 @@ func _place_props() -> void:
 	_fence_rect(Rect2i(74, 65, 8, 5), Vector2i(78, 65))
 	# Wild bits: tree clumps and scatter where nothing else is.
 	var avoid := {}
-	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12), GARDEN, RecCenter.lot_rect()]:
+	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12), GARDEN, HARBOUR, RecCenter.lot_rect()]:
 		for c in cells_of([r]):
 			avoid[c] = true
 	for c in _plaza:
@@ -1166,6 +1171,37 @@ func _garden() -> void:
 		_lamp(Vector2i(x, 10), Vector2i(1, 0))
 	_pp("props", "c14p2_tree_planter", Vector2i(57, 11))
 	_pp("props", "bench2_wood_a", Vector2i(45, 10), 1)
+
+
+func _harbour() -> void:
+	var signs := {
+		"c14p2_fish_market": [Vector2i(14, 102), "Harbour Row Fish Market: the morning catch on ice, from Sel's boats and Finn's lines."],
+		"c14p2_chandlery": [Vector2i(25, 102), "The Chandlery: rope, sail, lanterns and boat fittings for the marina."],
+		"c14p2_ticket_office": [Vector2i(47, 102), "Ferry & Coach Office: the timetable board is still being painted."],
+	}
+	if not GameState.is_penguins():
+		signs["c14p2_fish_market"][1] = "Docks End Fish Market: crates in, crates out, no questions on the quay."
+		signs["c14p2_ticket_office"][1] = "Taxi rank office: the dispatcher's out. Back soon, the chalk says."
+	for nm: String in signs:
+		var at: Vector2i = signs[nm][0]
+		if Art.has("buildings", nm):
+			building(nm, at)
+			var w := int(round(float(Art.info("buildings", nm).get("w", 112)) / TILE))
+			set_thing(at.x + w / 2 + 2, 109, {"type": "sign", "text": str(signs[nm][1]), "hint": "A: read the sign"}, false)
+	for x in range(12, 66, 8):
+		_lamp(Vector2i(x, 112), Vector2i(1, 0))
+	_pp("props", "stall2_blue" if Art.has("props", "stall2_blue") else "stall_blue", Vector2i(56, 107), 1)
+	for pr: Array in [["crates2_a", Vector2i(22, 109)], ["barrel2_a", Vector2i(33, 109)], ["crab_pots2", Vector2i(34, 113)], ["c14p2_bench_iron", Vector2i(30, 114)], ["fish_rack", Vector2i(11, 109)], ["c14p2_tree_planter", Vector2i(45, 114)], ["c14p2_signpost", Vector2i(37, 113)]]:
+		_pp("props", str(pr[0]), pr[1] as Vector2i)
+	var sp := Vector2i(37, 113)
+	if props.has(sp):
+		set_thing(sp.x, sp.y, {"type": "sign", "text": "▲ the plaza   ▼ beach\n▶ river dock", "hint": "A: read the sign"}, false)
+	# The river dock at the quay's east end.
+	for y in [109, 110, 111, 112]:
+		if Art.has("props", "dock2_mid"):
+			prop("props", "dock2_mid" if y < 112 else "dock2_end", Vector2i(66, y), 0, 0.0, false)
+	if Art.has("props", "buoy2_red"):
+		prop("props", "buoy2_red", Vector2i(70, 108), 0, 0.0, false)
 
 
 ## The hedge maze's keepsake: a topiary for your yard, once per save.
@@ -1538,7 +1574,7 @@ func draw_map() -> void:
 	var rk := "town_roads:%d:%d" % [_doors.hash(), blocked.size()]
 	var rm: Dictionary = _geom_memo.get(rk, {})
 	if rm.is_empty():
-		var r_roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
+		var r_roads := cells_of([AVENUE_X, AVENUE_Y, QUAY, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
 		for c in _plaza:
 			r_roads.erase(c)
 		var lanes_base := cells_of(LANES + [HALL_STEPS, RecCenter.lane_rect()])
@@ -1602,7 +1638,7 @@ func _tended() -> Dictionary:
 	var k := "town_tended"
 	if not _geom_memo.has(k):
 		var d := {}
-		for y in range(5, 94):
+		for y in range(5, 120):
 			for x in range(6, 66):
 				if (x * 7 + y * 13) % 3 != 0:  # a third of the lawn cells keep their tufts and flowers
 					d[Vector2i(x, y)] = true

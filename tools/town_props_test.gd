@@ -56,6 +56,22 @@ func _reach2(t: GameMap, from: Vector2i, to: Vector2i) -> bool:
 	return false
 
 
+func _reach2b(t: GameMap, from: Vector2i, to: Vector2i) -> bool:
+	var seen := {from: true}
+	var q: Array[Vector2i] = [from]
+	while not q.is_empty():
+		var c: Vector2i = q.pop_front()
+		if c == to:
+			return true
+		for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+			var n := c + d
+			if seen.has(n) or n.x < 30 or n.x > 50 or n.y < 55 or n.y > 123 or t.blocked.has(n):
+				continue
+			seen[n] = true
+			q.append(n)
+	return false
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
 	_ok(Art.has("tiles", "c14p2_flag") and Art.has("props", "c14p2_mosaic"), "plaza flagstone variants and mosaic art exist")
@@ -87,7 +103,7 @@ func _run() -> void:
 						if own.has(c) and not (bool(p[2]) and bool(own[c][1])):
 							_ok(false, "%s: %s overlaps %s at %s" % [tag, p[0], own[c][0], c])
 						own[c] = [p[0], bool(p[2])]
-			var lanes: Dictionary = t.cells_of(t.LANES)
+			var lanes: Dictionary = t.cells_of(t.LANES + [t.QUAY])
 			var lamps := 0
 			var plaza_lamps := 0
 			for p: Array in placed:
@@ -115,6 +131,11 @@ func _run() -> void:
 				_ok(green.is_empty(), "%s: green roofs in winter %s" % [tag, green])
 				for base: String in ["store", "smith", "bakery", "hall", "inn", "library", "school", "cottage_a", "chapel", "bank"]:
 					_ok(Art.has("buildings", base + "_snow"), "winter twin for " + base)
+			if day == 1:  # c14_03-13: Harbour Row: the town grew south, the beach road still meets the exit
+				_ok(t.rows == 124 and t.BEACH_EXIT.position.y == 122, "%s: town is 124 rows, beach exit at the new south edge" % tag)
+				for b: String in ["c14p2_fish_market", "c14p2_chandlery", "c14p2_ticket_office"]:
+					_ok(t.get("_bprops").any(func(e: Array) -> bool: return str(e[0]) == b), "%s: Harbour Row has %s" % [tag, b])
+				_ok(not t.blocked.has(Vector2i(40, 120)) and _reach2b(t, Vector2i(40, 120), Vector2i(40, 60)), "%s: beach arrival walks up the avenue to the plaza" % tag)
 			if day == 1:  # c14_03-13: the Mayor's garden maze is walkable to its heart and gives its keepsake once
 				var pc: Vector2i = t.MAZE_AT + Vector2i(4, 4)
 				_ok(str(t.things.get(pc, {}).get("type", "")) == "maze_prize", "%s: maze heart has its keepsake" % tag)

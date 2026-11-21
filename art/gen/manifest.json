@@ -29231,10 +29231,25 @@
    "h": 93,
    "w": 120
   },
+  "c14p2_chandlery": {
+   "file": "buildings/c14p2_chandlery.png",
+   "h": 135,
+   "w": 112
+  },
+  "c14p2_fish_market": {
+   "file": "buildings/c14p2_fish_market.png",
+   "h": 131,
+   "w": 112
+  },
   "c14p2_greenhouse": {
    "file": "buildings/c14p2_greenhouse.png",
    "h": 94,
    "w": 96
+  },
+  "c14p2_ticket_office": {
+   "file": "buildings/c14p2_ticket_office.png",
+   "h": 135,
+   "w": 112
   },
   "chapel": {
    "file": "buildings/chapel.png",

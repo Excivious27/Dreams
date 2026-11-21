@@ -25,7 +25,7 @@ func build() -> void:
 	pad = 7
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}  # (the east rock band was buried under the sand: an invisible wall)
 	music_track = "beach"
-	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
+	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 120 * TILE), "up", "▲ town")  # C14 P2: town grew south
 	add_exit(MARSH_EXIT, "marsh", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ marsh")
 	add_exit(QUARRY_EXIT, "quarry", Vector2(2 * TILE, 22 * TILE + 8), "right", "quarry ▶")
 	# The tide line wanders: sea cells start at SEA_Y ± noise, with a cove on the east.

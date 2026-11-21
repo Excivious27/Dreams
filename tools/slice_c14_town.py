@@ -110,7 +110,17 @@ def garden():
     _rm_save(C.piece(rgba, C.tight(rgba, pieces[1]), w=76), "props", "c14p2_rose_arbour")
 
 
-STEPS = [flagstones, cobbles, mosaic, props, snow, garden]
+def harbour():
+    """Harbour Row buildings (1x, like the town's): fish market, chandlery, ticket office."""
+    rgba, rows = C.sheet_rows(INC + "/harbour.png", merge=6, min_area=3000)
+    pieces = sorted([b for r in rows for b in r], key=lambda b: (b[2] - b[0]) * (b[3] - b[1]), reverse=True)[:3]
+    pieces.sort(key=lambda b: b[0])
+    assert len(pieces) == 3, pieces
+    for nm, b in zip(["c14p2_fish_market", "c14p2_chandlery", "c14p2_ticket_office"], pieces):
+        _rm_save(C.piece(rgba, C.tight(rgba, b), w=112), "buildings", nm)
+
+
+STEPS = [flagstones, cobbles, mosaic, props, snow, garden, harbour]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
