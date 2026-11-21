@@ -373,7 +373,6 @@ func _make_river() -> void:
 		return y
 	var keep_out := {}  # never under a building (built or not yet), the house, pens, the pond's bank or the track
 	keep_out.merge(cells_of([house_r.grow(2), pen_of("coop").grow(1), pen_of("barn").grow(1), GameState.GREENHOUSE_PLOT.grow(1), Rect2i(0, 28, cols, 4)]))
-	keep_out.merge(_pen_cells())  # every built ranch pen (hutch, sty, apiary...), not just coop and barn (c11b_05-01)
 	for bid: String in Builds.all():
 		var bd: Dictionary = Builds.all()[bid]
 		if bd.has("cell"):
