@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 69.8}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 14.0}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 3.1}
+{"step": 16, "name": "touch_ui_test", "rc": 0, "secs": 37.0}
+{"step": 22, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 4.5}
+{"step": 28, "name": "rec_test", "rc": 0, "secs": 4.7}
+{"step": 34, "name": "cash_test", "rc": 0, "secs": 3.2}
+{"step": 40, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 46, "name": "commons_test", "rc": 0, "secs": 35.9}
+{"step": 52, "name": "cf_layout_test", "rc": 0, "secs": 8.0}
+{"step": 58, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 6.9}
+{"step": 64, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.3}
+{"step": 70, "name": "ambience_test", "rc": 0, "secs": 4.7}
+{"step": 76, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.8}
+{"step": 82, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.8}
+{"step": 88, "name": "c6_cue_test", "rc": 0, "secs": 2.4}
+{"step": 94, "name": "meow_gate_test", "rc": 0, "secs": 3.2}
+{"step": 100, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.4}
+{"step": 106, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 16.7}
+{"step": 112, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 118, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.7}
+{"step": 124, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.9}
+{"step": 130, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 3.1}
+{"step": 136, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 3.9}

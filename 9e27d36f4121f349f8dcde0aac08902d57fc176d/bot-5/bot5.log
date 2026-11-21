@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 5 start arc=penguins hero=coco style=menus progress=1 difficulty=1 day_len=15
+BOT FAIL [5 menus] screen won't close on B/MENU in quarry: PadCursor, Scenery, NightGlow, GameMenu [menu open=false panel=false tab=Items rebind='' was_paused=false modal=[P: (0.0, 0.0), S: (270.0, 480.0)]] layers=["Dialogue(8)[\"@PanelContainer@178:PanelContainer\", \"@Button@188:Button\", \"@TextureRect@406:TextureRect\"]", "@CanvasLayer@140532(3)[\"@Node2D@140533:Node2D\"]", "@CanvasLayer@140535(1)[\"@Node2D@140536:Node2D\"]", "@CanvasLayer@140545(5)[\"@Control@140546:Control\", \"@CanvasLayer@140547:CanvasLayer\", \"@ColorRect@140549:ColorRect\"]", "@CanvasLayer@140550(10)[\"@Control@140551:Control\"]", "@CanvasLayer@140552(9)[\"@PanelContainer@140553:PanelContainer\"]"] last=Book > ? act=menu_crawl
+BOT 5 done: 1 fails, 0 warns, 330 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "colony_kelp", "orchard_hills", "frost_falls", "jungle", "ruins", "wastes", "quarry"], day 4, ◆135
+WARNING: 153 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2678)
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
