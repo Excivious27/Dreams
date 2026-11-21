@@ -139,7 +139,7 @@ func mount() -> void:
 		return
 	mounted = true
 	GameState.run["flags"]["mounted"] = true
-	Music.instance(get_tree()).sfx("horse_whinny", "horse")
+	Music.instance(get_tree()).sfx("whinny", "horse")
 	_show_idle()
 
 

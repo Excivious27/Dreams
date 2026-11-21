@@ -107,6 +107,11 @@ static func _finish(m: GameMap, c: Dictionary, i: int, st: Dictionary) -> void:
 		m.hud.toast("+%s" % Money.amount(int(st["money"])), Color(1, 0.9, 0.4))
 	if st.has("friend"):
 		GameState.add_friend(str(st["friend"][0]), int(st["friend"][1]))
+	if st.get("animal", null) is Dictionary:  # a side story that ends with an animal (c11b_04-06)
+		var an: Dictionary = st["animal"]
+		for n in int(an.get("count", 1)):
+			Perks.gift_animal(an, "ss:%s%s" % [cid, "" if n == 0 else "_%d" % n], str(GameState.npcs.get(str(st.get("giver", "")), {}).get("name", "")))
+		m.hud.toast(str(an.get("toast", "An animal is on its way to your farm.")), Color(0.9, 1, 0.8))
 	if i == 0:
 		m.hud.toast("Side story: %s" % str(c.get("title", cid)), Color(0.8, 0.9, 1))
 		Music.instance(m.get_tree()).sfx("j_page", "pickup")
