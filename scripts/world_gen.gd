@@ -413,12 +413,17 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 
 
 ## Wildlife: small critters that hop around and flee from the player.
-static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
+## `filter` false (c15_09-16: Meow Pow Wow true forms) places exactly the kinds given,
+## ignoring the time-of-day/season rules, and they stay.
+static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = [], filter := true) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"])
+	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]) if filter or kinds.is_empty() else kinds.duplicate()
 	var wet: Array[Vector2i] = []  # water cells in the rect, for fish (never on land)
-	for i in count:
+	var placed := 0
+	for i in (count if filter else count * 10):  # a true form retries blocked cells (c15_09-16)
+		if not filter and placed >= count:
+			break
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
 		var kind: String = pool[rng.randi_range(0, pool.size() - 1)]
 		if kind in WATER_CRITTERS:
@@ -434,14 +439,16 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 				continue
 		elif m.blocked.has(c) or m.is_water_cell(c):
 			continue
-		elif kind in TAKE_OFF and not _near_water(m, c, 2):
+		elif kind in TAKE_OFF and not _near_water(m, c, 2) and filter:
 			continue  # c14b_09-23 / 11-15: waders stay by the water
 		var cr := Critter.new()
 		cr.map = m
 		cr.kind = kind
+		cr.ruled = filter
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
+		placed += 1
 
 
 ## The winter look of a sprite when the look season is winter and the art exists:
@@ -480,16 +487,39 @@ const TAKE_OFF := ["duck", "heron"]
 ## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
 const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
 const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
-static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> Array:
+## C15 P4 (c15_09-06/-11/-05): each season brings its own wildlife to meadow-type
+## pools (a pool with a MEADOW kind in it), fall and winter send some away, and
+## owls/bats/fireflies in a region's own list only come out at night. `se` pins the
+## season for tests ("" = no season extras, the pre-C15 behaviour).
+const NIGHT_ONLY := ["bat", "owl", "firefly"]
+const MEADOW := ["sparrow", "rabbit", "squirrel", "butterfly_orange", "butterfly_blue", "robin", "finch", "hedgehog", "deer", "fox", "mouse"]
+const SEASON_CRITTERS := {
+	"spring": ["robin", "ladybug", "snail", "butterfly_yellow", "finch"],
+	"summer": ["dragonfly", "grasshopper", "butterfly_purple", "bee", "frog"],
+	"fall": ["squirrel", "crow", "hedgehog", "fox", "mouse"],
+	"winter": ["blue_jay", "fox", "crow", "deer"],
+}
+const SEASON_AWAY := {"fall": ["bee", "dragonfly", "butterfly_blue", "ladybug"], "spring": [], "summer": ["blue_jay"], "winter": []}
+static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1, se := "?") -> Array:
 	var is_night := GameState.is_night() if night < 0 else night == 1
 	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
 	var is_wet := (GameState.is_wet() and night < 0) if wet < 0 else wet == 1  # a pinned night/day call (tests) pins dry weather too
+	if se == "?":
+		se = GameState.look_se() if winter < 0 else ("winter" if is_winter else "")
+	var src := pool.duplicate()
+	if SEASON_CRITTERS.has(se) and src.any(func(k): return str(k) in MEADOW):
+		for k: String in SEASON_CRITTERS[se]:
+			if Art.has("wildlife/" + k, "idle"):
+				src.append(k)
+	var away: Array = SEASON_AWAY.get(se, [])
 	var out: Array = []
-	for k: String in pool:
+	for k: String in src:
 		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
 		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
-		if (is_night and day_only) or (is_winter and warm_only):
+		if (is_night and day_only) or (is_winter and warm_only) or k in away:
 			continue
+		if not is_night and k in NIGHT_ONLY:
+			continue  # c15_09-11: no bats or owls at noon
 		if is_wet and (k in FLUTTERS or k in ["hedgehog", "squirrel", "snake"]):
 			continue  # c14b_09-28: no butterflies in a storm; small critters shelter
 		out.append(k)
@@ -498,8 +528,22 @@ static func critter_pool(pool: Array, night := -1, winter := -1, wet := -1) -> A
 			if Art.has("wildlife/" + k, "idle"):
 				out.append(k)
 	if out.is_empty():
-		out = pool.filter(func(k): return not str(k).begins_with("butterfly") and k != "bee") if not pool.is_empty() else []
-	return out if not out.is_empty() else ["rabbit"]
+		# c15_09-05: the fallback keeps the season/time rules (no frogs in the snow).
+		out = pool.filter(func(k):
+			var ks := str(k)
+			return not ks.begins_with("butterfly") and ks != "bee" and not (is_winter and ks in WARM_ONLY) \
+				and not (is_night and ks in DAY_ONLY) and not (not is_night and ks in NIGHT_ONLY)) if not pool.is_empty() else []
+	if out.is_empty():
+		out = ["owl"] if is_night else (["crow", "rabbit"] if is_winter else ["rabbit"])
+	return out
+## C15 P4 (c15_09-19): may this kind still be out right now (night/winter rules)?
+static func critter_ok(k: String) -> bool:
+	var night := GameState.is_night()
+	if night and (k in DAY_ONLY or k.begins_with("butterfly")):
+		return false
+	if not night and k in NIGHT_ONLY:
+		return false
+	return not (GameState.look_se() == "winter" and (k in WARM_ONLY or k.begins_with("butterfly")))
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
 
@@ -547,6 +591,8 @@ const STILL_KINDS := ["six_deer"]  # idle-only art: they stand and graze, never 
 const CAT_ART := {"cat_grey": "animals/cat2_calico", "cat_orange": "animals/cat2_orange", "cat_black": "animals/cat2_black"}
 class Critter:
 	extends Node2D
+	var _rule_t := 4.0  # C15 P4 (c15_09-19): seconds until the next time-of-day/season rule check
+	var ruled := false  # set by add_critters: wildlife that follows the time-of-day/season rules (true forms etc. don't)
 	var map: GameMap
 	var kind := "bird"
 	var home := Vector2.ZERO
@@ -646,6 +692,12 @@ class Critter:
 	func _process(delta: float) -> void:
 		_t += delta
 		_timer -= delta
+		_rule_t -= delta
+		if ruled and _rule_t <= 0.0:
+			_rule_t = 4.0
+			if not WorldGen.critter_ok(kind):
+				queue_free()  # dusk sends the bees home (owls don't arrive mid-map: next visit)
+				return
 		# c14b_15-13: off-screen critters skip their wander / animation work.
 		if _away <= 0.0 and is_inside_tree():
 			var vr := get_viewport().get_visible_rect().grow(48.0)

@@ -290,12 +290,12 @@
     {
      "item": "catfish",
      "arc": "",
-     "where": "Farm, Fishing"
+     "where": "Farm, Lake"
     },
     {
      "item": "salmon",
      "arc": "",
-     "where": "Farm, Fishing"
+     "where": "Farm, Item Words"
     },
     {
      "item": "eel",
@@ -305,12 +305,12 @@
     {
      "item": "puffer",
      "arc": "",
-     "where": "Beach, Fishing"
+     "where": "Beach, Lake"
     },
     {
      "item": "goldfish",
      "arc": "",
-     "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
+     "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
     },
     {
      "item": "starfin",
@@ -345,7 +345,7 @@
     {
      "item": "sun_trout",
      "arc": "",
-     "where": "Somewhere in the water, at night with bait, fishing 5+"
+     "where": "Somewhere in the water, by day with bait, fishing 5+"
     },
     {
      "item": "ice_pike",
@@ -2232,6 +2232,624 @@
     "arc": "",
     "family": "Crops",
     "where": "Grow it on the farm. (Winter)"
+   },
+   {
+    "item": "turnip",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "strawberry",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "corn",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "coconut",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Forage: Beach"
+   },
+   {
+    "item": "catfish",
+    "arc": "",
+    "family": "Fish",
+    "where": "Farm, Lake"
+   },
+   {
+    "item": "salmon",
+    "arc": "",
+    "family": "Fish",
+    "where": "Farm, Item Words"
+   },
+   {
+    "item": "puffer",
+    "arc": "",
+    "family": "Fish",
+    "where": "Beach, Lake"
+   },
+   {
+    "item": "goldfish",
+    "arc": "",
+    "family": "Fish",
+    "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
+   },
+   {
+    "item": "potato",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "carrot",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "tomato",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pumpkin",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "melon",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "apple",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "orange",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pear",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lemon",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "banana",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "blueberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "raspberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "blackberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "fig",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "watermelon",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cantaloupe",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pineapple",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "mango",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "kiwi",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pomegranate",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cranberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "mulberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "quince",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "dragonfruit",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "passionfruit",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lychee",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "persimmon",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "guava",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sunfruit",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "frostberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sweet_potato",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "radish",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "beet",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "onion",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "garlic",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "leek",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "shallot",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "oat",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "rice",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "chili",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cucumber",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "zucchini",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cabbage",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lettuce",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "kale",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "spinach",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "broccoli",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cauliflower",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "eggplant",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "artichoke",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "asparagus",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "celery",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "bok_choy",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "poppy",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sunflower",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "moonflower",
+    "arc": "",
+    "family": "Flowers",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "grape",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cotton",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "flax",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sugar_beet",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "lotus",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "snow_pea",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "ghost_pepper",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "moon_melon",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "green_bean",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pea",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "pepper",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "scallion",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "peach",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "yellow_squash",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "turmeric",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "wasabi",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sesame",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "chia",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "avocado",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "kumquat",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "vanilla",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "cacao",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "watercress",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "water_chestnut",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "flameberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "shadowberry",
+    "arc": "",
+    "family": "Fruit",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "aurora_corn",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sky_lettuce",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
+    "item": "sun_trout",
+    "arc": "",
+    "family": "Fish",
+    "where": "Somewhere in the water, by day with bait, fishing 5+"
+   },
+   {
+    "item": "perch",
+    "arc": "",
+    "family": "Fish",
+    "where": "Ponds, rivers and the lake, Spring/Fall"
+   },
+   {
+    "item": "herring",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Spring"
+   },
+   {
+    "item": "flying_fish",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Summer, by day"
+   },
+   {
+    "item": "snapper",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Summer"
+   },
+   {
+    "item": "pike",
+    "arc": "",
+    "family": "Fish",
+    "where": "Ponds, rivers and the lake, Fall/Winter"
+   },
+   {
+    "item": "mullet",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Fall"
+   },
+   {
+    "item": "mackerel",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Fall/Winter"
+   },
+   {
+    "item": "cod",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter"
+   },
+   {
+    "item": "sardine",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter/Spring"
+   },
+   {
+    "item": "lantern_fish",
+    "arc": "",
+    "family": "Fish",
+    "where": "The sea, the docks and charters, Winter, at night"
    }
   ],
   "fish": [
@@ -2263,12 +2881,12 @@
    {
     "item": "catfish",
     "arc": "",
-    "where": "Farm, Fishing"
+    "where": "Farm, Lake"
    },
    {
     "item": "salmon",
     "arc": "",
-    "where": "Farm, Fishing"
+    "where": "Farm, Item Words"
    },
    {
     "item": "eel",
@@ -2278,12 +2896,12 @@
    {
     "item": "puffer",
     "arc": "",
-    "where": "Beach, Fishing"
+    "where": "Beach, Lake"
    },
    {
     "item": "goldfish",
     "arc": "",
-    "where": "Crystal Meadow, Lake, at night with bait, fishing 3+"
+    "where": "Crystal Meadow, Lake, by day with bait, fishing 3+"
    },
    {
     "item": "starfin",
@@ -2308,7 +2926,7 @@
    {
     "item": "sun_trout",
     "arc": "",
-    "where": "Somewhere in the water, at night with bait, fishing 5+"
+    "where": "Somewhere in the water, by day with bait, fishing 5+"
    },
    {
     "item": "ice_pike",
@@ -2324,6 +2942,106 @@
     "item": "ember_koi",
     "arc": "",
     "where": "Somewhere in the water, at night with bait, fishing 13+"
+   },
+   {
+    "item": "perch",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Spring/Fall"
+   },
+   {
+    "item": "smelt",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Spring/Winter, only in rain/storm/snow"
+   },
+   {
+    "item": "herring",
+    "arc": "",
+    "where": "The sea, the docks and charters, Spring"
+   },
+   {
+    "item": "flounder",
+    "arc": "",
+    "where": "The sea, the docks and charters, Spring/Summer"
+   },
+   {
+    "item": "bream",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Summer"
+   },
+   {
+    "item": "chub",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Summer/Fall"
+   },
+   {
+    "item": "flying_fish",
+    "arc": "",
+    "where": "The sea, the docks and charters, Summer, by day"
+   },
+   {
+    "item": "snapper",
+    "arc": "",
+    "where": "The sea, the docks and charters, Summer"
+   },
+   {
+    "item": "pike",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Fall/Winter"
+   },
+   {
+    "item": "grayling",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Fall"
+   },
+   {
+    "item": "mullet",
+    "arc": "",
+    "where": "The sea, the docks and charters, Fall"
+   },
+   {
+    "item": "mackerel",
+    "arc": "",
+    "where": "The sea, the docks and charters, Fall/Winter"
+   },
+   {
+    "item": "sturgeon",
+    "arc": "",
+    "where": "Ponds, rivers and the lake, Winter"
+   },
+   {
+    "item": "cod",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter"
+   },
+   {
+    "item": "sardine",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter/Spring"
+   },
+   {
+    "item": "lantern_fish",
+    "arc": "",
+    "where": "The sea, the docks and charters, Winter, at night"
+   },
+   {
+    "item": "prism_trout",
+    "arc": "",
+    "where": "Legend: Forest, in spring, fishing 6+. Only one exists."
+   },
+   {
+    "item": "sailfish",
+    "arc": "",
+    "where": "Legend: Beach, in summer, fishing 7+. Only one exists."
+   },
+   {
+    "item": "soul_salmon",
+    "arc": "",
+    "where": "Legend: Lake, in fall, fishing 8+. Only one exists."
+   },
+   {
+    "item": "frost_pike",
+    "arc": "",
+    "where": "Legend: Forest, in winter, fishing 9+, from year 2. Only one exists."
    }
   ],
   "cooking": [
@@ -6494,6 +7212,31 @@
    "when": "rain_or_winter_dawn",
    "chance": 0.04,
    "first_decor": "dc_koi_scroll"
+  },
+  "prism_trout": {
+   "scene": "forest",
+   "lvl": 6,
+   "when": "season:spring",
+   "chance": 0.03
+  },
+  "sailfish": {
+   "scene": "beach",
+   "lvl": 7,
+   "when": "season:summer",
+   "chance": 0.03
+  },
+  "soul_salmon": {
+   "scene": "lake",
+   "lvl": 8,
+   "when": "season:fall",
+   "chance": 0.03
+  },
+  "frost_pike": {
+   "scene": "forest",
+   "lvl": 9,
+   "when": "season:winter",
+   "chance": 0.03,
+   "year": 2
   }
  }
 }

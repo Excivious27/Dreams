@@ -4714,7 +4714,7 @@ class BorderBucket extends Node2D:
 func fish_at(c: Vector2i, pool_in: Array) -> void:
 	# Pools run cheapest → priciest (Fishing.pool_for); numbers live in Fishing.T.
 	var area_tier := fish_tier()
-	var pool := Fishing.pool_for(pool_in, area_tier)
+	var pool := Fishing.pool_for(pool_in, area_tier, scene_id())
 	if GameState.held_tool() != "rod":
 		# Only the rod in hand fishes (an axe or a hoe at the water does nothing).
 		ToolHint.need(self, "rod", "to fish")

@@ -51,15 +51,31 @@ static func band(fish: String) -> int:
 
 ## The water's pool sorted cheapest first; valley waters with too few commons
 ## get minnow/sunfish, mega and sea waters keep their own fish.
-static func pool_for(pool_in: Array, area_tier: int) -> Array:
+static func pool_for(pool_in: Array, area_tier: int, scene := "") -> Array:
 	var pool := []
 	for f in pool_in:
 		if not pool.has(f) and GameState.items.has(str(f)):
 			pool.append(str(f))
 	if pool.is_empty():
 		pool = (T["fresh_pool"] as Array).duplicate()
+	# C15 P4: the season's own fish join home waters and the sea; fish out of
+	# season (or out of their weather) don't bite. Never empties a pool.
+	var se := GameState.season()
+	var wx := GameState.weather_today()
+	var water := water_kind(scene, area_tier)
+	if water != "":
+		for f: String in season_fish(se, water):
+			if not pool.has(f):
+				pool.append(f)
+	var fits := pool.filter(func(f: String) -> bool: return in_season(f, se) and weather_ok(f, wx))
+	if not fits.is_empty():
+		pool = fits
 	var now := "night" if GameState.is_night() else "day"
-	var timed := pool.filter(func(f: String) -> bool: return str((T["when"] as Dictionary).get(f, now)) == now)
+	if wx == "fog":
+		now = "night"  # fog: night fish come up by day too (c15_09-07)
+	var timed := pool.filter(func(f: String) -> bool:
+		var w := str((T["when"] as Dictionary).get(f, GameState.items.get(f, {}).get("when", now)))
+		return w == now or (wx == "fog" and w == "day"))
 	if not timed.is_empty():
 		pool = timed
 	if area_tier <= 0:
@@ -70,6 +86,52 @@ static func pool_for(pool_in: Array, area_tier: int) -> Array:
 					pool.append(f)
 	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
 	return pool
+
+
+## "fresh" for valley waters, "sea" for the sea, docks, charters and island seas,
+## "" for mega-region waters (they keep their own fish lists).
+static func water_kind(scene: String, area_tier: int) -> String:
+	if scene == "":
+		return ""
+	if (T["sea_waters"] as Array).has(scene):
+		return "sea"
+	return "fresh" if area_tier <= 0 else ""
+
+
+static var _season_cache := {}
+
+
+## Seasonal fish (items with "seasons" + "water", gen_mega_new SEASON_FISH) for one season and water.
+static func season_fish(se: String, water: String) -> Array:
+	var key := se + "/" + water
+	if _season_cache.has(key) and int(_season_cache.get("_n", -1)) == GameState.items.size():
+		return _season_cache[key]
+	if int(_season_cache.get("_n", -1)) != GameState.items.size():
+		_season_cache = {"_n": GameState.items.size()}
+	var out := []
+	for id: String in GameState.items:
+		var it: Dictionary = GameState.items[id]
+		if str(it.get("type", "")) == "fish" and str(it.get("water", "")) == water and (it.get("seasons", []) as Array).has(se):
+			out.append(id)
+	out.sort()
+	_season_cache[key] = out
+	return out
+
+
+static func in_season(fish: String, se: String) -> bool:
+	var s: Variant = GameState.items.get(fish, {}).get("seasons", [])
+	return not (s is Array) or (s as Array).is_empty() or (s as Array).has(se)
+
+
+static func weather_ok(fish: String, wx: String) -> bool:
+	var w: Variant = GameState.items.get(fish, {}).get("weather", [])
+	return not (w is Array) or (w as Array).is_empty() or (w as Array).has(wx)
+
+
+## Seasons a fish bites in (all four for the year-round fish), for the fish log.
+static func seasons_of(fish: String) -> Array:
+	var s: Variant = GameState.items.get(fish, {}).get("seasons", [])
+	return (s as Array).duplicate() if s is Array and not (s as Array).is_empty() else ["spring", "summer", "fall", "winter"]
 
 
 ## The koi is one of a kind: only under the lit lighthouse, and only until you have one (c10_07).
@@ -94,7 +156,9 @@ static func ceiling(lvl: int, night: bool, baited: bool, area_tier: int) -> int:
 
 
 static func reach_n(lvl: int, night: bool, baited: bool) -> int:
-	return 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2
+	var wx := GameState.weather_today()
+	var w := 1 if wx == "storm" else (-1 if wx == "blizzard" else 0)  # C15 P4: storms stir the deep fish up
+	return maxi(1, 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2 + w)
 
 
 ## True when bait would open a fish the bare hook can't reach here (bait is

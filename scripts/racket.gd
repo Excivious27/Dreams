@@ -44,7 +44,49 @@ static func risk(id: String) -> float:
 	r -= 0.09 if Crew.perk_level("shop_discount") >= 3 else 0.0  # Specs knows which tills to avoid: his loyalty-3 perk (c11b_08-14)
 	r -= GameState.bonus("hustle", "pass_risk")
 	r -= 0.02 if Crew.perk_level("board_bonus") >= 2 else 0.0  # Dice hears which shops are watching
+	r += float(season_mod().get("risk", 0.0))      # C15 P4: festival patrols, spring-cleaning distraction
 	return clampf(r, 0.03, 0.9)
+
+
+## C15 P4 (c15_16-04): how the season (and festival days) move the racket.
+## risk: added to every bill's risk; pass: extra bills the streets take; wash: laundromat face cap multiplier.
+const SEASON_MOD := {
+	"spring": {"risk": -0.02, "pass": 0, "wash": 1.0, "line": "Spring cleaning: shopkeepers are busy with their windows, not their tills."},
+	"summer": {"risk": 0.0, "pass": 1, "wash": 1.0, "line": "Summer crowds on the boardwalk: one more till will take paper."},
+	"fall": {"risk": 0.0, "pass": 0, "wash": 1.1, "line": "Fall rush: the wash takes a little more while everyone's buying coats."},
+	"winter": {"risk": 0.0, "pass": 0, "wash": 1.2, "line": "Coat season: the laundromat's busier, so a bigger load slips through."},
+}
+
+
+static func season_mod(se := "") -> Dictionary:
+	if se == "":
+		se = GameState.season()
+	var d: Dictionary = (SEASON_MOD.get(se, SEASON_MOD["spring"]) as Dictionary).duplicate()
+	if festival_day():
+		d["risk"] = float(d["risk"]) + 0.05  # more eyes on the street on festival days...
+		d["pass"] = int(d["pass"]) + 1         # ...but more tills open, too
+	return d
+
+
+## C15 P4 (c15_15-14): the first Hideout visit of a season, Dice passes on "the Word":
+## what's on in the city this season, and how the season moves the racket.
+static func season_word(m: GameMap) -> bool:
+	if not Crew.recruited("dice") or GameState.day_of_season() > 7:
+		return false
+	var se := GameState.season()
+	var key := "word_%s_%d" % [se, (int(GameState.run.get("day", 1)) - 1) / 112]
+	if GameState.run["flags"].has(key):
+		return false
+	GameState.run["flags"][key] = true
+	var ls: Array = (CrewSeason.LINES.get("dice", {}) as Dictionary).get(se, [])
+	var word := str(ls[0]) if not ls.is_empty() else ""
+	m.hud.toast("Dice: %s %s" % [word, str((SEASON_MOD.get(se, {}) as Dictionary).get("line", ""))], Color(0.85, 0.9, 1))
+	return true
+
+
+## True on a festival/holiday day (GameState.festival_today delegates to Calendar, C15 contract).
+static func festival_day() -> bool:
+	return GameState.festival_today() != ""
 
 
 ## Bills passed today, and how many the streets will take in a day.
@@ -54,7 +96,7 @@ static func passed_today() -> int:
 
 
 static func pass_cap() -> int:
-	return 3 + 2 * GameState.progress_tier()
+	return 3 + 2 * GameState.progress_tier() + int(season_mod().get("pass", 0))
 
 
 static func pass_bills(m: GameMap, id: String) -> bool:
@@ -154,6 +196,8 @@ static func on_enter(m: GameMap) -> void:
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
 		var got := GameState.extra_energy(int(GameState.run["max_energy"]))
 		m.hud.toast("Mama Rosa left a hot plate out for you. +%d energy." % got if got > 0 else "Mama Rosa left a hot plate out for you. You're too full to eat.", Color(1, 0.9, 0.6))
+	if on() and m.scene_id() == "hideout":
+		season_word(m)
 	if on() and Crew.perk_level("raid_warning") >= 3 and m.scene_id() in PEOPLED and m.scene_id() != "hideout":
 		m.later(func() -> void:
 			var n := 0
@@ -164,6 +208,12 @@ static func on_enter(m: GameMap) -> void:
 				m.hud.toast("Ladder, on the radio: %d hostile%s on this block." % [n, "" if n == 1 else "s"], Color(0.8, 0.9, 1)))
 	if Project.has("hq_comms") or Ops.holds(m.scene_id()):
 		return  # drones on the roofs / your own block: collectors never get close
+	if festival_day():
+		# C15 P4 (c15_16-18): festival truce: no collector ambush on a festival/holiday day.
+		if on() and heat() >= 3 and m.scene_id() == "town" and int(GameState.run["flags"].get("truce_day", -1)) != int(GameState.run["day"]):
+			GameState.run["flags"]["truce_day"] = int(GameState.run["day"])
+			m.hud.toast("Festival day. Even the collectors take the day off.", Color(1, 0.9, 0.6))
+		return
 	if not on() or heat() < 3 or GameState.run["flags"].has("president_freed") or GameState.run["flags"].has("city_taken") or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
 		return
 	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > (0.25 if Crew.perk_level("raid_warning") >= 2 else 0.5):
@@ -222,7 +272,7 @@ static func overnight(report: Dictionary) -> void:
 ## Face value the wash can still take tonight (c10b_04_20): one budget shared by
 ## the laundromat menu and overnight(); bills over it come back unwashed.
 static func wash_face_cap() -> int:
-	return int(WASH_FACE_CAP[clampi(Builds.built_tier("laundromat"), 0, 3)])
+	return int(float(WASH_FACE_CAP[clampi(Builds.built_tier("laundromat"), 0, 3)]) * float(season_mod().get("wash", 1.0)))
 
 
 static func wash_room_left() -> int:

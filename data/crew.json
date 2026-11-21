@@ -48,6 +48,10 @@
    "finale": "Deuce shows the door guards a card trick they can't walk away from.",
    "waiting": [
     "Pick a card. Any card. ...Later, then. I'll keep it warm."
+   ],
+   "birthday": [
+    "spring",
+    10
    ]
   },
   "mama_rosa": {
@@ -93,6 +97,10 @@
    "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the red carpet.",
    "waiting": [
     "Sit, sit. We talk business when you've got time to eat."
+   ],
+   "birthday": [
+    "fall",
+    2
    ]
   },
   "specs": {
@@ -140,7 +148,11 @@
     "No paper, no talk. Somebody on these docks keeps a shipping manifest. Find it.",
     "I don't talk to people without paper. It's nothing personal. It's a policy."
    ],
-   "waiting_hint": "Specs wants a shipping manifest. Somebody on the docks keeps one."
+   "waiting_hint": "Specs wants a shipping manifest. Somebody on the docks keeps one.",
+   "birthday": [
+    "spring",
+    18
+   ]
   },
   "ladder": {
    "name": "Ladder",
@@ -187,7 +199,11 @@
     "Dock boss owns the crane. Move him and come up.",
     "Four hundred and... don't interrupt. Come back when the docks are yours."
    ],
-   "waiting_hint": "Ladder will talk once the dock boss is beaten."
+   "waiting_hint": "Ladder will talk once the dock boss is beaten.",
+   "birthday": [
+    "winter",
+    11
+   ]
   },
   "vic": {
    "name": "Vic",
@@ -238,7 +254,11 @@
     "Pit first.",
     "Win the pit. Then we talk. Both of us."
    ],
-   "waiting_hint": "Vic and Val will talk once you win the pit fights."
+   "waiting_hint": "Vic and Val will talk once you win the pit fights.",
+   "birthday": [
+    "summer",
+    18
+   ]
   },
   "val": {
    "name": "Val",
@@ -285,7 +305,11 @@
     "Vic says pit first. Vic's right.",
     "You haven't won anything down here yet."
    ],
-   "waiting_hint": "Vic and Val will talk once you win the pit fights."
+   "waiting_hint": "Vic and Val will talk once you win the pit fights.",
+   "birthday": [
+    "summer",
+    18
+   ]
   },
   "halo": {
    "name": "Halo",
@@ -332,7 +356,11 @@
     "Nobody races on these docks while the boss is watching. Fix that.",
     "Engine's warm. You're not ready. Come back when the docks are free."
    ],
-   "waiting_hint": "Halo will talk once the dock boss is beaten."
+   "waiting_hint": "Halo will talk once the dock boss is beaten.",
+   "birthday": [
+    "summer",
+    6
+   ]
   },
   "dice": {
    "name": "Dice",
@@ -379,7 +407,11 @@
     "Can't talk, can't talk. Neon's boss has eyes everywhere.",
     "Not while Neon's boss is up. Ask me after. Please. After."
    ],
-   "waiting_hint": "Dice is too scared to talk while the Neon boss runs the street."
+   "waiting_hint": "Dice is too scared to talk while the Neon boss runs the street.",
+   "birthday": [
+    "fall",
+    10
+   ]
   },
   "the_kid": {
    "name": "The Kid",
@@ -434,7 +466,11 @@
      "text": "The Kid flips the board, catches it, and looks at the boss's sign again. Not yet, then."
     }
    ],
-   "waiting_hint": "The Kid won't talk while the Neon boss runs the street."
+   "waiting_hint": "The Kid won't talk while the Neon boss runs the street.",
+   "birthday": [
+    "spring",
+    22
+   ]
   },
   "doc": {
    "name": "Doc",
@@ -481,7 +517,11 @@
     "I don't sign on with anyone while Neon's boss is running this street.",
     "Come and see me when Neon is quiet. Mind that cut."
    ],
-   "waiting_hint": "Doc will talk once the Neon boss is beaten."
+   "waiting_hint": "Doc will talk once the Neon boss is beaten.",
+   "birthday": [
+    "fall",
+    26
+   ]
   },
   "marlene": {
    "name": "Marlene",
@@ -541,6 +581,10 @@
     {
      "text": "Marlene tucks her ledger under her arm and walks off down the docks without looking back."
     }
+   ],
+   "birthday": [
+    "winter",
+    6
    ]
   },
   "sasha": {
@@ -588,7 +632,11 @@
     "The champion's still standing. Fix that, then talk to me.",
     "Win the pit first."
    ],
-   "waiting_hint": "Sasha will talk once the underground boss is beaten."
+   "waiting_hint": "Sasha will talk once the underground boss is beaten.",
+   "birthday": [
+    "winter",
+    18
+   ]
   }
  }
 }
