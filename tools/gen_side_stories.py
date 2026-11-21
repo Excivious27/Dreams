@@ -145,6 +145,54 @@ chain("specs_wire", "gangsters", "Specs and the wire", {"flag": "st_g3_specs"}, 
      "friend": ["sal", 20], "flag": "ss_specs_files", "hint": ""},
 ])
 
+# C15 P3 (c15_11-04): one seasonal chain per season, both arcs. The chain's "when"
+# holds the season, so each step only plays in that season (a chain started late
+# picks up again the next year).
+chain("spring_beds", "", "Wren's spring beds", {"season": "spring", "day": 3}, [
+    {"giver": "wren",
+     "lines": L("Wren", "Spring's the only time the wildflowers along the lanes are worth picking for seed. I want a bed of them by my door this year.", "Bring me three wildflowers and I'll show you how to save their seeds."),
+     "need": ["flower", 3],
+     "ask": L("Wren", "Three wildflowers. They grow along the paths and the meadow edges in spring."),
+     "hint": "Bring Wren 3 Wildflowers for her spring flower bed.",
+     "done_hint": "Wren is planting her flower bed. See her again tomorrow."},
+    {"giver": "wren",
+     "lines": N("A neat new bed of wildflowers runs along Wren's doorstep, already buzzing.") + L("Wren", "Look at that. Bees by lunchtime. Here, a tea from last year's flowers. Next spring, these will be the seeds."),
+     "give": ["tea", 2], "friend": ["wren", 20], "flag": "ss_spring_beds", "hint": ""},
+])
+chain("summer_shells", "", "Lumi's summer shells", {"season": "summer", "day": 3}, [
+    {"giver": "lumi",
+     "lines": L("Lumi", "I want to paint the beach with real shells pressed into the frame. The summer tide leaves the best ones.", "Two seashells, please. The prettier the better. I'm very picky. I'm sorry. I'm not sorry."),
+     "need": ["seashell", 2],
+     "ask": L("Lumi", "Two seashells from the shore. Summer tides bring them in."),
+     "hint": "Bring Lumi 2 Seashells for her beach painting.",
+     "done_hint": "Lumi is framing her beach painting. Visit her tomorrow."},
+    {"giver": "lumi",
+     "lines": N("The painting is all blues and gold, with your two shells set into the corners of the frame.") + L("Lumi", "It's done! It's going on the wall at the inn so everyone can see summer even in winter. Take this, you've earned a cool drink."),
+     "give": ["energy_tea", 2], "friend": ["lumi", 20], "flag": "ss_summer_shells", "hint": ""},
+])
+chain("fall_soup", "", "Bram's fall soup", {"season": "fall", "day": 3}, [
+    {"giver": "bram",
+     "lines": L("Bram", "Every fall I make one pot of mushroom soup for the whole town. One. It's tradition and also all I have time for.", "Three mushrooms and I can start it. The woods are full of them this time of year."),
+     "need": ["mushroom", 3],
+     "ask": L("Bram", "Three mushrooms. Look under the trees after a fall rain."),
+     "hint": "Bring Bram 3 Mushrooms for his fall soup.",
+     "done_hint": "Bram's soup is simmering. Come back to the inn tomorrow."},
+    {"giver": "bram",
+     "lines": N("The whole inn smells of mushrooms and thyme. Bram ladles out bowl after bowl.") + L("Bram", "There. The town's fed and nobody's cold. Take a bowl home. Two, actually. You picked the mushrooms."),
+     "give": ["pumpkin_soup", 2], "friend": ["bram", 20], "flag": "ss_fall_soup", "hint": ""},
+])
+chain("winter_tarts", "", "Posy's winter tarts", {"season": "winter", "day": 3}, [
+    {"giver": "posy",
+     "lines": L("Posy", "Frostberry tarts. Only in winter, only with real frostberries, and I've run out.", "Two frostberries and I'll bake a batch for the whole street. And one for you. Fine, two for you."),
+     "need": ["frostberry", 2],
+     "ask": L("Posy", "Two frostberries. They only grow in winter."),
+     "hint": "Bring Posy 2 Frostberries for her winter tarts.",
+     "done_hint": "Posy is baking frostberry tarts. Visit the bakery tomorrow."},
+    {"giver": "posy",
+     "lines": N("Trays of glossy purple tarts cool on every surface of the bakery.") + L("Posy", "The whole street's had one. Two people cried. Happy crying. Here, something warm to go with yours."),
+     "give": ["hot_cocoa", 2], "friend": ["posy", 20], "flag": "ss_winter_tarts", "hint": ""},
+])
+
 # C10a P4: a chain's last step may hand over a home keepsake: data/decor.json "grants"
 # "side:<chain id>": decor id (tools/gen_decor.py runs first). Only when the step has no
 # give of its own (SideStory gives one item per step) and the id is in the catalogue.

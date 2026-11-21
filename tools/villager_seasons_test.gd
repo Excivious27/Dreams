@@ -205,5 +205,26 @@ func _run() -> void:
 	check("ev_fall_ledger" in y2 and not "ev_fall_ledger" in y1, "year-2 scene only in year 2 (y1 %s, y2 %s)" % [y1, y2])
 	check("ev_fall_press" in y1, "fall year-1 scene eligible in fall (%s)" % [y1])
 
+	# --- seasonal side stories: due only in their season ---
+	var ss := {"spring_beds": ["wren", 0], "summer_shells": ["lumi", 1], "fall_soup": ["bram", 2], "winter_tarts": ["posy", 3]}
+	for cid: String in ss:
+		var giver: String = ss[cid][0]
+		var si: int = ss[cid][1]
+		_setup("penguins", _day(si, 8), 12.0)
+		var d := SideStory.due(giver)
+		check(not d.is_empty() and str(d[0]["id"]) == cid, "%s due from %s in its season (%s)" % [cid, giver, d])
+		_setup("penguins", _day((si + 1) % 4, 8), 12.0)
+		var d2 := SideStory.due(giver)
+		check(d2.is_empty() or str(d2[0]["id"]) != cid, "%s not due out of season" % cid)
+	# --- spouse: festival and season lines, both arcs ---
+	var sp_id := str(Romance.candidates()[0]) if not Romance.candidates().is_empty() else ""
+	check(sp_id != "", "a romance candidate exists")
+	for arc: String in ["penguins", "gangsters"]:
+		_setup(arc, _day(3, 14), 12.0)
+		var pool: Dictionary = Romance.SPOUSE_SEASON if arc == "penguins" else Romance.SPOUSE_SEASON_GANG
+		check((pool["festival"] as Array).has(Romance.spouse_line(sp_id)), "[%s] spouse festival line" % arc)
+		_setup(arc, _day(2, 1), 8.0)
+		check((pool["fall"] as Array).has(Romance.spouse_line(sp_id)), "[%s] spouse line on Fall 1 is a fall line" % arc)
+
 	print("villager_seasons_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

@@ -475,7 +475,7 @@ func _talk(n: Npc) -> void:
 		await RecCenter.visitor_talk(self, n)  # out for the evening: they talk about the games (and let you at their cabinet)
 	elif hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
-	elif lines.is_empty() or int(GameState.run["day"]) % 2 == 1:
+	elif lines.is_empty() or int(GameState.run["day"]) % 2 == 1 or not Talk.festival_pool(n.id).is_empty() or GameState.is_birthday(n.id) or GameState.day_of_season() == 1:  # C15 P3 (c15_11-20)
 		await say(Talk.line(n.id))  # odd days: the season/weather/arc pool indoors too
 	else:
 		await say([{"who": name, "text": str(lines[int(GameState.run["day"]) % lines.size()])}])

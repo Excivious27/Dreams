@@ -262,7 +262,8 @@
   "old_moss": "A {item}. Nobody's minded my birthday since I came out here. The frogs say thank you too.",
   "granite": "A birthday {item}. Hm. It goes on the shelf in the hut, out of the dust.",
   "sel": "A {item} for my birthday! The university forgot. You didn't.",
-  "tess": "A {item}, on my birthday? I'm making you a stool. No, a chair. Don't argue with a carpenter."
+  "tess": "A {item}, on my birthday? I'm making you a stool. No, a chair. Don't argue with a carpenter.",
+  "catkins": "A {item}, on my birthday? You remembered. The whole colony will purr about this."
  },
  "_default": [
   "A {item}! Oh, I love these. Thank you!",
