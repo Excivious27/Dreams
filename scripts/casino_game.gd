@@ -67,6 +67,21 @@ func _deck_buttons() -> Array:
 	]
 
 
+## C12 (c12_14-10): how-to lines name the device's own buttons. {A}/{X}/{Y} are the
+## deck's gold / X / Y buttons on the phone, the real keys or pad buttons otherwise.
+static func howto_words(line: String) -> String:
+	var touch := PadInput.device_kind() == "touch"
+	var t := line
+	t = t.replace("{A}", "the gold button" if touch else InputSetup.prompt("a"))
+	t = t.replace("{X}", "X" if touch else InputSetup.prompt("tool"))
+	t = t.replace("{Y}", "Y" if touch else InputSetup.prompt("action"))
+	t = t.replace("{LR}", "- and +" if touch else "%s and %s" % [InputSetup.prompt("left"), InputSetup.prompt("right")])
+	t = t.replace("{UD}", "▲ and ▼" if touch else "%s and %s" % [InputSetup.prompt("up"), InputSetup.prompt("down")])
+	t = t.replace("{", "").replace("}", "")
+	t = t.left(1).to_upper() + t.substr(1)
+	return PadInput.words(t)
+
+
 func _a_word() -> String:
 	return "DEAL"
 
@@ -404,7 +419,7 @@ func _draw_title(c: Control) -> void:
 	text_outline(c, Vector2(0, 70), title.to_upper(), W, 16, accent, HORIZONTAL_ALIGNMENT_CENTER)
 	var y := 100.0
 	for l in howto:
-		text(c, Vector2(16, y), PadInput.words(str(l)), W - 32, 9, Color(0.95, 0.95, 1), HORIZONTAL_ALIGNMENT_CENTER)
+		text(c, Vector2(16, y), howto_words(str(l)), W - 32, 9, Color(0.95, 0.95, 1), HORIZONTAL_ALIGNMENT_CENTER)
 		y += 14.0
 	var keep: Dictionary = Casino.data().get("house_keeps", {})
 	text(c, Vector2(16, y + 10), "House keeps about %s%.2f of every %s bet here." % [Money.sym(), float(keep.get(table, 3.0)), Money.amount(100)], W - 32, 8, Color(1, 0.9, 0.6), HORIZONTAL_ALIGNMENT_CENTER)

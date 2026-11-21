@@ -16,7 +16,7 @@
      "lines": [
       {
        "who": "",
-       "text": "You came to the river cities to end the gangs. One block at a time, one crew at a time, you did: you were good at it, and a voice on a burner phone who signed himself M. always knew where the next one was."
+       "text": "You came to the river cities to end the gangs. One block at a time, one crew at a time, you did: you were good at it, and a voice on a burner phone, who only ever called himself M., always knew where the next one was."
       },
       {
        "who": "",
@@ -44,7 +44,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. For a second, as he runs, something in his fist glows a dark, bruised purple. In it, a photograph of your old front door, and a phone with one number in it."
+       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. For a second, as he runs, something in his fist glows a dark, bruised purple. In the coat's pocket: a photograph of your old front door, and a phone with one number in it."
       },
       {
        "who": "",
@@ -52,7 +52,7 @@
       },
       {
        "who": "",
-       "text": "Written on the back of the photograph, in a hand with hard loops on the W and a hard press on the K: \"WE KNOW ABOUT THE FARM. NICE TOUCH.\"",
+       "text": "Written on the back of the photograph, in heavy capitals: \"WE KNOW ABOUT THE FARM. NICE TOUCH.\"",
        "choice": [
         "Burn it.",
         "Keep it with the deed.",
@@ -69,20 +69,20 @@
         "1": [
          {
           "who": "",
-          "text": "It goes in with the deed. Paper keeps. Paper remembers."
+          "text": "It goes in with the deed. Paper keeps. Paper remembers. One day it'll remember out loud, in front of the right person."
          }
         ],
         "2": [
          {
           "who": "",
-          "text": "Hard loops on the W, a hard press on the K. You'll know that hand the next time you see it."
+          "text": "The same loops on the W. The same press on the K. Whoever wrote your first letter wrote this too. They've been one step behind you since the river cities."
          }
         ]
        }
       },
       {
        "who": "",
-       "text": "The coat smells of rain and something else, something cold, like a cellar. Under your hand the pocket where his fist was is still faintly warm, and for a moment you'd swear it hums."
+       "text": "The coat smells of rain and something else, something cold, like a cellar. The inside pocket, where he kept whatever he was holding, is still faintly warm, and for a moment you'd swear it hums."
       }
      ],
      "effects": {
@@ -339,7 +339,7 @@
        "who": "Deuce",
        "text": "An arcade there pays the crew for a season. She'd have to go, of course. Somewhere nice. We'd make sure.",
        "choice": [
-        "Fund it. Business is business.",
+        "Do it. Business is business.",
         "No. Not her shop. Not anyone's."
        ],
        "key": "shop_1",
@@ -352,6 +352,10 @@
          {
           "who": "",
           "text": "Three days later, the bakery is boarded, and there's a man in a good coat on the avenue at night who nods when you pass."
+         },
+         {
+          "who": "Deuce",
+          "text": "First season's cut, boss. Six hundred, up front. The arcade pays for itself; the rest is gravy."
          },
          {
           "who": "",
@@ -1007,13 +1011,17 @@
       {
        "who": "Inspector Hale",
        "text": "Keep your heat down. Nobody believes a detective whose witness is on every wanted board."
+      },
+      {
+       "who": "Inspector Hale",
+       "text": "And the kids with the black stones. Every one you put in your crew is one more the capital calls a gang. Send them home, and I can call them witnesses."
       }
      ],
      "effects": {
       "flags": [
        "hale_seen_neon"
       ],
-      "hint": "Inspector Hale wants the stone brought to her when it's over. Keep your heat low."
+      "hint": "Inspector Hale wants the stone brought to her when it's over. Keep your heat low, and send the Marked home."
      }
     },
     {
@@ -1249,7 +1257,7 @@
      "lines": [
       {
        "who": "Doc",
-       "text": "Sit. Let me see that arm. ...You hold that bat like a hoe. That's not an insult; hoes are honest."
+       "text": "Sit. Let me see that arm. ...You swing like somebody who learned on a hoe. That's not an insult; hoes are honest."
       },
       {
        "who": "Doc",
@@ -2048,7 +2056,7 @@
       },
       {
        "who": "The President",
-       "text": "And my lieutenants, the ones you beat on the way? Vance's tides, Lucia's flame, Brock who never stays down, Silas and his rules, Old Mags and her roads: none of them were born with it. I gave each of them a splinter of this. So were the young people with the Gifts. Every trick in this city is the same stone, and the stone is mine."
+       "text": "And my lieutenants? Vance's tides, Lucia's flame, Brock who never stays down, Silas and his rules, Old Mags and her back roads: none of them were born with it. I gave each of them a splinter of this. The young people with the Gifts, too; I handed them out like coins. Every trick in this city is the same stone, and the stone is mine."
       },
       {
        "who": "The President",
@@ -2184,12 +2192,22 @@
      "after": "g5_president",
      "lines": [
       {
-       "who": "",
-       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the runner's coat, the crates on the docks, the quiet thing that said good, count it."
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the coat the President's man left in the meadow, the crates on the docks, the quiet thing that said good, count it.",
+       "if_flag": "dark_shop_2"
+      },
+      {
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the coat the President's man left in the meadow. The crates on the docks that sounded pleased to meet you.",
+       "unless_flag": "dark_shop_2"
       },
       {
        "who": "Dark Crystal",
-       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting."
+       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting.",
+       "if_flag": "dark_shop_1"
+      },
+      {
+       "who": "Dark Crystal",
+       "text": "Take it. The city. The chair. You walked every step to get here; you've earned a rest. Put your hand on the stone and never walk anywhere again.",
+       "unless_flag": "dark_shop_1"
       },
       {
        "who": "",
@@ -2204,7 +2222,7 @@
         "0": [
          {
           "who": "",
-          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new.",
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a wet carpet, looking at his hands like they're new.",
           "sfx": "pop",
           "pic": "cut_gang_stone"
          },
@@ -2231,17 +2249,42 @@
          {
           "who": "",
           "text": "The Kid is already running up the tower stairs. A minute later a girl in a cleaner's uniform comes running down them, and the hood finally comes off.",
-          "if_flag": "crew_the_kid"
+          "if_loyalty": [
+           "the_kid",
+           2
+          ]
          },
          {
           "who": "Val",
           "text": "Our brother's up there somewhere. With the stone gone... he'll come home. Won't he?",
-          "if_flag": "crew_val"
+          "if_loyalty": [
+           "val",
+           2
+          ]
          },
          {
           "who": "Specs",
-          "text": "Tower's on its own wire. Was. I just went for the wire.",
-          "if_flag": "crew_specs"
+          "text": "Told you I'd go for the wire. The tower's cameras are just watching rain now.",
+          "if_loyalty": [
+           "specs",
+           3
+          ]
+         },
+         {
+          "who": "Dice",
+          "text": "I was there. I was SO there. Did you see me? I was behind the bus shelter the whole time. That counts.",
+          "if_loyalty": [
+           "dice",
+           3
+          ]
+         },
+         {
+          "who": "Halo",
+          "text": "Engine's warm. Where to, boss? ...Yeah. I figured. Home.",
+          "if_loyalty": [
+           "halo",
+           3
+          ]
          }
         ],
         "1": [
@@ -2273,11 +2316,50 @@
          },
          {
           "who": "Inspector Hale",
-          "text": "Clean hands. Low heat. Nobody's shop. I didn't think anybody could do it from where you started. Give it here, farmer."
+          "text": "Clean hands. Low heat. Nobody's shop. Every one of those kids sent home to their mothers. I didn't think anybody could do it from where you started. Give it here, farmer."
          },
          {
           "who": "",
           "text": "She seals it in a lead box with a click. The whisper stops. All over the city the splinters go quiet, and ten young people look at their hands and find their Gifts are still there, smaller and steadier, and theirs."
+         },
+         {
+          "text": "The Kid doesn't wait for the inspector. He's already through the tower doors, and a minute later a girl in a cleaner's uniform comes out of them, and the hood finally comes off.",
+          "if_loyalty": [
+           "the_kid",
+           2
+          ]
+         },
+         {
+          "who": "Val",
+          "text": "Our brother's up there somewhere. With the stone gone quiet... he'll come home. Won't he?",
+          "if_loyalty": [
+           "val",
+           2
+          ]
+         },
+         {
+          "who": "Specs",
+          "text": "Told you I'd go for the wire. The tower's cameras are just watching rain now.",
+          "if_loyalty": [
+           "specs",
+           3
+          ]
+         },
+         {
+          "who": "Dice",
+          "text": "I was there. I was SO there. Did you see me? I was behind the bus shelter the whole time. That counts.",
+          "if_loyalty": [
+           "dice",
+           3
+          ]
+         },
+         {
+          "who": "Halo",
+          "text": "Engine's warm. Where to, boss? ...Yeah. I figured. Home.",
+          "if_loyalty": [
+           "halo",
+           3
+          ]
          },
          {
           "who": "",
@@ -2335,12 +2417,22 @@
      "after": "g5_president",
      "lines": [
       {
-       "who": "",
-       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the runner's coat, the crates on the docks, the quiet thing that said good, count it."
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the coat the President's man left in the meadow, the crates on the docks, the quiet thing that said good, count it.",
+       "if_flag": "dark_shop_2"
+      },
+      {
+       "text": "He's on his knees on the wet red carpet. The stone in his chest is cracked and dark and it's whispering, and you know the voice. The hum in the coat the President's man left in the meadow. The crates on the docks that sounded pleased to meet you.",
+       "unless_flag": "dark_shop_2"
       },
       {
        "who": "Dark Crystal",
-       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting."
+       "text": "Take it. The city. The chair. You've earned it; you counted every step. Put your hand on the stone and keep counting.",
+       "if_flag": "dark_shop_1"
+      },
+      {
+       "who": "Dark Crystal",
+       "text": "Take it. The city. The chair. You walked every step to get here; you've earned a rest. Put your hand on the stone and never walk anywhere again.",
+       "unless_flag": "dark_shop_1"
       },
       {
        "who": "",
@@ -2354,7 +2446,7 @@
         "0": [
          {
           "who": "",
-          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new.",
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a wet carpet, looking at his hands like they're new.",
           "sfx": "pop",
           "pic": "cut_gang_stone"
          },
@@ -2381,17 +2473,42 @@
          {
           "who": "",
           "text": "The Kid is already running up the tower stairs. A minute later a girl in a cleaner's uniform comes running down them, and the hood finally comes off.",
-          "if_flag": "crew_the_kid"
+          "if_loyalty": [
+           "the_kid",
+           2
+          ]
          },
          {
           "who": "Val",
           "text": "Our brother's up there somewhere. With the stone gone... he'll come home. Won't he?",
-          "if_flag": "crew_val"
+          "if_loyalty": [
+           "val",
+           2
+          ]
          },
          {
           "who": "Specs",
-          "text": "Tower's on its own wire. Was. I just went for the wire.",
-          "if_flag": "crew_specs"
+          "text": "Told you I'd go for the wire. The tower's cameras are just watching rain now.",
+          "if_loyalty": [
+           "specs",
+           3
+          ]
+         },
+         {
+          "who": "Dice",
+          "text": "I was there. I was SO there. Did you see me? I was behind the bus shelter the whole time. That counts.",
+          "if_loyalty": [
+           "dice",
+           3
+          ]
+         },
+         {
+          "who": "Halo",
+          "text": "Engine's warm. Where to, boss? ...Yeah. I figured. Home.",
+          "if_loyalty": [
+           "halo",
+           3
+          ]
          }
         ],
         "1": [
@@ -2468,6 +2585,14 @@
        "text": "At the gate, the crew. All of them, the ones who stayed, leaning on the gate like they've been there since before the sun. Sal at the front."
       },
       {
+       "text": "Ladder isn't at the gate. A note on it, in tiny careful numbers: tower roof, clear day, saw the farm. 1.",
+       "if_loyalty": [
+        "ladder",
+        3
+       ],
+       "unless_flag": "city_taken"
+      },
+      {
        "who": "Sal",
        "text": "Boss. Word's all over town by now. They're not sure what you are. Neither am I.",
        "unless_flag": "city_taken"
@@ -2484,7 +2609,7 @@
       },
       {
        "who": "Sal",
-       "text": "Boss. Or is it Mr President now? ...The car can wait. The turnips can't. Go on, water them, and then we'll see who you are today.",
+       "text": "Boss. Or do I call you President now? ...The car can wait. The turnips can't. Go on, water them, and then we'll see who you are today.",
        "if_flag": "city_taken"
       }
      ],

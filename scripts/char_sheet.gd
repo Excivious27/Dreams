@@ -442,7 +442,7 @@ static func stats() -> Array:
 	var mcalc := MoveSpeed.calc(pl.map if pl != null else null, false, mmode, vsp, vwat)
 	var spd := float(mcalc["total"])
 	p = mcalc["parts"]
-	out.append({"id": "speed", "name": "Move speed", "icon": ["items", Hud.icon_for("boots")], "value": _pct(spd), "parts": p, "note": "Hold B (or the run toggle) to run. Gear, food and skills add up to +%d%%; on foot tops out at ×%.2f, rides at ×%.1f." % [roundi(MoveSpeed.FOOT_CAP * 100), MoveSpeed.FOOT_MAX, MoveSpeed.RIDE_MAX]})
+	out.append({"id": "speed", "name": "Move speed", "icon": ["items", Hud.icon_for("boots")], "value": _pct(spd), "parts": p, "note": ("Flip the run toggle to run. " if TouchControls.visible_controls else "Hold %s to run (or flip the run toggle). " % InputSetup.prompt("b")) + "Gear, food and skills add up to +%d%%; on foot tops out at ×%.2f, rides at ×%.1f." % [roundi(MoveSpeed.FOOT_CAP * 100), MoveSpeed.FOOT_MAX, MoveSpeed.RIDE_MAX]})
 	# Luck
 	var lk := GameState.gear_stat("luck") + int(GameState.buff("luck"))
 	p = []
@@ -507,7 +507,7 @@ static func stats() -> Array:
 	# Difficulty mode and day length (per save slot; Settings changes them)
 	p = [["Foe health", _pct(Difficulty.mul("foe_hp"))], ["Boss health", _pct(Difficulty.mul("boss_hp"))], ["Foe hits on you", _pct(Difficulty.mul("foe_dmg"))], ["Day length", "%d real min" % GameState.day_len()]]
 	out.append({"id": "mode", "name": "Difficulty", "icon": ["items", Hud.icon_for("sword")], "value": Difficulty.name_of(), "parts": p,
-		"note": Difficulty.words() + " Only fights and battle campaigns change; change it in Settings."})
+		"note": Difficulty.words() + " Only fights and battle campaigns change. Change it in MENU > Options."})
 	return out
 
 

@@ -464,7 +464,7 @@ func _trash_pressed() -> void:
 		return
 	if _trash_arm != id and GameState.trash_needs_confirm(id):
 		_trash_arm = id
-		_say("Throw away %d %s? Trash it again to confirm." % [GameState.count(id), GameState.item_name(id)], Color(1, 0.8, 0.6))
+		_say("Throw away %s? Trash it again to confirm." % ItemWords.count_id(id, GameState.count(id)), Color(1, 0.8, 0.6))
 		_refresh()
 		return
 	GameState.trash(id, GameState.count(id))

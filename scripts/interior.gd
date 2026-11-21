@@ -415,7 +415,7 @@ func _talk(n: Npc) -> void:
 	emote(n, "talk", 1.0, -30.0)
 	# Same lines as on the street: the town script owns the dialogue tables.
 	var data: Dictionary = GameState.npcs.get(n.id, {})
-	var lines: Array = data.get("inside", [])
+	var lines: Array = Talk.inside_pool(n.id, interior_id)  # C12 P3: workplace only, arc/progress aware
 	var name := str(data.get("name", n.id.capitalize()))
 	player.frozen = true
 	if not GameState.run["talked_today"].has(n.id):
@@ -459,13 +459,14 @@ func _talk(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
+	gift_block_toast(n.id, name, sel)
 	var hl := Hearts.daily(n.id)
 	if bool(I.get("rec", false)) and str(data.get("work", "")) != interior_id:
 		await RecCenter.visitor_talk(self, n)  # out for the evening: they talk about the games (and let you at their cabinet)
 	elif hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
-	elif lines.is_empty():
-		await say(Talk.line(n.id))
+	elif lines.is_empty() or int(GameState.run["day"]) % 2 == 1:
+		await say(Talk.line(n.id))  # odd days: the season/weather/arc pool indoors too
 	else:
 		await say([{"who": name, "text": str(lines[int(GameState.run["day"]) % lines.size()])}])
 	player.frozen = false

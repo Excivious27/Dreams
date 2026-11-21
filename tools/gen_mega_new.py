@@ -123,7 +123,7 @@ ITEMS = {
     "glass_frosted": ("Glacier Glass", "material", 200, 4, {"rarity": "rare"}),
     "ice_pike": ("Glacier Pike", "fish", 210, 4, {"rarity": "rare"}),
     "frost_sorbet": ("Frost Sorbet", "food", 480, 4, {"rarity": "epic", "heal": 6, "energy": 115}),
-    "charm_frost": ("Rimewyrm Charm", "equip", 2600, 5, {"rarity": "legendary", "slot": "charm", "stats": {"defense": 4, "speed": 1}, "desc": "One scale of the Rime Wyrm, frosted over for good."}),
+    "charm_frost": ("Rime Wyrm Charm", "equip", 2600, 5, {"rarity": "legendary", "slot": "charm", "stats": {"defense": 4, "speed": 1}, "desc": "One scale of the Rime Wyrm, frosted over for good."}),
     "ring_warmth": ("Hearth Ring", "equip", 1300, 4, {"rarity": "rare", "slot": "ring", "stats": {"defense": 1, "energy": 15}}),
     # Windward
     "storm_glass": ("Storm Glass", "ore", 300, 5, {"rarity": "epic", "desc": "Lightning, cooled into crystal."}),
@@ -141,7 +141,7 @@ ITEMS = {
     "gold_bundle": ("Gold Leaf", "material", 280, 5, {"rarity": "rare"}),
     "sun_flan": ("Gilded Flan", "food", 480, 5, {"rarity": "epic", "heal": 7, "energy": 130}),
     "ring_platinum": ("Aurum Signet", "equip", 3200, 5, {"rarity": "legendary", "slot": "ring", "stats": {"damage": 3, "luck": 3}, "desc": "Madame Aurum's seal. Doors open for whoever wears it."}),
-    "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."}),
+    "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. A trade good: sold, gifted or shelved, never drunk."}),
     "ember_koi": ("Ember Koi", "fish", 260, 5, {"rarity": "rare", "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."}),
     "golden_dice": ("Golden Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
 }
@@ -209,6 +209,46 @@ DROP_PER_HP = 3.4
 # Region bosses wait for the hub job (Moonpool after Liesl's, etc.): set per boss in main().
 # Gangster-arc bosses for the both-arc regions (c4_09 #6): region.gd reads kind/who/text/title/
 # win/after "_gangsters". All-ages: a scuffle, then they back down.
+# Each mega boss door's own locked line (c12_18-12): the place, not "it", and fit for both
+# arcs where the boss changes per arc. %s = the hub's job giver, %s = the hub.
+HUB_THE = {"Grand Plaza"}
+BOSS_LOCKED = {
+    "gloam_moonpool": "The moonpool is still and black, and something among the roses is waiting. Help %s in %s first.",
+    "desert_sunken_temple": "Sand has buried the temple door to the lintel. Help %s in %s, and the dunes will shift.",
+    "iron_tunnels": "The private platform is roped off: NO PASSENGERS. Help %s in %s first, and you'll get a ticket.",
+    "frost_summit": "The snowfield above is quiet. Too quiet. Help %s in %s before you climb.",
+    "wind_starfall_garden": "The garden gate is held shut by a wind you can lean on. Help %s in %s first.",
+    "gilt_vaults": "The vault doors are shut and the guards won't look at you. Help %s in %s first.",
+}
+
+# C12 P3: hub folk lines that follow the arc and progress (read by Talk.region_lines):
+# lines_gangsters (gangster arc), after + after_flag (the hub's boss beaten; after_gangsters),
+# done_lines + done_quest (their job handed in).
+NPC_EXTRA = {
+    "mg_liesl": {"lines_gangsters": ["Every lantern here has a moth, and every moth has a name. That one's Bartholomew.", "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."],
+                 "after_flag": "boss_gloam_moonpool", "after": ["The garden's breathing again. Bartholomew's taken to sleeping in the roses.", "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."],
+                 "after_gangsters": ["Nobody collects rent in Lanternfall now. Bartholomew's moved into the roses.", "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."]},
+    "mg_bramble": {"after_flag": "boss_gloam_moonpool", "after": ["The giant flower stopped sneezing. I sort of miss it.", "I'm not scared of the dark. The dark is scared of my lantern."]},
+    "mg_rahim": {"done_quest": "mega_sunscorch_rahim", "done_lines": ["The lamps burn till dawn now. Caravans come in singing.", "Fifty years at this well. Never once seen it run dry."]},
+    "mg_nadia": {"lines_gangsters": ["The Glass Canyon was a lake once. Lightning turned the sand to glass.", "Vasco sits on a crate of temple gold and calls himself a king. The scarabs were kings first.", "I'd give a lot for a scarab from the temple. For science."],
+                 "done_quest": "mega_sunscorch_job", "done_lines": ["The scarab's a calendar. I've read three months of it. Next month has a festival.", "The Glass Canyon was a lake once. Lightning turned the sand to glass."],
+                 "after_flag": "boss_desert_sunken_temple", "after": ["The Colossus is sleeping. Someone finally told it the war was over. You did."],
+                 "after_gangsters": ["Vasco's crate sits empty. I'm reading the temple walls at last."]},
+    "mg_hollis": {"after_flag": "boss_iron_tunnels", "after": ["Baron's gone and the trains run on time. Well. Mostly on time. On a time.", "My engine's the last one he never bought. She stays mine."]},
+    "mg_dot": {"after_flag": "boss_iron_tunnels", "after": ["The Baron's table is free now. Nobody wants it. Too many bad tips in the wood."]},
+    "mg_skip": {"after_flag": "boss_iron_tunnels", "after": ["Paper! Trains run again! Read all about it! ...I wrote that one myself."]},
+    "mg_brannoch": {"lines_gangsters": ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "Big Ike hauls ice off the Summit and sells it back to us. Our own ice."],
+                    "after_flag": "boss_frost_summit", "after": ["The Wyrm's snoring again. Hearthhold sleeps easier for it.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."],
+                    "after_gangsters": ["Big Ike's sled tracks go down the mountain and don't come back. Good.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead."]},
+    "mg_tove": {"after_flag": "boss_frost_summit", "after": ["Brannoch says I can go to the Summit now. When I'm nine hundred and one."]},
+    "mg_zephyr": {"after_flag": "boss_wind_starfall_garden", "after": ["The sky's ours again. Well, the Roc's, but it shares now.", "Storm Glass comes from where lightning lands. Don't be where lightning lands."]},
+    "mg_nimbus": {"done_quest": "mega_windward_job", "done_lines": ["I bottled a breeze. It got out. It's somewhere in the gondola now, being smug.", "The Storm Shelf is calm again. The clouds have stopped flinching."]},
+    "mg_pell": {"after_flag": "boss_gilt_vaults", "after": ["Madame's left the Vaults. The fountain water's free. I'm still not used to it."]},
+    "mg_cass": {"after_flag": "boss_gilt_vaults", "after": ["Nobody's chasing me any more. It's honestly a bit dull."]},
+    "mg_odette": {"after_flag": "boss_gilt_vaults", "after": ["I'm painting the statues to look like whoever I like now. Mostly pigeons."]},
+}
+
+
 GANG_BOSS = {
     "gloam_moonpool": {"kind_gangsters": "garden_boss", "who_gangsters": "Rosa Thorne", "title_gangsters": "Rosa Thorne",
         "text_gangsters": "A woman in a thorn-green coat steps out from behind the roses, pruning shears in one hand. 'This garden pays me rent,' says Rosa Thorne. 'Everyone in Gloamwood pays me rent.'",
@@ -407,11 +447,11 @@ A("gloam_lanternfall", cols=42, rows=38, music="mega_gloam", look="gloam", links
   heal=("props/glow_pond", 4, 2, (14, 17), {"hp": 4, "energy": 60, "msg": "You dip your hands in the glowing pond. Everything aches a little less."}),
   gate=("nature/fairy_ring", 1, 1, "spawn"),
   notes=[("A: read the lantern board", "Lantern board: 'Violet Glade, north. Crystal Thicket, east. The Moonpool is past the glade, and the Thornmother sleeps under it. Please don't wake her. (Someone has written underneath: SOMEONE HAS TO.)'")],
-  npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
+  npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Bartholomew.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
         ("mg_fenn", "Fenn", "mg_fenn", ["Glowmoss grows on the north side of everything. Even me, if I stand still.", "The Crystal Thicket chimes when the wind's right.", "Honey and wisp-light. That's the trick to a Gloam Pudding."]),
         ("mg_bramble", "Bramble", "mg_bramble", ["Did you see the giant flower? It sneezed on me.", "I'm not scared of the dark. The dark is scared of my lantern.", "The ghostfish in the Moonpool can see you even with their eyes closed."])],
   job={"giver": "mg_liesl", "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.", "items": [["wisp_thread", 5]], "reward": {"animal": ["lantern_moth", "Liesl"], "animal_gang": ["peacock", "Liesl"], "gift_key": "mega:gloam_job", "crystals": 300, "item": ["luna_moth", 1], "friend": ["mg_liesl", 15]},
-       "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Gerald says thank you. Gerald is the moth."]}},
+       "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Bartholomew says thank you. Bartholomew is the moth."]}},
   intro=["The ring lets go of you in a hush of moth-wings. Lanterns everywhere, hung from mushrooms taller than houses, and the moss underfoot is violet and soft.", "This is Lanternfall. Somebody waves. Somebody is always waving here."])
 A("gloam_violet_glade", cols=50, rows=44, music="mega_gloam", look="gloam", ground_seam="teal_moss_dense", links={"gloam_lanternfall": ("s", 23), "gloam_moonpool": ("n", 30)},
   water=[(4, 11)], hills=[(5, 33)], gen_extra={"clumps": 2},
@@ -1097,7 +1137,9 @@ def build_area(aid, mega, spec, links_geom):
                 if best is None or sc < best[0]:
                     best = (sc, c)
         if best:
-            npcs.append({"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0})
+            nd = {"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0}
+            nd.update(NPC_EXTRA.get(nid, {}))  # C12 P3: arc / after-boss / job-done lines (Talk.region_lines)
+            npcs.append(nd)
     for p in props:
         oc = open_cells(p)
         if oc:
@@ -1228,7 +1270,9 @@ def main():
             bs = AREAS[a["id"]].get("boss")
             if bs:
                 bs["when"] = {"quest": jid}
-                bs["locked"] = "It hasn't noticed you yet. Help %s in %s first, and the way to it will open." % (giver, CONTENT[r["id"]]["hub_name"])
+                hub = CONTENT[r["id"]]["hub_name"]
+                hub = ("the " + hub) if hub in HUB_THE else hub
+                bs["locked"] = BOSS_LOCKED.get(a["id"], "The way on is shut for now. Help %s in %s first.") % (giver, hub)
                 if r["arc"] == "both":
                     bs.update(GANG_BOSS.get(a["id"], {}))
     regs = J("regions.json")

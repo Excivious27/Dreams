@@ -83,10 +83,12 @@ static func lines(report: Dictionary) -> Array:
 	if report.has("relic"):
 		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
 	if Racket.on() and (Racket.heat() > 0 or GameState.run["flags"].has("heat_told")):  # "Heat 0/5" means nothing before it's explained
-		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed")  # no collectors once the stone is broken
+		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed") and not GameState.run["flags"].has("city_taken")  # no collectors once the stone is broken or the chair is yours (C12 c12_04-16)
 		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if raids else ""]})
 		if raids and Crew.perk_level("raid_warning") >= 1:
 			lines.append({"who": "Ladder", "text": "Word from the roofs: the President's collectors are walking the districts today. Stay off the main streets, or bring friends."})
+		elif Racket.heat() >= 3 and GameState.run["flags"].has("city_taken") and Crew.perk_level("raid_warning") >= 1:
+			lines.append({"who": "Ladder", "text": "Word from the roofs: the collectors are walking the districts today. Yours, now. They wanted to know if that's what you want."})
 	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
 	if GameState.festival_today() != "":
 		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())

@@ -76,7 +76,7 @@ func _run() -> void:
 	check(w0.contains("east meadow") and not w0.contains("chapter"), "gangster gate words name the first step (%s)" % w0)
 	GameState.run["quests"].append({"id": "clear_meadow", "text": "", "done": true})
 	var w1 := MegaTravel.gate_words(iron)
-	check(w1.contains("Docks boss"), "after the meadow the Ironline waits for the Docks boss (%s)" % w1)
+	check(w1.contains("dock boss"), "after the meadow the Ironline waits for the dock boss (%s)" % w1)
 	# --- quests ---
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true

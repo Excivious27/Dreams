@@ -147,7 +147,7 @@ static func provisions_short(cid: String) -> Array:
 	for it: String in items:
 		var miss := int(items[it]) - GameState.count(it)
 		if miss > 0:
-			out.append(["%d %s" % [miss, GameState.item_name(it)], miss])
+			out.append([ItemWords.count_id(it, miss), miss])
 	var cr := int(nd.get("crystals", 0)) - int(GameState.run.get("crystals", 0))
 	if cr > 0:
 		out.append(["◆%d" % cr, cr])
@@ -159,7 +159,7 @@ static func provisions_text(cid: String) -> String:
 	var bits: Array = []
 	var items: Dictionary = nd.get("items", {})
 	for it: String in items:
-		bits.append("%d %s" % [int(items[it]), GameState.item_name(it)])
+		bits.append(ItemWords.count_id(it, int(items[it])))
 	if int(nd.get("crystals", 0)) > 0:
 		bits.append("◆%d" % int(nd["crystals"]))
 	return ", ".join(bits)

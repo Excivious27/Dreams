@@ -12,8 +12,10 @@
  },
  "shared": {
   "too_soon": [
-   "Oh! Flowers... for me? That's sweet, {you}. But let's get to know each other a little better first, all right?",
-   "{name} smiles and gently hands the bouquet back. 'Not yet. Ask me again when we're closer.'"
+   "Oh! Flowers... for me? That's sweet, {you}. But let's get to know each other a little better first, all right? Ask me again when we're closer."
+  ],
+  "too_soon_locket": [
+   "A locket... {you}, I... not yet. Ask me again when we're even closer. Keep it safe for me?"
   ],
   "taken": [
    "You're already seeing someone, {you}. I'd never want to get in the middle of that. Keep them for your sweetheart."
@@ -22,7 +24,7 @@
    "We said we'd stay friends, and I meant it. Give it a little time, {you}. Maybe later."
   ],
   "not_yet_house": [
-   "{you}... yes. Yes! But where would we live? That little one-room house barely fits you and the pup. Talk to Gideon about a Farmhouse first, and ask me again."
+   "{you}... yes. Yes! But where would we live? That one-room cottage barely fits you and {pet}. Put up a Farmhouse first (the Plans board by your door, and a permit from Alder at the hall), then ask me again."
   ],
   "not_yet_dates": [
    "I love that you asked. But we've hardly been out together yet. A couple more evenings first? Then ask me again."
@@ -38,7 +40,7 @@
    "I understand. Thank you for being honest with me. We'll always be friends, {you}. Always."
   ],
   "wedding_intro": [
-   "The whole town turned out. Someone tied ribbons to every bench, and the flower arch smells of spring."
+   "The whole town turned out. Someone tied ribbons to every bench, and the arch is woven with whatever the season had to give."
   ],
   "wedding_end": [
    "Petals in your hair, cake on everyone's plate, and a whole new life waiting at home."
@@ -172,7 +174,7 @@
       },
       {
        "who": "Lumi",
-       "text": "Lie back on the grass with me. There. That one's yours, and that one's mine.",
+       "text": "Lie back on the grass with me. There. That one's yours, and that one's mine. I'm painting this next: not the stars, you looking at them.",
        "mood": "love"
       }
      ],
@@ -225,10 +227,11 @@
     "chore": {
      "water": "Lumi watered the crops at dawn: 'The droplets looked like little lamps!'",
      "animals": "Lumi fed the animals and sketched the sleepiest one.",
-     "fence": "Lumi tidied up around the house and painted a flower on the gate.",
+     "fence": "Lumi tidied the yard, painted a flower on the gate and stacked the offcuts by the door (3 Wood).",
      "breakfast": "Lumi left a slice of berry pie by the bed.",
      "pup": "Lumi played fetch with {pet} until they were both out of breath."
-    }
+    },
+    "birthday": "You remembered. Of course you did; you live with the calendar I painted."
    }
   },
   "theo": {
@@ -398,11 +401,12 @@
     ],
     "chore": {
      "water": "Theo watered the crops, consulting an almanac for every row.",
-     "animals": "Theo fed the animals and named the hens after poets.",
-     "fence": "Theo tidied the yard and alphabetised the tool shed.",
+     "animals": "Theo fed the animals and named every one of them after a poet.",
+     "fence": "Theo tidied the yard, alphabetised the tool shed and found 3 Wood filed under W.",
      "breakfast": "Theo left a pot of perfectly brewed tea by the bed.",
      "pup": "Theo read {pet} a story. {pet} fell asleep on his feet."
-    }
+    },
+    "birthday": "I've written myself a very small notice: 'Today, be spoiled.' You may read it."
    }
   },
   "finn": {
@@ -426,7 +430,7 @@
     },
     {
      "who": "Finn",
-     "text": "Yes, I'll walk out with you. You've got a good heart, kid. I've seen how you look after the place.",
+     "text": "Yes, I'll walk out with you. You cast like you're asking now. I noticed.",
      "mood": "happy"
     }
    ],
@@ -441,7 +445,7 @@
      "lines": [
       {
        "who": "Finn",
-       "text": "Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.",
+       "text": "Second Cast is tied up at the jetty; I'll row us out after. Brought two rods. No pressure. The fish don't bite much at dusk, but the view does.",
        "mood": "happy"
       },
       {
@@ -572,10 +576,11 @@
     "chore": {
      "water": "Finn watered the crops: 'Same as boats, just greener.'",
      "animals": "Finn fed the animals and told them a fishing story.",
-     "fence": "Finn mended a bit of fence with net twine.",
+     "fence": "Finn mended a bit of fence with net twine and stacked the spare boards (3 Wood).",
      "breakfast": "Finn left a bowl of fish stew on the stove.",
      "pup": "Finn shared a sardine with {pet}. Don't tell."
-    }
+    },
+    "birthday": "Birthday. Row me out on Second Cast and we'll call it even."
    }
   },
   "rook": {
@@ -734,7 +739,7 @@
     "morning": [
      "Morning. I checked the fences. All good.",
      "Brought you wild berries. Don't eat the red ones. Those are mine.",
-     "Fox tracks by the barn. I scared it off. Gently."
+     "Fox tracks by the fence. I scared it off. Gently."
     ],
     "evening": [
      "You're home. Good.",
@@ -746,18 +751,17 @@
     "chore": {
      "water": "Rook watered the crops before sunrise without a word.",
      "animals": "Rook fed the animals. They follow him around now.",
-     "fence": "Rook mended a broken fence post.",
+     "fence": "Rook mended a broken fence post and split the old one for you (3 Wood).",
      "breakfast": "Rook left a bowl of wild greens on the table.",
      "pup": "Rook took {pet} on a long walk in the woods."
-    }
+    },
+    "birthday": "Birthday. I don't usually count them. I'm counting this one."
    }
   },
   "juniper": {
    "pronoun": "she",
-   "arcs": [
-    "penguins",
-    "gangsters"
-   ],
+   "arcs": [],
+   "retired": "engaged to Gideon in her own heart arc (hearts ♥8)",
    "dish": "salad",
    "corner": "spouse_juniper",
    "job_days": [
@@ -873,17 +877,17 @@
        "mood": "love"
       }
      ],
-     "q": "Do you want a family someday? Pets, plants, all of it?",
+     "q": "What does home look like, years from now?",
      "a": [
       [
-       "A full house, someday.",
+       "Animals everywhere.",
        20,
-       "Me too. Noisy and warm."
+       "And me checking every one of them. Nurse's habits."
       ],
       [
-       "Lots of animals.",
+       "A porch and a quiet evening.",
        15,
-       "As long as I'm the vet!"
+       "Prescribed. Daily."
       ],
       [
        "Whatever we choose together.",
@@ -901,14 +905,14 @@
     },
     {
      "who": "Juniper",
-     "text": "Yes! Yes, yes! Prescription: forever.",
+     "text": "Yes. Don't make a fuss. ...Fine, make a small fuss. Prescription: forever.",
      "mood": "love"
     }
    ],
    "vows": "I promise to look after you on the hard days, and to dance with you on the good ones.",
    "spouse": {
     "morning": [
-     "Morning, love! Did you drink water? Drink water.",
+     "Morning. Water. Then breakfast. Then you can look at me like that.",
      "I packed you a snack. You'll thank me at noon.",
      "You were snoring. It was adorable."
     ],
@@ -922,10 +926,11 @@
     "chore": {
      "water": "Juniper watered the crops and checked every leaf for blight.",
      "animals": "Juniper fed the animals and gave them all a little check-up.",
-     "fence": "Juniper tidied the porch and patched a fence board.",
+     "fence": "Juniper tidied the porch, patched a fence board and set aside 3 Wood.",
      "breakfast": "Juniper left a fresh salad and a note: 'Eat greens!'",
      "pup": "Juniper brushed {pet}'s coat until it shone."
-    }
+    },
+    "birthday": "My birthday. Doctor's orders: you're not allowed to work too hard today. Neither am I."
    }
   },
   "posy": {
@@ -1099,10 +1104,11 @@
     "chore": {
      "water": "Posy watered the crops, humming a baking song.",
      "animals": "Posy fed the animals and saved crumbs for the birds.",
-     "fence": "Posy swept the porch and fixed a squeaky gate.",
-     "breakfast": "Posy left a warm loaf of bread on the table.",
+     "fence": "Posy swept the porch, fixed a squeaky gate and stacked the spare slats (3 Wood).",
+     "breakfast": "Posy left a jar of her mum's jam and a warm roll on the table: second batch.",
      "pup": "Posy gave {pet} a little dog biscuit she baked."
-    }
+    },
+    "birthday": "I baked my own birthday cake at four this morning. Second batch is yours. Obviously."
    }
   },
   "ivy": {
@@ -1275,10 +1281,11 @@
     "chore": {
      "water": "Ivy watered the crops in perfectly even rows.",
      "animals": "Ivy fed the animals right on schedule.",
-     "fence": "Ivy tidied the shed and counted every nail.",
+     "fence": "Ivy tidied the shed, counted every nail and set aside 3 Wood.",
      "breakfast": "Ivy left a hot cup of coffee by the bed.",
      "pup": "Ivy taught {pet} a new trick: 'sit pretty'."
-    }
+    },
+    "birthday": "My birthday. I've entered it in the ledger under 'assets'. You're in the same column."
    }
   },
   "benno": {
@@ -1436,7 +1443,7 @@
    "vows": "I promise to always be steady for you, like a good horse on a long road.",
    "spouse": {
     "morning": [
-     "Morning! The animals are fed. I couldn't help it.",
+     "Morning! I said good morning to every animal on the way in. They said it back.",
      "Brought you an apple. Polished it on my shirt.",
      "Big day? I believe in you."
     ],
@@ -1450,10 +1457,11 @@
     "chore": {
      "water": "Benno hauled water for every row of crops.",
      "animals": "Benno fed and brushed every animal on the farm.",
-     "fence": "Benno fixed a loose fence board.",
+     "fence": "Benno fixed a loose fence board and stacked the offcuts (3 Wood).",
      "breakfast": "Benno left a slice of bread with honey.",
      "pup": "Benno raced {pet} round the yard. {pet} won."
-    }
+    },
+    "birthday": "Birthday. The mare got an apple and so do you. Don't tell her you got the bigger one."
    }
   },
   "tam": {
@@ -1492,7 +1500,7 @@
      "lines": [
       {
        "who": "Tam",
-       "text": "The flock's settled. Sit on the hill with me. You can see the whole valley from here.",
+       "text": "The Dollys have voted you in. Unanimous. They never agree on anything. Sit on the hill with me; you can see the whole valley from here.",
        "mood": "happy"
       },
       {
@@ -1599,7 +1607,7 @@
    "propose": [
     {
      "who": "Tam",
-     "text": "A locket... You want to marry me?",
+     "text": "A locket... You want to marry me? Good thing I didn't go up the hill.",
      "mood": "surprised"
     },
     {
@@ -1625,10 +1633,11 @@
     "chore": {
      "water": "Tam watered the crops at first light.",
      "animals": "Tam fed the animals. They followed him like a flock.",
-     "fence": "Tam fixed a gap in the fence: 'Can't have strays.'",
+     "fence": "Tam fixed a gap in the fence: 'Can't have strays.' The old rails went on the woodpile (3 Wood).",
      "breakfast": "Tam left a bowl of fresh greens on the table.",
      "pup": "Tam taught {pet} to herd. Mostly it herded Tam."
-    }
+    },
+    "birthday": "Birthday. The Dollys sang. It sounded like baaing. It was singing."
    }
   },
   "sel": {
@@ -1800,10 +1809,11 @@
     "chore": {
      "water": "Sel watered the crops, reciting an ancient planting song.",
      "animals": "Sel fed the animals and sketched their tracks.",
-     "fence": "Sel mended a fence and found an old coin by the post.",
+     "fence": "Sel mended a fence and stacked the old boards by the post (3 Wood).",
      "breakfast": "Sel left a pot of fragrant tea by the bed.",
      "pup": "Sel took {pet} digging for treasure. They found a bone."
-    }
+    },
+    "birthday": "My birthday. Three thousand years of walls and nobody wrote that one down. You did."
    }
   }
  }

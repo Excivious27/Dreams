@@ -121,9 +121,29 @@ MARKED_LINES = {
  'mei': ("Heads, I'm in. Tails, also in.", "I'm going to call heads for someone who needs the luck more.", ["I flipped for who does dishes. I won. I always win.", "Three rolls. I'm still annoyed you knew.", "Lucky's a funny word for what I had."]),
  'bruno': ("You waited for me. I'll wait for you.", "Foundry's hiring again. Without the stone, this time.", ["Hit me if you need practice. I don't mind.", "Rosa's stew is the best thing that's happened to me this year.", "I'm learning to say no. It's hard."]),
  'tomas': ("Okay. Somebody should look out for you from forty floors up.", "I'm going back to windows. Clean ones. I want to see out of them.", ["I can see myself in the hideout windows. Just one of me. Good.", "You found me. I keep thinking about that.", "People see me here. It's strange. It's nice."]),
- 'sable': ("I'll drive. Quietly. You'll never hear me coming, and neither will they.", "I think I'll cast a shadow for a while. See how it feels.", ["I have a shadow again. I keep checking.", "You turned round, that day. Nobody turns round.", "Quiet in here. The good kind."]),
+ 'sable': ("I'll drive. Quietly. You'll never hear me coming, and neither will they.", "I think I'll cast a shadow for a while. See how it feels.", ["Under the hideout lamp I get about half a shadow. I keep checking.", "You turned round, that day. Nobody turns round.", "Quiet in here. The good kind."]),
  'atlas': ("Fine. Everything comes to me in the end. Even friends, apparently.", "Lonely way to win. I'll go and find some people.", ["Things don't fall toward me in here. I don't know why. Maybe they don't need to.", "Carried Rosa's pots. All of them. At once.", "Turns out heavy is easier with help."]),
 }
+# C12 (c12_04-14): hideout lines once the tower is done, by ending:
+# 'free' (stone broken or sealed: free and clean endings) and 'take' (you took the chair).
+MARKED_AFTER = {
+ 'kit': ("The wind's just wind now. I still win every race.", "The wind keeps blowing toward the tower. I don't like it."),
+ 'ember': ("My splinter's cold. The fire's still mine. That's the best part.", "The stove's hot all the time now. I didn't light it."),
+ 'dahlia': ("The fern flowered. First time. I think it knows.", "The roads all bend toward uptown now. I keep them straight for you."),
+ 'juno': ("The tower's lights went off at midnight. Normal. I loved it.", "Every light uptown is on all night. I can feel them humming."),
+ 'rio': ("Everyone in this room is calm. Still. That's new.", "Everyone in this room is calm. Too calm. It's your heartbeat, boss. It's slower than it used to be."),
+ 'mei': ("I flipped for nothing today. Just to watch it spin.", "I flipped for you this morning. I didn't look at how it landed."),
+ 'bruno': ("I said no to a fight today. Nobody even asked twice.", "I'll stand where you say. I'd just like to know why, sometimes."),
+ 'tomas': ("One of me. Every window. I've stopped checking.", "There are more of me in the tower windows again. I don't look up."),
+ 'sable': ("I have a shadow again. I keep checking.", "My shadow's thin again. Like it's leaning toward the tower."),
+ 'atlas': ("Nothing's heavy today. Not even me.", "Everything leans toward the tower now. Even the rocks."),
+}
+LT_AFTER = {
+ 'brock': ("No stone, no pit. Turns out I still like a fair fight.", "They want me back in the pit, for you. I said I'd think about it."),
+ 'mags': ("Back roads are just roads now, sugar. Pretty, mind.", "The hedges listen to you now, sugar. I'm not sure I like that."),
+}
+
+
 def pick(cands):
     for c in cands:
         if 'idle' in M.get('characters/' + c, {}): return c
@@ -135,7 +155,8 @@ for (mid, name, age, epi, gift, scene, prog, hp, dmg, speed, tier, art, intro, y
     char = own if 'idle' in M.get('characters/' + own, {}) else pick(art)
     jl, hl, hd = MARKED_LINES[mid]
     marked[mid] = {'name': name, 'age': age, 'epithet': epi, 'gift': gift, 'scene': scene, 'progress': prog, 'intro': intro, 'yield': yld, 'origin': origin, 'char': char,
-                   'join_line': jl, 'home_line': hl, 'hideout': hd}
+                   'join_line': jl, 'home_line': hl, 'hideout': hd,
+                   'hideout_after': {'free': MARKED_AFTER[mid][0], 'take': MARKED_AFTER[mid][1]}}
     E['enemies']['marked_' + mid] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 30 + 20 * tier, 'tier': tier, 'abilities': [], 'gift': gift, 'char': char, 'reward': 60 * tier}
     E['drops']['marked_' + mid] = []
     g = GIFTS[gift]
@@ -204,6 +225,8 @@ for (lid, name, title, where, hp, dmg, speed, tier, art, gid, gdef, ) in LT:
         LIEUTENANTS[lid]['refuse'] = LT_REFUSE[lid]
     if lid in LT_HIDEOUT:
         LIEUTENANTS[lid]['hideout'] = LT_HIDEOUT[lid]
+    if lid in LT_AFTER:
+        LIEUTENANTS[lid]['hideout_after'] = {'free': LT_AFTER[lid][0], 'take': LT_AFTER[lid][1]}
 
 try:
     _old = json.load(open(D + 'gifts.json')).get('gifts', {})

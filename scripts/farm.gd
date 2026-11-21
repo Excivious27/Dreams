@@ -723,7 +723,7 @@ func _partner_scene() -> void:
 	# you don't hear yourself ask to stay.
 	var ls: Array = []
 	for l in cfg.get("lines", []):
-		if str(l.get("not_hero", "")) == pid or (l.has("only_hero") and str(l["only_hero"]) != pid):
+		if (l.has("not_hero") and Story._hero_in(l["not_hero"], pid)) or (l.has("only_hero") and not Story._hero_in(l["only_hero"], pid)):
 			continue
 		ls.append(l)
 	await say(ls)
@@ -738,6 +738,7 @@ func _partner_scene() -> void:
 	if d.last_choice >= 0 and d.last_choice < pool.size():
 		var cid: String = pool[d.last_choice]
 		Companion.recruit(cid)
+		_set_watcher(pid, cid)
 		for other in pool:
 			if other != cid:
 				Companion.party()["refused"][other] = int(Companion.party()["refused"].get(other, 0)) + 1
@@ -755,11 +756,30 @@ func _partner_scene() -> void:
 		await say([{"who": cname, "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party and follows you around. %s Change partners in MENU > Party." % [cname, how]}])
 		GameState.add_hint("Partners: tap %s's round button (bottom, left of CHECK) to use %s. Others who asked may take it badly if you keep saying no." % [cname, ab])
 	else:
+		_set_watcher(pid, "")
 		for other in pool:
 			Companion.refuse(other)
 		_partner_leave(visitors, "")
 		await say([{"text": "They look at each other. They go. The gate is quieter than before."}])
 	player.frozen = false
+
+
+## Who keeps watch over the island while you go east (C12): the penguin who
+## didn't stay with you. The Ch3 campfire's "I kept watch" line reads the flag.
+static func watcher_flag(pid: String, cid: String) -> String:
+	if pid == "penguin_m":
+		return "" if cid == "penguin_f" else "watch_nova"
+	if pid == "penguin_f":
+		return "" if cid == "penguin_m" else "watch_pip"
+	return "watch_pip" if cid == "penguin_f" else "watch_nova"
+
+
+func _set_watcher(pid: String, cid: String) -> void:
+	if not GameState.is_penguins():
+		return
+	var f := watcher_flag(pid, cid)
+	if f != "":
+		GameState.run["flags"][f] = true
 
 
 ## The partner scene's visitors, standing in front of you while they ask.
@@ -1416,7 +1436,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			if bool(pcd.get("tree", false)) and not GameState.crop_fits_season(pcd, se):
 				hud.toast("Fruit trees only grow in their season: this one sleeps until then.", Color(1, 0.9, 0.6))
 			elif not bool(pcd.get("tree", false)) and str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
-				hud.toast("Careful: it needs %d days and only %d are left this season." % [int(pcd["days"]), left], Color(1, 0.9, 0.6))
+				hud.toast("Careful: it needs %d days and only %s left this season." % [int(pcd["days"]), ("1 is" if left == 1 else "%d are" % left)], Color(1, 0.9, 0.6))
 			if not GameState.spend_for("plant"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -1755,7 +1775,7 @@ func _talk_crystal() -> void:
 		await say([{"who": "Star Crystal", "text": ("He sleeps a lot. Crystals do, after. Thank you for the field, %s." if r["flags"].has("dc_reverted") else "It's quiet up there now. Down here there are turnips, %s.") % GameState.names()["character"], "mood": "happy"}])
 	else:
 		await say([
-			{"who": "Star Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is scattered across this world, and beyond it."},
+			{"who": "Star Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is kept by the cats of Cat-topia, and they only teach it to those who come to them."},
 			{"who": "Star Crystal", "text": ("What I feel next: %s" % GameState.next_step()) if GameState.next_step() != "" else "One thing at a time. Turnips first."},
 		])
 
@@ -2027,8 +2047,8 @@ func _intro_penguins(n: Dictionary) -> void:
 	await say([
 		{"who": "???", "text": "...you can hear me? Good. Good. I was starting to think I'd landed on a world of rocks."},
 		{"who": "Star Crystal", "text": "I am a Star Crystal. Where I come from, we are the memory of every kind thing anyone ever did. We are... fewer than we were."},
-		{"who": "Star Crystal", "text": "One of us went dark. It calls itself the Dark Crystal now. It turned others. It built an army of Grumps whose only job is to squeeze the joy out of everything, world by world."},
-		{"who": "Star Crystal", "text": "I carry the last piece of something that can stop it. A power called the Meow Pow Wow. Most of it is scattered. I can only give you the first spark."},
+		{"who": "Star Crystal", "text": "One of us went dark. He calls himself the Dark Crystal now. He talked the others grey, one by one, and made them into an army of Grumps, whose only job is to take away all the love and happiness in everything, world by world."},
+		{"who": "Star Crystal", "text": "I carry the first spark of something that can stop him. A power called the Meow Pow Wow. The ones who know the rest of it live very far from here. I can only give you the first spark."},
 		{"who": "Star Crystal", "text": "I need someone with their feet in the dirt and their heart in the right place. The question is whether that's you."},
 		{"who": "Star Crystal", "text": "So. %s. Will you help me?" % who, "choice": ["I'll help. Where do we start?", "I just want to farm in peace.", "Who said I'd trust a talking rock?"], "key": "crystal_answer"},
 	])
@@ -2044,12 +2064,14 @@ func _intro_penguins(n: Dictionary) -> void:
 			{"who": "Star Crystal", "text": "...Peace. Yes. That's exactly what the Grumps will take first. Farm, then. I'll wait. I'm very good at waiting."},
 		])
 		GameState.run["flags"]["crystal_trust"] = 1
+		GameState.run["flags"]["crystal_peace"] = true  # C12: answered in p1_howl / p5_win
 	else:
 		await say([
 			{"who": "Star Crystal", "text": "Fair. I wouldn't either. I'll be here, glowing uselessly in your yard, until you change your mind."},
 			{"who": "Star Crystal", "text": "...I am not a rock."},
 		])
 		GameState.run["flags"]["crystal_trust"] = 0
+		GameState.run["flags"]["crystal_doubt"] = true  # C12: answered in p1_howl / p1_grump_truth / p5_win
 	await say([
 		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
 		{"who": "Star Crystal", "text": "Hold the hoe (the first toolbar slot), face the grass and tap USE to till. Then pick the seeds, tap USE on the soil, and water it with the can.", "keep": true},

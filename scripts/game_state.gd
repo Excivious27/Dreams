@@ -2162,15 +2162,36 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor", "wear", "romance"]
 
 
+## Gear and racket goods never go into a villager's hands (ammo, counterfeit cash, forged papers, gadgets). C12 P4.
+const NO_GIFT_IDS := ["rounds", "bills_crude", "bills_passable", "bills_fine", "bills_perfect", "forged_permit", "ghost_ledger", "scrambler", "emp_charge", "emp_heavy", "spy_drone", "scrap_bot", "guard_bot", "drone_swarm"]
+
+
 static func can_gift(npc: String, item: String) -> bool:
 	if item == "" or count(item) <= 0 or not items.has(item):
 		return false
-	if str(items[item].get("type", "")) in NO_GIFT_TYPES or keeps(item) or Decor.is_decor(item):
+	if str(items[item].get("type", "")) in NO_GIFT_TYPES or keeps(item) or Decor.is_decor(item) or item in NO_GIFT_IDS:
+		return false
+	# Only someone you can befriend takes a gift (villagers, registered crew/Marked); a mega-region local just chats.
+	if not npcs.has(npc):
 		return false
 	if (run.get("gifted_today", {}) as Dictionary).has(npc):
 		return false
 	# Two gifts a week each, like Stardew; birthdays always count.
 	return is_birthday(npc) or int((run.get("gifts_week", {}) as Dictionary).get(npc, 0)) < 2
+
+
+## C12 c12_08-21: why a gift that could otherwise go is held back: "today" (already gave one
+## today), "week" (two this week) or "" (no block, or not a giftable item/villager at all).
+static func gift_block(npc: String, item: String) -> String:
+	if item == "" or count(item) <= 0 or not items.has(item) or not npcs.has(npc):
+		return ""
+	if str(items[item].get("type", "")) in NO_GIFT_TYPES or keeps(item) or Decor.is_decor(item) or item in NO_GIFT_IDS:
+		return ""
+	if (run.get("gifted_today", {}) as Dictionary).has(npc):
+		return "today"
+	if not is_birthday(npc) and int((run.get("gifts_week", {}) as Dictionary).get(npc, 0)) >= 2:
+		return "week"
+	return ""
 
 
 ## Give a gift: takes the item, adds friendship, remembers today. Returns the gain.
@@ -2364,7 +2385,7 @@ static func add_friend(npc: String, n: int) -> void:
 static func notify(text: String) -> void:
 	if not run.has("notes"):
 		run["notes"] = []
-	(run["notes"] as Array).append(text)
+	(run["notes"] as Array).append(Money.t(text))  # C12 P4: perk texts carry ◆; the cash arc shows $
 	while (run["notes"] as Array).size() > 40:
 		(run["notes"] as Array).pop_front()  # S1 P2 (s1_05-06): keeps cloud saves small when no map reads them
 
@@ -2381,11 +2402,17 @@ static func gift_value(npc: String, item: String) -> int:
 	if fam == "#tree" or fam == "#berry":
 		if "#fruit" in likes:
 			fam = "#fruit"
+	# Order (C12 P4): loved_by > the item named in likes > the item named in dislikes > a kind/family like > a kind/family dislike.
+	var liked_tier := 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
 	if str(it.get("loved_by", "-")) in likes:
 		base = 20  # loved: e.g. Prize Candy for anyone who likes candy (gen_rec ITEMS "loved_by")
-	elif item in likes or (kind != "" and kind in likes) or fam in likes:
-		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
-	elif item in dislikes or (kind != "" and kind in dislikes) or fam in dislikes:
+	elif item in likes:
+		base = liked_tier
+	elif item in dislikes:
+		base = -8
+	elif (kind != "" and kind in likes) or fam in likes:
+		base = liked_tier
+	elif (kind != "" and kind in dislikes) or fam in dislikes:
 		base = -8
 	elif rarity_rank(item) >= 2:
 		base = 8
@@ -2408,21 +2435,66 @@ static func is_birthday(npc: String) -> bool:
 
 ## Whose birthday is today ("" if nobody's).
 ## A villager's own reaction to a gift (data/gift_lines.json), "" if none.
+## C12 P4: progression-aware variants ("when"), arc/flag gates, the birthday line only for a
+## liked-or-better gift (a neutral one gets "birthday_plain"), and one "_default" set for anyone
+## without lines of their own (so town, interiors and regions all answer the same way).
 static func gift_line(id: String, item: String, gain: int) -> String:
-	var d := load_json("res://data/gift_lines.json") if _gift_lines.is_empty() else _gift_lines
-	_gift_lines = d
+	var d := _gift_data()
 	var n := item_name(item)
-	if is_birthday(id) and gain > 0 and d.get("birthday", {}).has(id):
-		return ItemWords.fill(str(d["birthday"][id]), n)
-	var ls: Array = d.get("lines", {}).get(id, [])
-	if ls.size() < 4:
-		return ""
 	var mult := 3 if is_birthday(id) else 1
 	var g := gain / mult
 	if g > 0:
 		g = maxi(0, g - int(bonus("bartering", "gift_bonus")) - int(items.get(item, {}).get("friend", 0)))  # react to the gift itself, not the bonuses
 	var idx := 3 if g < 0 else (0 if g >= 20 else (1 if g >= 12 else 2))
+	var bday := is_birthday(id) and gain > 0
+	var tier: Variant = "birthday" if bday and g >= 12 else idx
+	for w: Dictionary in d.get("when", []):
+		var wt: Variant = w.get("tier", -1)
+		var tier_ok := (str(wt) == str(tier)) if (wt is String or tier is String) else int(wt) == int(tier)  # JSON numbers are floats
+		if str(w.get("id", "")) == id and tier_ok and _gift_when_ok(id, w):
+			return ItemWords.fill(str(w["text"]), n)
+	if bday and g >= 12 and d.get("birthday", {}).has(id):
+		return ItemWords.fill(str(d["birthday"][id]), n)
+	var ls: Array = d.get("lines", {}).get(id, [])
+	if ls.size() < 4:
+		ls = d.get("_default", [])
+	if ls.size() < 4:
+		return ""
+	if bday and g < 12:
+		var plain := str(d.get("birthday_plain", {}).get(id, ""))
+		if plain != "":
+			return ItemWords.fill(plain, n)
+		return ItemWords.fill(str(ls[idx]), n) + " Thanks for remembering my birthday."
 	return ItemWords.fill(str(ls[idx]), n)
+
+
+static func _gift_data() -> Dictionary:
+	if _gift_lines.is_empty():
+		_gift_lines = load_json("res://data/gift_lines.json")
+	return _gift_lines
+
+
+## A "when" variant's gates: arc, flag, not_flag, hearts_seen / not_hearts_seen (Hearts.seen_level).
+static func _gift_when_ok(id: String, w: Dictionary) -> bool:
+	if w.has("arc") and str(w["arc"]) != ("penguins" if is_penguins() else "gangsters"):
+		return false
+	if w.has("flag") and not run["flags"].has(str(w["flag"])):
+		return false
+	if w.has("not_flag") and run["flags"].has(str(w["not_flag"])):
+		return false
+	if w.has("hearts_seen") and Hearts.seen_level(id) < int(w["hearts_seen"]):
+		return false
+	if w.has("not_hearts_seen") and Hearts.seen_level(id) >= int(w["not_hearts_seen"]):
+		return false
+	return true
+
+
+## Crew and other late-registered gift receivers take their tastes from gift_lines.json "tastes".
+static func apply_gift_tastes(id: String) -> void:
+	var t: Dictionary = _gift_data().get("tastes", {}).get(id, {})
+	if not t.is_empty() and npcs.has(id):
+		npcs[id]["likes"] = (t.get("likes", []) as Array).duplicate()
+		npcs[id]["dislikes"] = (t.get("dislikes", []) as Array).duplicate()
 
 
 static var _gift_lines := {}
@@ -2433,15 +2505,10 @@ const SOME_WORDS := ["wood", "stone", "hay", "fiber", "fibre", "milk", "honey", 
 
 
 ## "an Apple" / "a Carrot" / "some Turnip Seeds" (cap = capital first letter). C7.
+## Delegates to ItemWords so the two can never disagree ("a Lotus", "a Jar of Honey"). C12 P4.
 static func with_article(name: String, cap := false) -> String:
-	var low := name.to_lower()
-	var last := low.split(" ")[-1] if low != "" else ""
-	var art := "a"
-	if (last.ends_with("s") and not last.ends_with("ss")) or SOME_WORDS.has(last):
-		art = "some"
-	elif low != "" and "aeiou".contains(low.left(1)):
-		art = "an"
-	return (art.capitalize() if cap else art) + " " + name
+	var a := ItemWords.with_article(name)
+	return a.left(1).to_upper() + a.substr(1) if cap else a
 
 
 ## A reaction line with the right article before the item's name ("A Apple" -> "An Apple").
@@ -2456,14 +2523,7 @@ static func plural_name(id: String, n: int) -> String:
 	var nm := item_name(id)
 	if n == 1 or nm == "":
 		return nm
-	var last := nm.to_lower().split(" ")[-1]
-	if last.ends_with("s") or SOME_WORDS.has(last):
-		return nm
-	if last.ends_with("y") and not "aeiou".contains(last.substr(last.length() - 2, 1)):
-		return nm.left(nm.length() - 1) + "ies"
-	if last.ends_with("sh") or last.ends_with("ch") or last.ends_with("x"):
-		return nm + "es"
-	return nm + "s"
+	return ItemWords.plural(nm)  # C12 P4: one plural rule (ItemWords)
 
 
 static func birthday_today() -> String:
@@ -2480,7 +2540,7 @@ static func birthday_today() -> String:
 static func npc_present(id: String) -> bool:
 	if run.is_empty():
 		return false
-	return not run["flags"].has(id + "_gone") and id != "catkins" and not (id == "sal" and is_penguins() and int(run["day"]) < 4)
+	return not run["flags"].has(id + "_gone") and id != "catkins" and not (id == "sal" and is_penguins() and int(run["day"]) < 4) and not (id == "tam" and Mail.tam_away())
 
 
 # ---- quests ------------------------------------------------------------------

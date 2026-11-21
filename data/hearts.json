@@ -15,7 +15,7 @@
      },
      {
       "who": "Maple",
-      "text": "Here. A turnip seed packet with a bent corner. It's the first thing I ever sold in this shop; I kept it. Plant it or don't, but it should be in the ground somewhere."
+      "text": "See this? A turnip seed packet with a bent corner. The first thing I ever sold in this shop, and it came back to me in a returns box. I keep it by the till. One day it goes in the ground."
      }
     ],
     "4": [
@@ -29,7 +29,7 @@
      },
      {
       "who": "Maple",
-      "text": "I write. He writes back, four lines, every month. Four lines is a lot, from him."
+      "text": "I write. He writes back, four lines, every month. Four lines is a lot, from him. Pip counts them. Pip counts everything."
      }
     ],
     "6": [
@@ -72,7 +72,7 @@
      },
      {
       "who": "Maple",
-      "text": "Four lines came today. Five, actually. The fifth one says: 'Is it safe to come home?'"
+      "text": "Pip got six lines last month and hasn't let me forget it. Mine came today. Five. The fifth one says: 'Is it safe to come home?'"
      },
      {
       "who": "Maple",
@@ -86,7 +86,7 @@
    },
    "fall": "Maple would lock the store and stand in the doorway with a broom, and nobody would get past the broom.",
    "after": {
-    "2": "Plant the bent packet. I want to know what comes up.",
+    "2": "The bent packet's still by the till. One day.",
     "4": "Four lines this month. He asked about the weather. That's a lot, from him.",
     "6": "The storeroom. I've stopped pretending about it. Mostly.",
     "8": "I still don't ask questions. I've just started noticing the answers.",
@@ -339,7 +339,7 @@
      },
      {
       "who": "Alder",
-      "text": "I was going to be a painter. There. Lumi knows; nobody else. I had a place in the capital and my father got ill the week before I left."
+      "text": "I was going to be a painter. There. Lumi guessed; I never told her. Nobody else. I had a place in the capital and my father got ill the week before I left."
      },
      {
       "who": "Alder",
@@ -551,7 +551,7 @@
      }
     ]
    },
-   "fall": "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was Tuesday.",
+   "fall": "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was any other morning.",
    "after": {
     "2": "Asking, not angry. Remember.",
     "4": "Half a boat. Still.",
@@ -623,7 +623,7 @@
      },
      {
       "who": "Lumi",
-      "text": "You're the first person to see it. Theo doesn't count; he only looks at the corners."
+      "text": "You're the first person to see it. Alder doesn't count; he only looks at the corners."
      }
     ],
     "10": [
@@ -738,7 +738,7 @@
      }
     ]
    },
-   "fall": "Theo would carry four hundred books into the chapel two at a time and read the last one aloud until whatever came was bored into leaving.",
+   "fall": "Theo would carry four hundred books into the town hall two at a time and read the last one aloud until whatever came was bored into leaving.",
    "after": {
     "2": "Small notices. Hello.",
     "4": "Three hundred and ninety-eight.",
@@ -771,7 +771,7 @@
      },
      {
       "who": "Hazel",
-      "text": "Mabel's mine. My girl. Her father went to the quarry for one season and the season's been nine years."
+      "text": "Mabel's mine. My girl. Her father went to the quarry for one season when she was still in the cradle, and the season's been nine years."
      },
      {
       "who": "Hazel",
@@ -799,7 +799,7 @@
      },
      {
       "who": "Hazel",
-      "text": "Granite told me. At the quarry. He didn't leave us. There was a rockfall; he got the whole crew out and hurt his back so badly he went to the coast to mend, too proud to write. Nine years, Granite's been carrying that up the road and not quite knocking."
+      "text": "Granite told me. At the quarry. He didn't leave us. There was a rockfall; he got the whole crew out, and he was the last one, and the hill didn't let him come back. Nine years, Granite's been carrying that up the road and not quite knocking."
      },
      {
       "who": "Hazel",
@@ -871,6 +871,10 @@
      {
       "who": "Bram",
       "text": "Still do. The kitchen part."
+     },
+     {
+      "who": "Bram",
+      "text": "And Tobin. His mum left him with me the winter she sailed. He thinks I don't know he steals the ladle. I leave it out."
      }
     ],
     "6": [
@@ -880,8 +884,8 @@
      },
      {
       "who": "Bram",
-      "text": "Festival night. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
-      "text_gangsters": "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."
+      "text": "Festival's coming. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
+      "text_gangsters": "Festival's coming. I want two root beers on the sill, for once, for Posy's mother."
      },
      {
       "who": "Bram",
@@ -912,14 +916,14 @@
     "10": [
      {
       "who": "",
-      "text": "Through the inn window, Posy is laughing at the front counter. Bram watches from the kitchen hatch, wiping the same plate.",
+      "text": "Across the lane, Posy is laughing at the bakery counter. Bram watches from the inn's kitchen hatch, wiping the same plate.",
       "if_gone": {
        "posy": "Bram is at the kitchen hatch with a letter propped against the salt, reading it again between plates."
       }
      },
      {
       "who": "Bram",
-      "text": "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.",
+      "text": "Posy's running that bakery like her mother ran this inn. Like a ship. Better, and I said so, and she threw a tea towel at me.",
       "if_gone": {
        "posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."
       }
@@ -938,13 +942,13 @@
    "after": {
     "2": "Corner's yours.",
     "4": "Still hiding in the kitchen.",
-    "6": "Two bottles for the sill. Festival night.",
+    "6": "Two bottles for the sill, before the festival.",
     "8": "Two hours. The sill's full.",
     "10": "Tea towel. Right in the face."
    },
    "quest6_gangsters": "bram_rootbeer",
    "after_gangsters": {
-    "6": "Two root beers. Festival night.",
+    "6": "Two root beers, before the festival.",
     "8": "Two hours. Her glass was full."
    }
   },
@@ -972,7 +976,7 @@
      },
      {
       "who": "Posy",
-      "text": "Mum made the bread. I made the cakes. Dad hid in the inn kitchen, which is where he's happiest, so that's fine."
+      "text": "Mum made the bread. I made the cakes. Dad hid in the inn kitchen, with Tobin under his feet, which is where they're both happiest, so that's fine."
      },
      {
       "who": "Posy",
@@ -1000,7 +1004,7 @@
     "8": [
      {
       "who": "",
-      "text": "Posy hands you a jar of jam still warm from the pan, then takes it back to wipe the lid, then gives it to you again."
+      "text": "Posy holds out a spoonful of jam still warm from the pan, then pulls it back to blow on it, then holds it out again."
      },
      {
       "who": "Posy",
@@ -1013,7 +1017,7 @@
      },
      {
       "who": "Posy",
-      "text": "First batch that tasted like hers. You get the first jar. That's how it works now."
+      "text": "First batch that tasted like hers. You get the first taste. That's how it works now."
      }
     ],
     "10": [
@@ -1122,7 +1126,7 @@
      },
      {
       "who": "Juniper",
-      "text": "Gideon's on it. Maple. Granite. You, at the top. It's a short list. It's a good list."
+      "text": "That one has Gideon on it. Maple. Granite. And you, at the top. It's a short list. It's a good list."
      }
     ]
    },
@@ -1156,11 +1160,11 @@
     "4": [
      {
       "who": "",
-      "text": "Rook is cleaning an old knife by the lodge fire, very carefully."
+      "text": "Rook is whittling a tent peg by the lodge fire, very carefully."
      },
      {
       "who": "Rook",
-      "text": "I came out of the river cities on foot. Took a season. Ate what I could catch, which taught me to catch things."
+      "text": "I came out of the river cities on foot. Took a season. Ate what I could forage, which taught me to read the woods."
      },
      {
       "who": "Rook",
@@ -1548,7 +1552,7 @@
      },
      {
       "who": "Mabel",
-      "text": "I'm eight. I'm allowed to have plans."
+      "text": "I'm nine. Nearly ten. I'm allowed to have plans."
      }
     ],
     "8": [
@@ -1852,19 +1856,19 @@
     "10": [
      {
       "who": "",
-      "text": "Benno is in the paddock at dawn, walking the race course on foot, counting the turns out loud."
+      "text": "Benno is in the paddock at dawn, walking the show ring on foot, counting the strides out loud."
      },
      {
       "who": "Benno",
-      "text": "Race at the festival. I'm riding. Alder's put it on the notice; Theo wrote it small, bless him."
+      "text": "Ring at the Harvest Fair. I'm riding Willow in, not just judging. Alder's put it on the notice; Theo wrote it small, bless him."
      },
      {
       "who": "Benno",
-      "text": "I'll lose. I'll lose on purpose if I have to, so I can say I finished one. Come and watch me finish."
+      "text": "I'll come last. I'll come last on purpose if I have to, so I can say I finished one. Come and watch me finish."
      },
      {
       "who": "Benno",
-      "text": "Fourteen turns. I'll take every one of them slow. Finishing's the race. The rest is just horses."
+      "text": "Fourteen strides round the ring. I'll take every one of them slow. Finishing's the race. The rest is just horses."
      }
     ]
    },
@@ -2039,19 +2043,23 @@
     "10": [
      {
       "who": "",
-      "text": "Tam is packing a rucksack with a crook tied to the side. The Dollys are watching from the fence, unimpressed."
+      "text": "Tam is packing a rucksack with a crook tied to the side. The Dollys are watching from the fence, unimpressed.",
+      "if_partner": "Tam is unpacking a rucksack, crook and all. The Dollys watch from the fence, looking smug."
      },
      {
       "who": "Tam",
-      "text": "Going up. To the highlands. Spring. The Dollys voted and it was close and I overruled them, which I've never done."
+      "text": "Going up. To the highlands. Spring. The Dollys voted and it was close and I overruled them, which I've never done.",
+      "if_partner": "I was going to go back up to the highlands this spring. The Dollys voted yes. I overruled them. I've got a reason down here now."
      },
      {
       "who": "Tam",
-      "text": "Watch the lamb while I'm gone. Bring her down to the Harvest Fair; I'll be back for it. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are."
+      "text": "Watch the lamb while I'm gone. Bring her down to the Harvest Fair; I'll be back for it. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are.",
+      "if_partner": "Bring the lamb to the Harvest Fair with me. We'll walk the hills one summer, the two of us. Then we come home."
      },
      {
       "who": "Tam",
-      "text": "I'll write. Sheep don't, so I have to. Keep a light on at the farm; it helps, coming down off the hills."
+      "text": "I'll write. Sheep don't, so I have to. Keep a light on at the farm; it helps, coming down off the hills.",
+      "if_partner": "I'll still write to the hills. Sheep don't, so I have to. I'll tell them I'm staying."
      }
     ]
    },
@@ -2179,7 +2187,7 @@
      },
      {
       "who": "Granite",
-      "text": "Nine years foreman. Was a hand before that. There was a rockfall, first year. A good man got us all out and paid for it with his back. Hazel's man."
+      "text": "Nine years foreman. Was a hand before that. There was a rockfall, first year. A good man got us all out and paid for it. Hazel's man."
      },
      {
       "who": "Granite",
@@ -2211,7 +2219,7 @@
      },
      {
       "who": "Granite",
-      "text": "She said: 'I know. I've always known. Come in and fix the fence.' So I'm fixing the fence."
+      "text": "She said: 'I think I always half knew. Thank you for saying it whole. Come in and fix the fence.' So I'm fixing the fence."
      },
      {
       "who": "Granite",
@@ -2237,7 +2245,7 @@
      }
     ]
    },
-   "fall": "Granite would bring every man from the quarry down the road with picks, in a line, not fast, the way rock moves, and nothing moves rock.",
+   "fall": "Granite would bring every hand from the quarry down the road with picks, in a line, not fast, the way rock moves, and nothing moves rock.",
    "after": {
     "2": "Short strokes.",
     "4": "Nine years of meaning to.",
@@ -2280,7 +2288,7 @@
     "6": [
      {
       "who": "",
-      "text": "Sel is pacing among the ruin walls, tapping her pencil on each stone she passes."
+      "text": "Sel is pacing among the ruin walls, tapping a pencil on each stone they pass."
      },
      {
       "who": "Sel",
@@ -2288,7 +2296,8 @@
      },
      {
       "who": "Sel",
-      "text": "The sentence is about your field. I'm fairly sure. My grammar's shaky."
+      "text": "The sentence is about your field. I'm fairly sure. My grammar's shaky.",
+      "text_gangsters": "The sentence is about a stranger who comes up the road. I'm fairly sure. My grammar's shaky."
      }
     ],
     "8": [
@@ -2298,11 +2307,12 @@
      },
      {
       "who": "Sel",
-      "text": "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things."
+      "text": "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things.",
+      "text_gangsters": "The sentence: 'A stranger came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things."
      },
      {
       "who": "Sel",
-      "text": "Awake. The bell. They had a bell; it's in the plaza, cracked. They rang it."
+      "text": "Awake. The bell. They had a bell, like yours in the plaza. They rang it."
      },
      {
       "who": "Sel",
@@ -2312,11 +2322,13 @@
     "10": [
      {
       "who": "",
-      "text": "Sel's tent is packed. A rubbing of the wall is rolled up under one arm, tied with string."
+      "text": "Sel's tent is packed. A rubbing of the wall is rolled up under one arm, tied with string.",
+      "if_partner": "Sel's tent is folded away for good. A rubbing of the wall is rolled up under one arm, addressed to the university."
      },
      {
       "who": "Sel",
-      "text": "I'm going back to the university. To tell them. Not that I'm alive; that there's a wall three thousand years old that says a town can beat the dark by being awake."
+      "text": "I'm going back to the university. To tell them. Not that I'm alive; that there's a wall three thousand years old that says a town can beat the dark by being awake.",
+      "if_partner": "I'm writing to the university. A letter, not a visit. I'd rather tell them from here, where the person who believed me first lives."
      },
      {
       "who": "Sel",
@@ -2324,7 +2336,8 @@
      },
      {
       "who": "Sel",
-      "text": "I'll come back. The stones aren't finished talking. Neither, I think, are we."
+      "text": "I'll come back. The stones aren't finished talking. Neither, I think, are we.",
+      "if_partner": "The stones aren't finished talking. Neither, I think, are we. I'm not going anywhere."
      }
     ]
    },
@@ -2335,6 +2348,100 @@
     "6": "The sentence is about your field.",
     "8": "The town was awake.",
     "10": "A town can beat the dark by being awake."
+   },
+   "after_gangsters": {
+    "6": "The sentence is about a stranger on the road."
+   }
+  },
+  "tess": {
+   "quest6": "tess_seat",
+   "milestones": {
+    "2": [
+     {
+      "who": "",
+      "text": "Tess is planing a board outside the workshop, curls of wood piling round her boots."
+     },
+     {
+      "who": "Tess",
+      "text": "You measure twice. I've watched you at the Plans board. Most people measure once and blame the saw."
+     },
+     {
+      "who": "Tess",
+      "text": "Here's a secret: the saw's never wrong. The saw's just honest about what you told it."
+     }
+    ],
+    "4": [
+     {
+      "who": "",
+      "text": "Tess runs her thumb along a cracked old chair leg, the way you'd check a pulse."
+     },
+     {
+      "who": "Tess",
+      "text": "This was my gran's chair. Every chair in this town has a wobble I know by name, and this one taught me all of them."
+     },
+     {
+      "who": "Tess",
+      "text": "I keep it in the back. I sit in it when a job goes wrong. It still wobbles. It's still standing."
+     }
+    ],
+    "6": [
+     {
+      "who": "",
+      "text": "Tess has a pencil behind each ear and a stack of offcuts sorted by length on the bench."
+     },
+     {
+      "who": "Tess",
+      "text": "Offcuts. Everyone throws them away. I save every one. A shelf for one house, a toy for the next, a wedge for a door that won't stay shut."
+     },
+     {
+      "who": "Tess",
+      "text": "Nothing that grew for forty years should end up as kindling because somebody got bored. That's my one rule. Wood first."
+     }
+    ],
+    "8": [
+     {
+      "who": "",
+      "text": "The workshop is quiet. Tess is sitting in her gran's chair, and for once it isn't wobbling."
+     },
+     {
+      "who": "Tess",
+      "text": "I fixed it. The wobble. Thirty years I said I'd leave it, because it was hers."
+     },
+     {
+      "who": "Tess",
+      "text": "Then I watched you build that house of yours, board by board, and I thought: she'd have fixed it. She'd have fixed it the first day and laughed at me."
+     },
+     {
+      "who": "Tess",
+      "text": "That window seat I've been building? It's yours. There's a bit of the old leg in it. Best wood in the shop."
+     }
+    ],
+    "10": [
+     {
+      "who": "",
+      "text": "Tess has carved a small sign and hung it over the workshop door. It's two names, hers and her gran's, side by side."
+     },
+     {
+      "who": "Tess",
+      "text": "Gran's name goes over the door now. I should have done it years ago. I was waiting to be good enough."
+     },
+     {
+      "who": "Tess",
+      "text": "You don't wait to be good enough. You build, and the building makes you good enough. I learned that watching you."
+     },
+     {
+      "who": "Tess",
+      "text": "Bring me any job, any time. The bench is yours too. Measure twice."
+     }
+    ]
+   },
+   "fall": "Tess would nail every shutter in town closed in an afternoon, then build a barricade across the plaza out of her best timber, and it would hold, because she measured twice.",
+   "after": {
+    "2": "Measure twice.",
+    "4": "Gran's chair still wobbles.",
+    "6": "Wood first.",
+    "8": "No more wobble.",
+    "10": "Two names over the door."
    }
   },
   "catkins": {

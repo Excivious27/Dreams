@@ -263,13 +263,20 @@ static func wants_run(raw: Vector2) -> bool:
 ## Touch words -> the pad's buttons ("Tap USE" -> "Press A") or keys.
 static func words(text: String) -> String:
 	var dev := device_kind()
+	# c12_13-11: menu paths read one way everywhere ("MENU > Map"), so the
+	# key/pad branch below can name the real button.
+	var t := text.replace("Menu > ", "MENU > ").replace("MENU → ", "MENU > ")
 	if dev == "touch":
-		return text
-	var t := text
+		return t
 	for pair: Array in [["USE", "a"], ["CHECK", "action"], ["MENU", "menu"], ["ROLL", "dodge"], ["CALL", "pup"], ["BOP", "a"], ["RALLY", "rally"]]:
 		t = t.replace(" " + str(pair[0]), " " + InputSetup.prompt(str(pair[1])))
+		# c12_13-06: "(MENU > Items)" converts too.
+		t = t.replace("(" + str(pair[0]), "(" + InputSetup.prompt(str(pair[1])))
 		if t.begins_with(str(pair[0])):
 			t = InputSetup.prompt(str(pair[1])) + t.substr(str(pair[0]).length())
+	# C12 02-28: the Meow Pow Wow's touch button is drawn as a heart; name the real key.
+	var ab := InputSetup.prompt("ability")
+	t = t.replace("tap the ♥ button", "press " + ab).replace("tap ♥", "press " + ab).replace("Tap ♥", "Press " + ab).replace("with ♥", "with " + ab)
 	# S1 s1_08-06: no touch or keyboard words with a controller in hand.
 	if dev == "pad":
 		t = t.replace("tap for more", "press %s for more" % InputSetup.prompt("a")).replace("Tap for more", "Press %s for more" % InputSetup.prompt("a"))

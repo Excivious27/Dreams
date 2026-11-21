@@ -107,7 +107,7 @@ BEAT = {
     "seeds": ["wren", P("Plant them shallow, water them often, and talk to them. Don't laugh, it works.", "Shallow, water often, talk to them. Don't laugh. It works.")],
     "well": ["benno", P("Taste that. Cold as the bottom of the river, and none of the fish.", "Taste that. No meter, no bill, no rust.")],
     "orchard": ["rook", P("Three summers and you'll be climbing these for cherries. Trees don't hurry.", "Three summers and there'll be fruit on a vacant lot. Trees don't hurry.")],
-    "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in January.")],
+    "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in the dead of winter.")],
 }
 # Builds take a few days each (Tom, Guide 26 #2): "days" nights of work; after each night
 # but the last, the sleep report reads that night's "progress" line and the site shows
@@ -259,7 +259,7 @@ TALK_OWN = [
     ["wren", 3, P(["The commons soil is good. Old. It remembers being a garden.", "I grow feverfew in the corner of the commons beds. Don't pick it, it's not a salad."],
                   ["The lot soil came back faster than I thought. Dirt's forgiving.", "There's feverfew in the corner bed at the lot. It's medicine, not lunch."])],
     ["benno", 4, P(["I water the commons every evening. The horses can spare me an hour.", "That well's deeper than it looks. Cold all summer."],
-                   ["I water the lot every evening. Best hour of my day.", "That well's cold even in August. Don't tell the President."])],
+                   ["I water the lot every evening. Best hour of my day.", "That well's cold even at the height of summer. Don't tell the President."])],
     ["rook", 5, P(["The commons orchard needs a few years. Trees don't hurry for anyone.", "I watch the commons trees mornings. Deer love a young plum."],
                   ["I keep an eye on the lot trees mornings. Rats love a young plum.", "Trees on a vacant lot. Funny old world."])],
     ["juniper", 6, P(["I moved my herbs into the commons greenhouse. They've never looked better.", "Fresh greens in winter keep me less busy. That's the whole point."],
@@ -307,7 +307,7 @@ AT_WORK_OWN = {
     "juniper": P(["Mint wants the whole greenhouse. Mint can't have it."], ["Mint wants the whole greenhouse. Mint doesn't get it."]),
     "mabel": P(["Compost is just old dinner having a nap."], ["Compost is old dinner taking a nap."]),
     "lumi": P(["I'm sketching the beds. The light's perfect on the kale."], ["Sketching the beds. The kale's got good bones."]),
-    "theo": P(["Did you know the old commons had forty-one kinds of apple? I'm writing it down."], ["This lot was an orchard in 1903. I checked the records."]),
+    "theo": P(["Did you know the old commons had forty-one kinds of apple? I'm writing it down."], ["This lot was an orchard before the city had streetlights. I checked the records."]),
     "alder": P(["Officially a park. Unofficially the best thing I've signed."], ["Officially a park now. Best thing I ever signed."]),
 }
 # Short lines volunteers call out when you pass close (floating text, by activity; "rain", "greet").
@@ -335,7 +335,7 @@ HELP = {
     "water": {"n": 0, "ask": P("The beds are thirsty and the river's a long walk. Water a few for me? Grab your can.",
                                "Beds are dry and the hydrant's a hike. Water a few? Bring your can."),
               "go": P("Water the dry beds near %s with your can.", "Water the dry beds near %s."),
-              "done": P("Listen to them drink! Thank you. Here, take some of this.", "They'll be fat by Friday. Here, take some of this.")},
+              "done": P("Listen to them drink! Thank you. Here, take some of this.", "They'll be fat by market day. Here, take some of this.")},
 }
 # What each activity asks help with ("" = they're happy chatting).
 HELP_KIND = {"farm": "weed", "haul": "haul", "work": "haul", "market": "haul"}

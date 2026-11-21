@@ -254,7 +254,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "3a3440"
@@ -288,7 +288,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "3f6fd8"
@@ -322,7 +322,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "e8eef6"
@@ -356,7 +356,7 @@
    "arc": "penguins",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Adds a bit of flair. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "9fe0ff"
@@ -364,7 +364,7 @@
    "glow": false,
    "icon": "capes/cape",
    "layer": "wear",
-   "name": "Crystal Cape (Look)",
+   "name": "Replica Crystal Cape",
    "penguin": {
     "back": "capes/cape",
     "tint": "9fe0ff"
@@ -390,7 +390,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "It ripples like a dream you almost remember. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "c79bf0"
@@ -424,7 +424,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "The little detail that makes the look. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "e8673a"
@@ -458,7 +458,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "bfe6ff"
@@ -492,7 +492,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Adds a bit of flair. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "f2c94c"
@@ -500,7 +500,7 @@
    "glow": false,
    "icon": "capes/cape",
    "layer": "wear",
-   "name": "Gold Cape (Look)",
+   "name": "Replica Gold Cape",
    "penguin": {
     "back": "capes/cape",
     "tint": "f2c94c"
@@ -526,7 +526,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "The little detail that makes the look. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "4aa84a"
@@ -560,7 +560,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "d8d8ec"
@@ -568,7 +568,7 @@
    "glow": false,
    "icon": "capes/cape",
    "layer": "wear",
-   "name": "Moon Cape (Look)",
+   "name": "Replica Moon Cape",
    "penguin": {
     "back": "capes/cape",
     "tint": "d8d8ec"
@@ -594,7 +594,7 @@
    "arc": "penguins",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "f4a6c8"
@@ -628,7 +628,7 @@
    "arc": "penguins",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Adds a bit of flair. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "2e3446"
@@ -662,7 +662,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "The little detail that makes the look. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "d8403a"
@@ -696,7 +696,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "f6d860"
@@ -730,7 +730,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "6a7088"
@@ -764,7 +764,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Small touch, big difference. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "f4f4f4"
@@ -798,7 +798,7 @@
    "arc": "",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "Adds a bit of flair. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "7a6a4a"
@@ -832,7 +832,7 @@
    "arc": "gangsters",
    "art": "capes/cape",
    "cat": "acc",
-   "desc": "An accessory. Looks only, no stats.",
+   "desc": "A long dark cape. People step aside. Looks only, no stats.",
    "doll": {
     "back": "capes/cape",
     "tint": "8a2030"

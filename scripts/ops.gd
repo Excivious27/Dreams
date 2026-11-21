@@ -69,13 +69,13 @@ static func on_kill(m: GameMap, late := false) -> void:
 		return  # take the district from its boss first
 	if not GameState.run["flags"].has("turf_hint"):
 		GameState.run["flags"]["turf_hint"] = true
-		GameState.add_hint("Clear every hostile left on a district block and it's yours: ◆%d every morning, and collectors stay away." % TURF_PAY)
+		GameState.add_hint("Clear every hostile left on a district block and it's yours: %s every morning, and collectors stay away." % Money.amount(TURF_PAY))
 	for e in m.enemies:
 		if is_instance_valid(e) and e._alive:
 			return
 	turf()[m.scene_id()] = int(GameState.run["day"])
 	GameState.add_arc_xp(40)
-	m.hud.toast("This block is yours: %s. ◆%d every morning, and collectors stay away." % [str(TURF[m.scene_id()]), TURF_PAY], Color(1, 0.9, 0.5))
+	m.hud.toast("This block is yours: %s. %s every morning, and collectors stay away." % [str(TURF[m.scene_id()]), Money.amount(TURF_PAY)], Color(1, 0.9, 0.5))
 	m.fx("sparkle", m.player.position + Vector2(0, -18), 16.0, 0.6)
 	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 

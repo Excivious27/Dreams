@@ -1,5 +1,5 @@
 {
- "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in story.json recruit them, flag crew_<id>). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218). 'waiting' = lines (or {text} narration) before a member is recruited; 'waiting_hint' = toast once (flag crew_hint_<id>); marlene 'sold' plays once after letter_sold, then marlene_refused.",
+ "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in data/story_gang.json recruit them, flag crew_<id>; never edit gangster beats in story.json). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218). 'waiting' = lines (or {text} narration) before a member is recruited; 'waiting_hint' = toast once (flag crew_hint_<id>); marlene 'sold' plays once after letter_sold, then marlene_refused.",
  "members": {
   "deuce": {
    "name": "Deuce",
@@ -45,7 +45,7 @@
      }
     ]
    ],
-   "finale": "Deuce shows the lobby guards a card trick they can't walk away from.",
+   "finale": "Deuce shows the door guards a card trick they can't walk away from.",
    "waiting": [
     "Pick a card. Any card. ...Later, then. I'll keep it warm."
    ]
@@ -90,7 +90,7 @@
      }
     ]
    ],
-   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the lobby.",
+   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the red carpet.",
    "waiting": [
     "Sit, sit. We talk business when you've got time to eat."
    ]
@@ -131,7 +131,7 @@
     [
      {
       "who": "Specs",
-      "text": "When we're in the tower I'll go for the wire. Don't wait for me. I'll be faster than you think; I'm always faster than people think."
+      "text": "When it starts, I'll go for the tower's wire. Don't wait for me. I'll be faster than you think; I'm always faster than people think."
      }
     ]
    ],
@@ -229,11 +229,11 @@
     [
      {
       "who": "Vic",
-      "text": "When we're in the lobby, you go left. We go right. Nobody goes middle. The middle is where he puts the ones who think they're brave."
+      "text": "When it starts, you go left. We go right. Nobody goes middle. The middle is where he puts the ones who think they're brave."
      }
     ]
    ],
-   "finale": "Vic and Val take the right side of the lobby and hold it.",
+   "finale": "Vic and Val take the right side of the avenue and hold it.",
    "waiting": [
     "Pit first.",
     "Win the pit. Then we talk. Both of us."
@@ -280,7 +280,7 @@
      }
     ]
    ],
-   "finale": "Val holds the right side of the lobby with Vic.",
+   "finale": "Val holds the right side of the avenue with Vic.",
    "waiting": [
     "Vic says pit first. Vic's right.",
     "You haven't won anything down here yet."
@@ -323,7 +323,7 @@
     [
      {
       "who": "Halo",
-      "text": "Car's gassed. Engine's warm. When it's done up there, I'll be at the steps, and we'll go wherever you say, and I won't ask who's in the back."
+      "text": "Car's gassed. Engine's warm. When it's done out there on the carpet, I'll be at the curb, and we'll go wherever you say, and I won't ask who's in the back."
      }
     ]
    ],
@@ -370,7 +370,7 @@
     [
      {
       "who": "Dice",
-      "text": "I'm going to be in the lobby. I'm going to be terrified. I'm going to be there anyway. That's— I think that's what you do? Is that what you do?"
+      "text": "I'm going to be there, on the avenue. I'm going to be terrified. I'm going to be there anyway. That's— I think that's what you do? Is that what you do?"
      }
     ]
    ],
@@ -425,7 +425,7 @@
      }
     ]
    ],
-   "finale": "The Kid finds the stairwell nobody else could; it goes all the way up.",
+   "finale": "The Kid finds the service stair nobody else could, and comes back down it with news.",
    "waiting": [
     {
      "text": "The Kid points at the boss's big sign, then at you, then shrugs and skates a slow circle."
@@ -472,11 +472,11 @@
     [
      {
       "who": "Doc",
-      "text": "I'm telling you because when you get up there, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."
+      "text": "I'm telling you because when you get to him, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."
      }
     ]
    ],
-   "finale": "Doc keeps the crew breathing in the lobby.",
+   "finale": "Doc keeps the crew breathing out there in the rain.",
    "waiting": [
     "I don't sign on with anyone while Neon's boss is running this street.",
     "Come and see me when Neon is quiet. Mind that cut."
@@ -583,7 +583,7 @@
      }
     ]
    ],
-   "finale": "Sasha walks point across the marble, and nothing in the lobby gets past her.",
+   "finale": "Sasha walks point up the wet avenue, and nothing at the tower doors gets past her.",
    "waiting": [
     "The champion's still standing. Fix that, then talk to me.",
     "Win the pit first."

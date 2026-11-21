@@ -95,16 +95,18 @@ PLANNED = {}
 #   habitat (read by P2's Ranch.comfort when present): likes [seasons/weather], night_goods, needs_add (an add id on
 #   some tier of its home), hates_heater. Lab rows carry lab=(station, tier, recipe need) for the Gene Splicer.
 # Values follow TIER_LADDER below (c11b_12-04); econ_check.py re-checks every row.
+# Gangster-arc words for a creature's where-from line (c12_14-04); the rest read the same in both arcs.
+SOURCE_GANG = {'komodo': 'A rescued Komodo, handed over after a job went sideways'}
 C11B = {
     # exotics: bought (Hazel/Tam; P3 may move ostrich/emu to Old Rahim with buy.seller 'rahim' once his counter exists)
     'ostrich': ('exotics', 'enclosure', 'bird', 3, 'hoot', 14, ('hazel', 4800, 1), ('ostrich_egg', 2, 60, ['plume', 0.2]),
-                ('ostrich_egg', 6, [1, 1], 0, 0.0), 'big_bird', 'pat', 'Hazel imports them once you have an Exotic Enclosure (Sunscorch stock)', dict(likes=['summer'])),
+                ('ostrich_egg', 6, [1, 1], 0, 0.0), 'big_bird', 'pat', 'Hazel imports them from Sunscorch once you have an Exotic Enclosure', dict(likes=['summer'])),
     'emu': ('exotics', 'enclosure', 'bird', 3, 'drum', 12, ('hazel', 3600, 1), ('emu_egg', 2, 55, ['plume', 0.15]),
-            ('emu_egg', 5, [1, 1], 0, 0.0), 'big_bird', 'pat', 'Hazel, once you have an Exotic Enclosure', dict(likes=['summer'])),
+            ('emu_egg', 5, [1, 1], 0, 0.0), 'big_bird', 'pat', 'Hazel imports them once you have an Exotic Enclosure', dict(likes=['summer'])),
     'alpaca': ('exotics', 'barn', 'beast', 2, 'hum', 10, ('tam', 1800, 2), ('alpaca_fleece', 2, 50, None),
                ('', 10, [1, 1], 400, 0.3), 'beast', 'pet', 'Tam, once you have the Big Barn', {}),
     'komodo': ('exotics', 'enclosure', 'beast', 4, 'hiss', 20, None, ('shed_scale', 5, 70, None),
-               ('', 14, [1, 1], 700, 0.15), 'reptile', 'scratch', 'Quest: a Sun Drake hatchling (penguins) / a rescued Komodo (gangsters)', dict(likes=['summer'], needs_add='heater')),
+               ('', 14, [1, 1], 700, 0.15), 'reptile', 'scratch', 'Emberclaw quest: a Sun Drake hatchling that chose you', dict(likes=['summer'], needs_add='heater')),
     'snow_yak': ('exotics', 'barn', 'beast', 2, 'moo', 12, ('tam', 2600, 3), ('yak_wool', 2, 50, ['milk', 0.25]),
                  ('', 10, [1, 1], 400, 0.3), 'frost', 'pet', 'Tam, once you have the Deluxe Barn (Frostpeak stock)', dict(likes=['winter', 'snow'], hates_heater=True)),
     'peacock': ('exotics', 'aviary', 'bird', 1, 'peep', 9, ('hazel', 2400, 1), ('peacock_feather', 2, 50, None),
@@ -117,7 +119,7 @@ C11B = {
     'crystal_hen': ('fantastic', 'coop', 'bird', 1, 'cluck', 7, None, ('crystal_egg', 2, 40, None),
                     ('crystal_egg', 4, [1, 1], 0, 0.0), 'crystal', 'pet', 'Crystopia: a hen that pecks at crystal dust', {}),
     'star_sheep': ('fantastic', 'barn', 'beast', 2, 'sheep', 9, None, ('star_wool', 2, 50, None),
-                   ('', 9, [1, 1], 300, 0.3), 'moon', 'pet', 'The Moon: a lamb from the Star Station', dict(night_goods=True)),
+                   ('', 9, [1, 1], 300, 0.3), 'moon', 'pet', 'Star Station: a lamb from the low-gravity pens', dict(night_goods=True)),
     'moon_hare': ('fantastic', 'hutch', 'small', 1, 'thump', 6, None, ('moon_fluff', 2, 40, None),
                   ('', 6, [1, 2], 200, 0.3), 'moon', 'pet', 'The Moon pad: a hare that hopped aboard', dict(night_goods=True)),
     'star_jelly': ('fantastic', 'tide_pool', 'small', 1.5, 'bubble', 8, None, ('star_dust', 2, 40, None),
@@ -135,7 +137,7 @@ C11B = {
     'cloud_sheep': ('fantastic', 'barn', 'beast', 2, 'sheep', 9, None, ('storm_fluff', 3, 50, None),
                     ('', 9, [1, 1], 300, 0.3), 'sky', 'pet', 'Cloud Isles: a lamb made mostly of fluff', dict(likes=['rain'])),
     'storm_roc': ('fantastic', 'aviary', 'bird', 1.5, 'whistle', 14, None, ('roc_feather', 2, 60, ['storm_eye', 0.01]),
-                  ('roc_egg', 8, [1, 1], 0, 0.0), 'sky', 'pat', 'Windward: the egg from the Storm Roc nest', dict(likes=['rain'])),
+                  ('roc_egg', 8, [1, 1], 0, 0.0), 'sky', 'pat', 'Windward: a young roc from the Storm Roc nest', dict(likes=['rain'])),
     'lantern_moth': ('fantastic', 'aviary', 'insect', 1, 'buzz', 6, None, ('wisp_thread', 2, 40, None),
                      ('', 6, [1, 2], 200, 0.3), 'glow', 'tend', 'Gloamwood: a moth that glows like a lamp', dict(night_goods=True)),
     'moon_cow': ('fantastic', 'star_dome', 'beast', 2, 'moo', 10, None, ('moon_milk', 1, 50, None),
@@ -145,7 +147,7 @@ C11B = {
     'deep_glowworm': ('fantastic', 'terrarium', 'insect', 1, 'critter', 6, None, ('glow_silk', 2, 40, None),
                       ('', 6, [1, 2], 200, 0.3), 'glow', 'tend', 'The Hollow: a glowworm from the deep caves', dict(night_goods=True)),
     'frost_wyrmling': ('fantastic', 'star_dome', 'beast', 2, 'whistle', 21, None, ('moon_shard', 14, 70, None),
-                       ('', 28, [1, 1], 900, 0.05), 'frost', 'scratch', 'Frostpeak Summit: the egg left after the summit boss (one per save)', dict(likes=['winter', 'snow'], hates_heater=True)),
+                       ('', 28, [1, 1], 900, 0.05), 'frost', 'scratch', 'Frostpeak Summit: a hatchling from the warm snow hollow', dict(likes=['winter', 'snow'], hates_heater=True)),
     # lab strains (gangster arc): spliced at the Gene Splicer, cute cyber, within +-20% of the classic animal in the same home
     'chrome_hen': ('lab', 'coop', 'bird', 1, 'cluck', 7, None, ('circuit_egg', 2, 30, None),
                    ('circuit_egg', 3, [1, 1], 0, 0.0), 'lab', 'pet', 'Gene Splicer: a hen with a polished chrome comb', {}),
@@ -160,7 +162,7 @@ C11B = {
     'drone_hog': ('lab', 'sty', 'beast', 2, 'oink', 10, None, ('circuit_board', 1, 50, ['data_chip', 0.05]),
                   ('', 6, [1, 3], 300, 0.3), 'lab', 'pet', 'Gene Splicer: a hog with little drone rotors', {}),
     'volt_gecko': ('lab', 'terrarium', 'small', 2, 'zap', 7, None, ('static_scale', 2, 40, None),
-                   ('', 7, [1, 2], 200, 0.3), 'lab', 'pat', 'Gene Splicer: a gecko that hums with a tiny spark', {}),
+                   ('', 7, [1, 2], 200, 0.3), 'lab', 'pat', 'Gene Splicer, or a lost one in the Hollow: a gecko that hums with a tiny spark', {}),
     'chrome_runner': ('lab', 'enclosure', 'bird', 3, 'hoot', 14, None, ('alloy_egg', 2, 60, None),
                       ('alloy_egg', 6, [1, 1], 0, 0.0), 'lab', 'pat', 'Gene Splicer: a runner bird with chrome legs', {}),
 }
@@ -188,7 +190,7 @@ C11B_ITEMS = {
     'emu_egg': ('Emu Egg', 'food', 220, 3, 'egg', 'Deep green and glossy, like a polished stone.'),
     'plume': ('Plume', 'material', 120, 3, '', 'A long, soft plume dropped by a big bird. Hat makers love them.'),
     'alpaca_fleece': ('Alpaca Fleece', 'material', 90, 2, '', 'Silky and warm. Spins into fine yarn.'),
-    'shed_scale': ('Shed Scale', 'material', 600, 4, '', 'A shiny scale shed by a happy drake. It grows a new one.'),
+    'shed_scale': ('Shed Scale', 'material', 600, 4, '', 'A shiny scale shed by a happy big lizard. It grows a new one.'),
     'yak_wool': ('Yak Wool', 'material', 110, 3, '', 'Thick winter wool, brushed out, never cut close.'),
     'peacock_feather': ('Peacock Feather', 'material', 140, 3, '', 'An eye-patterned feather the peacock dropped while showing off.'),
     'shell_moss': ('Shell Moss', 'forage', 90, 2, '', 'Soft green moss that grows on a tortoise shell. Brewers prize it.'),
@@ -206,14 +208,14 @@ C11B_ITEMS = {
     'circuit_egg': ('Circuit Egg', 'material', 48, 2, '', 'Warm, smooth and faintly humming. Crack it for parts.'),
     'glow_wool': ('Glow Wool', 'material', 56, 2, '', 'Soft wool that glows after dark.'),
     'coolant': ('Coolant', 'material', 48, 2, '', 'Cold blue and never spills. Bots love it.'),
-    'static_fluff': ('Static Fluff', 'material', 70, 2, '', 'It sticks to everything and crackles when you pet it.'),
+    'static_fluff': ('Static Fluff', 'material', 70, 2, '', 'It sticks to everything and crackles in your pocket.'),
     'synth_milk': ('Synth Milk', 'material', 43, 2, '', 'Smooth and blue-white. Machines run cooler on it.'),
     'static_scale': ('Static Scale', 'material', 90, 3, '', 'A tiny scale with a spark trapped inside.'),
     'alloy_egg': ('Alloy Egg', 'material', 300, 4, '', 'A heavy metal-shelled egg. Crack it for rare parts.'),
     # made goods (recipes in gen_stations.py)
     'grand_omelette': ('Grand Omelette', 'food', 420, 3, '', 'One giant egg, folded with herbs. Feeds everyone.'),
     'fine_yarn': ('Fine Yarn', 'craft', 120, 3, '', 'Silky yarn from alpaca fleece or yak wool.'),
-    'scale_charm': ('Scale Charm', 'gift', 800, 4, '', 'A polished drake scale on a cord. Said to bring warm days.'),
+    'scale_charm': ('Scale Charm', 'gift', 800, 4, '', 'A polished lizard scale on a cord. Said to bring warm days.'),
     'moon_cheese': ('Moon Cheese', 'food', 240, 4, '', 'A pale round cheese with little craters.'),
     'glow_yarn': ('Glow Yarn', 'craft', 80, 2, '', 'Yarn that glows softly. Neon tailors want it.'),
     'moss_tea_blend': ('Moss Tea Blend', 'food', 130, 2, '', 'Shell moss and herbs, dried for a calming tea.'),
@@ -332,8 +334,8 @@ LEGACY = [
 # "gang:" flags only count in the gangster arc). Hazel also sells from her morning market stall (Town.MARKET_STALLS).
 SELLERS = {
     'tam': dict(name='Tam', interior='', cell=None, away=[], fallback='',
-                greet="Wool, hay, and saplings for the orchard. The sheep did most of the work.",
-                greet_gang="Wool, hay, and saplings for the orchard. The sheep did most of the work."),
+                greet="Wool, hay and saplings. And if your barn's big enough, an alpaca or a yak off the high pasture. The sheep did most of the work.",
+                greet_gang="Wool, hay, saplings. Big beasts off the high pasture if your barn can take them. Sheep don't haggle; neither do I."),
     'hazel': dict(name='Hazel', interior='hazel_house', cell=[5, 5], away=[], fallback='',
                   greet="Hens, ducks, cows and pigs, all hand-raised in my yard. Who's coming home with you?",
                   greet_gang="Birds, cattle and hogs off my own yard. Cash, and treat them right."),
@@ -352,7 +354,7 @@ LEGACY_MOVED = {'cow_bw_36_8': 'cow_bw_31_8'}  # spawn cells that moved before C
 # ---- processing (the stations P3 builds; listed here so recipes and quests share one table) --------------
 PROCESSING = {
     'egg': ['mayonnaise'], 'duck_egg': ['mayonnaise'], 'milk': ['cheese', 'butter'], 'goat_milk': ['goat_cheese'],
-    'sheep_wool': ['yarn'], 'rabbit_fur': ['yarn'], 'honey': ['flower_mead'], 'beeswax': ['candle'], 'truffle': ['truffle_broth'],
+    'sheep_wool': ['yarn'], 'rabbit_fur': ['yarn'], 'honey': ['flower_mead'], 'beeswax': ['beeswax_candle'], 'truffle': ['truffle_broth'],
     # C11b goods (recipes in gen_stations.py)
     'ostrich_egg': ['grand_omelette', 'giant_egg_custard'], 'emu_egg': ['grand_omelette', 'giant_egg_custard'], 'plume': ['feather_fan'],
     'peacock_feather': ['feather_fan'], 'roc_feather': ['feather_fan'], 'alpaca_fleece': ['fine_yarn'], 'yak_wool': ['fine_yarn'],
@@ -422,7 +424,7 @@ def c11b_species(items):
                    art=dict(adult=sid, baby=[a.get('baby', sid + '_baby'), 'idle'], variants=variants),
                    product=dict(id=prod[0], every_days=prod[1], needs_mood=prod[2]), feed='hay', pet_word=pet_word,
                    breed=dict(days=breed[1], litter=breed[2], min_friend=breed[3], chance=breed[4]),
-                   names_key=names, source=source, team=bool(a.get('team')), special=a.get('special', ''),
+                   names_key=names, source=source, source_gang=SOURCE_GANG.get(sid, source), team=bool(a.get('team')), special=a.get('special', ''),
                    long_low=bool(a.get('long_low')))
         if a.get('shorn'):
             row['art']['shorn'] = a['shorn']

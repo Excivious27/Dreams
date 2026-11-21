@@ -16,13 +16,13 @@ const ENTRY := ["door", "idoor", "shop", "hall", "hut", "exit", "station", "ferr
 ## First match wins: the more specific words come first. [words, reason, penguin-arc reason]
 const REASONS := [
 	[["noodle", "ramen", "karaoke", "arcade", "dragon", "neon_bar"], "Closed: shutters down till the district wakes up. A sign says 'back after dark, maybe'."],
-	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery", "hotel"], "Closed: a card in the window says the keeper is away. Come back once folk know you better."],
+	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery", "hotel"], "Closed: a card in the window says the keeper has moved away. The shutters are staying down."],
 	[["bank"], "Locked: the vault door is shut and the teller's window is dark."],
 	[["warehouse", "factory", "garage", "depot", "container", "office", "hq_"], "Locked: another crew stores its goods here, chained and guarded. Not your block, and not a fight worth picking.", "Locked: Hazel's feed store. She keeps the only key; hay and feed are sold at Maple's."],
 	[["clock"], "Locked: the clock works, and Theo has the only key. He's very particular about it."],
 	[["lighthouse_rust"], "Locked: the old harbour light. The door's rusted shut and the lamp's been dead for years."],
 	[["tower", "lighthouse", "temple", "shrine", "ruin", "president"], "Locked: the door is barred from the inside. Nobody's gone in for years."],
-	[["barn", "coop", "shed", "mill", "greenhouse", "stable", "winch"], "Locked: empty and padlocked. Nothing in there needs you today."],
+	[["barn", "coop", "shed", "mill", "greenhouse", "stable", "winch"], "Locked: empty and padlocked. Nobody keeps anything in there any more."],
 	[["mansion", "penthouse"], "Private home: a doorman's note says 'by appointment only'."],
 	[["house", "cottage", "home", "hut", "cabin", "manor", "villa"], "Private home: nobody answers. Folks round here keep their doors shut to strangers."],
 ]

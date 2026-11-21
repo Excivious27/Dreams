@@ -10,9 +10,9 @@ extends CanvasLayer
 signal done
 
 const WIN := {
-	"drill": "Follow the six training steps. Take every point to finish.",
+	"drill": "Follow the training steps on the card below, one at a time. Take every point to finish.",
 	"skirmish": "Hold every point, or run their tickets to zero.",
-	"siege": "Every point they hold is fortified (turns at half speed). Take them all, or run their tickets out.",
+	"siege": "Every point they hold is fortified: its ring fills at half speed. Take them all, or run their tickets out.",
 	"escort": "Walk the convoy to its last stop. It rolls while a friend is beside it and no foe is on it.",
 	"defend": "Hold at least one point until the clock runs out. Their gates (spiked rings) can't be taken.",
 	"boss": "Bring their captain down. Taking every point works too.",
@@ -25,7 +25,10 @@ const LOSE := {
 	"defend": "You lose every point, or your tickets run out.",
 	"": "Your tickets run out (they bleed while they hold more points), or you're knocked out.",
 }
-const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). HELPERS (top left) gives orders: Follow me, Hold here, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back."
+## Built per device (c12_13-18): the banner button and the orders control read
+## the player's own keys/pad words, never touch-only words on keys.
+static func controls_text() -> String:
+	return "Walk into a ring to take a point. %s on your banner: helpers and upgrades (◇ supply). %s for orders: Follow me, Hold here, Go to a point (till then your team pushes on its own). Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how()]
 
 var d: Dictionary = {}
 var mode := ""
@@ -141,7 +144,7 @@ func _ready() -> void:
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
 	_team_box(v)
 	v.add_child(_head("CONTROLS"))
-	v.add_child(_label(CONTROLS, 7, Color(0.88, 0.88, 0.92)))
+	v.add_child(_label(controls_text(), 7, Color(0.88, 0.88, 0.92)))
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 6)
@@ -185,7 +188,7 @@ func _team_box(v: VBoxContainer) -> void:
 	var tm: Array = CampaignGate.team()
 	if tm.is_empty():
 		return
-	v.add_child(_head("YOUR TEAM: TAP TO PICK %d" % CampaignGate.LINE_MAX))
+	v.add_child(_head(("YOUR TEAM: TAP TO PICK %d" if TouchControls.visible_controls else "YOUR TEAM: PICK %d") % CampaignGate.LINE_MAX))
 	var fl := HFlowContainer.new()
 	fl.add_theme_constant_override("h_separation", 3)
 	fl.add_theme_constant_override("v_separation", 3)

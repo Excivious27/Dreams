@@ -429,6 +429,13 @@ if ! echo "$cout" | grep -q "town_first_test: 0 failures"; then
   echo "Town first-visit test failed"; exit 1
 fi
 
+echo "== talk conditions (C12 P3) =="
+tcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/talk_conditions_test.gd 2>&1)"
+echo "$tcout" | grep -E "FAIL|SCRIPT ERROR|talk_conditions_test" || true
+if ! echo "$tcout" | grep -q "talk_conditions_test: 0 failures"; then
+  echo "Talk conditions test failed"; exit 1
+fi
+
 echo "== workshop: no dead ends =="
 python3 tools/station_check.py || { echo "Station check failed"; exit 1; }
 echo "== art prompts: at most 3 images each =="
@@ -661,6 +668,13 @@ echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|campaign_words_test" || true
 if ! echo "$p5out" | grep -q "campaign_words_test: 0 fails"; then
   echo "Campaign gate words test failed"; exit 1
 fi
+
+c12p6out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_items_ui_text_test.gd 2>&1)"
+echo "$c12p6out" | grep -E "FAIL|SCRIPT ERROR|c12_items_ui_text_test" || true
+if ! echo "$c12p6out" | grep -q "c12_items_ui_text_test: 0 fails"; then
+  echo "C12 items/UI text test failed"; exit 1
+fi
+
 c3out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_c3_test.gd 2>&1)"
 echo "$c3out" | grep -E "FAIL|SCRIPT ERROR|campaign_c3_test" || true
 if ! echo "$c3out" | grep -q "campaign_c3_test: 0 fails"; then
@@ -822,6 +836,13 @@ echo "$sfout" | grep -E "FAIL|SCRIPT ERROR|STORY FLOW DONE" || true
 if ! echo "$sfout" | grep -q "STORY FLOW DONE, failures: 0"; then
   echo "Story flow test failed"; exit 1
 fi
+echo "== C12 story conditions: hero-as-character lines, choice payoffs, watcher, elders, %bitter, backstop order =="
+c12sout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_story_cond_test.gd 2>&1)"
+echo "$c12sout" | grep -E "FAIL|SCRIPT ERROR|c12_story_cond_test" || true
+if ! echo "$c12sout" | grep -q "c12_story_cond_test: 0 fails"; then
+  echo "C12 story condition test failed"; exit 1
+fi
+
 echo "== toasts: never over a boss card, a region card, the pup strip or the energy bar =="
 tlout="$("$GODOT" --headless --path . -s res://tools/toast_layout_test.gd 2>&1)"
 echo "$tlout" | grep -E "FAIL|SCRIPT ERROR|toast_layout_test" || true
@@ -857,6 +878,13 @@ if ! echo "$epout" | grep -q "epilogue_test: 0 fails"; then
   echo "Epilogue test failed"; exit 1
 fi
 
+echo "== C12 P2: gangster story text matches state =="
+c12p2out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_gang_story_test.gd 2>&1)"
+echo "$c12p2out" | grep -E "FAIL|SCRIPT ERROR|c12_gang_story_test" || true
+if ! echo "$c12p2out" | grep -q "c12_gang_story_test: 0 fails"; then
+  echo "C12 gangster story test failed"; exit 1
+fi
+
 echo "== C7 P4: heart scene content =="
 hcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/hearts_content_test.gd 2>&1)"
 echo "$hcout" | grep -E "FAIL|hearts_content_test" || true
@@ -864,11 +892,25 @@ if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
 
+echo "== C12 P4: hearts, romance and gift words match game state =="
+c12hgout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_hearts_gifts_test.gd 2>&1)"
+echo "$c12hgout" | grep -E "FAIL|SCRIPT ERROR|c12_hearts_gifts_test" || true
+if ! echo "$c12hgout" | grep -q "c12_hearts_gifts_test: OK"; then
+  echo "C12 hearts/gifts test failed"; exit 1
+fi
+
 echo "== C11a P5: ranch villagers, mail, festivals, pen sounds =="
 rvout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/ranch_villagers_test.gd 2>&1)"
 echo "$rvout" | grep -E "FAIL|SCRIPT ERROR|ranch_villagers_test" || true
 if ! echo "$rvout" | grep -q "ranch_villagers_test: OK" || echo "$rvout" | grep -q "SCRIPT ERROR"; then
   echo "Ranch villagers test failed"; exit 1
+fi
+
+echo "== C12 P5: mail, side stories and quest text match game state =="
+c12mqout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c12_mail_quests_test.gd 2>&1)"
+echo "$c12mqout" | grep -E "FAIL|SCRIPT ERROR|c12_mail_quests_test" || true
+if ! echo "$c12mqout" | grep -q "c12_mail_quests_test: OK" || echo "$c12mqout" | grep -q "SCRIPT ERROR"; then
+  echo "C12 mail/quests test failed"; exit 1
 fi
 
 echo "== C11b P6: fair ribbon tables =="
@@ -1080,3 +1122,19 @@ python3 tools/steam_capsules_check.py || { echo "steam_capsules_check failed"; e
 
 echo "== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) =="
 python3 tools/steam_shots_test.py || { echo "steam_shots_test failed"; exit 1; }
+
+echo "== C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) =="
+python3 tools/cond_schema_test.py || { echo "cond_schema_test failed"; exit 1; }
+
+echo "== C12 P7: story continuity (no other-arc words, no later-chapter names before their beat) =="
+python3 tools/continuity_check.py --strict || { echo "continuity_check failed"; exit 1; }
+
+echo "== C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brands, counts) =="
+python3 tools/text_style_check.py || { echo "text_style_check failed"; exit 1; }
+
+echo "== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) =="
+dsout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/dialogue_state_test.gd 2>&1)"
+echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
+if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
+  echo "dialogue_state_test failed"; exit 1
+fi

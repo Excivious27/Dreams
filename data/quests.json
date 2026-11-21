@@ -268,7 +268,7 @@
   {
    "id": "tower",
    "arc": "gangsters",
-   "text": "The tower doors are past the Enforcer. Get inside and face the President.",
+   "text": "The tower doors are past the Enforcer. Open them, and the President will come out to meet you.",
    "when": {
     "quest": "uptown"
    },
@@ -453,7 +453,7 @@
   {
    "id": "theo_glowcap",
    "giver": "theo",
-   "text": "Theo has read about glow-caps. Find one.",
+   "text": "Theo has read about glow-caps. Find one in the forest (they show at Foraging 3).",
    "when": {
     "skill": [
      "foraging",
@@ -534,7 +534,7 @@
   {
    "id": "juniper_honey",
    "giver": "juniper",
-   "text": "Juniper needs honey for a remedy.",
+   "text": "Juniper needs 2 jars of honey for a remedy.",
    "when": {
     "day": 10
    },
@@ -1181,7 +1181,7 @@
   {
    "id": "finn_pearl",
    "giver": "finn",
-   "text": "Finn's heard of a pearl in the lake. Find it.",
+   "text": "Finn's heard the sea gives up pearls to patient anglers. Fish the beach for treasure and bring him one.",
    "when": {
     "friend": [
      "finn",
@@ -1602,7 +1602,7 @@
   {
    "id": "rook_bones",
    "giver": "rook",
-   "text": "Rook needs 10 bones from the mine for arrowheads.",
+   "text": "Rook needs 10 bones for arrowheads. Take your pup down the mine: it digs them up.",
    "when": {
     "friend": [
      "rook",
@@ -2224,7 +2224,7 @@
   {
    "id": "granite_bones",
    "giver": "granite",
-   "text": "Granite wants 10 bones out of the deep mine floors.",
+   "text": "Granite wants 10 bones for the quarry's old-bones shelf. Your pup can dig them up in the mine.",
    "when": {
     "friend": [
      "granite",
@@ -2355,7 +2355,7 @@
   {
    "id": "theo_coffee",
    "giver": "theo",
-   "text": "Theo wants 4 coffee beans.",
+   "text": "Theo wants 4 Coffee to get through his reading.",
    "when": {
     "friend": [
      "theo",
@@ -2495,6 +2495,31 @@
    }
   },
   {
+   "id": "tess_seat",
+   "giver": "tess",
+   "text": "Tess wants 8 Hardwood for a window seat she won't say who it's for.",
+   "when": {
+    "friend": [
+     "tess",
+     6
+    ]
+   },
+   "done_when": {
+    "item": [
+     "hardwood",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 250,
+    "friend": [
+     "tess",
+     20
+    ]
+   }
+  },
+  {
    "id": "lumi_linen",
    "giver": "lumi",
    "text": "Lumi wants 6 bolts of linen for canvases.",
@@ -2609,7 +2634,8 @@
   {
    "id": "rec_bowl_120",
    "giver": "tobin",
-   "text": "Tobin bets you can't bowl 120 or more upstairs at the rec.",
+   "text": "Tobin bets you can't bowl 120 or more upstairs at the Rec Center.",
+   "text_gangsters": "Tobin bets you can't bowl 120 or more upstairs at the Rec Hall.",
    "when": {
     "flag": "rec_open"
    },
@@ -2653,7 +2679,8 @@
   {
    "id": "rec_pip_jumper",
    "giver": "pip",
-   "text": "Pip is stuck on Block Jumper. Clear level 3 to show how it's done.",
+   "text": "Pip is stuck on Block Jumper at the Rec Center arcade. Clear level 3 to show how it's done.",
+   "text_gangsters": "Pip is stuck on Block Jumper at the Rec Hall arcade. Clear level 3 to show how it's done.",
    "when": {
     "flag": "rec_visited",
     "day": 10
@@ -2746,7 +2773,8 @@
   {
    "id": "rec_maple_league",
    "giver": "maple",
-   "text": "Maple dares you onto league night: bowl 150 or better.",
+   "text": "Maple dares you onto league night (the third day of each week, upstairs at the Rec Center): bowl 150 or better.",
+   "text_gangsters": "Maple dares you onto league night (the third day of each week, upstairs at the Rec Hall): bowl 150 or better.",
    "when": {
     "flag": "rec_visited",
     "day": 16,
@@ -2769,7 +2797,8 @@
   {
    "id": "rec_alder_cabinets",
    "giver": "alder",
-   "text": "Mayor Alder wants every cabinet tried before he cuts the arcade ribbon twice.",
+   "text": "Mayor Alder wants every arcade cabinet at the Rec Center played once, so he can say they all work.",
+   "text_gangsters": "Mayor Alder wants every arcade cabinet at the Rec Hall played once, so he can say they all work.",
    "when": {
     "flag": "rec_reno_arcade_wing",
     "day": 9
