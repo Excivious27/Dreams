@@ -24,12 +24,12 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-21 01:10 PT, personal account. CONDUCT 12 (writing) SHIPPED on main (final CI c12i: shards 5/6 + 20 bots + playtest + relay green; shard 3 failed on stale Steam facts -> fixed, shard 3 rerun green; playtest door-entry flake once, rerun PASS).
-- **Done:** CONDUCT 1-12, S1, relay live, optimization rounds 1-4.
-- **In progress:** CONDUCT 13 (audio depth): 18 audits done (/home/claude/wt/c13_reports), packages /home/claude/wt/C13_PACKAGES.md + contract C13_CONTRACT.md (copies in docs/reports/), 6 fix agents running since 00:42 PT on branches c13f/p1..p6 (based on c12/integ; reports /home/claude/wt/c13f_reports). P2/P3 render ACE songs (budget 55 + 40 create_song, account 444 credits).
-- **Next step:** when c13f/p*.done: merge c13f/p1..p6 into main (mrg.sh), import any ACE renders still landing (ids in p2.md/p3.md), one hook agent if gaps, full CI, docs agent, ship C13, package 13. Then C14 → C14b (animation life) → C15 → C16 (incl. optional battles) → ... → C23 → C23b → final package.
-- **Jobs running elsewhere:** C13 fix agents (subagents) and their ACE renders. Images used today: ~280 (limit 1000/day). ACE credits: 444 (2026-11-21).
-- **WIP branches:** wip/c13* may appear from the fix agents (wip_push.sh).
+- **Last update:** 2026-11-21 03:15 PT, personal account. CONDUCT 13 (audio depth) SHIPPED on main (final CI c13i + rerun c13i2 green).
+- **Done:** CONDUCT 1-13, S1, relay live, optimization rounds 1-4.
+- **In progress:** CONDUCT 14 (world aesthetics, town expansion, beach + tiered marina, earned fast travel TravelNet, exploration): 18 audits done (/home/claude/wt/c14_reports), packages /home/claude/wt/C14_PACKAGES.md + C14_CONTRACT.md (copies in docs/reports/), 6 fix branches c14f/p1..p6 merged into c14/integ + hook agent done (head 1f07f6706). Next: full CI on c14/integ.
+- **Next step:** ci_run c14i 3 --branch c14/integ (full + bots); docs agent writes CONDUCT-14.md/GUIDE-41 on c14/docs; ship C14; package 14 (art prompts from c14f_reports/p*.md). Then C14b animation life → C15 seasons → C16 (incl. optional battles) → C17 → C18a/b → C19 → C20 → C21 → C22 → C23 → C23b → final package.
+- **Jobs running elsewhere:** subagents only. Images used today: ~360 of 1000. ACE credits: 64 until Dec 1.
+- **WIP branches:** c14/integ (integration, not on main yet).
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 

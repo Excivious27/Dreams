@@ -1,6 +1,6 @@
 # CONDUCT 13 report: audio depth (2026-11-22)
 
-A deep audio pass over both arcs. The music now changes with the season, dawn, evening and night, rain, storms and snow, the weekend, the story and the after-ending, and a different take plays on different days. The gangster arc has its own farm, town and valley songs, its own jingles and its own menu sounds. Every festival has its own song, and the casino, the museum and the crew venues have songs of their own. Story scenes play mood songs. Options gained mono, softer loud sounds, sound captions and separate Voices, UI and Footsteps sliders. Co-op has join and leave sounds. 18 focus auditors (398 findings) fed 6 fix packages (scopes in /home/claude/wt/C13_SCOPES.txt, song names and APIs fixed up front in C13_CONTRACT.md), then one hook integration pass. **Final full CI c13i: PENDING.**
+A deep audio pass over both arcs. The music now changes with the season, dawn, evening and night, rain, storms and snow, the weekend, the story and the after-ending, and a different take plays on different days. The gangster arc has its own farm, town and valley songs, its own jingles and its own menu sounds. Every festival has its own song, and the casino, the museum and the crew venues have songs of their own. Story scenes play mood songs. Options gained mono, softer loud sounds, sound captions and separate Voices, UI and Footsteps sliders. Co-op has join and leave sounds. 18 focus auditors (398 findings) fed 6 fix packages (scopes in /home/claude/wt/C13_SCOPES.txt, song names and APIs fixed up front in C13_CONTRACT.md), then one hook integration pass. **Final full CI c13i: PASS** (5 of 6 shards, 20 bots and the playtest green on the first run; shard 3 caught a merge slip in the web export presets and a loop point the P3 merge brought back, and the relay end-to-end test had a stale probe; all fixed, shard 3 + relay + end-to-end rerun green).
 
 **Whole game after C13: about 81% done, 19% remaining** (average of the 103 systems in docs/inventory.csv). Seven new audio rows: music resolver 88%, song library 80%, jingles 88%, sfx library 88%, ambience 85%, audio accessibility 85%, co-op audio 70%.
 
@@ -68,7 +68,7 @@ Muffled ACE renders come from the arrangement, not from the prompt's hi-fi words
 | Rolling CI, 01:15 | CI | | 2 fails, both fixed |
 | Merges, 01:20-01:35 | integrator | medium | ~15 |
 | Hook agent, 01:35-01:50 (server restart mid-run) | integrator | medium | ~15 |
-| Final full CI c13i, started ~01:52 | CI | | PENDING |
+| Final full CI c13i 01:40-02:30 + fixes + rerun c13i2 to 03:10 | CI | | PASS |
 | **Total** | | | **~2 h wall clock (23:50-01:52) + final CI** |
 | Agents per effort | | | 18 medium auditors; 6 medium fixers; 1 hook integrator |
 | CI first-run result | | | rolling CI: 2 fails, fixed before the merge |
