@@ -2741,7 +2741,10 @@ func _spawn_roster(builds: Dictionary) -> void:
 			var kind := RanchFarm.art_for(str(a.get("species", "")), adult, str(a.get("variant", "")))
 			# ranch.json look first: variant art (a list), baby strip and tint (Ranch.art_for; c11b_01-10).
 			# Care, hints and goods stay on the one farm path (RanchFarm / pet_farm_animal).
-			var ra := Ranch.art_for(uid)
+			var sart: Variant = Ranch.species(str(a.get("species", ""))).get("art", {})
+			var ra: Dictionary = {}
+			if sart is Dictionary and not ((sart as Dictionary).has("baby") and not ((sart as Dictionary)["baby"] is Array)):
+				ra = Ranch.art_for(uid)  # (Ranch.art_for needs art.baby as [strip group, strip]; older data skips it)
 			var rg := str(ra.get("group", ""))
 			var strip := str(ra.get("strip", "idle"))
 			if rg != "" and (Art.has(rg, "idle") or Art.has(rg, strip)):
