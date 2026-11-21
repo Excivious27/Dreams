@@ -73,7 +73,7 @@ chain("coldy_key", "penguins", "Coldy's key", {"flag": "st_p3_coldy"}, [
      "hint": "Bring Theo 2 Old Coins (Sel sells them) to date the vault.",
      "done_hint": "Theo dated the vault: it really is Coldy's lock. Take the news to Mayor Alder at the town hall tomorrow."},
     {"giver": "alder",
-     "lines": N("Coldy's key turns in the snowflake lock with a sound like ice cracking on a pond. The little room smells of cold stone and old paper.") + L("Alder", "The town's first bell rope. A bundle of seed packets, still good. And a letter: 'If you are reading this, you remembered. Ring the bell.'", "Twenty-one years we forgot. I'll put the rope back on the bell myself."),
+     "lines": N("Coldy's key turns in the snowflake lock with a sound like ice cracking on a pond. The little room smells of cold stone and old paper.") + L("Alder", "The town's first bell rope. A bundle of seed packets, still good. And a letter: 'If you are reading this, you remembered. Ring the bell.'", "Twenty-one years we forgot. I'll hang it the day the bell has a clapper again."),
      "give": ["gold_bar", 1], "friend": ["alder", 20], "flag": "ss_vault_open", "hint": "",
      # c11b_04-06: a snow duck nesting in the cold vault goes home with you.
      "animal": {"species": "duck", "variant": "snow", "name": "Frost", "keepsake": True, "toast": "A snow duck was nesting in the cold vault. She's coming to your coop."}},

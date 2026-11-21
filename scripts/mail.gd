@@ -124,6 +124,7 @@ static func story_due() -> Array:
 			out.append({"flag": "mail_1", "who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the Mercantile when you can. - Maple" % GameState.names()["town"], "give": ["strawberry_seed", 3]})
 		if day >= 3 and not flags.has("mail_2"):
 			out.append({"flag": "mail_2", "who": "Letter", "text": "Dear neighbour, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren", "quest": ["clear_meadow", "Find out what's howling in the east meadow."]})
+		out.append_array(after_ending_letters())
 	else:
 		# The first letter was read (and burned or kept) in the opening; M. writes again next morning.
 		if day >= 2 and not flags.has("mail_1"):
@@ -131,6 +132,24 @@ static func story_due() -> Array:
 		if day >= 3 and not flags.has("mail_2"):
 			out.append({"flag": "mail_2", "who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M.", "quest": ["clear_meadow", "Someone is asking about you. Check the east meadow."]})
 	return out
+
+
+## C12 c12_02-22: the town writes after the penguin ending (after the end slides were shown),
+## one letter at a time: the bell (if it rang), Catkins, and Finn (if you told him).
+static func after_ending_letters() -> Array:
+	var flags: Dictionary = GameState.run["flags"]
+	if not GameState.is_penguins() or not flags.has("epilogue_done") or not flags.has("epilogue_shown"):
+		return []
+	var all: Array = []
+	if flags.has("bell_rung"):
+		all.append({"flag": "post_end_alder", "who": "Letter", "text": "The council has voted to ring the bell every morning at nine. Theo says that's too often. Theo is outvoted. Come and pull the rope sometime. - Mayor Alder"})
+	all.append({"flag": "post_end_catkins", "who": "Letter", "text": "Celestica's rings are brighter this week. The kittens say it's because of you. I say it's because of you too. - C."})
+	if flags.has("finn_told"):
+		all.append({"flag": "post_end_finn", "who": "Letter", "text": "Got a letter. You know from who. Thanks. That's all. That's the letter. - Finn"})
+	for l: Dictionary in all:
+		if not flags.has(str(l["flag"])):
+			return [l]
+	return []
 
 
 ## Everything waiting at the farm mailbox (the bobbing letter over it).

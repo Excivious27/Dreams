@@ -2180,6 +2180,20 @@ static func can_gift(npc: String, item: String) -> bool:
 	return is_birthday(npc) or int((run.get("gifts_week", {}) as Dictionary).get(npc, 0)) < 2
 
 
+## C12 c12_08-21: why a gift that could otherwise go is held back: "today" (already gave one
+## today), "week" (two this week) or "" (no block, or not a giftable item/villager at all).
+static func gift_block(npc: String, item: String) -> String:
+	if item == "" or count(item) <= 0 or not items.has(item) or not npcs.has(npc):
+		return ""
+	if str(items[item].get("type", "")) in NO_GIFT_TYPES or keeps(item) or Decor.is_decor(item) or item in NO_GIFT_IDS:
+		return ""
+	if (run.get("gifted_today", {}) as Dictionary).has(npc):
+		return "today"
+	if not is_birthday(npc) and int((run.get("gifts_week", {}) as Dictionary).get(npc, 0)) >= 2:
+		return "week"
+	return ""
+
+
 ## Give a gift: takes the item, adds friendship, remembers today. Returns the gain.
 # ---- produce families ----------------------------------------------------------
 ## Every crop (and what it yields) belongs to a family: veg, herb, berry, fruit,

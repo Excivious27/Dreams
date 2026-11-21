@@ -303,6 +303,21 @@ static func _quests_now(m: GameMap) -> void:
 		m._check_quests()
 
 
+## C12 c12_17-15: if choice `pick` would set "<npc>_gone" for the player's partner or spouse,
+## returns the choice to play instead (the first one that sends nobody away), else "".
+static func partner_guard(l: Dictionary, pick: String) -> String:
+	var ebc: Dictionary = l.get("effects_by_choice", {})
+	var p := Romance.partner()
+	if p == "" or not ebc.has(pick):
+		return ""
+	if not ((ebc[pick] as Dictionary).get("flags", []) as Array).has(p + "_gone"):
+		return ""
+	for k in ebc.keys():
+		if not ((ebc[k] as Dictionary).get("flags", []) as Array).has(p + "_gone"):
+			return str(k)
+	return ""
+
+
 ## Returns "ok", "gated" (a choice's price wasn't met: the beat is re-armed) or
 ## "cut" (the map went away mid-scene).
 static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> String:
@@ -323,6 +338,14 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> String:
 				return "cut"  # the scene changed under the choice
 			var br: Dictionary = l.get("branches", {})
 			var pick := str(d.last_choice)
+			var guard := partner_guard(l, pick)
+			if guard != "":
+				# C12 c12_17-15: no deal ever sends away the player's own partner or spouse.
+				d.say([{"who": str(l.get("who", "")), "text": str(l.get("partner_refuse", "Forget I said it. Not that place. Not theirs, and not yours. Even I've got a line, boss."))}])
+				await d.finished
+				if not is_instance_valid(m):
+					return "cut"
+				pick = guard
 			var gates: Dictionary = l.get("gates", {})
 			if gates.has(pick) and not GameState._cond_ok(gates[pick]):
 				var g: Dictionary = gates[pick]

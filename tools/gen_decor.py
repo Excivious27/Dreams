@@ -1009,6 +1009,10 @@ grant('house:2', first(lambda k, e: e['sub'] == 'seating' and e['rarity'] == 'un
 grant('house:3', first(lambda k, e: e['sub'] == 'clock' and e['rarity'] == 'rare') or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] == 'furniture'))
 for fl, rar in ((25, 'rare'), (50, 'rare'), (75, 'epic'), (100, 'epic'), (120, 'legendary')):
     grant('mine:%d' % fl, first(lambda k, e, rar=rar: e['rarity'] == rar and any(w in text(k, e) for w in ('crystal', 'lantern', 'lamp', 'statue', 'stone', 'gem'))))
+# C12 c12_07-19: heart keepsakes that fit the person (picked before the keeper-shelf fallback below).
+for _key, _id in (('heart:sel:8', 'dc_books_scrolls'), ('heart:lumi:8', 'dc_easel2'), ('heart:gideon:8', 'dc_stove_iron'),
+                  ('heart:maple:8', 'dc_orch_crate'), ('heart:rook:8', 'dc_out_log_bench'), ('heart:tam:8', 'dc_rug_braided')):
+    grant(_key, _id)
 KEEPER_NPC = {'carpenter': 'tess'}   # keeper shelf key -> villager id (heart grants)
 for npc in KEEPERS:
     rows = SHOPS.get(npc, [])

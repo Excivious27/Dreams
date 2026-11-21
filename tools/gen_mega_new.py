@@ -225,9 +225,9 @@ BOSS_LOCKED = {
 # lines_gangsters (gangster arc), after + after_flag (the hub's boss beaten; after_gangsters),
 # done_lines + done_quest (their job handed in).
 NPC_EXTRA = {
-    "mg_liesl": {"lines_gangsters": ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."],
-                 "after_flag": "boss_gloam_moonpool", "after": ["The garden's breathing again. Gerald's taken to sleeping in the roses.", "Every lantern here has a moth, and every moth has a name. That one's Gerald."],
-                 "after_gangsters": ["Nobody collects rent in Lanternfall now. Gerald's moved into the roses.", "Every lantern here has a moth, and every moth has a name. That one's Gerald."]},
+    "mg_liesl": {"lines_gangsters": ["Every lantern here has a moth, and every moth has a name. That one's Bartholomew.", "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."],
+                 "after_flag": "boss_gloam_moonpool", "after": ["The garden's breathing again. Bartholomew's taken to sleeping in the roses.", "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."],
+                 "after_gangsters": ["Nobody collects rent in Lanternfall now. Bartholomew's moved into the roses.", "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."]},
     "mg_bramble": {"after_flag": "boss_gloam_moonpool", "after": ["The giant flower stopped sneezing. I sort of miss it.", "I'm not scared of the dark. The dark is scared of my lantern."]},
     "mg_rahim": {"done_quest": "mega_sunscorch_rahim", "done_lines": ["The lamps burn till dawn now. Caravans come in singing.", "Fifty years at this well. Never once seen it run dry."]},
     "mg_nadia": {"lines_gangsters": ["The Glass Canyon was a lake once. Lightning turned the sand to glass.", "Vasco sits on a crate of temple gold and calls himself a king. The scarabs were kings first.", "I'd give a lot for a scarab from the temple. For science."],

@@ -914,6 +914,21 @@ def auto_desc(k, it):
     return ''
 
 
+# C12 c12_08-07 / 08-14: rare herbs are herbs (not flowers), Memory Tea is a herb food, and the
+# kids' candy is "loved_by: candy" like the prize candy.
+RARE_HERBS = ['dreamleaf', 'lantern_sage', 'singing_thyme', 'mirror_mint', 'thunder_nettle', 'silver_sage',
+              'gold_chamomile', 'prism_basil', 'moon_mugwort', 'comet_dill', 'wisp_rosemary', 'echo_yarrow', 'star_lavender']
+for _k in RARE_HERBS:
+    if _k in I and I[_k].get('type') in ('flower', 'herb'):
+        I[_k]['type'] = 'herb'
+        I[_k]['family'] = 'herb'
+if 'memory_tea' in I:
+    I['memory_tea'].update({'type': 'food', 'family': 'herb'})
+    I['memory_tea'].setdefault('energy', 30)
+if 'candy' in I:
+    I['candy']['loved_by'] = 'candy'
+
+
 for _k, _it in I.items():
     if _k.startswith(('dc_', 'wr_')) or not isinstance(_it, dict):
         continue

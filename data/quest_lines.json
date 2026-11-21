@@ -369,7 +369,7 @@
  },
  "alder_gold": {
   "offer": [
-   "The town bell has no clapper. It hasn't rung in twenty-one years.",
+   "The town bell's clapper split the night the red sky went over. It hasn't rung in twenty-one years.",
    "A gold bar, and it rings again. For weddings. For warnings. For the end of the thing in the east."
   ],
   "yes": "Then we'll hear it. All of us.",
@@ -378,7 +378,7 @@
   "done": [
    "...Listen.",
    "...",
-   "That's the bell. My father pulled that rope the last time it rang. Thank you."
+   "That's the bell. Thank you."
   ]
  },
  "finn_minnows": {
