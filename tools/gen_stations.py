@@ -877,6 +877,14 @@ lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence
 for i in lost: books['workbench'].append(old[i])
 for k in ('smith', 'alchemy'): R.pop(k, None)
 R.update(books)
+# C16a P2 (c16a_02-03): money must still gate the late tiers in years 2-3 (the 3-year sim ends year 3 with
+# 0.5-0.9M unspent). Permits on the top tiers (price fields only; gates/years are P1/P5's): (id, tier) -> permit.
+C16A_PERMITS = {('barn', 4): 40000, ('house', 3): 6000, ('launchpad', 4): 30000, ('anvil', 4): 20000,
+                ('resonator', 4): 20000, ('shaper', 4): 20000, ('armory', 4): 20000, ('robotics', 4): 20000}
+for (bid, tn), pm in C16A_PERMITS.items():
+    for t in B.get(bid, {}).get('tiers', []):
+        if int(t['tier']) == tn:
+            t['permit'] = pm
 json.dump(B, open(D + 'buildings.json', 'w'), indent=1, ensure_ascii=False)
 json.dump(R, open(D + 'recipes.json', 'w'), indent=1, ensure_ascii=False)
 for k, d in (('sprinkler', 'Place it on the farm (hold it, USE on open ground). Waters the 4 tiles beside it every morning. USE it again to pick it up.'),

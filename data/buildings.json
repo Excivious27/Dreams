@@ -52,7 +52,7 @@
      "iron_bar": 10,
      "glass": 20
     },
-    "permit": 2500,
+    "permit": 6000,
     "days": 4,
     "unlock": {
      "skill": [
@@ -224,7 +224,7 @@
      "steel_bar": 10,
      "glass": 20
     },
-    "permit": 15000,
+    "permit": 40000,
     "days": 4,
     "desc": "The biggest herd, with big stalls and a paddock in the pasture. Room for 16. Adds big stalls.",
     "price": 17010,
@@ -1075,7 +1075,7 @@
      "moon_bar": 1,
      "plating": 4
     },
-    "permit": 0,
+    "permit": 20000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open.",
     "price": 15950,
@@ -1329,7 +1329,7 @@
      "plating": 6,
      "crystal_battery": 2
     },
-    "permit": 0,
+    "permit": 20000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 19030,
@@ -2309,7 +2309,7 @@
      "moon_bar": 2,
      "moonweave": 4
     },
-    "permit": 0,
+    "permit": 30000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open. Also flies to the star station.",
     "price": 35400,
@@ -2537,7 +2537,7 @@
      "plating": 6,
      "fine_fabric": 6
     },
-    "permit": 0,
+    "permit": 20000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open. Neon and armor.",
     "price": 19470,
@@ -2929,7 +2929,7 @@
      "crystal_battery": 4,
      "fine_fabric": 6
     },
-    "permit": 0,
+    "permit": 20000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open. The Starheart Blade.",
     "price": 19380,
@@ -3719,7 +3719,7 @@
      "crystal_battery": 4,
      "plating": 6
     },
-    "permit": 0,
+    "permit": 20000,
     "days": 2,
     "desc": "4 jobs at once, 45% faster, every recipe already open. A drone swarm.",
     "price": 16920,

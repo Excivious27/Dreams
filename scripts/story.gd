@@ -544,7 +544,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		GameState.add_item(str(pair[0]), int(pair[1]))
 		m.hud.toast("%+d %s" % [int(pair[1]), GameState.item_name(str(pair[0]))], Color(0.8, 1, 0.8) if int(pair[1]) > 0 else Color(1, 0.85, 0.7))
 	if fx.has("crystals"):
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(fx["crystals"])
+		GameState.add_money(int(fx["crystals"]), "story")  # C16a P2: gains counted in run.earned_by (losses just subtract)
 	if fx.has("hint"):
 		# "hint_hero": {playable: text} (C12) replaces the hint for that hero.
 		var hh: Dictionary = fx.get("hint_hero", {})
