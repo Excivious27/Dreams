@@ -1243,3 +1243,10 @@ echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
 if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
   echo "town_props_test failed"; exit 1
 fi
+
+echo "== anim core (C14b P1) =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_core_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|anim_core_test" || true
+if ! echo "$acout" | grep -q "anim_core_test: 0 failures"; then
+  echo "anim_core_test failed"; exit 1
+fi

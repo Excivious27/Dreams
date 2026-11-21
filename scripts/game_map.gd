@@ -135,6 +135,7 @@ func _ready() -> void:
 		sky = Scenery.new()
 		sky.weather = GameState.weather_today() if fixed_dark < 0.0 else "clear"  # (gangster day 1 is real rain in weather_for)
 		add_child(sky)
+	Anim.set_weather("" if has_sky else "clear", scene_id(), not has_sky or fixed_dark >= 0.0)  # C14b: no wind indoors / in caves
 	_night = CanvasModulate.new()
 	add_child(_night)
 	_night.color = sky_tint(int(GameState.run["time"]))
@@ -1473,6 +1474,7 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	a.offset = Vector2(0, -float(ai.get("cell_h", ai.get("h", 48))) / 2.0)  # single-frame art has no cell_h (c5_14 #10)
 	add_child(a)
 	a.play("idle")
+	Anim.apply(a, group + "/" + name)  # C14b P1: random start frame, speed variance, data fps/ping-pong (no lockstep)
 	if glow and glows(name):  # animated fires, festival bonfires, neon signs (c5_10 #1)
 		var ch := float(Art.info(group, name).get("cell_h", 48)) * scale
 		glow.lights.append([a, 30.0 + minf(ch, 60.0) * 0.3, ch * 0.55])
@@ -1804,6 +1806,9 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 		glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7] + NightGlow.tint_of(name))  # C14 P6 coloured lamps
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
+	var sw := Anim.sway_strength(name) if group in ["nature", "props"] and CrispArt.on() else 0.0
+	if sw > 0.0:
+		s.material = Anim.sway_material(sw)  # C14b P1: shared wind sway (crisp sampling too), phase from world position
 	if group in ["buildings", "props", "nature"]:
 		CrispArt.apply(s)  # crisp when the phone magnifies 2x-detail art (shaders/sharp_pixel)
 	if solid:
@@ -3064,6 +3069,7 @@ static var _other_told := false
 
 
 func _process(delta: float) -> void:
+	Anim.tick()  # C14b: shared sway materials follow game time and wind
 	if hitstop > 0.0:
 		hitstop -= delta
 	if _night:
