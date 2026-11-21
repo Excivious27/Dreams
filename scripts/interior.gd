@@ -459,6 +459,7 @@ func _talk(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
+	gift_block_toast(n.id, name, sel)
 	var hl := Hearts.daily(n.id)
 	if bool(I.get("rec", false)) and str(data.get("work", "")) != interior_id:
 		await RecCenter.visitor_talk(self, n)  # out for the evening: they talk about the games (and let you at their cabinet)

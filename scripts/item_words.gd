@@ -10,7 +10,9 @@ const MASS := ["wood", "stone", "hay", "flour", "honey", "milk", "coal", "clay",
 	"lettuce", "spinach", "asparagus", "garlic", "celery", "dill", "parsley", "basil", "chives",
 	"lemongrass", "moss", "glass", "slime", "dust", "ink", "paper", "chocolate", "candy", "fudge", "pie",
 	"wine", "yarn", "mead", "cider", "ale", "fleece", "fur", "fabric", "mayonnaise", "mozzarella", "custard",
-	"broth", "coolant", "wax", "beeswax", "cash"]
+	"broth", "coolant", "wax", "beeswax", "cash",
+	# c12_12-14: more mass nouns ("4 Moon Fluff", "3 Barley", "2 Beeswax")
+	"fluff", "barley", "comfrey", "watercress", "plating", "thread", "choy"]
 ## Names that end in s but are one thing ("a Crystal Lens").
 const SINGLE_S := ["lens", "iris", "lotus", "edelweiss", "bass", "moss", "glass", "cactus", "hibiscus", "crocus", "octopus", "walrus"]
 ## Fish keep their name in the plural ("3 Bass", "2 Trout").
@@ -42,13 +44,13 @@ static func plural(name: String) -> String:
 	if of > 0:
 		return plural(name.substr(0, of)) + name.substr(of)  # "Pots of Chili", "Jars of Honey"
 	var w := _last(name)
-	if name == "" or is_plural(name) or is_mass(name) or w in SAME:
-		return name
+	if name == "" or is_plural(name) or is_mass(name) or w in SAME or w.ends_with("fish"):
+		return name   # "3 Catfish", "2 Pufferfish"
 	if w.ends_with("y") and w.length() > 1 and not ("aeiou".contains(w[w.length() - 2])):
 		return name.substr(0, name.length() - 1) + "ies"
 	if w.ends_with("s") or w.ends_with("sh") or w.ends_with("ch") or w.ends_with("x") or w.ends_with("z") or w in ["potato", "tomato", "mango"]:
 		return name + "es"
-	if w.ends_with("leaf"):
+	if w.ends_with("leaf") or w.ends_with("loaf"):
 		return name.substr(0, name.length() - 1) + "ves"
 	return name + "s"
 
@@ -77,3 +79,23 @@ static func fill(text: String, name: String) -> String:
 	text = text.replace("A {item}", art.substr(0, 1).to_upper() + art.substr(1))
 	text = text.replace("a {item}", art)
 	return text.replace("{item}", name)
+
+
+## C12 (c12_12-03): "Drink" for potions, tonics, milk, teas and juices; "Eat" for the rest.
+## Alcohol is never consumable (drink_rule_test), so no trade good ever gets the verb.
+const DRINK_WORDS := ["milk", "tea", "coffee", "cocoa", "soda", "beer", "juice", "smoothie", "potion", "elixir", "tonic", "brew", "blend"]
+
+
+static func is_drink(id: String) -> bool:
+	var it: Dictionary = GameState.items.get(id, {})
+	if str(it.get("type", "")) in ["tonic", "potion"]:
+		return true
+	for w in str(it.get("name", "")).to_lower().split(" "):
+		if w in DRINK_WORDS:
+			return true
+	return false
+
+
+static func consume_verb(id: String) -> String:
+	return "Drink" if is_drink(id) else "Eat"
+

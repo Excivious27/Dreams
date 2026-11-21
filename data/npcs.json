@@ -523,7 +523,7 @@
    "2": "Lumi gives you paints for your sign",
    "4": "Lumi sells you paints at cost: 3 Paint each week",
    "6": "Lumi's first sketch of you, pinned by the studio window: +10 max energy",
-   "8": "Lumi teaches you to see: +10 max energy",
+   "8": "Lumi teaches you to see: +10 max energy, and a keepsake for your home: Painter's Easel",
    "10": "Lumi's gate painting, with your face in it: a Dream Charm"
   },
   "home": "cottage_c",
@@ -990,9 +990,9 @@
   ],
   "perks": {
    "2": "Rook shows you the brambles: a Shed Fur each week",
-   "4": "Rook sells arrows and traps",
+   "4": "Rook sells arrows and bramble brushes",
    "6": "Rook's map of the quarry path: a Map Scrap",
-   "8": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting",
+   "8": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Log Seat",
    "10": "Rook's lucky arrowhead: a Light Charm"
   },
   "home": "lodge",
@@ -1566,7 +1566,7 @@
    "2": "Tam's wool: 2 each week",
    "4": "The Dollys find forage on the hill: 2 Tea Leaves each week",
    "6": "Tam gives you a lamb's worth of wool: 5 Wool",
-   "8": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Blue Quilt Double Bed",
+   "8": "Tam's lamb Bramble moves into your barn, and 2 Cider each week, and a keepsake for your home: Braided Rug",
    "10": "Tam's hills: 2 Golden Apples"
   },
   "home": "tam_hut",
@@ -1681,7 +1681,7 @@
    "2": "Sel reads the first rune: a Memory Tea",
    "4": "+10 max mana",
    "6": "Sel opens the stone door: 2 Mana Potions",
-   "8": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel",
+   "8": "Sel's translation: +10 max mana, and a keepsake for your home: Books and Scrolls",
    "10": "Sel's rubbing of the wall: +20 max mana"
   },
   "home": "sel_camp",
@@ -1785,7 +1785,7 @@
   ],
   "perks": {
    "2": "Tess saves you offcuts: 5 Wood each week",
-   "4": "Tess's spare planks: 10 Plank",
+   "4": "Tess's spare planks: 10 Planks",
    "6": "Tess sends hardwood: 3 Hardwood each week",
    "10": "Tess's master joinery: 10 Hardwood",
    "8": "Tess gives you a keepsake for your home: Window Seat"

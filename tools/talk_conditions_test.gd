@@ -95,7 +95,7 @@ func _run() -> void:
 		for nm in ["Coldy", "Big Jim", "merkitty"]:
 			check(not (nm in all2), "penguin day 2: nobody mentions %s yet" % nm)
 	_setup("penguins", 40, 12)
-	for f in ["babies_done", "merkitty_done", "meow_taught"]:
+	for f in ["babies_done", "merkitty_done", "meow_taught", "campfire_done"]:
 		GameState.run["flags"][f] = true
 	var later := _all_pools()
 	check("Coldy" in later and "Big Jim" in later and "merkitty" in later, "story characters show up once met")
@@ -185,7 +185,7 @@ func _run() -> void:
 	_setup("gangsters", 5, 12)
 	check(not ("Thornmother" in _j(Talk.region_lines(liesl))), "gangster Liesl doesn't name the Thornmother")
 	GameState.run["flags"]["boss_gloam_moonpool"] = true
-	check("Gerald's moved into the roses" in _j(Talk.region_lines(liesl)), "Liesl after the boss (gangster)")
+	check("Bartholomew's moved into the roses" in _j(Talk.region_lines(liesl)), "Liesl after the boss (gangster)")
 	_setup("penguins", 5, 12)
 	check("Thornmother" in _j(Talk.region_lines(liesl)), "penguin Liesl keeps her line")
 	for rid in ["gloam_lanternfall", "desert_mirage_post", "frost_hearthhold"]:

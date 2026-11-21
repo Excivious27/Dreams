@@ -13976,18 +13976,18 @@
     ],
     "wander": 10.0,
     "lines_gangsters": [
-     "Every lantern here has a moth, and every moth has a name. That one's Gerald.",
+     "Every lantern here has a moth, and every moth has a name. That one's Bartholomew.",
      "Rosa Thorne says the garden pays her rent. The garden has never paid anyone anything.",
      "Wisp Sparks keep a pudding light. Bring one back and cook something nice."
     ],
     "after_flag": "boss_gloam_moonpool",
     "after": [
-     "The garden's breathing again. Gerald's taken to sleeping in the roses.",
-     "Every lantern here has a moth, and every moth has a name. That one's Gerald."
+     "The garden's breathing again. Bartholomew's taken to sleeping in the roses.",
+     "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."
     ],
     "after_gangsters": [
-     "Nobody collects rent in Lanternfall now. Gerald's moved into the roses.",
-     "Every lantern here has a moth, and every moth has a name. That one's Gerald."
+     "Nobody collects rent in Lanternfall now. Bartholomew's moved into the roses.",
+     "Every lantern here has a moth, and every moth has a name. That one's Bartholomew."
     ]
    },
    {

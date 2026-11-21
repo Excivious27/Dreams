@@ -971,6 +971,7 @@ func _talk_npc(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
+	gift_block_toast(id, name, sel)
 	var lines: Array = []
 	var hl := Hearts.daily(id)
 	if hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(id)) % 2 == 0:

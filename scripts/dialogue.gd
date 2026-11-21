@@ -118,6 +118,10 @@ static func portrait_for(who: String) -> String:
 
 
 static func instance(tree: SceneTree) -> Dialogue:
+	if tree == null:
+		# A caller whose node already left the tree (its scene changed mid-await) still gets
+		# the one Dialogue instead of a null crash (C12 integ: mega_region_test SCRIPT ERROR).
+		tree = Engine.get_main_loop() as SceneTree
 	var d := tree.root.get_node_or_null("Dialogue") as Dialogue
 	if d == null:
 		d = Dialogue.new()

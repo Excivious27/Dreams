@@ -342,10 +342,20 @@ static func deliver_orders() -> Array:
 static func hint(id: String) -> String:
 	var e := Decor.entry(id)
 	var r := Decor.rarity(id)
+	# C12 (c12_14-13): gen_decor writes a player-facing "where" per source (and
+	# "where_gang"), plus the keeper shelves that stock it ("shelves"/"shelves_gang").
+	var pen := GameState.is_penguins()
+	var place := "the valley" if pen else "the city"
 	var src := []
+	for sh in e.get("shelves" if pen else "shelves_gang", []):
+		src.append(str(sh))
 	for s in e.get("sources", []):
 		if s is Dictionary:
-			src.append(str((s as Dictionary).get("where", (s as Dictionary).get("text", ""))))
+			var sd := s as Dictionary
+			var w := str(sd.get("where_gang", sd.get("where", "")) if not pen else sd.get("where", sd.get("text", "")))
+			if not src.is_empty() and w.begins_with("shops around"):
+				continue   # a named shelf already says where
+			src.append(w)
 		else:
 			src.append(str(s))
 	src = src.filter(func(x: String) -> bool: return x != "")
@@ -353,11 +363,11 @@ static func hint(id: String) -> String:
 	var gate := str(e.get("gate", ""))
 	if state(id) == "missing" and gate != "" and not (GameState.run.get("flags", {}) as Dictionary).has(gate):
 		return "???"  # from a system not open yet (campaigns, mega regions): no spoilers
-	if state(id) != "missing" and r != "unique":
-		return exact if exact != "" else str(e.get("hint", "Found around the valley."))  # seen/owned: no riddles
+	if state(id) != "missing":
+		return exact if exact != "" else str(e.get("hint", "Found around %s." % place))  # seen/owned (uniques too): no riddles
 	match r:
 		"common", "uncommon":
-			return exact if exact != "" else "Sold in shops around the valley."
+			return exact if exact != "" else "Sold in shops around %s." % place
 		"rare", "epic":
 			return str(e.get("hint", exact if exact != "" else "Something special: keep exploring."))
 		"legendary":

@@ -290,7 +290,7 @@ const EVERYDAY := {
 	"val": ["Vic's warming up.", {"text": "Right side's ours.", "min_loyalty": 3}, {"text": "Don't listen to the stone.", "min_loyalty": 1}],
 	"halo": ["Engine's warm.", "Hideout's where I park. Find me there.", "Never quit at the containers."],
 	"dice": ["Nothing new. Well. Something new. Nothing I can tell you yet.", "I'm fine. I'm FINE.", "Messages are quiet. Quiet's bad."],
-	"the_kid": ["...", "...", "..."],
+	"the_kid": ["...", "...hey.", "...saw that. Nice."],
 	"doc": ["Let me see that arm.", "Sleep more.", "Try not to need me."],
 	"marlene": ["Prices are up. Yours especially.", "I don't do favours. This isn't one.", "Paper, boss. Keep it dry."],
 	"sasha": ["Doors?", "...", "Say the word."],

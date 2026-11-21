@@ -66,8 +66,39 @@ static func name_of(uid: String) -> String:
 static func species_name(uid: String) -> String:
 	var s := spec(uid)
 	if s.is_empty():
-		return str(Ranch.species(str(Ranch.animal(uid).get("species", ""))).get("name", "Animal"))
+		var rs := Ranch.species(str(Ranch.animal(uid).get("species", "")))
+		return str(rs.get("name_gang" if not GameState.is_penguins() else "name", rs.get("name", "Animal")))
 	return str(s.get("name_gang" if not GameState.is_penguins() else "name", s.get("name", "Animal")))
+
+
+## C12 (c12_14-02/04/15/17): player words for homes, where-from lines and battle jobs.
+const JOB_WORDS := {"striker": "charges foes", "healer": "mends you", "warden": "shields you"}
+
+
+static func job_words(job: String) -> String:
+	return str(JOB_WORDS.get(job, job))
+
+
+## The built tier's name of a home ("Tide Pool", "Big Barn"; gangster words via Builds), never a raw id.
+static func home_word(home: String) -> String:
+	if home == "":
+		return "pen"
+	var td := Builds.tier_def(home, maxi(1, Builds.built_tier(home)))
+	var nm := str(td.get("name", ""))
+	return nm if nm != "" else home.replace("_", " ").capitalize()
+
+
+static func home_name(uid: String) -> String:
+	var home := str(Ranch.animal(uid).get("home", ""))
+	if home == "":
+		home = str(Ranch.species(str(Ranch.animal(uid).get("species", ""))).get("home", ""))
+	return home_word(home)
+
+
+## Where the creature comes from (gen_ranch source / source_gang), "" for plain farm animals.
+static func source_line(uid: String) -> String:
+	var rs := Ranch.species(str(Ranch.animal(uid).get("species", "")))
+	return str(rs.get("source_gang", rs.get("source", "")) if not GameState.is_penguins() else rs.get("source", ""))
 
 
 static func _day() -> int:
@@ -148,7 +179,7 @@ static func why_not(uid: String, lid := "") -> String:
 	if GameState.visiting():
 		return "Those animals belong to your host."
 	if not trainable(uid):
-		return "%s are happiest at home: they don't learn team lessons." % species_name(uid)
+		return "%s is a homebody: happiest in the %s, no team lessons." % [name_of(uid), home_name(uid)]
 	if not grown(uid):
 		return "Still little: wait until it's grown."
 	var need := int(rule("bond_to_train", 200))
@@ -156,14 +187,15 @@ static func why_not(uid: String, lid := "") -> String:
 		return "Build its trust first: ♥%d of %d. Pet and feed it every day." % [hearts(uid), need / 100]
 	if lid != "":
 		if not can_learn(uid, lid):
-			return "%s can't learn %s." % [species_name(uid), str(lesson(lid).get("name", lid))]
+			return "%s can't learn %s." % [name_of(uid), str(lesson(lid).get("name", lid))]
 		if rank(uid, lid) >= int(rule("max_rank", 3)) and int(lessons(uid).get(lid, 0)) >= int((rule("rank_at", [7]) as Array).back()):
 			return "It knows %s by heart already." % str(lesson(lid).get("name", lid))
 	if int(Ranch.animal(uid).get("lesson_day", -1)) == _day():
 		return "One lesson a day: it's had today's."
 	if treat_for(uid) == "":
 		var t: Array = spec(uid).get("treat", [])
-		return "Bring a treat: %s." % " or ".join(t.map(func(x: Variant) -> String: return GameState.item_name(str(x))))
+		var tw: Array = t.map(func(x: Variant) -> String: return ItemWords.with_article(GameState.item_name(str(x))))
+		return "Bring a treat: %s." % (", ".join(tw.slice(0, tw.size() - 1)) + " or " + str(tw.back()) if tw.size() > 1 else (str(tw[0]) if tw.size() == 1 else "a treat"))
 	if int(GameState.run.get("energy", 0)) < int(rule("energy", 8)):  # same bar GameState.spend_energy checks
 		return "You're too tired to teach today."
 	return ""
@@ -488,7 +520,7 @@ static func lesson_desc(lid: String) -> String:
 	var c := str(l.get("chore", ""))
 	if c != "":
 		bits.append("chore: " + Chores.chore_name(c).to_lower())
-	bits.append("in battle: " + str(l.get("job", "striker")))
+	bits.append("in battle: " + job_words(str(l.get("job", "striker"))))
 	return "%s (%s)" % [d, ", ".join(bits)]
 
 
@@ -496,16 +528,20 @@ static func _detail(menu: Variant, uid: String) -> void:
 	var a := Ranch.animal(uid)
 	var home := str(a.get("home", ""))
 	var age := "grown" if grown(uid) else "little"
-	menu._line("  Lives in the %s · %s · friendship %d" % [home if home != "" else "pen", age, bond(uid)], 8, Color(0.8, 0.85, 0.9))
+	menu._line("  Lives in the %s · %s · ♥%d" % [home_name(uid), age, hearts(uid)], 8, Color(0.8, 0.85, 0.9))
+	var src := source_line(uid)
+	if src != "":
+		menu._line("  From: " + src, 8, Color(0.8, 0.85, 0.9))
 	menu.ranch_family_lines(uid)  # C11b P2 hook: born day, gen, parents, kids, expecting, habitat
 	if trainable(uid):
 		var ls: Array = []
 		for lid in (spec(uid).get("lessons", []) as Array):
-			ls.append("%s %s" % [str(lesson(str(lid)).get("name", lid)), ("rank %d" % rank(uid, str(lid))) if rank(uid, str(lid)) > 0 else "—"])
-		menu._line("  Lessons: " + ", ".join(ls), 8, Color(0.85, 0.9, 0.8))
+			if rank(uid, str(lid)) > 0:
+				ls.append("%s rank %d" % [str(lesson(str(lid)).get("name", lid)), rank(uid, str(lid))])
+		menu._line("  Lessons: " + (", ".join(ls) if not ls.is_empty() else "none yet"), 8, Color(0.85, 0.9, 0.8))
 		var st := stats(uid)
 		if not learned(uid).is_empty():
-			menu._line("  Health %d · power %d · in battle: %s" % [int(st["hp"]), int(st["dmg"]), battle_job(uid)], 8, Color(0.8, 0.85, 0.9))
+			menu._line("  Health %d · power %d · in battle: %s" % [int(st["hp"]), int(st["dmg"]), job_words(battle_job(uid))], 8, Color(0.8, 0.85, 0.9))
 		for lid in (spec(uid).get("lessons", []) as Array):
 			var l := str(lid)
 			var tb: Button = menu._button("  Teach %s · %s" % [str(lesson(l).get("name", l)), lesson_note(uid, l)], func() -> void:
@@ -544,7 +580,7 @@ static func _detail(menu: Variant, uid: String) -> void:
 			menu._refresh())
 		row.add_child(ok)
 		le.text_submitted.connect(func(_t: String) -> void: ok.pressed.emit())
-		var sug: Button = menu._button("  Pick a name for me (%s)" % suggest_name(uid), func() -> void:
+		var sug: Button = menu._button("  Suggest a name: %s" % suggest_name(uid), func() -> void:
 			rename(uid, suggest_name(uid))
 			_rename_uid = ""
 			menu._refresh())

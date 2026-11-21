@@ -1243,6 +1243,7 @@ func _talk(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
+	gift_block_toast(id, name, sel)
 	var hl := Hearts.daily(id)
 	# Sal's recruitment is story, not chatter: it always comes first once the meadow is clear.
 	if id == "sal" and not GameState.is_penguins() and GameState.quest_done("clear_meadow") and not r["flags"].has("sal_recruited"):
@@ -1268,20 +1269,7 @@ func _gift_line(id: String, item: String, gain: int) -> String:
 	var own := GameState.gift_line(id, item, gain)
 	if own != "":
 		return own
-	var n := GameState.item_name(item)
-	var art := ItemWords.with_article(n)
-	art = art.substr(0, 1).to_upper() + art.substr(1)
-	if gain < 0:
-		return {"gideon": "%s. ...Why." % art, "alder": "%s. I'll have it... filed." % art, "wren": "%s. You can keep that, actually." % art}.get(id, "Oh. %s. Thanks, I suppose." % art)
-	if gain >= 20:
-		return {"maple": "%s! You remembered! Oh, you're going to fit right in." % art, "gideon": "...%s. Where did you— Don't make it weird. Thank you." % art, "wren": "%s. Do you know how rare these are? I do." % art, "finn": "%s! Now that's a gift. Come by the hut, I'll show you the good spots." % art, "rook": "%s. Huh. You pay attention. Good." % art, "sal": "%s. Nobody gives me things. ...Thanks, boss." % art}.get(id, "%s! My favourite. How did you know?" % art)
-	match id:
-		"maple": return "%s! For me? That's kind." % art
-		"gideon": return "Hm. %s. ...Thank you." % art
-		"wren": return "%s. I can do something with this. Probably not what you'd expect." % art
-		"alder": return "%s, how civic-minded. It'll go in the town records." % art
-		"sal": return "%s. Huh. What do you want?" % art
-	return "Thanks for the %s." % n
+	return "Thanks for the %s." % GameState.item_name(item)  # gift_line answers for every villager (C12 c12_08-18)
 
 
 func _lines(id: String, friend: int) -> Array:

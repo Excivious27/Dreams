@@ -120,12 +120,12 @@ static func shows(id: String, r: Dictionary) -> bool:
 ## "chapter N" was wrong in the gangster arc; name the real step instead).
 const TIER_STEPS := {
 	"penguins": [["clear_meadow", "you find what's howling in the east meadow"],
-		["spark", "you build the Crystal Resonator (or beat the Grump Commander)"],
+		["spark", "you refine your first crystal at the Crystal Resonator (or beat the Grump Commander)"],
 		["sky_stair", "you climb the great tree in the forest"],
 		["teleporter", "you power the moon teleporter"]],
 	"gangsters": [["clear_meadow", "you check out the east meadow"],
-		["docks", "you beat the Docks boss"],
-		["neon", "you put out Flame in the neon district"],
+		["docks", "you beat the dock boss"],
+		["neon", "you beat Flame in the neon district"],
 		["uptown", "you beat the President's Enforcer"]],
 }
 const TIER_ALT := {"spark": ["wastes_gate", "docks"], "sky_stair": ["neon"], "teleporter": ["uptown"]}

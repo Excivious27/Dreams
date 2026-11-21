@@ -163,7 +163,7 @@
   "festival": [
    "Festival nights, the inn never sleeps. Neither do I."
   ],
-  "penguins&if:meow_taught": [
+  "penguins&if:campfire_done": [
    "Big Jim came in for stew and ate the whole pot. Paid in fish. I'm not complaining."
   ],
   "night": [
@@ -425,6 +425,14 @@
   ],
   "festival_star": [
    "Star Festival. One gift each. I've given the council a calendar of myself."
+  ],
+  "penguins&f:told_town": [
+   "The town knows what's out there now. Nobody's bolted their door. I'm prouder of that than of anything on the council's books.",
+   "Someone's pup, you said. I've stopped shooing them off my step with a broom. Mostly."
+  ],
+  "penguins&f:kept_quiet": [
+   "Quiet out east lately. I'd like to think that's my doing. I suspect it's yours.",
+   "If there's something the town ought to hear, {name}, my door's open. So's the bell tower, when it has a clapper."
   ]
  },
  "sal": {
@@ -464,6 +472,12 @@
   ],
   "gangsters&q:clear_meadow": [
    "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things."
+  ],
+  "gangsters&f:president_freed": [
+   "Got a letter from W. He wants to know what grows best in spring. I told him patience."
+  ],
+  "gangsters&f:city_taken": [
+   "Car came by again. I told them you were watering the turnips. They wrote that down."
   ]
  },
  "finn": {
@@ -567,6 +581,14 @@
   ],
   "festival": [
    "The library's shut for the festival. I brought a book anyway. Don't look."
+  ],
+  "penguins&f:told_town": [
+   "Since you told the town, half of them have been in asking for books on the Grumps. I've never been so popular.",
+   "Knowing helps. People were scared of the dark until somebody wrote down what's in it."
+  ],
+  "penguins&f:kept_quiet": [
+   "People say the howling's stopped. They don't say why. I've noticed you don't either.",
+   "Some things belong in the records later, not the gossip now. I can wait."
   ]
  },
  "hazel": {

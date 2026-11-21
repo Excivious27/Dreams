@@ -24,7 +24,7 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-21 00:20 PT, personal account. Optimization round 4 DONE and on main (see "CONDUCT operating rules" Round 4). C12 (writing): 7 packages done, 5 merged on local main + c12/integ integration agent merging P5/P6 + hooks + fixing roll-CI fails (hearts gating test, story_test locket beat, prompt words); then full CI, ship, package. Next: C13 audio depth (auditors with shots sweep). Steam readiness artifact: https://claude.ai/artifact/2D2zYkwGXcWte5JSskKmfy (slug 09c74aa8-ac79-44a9-b25d-260afde98584).
+- **Last update:** 2026-11-21 00:50 PT, personal account. C12 integration done on c12/integ (P1-P7 merged, hooks, roll-CI fails fixed); full CI c12i running, then ship + package C12. C13 audio depth auditors nearly done. Steam readiness artifact: https://claude.ai/artifact/2D2zYkwGXcWte5JSskKmfy (slug 09c74aa8-ac79-44a9-b25d-260afde98584).
 - **Done:** CONDUCT 1-11b, S1, relay live, optimization rounds 1-3.
 - **In progress:** CONDUCT S1 (Steam prep): 18 audits done (/home/claude/wt/s1_reports), packages docs/reports/S1-PACKAGES.md, fix agents P1-P6 DONE on s1f/p1..p6 (reports /home/claude/wt/s1f_reports). C11b docs/package.
 - **Next step:** merge s1f/p1..p6 into main, S1 integration agent (cross hooks in each p*.md, `python3 tools/steam_handoff.py --write`, CLAUDE.md one line for Steam tools), full CI s1, package S1 (incl. docs/STEAM.md artifact page, Steam readiness %), push. Then queue C12-C23. ci_run --branch: refresh origin/<branch> tracking ref first or it tests a stale head.
@@ -95,6 +95,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 - 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
 
 ## Log (newest first, 30 lines max)
+- 2026-11-21, C12 integ: P5+P6 merged into c12/integ, cross-package hooks (partner guard on gangster shop deals, gift block toast, penguin post-ending letters, one bell cause, colony elder moon lines, heart keepsakes, rare herbs typed herb, told_town/kept_quiet and Sal after-ending talk, Rook/Bram tracker words, Benno ring, Bram festival eve, festival-eve letters, side-story compass, arrival verbs); continuity_check reads compound talk keys.
 
 - 2026-11-20 23:15 S1 docs: report docs/reports/CONDUCT-S1.md (264 findings, 6 packages + integration, final CI s1i2 PASS, steam-builds green, Steam readiness 92/4/4), Guide 38, TEXTS['S1'] + Steam readiness tab in build_package.py, 10 new inventory rows (whole game ~81%), PROJECT-MEMORY S1 entry, STATUS entry; branch s1/docs.
 - 2026-11-20 21:55 C11b docs: report docs/reports/CONDUCT-11b.md (183 findings, 7 packages + art lane + integration, final CI c11bi4b PASS), Guide 37, TEXTS['11b'] in build_package.py, 9 new inventory rows (whole game ~79%), PROJECT-MEMORY C11b entry, STATUS entry; branch c11b/docs.

@@ -17,7 +17,6 @@
   "grumps_case": 2
  },
  "data/decor.json": {
-  "part_of_set": 72,
   "us_spelling": 1
  },
  "data/epilogue.json": {
@@ -36,7 +35,6 @@
   "real_brand": 1
  },
  "data/items.json": {
-  "part_of_set": 68,
   "real_brand": 1,
   "us_spelling": 2
  },

@@ -551,7 +551,7 @@
      }
     ]
    },
-   "fall": "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was Tuesday.",
+   "fall": "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was any other morning.",
    "after": {
     "2": "Asking, not angry. Remember.",
     "4": "Half a boat. Still.",
@@ -884,8 +884,8 @@
      },
      {
       "who": "Bram",
-      "text": "Festival night. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
-      "text_gangsters": "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."
+      "text": "Festival's coming. Posy's mother kept two bottles of lake wine on the inn's sill, never opened: one for the harvest, one for whoever came home late. The sill's been bare since she went.",
+      "text_gangsters": "Festival's coming. I want two root beers on the sill, for once, for Posy's mother."
      },
      {
       "who": "Bram",
@@ -942,13 +942,13 @@
    "after": {
     "2": "Corner's yours.",
     "4": "Still hiding in the kitchen.",
-    "6": "Two bottles for the sill. Festival night.",
+    "6": "Two bottles for the sill, before the festival.",
     "8": "Two hours. The sill's full.",
     "10": "Tea towel. Right in the face."
    },
    "quest6_gangsters": "bram_rootbeer",
    "after_gangsters": {
-    "6": "Two root beers. Festival night.",
+    "6": "Two root beers, before the festival.",
     "8": "Two hours. Her glass was full."
    }
   },
@@ -1160,11 +1160,11 @@
     "4": [
      {
       "who": "",
-      "text": "Rook is cleaning an old knife by the lodge fire, very carefully."
+      "text": "Rook is whittling a tent peg by the lodge fire, very carefully."
      },
      {
       "who": "Rook",
-      "text": "I came out of the river cities on foot. Took a season. Ate what I could catch, which taught me to catch things."
+      "text": "I came out of the river cities on foot. Took a season. Ate what I could forage, which taught me to read the woods."
      },
      {
       "who": "Rook",
@@ -1856,19 +1856,19 @@
     "10": [
      {
       "who": "",
-      "text": "Benno is in the paddock at dawn, walking the race course on foot, counting the turns out loud."
+      "text": "Benno is in the paddock at dawn, walking the show ring on foot, counting the strides out loud."
      },
      {
       "who": "Benno",
-      "text": "Race at the festival. I'm riding. Alder's put it on the notice; Theo wrote it small, bless him."
+      "text": "Ring at the Harvest Fair. I'm riding Willow in, not just judging. Alder's put it on the notice; Theo wrote it small, bless him."
      },
      {
       "who": "Benno",
-      "text": "I'll lose. I'll lose on purpose if I have to, so I can say I finished one. Come and watch me finish."
+      "text": "I'll come last. I'll come last on purpose if I have to, so I can say I finished one. Come and watch me finish."
      },
      {
       "who": "Benno",
-      "text": "Fourteen turns. I'll take every one of them slow. Finishing's the race. The rest is just horses."
+      "text": "Fourteen strides round the ring. I'll take every one of them slow. Finishing's the race. The rest is just horses."
      }
     ]
    },
@@ -2354,7 +2354,7 @@
    }
   },
   "tess": {
-   "quest6": "",
+   "quest6": "tess_seat",
    "milestones": {
     "2": [
      {

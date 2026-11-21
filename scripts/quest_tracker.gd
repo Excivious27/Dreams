@@ -22,6 +22,13 @@ static func tracked() -> String:
 	var id := str(r.get("pinned_quest", ""))
 	if id == "":
 		return ""
+	if id.begins_with("ss:"):
+		# C12 P5/P6: a side story is followed until it ends (its giver is the target).
+		for sl: Dictionary in SideStory.open_lines():
+			if "ss:" + str(sl["id"]) == id:
+				return id
+		r["pinned_quest"] = ""
+		return ""
 	for q in r.get("quests", []):
 		if str(q.get("id", "")) == id and not bool(q.get("done", false)):
 			return id
@@ -148,6 +155,11 @@ static func target(m: GameMap) -> Vector2:
 	var id := tracked()
 	if id == "" or is_main(id):
 		return GoalLine.target(m)
+	if id.begins_with("ss:"):
+		for sl: Dictionary in SideStory.open_lines():
+			if "ss:" + str(sl["id"]) == id:
+				return _giver_target(m, str(sl["giver"]))
+		return GoalLine.target(m, true)
 	if id.begins_with("colony_"):
 		return Colony.pointer(m, id)  # colony quests: ferry, elder, beacons, crystal, kits (C7 P5)
 	var tg := _giver_target(m, str(GameState._quest_def(id).get("giver", "")), id)
