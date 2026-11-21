@@ -176,6 +176,8 @@ func _run() -> void:
 		await _npc_pass()
 	if _want("festival", secs):
 		await _festival_pass()
+	if _want("town", secs):
+		await _town_pass()
 	if _want("night", secs):
 		await _night_pass()
 	if _want("battle", secs):
@@ -326,6 +328,26 @@ func _festival_pass() -> void:
 		await _load("town", Vector2i(40, 52))  # just south of the fountain (Town.PLAZA_C)
 		await _frames(10)
 		await _shot("festival_" + str(f[2]), "festival", "town plaza on festival day (%s, day %d, %02d:00)" % [GameState.festival_today(), f[0], int(f[1]) / 60])
+
+
+## c14_03-22: town districts at 11:00 in spring, the plaza and shop row in every season,
+## and the Lantern Festival plaza at 20:00 (same cells each CONDUCT, so before/after compare).
+const TOWN_SPOTS := [[40, 52, "plaza"], [22, 26, "shop_row"], [55, 34, "hall"], [14, 64, "cottages"], [55, 68, "library"], [77, 48, "bridge"], [78, 18, "orchard"], [40, 8, "gate"], [32, 88, "south"], [14, 40, "park"]]
+
+
+func _town_pass() -> void:
+	for sp: Array in TOWN_SPOTS:
+		_fresh(1, 11 * 60)
+		await _load("town", Vector2i(int(sp[0]), int(sp[1])))
+		await _shot("town_" + str(sp[2]), "town", "town %s (%d,%d) spring 11:00" % [sp[2], sp[0], sp[1]])
+	for d in [[29, "summer"], [57, "fall"], [85, "winter"]]:
+		for sp: Array in [TOWN_SPOTS[0], TOWN_SPOTS[1]]:
+			_fresh(int(d[0]), 11 * 60)
+			await _load("town", Vector2i(int(sp[0]), int(sp[1])))
+			await _shot("town_%s_%s" % [sp[2], d[1]], "town", "town %s %s 11:00" % [sp[2], d[1]])
+	_fresh(42, 20 * 60)
+	await _load("town", Vector2i(40, 52))
+	await _shot("town_plaza_lantern_eve", "town", "Lantern Festival plaza at 20:00")
 
 
 func _night_pass() -> void:

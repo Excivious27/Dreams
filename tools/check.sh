@@ -1236,3 +1236,10 @@ echo "$p6aout" | grep -E "FAIL|SCRIPT ERROR|c14_p6_art_test" || true
 if ! echo "$p6aout" | grep -q "c14_p6_art_test: 0 failures"; then
   echo "C14 P6 art/light test failed"; exit 1
 fi
+
+echo "== town props (C14 P2) =="
+tpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/town_props_test.gd 2>&1)"
+echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
+if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
+  echo "town_props_test failed"; exit 1
+fi

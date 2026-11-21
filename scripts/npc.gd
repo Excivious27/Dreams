@@ -328,15 +328,34 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 	return RecCenter.visit(npc_id, place)  # an evening at the Rec Center
 
 
-## C12 P3 (c12_11-14): on a festival day, 9 to 6, the town is on the plaza: shops
+## C12 P3 (c12_11-14): on a festival day (festival_hours) the town is on the plaza: shops
 ## and school are shut and every sign says so. Juniper stays on call at the clinic;
 ## the mayor runs the fountain stage. Storms and blizzards keep the old routine.
 const FEST_ON_CALL := ["juniper"]
 const FEST_SPOTS := ["plaza", "plaza_e", "bench_nw", "bench_ne", "bench_sw", "bench_se"]
 
 
+## C14 P2 (c14_03-08): festival hours. Egg and Harvest run 9 to 6; Lantern and Star are
+## evening festivals on the sunset clock: from 4 hours before sunset until 3.5 after
+## (at most 23:30), so the plaza is full when the lanterns light. Vector2(0, 0) = none.
+static func festival_hours(fest: String = "") -> Vector2:
+	if fest == "":
+		fest = GameState.festival_today()
+	if fest == "":
+		return Vector2.ZERO
+	if fest in ["lantern", "star"]:
+		var ss := GameState.sunset() / 60.0
+		return Vector2(ss - 4.0, minf(23.5, ss + 3.5))
+	return Vector2(9.0, 18.0)
+
+
+static func in_festival(hour: float) -> bool:
+	var fh := festival_hours()
+	return fh.y > 0.0 and hour >= fh.x and hour < fh.y
+
+
 static func festival_place(npc_id: String, hour: float) -> String:
-	if GameState.festival_today() == "" or hour < 9.0 or hour >= 18.0 or npc_id in FEST_ON_CALL:
+	if not in_festival(hour) or npc_id in FEST_ON_CALL:
 		return ""
 	if GameState.weather_today() in ["storm", "blizzard"] or not GameState.npcs.has(npc_id):
 		return ""

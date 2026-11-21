@@ -30331,6 +30331,136 @@
    "file": "buildings/ramen_shop_night.png",
    "h": 96,
    "w": 105
+  },
+  "bakery_snow": {
+   "file": "buildings/bakery_snow.png",
+   "h": 112,
+   "w": 112
+  },
+  "bandstand_snow": {
+   "file": "buildings/bandstand_snow.png",
+   "h": 128,
+   "w": 144
+  },
+  "bank_snow": {
+   "file": "buildings/bank_snow.png",
+   "h": 110,
+   "w": 144
+  },
+  "c14p2_chandlery": {
+   "file": "buildings/c14p2_chandlery.png",
+   "h": 135,
+   "w": 112
+  },
+  "c14p2_chandlery_gang": {
+   "file": "buildings/c14p2_chandlery_gang.png",
+   "h": 144,
+   "w": 112
+  },
+  "c14p2_fish_market": {
+   "file": "buildings/c14p2_fish_market.png",
+   "h": 131,
+   "w": 112
+  },
+  "c14p2_fish_market_gang": {
+   "file": "buildings/c14p2_fish_market_gang.png",
+   "h": 140,
+   "w": 112
+  },
+  "c14p2_greenhouse": {
+   "file": "buildings/c14p2_greenhouse.png",
+   "h": 94,
+   "w": 96
+  },
+  "c14p2_ticket_office": {
+   "file": "buildings/c14p2_ticket_office.png",
+   "h": 135,
+   "w": 112
+  },
+  "c14p2_ticket_office_gang": {
+   "file": "buildings/c14p2_ticket_office_gang.png",
+   "h": 145,
+   "w": 112
+  },
+  "chapel_snow": {
+   "file": "buildings/chapel_snow.png",
+   "h": 128,
+   "w": 96
+  },
+  "clinic_snow": {
+   "file": "buildings/clinic_snow.png",
+   "h": 102,
+   "w": 112
+  },
+  "clock_tower_snow": {
+   "file": "buildings/clock_tower_snow.png",
+   "h": 160,
+   "w": 79
+  },
+  "cottage_a_snow": {
+   "file": "buildings/cottage_a_snow.png",
+   "h": 96,
+   "w": 128
+  },
+  "cottage_b_snow": {
+   "file": "buildings/cottage_b_snow.png",
+   "h": 100,
+   "w": 128
+  },
+  "cottage_c_snow": {
+   "file": "buildings/cottage_c_snow.png",
+   "h": 125,
+   "w": 136
+  },
+  "hall_snow": {
+   "file": "buildings/hall_snow.png",
+   "h": 216,
+   "w": 238
+  },
+  "inn_snow": {
+   "file": "buildings/inn_snow.png",
+   "h": 128,
+   "w": 171
+  },
+  "library_snow": {
+   "file": "buildings/library_snow.png",
+   "h": 112,
+   "w": 116
+  },
+  "mansion_snow": {
+   "file": "buildings/mansion_snow.png",
+   "h": 127,
+   "w": 208
+  },
+  "potions_snow": {
+   "file": "buildings/potions_snow.png",
+   "h": 136,
+   "w": 160
+  },
+  "school_snow": {
+   "file": "buildings/school_snow.png",
+   "h": 101,
+   "w": 160
+  },
+  "smith_snow": {
+   "file": "buildings/smith_snow.png",
+   "h": 162,
+   "w": 192
+  },
+  "stable_snow": {
+   "file": "buildings/stable_snow.png",
+   "h": 91,
+   "w": 128
+  },
+  "store_snow": {
+   "file": "buildings/store_snow.png",
+   "h": 163,
+   "w": 192
+  },
+  "warehouse_a_snow": {
+   "file": "buildings/warehouse_a_snow.png",
+   "h": 111,
+   "w": 144
   }
  },
  "c14p4": {
@@ -115385,6 +115515,56 @@
    "file": "props/c14p5_waterfall_frozen.png",
    "h": 287,
    "w": 160
+  },
+  "c14p2_bench_curved": {
+   "file": "props/c14p2_bench_curved.png",
+   "h": 47,
+   "w": 84
+  },
+  "c14p2_bench_iron": {
+   "file": "props/c14p2_bench_iron.png",
+   "h": 54,
+   "w": 70
+  },
+  "c14p2_cafe_table": {
+   "file": "props/c14p2_cafe_table.png",
+   "h": 64,
+   "w": 84
+  },
+  "c14p2_cafe_umbrella": {
+   "file": "props/c14p2_cafe_umbrella.png",
+   "h": 134,
+   "w": 92
+  },
+  "c14p2_drink_fountain": {
+   "file": "props/c14p2_drink_fountain.png",
+   "h": 71,
+   "w": 40
+  },
+  "c14p2_flower_kiosk": {
+   "file": "props/c14p2_flower_kiosk.png",
+   "h": 127,
+   "w": 104
+  },
+  "c14p2_mosaic": {
+   "file": "props/c14p2_mosaic.png",
+   "h": 256,
+   "w": 256
+  },
+  "c14p2_rose_arbour": {
+   "file": "props/c14p2_rose_arbour.png",
+   "h": 84,
+   "w": 76
+  },
+  "c14p2_signpost": {
+   "file": "props/c14p2_signpost.png",
+   "h": 84,
+   "w": 52
+  },
+  "c14p2_tree_planter": {
+   "file": "props/c14p2_tree_planter.png",
+   "h": 146,
+   "w": 92
   }
  },
  "riding": {
@@ -117810,6 +117990,22 @@
    "frames": 4,
    "h": 32,
    "w": 84
+  },
+  "c14p2_cobble": {
+   "cell_h": 32,
+   "cell_w": 32,
+   "cols": 6,
+   "file": "tiles/c14p2_cobble.png",
+   "h": 64,
+   "w": 192
+  },
+  "c14p2_flag": {
+   "cell_h": 32,
+   "cell_w": 32,
+   "cols": 8,
+   "file": "tiles/c14p2_flag.png",
+   "h": 64,
+   "w": 256
   },
   "cave_chasm_bl_0": {
    "file": "tiles/cave_chasm_bl_0.png",
