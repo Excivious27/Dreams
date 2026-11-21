@@ -81815,7 +81815,7 @@
   },
   "flame_core": {
    "file": "items/flame_core.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "flame_ember": {
@@ -95992,52 +95992,52 @@
   "dune_0": {
    "file": "nature/dune_0.png",
    "h": 30,
-   "w": 40
+   "w": 33
   },
   "dune_1": {
    "file": "nature/dune_1.png",
-   "h": 30,
+   "h": 21,
    "w": 40
   },
   "dune_2": {
    "file": "nature/dune_2.png",
-   "h": 30,
+   "h": 29,
    "w": 40
   },
   "dune_3": {
    "file": "nature/dune_3.png",
-   "h": 26,
-   "w": 40
+   "h": 30,
+   "w": 34
   },
   "dune_4": {
    "file": "nature/dune_4.png",
-   "h": 25,
-   "w": 40
+   "h": 30,
+   "w": 28
   },
   "dune_5": {
    "file": "nature/dune_5.png",
-   "h": 27,
-   "w": 40
+   "h": 30,
+   "w": 31
   },
   "dune_6": {
    "file": "nature/dune_6.png",
-   "h": 31,
+   "h": 30,
    "w": 40
   },
   "dune_7": {
    "file": "nature/dune_7.png",
-   "h": 28,
-   "w": 40
+   "h": 30,
+   "w": 34
   },
   "dune_8": {
    "file": "nature/dune_8.png",
-   "h": 26,
-   "w": 40
+   "h": 30,
+   "w": 27
   },
   "dune_9": {
    "file": "nature/dune_9.png",
-   "h": 32,
-   "w": 40
+   "h": 30,
+   "w": 31
   },
   "fairy_ring": {
    "file": "nature/fairy_ring.png",
