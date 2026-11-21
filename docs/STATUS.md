@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16b P2: training drill finished both arcs (helper only after Build helper with arrival sparkle, no turret soft-lock, follow keeps up and is leashed, Guard banner, exit asks End training, tickets explained, cash reward), battle feel (strikers stand and fight, ranged foes shoot helpers/turrets, block numbers, outro beat, threat pointer); test battle_feel_test.gd
+
 ## 2026-11-21 — C16a integ: energy filler re-spread against P3's cap 60; mega hook quests wait for the gate floors (sim first mega day ~50); Spark migrate; net energy row; fishing caps; gang helper meadow/forest/lake
 
 ## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd

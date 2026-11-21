@@ -82,3 +82,43 @@ static func beat(n: Node) -> void:
 	if n == null or not n.is_inside_tree():
 		return
 	await n.get_tree().create_timer(OUTRO, false).timeout
+
+
+## A second, red off-screen pointer toward a point you hold that is under attack
+## (foes in its ring, or its hold slipping under 0.6), pulsing; its name and
+## "under attack" go in the HUD's text list (c16b_11-15). Still under reduced motion.
+static func threat_pointer(bt: Battle, txt: Array) -> void:
+	if bt == null or bt.map == null or bt.map.player == null or bt._hud == null:
+		return
+	var best: Variant = threat_point(bt)
+	if (best as Dictionary).is_empty():
+		return
+	var pp: Vector2 = bt.map.player.position
+	var dir: Vector2 = ((best as Dictionary)["pos"] - pp).normalized()
+	var a := 0.9 if Anim.reduced() else 0.65 + 0.35 * sin(Anim.t() * 6.0)
+	var c := Vector2(135, 310) + dir * Vector2(100.0, 70.0)
+	bt._hud.draw_colored_polygon(PackedVector2Array([c + dir * 9, c + dir.orthogonal() * 6, c - dir.orthogonal() * 6]), Color(1, 0.35, 0.3, a))
+	bt._hud.draw_arc(c, 9.0, 0, TAU, 20, Color(1, 0.35, 0.3, a * 0.8), 1.5, true)
+	txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y - 20.0), "%s under attack" % str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 7, Color(1, 0.6, 0.55)])
+
+
+## The nearest off-screen (> 140 px) point you hold that is under attack, or {}.
+static func threat_point(bt: Battle) -> Dictionary:
+	var pp: Vector2 = bt.map.player.position
+	var best: Dictionary = {}
+	var bd := 1e9
+	for p in bt.points:
+		if str(p["owner"]) != "ally":
+			continue
+		var pos: Vector2 = p["pos"]
+		var hit := float(p["prog"]) < 0.6
+		if not hit:
+			for e in bt.map.enemies:
+				if is_instance_valid(e) and e._alive and (e as Node2D).position.distance_to(pos) < Battle.CAP_R + 6.0:
+					hit = true
+					break
+		var dd := pp.distance_to(pos)
+		if hit and dd > 140.0 and dd < bd:
+			bd = dd
+			best = p
+	return best

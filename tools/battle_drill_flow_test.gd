@@ -160,6 +160,9 @@ func _run() -> void:
 	check(dr.leave_btn != null and dr.leave_btn.visible and dr.leave_btn.text == "Leave training", "a Leave training button is on screen")
 	check(Hud.extra_rects.has(dr.leave_rect) and dr.leave_rect.has_point(dr.leave_btn.position + Vector2(4, 4)), "the button gets taps (extra rect)")
 	check(dr.leave_rect.size.y >= 20 and dr.card_rect().encloses(dr.leave_rect) and dr.leave_rect.end.y < 380, "the button is a comfortable tap inside the card, above the touch deck (%s)" % dr.leave_rect)
+	await process_frame
+	check(dr.leave_btn.size == BattleDrill.LEAVE_SIZE and dr.leave_rect.size == dr.leave_btn.size and dr.leave_btn.get_combined_minimum_size().x <= BattleDrill.LEAVE_SIZE.x + 0.5, "c16b_01-07: the Leave button is drawn exactly its tap rect (%s / %s)" % [dr.leave_btn.size, dr.leave_rect.size])
+	check(dr.leave_rect.end.x <= dr.card_rect().end.x and dr.leave_rect.end.x <= 270.0, "c16b_01-07: ... inside the card and the screen")
 	dr.ask_leave()
 	await process_frame
 	var opts := _choices()

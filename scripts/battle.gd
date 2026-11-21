@@ -692,7 +692,7 @@ func _enemy_wave() -> void:
 			_target_pt = bestp
 			if str(bestp["owner"]) == "ally":
 				map.hud.toast("They're massing on %s!" % str(bestp["name"]), Color(1, 0.6, 0.45))
-				var nw := Time.get_ticks_msec()
+				var nw := PlayClock.ms()
 				if nw - _mass_ms > 8000:
 					_mass_ms = nw
 					Music.instance(get_tree()).sfx("war_drum", "alert")
@@ -1048,7 +1048,7 @@ func _end(won: bool, travel := true) -> void:
 # ---- drawing -----------------------------------------------------------------
 
 func _draw() -> void:
-	var t := Time.get_ticks_msec() / 1000.0
+	var t := 0.0 if Anim.reduced() else Anim.t()  # game time; Reduced motion: still rings, chevrons, flags (c16b_11-07)
 	# Only points near the screen (this one canvas item spans the whole field, so
 	# nothing culls its commands), rings first and pictures after: an antialiased
 	# arc is three draw calls, so the old order cost ~32 per frame on bf maps.
@@ -1218,6 +1218,7 @@ func _hud_pointer(txt: Array) -> void:
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
 		# 90 px wide (kept on screen) so names like "Scarecrow Post" aren't cut short.
 		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 7, Color(1, 0.95, 0.8)])  # 7 px floor (c16b_11-06)
+	BattleFx.threat_pointer(self, txt)  # a red pointer to a point of yours under attack (c16b_11-15)
 
 
 # ---- campaign nodes --------------------------------------------------------------

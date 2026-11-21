@@ -187,5 +187,55 @@ func _run() -> void:
 		await _run_for(0.2)
 		e2._alert_sting()
 		check(t1 >= 0 and int(m.get_meta("alert_ms", -1)) == t1, "c16b_11-13: a second sting within 1.5 s is skipped")
+	# ---- 11-15: a point of yours under attack, off screen, gets the red pointer -------
+	if bt != null and not bt.points.is_empty():
+		var p0: Dictionary = bt.points[0]
+		p0["owner"] = "ally"
+		p0["prog"] = 0.3
+		m.player.position = p0["pos"] + Vector2(0, 300)
+		var tp := BattleFx.threat_point(bt)
+		check(not tp.is_empty() and tp == p0, "c16b_11-15: a held point losing its hold is flagged for the red pointer")
+		p0["prog"] = 1.0
+		check(BattleFx.threat_point(bt).is_empty() or BattleFx.threat_point(bt) != p0, "c16b_11-15: a safe point is not")
+	# ---- 11-08 / 11-17: units stand down with a fade, the field clears with a beat ----
+	var u := HelperUnit.make(m, "striker", spot, spot)
+	BattleFx.stand_down(m, u)
+	check(is_instance_valid(u) and not u.is_in_group("allies"), "c16b_11-08: a stood-down helper leaves the ally list at once but fades out")
+	await _run_for(0.6)
+	check(not is_instance_valid(u), "c16b_11-08: ... and is gone within 0.6 s")
+	var f1 := m.spawn_enemy("grump", spot + Vector2(30, 0), 0)
+	var u2 := HelperUnit.make(m, "striker", spot, spot)
+	BattleFx.clear_field(m, true)
+	check(m.enemies.is_empty() and is_instance_valid(f1), "c16b_11-17: foes leave the fight at once but stay on screen for the outro")
+	await _run_for(BattleFx.OUTRO + 0.3)
+	check(not is_instance_valid(f1) and not is_instance_valid(u2), "c16b_11-17: everything is cleared after the outro")
+	# ---- 11-14: a live battle's frame cost (14 foes + 12 helpers, following you) ---------
+	_clear(m)
+	await _run_for(0.3)
+	m.player.position = spot
+	m.set_meta("follow_me", true)
+	for i in 12:
+		HelperUnit.make(m, "striker" if i % 3 else "healer", spot + Vector2(randf_range(-30, 30), randf_range(-20, 20)), spot)
+	for i in 14:
+		var fe := m.spawn_enemy("grump", spot + Vector2.from_angle(TAU * i / 14.0) * 110.0, 0)
+		if fe:
+			fe.hp = 999
+			fe.max_hp = 999
+	var tot := 0
+	var worst := 0
+	var nf := 0
+	var last := Time.get_ticks_usec()
+	for i in 180:
+		m.player.position += Vector2(0.6 if (i / 60) % 2 == 0 else -0.6, 0)
+		await process_frame
+		var now := Time.get_ticks_usec()
+		if i >= 30:  # (first half second: flow fields warm up)
+			tot += now - last
+			worst = maxi(worst, now - last)
+			nf += 1
+		last = now
+	var avg := tot / 1000.0 / maxf(1.0, nf)
+	print("PERF_JSON " + JSON.stringify({"scene": "battle_feel", "battle_ms_avg": snappedf(avg, 0.1), "battle_ms_worst": snappedf(worst / 1000.0, 0.1)}))
+	check(avg < 16.0, "c16b_11-14: a 14-foe, 12-helper battle runs under 16 ms a frame headless (avg %.1f ms, worst %.1f ms)" % [avg, worst / 1000.0])
 	print("battle_feel_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)
