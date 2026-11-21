@@ -421,14 +421,7 @@ const FEST_SPOTS := ["plaza", "plaza_e", "bench_nw", "bench_ne", "bench_sw", "be
 ## evening festivals on the sunset clock: from 4 hours before sunset until 3.5 after
 ## (at most 23:30), so the plaza is full when the lanterns light. Vector2(0, 0) = none.
 static func festival_hours(fest: String = "") -> Vector2:
-	if fest == "":
-		fest = GameState.festival_today()
-	if fest == "":
-		return Vector2.ZERO
-	if fest in ["lantern", "star"]:
-		var ss := GameState.sunset() / 60.0
-		return Vector2(ss - 4.0, minf(23.5, ss + 3.5))
-	return Vector2(9.0, 18.0)
+	return Calendar.festival_hours(fest)  # C15 P1: hours from the festival row
 
 
 static func in_festival(hour: float) -> bool:

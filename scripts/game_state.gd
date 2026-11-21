@@ -639,7 +639,7 @@ static func demand(id: String) -> float:
 	if t == "forage" and se == "spring":
 		m *= 0.9
 	# Festival week: the town buys everything a little dearer.
-	if absi(day_of_season() - FESTIVAL_DAY) <= 1:
+	if festival_week():  # C15 P1: any festival on the calendar
 		m *= 1.1
 	return m
 
@@ -3104,8 +3104,9 @@ static func weather_for(day: int) -> String:
 		pick = "clear"  # gentle first days
 	if day == 1 and not is_penguins() and pick in ["clear", "fog", "wind", "petals"]:
 		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
-	if (day - 1) % DAYS_PER_SEASON + 1 == FESTIVAL_DAY:  # C14b P3 (c14b_18-01): festival days get their own sky motion
-		pick = {"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick)
+	var fest_row := Calendar.festival_for_day(day)  # C14b P3 / C15 P1: festival days get their own sky motion
+	if not fest_row.is_empty():
+		pick = str((fest_row["row"] as Dictionary).get("weather", {"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick)))
 	w[key] = pick
 	# C9: only yesterday/today/tomorrow are ever read; older days would grow the save forever.
 	var keep_from := mini(day, int(run.get("day", day))) - 2
@@ -3130,9 +3131,21 @@ const FESTIVAL_DAY := 14
 
 
 static func festival_today() -> String:
-	if day_of_season() != FESTIVAL_DAY:
-		return ""
-	return str(FESTIVALS[season()][0])
+	return Calendar.festival_id_today()  # C15 P1: Calendar-backed (data/festivals.json or the classic four)
+
+
+## C15 P1: 1-based year of the save (days 1..112 = year 1).
+static func year() -> int:
+	return Calendar.year()
+
+
+## C15 P1: is this a festival week (a plaza festival within a day either side)?
+static func festival_week() -> bool:
+	var d := int(run.get("day", 1))
+	for k in [-1, 0, 1]:
+		if not Calendar.festival_for_day(d + k).is_empty():
+			return true
+	return false
 
 
 ## Day of the week, 0 = Mon (day 1 of a save is a Monday) .. 6 = Sun (C13 contract).
@@ -3158,6 +3171,9 @@ static func story_stage() -> int:
 
 
 static func festival_name(id: String) -> String:
+	var ce := Calendar.find(id)
+	if not ce.is_empty():
+		return str(ce["name"])
 	for se in FESTIVALS:
 		if str(FESTIVALS[se][0]) == id:
 			return str(FESTIVALS[se][1])
