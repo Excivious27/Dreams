@@ -38,6 +38,8 @@ func _place_secrets() -> void:
 	var lt := Secrets.loot_tier(int(R.get("tier", AREA_TIER.get(region_id, 1))), not (R.get("enemies", []) as Array).is_empty())
 	Secrets.place(self, region_id, lt)
 	var ha := HiddenArea.place(self, region_id, lt)
+	if ha == null and not Secrets.undug(self).is_empty():
+		ha = Secrets.cache_watch(self)  # C16a P4 (c16a_08-04): caches sparkle/sniff in every region, not only hidden ones
 	if ha:
 		for dc: Vector2i in Secrets.undug(self):
 			ha.spots.append([dc, "cache"])

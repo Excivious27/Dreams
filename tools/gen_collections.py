@@ -54,7 +54,7 @@ WHERE = {
     "ancient_urn": "Buried caches (dig with the hoe where the ground looks turned).",
     "eagle_feather": "Mountain forage, now and then.",
     "goat_horn": "Mountain forage, rarely.",
-    "otter_whisker": "Dropped by otters by the water.",
+    "otter_whisker": "The river serpent drops it, now and then.",  # C16a P4 (c16a_14-02): the real source
     "book": "Old chests and the library's lost-and-found.",
 }
 
@@ -484,6 +484,9 @@ def _where_hint(item_id, it, forage, pools):
         # mirrors Fishing.T["when"] (fishing.gd): day-only fish are never hinted "at night"
         when = {"goldfish": "day", "sun_trout": "day"}.get(item_id, "night")
         return s + (", %s with bait, fishing %d+" % ("by day" if when == "day" else "at night", lvl) if v > 75 else "")
+    if places and t in ("ore", "gem", "material", "bar"):
+        # C16a P4 (c16a_14-11): mine goods say the mines first, the forage place second
+        return "The mines; also Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
     if places:
         return "Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
     if t in ("ore", "gem", "material", "bar"):

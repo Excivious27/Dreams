@@ -58,7 +58,7 @@
     {
      "item": "coal",
      "arc": "",
-     "where": "Forage: Wastes"
+     "where": "The mines; also Forage: Wastes"
     },
     {
      "item": "copper",
@@ -98,7 +98,7 @@
     {
      "item": "dark",
      "arc": "",
-     "where": "Forage: Wastes"
+     "where": "The mines; also Forage: Wastes"
     },
     {
      "item": "moon_shard",
@@ -174,7 +174,7 @@
     {
      "item": "otter_whisker",
      "arc": "",
-     "where": "Dropped by otters by the water."
+     "where": "The river serpent drops it, now and then."
     },
     {
      "item": "goat_horn",
@@ -1038,7 +1038,7 @@
     "item": "coal",
     "arc": "",
     "family": "Minerals",
-    "where": "Forage: Wastes"
+    "where": "The mines; also Forage: Wastes"
    },
    {
     "item": "tuna",

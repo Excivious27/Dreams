@@ -262,6 +262,16 @@ static func _walls(m: GameMap, c: Vector2i) -> int:
 	return n
 
 
+## C16a P4 (c16a_08-04): a bare HiddenArea that only watches the buried caches (twilight sparkle, pup sniff)
+## in regions with no hidden pocket or way.
+static func cache_watch(m: GameMap) -> HiddenArea:
+	var node := HiddenArea.new()
+	node.map = m
+	node.name = "HiddenArea"
+	m.add_child(node)
+	return node
+
+
 ## Buried caches not dug yet (HiddenArea sparkles over them at dawn and dusk).
 static func undug(m: GameMap) -> Array:
 	var out: Array = []
