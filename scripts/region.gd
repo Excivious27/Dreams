@@ -6,6 +6,8 @@ extends GameMap
 ## script each; story hooks still live in dialogue below.
 
 @export var region_id := "wastes"
+## C14b P4 (c14b_05-03): the penguin magic areas whose nights carry the aurora.
+const AURORA_REGIONS := ["gloam_violet_glade", "gloam_moonpool", "gloam_crystal_thicket", "wind_starfall_garden", "sky_reaches", "sky", "colony_ice"]
 var R: Dictionary = {}
 var _patch_memo := {}  # region patch cells, worked out on the first draw
 var _anim_nodes: Array = []
@@ -556,9 +558,9 @@ func after_ready() -> void:
 		# Buildings carry a "scale" (round 13) so they stand at town size next to the
 		# hero (town buildings are ~1.0); everything else is drawn at the usual 0.5.
 		var psc := float(p.get("scale", 0.5))
-		if bool(p.get("anim", false)) and Art.has(g, nm):
+		if RegionAnim.wants_anim(p, g, nm):  # C14b P4: every strip plays (unless "still"), ping-pong where it would pop
 			var a := AnimatedSprite2D.new()
-			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 4.0))})
+			a.sprite_frames = RegionAnim.frames_for(g, nm, RegionAnim.fps_for(nm, float(p.get("fps", 0.0))))
 			a.animation = "idle"
 			a.scale = Vector2(psc, psc)
 			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
@@ -568,10 +570,13 @@ func after_ready() -> void:
 			else:
 				add_child(a)
 			a.play("idle")
+			RegionAnim.phase(a, c)  # random start frame/speed per cell: never lockstep
+			RegionAnim.of(self).add(a, nm, c)
 			if g == "buildings":
 				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in
 		else:
 			var sp := prop(g, nm, c, w, 0.0, false, psc)  # footprint blocked below, sized to the art
+			RegionAnim.of(self).add(sp, nm, c)  # C14b P4: neon hum, boats bob, drones glide
 			if sp and bool(p.get("under", false)):
 				to_under(sp)
 			if sp and p.has("scale") and g != "buildings":
@@ -638,6 +643,9 @@ func after_ready() -> void:
 		add_child(npc)
 		npcs.append(npc)
 	Crew.place(self)
+	MagicFx.attach(self, region_id, R.get("magic", {}))  # C14b P4: ground sparkles, sky shimmer, motes
+	if GameState.is_penguins() and region_id in AURORA_REGIONS:
+		set_aurora(true)
 	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout" and int(GameState.run["hp"]) < int(GameState.run["max_hp"]) and int(GameState.run["flags"].get("doc_heal_day", -1)) != int(GameState.run["day"]):
 		GameState.run["flags"]["doc_heal_day"] = int(GameState.run["day"])  # only used up when you're hurt
 		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 20)
