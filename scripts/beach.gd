@@ -192,11 +192,25 @@ func after_ready() -> void:
 			for sid: String in ["beach_marina", "beach_colony_ferry" if GameState.is_penguins() else "beach_tidewater"]:
 				tn.call("station_prop", self, sid)
 	HiddenArea.place(self, "beach", 1)
+	_festival_note()
 	if not GameState.run["flags"].has("beach_seen"):
 		GameState.run["flags"]["beach_seen"] = true
 		player.frozen = true
 		await say([{"text": "Salt wind. Gulls. The sea goes on until it becomes the sky. Half a boat lies in the sand like something the water spat out."}])
 		player.frozen = false
+
+
+## Marina festival days (c14_04-13): the Fishing Derby, the Regatta / Harbour
+## Lights night market, announced on arrival once the marina's tier allows.
+func _festival_note() -> void:
+	var arc := "penguins" if GameState.is_penguins() else "gangsters"
+	var fest: Dictionary = Marina.data().get("festival", {})
+	for k: String in fest:
+		var f: Dictionary = fest[k]
+		if not f.has("day") or str(f.get("arc", "both")) not in ["both", arc] or Marina.tier() < int(f.get("tier", 1)):
+			continue
+		if GameState.season() == str(f.get("season", "")) and GameState.day_of_season() == int(f["day"]):
+			hud.toast(str(f["line"]), Color(1, 0.9, 0.6))
 
 
 ## Nothing grows on the planks: drop any plant/decal dressing that landed on a
