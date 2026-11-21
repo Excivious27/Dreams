@@ -11,6 +11,7 @@
 ## 2026-11-21 — C14b P4: Orchard Hills/Breezehaven windmills now a still body with code-rotated sails (new split art)
 
 ## 2026-11-21 — C14b P4: magic areas get ground sparkles, sky veils, motes and cloud wisps (MagicFx); region strips play out of step with ping-pong; colony crystal glow and wake burst; moon dusk + aurora; neon hum, boats bob, drones glide (RegionAnim)
+## 2026-11-21 — C14b P5 (2026-11-21): character idle life: IdleLife breathing for player/doll/villagers, front idles fixed (HERO2/gang/crew), idle_up/idle_side used, idle glance, still mount, villager pose scheduler + looping pose pairs + desync, 23 blink frames (6 heroes, 6 gang outfits, 11 villagers) via slice_c14b_p5.py
 
 ## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
 

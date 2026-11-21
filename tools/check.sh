@@ -1309,3 +1309,10 @@ echo "$c14bp4out" | grep -E "FAIL|SCRIPT ERROR|c14b_p4_magic_test" || true
 if ! echo "$c14bp4out" | grep -q "c14b_p4_magic_test: 0 failures"; then
   echo "C14b P4 magic test failed"; exit 1
 fi
+
+echo "== C14b P5: character idle life (front idles, breath, glances, villager pose scheduler) =="
+p5bout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14b_p5_test.gd 2>&1)"
+echo "$p5bout" | grep -E "FAIL|SCRIPT ERROR|c14b_p5_test" || true
+if ! echo "$p5bout" | grep -q "c14b_p5_test: 0 failures"; then
+  echo "C14b P5 idle life test failed"; exit 1
+fi
