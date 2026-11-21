@@ -91,9 +91,14 @@ static func lines(report: Dictionary) -> Array:
 			lines.append({"who": "Ladder", "text": "Word from the roofs: the collectors are walking the districts today. Yours, now. They wanted to know if that's what you want."})
 	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
 	if GameState.festival_today() != "":
-		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
+		var fe := Calendar.festival_today()  # C15 P1: the festival's own place and hours
+		brief += " It's the %s: %s, %s." % [GameState.festival_name(GameState.festival_today()), str(fe.get("where", "the plaza")), str(fe.get("time", ""))]
 	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
-	lines.push_front({"text": "Day %d. %s" % [int(GameState.run["day"]), brief]})
+	var cal: Array = Calendar.morning_lines().filter(func(t: String) -> bool: return not t.begins_with("Today: " + GameState.festival_name(GameState.festival_today())) or GameState.festival_today() == "")
+	if not cal.is_empty():
+		brief += "\n" + " ".join(cal)  # C15 P1: today's events, birthdays and a special sky
+	var dt := "Day %d" % int(GameState.run["day"]) if Calendar.year() == 1 else "Year %d, day %d" % [Calendar.year(), Calendar.day_of_year()]
+	lines.push_front({"text": "%s. %s" % [dt, brief]})
 	_open_due()  # today's new main steps (day-gated) first, so Next: matches the goal line
 	var nxt := GameState.next_step()
 	if nxt != "":

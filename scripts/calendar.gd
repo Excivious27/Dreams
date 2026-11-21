@@ -149,6 +149,8 @@ static func row_ok(r: Dictionary, yr: int, ar: String) -> bool:
 	if int(nd.get("marina_tier", 0)) > 0:
 		if GameState.run.is_empty() or Marina.tier() < int(nd["marina_tier"]):
 			return false
+	if bool(nd.get("commons", false)) and (GameState.run.is_empty() or not Commons.complete()):
+		return false
 	if str(nd.get("flag", "")) != "":
 		if GameState.run.is_empty() or not (GameState.run.get("flags", {}) as Dictionary).has(str(nd["flag"])):
 			return false
@@ -251,6 +253,8 @@ static func events_on(season: String, day: int, yr := -1, ar := "") -> Array:
 	for r: Dictionary in _all_rows():
 		if str(r.get("season", "")) == season and int(r.get("day", 0)) == day and row_ok(r, yr, ar):
 			out.append(_entry(r, ar))
+	if out.any(func(e: Dictionary) -> bool: return e["kind"] == "festival"):
+		out = out.filter(func(e: Dictionary) -> bool: return e["kind"] != "market")  # everyone's at the festival
 	var order := {"festival": 0, "holiday": 1, "marina": 2, "event": 3, "market": 4}
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(order.get(a["kind"], 5)) < int(order.get(b["kind"], 5)))
 	out.append_array(_birthdays(season, day))
@@ -371,3 +375,41 @@ static func board_notices(days := 7) -> String:
 	if bits.is_empty():
 		return "Nothing on the calendar this week."
 	return "Coming up: " + " · ".join(bits)
+
+
+static var _pip_key := ""
+static var _pip := Color(0, 0, 0, 0)
+
+
+## HUD date-box pip for today: festival red, holiday purple, marina blue, event green,
+## a met villager's birthday pink; transparent when nothing's on (memoised per day).
+static func pip_color() -> Color:
+	var key := "%d:%s:%d" % [_today(), arc(), (GameState.run.get("friendship", {}) as Dictionary).size() if not GameState.run.is_empty() else 0]
+	if key == _pip_key:
+		return _pip
+	_pip_key = key
+	_pip = Color(0, 0, 0, 0)
+	var cols := {"festival": Color("d9482b"), "holiday": Color("8a3fb8"), "marina": Color("2a7fc4"), "event": Color("2f9a52"), "birthday": Color("d6589a")}
+	for e: Dictionary in today():
+		if e["kind"] == "birthday" and not bool(e.get("met", false)):
+			continue
+		if cols.has(e["kind"]):
+			_pip = cols[e["kind"]]
+			break
+	return _pip
+
+
+## Morning lines for the sleep report: what's on today (and a special sky).
+static func morning_lines() -> Array:
+	var out: Array = []
+	for e: Dictionary in today():
+		if e["kind"] == "birthday":
+			if bool(e.get("met", false)):
+				out.append(str(e["name"]) + " today.")
+			continue
+		var w := str(e.get("where", ""))
+		out.append("Today: %s%s%s." % [e["name"], (" (" + w + ")") if w != "" else "", (", " + str(e["time"])) if str(e.get("time", "")) != "all day" else ""])
+	var sp := GameState.special_weather()
+	if sp != "":
+		out.append(GameState.special_weather_name(sp) + ".")
+	return out

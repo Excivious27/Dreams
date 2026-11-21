@@ -57,7 +57,7 @@ func _run() -> void:
 				var se := str(r["season"])
 				var d := int(r["day"])
 				var ids: Array = Calendar.events_on(se, d, yr, ar).map(func(e: Dictionary) -> String: return str(e["id"]))
-				var want := Calendar.row_ok(r, yr, ar)
+				var want := Calendar.row_ok(r, yr, ar) and not (str(r.get("kind", "")) == "market" and not Calendar.festival_on(se, d, yr, ar).is_empty())
 				check((str(r["id"]) in ids) == want, "%s y%d %s %s %d listed=%s want=%s" % [ar, yr, r["id"], se, d, str(r["id"]) in ids, want])
 			# Year gates actually exist (calendar.json carries year-2+ rows).
 		var y2 := 0

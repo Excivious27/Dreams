@@ -849,7 +849,7 @@ func _board() -> void:
 	player.frozen = true
 	var jobs := GameState.board_today()
 	var d := Dialogue.instance(get_tree())
-	var ch: Array = []
+	var ch: Array = ["Calendar"]  # C15 P1 (c15_01-01/05): the season calendar first
 	for j in jobs:
 		var taken := GameState.has_quest(str(j["id"]))
 		var poster := str(GameState.npcs[str(j["npc"])]["name"])
@@ -863,10 +863,15 @@ func _board() -> void:
 	var notes := RecCenter.board_notes()  # what's on at the rec / community farm
 	if notes != "":
 		head += "\nAlso pinned: " + notes
+	head += "\n" + Calendar.board_notices(7)  # C15 P1: coming up this week
 	d.say([{"who": "Community Board", "text": head, "choice": ch, "key": ""}])
 	await d.finished
-	if d.last_choice >= 0 and d.last_choice < jobs.size():
-		var j: Dictionary = jobs[d.last_choice]
+	if d.last_choice == 0:
+		player.frozen = false
+		CalendarScreen.open(get_tree())
+		return
+	if d.last_choice >= 1 and d.last_choice <= jobs.size():
+		var j: Dictionary = jobs[d.last_choice - 1]
 		if GameState.has_quest(str(j["id"])):
 			hud.toast("You already took that one.")
 		else:

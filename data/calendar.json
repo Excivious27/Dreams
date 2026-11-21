@@ -1,0 +1,510 @@
+{
+ "rows": [
+  {
+   "id": "market_spring_7",
+   "season": "spring",
+   "day": 7,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_spring_21",
+   "season": "spring",
+   "day": 21,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_spring_28",
+   "season": "spring",
+   "day": 28,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_summer_7",
+   "season": "summer",
+   "day": 7,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_summer_21",
+   "season": "summer",
+   "day": 21,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_summer_28",
+   "season": "summer",
+   "day": 28,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_fall_7",
+   "season": "fall",
+   "day": 7,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_fall_21",
+   "season": "fall",
+   "day": 21,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_fall_28",
+   "season": "fall",
+   "day": 28,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_winter_7",
+   "season": "winter",
+   "day": 7,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "market_winter_21",
+   "season": "winter",
+   "day": 21,
+   "kind": "market",
+   "arc": "both",
+   "name": "Market Day",
+   "venue": {
+    "scene": "commons"
+   },
+   "hours": [
+    9,
+    14
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "Market stalls at the Commons, nine till two.",
+   "name_gang": "Street Market",
+   "line_gang": "Street market at the Commons lot, nine till two.",
+   "needs": {
+    "commons": true
+   }
+  },
+  {
+   "id": "seed_swap",
+   "season": "spring",
+   "day": 5,
+   "kind": "event",
+   "arc": "both",
+   "name": "Seed Swap",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "morning",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "flower",
+   "line": "Bring spare seeds to the plaza and trade for something new.",
+   "name_gang": "Seed Swap at the Docks",
+   "line_gang": "Crates of spare seeds change hands on the docks all morning."
+  },
+  {
+   "id": "kite_day",
+   "season": "spring",
+   "day": 10,
+   "kind": "event",
+   "arc": "penguins",
+   "name": "Kite Day",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": [
+    12,
+    18
+   ],
+   "closes_shops": false,
+   "year_min": 2,
+   "every": 1,
+   "icon": "kite",
+   "line": "Kites over the hill north of town all afternoon."
+  },
+  {
+   "id": "kite_wars",
+   "season": "spring",
+   "day": 20,
+   "kind": "event",
+   "arc": "gangsters",
+   "name": "Rooftop Kite Wars",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": [
+    12,
+    18
+   ],
+   "closes_shops": false,
+   "year_min": 2,
+   "every": 1,
+   "icon": "kite",
+   "line": "",
+   "line_gang": "Crews fly kites off the rooftops: last kite up wins bragging rights."
+  },
+  {
+   "id": "beach_cleanup",
+   "season": "summer",
+   "day": 11,
+   "kind": "event",
+   "arc": "penguins",
+   "name": "Beach Cleanup Day",
+   "venue": {
+    "scene": "beach"
+   },
+   "hours": "morning",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "fish",
+   "line": "Help tidy the beach: shells and driftwood make good trades."
+  },
+  {
+   "id": "street_art_jam",
+   "season": "summer",
+   "day": 18,
+   "kind": "event",
+   "arc": "gangsters",
+   "name": "Street Art Jam",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": [
+    10,
+    18
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "music",
+   "line": "",
+   "line_gang": "Paint the underpass: the best wall gets a spot in the Hideout."
+  },
+  {
+   "id": "meteor_watch",
+   "season": "summer",
+   "day": 25,
+   "kind": "event",
+   "arc": "both",
+   "name": "Meteor Watch",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "night",
+   "closes_shops": false,
+   "year_min": 2,
+   "every": 1,
+   "icon": "moon",
+   "line": "Stay up late: shooting stars after dark, make a wish.",
+   "name_gang": "Rooftop Meteor Watch",
+   "line_gang": "Up on the roof after dark: shooting stars over the skyline."
+  },
+  {
+   "id": "apple_day",
+   "season": "fall",
+   "day": 9,
+   "kind": "event",
+   "arc": "penguins",
+   "name": "Apple Picking Day",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "pumpkin",
+   "line": "The orchard trees are heavy: pick a basket on the hill."
+  },
+  {
+   "id": "scrap_swap",
+   "season": "fall",
+   "day": 9,
+   "kind": "event",
+   "arc": "gangsters",
+   "name": "Scrap Swap",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "market",
+   "line": "",
+   "line_gang": "Swap meet behind the docks: parts, tools and odd finds."
+  },
+  {
+   "id": "founders_day",
+   "season": "fall",
+   "day": 26,
+   "kind": "event",
+   "arc": "both",
+   "name": "Founders' Day",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 2,
+   "every": 2,
+   "icon": "firework",
+   "line": "Every second year the town remembers its founders with a picnic on the plaza.",
+   "name_gang": "Founders' Night",
+   "line_gang": "Every second year the old crews raise a toast of soda to the founders."
+  },
+  {
+   "id": "ice_fishing",
+   "season": "winter",
+   "day": 7,
+   "kind": "event",
+   "arc": "both",
+   "name": "Ice Fishing Day",
+   "venue": {
+    "scene": "beach"
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "fish",
+   "line": "The lake is frozen hard: fish through the ice all day.",
+   "name_gang": "Ice Fishing Day",
+   "line_gang": "The harbour edge has frozen: fishing holes all along the pier."
+  },
+  {
+   "id": "snowball_day",
+   "season": "winter",
+   "day": 13,
+   "kind": "event",
+   "arc": "both",
+   "name": "Snowball Saturday",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": [
+    10,
+    16
+   ],
+   "closes_shops": false,
+   "year_min": 1,
+   "every": 1,
+   "icon": "snow",
+   "line": "Snowball fights in the park: soft snow, big laughs.",
+   "name_gang": "Snowball Turf War",
+   "line_gang": "Snowball turf war in the park: soft snow, no hard feelings."
+  },
+  {
+   "id": "snow_sculpture",
+   "season": "winter",
+   "day": 21,
+   "kind": "event",
+   "arc": "both",
+   "name": "Snow Sculpture Contest",
+   "venue": {
+    "scene": "town"
+   },
+   "hours": "day",
+   "closes_shops": false,
+   "year_min": 2,
+   "every": 1,
+   "icon": "snow",
+   "line": "Build the best snow sculpture on the plaza.",
+   "name_gang": "Ice Sculpture Night",
+   "line_gang": "Ice sculptures under the neon: best one wins."
+  }
+ ]
+}

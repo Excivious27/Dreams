@@ -745,6 +745,7 @@ func _refresh() -> void:
 					toggle()  # close the menu (unpauses), then the board pauses again
 					CampaignScreen.open(gm))
 		"Quests":
+			_button("Calendar: %s %d" % [GameState.season().capitalize(), GameState.day_of_season()], func() -> void: CalendarScreen.open(get_tree()))  # C15 P1 (c15_01-01)
 			if r["quests"].is_empty():
 				_line("No quests yet.")
 			# The same next step the HUD goal line shows, so the two never disagree.
