@@ -169,7 +169,7 @@ static func cond_ok(c: Dictionary, l: Dictionary = {}, skip_project := false) ->
 		"quest":
 			return GameState.quest_done(str(c.get("id", "")))
 		"campaign":
-			return Campaign.is_won(str(c.get("id", "")))
+			return Campaign.is_won(str(c.get("id", ""))) or Campaign.long_way_taken(str(c.get("id", "")))  # C16b: the long way opens lines too
 		"skill":
 			return GameState.skill_level(str(c.get("id", ""))) >= int(c.get("n", 1))
 		"perk":

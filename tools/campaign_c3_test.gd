@@ -115,7 +115,7 @@ func _initialize() -> void:
 	check(int(Campaign.get_c("c_uptown")["tier"]) == 4 and "c_underground" in Campaign.get_c("c_uptown")["after"], "uptown after the underground, both tier 4")
 	check(Campaign.who("c_neon") == "Sal", "Halo unrecruited: Sal leads")
 	check(Campaign.force_word() == "crew", "gangsters: crew")
-	check(Campaign.flavour("c_countryside", "n1", true) == "", "no penguin lines for gangsters")
+	check(not Campaign.flavour("c_countryside", "n1", true).contains("Grump"), "no penguin lines for gangsters (C16b: gang lines of their own)")
 	check(Campaign.text(Campaign.get_c("c_orchard_hills"), "intro").contains("lookouts"), "gangster intro on a shared campaign")
 	print("campaign_c3_test: %d fails" % fails)
 	quit(1 if fails > 0 else 0)

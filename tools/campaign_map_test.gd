@@ -221,7 +221,17 @@ func _run() -> void:
 			check(not Campaign.taken(cid, target), "a lost battle takes nothing")
 			check(int(Campaign.cs(cid)["morale"]) < morale0, "a loss costs morale")
 			check(int(Campaign.cs(cid)["losses"]) == 1, "the loss is counted")
-			for k in 90:
+			# C16b P3: a loss brings up the loss card first (Try again / Easier / Long way / Board / Not now).
+			var dlc := Dialogue.instance(self)
+			var seen_card := false
+			for k in 600:
+				await process_frame
+				if dlc.active and dlc._in_choice and dlc._choices.get_child_count() >= 3:
+					seen_card = (dlc._choices.get_child(0) as Button).text.contains("Try again")
+					dlc._choose("", dlc._choices.get_child_count() - 2)  # Back to the campaign map
+					break
+			check(seen_card, "a loss offers Try again / easier / the long way")
+			for k in 60:
 				await process_frame
 			var rs := _screen(m)
 			check(rs != null, "the board opens again after the fight")
