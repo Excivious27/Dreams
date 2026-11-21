@@ -189,7 +189,8 @@ func _process(delta: float) -> void:
 			# they drift loose instead of marching down in a grid.
 			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind,
 				"fall": randf_range(14.0, 30.0) if leafy else 18.0, "sway": randf_range(6.0, 16.0) if leafy else 8.0, "wob": randf_range(0.6, 1.4) if leafy else 1.0,
-				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind == "petal_pink" else randf_range(0.35, 0.55)) if leafy else 0.5})
+				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind == "petal_pink" else randf_range(0.35, 0.55)) if leafy else 0.5,
+				"tint": [Color.WHITE, Color(1.0, 0.75, 0.6), Color(1.0, 0.95, 0.55), Color(0.85, 0.55, 0.4)][randi() % 4] if pkind == "leaf_orange" else Color.WHITE})  # fall leaves in mixed colours (c14b_18-08)
 		for p: Dictionary in _parts:
 			if weather == "fireflies":
 				p["t"] += delta
@@ -534,7 +535,7 @@ func _on_draw() -> void:
 		var f: int = int(p["f"]) % n
 		if p.has("rot") and (weather in ["leaves", "petals"] or _sprinkle() != ""):
 			var sz := Vector2(cw, ch) * float(p.get("sz", 0.5))
-			var tint := Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else Color.WHITE  # no petal art: pink leaves
+			var tint: Color = Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else p.get("tint", Color.WHITE)  # no petal art: pink leaves
 			tint.a *= _fade
 			_canvas.draw_set_transform(p["pos"], float(p["rot"]), Vector2.ONE)
 			_canvas.draw_texture_rect_region(t, Rect2(-sz / 2.0, sz), Rect2(f * cw, 0, cw, ch), tint)
