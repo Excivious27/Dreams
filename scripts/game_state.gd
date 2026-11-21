@@ -3847,11 +3847,18 @@ static func in_greenhouse(key: String) -> bool:
 
 
 ## A crop's season can be "any", one season, or a list of seasons.
+## C16a P5 (c16a_06-11): "any" means spring to fall outdoors; winter outdoors takes a winter crop or
+## one of these cold-proof crystal crops (or the greenhouse plot, which callers check).
+const WINTER_HARDY := ["crystal_lettuce", "crystal_melon", "crystal_tomato", "glowcap"]
+
+
 static func crop_fits_season(cd: Dictionary, se: String) -> bool:
 	var cs: Variant = cd.get("season", "any")
 	if cs is Array:
 		return se in cs
-	return str(cs) == "any" or str(cs) == se
+	if str(cs) == "any":
+		return se != "winter" or bool(cd.get("winter_hardy", false)) or str(cd.get("yield", "")) in WINTER_HARDY
+	return str(cs) == se
 
 
 static func _sprinklers_water() -> void:

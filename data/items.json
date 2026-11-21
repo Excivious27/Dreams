@@ -21954,7 +21954,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_cat_tower",
-  "desc": "The bees will thank you.",
+  "desc": "The bees will thank you. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21965,7 +21965,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_cat_tower_b",
-  "desc": "Gives the yard some character.",
+  "desc": "Gives the yard some character. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21987,7 +21987,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_crystal_cluster",
-  "desc": "Something nice to see from the porch.",
+  "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -21998,7 +21998,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_crystal_cluster_b",
-  "desc": "Something nice to see from the porch.",
+  "desc": "Something nice to see from the porch. One piece of the Homestead Yard Set.",
   "decor": true,
   "arc": "penguins"
  },
@@ -22020,7 +22020,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_fence_gold",
-  "desc": "A neat line around your place. One piece of the Picket and Rail Set.",
+  "desc": "A neat line around your place. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22073,7 +22073,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_fence_neon",
-  "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+  "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22084,7 +22084,7 @@
   "rarity": "rare",
   "tier": 3,
   "icon": "decor/dc_y_fence_neon_v",
-  "desc": "A warm glow for the evening. One piece of the Picket and Rail Set.",
+  "desc": "A warm glow for the evening. One piece of the Chain and Rail Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22351,7 +22351,7 @@
   "rarity": "legendary",
   "tier": 5,
   "icon": "decor/dc_y_lowrider_bounce_icon",
-  "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Show Ribbon Yard Set.",
+  "desc": "A lowrider that bounces on its springs. Shows off all day. One piece of the Block Party Yard Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22406,7 +22406,7 @@
   "rarity": "epic",
   "tier": 4,
   "icon": "decor/dc_y_neon_chase_arch_icon",
-  "desc": "A warm glow for the evening. One piece of the Show Ribbon Yard Set.",
+  "desc": "A warm glow for the evening. One piece of the Block Party Yard Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22449,7 +22449,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_y_path_checker_icon",
-  "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+  "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22460,7 +22460,7 @@
   "rarity": "common",
   "tier": 1,
   "icon": "decor/dc_y_path_ice_brick_icon",
-  "desc": "A neat way across the yard. One piece of the Cobble Path Set.",
+  "desc": "A neat way across the yard.",
   "decor": true,
   "arc": "penguins"
  },
@@ -22481,7 +22481,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_path_neon_asphalt_icon",
-  "desc": "Flick it on and the room changes mood. One piece of the Cobble Path Set.",
+  "desc": "Flick it on and the room changes mood. One piece of the Street Paving Set.",
   "decor": true,
   "arc": "gangsters"
  },
@@ -22492,7 +22492,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "decor/dc_y_path_pebble_icon",
-  "desc": "Keeps your boots out of the mud. One piece of the Cobble Path Set.",
+  "desc": "Keeps your boots out of the mud. One piece of the Street Paving Set.",
   "decor": true
  },
  "dc_y_penguin_statue": {

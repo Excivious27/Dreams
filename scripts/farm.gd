@@ -1495,7 +1495,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			var se := GameState.season()
 			if not GameState.crop_fits_season(pcd, se) and not GameState.in_greenhouse(key) and not bool(pcd.get("tree", false)):
 				var cs: Variant = pcd.get("season", "any")
-				hud.toast("%s is a %s crop. It won't grow in %s%s." % [GameState.item_name(str(pcd.get("yield", it["crop"]))), " or ".join(cs) if cs is Array else str(cs), se, " (try the greenhouse plot)" if Builds.is_built("greenhouse") else ""], Color(1, 0.8, 0.6))
+				if str(cs) == "any":  # C16a P5 (c16a_06-11): all-season crops sleep through winter outdoors
+					hud.toast("%s sleeps in winter outdoors%s." % [GameState.item_name(str(pcd.get("yield", it["crop"]))), " (try the greenhouse plot)" if Builds.is_built("greenhouse") else ""], Color(1, 0.8, 0.6))
+				else:
+					hud.toast("%s is a %s crop. It won't grow in %s%s." % [GameState.item_name(str(pcd.get("yield", it["crop"]))), " or ".join(cs) if cs is Array else str(cs), se, " (try the greenhouse plot)" if Builds.is_built("greenhouse") else ""], Color(1, 0.8, 0.6))
 				Music.instance(get_tree()).sfx("nope")
 				return true
 			# It grows on the nights from today to day 27; it dies at the season's turn.

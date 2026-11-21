@@ -794,12 +794,31 @@ for k0, e in ENTRIES.items():
         if s0 and s0 not in BUILT_SETS:
             SETS.setdefault(s0, {'name': s0.replace('wear_', '').replace('_', ' ').title() + ' Set', 'arc': e['arc'], 'pieces': []})
             SETS[s0]['pieces'].append(k0)
+# C16a P5 (c16a_09-01): an auto-built set's arc is its one-arc pieces' arc when they all agree, else both
+# (it used to take the first piece's arc, so Picket and Rail / Cobble Path / Show Ribbon Yard were unfinishable).
+# Mixed sets split into arc twins (sid = penguins + shared pieces, sid_g = gangsters + shared pieces).
+for sid in [k for k in SETS if k not in BUILT_SETS]:
+    s = SETS[sid]
+    arcs = {ENTRIES[p]['arc'] for p in s['pieces'] if ENTRIES[p]['arc'] not in ('both', '')}
+    if len(arcs) == 1:
+        s['arc'] = arcs.pop()
+    elif len(arcs) > 1:
+        both_p = [p for p in s['pieces'] if ENTRIES[p]['arc'] in ('both', '')]
+        SETS[sid + '_g'] = dict(s, arc='gangsters', pieces=both_p + [p for p in s['pieces'] if ENTRIES[p]['arc'] == 'gangsters'])
+        s['arc'] = 'penguins'; s['pieces'] = both_p + [p for p in s['pieces'] if ENTRIES[p]['arc'] == 'penguins']
+        for p in SETS[sid + '_g']['pieces']:
+            if ENTRIES[p]['arc'] == 'gangsters':
+                ENTRIES[p]['sets'] = [sid + '_g' if x == sid else x for x in ENTRIES[p].get('sets', [])]
+                if ENTRIES[p].get('set') == sid: ENTRIES[p]['set'] = sid + '_g'
+    else:
+        s['arc'] = 'both'
 SET_NAMES = {'casino': 'Lucky Lounge Set'}   # c10b_13_01: no "casino" in a set name
 for sid, s in SETS.items():
     if sid in SET_NAMES:
         s['name'] = SET_NAMES[sid]
-    if s.get('arc', 'both') in ('both', ''):   # c10b_07: a both-arc set never needs a one-arc piece (Arcade Den 11/12)
-        drop = [p for p in s['pieces'] if ENTRIES[p]['arc'] not in ('both', '')]
+    if True:   # c10b_07 + C16a P5: a set never needs a piece of the other arc (Arcade Den 11/12, Picket and Rail)
+        sa = s.get('arc', 'both')
+        drop = [p for p in s['pieces'] if ENTRIES[p]['arc'] not in ('both', '') and (sa in ('both', '') or ENTRIES[p]['arc'] != sa)]
         s['pieces'] = [p for p in s['pieces'] if p not in drop]
         for p in drop:
             ENTRIES[p]['sets'] = [x for x in ENTRIES[p].get('sets', []) if x != sid]
@@ -1342,6 +1361,7 @@ SET_RENAME = {'cottage': 'Cottage Classics Set', 'country': 'Country Comforts Se
               'cosy_kitchen': 'Cosy Kitchen Set', 'reading_nook': 'Reading Nook Set', 'rec_trophies': 'Prize Trophy Case Set',
               'yard_kit': 'Homestead Yard Set', 'yard_gang': 'Back-Lot Hangout Set', 'yard_show': 'Show Ribbon Yard Set',
               'yard_path': 'Cobble Path Set', 'yard_fence': 'Picket and Rail Set', 'yard_lights': 'Lamplight Yard Set',
+              'yard_path_g': 'Street Paving Set', 'yard_fence_g': 'Chain and Rail Set', 'yard_show_g': 'Block Party Yard Set',
               'yard_seasonal': 'Four Seasons Yard Set'}
 for sid, s in SETS.items():
     if sid in SET_RENAME:
@@ -1472,6 +1492,9 @@ for e in ENTRIES.values():
 for st2 in SETS.values():
     if st2.get('arc') == 'both':
         st2['arc'] = ''
+for sid, st2 in SETS.items():   # C16a P5 self-check: every set is finishable in the arc(s) that show it
+    for p in st2['pieces']:
+        assert ENTRIES[p]['arc'] in ('', st2.get('arc', '')), (sid, p, ENTRIES[p]['arc'], st2.get('arc'))
 with open(os.path.join(D, 'decor.json'), 'w') as f:
     json.dump(out, f, indent=1, ensure_ascii=False, sort_keys=True)
     f.write('\n')

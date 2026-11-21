@@ -19,6 +19,11 @@ var _chasm := {}
 ## layout is re-carved each day; every 5th floor is a lift stop you keep; every
 ## 10th floor has a prize chest; floor 150's shaft opens the Hollow Heart.
 const MAX_FLOOR := 150
+## C16a P5 (c16a_07-15): the deep end waits. Floors past DEEP_FLOOR open in DEEP_YEAR (Granite's
+## year-long shaft repair), the Hollow Heart in HEART_YEAR. Floors 1-100 stay year-1 content.
+const DEEP_FLOOR := 100
+const DEEP_YEAR := 2
+const HEART_YEAR := 3
 const THEMES := [
 	{"cave": "earth", "name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
 	{"cave": "earth", "name": "Mossy Hollows", "ores": ["copper"], "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
@@ -917,6 +922,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"down":
 			if _grotto and not GameState.run["flags"].has("grotto_done"):
 				hud.toast("The ladder is under the water. You'd need to swim like she does.", Color(0.8, 0.9, 1.0))
+				return true
+			var dl := deep_lock(floor_no)
+			if dl != "":
+				hud.toast(dl, Color(0.8, 0.9, 1.0))
 				return true
 			if floor_no >= MAX_FLOOR:
 				GameState.run["flags"]["hollow_heart_open"] = true
@@ -2429,3 +2438,12 @@ func _ore_glimmer() -> void:
 		var t: Dictionary = things[c]
 		if str(t.get("type", "")) == "rock" and str(t.get("ore", "stone")) != "stone" and (c - pc).length() <= 6.0:
 			fx("sparkle", cell_center(c) + Vector2(0, -8), 8.0, 0.5)
+
+
+## C16a P5 (c16a_07-15): why the shaft below `fl` is shut this year ("" = open).
+static func deep_lock(fl: int) -> String:
+	if fl >= MAX_FLOOR and GameState.year() < HEART_YEAR and not GameState.run["flags"].has("hollow_heart_open"):
+		return "The rock below is warm and sealed. Granite: \"The heart opens in year %d. It's waiting for you.\"" % HEART_YEAR
+	if fl >= DEEP_FLOOR and fl < MAX_FLOOR and GameState.year() < DEEP_YEAR:
+		return "Granite's rope ends here. The deep shaft needs a year-long repair: it opens in year %d." % DEEP_YEAR
+	return ""

@@ -137,7 +137,8 @@
     "crystal_refined": 3
    },
    "give": "sprinkler_iridium",
-   "tier": 4
+   "tier": 4,
+   "year": 2
   },
   {
    "id": "dc_stool_wood",

@@ -816,6 +816,16 @@ for sid, st in B.items():
     # c16a_10-02 / c16a_09-17: the top tier of a 4-tier station waits for year 2
     if len(st['tiers']) >= 4:
         st['tiers'][3].setdefault('unlock', {})['year'] = 2
+# c16a_06-09: the top farm and ranch tiers wait for year 2 (Builds.gate reads unlock.year).
+YEAR2_TIERS = {'Grand Barn', 'Grand Enclosure', 'Grand Aviary', 'Grand Terrarium', 'Star Dome'}
+for bid, bd in B.items():
+    if isinstance(bd, dict):
+        for t in bd.get('tiers', []):
+            if t.get('name') in YEAR2_TIERS:
+                t.setdefault('unlock', {})['year'] = 2
+for bk, b in books.items():
+    for r in b:
+        if r['id'] == 'sprinkler_iridium': r['year'] = 2
 # c16a_10-03 / c16a_09-05: both-arc stations in the gangster arc's own words (Builds._arc_words reads name_gang).
 GANG_TIER = {'Workbench': 'Work Bench', "Carpenter's Bench": 'Shop Bench', 'Workshop': 'Garage Shop', 'Master Workshop': 'Fab Shop',
              'Stone Furnace': 'Scrap Furnace', 'Brick Furnace': 'Smelter', 'Starfire Furnace': 'Arc Furnace',
