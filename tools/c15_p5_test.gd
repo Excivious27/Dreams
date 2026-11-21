@@ -114,6 +114,26 @@ func _run() -> void:
 			var wp: Array = m.get("_win_props")
 			if se == "winter" and not wp.is_empty():
 				check((wp[0][0] as Sprite2D).modulate == InteriorSeason.WINDOW_TINT["winter"], "%s winter: frosted windows" % iid)
+	# --- rain splashes (c15_14-06) ---
+	GameState.run["day"] = 5
+	var fm: GameMap = await _load("farm")
+	var sk = fm.get("sky")
+	check(sk != null, "farm has a weather layer")
+	if sk != null:
+		paused = false  # an arrival dialogue may hold the tree
+		sk.weather = "rain"
+		var gt := 0.0
+		var most := 0
+		for i in 60:
+			await process_frame
+			paused = false
+			gt += root.get_process_delta_time()
+			most = maxi(most, (sk._splashes as Array).size())
+		check(most >= 1 and most <= 16, "rain: a few ground splashes (%d)" % most)
+		sk.weather = "clear"
+		for i in 30:
+			await process_frame
+		check((sk._splashes as Array).is_empty(), "clear: splashes gone")
 	# --- sprinkle ---
 	check(Scenery.sprinkle_kind("spring") == "petal_pink" and Scenery.sprinkle_kind("fall") == "leaf_orange", "spring petals, fall leaves")
 	check(Scenery.sprinkle_kind("summer") == "leaf_green" and Scenery.sprinkle_kind("winter") == "snowflake", "summer leaves, winter flurries")

@@ -265,6 +265,7 @@ func _tick_precip(delta: float) -> void:
 				dr["p"] = Vector2(randf_range(0, _w + 80), randf_range(-30, -5))
 	elif not _drops.is_empty():
 		_drops.clear()
+	_tick_splashes(delta, calm)
 	if weather in ["snow", "blizzard"] and overhead:
 		var bl := weather == "blizzard"
 		var k := (1.45 if bl else 1.0) * (0.5 if calm else 1.0)
@@ -364,7 +365,47 @@ func _draw_aurora(dark: float) -> void:
 			PackedColorArray([cols[i], cols[i + 1], cols[i + 2], cols[i + 5]]))
 
 
+## C15 P5 (c15_14-06): the sliced rain splash art finally lands: a few ground splashes
+## per second on screen in rain/storm (budgeted, fewer with reduced motion).
+var _splashes: Array = []  # {p, t}
+const SPLASH_RATE := {"rain": 7.0, "storm": 12.0}
+const SPLASH_LIFE := 0.3
+var _splash_acc := 0.0
+
+
+func _tick_splashes(delta: float, calm: bool) -> void:
+	for sp: Dictionary in _splashes:
+		sp["t"] += delta
+	_splashes = _splashes.filter(func(sp: Dictionary) -> bool: return float(sp["t"]) < SPLASH_LIFE)
+	if not overhead or not SPLASH_RATE.has(weather) or not Art.has("fx", "rain_splash"):
+		_splash_acc = 0.0
+		return
+	_splash_acc += delta * float(SPLASH_RATE[weather]) * (0.5 if calm else 1.0) * _fade
+	while _splash_acc >= 1.0 and _splashes.size() < 16:
+		_splash_acc -= 1.0
+		_splashes.append({"p": Vector2(randf_range(8, _w - 8), randf_range(_h * 0.15, _h - 8)), "t": 0.0})
+	_splash_acc = minf(_splash_acc, 1.0)
+
+
+func _draw_splashes() -> void:
+	if _splashes.is_empty():
+		return
+	var t := Art.tex("fx", "rain_splash")
+	if t == null:
+		return
+	var info := Art.info("fx", "rain_splash")
+	var cw := float(info.get("cell_w", 36))
+	var ch := float(info.get("cell_h", 28))
+	var n := int(info.get("frames", 3))
+	for sp: Dictionary in _splashes:
+		var k := float(sp["t"]) / SPLASH_LIFE
+		var f := mini(n - 1, int(k * n))
+		var sz := Vector2(cw, ch) * 0.35
+		_canvas.draw_texture_rect_region(t, Rect2(sp["p"] - Vector2(sz.x / 2.0, sz.y), sz), Rect2(f * cw, 0, cw, ch), Color(1, 1, 1, 0.75 * (1.0 - k * 0.5)))
+
+
 func _draw_precip() -> void:
+	_draw_splashes()
 	if not _drops.is_empty():
 		var pts := PackedVector2Array()
 		var cols := PackedColorArray()
