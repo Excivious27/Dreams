@@ -195,16 +195,18 @@ class Glow extends Node2D:
 		born = PlayClock.now()
 		if mode == "steam":
 			return  # steam is white mist: normal blend
-		var cm := CanvasItemMaterial.new()
-		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-		material = cm
-		born = PlayClock.now()
+		material = MagicFx._add_mat()  # shared additive material
+
+	var _last := -1.0
 
 	func _process(_d: float) -> void:
-		if mode == "burst" and PlayClock.now() - born > 1.4:
+		var t := PlayClock.now()
+		if mode == "burst" and t - born > 1.4:
 			queue_free()
 			return
-		queue_redraw()
+		if absf(t - _last) >= 1.0 / 30.0:  # <= 30 Hz redraw
+			_last = t
+			queue_redraw()
 
 	func _draw() -> void:
 		var t := PlayClock.now()

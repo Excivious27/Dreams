@@ -96,10 +96,15 @@ static func attach(m: GameMap, key: String, extra: Dictionary = {}) -> MagicFx:
 
 
 ## Light adds to what's under it: sparkles glow on dark grass instead of sitting on it.
+## One shared material for every additive layer (P1 budget: no material per node).
+static var _add_shared: CanvasItemMaterial
+
+
 static func _add_mat() -> CanvasItemMaterial:
-	var cm := CanvasItemMaterial.new()
-	cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	return cm
+	if _add_shared == null:
+		_add_shared = CanvasItemMaterial.new()
+		_add_shared.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	return _add_shared
 
 
 static func reduced() -> bool:
@@ -167,10 +172,16 @@ func strength() -> float:
 	return lerpf(float(prof.get("day", 0.7)), 1.0, d)
 
 
+var _last_draw := -1.0
+
+
 func _process(_delta: float) -> void:
 	if map == null or not is_visible_in_tree():
 		return
 	var t := now()
+	if absf(t - _last_draw) < 1.0 / 30.0:  # P1 budget: ambient layers redraw at <= 30 Hz
+		return
+	_last_draw = t
 	var vr := view()
 	if vr.size.x <= 0.0:
 		return
