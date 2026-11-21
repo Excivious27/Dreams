@@ -2378,7 +2378,7 @@ func _place_river_props() -> void:
 	WorldGen.add_critters(self, Rect2i(2, 38, cols - 4, 18), 7172, 8, ["dragonfly", "frog", "heron", "duck", "dragonfly", "butterfly_blue"])
 
 
-func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "", uid := "") -> void:
+func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "", uid := "", strip := "idle") -> Node:
 	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse3", "goat": "goat2"}.get(kind, kind)  # goat2: same sheet style as the cows and sheep (C5)
 	if not Art.has("animals/" + full, "idle") and kind != full and Art.has("animals/" + kind, "idle"):
 		full = kind  # ranch.json art names an animals/<id> strip directly
@@ -2386,6 +2386,8 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 		var fa := FarmAnimal.new()
 		if uid != "":
 			fa.set_meta("uid", uid)  # roster key (C11a): care state lives in run.ranch.animals[uid]
+		if strip != "idle":
+			fa.set("_strip", strip)  # a young one drawn from its parent's baby strip (Ranch art.baby)
 		fa.setup(self, str(full), c, pen, is_baby)
 		if nm == "" and kind == "goat":
 			nm = "goat_%d_%d" % [c.x, c.y]  # (drawn from goat2 since C5: the name, and its friendship, stay)
@@ -2394,9 +2396,9 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 		if nm != "":
 			fa.name = nm  # one name for life (a hatched chick keeps its friendship when grown)
 		add_child(fa)
-		return
+		return fa
 	if not Art.has("props", kind):
-		return
+		return null
 	var a := AnimatedSprite2D.new()
 	a.sprite_frames = Art.frames("props", {"idle": kind}, {"idle": 2.0})
 	a.animation = "idle"
@@ -2406,6 +2408,7 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 	add_child(a)
 	a.play("idle")
 	blocked[c] = true
+	return a
 
 
 ## Sprinklers and scarecrows: placed on open farm ground, picked up with USE.
@@ -2735,18 +2738,20 @@ func _spawn_roster(builds: Dictionary) -> void:
 			var a := Ranch.animal(uid)
 			if bool(a.get("team", false)) and not bool(a.get("home_today", false)):
 				continue  # out with the team (P4): not in the pen twice (c11a_09)
-			# ranch.json look first: variant art, tint, baby strip and height (Ranch.art_for; c11b_01-10).
-			var ra := Ranch.art_for(uid)
-			var rg := str(ra.get("group", ""))
-			if rg != "" and (Art.has(rg, "idle") or Art.has(rg, str(ra.get("strip", "idle")))):
-				var fa := FarmAnimal.new()
-				fa.set_meta("uid", uid)
-				fa.setup_uid(self, uid, cells[i], pen)
-				add_child(fa)
-				continue
 			var adult := RanchFarm.is_adult(uid)
 			var kind := RanchFarm.art_for(str(a.get("species", "")), adult, str(a.get("variant", "")))
-			_animal(kind, cells[i], pen, not adult, "", uid)
+			# ranch.json look first: variant art (a list), baby strip and tint (Ranch.art_for; c11b_01-10).
+			# Care, hints and goods stay on the one farm path (RanchFarm / pet_farm_animal).
+			var ra := Ranch.art_for(uid)
+			var rg := str(ra.get("group", ""))
+			var strip := str(ra.get("strip", "idle"))
+			if rg != "" and (Art.has(rg, "idle") or Art.has(rg, strip)):
+				kind = rg.trim_prefix("animals/")
+			else:
+				strip = "idle"
+			var fa := _animal(kind, cells[i], pen, not adult, "", uid, strip)
+			if fa is FarmAnimal and ra.get("tint", null) is Color:
+				(fa as FarmAnimal).modulate = ra["tint"]
 
 
 ## Homes with pens: the coop and barn always, plus any ranch.json building with a pen.
