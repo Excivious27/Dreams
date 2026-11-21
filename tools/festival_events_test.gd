@@ -215,5 +215,31 @@ func _run() -> void:
 		if str((current_scene as GameMap).things[c].get("type", "")) == "festival_venue":
 			none = false
 	check(none, "no Tide Feast spot the next day")
+	# Marina festivals at the beach: derby (tier 2, fall 9), regatta (tier 3, summer 18), moon jellies (year 2, night).
+	Marina.st()["tier"] = 3
+	var fish := ""
+	for id in GameState.items:
+		if str(GameState.items[id].get("type", "")) == "fish":
+			fish = str(id)
+			break
+	GameState.add_item(fish, 1)
+	for f: Array in [["derby", 65, 10 * 60], ["regatta", 46, 11 * 60], ["moon_jellies", 112 + 55, int(GameState.sunset()) + 60]]:
+		GameState.run["day"] = int(f[1])
+		GameState.run["time"] = int(f[2])
+		change_scene_to_file("res://scenes/beach.tscn")
+		for k in 12:
+			await process_frame
+		var bm := current_scene as GameMap
+		var sp := Vector2i(-1, -1)
+		for c: Vector2i in bm.things:
+			if str(bm.things[c].get("type", "")) == "festival_venue" and str(bm.things[c].get("fest", "")) == str(f[0]):
+				sp = c
+		check(sp.x >= 0, "%s spot on the beach" % f[0])
+		if sp.x >= 0:
+			picks = [0, 0, 0, 0]
+			bm.interact(sp, bm.things[sp])
+			await _drive()
+			check(GameState.run["flags"].has("fest_%s_%d" % [f[0], int(f[1])]), "%s played" % f[0])
+	check(FestivalExtra.derby_rivals(1)[0] < FestivalExtra.derby_rivals(4)[0], "derby rivals grow by year")
 	print("festival_events_test: ", "OK" if fails == 0 else "FAILED (%d)" % fails)
 	quit(0 if fails == 0 else 1)

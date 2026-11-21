@@ -5,10 +5,10 @@ extends RefCounted
 ## Winter Market / Night Market, Gift Swap Feast / Year's End Swap. One try per festival day (key);
 ## every choice is seeded by the day so a reload replays the same festival. All ages.
 
-const HANDLED := ["blossom", "founders", "hollow", "winter_market", "gift_swap", "tide_feast"]
+const HANDLED := ["blossom", "founders", "hollow", "winter_market", "gift_swap", "tide_feast", "derby", "regatta", "moon_jellies"]
 ## Festivals held off the town plaza: their scene adds the festival spot through venue_thing(m)
 ## (one hook line in the scene's build) and routes it through interact(m, thing).
-const VENUE := ["tide_feast"]
+const VENUE := ["tide_feast", "derby", "regatta", "moon_jellies"]
 const STEPS := ["up", "down", "left", "right"]
 
 
@@ -50,6 +50,12 @@ static func play(m: GameMap, fest: String, key: String) -> void:
 			await _gift_swap(m, key)
 		"tide_feast":
 			await _tide_feast(m, key)
+		"derby":
+			await _derby(m, key)
+		"regatta":
+			await _regatta(m, key)
+		"moon_jellies":
+			await _jellies(m, key)
 
 
 ## Today's festival row held in this map's scene (venue.scene), {} when none.
@@ -84,6 +90,9 @@ static func venue_thing(m: GameMap) -> void:
 		if found:
 			break
 	var c: Array = [at.x, at.y]
+	if str(r["id"]) == "moon_jellies":  # glowing jellies drift over the water round the spot
+		var real: Node = m.get("_painter_of") if m.get("_painter_of") is Node else m
+		FestivalSky.make(real, "jellies", Rect2(Vector2(at - Vector2i(10, 0)) * GameMap.TILE, Vector2(20, 12) * GameMap.TILE))
 	m.set_thing(int(c[0]), int(c[1]), {"type": "festival_venue", "fest": str(r["id"]), "hint": "A: " + FestivalWords.name_of(str(r["id"]))}, false)
 
 
@@ -110,6 +119,13 @@ static func _venue_play(m: GameMap, fest: String) -> void:
 		await play(m, fest, key)
 		if GameState.run["flags"].has(key):
 			RecCenter.festival_bonus(m, key)
+			if not GameState.run["flags"].has(key + "_dc"):
+				GameState.run["flags"][key + "_dc"] = true
+				var d := FestivalWords.def(fest)
+				var pool := str(d.get("prize_pool", ""))
+				if not (Decor.data().get("pools", {}) as Dictionary).has(pool):
+					pool = "festival_%s_prize" % str(d.get("season", "summer"))
+				DecorSources.roll_grant(m, pool, 4.0 if int(GameState.run["flags"].get(key + "_place", 0)) == 1 else 0.0, "festival")
 	if m.player:
 		m.player.frozen = false
 
@@ -447,3 +463,94 @@ static func _gift_swap(m: GameMap, key: String) -> void:
 	if GameState.items.has(back):
 		m.give(back)
 	m.hud.toast("%s +%d friendship" % [str(GameState.npcs[who]["name"]), gain], Color(1, 0.8, 0.9))
+
+
+
+## Fishing Derby: bring your best fish to the judge by 2pm; scored on value and quality against two
+## seeded rivals who get better every year (capped). 300/150/50 and the keepsake roll.
+static func derby_rivals(year: int) -> Array:
+	var r := _rng(9)
+	var base := 60 + 25 * (year - 1)
+	return [mini(base + r.randi() % 40, 320), mini(base - 15 + r.randi() % 30, 300)]
+
+
+static func fish_score(id: String) -> int:
+	var q: Dictionary = GameState.quality_of(id)
+	var qp := 30 if int(q.get("i", 0)) > 0 else (20 if int(q.get("g", 0)) > 0 else (10 if int(q.get("s", 0)) > 0 else 0))
+	return GameState.item_value(id) + qp
+
+
+static func _derby(m: GameMap, key: String) -> void:
+	var host := FestivalWords.host_of("derby")
+	if (int(GameState.run.get("time", 0)) % 1440) >= 14 * 60:
+		await m.say([{"who": host, "text": "Weigh-in closed at two. Next year!"}])
+		return
+	var fish: Array = []
+	for id in GameState.run["inventory"].keys():
+		var sid := str(id)
+		if GameState.count(sid) > 0 and str(GameState.items.get(sid, {}).get("type", "")) == "fish":
+			fish.append(sid)
+	fish.sort_custom(func(a: String, b: String) -> bool: return fish_score(a) > fish_score(b))
+	fish = fish.slice(0, 4)
+	if fish.is_empty():
+		await m.say([{"who": host, "text": "No fish yet? The pier's open till two. Go catch me a big one!"}])
+		return
+	var nm: Array = []
+	for id: String in fish:
+		nm.append(GameState.item_name(id))
+	nm.append("Not now")
+	var c: int = await _ask(m, host, "What are you weighing in?", nm)
+	if c < 0 or c >= fish.size():
+		return
+	GameState.run["flags"][key] = true
+	var pick: String = fish[c]
+	var sc := fish_score(pick)
+	GameState.add_item(pick, -1)
+	var rv := derby_rivals(FestivalWords.year_of(int(GameState.run["day"])))
+	var place := 1 + int(int(rv[0]) > sc) + int(int(rv[1]) > sc)
+	GameState.run["flags"][key + "_place"] = place
+	var pay: int = [300, 150, 50][place - 1]
+	GameState.add_money(pay, "festival")
+	await m.say([{"who": host, "text": "%s on the scale... %s place! %s." % [ItemWords.with_article(GameState.item_name(pick)).capitalize(), ["First", "Second", "Third"][place - 1], Money.amount(pay)]}])
+
+
+## Regatta (penguins) / Harbour Lights ring toss (gangsters): three legs, read the water (or the
+## wind on the rings); every leg has a tell, so it is skill, not a coin flip.
+static func regatta_legs() -> Array:
+	var r := _rng(18)
+	return [r.randi() % 2, r.randi() % 2, r.randi() % 2]
+
+
+static func _regatta(m: GameMap, key: String) -> void:
+	var host := FestivalWords.host_of("regatta")
+	var c: int = await _ask(m, host, "The regatta! Three legs round the buoys. Watch the water and pick your line." if _pen()
+		else "Harbour Lights. Three rings, three bottles. Watch the breeze off the water.", ["Race" if _pen() else "Throw", "Not now"])
+	if c != 0:
+		return
+	GameState.run["flags"][key] = true
+	var legs := regatta_legs()
+	var ok := 0
+	for i in 3:
+		var tell: String = (["Dark ripples on the left: wind there. The right is glassy.", "Glassy water to the left; the right side is ruffled with wind."] if _pen()
+			else ["The flags lean left: aim right of the bottle.", "The flags lean right: aim left of the bottle."])[legs[i]]
+		var opts: Array = ["Take the left line", "Take the right line"] if _pen() else ["Aim left", "Aim right"]
+		var want: int = (1 - int(legs[i])) if not _pen() else int(legs[i])
+		var p: int = await _ask(m, "", "Leg %d. %s" % [i + 1, tell] if _pen() else "Ring %d. %s" % [i + 1, tell], opts)
+		if p == want:
+			ok += 1
+	var place := 3 - ok if ok > 0 else 3
+	GameState.run["flags"][key + "_place"] = place
+	var pay: int = [250, 120, 40][place - 1]
+	GameState.add_money(pay, "festival")
+	await m.say([{"who": host, "text": "%d of 3! %s" % [ok, "%s place and %s." % [["First", "Second", "Third"][place - 1], Money.amount(pay)]]}])
+
+
+## Moon Jellies / Neon Tide (year 2+, night): watch from the pier; a keepsake roll.
+static func _jellies(m: GameMap, key: String) -> void:
+	var host := FestivalWords.host_of("moon_jellies")
+	GameState.run["flags"][key] = true
+	var gold := FestivalWords.year_of(int(GameState.run["day"])) >= 3
+	await m.say([{"who": host, "text": "There they are. Hundreds of them, glowing like little moons." if _pen() else "Glow buoys on, and the jellies come up to meet them."},
+		{"text": "A golden one drifts right past the pier!" if gold else "They drift past the pier, slow and bright."}])
+	if gold:
+		GameState.run["flags"][key + "_place"] = 1

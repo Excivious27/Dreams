@@ -531,7 +531,7 @@
    "name": "Regatta",
    "tier": 3,
    "season": "summer",
-   "day": 21,
+   "day": 18,
    "arc": "penguins",
    "line": "Bunting on every mast: the marina regatta is on today."
   },
@@ -539,7 +539,7 @@
    "name": "Fishing Derby",
    "tier": 2,
    "season": "fall",
-   "day": 7,
+   "day": 9,
    "arc": "both",
    "line": "Fishing Derby! Biggest fish on the pier by 2pm wins. Ines is judging."
   },
@@ -547,7 +547,7 @@
    "name": "Harbour Lights",
    "tier": 3,
    "season": "summer",
-   "day": 21,
+   "day": 18,
    "arc": "gangsters",
    "line": "Harbour Lights night market: neon stalls and ring toss all down the boardwalk."
   }
