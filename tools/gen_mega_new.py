@@ -912,6 +912,7 @@ def build_area(aid, mega, spec, links_geom):
         R["gen"]["theme"] = {"trees": [], "bushes": False, "logs": False, "band": []}
     if spec["look"] in ("rail", "gilt") or aid in CAVE or aid.startswith("hollow_"):
         R["band_style"] = "stone"
+        R["forage_sprite"] = "props/cave_mushroom" if (aid in CAVE or aid.startswith("hollow_")) else ("props/flowerbed_yellow" if spec["look"] == "gilt" else "props/planter2_2")
     if is_hub:
         R["gen"]["region_count"] = max(10, R["gen"].get("region_count", 20) // 2)
     G = Grid(cols, rows)

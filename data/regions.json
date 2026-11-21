@@ -17396,6 +17396,7 @@
   },
   "cave": true,
   "band_style": "stone",
+  "forage_sprite": "props/cave_mushroom",
   "paths": [
    [
     21,
@@ -17797,6 +17798,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/planter2_2",
   "paths": [
    [
     21,
@@ -18608,6 +18610,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/planter2_2",
   "paths": [
    [
     26,
@@ -20352,6 +20355,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/planter2_2",
   "paths": [
    [
     24,
@@ -20668,6 +20672,7 @@
   },
   "cave": true,
   "band_style": "stone",
+  "forage_sprite": "props/cave_mushroom",
   "paths": [
    [
     22,
@@ -22305,6 +22310,7 @@
   },
   "cave": true,
   "band_style": "stone",
+  "forage_sprite": "props/cave_mushroom",
   "paths": [
    [
     22,
@@ -24698,6 +24704,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/flowerbed_yellow",
   "paths": [
    [
     21,
@@ -25149,6 +25156,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/flowerbed_yellow",
   "paths": [
    [
     24,
@@ -25504,6 +25512,7 @@
    ]
   },
   "band_style": "stone",
+  "forage_sprite": "props/flowerbed_yellow",
   "paths": [
    [
     24,
@@ -25826,6 +25835,7 @@
   },
   "cave": true,
   "band_style": "stone",
+  "forage_sprite": "props/cave_mushroom",
   "paths": [
    [
     22,
@@ -26192,6 +26202,7 @@
    }
   },
   "band_style": "stone",
+  "forage_sprite": "props/cave_mushroom",
   "paths": [
    [
     24,

@@ -605,10 +605,22 @@ func after_ready() -> void:
 	for mc: Vector2i in things:
 		if str(things[mc].get("type", "")) == "mrock" and not props.has(mc):
 			prop("props", "mrock_stone_%d" % (absi(mc.x + mc.y) % 2), mc)  # every ore rock shows
+	# C14 (c14_08-20, c14_09-14): no forage bush on a road, and urban/cave areas show their own
+	# forage look (regions.json "forage_sprite": "group/name") instead of a meadow flower clump.
+	var fsp := str(R.get("forage_sprite", ""))
+	var road := {}
+	if fsp != "":
+		for pr in R.get("paths", []):
+			for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+				for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+					road[Vector2i(x, y)] = true
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
-			if blocked.has(k):  # walled in by a landmark placed after the roll
+			if blocked.has(k) or road.has(k):  # walled in by a landmark placed after the roll / on the road
 				things.erase(k)
+				continue
+			if fsp != "" and Art.has(fsp.get_slice("/", 0), fsp.get_slice("/", 1)):
+				prop(fsp.get_slice("/", 0), fsp.get_slice("/", 1), k, 0, 0.0, false)
 				continue
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")

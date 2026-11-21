@@ -66,6 +66,7 @@ func _run() -> void:
 		for wb in R[id].get("water_blobs", []):
 			ok(str(wb.get("shore", "")) != "grass", "%s pool has no grass bank" % id)
 	ok(R["wind_storm_shelf"].has("light"), "Storm Shelf is dark")
+	ok(str(R["gilt_vaults"].get("forage_sprite", "")) == "props/cave_mushroom" and str(R["iron_junction"].get("forage_sprite", "")) == "props/planter2_2", "urban/cave forage look")
 	# art swaps
 	var desert: Array = R["desert_dune_sea"]["gen"]["region_props"]
 	ok(not desert.any(func(n): return str(n).begins_with("dune_")), "desert scatter drops the mis-sliced dune_ props")
