@@ -97,6 +97,16 @@ func _run() -> void:
 	for id: String in town:
 		check(CharacterLibrary.has_character("npc_%s_winter" % id) or CharacterLibrary.has_character("npc_%s_all" % id), "%s has a winter walker" % id)
 
+	# --- festival outfits: per festival first, the one festival sheet otherwise ---
+	var outfit := {[3, 14]: ["alder", "npc_alder_festival_star"], [1, 14]: ["posy", "npc_posy_festival_lantern"], [0, 14]: ["alder", "npc_alder_festival"], [3, 5]: ["gideon", "npc_gideon_winter"], [0, 5]: ["maple", "npc_maple_spring"]}
+	for k in outfit:
+		_setup("penguins", _day(int(k[0]), int(k[1])), 12.0)
+		var n := Npc.new()
+		root.add_child(n)
+		n.setup(str(outfit[k][0]), GameState.npcs[str(outfit[k][0])], Vector2(100, 100))
+		check(n._walker == str(outfit[k][1]), "%s on %s wears %s (%s)" % [outfit[k][0], k, outfit[k][1], n._walker])
+		n.queue_free()
+
 	# --- seasonal Talk parts ---
 	_setup("penguins", _day(1, 1), 10.0)
 	check(Talk.part_ok("first") and Talk.part_ok("early") and not Talk.part_ok("late") and Talk.part_ok("y1") and not Talk.part_ok("y2"), "summer 1: first/early/y1")

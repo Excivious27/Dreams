@@ -35,6 +35,7 @@ import numpy as np  # noqa: E402
 SHEETS = {
     "c15p3/c15p3_winter_walkers_a.png": [("gideon", "winter"), ("wren", "winter"), ("alder", "winter"), ("hazel", "winter"), ("theo", "winter"), ("bram", "winter"), ("tobin", "winter")],
     "c15p3/c15p3_walkers_b.png": [("ivy", "winter"), ("benno", "winter"), ("tess", "winter"), ("wren_jr", "winter"), ("maple", "spring"), ("finn", "spring"), ("posy", "spring")],
+    "c15p3/c15p3_festival_walkers.png": [("alder", "festival_star"), ("posy", "festival_star"), ("maple", "festival_star"), ("pip", "festival_star"), ("tobin", "festival_star"), ("wren_jr", "festival_star"), ("alder", "festival_lantern"), ("posy", "festival_lantern")],
 }
 
 

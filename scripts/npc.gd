@@ -318,8 +318,13 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	var se := GameState.season()
 	# Their own seasonal sheet is npc_<id>_<season>, whatever job sprite they wear.
 	var own := "npc_%s_%s" % [npc_id, se]
-	# Festival day: their festival outfit comes first.
-	if GameState.festival_today() != "" and CharacterLibrary.has_character("npc_%s_festival" % npc_id):
+	# Festival day: their outfit for this festival first (npc_<id>_festival_<fid>, C15 P3
+	# c15_11-12), then their one festival outfit, except at a winter festival when they
+	# have a winter coat (no summer clothes at the Star Festival night).
+	var fid := GameState.festival_today()
+	if fid != "" and CharacterLibrary.has_character("npc_%s_festival_%s" % [npc_id, fid]):
+		own = "npc_%s_festival_%s" % [npc_id, fid]
+	elif fid != "" and CharacterLibrary.has_character("npc_%s_festival" % npc_id) and not (se == "winter" and CharacterLibrary.has_character(own)):
 		own = "npc_%s_festival" % npc_id
 	if CharacterLibrary.has_character(own):
 		sprite_id = own
