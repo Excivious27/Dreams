@@ -19,11 +19,11 @@
     {
      "id": "quick_hands",
      "name": "Quick Hands",
-     "desc": "Hoeing and watering cost 15% less energy (per rank)",
+     "desc": "Hoeing and watering cost 5% less energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "farm_energy": 0.15
+      "farm_energy": 0.05
      }
     },
     {
@@ -177,11 +177,11 @@
     {
      "id": "iron_will",
      "name": "Iron Will",
-     "desc": "Mining costs 15% less energy (per rank)",
+     "desc": "Mining costs 5% less energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "mine_energy": 0.15
+      "mine_energy": 0.05
      }
     },
     {
@@ -432,12 +432,15 @@
     {
      "id": "keeper_of_the_woods",
      "name": "Keeper of the Woods",
-     "desc": "Chopping costs no energy",
+     "desc": "Chopping costs half the energy",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "sap_tapper"
-     ]
+     ],
+     "effect": {
+      "wood_energy": 0.5
+     }
     },
     {
      "id": "wild_friend",
@@ -729,14 +732,14 @@
     {
      "id": "second_wind",
      "name": "Second Wind",
-     "desc": "Beating an enemy restores 5 energy (per rank)",
+     "desc": "Beating an enemy restores 2 energy (per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [
       "acrobat"
      ],
      "effect": {
-      "kill_energy": 5
+      "kill_energy": 2
      }
     },
     {

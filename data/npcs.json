@@ -753,7 +753,7 @@
    "4": "Free soup at the inn: +30 energy once a day",
    "6": "Bram's pies: 2 Orchard Pies",
    "8": "Bram's stories: a Map Scrap",
-   "10": "Bram names a dish after you (+50 max energy)"
+   "10": "Bram names a dish after you (+25 max energy)"
   },
   "home": "inn",
   "work": "inn",
@@ -1456,7 +1456,7 @@
   "perks": {
    "2": "Horses half price",
    "4": "Benno's saddle care: your horse runs 10% faster",
-   "6": "Benno's oats: +20 max energy",
+   "6": "Benno's oats: +10 max energy",
    "8": "Benno's spare tack sells for ◆250, and Tinker, a goat kid he hand-reared, comes to your barn (when it has room)",
    "10": "Benno's feed run: 6 Hay each week for your animals"
   },

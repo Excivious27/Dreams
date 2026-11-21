@@ -1354,7 +1354,7 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## Summed effect of ranks bought in a tree, e.g. bonus("combat", "damage").
 ## Ceilings for stacking effects (the big trees can't make costs negative or
 ## chances certain).
-const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
+const BONUS_CAPS := {"farm_energy": 0.3, "mine_energy": 0.3, "wood_energy": 0.5, "kill_energy": 8.0, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
 	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
 	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
@@ -1553,16 +1553,20 @@ static func gear_stat(stat: String) -> int:
 ##   floor (~90 for three); hoeing, planting and watering 15 tiles is ~27. The
 ##   keeper thresholds on floors 1-3 (mine.gd, P4) decide how many rocks a floor
 ##   really asks. tools/first_week_test.gd models a week with these numbers.
-const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.6, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.15, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.8, "swim": 0.5}
-const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building"}
+const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.45, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.12, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.5, "swim": 0.5, "spar": 8.0, "teach": 6.0}
+const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building", "spar": "combat", "teach": "ranching"}
 const ENERGY_BASE := 120
+## C16a P3: no action ever costs less than this share of its base (was 0.25).
+const ENERGY_FLOOR := 0.35
 ## C8 P1: passive max energy from summed skill levels. Was +3 a level up to 40
 ## levels (+120: the bar doubled by day 28 and stopped binding in week 3). Now
 ## +1.5 a level up to 30 levels (+45); the rest of the growth is chosen: house
 ## tiers, tree nodes (all trees together <= TREE_EN_CAP), gear, mine milestones.
 const ENERGY_PER_LEVEL := 1.5
 const ENERGY_LEVELS_MAX := 30
-const TREE_EN_CAP := 120
+const TREE_EN_CAP := 80  # C16a P3: was 120
+## C16a P3: gear energy counts up to this much in total (was uncapped).
+const GEAR_EN_CAP := 40
 const TREE_HP_CAP := 200
 
 static func level_energy(levels: int) -> int:
@@ -1588,12 +1592,12 @@ static func _apply_max_stats() -> void:
 	tree_hp = mini(tree_hp, TREE_HP_CAP)
 	tree_en = mini(tree_en, TREE_EN_CAP)
 	var base_hp := 100 + 8 * (skill_level_eff("combat") - 1) + tree_hp + gear_stat("hp")
-	var base_en := ENERGY_BASE + level_energy(levels) + tree_en + gear_stat("energy") + energy_milestones()
+	var base_en := ENERGY_BASE + level_energy(levels) + tree_en + mini(GEAR_EN_CAP, gear_stat("energy")) + energy_milestones()
 	var base_mana := 20 + 12 * (skill_level_eff("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
 	run["max_hp"] = base_hp + int(run.get("bonus_hp", 0))
-	run["max_energy"] = base_en + int(run.get("bonus_energy", 0)) + (50 if has_friend_perk("bram", 10) else 0) + (20 if has_friend_perk("posy", 8) else 0)
+	run["max_energy"] = base_en + int(run.get("bonus_energy", 0)) + (25 if has_friend_perk("bram", 10) else 0) + (20 if has_friend_perk("posy", 8) else 0)
 	run["max_mana"] = base_mana + int(run.get("bonus_mana", 0))
 	if int(run["max_hp"]) > 0 and int(run["hp"]) <= 10 and int(run.get("hp_scale", 6)) == 6:
 		run["hp"] = base_hp  # old 6-heart saves: refill on the new scale
@@ -1619,8 +1623,11 @@ static func energy_cost_f(task: String) -> float:
 	if sk != "" and run.has("skills"):
 		# C6 P7: early work costs a little more (x1.15 at level 1, back to x1.0
 		# by level 5), then the usual -3.5% a level down to the 0.6 floor.
+		# C16a P3: the early x1.15 is field work only (hoe/can/plant/scythe), not
+		# pickaxe/axe/rod: Tom's day-1 mine trip cost half his bar. Skill floor 0.6 -> 0.7.
 		var lv := float(skill_level(sk) - 1)
-		skill_mult = maxf(0.6, 1.0 - 0.035 * lv) * (1.0 + 0.15 * maxf(0.0, 1.0 - lv / 4.0))
+		var early := 0.15 if task in ["hoe", "can", "plant", "scythe"] else 0.0
+		skill_mult = maxf(0.7, 1.0 - 0.035 * lv) * (1.0 + early * maxf(0.0, 1.0 - lv / 4.0))
 	var tier := 0
 	if task in ["sword", "dodge"]:
 		tier = 0  # a better blade hits harder; it doesn't swing lighter
@@ -1629,12 +1636,20 @@ static func energy_cost_f(task: String) -> float:
 	elif task == "plant":
 		tier = tool_tier("hoe")
 	# Better hoes and cans save more (they are the everyday tools).
-	var tool_mult := 1.0 - (0.12 if task in ["hoe", "can", "plant", "scythe"] else 0.08) * tier
-	var mult := maxf(0.25, skill_mult * tool_mult)
+	# C16a P3: axe/pickaxe tiers already cut swings 25% a tier (TOUGH_TIER_MULT),
+	# so their cost per swing drops only 3% a tier (was 8%: a 21x per-rock fall).
+	var per_tier := 0.12 if task in ["hoe", "can", "plant", "scythe"] else (0.03 if task in ["axe", "pickaxe"] else 0.08)
+	var tool_mult := 1.0 - per_tier * tier
+	# Tree perks fold inside the floor (C16a P3: they used to stack below it, to 13% of base).
+	var perk := 0.0
 	if task in ["hoe", "can", "plant"]:
-		mult *= 1.0 - bonus("farming", "farm_energy")
+		perk = bonus("farming", "farm_energy")
 	elif task == "pickaxe":
-		mult *= 1.0 - bonus("mining", "mine_energy")
+		perk = bonus("mining", "mine_energy")
+	elif task == "axe":
+		perk = bonus("foraging", "wood_energy")
+	var mult := maxf(ENERGY_FLOOR, skill_mult * tool_mult * (1.0 - perk))
+	mult *= 1.0 - 0.10 * minf(2.0, buff("stamina"))  # stamina buff (coffee, tea, hearty meals): -10% a step
 	if weather_here() == "sun" and task in ["hoe", "axe", "pickaxe"] and in_the_heat():  # C15 P1: the map's own sky
 		mult *= 1.1  # heat wave: heavy work is a little harder (outdoors only, C8 P1)
 	return base * mult
@@ -1775,7 +1790,29 @@ static func grow_vital(which: String, n: int) -> void:
 	var key := "bonus_" + which
 	run[key] = int(run.get(key, 0)) + n
 	_apply_max_stats()
-	run[which] = int(run["max_" + which])  # refill on growth
+	# C16a P3: growth refills only what it added (was a full bar that bypassed the food cap).
+	run[which] = mini(int(run.get(which, 0)) + n, int(run["max_" + which]))
+
+
+## C16a P3: eaten growth items (stamina_root, heart_fruit, mana_berry, juniper_tonic)
+## stop growing a vital past these totals (run.tonic_grow); quest/house/story growth
+## is separate. Was uncapped: Stamina Root regrows, so the bar reached ~750 in year 1.
+const TONIC_CAP := {"energy": 50, "hp": 50, "mana": 30}
+
+## How much more eaten growth `which` can still take.
+static func tonic_room(which: String) -> int:
+	var used := int((run.get("tonic_grow", {}) as Dictionary).get(which, 0))
+	return maxi(0, int(TONIC_CAP.get(which, 999)) - used)
+
+
+## Every vital this item grows is at its eaten-growth cap.
+static func tonic_capped(it: Dictionary) -> bool:
+	if not it.has("grow"):
+		return false
+	for k in it["grow"]:
+		if tonic_room(str(k)) > 0:
+			return false
+	return true
 
 
 ## Fraction of max, for bars.
@@ -1914,7 +1951,7 @@ static func consume(id: String) -> Dictionary:
 	# Food energy is capped at one full bar a day (fed_en resets on sleep), so
 	# bought food can't turn the clock into the only limit on fishing.
 	var en_gain := int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult
-	var room := maxi(0, int(run["max_energy"]) - int(run.get("fed_en", 0)))
+	var room := maxi(0, food_cap() - int(run.get("fed_en", 0)))
 	restore_energy(mini(room, en_gain))
 	run["fed_en"] = int(run.get("fed_en", 0)) + int(run["energy"]) - en0
 	if room <= 0 and en_gain > 0:
@@ -1928,14 +1965,34 @@ static func consume(id: String) -> Dictionary:
 		out["mana"] = int(run.get("mana", 0)) - ma0
 	if it.has("grow"):
 		for k in it["grow"]:
-			grow_vital(str(k), int(it["grow"][k]))
-			out["grow_" + str(k)] = int(it["grow"][k])
+			var g := mini(int(it["grow"][k]), tonic_room(str(k)))
+			if g <= 0:
+				continue
+			var tg: Dictionary = run.get("tonic_grow", {})
+			tg[str(k)] = int(tg.get(str(k), 0)) + g
+			run["tonic_grow"] = tg
+			grow_vital(str(k), g)
+			out["grow_" + str(k)] = g
 	if it.has("buff"):
-		# {"buff": {"kind": "speed"|"luck"|"defense"|"warm", "minutes": 120, "amount": 1}}
+		# {"buff": {"kind": "speed"|"luck"|"defense"|"warm"|"stamina", "minutes": 120, "amount": 1}}
+		# C16a P3: a weaker buff never overwrites a stronger one of the same kind:
+		# keep the bigger amount; the clock moves on only when the new one is at least as strong.
 		var b: Dictionary = it["buff"]
+		var kind := str(b.get("kind", "luck"))
 		run["buffs"] = run.get("buffs", {})
-		run["buffs"][str(b.get("kind", "luck"))] = {"until": now_abs() + int(b.get("minutes", 120)), "amount": float(b.get("amount", 1))}
-		out["buff"] = str(b.get("kind", "luck"))
+		var amt := float(b.get("amount", 1))
+		var until := now_abs() + int(b.get("minutes", 120))
+		var old_amt := buff(kind)
+		if old_amt > 0.0:
+			var old_until := int((run["buffs"][kind] as Dictionary).get("until", 0))
+			if amt >= old_amt:
+				until = maxi(until, old_until)
+			else:
+				until = old_until
+				out["buff_kept"] = true
+			amt = maxf(amt, old_amt)
+		run["buffs"][kind] = {"until": until, "amount": amt}
+		out["buff"] = kind
 	return out
 
 
@@ -1946,19 +2003,26 @@ static func consume_blocked(id: String) -> String:
 	var it: Dictionary = items.get(id, {})
 	if it.is_empty():
 		return "nothing"
-	if it.has("buff") or it.has("grow"):
-		return ""
 	var heal := int(it.get("heal", 0))
+	if it.has("grow") and not it.has("buff") and tonic_capped(it) and heal <= 0 and int(it.get("energy", 0)) <= 0:
+		return "tonic"  # C16a P3: kept (still sellable)
+	if it.has("buff") or it.has("grow"):
+		if it.has("buff") and not it.has("grow") and _buff_weaker(it):
+			pass  # falls through: kept only when it gives no hp/energy/mana room either
+		else:
+			return ""
 	var ty := str(it.get("type", ""))
 	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 5)
 	var en_gain := int(it.get("energy", 0)) + heal * en_mult
 	var hp_room := heal > 0 and int(run["hp"]) < int(run["max_hp"])
 	var mana_room := int(it.get("mana", 0)) > 0 and int(run.get("mana", 0)) < int(run.get("max_mana", 0))
 	var bar_full := int(run["energy"]) >= int(run["max_energy"])
-	var fed_full := int(run.get("fed_en", 0)) >= int(run["max_energy"])
+	var fed_full := int(run.get("fed_en", 0)) >= food_cap()
 	var en_room := en_gain > 0 and not bar_full and not fed_full
 	if hp_room or mana_room or en_room:
 		return ""
+	if it.has("buff"):
+		return "buff"
 	if en_gain > 0:
 		return "topped" if bar_full else "cap"
 	if heal > 0:
@@ -2016,11 +2080,24 @@ static var last_full_why := ""
 static func full_text() -> String:
 	match last_full_why:
 		"topped": return "Your energy is already full."
+		"tonic": return "You feel as strong as a root can make you."
+		"buff": return "Your stronger buff is still on."
 		"hp": return "You're already at full health."
 		"mana": return "Your mana is already full."
 		"pup": return "That's for your pup (Pup tab → Give)."
 		"nothing": return "That wouldn't do anything right now."
 	return "You've eaten all the energy you can today. Sleep resets it."
+
+
+## C16a P3: this item's buff is weaker AND shorter than the one already on.
+static func _buff_weaker(it: Dictionary) -> bool:
+	var b: Dictionary = it.get("buff", {})
+	var kind := str(b.get("kind", "luck"))
+	var old_amt := buff(kind)
+	if old_amt <= 0.0:
+		return false
+	var old_until := int((run.get("buffs", {})[kind] as Dictionary).get("until", 0))
+	return float(b.get("amount", 1)) < old_amt and now_abs() + int(b.get("minutes", 120)) <= old_until
 
 
 ## Active buff amount (0 when none / expired).
@@ -2119,10 +2196,45 @@ static func restore_energy(n: int) -> void:
 		energy_warn()  # refilling re-arms the warnings
 
 
+## C16a P3: daily recovery caps no longer grow with the bar (a 300+ bar made food
+## and rest refill 2.5 bars a day, so energy stopped binding by mid year 1).
+## Food: 120 + 4 a farming level, at most 200. Rest: half the bar, between 60 and 100.
+## Both scale with the day length (longer days get more recovery, the bar stays put).
+const FOOD_LEN_MULT := {15: 1.0, 20: 1.1, 30: 1.25, 40: 1.4}
+const REST_LEN_MULT := {15: 1.0, 20: 1.15, 30: 1.35, 40: 1.5}
+
+static func len_recovery_mult(kind: String) -> float:
+	var t: Dictionary = REST_LEN_MULT if kind == "rest" else FOOD_LEN_MULT
+	var dl := day_len()
+	if t.has(dl):
+		return float(t[dl])
+	var best := 1.0
+	for k in t:  # an unlisted length takes the nearest shorter one
+		if int(k) <= dl:
+			best = float(t[k])
+	return best
+
+
+## Most food energy you can eat in a day (fed_en resets on sleep).
+static func food_cap() -> int:
+	var lv := skill_level("farming") if run.has("skills") else 1
+	return int(round(float(mini(200, 120 + 4 * (lv - 1))) * len_recovery_mult("food")))
+
+
+## Most energy rest spots give in a day (rest_en resets on sleep).
+static func rest_cap() -> int:
+	return int(round(float(clampi(int(run.get("max_energy", 120)) / 2, 60, 100)) * len_recovery_mult("rest")))
+
+
+## Rest spots: "You've rested plenty today" (the day is kept, nothing stamped).
+static func rested_plenty() -> bool:
+	return int(run.get("rest_en", 0)) >= rest_cap()
+
+
 ## Energy from food, rest spots and perk meals: together at most one full bar a day
 ## (fed_en resets on sleep). Returns what was actually gained.
 static func extra_energy(n: int) -> int:
-	var room := maxi(0, int(run["max_energy"]) - int(run.get("fed_en", 0)))
+	var room := maxi(0, food_cap() - int(run.get("fed_en", 0)))
 	var en0 := int(run["energy"])
 	restore_energy(mini(room, n))
 	var got := int(run["energy"]) - en0
@@ -2133,7 +2245,7 @@ static func extra_energy(n: int) -> int:
 ## Rest spots (well, spring, inn, chapel...): their own half bar a day (rest_en,
 ## reset each morning), apart from food and perk meals. Returns what was gained.
 static func rest_energy(n: int) -> int:
-	var room := maxi(0, int(run["max_energy"]) / 2 - int(run.get("rest_en", 0)))
+	var room := maxi(0, rest_cap() - int(run.get("rest_en", 0)))
 	var en0 := int(run["energy"])
 	restore_energy(mini(room, n))
 	var got := int(run["energy"]) - en0
@@ -2381,7 +2493,7 @@ static func add_friend(npc: String, n: int) -> void:
 	# Bram's soup: the first chat with him each day tops you up.
 	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]) and int(run["energy"]) < int(run["max_energy"]):  # full bar: keep today's bowl for later
 		run["flags"]["soup_day"] = int(run["day"])
-		var got := extra_energy(30)
+		var got := extra_energy(35)  # C16a P3: was 30
 		notify("Bram slides you a bowl of soup. +%d energy." % got if got > 0 else "Bram slides you a bowl of soup. You're too full for more energy today.")
 
 
@@ -3513,13 +3625,19 @@ static func sleep(passed_out := false) -> Dictionary:
 			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	# Passing out costs a quarter of tomorrow's bar (Stardew-style), not half.
-	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) * 3 / 4
+	# C16a P3: Juniper 8 softens it to 85% (it used to erase it), and a cosy home lifts
+	# a pass-out morning by at most +5% (its floor is for late bedtimes).
+	var po_frac := 0.85 if has_friend_perk("juniper", 8) else 0.75
+	run["energy"] = int(run["max_energy"]) if not passed_out else int(int(run["max_energy"]) * po_frac)
 	# C8 P1: bed after midnight wakes you a little tired (up to -15% at 2am).
 	var late := late_wake_mult(bedtime) if not passed_out else 1.0
 	if late < 1.0:
 		run["energy"] = int(round(int(run["max_energy"]) * late))
 		report["late"] = true
 	var comfort_line := Decor.morning_comfort()  # C10b P1: a cosy home softens a late night, lifts morning luck
+	if passed_out and int(run["energy"]) > int(int(run["max_energy"]) * (po_frac + 0.05)):
+		run["energy"] = int(int(run["max_energy"]) * (po_frac + 0.05))
+		comfort_line = ""
 	report["short"] = int(run["energy"]) < int(run["max_energy"])  # SleepReport says why
 	run["en_frac"] = 0.0
 	run["en_warn"] = 0

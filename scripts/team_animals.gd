@@ -196,7 +196,7 @@ static func why_not(uid: String, lid := "") -> String:
 		var t: Array = spec(uid).get("treat", [])
 		var tw: Array = t.map(func(x: Variant) -> String: return ItemWords.with_article(GameState.item_name(str(x))))
 		return "Bring a treat: %s." % (", ".join(tw.slice(0, tw.size() - 1)) + " or " + str(tw.back()) if tw.size() > 1 else (str(tw[0]) if tw.size() == 1 else "a treat"))
-	if int(GameState.run.get("energy", 0)) < int(rule("energy", 8)):  # same bar GameState.spend_energy checks
+	if int(GameState.run.get("energy", 0)) <= 0:  # C16a P3: spend_for("teach") works until 0
 		return "You're too tired to teach today."
 	return ""
 
@@ -209,7 +209,7 @@ static func teach(uid: String, lid: String) -> String:
 	var a := Ranch.animal(uid)
 	var before := rank(uid, lid)
 	var t := treat_for(uid)
-	if not GameState.spend_energy(int(rule("energy", 8))):  # c11b_09-12: the energy rules (warning), not a raw write
+	if not GameState.spend_for("teach"):  # C16a P3: ENERGY_COST teach, ranching-discounted (was a flat rule 8)
 		return "You're too tired to teach today."
 	GameState.add_item(t, -1)
 	lessons(uid)[lid] = int(lessons(uid).get(lid, 0)) + 1

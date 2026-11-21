@@ -839,13 +839,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_creature.bind(thing))  # C11b P3: a creature that comes home with you (RanchGift)
 			return true
 		"heal":
-			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty()) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
 			elif int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_%s" % region_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
 				var got := GameState.rest_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "")))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if GameState.rested_plenty() else "")))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day.")

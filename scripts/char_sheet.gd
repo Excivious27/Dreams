@@ -570,7 +570,7 @@ static func duration(minutes: int) -> String:
 	return "%dm" % maxi(0, minutes)
 
 
-const BUFF_NAMES := {"speed": "Swift", "luck": "Lucky", "defense": "Stoneskin", "warm": "Warm"}
+const BUFF_NAMES := {"speed": "Swift", "luck": "Lucky", "defense": "Stoneskin", "warm": "Warm", "stamina": "Steady"}
 
 
 static func buff_icon(kind: String) -> Array:
@@ -596,7 +596,7 @@ static func effects() -> Array:
 		if left <= 0:
 			continue
 		var amt := float(b.get("amount", 1))
-		var what: String = {"speed": "+%d%% move speed" % roundi(15 * amt), "luck": "+%d luck" % int(amt), "defense": "+%d defense" % int(amt), "warm": "no chill or freeze"}.get(k, "+%s %s" % [str(amt), k])
+		var what: String = {"speed": "+%d%% move speed" % roundi(15 * amt), "luck": "+%d luck" % int(amt), "defense": "+%d defense" % int(amt), "warm": "no chill or freeze", "stamina": "-%d%% energy per action" % roundi(10 * amt)}.get(k, "+%s %s" % [str(amt), k])
 		out.append({"name": str(BUFF_NAMES.get(k, k.capitalize())), "icon": buff_icon(k), "left": duration(left), "what": what, "bad": false})
 	var haste := int(r.get("flags", {}).get("haste_abs", -1)) - now
 	if haste > 0:

@@ -1637,16 +1637,14 @@ func _pup_tab() -> void:
 				GameState.add_item(sel, -GameState.count(sel))
 				_refresh())
 	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:
-		_button("  Rest by %s's bedroll (+20 energy, once a day)" % pname, func() -> void:
+		_button("  Rest by %s's bedroll (+20 energy (rest), once a day)" % pname, func() -> void:
 			var gm := get_tree().current_scene as GameMap
-			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty():
 				if gm and gm.hud:
-					gm.hud.toast("You're fully rested. Come back when you're tired.", Color(1, 0.9, 0.7))
+					gm.hud.toast("You're fully rested. Come back when you're tired." if not GameState.rested_plenty() else "You've rested plenty today.", Color(1, 0.9, 0.7))
 				return  # keep today's rest for later
 			st["bedroll_day"] = int(GameState.run["day"])
-			var got := GameState.extra_energy(20)
-			if gm and gm.hud and got <= 0:
-				gm.hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
+			GameState.rest_energy(20)  # C16a P3: a rest spot (rest pool), not food
 			_refresh())
 	_line("Skill tree: see Skills → Pup.", 8, Color(0.7, 0.7, 0.7))
 

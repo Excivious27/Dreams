@@ -1129,7 +1129,12 @@
   "heal": 2,
   "energy": 40,
   "desc": "Warm, filling and made with care.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "stamina",
+   "minutes": 240,
+   "amount": 1
+  }
  },
  "fish_stew": {
   "name": "Fish Stew",
@@ -1140,7 +1145,12 @@
   "heal": 3,
   "energy": 60,
   "desc": "Good food for a long day.",
-  "desc_auto": true
+  "desc_auto": true,
+  "buff": {
+   "kind": "stamina",
+   "minutes": 240,
+   "amount": 1
+  }
  },
  "berry_pie": {
   "name": "Berry Pie",
@@ -8274,7 +8284,12 @@
   "tier": 3,
   "energy": 30,
   "desc": "Sal runs on it.",
-  "family": "herb"
+  "family": "herb",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 180,
+   "amount": 1
+  }
  },
  "tea": {
   "name": "Tea",
@@ -8284,7 +8299,12 @@
   "tier": 3,
   "energy": 20,
   "desc": "Juniper's cure for most things.",
-  "family": "herb"
+  "family": "herb",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  }
  },
  "cake": {
   "name": "Cake",
@@ -9568,7 +9588,12 @@
   "rarity": "common",
   "tier": 1,
   "energy": 45,
-  "desc": "Steeped in the keg. Wren approves."
+  "desc": "Steeped in the keg. Wren approves.",
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  }
  },
  "harvest_ale": {
   "name": "Harvest Ale",
@@ -23888,6 +23913,11 @@
   "c15": true,
   "icon": "herbal_tea",
   "desc_auto": true,
+  "buff": {
+   "kind": "stamina",
+   "minutes": 120,
+   "amount": 1
+  },
   "desc": "Warm, filling and made with care."
  },
  "kelp_salad": {

@@ -409,13 +409,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
 		"heal":
-			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty()) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):  # C16a P3: region.gd guard
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
 			elif int(GameState.run["flags"].get("heal_" + interior_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_" + interior_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
 				var got := GameState.rest_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "")))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if GameState.rested_plenty() else "")))
 			else:
 				hud.toast("Once a day.")
 			return true

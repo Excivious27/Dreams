@@ -640,7 +640,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(tb, Color(1, 0.85, 0.6))
 				Music.instance(get_tree()).sfx("dry_click", "thud")  # clink, no
 				return true
-			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_for("axe"):
+			if not GameState.spend_for("axe"):  # C16a P3: Keeper of the Woods halves it (wood_energy) instead of free
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("axe")

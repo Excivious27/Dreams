@@ -5304,7 +5304,7 @@
     "item": "stamina_root",
     "n": 1,
     "hint": "A: something growing between the stones",
-    "every": 4,
+    "every": 9999,
     "solid": false
    }
   ],

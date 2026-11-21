@@ -1070,7 +1070,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"well":
 			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
 				hud.toast("You're not thirsty.")  # keep today's drink for later
-			elif int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2:
+			elif GameState.rested_plenty():
 				hud.toast("You've rested plenty today.")  # the half bar is used up: keep today's drink
 			elif int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["well_day"] = int(GameState.run["day"])

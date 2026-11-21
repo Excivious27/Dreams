@@ -152,11 +152,11 @@ func _threshold() -> int:
 	var old: Dictionary = GameState.run.get("mine_thresh", {})
 	if floor_no <= 3:
 		# A share of this floor's rock (rocks 1, crates 1, kills 3): this layout's.
-		var share: float = [0.0, 0.17, 0.15, 0.13][floor_no]
+		var share: float = [0.0, 0.12, 0.11, 0.10][floor_no]  # C16a P3: was 0.17/0.15/0.13
 		var lo: int = EARLY_LO[floor_no]
 		lo = mini(lo, int(_rock_total * 0.4) + 6)   # a small, rock-poor layout still opens
 		var m3 := float(_pace()["thr"])
-		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 14) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
+		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 6) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
 	if not old.has(key):
 		var base := 14.0 + minf(60.0, floor_no * 0.4)
 		var v := int(round(base * float(_pace()["thr"]) * randf_range(0.9, 1.1)))
@@ -247,6 +247,12 @@ func build() -> void:
 	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
 		var lc := _nearest_open(_entry + Vector2i(3, 0))
 		set_thing(lc.x, lc.y, {"type": "lift", "hint": "A: the mine lift"})
+	# C16a P3: a miner's bench near the ladder on floor 1 and every 5th floor: rest
+	# once a day per floor (the shared rest pool, like the farm well).
+	if floor_no == 1 or floor_no % 5 == 0:
+		var bc := _roomy_open(_entry + Vector2i(-2, 3))
+		if _open.has(bc) and not things.has(bc):
+			set_thing(bc.x, bc.y, {"type": "rest_bench", "hint": "A: sit and rest a while"})
 	# Floor 5: the flooded grotto. Much of the cave is black water; crystals sit
 	# under it. Mer the mercat lives here; with her you can swim and dive.
 	_grotto = floor_no == 5
@@ -368,7 +374,7 @@ var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
 static var force_style := ""   # tools/tests: carve this style every time
-const EARLY_LO := [0, 14, 13, 12]   # floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
+const EARLY_LO := [0, 10, 10, 9]   # C16a P3 (was 14/13/12): floors 1-3: fewest rocks/kills before the keeper wakes (3-swing rocks)
 const KEEPER_MIN_HP := 8  # a keeper encounter's total hp is never below this
 static var force_encounter := ""  # tools/tests: this keeper encounter id instead of a roll ("" = roll)
 static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
@@ -930,6 +936,17 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
 			return true
+		"rest_bench":
+			var rk := "mine_rest_%d" % floor_no
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or GameState.rested_plenty()):
+				hud.toast("You've rested plenty today." if GameState.rested_plenty() else "You're fully rested. Come back when you're tired.")
+			elif int(GameState.run["flags"].get(rk, -1)) == int(GameState.run["day"]):
+				hud.toast("Once a day.")
+			else:
+				GameState.run["flags"][rk] = int(GameState.run["day"])
+				var got := GameState.rest_energy(25)
+				hud.toast("You sit a while on the old bench. +%d energy." % got)
+			return true
 		"crate":
 			if ToolHint.is_soft(GameState.held_tool()):
 				ToolHint.say(self, "Smash crates and barrels with a sword, axe or pickaxe (or bare fists).")
@@ -1337,6 +1354,13 @@ func _draw_things() -> void:
 				if props.has(k):
 					continue
 				_ci.draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
+			"rest_bench":
+				if Art.has("decor", "dc_rustic_bench"):
+					var bt := Art.tex("decor", "dc_rustic_bench")
+					var bs := Vector2(bt.get_size()) * 0.4
+					_ci.draw_texture_rect(bt, Rect2(p.x - bs.x / 2.0, p.y + 4 - bs.y, bs.x, bs.y), false)
+				else:
+					_ci.draw_rect(Rect2(p.x - 8, p.y - 6, 16, 5), Color("6a4a30"))
 			"lift":
 				if not Art.draw_prop(_ci, "props", "mine_lift", p + Vector2(0, 2)) and not Art.draw_prop(_ci, "props", "cart_full", p):
 					_ci.draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
