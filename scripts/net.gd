@@ -602,7 +602,12 @@ func _process(delta: float) -> void:
 				_world_t += delta
 				_since_push += delta
 				if peers.is_empty():
-					_world_t = 0.0  # alone in the room: nobody to push to (a joiner gets a full world)
+					# Alone: no pushes, only the relay snapshot (late joiners, a relay restart):
+					# the first within 2 s, then every SAVE_EVERY s when the world changed.
+					if _world_t >= 2.0:
+						_world_t = 0.0
+						if _save_n == 0 or _save_t >= SAVE_EVERY:
+							_alone_save()
 				elif _world_t >= 2.0 or (_dirty and _since_push >= PUSH_GAP) or _resync_all:
 					_world_t = 0.0
 					_push_world()
@@ -674,6 +679,7 @@ func _on_msg(m: Dictionary) -> void:
 			_retry_t = 0.0
 			_host_rx_t = 0.0
 			_wseen = -1
+			_save_n = 0
 			_host = bool(m.get("host", false))
 			_host_id = my_id if _host else int(m.get("host_id", -1))
 			if _host_away:
@@ -865,6 +871,31 @@ func _broadcast_state() -> void:
 const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home", "ranch", "coop_hatch"]
 
 
+var _save_n := 0         # host_saves sent this connection
+var _save_hash := 0
+
+
+func _alone_save() -> void:
+	var d := _world_now()
+	var hv := hash(d)
+	_save_t = 0.0
+	if _save_n > 0 and hv == _save_hash:
+		return
+	_save_hash = hv
+	_save_n += 1
+	_send({"t": "host_save", "d": d})
+
+
+func _world_now() -> Dictionary:
+	var d := {}
+	for k in WORLD_KEYS:
+		if k == "decor_home":
+			d[k] = DecorMode.home_view()
+		elif GameState.run.has(k):
+			d[k] = GameState.run[k]
+	return d
+
+
 func _push_world(to_id := -1) -> void:
 	var d := {}
 	for k in WORLD_KEYS:
@@ -910,6 +941,7 @@ func _push_world(to_id := -1) -> void:
 	if _save_t >= SAVE_EVERY and (_save_dirty or busy or delta.has("day")):
 		_save_t = 0.0
 		_save_dirty = false
+		_save_n += 1
 		_send({"t": "host_save", "d": d})
 
 
