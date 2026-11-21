@@ -1,0 +1,1 @@
+Auditor <ID> for CONDUCT <N>: follow /home/claude/wt/AUDIT_BRIEF.md. Worktree /home/claude/dreams (read-only). Code map /home/claude/wt/c<N>_map.md. Shots /home/claude/wt/shots_<N>/index.md. Scope: <SCOPE>. Findings /home/claude/wt/c<N>_reports/<ID>.jsonl (+ <ID>.done). Model Opus 5.5, medium effort.
