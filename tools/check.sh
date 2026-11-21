@@ -1243,3 +1243,24 @@ echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|town_props_test" || true
 if ! echo "$tpout" | grep -q "town_props_test: 0 failures"; then
   echo "town_props_test failed"; exit 1
 fi
+
+echo "== anim core (C14b P1) =="
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_core_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|anim_core_test" || true
+if ! echo "$acout" | grep -q "anim_core_test: 0 failures"; then
+  echo "anim_core_test failed"; exit 1
+fi
+
+echo "== weather fx (C14b P1) =="
+wfout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/weather_fx_test.gd 2>&1)"
+echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|weather_fx_test" || true
+if ! echo "$wfout" | grep -q "weather_fx_test: 0 failures"; then
+  echo "weather_fx_test failed"; exit 1
+fi
+
+echo "== anim budget (C14b P1) =="
+about="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/anim_budget_test.gd 2>&1)"
+echo "$about" | grep -E "FAIL|SCRIPT ERROR|anim_budget_test" || true
+if ! echo "$about" | grep -q "anim_budget_test: 0 failures"; then
+  echo "anim_budget_test failed"; exit 1
+fi

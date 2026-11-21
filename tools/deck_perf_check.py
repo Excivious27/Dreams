@@ -26,10 +26,14 @@ LOAD_FRAME_MS = 900.0      # longest load frame after the first: the farm bake (
 COVER_MS = 2500.0          # arrival cover lift (farm 1.4-1.7 s on the 2-core sandbox, software GL)
 TEX_MB = 256.0
 MEM_MB = 600.0
+ANIM = 120                 # C14b budget: AnimatedSprite2D per map, total / inside the phone view
+ANIM_ONSCREEN = 40
+MATS = 12                  # distinct ShaderMaterial instances under a map (shared sway/crisp only)
 # ---------------------------------------------------------------------------
 SCENES = {
-    "penguins": ["title", "farm", "town", "meadow", "mine", "gilt_grand_plaza", "bf_neon_block", "community_farm"],
-    "gangsters": ["farm", "town", "mine", "iron_junction"],
+    "penguins": ["title", "farm", "town", "meadow", "mine", "gilt_grand_plaza", "bf_neon_block", "community_farm",
+                 "gloam_lanternfall", "crystal_meadow", "beach"],
+    "gangsters": ["farm", "town", "mine", "iron_junction", "docks"],
 }
 QUICK = {"penguins": ["farm", "town"], "gangsters": ["farm"]}
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,6 +82,14 @@ def judge(r):
         bad.append("cover %.0f > %.0f ms" % (r["cover_ms"], COVER_MS))
     if r["tex_mb"] > TEX_MB:
         bad.append("tex %.0f > %.0f MB" % (r["tex_mb"], TEX_MB))
+    if r.get("anim", 0) > ANIM:
+        bad.append("animated sprites %d > %d" % (r["anim"], ANIM))
+    if r.get("anim_onscreen", 0) > ANIM_ONSCREEN:
+        bad.append("animated sprites on screen %d > %d" % (r["anim_onscreen"], ANIM_ONSCREEN))
+    if r.get("mats", 0) > MATS:
+        bad.append("shader materials %d > %d" % (r["mats"], MATS))
+    if r.get("lock", 0) > 0:
+        bad.append("%d anim_prop groups in lockstep" % r["lock"])
     if r["mem_mb"] > MEM_MB:
         bad.append("mem %.0f > %.0f MB" % (r["mem_mb"], MEM_MB))
     return bad
