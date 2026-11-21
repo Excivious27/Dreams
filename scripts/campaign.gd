@@ -841,7 +841,7 @@ static func gate_words(cid: String) -> Dictionary:
 static func reopen_later(tree: SceneTree, cid: String, tries := 12) -> void:
 	tree.create_timer(1.0, true).timeout.connect(func() -> void:
 		var gm := tree.current_scene as GameMap
-		if gm == null or gm.scene_id().begins_with("bf_") or tree.paused or Dialogue.instance(tree).active or gm.player == null:
+		if gm == null or gm._changing or gm.scene_id().begins_with("bf_") or tree.paused or Dialogue.instance(tree).active or gm.player == null:
 			if tries > 0:
 				reopen_later(tree, cid, tries - 1)
 			return
