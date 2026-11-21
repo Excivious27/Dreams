@@ -37,7 +37,7 @@ static func tick(m: GameMap, delta: float) -> void:
 		var when: Dictionary = ev.get("when", {})
 		if when.has("hours") and (hour < float(when["hours"][0]) or hour >= float(when["hours"][1])):
 			continue
-		if not GameState._cond_ok(when):
+		if not GameState._cond_ok(when) or not season_ok(when, hour):
 			continue
 		# All named actors must exist in this map (regions: the resident; town: everyone with a routine).
 		var actors: Array = []
@@ -52,6 +52,42 @@ static func tick(m: GameMap, delta: float) -> void:
 		GameState.run["flags"]["ev_" + str(ev["id"])] = true
 		m.later(func() -> void: await play(m, ev, actors))
 		return
+
+
+## C15 P3 (c15_10-09, 11-13): events.json-only keys on top of GameState._cond_ok:
+## "year" (min year), "dos" [first, last] day-of-season window, "weather" (id or
+## list) and "festival" (true: only in festival hours; otherwise every scene waits
+## out the festival hours, so nothing fires mid-festival).
+static func season_ok(when: Dictionary, hour: float) -> bool:
+	if when.has("year") and Talk.year() < int(when["year"]):
+		return false
+	if when.has("dos"):
+		var ds := GameState.day_of_season()
+		if ds < int(when["dos"][0]) or ds > int(when["dos"][1]):
+			return false
+	if when.has("weather"):
+		var w: Variant = when["weather"]
+		var ws: Array = w if w is Array else [w]
+		if not GameState.weather_today() in ws:
+			return false
+	var fest := Npc.in_festival(hour)
+	if bool(when.get("festival", false)) != fest:
+		return false
+	return true
+
+
+## Events that could fire today at `hour` (ignoring the area and actors): tests.
+static func eligible(scene: String, hour: float) -> Array:
+	var out: Array = []
+	for ev in data():
+		if str(ev.get("scene", "")) != scene or GameState.run["flags"].has("ev_" + str(ev["id"])):
+			continue
+		var when: Dictionary = ev.get("when", {})
+		if when.has("hours") and (hour < float(when["hours"][0]) or hour >= float(when["hours"][1])):
+			continue
+		if GameState._cond_ok(when) and season_ok(when, hour):
+			out.append(str(ev["id"]))
+	return out
 
 
 static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
@@ -95,7 +131,7 @@ static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
 		GameState.add_friend(str(id), int(after["friend"][id]))
 	if after.has("item"):
 		GameState.add_item(str(after["item"][0]), int(after["item"][1]))
-		m.hud.toast("Got %d %s." % [int(after["item"][1]), GameState.item_name(str(after["item"][0]))], Color(1, 0.9, 0.5))
+		m.hud.toast("Got %s." % ItemWords.count_id(str(after["item"][0]), int(after["item"][1])), Color(1, 0.9, 0.5))
 	if after.has("flag"):
 		GameState.run["flags"][str(after["flag"])] = true
 	if after.has("quest"):

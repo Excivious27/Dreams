@@ -214,7 +214,11 @@ func set_pose(pose: String) -> void:
 	# they still wear the job sprite: it's a different person from the new design).
 	var g := ""
 	var cands := ["characters/npc_" + id]
-	if _walker == _base_sprite:
+	if in_outfit():
+		# C15 P3 (c15_10-14): a seasonal outfit only plays poses drawn on the outfit
+		# sheet itself; otherwise they hold the outfit's idle (never snap into base clothes).
+		cands = ["characters/" + _walker]
+	elif _walker == _base_sprite:
 		cands.append("characters/" + _base_sprite)
 	for cand: String in cands:
 		if bad_cell(cand.get_file(), pose):
@@ -325,7 +329,7 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 		sprite_id = sprite_id + "_summer"
 	elif se == "fall" and CharacterLibrary.has_character(sprite_id + "_fall"):
 		sprite_id = sprite_id + "_fall"
-	elif int(GameState.run.get("day", 1)) % 28 in [13, 27] and CharacterLibrary.has_character(sprite_id + "_festival"):
+	elif GameState.festival_today() != "" and CharacterLibrary.has_character(sprite_id + "_festival"):  # C15 P3 (c15_10-02)
 		sprite_id = sprite_id + "_festival"
 	_base_sprite = str(data.get("sprite", ""))
 	sprite_id = walker_for(npc_id, sprite_id, _base_sprite)
@@ -395,6 +399,7 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 	for entry in routine_list:
 		if hour >= float(entry[0]):
 			place = str(entry[1])
+	place = season_place(npc_id, place, hour)  # C15 P3: summer holidays, weekends, winter indoors
 	if day % 7 == 0 and hour >= 9.0 and hour < 12.0 and place != "work" and not Commons.market_slot(npc_id, hour):
 		place = "chapel_front"  # (the community farm's market day beats the chapel morning)
 	elif place != "work":
@@ -410,11 +415,62 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 	return RecCenter.visit(npc_id, place)  # an evening at the Rec Center
 
 
+## C15 P3 (c15_10-03, 11-02, 10-19): the routine bends with the season. Kids have
+## no school on Saturdays and Sundays, all summer or on a snow day (they play at
+## the pond, park, beach road or plaza instead); in winter nobody gardens or fishes
+## the river (gardens and the orchard swap for the inn, library, well or plaza; river
+## anglers ice-fish the pond); summer weekends send some grown-ups to the beach road.
+const KIDS := ["pip", "wren_jr", "tobin", "mabel"]
+const GARDEN_SPOTS := ["wren_garden", "finn_garden", "lumi_garden", "hazel_yard", "orchard", "mansion_front"]
+const KID_PLAY := {"summer": ["pond", "beach_road", "park", "plaza_e"], "snow": ["park", "school_yard", "plaza_e"], "": ["park", "pond", "plaza_e", "school_yard"]}
+const WINTER_INSTEAD := ["inn", "library", "well", "plaza_e"]
+
+
+static func season_place(npc_id: String, place: String, hour: float) -> String:
+	var se := GameState.season()
+	var day := int(GameState.run.get("day", 1))
+	var roll := absi(hash(npc_id + ":" + str(day)))
+	if npc_id in KIDS and place in ["school", "school_yard"]:
+		var snow := GameState.weather_today() == "snow"
+		if se == "summer" or GameState.weekday() >= 5 or snow:
+			var opts: Array = KID_PLAY["summer" if se == "summer" else ("snow" if snow else "")]
+			return str(opts[roll % opts.size()]) if hour < 18.0 else "home"
+		return place
+	if se == "winter":
+		if place in GARDEN_SPOTS:
+			return str(WINTER_INSTEAD[roll % WINTER_INSTEAD.size()])
+		if place in ["river_n", "river_s"]:
+			return "pond"  # ice fishing
+	if se == "summer" and GameState.weekday() >= 5 and hour >= 11.0 and hour < 18.0 and place in ["park", "bench_nw", "bench_ne", "bench_sw", "bench_se", "bridge"] and roll % 2 == 0:
+		return "beach_road"
+	return place
+
+
+## C15 P3 (c15_11-08): what a spot is for bends with the season too (no hoeing
+## snowy gardens or sitting on snowed-over benches; picnics on the summer beach road).
+static func season_activity(place: String, act: String) -> String:
+	match GameState.season():
+		"winter":
+			if act == "garden":
+				return "look"
+			if act == "sit" and place.begins_with("bench"):
+				return "look"
+			if place == "park" or place == "school_yard":
+				return "play"
+		"fall":
+			if place == "orchard" or (act == "garden" and place != "mansion_front"):
+				return "haul"
+		"summer":
+			if place == "beach_road":
+				return "picnic"
+	return act
+
+
 ## C12 P3 (c12_11-14): on a festival day (festival_hours) the town is on the plaza: shops
 ## and school are shut and every sign says so. Juniper stays on call at the clinic;
 ## the mayor runs the fountain stage. Storms and blizzards keep the old routine.
 const FEST_ON_CALL := ["juniper"]
-const FEST_SPOTS := ["plaza", "plaza_e", "bench_nw", "bench_ne", "bench_sw", "bench_se"]
+const FEST_SPOTS := ["plaza", "plaza_e", "bench_nw", "bench_ne", "bench_sw", "bench_se", "well", "hall_front"]
 
 
 ## C14 P2 (c14_03-08): festival hours. Egg and Harvest run 9 to 6; Lantern and Star are
@@ -445,7 +501,17 @@ static func festival_place(npc_id: String, hour: float) -> String:
 		return ""
 	if npc_id == "alder":
 		return "fountain"
-	return FEST_SPOTS[absi(hash(npc_id)) % FEST_SPOTS.size()]
+	# C15 P3 (c15_10-10): spread the crowd evenly over the spots by a stable index
+	# (sorted town villagers), so no spot gets six people and their tags merge.
+	var town: Array = []
+	for k in GameState.npcs:
+		if str(GameState.npcs[k].get("home_scene", "")) in ["", "town"] and not str(k) in FEST_ON_CALL and str(k) != "alder" and not (GameState.npcs[k].get("routine", []) as Array).is_empty():
+			town.append(str(k))
+	town.sort()
+	var i := town.find(npc_id)
+	if i < 0:
+		i = absi(hash(npc_id))
+	return FEST_SPOTS[i % FEST_SPOTS.size()]
 
 
 ## Who keeps their outdoor plans in the wet: Finn, Rook and Sal always; in a
@@ -543,7 +609,7 @@ func _apply_routine(snap := false) -> void:
 	if spot == Vector2i(-1, -1) or map == null:
 		visible = true
 		return
-	activity = str(SPOT_ACTIVITY.get(place, Commons.spot_activity(place)))
+	activity = season_activity(place, str(SPOT_ACTIVITY.get(place, Commons.spot_activity(place))))
 	if map.has_method("stand_cell"):
 		spot = map.stand_cell(self, place, spot)  # each person their own patch of a shared spot
 	var at := map.cell_center(spot)

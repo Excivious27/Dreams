@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C15 P3: villager seasonal life: seasonal Talk parts + ~330 seasonal/festival/eve/birthday lines, seasonal routines and activities, festival crowd spread, in-season mail gifts and season letters, real festival-eve hours, 8 seasonal scenes (year 2 set), spring scenes stay in spring; villager_seasons_test
+
 ## 2026-11-21 — C14b integ: helpers (IdleLife/CreatureMotion/AmbientMotion/RegionAnim) take time/reduced/phase from Anim; region water strips held by WaterFeature (no double anim); moon faint day aurora; NPC walk strips desynced; shore_motion_test matches merged LighthouseBeam (one beam per tower).
 
 ## 2026-11-21 — CONDUCT 14 (world look, town, beach + marina, fast travel, exploration) docs: report docs/reports/CONDUCT-14.md, Guide 41, ART-PROMPTS-CONDUCT-14.md (80 images), TEXTS['14'], inventory rows (TravelNet 72%, marina, town expansion, prop dressing, secrets, lighting; whole game ~82%), PROJECT-MEMORY C14 entry. 401 findings, 6 packages + hooks. Final CI c14i pending.

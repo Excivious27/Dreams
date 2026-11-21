@@ -6,16 +6,23 @@
    "Old Clover's too grey for riding now. She supervises. She's very good at it."
   ],
   "spring": [
-   "Foals this spring. Two of them. Don't tell them they're cute; it goes to their heads."
+   "Foals this spring. Two of them. Don't tell them they're cute; it goes to their heads.",
+   "Spring grass makes the horses silly. They run for no reason.",
+   "Mud season. I wash more horse legs than dishes."
   ],
   "summer": [
-   "Too hot for the horses past noon. I take them down to the stream."
+   "Too hot for the horses past noon. I take them down to the stream.",
+   "Long rides at dawn before the heat. Best part of the day.",
+   "Flies everywhere in summer. The horses swish. I swat."
   ],
   "fall": [
-   "Hay's in. Best feeling in the world, a full loft."
+   "Hay's in. Best feeling in the world, a full loft.",
+   "Fall rides through the orchard. The horses steal apples.",
+   "Cool mornings. The horses' breath steams. They look like dragons."
   ],
   "winter": [
-   "Frost on the water trough. I break it every morning with my boot heel."
+   "Frost on the water trough. I break it every morning with my boot heel.",
+   "Blankets on every horse this week. They look very smart."
   ],
   "rain": [
    "Rain makes the barn smell like a barn. I don't mind it."
@@ -74,6 +81,18 @@
   ],
   "festival_star": [
    "One gift each, Bram says. I wrapped a hoof pick. It's a very good hoof pick."
+  ],
+  "gangsters&winter": [
+   "Cold nights. I sleep in the stable sometimes. Horses keep you warm."
+  ],
+  "gangsters&summer": [
+   "Summer on the outskirts. Quiet out here, away from the avenue."
+  ],
+  "eve": [
+   "Festival tomorrow. I'll brush the horses. They like to look their best."
+  ],
+  "birthday": [
+   "My birthday. The horses got me nothing. They never do. I love them anyway."
   ]
  },
  "ivy": {
@@ -82,16 +101,24 @@
    "Interest is just money being patient. You could learn from it."
   ],
   "spring": [
-   "New ledgers every spring. I love the smell of an empty page."
+   "New ledgers every spring. I love the smell of an empty page.",
+   "Spring accounts are open. New season, clean ledger.",
+   "People borrow for seed in spring. I lend fairly. Mostly."
   ],
   "summer": [
-   "The vault is the coolest room in town in summer. I'm not saying I eat lunch in there."
+   "The vault is the coolest room in town in summer. I'm not saying I eat lunch in there.",
+   "Summer is slow at the bank. I balance books in the shade.",
+   "Tourists in summer. They always ask where the gold is."
   ],
   "fall": [
-   "Harvest money, harvest money. Everyone's rich for a week."
+   "Harvest money, harvest money. Everyone's rich for a week.",
+   "Harvest money comes in. The vault is happy. So am I.",
+   "Fall is the season for savings. Squirrels understand."
   ],
   "winter": [
-   "Nobody banks in winter. I knit."
+   "Nobody banks in winter. I knit.",
+   "Winter is year-end. I count everything twice. Then once more.",
+   "Snow on the bank steps. I salt them myself. Nobody slips on my watch."
   ],
   "gangsters": [
    "Someone tried to pay off a loan in very fresh bills yesterday. Very fresh. Still damp.",
@@ -100,9 +127,6 @@
   ],
   "penguins": [
    "I count crystals in my sleep. Sometimes I dream I'm short one."
-  ],
-  "festival": [
-   "The bank's closed for the festival. I'm still doing sums in my head."
   ],
   "heat": [
    "Men in grey suits were reading the ledgers this morning. I didn't let them. Mostly."
@@ -115,6 +139,31 @@
   ],
   "gangsters&festival": [
    "Bank's shut for the fair. The vault isn't on holiday, though."
+  ],
+  "festival_egg": [
+   "The bank's closed for the festival. I'm still doing sums in my head.",
+   "The bank's closed for the Egg Festival. I'm still doing sums in my head."
+  ],
+  "festival_star": [
+   "Star Festival. I gave everyone a shiny coin. Not real gold. Chocolate."
+  ],
+  "gangsters&winter": [
+   "Year-end on the block. Everyone's settling debts. Fairly, I hope."
+  ],
+  "gangsters&summer": [
+   "Summer heat, slow business. The vault's the coolest room in the city."
+  ],
+  "eve": [
+   "Festival tomorrow. The bank closes. The numbers don't."
+  ],
+  "birthday": [
+   "My birthday. I've calculated I'm exactly one year older. Precisely."
+  ],
+  "festival_lantern": [
+   "I floated a lantern with a tiny ledger drawn on it. It balanced perfectly."
+  ],
+  "festival_harvest": [
+   "Harvest Fair. Everyone's spending. I'm smiling at a respectable level."
   ]
  },
  "orla": {
@@ -152,16 +201,15 @@
    "Rainy days are full-house days. Everyone wants a fire and a story."
   ],
   "winter": [
-   "Hot cocoa, no charge, for anyone who shovelled the square."
+   "Hot cocoa, no charge, for anyone who shovelled the square.",
+   "Fire's on day and night. Best seat in town is by my hearth.",
+   "Snowed-in nights are the best nights at the inn. Everyone tells stories."
   ],
   "gangsters": [
    "The back booth's yours, boss, any night. I keep it clear."
   ],
   "penguins": [
    "A penguin in a crown ordered stew and paid with a very shiny pebble. I didn't ask. Good stew, mind."
-  ],
-  "festival": [
-   "Festival nights, the inn never sleeps. Neither do I."
   ],
   "penguins&if:campfire_done": [
    "Big Jim came in for stew and ate the whole pot. Paid in fish. I'm not complaining."
@@ -176,16 +224,49 @@
    "Rosa took over my kitchen and my soup got better. I'm not saying that twice."
   ],
   "spring": [
-   "Spring greens soup all week. Barley, peas, a lot of pepper. Nobody's complained yet."
+   "Spring greens soup all week. Barley, peas, a lot of pepper. Nobody's complained yet.",
+   "Spring menu's up. Fresh greens, finally. The stew misses winter.",
+   "Rain all day means a full inn all night."
   ],
   "summer": [
-   "Cold soup in summer. People look at me funny until they try it."
+   "Cold soup in summer. People look at me funny until they try it.",
+   "Iced tea on the counter all summer. Help yourself.",
+   "Hot nights, open doors. The inn smells like supper all the way to the plaza."
   ],
   "fall": [
-   "Pumpkin soup season. The whole inn smells like a pie."
+   "Pumpkin soup season. The whole inn smells like a pie.",
+   "Pumpkin soup's on all fall. People come for it from the far farms.",
+   "Fall evenings fill the inn. Everyone wants a warm corner."
   ],
   "festival_lantern": [
    "Lantern Festival. I've a pot of cocoa for anyone who gets their feet wet launching one."
+  ],
+  "festival_star": [
+   "Festival nights, the inn never sleeps. Neither do I."
+  ],
+  "festival_egg": [
+   "Egg sandwiches for the Egg Festival. Hundreds of them. Don't ask."
+  ],
+  "festival_harvest": [
+   "Harvest Fair. I'm judging the soup contest. Mine's not entered. Mine would win."
+  ],
+  "gangsters&spring": [
+   "Spring on the block. The diner crowd's back out on the stoop."
+  ],
+  "gangsters&summer": [
+   "Summer, every booth's full and the fan's on full. Grab a cold one."
+  ],
+  "gangsters&fall": [
+   "Fall, the soup pot never goes cold. Neither does the gossip."
+  ],
+  "gangsters&winter": [
+   "Cold snap. I'm handing out soup by the door. No questions."
+  ],
+  "eve": [
+   "Festival tomorrow. I'm baking all night. Come hungry."
+  ],
+  "birthday": [
+   "Birthday? Me? ...Well. Drinks on the house. Juice. Tea. You know what I mean."
   ]
  },
  "juniper": {
@@ -195,13 +276,19 @@
    "I patch up farmers, miners, and once a very embarrassed goat."
   ],
   "spring": [
-   "Spring sniffles season. Wash your hands."
+   "Spring sniffles season. Wash your hands.",
+   "Spring sneezes. Pollen season. I have tissues by the door.",
+   "Spring rain means muddy boots in the clinic. Please wipe them."
   ],
   "summer": [
-   "Sunburn. Every summer. Hats, people. Hats."
+   "Sunburn. Every summer. Hats, people. Hats.",
+   "Summer's sunburn season. Wear a hat. I'm serious.",
+   "Drink water. That's my whole summer advice. Drink water."
   ],
   "winter": [
-   "Wrap up. I mean it."
+   "Wrap up. I mean it.",
+   "Winter's my busy season. Slips on ice, coughs, chilblains. Stay warm.",
+   "Hot water bottles, thick socks, early nights. My winter prescription."
   ],
   "gangsters": [
    "I don't ask how anyone gets their bruises. I just fix them."
@@ -225,7 +312,33 @@
    "Someone has to stay open on festival day. Bring me a sweet from the plaza?"
   ],
   "fall": [
-   "Fall colds are starting. Hands, soap, sleep. In that order."
+   "Fall colds are starting. Hands, soap, sleep. In that order.",
+   "Fall's here. Scarves on, everyone. Doctor's orders.",
+   "Apple season. An apple a day doesn't keep me away, but it helps."
+  ],
+  "festival_egg": [
+   "Someone has to stay open on festival day. Bring me an egg bun?"
+  ],
+  "festival_lantern": [
+   "I'll watch the lanterns from the clinic window. Best view, actually."
+  ],
+  "festival_harvest": [
+   "On call at the fair. Too many pies is a medical condition."
+  ],
+  "festival_star": [
+   "Star Festival night. I'll pop out for the star lighting, then back to the clinic."
+  ],
+  "gangsters&winter": [
+   "Cold snap. Clinic's open all night. Send anyone who needs it."
+  ],
+  "gangsters&summer": [
+   "Heat sends folks in fainting. Water, shade, rest. Tell your crew."
+  ],
+  "eve": [
+   "Festival tomorrow. I'll be on call. Somebody has to be."
+  ],
+  "birthday": [
+   "My birthday. I'm taking ten minutes off. Ten exactly. Then back to work."
   ]
  },
  "_any": {
@@ -251,6 +364,12 @@
   ],
   "blizzard": [
    "Snow to the knees. Mind the steps."
+  ],
+  "eve": [
+   "Big day tomorrow! Are you going to the festival?"
+  ],
+  "birthday": [
+   "It's my birthday today! Nice of you to stop by."
   ]
  },
  "maple": {
@@ -261,16 +380,24 @@
    "I keep a ledger of who owes me. I keep a smaller one of who I owe. Yours is in the small one."
   ],
   "spring": [
-   "Spring seeds fly off the shelf. Turnips first, always turnips first."
+   "Spring seeds fly off the shelf. Turnips first, always turnips first.",
+   "Seed week! I've restocked the turnip shelf three times since Monday.",
+   "Spring rain's good for business. Everyone suddenly remembers they own a garden."
   ],
   "summer": [
-   "Corn and tomatoes, that's summer in a basket. Plant early and they keep giving till the season turns."
+   "Corn and tomatoes, that's summer in a basket. Plant early and they keep giving till the season turns.",
+   "Sun hats are sold out. I'm wearing the display one. Don't tell anyone.",
+   "Summer seeds go in early or not at all. Ask me which ones, I love this question."
   ],
   "fall": [
-   "Pumpkins! The whole valley wants pumpkins this month."
+   "Pumpkins! The whole valley wants pumpkins this month.",
+   "Pumpkin seeds are half price till they're gone. They're going.",
+   "Fall stock's in: jars, twine and enough lamp oil for the long nights."
   ],
   "winter": [
-   "Winter's quiet in here. Come in and warm your hands, even if you're not buying."
+   "Winter's quiet in here. Come in and warm your hands, even if you're not buying.",
+   "Quiet in the shop this time of year. I've alphabetised the buttons.",
+   "Winter seeds are a short list, but frostberries are worth every packet."
   ],
   "rain": [
    "Rain's good for the fields and bad for business. I'll take the trade."
@@ -305,6 +432,27 @@
   ],
   "festival_star": [
    "Star Festival. One gift each, Bram says. I've wrapped mine four times."
+  ],
+  "gangsters&spring": [
+   "Delivery trucks are back on the avenue. Means I can finally restock the shelves."
+  ],
+  "gangsters&summer": [
+   "Heat's got the whole street buying cold drinks. I can't keep them in the cooler."
+  ],
+  "gangsters&fall": [
+   "Folks are stocking up for the cold. Good for the till, hard on the back."
+  ],
+  "gangsters&winter": [
+   "Snow keeps the troublemakers indoors. Best season for a shopkeeper."
+  ],
+  "eve": [
+   "Festival tomorrow! I close early tonight to finish my stall sign."
+  ],
+  "birthday": [
+   "It's my birthday! I've given myself the afternoon off. From two till ten past."
+  ],
+  "snow": [
+   "Snow on the step. I swept it, then it snowed again. We're even."
   ]
  },
  "gideon": {
@@ -315,10 +463,14 @@
    "You hear that hum in the anvil? That's iron telling you it's ready."
   ],
   "winter": [
-   "Best season for smithing. The forge keeps me warm and the work keeps me honest."
+   "Best season for smithing. The forge keeps me warm and the work keeps me honest.",
+   "Shovel blades. Everyone wants a shovel blade the morning after snow.",
+   "Cold iron cracks if you rush it. Winter teaches patience."
   ],
   "summer": [
-   "Hot out, hotter in here. Don't touch anything orange."
+   "Hot out, hotter in here. Don't touch anything orange.",
+   "Forge in summer. I sweat like a kettle. Worth it.",
+   "Too hot to swing past noon. I work early and nap in the shade."
   ],
   "rain": [
    "Rain on the roof, hammer on the anvil. Good rhythm, that."
@@ -339,10 +491,13 @@
    "Off the clock. Don't show me a tool. ...Fine, show me the tool."
   ],
   "spring": [
-   "Thaw rusts everything. I'll have hoes in all week."
+   "Thaw rusts everything. I'll have hoes in all week.",
+   "Hoe season. Everyone's bringing me bent tools they swore were fine in fall.",
+   "Spring mud gets into the bellows. I've cleaned them twice this week."
   ],
   "gangsters&winter": [
-   "Cold hands slip. Keep your gloves on, kid."
+   "Cold hands slip. Keep your gloves on, kid.",
+   "Cold snap. Half the block comes by just to stand near the forge."
   ],
   "gangsters&festival": [
    "Whole block's on the plaza. Good day to keep your hands where people can see them."
@@ -354,7 +509,39 @@
    "Burned my hand last week. Went to the clinic. A man called Doc wrapped it and didn't ask a thing. Didn't like that."
   ],
   "fall": [
-   "Frost's coming. Bring me your hoe before the ground goes hard, not after."
+   "Frost's coming. Bring me your hoe before the ground goes hard, not after.",
+   "Sharpening sickles all week. The whole town's harvesting at once.",
+   "Cold mornings, warm forge. Fall's the best season to be a smith."
+  ],
+  "festival_egg": [
+   "I made the egg hunt prizes. Little iron eggs. They're heavier than they look."
+  ],
+  "festival_lantern": [
+   "I forged the lantern hooks along the plaza. Count them. All forty hold."
+  ],
+  "festival_harvest": [
+   "Horseshoe toss at the Harvest Fair. I'm not allowed to enter. Apparently that's fair."
+  ],
+  "festival_star": [
+   "I made a little iron star for the tree. It's crooked. It's meant to be. Probably."
+  ],
+  "gangsters&spring": [
+   "Spring on the block means busted gates and broken locks. Plenty of work."
+  ],
+  "gangsters&summer": [
+   "Hot as a furnace out there and hotter in here. Bring water if you visit."
+  ],
+  "gangsters&fall": [
+   "Fall's when the fences get mended. Iron doesn't care whose fence it is."
+  ],
+  "eve": [
+   "Festival's tomorrow. Forge goes cold at dusk. First rest all season."
+  ],
+  "birthday": [
+   "My birthday? Who told you. ...Fine. Thank you. Go on, then."
+  ],
+  "sun": [
+   "Heat wave and a forge. I'm basically soup."
   ]
  },
  "wren": {
@@ -365,10 +552,14 @@
    "I talk to my plants. The plants talk back. We're working on manners."
   ],
   "spring": [
-   "Spring herbs are the strongest. Everything wants to grow."
+   "Spring herbs are the strongest. Everything wants to grow.",
+   "Spring nettles make the best tonic. Gloves, though. Always gloves.",
+   "The garden's waking up. So are the slugs. I have a word with them every morning."
   ],
   "fall": [
-   "Mushroom season! The good ones and the very bad ones look alike, so ask me first."
+   "Mushroom season! The good ones and the very bad ones look alike, so ask me first.",
+   "Drying herbs from every rafter. Mind your head when you come in.",
+   "Fall is for roots: valerian, dandelion, burdock. Dig deep."
   ],
   "rain": [
    "Rain days are brewing days. Everything steeps better when it's grey."
@@ -377,13 +568,41 @@
    "I sell red bottles to people who don't say where the bruise came from. I don't ask."
   ],
   "summer": [
-   "Summer herbs dry in a day on my sill. The whole shop smells like a meadow."
+   "Summer herbs dry in a day on my sill. The whole shop smells like a meadow.",
+   "Everything I grow wants water in summer. Me included.",
+   "Lavender's in bloom. The whole house smells like a pillow."
   ],
   "winter": [
-   "Winter brews are slow brews. Everything steeps longer in the cold."
+   "Winter brews are slow brews. Everything steeps longer in the cold.",
+   "Cough season. I've doubled my honey syrup batches.",
+   "Nothing grows outside now, so I grow things on every windowsill instead."
   ],
-  "festival": [
+  "festival_harvest": [
    "Festival day. I sell a lot of the stomach tonic after the pies."
+  ],
+  "festival_egg": [
+   "I dyed eggs with onion skins and beetroot. Natural colours. Very proud."
+  ],
+  "festival_lantern": [
+   "I filled my lantern with dried lavender. It smells wonderful when it floats."
+  ],
+  "festival_star": [
+   "I brought spiced tea for the Star Festival. Warm hands, warm hearts."
+  ],
+  "gangsters&winter": [
+   "Cold season on the street. Everyone wants something for a sore throat."
+  ],
+  "gangsters&summer": [
+   "Heat makes folks short-tempered. I sell a lot of calming tea."
+  ],
+  "eve": [
+   "Big day tomorrow. I'm brewing extra tonic tonight. Trust me."
+  ],
+  "birthday": [
+   "You remembered my birthday? I'll make you a tea. Something lovely."
+  ],
+  "leaves": [
+   "Fallen leaves make the best compost. I've got three piles going."
   ]
  },
  "alder": {
@@ -397,7 +616,9 @@
    "Festival day! Best day of the season. Eat everything."
   ],
   "winter": [
-   "Mind the ice on the plaza. I've asked for salt. I've asked twice."
+   "Mind the ice on the plaza. I've asked for salt. I've asked twice.",
+   "Snow day for the council. I've declared it. That's a power I have.",
+   "Winter's quiet in the hall. I've been reading old town records. Fascinating stuff, mostly."
   ],
   "penguins": [
    "The Star Crystal chose well. I'll deny I said that if the council asks."
@@ -406,13 +627,19 @@
    "Off duty. Mostly. Don't tell anyone I'm off duty."
   ],
   "spring": [
-   "Spring council meeting tonight. Three hours about the fountain. Again."
+   "Spring council meeting tonight. Three hours about the fountain. Again.",
+   "Spring council meeting. Thirty minutes about the fountain. It's fine. It's a fountain.",
+   "New season, new notices on the board. Do read them. Somebody should."
   ],
   "summer": [
-   "Summer's when the town looks its best. I take full credit."
+   "Summer's when the town looks its best. I take full credit.",
+   "Long days. I've moved the council meeting outside. Nobody's complained yet.",
+   "Summer brings visitors up the beach road. Good for the shops. Busy for me."
   ],
   "fall": [
-   "Harvest Fair's coming. I've practised my ribbon speech in the mirror."
+   "Harvest Fair's coming. I've practised my ribbon speech in the mirror.",
+   "Fall's the season for budgets. I dream in columns now.",
+   "The Harvest Fair is the pride of {town}. I may have said that every year. It's still true."
   ],
   "festival_egg": [
    "Egg Festival! The kids have been training for weeks. I'm not exaggerating."
@@ -433,6 +660,24 @@
   "penguins&f:kept_quiet": [
    "Quiet out east lately. I'd like to think that's my doing. I suspect it's yours.",
    "If there's something the town ought to hear, {name}, my door's open. So's the bell tower, when it has a clapper."
+  ],
+  "gangsters&spring": [
+   "Spring sweep on the avenue. The hall pays for brooms; the block does the rest."
+  ],
+  "gangsters&summer": [
+   "Hot nights, open windows, loud radios. The noise complaints pile up on my desk."
+  ],
+  "gangsters&fall": [
+   "Fall budget. I'm trying to find money for streetlamps. Every corner wants one."
+  ],
+  "gangsters&winter": [
+   "Cold snap. The hall's opened as a warming room. Spread the word."
+  ],
+  "eve": [
+   "The festival's tomorrow! I've rehearsed my speech. It's short. Shorter than last time."
+  ],
+  "birthday": [
+   "My birthday! The council gave me a card. All three of them signed it."
   ]
  },
  "sal": {
@@ -456,16 +701,24 @@
    "Grey suits on the bridge this morning. Walk the long way home."
   ],
   "spring": [
-   "Mud season. Every road out of here's a bog. Suits me."
+   "Mud season. Every road out of here's a bog. Suits me.",
+   "River's high with the thaw. Stay back from the bank when it's loud.",
+   "Spring evenings are good for walking. Nobody bothers you."
   ],
   "summer": [
-   "Long days. Too much light for a man who likes corners."
+   "Long days. Too much light for a man who likes corners.",
+   "Summer nights I sit on the bridge till late. Cooler there.",
+   "Kids jump off the bridge in summer. I watch. Somebody should."
   ],
   "fall": [
-   "Leaves on the bridge. Loud underfoot. I like hearing who's coming."
+   "Leaves on the bridge. Loud underfoot. I like hearing who's coming.",
+   "Leaves on the bridge. Loud as gravel. Can't sneak up on anyone in fall.",
+   "Fall's when I feel most like myself. Quiet. Grey. Honest."
   ],
   "winter": [
-   "Snow shows every footprint. Even mine. Especially mine."
+   "Snow shows every footprint. Even mine. Especially mine.",
+   "Ice on the river edges. I check it every morning on my walk.",
+   "Snow muffles everything. First time all year the town's quieter than me."
   ],
   "festival": [
    "Whole town's on the plaza. I'll be on the edge of it. Where I can see."
@@ -478,6 +731,39 @@
   ],
   "gangsters&f:city_taken": [
    "Car came by again. I told them you were watering the turnips. They wrote that down."
+  ],
+  "festival_egg": [
+   "Egg hunt. I found one in my coat pocket. Wasn't me."
+  ],
+  "festival_lantern": [
+   "Lanterns on the water. Prettiest thing I've seen in a long while. Don't repeat that."
+  ],
+  "festival_harvest": [
+   "I'll try one pie. One. Then I'll go back to the edge of things."
+  ],
+  "festival_star": [
+   "Star Festival. I got a gift last year. Still have it. Don't know what to do about that."
+  ],
+  "gangsters&spring": [
+   "New faces on the block every spring. I learn them all."
+  ],
+  "gangsters&summer": [
+   "Summer nights the street never sleeps. Neither do I."
+  ],
+  "gangsters&fall": [
+   "Fall fog off the river. Good cover. For birdwatching. Obviously."
+  ],
+  "gangsters&winter": [
+   "Cold keeps the corners empty. I like it that way."
+  ],
+  "eve": [
+   "Festival tomorrow. Whole town in one place. I'll keep an eye out."
+  ],
+  "birthday": [
+   "Birthday. Yeah. Don't make it a thing. ...Thanks."
+  ],
+  "leaves": [
+   "Hear that? Leaves on the bridge. Every step announces you."
   ]
  },
  "finn": {
@@ -488,10 +774,14 @@
    "Bait's half the battle. The other half is not falling in."
   ],
   "summer": [
-   "Summer evenings, the trout come right up to the dock."
+   "Summer evenings, the trout come right up to the dock.",
+   "Fish go deep in the heat. I go out at dawn.",
+   "Summer evenings, the jetty's the place. Bring a rod."
   ],
   "winter": [
-   "Ice fishing's not for everyone. It's barely for me."
+   "Ice fishing's not for everyone. It's barely for me.",
+   "Ice fishing on the pond. Cut a hole, sit, wait. It's very relaxing.",
+   "River's too cold to bother with. The pond's where the action is."
   ],
   "rain": [
    "Rain stirs the fish up. Grab your rod."
@@ -506,13 +796,47 @@
    "Evening rise. Hear that? That's dinner thinking about it."
   ],
   "fall": [
-   "The trout go deep when the leaves come down. Patience season."
+   "The trout go deep when the leaves come down. Patience season.",
+   "Fall's the best fishing of the year. The fish know winter's coming.",
+   "Cold mornings on the river. Steam rises off the water like a kettle."
   ],
   "festival_lantern": [
    "Lanterns float better downstream of the bridge post. Don't tell Lumi I said."
   ],
   "spring": [
-   "Spring melt. The river's fast and the trout are hungry."
+   "Spring melt. The river's fast and the trout are hungry.",
+   "Spring run's on. The trout are hungry and so am I.",
+   "Rain means the fish bite. I'll be out in it."
+  ],
+  "festival_egg": [
+   "I hid an egg in my tackle box. Nobody's found it. Nobody looks in tackle boxes."
+  ],
+  "festival_harvest": [
+   "Biggest fish contest at the fair. I'm the judge. Again. Nobody wants to compete with me."
+  ],
+  "festival_star": [
+   "Star Festival. I'm giving everyone a lure. Wrapped in newspaper. It's tradition."
+  ],
+  "gangsters&spring": [
+   "River's running fast. Good fishing, bad for anyone dumping things in it."
+  ],
+  "gangsters&summer": [
+   "Hot city, cool water. I spend summer under the bridge with a line out."
+  ],
+  "gangsters&fall": [
+   "Fall fishing's the best. Quiet river, nobody watching."
+  ],
+  "gangsters&winter": [
+   "Winter on the pond. Me, a bucket and the cold. Perfect."
+  ],
+  "eve": [
+   "Festival tomorrow. I'll fish at dawn and be on the plaza by noon. Maybe."
+  ],
+  "birthday": [
+   "My birthday. I'm taking the whole day to fish. Which is every day, but still."
+  ],
+  "sun": [
+   "Heat wave. The fish are sulking at the bottom. Can't blame them."
   ]
  },
  "lumi": {
@@ -523,10 +847,14 @@
    "Art's just noticing things, slowly, on purpose."
   ],
   "fall": [
-   "Fall is the only season that paints itself."
+   "Fall is the only season that paints itself.",
+   "Fall colours! I've run out of orange twice this week.",
+   "Painting leaves before they fall. A race I always lose."
   ],
   "winter": [
-   "Snow is hard to paint. It's all the colours pretending to be white."
+   "Snow is hard to paint. It's all the colours pretending to be white.",
+   "Winter's all whites and greys. Very difficult. Very beautiful.",
+   "I paint indoors in winter. Through the window. It's cheating a little."
   ],
   "rain": [
    "Rain makes everything shine. Best light all week."
@@ -538,13 +866,47 @@
    "This light. Ten minutes of it a day. Stand still."
   ],
   "spring": [
-   "Blossom on every branch. I can't paint fast enough."
+   "Blossom on every branch. I can't paint fast enough.",
+   "Blossom colours! Pink, white, that green that only lasts a week.",
+   "I'm painting the rain. It's harder than it sounds. It keeps moving."
   ],
   "summer": [
-   "Summer light is too honest. Everything looks exactly like itself."
+   "Summer light is too honest. Everything looks exactly like itself.",
+   "The light in summer is too bright to paint. I paint at dusk instead.",
+   "I set up my easel on the beach road. The sea changes colour every hour."
   ],
   "festival_lantern": [
    "I painted forty lanterns. Find the one with the frog on it. That one's mine."
+  ],
+  "festival_egg": [
+   "I painted half the eggs in the hunt. Look for the ones with tiny suns."
+  ],
+  "festival_harvest": [
+   "I'm painting the fair. You're in it now. Hold still. ...Thanks."
+  ],
+  "festival_star": [
+   "Star Festival. I painted the star at the top of the tree. Gold, three coats."
+  ],
+  "gangsters&spring": [
+   "New murals on the avenue every spring. Some are mine. I'm not saying which."
+  ],
+  "gangsters&summer": [
+   "Summer nights, neon on wet streets. I could paint it forever."
+  ],
+  "gangsters&fall": [
+   "Fall light through the smog is surprisingly lovely. Don't tell anyone."
+  ],
+  "gangsters&winter": [
+   "Snow on the rooftops. The whole city turns quiet and blue."
+  ],
+  "eve": [
+   "Festival tomorrow! I'm still painting decorations. Want to help?"
+  ],
+  "birthday": [
+   "It's my birthday! I'm painting myself a cake. It's not edible. It's art."
+  ],
+  "fireflies": [
+   "Fireflies! I'm trying to paint them. They will not sit still."
   ]
  },
  "theo": {
@@ -556,7 +918,9 @@
    "Sel keeps sending me rubbings from the ruins. Half of them are upside down. I haven't told her."
   ],
   "winter": [
-   "Long nights, long books. Winter's my season."
+   "Long nights, long books. Winter's my season.",
+   "Winter is for reading by the fire. Every scholar's favourite season.",
+   "I've catalogued every snowfall for eleven winters. This one's a good one."
   ],
   "rain": [
    "Rain's for reading. I've got three going at once."
@@ -571,13 +935,19 @@
    "Lamp oil and a good index. That's my evening."
   ],
   "spring": [
-   "Spring cleaning at the library. I found a book that's been overdue for sixty years."
+   "Spring cleaning at the library. I found a book that's been overdue for sixty years.",
+   "Spring is when the library gets cleaned. I hide in the stacks.",
+   "Did you know the orchard wall is older than the town? I've a book on it."
   ],
   "summer": [
-   "Summer reading list's up by the door. Mostly maps. I like maps."
+   "Summer reading list's up by the door. Mostly maps. I like maps.",
+   "Library's the coolest room in town in summer. Thick walls.",
+   "Summer reading list's on the board. It's long. That's the point."
   ],
   "fall": [
-   "Leaves press nicely between pages. Don't tell anyone I do that."
+   "Leaves press nicely between pages. Don't tell anyone I do that.",
+   "Fall is the season for history. Long evenings, old books.",
+   "I've been recording the leaf fall. For science. And for fun."
   ],
   "festival": [
    "The library's shut for the festival. I brought a book anyway. Don't look."
@@ -589,6 +959,30 @@
   "penguins&f:kept_quiet": [
    "People say the howling's stopped. They don't say why. I've noticed you don't either.",
    "Some things belong in the records later, not the gossip now. I can wait."
+  ],
+  "festival_egg": [
+   "The Egg Festival dates back a very long way. I have a footnote about it."
+  ],
+  "festival_lantern": [
+   "The lanterns are an old custom. Each one carries a wish. Mine's for quiet."
+  ],
+  "festival_harvest": [
+   "The Harvest Fair records go back decades. Hazel's family wins a lot."
+  ],
+  "festival_star": [
+   "The Star Festival. The oldest record mentions a single candle. We've grown."
+  ],
+  "gangsters&winter": [
+   "Library's open as a warm room this winter. Read something while you thaw."
+  ],
+  "gangsters&summer": [
+   "Hot outside. Cool in here. And quiet. Mostly."
+  ],
+  "eve": [
+   "Festival tomorrow. I'll close the library. I'll bring a book."
+  ],
+  "birthday": [
+   "My birthday. Someone left a book on my desk. It was overdue, but the thought counts."
   ]
  },
  "hazel": {
@@ -599,16 +993,24 @@
    "Need a hand? I've got two, and both have dirt on them."
   ],
   "spring": [
-   "Spring rains do half the watering. Don't let that make you lazy."
+   "Spring rains do half the watering. Don't let that make you lazy.",
+   "Lambs this spring. Two of them already think they're in charge.",
+   "Planting season. I'll sleep in summer. Maybe."
   ],
   "summer": [
-   "Summer crops need water every single day. No excuses."
+   "Summer crops need water every single day. No excuses.",
+   "Watering at dawn, watering at dusk. Summer's a long chore and I love it.",
+   "The corn's taller than me. That happens every year and it still surprises me."
   ],
   "fall": [
-   "Harvest what you can before winter. The frost doesn't negotiate."
+   "Harvest what you can before winter. The frost doesn't negotiate.",
+   "Harvest! Everything at once and not enough hands.",
+   "Pumpkins, apples, squash. The barn's full and I'm tired and happy."
   ],
   "winter": [
-   "Winter's for planning next year. And for winter crops, if you're brave."
+   "Winter's for planning next year. And for winter crops, if you're brave.",
+   "Winter on the farm is mending fences and planning next year.",
+   "The animals stay in when it snows. They're very cosy. I'm jealous."
   ],
   "rain": [
    "Rain day. Let the sky do the watering and you fix that fence you keep looking at."
@@ -618,9 +1020,6 @@
   ],
   "gangsters": [
    "Folk here mind their own fields. Do the same and you'll get along fine."
-  ],
-  "festival": [
-   "I entered my best turnip. Don't look at it, it gets nervous."
   ],
   "festival_lantern": [
    "Bring wool to the Fleece & Feather table. Tam wins every year and it's getting embarrassing."
@@ -639,6 +1038,33 @@
   ],
   "evening": [
    "Done for the day. My back says so and my back is never wrong."
+  ],
+  "festival_harvest": [
+   "I entered my best turnip. Don't look at it, it gets nervous."
+  ],
+  "festival_egg": [
+   "My hens are famous at the Egg Festival. They don't know. Don't tell them."
+  ],
+  "festival_star": [
+   "Star Festival. I'm giving everyone a jar of honey. Hope they like honey."
+  ],
+  "gangsters&spring": [
+   "Planting in a city's not easy, but there's dirt if you look for it."
+  ],
+  "gangsters&summer": [
+   "Summer on the block's hot and loud. My plants don't mind."
+  ],
+  "gangsters&fall": [
+   "Harvest time even in the city. Rooftops full of pumpkins."
+  ],
+  "gangsters&winter": [
+   "Winter's slow. I'm planning next year's rows on paper."
+  ],
+  "eve": [
+   "Festival tomorrow. I'm polishing my turnip. Yes, really."
+  ],
+  "birthday": [
+   "You remembered my birthday? That's lovely. Come by the farm, I'll show you the lambs."
   ]
  },
  "posy": {
@@ -648,13 +1074,14 @@
    "If you bring me berries, I'll make you something you'll remember."
   ],
   "fall": [
-   "Pumpkin pies all month. I've stopped counting."
+   "Pumpkin pies all month. I've stopped counting.",
+   "Pumpkin pies, apple cakes, ginger biscuits. Fall is a baker's dream.",
+   "The bakery smells like cinnamon all fall. People just come in to breathe."
   ],
   "winter": [
-   "Spiced bread in winter. My gran's recipe. Secret ingredient: more spice."
-  ],
-  "festival": [
-   "I've baked for the whole festival. My arms will never recover."
+   "Spiced bread in winter. My gran's recipe. Secret ingredient: more spice.",
+   "Frostberry tarts this week. They taste like cold, in a good way.",
+   "Winter baking keeps the kitchen warm. I don't mind the snow at all."
   ],
   "morning": [
    "I bake at dawn. The whole street smells like bread by six.",
@@ -664,10 +1091,14 @@
    "Up at four, asleep by eight. Talk fast."
   ],
   "spring": [
-   "Strawberry tarts the minute the first ones ripen. Bring me a basket and I'll bring you a tart."
+   "Strawberry tarts the minute the first ones ripen. Bring me a basket and I'll bring you a tart.",
+   "Spring flowers on every cake this week. People keep asking for more.",
+   "Rhubarb's in! Rhubarb everything. I'm unstoppable."
   ],
   "summer": [
-   "Too hot to proof dough after noon. I bake early and nap after lunch."
+   "Too hot to proof dough after noon. I bake early and nap after lunch.",
+   "Too hot for the oven. I bake at four in the morning now.",
+   "Summer berries on everything. My fingers are purple."
   ],
   "rain": [
    "Rainy days sell more bread. Nobody wants to cook when it's pouring."
@@ -690,6 +1121,34 @@
   ],
   "festival_star": [
    "Spiced loaf for every gift basket. My kitchen looks like a snowstorm."
+  ],
+  "festival_harvest": [
+   "I've baked for the whole festival. My arms will never recover.",
+   "I've baked for the whole Harvest Fair. My arms will never recover."
+  ],
+  "festival_lantern": [
+   "Lantern cakes! Little paper cups with a candle on top. Don't eat the candle."
+  ],
+  "gangsters&spring": [
+   "Spring on the block. Fresh bread smells better than exhaust. Come in."
+  ],
+  "gangsters&summer": [
+   "Hot ovens, hot street. I sell more cold buns than hot ones."
+  ],
+  "gangsters&fall": [
+   "Pumpkin bread's back. The whole block lines up for it."
+  ],
+  "gangsters&winter": [
+   "Snow outside, ovens inside. My bakery's the warmest shop on the street."
+  ],
+  "eve": [
+   "Festival tomorrow! I've been up since three. I'll be up since three again tomorrow."
+  ],
+  "birthday": [
+   "My birthday! I baked my own cake. I always do. It's the best one."
+  ],
+  "sun": [
+   "Heat wave. My icing's melting faster than I can pipe it."
   ]
  },
  "rook": {
@@ -700,10 +1159,14 @@
    "Tracks don't lie. People do. That's why I like tracks."
   ],
   "winter": [
-   "Easy tracking in snow. Hard everything else."
+   "Easy tracking in snow. Hard everything else.",
+   "Fresh snow tells you everything. Who walked where, and when.",
+   "Pond's frozen at the edges. Safe only near the reeds."
   ],
   "fall": [
-   "The deer are fattening up for winter. I just watch. They know I just watch."
+   "The deer are fattening up for winter. I just watch. They know I just watch.",
+   "Fall's the season for tracking. Soft ground, fewer leaves on the trees.",
+   "Geese are heading south. I watch them every year."
   ],
   "morning": [
    "Dew shows every track. Best hour of the day."
@@ -715,10 +1178,47 @@
    "You've got a tail. City boots, no patience. Lose him in the orchard."
   ],
   "spring": [
-   "Spring tracks everywhere. Everything's out looking for breakfast."
+   "Spring tracks everywhere. Everything's out looking for breakfast.",
+   "Spring tracks are everywhere. Everything's moving again.",
+   "Fawns in the woods this time of year. Keep your distance."
   ],
   "summer": [
-   "Hot days, the woods go quiet at noon. I do too."
+   "Hot days, the woods go quiet at noon. I do too.",
+   "Summer, the woods are thick. Hard to track, easy to get lost.",
+   "Long days for walking the ridge. I'll be back by dark. Probably."
+  ],
+  "festival_egg": [
+   "I'll find every egg in the hunt. It's tracking. With eggs."
+  ],
+  "festival_lantern": [
+   "Lanterns scare the owls. I'll watch from the trees."
+  ],
+  "festival_harvest": [
+   "I don't enter the fair. I just eat. That's my contribution."
+  ],
+  "festival_star": [
+   "Star Festival. Clear night for it. You can see every constellation."
+  ],
+  "gangsters&spring": [
+   "Spring on the block. More feet on the street, harder to track."
+  ],
+  "gangsters&summer": [
+   "Summer nights I walk the rooftops. Quiet up there."
+  ],
+  "gangsters&fall": [
+   "Fall fog. Good for watching. Bad for being watched."
+  ],
+  "gangsters&winter": [
+   "Snow on the street. Every footprint's a story."
+  ],
+  "eve": [
+   "Festival tomorrow. Too many people. I'll go anyway."
+  ],
+  "birthday": [
+   "Birthday. Nobody usually knows. ...Thanks."
+  ],
+  "snow": [
+   "Fresh snow. Look: fox tracks, right across the plaza."
   ]
  },
  "pip": {
@@ -735,22 +1235,51 @@
    "Mum says bed at eight. I say bed at eight-ish."
   ],
   "spring": [
-   "Spring means puddles. Puddles mean jumping. That's science."
+   "Spring means puddles. Puddles mean jumping. That's science.",
+   "Spring! I found a bird's nest. I'm not touching it. I'm just guarding it.",
+   "I'm growing a bean in a cup at school. It's winning."
   ],
   "summer": [
-   "Summer holidays! No school! Mum still makes me sweep the shop."
+   "Summer holidays! No school! Mum still makes me sweep the shop.",
+   "NO SCHOOL. All summer. I'm going to the pond every single day.",
+   "I got sunburnt on my nose. Mum says it's a souvenir."
   ],
   "fall": [
-   "I'm collecting the best leaves. Only the red ones. The yellow ones are boring."
+   "I'm collecting the best leaves. Only the red ones. The yellow ones are boring.",
+   "Back to school. I'm not sad. I'm a little sad.",
+   "I jumped in a leaf pile and found a sock. Not mine."
   ],
   "winter": [
-   "I built a snow-mayor. It looks more like the mayor than the mayor does."
+   "I built a snow-mayor. It looks more like the mayor than the mayor does.",
+   "Snowball fight after school! You can be on my team.",
+   "I made a snowman. He's called Mr. Buttons. He's very tall."
   ],
   "festival_egg": [
    "I know where three eggs are. I'm not telling. Okay, one. No."
   ],
   "festival_star": [
    "I wrapped Mum's present myself. You can tell."
+  ],
+  "festival_lantern": [
+   "My lantern has a star on it. It's floating the best."
+  ],
+  "festival_harvest": [
+   "I'm entering the pumpkin contest. Mine's small but it's very round."
+  ],
+  "gangsters&summer": [
+   "No school all summer. I'm running the hydrant on our corner."
+  ],
+  "gangsters&winter": [
+   "Snow day! Nobody's on the street. Except me. And my sled."
+  ],
+  "eve": [
+   "Festival TOMORROW. I can't sleep. I'm not even tired."
+  ],
+  "birthday": [
+   "It's my BIRTHDAY. I'm this many now. Guess how many. MORE."
+  ],
+  "fireflies": [
+   "Fireflies! I caught one and let it go. It said thank you. I think."
   ]
  },
  "wren_jr": {
@@ -761,22 +1290,45 @@
    "I'm going to be a frog scientist. Or a potion-maker. Or both, for frogs."
   ],
   "spring": [
-   "Tadpoles in the pond! Hundreds! I counted to forty and then they moved."
+   "Tadpoles in the pond! Hundreds! I counted to forty and then they moved.",
+   "Tadpoles in the pond! I named all of them Frederick.",
+   "Spring rain brings out the frogs. Best season ever."
   ],
   "rain": [
    "Rain means FROG DAY."
   ],
   "summer": [
-   "Summer frogs are LOUD. I love it."
+   "Summer frogs are LOUD. I love it.",
+   "The pond's warm in summer. The frogs love it. So do I.",
+   "No school means more time with the frogs."
   ],
   "fall": [
-   "The frogs are getting sleepy. I tucked one in. It didn't want to be tucked."
+   "The frogs are getting sleepy. I tucked one in. It didn't want to be tucked.",
+   "The frogs are getting sleepy. They'll hide in the mud soon.",
+   "Leaves on the pond look like little boats."
   ],
   "winter": [
-   "Frogs sleep under the pond all winter. I check on them anyway."
+   "Frogs sleep under the pond all winter. I check on them anyway.",
+   "The frogs are asleep under the ice. I whisper to them.",
+   "I built a snow frog. It's very big and very froggy."
   ],
-  "festival": [
+  "festival_egg": [
    "I hid a frog in the egg basket. Don't tell. It wanted to see the festival."
+  ],
+  "festival_lantern": [
+   "I made a frog lantern. It floats. Frogs float. Mostly."
+  ],
+  "festival_harvest": [
+   "I entered a frog in the fair. They said no frogs. I said why. They didn't know."
+  ],
+  "festival_star": [
+   "Star Festival. I wished for a frog that glows. Maybe next year."
+  ],
+  "eve": [
+   "Festival tomorrow! My frog is very excited. Can't you tell?"
+  ],
+  "birthday": [
+   "It's my birthday! I'm going to the pond to tell the frogs."
   ]
  },
  "tobin": {
@@ -787,19 +1339,43 @@
    "The wind's good today. Good for kites, bad for hats."
   ],
   "summer": [
-   "Summer wind is the best kite wind. Everyone knows that."
+   "Summer wind is the best kite wind. Everyone knows that.",
+   "No school! I'm working at the inn. Bram pays me in pie.",
+   "Summer, the inn's busy every night. I carry plates."
   ],
   "winter": [
-   "Snow day! There's no school but I'm calling it a snow day."
+   "Snow day! There's no school but I'm calling it a snow day.",
+   "Snow day! Bram let me light the fire. Well, hand him the match.",
+   "Bram says winter stew is the best stew. I've had three bowls to check."
   ],
   "spring": [
-   "Spring tides bring the best shells. I've got a whole bucket."
+   "Spring tides bring the best shells. I've got a whole bucket.",
+   "I'm helping Bram plant herbs behind the inn. Mostly I dig holes.",
+   "Spring cleaning at the inn. I found three spoons under the stairs."
   ],
   "fall": [
-   "Fall wind takes my kite all the way to the lighthouse. Marlowe waves."
+   "Fall wind takes my kite all the way to the lighthouse. Marlowe waves.",
+   "Back to school. I miss carrying plates.",
+   "Fall, Bram makes soup every day. I've tasted every batch. For quality."
   ],
-  "festival": [
-   "Festival day! Bram let me carry the big pot. Well. One handle."
+  "festival_harvest": [
+   "Festival day! Bram let me carry the big pot. Well. One handle.",
+   "Bram let me carry the big pot. Well. One handle."
+  ],
+  "festival_egg": [
+   "Egg Festival! I'm carrying the egg baskets. Very carefully."
+  ],
+  "festival_lantern": [
+   "I'm helping light the lanterns. Bram says I have steady hands."
+  ],
+  "festival_star": [
+   "I wrapped a present for Bram. It's a spoon. He needs more spoons."
+  ],
+  "eve": [
+   "Festival tomorrow! I've polished every pot at the inn."
+  ],
+  "birthday": [
+   "It's my birthday! Bram made me a pie. With my name on it. In pastry."
   ]
  },
  "mabel": {
@@ -810,19 +1386,45 @@
    "Daisies mean innocence. Dandelions mean I was bored."
   ],
   "spring": [
-   "Spring is when the diary gets heavy. All the flowers."
+   "Spring is when the diary gets heavy. All the flowers.",
+   "Spring entry: the cherry trees are pink. Also: Pip fell in the pond.",
+   "I'm writing a poem about spring. It rhymes with thing. Most things do."
   ],
   "summer": [
-   "Summer flowers go floppy by noon. I press them early."
+   "Summer flowers go floppy by noon. I press them early.",
+   "Summer entry: hot. Very hot. Iced tea helps.",
+   "I'm writing my diary in the shade. The sun makes the ink run."
   ],
   "fall": [
-   "Fall flowers are the brave ones. Page thirty-one is all asters."
+   "Fall flowers are the brave ones. Page thirty-one is all asters.",
+   "Fall entry: leaves, pumpkins, school again. Mixed feelings.",
+   "Fall's my favourite season to write about. Everything's changing."
   ],
   "winter": [
-   "No flowers in winter, so I press snowflakes. They don't keep."
+   "No flowers in winter, so I press snowflakes. They don't keep.",
+   "Winter entry: snow, cocoa, Pip lost a mitten. Again.",
+   "I'm writing by the fire. My diary's almost full. I'll need a new one by spring."
   ],
   "festival": [
    "I'm writing the whole festival in my diary. You're on page forty."
+  ],
+  "festival_egg": [
+   "Egg Festival entry: I found two. Pip found none. That's going in the diary."
+  ],
+  "festival_lantern": [
+   "Lantern Festival. I wrote a wish on my lantern. It's private."
+  ],
+  "festival_harvest": [
+   "Harvest Fair entry: pies, ribbons, Theo counting everything."
+  ],
+  "festival_star": [
+   "Star Festival. I'm writing down everyone's gifts. For the record."
+  ],
+  "eve": [
+   "Festival tomorrow. I've saved a whole page for it."
+  ],
+  "birthday": [
+   "My birthday! I'm writing it in my diary in gold pen."
   ]
  },
  "marlowe": {
@@ -962,16 +1564,24 @@
    "Good timber tells you where it wants to split. Listen and it won't fight you."
   ],
   "spring": [
-   "Spring's for garden benches. Everyone wants to sit outside the second it stops raining."
+   "Spring's for garden benches. Everyone wants to sit outside the second it stops raining.",
+   "Spring repairs. Every fence in town needs a nail.",
+   "New planks for the bridge this spring. Sal's watching me like a hawk."
   ],
   "summer": [
-   "Wood moves in the heat. I leave every joint a hair loose in summer."
+   "Wood moves in the heat. I leave every joint a hair loose in summer.",
+   "Building stalls for the summer markets. Hammer, saw, repeat.",
+   "Too hot in the workshop. I build outside under the tree."
   ],
   "fall": [
-   "Wood's dry this time of year. Best season to build."
+   "Wood's dry this time of year. Best season to build.",
+   "Fall's for roofs. Fix them before the snow, not after.",
+   "Building harvest crates for Hazel. Dozens of them."
   ],
   "winter": [
-   "Winter's for beds and chairs. People notice their furniture when they're stuck indoors."
+   "Winter's for beds and chairs. People notice their furniture when they're stuck indoors.",
+   "Winter, I build furniture. Indoor work for indoor weather.",
+   "Sledges! Every kid in town wants one fixed this week."
   ],
   "rain": [
    "Damp air, swollen drawers. Half the town will be at my door by tomorrow."
@@ -993,6 +1603,21 @@
   ],
   "festival_harvest": [
    "My pie's on the table. I made the table too. Judge them separately."
+  ],
+  "festival_egg": [
+   "I built the egg hunt hiding spots. Some of them are very clever."
+  ],
+  "festival_lantern": [
+   "I built the lantern launch on the water. It floats. I tested it. Twice."
+  ],
+  "festival_star": [
+   "I built the star frame for the tree. It's very sturdy. Climb it at your peril."
+  ],
+  "eve": [
+   "Festival tomorrow. Stall frames are up. Don't lean on them yet."
+  ],
+  "birthday": [
+   "My birthday! I made myself a new chair. Come sit in it."
   ]
  },
  "catkins": {
