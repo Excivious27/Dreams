@@ -1250,3 +1250,10 @@ echo "$wfout" | grep -E "FAIL|SCRIPT ERROR|water_feature_test" || true
 if ! echo "$wfout" | grep -q "water_feature_test: PASS"; then
   echo "water_feature_test failed"; exit 1
 fi
+
+echo "== glow_kinds_test (C14b P2: fire/electric/neon/crystal lights, window fades, room fires) =="
+gkout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/glow_kinds_test.gd 2>&1)"
+echo "$gkout" | grep -E "FAIL|SCRIPT ERROR|glow_kinds_test" || true
+if ! echo "$gkout" | grep -q "glow_kinds_test: PASS"; then
+  echo "glow_kinds_test failed"; exit 1
+fi
