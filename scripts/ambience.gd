@@ -309,6 +309,8 @@ func _evaluate() -> Dictionary:
 			out["wind_soft"] = -12.0  # dry lands: a hot wind instead of birds
 		if (w == "leaves" or (se == "fall" and id == "forest")) and not wet and not snowy:
 			out["leaves"] = -18.0 - (6.0 if ph == "night" else 0.0)
+		elif se == "fall" and wild and not wet and not snowy and not urban and id not in SEA_MAPS and Scenery.sprinkle_ok(id):
+			out["leaves"] = -24.0 - (6.0 if ph == "night" else 0.0)  # C15 P5: a soft leaf rustle wherever fall leaves drift
 		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and (not wet or GameState.festival_today() != ""):
 			if GameState.festival_today() != "":
 				# c13_10-10: a rainy festival keeps its crowd (under awnings), 6 dB down.

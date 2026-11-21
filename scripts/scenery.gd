@@ -36,7 +36,8 @@ const NO_FLOCKS := ["rain", "storm", "snow", "blizzard", "sandstorm", "ash", "fo
 var _drops: Array = []  # rain/storm/drizzle/hail: {p, v, len, a}
 var _snow: Array = []  # snow/blizzard flakes: {p, layer, fall, sway, fq, ph}
 ## C14b: drop count, fall velocity (px/s) and streak length per wet weather.
-const PRECIP := {"rain": [140, Vector2(-40, 260), 10.0], "drizzle": [60, Vector2(-20, 200), 6.0],
+const PRECIP := {"rain": [140, Vector2(-40, 260), 12.0],  # C15 P5 (c15_14-11): 10 -> 12, reads on a phone
+	"drizzle": [60, Vector2(-20, 200), 6.0],
 	"storm": [220, Vector2(-90, 380), 14.0], "hail": [80, Vector2(-30, 320), 4.0]}
 ## Snow depth layers: [count, size px, alpha, fall min, fall max, sway px] (c14b_18-03).
 const SNOW_LAYERS := [[50, 1.5, 0.75, 10.0, 14.0, 3.0], [40, 2.0, 0.9, 18.0, 26.0, 6.0], [20, 3.0, 1.0, 30.0, 40.0, 10.0]]
@@ -46,7 +47,7 @@ var _ov_t := 0.0
 ## Painted aurora band across the top of the sky (crystal meadow / moon nights).
 var aurora := false
 ## Overcast washes per weather (c14_16-02): rainy and grey days are dimmer and cooler than sunny ones.
-const OVERCAST := {"rain": Color(0.1, 0.12, 0.18, 0.15), "fog": Color(0.55, 0.58, 0.64, 0.08), "snow": Color(0.5, 0.55, 0.65, 0.07), "sandstorm": Color(0.45, 0.32, 0.15, 0.1), "ash": Color(0.15, 0.1, 0.1, 0.12)}
+const OVERCAST := {"rain": Color(0.1, 0.12, 0.18, 0.2), "fog": Color(0.55, 0.58, 0.64, 0.08), "snow": Color(0.5, 0.55, 0.65, 0.07), "sandstorm": Color(0.45, 0.32, 0.15, 0.1), "ash": Color(0.15, 0.1, 0.1, 0.12)}
 const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow", "blizzard": "ov_blizzard", "petals": "ov_petals", "leaves": "ov_leaves", "fireflies": "ov_fireflies", "fog": "ov_fog", "dust": "ov_dust", "sandstorm": "ov_sandstorm", "ash": "ov_ash", "meteors": "ov_meteors"}
 
 
@@ -85,19 +86,40 @@ func _pkind() -> String:
 
 
 ## C14b (c14b_18-05): a light seasonal sprinkle on clear/sun/wind days outdoors:
-## spring petals, fall leaves. Not in cities, caves or under a fixed dark.
+## spring petals, a few summer leaves, fall leaves, winter flurries (C15 P5,
+## c15_14-22). Not in cities, caves or under a fixed dark, and not over maps with no
+## trees to shed them (c15_17-04: iron yards, Gilt plaza, desert, frost, sky, colonies).
+const NO_SPRINKLE_PREFIX := ["iron_", "gilt_", "desert_", "frost_", "wind_", "sky", "station", "colony_", "moon", "mega_iron", "mega_gilt", "mega_desert"]
+
+
+static func sprinkle_ok(id: String) -> bool:
+	if id in Ambience.CITY_MAPS:
+		return false
+	for pre: String in NO_SPRINKLE_PREFIX:
+		if id.begins_with(pre):
+			return false
+	return true
+
+
+## The sprinkle kind for a look season ("" = none).
+static func sprinkle_kind(se: String) -> String:
+	match se:
+		"spring": return "petal_pink" if Art.has("fx", "petal_pink") else ""
+		"summer": return "leaf_green" if Art.has("fx", "leaf_green") else ""
+		"fall": return "leaf_orange" if Art.has("fx", "leaf_orange") else ""
+		"winter": return "snowflake" if Art.has("fx", "snowflake") else ""
+	return ""
+
+
 func _sprinkle() -> String:
 	if not overhead or not (weather in ["clear", "sun", "wind"]) or GameState.run.is_empty():
 		return ""
 	var host := get_parent()
 	if host is GameMap:
 		var gm := host as GameMap
-		if gm.fixed_dark >= 0.0 or gm.scene_id() in Ambience.CITY_MAPS:
+		if gm.fixed_dark >= 0.0 or not sprinkle_ok(gm.scene_id()):
 			return ""
-	match GameState.look_se():
-		"spring": return "petal_pink" if Art.has("fx", "petal_pink") else ""
-		"fall": return "leaf_orange" if Art.has("fx", "leaf_orange") else ""
-	return ""
+	return sprinkle_kind(GameState.look_se())
 
 
 func _ready() -> void:
@@ -181,7 +203,7 @@ func _process(delta: float) -> void:
 		var leafy := true
 		var want := 18
 		if sprinkle:
-			want = (10 if weather == "wind" else (5 if pkind == "petal_pink" else 7))
+			want = (10 if weather == "wind" else (5 if pkind == "petal_pink" else (3 if pkind == "leaf_green" else (4 if pkind == "snowflake" else 7))))
 		if Settings.reduced_motion():
 			want = maxi(10, want / 2) if not sprinkle else maxi(2, want / 2)
 		while _parts.size() < want:
@@ -189,7 +211,7 @@ func _process(delta: float) -> void:
 			# they drift loose instead of marching down in a grid.
 			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind,
 				"fall": randf_range(14.0, 30.0) if leafy else 18.0, "sway": randf_range(6.0, 16.0) if leafy else 8.0, "wob": randf_range(0.6, 1.4) if leafy else 1.0,
-				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind == "petal_pink" else randf_range(0.35, 0.55)) if leafy else 0.5,
+				"rot": randf() * TAU, "spin": randf_range(-1.6, 1.6), "fps": randf_range(2.5, 5.0) if leafy else 4.0, "sz": (randf_range(0.6, 0.85) if pkind in ["petal_pink", "snowflake"] else randf_range(0.35, 0.55)) if leafy else 0.5,
 				"tint": [Color.WHITE, Color(1.0, 0.75, 0.6), Color(1.0, 0.95, 0.55), Color(0.85, 0.55, 0.4)][randi() % 4] if pkind == "leaf_orange" else Color.WHITE})  # fall leaves in mixed colours (c14b_18-08)
 		for p: Dictionary in _parts:
 			if weather == "fireflies":
@@ -243,6 +265,7 @@ func _tick_precip(delta: float) -> void:
 				dr["p"] = Vector2(randf_range(0, _w + 80), randf_range(-30, -5))
 	elif not _drops.is_empty():
 		_drops.clear()
+	_tick_splashes(delta, calm)
 	if weather in ["snow", "blizzard"] and overhead:
 		var bl := weather == "blizzard"
 		var k := (1.45 if bl else 1.0) * (0.5 if calm else 1.0)
@@ -342,7 +365,47 @@ func _draw_aurora(dark: float) -> void:
 			PackedColorArray([cols[i], cols[i + 1], cols[i + 2], cols[i + 5]]))
 
 
+## C15 P5 (c15_14-06): the sliced rain splash art finally lands: a few ground splashes
+## per second on screen in rain/storm (budgeted, fewer with reduced motion).
+var _splashes: Array = []  # {p, t}
+const SPLASH_RATE := {"rain": 7.0, "storm": 12.0}
+const SPLASH_LIFE := 0.3
+var _splash_acc := 0.0
+
+
+func _tick_splashes(delta: float, calm: bool) -> void:
+	for sp: Dictionary in _splashes:
+		sp["t"] += delta
+	_splashes = _splashes.filter(func(sp: Dictionary) -> bool: return float(sp["t"]) < SPLASH_LIFE)
+	if not overhead or not SPLASH_RATE.has(weather) or not Art.has("fx", "rain_splash"):
+		_splash_acc = 0.0
+		return
+	_splash_acc += delta * float(SPLASH_RATE[weather]) * (0.5 if calm else 1.0) * _fade
+	while _splash_acc >= 1.0 and _splashes.size() < 16:
+		_splash_acc -= 1.0
+		_splashes.append({"p": Vector2(randf_range(8, _w - 8), randf_range(_h * 0.15, _h - 8)), "t": 0.0})
+	_splash_acc = minf(_splash_acc, 1.0)
+
+
+func _draw_splashes() -> void:
+	if _splashes.is_empty():
+		return
+	var t := Art.tex("fx", "rain_splash")
+	if t == null:
+		return
+	var info := Art.info("fx", "rain_splash")
+	var cw := float(info.get("cell_w", 36))
+	var ch := float(info.get("cell_h", 28))
+	var n := int(info.get("frames", 3))
+	for sp: Dictionary in _splashes:
+		var k := float(sp["t"]) / SPLASH_LIFE
+		var f := mini(n - 1, int(k * n))
+		var sz := Vector2(cw, ch) * 0.35
+		_canvas.draw_texture_rect_region(t, Rect2(sp["p"] - Vector2(sz.x / 2.0, sz.y), sz), Rect2(f * cw, 0, cw, ch), Color(1, 1, 1, 0.75 * (1.0 - k * 0.5)))
+
+
 func _draw_precip() -> void:
+	_draw_splashes()
 	if not _drops.is_empty():
 		var pts := PackedVector2Array()
 		var cols := PackedColorArray()
@@ -350,13 +413,25 @@ func _draw_precip() -> void:
 		var dir: Vector2 = (pr[1] as Vector2) + Vector2(-Anim.wind() * 40.0, 0)
 		dir = dir.normalized()
 		var hail := weather == "hail"
+		var near := PackedVector2Array()  # C15 P5 (c15_14-11): a near third of rain drawn 2 px wide
+		var ncols := PackedColorArray()
+		var i := 0
 		for dr: Dictionary in _drops:
 			var p: Vector2 = dr["p"]
-			pts.append(p)
-			pts.append(p + dir * float(dr["len"]))
 			var c := Color(0.85, 0.9, 1.0, float(dr["a"]) * _fade) if not hail else Color(0.95, 0.97, 1.0, 0.8 * _fade)
-			cols.append(c)
-		_canvas.draw_multiline_colors(pts, cols, 2.0 if hail else 1.0)
+			if not hail and weather in ["rain", "storm"] and i % 3 == 0:
+				near.append(p)
+				near.append(p + dir * float(dr["len"]) * 1.2)
+				ncols.append(c)
+			else:
+				pts.append(p)
+				pts.append(p + dir * float(dr["len"]))
+				cols.append(c)
+			i += 1
+		if not pts.is_empty():
+			_canvas.draw_multiline_colors(pts, cols, 2.0 if hail else 1.0)
+		if not near.is_empty():
+			_canvas.draw_multiline_colors(near, ncols, 2.0)
 	if not _snow.is_empty():
 		var bl := weather == "blizzard"
 		for f: Dictionary in _snow:
@@ -540,7 +615,7 @@ func _on_draw() -> void:
 		var f: int = int(p["f"]) % n
 		if p.has("rot") and (weather in ["leaves", "petals"] or _sprinkle() != ""):
 			var sz := Vector2(cw, ch) * float(p.get("sz", 0.5))
-			var tint: Color = Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" else p.get("tint", Color.WHITE)  # no petal art: pink leaves
+			var tint: Color = Color(1.0, 0.72, 0.84) if str(p["k"]) == "leaf_green" and weather == "petals" else p.get("tint", Color.WHITE)  # no petal art: pink leaves (summer sprinkle stays green)
 			tint.a *= _fade
 			_canvas.draw_set_transform(p["pos"], float(p["rot"]), Vector2.ONE)
 			_canvas.draw_texture_rect_region(t, Rect2(-sz / 2.0, sz), Rect2(f * cw, 0, cw, ch), tint)

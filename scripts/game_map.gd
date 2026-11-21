@@ -1684,14 +1684,13 @@ func area_track() -> String:
 	if id == "town" and GameState.festival_today() != "":
 		if now >= FESTIVAL_FROM and now < FESTIVAL_TO:
 			var fid := GameState.festival_today()
-			var g := "" if peng else "_gang"
 			if GameState.is_night():
-				var fn := first_track(["festival_%s_night%s" % [fid, g], "festival_%s_night" % fid if peng else "", "festival_night" + g, "festival_night"])
+				var fn := MusicResolve.festival_track(fid, true)  # C15 P5: per-arc festival songs + stand-ins
 				if fn != "":
 					return fn
 			if player != null and preload("res://scripts/animal_show.gd").near_stand(fid, world_to_cell(player.position)) and Music.has_track("animal_show"):
 				return "animal_show"  # C11b P6: the ribbon tables have their own tune
-			return first_track(["festival_%s%s" % [fid, g], "festival_%s" % fid if peng else "", "festival" + g, "festival"])  # C13: a song per festival day
+			return MusicResolve.festival_track(fid, false)  # C13 a song per festival day; C15 P5 gang/harvest stand-ins
 	if t != t0 or RecCenter.is_rec(self):
 		return t  # a jukebox/music-box record plays exactly as chosen
 	var ctx := music_ctx(id)
@@ -1711,6 +1710,8 @@ func music_ctx(id: String) -> Dictionary:
 		c["shared_weather"] = true
 	if sky != null and str(sky.weather) in ["rain", "storm"] and id in NIGHT_OK:
 		c["weather"] = str(sky.weather)
+	elif sky != null and GameState.look_season != "":
+		c["weather"] = MusicResolve.sky_weather(str(sky.weather))  # C15 P5: a region's own sky, not the home calendar
 	if id == "farm":
 		c["season_alias"] = {"fall": "farm_fall", "winter": "winter"}
 	if MusicResolve.NIGHT_GROUP.has(id):
@@ -1819,6 +1820,7 @@ func sky_tint(t: int) -> Color:
 
 
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
+	name = SeasonLook.pick(group, name)  # C15 P5: every outdoor prop takes its look-season twin
 	if _painter_of != null:  # e.g. WorldGen.draw_ground_detail places forage from draw_map
 		return _painter_of.prop(group, name, c, extra_w, dy, solid, scale)
 	var s := Art.sprite(group, name)
@@ -4458,7 +4460,7 @@ func _build_border() -> void:
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
 			prop(bg, nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
 		else:
-			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0), depth])
+			_border_draw.append([c, bg, SeasonLook.pick(bg, nm), rng.randf_range(-3.0, 3.0), depth])  # C15 P5: themed city/region stands take season twins
 	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
 
 

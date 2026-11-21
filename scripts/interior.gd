@@ -273,6 +273,7 @@ func after_ready() -> void:
 			ps.offset = Vector2(0, -crop.size.y / 2.0)
 		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm.begins_with("pelt_") or nm == "round_rug_stone"):
 			to_under(ps)  # rugs lie flat: you walk over them, not behind them
+	InteriorSeason.dress(self)  # C15 P5: wreaths/garlands by look season
 	# Keep the way in and the spot in front of every counter/thing walkable.
 	var dd: Array = I.get("door", [cols / 2, rows - 2])
 	blocked.erase(Vector2i(int(dd[0]), int(dd[1]) - 1))
