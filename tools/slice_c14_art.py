@@ -5,6 +5,8 @@ Sources (dreams-image renders, art/incoming/c14p6/):
   flame_core.png  -> items/flame_core (c14_17-01: the old icon was a broken fragment)
   dunes.png, dunes-2.png (5 isolated props each, one row) -> nature/dune_0..9
                       (c14_17-04 / c14_15-01: the old set were square sand crops)
+  nature_fix.png  -> nature/hedge (round free-standing shrub), nature/grass_tuft_winter (no key halo)
+  icons_fix.png   -> items/luck_potion, harvest_potion (no card crop), golem_core (no sliver)
 
 Colour key: the C11b violet-safe key (cut magenta only in regions touching near-pure
 #FF00FF); renders that already carry alpha keep it. Pieces are found as alpha blobs
@@ -29,6 +31,8 @@ JOBS = [
     ("flame_core.png", "items", ["flame_core"], (32, 32)),
     ("dunes.png", "nature", ["dune_0", "dune_1", "dune_2", "dune_3", "dune_4"], (40, 30)),
     ("dunes-2.png", "nature", ["dune_5", "dune_6", "dune_7", "dune_8", "dune_9"], (40, 30)),
+    ("nature_fix.png", "nature", ["hedge", "grass_tuft_winter"], [(40, 35), (116, 89)]),  # c14_17-18, c14_16-14
+    ("icons_fix.png", "items", ["luck_potion", "harvest_potion", "golem_core"], (32, 32)),  # c14_17-06, c14_17-16
 ]
 
 
@@ -89,8 +93,8 @@ def main():
             continue
         ps = pieces(load(src), len(ids))
         assert len(ps) == len(ids), (sheet, len(ps))
-        for name, crop in zip(ids, ps):
-            im = shrink(crop, box)
+        for k, (name, crop) in enumerate(zip(ids, ps)):
+            im = shrink(crop, box[k] if isinstance(box, list) else box)
             rel = f"{group}/{name}.png"
             if not check:
                 dst = os.path.join(GEN, rel)

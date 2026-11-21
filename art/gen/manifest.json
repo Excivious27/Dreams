@@ -82800,8 +82800,8 @@
   },
   "golem_core": {
    "file": "items/golem_core.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "golem_crown": {
    "file": "items/golem_crown.png",
@@ -83110,8 +83110,8 @@
   },
   "harvest_potion": {
    "file": "items/harvest_potion.png",
-   "h": 28,
-   "w": 48
+   "h": 32,
+   "w": 28
   },
   "hay": {
    "file": "items/hay.png",
@@ -84405,8 +84405,8 @@
   },
   "luck_potion": {
    "file": "items/luck_potion.png",
-   "h": 28,
-   "w": 48
+   "h": 32,
+   "w": 25
   },
   "luck_ring": {
    "file": "items/luck_ring.png",
@@ -96404,7 +96404,7 @@
   "grass_tuft_winter": {
    "file": "nature/grass_tuft_winter.png",
    "h": 89,
-   "w": 116
+   "w": 102
   },
   "grove_0": {
    "file": "nature/grove_0.png",
@@ -96449,7 +96449,7 @@
   "hedge": {
    "file": "nature/hedge.png",
    "h": 35,
-   "w": 40
+   "w": 36
   },
   "hidden_pond": {
    "file": "nature/hidden_pond.png",
