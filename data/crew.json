@@ -45,7 +45,7 @@
      }
     ]
    ],
-   "finale": "Deuce shows the lobby guards a card trick they can't walk away from.",
+   "finale": "Deuce shows the door guards a card trick they can't walk away from.",
    "waiting": [
     "Pick a card. Any card. ...Later, then. I'll keep it warm."
    ]
@@ -90,7 +90,7 @@
      }
     ]
    ],
-   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the lobby.",
+   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the red carpet.",
    "waiting": [
     "Sit, sit. We talk business when you've got time to eat."
    ]
@@ -233,7 +233,7 @@
      }
     ]
    ],
-   "finale": "Vic and Val take the right side of the lobby and hold it.",
+   "finale": "Vic and Val take the right side of the avenue and hold it.",
    "waiting": [
     "Pit first.",
     "Win the pit. Then we talk. Both of us."
@@ -280,7 +280,7 @@
      }
     ]
    ],
-   "finale": "Val holds the right side of the lobby with Vic.",
+   "finale": "Val holds the right side of the avenue with Vic.",
    "waiting": [
     "Vic says pit first. Vic's right.",
     "You haven't won anything down here yet."
@@ -425,7 +425,7 @@
      }
     ]
    ],
-   "finale": "The Kid finds the stairwell nobody else could; it goes all the way up.",
+   "finale": "The Kid finds the service stair nobody else could, and comes back down it with news.",
    "waiting": [
     {
      "text": "The Kid points at the boss's big sign, then at you, then shrugs and skates a slow circle."
@@ -476,7 +476,7 @@
      }
     ]
    ],
-   "finale": "Doc keeps the crew breathing in the lobby.",
+   "finale": "Doc keeps the crew breathing out there in the rain.",
    "waiting": [
     "I don't sign on with anyone while Neon's boss is running this street.",
     "Come and see me when Neon is quiet. Mind that cut."
@@ -583,7 +583,7 @@
      }
     ]
    ],
-   "finale": "Sasha walks point across the marble, and nothing in the lobby gets past her.",
+   "finale": "Sasha walks point up the wet avenue, and nothing at the tower doors gets past her.",
    "waiting": [
     "The champion's still standing. Fix that, then talk to me.",
     "Win the pit first."

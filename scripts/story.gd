@@ -224,7 +224,7 @@ static func _play_beat(m: GameMap, b: Dictionary) -> void:
 		m.hud.toast(str(b["chapter_title"]), Color(1, 0.9, 0.6))
 		Music.instance(m.get_tree()).sfx("j_region", "j_page")
 	var lines: Array = _fill(b.get("lines", []))
-	if str(b["id"]) == "g5_win" and not GameState.is_penguins():
+	if str(b["id"]) in ["g5_win", "g5_win_clean"] and not GameState.is_penguins():  # C12 c12_04-09: the Clean Break gets the crew roll too
 		# The crew were with you the whole way up: each one gets a line.
 		var roll: Array = []
 		for cid in Crew.all_recruited():
