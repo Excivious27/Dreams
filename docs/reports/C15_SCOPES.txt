@@ -1,0 +1,22 @@
+CONDUCT 15: SEASONS (spec docs/CONDUCT-PLAN.md "CONDUCT 15"): each season uniquely built out, both arcs: its own festivals, holidays and events (calendar on the board), seasonal-only items, crops, forage, fish, creatures, shop stock, decor and recipes; unique seasonal quests and story/villager events; seasonal map dressing, weather, music hooks; year-to-year variety (some events only in year 2+); tests that each season's calendar, availability and events fire correctly. Quality bar Stardew Valley / Sun Haven. Read code + data generators (grep docs/TOOLS.md) and the shots (shots_15/index.md); take more shots per season with area_shot.gd where needed (season via env or save; read area_shot.gd for knobs). Worktree to read: /home/claude/wt/c14b_integ (C14 + C14b merged there; read-only).
+01 CALENDAR AND BOARD: the calendar UI/board, festival and holiday list per season both arcs, what shows, birthdays, notices; gaps vs a full Stardew-like calendar (each season with 2-3 festivals/events + holidays); exact proposed calendar per season and arc.
+02 SPRING: crops, forage, fish, creatures, shop stock, decor, recipes, quests, villager events, map dressing, weather and music hooks; what exists vs a unique spring.
+03 SUMMER: same for summer.
+04 FALL: same for fall.
+05 WINTER: same for winter (crops/greenhouse, forage, ice fishing, snow events).
+06 FESTIVALS A: existing festivals (egg, lantern, harvest, star) in depth: activities, minigames, prizes, shops, NPC lines, both arcs, year 2+ variation.
+07 FESTIVALS B + HOLIDAYS: new festivals/holidays needed to fill the calendar (e.g. a spring flower dance-like event, a summer luau-like beach event using the new marina, fall fair/haunted night in an all-ages tone, winter market/feast), gang-arc versions (block parties, night markets, a casino gala), with full designs that fit the code.
+08 SEASONAL ITEMS ECONOMY: seasonal-only crops/forage/fish/recipes/decor counts per season, prices, shop rotation (shops.gd, gen_* data), greenhouse/out-of-season rules; balance and variety.
+09 FISHING AND CREATURES BY SEASON: fish tables per season/weather/time/location incl. marina charters; creatures/critters/bugs per season; ranch animal seasonal behaviour.
+10 VILLAGER SEASONAL LIFE: schedules, outfits, dialogue, gifts, heart events and side stories that change by season both arcs; seasonal mail.
+11 QUESTS AND STORY BY SEASON: seasonal quests, board requests, community farm/commons seasonal goals, story beats tied to seasons, year 2+ quests.
+12 MAP DRESSING AND LOOK BY SEASON: every map's seasonal look (GameState.look_se, winter variants, fall colours, spring blossoms), missing seasonal art, interiors seasonal decor (wreaths, harvest displays).
+13 WEATHER BY SEASON: weather tables, special weather days, festival weather, seasonal FX (from C14b), storms, snow accumulation, gameplay effects (crops watered by rain, snow days).
+14 YEAR-TO-YEAR VARIETY: what changes in year 2+, 3+ (events, rare visitors, upgraded festivals, new shop items), how years are tracked, and a concrete plan.
+15 GANG ARC SEASONS: the gang arc's own seasonal identity (city events, rackets by season, crew events, neon holidays), all ages.
+16 MEGA REGIONS + COLONIES BY SEASON: do the mega regions/colonies/moon change with the season at all; what should (Frostpeak always winter is fine; others vary).
+17 TESTS AND DATA INTEGRITY: existing season tests, generators; plan tests that each season's calendar, availability and events fire correctly (both arcs, years 1-3), save/migration needs.
+18 MUSIC/AMBIENCE/ANIMATION HOOKS BY SEASON: check C13 seasonal songs/ambience and C14b seasonal FX actually trigger for each season and festival, both arcs; gaps.
+19 REGRESSION after C14b merge (low): anim_core_test, water_feature_test, c14b_p5_test, creature_life_test, shore_motion_test, weather_fx_test; log only what is broken.
+20 BUGS SWEEP after C14b (low): 4 single bots (both arcs, Hard + Very easy) through a full season change (end of season day 28 -> day 1) and a festival day; script errors, freezes, softlocks.
+Note: 01-18 medium; 19-20 low after the C14b push.
