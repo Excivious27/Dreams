@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16b P1: battle commands clear (HELPERS label tells pushing/follow/hold/point, Hold holds the team, MEND/BARRAGE buttons, tap opens orders), building explained (crystals/drones, upkeep, switching keeps units, tier ladder), ally ranks count, whole roster on the battle card, short card keeps the team picker, rewards ladder hook, weapon out; tools/battle_army_test.gd
+
 ## 2026-11-21 — C16a integ: energy filler re-spread against P3's cap 60; mega hook quests wait for the gate floors (sim first mega day ~50); Spark migrate; net energy row; fishing caps; gang helper meadow/forest/lake
 
 ## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd

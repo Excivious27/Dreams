@@ -208,7 +208,7 @@ func _small_btn(r: Rect2, cmd: String, icon: String, layer: CanvasLayer) -> Butt
 	b.add_theme_font_size_override("font_size", 7)
 	b.focus_mode = Control.FOCUS_NONE
 	b.expand_icon = true
-	b.add_theme_constant_override("icon_max_width", 12)
+	b.add_theme_constant_override("icon_max_width", 11)
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.clip_text = true
 	var tx := Art.tex("ui", icon)  # (icons queued in docs/ART-QUEUE.md; text-only until they land)
