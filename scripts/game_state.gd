@@ -201,9 +201,9 @@ static func _migrate() -> void:
 		Decor.migrate()  # C10a: decor/wear out of the bag and chests into run.decor (idempotent)
 	if run.get("builds") is Dictionary:
 		Ranch.migrate()  # C11a: the animal roster from the builds/run.animals/coop_hatch (idempotent)
+		_seed_ranching()
 	if run.get("chores") is Dictionary:
 		Chores.migrate()  # C11b: run.chores shape/version (idempotent)
-		_seed_ranching()
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
 	for sk in (run["skills"] as Dictionary).keys():

@@ -213,6 +213,13 @@ if ! echo "$atout" | grep -q "ability_tap_test: 0 fails" || echo "$atout" | grep
   echo "ability_tap_test failed"; exit 1
 fi
 
+echo "== C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Splicer via RanchGift =="
+ciout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c11b_integ_test.gd 2>&1)"
+echo "$ciout" | grep -E "FAIL|SCRIPT ERROR|c11b_integ_test" || true
+if ! echo "$ciout" | grep -q "c11b_integ_test: [0-9]* checks, 0 failures" || echo "$ciout" | grep -q "SCRIPT ERROR"; then
+  echo "c11b_integ_test failed"; exit 1
+fi
+
 echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
 dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
 echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true

@@ -188,6 +188,8 @@ func _run() -> void:
 	var rj: Dictionary = GameState.load_json("res://data/ranch.json")
 	for sid: String in rj.get("species", {}):
 		var sd: Dictionary = rj["species"][sid]
+		if str(sd.get("arc", "")) == "penguins":
+			continue  # penguin-only creatures never show in a gangster run (C11b integ)
 		rtexts.append(str(sd.get("name_gang", "")))
 		if str(sd.get("arc", "")) == "gangsters":
 			_texts(sd, rtexts)
