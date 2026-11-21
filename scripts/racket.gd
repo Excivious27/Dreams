@@ -119,7 +119,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 	var r_now := risk(id)
 	GameState.run["passed_day"] = {"day": int(GameState.run["day"]), "n": passed_today() + 1}
 	if randf() >= r_now:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + face
+		GameState.add_money(face, "racket")  # C16a P2: counted in run.earned_by
 		# Big notes get remembered even when nobody says anything.
 		if int(it.get("tier", 1)) >= 3:
 			GameState.run["heat_shadow"] = float(GameState.run.get("heat_shadow", 0.0)) + 0.25
@@ -264,7 +264,7 @@ static func overnight(report: Dictionary) -> void:
 		GameState.add_item(str(id), int(back[id]))
 		report["wash_back"] = int(report.get("wash_back", 0)) + int(back[id])
 	if paid > 0:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + paid
+		GameState.add_money(paid, "wash")  # C16a P2: counted in run.earned_by
 		report["washed"] = paid
 	GameState.run["wash"] = {}
 

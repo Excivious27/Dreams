@@ -361,7 +361,7 @@ static func _kit(m: GameMap, id: String, key: String) -> void:
 	var rw: Dictionary = q.get("reward", {})
 	for it in rw:
 		if str(it) == "crystals":
-			GameState.add_money(int(rw[it]), "quests")
+			GameState.add_money(int(rw[it]), "quest")  # C16a P2: one quest key
 			m.hud.toast("+%s" % Money.amount(int(rw[it])), Color(1, 0.9, 0.5))
 		elif int(rw[it]) > 0:
 			m.give(str(it), int(rw[it]))

@@ -137,7 +137,7 @@
  "dreamflower": {
   "name": "Dream Flower",
   "type": "crop",
-  "value": 110,
+  "value": 170,
   "rarity": "common",
   "tier": 4,
   "family": "flower",
@@ -395,7 +395,7 @@
  "dream_tonic": {
   "name": "Dream Tonic",
   "type": "potion",
-  "value": 408,
+  "value": 480,
   "heal": 6,
   "energy": 60,
   "rarity": "rare",
