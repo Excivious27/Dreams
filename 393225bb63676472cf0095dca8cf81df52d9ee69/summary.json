@@ -1,0 +1,149 @@
+{
+ "sha": "393225bb63676472cf0095dca8cf81df52d9ee69",
+ "ref": "ci/c11bp6c-e08a948e",
+ "run": "44850045833",
+ "finished": 1795224934.8757188,
+ "pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 52,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "e08a948e110633595a8e0e31a926efc0d44e7a88",
+  "label": "c11bp6c",
+  "branch": "c11bf/p6",
+  "shards": [
+   3,
+   4
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 312,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 312,
+   "failed_steps": [
+    "commons_test"
+   ]
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 299,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [
+  [
+   "FAIL [pen] stage 6 reveal played on the visit",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 131.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 124.5
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 40.4
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 1,
+   "secs": 36.2
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 33.8
+  },
+  {
+   "step": 143,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 29.1
+  },
+  {
+   "step": 35,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 18.3
+  },
+  {
+   "step": 107,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 17.4
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 14.8
+  },
+  {
+   "step": 100,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 11.0
+  },
+  {
+   "step": 58,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 8.7
+  },
+  {
+   "step": 52,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 8.6
+  },
+  {
+   "step": 83,
+   "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers",
+   "rc": 0,
+   "secs": 7.1
+  },
+  {
+   "step": 118,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 6.8
+  },
+  {
+   "step": 76,
+   "name": "gifts: the Marked and boss powers",
+   "rc": 0,
+   "secs": 6.6
+  }
+ ]
+}

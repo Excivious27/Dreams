@@ -1,0 +1,12 @@
+CONDUCT CI FAIL  393225bb63  (ci/c11bp6c-e08a948e, run 44850045833)
+
+subset run: shards [3, 4], bots off, playtest on
+check shards (2/2):
+  shard 3: FAIL  312s  failed: commons_test
+  shard 4: PASS  299s
+playtest: PASS  52s  21 screenshots (results playtest/shots/)
+
+longest job: 312s
+slowest check steps: import 131.5s; import 124.5s; touch_ui_test 40.4s; commons_test 36.2s; exits and spawns 33.8s; C9 P6: generated data in sync 29.1s; gang_play_test 18.3s; mega regions: the new worlds walk end to end 17.4s
+distinct errors/fails/warns:
+    1  FAIL [pen] stage 6 reveal played on the visit

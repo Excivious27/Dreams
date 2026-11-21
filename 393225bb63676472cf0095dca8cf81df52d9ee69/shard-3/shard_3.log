@@ -1,0 +1,153 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | downed.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  99% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2101 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 124.5s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 14.8s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 3.3s
+
+#### step 16: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 16 touch_ui_test: PASS in 40.4s
+
+#### step 22: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 22 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 4.5s
+
+#### step 28: rec_test (shard 3/6)
+rec_test: 0 failures
+#### step 28 rec_test: PASS in 5.1s
+
+#### step 34: cash_test (shard 3/6)
+cash_test: scanned 83734 strings, 0 failures
+#### step 34 cash_test: PASS in 3.3s
+
+#### step 40: make_house_parts (shard 3/6)
+#### step 40 make_house_parts: PASS in 0.4s
+
+#### step 46: commons_test (shard 3/6)
+  FAIL [pen] stage 6 reveal played on the visit
+commons_test: 1 failures
+Community farm test failed
+#### step 46 commons_test: FAIL rc=1 in 36.2s
+
+#### step 52: cf_layout_test (shard 3/6)
+cf_layout_test: 0 failures
+#### step 52 cf_layout_test: PASS in 8.6s
+
+#### step 58: music loop seams (join click + level jump) (shard 3/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 103
+#### step 58 music loop seams (join click + level jump): PASS in 8.7s
+
+#### step 64: C11a ranch art: species strips, building looks, icons, stations (shard 3/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 64 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.4s
+
+#### step 70: mix_test (shard 3/6)
+mix_test: 0 failures
+#### step 70 mix_test: PASS in 4.6s
+
+#### step 76: gifts: the Marked and boss powers (shard 3/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 76 gifts: the Marked and boss powers: PASS in 6.6s
+
+#### step 82: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 82 campaign: battles, projects, colonies, big mines: PASS in 6.3s
+
+#### step 88: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 88 street_bat_test: PASS in 2.6s
+
+#### step 94: campaign_c3_test (shard 3/6)
+campaign_c3_test: 0 fails
+#### step 94 campaign_c3_test: PASS in 2.6s
+
+#### step 100: story: every chapter plays to the end (shard 3/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 100 story: every chapter plays to the end: PASS in 11.0s
+
+#### step 106: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 3/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 106 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.7s
+
+#### step 112: hidden areas stay put day to day (C5) (shard 3/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 112 hidden areas stay put day to day (C5): PASS in 4.6s
+
+#### step 118: softlocks: every menu/screen leaves on B, dialogues always finish (shard 3/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 118 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.8s
+
+#### step 124: C7 P3: endings and epilogue (shard 3/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 124 C7 P3: endings and epilogue: PASS in 2.6s
+
+#### step 130: C11b P6: C11b creature voices and ranch sound (shard 3/6)
+== C11b P6: C11b creature voices and ranch sound ==
+ranch_audio_c11b_test: OK
+#### step 130 C11b P6: C11b creature voices and ranch sound: PASS in 2.4s
+
+#### step 136: C9 P1: controller bindings and field play (shard 3/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 136 C9 P1: controller bindings and field play: PASS in 3.3s
+
+#### step 142: C9 P6: forest border buckets (shard 3/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 142 C9 P6: forest border buckets: PASS in 4.0s
+
+#### shard 3/6 done in 312s: FAIL (commons_test)
