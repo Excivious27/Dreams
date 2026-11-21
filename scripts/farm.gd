@@ -902,6 +902,7 @@ func _make_crystal() -> void:
 func _process(delta: float) -> void:
 	super(delta)
 	_grass_step()
+	_crop_tick()
 	_house_t += delta
 	if _house_t > 2.0:
 		_house_t = 0.0
@@ -935,6 +936,7 @@ func _grass_step() -> void:
 	if pc == _grass_cell:
 		return
 	_grass_cell = pc
+	_crop_touch(pc)
 	var t: Dictionary = things.get(pc, {})
 	if not bool(t.get("walk", false)):
 		return
@@ -2649,10 +2651,46 @@ func _make_soil() -> void:
 	# Just below the map's own ground in the y-sort (the map draws at y=0 and is
 	# sorted with its children): above the grass, under every prop and person.
 	_soil.position = Vector2(offset().x, 0.5)
+	# C14b P3 (c14b_03-03): the crops draw on their own child layer with the crop
+	# sway shader (one material, still batched), so they sway and part as you pass.
+	if ResourceLoader.exists(CROP_SHADER):
+		_crops = Node2D.new()
+		_crops.name = "CropLayer"
+		_crop_mat = ShaderMaterial.new()
+		_crop_mat.shader = load(CROP_SHADER)
+		_crops.material = _crop_mat
+		_crops.draw.connect(func() -> void:
+			_crops.draw_set_transform(Vector2(0, offset().y - 0.5))
+			_draw_soil(_crops, 2))
+		_soil.add_child(_crops)
 	_soil.draw.connect(func() -> void:
 		_soil.draw_set_transform(Vector2(0, offset().y - 0.5))
-		_draw_soil(_soil))
+		_draw_soil(_soil, 1 if _crops else 0)
+		if _crops:
+			_crops.queue_redraw())
 	add_child(_soil)
+
+
+const CROP_SHADER := "res://shaders/crop_sway.gdshader"
+var _crops: Node2D
+var _crop_mat: ShaderMaterial
+
+
+## Game time and wind into the crop shader each frame (cheap: two uniforms).
+func _crop_tick() -> void:
+	if _crop_mat == null:
+		return
+	_crop_mat.set_shader_parameter("game_t", PlayClock.now())
+	_crop_mat.set_shader_parameter("wind", AmbientMotion.wind() * (0.3 if AmbientMotion.reduced() else 1.0))
+
+
+## The player stepped into a planted cell: the plants there part round them.
+func _crop_touch(pc: Vector2i) -> void:
+	if _crop_mat == null or not (GameState.run["farm"] as Dictionary).has("%d,%d" % [pc.x, pc.y]):
+		return
+	var lp := player.position - _soil.position - Vector2(0, offset().y - 0.5)
+	var dir := 1.0 if player.facing in ["right", "down"] else -1.0
+	_crop_mat.set_shader_parameter("touch", Vector4(lp.x, lp.y, dir, PlayClock.now()))
 
 
 ## A tilled cell as four quarters of the 3x3 bed painting, picked by which
@@ -2680,7 +2718,9 @@ func _draw_bed(ci: CanvasItem, name: String, c: Vector2i, farm: Dictionary, till
 var _crop_art := {}  # crop sheet -> [has stage sprites, stage textures, ripe width, sheet]
 
 
-func _draw_soil(ci: CanvasItem) -> void:
+## part: 0 everything, 1 soil only, 2 crops only (the CropLayer; each plant's sway
+## phase rides in its modulate alpha, which crop_sway.gdshader turns back to 1).
+func _draw_soil(ci: CanvasItem, part := 0) -> void:
 	var farm: Dictionary = GameState.run["farm"]
 	# The greenhouse plot (crops ignore the season here): a low stone border marks it.
 	if Builds.is_built("greenhouse"):
@@ -2697,6 +2737,9 @@ func _draw_soil(ci: CanvasItem) -> void:
 		tiles[c] = farm[key]
 	# Row by row, so a tall crop overlaps the row behind it, never the one in front.
 	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
+	if part == 2:
+		_draw_crop_pass(ci, cells, tiles, true)
+		return
 	var rain := GameState.sky_waters()
 	for pass_wet: bool in [false, true]:
 		for c: Vector2i in cells:
@@ -2713,8 +2756,14 @@ func _draw_soil(ci: CanvasItem) -> void:
 		if rain or bool(tile.get("watered", false)):
 			# Watered soil reads darker (no blue: it turned the beds purple).
 			ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(1, 1), Vector2(TILE - 2, TILE - 2)), Color(0, 0, 0, 0.16))
+	if part == 0:
+		_draw_crop_pass(ci, cells, tiles, false)
+
+
+func _draw_crop_pass(ci: CanvasItem, cells: Array[Vector2i], tiles: Dictionary, phased: bool) -> void:
 	for c: Vector2i in cells:
 		var tile: Dictionary = tiles[c]
+		var mo := Color(1, 1, 1, 0.5 + 0.5 * AmbientMotion.phase(Vector2(c))) if phased else Color.WHITE
 		var crop := str(tile.get("crop", ""))
 		if crop == "" and str(tile.get("dead", "")) != "":
 			_draw_withered(ci, c, str(tile["dead"]))
@@ -2744,14 +2793,14 @@ func _draw_soil(ci: CanvasItem) -> void:
 				var ks := minf(0.5, 30.0 / float(maxi(1, int(ca[2]) if int(ca[2]) > 0 else tex.get_width())))
 				var w2 := tex.get_width() * ks
 				var h2 := tex.get_height() * ks
-				ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
+				ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false, mo)
 			elif t:
 				var info := Art.info("crops", art)
 				var cw := int(info.get("cell_w", 32))
 				var ch := int(info.get("cell_h", 32))
 				var w := cw / 2.0
 				var h := ch / 2.0
-				ci.draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
+				ci.draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch), mo)
 			else:
 				_draw_plain_crop(c, cd, frac, ci)
 

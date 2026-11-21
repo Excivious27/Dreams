@@ -37,20 +37,12 @@ static func phase(p: Vector2) -> float:
 
 
 static func reduced() -> bool:
-	return Settings.reduced_motion()
+	return Anim.reduced()
 
 
-## Wind 0..1: P1's Anim.wind() once it lands, else from today's weather and season.
+## Wind 0..1 from the shared Anim core (weather + season, smoothed).
 static func wind() -> float:
-	if ResourceLoader.exists("res://scripts/anim.gd"):
-		var an: Script = load("res://scripts/anim.gd")
-		if an != null and an.has_method("wind"):
-			return float(an.call("wind"))
-	var w := GameState.weather_today() if GameState.run.has("day") else "clear"
-	var v: float = {"storm": 1.0, "blizzard": 1.0, "wind": 0.8, "rain": 0.6, "snow": 0.4, "leaves": 0.5, "petals": 0.4}.get(w, 0.25)
-	if GameState.season() == "fall":
-		v += 0.1
-	return clampf(v, 0.0, 1.0)
+	return Anim.wind()
 
 
 ## Gentle float: amp px up/down on a period, plus a tiny roll (degrees).
