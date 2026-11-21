@@ -1138,3 +1138,9 @@ echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
 fi
+
+echo "== C13 P3: audio tools (short-sting levelling, len_audible, gang jingles, ace_batch --alt/--pair) =="
+python3 tools/audio_tools_test.py || { echo "audio_tools_test failed"; exit 1; }
+
+echo "== C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, impacts start < 60 ms, sfx_meta complete) =="
+python3 tools/sfx_level_check.py || { echo "sfx_level_check failed"; exit 1; }
