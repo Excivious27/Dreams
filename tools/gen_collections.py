@@ -581,8 +581,17 @@ def main():
             e = {"recipe": rid, "station": s, "item": str(r.get("give", rid)), "name": r.get("name", rid),
                  "arc": str(r.get("arc", "") or station_arc(s))}
             (cook if s in COOK_STATIONS else craft).append(e)
+    # C16a P4 (c16a_08-13): the Forage log counts "seen", so items a season shelf sells are left out (buying is not foraging).
+    sg = load("season_goods.json") if os.path.exists(os.path.join(D, "season_goods.json")) else {}
+    shop_sold = set()
+    for sk in ("shops", "shops_y2"):
+        for _shop, by_se in (sg.get(sk) or {}).items():
+            for lst in (by_se or {}).values():
+                if isinstance(lst, list):
+                    shop_sold.update(lst)
     forage_log = [{"item": i, "arc": arc_of(it), "where": where_hint(i, it, forage, pools)}
-                  for i, it in items.items() if it.get("type") in ("forage", "herb") and int(it.get("value", 0)) > 0 and sourced(i)]
+                  for i, it in items.items() if it.get("type") in ("forage", "herb") and int(it.get("value", 0)) > 0 and sourced(i)
+                  and i not in shop_sold]
 
     items["curators_loupe"] = LOUPE
     critter_items(items)

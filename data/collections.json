@@ -5809,11 +5809,6 @@
     "where": "Out in the world somewhere."
    },
    {
-    "item": "chamomile",
-    "arc": "",
-    "where": "Out in the world somewhere."
-   },
-   {
     "item": "dill",
     "arc": "",
     "where": "Out in the world somewhere."
@@ -5884,11 +5879,6 @@
     "where": "Forage: Crystal Meadow, Moon"
    },
    {
-    "item": "morel",
-    "arc": "",
-    "where": "Out in the world somewhere."
-   },
-   {
     "item": "moonwort",
     "arc": "",
     "where": "Forage: Orchard Hills"
@@ -5904,19 +5894,9 @@
     "where": "Out in the world somewhere."
    },
    {
-    "item": "fiddlehead",
-    "arc": "",
-    "where": "Forage: Forest, Lake (Spring)"
-   },
-   {
     "item": "salmonberry",
     "arc": "",
     "where": "Forage: Meadow, Orchard Hills (Spring)"
-   },
-   {
-    "item": "sand_dollar",
-    "arc": "",
-    "where": "Forage: Beach (Summer)"
    },
    {
     "item": "sea_glass",
@@ -5927,16 +5907,6 @@
     "item": "summer_kelp",
     "arc": "",
     "where": "Forage: Beach (Summer, Fall)"
-   },
-   {
-    "item": "cattail",
-    "arc": "",
-    "where": "Forage: Lake, Wild (Summer, Fall)"
-   },
-   {
-    "item": "chanterelle",
-    "arc": "",
-    "where": "Forage: Forest, Wild (Fall)"
    },
    {
     "item": "hazelnut",
@@ -5952,31 +5922,6 @@
     "item": "wild_plum",
     "arc": "",
     "where": "Forage: Meadow, Mountain (Fall)"
-   },
-   {
-    "item": "chestnut",
-    "arc": "",
-    "where": "Forage: Forest, Orchard Hills (Fall)"
-   },
-   {
-    "item": "leaf_bundle",
-    "arc": "",
-    "where": "Forage: Farm, Lake (Fall)"
-   },
-   {
-    "item": "holly_sprig",
-    "arc": "",
-    "where": "Forage: Farm, Forest (Winter)"
-   },
-   {
-    "item": "snow_yam",
-    "arc": "",
-    "where": "Forage: Farm, Forest (Winter)"
-   },
-   {
-    "item": "crystal_icicle",
-    "arc": "",
-    "where": "Forage: Forest, Lake (Winter)"
    },
    {
     "item": "winter_honeycomb",
