@@ -253,6 +253,23 @@ func _map_tests() -> void:
 	GameMap.next_interior = "store"
 	var mi := await _go("res://scenes/interior.tscn")
 	check(mi.scene_id() == "interior" and str(mi.call("net_scene")) == "interior:store", "interior key is the room (%s), scene_id unchanged" % str(mi.call("net_scene")))
+	# A partner's swing shows in their puppet's hands.
+	var pp := Player.new()
+	pp.map = mi
+	pp.frozen = true
+	pp.is_puppet = true
+	mi.add_child(pp)
+	await process_frame
+	var tool_id := "pickaxe" if GameState.items.has("pickaxe") else str(GameState.items.keys()[0])
+	var first := pp.remote_swing([4, tool_id, "chop", 0.4])
+	var again := pp.remote_swing([4, tool_id, "chop", 0.4])
+	var nxt := pp.remote_swing([5, tool_id, "chop", 0.4])
+	var hs := pp.get_children().filter(func(c: Node) -> bool: return c is HeldSwing).size()
+	check(not first and not again and nxt and hs >= 1, "puppet replays a partner's new swing once (held tool shown: %d)" % hs)
+	var n0: int = mi.player.swing_n
+	mi.player._note_swing("pickaxe", "chop", 0.4)
+	check(mi.player.swing_n == n0 + 1 and mi.player.swing_sig()[1] == "pickaxe", "local swings are counted for the state packet")
+	pp.queue_free()
 	# Campaign board while visiting: look only (no Muster/Attack/March buttons that refuse).
 	var c0: String = Campaign.for_arc()[0]
 	CampaignScreen.open(mi, "")

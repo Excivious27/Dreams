@@ -1089,6 +1089,7 @@ func play_tool(action: String, restart := true) -> bool:
 		if _anim:
 			_anim.speed_scale = 1.35
 		HeldSwing.spawn(self, ht, "sweep", 0.4, facing)
+		_note_swing(ht, "sweep", 0.4)
 		return true
 	var a := action + "_" + d
 	if not has_anim(a) and has_anim(action + "_right"):
@@ -1129,6 +1130,7 @@ func play_tool(action: String, restart := true) -> bool:
 		if tool == "" or not (GameState.TOOL_KINDS.has(tool) or GameState.items.has(tool)):
 			tool = {"water": "can"}.get(action, action)
 		HeldSwing.spawn(self, tool, "pour" if action == "water" else "chop", float(TOOL_TIME.get(action, 0.4)), facing)
+		_note_swing(tool, "pour" if action == "water" else "chop", float(TOOL_TIME.get(action, 0.4)))
 	return true
 
 
@@ -1317,6 +1319,49 @@ func do_action(mode := "a") -> void:
 		_swing()
 
 
+## C17 P3 (c17_04-03): every swing/shot/tool use is counted so co-op state can
+## carry it (P1: state "sw" = swing_sig()); a partner's Puppet replays it with
+## remote_swing() so the tool, blade or gun shows in their hands (no damage).
+var swing_n := 0
+var swing_tool := ""
+var swing_kind := ""
+var swing_dur := 0.2
+
+
+func _note_swing(item: String, kind: String, dur: float) -> void:
+	if is_puppet:
+		return
+	swing_n += 1
+	swing_tool = item
+	swing_kind = kind
+	swing_dur = dur
+
+
+## [count, item, kind, dur] for the state packet.
+func swing_sig() -> Array:
+	return [swing_n, swing_tool, swing_kind, swing_dur]
+
+
+## Puppets: replay a partner's swing when their count moves on. True if one was shown.
+var _remote_sw := -1
+
+
+func remote_swing(sig: Variant) -> bool:
+	if not (sig is Array) or (sig as Array).size() < 4:
+		return false
+	var n := int(sig[0])
+	if n == _remote_sw:
+		return false
+	var first := _remote_sw < 0
+	_remote_sw = n
+	if first or str(sig[1]) == "":
+		return false
+	HeldSwing.spawn(self, str(sig[1]), str(sig[2]), float(sig[3]), facing)
+	if str(sig[2]) == "aim" and map:
+		Music.instance(get_tree()).sfx("shot", "thud")
+	return true
+
+
 func _swing() -> void:
 	if _attack_cd > 0.0:
 		return
@@ -1359,6 +1404,7 @@ func _swing() -> void:
 	var hw := GameState.held_tool()
 	if CharacterLibrary.unarmed_attack(char_id) and hw != "" and GameState.is_sword(hw) and not GameState.items.get(hw, {}).has("range"):
 		HeldSwing.spawn(self, hw, "sweep", 0.2, facing)
+	_note_swing(hw, "sweep", 0.2)
 	_attack_hit()
 	if _anim == null:
 		_busy = false
@@ -1574,6 +1620,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	GameState.add_item("rounds", -1)
 	if CharacterLibrary.unarmed_attack(char_id):
 		HeldSwing.spawn(self, GameState.held_tool(), "aim", 0.16, facing)
+	_note_swing(GameState.held_tool(), "aim", 0.16)
 	_dry_told = false
 	var dir := hit_dir()
 	var muzzle := position + dir * 10.0 + Vector2(0, -8)
