@@ -58,6 +58,7 @@ var deepest := 0
 var spent := {}        # sink -> total
 var made := {}         # category -> value shipped today (split of "sales")
 var quests_all: Array = []
+var quest_flags: Dictionary = {}  # flags a quest reward sets (modelled: a gate on one waits for that quest)
 
 
 func _init() -> void:
@@ -85,6 +86,10 @@ func _init() -> void:
 		quests_all.append([q, true])
 	for q in GameState.quests_data.get("side", []):
 		quests_all.append([q, false])
+	for pair in quests_all:
+		var rw: Variant = pair[0].get("reward", {})
+		if rw is Dictionary and (rw as Dictionary).has("flag"):
+			quest_flags[str(rw["flag"])] = true
 	var cols := ["day", "year", "season", "style", "arc", "day_len", "purse", "earned_today", "earned_total",
 		"inc_crops", "inc_fish", "inc_ore", "inc_quest", "inc_racket", "inc_other", "spent_today", "spent_total",
 		"energy_start", "energy_end", "energy_max", "bound", "actions", "actions_cap"]
@@ -150,6 +155,8 @@ func _story() -> void:
 		var when: Dictionary = (q.get("when", {}) as Dictionary).duplicate()
 		# Story-beat flags (cutscenes, bosses) are not modelled: a flag gate costs one more main-quest delay.
 		var beat: bool = when.has("flag") and not GameState.run["flags"].has(str(when["flag"]))
+		if beat and quest_flags.has(str(when["flag"])):
+			continue  # C16a integ: a quest-set flag (mega_<id>_open) is modelled: wait for that quest
 		when.erase("flag")
 		if not avail.has(id):
 			if not GameState._cond_ok(when):

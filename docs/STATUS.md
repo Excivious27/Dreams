@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16a integ: energy filler re-spread against P3's cap 60; mega hook quests wait for the gate floors (sim first mega day ~50); Spark migrate; net energy row; fishing caps; gang helper meadow/forest/lake
+
 ## 2026-11-21 — C16a P3 energy: Tom's day-1 gang route (meadow + mine floor 1 + half floor 2) 68% -> 35% of the bar; tree perks inside a 35% floor; eaten-growth and recovery caps; stamina buff (coffee/tea); miner's bench; tools/energy_check.py + energy_route_probe.gd
 ## 2026-11-21 — C16a P6: skill column ladder (col X at 64 pts), per-tree XP pace, damage/kill-energy/team-heal/farming caps, partner power XP only on effect + partner ranks, pup bite XP cap, slower helper/crew/team progression, exotic team species, gang Tech tree
 ## 2026-11-21 — C16a P5: gear ladders (weapon damage per tier both arcs, gun DPS, armour def 1..8), pick swing fix + early rock relief, station T1 gates/top tiers year 2, recipe level table, deep mine year 2/heart year 3, any-crops sleep in winter, helper watering caps, dish buffs, decor set arc twins, show tables take exotic goods
