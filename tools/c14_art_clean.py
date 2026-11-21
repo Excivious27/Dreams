@@ -170,7 +170,8 @@ def fringe_files():
 
 # bleed (c14_17-11): neighbour slivers on any cell edge (top/bottom too: the next row's hat
 # tips) and detached bursts: islands under 15% of the figure that touch a cell edge go.
-BLEED = ["characters/penguin_wizard/swim.png", "characters/penguin_king/swim.png"]
+BLEED = ["characters/penguin_wizard/swim.png", "characters/penguin_king/swim.png",
+         "props/skydeco_4.png", "props/skydeco_5.png", "props/skydeco_7.png", "props/jdeco_9.png", "props/wdeco_2.png"]  # + c14_17-05
 
 
 def debleed(a, cw):
