@@ -33,8 +33,11 @@ const SAY := [
 	"Last one: take %s. These are practice foes, so go at them.",
 ]
 const CARD := Rect2(20, 292, 230, 52)   # above the touch deck, clear of the rings up top
-## "Leave training": always on screen (above the card, clear of the touch deck) (C11b P7).
-const LEAVE_RECT := Rect2(170, 268, 80, 20)
+## "Leave training": always on screen, in the step card's bottom-right corner (clear of
+## the toasts and the touch deck); leave_rect is where it is now (the card grows) (C11b P7).
+const LEAVE_SIZE := Vector2(80, 20)
+const LEAVE_ROW := 23.0    # the card's extra bottom row that holds the button
+var leave_rect := Rect2()
 const WALK_NEED := 80.0    # px you walk with a helper beside you (5 cells) for "follow"
 const NEAR := 56.0         # a helper this close counts as "with you"
 
@@ -59,19 +62,46 @@ static func attach(bt: Battle, layer: CanvasLayer) -> BattleDrill:
 	layer.add_child(dr)
 	var lb := Button.new()
 	lb.text = "Leave training"
-	lb.position = LEAVE_RECT.position
-	lb.size = LEAVE_RECT.size
+	lb.size = LEAVE_SIZE
 	lb.focus_mode = Control.FOCUS_NONE
 	lb.add_theme_font_size_override("font_size", 8)
+	for st: String in ["normal", "hover", "pressed"]:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.32, 0.12, 0.1, 0.95) if st != "pressed" else Color(0.5, 0.2, 0.15, 1.0)
+		sb.border_color = Color(1, 0.85, 0.45, 0.9)
+		sb.set_border_width_all(1)
+		sb.set_corner_radius_all(3)
+		lb.add_theme_stylebox_override(st, sb)
 	lb.pressed.connect(func() -> void: bt.map.later(dr.ask_leave))
 	layer.add_child(lb)
 	dr.leave_btn = lb
-	Hud.extra_rects.append(LEAVE_RECT)
+	dr._place_leave()
 	return dr
 
 
 func _exit_tree() -> void:
-	Hud.extra_rects.erase(LEAVE_RECT)
+	Hud.extra_rects.erase(leave_rect)
+
+
+## The step card's rect for the current step (its body text sets the height).
+func card_rect() -> Rect2:
+	var f := ThemeDB.fallback_font
+	var i := mini(step, STEPS.size() - 1)
+	var bh := f.get_multiline_string_size(text(i), HORIZONTAL_ALIGNMENT_LEFT, CARD.size.x - 12, 7).y
+	return Rect2(CARD.position, Vector2(CARD.size.x, maxf(CARD.size.y, 20.0 + bh) + LEAVE_ROW))
+
+
+## Keep the button (and its tap rect) in the card's corner.
+func _place_leave() -> void:
+	if leave_btn == null or b == null:
+		return
+	var r := card_rect()
+	var nr := Rect2(r.end - LEAVE_SIZE - Vector2(3, 2), LEAVE_SIZE)
+	if nr != leave_rect:
+		Hud.extra_rects.erase(leave_rect)
+		leave_rect = nr
+		Hud.extra_rects.append(leave_rect)
+		leave_btn.position = nr.position
 
 
 func idx(key: String) -> int:
@@ -217,6 +247,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	queue_redraw()
 	if leave_btn:
+		_place_leave()
 		leave_btn.visible = b != null and is_instance_valid(b) and not b._over and not get_tree().paused and not Dialogue.instance(get_tree()).active
 	if b == null or not is_instance_valid(b) or b._over or get_tree().paused:
 		return
@@ -281,8 +312,7 @@ func _draw() -> void:
 	var f := ThemeDB.fallback_font
 	var i := mini(step, STEPS.size() - 1)
 	var body := text(i)
-	var bh := f.get_multiline_string_size(body, HORIZONTAL_ALIGNMENT_LEFT, CARD.size.x - 12, 7).y
-	var r := Rect2(CARD.position, Vector2(CARD.size.x, maxf(CARD.size.y, 20.0 + bh)))
+	var r := card_rect()
 	draw_rect(r, Color(0.08, 0.06, 0.1, 0.88))
 	draw_rect(r, Color(1, 0.85, 0.45, 0.9), false, 1.0)
 	var head := "TRAINING %d/%d · %s" % [i + 1, STEPS.size(), str(STEPS[i][1])]

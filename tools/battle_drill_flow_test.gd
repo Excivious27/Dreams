@@ -126,7 +126,11 @@ func _left_ok(m: GameMap, what: String) -> void:
 		await process_frame
 	check(m != null and m.scene_id() == "town", "%s: back in town (%s)" % [what, m.scene_id() if m else "null"])
 	check(not paused, "%s: the game is not paused" % what)
-	check(not Hud.extra_rects.has(BattleDrill.LEAVE_RECT) and not Hud.extra_rects.has(Battle.RALLY_RECT), "%s: no stray button rects" % what)
+	var stray := Hud.extra_rects.has(Battle.RALLY_RECT)
+	for er: Rect2 in Hud.extra_rects:
+		if er.size == BattleDrill.LEAVE_SIZE:
+			stray = true
+	check(not stray, "%s: no stray button rects" % what)
 	check(Hud.modal_rect.size == Vector2.ZERO, "%s: no modal rect left" % what)
 	check(not CampaignGate.trained() and Campaign.st()["fight"].is_empty(), "%s: not trained, no fight left open" % what)
 	check(CampaignGate.drill_lock() == "", "%s: the drill can be started again" % what)
@@ -154,8 +158,8 @@ func _run() -> void:
 	check(bt != null and bt.is_drill and bt.drill != null, "the drill runs")
 	var dr := bt.drill
 	check(dr.leave_btn != null and dr.leave_btn.visible and dr.leave_btn.text == "Leave training", "a Leave training button is on screen")
-	check(Hud.extra_rects.has(BattleDrill.LEAVE_RECT), "the button gets taps (extra rect)")
-	check(BattleDrill.LEAVE_RECT.size.y >= 20, "the button is a comfortable tap")
+	check(Hud.extra_rects.has(dr.leave_rect) and dr.leave_rect.has_point(dr.leave_btn.position + Vector2(4, 4)), "the button gets taps (extra rect)")
+	check(dr.leave_rect.size.y >= 20 and dr.card_rect().encloses(dr.leave_rect) and dr.leave_rect.end.y < 380, "the button is a comfortable tap inside the card, above the touch deck (%s)" % dr.leave_rect)
 	dr.ask_leave()
 	await process_frame
 	var opts := _choices()
