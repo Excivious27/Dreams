@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P7 (2026-11-20): continuity_check.py (+allow list), cond_schema_test.py, text_style_check.py (+baseline), dialogue_state_test.gd, all in check.sh; style fixes in unowned files (ItemWords counts in 8 scripts, kind/piece/day plurals, fertiliser, Grumps case, gangster arcade milestone names via ArcadeHub.milestone_text, interiors copy-paste lines, skill node text, per-boss mega door lines, Not now).
+
 ## 2026-11-20 — CONDUCT 11b (ranching part 2): 32 new creatures (8 exotics both arcs, 16 fantastic penguin, 8 lab strains gangster via the Gene Splicer), homes v2 (Enclosure, Aviary, Terrarium, Tide Pool, Ember Pit, Star Dome, Grand Barn), RanchGift earned creatures, animal shows with ribbons/medals, chores with helper spots and a nightly cap, team animal CHECK/lessons, RanchVoice, battle training fix (P7: HELPERS orders, Leave training), bot20 decor softlock fix. 183 audit findings, 7 packages, ~41 images, 0 ACE credits. Final CI c11bi4b PASS (6 shards, 20/20 bots, playtest, relay, net e2e). Report docs/reports/CONDUCT-11b.md, Guide 37. Whole game ~79%.
 
 ## 2026-11-20 — C11b integ: bot20 softlock fixed (Decor catalogue restored a stale full-screen modal of a closed campaign board; closed-menu Book button opened it). decor_catalogue_test regression.
