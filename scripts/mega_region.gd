@@ -218,17 +218,37 @@ static func on_enter(m: GameMap) -> void:
 	if here != last:
 		# An area may carry its own lines (the Ironline rides the night train,
 		# not the Cities' bus); otherwise the region's.
+		# C14 (c14_06-07, c14_09-18): the ride line only when you really rode in or out
+		# (arriving from / at one of the region's entry scenes), with a daytime wording
+		# where the region has one; any other crossing shows just the name card.
 		var line := ""
 		if here != VALLEY:
-			line = str(area(here, sid).get("travel", get_r(here).get("travel", "")))
-		elif last != "" and not get_r(last).is_empty():
+			if _entry_from(here, last_scene):
+				var ar := area(here, sid)
+				var rr := get_r(here)
+				line = str(ar.get("travel", rr.get("travel", "")))
+				if not GameState.is_night() and (ar.has("travel_day") or (not ar.has("travel") and rr.has("travel_day"))):
+					line = str(ar.get("travel_day", rr.get("travel_day", line)))
+		elif last != "" and not get_r(last).is_empty() and _entry_from(last, sid):
 			line = str(area(last, last_scene).get("leave", get_r(last).get("leave", "")))
 		banner(m, here, sid, line)
 	for id in fresh:
 		if id != here:
 			m.hud.toast("New map tab: %s (Menu > Map)" % str(get_r(str(id))["name"]), Color(0.85, 0.95, 1.0))
 	if here != VALLEY and fresh.has(here):
-		m.hud.toast("%s has its own map tab now (Menu > Map)." % str(get_r(here)["name"]), Color(0.85, 0.95, 1.0))
+		var sub_n := str(MegaTravel.reg(MegaTravel.region_of(sid)).get("name", ""))  # the Ironline: same name as its card (c14_09-26)
+		if sub_n != "" and sub_n != str(get_r(here)["name"]):
+			m.hud.toast("%s is on the %s map tab now (Menu > Map)." % [sub_n, str(get_r(here)["name"])], Color(0.85, 0.95, 1.0))
+		else:
+			m.hud.toast("%s has its own map tab now (Menu > Map)." % str(get_r(here)["name"]), Color(0.85, 0.95, 1.0))
+
+
+## True when scene is one of region id's entry "from" scenes (where its ride starts and ends).
+static func _entry_from(id: String, scene: String) -> bool:
+	for e in get_r(id).get("entries", []):
+		if str(e.get("from", "")) == scene:
+			return true
+	return false
 
 
 ## The name card: region name big, area name and the travel line under it.

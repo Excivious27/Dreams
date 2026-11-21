@@ -176,6 +176,25 @@ func scene_id() -> String:
 	return region_id
 
 
+## C14 P5 (c14_06-04, c14_07-14): a region's gang-arc skin. regions.json "gang": {key: value}
+## replaces those keys for the gang arc (enemies, weather, ground_seam, border_trees...);
+## "props_add": [...] are extra props, "props_drop": [names] props left out.
+func _gang_skin() -> void:
+	var gk = R.get("gang")
+	if GameState.is_penguins() or not (gk is Dictionary):
+		return
+	for k in (gk as Dictionary):
+		if k == "props_add":
+			var ps: Array = R.get("props", []).duplicate()
+			ps.append_array(gk[k])
+			R["props"] = ps
+		elif k == "props_drop":
+			var dn: Array = gk[k]
+			R["props"] = (R.get("props", []) as Array).filter(func(p): return not dn.has(str(p.get("name", ""))))
+		else:
+			R[k] = gk[k]
+
+
 ## Regions can name their cliff and stair look ("cliff_style": ["snow", "stair_snow"]).
 func cliff_style() -> Array:
 	if R.has("cliff_style"):
@@ -204,6 +223,7 @@ func default_spawn() -> Vector2:
 
 func build() -> void:
 	R = RegionData.region(region_id).duplicate(true)  # parsed once per session (RegionData)
+	_gang_skin()
 	GameState.look_season = str(R.get("season", ""))
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
@@ -660,7 +680,8 @@ func after_ready() -> void:
 			if things.has(c) or blocked.has(c) or avoid.has(c):
 				continue
 			var tx := Art.tex(g, nm)
-			prop(g, nm, c, 0, 0.0, tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
+			var soft := "tuft" in nm or "reeds" in nm or "thistle" in nm or "coral" in nm  # grass you walk through (C14)
+			prop(g, nm, c, 0, 0.0, not soft and tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
 	if gen.has("critters") and not bool(R.get("cave", false)):  # caves: no surface critters
 		var ccount := int(gen.get("critter_count", 6))
 		if MegaRegion.region_of(region_id) != "":
@@ -1057,9 +1078,14 @@ func draw_map() -> void:
 		elif gseam == "teal_moss" and seam_fill(self, "meadow_grass", garea, Color(0.42, 0.85, 0.82)):
 			pass
 		else:
+			var gcyc: Array = R.get("ground_cycle", [])  # c14_06-15: several tile sets mixed per cell hash (Neon's wet asphalt)
 			for y in range(-pad, rows + pad):
 				for x in range(-pad, cols + pad):
-					Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
+					if not gcyc.is_empty():
+						var gh := absi((x * 73856093) ^ (y * 19349663))
+						Art.draw_tile(self, "tiles", str(gcyc[gh % gcyc.size()]), Vector2(x * TILE, y * TILE), 4)  # centre piece of each set
+						continue
+					Art.draw_tile(self, "tiles", ground,Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
 	else:
 		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
 	# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
@@ -1301,6 +1327,12 @@ func _place_colony() -> void:
 					sp.play("happy" if done and sp.sprite_frames.has_animation("happy") else ("idle" if done else ("sad" if sp.sprite_frames.has_animation("sad") else "idle")))
 					add_child(sp)
 				_colony_village(cid, c, done)
+			"colony_jetty":  # C14 contract: TravelNet station (P4) or a plain pier until it exists
+				var tn = Colony.travel_net()
+				if tn != null:
+					tn.station_prop(self, str(t.get("station", region_id + "_jetty")))
+				elif Art.has("props", "bk_pier_ladder"):
+					prop("props", "bk_pier_ladder", c, 1)
 			"colony_shop":
 				var stn := "%s_stall_%s" % [cid, "open" if done else "closed"]
 				if Art.has("props", stn):

@@ -95919,6 +95919,86 @@
    "h": 40,
    "w": 39
   },
+  "c14p5_desert_cairn": {
+   "file": "nature/c14p5_desert_cairn.png",
+   "h": 39,
+   "w": 30
+  },
+  "c14p5_desert_coral": {
+   "file": "nature/c14p5_desert_coral.png",
+   "h": 40,
+   "w": 44
+  },
+  "c14p5_desert_log": {
+   "file": "nature/c14p5_desert_log.png",
+   "h": 32,
+   "w": 56
+  },
+  "c14p5_desert_rock_flowers_a": {
+   "file": "nature/c14p5_desert_rock_flowers_a.png",
+   "h": 35,
+   "w": 44
+  },
+  "c14p5_desert_rock_flowers_b": {
+   "file": "nature/c14p5_desert_rock_flowers_b.png",
+   "h": 40,
+   "w": 52
+  },
+  "c14p5_desert_tuft_a": {
+   "file": "nature/c14p5_desert_tuft_a.png",
+   "h": 38,
+   "w": 40
+  },
+  "c14p5_desert_tuft_b": {
+   "file": "nature/c14p5_desert_tuft_b.png",
+   "h": 31,
+   "w": 30
+  },
+  "c14p5_desert_tuft_c": {
+   "file": "nature/c14p5_desert_tuft_c.png",
+   "h": 48,
+   "w": 40
+  },
+  "c14p5_frost_reeds_a": {
+   "file": "nature/c14p5_frost_reeds_a.png",
+   "h": 48,
+   "w": 40
+  },
+  "c14p5_frost_reeds_b": {
+   "file": "nature/c14p5_frost_reeds_b.png",
+   "h": 58,
+   "w": 40
+  },
+  "c14p5_frost_thistle": {
+   "file": "nature/c14p5_frost_thistle.png",
+   "h": 48,
+   "w": 38
+  },
+  "c14p5_frost_tuft_m": {
+   "file": "nature/c14p5_frost_tuft_m.png",
+   "h": 42,
+   "w": 38
+  },
+  "c14p5_frost_tuft_s": {
+   "file": "nature/c14p5_frost_tuft_s.png",
+   "h": 32,
+   "w": 30
+  },
+  "c14p5_frost_tuft_w": {
+   "file": "nature/c14p5_frost_tuft_w.png",
+   "h": 31,
+   "w": 50
+  },
+  "c14p5_snow_stone_m": {
+   "file": "nature/c14p5_snow_stone_m.png",
+   "h": 34,
+   "w": 46
+  },
+  "c14p5_snow_stone_s": {
+   "file": "nature/c14p5_snow_stone_s.png",
+   "h": 27,
+   "w": 34
+  },
   "campfire2": {
    "file": "nature/campfire2.png",
    "h": 40,
@@ -103757,6 +103837,11 @@
    "file": "props/bus_stop.png",
    "h": 60,
    "w": 80
+  },
+  "c14p5_gc_stone_head": {
+   "file": "props/c14p5_gc_stone_head.png",
+   "h": 190,
+   "w": 240
   },
   "cafe2_a": {
    "file": "props/cafe2_a.png",

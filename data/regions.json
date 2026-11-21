@@ -763,7 +763,19 @@
   "pad": 6,
   "border": "trees",
   "fruit": 0,
-  "ground_seam": "dry_grass"
+  "ground_seam": "dry_grass",
+  "border_trees": {
+   "mid": [
+    "nature/mid_dead",
+    "props/city_chainlink",
+    "props/city_pole"
+   ],
+   "big": [
+    "nature/big_dead_a",
+    "props/billboard2",
+    "props/city_garage"
+   ]
+  }
  },
  "docks": {
   "cols": 54,
@@ -1229,7 +1241,19 @@
   ],
   "fruit": 0,
   "ground_seam": "pier_concrete",
-  "border_water_shore": "quay"
+  "border_water_shore": "quay",
+  "border_trees": {
+   "mid": [
+    "props/container_red",
+    "props/container_blue2",
+    "props/city_chainlink"
+   ],
+   "big": [
+    "props/container_green2",
+    "props/container_orange2",
+    "props/city_garage"
+   ]
+  }
  },
  "neon": {
   "cols": 50,
@@ -1317,6 +1341,18 @@
     20,
     17,
     3
+   ],
+   [
+    36,
+    23,
+    1,
+    10
+   ],
+   [
+    2,
+    31,
+    34,
+    1
    ]
   ],
   "props": [
@@ -1544,6 +1580,311 @@
     "fps": 2,
     "solid": false,
     "under": true
+   },
+   {
+    "name": "city_apartment",
+    "cell": [
+     34,
+     13
+    ],
+    "w": 5,
+    "h": 3
+   },
+   {
+    "name": "city_alley",
+    "cell": [
+     41,
+     13
+    ],
+    "w": 3,
+    "h": 2
+   },
+   {
+    "name": "fire_escape",
+    "cell": [
+     45,
+     12
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "neon_sign_4",
+    "cell": [
+     46,
+     14
+    ],
+    "solid": false
+   },
+   {
+    "name": "city_tenement",
+    "cell": [
+     34,
+     19
+    ],
+    "w": 3,
+    "h": 3
+   },
+   {
+    "name": "city_walkup",
+    "cell": [
+     39,
+     19
+    ],
+    "w": 4,
+    "h": 3
+   },
+   {
+    "name": "city_shop",
+    "cell": [
+     45,
+     19
+    ],
+    "w": 2,
+    "h": 3
+   },
+   {
+    "name": "lamp2_tall_1",
+    "cell": [
+     33,
+     23
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_3",
+    "cell": [
+     38,
+     23
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_1",
+    "cell": [
+     43,
+     23
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_3",
+    "cell": [
+     48,
+     23
+    ],
+    "solid": false
+   },
+   {
+    "name": "neon_sign_1",
+    "cell": [
+     37,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "neon_sign_3",
+    "cell": [
+     44,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "neon_sign_6",
+    "cell": [
+     48,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "taxi",
+    "cell": [
+     35,
+     25
+    ],
+    "w": 2
+   },
+   {
+    "name": "taxi",
+    "cell": [
+     39,
+     25
+    ],
+    "w": 2
+   },
+   {
+    "name": "vend_red",
+    "cell": [
+     43,
+     25
+    ]
+   },
+   {
+    "name": "payphone2",
+    "cell": [
+     46,
+     25
+    ]
+   },
+   {
+    "name": "city_pallets",
+    "cell": [
+     35,
+     29
+    ],
+    "w": 2
+   },
+   {
+    "name": "stall2_red",
+    "cell": [
+     38,
+     30
+    ],
+    "w": 4,
+    "h": 2
+   },
+   {
+    "name": "stall2_blue",
+    "cell": [
+     44,
+     30
+    ],
+    "w": 4,
+    "h": 2
+   },
+   {
+    "name": "lux_car_black",
+    "cell": [
+     5,
+     34
+    ],
+    "w": 2
+   },
+   {
+    "name": "lux_car_red",
+    "cell": [
+     9,
+     34
+    ],
+    "w": 2
+   },
+   {
+    "name": "lux_car_black",
+    "cell": [
+     13,
+     34
+    ],
+    "w": 2
+   },
+   {
+    "name": "scooter",
+    "cell": [
+     17,
+     34
+    ],
+    "w": 1
+   },
+   {
+    "name": "scooter",
+    "cell": [
+     19,
+     34
+    ],
+    "w": 1
+   },
+   {
+    "name": "city_pole",
+    "cell": [
+     3,
+     32
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "city_pole",
+    "cell": [
+     22,
+     32
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "city_pole",
+    "cell": [
+     30,
+     32
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "city_brickwall",
+    "cell": [
+     2,
+     38
+    ],
+    "w": 3
+   },
+   {
+    "name": "city_brickwall",
+    "cell": [
+     10,
+     38
+    ],
+    "w": 3
+   },
+   {
+    "name": "city_brickwall",
+    "cell": [
+     18,
+     38
+    ],
+    "w": 3
+   },
+   {
+    "name": "city_brickwall",
+    "cell": [
+     26,
+     38
+    ],
+    "w": 3
+   },
+   {
+    "name": "graffiti_2",
+    "cell": [
+     6,
+     38
+    ],
+    "solid": false
+   },
+   {
+    "name": "graffiti_4",
+    "cell": [
+     22,
+     38
+    ],
+    "solid": false
+   },
+   {
+    "name": "puddle",
+    "cell": [
+     27,
+     33
+    ],
+    "solid": false
+   },
+   {
+    "name": "puddle",
+    "cell": [
+     41,
+     27
+    ],
+    "solid": false
    }
   ],
   "gen": {
@@ -1656,6 +1997,29 @@
     "locked": "The neon boss is not seeing anyone who has not settled the docks.",
     "title": "Lucia \"Flame\" Ardent",
     "max_hp": 1
+   },
+   {
+    "type": "note",
+    "cell": [
+     42,
+     27
+    ],
+    "who": "Stall sign",
+    "text": "Night market. Fixed prices, no haggling, no questions. Someone hand-painted a small cat in the corner.",
+    "hint": "A: read",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     25,
+     35
+    ],
+    "item": "old_coin",
+    "n": 2,
+    "every": 3,
+    "hint": "A: something under a wiper",
+    "solid": false
    }
   ],
   "enemies": [
@@ -1683,14 +2047,30 @@
    "e": "cliff"
   },
   "fruit": 0,
-  "ground_seam": "pavement"
+  "border_trees": {
+   "mid": [
+    "props/city_brickwall",
+    "props/city_tenement"
+   ],
+   "big": [
+    "props/city_tenement",
+    "props/city_walkup",
+    "props/city_apartment"
+   ]
+  },
+  "ground_cycle": [
+   "wet_asphalt_0",
+   "wet_asphalt_1",
+   "wet_asphalt_2",
+   "wet_asphalt_3"
+  ]
  },
  "uptown": {
   "cols": 50,
   "rows": 44,
   "music": "uptown",
   "backdrop": "gritty",
-  "ground": "lawn",
+  "ground": "pavement",
   "path": "asphalt2",
   "spawn": [
    2,
@@ -1731,28 +2111,50 @@
     16,
     3,
     14
+   ],
+   [
+    29,
+    22,
+    20,
+    2
+   ],
+   [
+    20,
+    26,
+    2,
+    12
    ]
   ],
   "layers": [
    {
-    "tile": "pavement",
+    "tile": "lawn",
     "rect": [
+     30,
+     4,
      10,
-     3,
-     15,
-     5
-    ],
-    "color": "d8d8e0"
-   },
-   {
-    "tile": "pavement",
-    "rect": [
-     12,
-     24,
-     11,
      6
     ],
-    "color": "d8d8e0"
+    "color": "6aa85a"
+   },
+   {
+    "tile": "lawn",
+    "rect": [
+     6,
+     32,
+     9,
+     5
+    ],
+    "color": "6aa85a"
+   },
+   {
+    "tile": "lawn",
+    "rect": [
+     32,
+     30,
+     10,
+     6
+    ],
+    "color": "6aa85a"
    }
   ],
   "props": [
@@ -2006,6 +2408,259 @@
     "w": 2,
     "anim": true,
     "fps": 12
+   },
+   {
+    "name": "city_shop",
+    "cell": [
+     33,
+     18
+    ],
+    "w": 2,
+    "h": 3
+   },
+   {
+    "name": "city_apartment",
+    "cell": [
+     37,
+     18
+    ],
+    "w": 5,
+    "h": 3
+   },
+   {
+    "name": "city_shop",
+    "cell": [
+     44,
+     18
+    ],
+    "w": 2,
+    "h": 3
+   },
+   {
+    "name": "lamp2_tall_0",
+    "cell": [
+     31,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_0",
+    "cell": [
+     36,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_0",
+    "cell": [
+     43,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "lamp2_tall_0",
+    "cell": [
+     47,
+     20
+    ],
+    "solid": false
+   },
+   {
+    "name": "guard_booth2",
+    "cell": [
+     30,
+     15
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "cctv_a",
+    "cell": [
+     46,
+     15
+    ],
+    "solid": false
+   },
+   {
+    "name": "hedge2_tree",
+    "cell": [
+     29,
+     4
+    ]
+   },
+   {
+    "name": "hedge2_tree",
+    "cell": [
+     40,
+     4
+    ]
+   },
+   {
+    "name": "hedge2_tree_s",
+    "cell": [
+     29,
+     10
+    ]
+   },
+   {
+    "name": "hedge2_tree_s",
+    "cell": [
+     40,
+     10
+    ]
+   },
+   {
+    "name": "hedge2_tree",
+    "cell": [
+     31,
+     30
+    ]
+   },
+   {
+    "name": "hedge2_tree",
+    "cell": [
+     42,
+     30
+    ]
+   },
+   {
+    "name": "hedge2_tree_s",
+    "cell": [
+     31,
+     36
+    ]
+   },
+   {
+    "name": "hedge2_tree_s",
+    "cell": [
+     42,
+     36
+    ]
+   },
+   {
+    "name": "statue",
+    "cell": [
+     22,
+     34
+    ],
+    "w": 1,
+    "h": 2
+   },
+   {
+    "name": "bench_green",
+    "cell": [
+     18,
+     34
+    ],
+    "w": 1
+   },
+   {
+    "name": "bench_green",
+    "cell": [
+     25,
+     34
+    ],
+    "w": 1
+   },
+   {
+    "name": "cctv_b",
+    "cell": [
+     27,
+     31
+    ],
+    "solid": false
+   },
+   {
+    "name": "gold_fence_b",
+    "cell": [
+     18,
+     38
+    ],
+    "w": 1
+   },
+   {
+    "name": "gold_fence_b",
+    "cell": [
+     21,
+     38
+    ],
+    "w": 1
+   },
+   {
+    "name": "gold_fence_b",
+    "cell": [
+     24,
+     38
+    ],
+    "w": 1
+   },
+   {
+    "name": "gold_fence_b",
+    "cell": [
+     27,
+     38
+    ],
+    "w": 1
+   },
+   {
+    "name": "limo",
+    "cell": [
+     34,
+     26
+    ],
+    "w": 4
+   },
+   {
+    "name": "lux_car_red",
+    "cell": [
+     40,
+     26
+    ],
+    "w": 2
+   },
+   {
+    "name": "lux_car_black",
+    "cell": [
+     44,
+     26
+    ],
+    "w": 2
+   },
+   {
+    "name": "topiary_a",
+    "cell": [
+     34,
+     7
+    ],
+    "solid": false
+   },
+   {
+    "name": "topiary_b",
+    "cell": [
+     37,
+     7
+    ],
+    "solid": false
+   },
+   {
+    "name": "topiary_c",
+    "cell": [
+     9,
+     34
+    ],
+    "solid": false
+   },
+   {
+    "name": "topiary_a",
+    "cell": [
+     36,
+     33
+    ],
+    "solid": false
    }
   ],
   "layers_extra": [],
@@ -2019,14 +2674,19 @@
     "topiary_a",
     "topiary_b",
     "topiary_c",
-    "hedge2_ball",
     "hedge2_pot",
     "planter2_0",
     "planter2_1",
     "bench_green",
     "lamp2_tall_0"
    ],
-   "region_count": 26
+   "region_count": 26,
+   "theme": {
+    "trees": [],
+    "bushes": false,
+    "logs": false,
+    "band": []
+   }
   },
   "things": [
    {
@@ -2075,6 +2735,29 @@
     "locked": "The tower guards look straight through you. Win the pit first; then they will take you seriously.",
     "title": "Silas Crane",
     "max_hp": 1
+   },
+   {
+    "type": "note",
+    "cell": [
+     37,
+     24
+    ],
+    "who": "Valet ticket",
+    "text": "Ticket 41. Silver coupe. Owner said 'keep it running, I'll be quick.' That was three hours ago.",
+    "hint": "A: read",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     8,
+     35
+    ],
+    "item": "old_coin",
+    "n": 2,
+    "every": 3,
+    "hint": "A: a coin in the hedge bed",
+    "solid": false
    }
   ],
   "enemies": [
@@ -2093,7 +2776,18 @@
   "pad": 6,
   "border": "trees",
   "fruit": 0,
-  "ground_seam": "meadow_grass"
+  "ground_seam": "pavement",
+  "border_trees": {
+   "mid": [
+    "props/hedge2_tree",
+    "props/city_street_tree",
+    "props/hedge2_tree_s"
+   ],
+   "big": [
+    "props/city_apartment",
+    "props/city_street_tree"
+   ]
+  }
  },
  "underground": {
   "cols": 40,
@@ -4772,7 +5466,85 @@
   ],
   "patch_set": "ruinfloor",
   "ground_threshold": 0.12,
-  "deco_keep": []
+  "deco_keep": [],
+  "gang": {
+   "intro": [
+    "The old stones keep a secret the town forgot: smugglers have a hideaway under them. Crates where the altar was, lanterns in the arches, and someone watching from the dark."
+   ],
+   "enemies": [
+    {
+     "kind": "thug_speedster",
+     "count": 2
+    },
+    {
+     "kind": "ruin_guardian",
+     "count": 2
+    }
+   ],
+   "props_add": [
+    {
+     "name": "crates_a",
+     "cell": [
+      10,
+      30
+     ]
+    },
+    {
+     "name": "crates_b",
+     "cell": [
+      12,
+      30
+     ]
+    },
+    {
+     "name": "crates_pallet",
+     "cell": [
+      30,
+      28
+     ],
+     "w": 2
+    },
+    {
+     "name": "lantern_lit",
+     "cell": [
+      21,
+      15
+     ],
+     "solid": false
+    },
+    {
+     "name": "lantern_lit",
+     "cell": [
+      26,
+      15
+     ],
+     "solid": false
+    },
+    {
+     "name": "graffiti_1",
+     "cell": [
+      9,
+      13
+     ],
+     "solid": false
+    },
+    {
+     "name": "graffiti_3",
+     "cell": [
+      33,
+      24
+     ],
+     "solid": false
+    },
+    {
+     "name": "oil_drums",
+     "cell": [
+      38,
+      34
+     ]
+    }
+   ]
+  }
  },
  "quarry": {
   "cols": 52,
@@ -5274,7 +6046,100 @@
     ],
     "upper": []
    }
-  ]
+  ],
+  "gang": {
+   "intro": [
+    "Granite & Sons, says the sign. Nobody named Granite has worked here in years. The crew that runs it now cuts more deals than stone, and the floodlights never go off."
+   ],
+   "enemies": [
+    {
+     "kind": "thug_brute",
+     "count": 2
+    },
+    {
+     "kind": "rock_crab",
+     "count": 3
+    }
+   ],
+   "props_add": [
+    {
+     "name": "city_chainlink",
+     "cell": [
+      8,
+      4
+     ],
+     "w": 3,
+     "solid": false
+    },
+    {
+     "name": "city_chainlink",
+     "cell": [
+      12,
+      4
+     ],
+     "w": 3,
+     "solid": false
+    },
+    {
+     "name": "floodlight_on",
+     "cell": [
+      6,
+      8
+     ]
+    },
+    {
+     "name": "floodlight_on",
+     "cell": [
+      44,
+      8
+     ]
+    },
+    {
+     "name": "oil_drums",
+     "cell": [
+      40,
+      18
+     ]
+    },
+    {
+     "name": "forklift",
+     "cell": [
+      36,
+      24
+     ],
+     "w": 2
+    },
+    {
+     "name": "pickup",
+     "cell": [
+      10,
+      36
+     ],
+     "w": 2
+    },
+    {
+     "name": "crates_a",
+     "cell": [
+      42,
+      30
+     ]
+    },
+    {
+     "name": "crates_b",
+     "cell": [
+      44,
+      30
+     ]
+    },
+    {
+     "name": "fire_barrel2",
+     "cell": [
+      24,
+      38
+     ]
+    }
+   ]
+  }
  },
  "marsh": {
   "cols": 52,
@@ -5634,7 +6499,71 @@
    13,
    14,
    23
-  ]
+  ],
+  "gang": {
+   "intro": [
+    "Black water, tall reeds, and an airboat landing nobody admits to building. Smugglers run crates through here at night, and the frogs have learned to go quiet when the engines start."
+   ],
+   "enemies": [
+    {
+     "kind": "thug_gambler",
+     "count": 2
+    },
+    {
+     "kind": "mud_slime",
+     "count": 3
+    }
+   ],
+   "props_add": [
+    {
+     "name": "ri_boat2",
+     "cell": [
+      30,
+      22
+     ],
+     "w": 3,
+     "solid": false
+    },
+    {
+     "name": "crates_pallet",
+     "cell": [
+      34,
+      20
+     ],
+     "w": 2
+    },
+    {
+     "name": "rope_coil",
+     "cell": [
+      28,
+      20
+     ],
+     "solid": false
+    },
+    {
+     "name": "fire_barrel2",
+     "cell": [
+      36,
+      24
+     ]
+    },
+    {
+     "name": "crates_a",
+     "cell": [
+      26,
+      26
+     ]
+    },
+    {
+     "name": "dock_lantern",
+     "cell": [
+      33,
+      25
+     ],
+     "solid": false
+    }
+   ]
+  }
  },
  "riverlands": {
   "cols": 52,
@@ -7299,6 +8228,16 @@
     "solid": true
    },
    {
+    "type": "colony_jetty",
+    "station": "colony_coral_jetty",
+    "cell": [
+     44,
+     61
+    ],
+    "hint": "A: the jetty",
+    "solid": true
+   },
+   {
     "type": "loot",
     "cell": [
      20,
@@ -7619,6 +8558,16 @@
      58
     ],
     "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "colony_jetty",
+    "station": "colony_kelp_jetty",
+    "cell": [
+     51,
+     61
+    ],
+    "hint": "A: the jetty",
     "solid": true
    },
    {
@@ -7972,6 +8921,16 @@
     "solid": true
    },
    {
+    "type": "colony_jetty",
+    "station": "colony_ice_jetty",
+    "cell": [
+     44,
+     61
+    ],
+    "hint": "A: the jetty",
+    "solid": true
+   },
+   {
     "type": "loot",
     "cell": [
      20,
@@ -8303,6 +9262,16 @@
      16
     ],
     "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "colony_jetty",
+    "station": "colony_ember_jetty",
+    "cell": [
+     51,
+     61
+    ],
+    "hint": "A: the jetty",
     "solid": true
    },
    {
@@ -13630,7 +14599,14 @@
      "props/crystal_tree_pink"
     ],
     "bushes": false,
-    "logs": false
+    "logs": false,
+    "band": [
+     "gmush_blue",
+     "gmush_purple",
+     "cave_mush_purple",
+     "spiral_fern",
+     "starflower_pink"
+    ]
    }
   },
   "border_trees": {
@@ -14105,7 +15081,14 @@
      "props/crystal_tree_pink"
     ],
     "bushes": false,
-    "logs": false
+    "logs": false,
+    "band": [
+     "gmush_blue",
+     "gmush_purple",
+     "cave_mush_purple",
+     "spiral_fern",
+     "starflower_pink"
+    ]
    }
   },
   "border_trees": {
@@ -14479,7 +15462,14 @@
      "props/crystal_tree_pink"
     ],
     "bushes": false,
-    "logs": false
+    "logs": false,
+    "band": [
+     "gmush_blue",
+     "gmush_purple",
+     "cave_mush_purple",
+     "spiral_fern",
+     "starflower_pink"
+    ]
    }
   },
   "border_trees": {
@@ -14848,7 +15838,14 @@
      "props/crystal_tree_pink"
     ],
     "bushes": false,
-    "logs": false
+    "logs": false,
+    "band": [
+     "gmush_blue",
+     "gmush_purple",
+     "cave_mush_purple",
+     "spiral_fern",
+     "starflower_pink"
+    ]
    }
   },
   "border_trees": {
@@ -15154,16 +16151,14 @@
   },
   "gen": {
    "region_props": [
-    "dune_0",
-    "dune_1",
-    "dune_2",
-    "dune_3",
-    "dune_4",
-    "dune_5",
-    "dune_6",
-    "dune_7",
-    "dune_8",
-    "dune_9",
+    "c14p5_desert_tuft_a",
+    "c14p5_desert_tuft_b",
+    "c14p5_desert_tuft_c",
+    "c14p5_desert_log",
+    "c14p5_desert_coral",
+    "c14p5_desert_rock_flowers_a",
+    "c14p5_desert_rock_flowers_b",
+    "c14p5_desert_cairn",
     "dead_tree_s",
     "dead_tree_m",
     "boulder2_s_a",
@@ -15615,16 +16610,14 @@
   },
   "gen": {
    "region_props": [
-    "dune_0",
-    "dune_1",
-    "dune_2",
-    "dune_3",
-    "dune_4",
-    "dune_5",
-    "dune_6",
-    "dune_7",
-    "dune_8",
-    "dune_9",
+    "c14p5_desert_tuft_a",
+    "c14p5_desert_tuft_b",
+    "c14p5_desert_tuft_c",
+    "c14p5_desert_log",
+    "c14p5_desert_coral",
+    "c14p5_desert_rock_flowers_a",
+    "c14p5_desert_rock_flowers_b",
+    "c14p5_desert_cairn",
     "dead_tree_s",
     "dead_tree_m",
     "boulder2_s_a",
@@ -15795,7 +16788,7 @@
     ]
    },
    {
-    "name": "dune_9",
+    "name": "c14p5_desert_rock_flowers_a",
     "cell": [
      14,
      10
@@ -15813,7 +16806,7 @@
     "group": "nature"
    },
    {
-    "name": "dune_6",
+    "name": "c14p5_desert_cairn",
     "cell": [
      42,
      24
@@ -15962,16 +16955,14 @@
   },
   "gen": {
    "region_props": [
-    "dune_0",
-    "dune_1",
-    "dune_2",
-    "dune_3",
-    "dune_4",
-    "dune_5",
-    "dune_6",
-    "dune_7",
-    "dune_8",
-    "dune_9",
+    "c14p5_desert_tuft_a",
+    "c14p5_desert_tuft_b",
+    "c14p5_desert_tuft_c",
+    "c14p5_desert_log",
+    "c14p5_desert_coral",
+    "c14p5_desert_rock_flowers_a",
+    "c14p5_desert_rock_flowers_b",
+    "c14p5_desert_cairn",
     "dead_tree_s",
     "dead_tree_m",
     "boulder2_s_a",
@@ -16092,11 +17083,11 @@
     "blobs": [
      {
       "c": [
-       9,
+       14,
        34
       ],
-      "r": 5,
-      "ry": 3.75,
+      "r": 4,
+      "ry": 3.0,
       "seed": 367
      }
     ],
@@ -16120,13 +17111,23 @@
   ],
   "props": [
    {
-    "name": "stone_head",
+    "name": "c14p5_gc_stone_head",
     "cell": [
-     11,
+     10,
      26
     ],
-    "w": 6,
-    "h": 3
+    "w": 7,
+    "h": 3,
+    "open": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ]
+    ]
    },
    {
     "name": "toppled_statue",
@@ -16310,8 +17311,8 @@
   "ground_seam": "pale_stone",
   "path": "flagstone",
   "border": "cliff",
-  "backdrop": "hills",
-  "weather": "sun",
+  "backdrop": "night",
+  "weather": "clear",
   "season": "summer",
   "cliff_style": [
    "sand",
@@ -16339,6 +17340,7 @@
    }
   },
   "cave": true,
+  "band_style": "stone",
   "paths": [
    [
     21,
@@ -16739,6 +17741,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     21,
@@ -17162,6 +18165,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     26,
@@ -17525,6 +18529,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     24,
@@ -17840,6 +18845,7 @@
    }
   },
   "cave": true,
+  "band_style": "stone",
   "paths": [
    [
     22,
@@ -18173,7 +19179,14 @@
     "bush_snow",
     "bush_bare_snow",
     "stump_snow",
-    "grass_tuft_winter"
+    "c14p5_frost_tuft_s",
+    "c14p5_frost_tuft_m",
+    "c14p5_frost_tuft_w",
+    "c14p5_frost_reeds_a",
+    "c14p5_frost_reeds_b",
+    "c14p5_frost_thistle",
+    "c14p5_snow_stone_s",
+    "c14p5_snow_stone_m"
    ],
    "region_count": 18,
    "critters": [
@@ -18187,7 +19200,14 @@
      "mid_snowpine",
      "mid_snowpine_b"
     ],
-    "bushes": false
+    "bushes": false,
+    "band": [
+     "bush_snow",
+     "bush_bare_snow",
+     "snowdrift_1",
+     "rock_snow_s",
+     "c14p5_frost_tuft_m"
+    ]
    }
   },
   "border_trees": {
@@ -18658,7 +19678,14 @@
     "bush_snow",
     "bush_bare_snow",
     "stump_snow",
-    "grass_tuft_winter"
+    "c14p5_frost_tuft_s",
+    "c14p5_frost_tuft_m",
+    "c14p5_frost_tuft_w",
+    "c14p5_frost_reeds_a",
+    "c14p5_frost_reeds_b",
+    "c14p5_frost_thistle",
+    "c14p5_snow_stone_s",
+    "c14p5_snow_stone_m"
    ],
    "region_count": 36,
    "critters": [
@@ -18673,7 +19700,14 @@
      "mid_snowpine",
      "mid_snowpine_b"
     ],
-    "bushes": false
+    "bushes": false,
+    "band": [
+     "bush_snow",
+     "bush_bare_snow",
+     "snowdrift_1",
+     "rock_snow_s",
+     "c14p5_frost_tuft_m"
+    ]
    }
   },
   "border_trees": {
@@ -18881,7 +19915,7 @@
     "solid": false
    },
    {
-    "name": "icicles_1",
+    "name": "ice_crystal_dim",
     "cell": [
      23,
      24
@@ -19025,9 +20059,8 @@
    "region_props": [
     "cave_stalag_l",
     "cave_stalag_m",
-    "icicles_0",
-    "icicles_1",
-    "icicles_2",
+    "cave_stalag_s",
+    "ice_crystal_dim",
     "crystal_tree_frost",
     "cave_mush_blue"
    ],
@@ -19042,6 +20075,7 @@
    }
   },
   "cave": true,
+  "band_style": "stone",
   "paths": [
    [
     22,
@@ -19164,23 +20198,13 @@
     ]
    },
    {
-    "name": "icicles_0",
+    "name": "ice_crystal_dim",
     "cell": [
-     31,
+     32,
      26
     ],
-    "w": 3,
-    "h": 1,
-    "open": [
-     [
-      0,
-      0
-     ],
-     [
-      3,
-      0
-     ]
-    ]
+    "w": 1,
+    "h": 1
    },
    {
     "name": "cave_stalactite_a",
@@ -19230,7 +20254,7 @@
     "solid": false
    },
    {
-    "name": "icicles_2",
+    "name": "ice_crystal_lit",
     "cell": [
      9,
      9
@@ -19374,7 +20398,14 @@
     "bush_snow",
     "bush_bare_snow",
     "stump_snow",
-    "grass_tuft_winter"
+    "c14p5_frost_tuft_s",
+    "c14p5_frost_tuft_m",
+    "c14p5_frost_tuft_w",
+    "c14p5_frost_reeds_a",
+    "c14p5_frost_reeds_b",
+    "c14p5_frost_thistle",
+    "c14p5_snow_stone_s",
+    "c14p5_snow_stone_m"
    ],
    "region_count": 36,
    "critters": [
@@ -19388,7 +20419,14 @@
      "mid_snowpine",
      "mid_snowpine_b"
     ],
-    "bushes": false
+    "bushes": false,
+    "band": [
+     "bush_snow",
+     "bush_bare_snow",
+     "snowdrift_1",
+     "rock_snow_s",
+     "c14p5_frost_tuft_m"
+    ]
    }
   },
   "border_trees": {
@@ -19524,7 +20562,7 @@
     "group": "nature"
    },
    {
-    "name": "icicles_1",
+    "name": "ice_crystal_dim",
     "cell": [
      30,
      18
@@ -19652,7 +20690,14 @@
     "bush_snow",
     "bush_bare_snow",
     "stump_snow",
-    "grass_tuft_winter"
+    "c14p5_frost_tuft_s",
+    "c14p5_frost_tuft_m",
+    "c14p5_frost_tuft_w",
+    "c14p5_frost_reeds_a",
+    "c14p5_frost_reeds_b",
+    "c14p5_frost_thistle",
+    "c14p5_snow_stone_s",
+    "c14p5_snow_stone_m"
    ],
    "region_count": 36,
    "critters": [
@@ -19666,7 +20711,14 @@
      "mid_snowpine",
      "mid_snowpine_b"
     ],
-    "bushes": false
+    "bushes": false,
+    "band": [
+     "bush_snow",
+     "bush_bare_snow",
+     "snowdrift_1",
+     "rock_snow_s",
+     "c14p5_frost_tuft_m"
+    ]
    }
   },
   "border_trees": {
@@ -19820,7 +20872,7 @@
     "solid": false
    },
    {
-    "name": "icicles_2",
+    "name": "ice_crystal_lit",
     "cell": [
      24,
      15
@@ -20475,7 +21527,7 @@
      "sky_fish",
      "mooncarp"
     ],
-    "shore": "grass"
+    "shore": "cave"
    }
   ],
   "plateaus": [
@@ -20997,8 +22049,9 @@
    39
   ],
   "intro": [
-   "Black cloud underfoot, lightning in it like veins. The rods hum. Your hair stands up. So does the pup's."
-  ]
+   "Black cloud underfoot, lightning in it like veins. The rods hum. Your hair stands up and crackles."
+  ],
+  "light": 0.45
  },
  "wind_starfall_garden": {
   "cols": 46,
@@ -21143,7 +22196,7 @@
      "sky_fish",
      "mooncarp"
     ],
-    "shore": "grass"
+    "shore": "cave"
    }
   ],
   "props": [
@@ -21314,7 +22367,8 @@
   ],
   "intro": [
    "Above the storm, the sky goes dark and full of stars, close enough to touch. Flowers glow in the cloud. In the middle of it all, a nest the size of a barn."
-  ]
+  ],
+  "light": 0.6
  },
  "gilt_grand_plaza": {
   "cols": 44,
@@ -21365,6 +22419,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     21,
@@ -21788,6 +22843,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     24,
@@ -22131,6 +23187,7 @@
     "band": []
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     24,
@@ -22452,6 +23509,7 @@
    }
   },
   "cave": true,
+  "band_style": "stone",
   "paths": [
    [
     22,
@@ -22807,9 +23865,17 @@
      "props/crystal_tree_pink"
     ],
     "bushes": false,
-    "logs": false
+    "logs": false,
+    "band": [
+     "gmush_blue",
+     "gmush_purple",
+     "cave_mush_purple",
+     "spiral_fern",
+     "starflower_pink"
+    ]
    }
   },
+  "band_style": "stone",
   "paths": [
    [
     24,
@@ -22878,7 +23944,7 @@
      "ghost_fish",
      "eel"
     ],
-    "shore": "grass"
+    "shore": "cave"
    },
    {
     "c": [
@@ -22892,7 +23958,7 @@
      "ghost_fish",
      "eel"
     ],
-    "shore": "grass"
+    "shore": "cave"
    }
   ],
   "feature_blobs": [
@@ -23312,7 +24378,7 @@
      "sky_fish",
      "mooncarp"
     ],
-    "shore": "grass"
+    "shore": "cave"
    }
   ],
   "props": [

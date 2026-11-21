@@ -87,6 +87,7 @@ REGIONS = [
         "id": "cities", "name": "Lieutenant Cities", "short": "Cities", "arc": "gangsters", "status": "built",
         "blurb": "The President's city: every district run by one of his lieutenants.",
         "travel": "The night bus hisses into the city. Neon on wet glass, sirens far off, and the Valley is a rumour.",
+        "travel_day": "The city bus wheezes downtown. Billboards, horns, and the Valley is a rumour.",
         "leave": "The last bus rattles out past the billboards. Crickets again.",
         "theme": {"style": "city", "bg": [0.1, 0.09, 0.15], "land": [0.28, 0.26, 0.34], "accent": [1.0, 0.35, 0.75], "ink": [0.95, 0.9, 1.0]},
         "areas": [

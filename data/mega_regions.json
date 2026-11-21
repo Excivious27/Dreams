@@ -249,6 +249,7 @@
    "status": "built",
    "blurb": "The President's city: every district run by one of his lieutenants.",
    "travel": "The night bus hisses into the city. Neon on wet glass, sirens far off, and the Valley is a rumour.",
+   "travel_day": "The city bus wheezes downtown. Billboards, horns, and the Valley is a rumour.",
    "leave": "The last bus rattles out past the billboards. Crickets again.",
    "theme": {
     "style": "city",
@@ -323,7 +324,7 @@
      ],
      "icon": "pin_town",
      "blurb": "Rail town; every train CANCELLED.",
-     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City.",
      "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
@@ -335,7 +336,7 @@
      ],
      "icon": "pin_docks",
      "blurb": "Rail bots and rusting freight.",
-     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City.",
      "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
@@ -347,7 +348,7 @@
      ],
      "icon": "pin_tower",
      "blurb": "Brick mills and the Baron's silo.",
-     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City.",
      "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
@@ -359,7 +360,7 @@
      ],
      "icon": "pin_mine",
      "blurb": "Old rail tunnels and the Baron's car.",
-     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City.",
      "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     }
    ],
@@ -1058,7 +1059,7 @@
    "arc": "gangsters",
    "status": "built",
    "blurb": "Madame Aurum's city of casinos, gardens and vaults.",
-   "travel": "The limousine purrs through the night. At dawn: gold stone, statues, and a hundred lit windows.",
+   "travel": "The limousine purrs through the dark and out into gold stone, statues, and a hundred lit windows.",
    "leave": "The limo drops you at the farm gate and glides away without a sound.",
    "theme": {
     "style": "city",
