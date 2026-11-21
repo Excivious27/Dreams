@@ -50,7 +50,7 @@ func _initialize() -> void:
 		lines = BattleRewards.on_win(cid, nid, 3, {})
 		var m2 := int(GameState.run.get("crystals", 0))
 		var cr := int(cd["nodes"][nid]["crystals"])
-		check(m2 - m1 >= int(round(cr * 1.0)), "%s: 1->3 stars pays +40%%+60%% (+chest) (%d)" % [arc, m2 - m1])
+		check(m2 - m1 >= int(round(cr * 0.7)) + 120, "%s: 1->3 stars pays +30%%+40%% + chest (%d)" % [arc, m2 - m1])
 		check(BattleRewards.stars(cid, nid) == 3, "%s: 3 stars stored" % arc)
 		check(" ".join(lines.map(func(x): return str(x["text"]))).contains(BattleRewards.chest_name("supply")), "%s: 3 stars opens a supply chest" % arc)
 		BattleRewards.on_win(cid, nid, 3, {})

@@ -9,10 +9,10 @@ essential. Nothing here is story-required (checked below against story/quest nee
 Ladder per campaign (both arcs):
   stars per battle node, 1-3: 1 = won, 2 = won with every ally standing (no player KO
     and >= half your tickets left), 3 = also under the node's par time.
-    Paid on rank-up only: 2 stars +40% of the node's crystals, 3 stars +60% + a Supply chest.
+    Paid on rank-up only: 2 stars +30% of the node's crystals, 3 stars +40% + a Supply chest.
   rematch: a node already won pays 20% of its crystals + strategist XP once a day.
   first clear (gate): a tier chest + the campaign's trophy decor (DecorSources.grant).
-  mastery (every node at 3 stars): a Commander chest + a mastery piece (decor; three
+  mastery (every node at 3 stars): a tier chest (Field T1-2, War T3-4, Commander T5) + a mastery piece (decor; three
     campaigns also give the old legacy uniques: Aurora Blade, Prism Lance, Tommy Gun).
   chests: Supply / Field / War / Commander, a material bundle + a chance at chest decor.
   mastery track per arc: total stars thresholds pay strategist XP and money.
@@ -36,7 +36,7 @@ DECOR = load("data/decor.json")["items"]
 ITEMS = load("data/items.json")
 ITEMS = ITEMS.get("items", ITEMS)
 
-STAR_PAY = {"2": 0.4, "3": 0.6}
+STAR_PAY = {"2": 0.3, "3": 0.4}
 REMATCH = {"share": 0.2, "xp_win": 60, "xp_rank": 100}
 PAR_BASE = {"skirmish": 150, "siege": 210, "escort": 180, "defend": 180, "boss": 200, "gate": 240}
 
@@ -57,7 +57,7 @@ CHESTS = {
 }
 FIRST_CHEST = {1: "supply", 2: "field", 3: "war", 4: "war", 5: "commander"}
 GOLD_NODE_CHEST = "supply"
-MASTERY_CHEST = "commander"
+MASTERY_CHEST = {1: "field", 2: "field", 3: "war", 4: "war", 5: "commander"}
 LEGACY_TOOLS = {"c_wastes": {"penguins": "aurora_blade"}, "c_sky": {"penguins": "prism_lance"},
                 "c_countryside": {"gangsters": "tommy_gun"}}
 TRACK = [{"at": 10, "xp": 200, "money": 500}, {"at": 30, "xp": 400, "money": 1200},
@@ -107,7 +107,7 @@ def main():
             "tier": tier, "arc": c.get("arc", "both"),
             "max_stars": 3 * len(nodes), "nodes": nodes,
             "first_clear": {"chest": FIRST_CHEST[tier], "trophy": pick_decor(tier, c.get("arc", "both"), used, i, True)},
-            "mastery": {"chest": MASTERY_CHEST, "decor": pick_decor(min(5, tier + 1), c.get("arc", "both"), used, i + 7),
+            "mastery": {"chest": MASTERY_CHEST[tier], "decor": pick_decor(min(5, tier + 1), c.get("arc", "both"), used, i + 7),
                         "tool": LEGACY_TOOLS.get(cid, {})},
         }
     out = {"_doc": "C16b P4 battle reward ladder (tools/gen_battle_rewards.py; BattleRewards). Never edit by hand.",
@@ -132,6 +132,20 @@ def main():
         for a, t in cd["mastery"]["tool"].items():
             if t not in ITEMS or ITEMS[t].get("arc") not in (None, "", a):
                 bad.append("%s tool %s" % (cid, t))
+    # Economy (C16b c16b_09-03, contract 3): the full-star ladder adds roughly 35-90% of a
+    # campaign's own crystal pay (target ~60%), and chest/first-clear value never falls by tier.
+    for cid, cd in camps.items():
+        c = BATTLES["list"][cid]
+        base = sum(v["crystals"] for v in cd["nodes"].values()) + int(c.get("reward", {}).get("crystals", 0))
+        extra = sum(round(v["crystals"] * (STAR_PAY["2"] + STAR_PAY["3"])) for v in cd["nodes"].values()) \
+            + len(cd["nodes"]) * CHESTS[GOLD_NODE_CHEST]["money"] + CHESTS[cd["mastery"]["chest"]]["money"]
+        cd["ladder_money"] = extra
+        if not (0.35 * base <= extra <= 0.9 * base):
+            bad.append("%s ladder money %d vs campaign pay %d (want 35-90%%)" % (cid, extra, base))
+    tiers = sorted({cd["tier"] for cd in camps.values()})
+    for a, b in zip(tiers, tiers[1:]):
+        if CHESTS[FIRST_CHEST[a]]["money"] > CHESTS[FIRST_CHEST[b]]["money"]:
+            bad.append("first-clear chest falls from tier %d to %d" % (a, b))
     story = json.dumps([load("data/story.json"), load("data/story_gang.json")])
     for cid, cd in camps.items():
         for k in (cd["first_clear"]["trophy"], cd["mastery"]["decor"]):

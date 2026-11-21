@@ -8,8 +8,9 @@
     "chest": "field",
     "trophy": "dc_top_globe"
    },
+   "ladder_money": 1508,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_tt_statue_head",
     "tool": {}
    },
@@ -44,6 +45,7 @@
     "chest": "commander",
     "trophy": "dc_statue2_crystal"
    },
+   "ladder_money": 3310,
    "mastery": {
     "chest": "commander",
     "decor": "dc_founders_orrery",
@@ -80,8 +82,9 @@
     "chest": "war",
     "trophy": "dc_tt_trophy_crystal"
    },
+   "ladder_money": 2452,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "rp_golden_pin",
     "tool": {}
    },
@@ -116,8 +119,9 @@
     "chest": "war",
     "trophy": "dc_globe3"
    },
+   "ladder_money": 1810,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "rp_trophy_gold",
     "tool": {}
    },
@@ -148,8 +152,9 @@
     "chest": "supply",
     "trophy": "dc_top_dice_cup"
    },
+   "ladder_money": 1116,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "rp_trophy_bronze",
     "tool": {
      "gangsters": "tommy_gun"
@@ -182,8 +187,9 @@
     "chest": "field",
     "trophy": "dc_tt_snow_globe"
    },
+   "ladder_money": 1329,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_museum_trophy",
     "tool": {}
    },
@@ -214,8 +220,9 @@
     "chest": "field",
     "trophy": "dc_top_snow_globe"
    },
+   "ladder_money": 1587,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_tt_trophy_craft_a",
     "tool": {}
    },
@@ -250,8 +257,9 @@
     "chest": "war",
     "trophy": "rp_arcade_medal"
    },
+   "ladder_money": 2298,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_carnivore_plant",
     "tool": {}
    },
@@ -286,8 +294,9 @@
     "chest": "field",
     "trophy": "dc_tt_medal_bronze"
    },
+   "ladder_money": 1310,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_globe2",
     "tool": {}
    },
@@ -318,8 +327,9 @@
     "chest": "war",
     "trophy": "dc_tt_trophy_farm_a"
    },
+   "ladder_money": 1835,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_golden_crate",
     "tool": {}
    },
@@ -350,8 +360,9 @@
     "chest": "supply",
     "trophy": "dc_globe"
    },
+   "ladder_money": 912,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_top_teapot",
     "tool": {}
    },
@@ -378,8 +389,9 @@
     "chest": "field",
     "trophy": "rp_trophy_silver"
    },
+   "ladder_money": 1349,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_telescope2",
     "tool": {}
    },
@@ -410,8 +422,9 @@
     "chest": "field",
     "trophy": "dc_tt_medal_silver"
    },
+   "ladder_money": 1349,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_tt_trophy_fish_a",
     "tool": {}
    },
@@ -442,8 +455,9 @@
     "chest": "war",
     "trophy": "dc_top_ice_crystal"
    },
+   "ladder_money": 1911,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_curio_jar",
     "tool": {}
    },
@@ -474,8 +488,9 @@
     "chest": "war",
     "trophy": "dc_cat_statue"
    },
+   "ladder_money": 1860,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_ink_brushes",
     "tool": {
      "penguins": "prism_lance"
@@ -508,8 +523,9 @@
     "chest": "war",
     "trophy": "dc_books_scrolls"
    },
+   "ladder_money": 2390,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_top_holo_cube",
     "tool": {}
    },
@@ -544,8 +560,9 @@
     "chest": "war",
     "trophy": "dc_top_gold_bar"
    },
+   "ladder_money": 2452,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_top_music_box",
     "tool": {}
    },
@@ -580,8 +597,9 @@
     "chest": "war",
     "trophy": "dc_lucky_cat_gold"
    },
+   "ladder_money": 2421,
    "mastery": {
-    "chest": "commander",
+    "chest": "war",
     "decor": "dc_crystal_cage",
     "tool": {}
    },
@@ -616,8 +634,9 @@
     "chest": "supply",
     "trophy": "dc_top_desk_phone"
    },
+   "ladder_money": 1074,
    "mastery": {
-    "chest": "commander",
+    "chest": "field",
     "decor": "dc_tt_snowman",
     "tool": {
      "penguins": "aurora_blade"
@@ -738,8 +757,8 @@
   "xp_win": 60
  },
  "star_pay": {
-  "2": 0.4,
-  "3": 0.6
+  "2": 0.3,
+  "3": 0.4
  },
  "track": [
   {
