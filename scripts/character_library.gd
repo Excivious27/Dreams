@@ -13,7 +13,7 @@ const NPC_H := 24.0
 const HERO_H := 26.0
 const TARGET_H := {"penguin": 14.0, "dog": 15.0, "light_crystal": 16.0, "president": 30.0}
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
-const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "power": 10.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
+const FPS := {"idle": 3.0, "idle_down": 3.0, "idle_up": 3.0, "idle_side": 3.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "power": 10.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
 const LOOPS := {"bite": false, "howl": false, "beg": false, "bark": false, "play": false, "dig": false, "fetch": false, "attack": false, "attack_down": false, "attack_up": false, "powerup": false, "power": false, "hurt": false, "faint": false, "dive": false, "cast_down": false, "cast_side": false, "cast_up": false,
 	"hoe_down": false, "hoe_right": false, "hoe_up": false, "water_down": false, "water_right": false, "water_up": false, "axe_down": false, "axe_right": false, "axe_up": false,
 	"pickaxe_down": false, "pickaxe_right": false, "pickaxe_up": false, "cast_right": false, "reel_right": false, "hold_down": false, "eat_down": false}
@@ -115,7 +115,7 @@ static func frames_for(id: String) -> SpriteFrames:
 	if GEN_ONLY.has(id) or (not data().has(id) and Art.has("characters/" + id, "idle")):
 		var g := "characters/" + id
 		var anims := {}
-		var list: Array = GEN_ONLY.get(id, ["idle", "idle_up", "idle_side", "walk", "walk_down", "walk_up", "sit", "wave", "work"])
+		var list: Array = GEN_ONLY.get(id, ["idle", "idle_down", "idle_up", "idle_side", "walk", "walk_down", "walk_up", "sit", "wave", "work"])
 		if id.ends_with("_gang"):
 			list = (Art.manifest().get(g, {}) as Dictionary).keys()  # whatever the sheet gave us
 		elif id.begins_with("mk_"):
@@ -124,13 +124,33 @@ static func frames_for(id: String) -> SpriteFrames:
 			if Art.has(g, a) and int(Art.info(g, a).get("h", 99)) >= 16:  # tiny strips are empty slots
 				anims[a] = a
 		var gsf := Art.frames(g, anims, FPS, LOOPS)
+		# Idle strips cut through the body (c14b_14-07): rest on the clean views
+		# instead (IdleLife breathes them) until they are re-cut.
+		for a: String in MISCUT_IDLE.get(id, []):
+			if gsf.has_animation(a):
+				gsf.remove_animation(a)
 		# The 12B hero sheets (Coldy, Big Jim, the penguins, the cats) drew "idle"
 		# as a SIDE view: everyone resting faced right. Their front idle is
 		# idle_down; the side one stays as idle_side (used for left/right rests).
 		if list == HERO12_ANIMS and gsf.has_animation("idle") and gsf.has_animation("idle_down"):
 			_alias(gsf, "idle_side", "idle")
+			(gsf.get_meta("aliased") as Dictionary).erase("idle_side")  # drawn side idle, not a stand-in
 			gsf.remove_animation("idle")
 			_alias(gsf, "idle", "idle_down")
+		# C14b P5 (c14b_07-06, 10-04, 14-19): the HERO2 heroes, every gangster
+		# outfit and the crew sheets also drew "idle" as a side (or mixed) view,
+		# so resting facing you showed them sideways or flipping poses. Their
+		# front rest is idle_down; a clean side idle is kept as idle_side.
+		elif list != HERO12_ANIMS and gsf.has_animation("idle") and gsf.has_animation("idle_down") and not is_alias(gsf, "idle_down"):
+			if not gsf.has_animation("idle_side") and not (list == HERO2_ANIMS or id.ends_with("_gang")):
+				_alias(gsf, "idle_side", "idle")
+				(gsf.get_meta("aliased") as Dictionary).erase("idle_side")
+			gsf.remove_animation("idle")
+			_alias(gsf, "idle", "idle_down")
+		if id == "penguin_wizard" and gsf.get_frame_count("idle_down") == 3:
+			_drop_frame(gsf, "idle_down", 1)  # Nova's frame 1 is an off-model tilt (c14b_07-05)
+			_drop_frame(gsf, "idle", 1)
+		_breath_timing(gsf)
 		# Fallbacks so every character can idle/walk even with a partial set.
 		if not gsf.has_animation("idle") and gsf.has_animation("view_front"):
 			_alias(gsf, "idle", "view_front")
@@ -240,6 +260,33 @@ static func _gang_tool_src(gsf: SpriteFrames, tool: String, dir: String, attack:
 	return attack
 
 
+## C14b P5 (c14b_07-02/05, 16-08, 14-19): idle strips read as a breath, not
+## a tick: the rest frame is held about twice as long as the others, and a
+## 3+-frame idle plays out and back (0,1,2,1) so the loop never pops.
+const MISCUT_IDLE := {"bo": ["idle", "idle_down", "idle_up"], "president": ["idle"]}
+const IDLE_ANIMS := ["idle", "idle_down", "idle_up", "idle_side"]
+
+
+static func _breath_timing(sf: SpriteFrames) -> void:
+	for a: String in IDLE_ANIMS:
+		if not sf.has_animation(a) or sf.get_meta("breath_" + a, false):
+			continue
+		sf.set_meta("breath_" + a, true)
+		var n := sf.get_frame_count(a)
+		if n < 2:
+			continue
+		if n >= 3 and n <= 4:
+			for i in range(n - 2, 0, -1):  # ping-pong back to the rest frame
+				sf.add_frame(a, sf.get_frame_texture(a, i), sf.get_frame_duration(a, i))
+		sf.set_frame(a, 0, sf.get_frame_texture(a, 0), 2.2)
+		sf.set_animation_speed(a, 3.0 if n >= 3 else 2.4)
+
+
+static func _drop_frame(sf: SpriteFrames, a: String, i: int) -> void:
+	if sf.has_animation(a) and sf.get_frame_count(a) > i + 1:
+		sf.remove_frame(a, i)
+
+
 ## True when `anim` is a borrowed stand-in (not drawn for this action).
 static func is_alias(sf: SpriteFrames, anim: String) -> bool:
 	return sf != null and (sf.get_meta("aliased", {}) as Dictionary).has(anim)
@@ -264,7 +311,7 @@ static func _alias(sf: SpriteFrames, new_name: String, from: String) -> void:
 	sf.set_animation_speed(new_name, sf.get_animation_speed(from))
 	sf.set_animation_loop(new_name, sf.get_animation_loop(from))
 	for i in sf.get_frame_count(from):
-		sf.add_frame(new_name, sf.get_frame_texture(from, i))
+		sf.add_frame(new_name, sf.get_frame_texture(from, i), sf.get_frame_duration(from, i))
 
 
 static func make_sprite(id: String) -> AnimatedSprite2D:
