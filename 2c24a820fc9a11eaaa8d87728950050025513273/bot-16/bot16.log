@@ -1,0 +1,6 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 16 start arc=gangsters hero=ollie style=story progress=4 difficulty=2 day_len=30
+BOT 16 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountain", "lake", "crystal_meadow"], day 4, ◆4715
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

@@ -1,0 +1,16 @@
+local server/ code a29f453d8be9, origin/main a29f453d8be9, live {"commit": "6fce22377e912cb87c978ee22b7bd62cb2726032", "code": "a29f453d8be9", "started": "2026-11-21T07:03:51.291Z", "rooms": 0, "players": 0}
+$ node tools/relay_test.js --url wss://dreams-64-23-239-63.sslip.io  (rc=0, 3s)
+relay test (live subset) against wss://dreams-64-23-239-63.sslip.io
+  ok  live: host created room MLFV
+  ok  live: guest joined by code
+  ok  live: guest got the host's world on join
+  ok  live: host saw peer_joined
+  ok  live: round trip 1 (host flag right)
+  ok  live: round trip 2 (host flag right)
+  ok  live: round trip 3 (host flag right)
+  ok  live: round trip 4 (host flag right)
+  ok  live: round trip 5 (host flag right)
+  ok  live: 5 round trips
+  live /version: {"commit":"6fce22377e912cb87c978ee22b7bd62cb2726032","code":"a29f453d8be9","started":"2026-11-21T07:03:51.291Z","rooms":1,"players":0}
+RELAY LIVE: ok, 121ms
+

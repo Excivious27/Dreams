@@ -1,0 +1,228 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  88% ] [90m[1mreimport[22m | mega_desert_2.ogg[39m[0m
+[  89% ] [90m[1mreimport[22m | mega_desert_canyon_2.ogg[39m[0m
+[  90% ] [90m[1mreimport[22m | mega_gilt_2.ogg[39m[0m
+[  90% ] [90m[1mreimport[22m | mega_gloam.ogg[39m[0m
+[  91% ] [90m[1mreimport[22m | mega_hollow_deeps.ogg[39m[0m
+[  91% ] [90m[1mreimport[22m | mega_hollow_deeps_2.ogg[39m[0m
+[  92% ] [90m[1mreimport[22m | mega_iron_2.ogg[39m[0m
+[  92% ] [90m[1mreimport[22m | mega_station_2.ogg[39m[0m
+[  93% ] [90m[1mreimport[22m | mega_wind_2.ogg[39m[0m
+[  93% ] [90m[1mreimport[22m | morning.ogg[39m[0m
+[  94% ] [90m[1mreimport[22m | mountain_fall.ogg[39m[0m
+[  95% ] [90m[1mreimport[22m | mountain_fall_2.ogg[39m[0m
+[  95% ] [90m[1mreimport[22m | mountain_gang.ogg[39m[0m
+[  96% ] [90m[1mreimport[22m | mountain_winter.ogg[39m[0m
+[  96% ] [90m[1mreimport[22m | neon_2.ogg[39m[0m
+[  97% ] [90m[1mreimport[22m | neon_night.ogg[39m[0m
+[  97% ] [90m[1mreimport[22m | night.ogg[39m[0m
+[  98% ] [90m[1mreimport[22m | night_gang.ogg[39m[0m
+[  98% ] [90m[1mreimport[22m | night_summer.ogg[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (179 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 108.4s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 13.0s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 3.6s
+
+#### step 16: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s (shard 3/6)
+== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) ==
+web_export_guard static: ok (0 problems)
+#### step 16 S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s: PASS in 0.3s
+
+#### step 22: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 22 touch_ui_test: PASS in 39.2s
+
+#### step 28: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 28 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 4.2s
+
+#### step 34: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 3/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6675 checks, 0 failures
+#### step 34 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 5.1s
+
+#### step 40: rec_reno_test (shard 3/6)
+rec_reno_test: 0 failures
+#### step 40 rec_reno_test: PASS in 2.3s
+
+#### step 46: farm_week_test (shard 3/6)
+farm_week_test: OK (0 fails)
+#### step 46 farm_week_test: PASS in 5.1s
+
+#### step 52: anim_test (shard 3/6)
+anim_test: 0 failures
+#### step 52 anim_test: PASS in 2.7s
+
+#### step 58: ranch_p2_test (shard 3/6)
+ranch_p2_test: 0 failures
+#### step 58 ranch_p2_test: PASS in 2.4s
+
+#### step 64: early_gating_test (shard 3/6)
+early_gating_test: PASS (0 fails)
+#### step 64 early_gating_test: PASS in 4.4s
+
+#### step 70: music loop seams (join click + level jump) (shard 3/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 192
+#### step 70 music loop seams (join click + level jump): PASS in 13.4s
+
+#### step 76: Steam: docs/STEAM.md current, Steamworks brief and ledger consistent ( (shard 3/6)
+== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) ==
+steam_handoff: OK (6 fragments, brief current)
+#### step 76 Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (: PASS in 0.0s
+
+#### step 82: C11a ranch art: species strips, building looks, icons, stations (shard 3/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 82 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.4s
+
+#### step 88: danger_music_test (shard 3/6)
+danger_music_test: 0 failures
+#### step 88 danger_music_test: PASS in 22.0s
+
+#### step 94: allies: enemies fight back, pup commands (shard 3/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 94 allies: enemies fight back, pup commands: PASS in 4.0s
+
+#### step 100: every script compiles (shard 3/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 100 every script compiles: PASS in 3.4s
+
+#### step 106: quest_tracker_test (shard 3/6)
+quest_tracker_test: 0 fails
+#### step 106 quest_tracker_test: PASS in 3.6s
+
+#### step 112: battle_drill_flow_test (shard 3/6)
+battle_drill_flow_test (penguins): 0 fails
+#### step 112 battle_drill_flow_test: PASS in 7.1s
+
+#### step 118: skill_glow_test (shard 3/6)
+skill_glow_test: 0 fails
+#### step 118 skill_glow_test: PASS in 3.6s
+
+#### step 124: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 3/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 124 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 9.5s
+
+#### step 130: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 3/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 130 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 8.1s
+
+#### step 136: jumper_test (shard 3/6)
+jumper_test: 0 failures
+#### step 136 jumper_test: PASS in 2.5s
+
+#### step 142: C12 story conditions: hero-as-character lines, choice payoffs, watcher (shard 3/6)
+== C12 story conditions: hero-as-character lines, choice payoffs, watcher, elders, %bitter, backstop order ==
+c12_story_cond_test: 0 fails
+#### step 142 C12 story conditions: hero-as-character lines, choice payoffs, watcher: PASS in 3.0s
+
+#### step 148: C12 P2: gangster story text matches state (shard 3/6)
+== C12 P2: gangster story text matches state ==
+c12_gang_story_test: 0 fails
+#### step 148 C12 P2: gangster story text matches state: PASS in 2.5s
+
+#### step 154: C11b P6: battle line-up and team jobs (shard 3/6)
+== C11b P6: battle line-up and team jobs ==
+battle_team_test: OK
+#### step 154 C11b P6: battle line-up and team jobs: PASS in 2.3s
+
+#### step 160: C11a integration: one care path, ranching keys, incubator, farm hands, (shard 3/6)
+== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art ==
+c11a_integ_test: 41 checks, 0 failures
+#### step 160 C11a integration: one care path, ranching keys, incubator, farm hands,: PASS in 2.6s
+
+#### step 166: S1 P3: Steam Deck text floor (every screen at 1280x800) (shard 3/6)
+== S1 P3: Steam Deck text floor (every screen at 1280x800) ==
+ISSUE tap|p_menu_items|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_hero|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_skills|@Button@165'Pup'|18x30
+ISSUE tap|p_menu_pup|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_party|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_social|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_map|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_quests|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_book|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_options|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_keys|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_fieldlog|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_workshop|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_foes|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_messages|@Button@165'Pup'|17x30
+ISSUE tap|p_menu_mail|@Button@165'Pup'|17x30
+ISSUE tap|g_menu_items|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_hero|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_skills|@Button@3356'Pup'|18x30
+ISSUE tap|g_menu_pup|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_party|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_social|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_map|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_quests|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_book|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_options|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_keys|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_fieldlog|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_workshop|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_foes|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_messages|@Button@3356'Pup'|17x30
+ISSUE tap|g_menu_mail|@Button@3356'Pup'|17x30
+deck_text_test: smallest Control text cap 9.5 px at 1280x800
+deck_text_test: 0 issue(s)
+#### step 166 S1 P3: Steam Deck text floor (every screen at 1280x800): PASS in 10.4s
+
+#### step 172: S1 P2: achievements, stats, rich presence (shard 3/6)
+== S1 P2: achievements, stats, rich presence ==
+achievements_test: 0 failures
+#### step 172 S1 P2: achievements, stats, rich presence: PASS in 2.7s
+
+#### step 178: relay: Play together uses the live relay by default, custom server + R (shard 3/6)
+== relay: Play together uses the live relay by default, custom server + Reset to default ==
+net_url_test: 13 checks, 0 failures
+#### step 178 relay: Play together uses the live relay by default, custom server + R: PASS in 2.5s
+
+#### step 184: S1 P6: Steam store text drafts (tokens, limits, banned words, claims g (shard 3/6)
+== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) ==
+store_text_check: warn short-description.md [short]: 252 chars (> 250 leaves little room for translations)
+store_text_check: warn claims.md c4: 'Raise and rehome animals' is rough; review before the page goes live
+store_text_check: warn claims.md c11: 'Online co-op (GATED: use short ALT B until done)' is rough; review before the page goes live
+store_text_check: FAIL facts.json is stale: run python3 tools/store_facts.py
+store_text_check: 5 fields, 1 failures
+store_text_check failed
+#### step 184 S1 P6: Steam store text drafts (tokens, limits, banned words, claims g: FAIL rc=1 in 0.0s
+
+#### step 190: C12 P7: dialogue conditions match game state (talk pools per snapshot, (shard 3/6)
+== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) ==
+dialogue_state_test: OK (0 failures)
+#### step 190 C12 P7: dialogue conditions match game state (talk pools per snapshot,: PASS in 2.8s
+
+#### shard 3/6 done in 297s: FAIL (S1 P6: Steam store text drafts (tokens, limits, banned words, claims g)

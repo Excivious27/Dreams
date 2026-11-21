@@ -1,0 +1,195 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  88% ] [90m[1mreimport[22m | mega_desert_2.ogg[39m[0m
+[  89% ] [90m[1mreimport[22m | mega_desert_canyon_2.ogg[39m[0m
+[  90% ] [90m[1mreimport[22m | mega_gilt_2.ogg[39m[0m
+[  90% ] [90m[1mreimport[22m | mega_gloam.ogg[39m[0m
+[  91% ] [90m[1mreimport[22m | mega_hollow_deeps.ogg[39m[0m
+[  91% ] [90m[1mreimport[22m | mega_hollow_deeps_2.ogg[39m[0m
+[  92% ] [90m[1mreimport[22m | mega_iron_2.ogg[39m[0m
+[  92% ] [90m[1mreimport[22m | mega_station_2.ogg[39m[0m
+[  93% ] [90m[1mreimport[22m | mega_wind_2.ogg[39m[0m
+[  93% ] [90m[1mreimport[22m | morning.ogg[39m[0m
+[  94% ] [90m[1mreimport[22m | mountain_fall.ogg[39m[0m
+[  95% ] [90m[1mreimport[22m | mountain_fall_2.ogg[39m[0m
+[  95% ] [90m[1mreimport[22m | mountain_gang.ogg[39m[0m
+[  96% ] [90m[1mreimport[22m | mountain_winter.ogg[39m[0m
+[  96% ] [90m[1mreimport[22m | neon_2.ogg[39m[0m
+[  97% ] [90m[1mreimport[22m | neon_night.ogg[39m[0m
+[  97% ] [90m[1mreimport[22m | night.ogg[39m[0m
+[  98% ] [90m[1mreimport[22m | night_gang.ogg[39m[0m
+[  98% ] [90m[1mreimport[22m | night_summer.ogg[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (179 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 186.9s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 6.4s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 4.1s
+
+#### step 15: crops wired in (shard 2/6)
+== crops wired in ==
+interior_back: 0 bad []
+#### step 15 crops wired in: PASS in 0.0s
+
+#### step 21: phone_ui_test (shard 2/6)
+glyphs ok: 54 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 21 phone_ui_test: PASS in 12.9s
+
+#### step 27: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 27 gangster interior skins (c5_04): PASS in 3.8s
+
+#### step 33: C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli (shard 2/6)
+== C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Splicer via RanchGift ==
+c11b_integ_test: 821 checks, 0 failures
+#### step 33 C11b integ: voices, words, hatch cues, chores migrate/guard, Gene Spli: PASS in 4.0s
+
+#### step 39: rec_links_test (shard 2/6)
+rec_links_test: 0 failures
+#### step 39 rec_links_test: PASS in 3.6s
+
+#### step 45: coop_test (shard 2/6)
+coop_test: 0 failures
+#### step 45 coop_test: PASS in 3.6s
+
+#### step 51: crop_test (shard 2/6)
+crop_test: 0 failures
+#### step 51 crop_test: PASS in 36.4s
+
+#### step 57: ranch_test (shard 2/6)
+ranch_test: 1645 checks, 0 failures
+#### step 57 ranch_test: PASS in 4.7s
+
+#### step 63: cf_layout_test (shard 2/6)
+cf_layout_test: 0 failures
+#### step 63 cf_layout_test: PASS in 11.2s
+
+#### step 69: every sound the game asks for exists (shard 2/6)
+== every sound the game asks for exists ==
+unused sfx (11, warning): cannon chips_stack claw_drop croak drain gallery_ding j_birthday monster save_done shop_bell unsheathe
+sfx asked for: 193 names, real recordings/ACE files: 573
+music: 80 tracks wired, 196/196 real (ACE)
+ambience: 32 beds, 15 spots
+stand-ins (7: asked-for name has no file, its fallback plays): ach_unlock->levelup arcade_coin->pop j_casino_big->j_victory j_casino_small->j_confirm j_recruit->j_skill quake->stone_grind ticket_feed->j_confirm
+stand-ins now real (drop from tools/sfx_standins.txt): claw_motor
+MISSING: new stand-in (make the sound, or add it to tools/sfx_standins.txt): j_recruit quake
+Sound audit failed
+#### step 69 every sound the game asks for exists: FAIL rc=1 in 5.0s
+
+#### step 75: Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) (shard 2/6)
+== Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) ==
+steam_vdf_check: OK
+#### step 75 Steam: SteamPipe templates, depot exclusions, upload config (S1 P5): PASS in 0.0s
+
+#### step 81: C10b decor art: outdoor pieces, seams, names (shard 2/6)
+== C10b decor art: outdoor pieces, seams, names ==
+c10b check ok: 87 outdoor pieces
+check ok: 462 catalogue pieces
+#### step 81 C10b decor art: outdoor pieces, seams, names: PASS in 0.3s
+
+#### step 87: music_stream_test (shard 2/6)
+music_stream_test: 0 failures
+#### step 87 music_stream_test: PASS in 10.3s
+
+#### step 93: arcs: path cards, arc building intros, locked-plan hints (shard 2/6)
+== arcs: path cards, arc building intros, locked-plan hints ==
+arc_intro_test: 0 failures
+#### step 93 arcs: path cards, arc building intros, locked-plan hints: PASS in 5.2s
+
+#### step 99: early combat: clinic, pup lesson, telegraph, first boss (shard 2/6)
+== early combat: clinic, pup lesson, telegraph, first boss ==
+early_combat_test: PASS (0 fails)
+#### step 99 early combat: clinic, pup lesson, telegraph, first boss: PASS in 9.5s
+
+#### step 105: goal_line_test (shard 2/6)
+goal_line_test: 0 fails
+#### step 105 goal_line_test: PASS in 3.7s
+
+#### step 111: campaign_gate_test (shard 2/6)
+campaign_gate_test: 0 fails
+#### step 111 campaign_gate_test: PASS in 9.9s
+
+#### step 117: meow_gate_test (shard 2/6)
+meow_gate_test: 0 fails
+#### step 117 meow_gate_test: PASS in 4.7s
+
+#### step 123: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 2/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 123 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 8.0s
+
+#### step 129: mega regions: the new worlds walk end to end (shard 2/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 129 mega regions: the new worlds walk end to end: PASS in 22.6s
+
+#### step 135: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 2/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 135 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 4.1s
+
+#### step 141: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 2/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 141 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 5.6s
+
+#### step 147: C7 P3: endings and epilogue (shard 2/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 147 C7 P3: endings and epilogue: PASS in 3.6s
+
+#### step 153: C11b P6: fair ribbon tables (shard 2/6)
+== C11b P6: fair ribbon tables ==
+animal_show_test: OK
+#### step 153 C11b P6: fair ribbon tables: PASS in 3.5s
+
+#### step 159: C11a fix2: every ranch species buyable from its seller, both arcs, sta (shard 2/6)
+== C11a fix2: every ranch species buyable from its seller, both arcs, starter gift in the roster ==
+ranch_shop_test: 292 checks, 0 failures
+#### step 159 C11a fix2: every ranch species buyable from its seller, both arcs, sta: PASS in 4.2s
+
+#### step 165: S1 P3: Steam Deck text floor (drawn text scan) (shard 2/6)
+== S1 P3: Steam Deck text floor (drawn text scan) ==
+deck_font_scan: 0 unwrapped
+#### step 165 S1 P3: Steam Deck text floor (drawn text scan): PASS in 0.1s
+
+#### step 171: C9 P5: save codes and files (shard 2/6)
+== C9 P5: save codes and files ==
+SAVE TRANSFER DONE 0
+#### step 171 C9 P5: save codes and files: PASS in 3.5s
+
+#### step 177: relay: server/server.js protocol (tools/relay_test.js; a push of serve (shard 2/6)
+== relay: server/server.js protocol (tools/relay_test.js; a push of server/ to main deploys the live relay) ==
+RELAY TEST OK
+#### step 177 relay: server/server.js protocol (tools/relay_test.js; a push of serve: PASS in 15.5s
+
+#### step 183: deck window: 1280x800 with no window manager fills the screen (xvfb) (shard 2/6)
+== deck window: 1280x800 with no window manager fills the screen (xvfb) ==
+deck_window_test: 0 failures
+#### step 183 deck window: 1280x800 with no window manager fills the screen (xvfb): PASS in 15.9s
+
+#### step 189: C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand (shard 2/6)
+== C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brands, counts) ==
+text_style_check: 76 hits, 0 over baseline
+#### step 189 C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand: PASS in 0.9s
+
+#### shard 2/6 done in 414s: FAIL (every sound the game asks for exists)

@@ -1,0 +1,14 @@
+arc        scene                   load  ldframe    cover  cpu_med  cpu_p95  draws  texMB  memMB  verdict
+penguins   title                    424      321      104     6.90     6.96     25     17    179  ok
+penguins   farm                    1246       89     1496     6.90     9.44    250     60    266  ok
+penguins   town                     596       46      724     6.90     6.95    124     82    272  ok
+penguins   meadow                   214       50      478     6.90     9.42    164     91    268  ok
+penguins   mine                     382       38      382     6.90     9.39    134     52    269  ok
+penguins   gilt_grand_plaza         599       51      756     6.90     9.31    127     78    272  ok
+penguins   bf_neon_block            290       32      428     6.90     9.81    121     86    276  ok
+penguins   community_farm           352       58      524     6.90     9.00    150     86    277  ok
+gangsters  farm                    1200      794     1571     6.90     9.61    247     51    261  ok
+gangsters  town                     599       55      756     6.90     6.96    130     73    265  ok
+gangsters  mine                     310       30      310     6.90     8.86    162     42    265  ok
+gangsters  iron_junction            386       57      540     6.91     9.58    116     69    269  ok
+DECK PERF: ok (12 maps, both arcs, 1280x800)
