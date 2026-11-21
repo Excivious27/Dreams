@@ -202,3 +202,25 @@ static func hours_of(fest: String) -> Vector2:
 		"allday":
 			return Vector2(6.0, 24.0)
 	return Vector2(9.0, 18.0)
+
+
+static func kid_took_text(kid: String) -> String:
+	return ("%s grabs an egg first!" if GameState.is_penguins() else "%s swipes an envelope!") % kid
+
+
+static func egg_second_text(mine: int, kids: int) -> String:
+	if GameState.is_penguins():
+		return "Hunt over: you found %d, the kids found %d. Alder gives you %s for trying." % [mine, kids, Money.amount(80)]
+	return "Done: you got %d, the kids got %d. Halo hands you %s anyway." % [mine, kids, Money.amount(80)]
+
+
+## C15 P6 (c15_07-12): today's holiday row id (kind "holiday"), "" when none. Talk can key
+## festival_<id> chatter on it; mail and the calendar list it.
+static func holiday_today() -> String:
+	if GameState.run.is_empty():
+		return ""
+	var d := int(GameState.run.get("day", 1))
+	for r: Dictionary in rows_on(GameState.season(), (d - 1) % 28 + 1):
+		if str(r["kind"]) == "holiday":
+			return str(r["id"])
+	return ""

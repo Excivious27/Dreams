@@ -173,6 +173,7 @@ var _front_t := 0.0
 
 func _process(delta: float) -> void:
 	super(delta)
+	_egg_kids(delta)
 	_front_t -= delta
 	if _front_t > 0.0:
 		return
@@ -595,6 +596,41 @@ func _place_eggs() -> void:
 			nm = "c15p6_envelope_%d" % (i % 3)
 		if Art.has("props", nm):
 			prop("props", nm, c, 0, 0.0, false)
+
+
+## C15 P6 (c15_06-02): the kids hunt too. While your hunt is on, a kid grabs one of the eggs still
+## hidden every few seconds of game time (faster from year 3); find more than they do for the full prize.
+var _kid_t := 0.0
+func _egg_kids(delta: float) -> void:
+	var fl: Dictionary = GameState.run.get("flags", {})
+	var day := int(GameState.run.get("day", 0))
+	if not _fest_hunt or int(fl.get("eggs_left", 0)) <= 0 or not fl.has("fest_egg_cells_%d" % day) or fl.has("fest_egg_%d_done" % day) or get_tree().paused:
+		return
+	_kid_t += delta
+	if _kid_t < kid_every():
+		return
+	_kid_t = 0.0
+	var eggs: Array = []
+	for c: Vector2i in things:
+		if str(things[c].get("type", "")) == "egg" and not bool(things[c].get("golden", false)):
+			eggs.append(c)
+	if eggs.size() <= 1:
+		return  # the last egg is always yours to find
+	eggs.sort()
+	var c: Vector2i = eggs[(day + int(fl.get("fest_egg_kids_%d" % day, 0))) % eggs.size()]
+	things.erase(c)
+	if props.has(c):
+		(props[c] as Node).queue_free()
+		props.erase(c)
+	_egg_found(c)
+	fl["fest_egg_kids_%d" % day] = int(fl.get("fest_egg_kids_%d" % day, 0)) + 1
+	fl["eggs_left"] = int(fl["eggs_left"]) - 1
+	hud.toast(FestivalWords.kid_took_text(["Pip", "Wren Jr.", "Tobin", "Mabel"][int(fl["fest_egg_kids_%d" % day]) % 4]), Color(1, 0.85, 0.7))
+	Music.instance(get_tree()).sfx("pickup")
+
+
+static func kid_every() -> float:
+	return 14.0 if FestivalWords.year_of(int(GameState.run.get("day", 1))) < 3 else 9.0
 
 
 func _egg_found(c: Vector2i) -> void:
@@ -1527,13 +1563,20 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(FestivalWords.golden_egg_text(), Color(1, 0.85, 0.3))
 				DecorSources.roll_grant(self, _fest_pool("egg"), 6.0, "festival")
 			if left <= 0:
-				hud.toast(FestivalWords.egg_prize_text(), Color(1, 0.9, 0.4))
-				GameState.add_money(200, "festival")
-				xp("foraging", 30)
 				var ek := "fest_egg_%d" % int(GameState.run["day"])
+				var kids := int(GameState.run["flags"].get("fest_egg_kids_%d" % int(GameState.run["day"]), 0))
+				var mine := (GameState.run["flags"].get("fest_egg_found_%d" % int(GameState.run["day"]), []) as Array).size() - kids
+				if mine > kids:
+					hud.toast(FestivalWords.egg_prize_text(), Color(1, 0.9, 0.4))
+					GameState.add_money(200, "festival")
+					GameState.run["flags"][ek + "_place"] = 1
+				else:
+					hud.toast(FestivalWords.egg_second_text(mine, kids), Color(1, 0.9, 0.4))
+					GameState.add_money(80, "festival")
+				xp("foraging", 30)
 				GameState.run["flags"][ek + "_done"] = true
 				RecCenter.festival_bonus(self, ek)  # C15 P6 (c15_06-13): paid when the hunt is won, not on Go!
-				later(_fest_keepsake.bind("egg", ek, 0.0))
+				later(_fest_keepsake.bind("egg", ek, 4.0 if mine > kids else 0.0))
 			else:
 				hud.toast(FestivalWords.egg_left_text(left))
 			return true
