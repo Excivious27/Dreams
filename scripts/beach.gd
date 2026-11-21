@@ -185,12 +185,9 @@ func after_ready() -> void:
 	prop("props", "lantern_lit", Vector2i(30, SEA_Y - 5))
 	prop("props", "lantern_lit", Vector2i(33, SEA_Y - 5))
 	_clear_docks()
-	# Station props for the TravelNet stations here (P4's TravelNet, when present).
-	if Marina.has_travel_net():
-		var tn: Script = load(Marina.TRAVEL)
-		if tn and tn.has_method("station_prop"):
-			for sid: String in ["beach_marina", "beach_colony_ferry" if GameState.is_penguins() else "beach_tidewater"]:
-				tn.call("station_prop", self, sid)
+	# Station signs for the TravelNet stations here (the desks are this map's own things).
+	for sid: String in ["beach_marina", "beach_colony_ferry" if GameState.is_penguins() else "beach_tidewater"]:
+		TravelNet.station_prop(self, sid)
 	HiddenArea.place(self, "beach", 1)
 	_festival_note()
 	if not GameState.run["flags"].has("beach_seen"):

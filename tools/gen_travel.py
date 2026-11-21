@@ -138,12 +138,14 @@ ln("t2_ferry_farm_lake", "farm_dock", "lake_dock", 2, "ferry", {"type": "all", "
 ln("t2_ferry_lake_river", "lake_dock", "riverlands_dock", 2, "ferry", {"type": "all", "of": [{"type": "project"}, {"type": "explore", "id": "riverlands"}]},
    money(50), {"type": "campaign", "id": "c_riverlands"}, minutes=40)
 # Beach marina (P3 draws these desks) and the colony jetties (P5 draws those).
-st("beach_marina", "both", "beach", [40, 30], "ferry", name="Marina Passage Desk", placed=False)
-st("beach_colony_ferry", "penguins", "beach", [44, 32], "ferry", name="Colony Ferry", placed=False)
-st("beach_tidewater", "gangsters", "beach", [36, 32], "boat", name="Tidewater Launch", placed=False)
+st("beach_marina", "both", "beach", [77, 19], "ferry", name="Marina Passage Desk", spawn=[77, 18], placed=False)
+st("beach_colony_ferry", "penguins", "beach", [12, 29], "ferry", name="Colony Ferry", spawn=[12, 22], placed=False)
+st("beach_tidewater", "gangsters", "beach", [12, 29], "boat", name="Tidewater Launch", spawn=[12, 22], placed=False)
 COLONIES = ["coral", "kelp", "ice", "ember"]
 for c in COLONIES:
-    st("colony_%s_jetty" % c, "penguins", "colony_" + c, [20, 40], "ferry", name="Jetty", placed=False)
+    # Real jetty cells from P5's gen_colonies (kelp/ember are mirrored).
+    st("colony_%s_jetty" % c, "penguins", "colony_" + c, [51, 61] if c in ("kelp", "ember") else [44, 61], "ferry", name="Jetty",
+       spawn=[55, 60] if c in ("kelp", "ember") else [40, 60], placed=False)
     ln("t2_colony_%s" % c, "beach_colony_ferry", "colony_%s_jetty" % c, 2, "ferry", {"type": "explore", "id": "colony_" + c},
        money(30), {"type": "campaign", "id": "c_colony_" + c}, minutes=45)
 # Merkitty currents between colonies (T3 inside the sea, after all four beacons).
@@ -151,11 +153,14 @@ ALL_COLONIES = {"type": "all", "of": [{"type": "flag", "id": "colony_%s_done" % 
 for i, c in enumerate(COLONIES):
     d = COLONIES[(i + 1) % len(COLONIES)]
     ln("t3_current_%s_%s" % (c, d), "colony_%s_jetty" % c, "colony_%s_jetty" % d, 3, "current", ALL_COLONIES, minutes=20)
+# Town: the Harbour Row ferry & coach office (P2's c14p2_ticket_office, quay cell 50,110).
+st("town_ferry_office", "penguins", "town", [50, 110], "ferry", name="Ferry Office")
+ln("t2_town_marina", "town_ferry_office", "beach_marina", 2, "ferry", {"type": "explore", "id": "beach"}, money(20), RIDES5, minutes=15)
 # Gangster T2: the city bus, payphone taxis, the harbour water taxi.
 st("bus_hideout", "gangsters", "hideout", [10, 4], "bus")
 st("bus_docks", "gangsters", "docks", [4, 12], "bus")
 ln("t2_bus_hideout_docks", "bus_hideout", "bus_docks", 2, "bus", {"type": "quest", "id": "docks"}, money(10), RIDES5, minutes=20)
-st("taxi_town", "gangsters", "town", [60, 50], "taxi")
+st("taxi_town", "gangsters", "town", [50, 110], "taxi")  # the Harbour Row coach office's taxi rank (P2)
 for sc, cell in (("farm", [44, 40]), ("docks", [10, 20]), ("neon", [6, 12]), ("uptown", [6, 16]), ("hideout", [16, 8])):
     st("taxi_" + sc, "gangsters", sc, cell, "taxi")
     ln("t2_taxi_town_" + sc, "taxi_town", "taxi_" + sc, 2, "taxi", {"type": "explore", "id": sc}, money(40),

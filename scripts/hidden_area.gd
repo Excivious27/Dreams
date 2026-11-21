@@ -209,6 +209,8 @@ static func _keep(m: GameMap) -> Dictionary:
 		keep[c] = true
 		if str(m.things[c].get("type", "")) in ["casino", "casino_odds"]:  # C10b P4: never wall off the casino's front
 			keep.merge(m.cells_of([Rect2i(c.x - 1, c.y + 1, 3, 3)]))
+		elif m.blocked.has(c) and m.in_content(c + Vector2i(0, 1)):  # C14: a solid thing (shop, desk) keeps the cell you use it from
+			keep[c + Vector2i(0, 1)] = true
 	return keep
 
 

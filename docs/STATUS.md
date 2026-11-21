@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14 integ: TravelNet hooks closed (marina routes via Marina.route_open/route_cost + landing stations, beach/colony desks direct, jetty cells, Harbour Row ferry office/taxi rank, arrival spawns), festival hours via Npc.in_festival, charter maps in sea fishing/ambience, Skipper Barnacle text, hidden pockets keep solid things' front cell (gilt_grand_plaza shop)
+
 ## 2026-11-21 — C14 P4: fast-travel network TravelNet (62 stations, 74 links, tiers 1-5 per arc, build/unlock/fare/free-after, ride scene), mega keeper rides + hub-to-hub as per-link lines, balloon only between built masts, Map-tab station layer, save v13 (run.travel + run.marina), classic-region pockets/ways + pages, quarry gravel ground; 36 travel art images.
 ## 2026-11-21 — C14 P3: beach marina (Marina + gen_marina.py, T1-T4 tiers, routes as TravelNet links, charters, NPC roster data), beach grown to 100x46 with marina/cove sandbar/lighthouse point, per-arc west pier tip (Skipper Barnacle ferry / Tidewater Launch), gangster boardwalk, seasonal beach, sea fish pool, wreck log, hidden pocket
 ## 2026-11-21 — C14 P1 (home valley look): Riverlands river + bridge, Orchard Hills orchard rows, Highway day corn by season + snowy winter verge, Highlands spring without snow fields, wandering mountain ledges, meadow creek continuing the farm river, lake arrival backwater + winter mill/hut, seasonal Commons wild patches, no winter lilies/hedges, stone-only cliff tops off green ground, clear arrival cells, ri_* name plates removed

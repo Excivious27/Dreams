@@ -26,7 +26,7 @@ const T := {
 	"treasure_sea": ["old_coin", "map_scrap", "pearl"],
 	"treasure_deep": ["old_coin", "pearl", "pearl"],   # area tier 3+
 	"treasure_decor_p": 0.17,   # share of treasure catches that bring up a decor piece instead
-	"sea_waters": ["beach", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "docks"],
+	"sea_waters": ["beach", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "docks", "the_shoals", "blue_deep"],
 	# XP per catch: base + value / per (capped); boots give the floor.
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
 	# Legendary Koi: the lake at night under the lit lighthouse, baited, Fishing 10+.

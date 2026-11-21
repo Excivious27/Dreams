@@ -133,8 +133,8 @@
    "short": "Colonies",
    "arc": "penguins",
    "status": "built",
-   "blurb": "Four island colonies, each kept alive by a star crystal. Pip's ferry sails from the beach pier.",
-   "travel": "Pip's ferry rocks out past the breakers. Salt spray, gulls, and the Valley falls behind the waves.",
+   "blurb": "Four island colonies, each kept alive by a star crystal. Skipper Barnacle's ferry sails from the beach pier.",
+   "travel": "Skipper Barnacle's ferry rocks out past the breakers. Salt spray, gulls, and the Valley falls behind the waves.",
    "leave": "The ferry bumps the pier. Home sand under your boots.",
    "theme": {
     "style": "sea",

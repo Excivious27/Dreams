@@ -1343,12 +1343,8 @@ func _place_colony() -> void:
 					sp.play("happy" if done and sp.sprite_frames.has_animation("happy") else ("idle" if done else ("sad" if sp.sprite_frames.has_animation("sad") else "idle")))
 					add_child(sp)
 				_colony_village(cid, c, done)
-			"colony_jetty":  # C14 contract: TravelNet station (P4) or a plain pier until it exists
-				var tn = Colony.travel_net()
-				if tn != null:
-					tn.station_prop(self, str(t.get("station", region_id + "_jetty")))
-				elif Art.has("props", "bk_pier_ladder"):
-					prop("props", "bk_pier_ladder", c, 1)
+			"colony_jetty":  # C14 contract: the TravelNet station sign on this jetty
+				TravelNet.station_prop(self, str(t.get("station", region_id + "_jetty")))
 			"colony_shop":
 				var stn := "%s_stall_%s" % [cid, "open" if done else "closed"]
 				if Art.has("props", stn):

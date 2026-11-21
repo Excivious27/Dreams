@@ -86,15 +86,7 @@ static func travel_net() -> Variant:
 
 ## The colony jetty: TravelNet's ride list, or the plain ferry home before TravelNet exists.
 static func jetty(m: GameMap, region_id: String, thing: Dictionary) -> void:
-	var tn = travel_net()
-	if tn != null:
-		tn.desk(m, str(thing.get("station", region_id + "_jetty")))
-		return
-	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Ferry", "text": "The ferry bobs at the jetty, rope looped on a post.", "choice": ["Sail home to the beach", "Stay on the island"], "key": ""}])
-	await d.finished
-	if d.last_choice == 0:
-		m.go_to("beach", Vector2(12 * GameMap.TILE + 8, 22 * GameMap.TILE + 8), "down")
+	TravelNet.desk(m, str(thing.get("station", region_id + "_jetty")))
 
 
 static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:

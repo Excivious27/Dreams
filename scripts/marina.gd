@@ -156,12 +156,7 @@ static func has_travel_net() -> bool:
 
 ## A station's ride list: TravelNet's desk when it exists, else this one.
 static func desk(m: GameMap, station: String) -> void:
-	if has_travel_net():
-		var tn: Script = load(TRAVEL)
-		if tn and tn.has_method("desk"):
-			tn.call("desk", m, station)
-			return
-	await passage(m, station)
+	TravelNet.desk(m, station)
 
 
 ## Fallback passage desk (no TravelNet yet): the routes from `station`, way out last.

@@ -67,8 +67,8 @@ REGIONS = [
     },
     {
         "id": "colonies", "name": "Merkitty Colonies", "short": "Colonies", "arc": "penguins", "status": "built",
-        "blurb": "Four island colonies, each kept alive by a star crystal. Pip's ferry sails from the beach pier.",
-        "travel": "Pip's ferry rocks out past the breakers. Salt spray, gulls, and the Valley falls behind the waves.",
+        "blurb": "Four island colonies, each kept alive by a star crystal. Skipper Barnacle's ferry sails from the beach pier.",
+        "travel": "Skipper Barnacle's ferry rocks out past the breakers. Salt spray, gulls, and the Valley falls behind the waves.",
         "leave": "The ferry bumps the pier. Home sand under your boots.",
         "theme": {"style": "sea", "bg": [0.16, 0.42, 0.62], "land": [0.86, 0.78, 0.52], "accent": [0.55, 0.9, 1.0], "ink": [0.1, 0.12, 0.18]},
         "areas": [

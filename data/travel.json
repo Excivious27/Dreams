@@ -851,6 +851,41 @@
    }
   },
   {
+   "a": "town_ferry_office",
+   "b": "beach_marina",
+   "both_ways": true,
+   "cost": {
+    "items": {},
+    "money": 20
+   },
+   "free_after": {
+    "n": 5,
+    "type": "rides"
+   },
+   "id": "t2_town_marina",
+   "kind": "ferry",
+   "minutes": 15,
+   "path": [
+    [
+     0.52,
+     0.7
+    ],
+    [
+     0.476,
+     0.81
+    ],
+    [
+     0.4,
+     0.9
+    ]
+   ],
+   "tier": 2,
+   "unlock": {
+    "id": "beach",
+    "type": "explore"
+   }
+  },
+  {
    "a": "bus_hideout",
    "b": "bus_docks",
    "both_ways": true,
@@ -3583,8 +3618,8 @@
   {
    "arc": "both",
    "cell": [
-    40,
-    30
+    77,
+    19
    ],
    "id": "beach_marina",
    "keeper": "",
@@ -3592,13 +3627,17 @@
    "name": "Marina Passage Desk",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "beach"
+   "scene": "beach",
+   "spawn": [
+    77,
+    18
+   ]
   },
   {
    "arc": "penguins",
    "cell": [
-    44,
-    32
+    12,
+    29
    ],
    "id": "beach_colony_ferry",
    "keeper": "",
@@ -3606,13 +3645,17 @@
    "name": "Colony Ferry",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "beach"
+   "scene": "beach",
+   "spawn": [
+    12,
+    22
+   ]
   },
   {
    "arc": "gangsters",
    "cell": [
-    36,
-    32
+    12,
+    29
    ],
    "id": "beach_tidewater",
    "keeper": "",
@@ -3620,13 +3663,17 @@
    "name": "Tidewater Launch",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "beach"
+   "scene": "beach",
+   "spawn": [
+    12,
+    22
+   ]
   },
   {
    "arc": "penguins",
    "cell": [
-    20,
-    40
+    44,
+    61
    ],
    "id": "colony_coral_jetty",
    "keeper": "",
@@ -3634,13 +3681,17 @@
    "name": "Jetty",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "colony_coral"
+   "scene": "colony_coral",
+   "spawn": [
+    40,
+    60
+   ]
   },
   {
    "arc": "penguins",
    "cell": [
-    20,
-    40
+    51,
+    61
    ],
    "id": "colony_kelp_jetty",
    "keeper": "",
@@ -3648,13 +3699,17 @@
    "name": "Jetty",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "colony_kelp"
+   "scene": "colony_kelp",
+   "spawn": [
+    55,
+    60
+   ]
   },
   {
    "arc": "penguins",
    "cell": [
-    20,
-    40
+    44,
+    61
    ],
    "id": "colony_ice_jetty",
    "keeper": "",
@@ -3662,13 +3717,17 @@
    "name": "Jetty",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "colony_ice"
+   "scene": "colony_ice",
+   "spawn": [
+    40,
+    60
+   ]
   },
   {
    "arc": "penguins",
    "cell": [
-    20,
-    40
+    51,
+    61
    ],
    "id": "colony_ember_jetty",
    "keeper": "",
@@ -3676,7 +3735,25 @@
    "name": "Jetty",
    "placed": false,
    "prop": "c14p4_ferry_kiosk",
-   "scene": "colony_ember"
+   "scene": "colony_ember",
+   "spawn": [
+    55,
+    60
+   ]
+  },
+  {
+   "arc": "penguins",
+   "cell": [
+    50,
+    110
+   ],
+   "id": "town_ferry_office",
+   "keeper": "",
+   "kind": "ferry",
+   "name": "Ferry Office",
+   "placed": true,
+   "prop": "c14p4_ferry_kiosk",
+   "scene": "town"
   },
   {
    "arc": "gangsters",
@@ -3709,8 +3786,8 @@
   {
    "arc": "gangsters",
    "cell": [
-    60,
-    50
+    50,
+    110
    ],
    "id": "taxi_town",
    "keeper": "",

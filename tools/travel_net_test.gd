@@ -140,5 +140,20 @@ func _run() -> void:
 			if str(m.things[c].get("station", "")) == "town_cliff_stairs":
 				found = true
 	check(found, "town shows the stairs desk")
+	# C14 integration: P3's marina routes ride on TravelNet through Marina.route_open/route_cost.
+	GameState.run["arc"] = "penguins"
+	check(not TravelNet.link("boat_marsh").is_empty(), "marina route boat_marsh is a TravelNet link")
+	check(str(TravelNet.station(str(TravelNet.link("boat_marsh").get("b", ""))).get("scene", "")) == "marsh", "boat_marsh lands in the marsh")
+	Marina.st()["tier"] = 0
+	check(not TravelNet.is_unlocked("boat_marsh") and TravelNet.why_not("boat_marsh") != "", "boat_marsh closed below marina tier 2")
+	Marina.st()["tier"] = 2
+	check(TravelNet.is_unlocked("boat_marsh") and not TravelNet.is_free("boat_marsh"), "boat_marsh open (paid) at marina tier 2")
+	Marina.st()["tier"] = 4
+	check(TravelNet.is_free("boat_marsh"), "boat_marsh free at marina tier 4")
+	check(not TravelNet.link_arc_ok(TravelNet.link("boat_docks")), "boat_docks is gangster-only")
+	var kc: Array = TravelNet.station("colony_kelp_jetty")["cell"]
+	var cc: Array = TravelNet.station("colony_coral_jetty")["cell"]
+	check(Vector2i(int(kc[0]), int(kc[1])) == Vector2i(51, 61) and Vector2i(int(cc[0]), int(cc[1])) == Vector2i(44, 61), "colony jetties at P5's cells")
+	check(str(TravelNet.station("town_ferry_office").get("scene", "")) == "town" and str(TravelNet.station("taxi_town").get("scene", "")) == "town", "Harbour Row ferry office + taxi rank")
 	print("travel_net_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails else 0)

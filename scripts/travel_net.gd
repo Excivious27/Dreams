@@ -36,9 +36,20 @@ static func data() -> Dictionary:
 			for s in md.get("stations", []):
 				if s is Dictionary and not _stations.has(str(s.get("id", ""))):
 					_stations[str(s["id"])] = s
-			for l in md.get("routes", []):
-				if not (l is Dictionary) or _links.has(str(l.get("id", ""))) or pairs.has(str(l.get("a", "")) + ">" + str(l.get("b", ""))):
+			var lands: Dictionary = md.get("landings", {})
+			for l0 in md.get("routes", []):
+				if not (l0 is Dictionary) or _links.has(str(l0.get("id", ""))) or pairs.has(str(l0.get("a", "")) + ">" + str(l0.get("b", ""))):
 					continue
+				var l: Dictionary = (l0 as Dictionary).duplicate(true)
+				l["marina"] = true  # unlock/fare through Marina.route_open / route_cost
+				var b := str(l.get("b", ""))
+				if not _stations.has(b) and lands.get(b) is Array and (lands[b] as Array).size() >= 2:
+					# A landing with no station of its own: an arrival-only spot at marina.json "landings".
+					var ln: Array = lands[b]
+					var lid := "landing_" + b
+					_stations[lid] = {"id": lid, "arc": str(l.get("arc", "both")), "scene": str(ln[0]), "cell": ln[1], "spawn": ln[1],
+						"kind": str(l.get("kind", "boat")), "name": str(l.get("label", b)), "placed": false}
+					l["b"] = lid
 				if _stations.has(str(l.get("a", ""))) and _stations.has(str(l.get("b", ""))):
 					_links[str(l["id"])] = l
 	return _d
@@ -96,7 +107,7 @@ static func arc_ok(arc: String) -> bool:
 
 
 static func link_arc_ok(l: Dictionary) -> bool:
-	return arc_ok(str(station(str(l.get("a", ""))).get("arc", "both"))) and arc_ok(str(station(str(l.get("b", ""))).get("arc", "both")))
+	return arc_ok(str(station(str(l.get("a", ""))).get("arc", "both"))) and arc_ok(str(station(str(l.get("b", ""))).get("arc", "both"))) and arc_ok(str(l.get("arc", "both")))
 
 
 static func stations_at(scene: String) -> Array:
@@ -173,6 +184,8 @@ static func cond_ok(c: Dictionary, l: Dictionary = {}, skip_project := false) ->
 		"tier":
 			return GameState.progress_tier() >= int(c.get("n", 0))
 		"project":
+			if str(c.get("id", "")) == "marina":
+				return skip_project or Marina.tier() >= int(c.get("n", 1))
 			return skip_project or to_build(l).is_empty()
 		"rides":
 			return int(st()["rides"].get(str(l.get("id", "")), 0)) >= int(c.get("n", 5))
@@ -183,6 +196,8 @@ static func is_unlocked(id: String) -> bool:
 	var l := link(id)
 	if l.is_empty() or not link_arc_ok(l):
 		return false
+	if bool(l.get("marina", false)):  # P3's boat passages open with the marina tiers
+		return Marina.route_open(l)
 	if st()["unlocked"].has(id):
 		return to_build(l).is_empty()
 	if cond_ok(l.get("unlock", {}), l):
@@ -200,9 +215,13 @@ static func is_known(id: String) -> bool:
 
 static func is_free(id: String) -> bool:
 	var l := link(id)
+	if bool(l.get("marina", false)):
+		return Marina.route_cost(l) <= 0
 	var c: Dictionary = l.get("cost", {})
 	if int(c.get("money", 0)) <= 0 and (c.get("items", {}) as Dictionary).is_empty():
 		return true
+	if not (l.get("free_after", {}) is Dictionary):
+		return false
 	var fa: Dictionary = l.get("free_after", {})
 	return not fa.is_empty() and cond_ok(fa, l)
 
@@ -256,6 +275,9 @@ static func why_not(id: String, from_sid := "") -> String:
 	if not tb.is_empty():
 		return "Build the %s first." % str(station(str(tb[0])).get("name", "station"))
 	if not is_unlocked(id):
+		if bool(l.get("marina", false)):
+			var mw := Marina.route_why(l)
+			return ("That passage %s." % mw) if mw != "" else "Not open yet."
 		return unlock_words(l.get("unlock", {}), l)
 	var dest := dest_scene(id, from_sid)
 	if dest != "" and not Campaign.region_open(dest):
@@ -424,6 +446,15 @@ static func station_prop(m: GameMap, sid: String) -> void:
 	if placed.has(key) and m.things.has(placed[key]) and str(m.things[placed[key]].get("station", "")) == sid:
 		return
 	var cell: Array = s.get("cell", [10, 10])
+	var own := _own_desk(m, sid, Vector2i(int(cell[0]), int(cell[1])))
+	if own.x >= 0:
+		# The map already has its own desk thing for this station (beach marina, ferry tip):
+		# draw the station's sign beside it and keep that desk (no second desk).
+		placed[key] = own
+		var pn0 := str(s.get("prop", ""))
+		if pn0 != "" and Art.has(GROUP, pn0):
+			m.prop(GROUP, pn0, own, 0, 0.0, false, 0.5)
+		return
 	var c := _spot(m, Vector2i(int(cell[0]), int(cell[1])))
 	if c.x < 0:
 		return
@@ -437,6 +468,17 @@ static func station_prop(m: GameMap, sid: String) -> void:
 			sp.modulate = Color(0.72, 0.7, 0.66, 1.0)  # a build site: weathered/dim until built (solid, never see-through)
 	var hint := "A: " + (str(s.get("name", "travel")) if is_built(sid) else "build " + str(s.get("name", "station")))
 	m.set_thing(c.x, c.y, {"type": "mega_gate", "station": sid, "hint": hint}, false)  # walk-on: a station never blocks a path
+
+
+## A thing the map placed itself for station `sid` near its data cell, else (-1, -1).
+static func _own_desk(m: GameMap, sid: String, near: Vector2i) -> Vector2i:
+	for dy in range(-SEARCH, SEARCH + 1):
+		for dx in range(-SEARCH, SEARCH + 1):
+			var k := near + Vector2i(dx, dy)
+			var t = m.things.get(k)
+			if t is Dictionary and str(t.get("station", "")) == sid and str(t.get("type", "")) != "mega_gate":
+				return k
+	return Vector2i(-1, -1)
 
 
 ## Which stations show on this visit: built ones, and build sites/finds whose links
@@ -464,7 +506,7 @@ static func on_enter(m: GameMap) -> void:
 	if arr != "" and str(station(arr).get("scene", "")) == sid:
 		st().erase("arrive")
 		var key := sid + ":" + arr
-		if placed.has(key) and m.player != null and is_instance_valid(m.player):
+		if placed.has(key) and not station(arr).has("spawn") and m.player != null and is_instance_valid(m.player):
 			var c: Vector2i = placed[key] + Vector2i(0, 1)
 			if not m.blocked.has(c) and not m.things.has(c):
 				m.player.position = m.cell_center(c)
