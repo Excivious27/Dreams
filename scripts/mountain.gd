@@ -9,6 +9,24 @@ const SPRING := Rect2i(44, 20, 3, 2)
 const LEDGES := [[14, 24, 27], [28, 10, 13]]   # [row, stair x0, stair x1]
 const FALLS_X := 52   # the stream runs down the top terrace and pours over the first ledge
 const FALLS_BRIDGE := Vector2i(FALLS_X, 9)
+## C14 P1 (c14_01-09 / c14_02-10): the ledges wander a row with noise instead of
+## running ruler-straight; flat at the stair gaps, the falls and the map sides.
+## The lower ledge only rises (the trail runs right under it on rows 29-30).
+static func ledge_y(l: Array, x: int) -> int:
+	var row := int(l[0])
+	if (x >= int(l[1]) - 4 and x <= int(l[2]) + 4) or absi(x - FALLS_X) <= 3 or x <= 2:
+		return row
+	var n := WorldGen.fbm(float(x), float(row), 1400 + row, 7.0) - 0.5
+	var off := 0
+	if n > 0.12:
+		off = 1
+	elif n < -0.12:
+		off = -1
+	if row >= 28:
+		off = mini(off, 0)
+	return row + off
+
+
 const STREAM_BEND := {3: -1, 4: -1, 5: -1, 6: 1, 7: 1, 11: 1}  # row -> column offset of the stream
 var _ledge := {}
 var _falls_water := {}
@@ -33,12 +51,12 @@ func build() -> void:
 	add_exit(Rect2i(40, 45, 4, 1), "quarry", Vector2(26 * TILE, 2 * TILE + 8), "down", "▼ quarry")
 	# Three wide terraces split by two long cliff ledges, each with one stair gap.
 	for l in LEDGES:
-		var y: int = l[0]
 		for x in range(0, cols):
 			if x >= int(l[1]) and x <= int(l[2]):
 				continue
-			_ledge[Vector2i(x, y)] = true
-			blocked[Vector2i(x, y)] = true
+			var ly := ledge_y(l, x)
+			_ledge[Vector2i(x, ly)] = true
+			blocked[Vector2i(x, ly)] = true
 	# Stream (1 wide) down the top terrace, the falls over the ledge, a pool at the foot.
 	# It wanders a cell either way (straight under the bridge and at the lip), and
 	# the bends are two cells wide so the water stays one body (c5_03 #4).
@@ -328,8 +346,13 @@ func draw_map() -> void:
 			for l2 in LEDGES:
 				if int(l2[0]) < y:
 					y_from = maxi(y_from, int(l2[0]) + 1)
-			for yy in range(y_from, y):
-				for x in range(-pad, cols + pad):  # on under the border band: no edge at the map side
+			for x in range(-pad, cols + pad):  # on under the border band: no edge at the map side
+				var xc := clampi(x, 0, cols - 1)
+				var yf := 0
+				for l2 in LEDGES:
+					if int(l2[0]) < y:
+						yf = maxi(yf, ledge_y(l2, xc) + 1)
+				for yy in range(yf if y_from > 0 else 0, ledge_y(l, xc)):
 					top[Vector2i(x, yy)] = true
 			draw_plateau(top, "cliffg", stairs)
 	if not _falls_water.is_empty():

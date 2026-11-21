@@ -1186,3 +1186,10 @@ echo "$uqout" | grep -E "FAIL|SCRIPT ERROR|ui_cue_test" || true
 if ! echo "$uqout" | grep -q "ui_cue_test: 0 failures"; then
   echo "UI cue test failed"; exit 1
 fi
+
+echo "== C14 P1: home regions (riverlands river + bridge, orchard rows, day corn by season, highlands spring, winter bands) =="
+c14p1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/c14p1_home_test.gd 2>&1)"
+echo "$c14p1out" | grep -E "FAIL|SCRIPT ERROR|c14p1_home_test" || true
+if ! echo "$c14p1out" | grep -q "c14p1_home_test: 0 failures"; then
+  echo "C14 P1 home region test failed"; exit 1
+fi

@@ -143,7 +143,12 @@ func draw_map() -> void:
 		for c in wild.keys():
 			if WorldGen.fbm(float(c.x), float(c.y), 1721, 4.0) > 0.28:
 				wild.erase(c)
-		soft_ground(WorldGen.smooth_cells(wild), "dry_grass", Color(0.2, 0.16, 0.05, 0.15))
+		# C14 P1 (c14_02-11): the wild patches follow the season: dry grass only in
+		# fall, overgrown meadow grass in spring/summer, frosted tufts in winter.
+		var wild_seam: String = {"winter": "frost_grass", "spring": "meadow_grass", "summer": "meadow_grass"}.get(GameState.look_se(), "dry_grass")
+		if not Art.has("seamless", wild_seam):
+			wild_seam = "dry_grass"
+		soft_ground(WorldGen.smooth_cells(wild), wild_seam, Color(0.2, 0.16, 0.05, 0.15))
 	else:
 		if not _gang():
 			soft_ground(_plaza(), "cobble_warm", Color(0.15, 0.1, 0.05, 0.3))
