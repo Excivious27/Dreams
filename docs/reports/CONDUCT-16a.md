@@ -1,6 +1,6 @@
 # CONDUCT 16a report: progression, balance, energy, skill ecosystems, museum (2026-11-21)
 
-A pacing pass so the game lasts three years in every style of play. Your energy case is fixed (the day-1 gang mine route used 68% of the bar, now 35%). The mega regions now open by the calendar and by skill, not all in week 1. Year 2 and 3 gates hold back the deep mine, the top station tiers, the Grand ranch buildings, the iridium sprinkler and some legend fish. A 3-year simulator measures income for each style. New this round: a bug net and critter log, a longer museum ladder, a fishing ladder (stars, sizes, baits, legends), skill columns that open slowly, and ranks for partners, team animals, helpers and crew. 18 focus auditors (269 findings) fed 6 fix packages (scopes in /home/claude/wt/C16A_SCOPES.txt, contract in C16A_CONTRACT.md), then one hook integration pass. **Final full CI c16ai: PENDING.**
+A pacing pass so the game lasts three years in every style of play. Your energy case is fixed (the day-1 gang mine route used 68% of the bar, now 35%). The mega regions now open by the calendar and by skill, not all in week 1. Year 2 and 3 gates hold back the deep mine, the top station tiers, the Grand ranch buildings, the iridium sprinkler and some legend fish. A 3-year simulator measures income for each style. New this round: a bug net and critter log, a longer museum ladder, a fishing ladder (stars, sizes, baits, legends), skill columns that open slowly, and ranks for partners, team animals, helpers and crew. 18 focus auditors (269 findings) fed 6 fix packages (scopes in /home/claude/wt/C16A_SCOPES.txt, contract in C16A_CONTRACT.md), then one hook integration pass. **Final full CI c16ai: PASS (first run: 4 of 6 shards, 20 bots, playtest and relay green; shards 1-2 caught a training-hall test that predated the loyalty rule, a skill-reset button word outside PadInput, and a faint-energy test that predated the new rule; fixed, shard 1-2 rerun green).**
 
 **Whole game after C16a: about 82% done, 18% remaining** (average of the 127 systems in docs/inventory.csv). New rows: energy model 85%, 3-year simulator 75%, bug net and critter log 82%, museum ladder 80%, fishing ladder 78%, skill pacing 85%, recruit progression 75%. Moved: long-run progression and balance 50% -> 75%.
 
@@ -131,7 +131,7 @@ Points spent to open each column: I 0, II 2, III 5, IV 9, V 14, VI 20, VII 28, V
 | Fix agents P1-P6 in parallel, 08:45-09:20 (server restart mid-run, resumed) | fixer | medium | ~35 |
 | Merges, 09:20-09:25 | integrator | medium | ~5 |
 | Hook agent, 09:25-09:40 | integrator | medium | ~15 |
-| Final full CI c16ai, started ~09:45 | CI | | PENDING |
+| Final full CI c16ai, started ~09:45 | CI | | PASS (shards 1-2 rerun) |
 | **Total** | | | **~1.75 h wall clock (08:00-09:45) + final CI** |
 | Agents per effort | | | 18 medium auditors; 6 medium fixers; 1 hook integrator |
 | Images used | | | 4 |
