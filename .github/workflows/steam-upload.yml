@@ -1,0 +1,113 @@
+name: Steam upload (beta, staged)
+
+# STAGED AND OFF (s1_11). The gate job reads steam/steam_config.json: nothing uploads until it has
+# enabled:true and a real app_id. Turning it on is a one-line commit by Claude after the Steamworks
+# session (docs/STEAM.md "When Tom's Steamworks account is ready"); Tom never edits this file.
+# Secrets live only in the GitHub Environment "steam" (deployment branches: main only), so ci/**,
+# wip/** and fork PR runs never see them. When enabled, every game push to main uploads to the
+# "beta" branch; the default branch is only ever set live by hand in Steamworks.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["docs/**", "reference/**", "art/incoming/**", "audio/incoming/**", "ci/**", "*.md"]
+  workflow_dispatch:
+    inputs:
+      preview:
+        description: "Preview only (SteamPipe builds the manifest but uploads nothing)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: steam-upload
+  cancel-in-progress: false
+
+env:
+  GODOT_VERSION: "4.5.1"
+  # Desktop preset names (P1 owns export_presets.cfg): keep in step with it.
+  WIN_PRESET: "Windows Desktop"
+  LINUX_PRESET: "Linux"
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.g.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: steam
+      - id: g
+        run: |
+          on=$(jq -r 'if .enabled and (.app_id > 0) then "true" else "false" end' steam/steam_config.json)
+          echo "enabled=$on" >> "$GITHUB_OUTPUT"
+          echo "### Steam upload gate: $on (steam/steam_config.json)" >> "$GITHUB_STEP_SUMMARY"
+
+  upload:
+    needs: gate
+    if: needs.gate.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    environment: steam
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Steam deps (ONE apt line from tools/ci_deps_check.py --steam)
+        run: |
+          miss="$(python3 tools/ci_deps_check.py --apt-missing --steam)"
+          if [ -n "$miss" ]; then sudo dpkg --add-architecture i386; sudo apt-get update -qq; sudo apt-get install -y -qq $miss > /dev/null; fi
+          python3 tools/ci_deps_check.py --steam-only
+      - name: Cache Godot and desktop export templates
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-desktop
+      - name: Download Godot and desktop templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -e
+          V="${GODOT_VERSION}-stable"
+          T="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$HOME/godot" "$T"; cd "$HOME/godot"
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_linux.x86_64.zip"
+          unzip -q godot.zip; mv "Godot_v${V}_linux.x86_64" godot; chmod +x godot; rm godot.zip
+          curl -fsSL -o t.tpz "https://github.com/godotengine/godot/releases/download/${V}/Godot_v${V}_export_templates.tpz"
+          unzip -q t.tpz
+          mv templates/windows_release_x86_64.exe templates/windows_debug_x86_64.exe templates/linux_release.x86_64 templates/linux_debug.x86_64 "$T/"
+          rm -rf templates t.tpz
+      - name: Cache steamcmd (binaries only, never config/)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/steamcmd
+            !~/steamcmd/config
+          key: steamcmd-v1
+      # Export inside this job: no public artifact hop (the repo is public; s1_11-06), and the
+      # Linux exe keeps its +x bit (s1_11-12).
+      - name: Export Windows + Linux into the depot content roots
+        shell: bash
+        run: |
+          set -eo pipefail
+          export PATH="$HOME/godot:$PATH"
+          godot --headless --path . --import > /dev/null 2>&1 || true
+          mkdir -p build/steam/content/windows build/steam/content/linux
+          godot --headless --path . --export-release "$WIN_PRESET" build/steam/content/windows/Dreams.exe
+          godot --headless --path . --export-release "$LINUX_PRESET" build/steam/content/linux/Dreams.x86_64
+          find build/steam/content -name steam_appid.txt -delete
+          chmod +x build/steam/content/linux/Dreams.x86_64
+      - name: Render VDFs and check content
+        run: |
+          python3 tools/gen_steam_vdf.py --out build/steam/scripts ${{ (github.event_name == 'workflow_dispatch' && inputs.preview) && '--preview' || '' }}
+          python3 tools/steam_vdf_check.py --scripts build/steam/scripts --content build/steam/content
+      - name: Upload with steamcmd
+        env:
+          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
+        run: bash tools/steam/upload.sh build/steam/scripts/app_build.vdf
+      # build/steam/output (manifests, logs) is never uploaded as an artifact: public repo.

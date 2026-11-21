@@ -650,7 +650,7 @@
    "4": "Hazel waters your crops every other day",
    "6": "Hazel waters your crops every day",
    "8": "Hazel harvests ripe crops into your sell box",
-   "10": "Hazel's heirloom seeds: 5 Dream Seeds"
+   "10": "Hazel's heirloom seeds: 5 Dream Seeds, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)"
   },
   "home": "hazel_house",
   "work": "hazel_house",
@@ -788,7 +788,7 @@
   "perks": {
    "2": "A free loaf every morning",
    "4": "Posy bakes for you: a Berry Pie each week",
-   "6": "Posy's recipes: 2 Cakes",
+   "6": "Posy's recipes: 2 Cakes, and Crumpet, her silver rabbit, moves into your hutch (she waits at the bakery until you have a hutch with room)",
    "8": "Festival cake: +20 max energy",
    "10": "Posy's best: two berry pies each week"
   },
@@ -934,7 +934,7 @@
    "cake"
   ],
   "perks": {
-   "2": "Rook shows tracks: a Pelt each week",
+   "2": "Rook shows you the brambles: a Shed Fur each week",
    "4": "Rook sells arrows and traps",
    "6": "Rook's map of the quarry path: a Map Scrap",
    "8": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting",
@@ -1354,7 +1354,7 @@
    "2": "Horses half price",
    "4": "Benno's saddle care: your horse runs 10% faster",
    "6": "Benno's oats: +20 max energy",
-   "8": "Benno's spare tack sells for ◆250",
+   "8": "Benno's spare tack sells for ◆250, and Tinker, a goat kid he hand-reared, comes to your barn (when it has room)",
    "10": "Benno's feed run: 6 Hay each week for your animals"
   },
   "home": "stable",

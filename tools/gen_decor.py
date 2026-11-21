@@ -214,8 +214,8 @@ PRETTY = {'bed_double': 'Double Bed', 'bed2_double_blue': 'Blue Quilt Double Bed
           'fridge': 'Icebox', 'kitchen_fridge': 'Kitchen Icebox', 'kitchen_sink': 'Kitchen Sink', 'kitchen_stove': 'Kitchen Stove', 'stove_iron': 'Iron Stove',
           'kitchen_counter_a': 'Kitchen Counter', 'kitchen_counter_b': 'Kitchen Cupboard', 'kettle': 'Kettle', 'kettle_stand': 'Kettle Stand',
           'coffee_pot': 'Coffee Pot', 'coffee_pot_a': 'Tall Coffee Pot', 'hanging_mugs': 'Mug Rack', 'jug': 'Water Jug', 'cat_bed': 'Cat Bed',
-          'dog_bed': 'Dog Bed', 'pet_bed': 'Pet Cushion', 'low_table': 'Low Table', 'pelt_bear': 'Bear Pelt Rug', 'pelt_leopard': 'Spotted Pelt Rug',
-          'pelt_wolf': 'Wolf Pelt Rug', 'reed_mat_a': 'Reed Mat', 'reed_mat_b': 'Woven Reed Mat', 'reed_mat_round': 'Round Reed Mat',
+          'dog_bed': 'Dog Bed', 'pet_bed': 'Pet Cushion', 'low_table': 'Low Table', 'pelt_bear': 'Bear-Pattern Rug', 'pelt_leopard': 'Spotted Woven Rug',
+          'pelt_wolf': 'Wolf-Pattern Rug', 'reed_mat_a': 'Reed Mat', 'reed_mat_b': 'Woven Reed Mat', 'reed_mat_round': 'Round Reed Mat',
           'round_rug_stone': 'Stone-Ring Rug', 'antler_hooks': 'Antler Hooks', 'coat_hooks': 'Coat Hooks', 'chalkboard': 'Chalkboard',
           'poster_frame': 'Framed Poster', 'flag_a': 'Pennant Flag', 'flag_b': 'Banner Flag', 'mirror': 'Round Mirror', 'mirror2': 'Tall Mirror',
           'ivy_pot': 'Ivy Pot', 'cattail_pot': 'Cattail Pot', 'flower_jug': 'Flower Jug', 'filing_cabinet': 'Filing Cabinet',
@@ -522,6 +522,20 @@ for cid, name, art, cat, layer, rar, ref in COLL:
             sources=[{'kind': 'collection', 'ref': ref, 'once': True}], fp=[1, 1], price=0, sell=0,
             desc='A keepsake from the museum and your collections.')
         ENTRIES[cid]['order'] = False
+# ---- 7c) Harvest Fair Animal Show prizes (c11b_10-03): DecorSources.show_prize grants them ---------------
+SHOW = [  # id, name, art, cat, layer, rarity, source ref
+    ('dc_show_ribbon_blue', 'Blue Show Ribbon', 'props/show_ribbon_blue', 'wall_art', 'wall', 'rare', 'show_1'),
+    ('dc_show_ribbon_red', 'Red Show Ribbon', 'props/show_ribbon_red', 'wall_art', 'wall', 'uncommon', 'show_2'),
+    ('dc_show_ribbon_yellow', 'Yellow Show Ribbon', 'props/show_ribbon_yellow', 'wall_art', 'wall', 'uncommon', 'show_3'),
+    ('dc_show_trophy', 'Best in Show Trophy', 'props/show_trophy', 'decor', 'floor', 'unique', 'show_champion'),
+]
+for cid, name, art, cat, layer, rar, ref in SHOW:
+    if art_ok(art):
+        add(cid, name, cat, rar, art, layer, 5 if rar == 'unique' else 3, sub='showpiece' if rar == 'unique' else 'keepsake',
+            sources=[{'kind': 'festival', 'ref': ref, 'once': True}], fp=[1, 1], price=0, sell=0,
+            desc='Won at the Harvest Fair Animal Show.' if rar != 'unique' else 'One of a kind: three blue ribbons at the Animal Show.')
+        ENTRIES[cid]['order'] = False
+
 if art_ok('furniture/globe3'):
     add('dc_founders_orrery', 'Founder\'s Orrery', 'decor', 'unique', 'decor/dc_founders_orrery', 'floor', 5, sub='showpiece',
         sources=[{'kind': 'collection', 'ref': 'mus_all', 'once': True}], fp=[1, 1],
@@ -976,6 +990,9 @@ def grant(key, id):
         GRANTS[key] = id
         if ENTRIES[id]['rarity'] != 'unique' or not ENTRIES[id]['sources']:
             ENTRIES[id]['sources'].append({'kind': key.split(':')[0], 'ref': key.split(':', 1)[1]})
+for _cid, _n, _a, _c, _l, _r, _ref in SHOW:  # C11b P2: show prizes keep a live grant key (DecorSources.show_prize)
+    if _r == 'unique':
+        grant('festival:' + _ref, _cid)
 def first(f, any_arc=False):
     for k, e in sorted(ENTRIES.items()):
         if not e.get('ext') and e.get('order') is not False and e['rarity'] not in ('unique',) and (any_arc or e['arc'] == 'both') and f(k, e) and k not in GRANTS.values():

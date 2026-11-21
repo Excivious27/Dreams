@@ -206,7 +206,16 @@ func _show_sound() -> void:
 					sc.call("rows", box)
 				else:
 					sc.call(str(sp[1]), box, get_tree(), _show_sound)
+	_page.add_child(_button("Credits and licences", _show_licences))  # s1_13-09
 	_page.add_child(_button("Back", _show_title))
+
+
+## s1_13-09: credits + Godot/font/GodotSteam licence notices (Licences.text()); scrolls in the title page.
+func _show_licences() -> void:
+	_clear()
+	_page.add_child(_label("Credits and licences", 14))
+	_page.add_child(_label(preload("res://scripts/licences.gd").text(), 7, false))
+	_page.add_child(_button("Back", _show_sound))
 
 
 func _show_slots(msg := "") -> void:
@@ -401,6 +410,7 @@ func _show_net() -> void:
 	_clear()
 	_page.add_child(_label("Play together", 16))
 	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
+	_page.add_child(_label("About co-op: your character's name and look and the world changes go to the players in your room. The server keeps them in memory only and forgets them 30 minutes after the room empties. No accounts, no chat, nothing stored.", 7, false))  # s1_13-08, docs/steam-store/privacy.md
 	# The Dreams server works out of the box; a custom wss:// address can still be typed,
 	# and "Reset to default" puts the Dreams server back.
 	_net_url = _edit("Server (the Dreams server is filled in; change only for your own)", NetNode.server_url())
@@ -882,6 +892,8 @@ func _begin() -> void:
 	var cname := _name_edit.text.strip_edges()
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
+	var nf := preload("res://scripts/name_filter.gd")
+	cname = nf.clean(cname, ""); town = nf.clean(town, ""); pet = nf.clean(pet, "")  # s1_13-03: co-op partners see these
 	if GameState.has_run():
 		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup", {"difficulty": _new_diff, "day_len": _new_len})

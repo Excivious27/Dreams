@@ -592,15 +592,26 @@ func _refresh() -> void:
 					tb.pressed.connect(func() -> void: last_press = "%s > card" % _tab)
 					tb.pressed.connect(pick)
 					h.add_child(tb)
+					var plate := Label.new()  # the name on the card's plate (c11b_08-08)
+					plate.text = str(cd.get("name", cid))
+					plate.add_theme_font_size_override("font_size", 7)
+					plate.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+					plate.add_theme_constant_override("outline_size", 2)
+					plate.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+					plate.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+					plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+					plate.set_anchors_preset(Control.PRESET_FULL_RECT)
+					plate.anchor_top = 0.62
+					tb.add_child(plate)
 					var col := VBoxContainer.new()
 					col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 					h.add_child(col)
 					var nm := Label.new()
-					nm.text = ("▶ " if cid == act else "") + str(cd.get("name", cid))
+					nm.text = ("▶ Bringing along" if cid == act else "Staying home") + " · " + Companion.ability_name(cid)
 					nm.add_theme_font_size_override("font_size", 8)
 					col.add_child(nm)
 					var ab := Label.new()
-					ab.text = "%s: %s" % [Companion.ability_name(cid), Companion.ability_desc(cid)]
+					ab.text = Companion.ability_desc(cid)
 					ab.add_theme_font_size_override("font_size", 7)
 					ab.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 					ab.modulate = Color(0.85, 0.85, 0.8)
@@ -609,7 +620,9 @@ func _refresh() -> void:
 				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
-				_line("  Tap the ♥ button to use the active partner's ability.", 8, Color(0.8, 0.8, 0.8))
+				_line("  %s: use the active partner's ability." % InputSetup.prompt("ability"), 8, Color(0.8, 0.8, 0.8))
+			if not (pt["known"] as Array).is_empty():
+				_line("  Tap a partner to bring them along; tap them again to leave them home.", 7, Color(0.75, 0.75, 0.75))
 			if not (pt["bitter"] as Array).is_empty():
 				_line("Bitter", 9, Color(1, 0.7, 0.7))
 				for cid in pt["bitter"]:
@@ -1442,6 +1455,55 @@ func _assign_toolbar(id: String, i: int) -> void:
 	_refresh()
 
 
+## Animals detail (TeamAnimals._detail calls this): born day and generation, parents and kids (tap a
+## living one to open it), expecting status and the species' habitat needs (c11b_11-07, 11-08, 02-02).
+func ranch_family_lines(uid: String) -> void:
+	var fam := Ranch.family(uid)
+	var born := int(fam["born_day"])
+	_line("  Born %s %d · gen %d" % [GameState.season_of(maxi(1, born)).capitalize(), (maxi(1, born) - 1) % GameState.DAYS_PER_SEASON + 1, int(fam["gen"])], 8, Color(0.8, 0.85, 0.9))
+	for grp: String in ["parents", "kids"]:
+		var kin: Array = fam[grp]
+		if kin.is_empty():
+			continue
+		_line("  %s:" % grp.capitalize(), 8, Color(0.85, 0.9, 0.8))
+		for k: Dictionary in kin:
+			var kid := str(k["uid"])
+			var rare := Ranch.is_rare(kid) if not bool(k["rehomed"]) else false
+			var label := "    %s%s%s" % [str(k["name"]), " ✦" if rare else "", (" (lives at %s)" % str(k["where"])) if bool(k["rehomed"]) else ""]
+			if bool(k["rehomed"]):
+				_line(label, 8, Color(0.7, 0.7, 0.7))
+			else:
+				_button(label + " ›", func() -> void:
+					TeamAnimals._sel = kid
+					_refresh())
+	var ex := Ranch.expecting_text(uid)
+	if ex != "":
+		_line("  " + ex, 8, Color(1, 0.85, 0.75))
+	var hab := Ranch.habitat_text(uid)
+	if hab != "":
+		_line("  " + hab, 8, Color(0.8, 0.9, 1))
+
+
+## When a resting pup is back, as a clock time ("about 8am" / "tomorrow about 6am").
+static func pup_back_text() -> String:
+	var st := Pet.state()
+	if not st.has("rest_until_abs"):
+		return "tomorrow"
+	var at := int(st["rest_until_abs"])
+	var now := GameState.now_abs()
+	var t := at % 1440
+	var h := t / 60
+	var clock := "%d%s" % [12 if h % 12 == 0 else h % 12, "am" if h < 12 else "pm"]
+	return ("about %s" % clock) if at / 1440 == now / 1440 else ("tomorrow about %s" % clock)
+
+
+## Why a command can't reach the pup right now.
+func _pup_away_text(pname: String) -> String:
+	if Pet.resting():
+		return "%s is resting at home. Back %s." % [pname, pup_back_text()]
+	return "%s isn't here. Recall first." % pname
+
+
 ## The pup: health, level, commands, gear, pack, treats.
 func _pup_tab() -> void:
 	var st := Pet.state()
@@ -1451,16 +1513,21 @@ func _pup_tab() -> void:
 	var m: Node = get_tree().current_scene if is_inside_tree() else null
 	var pt: Pet = (m as GameMap).pet as Pet if m is GameMap and (m as GameMap).pet is Pet else null
 	if Pet.resting():
-		_line("%s is resting at home after a rough day. Back %s." % [pname, "this afternoon" if GameState.bonus("pup", "best") > 0.0 else "tomorrow"], 9, Color(1, 0.85, 0.7))
+		_line("%s is resting at home after a rough day. Back %s." % [pname, pup_back_text()], 9, Color(1, 0.85, 0.7))
 	_line("%s  ·  Lv %d  (%d / %d xp)" % [pname, lvl, int(sk["xp"]), GameState.xp_for_next(lvl)], 10, Color(1, 0.95, 0.8))
 	_line("Health %d / %d   ·   bite %d   ·   speed ×%.1f" % [int(st["hp"]), Pet.max_hp(), Pet.bite_damage(), Pet.speed_mult()] + ("   ·   pack %d" % Pet.pack_size() if Pet.pack_size() > 0 else ""), 8, Color(0.85, 1.0, 0.85))
-	_line("Mode: %s" % str(st.get("mode", "follow")).to_upper(), 9, Color(1, 0.9, 0.5))
+	var here := pt != null and pt.visible
+	var mode_word := str({"follow": "HEEL", "attack": "ATTACK", "wait": "STAY", "guard": "GUARD"}.get(str(st.get("mode", "follow")), str(st.get("mode", "follow")).to_upper()))
+	_line("Mode: %s" % (mode_word if here else ("resting" if Pet.resting() else "away (not on this map)")), 9, Color(1, 0.9, 0.5))
 	var cmds := [["Heel (follow)", "follow"], ["Attack", "attack"], ["Guard here", "guard"], ["Stay", "wait"]]
 	for c in cmds:
 		var mode: String = c[1]
 		var locked := (mode == "guard" and GameState.bonus("pup", "guard") <= 0.0)
 		var b := _button(("  " if str(st.get("mode", "")) != mode else "▶ ") + str(c[0]) + ("   [needs Guard Dog]" if locked else ""), func() -> void:
-			if locked or pt == null:
+			if locked:
+				return
+			if not here:
+				_toast(_pup_away_text(pname))
 				return
 			toggle()
 			pt.set_mode(mode))
@@ -1469,13 +1536,16 @@ func _pup_tab() -> void:
 			b.icon = Art.tex("ui", ic_name)
 			b.expand_icon = true
 			b.add_theme_constant_override("icon_max_width", 16)
-		if locked or pt == null:
+		if locked or not here:
 			b.modulate = Color(0.6, 0.6, 0.6)
-	_button("  Recall %s (from anywhere)" % pname, func() -> void:
+	var rb := _button("  Recall %s (from anywhere)" % pname + ("   [resting]" if Pet.resting() else ""), func() -> void:
 		if pt == null:
+			_toast(_pup_away_text(pname))
 			return
 		toggle()
 		pt.recall())
+	if pt == null:
+		rb.modulate = Color(0.6, 0.6, 0.6)
 	_line("Gear", 9, Color(0.9, 0.85, 0.7))
 	for slot: String in ["collar", "pack", "boots"]:
 		var gid := str(st["gear"].get(slot, ""))
@@ -1483,6 +1553,9 @@ func _pup_tab() -> void:
 			_line("  %s: -" % slot, 8, Color(0.6, 0.6, 0.6))
 		else:
 			_button("  %s: %s  (take off)" % [slot, GameState.item_name(gid)], func() -> void:
+				if slot == "pack" and not (st.get("pack", {}) as Dictionary).is_empty():
+					_toast("Empty the pack first: take what %s carries." % pname)
+					return
 				st["gear"][slot] = ""
 				GameState.add_item(gid, 1)
 				if pt:
@@ -1513,9 +1586,9 @@ func _pup_tab() -> void:
 					st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				_refresh())
 	if not any_gear:
-		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 8, Color(0.7, 0.7, 0.7))
+		_line("  Collars and packs come from the workbench and the smithy (shed fur, rope, bars).", 8, Color(0.7, 0.7, 0.7))
 	var cap := Pet.pack_size()
-	if cap > 0:
+	if cap > 0 or not (st.get("pack", {}) as Dictionary).is_empty():
 		var pack: Dictionary = st["pack"]
 		var used := 0
 		for k in pack:
@@ -1745,9 +1818,12 @@ func _crew_tab() -> void:
 				hr.custom_minimum_size = Vector2(11, 11)
 				hr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 				hearts.add_child(hr)
-		if Art.has("ui", "rank_%d" % (lv + 1)):
+		var rlv := Crew.member_level(id)  # the drilled level the perk text uses (c11b_08-13)
+		if not Art.has("ui", "rank_%d" % (rlv + 1)):
+			rlv = lv
+		if Art.has("ui", "rank_%d" % (rlv + 1)):
 			var rk := TextureRect.new()
-			rk.texture = Art.tex("ui", "rank_%d" % (lv + 1))
+			rk.texture = Art.tex("ui", "rank_%d" % (rlv + 1))
 			rk.custom_minimum_size = Vector2(14, 12)
 			rk.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			h.add_child(rk)

@@ -3777,25 +3777,31 @@
     },
     {
      "id": "pup_0_2",
-     "name": "Thick Paws",
+     "name": "Strong Jaw",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
       "pet_dmg": 1
-     }
+     },
+     "aka": [
+      "Thick Paws"
+     ]
     },
     {
      "id": "pup_0_3",
-     "name": "Healthy Coat",
+     "name": "Firm Grip",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
       "pet_dmg": 1
-     }
+     },
+     "aka": [
+      "Healthy Coat"
+     ]
     },
     {
      "id": "thick_coat",
@@ -3810,36 +3816,45 @@
     },
     {
      "id": "pup_0_5",
-     "name": "Big Heart",
+     "name": "Sharp Bite",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
       "pet_dmg": 1
-     }
+     },
+     "aka": [
+      "Big Heart"
+     ]
     },
     {
      "id": "pup_0_6",
-     "name": "Sturdy",
+     "name": "Big Chomp",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 0,
      "effect": {
       "pet_dmg": 1
-     }
+     },
+     "aka": [
+      "Sturdy"
+     ]
     },
     {
      "id": "pup_0_7",
-     "name": "Shaggy Armour",
+     "name": "Steel Jaw",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
       "pet_dmg": 1
-     }
+     },
+     "aka": [
+      "Shaggy Armour"
+     ]
     },
     {
      "id": "best_friend",
@@ -3855,14 +3870,17 @@
     },
     {
      "id": "pup_0_9",
-     "name": "Old Soldier",
+     "name": "Hard Bite",
      "desc": "+2 pup bite damage",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
       "pet_dmg": 2
-     }
+     },
+     "aka": [
+      "Old Soldier"
+     ]
     },
     {
      "id": "pup_1_0",
@@ -4130,7 +4148,7 @@
     {
      "id": "pack_1",
      "name": "Saddle Pack",
-     "desc": "Pup carries 6 items for you (needs a pack from the workbench)",
+     "desc": "+6 pack stacks for your pup (needs a pack from the workbench; adds to the pack's own stacks)",
      "ranks": 1,
      "tier": 2,
      "effect": {
@@ -4163,7 +4181,7 @@
     {
      "id": "pack_2",
      "name": "Big Pack",
-     "desc": "Pup carries 12 items",
+     "desc": "+6 more pup pack stacks (they add up with the pack and Saddle Pack)",
      "ranks": 1,
      "tier": 5,
      "effect": {
@@ -4185,7 +4203,7 @@
     {
      "id": "pack_3",
      "name": "Trail Pack",
-     "desc": "Pup carries 18 items and a bedroll: resting by the pup restores 20 energy once a day",
+     "desc": "+6 more pup pack stacks and a bedroll: resting by the pup restores 20 energy once a day",
      "ranks": 1,
      "tier": 7,
      "effect": {
@@ -4554,15 +4572,16 @@
      }
     },
     {
-     "id": "ranching_2_9",
-     "name": "Proud Parents",
-     "desc": "+6% chance two animals have a baby overnight",
+     "id": "ranching_u_rare_lineages",
+     "name": "Rare Lineages",
+     "desc": "Rare looks turn up twice as often in births and hatchlings.",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "breed_chance": 0.06
-     }
+      "rare_breed": 0.1
+     },
+     "unlock": true
     },
     {
      "id": "ranching_3_0",
