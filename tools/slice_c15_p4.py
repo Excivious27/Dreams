@@ -2,9 +2,8 @@
 """C15 P4 slicer: winter (snow) twins of the gang city props from art/incoming/c15p4/.
 
 Each render is one prop on flat magenta (or real alpha). The prop is keyed, cropped
-to its largest blob (after a small dilation), scaled to fit the ORIGINAL prop's
-canvas (art/gen/props/<name>.png) keeping its aspect, bottom-centred on that same
-canvas, and written as art/gen/props/<name>_winter.png, so WorldGen.winter_look
+to its largest blob (after a small dilation), scaled to the ORIGINAL prop's width (art/gen/props/<name>.png;
+at most 25% taller than it, snow caps add height) keeping its aspect, bottom-centred, and written as art/gen/props/<name>_winter.png, so WorldGen.winter_look
 picks it up in winter. Never edits an existing file in place: removes it first.
 Appends manifest.json entries (props/<name>_winter)."""
 import json
@@ -68,9 +67,12 @@ def main():
         W, H = Image.open(src).size
         crop = crop_main(key(Image.open(os.path.join(INC, f))))
         h, w = crop.shape[:2]
-        s = min(W / w, H / h)
+        # Match the original's width (snow caps and icicles make renders a bit taller);
+        # never more than 25% taller than the original canvas.
+        s = min(W / w, 1.25 * H / h)
         nw, nh = max(1, round(w * s)), max(1, round(h * s))
         im = Image.fromarray(crop).resize((nw, nh), Image.LANCZOS)
+        H = max(H, nh)
         canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         canvas.paste(im, ((W - nw) // 2, H - nh), im)
         out = os.path.join(GEN, "props", name + "_winter.png")

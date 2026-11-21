@@ -121,6 +121,21 @@ func _city() -> void:
 					check(GameState.items.has(str(row[0])), "%s stall item %s exists" % [rid, row[0]])
 				seen[se] = str(its)
 			check(seen.size() == 4, "%s %s: stall checked every season" % [rid, t.get("who", "")])
+	var hide := {"ground_seam": "dry_grass", "ground_seam_winter": "snow_trampled"}
+	RegionSeason.skin(hide, "winter")
+	check(str(hide["ground_seam"]) == "snow_trampled", "the Hideout lot goes snowy in winter")
+	var neon2 := {"ground_seam": "c14p5_wet_asphalt", "ground_cycle": ["a"], "ground_seam_winter": "slush"}
+	RegionSeason.skin(neon2, "summer")
+	check(str(neon2["ground_seam"]) == "c14p5_wet_asphalt" and neon2.has("ground_cycle"), "summer keeps Neon's wet asphalt")
+	for rid in ["neon", "hideout", "docks", "uptown"]:
+		check(Art.has("seamless", str(rj[rid].get("ground_seam_winter", ""))), "%s has a winter ground" % rid)
+	for nm in ["taxi", "vend_red", "trailer", "gas_station", "diner_pink", "motel_cyan", "container_red", "fish_market", "limo", "hedge2_tree"]:
+		check(Art.has("props", nm + "_winter"), "city prop %s has a winter twin" % nm)
+	GameState.look_season = "winter"
+	check(WorldGen.winter_look("props", "taxi") == "taxi_winter", "winter_look finds the city twins")
+	GameState.look_season = "summer"
+	check(WorldGen.winter_look("props", "taxi") == "taxi", "no twin outside winter")
+	GameState.look_season = ""
 	var market := {}
 	for t: Dictionary in rj["docks"]["things"]:
 		if str(t.get("who", "")) == "Fish market":

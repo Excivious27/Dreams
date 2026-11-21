@@ -239,6 +239,7 @@ func build() -> void:
 	R = RegionData.region(region_id).duplicate(true)  # parsed once per session (RegionData)
 	_gang_skin()
 	GameState.look_season = str(R.get("season", ""))
+	RegionSeason.skin(R)  # C15 P4: winter ground / seasonal keys (regions.json *_winter)
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
 	music_track = str(R.get("music", "meadow"))

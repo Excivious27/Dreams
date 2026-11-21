@@ -811,7 +811,8 @@
     "props/billboard2",
     "props/city_garage"
    ]
-  }
+  },
+  "ground_seam_winter": "snow_trampled"
  },
  "docks": {
   "cols": 54,
@@ -1350,7 +1351,8 @@
     "props/container_orange2",
     "props/city_garage"
    ]
-  }
+  },
+  "ground_seam_winter": "snow_paving"
  },
  "neon": {
   "cols": 50,
@@ -2220,7 +2222,8 @@
    "wet_asphalt_2",
    "wet_asphalt_3"
   ],
-  "ground_seam": "c14p5_wet_asphalt"
+  "ground_seam": "c14p5_wet_asphalt",
+  "ground_seam_winter": "slush"
  },
  "uptown": {
   "cols": 50,
@@ -2944,7 +2947,8 @@
     "props/city_apartment",
     "props/city_street_tree"
    ]
-  }
+  },
+  "ground_seam_winter": "snow_paving"
  },
  "underground": {
   "cols": 40,

@@ -48,3 +48,18 @@ static func greet(thing: Dictionary, se := "") -> String:
 	if se == "":
 		se = GameState.season()
 	return str(thing.get("greet_" + se, thing.get("greet", "What'll it be?")))
+
+
+## Seasonal skin (c15_15-02 / c15_16-02): in the winter look a region's
+## "ground_seam_winter" / "path_winter" / "seam_tint_winter" replace the usual keys
+## (the city's asphalt and lots go slushy and snowy). Mutates the region dict (a copy per map).
+static func skin(r: Dictionary, se := "") -> void:
+	if se == "":
+		se = GameState.look_se()
+	if se != "winter":
+		return
+	if r.has("ground_seam_winter"):
+		r["ground_seam"] = r["ground_seam_winter"]
+		r.erase("ground_cycle")  # a seamless winter fill replaces Neon's wet-asphalt cycle
+	if r.has("path_winter"):
+		r["path"] = r["path_winter"]

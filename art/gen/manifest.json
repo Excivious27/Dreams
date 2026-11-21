@@ -115827,22 +115827,22 @@
   "city_brickwall_winter": {
    "file": "props/city_brickwall_winter.png",
    "w": 128,
-   "h": 69
+   "h": 73
   },
   "diner_pink_winter": {
    "file": "props/diner_pink_winter.png",
    "w": 112,
-   "h": 90
+   "h": 91
   },
   "gas_station_winter": {
    "file": "props/gas_station_winter.png",
    "w": 208,
-   "h": 94
+   "h": 113
   },
   "lux_car_black_winter": {
    "file": "props/lux_car_black_winter.png",
    "w": 72,
-   "h": 39
+   "h": 40
   },
   "motel_cyan_winter": {
    "file": "props/motel_cyan_winter.png",
@@ -115862,7 +115862,7 @@
   "taxi_winter": {
    "file": "props/taxi_winter.png",
    "w": 72,
-   "h": 37
+   "h": 39
   },
   "trailer_winter": {
    "file": "props/trailer_winter.png",
@@ -115877,7 +115877,67 @@
   "water_tower_winter": {
    "file": "props/water_tower_winter.png",
    "w": 48,
-   "h": 88
+   "h": 104
+  },
+  "billboard_winter": {
+   "file": "props/billboard_winter.png",
+   "w": 80,
+   "h": 81
+  },
+  "bus_stop_winter": {
+   "file": "props/bus_stop_winter.png",
+   "w": 80,
+   "h": 60
+  },
+  "container_blue_winter": {
+   "file": "props/container_blue_winter.png",
+   "w": 64,
+   "h": 30
+  },
+  "container_red_winter": {
+   "file": "props/container_red_winter.png",
+   "w": 64,
+   "h": 30
+  },
+  "fish_market_winter": {
+   "file": "props/fish_market_winter.png",
+   "w": 112,
+   "h": 69
+  },
+  "forklift_winter": {
+   "file": "props/forklift_winter.png",
+   "w": 80,
+   "h": 50
+  },
+  "guard_booth_winter": {
+   "file": "props/guard_booth_winter.png",
+   "w": 104,
+   "h": 71
+  },
+  "hedge2_tree_s_winter": {
+   "file": "props/hedge2_tree_s_winter.png",
+   "w": 72,
+   "h": 104
+  },
+  "hedge2_tree_winter": {
+   "file": "props/hedge2_tree_winter.png",
+   "w": 83,
+   "h": 124
+  },
+  "limo_winter": {
+   "file": "props/limo_winter.png",
+   "w": 144,
+   "h": 34
+  },
+  "lux_car_red_winter": {
+   "file": "props/lux_car_red_winter.png",
+   "w": 60,
+   "h": 40
+  },
+  "rusted_car_winter": {
+   "file": "props/rusted_car_winter.png",
+   "w": 96,
+   "h": 44
   }
  },
  "riding": {
