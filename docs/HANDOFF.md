@@ -24,8 +24,8 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 23:00 PT, personal account. PAUSED FOR OPTIMIZATION ROUND 4 (Tom 22:48; spec docs/conduct/R4_SPEC.md): running work continues (S1 integration on s1/integ, C12 fix agents P1-P7 on c12f/pN, tooling engineer on r4/tools); no new stage launches until round 4 is in. C11b shipped; S1 merged locally (wip/s1-merge), not yet on main.
-- **Done:** CONDUCT 1-10b, 11a, 11b, relay live integration, optimization round 3.
+- **Last update:** 2026-11-20 23:10 PT, personal account. CONDUCT S1 (Steam prep) SHIPPED: final CI s1i2 PASS (6 shards, 20/20 bots, playtest, relay, net e2e, deck perf), steam-builds green (Linux 373 MB ~2.3 s to title, Windows boots, web 135.6 MB unchanged). Readiness ~90% of what is possible without the account. Optimization round 4 in progress (r4/tools); C12 fix agents P1-P7 running.
+- **Done:** CONDUCT 1-11b, S1, relay live, optimization rounds 1-3.
 - **In progress:** CONDUCT S1 (Steam prep): 18 audits done (/home/claude/wt/s1_reports), packages docs/reports/S1-PACKAGES.md, fix agents P1-P6 DONE on s1f/p1..p6 (reports /home/claude/wt/s1f_reports). C11b docs/package.
 - **Next step:** merge s1f/p1..p6 into main, S1 integration agent (cross hooks in each p*.md, `python3 tools/steam_handoff.py --write`, CLAUDE.md one line for Steam tools), full CI s1, package S1 (incl. docs/STEAM.md artifact page, Steam readiness %), push. Then queue C12-C23. ci_run --branch: refresh origin/<branch> tracking ref first or it tests a stale head.
 - **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
