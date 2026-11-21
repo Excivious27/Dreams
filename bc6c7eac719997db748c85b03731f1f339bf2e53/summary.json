@@ -1,0 +1,139 @@
+{
+ "sha": "bc6c7eac719997db748c85b03731f1f339bf2e53",
+ "ref": "ci/c11bp3-4fb3ade0",
+ "run": "44848622571",
+ "finished": 1795223996.2131958,
+ "pass": false,
+ "playtest": {
+  "rc": -1,
+  "secs": 0,
+  "shots": 0,
+  "fails": []
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "4fb3ade065b768f4bde7d768397df3fcbf51f535",
+  "label": "c11bp3",
+  "branch": "c11bf/p3",
+  "shards": [
+   2,
+   6
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 262,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 229,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 262,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 92.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 91.0
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.7
+  },
+  {
+   "step": 27,
+   "name": "held-tool rules: right tool acts, wrong tool hints",
+   "rc": 0,
+   "secs": 22.9
+  },
+  {
+   "step": 45,
+   "name": "move_target_test",
+   "rc": 0,
+   "secs": 14.2
+  },
+  {
+   "step": 103,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 13.8
+  },
+  {
+   "step": 109,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 12.8
+  },
+  {
+   "step": 33,
+   "name": "bowling_test",
+   "rc": 0,
+   "secs": 11.6
+  },
+  {
+   "step": 15,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 10.7
+  },
+  {
+   "step": 85,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 0,
+   "secs": 9.6
+  },
+  {
+   "step": 7,
+   "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+   "rc": 0,
+   "secs": 9.3
+  },
+  {
+   "step": 69,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.0
+  },
+  {
+   "step": 121,
+   "name": "toasts: never over a boss card, a region card, the pup strip or the en",
+   "rc": 0,
+   "secs": 8.6
+  },
+  {
+   "step": 111,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 8.2
+  },
+  {
+   "step": 81,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 8.0
+  }
+ ]
+}
