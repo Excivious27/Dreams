@@ -1586,7 +1586,7 @@ func _pup_tab() -> void:
 					st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				_refresh())
 	if not any_gear:
-		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 8, Color(0.7, 0.7, 0.7))
+		_line("  Collars and packs come from the workbench and the smithy (shed fur, rope, bars).", 8, Color(0.7, 0.7, 0.7))
 	var cap := Pet.pack_size()
 	if cap > 0 or not (st.get("pack", {}) as Dictionary).is_empty():
 		var pack: Dictionary = st["pack"]

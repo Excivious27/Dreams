@@ -1,0 +1,51 @@
+name: Steam builder login (one-time, mints STEAM_CONFIG_VDF)
+
+# Run 1 with no code: steamcmd asks Steam to email a Guard code to the builder account.
+# Run 2 with that code: logs in, confirms a password-less login works, stores config.vdf
+# as the environment secret STEAM_CONFIG_VDF (fine-grained PAT, Environments: write), s1_11.
+# STAGED: does nothing useful until the Environment "steam" and its secrets exist (docs/STEAM.md).
+on:
+  workflow_dispatch:
+    inputs:
+      guard_code:
+        description: "Steam Guard code from the builder account's email (leave empty for run 1)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    environment: steam
+    timeout-minutes: 15
+    env:
+      U: ${{ secrets.STEAM_USERNAME }}
+      P: ${{ secrets.STEAM_PASSWORD }}
+      CODE: ${{ inputs.guard_code }}
+      GH_TOKEN: ${{ secrets.STEAM_SECRET_WRITER }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools
+      - name: Install steamcmd (ONE apt line from tools/ci_deps_check.py --steam)
+        run: |
+          miss="$(python3 tools/ci_deps_check.py --apt-missing --steam)"
+          if [ -n "$miss" ]; then sudo dpkg --add-architecture i386; sudo apt-get update -qq; sudo apt-get install -y -qq $miss > /dev/null; fi
+          mkdir -p ~/steamcmd && curl -fsSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar xz -C ~/steamcmd
+          ~/steamcmd/steamcmd.sh +quit > /dev/null 2>&1 || true
+      - name: Log in and store config.vdf
+        run: |
+          set -euo pipefail
+          echo "::add-mask::$U"; [ -n "$CODE" ] && echo "::add-mask::$CODE"
+          if [ -z "$CODE" ]; then
+            ~/steamcmd/steamcmd.sh +@NoPromptForPassword 1 +login "$U" "$P" +quit > /dev/null 2>&1 || true
+            echo "STEAM: code requested - check the builder inbox, then re-run with guard_code" >> "$GITHUB_STEP_SUMMARY"; exit 0
+          fi
+          ~/steamcmd/steamcmd.sh +@NoPromptForPassword 1 +set_steam_guard_code "$CODE" +login "$U" "$P" +quit > /dev/null 2>&1 || true
+          out="$(~/steamcmd/steamcmd.sh +@NoPromptForPassword 1 +login "$U" +quit 2>&1 || true)"
+          echo "$out" | grep -q -E "Logged in OK|Waiting for user info...OK" || { echo "STEAM: password-less login failed" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+          f=$(ls ~/Steam/config/config.vdf ~/steamcmd/config/config.vdf 2>/dev/null | head -n1)
+          base64 -w0 "$f" | gh secret set STEAM_CONFIG_VDF --env steam --repo "$GITHUB_REPOSITORY"
+          echo "STEAM: STEAM_CONFIG_VDF stored - now delete STEAM_PASSWORD" >> "$GITHUB_STEP_SUMMARY"

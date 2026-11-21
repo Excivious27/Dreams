@@ -17,6 +17,9 @@ for k, v in items.items():
     n += 1
     if v.get("type") != "gift" or any(x in v for x in ("energy", "heal", "mana", "buff")):
         bad.append(k)
+    # s1_13-06: the description never implies anyone drinks it (keeps the ratings answer at "alcohol reference").
+    if re.search(r"\b(toasts?|sip|sips|drinks?|drank|glass of|cheers|tipsy|hangover|pour (a|me))\b", str(v.get("desc", "")).replace("never drunk", "").replace("never drink", "").lower()):
+        bad.append(k + " (desc implies drinking)")
 print("drink rule: %d alcoholic items checked" % n)
 if bad:
     print("FAIL: drinkable alcohol:", ", ".join(bad))

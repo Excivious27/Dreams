@@ -60,7 +60,7 @@ P = {
                 {"give": {"cake": 2}, "animal": {"species": "rabbit", "variant": "silver", "name": "Crumpet", "keepsake": True}}),
           "10": ("Posy's best: two berry pies each week", {"weekly": {"berry_pie": 2}})},
  "juniper": {"10": ("Juniper teaches Second Wind: +30 max health", {"bonus": {"hp": 30}})},
- "rook": {"2": ("Rook shows tracks: a Pelt each week", {"weekly": {"pelt": 1}}),
+ "rook": {"2": ("Rook shows you the brambles: a Shed Fur each week", {"weekly": {"pelt": 1}}),
           "6": ("Rook's map of the quarry path: a Map Scrap", {"give": {"map_scrap": 1}}),
           "8": ("Rook's field kit: 2 Greater Potions", {"give": {"greater_potion": 2}}),
           "10": ("Rook's lucky arrowhead: a Light Charm", {"give": {"light_charm": 1}})},

@@ -411,6 +411,23 @@ python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
 echo "== all ages: alcohol is a trade good, never drunk =="
 python3 tools/drink_rule_test.py || { echo "Drink rule failed"; exit 1; }
 
+echo "== all ages: no animal dies, is harvested or sold for meat (beasts drop no parts) =="
+python3 tools/animal_rule_test.py || { echo "Animal rule failed"; exit 1; }
+
+echo "== Steam: SteamPipe templates, depot exclusions, upload config (S1 P5) =="
+python3 tools/steam_vdf_check.py --templates || { echo "Steam VDF check failed"; exit 1; }
+
+echo "== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) =="
+python3 tools/steam_handoff.py --check || { echo "Steam handoff check failed (python3 tools/steam_handoff.py --write after merging docs/steam/ fragments)"; exit 1; }
+
+echo "== Steam: ratings / AI disclosure answers still true (S1 P5) =="
+python3 tools/ratings_facts_check.py || { echo "Ratings facts check failed"; exit 1; }
+
+echo "== all ages: name filter for player-typed names (S1 P5) =="
+nfout="$("$GODOT" --headless --path . -s res://tools/name_filter_test.gd 2>&1)"
+echo "$nfout" | grep -E "FAIL|SCRIPT ERROR" || true
+echo "$nfout" | grep -q "NAME FILTER DONE, failures: 0" || { echo "Name filter test failed"; exit 1; }
+
 echo "== C10a decor art: every catalogue piece and rotation exists =="
 python3 tools/slice_c10a.py check || { echo "Decor art check failed"; exit 1; }
 

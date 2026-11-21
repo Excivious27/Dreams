@@ -6593,22 +6593,22 @@
   "desc": "A sliver of the moon's crystal. Found only up there."
  },
  "pelt": {
-  "name": "Pelt",
+  "name": "Shed Fur",
   "type": "material",
   "value": 28,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "Soft fur. Rook buys these; tailors want them."
+  "desc": "Combed from the brambles where a moulting coat brushed past; no animal is hurt. Rook buys these; tailors want them."
  },
  "meat": {
-  "name": "Game Meat",
+  "name": "Trail Rations",
   "type": "food",
   "value": 45,
   "rarity": "common",
   "tier": 2,
   "heal": 2,
   "energy": 15,
-  "desc": "From the hills. Cook it for more."
+  "desc": "Smoked beans and grain cake, packed for the hills. Cook it for more."
  },
  "arrow": {
   "name": "Arrow",
@@ -6664,7 +6664,7 @@
   "value": 140,
   "rarity": "uncommon",
   "tier": 3,
-  "desc": "From the keg. Saved for toasts at the fair. A trade good: sold and gifted, never drunk."
+  "desc": "From the keg. Sells well at the fair. A trade good: sold and gifted, never drunk."
  },
  "candy": {
   "name": "Candy",
@@ -6716,12 +6716,12 @@
   "desc": "Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam."
  },
  "bone": {
-  "name": "Bone",
+  "name": "Old Antler",
   "type": "material",
   "value": 6,
   "rarity": "common",
   "tier": 1,
-  "desc": "Old beast bones. The dog approves."
+  "desc": "Shed every spring and found in the grass. The dog approves."
  },
  "slime_goo": {
   "name": "Slime Goo",
@@ -6804,12 +6804,12 @@
   "desc": "Carved at the workbench."
  },
  "trap": {
-  "name": "Trap",
+  "name": "Bramble Brush",
   "type": "material",
   "value": 40,
   "rarity": "common",
   "tier": 2,
-  "desc": "Rook's design. Catches critters for pelts."
+  "desc": "Rook's design. Set by the trails, it combs shed fur from passing coats; nothing is caught."
  },
  "map_scrap": {
   "name": "Map Scrap",
@@ -7856,7 +7856,7 @@
   "value": 306,
   "rarity": "uncommon",
   "tier": 3,
-  "desc": "Alder keeps one bottle back for the fair toast. A trade good: sold and gifted, never drunk."
+  "desc": "Alder keeps one bottle back for the fair display. A trade good: sold and gifted, never drunk."
  },
  "starlight_wine": {
   "name": "Starlight Wine",
@@ -11581,7 +11581,7 @@
   "decor": true
  },
  "dc_pelt_bear": {
-  "name": "Bear Pelt Rug",
+  "name": "Bear-Pattern Rug",
   "type": "decor",
   "value": 360,
   "rarity": "rare",
@@ -11591,7 +11591,7 @@
   "decor": true
  },
  "dc_pelt_leopard": {
-  "name": "Spotted Pelt Rug",
+  "name": "Spotted Woven Rug",
   "type": "decor",
   "value": 308,
   "rarity": "rare",
@@ -11601,7 +11601,7 @@
   "decor": true
  },
  "dc_pelt_wolf": {
-  "name": "Wolf Pelt Rug",
+  "name": "Wolf-Pattern Rug",
   "type": "decor",
   "value": 405,
   "rarity": "rare",
