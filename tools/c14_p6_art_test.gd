@@ -1,7 +1,7 @@
 extends SceneTree
 ## C14 P6 art + light checks: mega villagers walk 4 ways with 4-frame side/back strips,
 ## the dune scatter set and the redrawn icons are isolated pieces (clear corners), hearths
-## and forges glow, neon/crystal lamps are coloured, the gangster lamps cool.
+## and forges glow, neon/crystal lamps are coloured; critters follow night and winter (c14_16-06).
 ##   godot --headless --fixed-fps 60 --path . -s res://tools/c14_p6_art_test.gd
 var fails := 0
 
@@ -28,6 +28,12 @@ func _initialize() -> void:
 	check(NightGlow.tint_of("neon_sign_3").size() == 1, "neon signs cast a coloured light")
 	check(NightGlow.tint_of("ice_crystal_lit").size() == 1, "crystal lamps cast their crystal colour")
 	check(NightGlow.tint_of("lamp2_tall_0").is_empty(), "penguin/no-save lamps keep the warm amber")
+	var wn := WorldGen.critter_pool(["sparrow", "butterfly_orange", "bee", "heron", "rabbit"], 1, 1)
+	check(not wn.has("bee") and not wn.has("butterfly_orange") and not wn.has("heron") and not wn.has("sparrow"), "winter night: no bees, butterflies, herons or sparrows (%s)" % [wn])
+	check(wn.has("owl") and not wn.has("firefly"), "winter night: owls, no fireflies")
+	var sd := WorldGen.critter_pool(["sparrow", "butterfly_orange", "bee", "rabbit"], 0, 0)
+	check(sd.size() == 4, "summer day keeps the whole crowd")
+	check(not WorldGen.critter_pool(["bee"], 1, 1).is_empty(), "the pool is never empty")
 	print("c14_p6_art_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 

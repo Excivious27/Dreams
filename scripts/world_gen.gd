@@ -413,7 +413,7 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var pool: Array = kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]
+	var pool: Array = critter_pool(kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"])
 	var wet: Array[Vector2i] = []  # water cells in the rect, for fish (never on land)
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
@@ -470,6 +470,28 @@ const TAKE_OFF := ["duck", "heron"]
 
 
 ## Kinds that live in water only: spawned on water cells and kept there.
+## Day-only and warm-weather critters (c14_16-06): no butterflies, bees or wading herons
+## at 9pm or in the snow. At night the day crowd gives way to owls, bats and (not in
+## winter) fireflies; in winter the warm crowd goes. Never an empty pool.
+const DAY_ONLY := ["bee", "dragonfly", "sparrow", "pigeon", "seagull", "heron", "duck", "robin", "finch", "blue_jay", "ladybug", "grasshopper"]
+const WARM_ONLY := ["bee", "dragonfly", "frog", "ladybug", "grasshopper", "snail", "turtle", "heron", "duck"]
+static func critter_pool(pool: Array, night := -1, winter := -1) -> Array:
+	var is_night := GameState.is_night() if night < 0 else night == 1
+	var is_winter := GameState.look_se() == "winter" if winter < 0 else winter == 1
+	var out: Array = []
+	for k: String in pool:
+		var day_only := k in DAY_ONLY or k.begins_with("butterfly")
+		var warm_only := k in WARM_ONLY or k.begins_with("butterfly")
+		if (is_night and day_only) or (is_winter and warm_only):
+			continue
+		out.append(k)
+	if is_night:
+		for k in (["owl", "bat"] if is_winter else ["owl", "bat", "firefly"]):
+			if Art.has("wildlife/" + k, "idle"):
+				out.append(k)
+	if out.is_empty():
+		out = pool.filter(func(k): return not str(k).begins_with("butterfly") and k != "bee") if not pool.is_empty() else []
+	return out if not out.is_empty() else ["rabbit"]
 const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
 
 
