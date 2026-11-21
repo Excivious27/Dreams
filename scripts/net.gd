@@ -60,6 +60,59 @@ var _solo_backup: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	pending_lobby = lobby_from_args(OS.get_cmdline_args())
+
+
+## Steam invites (S1 P4): a lobby waiting to be joined: a cold start from an
+## invite ("+connect_lobby <id>") or Steam's join_requested (SteamService calls
+## on_join_requested). Asked about once a farm map is up, so the guest has a save.
+var pending_lobby := 0
+var pending_from := ""
+var _asking := false
+
+
+static func lobby_from_args(args: PackedStringArray) -> int:
+	for i in args.size():
+		var a := args[i]
+		if a == "+connect_lobby" and i + 1 < args.size() and args[i + 1].is_valid_int():
+			return int(args[i + 1])
+		if a.begins_with("+connect_lobby=") and a.get_slice("=", 1).is_valid_int():
+			return int(a.get_slice("=", 1))
+	return 0
+
+
+## Steam's join_requested(lobby_id, friend_steam_id) lands here (SteamService connects it).
+func on_join_requested(lobby_id: int, friend_name := "") -> void:
+	if lobby_id <= 0:
+		return
+	pending_lobby = lobby_id
+	pending_from = friend_name
+
+
+func _ask_pending() -> void:
+	if pending_lobby <= 0 or _asking or not is_inside_tree() or not steam_ready():
+		return
+	var gm := get_tree().current_scene as GameMap
+	if gm == null or gm.hud == null or get_tree().paused:
+		return
+	var d := Dialogue.instance(get_tree())
+	if d.active or Dialogue.input_blocked():
+		return
+	var lid := pending_lobby
+	pending_lobby = 0
+	var cur: Variant = tr.get("lobby_id") if tr != null else null
+	if cur != null and int(cur) == lid:
+		return  # already in that lobby
+	_asking = true
+	var who := pending_from if pending_from != "" else "your friend"
+	d.say([{"who": "", "text": ("Leave this game and visit %s's farm?" if online() else "Visit %s's farm? Your own farm waits here.") % who, "choice": ["Visit", "Not now"], "key": ""}])
+	await d.finished
+	_asking = false
+	if d.last_choice != 0:
+		return
+	if tr != null:
+		leave("left")
+	join_steam(lid)
 
 
 func online() -> bool:
@@ -249,6 +302,8 @@ func send_host(d: Dictionary) -> void:
 
 
 func _process(delta: float) -> void:
+	if pending_lobby > 0 and not _asking:
+		_ask_pending()
 	if tr == null:
 		if _retry_t > 0.0:
 			_retry_t -= delta

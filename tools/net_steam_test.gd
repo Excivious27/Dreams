@@ -175,6 +175,34 @@ func _run() -> void:
 	await _pump(3, [])
 	check(home[0] and int(GameState.run["day"]) == 4, "owner gone 31 s: guest went home to its own day")
 	n2.queue_free()
+	# Invites: "+connect_lobby <id>" at launch, join_requested in game -> asked on the farm.
+	check(NetNode.lobby_from_args(PackedStringArray(["--x", "+connect_lobby", "1097752410000001"])) == 1097752410000001, "+connect_lobby <id> parsed")
+	check(NetNode.lobby_from_args(PackedStringArray(["+connect_lobby=42"])) == 42 and NetNode.lobby_from_args(PackedStringArray(["--y"])) == 0, "+connect_lobby=<id> parsed, none = 0")
+	var hy := NetTransportSteam.new(fs.user(SID + 60))
+	hy.open("", {"proto": NetNode.PROTO})
+	hy.send({"t": "join", "room": "", "token": "hy", "name": "HY", "look": {}, "arc": "penguins", "proto": NetNode.PROTO})
+	await _pump(1, [hy])
+	var n3 := NetNode.new()
+	root.add_child(n3)
+	n3.steam_backend = fs.user(SID + 61)
+	n3.on_join_requested(hy.lobby_id, "Rook")
+	await _pump(5, [hy])
+	check(n3.pending_lobby == hy.lobby_id and not n3.online(), "invite waits while no farm map is up (title)")
+	change_scene_to_file("res://scenes/farm.tscn")
+	var asked := false
+	var d := Dialogue.instance(self)
+	for i in 240:
+		await _pump(1, [hy])
+		if d.active and d._in_choice:
+			asked = true
+			d._choose("", 0)
+			break
+	check(asked, "on the farm the invite asks first (Visit / Not now)")
+	await _pump(6, [hy])
+	check(n3.online() and not n3.is_host() and n3.pending_lobby == 0, "Visit joined the friend's lobby")
+	n3.leave()
+	hy.close()
+	n3.queue_free()
 	h.queue_free()
 	await process_frame
 	fs.free_all()
