@@ -1,0 +1,205 @@
+{
+ "aliases": {
+  "chick": "hen",
+  "chicken": "hen",
+  "donkey_b": "donkey",
+  "duckling": "duck",
+  "foal": "donkey",
+  "foal_b": "donkey",
+  "goat2": "goat",
+  "goat_kid": "goat",
+  "kid_goat": "goat",
+  "lamb": "sheep",
+  "llama_b": "llama",
+  "llama_cria": "llama",
+  "sheep_woolly": "sheep"
+ },
+ "lessons": {
+  "attack": {
+   "chore": "",
+   "desc": "Butts, kicks or spits at foes that come for you.",
+   "desc_gang": "Butts, kicks or spits at anyone who comes for you.",
+   "dmg": 2,
+   "hp": 2,
+   "job": "striker",
+   "name": "Charge"
+  },
+  "carry": {
+   "chore": "harvest",
+   "desc": "Hauls a load: on the farm it carries the harvest to a chest.",
+   "desc_gang": "Hauls the load: on the farm it carts the harvest to a chest.",
+   "dmg": 0,
+   "hp": 4,
+   "job": "warden",
+   "name": "Carry"
+  },
+  "fetch": {
+   "chore": "forage",
+   "desc": "Brings back forage it finds near you; on the farm it forages overnight.",
+   "desc_gang": "Sniffs out loose goods and brings them back; on the farm it scrounges overnight.",
+   "dmg": 0,
+   "hp": 2,
+   "job": "healer",
+   "name": "Fetch"
+  },
+  "guard": {
+   "chore": "pet",
+   "desc": "Holds its ground beside you and shoves foes back.",
+   "desc_gang": "Plants its hooves by you and shoves anybody pushy back.",
+   "dmg": 1,
+   "hp": 6,
+   "job": "warden",
+   "name": "Guard"
+  }
+ },
+ "names": [
+  "Biscuit",
+  "Clover",
+  "Pepper",
+  "Maple",
+  "Juniper",
+  "Waffles",
+  "Pebble",
+  "Thistle",
+  "Nutmeg",
+  "Bramble",
+  "Dumpling",
+  "Fern",
+  "Tansy",
+  "Hazelnut",
+  "Sprout",
+  "Button"
+ ],
+ "rules": {
+  "bond_per_lesson": 20,
+  "bond_to_train": 200,
+  "energy": 8,
+  "grown_days": 7,
+  "hp_per_tier": 6,
+  "max_rank": 3,
+  "pup_margin": 4,
+  "rank_at": [
+   3,
+   5,
+   7
+  ],
+  "team_max": 2
+ },
+ "species": {
+  "donkey": {
+   "carry": true,
+   "dmg": 1,
+   "hp": 22,
+   "job_word": "kicks",
+   "lessons": [
+    "carry",
+    "fetch",
+    "attack"
+   ],
+   "name": "Donkey",
+   "name_gang": "Donkey",
+   "speed": 0.9,
+   "treat": [
+    "carrot",
+    "apple",
+    "hay"
+   ],
+   "voice": "whinny"
+  },
+  "duck": {
+   "carry": false,
+   "dmg": 1,
+   "hp": 10,
+   "job_word": "pecks",
+   "lessons": [
+    "fetch"
+   ],
+   "name": "Duck",
+   "name_gang": "Duck",
+   "speed": 1.1,
+   "treat": [
+    "wheat",
+    "berry",
+    "carrot"
+   ],
+   "voice": "quack"
+  },
+  "goat": {
+   "carry": false,
+   "dmg": 2,
+   "hp": 18,
+   "job_word": "butts",
+   "lessons": [
+    "attack",
+    "guard",
+    "fetch"
+   ],
+   "name": "Goat",
+   "name_gang": "Goat",
+   "speed": 1.0,
+   "treat": [
+    "carrot",
+    "apple",
+    "hay"
+   ],
+   "voice": "bleat"
+  },
+  "hen": {
+   "carry": false,
+   "dmg": 1,
+   "hp": 10,
+   "job_word": "pecks",
+   "lessons": [
+    "fetch"
+   ],
+   "name": "Hen",
+   "name_gang": "Hen",
+   "speed": 1.1,
+   "treat": [
+    "wheat",
+    "berry",
+    "carrot"
+   ],
+   "voice": "cluck"
+  },
+  "llama": {
+   "carry": true,
+   "dmg": 1,
+   "hp": 22,
+   "job_word": "spits",
+   "lessons": [
+    "guard",
+    "carry",
+    "attack"
+   ],
+   "name": "Llama",
+   "name_gang": "Llama",
+   "speed": 0.9,
+   "treat": [
+    "apple",
+    "carrot",
+    "hay"
+   ],
+   "voice": "bleat"
+  },
+  "sheep": {
+   "carry": false,
+   "dmg": 1,
+   "hp": 16,
+   "job_word": "bumps",
+   "lessons": [
+    "fetch",
+    "guard"
+   ],
+   "name": "Sheep",
+   "name_gang": "Sheep",
+   "speed": 1.0,
+   "treat": [
+    "hay",
+    "carrot",
+    "apple"
+   ],
+   "voice": "sheep"
+  }
+ }
+}

@@ -189,6 +189,10 @@ MAP = {
     "cluck": ("sfx", ["bigsoundbank/0978", "bigsoundbank/1039", "bigsoundbank/0453"], {"cap": 0.9, "slice": True, "gap": 0.12, "min": 0.1}),
     "peep": ("sfx", ["bigsoundbank/0430", "bigsoundbank/0431", "bigsoundbank/0672"], {"cap": 0.5, "slice": True, "gap": 0.05, "min": 0.05}),
     "quack": ("sfx", ["bigsoundbank/0276"], {"cap": 0.8, "slice": True, "gap": 0.1, "min": 0.1}),
+    # C11a P5 ranch voices (all BigSoundBank CC0): pig (mouth imitation, cartoon-friendly), bees, rabbits stamping.
+    "oink": ("sfx", ["bigsoundbank/1658", "bigsoundbank/1659"], {"cap": 1.0, "slice": True, "gap": 0.2, "min": 0.15}),
+    "buzz": ("sfx", ["bigsoundbank/1000", "bigsoundbank/1001"], {"cap": 1.4, "slice": True, "gap": 0.3, "min": 0.4}),
+    "thump": ("sfx", ["bigsoundbank/1376"], {"cap": 0.35, "slice": True, "gap": 0.08, "min": 0.03}),
     "bleat": ("sfx", ["bigsoundbank/0880", "bigsoundbank/1377"], {"cap": 1.4, "slice": True, "gap": 0.2, "min": 0.3}),
     # --- mega travel (C4 P4): derived mixes of the CC0 bell dings + the air whoosh ---
     "airship_whoosh": ("sfx", ["air-whoosh/whoosh2_0.*"], {"cap": 2.6}),

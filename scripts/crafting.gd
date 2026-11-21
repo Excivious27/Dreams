@@ -259,8 +259,10 @@ static func job_left(key: String) -> int:
 
 
 static func start(station: String, key: String, rc: Dictionary, tier: int, qty: int) -> Dictionary:
+	var before := _stars_before(rc)
 	for id in rc["need"]:
 		GameState.take_any(str(id), int(rc["need"][id]) * qty)
+	var stars := _stars_used(rc, before, qty)
 	var mins := minutes_for(station, rc, tier, qty)
 	if not rc.has("days"):
 		# Whatever you start today is ready when you wake.
@@ -269,8 +271,57 @@ static func start(station: String, key: String, rc: Dictionary, tier: int, qty: 
 		if now_abs() + mins > day_end and now_abs() + mins <= day_end + 480:  # a huge batch still takes its time
 			mins = (int(GameState.run["day"]) + 1) * 1440 + GameState.DAY_START - now_abs()
 	var j := {"id": str(rc["id"]), "name": str(rc["name"]), "give": str(rc["give"]), "n": int(rc.get("n", 1)) * qty, "batches": qty, "tier": int(rc.get("tier", 1)), "tool": bool(rc.get("tool", false)), "st": tier, "station": station, "done_at": now_abs() + mins}
+	if not stars.is_empty():
+		j["q"] = stars
 	jobs(key).append(j)
 	return j
+
+
+## Starred inputs keep their star (C11a P3, c11a_04-12): a single-input recipe (cheese, mayonnaise, yarn,
+## honey...) whose batches used silver/gold pieces turns out that many starred pieces. Inputs are used
+## plain-first (your stars stay in the bag), so a star only carries when the starred pieces were spent.
+static func _star_ids(rc: Dictionary) -> Array:
+	var need: Dictionary = rc.get("need", {})
+	if need.size() != 1 or bool(rc.get("tool", false)) or bool(rc.get("decor", false)):
+		return []
+	var give_t := str(GameState.items.get(str(rc.get("give", "")), {}).get("type", ""))
+	if give_t in ["equip", "tool", "vehicle", "decor", "wear"]:
+		return []
+	var k := str(need.keys()[0])
+	if not k.begins_with("#"):
+		return [k]
+	var out: Array = []
+	var f := k.substr(1)
+	for id in GameState.run["inventory"]:
+		if GameState.family(str(id)) == f or (f == "fruit" and GameState.family(str(id)) in ["tree", "berry"]):
+			out.append(str(id))
+	return out
+
+
+static func _stars_before(rc: Dictionary) -> Dictionary:
+	var out := {}
+	for id: String in _star_ids(rc):
+		var q := GameState.quality_of(id)
+		out[id] = [int(q.get("g", 0)), int(q.get("s", 0))]
+	return out
+
+
+static func _stars_used(rc: Dictionary, before: Dictionary, qty: int) -> Dictionary:
+	if before.is_empty():
+		return {}
+	var lg := 0
+	var ls := 0
+	for id: String in before:
+		var q := GameState.quality_of(id)
+		lg += maxi(0, int(before[id][0]) - int(q.get("g", 0)))
+		ls += maxi(0, int(before[id][1]) - int(q.get("s", 0)))
+	var per := maxi(1, int((rc["need"] as Dictionary).values()[0]))
+	var gb := mini(qty, lg / per)
+	var sb := mini(qty - gb, (ls + lg - gb * per) / per)
+	var nper := int(rc.get("n", 1))
+	if gb + sb <= 0:
+		return {}
+	return {"g": gb * nper, "s": sb * nper}
 
 
 ## Hands over every finished job at this station. Returns how many.
@@ -296,6 +347,10 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 					if randf() < float(BONUS[clampi(int(j.get("st", 1)), 1, 4) - 1]):
 						extra += 1
 			m.give(give_id, n + extra)
+			var jq: Dictionary = j.get("q", {})
+			for qk: String in ["g", "s"]:
+				if int(jq.get(qk, 0)) > 0:
+					GameState.add_quality(give_id, qk, mini(int(jq[qk]), n + extra))
 			if extra > 0:
 				m.hud.toast("Masterwork! +%d %s" % [extra, GameState.item_name(give_id)], Color(0.8, 1, 0.9))
 				m.fx("masterwork", m.player.position + Vector2(0, -22), 10.0, 0.5)

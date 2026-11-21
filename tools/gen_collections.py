@@ -78,7 +78,18 @@ CATS = [
     {"id": "cooking", "title": "Cookbook", "kind": "make", "badge": "medal_master"},
     {"id": "crafting", "title": "Crafting log", "kind": "make", "badge": "medal_craftsman"},
     {"id": "forage", "title": "Forage log", "kind": "seen", "badge": "medal_explorer"},
+    {"id": "ranch", "title": "Ranch log", "kind": "count", "badge": "medal_green_thumb"},
 ]
+
+# Animal goods (C11a P3). Raw goods fill the Ranch log (Collections.record_ranch when collected) and ship as
+# "Animal goods"; made goods ship as "Artisan goods". data/ranch.json "products" (gen_ranch.py) adds the rest.
+ANIMAL_RAW = ["egg", "duck_egg", "milk", "goat_milk", "sheep_wool", "honey", "honeycomb", "truffle"]
+ARTISAN = ["cheese", "butter", "goat_cheese", "mayonnaise", "duck_mayonnaise", "cream", "yogurt", "honey_jar", "beeswax",
+           "beeswax_candle", "yarn", "truffle_oil"]
+ANIMAL_WHERE = {"egg": "Your coop hens, every morning you care for them.", "duck_egg": "Ducks in the Big Coop.",
+                "milk": "Cows in your barn.", "goat_milk": "Goats in the Big Barn.", "sheep_wool": "Sheep and llamas in your barn.",
+                "honey": "Your beehives on the farm; sometimes found in the Meadow.", "honeycomb": "Your beehives, now and then.",
+                "truffle": "Happy pigs dig them up outdoors; old forests too."}
 
 # ---------------------------------------------------------------- milestones
 # need: int count in cat, "wing:<id>" (every item of that wing), or "all".
@@ -132,6 +143,12 @@ MILESTONES = [
     {"id": "cook_all", "cat": "cooking", "need": "all", "from": "posy", "give": {"decor": "dc_master_hearth", "money": 3000},
      "text": "You've cooked every recipe there is. Teach me something now! - Posy",
      "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy"},
+    {"id": "ranch_3", "cat": "ranch", "need": 3, "from": "benno", "give": {"money": 400, "item": "hay", "n": 40},
+     "text": "Three kinds of animal goods from your own ranch! Here's hay for the herd, on the house. - Benno",
+     "text_gangsters": "Three kinds of goods off your own ranch. Nobody looks twice at a real farm. Hay's on me. - Benno"},
+    {"id": "ranch_all", "cat": "ranch", "need": "all", "from": "benno", "give": {"money": 2500, "decor": "dc_tt_trophy_farm_a"},
+     "text": "Every good a ranch can give, from your own animals. The fair made you a trophy. - Benno",
+     "text_gangsters": "Every good a ranch can give, all yours. The block chipped in for a trophy. - Benno"},
     {"id": "craft_25", "cat": "crafting", "need": 25, "from": "hazel", "give": {"item": "chest", "n": 1},
      "text": "Twenty-five things built! Have a spare chest for all of it. - Hazel",
      "text_gangsters": "Twenty-five builds. Here's a spare chest. - Hazel"},
@@ -274,6 +291,10 @@ def source_text():
 def where_hint(item_id, it, forage, pools):
     if item_id in WHERE:
         return WHERE[item_id]
+    if item_id in ANIMAL_WHERE:
+        return ANIMAL_WHERE[item_id]
+    if item_id in ARTISAN:
+        return "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
     t = it.get("type", "")
     places = [k for k, tab in forage.items() if any(e[0] == item_id for e in tab)]
     if t == "fish":
@@ -328,8 +349,18 @@ def main():
         ents = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)} for i in w["items"]]
         wings.append({"id": w["id"], "title": w["title"], "entries": ents})
 
+    ranch_json = load("ranch.json") if os.path.exists(os.path.join(ROOT, "data", "ranch.json")) else {}
+    raw = list(ANIMAL_RAW) + [k for k in (ranch_json.get("products") or {}) if k not in ANIMAL_RAW]
+    raw = [i for i in raw if i in items]
+    ranch_log = [{"item": i, "arc": arc_of(items[i]), "family": "Animal goods", "where": where_hint(i, items[i], forage, pools)} for i in raw]
     ship, dropped = [], []
+    for i in raw + [a for a in ARTISAN if a in items]:
+        ship.append({"item": i, "arc": arc_of(items[i]), "family": "Animal goods" if i in raw else "Artisan goods",
+                     "where": where_hint(i, items[i], forage, pools)})
+    animal = {e["item"] for e in ship}
     for i, it in items.items():
+        if i in animal:
+            continue
         if it.get("type") in SHIP_TYPES and int(it.get("value", 0)) > 0 and not it.get("alias_of"):
             if sourced(i) or it.get("type") in ("crop", "fruit", "flower"):
                 ship.append({"item": i, "arc": arc_of(it), "family": SHIP_FAMILY[it["type"]], "where": where_hint(i, it, forage, pools)})
@@ -338,6 +369,7 @@ def main():
     # Crops/fruit/flowers count only if a seed or tree yields them (crops.json yield) or they're sourced.
     yields = {c.get("yield") for c in load("crops.json").values() if isinstance(c, dict)}
     ship = [e for e in ship if e["family"] not in ("Crops", "Fruit", "Flowers") or e["item"] in yields or sourced(e["item"])]
+    ship = [e for e in ship if e["family"] in ("Animal goods", "Artisan goods")] + [e for e in ship if e["family"] not in ("Animal goods", "Artisan goods")]
 
     fish_log = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)}
                 for i in WINGS[3]["items"] if i not in NOT_ROD]
@@ -359,7 +391,7 @@ def main():
 
     items["curators_loupe"] = LOUPE
     out = {"_": "Generated by tools/gen_collections.py", "cats": CATS, "wings": wings,
-           "logs": {"shipping": ship, "fish": fish_log, "cooking": cook, "crafting": craft, "forage": forage_log},
+           "logs": {"shipping": ship, "fish": fish_log, "cooking": cook, "crafting": craft, "forage": forage_log, "ranch": ranch_log},
            "stations": sorted({e["station"] for e in craft}), "milestones": MILESTONES, "decor_milestones": DECOR_MILESTONES, "letters": LETTERS,
            "room_names": ROOM_NAMES, "legends": LEGENDS}
     check(out, items, src)
