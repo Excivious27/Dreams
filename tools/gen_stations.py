@@ -36,6 +36,16 @@ G = [  # id, name, type, value, tier, extra
  ('herbal_cordial', 'Herbal Cordial', 'food', 420, 4, {'energy': 60, 'heal': 3, 'desc': 'A sweet, green, restoring syrup.'}),
  ('truffle_broth', 'Truffle Broth', 'food', 420, 4, {'energy': 90, 'desc': 'Deep, earthy and warming.'}),
  ('goat_cheese', 'Goat Cheese', 'food', 95, 2, {'energy': 30, 'desc': 'Tangy and soft, pressed from goat milk.'}),
+ # ranch processing (C11a P3): Mayo Machine, Honey Extractor, press and loom goods
+ ('mayonnaise', 'Mayonnaise', 'food', 60, 1, {'energy': 30, 'desc': 'Whipped from fresh eggs in the Mayo Machine.'}),
+ ('duck_mayonnaise', 'Duck Mayonnaise', 'food', 90, 2, {'energy': 40, 'icon': 'mayonnaise', 'desc': 'Rich and golden, from duck eggs.'}),
+ ('beeswax', 'Beeswax', 'craft', 30, 1, {'icon': 'wax', 'desc': 'Spun from honeycomb. Candles, polish and fine goods.'}),
+ ('honey_jar', 'Jar of Honey', 'food', 160, 2, {'energy': 60, 'heal': 2, 'desc': 'Clear, golden honey, sealed in glass.'}),
+ ('beeswax_candle', 'Beeswax Candle', 'craft', 75, 2, {'icon': 'candle', 'desc': 'Burns long and smells of summer.'}),
+ ('cream', 'Cream', 'food', 60, 1, {'energy': 25, 'desc': 'Skimmed from fresh milk.'}),
+ ('yogurt', 'Honey Yogurt', 'food', 110, 2, {'energy': 40, 'heal': 1, 'icon': 'yogurt', 'desc': 'Thick, tangy and sweetened with honey.'}),
+ ('down_pillow', 'Down Pillow', 'craft', 90, 1, {'icon': 'feather', 'desc': 'Soft as a cloud, stuffed with feathers. A fine trade good.'}),
+ ('truffle_oil', 'Truffle Oil', 'craft', 320, 3, {'icon': 'cooking_oil', 'desc': 'A few drops make any dish taste rich.'}),
  # potions (the magic potion station)
  ('swift_draught', 'Swift Draught', 'potion', 120, 2, {'buff': {'kind': 'speed', 'minutes': 180, 'amount': 1}, 'desc': 'Quick feet for three hours.'}),
  ('luck_potion', 'Luck Potion', 'potion', 180, 2, {'buff': {'kind': 'luck', 'minutes': 240, 'amount': 2}, 'desc': 'Better finds, kinder dice.'}),
@@ -215,6 +225,13 @@ station('press', 'Pantry Press', 'pantry', [6, 24], 'farming', 'Press', 'Tam', [
  ('Oil Press', ['oil_press'], {'plank': 16, 'iron_bar': 3, 'clay_pot': 6}, d(1)),
  ('Preserving Room', ['preserves_jar2', 'preserves_jar'], {'beam': 6, 'glass': 16, 'gear': 3}, d(2)),
  ('Creamery', ['creamery', 'cheese_press'], {'plating': 3, 'crystal_glass': 4, 'tile': 20}, d(3))])
+# Ranch processing (C11a P3): two-tier stations beside the pantry row.
+station('mayo', 'Mayo Machine', 'pantry', [13, 24], 'ranching', 'Whip', 'Hazel', [
+ ('Mayo Machine', ['mayo_1', 'mayo_machine_1', 'mayo_machine'], {'plank': 15, 'copper_bar': 2, 'clay_pot': 2}, d(0, 'Eggs into mayonnaise.')),
+ ('Deluxe Mayo Machine', ['mayo_2', 'mayo_machine_2', 'mayo_machine_1', 'mayo_machine'], {'iron_bar': 4, 'glass': 6, 'gear': 2}, d(1, 'Duck eggs and big eggs too.'))])
+station('extractor', 'Honey Extractor', 'pantry', [13, 21], 'ranching', 'Spin', 'Hazel', [
+ ('Honey Extractor', ['extractor_1', 'honey_extractor'], {'plank': 12, 'copper_bar': 2, 'glass': 4}, d(0, 'Honeycomb into honey and beeswax.')),
+ ('Honey House', ['extractor_2', 'honey_extractor'], {'iron_bar': 4, 'glass': 10, 'gear': 2}, d(1, 'Jars of honey and beeswax candles.'))])
 station('kiln', 'Kiln', 'workshop', [3, 18], 'mining', 'Fire', 'Granite', [
  ('Clay Kiln', ['kiln', 'glass_kiln'], {'stone': 30, 'clay': 10}, d(0, 'Bricks, pots, glass.')),
  ('Brick Kiln', ['kiln_2', 'glass_kiln'], {'brick': 40, 'copper_bar': 3}, d(1)),
@@ -339,9 +356,90 @@ for k in ('chest', 'well', 'beehive', 'scarecrow'): B[k]['cat'] = 'farm'
 
 # Upgrades of the older farm buildings now take worked goods, and everything has a ready-made price.
 for bid, tier, cost in [('house', 2, {'plank': 80, 'brick': 60, 'nails': 30, 'copper_bar': 5}), ('house', 3, {'beam': 40, 'tile': 60, 'iron_bar': 10, 'glass': 20}),
-                        ('coop', 2, {'plank': 60, 'nails': 30, 'copper_bar': 3}), ('barn', 2, {'beam': 30, 'brick': 60, 'iron_bar': 4}), ('shed', 2, {'plank': 50, 'nails': 30, 'copper_bar': 4})]:
+                        ('shed', 2, {'plank': 50, 'nails': 30, 'copper_bar': 4})]:
     for t in B[bid]['tiers']:
         if t['tier'] == tier: t['cost'] = cost
+# ---- ranch buildings (C11a P3) ------------------------------------------------------
+# Every ranch building tier lives here (the old hand-kept coop/barn/silo/stable/beehive entries
+# and the tier-2 cost patch are gone). Prices/permits/days/gates/sellers come from this table;
+# capacity, perks ("adds"), pens and footprints come from data/ranch.json "buildings" (gen_ranch.py,
+# runs before this). Builds id -> Ranch home: coop, barn, hutch, sty, beehive = "apiary", stable.
+# The Ranching tree gates the hutch and sty (blueprints) and every tier 3 (skill level).
+RJ = json.load(open(D + 'ranch.json')) if os.path.exists(D + 'ranch.json') else {}
+RB = RJ.get('buildings', {}) if isinstance(RJ.get('buildings'), dict) else {}
+RANCH_HOME = {'coop': 'coop', 'barn': 'barn', 'hutch': 'hutch', 'sty': 'sty', 'beehive': 'apiary', 'stable': 'stable'}
+ADDS_WORD = {'feeder': 'a silo feeder', 'incubator': 'an incubator', 'auto_water': 'automatic water', 'heater': 'a heater for winter',
+             'breeding': 'a breeding pen'}
+def bart(*names):
+    for n in names:
+        for g in ('props', 'buildings', 'stations'):  # legacy props first; P6's new tiers live in buildings/
+            if n in M.get(g, {}): return (g, n)
+    raise SystemExit('gen_stations: no art for ranch tier %s' % (names,))
+#  id: (label, seller, seller_gangsters, thing, default cell/w/h, [(name, gang name, sprites, cost, permit, days, unlock, desc)])
+RANCH = {
+ 'coop': ('Coop', 'Hazel', 'The crew', '', ([26, 8], 3, 3), [
+   ('Coop', 'Coop', ['coop_1', 'coop_small'], {'wood': 120, 'stone': 40}, 100, 1, {}, 'Chickens: eggs every morning you care for them.'),
+   ('Big Coop', 'Big Coop', ['coop_2', 'coop_big'], {'plank': 60, 'nails': 30, 'copper_bar': 3}, 400, 2, {'skill': ['building', 3]}, 'Room for ducks too; birds eat silo hay.'),
+   ('Deluxe Coop', 'Deluxe Coop', ['coop_3', 'coop_deluxe', 'coop_big'], {'hardwood_plank': 20, 'glass': 12, 'iron_bar': 6}, 900, 3, {'skill': ['ranching', 5], 'progress': 1}, 'The biggest flock, warm all winter.')]),
+ 'barn': ('Barn', 'Benno', 'The crew', '', ([32, 5], 4, 3), [
+   ('Barn', 'Barn', ['barn_1', 'barn_small'], {'wood': 200, 'stone': 80}, 200, 2, {}, 'Cows and sheep: milk and wool.'),
+   ('Big Barn', 'Big Barn', ['barn_2', 'barn_big'], {'beam': 30, 'brick': 60, 'iron_bar': 4}, 800, 3, {'skill': ['building', 5]}, 'Goats and llamas too; barn animals eat silo hay.'),
+   ('Deluxe Barn', 'Deluxe Barn', ['barn_3', 'barn_deluxe', 'barn_big'], {'beam': 40, 'tile': 30, 'steel_bar': 6}, 1600, 3, {'skill': ['ranching', 7], 'progress': 2}, 'The biggest herd, warm all winter.')]),
+ 'hutch': ('Rabbit Hutch', 'Hazel', 'The crew', 'hutch', ([38, 9], 2, 2), [
+   ('Rabbit Hutch', 'Rabbit Hutch', ['hutch_1', 'coop_small'], {'wood': 60, 'fiber': 20, 'plank': 10}, 80, 1, {}, 'Rabbits: soft fur for the loom.'),
+   ('Big Hutch', 'Big Hutch', ['hutch_2', 'hutch_1', 'coop_small'], {'plank': 30, 'nails': 16, 'copper_bar': 2}, 300, 2, {'skill': ['ranching', 4]}, 'More rabbits.')]),
+ 'sty': ('Pig Sty', 'Benno', 'The crew', 'sty', ([41, 9], 3, 2), [
+   ('Pig Sty', 'Pig Pen', ['sty_1', 'pig_pen'], {'wood': 100, 'stone': 40}, 150, 1, {}, 'Pigs: they dig up truffles outdoors.'),
+   ('Big Sty', 'Big Pig Pen', ['sty_2', 'sty_1', 'pig_pen'], {'plank': 40, 'brick': 30, 'iron_bar': 3}, 500, 2, {'skill': ['ranching', 6]}, 'More pigs.')]),
+ 'beehive': ('Apiary', 'Hazel', 'The crew', 'beehive', ([29, 19], 0, 1), [
+   ('Beehive', 'Beehive', ['apiary_1', 'beehive3_a'], {'wood': 15, 'fiber': 10}, 0, 0, {}, 'Honey every few days; flowers nearby make it finer.'),
+   ('Bee House', 'Bee House', ['apiary_2', 'beehive2', 'beehive3_b'], {'plank': 20, 'nails': 10, 'glass': 4}, 0, 1, {'skill': ['ranching', 3]}, 'More hives, more honey.'),
+   ('Apiary', 'Apiary', ['apiary_3', 'apiary_2', 'ri_beehive4', 'beehive3_b'], {'hardwood_plank': 10, 'glass': 10, 'gear': 2}, 200, 2, {'skill': ['ranching', 6]}, 'A whole row of hives.')]),
+ 'silo': ('Silo', 'Benno', 'The crew', 'silo', ([30, 4], 1, 3), [
+   ('Silo', 'Silo', ['silo_1', 'silo2'], {'stone': 60, 'wood': 30}, 50, 1, {}, 'Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.'),
+   ('Tall Silo', 'Tall Silo', ['silo_2', 'farm_silo_b', 'silo2'], {'brick': 60, 'plank': 30, 'iron_bar': 2}, 200, 1, {'skill': ['ranching', 2]}, 'Stores 480 hay: enough for a winter with a full coop.'),
+   ('Twin Silo', 'Twin Silo', ['silo_3', 'farm_silo_b', 'silo2'], {'brick': 100, 'beam': 12, 'steel_bar': 3}, 500, 2, {'skill': ['ranching', 5]}, 'Stores 720 hay: a whole ranch through winter.')]),
+ 'stable': ('Stable', 'Benno', 'The crew', '', ([32, 11], 3, 3), [
+   ('Stable', 'Stable', ['stable_1', 'stable2'], {'wood': 150, 'iron_bar': 2}, 300, 2, {'friend': ['benno', 2]}, 'Your horse sleeps here; it rides 10% faster.')]),
+}
+BLUEPRINT_GATED = {'hutch', 'sty'}  # Ranching tree blueprints (gen_skill_trees.py UNLOCKS); Builds.gate checks tier 1
+def ranch_desc(bid, i, base):
+    rows = [r for r in RB.get(RANCH_HOME.get(bid, bid), []) if isinstance(r, dict) and int(r.get('tier', 0)) == i + 1]
+    if not rows: return base
+    r = rows[0]; bits = []
+    if int(r.get('cap', 0)) > 0:
+        bits.append('Room for %d.' % int(r['cap']) if bid != 'beehive' else 'Holds %d hives.' % int(r['cap']))
+    new = [a for a in r.get('adds', []) if a in ADDS_WORD]
+    if i > 0:
+        prev = [x for x in RB.get(RANCH_HOME.get(bid, bid), []) if isinstance(x, dict) and int(x.get('tier', 0)) == i]
+        if prev: new = [a for a in new if a not in prev[0].get('adds', [])]
+    if new:
+        bits.append('Adds ' + ', '.join(ADDS_WORD[a] for a in new) + '.')
+    return (base + ' ' + ' '.join(bits)).strip()
+for bid, (label, seller, gseller, thing, (cell, w, h), tiers) in RANCH.items():
+    old = B.get(bid, {})
+    home = RANCH_HOME.get(bid, bid)
+    rb0 = next((r for r in RB.get(home, []) if isinstance(r, dict) and r.get('cell')), {})
+    e = {'label': label, 'cell': list(rb0.get('cell', old.get('cell', cell))), 'w': int(rb0.get('w', old.get('w', w))),
+         'h': int(rb0.get('h', old.get('h', h))), 'group': 'props', 'cat': 'farm', 'seller': seller, 'seller_gang': gseller, 'ranch': home}
+    if thing: e['thing'] = thing
+    for k in ('anim',):
+        if k in old: e[k] = old[k]
+    e['tiers'] = []
+    for i, (name, gname, sprites, cost, permit, days, unlock, desc) in enumerate(tiers):
+        g, sp = bart(*sprites)
+        t = {'tier': i + 1, 'name': name, 'sprite': sp, 'group': g, 'cost': cost, 'permit': permit, 'days': days,
+             'desc': ranch_desc(bid, i, desc), 'price': int(round((val(cost) * 2.2 + 150 * (i + 1) ** 2) / 10.0) * 10)}
+        if unlock: t['unlock'] = dict(unlock)
+        if gname != name: t['name_gang'] = gname  # C11b P6: Builds._arc_words; tier rows may grow (cell/w/h)
+        t.update({k: rr[k] for rr in RB.get(home, []) if isinstance(rr, dict) and int(rr.get('tier', 0)) == i + 1 for k in ('cell', 'w', 'h') if k in rr and i > 0})
+        if bid in BLUEPRINT_GATED and i == 0:
+            t.setdefault('unlock', {})['hint'] = 'learn the %s Blueprint (Ranching tree)' % ('Hutch' if bid == 'hutch' else 'Sty')
+        if i > 0 and 'skill' in t.get('unlock', {}) and t['unlock']['skill'][0] == 'ranching':
+            t['unlock']['hint'] = 'Ranching level %d' % t['unlock']['skill'][1]
+        e['tiers'].append(t)
+    B[bid] = e
+
 for k, v in B.items():
     if isinstance(v, dict):
         v.setdefault('seller', 'Hazel')
@@ -370,7 +468,7 @@ books['sawmill'] = [rc('plank', 'Plank', {'wood': 2}, n=1), rc('charcoal', 'Char
 books['furnace'] = keep('copper_bar', 'iron_bar', 'steel_bar', 'silver_bar', 'gold_bar') + [rc('dark_bar', 'Shadowsteel Bar', {'dark': 5, 'coal': 4}, tier=4), rc('moon_bar', 'Moonsilver Bar', {'moon_shard': 2, 'silver_bar': 2}, tier=5)]
 books['anvil'] = [rc('nails', 'Nails', {'copper_bar': 1}, n=10), rc('horseshoe', 'Horseshoe', {'copper_bar': 1}), rc('gear', 'Gear', {'iron_bar': 1}, tier=2), rc('spring', 'Spring', {'iron_bar': 1, 'coal': 1}, tier=2),
  rc('plating', 'Steel Plating', {'steel_bar': 2, 'coal': 2}, tier=3)] + sorted(metal_gear, key=lambda r: (r['tier'], r['id'])) + keep('pup_collar_iron', 'pup_boots')
-books['loom'] = keep('rope', 'cloth') + [rc('yarn', 'Yarn', {'sheep_wool': 1}), rc('linen', 'Linen', {'flax': 2}), rc('cotton_cloth', 'Cotton Cloth', {'cotton': 2}, tier=2),
+books['loom'] = keep('rope', 'cloth') + [rc('yarn', 'Yarn', {'sheep_wool': 1, 'fiber': 1}, n=2), rc('linen', 'Linen', {'flax': 2}), rc('cotton_cloth', 'Cotton Cloth', {'cotton': 2}, tier=2),
  rc('sail', 'Sailcloth', {'linen': 3, 'rope': 2}, tier=2), rc('fine_fabric', 'Fine Fabric', {'cotton_cloth': 1, 'linen': 1, 'yarn': 1}, tier=3), rc('moonweave', 'Moonweave', {'fine_fabric': 2, 'star_dust': 1}, tier=4)] + keep(
  'work_shirt', 'outfit_farmer', 'outfit_forester', 'outfit_fisher', 'outfit_miner', 'outfit_merchant', 'outfit_scholar', 'outfit_neon', 'outfit_penguin')
 books['tannery'] = [rc('leather', 'Leather', {'pelt': 1}, tier=1), rc('leather_scrap', 'Leather (from wings)', {'bat_wing': 2, 'slime_gel': 1}, 'leather', 1), rc('fine_leather', 'Fine Leather', {'leather': 2, 'cooking_oil': 1}, tier=3)] + sorted(leather_gear, key=lambda r: r['id']) + keep(
@@ -381,6 +479,17 @@ books['press'] = [rc('cheese', 'Cheese', {'milk': 1}), rc('butter', 'Butter', {'
  rc('pickles', 'Pickles', {'#veg': 2, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fruit Wine Reserve', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
 books['kiln'] = [rc('brick', 'Brick', {'clay': 1}, n=2), rc('stone_brick', 'Brick (from stone)', {'stone': 4, 'coal': 1}, 'brick', 1, 2), rc('clay_pot', 'Clay Pot', {'clay': 2}), rc('glass', 'Glass', {'sand': 3, 'coal': 1}),
  rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Lens', {'glass': 2, 'sand': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
+books['mayo'] = [rc('mayonnaise', 'Mayonnaise', {'egg': 1}), rc('duck_mayonnaise', 'Duck Mayonnaise', {'duck_egg': 1}, tier=2)]
+books['extractor'] = [rc('honey_comb', 'Honey (from honeycomb)', {'honeycomb': 1}, 'honey', 1, 2), rc('beeswax', 'Beeswax', {'honeycomb': 1}, n=2),
+ rc('honey_jar', 'Jar of Honey', {'honey': 3, 'glass': 1}, tier=2), rc('beeswax_candle', 'Beeswax Candle', {'beeswax': 2, 'fiber': 1}, tier=2)]
+# Raw goods that only exist once tools/gen_ranch.py has written them (C11a P1): recipes join when their inputs do.
+for bk, r in [('mayo', rc('big_mayo', 'Mayonnaise (big egg)', {'large_egg': 1}, 'mayonnaise', 2, 2)),
+              ('mayo', rc('golden_mayo', 'Mayonnaise (golden egg)', {'golden_egg': 1}, 'duck_mayonnaise', 2, 6)),
+              ('loom', rc('down_pillow', 'Down Pillow', {'feather': 2, 'cloth': 1})),
+              ('loom', rc('angora_yarn', 'Yarn (rabbit fur)', {'rabbit_fur': 1}, 'yarn', 1, 3)),
+              ('press', rc('big_cheese', 'Cheese (big milk)', {'large_milk': 1}, 'cheese', 1, 2))]:
+    if all(k in I for k in r['need']):
+        books[bk].append(r)
 books['jeweler'] = keep('copper_ring', 'paw_charm', 'silver_ring', 'ruby_ring', 'crystal_lens', 'pup_collar_crystal', 'crystal_crown', 'light_charm', 'moon_ring', 'dream_charm')
 books['cauldron'] = keep('herb_remedy', 'energy_tea', 'potion', 'dream_tonic', 'cloud_walkers') + [
  rc('hearth_brew', 'Hearth Brew', {'#herb': 1, 'honey': 1, 'clay_pot': 1}), rc('mana_potion', 'Mana Potion', {'flower': 2, 'glass': 1, 'light_mote': 1}, tier=2),
@@ -519,6 +628,17 @@ for b in books.values():
             if raw in r['need'] and r['id'] not in ('cheese', 'butter'):
                 r['need'][fam] = r['need'].pop(raw)
 books['press'].insert(2, rc('goat_cheese', 'Goat Cheese', {'goat_milk': 1}))
+books['press'] += [rc('cream', 'Cream', {'#milk': 1}), rc('yogurt', 'Honey Yogurt', {'#milk': 1, 'honey': 1}, tier=2),
+                   rc('truffle_oil', 'Truffle Oil', {'truffle': 1}, tier=3)]
+# Animal goods text (c11a_04-21, c11a_08): what they are and where they come from.
+for k, dd in (('goat_milk', 'From the barn goats.'), ('sheep_wool', 'Shorn from a happy sheep or llama. Spin it into yarn at the Loom.'),
+              ('honey', 'From your beehives, or found in the Meadow.'), ('butter', 'Churned from fresh milk.'),
+              ('yarn', 'Soft and warm. Spun from wool or rabbit fur at the Loom.'), ('truffle', 'Dug up by happy pigs, or found in old forests.'),
+              ('honeycomb', 'Straight from the hive. Spin it at the Honey Extractor for honey and beeswax.'),
+              ('hay', 'Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam.')):
+    if k in I: I[k]['desc'] = dd
+I['duck_egg']['energy'] = 26
+I['honey']['energy'] = 20
 I['butter']['value'] = 70; I['cheese']['desc'] = 'Pressed from fresh milk.'
 def fval(k):  # value of a need key ('#fam' = its cheapest member)
     if k.startswith('#'):

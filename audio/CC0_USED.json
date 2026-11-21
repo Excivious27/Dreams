@@ -36,6 +36,9 @@
   "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Simple Bleeps/sfx_sounds_Blip9.wav",
   "crowd-shoutingspeaking-ambience/crowd_shouting_0.ogg"
  ],
+ "aviary_room": [
+  "bird-chirping-sounds/birdchirping071414.wav"
+ ],
  "ball_return": [
   "68-workshop-sounds/workshop_x/workshop/workshop - wood on concrete.wav",
   "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
@@ -131,6 +134,10 @@
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/bug_01.ogg",
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/bug_02.ogg",
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/bug_03.ogg"
+ ],
+ "buzz": [
+  "bigsoundbank/1000.ogg",
+  "bigsoundbank/1001.ogg"
  ],
  "campfire": [
   "fire-crackling/fire-1.wav"
@@ -252,6 +259,40 @@
  "crowd": [
   "bigsoundbank/0825.ogg"
  ],
+ "cv_emu": [
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_11.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_10.ogg"
+ ],
+ "cv_frost": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/ooh.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/weird_07.ogg"
+ ],
+ "cv_gloam": [
+  "insect-sounds/insect_x/insect0.ogg",
+  "insect-sounds/insect_x/insect4.ogg"
+ ],
+ "cv_komodo": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/nose.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/breath.ogg"
+ ],
+ "cv_merkitty": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_02.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_06.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/burble_01.ogg"
+ ],
+ "cv_moon": [
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/alien_02.ogg",
+  "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/alien_03.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/alien_08.ogg"
+ ],
+ "cv_ostrich": [
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_10.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_11.ogg",
+  "80-cc0-creture-sfx-2/80-CC0-creature-sfx-2_x/misc_12.ogg"
+ ],
+ "cv_sky": [
+  "bird-chirping-sounds/birdchirping071414.wav"
+ ],
  "dice_roll": [
   "bigsoundbank/0581.ogg",
   "bigsoundbank/0582.ogg"
@@ -305,6 +346,11 @@
   "7-eating-crunches/crunch_-_tito_x/crunch.3.ogg",
   "apple-bite/apple_bite_0.ogg"
  ],
+ "egg_crack": [
+  "7-eating-crunches/crunch_-_tito_x/crunch.2.ogg",
+  "7-eating-crunches/crunch_-_tito_x/crunch.4.ogg",
+  "7-eating-crunches/crunch_-_tito_x/crunch.5.ogg"
+ ],
  "emp": [
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/EMP_01_s01.wav",
   "150-combat-sound-effects/150gameeffectsounds_x/04_magic_spells/EMP_02_s01.wav",
@@ -317,6 +363,10 @@
  ],
  "fairy_ring": [
   "bigsoundbank/0040.ogg"
+ ],
+ "feeder_fill": [
+  "68-workshop-sounds/workshop_x/workshop/workshop - rummaging through nails.wav",
+  "68-workshop-sounds/workshop_x/workshop/workshop - tool rummaging.wav"
  ],
  "fireworks": [
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/fw_01.ogg",
@@ -487,6 +537,10 @@
  ],
  "neon_street": [
   "scifi-city-ambient-loop/busy_cyberworld.ogg"
+ ],
+ "oink": [
+  "bigsoundbank/1658.ogg",
+  "bigsoundbank/1659.ogg"
  ],
  "owl": [
   "birdcricketfrog-and-mosquito-sounds/birdsCrickets_x/birdsCrickets/birdNight.wav"
@@ -829,10 +883,17 @@
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/terminal_02.ogg",
   "50-cc0-sci-fi-sfx/sci-fi-sfx_x/terminal_03.ogg"
  ],
+ "terrarium_room": [
+  "30-cc0-sfx-loops/sfx_loops_x/ambient_02.ogg",
+  "30-cc0-sfx-loops/sfx_loops_x/noise_01.ogg"
+ ],
  "thud": [
   "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood01.mp3.flac",
   "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood05.mp3.flac",
   "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood09.mp3.flac"
+ ],
+ "thump": [
+  "bigsoundbank/1376.ogg"
  ],
  "thunder": [
   "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_thunder_01.ogg"

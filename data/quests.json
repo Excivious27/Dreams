@@ -1266,12 +1266,13 @@
   {
    "id": "hazel_eggs",
    "giver": "hazel",
-   "text": "Hazel asks for 6 eggs. Build a coop if you haven't.",
+   "text": "Hazel asks for 6 eggs from your hens.",
    "when": {
     "friend": [
      "hazel",
      2
-    ]
+    ],
+    "flag": "rmail_coop_1"
    },
    "done_when": {
     "item": [
@@ -1295,12 +1296,13 @@
   {
    "id": "hazel_milk",
    "giver": "hazel",
-   "text": "Hazel wants 4 milk for the cheese cellar.",
+   "text": "Hazel wants 4 milk from your barn for the cheese cellar.",
    "when": {
     "friend": [
      "hazel",
      6
-    ]
+    ],
+    "flag": "rmail_barn_1"
    },
    "done_when": {
     "item": [
@@ -1418,7 +1420,8 @@
     "friend": [
      "posy",
      3
-    ]
+    ],
+    "flag": "rmail_coop_1"
    },
    "done_when": {
     "item": [

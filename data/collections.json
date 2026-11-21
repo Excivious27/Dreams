@@ -36,6 +36,12 @@
    "title": "Forage log",
    "kind": "seen",
    "badge": "medal_explorer"
+  },
+  {
+   "id": "ranch",
+   "title": "Ranch log",
+   "kind": "count",
+   "badge": "medal_green_thumb"
   }
  ],
  "wings": [
@@ -362,6 +368,144 @@
  "logs": {
   "shipping": [
    {
+    "item": "egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your coop hens, every morning you care for them."
+   },
+   {
+    "item": "duck_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Ducks in the Big Coop."
+   },
+   {
+    "item": "milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Cows in your barn."
+   },
+   {
+    "item": "goat_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Goats in the Big Barn."
+   },
+   {
+    "item": "sheep_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Sheep and llamas in your barn."
+   },
+   {
+    "item": "honey",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives on the farm; sometimes found in the Meadow."
+   },
+   {
+    "item": "honeycomb",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives, now and then."
+   },
+   {
+    "item": "truffle",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Happy pigs dig them up outdoors; old forests too."
+   },
+   {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "cheese",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "butter",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "goat_cheese",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "mayonnaise",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "duck_mayonnaise",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "cream",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "yogurt",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "honey_jar",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "beeswax_candle",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "yarn",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
+    "item": "truffle_oil",
+    "arc": "",
+    "family": "Artisan goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   },
+   {
     "item": "turnip",
     "arc": "",
     "family": "Crops",
@@ -432,12 +576,6 @@
     "arc": "",
     "family": "Fish",
     "where": "Crystal Meadow, Farm"
-   },
-   {
-    "item": "honey",
-    "arc": "",
-    "family": "Crops",
-    "where": "Forage: Meadow"
    },
    {
     "item": "wheat",
@@ -606,12 +744,6 @@
     "arc": "",
     "family": "Forage",
     "where": "Out in the world somewhere."
-   },
-   {
-    "item": "truffle",
-    "arc": "",
-    "family": "Forage",
-    "where": "Forage: Forest"
    },
    {
     "item": "glowcap",
@@ -3329,6 +3461,20 @@
     "arc": ""
    },
    {
+    "recipe": "down_pillow",
+    "station": "loom",
+    "item": "down_pillow",
+    "name": "Down Pillow",
+    "arc": ""
+   },
+   {
+    "recipe": "angora_yarn",
+    "station": "loom",
+    "item": "yarn",
+    "name": "Yarn (rabbit fur)",
+    "arc": ""
+   },
+   {
     "recipe": "dc_rug_rect_blue",
     "station": "loom",
     "item": "dc_rug_rect_blue",
@@ -3655,6 +3801,27 @@
     "station": "press",
     "item": "fine_wine",
     "name": "Fruit Wine Reserve",
+    "arc": ""
+   },
+   {
+    "recipe": "cream",
+    "station": "press",
+    "item": "cream",
+    "name": "Cream",
+    "arc": ""
+   },
+   {
+    "recipe": "yogurt",
+    "station": "press",
+    "item": "yogurt",
+    "name": "Honey Yogurt",
+    "arc": ""
+   },
+   {
+    "recipe": "truffle_oil",
+    "station": "press",
+    "item": "truffle_oil",
+    "name": "Truffle Oil",
     "arc": ""
    },
    {
@@ -4510,6 +4677,48 @@
     "item": "drone_swarm",
     "name": "Drone Swarm",
     "arc": ""
+   },
+   {
+    "recipe": "mayonnaise",
+    "station": "mayo",
+    "item": "mayonnaise",
+    "name": "Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "duck_mayonnaise",
+    "station": "mayo",
+    "item": "duck_mayonnaise",
+    "name": "Duck Mayonnaise",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_comb",
+    "station": "extractor",
+    "item": "honey",
+    "name": "Honey (from honeycomb)",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax",
+    "station": "extractor",
+    "item": "beeswax",
+    "name": "Beeswax",
+    "arc": ""
+   },
+   {
+    "recipe": "honey_jar",
+    "station": "extractor",
+    "item": "honey_jar",
+    "name": "Jar of Honey",
+    "arc": ""
+   },
+   {
+    "recipe": "beeswax_candle",
+    "station": "extractor",
+    "item": "beeswax_candle",
+    "name": "Beeswax Candle",
+    "arc": ""
    }
   ],
   "forage": [
@@ -4566,7 +4775,7 @@
    {
     "item": "truffle",
     "arc": "",
-    "where": "Forage: Forest"
+    "where": "Happy pigs dig them up outdoors; old forests too."
    },
    {
     "item": "glowcap",
@@ -4673,12 +4882,81 @@
     "arc": "",
     "where": "Forage: Desert Dune Sea, Desert Glass Canyon"
    }
+  ],
+  "ranch": [
+   {
+    "item": "egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your coop hens, every morning you care for them."
+   },
+   {
+    "item": "duck_egg",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Ducks in the Big Coop."
+   },
+   {
+    "item": "milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Cows in your barn."
+   },
+   {
+    "item": "goat_milk",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Goats in the Big Barn."
+   },
+   {
+    "item": "sheep_wool",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Sheep and llamas in your barn."
+   },
+   {
+    "item": "honey",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives on the farm; sometimes found in the Meadow."
+   },
+   {
+    "item": "honeycomb",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Your beehives, now and then."
+   },
+   {
+    "item": "truffle",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Happy pigs dig them up outdoors; old forests too."
+   },
+   {
+    "item": "feather",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "rabbit_fur",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "The mines, or rocks out in the wilds."
+   },
+   {
+    "item": "beeswax",
+    "arc": "",
+    "family": "Animal goods",
+    "where": "Make it from animal goods (Pantry Press, Loom, Mayo Machine or Honey Extractor)."
+   }
   ]
  },
  "stations": [
   "anvil",
   "armory",
   "cauldron",
+  "extractor",
   "furnace",
   "garage",
   "hack",
@@ -4687,6 +4965,7 @@
   "kiln",
   "litter",
   "loom",
+  "mayo",
   "mill",
   "press",
   "print",
@@ -4889,6 +5168,67 @@
    },
    "text": "You've cooked every recipe there is. Teach me something now! - Posy",
    "text_gangsters": "Every recipe in the book. Your turn to teach me. - Posy"
+  },
+  {
+   "id": "ranch_3",
+   "cat": "ranch",
+   "need": 3,
+   "from": "benno",
+   "give": {
+    "money": 400,
+    "item": "hay",
+    "n": 40
+   },
+   "text": "Three kinds of animal goods from your own ranch! Here's hay for the herd, on the house. - Benno",
+   "text_gangsters": "Three kinds of goods off your own ranch. Nobody looks twice at a real farm. Hay's on me. - Benno"
+  },
+  {
+   "id": "ribbon_1",
+   "cat": "ranch",
+   "need": "flag:show_blue:1",
+   "from": "benno",
+   "give": {
+    "money": 300,
+    "decor": "dc_tt_medal_bronze"
+   },
+   "text": "Your first blue ribbon! The fair sent a little medal for your wall. - Benno",
+   "text_gangsters": "First blue ribbon. The fair sent a medal. Hang it somewhere people see. - Benno"
+  },
+  {
+   "id": "ribbon_3",
+   "cat": "ranch",
+   "need": "flag:show_blue:3",
+   "from": "benno",
+   "give": {
+    "money": 800,
+    "decor": "dc_tt_medal_silver"
+   },
+   "text": "Three blue ribbons. Folks are starting to ask your secret. - Benno",
+   "text_gangsters": "Three blues. The other ranchers are asking questions. Say nothing. - Benno"
+  },
+  {
+   "id": "ribbon_8",
+   "cat": "ranch",
+   "need": "flag:show_blue:8",
+   "from": "benno",
+   "give": {
+    "money": 2000,
+    "decor": "dc_tt_trophy_crystal"
+   },
+   "text": "Eight blue ribbons! The fair had a crystal trophy made with your name on it. - Benno",
+   "text_gangsters": "Eight blues. They had a trophy made with your name on it. Champion of the pens. - Benno"
+  },
+  {
+   "id": "ranch_all",
+   "cat": "ranch",
+   "need": "all",
+   "from": "benno",
+   "give": {
+    "money": 2500,
+    "decor": "dc_tt_trophy_farm_a"
+   },
+   "text": "Every good a ranch can give, from your own animals. The fair made you a trophy. - Benno",
+   "text_gangsters": "Every good a ranch can give, all yours. The block chipped in for a trophy. - Benno"
   },
   {
    "id": "craft_25",

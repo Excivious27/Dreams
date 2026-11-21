@@ -415,6 +415,18 @@ func _place_festival(fest: String) -> void:
 			pf.call("fest_fw_41", Vector2i(32, 54)); pf.call("fest_fw_42", Vector2i(48, 54)); pf.call("fest_fw_43", Vector2i(35, 60)); pf.call("fest_fw_44", Vector2i(45, 60))
 			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1); pf.call("fest_fw_68", Vector2i(40, 60), 1, false)
 	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + GameState.festival_name(fest)}, false)
+	# C11a P5: the Animal Show (Harvest Fair) and the Best Egg table (Egg Festival).
+	var sh: Array = SHOW.get(fest, [])
+	if not sh.is_empty():
+		var shc: Vector2i = sh[0]
+		if Art.has("buildings", "fence_h"):
+			for dx in [-1, 1]:
+				prop("buildings", "fence_h", shc + Vector2i(dx, 0), 0, 0.0, false)
+		# C11b P6 (c11b_10-12): the rivals' animals stand in the show pen behind the fence.
+		if fest == "harvest":
+			for pa: Array in [["animals/sheep_woolly", Vector2i(-1, -1)], ["animals/goat", Vector2i(1, -1)], ["animals/chicken2", Vector2i(-2, 0)]]:
+				anim_prop(str(pa[0]), "idle", shc + (pa[1] as Vector2i), 0, 3.0, false)
+		set_thing(shc.x, shc.y, {"type": "animal_show", "fest": fest, "hint": "A: " + show_title(fest)}, false)
 	# C10b P1 (c10b_06_02/15): the festival stall sells the day's treat and that season's decor
 	# (decor.json "stall:festival_<season>", through Shops.stall). Lantern/harvest get their own stall prop.
 	var st: Array = FEST_STALL.get(fest, [])
@@ -533,8 +545,7 @@ func _lantern_float(key: String) -> void:
 func _crop_contest(key: String) -> void:
 	var opts: Array = []
 	for id in GameState.run["inventory"].keys():
-		var it: Dictionary = GameState.items.get(id, {})
-		if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and not GameState.is_locked(str(id)) and GameState.count(str(id)) > 0:
+		if contest_crop(str(id)) and not GameState.is_locked(str(id)) and GameState.count(str(id)) > 0:
 			opts.append(str(id))
 	if opts.is_empty():
 		await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
@@ -551,9 +562,8 @@ func _crop_contest(key: String) -> void:
 	if dc.last_choice < 0 or dc.last_choice >= opts.size():
 		return
 	var best: String = opts[dc.last_choice]
+	var qb := entry_quality(best)  # read (and take) the best piece BEFORE the count drops (c11a_04-04)
 	GameState.add_item(best, -1)
-	var q: Dictionary = GameState.quality_of(best)
-	var qb := 30 if int(q.get("i", 0)) > 0 else (20 if int(q.get("g", 0)) > 0 else (10 if int(q.get("s", 0)) > 0 else 0))
 	var grown := (GameState.run.get("grown", {}) as Dictionary).size()
 	var score := GameState.item_value(best) + qb + grown * 4
 	# The other entries this year (seeded by the day so they don't change on reload).
@@ -573,6 +583,157 @@ func _crop_contest(key: String) -> void:
 	Music.instance(get_tree()).sfx("quest_done", "coin")
 	hud.toast("+%s" % Money.amount([300, 150, 50][place - 1]), Color(0.7, 0.9, 1))
 	xp("farming", 40)
+
+
+## C11a P5: crops and fruit only (animal goods go to the Animal Show / Best Egg table).
+const CROP_FAMILIES := ["veg", "fruit", "grain", "berry", "tree", "flower", "herb", "magic", "mushroom"]
+
+
+static func contest_crop(id: String) -> bool:
+	var it: Dictionary = GameState.items.get(id, {})
+	var ty := str(it.get("type", ""))
+	if ty == "crop":
+		return true
+	return ty == "fruit" or (ty != "food" and ty != "material" and str(it.get("family", "")) in CROP_FAMILIES)
+
+
+## Quality points of the piece you hand over: the best one (gold first, as the sell box takes
+## them) is taken from the quality record before the item count drops. 30/20/10/0.
+static func entry_quality(id: String) -> int:
+	var q: Dictionary = GameState.quality_of(id)
+	if int(q.get("i", 0)) > 0:
+		return 30
+	var tq := GameState.take_quality(id, 1)
+	return 20 if int(tq.get("g", 0)) > 0 else (10 if int(tq.get("s", 0)) > 0 else 0)
+
+
+## Animal Show / Ranch Goods (Harvest Fair), Best Egg (Egg Festival), Fleece & Feather (Lantern
+## Festival): logic and tables in scripts/animal_show.gd (C11b P6). SHOW = [cell, host] per festival.
+const AnimalShowLib := preload("res://scripts/animal_show.gd")
+const SHOW := AnimalShowLib.STANDS
+
+
+static func show_title(fest: String) -> String:
+	return AnimalShowLib.stand_title(fest)
+
+
+static func show_score_animal(uid: String) -> int:
+	return AnimalShowLib.score_animal(uid)
+
+
+static func show_score_good(id: String, quality: int) -> int:
+	return AnimalShowLib.score_good(id, quality)
+
+
+func _animal_show(fest: String) -> void:
+	var cs: Array = AnimalShowLib.cats(fest)
+	var sh: Array = SHOW.get(fest, [])
+	if cs.is_empty() or sh.is_empty():
+		return
+	var host := str(sh[1])
+	player.frozen = true
+	var c: Dictionary = cs[0]
+	if cs.size() > 1:
+		var names: Array = []
+		for cc: Dictionary in cs:
+			names.append(AnimalShowLib.title(cc))
+		names.append("Not now")
+		var d0 := Dialogue.instance(get_tree())
+		d0.say([{"who": host, "text": "Two ribbon tables today. Which one?", "choice": names, "key": ""}])
+		await d0.finished
+		if d0.last_choice < 0 or d0.last_choice >= cs.size():
+			player.frozen = false
+			return
+		c = cs[d0.last_choice]
+	var cid := str(c["id"])
+	var ttl := AnimalShowLib.title(c)
+	if GameState.run["flags"].has(AnimalShowLib.done_key(fest, cid)):
+		await say([{"who": host, "text": "You've had your turn at the %s today. The judges are still talking about it." % ttl}])
+		player.frozen = false
+		return
+	var entries: Array = AnimalShowLib.animal_entries() if str(c["kind"]) == "animal" else AnimalShowLib.good_entries(c)
+	if entries.is_empty():
+		var why := "Bring a grown animal and you're in." if str(c["kind"]) == "animal" else "Bring something from the list and the table's yours. Gold stars win."
+		await say([{"who": host, "text": "The %s! %s" % [ttl, why]}])
+		player.frozen = false
+		return
+	var labels: Array = []
+	for e: Array in entries:
+		labels.append(str(e[0]))
+	labels.append("Not now")
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": host, "text": str(c.get("ask_gang" if AnimalShowLib.gang() else "ask", "")), "choice": labels, "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice >= entries.size():
+		player.frozen = false
+		return
+	var pick := str((entries[d.last_choice] as Array)[1])
+	var score := 0
+	var entry := ""
+	if str(c["kind"]) == "animal":
+		score = AnimalShowLib.score_animal(pick)
+		entry = str(Ranch.animal(pick).get("name", "your animal"))
+		Ranch.pet(pick)
+	else:
+		var qb := entry_quality(pick)
+		GameState.add_item(pick, -1)
+		score = AnimalShowLib.score_good(pick, qb)
+		entry = "your %s%s" % ["gold-star " if qb >= 20 else ("silver-star " if qb >= 10 else ""), GameState.item_name(pick)]
+	Music.instance(get_tree()).sfx("j_confirm", "pickup")
+	var rv: Array = AnimalShowLib.rivals(fest, cid)
+	var place: int = AnimalShowLib.place_for(score, rv)
+	var amt: int = AnimalShowLib.prize(c, place)
+	var lines: Array = [{"text": AnimalShowLib.ring_line(c, rv, entry)}, {"who": host, "text": AnimalShowLib.result_line(place, entry, amt)}]
+	var giver: Array = AnimalShowLib.giver_line(pick) if str(c["kind"]) == "animal" else []
+	if not giver.is_empty():
+		lines.append({"who": str(giver[1]), "text": str(giver[2])})
+		GameState.add_friend(str(giver[0]), 10)
+	await say(lines)
+	GameState.add_money(amt, "festival")
+	AnimalShowLib.record(fest, cid, place)
+	if place == 1:
+		Music.instance(get_tree()).sfx("j_treasure", "levelup")
+	else:
+		Music.instance(get_tree()).sfx("quest_done", "coin")
+	hud.toast("+%s" % Money.amount(amt), Color(0.7, 0.9, 1))
+	xp("farming", 20 if place <= 3 else 8)
+	player.frozen = false
+
+
+## C11a P5: the plaza market stalls Hazel and Benno keep in the morning (their routines put them at
+## the market then). [stall cell, open hour, close hour, greet pen, greet gang, items [[id, price]]].
+const MARKET_STALLS := {
+	"benno": [Vector2i(33, 24), 9, 11, "Feed for the barn, straight off the cart.", "Feed and hay. Cash, no receipts.", [["hay", 8], ["wheat_seed", 6], ["carrot_seed", 8]]],
+	"hazel": [Vector2i(33, 28), 8, 11, "Fresh from my yard: seed, hay, and good advice for free.", "Seed and hay. Advice is free; the rest isn't.", [["hay", 8], ["fertilizer", 10], ["corn_seed", 18]]],
+}
+
+
+static func market_open(who: String, minutes: int) -> bool:
+	var st: Array = MARKET_STALLS.get(who, [])
+	return not st.is_empty() and minutes >= int(st[1]) * 60 and minutes < int(st[2]) * 60 and GameState.festival_today() == ""
+
+
+func _market_stall(who: String) -> void:
+	var st: Array = MARKET_STALLS.get(who, [])
+	if st.is_empty():
+		return
+	var nm := str(GameState.npcs.get(who, {}).get("name", who))
+	player.frozen = true
+	if not market_open(who, int(GameState.run["time"])):
+		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
+	else:
+		var items: Array = (st[5] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
+		var pick := 0
+		if not Shops.animals_for(who).is_empty():  # fix2: Hazel sells her animals from the stall too
+			var d := Dialogue.instance(get_tree())
+			d.say([{"who": nm, "text": str(st[3] if GameState.is_penguins() else st[4]), "choice": ["Seed and hay", "Animals for your ranch", "Leave"], "key": ""}])
+			await d.finished
+			pick = d.last_choice
+		if pick == 0:
+			await Shops.stall(self, nm, str(st[3] if GameState.is_penguins() else st[4]), items)
+		elif pick == 1:
+			await Shops.animal_counter(self, who, nm)
+	player.frozen = false
 
 
 ## Star-wish: a small gift box, a wish for a lasting little boon, and a star sent
@@ -734,6 +895,9 @@ func _place_props() -> void:
 			prop("props", "stall2_" + col + ("" if open_hours else "_closed"), c, 1)
 		else:
 			prop("props", "stall_" + col, c, 1)
+		for ms: String in MARKET_STALLS:  # C11a P5: Benno's feed stall and Hazel's farm stall (mornings)
+			if (MARKET_STALLS[ms][0] as Vector2i) == c:
+				set_thing(c.x + 1, c.y, {"type": "market_stall", "who": ms, "hint": "A: %s's stall" % str(GameState.npcs.get(ms, {}).get("name", ms))}, false)
 		i += 1
 	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
 	for bx in [35, 36]:
@@ -971,6 +1135,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"fest_stall":
 			later(_fest_stall.bind(str(thing.get("fest", ""))))
+			return true
+		"market_stall":
+			later(_market_stall.bind(str(thing.get("who", ""))))
+			return true
+		"animal_show":
+			later(_animal_show.bind(str(thing.get("fest", ""))))
 			return true
 		"board":
 			later(_board)
