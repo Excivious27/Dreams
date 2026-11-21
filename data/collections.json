@@ -1262,6 +1262,12 @@
     "where": "Grow it on the farm."
    },
    {
+    "item": "barley",
+    "arc": "",
+    "family": "Crops",
+    "where": "Grow it on the farm."
+   },
+   {
     "item": "oat",
     "arc": "",
     "family": "Crops",
@@ -1425,6 +1431,12 @@
    },
    {
     "item": "ginger",
+    "arc": "",
+    "family": "Herbs",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "comfrey",
     "arc": "",
     "family": "Herbs",
     "where": "Out in the world somewhere."
@@ -5284,6 +5296,11 @@
    },
    {
     "item": "ginger",
+    "arc": "",
+    "where": "Out in the world somewhere."
+   },
+   {
+    "item": "comfrey",
     "arc": "",
     "where": "Out in the world somewhere."
    },

@@ -338,7 +338,7 @@ LINES = {
     "cold_2": "That's a long cold run. Take a breather?",
     "luck_charm": "Charms are lovely. The wheel doesn't care.",
     "gilt_chip": "Gilt house chips? Collectors want those, not my table. We take cash.",
-    "last_call": "Last call: one more hand, then the tables close for the night.",
+    "last_call": "Final hands: one more, then the tables close for the night.",
     "closing": "The Gilded Ace is closing for the night. Thanks for playing.",
     "big_win_heat": "The pit boss is making calls about you.",
     "break_set": "Done. The floor is closed to you until day %d. The house will hold your table.",
@@ -349,15 +349,15 @@ ODDS_BOARD = "Odds board: for every $100 bet, the house keeps about"
 
 TABLES = [   # id, name, short how-to (3 lines, button words through PadInput.words in game)
     {"id": "slots", "name": "Gilded Slots", "accent": [0.95, 0.72, 0.18],
-     "howto": ["Set your bet with LEFT and RIGHT.", "A spins. One payline across the middle.", "Every win pays at least twice your bet."]},
+     "howto": ["Set your bet with {LR}.", "{A} spins. One payline across the middle.", "Every win pays at least twice your bet."]},
     {"id": "roulette", "name": "Roulette", "accent": [0.9, 0.3, 0.3],
-     "howto": ["UP and DOWN pick a bet, LEFT and RIGHT the stake.", "On One number, X and Y pick the number.", "A spins. Single zero: zero loses outside bets."]},
+     "howto": ["{UD} pick a bet, {LR} the stake.", "On One number, {X} and {Y} pick the number.", "{A} spins. Single zero: zero loses outside bets."]},
     {"id": "blackjack", "name": "Blackjack", "accent": [0.35, 0.8, 0.4],
-     "howto": ["Get closer to 21 than the dealer.", "A hits, X stands, Y doubles your bet.", "Dealer stands on all 17s. Blackjack pays 6 to 5."]},
+     "howto": ["Get closer to 21 than the dealer.", "{A} hits, {X} stands, {Y} doubles your bet.", "Dealer stands on all 17s. Blackjack pays 6 to 5."]},
     {"id": "dice", "name": "Big or Small", "accent": [0.3, 0.55, 0.95],
-     "howto": ["Three dice. Small is 4-10, Big is 11-17.", "UP and DOWN pick, A rolls.", "Any triple: the house wins."]},
+     "howto": ["Three dice. Small is 4-10, Big is 11-17.", "{UD} pick, {A} rolls.", "Any triple: the house wins."]},
     {"id": "poker", "name": "Video Poker", "accent": [0.75, 0.45, 0.95],
-     "howto": ["Five cards. Tap cards (or X) to hold them.", "A draws new cards for the rest. Y shows a hint.", "Jacks or better pays. Paytable 8/5."]},
+     "howto": ["Five cards. Tap cards (or {X}) to hold them.", "{A} draws new cards for the rest. {Y} shows a hint.", "Jacks or better pays. Paytable 8/5."]},
 ]
 
 # One-time keepsakes for trying the tables and for hands played: never for the size

@@ -305,7 +305,7 @@ static func shelf_dialogue(m: GameMap, shop: String, who: String) -> void:
 			qty = [1, 5, 10][dq.last_choice]
 		match buy(m, id, qty):
 			"poor":
-				m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				m.hud.toast("Not enough %s." % ("crystals" if GameState.is_penguins() else "cash"), Color(1, 0.7, 0.7))
 				Music.instance(m.get_tree()).sfx("nope", "thud")
 			"ok":
 				Music.instance(m.get_tree()).sfx("cash", "coin")

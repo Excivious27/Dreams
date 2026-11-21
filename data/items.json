@@ -22912,7 +22912,7 @@
   "value": 600,
   "rarity": "epic",
   "tier": 4,
-  "desc": "A shiny scale shed by a happy drake. It grows a new one.",
+  "desc": "A shiny scale shed by a happy big lizard. It grows a new one.",
   "ranch": true
  },
  "yak_wool": {
@@ -23093,7 +23093,7 @@
   "value": 70,
   "rarity": "uncommon",
   "tier": 2,
-  "desc": "It sticks to everything and crackles when you pet it.",
+  "desc": "It sticks to everything and crackles in your pocket.",
   "ranch": true,
   "arc": "gangsters"
  },
@@ -23150,7 +23150,7 @@
   "value": 1011,
   "rarity": "epic",
   "tier": 4,
-  "desc": "A polished drake scale on a cord. Said to bring warm days."
+  "desc": "A polished lizard scale on a cord. Said to bring warm days."
  },
  "moon_cheese": {
   "name": "Moon Cheese",
