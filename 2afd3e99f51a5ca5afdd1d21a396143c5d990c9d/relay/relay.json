@@ -1,0 +1,28 @@
+{
+ "url": "wss://dreams-64-23-239-63.sslip.io",
+ "strict": false,
+ "notes": [],
+ "fail": true,
+ "local_code": "a29f453d8be9",
+ "main_code": "a29f453d8be9",
+ "live_before": {
+  "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+  "code": "a29f453d8be9",
+  "started": "2026-11-21T07:03:51.291Z",
+  "rooms": 1,
+  "players": 0
+ },
+ "live": {
+  "commit": "6fce22377e912cb87c978ee22b7bd62cb2726032",
+  "code": "a29f453d8be9",
+  "started": "2026-11-21T07:03:51.291Z",
+  "rooms": 1,
+  "players": 0
+ },
+ "deployed": true,
+ "ms": 168,
+ "live_ok": true,
+ "e2e": "NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e)",
+ "e2e_ok": false,
+ "line": "RELAY: FAIL, 168ms (NET E2E: FAIL (host rc=0, guest rc=1; logs in /home/runner/work/Dreams/Dreams/out/relay/e2e))"
+}
