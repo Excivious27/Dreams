@@ -80086,6 +80086,116 @@
    "h": 29,
    "w": 32
   },
+  "c15p2_cattail": {
+   "file": "items/c15p2_cattail.png",
+   "h": 32,
+   "w": 13
+  },
+  "c15p2_chanterelle": {
+   "file": "items/c15p2_chanterelle.png",
+   "h": 32,
+   "w": 32
+  },
+  "c15p2_chestnut": {
+   "file": "items/c15p2_chestnut.png",
+   "h": 32,
+   "w": 30
+  },
+  "c15p2_crocus": {
+   "file": "items/c15p2_crocus.png",
+   "h": 32,
+   "w": 21
+  },
+  "c15p2_crystal_icicle": {
+   "file": "items/c15p2_crystal_icicle.png",
+   "h": 32,
+   "w": 12
+  },
+  "c15p2_fiddlehead": {
+   "file": "items/c15p2_fiddlehead.png",
+   "h": 32,
+   "w": 17
+  },
+  "c15p2_hazelnut": {
+   "file": "items/c15p2_hazelnut.png",
+   "h": 32,
+   "w": 30
+  },
+  "c15p2_holly_sprig": {
+   "file": "items/c15p2_holly_sprig.png",
+   "h": 32,
+   "w": 32
+  },
+  "c15p2_honeysuckle": {
+   "file": "items/c15p2_honeysuckle.png",
+   "h": 32,
+   "w": 25
+  },
+  "c15p2_leaf_bundle": {
+   "file": "items/c15p2_leaf_bundle.png",
+   "h": 32,
+   "w": 30
+  },
+  "c15p2_moon_melon_seed": {
+   "file": "items/c15p2_moon_melon_seed.png",
+   "h": 19,
+   "w": 32
+  },
+  "c15p2_rosehip": {
+   "file": "items/c15p2_rosehip.png",
+   "h": 32,
+   "w": 28
+  },
+  "c15p2_salmonberry": {
+   "file": "items/c15p2_salmonberry.png",
+   "h": 32,
+   "w": 25
+  },
+  "c15p2_sand_dollar": {
+   "file": "items/c15p2_sand_dollar.png",
+   "h": 32,
+   "w": 32
+  },
+  "c15p2_sea_glass": {
+   "file": "items/c15p2_sea_glass.png",
+   "h": 32,
+   "w": 26
+  },
+  "c15p2_snow_radish": {
+   "file": "items/c15p2_snow_radish.png",
+   "h": 32,
+   "w": 24
+  },
+  "c15p2_snow_yam": {
+   "file": "items/c15p2_snow_yam.png",
+   "h": 32,
+   "w": 25
+  },
+  "c15p2_summer_kelp": {
+   "file": "items/c15p2_summer_kelp.png",
+   "h": 32,
+   "w": 19
+  },
+  "c15p2_water_lily": {
+   "file": "items/c15p2_water_lily.png",
+   "h": 28,
+   "w": 32
+  },
+  "c15p2_wild_plum": {
+   "file": "items/c15p2_wild_plum.png",
+   "h": 30,
+   "w": 32
+  },
+  "c15p2_winter_honeycomb": {
+   "file": "items/c15p2_winter_honeycomb.png",
+   "h": 32,
+   "w": 30
+  },
+  "c15p2_winter_leek": {
+   "file": "items/c15p2_winter_leek.png",
+   "h": 32,
+   "w": 23
+  },
   "cabbage": {
    "file": "items/cabbage.png",
    "h": 32,

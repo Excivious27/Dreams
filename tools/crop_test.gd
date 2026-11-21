@@ -47,7 +47,7 @@ func _run() -> void:
 		check(seed_of.has(cid), "%s has a seed" % cid)
 		check(GameState.keg_brew(y) != "" and GameState.items.has(GameState.keg_brew(y)), "%s brews in the keg" % y)
 		check(int(cd.get("days", 0)) >= 2 and int(cd.get("days", 0)) <= 22, "%s grows in 2-22 days" % cid)
-		check(sold.has(str(seed_of.get(cid, ""))) or cid in ["melon", "grape", "lotus", "moon_melon", "dreamflower", "flax", "tea_leaf", "hops", "cotton", "ghost_pepper"], "%s seed is sold somewhere" % cid)
+		check(sold.has(str(seed_of.get(cid, ""))) or cid in ["melon", "grape", "lotus", "moon_melon", "dreamflower", "flax", "tea_leaf", "hops", "cotton", "ghost_pepper", "winter_snowdrop"], "%s seed is sold somewhere" % cid)
 		# Grows to ripe in season, watered every night.
 		var se := str(cd.get("season", "any"))
 		var start := 1 + maxi(0, GameState.SEASONS.find(se)) * 28

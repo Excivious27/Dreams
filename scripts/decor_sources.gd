@@ -233,7 +233,7 @@ static func rotate(pool: Array, n: int, period: int, salt: int) -> Array:
 ## rotate_days, rare+ weekly; tier/arc filtered; owned uniques never listed.
 static func today(shop: String) -> Array:
 	var key := _shelf_key(shop)
-	var all := Decor.stock(key).filter(func(i: Variant) -> bool: return _fits(str(i)))
+	var all := Decor.stock(key).filter(func(i: Variant) -> bool: return _fits(str(i)) and SeasonGoods.decor_ok(str(i), key))
 	var plain: Array = []
 	var rare: Array = []
 	for i in all:
@@ -245,6 +245,9 @@ static func today(shop: String) -> Array:
 	var r := rotate(rare, int(T["rare_n"]), int(T["rare_rotate_days"]), salt)
 	var out := rotate(plain, int(T["shelf_n"]) - r.size(), int(T["rotate_days"]), salt)
 	out.append_array(r)
+	for i in SeasonGoods.decor_shelf(key):  # C15 P2: the season's pieces stay on the carpenter's shelf all season
+		if not i in out and _fits(str(i)):
+			out.append(str(i))
 	return out
 
 

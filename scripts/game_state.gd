@@ -633,7 +633,7 @@ static func demand(id: String) -> float:
 		if str(crops[cid].get("yield", "")) == id:
 			var cs := str(crops[cid].get("season", "any"))
 			if cs != "any" and cs != se:
-				m *= DEMAND_OUT_OF_SEASON
+				m *= SeasonGoods.OFF_SEASON_DEMAND  # C15 P2 hook (c15_08-04): a small premium, not a free +35% for chesting crops
 			break
 	if t in ["fish", "forage"] and se == "winter":
 		m *= 1.2
@@ -1826,6 +1826,7 @@ static func roll_forage(region: String) -> String:
 
 static func _roll_forage_once(region: String) -> String:
 	var pool: Array = forage_data.get(region, forage_data.get("wild", forage_data.get("farm", [])))
+	pool = SeasonGoods.forage_pool(region, pool)  # C15 P2 hook: the season's own forage, off-season rows thinned
 	var total := 0.0
 	var ok: Array = []
 	for row in pool:

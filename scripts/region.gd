@@ -646,6 +646,9 @@ func after_ready() -> void:
 				continue
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
+			if SeasonGoods.is_seasonal_forage(it) and Art.has("items", Hud.icon_for(it)):  # C15 P2 hook: seasonal finds look like themselves
+				prop("items", Hud.icon_for(it), k, 0, 0.0, false, 0.5)
+				continue
 			prop("nature", nm, k, 0, 0.0, false)
 	# Villagers who live out here (regions.json "npcs": [{"id", "cell", "lines": [...]}]).
 	for n in R.get("npcs", []):
