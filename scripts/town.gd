@@ -872,7 +872,7 @@ func _dress_buildings() -> void:
 		pl.call("crates_pallet", Vector2i(73, 66), 1); pl.call("cart_covered", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
 	else:
 		pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
-	# Rook's lodge: pelts on a tanning rack, traps, a fire barrel.
+	# Rook's lodge: shed fur on a tanning rack, traps, a fire barrel.
 	pl.call("tanning_rack", Vector2i(75, 79), 1); pl.call("crab_pots2", Vector2i(80, 79)); pl.call("fire_barrel2", Vector2i(76, 80))
 	# Bank (Ivy): two short lamps and a hedge ball.
 	pl.call("lamp2_short_3", Vector2i(25, 11)); pl.call("lamp2_short_4", Vector2i(37, 11)); pl.call("hedge2_ball", Vector2i(24, 12))

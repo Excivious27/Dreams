@@ -1,0 +1,10 @@
+{
+ "_": "Steam upload config (s1_11). Not secret. enabled:false + app_id 0 keeps .github/workflows/steam-upload.yml off. Turning it on is a one-line commit by Claude after the Steamworks session records the ids (docs/STEAM.md).",
+ "enabled": false,
+ "app_id": 0,
+ "depots": {"windows": 0, "linux": 0},
+ "beta_branch": "beta",
+ "set_live": "beta",
+ "preview": true,
+ "desc_fmt": "Dreams {version} {sha} {date}"
+}

@@ -4089,7 +4089,7 @@
     "fps": 6
    },
    {
-    "name": "pelt_bear",
+    "name": "rug_rect_green",
     "cell": [
      11,
      7
@@ -4190,7 +4190,7 @@
     ]
    }
   ],
-  "intro": "Rook's lodge: smoke, pelts, and a bow over the door."
+  "intro": "Rook's lodge: woodsmoke, woven rugs, and a bow over the door."
  },
  "bank": {
   "cols": 16,

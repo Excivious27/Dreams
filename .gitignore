@@ -6,7 +6,7 @@ export_credentials.cfg
 tools/conduct/__pycache__/
 server/.deployed_commit
 
-# Steam: the dev app id file never ships or gets committed (S1 P1); the addon is
+# Steam (s1_11 + S1 P1): the dev app id file never ships or gets committed (S1 P1); the addon is
 # staged from steam/godotsteam only for desktop exports (tools/stage_godotsteam.sh).
 steam_appid.txt
 **/steam_appid.txt

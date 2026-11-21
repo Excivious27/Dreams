@@ -1,0 +1,14 @@
+"AppBuild"
+{
+	"AppID" "${APP_ID}"
+	"Desc" "${DESC}"
+	"ContentRoot" "../content/"
+	"BuildOutput" "../output/"
+	"Preview" "${PREVIEW}"
+	"SetLive" "${SET_LIVE}"
+	"Depots"
+	{
+		"${DEPOT_WIN}" "depot_build_windows.vdf"
+		"${DEPOT_LINUX}" "depot_build_linux.vdf"
+	}
+}

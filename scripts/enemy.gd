@@ -748,6 +748,20 @@ func _die() -> void:
 			Music.instance(get_tree()).sfx(_death_sound(), "thud")
 	if big:
 		map.shake(5.0)
+	# s1_13-02: animals are never killed: a beaten beast turns tail, hops back and runs off-screen.
+	if not big and is_beast():
+		queue_redraw()
+		var away := (position - map.player.position).normalized() if map.player else Vector2.RIGHT
+		if away == Vector2.ZERO:
+			away = Vector2.RIGHT
+		if _sprite:
+			_sprite.flip_h = away.x < 0.0
+		var tf := create_tween()
+		tf.tween_property(self, "position", position + away * 6.0 + Vector2(0, -4), 0.12)
+		tf.tween_property(self, "position", position + away * 140.0, 0.6)
+		tf.parallel().tween_property(self, "modulate:a", 0.0, 0.6)
+		tf.tween_callback(queue_free)
+		return
 	# Sheets with a "die" strip play it, then fade; the rest get the squash.
 	if _sprite and _sprite.sprite_frames.has_animation("die"):
 		_sprite.play("die")
@@ -872,6 +886,15 @@ func _shot_sound(flavour: String) -> String:
 
 
 ## A small foe's send-off, by what it is (c6_08_06: the bubble-pop "die" is the last resort).
+## Wolves, hounds, bears, boars, deer, crabs, serpents, eels, foxes: driven off, never killed (s1_13-02).
+func is_beast() -> bool:
+	var k := kind.to_lower()
+	for w in ["wolf", "hound", "bear", "boar", "deer", "crab", "serpent", "eel", "fox", "lynx"]:
+		if w in k:
+			return true
+	return k == "roc" or k.ends_with("_roc")  # not "rock_*"
+
+
 func _death_sound() -> String:
 	var k := kind.to_lower()
 	if "slime" in k or "blob" in k or "ooze" in k:

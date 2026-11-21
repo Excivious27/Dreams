@@ -3322,14 +3322,14 @@ static func sleep(passed_out := false) -> Dictionary:
 	if comfort_line != "":
 		notify(comfort_line)
 	DecorSources.sweep(null)  # C10b P1: state-based home pieces (secret flags, campaigns, quests, set master)
-	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
+	# Bramble brushes (item id trap) in the bag comb shed fur overnight, never catch an animal (Rook's design): up to 3 work.
 	var caught := 0
 	for i in mini(count("trap"), 3):
 		if randf() < 0.4:
 			caught += 1
 	if caught > 0:
 		add_item("pelt", caught)
-		notify("Your traps caught something overnight: +%d Pelt." % caught)
+		notify("Your bramble brushes combed shed fur overnight: +%d." % caught)
 	var nm := Mail.morning()
 	if nm > 0:
 		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])
