@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C14 P2: town plaza (flagstone variants, mosaic, smooth kerb ring, dressing, lamp ring), warm cobbles, meandering river, Mayor's garden maze + conservatory, Harbour Row (town 124 rows), winter snow roofs on 19 buildings, prop-collision guard + town_props_test, evening Lantern/Star festival hours
+
 ## 2026-11-21 — C12 docs (writing): CONDUCT-12.md report (379 findings, P1-P7 + integration, final CI c12i PENDING), Guide 39, TEXTS['12'], inventory rows for talk conditions, writing checks and mail (whole game ~81%), PROJECT-MEMORY C12 entry. Tom's calls: Juniper as a candidate, rename kid Pip.
 ## 2026-11-21 — C13 P4: story/scene/minigame audio cues - every live key beat cued, per-ending songs on branch line 0, mood_* scene songs via Dialogue.scene_song (arc take, safe fallback), dream/Hale/tension beats, chapter title cards both arcs, heart/side-story moods, drill/capture/hack/shot/summon cues; test tools/story_audio_test.gd
 ## 2026-11-21 — C13 P2 songs: 102 music files added/replaced (56 new renders incl. gang farm/town/valley/beach, penguin fall/winter/summer sets, morning, storm(+gang), hub nights, night/rain/forest/lake/sky/marsh/wastes/hideout/mega_gloam/hollow_deeps/sanctuary re-renders; ~35 unused-take imports as _2; town swapped to its brighter take). 55 create_song calls. Muffle cause found: piano/harp/celesta-led drumless prompts; guitar + shaker fixes it (docs/AUDIO-PLAN.md C13 P2).
