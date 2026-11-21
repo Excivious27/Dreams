@@ -58,7 +58,7 @@ SFX = os.path.join(ROOT, "audio", "sfx")
 AMB = os.path.join(ROOT, "audio", "amb")
 LOG = os.path.join(SFX, "SOFTEN_LOG.json")
 JINGLES = ("j_",)
-JINGLE_NAMES = {"levelup", "quest_done", "craft_done", "sleep"}
+JINGLE_NAMES = {"levelup", "quest_done", "craft_done", "sleep", "ach_unlock"}
 JINGLE_LUFS = -17.0
 # K-weighted loudest-100ms targets by name prefix; Music.GROUP_DB sits on top in game.
 TARGETS = [("step_", -21.0), ("ui_", -20.0), ("menu_", -20.0), ("talk_blip", -20.0), ("keypress", -19.0),
@@ -151,7 +151,8 @@ def target(name):
 
 
 def is_jingle(name):
-    return name.startswith(JINGLES) or name in JINGLE_NAMES
+    base = name[:-5] if name.endswith("_gang") else name  # arc variants (levelup_gang) are jingles too
+    return name.startswith(JINGLES) or base in JINGLE_NAMES
 
 
 def trim(x, name):
@@ -251,11 +252,36 @@ def full_pass(x, name, before):
     return y, {"gain_db": round(gain, 2), "lowpass": lp, "shelf_db": shelf, "extra": extra}
 
 
+JINGLE_SHORT = 0.5      # s: ebur128 gates clips this short to -70 LUFS (its blocks are 400 ms)
+JINGLE_SHORT_LK = -18.0 # short UI stings level like coin/pickup on the loudest-100 ms K-weighted path
+JINGLE_MAX_GAIN = 12.0  # never boost a jingle more than this (j_buy/j_confirm once got +53 dB)
+
+
 def jingle_pass(x, name):
     ch = x.shape[1] if x.ndim > 1 else 1
-    g = JINGLE_LUFS - lufs_i(x, ch)
+    li = lufs_i(x, ch)
+    dur = (len(x) / SR)
+    if dur < JINGLE_SHORT or li <= -69.0:
+        lk = measure(x)["lk"]
+        g = max(-16.0, min(6.0, JINGLE_SHORT_LK - lk))
+        mode = "jingle_short"
+    else:
+        g = JINGLE_LUFS - li
+        mode = "jingle"
+    g = min(g, JINGLE_MAX_GAIN)
+    extra = []
+    b = measure(x)
+    if b["phone_loss"] > 8.0:
+        # bass-led sting (upright bass, low brass): a phone speaker drops it; same presence
+        # lift + exciter as full_pass, then re-measure so the level still follows the result
+        x = excite(filt(x, "highpass=f=90,equalizer=f=1800:t=o:w=1.5:g=5", ch))
+        extra = ["presence", "exciter"]
+        if mode == "jingle":
+            g = min(JINGLE_MAX_GAIN, JINGLE_LUFS - lufs_i(x, ch))
+        else:
+            g = max(-16.0, min(6.0, JINGLE_SHORT_LK - measure(x)["lk"]))
     y = soft_limit(x * 10 ** (g / 20))
-    return y, {"gain_db": round(g, 2), "mode": "jingle"}
+    return y, {"gain_db": round(g, 2), "mode": mode, "extra": extra}
 
 
 def write(path, x, ch):
@@ -286,13 +312,53 @@ def all_files():
     return sorted(glob.glob(os.path.join(SFX, "*.ogg"))) + sorted(glob.glob(os.path.join(AMB, "spot_*.ogg")))
 
 
+META = os.path.join(ROOT, "data", "sfx_meta.json")
+AUDIBLE_DB = 35.0  # a sound "ends" at its last 50 ms window within this many dB of its loudest one
+
+
+def len_audible(x):
+    """Seconds from the start to the end of the last audible 50 ms window (Music ducks only that long)."""
+    m = mono(x).astype(np.float64)
+    w = int(0.05 * SR)
+    n = len(m) // w
+    if n < 1:
+        return round(len(m) / SR, 3)
+    db = 10 * np.log10(np.mean(m[:n * w].reshape(n, w) ** 2, axis=1) + 1e-12)
+    loud = np.nonzero(db > db.max() - AUDIBLE_DB)[0]
+    end = (int(loud[-1]) + 1) * w if len(loud) else len(m)
+    return round(min(len(m), end) / SR, 3)
+
+
+def write_meta(names=None):
+    """data/sfx_meta.json {name: {len_audible, dur}} for every audio/sfx file (names: refresh only these)."""
+    meta = json.load(open(META)) if os.path.exists(META) and names is not None else {}
+    for p in sorted(glob.glob(os.path.join(SFX, "*.ogg"))):
+        name = os.path.basename(p)[:-4]
+        if names is not None and name not in names and name in meta:
+            continue
+        x = decode(p, 1)
+        meta[name] = {"len_audible": len_audible(x), "dur": round(len(x) / SR, 3)}
+    have = {os.path.basename(p)[:-4] for p in glob.glob(os.path.join(SFX, "*.ogg"))}
+    meta = {k: v for k, v in sorted(meta.items()) if k in have}
+    with open(META + ".new", "w") as fh:
+        json.dump(meta, fh, indent=0, sort_keys=True)
+    if os.path.exists(META):
+        os.remove(META)
+    os.rename(META + ".new", META)
+    return meta
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--meta", action="store_true", help="only rebuild data/sfx_meta.json (len_audible per sfx)")
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--only", default="")
     ap.add_argument("--force", action="store_true", help="re-level done files (gain only, no new filter pass)")
     ap.add_argument("--report", action="store_true")
     a = ap.parse_args()
+    if a.meta:
+        print(f"sfx_meta: {len(write_meta())} files -> data/sfx_meta.json")
+        return
     log = json.load(open(LOG)) if os.path.exists(LOG) else {}
     only = set(x for x in a.only.split(",") if x)
     files = all_files()
@@ -381,6 +447,7 @@ def main():
         if os.path.exists(LOG):
             os.remove(LOG)
         os.rename(LOG + ".new", LOG)
+        write_meta({k for k in touched if "/" not in k})
     print(f"processed {n} files, wrote {len(touched)}" + (" (dry run)" if a.dry else ""))
 
 

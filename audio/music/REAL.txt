@@ -106,3 +106,7 @@ wedding_gang
 date_evening
 ranch
 animal_show
+casino
+museum
+library
+workshop

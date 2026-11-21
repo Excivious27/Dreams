@@ -1,0 +1,2062 @@
+{
+"ach_unlock": {
+"dur": 1.88,
+"len_audible": 1.8
+},
+"airship_whoosh": {
+"dur": 2.599,
+"len_audible": 2.55
+},
+"alarm": {
+"dur": 1.998,
+"len_audible": 1.95
+},
+"alarm_2": {
+"dur": 1.977,
+"len_audible": 1.95
+},
+"alert": {
+"dur": 0.318,
+"len_audible": 0.3
+},
+"anvil": {
+"dur": 1.006,
+"len_audible": 1.0
+},
+"anvil_2": {
+"dur": 0.444,
+"len_audible": 0.4
+},
+"anvil_3": {
+"dur": 0.104,
+"len_audible": 0.1
+},
+"ball_return": {
+"dur": 2.0,
+"len_audible": 1.8
+},
+"bark": {
+"dur": 0.268,
+"len_audible": 0.25
+},
+"bark_2": {
+"dur": 0.21,
+"len_audible": 0.2
+},
+"bat": {
+"dur": 0.796,
+"len_audible": 0.75
+},
+"bat_2": {
+"dur": 0.79,
+"len_audible": 0.75
+},
+"bat_3": {
+"dur": 0.792,
+"len_audible": 0.75
+},
+"beast_down": {
+"dur": 0.312,
+"len_audible": 0.3
+},
+"beast_down_2": {
+"dur": 0.493,
+"len_audible": 0.45
+},
+"beast_down_3": {
+"dur": 0.506,
+"len_audible": 0.5
+},
+"beat_tick": {
+"dur": 0.131,
+"len_audible": 0.1
+},
+"beat_tick_2": {
+"dur": 0.144,
+"len_audible": 0.1
+},
+"beep": {
+"dur": 0.129,
+"len_audible": 0.1
+},
+"beep_2": {
+"dur": 0.239,
+"len_audible": 0.2
+},
+"beep_3": {
+"dur": 0.119,
+"len_audible": 0.1
+},
+"bite": {
+"dur": 0.314,
+"len_audible": 0.3
+},
+"bleat": {
+"dur": 0.82,
+"len_audible": 0.8
+},
+"bleat_2": {
+"dur": 0.814,
+"len_audible": 0.8
+},
+"bleat_3": {
+"dur": 0.491,
+"len_audible": 0.45
+},
+"block": {
+"dur": 0.416,
+"len_audible": 0.3
+},
+"block_2": {
+"dur": 0.459,
+"len_audible": 0.45
+},
+"block_3": {
+"dur": 0.588,
+"len_audible": 0.55
+},
+"book": {
+"dur": 0.067,
+"len_audible": 0.05
+},
+"book_2": {
+"dur": 0.197,
+"len_audible": 0.15
+},
+"boom": {
+"dur": 0.762,
+"len_audible": 0.7
+},
+"boom_2": {
+"dur": 0.778,
+"len_audible": 0.75
+},
+"boom_3": {
+"dur": 0.726,
+"len_audible": 0.7
+},
+"boss_down": {
+"dur": 0.892,
+"len_audible": 0.8
+},
+"boss_down_2": {
+"dur": 0.891,
+"len_audible": 0.85
+},
+"boss_fall": {
+"dur": 1.017,
+"len_audible": 1.0
+},
+"boss_fall_2": {
+"dur": 1.6,
+"len_audible": 1.6
+},
+"bow": {
+"dur": 0.254,
+"len_audible": 0.25
+},
+"bow_2": {
+"dur": 0.059,
+"len_audible": 0.05
+},
+"bow_3": {
+"dur": 0.13,
+"len_audible": 0.1
+},
+"bowl_gutter": {
+"dur": 2.6,
+"len_audible": 2.35
+},
+"bowl_pit": {
+"dur": 1.1,
+"len_audible": 1.05
+},
+"bowl_roll": {
+"dur": 1.053,
+"len_audible": 1.05
+},
+"bowl_rumble": {
+"dur": 4.022,
+"len_audible": 3.85
+},
+"bubble": {
+"dur": 0.527,
+"len_audible": 0.5
+},
+"bubble_2": {
+"dur": 0.2,
+"len_audible": 0.15
+},
+"bubble_3": {
+"dur": 0.495,
+"len_audible": 0.45
+},
+"bug": {
+"dur": 0.139,
+"len_audible": 0.1
+},
+"bug_2": {
+"dur": 0.312,
+"len_audible": 0.3
+},
+"bug_3": {
+"dur": 0.289,
+"len_audible": 0.25
+},
+"buzz": {
+"dur": 1.4,
+"len_audible": 1.35
+},
+"buzz_2": {
+"dur": 1.4,
+"len_audible": 1.35
+},
+"cannon": {
+"dur": 0.787,
+"len_audible": 0.75
+},
+"cannon_2": {
+"dur": 1.03,
+"len_audible": 1.0
+},
+"cannon_3": {
+"dur": 0.588,
+"len_audible": 0.55
+},
+"car_door": {
+"dur": 0.401,
+"len_audible": 0.4
+},
+"car_door_2": {
+"dur": 0.971,
+"len_audible": 0.9
+},
+"car_horn": {
+"dur": 0.91,
+"len_audible": 0.9
+},
+"car_horn_2": {
+"dur": 0.885,
+"len_audible": 0.85
+},
+"car_horn_3": {
+"dur": 0.889,
+"len_audible": 0.65
+},
+"car_start": {
+"dur": 1.638,
+"len_audible": 1.6
+},
+"cards": {
+"dur": 0.096,
+"len_audible": 0.05
+},
+"cards_2": {
+"dur": 0.514,
+"len_audible": 0.5
+},
+"cash": {
+"dur": 0.991,
+"len_audible": 0.95
+},
+"cash_2": {
+"dur": 0.679,
+"len_audible": 0.65
+},
+"cash_3": {
+"dur": 0.294,
+"len_audible": 0.25
+},
+"cash_pickup": {
+"dur": 0.193,
+"len_audible": 0.15
+},
+"cash_pickup_2": {
+"dur": 0.334,
+"len_audible": 0.3
+},
+"cash_pickup_3": {
+"dur": 0.41,
+"len_audible": 0.4
+},
+"cash_register": {
+"dur": 0.991,
+"len_audible": 0.95
+},
+"cash_register_2": {
+"dur": 1.29,
+"len_audible": 1.25
+},
+"cash_register_3": {
+"dur": 0.881,
+"len_audible": 0.85
+},
+"cast": {
+"dur": 0.315,
+"len_audible": 0.3
+},
+"cast_2": {
+"dur": 0.401,
+"len_audible": 0.35
+},
+"cave_in": {
+"dur": 2.997,
+"len_audible": 2.95
+},
+"chest_close": {
+"dur": 0.204,
+"len_audible": 0.2
+},
+"chest_close_2": {
+"dur": 0.244,
+"len_audible": 0.2
+},
+"chest_open": {
+"dur": 0.309,
+"len_audible": 0.25
+},
+"chest_open_2": {
+"dur": 1.199,
+"len_audible": 1.15
+},
+"chop": {
+"dur": 0.245,
+"len_audible": 0.2
+},
+"chop_2": {
+"dur": 0.151,
+"len_audible": 0.15
+},
+"chop_3": {
+"dur": 0.237,
+"len_audible": 0.2
+},
+"clap": {
+"dur": 0.061,
+"len_audible": 0.05
+},
+"clap_2": {
+"dur": 0.081,
+"len_audible": 0.05
+},
+"cloth": {
+"dur": 0.689,
+"len_audible": 0.65
+},
+"cloth_2": {
+"dur": 0.739,
+"len_audible": 0.7
+},
+"cloth_3": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"cluck": {
+"dur": 0.424,
+"len_audible": 0.4
+},
+"cluck_2": {
+"dur": 0.112,
+"len_audible": 0.1
+},
+"cluck_3": {
+"dur": 0.095,
+"len_audible": 0.05
+},
+"coin": {
+"dur": 0.332,
+"len_audible": 0.3
+},
+"coin_2": {
+"dur": 0.517,
+"len_audible": 0.5
+},
+"coin_3": {
+"dur": 0.42,
+"len_audible": 0.4
+},
+"cooking": {
+"dur": 1.997,
+"len_audible": 1.95
+},
+"craft_done": {
+"dur": 2.52,
+"len_audible": 2.45
+},
+"crate_break": {
+"dur": 0.971,
+"len_audible": 0.9
+},
+"crate_break_2": {
+"dur": 0.991,
+"len_audible": 0.95
+},
+"crate_break_3": {
+"dur": 0.354,
+"len_audible": 0.35
+},
+"crit": {
+"dur": 0.161,
+"len_audible": 0.15
+},
+"crit_2": {
+"dur": 0.489,
+"len_audible": 0.45
+},
+"crit_3": {
+"dur": 0.545,
+"len_audible": 0.35
+},
+"critter": {
+"dur": 0.31,
+"len_audible": 0.3
+},
+"critter_2": {
+"dur": 0.453,
+"len_audible": 0.45
+},
+"critter_3": {
+"dur": 0.215,
+"len_audible": 0.2
+},
+"crop_ready": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"crow": {
+"dur": 0.547,
+"len_audible": 0.5
+},
+"crow_2": {
+"dur": 0.55,
+"len_audible": 0.5
+},
+"cv_emu": {
+"dur": 0.783,
+"len_audible": 0.75
+},
+"cv_emu_2": {
+"dur": 0.57,
+"len_audible": 0.55
+},
+"cv_frost": {
+"dur": 0.265,
+"len_audible": 0.25
+},
+"cv_frost_2": {
+"dur": 0.431,
+"len_audible": 0.4
+},
+"cv_gloam": {
+"dur": 0.691,
+"len_audible": 0.65
+},
+"cv_gloam_2": {
+"dur": 0.313,
+"len_audible": 0.3
+},
+"cv_komodo": {
+"dur": 0.25,
+"len_audible": 0.2
+},
+"cv_komodo_2": {
+"dur": 0.332,
+"len_audible": 0.3
+},
+"cv_merkitty": {
+"dur": 0.433,
+"len_audible": 0.4
+},
+"cv_merkitty_2": {
+"dur": 0.354,
+"len_audible": 0.35
+},
+"cv_merkitty_3": {
+"dur": 0.82,
+"len_audible": 0.8
+},
+"cv_moon": {
+"dur": 0.49,
+"len_audible": 0.45
+},
+"cv_moon_2": {
+"dur": 0.637,
+"len_audible": 0.6
+},
+"cv_moon_3": {
+"dur": 0.533,
+"len_audible": 0.5
+},
+"cv_ostrich": {
+"dur": 0.691,
+"len_audible": 0.65
+},
+"cv_ostrich_2": {
+"dur": 0.919,
+"len_audible": 0.85
+},
+"cv_ostrich_3": {
+"dur": 0.323,
+"len_audible": 0.3
+},
+"cv_sky": {
+"dur": 0.612,
+"len_audible": 0.6
+},
+"cv_sky_2": {
+"dur": 0.491,
+"len_audible": 0.45
+},
+"dice_roll": {
+"dur": 0.951,
+"len_audible": 0.95
+},
+"dice_roll_2": {
+"dur": 1.029,
+"len_audible": 1.0
+},
+"dice_roll_3": {
+"dur": 0.454,
+"len_audible": 0.45
+},
+"die": {
+"dur": 0.307,
+"len_audible": 0.3
+},
+"die_2": {
+"dur": 0.309,
+"len_audible": 0.3
+},
+"die_3": {
+"dur": 0.236,
+"len_audible": 0.2
+},
+"dig": {
+"dur": 0.732,
+"len_audible": 0.7
+},
+"dig_2": {
+"dur": 0.787,
+"len_audible": 0.75
+},
+"door": {
+"dur": 0.631,
+"len_audible": 0.6
+},
+"door_2": {
+"dur": 0.861,
+"len_audible": 0.75
+},
+"door_3": {
+"dur": 0.438,
+"len_audible": 0.4
+},
+"door_close": {
+"dur": 0.822,
+"len_audible": 0.75
+},
+"door_close_2": {
+"dur": 0.37,
+"len_audible": 0.35
+},
+"door_close_3": {
+"dur": 0.662,
+"len_audible": 0.65
+},
+"drain": {
+"dur": 1.596,
+"len_audible": 1.55
+},
+"drill": {
+"dur": 1.142,
+"len_audible": 1.1
+},
+"drill_2": {
+"dur": 0.783,
+"len_audible": 0.75
+},
+"drink": {
+"dur": 0.393,
+"len_audible": 0.35
+},
+"drink_2": {
+"dur": 0.307,
+"len_audible": 0.3
+},
+"drink_3": {
+"dur": 0.263,
+"len_audible": 0.25
+},
+"drop": {
+"dur": 0.115,
+"len_audible": 0.1
+},
+"drop_2": {
+"dur": 0.075,
+"len_audible": 0.05
+},
+"drop_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"dry_click": {
+"dur": 0.325,
+"len_audible": 0.3
+},
+"dry_click_2": {
+"dur": 0.189,
+"len_audible": 0.15
+},
+"eat": {
+"dur": 0.512,
+"len_audible": 0.5
+},
+"eat_2": {
+"dur": 0.372,
+"len_audible": 0.35
+},
+"eat_3": {
+"dur": 0.682,
+"len_audible": 0.65
+},
+"egg_crack": {
+"dur": 0.263,
+"len_audible": 0.25
+},
+"egg_crack_2": {
+"dur": 0.241,
+"len_audible": 0.2
+},
+"egg_crack_3": {
+"dur": 0.263,
+"len_audible": 0.25
+},
+"emp": {
+"dur": 0.971,
+"len_audible": 0.95
+},
+"emp_2": {
+"dur": 0.954,
+"len_audible": 0.9
+},
+"emp_3": {
+"dur": 0.893,
+"len_audible": 0.85
+},
+"equip": {
+"dur": 0.049,
+"len_audible": 0.049
+},
+"equip_2": {
+"dur": 0.627,
+"len_audible": 0.6
+},
+"equip_3": {
+"dur": 0.361,
+"len_audible": 0.3
+},
+"fairy_ring": {
+"dur": 2.363,
+"len_audible": 2.35
+},
+"feeder_fill": {
+"dur": 1.017,
+"len_audible": 1.0
+},
+"feeder_fill_2": {
+"dur": 0.984,
+"len_audible": 0.9
+},
+"fireworks": {
+"dur": 0.741,
+"len_audible": 0.7
+},
+"fireworks_2": {
+"dur": 1.038,
+"len_audible": 1.0
+},
+"fireworks_3": {
+"dur": 0.683,
+"len_audible": 0.65
+},
+"fish_escape": {
+"dur": 0.196,
+"len_audible": 0.15
+},
+"fish_escape_2": {
+"dur": 0.406,
+"len_audible": 0.35
+},
+"freeze": {
+"dur": 1.385,
+"len_audible": 1.35
+},
+"freeze_2": {
+"dur": 1.0,
+"len_audible": 0.95
+},
+"frog": {
+"dur": 0.115,
+"len_audible": 0.1
+},
+"frog_2": {
+"dur": 0.15,
+"len_audible": 0.1
+},
+"frog_3": {
+"dur": 0.198,
+"len_audible": 0.15
+},
+"gate": {
+"dur": 0.419,
+"len_audible": 0.4
+},
+"gate_2": {
+"dur": 0.32,
+"len_audible": 0.3
+},
+"gem": {
+"dur": 0.188,
+"len_audible": 0.15
+},
+"gem_2": {
+"dur": 0.077,
+"len_audible": 0.05
+},
+"gem_3": {
+"dur": 0.132,
+"len_audible": 0.1
+},
+"glass": {
+"dur": 0.266,
+"len_audible": 0.25
+},
+"glass_2": {
+"dur": 0.3,
+"len_audible": 0.25
+},
+"glass_3": {
+"dur": 0.27,
+"len_audible": 0.25
+},
+"growl": {
+"dur": 1.031,
+"len_audible": 1.0
+},
+"growl_2": {
+"dur": 1.101,
+"len_audible": 1.05
+},
+"grunt": {
+"dur": 0.619,
+"len_audible": 0.6
+},
+"grunt_2": {
+"dur": 0.524,
+"len_audible": 0.5
+},
+"grunt_3": {
+"dur": 0.436,
+"len_audible": 0.4
+},
+"hammer": {
+"dur": 0.254,
+"len_audible": 0.2
+},
+"hammer_2": {
+"dur": 0.169,
+"len_audible": 0.15
+},
+"hammer_3": {
+"dur": 0.191,
+"len_audible": 0.15
+},
+"harvest": {
+"dur": 0.381,
+"len_audible": 0.35
+},
+"harvest_2": {
+"dur": 0.591,
+"len_audible": 0.55
+},
+"harvest_3": {
+"dur": 0.563,
+"len_audible": 0.55
+},
+"harvest_pluck": {
+"dur": 0.071,
+"len_audible": 0.05
+},
+"harvest_pluck_2": {
+"dur": 0.052,
+"len_audible": 0.05
+},
+"harvest_pluck_3": {
+"dur": 0.056,
+"len_audible": 0.05
+},
+"heal": {
+"dur": 0.734,
+"len_audible": 0.7
+},
+"heal_2": {
+"dur": 0.756,
+"len_audible": 0.7
+},
+"heal_3": {
+"dur": 1.591,
+"len_audible": 1.55
+},
+"heartbeat": {
+"dur": 0.894,
+"len_audible": 0.85
+},
+"hit": {
+"dur": 0.491,
+"len_audible": 0.45
+},
+"hit_2": {
+"dur": 0.49,
+"len_audible": 0.45
+},
+"hit_3": {
+"dur": 0.491,
+"len_audible": 0.45
+},
+"hoof": {
+"dur": 0.062,
+"len_audible": 0.05
+},
+"hoof_2": {
+"dur": 0.08,
+"len_audible": 0.05
+},
+"hoof_3": {
+"dur": 0.134,
+"len_audible": 0.1
+},
+"horn": {
+"dur": 0.69,
+"len_audible": 0.65
+},
+"horse": {
+"dur": 1.997,
+"len_audible": 1.95
+},
+"horse_whinny": {
+"dur": 1.289,
+"len_audible": 1.25
+},
+"hurt": {
+"dur": 0.335,
+"len_audible": 0.3
+},
+"hurt_2": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"hurt_3": {
+"dur": 0.491,
+"len_audible": 0.35
+},
+"j_battle_lost": {
+"dur": 2.5,
+"len_audible": 2.45
+},
+"j_battle_lost_gang": {
+"dur": 2.72,
+"len_audible": 2.65
+},
+"j_battle_start": {
+"dur": 2.7,
+"len_audible": 2.6
+},
+"j_battle_start_gang": {
+"dur": 2.98,
+"len_audible": 2.9
+},
+"j_battle_won": {
+"dur": 2.36,
+"len_audible": 2.3
+},
+"j_battle_won_gang": {
+"dur": 3.1,
+"len_audible": 3.0
+},
+"j_birthday": {
+"dur": 2.72,
+"len_audible": 2.65
+},
+"j_buy": {
+"dur": 0.304,
+"len_audible": 0.3
+},
+"j_campaign_won": {
+"dur": 3.18,
+"len_audible": 2.9
+},
+"j_campaign_won_gang": {
+"dur": 3.18,
+"len_audible": 3.05
+},
+"j_casino_big": {
+"dur": 2.2,
+"len_audible": 2.15
+},
+"j_casino_small": {
+"dur": 1.3,
+"len_audible": 1.2
+},
+"j_confirm": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"j_gift": {
+"dur": 2.42,
+"len_audible": 2.35
+},
+"j_heart": {
+"dur": 2.94,
+"len_audible": 2.85
+},
+"j_morning": {
+"dur": 2.42,
+"len_audible": 2.35
+},
+"j_page": {
+"dur": 2.84,
+"len_audible": 2.8
+},
+"j_page_gang": {
+"dur": 1.28,
+"len_audible": 1.25
+},
+"j_proposal": {
+"dur": 3.217,
+"len_audible": 3.2
+},
+"j_quest": {
+"dur": 1.3,
+"len_audible": 1.25
+},
+"j_region": {
+"dur": 2.26,
+"len_audible": 2.2
+},
+"j_region_gang": {
+"dur": 2.62,
+"len_audible": 2.55
+},
+"j_secret": {
+"dur": 2.88,
+"len_audible": 2.85
+},
+"j_secret_gang": {
+"dur": 2.74,
+"len_audible": 2.7
+},
+"j_skill": {
+"dur": 2.52,
+"len_audible": 2.45
+},
+"j_skill_gang": {
+"dur": 2.34,
+"len_audible": 2.3
+},
+"j_treasure": {
+"dur": 2.86,
+"len_audible": 2.75
+},
+"j_treasure_gang": {
+"dur": 2.52,
+"len_audible": 1.95
+},
+"j_victory": {
+"dur": 2.58,
+"len_audible": 2.5
+},
+"j_victory_gang": {
+"dur": 3.18,
+"len_audible": 1.35
+},
+"j_wedding": {
+"dur": 4.692,
+"len_audible": 3.7
+},
+"juke_needle": {
+"dur": 2.4,
+"len_audible": 2.2
+},
+"keypress": {
+"dur": 0.157,
+"len_audible": 0.15
+},
+"keypress_2": {
+"dur": 0.127,
+"len_audible": 0.1
+},
+"keypress_3": {
+"dur": 0.212,
+"len_audible": 0.2
+},
+"keys": {
+"dur": 0.24,
+"len_audible": 0.2
+},
+"keys_2": {
+"dur": 0.37,
+"len_audible": 0.35
+},
+"knockout": {
+"dur": 0.132,
+"len_audible": 0.1
+},
+"knockout_2": {
+"dur": 0.072,
+"len_audible": 0.05
+},
+"knockout_3": {
+"dur": 0.074,
+"len_audible": 0.05
+},
+"laser": {
+"dur": 0.379,
+"len_audible": 0.35
+},
+"laser_2": {
+"dur": 0.612,
+"len_audible": 0.6
+},
+"laser_3": {
+"dur": 0.645,
+"len_audible": 0.55
+},
+"levelup": {
+"dur": 2.72,
+"len_audible": 2.65
+},
+"levelup_gang": {
+"dur": 2.78,
+"len_audible": 2.7
+},
+"locked": {
+"dur": 0.601,
+"len_audible": 0.6
+},
+"mail": {
+"dur": 0.391,
+"len_audible": 0.35
+},
+"mail_2": {
+"dur": 0.541,
+"len_audible": 0.5
+},
+"map": {
+"dur": 0.848,
+"len_audible": 0.8
+},
+"map_2": {
+"dur": 0.951,
+"len_audible": 0.9
+},
+"menu_close": {
+"dur": 0.154,
+"len_audible": 0.15
+},
+"menu_open": {
+"dur": 0.154,
+"len_audible": 0.15
+},
+"meow": {
+"dur": 1.192,
+"len_audible": 1.15
+},
+"meow_2": {
+"dur": 1.096,
+"len_audible": 0.95
+},
+"meow_3": {
+"dur": 0.814,
+"len_audible": 0.8
+},
+"monster": {
+"dur": 0.109,
+"len_audible": 0.1
+},
+"monster_2": {
+"dur": 0.08,
+"len_audible": 0.05
+},
+"monster_3": {
+"dur": 0.723,
+"len_audible": 0.7
+},
+"moo": {
+"dur": 1.706,
+"len_audible": 1.7
+},
+"moo_2": {
+"dur": 1.796,
+"len_audible": 1.75
+},
+"moo_3": {
+"dur": 1.535,
+"len_audible": 1.5
+},
+"new_item": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"new_item_2": {
+"dur": 0.324,
+"len_audible": 0.3
+},
+"nope": {
+"dur": 0.309,
+"len_audible": 0.25
+},
+"oink": {
+"dur": 0.645,
+"len_audible": 0.6
+},
+"oink_2": {
+"dur": 0.377,
+"len_audible": 0.35
+},
+"oink_3": {
+"dur": 0.198,
+"len_audible": 0.15
+},
+"page": {
+"dur": 0.77,
+"len_audible": 0.75
+},
+"page_2": {
+"dur": 0.811,
+"len_audible": 0.8
+},
+"page_3": {
+"dur": 0.796,
+"len_audible": 0.75
+},
+"peep": {
+"dur": 0.208,
+"len_audible": 0.2
+},
+"peep_2": {
+"dur": 0.247,
+"len_audible": 0.2
+},
+"peep_3": {
+"dur": 0.125,
+"len_audible": 0.1
+},
+"penguin": {
+"dur": 0.455,
+"len_audible": 0.45
+},
+"penguin_2": {
+"dur": 0.444,
+"len_audible": 0.4
+},
+"pick": {
+"dur": 0.418,
+"len_audible": 0.35
+},
+"pick_2": {
+"dur": 0.536,
+"len_audible": 0.5
+},
+"pick_3": {
+"dur": 0.267,
+"len_audible": 0.25
+},
+"pickup": {
+"dur": 0.3,
+"len_audible": 0.25
+},
+"pickup_2": {
+"dur": 0.331,
+"len_audible": 0.3
+},
+"pickup_3": {
+"dur": 0.216,
+"len_audible": 0.2
+},
+"pin_crash": {
+"dur": 0.483,
+"len_audible": 0.45
+},
+"pin_crash_2": {
+"dur": 1.273,
+"len_audible": 1.25
+},
+"pin_crash_3": {
+"dur": 0.336,
+"len_audible": 0.3
+},
+"pin_strike": {
+"dur": 1.8,
+"len_audible": 1.75
+},
+"pin_strike_2": {
+"dur": 1.8,
+"len_audible": 1.75
+},
+"pin_tap": {
+"dur": 0.504,
+"len_audible": 0.4
+},
+"pin_tap_2": {
+"dur": 0.356,
+"len_audible": 0.3
+},
+"pin_tap_3": {
+"dur": 0.594,
+"len_audible": 0.55
+},
+"plant": {
+"dur": 0.502,
+"len_audible": 0.5
+},
+"plant_2": {
+"dur": 0.502,
+"len_audible": 0.5
+},
+"plant_3": {
+"dur": 0.492,
+"len_audible": 0.45
+},
+"plant_pat": {
+"dur": 0.185,
+"len_audible": 0.15
+},
+"plant_pat_2": {
+"dur": 0.184,
+"len_audible": 0.15
+},
+"plant_pat_3": {
+"dur": 0.155,
+"len_audible": 0.15
+},
+"pop": {
+"dur": 0.105,
+"len_audible": 0.1
+},
+"pop_2": {
+"dur": 0.048,
+"len_audible": 0.048
+},
+"pop_3": {
+"dur": 0.095,
+"len_audible": 0.05
+},
+"pot": {
+"dur": 0.781,
+"len_audible": 0.75
+},
+"pot_2": {
+"dur": 0.686,
+"len_audible": 0.6
+},
+"pot_3": {
+"dur": 0.678,
+"len_audible": 0.6
+},
+"power_off": {
+"dur": 1.902,
+"len_audible": 1.9
+},
+"power_up": {
+"dur": 0.422,
+"len_audible": 0.4
+},
+"power_up_2": {
+"dur": 0.524,
+"len_audible": 0.5
+},
+"purr": {
+"dur": 2.996,
+"len_audible": 2.95
+},
+"quack": {
+"dur": 0.793,
+"len_audible": 0.7
+},
+"quest_done": {
+"dur": 2.5,
+"len_audible": 2.45
+},
+"quest_done_gang": {
+"dur": 2.96,
+"len_audible": 2.9
+},
+"reel": {
+"dur": 0.642,
+"len_audible": 0.6
+},
+"reel_2": {
+"dur": 0.68,
+"len_audible": 0.65
+},
+"reload": {
+"dur": 1.396,
+"len_audible": 1.35
+},
+"reload_2": {
+"dur": 0.785,
+"len_audible": 0.75
+},
+"reload_3": {
+"dur": 1.343,
+"len_audible": 1.3
+},
+"roar": {
+"dur": 0.541,
+"len_audible": 0.5
+},
+"roar_2": {
+"dur": 0.825,
+"len_audible": 0.8
+},
+"roar_3": {
+"dur": 0.814,
+"len_audible": 0.75
+},
+"rock_break": {
+"dur": 0.423,
+"len_audible": 0.4
+},
+"rock_break_2": {
+"dur": 0.341,
+"len_audible": 0.3
+},
+"rock_break_3": {
+"dur": 0.34,
+"len_audible": 0.3
+},
+"rooster": {
+"dur": 2.081,
+"len_audible": 2.05
+},
+"rooster_2": {
+"dur": 2.595,
+"len_audible": 2.55
+},
+"save_done": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"saw": {
+"dur": 0.46,
+"len_audible": 0.4
+},
+"saw_2": {
+"dur": 1.6,
+"len_audible": 1.6
+},
+"saw_3": {
+"dur": 0.422,
+"len_audible": 0.4
+},
+"scroll_tick": {
+"dur": 0.318,
+"len_audible": 0.25
+},
+"scroll_tick_2": {
+"dur": 0.314,
+"len_audible": 0.3
+},
+"scythe": {
+"dur": 0.419,
+"len_audible": 0.35
+},
+"seagull": {
+"dur": 1.6,
+"len_audible": 1.6
+},
+"seagull_2": {
+"dur": 0.911,
+"len_audible": 0.9
+},
+"seagull_3": {
+"dur": 1.356,
+"len_audible": 1.3
+},
+"servo": {
+"dur": 0.291,
+"len_audible": 0.25
+},
+"servo_2": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"sheep": {
+"dur": 0.771,
+"len_audible": 0.75
+},
+"shop_bell": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"shot": {
+"dur": 0.56,
+"len_audible": 0.55
+},
+"shot_2": {
+"dur": 0.301,
+"len_audible": 0.3
+},
+"shot_3": {
+"dur": 0.299,
+"len_audible": 0.25
+},
+"shot_heavy": {
+"dur": 0.852,
+"len_audible": 0.65
+},
+"shot_heavy_2": {
+"dur": 0.68,
+"len_audible": 0.65
+},
+"shot_heavy_3": {
+"dur": 0.365,
+"len_audible": 0.35
+},
+"shot_rifle": {
+"dur": 0.99,
+"len_audible": 0.95
+},
+"shot_rifle_2": {
+"dur": 1.014,
+"len_audible": 1.0
+},
+"shot_rifle_3": {
+"dur": 0.991,
+"len_audible": 0.95
+},
+"shot_shotgun": {
+"dur": 0.69,
+"len_audible": 0.65
+},
+"shot_shotgun_2": {
+"dur": 0.201,
+"len_audible": 0.2
+},
+"shot_smg": {
+"dur": 0.274,
+"len_audible": 0.25
+},
+"shot_smg_2": {
+"dur": 0.138,
+"len_audible": 0.1
+},
+"shot_smg_3": {
+"dur": 0.115,
+"len_audible": 0.1
+},
+"siren": {
+"dur": 2.997,
+"len_audible": 2.95
+},
+"sled_bells": {
+"dur": 0.949,
+"len_audible": 0.9
+},
+"sleep": {
+"dur": 2.42,
+"len_audible": 2.35
+},
+"slime": {
+"dur": 0.509,
+"len_audible": 0.5
+},
+"slime_2": {
+"dur": 0.385,
+"len_audible": 0.35
+},
+"slime_3": {
+"dur": 0.306,
+"len_audible": 0.3
+},
+"snore": {
+"dur": 0.301,
+"len_audible": 0.3
+},
+"snore_2": {
+"dur": 0.725,
+"len_audible": 0.7
+},
+"sparkle": {
+"dur": 0.598,
+"len_audible": 0.55
+},
+"sparkle_2": {
+"dur": 0.592,
+"len_audible": 0.55
+},
+"sparkle_3": {
+"dur": 0.562,
+"len_audible": 0.55
+},
+"spell": {
+"dur": 0.49,
+"len_audible": 0.45
+},
+"spell_2": {
+"dur": 0.377,
+"len_audible": 0.35
+},
+"spell_3": {
+"dur": 0.582,
+"len_audible": 0.55
+},
+"spell_dark": {
+"dur": 1.598,
+"len_audible": 1.55
+},
+"spell_dark_2": {
+"dur": 1.006,
+"len_audible": 0.95
+},
+"spell_dark_3": {
+"dur": 1.596,
+"len_audible": 1.55
+},
+"spell_earth": {
+"dur": 1.397,
+"len_audible": 1.35
+},
+"spell_earth_2": {
+"dur": 1.111,
+"len_audible": 0.95
+},
+"spell_earth_3": {
+"dur": 1.396,
+"len_audible": 1.35
+},
+"spell_fire": {
+"dur": 1.395,
+"len_audible": 1.35
+},
+"spell_fire_2": {
+"dur": 1.397,
+"len_audible": 1.35
+},
+"spell_fire_3": {
+"dur": 1.397,
+"len_audible": 1.35
+},
+"spell_ice": {
+"dur": 1.396,
+"len_audible": 1.35
+},
+"spell_ice_2": {
+"dur": 1.396,
+"len_audible": 1.35
+},
+"spell_ice_3": {
+"dur": 0.55,
+"len_audible": 0.55
+},
+"spell_lightning": {
+"dur": 1.397,
+"len_audible": 1.35
+},
+"spell_lightning_2": {
+"dur": 1.395,
+"len_audible": 1.35
+},
+"spell_lightning_3": {
+"dur": 1.394,
+"len_audible": 1.35
+},
+"spell_nature": {
+"dur": 1.395,
+"len_audible": 1.35
+},
+"spell_nature_2": {
+"dur": 1.397,
+"len_audible": 1.35
+},
+"spell_nature_3": {
+"dur": 1.395,
+"len_audible": 1.35
+},
+"spirit": {
+"dur": 0.358,
+"len_audible": 0.35
+},
+"spirit_2": {
+"dur": 0.452,
+"len_audible": 0.45
+},
+"spirit_3": {
+"dur": 1.099,
+"len_audible": 1.05
+},
+"splash": {
+"dur": 0.997,
+"len_audible": 0.95
+},
+"splash_2": {
+"dur": 0.628,
+"len_audible": 0.6
+},
+"splash_3": {
+"dur": 0.526,
+"len_audible": 0.5
+},
+"status_tick": {
+"dur": 0.125,
+"len_audible": 0.1
+},
+"status_tick_2": {
+"dur": 0.134,
+"len_audible": 0.1
+},
+"step_dirt": {
+"dur": 0.277,
+"len_audible": 0.2
+},
+"step_dirt_2": {
+"dur": 0.235,
+"len_audible": 0.2
+},
+"step_dirt_3": {
+"dur": 0.194,
+"len_audible": 0.15
+},
+"step_grass": {
+"dur": 0.236,
+"len_audible": 0.2
+},
+"step_grass_2": {
+"dur": 0.173,
+"len_audible": 0.15
+},
+"step_grass_3": {
+"dur": 0.202,
+"len_audible": 0.2
+},
+"step_gravel": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_gravel_2": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"step_gravel_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_hoof": {
+"dur": 0.062,
+"len_audible": 0.05
+},
+"step_hoof_2": {
+"dur": 0.08,
+"len_audible": 0.05
+},
+"step_hoof_3": {
+"dur": 0.134,
+"len_audible": 0.1
+},
+"step_leaves": {
+"dur": 0.292,
+"len_audible": 0.25
+},
+"step_leaves_2": {
+"dur": 0.292,
+"len_audible": 0.25
+},
+"step_leaves_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_mud": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_mud_2": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_mud_3": {
+"dur": 0.277,
+"len_audible": 0.2
+},
+"step_sand": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_sand_2": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_sand_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_snow": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"step_snow_2": {
+"dur": 0.3,
+"len_audible": 0.3
+},
+"step_snow_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_stone": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_stone_2": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_stone_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_swim": {
+"dur": 0.593,
+"len_audible": 0.5
+},
+"step_swim_2": {
+"dur": 0.591,
+"len_audible": 0.55
+},
+"step_swim_3": {
+"dur": 0.616,
+"len_audible": 0.6
+},
+"step_water": {
+"dur": 0.202,
+"len_audible": 0.2
+},
+"step_water_2": {
+"dur": 0.276,
+"len_audible": 0.25
+},
+"step_water_3": {
+"dur": 0.277,
+"len_audible": 0.25
+},
+"step_wheels": {
+"dur": 0.794,
+"len_audible": 0.75
+},
+"step_wheels_2": {
+"dur": 0.809,
+"len_audible": 0.8
+},
+"step_wood": {
+"dur": 0.165,
+"len_audible": 0.15
+},
+"step_wood_2": {
+"dur": 0.159,
+"len_audible": 0.15
+},
+"step_wood_3": {
+"dur": 0.086,
+"len_audible": 0.05
+},
+"stink": {
+"dur": 0.253,
+"len_audible": 0.25
+},
+"stink_2": {
+"dur": 0.499,
+"len_audible": 0.45
+},
+"stomp": {
+"dur": 0.345,
+"len_audible": 0.3
+},
+"stomp_2": {
+"dur": 0.449,
+"len_audible": 0.4
+},
+"stomp_3": {
+"dur": 0.376,
+"len_audible": 0.35
+},
+"stone_grind": {
+"dur": 1.997,
+"len_audible": 1.95
+},
+"stun": {
+"dur": 0.471,
+"len_audible": 0.45
+},
+"stun_2": {
+"dur": 0.737,
+"len_audible": 0.7
+},
+"swim": {
+"dur": 0.632,
+"len_audible": 0.6
+},
+"swim_2": {
+"dur": 0.79,
+"len_audible": 0.75
+},
+"swim_3": {
+"dur": 0.805,
+"len_audible": 0.8
+},
+"swing": {
+"dur": 0.278,
+"len_audible": 0.25
+},
+"swing_2": {
+"dur": 0.184,
+"len_audible": 0.15
+},
+"swing_3": {
+"dur": 0.181,
+"len_audible": 0.15
+},
+"swing_heavy": {
+"dur": 0.405,
+"len_audible": 0.35
+},
+"swing_heavy_2": {
+"dur": 0.353,
+"len_audible": 0.3
+},
+"swing_heavy_3": {
+"dur": 0.37,
+"len_audible": 0.35
+},
+"sword_clash": {
+"dur": 0.767,
+"len_audible": 0.55
+},
+"sword_clash_2": {
+"dur": 0.385,
+"len_audible": 0.35
+},
+"sword_clash_3": {
+"dur": 0.55,
+"len_audible": 0.45
+},
+"tab": {
+"dur": 0.294,
+"len_audible": 0.25
+},
+"tab_2": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"talk_blip": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"talk_blip_2": {
+"dur": 0.179,
+"len_audible": 0.15
+},
+"talk_blip_3": {
+"dur": 0.318,
+"len_audible": 0.25
+},
+"teleport": {
+"dur": 0.187,
+"len_audible": 0.15
+},
+"teleport_2": {
+"dur": 1.399,
+"len_audible": 1.3
+},
+"tell": {
+"dur": 0.338,
+"len_audible": 0.3
+},
+"terminal": {
+"dur": 0.129,
+"len_audible": 0.1
+},
+"terminal_2": {
+"dur": 0.167,
+"len_audible": 0.15
+},
+"terminal_3": {
+"dur": 0.283,
+"len_audible": 0.25
+},
+"thud": {
+"dur": 0.593,
+"len_audible": 0.55
+},
+"thud_2": {
+"dur": 0.593,
+"len_audible": 0.55
+},
+"thud_3": {
+"dur": 0.593,
+"len_audible": 0.55
+},
+"thump": {
+"dur": 0.344,
+"len_audible": 0.3
+},
+"thump_2": {
+"dur": 0.193,
+"len_audible": 0.15
+},
+"thump_3": {
+"dur": 0.344,
+"len_audible": 0.3
+},
+"timber": {
+"dur": 1.877,
+"len_audible": 1.85
+},
+"timber_2": {
+"dur": 2.5,
+"len_audible": 2.5
+},
+"tools": {
+"dur": 0.667,
+"len_audible": 0.65
+},
+"tools_2": {
+"dur": 0.169,
+"len_audible": 0.15
+},
+"tools_3": {
+"dur": 0.329,
+"len_audible": 0.3
+},
+"town_bell": {
+"dur": 5.5,
+"len_audible": 5.5
+},
+"town_bell_far": {
+"dur": 5.919,
+"len_audible": 5.9
+},
+"train_depart": {
+"dur": 2.902,
+"len_audible": 2.9
+},
+"twig": {
+"dur": 0.26,
+"len_audible": 0.25
+},
+"twig_2": {
+"dur": 0.506,
+"len_audible": 0.5
+},
+"typing": {
+"dur": 1.197,
+"len_audible": 1.15
+},
+"typing_2": {
+"dur": 1.195,
+"len_audible": 1.15
+},
+"ui_tap": {
+"dur": 0.144,
+"len_audible": 0.1
+},
+"ui_tap_2": {
+"dur": 0.144,
+"len_audible": 0.1
+},
+"ui_tap_3": {
+"dur": 0.144,
+"len_audible": 0.1
+},
+"unlock": {
+"dur": 0.425,
+"len_audible": 0.4
+},
+"unlock_2": {
+"dur": 0.585,
+"len_audible": 0.55
+},
+"unsheathe": {
+"dur": 0.303,
+"len_audible": 0.3
+},
+"unsheathe_2": {
+"dur": 0.261,
+"len_audible": 0.25
+},
+"unsheathe_3": {
+"dur": 0.281,
+"len_audible": 0.25
+},
+"war_drum": {
+"dur": 2.198,
+"len_audible": 2.15
+},
+"war_horn": {
+"dur": 2.398,
+"len_audible": 2.35
+},
+"war_horn_2": {
+"dur": 2.398,
+"len_audible": 2.35
+},
+"war_horn_gang": {
+"dur": 0.885,
+"len_audible": 0.85
+},
+"water": {
+"dur": 1.196,
+"len_audible": 1.15
+},
+"water_2": {
+"dur": 1.199,
+"len_audible": 1.15
+},
+"whimper": {
+"dur": 1.6,
+"len_audible": 1.45
+},
+"whimper_2": {
+"dur": 1.6,
+"len_audible": 1.45
+},
+"whinny": {
+"dur": 1.289,
+"len_audible": 1.25
+},
+"whistle": {
+"dur": 0.319,
+"len_audible": 0.3
+},
+"whistle_2": {
+"dur": 0.353,
+"len_audible": 0.35
+},
+"yawn": {
+"dur": 0.307,
+"len_audible": 0.3
+},
+"yawn_2": {
+"dur": 0.235,
+"len_audible": 0.2
+},
+"zap": {
+"dur": 0.227,
+"len_audible": 0.2
+},
+"zap_2": {
+"dur": 0.22,
+"len_audible": 0.2
+},
+"zap_3": {
+"dur": 0.892,
+"len_audible": 0.85
+}
+}

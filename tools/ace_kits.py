@@ -27,7 +27,16 @@ JINGLES = {
     "jin_warm": ["j_heart", "j_gift", "j_birthday", "j_morning"],
     "jin_disc": ["j_secret", "j_page", "j_region", "j_treasure"],
     "jin_battle": ["j_battle_won", "j_battle_lost", "j_battle_start", "j_campaign_won"],
+    # C13: casino wins, achievement, new quest (one render, four stings)
+    "jin_casino": ["j_casino_small", "j_casino_big", "ach_unlock", "j_quest"],
+    # C13: gangster-arc jingle set (noir brass/vibes/upright bass); Music.sfx plays <name>_gang in the gang arc
+    "jin_gang_a": ["levelup_gang", "quest_done_gang", "j_skill_gang", "j_victory_gang"],
+    "jin_gang_b": ["j_battle_won_gang", "j_battle_lost_gang", "j_battle_start_gang", "j_campaign_won_gang"],
+    "jin_gang_c": ["j_secret_gang", "j_page_gang", "j_region_gang", "j_treasure_gang"],
+    "jin_gang_d": ["j_heart_gang", "j_gift_gang", "j_birthday_gang", "j_morning_gang"],
 }
+# max cue length per name (s); default 3.2 (a short win sting must stay short)
+MAX_LEN = {"j_casino_small": 1.4, "j_quest": 2.0, "ach_unlock": 2.0, "j_page_gang": 2.2}
 # extra names that reuse a cue
 ALIASES = {"sleep": "j_morning", "craft_done": "j_skill"}
 # C6: these come from real CC0 recordings now (tools/cc0_import.py): never cut them here
@@ -72,7 +81,7 @@ def fade(seg, sr, fi=0.005, fo=0.5):
     return seg * (0.89 / pk)
 
 
-def cut_jingles(src, names, out_dir, done):
+def cut_jingles(src, names, out_dir, done, only=None):
     x, sr = ace_pick.load(src, 44100)
     hop = int(0.02 * sr)
     n = len(x) // hop
@@ -80,14 +89,16 @@ def cut_jingles(src, names, out_dir, done):
     db = 20 * np.log10(env)
     q = n // 4
     for k, name in enumerate(names):
+        if only and name not in only:
+            continue
         lo, hi = k * q, (k + 1) * q
         best, bs = lo, -1e9
-        for i in range(lo + 5, hi - int(2.2 / 0.02)):
+        for i in range(lo + 5, max(lo + 6, hi - int(min(2.2, MAX_LEN.get(name, 3.2)) / 0.02))):
             # a phrase start: louder than the moment before it, and not quieter after
             s = (db[i:i + 10].mean() - db[i - 5:i].mean()) + 0.2 * db[i:i + 50].mean()
             if s > bs:
                 bs, best = s, i
-        L = min(int(3.2 / 0.02), hi - best)
+        L = min(int(MAX_LEN.get(name, 3.2) / 0.02), hi - best)
         # end at the quietest point in the last second, so it doesn't stop mid-note
         tail = db[best + L - 50:best + L]
         end = best + L - 50 + int(np.argmin(tail)) if len(tail) else best + L
@@ -96,7 +107,7 @@ def cut_jingles(src, names, out_dir, done):
         done.append(name)
 
 
-def cut_kit(src, spec, out_dir, done, tmp):
+def cut_kit(src, spec, out_dir, done, tmp, only=None):
     d = os.path.join(tmp, os.path.basename(src))
     subprocess.run([sys.executable, os.path.join(HERE, "ace_slice_hits.py"), src, d, "--onsets", "--max", "0.9", "--keep", "40"], check=True, capture_output=True)
     hits = json.load(open(os.path.join(d, "hits.json")))
@@ -119,7 +130,7 @@ def cut_kit(src, spec, out_dir, done, tmp):
                 sr = w.getframerate()
             x = fade(x, sr, fo=min(0.25, len(x) / sr / 2))
             nm = name if t == 0 else f"{name}_{t + 1}"
-            if nm in CC0_NOW:
+            if nm in CC0_NOW or (only and nm not in only):
                 continue
             write_ogg(x, sr, os.path.join(out_dir, nm + ".ogg"))
             done.append(nm)
@@ -129,7 +140,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", default="/home/claude/work/ace_raw")
     ap.add_argument("--dry", default="")
+    ap.add_argument("--only", default="", help="comma list: cut only these cue names (others untouched)")
     a = ap.parse_args()
+    only = set(x for x in a.only.split(",") if x) or None
     log = json.load(open(os.path.join(ROOT, "audio", "ACE_LOG.json")))
     out = a.dry or os.path.join(ROOT, "audio", "sfx")
     tmp = "/tmp/ace_kits"
@@ -138,12 +151,14 @@ def main():
     for r, names in JINGLES.items():
         src = chosen(log, r, a.raw)
         if src and os.path.exists(src):
-            cut_jingles(src, names, out, done)
+            cut_jingles(src, names, out, done, only)
     for r, spec in KITS.items():
         src = chosen(log, r, a.raw)
         if src and os.path.exists(src):
-            cut_kit(src, spec, out, done, tmp)
+            cut_kit(src, spec, out, done, tmp, only)
     for al, base in ALIASES.items():
+        if only and al not in only:
+            continue
         p = os.path.join(out, base + ".ogg")
         if os.path.exists(p):
             q = os.path.join(out, al + ".ogg")
