@@ -1,0 +1,142 @@
+{
+ "sha": "c4649e46908d7bd4f07b6ed95662bfb34acd81da",
+ "ref": "ci/c11bp1-71e24573",
+ "run": "44848834897",
+ "finished": 1795224244.9984195,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 49,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "71e24573c9b357c2492b0c6846257e1407b62cfb",
+  "label": "c11bp1",
+  "branch": "c11bf/p1",
+  "shards": [
+   3,
+   5
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 415,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 415,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 377,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 238.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 203.1
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 40.2
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 40.0
+  },
+  {
+   "step": 42,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 27.3
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 23.1
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 18.2
+  },
+  {
+   "step": 100,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 14.5
+  },
+  {
+   "step": 52,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 10.6
+  },
+  {
+   "step": 102,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 10.5
+  },
+  {
+   "step": 58,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 10.0
+  },
+  {
+   "step": 108,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 9.1
+  },
+  {
+   "step": 82,
+   "name": "campaign: battles, projects, colonies, big mines",
+   "rc": 0,
+   "secs": 8.1
+  },
+  {
+   "step": 118,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 7.8
+  },
+  {
+   "step": 120,
+   "name": "toasts: never over a boss card, a region card, the pup strip or the en",
+   "rc": 0,
+   "secs": 7.6
+  }
+ ]
+}

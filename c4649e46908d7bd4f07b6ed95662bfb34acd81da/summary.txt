@@ -1,0 +1,11 @@
+CONDUCT CI PASS  c4649e4690  (ci/c11bp1-71e24573, run 44848834897)
+
+subset run: shards [3, 5], bots off, playtest on
+check shards (2/2):
+  shard 3: PASS  415s
+  shard 5: PASS  377s
+playtest: PASS  49s  21 screenshots (results playtest/shots/)
+
+longest job: 415s
+slowest check steps: import 238.3s; import 203.1s; touch_ui_test 40.2s; commons_test 40.0s; crop_test 27.3s; exits line up (top edge leads to the next map's bottom edge...) 23.1s; building doors 18.2s; story: every chapter plays to the end 14.5s
+distinct errors/fails/warns:
