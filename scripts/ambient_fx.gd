@@ -101,3 +101,38 @@ static func shore_building(a: AnimatedSprite2D, name: String) -> void:
 	elif "water_mill" in name:
 		a.stop()
 		a.frame = 0
+		# life without re-drawn frames: chimney smoke and spray where the wheel meets the race
+		var tl := a.offset - Vector2(163, 200) / 2.0
+		steam(a, tl + Vector2(115, 18), 2.0, 14.0, 1.8, Color(0.92, 0.92, 0.95, 0.42))
+		splash(a, tl + Vector2(84, 178))
+
+
+## Water spray: pale droplets hopping up and falling back (wheel foot, weirs).
+static func splash(parent: Node2D, at: Vector2, n := 10) -> CPUParticles2D:
+	if Settings.reduced_motion() or parent == null:
+		return null
+	var d := CPUParticles2D.new()
+	d.name = "Splash"
+	d.position = at
+	d.amount = n
+	d.lifetime = 0.6
+	d.preprocess = 0.6
+	d.randomness = 0.5
+	d.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	d.emission_rect_extents = Vector2(8, 2)
+	d.direction = Vector2(0.3, -1)
+	d.spread = 40.0
+	d.initial_velocity_min = 20.0
+	d.initial_velocity_max = 40.0
+	d.gravity = Vector2(0, 200)
+	var img := Image.create(2, 2, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	d.texture = ImageTexture.create_from_image(img)
+	d.scale_amount_min = 0.6
+	d.scale_amount_max = 1.0
+	var g := Gradient.new()
+	g.set_color(0, Color(0.9, 0.97, 1.0, 0.9))
+	g.set_color(1, Color(0.75, 0.9, 1.0, 0.0))
+	d.color_ramp = g
+	parent.add_child(d)
+	return d
