@@ -11,4 +11,5 @@ ORDER="gen_skill_trees gen_ranch gen_decor gen_wardrobe gen_heart_perks gen_roma
 for g in $ORDER; do
   out="$(python3 -B tools/$g.py 2>&1)" || { echo "$out"; echo "regen_data: $g failed"; exit 1; }
 done
+python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"

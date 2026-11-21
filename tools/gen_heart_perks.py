@@ -10,6 +10,8 @@ Each entry: text, and any of
   weekly {item: n}   arrives every Monday morning (day % 7 == 1) from then on
   season {item: n}   arrives on the first day of each season
   bonus  {hp|energy|mana: n}  one-time permanent max bonus
+  animal {species, variant, name, keepsake}  a ranch animal, once (Perks.gift_animal -> RanchGift:
+                     it waits with a letter until its home has room; c11b_04-05)
   flag   name        read by code: no_clinic_fee, quiet_steps,
                      ride_fast, skill_point, fog_lift, wisp_safe, soup
 Run: python3 tools/gen_heart_perks.py
@@ -47,13 +49,15 @@ P = {
           "6": ("Tess sends hardwood: 3 Hardwood each week", {"weekly": {"hardwood": 3}}),
           "10": ("Tess's master joinery: 10 Hardwood", {"give": {"hardwood": 10}})},
  "hazel": {"2": ("Hazel shares seeds: a seed pack each week", {"weekly": {"#seedpack": 1}}),
-           "10": ("Hazel's heirloom seeds: 5 Dream Seeds", {"give": {"dream_seed": 5}})},
+           "10": ("Hazel's heirloom seeds: 5 Dream Seeds, and Saffron, her golden hen, comes to your coop (she waits with Hazel until the coop has room)",
+                  {"give": {"dream_seed": 5}, "animal": {"species": "chicken", "variant": "golden", "name": "Saffron", "keepsake": True}})},
  "bram": {"2": ("Bram's breakfast: a Tea each week", {"weekly": {"tea": 1}}),
           "4": ("Free soup at the inn: +30 energy once a day", {"flag": "soup"}),
           "6": ("Bram's pies: 2 Orchard Pies", {"give": {"orchard_pie": 2}}),
           "8": ("Bram's stories: a Map Scrap", {"give": {"map_scrap": 1}})},
  "posy": {"4": ("Posy bakes for you: a Berry Pie each week", {"weekly": {"berry_pie": 1}}),
-          "6": ("Posy's recipes: 2 Cakes", {"give": {"cake": 2}}),
+          "6": ("Posy's recipes: 2 Cakes, and Crumpet, her silver rabbit, moves into your hutch (she waits at the bakery until you have a hutch with room)",
+                {"give": {"cake": 2}, "animal": {"species": "rabbit", "variant": "silver", "name": "Crumpet", "keepsake": True}}),
           "10": ("Posy's best: two berry pies each week", {"weekly": {"berry_pie": 2}})},
  "juniper": {"10": ("Juniper teaches Second Wind: +30 max health", {"bonus": {"hp": 30}})},
  "rook": {"2": ("Rook shows tracks: a Pelt each week", {"weekly": {"pelt": 1}}),
@@ -97,7 +101,8 @@ P = {
           "10": ("Orla's heirloom grain: 5 Dream Seeds", {"give": {"dream_seed": 5}})},
  "benno": {"4": ("Benno's saddle care: your horse runs 10% faster", {"flag": "ride_fast"}),
            "6": ("Benno's oats: +20 max energy", {"bonus": {"energy": 20}}),
-           "8": ("Benno's spare tack sells for ◆250", {"give": {"#gold": 250}}),
+           "8": ("Benno's spare tack sells for ◆250, and Tinker, a goat kid he hand-reared, comes to your barn (when it has room)",
+                 {"give": {"#gold": 250}, "animal": {"species": "goat", "variant": "chocolate", "name": "Tinker", "keepsake": True}}),
            "10": ("Benno's feed run: 6 Hay each week for your animals", {"weekly": {"hay": 6}})},
  "ivy": {"4": ("Ivy's small loan you never have to pay back: ◆400", {"give": {"#gold": 400}}),
          "8": ("Ivy's insurance: no clinic fee when you collapse", {"flag": "no_clinic_fee"}),

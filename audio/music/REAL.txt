@@ -104,3 +104,5 @@ winter
 wedding
 wedding_gang
 date_evening
+ranch
+animal_show

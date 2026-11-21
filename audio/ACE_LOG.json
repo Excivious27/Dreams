@@ -73,6 +73,34 @@
    }
   ]
  },
+ "animal_show": {
+  "alt_of": "festival",
+  "chosen": "so_2b45c6a93a724a9b96443868",
+  "kind": "music",
+  "note": "C11b P6 (c11b_14-05): the unused festival take, for the fair ribbon tables",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/animal_show__so_2b45c6a93a724a9b96443868.mp3",
+    "id": "so_2b45c6a93a724a9b96443868",
+    "page": "",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/animal_show__so_2b45c6a93a724a9b96443868.mp3",
+     "holes": 0,
+     "intro_db": 3.3,
+     "late_soft": 0,
+     "low120": 0.53,
+     "lvl_diff": 4.0,
+     "peak": 1.385,
+     "r999": 10191,
+     "score": 90.63,
+     "seam": 0.966,
+     "soft": 0
+    }
+   }
+  ]
+ },
  "arc_gangsters": {
   "chosen": "upload_arc_gangsters",
   "kind": "music",
@@ -4079,6 +4107,34 @@
      "score": 26.08,
      "seam": 0.805,
      "soft": 2
+    }
+   }
+  ]
+ },
+ "ranch": {
+  "alt_of": "countryside",
+  "chosen": "so_08dc251053904cc1b8467e18",
+  "kind": "music",
+  "note": "C11b P6 (c11b_14-05): the unused countryside take, for barn/coop/enclosure interiors",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/ranch__so_08dc251053904cc1b8467e18.mp3",
+    "id": "so_08dc251053904cc1b8467e18",
+    "page": "https://acemusic.ai/song/g2nb7pvhtcyt",
+    "score": {
+     "dur": 144.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/ranch__so_08dc251053904cc1b8467e18.mp3",
+     "holes": 0,
+     "intro_db": 4.0,
+     "late_soft": 0,
+     "low120": 0.54,
+     "lvl_diff": 1.899999976158142,
+     "peak": 1.369,
+     "r999": 9625,
+     "score": 87.59,
+     "seam": 0.904,
+     "soft": 0
     }
    }
   ]

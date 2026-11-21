@@ -132,4 +132,4 @@ static func deliver(pt: Pet) -> void:
 	pt.map.pop_items(pt.position, id, n)
 	GameState.add_xp("pup", 3)
 	Music.instance(pt.get_tree()).sfx("pickup")
-	pt.map.hud.toast("%s brings you %s." % [Pet.name_of(), ("%d %s" % [n, GameState.item_name(id)]) if n > 1 else GameState.item_name(id)], Color(0.8, 1, 0.8))
+	pt.map.hud.toast("%s brings you %s." % [Pet.name_of(), ItemWords.count_id(id, n) if n > 1 else ItemWords.with_article(GameState.item_name(id))], Color(0.8, 1, 0.8))

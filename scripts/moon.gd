@@ -79,6 +79,8 @@ func after_ready() -> void:
 		mc.offset = Vector2(0, -22)
 		add_child(mc)
 		mc.play("idle")
+		mc.visible = not RanchGift.given(MOON_COW_KEY)
+		set_thing(21, 16, {"type": "moon_cow", "hint": "A: moon cow"}, false)  # C11b P3: she can come home
 		var sp := AnimatedSprite2D.new()
 		sp.sprite_frames = Art.frames("props", {"idle": "moon_spire_anim"}, {"idle": 3.0})
 		sp.animation = "idle"
@@ -150,6 +152,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"alien_shop":
 			later(_alien_shop)
+			return true
+		"moon_cow":
+			later(_moon_cow)
 			return true
 		"spire" when not GameState.is_penguins():
 			tell([{"text": "A spire of glass grown out of the moon. Something inside hums the same tune the neon signs do. Not your business. Yet."}])
@@ -231,8 +236,16 @@ func _alien_shop() -> void:
 	var d := Dialogue.instance(get_tree())
 	var p1 := GameState.shop_price("dream_tonic", 200)
 	var p2 := GameState.shop_price("energy_tea", 70)
-	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆%d" % p1, "Energy Tea  ◆%d" % p2, "Leave"], "key": ""}])
+	var ch: Array = ["Dream Tonic  %s" % Money.fmt(p1), "Energy Tea  %s" % Money.fmt(p2)]
+	var pets := not Shops.animals_for("alien").is_empty()  # C11b P3: the Moon Hare line, once the story opens it
+	if pets:
+		ch.append("Moon creatures")
+	ch.append("Leave")
+	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (%s)" % Money.fmt(int(GameState.run["crystals"])), "choice": ch, "key": ""}])
 	await d.finished
+	if pets and d.last_choice == 2:
+		await Shops.animal_counter(self, "alien", "Alien trader")
+		return
 	if d.last_choice == 0 and int(GameState.run["crystals"]) >= p1:
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - p1
 		give("dream_tonic")
@@ -241,6 +254,22 @@ func _alien_shop() -> void:
 		give("energy_tea")
 	elif d.last_choice in [0, 1]:
 		hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+
+
+## C11b P3 (c11b_02-04): the Moon's crystal-horned cow goes home with you once Gideon's moon quest is done.
+const MOON_COW_KEY := "moon:cow"
+
+
+func _moon_cow() -> void:
+	if RanchGift.given(MOON_COW_KEY):
+		await say([{"text": "The moon cow's old grazing spot. A ring of nibbled moon moss is all she left."}])
+		return
+	if not GameState.quest_done("gideon_moon") or not GameState.is_penguins():
+		await say([{"text": "A cow with crystal horns, grazing on nothing at all. She looks at you, then back at the stars. Maybe someone down home knows about the moon." if GameState.is_penguins()
+			else "A cow with chrome-bright horns, chewing moon dust. She doesn't trust you yet. Maybe someone back in the city knows about this place."}])
+		return
+	await say([{"who": "Alien trader", "text": "Zzzt. She likes you. She follows anyone who brings a moon shard home to a friend. Take her. Zzzt."}])
+	RanchGift.give("moon_cow", MOON_COW_KEY, {"giver": "Alien trader", "home": "barn"})
 
 
 func _tele_first() -> void:
