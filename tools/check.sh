@@ -1490,6 +1490,13 @@ if echo "$c16bp2out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp2out" | grep -q "
   echo "C16b P2 battle feel test failed"; exit 1
 fi
 
+echo "== C16b integ: one on_win per win, perf stars, rematch, gang names/provisions, drill names, brief lines =="
+c16biout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c16b_integ_test.gd 2>&1)"
+echo "$c16biout" | grep -E "FAIL|SCRIPT ERROR|c16b_integ_test" || true
+if echo "$c16biout" | grep -q "SCRIPT ERROR" || ! echo "$c16biout" | grep -q "c16b_integ_test: 0 fails"; then
+  echo "C16b integ test failed"; exit 1
+fi
+
 echo "== C16b P4: battle reward ladder (stars, rematch pay, chests, first clear, mastery, track) =="
 c16bp4rout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/battle_rewards_test.gd 2>&1)"
 echo "$c16bp4rout" | grep -E "FAIL|SCRIPT ERROR|battle_rewards_test" || true

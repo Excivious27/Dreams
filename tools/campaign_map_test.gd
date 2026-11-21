@@ -300,6 +300,7 @@ func _run() -> void:
 	GameState.run["flags"]["crew_deuce"] = true
 	GameState.run["flags"]["crew_mama_rosa"] = true
 	GameState.add_item("wood", 60)
+	GameState.add_item("rounds", 60)  # gang provisions (need_gang)
 	GameState.add_item("copper_bar", 10)
 	GameState.run["crystals"] = 3000
 	var gl := Campaign.for_arc()

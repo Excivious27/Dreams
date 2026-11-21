@@ -246,10 +246,11 @@ func _run() -> void:
 	check(scr._brief.visible, "a campaign opens with its briefing card")
 	await _shot("gate_board_briefing")
 	scr._brief.visible = false
-	check(scr._acts.is_empty() or str(scr._acts[0][0]) == "What's needed", "no attack before mustering")
+	check(scr._acts.filter(func(a: Array) -> bool: return str(a[0]).begins_with("⚔")).is_empty(), "no attack before mustering (the long way may be offered)")
 	Companion.recruit("dad", false)
 	Companion.recruit("mom", false)
 	GameState.add_item("wood", 40)
+	GameState.add_item("rounds", 40)  # the gang arc's provisions (need_gang)
 	GameState.add_item("stone", 20)
 	GameState.run["crystals"] = 1000
 	scr._refresh()
