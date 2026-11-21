@@ -160,6 +160,9 @@ func _run() -> void:
 	check(dr.leave_btn != null and dr.leave_btn.visible and dr.leave_btn.text == "Leave training", "a Leave training button is on screen")
 	check(Hud.extra_rects.has(dr.leave_rect) and dr.leave_rect.has_point(dr.leave_btn.position + Vector2(4, 4)), "the button gets taps (extra rect)")
 	check(dr.leave_rect.size.y >= 20 and dr.card_rect().encloses(dr.leave_rect) and dr.leave_rect.end.y < 380, "the button is a comfortable tap inside the card, above the touch deck (%s)" % dr.leave_rect)
+	await process_frame
+	check(dr.leave_btn.size == BattleDrill.LEAVE_SIZE and dr.leave_rect.size == dr.leave_btn.size and dr.leave_btn.get_combined_minimum_size().x <= BattleDrill.LEAVE_SIZE.x + 0.5, "c16b_01-07: the Leave button is drawn exactly its tap rect (%s / %s)" % [dr.leave_btn.size, dr.leave_rect.size])
+	check(dr.leave_rect.end.x <= dr.card_rect().end.x and dr.leave_rect.end.x <= 270.0, "c16b_01-07: ... inside the card and the screen")
 	dr.ask_leave()
 	await process_frame
 	var opts := _choices()
@@ -195,6 +198,8 @@ func _run() -> void:
 	opts = _choices()
 	var bi := _find(opts, "Build helper")
 	check(bi == 0, "the banner menu leads with Build helper while nothing is built (%s)" % str(opts.slice(0, 2)))
+	check(_find(opts, "Turret") < 0 and _find(opts, "Pylon") < 0, "c16b_01-01: no turret on offer while the drill teaches helper orders (%s)" % str(opts))
+	check(BattleDrill.controls_text().contains("Leave training") and not BattleDrill.controls_text().contains("pushes on its own"), "c16b_01-04: the drill's own CONTROLS text")
 	check(Dialogue.is_way_out(str(opts.back())), "the banner menu ends with its way out")
 	Dialogue.instance(self)._choose("", bi)
 	for i in 900:
@@ -202,6 +207,7 @@ func _run() -> void:
 		if bt._helpers() > 0:
 			break
 	check(bt._helpers() > 0, "Build helper brings a helper out of the banner")
+	check(dr.step == 1, "c16b_01-08: the trainer's next line waits until the helper is out (step %d)" % dr.step)
 	await _talk(40)
 	for i in 120:
 		await process_frame
@@ -225,21 +231,48 @@ func _run() -> void:
 		await _walk(m, Vector2(1, 0), 8.0)
 	check(dr.step == 3, "walking with it passes the follow step (walked %.0f)" % dr._walked)
 	await _talk(40)
+	# c16b_11-16: a foe near the helper does not pull it away from you while it follows.
+	h = _helper()
+	if h:
+		var foe := m.spawn_enemy("grump" if arc == "penguins" else "thug_cyber", h.position + Vector2(40, 0), 0)
+		if foe:
+			foe._stun = 99.0
+			foe.speed = 0.0
+		var away := (m.player.position - (foe.position if foe else m.player.position)).normalized()
+		if away == Vector2.ZERO:
+			away = Vector2(0, 1)
+		var warped := [false]
+		var last := h.position
+		for k in 50:
+			await _walk(m, away, 4.0)
+			if h.position.distance_to(last) > 30.0:
+				warped[0] = true
+			last = h.position
+		for i in 90:
+			await process_frame
+			if h.position.distance_to(last) > 30.0:
+				warped[0] = true
+			last = h.position
+		check(h.position.distance_to(m.player.position) < 60.0 and not warped[0], "c16b_11-16: walking 200 px off, the helper stays with you, no warp (%.0f px)" % h.position.distance_to(m.player.position))
+		if foe and is_instance_valid(foe):
+			foe.queue_free()
+			m.enemies.erase(foe)
+		await _talk(20)
 	# Hold here, through the HELPERS list.
 	bt._pick_rally()
 	await process_frame
 	opts = _choices()
-	check(str(opts[0]).contains("Follow me") and str(opts[1]).contains("Hold here") and str(opts[2]).begins_with("Go to") and str(opts.back()) == "Close", "the HELPERS list says what each order does: %s" % str(opts))
+	check(str(opts[0]).contains("Follow me") and str(opts[1]).contains("Guard banner") and str(opts[2]).begins_with("Go to") and str(opts.back()) == "Close", "the HELPERS list says what each order does: %s" % str(opts))
 	check(bt._rally_btn.text.begins_with("HELPERS"), "the button is called HELPERS: %s" % bt._rally_btn.text)
 	Dialogue.instance(self)._choose("", 1)
 	await _talk(10)
-	check(bt._rally == -2 and not m.has_meta("follow_me"), "Hold here takes")
+	check(bt._rally == -2 and not m.has_meta("follow_me"), "Guard banner takes")
 	h = _helper()
 	var d0 := h.position.distance_to(h.home) if h else 0.0
 	for i in 120:
 		await process_frame
-	check(h != null and h.position.distance_to(h.home) < maxf(30.0, d0 - 10.0), "on Hold here the helper goes back to its banner (%.0f -> %.0f)" % [d0, h.position.distance_to(h.home) if h else -1.0])
-	check(dr.step == 4, "Hold here passes its step (%d)" % dr.step)
+	check(h != null and h.position.distance_to(h.home) < maxf(30.0, d0 - 10.0), "on Guard banner the helper goes back to its banner (%.0f -> %.0f)" % [d0, h.position.distance_to(h.home) if h else -1.0])
+	check(dr.step == 4, "Guard banner passes its step (%d)" % dr.step)
 	await _talk(40)
 	# ---- 3. leave from the pause menu row (pad / keys) mid-drill -------------------
 	GameMenu.open_page(self, "Items")
@@ -294,6 +327,26 @@ func _run() -> void:
 		Dialogue.instance(self)._choose("", mi)
 		await _talk(10)
 		check(bt._rally >= 0 and bt.points[bt._rally] == bt.point("b") and m.has_meta("rally_pos"), "Go to Old Mill takes")
+		# c16b_01-12: the field's exit asks first while the drill runs, and is labelled so.
+		var lab_ok := false
+		for e in m.exits:
+			if str(e.get("label", "")) == "▼ end training":
+				lab_ok = true
+		check(lab_ok, "c16b_01-12: the field exit reads 'end training' during the drill")
+		for i in 200:
+			if not Dialogue.instance(self).active:
+				break
+			await _talk(2)
+		check(BattleDrill.intercept_exit(m), "c16b_01-12: walking off the field is taken over by the drill")
+		for i in 30:
+			await process_frame
+			if Dialogue.instance(self).active and Dialogue.instance(self)._in_choice:
+				break
+		opts = _choices()
+		check(opts.size() == 2 and str(opts[0]).begins_with("End training"), "c16b_01-12: ... and asks End training? (%s)" % str(opts))
+		Dialogue.instance(self)._choose("", 1)
+		await _talk(10)
+		check(current_scene == m and not bt._over, "c16b_01-12: Not now keeps training")
 		# A KO-free way out at the last step too.
 		bt.drill.leave()
 		m = await _arrive("town")

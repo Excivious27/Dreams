@@ -32,7 +32,7 @@ const LOSE := {
 static func controls_text(data: Dictionary = {}) -> String:
 	var md := str(data.get("mode", ""))
 	var push := push_clause(data)
-	return "Walk into a ring to take a point. %s on your banner: build helpers and upgrades (◇ supply). %s for orders: Follow me, Hold here, Go to a point %s. MEND and BARRAGE (top left) spend supply anywhere. Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how(), push] + ("" if md == "drill" else extra_controls())
+	return "Walk into a ring to take a point. %s on your banner: build helpers and upgrades (◇ supply). %s for orders: Follow me, Guard banner, Go to a point %s. MEND and BARRAGE (top left) spend supply anywhere. Leave by the ▼ exit to fall back." % [PadInput.words("USE").strip_edges(), BattleDrill.order_how(), push] + ("" if md == "drill" else extra_controls())
 
 
 static func push_clause(data: Dictionary) -> String:
@@ -185,7 +185,7 @@ func _ready() -> void:
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
 	_team_box(v)
 	v.add_child(_head("CONTROLS"))
-	v.add_child(_label(controls_text(d), 7, Color(0.88, 0.88, 0.92)))
+	v.add_child(_label(BattleDrill.controls_text() if mode == "drill" else controls_text(d), 7, Color(0.88, 0.88, 0.92)))  # c16b_01-04
 	_buttons(v)
 
 

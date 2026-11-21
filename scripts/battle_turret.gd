@@ -103,5 +103,4 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	super()
 	if hp < max_hp:
-		draw_rect(Rect2(-7, -24, 14, 1.5), Color(0, 0, 0, 0.6))
-		draw_rect(Rect2(-7, -24, 14.0 * hp / max_hp, 1.5), Color(0.4, 1, 0.5))
+		HelperUnit.ally_bar(self, Rect2(-7, -24, 14, 1.5), float(hp) / float(max_hp))  # the framed ally bar (c16b_11-09)

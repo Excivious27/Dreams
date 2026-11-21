@@ -270,7 +270,7 @@ static func drill_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["mode"] = "drill"
 	d["drill"] = true
 	d["title"] = "Training: First Muster"
-	d["brief"] = "Three points, a few sleepy foes, and me talking you through it. %s steps, then you're ready to lead." % _steps_word() if GameState.is_penguins() else "Three points, a couple of lookouts, and me in your ear. %s steps and you can run a crew in a fight." % _steps_word()
+	d["brief"] = "Three points, a few sleepy foes, and me talking you through it. %s steps, then you're ready to lead." % _steps_word() if GameState.is_penguins() else "Three points, a couple of lookouts, and me in your ear. %s steps and you can run a crew in a fight." % _steps_word()  # c16b_01-03 / 11-19
 	d["who"] = trainer()
 	d["points"] = (dd.get("points", []) as Array).duplicate(true)
 	d["enemies"] = dd.get("enemies", {}).get(Campaign.arc(), ["grump"])
@@ -301,10 +301,10 @@ static func drill_finish(won: bool) -> Array:
 	if first:
 		var rw: Dictionary = drill_def().get("reward", {})
 		GameState.add_money(int(rw.get("crystals", 0)), "campaign")
-		var got: Array = ["◆%d" % int(rw.get("crystals", 0))]
+		var got: Array = [Money.amount(int(rw.get("crystals", 0)))]  # cash in the gang arc (c16b_01-06)
 		for it: String in rw.get("items", {}):
 			GameState.add_item(it, int(rw["items"][it]))
-			got.append("%s ×%d" % [GameState.item_name(it), int(rw["items"][it])])
+			got.append(ItemWords.count_id(it, int(rw["items"][it])))
 		GameState.add_xp("strategist", 60)
 		lines.append({"text": "Training complete! +" + ", ".join(got)})
 		lines.append({"who": who, "text": "Campaigns need a team and provisions. Each one on the campaign map lists what it asks. Gather them, muster, and march."})

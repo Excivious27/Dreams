@@ -24,6 +24,8 @@ const WALK := 52.0
 const CATCH_UP := 100.0     # follow speed cap when left behind (player run 96 x 1.1)
 const WARP_D := 400.0       # further than this from you while following: poof back beside you
 const SEP := 8.0            # helpers keep this far apart
+const LEASH := 70.0         # following: only foes this close to YOU; guarding: to the post (c16b_11-16)
+const LEASH_DROP := 90.0    # following: further than this from you, drop the foe and come back
 
 static var _kinds: Dictionary = {}
 ## Game-time clock for veils (shade): advanced once per frame by whoever runs first.
@@ -110,6 +112,11 @@ var team_spd := 1.0
 var tag_row := 0           # team name tags alternate rows so neighbours never overlap
 var _spr: AnimatedSprite2D = null
 var _last_pos := Vector2.ZERO
+var _face := Vector2.DOWN   # last move direction (team sprites face it)
+var _sep_t := 0.0           # separation runs every 0.1 s (c16b_11-14)
+var _pl_last := Vector2.INF
+var _pl_spd := 0.0
+var _hurt_ms := -10000      # last hurt cue (game ms)
 
 
 static func make(m: GameMap, k: String, at: Vector2, home_at: Vector2) -> HelperUnit:
@@ -126,7 +133,23 @@ static func make(m: GameMap, k: String, at: Vector2, home_at: Vector2) -> Helper
 	h.z_index = 1
 	h.add_to_group("allies")
 	m.add_child(h)
+	h.arrive()
 	return h
+
+
+## Step onto the field where it can be seen: a sparkle (crystal) / poof (drone),
+## a quick scale-in (none under reduced motion) and the step-out cue whenever it
+## is near you, so a helper never just appears out of nowhere (c16b_11-11).
+func arrive() -> void:
+	if map == null:
+		return
+	map.fx("sparkle" if style == "crystal" else "poof", position + Vector2(0, -8), 12.0, 0.4)
+	if not Anim.reduced():
+		scale = Vector2(0.4, 0.4)
+		var tw := create_tween()
+		tw.tween_property(self, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if map.player and position.distance_to(map.player.position) < 220.0:
+		Music.instance(map.get_tree()).sfx("teleport", "pop")
 
 
 ## A mustered ally on the field: [id, name, kind] from CampaignGate.team(); `a`
@@ -214,6 +237,9 @@ func label() -> String:
 func take_damage(n: int, _from: Vector2) -> void:
 	hp -= maxi(1, n / 2)
 	_hurt = 0.2
+	if hp > 0 and team_id == "" and map.player and position.distance_to(map.player.position) < 200.0 and PlayClock.ms() - _hurt_ms > 400:
+		_hurt_ms = PlayClock.ms()
+		Music.instance(get_tree()).sfx("zap" if style == "drone" else "hit", "thud")  # a spawned helper is heard when hit (c16b_11-04)
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
 		if team_id.begins_with("animal:"):
@@ -243,33 +269,47 @@ func _process(delta: float) -> void:
 	_zap_t = maxf(0.0, _zap_t - delta)
 	_hurt = maxf(0.0, _hurt - delta)
 	_act_t = maxf(0.0, _act_t - delta)
-	# Move: guard home; drift toward the player when no foe is near home.
-	var foe := map.nearest_enemy_to(position, 120.0)
-	if foe and not foe._alive:
-		foe = null
+	# Move: guard home (or your rally point), or walk with you; fight only what's
+	# near whoever it's with, so "Follow me" keeps the helper beside you (c16b_11-16).
 	var want := home
 	# Early fights: with no order given, the team pushes on its own (Battle sets team_push).
 	var pushing := team_id != "" and map.has_meta("team_push") and not map.has_meta("rally_pos") and not map.has_meta("follow_me")
 	var following := not pushing and (map.has_meta("follow_me") or (team_id != "" and not map.has_meta("rally_pos") and not map.has_meta("team_hold")))  # C16b P1 hook: Hold here holds the team at home
+	var pd := position.distance_to(map.player.position)
+	var foe: Enemy = null
 	if following:
-		# Following you means following you, fight or no fight (team members always
-		# walk with you unless sent to a point: they have no post of their own).
+		foe = map.nearest_enemy_to(map.player.position, LEASH) if pd < LEASH_DROP else null
+	elif map.has_meta("rally_pos"):
+		foe = map.nearest_enemy_to(map.get_meta("rally_pos"), LEASH)
+	elif pushing:
+		foe = map.nearest_enemy_to(position, 120.0)
+	else:
+		foe = map.nearest_enemy_to(home, LEASH + 20.0)
+	if following:
+		# Following you means following you (team members always walk with you
+		# unless sent to a point: they have no post of their own).
 		want = map.player.position + Vector2(cos(get_instance_id() % 7), sin(get_instance_id() % 5)) * 22.0
-		if position.distance_to(map.player.position) > WARP_D:
+		if pd > WARP_D:
 			_warp_to(map.player.position)
 			return
 	if map.has_meta("rally_pos"):
 		var rp: Vector2 = map.get_meta("rally_pos")
 		want = rp + Vector2(cos(get_instance_id() % 11), sin(get_instance_id() % 13)) * 20.0
-		if foe and foe.position.distance_to(position) > 70.0:
-			foe = map.nearest_enemy_to(position, 70.0)
-			if foe and not foe._alive:
-				foe = null
 	if pushing:
 		var tp: Vector2 = map.get_meta("team_push")
 		want = tp + Vector2(cos(get_instance_id() % 11), sin(get_instance_id() % 13)) * 20.0
 	if foe and act == "striker":
-		want = foe.position + (position - foe.position).normalized() * 40.0
+		# Close to its own fighting range and stand there: no endless backing off, so
+		# a melee foe can answer (c16b_11-01). Only steps back when right on top of it.
+		var fd := position.distance_to(foe.position)
+		var away := (position - foe.position).normalized() if fd > 0.5 else Vector2.RIGHT
+		var sd := standoff()
+		if fd > sd + 6.0:
+			want = foe.position + away * sd
+		elif fd < 10.0:
+			want = foe.position + away * 12.0
+		else:
+			want = position
 	var step := (want - position)
 	if step.length() > 4.0:
 		# Walk around cliffs and water toward fixed spots (home, rally point).
@@ -288,21 +328,35 @@ func _process(delta: float) -> void:
 			elif following and (not map.line_clear(position, want) or not _can_step(position + step.normalized() * 8.0)):
 				# Near you: the bounded chase field. Left far behind (outside its 14-cell
 				# window): a coarse unbounded field, so it still walks round cliffs/water.
-				if position.distance_to(map.player.position) < 200.0:
+				if pd < 200.0:
 					dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 				else:
-					dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(128, 128)) + map.offset())
-		# Left behind while following: catch up at a run (a touch quicker than you).
-		var spd := WALK
-		if following and step.length() > 60.0:
-			spd = minf(RUN_SPEED * 1.1, CATCH_UP)
+					dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(256, 256)) + map.offset())
+		# Left behind while following: keep up with you however fast you go (running,
+		# tap-to-move, speed gear: c16b_01-02); trained team animals keep their own pace.
+		var spd := WALK * team_spd
+		if following and step.length() > 30.0:
+			spd = maxf(WALK, _player_speed() * 1.15) * clampf(team_spd, 0.8, 1.3)
 		elif step.length() > 120.0:
-			spd = WALK * 1.4  # a long way to a rally point / home
+			spd = WALK * 1.4 * team_spd  # a long way to a rally point / home
 		_move(dir * minf(step.length(), spd * delta), dir, spd * delta)
-	_separate(delta)
+	_sep_t -= delta
+	if _sep_t <= 0.0:
+		_sep_t = 0.1
+		_separate(0.1)
 	if _spr:
-		var moved := position.distance_to(_last_pos) > 0.05
-		var an := "walk" if moved and _spr.sprite_frames.has_animation("walk") else "idle"
+		var mv := position - _last_pos
+		var moved := mv.length() > 0.05
+		if moved:
+			_face = mv
+		# Facing: up/down strips when the move is mostly vertical (c16b_11-18).
+		var vert := absf(_face.y) > absf(_face.x) * 1.2
+		var sfx_dir := ("_up" if _face.y < 0.0 else "_down") if vert else ""
+		var an := "idle"
+		if moved:
+			an = "walk" + sfx_dir if sfx_dir != "" and _spr.sprite_frames.has_animation("walk" + sfx_dir) else ("walk" if _spr.sprite_frames.has_animation("walk") else "idle")
+		elif sfx_dir != "" and _spr.sprite_frames.has_animation("idle" + sfx_dir):
+			an = "idle" + sfx_dir
 		if _hurt > 0.0 and _spr.sprite_frames.has_animation("hurt"):
 			an = "hurt"
 		elif _act_t > 0.0 and _spr.sprite_frames.has_animation("attack"):
@@ -311,26 +365,32 @@ func _process(delta: float) -> void:
 			_spr.play(an)
 			if an == "idle":
 				CreatureMotion.random_start(_spr, CreatureMotion.rng_for(self), 0.1)
-		if absf(position.x - _last_pos.x) > 0.05:
-			_spr.flip_h = position.x < _last_pos.x
+		if absf(mv.x) > 0.05 and absf(mv.x) > absf(mv.y) * 0.25:
+			_spr.flip_h = mv.x < 0.0  # (dead zone: no flicker on a near-vertical walk)
 	_last_pos = position
 	if _cd > 0.0:
 		_rd()
 		return
 	match act:
 		"striker":
-			if foe and foe._alive and foe.position.distance_to(position) < 90.0 and map.line_clear(position, foe.position):
+			if foe and foe._alive and foe.position.distance_to(position) < reach() and map.line_clear(position, foe.position):
 				_cd = 1.1
 				_act_t = 0.5
 				_zap_to = foe.position + Vector2(0, -8)
-				_zap_t = 0.12
+				_zap_t = 0.12 if attack_kind() == "beam" else (0.06 if attack_kind() == "shot" else 0.0)
 				foe.provoke(self)
-				foe.hit(strike_damage(), position, true, true)
-				if team_id != "":
-					# Mustered people swing or shoot like people (c6_11).
-					_sfx("swing" if GameState.is_penguins() else "shot", 0.35)
-				else:
-					_sfx("laser" if style == "drone" else "spell_lightning", 0.35)
+				if foe.hit(strike_damage(), position, true, true):
+					_hit_number(foe)
+				match attack_kind():
+					"melee":
+						# Penguin-arc people and team animals swing / bite up close (c16b_11-05).
+						map.fx("slash", foe.position + Vector2(0, -10), 16.0, 0.4, foe.position.x < position.x)
+						_sfx("swing", 0.35)
+					"shot":
+						map.fx("spark", position + (foe.position - position).normalized() * 6.0 + Vector2(0, -12), 18.0, 0.25)
+						_sfx("shot", 0.35)
+					_:
+						_sfx("laser" if style == "drone" else "spell_lightning", 0.35)
 			else:
 				_cd = 0.3
 		"healer":
@@ -381,6 +441,59 @@ func _process(delta: float) -> void:
 				map.fx("poof", map.player.position + Vector2(0, -8), 12.0, 0.4)
 				_sfx("spirit", 0.3)
 	_rd()
+
+
+## How it fights: "beam" (spawned crystals / drones), "melee" (penguin-arc people and
+## team animals, up close) or "shot" (gang crew: a short tracer, c16b_11-05).
+func attack_kind() -> String:
+	if team_id == "":
+		return "beam"
+	if team_dmg > 0 or GameState.is_penguins():
+		return "melee"
+	return "shot"
+
+
+## Where a striker stands to fight: melee right up close, guns and beams at short range.
+func standoff() -> float:
+	match attack_kind():
+		"melee":
+			return 14.0
+		"shot":
+			return 30.0
+	return 28.0
+
+
+func reach() -> float:
+	match attack_kind():
+		"melee":
+			return 22.0
+		"shot":
+			return 70.0
+	return 90.0
+
+
+## Ally hits show their number in ally cyan (smaller, at most one per foe per 0.3 s, c16b_11-04).
+func _hit_number(foe: Enemy) -> void:
+	if not is_instance_valid(foe):
+		return
+	var now := PlayClock.ms()
+	if foe.has_meta("ally_num_ms") and now - int(foe.get_meta("ally_num_ms")) < 300:
+		return
+	foe.set_meta("ally_num_ms", now)
+	map.damage_number(foe.position + Vector2(0, -20), int(foe.last_applied), Color(0.6, 0.9, 1.0))
+
+
+## How fast you are moving right now (running, tap-to-move and speed gear included).
+func _player_speed() -> float:
+	var pl := map.player
+	var v: Variant = pl.get("velocity")
+	var sp := (v as Vector2).length() if v is Vector2 else 0.0
+	var moved := pl.position.distance_to(_pl_last) / maxf(0.001, get_process_delta_time())
+	_pl_last = pl.position
+	if moved > 400.0:
+		moved = 0.0  # a warp / map change, not a speed
+	_pl_spd = lerpf(_pl_spd, maxf(sp, moved), 0.3)
+	return maxf(_pl_spd, RUN_SPEED * 0.9)
 
 
 func _sfx(n: String, chance := 1.0) -> void:
@@ -496,15 +609,16 @@ func _draw_team(c: Color) -> void:
 	if _spr:
 		_spr.modulate = Color(1.6, 1.6, 1.6) if _hurt > 0.0 else Color.WHITE
 	var f := ThemeDB.fallback_font
-	var top := -30.0 - 7.0 * tag_row
-	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(6), 3, Color(0, 0, 0, 0.8))
-	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(6), Color(0.75, 0.95, 1.0))
+	var top := -30.0 - 8.0 * tag_row
+	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(7), 3, Color(0, 0, 0, 0.8))
+	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, DisplayMode.df(7), Color(0.75, 0.95, 1.0))
 	if hp < max_hp:
 		_ally_bar(Rect2(-7, top, 14, 1.5))
-	if _zap_t > 0.0 and _zap_to != Vector2.INF:
+	if _zap_t > 0.0 and _zap_to != Vector2.INF and attack_kind() == "shot":
+		# Gang crew: a short tracer from the muzzle, not a crystal beam.
 		var to := _zap_to - position
-		draw_line(Vector2(0, -12), to, Color(1, 1, 1, 0.9), 1.5)
-		draw_line(Vector2(0, -12), to, c, 0.8)
+		var from := Vector2(0, -12) + (to - Vector2(0, -12)).normalized() * 6.0
+		draw_line(from, from + (to - from) * 0.6, Color(1, 0.95, 0.7, 0.95), 2.0)
 
 
 ## Ally health: the battle's "us" cyan inside a light frame, so it never reads as a
@@ -514,6 +628,11 @@ const ALLY_FRAME := Color(0.9, 0.97, 1.0, 0.85)
 
 
 func _ally_bar(r: Rect2) -> void:
-	draw_rect(r.grow(1.0), ALLY_FRAME, false, 1.0)
-	draw_rect(r, Color(0, 0, 0, 0.6))
-	draw_rect(Rect2(r.position, Vector2(r.size.x * float(hp) / float(max_hp), r.size.y)), ALLY_BAR)
+	ally_bar(self, r, float(hp) / float(max_hp))
+
+
+## The framed cyan ally bar, for any ally drawn on the field (turrets too, c16b_11-09).
+static func ally_bar(ci: CanvasItem, r: Rect2, frac: float) -> void:
+	ci.draw_rect(r.grow(1.0), ALLY_FRAME, false, 1.0)
+	ci.draw_rect(r, Color(0, 0, 0, 0.6))
+	ci.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(frac, 0.0, 1.0), r.size.y)), ALLY_BAR)

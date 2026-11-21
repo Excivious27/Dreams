@@ -1482,3 +1482,10 @@ echo "$c16bp1out" | grep -E "FAIL|SCRIPT ERROR|battle_army_test" || true
 if echo "$c16bp1out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp1out" | grep -q "battle_army_test: OK"; then
   echo "C16b P1 battle army test failed"; exit 1
 fi
+
+echo "== C16b P2: battle feel (striker stands its ground, ranged foes shoot any target, team speed, sting throttle) =="
+c16bp2out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/battle_feel_test.gd 2>&1)"
+echo "$c16bp2out" | grep -E "FAIL|SCRIPT ERROR|battle_feel_test" || true
+if echo "$c16bp2out" | grep -q "SCRIPT ERROR" || ! echo "$c16bp2out" | grep -q "battle_feel_test: 0 fails"; then
+  echo "C16b P2 battle feel test failed"; exit 1
+fi

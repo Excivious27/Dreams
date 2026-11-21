@@ -1,6 +1,6 @@
 extends SceneTree
 ## The campaign lead-in: day-one locks, the training drill played step by step
-## (move, build, follow, hold here, follow me, point menu, go to a point, capture), the
+## (move, build, follow, guard banner, follow me, point menu, go to a point, capture), the
 ## battle briefing card (pauses, can be hidden after the first view), the
 ## campaign briefing on the board and mustering.
 ##   godot --headless --path . -s res://tools/campaign_gate_test.gd
@@ -181,13 +181,13 @@ func _run() -> void:
 			await _talk(5)
 	check(dr.step == 3, "walking with the helper beside you passes step 3 (walked %.0f)" % dr._walked)
 	await _talk(20)
-	# 4 order: Hold here
+	# 4 order: Guard banner
 	bt._set_rally(-2)
 	for i in 120:
 		await process_frame
 		if dr.step > 3:
 			break
-	check(dr.step == 4, "Hold here passes step 4")
+	check(dr.step == 4, "Guard banner passes step 4")
 	await _talk(20)
 	# 5 order: Follow me
 	bt._set_rally(-1)

@@ -10,10 +10,14 @@ D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FLOOR = 7
 bad = []
 call = re.compile(r"draw_string(_outline)?\(")
-for p in ("scripts/hud.gd", "scripts/touch_controls.gd"):
+# C16b P2 (c16b_11-06): the battle screens too, and DisplayMode.df(N) sizes.
+for p in ("scripts/hud.gd", "scripts/touch_controls.gd", "scripts/battle.gd", "scripts/helper_unit.gd", "scripts/battle_drill.gd", "scripts/battle_brief.gd"):
     for i, ln in enumerate(open(os.path.join(D, p)), 1):
         if not call.search(ln):
             continue
+        for dm in re.finditer(r"DisplayMode\.df\((\d+)\)", ln):
+            if int(dm.group(1)) < FLOOR:
+                bad.append("%s:%d drawn text size df(%s)" % (p, i, dm.group(1)))
         # args after the alignment: (font, pos, text, ALIGN, width, SIZE, ...)
         m = re.search(r"HORIZONTAL_ALIGNMENT_\w+(?: if [^,]+ else HORIZONTAL_ALIGNMENT_\w+)?,\s*[^,]+,\s*(\d+)\b", ln)
         if m and int(m.group(1)) < FLOOR:

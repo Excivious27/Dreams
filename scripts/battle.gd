@@ -310,7 +310,7 @@ static func unit_word(plural := true) -> String:
 
 ## Order words for the helpers' list and the drill card.
 const ORDER_FOLLOW := "Follow me"
-const ORDER_HOLD := "Hold here"
+const ORDER_HOLD := "Guard banner"  # (it sends them back to their banners, not "here": c16b_01-05)
 var orders := 0   # orders you have given this fight (the drill checks a new one per step)
 
 
@@ -500,7 +500,7 @@ func _set_rally(i: int, quiet := false) -> void:
 			if is_instance_valid(h):
 				(h as HelperUnit).home = (h as HelperUnit).position
 		if not quiet:
-			_rally_toast("Helpers: hold here. %s at their banners, your team where it stands." % unit_word().capitalize())
+			_rally_toast("Helpers: back to guard your banners. Your team holds where it stands.")
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
 		_rally_toast("Helpers: go to %s!" % str(points[i]["name"]))
@@ -722,8 +722,7 @@ func _capture(delta: float) -> void:
 				p["spawner"] = ""
 				# Whatever it built goes down with it (turrets included).
 				for mm in p["made"]:
-					if is_instance_valid(mm):
-						(mm as Node).queue_free()
+					BattleFx.stand_down(map, mm)  # a poof and a fade, not a blink (c16b_11-08)
 				p["made"] = []
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
 				Captions.say("Spawner knocked out", "sfx")  # c16b_12-08: not the generic "Glass breaks"
@@ -1251,7 +1250,7 @@ func interact(id: String) -> void:
 		var tail := (" (your %d %s here fight on till they fall)" % [made_n, now_nm]) if sp != "" and k != sp and made_n > 0 else ""
 		bo.append("%s%s (◇%d): %s%s" % [mark, knm, _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps"))), tail])
 		bk.append(k)
-	if bt >= int(LADDER["turret"]) or sp == "turret":
+	if (bt >= int(LADDER["turret"]) or sp == "turret") and (drill == null or not drill.turret_locked()):  # (drill helper steps need a helper: c16b_01-01)
 		bo.append("%s%s (◇%d): guards this point, a new one every 45 s" % ["▸ building now: " if sp == "turret" else ("Switch to " if sp != "" else "Build guard: "), "Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
 		bk.append("turret")
 	if sp == "":
@@ -1363,13 +1362,7 @@ func _end(won: bool, travel := true) -> void:
 	_duck_music()
 	if won:
 		GameState.add_arc_xp(25 if rematch else 80)
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	if not travel:
 		return
 	var key := "battle_" + bid
@@ -1528,7 +1521,7 @@ func _draw_hud() -> void:
 	_hud.draw_rect(Rect2(260 - bw, y, bw, 5), Color(0, 0, 0, 0.6))
 	_hud.draw_rect(Rect2(260 - bw + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
 	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
-	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by in ["hold", "drill"] else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
+	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by == "hold" else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
 	# The objective, always on screen, in its own banner.
 	var goal := _goal_text() if drill == null else ""  # the drill's step card says what to do
 	if goal != "":
@@ -1638,7 +1631,8 @@ func _hud_pointer(txt: Array) -> void:
 		var c := Vector2(135, 310) + dir * Vector2(110.0, 80.0)
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
 		# 90 px wide (kept on screen) so names like "Scarecrow Post" aren't cut short.
-		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 6, Color(1, 0.95, 0.8)])
+		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 7, Color(1, 0.95, 0.8)])  # 7 px floor (c16b_11-06)
+	BattleFx.threat_pointer(self, txt)  # a red pointer to a point of yours under attack (c16b_11-15)
 
 
 # ---- campaign nodes --------------------------------------------------------------
@@ -1770,17 +1764,12 @@ func _end_drill(won: bool, travel: bool) -> void:
 	Music.instance(get_tree()).sfx(drill_end_cue(won, _rescued), "j_page")
 	if won:
 		_duck_music()
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	var lines := CampaignGate.drill_finish(won)
 	GameState.save()
 	if not travel:
 		return
+	await BattleFx.beat(self)
 	await map.say(lines)
 	var back: Array = d.get("back", ["town", 0, 0])
 	Campaign.reopen_later(get_tree(), "")
@@ -1849,13 +1838,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	_duck_music()
 	if won:
 		GameState.add_arc_xp(30)
-	for e in map.enemies.duplicate():
-		if is_instance_valid(e):
-			e.queue_free()
-	map.enemies.clear()
-	for h in get_tree().get_nodes_in_group("allies"):
-		if h is HelperUnit or h is CampaignConvoy:
-			h.queue_free()
+	BattleFx.clear_field(map, won)  # the last second has a beat (c16b_11-17)
 	var cid := camp
 	var nid := str(d.get("node", ""))
 	var stats := win_stats()
@@ -1869,6 +1852,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	if not travel:
 		return
 	if not lines.is_empty():
+		await BattleFx.beat(self)
 		await map.say(lines)
 	GameState.save()
 	var back: Array = d.get("back", ["town", 0, 0])
