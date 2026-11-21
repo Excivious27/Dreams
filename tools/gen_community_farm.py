@@ -107,7 +107,7 @@ BEAT = {
     "seeds": ["wren", P("Plant them shallow, water them often, and talk to them. Don't laugh, it works.", "Shallow, water often, talk to them. Don't laugh. It works.")],
     "well": ["benno", P("Taste that. Cold as the bottom of the river, and none of the fish.", "Taste that. No meter, no bill, no rust.")],
     "orchard": ["rook", P("Three summers and you'll be climbing these for cherries. Trees don't hurry.", "Three summers and there'll be fruit on a vacant lot. Trees don't hurry.")],
-    "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in January.")],
+    "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in the dead of winter.")],
 }
 # Builds take a few days each (Tom, Guide 26 #2): "days" nights of work; after each night
 # but the last, the sleep report reads that night's "progress" line and the site shows

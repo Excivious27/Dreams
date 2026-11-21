@@ -631,7 +631,7 @@ static func _pick_line(who: String, pool: Dictionary, rng: RandomNumberGenerator
 		if who in KIDS:
 			opts.append_array(pool["#kid"])
 		else:
-			opts.append_array(GIFT_NOTES_GANG if pool.has("posy") else CHAT_NOTES_GANG  # GIFT_NOTES has posy, CHAT_NOTES not)
+			opts.append_array(GIFT_NOTES_GANG if pool.has("posy") else CHAT_NOTES_GANG)  # GIFT_NOTES has posy, CHAT_NOTES not
 	else:
 		opts.append_array(pool["#kid"] if who in KIDS else pool["#all"])
 	if not GameState.run["flags"].has("mail_last"):

@@ -35,6 +35,8 @@ func _fresh(arc: String) -> void:
 
 func _run() -> void:
 	Mail._morning_post = true  # no toasts outside a map
+	for sp in ["res://scripts/game_menu.gd", "res://scripts/game_map.gd", "res://scripts/ranch_gift.gd", "res://scripts/rec_center.gd", "res://scripts/commons.gd", "res://scripts/house_exterior.gd", "res://scripts/decor_sources.gd", "res://scripts/shops.gd"]:
+		check(load(sp) != null, "compiles: " + sp)
 	for arc: String in ["penguins", "gangsters"]:
 		_mail(arc)
 		_tam(arc)
