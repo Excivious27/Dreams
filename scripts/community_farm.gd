@@ -1019,14 +1019,16 @@ func _reveal() -> void:
 	var got := str(GameState.run["flags"].get("cf_reveal_got", ""))
 	GameState.run["flags"].erase("cf_reveal")
 	GameState.run["flags"].erase("cf_reveal_got")
+	# Consume every reveal flag before the pause, so the visit has taken them as soon as it starts.
+	var built_overnight: bool = GameState.run["flags"].has("cf_reveal_done")
+	GameState.run["flags"].erase("cf_reveal_done")
 	player.frozen = true
 	await get_tree().create_timer(0.4).timeout
 	fx("levelup", player.position + Vector2(0, -12), 10.0, 0.9)
 	Music.instance(get_tree()).sfx("j_victory", "quest_done")
 	var sd: Dictionary = Commons.stages()[s]
 	var lines: Array = []
-	if GameState.run["flags"].has("cf_reveal_done"):  # built overnight: Hazel says it now, on the spot
-		GameState.run["flags"].erase("cf_reveal_done")
+	if built_overnight:  # built overnight: Hazel says it now, on the spot
 		lines.append({"who": Commons.keeper_name(), "text": str(Commons.tx(sd["done"]))})
 	lines.append({"text": "%s: done! (stage %d of %d)\n%s" % [Commons.stage_name(s), s + 1, Commons.stages().size(), got]})
 	var beat: Array = sd.get("beat", [])
