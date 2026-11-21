@@ -159,7 +159,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -184,13 +185,14 @@
       "y": 0.66,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Packing Shed",
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 24,
        "morale": 15,
-       "crystals": 190,
+       "crystals": 70,
        "items": {
-        "potion": 3
+        "potion": 2
        }
       },
       "links": [
@@ -206,6 +208,7 @@
       "y": 0.66,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Fallen Fence",
       "cfg": {
        "penguins": {
         "field": "bf_orchard_line",
@@ -294,10 +297,8 @@
          }
         ],
         "enemies": [
-         "hill_wolf",
-         "thug_cyber",
-         "thug_speedster",
-         "thug_gambler"
+         "thug_lookout",
+         "thug_speedster"
         ]
        }
       },
@@ -305,7 +306,10 @@
       "tickets": 110,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "A quick clash at Fallen Fence. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Fallen Fence. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Fallen Fence. Take the corners and they pull out."
+      },
       "reward": {
        "crystals": 120,
        "supply": 10,
@@ -327,6 +331,7 @@
       "y": 0.4,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Fruit Stand",
       "cfg": {
        "penguins": {
         "field": "bf_orchard_line",
@@ -416,11 +421,11 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_orchard_hills",
         "enemies": [
-         "hill_wolf",
-         "thug_cyber",
+         "thug_lookout",
          "thug_speedster",
-         "thug_gambler"
+         "thug_brute"
         ]
        }
       },
@@ -431,14 +436,14 @@
       "enemy_cap": 8,
       "brief": {
        "penguins": "Captain Bramblesnout holds Honey Cellars. Turn the captain back and the rest will scatter.",
-       "gangsters": "Their captain holds Honey Cellars. Bring the captain down and the rest will scatter."
+       "gangsters": "Harlan \"Hayride\" Voss runs Fruit Stand. Make them back off and the crew scatters."
       },
       "reward": {
        "crystals": 240,
        "supply": 8,
        "morale": 15,
        "items": {
-        "potion": 1
+        "copper_bar": 2
        }
       },
       "links": [
@@ -455,6 +460,7 @@
       "y": 0.1,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "The Cider Works",
       "cfg": {
        "penguins": {
         "field": "bf_orchard_line",
@@ -505,12 +511,11 @@
            52,
            50
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_orchard_hills",
-        "tickets": 210,
+        "tickets": 170,
         "enemies": [
          "grump",
          "grump_moss",
@@ -567,16 +572,16 @@
            52,
            50
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 210,
+        "boss": "gcap_g_orchard_hills",
+        "tickets": 170,
         "enemies": [
-         "hill_wolf",
-         "thug_cyber",
+         "thug_lookout",
          "thug_speedster",
-         "thug_gambler"
+         "thug_brute",
+         "thug_cyber"
         ]
        }
       },
@@ -587,7 +592,7 @@
       "enemy_cap": 12,
       "brief": {
        "penguins": "The Cider Press: the last wall before the region. Every point fortified, and Captain Bramblesnout takes the field.",
-       "gangsters": "The Cider Press: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "The Cider Works: the last block before the turf. Every point locked down, and Harlan \"Hayride\" Voss steps in."
       },
       "reward": {
        "crystals": 0,
@@ -632,6 +637,23 @@
      "supply": 25
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "quest",
+     "id": "lw_orchard_hills",
+     "cost": {
+      "money": 150,
+      "items": {
+       "wood": 15
+      }
+     },
+     "steps": [
+      "Help the orchard keeper mend the back fence",
+      "Follow the pickers' path round the rows"
+     ],
+     "text": "The orchard keeper knows a pickers' path round the back rows. Mend her fence first and she'll walk you through.",
+     "text_gang": "The old orchard keeper hates the lookouts too. Fix her fence and she'll show you the farm track nobody watches.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "Branches creak where there's no wind, and small grumpy eyes blink from every orchard row.",
      "gangsters": "A car with its lights off sits at the top of the orchard road. Then you spot a second one."
@@ -670,7 +692,7 @@
      "gangsters": "The high gate is ours. Up here the radio finally gets a signal, and it's playing our song."
     },
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
       "greater_potion": 2,
       "iron_bar": 5
@@ -682,7 +704,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -707,6 +730,7 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Switchback One",
       "cfg": {
        "penguins": {
         "field": "bf_highland_pass",
@@ -751,8 +775,7 @@
         "enemies": [
          "grump_frost",
          "grump_wisp",
-         "hill_wolf",
-         "ice_wisp"
+         "hill_wolf"
         ]
        },
        "gangsters": {
@@ -796,9 +819,9 @@
          }
         ],
         "enemies": [
-         "hill_wolf",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler"
         ]
        }
       },
@@ -806,9 +829,12 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Wolf Run. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Wolf Run. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Switchback One. Take the corners and they pull out."
+      },
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -828,6 +854,7 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Cairn Lay-by",
       "cfg": {
        "penguins": {
         "field": "bf_highland_pass",
@@ -863,8 +890,7 @@
         "enemies": [
          "grump_frost",
          "grump_wisp",
-         "hill_wolf",
-         "ice_wisp"
+         "hill_wolf"
         ]
        },
        "gangsters": {
@@ -899,9 +925,9 @@
          }
         ],
         "enemies": [
-         "hill_wolf",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler"
         ]
        }
       },
@@ -909,9 +935,12 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Cairn Field. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Cairn Field. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Cairn Lay-by. Take the corners and they pull out."
+      },
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -931,6 +960,7 @@
       "y": 0.5,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Shepherd's Hut",
       "cfg": {
        "penguins": {
         "field": "bf_highland_pass",
@@ -961,8 +991,7 @@
            50,
            39
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -971,8 +1000,7 @@
            88,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "d",
@@ -995,7 +1023,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_frost",
          "grump_wisp",
@@ -1033,8 +1061,7 @@
            50,
            39
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -1043,8 +1070,7 @@
            88,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "d",
@@ -1067,11 +1093,12 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "hill_wolf",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -1079,13 +1106,16 @@
       "tickets": 150,
       "wave_every": 7.25,
       "enemy_cap": 13,
-      "brief": "Shepherd's Hut is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": {
+       "penguins": "Shepherd's Hut is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+       "gangsters": "Shepherd's Hut is locked down: their points take twice as long to turn. Bring the crew and a plan."
+      },
       "reward": {
-       "crystals": 308,
+       "crystals": 421,
        "supply": 6,
        "morale": 12,
        "items": {
-        "greater_potion": 1
+        "iron_bar": 2
        }
       },
       "links": [
@@ -1103,6 +1133,7 @@
       "y": 0.28,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "Windy Saddle",
       "cfg": {
        "penguins": {
         "field": "bf_highland_pass",
@@ -1193,10 +1224,12 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_highlands",
         "enemies": [
-         "hill_wolf",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -1207,10 +1240,10 @@
       "enemy_cap": 10,
       "brief": {
        "penguins": "Frostjaw holds Windy Saddle. Turn the captain back and the rest will scatter.",
-       "gangsters": "Their captain holds Windy Saddle. Bring the captain down and the rest will scatter."
+       "gangsters": "Ridge Boss Kestrel runs Windy Saddle. Make them back off and the crew scatters."
       },
       "reward": {
-       "crystals": 336,
+       "crystals": 459,
        "supply": 8,
        "morale": 15,
        "items": {
@@ -1230,6 +1263,7 @@
       "y": 0.09,
       "layer": 4,
       "step": 1,
+      "name_gangsters": "The High Gate",
       "cfg": {
        "penguins": {
         "field": "bf_highland_pass",
@@ -1260,8 +1294,7 @@
            50,
            39
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -1295,7 +1328,7 @@
          }
         ],
         "boss": "gcap_highlands",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_frost",
          "grump_wisp",
@@ -1333,8 +1366,7 @@
            50,
            39
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -1367,11 +1399,14 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_highlands",
+        "tickets": 210,
         "enemies": [
-         "hill_wolf",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "thug_flame"
         ]
        }
       },
@@ -1382,7 +1417,7 @@
       "enemy_cap": 14,
       "brief": {
        "penguins": "The High Gate: the last wall before the region. Every point fortified, and Frostjaw takes the field.",
-       "gangsters": "The High Gate: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "The High Gate: the last block before the turf. Every point locked down, and Ridge Boss Kestrel steps in."
       },
       "reward": {
        "crystals": 0,
@@ -1436,6 +1471,23 @@
      "supply": 30
     },
     "min_battles": 3,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_highlands",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Pay the shepherd for a guide",
+      "Take the sheep trail over the saddle"
+     ],
+     "text": "Big Jim's shepherd friend knows a sheep trail over the saddle. It's long and windy, but nobody guards it.",
+     "text_gang": "A shepherd up the valley runs sheep over the saddle every week. Pay her for the trip and walk up with the flock.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "A howl rolls down off the ridge, and the heather lies flat as if something huge just lay down on it.",
      "gangsters": "Engines idle up on the ridge. Someone has a lookout on every switchback."
@@ -1471,7 +1523,7 @@
      "gangsters": "The crushers go quiet. The quarry workers come back to their own jobs, and nobody takes a cut."
     },
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
       "greater_potion": 2,
       "iron_bar": 5
@@ -1483,7 +1535,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -1508,6 +1561,7 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Rubble Gate",
       "cfg": {
        "penguins": {
         "field": "bf_quarry_cut",
@@ -1552,8 +1606,7 @@
         "enemies": [
          "grump_crystal",
          "grump_moss",
-         "quarry_golem",
-         "rock_crab"
+         "quarry_golem"
         ]
        },
        "gangsters": {
@@ -1597,9 +1650,9 @@
          }
         ],
         "enemies": [
-         "quarry_golem",
-         "rock_crab",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler"
         ]
        }
       },
@@ -1607,9 +1660,12 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Rubble Gate. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Rubble Gate. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Rubble Gate. Take the corners and they pull out."
+      },
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -1629,13 +1685,14 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Crane Pit",
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 490,
+       "crystals": 140,
        "items": {
-        "greater_potion": 2
+        "potion": 3
        }
       },
       "links": [
@@ -1651,6 +1708,7 @@
       "y": 0.5,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Crusher House",
       "cfg": {
        "penguins": {
         "field": "bf_quarry_cut",
@@ -1741,10 +1799,12 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_quarry",
         "enemies": [
-         "quarry_golem",
-         "rock_crab",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -1755,10 +1815,10 @@
       "enemy_cap": 10,
       "brief": {
        "penguins": "Old Shardback holds Echo Shaft. Turn the captain back and the rest will scatter.",
-       "gangsters": "Their captain holds Echo Shaft. Bring the captain down and the rest will scatter."
+       "gangsters": "Crusher Kade runs Crusher House. Make them back off and the crew scatters."
       },
       "reward": {
-       "crystals": 336,
+       "crystals": 459,
        "supply": 8,
        "morale": 15,
        "items": {
@@ -1780,6 +1840,7 @@
       "y": 0.28,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "Foreman's Hut",
       "cfg": {
        "penguins": {
         "field": "bf_quarry_cut",
@@ -1800,8 +1861,7 @@
            22,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -1810,8 +1870,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -1844,7 +1903,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_crystal",
          "grump_moss",
@@ -1872,8 +1931,7 @@
            22,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -1882,8 +1940,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -1916,11 +1973,12 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "quarry_golem",
-         "rock_crab",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -1928,9 +1986,12 @@
       "tickets": 150,
       "wave_every": 7.25,
       "enemy_cap": 13,
-      "brief": "Foreman's Hut is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": {
+       "penguins": "Foreman's Hut is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+       "gangsters": "Foreman's Hut is locked down: their points take twice as long to turn. Bring the crew and a plan."
+      },
       "reward": {
-       "crystals": 308,
+       "crystals": 421,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -1950,6 +2011,7 @@
       "y": 0.09,
       "layer": 4,
       "step": 1,
+      "name_gangsters": "The Deep Cut",
       "cfg": {
        "penguins": {
         "field": "bf_quarry_cut",
@@ -1980,8 +2042,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2015,7 +2076,7 @@
          }
         ],
         "boss": "gcap_quarry",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_crystal",
          "grump_moss",
@@ -2053,8 +2114,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2087,11 +2147,14 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_quarry",
+        "tickets": 210,
         "enemies": [
-         "quarry_golem",
-         "rock_crab",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "thug_flame"
         ]
        }
       },
@@ -2102,7 +2165,7 @@
       "enemy_cap": 14,
       "brief": {
        "penguins": "The Deep Cut: the last wall before the region. Every point fortified, and Old Shardback takes the field.",
-       "gangsters": "The Deep Cut: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "The Deep Cut: the last block before the turf. Every point locked down, and Crusher Kade steps in."
       },
       "reward": {
        "crystals": 0,
@@ -2156,6 +2219,23 @@
      "supply": 30
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "toll",
+     "id": "lw_quarry",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Pay the cutters' toll",
+      "Walk the old cutters' path into the pit"
+     ],
+     "text": "The old stone cutters still keep a path along the cliff. Pay their toll and they'll open the gate for you.",
+     "text_gang": "The quarry workers keep their own gate at the back. Pay their union fee and they'll let you in with the morning shift.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The ground rumbles. Rocks shift on their own, and something in the dust is breathing.",
      "gangsters": "A rock crusher starts up with nobody at the controls. The quarry's taken, and they don't want visitors."
@@ -2191,7 +2271,7 @@
      "gangsters": "The marsh landings are ours. The frogs are louder than the outboard motors now."
     },
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
       "greater_potion": 2,
       "iron_bar": 5
@@ -2203,7 +2283,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -2228,13 +2309,14 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Bait Shack",
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 490,
+       "crystals": 140,
        "items": {
-        "greater_potion": 2
+        "potion": 3
        }
       },
       "links": [
@@ -2250,6 +2332,7 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Plank Causeway",
       "cfg": {
        "penguins": {
         "field": "bf_bog_crossing",
@@ -2294,8 +2377,7 @@
         "enemies": [
          "grump_moss",
          "grump_coral",
-         "mud_slime",
-         "bog_hag"
+         "mud_slime"
         ]
        },
        "gangsters": {
@@ -2339,11 +2421,9 @@
          }
         ],
         "enemies": [
-         "mud_slime",
-         "bog_hag",
-         "river_serpent",
-         "drip_crawler",
-         "lantern_moth"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler"
         ]
        }
       },
@@ -2351,13 +2431,16 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Lily Causeway. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Lily Causeway. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Plank Causeway. Take the corners and they pull out."
+      },
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
-        "greater_potion": 1
+        "iron_bar": 2
        }
       },
       "links": [
@@ -2373,6 +2456,7 @@
       "y": 0.5,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Boat Shed",
       "cfg": {
        "penguins": {
         "field": "bf_bog_crossing",
@@ -2502,11 +2586,10 @@
          }
         ],
         "enemies": [
-         "mud_slime",
-         "bog_hag",
-         "river_serpent",
-         "drip_crawler",
-         "lantern_moth"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -2515,9 +2598,12 @@
       "tickets": 140,
       "wave_every": 5.75,
       "enemy_cap": 14,
-      "brief": "Hold Witch's Larder. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "brief": {
+       "penguins": "Hold Witch's Larder. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+       "gangsters": "Hold Boat Shed. Their cars keep dropping off more of them; keep at least one point until the clock runs out."
+      },
       "reward": {
-       "crystals": 280,
+       "crystals": 382,
        "supply": 8,
        "morale": 10,
        "items": {
@@ -2539,6 +2625,7 @@
       "y": 0.28,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "Dry Hummock",
       "cfg": {
        "penguins": {
         "field": "bf_bog_crossing",
@@ -2569,8 +2656,7 @@
            54,
            30
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2579,8 +2665,7 @@
            88,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "d",
@@ -2603,7 +2688,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_moss",
          "grump_coral",
@@ -2640,8 +2725,7 @@
            54,
            30
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2650,8 +2734,7 @@
            88,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "d",
@@ -2674,13 +2757,12 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "mud_slime",
-         "bog_hag",
-         "river_serpent",
-         "drip_crawler",
-         "lantern_moth"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -2688,9 +2770,12 @@
       "tickets": 150,
       "wave_every": 7.25,
       "enemy_cap": 13,
-      "brief": "Dry Hummock is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": {
+       "penguins": "Dry Hummock is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+       "gangsters": "Dry Hummock is locked down: their points take twice as long to turn. Bring the crew and a plan."
+      },
       "reward": {
-       "crystals": 308,
+       "crystals": 421,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -2710,6 +2795,7 @@
       "y": 0.09,
       "layer": 4,
       "step": 1,
+      "name_gangsters": "Smugglers' Landing",
       "cfg": {
        "penguins": {
         "field": "bf_bog_crossing",
@@ -2740,8 +2826,7 @@
            54,
            30
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2775,7 +2860,7 @@
          }
         ],
         "boss": "gcap_marsh",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_moss",
          "grump_coral",
@@ -2812,8 +2897,7 @@
            54,
            30
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -2846,13 +2930,14 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_marsh",
+        "tickets": 210,
         "enemies": [
-         "mud_slime",
-         "bog_hag",
-         "river_serpent",
-         "drip_crawler",
-         "lantern_moth"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "thug_flame"
         ]
        }
       },
@@ -2863,7 +2948,7 @@
       "enemy_cap": 14,
       "brief": {
        "penguins": "Witchlight Isle: the last wall before the region. Every point fortified, and Mirewhisker takes the field.",
-       "gangsters": "Witchlight Isle: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "Smugglers' Landing: the last block before the turf. Every point locked down, and Smuggler Queen Rook steps in."
       },
       "reward": {
        "crystals": 0,
@@ -2917,6 +3002,23 @@
      "supply": 30
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_marsh",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Hire a flat-bottom boat",
+      "Pole through the reeds at dawn"
+     ],
+     "text": "A frog-catcher hires out a flat-bottom boat. Pole through the reeds at dawn, when the bog is quiet.",
+     "text_gang": "A bait-shack owner rents airboats by the hour. Pay up and slip through the reeds before the smugglers wake up.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "Fog rolls over your boots and a hundred frogs stop singing at once. Something in the reeds is waiting.",
      "gangsters": "Headlights blink twice across the bog, then go dark. That's a signal, and it isn't for you."
@@ -2955,7 +3057,7 @@
      "gangsters": "The bridges are clear. Trucks roll across the river again, and nobody pays a toll."
     },
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
       "greater_potion": 2,
       "iron_bar": 5
@@ -2967,7 +3069,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -2992,13 +3095,14 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Ferry Steps",
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 490,
+       "crystals": 140,
        "items": {
-        "greater_potion": 2
+        "potion": 3
        }
       },
       "links": [
@@ -3014,6 +3118,7 @@
       "y": 0.7,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Willow Bend",
       "cfg": {
        "penguins": {
         "field": "bf_river_ford",
@@ -3058,8 +3163,7 @@
         "enemies": [
          "grump_coral",
          "grump_storm",
-         "river_serpent",
-         "mud_slime"
+         "river_serpent"
         ]
        },
        "gangsters": {
@@ -3103,9 +3207,9 @@
          }
         ],
         "enemies": [
-         "river_serpent",
-         "mud_slime",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler"
         ]
        }
       },
@@ -3113,13 +3217,16 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Willow Bend. Take the points and their line breaks.",
+      "brief": {
+       "penguins": "A quick clash at Willow Bend. Take the points and their line breaks.",
+       "gangsters": "Their lookouts hold Willow Bend. Take the corners and they pull out."
+      },
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
-        "greater_potion": 1
+        "iron_bar": 2
        }
       },
       "links": [
@@ -3135,6 +3242,7 @@
       "y": 0.5,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Bridge Two",
       "cfg": {
        "penguins": {
         "field": "bf_river_ford",
@@ -3224,10 +3332,12 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_riverlands",
         "enemies": [
-         "river_serpent",
-         "mud_slime",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -3238,14 +3348,14 @@
       "enemy_cap": 10,
       "brief": {
        "penguins": "Tidegrudge holds Otter Holt. Turn the captain back and the rest will scatter.",
-       "gangsters": "Their captain holds Otter Holt. Bring the captain down and the rest will scatter."
+       "gangsters": "Toll Man Dukes runs Bridge Two. Make them back off and the crew scatters."
       },
       "reward": {
-       "crystals": 336,
+       "crystals": 459,
        "supply": 8,
        "morale": 15,
        "items": {
-        "greater_potion": 1
+        "iron_bar": 2
        }
       },
       "links": [
@@ -3263,6 +3373,7 @@
       "y": 0.28,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "Ford of Stones",
       "cfg": {
        "penguins": {
         "field": "bf_river_ford",
@@ -3283,8 +3394,7 @@
            22,
            25
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -3313,8 +3423,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -3327,7 +3436,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_coral",
          "grump_storm",
@@ -3354,8 +3463,7 @@
            22,
            25
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -3384,8 +3492,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -3398,11 +3505,12 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "river_serpent",
-         "mud_slime",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute"
         ]
        }
       },
@@ -3410,13 +3518,16 @@
       "tickets": 150,
       "wave_every": 7.25,
       "enemy_cap": 13,
-      "brief": "Ford of Stones is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": {
+       "penguins": "Ford of Stones is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+       "gangsters": "Ford of Stones is locked down: their points take twice as long to turn. Bring the crew and a plan."
+      },
       "reward": {
-       "crystals": 308,
+       "crystals": 421,
        "supply": 6,
        "morale": 12,
        "items": {
-        "greater_potion": 1
+        "iron_bar": 2
        }
       },
       "links": [
@@ -3432,6 +3543,7 @@
       "y": 0.09,
       "layer": 4,
       "step": 1,
+      "name_gangsters": "The Weir",
       "cfg": {
        "penguins": {
         "field": "bf_river_ford",
@@ -3482,8 +3594,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -3497,7 +3608,7 @@
          }
         ],
         "boss": "gcap_riverlands",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_coral",
          "grump_storm",
@@ -3554,8 +3665,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -3568,11 +3678,14 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_riverlands",
+        "tickets": 210,
         "enemies": [
-         "river_serpent",
-         "mud_slime",
-         "thug_cyber"
+         "thug_speedster",
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "thug_flame"
         ]
        }
       },
@@ -3583,7 +3696,7 @@
       "enemy_cap": 14,
       "brief": {
        "penguins": "The Weir: the last wall before the region. Every point fortified, and Tidegrudge takes the field.",
-       "gangsters": "The Weir: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "The Weir: the last block before the turf. Every point locked down, and Toll Man Dukes steps in."
       },
       "reward": {
        "crystals": 0,
@@ -3637,6 +3750,23 @@
      "supply": 30
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "toll",
+     "id": "lw_riverlands",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Pay the ferry keeper",
+      "Cross on the night ferry"
+     ],
+     "text": "The ferry keeper still runs one boat at night. Pay the fare and cross while the river sleeps.",
+     "text_gang": "The ferry still runs one late boat. Pay the fare and cross while the bridge crews are changing shifts.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "For a moment the river runs the wrong way. Grump tracks line both banks.",
      "gangsters": "Every bridge has a car parked across it with the engine running."
@@ -3676,7 +3806,7 @@
      "gangsters": "The floodlights go dark one by one. The ruins are quiet, and they belong to everyone again."
     },
     "reward": {
-     "crystals": 1700,
+     "crystals": 3600,
      "items": {
       "gold_bar": 3,
       "crystal_refined": 3
@@ -3688,7 +3818,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -3709,32 +3840,35 @@
       "id": "n1",
       "name": "Broken Stair",
       "type": "cache",
-      "x": 0.78,
-      "y": 0.7,
+      "x": 0.76,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Broken Stair",
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 1040,
+       "crystals": 220,
        "items": {
-        "gold_bar": 3
+        "greater_potion": 1
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n3",
+       "n4"
       ]
      },
      {
       "id": "n2",
       "name": "Moss Court",
       "type": "escort",
-      "x": 0.22,
-      "y": 0.7,
+      "x": 0.24,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
+      "name_gangsters": "Floodlight Court",
       "cfg": {
        "penguins": {
         "field": "bf_ruin_court",
@@ -3785,9 +3919,7 @@
         "enemies": [
          "grump_crystal",
          "grump_storm",
-         "grump_brute",
-         "ruin_guardian",
-         "ice_wisp"
+         "grump_brute"
         ]
        },
        "gangsters": {
@@ -3837,42 +3969,43 @@
         ],
         "vehicle": "truck",
         "enemies": [
-         "ruin_guardian",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_flame"
         ]
        }
       },
-      "convoy_hp": 155,
+      "convoy_hp": 205,
       "enemy_tickets": 400,
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 13,
       "brief": {
-       "penguins": "Our supply wagon has to reach West Colonnade. Walk with it: it only rolls with friends beside it and no foes on it.",
-       "gangsters": "Our supply truck has to reach West Colonnade. Walk with it: it only rolls with friends beside it and no foes on it."
+       "penguins": "Our supply crystal sled has to reach West Colonnade. Walk with it: it only rolls with friends beside it and no foes on it.",
+       "gangsters": "Our supply truck has to reach West Colonnade. Stay with it: it only rolls with the crew beside it and nobody in the way."
       },
       "reward": {
-       "crystals": 324,
+       "crystals": 557,
        "supply": 18,
        "morale": 10,
        "items": {
-        "crystal_refined": 1
+        "gold_bar": 1
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n4"
       ]
      },
      {
       "id": "n3",
       "name": "Hall of Pillars",
       "type": "boss",
-      "x": 0.5,
-      "y": 0.5,
+      "x": 0.82,
+      "y": 0.48,
       "layer": 2,
       "step": 0,
+      "name_gangsters": "Hall of Pillars",
       "cfg": {
        "penguins": {
         "field": "bf_ruin_court",
@@ -3963,10 +4096,12 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_ruins",
         "enemies": [
-         "ruin_guardian",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -3977,31 +4112,55 @@
       "enemy_cap": 13,
       "brief": {
        "penguins": "Gloomcrown holds Hall of Pillars. Turn the captain back and the rest will scatter.",
-       "gangsters": "Their captain holds Hall of Pillars. Bring the captain down and the rest will scatter."
+       "gangsters": "The Curator runs Hall of Pillars. Make them back off and the crew scatters."
       },
       "reward": {
-       "crystals": 432,
+       "crystals": 743,
        "supply": 8,
        "morale": 15,
        "items": {
-        "crystal_refined": 1
+        "gold_bar": 1
        }
       },
       "links": [
        "n1",
-       "n2",
-       "n4",
        "n5"
       ]
      },
      {
       "id": "n4",
       "name": "Scribes' Rest",
+      "type": "camp",
+      "x": 0.34,
+      "y": 0.5,
+      "layer": 2,
+      "step": 0,
+      "name_gangsters": "Guard Hut",
+      "brief": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
+      "loot": {
+       "supply": 32,
+       "morale": 15,
+       "crystals": 220,
+       "items": {
+        "greater_potion": 1
+       }
+      },
+      "links": [
+       "n1",
+       "n2",
+       "n5",
+       "n6"
+      ]
+     },
+     {
+      "id": "n5",
+      "name": "Toppled Arch",
       "type": "defend",
-      "x": 0.74,
+      "x": 0.6,
       "y": 0.28,
       "layer": 3,
       "step": 1,
+      "name_gangsters": "Toppled Arch",
       "cfg": {
        "penguins": {
         "field": "bf_ruin_court",
@@ -4132,9 +4291,10 @@
          }
         ],
         "enemies": [
-         "ruin_guardian",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_flame",
+         "thug_brute"
         ]
        }
       },
@@ -4143,9 +4303,12 @@
       "tickets": 140,
       "wave_every": 5.0,
       "enemy_cap": 17,
-      "brief": "Hold Scribes' Rest. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "brief": {
+       "penguins": "Hold Toppled Arch. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+       "gangsters": "Hold Toppled Arch. Their cars keep dropping off more of them; keep at least one point until the clock runs out."
+      },
       "reward": {
-       "crystals": 360,
+       "crystals": 619,
        "supply": 8,
        "morale": 10,
        "items": {
@@ -4154,17 +4317,19 @@
       },
       "links": [
        "n3",
-       "n5"
+       "n4",
+       "n6"
       ]
      },
      {
-      "id": "n5",
+      "id": "n6",
       "name": "The Star Arch",
       "type": "gate",
-      "x": 0.44,
-      "y": 0.09,
+      "x": 0.4,
+      "y": 0.08,
       "layer": 4,
       "step": 1,
+      "name_gangsters": "The Star Arch",
       "cfg": {
        "penguins": {
         "field": "bf_ruin_court",
@@ -4195,8 +4360,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -4230,7 +4394,7 @@
          }
         ],
         "boss": "gcap_ruins",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_crystal",
          "grump_storm",
@@ -4268,8 +4432,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -4302,11 +4465,14 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_ruins",
+        "tickets": 210,
         "enemies": [
-         "ruin_guardian",
-         "ice_wisp",
-         "thug_cyber"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_flame",
+         "thug_brute",
+         "thug_enforcer"
         ]
        }
       },
@@ -4317,7 +4483,7 @@
       "enemy_cap": 17,
       "brief": {
        "penguins": "The Star Arch: the last wall before the region. Every point fortified, and Gloomcrown takes the field.",
-       "gangsters": "The Star Arch: the last wall before the region. Every point fortified, and their commander takes the field."
+       "gangsters": "The Star Arch: the last block before the turf. Every point locked down, and The Curator steps in."
       },
       "reward": {
        "crystals": 0,
@@ -4326,8 +4492,8 @@
        "items": {}
       },
       "links": [
-       "n3",
-       "n4"
+       "n4",
+       "n5"
       ]
      }
     ],
@@ -4345,11 +4511,11 @@
       "n3"
      ],
      [
-      "n2",
-      "n3"
+      "n1",
+      "n4"
      ],
      [
-      "n3",
+      "n2",
       "n4"
      ],
      [
@@ -4359,6 +4525,14 @@
      [
       "n4",
       "n5"
+     ],
+     [
+      "n4",
+      "n6"
+     ],
+     [
+      "n5",
+      "n6"
      ]
     ],
     "need": {
@@ -4370,7 +4544,24 @@
      "crystals": 500,
      "supply": 35
     },
-    "min_battles": 2,
+    "min_battles": 1,
+    "long_way": {
+     "kind": "quest",
+     "id": "lw_ruins",
+     "cost": {
+      "money": 900,
+      "items": {
+       "iron_bar": 3
+      }
+     },
+     "steps": [
+      "Bring the scribe three old rubbings",
+      "Take the scribes' tunnel under the arch"
+     ],
+     "text": "An old scribe knows a tunnel under the arch. Bring her paper and charcoal for her rubbings and she'll lead the way.",
+     "text_gang": "A night watchman at the ruins wants out. Bring him the supplies he asks for and he'll unlock the service gate.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The old stones hum with a cold purple light. Whatever guards the ruins is wide awake.",
      "gangsters": "Floodlights sweep the old ruins. Somebody has turned them into a fortress."
@@ -4408,7 +4599,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -4475,9 +4667,7 @@
          }
         ],
         "enemies": [
-         "grump_ember",
          "grump",
-         "grump_crystal",
          "wisp"
         ]
        }
@@ -4550,9 +4740,7 @@
          }
         ],
         "enemies": [
-         "grump_ember",
          "grump",
-         "grump_crystal",
          "wisp"
         ]
        }
@@ -4638,12 +4826,12 @@
         ]
        }
       },
-      "convoy_hp": 105,
+      "convoy_hp": 115,
       "enemy_tickets": 240,
       "tickets": 130,
       "wave_every": 9.0,
       "enemy_cap": 8,
-      "brief": "Our supply wagon has to reach Burnt Watchtower. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Burnt Watchtower. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
        "crystals": 180,
        "supply": 18,
@@ -4716,12 +4904,11 @@
            56,
            50
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_wastes",
-        "tickets": 210,
+        "tickets": 170,
         "enemies": [
          "grump_ember",
          "grump",
@@ -4779,6 +4966,23 @@
      "supply": 25
     },
     "min_battles": 3,
+    "long_way": {
+     "kind": "story",
+     "id": "lw_wastes",
+     "cost": {
+      "money": 150,
+      "items": {
+       "wood": 15
+      }
+     },
+     "steps": [
+      "Ask the standing stones' keeper for the old road",
+      "Walk the ash road by lantern light"
+     ],
+     "text": "The keeper of the standing stones remembers an ash road from before the Grumps. Carry a lantern and walk it at night.",
+     "text_gang": "An old prospector draws you a map of a dry road round the patrols. It's slow going, but it gets you there.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The air tastes of ash and the black stones hum. Out there, Grumps march in rows like soldiers."
     },
@@ -4808,7 +5012,7 @@
     "intro": "Above the clouds the mountain keeps climbing. Storm Grumps crackle on every ledge. Climb it battle by battle, and bring them home.",
     "won": "The sky stair is yours. The clouds part under your feet like a carpet.",
     "reward": {
-     "crystals": 1700,
+     "crystals": 3600,
      "items": {
       "gold_bar": 3,
       "crystal_refined": 3
@@ -4820,7 +5024,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -4841,8 +5046,8 @@
       "id": "n1",
       "name": "Cloudfoot",
       "type": "skirmish",
-      "x": 0.78,
-      "y": 0.7,
+      "x": 0.76,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "cfg": {
@@ -4889,9 +5094,7 @@
         "enemies": [
          "grump_storm",
          "grump_wisp",
-         "grump_frost",
-         "finargle_drone",
-         "wisp"
+         "grump_frost"
         ]
        }
       },
@@ -4901,7 +5104,7 @@
       "enemy_cap": 13,
       "brief": "A quick clash at Cloudfoot. Take the points and their line breaks.",
       "reward": {
-       "crystals": 216,
+       "crystals": 371,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -4910,36 +5113,59 @@
       },
       "links": [
        "n0",
-       "n3"
+       "n3",
+       "n4"
       ]
      },
      {
       "id": "n2",
       "name": "Ice Ladder",
       "type": "cache",
-      "x": 0.22,
-      "y": 0.7,
+      "x": 0.24,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 1040,
+       "crystals": 220,
        "items": {
-        "gold_bar": 3
+        "greater_potion": 1
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n4"
       ]
      },
      {
       "id": "n3",
       "name": "Prism Shelf",
-      "type": "boss",
-      "x": 0.5,
+      "type": "camp",
+      "x": 0.82,
+      "y": 0.48,
+      "layer": 2,
+      "step": 0,
+      "brief": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
+      "loot": {
+       "supply": 32,
+       "morale": 15,
+       "crystals": 220,
+       "items": {
+        "greater_potion": 1
+       }
+      },
+      "links": [
+       "n1",
+       "n5"
+      ]
+     },
+     {
+      "id": "n4",
+      "name": "Finargle Roost",
+      "type": "escort",
+      "x": 0.34,
       "y": 0.5,
       "layer": 2,
       "step": 0,
@@ -4957,13 +5183,22 @@
           "owner": "ally"
          },
          {
-          "id": "e",
-          "name": "Cloudfoot",
+          "id": "d",
+          "name": "Prism Shelf",
           "cell": [
-           78,
-           56
+           30,
+           51
           ],
           "owner": "neutral"
+         },
+         {
+          "id": "a",
+          "name": "Star Ledge",
+          "cell": [
+           20,
+           27
+          ],
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -4972,19 +5207,15 @@
            62,
            25
           ],
-          "owner": "enemy"
-         },
-         {
-          "id": "c",
-          "name": "Thin Air Fort",
-          "cell": [
-           90,
-           30
-          ],
-          "owner": "enemy"
+          "owner": "neutral"
          }
         ],
-        "boss": "gcap_sky",
+        "convoy": [
+         "f",
+         "d",
+         "a"
+        ],
+        "vehicle": "wagon",
         "enemies": [
          "grump_storm",
          "grump_wisp",
@@ -4994,16 +5225,16 @@
         ]
        }
       },
-      "boss": "knight",
-      "enemy_tickets": 110,
+      "convoy_hp": 205,
+      "enemy_tickets": 400,
       "tickets": 130,
-      "wave_every": 7.0,
+      "wave_every": 7.5,
       "enemy_cap": 13,
-      "brief": "Stormcrest holds Prism Shelf. Turn the captain back and the rest will scatter.",
+      "brief": "Our supply crystal sled has to reach Star Ledge. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
-       "crystals": 432,
-       "supply": 8,
-       "morale": 15,
+       "crystals": 557,
+       "supply": 18,
+       "morale": 10,
        "items": {
         "crystal_refined": 1
        }
@@ -5011,15 +5242,15 @@
       "links": [
        "n1",
        "n2",
-       "n4",
-       "n5"
+       "n5",
+       "n6"
       ]
      },
      {
-      "id": "n4",
-      "name": "Finargle Roost",
+      "id": "n5",
+      "name": "Star Ledge",
       "type": "siege",
-      "x": 0.74,
+      "x": 0.6,
       "y": 0.28,
       "layer": 3,
       "step": 1,
@@ -5043,8 +5274,7 @@
            20,
            27
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -5083,11 +5313,10 @@
            78,
            56
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_storm",
          "grump_wisp",
@@ -5101,9 +5330,9 @@
       "tickets": 150,
       "wave_every": 6.5,
       "enemy_cap": 16,
-      "brief": "Finargle Roost is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": "Star Ledge is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 396,
+       "crystals": 681,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -5112,15 +5341,16 @@
       },
       "links": [
        "n3",
-       "n5"
+       "n4",
+       "n6"
       ]
      },
      {
-      "id": "n5",
+      "id": "n6",
       "name": "The Sky Stair",
       "type": "gate",
-      "x": 0.44,
-      "y": 0.09,
+      "x": 0.4,
+      "y": 0.08,
       "layer": 4,
       "step": 1,
       "cfg": {
@@ -5183,12 +5413,11 @@
            78,
            56
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_sky",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_storm",
          "grump_wisp",
@@ -5211,8 +5440,8 @@
        "items": {}
       },
       "links": [
-       "n3",
-       "n4"
+       "n4",
+       "n5"
       ]
      }
     ],
@@ -5230,11 +5459,11 @@
       "n3"
      ],
      [
-      "n2",
-      "n3"
+      "n1",
+      "n4"
      ],
      [
-      "n3",
+      "n2",
       "n4"
      ],
      [
@@ -5244,6 +5473,14 @@
      [
       "n4",
       "n5"
+     ],
+     [
+      "n4",
+      "n6"
+     ],
+     [
+      "n5",
+      "n6"
      ]
     ],
     "need": {
@@ -5256,6 +5493,23 @@
      "supply": 35
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_sky",
+     "cost": {
+      "money": 900,
+      "items": {
+       "iron_bar": 3
+      }
+     },
+     "steps": [
+      "Pay Finargle's balloon fare",
+      "Float up past the cloud stair"
+     ],
+     "text": "Finargle's balloon goes up past the cloud stair on clear days. Pay the fare, hold on, and don't look down.",
+     "text_gang": "Finargle's balloon goes up past the cloud stair on clear days. Pay the fare, hold on, and don't look down.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The wind up the cloud stair sings a warning, and armour glints on every step."
     },
@@ -5283,7 +5537,7 @@
     "intro": "The station drifts dark, and shards crawl its corridors. Take it ring by ring.",
     "won": "The station lights come on, one deck at a time. Somebody left the radio playing.",
     "reward": {
-     "crystals": 2100,
+     "crystals": 6000,
      "items": {
       "crystal_battery": 2,
       "ruby": 1,
@@ -5296,7 +5550,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -5365,9 +5620,7 @@
         "enemies": [
          "grump_crystal",
          "grump_storm",
-         "grump_wisp",
-         "shard",
-         "wisp"
+         "grump_wisp"
         ]
        }
       },
@@ -5377,7 +5630,7 @@
       "enemy_cap": 16,
       "brief": "A quick clash at Docking Ring. Take the points and their line breaks.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -5448,20 +5701,18 @@
         "enemies": [
          "grump_crystal",
          "grump_storm",
-         "grump_wisp",
-         "shard",
-         "wisp"
+         "grump_wisp"
         ]
        }
       },
-      "convoy_hp": 180,
+      "convoy_hp": 250,
       "enemy_tickets": 460,
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 16,
-      "brief": "Our supply wagon has to reach Solar Wing. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Solar Wing. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
-       "crystals": 396,
+       "crystals": 810,
        "supply": 18,
        "morale": 10,
        "items": {
@@ -5485,9 +5736,9 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 320,
        "items": {
-        "crystal_battery": 2
+        "greater_potion": 1
        }
       },
       "links": [
@@ -5523,8 +5774,7 @@
            22,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -5533,8 +5783,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -5567,7 +5816,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_crystal",
          "grump_storm",
@@ -5583,7 +5832,7 @@
       "enemy_cap": 19,
       "brief": "Crew Galley is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -5600,7 +5849,7 @@
      {
       "id": "n5",
       "name": "Solar Wing",
-      "type": "siege",
+      "type": "boss",
       "x": 0.4,
       "y": 0.28,
       "layer": 3,
@@ -5619,34 +5868,13 @@
           "owner": "ally"
          },
          {
-          "id": "a",
-          "name": "Airlock Row",
-          "cell": [
-           22,
-           26
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
           "id": "b",
           "name": "Reactor Ring",
           "cell": [
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "c",
-          "name": "Solar Wing",
-          "cell": [
-           86,
-           26
-          ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "d",
@@ -5655,21 +5883,19 @@
            22,
            60
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
-          "id": "e",
-          "name": "Crew Galley",
+          "id": "a",
+          "name": "Airlock Row",
           "cell": [
-           86,
-           60
+           22,
+           26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          }
         ],
-        "tickets": 230,
+        "boss": "gcap_station",
         "enemies": [
          "grump_crystal",
          "grump_storm",
@@ -5679,15 +5905,16 @@
         ]
        }
       },
-      "enemy_tickets": 170,
-      "tickets": 150,
-      "wave_every": 6.5,
-      "enemy_cap": 19,
-      "brief": "Solar Wing is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "boss": "geode_golem",
+      "enemy_tickets": 125,
+      "tickets": 130,
+      "wave_every": 7.0,
+      "enemy_cap": 16,
+      "brief": "Prismjaw holds Solar Wing. Turn the captain back and the rest will scatter.",
       "reward": {
-       "crystals": 484,
-       "supply": 6,
-       "morale": 12,
+       "crystals": 1080,
+       "supply": 8,
+       "morale": 15,
        "items": {
         "ruby": 1
        }
@@ -5736,8 +5963,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -5771,7 +5997,7 @@
          }
         ],
         "boss": "gcap_station",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_crystal",
          "grump_storm",
@@ -5838,7 +6064,7 @@
      ]
     ],
     "need": {
-     "team": 5,
+     "team": 4,
      "items": {
       "gold_bar": 2,
       "iron_bar": 6
@@ -5847,6 +6073,24 @@
      "supply": 40
     },
     "min_battles": 3,
+    "long_way": {
+     "kind": "story",
+     "id": "lw_station",
+     "cost": {
+      "money": 1600,
+      "items": {
+       "iron_bar": 4,
+       "gold_bar": 1
+      }
+     },
+     "steps": [
+      "Help Coldy fix the old shuttle",
+      "Dock at the back airlock"
+     ],
+     "text": "Coldy thinks the old shuttle still flies. Help fix it and you can dock at the back airlock, where nobody's looking.",
+     "text_gang": "Coldy thinks the old shuttle still flies. Help fix it and you can dock at the back airlock, where nobody's looking.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "A cold hum comes down from the station, and its lights blink in Grump colours."
     },
@@ -5874,7 +6118,7 @@
     "intro": "The green planet's jungle is thick with shards. Cut a way in, one clearing at a time.",
     "won": "The jungle opens. The giant flowers turn to watch you pass, and they seem pleased.",
     "reward": {
-     "crystals": 2100,
+     "crystals": 6000,
      "items": {
       "crystal_battery": 2,
       "ruby": 1,
@@ -5887,7 +6131,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -5947,9 +6192,7 @@
         "enemies": [
          "grump_moss",
          "grump_coral",
-         "grump_ember",
-         "shard",
-         "slime"
+         "grump_ember"
         ]
        }
       },
@@ -5959,7 +6202,7 @@
       "enemy_cap": 16,
       "brief": "A quick clash at Fern Wall. Take the points and their line breaks.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -6024,9 +6267,7 @@
         "enemies": [
          "grump_moss",
          "grump_coral",
-         "grump_ember",
-         "shard",
-         "slime"
+         "grump_ember"
         ]
        }
       },
@@ -6036,7 +6277,7 @@
       "enemy_cap": 16,
       "brief": "A quick clash at Glow Pool. Take the points and their line breaks.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -6076,8 +6317,7 @@
            22,
            25
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -6106,8 +6346,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -6120,7 +6359,7 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_moss",
          "grump_coral",
@@ -6136,7 +6375,7 @@
       "enemy_cap": 19,
       "brief": "Vine Bridge is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -6160,9 +6399,9 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 320,
        "items": {
-        "crystal_battery": 2
+        "greater_potion": 1
        }
       },
       "links": [
@@ -6175,7 +6414,7 @@
      {
       "id": "n5",
       "name": "Spore Hollow",
-      "type": "siege",
+      "type": "boss",
       "x": 0.49,
       "y": 0.28,
       "layer": 3,
@@ -6194,57 +6433,25 @@
           "owner": "ally"
          },
          {
-          "id": "a",
-          "name": "Fern Wall",
-          "cell": [
-           22,
-           25
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "b",
-          "name": "Vine Bridge",
-          "cell": [
-           58,
-           28
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
-          "id": "c",
-          "name": "Spore Hollow",
-          "cell": [
-           86,
-           25
-          ],
-          "owner": "enemy",
-          "efort": true
-         },
-         {
           "id": "d",
           "name": "Glow Pool",
           "cell": [
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
-          "id": "e",
-          "name": "Root Temple",
+          "id": "a",
+          "name": "Fern Wall",
           "cell": [
-           84,
-           57
+           22,
+           25
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          }
         ],
-        "tickets": 230,
+        "boss": "gcap_jungle",
         "enemies": [
          "grump_moss",
          "grump_coral",
@@ -6254,15 +6461,16 @@
         ]
        }
       },
-      "enemy_tickets": 170,
-      "tickets": 150,
-      "wave_every": 6.5,
-      "enemy_cap": 19,
-      "brief": "Spore Hollow is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "boss": "shard_spider",
+      "enemy_tickets": 125,
+      "tickets": 130,
+      "wave_every": 7.0,
+      "enemy_cap": 16,
+      "brief": "Thornmaw holds Spore Hollow. Turn the captain back and the rest will scatter.",
       "reward": {
-       "crystals": 484,
-       "supply": 6,
-       "morale": 12,
+       "crystals": 1080,
+       "supply": 8,
+       "morale": 15,
        "items": {
         "ruby": 1
        }
@@ -6331,8 +6539,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -6346,7 +6553,7 @@
          }
         ],
         "boss": "gcap_jungle",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_moss",
          "grump_coral",
@@ -6413,7 +6620,7 @@
      ]
     ],
     "need": {
-     "team": 5,
+     "team": 4,
      "items": {
       "gold_bar": 2,
       "iron_bar": 6
@@ -6422,6 +6629,24 @@
      "supply": 40
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_jungle",
+     "cost": {
+      "money": 1600,
+      "items": {
+       "iron_bar": 4,
+       "gold_bar": 1
+      }
+     },
+     "steps": [
+      "Pay for a seat on the supply pod",
+      "Land in the quiet clearing"
+     ],
+     "text": "A supply pod lands in a quiet clearing once a week. Buy a seat and you're down below the canopy.",
+     "text_gang": "A supply pod lands in a quiet clearing once a week. Buy a seat and you're down below the canopy.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The green planet's trees lean toward you, and the shadows under them move."
     },
@@ -6446,7 +6671,7 @@
     "intro": "The coral colony is cut off by crabs and serpents. Fight your way across the reef to reach them.",
     "won": "The reef gate opens. The merkitties are waving from the shore.",
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
       "greater_potion": 2,
       "iron_bar": 5
@@ -6458,7 +6683,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -6528,7 +6754,7 @@
       "enemy_cap": 10,
       "brief": "A quick clash at Shell Beach. Take the points and their line breaks.",
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -6602,7 +6828,7 @@
       "enemy_cap": 10,
       "brief": "A quick clash at Tide Pools. Take the points and their line breaks.",
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -6676,14 +6902,14 @@
         ]
        }
       },
-      "convoy_hp": 130,
+      "convoy_hp": 160,
       "enemy_tickets": 320,
       "tickets": 130,
       "wave_every": 8.25,
       "enemy_cap": 10,
-      "brief": "Our supply wagon has to reach Pearl Cove. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Pearl Cove. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
-       "crystals": 251,
+       "crystals": 344,
        "supply": 18,
        "morale": 10,
        "items": {
@@ -6780,7 +7006,7 @@
       "enemy_cap": 14,
       "brief": "Hold Pearl Cove. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
       "reward": {
-       "crystals": 280,
+       "crystals": 382,
        "supply": 8,
        "morale": 10,
        "items": {
@@ -6850,8 +7076,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -6865,7 +7090,7 @@
          }
         ],
         "boss": "gcap_colony_coral",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_coral",
          "grump_wisp",
@@ -6931,6 +7156,23 @@
      "supply": 30
     },
     "min_battles": 3,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_colony_coral",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Pay the boatman",
+      "Sail round the reef at high tide"
+     ],
+     "text": "At high tide a boat can slip round the reef. The boatman knows when. Pay him and sail round.",
+     "text_gang": "At high tide a boat can slip round the reef. The boatman knows when. Pay him and sail round.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The reef glows the wrong colour, and every fish has gone quiet."
     },
@@ -6957,7 +7199,7 @@
     "intro": "The kelp forest is dark and full of eels. Light a path through and the colony can breathe.",
     "won": "The kelp sways open. Little lights blink on all along the path.",
     "reward": {
-     "crystals": 1700,
+     "crystals": 3600,
      "items": {
       "gold_bar": 3,
       "crystal_refined": 3
@@ -6969,7 +7211,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -6990,30 +7233,31 @@
       "id": "n1",
       "name": "Kelp Edge",
       "type": "cache",
-      "x": 0.78,
-      "y": 0.7,
+      "x": 0.76,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 1040,
+       "crystals": 220,
        "items": {
-        "gold_bar": 3
+        "greater_potion": 1
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n3",
+       "n4"
       ]
      },
      {
       "id": "n2",
       "name": "Bubble Field",
       "type": "skirmish",
-      "x": 0.22,
-      "y": 0.7,
+      "x": 0.24,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "cfg": {
@@ -7051,8 +7295,7 @@
         "enemies": [
          "grump_coral",
          "grump_moss",
-         "grump_storm",
-         "river_serpent"
+         "grump_storm"
         ]
        }
       },
@@ -7062,7 +7305,7 @@
       "enemy_cap": 13,
       "brief": "A quick clash at Bubble Field. Take the points and their line breaks.",
       "reward": {
-       "crystals": 216,
+       "crystals": 371,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -7071,15 +7314,15 @@
       },
       "links": [
        "n0",
-       "n3"
+       "n4"
       ]
      },
      {
       "id": "n3",
       "name": "Sunken Bell",
       "type": "siege",
-      "x": 0.5,
-      "y": 0.5,
+      "x": 0.82,
+      "y": 0.48,
       "layer": 2,
       "step": 0,
       "cfg": {
@@ -7102,8 +7345,7 @@
            20,
            27
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -7142,11 +7384,10 @@
            78,
            56
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
          "grump_coral",
          "grump_moss",
@@ -7161,7 +7402,7 @@
       "enemy_cap": 16,
       "brief": "Sunken Bell is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 396,
+       "crystals": 681,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -7170,8 +7411,6 @@
       },
       "links": [
        "n1",
-       "n2",
-       "n4",
        "n5"
       ]
      },
@@ -7179,10 +7418,10 @@
       "id": "n4",
       "name": "Eel Narrows",
       "type": "defend",
-      "x": 0.74,
-      "y": 0.28,
-      "layer": 3,
-      "step": 1,
+      "x": 0.34,
+      "y": 0.5,
+      "layer": 2,
+      "step": 0,
       "cfg": {
        "penguins": {
         "field": "bf_kelp_beds",
@@ -7259,7 +7498,7 @@
       "enemy_cap": 17,
       "brief": "Hold Eel Narrows. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
       "reward": {
-       "crystals": 360,
+       "crystals": 619,
        "supply": 8,
        "morale": 10,
        "items": {
@@ -7267,16 +7506,96 @@
        }
       },
       "links": [
-       "n3",
-       "n5"
+       "n1",
+       "n2",
+       "n5",
+       "n6"
       ]
      },
      {
       "id": "n5",
+      "name": "Glow Shallows",
+      "type": "boss",
+      "x": 0.6,
+      "y": 0.28,
+      "layer": 3,
+      "step": 1,
+      "cfg": {
+       "penguins": {
+        "field": "bf_kelp_beds",
+        "points": [
+         {
+          "id": "f",
+          "name": "Driftwood Camp",
+          "cell": [
+           54,
+           75
+          ],
+          "owner": "ally"
+         },
+         {
+          "id": "e",
+          "name": "Glow Shallows",
+          "cell": [
+           78,
+           56
+          ],
+          "owner": "neutral"
+         },
+         {
+          "id": "b",
+          "name": "Sunken Bell",
+          "cell": [
+           62,
+           25
+          ],
+          "owner": "enemy"
+         },
+         {
+          "id": "c",
+          "name": "Eel Narrows",
+          "cell": [
+           90,
+           30
+          ],
+          "owner": "enemy"
+         }
+        ],
+        "boss": "gcap_colony_kelp",
+        "enemies": [
+         "grump_coral",
+         "grump_moss",
+         "grump_storm",
+         "river_serpent"
+        ]
+       }
+      },
+      "boss": "void_eel",
+      "enemy_tickets": 110,
+      "tickets": 130,
+      "wave_every": 7.0,
+      "enemy_cap": 13,
+      "brief": "Murkfin holds Glow Shallows. Turn the captain back and the rest will scatter.",
+      "reward": {
+       "crystals": 743,
+       "supply": 8,
+       "morale": 15,
+       "items": {
+        "crystal_refined": 1
+       }
+      },
+      "links": [
+       "n3",
+       "n4",
+       "n6"
+      ]
+     },
+     {
+      "id": "n6",
       "name": "The Kelp Gate",
       "type": "gate",
-      "x": 0.44,
-      "y": 0.09,
+      "x": 0.4,
+      "y": 0.08,
       "layer": 4,
       "step": 1,
       "cfg": {
@@ -7339,12 +7658,11 @@
            78,
            56
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_colony_kelp",
-        "tickets": 250,
+        "tickets": 210,
         "enemies": [
          "grump_coral",
          "grump_moss",
@@ -7366,8 +7684,8 @@
        "items": {}
       },
       "links": [
-       "n3",
-       "n4"
+       "n4",
+       "n5"
       ]
      }
     ],
@@ -7385,11 +7703,11 @@
       "n3"
      ],
      [
-      "n2",
-      "n3"
+      "n1",
+      "n4"
      ],
      [
-      "n3",
+      "n2",
       "n4"
      ],
      [
@@ -7399,6 +7717,14 @@
      [
       "n4",
       "n5"
+     ],
+     [
+      "n4",
+      "n6"
+     ],
+     [
+      "n5",
+      "n6"
      ]
     ],
     "need": {
@@ -7411,6 +7737,23 @@
      "supply": 35
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "quest",
+     "id": "lw_colony_kelp",
+     "cost": {
+      "money": 900,
+      "items": {
+       "iron_bar": 3
+      }
+     },
+     "steps": [
+      "Bring the colony lamps for the dark path",
+      "Follow the lamps through the kelp"
+     ],
+     "text": "The colony would light a path through the kelp if someone brought them lamp oil and wicks.",
+     "text_gang": "The colony would light a path through the kelp if someone brought them lamp oil and wicks.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "The kelp sways against the tide. Something big is hiding in it."
     },
@@ -7438,7 +7781,7 @@
     "intro": "Hollow Winter has frozen the island solid. Break the ice walls and reach the colony.",
     "won": "The ice gate cracks and melts. The colony sends out hot cocoa.",
     "reward": {
-     "crystals": 2100,
+     "crystals": 6000,
      "items": {
       "crystal_battery": 2,
       "ruby": 1,
@@ -7451,7 +7794,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -7480,9 +7824,9 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 320,
        "items": {
-        "crystal_battery": 2
+        "greater_potion": 1
        }
       },
       "links": [
@@ -7534,8 +7878,7 @@
         "enemies": [
          "grump_frost",
          "grump_crystal",
-         "grump_brute",
-         "ice_wisp"
+         "grump_brute"
         ]
        }
       },
@@ -7545,7 +7888,7 @@
       "enemy_cap": 16,
       "brief": "A quick clash at Seal Rocks. Take the points and their line breaks.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -7632,7 +7975,7 @@
       "enemy_cap": 20,
       "brief": "Hold Frost Chapel. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
       "reward": {
-       "crystals": 440,
+       "crystals": 900,
        "supply": 8,
        "morale": 10,
        "items": {
@@ -7672,8 +8015,7 @@
            24,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -7702,11 +8044,10 @@
            56,
            52
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 190,
+        "tickets": 150,
         "enemies": [
          "grump_frost",
          "grump_crystal",
@@ -7721,7 +8062,7 @@
       "enemy_cap": 19,
       "brief": "Aurora Field is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -7800,7 +8141,7 @@
       "enemy_cap": 16,
       "brief": "Hailbrute holds Glacier Mouth. Turn the captain back and the rest will scatter.",
       "reward": {
-       "crystals": 528,
+       "crystals": 1080,
        "supply": 8,
        "morale": 15,
        "items": {
@@ -7871,12 +8212,11 @@
            56,
            52
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_colony_ice",
-        "tickets": 210,
+        "tickets": 170,
         "enemies": [
          "grump_frost",
          "grump_crystal",
@@ -7942,7 +8282,7 @@
      ]
     ],
     "need": {
-     "team": 5,
+     "team": 4,
      "items": {
       "gold_bar": 2,
       "iron_bar": 6
@@ -7951,6 +8291,24 @@
      "supply": 40
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "travel",
+     "id": "lw_colony_ice",
+     "cost": {
+      "money": 1600,
+      "items": {
+       "iron_bar": 4,
+       "gold_bar": 1
+      }
+     },
+     "steps": [
+      "Pay the icebreaker's captain",
+      "Ride in the icebreaker's wake"
+     ],
+     "text": "An icebreaker cuts a channel to the island every few days. Pay the captain and ride in its wake.",
+     "text_gang": "An icebreaker cuts a channel to the island every few days. Pay the captain and ride in its wake.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "Frost cracks across the water toward you, and the ice groans like a giant waking up."
     },
@@ -7977,7 +8335,7 @@
     "intro": "The ember island smoulders. Ash hounds patrol the bridges. Cross, hold, and reach the last colony.",
     "won": "The smoke clears from the ember isle. Above it, real stars.",
     "reward": {
-     "crystals": 2500,
+     "crystals": 9000,
      "items": {
       "crystal_battery": 3,
       "gold_bar": 6,
@@ -7990,7 +8348,8 @@
       },
       "gangsters": {
        "servo": 12,
-       "data_chip": 3
+       "data_chip": 3,
+       "rounds": 120
       }
      }
     },
@@ -8066,20 +8425,18 @@
         "enemies": [
          "grump_ember",
          "grump_brute",
-         "grump_storm",
-         "lantern_moth",
-         "wisp"
+         "grump_storm"
         ]
        }
       },
-      "convoy_hp": 205,
+      "convoy_hp": 295,
       "enemy_tickets": 520,
       "tickets": 130,
       "wave_every": 7.5,
       "enemy_cap": 19,
-      "brief": "Our supply wagon has to reach Cinder Gate. Walk with it: it only rolls with friends beside it and no foes on it.",
+      "brief": "Our supply crystal sled has to reach Cinder Gate. Walk with it: it only rolls with friends beside it and no foes on it.",
       "reward": {
-       "crystals": 468,
+       "crystals": 1096,
        "supply": 18,
        "morale": 10,
        "items": {
@@ -8143,9 +8500,7 @@
         "enemies": [
          "grump_ember",
          "grump_brute",
-         "grump_storm",
-         "lantern_moth",
-         "wisp"
+         "grump_storm"
         ]
        }
       },
@@ -8155,7 +8510,7 @@
       "enemy_cap": 19,
       "brief": "A quick clash at Smoke Hollow. Take the points and their line breaks.",
       "reward": {
-       "crystals": 312,
+       "crystals": 730,
        "supply": 10,
        "morale": 8,
        "items": {
@@ -8180,9 +8535,9 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1540,
+       "crystals": 440,
        "items": {
-        "crystal_battery": 3
+        "greater_potion": 2
        }
       },
       "links": [
@@ -8202,9 +8557,9 @@
       "loot": {
        "supply": 40,
        "morale": 15,
-       "crystals": 1540,
+       "crystals": 440,
        "items": {
-        "crystal_battery": 3
+        "greater_potion": 2
        }
       },
       "links": [
@@ -8261,8 +8616,7 @@
            90,
            24
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "d",
@@ -8271,11 +8625,10 @@
            56,
            50
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 190,
+        "tickets": 150,
         "enemies": [
          "grump_ember",
          "grump_brute",
@@ -8291,7 +8644,7 @@
       "enemy_cap": 22,
       "brief": "Cinder Cone is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
       "reward": {
-       "crystals": 572,
+       "crystals": 1339,
        "supply": 6,
        "morale": 12,
        "items": {
@@ -8308,7 +8661,7 @@
      {
       "id": "n6",
       "name": "Hound Kennels",
-      "type": "defend",
+      "type": "boss",
       "x": 0.59,
       "y": 0.29,
       "layer": 3,
@@ -8327,14 +8680,13 @@
           "owner": "ally"
          },
          {
-          "id": "a",
-          "name": "Cinder Gate",
+          "id": "d",
+          "name": "Dry Well",
           "cell": [
-           24,
-           24
+           56,
+           50
           ],
-          "owner": "enemy",
-          "gate": true
+          "owner": "neutral"
          },
          {
           "id": "b",
@@ -8343,7 +8695,7 @@
            56,
            26
           ],
-          "owner": "ally"
+          "owner": "enemy"
          },
          {
           "id": "c",
@@ -8352,19 +8704,10 @@
            90,
            24
           ],
-          "owner": "enemy",
-          "gate": true
-         },
-         {
-          "id": "d",
-          "name": "Dry Well",
-          "cell": [
-           56,
-           50
-          ],
-          "owner": "ally"
+          "owner": "enemy"
          }
         ],
+        "boss": "gcap_colony_ember",
         "enemies": [
          "grump_ember",
          "grump_brute",
@@ -8374,16 +8717,16 @@
         ]
        }
       },
-      "hold": 175,
-      "enemy_tickets": 999,
-      "tickets": 140,
-      "wave_every": 5.0,
-      "enemy_cap": 23,
-      "brief": "Hold Hound Kennels. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "boss": "ash_hound",
+      "enemy_tickets": 145,
+      "tickets": 130,
+      "wave_every": 7.0,
+      "enemy_cap": 19,
+      "brief": "Ashmaw holds Hound Kennels. Turn the captain back and the rest will scatter.",
       "reward": {
-       "crystals": 520,
+       "crystals": 1461,
        "supply": 8,
-       "morale": 10,
+       "morale": 15,
        "items": {
         "emerald": 1
        }
@@ -8452,12 +8795,11 @@
            56,
            50
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
         "boss": "gcap_colony_ember",
-        "tickets": 210,
+        "tickets": 170,
         "enemies": [
          "grump_ember",
          "grump_brute",
@@ -8532,7 +8874,7 @@
      ]
     ],
     "need": {
-     "team": 6,
+     "team": 4,
      "items": {
       "gold_bar": 5,
       "crystal_refined": 2
@@ -8541,6 +8883,23 @@
      "supply": 45
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "story",
+     "id": "lw_colony_ember",
+     "cost": {
+      "money": 2600,
+      "items": {
+       "gold_bar": 3
+      }
+     },
+     "steps": [
+      "Ask Lady Cinderpaw for the cool path",
+      "Cross the old stone bridge at low smoke"
+     ],
+     "text": "Lady Cinderpaw remembers a cool stone bridge where the lava never reaches. Cross it when the smoke is low.",
+     "text_gang": "Lady Cinderpaw remembers a cool stone bridge where the lava never reaches. Cross it when the smoke is low.",
+     "unlock_after": "always"
+    },
     "sense": {
      "penguins": "Smoke hangs over the atoll and the sea hisses where lava meets it. Grump drums, far off."
     },
@@ -8567,7 +8926,7 @@
     "reward": {
      "crystals": 900,
      "items": {
-      "potion": 3,
+      "cherry_fizz": 3,
       "copper_bar": 5
      },
      "strategist": 350,
@@ -8577,7 +8936,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -8608,7 +8968,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Your Boxcar",
+          "name": "Motel Lot",
           "cell": [
            56,
            76
@@ -8617,7 +8977,7 @@
          },
          {
           "id": "d",
-          "name": "Turntable",
+          "name": "Truck Stop",
           "cell": [
            56,
            46
@@ -8626,7 +8986,7 @@
          },
          {
           "id": "b",
-          "name": "Coal Depot",
+          "name": "Overpass",
           "cell": [
            56,
            26
@@ -8635,7 +8995,7 @@
          },
          {
           "id": "c",
-          "name": "Water Tower",
+          "name": "Billboard Bend",
           "cell": [
            90,
            24
@@ -8644,10 +9004,8 @@
          }
         ],
         "enemies": [
-         "thug_speedster",
-         "thug_brute",
-         "thug_cyber",
-         "thug_gambler"
+         "thug_lookout",
+         "thug_speedster"
         ]
        }
       },
@@ -8655,13 +9013,14 @@
       "tickets": 110,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "A quick clash at Billboard Bend. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Billboard Bend. Take the corners and they pull out.",
       "reward": {
        "crystals": 120,
        "supply": 10,
        "morale": 8,
        "items": {
-        "potion": 1
+        "cherry_fizz": 1,
+        "rounds": 10
        }
       },
       "links": [
@@ -8683,7 +9042,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Your Boxcar",
+          "name": "Motel Lot",
           "cell": [
            56,
            76
@@ -8692,7 +9051,7 @@
          },
          {
           "id": "d",
-          "name": "Turntable",
+          "name": "Truck Stop",
           "cell": [
            56,
            46
@@ -8701,7 +9060,7 @@
          },
          {
           "id": "b",
-          "name": "Coal Depot",
+          "name": "Overpass",
           "cell": [
            56,
            26
@@ -8710,7 +9069,7 @@
          },
          {
           "id": "a",
-          "name": "Signal Tower",
+          "name": "Gas Station",
           "cell": [
            22,
            24
@@ -8719,10 +9078,8 @@
          }
         ],
         "enemies": [
-         "thug_speedster",
-         "thug_brute",
-         "thug_cyber",
-         "thug_gambler"
+         "thug_lookout",
+         "thug_speedster"
         ]
        }
       },
@@ -8730,13 +9087,14 @@
       "tickets": 110,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "A quick clash at Gas Station. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Gas Station. Take the corners and they pull out.",
       "reward": {
        "crystals": 120,
        "supply": 10,
        "morale": 8,
        "items": {
-        "potion": 1
+        "cherry_fizz": 1,
+        "rounds": 10
        }
       },
       "links": [
@@ -8758,7 +9116,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Your Boxcar",
+          "name": "Motel Lot",
           "cell": [
            56,
            76
@@ -8767,7 +9125,7 @@
          },
          {
           "id": "d",
-          "name": "Turntable",
+          "name": "Truck Stop",
           "cell": [
            56,
            46
@@ -8776,7 +9134,7 @@
          },
          {
           "id": "b",
-          "name": "Coal Depot",
+          "name": "Overpass",
           "cell": [
            56,
            26
@@ -8785,7 +9143,7 @@
          },
          {
           "id": "c",
-          "name": "Water Tower",
+          "name": "Billboard Bend",
           "cell": [
            90,
            24
@@ -8793,26 +9151,27 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_countryside",
         "enemies": [
+         "thug_lookout",
          "thug_speedster",
-         "thug_brute",
-         "thug_cyber",
-         "thug_gambler"
+         "thug_brute"
         ]
        }
       },
-      "boss": "thug_speedster",
+      "boss": "gcap_g_countryside",
       "enemy_tickets": 65,
       "tickets": 130,
       "wave_every": 8.5,
       "enemy_cap": 8,
-      "brief": "Their captain holds Truck Stop. Bring the captain down and the rest will scatter.",
+      "brief": "Road Boss Dutch runs Truck Stop. Make them back off and the crew scatters.",
       "reward": {
        "crystals": 240,
        "supply": 8,
        "morale": 15,
        "items": {
-        "potion": 1
+        "cherry_fizz": 1,
+        "rounds": 10
        }
       },
       "links": [
@@ -8835,7 +9194,7 @@
         "points": [
          {
           "id": "e",
-          "name": "Your Boxcar",
+          "name": "Motel Lot",
           "cell": [
            56,
            76
@@ -8844,7 +9203,7 @@
          },
          {
           "id": "a",
-          "name": "Signal Tower",
+          "name": "Gas Station",
           "cell": [
            22,
            24
@@ -8854,7 +9213,7 @@
          },
          {
           "id": "b",
-          "name": "Coal Depot",
+          "name": "Overpass",
           "cell": [
            56,
            26
@@ -8864,7 +9223,7 @@
          },
          {
           "id": "c",
-          "name": "Water Tower",
+          "name": "Billboard Bend",
           "cell": [
            90,
            24
@@ -8874,30 +9233,30 @@
          },
          {
           "id": "d",
-          "name": "Turntable",
+          "name": "Truck Stop",
           "cell": [
            56,
            46
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          }
         ],
-        "tickets": 210,
+        "boss": "gcap_g_countryside",
+        "tickets": 170,
         "enemies": [
+         "thug_lookout",
          "thug_speedster",
          "thug_brute",
-         "thug_cyber",
-         "thug_gambler"
+         "thug_cyber"
         ]
        }
       },
-      "boss": "thug_speedster",
+      "boss": "gcap_g_countryside",
       "enemy_tickets": 100,
       "tickets": 170,
       "wave_every": 7.5,
       "enemy_cap": 12,
-      "brief": "The Long Highway: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Long Highway: the last block before the turf. Every point locked down, and Road Boss Dutch steps in.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -8941,10 +9300,27 @@
      "supply": 25
     },
     "min_battles": 3,
+    "long_way": {
+     "kind": "quest",
+     "id": "lw_countryside",
+     "cost": {
+      "money": 150,
+      "items": {
+       "wood": 15
+      }
+     },
+     "steps": [
+      "Fetch a spare tyre for the stranded trucker",
+      "Ride in his cab past the roadblock"
+     ],
+     "text": "A trucker is stuck at the motel with a flat. Bring him a spare tyre and he'll take you past the roadblock in his cab.",
+     "text_gang": "A trucker is stuck at the motel with a flat. Bring him a spare tyre and he'll take you past the roadblock in his cab.",
+     "unlock_after": "always"
+    },
     "sense": {
      "gangsters": "A roadblock of parked trucks. Somebody whistles, and three more doors open."
     },
-    "region_name": "Countryside"
+    "region_name": "The Highway"
    },
    "c_docks": {
     "id": "c_docks",
@@ -8967,9 +9343,9 @@
     "intro": "The docks are the President's front door. Every pier is guarded. Take them one by one.",
     "won": "The harbour gate is yours. The gulls sound like they're laughing at somebody else for once.",
     "reward": {
-     "crystals": 1300,
+     "crystals": 2000,
      "items": {
-      "greater_potion": 2,
+      "golden_float": 2,
       "iron_bar": 5
      },
      "strategist": 450,
@@ -8979,7 +9355,8 @@
       },
       "gangsters": {
        "servo": 4,
-       "data_chip": 1
+       "data_chip": 1,
+       "rounds": 40
       }
      }
     },
@@ -9008,9 +9385,10 @@
       "loot": {
        "supply": 28,
        "morale": 15,
-       "crystals": 490,
+       "crystals": 140,
        "items": {
-        "greater_potion": 2
+        "cherry_fizz": 3,
+        "rounds": 20
        }
       },
       "links": [
@@ -9068,11 +9446,8 @@
          }
         ],
         "enemies": [
-         "thug_cyber",
-         "thug_brute",
          "thug_speedster",
-         "thug_enforcer",
-         "thug_flame",
+         "thug_cyber",
          "thug_gambler"
         ]
        }
@@ -9081,13 +9456,14 @@
       "tickets": 110,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "A quick clash at Net Lofts. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Net Lofts. Take the corners and they pull out.",
       "reward": {
-       "crystals": 168,
+       "crystals": 229,
        "supply": 10,
        "morale": 8,
        "items": {
-        "iron_bar": 2
+        "iron_bar": 2,
+        "rounds": 20
        }
       },
       "links": [
@@ -9165,12 +9541,11 @@
          }
         ],
         "enemies": [
-         "thug_cyber",
-         "thug_brute",
          "thug_speedster",
-         "thug_enforcer",
-         "thug_flame",
-         "thug_gambler"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "rust_knight"
         ]
        }
       },
@@ -9179,13 +9554,14 @@
       "tickets": 140,
       "wave_every": 5.75,
       "enemy_cap": 14,
-      "brief": "Hold Bonded Store. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "brief": "Hold Bonded Store. Their cars keep dropping off more of them; keep at least one point until the clock runs out.",
       "reward": {
-       "crystals": 280,
+       "crystals": 382,
        "supply": 8,
        "morale": 10,
        "items": {
-        "greater_potion": 1
+        "golden_float": 1,
+        "rounds": 20
        }
       },
       "links": [
@@ -9244,28 +9620,29 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_docks",
         "enemies": [
-         "thug_cyber",
-         "thug_brute",
          "thug_speedster",
-         "thug_enforcer",
-         "thug_flame",
-         "thug_gambler"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "rust_knight"
         ]
        }
       },
-      "boss": "rust_knight",
+      "boss": "gcap_g_docks",
       "enemy_tickets": 90,
       "tickets": 130,
       "wave_every": 7.75,
       "enemy_cap": 10,
-      "brief": "Their captain holds Tugboat Yard. Bring the captain down and the rest will scatter.",
+      "brief": "Ironside Mae runs Tugboat Yard. Make them back off and the crew scatters.",
       "reward": {
-       "crystals": 336,
+       "crystals": 459,
        "supply": 8,
        "morale": 15,
        "items": {
-        "greater_potion": 1
+        "golden_float": 1,
+        "rounds": 20
        }
       },
       "links": [
@@ -9331,8 +9708,7 @@
            30,
            62
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -9345,23 +9721,24 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_docks",
+        "tickets": 210,
         "enemies": [
-         "thug_cyber",
-         "thug_brute",
          "thug_speedster",
-         "thug_enforcer",
-         "thug_flame",
-         "thug_gambler"
+         "thug_cyber",
+         "thug_gambler",
+         "thug_brute",
+         "rust_knight",
+         "thug_flame"
         ]
        }
       },
-      "boss": "rust_knight",
+      "boss": "gcap_g_docks",
       "enemy_tickets": 135,
       "tickets": 170,
       "wave_every": 6.75,
       "enemy_cap": 14,
-      "brief": "The Harbour Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Harbour Gate: the last block before the turf. Every point locked down, and Ironside Mae steps in.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -9414,6 +9791,23 @@
      "supply": 30
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "toll",
+     "id": "lw_docks",
+     "cost": {
+      "money": 400,
+      "items": {
+       "copper_bar": 2
+      }
+     },
+     "steps": [
+      "Pay the harbour pilot",
+      "Come in by the fishing boats' slip"
+     ],
+     "text": "A harbour pilot owes Sal a favour, almost. Pay the rest and come in with the fishing boats at dawn.",
+     "text_gang": "A harbour pilot owes Sal a favour, almost. Pay the rest and come in with the fishing boats at dawn.",
+     "unlock_after": "always"
+    },
     "sense": {
      "gangsters": "Crates move with nobody carrying them, and every crane on the docks has a lookout."
     },
@@ -9441,7 +9835,7 @@
     "intro": "Every block in Neon answers to a sign, and every sign answers to the President. Take the blocks back, street by street.",
     "won": "The neon gate flickers to your colours. The whole street hums along.",
     "reward": {
-     "crystals": 1700,
+     "crystals": 3600,
      "items": {
       "gold_bar": 3,
       "data_chip": 3
@@ -9453,7 +9847,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -9474,8 +9869,8 @@
       "id": "n1",
       "name": "Noodle Row",
       "type": "skirmish",
-      "x": 0.78,
-      "y": 0.7,
+      "x": 0.76,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "cfg": {
@@ -9520,11 +9915,9 @@
          }
         ],
         "enemies": [
-         "thug_speedster",
-         "thug_gambler",
          "thug_cyber",
-         "thug_flame",
-         "thug_brute"
+         "thug_gambler",
+         "thug_flame"
         ]
        }
       },
@@ -9532,48 +9925,51 @@
       "tickets": 110,
       "wave_every": 7.0,
       "enemy_cap": 13,
-      "brief": "A quick clash at Noodle Row. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Noodle Row. Take the corners and they pull out.",
       "reward": {
-       "crystals": 216,
+       "crystals": 371,
        "supply": 10,
        "morale": 8,
        "items": {
-        "data_chip": 1
+        "data_chip": 1,
+        "rounds": 30
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n3",
+       "n4"
       ]
      },
      {
       "id": "n2",
       "name": "Arcade Alley",
       "type": "cache",
-      "x": 0.22,
-      "y": 0.7,
+      "x": 0.24,
+      "y": 0.72,
       "layer": 1,
       "step": 0,
       "brief": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale.",
       "loot": {
        "supply": 32,
        "morale": 15,
-       "crystals": 1040,
+       "crystals": 220,
        "items": {
-        "gold_bar": 3
+        "cherry_fizz": 3,
+        "rounds": 25
        }
       },
       "links": [
        "n0",
-       "n3"
+       "n4"
       ]
      },
      {
       "id": "n3",
       "name": "Karaoke Box",
       "type": "defend",
-      "x": 0.5,
-      "y": 0.5,
+      "x": 0.82,
+      "y": 0.48,
       "layer": 2,
       "step": 0,
       "cfg": {
@@ -9638,9 +10034,8 @@
          }
         ],
         "enemies": [
-         "thug_speedster",
-         "thug_gambler",
          "thug_cyber",
+         "thug_gambler",
          "thug_flame",
          "thug_brute"
         ]
@@ -9651,30 +10046,29 @@
       "tickets": 140,
       "wave_every": 5.0,
       "enemy_cap": 17,
-      "brief": "Hold Karaoke Box. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "brief": "Hold Karaoke Box. Their cars keep dropping off more of them; keep at least one point until the clock runs out.",
       "reward": {
-       "crystals": 360,
+       "crystals": 619,
        "supply": 8,
        "morale": 10,
        "items": {
-        "data_chip": 1
+        "data_chip": 1,
+        "rounds": 30
        }
       },
       "links": [
        "n1",
-       "n2",
-       "n4",
        "n5"
       ]
      },
      {
       "id": "n4",
       "name": "Rooftop Garden",
-      "type": "boss",
-      "x": 0.74,
-      "y": 0.28,
-      "layer": 3,
-      "step": 1,
+      "type": "escort",
+      "x": 0.34,
+      "y": 0.5,
+      "layer": 2,
+      "step": 0,
       "cfg": {
        "gangsters": {
         "field": "bf_neon_block",
@@ -9698,58 +10092,90 @@
           "owner": "neutral"
          },
          {
+          "id": "a",
+          "name": "Dragon Sign",
+          "cell": [
+           22,
+           24
+          ],
+          "owner": "enemy"
+         },
+         {
           "id": "b",
           "name": "Night Market",
           "cell": [
            52,
            26
           ],
-          "owner": "enemy"
-         },
-         {
-          "id": "c",
-          "name": "Pachinko Hall",
-          "cell": [
-           84,
-           24
-          ],
-          "owner": "enemy"
+          "owner": "neutral"
          }
         ],
+        "convoy": [
+         "f",
+         "d",
+         "a"
+        ],
+        "vehicle": "truck",
         "enemies": [
-         "thug_speedster",
-         "thug_gambler",
          "thug_cyber",
+         "thug_gambler",
          "thug_flame",
          "thug_brute"
         ]
        }
       },
-      "boss": "thug_flame",
-      "enemy_tickets": 110,
+      "convoy_hp": 205,
+      "enemy_tickets": 400,
       "tickets": 130,
-      "wave_every": 7.0,
+      "wave_every": 7.5,
       "enemy_cap": 13,
-      "brief": "Their captain holds Rooftop Garden. Bring the captain down and the rest will scatter.",
+      "brief": "Our supply truck has to reach Dragon Sign. Stay with it: it only rolls with the crew beside it and nobody in the way.",
       "reward": {
-       "crystals": 432,
-       "supply": 8,
-       "morale": 15,
+       "crystals": 557,
+       "supply": 18,
+       "morale": 10,
        "items": {
-        "gold_bar": 1
+        "gold_bar": 1,
+        "rounds": 30
        }
       },
       "links": [
-       "n3",
-       "n5"
+       "n1",
+       "n2",
+       "n5",
+       "n6"
       ]
      },
      {
       "id": "n5",
+      "name": "Signal Bridge",
+      "type": "camp",
+      "x": 0.6,
+      "y": 0.28,
+      "layer": 3,
+      "step": 1,
+      "brief": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
+      "loot": {
+       "supply": 32,
+       "morale": 15,
+       "crystals": 220,
+       "items": {
+        "cherry_fizz": 3,
+        "rounds": 25
+       }
+      },
+      "links": [
+       "n3",
+       "n4",
+       "n6"
+      ]
+     },
+     {
+      "id": "n6",
       "name": "The Neon Gate",
       "type": "gate",
-      "x": 0.44,
-      "y": 0.09,
+      "x": 0.4,
+      "y": 0.08,
       "layer": 4,
       "step": 1,
       "cfg": {
@@ -9802,8 +10228,7 @@
            52,
            48
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -9816,22 +10241,23 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_neon",
+        "tickets": 210,
         "enemies": [
-         "thug_speedster",
-         "thug_gambler",
          "thug_cyber",
+         "thug_gambler",
          "thug_flame",
-         "thug_brute"
+         "thug_brute",
+         "thug_enforcer"
         ]
        }
       },
-      "boss": "thug_flame",
+      "boss": "gcap_g_neon",
       "enemy_tickets": 170,
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 17,
-      "brief": "The Neon Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Neon Gate: the last block before the turf. Every point locked down, and Neon Sable steps in.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -9839,8 +10265,8 @@
        "items": {}
       },
       "links": [
-       "n3",
-       "n4"
+       "n4",
+       "n5"
       ]
      }
     ],
@@ -9858,11 +10284,11 @@
       "n3"
      ],
      [
-      "n2",
-      "n3"
+      "n1",
+      "n4"
      ],
      [
-      "n3",
+      "n2",
       "n4"
      ],
      [
@@ -9872,6 +10298,14 @@
      [
       "n4",
       "n5"
+     ],
+     [
+      "n4",
+      "n6"
+     ],
+     [
+      "n5",
+      "n6"
      ]
     ],
     "need": {
@@ -9884,6 +10318,23 @@
      "supply": 35
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "quest",
+     "id": "lw_neon",
+     "cost": {
+      "money": 900,
+      "items": {
+       "iron_bar": 3
+      }
+     },
+     "steps": [
+      "Fix the arcade owner's sign",
+      "Walk through the back of the arcade"
+     ],
+     "text": "The arcade owner's sign keeps blowing a fuse. Fix it and she'll let you through the back door onto the next block.",
+     "text_gang": "The arcade owner's sign keeps blowing a fuse. Fix it and she'll let you through the back door onto the next block.",
+     "unlock_after": "always"
+    },
     "sense": {
      "gangsters": "The neon flickers in a pattern. Someone is telling the whole district you're coming."
     },
@@ -9911,7 +10362,7 @@
     "intro": "Uptown is all lawns, glass and guards. Take the plazas and the tower road opens.",
     "won": "The tower gate stands open. Up close, the tower looks smaller.",
     "reward": {
-     "crystals": 2100,
+     "crystals": 6000,
      "items": {
       "crystal_battery": 2,
       "ruby": 1,
@@ -9924,7 +10375,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -9991,7 +10443,8 @@
          }
         ],
         "enemies": [
-         "thug_cyber",
+         "thug_flame",
+         "thug_brute",
          "thug_gambler"
         ]
        }
@@ -10000,13 +10453,14 @@
       "tickets": 110,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "A quick clash at Lawn Terrace. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Lawn Terrace. Take the corners and they pull out.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
-        "crystal_battery": 1
+        "crystal_battery": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10027,9 +10481,10 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 320,
        "items": {
-        "crystal_battery": 2
+        "cherry_fizz": 4,
+        "rounds": 30
        }
       },
       "links": [
@@ -10065,8 +10520,7 @@
            22,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -10075,8 +10529,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -10109,10 +10562,14 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "thug_cyber",
-         "thug_gambler"
+         "thug_flame",
+         "thug_brute",
+         "thug_gambler",
+         "thug_enforcer",
+         "gilt_runner",
+         "gilt_guard"
         ]
        }
       },
@@ -10120,13 +10577,14 @@
       "tickets": 150,
       "wave_every": 6.5,
       "enemy_cap": 19,
-      "brief": "Gallery Steps is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": "Gallery Steps is locked down: their points take twice as long to turn. Bring the crew and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
-        "crystal_battery": 1
+        "crystal_battery": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10162,8 +10620,7 @@
            22,
            26
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -10172,8 +10629,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -10206,10 +10662,14 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
-         "thug_cyber",
-         "thug_gambler"
+         "thug_flame",
+         "thug_brute",
+         "thug_gambler",
+         "thug_enforcer",
+         "gilt_runner",
+         "gilt_guard"
         ]
        }
       },
@@ -10217,13 +10677,14 @@
       "tickets": 150,
       "wave_every": 6.5,
       "enemy_cap": 19,
-      "brief": "Valet Ramp is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": "Valet Ramp is locked down: their points take twice as long to turn. Bring the crew and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
-        "sapphire": 1
+        "sapphire": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10236,7 +10697,7 @@
      {
       "id": "n5",
       "name": "Glass Atrium",
-      "type": "defend",
+      "type": "boss",
       "x": 0.49,
       "y": 0.28,
       "layer": 3,
@@ -10255,33 +10716,13 @@
           "owner": "ally"
          },
          {
-          "id": "a",
-          "name": "Gallery Steps",
-          "cell": [
-           22,
-           26
-          ],
-          "owner": "enemy",
-          "gate": true
-         },
-         {
           "id": "b",
           "name": "Fountain Terrace",
           "cell": [
            54,
            41
           ],
-          "owner": "ally"
-         },
-         {
-          "id": "c",
-          "name": "Glass Atrium",
-          "cell": [
-           86,
-           26
-          ],
-          "owner": "enemy",
-          "gate": true
+          "owner": "neutral"
          },
          {
           "id": "d",
@@ -10290,36 +10731,42 @@
            22,
            60
           ],
-          "owner": "ally"
+          "owner": "enemy"
          },
          {
-          "id": "e",
-          "name": "Tower Gardens",
+          "id": "a",
+          "name": "Gallery Steps",
           "cell": [
-           86,
-           60
+           22,
+           26
           ],
-          "owner": "ally"
+          "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_uptown",
         "enemies": [
-         "thug_cyber",
-         "thug_gambler"
+         "thug_flame",
+         "thug_brute",
+         "thug_gambler",
+         "thug_enforcer",
+         "gilt_runner",
+         "gilt_guard"
         ]
        }
       },
-      "hold": 155,
-      "enemy_tickets": 999,
-      "tickets": 140,
-      "wave_every": 5.0,
-      "enemy_cap": 20,
-      "brief": "Hold Glass Atrium. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "boss": "gcap_g_uptown",
+      "enemy_tickets": 125,
+      "tickets": 130,
+      "wave_every": 7.0,
+      "enemy_cap": 16,
+      "brief": "Mr. Gilt runs Glass Atrium. Make them back off and the crew scatters.",
       "reward": {
-       "crystals": 440,
+       "crystals": 1080,
        "supply": 8,
-       "morale": 10,
+       "morale": 15,
        "items": {
-        "crystal_battery": 1
+        "crystal_battery": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10366,8 +10813,7 @@
            54,
            41
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "c",
@@ -10400,19 +10846,24 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_uptown",
+        "tickets": 210,
         "enemies": [
-         "thug_cyber",
-         "thug_gambler"
+         "thug_flame",
+         "thug_brute",
+         "thug_gambler",
+         "thug_enforcer",
+         "gilt_runner",
+         "gilt_guard"
         ]
        }
       },
-      "boss": "thug_enforcer",
+      "boss": "gcap_g_uptown",
       "enemy_tickets": 195,
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 20,
-      "brief": "The Tower Gate: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Tower Gate: the last block before the turf. Every point locked down, and Mr. Gilt steps in.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -10464,7 +10915,7 @@
      ]
     ],
     "need": {
-     "team": 5,
+     "team": 4,
      "items": {
       "gold_bar": 2,
       "iron_bar": 6
@@ -10473,6 +10924,24 @@
      "supply": 40
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "story",
+     "id": "lw_uptown",
+     "cost": {
+      "money": 1600,
+      "items": {
+       "iron_bar": 4,
+       "gold_bar": 1
+      }
+     },
+     "steps": [
+      "Get a caterer's uniform",
+      "Walk in through the service entrance"
+     ],
+     "text": "Every party uptown needs caterers. Rent a uniform, carry a tray, and walk right in through the service entrance.",
+     "text_gang": "Every party uptown needs caterers. Rent a uniform, carry a tray, and walk right in through the service entrance.",
+     "unlock_after": "always"
+    },
     "sense": {
      "gangsters": "Private security on every corner, and every earpiece turns your way."
     },
@@ -10500,7 +10969,7 @@
     "intro": "Under Neon the tunnels go on for miles. Crawlers and the President's crews hold every junction.",
     "won": "The pit door grinds open. Down here, your name echoes.",
     "reward": {
-     "crystals": 2100,
+     "crystals": 6000,
      "items": {
       "crystal_battery": 2,
       "ruby": 1,
@@ -10513,7 +10982,8 @@
       },
       "gangsters": {
        "servo": 8,
-       "data_chip": 2
+       "data_chip": 2,
+       "rounds": 80
       }
      }
     },
@@ -10571,8 +11041,9 @@
          }
         ],
         "enemies": [
+         "thug_flame",
          "thug_brute",
-         "thug_speedster"
+         "thug_gambler"
         ]
        }
       },
@@ -10580,13 +11051,14 @@
       "tickets": 110,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "A quick clash at Drip Tunnel. Take the points and their line breaks.",
+      "brief": "Their lookouts hold Drip Tunnel. Take the corners and they pull out.",
       "reward": {
-       "crystals": 264,
+       "crystals": 540,
        "supply": 10,
        "morale": 8,
        "items": {
-        "sapphire": 1
+        "sapphire": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10607,9 +11079,10 @@
       "loot": {
        "supply": 36,
        "morale": 15,
-       "crystals": 1070,
+       "crystals": 320,
        "items": {
-        "crystal_battery": 2
+        "cherry_fizz": 4,
+        "rounds": 30
        }
       },
       "links": [
@@ -10645,8 +11118,7 @@
            22,
            25
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "enemy"
          },
          {
           "id": "b",
@@ -10675,8 +11147,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -10689,10 +11160,13 @@
           "efort": true
          }
         ],
-        "tickets": 230,
+        "tickets": 190,
         "enemies": [
+         "thug_flame",
          "thug_brute",
-         "thug_speedster"
+         "thug_gambler",
+         "thug_enforcer",
+         "coal_crawler"
         ]
        }
       },
@@ -10700,13 +11174,14 @@
       "tickets": 150,
       "wave_every": 6.5,
       "enemy_cap": 19,
-      "brief": "Old Platform is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+      "brief": "Old Platform is locked down: their points take twice as long to turn. Bring the crew and a plan.",
       "reward": {
-       "crystals": 484,
+       "crystals": 990,
        "supply": 6,
        "morale": 12,
        "items": {
-        "crystal_battery": 1
+        "crystal_battery": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10763,24 +11238,29 @@
           "owner": "enemy"
          }
         ],
+        "boss": "gcap_g_underground",
         "enemies": [
+         "thug_flame",
          "thug_brute",
-         "thug_speedster"
+         "thug_gambler",
+         "thug_enforcer",
+         "coal_crawler"
         ]
        }
       },
-      "boss": "drip_crawler",
+      "boss": "gcap_g_underground",
       "enemy_tickets": 125,
       "tickets": 130,
       "wave_every": 7.0,
       "enemy_cap": 16,
-      "brief": "Their captain holds Rat King's Hall. Bring the captain down and the rest will scatter.",
+      "brief": "Old Pipes Mulgrew runs Rat King's Hall. Make them back off and the crew scatters.",
       "reward": {
-       "crystals": 528,
+       "crystals": 1080,
        "supply": 8,
        "morale": 15,
        "items": {
-        "sapphire": 1
+        "sapphire": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10860,8 +11340,11 @@
          }
         ],
         "enemies": [
+         "thug_flame",
          "thug_brute",
-         "thug_speedster"
+         "thug_gambler",
+         "thug_enforcer",
+         "coal_crawler"
         ]
        }
       },
@@ -10870,13 +11353,14 @@
       "tickets": 140,
       "wave_every": 5.0,
       "enemy_cap": 20,
-      "brief": "Hold Pump Room. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+      "brief": "Hold Pump Room. Their cars keep dropping off more of them; keep at least one point until the clock runs out.",
       "reward": {
-       "crystals": 440,
+       "crystals": 900,
        "supply": 8,
        "morale": 10,
        "items": {
-        "sapphire": 1
+        "sapphire": 1,
+        "rounds": 40
        }
       },
       "links": [
@@ -10943,8 +11427,7 @@
            24,
            57
           ],
-          "owner": "enemy",
-          "efort": true
+          "owner": "neutral"
          },
          {
           "id": "e",
@@ -10957,19 +11440,24 @@
           "efort": true
          }
         ],
-        "tickets": 250,
+        "boss": "gcap_g_underground",
+        "tickets": 210,
         "enemies": [
+         "thug_flame",
          "thug_brute",
-         "thug_speedster"
+         "thug_gambler",
+         "thug_enforcer",
+         "coal_crawler",
+         "rust_knight"
         ]
        }
       },
-      "boss": "drip_crawler",
+      "boss": "gcap_g_underground",
       "enemy_tickets": 195,
       "tickets": 170,
       "wave_every": 6.0,
       "enemy_cap": 20,
-      "brief": "The Pit Door: the last wall before the region. Every point fortified, and their commander takes the field.",
+      "brief": "The Pit Door: the last block before the turf. Every point locked down, and Old Pipes Mulgrew steps in.",
       "reward": {
        "crystals": 0,
        "supply": 0,
@@ -11021,7 +11509,7 @@
      ]
     ],
     "need": {
-     "team": 5,
+     "team": 4,
      "items": {
       "gold_bar": 2,
       "iron_bar": 6
@@ -11030,6 +11518,24 @@
      "supply": 40
     },
     "min_battles": 2,
+    "long_way": {
+     "kind": "story",
+     "id": "lw_underground",
+     "cost": {
+      "money": 1600,
+      "items": {
+       "iron_bar": 4,
+       "gold_bar": 1
+      }
+     },
+     "steps": [
+      "Buy Sal's old sewer map",
+      "Follow the map through the dry tunnels"
+     ],
+     "text": "Sal still has a sewer map from the old days. It costs, but it shows dry tunnels the crews forgot about.",
+     "text_gang": "Sal still has a sewer map from the old days. It costs, but it shows dry tunnels the crews forgot about.",
+     "unlock_after": "always"
+    },
     "sense": {
      "gangsters": "Water drips, and under it, footsteps that stop whenever yours do."
     },
@@ -11076,8 +11582,15 @@
      "grump"
     ],
     "gangsters": [
-     "thug_speedster"
+     "thug_lookout"
     ]
+   },
+   "point_names": {
+    "gangsters": {
+     "e": "Getaway Car",
+     "d": "Phone Booth",
+     "b": "Corner Store"
+    }
    },
    "supply": 60,
    "enemy_cap": 3,
@@ -11092,6 +11605,48 @@
   "kin_gift": {
    "item": "crystal_refined",
    "n": 2
+  },
+  "unlocks": {
+   "1": {
+    "builds": [
+     "striker",
+     "healer"
+    ],
+    "orders": [
+     "mend"
+    ],
+    "words": "Strikers, healers and mending"
+   },
+   "2": {
+    "builds": [
+     "warden"
+    ],
+    "orders": [
+     "upgrade",
+     "fortify"
+    ],
+    "words": "Wardens, upgrades and fortify"
+   },
+   "3": {
+    "builds": [
+     "shade",
+     "turret"
+    ],
+    "orders": [
+     "barrage"
+    ],
+    "words": "Shades, turrets and barrage"
+   },
+   "4": {
+    "builds": [],
+    "orders": [],
+    "words": ""
+   },
+   "5": {
+    "builds": [],
+    "orders": [],
+    "words": ""
+   }
   }
  },
  "_helper_kinds": {
