@@ -24,10 +24,10 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-20 21:13 PT, personal account (C11b integration fix agent on c11b/integ). bot20 softlock fixed (Decor catalogue gave back a stale full-screen modal); full CI c11bi4 on c11b/integ running.
-- **Done:** CONDUCT 1-10b, 11a (package sent), relay live integration, optimization round 3.
-- **In progress:** C11b integration on branch c11b/integ (P1-P7 merged there; c11bi3 failed only bot20 "screen won't close", fixed: DecorCatalogue.close restores the under-screen modal/pause only while `Hud.keep_paused` says it is up; CollectionScreen.open_catalogue refuses on a closed menu; decor_catalogue_test regression). Waiting on full CI c11bi4.
-- **Next step:** merge c11bf/p1..p7 into main (rolling, mrg.sh), integration agent for cross-package hooks (each p*.md "hooks" list), regen_data, full CI c11b, package 11b, push. Then CONDUCT S1 (Steam prep; scopes drafted at /home/claude/wt/S1_SCOPES.txt, copy in docs/reports when launched), then queue C12-C23. Known flaky: playtest "tap-to-move"/"boss after 5 kills" on some runs (one retry often passes).
+- **Last update:** 2026-11-20 21:50 PT, personal account. CONDUCT 11b SHIPPED (32 new creatures, homes, gifts/quests, shows, helpers/chores, team animals, voices, battle-training fix P7, bot20 decor softlock fix). Final CI c11bi4b PASS (6 shards, 20/20 bots, playtest, relay, net e2e). C11b report/guide/package being written.
+- **Done:** CONDUCT 1-10b, 11a, 11b, relay live integration, optimization round 3.
+- **In progress:** CONDUCT S1 (Steam prep): 18 audits done (/home/claude/wt/s1_reports), packages docs/reports/S1-PACKAGES.md, fix agents P1-P6 DONE on s1f/p1..p6 (reports /home/claude/wt/s1f_reports). C11b docs/package.
+- **Next step:** merge s1f/p1..p6 into main, S1 integration agent (cross hooks in each p*.md, `python3 tools/steam_handoff.py --write`, CLAUDE.md one line for Steam tools), full CI s1, package S1 (incl. docs/STEAM.md artifact page, Steam readiness %), push. Then queue C12-C23. ci_run --branch: refresh origin/<branch> tracking ref first or it tests a stale head.
 - **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
