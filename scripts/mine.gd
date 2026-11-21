@@ -1025,6 +1025,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if randf() < Mining.gem_chance(ore == "stone"):
 					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
 					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
+					Music.instance(get_tree()).sfx_pitched("gem", "sparkle", 1.0, -2.0, 0.2)  # a gem lands with its own chime (c13_07-09)
+				elif ore in ["gold", "crystal", "mithril", "ruby"]:
+					Music.instance(get_tree()).sfx_pitched("sparkle", "", 1.15, -6.0, 0.2)
 				xp("mining", (3 if ore == "stone" else 6) + mine_tier)
 				if drawn:
 					redraw_cell(c)
