@@ -210,6 +210,14 @@ A major side arc built on Tom's real store, The General Store (Spokane, est. 194
 - ECONOMY: a store-credit/loyalty card, wholesale buying for your farm goods (the store buys your crops/crafts for its shelves), gift cards as gifts; numbers in a generator with an economy check; both arcs (gangster arc: a family store under pressure from the gangs, protection-racket plot you resolve the right way; penguin arc: the cozy heart of town).
 - Tests: store_test (departments reachable, quests, upgrades, economy), phone UI audit of every store screen, bots walk the store. Art via image tool; music: an upbeat in-store song (ACE).
 
+## CONDUCT 23b — Full visual design polish (Tom, 2026-11-21 00:42)
+Tom: review ALL imagery and graphic design, 100% comprehensive, so the game looks state-of-the-art designed. Runs right after C23 (art direction), before the final package.
+- Towns, cities and regions superbly fleshed out and put together like Sun Haven's towns: intentional layouts, paths that lead somewhere, landmarks, clustered props and decor, gardens, fences, lamps, signs, ground detail and transitions; no empty or random-looking patches; both arcs (penguin whimsical, gang serious cyber/underworld).
+- Every map, interior, mega region, colony, battle field, minigame, menu, HUD, icon set, portrait, title and credits: nothing choppy, mismatched or low-res; consistent scale, palette, outlines and lighting; smooth edges and tile seams.
+- Backgrounds and skies match where you are (theme, season, time, weather); parallax/sky layers where they help.
+- UI and graphic design intuitive and polished: readable hierarchy, consistent frames, buttons and typography on phone.
+- Method: 20 auditors (shots sweep of every spot both arcs + design-review checklist per place) → fix packages by area (penguin towns, gang cities, regions, mega regions/colonies, interiors, UI/icons/menus); art via dreams-image (1000/day), sliced and audited; before/after shots in the package.
+
 ## Split build-from-scratch runs (Tom 20:18, OPTIMIZE CONDUCT)
 Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, full package):
 - C10a decor/cosmetics: the item catalogue, rarity tiers, shops/rewards/drops, placing furniture/wallpaper/flooring indoors, apparel and footwear (wardrobe), data generator + tests.
@@ -218,7 +226,7 @@ Each half is a full CONDUCT (20 auditors, 5-6 fix packages, CI check + 20 bots, 
 - C11b ranching: exotics and fantastic creatures (ostrich, Komodo, space and Merkitty Islands creatures; gangster genetically modified ones), quest-earned animals, ranch buildings tiers, helper automation full (assign to farm/combat/forage/chests, levels, energy), balance + art.
 - C18a cutscenes: cutscene engine (art panels, staged NPC scenes, skip), the Crystopia intro (Star Crystal visits the hero), main-story beats both arcs.
 - C18b cutscenes: random night events, side-event and quirky side-quest scenes, big openings (rec, casino, General Store), polish + art.
-Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C14b (animation life, Tom 2026-11-21), C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, then the final package.
+Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C14b (animation life, Tom 2026-11-21), C15, C16, C17, C18a, C18b, C19, C20, C21, C22, C23, C23b (full visual design polish, Tom 2026-11-21), then the final package.
 
 ## CONDUCT timing (Tom 20:18)
 Every report carries a timing table (audit, sort, fix, merge+CI, package, total, gap since the last CONDUCT ended); the progress sheet has a Timing tab. Target about 1.5-2 h between finished CONDUCTs (Tom 20:22: ideally ~1.5 h all in).

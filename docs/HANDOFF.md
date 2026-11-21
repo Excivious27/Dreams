@@ -34,6 +34,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
 
 ## Decisions (newest first)
+- 2026-11-21 00:42, Tom: new CONDUCT 23b "Full visual design polish" after C23: review all imagery/graphic design, towns/cities/regions fleshed out like Sun Haven, nothing choppy, backgrounds match each place, polished intuitive UI; 100% of the game. Spec in docs/CONDUCT-PLAN.md.
 - 2026-11-21 00:32, Tom: new CONDUCT 14b "Animation life" queued right after C14: smooth natural ambient motion everywhere (flags/cloth in wind, foliage, smoke/fire, wildlife), fix choppy anims (Town Hall fountain named), magic-area sparkles/shimmers, subtle Sun Haven-style idle animations for player, NPCs, animals; 100% sweep of every region/category. Spec in docs/CONDUCT-PLAN.md.
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
