@@ -67,7 +67,8 @@ func _arc(arc: String) -> void:
 	Storage.box("chest")["items"] = {}
 	var pool_key := str(Chores.forage_region(vis_key).get("pool", ""))
 	var allowed := {}
-	for row in (GameState.forage_data.get(pool_key, []) as Array):
+	# C15 P2: a region's table now carries the season's own forage (SeasonGoods.forage_pool), same as roll_forage.
+	for row in SeasonGoods.forage_pool(pool_key, GameState.forage_data.get(pool_key, []) as Array):
 		allowed[str(row[0])] = true
 	Chores._budget = 99999
 	var rf := Chores._do("forage", 4, "chest", vis_key)
