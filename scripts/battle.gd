@@ -1831,7 +1831,7 @@ func _end_campaign(won: bool, travel: bool) -> void:
 	var stats := win_stats()
 	stats["assist"] = int(d.get("assist", 0))
 	var fight: Variant = Campaign.st().get("fight", {})
-	if fight is Dictionary and not (fight as Dictionary).is_empty():
+	if fight is Dictionary and not (fight as Dictionary).is_empty() and not _guest:  # C17 P3: a guest's parked fight is left alone
 		(fight as Dictionary)["perf"] = stats
 	var lines := Campaign.finish(won, supply)
 	if won:

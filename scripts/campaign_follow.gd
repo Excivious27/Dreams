@@ -80,7 +80,7 @@ static func note_march(field: String) -> void:
 		return
 	var nm := NameFilter.clean(str(GameState.names().get("character", "")), "Your host")
 	var where := str(GameState.load_json("res://data/battles.json").get(field, {}).get("title", "the battlefield"))
-	_send_note("%s marched to %s. Back soon." % [nm, where])
+	_send_note("%s marched to %s." % [nm, where], field)
 
 
 static func note_back(won: bool) -> void:
@@ -90,12 +90,12 @@ static func note_back(won: bool) -> void:
 	_send_note("%s %s." % [nm, "won the battle" if won else "fell back from the battle"])
 
 
-static func _send_note(text: String) -> void:
+static func _send_note(text: String, field := "") -> void:
 	var now := PlayClock.ms()
 	if now - _last_note < 4000:
 		return
 	_last_note = now
-	Net.broadcast("campaign_note", {"text": text})
+	Net.broadcast("campaign_note", {"text": text, "field": field})
 
 
 func _on_note(_from_peer: String, d: Dictionary) -> void:
@@ -105,3 +105,25 @@ func _on_note(_from_peer: String, d: Dictionary) -> void:
 	var m: Variant = Engine.get_main_loop().current_scene if Engine.get_main_loop() is SceneTree else null
 	if m is GameMap and (m as GameMap).hud != null:
 		(m as GameMap).hud.toast(CampaignFollow.last_note_text, Color(1, 0.9, 0.7))
+		var field := str(d.get("field", ""))
+		if field.begins_with("bf_") and ResourceLoader.exists("res://scenes/%s.tscn" % field):
+			CampaignFollow.offer_join(m as GameMap, field)
+
+
+## C17 P3 (c17_05-07, minimum co-op battle): "Join them?" A guest who says yes
+## stands on the same field (Battle: no campaign state, own blade drawn, foes on
+## their own phone, a small xp share; nothing changes their campaign or story).
+static var offered_field := ""   # tests
+
+
+static func offer_join(m: GameMap, field: String) -> void:
+	offered_field = field
+	if not is_instance_valid(m) or m.get_tree() == null or m.scene_id() == field:
+		return
+	var dl := Dialogue.instance(m.get_tree())
+	if dl.active or m.get_tree().paused:
+		return
+	dl.say([{"who": "", "text": "Your host is heading into battle. Go and help?", "choice": ["Join the fight", "Not now"], "key": ""}])
+	await dl.finished
+	if dl.last_choice == 0 and is_instance_valid(m) and Net.visiting():
+		m.go_to(field, Vector2.ZERO, "up")

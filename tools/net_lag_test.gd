@@ -325,8 +325,8 @@ func _map_tests() -> void:
 	# The host marches out: guests get word (router msg campaign_note).
 	nn2._host = false
 	nn2._solo_backup = {"probe": true}
-	CampaignFollow._inst._on_note("1", {"text": "H marched to Frostfield Front. Back soon."})
-	check(CampaignFollow.last_note_text.begins_with("H marched to"), "a visiting guest hears the host marched out")
+	CampaignFollow._inst._on_note("1", {"text": "H marched to Frostfield Front.", "field": "bf_frostfield"})
+	check(CampaignFollow.last_note_text.begins_with("H marched to") and CampaignFollow.offered_field == "bf_frostfield", "a visiting guest hears the host marched out and is offered to join the fight")
 	nn2._solo_backup = ob2
 	nn2._host = oh2
 	Campaign.bypass = true
