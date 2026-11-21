@@ -258,6 +258,14 @@ static func events_on(season: String, day: int, yr := -1, ar := "") -> Array:
 	var order := {"festival": 0, "holiday": 1, "marina": 2, "event": 3, "market": 4}
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(order.get(a["kind"], 5)) < int(order.get(b["kind"], 5)))
 	out.append_array(_birthdays(season, day))
+	# A special sky (GameState.special_weather) shows for today and tomorrow (the forecast).
+	if not GameState.run.is_empty():
+		var ad := abs_day(season, day, yr)
+		if ad - _today() in [0, 1]:
+			var sp := GameState.special_weather(ad)
+			if sp != "":
+				out.append({"id": "wx_" + sp, "name": GameState.special_weather_name(sp), "kind": "weather", "icon": "moon" if sp in ["meteor_shower", "harvest_moon", "aurora_night"] else "snow" if sp == "first_snow" else "flower",
+					"where": "", "hours": Vector2.ZERO, "time": "all day", "line": "", "season": season, "day": day, "closes_shops": false})
 	return out
 
 
@@ -407,9 +415,9 @@ static func morning_lines() -> Array:
 			if bool(e.get("met", false)):
 				out.append(str(e["name"]) + " today.")
 			continue
+		if e["kind"] == "weather":
+			out.append(str(e["name"]) + ".")
+			continue
 		var w := str(e.get("where", ""))
 		out.append("Today: %s%s%s." % [e["name"], (" (" + w + ")") if w != "" else "", (", " + str(e["time"])) if str(e.get("time", "")) != "all day" else ""])
-	var sp := GameState.special_weather()
-	if sp != "":
-		out.append(GameState.special_weather_name(sp) + ".")
 	return out

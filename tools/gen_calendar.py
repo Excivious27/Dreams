@@ -61,14 +61,11 @@ ROWS += [
         name_gang="Rooftop Meteor Watch", line_gang="Up on the roof after dark: shooting stars over the skyline.",
         hours="night", year_min=2, icon="moon"),
     # FALL
-    row("apple_day", "fall", 9, "event", "Apple Picking Day", "The orchard trees are heavy: pick a basket on the hill.",
+    row("orchard_day", "fall", 5, "event", "Orchard Day", "The orchard trees are heavy: pick a basket on the hill.",
         arc="penguins", hours="day", icon="pumpkin"),
-    row("scrap_swap", "fall", 9, "event", "Scrap Swap", "",
+    row("scrap_swap", "fall", 5, "event", "Scrap Swap", "",
         arc="gangsters", line_gang="Swap meet behind the docks: parts, tools and odd finds.",
         hours="day", icon="market"),
-    row("founders_day", "fall", 26, "event", "Founders' Day", "Every second year the town remembers its founders with a picnic on the plaza.",
-        name_gang="Founders' Night", line_gang="Every second year the old crews raise a toast of soda to the founders.",
-        hours="day", year_min=2, every=2, icon="firework"),
     # WINTER
     row("ice_fishing", "winter", 7, "event", "Ice Fishing Day", "The lake is frozen hard: fish through the ice all day.",
         name_gang="Ice Fishing Day", line_gang="The harbour edge has frozen: fishing holes all along the pier.",
@@ -76,7 +73,7 @@ ROWS += [
     row("snowball_day", "winter", 13, "event", "Snowball Saturday", "Snowball fights in the park: soft snow, big laughs.",
         name_gang="Snowball Turf War", line_gang="Snowball turf war in the park: soft snow, no hard feelings.",
         hours=[10, 16], icon="snow"),
-    row("snow_sculpture", "winter", 21, "event", "Snow Sculpture Contest", "Build the best snow sculpture on the plaza.",
+    row("snow_sculpture", "winter", 17, "event", "Snow Sculpture Contest", "Build the best snow sculpture on the plaza.",
         name_gang="Ice Sculpture Night", line_gang="Ice sculptures under the neon: best one wins.",
         hours="day", year_min=2, icon="snow"),
 ]
@@ -88,6 +85,19 @@ def main():
     for r in ROWS:
         assert r["season"] in SEASONS and 1 <= r["day"] <= 28, r["id"]
         assert r["day"] != 14, "day 14 is the plaza festival: %s" % r["id"]
+    # Clear of P6's festivals.json ids and festival days (markets drop themselves at runtime).
+    fp = os.path.join(ROOT, "data", "festivals.json")
+    if os.path.exists(fp):
+        fd = json.load(open(fp))
+        frows = fd if isinstance(fd, list) else fd.get("rows", fd.get("festivals", []))
+        fids = {f["id"] for f in frows}
+        fdays = {(f["season"], f["day"], f.get("arc", "both")) for f in frows if f.get("kind") == "festival"}
+        for r in ROWS:
+            assert r["id"] not in fids, "calendar id %s is a festivals.json id" % r["id"]
+            if r["kind"] != "market":
+                for ar in ("both", "penguins", "gangsters"):
+                    if (r["season"], r["day"], ar) in fdays and (r["arc"] == "both" or ar in ("both", r["arc"])):
+                        raise SystemExit("gen_calendar: %s shares %s %d with a festival" % (r["id"], r["season"], r["day"]))
     with open(OUT, "w") as f:
         json.dump({"rows": ROWS}, f, indent=1)
         f.write("\n")

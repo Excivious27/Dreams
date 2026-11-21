@@ -8,8 +8,8 @@ extends CanvasLayer
 ## (year 1 spring up to a year ahead); Close (way out, last) or B. Pad: ScreenCursor.
 
 const DAYS := ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-const KIND_COL := {"festival": Color("d9482b"), "holiday": Color("8a3fb8"), "marina": Color("2a7fc4"), "event": Color("2f9a52"), "market": Color("b07a1e"), "birthday": Color("d6589a")}
-const KIND_TAG := {"festival": "F", "holiday": "H", "marina": "M", "event": "E", "market": "$", "birthday": "B"}
+const KIND_COL := {"weather": Color("4a6fa5"), "festival": Color("d9482b"), "holiday": Color("8a3fb8"), "marina": Color("2a7fc4"), "event": Color("2f9a52"), "market": Color("b07a1e"), "birthday": Color("d6589a")}
+const KIND_TAG := {"weather": "W", "festival": "F", "holiday": "H", "marina": "M", "event": "E", "market": "$", "birthday": "B"}
 
 var view := 0  # absolute season index: (year-1)*4 + season
 var sel := 1  # selected day of the viewed season
@@ -234,6 +234,9 @@ func _detail() -> void:
 	if absd == _today_abs():
 		head += "  (today)"
 	_lab(_root, head, Vector2(18, y), 10, ink)
+	var dd := absd - _today_abs()
+	if not GameState.run.is_empty() and dd in [0, 1]:  # c15_14-13: today's weather and the forecast
+		_lab(_root, GameState.weather_name(GameState.weather_for(absd)), Vector2(170, y + 2), 8, ink_soft, 84)
 	y += 18
 	var ev := marks(sel)
 	if ev.is_empty():

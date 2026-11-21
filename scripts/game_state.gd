@@ -1635,7 +1635,7 @@ static func energy_cost_f(task: String) -> float:
 		mult *= 1.0 - bonus("farming", "farm_energy")
 	elif task == "pickaxe":
 		mult *= 1.0 - bonus("mining", "mine_energy")
-	if weather_today() == "sun" and task in ["hoe", "axe", "pickaxe"] and in_the_heat():
+	if weather_here() == "sun" and task in ["hoe", "axe", "pickaxe"] and in_the_heat():  # C15 P1: the map's own sky
 		mult *= 1.1  # heat wave: heavy work is a little harder (outdoors only, C8 P1)
 	return base * mult
 
@@ -3125,7 +3125,8 @@ static func weather_for(day: int) -> String:
 		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
 	var fest_row := Calendar.festival_for_day(day)  # C14b P3 / C15 P1: festival days get their own sky motion
 	if not fest_row.is_empty():
-		pick = str((fest_row["row"] as Dictionary).get("weather", {"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick)))
+		var fw := str((fest_row["row"] as Dictionary).get("weather", ""))
+		pick = fw if fw != "" else str({"spring": "petals", "summer": "fireflies", "fall": "leaves", "winter": "snow"}.get(se, pick))
 	w[key] = pick
 	# C9: only yesterday/today/tomorrow are ever read; older days would grow the save forever.
 	var keep_from := mini(day, int(run.get("day", day))) - 2

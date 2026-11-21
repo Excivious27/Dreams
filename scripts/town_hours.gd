@@ -72,7 +72,7 @@ static func why_shut(shop: String) -> String:
 	var h := _hour()
 	if not _within(h, float(s[0]), float(s[1])):
 		return "%s: closed. Open %s." % [str(s[2]), hours_text(int(s[0]), int(s[1]))]
-	if shop != "hall" and Npc.in_festival(h):  # C14 P2: per-festival hours
+	if shop != "hall" and Npc.in_festival(h) and bool(Calendar.festival_today().get("closes_shops", true)):  # C14 P2 / C15: per-festival hours, only festivals that shut the shops
 		return "%s: closed today. Everyone's at the %s %s." % [str(s[2]), GameState.festival_name(GameState.festival_today()), _at()]
 	var hol := holiday_closing(h)  # C15 P1: holidays that shut the shops
 	if shop != "hall" and hol != "":
@@ -106,7 +106,7 @@ static func counter_shut(shop: String) -> String:
 	var h := _hour()
 	if not _within(h, 7.0, 21.0):
 		return "Closed for the night. Open %s." % hours_text(7, 21)
-	if Npc.in_festival(h):  # C14 P2: per-festival hours
+	if Npc.in_festival(h) and bool(Calendar.festival_today().get("closes_shops", true)):  # C14 P2: per-festival hours
 		return "Closed today: everyone's at the %s %s." % [GameState.festival_name(GameState.festival_today()), _at()]
 	if holiday_closing(h) != "":
 		return "Closed today for %s." % holiday_closing(h)

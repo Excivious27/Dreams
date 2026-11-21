@@ -393,12 +393,12 @@
    "line_gang": "Up on the roof after dark: shooting stars over the skyline."
   },
   {
-   "id": "apple_day",
+   "id": "orchard_day",
    "season": "fall",
-   "day": 9,
+   "day": 5,
    "kind": "event",
    "arc": "penguins",
-   "name": "Apple Picking Day",
+   "name": "Orchard Day",
    "venue": {
     "scene": "town"
    },
@@ -412,7 +412,7 @@
   {
    "id": "scrap_swap",
    "season": "fall",
-   "day": 9,
+   "day": 5,
    "kind": "event",
    "arc": "gangsters",
    "name": "Scrap Swap",
@@ -426,25 +426,6 @@
    "icon": "market",
    "line": "",
    "line_gang": "Swap meet behind the docks: parts, tools and odd finds."
-  },
-  {
-   "id": "founders_day",
-   "season": "fall",
-   "day": 26,
-   "kind": "event",
-   "arc": "both",
-   "name": "Founders' Day",
-   "venue": {
-    "scene": "town"
-   },
-   "hours": "day",
-   "closes_shops": false,
-   "year_min": 2,
-   "every": 2,
-   "icon": "firework",
-   "line": "Every second year the town remembers its founders with a picnic on the plaza.",
-   "name_gang": "Founders' Night",
-   "line_gang": "Every second year the old crews raise a toast of soda to the founders."
   },
   {
    "id": "ice_fishing",
@@ -490,7 +471,7 @@
   {
    "id": "snow_sculpture",
    "season": "winter",
-   "day": 21,
+   "day": 17,
    "kind": "event",
    "arc": "both",
    "name": "Snow Sculpture Contest",
