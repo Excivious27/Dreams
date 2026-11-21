@@ -104009,6 +104009,36 @@
    "h": 60,
    "w": 80
   },
+  "c14p3_charter": {
+   "file": "props/c14p3_charter.png",
+   "h": 128,
+   "w": 96
+  },
+  "c14p3_hollis": {
+   "file": "props/c14p3_hollis.png",
+   "h": 96,
+   "w": 45
+  },
+  "c14p3_ines": {
+   "file": "props/c14p3_ines.png",
+   "h": 96,
+   "w": 43
+  },
+  "c14p3_roz": {
+   "file": "props/c14p3_roz.png",
+   "h": 96,
+   "w": 42
+  },
+  "c14p3_sailboat": {
+   "file": "props/c14p3_sailboat.png",
+   "h": 128,
+   "w": 81
+  },
+  "c14p3_speedboat": {
+   "file": "props/c14p3_speedboat.png",
+   "h": 128,
+   "w": 135
+  },
   "cafe2_a": {
    "file": "props/cafe2_a.png",
    "h": 125,

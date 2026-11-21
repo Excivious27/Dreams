@@ -1,0 +1,571 @@
+{
+ "tiers": [
+  {
+   "n": 1,
+   "id": "old_pier",
+   "name": "Mend the Old Pier",
+   "gate": 1,
+   "items": {
+    "plank": 40,
+    "nails": 30,
+    "rope": 10
+   },
+   "money": 1500,
+   "opens": "The main pier and four berths, the harbourmaster's office, the Surf & Bait Shack and the dock-jobs board.",
+   "opens_gang": "The main pier and four berths, the harbour office, the boardwalk vendor and the dock-jobs board."
+  },
+  {
+   "n": 2,
+   "id": "breakwater",
+   "name": "Breakwater & Fish Market",
+   "gate": 2,
+   "items": {
+    "stone": 120,
+    "beam": 20,
+    "crab_pot": 4
+   },
+   "money": 6000,
+   "gang_campaign": "docks",
+   "opens": "A stone breakwater, the fish market, the boatwright, inshore charters and the first boat passages.",
+   "opens_gang": "A concrete breakwater, the fish market, the boatwright, inshore charters and the first quiet passages."
+  },
+  {
+   "n": 3,
+   "id": "deep_berths",
+   "name": "Deep-Water Berths",
+   "gate": 3,
+   "items": {
+    "iron_bar": 20,
+    "sail": 4,
+    "beam": 30
+   },
+   "money": 20000,
+   "opens": "The lighthouse lit again, the weekly trader ship, deep-sea night charters and world passages.",
+   "opens_gang": "The harbour light back on, the weekly freighter, night charters and long-haul passages."
+  },
+  {
+   "n": 4,
+   "id": "grand_marina",
+   "name": "Grand Marina",
+   "gate": 4,
+   "items": {
+    "steel_bar": 10,
+    "pearl": 4
+   },
+   "money": 50000,
+   "opens": "The yacht club, the trawler and free passages on every route.",
+   "opens_gang": "The waterfront club, the trawler and free passages on every route."
+  }
+ ],
+ "npcs": {
+  "hollis": {
+   "name": "Hollis Wade",
+   "role": "Harbourmaster",
+   "tier": 0,
+   "spot": "office",
+   "pen": "Hollis Wade taps his clipboard. 'Pier's half gone, lights are out. Fix her up and she'll pay you back.'",
+   "gang": "Hollis Wade doesn't look up from the ledger. 'Harbour runs on favours. Bring planks, I'll find you berths.'"
+  },
+  "dabney": {
+   "name": "Dabney",
+   "role": "Bait Shack",
+   "tier": 1,
+   "spot": "bait",
+   "pen": "Dabney grins over a bucket. 'Worms, lures, crab bait! Fresh as this morning!'",
+   "gang": "Dabney grins over a bucket. 'Bait, tackle, snacks. Boardwalk prices, honest ones.'"
+  },
+  "ines": {
+   "name": "Ines Ferro",
+   "role": "Fishmonger",
+   "tier": 2,
+   "spot": "market",
+   "pen": "Ines Ferro holds up a gleaming fish. 'Catch of the day pays a quarter more. Bring me that one.'",
+   "gang": "Ines Ferro wipes her knife. 'I buy fish, I don't ask where you cast. Catch of the day pays extra.'"
+  },
+  "cora": {
+   "name": "Cora Bell",
+   "role": "Boatwright",
+   "tier": 2,
+   "spot": "boathouse",
+   "pen": "Cora Bell brushes off sawdust. 'Every boat at this marina has my fingerprints on it somewhere.'",
+   "gang": "Cora Bell brushes off sawdust. 'Fast hulls, quiet engines. I build both.'"
+  },
+  "roz": {
+   "name": "Captain Roz Tern",
+   "role": "Charter captain",
+   "tier": 0,
+   "spot": "camp",
+   "pen": "Captain Roz Tern warms her hands at the fire. 'That's my camp. Rowed in last week. This harbour used to be something.'",
+   "gang": "Captain Roz Tern warms her hands at the fire. 'The Night Heron's mine. I take folk out past the lights. For a price.'"
+  },
+  "skipper": {
+   "name": "Skipper Barnacle",
+   "role": "Colony ferry",
+   "tier": 0,
+   "spot": "ferry",
+   "arc": "penguins",
+   "pen": "Skipper Barnacle, the ferry-cat, flicks an ear. 'The colonies are out there. Hop aboard when you're ready.'"
+  },
+  "dutch": {
+   "name": "Dutch Calloway",
+   "role": "Tidewater Launch",
+   "tier": 0,
+   "spot": "taxi",
+   "arc": "gangsters",
+   "gang": "Dutch Calloway tips his flat cap. 'Tidewater Launch. Quiet passage, no questions, honest cargo only.'"
+  },
+  "saffi": {
+   "name": "Saffi",
+   "role": "Trader of the Gull's Wing",
+   "tier": 3,
+   "spot": "trader",
+   "every": 7,
+   "pen": "Saffi leans on the Gull's Wing rail. 'Sea treasure for seeds and trinkets. One day only!'",
+   "gang": "Saffi leans on the freighter rail. 'Rare stock, one day a week. Look fast.'"
+  }
+ },
+ "spots": {
+  "office": [
+   6,
+   13
+  ],
+  "bait": [
+   -24,
+   9
+  ],
+  "market": [
+   16,
+   13
+  ],
+  "boathouse": [
+   24,
+   13
+  ],
+  "camp": [
+   24,
+   -6
+  ],
+  "ferry": [
+   0,
+   0
+  ],
+  "taxi": [
+   0,
+   0
+  ],
+  "trader": [
+   20,
+   20
+  ]
+ },
+ "schedule": {
+  "hollis": [
+   7,
+   19
+  ],
+  "dabney": [
+   6,
+   13
+  ],
+  "ines": [
+   8,
+   16
+  ],
+  "cora": [
+   9,
+   18
+  ],
+  "roz": [
+   18,
+   24
+  ],
+  "saffi": [
+   8,
+   18
+  ]
+ },
+ "shops": {
+  "bait": {
+   "who": "dabney",
+   "tier": 1,
+   "goods": [
+    [
+     "bait",
+     5
+    ],
+    [
+     "crab_pot",
+     120
+    ],
+    [
+     "rope",
+     20
+    ]
+   ]
+  },
+  "market": {
+   "who": "ines",
+   "tier": 2,
+   "buys_fish": 1.25,
+   "goods": [
+    [
+     "pearl",
+     900
+    ]
+   ]
+  },
+  "boathouse": {
+   "who": "cora",
+   "tier": 2,
+   "goods": [
+    [
+     "rowboat",
+     2500
+    ],
+    [
+     "sail",
+     400
+    ]
+   ]
+  },
+  "trader": {
+   "who": "saffi",
+   "tier": 3,
+   "goods": [
+    [
+     "pearl",
+     800
+    ],
+    [
+     "map_scrap",
+     300
+    ]
+   ]
+  }
+ },
+ "quests": [
+  {
+   "id": "marina_lights",
+   "tier": 0,
+   "who": "hollis",
+   "title": "Who Kept the Lights?",
+   "ask": "Light the dock lanterns: bring 4 lamp oil.",
+   "need": {
+    "lamp_oil": 4
+   },
+   "reward": {
+    "money": 300
+   }
+  },
+  {
+   "id": "marina_tangled",
+   "tier": 1,
+   "who": "dabney",
+   "title": "Tangled",
+   "ask": "Bring 10 fiber so the nets can be mended.",
+   "need": {
+    "fiber": 10
+   },
+   "reward": {
+    "items": {
+     "bait": 20
+    }
+   }
+  },
+  {
+   "id": "marina_wreck_log",
+   "tier": 0,
+   "who": "roz",
+   "title": "The Wreck's Log",
+   "ask": "Search the old galleon on three different days.",
+   "need": {},
+   "reward": {
+    "items": {
+     "map_scrap": 1
+    }
+   }
+  },
+  {
+   "id": "marina_catch",
+   "tier": 2,
+   "who": "ines",
+   "title": "Catch of the Day",
+   "ask": "Ines pays a quarter more for the day's fish.",
+   "daily": true,
+   "need": {},
+   "reward": {}
+  },
+  {
+   "id": "marina_shipshape",
+   "tier": 2,
+   "who": "cora",
+   "arc": "penguins",
+   "title": "Shipshape",
+   "ask": "Repair the old ferry: 20 hardwood planks and 4 sailcloth.",
+   "need": {
+    "hardwood_plank": 20,
+    "sail": 4
+   },
+   "reward": {
+    "money": 800
+   }
+  },
+  {
+   "id": "marina_quiet_cargo",
+   "tier": 2,
+   "who": "dutch",
+   "arc": "gangsters",
+   "title": "Quiet Cargo",
+   "ask": "Fix up the launch for honest cargo runs: 20 hardwood planks and 4 sailcloth.",
+   "need": {
+    "hardwood_plank": 20,
+    "sail": 4
+   },
+   "reward": {
+    "money": 800
+   }
+  },
+  {
+   "id": "marina_light_point",
+   "tier": 3,
+   "who": "hollis",
+   "title": "Light at the Point",
+   "ask": "Restore the lighthouse lamp: 8 glass and 6 iron bars.",
+   "need": {
+    "glass": 8,
+    "iron_bar": 6
+   },
+   "reward": {
+    "money": 1500
+   }
+  }
+ ],
+ "charters": [
+  {
+   "id": "shoals",
+   "name": "The Shoals",
+   "scene": "the_shoals",
+   "tier": 2,
+   "price": 250,
+   "hours": 3,
+   "night": false,
+   "intro": "Roz throws a line round a post: 'The Shoals. Shallow, warm, full of fish. Cast anywhere.'",
+   "fish": [
+    "sunfish",
+    "bass",
+    "puffer",
+    "starfin",
+    "tuna"
+   ],
+   "catches": 3,
+   "season": {}
+  },
+  {
+   "id": "deep",
+   "name": "Blue Deep",
+   "scene": "blue_deep",
+   "tier": 3,
+   "price": 900,
+   "hours": 3,
+   "night": true,
+   "intro": "Roz kills the engine. 'Blue Deep. Mind the fog. The big ones come up at night.'",
+   "fish": [
+    "tuna",
+    "eel",
+    "ghost_fish",
+    "starfin"
+   ],
+   "catches": 4,
+   "season": {}
+  }
+ ],
+ "pools": {
+  "shore": [
+   "sunfish",
+   "bass",
+   "eel",
+   "puffer",
+   "starfin",
+   "crab"
+  ],
+  "deep": [
+   "tuna",
+   "eel",
+   "starfin",
+   "puffer"
+  ],
+  "season": {}
+ },
+ "routes": [
+  {
+   "id": "boat_marsh",
+   "a": "beach_marina",
+   "b": "marsh",
+   "tier": 2,
+   "kind": "boat",
+   "unlock": {
+    "type": "project",
+    "id": "marina",
+    "n": 2
+   },
+   "cost": {
+    "money": 60,
+    "items": {}
+   },
+   "free_after": 4,
+   "path": [],
+   "both_ways": true,
+   "arc": "both",
+   "label": "Marsh landing"
+  },
+  {
+   "id": "boat_riverlands",
+   "a": "beach_marina",
+   "b": "riverlands",
+   "tier": 2,
+   "kind": "boat",
+   "unlock": {
+    "type": "project",
+    "id": "marina",
+    "n": 2
+   },
+   "cost": {
+    "money": 100,
+    "items": {}
+   },
+   "free_after": 4,
+   "path": [],
+   "both_ways": true,
+   "arc": "both",
+   "label": "Riverlands mouth"
+  },
+  {
+   "id": "boat_quarry",
+   "a": "beach_marina",
+   "b": "quarry",
+   "tier": 2,
+   "kind": "boat",
+   "unlock": {
+    "type": "project",
+    "id": "marina",
+    "n": 2
+   },
+   "cost": {
+    "money": 80,
+    "items": {}
+   },
+   "free_after": 4,
+   "path": [],
+   "both_ways": true,
+   "arc": "both",
+   "label": "Quarry cove"
+  },
+  {
+   "id": "boat_docks",
+   "a": "beach_tidewater",
+   "b": "docks",
+   "tier": 3,
+   "kind": "boat",
+   "unlock": {
+    "type": "campaign",
+    "id": "docks",
+    "n": 1
+   },
+   "cost": {
+    "money": 150,
+    "items": {}
+   },
+   "free_after": 4,
+   "path": [],
+   "both_ways": true,
+   "arc": "gangsters",
+   "label": "The Docks"
+  }
+ ],
+ "landings": {
+  "marsh": [
+   "marsh",
+   [
+    47,
+    22
+   ],
+   "left"
+  ],
+  "riverlands": [
+   "riverlands",
+   [
+    10,
+    20
+   ],
+   "down"
+  ],
+  "quarry": [
+   "quarry",
+   [
+    3,
+    22
+   ],
+   "right"
+  ],
+  "docks": [
+   "docks",
+   [
+    10,
+    10
+   ],
+   "down"
+  ]
+ },
+ "festival": {
+  "lantern": {
+   "name": "Lantern Boats",
+   "tier": 1,
+   "hours": [
+    19,
+    22
+   ],
+   "arc": "penguins",
+   "line": "Paper lantern boats drift out from the main pier, one for every wish."
+  },
+  "regatta": {
+   "name": "Regatta",
+   "tier": 3,
+   "season": "summer",
+   "day": 21,
+   "arc": "penguins",
+   "line": "Bunting on every mast: the marina regatta is on today."
+  },
+  "derby": {
+   "name": "Fishing Derby",
+   "tier": 2,
+   "season": "fall",
+   "day": 7,
+   "arc": "both",
+   "line": "Fishing Derby! Biggest fish on the pier by 2pm wins. Ines is judging."
+  },
+  "harbour_lights": {
+   "name": "Harbour Lights",
+   "tier": 3,
+   "season": "summer",
+   "day": 21,
+   "arc": "gangsters",
+   "line": "Harbour Lights night market: neon stalls and ring toss all down the boardwalk."
+  }
+ },
+ "lines": {
+  "pen": {
+   "board": "Marina notice board",
+   "closed": "The old pier creaks. A sign: 'Harbourmaster: see Hollis'.",
+   "upgrade_done": "The marina grows: %s.",
+   "taxi": "",
+   "music": "marina"
+  },
+  "gang": {
+   "board": "Harbour board",
+   "closed": "Rotten pilings and a padlocked harbour office. A card: 'Ask for Hollis'.",
+   "upgrade_done": "The harbour grows: %s.",
+   "taxi": "Tidewater Launch",
+   "music": "marina_gang"
+  }
+ }
+}

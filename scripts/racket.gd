@@ -61,7 +61,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 	if not on():
 		m.hud.toast("Funny-looking money. Best not.")
 		return true
-	if m.scene_id() not in PEOPLED:
+	if m.scene_id() not in PEOPLED or (m.scene_id() == "beach" and not Marina.vendor_here()):  # c14_04-17: only while the boardwalk vendor works
 		m.hud.toast("Nobody here to pass them to. Try a town.")
 		return true
 	if int(GameState.run["flags"].get("burned_day", -1)) == int(GameState.run["day"]):

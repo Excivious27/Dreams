@@ -11,5 +11,7 @@ ORDER="gen_skill_trees gen_ranch gen_decor gen_wardrobe write_hearts gen_heart_p
 for g in $ORDER; do
   out="$(python3 -B tools/$g.py 2>&1)" || { echo "$out"; echo "regen_data: $g failed"; exit 1; }
 done
+# C14 P3: the beach marina (data/marina.json; its routes are TravelNet links).
+python3 -B tools/gen_marina.py >/dev/null || { echo "regen_data: gen_marina failed"; exit 1; }
 python3 -B tools/store_facts.py >/dev/null || { echo "regen_data: store_facts failed"; exit 1; }
 echo "regen_data: ok ($(echo $ORDER | wc -w) generators)"

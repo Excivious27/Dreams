@@ -60,7 +60,7 @@ static func ferry(m: GameMap) -> void:
 		ids.append([str(id), ok, held])
 	opts.append("Stay ashore")
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Ferry", "text": "Skipper Barnacle, the ferry-cat, flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
+	d.say([{"who": "Skipper Barnacle", "text": "Skipper Barnacle, the ferry-cat, flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
 	await d.finished
 	var i := d.last_choice
 	if i < 0 or i >= ids.size():

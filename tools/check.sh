@@ -1200,3 +1200,10 @@ echo "$csout" | grep -E "FAIL|SCRIPT ERROR|c14_secrets_test" || true
 if ! echo "$csout" | grep -q "c14_secrets_test: [0-9]* checks, 0 failures"; then
   echo "C14 secrets test failed"; exit 1
 fi
+
+echo "== C14 P3: beach marina (tiers, routes, passages, charters, both arcs) =="
+mrout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/marina_test.gd 2>&1)"
+echo "$mrout" | grep -E "FAIL|SCRIPT ERROR|marina_test" || true
+if ! echo "$mrout" | grep -q "marina_test: 0 failures"; then
+  echo "Marina test failed"; exit 1
+fi
