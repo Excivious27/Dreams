@@ -965,3 +965,10 @@ python3 tools/net_web_safety_check.py || { echo "net_web_safety_check failed"; e
 
 echo "== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) =="
 python3 tools/steam_input_check.py || { echo "steam_input_check failed"; exit 1; }
+
+echo "== deck window: 1280x800 with no window manager fills the screen (xvfb) =="
+dwout="$(SteamDeck=1 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path . --rendering-driver opengl3 -s res://tools/deck_window_test.gd 2>&1)"
+echo "$dwout" | grep -E "FAIL|SCRIPT ERROR|deck_window_test" || true
+if ! echo "$dwout" | grep -q "deck_window_test: .*0 failures"; then
+  echo "deck_window_test failed"; exit 1
+fi
