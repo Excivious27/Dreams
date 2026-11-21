@@ -435,8 +435,8 @@
    "Coffee? No? Smart. It's terrible."
   ],
   "gangsters": [
-   "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things.",
-   "You're getting a name. That's good and bad. Mostly good."
+   "You're getting a name. That's good and bad. Mostly good.",
+   "Somebody in this valley pays people to watch the roads. Most of them are bored. Bored eyes miss things."
   ],
   "rain": [
    "Rain washes out tracks. Good day to go somewhere you shouldn't."
@@ -461,6 +461,9 @@
   ],
   "festival": [
    "Whole town's on the plaza. I'll be on the edge of it. Where I can see."
+  ],
+  "gangsters&q:clear_meadow": [
+   "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things."
   ]
  },
  "finn": {

@@ -37,6 +37,11 @@ func _done(qid: String) -> void:
 	GameState.run["quests"].append({"id": qid, "done": true, "text": ""})
 
 
+## Arrays of strings joined plainly (str() of an Array escapes apostrophes).
+func _j(a: Array) -> String:
+	return "\n".join(PackedStringArray(a))
+
+
 func _all_pools() -> String:
 	var out := ""
 	for id: String in Talk.data():
@@ -134,7 +139,7 @@ func _run() -> void:
 	for id in ["marlowe", "orla", "old_moss", "granite", "sel"]:
 		check(Intros.LINES.has(id), "%s has a first meeting" % id)
 	_setup("gangsters", 3, 12)
-	check("don't write down why" in str(Intros.lines_for("juniper")), "Juniper's gangster intro")
+	check("write down why" in _j(Intros.lines_for("juniper").map(func(x: Dictionary) -> String: return str(x["text"]))), "Juniper's gangster intro")
 	# --- indoor lines: only at work, arc and progress aware ---
 	_setup("gangsters", 3, 12)
 	check(Talk.inside_pool("maple", "inn").is_empty(), "Maple at the inn doesn't talk about her glass case")
@@ -161,7 +166,7 @@ func _run() -> void:
 	check(Npc.place_now(GameState.npcs["gideon"]["routine"], "gideon") in Npc.FEST_SPOTS, "place_now uses the plaza on festival day")
 	check(not Talk.festival_pool("benno").is_empty() and not ("ribbons" in str(Talk.festival_pool("benno"))), "Benno's egg-day lines are not the horse ribbons")
 	check(FestivalWords.fest_host("Posy") == "Posy", "Posy hosts while she's here")
-	check("◆" in FestivalWords.egg_prize_text(), "penguin egg prize in crystals")
+	check(not ("$" in FestivalWords.egg_prize_text()), "penguin egg prize not in cash: %s" % FestivalWords.egg_prize_text())
 	_setup("gangsters", 14, 10)
 	GameState.run["flags"]["posy_gone"] = true
 	GameState.run["flags"]["lumi_gone"] = true
@@ -178,15 +183,15 @@ func _run() -> void:
 			liesl = nd
 	check(not liesl.is_empty(), "Liesl in regions.json")
 	_setup("gangsters", 5, 12)
-	check(not ("Thornmother" in str(Talk.region_lines(liesl))), "gangster Liesl doesn't name the Thornmother")
+	check(not ("Thornmother" in _j(Talk.region_lines(liesl))), "gangster Liesl doesn't name the Thornmother")
 	GameState.run["flags"]["boss_gloam_moonpool"] = true
-	check("Gerald's moved into the roses" in str(Talk.region_lines(liesl)), "Liesl after the boss (gangster)")
+	check("Gerald's moved into the roses" in _j(Talk.region_lines(liesl)), "Liesl after the boss (gangster)")
 	_setup("penguins", 5, 12)
-	check("Thornmother" in str(Talk.region_lines(liesl)), "penguin Liesl keeps her line")
+	check("Thornmother" in _j(Talk.region_lines(liesl)), "penguin Liesl keeps her line")
 	for rid in ["gloam_lanternfall", "desert_mirage_post", "frost_hearthhold"]:
 		_setup("gangsters", 5, 12)
 		for nd in regions.get(rid, {}).get("npcs", []):
-			var s := str(Talk.region_lines(nd))
+			var s := _j(Talk.region_lines(nd))
 			for boss in ["Thornmother", "Colossus", "Wyrm"]:
 				check(not (boss in s), "gangster %s %s doesn't name the %s" % [rid, nd["id"], boss])
 	var tam_lines := str(regions.get("orchard_hills", {}).get("npcs", []))

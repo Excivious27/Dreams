@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C12 P3 (villagers + festivals): Talk pool keys are conditions (q:/f:/time/festival_<id>, a&b); story-gated chatter (President, Coldy, Big Jim, merkitty); Tess/Catkins blocks, weather/time/season/festival lines; Rook a tracker; Benno horse/Halo; Posy/Juniper away and back; indoor lines only at work (arc/progress aware); region folk arc/after-boss/job-done lines; Marlowe/Orla/Old Moss/Granite/Sel first meetings; festival hosts who left are replaced, town on the plaza 9-6, egg hunt 12 eggs + cash prize; Catkins hands in her bell quest; tools/talk_conditions_test.gd.
+
 ## 2026-11-20 — CONDUCT 11b (ranching part 2): 32 new creatures (8 exotics both arcs, 16 fantastic penguin, 8 lab strains gangster via the Gene Splicer), homes v2 (Enclosure, Aviary, Terrarium, Tide Pool, Ember Pit, Star Dome, Grand Barn), RanchGift earned creatures, animal shows with ribbons/medals, chores with helper spots and a nightly cap, team animal CHECK/lessons, RanchVoice, battle training fix (P7: HELPERS orders, Leave training), bot20 decor softlock fix. 183 audit findings, 7 packages, ~41 images, 0 ACE credits. Final CI c11bi4b PASS (6 shards, 20/20 bots, playtest, relay, net e2e). Report docs/reports/CONDUCT-11b.md, Guide 37. Whole game ~79%.
 
 ## 2026-11-20 — C11b integ: bot20 softlock fixed (Decor catalogue restored a stale full-screen modal of a closed campaign board; closed-menu Book button opened it). decor_catalogue_test regression.
