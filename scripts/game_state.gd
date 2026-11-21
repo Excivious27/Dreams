@@ -2480,7 +2480,7 @@ static func birthday_today() -> String:
 static func npc_present(id: String) -> bool:
 	if run.is_empty():
 		return false
-	return not run["flags"].has(id + "_gone") and id != "catkins" and not (id == "sal" and is_penguins() and int(run["day"]) < 4)
+	return not run["flags"].has(id + "_gone") and id != "catkins" and not (id == "sal" and is_penguins() and int(run["day"]) < 4) and not (id == "tam" and Mail.tam_away())
 
 
 # ---- quests ------------------------------------------------------------------

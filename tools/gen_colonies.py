@@ -244,8 +244,8 @@ STORY = {
    "enemies": ["grump_ember", "lantern_moth", "grump_brute"], "foe_word": "Ember Grumps and lantern moths",
    "kits": [
      {"name": "Cinder", "wait": "Lady Cinderpaw first. She's the one doing cartwheels. On hot sand. Show-off.",
-      "quest": {"id": "vents", "title": "Cooling Stones", "ask": "My little brother's hut is right over a cracked vent. If you bring me ten stone and three coal, we can build him a proper hearth instead of a hot floor.",
-                "need": {"ember_glass": 2, "coal": 6}, "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.", "reward": {"ember_glass": 1, "crystals": 600}},
+      "quest": {"id": "vents", "title": "Cooling Stones", "ask": "My little brother's hut is right over a cracked vent. Bring me two ember glass and six coal and we'll build him a proper hearth instead of a hot floor. Our glassblower sells the glass.",
+                "need": {"ember_glass": 2, "coal": 6}, "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.", "reward": {"crystal_glass": 1, "crystals": 600}},
       "after": ["My brother cooks on his new hearth. Mostly toast. Very good toast.", "The vent sighs at night now instead of growling. I like the sigh."]},
      {"name": "Flick", "wait": "You want Lady Cinderpaw. Follow the laughing.",
       "quest": {"id": "glassbeads", "title": "Glass Beads for the Fire", "ask": "We hang glass beads round the Never-Out Fire so it can see itself and feel less lonely. Five glass and one silver bar and I'll make a whole string.",

@@ -72,7 +72,10 @@ static func news() -> void:
 	var day := int(GameState.run["day"])
 	if not f.has("rec_league_mail") and f.has("rec_visited") and day - int(f.get("rec_open", day)) >= 3:
 		f["rec_league_mail"] = true
-		Mail.send("Maple", "League night is the third day of every week, upstairs at the %s. Gideon brings his own ball. I bring mine. Bring yourself, dear, and bowl a hundred and fifty if you want me to take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
+		if GameState.is_penguins():
+			Mail.send("Maple", "League night is the third day of every week, upstairs at the %s. Gideon brings his own ball. I bring mine. Bring yourself, dear, and bowl a hundred and fifty if you want me to take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
+		else:  # c12_09-16: Maple's terse gangster-arc voice
+			Mail.send("Maple", "League night's the third day of every week, upstairs at the %s. Gideon brings his own ball. So do I. Bowl a hundred and fifty and I'll take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
 	var told: Dictionary = f.get("rec_pz_told", {}) if f.get("rec_pz_told") is Dictionary else {}
 	var fresh: Array = []
 	for pid in Tickets.prizes().get("order", []):

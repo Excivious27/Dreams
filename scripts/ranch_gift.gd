@@ -155,6 +155,12 @@ static func room_hint(species: String, opts: Dictionary = {}) -> String:
 	return "a %s on the Plans board" % (nm if nm != "" else h)
 
 
+## The home as this arc names it ("pig pen" for the gangster sty; c12_09-15).
+static func home_word(h: String) -> String:
+	var nm := _tname(h, 1) if h != "" else ""
+	return nm.to_lower() if nm != "" else h
+
+
 static func _tname(bid: String, t: int) -> String:
 	var d := Builds.tier_def(bid, t)
 	var k := "name_gang" if GameState.run.get("arc", "") == "gangsters" and d.has("name_gang") else "name"
@@ -173,6 +179,6 @@ static func _arrived(sp: String, uid: String, opts: Dictionary, was_waiting: boo
 	var nm := str(Ranch.animal(uid).get("name", _kind(sp)))
 	var h := str(Ranch.animal(uid).get("home", ""))
 	if was_waiting:
-		Mail.send(_who(opts), "%s walked over at first light and is settling into your %s. - %s" % [nm, h, _who(opts)], "chat", {}, true)
+		Mail.send(_who(opts), "%s walked over at first light and is settling into your %s. - %s" % [nm, home_word(h), _who(opts)], "chat", {}, true)
 	else:
 		GameState.notify("%s the %s joined your %s." % [nm, _kind(sp), h])
