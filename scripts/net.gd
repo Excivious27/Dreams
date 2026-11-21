@@ -1,6 +1,9 @@
 class_name NetNode
 extends Node
-## Multiplayer (web-first). Talks to the relay in server/ over one WebSocket.
+## Multiplayer (web-first). Talks to the relay in server/ through a NetTransport
+## (S1 P4): NetTransportWs (the live relay over a WebSocket) everywhere, plus
+## NetTransportSteam (Steam lobbies) on desktop builds with Steam running.
+## Every transport speaks the relay protocol, so the code below never changes per wire.
 ## Host-authoritative: the host's run is the world. Guests keep their OWN
 ## character, skills, inventory, pup and party (saved locally) but the host's
 ## day/time/weather, farm tiles, builds, sell box, quests-done and town flags.
@@ -21,7 +24,13 @@ const TICK := 0.1
 ## The live Dreams relay (DigitalOcean droplet, see server/README.md): used out of the box.
 ## SaveGame "net_url" holds only a custom server ("" = this default), so a later default move reaches everyone.
 const DEFAULT_URL := "wss://dreams-64-23-239-63.sslip.io"
-var ws: WebSocketPeer = null
+var tr: NetTransport = null
+## Tests (and SteamService) may set this to a Steam backend object (the Steam
+## singleton or tools/fake_steam.gd); null = ask the SteamService autoload.
+var steam_backend: Object = null
+## Bump whenever WORLD_KEYS, the delta format, act names or frame shapes change:
+## Steam builds update on their own schedule while the web build auto-deploys.
+const PROTO := 1
 var url := ""
 var room := ""
 var my_id := -1
@@ -37,7 +46,7 @@ var _retries := 0
 var _retry_t := 0.0
 var _last_room := ""
 const MAX_RETRIES := 3
-const BUFFER_BYTES := 1 << 20     # WebSocket buffers (the relay allows the host 1 MB frames)
+const BUFFER_BYTES := NetTransportWs.BUFFER_BYTES
 const SAVE_EVERY := 10.0          # host_save (late joiners' snapshot): at most this often while only the clock moves
 var _pushed := {}                 # host: the world as last broadcast (deltas are against this)
 var _save_t := 0.0
@@ -51,10 +60,63 @@ var _solo_backup: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	pending_lobby = lobby_from_args(OS.get_cmdline_args())
+
+
+## Steam invites (S1 P4): a lobby waiting to be joined: a cold start from an
+## invite ("+connect_lobby <id>") or Steam's join_requested (SteamService calls
+## on_join_requested). Asked about once a farm map is up, so the guest has a save.
+var pending_lobby := 0
+var pending_from := ""
+var _asking := false
+
+
+static func lobby_from_args(args: PackedStringArray) -> int:
+	for i in args.size():
+		var a := args[i]
+		if a == "+connect_lobby" and i + 1 < args.size() and args[i + 1].is_valid_int():
+			return int(args[i + 1])
+		if a.begins_with("+connect_lobby=") and a.get_slice("=", 1).is_valid_int():
+			return int(a.get_slice("=", 1))
+	return 0
+
+
+## Steam's join_requested(lobby_id, friend_steam_id) lands here (SteamService connects it).
+func on_join_requested(lobby_id: int, friend_name := "") -> void:
+	if lobby_id <= 0:
+		return
+	pending_lobby = lobby_id
+	pending_from = friend_name
+
+
+func _ask_pending() -> void:
+	if pending_lobby <= 0 or _asking or not is_inside_tree() or not steam_ready():
+		return
+	var gm := get_tree().current_scene as GameMap
+	if gm == null or gm.hud == null or get_tree().paused:
+		return
+	var d := Dialogue.instance(get_tree())
+	if d.active or Dialogue.input_blocked():
+		return
+	var lid := pending_lobby
+	pending_lobby = 0
+	var cur: Variant = tr.get("lobby_id") if tr != null else null
+	if cur != null and int(cur) == lid:
+		return  # already in that lobby
+	_asking = true
+	var who := pending_from if pending_from != "" else "your friend"
+	d.say([{"who": "", "text": ("Leave this game and visit %s's farm?" if online() else "Visit %s's farm? Your own farm waits here.") % who, "choice": ["Visit", "Not now"], "key": ""}])
+	await d.finished
+	_asking = false
+	if d.last_choice != 0:
+		return
+	if tr != null:
+		leave("left")
+	join_steam(lid)
 
 
 func online() -> bool:
-	return ws != null and ws.get_ready_state() == WebSocketPeer.STATE_OPEN and my_id > 0
+	return tr != null and tr.is_open() and my_id > 0
 
 
 func is_host() -> bool:
@@ -86,12 +148,9 @@ func _connect(u: String) -> bool:
 	url = u.strip_edges()
 	if url == "":
 		return false
-	ws = WebSocketPeer.new()
-	ws.inbound_buffer_size = BUFFER_BYTES   # a late farm's world is bigger than the 64 KB default
-	ws.outbound_buffer_size = BUFFER_BYTES
-	var err := ws.connect_to_url(url)
-	if err != OK:
-		ws = null
+	tr = NetTransportWs.new()
+	if not tr.open(url, _pending_join):
+		tr = null
 		disconnected.emit("Couldn't reach %s" % url)
 		return false
 	SaveGame.set_value("net_url", "" if url == DEFAULT_URL else url)
@@ -110,23 +169,97 @@ func _tok() -> String:
 func host(u: String) -> void:
 	_host = true
 	_pushed = {}
-	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
 	_connect(pick_url(u))
 
 
 func join(u: String, code: String) -> void:
 	_host = false
-	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
 	_connect(pick_url(u))
+
+
+## Steam friends (S1 P4): host a friends-only Steam lobby. Desktop builds with
+## Steam running only (steam_ready()); the room-code relay stays for phones/web.
+func host_steam() -> bool:
+	var t := _steam_transport()
+	if t == null:
+		return false
+	_host = true
+	_pushed = {}
+	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
+	tr = t
+	if not tr.open("", _pending_join):
+		tr = null
+		disconnected.emit("Couldn't start a Steam lobby.")
+		return false
+	return true
+
+
+## Join a friend's Steam lobby (an invite, the friends list, or +connect_lobby).
+func join_steam(lobby_id: int) -> bool:
+	var t := _steam_transport()
+	if t == null or lobby_id <= 0:
+		return false
+	_host = false
+	_pending_join = {"t": "join", "room": "", "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
+	tr = t
+	if not tr.open(str(lobby_id), _pending_join):
+		tr = null
+		disconnected.emit("Couldn't join that Steam lobby.")
+		return false
+	return true
+
+
+## Steam is up (desktop build, client running, or a test backend).
+func steam_ready() -> bool:
+	return _steam_obj() != null
+
+
+func _steam_obj() -> Object:
+	if steam_backend != null:
+		return steam_backend
+	var svc := get_node_or_null("/root/SteamService") if is_inside_tree() else null
+	if svc and svc.has_method("ready") and bool(svc.call("ready")):
+		var b: Variant = svc.get("backend")
+		if b is Object:
+			return b
+		if Engine.has_singleton("Steam"):
+			return Engine.get_singleton("Steam")
+	return null
+
+
+## Loaded by path so the web export (which leaves the file out) never parses Steam code.
+func _steam_transport() -> NetTransport:
+	var b := _steam_obj()
+	if b == null:
+		return null
+	var sc: Variant = load("res://scripts/net_transport_steam.gd")
+	if not (sc is Script):
+		return null
+	return (sc as Script).new(b) as NetTransport
+
+
+## Try the same place again after a drop: the same lobby on Steam, the same URL on the relay.
+var _last_tr: NetTransport = null
+
+
+func _reconnect() -> bool:
+	if _last_tr != null and str(_last_tr.caps().get("kind", "")) == "steam":
+		if _last_tr.reopen():
+			tr = _last_tr
+			return true
+		return false
+	return _connect(url)
 
 
 func leave(why := "left") -> void:
 	_retries = MAX_RETRIES  # a deliberate leave never reconnects
 	_last_room = ""
 	_restore_solo(why if why != "left" else "You left. You're back on your own farm.")
-	if ws:
-		ws.close()
-	ws = null
+	if tr:
+		tr.close()
+	tr = null
 	my_id = -1
 	room = ""
 	peers.clear()
@@ -148,8 +281,13 @@ func _my_look() -> Dictionary:
 
 
 func _send(o: Dictionary) -> void:
-	if ws and ws.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		ws.send_text(JSON.stringify(o))
+	if tr and tr.is_open():
+		tr.send(o)
+
+
+## Tell the room which scene we're in (game_map.gd on every map change).
+func send_scene(scene_id: String) -> void:
+	_send({"t": "scene", "scene": scene_id})
 
 
 func send_all(d: Dictionary) -> void:
@@ -164,31 +302,31 @@ func send_host(d: Dictionary) -> void:
 
 
 func _process(delta: float) -> void:
-	if ws == null:
+	if pending_lobby > 0 and not _asking:
+		_ask_pending()
+	if tr == null:
 		if _retry_t > 0.0:
 			_retry_t -= delta
 			if _retry_t <= 0.0 and _last_room != "" and _retries < MAX_RETRIES:
 				_retries += 1
-				_pending_join = {"t": "join", "room": _last_room, "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
-				if not _connect(url):
+				_pending_join = {"t": "join", "room": _last_room, "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"], "proto": PROTO}
+				if not _reconnect():
 					if _retries >= MAX_RETRIES:
 						_restore_solo()  # gave up: back to our own world, not the host's offline
 					else:
 						_retry_t = 2.0 * (_retries + 1)
 		return
-	ws.poll()
-	var st := ws.get_ready_state()
-	if st == WebSocketPeer.STATE_OPEN:
+	tr.poll(delta)
+	if tr.is_open():
 		if not _pending_join.is_empty():
 			_send(_pending_join)
 			_pending_join = {}
-		while ws != null and ws.get_available_packet_count() > 0:
-			var pkt := ws.get_packet().get_string_from_utf8()
-			var m: Variant = JSON.parse_string(pkt)
-			if m is Dictionary:
-				_on_msg(m)
-		if ws == null:
-			return  # a message made us leave
+		for m: Dictionary in tr.take():
+			_on_msg(m)
+			if tr == null:
+				return  # a message made us leave
+		if tr == null:
+			return
 		if my_id > 0:
 			_t += delta
 			if _t >= TICK:
@@ -200,9 +338,10 @@ func _process(delta: float) -> void:
 				if _world_t >= 2.0:
 					_world_t = 0.0
 					_push_world()
-	elif st == WebSocketPeer.STATE_CLOSED:
-		var why := "connection closed (%d)" % ws.get_close_code()
-		ws = null
+	elif tr.closed():
+		var why := tr.close_reason()
+		_last_tr = tr
+		tr = null
 		my_id = -1
 		peers.clear()
 		peers_changed.emit()
@@ -247,6 +386,8 @@ func _on_msg(m: Dictionary) -> void:
 			peers_changed.emit()
 		"full":
 			leave("That room is full (8 players).")
+		"old_build":
+			leave("Your host is on a different version of Dreams. Update and try again.")
 		"no_room":
 			leave("No game with that code. Check the code with your host.")
 		"peer_joined":
@@ -289,6 +430,8 @@ func _on_msg(m: Dictionary) -> void:
 						peers[from]["anim"] = str(d.get("anim", "idle"))
 						peers[from]["flip"] = bool(d.get("flip", false))
 						peers[from]["look"] = d.get("look", peers[from].get("look", {}))
+						peers[from]["pal"] = str(d.get("pal", ""))  # C11b P3: their partner and pup trail their puppet
+						peers[from]["pup"] = bool(d.get("pup", false))
 				"act":
 					if _host:
 						_handle_action(from, d)
@@ -309,7 +452,8 @@ func _broadcast_state() -> void:
 	if not (m is GameMap) or (m as GameMap).player == null:
 		return
 	var p := (m as GameMap).player
-	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false}
+	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false,
+		"pal": Companion.active_id(), "pup": (m as GameMap).pet != null and is_instance_valid((m as GameMap).pet) and ((m as GameMap).pet as Node2D).visible}
 	# The look (and wardrobe) rides along only when it changed, or every LOOK_EVERY s for
 	# late joiners: receivers keep the last one (c10_10: it was sent whole 10x a second).
 	var lk := _my_look()

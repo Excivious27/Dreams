@@ -141,7 +141,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [25 CC0 bang / firework SFX](https://opengameart.org/content/25-cc0-bang-firework-sfx) | rubberduck | CC0 | boom, cannon, fireworks, shot, shot_shotgun |
 | [3 dark magic spells](https://opengameart.org/content/3-dark-magic-spells) | qubodup | CC0 | spell_dark |
 | [3 Pop Sounds](https://opengameart.org/content/3-pop-sounds) | wubitog | CC0 | die, pop |
-| [30 CC0 SFX loops](https://opengameart.org/content/30-cc0-sfx-loops) | rubberduck | CC0 | alarm, bowl_pit, bowl_roll, machines, rec_alley |
+| [30 CC0 SFX loops](https://opengameart.org/content/30-cc0-sfx-loops) | rubberduck | CC0 | alarm, bowl_pit, bowl_roll, machines, rec_alley, terrarium_room |
 | [35 wooden cracks/hits/destructions](https://opengameart.org/content/35-wooden-crackshitsdestructions) | qubodup | CC0 | bowl_pit, crate_break, pin_strike, pin_tap, thud |
 | [37 hits/punches](https://opengameart.org/content/37-hitspunches) | qubodup | CC0 | crit, hit |
 | [4 dry snow steps](https://opengameart.org/content/4-dry-snow-steps) | qubodup | CC0 | step_snow |
@@ -153,10 +153,10 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [58 Random Sound Effects](https://opengameart.org/content/58-random-sound-effects) | TokyoGeisha | CC0 | cards, clap |
 | [6 Short water splashes](https://opengameart.org/content/6-short-water-splashes) | qubodup | CC0 | splash |
 | [60 CC0 Sci-Fi SFX](https://opengameart.org/content/60-cc0-sci-fi-sfx) | rubberduck | CC0 | servo |
-| [68 Workshop Sounds](https://opengameart.org/content/68-workshop-sounds) | bart | CC0 | ball_return, drill, pin_crash, pin_strike, pin_tap, rec_alley, tools |
-| [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) | StarNinjas | CC0 | eat |
-| [80 CC0 creature SFX](https://opengameart.org/content/80-cc0-creature-sfx) | rubberduck | CC0 | bark, bug, critter, grunt, snore, yawn |
-| [80 CC0 creture SFX #2](https://opengameart.org/content/80-cc0-creture-sfx-2) | rubberduck | CC0 | beast_down, snore, stomp, yawn |
+| [68 Workshop Sounds](https://opengameart.org/content/68-workshop-sounds) | bart | CC0 | ball_return, drill, feeder_fill, pin_crash, pin_strike, pin_tap, rec_alley, tools |
+| [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) | StarNinjas | CC0 | eat, egg_crack |
+| [80 CC0 creature SFX](https://opengameart.org/content/80-cc0-creature-sfx) | rubberduck | CC0 | bark, bug, critter, cv_frost, cv_komodo, cv_merkitty, cv_moon, grunt, snore, yawn |
+| [80 CC0 creture SFX #2](https://opengameart.org/content/80-cc0-creture-sfx-2) | rubberduck | CC0 | beast_down, cv_emu, cv_frost, cv_moon, cv_ostrich, snore, stomp, yawn |
 | [80 CC0 RPG SFX](https://opengameart.org/content/80-cc0-rpg-sfx) | rubberduck | CC0 | coin, gem, monster, pick, pickup, roar, slime, spell |
 | [9 wet snow steps](https://opengameart.org/content/9-wet-snow-steps) | qubodup | CC0 | step_snow |
 | [Air whoosh](https://opengameart.org/content/air-whoosh) | pyranostudios | CC0 | airship_whoosh |
@@ -169,7 +169,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Bear Growls](https://opengameart.org/content/bear-growls) | AntumDeluge | CC0 | growl |
 | [Bell dings/chimes](https://opengameart.org/content/bell-dingschimes) | PWL | CC0 | sled_bells, train_depart |
 | [Bicycle Horn](https://opengameart.org/content/bicycle-horn) | AntumDeluge | CC0 | horn |
-| [Bird chirping sounds](https://opengameart.org/content/bird-chirping-sounds) | syncopika | CC0 | birds_dawn |
+| [Bird chirping sounds](https://opengameart.org/content/bird-chirping-sounds) | syncopika | CC0 | aviary_room, birds_dawn, cv_sky |
 | [Bird,cricket,frog and mosquito sounds](https://opengameart.org/content/birdcricketfrog-and-mosquito-sounds) | Aj_ | CC0 | bird_chirp, owl |
 | [Blacksmith's Hammer](https://opengameart.org/content/blacksmiths-hammer) | VishwaJai | CC0 | anvil |
 | [boiling water loops](https://opengameart.org/content/boiling-water-loops) | TinyWorlds | CC0 | cooking |
@@ -206,7 +206,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Horde War Drums loop](https://opengameart.org/content/horde-war-drums-loop) | William Hector | CC0 | war_drum |
 | [Horse Trotting](https://opengameart.org/content/horse-trotting) | EZduzziteh | CC0 | horse |
 | [Ice spells](https://opengameart.org/content/ice-spells) | bart | CC0 | freeze, spell_ice |
-| [Insect Sounds](https://opengameart.org/content/insect-sounds) | fvcalderan | CC0 | insect |
+| [Insect Sounds](https://opengameart.org/content/insect-sounds) | fvcalderan | CC0 | cv_gloam, insect |
 | [Keyboard Soundpack #1 [Typing and Single Keystrokes]](https://opengameart.org/content/keyboard-soundpack-1-typing-and-single-keystrokes) | unicaegames | CC0 | keypress, typing |
 | [Kitten Mew](https://opengameart.org/content/kitten-mew) | AntumDeluge | CC0 | meow |
 | [Loopable Dungeon Ambience](https://opengameart.org/content/loopable-dungeon-ambience) | JaggedStone | CC0 | cave |

@@ -7,6 +7,10 @@ extends SceneTree
 ## in_<interior> probes an interior (in_rec, in_rec_up); REC=1 opens the Rec Center on league night.
 ## Each line: scene, load ms (change_scene -> first frame), median/p95/max frame ms while
 ## the player walks a square, nodes, draw calls, static memory MB, texture MB.
+## S1 P4: FPS=n caps Engine.max_fps (Deck 40 Hz runs); MACHINE=1 adds one "PERF_JSON {...}"
+## line per scene (tools/deck_perf_check.py). Run --headless, frame ms is the game's CPU time
+## per frame (no renderer); Performance TIME_PROCESS is sampled about once a second, so it
+## is not used per frame.
 const DEFAULT := ["title", "farm", "town", "meadow", "forest", "beach", "mountain", "community_farm",
 	"gloam_lanternfall", "desert_mirage_post", "frost_hearthhold", "wind_breezehaven", "gilt_grand_plaza",
 	"iron_junction", "bf_orchard_line", "bf_neon_block", "hollow_heart", "mine"]
@@ -23,6 +27,8 @@ func _run() -> void:
 	var scenes: Array = Array(args) if args.size() > 0 else DEFAULT
 	var frames := int(OS.get_environment("FRAMES")) if OS.get_environment("FRAMES") != "" else 180
 	InputSetup.ensure_actions()
+	if OS.get_environment("FPS") != "":
+		Engine.max_fps = int(OS.get_environment("FPS"))
 	GameMap.exits_off = OS.get_environment("EXITS") == ""  # stay on the probed map (EXITS=1: old behaviour)
 	if OS.get_environment("WIDE") != "":  # the desktop / Steam Deck view (run with --resolution 1280x800)
 		DisplayMode.force = 1
@@ -157,6 +163,14 @@ func _run() -> void:
 			int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)), dl[dl.size() / 2], draws,
 			Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0,
 			Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, bake_draws, bake_ms])
+		if OS.get_environment("MACHINE") != "":
+			print("PERF_JSON " + JSON.stringify({"scene": sc, "arc": arc, "load_ms": snappedf(_ms(t0, t1), 0.1),
+				"load_frame_max_ms": snappedf(fmax, 0.1), "cover_ms": snappedf(_ms(t0, fts[maxi(uncover, 0)]), 0.1),
+				"frame_med": snappedf(times[n / 2], 0.01), "frame_p95": snappedf(times[int(n * 0.95)], 0.01),
+				"headless": DisplayServer.get_name() == "headless",
+				"draws": draws, "nodes": int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)),
+				"mem_mb": snappedf(Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0, 0.1),
+				"tex_mb": snappedf(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, 0.1), "left_to": left_to}))
 	print("perf_probe: done")
 	quit()
 

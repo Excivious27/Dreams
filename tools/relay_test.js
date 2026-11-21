@@ -62,7 +62,7 @@ class Client {
     return new Promise((res) => { const w = { pred, res, timer: setTimeout(() => { this.waiters = this.waiters.filter((x) => x !== w); res(null); }, ms) }; this.waiters.push(w); });
   }
   waitT(t, ms) { return this.wait((m) => m.t === t, ms); }
-  async join(room, extra = {}) { this.send({ t: "join", room, name: this.name, look: {}, arc: "penguins", ...extra }); return this.wait((m) => ["joined", "no_room", "full"].includes(m.t), 8000); }
+  async join(room, extra = {}) { this.send({ t: "join", room, name: this.name, look: {}, arc: "penguins", ...extra }); return this.wait((m) => ["joined", "no_room", "full", "old_build"].includes(m.t), 8000); }
   close() { try { this.ws.close(); } catch {} }
   kill() { try { this.ws.terminate(); } catch {} }
 }
@@ -119,6 +119,8 @@ async function localSuite(url, httpUrl) {
   const room = aj.room;
   const nr = await new Client(url, "x").open().then((x) => x.join("ZZZZ", { create: false }).then((m) => { x.close(); return m; }));
   ok(nr && nr.t === "no_room", "joining an unknown code answers no_room");
+  const ob = await new Client(url, "v").open().then((x) => x.join(room, { create: false, proto: 99 }).then((m) => { x.close(); return m; }));
+  ok(ob && ob.t === "old_build" && ob.need === 0, "a joiner on another protocol gets old_build");
   // host_save: full then delta; the late joiner gets the merged world
   A.send({ t: "host_save", d: { day: 3, farm: { a: 1 }, money: 10 } });
   A.send({ t: "host_save", d: { _delta: true, money: 25 } });
