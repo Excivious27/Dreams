@@ -2413,28 +2413,6 @@
     13
    ]
   ],
-  "layers": [
-   {
-    "tile": "cornfield_night",
-    "rect": [
-     2,
-     3,
-     10,
-     8
-    ],
-    "color": "2a3a2a"
-   },
-   {
-    "tile": "cornfield_night",
-    "rect": [
-     22,
-     14,
-     10,
-     8
-    ],
-    "color": "2a3a2a"
-   }
-  ],
   "props": [
    {
     "name": "tunnel",
@@ -2682,6 +2660,31 @@
    "s": "trees",
    "w": "trees",
    "e": "trees"
+  },
+  "crop_rows": [
+   {
+    "rect": [
+     2,
+     3,
+     10,
+     8
+    ],
+    "crop": "corn"
+   },
+   {
+    "rect": [
+     22,
+     14,
+     10,
+     8
+    ],
+    "crop": "corn"
+   }
+  ],
+  "season_ground": {
+   "winter": {
+    "ground_seam": "snow"
+   }
   }
  },
  "sky": {
@@ -3970,6 +3973,41 @@
      }
     ]
    }
+  ],
+  "orchard": [
+   {
+    "rect": [
+     30,
+     24,
+     18,
+     5
+    ],
+    "kinds": [
+     "apple",
+     "plum",
+     "cherry"
+    ],
+    "step": [
+     3,
+     3
+    ]
+   },
+   {
+    "rect": [
+     27,
+     14,
+     10,
+     5
+    ],
+    "kinds": [
+     "apple",
+     "orange"
+    ],
+    "step": [
+     3,
+     3
+    ]
+   }
   ]
  },
  "highlands": {
@@ -4307,40 +4345,22 @@
      {
       "c": [
        12,
-       10
+       5
       ],
-      "r": 6,
+      "r": 3,
       "seed": 31
      },
      {
       "c": [
        40,
-       14
+       5
       ],
-      "r": 5,
+      "r": 3,
       "seed": 32
-     },
-     {
-      "c": [
-       30,
-       36
-      ],
-      "r": 7,
-      "seed": 33
-     },
-     {
-      "c": [
-       8,
-       30
-      ],
-      "r": 4,
-      "seed": 34
      }
     ]
    }
   ],
-  "patch_set": "snowpatch",
-  "ground_threshold": 0.0,
   "deco_keep": [],
   "plateaus": [
    {
@@ -5779,17 +5799,6 @@
     "h": 1
    },
    {
-    "name": "bridge_wood2",
-    "cell": [
-     13,
-     9
-    ],
-    "w": 3,
-    "h": 1,
-    "solid": false,
-    "under": true
-   },
-   {
     "name": "beaver_dam",
     "cell": [
      36,
@@ -5949,7 +5958,69 @@
   "deco_count": 12,
   "patch_set": "track",
   "ground_threshold": 0.32,
-  "deco_keep": []
+  "deco_keep": [],
+  "rivers": [
+   {
+    "pts": [
+     [
+      53,
+      13
+     ],
+     [
+      44,
+      12
+     ],
+     [
+      38,
+      10
+     ],
+     [
+      31,
+      13
+     ],
+     [
+      24,
+      14
+     ],
+     [
+      19,
+      15
+     ],
+     [
+      14,
+      16
+     ],
+     [
+      12,
+      22
+     ],
+     [
+      13,
+      28
+     ],
+     [
+      17,
+      34
+     ],
+     [
+      20,
+      39
+     ],
+     [
+      20,
+      45
+     ]
+    ],
+    "w": 2.6,
+    "seed": 77,
+    "fish": [
+     "trout",
+     "salmon",
+     "bass",
+     "minnow"
+    ]
+   }
+  ]
  },
  "bf_frostfield": {
   "cols": 110,

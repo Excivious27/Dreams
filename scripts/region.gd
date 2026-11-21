@@ -336,6 +336,7 @@ func build() -> void:
 			_rect_water.erase(bsh)
 		if R.has("islands"):
 			border_water_extra.merge(_water_cells)  # one sea, one shore look
+	WorldGen.home_build(self, R)  # C14 P1 hook: regions.json "rivers" / "orchard"
 	# Forage spots from data/forage.json (respawn every 2 days, 1 with Tracker).
 	var fcount := int(R.get("forage", 0))
 	if fcount > 0:
@@ -523,6 +524,7 @@ func after_ready() -> void:
 	if R.has("battle"):
 		battle = Battle.start(self, region_id, R["battle"])
 	place_project_site()
+	WorldGen.home_dress(self)  # C14 P1 hook: bridges and reeds for regions.json rivers
 	if R.has("colony"):
 		_place_colony()
 	_place_secrets.call_deferred()
@@ -646,6 +648,7 @@ func after_ready() -> void:
 			var nm := str(names[rng.randi_range(0, names.size() - 1)])
 			var g := "nature" if Art.has("nature", nm) else "props"
 			if nm in wprops:
+				if GameState.look_se() == "winter": continue  # C14 P1: no lily pads on winter water (c14_02-12)
 				# Lily pads, leaping fish and splashes belong on the water.
 				if wkeys.is_empty():
 					continue
