@@ -40,6 +40,8 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report.get("grown", 0)), "" if int(report.get("grown", 0)) == 1 else "s"]})
 	if int(report.get("dry", 0)) > 0:
 		lines.append({"text": "%d crop%s went without water and didn't grow. Water each one with the can every day (rain does it for you)." % [int(report["dry"]), "" if int(report["dry"]) == 1 else "s"]})
+	if int(report.get("heat_dried", 0)) > 0:  # C15 P1 (c15_14-01)
+		lines.append({"text": "The heat dried %d plant%s back a day. Water early on a heat wave." % [int(report["heat_dried"]), "" if int(report["heat_dried"]) == 1 else "s"]})
 	if int(report.get("ripe", 0)) > 0 and GameState.quest_done("first_harvest"):  # before that the Next: line says it
 		lines.append({"text": "%d crop%s ripe: face %s and tap USE to harvest." % [int(report["ripe"]), " is" if int(report["ripe"]) == 1 else "s are", "it" if int(report["ripe"]) == 1 else "them"]})
 	if GameState.sky_waters() and not (GameState.run["farm"] as Dictionary).values().filter(func(t: Variant) -> bool: return t is Dictionary and str(t.get("crop", "")) != "").is_empty():
@@ -91,9 +93,14 @@ static func lines(report: Dictionary) -> Array:
 			lines.append({"who": "Ladder", "text": "Word from the roofs: the collectors are walking the districts today. Yours, now. They wanted to know if that's what you want."})
 	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
 	if GameState.festival_today() != "":
-		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
+		var fe := Calendar.festival_today()  # C15 P1: the festival's own place and hours
+		brief += " It's the %s: %s, %s." % [GameState.festival_name(GameState.festival_today()), str(fe.get("where", "the plaza")), str(fe.get("time", ""))]
 	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
-	lines.push_front({"text": "Day %d. %s" % [int(GameState.run["day"]), brief]})
+	var cal: Array = Calendar.morning_lines().filter(func(t: String) -> bool: return not t.begins_with("Today: " + GameState.festival_name(GameState.festival_today())) or GameState.festival_today() == "")
+	if not cal.is_empty():
+		brief += "\n" + " ".join(cal)  # C15 P1: today's events, birthdays and a special sky
+	var dt := "Day %d" % int(GameState.run["day"]) if Calendar.year() == 1 else "Year %d, day %d" % [Calendar.year(), Calendar.day_of_year()]
+	lines.push_front({"text": "%s. %s" % [dt, brief]})
 	_open_due()  # today's new main steps (day-gated) first, so Next: matches the goal line
 	var nxt := GameState.next_step()
 	if nxt != "":
