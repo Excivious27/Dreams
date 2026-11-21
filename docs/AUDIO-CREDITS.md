@@ -137,14 +137,14 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [12 wet towel hitting/falling/punching floor sounds](https://opengameart.org/content/12-wet-towel-hittingfallingpunching-floor-sounds) | qubodup | CC0 | hurt, knockout |
 | [150 Combat Sound Effects](https://opengameart.org/content/150-combat-sound-effects) | untamedpixels | CC0 | crit, emp, laser, spell_earth, spell_fire, spell_ice, spell_lightning, spell_nature, stun, zap |
 | [2 Gun Reloads](https://opengameart.org/content/2-gun-reloads) | StarNinjas | CC0 | reload |
-| [20 Rustles of dry leaves](https://opengameart.org/content/20-rustles-dry-leaves) | qubodup | CC0 | harvest, plant, step_leaves |
+| [20 Rustles of dry leaves](https://opengameart.org/content/20-rustles-dry-leaves) | qubodup | CC0 | forage, harvest, plant, step_leaves |
 | [20 Sword Sound Effects (Attacks and Clashes)](https://opengameart.org/content/20-sword-sound-effects-attacks-and-clashes) | StarNinjas | CC0 | sword_clash |
 | [202 More Sound Effects](https://opengameart.org/content/202-more-sound-effects) | OwlishMedia | CC0 | cash, cash_pickup, cash_register, cloth, drink |
 | [25 CC0 bang / firework SFX](https://opengameart.org/content/25-cc0-bang-firework-sfx) | rubberduck | CC0 | boom, cannon, fireworks, shot, shot_shotgun |
 | [3 dark magic spells](https://opengameart.org/content/3-dark-magic-spells) | qubodup | CC0 | spell_dark |
 | [3 Pop Sounds](https://opengameart.org/content/3-pop-sounds) | wubitog | CC0 | die, pop |
 | [30 CC0 SFX loops](https://opengameart.org/content/30-cc0-sfx-loops) | rubberduck | CC0 | alarm, bowl_pit, bowl_roll, machines, rec_alley, terrarium_room |
-| [35 wooden cracks/hits/destructions](https://opengameart.org/content/35-wooden-crackshitsdestructions) | qubodup | CC0 | bowl_pit, crate_break, egg_collect, pin_strike, pin_tap, thud |
+| [35 wooden cracks/hits/destructions](https://opengameart.org/content/35-wooden-crackshitsdestructions) | qubodup | CC0 | block_fall, bowl_pit, crate_break, egg_collect, pin_strike, pin_tap, thud |
 | [37 hits/punches](https://opengameart.org/content/37-hitspunches) | qubodup | CC0 | crit, hit |
 | [4 dry snow steps](https://opengameart.org/content/4-dry-snow-steps) | qubodup | CC0 | step_ice, step_snow |
 | [40 CC0 water / splash / slime SFX](https://opengameart.org/content/40-cc0-water-splash-slime-sfx) | rubberduck | CC0 | bubble, fish_escape, splash, stink, water |
@@ -200,13 +200,13 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [Fire Crackling](https://opengameart.org/content/fire-crackling) | AntumDeluge | CC0 | campfire |
 | [Fireplace Sound loop](https://opengameart.org/content/fireplace-sound-loop) | PagDev | CC0 | hearth |
 | [Freeze Spell](https://opengameart.org/content/freeze-spell-0) | artisticdude | CC0 | freeze |
-| [Frog Croaks](https://opengameart.org/content/frog-croaks) | EZduzziteh | CC0 | frog, frog_spot |
+| [Frog Croaks](https://opengameart.org/content/frog-croaks) | EZduzziteh | CC0 | croak, frog, frog_spot |
 | [Gun reload sounds](https://opengameart.org/content/gun-reload-sounds) | SpringySpringo | CC0 | reload |
 | [Gunshot sound effect](https://opengameart.org/content/gunshot-sound-effect) | hingydunyas | CC0 | shot |
 | [Gunshot Sounds](https://opengameart.org/content/gunshot-sounds) | Tabasco | CC0 | shot_rifle, shot_shotgun |
 | [Hammer on Anvil](https://opengameart.org/content/hammer-on-anvil) | themightyglider | CC0 | anvil |
 | [High traffic road sounds](https://opengameart.org/content/high-traffic-road-sounds) | IgnasD | CC0 | city_hum |
-| [Horde War Drums loop](https://opengameart.org/content/horde-war-drums-loop) | William Hector | CC0 | war_drum |
+| [Horde War Drums loop](https://opengameart.org/content/horde-war-drums-loop) | William Hector | CC0 | march, war_drum |
 | [Horse Trotting](https://opengameart.org/content/horse-trotting) | EZduzziteh | CC0 | horse |
 | [Ice spells](https://opengameart.org/content/ice-spells) | bart | CC0 | freeze, spell_ice |
 | [Insect Sounds](https://opengameart.org/content/insect-sounds) | fvcalderan | CC0 | cv_gloam, insect |
@@ -311,6 +311,7 @@ Every source below is CC0 (public domain), or dual-licensed with CC0 as one choi
 | [BigSoundBank #1658 Grumpy pig, with the mouth #1](https://bigsoundbank.com/grumpy-pig-1-s1658.html) | Joseph Sardin | CC0 | oink |
 | [BigSoundBank #1659 Grumpy Pig, with the Mouth #2](https://bigsoundbank.com/grumpy-pig-2-s1659.html) | Joseph Sardin | CC0 | oink |
 | [BigSoundBank #1854 Horse Walking on a Path](https://bigsoundbank.com/horse-walking-on-a-path-s1854.html) | Joseph Sardin | CC0 | hoof, step_hoof |
+| [BigSoundBank #1926 Boxing bell 1](https://bigsoundbank.com/boxing-bell-1-s1926.html) | Joseph Sardin | CC0 | gallery_ding |
 | [BigSoundBank #2242 Metal ball bounce 1](https://bigsoundbank.com/metal-ball-bounce-1-s2242.html) | Joseph Sardin | CC0 | roulette_ball |
 | [BigSoundBank #2243 Metal ball bounce 2](https://bigsoundbank.com/metal-ball-bounce-2-s2243.html) | Joseph Sardin | CC0 | roulette_ball |
 | [BigSoundBank #2450 Dog singing 1](https://bigsoundbank.com/dog-singing-1-s2450.html) | Joseph Sardin | CC0 | howl_far, pet_howl |

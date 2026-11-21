@@ -87,6 +87,10 @@
   "10-impactshield-blocks/impact_-_starninjas_x/impact.3.ogg",
   "10-impactshield-blocks/impact_-_starninjas_x/impact.4.ogg"
  ],
+ "block_fall": [
+  "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood03.mp3.flac",
+  "35-wooden-crackshitsdestructions/independent_nu_ljudbank-wood_crack_hit_destruction_x/wood_impact/impactwood07.mp3.flac"
+ ],
  "boiling": [
   "bigsoundbank/0149.ogg",
   "bigsoundbank/0492.ogg"
@@ -279,6 +283,9 @@
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_04.ogg",
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/cute_07.ogg"
  ],
+ "croak": [
+  "frog-croaks/croak_01_0.mp3"
+ ],
  "crow": [
   "crow-caw/crow_caw.wav",
   "crow/crow_0.ogg"
@@ -417,6 +424,11 @@
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/splash_10.ogg",
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/splash_12.ogg"
  ],
+ "forage": [
+  "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle02.flac",
+  "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle05.flac",
+  "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle11.flac"
+ ],
  "freeze": [
   "freeze-spell-0/freeze.wav",
   "ice-spells/icespells_x/coldsnap.wav"
@@ -432,6 +444,9 @@
  ],
  "frogs": [
   "swamp-environment-audio/swamp.ogg"
+ ],
+ "gallery_ding": [
+  "bigsoundbank/1926.ogg"
  ],
  "gate": [
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/metal_open_01.ogg",
@@ -563,6 +578,9 @@
  "map": [
   "opening-and-closing-a-map-sounds/snd_use_map.wav",
   "opening-and-closing-a-map-sounds/snd_close_map.wav"
+ ],
+ "march": [
+  "horde-war-drums-loop/horde_war_drums_by_william_hector.wav"
  ],
  "marsh": [
   "bigsoundbank/0691.ogg"

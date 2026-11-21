@@ -290,6 +290,11 @@ MAP = {
     "egg_collect": ("sfx", ["35-wooden-crackshitsdestructions/impactwood02*", "35-wooden-crackshitsdestructions/impactwood04*", "35-wooden-crackshitsdestructions/impactwood06*"], {"cap": 0.2, "af": "asetrate=44100*1.6,aresample=44100,lowpass=f=5000,volume=-4dB"}),
     "howl_far": ("sfx", ["bigsoundbank/2450", "bigsoundbank/2451"], {"cap": 3.0, "slice": True, "takes": 1, "min": 0.6, "gap": 0.3, "af": "asetrate=33075,aresample=44100", "post": "lowpass=f=1400,aecho=0.8:0.6:240|520:0.4|0.25,volume=-4dB"}),
     "cv_crystal_baby": ("sfx", ["80-cc0-creature-sfx/cute_03*", "80-cc0-creature-sfx/cute_05*", "80-cc0-creature-sfx/cute_08*"], {"cap": 0.7, "af": "asetrate=44100*1.35,aresample=44100,highpass=f=500,aecho=0.6:0.4:60:0.3"}),
+    "block_fall": ("sfx", ["35-wooden-crackshitsdestructions/impactwood03*", "35-wooden-crackshitsdestructions/impactwood07*"], {"cap": 0.5}),
+    "gallery_ding": ("sfx", ["bigsoundbank/1926"], {"cap": 0.5, "slice": True, "takes": 2, "min": 0.05, "af": "highpass=f=800"}),
+    "croak": ("sfx", ["frog-croaks/*"], {"cap": 0.6, "slice": True, "min": 0.08}),
+    "forage": ("sfx", ["20-rustles-dry-leaves/*rustle02*", "20-rustles-dry-leaves/*rustle05*", "20-rustles-dry-leaves/*rustle11*"], {"cap": 0.4, "af": "highpass=f=300,volume=-2dB"}),
+    "march": ("sfx", ["horde-war-drums-loop/*"], {"cap": 1.4, "slice": True, "chunk": True, "takes": 2, "af": "highpass=f=90"}),
     "pet_howl": ("sfx", ["bigsoundbank/2450", "bigsoundbank/2451"], {"cap": 1.6, "slice": True, "takes": 2, "min": 0.4, "gap": 0.3}),
 }
 
