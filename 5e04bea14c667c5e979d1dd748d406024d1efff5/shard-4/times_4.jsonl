@@ -1,0 +1,32 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 138.8}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 36.6}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 3.3}
+{"step": 17, "name": "step 17", "rc": 0, "secs": 0.0}
+{"step": 23, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.8}
+{"step": 29, "name": "storage_test", "rc": 0, "secs": 3.0}
+{"step": 35, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.9}
+{"step": 41, "name": "rec_audio_test", "rc": 0, "secs": 3.1}
+{"step": 47, "name": "farm_look_test", "rc": 0, "secs": 4.5}
+{"step": 53, "name": "npc_anim_test", "rc": 0, "secs": 2.9}
+{"step": 59, "name": "ranch_gift_test", "rc": 0, "secs": 3.3}
+{"step": 65, "name": "town_first_test", "rc": 0, "secs": 4.7}
+{"step": 71, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 3.2}
+{"step": 77, "name": "Steam: ratings / AI disclosure answers still true (S1 P5)", "rc": 0, "secs": 0.5}
+{"step": 83, "name": "C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico", "rc": 0, "secs": 0.9}
+{"step": 89, "name": "mix_test", "rc": 0, "secs": 4.9}
+{"step": 95, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 7.1}
+{"step": 101, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 6.9}
+{"step": 107, "name": "street_bat_test", "rc": 0, "secs": 3.0}
+{"step": 113, "name": "battle_drill_flow_test", "rc": 0, "secs": 8.8}
+{"step": 119, "name": "move_speed_test", "rc": 0, "secs": 4.4}
+{"step": 125, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 6.6}
+{"step": 131, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.8}
+{"step": 137, "name": "arcade_test", "rc": 0, "secs": 3.5}
+{"step": 143, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.0}
+{"step": 149, "name": "C7 P4: heart scene content", "rc": 0, "secs": 3.5}
+{"step": 155, "name": "C11b P6: ranch building arc words and footprints", "rc": 0, "secs": 3.1}
+{"step": 161, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 9.4}
+{"step": 167, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 4.2}
+{"step": 173, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 4.4}
+{"step": 179, "name": "net transport: NetNode over the in-memory relay twin (NetRelayRoom = s", "rc": 0, "secs": 2.9}
+{"step": 185, "name": "S1 P6: Steam capsule/library art (sizes, formats, no text on hero, saf", "rc": 0, "secs": 0.1}
