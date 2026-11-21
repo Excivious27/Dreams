@@ -73,7 +73,7 @@ func _run() -> void:
 	_ok(net.url == NetNode.DEFAULT_URL and str(SaveGame.get_value("net_url", "x")) == "", "connecting to the default saves \"\"")
 	net._connect("wss://example.invalid/relay")
 	_ok(str(SaveGame.get_value("net_url", "")) == "wss://example.invalid/relay", "a custom server is saved on connect")
-	net.ws = null
+	net.tr = null
 	NetNode.reset_server()
 	print("net_url_test: %d checks, %d failures" % [checks, fails])
 	quit(0 if fails == 0 else 1)

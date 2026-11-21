@@ -89,3 +89,24 @@ static func _send(o: Dictionary) -> void:
 static func save_view(run: Dictionary) -> Dictionary:
 	var n := i()
 	return n.save_view(run) if n else run
+
+
+static func send_scene(scene_id: String) -> void:
+	var n := i()
+	if n: n.send_scene(scene_id)
+
+
+## Steam friends co-op (desktop + Steam only; false/no-op everywhere else).
+static func steam_ready() -> bool:
+	var n := i()
+	return n != null and n.steam_ready()
+
+
+static func host_steam() -> bool:
+	var n := i()
+	return n != null and n.host_steam()
+
+
+static func join_steam(lobby_id: int) -> bool:
+	var n := i()
+	return n != null and n.join_steam(lobby_id)

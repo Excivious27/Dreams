@@ -10,7 +10,7 @@ extends RefCounted
 ##   Map                      M
 ##   Toolbar slots            1 2 3 4 5 6 7 8 9 0 - =
 ##   Shift toolbar row        Tab  (mouse wheel cycles the selected slot)
-##   Emote menu               Y
+##   (Emote / Y: dropped in S1, nothing read it; saved "emote" keys are ignored)
 ##   Toolbar back             Q   (C9: LB on a pad)
 ##   Partner ability          R   (C9: RT on a pad; B-hold still works)
 ##   Pup command (cycle)      G   (C9: R3 on a pad)
@@ -38,7 +38,6 @@ const DEFAULTS := {
 	"dodge": [KEY_V],
 	"journal": [KEY_F],
 	"map": [KEY_M],
-	"emote": [KEY_Y],
 	"cycle_tool": [KEY_TAB],
 	"cycle_back": [KEY_Q],
 	"ability": [KEY_R],
@@ -89,7 +88,7 @@ const TOUCH_WORDS := {"a": "USE", "action": "CHECK", "menu": "MENU", "dodge": "R
 const SHOWN := [
 	["up", "Move Up"], ["left", "Move Left"], ["down", "Move Down"], ["right", "Move Right"],
 	["tool", "Use Tool"], ["action", "Action"], ["b", "Run"], ["menu", "Menu"],
-	["journal", "Journal"], ["map", "Map"], ["emote", "Emote"], ["cycle_tool", "Shift Toolbar"],
+	["journal", "Journal"], ["map", "Map"], ["cycle_tool", "Shift Toolbar"],
 	["cycle_back", "Toolbar Back"], ["dodge", "Dodge"], ["ability", "Partner Ability"], ["pup", "Pup Command"],
 	["rally", "Battle Rally"],
 	["a", "Confirm (mobile A)"],

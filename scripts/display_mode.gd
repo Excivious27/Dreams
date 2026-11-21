@@ -220,6 +220,7 @@ func _desktop_window(startup := false) -> void:
 	# Handhelds (Deck) start fullscreen at the panel's native 16:10 size, never a shrunken 16:9 window.
 	if bool(Settings.get_v("fullscreen")) or (startup and is_deck()):
 		w.mode = Window.MODE_FULLSCREEN
+		_fill_screen_later.call_deferred()
 		return
 	if _restore_window(w):
 		return
@@ -282,6 +283,22 @@ func _track_window(d: float) -> void:
 	if rect != _win_saved and rect.size.x >= MIN_WIN.x and rect.size.y >= MIN_WIN.y:
 		_win_saved = rect
 		Settings.set_v("win_rect", [rect.position.x, rect.position.y, rect.size.x, rect.size.y])
+
+
+## S1 P4: with no window manager (bare X11, some gamescope setups) Godot reports
+## MODE_FULLSCREEN but keeps the 540x960 portrait window. A frame later, if the
+## window still isn't the screen's size, cover the screen ourselves (borderless).
+func _fill_screen_later() -> void:
+	await get_tree().process_frame
+	var w := get_window()
+	if w.mode != Window.MODE_FULLSCREEN or DisplayServer.get_name() == "headless":
+		return
+	var scr := DisplayServer.screen_get_size(w.current_screen)
+	if scr.x <= 0 or w.size == scr:
+		return
+	w.borderless = true
+	w.position = DisplayServer.screen_get_position(w.current_screen)
+	w.size = scr
 
 
 ## Window size in pixels (tests may resize the root viewport instead).

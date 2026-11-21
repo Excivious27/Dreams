@@ -1022,3 +1022,30 @@ echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
 if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
   echo "net_url_test failed"; exit 1
 fi
+
+echo "== net transport: NetNode over the in-memory relay twin (NetRelayRoom = server.js rules) =="
+ntout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_transport_test.gd 2>&1)"
+echo "$ntout" | grep -E "FAIL|SCRIPT ERROR|net_transport_test" || true
+if ! echo "$ntout" | grep -q "net_transport_test: [0-9]* checks, 0 failures"; then
+  echo "net_transport_test failed"; exit 1
+fi
+
+echo "== steam co-op: lobbies + networking messages over FakeSteam (no Steam client) =="
+nsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_steam_test.gd 2>&1)"
+echo "$nsout" | grep -E "FAIL|SCRIPT ERROR|net_steam_test" || true
+if ! echo "$nsout" | grep -q "net_steam_test: [0-9]* checks, 0 failures"; then
+  echo "net_steam_test failed"; exit 1
+fi
+
+echo "== steam co-op: web build never parses Steam code (backend object, load by path) =="
+python3 tools/net_web_safety_check.py || { echo "net_web_safety_check failed"; exit 1; }
+
+echo "== steam input: game_actions VDF matches InputSetup (generator + KeyValues check) =="
+python3 tools/steam_input_check.py || { echo "steam_input_check failed"; exit 1; }
+
+echo "== deck window: 1280x800 with no window manager fills the screen (xvfb) =="
+dwout="$(SteamDeck=1 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path . --rendering-driver opengl3 -s res://tools/deck_window_test.gd 2>&1)"
+echo "$dwout" | grep -E "FAIL|SCRIPT ERROR|deck_window_test" || true
+if ! echo "$dwout" | grep -q "deck_window_test: .*0 failures"; then
+  echo "deck_window_test failed"; exit 1
+fi
