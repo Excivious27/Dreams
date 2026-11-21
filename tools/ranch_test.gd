@@ -261,6 +261,7 @@ func _incubator_view() -> void:
 	_fresh("penguins")
 	GameState.run["builds"] = {"coop": 2, "barn": 1}
 	Ranch.migrate()
+	_empty_home("coop")
 	for sid in Ranch.data()["species"]:
 		var br: Variant = Ranch.species(sid).get("breed", null)
 		if br is Dictionary and str((br as Dictionary).get("egg", "")) != "":
@@ -271,9 +272,12 @@ func _incubator_view() -> void:
 	check(RanchFarm.incubator_homes().has("coop"), "Big Coop has an incubator")
 	check(RanchFarm.incubator_tier_name("coop") != "", "incubator tier name (%s)" % RanchFarm.incubator_tier_name("coop"))
 	GameState.add_item("duck_egg", 1)
-	check(Ranch.incubate("duck_egg") == "", "duck egg in")
+	var why := Ranch.incubate("duck_egg")
+	check(why == "", "duck egg in (%s)" % why)
 	check(RanchFarm.incubator("coop").size() == 1 and RanchFarm.all_eggs().size() == 1, "RanchFarm sees Ranch's entry")
 	check(RanchFarm.room_for_egg("coop") == Ranch.room("coop") - 1, "room counts warming eggs")
+	if RanchFarm.incubator("coop").is_empty():
+		return
 	var due: int = RanchFarm.egg_day(RanchFarm.incubator("coop")[0])
 	var names: Array = RanchFarm.hatch_due(due)
 	check(names.size() == 1 and RanchFarm.all_eggs().is_empty(), "due egg hatches through RanchFarm (%s)" % str(names))
@@ -318,6 +322,7 @@ func _reap_tile() -> void:
 func _gift_perk() -> void:
 	_fresh("penguins")
 	Ranch.migrate()
+	_empty_home("coop")
 	var hp: Dictionary = Perks.data()
 	check(hp.get("hazel", {}).get("10", {}).get("animal", null) is Dictionary and hp.get("benno", {}).get("8", {}).get("animal", null) is Dictionary, "Hazel and Benno heart perks carry an animal")
 	var n0 := Ranch.roster("coop").size()
@@ -333,3 +338,8 @@ func _gift_perk() -> void:
 			if (stp as Dictionary).get("animal", null) is Dictionary:
 				with_animal += 1
 	check(with_animal >= 3, "three side stories end with an animal (%d)" % with_animal)
+
+
+func _empty_home(home: String) -> void:
+	for uid in Ranch.roster(home):
+		Ranch.animals().erase(uid)
